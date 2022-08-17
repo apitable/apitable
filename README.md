@@ -1,13 +1,19 @@
 # apitable
 
 APITable is an API-based Visual Database and the best Airtable open-source alternative.
-
-
-> Puts 1000 softwares on your cloud.
-
+Puts 1000 softwares on your cloud.
 ![](docs/static/cover.png)
+## Quick Start
 
-Try out APITable using our hosted version at apitable.com.
+If you just want try out APITable using our hosted version at [apitable.com](https://apitable.com).
+
+If your computer has installed Docker Machine, run this:
+
+```
+curl https://apitable.github.io/install.sh | bash -c
+```
+
+More detail, on [Installation](#installation)
 
 ## Features
 
@@ -74,7 +80,7 @@ Team and Enterprise versions offer advanced features:
 
 ## 1 Click deploy:
 - Heroku
-- Oceandigital
+- OceanDigital
 - Microsoft Azure
 - Google Cloud
 - AWS
@@ -100,6 +106,8 @@ Team and Enterprise versions offer advanced features:
 - Microsoft Azure
 - Google Cloud
 - AWS
+
+## Installation
 
 ## Screenshot
 
