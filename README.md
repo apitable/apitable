@@ -65,7 +65,8 @@ and more, on the way with extensible widgets and plugins.
 - Flexible Project Management.
 - Marketing Leads Management. 
 - Flexible CRM.
-- Flexible BI.
+- Flexible Business Intelligence(BI).
+- People-Friendly Forms and Surveys
 - Flexible ERP.
 - Visual Database with REST API.
 - Low-code and no-code platform.
@@ -84,12 +85,15 @@ and more, on the way with extensible widgets and plugins.
 - As an IdP;
 - ...
 
-## 1 Click deploy:
+## 1 Click deploy
+
 - Heroku
 - OceanDigital
 - Microsoft Azure
 - Google Cloud
 - AWS
+
+
 ## Screenshot
 
 - Invite
