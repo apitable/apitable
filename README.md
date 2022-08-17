@@ -4,20 +4,19 @@
 </p>
 
 <p align="center">
-    <em>
+    <i>
         <b>Puts 1000 softwares on your cloud.</b>
-    </em>
+    </i>
 </p>
-
 <p align="center">
     <em>
         APITable is an API-oriented Visual Database for everyone and the best Airtable open-source alternative.
     </em>
 </p>
+<p align="center">
+    <img src="docs/static/cover.png" alt="APITable Cover Image" />
+</p>
 
-
-
-![APITable Cover Image](docs/static/cover.png)
 
 
 <p align="center">
