@@ -1,6 +1,6 @@
 # apitable
 
-APITable is API-based Visual Database and the best Airtable open-source alternative.
+APITable is an API-based Visual Database and the best Airtable open-source alternative.
 
 > Puts 1000 softwares in your own cloud.
 
@@ -13,8 +13,8 @@ Try out APITable using our hosted version at apitable.com.
 - `Realtime collaboration` in Operational-Transformation(OT) Algorithm without loading.
 - Extremely smoothly / user-friendly / superfast database-spreadsheet `<canvas>` Rendering Engine.
 - Full-stack API access, from Data to `Metadata`.
-- Dark mode and theme customization available.
-- Extensible widgets system with 20+ widgets.
+- `Dark mode` and theme customization available.
+- Extensible `widgets system` with 20+ widgets.
 - `Mirror`, put a view into a mirror to implement Row Permission.
 - Column Permission, data permission with simple operation.
 - Folders / Sub-Folders / Files Permission.
