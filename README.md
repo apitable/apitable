@@ -23,6 +23,7 @@ More detail, on [Installation](#installation)
     - Full-stack API access, from Data to `Metadata`.
     - One-direction / Bi-direction Table Link or Infinite Cross Links 
 - Beautiful UI and Rich Database-Spreadsheet UI
+    - 100k+ data rows
     - Create, Read, Update and Delete on Tables, Columns, and Rows
     - Fields Operations: sort, filter, hide/unhide.
     - `Dark mode` and theme customization available.
@@ -47,6 +48,12 @@ More detail, on [Installation](#installation)
     - Share and Emabbedable page.
     - Multi-language supported.
     - Integration with n8n.io / Zapier / Appsmith... and more.
+- Enterprise features:
+    - SAML
+    - Single-Sign
+    - Audit
+    - Database Backup
+    - Watermark
 - ....
 
 and more, on the way with extensible widgets and plugins.
@@ -68,15 +75,12 @@ and more, on the way with extensible widgets and plugins.
 
 (.....)
 
+## Roadmap
 
-## More Features
-Team and Enterprise versions offer advanced features:
+- Interface builder
+- Embbedable  3rd party documenets components
 - As an IdP;
-- SAML
-- Single-Sign
-- Audit
-- Database Backup
-- Watermark
+- ...
 
 ## 1 Click deploy:
 - Heroku
