@@ -11,7 +11,7 @@
 
 <p align="center">
     <em>
-        APITable is an API-based Visual Database for everyone and the best Airtable open-source alternative.
+        APITable is an API-oriented Visual Database for everyone and the best Airtable open-source alternative.
     </em>
 </p>
 
@@ -40,29 +40,18 @@ More detail, on [Installation](#installation)
 
 ## Features
 
-- Advanced Technology and open-source
+- Advanced technology stack and open-source
     - `Realtime collaboration` allow multiple users to edit together in real time, or simultaneously with Operational-Transformation(OT) Algorithm.
-    - Extremely smoothly / user-friendly / superfast database-spreadsheet `<canvas>` Rendering Engine.
+    - Extremely smoothly / user-friendly / superfast database-spreadsheet in  `<canvas>` Rendering Engine.
     - Full-stack API access, from Data to `Metadata`.
-    - One-direction / Bi-direction Table Link or `Infinite Cross Links` 
+    - One-direction / Bi-direction Table Link and `Infinite Cross Links` 
 - Beautiful UI and Rich Database-Spreadsheet UI
     - **100k+** Data Rows
     - Create, Read, Update and Delete on Tables, Columns, and Rows
-    - Fields Operations: sort, filter, hide/unhide.
+    - Fields Operations: sort, filter, grouping, hide/unhide, height setting.
     - `Dark mode` and theme customization available.
-    - `7 View Types`: Gallery View / Mindmap View / Grid View / Kanban View / full-feature Gantt View / Calendar View
+    - `7 View Types`: Grid View (Datasheet) / Gallery View / Mindmap View /  Kanban View / Full-Feature Gantt View / Calendar View
     - One-click API Panel
-- Extremely extensible
-    - Extensible `Widget System` with 20+ officials widgets.
-    - Customizable Data Column Types
-    - Customizable Formulas
-    - Customizable Automation Robot Actions.
-- Enterprise-grade Permissions
-    - `Mirror`, put a view into a mirror to implement Row Permission.
-    - Activate `Column Permission` with very simple operation.
-    - Folders / Sub-Folders / Files Permission.
-    - Tree structure folders and customizable node(file);
-    - Org Chart & Team Management Dashboard.
 - Batteries-included
     - Built-in 10+ official templates.
     - Robot Automation and customization available.
@@ -71,19 +60,32 @@ More detail, on [Installation](#installation)
     - Share and Emabbedable page.
     - Multi-language supported.
     - Integration with n8n.io / Zapier / Appsmith... and more.
+- Extremely extensible
+    - Extensible `Widget System` with 20+ officials open-source widgets.
+    - Customizable Graph & Chart & Dashboard
+    - Customizable Data Column Types
+    - Customizable Formulas
+    - Customizable Automation Robot Actions.
+- Enterprise-grade Permissions
+    - `Mirror`, put a view into a mirror to implement Row Permission.
+    - Activate `Column Permission` through very simple operation.
+    - Folders / Sub-Folders / Files Permission.
+    - Tree structure folders and customizable node(file);
+    - Org Chart & Team Management Dashboard.
 - Enterprise features:
     - SAML
-    - Single-Sign
+    - Single-Sign-On (SSO)
     - Audit
-    - Database Backup
+    - Database Auto Backup
+    - Data Exporter
     - Watermark
 - ....
 
-and more, on the way with extensible widgets and plugins.
+and more and more with extensible widgets and plugins.
 
 ## Use Cases
 
-- Flexible Project Management.
+- Flexible Project Management & Task/Issues Managements.
 - Marketing Leads Management. 
 - Most flexible and connectable CRM.
 - Flexible Business Intelligence(BI).
@@ -101,10 +103,17 @@ and more, on the way with extensible widgets and plugins.
 
 ## Roadmap
 
-- Interface builder
+- Heavy-code Interface Builder
 - Embbedable  3rd party documenets components
 - As an IdP;
 - ...
+
+## Why we create APITable and open-source?
+
+- We believe that `Database is the cornerstone` of all the software`.
+- We believe that making a `Visual Database with rich and easy user interface for everyone` can reduce the difficulty of software industry and increase the world's digitalization adoption.
+- We believe that open-sourcing `APITable` work can `Push Human Beings Forward`.
+
 
 ## 1 Click deploy
 
