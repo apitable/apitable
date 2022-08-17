@@ -106,14 +106,19 @@ and more, on the way with extensible widgets and plugins.
 - Database Backup
 - Watermark
 
-## 1 Click deploy:
+
+
+## Installation
+
+
+
+## Cloud Deployment:
+
 - Heroku
 - Oceandigital
 - Microsoft Azure
 - Google Cloud
 - AWS
-
-## Installation
 
 ## Screenshot
 
@@ -123,10 +128,12 @@ and more, on the way with extensible widgets and plugins.
 ## License
 
 APITable is under AGPL.
-You can xxx..
-You may not....
+- You can xxx..
+- You may not....
 
 
 > This is the source code that runs APITable and all the associated services. 
+>
 > If you'd like to run your own copy of APITable or contribute to development then this is the place for you.
+>
 > If you want to use APITable online then you don't need to run this code, we offer a hosted version of the app at [APITable.com](https://apitable.com)
