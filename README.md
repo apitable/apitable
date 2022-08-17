@@ -1,13 +1,34 @@
-# apitable
 
-APITable is an API-based Visual Database and the best Airtable open-source alternative.
+<center>
+    <img width="200" src="docs/static/logo.svg" alt="APITable Logo Image" />
+</center>
 
-Puts 1000 softwares on your cloud.
+<center>
+    <em>
+        <b>Puts 1000 softwares on your cloud.</b>
+    </em>
+</center>
 
-![](docs/static/cover.png)
+<center>
+    <em>
+        APITable is an API-based Visual Database for everyone and the best Airtable open-source alternative.
+    </em>
+</center>
+
+
+
+![APITable Cover Image](docs/static/cover.png)
+
+
+<p align="center">
+    <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" />
+    <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" />
+    <img src="https://img.shields.io/badge/LICENSE-AGPL-ff69b4" alt="APITable License Badge AGPL" />
+</p>
+
 ## Quick Start
 
-If you just want try out APITable using our hosted version at [apitable.com](https://apitable.com).
+If you just want try out APITable, using our hosted version at [apitable.com](https://apitable.com).
 
 If your computer has installed Docker Machine, run this:
 
@@ -23,16 +44,16 @@ More detail, on [Installation](#installation)
     - `Realtime collaboration` allow multiple users to edit together in real time, or simultaneously with Operational-Transformation(OT) Algorithm.
     - Extremely smoothly / user-friendly / superfast database-spreadsheet `<canvas>` Rendering Engine.
     - Full-stack API access, from Data to `Metadata`.
-    - One-direction / Bi-direction Table Link or Infinite Cross Links 
+    - One-direction / Bi-direction Table Link or `Infinite Cross Links` 
 - Beautiful UI and Rich Database-Spreadsheet UI
-    - 100k+ data rows
+    - **100k+** Data Rows
     - Create, Read, Update and Delete on Tables, Columns, and Rows
     - Fields Operations: sort, filter, hide/unhide.
     - `Dark mode` and theme customization available.
-    - 7 View Types: Gallery View / Mindmap View / Grid View / Kanban View / full-feature Gantt View / Calendar View
+    - `7 View Types`: Gallery View / Mindmap View / Grid View / Kanban View / full-feature Gantt View / Calendar View
     - One-click API Panel
 - Extremely extensible
-    - Extensible `Widgets System` with 20+ officials widgets.
+    - Extensible `Widget System` with 20+ officials widgets.
     - Customizable Data Column Types
     - Customizable Formulas
     - Customizable Automation Robot Actions.
