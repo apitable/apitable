@@ -1,19 +1,19 @@
 
-<center>
+<p align="center">
     <img width="200" src="docs/static/logo.svg" alt="APITable Logo Image" />
-</center>
+</p>
 
-<center>
+<p align="center">
     <em>
         <b>Puts 1000 softwares on your cloud.</b>
     </em>
-</center>
+</p>
 
-<center>
+<p align="center">
     <em>
         APITable is an API-based Visual Database for everyone and the best Airtable open-source alternative.
     </em>
-</center>
+</p>
 
 
 
