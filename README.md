@@ -42,10 +42,10 @@ More detail, on [Installation](#installation)
 - Advanced technology stack and open-source
     - `Realtime collaboration` allow multiple users to edit together in real time, or simultaneously with Operational-Transformation(OT) Algorithm.
     - Extremely smoothly / user-friendly / superfast database-spreadsheet in  `<canvas>` Rendering Engine.
+    - **200k+** Data Rows collaboration available.
     - Full-stack API access, from Data to `Metadata`.
     - One-direction / Bi-direction Table Link and `Infinite Cross Links` 
 - Beautiful UI and Rich Database-Spreadsheet UI
-    - **100k+** Data Rows
     - Create, Read, Update and Delete on Tables, Columns, and Rows
     - Fields Operations: sort, filter, grouping, hide/unhide, height setting.
     - `Dark mode` and theme customization available.
@@ -56,7 +56,7 @@ More detail, on [Installation](#installation)
     - Robot Automation and customization available.
     - BI dashboard
     - One-click auto-generated Form
-    - Share and Emabbedable page.
+    - Share and embeddable page.
     - Multi-language supported.
     - Integration with n8n.io / Zapier / Appsmith... and more.
 - Extremely extensible
