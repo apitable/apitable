@@ -103,13 +103,13 @@ and more and more with extensible widgets and plugins.
 ## Roadmap
 
 - Heavy-code Interface Builder
-- Embbedable  3rd party documenets components
+- Embbedable  3rd party documentation components
 - As an IdP;
 - ...
 
 ## Why we create APITable and open-source?
 
-- We believe that `Database is the cornerstone` of all the software`.
+- We believe that `Database is the cornerstone` of all the software.
 - We believe that making a `Visual Database with rich and easy user interface for everyone` can reduce the difficulty of software industry and increase the world's digitalization adoption.
 - We believe that open-sourcing `APITable` work can `Push Human Beings Forward`.
 
