@@ -46,7 +46,7 @@ More detail, on [Installation](#installation)
     - Full-stack API access, from Data to `Metadata`.
     - One-direction / Bi-direction Table Link and `Infinite Cross Links` 
     - Community-friendly programming languages and framework, TypeScript(React + NestJS) and Java (Spring Boot)
-- Beautiful UI and Rich Database-Spreadsheet UI
+- Beautiful and Rich Database-Spreadsheet UI
     - Create, Read, Update and Delete on Tables, Columns, and Rows
     - Fields Operations: sort, filter, grouping, hide/unhide, height setting.
     - `Dark mode` and theme customization available.
