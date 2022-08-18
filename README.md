@@ -4,13 +4,8 @@
 </p>
 
 <p align="center">
-    <i>
-        <b>Puts 1000 softwares on your cloud.</b>
-    </i>
-</p>
-<p align="center">
     <em>
-        APITable is an API-oriented Visual Database for everyone and the best Airtable open-source alternative.
+        APITable is an <b>API-oriented Visual Database</b> for everyone and <b>the best Airtable open-source alternative</b>.
     </em>
 </p>
 <p align="center">
