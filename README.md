@@ -24,13 +24,7 @@
 
 If you just want try out APITable, using our hosted version at [apitable.com](https://apitable.com).
 
-If your computer has installed Docker Machine, run this:
-
-```
-curl https://apitable.github.io/install.sh | bash -c
-```
-
-More detail, on [Installation](#installation)
+If you want to install APITable on your local or cloud, See [Installation](#installation)
 
 ## Features
 
@@ -142,6 +136,11 @@ and more and more with extensible widgets and plugins.
 ## Installation
 
 
+If you computer has installed Docker Machine, run this:
+
+```
+curl https://apitable.github.io/install.sh | bash -c
+```
 
 ## Cloud Deployment:
 
@@ -167,4 +166,4 @@ APITable is under AGPL.
 >
 > If you'd like to run your own copy of APITable or contribute to development then this is the place for you.
 >
-> If you want to use APITable online then you don't need to run this code, we offer a hosted version of the app at [APITable.com](https://apitable.com)
+> If you want to use APITable online then you don't need to run this code, we offer a hosted version of the app at [APITable.com](https://apitable.com) which optimized for global accelerator.
