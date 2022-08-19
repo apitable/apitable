@@ -37,13 +37,14 @@ More detail, on [Installation](#installation)
 - Advanced technology stack and open-source
     - `Realtime collaboration` allow multiple users to edit together in real time, or simultaneously with Operational-Transformation(OT) Algorithm.
     - Extremely smoothly / user-friendly / superfast database-spreadsheet in  `<canvas>` Rendering Engine.
-    - **200k+** Data Rows collaboration available.
+    - **100k+** Data Rows collaboration available.
     - Full-stack API access, from Data to `Metadata`.
     - One-direction / Bi-direction Table Link and `Infinite Cross Links` 
     - Community-friendly programming languages and framework, TypeScript(React + NestJS) and Java (Spring Boot)
 - Beautiful and Rich Database-Spreadsheet UI
-    - Create, Read, Update and Delete on Tables, Columns, and Rows
-    - Fields Operations: sort, filter, grouping, hide/unhide, height setting.
+    - `CRUD`: Create, Read, Update and Delete on Tables, Columns, and Rows
+    - `Fields Operations`: sort, filter, grouping, hide/unhide, height setting.
+    - `Space based`: not a App/Base based worksapce strcture, make unlimited table link togehter possible.
     - `Dark mode` and theme customization available.
     - `7 View Types`: Grid View (Datasheet) / Gallery View / Mindmap View /  Kanban View / Full-Feature Gantt View / Calendar View
     - One-click API Panel
