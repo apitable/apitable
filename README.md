@@ -100,6 +100,7 @@ and more and more with extensible widgets and plugins.
 
 - Heavy-code Interface Builder
 - Embbedable  3rd party documentation components
+- SQL-like Domain-Specific Languages.
 - As an IdP;
 - ...
 
