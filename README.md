@@ -38,7 +38,7 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
 - Beautiful and Rich Database-Spreadsheet UI
     - `CRUD`: Create, Read, Update and Delete on Tables, Columns, and Rows
     - `Fields Operations`: sort, filter, grouping, hide/unhide, height setting.
-    - `Space based`: not a App/Base based worksapce strcture, make unlimited table link togehter possible.
+    - `Space based`: Use separated workspaces in place of App/Base-based structure, make unlimited tables link together possible.
     - `Dark mode` and theme customization available.
     - `7 View Types`: Grid View (Datasheet) / Gallery View / Mindmap View /  Kanban View / Full-Feature Gantt View / Calendar View
     - One-click API Panel
