@@ -1,0 +1,157 @@
+import { FC, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import cls from 'classnames';
+
+import RcTrigger from 'rc-trigger';
+
+import { ConfigConstant, INodeRoleMap, IReduxState, StoreActions } from '@vikadata/core';
+import { Button, stopPropagation, Typography } from '@vikadata/components';
+import { InformationSmallOutlined, AddOutlined, ChevronDownOutlined, ChevronRightOutlined } from '@vikadata/icons';
+
+import ComponentDisplay, { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { NodeChangeInfoType, useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
+import { Popup } from 'pc/components/common/mobile/popup';
+import { Avatar } from 'pc/components/common';
+import { Tooltip } from 'pc/components/common/tooltip';
+
+import { Select, Dropdown } from './tools_components';
+import { PublicShareLink } from './public_link';
+import { MembersDetail } from '../permission_settings/permission/members_detail';
+
+import styles from './style.module.less';
+
+export interface IShareContentProps {
+  /** 被操作节点相关的信息 */
+  data: {
+    nodeId: string,
+    type: ConfigConstant.NodeType,
+    icon: string,
+    name: string,
+  };
+}
+
+const Permission = [
+  { label: '可管理', describe: '', value: 'management' },
+  { label: '可编辑', describe: '', value: 'edit' },
+  { label: '只读', describe: '', value: 'readonly' },
+];
+
+export const ShareContent: FC<IShareContentProps> = ({ data }) => {
+  const [visible, setVisible] = useState(false);
+  const [authVisible, setAuthVisible] = useState(false);
+  const [detailModalVisible, setDetailModalVisible] = useState(false);
+
+  const dispatch = useDispatch();
+  const { screenIsAtMost } = useResponsive();
+  const isMobile = screenIsAtMost(ScreenSize.md);
+  const socketData = useSelector((state: IReduxState) => state.catalogTree.socketData);
+  const { getNodeRoleListReq } = useCatalogTreeRequest();
+  const { run: getNodeRoleList, data: roleList } = useRequest<INodeRoleMap>(() => getNodeRoleListReq(data.nodeId));
+
+  useEffect(() => {
+    if (socketData && socketData.type === NodeChangeInfoType.UpdateRole) {
+      getNodeRoleList();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socketData]);
+
+  const handleOpenAuth = (e) => {
+    stopPropagation(e);
+    if (isMobile) {
+      setAuthVisible(true);
+    }
+  };
+
+  const renderSuffix = () => {
+    const element = (
+      <Typography variant='body2' className={cls(styles.shareInviteAuth, { [styles.shareInviteAuthOpen]: visible })} onClick={handleOpenAuth}>
+        <span>可编辑</span>
+        <ChevronDownOutlined size={16} />
+      </Typography>
+    );
+    if (isMobile) {
+      return element;
+    }
+    return (
+      <RcTrigger
+        action="click"
+        popup={(
+          <Dropdown data={Permission} value={['edit']} />
+        )}
+        destroyPopupOnHide
+        popupAlign={{
+          points: ['tr', 'br'],
+        }}
+        popupVisible={visible}
+        onPopupVisibleChange={setVisible}
+        zIndex={1000}
+      >
+        {element}
+      </RcTrigger>
+    );
+  };
+
+  return (
+    <>
+      <div className={cls(styles.shareContent, { [styles.shareContentMobile]: isMobile })}>
+        <Typography variant='h7' className={cls(styles.shareFloor, styles.shareTitle)}>
+          <span>邀请更多人加入协作</span>
+          <InformationSmallOutlined />
+        </Typography>
+        <div className={cls(styles.shareFloor, styles.shareInvite)}>
+          <Select
+            wrapClassName={styles.shareInviteWrap}
+            data={[]}
+            value={[]}
+            placeholder={'请输入需要添加的成员昵称/邮箱'}
+            prefix={(
+              <div className={styles.shareInvitePrefix}><AddOutlined size={16} /></div>
+            )}
+            suffix={renderSuffix()}
+          />
+          <Button color='primary'>邀请</Button>
+        </div>
+        <div className={cls(styles.shareFloor, styles.collaborator)}>
+          <div className={styles.collaboratorStatus} onClick={() => setDetailModalVisible(true)}>
+            {roleList && (
+              <div className={styles.collaboratorIcon}>
+                {
+                  roleList.members.slice(0, 5).map((v, i) => (
+                    <div className={styles.collaboratorIconItem} style={{ marginLeft: i === 0 ? 0 : -16, zIndex: 5 - i }}>
+                      <Tooltip title={v.memberName}>
+                        <div>
+                          <Avatar src={v.avatar} title={v.memberName} id={v.memberId} />
+                        </div>
+                      </Tooltip>
+                    </div>
+                  ))
+                }
+              </div>
+            )}
+            <Typography variant='body3' className={styles.collaboratorNumber}>
+              {roleList?.members.length || 0} 位协作者
+            </Typography>
+          </div>
+          <Typography variant='body3' className={styles.collaboratorAuth} onClick={() => dispatch(StoreActions.updatePermissionModalNodeId(data.nodeId))}>
+            <span>设置权限</span>
+            <ChevronRightOutlined />
+          </Typography>
+        </div>
+        <PublicShareLink nodeId={data.nodeId} isMobile={isMobile} />
+      </div>
+      {detailModalVisible && roleList && <MembersDetail data={roleList} onCancel={() => setDetailModalVisible(false)} />}
+      <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
+        <Popup
+          title="设置权限"
+          visible={authVisible}
+          onClose={() => setAuthVisible(false)}
+          height="auto"
+          destroyOnClose
+          className={styles.collaboratorMobile}
+        >
+          <Dropdown selectedMode="check" divide data={Permission} value={['edit']} />
+        </Popup>
+      </ComponentDisplay>
+    </>
+  );
+};

@@ -11,6 +11,7 @@ export enum ToolHandleType {
   CalendarSetting = 'CalendarSetting',
   OrgChartSetting = 'OrgChartSetting',
   HiddenKanbanGroup = 'HiddenKanbanGroup',
+  Share = 'Share',
 }
 
 export enum HideFieldType {

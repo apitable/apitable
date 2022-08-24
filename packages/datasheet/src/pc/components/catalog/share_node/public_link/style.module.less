@@ -1,5 +1,6 @@
 @import "~pc/styles/lib_var.less";
 @import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
 
 // pc端
 .publicLink {
@@ -184,3 +185,70 @@
     }
   }
 }
+
+.displayAlignCenter {
+  display: flex;
+  align-items: center;
+}
+
+.shareToggle {
+  padding-bottom: 24px;
+  .displayAlignCenter();
+
+  .shareToggleContent {
+    margin: 0 4px 0 8px;
+  }
+}
+
+.sharePerson {
+  margin-bottom: 8px;
+  .displayAlignCenter();
+
+  .sharePersonContent {
+    margin-right: 4px;
+    color: var(--textCommonSecondary);
+  }
+
+  .sharePersonAuth {
+    color: var(--textBrandDefault);
+    cursor: pointer;
+    .displayAlignCenter();
+
+    svg {
+      fill: var(--textBrandDefault);
+    }
+  }
+}
+
+.shareMore {
+  padding: 14px 0;
+  border-top: 1px solid var(--borderCommon);
+  .displayAlignCenter();
+
+  .shareMoreTitle {
+    margin-right: 16px;
+    color: var(--textCommonSecondary);
+  }
+
+  .shareMoreMethod {
+    margin-right: 24px;
+    color: var(--textCommonSecondary);
+    .displayAlignCenter();
+
+    svg {
+      margin-right: 4px;
+      fill: var(--textCommonPrimary);
+    }
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .sharePersonAuthMobile {
+    :global {
+      .ant-drawer-wrapper-body, .ant-drawer-header, .ant-drawer-body {
+        background-color: var(--bgCommonLower);
+      }
+    }
+  }
+}
+

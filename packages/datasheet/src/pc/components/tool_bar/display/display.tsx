@@ -25,6 +25,7 @@ import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock
 import { HiddenKanbanGroup } from '../hidden_kanban_group';
 import { closeAllExpandRecord } from 'pc/components/expand_record';
 import { store } from 'pc/store';
+import { Share } from 'pc/components/catalog/share';
 
 interface IDisplay extends Partial<TriggerProps> {
   style?: React.CSSProperties;
@@ -54,6 +55,7 @@ export const Display: React.FC<IDisplay> = props => {
   const disabledToolBarWithMirror = useDisabledOperateWithMirror();
   const showViewLockModal = useShowViewLockModal();
   const [triggerInfo, setTriggerInfo] = useState<IUseListenTriggerInfo>();
+  const activeNodeId = useSelector(state => Selectors.getNodeId(state));
 
   useEffect(() => {
     if (!editable && type !== ToolHandleType.ViewSwitcher) {
@@ -152,6 +154,9 @@ export const Display: React.FC<IDisplay> = props => {
       case ToolHandleType.CalendarSetting:
         renderNode = <SetCalendarLayout />;
         break;
+      case ToolHandleType.Share:
+        renderNode = <Share nodeId={activeNodeId} isTriggerRender />;
+        break;
       default:
         renderNode = <></>;
     }
@@ -169,8 +174,13 @@ export const Display: React.FC<IDisplay> = props => {
         return t(Strings.set_grouping);
       }
 
+      if (type === ToolHandleType.Share) {
+        return '分享与协作';
+      }
+
       return t(Strings.filter);
     };
+
     return (
       <>
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>{renderNode}</ComponentDisplay>
@@ -180,7 +190,7 @@ export const Display: React.FC<IDisplay> = props => {
             className={styles.popupWrapper}
             visible={open}
             onClose={() => onMenuVisibleChange(false)}
-            height="90%"
+            height={type !== ToolHandleType.Share ? '90%' : 'auto'}
             destroyOnClose
           >
             {renderNode}
@@ -206,6 +216,9 @@ export const Display: React.FC<IDisplay> = props => {
     }
     if (type === ToolHandleType.ViewSort || type === ToolHandleType.ViewGroup) {
       return 470;
+    }
+    if (type === ToolHandleType.Share) {
+      return 528;
     }
     return 200;
   };

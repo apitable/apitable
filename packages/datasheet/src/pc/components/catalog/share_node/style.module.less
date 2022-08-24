@@ -1,5 +1,6 @@
 @import "~pc/styles/lib_var.less";
 @import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
 
 .headerPng {
   width: 100%;
@@ -150,6 +151,140 @@
 
       .ant-tabs-content {
         height: 100%;
+      }
+    }
+  }
+}
+
+.displayAlignCenter {
+  display: flex;
+  align-items: center;
+}
+
+.shareContent {
+  border-radius: 8px;
+  padding: 25px 24px 0;
+  box-shadow: var(--shadowCommonHigh);
+  background-color: var(--bgCommonHigh);
+
+  .shareFloor {
+    .displayAlignCenter();
+  }
+
+  .shareTitle {
+    padding-bottom: 17px;
+    span {
+      font-size: 14px;
+      margin-right: 4px;
+    }
+  }
+
+  .shareInvite {
+    padding-bottom: 20px;
+    .shareInviteWrap {
+      flex: 1;
+      margin-right: 16px;
+    }
+
+    .shareInvitePrefix {
+      padding-right: 8px;
+      .displayAlignCenter();
+    }
+  }
+
+  .shareInviteAuth {
+    position: relative;
+    cursor: pointer;
+    .displayAlignCenter();
+
+    svg {
+      transition: all .3s;
+    }
+
+    &.shareInviteAuthOpen {
+      svg {
+        transform: rotate(-180deg);
+      }
+    }
+
+    &::before {
+      content: '';
+      width: 1px;
+      height: 16px;
+      background-color: var(--borderCommon);
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+    }
+
+    span {
+      margin: 0 8px;
+    }
+  }
+
+  .collaborator {
+    justify-content: space-between;
+    padding-bottom: 40px;
+
+    .collaboratorStatus {
+      padding: 4px;
+      border-radius: 4px;
+      transition: all .3s;
+      cursor: pointer;
+      .displayAlignCenter();
+
+      &:hover {
+        background-color: var(--bgBglessHover);
+      }
+    }
+
+    .collaboratorNumber {
+      color: var(--textCommonSecondary);
+    }
+
+    .collaboratorAuth {
+      color: var(--textCommonSecondary);
+      cursor: pointer;
+      .displayAlignCenter();
+    }
+
+    .collaboratorIcon {
+      margin-right: 8px;
+      position: relative;
+      .displayAlignCenter();
+
+      .collaboratorIconItem {
+        position: relative;
+      }
+    }
+
+    
+    &.collaboratorUnderline {
+      padding-bottom: 15px;
+      .collaboratorNumber {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .collaboratorList {
+    height: 400px;
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .shareContent {
+    padding: 0;
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  .collaboratorMobile {
+    :global {
+      .ant-drawer-wrapper-body, .ant-drawer-header, .ant-drawer-body {
+        background-color: var(--bgCommonLower);
       }
     }
   }

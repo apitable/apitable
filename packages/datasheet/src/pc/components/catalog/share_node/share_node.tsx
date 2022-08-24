@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import InvitePng from 'static/icon/datasheet/share/datasheet_img_share_left.png';
 import ShareNodePng from 'static/icon/datasheet/share/datasheet_img_share_right.png';
 import { PublicLink } from './public_link';
+import { ShareContent } from './share_content';
 import styles from './style.module.less';
 import { Teamwork } from './teamwork';
 
@@ -28,7 +29,8 @@ export interface IShareNodeProps {
   /** 模态框显隐控制 */
   visible: boolean;
   /** 关闭模态框 */
-  onClose: () => void;
+  onClose?: () => void;
+  isTriggerRender?: boolean;
 }
 
 export enum ShareTab {
@@ -36,10 +38,19 @@ export enum ShareTab {
   PublicLink = 'publiclink',
 }
 
-export const ShareNode: FC<IShareNodeProps> = ({ data, visible, onClose }) => {
+export const ShareNode: FC<IShareNodeProps> = ({
+  data,
+  visible,
+  onClose,
+  isTriggerRender
+}) => {
   const [activeTab, setActiveTab] = useState(ShareTab.PublicLink);
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
   const { nodeName } = treeNodesMap[data.nodeId];
+
+  if (isTriggerRender) {
+    return <ShareContent data={data} />;
+  }
 
   return (
     <>

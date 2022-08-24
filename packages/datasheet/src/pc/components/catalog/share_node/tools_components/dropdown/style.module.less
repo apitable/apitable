@@ -1,0 +1,95 @@
+@import "~pc/styles/lib_screen.less";
+
+.dropdown {
+  padding: 8px 0;
+  border-radius: 4px;
+  background-color: var(--bgCommonHighest);
+  box-shadow: var(--shadowCommonHighest);
+
+  .dropdownItem {
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all .3s;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      background-color: var(--bgBglessHover);
+    }
+
+    .dropdownItemContent {
+      flex: 1;
+      overflow: hidden;
+
+      .dropdownItemLabelText {
+        color: var(--textCommonPrimary);
+      }
+
+      .dropdownItemDescribe {
+        color: var(--textCommonTertiary);
+      }
+    }
+
+    .dropdownItemCheckSelected {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1.5px solid var(--textCommonQuaternary);
+      margin-right: 8px;
+      transition: all .3s;
+      display: flex;
+      align-items: center;
+    }
+
+    .dropdownItemIconSelected {
+      margin-left: 8px;
+      display: flex;
+      align-items: center;
+      svg {
+        fill: transparent;
+      }
+    }
+
+    // 选中
+    &.dropdownItemSelected {
+      .dropdownItemLabelText {
+        color: var(--textSelectedPrimary);
+      }
+
+      .dropdownItemCheckSelected {
+        border-width: 4px;
+        border-color: var(--textBrandDefault);
+      }
+
+      .dropdownItemIconSelected {
+        svg {
+          fill: var(--textBrandDefault);
+        }
+      }
+    }
+  }
+
+  .dropdownDivide {
+    width: calc(100% - 16px);
+    margin: 4px auto;
+    height: 1px;
+    background-color: var(--borderCommon);
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .dropdown {
+    padding: 0 16px;
+    box-shadow: none;
+    border-radius: 8px;
+
+    .dropdownItem {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .dropdownDivide {
+      width: 100%;
+    }
+  }
+}

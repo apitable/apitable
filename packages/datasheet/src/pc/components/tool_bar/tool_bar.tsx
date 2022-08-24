@@ -593,8 +593,8 @@ const ToolbarBase = () => {
               text={
                 isExitGroup
                   ? t(Strings.group_amount, {
-                      amount: (activeView as IGridViewProperty).groupInfo!.length,
-                    })
+                    amount: (activeView as IGridViewProperty).groupInfo!.length,
+                  })
                   : t(Strings.group)
               }
               showViewLockModal={showViewLockModal}
@@ -617,35 +617,46 @@ const ToolbarBase = () => {
             />
           </Display>
         )}
-        {!isOrgView && !isCalendarView && !isKanbanView && !isGalleryView && !isMobile && (
-          <Display type={ToolHandleType.ChangeRowHeight}>
-            <ToolItem
-              id={'toolRowHeight'}
-              showLabel={showIconBarLabel}
-              disabled={!visualizationEditable || disabledWithMirror}
-              className={styles.toolbarItem}
-              icon={getRowHeightIcon((activeView as IGridViewProperty).rowHeightLevel || RowHeightLevel.Short, {
-                fill: colors.secondLevelText,
-                className: styles.toolIcon,
-                width: '16',
-                height: '16',
-              })}
-              text={t(Strings.row_height)}
-              showViewLockModal={showViewLockModal}
-            />
-          </Display>
-        )}
-        {!shareId && !templateId && activeNodeId && treeNodesMap[activeNodeId] && (
-          <ToolItem
-            showLabel={showIconBarLabel}
-            icon={<ShareIcon width={16} height={16} fill={nodeShared ? colors.primaryColor : colors.secondLevelText} className={styles.toolIcon} />}
-            text={t(Strings.share)}
-            disabled={!permissions.sharable}
-            isActive={nodeShared}
-            className={styles.toolbarItem}
-            onClick={() => permissions.sharable && setShareNodeId(activeNodeId)}
-          />
-        )}
+        {
+          (!isOrgView && !isCalendarView && !isKanbanView && !isGalleryView && !isMobile) && (
+            <Display type={ToolHandleType.ChangeRowHeight}>
+              <ToolItem
+                id={'toolRowHeight'}
+                showLabel={showIconBarLabel}
+                disabled={!visualizationEditable || disabledWithMirror}
+                className={styles.toolbarItem}
+                icon={
+                  getRowHeightIcon(
+                    (activeView as IGridViewProperty).rowHeightLevel || RowHeightLevel.Short,
+                    { fill: colors.secondLevelText, className: styles.toolIcon, width: '16', height: '16' },
+                  )}
+                text={t(Strings.row_height)}
+                showViewLockModal={showViewLockModal}
+              />
+            </Display>
+          )
+        }
+        {
+          !shareId && !templateId && activeNodeId && treeNodesMap[activeNodeId] && (
+            <Display type={ToolHandleType.Share}>
+              <ToolItem
+                showLabel={showIconBarLabel}
+                icon={
+                  <ShareIcon
+                    width={16}
+                    height={16}
+                    fill={nodeShared ? colors.primaryColor : colors.secondLevelText}
+                    className={styles.toolIcon}
+                  />
+                }
+                text={t(Strings.share)}
+                disabled={!permissions.sharable}
+                isActive={nodeShared}
+                className={styles.toolbarItem}
+              />
+            </Display>
+          )
+        }
       </div>
       <Share nodeId={shareNodeId} onClose={() => setShareNodeId('')} />
       {!isMobile && (
@@ -748,8 +759,8 @@ function FilterNode(props: { showLabel: boolean; disabled: boolean; showViewLock
         isMobile
           ? t(Strings.filter)
           : t(Strings.filters_amount, {
-              amount: actualFilterCont,
-            })
+            amount: actualFilterCont,
+          })
       }
     />
   );
