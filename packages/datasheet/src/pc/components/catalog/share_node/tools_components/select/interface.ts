@@ -1,26 +1,9 @@
-import { ChangeEvent, ReactNode } from 'react';
+import React, { ChangeEvent, ReactNode } from 'react';
 import { DropdownRenderMode, IDropdownItem } from '../dropdown/interface';
 
 export type SelectMode = 'single' | 'multiple' | 'tag';
 
 export type ISelectItem = IDropdownItem;
-
-export interface ISelectChangeData {
-  /**
-   * 选择的下拉
-   */
-  option: ISelectItem;
-
-  /**
-   * 最新的回调值
-   */
-  newOptions: ISelectItem[];
-
-  /**
-   * 上一次的回调值
-   */
-  oldOptions: ISelectItem[];
-}
 
 export interface ISelect {
   /**
@@ -64,6 +47,11 @@ export interface ISelect {
   wrapClassName?: string;
 
   /**
+   * 以 html 形式插入
+   */
+  labelInDangerHTML?: boolean;
+
+  /**
    * 自定义渲染
    */
   renderItem?: (item: ISelectItem) => JSX.Element;
@@ -76,8 +64,9 @@ export interface ISelect {
   /**
    * 下拉值改变回调
    */
-  onChange?: (data: ISelectChangeData) => void;
+  onChange?: (value: string[], option: IDropdownItem, e: React.MouseEvent<HTMLElement>) => void;
 
+  // -------下拉-------
   /**
    * 下拉类名
    */
@@ -92,4 +81,14 @@ export interface ISelect {
    * 下拉尾部
    */
   dropdownFooter?: ReactNode;
+
+  /**
+   * 自适应 trigger 宽度
+   */
+  autoWidth?: boolean;
+
+  /**
+   * 空数据
+   */
+  empty?: ReactNode;
 }

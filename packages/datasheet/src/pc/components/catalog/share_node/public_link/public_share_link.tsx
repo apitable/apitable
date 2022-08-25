@@ -3,6 +3,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useRequest } from 'ahooks';
 
 import RcTrigger from 'rc-trigger';
+import { Popover } from 'antd';
 
 import { Api, IReduxState, IShareSettings, StoreActions, Strings, t } from '@vikadata/core';
 import { Switch, Typography } from '@vikadata/components';
@@ -168,7 +169,7 @@ export const PublicShareLink: FC<IPublicShareLinkProps> = ({ nodeId, isMobile })
       <RcTrigger
         action="click"
         popup={(
-          <Dropdown data={Permission} value={['share_and_editable_title']} />
+          <Dropdown mode='common' data={Permission} value={['share_and_editable_title']} />
         )}
         destroyPopupOnHide
         popupAlign={{
@@ -209,10 +210,12 @@ export const PublicShareLink: FC<IPublicShareLinkProps> = ({ nodeId, isMobile })
           <ColumnUrlOutlined />
           <span>链接邀请</span>
         </Typography>
-        <Typography className={styles.shareMoreMethod} variant='body3'>
-          <ShareQrcodeOutlined />
-          <span>二维码邀请</span>
-        </Typography>
+        <Popover placement="rightBottom" title={null} content={123} trigger="click">
+          <Typography className={styles.shareMoreMethod} variant='body3'>
+            <ShareQrcodeOutlined />
+            <span>二维码邀请</span>
+          </Typography>
+        </Popover>
       </div>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <Popup
@@ -223,7 +226,7 @@ export const PublicShareLink: FC<IPublicShareLinkProps> = ({ nodeId, isMobile })
           destroyOnClose
           className={styles.sharePersonAuthMobile}
         >
-          <Dropdown selectedMode="check" divide data={Permission} value={['edit']} />
+          <Dropdown mode='common' selectedMode="check" divide data={Permission} value={['edit']} />
         </Popup>
       </ComponentDisplay>
     </>

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 export interface ITag {
   /**
@@ -27,9 +27,14 @@ export interface ITag {
   closable?: boolean;
 
   /**
+   * 以 html 形式插入 children
+   */
+  childrenInDangerHTML?: boolean;
+
+  /**
    * 关闭回调
    */
-  onClose?: () => void;
+  onClose?: (e: React.MouseEvent<HTMLElement>) => void;
 
   /**
    * 填充内容

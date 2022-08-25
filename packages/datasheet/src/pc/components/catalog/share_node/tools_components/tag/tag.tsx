@@ -1,19 +1,31 @@
-import styles from './style.module.css';
-import { ITag } from './interface';
+import { FC, ReactNode } from 'react';
 import cls from 'classnames';
 
-export const Tag = (props: ITag) => {
-  const { children, closable, onClose, icon, color, className } = props;
+import { CloseMiddleOutlined } from '@vikadata/icons';
 
-  const handleClose = () => {
-    onClose && onClose();
+import { ITag } from './interface';
+
+import styles from './style.module.less';
+
+export const Tag: FC<ITag> = ({
+  children,
+  closable,
+  icon,
+  color,
+  className,
+  childrenInDangerHTML,
+  onClose,
+}) => {
+  const handleClose = (e) => {
+    onClose && onClose(e);
   };
 
-  const renderIcon = () => {
-    if (typeof icon === 'string') {
-      return <img src={icon} alt="" />;
+  const renderIcon = (icon?: string | ReactNode) => {
+    if (!icon) {
+      return null;
     }
-    return icon;
+    const iconEle = typeof icon === 'string' ? <img src={icon} alt="" /> : icon;
+    return <div className={styles.tagIcon}>{iconEle}</div>;
   };
 
   return (
@@ -21,9 +33,9 @@ export const Tag = (props: ITag) => {
       [styles.tag]: true,
       [styles.tagDefault]: !color,
     }, className)}>
-      {renderIcon()}
-      <span>{children}</span>
-      {closable && <span onClick={handleClose}>x</span>}
+      {renderIcon(icon)}
+      {childrenInDangerHTML ? <div dangerouslySetInnerHTML={{ __html: (children as string) }} /> : <span>{children}</span>}
+      {closable && <span className={styles.tagClose} onClick={handleClose}><CloseMiddleOutlined /></span>}
     </span>
   );
 };

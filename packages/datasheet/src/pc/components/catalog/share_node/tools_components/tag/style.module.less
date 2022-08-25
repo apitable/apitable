@@ -1,0 +1,32 @@
+.tag {
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 4px;
+  box-sizing: border-box;
+  font-size: 12px;
+
+  &.tagDefault {
+    color: var(--textCommonPrimary);
+    background-color: var(--bgTagDefault);
+  }
+
+  .tagIcon {
+    margin-right: 4px;
+    :global {
+      div, span, img {
+        width: 20px !important;
+        height: 20px !important;
+        font-size: 14px !important;
+      }
+    }
+  }
+
+  .tagClose {
+    display: flex;
+    align-items: center;
+    svg {
+      fill: var(--textCommonPrimary);
+    }
+  }
+}

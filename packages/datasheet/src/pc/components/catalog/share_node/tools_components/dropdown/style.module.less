@@ -1,11 +1,42 @@
 @import "~pc/styles/lib_screen.less";
 
-.dropdown {
+.dropdownGlobal {
+  position: fixed;
+  z-index: 10001;
+}
+
+.dropdownLocal {
+  position: absolute;
+}
+
+.dropdownWrap {
+  display: flex;
+  flex-direction: column;
   padding: 8px 0;
   border-radius: 4px;
   background-color: var(--bgCommonHighest);
   box-shadow: var(--shadowCommonHighest);
+  // transition: all .2s;
 
+  &.positionOpen {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &.positionClose {
+    opacity: 0;
+    visibility: hidden;
+    z-index: -1;
+  }
+
+  &.realVisible {
+    display: none;
+  }
+}
+
+.dropdown {
+  overflow: auto;
+  // 下拉项
   .dropdownItem {
     padding: 8px 16px;
     cursor: pointer;
@@ -17,6 +48,24 @@
       background-color: var(--bgBglessHover);
     }
 
+    // 图标区域
+    .dropdownIcon {
+      margin-right: 8px;
+    }
+
+    // 多选框选中样式
+    .dropdownItemCheckSelected {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1.5px solid var(--textCommonQuaternary);
+      margin-right: 8px;
+      transition: all .3s;
+      display: flex;
+      align-items: center;
+    }
+
+    // 内容区域
     .dropdownItemContent {
       flex: 1;
       overflow: hidden;
@@ -30,17 +79,7 @@
       }
     }
 
-    .dropdownItemCheckSelected {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      border: 1.5px solid var(--textCommonQuaternary);
-      margin-right: 8px;
-      transition: all .3s;
-      display: flex;
-      align-items: center;
-    }
-
+    // 图标选中样式
     .dropdownItemIconSelected {
       margin-left: 8px;
       display: flex;
@@ -69,6 +108,7 @@
     }
   }
 
+  // 分割线
   .dropdownDivide {
     width: calc(100% - 16px);
     margin: 4px auto;
@@ -78,7 +118,7 @@
 }
 
 @media screen and (max-width: @w-md) {
-  .dropdown {
+  .dropdownWrap {
     padding: 0 16px;
     box-shadow: none;
     border-radius: 8px;

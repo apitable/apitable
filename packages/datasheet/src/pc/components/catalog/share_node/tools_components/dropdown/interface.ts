@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactNode } from 'react';
+import React, { ChangeEvent, MouseEventHandler, ReactNode, RefObject } from 'react';
 
 /**
  * pc 端样式生效
@@ -13,7 +13,7 @@ export interface IDropdownItem {
   labelTip?: string;
   describe?: string;
   value: string;
-  avatar?: string | ReactNode;
+  icon?: string | ReactNode;
   extra?: string | ReactNode;
 }
 
@@ -64,12 +64,52 @@ export interface IDropdown {
   divide?: boolean;
 
   /**
+   * 以 html 形式插入 label
+   */
+  labelInDangerHTML?: boolean;
+
+  /**
+   * 触发器
+   */
+  triggerRef?: RefObject<HTMLElement>;
+
+  /**
+   * 自适应 trigger 宽度
+   */
+  autoWidth?: boolean;
+
+  /**
+   * 鼠标移入时若存在则显示
+   */
+  hoverElement?: ReactNode;
+
+  /**
+   * 空数据
+   */
+  empty?: ReactNode;
+
+  /**
    * 搜索回调
    */
   onSearch?: (e: ChangeEvent<HTMLInputElement>) => void;
 
   /**
+   * hover 回调
+   */
+  onMouseenter?: (option: IDropdownItem, triggerElement: HTMLElement, e: MouseEventHandler<HTMLDivElement>) => void;
+
+  /**
+   * click 回调
+   */
+  onClick?: (option: IDropdownItem, e: React.MouseEvent<HTMLDivElement>) => void;
+
+  /**
    * 自定义渲染
    */
   renderItem?: (item: IDropdownItem) => JSX.Element;
+
+  /**
+   * 关闭时的回调
+   */
+  onClose?: (e) => void;
 }
