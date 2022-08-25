@@ -187,7 +187,7 @@ export class RestService {
     return response.data;
   }
 
-  async getAssetInfo(token: string): Promise<IAssetDTO> {
+  async getAssetInfo(token: string): Promise<IAssetDTO | undefined> {
     const response = await lastValueFrom(this.httpService.get(this.GET_ASSET, {
       params: { token },
     }));
