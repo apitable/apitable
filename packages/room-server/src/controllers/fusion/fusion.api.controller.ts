@@ -27,6 +27,7 @@ import { QueryPipe } from 'middleware/pipe/query.pipe';
 import { ApiResponse } from 'model/api.response';
 import { AttachmentDto } from 'model/dto/attachment/attachment.dto';
 import { AttachmentUploadRo } from 'model/ro/attachment/attachment.upload.ro';
+import { AssetUploadQueryRo } from 'model/ro/fusion/asset.query';
 import { DatasheetCreateRo } from 'model/ro/fusion/datasheet.create.ro';
 import { FieldCreateRo } from 'model/ro/fusion/field.create.ro';
 import { FieldDeleteRo } from 'model/ro/fusion/field.delete.ro';
@@ -39,7 +40,7 @@ import { RecordQueryRo } from 'model/ro/fusion/record.query.ro';
 import { RecordUpdateRo } from 'model/ro/fusion/record.update.ro';
 import { RecordViewQueryRo } from 'model/ro/fusion/record.view.query.ro';
 import { SpaceParamRo } from 'model/ro/fusion/space.param.ro';
-import { AttachmentVo } from 'model/vo/fusion/attachment.vo';
+import { AssetView, AttachmentVo } from 'model/vo/fusion/attachment.vo';
 import { DatasheetCreateDto, DatasheetCreateVo, FieldCreateVo } from 'model/vo/fusion/datasheet.create.vo';
 import { FieldDeleteVo } from 'model/vo/fusion/field.delete.vo';
 import { FieldListVo } from 'model/vo/fusion/field.list.vo';
@@ -128,6 +129,27 @@ export class FusionApiController {
     }
   }
 
+  @Get('/datasheets/:datasheetId/attachments/presignedUrl')
+  @ApiOperation({
+    summary: '获取维格附件的预签名URL',
+    description: '',
+    deprecated: false,
+  })
+  @ApiProduces('application/json')
+  @NodePermissions(NodePermissionEnum.EDITABLE)
+  @UseGuards(ApiDatasheetGuard)
+  public async getPresignedUrl(@Query() query: AssetUploadQueryRo, @Req() req): Promise<AssetView> {
+    // check space capacity
+    const datasheet = req[DATASHEET_HTTP_DECORATE];
+    const spaceCapacityOverLimit = await this.restService.capacityOverLimit({ token: req.headers.authorization }, datasheet.spaceId);
+    if (spaceCapacityOverLimit) {
+      const error = ApiException.tipError('api_space_capacity_over_limit');
+      return Promise.reject(error);
+    }
+    const results = await this.restService.getUploadPresignedUrl({ token: req.headers.authorization }, datasheet.nodeId, query.count);
+    return ApiResponse.success(results);
+  }
+
   @Post('/datasheets/:datasheetId/attachments')
   @ApiOperation({
     summary: '上传维格附件',
@@ -135,7 +157,7 @@ export class FusionApiController {
       '在Request Header中需带上`Content-Type：multipart/form-data`，以form的形式提交数据。\n' +
       'POST数据是一个`formData`对象。\n' +
       '上传附件接口，每次仅允许接收一个附件。如果需要上传多份文件，需要重复调用此接口。',
-    deprecated: false,
+    deprecated: true,
   })
   @ApiBody({
     description: '附件',
