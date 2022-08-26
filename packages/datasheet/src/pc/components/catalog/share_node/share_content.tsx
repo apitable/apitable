@@ -54,9 +54,9 @@ interface ISearchUnit {
 }
 
 const Permission = [
-  { label: '可管理', describe: '', value: 'management' },
-  { label: '可编辑', describe: '', value: 'edit' },
-  { label: '只读', describe: '', value: 'readonly' },
+  { label: t(Strings.can_manage), describe: '', value: 'management' },
+  { label: t(Strings.can_edit), describe: '', value: 'edit' },
+  { label: t(Strings.can_read), describe: '', value: 'readonly' },
 ];
 
 const ROOT_TEAM_ID = '0';
@@ -161,7 +161,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   const renderSuffix = () => {
     const element = (
       <Typography variant='body2' className={cls(styles.shareInviteAuth, { [styles.shareInviteAuthOpen]: visible })} onClick={handleOpenAuth}>
-        <span>可编辑</span>
+        <span>{t(Strings.can_edit)}</span>
         <ChevronDownOutlined size={16} />
       </Typography>
     );
@@ -200,7 +200,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
     <>
       <div className={cls(styles.shareContent, { [styles.shareContentMobile]: isMobile })}>
         <Typography variant='h7' className={cls(styles.shareFloor, styles.shareTitle)}>
-          <span>邀请更多人加入协作</span>
+          <span>{t(Strings.collaborate_and_share)}</span>
           <InformationSmallOutlined />
         </Typography>
         <div className={cls(styles.shareFloor, styles.shareInvite)}>
@@ -210,14 +210,14 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
             labelInDangerHTML
             autoWidth
             value={membersValue}
-            placeholder={'请输入需要添加的成员昵称/邮箱'}
+            placeholder={t(Strings.enter_names_or_emails)}
             prefix={<div className={styles.shareInvitePrefix}><AddOutlined size={16} /></div>}
             suffix={renderSuffix()}
             onSearch={handleSearch}
             dropdownFooter={<div className={styles.shareMoreInvitor}>{t(Strings.see_more)}</div>}
             onChange={handleChange}
           />
-          <Button color='primary'>邀请</Button>
+          <Button color='primary'>{t(Strings.add)}</Button>
         </div>
         <div className={cls(styles.shareFloor, styles.collaborator)}>
           <div className={styles.collaboratorStatus} onClick={() => setDetailModalVisible(true)}>
@@ -235,11 +235,11 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
               </div>
             )}
             <Typography variant='body3' className={styles.collaboratorNumber}>
-              {roleList?.members.length || 0} 位协作者
+              {t(Strings.collaborator_number, { number: roleList?.members.length })}
             </Typography>
           </div>
           <Typography variant='body3' className={styles.collaboratorAuth} onClick={() => dispatch(StoreActions.updatePermissionModalNodeId(data.nodeId))}>
-            <span>设置权限</span>
+            <span>{t(Strings.setting_permission)}</span>
             <ChevronRightOutlined />
           </Typography>
         </div>
@@ -248,7 +248,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
       {detailModalVisible && roleList && <MembersDetail data={roleList} onCancel={() => setDetailModalVisible(false)} />}
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <Popup
-          title="设置权限"
+          title={t(Strings.setting_permission)}
           visible={authVisible}
           onClose={() => setAuthVisible(false)}
           height="auto"

@@ -79,7 +79,7 @@ export const DownloadQrCode: FC<IDownloadQrCodeProps> = ({
           </div>
           <GenerateQrCode url={url} color={rgba2hex(colors.staticDark1)} id="download_invite_code" width={width} />
         </div>
-        <Typography variant="body3" className={styles.downloadQrCodeFooter}>手机扫码，快速加入团队</Typography>
+        <Typography variant="body3" className={styles.downloadQrCodeFooter}>{t(Strings.scan_code_to_join_team)}</Typography>
       </div>
       <Button
         color="primary"

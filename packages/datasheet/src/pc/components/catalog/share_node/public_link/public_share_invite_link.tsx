@@ -165,23 +165,23 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
   }; 
 
   const Permission = [{
-    value: 'share_only_title',
-    label: t(Strings.share_only_title),
+    value: 'can_view',
+    label: t(Strings.can_view),
     describe: t(Strings.share_only_desc),
   }, {
-    value: 'share_and_editable_title',
-    label: t(Strings.share_and_editable_title),
+    value: 'can_edit',
+    label: t(Strings.can_edit),
     describe: t(Strings.share_and_editable_desc),
   }, {
-    value: 'share_and_save_title',
-    label: t(Strings.share_and_save_title),
+    value: 'can_duplicate',
+    label: t(Strings.can_duplicate),
     describe: t(Strings.share_and_save_desc),
   }];
 
   const renderAuth = () => {
     const element = (
       <Typography variant='body2' className={styles.sharePersonAuth} onClick={handleToggleAuthInMobile}>
-        <span>可编辑</span>
+        <span>{t(Strings.can_edit)}</span>
         <ChevronDownOutlined size={16} />
       </Typography>
     );
@@ -219,7 +219,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
     return (
       <Typography className={styles.inviteMoreMethod} variant='body3' onClick={handleOpenQrCode}>
         <ShareQrcodeOutlined />
-        <span>二维码邀请</span>
+        <span>{t(Strings.invite_by_qr_code)}</span>
       </Typography>
     );
   };
@@ -228,13 +228,13 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
     <>
       <div className={styles.shareToggle}>
         <Switch checked={shareSettings?.shareOpened} onChange={handleToggle} />
-        <Typography variant='h7' className={styles.shareToggleContent}>通过公开链接分享内容给他人</Typography>
+        <Typography variant='h7' className={styles.shareToggleContent}>{t(Strings.publish_share_link_with_anyone)}</Typography>
         <InformationSmallOutlined />
       </div>
       {!loading && shareSettings && shareSettings.shareOpened && (
         <>
           <div className={styles.sharePerson}>
-            <Typography className={styles.sharePersonContent} variant='body2'>互联网上获得该链接的人</Typography>
+            <Typography className={styles.sharePersonContent} variant='body2'>{t(Strings.get_link_person_on_internet)}</Typography>
             {renderAuth()}
           </div>
           <ShareLink
@@ -245,10 +245,10 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
         </>
       )}
       <div className={styles.inviteMore}>
-        <Typography className={styles.inviteMoreTitle} variant='body3'>更多邀请方式：</Typography>
+        <Typography className={styles.inviteMoreTitle} variant='body3'>{t(Strings.more_invite_ways)}：</Typography>
         <Typography className={styles.inviteMoreMethod} variant='body3' onClick={handleCopyInviteLink}>
           <ColumnUrlOutlined />
-          <span>链接邀请</span>
+          <span>{t(Strings.invite_via_link)}</span>
         </Typography>
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
           <Popover overlayClassName={styles.qrCodePopover} placement="rightBottom" title={null} content={renderPopover()} trigger="click">
@@ -261,7 +261,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
       </div>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <Popup
-          title="设置权限"
+          title={t(Strings.setting_permission)}
           visible={authVisible}
           onClose={handleToggleAuthInMobile}
           height="auto"
