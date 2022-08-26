@@ -9,14 +9,15 @@ import { ConfigConstant, INodeRoleMap, IReduxState, StoreActions, Strings, t } f
 import { Button, stopPropagation, Typography } from '@vikadata/components';
 import { InformationSmallOutlined, AddOutlined, ChevronDownOutlined, ChevronRightOutlined } from '@vikadata/icons';
 
-import ComponentDisplay, { ScreenSize } from 'pc/components/common/component_display/component_display';
 import { NodeChangeInfoType, useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
+import { useInviteRequest } from 'pc/hooks/use_invite_request';
+import ComponentDisplay, { ScreenSize } from 'pc/components/common/component_display/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { Avatar } from 'pc/components/common';
 import { Tooltip } from 'pc/components/common/tooltip';
 
 import { Select, Dropdown, ISelectItem } from './tools_components';
-import { PublicShareLink } from './public_link';
+import { PublicShareInviteLink } from './public_link';
 import { MembersDetail } from '../permission_settings/permission/members_detail';
 
 import styles from './style.module.less';
@@ -58,21 +59,94 @@ const Permission = [
   { label: '只读', describe: '', value: 'readonly' },
 ];
 
+const ROOT_TEAM_ID = '0';
+
 export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   const [visible, setVisible] = useState(false);
   const [authVisible, setAuthVisible] = useState(false);
   const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [keyword, setKeyword] = useState('');
   const [membersValue, setMembersValue] = useState<string[]>([]);
+  const [inviteLink, setInviteLink] = useState<string>('');
 
   const dispatch = useDispatch();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const socketData = useSelector((state: IReduxState) => state.catalogTree.socketData);
+  const { socketData, userInfo } = useSelector((state: IReduxState) => ({
+    socketData :state.catalogTree.socketData,
+    userInfo: state.user.info,
+  }));
   const { getNodeRoleListReq, searchUnitReq } = useCatalogTreeRequest();
+  const { generateLinkReq, linkListReq } = useInviteRequest();
   const { run: getNodeRoleList, data: roleList } = useRequest<INodeRoleMap>(() => getNodeRoleListReq(data.nodeId));
   const { run: searchUnit, data: searchUnitData } = useRequest<ISearchUnit>(searchUnitReq, { manual: true });
   const { run: search } = useDebounceFn(searchUnit, { wait: 100 });
+
+  /**
+   * 打开邀请成员的权限弹窗
+   */
+  const handleOpenAuth = (e) => {
+    stopPropagation(e);
+    if (isMobile) {
+      setAuthVisible(true);
+    }
+  };
+
+  /**
+   * 邀请成员搜索
+   */
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setKeyword(e.target.value);
+  };
+
+  /**
+   * 设置需要邀请的成员
+   */
+  const handleChange = (value: string[]) => {
+    setMembersValue(value);
+  };
+
+  /**
+   * 邀请链接生成
+   */
+  const generateInviteLink = (token) => {
+    const url = new URL(window.location.origin);
+    url.pathname = '/invite/link';
+
+    const searchParams = new URLSearchParams('');
+
+    searchParams.append('token', token);
+    userInfo?.inviteCode && searchParams.append('inviteCode', userInfo.inviteCode);
+    url.search = searchParams.toString();
+    setInviteLink(url.href);
+  };
+
+  /**
+   * 获取新的邀请 token
+   */
+  const generateInviteLinkByNewToken = async() => {
+    const token = await generateLinkReq(ROOT_TEAM_ID);
+    generateInviteLink(token);
+  };
+
+  /**
+   * 查询已经生成的邀请链接列表
+   */
+  const fetchInviteLinkList = async() => {
+    const linkList = await linkListReq();
+    // TODO - 需要判断链接是否已经失效，失效则需要从新生成
+    const generateInviteLinkItem = linkList.find((v) => v.teamId === ROOT_TEAM_ID);// 已经存在链接
+    if (generateInviteLinkItem) {
+      generateInviteLink(generateInviteLinkItem.token);
+      return;
+    }
+    // 旧的链接失效后重新生成新的邀请
+    generateInviteLinkByNewToken();
+  };
+
+  useEffect(() => {
+    search(keyword);
+  }, [keyword]);
 
   useEffect(() => {
     if (socketData && socketData.type === NodeChangeInfoType.UpdateRole) {
@@ -81,23 +155,8 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   }, [socketData]);
 
   useEffect(() => {
-    search(keyword);
-  }, [keyword]);
-
-  const handleOpenAuth = (e) => {
-    stopPropagation(e);
-    if (isMobile) {
-      setAuthVisible(true);
-    }
-  };
-
-  const handleSearch = (e) => {
-    setKeyword(e.target.value);
-  };
-
-  const handleChange = (value: string[]) => {
-    setMembersValue(value);
-  };
+    fetchInviteLinkList();
+  }, []);
 
   const renderSuffix = () => {
     const element = (
@@ -166,11 +225,9 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
               <div className={styles.collaboratorIcon}>
                 {
                   roleList.members.slice(0, 5).map((v, i) => (
-                    <div className={styles.collaboratorIconItem} style={{ marginLeft: i === 0 ? 0 : -16, zIndex: 5 - i }}>
+                    <div key={v.memberId} className={styles.collaboratorIconItem} style={{ marginLeft: i === 0 ? 0 : -16, zIndex: 5 - i }}>
                       <Tooltip title={v.memberName}>
-                        <div>
-                          <Avatar src={v.avatar} title={v.memberName} id={v.memberId} />
-                        </div>
+                        <div><Avatar src={v.avatar} title={v.memberName} id={v.memberId} /></div>
                       </Tooltip>
                     </div>
                   ))
@@ -186,7 +243,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
             <ChevronRightOutlined />
           </Typography>
         </div>
-        <PublicShareLink nodeId={data.nodeId} isMobile={isMobile} />
+        <PublicShareInviteLink inviteLink={inviteLink} nodeId={data.nodeId} isMobile={isMobile} />
       </div>
       {detailModalVisible && roleList && <MembersDetail data={roleList} onCancel={() => setDetailModalVisible(false)} />}
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
