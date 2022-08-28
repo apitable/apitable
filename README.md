@@ -5,7 +5,7 @@
 
 <p align="center">
     <em>
-        APITable is an <b>API-oriented Visual Database</b> for everyone and <b>the best Airtable open-source alternative</b>.
+        APITable is <b>an API-oriented Visual Database for everyone </b>and <b>the best Airtable open-source alternative</b>.
     </em>
 </p>
 <p align="center">
@@ -26,12 +26,15 @@ If you just want try out APITable, using our hosted version at [apitable.com](ht
 
 If you want to install APITable on your local or cloud, See [Installation](#installation)
 
+
 ## Features
+
+APITable provides incredible powerful features, from the personal to the Enterprise.
 
 - Advanced technology stack and open-source
     - `Realtime collaboration` allow multiple users to edit together in real time, or simultaneously with Operational-Transformation(OT) Algorithm.
     - Extremely smoothly / user-friendly / superfast database-spreadsheet in  `<canvas>` Rendering Engine.
-    - **100k+** Data Rows collaboration available.
+    - **100k+** Data Rows real-time collaboration available.
     - Full-stack API access, from Data to `Metadata`.
     - One-direction / Bi-direction Table Link and `Infinite Cross Links` 
     - Community-friendly programming languages and framework, TypeScript(React + NestJS) and Java (Spring Boot)
@@ -61,7 +64,7 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
     - Activate `Column Permission` through very simple operation.
     - Folders / Sub-Folders / Files Permission.
     - Tree structure folders and customizable node(file);
-    - Org Chart & Team Management Dashboard.
+    - Team Management & Organization Structure.
 - Enterprise features:
     - SAML
     - Single-Sign-On (SSO)
@@ -75,21 +78,26 @@ and more and more with extensible widgets and plugins.
 
 ## Use Cases
 
-- Flexible Project Management & Task/Issues Managements.
-- Marketing Leads Management. 
-- Most flexible and connectable CRM.
-- Flexible Business Intelligence(BI).
-- People-Friendly Forms and Surveys
-- Flexible ERP.
-- Visual Database with REST API.
-- Low-code and no-code platform.
-- Admin dashboard.
-- Central configuration management.
-- All-in-one enterprise database that connect all your software.
-- Embed APITable into your own software UIs.
-- .......and more, puts 1000 softwares in your own cloud.
+Why you must know APITable for your next software?
 
-(.....)
+APITable puts 1000 softwares in your own cloud.
+
+- As a Management Software
+    - Flexible Project Management & Task/Issues Managements.
+    - Marketing Leads Management. 
+    - Most flexible and connectable CRM.
+    - Flexible Business Intelligence(BI).
+    - People-Friendly Forms and Surveys
+    - Flexible ERP.
+    - Low-code and no-code platform.
+    - ......and more.
+- As a Visual Database infrastructure
+    - Visual Database with REST API.
+    - Admin dashboard.
+    - Central configuration management.
+    - All-in-one enterprise database that **connect all** your software.
+    - **Embed** APITable into your own software UIs.
+    - ......and more.
 
 ## Roadmap
 
