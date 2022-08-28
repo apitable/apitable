@@ -81,6 +81,7 @@ and more and more with extensible widgets and plugins.
 Why you must know APITable for your next software?
 
 APITable puts 1000 softwares in your own cloud.
+APITable embeds 1000 softwares in your softwares.
 
 - As a Management Software
     - Flexible Project Management & Task/Issues Managements.
@@ -92,11 +93,11 @@ APITable puts 1000 softwares in your own cloud.
     - Low-code and no-code platform.
     - ......and more.
 - As a Visual Database infrastructure
+    - **Embed** APITable into your own software UIs.
     - Visual Database with REST API.
     - Admin dashboard.
     - Central configuration management.
     - All-in-one enterprise database that **connect all** your software.
-    - **Embed** APITable into your own software UIs.
     - ......and more.
 
 ## Roadmap
