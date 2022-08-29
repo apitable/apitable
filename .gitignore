@@ -29,7 +29,6 @@ yarn-error.log*
 lerna-debug.log*
 
 dist/
-docs/
 
 scripts/system_config/java/*.java
 scripts/design_token/__pycache__
