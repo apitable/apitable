@@ -1,0 +1,9 @@
+plugins {
+  id 'java'
+}
+
+dependencies {
+  implementation rootProject.ext.dependencies['spring-web']
+  implementation rootProject.ext.dependencies['hutool']
+  implementation rootProject.ext.dependencies['slf4j']
+}

@@ -1,0 +1,27 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.9-20211207-001" author="Mayne" labels="automation">
+        <comment>automation service 添加 i18n 字段</comment>
+        <sql>
+            ALTER TABLE `vika_automation_service`
+            ADD COLUMN `i18n` json NULL COMMENT '国际化语言包' AFTER `base_url`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.9-20211207-002" author="Mayne" labels="automation">
+        <comment>automation trigger-type 添加 i18n 字段</comment>
+        <sql>
+            ALTER TABLE `vika_automation_trigger_type`
+            ADD COLUMN `i18n` json NULL COMMENT '国际化语言包' AFTER `endpoint`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.9-20211207-003" author="Mayne" labels="automation">
+        <comment>automation action-type 添加 i18n 字段</comment>
+        <sql>
+            ALTER TABLE `vika_automation_action_type`
+            ADD COLUMN `i18n` json NULL COMMENT '国际化语言包' AFTER `endpoint`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

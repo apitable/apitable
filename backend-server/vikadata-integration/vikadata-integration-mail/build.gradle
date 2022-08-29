@@ -1,0 +1,12 @@
+plugins {
+  id 'java'
+}
+
+dependencies {
+  implementation rootProject.ext.dependencies['qcloudses']
+
+  implementation rootProject.ext.dependencies['hutool']
+  implementation rootProject.ext.dependencies['slf4j']
+
+  testImplementation('org.junit.jupiter:junit-jupiter')
+}

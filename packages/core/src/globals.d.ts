@@ -1,0 +1,2 @@
+declare module 'ot-fuzzer';
+

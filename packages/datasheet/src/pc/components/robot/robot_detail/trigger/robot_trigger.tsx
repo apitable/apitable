@@ -1,0 +1,188 @@
+// import { Message } from '@vikadata/components';
+import { Message } from 'pc/components/common';
+import { EmptyNullOperand, IExpression, OperatorEnums, Selectors, Strings, t, integrateCdnHost } from '@vikadata/core';
+import produce from 'immer';
+import { isEqual } from 'lodash';
+import { Modal } from 'pc/components/common';
+import { IFormNodeItem } from 'pc/components/tool_bar/foreign_form/form_list_panel';
+import { useCallback, useEffect, useMemo } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
+import useSWR from 'swr';
+import { changeTriggerTypeId, getRobotTrigger, updateTriggerInput } from '../../api';
+import { getNodeTypeOptions } from '../../helper';
+import { IRobotTrigger, ITriggerType } from '../../interface';
+import { NodeForm } from '../node_form';
+import { Select } from '../select';
+import { RecordMatchesConditionsFilter } from './record_matches_conditions_filter';
+import { RobotTriggerCreateForm } from './robot_trigger_create';
+
+interface IRobotTriggerProps {
+  robotId: string;
+  triggerTypes: ITriggerType[];
+  formList: IFormNodeItem[],
+  setTrigger: (trigger: IRobotTrigger) => void;
+}
+
+const RobotTriggerBase = (props) => {
+  const { trigger, mutate, triggerTypes, formList, datasheetId, datasheetName } = props;
+  const formData = trigger.input;
+  const triggerTypeId = trigger.triggerTypeId;
+  const triggerType = triggerTypes.find(t => t.triggerTypeId === trigger.triggerTypeId);
+  const handleTriggerTypeChange = useCallback((triggerTypeId: string) => {
+    if (triggerTypeId === trigger?.triggerTypeId) {
+      return;
+    }
+    Modal.confirm({
+      title: t(Strings.robot_change_trigger_tip_title),
+      content: t(Strings.robot_change_trigger_tip_content),
+      cancelText: t(Strings.cancel),
+      okText: t(Strings.confirm),
+      onOk: () => {
+        changeTriggerTypeId(trigger?.triggerId!, triggerTypeId).then(() => {
+          mutate({
+            ...trigger!,
+            input: null,
+            triggerTypeId,
+          });
+        });
+      },
+      onCancel: () => {
+        return;
+      },
+      type: 'warning',
+    });
+  }, [trigger, mutate]);
+
+  const { schema, uiSchema = {}} = useMemo(() => {
+    const getTriggerInputSchema = (triggerType: ITriggerType) => {
+      return produce(triggerType.inputJsonSchema, draft => {
+        const properties = draft.schema.properties as any;
+
+        switch (triggerType.endpoint) {
+          case 'form_submitted':
+            // properties!.formId.title = '选择表单';
+            properties!.formId.enum = formList.map(f => f.nodeId);
+            properties!.formId.enumNames = formList.map(f => f.nodeName);
+            break;
+          case 'record_matches_conditions':
+            properties!.datasheetId.default = datasheetId;
+            properties!.datasheetId.enum = [datasheetId];
+            properties!.datasheetId.enumNames = [datasheetName];
+            // 如果这里是 object ui 无法正常渲染，转化成 string，在 onchange 时候处理好序列化和反序列化。
+            break;
+          case 'record_created':
+            properties!.datasheetId.default = datasheetId;
+            properties!.datasheetId.enum = [datasheetId];
+            properties!.datasheetId.enumNames = [datasheetName];
+            break;
+          default:
+            break;
+        }
+        return draft;
+      });
+    };
+    return getTriggerInputSchema(triggerType!);
+  }, [datasheetId, datasheetName, formList, triggerType]);
+
+  const triggerTypeOptions = useMemo(() => {
+    return getNodeTypeOptions(triggerTypes);
+  }, [triggerTypes]);
+  const mergedUiSchema = useMemo(() => {
+    const isFilterForm = triggerType?.endpoint === 'record_matches_conditions';
+    return isFilterForm ? {
+      ...uiSchema,
+      filter: {
+        'ui:widget': ({ defaultValue, value, onChange }) => {
+          const transformedValue = value == null || isEqual(value, EmptyNullOperand) ? {
+            operator: OperatorEnums.And,
+            operands: [],
+          } : value.value;
+          return <RecordMatchesConditionsFilter
+            datasheetId={datasheetId!}
+            filter={transformedValue as IExpression}
+            onChange={(value) => {
+              onChange(value);
+            }}
+          />;
+        }
+      },
+      datasheetId: {
+        'ui:disabled': true,
+      }
+    } : {};
+  }, [datasheetId, triggerType?.endpoint, uiSchema]);
+
+  const handleUpdateFormChange = useCallback(({ formData }) => {
+    // 更新输入
+    if (!shallowEqual(formData, trigger.input)) {
+      updateTriggerInput(trigger.triggerId, formData).then(() => {
+        mutate({
+          ...trigger,
+          input: formData,
+        });
+        Message.success({
+          content: t(Strings.robot_save_step_success)
+        });
+      }).catch(() => {
+        Message.error({
+          content: '步骤保存失败'
+        });
+      });
+    }
+  }, [mutate, trigger]);
+
+  return (
+    <NodeForm
+      nodeId={trigger.triggerId}
+      schema={schema}
+      formData={formData}
+      uiSchema={mergedUiSchema}
+      onSubmit={handleUpdateFormChange}
+      title={triggerType?.name}
+      description={triggerType?.description}
+      serviceLogo={integrateCdnHost(triggerType?.service.logo)}
+    >
+      <Select options={triggerTypeOptions} onChange={handleTriggerTypeChange} value={triggerTypeId} />
+    </NodeForm>
+  );
+};
+
+// trigger 组件 = 选择原型下拉框 + input form 表单。
+export const RobotTrigger = ({ robotId, triggerTypes, formList, setTrigger }: IRobotTriggerProps) => {
+  const { data: trigger, error, mutate } = useSWR(`/robots/${robotId}/trigger`, getRobotTrigger);
+  useEffect(() => {
+    if (trigger) {
+      setTrigger(trigger);
+    }
+  }, [trigger, setTrigger]);
+
+  const {
+    datasheetId,
+    datasheetName
+  } = useSelector(state => {
+    const dst = Selectors.getDatasheet(state);
+    return {
+      datasheetId: dst?.id,
+      datasheetName: dst?.name,
+    };
+  }, shallowEqual);
+
+  if (error || !triggerTypes) {
+    return null;
+  }
+
+  if (!trigger) {
+    return (
+      <RobotTriggerCreateForm robotId={robotId} triggerTypes={triggerTypes} />
+    );
+  }
+  // 丰富输入表单的默认值，trigger 是官方可控的。
+  return <RobotTriggerBase
+    trigger={trigger}
+    mutate={mutate}
+    triggerTypes={triggerTypes}
+    formList={formList}
+    datasheetId={datasheetId}
+    datasheetName={datasheetName}
+  />;
+};

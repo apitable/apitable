@@ -1,0 +1,9 @@
+plugins {
+  id 'java-library'
+}
+description = '数据分析组件'
+
+dependencies {
+  api(project(":vikadata-starters:vikadata-starter"))
+  api(project(':vikadata-integration:vikadata-integration-data-analysis'))
+}

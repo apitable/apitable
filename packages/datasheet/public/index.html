@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="{{{locale}}}">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="renderer" content="webkit">
+  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="width=device-width,viewport-fit=cover, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#000000" />
+  {{{metaContent}}}
+  <meta name="keywords" content="维格表,vika,vikadata,维格智数,大数据,数字化,数字化转型,数据中台,业务中台,数据资产,数字化智能办公,远程办公,数据工作台,区块链,人工智能,多维表格,aPaaS,hpaPaaS,RAD,数据库应用,快速开发工具" />
+  <meta property="og:image" content="%PUBLIC_URL%/logo.png" />
+  <meta name="renderer" content="webkit">
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.png" />
+  <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+  <!-- loading animation -->
+  <style>
+    @media screen and (max-width:768px){.script-loading-wrap .script-loading-logo-img{width:54px!important;height:54px!important}.script-loading-wrap .script-loading-vika-img{width:85.5px!important;top:7px !important}.script-loading-wrap-finished .script-loading-logo-img{transform:translateX(-44px)!important}.script-loading-wrap-finished .script-loading-vika-img{transform:translateX(26px)!important}}.script-loading-wrap{display:flex;position:absolute;left:0;top:0;right:0;bottom:0;align-items:center;justify-content:center;background:#fff;z-index:99999;transition:opacity .666s ease-in-out}.main-img-wrap{transform: scale(0.9);}.script-loading-wrap .loading-static-animation{transform:scale(1.2)}.script-loading-wrap .script-loading-logo-img{display:inline-block;position:relative;width:72px;height:72px;transition:transform .666s ease-in-out;vertical-align:middle}.script-loading-wrap .script-loading-vika-img{position:absolute;left:0;top:9px;width:114px;opacity:0;transition:transform .333s ease-in-out;vertical-align:middle;z-index:-1}.script-loading-wrap>div{position:relative}.script-loading-wrap-finished .script-loading-logo-img{transition-duration:.333s;animation:none;transform:translateX(-57px)}.script-loading-wrap-finished .script-loading-vika-img{opacity:1;transform:translateX(36px);vertical-align:middle}@keyframes __scale{0%{transform:translateX(0)}50%{transform:scale(1.2)}100%{transform:translateX(0)}}.script-loading-wrap-disappear{opacity:0};
+  </style>
+  <script>
+    window.addEventListener('error', function (event) {
+      if (
+        event.message.includes('ResizeObserver') ||
+        navigator.userAgent.toLowerCase().includes('dingtalk')
+      ) {
+        event.stopImmediatePropagation();
+      }
+    })
+  </script>
+  <script>
+    /* 由于 IE 11 及以下的浏览器不支持 React, React 的代码不会被执行，因此入口的浏览器判断不会生效，需要在这里特殊处理 */
+    (function() {
+      if (!!window.ActiveXObject || "ActiveXObject" in window) {
+        window.location.pathname = '/not_support'
+      }
+    })();
+  </script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-169214238-1');
+  </script>
+   <!-- 钉钉h5微应用 企业内部应用 -->
+   <!-- <script src="https://g.alicdn.com/dingding/dingtalk-jsapi/2.10.3/dingtalk.open.js"></script> -->
+  <!-- 模版测试 -->
+  <script>
+    window.__initialization_data__ = {
+      userInfo: {{{userInfo}}},
+      version: "{{{version}}}",
+      env: "{{{env}}}",
+      envVars: {{{envVars}}},
+      wizards: {{{wizards}}},
+      locale: "{{{locale}}}",
+    };
+  </script>
+   <!-- 阿里无痕验证 -->
+  <script src="https://g.alicdn.com/AWSC/AWSC/awsc.js"></script>
+  <!-- 钉钉浏览器中，加入监控中心 -->
+  <meta name="wpk-bid" content="dta_2_83919">
+  <script>
+    if (navigator.userAgent.toLowerCase().includes('dingtalk')) {
+      !(function(c,i,e,b){var h=i.createElement("script");
+      var f=i.getElementsByTagName("script")[0];
+      h.type="text/javascript";
+      h.crossorigin=true;
+      h.onload=function(){c[b]||(c[b]=new c.wpkReporter({bid:"dta_2_83919"}));
+      c[b].installAll()};
+      f.parentNode.insertBefore(h,f);
+      h.src=e})(window,document,"https://g.alicdn.com/woodpeckerx/jssdk??wpkReporter.js","__wpk");
+    }
+  </script>
+  <script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js" referrerpolicy="origin"></script>
+  <script src="https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js" referrerpolicy="origin"></script>
+</head>
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div class="script-loading-wrap"><div class="main-img-wrap"><img class="script-loading-logo-img" src="%PUBLIC_URL%/logo.svg" alt="logo"><img class="script-loading-vika-img" src="%PUBLIC_URL%/vika.svg" alt="vika"></div></div>
+  <div id="root"></div>
+  <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  <!-- script loading 动画相关js -->
+  <script>
+    window._loading = new Date().getTime();
+    const logoImg = document.querySelector('.script-loading-logo-img');
+    window.requestAnimationFrame(() => {
+      setTimeout(() => logoImg.classList.add('loading-static-animation'), 0)
+    })
+    logoImg.addEventListener("transitionend", function() {
+      const classLs = logoImg.classList
+      if (classLs.contains('script-loading-wrap-finished')) {
+        return
+      }
+      if (classLs.contains('loading-static-animation')) {
+        logoImg.classList.remove('loading-static-animation')
+      } else {
+        logoImg.classList.add('loading-static-animation')
+      }
+    })
+  </script>
+
+    <!-- 神策数据埋点接入 -->
+  <script>
+    (function (para) {
+      var p = para.sdk_url, n = para.name, w = window, d = document, s = 'script', x = null, y = null;
+      if (typeof (w['sensorsDataAnalytic201505']) !== 'undefined') {
+        return false;
+      }
+      w['sensorsDataAnalytic201505'] = n;
+      w[n] = w[n] || function (a) { return function () { (w[n]._q = w[n]._q || []).push([a, arguments]); } };
+      var ifs = ['track', 'quick', 'register', 'registerPage', 'registerOnce', 'trackSignup', 'trackAbtest', 'setProfile', 'setOnceProfile', 'appendProfile', 'incrementProfile', 'deleteProfile', 'unsetProfile', 'identify', 'login', 'logout', 'trackLink', 'clearAllRegister', 'getAppStatus'];
+      for (var i = 0; i < ifs.length; i++) {
+        w[n][ifs[i]] = w[n].call(null, ifs[i]);
+      }
+      if (!w[n]._t) {
+        x = d.createElement(s), y = d.getElementsByTagName(s)[0];
+        x.async = 1;
+        x.src = p;
+        x.setAttribute('charset', 'UTF-8');
+        w[n].para = para;
+        y.parentNode.insertBefore(x, y);
+      }
+    })({
+      sdk_url: '%PUBLIC_URL%/file/js/sensorsdata-1.19.2.min.js',
+      app_js_bridge:true,
+      heatmap_url: '//s1.vika.cn/common/js/sensors/heatmap.min.js',
+      name: 'sensors',
+      is_track_single_page: true,
+      server_url: 'https://vika.datasink.sensorsdata.cn/sa?token=352bda0fb16d392b' + (window.location.host.slice(-'vika.cn'.length) === 'vika.cn' ? '&project=production' : ''),
+      heatmap: {
+        clickmap: 'default',
+        scroll_notice_map: 'not_collect',
+        collect_tags: {
+          div: {
+            max_level: 3,
+          },
+          li: true,
+          img: true,
+          svg: true,
+          section: true,
+        },
+      },
+      show_log: false,
+    });
+    sensors.registerPage({
+      platform_type: 'web_app',
+      user_agent: navigator.userAgent,
+      app_version: function() {
+        return window.__initialization_data__ && window.__initialization_data__.version;
+      },
+      is_login: function() {
+        return Boolean(window.__initialization_data__ && window.__initialization_data__.userInfo);
+      },
+      userSpaceId: function() {
+        return window.__initialization_data__ && window.__initialization_data__.userInfo &&  window.__initialization_data__.userInfo.spaceId
+      }
+    });
+    sensors.quick('autoTrack');
+  </script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-169214238-1"></script> -->
+  <!-- 百度统计 -->
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?39ab4bbbb01e48bee90b6b17a067b9f1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+  <!-- js钉钉登录 -->
+  <script src="https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js"></script>
+  <!-- 飞书 -->
+  <!-- <script type="text/javascript" src="https://s3.bytecdn.cn/ee/lark/js_sdk/h5-js-sdk-1.4.13.js"></script> -->
+</body>
+</html>

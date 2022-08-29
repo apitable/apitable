@@ -1,0 +1,25 @@
+{
+  "schema": {
+    "type": "object",
+    "required": [
+      "status"
+    ],
+    "properties": {
+      "status": {
+        "title": "状态码",
+        "type": "number"
+      },
+      "json": {
+        "title": "返回数据",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false
+  },
+  "uiSchema": {
+    "ui:order": [
+      "status",
+      "json"
+    ]
+  }
+}

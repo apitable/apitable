@@ -1,0 +1,33 @@
+/*
+* Slider 组件的样式重载
+*/
+
+// 下面是 antd slider 组件提供的可覆盖的变量名
+// @slider-margin: 10px 6px 10px;
+@slider-track-background-color: var(--primaryColor);
+@slider-track-background-color-hover: var(--primaryColor);
+// @slider-track-background-color: var(--primary-3);
+// @slider-track-background-color-hover: @primary-4;
+// @slider-handle-border-width: 2px;
+// @slider-handle-background-color: var(--component-background);
+// @slider-handle-color: @primary-3;
+// @slider-handle-color-hover: @primary-4;
+// @slider-handle-color-focus: tint (var(--primaryColor), 20%);
+@slider-handle-color-focus-shadow: none;
+// @slider-handle-color-tooltip-open: var(--primaryColor);
+// @slider-handle-shadow: 0;
+// @slider-dot-border-color: @lineColor-split;
+// @slider-dot-border-color-active: tint (var(--primaryColor), 50%);
+// @slider-disabled-color: @disabled-color;
+// @slider-disabled-background-color: var(--component-background);
+
+// 通过覆盖上述的变量名无法达到所需效果，重载样式类
+.ant-slider {
+  .ant-slider-track {
+    height: 2px;
+  }
+  .ant-slider-handle {
+    border: 2px solid var(--primaryColor);
+    margin-top: -6px;
+  }
+}

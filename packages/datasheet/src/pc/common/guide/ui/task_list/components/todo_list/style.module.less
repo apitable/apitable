@@ -1,0 +1,32 @@
+@import "~pc/styles/lib_var.less";
+
+.item {
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  &:hover {
+    background-color: var(--highBg);
+  }
+  .text {
+    line-height: 22px;
+    &.active {
+      color: var(--deepPurple_500);
+    }
+    &.done {
+      color: #8C8C8C;
+      text-decoration-line: line-through;
+    }
+  }
+
+  .radio {
+    margin-right: 6px;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--fc4);
+    border-radius: 999px;
+    flex-shrink: 0;
+  }
+}

@@ -1,0 +1,16 @@
+{
+	"corpId": "ding9cf2a15232c5dacbee0f45d8e4f7c288",
+	"orderId": "211323358980917",
+	"suiteId": 20303001,
+	"syncSeq": "69BA2A311E00973B883D633D",
+	"itemCode": "DT_GOODS_881635416783711_857027",
+	"itemName": "企业版300人2年",
+	"pushType": "4",
+	"suiteKey": "suitewwganoedksh3qsil",
+	"closeType": 3,
+	"eventType": "subscription_close",
+	"goodsCode": "DT_GOODS_881635416783711",
+	"goodsName": "企业版300人2年",
+	"syncAction": "market_service_close",
+	"subQuantity": 1
+}

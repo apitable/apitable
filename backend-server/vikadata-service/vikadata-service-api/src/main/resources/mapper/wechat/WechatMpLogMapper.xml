@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.modular.wechat.mapper.WechatMpLogMapper">
+
+    <select id="getStatisticsData" resultType="com.vikadata.api.model.vo.wechat.QrCodeStatisticsVo">
+        SELECT COUNT(distinct union_id) AS viewUserCount, COUNT(*) AS viewCount
+        FROM vika_wechat_mp_log
+        WHERE app_id = #{appId} AND scene = #{scene}
+    </select>
+</mapper>

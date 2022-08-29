@@ -1,0 +1,183 @@
+import React from 'react';
+import { Story } from '@storybook/react';
+import { Space } from './index';
+import { StoryType } from '../../stories/constants';
+import { ISpaceProps } from './interface';
+import { Box, Button, Checkbox, Switch } from '../index';
+import { Radio } from '../radio/radio';
+import { LinkButton } from '../link_button';
+import { ColumnLinktableFilled } from '@vikadata/icons';
+
+const COMPONENT_NAME = 'Space 间距';
+
+const TITLE = `${StoryType.Design}/${COMPONENT_NAME}`;
+
+const Card = () => (
+  <Box
+    width="120px"
+    height="80px"
+    border="1px solid #ccc"
+    textAlign="center"
+    lineHeight="80px"
+  >
+    120px x 80px
+  </Box>
+);
+
+export default {
+  component: Space,
+  title: TITLE,
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/file/VjmhroWol6uCMqhDcJVrxV/LightMode?node-id=247%3A0',
+    },
+  },
+  args: {
+    children: [
+      '文本',
+      <Button color="primary">按钮</Button>,
+      <Switch />,
+      <Checkbox>勾选框</Checkbox>,
+      <Radio>单选框</Radio>
+    ]
+  }
+};
+
+const Template: Story<ISpaceProps> = (args) => <Space {...args} />;
+
+export const DefaultSize8 = Template.bind({});
+
+export const SetSize32 = Template.bind({});
+SetSize32.args = {
+  size: 32,
+};
+
+export const VerticalSize16 = Template.bind({});
+VerticalSize16.args = {
+  vertical: true,
+  size: 16,
+};
+
+export const Wrap = Template.bind({});
+Wrap.args = {
+  wrap: true,
+  children: new Array(20).fill(null).map((_, index) => (
+    <Card key={index}/>
+  ))
+};
+
+export const SetRowColumnSpace = Template.bind({});
+SetRowColumnSpace.args = {
+  size: [16, 32],
+  wrap: true,
+  children: new Array(20).fill(null).map((_, index) => (
+    <Card key={index}/>
+  ))
+};
+
+export const Split = Template.bind({});
+Split.args = {
+  split: true,
+  children: new Array(5).fill(null).map((_, index) => (
+    <LinkButton underline={false} prefixIcon={<ColumnLinktableFilled currentColor />} key={index}>跳转链接</LinkButton>
+  ))
+};
+
+export const AlignStart = Template.bind({});
+AlignStart.args = {
+  align: 'start',
+  children: (
+    <>
+      <span>文本</span>
+      <Button color="primary">按钮</Button>
+      <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">盒子</Box>
+    </>
+  )
+};
+
+export const AlignCenter = Template.bind({});
+AlignCenter.args = {
+  align: 'center',
+  children: (
+    <>
+      <span>文本</span>
+      <Button color="primary">按钮</Button>
+      <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">盒子</Box>
+    </>
+  )
+};
+
+export const AlignEnd = Template.bind({});
+AlignEnd.args = {
+  align: 'end',
+  children: (
+    <>
+      <span>文本</span>
+      <Button color="primary">按钮</Button>
+      <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">盒子</Box>
+    </>
+  )
+};
+
+export const AlignBaseline = Template.bind({});
+AlignBaseline.args = {
+  align: 'baseline',
+  children: (
+    <>
+      <span>文本</span>
+      <Button color="primary">按钮</Button>
+      <Box backgroundColor="#ccc" padding="40px 8px 16px">盒子</Box>
+    </>
+  )
+};
+
+export const VerticalAlignStart = Template.bind({});
+VerticalAlignStart.args = {
+  align: 'start',
+  vertical: true,
+  children: (
+    <>
+      <span>文本</span>
+      <Button color="primary">按钮</Button>
+      <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">盒子</Box>
+    </>
+  )
+};
+
+export const VerticalAlignCenter = Template.bind({});
+VerticalAlignCenter.args = {
+  align: 'center',
+  vertical: true,
+  children: (
+    <>
+      <span>文本</span>
+      <Button color="primary">按钮</Button>
+      <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">盒子</Box>
+    </>
+  )
+};
+
+export const VerticalAlignEnd = Template.bind({});
+VerticalAlignEnd.args = {
+  align: 'end',
+  vertical: true,
+  children: (
+    <>
+      <span>文本</span>
+      <Button color="primary">按钮</Button>
+      <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">盒子</Box>
+    </>
+  )
+};
+
+export const SetComponentUlLi = Template.bind({});
+SetComponentUlLi.args = {
+  component: 'ul',
+  vertical: true,
+  children: new Array(10).fill(null).map((_, index) => (
+    <Space key={index} component="li" style={{ borderBottom: '1px solid #ccc' }}>
+      列表 {index + 1}
+    </Space>
+  ))
+};

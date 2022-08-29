@@ -1,0 +1,34 @@
+server:
+  port: 9112
+  shutdown: graceful
+
+spring:
+  application:
+    name: scheduler-bill
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:33060}/${MYSQL_DATABASE:vika_dev}?characterEncoding=utf8&autoReconnect=true
+    username: ${MYSQL_USERNAME:vika}
+    password: ${MYSQL_PASSWORD:password}
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 15
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: DatebookHikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+
+vikadata-starter:
+  vika:
+    enabled: ${VIKA_ENABLED:false}
+    host: ${VIKA_HOST:https://integration.vika.ltd}
+    token: ${VIKA_TOKEN:uskM7PcEPftF4wh0Ni1}
+  job:
+    register-address: ${JOB_ADMIN_ADDRESS:http://job.vika.ltd}
+    port: ${JOB_EXECUTOR_PORT:9092}
+    appname: ${JOB_EXECUTOR_APPNAME:bill-job-executor}
+    logpath: ${JOB_EXECUTOR_LOGPATH:logs/vikadata/job/bill-executor}
+    logretentiondays: ${JOB_EXECUTOR_LOG_RETENTION_DAYS:7}
+    access-token: ${JOB_ACCESS_TOKEN:onJvanLmSE3CqotjNp8hb7WRolpM1pdL}

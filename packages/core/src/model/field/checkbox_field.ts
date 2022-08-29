@@ -1,0 +1,195 @@
+import Joi from 'joi';
+import { ICellValue } from '../record';
+import { Field } from './field';
+import { IFilterCondition, FOperator } from '../../types/view_types';
+import {
+  ICheckboxField, ICheckboxFieldProperty, IStandardValue,
+  FieldType, IField, BasicValueType,
+} from '../../types/field_types';
+import { DatasheetActions } from '../datasheet';
+import { isEmpty } from 'lodash';
+import { StatType } from './stat';
+import { t, Strings } from 'i18n';
+import { getEmojiIconNativeString, isNullValue } from 'model/utils';
+import { IAPIMetaCheckboxFieldProperty } from 'types';
+import { IOpenCheckboxFieldProperty } from 'types/open/open_field_read_types';
+import { IUpdateOpenCheckboxFieldProperty } from 'types/open/open_field_write_types';
+import { EmojisConfig } from 'config/emojis_config';
+import { joiErrorResult } from './validate_schema';
+
+const trueText = ['1', 'true', t(Strings.stat_checked)];
+const falseText = ['0', 'false', t(Strings.stat_un_checked)];
+
+export class CheckboxField extends Field {
+  static propertySchema = Joi.object({
+    icon: Joi.string().required(),
+  }).required();
+
+  static cellValueSchema = Joi.boolean().allow(null).required();
+
+  static openWriteValueValueSchema = Joi.boolean().allow(null).required();
+
+  static _statTypeList = [
+    StatType.None,
+    StatType.CountAll,
+    StatType.Checked,
+    StatType.UnChecked,
+    StatType.PercentChecked,
+    StatType.PercentUnChecked,
+  ];
+
+  static _acceptFilterOperators = [FOperator.Is];
+
+  get apiMetaProperty(): IAPIMetaCheckboxFieldProperty {
+    return {
+      icon: getEmojiIconNativeString(this.field.property.icon),
+    };
+  }
+
+  get openValueJsonSchema() {
+    return {
+      title: this.field.name,
+      type: 'boolean',
+    };
+  }
+
+  get statTypeList(): StatType[] {
+    return CheckboxField._statTypeList;
+  }
+
+  get basicValueType(): BasicValueType {
+    return BasicValueType.Boolean;
+  }
+
+  get acceptFilterOperators(): FOperator[] {
+    return CheckboxField._acceptFilterOperators;
+  }
+
+  static _isMeetFilter(operator: FOperator, cellValue: ICellValue, conditionValue: IFilterCondition['value']) {
+    switch (operator) {
+      case FOperator.Is:
+        return Boolean(conditionValue) === Boolean(cellValue);
+      default: {
+        console.warn('Method should be overwrite!');
+        return true;
+      }
+    }
+  }
+
+  isMeetFilter(operator: FOperator, cellValue: ICellValue, conditionValue: IFilterCondition['value']) {
+    return CheckboxField._isMeetFilter(operator, cellValue, conditionValue);
+  }
+
+  static defaultProperty(): ICheckboxFieldProperty {
+    return {
+      icon: 'white_check_mark',
+    };
+  }
+
+  static createDefault(fieldMap: { [fieldId: string]: IField }): ICheckboxField {
+    return {
+      id: DatasheetActions.getNewFieldId(fieldMap),
+      type: FieldType.Checkbox,
+      name: DatasheetActions.getDefaultFieldName(fieldMap),
+      property: this.defaultProperty(),
+    };
+  }
+
+  validateProperty() {
+    return CheckboxField.propertySchema.validate(this.field.property);
+  }
+
+  validateCellValue(cv: ICellValue) {
+    return CheckboxField.cellValueSchema.validate(cv);
+  }
+
+  validateOpenWriteValue(owv: boolean | null) {
+    return CheckboxField.openWriteValueValueSchema.validate(owv);
+  }
+
+  cellValueToStdValue(cellValue: boolean): IStandardValue {
+    return {
+      sourceType: this.field.type,
+      data: [{
+        text: this.cellValueToString(cellValue) || '',
+      }],
+    };
+  }
+
+  stdValueToCellValue(stdValue: IStandardValue): boolean | null {
+    if (isEmpty(stdValue) || isEmpty(stdValue.data)) {
+      return null;
+    }
+    if (trueText.includes(stdValue.data[0].text)) {
+      return true;
+    }
+    if (falseText.includes(stdValue.data[0].text)) {
+      return null;
+    }
+    if (stdValue.data[0].text) {
+      return true;
+    }
+    return null;
+  }
+
+  validate(value: any): boolean {
+    if (value == null || typeof value === 'boolean') {
+      return true;
+    }
+    return false;
+  }
+
+  cellValueToString(cellValue: ICellValue): string {
+    return cellValue ? '1' : '0';
+  }
+
+  defaultValueForCondition(condition: IFilterCondition<FieldType.Checkbox>): boolean | null {
+    return true;
+  }
+
+  static _compare(cellValue1: ICellValue, cellValue2: ICellValue, orderInCellValueSensitive?: boolean): number {
+    return Boolean(cellValue1) === Boolean(cellValue2) ? 0 : (Boolean(cellValue1) > Boolean(cellValue2) ? 1 : -1);
+  }
+
+  compare(cellValue1: ICellValue, cellValue2: ICellValue, orderInCellValueSensitive?: boolean): number {
+    return CheckboxField._compare(cellValue1, cellValue2, orderInCellValueSensitive);
+  }
+
+  cellValueToApiStandardValue(cellValue: ICellValue): boolean | null {
+    if (cellValue === true) {
+      return true;
+    }
+    return null;
+  }
+
+  cellValueToApiStringValue(cellValue: ICellValue): string | null {
+    return this.cellValueToString(cellValue);
+  }
+  cellValueToOpenValue(cellValue: ICellValue): boolean | null {
+    if (cellValue === true) {
+      return true;
+    }
+    return null;
+  }
+
+  openWriteValueToCellValue(openWriteValue: boolean | null) {
+    if (isNullValue(openWriteValue)) {
+      return null;
+    }
+    return openWriteValue;
+  }
+
+  get openFieldProperty(): IOpenCheckboxFieldProperty {
+    return {
+      icon: getEmojiIconNativeString(this.field.property.icon),
+    };
+  }
+
+  validateUpdateOpenProperty(updateProperty: IUpdateOpenCheckboxFieldProperty) {
+    const result = CheckboxField.propertySchema.validate(updateProperty);
+    if (!result.error && !EmojisConfig[updateProperty.icon]) {
+      return joiErrorResult('icon is not Emoji slug');
+    }
+    return result;
+  }
+}

@@ -1,0 +1,14 @@
+.wrap {
+
+  cursor: pointer;
+
+  &[data-disabled="true"] {
+    cursor: not-allowed ;
+  }
+
+  svg {
+    will-change: fill;
+    transition: fill 0.3s ease-out;
+  }
+
+}

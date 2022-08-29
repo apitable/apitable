@@ -1,0 +1,14 @@
+plugins {
+  id 'java-library'
+}
+
+description = "Starter for Mi Aegis"
+
+dependencies {
+  api(project(":vikadata-starters:vikadata-starter"))
+  
+  api files("${rootDir}" + '/lib/aegis-java-sdk-2.3.3.jar')
+  implementation rootProject.ext.dependencies['slf4j']
+  implementation rootProject.ext.dependencies['servlet-api']
+  implementation rootProject.ext.dependencies['gson']
+}

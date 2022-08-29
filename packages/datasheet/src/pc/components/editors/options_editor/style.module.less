@@ -1,0 +1,18 @@
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.optionsEditor {
+  position: absolute;
+  background: var(--defaultBg);
+  box-sizing: border-box;
+  user-select: none;
+  border-radius: 4px;
+  background: var(--defaultBg);
+}
+
+@media screen and (min-width: @w-md) {
+  .itemName {
+    font-size: 12px;
+    line-height: 20px;
+  }
+}

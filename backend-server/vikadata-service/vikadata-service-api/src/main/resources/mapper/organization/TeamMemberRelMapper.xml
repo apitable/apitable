@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.organization.mapper.TeamMemberRelMapper">
+
+    <insert id="insertBatch">
+        INSERT INTO vika_unit_team_member_rel(id, team_id, member_id)
+        VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id},#{item.teamId}, #{item.memberId}
+            </trim>
+        </foreach>
+    </insert>
+
+    <select id="selectTeamIdsByMemberId" resultType="java.lang.Long">
+        SELECT vod.id
+        FROM vika_unit_team_member_rel vodmr,
+             vika_unit_team vod
+        WHERE vod.id = vodmr.team_id
+          AND vod.is_deleted = 0
+          AND vodmr.member_id = #{memberId}
+    </select>
+
+    <!--查询部门下成员关联总数-->
+    <select id="countByTeamId" resultType="java.lang.Integer">
+        SELECT COUNT(DISTINCT vom.id)
+        FROM vika_unit_team_member_rel vodmr
+        JOIN vika_unit_member vom ON vodmr.member_id = vom.id AND vom.is_deleted = 0
+        WHERE vodmr.team_id IN
+        <foreach collection="teamIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <!--删除部门成员关联-->
+    <delete id="deleteByTeamId">
+        DELETE
+        FROM vika_unit_team_member_rel
+        WHERE team_id = #{teamId}
+    </delete>
+
+    <!--删除成员所属部门-->
+    <delete id="deleteByMemberId">
+        DELETE vodmr FROM vika_unit_team_member_rel vodmr
+        WHERE vodmr.member_id in
+        <foreach collection="memberIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!--删除指定成员的关联的部门-->
+    <delete id="deleteByTeamIdsAndMemberId">
+        <if test="teamIds != null and teamIds.size() != 0">
+            DELETE vodmr FROM vika_unit_team_member_rel vodmr
+            WHERE vodmr.member_id = #{memberId} AND vodmr.team_id IN
+            <foreach collection="teamIds" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </delete>
+
+    <delete id="deleteBatchMemberByTeams">
+        DELETE vodmr FROM vika_unit_team_member_rel vodmr
+        WHERE vodmr.team_id = #{teamId} AND vodmr.member_id IN
+        <foreach collection="memberIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="selectCountByMemberIdsAndTeamId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM vika_unit_team_member_rel
+        WHERE team_id = #{teamId} AND member_id IN
+        <foreach collection="memberIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="selectByMemberIds"
+            resultType="com.vikadata.entity.TeamMemberRelEntity">
+        SELECT voutmr.*
+        FROM vika_unit_team_member_rel voutmr
+        JOIN vika_unit_team vout ON voutmr.team_id = vout.id AND vout.is_deleted = 0
+        WHERE voutmr.member_id IN
+        <foreach collection="memberIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectByTeamIds" resultType="com.vikadata.entity.TeamMemberRelEntity">
+        SELECT vodmr.*
+        FROM vika_unit_team_member_rel vodmr
+        JOIN vika_unit_team vout ON vodmr.team_id = vout.id AND vout.is_deleted = 0
+        WHERE vodmr.team_id IN
+        <foreach collection="teamIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectMemberIdsByTeamId" resultType="java.lang.Long">
+        SELECT voutmr.member_id
+        FROM vika_unit_team_member_rel voutmr
+        WHERE voutmr.team_id = #{teamId}
+    </select>
+
+    <select id="selectMemberIdsByTeamIds" resultType="java.lang.Long">
+        SELECT voutmr.member_id
+        FROM vika_unit_team_member_rel voutmr
+        JOIN vika_unit_team vut ON voutmr.team_id = vut.id AND vut.is_deleted = 0
+        JOIN vika_unit_member vum ON vum.id = voutmr.member_id AND vum.is_deleted = 0
+        WHERE voutmr.team_id IN
+        <foreach collection="teamIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectActiveMemberIdsByTeamIds" resultType="java.lang.Long">
+        SELECT voutmr.member_id
+        FROM vika_unit_team_member_rel voutmr
+        JOIN vika_unit_team vut ON voutmr.team_id = vut.id AND vut.is_deleted = 0
+        JOIN vika_unit_member vum ON vum.id = voutmr.member_id AND vum.is_deleted = 0 AND vum.is_active = 1
+        WHERE voutmr.team_id IN
+        <foreach collection="teamIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectAllTeamIdByMemberId" resultType="java.lang.Long">
+        WITH RECURSIVE team_view (id,  parent_id, lvl) AS
+        (
+            SELECT vut.id,  vut.parent_id,0 lvl
+            FROM vika_unit_team vut
+            WHERE vut.is_deleted = 0 AND vut.id IN (
+                SELECT vutmr.team_id
+                FROM vika_unit_team_member_rel vutmr
+                WHERE vutmr.member_id = #{memberId}
+            )
+            UNION ALL
+            SELECT t.id, t.parent_id, tv.lvl + 1
+            FROM team_view tv
+            JOIN vika_unit_team t ON tv.parent_id = t.id AND t.is_deleted = 0
+        )
+        SELECT DISTINCT id FROM team_view ORDER BY lvl DESC;
+    </select>
+
+    <select id="selectTeamIdAndMemberIds" resultType="java.lang.Long">
+        SELECT voutmr.id
+        FROM vika_unit_team_member_rel voutmr
+        WHERE team_id = #{teamId} AND member_id IN
+        <foreach collection="memberIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectMemberIdsByRootTeamId" resultType="java.lang.Long">
+        SELECT tm.member_id
+        FROM vika_unit_team_member_rel tm
+        LEFT JOIN vika_unit_team_member_rel tm1 ON tm1.member_id = tm.member_id
+        LEFT JOIN vika_unit_team t ON t.id = tm1.team_id AND t.is_deleted = 0
+        WHERE tm.team_id = #{rootTeamId}
+        GROUP BY tm.member_id
+        HAVING COUNT(tm1.id) <![CDATA[<]]> 2
+    </select>
+
+    <delete id="deleteByTeamIds">
+        DELETE FROM vika_unit_team_member_rel
+        WHERE team_id IN
+        <foreach collection="teamIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

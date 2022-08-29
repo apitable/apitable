@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.modular.vcode.mapper.VCodeMapper">
+
+    <select id="countByCode" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM vika_code
+        WHERE code = #{code}
+    </select>
+
+    <select id="selectByCode" resultType="com.vikadata.entity.CodeEntity">
+        SELECT *
+        FROM vika_code
+        WHERE code = #{code} AND is_deleted = 0
+    </select>
+
+    <select id="selectRefIdByCodeAndType" resultType="java.lang.Long">
+        SELECT ref_id
+        FROM vika_code
+        WHERE code = #{code} AND `type` = #{type} AND is_deleted = 0
+    </select>
+
+    <select id="selectAvailableTimesByCode" resultType="java.lang.Integer">
+        SELECT available_times
+        FROM vika_code
+        WHERE code = #{code} AND is_deleted = 0
+    </select>
+
+    <select id="selectCodeByTypeAndRefId" resultType="java.lang.String">
+        SELECT code
+        FROM vika_code
+        WHERE ref_id = #{refId} AND type = #{type} AND is_deleted = 0
+        LIMIT 1
+    </select>
+
+    <select id="selectTypeByCode" resultType="java.lang.Integer">
+        SELECT `type`
+        FROM vika_code
+        WHERE code = #{code} AND is_deleted = 0
+    </select>
+
+    <update id="updateRefIdByCode">
+        UPDATE vika_code
+        SET ref_id = #{refId}, updated_by = #{userId}
+        WHERE code = #{code} AND is_deleted = 0
+    </update>
+
+    <update id="updateAvailableTimesByCode">
+        UPDATE vika_code
+        SET available_times = #{avail}, remain_times = #{remain}, updated_by = #{userId}
+        WHERE code = #{code} AND is_deleted = 0
+    </update>
+
+    <update id="updateLimitTimesByCode">
+        UPDATE vika_code
+        SET limit_times = #{times}, updated_by = #{userId}
+        WHERE code = #{code} AND is_deleted = 0
+    </update>
+
+    <update id="updateExpiredAtByCode">
+        UPDATE vika_code
+        SET expired_at = #{expireTime}, updated_by = #{userId}
+        WHERE code = #{code} AND is_deleted = 0
+    </update>
+
+    <update id="removeByCode">
+        UPDATE vika_code
+        SET is_deleted = 1, updated_by = #{userId}
+        WHERE code = #{code} AND is_deleted = 0
+    </update>
+
+    <insert id="insertList">
+        INSERT INTO vika_code(id, type, activity_id, ref_id, code, available_times, remain_times, limit_times,
+        expired_at, assign_user_id, created_by, updated_by)
+        VALUES
+        <foreach collection="entities" item="element" index="index" separator=",">
+            (#{element.id}, #{element.type}, #{element.activityId}, #{element.refId}, #{element.code},
+            #{element.availableTimes}, #{element.remainTimes}, #{element.limitTimes}, #{element.expiredAt},
+            #{element.assignUserId}, #{element.createdBy}, #{element.updatedBy})
+        </foreach>
+    </insert>
+
+    <select id="countByActivityId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM vika_code
+        WHERE activity_id = #{activityId} AND assign_user_id IS NULL AND is_deleted = 0
+    </select>
+
+    <update id="subRemainTimes">
+        UPDATE vika_code
+        SET remain_times = remain_times - 1
+        WHERE code = #{code} AND available_times > 0 AND is_deleted = 0
+    </update>
+
+    <select id="getAvailableCode" resultType="java.lang.String">
+        SELECT `code`
+        FROM (
+        SELECT vc.`code`, IF(vc.available_times = -1 OR vc.available_times - COUNT(vcu.id) > 0, 1, 0) AS factor
+        FROM vika_code vc
+        LEFT JOIN vika_code_usage vcu ON vc.`code` = vcu.`code` AND vcu.type = 0
+        WHERE vc.activity_id = #{activityId}
+        AND vc.assign_user_id IS NULL
+        AND (vc.expired_at IS NULL OR vc.expired_at > NOW())
+        AND (vc.available_times = -1 OR vc.remain_times > 0)
+        AND vc.is_deleted = 0
+        GROUP BY vc.`code`) AS t WHERE factor = 1;
+    </select>
+
+    <select id="getAcquiredCode" resultType="java.lang.String">
+        SELECT vc.code
+        FROM vika_code vc
+        JOIN vika_code_usage vcu ON vc.code = vcu.code AND vcu.operator = #{operator} AND vcu.type = 0
+        WHERE vc.activity_id = #{activityId}
+        LIMIT 1
+    </select>
+
+    <select id="selectDetailInfo" resultType="com.vikadata.api.model.vo.vcode.VCodePageVo">
+        SELECT vc.type, vc.code, vc.available_times, vc.remain_times, vc.limit_times, vc.expired_at AS expireTime,
+        vc.created_at, vc.updated_at, vu.nick_name AS creator, vu2.nick_name AS updater,
+        vca.name AS activityName, vcct.comment AS templateComment, vu3.nick_name AS assignUser
+        FROM vika_code vc
+        LEFT JOIN vika_user vu ON vc.created_by = vu.id
+        LEFT JOIN vika_user vu2 ON vc.updated_by = vu2.id
+        LEFT JOIN vika_user vu3 ON vc.assign_user_id = vu3.id
+        LEFT JOIN vika_code_activity vca ON vc.activity_id = vca.id
+        LEFT JOIN vika_code_coupon_template vcct ON vc.ref_id = vcct.id
+        WHERE vc.type != 1 AND vc.is_deleted = 0 AND vc.activity_id IS NOT NULL
+        <if test="type != null and type != ''">
+            AND vc.type = #{type}
+        </if>
+        <if test="activityId != null and activityId != ''">
+            AND vc.activity_id = #{activityId}
+        </if>
+        ORDER BY vc.id DESC
+    </select>
+
+    <select id="selectIntegral" resultType="java.lang.Integer">
+        SELECT vcct.total_count
+        FROM vika_code vc
+        JOIN vika_code_coupon_template vcct ON vc.ref_id = vcct.id AND vcct.is_deleted = 0
+        WHERE vc.code = #{code} AND vc.type = 2 AND vc.is_deleted = 0
+    </select>
+</mapper>

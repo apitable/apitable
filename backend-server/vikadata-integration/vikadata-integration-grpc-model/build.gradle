@@ -1,0 +1,48 @@
+plugins {
+  id 'java'
+  id 'idea'
+  id 'com.google.protobuf'
+}
+
+dependencies {
+  implementation rootProject.ext.dependencies['protobuf-java']
+  implementation rootProject.ext.dependencies['io-grpc']
+}
+
+protobuf {
+  protoc {
+    artifact = "com.google.protobuf:protoc:${protobuf_java_version}"
+  }
+  generatedFilesBaseDir = "$projectDir/src/generated"
+  clean {
+    delete generatedFilesBaseDir
+  }
+  plugins {
+    grpc {
+      if (osdetector.os == "osx") {
+        artifact = "io.grpc:protoc-gen-grpc-java:${io_grpc_version}:osx-x86_64"
+      } else {
+        artifact = "io.grpc:protoc-gen-grpc-java:${io_grpc_version}"
+      }
+    }
+  }
+  
+  generateProtoTasks {
+    all()*.plugins {
+      grpc {}
+    }
+  }
+}
+
+idea {
+  module {
+    sourceDirs += file('src/generated/main/java')
+    sourceDirs += file('src/generated/main/grpc')
+    generatedSourceDirs += file('src/generated/main/java')
+    generatedSourceDirs += file('src/generated/main/grpc')
+  }
+}
+
+
+
+

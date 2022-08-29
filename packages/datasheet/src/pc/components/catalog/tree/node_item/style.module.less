@@ -1,0 +1,137 @@
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+@import '~pc/styles/lib_screen.less';
+
+.nodeItemWrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-right: 8px;
+
+  &.nodeItemHover {
+    &:hover {
+      .state {
+        display: none;
+      }
+
+      .operation {
+        display: flex;
+      }
+    }
+  }
+
+  &.touchDevice {
+    .state {
+      display: none;
+    }
+
+    .operation {
+      display: flex;
+    }
+  }
+
+  .nodeIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    border-radius: 2px;
+    cursor: pointer;
+
+    @media (any-hover: hover) {
+      &:hover {
+        background: var(--shadowColor);
+      }
+    }
+
+    &.disabled {
+      background: transparent;
+      cursor: default;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--fourthLevelText);
+    }
+  }
+
+  .content {
+    width: 0;
+    margin-left: 4px;
+    flex: 1;
+    height: 100%;
+    line-height: 36px;
+    color: var(--fc1);
+
+    .nodeName {
+      font-size: 13px;
+      .ellipsis();
+    }
+  }
+
+  .state {
+    flex-shrink: 0;
+
+    & > div {
+      display: flex;
+      align-items: center;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--fourthLevelText);
+    }
+  }
+
+  .operation {
+    flex-shrink: 0;
+    display: none;
+
+    & > div {
+      display: flex;
+      align-items: center;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--thirdLevelText);
+    }
+  }
+}
+
+.actived {
+  .nodeIcon svg {
+    fill: var(--primaryColor);
+  }
+
+  .content {
+    color: var(--primaryColor)!important;
+    font-weight: bold;
+  }
+}
+
+.deleteTitle {
+  width: 100%;
+}
+
+.deleteNodeName {
+  display: inline;
+}
+
+// 移动端
+@media screen and (max-width: @w-md) {
+  .nodeItemWrapper {
+    .nodeIcon {
+      pointer-events: none;
+    }
+  }
+  .deleteTitle {
+    justify-content: center;
+  }
+}

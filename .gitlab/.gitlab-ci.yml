@@ -1,0 +1,1125 @@
+include:
+  - '/gitlab/script/deploy_node_script.yml'
+  - '/gitlab/script/widget_stage_script.yml'
+
+# 定义执行阶段
+stages:
+  - check
+  - install
+  - build
+  - unit_test
+  - deploy
+  - merge
+  - test
+  - test_notify
+
+variables:
+  BUCKET_NAME: s.vika.cn
+  BUILD_PATH: build
+  PUBLISH_PATH: publish
+  NODE_JS_VERSION: 16.15.0
+  NODE_VERSION: 16.15.0
+  CHROME_VERSION: 86
+  npm_config_cache: "$CI_PROJECT_DIR/.npm"
+  CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
+# 预定义执行条件
+.only-branch: &only-branch
+  only:
+    - /^build.*$/
+    - integration
+    - staging
+    - test
+    - feature-subscribe
+
+.only-tags: &only-tags
+  only:
+    refs:
+      - tags
+
+.only-runner: &only-runner
+  tags:
+    - node
+
+.except-feature: &except-feature
+  except:
+    - /^(feat|build).*$/
+    - schedules
+
+.only-feature: &only-feature
+  only:
+    - /^(feat|build).*$/
+
+.only-component-changed: &only-component-changed
+  only:
+    refs:
+      - feature-vika-ui
+      # - integration
+    changes:
+      # 组件变更请更新请 components 版本号。文档或版本号变更即触发组件库文档的重新 build 和发布。
+      - packages/components/docs/*
+      # gitlab 检测不到 src/components/ 下的改动
+      - packages/components/src/*
+      - packages/components/package.json
+
+# 仅当 room-server 变更时，才 build room-server 这个步骤 tar node_modules 耗性能。
+# .only-room-server-changed: &only-room-server-changed
+#   only:
+#     changes:
+#       - packages/room-server/*
+
+# 仅仅package.json发生改变时
+.only-packages-changed: &only-packages-changed
+  only:
+    refs:
+      - /^(feat|build).*$/
+      - integration
+      - staging
+      - test
+    changes:
+      - package.json
+      - yarn.lock
+      - packages/**/package.json
+
+# 配置 aws 认证
+.aws-auth: &aws-auth
+  script:
+    - aws --version
+    - mkdir ~/.aws/ && touch ~/.aws/credentials
+    # AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_DEFAULT_REGION 分别在gitlab代码库的变量里
+    - printf "[default]\naws_access_key_id = %s\naws_secret_access_key = %s\n" "$AWS_ACCESS_KEY_ID" "$AWS_SECRET_ACCESS_KEY" >> ~/.aws/credentials
+    - printf "[default]\nregion = %s\noutput = json\n" "$AWS_DEFAULT_REGION" >> ~/.aws/config
+
+# 配置 七牛云认证
+.qs-auth: &qs-auth
+  - qshell --version
+  # 七牛云认证
+  - qshell account $QS_ACCESS_KEY $QS_SECRET_KEY $QS_ACCOUNT
+
+# 全局缓存,同一个分之都共享缓存，默认策略是只拉取缓存
+cache: &global_cache
+  key: ${CI_PROJECT_NAME}_${CI_COMMIT_REF_NAME}
+  paths:
+    - node_modules/
+    - "packages/*/node_modules"
+  policy: pull
+  untracked: true
+
+# 共享脚本
+.yarn_config: &yarn_config
+  before_script:
+    - yarn config get npmRegistryServer
+    - yarn config set npmRegistryServer https://nexus.vika.ltd/repository/npm-group/
+
+# 安装依赖(非正式环境，集成分支和预发布分支)
+install_dependencies:
+  stage: install
+  image: node:$NODE_JS_VERSION-alpine
+  <<: *yarn_config
+  # 缓存依赖
+  cache:
+    <<: *global_cache
+    policy: push
+  script:
+    - yarn cache clean
+    - yarn workspaces focus @vikadata/datasheet @vikadata/components @vikadata/widget-stage @vikadata/room-server root
+  <<: *only-runner
+  <<: *only-branch
+  # <<: *except-feature
+  # <<: *only-packages-changed
+
+# 安装 cypress 的依赖
+install_cypress:
+  stage: install
+  image: node:$NODE_JS_VERSION-alpine
+  when: manual
+  <<: *yarn_config
+  # 缓存依赖
+  cache:
+    <<: *global_cache
+    policy: push
+  script:
+    - yarn workspaces focus @vikadata/cypress
+  <<: *only-runner
+  <<: *only-branch
+  <<: *except-feature
+  only:
+    refs:
+      - /^(feat|build).*$/
+      - integration
+      - staging
+      - test
+    changes:
+      - packages/cypress/package.json
+
+# 检查 tag commit（正式环境）
+release_check_tag:
+  stage: check
+  image: vikadata/dind-aws-node
+  script:
+    - chmod a+x ./scripts/tag-limit.sh
+    # - ./scripts/tag-limit.sh
+  <<: *only-runner
+  <<: *only-tags
+
+# 安装依赖（正式环境）
+release_install_dependencies:
+  stage: install
+  image: node:$NODE_JS_VERSION-alpine
+  <<: *yarn_config
+  # 缓存依赖
+  cache:
+    <<: *global_cache
+    policy: push
+  script:
+    - yarn cache clean
+    - yarn workspaces focus @vikadata/datasheet @vikadata/widget-stage root
+  <<: *only-runner
+  <<: *only-tags
+
+# 打包组件库文档
+build_vika_design:
+  stage: build
+  image: node:$NODE_JS_VERSION-alpine
+  <<: *yarn_config
+  script:
+    - echo "build vika design components"
+    - yarn workspaces focus @vikadata/components
+    - yarn build:icons
+    - yarn build:components:sg
+  artifacts:
+    name: ${CI_PROJECT_NAME}_${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHA}_vika_components
+    paths:
+      - packages/components/styleguide/
+    expire_in: "1 weeks"
+  <<: *only-component-changed
+  except:
+    - schedules
+
+# 直接部署
+deploy_vika_design:
+  stage: deploy
+  dependencies:
+    - build_vika_design
+  image: vikadata/dind-aws-node
+  <<: *aws-auth
+  script:
+    - aws s3 cp packages/components/styleguide s3://bundle.vika.ltd/component  --recursive --include "*"
+  <<: *only-component-changed
+  except:
+    - schedules
+
+# 打包前端工程
+build_web:
+  stage: build
+  image: node:$NODE_JS_VERSION-alpine
+  script:
+    # 查看alpine版本
+    - cat /etc/issue
+    # 配置加速源
+    - sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+    # 安装 curl
+    - apk add --no-cache git make bash
+    - yarn build:dst
+  artifacts:
+    name: ${CI_PROJECT_NAME}_${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHA}_web
+    paths:
+      - packages/datasheet/out/
+      - packages/components/dist/
+      - packages/icons/dist/
+    expire_in: "1 weeks"
+  <<: *only-branch
+  # <<: *except-feature
+  <<: *only-runner
+
+# (正式环境)打包前端工程
+release_build_web:
+  stage: build
+  image: node:$NODE_JS_VERSION-alpine
+  script:
+    # 查看alpine版本
+    - cat /etc/issue
+    # 配置加速源
+    - sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+    # 安装 curl
+    - apk add --no-cache git make bash
+    - yarn build:dst
+  artifacts:
+    name: ${CI_PROJECT_NAME}_${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHA}_web
+    paths:
+      - packages/datasheet/out/
+    expire_in: "1 weeks"
+  <<: *only-tags
+  <<: *only-runner
+  when: manual
+# 私有化环境的版本号
+.create_private_build_version: &create_private_build_version
+  before_script:
+    # 环境版本类型：integration=alpha, staging=beta 不是这几个分支一律按feature处理,
+    - VERSION_TYPE="private"
+    - echo $VERSION_TYPE
+    - echo ${CI_PIPELINE_ID}
+    - BUILD_VERSION=$(echo ${VERSION_TAG}-${VERSION_TYPE}.${CI_PIPELINE_ID} | sed 's/\"//g'|sed 's/ //g')
+    - echo $BUILD_VERSION
+    # 仓库地址
+    - REPOSITORY="${HUB_DOMAIN}/${TENANT}_${VERSION_TYPE}"
+    - echo $REPOSITORY
+    # 应用名称（容器云设置同步）
+    - APP_NAME="room-server"
+    # 镜像名称
+    - BUILD_IMAGE_NAME=$(echo $REPOSITORY/$APP_NAME)
+    - echo $BUILD_IMAGE_NAME
+    # 镜像标签：版本号-版本类型.CI流水线ID
+    - IMAGE_TAG=$(echo $BUILD_VERSION)
+# 部署RoomServer脚本
+.private_build_room_script: &private_build_room_script
+  script:
+    - echo "分支名称：$CI_COMMIT_REF_NAME"
+    - docker info
+    # 容器云平台登录认证，登录账户、密码与ECR地址存储在Gitlab Group变量中
+    - docker login -u $HUB_USER_NAME -p $HUB_PASSWORD $HUB_DOMAIN
+    # docker file
+    - TEST=$([[ "$ENV" != "release" ]] && echo "true" || echo "false")
+    # 构造镜像推送到私有仓库
+    - ls -la
+    - docker pull $BUILD_IMAGE_NAME:latest || true
+    - docker build --cache-from $BUILD_IMAGE_NAME:latest --tag $BUILD_IMAGE_NAME:$IMAGE_TAG --tag $BUILD_IMAGE_NAME:latest --build-arg test=$TEST -f Dockerfile.private .
+    - docker push $BUILD_IMAGE_NAME:$IMAGE_TAG
+    - docker push $BUILD_IMAGE_NAME:latest
+
+# 构建私有化Room Server
+private_build_room:
+  stage: build
+  image: vikadata/dind-aws-node
+  services:
+    - name: vikadata/dind-aws-node
+      command: [ "--registry-mirror=https://nt14bg6k.mirror.aliyuncs.com" ]
+  variables:
+    GIT_STRATEGY: fetch
+    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_HOST: "tcp://vikadata__dind-aws-node:2375"
+    TENANT: system-tenant
+    # 集群名称
+    CLUSTER_NAME: compass-stack
+  cache: { }
+  <<: *create_private_build_version
+  <<: *private_build_room_script
+  when: manual
+
+# 非正式环境的版本号
+.create_build_version: &create_build_version
+  before_script:
+    # 环境版本类型：integration=alpha, staging=beta 不是这几个分支一律按feature处理,
+    - VERSION_TYPE=$([[ "$CI_COMMIT_REF_NAME" == "integration" ]] && echo "alpha" || ([[ "$CI_COMMIT_REF_NAME" == "staging" ]] && echo "beta") || ([[ "$CI_COMMIT_REF_NAME" == "test" ]] && echo "test" || echo "feature"))
+    - echo $VERSION_TYPE
+    - echo ${CI_PIPELINE_ID}
+    - BUILD_VERSION=$(echo ${VERSION_TAG}-${VERSION_TYPE}.${CI_PIPELINE_ID} | sed 's/\"//g'|sed 's/ //g')
+    - echo $BUILD_VERSION
+    - DEPLOY_URL=$([[ "$CI_COMMIT_REF_NAME" == "staging" ]] && echo $STAGING_URL$BUILD_PATH || echo $INTEGRATION_URL$BUILD_PATH)
+    - echo $DEPLOY_URL
+    - PUBLISH_URL=$([[ "$CI_COMMIT_REF_NAME" == "staging" ]] && echo $STAGING_URL$PUBLISH_PATH || echo $INTEGRATION_URL$PUBLISH_PATH)
+    - echo $PUBLISH_URL
+    - ENV=$([[ $CI_COMMIT_REF_NAME == v* ]] && echo "release" || echo $CI_COMMIT_REF_NAME)
+    # 仓库地址
+    - REPOSITORY="${HUB_DOMAIN}/${TENANT}_${ENV}"
+    - echo $REPOSITORY
+    # 应用名称（容器云设置同步）
+    - APP_NAME=$([[ "$CI_COMMIT_REF_NAME" == "staging" ]] && echo "room-server-staging" || ([[ "$CI_COMMIT_REF_NAME" == "test" ]] && echo "room-test" || echo "room-server"))
+    # 镜像名称
+    - BUILD_IMAGE_NAME=$(echo $REPOSITORY/$APP_NAME)
+    - echo $BUILD_IMAGE_NAME
+    # 镜像标签：版本号-版本类型.CI流水线ID
+    - IMAGE_TAG=$(echo $BUILD_VERSION)
+
+# 正式环境的版本号
+.create_release_build_version: &create_release_build_version
+  before_script:
+    # 直接获取tag Name
+    - BUILD_VERSION=$(echo $CI_COMMIT_TAG | sed 's/\"//g'|sed 's/ //g')
+    - echo $BUILD_VERSION
+    - DEPLOY_URL=$RELEASE_URL$BUILD_PATH
+    - echo $DEPLOY_URL
+    - PUBLISH_URL=$RELEASE_URL$PUBLISH_PATH
+    - echo $PUBLISH_URL
+    - ENV=$(echo "release")
+    # 仓库地址
+    - REPOSITORY="${HUB_DOMAIN}/${TENANT}_${ENV}"
+    - echo $REPOSITORY
+    # 应用名称（容器云设置同步）
+    - APP_NAME=$([[ "$CI_COMMIT_REF_NAME" == "staging" ]] && echo "room-server-staging" || ([[ "$CI_COMMIT_REF_NAME" == "test" ]] && echo "room-test" || echo "room-server"))
+    # 镜像名称
+    - BUILD_IMAGE_NAME=$(echo $REPOSITORY/$APP_NAME)
+    - echo $BUILD_IMAGE_NAME
+    # 镜像标签：版本号-版本类型.CI流水线ID
+    - IMAGE_TAG=$(echo $BUILD_VERSION)
+
+# 部署RoomServer脚本
+.build_room_script: &build_room_script
+  script:
+    - echo "分支名称：$CI_COMMIT_REF_NAME"
+    - docker info
+    # 容器云平台登录认证，登录账户、密码与ECR地址存储在Gitlab Group变量中
+    - docker login -u $HUB_USER_NAME -p $HUB_PASSWORD $HUB_DOMAIN
+    # docker file
+    - TEST=$([[ "$ENV" != "release" ]] && echo "true" || echo "false")
+    # 构造镜像推送到私有仓库
+    - ls -la
+    - docker pull $BUILD_IMAGE_NAME:latest || true
+    - docker build --cache-from $BUILD_IMAGE_NAME:latest --tag $BUILD_IMAGE_NAME:$IMAGE_TAG --tag $BUILD_IMAGE_NAME:latest --build-arg test=$TEST -f Dockerfile .
+    - docker push $BUILD_IMAGE_NAME:$IMAGE_TAG
+    - docker push $BUILD_IMAGE_NAME:latest
+
+# 构建Room Server
+build_room:
+  stage: build
+  image: vikadata/dind-aws-node
+  services:
+    - name: vikadata/dind-aws-node
+      command: [ "--registry-mirror=https://nt14bg6k.mirror.aliyuncs.com" ]
+  artifacts:
+    name: ${CI_PROJECT_NAME}_${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}_${CI_PIPELINE_ID}_room
+    paths:
+      - deploy-server.py
+    expire_in: 120 mins
+  variables:
+    GIT_STRATEGY: fetch
+    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_HOST: "tcp://vikadata__dind-aws-node:2375"
+    TENANT: system-tenant
+    # 集群名称
+    CLUSTER_NAME: compass-stack
+  cache: { }
+  <<: *create_build_version
+  <<: *build_room_script
+  <<: *only-branch
+  <<: *except-feature
+  <<: *only-runner
+
+# (正式环境)构建Room Server
+release_build_room:
+  stage: build
+  image: vikadata/dind-aws-node
+  services:
+    - name: vikadata/dind-aws-node
+      command: [ "--registry-mirror=https://nt14bg6k.mirror.aliyuncs.com" ]
+  variables:
+    GIT_STRATEGY: fetch
+    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_HOST: "tcp://vikadata__dind-aws-node:2375"
+    TENANT: vika-prod
+    # 集群名称
+    CLUSTER_NAME: user-21b785-20200409100351-1a0l
+  cache: { }
+  artifacts:
+    name: ${CI_PROJECT_NAME}_${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHA}_room
+    paths:
+      - deploy-server.py
+    expire_in: "1 weeks"
+  <<: *create_release_build_version
+  <<: *build_room_script
+  <<: *only-tags
+  <<: *only-runner
+  when: manual
+
+# 部署Datasheet端脚本
+.deploy_web_script: &deploy_web_script
+  <<: *aws-auth
+  # 缓存依赖
+  # cache:
+  #   <<: *global_cache
+  #   policy: pull-push
+  script:
+    # 部署
+    - (if [ "$VERSION_TYPE" == "feature" ];then npm install -g n && export N_NODE_MIRROR='https://npm.taobao.org/mirrors/node' && n $NODE_JS_VERSION && yarn config get npmRegistryServer && yarn config set npmRegistryServer https://nexus.vika.ltd/repository/npm-group/ && yarn workspaces focus @vikadata/datasheet root && yarn build:dst; else echo "非feauture分支不下载";fi)
+    - echo $CI_COMMIT_SHA
+    - ls -a
+    # 上传sourceMap到sentry平台
+    - sudo npm install -g @sentry/cli@1.68.0 --sentrycli_cdnurl=https://npm.taobao.org/mirrors/sentry-cli/ --unsafe-perm
+    - echo "sentry地址：$SENTRY_URL, sentry认证：$SENTRY_API_TOKEN， sentry组织：$SENTRY_ORG_SLUG，版本：$BUILD_VERSION"
+    # - sleep 1800s
+    - sentry-cli --url $SENTRY_URL --auth-token $SENTRY_API_TOKEN releases --project datasheet --org $SENTRY_ORG_SLUG files "$BUILD_VERSION" upload-sourcemaps ./packages/datasheet/out/static/ --url-prefix "~/web_build/static" || echo "$BUILD_VERSION"
+    # 上传之前,删除，防止代码泄露
+    - rm packages/datasheet/out/static/**/*.map
+    # 上传S3
+    - aws s3 cp packages/datasheet/out s3://${BUCKET_NAME}/web_build --recursive --include "*"
+    # 上传七牛云
+    - *qs-auth
+    - qshell qupload2 --src-dir=packages/datasheet/out --bucket=${QS_BUCKET_NAME} --key-prefix=web_build/ --thread-count=4 --overwrite=true up_host=${QS_UPLOAD_HOST}
+    # 因为要获取编译后的文件，所以不能放在脚本之后 上传html文件开始
+    - htmlContent=$(cat packages/datasheet/out/index.html)
+    - echo $htmlContent
+    - htmlContentBase64=$(echo $(base64 <<< $htmlContent))
+    - echo $htmlContentBase64
+    # 发送入口文件html逻辑判断
+    - response=$(echo `curl -H 'Content-Type:application/json' -X POST -d '{"description":"'"$CI_COMMIT_SHA"'","htmlContent":"'"$htmlContentBase64"'","publishUser":"'"$GITLAB_USER_EMAIL"'","version":"'"$BUILD_VERSION"'"}' ${DEPLOY_URL}`)
+    - echo $response
+    - resonseCode=$(echo ${response} | awk -F 'code":' '{print $2}'| awk -F ',' '{print $1}')
+    - echo $resonseCode
+    # 如果入口文件写入失败, 不能执行publish
+    - (if [ "$resonseCode" == "200" ];then echo "resonseCode=200";else echo :"resonseCode=error" && apt-get;fi)
+    # 发布datashseet，feature分支不进行发布
+    - echo $VERSION_TYPE
+    - if [[ "$VERSION_TYPE" != "feature" && "$VERSION_TYPE" != "test" ]];then publishResponse=$(echo `curl -H 'Content-Type:application/json' -X POST -d '{"version":"'"$BUILD_VERSION"'"}' ${PUBLISH_URL}`); else publishResponse=$(echo "feature和test分支不支持发布"); fi
+    - echo $publishResponse
+
+.deploy_my_web_script: &deploy_my_web_script
+  <<: *aws-auth
+  # 缓存依赖
+  # cache:
+  #   <<: *global_cache
+  #   policy: pull-push
+  script:
+    # 部署
+    - (if [ "$VERSION_TYPE" == "feature" ];then npm install -g n && export N_NODE_MIRROR='https://npm.taobao.org/mirrors/node' && n $NODE_JS_VERSION && yarn config get npmRegistryServer && yarn config set npmRegistryServer https://nexus.vika.ltd/repository/npm-group/ && yarn workspaces focus @vikadata/datasheet root && yarn build:dst; else echo "非feauture分支不下载";fi)
+    - echo $CI_COMMIT_SHA
+    - ls -a
+    # 上传之前,删除，防止代码泄露
+    - rm packages/datasheet/out/static/**/*.map
+    # 上传七牛云
+    - *qs-auth
+    - qshell qupload2 --src-dir=packages/datasheet/out --bucket=${QS_BUCKET_NAME} --key-prefix=web_build/ --thread-count=4 --overwrite=true up_host=${QS_UPLOAD_HOST}
+    # 因为要获取编译后的文件，所以不能放在脚本之后 上传html文件开始
+    - htmlContent=$(cat packages/datasheet/out/index.html)
+    - echo $htmlContent
+    - htmlContentBase64=$(echo $(base64 <<< $htmlContent))
+    - echo $htmlContentBase64
+    # 发送入口文件html逻辑判断
+    - MY_BUILD_VERSION=v0.13.1-alpha.${CI_PIPELINE_ID}
+    - response=$(echo `curl -H 'Content-Type:application/json' -X POST -d '{"description":"'"$CI_COMMIT_SHA"'","htmlContent":"'"$htmlContentBase64"'","publishUser":"'"$GITLAB_USER_EMAIL"'","version":"'"$MY_BUILD_VERSION"'"}' http://40.115.219.168:30050/api/v1/client/build`)
+    - echo $response
+    - resonseCode=$(echo ${response} | awk -F 'code":' '{print $2}'| awk -F ',' '{print $1}')
+    - echo $resonseCode
+    # 如果入口文件写入失败, 不能执行publish
+    - (if [ "$resonseCode" == "200" ];then echo "resonseCode=200";else echo :"resonseCode=error" && apt-get;fi)
+    - echo $VERSION_TYPE
+    - publishResponse=$(echo `curl -H 'Content-Type:application/json' -X POST -d '{"version":"'"$MY_BUILD_VERSION"'"}' http://40.115.219.168:30050/api/v1/client/publish`)
+    - echo $publishResponse
+  only:
+    - feature-subscribe
+
+# 部署feature的Datasheet
+deploy_feature_web:
+  stage: deploy
+  image: vikadata/dind-aws-node
+  services:
+    - name: vikadata/dind-aws-node
+      command: [ "--registry-mirror=https://nt14bg6k.mirror.aliyuncs.com" ]
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_HOST: "tcp://vikadata__dind-aws-node:2375"
+    SENTRY_API_TOKEN: $SENTRY_API_TOKEN
+  # 不需要下载缓存
+  cache: { }
+  <<: *create_build_version
+  <<: *deploy_web_script
+  <<: *only-feature
+  <<: *only-runner
+  when: manual
+
+# 部署feature-subscribe
+deploy_my_web:
+  stage: deploy
+  needs:
+    - job: build_web
+      artifacts: true
+    # - job: datasheet-unit-test
+  image: vikadata/dind-aws-node
+  services:
+    - name: vikadata/dind-aws-node
+      command: [ "--registry-mirror=https://nt14bg6k.mirror.aliyuncs.com" ]
+  variables:
+    # 不需要拉取代码，使用依赖的job缓存
+    GIT_STRATEGY: none
+    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_HOST: "tcp://vikadata__dind-aws-node:2375"
+    SENTRY_API_TOKEN: $SENTRY_API_TOKEN
+  # 不需要下载缓存
+  cache: { }
+  <<: *create_build_version
+  <<: *deploy_my_web_script
+  <<: *only-runner
+  only:
+    - feature-subscribe
+
+# 构建私有化部署版本
+private_build_web:
+  stage: build
+  image: vikadata/dind-aws-node
+  services:
+    - name: vikadata/dind-aws-node
+      command: [ "--registry-mirror=https://nt14bg6k.mirror.aliyuncs.com" ]
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_HOST: "tcp://vikadata__dind-aws-node:2375"
+  # 不需要下载缓存
+  cache: { }
+  <<: *create_build_version
+  script:
+    # 部署
+    - echo "PRIVATE_BUILD_JOB_ID=${CI_JOB_ID}" >> build.env
+    - npm install -g n && export N_NODE_MIRROR='https://npm.taobao.org/mirrors/node' && n $NODE_JS_VERSION
+    - yarn workspaces focus @vikadata/datasheet @vikadata/widget-stage root
+    - sed -i 's/\/widget-stage/\/build\/widget-stage/g' packages/datasheet/src/pc/components/widget/widget_panel/widget_item/widget_iframe.tsx
+    - yarn build:dst:private;
+    - yarn build:widget-stage:private;
+  <<: *only-runner
+  artifacts:
+    name: ${CI_PROJECT_NAME}_${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHA}_private_web
+    paths:
+      - packages/datasheet/out/
+      - packages/widget-stage/build/
+    reports:
+      dotenv: build.env
+  when: manual
+
+private_deploy_web:
+  stage: deploy
+  # TODO: 这里换成带 curl 的最小镜像
+  image: vikadata/dind-aws-node
+  dependencies:
+    - private_build_web
+  script:
+    - echo $PRIVATE_BUILD_JOB_ID
+    - curl -d "versionCode=v${VERSION_TAG}&jobId=${PRIVATE_BUILD_JOB_ID}&branch=staging&pipelineId=${CI_PIPELINE_ID}" https://jenkins.vika.ltd/job/deploy_datasheet/buildWithParameters?token=tg-build-only
+  when: manual
+
+
+private_deploy_room:
+  stage: deploy
+  # TODO: 这里换成带 curl 的最小镜像
+  image: vikadata/dind-aws-node
+  dependencies:
+    - private_build_room
+  script:
+    - curl --connect-timeout 5 -m 5 -d "branch=$CI_COMMIT_REF_NAME&app=room-server&image=$BUILD_IMAGE_NAME:$IMAGE_TAG" https://jenkins.vika.ltd/job/patch_app/buildWithParameters?token=tg-build-only || exit 1
+  <<: *create_private_build_version
+  when: manual
+
+# 构建私有化部署版本
+api_call_private_build_web:
+  stage: build
+  image: vikadata/dind-aws-node
+  services:
+    - name: vikadata/dind-aws-node
+      command: [ "--registry-mirror=https://nt14bg6k.mirror.aliyuncs.com" ]
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_HOST: "tcp://vikadata__dind-aws-node:2375"
+  only:
+    variables:
+      - $API_CALL == "true"
+  # 不需要下载缓存
+  cache: { }
+  <<: *create_build_version
+  script:
+    # 部署
+    - npm install -g n && export N_NODE_MIRROR='https://npm.taobao.org/mirrors/node' && n $NODE_JS_VERSION
+    - yarn workspaces focus @vikadata/datasheet root
+    - yarn build:dst:private;
+    - rm -rf packages/datasheet/out/custom-config.js
+    - tmpPrefix='window.__vika_custom_config__ = '
+    - echo $tmpPrefix$CONFIG_STR > packages/datasheet/out/custom-config.js
+    - cat packages/datasheet/out/custom-config.js
+  <<: *only-runner
+  artifacts:
+    name: ${CI_PROJECT_NAME}_${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHA}_private_web
+    paths:
+      - packages/datasheet/out/
+
+# 部署integration和staging的Datasheet
+deploy_web:
+  stage: deploy
+  needs:
+    - job: build_web
+      artifacts: true
+    # - job: datasheet-unit-test
+  image: vikadata/dind-aws-node
+  services:
+    - name: vikadata/dind-aws-node
+      command: [ "--registry-mirror=https://nt14bg6k.mirror.aliyuncs.com" ]
+  variables:
+    # 不需要拉取代码，使用依赖的job缓存
+    GIT_STRATEGY: none
+    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_HOST: "tcp://vikadata__dind-aws-node:2375"
+    SENTRY_API_TOKEN: $SENTRY_API_TOKEN
+  # 不需要下载缓存
+  cache: { }
+  <<: *create_build_version
+  <<: *deploy_web_script
+  <<: *only-branch
+  <<: *except-feature
+  <<: *only-runner
+
+# 正式环境部署datasheet
+release_deploy_web:
+  stage: deploy
+  dependencies:
+    - release_build_web
+  image: vikadata/dind-aws-node
+  services:
+    - name: vikadata/dind-aws-node
+      command: [ "--registry-mirror=https://nt14bg6k.mirror.aliyuncs.com" ]
+  variables:
+    # 不需要拉取代码
+    GIT_STRATEGY: none
+    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_HOST: "tcp://vikadata__dind-aws-node:2375"
+    SENTRY_API_TOKEN: $SENTRY_API_TOKEN
+  # 不需要下载缓存
+  cache: { }
+  <<: *create_release_build_version
+  <<: *deploy_web_script
+  <<: *only-tags
+  <<: *only-runner
+  when: manual
+
+# 非正式环境部署Room Server
+deploy_room:
+  stage: deploy
+  image: python:3.9.4-alpine3.12
+  needs:
+    - job: build_room
+      artifacts: true
+    - job: datasheet-unit-test
+  variables:
+    # 集群名称
+    CLUSTER_NAME: compass-stack
+    TENANT: system-tenant
+  cache: { }
+  extends: .deploy_room_script
+  <<: *create_build_version
+  <<: *only-branch
+  <<: *except-feature
+  <<: *only-runner
+
+
+# 非正式环境部署Scheduler Server
+deploy_scheduler:
+  stage: deploy
+  image: python:3.9.4-alpine3.12
+  needs:
+    - job: build_room
+      artifacts: true
+  variables:
+    # 集群名称
+    CLUSTER_NAME: compass-stack
+    TENANT: system-tenant
+  cache: { }
+  extends: .deploy_scheduler_script
+  <<: *create_build_version
+  <<: *only-branch
+  <<: *except-feature
+  <<: *only-runner
+
+
+# 非正式环境部署Fusion Server
+deploy_fusion:
+  stage: deploy
+  image: python:3.9.4-alpine3.12
+  needs:
+    - job: build_room
+      artifacts: true
+  variables:
+    # 集群名称
+    CLUSTER_NAME: compass-stack
+    TENANT: system-tenant
+    DEPLOY_NAME: fusion-server-v1
+  cache: { }
+  extends: .deploy_fusion_script
+  <<: *create_build_version
+  <<: *only-branch
+  <<: *except-feature
+  <<: *only-runner
+
+
+
+# 正式环境青云集群部署Room Server
+release_deploy_ks_room:
+  stage: deploy
+  image: python:3.9.4-alpine3.12
+  dependencies:
+    - release_build_room
+  variables:
+    # 不需要拉取代码
+    GIT_STRATEGY: fetch
+    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_HOST: "tcp://vikadata__dind-aws-node:2375"
+    TENANT: vika-prod
+    # 集群名称
+    CLUSTER_NAME: user-21b785-20200409100351-1a0l
+  cache: { }
+  extends: .deploy_room_ks_script
+  <<: *create_release_build_version
+  <<: *only-tags
+  <<: *only-runner
+  when: manual
+
+# 正式环境青云集群部署Fusion Server
+release_deploy_ks_fusion:
+  stage: deploy
+  image: python:3.9.4-alpine3.12
+  dependencies:
+    - release_build_room
+  variables:
+    # 不需要拉取代码
+    GIT_STRATEGY: fetch
+    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_HOST: "tcp://vikadata__dind-aws-node:2375"
+    TENANT: vika-prod
+    # 集群名称
+    CLUSTER_NAME: user-21b785-20200409100351-1a0l
+  cache: { }
+  extends: .deploy_fusion_ks_script
+  <<: *create_release_build_version
+  <<: *only-tags
+  <<: *only-runner
+  when: manual
+
+# 正式环境青云集群部署Scheduler Server
+release_deploy_ks_scheduler:
+  stage: deploy
+  image: python:3.9.4-alpine3.12
+  dependencies:
+    - release_build_room
+  variables:
+    # 不需要拉取代码
+    GIT_STRATEGY: fetch
+    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_HOST: "tcp://vikadata__dind-aws-node:2375"
+    TENANT: vika-prod
+    # 集群名称
+    CLUSTER_NAME: user-21b785-20200409100351-1a0l
+  cache: { }
+  extends: .deploy_scheduler_ks_script
+  <<: *create_release_build_version
+  <<: *only-tags
+  <<: *only-runner
+  when: manual
+
+# staging接收非integration合并请求时，合并回integration，一般用于hotfix场景
+merge_staging_into_integration:
+  stage: merge
+  image: alpine:3.12
+  variables:
+    DATASHEET_GIT_HOST: 172.16.20.248
+  only:
+    - staging
+  dependencies:
+    - deploy_web
+  before_script:
+    # 配置加速源
+    - sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+    # 安装
+    - apk add git bash openssh-client
+    - eval "$(ssh-agent -s)"
+    - privKey=$(echo "${GIT_SSH_PRIV_KEY}" | base64 -d)
+    - echo "$privKey" >> priv_key.txt
+    # 配置较低权限
+    - chmod 0600 priv_key.txt
+    - ssh-add priv_key.txt
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - git config --global user.name "robot"
+    - git config --global user.email ${ROBOT_EMAIL}
+    - ssh-keyscan ${DATASHEET_GIT_HOST} >> gitlab-known-hosts
+    - cat gitlab-known-hosts >> ~/.ssh/known_hosts
+  script:
+    - mkdir tmpData
+    - cd tmpData
+    - git clone git@${DATASHEET_GIT_HOST}:fe/datasheet.git
+    - echo ${CI_PROJECT_NAME}
+    - cd ${CI_PROJECT_NAME}
+    - git fetch
+    - git checkout staging
+    - git pull
+    - git checkout integration
+    - git pull
+    - git merge staging
+    - git push
+  after_script:
+    - cd ../
+    - rm -rf tmpData/
+  <<: *only-runner
+# 发送通知
+send__notify:
+  stage: build
+  image: python:3.9.4-alpine3.12
+  script:
+    - pip install requests vika
+    - python3 scripts/send_refresh_notify.py $CI_COMMIT_REF_NAME
+  when: manual
+
+update_player_config:
+  stage: merge
+  image: node:$NODE_JS_VERSION-alpine
+  dependencies:
+    - deploy_web
+  script:
+    - curl --location --request GET "https://service-okmezytq-1254196833.gz.apigw.tencentcs.com/release/?versionType=${VERSION_TYPE}"
+  <<: *create_build_version
+  when: manual
+
+release_update_player_config:
+  stage: merge
+  image: node:$NODE_JS_VERSION-alpine
+  dependencies:
+    - release_deploy_web
+  script:
+    - curl --location --request GET "https://service-okmezytq-1254196833.gz.apigw.tencentcs.com/release/?versionType=${ENV}"
+  <<: *create_release_build_version
+  <<: *only-tags
+  when: manual
+
+api_test:
+  stage: test
+  image: vikadata/dind-aws-node
+  <<: *aws-auth
+  dependencies:
+    - deploy_web
+    - deploy_room
+  variables:
+    # 不需要拉取代码
+    GIT_STRATEGY: none
+  cache: { }
+  script:
+    - TEST_ENV=$([[ "$CI_COMMIT_REF_NAME" == "integration" ]] && echo "integration" || ([[ "$CI_COMMIT_REF_NAME" == "staging" ]] && echo "staging") || ([[ "$CI_COMMIT_REF_NAME" == "test" ]] && echo "integration" || echo "integration"))
+    - echo $TEST_ENV
+    - curl --location --request GET "http://auto-test.vika.ltd/api/autotest?env=${TEST_ENV}&headless=false&isPushDingMsg=true"
+  <<: *only-branch
+
+  #install:
+  #  image: cypress/browsers:node$NODE_VERSION-chrome$CHROME_VERSION-ff82
+  #  stage: install
+  #  # 缓存依赖
+  #  cache:
+  #    key: ${CI_COMMIT_REF_SLUG}
+  #    paths:
+  #      - .cache/*
+  #      - cache/Cypress
+  #      - node_modules
+  #  script:
+  #    # install dependencies
+  #    - npm install
+
+#install-cypress:
+#  stage: install
+#  image: node:$NODE_JS_VERSION-alpine
+#  <<: *yarn_config
+#  # 缓存依赖
+#  cache:
+#    <<: *global_cache
+#    policy: push
+#  script:
+#    - yarn workspaces focus @vikadata/cypress
+#  only:
+#    changes:
+#      - packages/cypress/package.json
+#    refs:
+#      - integration
+#      - staging
+#  <<: *only-runner
+
+#ui-chrome:
+#  image: cypress/browsers:node$NODE_VERSION-chrome$CHROME_VERSION-ff82
+#  stage: test
+#  allow_failure: false
+#  cache:
+#    <<: *global_cache
+#  only:
+#    refs:
+#      - integration
+#      - staging
+#  except:
+#    - schedules
+#  script:
+#    - yarn run cy:run
+#
+#ui-chrome-schedules:
+#  image: cypress/browsers:node$NODE_VERSION-chrome$CHROME_VERSION-ff82
+#  stage: test
+#  allow_failure: false
+#  cache:
+#    <<: *global_cache
+#  only:
+#    - schedules
+#  script:
+#    - yarn run cy:run
+#
+#ui-chrome-schedules-notify:
+#  image: vikadata/dind-aws-node
+#  stage: test_notify
+#  only:
+#    - schedules
+#  when: on_failure
+#  script:
+#    - curl --location --request GET "https://service-9fr7e9n2-1254196833.gz.apigw.tencentcs.com/release/"
+
+datasheet-unit-test:
+  timeout: 30m
+  services:
+    - name: mysql:8.0.22
+      alias: mysql
+      command: [ "--sql-mode=IGNORE_SPACE,NO_ENGINE_SUBSTITUTION" ]
+    - name: redis:6.0.16-alpine
+      alias: redis
+  variables:
+    MYSQL_DATABASE: vika_test
+    MYSQL_USER: vika
+    MYSQL_PASSWORD: password
+    MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    MYSQL_HOST: mysql
+    MYSQL_PORT: 3306
+    REDIS_HOST: redis
+    REDIS_PORT: 6379
+  image: vikadata:node14-java8-gradle
+  stage: unit_test
+  # allow_failure: false
+  cache:
+    <<: *global_cache
+  # needs:
+  #   - job: build_web
+  #     artifacts: true
+  only:
+    refs:
+      - integration
+      - staging
+      - feature-db-related-test
+      - test
+  script:
+    - yarn build:dst:pre
+    - yarn test:datasheet
+    - yarn build:room-server
+    - git clone https://oauth2:${DB_MANAGE_ACCESS_TOKEN}@git.vika.ltd/server/db-manage.git --depth 1 --branch integration
+    - ( cd db-manage && /bin/bash ./.depreciated/upgrade_db.sh )
+    - yarn test:ut
+  # <<: *except-feature
+  <<: *only-runner
+
+build_storybook:
+  stage: build
+  image: node:$NODE_JS_VERSION-alpine
+  <<: *yarn_config
+  # 缓存依赖
+  cache:
+    <<: *global_cache
+    policy: push
+  script:
+    - echo "build storybook docs"
+    - yarn cache clean
+    - yarn workspaces focus @vikadata/components @vikadata/icons
+    - yarn workspace @vikadata/icons build
+    - yarn workspace @vikadata/components build-storybook
+  when: manual
+
+deploy_dev_storybook:
+  stage: deploy
+  image: vikadata/dind-aws-node
+  <<: *yarn_config
+  <<: *aws-auth
+  script:
+    - echo "deploy storybook dev docs"
+    - aws s3 cp packages/components/storybook-static s3://dev-preview.vika.cn/storybook  --recursive --include "*"
+  when: manual
+
+# 合并请求检查
+merge_request_check:
+  stage: install
+  image: node:$NODE_JS_VERSION-alpine
+  <<: *yarn_config
+  # 缓存依赖
+  cache: { }
+  script:
+    - yarn workspaces focus @vikadata/core @vikadata/i18n-lang root
+    - yarn build:i18n
+    - yarn build:core
+    - yarn test:core
+  <<: *only-runner
+  only:
+    refs:
+      - merge_requests
+
+.only-widget-stage-need: &only-widget-stage-need
+  only:
+    refs:
+      - integration
+      - staging
+      - test
+    changes:
+      - packages/components/**/*
+      - packages/core/**/*
+      - packages/icon/**/*
+      - packages/widget-stage/**/*
+      - packages/widget-sdk/**/*
+      - packages/i18n-lang/**/*
+
+# 正式环境 build widget stage
+release_build_widget_stage:
+  stage: build
+  image: node:$NODE_JS_VERSION-alpine
+  extends: .build_widget_stage_script
+  artifacts:
+    name: ${CI_PROJECT_NAME}_${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHA}_widget_stage
+    paths:
+      - packages/widget-stage/build/
+    expire_in: "1 weeks"
+  <<: *only-tags
+  <<: *only-runner
+  when: manual
+
+# 正式环境 部署widget stage
+release_deploy_widget_stage:
+  stage: deploy
+  image: vikadata/dind-aws-node
+  before_script:
+    - echo "production"
+  services:
+    - name: vikadata/dind-aws-node
+      command: [ "--registry-mirror=https://nt14bg6k.mirror.aliyuncs.com" ]
+  variables:
+    GIT_STRATEGY: none
+    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_HOST: "tcp://vikadata__dind-aws-node:2375"
+  # 不需要下载缓存
+  cache: { }
+  extends: .release_deploy_widget_stage_script
+  <<: *only-tags
+  <<: *only-runner
+  when: manual
+
+# 非正式环境 build widget stage
+build_widget_stage:
+  stage: build
+  image: node:$NODE_JS_VERSION-alpine
+  extends: .build_widget_stage_script
+  artifacts:
+    name: ${CI_PROJECT_NAME}_${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHA}_widget_stage
+    paths:
+      - packages/widget-stage/build/
+    expire_in: "1 weeks"
+  <<: *only-branch
+  <<: *except-feature
+  <<: *only-runner
+  <<: *only-widget-stage-need
+
+# 非正式环境 部署widget stage
+deploy_widget_stage:
+  stage: deploy
+  needs:
+    - job: build_widget_stage
+  image: vikadata/dind-aws-node
+  before_script:
+    - WIDGET_STAGE_ENV=$(echo $CI_COMMIT_REF_NAME)
+  services:
+    - name: vikadata/dind-aws-node
+      command: [ "--registry-mirror=https://nt14bg6k.mirror.aliyuncs.com" ]
+  variables:
+    GIT_STRATEGY: none
+    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_HOST: "tcp://vikadata__dind-aws-node:2375"
+  # 不需要下载缓存
+  cache: { }
+  extends: .deploy_widget_stage_script
+  <<: *only-branch
+  <<: *except-feature
+  <<: *only-runner
+  <<: *only-widget-stage-need

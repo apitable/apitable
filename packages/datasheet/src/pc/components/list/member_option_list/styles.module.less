@@ -1,0 +1,172 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.memberOptionList {
+  // position: absolute;
+  box-sizing: border-box;
+  user-select: none;
+  border-radius: 4px;
+  background: var(--highestBg);
+  min-width: 200px;
+  z-index: var(--memberOptionListZIndex);
+  width: 100%;
+
+  & > div {
+    box-shadow: var(--shadowCommonHighest);
+    border-bottom: 1px solid var(--lineColor);
+  }
+
+  .searchField {
+    padding: 8px;
+  }
+
+  .noResult {
+    font-size: 11px;
+    padding-bottom: 8px;
+    padding: 0 10px;
+    height: 30px;
+    line-height: 30px;
+    color: var(--fourthLevelText);
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+  }
+}
+
+.memberInfo {
+  display: flex;
+  flex: 1;
+  max-width: 90%;
+}
+
+.seeMore {
+  text-align: center;
+  color: var(--secondLevelText);
+  font-size: 13px;
+  font-weight: normal;
+  cursor: pointer;
+  height: 40px;
+  line-height: 40px;
+}
+
+.inviteMember {
+  color: var(--primaryColor);
+  font-size: 11px;
+  text-align: center;
+  line-height: 32px;
+  height: 32px;
+  cursor: pointer;
+  margin-left: 4px;
+
+  svg {
+    vertical-align: -0.125em;
+    margin-right: 4px;
+  }
+
+  &:hover {
+    background: var(--rowSelectedBg);
+  }
+}
+
+.hoverContainer {
+  background: var(--rowSelectedBg);
+  position: relative;
+
+  &::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    left: -10px;
+    top: 0;
+    width: 10px;
+    height: 32px;
+    background: var(--rowSelectedBg);
+    z-index: 20;
+  }
+
+  &:after {
+    content: " ";
+    display: block;
+    position: absolute;
+    right: -10px;
+    top: 0;
+    width: 10px;
+    height: 32px;
+    background: var(--rowSelectedBg);
+  }
+}
+
+.searchInput {
+  padding: 0 8px !important;
+  height: 100%;
+  line-height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+
+  &,
+  input {
+    border-radius: 24px !important;
+  }
+
+  &::placeholder {
+    color: var(--fourthLevelText);
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .memberOptionList {
+    position: static;
+    width: 100% !important;
+    height: 100%;
+    box-shadow: none;
+    background: none;
+    font-size: 14px;
+
+    & > div {
+      box-shadow: none;
+      border: 0;
+    }
+
+    .searchField {
+      padding: 8px 0;
+    }
+
+    .displayList {
+      .displayListItem {
+        height: 48px;
+        font-size: 14px;
+        border-bottom: 1px solid var(--lineColor);
+      }
+    }
+
+    .noResult {
+      font-size: inherit;
+    }
+
+    .inviteMember {
+      font-size: inherit;
+    }
+  }
+
+  .seeMore {
+    font-size: inherit;
+  }
+}
+
+.memberOptionItemWrapper {
+  padding: 8px;
+
+  @media (any-hover: hover) {
+    &:hover {
+      background: var(--rowSelectedBg);
+    }
+  }
+
+  &:global {
+    &.isChecked {
+      color: inherit;
+    }
+  }
+}

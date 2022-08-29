@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.modular.base.mapper.SystemConfigMapper">
+
+    <select id="selectIdByTypeAndLang" resultType="java.lang.Long">
+        select id
+        from vika_system_config
+        where type = #{type}
+        <if test="lang != null and lang != ''">
+            and i18n_name = #{lang}
+        </if>
+          and is_deleted = 0
+    </select>
+
+    <select id="selectConfigMapByType" resultType="java.lang.String">
+        select config_map
+        from vika_system_config
+        where type = #{type}
+        <if test="lang != null and lang != ''">
+          and i18n_name = #{lang}
+        </if>
+          and is_deleted = 0
+    </select>
+</mapper>

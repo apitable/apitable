@@ -1,0 +1,57 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.changesetItemHeader {
+  display: flex;
+  align-items: center;
+  svg {
+    color: var(--fc3);
+  }
+  & + svg {
+    margin: 0 8px;
+  }
+  &.inline {
+    display: inline-flex;
+  }
+  .iconType {
+    display: flex;
+    align-items: center;
+    margin-right: 4px;
+  }
+  &:not(.old) {
+    cursor: pointer;
+    &:hover {
+      color: var(--deepPurple_500);
+      svg {
+        color: var(--deepPurple_500);
+      }
+    }
+    &:active {
+      color: var(--deepPurple_600);
+      svg {
+        color: var(--deepPurple_500);
+      }
+    }
+  }
+  &.old {
+    opacity: 0.5;
+    position: relative;
+    &::before {
+      position: absolute;
+      content: "";
+      border-top: 1px solid var(--thirdLevelText);
+      width: 100%;
+      top: 10px;
+    }
+  }
+  .text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 63px;
+  }
+  .block {
+    max-width: none;
+  }
+}

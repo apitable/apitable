@@ -1,0 +1,23 @@
+{
+    "title":"维格视图的神奇表单",
+    "description":[
+        {
+            "type":"paragraph",
+            "children":[
+                {
+                    "data":{
+                        "raw":"https://vika.cn",
+                        "href":"https://vika.cn"
+                    },
+                    "type":"link",
+                    "children":[
+                        {
+                            "text":""
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "fillAnonymous":true
+}

@@ -1,0 +1,15 @@
+{
+    "type": "event_callback",
+    "uuid": "a1a51edb78c51d32b8024debcf2d0974",
+    "token": "vVuJKuBGAAUqVaD2BeTQLbH3hLMoskzG",
+    "event": {
+        "tenant_key": "113651eb8e8ed75d",
+        "type": "app_open",
+        "installer": {
+            "open_id": "ou_950e14d5e46d57377a39cac74b431150",
+            "union_id": "on_3d346810d04b7bbdb5be59e07e156e45"
+        },
+        "app_id": "cli_a2d96e91ac3b100d"
+    },
+    "ts": "1649662267.035160"
+}

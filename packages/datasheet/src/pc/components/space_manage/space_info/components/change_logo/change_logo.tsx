@@ -1,0 +1,95 @@
+import { useState, useRef } from 'react';
+import * as React from 'react';
+import {
+  Avatar,
+  ImageCropUpload, IImageCropUploadRef, AvatarSize, AvatarType,
+} from 'pc/components/common';
+import { useSelector, shallowEqual } from 'react-redux';
+import { Spin } from 'antd';
+import { Strings, t, Api, IReduxState } from '@vikadata/core';
+import styles from './style.module.less';
+import { ISelectInfo } from 'pc/components/common/image_crop_upload';
+import { useChangeLogo } from 'pc/hooks';
+import EditIcon from 'static/icon/datasheet/rightclick/datasheet_icon_rename.svg';
+import AvatarBgImg from 'static/icon/space/space_img_avatarsbj.png';
+import { useThemeColors } from '@vikadata/components';
+
+const customTips = {
+  cropDesc: t(Strings.support_image_formats_limits, { number: 2 })
+};
+
+export const ChangeLogo = () => {
+  const colors = useThemeColors();
+  const ImageCropUploadRef = useRef<IImageCropUploadRef>(null);
+  const { spaceInfo, spaceId, spaceResource, userInfo } = useSelector((state: IReduxState) => ({
+    spaceInfo: state.space.curSpaceInfo,
+    spaceId: state.space.activeId || '',
+    spaceResource: state.spacePermissionManage.spaceResource,
+    userInfo: state.user.info,
+  }), shallowEqual);
+  
+  const [logoLoading, setLogoLoading] = useState(false);
+  
+  const cancelChangeLogoModal = () => {
+    if (ImageCropUploadRef.current) {
+      ImageCropUploadRef.current.clearState();
+    }
+  };
+  const { setLogo, logo } = useChangeLogo(spaceId, cancelChangeLogoModal);
+  const confirmChangeLogo = (data: ISelectInfo) => {
+    const { customFile } = data;
+    const formData = new FormData();
+    formData.append('file', customFile as File);
+    formData.append('type', '0');
+    setLogoLoading(true);
+    Api.uploadAttach(formData).then(res => {
+      setLogoLoading(false);
+      const { success, data } = res.data;
+      if (success) {
+        setLogo(data.token);
+      }
+    });
+  };
+  
+  const renderAvatar = (style?: React.CSSProperties) => {
+    if (!userInfo || !spaceInfo) return null;
+    return (
+      <Avatar
+        title={spaceInfo.spaceName}
+        size={AvatarSize.Size56}
+        id={userInfo!.spaceId}
+        src={spaceInfo.spaceLogo}
+        type={AvatarType.Space}
+        style={style}
+      />
+    );
+  };
+  return (
+    <div className={styles.logoWrap} style={{ backgroundImage: `url(${AvatarBgImg})` }}>
+      <div className={styles.logoContainer}>
+        <div className={styles.logo}>
+          <Spin
+            spinning={Boolean(logoLoading || logo)}
+          >
+            {renderAvatar()}
+          </Spin>
+        </div>
+        {
+          spaceResource && spaceResource.mainAdmin &&
+          <ImageCropUpload
+            fileLimit={2}
+            visible={Boolean(spaceResource?.mainAdmin)}
+            initPreview={renderAvatar({ width: '100%', height: '100%' })}
+            customTips={customTips}
+            cancel={() => { }}
+            confirm={data => confirmChangeLogo(data)}
+          >
+            <div className={styles.editIcon}>
+              <EditIcon fill={colors.staticWhite0} />
+            </div>
+          </ImageCropUpload>
+        }
+      </div>
+    </div>
+  );
+};

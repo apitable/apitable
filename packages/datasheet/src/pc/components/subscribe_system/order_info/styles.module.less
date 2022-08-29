@@ -1,0 +1,103 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.container {
+  background: var(--defaultBg);
+  //width: 520px;
+  //height: 100%;
+  max-height: 548px;
+  text-align: center;
+}
+
+main {
+  margin-top: 24px;
+}
+
+.price {
+  display: flex;
+  justify-content: center;
+  color: var(--tangerine_500);
+  font-size: 32px;
+  margin-bottom: 24px;
+
+  span {
+    font-family: BebasNeue;
+    line-height: 100%;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: flex-end;
+  }
+}
+
+footer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  top: -8px;
+
+  P {
+    text-align: left !important;
+  }
+
+  span {
+    cursor: pointer;
+  }
+}
+
+.modalWrapper {
+  :global {
+    .ant-modal-body {
+      width: 440px;
+    }
+  }
+}
+
+.checked {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.wechartPay {
+  width: 242px;
+  height: 248px;
+  border: 1px solid var(--fc5);
+  border-radius: 4px;
+  margin: 0 auto 0;
+  padding: 16px;
+  display: inline-block;
+  background-color: var(--static-white);
+
+  svg {
+    width: 208px;
+    height: 208px;
+  }
+
+  iframe {
+    border: 0;
+  }
+}
+
+.bankPay {
+  border-radius: 4px;
+  margin: 24px auto 80px;
+  position: relative;
+  width: 240px;
+  height: 240px;
+
+  span {
+    &:nth-child(2) {
+      top: 8px;
+    }
+  }
+}
+
+.freshOrderStatus {
+  margin-top: 16px;
+
+  span {
+    color: var(--primaryColor);
+    cursor: pointer;
+  }
+}

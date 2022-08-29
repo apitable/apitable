@@ -1,0 +1,19 @@
+{
+    "meta":{
+        "ts":"1653374272.912030",
+        "uuid":"3c8f79ae19d1513c958980cbaa9b1557"
+    },
+    "type":"order_paid",
+    "appId":"cli_a28611a8b9e2900d",
+    "seats":0,
+    "buyType":"buy",
+    "orderId":"7101188429446512642",
+    "payTime":"1653374272",
+    "buyCount":1,
+    "tenantKey":"11e9f3134b9e1740",
+    "createTime":"1653374272",
+    "srcOrderId":"",
+    "pricePlanId":"price_a2ac0364ee1a500e",
+    "orderPayPrice":0,
+    "pricePlanType":"trial"
+}

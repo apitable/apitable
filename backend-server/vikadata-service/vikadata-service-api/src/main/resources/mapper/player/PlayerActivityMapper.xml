@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.modular.player.mapper.PlayerActivityMapper">
+
+    <select id="selectActionsByUserId" resultType="java.lang.String">
+        SELECT actions
+        FROM vika_player_activity
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id="countByUserId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM vika_player_activity
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id="selectActionsVal" resultType="java.lang.Object">
+        SELECT JSON_EXTRACT(actions, CONCAT('$.', #{key}))
+        FROM vika_player_activity
+        WHERE user_id = #{userId}
+    </select>
+
+    <update id="updateActionsByJsonSet">
+        UPDATE vika_player_activity
+        SET actions = JSON_SET(actions, CONCAT('$.', #{key}), #{value})
+        WHERE user_id IN
+        <foreach collection="userIds" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="updateActionsReplaceByUserId">
+        UPDATE vika_player_activity
+        SET actions = JSON_REPLACE(actions, CONCAT('$.', #{key}), #{value})
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="updateActionsRemoveByUserId">
+        UPDATE vika_player_activity
+        SET actions = JSON_REMOVE(actions, CONCAT('$.', #{key}))
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="updateActionsByUserId">
+        UPDATE vika_player_activity
+        SET actions = #{act}
+        WHERE user_id = #{userId}
+    </update>
+</mapper>

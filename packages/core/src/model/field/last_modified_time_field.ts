@@ -1,0 +1,131 @@
+import Joi from 'joi';
+import { IReduxState } from 'store';
+import {
+  ILastModifiedTimeField, ILastModifiedTimeFieldProperty, FieldType, IField,
+  DateFormat, TimeFormat, CollectType,
+} from 'types/field_types';
+import { DatasheetActions } from '../datasheet';
+import { DateTimeBaseField } from './date_time_base_field';
+import { ICellValue } from 'model/record';
+import { IRecord } from 'store';
+import { datasheetIdString, enumKeyToArray, enumToArray, joiErrorResult } from './validate_schema';
+import { IOpenLastModifiedTimeFieldProperty } from 'types/open/open_field_read_types';
+import { IUpdateOpenLastModifiedTimeFieldProperty } from 'types/open/open_field_write_types';
+
+export class LastModifiedTimeField extends DateTimeBaseField {
+  constructor(public field: ILastModifiedTimeField, state: IReduxState) {
+    super(field, state);
+  }
+
+  static propertySchema = Joi.object({
+    datasheetId: datasheetIdString().required(),
+    collectType: Joi.number().allow(CollectType.AllFields, CollectType.SpecifiedFields).required(),
+    fieldIdCollection: Joi.array().items(Joi.string()).required(),
+    dateFormat: Joi.string().allow(...enumToArray(DateFormat)).required(),
+    timeFormat: Joi.string().allow(...enumToArray(TimeFormat)).required(),
+    includeTime: Joi.boolean().required(),
+  }).required();
+
+  static defaultDateFormat: string = DateFormat[0];
+  static defaultTimeFormat: string = TimeFormat[0];
+
+  static createDefault(fieldMap: { [fieldId: string]: IField }): ILastModifiedTimeField {
+    return {
+      id: DatasheetActions.getNewFieldId(fieldMap),
+      type: FieldType.LastModifiedTime,
+      name: DatasheetActions.getDefaultFieldName(fieldMap),
+      property: this.defaultProperty(),
+    };
+  }
+
+  static defaultProperty(): ILastModifiedTimeFieldProperty {
+    return {
+      dateFormat: DateFormat['YYYY/MM/DD'],
+      timeFormat: TimeFormat['hh:mm'],
+      includeTime: false,
+      collectType: CollectType.AllFields,
+      fieldIdCollection: [],
+      datasheetId: '',
+    };
+  }
+
+  get isComputed() {
+    return true;
+  }
+
+  recordEditable() {
+    return false;
+  }
+
+  validateProperty() {
+    return LastModifiedTimeField.propertySchema.validate(this.field.property);
+  }
+
+  validateCellValue() {
+    return joiErrorResult("computed field shouldn't validate cellValue");
+  }
+
+  validateOpenWriteValue() {
+    return joiErrorResult("computed field shouldn't validate cellValue");
+  }
+
+  stdValueToCellValue(): null {
+    return null;
+  }
+
+  getCellValue(record: IRecord): ICellValue {
+    const { collectType, fieldIdCollection } = this.field.property;
+    const updatedMap = record.recordMeta?.fieldUpdatedMap;
+
+    // 依赖于 fieldUpdatedMap，否则返回 null
+    if (!updatedMap) {
+      return null;
+    }
+
+    const isAllField = collectType === CollectType.AllFields;
+    const fieldIds = isAllField ? Object.keys(updatedMap) : fieldIdCollection;
+    const timestamps = fieldIds.reduce((acc, fieldId) => {
+      if (updatedMap[fieldId]?.at) {
+        acc.push(updatedMap[fieldId].at!);
+      }
+      return acc;
+    }, [] as number[]);
+    return timestamps.length ? Math.max(...timestamps as number[]) : null;
+  }
+
+  get openFieldProperty(): IOpenLastModifiedTimeFieldProperty {
+    const { includeTime, dateFormat, timeFormat, collectType, fieldIdCollection } = this.field.property;
+    return {
+      dateFormat: DateFormat[dateFormat],
+      timeFormat: TimeFormat[timeFormat],
+      includeTime,
+      collectType,
+      fieldIdCollection
+    };
+  }
+
+  static openUpdatePropertySchema = Joi.object({
+    dateFormat: Joi.string().valid(...enumKeyToArray(DateFormat)).required(),
+    timeFormat: Joi.valid(...enumKeyToArray(TimeFormat)),
+    includeTime: Joi.boolean(),
+    collectType: Joi.number().valid(CollectType.AllFields, CollectType.SpecifiedFields),
+    fieldIdCollection: Joi.array().items(Joi.string())
+  }).required();
+
+  validateUpdateOpenProperty(updateProperty: IUpdateOpenLastModifiedTimeFieldProperty) {
+    return LastModifiedTimeField.openUpdatePropertySchema.validate(updateProperty);
+  }
+
+  updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenLastModifiedTimeFieldProperty): ILastModifiedTimeFieldProperty {
+    const { dateFormat, timeFormat, includeTime, collectType, fieldIdCollection } = openFieldProperty;
+    const defaultProperty = LastModifiedTimeField.defaultProperty();
+    return {
+      datasheetId: (this.field.property as ILastModifiedTimeFieldProperty).datasheetId,
+      dateFormat: DateFormat[dateFormat],
+      timeFormat: timeFormat ? TimeFormat[timeFormat] : defaultProperty.timeFormat,
+      collectType: collectType ?? defaultProperty.collectType,
+      fieldIdCollection: fieldIdCollection || [],
+      includeTime: includeTime ?? defaultProperty.includeTime
+    };
+  }
+}

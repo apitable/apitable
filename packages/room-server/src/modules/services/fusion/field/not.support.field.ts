@@ -1,0 +1,17 @@
+import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
+import { IField } from '@vikadata/core';
+import { IFieldValue } from 'interfaces';
+import { BaseField } from 'modules/services/fusion/field/base.field';
+import { FieldManager } from '../field.manager';
+import { IFieldValidatorInterface } from '../i.field.validator.interface';
+
+@Injectable()
+export class NotSupportField extends BaseField implements OnApplicationBootstrap, IFieldValidatorInterface {
+  validate(fieldValue: IFieldValue, field: IField) {
+    this.throwException(field, 'api_param_default_error');
+  }
+
+  onApplicationBootstrap() {
+    FieldManager.setService(NotSupportField.name, this);
+  }
+}

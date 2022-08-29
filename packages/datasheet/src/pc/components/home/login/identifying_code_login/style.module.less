@@ -1,0 +1,66 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.login {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  form {
+    width: 100%;
+  }
+
+  .label {
+    display: block;
+    height: 20px;
+    line-height: 20px;
+    font-size: 14px;
+    color: var(--secondLevelText);
+    margin-bottom: 8px;
+  }
+
+  .inputItem {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .captchaMobile {
+    max-height: 32px;
+    margin-bottom: 16px;
+    width: 100%;
+  }
+  .buttonWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 16px 0;
+  }
+
+  .protocol {
+    color: var(--black_700);
+    font-size: 13px;
+    display: flex;
+
+    :global(.ant-checkbox-inner) {
+      background: var(--black_500);
+      &::after {
+        background-color: var(--staticWhite0);
+      }
+    }
+
+    .protocolText {
+      margin-left: 4px;
+    }
+
+    a {
+      color: var(--primaryColor);
+    }
+  }
+
+  .footer {
+    color: var(--thirdLevelText);
+    font-size: 13px;
+  }
+
+  
+}

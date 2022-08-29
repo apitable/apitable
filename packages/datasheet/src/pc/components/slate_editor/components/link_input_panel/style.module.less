@@ -1,0 +1,52 @@
+
+.wrap {
+  position: fixed;
+  left: -99999px;
+  top: -99999px;
+  opacity: 0;
+  background: var(--defaultBg);
+  border-radius: @radius-large;
+  box-shadow: @box-shadow-dark;
+  overflow: hidden;
+  pointer-events: none;
+  &[data-visible="true"] {
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+
+.linkInputPanel {
+  width: 258px;
+  padding: @spacing-small;
+  background: var(--defaultBg);
+  input {
+    height: 32px;
+    width: calc(100% - 40px);
+    margin-left: 8px;
+  }
+}
+
+.linkInputPanelInline {
+  display: flex;
+  align-items: center;
+
+  input {
+    margin-right: 8px;
+    margin-left: 0;
+    background: none;
+    border: none;
+  }
+}
+
+.inputGroup {
+  margin-bottom: @spacing-base;
+  display: flex;
+  align-items: center;
+}
+
+.footer {
+  text-align: right;
+  button + button {
+    margin-left: @spacing-base;
+  }
+}

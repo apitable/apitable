@@ -1,0 +1,39 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.childrenWrapper {
+  background-color: red;
+}
+
+.suspensionModal {
+  position: absolute;
+  width: 100%;
+  max-width: 597px;
+  background-color: var(--defaultBg);
+  border-radius: 8px;
+  z-index: 999;
+  min-height: 100px;
+  box-shadow: 0px 8px 24px fade(#000, 16%);
+
+  .closeBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding-top: 24px;
+    padding-right: 24px;
+
+    svg {
+      cursor: pointer;
+    }
+  }
+}
+
+@media (max-width: @w-md) {
+  .suspensionModal {
+    width: 100%;
+    position: absolute;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%);
+  }
+}

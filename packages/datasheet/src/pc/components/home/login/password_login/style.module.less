@@ -1,0 +1,55 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.login {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  form {
+    width: 100%;
+  }
+
+  .inputItem {
+    display: flex;
+    flex-direction: column;
+
+    .label {
+      height: 20px;
+      line-height: 20px;
+      font-size: 14px;
+      color: var(--secondLevelText);
+      margin-bottom: 8px;
+    }
+  }
+
+  .errMsg {
+    height: 14px;
+    font-size: 10px;
+    margin: 4px 0 6px 0;
+    color: var(--errorColor);
+  }
+
+  .passwordErrMsg {
+    margin: 0;
+    margin: 2px 0 0 0;
+  }
+
+  .captchaPwd {
+    max-height: 40px;
+    margin-top: 8px;
+  }
+
+  .loginButton {
+    margin: 16px 0;
+  }
+
+  
+}
+
+@media screen and (max-width: @w-md) {
+  .loginButton {
+    margin-top: 32px;
+  }
+}

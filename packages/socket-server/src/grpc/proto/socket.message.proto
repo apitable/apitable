@@ -1,0 +1,162 @@
+syntax = 'proto3';
+import "google/protobuf/any.proto";
+
+package vika.grpc;
+
+message BasicResult {
+  int32 code = 1;
+  string message = 2;
+  bool success = 3;
+}
+
+message Operation {
+  string cmd = 1;
+  google.protobuf.Any actions = 2;
+  map<string, FieldType> field_type_map = 3;
+}
+
+message LocalChangeset {
+  string message_id = 1;
+  int32 base_revision = 2;
+  ResourceType resource_type = 3;
+  string resource_id = 4;
+  repeated Operation operations = 5;
+}
+
+message RemoteChangeset {
+  string message_id = 1;
+  int32 revision = 2;
+  ResourceType resource_type = 3;
+  string resource_id = 4;
+  repeated Operation operations = 5;
+  optional string user_id = 6;
+  optional uint32 created_at = 7;
+}
+
+enum ResourceType {
+  Datasheet = 0;
+  Form = 1;
+  Dashboard = 2;
+  Widget = 3;
+}
+
+enum FieldType {
+  NotSupport = 0;
+  Text = 1;
+  Number = 2;
+  SingleSelect = 3;
+  MultiSelect = 4;
+  DateTime = 5;
+  Attachment = 6;
+  Link = 7;
+  URL = 8;
+  Email = 9;
+  Phone = 10;
+  Checkbox = 11;
+  Rating = 12;
+  Member = 13;
+  LookUp = 14;
+  RollUp = 15;
+  Formula = 16;
+  Currency = 17;
+  Percent = 18;
+  SingleText = 19;
+  AutoNumber = 20;
+  CreatedTime = 21;
+  LastModifiedTime = 22;
+  CreatedBy = 23;
+  LastModifiedBy = 24;
+}
+
+message WatchRoomRo {
+  string room_id = 1;
+  string client_id = 2;
+  string cookie = 3;
+  repeated string socket_ids = 4;
+  optional string share_id = 5;
+  optional string space_id = 6;
+}
+
+message WatchRoomVo {
+  message ResourceRevision {
+    string resourceId = 1;
+    int32 revision = 2;
+  }
+  message ActiveCell {
+    string field_id = 1;
+    string record_id = 2;
+    uint32 time = 3;
+  }
+  message Collaborator {
+    string active_datasheet = 1;
+    string socket_id = 2;
+    optional string user_name = 3;
+    optional string member_name = 4;
+    optional string avatar = 5;
+    optional string user_id = 6;
+    optional string share_id = 7;
+    optional uint32 create_time = 8;
+    optional ActiveCell active_cell = 9;
+  }
+  message Data {
+    repeated ResourceRevision resource_revisions = 1;
+    repeated Collaborator collaborators = 2;
+    Collaborator collaborator = 3;
+    optional string space_id = 4;
+  }
+  bool success = 1;
+  int32 code = 2;
+  string message = 3;
+  Data data = 4;
+}
+
+message GetActiveCollaboratorsVo {
+  message ActiveCell {
+    string field_id = 1;
+    string record_id = 2;
+    uint32 time = 3;
+  }
+  message Collaborator {
+    string active_datasheet = 1;
+    string socket_id = 2;
+    optional string user_name = 3;
+    optional string member_name = 4;
+    optional string avatar = 5;
+    optional string user_id = 6;
+    optional string share_id = 7;
+    optional uint32 create_time = 8;
+    optional ActiveCell active_cell = 9;
+  }
+  message Data {
+    repeated Collaborator collaborators = 1;
+  }
+  bool success = 1;
+  int32 code = 2;
+  string message = 3;
+  Data data = 4;
+}
+
+message LeaveRoomRo {
+  string client_id = 1;
+}
+
+message UserRoomChangeRo {
+  string cookie = 1;
+  string type = 2;
+  string room_id = 3;
+  google.protobuf.Any changesets = 4;
+  optional string share_id = 5;
+  string client_id = 6;
+}
+
+message UserRoomChangeVo {
+  bool success = 1;
+  int32 code = 2;
+  string message = 3;
+  google.protobuf.Any data = 4;
+}
+
+message ServerRoomChangeRo {
+  string room_id = 1;
+  google.protobuf.Any data = 2;
+}

@@ -1,0 +1,156 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.12-20220606-001" author="刘斌华" labels="IDaaS">
+        <comment>玉符 IDaaS 租户信息</comment>
+        <sql>
+            CREATE TABLE `vika_idaas_tenant`
+            (
+                `id`              bigint(20) UNSIGNED NOT NULL COMMENT '主键 ID',
+                `tenant_name`     varchar(64) NOT NULL COMMENT '租户名',
+                `service_account` json        NOT NULL COMMENT '租户级 ServiceAccount',
+                `is_deleted`      tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除标记。0：否；1：是',
+                `created_at`      timestamp   NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+                `updated_at`      timestamp   NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY (`id`),
+                UNIQUE INDEX `uk_tenant_name`(`tenant_name`) USING BTREE
+            ) ENGINE = InnoDB COMMENT = '玉符 IDaaS 租户信息';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.12-20220606-002" author="刘斌华" labels="IDaaS">
+        <comment>玉符 IDaaS 应用信息</comment>
+        <sql>
+            CREATE TABLE `vika_idaas_app`
+            (
+                `id`                     bigint(20) UNSIGNED NOT NULL COMMENT '主键 ID',
+                `tenant_name`            varchar(64)  NOT NULL COMMENT '租户名',
+                `client_id`              varchar(64)  NOT NULL COMMENT '应用的 Client ID',
+                `client_secret`          varchar(64)  NOT NULL COMMENT '应用的 Client Secret',
+                `authorization_endpoint` varchar(256) NOT NULL COMMENT '获取授权的 URL',
+                `token_endpoint`         varchar(256) NOT NULL COMMENT '获取 Token 的 URL',
+                `userinfo_endpoint`      varchar(256) NOT NULL COMMENT '获取用户信息的 URL',
+                `is_deleted`             tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除标记。0：否；1：是',
+                `created_at`             timestamp    NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+                `updated_at`             timestamp    NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY (`id`),
+                UNIQUE INDEX `uk_client_id`(`client_id`) USING BTREE
+            ) ENGINE = InnoDB COMMENT = '玉符 IDaaS 应用信息';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.12-20220606-003" author="刘斌华" labels="IDaaS">
+        <comment>玉符 IDaaS 应用与空间站的绑定信息</comment>
+        <sql>
+            CREATE TABLE `vika_idaas_app_bind`
+            (
+                `id`          bigint(20) UNSIGNED NOT NULL COMMENT '主键 ID',
+                `tenant_name` varchar(64) NOT NULL COMMENT '租户名',
+                `client_id`   varchar(64) NOT NULL COMMENT '应用的 Client ID',
+                `space_id`    varchar(50) NOT NULL COMMENT '绑定的空间站 ID',
+                `is_deleted`  tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除标记。0：否；1：是',
+                `created_at`  timestamp   NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+                `updated_at`  timestamp   NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY (`id`),
+                INDEX         `idx_client_id`(`client_id`) USING BTREE,
+                INDEX         `idx_space_id`(`space_id`) USING BTREE
+            ) ENGINE = InnoDB COMMENT = '玉符 IDaaS 应用与空间站的绑定信息';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.12-20220606-004" author="刘斌华" labels="IDaaS">
+        <comment>玉符 IDaaS 用户组绑定信息</comment>
+        <sql>
+            CREATE TABLE `vika_idaas_group_bind`
+            (
+                `id`          bigint(20) UNSIGNED NOT NULL COMMENT '主键 ID',
+                `tenant_name` varchar(64) NOT NULL COMMENT '租户名',
+                `group_id`    varchar(64) NOT NULL COMMENT '用户组 ID',
+                `group_name`  varchar(64) NOT NULL COMMENT '用户组名称',
+                `group_order` int(10) UNSIGNED NOT NULL COMMENT '用户组排序值',
+                `space_id`    varchar(50) NOT NULL COMMENT '空间站 ID',
+                `team_id`     bigint(20) UNSIGNED NOT NULL COMMENT '空间站通讯录小组 ID',
+                `is_deleted`  tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除标记。0：否；1：是',
+                `created_at`  timestamp   NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+                `updated_at`  timestamp   NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY (`id`),
+                INDEX         `idx_group_id`(`group_id`) USING BTREE,
+                INDEX         `idx_space_id`(`space_id`) USING BTREE,
+                INDEX         `idx_team_id`(`team_id`) USING BTREE
+            ) ENGINE = InnoDB COMMENT = '玉符 IDaaS 用户组绑定信息';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.12-20220606-005" author="刘斌华" labels="IDaaS">
+        <comment>玉符 IDaaS 用户绑定信息</comment>
+        <sql>
+            CREATE TABLE `vika_idaas_user_bind`
+            (
+                `id`           bigint(20) UNSIGNED NOT NULL COMMENT '主键 ID',
+                `tenant_name`  varchar(64) NOT NULL COMMENT '租户名',
+                `user_id`      varchar(64) NOT NULL COMMENT '玉符 IDaaS 用户 ID',
+                `nick_name`    varchar(64) NULL COMMENT '昵称',
+                `email`        varchar(128) NULL COMMENT '邮箱',
+                `mobile`       varchar(32) NULL COMMENT '手机号码',
+                `group_ids`    json NULL COMMENT '所属的用户组 ID 列表',
+                `vika_user_id` bigint(20) UNSIGNED NOT NULL COMMENT '绑定的维格用户 ID',
+                `is_deleted`   tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除标记。0：否；1：是',
+                `created_at`   timestamp   NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+                `updated_at`   timestamp   NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY (`id`),
+                INDEX          `idx_user_id`(`user_id`) USING BTREE,
+                INDEX          `idx_vika_user_id`(`vika_user_id`) USING BTREE
+            ) ENGINE = InnoDB COMMENT = '玉符 IDaaS 用户绑定信息';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.12-20220606-006" author="刘斌华" labels="IDaaS">
+        <comment>玉符 IDaaS 租户信息时间字段调整</comment>
+        <sql>
+            ALTER TABLE `vika_idaas_tenant`
+                MODIFY COLUMN `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' AFTER `is_deleted`,
+                MODIFY COLUMN `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间' AFTER `created_at`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.12-20220606-007" author="刘斌华" labels="IDaaS">
+        <comment>玉符 IDaaS 应用信息时间字段调整</comment>
+        <sql>
+            ALTER TABLE `vika_idaas_app`
+                MODIFY COLUMN `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' AFTER `is_deleted`,
+                MODIFY COLUMN `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间' AFTER `created_at`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.12-20220606-008" author="刘斌华" labels="IDaaS">
+        <comment>玉符 IDaaS 应用与空间站的绑定信息时间字段调整</comment>
+        <sql>
+            ALTER TABLE `vika_idaas_app_bind`
+                MODIFY COLUMN `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' AFTER `is_deleted`,
+                MODIFY COLUMN `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间' AFTER `created_at`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.12-20220606-009" author="刘斌华" labels="IDaaS">
+        <comment>玉符 IDaaS 用户组绑定信息时间字段调整</comment>
+        <sql>
+            ALTER TABLE `vika_idaas_group_bind`
+                MODIFY COLUMN `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' AFTER `is_deleted`,
+                MODIFY COLUMN `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间' AFTER `created_at`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.12-20220606-010" author="刘斌华" labels="IDaaS">
+        <comment>玉符 IDaaS 用户绑定信息时间字段调整</comment>
+        <sql>
+            ALTER TABLE `vika_idaas_tenant`
+                MODIFY COLUMN `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' AFTER `is_deleted`,
+                MODIFY COLUMN `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间' AFTER `created_at`;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

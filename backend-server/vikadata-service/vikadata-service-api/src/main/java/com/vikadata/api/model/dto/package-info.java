@@ -1,0 +1,1 @@
+package com.vikadata.api.model.dto;

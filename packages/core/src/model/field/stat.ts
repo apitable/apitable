@@ -1,0 +1,224 @@
+import { Strings, t } from 'i18n';
+import { sum, uniq } from 'lodash';
+import { ICellValue } from 'model';
+import { Selectors, ISnapshot, IReduxState } from 'store';
+import { BasicValueType, FieldType, IField } from 'types/field_types';
+import { toFixed } from '../../utils/number';
+import { Field } from './field';
+
+export enum StatType {
+  None = 0,
+  CountAll = 1,
+  Empty = 2,
+  Filled = 3,
+  Unique = 4,
+  PercentEmpty = 5,
+  PercentFilled = 6,
+  PercentUnique = 7,
+  Sum = 8,
+  Average = 9,
+  Max = 10, // 日期类型里的LatestDate
+  Min = 11, // 日期类型里的EarliestDate
+  // LatestDate = 10,
+  // EarliestDate = 11,
+  DateRangeOfDays = 12,
+  DateRangeOfMonths = 13,
+  // TotalAttachmentSize = 14,
+  // CountAttachments = 15,
+  Checked = 14,
+  UnChecked = 15,
+  PercentChecked = 16,
+  PercentUnChecked = 17,
+}
+
+export const StatTranslate = {
+  [StatType.None]: t(Strings.stat_none),
+  [StatType.CountAll]: t(Strings.stat_count_all),
+  [StatType.Empty]: t(Strings.stat_empty),
+  [StatType.Filled]: t(Strings.stat_fill),
+  [StatType.Unique]: t(Strings.stat_uniqe),
+  [StatType.PercentEmpty]: t(Strings.stat_percent_empty),
+  [StatType.PercentFilled]: t(Strings.stat_percent_filled),
+  [StatType.PercentUnique]: t(Strings.stat_percent_unique),
+  [StatType.Sum]: t(Strings.stat_sum),
+  [StatType.Average]: t(Strings.stat_average),
+  [StatType.Max]: t(Strings.stat_max),
+  [StatType.Min]: t(Strings.stat_min),
+  [StatType.DateRangeOfDays]: t(Strings.stat_date_range_of_days),
+  [StatType.DateRangeOfMonths]: t(Strings.stat_date_range_of_months),
+  [StatType.Checked]: t(Strings.stat_checked),
+  [StatType.UnChecked]: t(Strings.stat_un_checked),
+  [StatType.PercentChecked]: t(Strings.stat_percent_checked),
+  [StatType.PercentUnChecked]: t(Strings.stat_percent_un_checked),
+};
+
+export const getStatTypeList = (field: IField, state: IReduxState) => {
+  return Field.bindContext(field, state).statTypeList;
+};
+
+const statCountAll = (records: string[]) => {
+  return records.length;
+};
+
+const statEmpty = (cellValues: ICellValue[]) => {
+  return cellValues.filter(cellValue => !cellValue).length;
+};
+
+const statFilled = (cellValues: ICellValue[]) => {
+  return cellValues.filter(cellValue => cellValue).length;
+};
+
+const statUnique = (cellValues: ICellValue[], field: IField) => {
+  const _cellValue = cellValues.map(item => {
+    return JSON.stringify(item);
+  });
+  const result = uniq(_cellValue).length;
+  return result;
+};
+
+// 数字字段计算
+const statSum = (cellValues: ICellValue[], field: IField, state: IReduxState) => {
+  let res: number | number[] = sum(cellValues) || 0;
+  const instance = Field.bindContext(field, state);
+  if (instance.basicValueType === BasicValueType.Array) {
+    res = [res];
+  }
+  return instance.cellValueToString(res);
+};
+
+// 数字字段计算
+const statAverage = (cellValues: ICellValue[], field: IField, state: IReduxState) => {
+  // 单元格为空，不计算在总数里
+  const total = cellValues.filter(cv => typeof cv === 'number').length;
+  let res: number | number[] = sum(cellValues) / total;
+  if (field.type === FieldType.Rating) {
+    return res.toFixed(2).toString();
+  }
+  const instance = Field.bindContext(field, state);
+  if (instance.basicValueType === BasicValueType.Array) {
+    res = [res];
+  }
+  return instance.cellValueToString(res);
+};
+
+// 数字&日期字段计算
+const statMax = (cellValues: ICellValue[], field: IField, state: IReduxState) => {
+  let res: number | number[] = cellValues.reduce<number>((accumulator, cellValue: number | null) =>
+    Math.max(accumulator, typeof cellValue ==='number' ? cellValue : -Infinity), -Infinity);
+  if (!isFinite(res)) return Infinity;
+  const instance = Field.bindContext(field, state);
+  if (instance.basicValueType === BasicValueType.Array) res = [res];
+  return instance.cellValueToString(res);
+};
+
+// 数字&日期字段计算
+const statMin = (cellValues: ICellValue[], field: IField, state: IReduxState) => {
+  let res: number | number[] = cellValues.reduce<number>((accumulator, cellValue: number | null) =>
+    Math.min(accumulator, typeof cellValue ==='number' ? cellValue : Infinity), Infinity);
+  if (!isFinite(res)) return -Infinity;
+  const instance = Field.bindContext(field, state);
+  if (instance.basicValueType === BasicValueType.Array) res = [res];
+  return instance.cellValueToString(res);
+};
+
+const statDateRangeOfDays = (cellValues: ICellValue[]) => {
+  const max = cellValues.reduce<number>((accumulator, cellValue: number | null) =>
+    Math.max(accumulator, cellValue || -Infinity), -Infinity) as number;
+
+  const min = cellValues.reduce<number>((accumulator, cellValue: number | null) =>
+    Math.min(accumulator, cellValue || Infinity), Infinity) as number;
+
+  if (!isFinite(min)) return 0;
+  const rangeDayTime = max - min;
+  return Math.floor(rangeDayTime / (60 * 60 * 24 * 1000));
+};
+
+const statDateRangeOfMonths = (cellValues: ICellValue[]) => {
+  const max = cellValues.reduce((accumulator: number, cellValue: number | null) =>
+    Math.max(accumulator, cellValue || -Infinity), -Infinity) as number;
+
+  const min = cellValues.reduce((accumulator: number, cellValue: number | null) =>
+    Math.min(accumulator, cellValue || Infinity), Infinity) as number;
+
+  if (!isFinite(min)) return 0;
+  const maxDate = new Date(max);
+  const minDate = new Date(min);
+  let year = maxDate.getFullYear() - minDate.getFullYear();
+  let month = maxDate.getMonth() - minDate.getMonth();
+  let date = maxDate.getDate() - minDate.getDate();
+  let hours = maxDate.getHours() - minDate.getHours();
+  let minutes = maxDate.getMinutes() - minDate.getMinutes();
+  let seconds = maxDate.getSeconds() - minDate.getSeconds();
+  const milliSeconds = maxDate.getMilliseconds() - minDate.getMilliseconds();
+  milliSeconds < 0 && seconds--;
+  seconds < 0 && minutes--;
+  minutes < 0 && hours--;
+  hours < 0 && date--;
+  date < 0 && month--;
+  if (month < 0) {
+    month += 12;
+    year--;
+  }
+  return year * 12 + month;
+};
+
+/**
+ * 根据计算类型获取列结果
+ */
+export const getFieldResultByStatType = (
+  statType: StatType,
+  records: string[],
+  field: IField,
+  snapshot: ISnapshot,
+  state: IReduxState,
+) => {
+  let cellValues: ICellValue[] = records.map(recId => {
+    return Selectors.getCellValue(state, snapshot, recId, field.id);
+  });
+
+  const instance = Field.bindContext(field, state);
+  const shouldFlat = instance.isComputed && instance.basicValueType === BasicValueType.Array;
+  switch (statType) {
+    case StatType.CountAll:
+      return statCountAll(records);
+    case StatType.Empty:
+    case StatType.UnChecked:
+      return statEmpty(cellValues);
+    case StatType.Filled:
+    case StatType.Checked:
+      return statFilled(cellValues);
+    case StatType.Unique:
+      if (shouldFlat) cellValues = cellValues.flat(1) as ICellValue[];
+      return statUnique(cellValues, field);
+    case StatType.PercentEmpty:
+    case StatType.PercentUnChecked:
+      return toFixed(statEmpty(cellValues) * 100 / records.length) + '%';
+    case StatType.PercentFilled:
+    case StatType.PercentChecked:
+      return toFixed(statFilled(cellValues) * 100 / records.length) + '%';
+    case StatType.PercentUnique:
+      if (shouldFlat) cellValues = cellValues.flat(1) as ICellValue[];
+      return toFixed(statUnique(cellValues, field) * 100 / (shouldFlat ? cellValues.length : records.length)) + '%';
+    case StatType.Sum:
+      if (shouldFlat) cellValues = cellValues.flat(1) as ICellValue[];
+      return statSum(cellValues, field, state);
+    case StatType.Average:
+      if (shouldFlat) cellValues = cellValues.flat(1) as ICellValue[];
+      return statAverage(cellValues, field, state);
+    case StatType.Max:
+      if (shouldFlat) cellValues = cellValues.flat(1) as ICellValue[];
+      return statMax(cellValues, field, state);
+    case StatType.Min:
+      if (shouldFlat) cellValues = cellValues.flat(1) as ICellValue[];
+      return statMin(cellValues, field, state);
+    case StatType.DateRangeOfDays:
+      if (shouldFlat) cellValues = cellValues.flat(1) as ICellValue[];
+      return statDateRangeOfDays(cellValues);
+    case StatType.DateRangeOfMonths:
+      if (shouldFlat) cellValues = cellValues.flat(1) as ICellValue[];
+      return statDateRangeOfMonths(cellValues);
+    default: {
+      return null;
+    }
+  }
+};

@@ -1,0 +1,45 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  .inputWrapper {
+    padding-right: 24px;
+  }
+}
+
+.main {
+  height: 290px;
+  overflow: auto;
+  padding: 8px 0;
+}
+
+.viewItem {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  background-color: var(--defaultBg);
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+.text {
+  margin-left: 8px;
+  padding-right: 24px;
+  user-select: none;
+  .ellipsis();
+}
+
+.iconMove {
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.swipeItem {
+  width: 64px;
+  color: var(--defaultBg);
+}

@@ -1,0 +1,330 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.msgCard {
+  margin-bottom: 16px;
+  height: 100%;
+  transition: all 0.1s ease;
+  position: relative;
+  border-radius: 8px;
+  cursor: default;
+  &.canJump {
+    cursor: pointer;
+  }
+  .content {
+    box-shadow: var(--shadowCommonDefault);
+    border-radius: 8px;
+    background: var(--defaultBg);
+    overflow: hidden;
+  }
+  &.canJump:active .content {
+    background-color: var(--rowSelectedBg);
+  }
+  @media screen and (min-width: @w-md) {
+    &:hover .content {
+      box-shadow: var(--shadowCommonHigh);
+      transform: translate(-1px, -1px);
+      .toReadWrapper {
+        background-color: var(--primaryColor);
+        visibility: visible;
+      }
+    }
+  }
+
+  .cardTop {
+    padding: 0 16px;
+    display: flex;
+    justify-content: space-between;
+    color: var(--fc1);
+  }
+
+  .unitTagWrap {
+    display: flex;
+    cursor: pointer;
+    padding-right: 4px;
+  }
+
+  .unitTagWrap.isLeave {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  .cardBottom {
+    height: 36px;
+    box-shadow: 0px -1px 0px 0px rgba(218, 220, 229, 0.4);
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: var(--secondLevelText);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .cardBottom .bottomLeft {
+    display: flex;
+    .ellipsis();
+  }
+
+  .cardBottom .text {
+    max-width: 260px;
+    display: flex;
+    align-items: center;
+    .ellipsis();
+  }
+
+  .toReadWrapper {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    height: 32px;
+    width: 32px;
+    background-color: var(--defaultBg);
+    border-radius: 0 0 0 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+
+    &::after {
+      display: block;
+      content: " ";
+      background-color: var(--primaryColor);
+      width: 10px;
+      height: 100%;
+      position: absolute;
+      right: -10px;
+      top: 0;
+    }
+
+    .animate {
+      width: 24px;
+      height: 24px;
+      transform: translateX(10px);
+      cursor: pointer;
+      z-index: 1;
+      svg path {
+        stroke: var(--defaultBg);
+      }
+    }
+
+    .notificationIcon {
+      width: 24px;
+      height: 24px;
+      fill: var(--defaultBg);
+    }
+  }
+  .cardTopRight {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+}
+
+.msgContent {
+  flex: 1;
+  padding: 16px 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 13px;
+  .blobFont {
+    font-weight: bold;
+  }
+  b {
+    word-break: break-all;
+  }
+}
+
+.commentContentWrap {
+  margin: 8px 16px 16px;
+  padding: 16px;
+  background: var(--lowestBg);
+  color: var(--fc1);
+  border-radius: 8px;
+  line-height: 22px;
+  span {
+    display: -webkit-box;
+    word-break: break-all;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+.msgContentComment {
+  padding-top: 16px;
+  padding-bottom: 0px;
+}
+
+.triggerInNotice:global(.rc-trigger-popup) {
+  z-index: 1;
+}
+.quickProcessWrap {
+  display: flex !important;
+
+  button {
+    flex: 1;
+  }
+}
+
+.processRes {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  white-space: nowrap;
+  &.info {
+    color: var(--primaryColor);
+  }
+  &.red {
+    color: var(--errorColor);
+  }
+}
+@media screen and (min-width: @w-md) {
+  .cardTop {
+    min-height: 56px;
+  }
+  .cardBottom {
+    padding: 0 8px;
+    box-shadow: 0px -1px 0px 0px rgba(218, 220, 229, 0.4);
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .msgCard {
+    .cardTop {
+      padding: 0 8px;
+    }
+    .cardBottom {
+      padding: 0 8px;
+      .bottomLeft {
+        width: calc(100% - 100px);
+
+        .text {
+          display: block;
+        }
+      }
+
+      .time {
+        width: 94px;
+        text-align: right;
+      }
+    }
+  }
+
+  .isCardClicked {
+    .toReadWrapper {
+      background-color: var(--primaryColor);
+      visibility: visible;
+    }
+  }
+
+  .msgContent {
+    display: flex;
+    padding-top: 12px;
+    padding-bottom: 12px;
+
+    .unitTagWrap {
+      display: flex;
+      vertical-align: middle;
+    }
+  }
+  .commentContentWrap {
+    margin: 0 8px 8px;
+    padding: 8px;
+    span {
+      -webkit-line-clamp: 6;
+    }
+  }
+  .msgContentComment {
+    padding: 12px 8px 8px;
+  }
+}
+
+// card_avatar
+
+.avatar {
+  margin-right: 4px;
+}
+.avatar.systemLogo {
+  overflow: hidden;
+  svg {
+    width: 100%;
+    height: 100%;
+    fill: var(--primaryColor);
+  }
+}
+
+// handle_msg
+
+.handleButtonWrapInPc {
+  button:nth-of-type(1) {
+    margin-right: 16px;
+  }
+}
+
+.handleBtnInMobile {
+  margin-top: 8px;
+  color: var(--secondLevelText);
+  :global(.btn-icon) {
+    vertical-align: -0.125em;
+  }
+}
+
+.handleWrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: var(--rowSelectedBg);
+  position: absolute;
+  top: 8px;
+  right: 0;
+  cursor: pointer;
+  transition: all 0.3s;
+  color: var(--primaryColor);
+  font-size: 14px;
+  overflow: hidden;
+  span {
+    opacity: 0;
+    transition: all 0.2s;
+    visibility: hidden;
+    position: absolute;
+    left: 100%;
+    top: 10px;
+    font-weight: bold;
+  }
+}
+
+.handleWrap:hover {
+  @media (any-hover: hover) {
+    & {
+      width: 92px;
+      background-color: var(--primaryColor);
+      color: var(--fc1);
+      .handleSvg {
+        left: 16px;
+      }
+      span {
+        opacity: 1;
+        visibility: visible;
+        width: auto;
+        left: 44px;
+      }
+    }
+  }
+}
+
+.handleSvg {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 8px;
+  top: 8px;
+}
+
+.handleSvg svg path {
+  stroke: currentColor;
+  transition: all 0.2s;
+}

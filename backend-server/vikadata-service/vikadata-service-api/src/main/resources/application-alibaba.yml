@@ -1,0 +1,362 @@
+server:
+  port: 30050
+# 框架配置
+spring:
+  application:
+    name: service-api
+  # 数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:30002/vika_dev?characterEncoding=utf8&autoReconnect=true
+    username: vika
+    password: password
+    hikari:
+      minimum-idle: 10
+      maximum-pool-size: 20
+      idle-timeout: 600000
+      max-lifetime: 36000000
+      connection-timeout: 60000
+      connection-test-query: SELECT 1
+      auto-commit: true
+      pool-name: DatebookHikariCP
+  # 邮件配置
+  mail:
+    host: smtp.feishu.cn
+    username: email-server@vikadata.com
+    password: Qwer123456
+    protocol: smtp
+    # 开发者使用常规25端口，生产使用加密端口465
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.host: 465
+      mail.smtp.socketFactory.port: 465
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
+      mail.smtp.ssl.enable: true
+      mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
+  # Redis配置
+  redis:
+    # redis服务器主机，本地开发是公网地址，线上环境是内网地址
+    host: 127.0.0.1
+    # redis服务器端口
+    port: 30001
+    timeout: 30000
+    # Redis连接池
+    lettuce:
+      pool:
+        max-idle: 8
+        min-idle: 0
+        max-active: 8
+        max-wait: -1ms
+  zipkin:
+    enabled: false
+  rabbitmq:
+    addresses: amqp://127.0.0.1:30005
+    username: vika
+    password: password
+    publisher-returns: true # exchange到queue的callback,开启发送失败退回（消息有没有找到合适的队列）
+    publisher-confirm-type: correlated # 消息发送到队列的callback,开启发送ack
+    listener:
+      simple:
+        acknowledge-mode: manual # 手动 ack
+        prefetch: 100
+    virtual-host: /
+
+# 应用配置
+vikadata:
+  # 常量配置
+  const:
+    server-domain: http://40.115.219.168
+    callback-domain: http://dev.vika.com.vaiwan.com
+    # 存储桶配置
+    ossBuckets:
+      vk_assets_ltd:
+        resource-url: https://s1.vika.cn
+        bucket-name: vk-assets-ltd
+        type: QNY1
+      vk_public_assets_ltd:
+        resource-url: https://s1-applets.vika.cn
+        bucket-name: vk-public-assets-ltd
+        type: QNY3
+    # 人机验证token
+    login-token: FutureIsComing
+    # 官方头像列表
+    default-avatar-list: space/2020/09/11/e6aa3037a38f45acb65324ea314aea58,space/2021/03/10/61a8aae11da2439ebb4df35b9075587d,space/2020/09/11/41e723917dc742d2974e41abab8cf60b,space/2020/09/11/4dce50e4ec4649b9a408a494aca28183,space/2020/09/11/e4d073b1fa674bc884a8c194e9248ecf,space/2020/09/11/31a1acb4734c4dd3ae9538299282b39e
+    # 用户白名单列表，不设空间数量上限
+    user-white-list: 5
+    # 模板空间
+    template-space: spcNA5eN3Sj6Q
+    # GM 配置组
+    config-team: 1283285207447699457
+    # VCode 后台配置组
+    v-code-team: 1293401733138419713
+    # 微信公众号 获取邀请码的关键词
+    invite-code-keyword: vika
+    # 微信公众号 获取邀请码的消息体
+    invite-code-message: '{V_CODE}'
+    # 微信公众号 获取邀请码活动的截止时间
+    invite-code-expire-time: 2099-01-01 00:00:00
+    # 微信公众号 获取邀请码活动截止后的回复
+    invite-code-expire-reply: 活动已结束
+    # VCode 长度
+    v-code-length: 8
+    # 微信扫码登录/绑定 回复的模板消息ID
+    qr-code-reply-id: HH_VkCYNwTeiuExIgriGZxrjKYxm-SGUCO7DSvPegSE
+    # 钉钉订阅信息维格表ID
+    ding-talk-order-datasheet: dstbPAnKDwnPpliqg4
+    # 灰度功能"新后端"的 space 白名单
+    new-backend-space-ids: whatelse #,spcy8BzAqdR9p
+  # Socket Server 配置信息
+  socket:
+    domain: http://127.0.0.1:30041/socket
+  wx:
+    open-redirect-uri: http://1527fy8352.iok.la/api/v1/wechat/open/getQueryAuth
+  feishu:
+    app:
+      v2-enable: true
+      admin-uri: /user/feishu/admin?tenant_key={}
+      error-uri: /user/feishu/error?key={}
+      help-uri: https://vikadata.feishu.cn/docs/doccnE9bGAtFXqGlMwkRgutgtsd
+      help-desk-uri: https://applink.feishu.cn/client/helpdesk/open?id=6909791310909652995&extra=%7B%22channel%22%3A1%2C%22created_at%22%3A1609215935%7D
+  subscription:
+    test-mode: true
+  test:
+    test-mode: true
+
+# 自定义组件配置
+vikadata-starter:
+  socketio:
+    client:
+      url: http://127.0.0.1:30042
+      path: /notification
+  #组件：OSS云对象存储，默认开启：七牛云存储
+  oss:
+    type: qiniu
+    qiniu:
+      access-key: B7OyF1ZORX4iHaqJ5uN62qXAgoDnc7Jv7_zf1SpJ
+      secret-key: Hp26Vj4D2bv0JQ-qgExXYKlKc5EkFuVVgW1GA1Eh
+      region: z2
+      callback:
+        url: http://fktcca.natappfree.cc/api/v1/asset/qiniu/uploadCallback
+        body-type: application/json
+  # 组件：短信组件配置
+  sms:
+    enabled: true
+    local-area-code: '+86'
+    local:
+      type: tencent
+      tencent:
+        app-id: 1400261864
+        app-key: 393f363b9710ede454eacdc5e6114fb4
+        sign: 维格智数
+    outland:
+      type: yunpian
+      yunpian:
+        apikey: c62e64fe947c252761f1f6dbd944d288
+  #  mail:
+  #    type: tencent
+  #    region: ap-hongkong
+  #    from: noreply@mail.vika.cn
+  #    reply: support@vikadata.com
+  #    tencent:
+  #      secret-id: AKIDua7RYR5WihT1KQIuHPIvJRKyOaXHoFcp
+  #      secret-key: 3rRlqgHemfLo58wuqfIgplTvAAvQghU2
+  # 组件：腾讯组件
+  tencent:
+    webapp:
+      enabled: true
+      app-id: 101907145
+      app-key: 03484c5d9ebabc6ceb02eb7b626011c6
+      redirect-uri: http://shawn.vaiwan.com/user/qq_connect/callback
+      apply: true
+  # 组件：人机验证服务组件配置
+  afs:
+    enabled: true
+    aliyun:
+      access-key-id: LTAI4FbrkR6v4RfpAgL7GRN7
+      access-key-secret: XxYFF7e8RkSuOdszPqugrmaY83hNfR
+      region-id: cn-shenzhen
+  # 组件：社交媒体集成方案
+  social:
+    feishu:
+      # 维格表助手应用
+      enabled: true
+      app-id: cli_a2d96e91ac3b100d
+      app-secret: vNr7CIxa4q2jYQjNmQb4zbgJsjn2Ao1P
+      encrypt-key: fMhQmSpUsXuZx4z6B9Eb
+      verification-token: vVuJKuBGAAUqVaD2BeTQLbH3hLMoskzG
+      isv: true
+    dingtalk:
+      enabled: true
+      isv-corp-id: dingc7ad99cf1e0ad49a35c2f4657eb6378f
+      corp-secret: mj3j3b15Gc3w6JPp46lvmM7lEXzavfZUEgUKsy72s3YZWRC7RkBTRTgKQ2mSfVWP
+      suite-id: 7242002
+      suite-key: suite88qw1yq0q48b4tez
+      suite-secret: 6ITdgMwVcDYgnHT-IfG8_Szvc8-vMWBwwkCUjdlNaxWgGDFXQaYAsO_jhpyXdpg1
+      vika-dst-id: dstctCRkFl5nYEbJSB
+      corp-h5-app:
+        app-key: dingpp0pil1snqypkjym
+        app-secret: ZrVyKPrGkOeLMTmlDmFmcPK3eUIEDmABwT2DxuQONBOoTqZ0p1JEOedqxV_rNBo3
+      mobile-app:
+        app-id: dingoaumy4mh7oesecamid
+        app-secret: A1-kYsquLtLr9e_XXnOAoMaqxEjC5xvMUeAztFxPy8YGgsYmeXsSu7QvwrmCcw1P
+      isv-app-list:
+        - suite-id: 20303001
+          app-id: 87098
+          suite-key: suitewwganoedksh3qsil
+          suite-secret: OwKXwYcuHlpeyM9unHAT9J1lsf5Q5LkI832grMyZY5e6mXyzWkBwHGj09mvd1Ra8
+          aes-key: s2jsfx3sxcgqv58kvztxoru8ac3w1glksvgg5aolmf7
+          token: 6iyUG2vtOa45QjTKaGZCfhT3k1dW9DyF
+          goods-code: DT_GOODS_881635221357061
+          msg-tpl-id:
+            welcome: 3f7cec2386f74f5c8aec1a48395abeb0
+            comment: b4ac28623fd5493dbc5f995bb1cc17c7
+            member: 5994e97c8766482bb971e6253ad7f6f1
+      agent-app:
+        - agent-id: 1409847725
+          custom-key: suitetpxzdtp3oo8wowup
+          custom-secret: 8eQlKS619ygImlWRAStPZbtbjuVlR_lrXYH8kL_dBEjknrgYCgf3LgZHeTr2gkK9
+          corp-id: ding4878c658801eaec8a39a90f97fcb1e09
+          suite-ticket: integration_1
+          aes-key: UeLONuTAGG3fBejeJRZwmPmNRGhCdHpEh5TuSgiSmGg
+          token: 1lTi8eF3z7pxuKkWetmpDTA1vzhvjNt7
+    wecom:
+      enabled: true
+      vika-we-com-app-id: ina5200279359980055
+      init-menus:
+        - name: 进空间站
+          type: view
+          url: /
+        - name: 联系客服
+          sub-buttons:
+            - name: 使用咨询
+              type: view
+              url: https://s1.vika.cn/space/2021/06/17/3565d5fcc43542d0b245ffb41685523c
+            - name: 加入社群
+              type: view
+              url: https://t.1yb.co/AAAT
+        - name: 产品手册
+          type: view
+          url: /help
+      config-storage:
+        storage-type: redis
+      operate-enp-ddns:
+        api-host: https://inner.vika.ltd
+        action-ddns-url: /ddns
+        apply-enp-domain-template: '%s.enp'
+      isv-app-list:
+        - name: datasheet
+          corp-id: ww11761d11177ae10b
+          provider-secret: xxU3s7QBBBO6D8NTJ4BweUDFLLM2FgxQ2VQTZpnVOCP1YbtnwIUAppZEWYRKJsHL
+          suite-id: ww3dd616a360b3ce97
+          suite-secret: K3IoyEC3tN4ogGSk1xvh7dOKpriBH4x35dp7fxgA70Q
+          token: EfUMbpLAgVtkJmDvTSXMhFJ
+          aes-key: x4vbUAxSKgh8V8NJXtAP8EUEVfTl75wHtOiXFCKCApl
+          template-id: xxx
+          invite-template-id: ttOhr1DQAA4K2IrL60vlkKvu8aYPs5mQ
+          manual-auth-datetime: '2022-03-15T17:46:03+0800'
+  vika:
+    enabled: true
+    host: https://integration.vika.ltd
+    # 维格表API 专用号 token
+    token: usk8qo1Dk9PbecBlaqFIvbb
+  # 组件：在线API文档配置
+  swagger:
+    enabled: true
+  # 组件：微信生态集合
+  wx:
+    miniapp:
+      enabled: true
+      app-id: wxa53e1166321e4958
+      secret: 653ada352c97a52499b33aedf56f2645
+      config-storage:
+        storage-type: redistemplate
+    open:
+      enabled: true
+      app-id: wx73eb0ebe3b141189
+      secret: a4b35bd59863c30c29dce1468043d968
+      token: vikadataWechat2020
+      aes-key: 6UymNoC90oXNjO109ro1UoDJ45cd1G3syLa08VZUYu8
+      config-storage:
+        storage-type: redistemplate
+    mp:
+      enabled: true
+      app-id: wx3ccd2f6264309a7c
+      secret: 62cbaf84054c062f21899c4209b318a3
+      token: vikadataWechat2020
+      aes-key: 6UymNoC90oXNjO109ro1UoDJ45cd1G3syLa08VZUYu8
+      config-storage:
+        storage-type: redistemplate
+    pay:
+      enabled: true
+      app-id: wx1c297da2ee48065b
+      mch-id: 1606798457
+      mch-key: c6ad2c1d7fcd08c060014d959cf23556
+      key-path: http://duoweibiaoge.com/pay/apiclient_cert.p12
+      private-key-path: http://duoweibiaoge.com/pay/apiclient_key.pem
+      private-cert-path: http://duoweibiaoge.com/pay/apiclient_cert.pem
+  yozo:
+    enabled: true
+    app-id: ina5645957505507647
+    key: 55143998003190169672618
+    uri:
+      preview: http://api.yozocloud.cn/getPreview
+  pingpp:
+    enabled: true
+    api-key: sk_test_yH8erPj1W1eLKKa9KCij9qPK
+    app-id: app_z5qTy9TGqPG4j14O
+    private-key-path: cert/private_key.pem
+
+# 客户端配置
+client:
+  datasheet:
+    env: integration
+    host: https://integration.vika.ltd
+    publish:
+      auth-user:
+        - zhengxu@vikadata.com
+        - chenjiabei@vikadata.com
+        - devops@vikadata.com
+        - dengguiheng@vikadata.com
+        - kelly@vikadata.com
+        - yaomingyang@vikadata.com
+        - huangchangpeng@vikadata.com
+        - yudongdong@vikadata.com
+        - sujian@vikadata.com
+        - chenxinyi@vikadata.com
+        - ouyangyu@vikadata.com
+        - wangkailang@vikadata.com
+        - zhangsong@vikadata.com
+
+# grpc-client 配置
+grpc:
+  client:
+    nest-grpc-server:
+      address: 'static://127.0.0.1:3334'
+    dingtalk-grpc-server:
+      address: 'static://127.0.0.1:9092'
+      negotiationType: PLAINTEXT
+
+springfox:
+  documentation:
+    enabled: true
+
+decorator:
+  datasource:
+    enabled: true
+    datasource-proxy:
+      json-format: false
+      slow-query:
+        threshold: 1
+
+# Sentry 配置
+sentry:
+  dsn: https://caf101bd38584400bcf8ae485173b7fe@sentry.vika.cn/2
+  send-default-pii: true
+  environment: billing
+  use-git-commit-id-as-release: false
+  max-breadcrumbs: 150
+  traces-sample-rate: 1.0
+  logging:
+    minimum-breadcrumb-level: debug
+    minimum-event-level: info

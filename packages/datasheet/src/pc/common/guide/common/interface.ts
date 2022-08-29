@@ -1,0 +1,1 @@
+export type IBackdropType = 'underlying_mask' | 'around_mask';

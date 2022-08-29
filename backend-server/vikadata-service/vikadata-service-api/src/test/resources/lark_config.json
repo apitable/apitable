@@ -1,0 +1,10 @@
+{
+    "type": "LARK",
+    "profile": {
+        "appKey": "c123123",
+        "appSecret": "12312379123",
+        "eventEncryptKey": "12312j3j12",
+        "eventVerificationToken": "123123",
+        "event_check": true
+    }
+}

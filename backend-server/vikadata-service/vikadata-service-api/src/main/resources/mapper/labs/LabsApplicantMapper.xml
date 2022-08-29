@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.modular.labs.mapper.LabsApplicantMapper">
+
+    <select id="selectUserFeaturesByApplicant" resultType="java.lang.String">
+        SELECT feature_key FROM vika_labs_applicant vla
+        WHERE vla.applicant IN
+        <foreach collection="applicants" index="index" item="item" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND vla.is_deleted = 0
+    </select>
+
+    <select id="selectFeatureKeyByType" resultType="java.lang.String">
+        SELECT feature_key
+        FROM vika_labs_features
+        WHERE type = #{type} AND is_deleted = 0
+    </select>
+
+    <select id="selectApplicantAndFeatureKey" resultType="com.vikadata.entity.LabsApplicantEntity">
+        SELECT * FROM vika_labs_applicant vla WHERE
+        vla.applicant = #{applicant} AND
+        vla.feature_key = #{featureKey} AND
+        vla.is_deleted = 0
+    </select>
+
+    <update id="updateIsDeletedById">
+        UPDATE vika_labs_applicant vla SET vla.is_deleted = #{isDeleted}
+        WHERE vla.id = #{id}
+    </update>
+</mapper>

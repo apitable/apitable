@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.modular.wechat.mapper.AuthorizationMapper">
+
+    <select id="countByAuthorizerAppid" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM vika_wechat_authorization
+        WHERE authorizer_appid = #{authorizerAppid}
+    </select>
+
+    <select id="findByAuthorizerAppid" resultType="com.vikadata.entity.WechatAuthorizationEntity">
+        SELECT *
+        FROM vika_wechat_authorization
+        WHERE authorizer_appid = #{authorizerAppid}
+    </select>
+</mapper>

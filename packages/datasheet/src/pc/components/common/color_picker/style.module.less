@@ -1,0 +1,302 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.wrapper {
+  position: relative;
+}
+
+.trigger {
+  width: 14px;
+  height: 14px;
+  margin-left: 4px;
+  margin-right: 4px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  position: relative;
+
+  &:before {
+    content: "";
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+  }
+
+  &:hover::before {
+    background: rgba(var(--shadowBg-rgb), 10%);
+    display: block;
+  }
+
+  &:active::before {
+    background: rgba(var(--shadowBg-rgb), 20%);
+    display: block;
+  }
+
+  &:after {
+    content: " ";
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1px solid white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.arrowDisplayLeft {
+  position: absolute;
+  left: 0;
+  transform: translate(-100%, -50%);
+  border-style: solid;
+  border-color: transparent var(--defaultBg) transparent transparent;
+  border-width: 6px;
+  z-index: var(--triggerIndex);
+}
+
+.arrowDisplayRight {
+  position: absolute;
+  right: 0;
+  transform: translate(100%, -50%);
+  z-index: var(--triggerIndex);
+  border-style: solid;
+  border-color: transparent transparent transparent var(--defaultBg);
+  border-width: 6px;
+}
+
+.pane {
+  position: relative;
+  pointer-events: initial;
+
+  .editor {
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+
+    .deleteIconWrap {
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      margin-left: 6px;
+
+      svg {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .divider {
+    margin: 16px 10px;
+    height: 0px;
+    border-top: 1px solid var(--lineColor);
+  }
+
+  border-radius: 4px;
+  background: var(--highBg);
+  padding: 16px 16px 0 16px;
+  box-shadow: var(--shadowCommonHigh);
+
+  .colorMenuGroup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .menu {
+    width: 260px;
+    padding: 0 10px;
+    margin-bottom: 6px;
+    background-size: cover;
+    user-select: none;
+    border-radius: 4px;
+    &.bg {
+      background-color: var(--fill0);
+    }
+
+    &:nth-child(2) {
+      padding: 16px 10px 6px 10px;
+      margin-bottom: 16px;
+    }
+
+    .menuTitle {
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+      height: 20px;
+      &.base {
+        color: var(--firstLevelText);
+      }
+
+      div {
+        margin-right: 2px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+      }
+
+      img {
+        width: 16px;
+        height: 16px;
+      }
+
+      .menuTag {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 3px;
+        height: 18px;
+        margin-left: 4px;
+        padding: 0 3px;
+        font-size: 12px;
+        font-weight: bold;
+        color: var(--orange_400);
+        border: 1px solid var(--orange_400);
+      }
+    }
+  }
+}
+
+.colorGroup {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+
+  .item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 10%;
+  }
+
+  // 外圆
+  .outer {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    position: relative;
+
+    // 中间的白色圆环
+    .borderWhite {
+      border: 2px solid transparent;
+      border-radius: 50%;
+    }
+
+    // 内圆
+    .inner {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+    }
+
+    &.colorSelected {
+      border-color: var(--rc01) !important;
+    }
+
+    // 选中时动效
+    &.active::after {
+      position: absolute;
+      content: "";
+      border: 2px solid var(--rc01);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      animation: colorSelectEffect 0.36s ease-in-out;
+      animation-fill-mode: both;
+    }
+
+    @media (any-hover: hover) {
+      &:hover {
+        border-color: rgba(var(--rc01-rgb), 50%);
+      }
+    }
+  }
+}
+
+.mask {
+  position: fixed;
+  background: transparent;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--zIndex-9);
+}
+
+@keyframes colorSelectEffect {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+@media screen and(max-width: @w-md) {
+  .pane {
+    box-shadow: none;
+    width: auto;
+    padding: 0;
+
+    .menu {
+      width: auto;
+      padding: 0;
+      background-image: none !important;
+
+      &:nth-child(2) {
+        padding: 0;
+      }
+
+      .list {
+        .outer {
+          .inner {
+            width: .px2vw(22px) [ @res];
+            height: .px2vw(22px) [ @res];
+          }
+
+          &.active::after {
+            width: .px2vw(30px) [ @res];
+            height: .px2vw(30px) [ @res];
+          }
+        }
+      }
+    }
+
+    .editor {
+      padding: 0;
+    }
+
+    .divider {
+      margin: 16px 0;
+    }
+  }
+
+  .trigger {
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+}

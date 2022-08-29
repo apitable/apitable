@@ -1,0 +1,44 @@
+{
+  "barCode": {
+    "type": "Expression",
+    "value": {
+      "operands": [
+        {
+          "type": "Expression",
+          "value": {
+            "operands": [
+              {
+                "type": "Expression",
+                "value": {
+                  "operands": [
+                    {
+                      "type": "Expression",
+                      "value": {
+                        "operands": [
+                          {
+                            "type": "Literal",
+                            "value": "atr8TKsMQivMuAQrpX（当字段更新时trigger 的ID）"
+                          }
+                        ],
+                        "operator": "getNodeOutput"
+                      }
+                    },
+                    {
+                      "type": "Literal",
+                      "value": [
+                        "fidxxxxxxxx(条形码字段的fieldId)"
+                      ]
+                    }
+                  ],
+                  "operator": "getObjectProperty"
+                }
+              }
+            ],
+            "operator": "concatString"
+          }
+        }
+      ],
+      "operator": "concatParagraph"
+    }
+  }
+}

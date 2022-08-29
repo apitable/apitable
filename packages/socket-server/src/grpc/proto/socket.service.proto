@@ -1,0 +1,17 @@
+syntax='proto3';
+
+package vika.grpc;
+
+import 'socket.message.proto';
+
+
+service SocketService {
+  // 加入房间
+  rpc WatchRoom (WatchRoomRo) returns (WatchRoomVo);
+  // 退出房间
+  rpc LeaveRoom(LeaveRoomRo) returns (BasicResult);
+  // 用户修改
+  rpc RoomChange(UserRoomChangeRo) returns (UserRoomChangeVo);
+  // 获取当前房间所有活跃的用户
+  rpc GetActiveCollaborators (WatchRoomRo) returns (GetActiveCollaboratorsVo);
+}

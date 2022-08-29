@@ -1,0 +1,68 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.unitItemWrapper {
+  display: flex;
+  height: 24px;
+  max-width: 100%;
+  padding-right: 8px;
+  display: flex;
+  align-items: center;
+  margin: 1px 8px 2px 0;
+  background-color: var(--fc11);
+  width: max-content;
+}
+
+.unitDeactive {
+  opacity: 0.5;
+}
+
+.unitName,
+.unitDesc {
+  line-height: 17px;
+  padding: 2px 0 2px 4px;
+  font-size: 13px;
+  .ellipsis();
+}
+
+.unitDesc {
+  color: var(--thirdLevelText);
+  padding-left: 0;
+}
+
+.unitMember {
+  border-radius: 16px;
+  padding-left: 1px;
+  .close {
+    background-color: transparent;
+  }
+}
+
+.unitTeam {
+  padding-left: 2px !important;
+  border-radius: 4px;
+}
+
+.iconDelete {
+  cursor: pointer;
+  margin-left: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.isLeave {
+  opacity: 0.5;
+}
+
+.selected {
+  border: 1px solid var(--deepPurple_300);
+}
+
+@media screen and(max-width: @w-md) {
+
+  .unitName,
+  .unitDesc {
+    font-size: 14px;
+  }
+}

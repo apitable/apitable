@@ -1,0 +1,61 @@
+import { useThemeColors } from '@vikadata/components';
+import { ISelectFieldOption, Selectors } from '@vikadata/core';
+import classNames from 'classnames';
+import { setColor } from 'pc/components/multi_grid/format';
+import { rgbaToHex, stopPropagation } from 'pc/utils';
+import { FC, useState } from 'react';
+import * as React from 'react';
+import { useSelector } from 'react-redux';
+import { OptionSetting } from './color_picker';
+import styles from './style.module.less';
+
+export interface IColorGroupProps {
+  colorGroup: number[];
+  option: ISelectFieldOption;
+  onChange?: (type: OptionSetting, id: string, value: string | number) => void;
+  style?: React.CSSProperties;
+}
+
+export const ColorGroup: FC<IColorGroupProps> = (props) => {
+  const { colorGroup, option, onChange, style } = props;
+  const [colorIdx, setColorIdx] = useState<number>();
+  const colors = useThemeColors();
+  const cacheTheme = useSelector(Selectors.getTheme);
+
+  return (
+    <ul className={styles.colorGroup} style={style}>
+      {colorGroup.map(colorIndex => {
+        const selected = colorIndex === option.color;
+        return (
+          <li
+            className={styles.item}
+            key={option.id + colorIndex}
+          >
+            <div
+              className={classNames(styles.outer, {
+                [styles.colorSelected]: selected,
+                [styles.active]: selected && colorIdx, // 判断 selectedColorIdx 是否存在，首次打开不加载这个动效
+              })}
+              onClick={(e: React.MouseEvent) => {
+                stopPropagation(e);
+                onChange?.(OptionSetting.SETCOLOR, option.id, colorIndex);
+                setColorIdx(colorIndex);
+              }}
+              onMouseDown={stopPropagation}
+            >
+              <div className={styles.borderWhite}>
+                <div
+                  className={styles.inner}
+                  style={{
+                    background: colorIndex === -1 ? colors.defaultBg : setColor(colorIndex, cacheTheme),
+                    border: colorIndex === -1 ? `1px solid ${rgbaToHex(colors.fourthLevelText, 0.8)}` : 'none'
+                  }}
+                />
+              </div>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  );
+};

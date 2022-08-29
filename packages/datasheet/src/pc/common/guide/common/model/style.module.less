@@ -1,0 +1,35 @@
+@import "~pc/styles/lib_var.less";
+
+.modelRoot {
+  position: relative;
+  .content {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    border-radius: 8px;
+    background-color: var(--bgCommonHighest);
+    box-shadow: var(--shadowCommonHigh);
+    overflow: hidden;
+    z-index: 1000;
+  }
+  .closeBtn {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    border-radius: 999px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    transition: all 0.1s;
+    z-index: 1;
+    &:hover {
+      background-color: var(--deepPurple_600);
+    }
+    &:active {
+      background-color: var(--deepPurple_700);
+    }
+    & svg {
+      transform: scale(0.6);
+    }
+  }
+}

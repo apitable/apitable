@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.aider.mapper.NodeMapper">
+    <select id="selectNullCreateByNodeInfo"
+            resultType="com.vikadata.aider.model.NodeInfo">
+        SELECT id, space_id, parent_id, node_id, created_at, updated_at, created_by, updated_by
+        FROM vika_node
+        WHERE type != 0 AND created_by IS NULL
+    </select>
+
+    <select id="selectParentNodeInfo" resultType="com.vikadata.aider.model.NodeInfo">
+        SELECT id, space_id, parent_id, node_id, created_at, updated_at, created_by, updated_by
+        FROM vika_node
+        WHERE space_id = #{spaceId}
+          AND id > #{id}
+          AND created_by IS NOT NULL
+        LIMIT 1
+    </select>
+
+    <update id="updateChildNodeInfo">
+        UPDATE vika_node
+        SET created_by = #{parentNodeCreatedBy},
+            updated_at = updated_at
+                WHERE id IN
+        <foreach item="item" index="index" collection="childIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="updatedNullCreatedByNode">
+        UPDATE vika_node
+        SET updated_by = created_by,
+            updated_at = updated_at
+        WHERE updated_by IS NULL
+          AND created_by IS NOT NULL
+    </update>
+</mapper>

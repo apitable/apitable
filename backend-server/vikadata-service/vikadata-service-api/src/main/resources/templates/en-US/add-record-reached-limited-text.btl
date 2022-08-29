@@ -1,0 +1,12 @@
+
+Warning: You Failed to Add Records via API
+
+
+You failed to add new record(s) via API in the ${NODE_NAME} datasheet.
+
+
+The maximum number of records per datasheet is ${COUNT}. To continue to add records via API, please clean up your outdated data or write data into another datasheet.
+
+copyright © 2019-${YEARS} vikadata All rights reserved.
+
+Contact us

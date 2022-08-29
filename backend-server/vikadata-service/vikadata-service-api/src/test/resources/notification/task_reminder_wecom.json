@@ -1,0 +1,16 @@
+{
+    "nodeId": "dstB5BGPQdjXJ4wXHH",
+    "spaceId": "spcH5N5x2572s",
+    "body": {
+        "extras": {
+            "recordTitle": "value1",
+            "recordIds": ["rec0lVedrd83F"],
+            "viewId": "viwmXA8jCdVRA",
+            "taskExpireAt": "1647570367000",
+            "fieldName": "test"
+        }
+    },
+    "fromUserId": "5",
+    "templateId": "task_reminder",
+    "toUnitId": ["1509047736994271234"]
+}

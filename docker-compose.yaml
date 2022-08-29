@@ -1,0 +1,273 @@
+services:
+  init-db:
+    image: ${INIT_DB_IMAGE}
+    restart: always
+  web-server:
+    image: ${WEB_SERVER_IMAGE}
+    restart: always
+    expose:
+      - 8080
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ${PWD}/.env:/.env
+    environment:
+      - TZ=Asia/Singapore
+    depends_on:
+      - mysql
+      - minio
+      - backend-server
+      - room-server
+      - socket-server
+      - imageproxy-server
+    networks:
+      - vikadata
+
+  imageproxy-server:
+    image: ${IMAGEPROXY_SERVER_IMAGE}
+    restart: always
+    expose:
+      - "8080"
+    volumes:
+      - /etc/localtime:/etc/localtime
+    command: ["/app/imageproxy"]
+    environment:
+      - TZ=Asia/Singapore
+      - BASEURL=http://minio:9000
+    networks:
+      - vikadata
+
+  backend-server:
+    image: ${BACKEND_SERVER_IMAGE}
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ${PWD}/logs/backend-server:/logs
+    ports:
+      - "8081:8081"
+    env_file:
+      - ${PWD}/.env
+    expose:
+      - "8081"
+    restart: always
+    environment:
+      - TZ=Asia/Singapore
+    depends_on:
+      - mysql
+      - redis
+      - socket-server
+      - minio
+      - rabbit-mq
+    networks:
+      - vikadata
+
+
+  room-server:
+    image: ${ROOM_SERVER_IMAGE}
+    restart: always
+    #ports:
+    #  - 3333:3333
+    #  - 3334:3334
+    expose:
+      - "3333"
+      - "3334"
+    volumes:
+      - /etc/localtime:/etc/localtime
+      #- ${PWD}/room-server/config/config.yml:/home/vikadata/packages/room-server/dist/config/config.yaml
+      - ${PWD}/logs/room-server:/home/vikadata/logs
+    env_file:
+      - ${PWD}/.env
+    environment:
+      - NODE_ENV=${ENV}
+      - NODE_OPTIONS=--max-old-space-size=2048 --max-http-header-size=80000
+      - TZ=Asia/Singapore
+      - SERVER_DOMAIN=${SERVER_DOMAIN}
+      - API_MAX_MODIFY_RECORD_COUNTS=${API_MAX_MODIFY_RECORD_COUNTS:-30}
+      - INSTANCE_MAX_MEMORY=4096M
+    depends_on:
+      - redis
+      - mysql
+    networks:
+      - vikadata
+
+  scheduler-server:
+    image: ${ROOM_SERVER_IMAGE}
+    restart: always
+    #ports:
+    #  - 3333:3333
+    #  - 3334:3334
+    expose:
+      - "3333"
+      - "3334"
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ${PWD}/logs/room-server:/home/vikadata/logs
+    environment:
+      - NODE_ENV=${ENV}
+      - NODE_OPTIONS=--max-old-space-size=2048 --max-http-header-size=80000
+      - TZ=Asia/Singapore
+      - SERVER_DOMAIN=${SERVER_DOMAIN}
+      - API_MAX_MODIFY_RECORD_COUNTS=${API_MAX_MODIFY_RECORD_COUNTS:-30}
+      - INSTANCE_MAX_MEMORY=4096M
+      - APPLICATION_NAME=SCHEDULE_SERVER
+      # 只有一个服务开启
+      - ENABLE_SCHED=true
+    env_file:
+      - ${PWD}/.env
+    depends_on:
+      - redis
+      - mysql
+    networks:
+      - vikadata
+
+  socket-server:
+    image: ${SOCKET_SERVER_IMAGE}
+    restart: always
+#    ports:
+#      - 3001:3001
+#      - 3002:3002
+#      - 3005:3005
+    expose:
+      - "3001"
+      - "3002"
+      - "3005"
+      - "3007"
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ${PWD}/logs/socket-server:/home/vikadata/logs
+    environment:
+      - NODE_ENV=${ENV}
+      - REDIS_HOST=${REDIS_HOST:-redis}
+      - REDIS_PASS=${REDIS_PASSWORD}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - REDIS_DB=${REDIS_DB:-0}
+      - PORT=3001
+      - NOTIFICATION_PORT=3002
+      - SYS_MEMORY_RATIO=100
+      - NODE_MEMORY_RATIO=80
+      - NEST_GRPC_URL=room-server:3334
+      - LOG_LEVEL=info
+      - TZ=Asia/Singapore
+    env_file:
+      - ${PWD}/.env
+    depends_on:
+      - redis
+      - rabbit-mq
+    networks:
+      - vikadata
+
+
+  ### Third Party Dockers
+
+  # aider-server:
+  #   image: ${AIDER_SERVER_IMAGE}
+  #   restart: always
+  #   ports:
+  #     - 8082:8082
+  #   expose:
+  #     - 8082
+  #   volumes:
+  #     - /etc/localtime:/etc/localtime
+  #     - ${PWD}/aider-server/config:/opt/config
+  #     - ${PWD}/logs/aider-server:/logs
+  #   environment:
+  #     - TZ=Asia/Singapore
+  #   depends_on:
+  #     - mysql
+  #   networks:
+  #     - vikadata
+  openresty:
+    image: ${OPENRESTY_IMAGE}
+    restart: always
+    ports:
+      - ${NGINX_HTTP_PORT:-80}:80
+      - ${NGINX_HTTPS_PORT:-443}:443
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ${PWD}/openresty/conf.d:/etc/nginx/conf.d
+      - ${PWD}/openresty/static:/static
+    environment:
+      - TZ=Asia/Singapore
+    depends_on:
+      - mysql
+      - minio
+      - backend-server
+      - room-server
+      - socket-server
+      - imageproxy-server
+    networks:
+      - vikadata
+
+  minio:
+    image: ${MINIO_IMAGE}
+    restart: always
+    command: server /data
+    expose:
+      - "9000"
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ${PWD}/minio/data:/data
+      - ${PWD}/minio/config:/root/.minio
+    environment:
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+      - TZ=Asia/Singapore
+    networks:
+      - vikadata
+
+  redis:
+    image: ${REDIS_IMAGE}
+    restart: always
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD}"]
+    expose:
+      - "6379"
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ${PWD}/redis/data:/data
+    #  - ${PWD}/redis/redis.conf:/etc/redis.conf
+    environment:
+      - TZ=Asia/Singapore
+    networks:
+      - vikadata
+
+  mysql:
+    image: ${MYSQL_IMAGE}
+    restart: always
+    volumes:
+    - /etc/localtime:/etc/localtime
+    - ${PWD}/mysql/data:/var/lib/mysql
+    #   - ${PWD}/mysql/config:/etc/mysql/conf.d
+    #   - ${PWD}/mysql/my.cnf:/etc/mysql/my.cnf
+    - ${PWD}/mysql/initdb:/docker-entrypoint-initdb.d
+    #ports:
+    #  - 3306:3306
+    expose:
+      - "3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=Asia/Singapore
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --sql_mode=IGNORE_SPACE,NO_ENGINE_SUBSTITUTION
+    networks:
+      - vikadata
+
+  rabbit-mq:
+    image: ${RABBIT_MQ_IMAGE}
+    volumes:
+      - ${PWD}/rabbit-mq:/var/lib/rabbitmq
+    expose:
+      - "5671"
+      - "5672"
+      - "15672"
+    environment:
+      - RABBITMQ_USERNAME=${RABBITMQ_USERNAME}
+      - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    restart: always
+    networks:
+      - vikadata
+networks:
+  vikadata:
+    driver: bridge

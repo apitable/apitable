@@ -1,0 +1,16 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.5-20200819-001" author="Chambers" labels="node">
+        <comment>节点表新增删除时路径、created_by和updated_by</comment>
+        <sql>
+            ALTER TABLE `vika_node`
+            ADD COLUMN `deleted_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '删除时的路径' AFTER `creator`,
+            ADD COLUMN `created_by` bigint(20) NULL DEFAULT NULL COMMENT '创建者' AFTER `is_banned`,
+            ADD COLUMN `updated_by` bigint(20) NULL DEFAULT NULL COMMENT '最后修改者' AFTER `created_by`
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,6 @@
+# 当前 package 会发布到 npm，npm 中只保留 d.ts 不包含源码，将非必要的敏感信息均排出在
+.yarn
+src
+dist/**/*.d.ts.map
+tsconfig.json
+publish.sh

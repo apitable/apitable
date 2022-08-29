@@ -1,0 +1,94 @@
+@import "~pc/styles/lib_mixins.less";
+
+.syncSpan {
+  transition: fill 0.3s;
+  position: relative;
+
+  .arrow {
+    position: absolute;
+    bottom: -10px;
+    left: 0px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 7px 8px 7px;
+    border-color: transparent transparent var(--highestBg) transparent;
+    z-index: 1001;
+  }
+
+  &.noStatus {
+    svg {
+      fill: var(--deepPurple_200) !important;
+
+      &:hover {
+        fill: var(--primaryColor) !important;
+      }
+    }
+  }
+}
+
+.content {
+  padding: 16px;
+  position: relative;
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .closeIcon {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+  }
+}
+
+.mobileTip {
+  position: fixed;
+  z-index: var(--zIndex-9);
+  top: 40px;
+  left: 0;
+  right: 0;
+  height: 40px;
+  padding: 0 16px;
+  background: var(--treeSelectedBg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .infoIcon {
+    transform: rotate(180deg);
+  }
+
+  p {
+    margin-left: 8px;
+    flex: 1;
+    color: var(--primaryColor);
+  }
+
+  & > * {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.borderNone span {
+  border: none;
+}
+
+.viewSyncAlert {
+  position: fixed;
+  width: 300px;
+  top: 24px;
+  right: 0;
+  background: var(--highestBg);
+  z-index: 1000;
+  border-radius: 4px;
+  box-shadow: var(--shadowCommonHighest);
+  transition: right 0.2s ease-out, opacity 0.2s ease-out;
+
+  &.show {
+    right: 24px;
+  }
+}

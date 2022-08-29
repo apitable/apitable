@@ -1,0 +1,48 @@
+@import "~pc/styles/lib_var.less";
+
+.modelRoot {
+  position: relative;
+  .content {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    border-radius: 8px;
+    background-color: var(--bgCommonHighest);
+    box-shadow: var(--shadowCommonHigh);
+    overflow: hidden;
+    transform: translateX(320px);
+    z-index: 1000;
+  }
+  .closeBtnWrap {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 1;
+    .closeBtn {
+      color: var(--staticWhite0);
+      &:hover {
+        color: var(--black_500);
+        background-color: var(--black_100);
+      }
+      &:active {
+        color: var(--black_500);
+        background-color: var(--black_300);
+      }
+    }
+  }
+}
+
+:global {
+  .notice-animation-enter {
+    transform: translateX(320px)!important;
+  }
+  
+  .notice-animation-enter-active {
+    transform: translateX(0)!important;
+    transition: all 300ms ease-in-out;
+  }
+
+  .notice-animation-enter-done {
+    transform: unset!important;
+  }
+}

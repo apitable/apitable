@@ -1,0 +1,209 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.formContainer {
+  height: 100%;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  .formContent {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 32px auto 80px;
+    padding-bottom: 80px;
+    width: 720px;
+    border-radius: 8px;
+    background-color: var(--defaultBg);
+    box-shadow: var(--shadowCommonHigh);
+    transition: all 0.3s linear;
+
+    &.fullScreen {
+      width: 100%;
+      margin-top: 0;
+      padding-bottom: 40px;
+      box-shadow: none;
+      border-radius: 0;
+    }
+
+    &.formContentMobile {
+      margin-bottom: 0;
+    }
+
+    &.noCover {
+      border-top: 8px solid var(--primaryColor);
+    }
+
+    .formFieldContainer {
+      margin-top: 16px;
+      padding: 0 64px;
+      width: 100%;
+      max-width: 720px;
+
+      &.formFieldContainerMobile {
+        padding: 0 24px;
+      }
+    }
+
+    .submitWrapper {
+      width: 236px;
+      height: 40px;
+      margin: 48px auto 0;
+      text-align: center;
+
+      &.submitWrapperMobile {
+        width: 100%;
+        height: 48px;
+        padding: 0 24px;
+      }
+
+      &.submitWrapperLoading {
+        :global {
+          .btn[disabled] {
+            opacity: 1;
+          }
+        }
+      }
+
+      .submitBtn {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+
+        .submitLoading {
+          width: 30px;
+          height: 20px;
+          display: inline-block;
+          vertical-align: middle;
+        }
+
+        .addIcon {
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+
+  .brandContainerWrapper {
+    display: flex;
+    justify-content: center;
+    .brandContainer {
+      display: flex;
+      position: relative;
+      margin-bottom: 24px;
+      height: 16px;
+      color: var(--thirdLevelText);
+      font-size: 12px;
+
+      &.brandContainerMobile {
+        margin: 40px 0 24px;
+
+        &::before,
+        &::after {
+          width: 60px;
+        }
+        &::before {
+          left: -70px;
+        }
+        &::after {
+          right: -70px;
+        }
+      }
+
+      &.autoFixer {
+        position: fixed;
+        bottom: 0;
+      }
+
+      &::before,
+      &::after {
+        content: "";
+        width: 100px;
+        height: 1px;
+        position: absolute;
+        top: 8px;
+        background-color: var(--lineColor);
+      }
+      &::before {
+        left: -116px;
+      }
+      &::after {
+        right: -116px;
+      }
+
+      .logoWrap {
+        height: 100%;
+        margin-left: 4px;
+        margin-right: 4px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .welcomeWrapper {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    padding: 32px 0 120px;
+
+    &.welcomeWrapperMobile {
+      padding: 0;
+
+      .welcome {
+        width: 100%;
+        border-top: none;
+
+        .welcomeInner {
+          top: 180px;
+        }
+      }
+    }
+
+    .welcome {
+      margin: 0 auto;
+      width: 790px;
+      height: 100%;
+      border-radius: 8px;
+      background-color: var(--defaultBg);
+      border-top: 9px solid var(--primaryColor);
+
+      .welcomeInner {
+        position: relative;
+        top: 15%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .iconSuccess {
+          width: 100px;
+        }
+
+        .thankText {
+          margin-top: 24px;
+          font-size: 14px;
+        }
+
+        .linkBtn {
+          margin-top: 24px;
+          color: var(--primaryColor);
+        }
+      }
+    }
+  }
+
+  .logoContainer {
+    position: absolute;
+    left: 32px;
+    top: 32px;
+    width: 90px;
+    height: 24px;
+    cursor: pointer;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

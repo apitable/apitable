@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.scheduler.space.mapper.workspace.NodeShareSettingMapper">
+
+    <select id="selectOpenShareLastOperator" resultType="java.lang.Long">
+        SELECT operator
+        FROM vika_node_share_operate
+        WHERE node_id = #{nodeId} AND operate_event = 0
+        ORDER BY created_at DESC LIMIT 0,1
+    </select>
+
+    <update id="updateByNodeId">
+        UPDATE vika_node_share_setting
+        SET props = #{props}, created_by = #{creator}, updated_by = #{modifier}
+        WHERE node_id = #{nodeId}
+    </update>
+</mapper>

@@ -1,0 +1,243 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.templateItem {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.4s;
+  overflow: hidden;
+
+  &.card {
+    border: 1px solid var(--blackBlue_800);
+  }
+
+  // 只在可触发 hover 悬停效果的设备使用
+  @media screen and (any-hover: hover) {
+    &:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 0px 8px 24px fade(#000, 16%);
+
+      .moreBtnWrapper .moreBtn {
+        display: block !important;
+      }
+    }
+  }
+
+  .moreBtnWrapper {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+
+    .moreBtn {
+      display: none !important;
+      background: var(--blackBlue_800);
+      width: 24px;
+      min-width: 24px;
+      height: 24px;
+
+      svg {
+        fill: var(--blackBlue_50);
+      }
+
+      & > span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      &:hover {
+        box-shadow: 0px 0px 0px 1px #474747, 0px 2px 4px rgba(0, 0, 0, 0.12), 0px 6px 12px rgba(0, 0, 0, 0.16);
+      }
+    }
+  }
+
+  .banner {
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+
+  .backgroundImage {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .wrapper {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    position: relative;
+    background: var(--blackBlue_900);
+    background-position: center 35%;
+    background-repeat: no-repeat;
+
+    .avatarBackground {
+      width: 68px;
+      height: 26px;
+      fill: var(--blackBlue_900);
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+    }
+
+    .bannerDesc {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 32px;
+
+      .title {
+        font-size: 24px;
+        color: var(--blackBlue_50);
+        line-height: 39px;
+        font-weight: bold;
+      }
+
+      .desc {
+        padding-top: 8px;
+        font-size: 14px;
+        color: var(--blackBlue_400);
+        line-height: 20px;
+        display: -webkit-box;
+        word-break: normal;
+        word-wrap: break-word;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+
+    &.mediumBanner {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: space-between;
+      align-items: center;
+
+      .backgroundImage {
+        flex-shrink: 0;
+        height: 120px;
+        width: 120px;
+        border-radius: 50%;
+        margin-right: 20px;
+      }
+
+      .bannerDesc {
+        position: static;
+        height: 100%;
+        overflow: hidden;
+        word-break: normal;
+        word-wrap: break-word;
+      }
+    }
+
+    .userAvatar {
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      bottom: -20px;
+      left: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &::before {
+        content: attr(data-name);
+        font-size: 14px;
+        color: var(--defaultBg);
+        position: absolute;
+        top: -36px;
+        display: block;
+        width: 74px;
+        height: 32px;
+        line-height: 32px;
+        padding: 0 16px;
+        background-color: var(--primaryColor);
+        border-radius: 4px;
+        z-index: 10;
+        pointer-events: none;
+        opacity: 0;
+        transition: all 0.2s;
+        text-align: center;
+        .ellipsis();
+      }
+
+      &:hover::before {
+        opacity: 1;
+      }
+    }
+  }
+
+  .templateInfo {
+    background-color: var(--blackBlue_900);
+    padding: 16px;
+    border-radius: 0 0 8px 8px;
+
+    .name {
+      color: var(--static-white);
+    }
+
+    .desc {
+      height: 40px;
+      color: var(--blackBlue_400);
+      margin-top: 4px;
+    }
+
+    .tags {
+      margin-top: 8px;
+      padding-top: 8px;
+
+      .tag {
+        &:not(:last-child) {
+          margin-right: 8px;
+        }
+        background-color: var(--blackBlue_800)!important;
+        color: var(--blackBlue_400) !important;
+      }
+    }
+  }
+}
+
+.moreContextMenu {
+  .contextMenu();
+}
+
+@media screen and (max-width: 1360px) {
+  .mediumBanner {
+    .bannerDesc {
+      .title {
+        font-size: 20px !important;
+        line-height: 26px !important;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: @w-lg) {
+  .templateItem {
+    .wrapper {
+      &.mediumBanner {
+        .bannerDesc {
+          padding: 32px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .mediumBanner {
+    .bannerDesc {
+      .title {
+        font-size: 17px !important;
+        line-height: 22px !important;
+      }
+    }
+  }
+}

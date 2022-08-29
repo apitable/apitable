@@ -1,0 +1,2 @@
+INSERT INTO `vika_unit_member` (`id`, `user_id`, `space_id`, `member_name`, `job_number`, `position`, `mobile`, `email`, `open_id`, `status`, `name_modified`, `is_social_name_modified`, `is_point`, `is_active`, `is_admin`, `is_deleted`, `created_at`, `updated_at`)
+VALUES (1478202310895792130, 1478241862259765250, 'spczdmQDfBAn5', '刘子敬', NULL, NULL, '18807285659', 'liuzijing@vikadata.com', NULL, 0, 1, 1, 0, 1, 0, 0, '2022-01-04 11:11:09', '2022-04-28 10:40:56');

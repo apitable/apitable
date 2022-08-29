@@ -1,0 +1,141 @@
+@import "~pc/styles/lib_var.less";
+
+.apiPanelContainer {
+  position: relative;
+  z-index: var(--zIndex-1); // 避免切换时候，左边元素有延迟
+  flex-grow: 1;
+  flex-shrink: 0;
+  height: 100%;
+  background-color: var(--dc01);
+  color: white;
+  padding: 24px;
+
+  .iconDelete {
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    cursor: pointer;
+  }
+
+  .panelTitle {
+    color: var(--primaryColor);
+    font-size: 20px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+
+    a {
+      font-size: 12px;
+      color: fade(white, 70%);
+      margin-left: 6px;
+      text-decoration: none;
+
+      svg {
+        vertical-align: sub;
+      }
+    }
+  }
+
+  .panelName {
+    color: white;
+    font-size: 16px;
+    font-weight: normal;
+  }
+
+  @switchTop: 107px;
+
+  .operationArea {
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px 0;
+    .switchFieldId,
+    .switchApiToken {
+      display: flex;
+      align-items: center;
+      padding-left: 17px;
+    }
+    span {
+      font-size: 13px;
+      color: var(--static-white);
+    }
+  }
+
+  :global {
+    .ant-tabs-content {
+      min-height: 100%;
+    }
+
+    .ant-tabs {
+      position: absolute;
+      left: 24px;
+      top: 182px;
+      right: 24px;
+      bottom: 0;
+      border-radius: 4px;
+
+      .ant-tabs-nav-list {
+        width: 100%;
+      }
+
+      .ant-tabs-top > .ant-tabs-nav::before {
+        border: none;
+      }
+
+      .ant-tabs-nav {
+        margin-bottom: 0;
+      }
+
+      .ant-tabs-content-holder {
+        background: var(--dc03);
+        overflow: hidden scroll;
+      }
+
+      .ant-tabs-ink-bar {
+        transform: scaleX(0.65);
+      }
+    }
+
+    .ant-tabs-tabpane {
+      padding-bottom: 100px;
+    }
+
+    .ant-tabs-tab {
+      flex-grow: 1;
+      padding: 9px 0;
+      display: block;
+      text-align: center;
+      margin: 0;
+      background: var(--dc02);
+      max-width: 16.65%;
+
+      .ant-tabs-tab-btn {
+        font-size: 12px;
+        color: rgba(var(--static-white-rgb), 70%);
+
+        &:focus {
+          color: rgba(var(--static-white-rgb), 70%);
+        }
+
+        &:active {
+          color: rgba(var(--static-white-rgb), 90%);
+        }
+
+        &:hover {
+          color: rgba(var(--static-white-rgb), 80%);
+        }
+      }
+
+      &.ant-tabs-tab-active {
+        background: var(--dc03);
+
+        .ant-tabs-tab-btn {
+          color: var(--static-white);
+        }
+      }
+    }
+  }
+}
+
+.linkButton {
+  color: rgba(var(--static-white-rgb), 60%) !important;
+}

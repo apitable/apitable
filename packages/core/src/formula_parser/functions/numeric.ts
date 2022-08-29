@@ -1,0 +1,561 @@
+import { max, min } from 'lodash';
+import { FormulaFunc, IFormulaParam } from './basic';
+import { BasicValueType, FormulaFuncType } from 'types';
+import { AstNode, ValueOperandNodeBase } from 'formula_parser/parser';
+import { divide, noNaN, plus, times } from 'utils';
+import { t, Strings } from 'i18n';
+
+class NumericFunc extends FormulaFunc {
+  static readonly type = FormulaFuncType.Numeric;
+}
+
+type NumericType = number | null;
+
+function isArrayParam(params: IFormulaParam<any>[]): params is [IFormulaParam<any[] | null>] {
+  if (params.length !== 1) {
+    return false;
+  }
+  if (params[0].node.valueType === BasicValueType.Array) {
+    return true;
+  }
+  return false;
+}
+
+function isArrayNodes(nodes?: AstNode[]) {
+  if (!nodes || nodes.length !== 1) {
+    return false;
+  }
+  if (nodes[0].valueType === BasicValueType.Array) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * 部分公共函数的工具类
+ */
+export class NumericUtilsFunc extends NumericFunc {
+  static getReturnType(params?: AstNode[]) {
+    params && this.validateParams(params);
+    return BasicValueType.Number;
+  }
+
+  /**
+   * CEILING、FLOOR
+   * 输出结果与 Excel 对齐
+   */
+  static calc2RoundFC(
+    params: [IFormulaParam<number>, IFormulaParam<number>],
+    calcFn: (collection: any) => any,
+  ): NumericType {
+    if (params[0].value == null) {
+      return null;
+    }
+    const value = Number(params[0].value);
+    let sign = params[1]?.value;
+    if (sign != null) {
+      sign = Number(sign);
+      return times(calcFn(divide(value, sign)), sign);
+    }
+    return calcFn(value);
+  }
+
+  // ROUNDUP、ROUNDDOWN
+  static calc2RoundDU(
+    params: [IFormulaParam<number>, IFormulaParam<number>],
+    calcFn1: (collection: any) => any,
+    calcFn2: (collection: any) => any,
+  ): NumericType {
+    if (params[0].value == null) {
+      return null;
+    }
+    const value = Number(params[0].value);
+    const precision = Math.floor(params[1]?.value) || 0;
+    const offset = Math.pow(10, precision);
+    const roundFn = value > 0 ? calcFn1 : calcFn2;
+    const rounded = roundFn(value * offset) / offset;
+
+    return rounded;
+  }
+}
+
+export class Sum extends NumericFunc {
+  static acceptValueType = new Set([BasicValueType.Array, ...FormulaFunc.acceptValueType]);
+
+  static validateParams() {
+    //
+  }
+
+  static getReturnType() {
+    return BasicValueType.Number;
+  }
+
+  static func(params: IFormulaParam<number>[]): number {
+    let result = 0;
+    // 只有一个参数并且是数组的话，意味着是对数组类型字段的值进行求和
+    if (isArrayParam(params)) {
+      const innerValueType = (params[0].node as ValueOperandNodeBase).innerValueType;
+      if (innerValueType && innerValueType === BasicValueType.DateTime) {
+        return 0;
+      }
+      if (!params[0].value) {
+        return 0;
+      }
+
+      result = params[0].value.reduce((pre, cur) => {
+        return plus(pre, noNaN(Number(cur)));
+      }, 0);
+    } else {
+      result = params.reduce((pre, cur) => {
+        return plus(pre, noNaN(Number(cur.value)));
+      }, 0);
+    }
+
+    return result;
+  }
+}
+
+export class Abs extends NumericFunc {
+  static validateParams(params: AstNode[]) {
+    //
+  }
+
+  static getReturnType(params: AstNode[]) {
+    params && this.validateParams(params);
+
+    return BasicValueType.Number;
+  }
+
+  static func(params: [IFormulaParam<number>]): number {
+    return Math.abs(params[0] && params[0].value);
+  }
+}
+
+export class Average extends NumericFunc {
+  static acceptValueType = new Set([BasicValueType.Array, ...FormulaFunc.acceptValueType]);
+
+  static validateParams() {
+    //
+  }
+
+  static getReturnType() {
+    return BasicValueType.Number;
+  }
+
+  static func(params: IFormulaParam<number>[]): number {
+    // 只有一个参数并且是数组的话，意味着是对数组类型字段的值进行求和
+    if (isArrayParam(params)) {
+      const innerValueType = (params[0].node as ValueOperandNodeBase).innerValueType;
+      if (innerValueType && innerValueType === BasicValueType.DateTime) {
+        return 0;
+      }
+
+      if (!params[0].value) {
+        return 0;
+      }
+      return params[0].value.reduce((pre, cur) => {
+        return plus(pre, noNaN(Number(cur)));
+      }, 0) / (params[0].value.length || 1);
+    }
+
+    const total = params.filter(cur => {
+      // 产品需求，单元格为空，该单元格不计算在总数里
+      if (cur.value == null) {
+        return false;
+      }
+      return !Number.isNaN(Number(cur.value));
+    }).length || 1;
+
+    return params.reduce((pre, cur) => {
+      return plus(pre, noNaN(Number(cur.value)));
+    }, 0) / total;
+  }
+}
+
+export class Ceiling extends NumericUtilsFunc {
+  static validateParams(params: AstNode[]) {
+    if (params.length < 1) {
+      throw new Error(t(Strings.function_validate_params_count_at_least, {
+        name: 'CEILING',
+        count: 1,
+      }));
+    }
+  }
+
+  static func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
+    return this.calc2RoundFC(params, Math.ceil);
+  }
+}
+
+export class Floor extends NumericUtilsFunc {
+  static validateParams(params: AstNode[]) {
+    if (params.length < 1) {
+      throw new Error(t(Strings.function_validate_params_count_at_least, {
+        name: 'FLOOR',
+        count: 1,
+      }));
+    }
+  }
+
+  static func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
+    return this.calc2RoundFC(params, Math.floor);
+  }
+}
+
+export class Round extends NumericFunc {
+  static validateParams(params: AstNode[]) {
+    if (params.length < 1) {
+      throw new Error(t(Strings.function_validate_params_count_at_least, {
+        name: 'ROUND',
+        count: 1,
+      }));
+    }
+  }
+
+  static getReturnType(params?: AstNode[]) {
+    params && this.validateParams(params);
+    return BasicValueType.Number;
+  }
+
+  static func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
+    const value = params[0].value;
+    if (value == null) {
+      return null;
+    }
+    const num = Number(value);
+    const precision = params[1] && Math.floor(params[1].value) || 0;
+    const offset = Math.pow(10, precision);
+    return divide(Math.round(times(num, offset)), offset);
+  }
+}
+
+export class Max extends NumericFunc {
+  static acceptValueType = new Set([BasicValueType.DateTime, BasicValueType.Array, ...FormulaFunc.acceptValueType]);
+
+  static validateParams(params: AstNode[]) {
+    //
+  }
+
+  static getReturnType(params: AstNode[]) {
+    params && this.validateParams(params);
+    if (!params) {
+      return BasicValueType.Number;
+    }
+
+    if (isArrayNodes(params)) {
+      const innerValueType = (params[0] as ValueOperandNodeBase).innerValueType;
+      if (innerValueType === BasicValueType.DateTime) {
+        return BasicValueType.DateTime;
+      }
+      return BasicValueType.Number;
+    }
+
+    // 所有参数均为日期类型，则返回日期类型
+    if (params.every(node => node.valueType === BasicValueType.DateTime)) {
+      return BasicValueType.DateTime;
+    }
+
+    return BasicValueType.Number;
+  }
+
+  static func(params: IFormulaParam<number>[]): NumericType {
+    return this.calc(params, max);
+  }
+
+  static calc(params: IFormulaParam<number>[], calcFn: (collection: any[]) => any): NumericType {
+    // 只有一个参数并且是数组的话，意味着是对数组类型字段的值进行求和
+    if (isArrayParam(params)) {
+      if (!params[0].value) {
+        return null;
+      }
+      const v = calcFn(params[0].value.map(Number).filter(d => !isNaN(d)));
+      return v == null ? null : Number(v);
+    }
+
+    // 返回值是不是 DateTime 则要将 DateTime 类型的 node 过滤掉，否则会引入时间戳扰乱计算结果
+    if (this.getReturnType(params.map(p => p.node)) !== BasicValueType.DateTime) {
+      params = params.filter(p => p.node.valueType !== BasicValueType.DateTime);
+    }
+
+    const v = calcFn(params.map(p => Number(p.value)).filter(d => !isNaN(d)));
+    return v == null ? 0 : Number(v);
+  }
+}
+
+// Min 函数与 Max 区别只在计算方式 calcFn 不同
+export class Min extends Max {
+  static func(params: IFormulaParam<number>[]): NumericType {
+    return this.calc(params, min);
+  }
+}
+
+export class Log extends NumericFunc {
+  static validateParams(params: AstNode[]) {
+    if (params.length < 1) {
+      throw new Error(t(Strings.function_validate_params_count_at_least, {
+        name: 'LOG',
+        count: 1,
+      }));
+    }
+  }
+
+  static getReturnType(params: AstNode[]) {
+    params && this.validateParams(params);
+    return BasicValueType.Number;
+  }
+
+  static func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
+    const value = params[0].value;
+    if (value == null) {
+      return null;
+    }
+    const num = Number(value);
+    const base = params[1] ? Number(params[1].value) : 10;
+    return Math.log(num) / Math.log(base);
+  }
+}
+
+export class Int extends NumericFunc {
+  static validateParams(params: AstNode[]) {
+    if (params.length < 1) {
+      throw new Error(t(Strings.function_validate_params_count_at_least, {
+        name: 'INT',
+        count: 1,
+      }));
+    }
+  }
+
+  static getReturnType(params: AstNode[]) {
+    params && this.validateParams(params);
+    return BasicValueType.Number;
+  }
+
+  static func(params: [IFormulaParam<number>]): NumericType {
+    const value = params[0].value;
+    if (value == null) {
+      return null;
+    }
+    return Math.floor(value);
+  }
+}
+
+export class Exp extends NumericFunc {
+  static validateParams(params: AstNode[]) {
+    if (params.length < 1) {
+      throw new Error(t(Strings.function_validate_params_count_at_least, {
+        name: 'EXP',
+        count: 1,
+      }));
+    }
+  }
+
+  static getReturnType(params: AstNode[]) {
+    params && this.validateParams(params);
+    return BasicValueType.Number;
+  }
+
+  static func(params: [IFormulaParam<number>]): NumericType {
+    const value = params[0].value;
+    if (value == null) {
+      return null;
+    }
+    return Math.exp(value);
+  }
+}
+
+export class Odd extends NumericFunc {
+  static validateParams(params: AstNode[]) {
+    if (params.length < 1) {
+      throw new Error(t(Strings.function_validate_params_count_at_least, {
+        name: 'ODD',
+        count: 1,
+      }));
+    }
+  }
+
+  static getReturnType(params: AstNode[]) {
+    params && this.validateParams(params);
+    return BasicValueType.Number;
+  }
+
+  static func(params: [IFormulaParam<number>]): NumericType {
+    const value = params[0].value;
+    if (params[0].value == null) {
+      return null;
+    }
+    const num = Number(value);
+    const rounded = value > 0 ? Math.ceil(num) : Math.floor(num);
+    if (rounded % 2 !== 0) {
+      return rounded;
+    }
+
+    return rounded >= 0 ? rounded + 1 : rounded - 1;
+  }
+}
+
+export class Even extends NumericFunc {
+  static validateParams(params: AstNode[]) {
+    if (params.length < 1) {
+      throw new Error(t(Strings.function_validate_params_count_at_least, {
+        name: 'EVEN',
+        count: 1,
+      }));
+    }
+  }
+
+  static getReturnType(params: AstNode[]) {
+    params && this.validateParams(params);
+    return BasicValueType.Number;
+  }
+
+  static func(params: [IFormulaParam<number>]): NumericType {
+    const value = params[0].value;
+    if (params[0].value == null) {
+      return null;
+    }
+    const num = Number(params[0].value);
+    const rounded = value > 0 ? Math.ceil(num) : Math.floor(num);
+    if (rounded % 2 === 0) {
+      return rounded;
+    }
+
+    return rounded > 0 ? rounded + 1 : rounded - 1;
+  }
+}
+
+export class RoundUp extends NumericUtilsFunc {
+  static validateParams(params: AstNode[]) {
+    if (params.length < 1) {
+      throw new Error(t(Strings.function_validate_params_count_at_least, {
+        name: 'ROUNDUP',
+        count: 1,
+      }));
+    }
+  }
+
+  static func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
+    return this.calc2RoundDU(params, Math.ceil, Math.floor);
+  }
+}
+
+export class RoundDown extends NumericUtilsFunc {
+  static validateParams(params: AstNode[]) {
+    if (params.length < 1) {
+      throw new Error(t(Strings.function_validate_params_count_at_least, {
+        name: 'ROUNDDOWN',
+        count: 1,
+      }));
+    }
+  }
+
+  static func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
+    return this.calc2RoundDU(params, Math.floor, Math.ceil);
+  }
+}
+
+export class Power extends NumericFunc {
+  static validateParams(params: AstNode[]) {
+    if (params.length < 2) {
+      throw new Error(t(Strings.function_validate_params_count_at_least, {
+        name: 'POWER',
+        count: 2,
+      }));
+    }
+  }
+
+  static getReturnType(params: AstNode[]) {
+    params && this.validateParams(params);
+    return BasicValueType.Number;
+  }
+
+  static func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
+    const value = params[0].value;
+    if (params[0].value == null) {
+      return null;
+    }
+    return Math.pow(value, params[1].value);
+  }
+}
+
+export class Sqrt extends NumericFunc {
+  static validateParams(params: AstNode[]) {
+    if (params.length < 1) {
+      throw new Error(t(Strings.function_validate_params_count_at_least, {
+        name: 'SQRT',
+        count: 1,
+      }));
+    }
+  }
+
+  static getReturnType(params: AstNode[]) {
+    params && this.validateParams(params);
+    return BasicValueType.Number;
+  }
+
+  static func(params: [IFormulaParam<number>]): NumericType {
+    const value = params[0].value;
+    if (params[0].value == null) {
+      return null;
+    }
+    return Math.sqrt(value);
+  }
+}
+
+export class Mod extends NumericFunc {
+  static validateParams(params: AstNode[]) {
+    if (params.length < 2) {
+      throw new Error(t(Strings.function_validate_params_count_at_least, {
+        name: 'MOD',
+        count: 2,
+      }));
+    }
+  }
+
+  static getReturnType(params: AstNode[]) {
+    params && this.validateParams(params);
+    return BasicValueType.Number;
+  }
+
+  static func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
+    const value = params[0].value;
+    if (params[0].value == null) {
+      return null;
+    }
+    const num = Number(value);
+    const divisor = Number(params[1].value);
+    const mod = num % divisor;
+
+    if ((num ^ divisor) < 0) {
+      return mod * (-1);
+    }
+    return mod;
+  }
+}
+
+export class Value extends NumericFunc {
+  static validateParams(params: AstNode[]) {
+    if (params.length < 1) {
+      throw new Error(t(Strings.function_validate_params_count_at_least, {
+        name: 'VALUE',
+        count: 1,
+      }));
+    }
+  }
+
+  static getReturnType(params: AstNode[]) {
+    params && this.validateParams(params);
+    return BasicValueType.Number;
+  }
+
+  static func(params: [IFormulaParam<string>]): number {
+    const text = String(params[0].value);
+    const regNumber = /[^0-9.+-]/g;
+    const regSymbol = /(\+|-|\.)+/g;
+    const value = text
+      .replace(regNumber, '')
+      .replace(regSymbol, '$1');
+
+    return parseFloat(value);
+  }
+}
+

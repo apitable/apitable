@@ -1,0 +1,40 @@
+@import "~pc/styles/lib_var.less";
+
+.editorContainer {
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+  width: 100%;
+  min-height: 46px;
+  border-radius: 4px;
+  cursor: text;
+
+  & > div {
+    width: 100%;
+    font-size: 14px;
+    color: var(--secondLevelText);
+    word-break: break-word;
+  }
+
+  &.hoverClass {
+    transition: background-color 0.3s linear;
+    padding: 8px;
+    @media (any-hover: hover) {
+      &:hover {
+        background-color: var(--lowestBg);
+        & > div {
+          background-color: transparent;
+        }
+      }
+    }
+  }
+  &.edit {
+    .editor {
+      border: 1px solid var(--primaryColor);
+      border-radius: 8px;
+      min-height: 100px !important;
+      padding: 8px;
+      width: calc(100% - 16px);
+    }
+  }
+}

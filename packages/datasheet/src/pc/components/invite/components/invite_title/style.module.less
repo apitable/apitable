@@ -1,0 +1,50 @@
+@import "~pc/styles/lib_var.less";
+
+@titleLgWidth: 800px; //  正常屏幕
+@titleSmWidth: 600px; // 屏幕少于900px
+@titleXSmWidth: 360px; // 屏幕少于700px，大于375px
+
+// 标题： inviter邀请你加入空间站
+.inviteTitle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  h1 {
+    color: var(--staticDark1);
+    line-height: 28px;
+    font-size: 20px;
+    margin: 0;
+    text-align: center;
+    width: @titleLgWidth;
+    .highLightText {
+      color: var(--primaryColor);
+    }
+  }
+  h2 {
+    color: var(--secondLevelText);
+    font-size: 16px;
+    line-height: 22px;
+    margin-bottom: 30px;
+    width: @titleLgWidth;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .inviteTitle h1,
+  .inviteTitle h2 {
+    width: @titleSmWidth;
+  }
+}
+@media screen and (max-width: 700px) {
+  .inviteTitle h1,
+  .inviteTitle h2 {
+    width: @titleXSmWidth;
+  }
+}
+@media screen and (max-width: 375px) {
+  .inviteTitle h1,
+  .inviteTitle h2 {
+    width: calc(100% - 48px);
+  }
+}

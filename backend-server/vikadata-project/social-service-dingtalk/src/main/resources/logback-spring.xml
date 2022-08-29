@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <!--定义日志存放的位置-->
+    <springProperty scope="context" name="LOG_PATH" source="vikadata.log.path" defaultValue="logs"/>
+    <!--日志文件名字不可更改，默认使用spring.application.name的变量-->
+    <springProperty scope="context" name="LOG_FILE_NAME" source="spring.application.name" defaultValue="DingTalk"/>
+
+    <!--日志格式-->
+    <!--格式化输出：%d:表示日期,%thread:表示线程名,%-5level:级别从左显示5个字符宽度,%msg:日志消息,%n:是换行符-->
+
+    <!-- ****************************************************************************************** -->
+    <!-- ****************************** 本地开发只在控制台打印日志 ************************************* -->
+    <!-- ****************************************************************************************** -->
+    <springProfile name="local">
+        <logger name="com.vikadata.social.service.dingtalk" level="debug"/>
+        <logger name="springfox.documentation" level="warn"/>
+        <!--<logger name="org.springframework.cloud.sleuth" level="debug"/>-->
+        <!--<logger name="org.springframework" level="debug"/>-->
+        <!--<logger name="io.sentry" level="debug"/>-->
+        <logger name="brave" level="debug"/>
+        <!--本地开发使用DEBUG级别，预发布和线上千万别使用debug-->
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <!--encoder 默认配置为PatternLayoutEncoder-->
+            <encoder>
+                <!--小知识：日志颜色支持：-->
+                <!--blue cyan green magenta red yellow-->
+                <pattern>%cyan(「本地开发调试日志」)>>> %yellow(%d{yyyy-MM-dd HH:mm:ss.SSS}) - %red(T[%X{traceId}]) - %red(S[%X{spanId}]) - %red(线程[%thread]) %highlight(%-5level) %green(%logger{35}) %magenta(Line:%L) - %blue(%msg%n)</pattern>
+                <charset>utf-8</charset>
+            </encoder>
+        </appender>
+
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <!-- ****************************************************************************************** -->
+    <!-- ********************** 放到服务器上不管在什么环境都只在文件记录日志 **************************** -->
+    <!-- ****************************************************************************************** -->
+    <springProfile name="!local">
+        <!-- 日志记录器，日期滚动记录 -->
+        <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <!-- 正在记录的日志文件的路径及文件名 -->
+            <file>${LOG_PATH}/${LOG_FILE_NAME}_error.log</file>
+            <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- 归档的日志文件的路径，例如今天是2013-12-21日志，当前写的日志文件路径为file节点指定，可以将此文件与file指定文件路径设置为不同路径，从而将当前日志文件或归档日志文件置不同的目录。
+                而2013-12-21的日志文件在由fileNamePattern指定。%d{yyyy-MM-dd}指定日期格式，%i指定索引 -->
+                <fileNamePattern>${LOG_PATH}/backup/${LOG_FILE_NAME}-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <!-- 如果按天来回滚，则最大保存时间为60天，60天之前的都将被清理掉 这里的值与滚动策略模式有关 -->
+                <maxHistory>60</maxHistory>
+                <!-- 除按日志记录之外，还配置了日志文件不能超过2M，若超过2M，日志文件会以索引0开始，
+                命名日志文件，例如log-error-2013-12-21.0.log -->
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>5MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+            <!-- 追加方式记录日志 -->
+            <append>true</append>
+            <!-- 日志文件的格式 -->
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>Log >>> %d{yyyy-MM-dd HH:mm:ss.SSS} T[%X{traceId}] - S[%X{spanId}] - [%thread] %-5level %logger Line:%-3L - %msg%n</pattern>
+                <charset>utf-8</charset>
+            </encoder>
+            <!-- 此日志文件只记录的级别level:error -->
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>error</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+        </appender>
+
+        <!-- 异步输出 -->
+        <appender name="ASYNC_FILE_ERROR" class="ch.qos.logback.classic.AsyncAppender">
+            <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+            <discardingThreshold>0</discardingThreshold>
+            <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+            <queueSize>256</queueSize>
+            <!-- 添加附加的appender,最多只能添加一个 -->
+            <appender-ref ref="FILE_ERROR"/>
+        </appender>
+
+        <!-- 日志记录器，全日志记录 -->
+        <appender name="FILE_TOTAL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <!-- 正在记录的日志文件的路径及文件名 -->
+            <file>${LOG_PATH}/${LOG_FILE_NAME}_total.log</file>
+            <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- 归档的日志文件的路径，例如今天是2013-12-21日志，当前写的日志文件路径为file节点指定，
+                     可以将此文件与file指定文件路径设置为不同路径，从而将当前日志文件或归档日志文件置不同的目录。
+                     而2013-12-21的日志文件在由fileNamePattern指定。%d{yyyy-MM-dd}指定日期格式，%i指定索引 -->
+                <fileNamePattern>${LOG_PATH}/backup/${LOG_FILE_NAME}-total-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <!-- 如果按天来回滚，则最大保存时间为60天，60天之前的都将被清理掉 这里的值与滚动策略模式有关 -->
+                <maxHistory>60</maxHistory>
+                <!-- 除按日志记录之外，还配置了日志文件不能超过5M，若超过5M，日志文件会以索引0开始，命名日志文件，例如log-total-2013-12-21.0.log -->
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>5MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+            <!-- 追加方式记录日志 -->
+            <append>true</append>
+            <!-- 日志文件的格式 -->
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>Log >>> %d{yyyy-MM-dd HH:mm:ss.SSS} T[%X{traceId}] - S[%X{spanId}] - [%thread] %-5level %logger Line:%-3L - %msg%n</pattern>
+                <charset>utf-8</charset>
+            </encoder>
+        </appender>
+
+        <!-- 异步输出 -->
+        <appender name="ASYNC_FILE_TOTAL" class="ch.qos.logback.classic.AsyncAppender">
+            <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+            <discardingThreshold>0</discardingThreshold>
+            <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+            <queueSize>256</queueSize>
+            <!-- 添加附加的appender,最多只能添加一个 -->
+            <appender-ref ref="FILE_TOTAL"/>
+        </appender>
+
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <!--encoder 默认配置为PatternLayoutEncoder-->
+            <encoder>
+                <!--小知识：日志颜色支持：-->
+                <!--blue cyan green magenta red yellow-->
+                <pattern>「Log」>>> %d{yyyy-MM-dd HH:mm:ss.SSS} - T[%X{traceId}] - S[%X{spanId}] - Thread[%thread] %-5level %logger{35} Line:%L - %msg%n</pattern>
+                <charset>utf-8</charset>
+            </encoder>
+        </appender>
+
+        <root level="info">
+            <appender-ref ref="ASYNC_FILE_ERROR"/>
+            <appender-ref ref="ASYNC_FILE_TOTAL"/>
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+</configuration>
+
+

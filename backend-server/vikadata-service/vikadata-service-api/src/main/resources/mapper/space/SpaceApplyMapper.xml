@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.modular.space.mapper.SpaceApplyMapper">
+    <select id="countBySpaceIdAndCreatedByAndStatus" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM vika_space_apply
+        WHERE space_id = #{spaceId}
+          AND created_by = #{createdBy}
+          AND status = #{status}
+    </select>
+
+    <select id="selectSpaceApplyDto" resultType="com.vikadata.api.model.dto.space.SpaceApplyDto">
+        SELECT vsa.id                                                         AS applyId,
+               vsa.space_id,
+               vsa.`status`,
+               vsa.created_by,
+               JSON_EXTRACT(vpn.notify_body, CONCAT('$.', #{applyStatusKey})) AS notifyApplyStatus
+        FROM vika_player_notification vpn
+                 LEFT JOIN vika_space_apply vsa ON vpn.space_id = vsa.space_id AND vpn.from_user = vsa.created_by AND
+                                                   vsa.id = JSON_EXTRACT(vpn.notify_body, CONCAT('$.', #{applyIdKey}))
+        WHERE vpn.id = #{notifyId}
+          AND vpn.to_user = #{toUser}
+          AND vpn.template_id = #{templateId}
+          AND vpn.is_deleted = 0
+    </select>
+
+    <insert id="insertApply">
+        INSERT INTO vika_space_apply(id, space_id, status, created_by)
+            VALUE (#{entity.id}, #{entity.spaceId}, #{entity.status}, #{entity.createdBy})
+    </insert>
+
+    <update id="updateStatusByApplyIdAndUpdatedBy">
+        UPDATE vika_space_apply
+        SET status     = #{status},
+            updated_by = #{updatedBy}
+        WHERE id = #{applyId}
+    </update>
+
+    <update id="invalidateTheApply">
+        UPDATE vika_space_apply
+        SET status = 3, failure_reason = #{reason}
+        WHERE space_id = #{spaceId} AND status = 0
+        AND created_by IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

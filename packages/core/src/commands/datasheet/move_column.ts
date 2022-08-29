@@ -1,0 +1,128 @@
+import { isEmpty } from 'lodash';
+import { IJOTAction, jot } from 'engine/ot';
+import { DatasheetActions } from 'model';
+import { DropDirectionType, IGridViewProperty, Selectors } from 'store';
+import { Strings, t } from 'i18n';
+import { ResourceType } from 'types';
+import { ExecuteResult, ICollaCommandDef } from 'command_manager';
+import { CollaCommandName } from 'commands';
+
+export interface IMoveColumn {
+  fieldId: string; // 需要拖动那一列的id
+  overTargetId: string; // 当前放手时的columnIndex
+  direction: DropDirectionType; // 拖动的方向
+}
+
+export interface IMoveColumnOptions {
+  cmd: CollaCommandName.MoveColumn;
+  data: IMoveColumn[];
+  viewId: string;
+}
+
+export const moveColumn: ICollaCommandDef<IMoveColumnOptions> = {
+  undoable: true,
+
+  execute: (context, options) => {
+    const { model: state } = context;
+    const { data, viewId } = options;
+    const datasheetId = Selectors.getActiveDatasheetId(state)!;
+    const snapshot = Selectors.getSnapshot(state, datasheetId);
+
+    if (!snapshot) {
+      return null;
+    }
+
+    const view = snapshot.meta.views.find(view => view.id === viewId);
+
+    const getColumnIndexMap = () => {
+      const columnsMap: { [id: string]: number } = {};
+      if (!view) {
+        return columnsMap;
+      }
+      for (const [k, v] of view.columns.entries()) {
+        columnsMap[v.fieldId] = k;
+      }
+      return columnsMap;
+    };
+
+    const columnIndexMapById = getColumnIndexMap();
+
+    if (isEmpty(data)) {
+      return null;
+    }
+
+    if (!view) {
+      throw new Error(t(Strings.error_move_column_failed_invalid_params));
+    }
+
+    const frozenColumnCount = (view as IGridViewProperty).frozenColumnCount;
+    let finalFrozenColumnCount = frozenColumnCount;
+
+    const actions = data.reduce<IJOTAction[]>((collected, recordOption) => {
+      const { fieldId, overTargetId, direction } = recordOption;
+      const originColumnIndex = columnIndexMapById[fieldId];
+      const targetColumnIndex = columnIndexMapById[overTargetId!];
+      let targetIndex = originColumnIndex > targetColumnIndex ? targetColumnIndex + 1 : targetColumnIndex;
+      if (direction === DropDirectionType.BEFORE) {
+        targetIndex--;
+      }
+      if (targetIndex === 0) {
+        // 不允许将其他列拖动到第一列
+        return collected;
+      }
+      if (originColumnIndex === 0) {
+        // 第一列不允许拖动
+        return collected;
+      }
+      const action = DatasheetActions.moveColumns2Action(snapshot, { fieldId, target: targetIndex, viewId });
+
+      if (!action) {
+        return collected;
+      }
+
+      if (frozenColumnCount) {
+        if (targetIndex < frozenColumnCount && originColumnIndex >= frozenColumnCount) {
+          finalFrozenColumnCount ++;
+        }
+        if (targetIndex >= frozenColumnCount && originColumnIndex < frozenColumnCount) {
+          finalFrozenColumnCount --;
+        }
+      }
+
+      if (collected.length) {
+        const transformedAction = jot.transform([action], collected, 'right');
+        collected.push(...transformedAction);
+      } else {
+        collected.push(action);
+      }
+
+      return collected;
+    }, []);
+
+    if (actions.length === 0) {
+      return null;
+    }
+
+    if (frozenColumnCount && frozenColumnCount !== finalFrozenColumnCount) {
+      const action = DatasheetActions.setFrozenColumnCount2Action(snapshot, { viewId, count: finalFrozenColumnCount });
+      action && actions.push(action);
+    }
+
+    return {
+      result: ExecuteResult.Success,
+      resourceId: datasheetId,
+      resourceType: ResourceType.Datasheet,
+      actions,
+    };
+  },
+};
+
+/*
+
+ declare module 'command_manager/command_manager' {
+ interface CollaCommandManager {
+ execute(options: IMoveRowOptions & { cmd: 'MoveRow' });
+ }
+ }
+
+ */

@@ -1,0 +1,76 @@
+{
+    "meta": {
+        "fieldMap": {
+            "${fieldId0}": {
+                "name": "${defaultDatasheetTitle}",
+                "id": "${fieldId0}",
+                "type": 19,
+                "property": {
+                    "defaultValue": ""
+                }
+            },
+        "${fieldId1}": {
+                "name": "${defaultDatasheetOptions}",
+                "property": {
+                    "options": []
+                },
+                "id": "${fieldId1}",
+                "type": 4
+            },
+        "${fieldId2}": {
+                "name": "${defaultDatasheetAttachments}",
+                "id": "${fieldId2}",
+                "type": 6
+            }
+        },
+        "views": [{
+            "columns": [{
+                    "fieldId": "${fieldId0}",
+                    "statType": 1
+                },
+                {
+                    "fieldId": "${fieldId1}"
+                },
+                {
+                    "fieldId": "${fieldId2}"
+                }
+            ],
+            "name": "${defaultView}",
+            "id": "${viewId}",
+            "frozenColumnCount": 1,
+            "rows": [
+                {
+                    "recordId": "${recordId0}"
+                },
+                {
+                    "recordId": "${recordId1}"
+                },
+                {
+                    "recordId": "${recordId2}"
+                }
+            ],
+            "type": 1,
+            "autoSave": false
+        }]
+    },
+    "recordMap": {
+        "${recordId0}": {
+            "id": "${recordId0}",
+            "revisionHistory": 0,
+            "revision": 0,
+            "data": {}
+    },
+        "${recordId1}": {
+            "id": "${recordId1}",
+            "revisionHistory": 0,
+            "revision": 0,
+            "data": {}
+    },
+        "${recordId2}": {
+            "id": "${recordId2}",
+            "revisionHistory": 0,
+            "revision": 0,
+            "data": {}
+    }
+}
+}

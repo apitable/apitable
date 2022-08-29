@@ -1,0 +1,43 @@
+package com.vikadata.api.modular.user.mapper;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+
+import com.vikadata.api.AbstractMyBatisMapperTest;
+import com.vikadata.define.dtos.PausedUserHistoryDto;
+import com.vikadata.entity.UserHistoryEntity;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.jdbc.Sql;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+/**
+ * <p>
+ *     数据访问层测试：用户历史记录表测试
+ * </p>
+ * @author wuyitao
+ * @date 2022/4/5 5:39 PM
+ */
+public class UserHistoryMapperTest extends AbstractMyBatisMapperTest {
+
+    @Autowired
+    UserHistoryMapper userHistoryMapper;
+
+    @Test
+    @Sql("/testdata/user-history-data.sql")
+    void testSelectLatest() {
+        UserHistoryEntity entity = userHistoryMapper.selectLatest(41L, 1);
+        assertThat(entity).isNotNull();
+    }
+
+    @Test
+    @Sql("/testdata/user-history-data.sql")
+    void testSelectUserHistoryDtos() {
+        List<PausedUserHistoryDto> entities = userHistoryMapper.selectUserHistoryDtos(LocalDateTime.of(2020, 1, 1, 0, 0), LocalDateTime.now(), 1);
+        assertThat(entities).isNotEmpty();
+    }
+
+}

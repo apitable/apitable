@@ -1,0 +1,73 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.switchInfo {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+
+  .switchInfoTop {
+    display: flex;
+    align-items: center;
+  }
+
+  .switchText {
+    font-size: 14px;
+    color: var(--firstLevelText);
+    margin-right: 4px;
+    font-weight: bold;
+    margin-left: 8px;
+  }
+
+  svg.infoIcon {
+    width: 15px;
+    height: 15px;
+    fill: var(--thirdLevelText);
+    cursor: pointer;
+    margin-right: 70px;
+  }
+
+  ul {
+    color: var(--thirdLevelText);
+    font-size: 12px;
+    padding-inline-start: 32px;
+    margin: 0;
+    list-style: none;
+  }
+
+  ul li {
+    margin-top: 8px;
+  }
+
+  .radioGroup {
+    margin: 8px 0 0 32px;
+
+    &.radioGroupDisabled {
+      :global {
+        .ant-radio-wrapper {
+          cursor: not-allowed;
+        }
+      }
+    }
+
+    .radioWrapper {
+      display: inline-block;
+      height: 22px;
+    }
+
+    .radioText {
+      color: var(--secondLevelText);
+    }
+
+    .radioTextSelected {
+      color: var(--firstLevelText);
+    }
+  }
+}
+
+.free {
+  color: var(--orange_600) !important;
+  background: var(--orange_50);
+  border-radius: 2px !important;
+  padding: 4px 6px !important;
+}

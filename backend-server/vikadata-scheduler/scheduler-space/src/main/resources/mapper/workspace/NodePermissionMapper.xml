@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.scheduler.space.mapper.workspace.NodePermissionMapper">
+    <select id="selectRootNodeRoleDto"
+            resultType="com.vikadata.scheduler.space.model.NodeRoleDto">
+        SELECT vs.created_by, vn.node_id
+        FROM vika_space vs
+                     JOIN vika_node vn
+                ON vs.space_id = vn.space_id AND vn.type = 0 AND vn.is_rubbish = 0
+        WHERE vs.is_deleted = 0
+    </select>
+
+    <select id="selectNodeOwnerRoleDto"
+            resultType="com.vikadata.scheduler.space.model.NodeRoleDto">
+        SELECT vnp.node_id, vum.user_id AS createdBy
+        FROM vika_node_permission vnp
+                     JOIN vika_unit vu ON vnp.unit_id = vu.id AND vu.unit_type = 3
+                     JOIN vika_unit_member vum ON vu.unit_ref_id = vum.id
+        WHERE vnp.role_code = 'owner';
+    </select>
+
+    <select id="selectNodePermissionRoleDto"
+            resultType="com.vikadata.scheduler.space.model.NodeRoleDto">
+        SELECT space_id, node_id, MIN(created_at) AS createdAt
+        FROM vika_node_permission
+        GROUP BY node_id
+        ORDER BY MIN(created_at);
+    </select>
+
+    <insert id="insertControl">
+        INSERT INTO vika_control(id, space_id, control_id, control_type, created_by,
+        updated_by, created_at, updated_at)
+        VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id}, #{item.spaceId}, #{item.controlId}, #{item.controlType},
+                #{item.createdBy}, #{item.updatedBy}, #{item.createdAt}, #{item.updatedAt}
+            </trim>
+        </foreach>
+    </insert>
+
+    <insert id="insertIntoControlRoleSelectNodePermission">
+        INSERT INTO vika_control_role(id, control_id, unit_id, role_code, created_at,
+                                      updated_at)
+        SELECT id, node_id, unit_id, role_code, created_at, updated_at
+        FROM vika_node_permission
+        <if test="ids != null">
+            WHERE id IN
+            <foreach item="item" index="index" collection="ids" open="(" separator=","
+                     close=")">
+                #{item}
+            </foreach>
+        </if>
+    </insert>
+
+    <select id="selectControlRoleInitMaxId" resultType="java.lang.Long">
+        SELECT MAX(id)
+        FROM vika_control_role vcr
+        WHERE created_by IS NULL
+    </select>
+
+    <select id="selectCreateList" resultType="java.lang.Long">
+        SELECT vnp.id
+        FROM vika_node_permission vnp
+        WHERE vnp.id > #{minId}
+          AND (node_id, unit_id) NOT IN
+              (SELECT control_id, unit_id FROM vika_control_role);
+    </select>
+
+    <select id="selectChangeList"
+            resultType="com.vikadata.scheduler.space.model.NodeRoleInfo">
+        SELECT vnp.id, vnp.role_code, vnp.updated_at
+        FROM vika_node_permission vnp
+                     JOIN vika_control_role vcr ON vnp.id = vcr.id
+        WHERE vnp.role_code != vcr.role_code
+          AND vnp.updated_at > vcr.updated_at
+    </select>
+
+    <update id="updateControlRoleById">
+        UPDATE vika_control_role
+        SET role_code  = #{roleCode},
+            updated_at = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectControlRoleDelIds" resultType="java.lang.Long">
+        SELECT vcr.id
+        FROM vika_control_role vcr
+                     JOIN vika_control vc
+                ON vcr.control_id = vc.control_id AND vc.control_type = 0
+        WHERE vcr.id &lt;= #{maxId}
+          AND vcr.id NOT IN (SELECT id FROM vika_node_permission)
+    </select>
+
+    <delete id="deleteControlRoleByIds">
+        DELETE FROM vika_control_role
+        WHERE id IN
+        <foreach item="item" index="index" collection="ids" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="selectInitNodeControlIds" resultType="java.lang.String">
+        SELECT control_id
+        FROM vika_control
+        WHERE control_type = 0
+    </select>
+
+    <select id="selectControlRoleDto"
+            resultType="com.vikadata.scheduler.space.model.NodeRoleDto">
+        SELECT vn.space_id, vn.node_id, MIN(vcr.created_at) AS createdAt
+        FROM vika_control_role vcr
+        JOIN vika_node vn ON vcr.control_id = vn.node_id
+        GROUP BY vcr.control_id
+        ORDER BY MIN(vcr.created_at);
+    </select>
+
+    <delete id="deleteControlByIds">
+        DELETE FROM vika_control
+        WHERE control_id IN
+        <foreach item="item" index="index" collection="controlIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

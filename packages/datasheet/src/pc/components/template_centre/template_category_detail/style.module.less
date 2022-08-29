@@ -1,0 +1,146 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.templateDetailWrapper {
+  position: relative;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  .listEmpty {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+
+    a {
+      text-decoration: underline;
+    }
+
+    img {
+      height: 300px;
+      width: auto;
+    }
+
+    .text {
+      color: var(--textStaticPrimary);
+      font-size: 14px;
+      margin-top: 16px;
+    }
+  }
+}
+
+.templateCategory {
+  width: 100%;
+  padding: 32px;
+  padding-right: 20px;
+  padding-bottom: 8px;
+  user-select: none;
+
+  .title {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 22px;
+  }
+
+  .categoryName {
+    line-height: 34px;
+    font-size: 24px;
+    color: var(--blackBlue_50);
+    font-weight: bold;
+  }
+
+  .notFoundTip {
+    color: var(--primaryColor);
+
+    .text {
+      border-bottom: 1px solid;
+      padding-bottom: 2px;
+      cursor: pointer;
+      font-weight: normal;
+
+      &:hover {
+        color: var(--deepPurple_600);
+      }
+
+      &:active {
+        color: var(--deepPurple_700);
+      }
+    }
+  }
+}
+
+.templateList {
+  display: flex;
+  flex-wrap: wrap;
+  width: calc(100% + 24px);
+  transform: translateX(-12px);
+
+  .templateItemWrapper {
+    padding: 0 12px 24px;
+    flex: 0 0 20%;
+    width: 0;
+  }
+}
+
+
+@media screen and (max-width: 1900px) {
+  .templateList {
+    .templateItemWrapper {
+      flex: 0 0 25%;
+    }
+  }
+}
+
+@media screen and (max-width: 1360px) {
+  .templateList {
+    .templateItemWrapper {
+      flex: 0 0 33.3%;
+    }
+  }
+}
+
+@media screen and (max-width: 1120px) {
+  .templateList {
+    .templateItemWrapper {
+      flex: 0 0 50%;
+    }
+  }
+}
+
+@media screen and (max-width: 860px) {
+  .templateList {
+    .templateItemWrapper {
+      flex: 0 0 100%;
+    }
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .templateList {
+    .templateItemWrapper {
+      flex: 0 0 50%;
+    }
+  }
+
+  .templateCategory {
+    padding: 10px;
+  }
+
+  .templateDetailWrapper {
+    display: flex;
+    flex: 1;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .templateList {
+    .templateItemWrapper {
+      flex: 0 0 100%;
+    }
+  }
+}
+

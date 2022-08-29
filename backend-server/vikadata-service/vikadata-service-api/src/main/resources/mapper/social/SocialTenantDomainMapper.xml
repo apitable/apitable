@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.social.mapper.SocialTenantDomainMapper">
+
+    <select id="selectBySpaceId" resultType="com.vikadata.entity.SocialTenantDomainEntity">
+        SELECT *
+        FROM vika_social_tenant_domain vstd
+        WHERE vstd.space_id = #{spaceId}
+          AND vstd.is_deleted = 0
+    </select>
+
+    <select id="selectBySpaceIds" resultType="com.vikadata.entity.SocialTenantDomainEntity">
+        SELECT *
+        FROM vika_social_tenant_domain vstd
+        WHERE vstd.space_id IN
+        <foreach item="item" index="index" collection="spaceIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND vstd.is_deleted = 0
+    </select>
+
+    <select id="countTenantDomainName" resultType="int">
+        SELECT COUNT(*)
+        FROM vika_social_tenant_domain vstd
+        WHERE vstd.domain_prefix = #{domainPrefix}
+          AND vstd.is_deleted = 0
+    </select>
+
+    <select id="selectSpaceIdByDomainName" resultType="java.lang.String">
+        SELECT vstd.space_id
+        FROM vika_social_tenant_domain vstd
+        WHERE vstd.domain_name = #{domainName}
+          AND vstd.status = 1
+          AND vstd.is_deleted = 0
+    </select>
+
+    <select id="selectSpaceDomainBySpaceIds" resultType="com.vikadata.api.modular.social.model.SpaceBindDomainDTO">
+        SELECT vstd.space_id,
+               vstd.domain_name,
+               vstd.status
+        FROM vika_social_tenant_domain vstd
+        WHERE vstd.is_deleted = 0
+          AND vstd.space_id IN
+        <foreach item="item" index="index" collection="spaceIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <update id="updateStatusBySpaceId">
+        UPDATE vika_social_tenant_domain
+        SET status = #{domainStatus}
+        WHERE space_id = #{spaceId}
+    </update>
+
+    <select id="selectSpaceDomainByDomainName" resultType="com.vikadata.api.modular.social.model.SpaceBindDomainDTO">
+        SELECT  vstd.space_id,
+                vstd.domain_name,
+                vstd.status
+        FROM vika_social_tenant_domain vstd
+        WHERE vstd.domain_name = #{domainName}
+          AND vstd.is_deleted = 0
+    </select>
+
+    <delete id="deleteSpaceDomainBySpaceIds">
+        UPDATE vika_social_tenant_domain
+        SET status = 0, is_deleted = 1
+        WHERE space_id IN
+        <foreach item="item" index="index" collection="spaceIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

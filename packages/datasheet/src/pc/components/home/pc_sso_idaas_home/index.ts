@@ -1,0 +1,1 @@
+export * from './pc_sso_idaas_home';

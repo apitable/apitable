@@ -1,0 +1,11 @@
+{
+  "extends": "./common-tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "strict": true,
+    "incremental": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react"
+  }
+}

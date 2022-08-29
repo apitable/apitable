@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.modular.base.mapper.AssetMapper">
+
+    <select id="selectByChecksum" resultType="com.vikadata.entity.AssetEntity">
+        SELECT *
+        FROM vika_asset
+        WHERE checksum = #{checksum} AND is_deleted = 0
+    </select>
+
+    <select id="selectExtensionNameByFileUrl" resultType="java.lang.String">
+        SELECT extension_name
+        FROM vika_asset
+        WHERE file_url = #{fileUrl} AND is_deleted = 0
+    </select>
+
+    <select id="selectByFileUrl" resultType="com.vikadata.entity.AssetEntity">
+        SELECT id, `checksum`, file_url, file_size
+        FROM vika_asset
+        WHERE file_url IN
+        <foreach item="item" index="index" collection="fileUrls" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <update id="updateFileSizeById">
+        UPDATE vika_asset
+        SET file_size = file_size + #{incrFileSize}
+        WHERE id = #{id} AND is_deleted = 0
+    </update>
+</mapper>

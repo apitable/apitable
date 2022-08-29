@@ -1,0 +1,92 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+// 公用样式
+.commonTitle() {
+  font-weight: bold;
+  font-size: 32px;
+  line-height: 45px;
+  margin: 32px 0 8px;
+  color: var(--firstLevelText);
+  height: 45px;
+}
+.commonTitleDesc() {
+  font-size: 14px;
+  color: var(--thirdLevelText);
+  text-align: left;
+  margin-bottom: 56px;
+  font-weight: normal;
+}
+.commonSubTitle() {
+  height: 22px;
+  margin-bottom: 16px;
+  font-size: 16px;
+  color: var(--firstLevelText);
+  text-align: left;
+  font-weight: bold;
+  text-indent: 12px;
+  position: relative;
+  &::before {
+    display: block;
+    content: " ";
+    width: 2px;
+    height: 16px;
+    background: var(--primaryColor);
+    position: absolute;
+    top: 4px;
+    border-radius: 1px;
+  }
+}
+
+.spaceManage {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  .spaceTitle {
+    height: 60px;
+    border-bottom: 1px solid var(--lineColor);
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    .orgName {
+      display: inline-block;
+      font-size: 16px;
+      color: var(--firstLevelText);
+      font-weight: bold;
+      width: 228px;
+      cursor: default;
+      .ellipsis();
+    }
+  }
+  .spaceConentWrapper {
+    width: 100%;
+  }
+  .navSplit {
+    left: 56px !important;
+    top: 0;
+    & > :global(.Pane2) {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      background: var(--lowestBg);
+      // padding: 20px 20px 14px;
+      &:first-child {
+        flex: 1;
+      }
+    }
+  }
+
+  // 开关样式，工作台管理页面以及普通成员页面公用
+  :global(.switchWrapper) {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+// FIXME:THEME
+    background: rgba(var(--rowSelectedBg-rgb), 60%);
+    border-radius: 16px;
+    padding: 24px;
+    :global(.ant-skeleton-paragraph) {
+      margin-bottom: 0em;
+    }
+  }
+}

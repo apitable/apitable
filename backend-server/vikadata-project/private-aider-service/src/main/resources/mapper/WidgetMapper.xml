@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.aider.mapper.WidgetMapper">
+
+    <insert id="addDatasheetWidgetSourceData">
+        UPDATE vika_datasheet_widget
+        SET source_id = dst_id, updated_at = updated_at
+        WHERE source_id IS NULL
+    </insert>
+
+    <select id="selectMirrorIdHavingResourceMeta" resultType="java.lang.String">
+        SELECT resource_id
+        FROM vika_resource_meta
+        WHERE resource_type = 4
+    </select>
+
+    <update id="addMirrorResourceMeta">
+        INSERT INTO vika_resource_meta(id, resource_id, resource_type, meta_data, revision, is_deleted, created_by, updated_by, created_at, updated_at)
+        SELECT id+1, node_id, 4, '{}', 0, 0, created_by, created_by, created_at, created_at
+        FROM vika_node
+        WHERE type = 5
+        <if test="mirrorIds != null and mirrorIds.size() != 0">
+            AND node_id NOT IN
+            <foreach collection="mirrorIds" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </update>
+</mapper>

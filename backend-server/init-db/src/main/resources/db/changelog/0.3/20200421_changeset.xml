@@ -1,0 +1,31 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.3-20200421-001" author="Shawn" labels="audit">
+        <comment>系统级别审计表</comment>
+        <sql>
+            CREATE TABLE `vika_audit_system` (
+            `id` bigint(20) NOT NULL COMMENT '主键',
+            `user_id` bigint(20) NOT NULL COMMENT '用户ID(关联#vika_user#id)',
+            `action` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户行为',
+            `info` json DEFAULT NULL COMMENT '行为具体信息',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            PRIMARY KEY (`id`) USING BTREE,
+            KEY `IX_User_id` (`user_id`) USING BTREE,
+            KEY `IX_Action` (`action`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统行为审计表';
+        </sql>
+        <rollback>
+            <dropTable tableName="vika_audit_system"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.3-20200421-002" author="Shawn" labels="audit">
+        <comment>修改所有表的create_time和update_time为created_at和updated_at</comment>
+        <sqlFile path="db/changelog/0.3/alter_column.sql" />
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,64 @@
+dingtalk_docker_staging:
+  stage: docker
+  image: vikadata/dind-java:latest
+  services:
+    - name: vikadata/dind-java:latest
+      command: [ "--registry-mirror=https://nt14bg6k.mirror.aliyuncs.com" ]
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
+    BUILD_ENV: staging
+    VERSION_TYPE: beta
+    DOCKER_HOST: "tcp://vikadata__dind-java:2375"
+    DOCKER_IMAGE_NAME: cargo.vikadata.com/system-tenant_staging/dingtalk-server
+    DOCKER_IMAGE_TAG: $DINGTALK_VERSION-$BUILD_ENV.$VERSION_TYPE.$CI_PIPELINE_ID
+  # 不需要缓存
+  cache: { }
+  script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - ./gradlew -v
+    - ./gradlew build -D profile=$BUILD_ENV --build-cache -x test
+    - cp -r vikadata-project/social-service-dingtalk/build/libs/social-service-dingtalk.jar ./docker
+    - echo "DOCKER_IMAGE_TAG=$DOCKER_IMAGE_TAG" >> docker.env
+    - echo "BUILD_ENV=$BUILD_ENV" >> docker.env
+    - chmod a+x ./ci/script/build_docker.sh
+    - sh ./ci/script/build_docker.sh
+  artifacts:
+    name: $CI_JOB_ID
+    paths:
+      - ci/script
+    expire_in: 1 day
+    reports:
+      dotenv: docker.env
+  only:
+    refs:
+      - staging
+  tags:
+    - backend
+  when: manual
+
+dingtalk_deploy_staging:
+  stage: deploy
+  dependencies:
+    - dingtalk_docker_staging
+  image: aak1247/sshpass:latest
+  variables:
+    DOCKER_IMAGE_NAME: cargo.vikadata.com/system-tenant_staging/dingtalk-server
+    BUILD_ENV: staging
+    ALI_DINGTALK_HOST: 101.200.205.82
+    VERSION_TYPE: beta
+    DOCKER_IMAGE_TAG: $DINGTALK_VERSION-$BUILD_ENV.$VERSION_TYPE.$CI_PIPELINE_ID
+  # 不需要缓存
+  cache: { }
+  script:
+    - pwd;echo $BUILD_ENV;ls `pwd`/vikadata-project/social-service-dingtalk/src/main/resources/application*.yml;chmod 600 gitlab/integration/vikacloud-test.pem
+    - scp -i gitlab/integration/vikacloud-test.pem -o StrictHostKeyChecking=no -r vikadata-project/social-service-dingtalk/src/main/resources/application*.yml root@$ALI_DINGTALK_HOST:/data/dingtalk/$BUILD_ENV/
+    - ssh -i gitlab/integration/vikacloud-test.pem -o StrictHostKeyChecking=no  root@$ALI_DINGTALK_HOST "sed -i 's/@profile@/$BUILD_ENV/g' /data/dingtalk/$BUILD_ENV/application.yml;docker stop $BUILD_ENV-dingtalk-server;docker rm $BUILD_ENV-dingtalk-server;docker run --name $BUILD_ENV-dingtalk-server -p 9095:9091 -p 9096:9092 -v /data/dingtalk/$BUILD_ENV:/opt/config -v /tmp/$BUILD_ENV:/logs -d $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG"
+      # - sshpass -p $ALI_DINGTALK_PASSWD scp -o StrictHostKeyChecking=no `pwd`/vikadata-project/social-service-dingtalk/src/main/resources/application*.yml root@$ALI_DINGTALK_HOST:/data/dingtalk/$BUILD_ENV/
+      # - sshpass -p $ALI_DINGTALK_PASSWD ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o PubkeyAuthentication=no root@$ALI_DINGTALK_HOST "sed -i 's/@profile@/$BUILD_ENV/g' /data/dingtalk/$BUILD_ENV/application.yml;docker stop $BUILD_ENV-dingtalk-server;docker rm $BUILD_ENV-dingtalk-server;docker run --name $BUILD_ENV-dingtalk-server -p 9091:9091 -p 9092:9092 -v /data/dingtalk/$BUILD_ENV:/opt/config -d $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG"
+  only:
+    refs:
+      - staging
+  tags:
+    - backend
+  when: manual

@@ -1,0 +1,101 @@
+include:
+  - local: '/gitlab/integration/Api-Server.gitlab-ci.yml'
+  - local: '/gitlab/integration/Bill-Job-Scheduler.gitlab-ci.yml'
+  - local: '/gitlab/integration/Space-Job-Scheduler.gitlab-ci.yml'
+  - local: '/gitlab/integration/Social-Dingtalk-Server.gitlab-ci.yml'
+  - local: '/gitlab/staging/Api-Server.gitlab-ci.yml'
+  - local: '/gitlab/staging/Bill-Job-Scheduler.gitlab-ci.yml'
+  - local: '/gitlab/staging/Space-Job-Scheduler.gitlab-ci.yml'
+  - local: '/gitlab/staging/Social-Dingtalk-Server.gitlab-ci.yml'
+  - local: '/gitlab/test/Api-Server.gitlab-ci.yml'
+  - local: '/gitlab/test/Social-Dingtalk-Server.gitlab-ci.yml'
+  - local: '/gitlab/release/Api-Server.gitlab-ci.yml'
+  - local: '/gitlab/release/Bill-Job-Scheduler.gitlab-ci.yml'
+  - local: '/gitlab/release/Space-Job-Scheduler.gitlab-ci.yml'
+  - local: '/gitlab/release/Social-Dingtalk-Server.gitlab-ci.yml'
+  - local: '/gitlab/private/Api-Server.gitlab-ci.yml'
+  - local: '/gitlab/private/Aider-Server.gitlab-ci.yml'
+
+.only-branch: &only-branch
+  only:
+    - master
+    - integration
+    - staging
+    - test
+
+# 定义阶段
+stages:
+  - check
+  - test
+  - build
+  - docker
+  - deploy
+
+unit_tests:
+  stage: test
+  image: vikadata:node14-java8-gradle
+  services:
+    - name: mysql:8.0.23
+      alias: mysql
+      command: [ "--sql-mode=IGNORE_SPACE,NO_ENGINE_SUBSTITUTION" ]
+    - name: redis:5.0.6-alpine
+      alias: redis
+  variables:
+    MYSQL_HOST: mysql
+    MYSQL_PORT: 3306
+    MYSQL_USER: vika
+    MYSQL_PASSWORD: password
+    MYSQL_DATABASE: vika_test
+    MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    REDIS_HOST: redis
+    REDIS_PORT: 6379
+  script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - git clone https://oauth2:${DB_MANAGE_ACCESS_TOKEN}@git.vika.ltd/server/db-manage.git --depth 1 --branch integration
+    - ( cd db-manage && /bin/bash ./.depreciated/upgrade_db.sh )
+    - ./devtools.sh run-tests
+  # 缓存依赖
+  cache:
+    # 继承全局配置
+    key: ${CI_JOB_NAME}
+    paths:
+      - .gradle/
+    # 只拉取
+    policy: pull-push
+  <<: *only-branch
+
+# 合并请求检查
+merge_request_check:
+  stage: check
+  image: vikadata:node14-java8-gradle
+  services:
+    - name: mysql:8.0.23
+      alias: mysql
+      command: [ "--sql-mode=IGNORE_SPACE,NO_ENGINE_SUBSTITUTION" ]
+    - name: redis:5.0.6-alpine
+      alias: redis
+  variables:
+    MYSQL_HOST: mysql
+    MYSQL_PORT: 3306
+    MYSQL_USER: vika
+    MYSQL_PASSWORD: password
+    MYSQL_DATABASE: vika_test
+    MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    REDIS_HOST: redis
+    REDIS_PORT: 6379
+  script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - git clone https://oauth2:${DB_MANAGE_ACCESS_TOKEN}@git.vika.ltd/server/db-manage.git --depth 1 --branch integration
+    - ( cd db-manage && /bin/bash ./.depreciated/upgrade_db.sh )
+    - ./devtools.sh run-tests
+  # 缓存依赖
+  cache:
+    # 继承全局配置
+    key: ${CI_JOB_NAME}
+    paths:
+      - .gradle/
+    # 只拉取
+    policy: pull-push
+  only:
+    refs:
+      - merge_requests

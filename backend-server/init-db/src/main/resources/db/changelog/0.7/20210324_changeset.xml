@@ -1,0 +1,11 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.7-20210324-001" author="Shawn" labels="drop">
+        <comment>删除create_time和update_time字段</comment>
+        <sqlFile path="db/changelog/0.7/drop_audit_column.sql"/>
+    </changeSet>
+</databaseChangeLog>

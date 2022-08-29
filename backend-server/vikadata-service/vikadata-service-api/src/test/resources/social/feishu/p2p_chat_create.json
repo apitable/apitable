@@ -1,0 +1,19 @@
+{
+    "type": "event_callback",
+    "uuid": "907b66f7af2637e2491cb70db227477c",
+    "token": "vVuJKuBGAAUqVaD2BeTQLbH3hLMoskzG",
+    "event": {
+        "tenant_key": "113651eb8e8ed75d",
+        "type": "p2p_chat_create",
+        "operator": {
+            "open_id": "ou_bd532a0e4dc4da9e602f1bceba459e8d"
+        },
+        "chat_id": "oc_ee73982ec1fd1577ee45f9c602b70859",
+        "app_id": "cli_a2d96e91ac3b100d",
+        "user": {
+            "open_id": "ou_950e14d5e46d57377a39cac74b431150",
+            "name": "邓贵恒"
+        }
+    },
+    "ts": "1649662269.878704"
+}

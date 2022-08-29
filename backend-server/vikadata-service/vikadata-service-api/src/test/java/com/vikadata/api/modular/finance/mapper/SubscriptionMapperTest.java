@@ -1,0 +1,54 @@
+package com.vikadata.api.modular.finance.mapper;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.vikadata.api.AbstractIntegrationTest;
+import com.vikadata.api.enums.finance.SubscriptionState;
+import com.vikadata.api.util.billing.model.ProductCategory;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.jdbc.Sql;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+/**
+ * <p>
+ *  订阅计费系统-订阅表 测试
+ * </p>
+ *
+ * @author liuzijing
+ * @date 2022/8/22
+ */
+public class SubscriptionMapperTest extends AbstractIntegrationTest {
+
+    @Autowired
+    private SubscriptionMapper subscriptionMapper;
+
+    @Test
+    @Sql("/testdata/billing-subscription-data.sql")
+    public void testSelectUnExpireCapacityBySpaceId(){
+        String spaceId = "spcSueRmAkuPP";
+        assertThat(subscriptionMapper.selectUnExpireCapacityBySpaceId(spaceId, new Page<>(), SubscriptionState.ACTIVATED)).isNotNull();
+    }
+
+    @Test
+    @Sql("/testdata/billing-subscription-data.sql")
+    public void testSelectExpireCapacityBySpaceId(){
+        String spaceId = "spcSueRmAkuPP";
+        assertThat(subscriptionMapper.selectExpireCapacityBySpaceId(spaceId, new Page<>()).getRecords()).isEmpty();
+    }
+
+    @Test
+    @Sql("/testdata/billing-subscription-data.sql")
+    public void testSelectUnExpireGiftCapacityBySpaceId(){
+        String spaceId = "spcSueRmAkuPP";
+        String planId = "capacity_0.3G";
+        assertThat(subscriptionMapper.selectUnExpireGiftCapacityBySpaceId(spaceId,planId, SubscriptionState.ACTIVATED)).isNotNull();
+    }
+
+    @Test
+    @Sql("/testdata/billing-subscription-data.sql")
+    public void testSelectUnExpireBaseProductBySpaceId(){
+        String spaceId = "spcSueRmAkuPP";
+        assertThat(subscriptionMapper.selectUnExpireBaseProductBySpaceId(spaceId, SubscriptionState.ACTIVATED, ProductCategory.BASE)).isEqualTo(0);
+    }
+}

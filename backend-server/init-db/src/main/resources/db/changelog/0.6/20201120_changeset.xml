@@ -1,0 +1,22 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.6-20201120-001" author="Chambers" labels="datasheet">
+        <comment>新增工作台-数表记录来源表</comment>
+        <sql>
+            CREATE TABLE `vika_datasheet_record_source` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `dst_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数表ID(关联#vika_datasheet#dst_id)',
+            `record_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数据记录ID(关联#vika_datasheet_record#record_id)',
+            `type` tinyint(2) unsigned DEFAULT NULL COMMENT '数据来源类型(0:收集表)',
+            `created_by` bigint(20) DEFAULT NULL COMMENT '创建者',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_dst_rec_id` (`dst_id`,`record_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作台-数表记录来源表';
+        </sql>
+    </changeSet>
+</databaseChangeLog>

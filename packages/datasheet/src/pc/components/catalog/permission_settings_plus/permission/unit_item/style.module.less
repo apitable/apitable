@@ -1,0 +1,210 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.unitItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 24px 9px 8px;
+  border-radius: 4px;
+  width: 100%;
+  &:hover {
+    background: var(--bgBglessHover);
+  }
+  .unitInfo {
+    flex: 1;
+    overflow: hidden;
+    .infoCard div {
+      max-width: 100%;
+    }
+    .role {
+      display: flex;
+      align-items: center;
+    }
+    .identifyTag {
+      padding: 0 4px;
+      font-size: 12px;
+      border-radius: 2px;
+      .tagContent {
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .permission {
+    display: flex;
+    align-items: center;
+    line-height: 32px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--secondLevelText);
+    border-radius: 4px;
+    user-select: none;
+    padding-left: 16px;
+  }
+
+  .closeBtn {
+    margin-left: 5px;
+  }
+}
+
+.unitItemOperation {
+  cursor: pointer;
+  &:active {
+    background: var(--bgBglessActive);
+  }
+}
+
+.unitItemMobile {
+  &:hover, &:active {
+    background: transparent;
+  }
+}
+
+// 移动端
+@media screen and (max-width: @w-md) {
+  .unitItem {
+    height: 64px;
+
+    :global {
+      .ant-select {
+        width: auto;
+      }
+
+      .ant-select-selector {
+        padding: 0 !important;
+        background: transparent !important;
+      }
+    }
+
+    .selectBtn {
+      &.appoint {
+        position: relative;
+        padding-right: 24px;
+        display: flex;
+        align-items: center;
+
+        .arrowIcon {
+          position: absolute;
+          // top: 8px;
+          right: 0;
+        }
+      }
+    }
+  }
+  .onlyShowPermissionDisabled {
+    padding-right: 20px !important;
+  }
+}
+
+.permissionList {
+  padding: 0 8px;
+
+  .item {
+    padding: 0 8px;
+    height: 40px;
+    line-height: 40px;
+    cursor: pointer;
+
+    &.itemDisabled {
+      color: var(--fourthLevelText);
+      cursor: not-allowed;
+    }
+
+    @media (any-hover: hover) {
+      &:hover {
+        background: var(--rowSelectedBg);
+        border-radius: 4px;
+      }
+    }
+  }
+}
+
+.delete {
+  position: relative;
+  margin-top: 8px !important;
+  color: var(--errorColor) !important;
+
+  &:before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: -4px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--lineColor);
+  }
+
+  &.disabled {
+    opacity: 0.5 !important;
+  }
+}
+
+.onlyShowPermission {
+  padding-right: 4px;
+  font-size: 13px;
+  color: var(--textCommonPrimary);
+}
+
+.onlyShowPermissionDisabled {
+  padding-right: 16px;
+  opacity: 0.5;
+}
+
+.selectWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.mobileOption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  line-height: 48px;
+
+  &:not(:first-child) {
+    border-top: 1px solid var(--lineColor);
+  }
+}
+
+.mobileRoleSelect {
+  display: flex;
+  align-items: center;
+
+  .itemContent {
+    width: 100%;
+  }
+}
+
+.deleteItem {
+  height: 48px;
+  line-height: 48px;
+  text-align: center;
+  color: var(--errorColor);
+}
+
+.group {
+  border-radius: 8px;
+  background: var(--defaultBg);
+  padding: 0 16px;
+
+  &:not(:nth-child(1)) {
+    margin-top: 24px;
+  }
+}
+
+.mobileWrapper {
+  background: var(--defaultBg);
+  border-radius: 8px;
+  padding: 0 16px;
+}
+
+.hoverBg {
+  &:not(:hover) {
+    background: none !important;
+  }
+}

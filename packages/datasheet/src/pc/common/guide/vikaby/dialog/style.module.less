@@ -1,0 +1,62 @@
+@import "~pc/styles/lib_var.less";
+
+.title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  padding-right: 8px;
+  max-width: calc(100% - 20px);
+}
+
+.desc {
+  font-size: 14px;
+}
+
+.close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
+
+.close:not(:hover) svg {
+  fill: var(--defaultBg);
+}
+
+.btnWrap {
+  margin-top: 32px;
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+  }
+
+  button :global(.btn-icon) {
+    margin-right: 4px;
+  }
+}
+
+.upgradeBtn {
+  margin-top: 16px;
+  text-align: right;
+}
+
+.billingNotify {
+  .title, .desc {
+    color: var(--firstLevelText);
+  }
+
+  .title {
+    font-size: 14px;
+  }
+
+  .desc {
+    font-size: 12px;
+  }
+
+  .close:not(:hover) svg {
+    fill: var(--thirdLevelText);
+  }
+}

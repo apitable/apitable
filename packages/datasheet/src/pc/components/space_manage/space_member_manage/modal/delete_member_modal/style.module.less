@@ -1,0 +1,32 @@
+@import "~pc/styles/lib_var.less";
+.delModal {
+  :global {
+    .ant-modal-body {
+      padding: 16px;
+    }
+  }
+  .body {
+    display: flex;
+  }
+
+  .iconWrapper {
+    margin-right: 8px;
+  }
+  .text {
+    flex: 1;
+    overflow: hidden;
+  }
+  .title {
+    font-size: 18px;
+    color: var(--firstLevelText);
+    font-weight: bold;
+  }
+  .content {
+    font-size: 14px;
+    color: var(--secondLevelText);
+    margin-top: 16px;
+  }
+  :global(.ant-modal-footer) {
+    padding: 32px 24px 24px;
+  }
+}

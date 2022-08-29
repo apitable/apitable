@@ -1,0 +1,97 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+.treeWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  .light-scroll-bar();
+  &:hover {
+    overflow-y: auto;
+  }
+  :global {
+    .ant-tree {
+      &.ant-tree-directory .ant-tree-treenode::before {
+        bottom: 0;
+        border-radius: 4px;
+      }
+      span.ant-tree-switcher,
+      span.ant-tree-iconEle {
+        height: 40px;
+        width: 24px;
+        line-height: 40px;
+        svg {
+          fill: var(--fourthLevelText);
+          width: 16px;
+          height: 16px;
+          transform: rotate(90deg);
+        }
+      }
+      .ant-tree-treenode {
+        padding: 0;
+      }
+      .ant-tree-switcher-icon {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      }
+      .ant-tree-switcher_close .ant-tree-switcher-icon svg {
+        transform: rotate(0deg);
+      }
+      span.ant-tree-switcher {
+        margin-left: 13px;
+      }
+      span.ant-tree-iconEle {
+        svg {
+          width: 15px;
+          height: 15px;
+        }
+      }
+      .ant-tree-indent-unit {
+        width: 24px;
+      }
+      .ant-tree-node-content-wrapper,
+      .ant-tree-title {
+        display: inline-block;
+        height: 40px;
+        line-height: 40px !important;
+        padding: 0;
+        flex: 1;
+        .ellipsis();
+      }
+      .ant-tree-node-content-wrapper {
+        overflow: hidden;
+      }
+      .ant-tree-title {
+        width: 100%;
+        overflow: hidden;
+        span {
+          display: inline-block;
+          width: 100%;
+          height: 100%;
+          .ellipsis();
+        }
+      }
+      .ant-tree-node-content-wrapper::before {
+        height: 40px !important;
+      }
+
+      .ant-tree-node-selected {
+        .ant-tree-iconEle {
+          svg {
+            fill: var(--primaryColor);
+          }
+        }
+        .ant-tree-title {
+          color: var(--primaryColor);
+        }
+      }
+      &.ant-tree-directory .ant-tree-treenode:hover::before,
+      .ant-tree-treenode-selected::before,
+      .ant-tree-node-content-wrapper:hover::before {
+        background: var(--rowSelectedBg) !important;
+      }
+    }
+  }
+}

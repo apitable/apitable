@@ -1,0 +1,104 @@
+@import "~pc/styles/lib_mixins.less";
+
+.customSelect {
+  &:focus {
+    outline: none !important;
+    border: none !important;
+  }
+
+  &>div {
+    border: none !important;
+    background-color: var(--rowSelectedBg );
+
+    input {
+      height: 100% !important;
+    }
+
+    @media (any-hover: hover) {
+      &:focus {
+        box-shadow: 0px 0px 0px 1px var(--primaryColor);
+      }
+    }
+
+
+
+    &>div {
+      font-size: 13px !important;
+
+      svg {
+        display: none;
+      }
+    }
+  }
+
+  :global(.ant-select-arrow) {
+    margin-top: -8px;
+  }
+}
+
+.dropdown {
+  .ant-select-option-common();
+}
+
+.optionsListMenu {
+  .optionItem {
+    height: 48px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--lineColor);
+
+    .fieldItem {
+      display: flex;
+      align-items: center;
+      width: 100%;
+
+      .fieldName {
+        color: var(--firstLevelText);
+        margin-left: 8px;
+        .ellipsis();
+      }
+    }
+
+    &.active {
+      .fieldName {
+        color: var(--primaryColor);
+      }
+
+      svg:first-child {
+        fill: var(--primaryColor);
+      }
+    }
+
+    &.disabled {
+      .fieldName {
+        color: var(--fourthLevelText);
+      }
+
+      svg:first-child {
+        fill: var(--fourthLevelText);
+      }
+    }
+  }
+}
+
+.trigger {
+  height: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+}
+
+.outerTrigger,
+.trigger {
+  span {
+    .ellipsis();
+  }
+
+  svg {
+    margin-right: 4px;
+    flex-shrink: 0;
+  }
+}

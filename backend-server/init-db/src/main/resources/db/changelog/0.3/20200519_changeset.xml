@@ -1,0 +1,11 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.3-20200519-001" author="Shawn" labels="space">
+        <comment>修改空间管理权限文案</comment>
+        <sqlFile path="db/changelog/0.3/20200519_update_data.sql"/>
+    </changeSet>
+</databaseChangeLog>

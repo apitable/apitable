@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.social.mapper.SocialTenantBindMapper">
+    <select id="selectCountBySpaceId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM vika_social_tenant_bind
+        WHERE space_id = #{spaceId}
+    </select>
+
+    <select id="selectCountByTenantId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM vika_social_tenant_bind
+        WHERE tenant_id = #{tenantId}
+    </select>
+
+    <select id="selectTenantIdBySpaceId" resultType="java.lang.String">
+        SELECT tenant_id
+        FROM vika_social_tenant_bind
+        WHERE space_id = #{spaceId}
+    </select>
+
+    <select id="selectSpaceIdByTenantId" resultType="java.lang.String">
+        SELECT space_id
+        FROM vika_social_tenant_bind
+        WHERE tenant_id = #{tenantId}
+    </select>
+
+    <delete id="deleteBySpaceIdAndTenantId">
+        DELETE
+        FROM vika_social_tenant_bind
+        WHERE space_id = #{spaceId} AND tenant_id = #{tenantId}
+    </delete>
+
+    <delete id="deleteBatchByTenantId">
+        DELETE
+        FROM vika_social_tenant_bind
+        WHERE tenant_id IN
+        <foreach item="item" index="index" collection="tenantIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="selectBaseInfoBySpaceId"
+            resultType="com.vikadata.api.modular.social.model.TenantBindDTO">
+        SELECT vstb.space_id, vstb.tenant_id, vst.app_id
+        FROM vika_social_tenant vst
+        LEFT JOIN vika_social_tenant_bind vstb ON vst.tenant_id = vstb.tenant_id AND ((vstb.app_id is
+        NULL ) OR (vst.app_id = vstb.app_id))
+        WHERE vstb.space_id = #{spaceId}
+    </select>
+
+    <select id="selectCountByTenantIdAndAppId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM vika_social_tenant_bind
+        WHERE tenant_id = #{tenantId}
+        AND app_id = #{appId}
+    </select>
+
+    <select id="selectSpaceIdByTenantIdAndAppId" resultType="java.lang.String">
+        SELECT space_id
+        FROM vika_social_tenant_bind
+        WHERE tenant_id = #{tenantId}
+        AND app_id = #{appId}
+        LIMIT 0,1
+    </select>
+
+    <select id="selectByTenantIdAndAppId" resultType="com.vikadata.entity.SocialTenantBindEntity">
+        SELECT *
+        FROM vika_social_tenant_bind
+        WHERE tenant_id = #{tenantId}
+        AND app_id = #{appId}
+        LIMIT 0,1
+    </select>
+
+    <delete id="deleteBySpaceId">
+        DELETE
+        FROM vika_social_tenant_bind
+        WHERE space_id = #{spaceId}
+    </delete>
+
+    <select id="selectCountBySpaceIdAndPlatform" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM vika_social_tenant_bind vstb
+        LEFT JOIN vika_social_tenant vst on vstb.app_id = vst.app_id
+        WHERE vstb.space_id = #{spaceId}
+        AND vst.platform = #{platform}
+    </select>
+
+    <select id="selectSpaceBindTenantInfoByPlatform"
+            resultType="com.vikadata.api.modular.social.model.SpaceBindTenantInfoDTO">
+        SELECT vstb.space_id,
+        vst.tenant_id,
+        vst.app_id,
+        vst.platform,
+        vst.app_type,
+        vst.auth_mode,
+        vst.auth_info AS auth_info_str,
+        vst.status
+        FROM vika_social_tenant_bind vstb,
+        vika_social_tenant vst
+        WHERE vstb.tenant_id = vst.tenant_id
+        AND vstb.app_id = vst.app_id
+        AND vstb.space_id = #{spaceId}
+        <if test="platform != null">
+            AND vst.platform = #{platform}
+        </if>
+    </select>
+
+    <select id="selectSpaceIdsByTenantIdAndAppId" resultType="java.lang.String">
+        SELECT space_id
+        FROM vika_social_tenant_bind
+        WHERE tenant_id = #{tenantId}
+        AND app_id = #{appId}
+    </select>
+
+    <select id="selectSpaceIdByPlatformTypeAndAppType" resultType="java.lang.String">
+        SELECT space_id
+        FROM vika_social_tenant_bind vstb
+        JOIN vika_social_tenant vst ON vst.tenant_id = vstb.tenant_id
+        WHERE vst.platform = #{platformType.value}
+        AND vst.app_type = #{appType.type}
+        AND vst.status = 1
+    </select>
+
+    <delete id="deleteByTenantIdAndSpaceId">
+        DELETE FROM vika_social_tenant_bind
+        WHERE tenant_id = #{tenantId} AND space_id = #{spaceId}
+    </delete>
+
+    <select id="selectBySpaceIdAndTenantId" resultType="com.vikadata.entity.SocialTenantBindEntity">
+        SELECT * from vika_social_tenant_bind
+        WHERE space_id = #{spaceId} AND tenant_id = #{tenantId}
+    </select>
+
+    <select id="selectBySpaceId" resultType="com.vikadata.entity.SocialTenantBindEntity">
+        SELECT * FROM vika_social_tenant_bind
+        WHERE space_id = #{spaceId} LIMIT 0,1
+    </select>
+
+    <select id="selectSpaceIdsByTenantIdsAndAppIds" resultType="java.lang.String">
+        SELECT space_id FROM vika_social_tenant_bind
+        WHERE tenant_id IN
+        <foreach item="tenantId" index="index" collection="tenantIds" open="(" separator="," close=")">
+            #{tenantId}
+        </foreach>
+        AND app_id IN
+        <foreach item="appId" index="index" collection="appIds" open="(" separator="," close=")">
+            #{appId}
+        </foreach>
+    </select>
+</mapper>

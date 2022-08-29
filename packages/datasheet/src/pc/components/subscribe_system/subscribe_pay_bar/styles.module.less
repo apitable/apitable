@@ -1,0 +1,159 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.payBar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 24px 32px;
+  top: 0px;
+
+
+  span {
+    cursor: auto;
+  }
+
+  .price {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-right: 24px;
+
+    .priceLine {
+      display: flex;
+      margin-bottom: 0;
+    }
+
+    .fontStyle {
+      display: flex;
+      align-items: center;
+    }
+
+    .totalSave {
+      position: relative;
+      //top: 10px;
+
+      span {
+        font-size: 18px;
+        font-family: BebasNeue;
+        color: var(--red_500);
+        //font-weight: bolder;
+        line-height: 100%;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: flex-end;
+      }
+    }
+
+    .totalPaid {
+      position: relative;
+      top: 2px;
+
+      span {
+        font-size: 32px;
+        font-family: BebasNeue;
+        color: var(--tangerine_500);
+        line-height: 100%;
+        letter-spacing: 0.5px;
+        //font-weight: bolder;
+      }
+    }
+  }
+}
+
+.priceDetail {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  height: 48px;
+  margin-right: 16px;
+
+  & > p:nth-child(1) {
+    &:hover {
+      color: var(--tangerine_600);
+    }
+  }
+
+  .detailDialog {
+    display: none;
+    position: absolute;
+
+    .line {
+      margin-bottom: 16px;
+
+      .detailPrice {
+        font-family: BebasNeue;
+        font-size: 20px;
+      }
+    }
+
+    .justifySpaceBetween {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .splitBorder {
+      width: 100%;
+      height: 1px;
+      background: var(--lineColor);
+      margin-bottom: 16px;
+    }
+  }
+
+  &:hover {
+    cursor: default;
+
+    .detailDialog {
+      display: block;
+      width: 256px;
+      //height: 247px;
+      padding: 24px;
+      border-radius: 8px;
+      bottom: 30px;
+      left: -98px;
+      background: var(--highBg);
+      box-shadow: var(--shadowCommonHighest);
+      z-index: var(--zIndex-3);
+
+      .arrow {
+        position: absolute;
+        transform: translate(100%, -50%);
+        border: 6px solid transparent;
+        border-top: 6px solid var(--highBg);
+        bottom: -18px;
+        left: 120px;
+      }
+    }
+  }
+}
+
+.contactSpan {
+  color: var(--primaryColor);
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+.silverButton {
+  background: var(--indigo_400) !important;
+
+  &:hover {
+    background: var(--indigo_500) !important;
+  }
+
+  &:active {
+    background: var(--indigo_600) !important;
+  }
+}
+
+.goldButton {
+  background: var(--orange_500) !important;
+
+  &:hover {
+    background: var(--orange_600) !important;
+  }
+
+  &:active {
+    background: var(--orange_700) !important;
+  }
+}

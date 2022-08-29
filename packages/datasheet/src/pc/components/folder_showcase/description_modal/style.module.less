@@ -1,0 +1,25 @@
+@import "~pc/styles/lib_var.less";
+
+.editor {
+  padding-bottom: 24px;
+}
+
+.folderShowCaseDrawer {
+  :global {
+    .ant-drawer-content-wrapper, 
+    .ant-drawer-content {
+      border-radius: 16px 16px 0 0;
+    }
+
+    .ant-drawer-body {
+      padding: 0;
+    }
+
+    .ant-drawer-close {
+      svg {
+        background-color: var(--rowSelectedBg);
+        border-radius: 50%;
+      }
+    }
+  }
+}

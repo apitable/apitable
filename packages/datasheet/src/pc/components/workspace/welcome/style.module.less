@@ -1,0 +1,185 @@
+@import "~pc/styles/lib_var.less";
+
+.welcome {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--defaultBg);
+
+  .contentWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateY(-20px);
+  }
+
+  img {
+    width: auto !important;
+    height: 370px !important;
+  }
+
+  .tip {
+    font-size: 16px;
+    color: var(--firstLevelText);
+    margin: 55px 0 30px;
+  }
+}
+
+.guide {
+  padding: 40px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  overflow: auto;
+
+  .scrollWrapper {
+    overflow: hidden;
+    min-width: 900px;
+  }
+
+  .container {
+    padding-top: 78px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .guideItem {
+    padding-bottom: 80px;
+  }
+
+  .titleWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-bottom: 24px;
+
+    &::before {
+      display: block;
+      content: "";
+      height: 16px;
+      width: 3px;
+      border-radius: 1.5px;
+    }
+
+    .title {
+      padding-left: 8px;
+    }
+
+    .rightBtn {
+      position: absolute;
+      right: 0;
+    }
+  }
+
+  .moduleContainer {
+    display: flex;
+    align-items: center;
+
+    .moduleItem {
+      cursor: pointer;
+      position: relative;
+      width: 200px;
+      max-width: 200px;
+      height: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 16px;
+      transition: transform 0.3s;
+
+      @media (any-hover: hover) {
+        &:hover {
+          transform: scale(1.15);
+        }
+      }
+
+      &:not(:last-child) {
+        margin-right: 80px;
+      }
+
+      .moduleImg {
+        width: 34px;
+        height: 34px;
+        margin-right: 8px;
+      }
+
+      .videoBtn {
+        position: absolute;
+        right: 8px;
+        top: 8px;
+      }
+    }
+  }
+
+  .guideItem:nth-child(1) .titleWrapper::before {
+    background-color: var(--fc0);
+  }
+  .guideItem:nth-child(2) .titleWrapper::before {
+    background-color: var(--rc04);
+  }
+  .guideItem:nth-child(3) .titleWrapper::before {
+    background-color: var(--rc05);
+  }
+}
+
+@media screen and(min-height: 900px) {
+  .guide {
+    display: flex;
+    flex-direction: column;
+
+    .scrollWrapper {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+
+// 移动端
+.mobileGuide {
+  padding: 40px;
+  height: 100%;
+  overflow-y: auto;
+
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-top: 48px;
+  }
+
+  .moduleItem {
+    cursor: pointer;
+    position: relative;
+    width: 132px;
+    height: 132px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    padding: 0 7px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    .moduleImg {
+      margin-bottom: 8px;
+    }
+
+    .videoBtn {
+      position: absolute;
+      right: 8px;
+      top: 8px;
+    }
+  }
+}
+
+.moreTemplateBtn {
+  cursor: pointer;
+  display: flex;
+}

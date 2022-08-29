@@ -1,0 +1,105 @@
+import { Calendar } from './index';
+import { WarningTriangleNonzeroFilled } from '@vikadata/icons';
+import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+import { Drag, Drop } from './drag';
+import { ThemeToggle } from '../../stories/theme-toggle';
+
+<style>{`
+  
+`}</style>
+
+<Meta title="基础组件/Calendar 日历/文档" />
+
+# Calendar 日历
+
+## 使用场景
+
+当数据是日期或按照日期划分时，例如日程、课表、事项日历等。
+
+## 基础用法
+
+- 日历组件支持月切换、返回今天（当前月）；
+- 支持拉伸任务调整时间；
+- 移动端支持滑动切换月；
+- 国际化：支持中英文。
+
+## 使用说明
+
+- 默认展示当前月的日历视图，如果设置了 `defaultDate` 则展示对应月份的视图；
+- 计算任务长度时，以天为单位，忽略天以下（小时、分钟）的时间；
+- 任务没有开始时间或者结束时间时，长度为 1 天。
+- 开始时间大于结束时间时，任务异常，出现告警图标，任务在界面中展示到开始时间未知，长度为 1 天。
+
+## 默认展示
+
+没有任务时，日历展示如下：
+
+<Canvas>
+<ThemeToggle>
+  <Calendar />
+</ThemeToggle>
+</Canvas>
+
+## 有任务且允许拉伸
+
+设置 `resizable` 为 true 允许拉伸任务两端调整时间：
+
+<Canvas>
+<Story id="基础组件-calendar-日历--resizable" />
+</Canvas>
+
+## 自定义任务样式
+
+可以通过 `listStyle` 定义任务样式，日历会根据 `listStyle` height 属性自适应高度。
+
+<Canvas>
+<ThemeToggle>
+  <Calendar
+    defaultDate={new Date('2021/07/01')}
+    listStyle={{
+      border: '1px dashed #AB45FB',
+      height: '60px',
+      lineHeight: '60px'
+    }}
+    tasks={[
+      {
+        endDate: new Date('2021-07-18T16:00:00.000Z'),
+        id: 1,
+        startDate: new Date('2021-07-14T16:00:00.000Z'),
+        title: '干饭 🍚'
+      },
+      {
+        endDate: new Date('2021-07-16T16:00:00.000Z'),
+        id: 2,
+        startDate: new Date('2021-07-16T16:00:00.000Z'),
+        title: '睡觉 😴'
+      }
+    ]}
+  />
+</ThemeToggle>
+</Canvas>
+
+## 异常任务警告
+
+开始时间大于结束时间时，任务异常，此时展示告警，任务在界面中展示到开始时间未知，长度为 1 天。
+
+<Canvas>
+  <ThemeToggle>
+  <Calendar
+    defaultDate={new Date('2021/07/01')}
+    tasks={[
+      {
+        endDate: new Date('2021-07-05T16:00:00.000Z'),
+        id: 1,
+        startDate: new Date('2021-07-14T16:00:00.000Z'),
+        title: '干饭 🍚'
+      }
+    ]}
+    warnText={<Tooltip content="结束日期小于开始日期"><span className="warning"><IconComponent color="#FFAB00" size={14}/></span></Tooltip>}
+  />
+</ThemeToggle>
+</Canvas>
+
+## API
+
+<ArgsTable of={Calendar} />

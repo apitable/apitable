@@ -1,0 +1,29 @@
+{
+  "name": "@vikadata/icons",
+  "version": "0.13.5",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "homepage": "https://github.com/vikadata/",
+  "scripts": {
+    "build": "rm -rf dist && yarn tsc --build tsconfig.json",
+    "start": "rm -rf dist && yarn tsc --watch",
+    "format": "eslint 'src/*/*.tsx' --fix",
+    "build:publish": "./publish.sh",
+    "release": "yarn build"
+  },
+  "peerDependencies": {
+    "react": "17.0.2"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.2",
+    "@types/react-highlight-words": "^0.16.1",
+    "@types/styled-components": "^5.1.4",
+    "eslint": "^7.21.0",
+    "styled-components": ">=5.2.1",
+    "typescript": "4.6.4"
+  }
+}

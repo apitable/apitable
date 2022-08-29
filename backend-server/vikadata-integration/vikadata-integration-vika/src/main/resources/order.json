@@ -1,0 +1,12 @@
+{
+    "integration": {
+        "order" : "dstRoZyAHkFBZzGcC1",
+        "order_item" : "dstybUpZPtHH0LR0Bf",
+        "order_payment" : "dst9QqfRf8WwE0De2C"
+    },
+    "api": {
+        "order" : "dstqC7qJsQ2CP2GMQ6",
+        "order_item" : "dstr4SP9KvEZtRXnZB",
+        "order_payment" : "dstB7KLFmVHdiTWxJR"
+    }
+}

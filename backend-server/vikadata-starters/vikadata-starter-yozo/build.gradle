@@ -1,0 +1,13 @@
+plugins {
+  id 'java-library'
+}
+
+description = "Starter for yozo cloud"
+
+dependencies {
+  api(project(":vikadata-starters:vikadata-starter"))
+  api(project(':vikadata-integration:vikadata-integration-yozo'))
+  
+  implementation rootProject.ext.dependencies['spring-web']
+  implementation rootProject.ext.dependencies['jackson']
+}

@@ -1,0 +1,22 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.12-20220303-001" author="Shawn" labels="social">
+        <comment>第三方集成-租户部门表添加空间标识索引</comment>
+        <sql>
+            ALTER TABLE `vika_social_tenant_department`
+                ADD INDEX `k_space_id` (`space_id`) COMMENT '空间ID索引';
+        </sql>
+    </changeSet>
+    <changeSet id="V0.12-20220303-002" author="Shawn" labels="social">
+        <comment>第三方集成-租户部门绑定表添加租户ID索引</comment>
+        <sql>
+            ALTER TABLE `vika_social_tenant_department_bind`
+                ADD INDEX `k_tenant_id` (`tenant_id`) COMMENT '租户ID索引';
+        </sql>
+    </changeSet>
+</databaseChangeLog>

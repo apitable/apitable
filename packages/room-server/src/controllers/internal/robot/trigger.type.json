@@ -1,0 +1,242 @@
+[{
+  "id": 1430077664545525761,
+  "service_id": "asvu6yt7T4DxEjtiQD",
+  "trigger_type_id": "att3Rmx833YuGEbYH7",
+  "name": "$robot_trigger_form_submitted_title",
+  "description": "$robot_trigger_form_submitted_desc",
+  "input_json_schema": {
+    "schema": {
+        "type": "object",
+        "required": [
+            "formId"
+        ],
+        "properties": {
+            "formId": {
+                "type": "string",
+                "title": "$robot_trigger_form_submitted_config_1"
+            }
+        },
+        "additionalProperties": false
+    },
+    "uiSchema": {}
+  },
+  "output_json_schema": {
+    "type": "object",
+    "title": "$robot_trigger_form_submitted_title",
+    "required": [
+        "datasheetId",
+        "datasheetName",
+        "recordId",
+        "recordUrl"
+    ],
+    "properties": {
+        "recordId": {
+            "type": "string",
+            "title": "$robot_variables_record_ID"
+        },
+        "recordUrl": {
+            "type": "string",
+            "title": "$robot_variables_record_URL"
+        },
+        "datasheetId": {
+            "type": "string",
+            "title": "$robot_variables_datasheet_ID"
+        },
+        "datasheetName": {
+            "type": "string",
+            "title": "$robot_variables_datasheet_name"
+        }
+    }
+  },
+  "endpoint": "form_submitted",
+  "i18n": {
+    "zh": {
+      "$robot_trigger_form_submitted_title": "有新的表单提交时",
+      "$robot_trigger_form_submitted_desc": "当指定表单收到新的提交时，机器人会开始运行",
+      "$robot_trigger_form_submitted_config_1": "选择神奇表单",
+      "$robot_variables_record_ID": "记录 ID",
+      "$robot_variables_record_URL": "记录 URL",
+      "$robot_variables_datasheet_ID": "维格表 ID",
+      "$robot_variables_datasheet_name": "维格表名称"
+    },
+    "en": {
+      "$robot_trigger_form_submitted_title": "Form is submitted",
+      "$robot_trigger_form_submitted_desc": "When a form receives a new response, the robot will start working",
+      "$robot_trigger_form_submitted_config_1": "Select a form",
+      "$robot_variables_record_ID": "Record ID",
+      "$robot_variables_record_URL": "Record URL",
+      "$robot_variables_datasheet_ID": "Datasheet ID",
+      "$robot_variables_datasheet_name": "Datasheet name"
+    }
+  },
+  "is_deleted": 0,
+  "created_by": 1216908891233718274,
+  "updated_by": 1216908891233718274,
+  "created_at": "2021-08-24 16:00:59",
+  "updated_at": "2021-10-26 15:16:03"
+},{
+  "id": 1431136891165016065,
+  "service_id": "asvu6yt7T4DxEjtiQD",
+  "trigger_type_id": "attreS3uAlNVxdFQe4",
+  "name": "$robot_trigger_record_matches_condition_title",
+  "description": "$robot_trigger_record_matches_condition_desc",
+  "input_json_schema": {
+    "schema": {
+        "type": "object",
+        "required": [
+            "datasheetId",
+            "filter"
+        ],
+        "properties": {
+            "filter": {
+                "type": "string",
+                "title": "$robot_trigger_record_matches_condition_config_2"
+            },
+            "datasheetId": {
+                "type": "string",
+                "title": "$robot_trigger_record_matches_condition_config_1"
+            }
+        },
+        "additionalProperties": false
+    },
+    "uiSchema": {
+        "ui:order": [
+            "datasheetId",
+            "filter"
+        ]
+    }
+  },
+  "output_json_schema": {
+    "type": "object",
+    "title": "$robot_trigger_record_matches_condition_title",
+    "required": [
+        "datasheetId",
+        "datasheetName",
+        "recordId",
+        "recordUrl"
+    ],
+    "properties": {
+        "recordId": {
+            "type": "string",
+            "title": "$robot_variables_record_ID"
+        },
+        "recordUrl": {
+            "type": "string",
+            "title": "$robot_variables_record_URL"
+        },
+        "datasheetId": {
+            "type": "string",
+            "title": "$robot_variables_datasheet_ID"
+        },
+        "datasheetName": {
+            "type": "string",
+            "title": "$robot_variables_datasheet_name"
+        }
+    }
+  },
+  "endpoint": "record_matches_conditions",
+  "i18n": {
+    "zh": {
+      "$robot_trigger_record_matches_condition_title": "有记录满足条件时",
+      "$robot_trigger_record_matches_condition_desc": "当表中有记录满足指定条件时，机器人会开始运行",
+      "$robot_trigger_record_matches_condition_config_2": "选择匹配条件",
+      "$robot_trigger_record_matches_condition_config_1": "选择维格表",
+      "$robot_variables_record_ID": "记录 ID",
+      "$robot_variables_record_URL": "记录 URL",
+      "$robot_variables_datasheet_ID": "维格表 ID",
+      "$robot_variables_datasheet_name": "维格表名称"
+    },
+    "en": {
+      "$robot_trigger_record_matches_condition_title": "Record matches conditions",
+      "$robot_trigger_record_matches_condition_desc": "When a record matches predefined conditions, the robot will start working",
+      "$robot_trigger_record_matches_condition_config_2": "Select match conditions",
+      "$robot_trigger_record_matches_condition_config_1": "Select a datasheet",
+      "$robot_variables_record_ID": "Record ID",
+      "$robot_variables_record_URL": "Record URL",
+      "$robot_variables_datasheet_ID": "Datasheet ID",
+      "$robot_variables_datasheet_name": "Datasheet name"
+    }
+  },
+  "is_deleted": 0,
+  "created_by": 1216908891233718274,
+  "updated_by": 1216908891233718274,
+  "created_at": "2021-08-27 14:09:58",
+  "updated_at": "2021-10-27 18:38:19"
+},{
+  "id": 1432243487853051906,
+  "service_id": "asvu6yt7T4DxEjtiQD",
+  "trigger_type_id": "att8LFqLRDDwxbH6Zx",
+  "name": "$robot_trigger_record_created_title",
+  "description": "$robot_trigger_record_created_desc",
+  "input_json_schema": {
+    "schema": {
+        "type": "object",
+        "required": [
+            "datasheetId"
+        ],
+        "properties": {
+            "datasheetId": {
+                "type": "string",
+                "title": "$robot_trigger_record_created_config_1"
+            }
+        },
+        "additionalProperties": false
+    },
+    "uiSchema": {}
+  },
+  "output_json_schema": {
+    "type": "object",
+    "title": "$robot_trigger_record_created_title",
+    "required": [
+        "datasheetId",
+        "datasheetName",
+        "recordId",
+        "recordUrl"
+    ],
+    "properties": {
+        "recordId": {
+            "type": "string",
+            "title": "$robot_variables_record_ID"
+        },
+        "recordUrl": {
+            "type": "string",
+            "title": "$robot_variables_record_URL"
+        },
+        "datasheetId": {
+            "type": "string",
+            "title": "$robot_variables_datasheet_ID"
+        },
+        "datasheetName": {
+            "type": "string",
+            "title": "$robot_variables_datasheet_name"
+        }
+    }
+  },
+  "endpoint": "record_created",
+  "i18n": {
+    "zh": {
+      "$robot_trigger_record_created_title": "有新的记录创建时",
+      "$robot_trigger_record_created_desc": "只要表中有新的记录被创建（比如手动创建记录、API 创建记录、收到表单提交），机器人都会开始运行",
+      "$robot_trigger_record_created_config_1": "选择维格表",
+      "$robot_variables_record_ID": "记录 ID",
+      "$robot_variables_record_URL": "记录 URL",
+      "$robot_variables_datasheet_ID": "维格表 ID",
+      "$robot_variables_datasheet_name": "维格表名称"
+    },
+    "en": {
+      "$robot_trigger_record_created_title": "Record is created",
+      "$robot_trigger_record_created_desc": "Once a record is created, either by manual operation, API, or form collection, the robot will start working",
+      "$robot_trigger_record_created_config_1": "Select a datasheet",
+      "$robot_variables_record_ID": "Record ID",
+      "$robot_variables_record_URL": "Record URL",
+      "$robot_variables_datasheet_ID": "Datasheet ID",
+      "$robot_variables_datasheet_name": "Datasheet name"
+    }
+  },
+  "is_deleted": 0,
+  "created_by": 1216908891233718274,
+  "updated_by": 1216908891233718274,
+  "created_at": "2021-08-30 15:27:11",
+  "updated_at": "2021-10-26 15:16:03"
+}
+]

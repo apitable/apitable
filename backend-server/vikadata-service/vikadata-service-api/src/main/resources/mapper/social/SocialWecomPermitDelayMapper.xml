@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.social.mapper.SocialWecomPermitDelayMapper">
+    <select id="selectByProcessStatuses" resultType="com.vikadata.entity.SocialWecomPermitDelayEntity">
+        SELECT *
+        FROM vika_social_wecom_permit_delay
+        WHERE auth_corp_id = #{authCorpId}
+        AND suite_id = #{suiteId}
+        AND delay_type = #{delayType}
+        AND process_status IN
+        <foreach collection="processStatuses" item="processStatus" open="(" separator="," close=")">
+            #{processStatus}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectBySuiteIdAndProcessStatus" resultType="com.vikadata.entity.SocialWecomPermitDelayEntity">
+        SELECT *
+        FROM vika_social_wecom_permit_delay
+        WHERE process_status = #{processStatus}
+        AND suite_id = #{suiteId}
+        AND is_deleted = 0
+        ORDER BY created_at ASC
+        LIMIT #{skip}, #{limit}
+    </select>
+</mapper>

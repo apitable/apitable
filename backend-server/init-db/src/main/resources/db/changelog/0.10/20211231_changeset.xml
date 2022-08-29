@@ -1,0 +1,26 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.10-20211231-001" author="HumphreyHu" labels="history">
+        <comment>新增"用户历史记录"数据库表 (用于账号注销)</comment>
+        <sql>
+            CREATE TABLE `vika_user_history`
+            (
+                `id`                    bigint(20)  UNSIGNED NOT NULL                                                        COMMENT '主键',
+                `user_id`               bigint(20)  UNSIGNED NOT NULL                                                        COMMENT '用户ID',
+                `user_status`           tinyint(2)           NOT NULL                                                        COMMENT '用户账号状态(1:申请账号注销, 2:撤销账号注销, 3:完成账号注销)',
+                `created_by`            bigint(20)  UNSIGNED NOT NULL                                                        COMMENT '创建者',
+                `updated_by`            bigint(20)  UNSIGNED NOT NULL                                                        COMMENT '更新者',
+                `created_at`            timestamp            NOT NULL DEFAULT CURRENT_TIMESTAMP                              COMMENT '创建时间',
+                `updated_at`            timestamp                NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT '更新时间',
+                PRIMARY KEY (`id`) USING BTREE,
+                KEY `k_user_id`(`user_id`) USING BTREE
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4
+              COLLATE=utf8mb4_unicode_ci COMMENT = '用户历史记录表';
+        </sql>
+    </changeSet>
+</databaseChangeLog>

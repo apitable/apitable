@@ -1,0 +1,181 @@
+syntax = 'proto3';
+
+option java_multiple_files = true;
+option java_package = "com.vikadata.integration.grpc";
+option java_outer_classname = "GrpcDingTalkMessage";
+
+package grpc;
+
+import "google/protobuf/any.proto";
+
+message DeptUserListRo {
+  string suite_id = 1;
+  string auth_corp_id = 2;
+  string dept_id = 3;
+  int32 cursor = 4;
+  int32 size = 5;
+}
+
+message DepartmentSubIdRo {
+  string suite_id = 1;
+  string auth_corp_id = 2;
+  string dept_id = 3;
+}
+
+message UserDetailRo {
+  string suite_id = 1;
+  string auth_corp_id = 2;
+  string user_id = 3;
+}
+
+message GetSocialTenantStatusRo {
+  string suite_id = 1;
+  string auth_corp_id = 2;
+}
+
+message GetUserInfoByCodeRo {
+  string suite_id = 1;
+  string auth_corp_id = 2;
+  string code = 3;
+}
+
+message GetSsoUserInfoByCodeRo {
+  string suite_id = 1;
+  string code = 2;
+}
+
+message SendMessageToUserByTemplateIdRo {
+  string suite_id = 1;
+  string auth_corp_id = 2;
+  string agent_id = 3;
+  string data = 4;
+  repeated string user_ids = 5;
+  string template_id = 6;
+}
+
+message  UploadMediaRo {
+  string suite_id = 1;
+  string auth_corp_id = 2;
+  string media_type = 3;
+  bytes fileBytes = 4;
+  string fileName = 5;
+}
+
+message  CreateMicroApaasAppRo {
+  string suite_id = 1;
+  string auth_corp_id = 2;
+  string appName = 3;
+  string appDesc = 4;
+  string appIcon = 5;
+  string homepageLink = 6;
+  string pcHomepageLink = 7;
+  string ompLink = 8;
+  string homepageEditLink = 9;
+  string pcHomepageEditLink = 10;
+  string opUserId = 11;
+  string bizAppId = 12;
+  string templateKey = 13;
+}
+
+message GetInternalSkuPageRo {
+  string suite_id = 1;
+  string auth_corp_id = 2;
+  string goods_code = 3;
+  string callback_page = 4;
+  string extend_param = 5;
+}
+
+message InternalOrderFinishRo {
+  string suite_id = 1;
+  string auth_corp_id = 2;
+  string order_id = 3;
+}
+
+message GetInternalOrderRo {
+  string suite_id = 1;
+  string auth_corp_id = 2;
+  string order_id = 3;
+}
+
+message GetDdConfigSignRo {
+  string suite_id = 1;
+  string auth_corp_id = 2;
+  string nonce_str = 3;
+  string timestamp = 4;
+  string url = 5;
+}
+
+message GetUserCountRo {
+  string suite_id = 1;
+  string auth_corp_id = 2;
+  bool only_active = 3;
+}
+
+message GetUserTreeListRo {
+  string suite_id = 1;
+  string auth_corp_id = 2;
+  repeated string sub_dept_ids = 3;
+}
+
+message GetUserIdListByDeptIdRo {
+  string suite_id = 1;
+  string auth_corp_id = 2;
+  string dept_id = 3;
+}
+
+message GetCorpBizDataRo {
+  string suite_id = 1;
+  string auth_corp_id = 2;
+  repeated int32 biz_types = 3;
+}
+
+message RequestIdResult {
+  string request_id = 1;
+  google.protobuf.Any result = 2;
+}
+
+message DingTalkSsoUserInfoResult {
+  int32 errcode = 1;
+  string errmsg = 2;
+  google.protobuf.Any userInfo = 3;
+  bool isSys = 4;
+  google.protobuf.Any corpInfo = 5;
+}
+
+message AsyncSendMessageResult {
+  string request_id = 1;
+  string task_id = 2;
+}
+
+message CreateMicroApaasAppResult {
+  string agent_id = 1;
+  string biz_app_id = 2;
+}
+
+message TenantInfoResult {
+  string tenant_id = 1;
+  string agent_id = 2;
+  bool status = 3;
+}
+
+message UserTreeListResult {
+  map<string, DingTalkUserDto> userTreeList = 1;
+}
+
+message CorpBizDataResult {
+  repeated CorpBizDataDto result = 1;
+}
+
+message DingTalkUserDto {
+  string open_id = 1;
+  string user_name = 2;
+  string avatar = 3;
+  string union_id = 4;
+}
+
+message CorpBizDataDto {
+  int32 biz_type = 1;
+  string biz_id = 2;
+  string biz_data = 3;
+}
+

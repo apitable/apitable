@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.modular.workspace.mapper.ResourceMetaMapper">
+    <select id="selectByResourceIds" resultType="com.vikadata.entity.ResourceMetaEntity">
+        SELECT *
+        FROM vika_resource_meta
+        WHERE resource_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectMetaDataByResourceId" resultType="java.lang.String">
+        SELECT meta_data
+        FROM vika_resource_meta
+        WHERE resource_id = #{resourceId}
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO vika_resource_meta(id, resource_id, resource_type, meta_data,
+        created_by, updated_by)
+        VALUE
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id}, #{item.resourceId}, #{item.resourceType}, #{item.metaData},
+                #{item.createdBy}, #{item.updatedBy}
+            </trim>
+        </foreach>
+    </insert>
+</mapper>

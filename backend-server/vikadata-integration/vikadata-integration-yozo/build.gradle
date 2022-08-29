@@ -1,0 +1,11 @@
+plugins {
+  id 'java'
+}
+
+dependencies {
+  implementation rootProject.ext.dependencies['spring-web']
+  implementation rootProject.ext.dependencies['jackson']
+  implementation rootProject.ext.dependencies['okhttp3']
+  
+  testImplementation('org.junit.jupiter:junit-jupiter')
+}

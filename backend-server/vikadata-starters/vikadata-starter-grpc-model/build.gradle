@@ -1,0 +1,10 @@
+plugins {
+  id 'java-library'
+}
+
+description = "Starter For Vika"
+
+dependencies {
+  api(project(":vikadata-starters:vikadata-starter"))
+  api(project(':vikadata-integration:vikadata-integration-grpc-model'))
+}

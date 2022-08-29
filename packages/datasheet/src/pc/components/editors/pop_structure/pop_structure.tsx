@@ -1,0 +1,118 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+import * as React from 'react';
+import { stopPropagation } from 'pc/utils/dom';
+import { DEFAULT_COLUMN_WIDTH as MIN_POP_STRUCTURE_WIDTH, t, Strings } from '@vikadata/core';
+import { useLayoutEffect } from 'react';
+import { useDebounceFn } from 'ahooks';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { useResponsive } from 'pc/hooks';
+import { Popup } from 'pc/components/common/mobile/popup';
+import { PopStructureContext } from './context';
+
+interface IPopStructureProps {
+  editing: boolean;
+  height: number;
+  width: number;
+  className: string;
+  style: React.CSSProperties;
+  onClose (): void;
+}
+
+const SECURITY_PADDING = 30; // 给屏幕边缘预留的安全距离
+
+export const PopStructure: React.FC<IPopStructureProps> = props => {
+  const {
+    children,
+    editing,
+    height,
+    className,
+    style,
+    width,
+    onClose,
+  } = props;
+
+  const [position, setPosition] = useState({});
+  const [restHeight, setRestHeight] = useState(0);
+
+  const { screenIsAtMost } = useResponsive();
+  const isMobile = screenIsAtMost(ScreenSize.md);
+
+  const editContainerRef = useRef<HTMLDivElement>(null);
+
+  const setReflowSize = useCallback(() => {
+    if (!editContainerRef.current || !editContainerRef.current.parentElement) { return; }
+    const rect = editContainerRef.current.parentElement.getBoundingClientRect();
+    const modal = document.querySelector('.ant-modal');
+    const bottomEdge = (modal && modal.getBoundingClientRect().bottom) || window.innerHeight;
+    const isOverVertical = rect.top > (bottomEdge / 2);
+    const isOverHorizontal = rect.left + MIN_POP_STRUCTURE_WIDTH + SECURITY_PADDING > window.innerWidth;
+
+    // 设置存放下拉菜单区域的高度
+    setRestHeight(isOverVertical ? rect.top : window.innerHeight - rect.top - height);
+
+    setPosition({
+      top: !isOverVertical ? height : 'unset',
+      bottom: isOverVertical ? 0 : 'unset',
+      left: !isOverHorizontal ? 0 : 'unset',
+      right: isOverHorizontal ? -width : 'unset',
+    });
+  }, [height, width]);
+
+  const { run } = useDebounceFn(setReflowSize, {
+    wait: 150,
+  });
+
+  useLayoutEffect(() => {
+    if (!editing) {
+      setPosition({
+        top: 0,
+        left: 0,
+      });
+      return;
+    }
+
+    if (isMobile) { return; }
+    setReflowSize();
+  }, [editing, setReflowSize, isMobile]);
+
+  useEffect(() => {
+    window.addEventListener('resize', run);
+    return () => window.removeEventListener('resize', run);
+  }, [run]);
+
+  const context = { restHeight };
+  
+  return (
+    <>
+      <ComponentDisplay minWidthCompatible={ScreenSize.md}>
+        <div
+          className={className}
+          ref={editContainerRef}
+          onClick={stopPropagation}
+          onWheel={stopPropagation}
+          style={{
+            ...style,
+            ...position,
+            minHeight: 'auto',
+            minWidth: style.width ? MIN_POP_STRUCTURE_WIDTH : 'auto',
+          }}
+        >
+          <PopStructureContext.Provider value={context}>
+            {children}
+          </PopStructureContext.Provider>
+        </div>
+      </ComponentDisplay>
+
+      <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
+        <Popup
+          title={t(Strings.please_choose)}
+          height='80%'
+          visible={editing}
+          onClose={onClose}
+        >
+          {children}
+        </Popup>
+      </ComponentDisplay>
+    </>
+  );
+};

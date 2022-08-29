@@ -1,0 +1,213 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+@import "~pc/styles/lib_mixins.less";
+
+@cardWrapWidth: 800px;
+.accountWalletWrapper {
+  height: 100%;
+  overflow: auto;
+  .title,
+  .subTitle {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--firstLevelText);
+  }
+  .title {
+    @media screen and (min-width: @w-md) {
+      padding-left: 40px;
+    }
+    height: 48px;
+    display: flex;
+    align-items: center;
+  }
+  .title a {
+    display: flex;
+    align-items: center;
+  }
+  .title svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--fourthLevelText);
+    margin-left: 4px;
+    cursor: pointer;
+  }
+  .subTitle {
+    margin: 32px 0 8px;
+  }
+  .content {
+    @media screen and (min-width: @w-md) {
+      min-width: @cardWrapWidth;
+      & > .skeleton {
+        padding: 0 40px 24px;
+      }
+      & > div {
+        padding: 0 40px;
+      }
+    }
+  }
+
+  .bigCardWrap {
+    @media screen and (min-width: @w-md) {
+      width: @cardWrapWidth;
+    }
+
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .cardWrap {
+    height: 192px;
+    width: 344px;
+    border-radius: 8px;
+    background: var(--lowestBg);
+    overflow: hidden;
+  }
+  .rightCardWrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--thirdLevelText);
+    font-size: 12px;
+  }
+  .card {
+    height: 192px;
+    cursor: default;
+    padding: 20px 24px;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  .card.curCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .card.emptyCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    color: var(--thirdLevelText);
+  }
+
+  .cardTop {
+    position: relative;
+    color: var(--static-white);
+  }
+
+  .cardBottom {
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    span {
+      display: flex;
+      align-items: center;
+      color: rgba(var(--static-white-rgb), 80%);
+      cursor: pointer;
+      svg {
+        fill: currentColor;
+        width: 16px;
+        height: 16px;
+      }
+    }
+    span:hover {
+      color: rgba(var(--static-white-rgb), 60%);
+    }
+  }
+
+  .curVTitle {
+    font-size: 13px;
+    color: rgba(var(--static-white-rgb), 80%);
+  }
+  .curV {
+    padding-top: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+  }
+  .curV span {
+    font-size: 28px;
+  }
+
+  .money {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+  }
+  .money img {
+    width: 16px;
+    height: 16px;
+    margin-left: 4px;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+  }
+
+  :global {
+    .ant-table-thead > tr > th {
+      border: none;
+      color: var(--firstLevelText);
+    }
+    .ant-table-tbody tr td {
+      border: none;
+    }
+    .ant-table-tbody .ant-table-cell {
+      color: var(--fc1);
+    }
+    .ant-table-tbody tr.ant-table-row:hover td {
+      background-color: var(--rowSelectedBg);
+    }
+  }
+}
+
+.exchangeCodeModal {
+  .exchangeTip {
+    font-size: 14px;
+    color: var(--fc1);
+    margin-bottom: 8px;
+  }
+  .input:global(.ant-input) {
+    margin-bottom: 4px;
+  }
+}
+
+.exchangeSuccess {
+  cursor: default;
+  .animateContainer {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  :global(.ant-modal-body) {
+    padding: 0;
+  }
+
+  .content {
+    padding: 240px 0 0;
+    position: relative;
+  }
+
+  .title {
+    font-size: 20px;
+    color: var(--firstLevelText);
+    font-weight: bold;
+  }
+
+  .tip {
+    margin: 16px auto 0;
+    color: var(--fc1);
+    width: 256px;
+  }
+  .tip a {
+    text-decoration: underline;
+  }
+  .textCenter {
+    text-align: center;
+  }
+  .orange span {
+    color: var(--warningColor);
+  }
+}

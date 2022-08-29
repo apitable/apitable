@@ -1,0 +1,137 @@
+@import "~pc/styles/lib_var.less";
+
+.tab {
+  width: 100%;
+  :global {
+    .ant-tabs-nav::before {
+      border: none !important;
+    }
+
+    .ant-tabs-tab {
+      color: var(--black_500) !important;
+      padding: 0 0 4px !important;
+    }
+  }
+}
+
+.buttonGroup {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  :global {
+    .ant-btn {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+}
+
+.otherLogin {
+  width: 100%;
+}
+
+.otherDivider,
+.divider {
+  padding: 32px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &::after,
+  &::before {
+    flex: 1;
+    content: "";
+    display: flex;
+    height: 1px;
+    background: var(--lineColor);
+  }
+
+  .text {
+    padding: 0 32px;
+    color: var(--black_500);
+    font-size: 13px;
+  }
+}
+
+.divider {
+  padding-top: 40px;
+  width: 100%;
+}
+
+.loginOtherPopup {
+  padding: 4px 8px;
+  box-shadow: 0px 2px 12px var(--lightMaskColor);
+  border-radius: 8px;
+  background: var(--defaultBg);
+  .loginOtherItem {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 9px 16px;
+    box-sizing: border-box;
+    cursor: pointer;
+    border-radius: 4px;
+    &:hover {
+      background: var(--black_100);
+    }
+    span {
+      margin-left: 4px;
+      line-height: 16px;
+    }
+  }
+}
+
+.wecomLoginBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+  padding: 12px 0;
+  border: 1px solid var(--rc02);
+  border-radius: 4px;
+  background: var(--defaultBg);
+  cursor: pointer;
+  span {
+    margin-left: 4px;
+    color: var(--rc02);
+  }
+  &:hover {
+    background-color: var(--indigo_50);
+  }
+  &:active {
+    background-color: var(--indigo_100);
+  }
+}
+
+.buttonGroupDesktop {
+  display: flex;
+  margin: 0 auto;
+  button {
+    position: relative;
+    padding-left: 0;
+    padding-right: 0;
+    color: var(--black_500);
+    & + button {
+      margin-left: 18px;
+    }
+    & + button::before {
+      content: "";
+      position: absolute;
+      left: -9px;
+      top: 50%;
+      width: 1px;
+      height: 8px;
+      transform: translateY(-50%);
+      background: var(--lineColor);
+    }
+    &:hover {
+      color: var(--black_600) !important;
+    }
+    &:focus,
+    &:active {
+      color: var(--black_700) !important;
+    }
+  }
+}

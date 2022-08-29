@@ -1,0 +1,181 @@
+version: 2.1
+
+orbs:
+  # Specify codecov orb
+  codecov: codecov/codecov@3.2.3
+
+# Define a job to be invoked later in a workflow.
+# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+jobs:
+  # test stage
+  test:
+    docker:
+      # Specify java environment
+      - image: cimg/openjdk:8.0-node
+      # Specify database environment
+      - image: cimg/mysql:8.0
+        environment:
+          MYSQL_PASSWORD: password
+          MYSQL_USER: vika
+          MYSQL_DATABASE: vika_dev
+          MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        command: [ 'mysqld', '--sql_mode=IGNORE_SPACE,NO_ENGINE_SUBSTITUTION', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci' ]
+      # Specify redis environment
+      - image: cimg/redis:5.0
+      - image: rabbitmq:3-management
+        environment:
+          RABBITMQ_USERNAME: vika
+          RABBITMQ_PASSWORD: password
+          RABBITMQ_DEFAULT_USER: vika
+          RABBITMQ_DEFAULT_PASS: password
+    environment:
+      # Customize the JVM maximum heap limit
+      JVM_OPTS: "-Xmx3g"
+    steps:
+      - checkout
+      - run:
+          name: install dockerize
+          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          environment:
+            DOCKERIZE_VERSION: v0.6.1
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
+      - run:
+          name: Wait for redis
+          command: dockerize -wait tcp://127.0.0.1:6379 -timeout 1m
+      - run:
+          name: Wait for rabbitmq
+          command: dockerize -wait tcp://127.0.0.1:5672 -timeout 1m
+      - run:
+          name: Setup db schema
+          command: |
+            echo 'Setup db schema update'
+            # git clone https://oauth2:${GITHUB_TOKEN}@github.com/vikadata/db-manage.git --depth 1 --branch integration
+            cd init-db && gradle update
+          environment:
+            DB_HOST: 127.0.0.1
+            DB_PORT: 3306
+            DB_NAME: vika_dev
+            DB_USERNAME: vika
+            DB_PASSWORD: password
+      - restore_cache:
+          key: v1-gradle-cache-{{ checksum "gradle.properties" }}
+      - run:
+          name: Run tests and generate code coverage report
+          command: |
+            ./gradlew testCodeCoverageReport
+      - codecov/upload:
+          file: code-coverage-report/build/reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-gradle-cache-{{ checksum "gradle.properties" }}
+  # build stage
+  build:
+    docker:
+      - image: cimg/openjdk:8.0-node
+    parameters:
+      jar-path:
+        type: string
+      image-name:
+        type: string
+      cache-savable:
+        type: boolean
+        default: false
+    environment:
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+    steps:
+      - checkout
+      - restore_cache:
+          key: v1-gradle-cache-{{ checksum "lib.gradle" }}
+      - run:
+          name: "Build Jar"
+          command: |
+            echo "Branch: $CIRCLE_BRANCH"
+            echo "Tag: $CIRCLE_TAG"
+            ./gradlew build -D profile=$CIRCLE_BRANCH --build-cache -x test
+      - run: cp -r << parameters.jar-path >> ./docker
+      - setup_remote_docker:
+          version: 20.10.12
+      - run:
+          name: "Docker Build"
+          environment:
+            IMAGE_NAME: << parameters.image-name >>
+          command: |
+            # Init Get SemVer from Circle CI Environment Variables (Github https://github.com/vikadata/devops/blob/main/scripts/semver_ci/semver_ci.sh)
+            eval "$(curl -fsSL -H 'Authorization: token '"$CR_PAT" https://raw.githubusercontent.com/vikadata/devops/main/scripts/semver_ci/semver_ci.sh)"
+            env_java
+            ( cd docker && build_docker $IMAGE_NAME )
+      - when:
+          condition: << parameters.cache-savable >>
+          steps:
+            - save_cache:
+                paths:
+                  - ~/.gradle
+                key: v1-gradle-cache-{{ checksum "lib.gradle" }}
+            - store_artifacts:
+                path: ./docker
+# unit_test filter condition
+test_filters: &test_filters
+  branches:
+    ignore:
+      - master
+# api application release filter condition(no unit test require)
+backend_release_filters: &backend_release_filters
+  tags:
+    only: /^v.*/
+  branches:
+    ignore: /.*/
+# api application filter condition
+backend_filters: &backend_filters
+  branches:
+    only:
+      - integration
+      - /^integration-.*/
+      - staging
+      - /^staging-.*/
+      - test
+# schedule job application filter condition
+job_filters: &job_filters
+  branches:
+    only:
+      - integration
+      - /^integration-.*/
+      - staging
+      - /^staging-.*/
+  tags:
+    only: /^v.*/
+
+# ci workflows
+workflows:
+  default:
+    jobs:
+      # - test:
+      #     name: unit_test
+      #     filters: *test_filters
+      # - build:
+      #     name: build_backend_server
+      #     jar-path: vikadata-service/vikadata-service-api/build/libs/vikadata-service-api.jar
+      #     image-name: backend-server
+      #     cache-savable: true
+      #     filters: *backend_filters
+      #     requires:
+      #       - unit_test
+      - build:
+          name: build_backend_server_release
+          jar-path: vikadata-service/vikadata-service-api/build/libs/vikadata-service-api.jar
+          image-name: backend-server
+          cache-savable: true
+          filters: *backend_release_filters
+      - build:
+          name: build_space_job_executor
+          jar-path: vikadata-scheduler/scheduler-space/build/libs/scheduler-space.jar
+          image-name: space-job-executor
+          filters: *job_filters
+      - build:
+          name: build_bill_job_executor
+          jar-path: vikadata-scheduler/scheduler-bill/build/libs/scheduler-bill.jar
+          image-name: bill-job-executor
+          filters: *job_filters

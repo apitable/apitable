@@ -1,0 +1,42 @@
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.7-20210428-001" author="Shawn" labels="economic">
+        <comment>新增经济系统模块-订单表</comment>
+        <sql>
+            CREATE TABLE `vika_economic_order`
+            (
+            `id`                   bigint(20) unsigned                                           NOT NULL COMMENT '主键',
+            `order_no`             varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL COMMENT '订单号',
+            `type`                 tinyint(2) unsigned                                           NOT NULL DEFAULT '0' COMMENT '订单类型(0: 升级, 1: 增值)',
+            `plan_id`              varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL COMMENT '订阅计划ID',
+            `space_id`             varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL COMMENT '空间站ID',
+            `coupon_id`            varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NULL     DEFAULT NULL COMMENT '优惠券ID',
+            `currency`             varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci   NOT NULL COMMENT 'ISO货币代码(大写字母)',
+            `amount`               int(11) unsigned                                              NOT NULL DEFAULT '0' COMMENT '订单原始金额(对应币种的最小货币单位,人民币为分)',
+            `coupon_amount`        int(11) unsigned                                              NOT NULL DEFAULT '0' COMMENT '优惠券金额(对应币种的最小货币单位,人民币为分)',
+            `actual_amount`        int(11) unsigned                                              NOT NULL DEFAULT '0' COMMENT '订单实付金额(对应币种的最小货币单位,人民币为分,计算规则:amount-coupon_amount)',
+            `description`          varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci          DEFAULT NULL COMMENT '订单额外备注说明',
+            `client_ip`            varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci          DEFAULT NULL COMMENT '发起支付请求客户端的IP地址',
+            `status`               varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL COMMENT '订单状态(待支付-created,已支付-paid,已退款-refunded,已取消-canceled)',
+            `is_paid`              tinyint(1) unsigned                                           NOT NULL DEFAULT '0' COMMENT '是否已支付(0:否,1:是)',
+            `pay_channel`          varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NULL     DEFAULT NULL COMMENT '支付渠道属性值(balance等等)',
+            `pay_channel_trade_no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL     DEFAULT NULL COMMENT '支付渠道交易流水号',
+            `paid_time`            timestamp                                                     NULL     DEFAULT NULL COMMENT '订单支付完成时间',
+            `expire_time`          timestamp                                                     NULL     DEFAULT NULL COMMENT '订单失效完成时间',
+            `is_deleted`           tinyint(1) unsigned                                           NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `version`              int(11) unsigned                                              NOT NULL DEFAULT '1' COMMENT '乐观锁版本号',
+            `created_by`           bigint(20)                                                             DEFAULT NULL COMMENT '创建者',
+            `updated_by`           bigint(20)                                                             DEFAULT NULL COMMENT '最后修改者',
+            `created_at`           timestamp                                                     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `updated_at`           timestamp                                                     NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `uk_order_no` (`order_no`) USING BTREE COMMENT '订单号唯一索引'
+            ) ENGINE = InnoDB
+            DEFAULT CHARSET = utf8mb4
+            COLLATE = utf8mb4_unicode_ci COMMENT = '经济模块-订单表';
+        </sql>
+    </changeSet>
+</databaseChangeLog>

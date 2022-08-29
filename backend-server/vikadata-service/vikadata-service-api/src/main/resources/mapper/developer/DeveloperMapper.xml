@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.developer.mapper.DeveloperMapper">
+    <select id="selectByUserId" resultType="com.vikadata.entity.DeveloperEntity">
+        SELECT * FROM vika_developer
+        WHERE user_id = #{userId}
+    </select>
+
+    <update id="updateApiKeyByUserId">
+        UPDATE vika_developer
+        SET api_key = #{apiKey}
+        WHERE user_id = #{userId}
+    </update>
+
+    <select id="selectUserIdByApiKey" resultType="java.lang.Long">
+        SELECT user_id
+        FROM vika_developer
+        WHERE api_key = #{apiKey}
+    </select>
+</mapper>

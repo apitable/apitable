@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.appstore.mapper.AppInstanceMapper">
+    <select id="selectBySpaceIdAndAppId"
+            resultType="com.vikadata.entity.AppInstanceEntity">
+        SELECT *
+        FROM vika_app_instance
+        WHERE space_id = #{spaceId}
+          AND app_id = #{appId}
+          AND is_deleted = 0
+    </select>
+
+    <select id="selectBySpaceId" resultType="com.vikadata.entity.AppInstanceEntity">
+        SELECT *
+        FROM vika_app_instance
+        WHERE space_id = #{spaceId}
+          AND is_deleted = 0
+    </select>
+
+    <select id="selectByAppInstanceId" resultType="com.vikadata.entity.AppInstanceEntity">
+        SELECT * FROM vika_app_instance
+        WHERE app_instance_id = #{appInstanceId} AND is_deleted = 0;
+    </select>
+
+    <delete id="deleteByAppInstanceId">
+        DELETE FROM vika_app_instance
+        WHERE app_instance_id = #{appInstanceId}
+    </delete>
+
+    <select id="selectCountByAppKey" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM vika_app_instance
+        WHERE app_key = #{appKey} AND is_deleted = 0;
+    </select>
+
+    <select id="selectCountByAppInstanceIdAndAppKey" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM vika_app_instance
+        WHERE app_instance_id = #{appInstanceId} AND app_key = #{appKey} AND is_deleted = 0;
+    </select>
+</mapper>

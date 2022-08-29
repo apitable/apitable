@@ -1,0 +1,28 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.6-20201219-001" author="Chambers" labels="workbench">
+        <comment>资源元数据表，新增字段 resource_type</comment>
+        <sql>
+            ALTER TABLE `vika_resource_meta`
+            ADD COLUMN `resource_type` tinyint(2) UNSIGNED NULL DEFAULT 0 COMMENT '资源类型(0:数表;1:收集表;2:仪表盘;3:组件)' AFTER `resource_id`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.6-20201219-002" author="Chambers" labels="workbench">
+        <comment>资源操作变更合集表，新增字段 resource_type</comment>
+        <sql>
+            ALTER TABLE `vika_resource_changeset`
+            ADD COLUMN `resource_type` tinyint(2) UNSIGNED NULL DEFAULT 0 COMMENT '资源类型(0:数表;1:收集表;2:仪表盘;3:组件)' AFTER `resource_id`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.6-20201219-003" author="Chambers" labels="workbench">
+        <comment>资源操作变更合集表，修改字段 operations 类型</comment>
+        <sql>
+            ALTER TABLE `vika_resource_changeset`
+            MODIFY COLUMN `operations` json NULL COMMENT '操作action的合集' AFTER `message_id`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

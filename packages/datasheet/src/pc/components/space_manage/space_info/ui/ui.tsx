@@ -1,0 +1,99 @@
+import { Button, Skeleton, Typography, useThemeColors } from '@vikadata/components';
+import { ChevronRightOutlined } from '@vikadata/icons';
+import classnames from 'classnames';
+import Image from 'next/image';
+import { Tooltip } from 'pc/components/common';
+import { isMobileApp } from 'pc/utils/env';
+import * as React from 'react';
+import { FC, useContext } from 'react';
+import InfoIcon from 'static/icon/common/common_icon_information.svg';
+import { SpaceContext } from '../context';
+import styles from './style.module.less';
+
+export const Advert: FC<{ className?: string }> = ({ className }) => {
+
+  const { adData } = useContext(SpaceContext);
+
+  const handleClick = () => {
+    if (adData) {
+      window.open(adData.linkUrl, '_blank');
+    }
+  };
+
+  if (isMobileApp()) {
+    return null;
+  }
+
+  if (!adData) {
+    return <div className={styles.advert}>
+      <Skeleton width="38%" />
+      <Skeleton count={2} />
+      <Skeleton width="61%"/>
+    </div>;
+  }
+  return (
+    <div className={classnames(styles.advert, className)}>
+      <span className={styles.advertImg}>
+        <Image src={adData.banners?.[0]?.url} width={160} height={110}/>
+      </span>
+      <Typography variant="body3" className={styles.content}>{
+        adData.desc
+      }</Typography>
+      <Button color="primary" onClick={handleClick}>{adData.linkText}</Button>
+    </div>
+  );
+};
+
+type CardTitleType = {
+  title: string;
+  tipTitle?: string;
+  link?: { text: string, href: string };
+  button?: { text: string, onClick: () => void };
+  isMobile?: boolean;
+};
+
+export const CardTitle = ({ title, tipTitle, link, button, isMobile }: CardTitleType) => {
+  const colors = useThemeColors();
+  return (
+    <div className={styles.cardTitle}>
+      <div className={styles.titleText}>
+        <Typography variant='h7' className={styles.title}>{title}</Typography>
+        {!isMobile && <Tooltip title={tipTitle} trigger="hover" placement="top">
+          <span className={styles.infoIcon}><InfoIcon className={styles.infoIconInDesc}/></span>
+        </Tooltip>}
+      </div>
+      {
+        link && <a className={styles.link} href={link.href} target="_blank" rel="noopener noreferrer">
+          {link.text} <ChevronRightOutlined color={colors.deepPurple[500]} />
+        </a>
+      }
+      {
+        button && <a className={styles.link} onClick={button.onClick}>
+          {button.text} <ChevronRightOutlined color={colors.deepPurple[500]} />
+        </a>
+      }
+    </div>
+  );
+};
+
+export const PlotTitle = (data: { name: string, value: string, style?: React.CSSProperties, themeColor?: string }) => {
+  const { name, value, style, themeColor } = data;
+  return (
+    <div className={styles.plotTitle} style={style}>
+      <Typography variant="body4" className={styles.name}>{name}</Typography>
+      <Typography variant="h5" className={styles.value} color={themeColor}>{value}</Typography>
+    </div>
+  );
+};
+
+export const InfoHighlightTitle = (data: { value: number, unit: string, desc: string, style?: React.CSSProperties, themeColor?: string }) => {
+  const { value, unit, desc, style, themeColor } = data;
+  return (
+    <div className={styles.infoHighlightTitle} style={style}>
+      <Typography variant="h1" className={styles.value} color={themeColor}>{value.toLocaleString()}</Typography>
+      <Typography variant="h6" className={styles.unit} color={themeColor}>{unit}</Typography>
+      <Typography variant="body4" className={styles.desc}>{desc}</Typography>
+    </div>
+  );
+};
+

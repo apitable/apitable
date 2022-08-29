@@ -1,0 +1,1 @@
+export * from './wecom_shop_callback';

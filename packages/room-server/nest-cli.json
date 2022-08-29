@@ -1,0 +1,35 @@
+{
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "plugins": ["@nestjs/swagger/plugin"],
+    "assets": [
+      {
+        "include": "./config/*.yaml",
+        "outDir": "./dist"
+      },
+      {
+        "include": "./env/*",
+        "outDir": "./dist"
+      },
+      {
+        "include": "./proto/*.proto",
+        "outDir": "./dist"
+      },
+      {
+        "include": "./helpers/*.lua",
+        "outDir": "./dist"
+      }
+    ],
+    "watchAssets": true
+  },
+  "plugins": [
+    {
+      "name": "@nestjs/swagger/plugin",
+      "options": {
+        "classValidatorShim": true,
+        "dtoFileNameSuffix": [".ro.ts", ".vo.ts", ".dto.ts"]
+      }
+    }
+  ]
+}

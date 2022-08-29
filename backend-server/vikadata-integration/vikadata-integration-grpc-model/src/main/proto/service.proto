@@ -1,0 +1,19 @@
+syntax = 'proto3';
+
+option java_multiple_files = true;
+option java_package = "com.vikadata.integration.grpc";
+option java_outer_classname = "GrpcService";
+
+
+package grpc;
+
+import 'message.proto';
+// 内部服务调用生成changeset->apply
+service NodeService {
+  // 空间站内复制副作用ot
+  rpc CopyNodeEffectOt (NodeCopyRo) returns (BasicResult);
+  // 空间站内删除接口副作用ot
+  rpc DeleteNodeEffectOt (NodeDeleteRo) returns (BasicResult);
+}
+
+

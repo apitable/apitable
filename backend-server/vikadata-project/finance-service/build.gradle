@@ -1,0 +1,79 @@
+import java.nio.charset.StandardCharsets
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
+plugins {
+  id 'java'
+  id 'org.springframework.boot'
+  id "com.gorylenko.gradle-git-properties"
+}
+
+description = 'finance api project'
+
+// 依赖配置
+dependencies {
+  implementation rootProject.ext.dependencies['spring-web-starter']
+}
+
+// 打包环境
+def profile = System.getProperty("profile") ?: "local"
+
+System.out.println("Build Profile:" + profile)
+
+// Git 配置信息打包
+gitProperties {
+  extProperty = 'gitProps'
+  failOnNoGitDirectory = false
+  dateFormat = "yyyy-MM-dd HH:mm:ss"
+  dateFormatTimeZone = 'CTT'
+}
+
+generateGitProperties.outputs.upToDateWhen { false }
+
+task printGitProperties(dependsOn: 'generateGitProperties') {
+  // make sure generateGitProperties task to execute before accessing generated properties
+  doLast {
+    println "git.commit.id.abbrev=" + project.ext.gitProps['git.commit.id.abbrev']
+  }
+}
+
+// 编译时依赖编译Resources文件夹
+compileJava.dependsOn processResources
+bootJar.dependsOn processResources
+
+// Compile Java Setting
+tasks.withType(JavaCompile) {
+  options.encoding = StandardCharsets.UTF_8
+  options.warnings = false
+  options.compilerArgs += '-Xlint:-deprecation'
+}
+
+def className = 'com.vikadata.finance.FinanceApplication'
+
+bootJar {
+  mainClass.set(className)
+  manifest {
+    attributes 'Start-Class': className
+    attributes 'Implementation-Version': archiveVersion
+    attributes 'Built-Gradle': gradle.gradleVersion
+    attributes 'Build-OS': System.getProperty("os.name")
+    attributes 'Built-By': System.getProperty("user.name")
+    attributes 'Build-Jdk': System.getProperty("java.version")
+    attributes 'Build-Revision': "${-> project.ext.gitProps['git.commit.id.abbrev']}"
+    attributes 'Build-Timestamp': LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+  }
+}
+
+// SpringBoot Plugin On Gradle
+springBoot {
+  mainClass.set(className)
+  // build-info.properties in resources/main/META-INF directory
+  buildInfo {
+    properties {
+      artifact = 'Finance Api Server'
+      version = rootProject.version
+      group = rootProject.group
+      name = 'Finance Api Server'
+    }
+  }
+}

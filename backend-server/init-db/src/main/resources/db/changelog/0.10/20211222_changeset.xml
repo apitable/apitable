@@ -1,0 +1,72 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.10-20211222-001" author="Chambers" labels="third_party">
+        <comment>第三方系统-会员信息表新增索引open_id</comment>
+        <sql>
+            ALTER TABLE `vika_third_party_member`
+            ADD INDEX `inx_open_id`(`open_id`) USING BTREE;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.10-20211222-002" author="Chambers" labels="wechat">
+        <comment>微信第三方平台授权方信息表新增唯一索引app_id</comment>
+        <sql>
+            ALTER TABLE `vika_wechat_authorization`
+            ADD UNIQUE INDEX `uk_app_id`(`authorizer_appid`) USING BTREE;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.10-20211222-003" author="Chambers" labels="wechat">
+        <comment>微信关键词消息自动回复表新增索引app_id</comment>
+        <sql>
+            ALTER TABLE `vika_wechat_keyword_reply`
+            ADD INDEX `idx_app_id`(`app_id`) USING BTREE;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.10-20211222-004" author="Chambers" labels="wechat">
+        <comment>微信关键词消息自动回复表新增索引keyword</comment>
+        <sql>
+            ALTER TABLE `vika_wechat_keyword_reply`
+            ADD INDEX `idx_keyword`(`keyword`(10)) USING BTREE;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.10-20211222-005" author="Chambers" labels="wechat">
+        <comment>微信公众号日志表新增索引app_id</comment>
+        <sql>
+            ALTER TABLE `vika_wechat_mp_log`
+            ADD INDEX `idx_app_id`(`app_id`) USING BTREE;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.10-20211222-006" author="Chambers" labels="wechat">
+        <comment>微信公众号日志表新增索引scene</comment>
+        <sql>
+            ALTER TABLE `vika_wechat_mp_log`
+            ADD INDEX `idx_scene`(`scene`(10)) USING BTREE;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.10-20211222-007" author="Chambers" labels="wechat">
+        <comment>微信公众号二维码信息表新增索引app_id</comment>
+        <sql>
+            ALTER TABLE `vika_wechat_mp_qrcode`
+            ADD INDEX `idx_app_id`(`app_id`) USING BTREE;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.10-20211222-008" author="Chambers" labels="wechat">
+        <comment>微信公众号二维码信息表新增索引scene</comment>
+        <sql>
+            ALTER TABLE `vika_wechat_mp_qrcode`
+            ADD INDEX `idx_scene`(`scene`(10)) USING BTREE;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,73 @@
+# 汇集 nodejs 发布的脚本
+# deploy_room_script（RoomServer）：发布非正式room服务
+# deploy_fusion_script（FusionServer）：发布非正式fusion服务
+#
+# deploy_room_ks_script（RoomServer）：发布正式room服务
+# deploy_fusion_ks_script（FusionServer）：发布正式fusion服务
+
+variables:
+  # 需跟eks集群工作负载名一致
+  DEPLOY_ROOM_NAME: room-server-v1
+  DEPLOY_FUSION_NAME: fusion-server-v1
+  DEPLOY_SCHEDULE_NAME: scheduler-server-v1
+
+.deploy_room_script:
+  script:
+    - pip install -i https://pypi.tuna.tsinghua.edu.cn/simple requests
+    # 在容器云控制台创建好容器cluster集群、应用分区
+    # - PARTITION=$([[ "$ENV" == "release" ]] && echo "production" || ([[ "$CI_COMMIT_REF_NAME" == "test" ]] && echo "integration" || echo $CI_COMMIT_REF_NAME))
+    # - echo "当前更新的版本号：" $IMAGE_TAG  "更新对应集群：" $CLUSTER_NAME "对应分区：" $PARTITION  "对应服务：" $APP_NAME "VIP：" $VIP "请求地址：" $SERVER_DEPLOY_PATH
+    #    - curl -H 'Content-Type:application/json' -X POST -d '{"vip":"'"$VIP"'","clusters":"'"$CLUSTER_NAME"'","partition":"'"$PARTITION"'","appName":"'"$APP_NAME"'","tenant":"'"$TENANT"'","newVersion":"'"$IMAGE_TAG"'"}' ${SERVER_DEPLOY_PATH}/deploy/compass
+    # 使用deploy-server.py脚本，调用容器云接口自动部署最新镜像并更新服务
+    # - python3 deploy-server.py $VIP $CLUSTER_NAME $PARTITION $APP_NAME $TENANT $IMAGE_TAG
+    - echo "部署服务器：" $DEPLOY_SERVER  "更新对应集群：" $EKS_SERVER  "对应项目：" $NAMESPACE  "对应服务：" $DEPLOY_ROOM_NAME "当前更新镜像：" $BUILD_IMAGE_NAME:$IMAGE_TAG
+    - NAMESPACE=$([[ "$ENV" == "release" ]] && echo "production" || echo $CI_COMMIT_REF_NAME)
+    - DEPLOY_SERVER="$DEPLOY_SERVER_INTEGRATION"
+    - python3 deploy-eks.py $DEPLOY_SERVER $EKS_SERVER $NAMESPACE $DEPLOY_ROOM_NAME $BUILD_IMAGE_NAME:$IMAGE_TAG
+
+.deploy_fusion_script:
+  script:
+    - pip install -i https://pypi.tuna.tsinghua.edu.cn/simple requests
+    # 在容器云控制台创建好容器cluster集群、应用分区
+    - echo "部署服务器：" $DEPLOY_SERVER  "更新对应集群：" $EKS_SERVER  "对应项目：" $NAMESPACE  "对应服务：" $DEPLOY_FUSION_NAME "当前更新镜像：" $BUILD_IMAGE_NAME:$IMAGE_TAG
+    - NAMESPACE=$([[ "$ENV" == "release" ]] && echo "production" || echo $CI_COMMIT_REF_NAME)
+    - DEPLOY_SERVER="$DEPLOY_SERVER_INTEGRATION"
+    # 使用deploy-server.py脚本，调用容器云接口自动部署最新镜像并更新服务
+    - python3 deploy-eks.py $DEPLOY_SERVER $EKS_SERVER $NAMESPACE $DEPLOY_FUSION_NAME $BUILD_IMAGE_NAME:$IMAGE_TAG
+
+.deploy_scheduler_script:
+  script:
+    - pip install -i https://pypi.tuna.tsinghua.edu.cn/simple requests
+    # 在容器云控制台创建好容器cluster集群、应用分区
+    - echo "部署服务器：" $DEPLOY_SERVER  "更新对应集群：" $EKS_SERVER  "对应项目：" $NAMESPACE  "对应服务：" $DEPLOY_SCHEDULE_NAME "当前更新镜像：" $BUILD_IMAGE_NAME:$IMAGE_TAG
+    - NAMESPACE=$([[ "$ENV" == "release" ]] && echo "production" || echo $CI_COMMIT_REF_NAME)
+    - DEPLOY_SERVER="$DEPLOY_SERVER_INTEGRATION"
+    # 使用deploy-server.py脚本，调用容器云接口自动部署最新镜像并更新服务
+    - python3 deploy-eks.py $DEPLOY_SERVER $EKS_SERVER $NAMESPACE $DEPLOY_SCHEDULE_NAME $BUILD_IMAGE_NAME:$IMAGE_TAG
+
+.deploy_room_ks_script:
+  script:
+    - pip install -i https://pypi.tuna.tsinghua.edu.cn/simple requests
+    - NAMESPACE=production
+    - DEPLOY_SERVER="$DEPLOY_SERVER_PRODUCTION"
+    - EKS_SERVER=https://DD0A14D35441423ADC840071E0926891.sk1.cn-northwest-1.eks.amazonaws.com.cn
+    - echo "部署服务器：" $DEPLOY_SERVER  "更新对应集群：" $EKS_SERVER  "对应项目：" $NAMESPACE  "对应服务：" $DEPLOY_ROOM_NAME "当前更新镜像：" $BUILD_IMAGE_NAME:$IMAGE_TAG
+    - python3 deploy-eks.py $DEPLOY_SERVER $EKS_SERVER $NAMESPACE $DEPLOY_ROOM_NAME $BUILD_IMAGE_NAME:$IMAGE_TAG
+
+.deploy_fusion_ks_script:
+  script:
+    - pip install -i https://pypi.tuna.tsinghua.edu.cn/simple requests
+    - NAMESPACE=production
+    - DEPLOY_SERVER="$DEPLOY_SERVER_PRODUCTION"
+    - EKS_SERVER=https://DD0A14D35441423ADC840071E0926891.sk1.cn-northwest-1.eks.amazonaws.com.cn
+    - echo "部署服务器：" $DEPLOY_SERVER  "更新对应集群：" $EKS_SERVER  "对应项目：" $NAMESPACE  "对应服务：" $DEPLOY_FUSION_NAME "当前更新镜像：" $BUILD_IMAGE_NAME:$IMAGE_TAG
+    - python3 deploy-eks.py $DEPLOY_SERVER $EKS_SERVER $NAMESPACE $DEPLOY_FUSION_NAME $BUILD_IMAGE_NAME:$IMAGE_TAG
+
+.deploy_scheduler_ks_script:
+  script:
+    - pip install -i https://pypi.tuna.tsinghua.edu.cn/simple requests
+    - NAMESPACE=production
+    - DEPLOY_SERVER="$DEPLOY_SERVER_PRODUCTION"
+    - EKS_SERVER=https://DD0A14D35441423ADC840071E0926891.sk1.cn-northwest-1.eks.amazonaws.com.cn
+    - echo "部署服务器：" $DEPLOY_SERVER  "更新对应集群：" $EKS_SERVER  "对应项目：" $NAMESPACE  "对应服务：" $DEPLOY_FUSION_NAME "当前更新镜像：" $BUILD_IMAGE_NAME:$IMAGE_TAG
+    - python3 deploy-eks.py $DEPLOY_SERVER $EKS_SERVER $NAMESPACE $DEPLOY_SCHEDULE_NAME $BUILD_IMAGE_NAME:$IMAGE_TAG

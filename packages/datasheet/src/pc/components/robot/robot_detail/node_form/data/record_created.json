@@ -1,0 +1,16 @@
+{
+  "schema": {
+    "type": "object",
+    "required": [
+      "datasheetId"
+    ],
+    "properties": {
+      "datasheetId": {
+        "type": "string",
+        "title": "维格表"
+      }
+    },
+    "additionalProperties": false
+  },
+  "uiSchema": {}
+}

@@ -1,0 +1,370 @@
+package com.vikadata.api;
+
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.Collections;
+import java.util.List;
+
+import cn.hutool.json.JSONUtil;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.vikadata.api.context.ClockManager;
+import com.vikadata.api.enums.finance.OrderChannel;
+import com.vikadata.api.enums.finance.OrderPhase;
+import com.vikadata.api.enums.finance.OrderStatus;
+import com.vikadata.api.enums.finance.OrderType;
+import com.vikadata.api.enums.finance.PayChannel;
+import com.vikadata.api.enums.social.SocialPlatformType;
+import com.vikadata.api.holder.UserHolder;
+import com.vikadata.api.mock.bean.MockUserSpace;
+import com.vikadata.api.modular.appstore.enums.AppType;
+import com.vikadata.api.modular.appstore.service.IAppInstanceService;
+import com.vikadata.api.modular.base.service.IAuthService;
+import com.vikadata.api.modular.client.service.IClientReleaseVersionService;
+import com.vikadata.api.modular.developer.service.IGmService;
+import com.vikadata.api.modular.finance.core.Bundle;
+import com.vikadata.api.modular.finance.core.OrderArguments;
+import com.vikadata.api.modular.finance.core.OrderPrice;
+import com.vikadata.api.modular.finance.model.OrderPaymentVo;
+import com.vikadata.api.modular.finance.model.PingChargeSuccess;
+import com.vikadata.api.modular.finance.service.IBillingOfflineService;
+import com.vikadata.api.modular.finance.service.IBundleService;
+import com.vikadata.api.modular.finance.service.IOrderPaymentService;
+import com.vikadata.api.modular.finance.service.IOrderService;
+import com.vikadata.api.modular.finance.service.IOrderV2Service;
+import com.vikadata.api.modular.finance.service.IShopService;
+import com.vikadata.api.modular.finance.service.ISpaceSubscriptionService;
+import com.vikadata.api.modular.finance.util.EntitlementChecker;
+import com.vikadata.api.modular.finance.util.OrderChecker;
+import com.vikadata.api.modular.finance.util.OrderChecker.ExpectedOrderCheck;
+import com.vikadata.api.modular.integral.service.IIntegralService;
+import com.vikadata.api.modular.internal.service.IFieldService;
+import com.vikadata.api.modular.organization.service.IMemberService;
+import com.vikadata.api.modular.social.enums.SocialAppType;
+import com.vikadata.api.modular.social.enums.SocialTenantAuthMode;
+import com.vikadata.api.modular.social.service.ISocialTenantBindService;
+import com.vikadata.api.modular.social.service.ISocialTenantService;
+import com.vikadata.api.modular.space.service.ISpaceRoleService;
+import com.vikadata.api.modular.space.service.ISpaceService;
+import com.vikadata.api.modular.user.service.IUserService;
+import com.vikadata.api.modular.vcode.service.IVCodeService;
+import com.vikadata.api.modular.workspace.model.CreateNodeDto;
+import com.vikadata.api.modular.workspace.service.INodeService;
+import com.vikadata.api.util.IdUtil;
+import com.vikadata.api.util.billing.OrderUtil;
+import com.vikadata.api.util.billing.model.BillingPlanPrice;
+import com.vikadata.clock.Clock;
+import com.vikadata.clock.MockClock;
+import com.vikadata.core.util.DateTimeUtil;
+import com.vikadata.define.enums.NodeType;
+import com.vikadata.entity.EconomicOrderEntity;
+import com.vikadata.entity.EconomicOrderMetadataEntity;
+import com.vikadata.entity.OrderPaymentEntity;
+import com.vikadata.entity.SocialOrderWecomEntity;
+import com.vikadata.entity.SocialTenantEntity;
+import com.vikadata.entity.SpaceEntity;
+import com.vikadata.entity.UserEntity;
+import com.vikadata.system.config.billing.Price;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.TestPropertySource;
+
+import static com.vikadata.api.util.billing.OrderUtil.yuanToCents;
+import static java.time.temporal.ChronoUnit.SECONDS;
+
+
+@SpringBootTest(classes = { Application.class })
+@AutoConfigureMockMvc
+@ExtendWith({ MockitoExtension.class })
+@TestPropertySource(value = {
+        "classpath:test.properties",
+}, properties = { "vikadata.test.test-mode=true" })
+@Import(TestContextConfiguration.class)
+public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
+
+    /**
+     * using east 8 timezone for testing
+     */
+    protected static final ZoneOffset testTimeZone = ZoneOffset.ofHours(8);
+
+    @Autowired
+    protected JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    protected RedisTemplate<String, Object> redisTemplate;
+
+    @Value("#{'${exclude}'.split(',')}")
+    private List<String> excludeTables;
+
+    @Autowired
+    private IAppInstanceService iAppInstanceService;
+
+    @Autowired
+    protected IAuthService iAuthService;
+
+    @Autowired
+    protected IUserService iUserService;
+
+    @Autowired
+    protected ISpaceService iSpaceService;
+
+    @Autowired
+    protected IMemberService iMemberService;
+
+    @Autowired
+    protected IVCodeService ivCodeService;
+
+    @Autowired
+    protected IIntegralService iIntegralService;
+
+    @Autowired
+    protected IClientReleaseVersionService iClientReleaseVersionService;
+
+    @Autowired
+    private ISocialTenantService iSocialTenantService;
+
+    @Autowired
+    protected ISocialTenantBindService iSocialTenantBindService;
+
+    @Autowired
+    private IOrderService iOrderService;
+
+    @Autowired
+    protected IShopService isShopService;
+
+    @Autowired
+    private INodeService iNodeService;
+
+    @Autowired
+    protected IOrderV2Service iOrderV2Service;
+
+    @Autowired
+    protected IOrderPaymentService iOrderPaymentService;
+
+    @Autowired
+    protected IGmService iGmService;
+
+    @Autowired
+    protected IBillingOfflineService iBillingOfflineService;
+
+    @Autowired
+    protected IBundleService iBundleService;
+
+    @Autowired
+    protected ISpaceSubscriptionService iSpaceSubscriptionService;
+
+    @Autowired
+    protected PasswordEncoder passwordEncoder;
+
+    @Autowired
+    protected IFieldService fieldService;
+
+    @Autowired
+    private Clock clock;
+
+    @Autowired
+    protected EntitlementChecker entitlementChecker;
+
+    @Autowired
+    protected OrderChecker orderChecker;
+
+    @BeforeEach
+    public void beforeMethod() {
+        // db suite prepare before method
+        super.beforeMethod();
+        // reset clock
+        getClock().resetDeltaFromReality();
+    }
+
+    @Override
+    protected List<String> configureExcludeTables() {
+        return Collections.unmodifiableList(excludeTables);
+    }
+
+    @Override
+    protected JdbcTemplate configureJdbcTemplate() {
+        return this.jdbcTemplate;
+    }
+
+    @Override
+    protected RedisTemplate<String, Object> configureRedisTemplate() {
+        return this.redisTemplate;
+    }
+
+    protected MockClock getClock() {
+        if (!(clock instanceof MockClock)) {
+            throw new UnsupportedOperationException("System has not been configured to update the time");
+        }
+        return (MockClock) clock;
+    }
+
+    protected UserEntity createUserRandom() {
+        return createUserWithEmail("test@vikadata.com");
+    }
+
+    protected UserEntity createUserWithEmail(String email) {
+        return iUserService.createUserByCli(email, "123456", "13012341234");
+    }
+
+    protected String createSpaceWithoutName(UserEntity user) {
+        return createSpaceWithName(user, "test space");
+    }
+
+    protected String createSpaceWithName(UserEntity user, String name) {
+        return iSpaceService.createSpace(user, name);
+    }
+
+    protected MockUserSpace createSingleUserAndSpace() {
+        UserEntity user = createUserRandom();
+        String spaceId = createSpaceWithoutName(user);
+
+        // init context
+        initCallContext(user.getId());
+
+        return new MockUserSpace(user.getId(), spaceId);
+    }
+
+    protected void initCallContext(Long userId) {
+        UserHolder.init();
+        UserHolder.set(userId);
+    }
+
+    protected void refreshCallContext(Long userId) {
+        UserHolder.set(userId);
+    }
+
+    protected void autoOrderPayProcessor(Long userId, OrderArguments orderArguments, OffsetDateTime paidTime) {
+        String orderId = iOrderV2Service.createOrder(orderArguments);
+        // Check Order
+        Price price = orderArguments.getPrice();
+        Bundle actionBundle = iBundleService.getActivatedBundleBySpaceId(orderArguments.getSpaceId());
+        OrderType orderType = iOrderV2Service.parseOrderType(actionBundle, price);
+        BillingPlanPrice planPrice = BillingPlanPrice.of(price, ClockManager.me().getLocalDateNow());
+        OrderPrice orderPrice = orderType == OrderType.UPGRADE ? iOrderV2Service.repairOrderPrice(actionBundle, price) :
+                new OrderPrice(price.getOriginPrice(), planPrice.getDiscount(), planPrice.getDiscount(), planPrice.getActual());
+        ExpectedOrderCheck expected = new ExpectedOrderCheck(null, yuanToCents(orderPrice.getPriceOrigin()),
+                yuanToCents(orderPrice.getPriceDiscount()), yuanToCents(orderPrice.getPricePaid()),
+                OrderStatus.UNPAID, false, null);
+        orderChecker.check(orderId, expected);
+
+        // create pay order for this
+        OrderPaymentVo orderPaymentVo = iOrderV2Service
+                .createOrderPayment(userId, orderId, PayChannel.WX_PUB_QR);
+
+        // trigger pay success event notify without valid pingpp signature
+        OrderPaymentEntity orderPayment = iOrderPaymentService.getByPayTransactionId(orderPaymentVo.getPayTransactionNo());
+        PingChargeSuccess pingChargeSuccess = new PingChargeSuccess();
+        pingChargeSuccess.setId(orderPayment.getPayChannelTransactionId());
+        pingChargeSuccess.setOrderNo(orderPaymentVo.getPayTransactionNo());
+        pingChargeSuccess.setTimePaid(paidTime.toEpochSecond());
+        iOrderPaymentService.retrieveOrderPaidEvent(pingChargeSuccess);
+
+        // check order paid
+        expected = new ExpectedOrderCheck(null, yuanToCents(orderPrice.getPriceOrigin()),
+                yuanToCents(orderPrice.getPriceDiscount()), yuanToCents(orderPrice.getPricePaid()),
+                OrderStatus.FINISHED, true, paidTime.truncatedTo(SECONDS).toLocalDateTime());
+        orderChecker.check(orderId, expected);
+    }
+
+    /**
+     * 创建企微服务商租户
+     *
+     * @param suiteId 应用套件 ID
+     * @param authCorpId 授权的企业 ID
+     * @param isPaid 是否付费
+     * @return 绑定的空间站 ID
+     * @author 刘斌华
+     * @date 2022-08-02 15:21:15
+     */
+    protected String createWecomIsvTenant(String suiteId, String authCorpId, boolean isPaid) {
+        String authCorpName = "测试企业";
+        // 1 保存企业或者更新企业的授权信息
+        SocialTenantEntity tenantEntity = SocialTenantEntity.builder()
+                .appId(suiteId)
+                .appType(SocialAppType.ISV.getType())
+                .tenantId(authCorpId)
+                .contactAuthScope("{}")
+                .authMode(SocialTenantAuthMode.ADMIN.getValue())
+                .permanentCode("")
+                .authInfo("{}")
+                .platform(SocialPlatformType.WECOM.getValue())
+                .status(true)
+                .build();
+        iSocialTenantService.createOrUpdateByTenantAndApp(tenantEntity);
+        // 2 创建企业的空间站
+        SpaceEntity spaceEntity = iSpaceService.createWeComIsvSpaceWithoutUser(String.format("%s的空间站", authCorpName));
+        String spaceId = spaceEntity.getSpaceId();
+        // 2.1 绑定新创建的空间站
+        iSocialTenantBindService.addTenantBind(tenantEntity.getAppId(), tenantEntity.getTenantId(), spaceId);
+        // 2.2 创建空间站的根节点
+        String rootNodeId = iNodeService.createChildNode(-1L, CreateNodeDto.builder()
+                .spaceId(spaceId)
+                .newNodeId(IdUtil.createNodeId())
+                .type(NodeType.ROOT.getNodeType())
+                .build());
+        // 3 设置应用市场绑定状态
+        iAppInstanceService.createInstanceByAppType(spaceId, AppType.WECOM_STORE.name());
+        // 4 配置订阅信息
+        SocialOrderWecomEntity orderWeComEntity = SocialOrderWecomEntity.builder()
+                .orderId("junitTestWecomOrderId")
+                .orderStatus(1)
+                .orderType(0)
+                .paidCorpId(authCorpId)
+                .operatorId("junitTestWecomOperatorId")
+                .suiteId(suiteId)
+                .editionId("junitTestWecomEditionId")
+                .price(10000)
+                .userCount(10L)
+                .orderPeriod(365)
+                .orderTime(DateTimeUtil.localDateTimeNow(8))
+                .paidTime(DateTimeUtil.localDateTimeNow(8))
+                .beginTime(DateTimeUtil.localDateTimeNow(8))
+                .endTime(DateTimeUtil.localDateTimeFromNow(8, 365, 0, 0, 0))
+                .orderFrom(0)
+                .serviceShareAmount(9000)
+                .platformShareAmount(1000)
+                .dealerShareAmount(0)
+                .orderInfo("{}")
+                .build();
+        EconomicOrderEntity orderEntity = new EconomicOrderEntity();
+        orderEntity.setSpaceId(spaceId);
+        orderEntity.setOrderNo(OrderUtil.createOrderId());
+        orderEntity.setOrderChannel(OrderChannel.WECOM.getName());
+        orderEntity.setChannelOrderId(isPaid ? orderWeComEntity.getOrderId() : null);
+        orderEntity.setProduct("Wecom_Standard");
+        orderEntity.setSeat(10);
+        orderEntity.setType(0);
+        orderEntity.setMonth(isPaid ? 12 : 0);
+        orderEntity.setCurrency("CNY");
+        orderEntity.setAmount(isPaid ? orderWeComEntity.getPrice() : 0);
+        orderEntity.setActualAmount(isPaid ? orderWeComEntity.getPrice() : 0);
+        orderEntity.setStatus(OrderStatus.FINISHED.getName());
+        orderEntity.setIsPaid(true);
+        orderEntity.setPaidTime(orderWeComEntity.getPaidTime());
+        orderEntity.setExpireTime(orderWeComEntity.getEndTime());
+        orderEntity.setCreatedTime(orderWeComEntity.getOrderTime());
+        if (!isPaid) {
+            orderEntity.setOrderPhase(OrderPhase.TRIAL.getName());
+        }
+        else {
+            orderEntity.setOrderPhase(OrderPhase.FIXEDTERM.getName());
+        }
+        EconomicOrderMetadataEntity orderMetadata = new EconomicOrderMetadataEntity();
+        orderMetadata.setOrderNo(orderEntity.getOrderNo());
+        orderMetadata.setMetadata(isPaid ? JSONUtil.toJsonStr(orderWeComEntity) : null);
+        orderMetadata.setOrderChannel(OrderChannel.WECOM.getName());
+        iOrderService.createOrderWithMetadata(orderEntity, orderMetadata);
+        // 返回绑定的空间站 ID
+        return spaceId;
+    }
+
+}

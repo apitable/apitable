@@ -1,0 +1,23 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.6-20210109-001" author="Shawn" labels="widget">
+        <comment>新增数表组件关联表</comment>
+        <sqlFile path="db/changelog/0.6/20210109_changeset_001.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20210109-002" author="Shawn" labels="widget">
+        <comment>移除组件表的数表索引</comment>
+        <sqlFile path="db/changelog/0.6/20210109_changeset_002.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20210109-003" author="Shawn" labels="widget">
+        <comment>组件表增加空间ID</comment>
+        <sqlFile path="db/changelog/0.6/20210109_changeset_003.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20210109-004" author="Shawn" labels="widget">
+        <comment>组件表增加节点ID记录组件归属</comment>
+        <sqlFile path="db/changelog/0.6/20210109_changeset_004.sql"/>
+    </changeSet>
+</databaseChangeLog>

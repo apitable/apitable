@@ -1,0 +1,111 @@
+version: '3.9'
+services:
+  test-mysql:
+    container_name: test-mysql
+    image: mysql:8.0.28-oracle
+    ports:
+      - "23306:3306"
+    networks:
+      - unit-test
+    environment:
+      - TZ=Asia/Shanghai
+      - MYSQL_DATABASE=vika_test
+      - MYSQL_USER=vika
+      - MYSQL_PASSWORD=password
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+    command: [ 'mysqld', '--sql_mode=IGNORE_SPACE,NO_ENGINE_SUBSTITUTION', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci' ]
+    healthcheck:
+      test: "mysql $$MYSQL_DATABASE -u$$MYSQL_USER -p$$MYSQL_PASSWORD -e 'SELECT 1;'"
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  test-redis:
+    container_name: test-redis
+    image: redis:5.0.7-alpine
+    ports:
+      - "26379:6379"
+    networks:
+      - unit-test
+    environment:
+      - TZ=Asia/Shanghai
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  test-rabbitmq:
+    container_name: test-rabbitmq
+    image: rabbitmq:3-management
+    ports:
+      - "25672:5672"
+    networks:
+      - unit-test
+    environment:
+      - TZ=Asia/Shanghai
+      - RABBITMQ_USERNAME=vika
+      - RABBITMQ_PASSWORD=password
+      - RABBITMQ_DEFAULT_USER=vika
+      - RABBITMQ_DEFAULT_PASS=password
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  test-initdb:
+    depends_on:
+      test-mysql:
+        condition: service_healthy
+    container_name: test-initdb
+    image: ${INITDB_IMAGE:-docker.vika.ltd/vikadata/vika/init-db:latest}
+    networks:
+      - unit-test
+    environment:
+      - TZ=Asia/Shanghai
+      - ACTION=update
+      - DB_HOST=test-mysql
+      - DB_PORT=3306
+      - DB_NAME=vika_test
+      - DB_USERNAME=vika
+      - DB_PASSWORD=password
+
+  unit-test-room:
+    depends_on:
+      test-redis:
+        condition: service_healthy
+      test-rabbitmq:
+        condition: service_healthy
+      test-mysql:
+        condition: service_healthy
+    container_name: unit-test-room
+    networks:
+      - unit-test
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    environment:
+      - TZ=Asia/Shanghai
+      - MYSQL_HOST=test-mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USERNAME=vika
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=vika_test
+      - MYSQL_USE_SSL=false
+      - REDIS_HOST=test-redis
+      - REDIS_PORT=6379
+      - REDIS_DB=4
+      - REDIS_PASSWORD=
+      - RABBITMQ_HOST=test-rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=vika
+      - RABBITMQ_PASSWORD=password
+      - INSTANCE_COUNT=1
+      - APPLICATION_NAME=TEST_NEST_REST_SERVER
+    entrypoint: yarn test:ut:room
+
+networks:
+  unit-test:
+    external: true

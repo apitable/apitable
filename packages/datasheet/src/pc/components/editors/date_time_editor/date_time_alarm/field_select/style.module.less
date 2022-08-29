@@ -1,0 +1,65 @@
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+@import '~pc/styles/lib_screen.less';
+
+.displayBox {
+  padding-left: 8px;
+  padding-right: 13px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  background: var(--fc6);
+  cursor: pointer;
+
+  & > div {
+    display: flex;
+    align-items: center;
+    transition: all 0.3s;
+  }
+
+  & > div:nth-child(1) {
+    flex: 1;
+    text-align: left;
+  }
+}
+
+.selectedFieldsValue {
+  display: flex;
+  flex-shrink: 0;
+  height: 100%;
+  overflow: hidden;
+
+  .icon {
+    margin-right: 4px;
+    display: flex;
+    align-items: center;
+  }
+
+  .value {
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+}
+
+.memberOptionItemWrapper {
+  padding: 8px;
+
+  svg {
+    pointer-events: none;
+  }
+
+  @media (any-hover: hover) {
+    &:hover {
+      background: var(--rowSelectedBg);
+    }
+  }
+
+  &:global {
+    &.isChecked {
+      color: inherit;
+    }
+  }
+}
+

@@ -1,0 +1,12 @@
+plugins {
+  id 'java-library'
+}
+
+description = "Starter For Afs"
+
+dependencies {
+  api(project(":vikadata-starters:vikadata-starter"))
+  api(project(':vikadata-integration:vikadata-integration-rabbitmq'))
+  
+  api(rootProject.ext.dependencies['spring-rabbit'])
+}

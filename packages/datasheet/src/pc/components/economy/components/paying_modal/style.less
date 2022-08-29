@@ -1,0 +1,84 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@revealing-modal-prefix-cls: ~"paying-modal";
+@keyframes scaleUp {
+  0% {
+    transform: translateY(1000px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+@keyframes scaleDown {
+  0% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(1000px);
+    opacity: 0;
+  }
+}
+@keyframes fadeIn {
+  0% {
+    background: rgba(0, 0, 0, 0);
+  }
+  100% {
+    background: rgba(0, 0, 0, 0.7);
+  }
+}
+@keyframes fadeOut {
+  0% {
+    background: rgba(0, 0, 0, 0.7);
+  }
+  100% {
+    background: rgba(0, 0, 0, 0);
+  }
+}
+.@{revealing-modal-prefix-cls} {
+  &-body {
+    position: fixed;
+    z-index: 2;
+    // 弹窗置底
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  &-mask {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: fade(black, 50);
+    z-index: 1;
+    animation: fadeIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+  }
+  &-content {
+    background: var(--defaultBg);
+    border-radius: 4px;
+    transform: translate(-50%, -50%);
+    animation: scaleUp 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-close {
+    position: absolute;
+    display: inline-flex;
+    right: 24px;
+    top: 24px;
+  }
+}
+
+.@{revealing-modal-prefix-cls}.@{revealing-modal-prefix-cls}-out {
+  .@{revealing-modal-prefix-cls}-content {
+    animation: scaleDown 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+  }
+  .@{revealing-modal-prefix-cls}-mask {
+    animation: fadeOut 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+  }
+}

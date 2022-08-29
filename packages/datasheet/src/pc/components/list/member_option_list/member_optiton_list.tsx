@@ -1,0 +1,254 @@
+import {
+  Api, IMember, ITeam, IUnitIds, IUnitMap, IUnitValue, IUserValue, IUuids, MemberType, OtherTypeUnitId, StoreActions, Strings, t,
+  UnitItem
+} from '@vikadata/core';
+import { useUpdateEffect } from 'ahooks';
+import { useRequest } from 'pc/hooks';
+import classNames from 'classnames';
+import Fuse from 'fuse.js';
+import { memberStash } from 'pc/common/member_stash/member_stash';
+import { expandInviteModal } from 'pc/components/invite';
+import { CommonList } from 'pc/components/list/common_list';
+import { MemberItem } from 'pc/components/multi_grid/cell/cell_member/member_item';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { stopPropagation } from '../../../utils/dom';
+import { expandUnitModal, SelectUnitSource } from '../../catalog/permission_settings/permission/select_unit_modal';
+import { Check } from '../common_list/check';
+import { IMemberOptionListProps } from './member_option_list.interface';
+import styles from './styles.module.less';
+
+export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: React.RefObject<HTMLInputElement> }> = (props) => {
+  const {
+    linkId, unitMap, listData, onClickItem, showSearchInput,
+    showMoreTipButton, multiMode, existValues, uniqId, activeIndex, showInviteTip = true,
+    inputRef, monitorId, className,
+  } = props;
+  const initList = Array.isArray(listData) ? listData : memberStash.getMemberStash();
+  const [memberList, setMemberList] = useState<(IUnitValue | IUserValue)[]>(() => {
+    // 无论是否要开启远程搜索，都需要对数据做一次备份，尤其是组件传入的 local data
+    return initList;
+  });
+  const dispatch = useDispatch();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { formId } = useSelector(state => state.pageParams);
+  const shareId = useSelector(state => state.pageParams.shareId);
+
+  const refreshMemberList = useCallback(
+    () => {
+      // listData 未传入，直接使用 stash
+      if (!listData) {
+        setMemberList(memberStash.getMemberStash());
+        return;
+      }
+      setMemberList(listData);
+    },
+    [listData],
+  );
+
+  useEffect(() => {
+    refreshMemberList();
+  }, [refreshMemberList]);
+
+  const loadOrSearchMember = async(keyword?: string) => {
+    if (!showSearchInput && listData != null) {
+      // 不开启远程搜索的情况下，原始数据需要读取从外部传入的完整数据，不可以用组件内缓存的数据
+      const fuse = new Fuse(listData, { keys: ['name'] });
+      if (keyword) {
+        return fuse.search(keyword).map(item => (item as any).item); // FIXME:TYPE
+      }
+      return listData;
+    }
+    if (!keyword?.length) {
+      return initList;
+    }
+    const res = await Api.loadOrSearch({ filterIds: '', keyword, linkId });
+    const data: IUnitValue[] = res.data.data;
+    if (uniqId === 'userId') {
+      return data.filter(unitValue => unitValue.type === MemberType.Member && Boolean(unitValue.userId));
+    }
+    return data;
+  };
+
+  const { data, run } = useRequest(loadOrSearchMember, {
+    debounceWait: 200,
+    manual: true,
+  });
+
+  useUpdateEffect(() => {
+    // FIXME: API 应该有返回类型
+    if (Array.isArray(data)) {
+      setMemberList(data);
+    }
+  }, [data]);
+
+  // 选择一个新的成员，将该成员的信息更新到 unitMap 中
+  function updateMemberInfo(unit: IUnitValue | IUserValue) {
+    const { unitId, userId, name, avatar } = unit;
+    // 若筛选值为 ”当前用户“ 或 ”匿名者“，则不需要将其更新到对应 Map 中
+    if ([unitId, userId].includes(OtherTypeUnitId.Self) || [unitId, userId].includes(OtherTypeUnitId.Alien)) {
+      return;
+    }
+
+    memberStash.updateStash(unit as IUnitValue);
+
+    const _unitMap = unitMap || {};
+    const currentUnitId = (uniqId === 'unitId' ? unitId : userId)!;
+    if (
+      _unitMap[currentUnitId] &&
+      _unitMap[currentUnitId].name === name &&
+      _unitMap[currentUnitId].avatar === avatar
+    ) {
+      return;
+    }
+    if (uniqId === 'unitId') {
+      dispatch(StoreActions.updateUnitMap({ [currentUnitId]: unit } as IUnitMap));
+    } else {
+      dispatch(StoreActions.updateUserMap({ [currentUnitId]: unit } as IUnitMap));
+    }
+  }
+
+  function handleSubmit(values: UnitItem[]) {
+    const isTeam = (unit: UnitItem) => unit.hasOwnProperty('teamId');
+    const newValues = values.map(value => {
+      if (isTeam(value)) {
+        const result = {
+          type: MemberType.Team,
+          unitId: value.unitId,
+          name: value['name'] || value.originName || (value as ITeam).teamName,
+          avatar: (value as IMember).avatar,
+          isDelete: false,
+        };
+        updateMemberInfo(result);
+        return result;
+      }
+      const result = {
+        type: MemberType.Member,
+        unitId: value.unitId,
+        userId: (value as IMember).uuid,
+        name: value['name'] || value.originName || (value as IMember).memberName,
+        avatar: (value as IMember).avatar,
+        isActive: (value as IMember).isActive,
+        isDelete: false,
+      };
+      updateMemberInfo(result);
+      return result;
+    });
+    onClickItem(newValues.map(item => item.unitId));
+  }
+
+  function standardStructure(cv: IUnitIds | IUuids | null) {
+    if (!unitMap || !cv) {
+      return [];
+    }
+    return cv.filter(item => {
+      return unitMap[item];
+    }).map(item => {
+      const info = unitMap[item];
+      return {
+        avatar: info.avatar,
+        name: info.name,
+        isTeam: info.type === MemberType.Team,
+        type: info.type,
+        unitId: item,
+        userId: info.userId,
+        isActive: info.isActive,
+        isDeleted: info.isDeleted,
+        isMemberNameModified: info.isMemberNameModified,
+      } as any;
+    });
+  }
+
+  function clickItem(e: React.MouseEvent | null, index: number) {
+    e && stopPropagation(e);
+    const unit = memberList[index];
+    updateMemberInfo(unit);
+    const unitId = uniqId === 'unitId' ? unit.unitId : unit.userId;
+    const hasChecked = Boolean(existValues && existValues.includes(unitId!));
+    if (multiMode) {
+      if (hasChecked) {
+        return onClickItem((existValues as IUnitIds).filter(item => item !== unitId));
+      }
+      return onClickItem([...(existValues ? (existValues as IUnitIds) : []), unitId!]);
+    }
+    return onClickItem(hasChecked ? [] : [unitId!]);
+  }
+
+  return (
+    <div
+      className={classNames('memberOptionList', styles.memberOptionList, className)}
+      tabIndex={0}
+      ref={containerRef}
+    >
+      <CommonList
+        monitorId={monitorId}
+        inputRef={inputRef}
+        value={existValues}
+        onClickItem={clickItem}
+        showInput={showSearchInput}
+        activeIndex={activeIndex}
+        inputStyle={{ padding: 8 }}
+        onInputClear={() => setMemberList(initList)}
+        noSearchResult={
+          () => {
+            return <span className={styles.noResult}>
+              {uniqId == 'unitId' ? t(Strings.cell_not_find_member_or_team) : t(Strings.cell_not_find_member)}
+              {
+                (showInviteTip && !formId && !shareId) &&
+                <span className={styles.inviteMember} onClick={() => expandInviteModal()}>
+                  {t(Strings.invite_member)}
+                </span>
+              }
+            </span>;
+          }
+        }
+        onSearchChange={(e, keyword) => {
+          run(keyword);
+        }}
+        // 分享页面不允许出现查看更多，空间站内的组织结构会泄露
+        footerComponent={showMoreTipButton && !shareId ? () => {
+          return <div
+            className={styles.seeMore}
+            onMouseUp={e => {
+              expandUnitModal({
+                source: SelectUnitSource.Member,
+                onSubmit: values => handleSubmit(values),
+                isSingleSelect: !multiMode,
+                checkedList: standardStructure(existValues),
+                onClose: () => refreshMemberList()
+              });
+            }}
+            onMouseDown={e => {
+              e.preventDefault();
+            }}
+          >
+            {t(Strings.see_more)}
+          </div>;
+        } : undefined}
+      >
+        {
+          memberList.map((item, index) => {
+            const unitId = uniqId === 'unitId' ? item.unitId : item.userId;
+            return (
+              <CommonList.Option
+                key={item[uniqId] || index}
+                currentIndex={index}
+                id={item[uniqId] || ''}
+                onMouseDown={(e: React.MouseEvent) => {
+                  e.preventDefault();
+                }}
+                className={styles.memberOptionItemWrapper}
+              >
+                <span style={{ flex: 1, width: 0 }}>
+                  <MemberItem unitInfo={item} />
+                </span>
+                <Check isChecked={Boolean(existValues && existValues.includes(unitId!))} />
+              </CommonList.Option>
+            );
+          })
+        }
+      </CommonList>
+    </div>
+  );
+};

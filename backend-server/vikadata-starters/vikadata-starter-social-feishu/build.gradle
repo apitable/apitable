@@ -1,0 +1,10 @@
+plugins {
+  id 'java-library'
+}
+
+dependencies {
+  api(project(":vikadata-starters:vikadata-starter"))
+  api(project(":vikadata-social:vikadata-social-feishu"))
+
+  implementation rootProject.ext.dependencies['spring-data-redis']
+}

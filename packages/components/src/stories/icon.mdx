@@ -1,0 +1,188 @@
+import { 
+  CheckOutlined, UncheckedOutlined, DashboardOutlined, ChartBarStackFilled, ChartBarNormalFilled,
+  ChartColumnStackFilled, FavoriteOutlined, CalenderLeftOutlined
+} from '@vikadata/icons';
+import { deepPurple, teal } from 'colors';
+import { IconUseInCanvas } from './examples/icon-in-canvas';
+import { Meta, Canvas } from '@storybook/addon-docs';
+import { useEffect } from 'react';
+import { StoryType } from './constants';
+
+<Meta title={`${StoryType.Design}/Icons 图标(预发布)`} />
+
+## Icons 图标
+
+<style>{`
+  .change-color:hover svg {
+    fill: red;
+  }
+`}</style>
+
+### icon 组件化协作流程
+
+1. 设计师在 Figma 中将 icon 组件化，保证命名正确（以 filled、outlined 结尾）
+2. 设计师通过 [插件](https://www.notion.so/Figma-Vika-Helper-71cf56eac26242b4b20a0c9d3db2c84e) 将 icon 同步到维格表中。
+3. 研发通过脚本从维格表，拉取 icon 自动生成对应的 React 组件。
+4. 在项目中使用 Icon 组件。
+
+### 生成 Icon 组件
+
+```shell
+# 从维格表拉取 icon
+yarn sync:icons
+yarn build:icons
+```
+*拉完 icon 之后注意观察变更。设计可能修改名称，或者删除了某些 icon，需要特别注意。*
+
+```ts static
+interface IIconProps {
+  /**
+   * Icon 大小，默认 16 px
+   */
+  size?: number | string;
+  /**
+   * Icon 颜色
+   */
+  color?: string | string[];
+  /**
+   * 覆盖样式传入 className
+   */
+  className?: string;
+  /**
+   * 显示与父级元素相同的颜色
+   */
+  currentColor?: boolean;
+}
+```
+### 使用 Icon 组件
+
+
+icons 是独立的组件库，在使用前需要引入。
+
+icon 只有基础的 UI 属性，颜色和尺寸，不处理状态。如果 UI 需要处理状态，例如 disabled 灰置、响应点击事件，应该使用 IconButton。
+
+*分类*
+
+按结构
++ outlined 线框 Icon
++ filled 面性 Icon 
+
+
+按颜色
++ 单色 Icon ，最普通的、只有一种颜色的 Icon。
++ 双色 Icon 和单色 Icon 没有区别，不同的是设计师在画 Icon 的时候，指定部分 path 的透明度。
++ 多色 Icon
+
+icon 的名称只会体现结构、不会体现颜色。
+
+
+#### 使用 Icon
+
+从 `@vikadata/icons` 中引入需要的 Icon。
+
+```tsx
+import { CheckedOutlined } from '@vikadata/icons';
+```
+
+#### 单双色 Icon 
+
+<Canvas>
+  <CheckOutlined size={50} color={deepPurple[500]}/>
+  <UncheckedOutlined size={50} color={deepPurple[500]}/>
+  <DashboardOutlined size={50} color={deepPurple[500]}/>
+  <DashboardOutlined size={50} currentColor/>
+</Canvas>
+
+#### 多色 Icon
+
+<Canvas>
+  <ChartBarStackFilled size={40}/>
+</Canvas>
+
+#### 自定义颜色和尺寸
+
+1. 默认不传入颜色， 显示设计师切图的原始颜色。
+2. 传入颜色，显示传入的颜色。
+3. 使用 currentColor ,显示为父级元素的颜色。
+
+<Canvas>
+  <ChartBarNormalFilled size={100}/>
+  <ChartBarNormalFilled size={100} color={deepPurple[500]}/>
+  <ChartBarNormalFilled size={50} color={teal[500]}/>
+  <ChartColumnStackFilled size={100} currentColor/>
+  <ChartColumnStackFilled size={100} currentColor color={['red','green','blue']}/>
+  <ChartColumnStackFilled size={100} color={['red','green','blue']}/>
+</Canvas>
+
+#### CSS 覆盖颜色
+
+非多色 icon 都可以用 fill 直接修改 svg 的填色。
+
+```css
+<style>
+  .change-color:hover svg {
+    fill: red;
+  }
+</style>
+```
+<Canvas>
+  <div className="change-color">
+    <FavoriteOutlined size={100}/>
+    <CalenderLeftOutlined size={100} />
+  </div>
+</Canvas>
+
+#### 读取 Icon path 
+
+除了多色 Icon 外，所有的 icon 都经过统一的处理，变成由 Path 绘制的图形。你可以拿到 Path 的 `d` 属性，在 canvas 中绘制出来。
+
+_多个 Path 的 Icon，输出值是将多个 Path 的 d 属性用 `\n` 拼接起来。_
+
+<Canvas>
+  <IconUseInCanvas />
+</Canvas>
+
+#### 所有icon
+
+<style>{`
+  .icons-wrap {
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    list-style: none;
+  }
+  .icon-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 150px;
+    height: 100px;
+    margin: 0 12px 12px 0;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+  }
+
+  .icon-name {
+    font-size: 12px;
+    color: #999;
+  }
+`}</style>
+
+import * as Icons from '@vikadata/icons';
+const names = Object.keys(Icons);
+
+<ul className="icons-wrap" >
+  {
+    names.map((iconName) => {
+      const Icon = Icons[iconName];
+      return <li className="icon-wrap" key={iconName}>
+        <Icon size={60} />
+        <span className="icon-name">{iconName}</span>  
+    </li>
+    })
+  }
+</ul>

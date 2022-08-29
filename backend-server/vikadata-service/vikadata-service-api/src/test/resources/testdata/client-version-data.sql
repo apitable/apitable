@@ -1,0 +1,17 @@
+INSERT INTO `vika_client_release_version` (`id`, `version`, `description`,
+                                           `publish_user`, `html_content`)
+VALUES (1999999999999999991, 'feature.7446',
+        'e18520d5d 2020-10-23 19:39:50 | [姚明阳 Mayne] feat: lab color',
+        'yaomingyang@vikadata.com', '<!doctype html>\n'),
+       (1999999999999999992, 'v0.12.2-release.2',
+        'e18520d5d 2020-10-23 19:39:50 | [姚明阳 Mayne] feat: lab color',
+        'yaomingyang@vikadata.com', '<!doctype html>\n'),
+       (1999999999999999993, 'v0.12.3-release.3',
+        'e18520d5d 2020-10-23 19:39:50 | [姚明阳 Mayne] feat: lab color',
+        'yaomingyang@vikadata.com', '<!doctype html>\n'),
+       (1999999999999999994, 'alpha.17412',
+        'e18520d5d 2020-10-23 19:39:50 | [姚明阳 Mayne] feat: lab color',
+        'yaomingyang@vikadata.com', '<!doctype html>\n'),
+       (1999999999999999995, 'beta.18409',
+        'e18520d5d 2020-10-23 19:39:50 | [姚明阳 Mayne] feat: lab color',
+        'yaomingyang@vikadata.com', '<!doctype html>\n');

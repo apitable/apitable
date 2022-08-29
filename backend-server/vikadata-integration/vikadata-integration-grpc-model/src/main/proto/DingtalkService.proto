@@ -1,0 +1,36 @@
+syntax = 'proto3';
+
+option java_multiple_files = true;
+option java_package = "com.vikadata.integration.grpc";
+option java_outer_classname = "GrpcDingTalkService";
+
+
+package grpc.dingtalk;
+
+import 'DingTalkMessage.proto';
+import 'message.proto';
+import "google/protobuf/wrappers.proto";
+
+// 内部服务调用
+service DingTalkService {
+  rpc GetDeptUserList (DeptUserListRo) returns (RequestIdResult);
+  rpc GetDepartmentSubIdList (DepartmentSubIdRo) returns (RequestIdResult);
+  rpc GetUserDetailByUserId (UserDetailRo) returns (RequestIdResult);
+  rpc GetSocialTenantStatus (GetSocialTenantStatusRo) returns (google.protobuf.BoolValue);
+  rpc GetUserInfoByCode (GetUserInfoByCodeRo) returns (RequestIdResult);
+  rpc GetSsoUserInfoByCode(GetSsoUserInfoByCodeRo) returns (DingTalkSsoUserInfoResult);
+  rpc SendMessageToUserByTemplateId(SendMessageToUserByTemplateIdRo) returns (AsyncSendMessageResult);
+  rpc UploadMedia(UploadMediaRo) returns (google.protobuf.StringValue);
+  rpc CreateMicroApaasApp(CreateMicroApaasAppRo) returns(CreateMicroApaasAppResult);
+  rpc GetSocialTenantInfo(GetSocialTenantStatusRo) returns(TenantInfoResult);
+  rpc GetInternalSkuPage(GetInternalSkuPageRo) returns(google.protobuf.StringValue);
+  rpc InternalOrderFinish(InternalOrderFinishRo) returns(google.protobuf.BoolValue);
+  rpc GetInternalOrder(GetInternalOrderRo) returns(RequestIdResult);
+  rpc GetDdConfigSign(GetDdConfigSignRo) returns(google.protobuf.StringValue);
+  rpc GetUserCount(GetUserCountRo) returns(google.protobuf.UInt32Value);
+  rpc GetUserIdListByDeptId(GetUserIdListByDeptIdRo) returns(RequestIdResult);
+  rpc GetUerTreeList(GetUserTreeListRo) returns(UserTreeListResult);
+  rpc GetCorpBizData(GetCorpBizDataRo) returns(CorpBizDataResult);
+}
+
+

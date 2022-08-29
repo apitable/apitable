@@ -1,0 +1,15 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.7-20210429-001" author="Chambers" labels="space">
+        <comment>空间表字段数据汇总</comment>
+        <sql>
+            UPDATE vika_space
+            SET props = JSON_SET(props, '$.invitable', is_invite, '$.joinable',
+            allow_apply, '$.nodeExportable', IF(is_forbid, 0, 1)),
+            updated_at = updated_at;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

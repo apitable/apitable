@@ -1,0 +1,49 @@
+@import "~pc/styles/lib_var.less";
+@import "./highlight.module.less";
+
+.loading {
+  background-color: transparent !important;
+}
+
+.fieldCodes {
+  position: relative;
+  padding: 0 24px;
+  height: 100%;
+  color: var(--static-white);
+  .highlight();
+
+  .subTitle {
+    color: var(--primaryColor);
+    font-size: 16px;
+    font-weight: normal;
+    margin: 28px 0;
+    a {
+      opacity: 0.8;
+      color: var(--static-white);
+      font-size: 13px;
+      margin-left: 8px;
+      svg {
+        font-size: 15px;
+        vertical-align: text-top;
+      }
+    }
+  }
+
+  .codeWrapper,
+  .codeWrapper code {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .radioGroup {
+    position: absolute;
+    right: 24px;
+    top: -10px;
+    button {
+      color: rgba(var(--static-white-rgb), 60%);
+    }
+    button.radioActive {
+      color: var(--static-white);
+    }
+  }
+}

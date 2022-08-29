@@ -1,0 +1,108 @@
+<code_scheme name="vikadata" version="173">
+    <!-- Global - Tabs And Indents Begin -->
+    <!--是否自动检测缩进-->
+    <option name="AUTODETECT_INDENTS" value="false"/>
+    <!-- Java - Tabs And Indents End -->
+
+    <!-- Java - Imports Begin -->
+    <!--普通引入至少超过指定的个数才能使用import package.*-->
+    <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="50"/>
+    <!--静态类引入至少超过指定的个数才能使用import package.*-->
+    <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="500"/>
+    <!--import引入排版布局-->
+    <option name="IMPORT_LAYOUT_TABLE">
+        <value>
+            <package name="java" withSubpackages="true" static="false"/>
+            <emptyLine/>
+            <package name="javax" withSubpackages="true" static="false"/>
+            <emptyLine/>
+            <package name="" withSubpackages="true" static="false"/>
+            <emptyLine/>
+            <package name="com.vikadata" withSubpackages="true" static="false"/>
+            <emptyLine/>
+            <package name="org.springframework" withSubpackages="true" static="false"/>
+            <emptyLine/>
+            <package name="" withSubpackages="true" static="true"/>
+        </value>
+    </option>
+    <!-- Java - Imports End -->
+
+    <!--Java - Wrapping And Braces - 右边距-->
+    <option name="RIGHT_MARGIN" value="90"/>
+    <!--Java - JavaDoc-->
+    <!-- 是否开启JavaDoc格式化 -->
+    <option name="ENABLE_JAVADOC_FORMATTING" value="false"/>
+    <!-- JavaDoc 参数是否对齐 -->
+    <option name="JD_ALIGN_PARAM_COMMENTS" value="false"/>
+    <!-- JavaDoc 异常参数是否对齐 -->
+    <option name="JD_ALIGN_EXCEPTION_COMMENTS" value="false"/>
+    <!-- JavaDoc 留换行 -->
+    <option name="JD_KEEP_EMPTY_LINES" value="false"/>
+
+    <JavaCodeStyleSettings>
+        <option name="CLASS_NAMES_IN_JAVADOC" value="3"/>
+        <option name="INSERT_INNER_CLASS_IMPORTS" value="true"/>
+        <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="50"/>
+        <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="500"/>
+        <option name="PACKAGES_TO_USE_IMPORT_ON_DEMAND">
+            <value/>
+        </option>
+        <option name="IMPORT_LAYOUT_TABLE">
+            <value>
+                <package name="java" withSubpackages="true" static="false"/>
+                <emptyLine/>
+                <package name="javax" withSubpackages="true" static="false"/>
+                <emptyLine/>
+                <package name="" withSubpackages="true" static="false"/>
+                <emptyLine/>
+                <package name="com.vikadata" withSubpackages="true" static="false"/>
+                <emptyLine/>
+                <package name="org.springframework" withSubpackages="true"
+                         static="false"/>
+                <emptyLine/>
+                <package name="" withSubpackages="true" static="true"/>
+            </value>
+        </option>
+        <option name="ENABLE_JAVADOC_FORMATTING" value="false"/>
+        <option name="JD_ALIGN_PARAM_COMMENTS" value="false"/>
+        <option name="JD_ALIGN_EXCEPTION_COMMENTS" value="false"/>
+        <option name="JD_KEEP_INVALID_TAGS" value="false"/>
+        <option name="JD_KEEP_EMPTY_LINES" value="false"/>
+    </JavaCodeStyleSettings>
+    <XML>
+        <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true"/>
+    </XML>
+    <editorconfig>
+        <option name="ENABLED" value="false"/>
+    </editorconfig>
+    <codeStyleSettings language="Groovy">
+        <indentOptions>
+            <option name="INDENT_SIZE" value="2"/>
+            <option name="CONTINUATION_INDENT_SIZE" value="2"/>
+            <option name="KEEP_INDENTS_ON_EMPTY_LINES" value="true"/>
+        </indentOptions>
+    </codeStyleSettings>
+    <codeStyleSettings language="JAVA">
+        <option name="LINE_COMMENT_AT_FIRST_COLUMN" value="false"/>
+        <option name="BLOCK_COMMENT_AT_FIRST_COLUMN" value="false"/>
+        <option name="LINE_COMMENT_ADD_SPACE" value="true"/>
+        <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="1"/>
+        <option name="BLANK_LINES_AROUND_FIELD" value="1"/>
+        <option name="BLANK_LINES_AROUND_FIELD_IN_INTERFACE" value="1"/>
+        <option name="ELSE_ON_NEW_LINE" value="true"/>
+        <option name="CATCH_ON_NEW_LINE" value="true"/>
+        <option name="FINALLY_ON_NEW_LINE" value="true"/>
+        <option name="ALIGN_MULTILINE_PARAMETERS" value="false"/>
+        <option name="SPACE_WITHIN_ARRAY_INITIALIZER_BRACES" value="true"/>
+        <option name="SPACE_BEFORE_ARRAY_INITIALIZER_LBRACE" value="true"/>
+        <option name="BINARY_OPERATION_SIGN_ON_NEXT_LINE" value="true"/>
+        <option name="KEEP_SIMPLE_CLASSES_IN_ONE_LINE" value="true"/>
+        <option name="KEEP_MULTIPLE_EXPRESSIONS_IN_ONE_LINE" value="true"/>
+    </codeStyleSettings>
+    <codeStyleSettings language="JSON">
+        <indentOptions>
+            <option name="INDENT_SIZE" value="4"/>
+            <option name="TAB_SIZE" value="2"/>
+        </indentOptions>
+    </codeStyleSettings>
+</code_scheme>

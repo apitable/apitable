@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.modular.workspace.mapper.DatasheetMapper">
+
+    <insert id="insertBatch">
+        INSERT INTO vika_datasheet(id, space_id, dst_id, dst_name, node_id, creator, revision, created_by, updated_by)
+        VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id},#{item.spaceId},#{item.dstId},#{item.dstName},#{item.nodeId},#{item.creator},#{item.revision},#{item.createdBy},#{item.updatedBy}
+            </trim>
+        </foreach>
+    </insert>
+
+    <update id="updateNameByDstId">
+        UPDATE vika_datasheet
+        SET dst_name = #{dstName}, updated_by = #{userId}
+        WHERE dst_id = #{dstId} AND is_deleted = 0
+    </update>
+
+    <delete id="updateIsDeletedByNodeIds">
+        UPDATE vika_datasheet
+        SET is_deleted = #{isDel}, updated_by = #{userId}
+        WHERE dst_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted != #{isDel}
+    </delete>
+
+    <select id="selectByDstId" resultType="com.vikadata.entity.DatasheetEntity">
+        SELECT *
+        FROM vika_datasheet
+        WHERE dst_id = #{nodeId}
+    </select>
+</mapper>

@@ -1,0 +1,57 @@
+@import "~pc/styles/lib_var.less";
+.addAdminModal {
+  .pageTitle {
+    font-size: 16px;
+    color: var(--firstLevelText);
+    height: 22px;
+    line-height: 22px;
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-weight: bold;
+  }
+  .selectedWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 16px;
+    min-height: 16px;
+    max-height: 172px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    .selectedUnit {
+      margin: 0 8px 16px 0;
+    }
+  }
+  .cardWrap {
+    display: flex;
+    justify-content: space-between;
+  }
+  .btnWrapper {
+    margin-top: 32px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .confirmBtn {
+    margin-left: 20px;
+  }
+
+  :global {
+    .ant-modal-close {
+      margin: 24px 24px 0 0;
+    }
+    .ant-modal-header {
+      height: 74px;
+      padding: 24px;
+      border: none;
+      .ant-modal-title {
+        height: 25px;
+        line-height: 25px;
+        font-size: 16px;
+        color: var(--firstLevelText);
+      }
+    }
+
+    .ant-modal-body {
+      padding: 0 24px 24px;
+    }
+  }
+}

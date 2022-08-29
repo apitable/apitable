@@ -1,0 +1,186 @@
+package com.vikadata.api.modular.workspace.controller;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.validation.Valid;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+
+import com.vikadata.api.annotation.ApiResource;
+import com.vikadata.api.annotation.GetResource;
+import com.vikadata.api.annotation.PageObjectParam;
+import com.vikadata.api.annotation.PostResource;
+import com.vikadata.api.context.SessionContext;
+import com.vikadata.api.enums.developer.GmAction;
+import com.vikadata.api.model.ro.widget.WidgetPackageAuthRo;
+import com.vikadata.api.model.ro.widget.WidgetPackageBanRo;
+import com.vikadata.api.model.ro.widget.WidgetPackageCreateRo;
+import com.vikadata.api.model.ro.widget.WidgetPackageReleaseRo;
+import com.vikadata.api.model.ro.widget.WidgetPackageRollbackRo;
+import com.vikadata.api.model.ro.widget.WidgetPackageSubmitRo;
+import com.vikadata.api.model.ro.widget.WidgetPackageUnpublishRo;
+import com.vikadata.api.model.ro.widget.WidgetTransferOwnerRo;
+import com.vikadata.api.model.vo.widget.WidgetPackageInfoVo;
+import com.vikadata.api.model.vo.widget.WidgetReleaseCreateVo;
+import com.vikadata.api.model.vo.widget.WidgetReleaseListVo;
+import com.vikadata.api.modular.developer.service.IGmService;
+import com.vikadata.api.modular.workspace.service.IWidgetPackageService;
+import com.vikadata.core.support.ResponseData;
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import static com.vikadata.api.constants.PageConstants.PAGE_PARAM;
+import static com.vikadata.api.constants.PageConstants.PAGE_SIMPLE_EXAMPLE;
+
+/**
+ * <p>
+ * 小程序SDK模块_小程序管理接口
+ * </p>
+ *
+ * @author Pengap
+ * @date 2021/7/7
+ */
+@RestController
+@Api(tags = "小程序SDK模块_小程序管理接口")
+@ApiResource(path = "/widget/package")
+public class WidgetPackageController {
+
+    @Resource
+    private IWidgetPackageService iWidgetPackageService;
+
+    @Resource
+    private IGmService iGmService;
+
+    @PostResource(path = "/auth", requiredPermission = false)
+    @ApiOperation(value = "小程序开发鉴权校验", notes = "widget-cli小程序开发鉴权校验")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC")
+    })
+    public ResponseData<Void> widgetAuth(@RequestBody @Valid WidgetPackageAuthRo widget) {
+        // 上层有统一拦截器校验
+        return ResponseData.success();
+    }
+
+    @PostResource(path = "/create", requiredPermission = false)
+    @ApiOperation(value = "小程序创建", notes = "widget-cli初始化创建小程序")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC")
+    })
+    public ResponseData<WidgetReleaseCreateVo> createWidget(@RequestBody @Valid WidgetPackageCreateRo widget) {
+        Long userId = SessionContext.getUserId();
+        return ResponseData.success(iWidgetPackageService.createWidget(userId, widget));
+    }
+
+    @PostResource(path = "/release", requiredPermission = false)
+    @ApiOperation(value = "小程序发布", notes = "widget-cli发布小程序", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC")
+    })
+    public ResponseData<Void> releaseWidget(@Valid WidgetPackageReleaseRo widget) {
+        Long userId = SessionContext.getUserId();
+        iWidgetPackageService.releaseWidget(userId, widget);
+        return ResponseData.success();
+    }
+
+    @GetResource(path = "/release/history/{packageId}", requiredPermission = false)
+    @ApiOperation(value = "获取小程序发布历史版本", notes = "widget-cli获取发布小程序历史版本")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+            @ApiImplicitParam(name = "packageId", value = "小程序包Id", required = true, dataTypeClass = Integer.class, paramType = "path", example = "wpkAbc"),
+            @ApiImplicitParam(name = PAGE_PARAM, value = "分页参数，说明看接口描述", dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
+    })
+    public ResponseData<List<WidgetReleaseListVo>> releaseListWidget(@PathVariable(name = "packageId") String packageId, @PageObjectParam(required = false) Page page) {
+        Long userId = SessionContext.getUserId();
+        return ResponseData.success(iWidgetPackageService.releaseListWidget(userId, packageId, page));
+    }
+
+    @PostResource(path = "/rollback", requiredPermission = false)
+    @ApiOperation(value = "小程序回滚", notes = "widget-cli回滚小程序")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+    })
+    public ResponseData<Void> rollbackWidget(@RequestBody @Valid WidgetPackageRollbackRo widget) {
+        Long userId = SessionContext.getUserId();
+        iWidgetPackageService.rollbackWidget(userId, widget);
+        return ResponseData.success();
+    }
+
+    @PostResource(path = "/unpublish", requiredPermission = false)
+    @ApiOperation(value = "小程序下架", notes = "widget-cli下架小程序")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+    })
+    public ResponseData<Void> unpublishWidget(@RequestBody @Valid WidgetPackageUnpublishRo widget) {
+        Long userId = SessionContext.getUserId();
+        iWidgetPackageService.unpublishWidget(userId, widget);
+        return ResponseData.success();
+    }
+
+    @PostResource(path = "/ban", requiredPermission = false)
+    @ApiOperation(value = "小程序「封禁/解封」", notes = "widget-cli「封禁/解封」小程序")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+    })
+    public ResponseData<Void> banWidget(@RequestBody @Valid WidgetPackageBanRo widget) {
+        Long userId = SessionContext.getUserId();
+        // 校验操作权限
+        iGmService.validPermission(userId, Boolean.TRUE.equals(widget.getUnban()) ? GmAction.WIDGET_UNBAN : GmAction.WIDGET_BAN);
+        iWidgetPackageService.banWindget(userId, widget);
+        return ResponseData.success();
+    }
+
+    @GetResource(path = "/{packageId}", requiredPermission = false)
+    @ApiOperation(value = "获取单个小程序包信息", notes = "widget-cli获取单个小程序包信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+            @ApiImplicitParam(name = HttpHeaders.ACCEPT_LANGUAGE, value = "接受语言", dataTypeClass = String.class, paramType = "header", example = "「en-US/zh-CN」")
+    })
+    public ResponseData<WidgetPackageInfoVo> getWidgetPackageInfo(@PathVariable("packageId") String packageId) {
+        return ResponseData.success(iWidgetPackageService.getWidgetPackageInfo(packageId));
+    }
+
+    @GetResource(path = "/store", requiredPermission = false)
+    @ApiOperation(value = "获取小程序商店信息", notes = "widget-cli获取小程序商店信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+            @ApiImplicitParam(name = HttpHeaders.ACCEPT_LANGUAGE, value = "接受语言", dataTypeClass = String.class, paramType = "header", example = "「en-US/zh-CN」")
+    })
+    public ResponseData<List<WidgetPackageInfoVo>> getWidgetPackageListInfo(@RequestParam("spaceId") String spaceId) {
+        return ResponseData.success(iWidgetPackageService.getWidgetPackageListInfo(spaceId));
+    }
+
+    @PostResource(path = "/transfer/owner", requiredPermission = false)
+    @ApiOperation(value = "小程序转移拥有者", notes = "widget-cli小程序转移拥有者")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+            @ApiImplicitParam(name = HttpHeaders.ACCEPT_LANGUAGE, value = "接受语言", dataTypeClass = String.class, paramType = "header", example = "「en-US/zh-CN」")
+    })
+    public ResponseData<Void> transferWidgetOwner(@RequestBody @Valid WidgetTransferOwnerRo transferOwnerRo) {
+        Long userId = SessionContext.getUserId();
+        iWidgetPackageService.transferWidgetOwner(userId, transferOwnerRo);
+        return ResponseData.success();
+    }
+
+    @PostResource(path = "/submit", requiredPermission = false)
+    @ApiOperation(value = "小程序提交审核", notes = "widget-cli小程序提交审核", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+            @ApiImplicitParam(name = HttpHeaders.ACCEPT_LANGUAGE, value = "接受语言", dataTypeClass = String.class, paramType = "header", example = "「en-US/zh-CN」")
+    })
+    public ResponseData<Void> submitWidget(@Valid WidgetPackageSubmitRo widget) {
+        Long userId = SessionContext.getUserId();
+        iWidgetPackageService.submitWidget(userId, widget);
+        return ResponseData.success();
+    }
+
+}

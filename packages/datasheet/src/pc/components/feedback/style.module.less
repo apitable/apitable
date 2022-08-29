@@ -1,0 +1,35 @@
+@import "~pc/styles/lib_var.less";
+
+.feedbackMenu {
+  background-color: var(--highestBg);
+  box-shadow: var(--shadowCommonHighest);
+  padding: 4px 0;
+  border-radius: 4px;
+}
+
+.reportWeb {
+  .feedbackBtn svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--secondLevelText);
+  }
+  :global {
+    .btn-shadow {
+      box-shadow: var(--shadowCommonHighest);;
+    }
+  }
+}
+
+.reasonModal {
+  :global {
+    .ant-modal-body {
+      padding: 0;
+    }
+
+    .ant-modal-close-x {
+      svg {
+        fill: var(--defaultBg);
+      }
+    }
+  }
+}

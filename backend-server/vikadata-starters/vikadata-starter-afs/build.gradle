@@ -1,0 +1,14 @@
+plugins {
+  id 'java-library'
+}
+
+description = "Starter For Afs"
+
+dependencies {
+  api(project(":vikadata-starters:vikadata-starter"))
+  api(project(':vikadata-integration:vikadata-integration-afs'))
+
+  // 引入哪个就激活对应的自动配置
+  implementation(rootProject.ext.dependencies['aliyun-core'])
+  implementation(rootProject.ext.dependencies['aliyun-afs'])
+}

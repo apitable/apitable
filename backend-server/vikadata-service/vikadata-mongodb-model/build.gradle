@@ -1,0 +1,13 @@
+plugins {
+  id 'java'
+  id 'com.vikadata.gradle.plugin.mybatis-generator'
+}
+
+description = 'Vikadata MongoDB Model'
+
+dependencies {
+  implementation rootProject.ext.dependencies['mongodb']
+  
+  annotationProcessor rootProject.ext.dependencies['lombok']
+  compileOnly rootProject.ext.dependencies['lombok']
+}

@@ -1,0 +1,78 @@
+
+.box {
+  position: relative;
+  padding: 10px 0 0 10px;
+  width: 220px;
+  height: 220px;
+
+  .corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    &::before, &::after {
+      display: block;
+      content: "";
+      position: absolute;
+      background: #C3B3F8;
+      border-radius: 4px;
+    }
+    &:nth-child(1) {
+      top: 0;
+      left: 0;
+      &::before {
+        width: 20px;
+        height: 4px;
+      }
+      &::after {
+        height: 20px;
+        width: 4px;
+      }
+    }
+    &:nth-child(2) {
+      top: 0;
+      right: 0;
+      &::before {
+        width: 20px;
+        height: 4px;
+      }
+      &::after {
+        height: 20px;
+        width: 4px;
+        right: 0;
+      }
+    }
+    &:nth-child(3) {
+      bottom: 0;
+      left: 0;
+      &::before {
+        width: 20px;
+        height: 4px;
+        bottom: 0;
+      }
+      &::after {
+        height: 20px;
+        width: 4px;
+      }
+    }
+    &:nth-child(4) {
+      bottom: 0;
+      right: 0;
+      &::before {
+        width: 20px;
+        height: 4px;
+        right: 0;
+        bottom: 0;
+      }
+      &::after {
+        height: 20px;
+        width: 4px;
+        right: 0;
+      }
+    }
+  }
+
+  img {
+    width: 200px;
+    height: 200px;
+  }
+}

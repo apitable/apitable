@@ -1,0 +1,6 @@
+[defaults]
+url=https://sentry.io/
+SENTRY_DSN=https://e74316f674a04a32bcc5af4317b61985@o1305733.ingest.sentry.io/6547528
+
+org=vika
+project=datasheet

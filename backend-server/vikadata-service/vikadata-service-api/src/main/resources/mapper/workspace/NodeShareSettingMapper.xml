@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.workspace.mapper.NodeShareSettingMapper">
+
+    <select id="selectByShareId" resultType="com.vikadata.entity.NodeShareSettingEntity">
+        SELECT *
+        FROM vika_node_share_setting
+        WHERE share_id = #{shareId}
+    </select>
+
+    <select id="selectEnabledByUserId" resultType="com.vikadata.entity.NodeShareSettingEntity">
+        SELECT *
+        FROM vika_node_share_setting
+        WHERE created_by = #{userId}
+        AND is_enabled = 1
+    </select>
+
+    <select id="selectByNodeId" resultType="com.vikadata.entity.NodeShareSettingEntity">
+        SELECT *
+        FROM vika_node_share_setting
+        WHERE node_id = #{nodeId}
+        LIMIT 0,1
+    </select>
+
+    <select id="selectNodeIdByShareId" resultType="java.lang.String">
+        SELECT node_id
+        FROM vika_node_share_setting
+        WHERE share_id = #{shareId}
+          AND is_enabled = 1
+    </select>
+
+    <select id="selectUpdatedByByShareId" resultType="java.lang.Long">
+        SELECT updated_by
+        FROM vika_node_share_setting
+        WHERE share_id = #{shareId}
+          AND is_enabled = 1
+    </select>
+
+    <update id="disableByNodeIds">
+        UPDATE vika_node_share_setting
+        SET is_enabled = 0, props = NULL
+        WHERE node_id IN
+        <foreach collection="nodeIds" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="selectSpaceIdByShareId" resultType="java.lang.String">
+        SELECT vn.space_id
+        FROM vika_node_share_setting vnss
+                     JOIN vika_node vn ON vnss.node_id = vn.node_id AND vn.is_rubbish = 0
+        WHERE vnss.share_id = #{shareId}
+          AND vnss.is_enabled = 1
+        LIMIT 0,1
+    </select>
+
+    <select id="selectSpaceIdByShareIdIncludeDeleted" resultType="java.lang.String">
+        SELECT vn.space_id
+        FROM vika_node_share_setting vnss
+                 JOIN vika_node vn ON vnss.node_id = vn.node_id
+        WHERE vnss.share_id = #{shareId}
+        LIMIT 0,1
+    </select>
+
+    <select id="selectDtoByShareId" resultType="com.vikadata.api.model.dto.node.NodeShareDTO">
+        SELECT vn.space_id, vum.id operator
+        FROM vika_node_share_setting vnss
+        JOIN vika_node vn ON vnss.node_id = vn.node_id AND vn.is_rubbish = 0
+        LEFT JOIN vika_unit_member vum ON vum.user_id = vnss.updated_by AND vum.space_id = vn.space_id
+        WHERE vnss.share_id = #{shareId} AND vnss.is_enabled = 1
+        LIMIT 0,1
+    </select>
+
+    <select id="selectDtoByNodeIds" resultType="com.vikadata.api.model.dto.node.NodeShareDTO">
+        SELECT node_id, share_id
+        FROM vika_node_share_setting
+        WHERE node_id IN
+        <foreach collection="nodeIds" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectNodeIdsByUpdatersAndSpaceId" resultType="java.lang.String">
+        SELECT DISTINCT vnss.node_id
+        FROM vika_node_share_setting vnss
+        JOIN vika_node vn on vnss.node_id = vn.node_id AND vn.space_id = #{spaceId}
+        WHERE vnss.updated_by IN
+        <foreach collection="updaters" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectNodeIdAndEnabledByShareId" resultType="com.vikadata.entity.NodeShareSettingEntity">
+        SELECT node_id, is_enabled
+        FROM vika_node_share_setting
+        WHERE share_id = #{shareId}
+    </select>
+</mapper>

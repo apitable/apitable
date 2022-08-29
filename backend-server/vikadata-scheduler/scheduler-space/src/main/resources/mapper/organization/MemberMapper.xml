@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.scheduler.space.mapper.organization.MemberMapper">
+
+    <select id="selectUserIdBySpaceIds" resultType="java.lang.Long">
+        SELECT user_id
+        FROM vika_unit_member
+        WHERE space_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND user_id IS NOT NULL AND `status` = 1 AND is_deleted = 0
+    </select>
+
+    <update id="updateIsDeletedBySpaceIds">
+        UPDATE vika_unit_member
+        SET is_deleted = 1, `status` = 2
+        WHERE is_deleted = 0
+        AND space_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="getDtoBySpaceIds" resultType="com.vikadata.scheduler.space.model.UserSpaceRelDto">
+        SELECT id, user_id , space_id
+        FROM vika_unit_member
+        WHERE `status` = 2
+        AND space_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectMemberIds" resultType="java.lang.Long">
+        SELECT vum.id
+        FROM vika_user vu
+                 JOIN vika_unit_member vum ON vu.id = vum.user_id AND vu.nick_name != vum.member_name
+        WHERE vu.is_deleted = 0
+          AND vum.name_modified = 0
+          AND vum.is_deleted = 0
+    </select>
+
+    <update id="updateNameModifiedByIds">
+        UPDATE vika_unit_member
+        SET name_modified = 1
+        WHERE id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="selectUserIdByMemberId" resultType="java.lang.Long">
+        SELECT user_id
+        FROM vika_unit_member
+        WHERE id = #{memberId}
+    </select>
+</mapper>

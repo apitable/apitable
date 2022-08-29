@@ -1,0 +1,48 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.7-20210731-001" author="Zoe" labels="template">
+        <comment>新建模版属性表</comment>
+        <sql>
+            CREATE TABLE `vika_template_property` (
+            `id` bigint UNSIGNED NOT NULL COMMENT '主键',
+            `property_type` tinyint unsigned NOT NULL COMMENT '类型 (0:分类,1:标签)',
+            `property_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '属性名称',
+            `property_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '属性code',
+            `is_deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `created_by` bigint(20) DEFAULT NULL COMMENT '创建者',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT '最后修改者',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            PRIMARY KEY (`id`),
+            KEY `idx_property_code` (`property_code`) USING BTREE,
+            KEY `idx_property_name` (`property_name`(30)) USING BTREE
+            ) ENGINE = InnoDB
+            DEFAULT CHARSET = utf8mb4
+            COLLATE = utf8mb4_unicode_ci COMMENT = '模板中心-模版属性表';
+        </sql>
+
+    </changeSet>
+
+    <changeSet id="V0.7-20210731-002" author="Zoe" labels="template">
+        <comment>新建模版属性关联表</comment>
+        <sql>
+            CREATE TABLE `vika_template_property_rel` (
+            `id` bigint UNSIGNED NOT NULL COMMENT '主键',
+            `template_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '自定义模板ID',
+            `property_id` bigint DEFAULT NULL COMMENT '属性表ID(关联#vika_template_property#id)',
+            `property_order` tinyint(2) UNSIGNED NULL DEFAULT NULL COMMENT '属性顺序',
+            PRIMARY KEY (`id`),
+            KEY `idx_template_id` (`template_id`) USING BTREE,
+            KEY `idx_property_id` (`property_id`) USING BTREE
+            ) ENGINE = InnoDB
+            DEFAULT CHARSET = utf8mb4
+            COLLATE = utf8mb4_unicode_ci COMMENT = '模板中心-模版属性关联表';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

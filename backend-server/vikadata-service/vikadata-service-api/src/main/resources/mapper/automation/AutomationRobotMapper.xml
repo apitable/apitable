@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.automation.mapper.AutomationRobotMapper">
+    <select id="getRobotsByResourceId" resultType="com.vikadata.api.modular.automation.model.AutomationRobotDto">
+        SELECT robot_id, name, description
+        FROM vika_automation_robot
+        WHERE resource_id = #{resourceId}
+        AND is_deleted = 0
+    </select>
+
+    <update id="updateRobotById">
+        UPDATE vika_automation_robot
+        SET is_deleted = 0,
+            resource_id = #{resourceId},
+            name = #{name},
+            description = #{description}
+        WHERE robot_id = #{robotId}
+    </update>
+
+    <update id="deleteByRobotId">
+        UPDATE vika_automation_robot
+        SET is_deleted = 1
+        WHERE robot_id IN
+        <foreach item="item" index="index" collection="robotIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.finance.mapper.OrderItemMapper">
+    <select id="selectByOrderId" resultType="com.vikadata.entity.OrderItemEntity">
+        SELECT * FROM vika_billing_order_item
+        WHERE order_id = #{orderId} AND is_deleted = 0
+    </select>
+
+    <select id="selectBySubscriptionId"
+            resultType="com.vikadata.entity.OrderItemEntity">
+        SELECT * FROM vika_billing_order_item
+        WHERE subscription_id = #{subscriptionId} AND is_deleted = 0
+    </select>
+
+    <select id="selectSubscriptionIdsByOrderId" resultType="java.lang.String">
+        SELECT subscription_id
+        FROM vika_billing_order_item
+        WHERE order_id = #{orderId} AND is_deleted = 0
+    </select>
+</mapper>

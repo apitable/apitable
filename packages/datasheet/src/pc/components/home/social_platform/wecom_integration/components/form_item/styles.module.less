@@ -1,0 +1,38 @@
+@import "~pc/styles/lib_var.less";
+.formItem {
+  padding-top: 16px;
+  .formItemLabel {
+    padding-bottom: 8px;
+  }
+  .formItemLabelRequired {
+    position: relative;
+    padding-left: 10px;
+    &::before {
+      content: '*';
+      position: absolute;
+      left: 0;
+      line-height: 22px;
+      color: var(--errorColor);
+    }
+  }
+  .formItemValue {
+    display: flex;
+    align-items: center;
+    .formItemInputReadOnly:hover,
+    .formItemInputReadOnly:focus,
+    .formItemInputReadOnly:focus-within,
+    .formItemInputReadOnly:focus-visible {
+      background-color: #F5F7FA;
+      color: #262626;
+      border-color: transparent;
+    }
+  }
+  .formItemSuffix {
+    margin-left: 16px;
+  }
+  .formItemError {
+    font-size: 13px;
+    color: var(--errorColor);
+    line-height: 20px;
+  }
+}

@@ -1,0 +1,237 @@
+// @import "~antd/dist/antd.less";
+// @import "custom_antd_style.less"; // 用于覆盖上面定义的变量
+@import "~pc/styles/lib_screen.less";
+@import "~pc/styles/lib_mixins.less";
+
+
+.treeViewRoot {
+  /* 清理默认样式 */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+@node-over-bg: var(--treeSelectedBg);
+@node-focused-bg: transparent;
+@node-selected-bg: var(--primaryLight);
+@node-disabled-bg: transparent;
+@node-drag-bg: var(--defaultBg);
+@node-selected-children-bg: var(--fill0);
+@node-drag-line-color: var(--primaryColor);
+@node-drag-line-size: 2px;
+@node-drag-dot-size: 6px;
+
+
+.treeItemRoot {
+  &,
+  .group {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .treeItem {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border: @node-drag-line-size solid transparent;
+    cursor: pointer;
+
+    .iconContainer {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+
+      .icon {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        cursor: pointer;
+        border-radius: 2px;
+        @media (any-hover: hover) {
+          &:hover {
+            background: var(--shadowColor);
+          }
+        }
+
+        .spin {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        svg {
+          width: 16px;
+          height: 16px;
+          fill: var(--fourthLevelText);
+          transform: rotate(0deg);
+          transition: transform 500ms ease;
+        }
+      }
+    }
+
+    .label {
+      position: relative;
+      display: flex;
+      align-items: center;
+      flex: 1;
+      height: 100%;
+    }
+
+    // 拖拽时的线
+    .label::before {
+      display: none;
+      content: "\0020";
+      position: absolute;
+      left: @node-drag-dot-size - 1;
+      right: 0;
+      border-top: @node-drag-line-size @node-drag-line-color solid;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    // 拖拽时的点
+    .label::after {
+      display: none;
+      content: "\0020";
+      position: absolute;
+      width: @node-drag-dot-size;
+      height: @node-drag-dot-size;
+      border-radius: @node-drag-dot-size / 2;
+      border: @node-drag-line-size solid @node-drag-line-color;
+      left: 0;
+      right: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    @media (any-hover: hover) {
+      // 节点hover样式
+      &:hover {
+        border-radius: 4px;
+        background: var(--fill0);
+      }
+    }
+
+    &:active {
+      background: var(--fill1);
+    }
+
+    // 节点展开时的样式
+    &.expanded {
+      .iconContainer {
+        svg {
+          transform: rotate(90deg);
+        }
+      }
+    }
+
+    // 节点聚焦时的样式
+    // &.focused {
+    //   background: @node-focused-bg;
+    // }
+
+    // 节点选中时的样式
+    &.selected {
+      background: @node-selected-bg;
+
+      & + .group {
+        background: @node-selected-children-bg;
+        border-radius: 0 0 4px 4px;
+      }
+    }
+
+    &.selected.expanded {
+      border-radius: 4px 4px 0 0;
+    }
+
+    // 节点禁用时的样式
+    &.disabled {
+      background: @node-disabled-bg;
+    }
+
+    // 节点被拖拽时的样式
+    &.dragNodeHighlight {
+      background: @node-drag-bg;
+    }
+
+    &.parentHighlight {
+      border-color: @node-drag-line-color;
+    }
+
+    &.draggable {
+      .label {
+        cursor: pointer;
+      }
+    }
+
+    &.dragging {
+      .label {
+        cursor: grabbing;
+      }
+    }
+
+    &.dragOverGapTop .label::before {
+      display: block;
+      top: -@node-drag-line-size - 1px;
+    }
+
+    &.dragOverGapTop .label::after {
+      display: block;
+      top: -@node-drag-dot-size - 1px + @node-drag-line-size;
+    }
+
+    &.dragOverGapBottom .label::before {
+      display: block;
+      bottom: -@node-drag-line-size - 1px;
+    }
+
+    &.dragOverGapBottom .label::after {
+      display: block;
+      bottom: -@node-drag-dot-size - 1px + @node-drag-line-size;
+    }
+
+    &.dragOver {
+      border-color: var(--primaryColor);
+    }
+  }
+}
+
+// 激活时
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  font-weight: bold;
+  color: var(--primaryColor);
+}
+
+a{
+  color: var(--primaryColor);
+  text-decoration: none;
+  background-color: transparent;
+  outline: none;
+  cursor: pointer;
+  transition: color .3s;
+}
+
+
+.ant-tabs-tab-btn:focus,
+.ant-tabs-tab-remove:focus,
+.ant-tabs-tab-btn:active,
+.ant-tabs-tab-remove:active {
+  color: var(--black_900);
+}
+
+
+#dingtalk_qrcode {
+  width: 100%;
+  height: 100%;
+
+  iframe {
+    width: 100%;
+    height: 100%;
+  }
+}

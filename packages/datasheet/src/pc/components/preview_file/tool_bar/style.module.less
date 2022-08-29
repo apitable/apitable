@@ -1,0 +1,90 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+@import "~pc/styles/lib_mixins.less";
+
+.toolbar {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  flex-shrink: 0;
+  padding: 8px;
+
+  & > h4 {
+    font-size: 18px;
+    text-align: center;
+    color: white;
+    margin: 0;
+    max-width: 640px;
+    .ellipsis();
+  }
+
+  .toolLeft {
+    border-radius: 20px;
+    width: 280px;
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+    user-select: none;
+  }
+
+  .toolRight {
+    width: 280px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}
+
+.group {
+  display: flex;
+  margin-right: 24px;
+  &.borderRight {
+    border-right: 1px solid var(--thirdLevelText);
+  }
+}
+
+.componentWrapper {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-right: 24px;
+}
+
+.zoomText {
+  height: 16px;
+  width: 32px;
+  text-align: center;
+  font-size: 12px;
+  margin-left: 8px;
+  margin-right: 8px;
+  color: var(--static-white);
+}
+
+.rightIcon {
+  border-radius: 4px;
+  width: 24px;
+  height: 24px;
+  &:hover {
+    background-color: var(--bgOnmaskHover);
+  }
+  &:active {
+    background-color: var(--bgOnmaskActive);
+  }
+}
+.iconClose {
+  margin-right: 0;
+}
+
+@media screen and(max-width: @w-md) {
+  .toolbar {
+    & > div {
+      background: none;
+    }
+    .toolLeft {
+      padding: 0;
+      margin-right: 0;
+    }
+  }
+}

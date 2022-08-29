@@ -1,0 +1,52 @@
+package com.vikadata.social.feishu.model.v3;
+
+import java.util.List;
+import java.util.Objects;
+
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * v3 版本 部门对象
+ * @author Shawn Deng
+ * @date 2021-07-07 22:00:44
+ */
+@Setter
+@Getter
+public class FeishuDeptObject {
+
+    private String name;
+
+    private I18n i18n_name;
+
+    private String parentDepartmentId;
+
+    private String departmentId;
+
+    private String openDepartmentId;
+
+    private String leaderUserId;
+
+    private String chatId;
+
+    private String order;
+
+    private List<String> unitIds;
+
+    private int memberCount;
+
+    private DeptStatus status;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FeishuDeptObject that = (FeishuDeptObject) o;
+        return departmentId.equals(that.departmentId) && openDepartmentId.equals(that.openDepartmentId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(departmentId, openDepartmentId);
+    }
+}

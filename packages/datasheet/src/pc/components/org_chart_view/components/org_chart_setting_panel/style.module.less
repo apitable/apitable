@@ -1,0 +1,94 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.settingPanelContainer {
+  width: 100%;
+  height: 100%;
+  padding: 24px;
+  background-color: var(--defaultBg);
+  border-top-right-radius: 8px;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .title {
+      display: flex;
+      align-items: center;
+
+      .helpIcon {
+        margin-left: 4px;
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .closeIcon {
+      cursor: pointer;
+    }
+  }
+
+  .guideWrap {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px;
+    border-radius: 4px;
+    background-color: var(--fc6);
+    height: 36px;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    .left {
+      display: inline-flex;
+      align-items: center;
+
+      svg {
+        margin-right: 8px;
+      }
+    }
+
+    &:hover {
+      background-color: var(--fc16);
+    }
+
+    &:active {
+      background-color: var(--fc9);
+    }
+  }
+
+  .setting {
+    margin-top: 24px;
+
+    .settingTitle {
+      padding-left: 6px;
+      position: relative;
+
+      &::before {
+        content: "";
+        width: 2px;
+        height: 12px;
+        background-color: var(--primaryColor);
+        position: absolute;
+        left: 0;
+        top: 5px;
+      }
+    }
+
+    .settingLayout {
+      margin-top: 16px;
+      display: flex;
+
+      .selectField {
+        width: 100%;
+      }
+    }
+
+    .errorText {
+      color: var(--errorColor);
+      font-size: 10px;
+    }
+  }
+}

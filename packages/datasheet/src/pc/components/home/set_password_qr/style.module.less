@@ -1,0 +1,62 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+.setPasswordWrapper {
+  .flexCenter();
+  width: 100%;
+  h1 {
+    color: var(--firstLevelText);
+    line-height: 28px;
+    font-size: 20px;
+    margin: 0;
+    margin-bottom: 50px;
+    text-align: center;
+    max-width: 800px;
+    .highLightText {
+      color: var(--primaryColor);
+    }
+  }
+
+  h2 {
+    color: var(--secondLevelText);
+    font-size: 16px;
+    line-height: 22px;
+    margin-bottom: 30px;
+  }
+  .highLightText {
+    color: var(--primaryColor);
+  }
+  svg.checkBoxSelect {
+    fill: var(--primaryColor) !important;
+  }
+  .pwdEyeIcon:hover {
+    cursor: pointer;
+  }
+  .protocol {
+    color: var(--secondLevelText);
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+
+    .checkBox {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      svg {
+        fill: var(--secondLevelText);
+      }
+    }
+
+    .protocolText {
+      margin-left: 5px;
+    }
+  }
+
+  :global {
+    .ant-input-suffix svg {
+      fill: var(--secondLevelText);
+    }
+    .ant-btn {
+      margin-top: 50px;
+    }
+  }
+}

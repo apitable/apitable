@@ -1,0 +1,8 @@
+${Ansi.GREEN}  __      __  _   _              _____            _
+${Ansi.GREEN}  \ \    / / (_) | |            |  __ \          | |
+${Ansi.GREEN}   \ \  / /   _  | | __   __ _  | |  | |   __ _  | |_    __ _
+${Ansi.GREEN}    \ \/ /   | | | |/ /  / _` | | |  | |  / _` | | __|  / _` |
+${Ansi.GREEN}     \  /    | | |   <  | (_| | | |__| | | (_| | | |_  | (_| |
+${Ansi.GREEN}      \/     |_| |_|\_\  \__,_| |_____/   \__,_|  \__|  \__,_|
+${Ansi.BLUE}                  POWERED BY VikaData-Group
+${AnsiColor.RED}Spring Boot Version : ${spring-boot.formatted-version}

@@ -1,0 +1,58 @@
+@import "~pc/styles/lib_var.less";
+
+.title {
+  display: flex;
+  align-items: flex-end;
+
+  .nodeType {
+    padding-right: 4px;
+  }
+
+  .nodeInfo {
+    display: flex;
+    align-items: center;
+  }
+
+  .nodeName {
+    padding: 0 4px;
+    max-width: 250px;
+  }
+
+  .help {
+    cursor: pointer;
+  }
+
+  :global {
+    .emoji-mart-emoji {
+      display: flex;
+    }
+  }
+}
+
+.permissionDrawer {
+  :global {
+    .ant-drawer-header {
+      padding-bottom: 16px !important;
+      height: 64px;
+    }
+
+    .ant-drawer-body {
+      overflow: hidden;
+    }
+  }
+}
+
+.permissionModal {
+  :global {
+    .ant-modal-header {
+      padding-bottom: 16px;
+      height: 64px;
+    }
+  }
+}
+
+
+.helpBtn {
+  display: flex;
+  align-items: center;
+}

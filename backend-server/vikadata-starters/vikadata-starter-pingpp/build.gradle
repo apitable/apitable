@@ -1,0 +1,11 @@
+plugins {
+  id 'java-library'
+}
+
+description = "Starter for Ping++ payment"
+
+dependencies {
+  api(project(":vikadata-starters:vikadata-starter"))
+  
+  api(rootProject.ext.dependencies['pingpp'])
+}

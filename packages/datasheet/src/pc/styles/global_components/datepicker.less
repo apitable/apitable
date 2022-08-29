@@ -1,0 +1,141 @@
+@import "~pc/styles/lib_var.less";
+
+// override antd date picker default styles
+.ant-picker {
+  .ant-picker-clear {
+    background: transparent;
+
+    &:hover {
+      color: #888;
+    }
+  }
+}
+
+.ant-picker-dropdown {
+  .ant-picker-range-arrow {
+    &::after {
+      border-color: var(--highestBg) var(--highestBg) transparent transparent;
+    }
+  }
+
+  .ant-picker-panel-container {
+    background-color: var(--highestBg);
+  }
+
+  .ant-picker-panel {
+    background-color: var(--highestBg);
+    border-bottom: none;
+
+    .ant-picker-header {
+      border-bottom: 1px solid var(--lineColor);
+
+      .ant-picker-header-super-prev-btn,
+      .ant-picker-header-prev-btn,
+      .ant-picker-header-super-next-btn,
+      .ant-picker-header-next-btn {
+        color: var(--thirdLevelText);
+        
+        &:hover {
+          color: var(--firstLevelText);
+        }
+      }
+
+      .ant-picker-header-view {
+        color: var(--fc1);
+      }
+    }
+
+    .ant-picker-body {
+      .ant-picker-content {
+        thead {
+          th {
+            color: var(--thirdLevelText);
+          }
+        }
+
+        tbody {
+          .ant-picker-cell {
+            color: var(--fc3);
+
+            &:hover {
+              &:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) {
+                .ant-picker-cell-inner {
+                  background: var(--fill0);
+                }
+              }
+            }
+          }
+
+          .ant-picker-cell-in-range {
+            &::before {
+              background: var(--rowSelectedBg);
+            }
+
+            &.ant-picker-cell-range-hover-start,
+            &.ant-picker-cell-range-hover-end {
+              .ant-picker-cell-inner {
+                &::after {
+                  background: rgba(var(--highestBg-rgb), 0.75);
+                }
+              }
+            }
+
+          }
+
+          .ant-picker-cell-range-start,
+          .ant-picker-cell-range-end {
+            &::before {
+              background: var(--rowSelectedBg);
+            }
+          }
+
+          .ant-picker-cell-in-view {
+            color: var(--fc1);
+          }
+
+          .ant-picker-cell-range-hover-start,
+          .ant-picker-cell-range-hover,
+          .ant-picker-cell-range-hover-end {
+            &::after {
+              border-color: var(--primaryColor);
+            }
+          }
+
+          .ant-picker-cell-disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+            pointer-events: auto;
+
+            &:hover {
+              .ant-picker-cell-inner {
+                background: var(--highBg) !important;
+                color: #c9c9c9 !important;
+              }
+            }
+
+            &::before {
+              background: var(--highBg);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .ant-picker-month-panel,
+  .ant-picker-year-panel {
+    .ant-picker-body {
+      .ant-picker-content {
+        .ant-picker-cell-disabled {
+          .ant-picker-cell-inner {
+            background: var(--highestBg);
+          }
+
+          &::before {
+            background: var(--highestBg) !important;
+          }
+        }
+      }
+    }
+  }
+}

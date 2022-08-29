@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.workspace.mapper.DatasheetWidgetMapper">
+    <select id="selectByWidgetId" resultType="com.vikadata.entity.DatasheetWidgetEntity">
+        SELECT *
+        FROM vika_datasheet_widget
+        WHERE widget_id = #{widgetId}
+    </select>
+
+    <select id="selectByDstId" resultType="com.vikadata.entity.DatasheetWidgetEntity">
+        SELECT *
+        FROM vika_datasheet_widget
+        WHERE dst_id = #{dstId}
+    </select>
+
+    <select id="selectDtoByWidgetIds" resultType="com.vikadata.api.model.dto.widget.DatasheetWidgetDTO">
+        SELECT dst_id, widget_id, source_id
+        FROM vika_datasheet_widget
+        WHERE widget_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO vika_datasheet_widget(id, space_id, dst_id, widget_id, source_id)
+                VALUES
+        <foreach item="entity" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{entity.id}, #{entity.spaceId}, #{entity.dstId}, #{entity.widgetId},
+                #{entity.sourceId}
+            </trim>
+        </foreach>
+    </insert>
+</mapper>

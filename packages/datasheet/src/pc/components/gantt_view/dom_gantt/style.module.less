@@ -1,0 +1,48 @@
+@import "~pc/styles/lib_var.less";
+
+.domGantt {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+
+  .unitSelect {
+    position: absolute;
+    top: 1px;
+    height: 39px;
+    background: var(--defaultBg);
+    border-color: transparent;
+    border-left: 1px solid var(--lineColor);
+    border-radius: 0;
+    text-align: center;
+
+    &:hover,
+    &:focus-within {
+      border: 1px solid transparent !important;
+      border-left-color: var(--lineColor) !important;
+    }
+  }
+
+  .toggleBtnWrapper {
+    position: absolute;
+    top: 8px;
+
+    .toggleBtn {
+// FIXME:THEME
+      box-shadow: 0px 1px 6px 0px var(--shadowColor);
+      border: none;
+      background-color: var(--defaultBg);
+
+      &:hover {
+// FIXME:THEME
+        box-shadow: 0px 1px 6px 0px rgba(var(--primaryColor-rgb), 40%);
+
+        svg {
+          fill: var(--primaryColor);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,51 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.6-20201229-001" author="Shawn" labels="social">
+        <comment>第三方平台集成-飞书事件日志表</comment>
+        <sqlFile path="db/changelog/0.6/20201229_changeset_001.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201229-002" author="Shawn" labels="social">
+        <comment>第三方平台集成-企业租户表</comment>
+        <sqlFile path="db/changelog/0.6/20201229_changeset_002.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201229-003" author="Shawn" labels="social">
+        <comment>第三方平台集成-企业租户绑定空间表</comment>
+        <sqlFile path="db/changelog/0.6/20201229_changeset_003.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201229-004" author="Shawn" labels="social">
+        <comment>第三方平台集成-企业租户部门表</comment>
+        <sqlFile path="db/changelog/0.6/20201229_changeset_004.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201229-005" author="Shawn" labels="social">
+        <comment>第三方平台集成-企业租户部门关联表</comment>
+        <sqlFile path="db/changelog/0.6/20201229_changeset_005.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201229-006" author="Shawn" labels="social">
+        <comment>第三方平台集成-企业租户用户表</comment>
+        <sqlFile path="db/changelog/0.6/20201229_changeset_006.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201229-007" author="Shawn" labels="social">
+        <comment>第三方平台集成-用户表</comment>
+        <sqlFile path="db/changelog/0.6/20201229_changeset_007.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201229-008" author="Shawn" labels="social">
+        <comment>第三方平台集成-用户绑定表</comment>
+        <sqlFile path="db/changelog/0.6/20201229_changeset_008.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201229-009" author="Shawn" labels="social">
+        <comment>成员删除dingtalk_user_id</comment>
+        <sqlFile path="db/changelog/0.6/20201229_changeset_009.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201229-010" author="Shawn" labels="social">
+        <comment>成员增加open_id</comment>
+        <sqlFile path="db/changelog/0.6/20201229_changeset_010.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201229-011" author="Shawn" labels="social">
+        <comment>空间表删除ding_corp_id字段</comment>
+        <sqlFile path="db/changelog/0.6/20201229_changeset_011.sql"/>
+    </changeSet>
+</databaseChangeLog>

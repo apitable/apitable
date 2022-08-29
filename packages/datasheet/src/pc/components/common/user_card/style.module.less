@@ -1,0 +1,61 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.userCard {
+  width: 240px;
+  padding: 16px;
+  backdrop-filter: blur(16px);
+  overflow: hidden;
+  border-radius: 8px;
+  min-height: 120px;
+  background-color: var(--highBg);
+  box-shadow: var(--shadowCommonDefault);
+
+  .avatarWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .permissionWrapper {
+    display: flex;
+    align-items: center;
+
+    .settingPermissionBtn {
+      margin-left: 8px;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+  }
+
+  .name {
+    margin: 16px 0 2px;
+  }
+
+  .tagWrapper {
+    padding-top: 24px;
+
+    .tag {
+      display: inline-block;
+      border-radius: 2px;
+      padding: 1px 8px;
+      background-color: var(--lowestBg);
+      margin-right: 4px;
+      margin-bottom: 4px;
+      max-width: 100%;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.userCardTrigger:global(.rc-trigger-popup) {
+  z-index: var(--triggerIndex);
+  border-radius: 8px;
+}

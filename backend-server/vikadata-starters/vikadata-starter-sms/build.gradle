@@ -1,0 +1,15 @@
+plugins {
+  id 'java-library'
+}
+
+description = "Vikadata Starter SMS"
+
+dependencies {
+  api(project(":vikadata-starters:vikadata-starter"))
+  api(project(':vikadata-integration:vikadata-integration-sms'))
+
+  // 默认使用腾讯云短信
+  implementation(rootProject.ext.dependencies['qcloudsms'])
+  // 云片国际短信
+  implementation(rootProject.ext.dependencies['yunpian-sms'])
+}

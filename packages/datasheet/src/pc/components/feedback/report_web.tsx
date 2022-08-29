@@ -1,0 +1,108 @@
+import { FC, useState } from 'react';
+import { ReportReason } from './report_reason';
+import FeedbackIcon from 'static/icon/common/common_icon_feedback.svg';
+import AdviseIcon from 'static/icon/workbench/workbench_icon_advise.svg';
+import ReportIcon from 'static/icon/datasheet/datasheet_icon_prosecute.svg';
+import JoinCommunityIcon from 'static/icon/common/group.svg';
+import { ButtonPlus, MobileContextMenu, Modal } from 'pc/components/common';
+import styles from './style.module.less';
+import RcTrigger from 'rc-trigger';
+import { t, Strings, Settings } from '@vikadata/core';
+import { ContextmenuItem } from 'pc/components/common';
+import { ComponentDisplay, ScreenSize } from '../common/component_display/component_display';
+import { navigationToUrl } from '../route_manager/use_navigation';
+import { InformationSmallOutlined } from '@vikadata/icons';
+
+interface IReportWeb {
+  nodeId: string;
+}
+
+export const ReportWeb: FC<IReportWeb> = ({ nodeId }) => {
+  /** 控制菜单显示 */
+  const [menuVisible, setMenuVisible] = useState(false);
+  /** 控制填写举报原因模态框的显示 */
+  const [reasonModalVisible, setReasonModalVisible] = useState(false);
+  const isFeishu = navigator.userAgent.toLowerCase().indexOf('lark') > -1;
+  // import { IContextMenuData } from '@vikadata/components'; 'error'
+  const menuData: any[] = [[
+    {
+      icon: <AdviseIcon />,
+      text: t(Strings.vomit_a_slot),
+      onClick: () => navigationToUrl(Settings['user_feedback_url'].value),
+    }, {
+      icon: <InformationSmallOutlined />,
+      text: t(Strings.help_center),
+      onClick: () => navigationToUrl(`${window.location.origin}/help`),
+    }, {
+      icon: <ReportIcon />,
+      text: t(Strings.inform),
+      onClick: () => setReasonModalVisible(true),
+    }, {
+      icon: <JoinCommunityIcon />,
+      text: t(Strings.join_the_community),
+      onClick: () => navigationToUrl(isFeishu ? `${window.location.origin}/feishu/` : `${window.location.origin}/chatgroup/`),
+    },
+  ]];
+
+  const renderMenu = () => {
+    return (
+      <div className={styles.feedbackMenu}>
+        <div onClick={() => setMenuVisible(false)}>
+          {
+            menuData[0].map(item => (
+              <ContextmenuItem
+                name={item.text}
+                icon={item.icon}
+                onClick={item.onClick}
+              />
+            ))
+          }
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className={styles.reportWeb}>
+      <ComponentDisplay minWidthCompatible={ScreenSize.md}>
+        <RcTrigger
+          action="click"
+          popup={renderMenu()}
+          destroyPopupOnHide
+          popupAlign={{
+            points: ['br', 'bl'],
+            offset: [-10, 0],
+          }}
+          popupStyle={{ width: '240px' }}
+          popupVisible={menuVisible}
+          onPopupVisibleChange={visible => setMenuVisible(visible)}
+          zIndex={1000}
+        >
+          <ButtonPlus.Font onClick={() => setMenuVisible(true)} className={styles.feedbackBtn} icon={<FeedbackIcon />} size="small" shadow />
+        </RcTrigger>
+        {reasonModalVisible && <ReportReason nodeId={nodeId} onClose={() => setReasonModalVisible(false)} />}
+      </ComponentDisplay>
+      <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
+        <MobileContextMenu
+          title={t(Strings.help)}
+          visible={menuVisible}
+          height="50%"
+          data={menuData}
+          onClose={() => setMenuVisible(false)}
+        />
+        <ButtonPlus.Font onClick={() => setMenuVisible(true)} className={styles.feedbackBtn} icon={<FeedbackIcon />} size="small" shadow />
+        {reasonModalVisible &&
+          <Modal
+            className={styles.reasonModal}
+            onCancel={() => setReasonModalVisible(false)}
+            centered
+            footer={null}
+            visible
+          >
+            <ReportReason nodeId={nodeId} onClose={() => setReasonModalVisible(false)} />
+          </Modal>
+        }
+      </ComponentDisplay>
+    </div>
+  );
+};

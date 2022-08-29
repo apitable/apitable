@@ -1,0 +1,122 @@
+import { useState, FC } from 'react';
+import { Strings, t } from '@vikadata/core';
+import { Modal } from 'pc/components/common';
+import { Button, TextButton } from '@vikadata/components';
+import { Row, Col, Pagination } from 'antd';
+import { IErrorInfo } from '../interface';
+// import classNames from 'classnames';
+import styles from './style.module.less';
+import { useEffect } from 'react';
+import classNames from 'classnames';
+import { exportExcelBase } from 'pc/utils';
+
+interface IRecordsProps {
+  records: IErrorInfo[];
+  showDetail?: boolean;
+  close: () => void;
+  init: () => void;
+  title: string;
+  subTitle: string;
+  visible: boolean;
+ }
+
+const PAGE_SIZE = 12;
+const HeaderConfig = [
+  { header: t(Strings.member_name), key: 'name', width: 30 },
+  { header: t(Strings.team), key: 'team', width: 40 },
+  { header: t(Strings.email), key: 'email', width: 40 },
+  { header: t(Strings.error_detail), key: 'message', width: 40 },
+];
+export const Records: FC<IRecordsProps> = ({ records, title, subTitle, showDetail = false, close, init, visible }) => {
+  const [pageNo, setPageNo] = useState(1);
+  const [curRecords, setCurRecords] = useState<IErrorInfo[]>([]);
+  useEffect(()=>{
+    const startIndex = (pageNo - 1) * PAGE_SIZE;
+    const cur= records.slice(startIndex, startIndex + PAGE_SIZE);
+    setCurRecords(cur);
+  },[pageNo, records]);
+
+  const continueInvite = () => {
+    init();
+    close();
+  };
+  const ColConfig = {
+    span: showDetail ? 6 : 8,
+  }; 
+  const downloadFail = async() => {
+    const Excel = await import('exceljs');
+    const workbook = new Excel.Workbook();
+    // 新建sheet
+    const tempWorksheet = workbook.addWorksheet(t(Strings.failed_list));
+    // 定义column标题
+    tempWorksheet.columns = HeaderConfig;
+    tempWorksheet.addRows(curRecords);
+    const fileName = t(Strings.failed_list);
+    exportExcelBase(workbook, fileName);
+  };
+  return (
+    <Modal
+      visible={visible}
+      footer={null}
+      centered
+      title={title}
+      className={styles.records}
+      width={640}
+      destroyOnClose
+      onCancel={close}
+    >
+      <div className={styles.subTitle}>{subTitle}</div>
+      <Row className={styles.recordsTitle}>
+        {
+          HeaderConfig.map((item, index) => {
+            if(index === 0) (<Col {...ColConfig}><div className={styles.firstCol} style={{ paddingLeft: '16px' }}>{item.header}</div></Col>);
+            if (index === HeaderConfig.length - 1){
+              return showDetail ? (<Col {...ColConfig}>{item.header}</Col>) : null;
+            }
+            return <Col {...ColConfig}>{item.header}</Col>;
+          })
+        }
+      </Row>
+      <div className={styles.recordsWrap}>
+        {
+          curRecords.map(item => (
+            <Row className={styles.records}>
+              <Col {...ColConfig}><div className={classNames(styles.colContent, styles.firstCol)}>{item.name}</div></Col>
+              <Col {...ColConfig}><div className={styles.colContent}>{item.team}</div></Col>
+              <Col {...ColConfig}><div className={styles.colContent}>{item.email}</div></Col>
+              {showDetail && <Col {...ColConfig}><div className={styles.colContent}>{item.message}</div></Col>}
+            </Row>
+          ))
+        }
+      </div>
+      <div className={styles.pagination}>
+        <Pagination
+          defaultCurrent={pageNo}
+          total={records.length}
+          defaultPageSize={PAGE_SIZE}
+          onChange={pageNo => setPageNo(pageNo)}
+          showSizeChanger={false}
+        />
+      </div>
+      {
+        showDetail &&
+        <div className={styles.btnWrap}>
+          <TextButton
+            style={{ marginRight: '10px' }}
+            size="small"
+            onClick={downloadFail}
+          >
+            {t(Strings.failed_list_file_download)}
+          </TextButton>
+          <Button
+            color="primary"
+            size="small"
+            onClick={continueInvite}
+          >
+            {t(Strings.invite_outsider_keep_on)}
+          </Button>
+        </div>
+      }
+    </Modal>
+  );
+};

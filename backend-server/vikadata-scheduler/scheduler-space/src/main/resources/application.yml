@@ -1,0 +1,83 @@
+server:
+  port: 9111
+  shutdown: graceful
+
+# SpringBoot框架配置
+spring:
+  application:
+    name: scheduler-space
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:vika_dev}?characterEncoding=utf8&autoReconnect=true
+    username: ${MYSQL_USERNAME:vika}
+    password: ${MYSQL_PASSWORD:password}
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 15
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: DatebookHikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+  # Redis配置
+  redis:
+    # redis服务器主机，本地开发是公网地址，线上环境是内网地址
+    host: ${REDIS_HOST:127.0.0.1}
+    # redis服务器用户
+    username: ${REDIS_USERNAME:}
+    # redis服务器密码
+    password: ${REDIS_PASSWORD:}
+    # redis服务器端口
+    port: ${REDIS_PORT:6379}
+    database: ${REDIS_DB:3}
+    timeout: 30000
+
+config:
+  # oss 存储桶名称
+  oss-bucket-name: ${VK_ASSETS_LTD_BUCKET:vk-assets-ltd}
+  # 存储类型
+  oss-type: ${VK_ASSETS_LTD_TYPE:QNY1}
+
+# vikadata 组件配置
+vikadata-starter:
+  job:
+    register-address: ${JOB_ADMIN_ADDRESS:http://job.vika.ltd}
+    port: ${JOB_EXECUTOR_PORT:9091}
+    appname: ${JOB_EXECUTOR_APP_NAME:space-job-executor}
+    logpath: ${JOB_EXECUTOR_LOG_PATH:logs/vikadata/job/space}
+    logretentiondays: ${JOB_EXECUTOR_LOG_RETENTION_DAYS:7}
+    access-token: ${JOB_ACCESS_TOKEN:onJvanLmSE3CqotjNp8hb7WRolpM1pdL}
+  #组件：OSS云对象存储，默认开启：七牛云存储
+  oss:
+    enabled: ${OSS_ENABLED:false}
+    type: ${OSS_TYPE:qiniu}
+    qiniu:
+      access-key: ${QINIU_ACCESS_KEY:B7OyF1ZORX4iHaqJ5uN62qXAgoDnc7Jv7_zf1SpJ}
+      secret-key: ${QINIU_SECRET_KEY:Hp26Vj4D2bv0JQ-qgExXYKlKc5EkFuVVgW1GA1Eh}
+      region: ${QINIU_REGION:z2}
+  social:
+    dingtalk:
+      enabled: ${DINGTALK_ENABLED:false}
+      isv-corp-id: ${DINGTALK_ISV_CORP_ID:dingc7ad99cf1e0ad49a35c2f4657eb6378f}
+      suite-id: ${DINGTALK_SUITE_ID:7242002}
+      suite-key: ${DINGTALK_SUITE_KEY:suite88qw1yq0q48b4tez}
+      suite-secret: ${DINGTALK_SUITE_SECRET:6ITdgMwVcDYgnHT-IfG8_Szvc8-vMWBwwkCUjdlNaxWgGDFXQaYAsO_jhpyXdpg1}
+      corp-h5-app:
+        app-key: ${DINGTALK_CORP_APP_KEY:dingpp0pil1snqypkjym}
+        app-secret: ${DINGTALK_CORP_APP_SECRET:ZrVyKPrGkOeLMTmlDmFmcPK3eUIEDmABwT2DxuQONBOoTqZ0p1JEOedqxV_rNBo3}
+      mobile-app:
+        app-id: ${DINGTALK_APP_ID:dingoaumy4mh7oesecamid}
+        app-secret: ${DINGTALK_APP_SECRET:A1-kYsquLtLr9e_XXnOAoMaqxEjC5xvMUeAztFxPy8YGgsYmeXsSu7QvwrmCcw1P}
+  # vika sdk 配置
+  vika:
+    enabled: ${VIKA_ENABLED:false}
+    host: ${VIKA_HOST:https://integration.vika.ltd}
+    # 维格表API 专用号 token
+    token: ${VIKA_TOKEN:usk8qo1Dk9PbecBlaqFIvbb}
+# 内部服务配置
+internal:
+  domain: ${BACKEND_URL:http://backend-server:8081}
+  getPausedUserHistoryInfoURL: /api/v1/internal/getUserHistories
+  closePausedUserURL: /api/v1/internal/users/{userId}/close
+  batchProcessSocialWecomPermitDelayUrl: /api/v1/internal/social/wecom/permitDelay/batchProcess

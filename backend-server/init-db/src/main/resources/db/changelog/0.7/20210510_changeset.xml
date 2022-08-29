@@ -1,0 +1,13 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.7-20210510-001" author="Chambers" labels="user">
+        <comment>用户表新增区号字段</comment>
+        <sql>
+            ALTER TABLE `vika_user`
+            ADD COLUMN `code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '区号' AFTER `nick_name`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

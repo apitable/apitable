@@ -1,0 +1,197 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+.vika-guide-notice {
+  .vika-guide-notice-content {
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 100%;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .vika-guide-notice-head-img {
+    height: 162px;
+    background-size: cover;
+    cursor: pointer;
+    background-color: var(--fc9);
+  }
+  .vika-guide-notice-title {
+    font-size: 18px;
+    color: var(--firstLevelText);
+    margin-top: 16px;
+    margin-bottom: 16px;
+    text-align: center;
+    font-weight: bold;
+  }
+  .vika-guide-notice-body {
+    padding: 0 16px;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--firstLevelText);
+    flex: 1;
+    // .light-scroll-bar();
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--scrollbar-thumb);
+    }
+    .body2 {
+      font-size: 14px;
+      color: var(--secondLevelText);
+      margin-bottom: 0;
+    }
+    h3 {
+      margin-top: 16px;
+      margin-bottom: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--firstLevelText);
+    }
+    img {
+      width: 100%;
+      border: 1px solid var(--blackBlue_200);
+      border-radius: 4px;
+    }
+    p {
+      font-size: 14px;
+      color: var(--secondLevelText);
+      margin-bottom: 8px;
+    }
+    ul,
+    ol,
+    dl {
+      padding-inline-start: 15px;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+    ul {
+      padding-inline-start: 4px;
+    }
+    li {
+      position: relative;
+      padding-left: 10px;
+      padding-bottom: 4px;
+      font-size: 13px;
+      line-height: 20px;
+      list-style: none;
+      color: var(--thirdLevelText);
+      &::before {
+        position: absolute;
+        left: -5px;
+        top: -1px;
+        content: "\2022  ";
+        display: inline-block;
+        margin-right: 4px;
+        font-size: 22px;
+        line-height: 20px;
+        color: var(--fc3);
+      }
+    }
+  }
+
+  .vika-guide-notice-btnWrap {
+    margin: 16px;
+  }
+  .ant-modal {
+    padding: 0;
+    margin: 0;
+  }
+  .ant-modal-content {
+    overflow: hidden;
+    background: none;
+  }
+  .ant-modal-body {
+    padding: 0;
+    background: var(--defaultBg);
+    height: 80vh;
+  }
+}
+
+.vika-guide-privacy-modal {
+  .vika-guide-notice-content {
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 100%;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .vika-guide-notice-title {
+    font-size: 18px;
+    color: var(--firstLevelText);
+    text-align: center;
+    font-weight: bold;
+  }
+  .vika-guide-notice-body {
+
+    padding: 0 24px;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--firstLevelText);
+    flex: 1;
+    // .light-scroll-bar();
+    &::-webkit-scrollbar-thumb {
+      background-color: @scrollbar-thumb;
+    }
+    .body2 {
+      font-size: 14px;
+      color: var(--secondLevelText);
+      margin-bottom: 0;
+    }
+    img {
+      width: 100%;
+      border: 1px solid var(--blackBlue_200);
+      border-radius: 4px;
+    }
+
+  }
+
+  .vika-guide-notice-btnWrap {
+    margin: 16px;
+  }
+  .ant-modal {
+    padding: 0;
+    margin: 0;
+  }
+  .ant-modal-content {
+    overflow: hidden;
+    background: none;
+  }
+  .ant-modal-body {
+    padding: 0;
+    background: var(--white);
+    height: 80vh;
+  }
+  .ant-modal-footer {
+    padding: 16px 24px 24px;
+    background-color: var(--white);
+  }
+  .ant-modal-header {
+    padding-bottom: 16px;
+  }
+}
+
+// .privacy-footer {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+// }
+
+@media screen and (max-width: @w-md) {
+  .vika-guide-notice {
+    .vika-guide-notice-content {
+      max-height: 66vh;
+    }
+    .vika-guide-notice-title {
+      font-size: 15px;
+      margin-bottom: 16px;
+    }
+    .vika-guide-notice-body {
+      font-size: 12px;
+    }
+    .vika-guide-notice-btnWrap::before {
+      bottom: 84px;
+    }
+  }
+}

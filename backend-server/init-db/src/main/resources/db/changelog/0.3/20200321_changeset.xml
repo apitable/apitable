@@ -1,0 +1,95 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.3-20200321-001" author="Chambers" labels="base">
+        <comment>附件资源表新增字段与更换索引</comment>
+        <sql>
+            ALTER TABLE `vika_asset` ADD COLUMN `height` int(11) NULL DEFAULT NULL COMMENT '图片高度' AFTER `is_template`;
+            ALTER TABLE `vika_asset` ADD COLUMN `width` int(11) NULL DEFAULT NULL COMMENT '图片宽度' AFTER `height`;
+            ALTER TABLE `vika_asset` DROP INDEX `idx_digest`;
+            ALTER TABLE `vika_asset` ADD UNIQUE INDEX `uk_checksum`(`checksum`) USING BTREE;
+        </sql>
+        <rollback>
+            <sql>
+                ALTER TABLE `vika_asset` DROP COLUMN `height`;
+                ALTER TABLE `vika_asset` DROP COLUMN `width`;
+                ALTER TABLE `vika_asset` DROP INDEX `uk_checksum`;
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.3-20200321-002" author="Chambers" labels="space">
+        <comment>删除空间附件表中同一空间、同一数表、同一文件的重复记录</comment>
+        <sql>
+            DELETE t FROM vika_space_asset t WHERE t.id NOT IN (SELECT min_id FROM (SELECT MIN(id) as min_id FROM vika_space_asset GROUP BY space_id, node_id, asset_id) AS t);
+        </sql>
+        <rollback/>
+    </changeSet>
+
+    <changeSet id="V0.3-20200321-003" author="Chambers" labels="space">
+        <comment>同步基本附件表数据</comment>
+        <sql>
+            UPDATE vika_asset SET width = '300',height = '200' WHERE is_template = 1;
+            UPDATE vika_asset t JOIN vika_space_asset a ON t.id = a.asset_id SET t.width = a.width, t.height = a.height WHERE t.is_template != 1;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.3-20200321-004" author="Chambers" labels="space">
+        <comment>空间附件表新增字段与唯一索引</comment>
+        <sql>
+            ALTER TABLE `vika_space_asset` ADD COLUMN `cite` int(10) NULL DEFAULT 1 COMMENT '引用次数' AFTER `asset_checksum`;
+            ALTER TABLE `vika_space_asset` ADD COLUMN `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间' AFTER `create_time`;
+            ALTER TABLE `vika_space_asset` ADD UNIQUE INDEX `uk_spc_dst_asset_id`(`space_id`, `node_id`, `asset_id`) USING BTREE;
+        </sql>
+        <rollback>
+            <sql>
+                ALTER TABLE `vika_space_asset`
+                DROP COLUMN `cite`,
+                DROP COLUMN `update_time`,
+                DROP INDEX `uk_spc_dst_asset_id`;
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.3-20200321-005" author="Chambers" labels="node">
+        <comment>节点表新增字段icon</comment>
+        <sql>
+            ALTER TABLE `vika_node` ADD COLUMN `icon` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '节点图标' AFTER `node_name`;
+        </sql>
+        <rollback>
+            <sql>
+                ALTER TABLE `vika_node`
+                DROP COLUMN `icon`;
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.3-20200321-006" author="BensonCheung" labels="node">
+        <comment>创建附件审核表</comment>
+        <sql>
+            CREATE TABLE `vika_asset_audit` (
+            `id` bigint(20) NOT NULL COMMENT '主键',
+            `asset_id` bigint(20) NOT NULL COMMENT '资源ID(关联#vika_asset#id)',
+            `asset_file_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '云端文件存放路径',
+            `asset_checksum` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '[冗余]md5摘要',
+            `audit_result_score` float(8,8) DEFAULT NULL COMMENT '审核结果分数',
+            `audit_result_suggestion` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '审核结果建议，包括：[“block”,”review”,”pass”]',
+            `audit_scenes` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '审核类型，目前支持：pul[色情]/terror[暴恐]/politician[敏感人物]/ads[图片广告识别]',
+            `auditor_openid` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '审核人OpenId',
+            `auditor_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '审核人名称',
+            `is_audited` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否已人工审核(0:否,1:是)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            PRIMARY KEY (`id`) USING BTREE,
+            KEY `idx_digest` (`asset_checksum`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='基础-附件审核表';
+        </sql>
+        <rollback>
+            <dropTable tableName="vika_asset_audit"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

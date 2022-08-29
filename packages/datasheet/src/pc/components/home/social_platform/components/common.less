@@ -1,0 +1,71 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+// common
+.center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.commonWrapper {
+  padding-bottom: 40px;
+  .commonImgWrapper {
+    width: 304px;
+    height: 32px;
+    margin-bottom: 48px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .commonImgWrapper img {
+    height: 100%;
+  }
+}
+
+.commonCardTitle {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.commonCardSubTitle {
+  font-size: 14px;
+  color: var(--thirdLevelText);
+  margin-bottom: 24px;
+}
+.commonLoginCardWrapper {
+  padding: 32px 32px 32px;
+  overflow-y: auto;
+  min-height: 457px;
+}
+@media screen and (max-width: @w-md) {
+  // common
+  .commonWrapper {
+    height: 90%;
+    width: calc(100vw - 48px);
+  }
+  .commonWrapper .commonImgWrapper {
+    height: 26px;
+    margin-bottom: 40px;
+  }
+  .commonLoginCardWrapper {
+    padding: 24px;
+    width: calc(100% - 14px);
+    margin: 0 auto;
+  }
+  .commonCardTitle {
+    font-size: 22px;
+  }
+
+  // bindspace
+  .bindSpaceWrapper {
+    display: flex;
+    flex-direction: column;
+    max-height: 496px;
+    .bindSpaceCard {
+      flex: 1;
+      height: auto;
+    }
+  }
+}

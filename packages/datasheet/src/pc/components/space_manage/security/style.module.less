@@ -1,0 +1,83 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "../style.module.less";
+
+.loading {
+  width: 100%;
+  margin: 20px;
+}
+
+.securityContainer {
+  background: var(--defaultBg);
+  width: 100%;
+  height: 100%;
+  padding: 32px;
+  overflow: auto;
+
+  .pageSubscribe {
+    margin-top: 8px;
+    margin-bottom: 40px;
+    color: var(--thirdLevelText);
+  }
+}
+
+.optionSection {
+  border-bottom: 1px solid var(--fc5);
+  margin-bottom: 24px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.optionItem {
+  display: flex;
+  margin-bottom: 24px;
+
+  .left {
+    margin-right: 16px;
+  }
+
+  .right {
+  }
+}
+
+.normalMember {
+  flex: 1;
+  background: var(--defaultBg);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  h1 {
+    .commonTitle();
+    padding-left: 32px;
+  }
+
+  h2 {
+    .commonTitleDesc();
+  }
+
+  .scrollWrapper {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    padding-bottom: 32px;
+    .light-scroll-bar();
+  }
+
+  .content {
+    min-width: 580px;
+    min-height: 290px;
+    padding: 0 32px;
+  }
+
+  .operatePage {
+    .commonSubTitle();
+  }
+
+  .spaceSetting {
+    margin-top: 56px;
+  }
+}

@@ -1,0 +1,14 @@
+plugins {
+  id 'java-library'
+}
+
+description = "Starter For Vika"
+
+dependencies {
+  api(project(":vikadata-starters:vikadata-starter"))
+  api(project(':vikadata-integration:vikadata-integration-vika'))
+  
+  implementation(rootProject.ext.dependencies['vika-client']) {
+    exclude group: 'commons-logging', module: 'commons-logging'
+  }
+}

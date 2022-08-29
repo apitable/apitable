@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.scheduler.space.mapper.workspace.DatasheetMetaMapper">
+    <update id="updateIsDeletedByNodeIds">
+        UPDATE vika_datasheet_meta
+        SET is_deleted = 1
+        WHERE dst_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </update>
+
+    <select id="selectDtoByNodeIds" resultType="com.vikadata.scheduler.space.model.DataSheetMetaDto">
+        SELECT dst_id, meta_data
+        FROM vika_datasheet_meta
+        WHERE dst_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectNodeIdByMetaLike" resultType="java.lang.String">
+        SELECT dst_id
+        FROM vika_datasheet_meta
+        WHERE meta_data LIKE CONCAT('%', #{keyword}, '%') AND is_deleted = 0
+    </select>
+
+    <update id="updateMetaByNodeId">
+        UPDATE vika_datasheet_meta
+        SET meta_data = #{meta}
+        WHERE dst_id = #{nodeId} AND is_deleted = 0
+    </update>
+
+    <update id="updateMetaByJsonInsert">
+        UPDATE vika_datasheet_meta
+        SET meta_data = JSON_INSERT( meta_data,
+        <foreach item="item" index="index" collection="list" separator=",">
+            CONCAT('$.fieldMap.', #{item}, '.property.datasheetId'), #{nodeId}
+        </foreach>),
+        updated_at = updated_at
+        WHERE dst_id = #{nodeId}
+    </update>
+
+    <select id="selectMaxId" resultType="java.lang.Long">
+        SELECT MAX(id)
+        FROM vika_datasheet_changeset
+        WHERE id &lt; 1203232065516998658
+    </select>
+
+    <select id="selectMinIdAfterCreatedAt" resultType="java.lang.Long">
+        SELECT MIN(id)
+        FROM vika_datasheet_changeset
+        WHERE created_at >= #{createdAt}
+    </select>
+
+    <select id="selectForeignDatasheetIdsByPage" resultType="com.vikadata.scheduler.space.model.ForeignDatasheetDto">
+        SELECT vdm.id,
+               vdm.dst_id,
+               JSON_EXTRACT(vdm.meta_data -> '$.fieldMap.*','$[*]') AS fieldMap
+        FROM vika_datasheet_meta vdm
+        <if test="spaceId != null and spaceId != ''">
+            , vika_node vn
+        </if>
+        <where>
+            <if test="spaceId != null and spaceId != ''">
+                vdm.dst_id = vn.node_id
+            </if>
+            AND JSON_CONTAINS_PATH(vdm.meta_data -> '$.fieldMap.*', 'all','$[*].property.brotherFieldId') = 1
+            AND JSON_CONTAINS(vdm.meta_data -> '$.fieldMap.*.type', '7', '$') = 1
+            AND vdm.is_deleted = 0
+            <if test="spaceId != null and spaceId != ''">
+                AND vn.type = 2
+                AND vn.is_deleted = 0
+                AND vn.space_id = #{spaceId}
+            </if>
+            <if test="nextId != null">
+                AND vdm.id > #{nextId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectMetaDataByFixMode" resultType="com.vikadata.scheduler.space.model.DataSheetMetaDto">
+        SELECT vdm.dst_id,
+               vdm.meta_data
+        FROM vika_node vn ,
+             vika_datasheet_meta vdm
+        WHERE vn.node_id = vdm.dst_id
+          AND vn.space_id = #{spaceId}
+          AND vn.is_template = 1
+          AND vn.type = 2
+          AND vn.is_deleted = 0
+          AND vn.is_rubbish = 0
+          AND vn.is_banned = 0
+          AND vdm.is_deleted = 0
+          <if test="1 eq selectFixDataMode">
+              AND JSON_CONTAINS_PATH( vdm.meta_data -> '$.views[*]', 'all', '$[*].sortInfo' ) > 0
+          </if>
+    </select>
+
+    <update id="updateTemplateViewSortInfo">
+        UPDATE vika_datasheet_meta
+        SET meta_data = JSON_REPLACE(meta_data, '$.views[${viewIndex}].sortInfo', JSON_OBJECT('keepSort', true, 'rules',meta_data -> '$.views[${viewIndex}].sortInfo'))
+        WHERE dst_id = #{dstId} AND is_deleted = 0
+    </update>
+</mapper>

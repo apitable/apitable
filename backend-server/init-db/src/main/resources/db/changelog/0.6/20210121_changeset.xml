@@ -1,0 +1,23 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.6-20210121-001" author="Chambers" labels="workbench">
+        <comment>资源操作变更合集表，字段 resource_id 设置为非空</comment>
+        <sql>
+            ALTER TABLE `vika_resource_changeset`
+            MODIFY COLUMN `resource_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT
+            '资源ID(node_id/widget_id/..)' AFTER `id`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.6-20210121-002" author="Chambers" labels="workbench">
+        <comment>资源操作变更合集表，字段 message_id 设置为非空</comment>
+        <sql>
+            ALTER TABLE `vika_resource_changeset`
+            MODIFY COLUMN `message_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT
+            'changeset请求的唯一标识，用于保证changeset的唯一' AFTER `resource_type`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,56 @@
+@import "~pc/styles/lib_var.less";
+
+.container {
+  
+  .content {
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    color: var(--fc3);
+  }
+  .left {
+    margin-right: 4px;
+
+    svg {
+      margin-top: -0.12em;
+    }
+  }
+  .right {
+    flex: 1;
+  }
+  .btnGroup {
+    padding-top: 24px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  // 有icon时，内容区域需要缩进
+  .content.indent {
+    padding-left: 20px;
+  }
+
+  // 没有title时，需要强调内容
+  .content.accent {
+    color: var(--fc1);
+  }
+  .title{
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--fc1);
+    padding-bottom: 4px;
+  }
+  :global {
+    .ant-popover-inner {
+      padding: 16px;
+      
+    }
+
+    .ant-popover-inner-content {
+      padding: 0;
+      display: flex;
+      max-width: 320px;
+      min-width: 248px;
+    }
+  }
+}

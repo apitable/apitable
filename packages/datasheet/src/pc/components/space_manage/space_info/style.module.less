@@ -1,0 +1,99 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "../style.module.less";
+.spaceInfo {
+  width: 100%;
+  height: 100%;
+  padding: 24px;
+  min-width: calc(1601px / 1.5);
+  min-height: calc(773px / 1.5);
+
+  .left,
+  .right {
+    background-color: var(--defaultBg);
+  }
+  .left {
+    height: 100%;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .left .spaceTitle {
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+  }
+  .left .spaceTitle svg {
+    width: 24px;
+    height: 24px;
+    margin-right: 4px;
+  }
+
+  .left .spaceLevel {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+  }
+
+  .left .moreMenuWrap {
+    position: absolute;
+    right: 16px;
+  }
+}
+
+.spaceLevelTag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  padding: 0 8px 0 4px;
+  border-radius: 2px;
+
+  &.bronzeTag {
+    background: rgba(255, 234, 214, 0.5); // no color from theme here as the design
+
+    .text {
+      color: var(--bronzeFg);
+    }
+  }
+
+  &.silverTag {
+    background: rgba(224, 233, 255, 0.5); // no color from theme here as the design
+
+    .text {
+      color: var(--indigo_400);
+    }
+  }
+
+  &.goldTag {
+    background: var(--orange_50);
+
+    .text {
+      color: var(--orange_800);
+    }
+  }
+
+  &.enterpriseTag {
+    background: var(--indigo_50);
+
+    .text {
+      color: var(--indigo_700);
+    }
+  }
+
+  .text {
+    font-size: 12px;
+  }
+
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 2px;
+    font-size: 16px;
+  }
+}

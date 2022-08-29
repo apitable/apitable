@@ -1,0 +1,234 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="v0.4.0-20200405-001" author="Kelly" labels="developer">
+        <comment>新增模板表</comment>
+        <sql>
+            CREATE TABLE `vika_developer_template` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `type` tinyint(2) unsigned NOT NULL COMMENT '类型 (0:PreInstall官方预装,1:Space用户空间站自己的,2:Marketplace发布到市场，属于Sku的一部分)',
+            `type_id` bigint(20) DEFAULT NULL COMMENT '官方预装、Space编号、对应的SKU',
+            `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '模板的名字',
+            `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用于模板的介绍文字，可富文本。\n区别于node的description，那个是在界面中显示的description。',
+            `node_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '模板的本质是映射一个静态的node及其数据',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            `created_by` bigint(20) DEFAULT NULL COMMENT '创建者',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT '最后修改者',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='模板';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-002" author="Kelly" labels="developer">
+        <comment>新增Applet云程序表</comment>
+        <sql>
+            CREATE TABLE `vika_developer_applet` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '关联的工作间ID(关联#vika_space#space_id, parent!=0的space)',
+            `applet_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '类似其它开放平台的appId,全局唯一',
+            `applet_secret` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '秘钥，一般都被半隐藏，可被重置',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            `created_by` bigint(20) DEFAULT NULL COMMENT '创建者',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT '最后修改者',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_applet_id` (`applet_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='云程序applet';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-003" author="Kelly" labels="developer">
+        <comment>新增GM总部管理员表</comment>
+        <sql>
+            CREATE TABLE `vika_developer_gm` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `user_id` bigint(20) DEFAULT NULL COMMENT '对应的user',
+            `phone` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '电话号码',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            `created_by` bigint(20) DEFAULT NULL COMMENT '创建者',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT '最后修改者',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_user_id` (`user_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='GM总部管理员，用于vika-gm-cli';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-004" author="Kelly" labels="developer">
+        <comment>新增云钩表</comment>
+        <sql>
+            CREATE TABLE `vika_developer_webhook` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `applet_id` bigint(20) DEFAULT NULL COMMENT '对应的云程序',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            `created_by` bigint(20) DEFAULT NULL COMMENT '创建者',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT '最后修改者',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='云钩Webhook';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-005" author="Kelly" labels="eco">
+        <comment>新增账户表</comment>
+        <sql>
+            CREATE TABLE `vika_eco_account` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `type` tinyint(2) unsigned NOT NULL COMMENT '0:属于Space的账户，类似「企业银行账户」的概念，基于空间站的支付，如订阅、卖模板、云程序，都以Space作为主体，并受到空间管理的约束 \n 1:个人账户，类似个人银行, 由于我们大部分交易，都以空间站作为主体, 因此，如果个人要进行提现利得, 需要将账户的钱转移',
+            `type_id` bigint(20) DEFAULT NULL COMMENT '对应类型(space或user)的关联编号',
+            `payment_account_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '支付系统payment账户映射号',
+            `billing_account_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '账单系统billing账户映射号',
+            `currency_code` varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '货币代码\nCNY\nHKD\nUSD\n\n嗯，目前一个account暂时只支持一种货币类型。\n\n比如你这个user是使用人民币的，就不能用双币同时了。\n类似Apple App Store，1个User，可以通过切换国家，来前往多个不同的Account。',
+            `balance` decimal(20,2) NOT NULL DEFAULT '0' COMMENT '货币余额，充值、购买模板、收入等影响',
+            `credit` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '积分，无符号，永久>0',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            `created_by` bigint(20) DEFAULT NULL COMMENT '创建者',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT '最后修改者',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='账户表';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-006" author="Kelly" labels="eco">
+        <comment>新增订单表</comment>
+        <!-- vika_eco_order -->
+        <sql>
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-007" author="Kelly" labels="marketplace">
+        <comment>新增SKU表</comment>
+        <sql>
+            CREATE TABLE `vika_marketplace_sku` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `type` tinyint(2) unsigned NOT NULL COMMENT '0:Template模板，1:Applet云程序',
+            `type_id` bigint(20) DEFAULT NULL COMMENT '对应type的关联编号',
+            `product_id` bigint(20) DEFAULT NULL COMMENT '对应SPU(Product)的关联编号',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            `created_by` bigint(20) DEFAULT NULL COMMENT '创建者',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT '最后修改者',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='SKU表';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-008" author="Kelly" labels="marketplace">
+        <comment>新增SPU表</comment>
+        <sql>
+            CREATE TABLE `vika_marketplace_product` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '商品的名字',
+            `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '商品的介绍',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            `created_by` bigint(20) DEFAULT NULL COMMENT '创建者',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT '最后修改者',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='SPU表';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-008" author="Kelly" labels="player">
+        <comment>新增评论表(Comment)</comment>
+        <sql>
+            CREATE TABLE `vika_player_comment` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+
+            `type` tinyint(2) unsigned NOT NULL COMMENT '评论的类别，0:record',
+            `type_id` bigint(20) DEFAULT NULL COMMENT '对应type的编号，如对应的record',
+
+            `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '评论的内容',
+
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            `created_by` bigint(20) DEFAULT NULL COMMENT '创建者',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT '最后修改者',
+
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='评论，Comment + Op = Activity';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-009" author="Kelly" labels="player">
+        <comment>新增通知表(Notification)</comment>
+        <sql>
+            CREATE TABLE `vika_player_notification` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `user_id` bigint(20) DEFAULT NULL COMMENT '通知的user',
+            `template` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '通知模板',
+            `format` json DEFAULT NULL COMMENT '格式化字符串',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            `created_by` bigint(20) DEFAULT NULL COMMENT '创建者',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT '最后修改者',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='通知Notification表';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-010" author="Kelly" labels="space">
+        <comment>调整匹配station</comment>
+        <!--
+        node.space_id -> node.station_id
+        -->
+        <sql>
+            ALTER TABLE `vika_space` ADD COLUMN `parent_id` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '父space(空间站)'
+            AFTER `id`;
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-011" author="Kelly" labels="base">
+        <comment>Key-Value字典表(Dict)</comment>
+        <sql>
+            CREATE TABLE `vika_dict` (
+            `key` varchar(255) unsigned NOT NULL COMMENT '主键',
+            `value` json DEFAULT NULL COMMENT '值',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            `created_by` bigint(20) DEFAULT NULL COMMENT '创建者',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT '最后修改者',
+
+            PRIMARY KEY (`key`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            COMMENT='万能用途表，如用于一些第三方系统的对性能要求不高的缓存静态数据，如"payment/user/123/orders":[]\n模拟key-value的表，用于一些非重要数据、体积量、数据量又比较多的，对内存要求也低（Redis很耗内存，价格也贵）';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200411-001" author="Kelly" labels="eco">
+        <comment>新增资源文件节点表</comment>
+        <sql>
+            CREATE TABLE `vika_node_asset_file` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `node_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '对应的节点',
+            `space_asset_id` bigint(20) DEFAULT NULL COMMENT '对应的空间附件',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            `created_by` bigint(20) DEFAULT NULL COMMENT '创建者',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT '最后修改者',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='节点即实际文件，比如，PDF';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200420-001" author="Kelly" labels="node">
+        <comment>新增维格文稿表</comment>
+        <sql>
+            CREATE TABLE `vika_doc` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `node_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '对应的节点',
+            `data` json DEFAULT NULL COMMENT '文稿内容',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            `created_by` bigint(20) DEFAULT NULL COMMENT '创建者',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT '最后修改者',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='维格文稿节点';
+        </sql>
+    </changeSet>
+</databaseChangeLog>

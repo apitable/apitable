@@ -1,0 +1,27 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.5-20200623-001" author="Shawn" labels="datasheet">
+        <comment>vika_datasheet增加created_by和updated_by</comment>
+        <sqlFile path="db/changelog/0.5/20200623_changeset_001.sql"/>
+    </changeSet>
+    <changeSet id="V0.5-20200623-002" author="Shawn" labels="datasheet">
+        <comment>vika_datasheet_meta增加created_by和updated_by</comment>
+        <sqlFile path="db/changelog/0.5/20200623_changeset_002.sql"/>
+    </changeSet>
+    <changeSet id="V0.5-20200623-003" author="Shawn" labels="datasheet">
+        <comment>vika_datasheet_operation增加created_by和updated_by</comment>
+        <sqlFile path="db/changelog/0.5/20200623_changeset_003.sql"/>
+    </changeSet>
+    <changeSet id="V0.5-20200623-004" author="Shawn" labels="datasheet">
+        <comment>vika_datasheet_record增加created_by和updated_by</comment>
+        <sqlFile path="db/changelog/0.5/20200623_changeset_004.sql"/>
+    </changeSet>
+    <changeSet id="V0.5-20200623-005" author="Shawn" labels="datasheet">
+        <comment>vika_datasheet_changeset增加created_by和updated_by</comment>
+        <sqlFile path="db/changelog/0.5/20200623_changeset_005.sql"/>
+    </changeSet>
+</databaseChangeLog>

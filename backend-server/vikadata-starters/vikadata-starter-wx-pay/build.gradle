@@ -1,0 +1,10 @@
+plugins {
+  id 'java-library'
+}
+
+description = "Starter for weixin open"
+
+dependencies {
+  api(project(":vikadata-starters:vikadata-starter"))
+  api(rootProject.ext.dependencies['wx-pay'])
+}

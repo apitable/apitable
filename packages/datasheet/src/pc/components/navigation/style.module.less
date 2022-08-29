@@ -1,0 +1,342 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+.navigation {
+  // background-color: var(--defaultBg);
+  height: 100%;
+  width: 56px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--lineColor);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  position: relative;
+
+  .spaceLogo {
+    width: 40px;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+    z-index: 1;
+    cursor: pointer;
+    .spaceImg {
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+    }
+
+    .spaceDown {
+      width: 16px;
+      height: 16px;
+      margin-top: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .spaceIcon {
+      fill: var(--thirdLevelText);
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .navWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+    flex: 1;
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .navItem {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      padding: 5px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      cursor: pointer;
+      user-select: none;
+      margin-bottom: 24px;
+      border-radius: 16px;
+
+      &:hover {
+        background-color: var(--rowSelectedBg);
+      }
+    }
+
+    .navIcon {
+      width: 24px;
+      height: 24px;
+      fill: var(--secondLevelText);
+    }
+  }
+
+  .handbook {
+    width: 12px;
+    height: 12px;
+    text-align: center;
+    line-height: 12px;
+    margin: 0 auto;
+    font-size: 5px;
+    color: var(--defaultBg);
+    border: 1px solid #fff;
+    border-radius: 2px;
+  }
+
+  .help {
+    margin-bottom: 24px;
+  }
+
+  .userIcon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    z-index: 4;
+  }
+  .notification {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    margin-bottom: 14px;
+    display: inline-block;
+    position: relative;
+    &:hover {
+      background-color: var(--rowSelectedBg);
+      border-radius: 16px;
+    }
+  }
+  .notificationNavLink {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .notificationIcon {
+    width: 40px;
+    height: 40px;
+    position: relative;
+    border-radius: 20px;
+
+    :global {
+      .ant-badge-count {
+        z-index: 1;
+        padding: 0 2.5px;
+        top: 11px;
+        left: 14px;
+        right: auto;
+        background: var(--errorColor);
+      }
+    }
+  }
+  .noticeAnimate {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    svg path {
+      stroke: var(--secondLevelText);
+    }
+  }
+  .notice {
+    width: 24px;
+    height: 24px;
+    fill: var(--secondLevelText);
+    margin: 8px 0 0 8px;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .notificationIcon.navActiveItem .notice {
+    fill: var(--primaryColor);
+  }
+}
+.templateActived {
+  border: none;
+  box-shadow: 0 4px 4px fade(#000, 25%);
+  z-index: var(--template_navigation);
+  .notification:hover {
+    background-color: var(--blackBlue_800);
+  }
+}
+
+.templateActived.noticeOpend {
+  .helpCenter {
+    z-index: 1;
+  }
+  &::before {
+    display: block;
+    content: " ";
+    width: 56px;
+    height: 100%;
+    background: var(--defaultBg);
+    position: absolute;
+  }
+}
+.templateActived:not(.noticeOpend) {
+  .spaceLogo {
+    .spaceIcon {
+// FIXME:THEME
+      fill: rgba(var(--defaultBg-rgb), 50%);
+    }
+  }
+  .navWrapper {
+    .navItem {
+      background-color: transparent;
+      &:hover {
+        background-color: var(--blackBlue_800);
+      }
+      .navIcon {
+        fill: var(--blackBlue_500);
+      }
+    }
+
+    .templateActiveItem {
+      width: 40px;
+      height: 40px;
+      border-radius: 16px;
+      padding: 5px 0;
+      background-color: var(--blackBlue_800);
+      border: none;
+
+      .navIcon {
+        fill: var(--blackBlue_50);
+      }
+    }
+  }
+  .noticeAnimate svg path {
+    stroke: #bdb3f6;
+  }
+  .navActiveItem.notificationIcon {
+// FIXME:THEME
+    background-color: var(--blackBlue_500);
+  }
+  .notificationIcon,
+  .helpCenter,
+  .userIcon {
+    svg {
+      fill: var(--blackBlue_500);
+    }
+  }
+}
+
+.navigation .navActiveItem {
+  pointer-events: none;
+}
+
+.navigation .navActiveItem.notificationIcon,
+.navigation:not(.noticeOpend) .navActiveItem {
+  background-color: var(--rowSelectedBg);
+  border-radius: 16px;
+
+  .navItemTitle {
+    color: var(--primaryColor);
+  }
+
+  .navIcon {
+    fill: var(--primaryColor);
+  }
+}
+
+.drawer {
+  :global {
+    .ant-drawer-body {
+      padding: 0 !important;
+      overflow: hidden;
+      height: 100%;
+    }
+  }
+}
+
+@keyframes tipShow {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.navigationItem {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  margin-bottom: 24px;
+  cursor: pointer;
+
+  .tip {
+    animation: tipShow 0.3s;
+    display: none;
+    position: absolute;
+    right: 0;
+    top: -12px;
+    transform: translateX(98%);
+    line-height: 22px;
+    padding: 2px 8px;
+    background: var(--pink_500);
+    border-radius: 11px 11px 11px 0;
+    white-space: nowrap;
+    z-index: 1;
+  }
+
+  @media (any-hover: hover) {
+    &:hover {
+      .tip {
+        display: block;
+      }
+    }
+  }
+}
+
+.helpCenterDrawer {
+  :global {
+    .ant-drawer-body {
+      overflow: auto;
+    }
+  }
+}
+.notificationDrawer :global(.ant-drawer-content),
+.notificationDrawer :global(.ant-drawer-header) {
+  background-color: var(--defaultBg);
+}
+
+.navigation.templateActived .sticky_upgrade {
+  .sticky_upgrade_content {
+    background: var(--orange_500);
+  }
+  .sticky_upgrade_content:hover {
+    background: var(--orange_600);
+  }
+  .sticky_upgrade_content:active {
+    background: var(--orange_700);
+  }
+}
+
+.sticky_upgrade.loading .sticky_upgrade_content {
+  opacity: 0.5;
+}

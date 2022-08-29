@@ -1,0 +1,17 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.8-20211104-001" author="Pengap" labels="widget">
+        <comment>组件包信息表新增widget_body字段，修改字段描述</comment>
+        <sql>
+            ALTER TABLE `vika_widget_package`
+            ADD COLUMN `widget_body` json NULL COMMENT '组件包扩展信息' AFTER `release_type`,
+            MODIFY COLUMN `is_template` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否模版(0:否,1:是)' AFTER `release_id`,
+            MODIFY COLUMN `is_enabled` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '是否启用，只针对全局小组件(0:未启用,1:启用)' AFTER `is_template`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,52 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.9-20211125-001" author="Shawn" labels="economic">
+        <comment>增加订阅捆绑包表</comment>
+        <sql>
+            CREATE TABLE `vika_economic_bundle` (
+                `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+                `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '空间唯一标识字符',
+                `bundle_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '订阅组合包唯一标识',
+                `base_plan_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '基础产品订阅计划',
+                `start_date` datetime NOT NULL COMMENT '开始时间',
+                `is_active` tinyint(1) unsigned DEFAULT '0' COMMENT '是否活跃(0:否,1:是)',
+                `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+                `created_by` bigint(20) DEFAULT NULL COMMENT '创建用户',
+                `updated_by` bigint(20) DEFAULT NULL COMMENT '最后一次更新用户',
+                `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY (`id`) USING BTREE,
+                KEY `idx_space_id` (`space_id`) USING BTREE COMMENT '空间ID索引'
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='经济模块-订阅包表';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.9-20211125-002" author="Shawn" labels="economic">
+        <comment>增加订阅信息表</comment>
+        <sql>
+            CREATE TABLE `vika_economic_subscription` (
+              `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+              `bundle_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '订阅组合包唯一标识',
+              `subscription_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '订阅ID',
+              `plan_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '计划标识',
+              `bundle_start_date` datetime NOT NULL COMMENT '订阅组合包开始时间',
+              `start_date` datetime NOT NULL COMMENT '订阅开始时间',
+              `charge_date` datetime DEFAULT NULL COMMENT '收费周期日',
+              `end_date` datetime DEFAULT NULL COMMENT '订阅结束时间',
+              `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+              `created_by` bigint(20) DEFAULT NULL COMMENT '创建用户',
+              `updated_by` bigint(20) DEFAULT NULL COMMENT '最后一次更新用户',
+              `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+              `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+              PRIMARY KEY (`id`),
+              UNIQUE KEY `uk_subscription_id` (`subscription_id`) USING BTREE COMMENT '订阅ID唯一索引',
+              KEY `idx_bundle_id` (`bundle_id`) USING BTREE COMMENT '订阅包ID索引'
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='经济模块-订阅表';
+        </sql>
+    </changeSet>
+</databaseChangeLog>

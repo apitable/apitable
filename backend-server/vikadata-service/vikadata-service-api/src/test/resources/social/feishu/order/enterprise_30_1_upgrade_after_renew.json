@@ -1,0 +1,19 @@
+{
+	"meta": {
+		"ts": "1653650976.723737",
+		"uuid": "32650c0c755b647fc7bbe81cdd5b6c06"
+	},
+	"type": "order_paid",
+	"appId": "cli_a28611a8b9e2900d",
+	"seats": 0,
+	"buyType": "upgrade",
+	"orderId": "7102376753238556676",
+	"payTime": "1653650975",
+	"buyCount": 1,
+	"tenantKey": "11e9f3134b9e1740",
+	"createTime": "1653650950",
+	"srcOrderId": "7102360524121358364",
+	"pricePlanId": "price_a2ac7a4a43ba900e",
+	"orderPayPrice": 9,
+	"pricePlanType": "per_year"
+}

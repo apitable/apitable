@@ -1,0 +1,82 @@
+import { Pagination } from './index';
+import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+
+<Meta title="基础组件/Pagination 翻页/文档" />
+
+# Pagination 翻页
+
+## 使用场景
+
+展示数据的条数，页数及提供翻页的组件
+
+## 默认展示
+
+默认展示页数
+
+<Canvas>
+  <Story id="基础组件-pagination-翻页--default" />
+</Canvas>
+
+
+## 展示总数
+
+展示数据当前的范围和总记录条数
+
+<Canvas>
+  <Story id="基础组件-pagination-翻页--total" />
+</Canvas>
+
+## 快速跳转
+
+输入页码直接跳到指定页码数
+
+<Canvas>
+  <Story id="基础组件-pagination-翻页--quickjump" />
+</Canvas>
+
+## 更多
+
+超出 7 页显示省略号
+
+<Canvas>
+  <Story id="基础组件-pagination-翻页--more" />
+</Canvas>
+
+## 改变每页数据量
+
+使用下拉框改变分页的数据量
+
+<Canvas>
+  <Story id="基础组件-pagination-翻页--changesize" />
+</Canvas>
+
+## 禁用
+
+禁用翻页
+
+<Canvas>
+  <Story id="基础组件-pagination-翻页--disabled" />
+</Canvas>
+
+## 全部属性展示
+
+展示所有可展示属性
+
+<Canvas>
+  <Story id="基础组件-pagination-翻页--complete" />
+</Canvas>
+
+## 国际化
+
+翻页组件国际化展示
+
+<Canvas>
+  <Story id="基础组件-pagination-翻页--i18n" />
+</Canvas>
+
+
+## API
+
+### Pagination
+
+<ArgsTable of={Pagination} />

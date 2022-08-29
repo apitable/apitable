@@ -1,0 +1,94 @@
+@import "../lib_var.less";
+// *******Modal默认样式
+// @modal-body-padding: 24px;
+// @modal-header-bg: @component-background;
+// @modal-header-border-color-split: @lineColor-split;
+// @modal-content-bg: @component-background;
+// @modal-heading-color: @heading-color;
+// @modal-footer-bg: transparent;
+// @modal-footer-border-color-split: @lineColor-split;
+// @modal-footer-padding-vertical: 10px;
+// @modal-footer-padding-horizontal: 16px;
+// FIXME:THEME
+// @modal-mask-bg: rgba(var(--black-rgb), 45%);// FIXME:THEME
+//  FIXME:THEME
+// @modal-mask-bg: var(--deepMaskColor);
+
+// *******通用全局样式：定义了标题以及关闭图标样式，取消了modal内容边框
+// 使用注意：自动覆盖antd样式。注意modal组件中请使用closeIcon参数自定义关闭图标，不用antd自带的关闭图标
+.ant-modal-close {
+  height: 24px;
+  width: 24px;
+  margin: 24px 24px 0 0;
+
+  &:focus-within {
+    .ant-modal-close-x {
+      &:hover {
+        background: var(--black_300);
+        box-shadow: 0 0 0 4px var(--black_300);
+      }
+    }
+  }
+}
+
+.ant-modal-body {
+  color: var(--fc1);
+}
+
+.ant-modal-confirm-title,
+.ant-modal-confirm-content {
+  color: var(--fc1) !important;
+}
+
+.ant-modal-close-x {
+  height: 24px;
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  &:hover {
+    background: var(--fc11);
+    box-shadow: 0 0 0 4px var(--fc11);
+  }
+}
+
+.ant-modal-close-x svg {
+  height: 24px;
+  width: 24px;
+  fill: var(--thirdLevelText);
+}
+
+.ant-modal-header {
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.ant-modal-title {
+  color: var(--firstLevelText);
+}
+
+.ant-modal-content {
+  border-radius: 8px;
+  background-color: var(--defaultBg);
+}
+.ant-modal-header {
+  background-color: var(--defaultBg);
+}
+
+.ant-modal-footer {
+  border-top: none;
+}
+
+// 设计稿上宽高为1170*768的模态框，自适应样式
+// 注意，宽度的设置需要设置行内样式才能生效，例如<Modal width={'90%'} style={{maxWidth: '1170px', minWidth: '600px'}} />
+.lgModal(@minHeight: 600px) {
+  .ant-modal-content {
+    max-height: 768px;
+    min-height: @minHeight;
+    height: 85vh;
+    border-radius: 8px;
+  }
+}

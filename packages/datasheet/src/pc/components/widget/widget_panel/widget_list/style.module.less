@@ -1,0 +1,54 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.widgetList {
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  padding: 0 16px;
+  .widgetContainer {
+    border: 1px solid var(--lineColor);
+    border-radius: 8px;
+    width: 100%;
+    height: 100%;
+    background: var(--defaultBg);
+    overflow: hidden;
+  }
+  * {
+    transition: none;
+  }
+  .isFullscreen {
+    transform: none !important;
+  }
+}
+
+.widgetExpanding {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.publishHelpModal {
+  .modalHeader {
+    display: flex;
+    align-items: center;
+    svg {
+      margin-left: 4px;
+    }
+  }
+  .publishHelpContainer {
+    p {
+      font-size: 14px;
+      line-height: 22px;
+      color: var(--secondLevelText);
+    }
+    img {
+      width: 510px;
+      border: 1px solid #e9e9f5;
+      border-radius: 4px;
+    }
+  }
+}

@@ -1,0 +1,73 @@
+@import "../../../styles/var.less";
+
+@border-color: #e8eaed;
+
+.trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: @spacing-small;
+  margin-right: @spacing-base;
+  cursor: pointer;
+  border-radius: @radius-base;
+  &:hover,
+  &[data-active="true"] {
+    background: @bg-color-hover;
+  }
+
+  &[data-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.colorPanel {
+  display: flex;
+  align-items: center;
+  width: 273px;
+  padding: 10px @spacing-large;
+  background: var(--defaultBg);
+  border-radius: @radius-base;
+  box-shadow: @box-shadow-dark;
+
+  li {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    margin-left: 16px;
+    border-radius: @radius-small;
+    list-style: none;
+    position: relative;
+
+    &[data-active="true"] {
+      &::before {
+        content: " ";
+        display: block;
+        position: absolute;
+        left: -3px;
+        top: -3px;
+        width: 22px;
+        height: 22px;
+        border: 1px solid;
+        border-radius: @radius-small;
+      }
+    }
+  }
+  .none {
+    border: 1px solid @border-color;
+    position: relative;
+    margin-left: 0;
+    &::before {
+      content: " ";
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 20px;
+      height: 1px;
+      transform: rotate(45deg);
+      transform-origin: left top;
+      background: @border-color;
+    }
+  }
+}

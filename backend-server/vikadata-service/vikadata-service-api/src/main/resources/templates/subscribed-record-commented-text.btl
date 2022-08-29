@@ -1,0 +1,17 @@
+${MEMBER_NAME}在空间站「${SPACE_NAME}」的维格表「${NODE_NAME}」的记录进行了评论
+
+--------------------------------------------------------------------------------
+
+来自${MEMBER_NAME}
+
+记录：${RECORD_TITLE}
+
+${CONTENT}
+
+请点击下方链接去查看
+${URL}
+
+
+copyright © 2019-${YEARS} 深圳维格云科技有限公司.All rights reserved.
+
+联系我们（http://vika.cn/）

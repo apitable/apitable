@@ -1,0 +1,1 @@
+INSERT INTO `vika_social_user` (`id`, `union_id`, `platform`) VALUES (41, 'ui41', 2);

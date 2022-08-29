@@ -1,0 +1,14 @@
+// 给组件板和仪表盘的布局组件使用的
+
+.react-resizable-handle::after {
+  border-color: var(--primaryColor) !important;
+}
+
+.react-grid-item.react-grid-placeholder {
+  z-index: 0;
+  border: 1px dashed var(--primaryColor);
+// FIXME:THEME
+  background: rgba(var(--primaryColor-rgb), 10%);
+  opacity: 1;
+  border-radius: 8px;
+}

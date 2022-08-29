@@ -1,0 +1,30 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.3-20200324-001" author="ZoeZheng" labels="audit">
+        <comment>用户行为审计表</comment>
+        <sql>
+            CREATE TABLE `vika_audit_space` (
+            `id` bigint(20) NOT NULL COMMENT '主键',
+            `user_id` bigint(20) NOT NULL default 0  COMMENT '用户ID(关联#vika_user#id)',
+            `member_id` bigint(20) NOT NULL default 0 COMMENT 'memberId(关联#vika_unit_member#id)',
+            `space_id` bigint(20) NOT NULL default 0 COMMENT 'spaceId(关联#vika_space#id)',
+            `action` varchar(50) not null  COMMENT '用户行为',
+            `info` json DEFAULT NULL COMMENT '行为具体信息',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            PRIMARY KEY (`id`) USING BTREE,
+            KEY `idx_user_id` (`user_id`) USING BTREE,
+            KEY `idx_member_id` (`member_id`) USING BTREE,
+            KEY `idx_space_id` (`space_id`) USING BTREE,
+            KEY `idx_action` (`action`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户行为审计表';
+        </sql>
+        <rollback>
+            <dropTable tableName="vika_audit_space"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

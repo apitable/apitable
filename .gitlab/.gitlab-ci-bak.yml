@@ -1,0 +1,334 @@
+image: 'vikadata/dind-aws-node'
+services:
+  - name: vikadata/dind-aws-node
+    command: ['--registry-mirror=https://nt14bg6k.mirror.aliyuncs.com']
+
+variables:
+  DOCKER_TLS_CERTDIR: '/certs'
+  DOCKER_DRIVER: overlay2
+  DOCKER_HOST: 'tcp://vikadata__dind-aws-node:2375'
+  SERVICE_NAME: room-server-service
+  AWS_ECR_REPOSITORY: '535167499643.dkr.ecr.cn-northwest-1.amazonaws.com.cn'
+  AWS_DEFAULT_REGION: 'cn-northwest-1'
+  BUCKET_NAME: s.vika.cn
+  #容器云域名地址，变量存储在Gitlab
+  VIP: $VIP
+  #向容器云部署服务的接口地址，变量存储在Gitlab
+  SERVER_PATH: $SERVER_DEPLOY_PATH
+
+# 预定义公用脚本
+# tag触发
+.only-tags: &only-tags
+  only:
+    refs:
+      - tags
+
+stages:
+  - build
+  - deploy_web
+  - deploy_release
+  - merge
+
+# 构建 web 端 datasheet 项目
+build_web:
+  stage: build
+  only:
+    - integration
+    - staging
+  before_script:
+    - yarn config get npmRegistryServer
+    - yarn -v
+    - yarn install
+    - make _versioning_setter
+  script:
+    - yarn build:core
+    - yarn build:datasheet
+  artifacts:
+    paths:
+      - packages/datasheet/build/
+    expire_in: '2 weeks'
+
+# 构建 web 端 datasheet 项目
+build_production_web:
+  stage: build
+  only:
+    - /^.*beta.*$/
+  except:
+    - branches
+  before_script:
+    - yarn config get npmRegistryServer
+    - yarn -v
+    - yarn install
+    - make _versioning_setter
+  script:
+    - yarn build:core
+    - yarn build:datasheet
+  artifacts:
+    paths:
+      - packages/datasheet/build/
+    expire_in: '2 weeks'
+    # staging 构建只有在打了包含 beta字段的tag之后开始，排除所有分支
+
+# integration deploy 阶段：部署 Web page
+deploy_integration_web:
+  stage: deploy_web
+  variables:
+    ENTRY_POINT: integration
+  only:
+    - integration
+  dependencies:
+    - build_web
+  before_script:
+    # 构建版本号BUILD_VERSION开始
+    - BUILD_VERSION=$(echo $VERSION_TAG-$INTEGRATION_BRANCH_TAG.$CI_PIPELINE_ID|sed 's/\"//g'|sed 's/ //g')
+    - echo $BUILD_VERSION
+    - git_message=$(echo `cd ${CI_PROJECT_DIR};git log --pretty=format:'%h %ad | [%an] %s%n%b' --date=format:'%Y-%m-%d %H:%M:%S' -1`)
+    - echo $git_message
+    # 构建版本号BUILD_VERSION结束
+    - aws --version
+  script:
+    - echo "Start Upload......"
+    - mkdir ~/.aws/ && touch ~/.aws/credentials
+    # $AWS_ACCESS_KEY_ID、$AWS_SECRET_ACCESS_KEY 分别在gitlab代码库的变量里
+    - printf "[default]\naws_access_key_id = %s\naws_secret_access_key = %s\n" "$AWS_ACCESS_KEY_ID" "$AWS_SECRET_ACCESS_KEY" >> ~/.aws/credentials
+    # 因为要获取编译后的文件，所以不能放在脚本之后 上传html文件开始
+    - htmlContent=$(sudo cat packages/datasheet/build/index.html)
+    - echo $htmlContent
+    - htmlContentBase64=$(echo $(base64 <<< $htmlContent))
+    - echo $htmlContentBase64
+    # 发送入口文件html逻辑判断
+    - response=$(echo `curl -H 'Content-Type:application/json' -X POST -d '{"description":"'"$git_message"'","htmlContent":"'"$htmlContentBase64"'","publishUser":"'"$GITLAB_USER_EMAIL"'","version":"'"$BUILD_VERSION"'"}' ${INTEGRATION_DEPLOY_URL}`)
+    - echo $response
+    - resonseCode=$(echo ${response}|awk -F 'code":' '{print $2}'|awk -F ',' '{print $1}')
+    - echo $resonseCode
+    # 如果入口文件写入失败，则发版失败 todo 加入邮件提醒
+    - (if [ "$resonseCode" == "200" ];then echo "resonseCode=200";else echo :"resonseCode=error" && apt-get;fi)
+    # todo 新的脚本稳定之后可以去掉 上传html结束
+    - mv packages/datasheet/build/index.html packages/datasheet/build/${ENTRY_POINT}.html
+    - aws s3 cp packages/datasheet/build s3://${BUCKET_NAME}/web_build --recursive --include "*"
+
+# staging deploy 阶段：部署 Web page
+deploy_staging_web:
+  stage: deploy_web
+  variables:
+    ENTRY_POINT: staging
+  only:
+    - staging
+  dependencies:
+    - build_web
+  before_script:
+    # 构建版本号BUILD_VERSION开始
+    - BUILD_VERSION=$(echo $VERSION_TAG-$STAGING_BRANCH_TAG.$CI_PIPELINE_ID|sed 's/\"//g'|sed 's/ //g')
+    - echo $BUILD_VERSION
+    - git_message=$(echo `cd ${CI_PROJECT_DIR};git log --pretty=format:'%h %ad | [%an] %s%n%b' --date=format:'%Y-%m-%d %H:%M:%S' -1`)
+    - echo $git_message
+    # 构建版本号BUILD_VERSION结束
+    - aws --version
+  script:
+    - echo "Start Upload......"
+    - mkdir ~/.aws/ && touch ~/.aws/credentials
+    # $AWS_ACCESS_KEY_ID、$AWS_SECRET_ACCESS_KEY 分别在gitlab代码库的变量里
+    - printf "[default]\naws_access_key_id = %s\naws_secret_access_key = %s\n" "$AWS_ACCESS_KEY_ID" "$AWS_SECRET_ACCESS_KEY" >> ~/.aws/credentials
+    # 因为要获取编译后的文件，所以不能放在脚本之后 上传html文件开始
+    - htmlContent=$(sudo cat packages/datasheet/build/index.html)
+    - echo $htmlContent
+    - htmlContentBase64=$(echo $(base64 <<< $htmlContent))
+    - echo $htmlContentBase64
+    # 发送入口文件html逻辑判断
+    - response=$(echo `curl -H 'Content-Type:application/json' -X POST -d '{"description":"'"$git_message"'","htmlContent":"'"$htmlContentBase64"'","publishUser":"'"$GITLAB_USER_EMAIL"'","version":"'"$BUILD_VERSION"'"}' ${STAGING_DEPLOY_URL}`)
+    - echo $response
+    - resonseCode=$(echo ${response}|awk -F 'code":' '{print $2}'|awk -F ',' '{print $1}')
+    - echo $resonseCode
+    # 如果入口文件写入失败，则发版失败 todo 加入邮件提醒
+    - (if [ "$resonseCode" == "200" ];then echo "resonseCode=200";else echo :"resonseCode=error" && apt-get;fi)
+    # todo 新的脚本稳定之后可以去掉 上传html结束
+    - mv packages/datasheet/build/index.html packages/datasheet/build/${ENTRY_POINT}.html 
+    - aws s3 cp packages/datasheet/build s3://${BUCKET_NAME}/web_build --recursive --include "*"
+
+merge_staging_into_integration:
+  stage: merge
+  variables:
+    DATASHEET_GIT_HOST: 172.16.20.248
+  only:
+    - staging
+  dependencies:
+    - deploy_staging_web
+  before_script:
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "${GIT_SSH_PRIV_KEY}" | base64 --decode)
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - git config --global user.name "robot"
+    - git config --global user.email ${ROBOT_EMAIL}
+    - ssh-keyscan ${DATASHEET_GIT_HOST} >> gitlab-known-hosts
+    - cat gitlab-known-hosts >> ~/.ssh/known_hosts
+  script:
+    - mkdir tmpData
+    - cd tmpData
+    - git clone git@${DATASHEET_GIT_HOST}:fe/datasheet.git
+    - echo ${CI_PROJECT_NAME}
+    - cd ${CI_PROJECT_NAME}
+    - git fetch
+    - git checkout staging
+    - git pull
+    - git checkout integration
+    - git pull
+    - git merge staging
+    - git push
+  after_script:
+    - cd ../
+    - rm -rf tmpData/
+
+# integration build 阶段：部署Room Server
+build_integration_node:
+  stage: build
+  variables:
+    #镜像仓库地址
+    ECR_REPOSITORY: "cargo.vikadata.com/system-tenant_integration"
+    #分区名称
+    PARTITION: integration
+    #集群名称
+    CLUSTER_NAME: compass-stack
+    #租户
+    TENANT: system-tenant
+    #应用服务【标识】，注意不是服务【名称】！！
+    APP_NAME: room-server
+  only:
+    - integration
+  before_script:
+    - docker info
+    # 容器云平台登录认证，登录账户、密码与ECR地址存储在Gitlab Group变量中
+    - docker login -u $ECR_LOGIN_NAME -p $ECR_PASSWORD $ECR_PATH
+    - echo "登录成功"
+    # 每次运行的commit Sha
+    - IMAGE_TAG=$(echo $CI_COMMIT_SHORT_SHA)
+  script:
+    - ls -l
+    - pwd
+    # 构建Docker镜像，推送到镜像仓库
+    - BUILD_IMAGE_NAME=$(echo ${ECR_REPOSITORY}/${APP_NAME})
+    - docker pull $BUILD_IMAGE_NAME:latest || true
+    - docker build --cache-from $BUILD_IMAGE_NAME:latest --tag $BUILD_IMAGE_NAME:$IMAGE_TAG --tag $BUILD_IMAGE_NAME:latest .
+    - docker push $BUILD_IMAGE_NAME:$IMAGE_TAG
+    - docker push $BUILD_IMAGE_NAME:latest
+    # 在容器云控制台创建好容器cluster集群、应用分区
+    - echo "开始更新服务"
+    - echo "当前更新的版本号：" $IMAGE_TAG
+    - curl -H 'Content-Type:application/json' -X POST -d '{"vip":"'"$VIP"'","clusters":"'"$CLUSTER_NAME"'","partition":"'"$PARTITION"'","appName":"'"$APP_NAME"'","tenant":"'"$TENANT"'","newVersion":"'"$IMAGE_TAG"'"}' ${SERVER_PATH}/deploy/compass
+    - echo "完成更新"
+  
+
+# staging build 阶段：部署Room Server
+build_staging_node:
+  stage: build
+  variables:
+    #镜像仓库地址
+    ECR_REPOSITORY: "cargo.vikadata.com/system-tenant_staging"
+    #分区名称
+    PARTITION: staging
+    #集群名称
+    CLUSTER_NAME: compass-stack
+    #租户
+    TENANT: system-tenant
+    #应用服务【标识】，注意不是服务【名称】！！
+    APP_NAME: room-server-staging
+  only:
+    - staging
+  before_script:
+    - docker info
+    # 容器云平台登录认证，登录账户、密码与ECR地址存储在Gitlab Group变量中
+    - docker login -u $ECR_LOGIN_NAME -p $ECR_PASSWORD $ECR_PATH
+    - echo "登录成功"
+    # 每次运行的commit Sha
+    - IMAGE_TAG=$(echo $CI_COMMIT_SHORT_SHA)
+  script:
+    - ls -l
+    - pwd
+    # 构建Docker镜像，推送到镜像仓库
+    - BUILD_IMAGE_NAME=$(echo ${ECR_REPOSITORY}/${APP_NAME})
+    - docker pull $BUILD_IMAGE_NAME:latest || true
+    - docker build --cache-from $BUILD_IMAGE_NAME:latest --tag $BUILD_IMAGE_NAME:$IMAGE_TAG --tag $BUILD_IMAGE_NAME:latest .
+    - docker push $BUILD_IMAGE_NAME:$IMAGE_TAG
+    - docker push $BUILD_IMAGE_NAME:latest
+    # 在容器云控制台创建好容器cluster集群、应用分区
+    - echo "开始更新服务"
+    - echo "当前更新的版本号：" $IMAGE_TAG
+    - curl -H 'Content-Type:application/json' -X POST -d '{"vip":"'"$VIP"'","clusters":"'"$CLUSTER_NAME"'","partition":"'"$PARTITION"'","appName":"'"$APP_NAME"'","tenant":"'"$TENANT"'","newVersion":"'"$IMAGE_TAG"'"}' ${SERVER_PATH}/deploy/compass
+    - echo "完成更新"
+
+# 正式版本发布部署（静态网页），仅限于创建Git Tag标签触发
+release_deploy_web:
+  <<: *only-tags
+  stage: deploy_release
+  before_script:
+    # 构建版本号BUILD_VERSION开始
+    - BUILD_VERSION=$(echo $CI_COMMIT_TAG|sed 's/\"//g'|sed 's/ //g')
+    - echo $BUILD_VERSION
+    - git_message=$(echo `cd ${CI_PROJECT_DIR};git log --pretty=format:'%h %ad | [%an] %s%n%b' --date=format:'%Y-%m-%d %H:%M:%S' -1`)
+    - echo $git_message
+    # 构建版本号BUILD_VERSION结束
+    - aws --version
+    - yarn config get npmRegistryServer
+    - yarn -v
+    - yarn install
+    - make _versioning_setter
+    - yarn build:core
+    - yarn build:datasheet
+  script:
+    - echo "Start Upload......"
+    - mkdir ~/.aws/ && touch ~/.aws/credentials
+    # $AWS_ACCESS_KEY_ID、$AWS_SECRET_ACCESS_KEY 分别在gitlab代码库的变量里
+    - printf "[default]\naws_access_key_id = %s\naws_secret_access_key = %s\n" "$AWS_ACCESS_KEY_ID" "$AWS_SECRET_ACCESS_KEY" >> ~/.aws/credentials
+    # 因为要获取编译后的文件，所以不能放在脚本之后 上传html文件开始
+    - htmlContent=$(sudo cat packages/datasheet/build/index.html)
+    - echo $htmlContent
+    - htmlContentBase64=$(echo $(base64 <<< $htmlContent))
+    - echo $htmlContentBase64
+    # 发送入口文件html逻辑判断
+    - response=$(echo `curl -H 'Content-Type:application/json' -X POST -d '{"description":"'"$git_message"'","htmlContent":"'"$htmlContentBase64"'","publishUser":"'"$GITLAB_USER_EMAIL"'","version":"'"$BUILD_VERSION"'"}' ${RELEASE_DEPLOY_URL}`)
+    - echo $response
+    - resonseCode=$(echo ${response}|awk -F 'code":' '{print $2}'| awk -F ',' '{print $1}')
+    - echo $resonseCode
+    # 如果入口文件写入失败，则发版失败 todo 加入邮件提醒
+    - (if [ "$resonseCode" == "200" ];then echo "resonseCode=200";else echo :"resonseCode=error" && apt-get;fi)
+    - aws s3 cp packages/datasheet/build s3://${BUCKET_NAME}/web_build --recursive --include "*"
+  # 手动执行JOB
+  when: manual
+
+# 正式版本发布部署（node服务），仅限于创建Git Tag标签触发
+release_deploy_node:
+  <<: *only-tags
+  stage: deploy_release
+  variables:
+    #镜像仓库地址
+    ECR_REPOSITORY: "cargo.vikadata.com/vika-prod_release"
+    #分区名称
+    PARTITION: production
+    #集群名称
+    CLUSTER_NAME: user-21b785-20200409100351-1a0l
+    #租户
+    TENANT: vika-prod
+    #应用服务【标识】，注意不是服务【名称】！！
+    APP_NAME: room-server
+  before_script:
+    - docker info
+    # 容器云平台登录认证，登录账户、密码与ECR地址存储在Gitlab Group变量中
+    - docker login -u $ECR_LOGIN_NAME -p $ECR_PASSWORD $ECR_PATH
+    # 每次运行的commit Sha
+    - IMAGE_TAG=$(echo $CI_COMMIT_SHORT_SHA)
+  script:
+    - ls -l
+    - pwd
+    # 构建Docker镜像，推送到镜像仓库
+    - BUILD_IMAGE_NAME=$(echo ${ECR_REPOSITORY}/${APP_NAME})
+    - docker pull $BUILD_IMAGE_NAME:latest || true
+    - docker build --cache-from $BUILD_IMAGE_NAME:latest --tag $BUILD_IMAGE_NAME:$IMAGE_TAG --tag $BUILD_IMAGE_NAME:latest .
+    - docker push $BUILD_IMAGE_NAME:$IMAGE_TAG
+    - docker push $BUILD_IMAGE_NAME:latest
+    # 在容器云控制台创建好容器cluster集群、应用分区
+    - echo "开始更新服务"
+    - echo "当前更新的版本号：" $IMAGE_TAG
+    - curl -H 'Content-Type:application/json' -X POST -d '{"vip":"'"$VIP"'","clusters":"'"$CLUSTER_NAME"'","partition":"'"$PARTITION"'","appName":"'"$APP_NAME"'","tenant":"'"$TENANT"'","newVersion":"'"$IMAGE_TAG"'"}' ${SERVER_PATH}/deploy/compass
+    - echo "完成更新"
+  # 手动执行JOB
+  when: manual

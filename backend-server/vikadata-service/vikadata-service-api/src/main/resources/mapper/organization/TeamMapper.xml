@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.organization.mapper.TeamMapper">
+
+    <select id="selectRootIdBySpaceId" resultType="java.lang.Long">
+        SELECT id
+        FROM vika_unit_team
+        WHERE space_id = #{spaceId}
+          AND parent_id = 0 AND is_deleted = 0
+    </select>
+
+    <select id="selectParentIdByTeamId" resultType="java.lang.Long">
+        SELECT parent_id
+        FROM vika_unit_team
+        WHERE id = #{teamId} AND is_deleted = 0
+    </select>
+
+    <!--查询子部门最大排序值-->
+    <select id="selectMaxSequenceByParentId" resultType="java.lang.Integer">
+        SELECT MAX(sequence)
+        FROM vika_unit_team
+        WHERE parent_id = #{parentId}
+          and is_deleted = 0
+    </select>
+
+    <resultMap id="teamInfo" type="com.vikadata.api.model.vo.organization.TeamInfoVo">
+        <result column="team_id" property="teamId"/>
+        <result column="team_name" property="teamName"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="member_count" property="memberCount"/>
+        <result column="sequence" property="sequence"/>
+        <result column="has_children" property="hasChildren"/>
+    </resultMap>
+
+    <!--查询根部门的子部门-->
+    <select id="selectRootSubTeams" resultMap="teamInfo">
+        SELECT d.id                          AS team_id,
+               d.team_name                   AS team_name,
+               0                             as parent_id,
+               d.sequence                    AS sequence,
+               COUNT(DISTINCT dmr.member_id) AS member_count,
+               IF(d1.id IS NULL, 0, 1)       AS has_children
+        FROM vika_unit_team d
+                 LEFT JOIN vika_unit_team_member_rel dmr ON dmr.team_id = d.id
+                 LEFT JOIN vika_unit_team d1 ON d1.parent_id = d.id
+        WHERE d.space_id = #{spaceId}
+          and d.parent_id = #{parentId}
+          and d.is_deleted = 0
+        GROUP BY d.id, d.sequence
+        ORDER BY d.sequence;
+    </select>
+
+    <select id="selectTeamInfoByTeamIds" resultMap="teamInfo">
+        SELECT d.id                          AS team_id,
+        d.team_name                   AS team_name,
+        0                             as parent_id,
+        d.sequence                    AS sequence,
+        COUNT(DISTINCT dmr.member_id) AS member_count,
+        IF(d1.id IS NULL, 0, 1)       AS has_children
+        FROM vika_unit_team d
+        LEFT JOIN vika_unit_team_member_rel dmr ON dmr.team_id = d.id
+        LEFT JOIN vika_unit_team d1 ON d1.parent_id = d.id
+        WHERE d.space_id = #{spaceId}
+        and d.id IN
+        <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and d.is_deleted = 0
+        GROUP BY d.id, d.sequence
+        ORDER BY d.sequence;
+    </select>
+
+    <!--查询子部门列表-->
+    <select id="selectSubTeamsByParentId" resultMap="teamInfo">
+        SELECT d.id                          AS team_id,
+               d.team_name                   AS team_name,
+               d.parent_id,
+               d2.team_name                  AS parent_team_name,
+               d.sequence                    AS sequence,
+               COUNT(DISTINCT dmr.member_id) AS member_count,
+               IF(d1.id IS NULL, 0, 1)       AS has_children
+        FROM vika_unit_team d
+                 LEFT JOIN vika_unit_team_member_rel dmr ON dmr.team_id = d.id
+                 LEFT JOIN vika_unit_team d1 ON d1.parent_id = d.id
+                 LEFT JOIN vika_unit_team d2 ON d2.id = d.parent_id
+        WHERE d.space_id = #{spaceId}
+          and d.parent_id = #{parentId}
+          and d.is_deleted = 0
+        GROUP BY d.id, d.sequence
+        ORDER BY d.sequence;
+    </select>
+
+    <select id="selectTeamIdsByParentId" resultType="java.lang.Long">
+        SELECT vout.id
+        FROM vika_unit_team vout
+        WHERE vout.space_id = #{spaceId} AND vout.parent_id = #{parentId} AND
+        vout.is_deleted = 0
+        ORDER BY vout.sequence
+    </select>
+
+    <select id="selectAllParentTeamIds" resultType="java.lang.Long">
+        WITH RECURSIVE parent (id, parent_id) AS
+        (
+        SELECT id, parent_id
+        FROM vika_unit_team
+        WHERE id = #{teamId} AND is_deleted = 0
+        UNION ALL
+        SELECT c.id, c.parent_id
+        FROM parent AS cp
+        JOIN vika_unit_team AS c ON cp.parent_id = c.id AND c.is_deleted = 0
+        )
+        SELECT DISTINCT id
+        FROM parent
+        <if test="!includeSelf">
+            WHERE id != #{teamId}
+        </if>
+    </select>
+
+    <!--查询部门下的所有子部门ID列表-->
+    <select id="selectAllSubTeamIdsByParentId" resultType="java.lang.Long">
+        WITH RECURSIVE sub_ids (id) AS
+            (
+            SELECT id
+            FROM vika_unit_team
+            WHERE parent_id = #{parentId} and is_deleted = 0
+            <if test="includeSelf">
+                or id = #{parentId}
+            </if>
+        UNION ALL
+        SELECT c.id
+        FROM sub_ids AS cp
+                 JOIN vika_unit_team AS c
+            ON cp.id = c.parent_id and c.is_deleted = 0
+        )
+        SELECT distinct *
+        FROM sub_ids;
+    </select>
+
+    <select id="selectAllSubTeamIds" resultType="java.lang.Long">
+        WITH RECURSIVE sub_ids (id) AS
+        (
+        SELECT id
+        FROM vika_unit_team
+        WHERE parent_id IN
+            <foreach item="item" index="index" collection="parentIds" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            AND is_deleted = 0
+        UNION ALL
+        SELECT c.id
+        FROM sub_ids AS cp
+        JOIN vika_unit_team AS c
+        ON cp.id = c.parent_id and c.is_deleted = 0
+        )
+        SELECT distinct *
+        FROM sub_ids;
+    </select>
+
+    <!--根据部门名称模糊查询部门列表-->
+    <select id="selectByTeamName" resultType="com.vikadata.api.model.vo.organization.SearchTeamResultVo">
+        SELECT vod.id                             as team_id,
+               vod.team_name                      as team_name,
+               vod1.team_name                     as parent_name,
+               UPPER(SUBSTR(vod.team_name, 1, 1)) as short_name,
+               COUNT(DISTINCT dmr.member_id)      AS member_count,
+               IF(vod1.id IS NULL, 0, 1)          AS has_children
+        FROM vika_unit_team vod
+                 LEFT JOIN vika_unit_team_member_rel dmr ON dmr.team_id = vod.id
+                 LEFT JOIN vika_unit_team vod1 on vod.parent_id = vod1.id and vod1.is_deleted = 0
+        where vod.is_deleted = 0
+          and vod.space_id = #{spaceId}
+          and vod.parent_id != 0
+          and vod.team_name like CONCAT('%', #{teamName}, '%')
+        GROUP BY vod.id, vod.sequence
+        ORDER BY vod.sequence
+    </select>
+
+    <select id="existChildrenByParentId" resultType="java.lang.Integer">
+        SELECT IF(COUNT(*) > 0, 1, 0) AS cot
+        FROM vika_unit_team vod
+        WHERE vod.parent_id = #{parentId}
+          AND vod.is_deleted = 0
+    </select>
+
+    <resultMap id="memberPageVo" type="com.vikadata.api.model.vo.organization.MemberPageVo">
+        <result column="id" property="memberId"/>
+        <result column="avatar" property="avatar"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="member_name" property="memberName"/>
+        <result column="email" property="email"/>
+        <result column="teamIds" property="teamIds"/>
+        <result column="teams" property="teams"/>
+        <result column="is_active" property="isActive"/>
+        <result column="is_primary" property="isPrimary"/>
+        <result column="is_sub_admin" property="isSubAdmin"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+        <result column="is_nick_name_modified" property="isNickNameModified"/>
+        <result column="is_member_name_modified" property="isMemberNameModified"/>
+    </resultMap>
+
+    <select id="selectMembersByRootTeamId" resultMap="memberPageVo">
+        SELECT
+            vom.id,
+            vu.avatar,
+            vu.nick_name,
+            vom.mobile,
+            vom.member_name,
+            vom.email,
+            GROUP_CONCAT(distinct vod.id ORDER BY vodmr.created_at DESC)                        AS teamIds,
+            GROUP_CONCAT(distinct vod.team_name ORDER BY vodmr.created_at DESC SEPARATOR ' | ') AS teams,
+            vom.is_active,
+            vom.is_admin                                                                         AS is_primary,
+            IF(vsmrr.id IS NULL, 0, 1)                                                           AS is_sub_admin,
+            vom.created_at,
+            vom.updated_at,
+            IFNULL(vu.is_social_name_modified, 2) > 0                                      AS is_nick_name_modified,
+            IFNULL(vom.is_social_name_modified, 2) > 0                                     AS is_member_name_modified
+        FROM vika_unit_member vom
+        JOIN vika_unit_team_member_rel vodmr ON vodmr.member_id = vom.id
+        JOIN vika_unit_team vod ON vod.id = vodmr.team_id AND vod.is_deleted = 0
+        LEFT JOIN vika_user vu ON vom.user_id = vu.id
+        LEFT JOIN vika_space_member_role_rel vsmrr ON vsmrr.member_id = vom.id
+        WHERE vom.space_id = #{spaceId}
+        <if test="isActive != null">
+            AND vom.is_active = #{isActive}
+        </if>
+        AND vom.is_deleted = 0
+        GROUP BY vom.id
+    </select>
+
+    <select id="selectMembersByTeamId" resultMap="memberPageVo">
+        SELECT vom.id,
+        vu.avatar,
+        vu.nick_name,
+        vom.member_name,
+        vom.email,
+        GROUP_CONCAT(distinct vout.id) as teamIds,
+        GROUP_CONCAT(distinct vout.team_name ORDER BY vodmr.created_at DESC SEPARATOR ' | ') as teams,
+        vom.is_active,
+        vom.is_admin as is_primary,
+        IF(vsmrr.id IS NULL, 0, 1) as is_sub_admin,
+        vom.created_at,
+        vom.updated_at
+        FROM vika_unit_team_member_rel vodmr
+        JOIN vika_unit_member vom on vom.id = vodmr.member_id and vom.is_deleted = 0
+        LEFT JOIN vika_user vu on vom.user_id = vu.id
+        LEFT JOIN vika_unit_team vod on vod.id = vodmr.team_id and vod.is_deleted = 0
+        LEFT JOIN vika_unit_team_member_rel voutmr on voutmr.member_id = vodmr.member_id
+        LEFT JOIN vika_unit_team vout on vout.id = voutmr.team_id and vout.parent_id != 0
+        LEFT JOIN vika_space_member_role_rel vsmrr on vsmrr.member_id = vom.id
+        WHERE vodmr.team_id IN
+        <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY vom.id
+    </select>
+
+    <select id="selectMemberPageByTeamId" resultMap="memberPageVo">
+        SELECT
+        vom.id,
+        vu.avatar,
+        vu.nick_name,
+        vom.mobile,
+        vom.member_name,
+        vom.email,
+        GROUP_CONCAT(distinct vod.id ORDER BY vodmr.created_at DESC) as teamIds,
+        GROUP_CONCAT(distinct vod.team_name ORDER BY vodmr.created_at DESC SEPARATOR ' | ') as teams,
+        vom.is_active,
+        vom.is_admin as is_primary,
+        IF(vsmrr.id IS NULL, 0, 1) as is_sub_admin,
+        vom.created_at,
+        vom.updated_at,
+        IFNULL(vu.is_social_name_modified, 2) > 0 AS is_nick_name_modified,
+        IFNULL(vom.is_social_name_modified, 2) > 0 AS is_member_name_modified
+        FROM vika_unit_team_member_rel vodmr
+        JOIN vika_unit_member vom on vom.id = vodmr.member_id AND vom.is_deleted = 0
+        JOIN vika_unit_team vod on vod.id = vodmr.team_id and vod.is_deleted = 0
+        LEFT JOIN vika_user vu on vom.user_id = vu.id
+        LEFT JOIN vika_space_member_role_rel vsmrr on vsmrr.member_id = vom.id
+        WHERE vodmr.team_id IN
+        <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="isActive != null">
+            AND vom.is_active = #{isActive}
+        </if>
+        GROUP BY vodmr.member_id
+    </select>
+
+    <resultMap id="teamMemberDto" type="com.vikadata.api.model.dto.organization.TeamMemberDto">
+        <result column="id" property="teamId"/>
+        <result column="team_name" property="teamName"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="sequence" property="sequence"/>
+        <collection property="memberIds" ofType="java.lang.Long">
+            <result column="member_id" property="value"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectTeamsBySpaceId" resultMap="teamMemberDto">
+        SELECT vod.id,
+               vod.team_name,
+               vod.parent_id,
+               vodmr.member_id,
+               vod.sequence
+        FROM vika_unit_team vod
+                 LEFT JOIN vika_unit_team_member_rel vodmr on vod.id = vodmr.team_id
+                 LEFT JOIN vika_unit_member vom on vodmr.member_id = vom.id and vom.is_deleted = 0
+        WHERE vod.space_id = #{spaceId}
+          and vod.is_deleted = 0
+            <if test="parentId != null">
+                and vod.parent_id != #{parentId}
+            </if>
+        ORDER BY vod.sequence
+    </select>
+
+    <select id="selectMemberTeamsBySpaceIdAndTeamIds" resultMap="teamMemberDto">
+        SELECT vod.id,
+        vod.team_name,
+        vod.parent_id,
+        vodmr.member_id,
+        vod.sequence
+        FROM vika_unit_team vod
+        LEFT JOIN vika_unit_team_member_rel vodmr on vod.id = vodmr.team_id
+        LEFT JOIN vika_unit_member vom on vodmr.member_id = vom.id and vom.is_deleted = 0
+        WHERE vod.space_id = #{spaceId}
+        and vod.id IN
+        <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and vod.is_deleted = 0
+        ORDER BY vod.sequence
+    </select>
+
+    <select id="selectBySpaceIdAndName"
+            resultType="com.vikadata.entity.TeamEntity">
+        SELECT *
+        FROM vika_unit_team vod
+        WHERE vod.space_id = #{spaceId}
+          and parent_id = #{parentId}
+          and vod.is_deleted = 0
+          and vod.team_name = #{name}
+        LIMIT 0,1
+    </select>
+
+    <select id="selectTeamsByIds" resultMap="teamMemberDto">
+        SELECT vod.id,
+        vod.parent_id,
+        vodmr.member_id
+        FROM vika_unit_team vod
+        JOIN vika_unit_team_member_rel vodmr ON vod.id = vodmr.team_id
+        JOIN vika_unit_member vom ON vodmr.member_id = vom.id AND vom.is_deleted = 0
+        WHERE vod.id IN
+        <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND vod.is_deleted = 0 AND vod.parent_id != 0
+        ORDER BY vod.sequence
+    </select>
+
+    <select id="selectByTeamIdsIgnoreDelete" resultType="com.vikadata.entity.TeamEntity">
+        SELECT *
+        FROM vika_unit_team
+        WHERE id IN
+        <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectAllBySpaceId" resultType="com.vikadata.entity.TeamEntity">
+        SELECT *
+        FROM vika_unit_team
+        WHERE space_id = #{spaceId}
+          and is_deleted = 0
+        ORDER BY parent_id
+    </select>
+
+    <select id="selectTeamIdsLikeName" resultType="java.lang.Long">
+        SELECT vout.id
+        FROM vika_unit_team vout
+        WHERE vout.is_deleted = 0
+          and vout.space_id = #{spaceId}
+          and vout.parent_id != 0
+          and vout.team_name like CONCAT('%', #{likeName}, '%')
+    </select>
+
+    <select id="selectIdBySpaceIdAndNames" resultType="java.lang.Long">
+        SELECT id
+        FROM vika_unit_team
+        WHERE space_id = #{spaceId}
+        AND team_name IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectUnitTeamVoByTeamId" resultType="com.vikadata.api.model.vo.organization.UnitTeamVo">
+        SELECT vou.id as unitId,
+        vout.id as teamId,
+        vout.team_name
+        FROM vika_unit_team vout
+        JOIN vika_unit vou on vout.id = vou.unit_ref_id
+        WHERE vout.is_deleted = 0 AND vout.space_id = #{spaceId}
+        and vout.id = #{teamId}
+    </select>
+
+    <select id="selectUnitTeamVoByTeamIds" resultType="com.vikadata.api.model.vo.organization.UnitTeamVo">
+        SELECT vou.id as unitId,
+               vout.id as teamId,
+               vout.team_name
+        FROM vika_unit_team vout
+        JOIN vika_unit vou on vout.id = vou.unit_ref_id
+        WHERE vout.is_deleted = 0 AND vout.space_id = #{spaceId}
+        and vout.id IN
+        <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectSpaceIdById" resultType="java.lang.String">
+        SELECT space_id
+        FROM vika_unit_team
+        WHERE id = #{teamId}
+          AND is_deleted = 0
+    </select>
+
+    <select id="selectTeamNameById" resultType="string">
+        SELECT team_name
+        FROM vika_unit_team
+        WHERE id = #{teamId}
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectBaseInfoDTOByIds" resultType="com.vikadata.api.modular.organization.model.TeamBaseInfoDTO">
+        SELECT id, team_name
+        FROM vika_unit_team
+        WHERE id IN
+        <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+        ORDER BY FIELD(id,
+        <foreach item="item" index="index" collection="teamIds" separator=",">
+            #{item}
+        </foreach>)
+    </select>
+
+    <select id="selectMemberCountByTeamId" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM vika_unit_team_member_rel vutmr
+        JOIN vika_unit_member vum ON vutmr.member_id = vum.id AND vum.is_deleted = 0
+        WHERE vutmr.team_id = #{teamId}
+    </select>
+
+    <select id="selectActiveMemberCountByTeamId" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM vika_unit_team_member_rel vutmr
+        JOIN vika_unit_member vum ON vutmr.member_id = vum.id AND vum.is_deleted = 0 AND vum.is_active = 1
+        WHERE vutmr.team_id = #{teamId}
+    </select>
+
+    <select id="selectTeamAllIdBySpaceId" resultType="java.lang.Long">
+        SELECT id
+        FROM vika_unit_team
+        WHERE space_id = #{spaceId}
+          AND is_deleted = 0
+        ORDER BY parent_id
+    </select>
+
+    <select id="selectTreeByTeamName" resultType="com.vikadata.entity.TeamEntity">
+        WITH RECURSIVE tree_view ( id, team_name, parent_id, space_id ) AS (
+                SELECT id, team_name, parent_id, space_id
+                FROM vika_unit_team
+                WHERE space_id = #{spaceId}
+                  AND team_name = #{teamName}
+                  AND is_deleted = 0 UNION ALL
+                SELECT c.id, c.team_name, c.parent_id, c.space_id
+                FROM tree_view AS cp
+                JOIN vika_unit_team AS c ON c.space_id = #{spaceId} AND cp.parent_id = c.id AND c.is_deleted = 0
+                )
+        SELECT DISTINCT * FROM tree_view
+    </select>
+
+    <select id="selectChildTreeByTeamIds" resultType="com.vikadata.api.modular.organization.model.TeamCteInfo">
+        WITH RECURSIVE tree_view ( id, parent_id ) AS (
+        SELECT id, parent_id
+        FROM vika_unit_team
+        WHERE space_id = #{spaceId}
+        AND id IN
+        <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0 UNION ALL
+        SELECT c.id, c.parent_id
+        FROM tree_view AS cp
+        JOIN vika_unit_team AS c ON c.space_id = #{spaceId} AND cp.id = c.parent_id AND c.is_deleted = 0
+        )
+        SELECT DISTINCT * FROM tree_view
+    </select>
+</mapper>

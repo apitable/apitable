@@ -1,0 +1,108 @@
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
+    <meta charset="utf-8"/>
+    <script>
+      // http://vbs-integration.vika.ltd
+      // http://dev.vika.ltd
+      // http://ec2-161-189-41-224.cn-northwest-1.compute.amazonaws.com.cn:23002/
+      // http://ec2-161-189-41-224.cn-northwest-1.compute.amazonaws.com.cn
+      const socket = io("http://localhost:3002",
+        {
+          path: "/notification",
+          query: 'userId=aaaabbbbb',
+          transports: ['websocket'],
+          secure:true
+        });
+      // notification.nsp = 'notification';
+      // console.log(socket);
+
+      socket.on("connect", function() {
+        // 提交信息，表示需要关注空间站消息，服务端收到消息，将客户端加入房间「spaceId」
+        socket.emit('WATCH_SPACE', {spaceId: "spcYKiWLt6lD6"}, function(result) {
+          console.log('WATCH_SPACE:result', result);
+          // result 为boolean值
+          if (result) {
+            // todo
+          }
+        });
+
+        socket.emit('LEAVE_SPACE', {}, function(result) {
+          console.log('LEAVE_SPACE:result', result);
+          // result 为boolean值
+          if (result) {
+            // todo
+          }
+        });
+        // socket.emit("NOTIFY", {
+        //   rowNo: 0,
+        //   createdAt: "2020-06-10 16:54:05",
+        //   notifyBody: {
+        //     template: "",
+        //     extras: {},
+        //     node: {},
+        //     title: "removed_from_space_toadmin",
+        //     intent: {},
+        //     space: {
+        //       spaceName: "hi",
+        //       spaceId: "spcHKrd0liUcl",
+        //       logo: "https://s1.vika.cn/public/2020/05/28/1265928593719205889"
+        //     }
+        //   },
+        //   notifyType: "space",
+        //   fromUser: {
+        //     memberName: "zoe",
+        //     avatar: "",
+        //     userName: "zoe",
+        //     userId: "1236181553021718529",
+        //     memberId: "1236181592443981826"
+        //   },
+        //   isRead: 0,
+        //   id: "1270640347987689473",
+        //   toUserId: "23a5f52cd1ee4e6abdc8a77e9b73cdeb",
+        //   updatedAt: "2020-06-10 16:54:05",
+        //   event: "NOTIFY",
+        //   socketId: "NMuYGqi-LjXz1hnnAAAE"
+        // }, function(result) {
+        //   console.log("NOTIFY", result);
+        // });
+        console.log("connected", socket.id, '79739q7389');
+
+      });
+      socket.on("test_connected", function(data) {
+        console.log("test", data);
+      });
+      socket.on("NOTIFY", function(data) {
+        console.log("NOTIFY", data);
+      });
+      socket.on("WATCH_ROOM", function(data) {
+        console.log("WATCH_ROOM", data);
+      });
+      socket.on("Forbidden:403", function(data) {
+        console.log("Forbidden:403", data);
+      });
+      // notification.on('exception', function(data) {
+      //   console.log('event', data);
+      // });
+      socket.on("disconnect", function() {
+        console.log("Disconnected");
+      });
+      // // 提交信息，表示需要关注空间站消息，服务端收到消息，将客户端加入房间「spaceId」
+      // socket.emit('WATCH_SPACE', {spaceId: "dddddd"}, function(result) {
+      //   // result 为boolean值
+      //   if (result) {
+      //     // todo
+      //   }
+      // });
+      // 节点变化
+      socket.on('NODE_CHANGE', function(data) {
+        console.log('NODE_CHANGE_receive', data);
+      });
+      socket.on("test", function(data) {
+        console.log("test", data);
+      });
+    </script>
+</head>
+
+<body></body>
+</html>

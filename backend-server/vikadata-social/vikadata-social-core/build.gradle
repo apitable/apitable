@@ -1,0 +1,10 @@
+plugins {
+  id 'java-library'
+}
+
+description = "Vikadata Social Core"
+
+dependencies {
+  api rootProject.ext.dependencies['spring-web']
+  api rootProject.ext.dependencies['spring-data-redis']
+}

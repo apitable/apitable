@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.workspace.mapper.WidgetPackageAuthSpaceMapper">
+
+    <select id="selectSpaceIdByPackageId" resultType="java.lang.String">
+        SELECT vwpas.space_id
+        FROM vika_widget_package_auth_space vwpas
+        WHERE vwpas.package_id = #{packageId} AND vwpas.type = 0
+          AND vwpas.is_deleted = 0
+    </select>
+
+</mapper>

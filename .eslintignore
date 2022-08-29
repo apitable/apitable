@@ -1,0 +1,2 @@
+packages/room-server/src/proto/generated/*
+packages/datasheet/src/static/lang/*

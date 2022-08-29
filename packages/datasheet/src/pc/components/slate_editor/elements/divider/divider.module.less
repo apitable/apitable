@@ -1,0 +1,41 @@
+@import '../../styles/var.less';
+
+.wrap {
+  margin: @spacing-lx 0;
+  border-radius: @radius-base;
+  &:hover {
+    background: #F2F4F6;
+  }
+}
+
+.divider {
+  position: relative;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &[contentEditable="true"] {
+    user-select: none !important;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    background: #8C8C8C;
+    border-radius: 3px;
+    margin: 0 21px;
+  }
+
+  .deleteBtn {
+    display: none;
+    position: absolute;
+    right: @spacing-small;
+    cursor: pointer;
+    color: var(--black_400);
+  }
+  &:hover {
+    .deleteBtn {
+      display: inline-block;
+    }
+  }
+}

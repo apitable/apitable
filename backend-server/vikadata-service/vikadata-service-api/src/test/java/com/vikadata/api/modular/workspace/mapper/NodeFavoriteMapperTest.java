@@ -1,0 +1,56 @@
+package com.vikadata.api.modular.workspace.mapper;
+
+import java.util.List;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import com.vikadata.api.AbstractMyBatisMapperTest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.jdbc.Sql;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+/**
+ * <p>
+ *     数据访问接口测试：
+ * </p>
+ * @author wuyitao
+ * @date 2022/4/6 2:43 PM
+ */
+@Disabled
+public class NodeFavoriteMapperTest extends AbstractMyBatisMapperTest {
+
+    @Autowired
+    NodeFavoriteMapper nodeFavoriteMapper;
+
+    @Test
+    @Sql("/testdata/node-favorite-data.sql")
+    void testSelectOrderNodeIdByMemberId() {
+        List<String> ids = nodeFavoriteMapper.selectOrderNodeIdByMemberId(41L);
+        assertThat(ids).isNotEmpty();
+    }
+
+    @Test
+    @Sql("/testdata/node-favorite-data.sql")
+    void testSelectNodeIdByMemberId() {
+        List<String> ids = nodeFavoriteMapper.selectNodeIdByMemberId(41L);
+        assertThat(ids).isNotEmpty();
+    }
+
+    @Test
+    @Sql("/testdata/node-favorite-data.sql")
+    void testCountByMemberIdAndNodeId() {
+        Integer count = nodeFavoriteMapper.countByMemberIdAndNodeId(41L, "ni41");
+        assertThat(count).isEqualTo(1);
+    }
+
+    @Test
+    @Sql("/testdata/node-favorite-data.sql")
+    void testSelectPreNodeIdByMemberIdAndNodeId() {
+        String id = nodeFavoriteMapper.selectPreNodeIdByMemberIdAndNodeId(41L, "ni41");
+        assertThat(id).isNull();
+    }
+
+}

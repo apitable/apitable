@@ -1,0 +1,120 @@
+@import "~pc/styles/lib_mixins.less";
+
+.dragItemWrapper {
+  position: absolute;
+  align-items: flex-end;
+  left: 0;
+  bottom: 0px;
+  z-index: 5;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.prevDragItem {
+  background: var(--lowestBg);
+  border-bottom: none;
+  position: relative;
+  top: 10px;
+  height: 20px;
+
+  .item {
+    position: relative;
+    top: 0px;
+    width: 10px;
+    height: 10px;
+    background: var(--defaultBg);
+  }
+
+  .item::before {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    width: 10px;
+    height: 20px;
+    border-right: 1 solid var(--lineColor);
+    border-bottom: 1 solid var(--lineColor);
+    pointer-events: none;
+  }
+}
+
+.dragItem {
+  height: 40px;
+  border-bottom: none;
+  background: var(--defaultBg);
+
+  .item {
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    min-width: 30px;
+    position: relative;
+    text-align: center;
+    line-height: 40px;
+    background: var(--lowestBg);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+    span {
+      display: inline-block;
+      margin-left: 8px;
+      max-width: 156px;
+      .ellipsis();
+    }
+  }
+
+  .item::after {
+    position: absolute;
+    top: 0px;
+    left: -1;
+    content: "";
+    display: block;
+    width: calc(~"100% + 1");
+    height: calc(~"100% / 2");
+    border-radius: 10px 10px 0 0;
+    border-left: 1 solid var(--lineColor);
+    border-right: 1 solid var(--lineColor);
+    border-top: 1 solid var(--lineColor);
+    pointer-events: none;
+  }
+}
+
+.nextDragItem {
+  border-bottom: none;
+  background: var(--lowestBg);
+  position: relative;
+  top: 10px;
+  height: 20px;
+
+  .item {
+    position: relative;
+    top: 0px;
+    width: 10px;
+    height: 10px;
+    background: var(--defaultBg);
+  }
+
+  .item::after {
+    position: absolute;
+    bottom: 0px;
+    left: -1;
+    content: "";
+    display: inline-block;
+    width: 11px;
+    height: 20px;
+    border-left: 1 solid var(--lineColor);
+    border-bottom: 1 solid var(--lineColor);
+    pointer-events: none;
+  }
+}
+
+.circle {
+  display: flex;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  align-items: center;
+  transform: rotate(90deg);
+}

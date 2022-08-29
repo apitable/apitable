@@ -1,0 +1,33 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.8-20210926-001" author="Pengap" labels="widget">
+        <comment>组件包信息表新增is_template、is_enabled、owner字段</comment>
+        <sql>
+            ALTER TABLE `vika_widget_package`
+            ADD COLUMN `is_template` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否模版(0:是,1:否)' AFTER `release_id`,
+            ADD COLUMN `is_enabled` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '是否启用，只针对全局小组件(0:关闭,1:开启)' AFTER `is_template`,
+            ADD COLUMN `owner` bigint NULL DEFAULT NULL COMMENT '拥有者Id(关联#vika_user#id)' AFTER `is_deleted`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20210926-002" author="Pengap" labels="widget">
+        <comment>组件授权表新增sequence字段</comment>
+        <sql>
+            ALTER TABLE `vika_widget_package_auth_space`
+            ADD COLUMN `widget_sort` int UNSIGNED NULL DEFAULT 10000 COMMENT '排序号，空间站小组件从10000开始' AFTER `type`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20210926-003" author="Pengap" labels="widget">
+        <comment>初始化迁移组件包owner字段值</comment>
+        <sql>
+            UPDATE `vika_widget_package` SET `owner` = created_by;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

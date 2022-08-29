@@ -1,0 +1,65 @@
+@import "~pc/styles/lib_var.less";
+
+.nodeInfo {
+  max-width: 400px;
+  .title {
+    white-space: normal;
+    line-height: 24px;
+    svg, img {
+      margin-right: 8px;
+      vertical-align: bottom;
+    }
+  }
+  .contentInfo {
+    margin: 0;
+    padding: 0;
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      &+li {
+        padding-top: 24px;
+      }
+      .label {
+        line-height: 22px;
+        color: var(--thirdLevelText);
+      }
+      .value {
+        color: var(--firstLevelText);
+        display: flex;
+        align-items: center;
+        text-align: right;
+        .avatar {
+          margin-right: 4px;
+        }
+      }
+      .isLeave {
+        opacity: 0.5;
+      }
+    }
+  }
+}
+
+.nodeInfoMobile {
+  max-width: calc(100vw - 48px) !important;
+  :global {
+    .ant-modal-title {
+      padding-right: 0 !important;
+    }
+    .ant-modal-footer {
+      padding: 13px 0;
+      box-shadow: inset 0px 1px 0px var(--lineColor);
+      &:active {
+        background-color: #ddd;
+      }
+    }
+  }
+  .title {
+    text-align: center;
+  }
+  .footer {
+    text-align: center;
+    color: var(--thirdLevelText);
+  }
+}

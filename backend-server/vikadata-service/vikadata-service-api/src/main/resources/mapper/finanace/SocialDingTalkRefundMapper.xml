@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.finance.mapper.SocialDingTalkRefundMapper">
+    <select id="selectStatusByOrderId" resultType="java.lang.Integer">
+        SELECT `status`
+        FROM vika_billing_social_dingtalk_refund
+        WHERE order_id = #{orderId}
+        AND app_id = #{appId}
+        AND tenant_id = #{appId}
+    </select>
+
+    <update id="updateStatusByTenantIdAndAppIdAndOrderId">
+        UPDATE vika_billing_social_dingtalk_refund
+        SET `status` = #{status}
+        WHERE order_id = #{orderId}
+        AND tenant_id = #{tenantId}
+        AND app_id = #{appId}
+    </update>
+</mapper>

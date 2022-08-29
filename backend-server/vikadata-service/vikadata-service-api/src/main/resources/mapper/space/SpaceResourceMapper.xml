@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.space.mapper.SpaceResourceMapper">
+
+    <select id="selectAllResource" resultType="com.vikadata.api.cache.bean.SpaceResourceDto">
+        SELECT vr.resource_code,
+               vr.resource_name,
+               vr.resource_desc,
+               vr.assignable,
+               vr.group_code,
+               vsrg.group_name,
+               vsrg.group_desc
+        FROM vika_space_resource vr
+                 JOIN vika_space_resource_group vsrg on vsrg.group_code = vr.group_code
+    </select>
+
+    <select id="selectResourceByMemberId" resultType="com.vikadata.api.cache.bean.SpaceResourceDto">
+        SELECT vr.resource_code,
+               vr.resource_name,
+               vr.resource_desc,
+               vr.assignable,
+               vr.group_code,
+               vsrg.group_name,
+               vsrg.group_desc
+        FROM vika_space_resource vr
+                 JOIN vika_space_resource_group vsrg on vsrg.group_code = vr.group_code
+                 JOIN vika_space_role_resource_rel vsrrr on vr.resource_code = vsrrr.resource_code
+                 JOIN vika_space_role vsr on vsr.role_code = vsrrr.role_code
+                 JOIN vika_space_member_role_rel vsmrrr ON vsmrrr.role_code = vsr.role_code and vsmrrr.member_id = #{memberId}
+    </select>
+
+    <select id="selectAssignableCountInResourceCode" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM vika_space_resource
+        WHERE resource_code IN
+        <foreach collection="resourceCodes" open="(" separator="," close=")" index="index" item="item">
+            #{item}
+        </foreach>
+        AND assignable = 1
+    </select>
+
+    <resultMap id="groupResource" type="com.vikadata.api.modular.space.model.SpaceGroupResourceDto">
+        <result property="groupCode" column="group_code"/>
+        <result property="groupName" column="group_name"/>
+        <result property="groupDesc" column="group_desc"/>
+        <collection property="resources" ofType="java.lang.String">
+            <result column="resource_code"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectGroupResource" resultMap="groupResource">
+        SELECT vsrg.group_code,
+               vsrg.group_name,
+               vsrg.group_desc,
+               vr.resource_code
+        FROM vika_space_resource vr
+                 JOIN vika_space_resource_group vsrg on vsrg.group_code = vr.group_code
+        WHERE vr.assignable = 1
+    </select>
+
+    <resultMap id="menuResource" type="com.vikadata.api.modular.space.model.SpaceMenuResourceDto">
+        <result property="menuCode" column="menu_code"/>
+        <collection property="resources" ofType="java.lang.String">
+            <result column="resource_code"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectMenuResource" resultMap="menuResource">
+        SELECT vsm.menu_code,
+               vr.resource_code
+        FROM vika_space_resource vr
+                 JOIN vika_space_menu_resource_rel vsmrr on vr.resource_code = vsmrr.resource_code
+                 JOIN vika_space_menu vsm on vsmrr.menu_code = vsm.menu_code
+        WHERE vr.assignable = 1
+    </select>
+
+    <select id="selectResourceCodesByGroupCode" resultType="java.lang.String">
+        SELECT resource_code
+        FROM vika_space_resource
+        WHERE group_code IN
+        <foreach item="item" index="index" collection="groupCodes" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND assignable = 1
+    </select>
+
+    <select id="selectResourceCodesByMemberId" resultType="java.lang.String">
+        SELECT vsrrr.resource_code
+        FROM vika_space_member_role_rel vsmrr
+                 JOIN vika_space_role_resource_rel vsrrr on vsmrr.role_code = vsrrr.role_code
+        WHERE vsmrr.member_id = #{memberId}
+    </select>
+
+    <resultMap id="memberResource" type="com.vikadata.api.modular.space.model.SpaceMemberResourceDto">
+        <result property="memberId" column="member_id"/>
+        <collection property="resources" ofType="java.lang.String">
+            <result column="resource_code"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectMemberResource" resultMap="memberResource">
+        SELECT vsmrr.member_id,
+               vsrrr.resource_code
+        FROM vika_space_member_role_rel vsmrr
+                 JOIN vika_space_role_resource_rel vsrrr ON vsrrr.role_code = vsmrr.role_code
+        WHERE vsmrr.member_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>

@@ -1,0 +1,11 @@
+plugins {
+    id 'java-library'
+}
+
+dependencies {
+  implementation rootProject.ext.dependencies['socket-io']
+
+  implementation rootProject.ext.dependencies['slf4j']
+
+  implementation rootProject.ext.dependencies['hutool']
+}

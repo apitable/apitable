@@ -1,0 +1,69 @@
+plugins {
+  id "java-library"
+}
+
+description = "Vikadata Boot AutoConfigure Based On Spring Boot Starter"
+
+java {
+  registerFeature('optional') {
+    usingSourceSet(sourceSets.main)
+  }
+}
+
+dependencies {
+  api(rootProject.ext.dependencies['boot-starter'])
+  annotationProcessor rootProject.ext.dependencies['configuration-processor']
+  
+  // 整合所有的自动配置，并按需依赖自动化配置
+  optionalImplementation(project(':vikadata-integration:vikadata-integration-vika'))
+  optionalImplementation(project(':vikadata-integration:vikadata-integration-afs'))
+  optionalImplementation(project(':vikadata-integration:vikadata-integration-data-analysis'))
+  optionalImplementation(project(':vikadata-integration:vikadata-integration-sms'))
+  optionalImplementation(project(':vikadata-integration:vikadata-integration-oss'))
+  optionalImplementation(project(':vikadata-integration:vikadata-integration-socketio'))
+  optionalImplementation(project(':vikadata-integration:vikadata-integration-yozo'))
+  optionalImplementation(project(':vikadata-integration:vikadata-integration-rabbitmq'))
+  optionalImplementation(project(':vikadata-integration:vikadata-integration-mail'))
+  optionalImplementation(project(':vikadata-integration:vikadata-integration-idaas'))
+  optionalImplementation(project(':vikadata-social:vikadata-social-feishu'))
+  optionalImplementation(project(':vikadata-social:vikadata-social-dingtalk'))
+  optionalImplementation(project(':vikadata-social:vikadata-social-wecom'))
+  optionalImplementation(project(':vikadata-social:vikadata-social-qq'))
+  optionalImplementation(project(':vikadata-connector:vikadata-connector-k11'))
+  
+  optionalImplementation(rootProject.ext.dependencies['vika-client']) {
+    exclude group: 'commons-logging', module: 'commons-logging'
+  }
+  optionalImplementation(rootProject.ext.dependencies['aliyun-core'])
+  optionalImplementation(rootProject.ext.dependencies['aliyun-afs'])
+  optionalImplementation(rootProject.ext.dependencies['aliyun-oss'])
+  optionalImplementation(rootProject.ext.dependencies['sensors'])
+  optionalImplementation(rootProject.ext.dependencies['qcloudsms'])
+  optionalImplementation(rootProject.ext.dependencies['yunpian-sms'])
+  optionalImplementation(rootProject.ext.dependencies['qcloudses'])
+  optionalImplementation(rootProject.ext.dependencies['aws'])
+  optionalImplementation(rootProject.ext.dependencies['minio'])
+  optionalImplementation(rootProject.ext.dependencies['fundebug'])
+  optionalImplementation(rootProject.ext.dependencies['qiniu'])
+  optionalImplementation(rootProject.ext.dependencies['xxl'])
+  optionalImplementation(rootProject.ext.dependencies['socket-io'])
+  optionalImplementation(rootProject.ext.dependencies['servlet-api'])
+  optionalImplementation(rootProject.ext.dependencies['spring-mail-starter'])
+  optionalImplementation(rootProject.ext.dependencies['spring-web'])
+  optionalImplementation rootProject.ext.dependencies['spring-rabbit']
+  optionalImplementation(rootProject.ext.dependencies['spring-data-redis'])
+  optionalImplementation(rootProject.ext.dependencies['springfox-starter'])
+  optionalImplementation(rootProject.ext.dependencies['knife4j-starter'])
+  optionalImplementation(rootProject.ext.dependencies['beetl'])
+  optionalImplementation(rootProject.ext.dependencies['jedis'])
+  optionalImplementation(rootProject.ext.dependencies['wx-open'])
+  optionalImplementation(rootProject.ext.dependencies['wx-mp'])
+  optionalImplementation(rootProject.ext.dependencies['wx-miniapp'])
+  optionalImplementation(rootProject.ext.dependencies['wx-pay'])
+  optionalImplementation(rootProject.ext.dependencies['gson'])
+  optionalImplementation files("${rootDir}" + '/lib/aegis-java-sdk-2.3.3.jar')
+  optionalImplementation(rootProject.ext.dependencies['pingpp'])
+  optionalImplementation(rootProject.ext.dependencies['auth0'])
+  
+  implementation rootProject.ext.dependencies['hutool-core']
+}

@@ -1,0 +1,92 @@
+@import "~pc/styles/lib_var.less";
+
+.vikabyWrap {
+  position: relative;
+  transition: transform 0.3s;
+}
+// .vikabyWrap:hover {
+//   transform: translateZ(0) scale(1.25);
+// }
+
+.vikaby {
+  width: 64px;
+  height: 64px;
+  cursor: pointer;
+  background: transparent center center no-repeat;
+  background-size: contain;
+  transition: all 0.4s;
+}
+.vikabyMenu {
+  :global(.ant-popover-inner) {
+    border-radius: 8px;
+    box-shadow: var(--shadowCommonHigh);
+  }
+  :global(.ant-popover-inner-content) {
+    padding: 8px;
+  }
+}
+.vikabyMenu .vikabyMenuItem {
+  height: 40px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--firstLevelText);
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  &:hover {
+    background-color: var(--lowestBg);
+  }
+  svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+  }
+}
+:global(.VIKABY_SUB_POPOVER_CONTENT.ant-popover) {
+  z-index: var(--vikaby);
+}
+
+.vikabyDialog {
+  &:global(.ant-popover-placement-leftBottom)
+    :global(.ant-popover-content > .ant-popover-arrow) {
+    border-top-color: var(--primaryColor);
+    border-right-color: var(--primaryColor);
+    right: 7px;
+    bottom: 26px;
+  }
+
+  :global {
+    .ant-popover-inner {
+      border-radius: 8px;
+    }
+    .ant-popover-inner-content {
+      padding: 24px;
+      color: var(--firstLevelText);
+      width: 320px;
+      position: relative;
+    }
+  }
+}
+
+.vikabyTaskCard {
+  :global(.ant-popover-inner-content) {
+    padding: 0;
+  }
+  :global(.ant-popover-arrow) {
+    display: none;
+  }
+  :global(.ant-popover-inner) {
+    box-shadow: none;
+  }
+}
+
+
+.billingNotify {
+  :global {
+    .ant-popover-inner {
+      background: var(--highBg);
+      color: var(--firstLevelText);
+    }
+  }
+}

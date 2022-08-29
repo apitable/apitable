@@ -1,0 +1,45 @@
+@import "~pc/styles/lib_var.less";
+
+.recordList {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  border-right: 1px solid var(--sheetLineColor);
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 8px 0px 8px;
+    .closeIcon {
+      cursor: pointer;
+    }
+  }
+  .list {
+    height: calc(100% - 32px);
+  }
+  .list > div:first-child {
+    padding: 8px;
+  }
+  .list > div:nth-child(2) {
+    height: calc(100% - 48px);
+    max-height: none;
+    overflow: hidden;
+  }
+  .listItems {
+    height: calc(100% - 56px);
+    overflow-y: overlay;
+    overflow-x: hidden;
+  }
+  .add {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 8px;
+    padding-bottom: 16px;
+  }
+  .empty {
+    margin-top: 32px;
+    text-align: center;
+    color: var(--fc3);
+  }
+}

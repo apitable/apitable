@@ -1,0 +1,14 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.6-20201104-001" author="Chambers" labels="space">
+        <comment>space表新增字段allow_apply</comment>
+        <sql>
+            ALTER TABLE `vika_space`
+            ADD COLUMN `allow_apply` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否允许他人申请加入空间站(0:否,1:是)' AFTER `is_forbid`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

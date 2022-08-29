@@ -1,0 +1,93 @@
+import { Api, getCustomConfig, IReduxState, Navigation, StoreActions, Strings, t } from '@vikadata/core';
+import { configResponsive, useResponsive } from 'ahooks';
+import { Message } from 'pc/components/common';
+import { getSearchParams } from 'pc/utils';
+import { FC, useEffect } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { Method, useNavigation } from '../route_manager/use_navigation';
+import MobileHome from './mobile_home';
+import PcHome from './pc_home';
+import { isSocialDomain } from './social_platform';
+import styles from './style.module.less';
+
+configResponsive({
+  large: 1023.98,
+});
+
+export const Home: FC = () => {
+  const navigationTo = useNavigation();
+  configResponsive({
+    large: 1023.98,
+  });
+  const responsive = useResponsive();
+  const dispatch = useDispatch();
+  const urlParams = getSearchParams();
+  const reference = urlParams.get('reference') || undefined;
+
+  const { isLogin } = useSelector((state: IReduxState) => (
+    { isLogin: state.user.isLogin, user: state.user }), shallowEqual);
+
+  useEffect(() => {
+    // 清除缓存
+    localStorage.removeItem('qq_login_failed');
+    const storageChange = (e: StorageEvent) => {
+      if (!e.newValue) {
+        return;
+      }
+      if (e.key === 'qq_login_failed') {
+        if (e.newValue === 'true') {
+          Message.error({ content: t(Strings.login_failed) });
+        }
+        localStorage.removeItem('qq_login_failed');
+      }
+    };
+    window.addEventListener('storage', storageChange);
+    return () => {
+      window.removeEventListener('storage', storageChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isSocialDomain()) {
+      return;
+    }
+    // 如果是企业专属域名，就去加载企业专属域名相关配置
+    Api.socialTenantEnv().then(res => {
+      const { success, data } = res?.data;
+      if (success) {
+        dispatch(StoreActions.setEnvs(data?.envs ?? {}));
+      }
+    });
+  }, [dispatch]);
+
+  const { footer } = getCustomConfig();
+
+  if (isLogin) {
+    if (reference) {
+      navigationTo({
+        path: Navigation.HOME,
+        method: Method.Redirect,
+        query: {
+          reference,
+        }
+      });
+    } else {
+      navigationTo({
+        path: Navigation.WORKBENCH,
+        method: Method.Redirect,
+      });
+    }
+  }
+
+  return <>
+    <div className={styles.homeWrapper}>
+      {responsive?.large || process.env.SSR ? <PcHome /> : <MobileHome />}
+    </div>
+    {footer && (
+      <footer className={styles.footer}>
+        {footer}
+      </footer>
+    )}
+  </>;
+};
+

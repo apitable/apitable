@@ -1,0 +1,242 @@
+import dynamic from 'next/dynamic';
+import { Rect } from 'pc/components/konva_components';
+import { GRID_ROW_HEAD_WIDTH, GridCoordinate, KonvaGridContext, KonvaGridViewContext, useGrid } from 'pc/components/konva_grid';
+import { FC, memo, useContext } from 'react';
+import { EXPORT_BRAND_DESC_HEIGHT, EXPORT_IMAGE_PADDING, useBrandDesc, useViewWatermark } from '../gantt_view';
+import { IScrollState, PointPosition } from '../gantt_view/interface';
+import { GRID_ADD_FIELD_BUTTON_WIDTH, GRID_GROUP_ADD_FIELD_BUTTON_WIDTH } from './constant';
+
+const Layer = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/layer'), { ssr: false });
+const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
+
+export interface IKonvaGridProps {
+  instance: GridCoordinate;
+  rowStartIndex: number;
+  rowStopIndex: number;
+  columnStartIndex: number;
+  columnStopIndex: number;
+  scrollState: IScrollState;
+  pointPosition: PointPosition;
+  offsetX?: number;
+  isExporting?: boolean;
+}
+
+export const KonvaGrid: FC<IKonvaGridProps> = memo((props) => {
+  const {
+    instance,
+    scrollState,
+    rowStartIndex,
+    rowStopIndex,
+    columnStartIndex,
+    columnStopIndex,
+    pointPosition,
+    offsetX = 0,
+    isExporting
+  } = props;
+
+  const {
+    fieldHeads,
+    frozenFieldHead,
+    fillHandler,
+    frozenFillHandler,
+    hoverRowHeadOperation,
+    frozenCells,
+    cells,
+    dateAlarms,
+    frozenDateAlarms,
+    activedCell,
+    activeCellBorder,
+    frozenActivedCell,
+    frozenActiveCellBorder,
+    otherRows,
+    addFieldBtn,
+    groupStats,
+    frozenGroupStats,
+    bottomStats,
+    bottomFrozenStats,
+    bottomStatBackground,
+    opacityLines,
+    frozenOpacityLines,
+    dateAddAlarm,
+    frozenDateAddAlarm,
+    collaboratorAvatars,
+    frozenCollaboratorAvatars,
+    frozenFieldSplitter,
+    collaboratorBorders,
+    frozenCollaboratorBorders,
+    activeCollaboratorBorder,
+    frozenActiveCollaboratorBorder,
+    placeHolderCells,
+    frozenPlaceHolderCells,
+    draggingOutline,
+  } = useGrid({
+    instance,
+    rowStartIndex,
+    rowStopIndex,
+    columnStartIndex,
+    columnStopIndex,
+    pointPosition,
+    scrollState,
+    isExporting
+  });
+
+  const { theme } = useContext(KonvaGridContext);
+  const colors = theme.color;
+  const { scrollTop, scrollLeft } = scrollState;
+  const { groupInfo } = useContext(KonvaGridViewContext);
+  const { frozenColumnWidth, containerWidth, containerHeight, rowInitSize } = instance;
+  const frozenAreaWidth = GRID_ROW_HEAD_WIDTH + frozenColumnWidth;
+  const lastColumnWidth = instance.getColumnWidth(columnStopIndex);
+  const lastColumnOffset = instance.getColumnOffset(columnStopIndex);
+  const addFieldBtnWidth = groupInfo.length ? GRID_GROUP_ADD_FIELD_BUTTON_WIDTH : GRID_ADD_FIELD_BUTTON_WIDTH;
+  const cellGroupClipWidth = Math.min(
+    containerWidth - frozenAreaWidth,
+    addFieldBtnWidth + lastColumnOffset + lastColumnWidth - scrollLeft - frozenAreaWidth
+  );
+
+  const watermarkText = useViewWatermark({
+    containerWidth,
+    containerHeight: containerHeight + 16,
+    isExporting
+  });
+
+  const brandDesc = useBrandDesc({
+    containerWidth,
+    containerHeight: containerHeight + 16,
+    isExporting
+  });
+
+  return (
+    <Layer>
+      {
+        isExporting &&
+        <Rect
+          width={containerWidth + EXPORT_IMAGE_PADDING * 2}
+          height={containerHeight + EXPORT_IMAGE_PADDING * 2 + EXPORT_BRAND_DESC_HEIGHT}
+          fill={colors.fc6}
+        />
+      }
+      <Group
+        x={isExporting ? EXPORT_IMAGE_PADDING : undefined}
+        y={isExporting ? EXPORT_IMAGE_PADDING : undefined}
+      >
+        <Group
+          clipX={offsetX}
+          clipY={0}
+          clipWidth={containerWidth - offsetX}
+          clipHeight={containerHeight}
+        >
+          <Group x={offsetX}>
+            <Group offsetY={scrollTop}>
+              {frozenCells}
+              {otherRows}
+              {hoverRowHeadOperation}
+              {frozenGroupStats}
+              {frozenPlaceHolderCells}
+              {frozenCollaboratorBorders}
+              {frozenActivedCell}
+              {frozenDateAlarms}
+              {frozenDateAddAlarm}
+            </Group>
+            {
+              !isExporting &&
+              <Rect
+                width={8}
+                height={8}
+                fill={colors.lowestBg}
+                listening={false}
+              />
+            }
+            {frozenFieldHead}
+            {frozenOpacityLines}
+            <Group
+              clipX={frozenAreaWidth + 1}
+              clipY={0}
+              clipWidth={cellGroupClipWidth}
+              clipHeight={containerHeight}
+            >
+              <Group
+                offsetX={scrollLeft}
+                offsetY={scrollTop}
+              >
+                {cells}
+                {groupStats}
+              </Group>
+              <Group offsetX={scrollLeft}>
+                {fieldHeads}
+                {opacityLines}
+                {addFieldBtn}
+              </Group>
+            </Group>
+            {frozenFieldSplitter.top}
+            {frozenFieldSplitter.middle}
+            <Group
+              clipX={frozenAreaWidth - 1}
+              clipY={rowInitSize - 1}
+              clipWidth={containerWidth - frozenAreaWidth}
+              clipHeight={containerHeight - rowInitSize}
+            >
+              <Group
+                offsetX={scrollLeft}
+                offsetY={scrollTop}
+              >
+                {placeHolderCells}
+                {collaboratorBorders}
+                {activedCell}
+                {activeCellBorder}
+                {activeCollaboratorBorder}
+                {fillHandler}
+                {draggingOutline}
+                {dateAlarms}
+                {dateAddAlarm}
+                {collaboratorAvatars}
+              </Group>
+            </Group>
+            {frozenFieldSplitter.topPlaceholder}
+            <Group
+              clipX={0}
+              clipY={rowInitSize - 1}
+              clipWidth={frozenAreaWidth + 4}
+              clipHeight={containerHeight - rowInitSize}
+            >
+              <Group
+                offsetY={scrollTop}
+              >
+                {frozenActiveCellBorder}
+                {frozenActiveCollaboratorBorder}
+                {frozenFillHandler}
+                {frozenCollaboratorAvatars}
+              </Group>
+            </Group>
+          </Group>
+        </Group>
+        {bottomStatBackground}
+        <Group
+          clipX={offsetX}
+          clipY={0}
+          clipWidth={containerWidth - offsetX}
+          clipHeight={containerHeight}
+        >
+          <Group
+            x={offsetX}
+          >
+            <Group offsetX={scrollLeft}>
+              {bottomStats}
+            </Group>
+            {bottomFrozenStats}
+            {frozenFieldSplitter.bottom}
+            {frozenFieldSplitter.bottomPlaceholder}
+          </Group>
+        </Group>
+      </Group>
+
+      {
+        isExporting &&
+        <>
+          {watermarkText}
+          {brandDesc}
+        </>
+      }
+    </Layer>
+  );
+});

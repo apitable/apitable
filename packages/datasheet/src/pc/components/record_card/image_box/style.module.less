@@ -1,0 +1,70 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.bottomWrapper {
+  // FIXME:THEME
+  // background: linear-gradient(
+  //   180deg,
+  //   rgba(var(--firstLevelText-rgb), 0%),
+  //   rgba(var(--firstLevelText-rgb), 10%)
+  // );
+  height: 80px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.imageBox {
+  position: relative;
+}
+
+.indexThumbnailWrapper {
+  display: flex;
+  justify-content: center;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  height: 48px;
+  margin-top: -40px;
+  cursor: pointer;
+  .light-scroll-bar();
+  .thumbnailItem {
+    margin: 4px;
+    max-width: 100px;
+  }
+  .activeThumb {
+    outline: 2px solid #fff;
+  }
+}
+
+.imageIndex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.indexMarqueeWrapper {
+  display: flex;
+  width: auto;
+  height: 16px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  margin-top: -24px;
+  cursor: pointer;
+
+  .marqueeItem {
+    width: 8px;
+    height: 8px;
+    background: var(--defaultBg);
+    border-radius: 4px;
+    margin: 4px 4px;
+    opacity: 0.8;
+  }
+
+  .active {
+    background-color: var(--primaryColor);
+    opacity: 1;
+  }
+}

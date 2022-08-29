@@ -1,0 +1,10 @@
+plugins {
+  id 'java-library'
+}
+
+dependencies {
+  api(project(":vikadata-starters:vikadata-starter"))
+
+  implementation rootProject.ext.dependencies['springfox-starter']
+  implementation rootProject.ext.dependencies['knife4j-starter']
+}

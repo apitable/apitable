@@ -1,0 +1,128 @@
+import { Meta, Canvas } from '@storybook/addon-docs';
+import { IconUseInCanvas } from './examples/icon-in-canvas';
+import { TitleFavoriteFilled } from '@vikadata/icons';
+import { StoryType } from './constants';
+
+<Meta title={`${StoryType.Design}/Icons 图标`} />
+
+## Icons 图标
+
+## 如何使用
+
+需要从 `@vikadata/icons` 库中引入需要的图标。
+
+```jsx
+import { TitleFavoriteFilled } from '@vikadata/icons';
+```
+
+## 基本演示
+
+<Canvas>
+  <TitleFavoriteFilled />
+</Canvas>
+
+## 颜色
+
+<Canvas>
+  <TitleFavoriteFilled color="rgb(123, 103, 238)" />
+</Canvas>
+
+## 大小
+
+<Canvas>
+  <TitleFavoriteFilled color="rgb(123, 103, 238)" size={32} />
+</Canvas>
+
+## 继承父级颜色
+
+<Canvas>
+  <span style={{ color: 'rgb(123, 103, 238)' }}>
+    <TitleFavoriteFilled currentColor size={32} />
+  </span>
+</Canvas>
+
+
+#### Canvas 支持
+
+图标经过 `toString` 方法统一的处理，变成由 Path 绘制的图形，在 canvas 中绘制图标。
+
+```tsx
+import React, { useEffect } from 'react';
+import { TitleFavoriteFilled } from '@vikadata/icons';
+
+export const Icon2Canvas = () => {
+  useEffect(()=>{
+    const canvas = document.getElementById('canvas') as HTMLCanvasElement;
+    if (canvas){
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = 'red';
+      const p = new Path2D(TitleFavoriteFilled.toString());
+      ctx.fill(p);
+    }
+  },[])
+  return (
+    <div>
+      <TitleFavoriteFilled />
+      <canvas id="canvas" height="50" style={{ backgroundColor: '#eee' }}/>
+    </div>
+  )
+}
+```
+
+效果如下：
+
+<IconUseInCanvas />
+
+### API 接口
+
+| 名称 | 类型 | 是否必须 | 描述 | 默认值 |
+| --- | --- | --- | --- | --- |
+| size | number \| string | 必填 | icon 大小 | 16px |
+| color | string |  选填 | 颜色 | 16px |
+| currentColor| boolean | 选填 | 显示与父级元素相同的颜色 |  |
+| className | string | 选填 | 覆盖样式传入 className |  |
+
+#### 所有图标
+
+<style>{`
+  .icons-wrap {
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    list-style: none;
+  }
+  .icon-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 150px;
+    height: 100px;
+    margin: 0 12px 12px 0;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+  }
+
+  .icon-name {
+    font-size: 12px;
+    color: #999;
+  }
+`}</style>
+
+import * as Icons from '@vikadata/icons';
+const names = Object.keys(Icons);
+
+<ul className="icons-wrap" >
+  {
+    names.map((iconName) => {
+      const Icon = Icons[iconName];
+      return <li className="icon-wrap" key={iconName}>
+        <Icon size={60} />
+        <span className="icon-name">{iconName}</span>  
+    </li>
+    })
+  }
+</ul>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.idaas.mapper.IdaasUserBindMapper">
+    <select id="selectByUserId" resultType="com.vikadata.entity.IdaasUserBindEntity">
+        SELECT *
+        FROM vika_idaas_user_bind
+        WHERE user_id = #{userId}
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectAllByUserIdsIgnoreDeleted" resultType="com.vikadata.entity.IdaasUserBindEntity">
+        SELECT *
+        FROM vika_idaas_user_bind
+        WHERE user_id IN
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">#{userId}</foreach>
+    </select>
+
+    <select id="selectAllByVikaUserIdsIgnoreDeleted" resultType="com.vikadata.entity.IdaasUserBindEntity">
+        SELECT *
+        FROM vika_idaas_user_bind
+        WHERE vika_user_id IN
+        <foreach collection="vikaUserIds" item="vikaUserId" open="(" separator="," close=")">#{vikaUserId}</foreach>
+    </select>
+</mapper>

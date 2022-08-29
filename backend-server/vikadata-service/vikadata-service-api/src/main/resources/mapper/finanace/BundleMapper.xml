@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.finance.mapper.BundleMapper">
+    <select id="selectByBundleId" resultType="com.vikadata.entity.BundleEntity">
+        SELECT *
+        FROM vika_billing_bundle
+        WHERE bundle_id = #{bundleId}
+          AND is_deleted = 0
+    </select>
+
+    <select id="selectByBundleIds" resultType="com.vikadata.entity.BundleEntity">
+        SELECT *
+        FROM vika_billing_bundle
+        WHERE bundle_id IN
+        <foreach item="item" index="index" collection="bundleIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectBySpaceId" resultType="com.vikadata.entity.BundleEntity">
+        SELECT *
+        FROM vika_billing_bundle
+        WHERE space_id = #{spaceId}
+          AND is_deleted = 0
+    </select>
+
+    <select id="selectBySpaceIds" resultType="com.vikadata.entity.BundleEntity">
+        SELECT *
+        FROM vika_billing_bundle
+        WHERE space_id IN
+        <foreach item="item" index="index" collection="spaceIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectBySpaceIdAndByState" resultType="com.vikadata.entity.BundleEntity">
+        SELECT *
+        FROM vika_billing_bundle
+        WHERE space_id = #{spaceId}
+        AND state = #{state.name}
+        AND is_deleted = 0
+    </select>
+
+    <update id="updateIsDeletedByBundleIds">
+        UPDATE vika_billing_bundle
+        SET is_deleted = #{isDeleted}
+        WHERE bundle_id IN
+        <foreach item="item" index="index" collection="bundleIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

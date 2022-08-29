@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.aider.mapper.NodePermissionMapper">
+    <select id="selectRootNodeRoleDto"
+            resultType="com.vikadata.aider.model.NodeRoleDto">
+        SELECT vs.created_by, vn.node_id
+        FROM vika_space vs
+        JOIN vika_node vn ON vs.space_id = vn.space_id AND vn.type = 0 AND vn.is_rubbish = 0
+        WHERE vs.is_deleted = 0
+    </select>
+
+    <select id="selectNodeOwnerRoleDto"
+            resultType="com.vikadata.aider.model.NodeRoleDto">
+        SELECT vnp.node_id, vum.user_id AS createdBy
+        FROM vika_node_permission vnp
+        JOIN vika_unit vu ON vnp.unit_id = vu.id AND vu.unit_type = 3
+        JOIN vika_unit_member vum ON vu.unit_ref_id = vum.id
+        WHERE vnp.role_code = 'owner';
+    </select>
+
+    <select id="selectNodePermissionRoleDto"
+            resultType="com.vikadata.aider.model.NodeRoleDto">
+        SELECT space_id, node_id, MIN(created_at) AS createdAt
+        FROM vika_node_permission
+        GROUP BY node_id
+        ORDER BY MIN(created_at);
+    </select>
+
+    <insert id="insertControl">
+        INSERT INTO vika_control(id, space_id, control_id, control_type, created_by,
+        updated_by, created_at, updated_at)
+        VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id}, #{item.spaceId}, #{item.controlId}, #{item.controlType},
+                #{item.createdBy}, #{item.updatedBy}, #{item.createdAt}, #{item.updatedAt}
+            </trim>
+        </foreach>
+    </insert>
+
+    <insert id="insertIntoControlRoleSelectNodePermission">
+        INSERT INTO vika_control_role(id, control_id, unit_id, role_code, created_at,
+                                      updated_at)
+        SELECT id, node_id, unit_id, role_code, created_at, updated_at
+        FROM vika_node_permission
+        <if test="ids != null">
+            WHERE id IN
+            <foreach item="item" index="index" collection="ids" open="(" separator=","
+                     close=")">
+                #{item}
+            </foreach>
+        </if>
+    </insert>
+</mapper>

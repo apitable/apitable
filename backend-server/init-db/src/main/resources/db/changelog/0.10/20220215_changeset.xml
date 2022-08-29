@@ -1,0 +1,69 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.10-20220215-001" author="zoe" labels="social">
+        <comment>第三方平台集成-企业租户用户表-删除索引</comment>
+        <sql>
+            ALTER TABLE `vika_social_tenant_user` DROP INDEX `uk_tenant_user`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.10-20220215-002" author="zoe" labels="social">
+        <comment>第三方平台集成-企业租户用户表-修改字段长度-app_id</comment>
+        <sql>
+            ALTER TABLE `vika_social_tenant_user` MODIFY COLUMN `app_id` varchar (100) COLLATE utf8mb4_unicode_ci
+                DEFAULT NULL COMMENT '应用标识';
+        </sql>
+    </changeSet>
+    <changeSet id="V0.10-20220215-003" author="zoe" labels="social">
+        <comment>第三方平台集成-企业租户用户表-修改字段长度-tenant_id</comment>
+        <sql>
+            ALTER TABLE `vika_social_tenant_user` MODIFY COLUMN `tenant_id` varchar (100) CHARACTER SET utf8mb4 COLLATE
+                utf8mb4_unicode_ci NOT NULL COMMENT '企业标识';
+        </sql>
+    </changeSet>
+    <changeSet id="V0.10-20220215-004" author="zoe" labels="social">
+        <comment>第三方平台集成-企业租户用户表-修改字段长度-open_id</comment>
+        <sql>
+            ALTER TABLE `vika_social_tenant_user` MODIFY COLUMN `open_id` varchar (100) CHARACTER SET utf8mb4 COLLATE
+                utf8mb4_unicode_ci NOT NULL COMMENT '第三方平台用户ID，应用内唯一';
+        </sql>
+    </changeSet>
+    <changeSet id="V0.10-20220215-005" author="zoe" labels="social">
+        <comment>第三方平台集成-企业租户用户表-修改字段长度-union_id</comment>
+        <sql>
+            ALTER TABLE `vika_social_tenant_user` MODIFY COLUMN `union_id` varchar (100) CHARACTER SET utf8mb4 COLLATE
+                utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户在平台唯一标识';
+        </sql>
+    </changeSet>
+    <changeSet id="V0.10-20220215-006" author="zoe" labels="social">
+        <comment>第三方平台集成-企业租户用户表--添加唯一索引</comment>
+        <sql>
+            ALTER TABLE `vika_social_tenant_user`
+                ADD UNIQUE INDEX uk_tenant_user (`app_id`, `tenant_id`, `open_id`, `union_id`);
+        </sql>
+    </changeSet>
+    <changeSet id="V0.10-20220215-007" author="zoe" labels="control">
+        <comment>工作台-权限控制表-新增『删除标记』</comment>
+        <sql>
+            ALTER TABLE `vika_control`
+                ADD COLUMN `is_deleted` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除标记(0:否,1:是)' AFTER `control_type`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.10-20220215-008" author="zoe" labels="control">
+        <comment>工作台-权限控制角色表-新增『删除标记』</comment>
+        <sql>
+            ALTER TABLE `vika_control_role`
+                ADD COLUMN `is_deleted` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除标记(0:否,1:是)' AFTER `role_code`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.10-20220215-009" author="zoe" labels="control">
+        <comment>工作台-权限控制单元设置表-新增『删除标记』</comment>
+        <sql>
+            ALTER TABLE `vika_control_setting`
+                ADD COLUMN `is_deleted` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除标记(0:否,1:是)' AFTER `props`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

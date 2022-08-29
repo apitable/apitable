@@ -1,0 +1,32 @@
+[
+    {
+        "filed": "name",
+        "alias": "成员昵称",
+        "example": "张三",
+        "width": 15
+    },
+    {
+        "filed": "email",
+        "alias": "邮箱",
+        "example": "xxxxxxx@vikadata.com",
+        "width": 70
+    },
+    {
+        "filed": "team",
+        "alias": "小组",
+        "example": "市场部-产品组,设计部-视觉设计组",
+        "width": 30
+    },
+    {
+        "filed": "position",
+        "alias": "职位",
+        "example": "产品助理",
+        "width": 10
+    },
+    {
+        "filed": "jobNumber",
+        "alias": "工号",
+        "example": "1000",
+        "width": 10
+    }
+]

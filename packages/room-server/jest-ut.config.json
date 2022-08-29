@@ -1,0 +1,19 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": "./",
+  "testEnvironment": "node",
+  "testMatch": ["<rootDir>/src/**/*.(spec|test).[jt]s?(x)"],
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleDirectories": [
+    "src",
+    "node_modules"
+  ],
+  "setupFiles": [
+    "dotenv/config"
+  ],
+  "setupFilesAfterEnv": [
+    "@vikadata/i18n-lang"
+  ]
+}

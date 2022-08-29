@@ -1,0 +1,28 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.8-20211020-001" author="Mayne" labels="automation">
+        <comment>新建 automation robot 运行历史表</comment>
+        <sql>
+            CREATE TABLE `vika_automation_run_history`
+            (
+                `id`          bigint(20) UNSIGNED                                          NOT NULL COMMENT '主键',
+                `task_id`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '自定义运行任务ID',
+                `robot_id`    varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '机器人ID',
+                `space_id`    varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '[冗余]当前任务机器人所属的空间站ID',
+                `status`      tinyint(2) unsigned DEFAULT '0' COMMENT '运行状态(0:运行中,1:成功,2:失败)',
+                `data`        json DEFAULT NULL COMMENT '运行上下文详细信息',
+                `created_at`  timestamp                                                    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `uk_task_id` (`task_id`) USING BTREE COMMENT '运行任务唯一编码',
+                INDEX `idx_space_id` (`space_id`) COMMENT '空间站 ID'
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4
+              COLLATE = utf8mb4_unicode_ci COMMENT = '自动化-机器人-运行历史表';
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,24 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.12-20220424-001" author="Chambers" labels="space">
+        <comment>邀请记录表新增索引空间站ID</comment>
+        <sql>
+            ALTER TABLE `vika_space_invite_record`
+            ADD INDEX `idx_space_id`(`invite_space_id`) USING BTREE;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.12-20220424-002" author="Chambers" labels="space">
+        <comment>邀请记录表新增索引邮箱</comment>
+        <sql>
+            ALTER TABLE `vika_space_invite_record`
+            ADD INDEX `idx_email`(`invite_email`) USING BTREE;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

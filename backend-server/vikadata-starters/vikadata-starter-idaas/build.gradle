@@ -1,0 +1,10 @@
+plugins {
+  id 'java-library'
+}
+
+description = "Vikadata Starter IDaaS"
+
+dependencies {
+  api(project(":vikadata-starters:vikadata-starter"))
+  api(project(':vikadata-integration:vikadata-integration-idaas'))
+}

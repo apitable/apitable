@@ -1,0 +1,151 @@
+// @import "~antd/dist/antd.less";
+// @import "custom_antd_style.less"; // 用于覆盖上面定义的变量
+@import "~pc/styles/lib_screen.less";
+
+body {
+  margin: 0;
+  // font-family: -apple-system, "Helvetica Neue", PingFangSC-Regular, PingFang SC,
+  //   BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+  //   "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+  overflow: hidden;
+  color: var(--fc1) !important;
+  background-color: var(--defaultBg) !important;
+
+  #root {
+    @media (any-hover: hover) {
+      height: 100vh;
+    }
+
+    @media (min-width: @w-md) {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      left: 0;
+    }
+
+    overflow: auto;
+  }
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+  monospace;
+}
+
+
+.main {
+  height: 100vh;
+}
+
+
+#__next {
+  height: 100%;
+
+  .__next_main > div {
+    height: 100%;
+  }
+
+  & > div {
+    height: 100%;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .script-loading-wrap .script-loading-logo-img {
+    width: 54px !important;
+    height: 54px !important
+  }
+
+  .script-loading-wrap .script-loading-vika-img {
+    width: 85.5px !important;
+    top: 7px !important
+  }
+
+  .script-loading-wrap-finished .script-loading-logo-img {
+    transform: translateX(-44px) !important
+  }
+
+  .script-loading-wrap-finished .script-loading-vika-img {
+    transform: translateX(26px) !important
+  }
+}
+
+.script-loading-wrap,
+.script-loading-wrap > div {
+  display: flex;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  z-index: 99999;
+  transition: opacity .666s ease-in-out
+}
+
+.main-img-wrap {
+  transform: scale(0.9);
+}
+
+.script-loading-wrap .loading-static-animation {
+  transform: scale(1.2)
+}
+
+.script-loading-wrap .script-loading-logo-img {
+  display: inline-block;
+  position: relative;
+  width: 72px;
+  height: 72px;
+  transition: transform .666s ease-in-out;
+  vertical-align: middle
+}
+
+.script-loading-wrap .script-loading-vika-img {
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 114px;
+  height: 75%;
+  opacity: 0;
+  transition: transform .333s ease-in-out;
+  vertical-align: middle;
+  z-index: -1
+}
+
+.script-loading-wrap > div {
+  position: relative
+}
+
+.script-loading-wrap-finished .script-loading-logo-img {
+  transition-duration: .333s;
+  animation: none;
+  transform: translateX(-57px)
+}
+
+.script-loading-wrap-finished .script-loading-vika-img {
+  opacity: 1;
+  transform: translateX(36px);
+  vertical-align: middle
+}
+
+@keyframes __scale {
+  0% {
+    transform: translateX(0)
+  }
+  50% {
+    transform: scale(1.2)
+  }
+  100% {
+    transform: translateX(0)
+  }
+}
+
+
+

@@ -1,0 +1,9 @@
+syntax='proto3';
+
+package vika.grpc;
+import 'socket.message.proto';
+
+service ChangesetService {
+  // 加入房间
+  rpc ServerRoomChange (ServerRoomChangeRo) returns (BasicResult);
+}

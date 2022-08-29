@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.integral.mapper.IntegralHistoryMapper">
+    <select id="selectTotalIntegralValueByUserId" resultType="java.lang.Integer">
+        SELECT total_integral
+        FROM vika_integral_history
+        WHERE user_id = #{userId}
+        ORDER BY id DESC
+        LIMIT 0,1
+    </select>
+
+    <resultMap id="integralRecord" type="com.vikadata.api.model.vo.integral.IntegralRecordVO">
+        <result column="action_code" property="action"/>
+        <result column="alter_type" property="alterType"/>
+        <result column="alter_integral" property="alterValue"/>
+        <result column="parameter" property="params" typeHandler="com.vikadata.api.handler.mybatis.JsonHandler"/>
+        <result column="created_at" property="createdAt"/>
+    </resultMap>
+
+    <select id="selectPageByUserId" resultMap="integralRecord">
+        SELECT action_code, alter_type, alter_integral, parameter, created_at
+        FROM vika_integral_history
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id="selectCountByUserIdAndKeyValue" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM vika_integral_history
+        WHERE user_id = #{userId}
+          AND JSON_EXTRACT(parameter, CONCAT('$.', #{key})) = #{val}
+    </select>
+
+    <update id="updateParameterById">
+        UPDATE vika_integral_history
+        SET parameter = #{parameter}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectCountByUserIdAndActionCode" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM vika_integral_history
+        WHERE user_id = #{userId}
+          AND action_code = #{actionCode}
+    </select>
+
+    <select id="selectCountByUserIdAndActionCodes" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM vika_integral_history
+        WHERE user_id = #{userId} AND action_code IN
+        <foreach item="item" index="index" collection="actionCodes" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

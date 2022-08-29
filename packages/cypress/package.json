@@ -1,0 +1,48 @@
+{
+  "name": "@vikadata/cypress",
+  "version": "0.13.5",
+  "description": "> TODO: description",
+  "author": "JaneSu <sujian@vikadata.com>",
+  "homepage": "",
+  "license": "ISC",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.vika.ltd/fe/datasheet.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cy:open": "yarn build:json && cypress open",
+    "cy:run": "yarn build:json && cypress run --record --key 46dcabf8-59ab-47a9-b72c-bc7990335491",
+    "build:json": "ts-node ./script/run.ts"
+  },
+  "dependencies": {
+    "@cypress/browserify-preprocessor": "^3.0.1",
+    "@types/request": "^2.48.5",
+    "@vikadata/vika": "^0.1.9",
+    "cypress": "^8.2.0",
+    "request": "^2.88.2",
+    "ts-node": "^10.2.0",
+    "urlcat": "^2.0.4"
+  },
+  "devDependencies": {
+    "@cypress/code-coverage": "^3.9.9",
+    "@types/cypress-cucumber-preprocessor": "^4.0.1",
+    "babel-plugin-istanbul": "^6.0.0",
+    "cypress-wait-until": "^1.7.1",
+    "typescript": "4.6.4"
+  },
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": true
+  }
+}

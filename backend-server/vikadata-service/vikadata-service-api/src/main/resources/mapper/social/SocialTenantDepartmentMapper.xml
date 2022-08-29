@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.social.mapper.SocialTenantDepartmentMapper">
+    <insert id="insertBatch">
+        INSERT INTO vika_social_tenant_department(id, tenant_id, space_id, department_id,
+        open_department_id, parent_id, parent_open_department_id, department_name, department_order)
+        VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id}, #{item.tenantId}, #{item.spaceId}, #{item.departmentId},
+                #{item.openDepartmentId}, #{item.parentId}, #{item.parentOpenDepartmentId},
+                #{item.departmentName}, #{item.departmentOrder}
+            </trim>
+        </foreach>
+    </insert>
+
+    <select id="selectIdByDepartmentId" resultType="java.lang.Long">
+        SELECT id
+        FROM vika_social_tenant_department
+        WHERE space_id = #{spaceId} AND tenant_id = #{tenantId} AND department_id = #{departmentId}
+    </select>
+
+    <select id="selectByDepartmentId"
+            resultType="com.vikadata.entity.SocialTenantDepartmentEntity">
+        SELECT *
+        FROM vika_social_tenant_department
+        WHERE tenant_id = #{tenantId} AND space_id = #{spaceId} AND department_id = #{departmentId}
+    </select>
+
+    <select id="selectDepartmentIdsByTenantId"
+            resultType="java.lang.String">
+        SELECT department_id
+        FROM vika_social_tenant_department
+        WHERE tenant_id = #{tenantId} AND space_id = #{spaceId}
+    </select>
+
+    <delete id="deleteByDepartmentId">
+        DELETE
+        FROM vika_social_tenant_department
+        WHERE tenant_id = #{tenantId} AND space_id = #{spaceId} AND department_id = #{departmentId}
+    </delete>
+
+    <delete id="deleteBatchByDepartmentId">
+        DELETE
+        FROM vika_social_tenant_department
+        WHERE tenant_id = #{tenantId} AND space_id = #{spaceId} AND department_id IN
+        <foreach collection="departmentIds" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteByTenantId">
+        DELETE
+        FROM vika_social_tenant_department
+        WHERE tenant_id = #{tenantId} AND space_id = #{spaceId} AND space_id = #{spaceId}
+    </delete>
+
+    <delete id="deleteBySpaceIdAndTenantIdAndDepartmentId">
+        DELETE
+        FROM vika_social_tenant_department
+        WHERE tenant_id = #{tenantId}
+        AND space_id = #{spaceId}
+        AND department_id = #{departmentId}
+    </delete>
+
+    <select id="selectByTenantIdAndDeptId"
+            resultType="com.vikadata.entity.SocialTenantDepartmentEntity">
+        SELECT *
+        FROM vika_social_tenant_department
+        WHERE tenant_id = #{tenantId}
+        AND space_id = #{spaceId}
+        AND open_department_id = #{deptId}
+    </select>
+
+    <delete id="deleteByTenantIdAndSpaceId">
+        DELETE
+        FROM vika_social_tenant_department
+        WHERE tenant_id = #{tenantId}
+        AND space_id = #{spaceId}
+    </delete>
+
+    <select id="selectTenantBindTeamListBySpaceId" resultType="com.vikadata.api.modular.social.model.TenantDepartmentBindDTO">
+        SELECT vstd.id,
+               vut.team_name  AS departmentName,
+               vstd.department_id,
+               vstd.parent_id AS parentDepartmentId,
+               vstd.open_department_id,
+               vstd.parent_open_department_id,
+               vstdb.team_id,
+               vut.parent_id  AS parentTeamId,
+               vut.sequence   AS internalSequence
+        FROM vika_social_tenant_department vstd,
+             vika_social_tenant_department_bind vstdb,
+             vika_unit_team vut
+        WHERE vstd.department_id = vstdb.tenant_department_id
+          AND vstd.space_id = vstdb.space_id
+          AND vut.id = vstdb.team_id
+          AND vstdb.space_id = #{spaceId}
+    </select>
+
+    <select id="selectByTenantId"
+            resultType="com.vikadata.entity.SocialTenantDepartmentEntity">
+        SELECT *
+        FROM vika_social_tenant_department
+        WHERE tenant_id = #{tenantId} AND space_id = #{spaceId}
+    </select>
+</mapper>

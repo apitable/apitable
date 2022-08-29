@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.scheduler.space.mapper.template.TemplatePropertyMapper">
+    <insert id="insertBatch">
+        INSERT INTO vika_template_property(id, property_name, property_code, property_type, created_by, updated_by)
+        VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id},#{item.propertyName},#{item.propertyCode},#{item.propertyType},#{item.createdBy},#{item.updatedBy}
+            </trim>
+        </foreach>
+    </insert>
+</mapper>

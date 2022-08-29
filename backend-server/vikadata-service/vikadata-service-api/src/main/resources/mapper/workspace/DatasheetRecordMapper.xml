@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.modular.workspace.mapper.DatasheetRecordMapper">
+
+    <resultMap id="datasheetRecordVo" type="com.vikadata.api.model.vo.datasheet.DatasheetRecordVo">
+        <result column="record_id" property="id"/>
+        <result column="data" property="data" typeHandler="com.vikadata.api.handler.mybatis.JsonHandler"/>
+        <result column="revision_history" property="revisionHistory" typeHandler="com.vikadata.api.handler.mybatis.IntArrayTypeHandler"/>
+        <result column="revision" property="revision"/>
+        <result column="recordMeta" property="recordMeta"/>
+    </resultMap>
+
+    <resultMap id="dataSheetRecordDto" type="com.vikadata.api.model.dto.datasheet.DataSheetRecordDto">
+        <result column="id" property="id"/>
+        <result column="dst_id" property="dstId"/>
+        <result column="record_id" property="recordId"/>
+        <result column="data" property="data" typeHandler="com.vikadata.api.handler.mybatis.JsonHandler"/>
+    </resultMap>
+
+    <resultMap id="dataSheetRecordGroupDto" type="com.vikadata.api.model.dto.datasheet.DataSheetRecordGroupDto">
+        <result column="dst_id" property="dstId"/>
+        <collection property="recordVoList" resultMap="datasheetRecordVo"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, record_id, dst_id, `data`, revision_history, revision, is_deleted, created_at, updated_at
+    </sql>
+
+    <!--输出前端结果的结果列-->
+    <sql id="RecordVo_Column_List">
+        record_id, `data` as data, revision_history, revision, field_updated_info as recordMeta
+    </sql>
+
+    <!--根据数表dstid查询记录列表-->
+    <select id="selectListByDstId" resultMap="datasheetRecordVo">
+        select  <include refid="RecordVo_Column_List"/> from vika_datasheet_record
+        where dst_id = #{dstId} and is_deleted = 0
+    </select>
+
+    <!--根据指定record数组查询记录列表-->
+    <select id="selectListByIds" resultMap="datasheetRecordVo">
+        select  <include refid="RecordVo_Column_List"/> from vika_datasheet_record
+        where dst_id = #{dstId}
+        and record_id in <foreach collection="recordList" item="item" index="index" open="(" separator="," close=")">#{item}</foreach>
+        and is_deleted = 0
+    </select>
+
+    <!--统计空间内总记录数-->
+    <select id="countBySpaceId" resultType="java.lang.Long">
+        select COUNT(*) from vika_datasheet_record r, vika_datasheet t
+        where r.dst_id = t.dst_id and r.is_deleted = 0 and t.is_deleted = 0 and t.space_id = #{spaceId}
+    </select>
+
+    <!--统计数表的记录数 -->
+    <select id="countByDstId" resultType="java.lang.Integer">
+        select COUNT(*) from vika_datasheet_record where dst_id = #{dstId} and is_deleted = 0
+    </select>
+
+    <!--批量新增多个记录-->
+    <insert id="insertBatch">
+        INSERT INTO vika_datasheet_record(id, record_id, dst_id, data, field_updated_info, created_by, updated_by)
+        VALUES
+        <foreach collection="entities" item="element" index="index" separator=",">
+            <trim prefix="(" suffix=")">
+                #{element.id},#{element.recordId},#{element.dstId},#{element.data},#{element.fieldUpdatedInfo},#{element.createdBy},#{element.updatedBy}
+            </trim>
+        </foreach>
+    </insert>
+
+    <!--根据数表dstid和recordId查询单条记录-->
+    <select id="selectByConditionAndDeleted" resultType="com.vikadata.entity.DatasheetRecordEntity">
+        select  <include refid="Base_Column_List"/> from vika_datasheet_record
+        where dst_id = #{dstId} and record_id = #{recordId}
+    </select>
+
+    <!--根据数表dstid和recordId查询单条记录，返回recordVo-->
+    <select id="selectRecordVoByConditions"  resultMap="datasheetRecordVo">
+        select  <include refid="RecordVo_Column_List"/> from vika_datasheet_record
+        where dst_id = #{dstId} and record_id = #{recordId} and is_deleted = 0
+    </select>
+
+    <!--更新单条数表记录，支持传入is_deleted参数，即可恢复数据-->
+    <update id="updateByConditions" parameterType="com.vikadata.entity.DatasheetRecordEntity">
+        update vika_datasheet_record rec
+        set
+        <if test="record.data != null">
+            rec.data = #{record.data},
+        </if>
+        <if test="record.isDeleted != null">
+            rec.is_deleted = #{record.isDeleted},
+        </if>
+        rec.revision_history = #{record.revisionHistory}, rec.revision = #{record.revision}, rec.updated_by = #{userId}
+        where rec.id = #{record.id}
+    </update>
+
+    <select id="selectCountByDstId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM vika_datasheet_record
+        WHERE dst_id = #{dstId} and is_deleted = 0
+    </select>
+
+    <select id="selectDtoByDstId" resultMap="dataSheetRecordDto">
+        SELECT id, record_id, `data`
+        FROM vika_datasheet_record
+        WHERE dst_id = #{dstId} AND is_deleted = 0
+    </select>
+
+    <select id="selectDtoByDstIds" resultMap="dataSheetRecordDto">
+        SELECT id, dst_id, record_id, `data`
+        FROM vika_datasheet_record
+        WHERE dst_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectGroupDtoByDstIds" resultMap="dataSheetRecordGroupDto">
+        SELECT dst_id, record_id, `data`
+        FROM vika_datasheet_record
+        WHERE dst_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+</mapper>

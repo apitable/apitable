@@ -1,0 +1,64 @@
+// @import "../../styles/lib_colors.less";
+
+.configInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 16px;
+  height: 100%;
+  justify-content: center;
+  font-size: 13px;
+  .title {
+    display: flex;
+    align-items: center;
+    span {
+      color: var(--secondLevelText);
+      margin-right: 4px;
+      font-weight: bold;
+    }
+  }
+  .tips {
+    padding: 4px 0 8px;
+    color: var(--thirdLevelText);
+  }
+  .linkText {
+    font-size: 13px;
+  }
+}
+
+.helpIcon {
+  display: inherit;
+}
+
+.errorWidgetWrap {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  .title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 4px;
+    span {
+      margin-left: 4px;
+      font-size: 13px;
+      line-height: 20px;
+      color: var(--errorColor);
+    }
+  }
+  .content {
+    padding: 0 16px;
+    font-size: 13px;
+    line-height: 20px;
+    color: var(--thirdLevelText);
+    text-align: center;
+  }
+  p {
+    margin: 0;
+  }
+  .actionBtn {
+    margin-top: 5px;
+  }
+}

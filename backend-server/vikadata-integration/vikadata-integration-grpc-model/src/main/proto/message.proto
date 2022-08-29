@@ -1,0 +1,37 @@
+syntax = 'proto3';
+
+option java_multiple_files = true;
+option java_package = "com.vikadata.integration.grpc";
+option java_outer_classname = "GrpcMessage";
+
+package grpc;
+// 内部调用rpc 节点复制message
+message NodeCopyRo {
+  // 原始数表ID
+  string node_id = 1;
+  // 复制的数表ID
+  string copy_node_id = 2;
+  // 用户ID
+  string user_id = 3;
+  // 用户uuid
+  string uuid = 4;
+  // 需要转换的fieldId数组
+  repeated string field_ids = 5;
+}
+
+message NodeDeleteRo {
+  // 删除节点的数组
+  repeated string delete_node_id = 1;
+  // 需要转换字段的关联表
+  repeated string link_node_id = 2;
+  // 用户ID
+  string user_id = 3;
+  // 用户uuid
+  string uuid = 4;
+}
+
+message BasicResult {
+  int32 code = 1;
+  string message = 2;
+  bool success = 3;
+}

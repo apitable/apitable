@@ -1,0 +1,22 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.12-20220309-001" author="刘斌华" labels="企业微信服务商">
+        <comment>空间站成员信息增加 IM 是否改名标记</comment>
+        <sql>
+            alter table `vika_unit_member`
+            add column `is_social_name_modified` tinyint(1) default 2 null comment '是否作为第三方 IM 用户修改过昵称。0：否；1：是；2：不是 IM 第三方用户' after `name_modified`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.12-20220309-002" author="刘斌华" labels="企业微信服务商">
+        <comment>用户信息增加 IM 是否改名标记</comment>
+        <sql>
+            alter table `vika_user`
+                add column `is_social_name_modified` tinyint(1) default 2 null comment '是否作为第三方 IM 用户修改过昵称。0：否；1：是；2：不是 IM 第三方用户' after `last_login_time`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

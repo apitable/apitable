@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.scheduler.space.mapper.asset.AssetMapper">
+    <select id="selectDtoByTokens" resultType="com.vikadata.scheduler.space.model.AssetDto">
+        SELECT id, `checksum`, file_size, file_url
+        FROM vika_asset
+        WHERE file_url IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectExtensionName" resultType="java.lang.String">
+        SELECT DISTINCT extension_name
+        FROM vika_asset
+        WHERE bucket IS NULL
+    </select>
+
+    <update id="updateBucketAndMimeType">
+        UPDATE vika_asset
+        SET bucket    = #{bucket},
+            mime_type = #{mimeType}
+        WHERE extension_name = #{extensionName}
+          AND bucket IS NULL
+    </update>
+
+    <update id="updateBucket">
+        UPDATE vika_asset
+        SET bucket = #{bucket}
+        WHERE bucket IS NULL
+    </update>
+
+    <insert id="insertEntity">
+        INSERT INTO vika_asset(id, checksum, head_sum, bucket, file_size, file_url, mime_type, extension_name, height,
+                               width)
+        VALUES (#{entity.id}, #{entity.checksum}, #{entity.headSum}, #{entity.bucket}, #{entity.fileSize},
+                #{entity.fileUrl}, #{entity.mimeType}, #{entity.extensionName}, #{entity.height}, #{entity.width})
+    </insert>
+
+    <update id="updateIsDeletedByChecksums">
+        UPDATE vika_asset
+        SET is_deleted = 1
+        WHERE checksum IN
+        <foreach item="item" index="index" collection="checksums" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </update>
+</mapper>

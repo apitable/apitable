@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.modular.space.mapper.SpaceAssetMapper">
+
+    <update id="updateIsDeletedByNodeIds">
+        UPDATE vika_space_asset
+        SET is_deleted = #{isDel}
+        WHERE node_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted != #{isDel}
+    </update>
+
+    <select id="selectDistinctAssetIdByNodeIdIn" resultType="java.lang.Long">
+        SELECT DISTINCT asset_id
+        FROM vika_space_asset
+        WHERE node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectDto" resultType="com.vikadata.api.model.dto.space.SpaceAssetDto">
+        SELECT id, cite, type
+        FROM vika_space_asset
+        WHERE space_id = #{spaceId} AND node_id = #{nodeId} AND asset_id = #{assetId} AND is_deleted = 0
+    </select>
+
+    <select id="selectDtoByAssetIdsAndType" resultType="com.vikadata.api.model.dto.space.SpaceAssetDto">
+        SELECT id, cite, asset_checksum, type
+        FROM vika_space_asset t
+        WHERE space_id = #{spaceId} AND node_id = #{nodeId} AND type = #{type}
+        AND t.asset_id IN
+        <foreach item="item" index="index" collection="assetIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+        FOR UPDATE
+    </select>
+
+    <select id="selectNodeAssetDto" resultType="com.vikadata.api.model.dto.space.NodeAssetDto">
+        SELECT node_id, asset_id, asset_checksum AS checksum, cite, file_size, `type`, source_name
+        FROM vika_space_asset
+        WHERE node_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO vika_space_asset(id, space_id, node_id, asset_id, asset_checksum, cite, type, source_name, file_size)
+        VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id},#{item.spaceId},#{item.nodeId},#{item.assetId},#{item.assetChecksum},
+                #{item.cite},#{item.type},#{item.sourceName},#{item.fileSize}
+            </trim>
+        </foreach>
+    </insert>
+
+    <select id="countBySpaceIdAndAssetChecksum" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM vika_space_asset
+        WHERE space_id = #{spaceId} AND asset_checksum = #{checksum} AND is_deleted = 0
+    </select>
+
+    <update id="updateCiteByNodeIdAndToken">
+        UPDATE vika_space_asset vsa
+        JOIN vika_asset va ON vsa.asset_id = va.id AND va.file_url = #{token}
+        SET vsa.cite = vsa.cite + #{offset}
+        WHERE vsa.node_id = #{nodeId}
+    </update>
+
+    <select id="selectFileSizeBySpaceId" resultType="java.lang.Integer">
+        SELECT vsa.file_size
+        FROM vika_space_asset vsa
+        JOIN vika_asset va ON vsa.asset_checksum = va.checksum AND va.is_template = 0
+        WHERE vsa.space_id = #{spaceId}
+        AND vsa.is_deleted = 0
+        GROUP BY vsa.asset_id
+    </select>
+
+    <delete id="deleteBatchByIds">
+        DELETE
+        FROM vika_space_asset
+        WHERE id IN
+        <foreach item="item" index="index" collection="ids" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.eco.mapper.EconomicOrderMapper">
+    <select id="selectByOrderNo" resultType="com.vikadata.entity.EconomicOrderEntity">
+        SELECT * FROM vika_economic_order
+        WHERE order_no = #{orderNo} AND is_deleted = 0
+    </select>
+
+    <select id="selectBySpaceId" resultType="com.vikadata.entity.EconomicOrderEntity">
+        SELECT * FROM vika_economic_order
+        WHERE space_id = #{spaceId} AND is_deleted = 0
+        ORDER BY expire_time
+    </select>
+
+    <select id="selectCountBySpaceIdChannelOrderId" resultType="java.lang.Integer">
+        SELECT count(*) FROM vika_economic_order
+        WHERE space_id = #{spaceId} AND channel_order_id = #{channelOrderId} AND is_deleted = 0
+    </select>
+
+    <select id="selectBySpaceIdChannelOrderId" resultType="com.vikadata.entity.EconomicOrderEntity">
+        SELECT * FROM vika_economic_order
+        WHERE space_id = #{spaceId} AND channel_order_id = #{channelOrderId} AND is_deleted = 0
+    </select>
+
+    <select id="selectAll" resultType="com.vikadata.entity.EconomicOrderEntity">
+        SELECT * FROM vika_economic_order WHERE order_channel = 'vika'
+    </select>
+</mapper>

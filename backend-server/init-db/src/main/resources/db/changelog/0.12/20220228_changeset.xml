@@ -1,0 +1,33 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.12-20220228-001" author="Zoe" labels="order">
+        <comment>第三方-新建第三方订单表</comment>
+        <sql>
+            CREATE TABLE `vika_social_tenant_order` (
+                `id` BIGINT ( 20 ) UNSIGNED NOT NULL COMMENT '主键',
+                `channel_order_id` VARCHAR ( 100 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '渠道订单号',
+                `app_id` VARCHAR ( 255 ) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用标识',
+                `tenant_id` VARCHAR ( 255 ) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '企业的唯一标识，各大平台名词不一致，这里统一使用租户表示',
+                `platform` TINYINT UNSIGNED NOT NULL COMMENT '所属平台(1: 企业微信, 2: 钉钉, 3: 飞书)',
+                `order_data` json DEFAULT NULL COMMENT '订单数据',
+                `is_deleted` TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+                `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY ( `id` ) USING BTREE,
+                KEY `idx_tenant_app` ( `tenant_id`, `app_id` ) USING BTREE COMMENT '租户应用标识',
+                KEY `idx_channel_order_id` ( `channel_order_id` ) USING BTREE COMMENT '租户订单号'
+            ) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '第三方平台集成-订单表';
+        </sql>
+    </changeSet>
+    <changeSet id="V0.12-20220228-002" author="Shawn" labels="appstore">
+        <comment>应用市场-应用实例表增加应用类型</comment>
+        <sql>
+            ALTER TABLE `vika_app_instance`
+                ADD COLUMN `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '应用类型' AFTER `app_secret`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

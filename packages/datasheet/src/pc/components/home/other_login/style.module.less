@@ -1,0 +1,52 @@
+@import "~pc/styles/lib_var.less";
+
+.modalTitle {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 8px;
+}
+
+.otherLoginWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 12px;
+
+  .btn {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    img {
+      width: 32px !important;
+      height: 32px !important;
+    }
+
+    .text {
+      font-size: 13px;
+      color: var(--secondLevelText);
+    }
+  }
+
+  .forbidden {
+    opacity: 0.5;
+  }
+}
+
+.dingdingCodeModal {
+  :global {
+    .ant-modal-header {
+      padding-bottom: 0;
+    }
+
+    .ant-modal-title {
+      padding: 0 !important;
+    }
+
+    .ant-modal-body {
+      height: 320px;
+    }
+  }
+}

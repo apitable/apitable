@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.social.mapper.SocialCpTenantUserMapper">
+    <insert id="insertBatch">
+        INSERT INTO vika_social_cp_tenant_user(id, tenant_id, app_id, cp_user_id)
+        VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id}, #{item.tenantId}, #{item.appId}, #{item.cpUserId}
+            </trim>
+        </foreach>
+    </insert>
+
+    <select id="selectOpenIdsByTenantId"
+            resultType="com.vikadata.api.modular.social.model.CpTenantUserDTO">
+        SELECT id AS cpTenantUserId, cp_user_id AS cpUserId
+        FROM vika_social_cp_tenant_user
+        WHERE tenant_id = #{tenantId}
+          AND app_id = #{appId}
+    </select>
+
+    <delete id="batchDeleteByCorpAgent">
+        DELETE FROM vika_social_cp_tenant_user
+        WHERE
+        tenant_id = #{tenantId} AND app_id = #{appId} AND
+        cp_user_id IN
+        <foreach collection="cpUserIds" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="selectByTenantIdAndAppIdAndCpUserId"
+            resultType="com.vikadata.entity.SocialCpTenantUserEntity">
+        SELECT *
+        FROM vika_social_cp_tenant_user
+        WHERE tenant_id = #{tenantId}
+          AND app_id = #{appId}
+          AND cp_user_id = #{cpUserId}
+    </select>
+
+    <select id="selectByTenantIdAndAppIdAndCpUserIds"
+            resultType="com.vikadata.entity.SocialCpTenantUserEntity">
+        SELECT *
+        FROM vika_social_cp_tenant_user
+        WHERE tenant_id = #{tenantId}
+          AND app_id = #{appId}
+          AND cp_user_id IN
+        <foreach collection="cpUserIds" item="cpUserId" open="(" separator="," close=")">
+            #{cpUserId}
+        </foreach>
+    </select>
+
+    <select id="selectByTenantIdAndAppIdAndUserId"
+            resultType="com.vikadata.entity.SocialCpTenantUserEntity">
+        SELECT vsctu.*
+        FROM (
+            SELECT cp_tenant_user_id
+            FROM `vika_social_cp_user_bind`
+            WHERE `user_id` = #{userId}
+        ) vscub INNER JOIN (
+            SELECT *
+            FROM `vika_social_cp_tenant_user`
+            WHERE `tenant_id` = #{tenantId}
+            AND `app_id` = #{appId}
+        ) vsctu ON vscub.cp_tenant_user_id = vsctu.id
+    </select>
+
+    <select id="selectIdByTenantIdAndAppIdAndCpUserId" resultType="java.lang.Long">
+        SELECT id
+        FROM vika_social_cp_tenant_user
+        WHERE tenant_id = #{tenantId}
+          AND app_id = #{appId}
+          AND cp_user_id = #{cpUserId}
+    </select>
+
+</mapper>

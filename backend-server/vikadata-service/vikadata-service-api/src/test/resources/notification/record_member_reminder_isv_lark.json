@@ -1,0 +1,16 @@
+{
+    "nodeId": "dstNGhxCiNXBavbkmA",
+    "spaceId": "spcD5n2WFfUKD",
+    "body": {
+        "extras": {
+            "recordTitle": "value1",
+            "recordIds": ["rec0lVedrd83F"],
+            "viewId": "viwmXA8jCdVRA",
+            "taskExpireAt": "1647570367000",
+            "fieldName": "test"
+        }
+    },
+    "fromUserId": "5",
+    "templateId": "single_record_member_mention",
+    "toUnitId": ["1496048111808806917"]
+}

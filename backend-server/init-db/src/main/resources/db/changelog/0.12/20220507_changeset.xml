@@ -1,0 +1,30 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.12-20220507-001" author="刘斌华" labels="企微服务商">
+        <comment>企业微信应用版本变更记录</comment>
+        <sql>
+            create table vika_social_edition_changelog_wecom
+            (
+                id bigint(20) not null comment '主键 ID',
+                suite_id varchar(32) not null comment '应用套件 ID',
+                paid_corp_id varchar(32) not null comment '下单的企业 ID',
+                edition_info json not null comment '版本变更原始数据',
+                is_deleted tinyint(1) default '0' not null comment '删除标记。0：否；1：是',
+                created_at timestamp default CURRENT_TIMESTAMP not null comment '创建时间',
+                updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间',
+                constraint vika_social_edition_changelog_wecom_pk
+                    primary key (id)
+            )
+                comment '企业微信应用版本变更记录';
+
+            create index idx_paid_corp_id
+                on vika_social_edition_changelog_wecom (paid_corp_id);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

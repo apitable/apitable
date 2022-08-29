@@ -1,0 +1,14 @@
+= Developer 开放平台模块
+
+配合vika-cli命令行工程:
+
+https://git.vika.ltd/fe/vika-cli[工程地址]
+
+
+== 文档
+
+https://www.yuque.com/vika/rd/eg8668[链接]
+
+== 结构
+
+* **sidecar** 目录为其它模块通讯调用的接口

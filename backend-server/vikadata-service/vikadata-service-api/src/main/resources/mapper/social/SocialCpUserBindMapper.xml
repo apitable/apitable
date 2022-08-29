@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.social.mapper.SocialCpUserBindMapper">
+    <select id="selectUserIdByCpTenantUserId" resultType="java.lang.Long">
+        SELECT user_id
+        FROM vika_social_cp_user_bind
+        WHERE cp_tenant_user_id = #{cpTenantUserId}
+    </select>
+
+    <select id="selectByCpTenantUserIds" resultType="com.vikadata.entity.SocialCpUserBindEntity">
+        SELECT *
+        FROM vika_social_cp_user_bind
+        WHERE cp_tenant_user_id IN
+        <foreach collection="cpTenantUserIds" item="cpTenantUserId" open="(" separator=","
+                 close=")">#{cpTenantUserId}</foreach>
+    </select>
+
+    <select id="selectUserIdByTenantIdAndCpUserId" resultType="java.lang.Long">
+        SELECT DISTINCT vscub.user_id
+        FROM vika_social_cp_user_bind vscub,
+             vika_social_cp_tenant_user vsctu
+        WHERE vscub.cp_tenant_user_id = vsctu.id
+          AND vsctu.tenant_id = #{tenantId}
+          AND vsctu.cp_user_id = #{cpUserId}
+    </select>
+
+    <delete id="batchDeleteByCpTenantUserIds">
+        DELETE FROM vika_social_cp_user_bind
+        WHERE
+        cp_tenant_user_id IN
+        <foreach collection="removeCpTenantUserIds" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="countTenantBindByUserId" resultType="java.lang.Long">
+        SELECT COUNT(DISTINCT vsctu.tenant_id, vsctu.cp_user_id)
+        FROM vika_social_cp_user_bind vscub,
+             vika_social_cp_tenant_user vsctu
+        WHERE vscub.cp_tenant_user_id = vsctu.id
+          AND vscub.user_id = #{userId}
+          AND tenant_id = #{tenantId}
+        GROUP BY vsctu.tenant_id, vsctu.cp_user_id
+    </select>
+
+    <select id="selectOpenIdByTenantIdAndUserId" resultType="java.lang.String">
+        SELECT DISTINCT vsctu.cp_user_id
+        FROM vika_social_cp_user_bind vscub,
+             vika_social_cp_tenant_user vsctu
+        WHERE vscub.cp_tenant_user_id = vsctu.id
+          AND vsctu.tenant_id = #{tenantId}
+          AND vscub.user_id = #{userId}
+    </select>
+
+    <delete id="deleteByUserId">
+        DELETE
+        FROM vika_social_cp_user_bind
+        WHERE user_id = #{userId}
+    </delete>
+</mapper>

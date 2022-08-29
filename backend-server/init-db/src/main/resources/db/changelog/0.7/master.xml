@@ -1,0 +1,34 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <include file="db/changelog/0.7/20210314_changeset.xml"/>
+    <include file="db/changelog/0.7/20210315_changeset.xml"/>
+    <include file="db/changelog/0.7/20210324_changeset.xml"/>
+    <include file="db/changelog/0.7/20210401_changeset.xml"/>
+    <include file="db/changelog/0.7/20210406_changeset.xml"/>
+    <include file="db/changelog/0.7/20210408_changeset.xml"/>
+    <include file="db/changelog/0.7/20210414_changeset.xml"/>
+    <include file="db/changelog/0.7/20210415_changeset.xml"/>
+    <include file="db/changelog/0.7/20210419_changeset.xml"/>
+    <include file="db/changelog/0.7/20210421_changeset.xml"/>
+    <include file="db/changelog/0.7/20210426_changeset.xml"/>
+    <include file="db/changelog/0.7/20210427_changeset.xml"/>
+    <include file="db/changelog/0.7/20210428_changeset.xml"/>
+    <include file="db/changelog/0.7/20210429_changeset.xml"/>
+    <include file="db/changelog/0.7/20210510_changeset.xml"/>
+    <include file="db/changelog/0.7/20210526_changeset.xml"/>
+    <include file="db/changelog/0.7/20210707_changeset.xml"/>
+    <include file="db/changelog/0.7/20210712_changeset.xml"/>
+    <include file="db/changelog/0.7/20210721_changeset.xml"/>
+    <include file="db/changelog/0.7/20210722_changeset.xml"/>
+    <include file="db/changelog/0.7/20210730_changeset.xml"/>
+    <include file="db/changelog/0.7/20210731_changeset.xml"/>
+    <include file="db/changelog/0.7/20210803_changeset.xml"/>
+    <include file="db/changelog/0.7/20210805_changeset.xml"/>
+    <include file="db/changelog/0.7/20210813_changeset.xml"/>
+    <include file="db/changelog/0.7/20210819_changeset.xml"/>
+    <include file="db/changelog/0.7/20210820_changeset.xml"/>
+</databaseChangeLog>

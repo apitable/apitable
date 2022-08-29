@@ -1,0 +1,50 @@
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+@import '~pc/styles/lib_screen.less';
+
+// 关于折行情况有四种：
+// 1. 单元格中，默认行高不折行
+// 2. 单元格中，非默认行高折行
+// 3. 单元格中，激活的单元格折行
+// 3. 记录卡片中，默认折行
+
+.optionCellContainer {
+  display: flex !important;
+  padding: 3px 10px 3px;
+  max-width: 100%;
+  overflow: hidden;
+  line-height: 1.1;
+  flex-grow: 1;
+  align-content: flex-start;
+  align-items: center;
+
+  &.rowHeightHigh {
+    flex-wrap: wrap;
+  }
+}
+
+:global {
+  .displayItem, 
+  .activeCell {
+    .optionCellContainer {
+      flex-wrap: wrap;
+    }
+  }
+}
+
+.minWidth {
+  & > div:first-of-type {
+    max-width: calc(100% - 36px);
+  }
+}
+
+.iconAdd {
+  display: flex;
+  align-items: center;
+  margin-right: 4px;
+  margin-top: 3px;
+
+  svg {
+    fill: currentColor;
+  }
+}

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.modular.user.mapper.ThirdPartyMemberMapper">
+
+    <select id="selectUnionIdByOpenIdAndType" resultType="java.lang.String">
+        SELECT union_id
+        FROM vika_third_party_member
+        WHERE app_id = #{appId} AND open_id = #{openId} AND type = #{type}
+    </select>
+
+    <select id="selectNickNameByUnionIdAndType" resultType="java.lang.String">
+        SELECT nick_name
+        FROM vika_third_party_member
+        WHERE app_id = #{appId} AND union_id = #{unionId} AND type = #{type}
+    </select>
+
+    <select id="selectExtraById" resultType="java.lang.String">
+        SELECT extra
+        FROM vika_third_party_member
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectSessionKeyById" resultType="java.lang.String">
+        SELECT session_key
+        FROM vika_third_party_member
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectInfo" resultType="com.vikadata.api.model.dto.user.ThirdPartyMemberInfo">
+        SELECT id, nick_name, avatar
+        FROM vika_third_party_member
+        WHERE app_id = #{appId} AND union_id = #{unionId} AND type = #{type}
+    </select>
+
+    <select id="selectUserIdByIdAndLinkType" resultType="java.lang.Long">
+        SELECT vu.id
+        FROM vika_third_party_member vtpm
+        JOIN vika_user_link vul ON vtpm.union_id = vul.union_id AND vul.type = #{linkType}
+        JOIN vika_user vu ON vu.id = vul.user_id AND vu.is_deleted = 0
+        WHERE vtpm.id = #{id}
+    </select>
+
+    <select id="selectWechatMemberDto" resultType="com.vikadata.api.model.dto.wechat.WechatMemberDto">
+        SELECT vtpm.id, IF(vtpm.union_id IS NOT NULL, 1, 0) hasUnion, vul.user_id
+        FROM vika_third_party_member vtpm
+        LEFT JOIN vika_user_link vul ON vtpm.union_id = vul.union_id AND vul.type = 1
+        WHERE vtpm.app_id = #{appId} AND vtpm.type = #{type} AND vtpm.open_id = #{openId}
+    </select>
+
+    <select id="selectUserLinkedWechatMemberDto" resultType="com.vikadata.api.model.dto.wechat.WechatMemberDto">
+        SELECT vu.id userId, vtpm.id, vtpm.mobile, IF(vul.id IS NULL, 0, 1) hasLink
+        FROM vika_user vu
+        LEFT JOIN vika_user_link vul ON vu.id = vul.user_id AND vul.type = 1
+        LEFT JOIN vika_third_party_member vtpm ON vtpm.union_id = vul.union_id AND vtpm.app_id = #{appId}
+        WHERE vu.mobile_phone = #{mobile} AND vu.is_deleted = 0
+        ORDER BY vtpm.type
+        LIMIT 1
+    </select>
+</mapper>

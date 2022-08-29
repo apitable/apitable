@@ -1,0 +1,188 @@
+import { Button, ButtonGroup, useThemeColors } from '@vikadata/components';
+import { ConfigConstant, IReduxState, StoreActions, Strings, t } from '@vikadata/core';
+import { Input } from 'antd';
+import { IdentifyingCodeInput, WithTipWrapper } from 'pc/components/common/input';
+import { Message } from 'pc/components/common/message';
+import { Modal } from 'pc/components/common/modal';
+import { BaseModal } from 'pc/components/common/modal/base_modal';
+import { Tooltip } from 'pc/components/common/tooltip';
+import { useRequest, useSetState, useUserRequest } from 'pc/hooks';
+import { copy2clipBoard } from 'pc/utils';
+import * as React from 'react';
+import { FC, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import AddIcon from 'static/icon/common/common_icon_add_content.svg';
+import RefreshIcon from 'static/icon/common/common_icon_fresh.svg';
+import CopyIcon from 'static/icon/datasheet/rightclick/datasheet_icon_copy.svg';
+import { getMaskToken, getVerifyData, IRefreshConfigConfig, VerifyTypes } from '../utils';
+import styles from './style.module.less';
+
+export interface IDeveloperConfigProps {
+  setActiveItem: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export const DeveloperConfiguration: FC<IDeveloperConfigProps> = ({ setActiveItem }) => {
+  const user = useSelector((state: IReduxState) => state.user.info);
+  const colors = useThemeColors();
+  const [identifyingCode, setIdentifyingCode] = useState('');
+  const [inputValue, setInputValue] = useState(user!.apiKey);
+  const [openCheckModal, setOpenCheckModal] = useState<boolean>();
+  const dispatch = useDispatch();
+  const [errMsg, setErrMsg] = useSetState<{
+    accountErrMsg: string;
+    identifyingCodeErrMsg: string;
+  }>({
+    accountErrMsg: '',
+    identifyingCodeErrMsg: '',
+  });
+  const { createApiKeyReq, refreshApiKeyReq } = useUserRequest();
+  const { run: createApiKey, loading: createKeyLoading } = useRequest(createApiKeyReq, { manual: true });
+  const { run: refreshApiKey, loading } = useRequest(refreshApiKeyReq, { manual: true });
+
+  const rebuildToken = () => {
+    setOpenCheckModal(true);
+  };
+
+  const createToken = async() => {
+    if (!user!.email) {
+      Modal.confirm({
+        title: t(Strings.please_note),
+        content: t(Strings.create_token_tip),
+        cancelText: t(Strings.cancel),
+        okText: t(Strings.go_to),
+        type: 'warning',
+        onOk: () => {
+          setActiveItem(0);
+        },
+      });
+      return;
+    }
+    const result = await createApiKey();
+    if (!result) {
+      return;
+    }
+    dispatch(StoreActions.updateUserInfo({ apiKey: result }));
+    setInputValue(result);
+  };
+
+  const copyToken = () => {
+
+    if (!inputValue) {
+      return;
+    }
+    copy2clipBoard(inputValue, () => Message.success({ content: t(Strings.copy_token_toast) }));
+  };
+
+  const onOk = async() => {
+    if (!identifyingCode || !user) {
+      return;
+    }
+    const type = user.mobile ? ConfigConstant.CodeTypes.SMS_CODE :
+      ConfigConstant.CodeTypes.EMAIL_CODE;
+    const result = await refreshApiKey(identifyingCode, type);
+    if (!result.success) {
+      setErrMsg({ identifyingCodeErrMsg: result.message });
+      return;
+    }
+    setInputValue(result.data.apiKey);
+    setOpenCheckModal(false);
+  };
+
+  const handleIdentifyingCodeChange = React.useCallback((
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (errMsg.identifyingCodeErrMsg) {
+      setErrMsg({ identifyingCodeErrMsg: '' });
+    }
+
+    const value = e.target.value.trim();
+    setIdentifyingCode(value);
+  }, [setErrMsg, errMsg.identifyingCodeErrMsg]);
+
+  const CodeContent = React.useMemo(() => {
+    if (!user || !(user?.email || user?.mobile)) return null;
+    const { codeMode, title, smsType, emailType, areaCode, verifyAccount } =
+      getVerifyData({ key: VerifyTypes.REFRESH_TOKEN }) as IRefreshConfigConfig;
+    return (
+      <>
+        <div className={styles.tip}>
+          {title}
+        </div>
+        <WithTipWrapper tip={errMsg.identifyingCodeErrMsg} captchaVisible>
+          <IdentifyingCodeInput
+            data={{ areaCode, account: verifyAccount }}
+            smsType={smsType}
+            emailType={emailType}
+            mode={codeMode}
+            onChange={handleIdentifyingCodeChange}
+            setErrMsg={setErrMsg}
+            error={Boolean(errMsg.identifyingCodeErrMsg)}
+            disabled={Boolean(
+              errMsg.accountErrMsg ||
+              errMsg.identifyingCodeErrMsg
+            )}
+          />
+        </WithTipWrapper>
+      </>
+    );
+  }, [user, setErrMsg, errMsg.identifyingCodeErrMsg, errMsg.accountErrMsg, handleIdentifyingCodeChange]);
+
+  const maskAPIToken = getMaskToken(inputValue);
+
+  return (
+    <div className={styles.developerConfiguration}>
+      <div className={styles.title}>{t(Strings.developer_configuration)}</div>
+      <div className={styles.label}>{t(Strings.token_value)}</div>
+      <div className={styles.tokenWrapper}>
+        <Input
+          className={styles.token}
+          placeholder={t(Strings.developer_token_placeholder)}
+          id="developerToken"
+          value={maskAPIToken}
+          disabled
+        />
+        <ButtonGroup withSeparate>
+          <Tooltip
+            title={!user!.apiKey ? t(Strings.generating_token_value) : t(Strings.rebuild_token_value)}
+            placement="top"
+          >
+            <Button
+              disabled={createKeyLoading}
+              onClick={!user!.apiKey ? createToken : rebuildToken}
+            >
+              {
+                !user!.apiKey ?
+                  <AddIcon fill={colors.thirdLevelText} width={15} height={15} /> :
+                  <RefreshIcon fill={colors.thirdLevelText} width={15} height={15} />
+              }
+            </Button>
+          </Tooltip>
+          <Tooltip title={t(Strings.copy_token)} placement="top">
+            <Button
+              onClick={copyToken}
+            >
+              <CopyIcon fill={colors.thirdLevelText} width={15} height={15} />
+            </Button>
+          </Tooltip>
+        </ButtonGroup>
+      </div>
+      {openCheckModal &&
+        <BaseModal
+          width={400}
+          className={styles.checkModal}
+          title={(user?.mobile) ? t(Strings.modal_title_check_original_phone) : t(Strings.modal_title_check_mail)}
+          onOk={onOk}
+          onCancel={() => setOpenCheckModal(false)}
+          okButtonProps={{
+            loading,
+            disabled: !identifyingCode,
+          }}
+        >
+          <div className={styles.content}>
+            {CodeContent}
+          </div>
+        </BaseModal>
+      }
+    </div>
+  );
+};

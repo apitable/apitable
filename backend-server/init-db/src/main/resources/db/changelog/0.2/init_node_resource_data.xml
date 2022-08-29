@@ -1,0 +1,18 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.2-20200313-039" author="ShawnDeng" labels="node">
+        <comment>初始化空节点资源数据</comment>
+        <sqlFile path="db/changelog/0.2/node_resource_data.sql"/>
+        <rollback>
+            <!--删除数据-->
+            <delete tableName="vika_node_role"/>
+            <delete tableName="vika_node_role_resource_rel"/>
+            <delete tableName="vika_node_resource"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

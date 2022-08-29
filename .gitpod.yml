@@ -1,0 +1,23 @@
+# List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  - name: init and run
+    # 提前预先编译
+    init: |
+      yarn install
+      yarn build:dst:pre
+    # 启动程序运行命令
+    command: |
+      yarn sd:r
+  # 一个独立的命令行窗口用于自由编辑
+  - name: command line for free
+    command: echo "Hi, Vikaer"
+    openMode: split-right
+              
+
+# List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
+ports:
+  - port: 3000
+    onOpen: open-preview

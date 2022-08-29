@@ -1,0 +1,37 @@
+export enum Navigation {
+  HOME,
+  LOGIN,
+  APPLY_LOGOUT,
+  REGISTER,
+  RESET_PWD,
+  CREATE_SPACE,
+  WORKBENCH,
+  SPACE,
+  SPACE_MANAGE,
+  NOT_FOUND,
+  INVITE,
+  SET_PASSWORD,
+  SHARE_FAIL,
+  SETTING_NICKNAME,
+  SHARE_SPACE,
+  NO_SUPPORT,
+  TEMPLATE,
+  TRASH,
+  IMPROVING_INFO,
+  INVITATION_VALIDATION,
+  MEMBER_DETAIL,
+  FEISHU,
+  DINGTALK,
+  WECOM,
+  WECOM_SHOP_CALLBACK
+}
+
+export enum SpacePathType {
+  SAPCE_OVERVIEW = 'overview',
+  MANAGE_WORKBENCH = 'workbench',
+  MANAGE_MEMBER = 'managemember',
+  MAIN_ADMIN = 'mainadmin',
+  SUB_ADMIN = 'subadmin',
+  MEMBER = 'member',
+  MARKETING = 'marketing'
+}

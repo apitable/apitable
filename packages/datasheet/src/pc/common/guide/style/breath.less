@@ -1,0 +1,72 @@
+@import "~pc/styles/lib_var.less";
+@keyframes insetBreath {
+  0% {
+    box-shadow: inset 0 0 0 4px var(--primaryColor);
+  }
+  50% {
+    box-shadow: inset 0 0 0 @shadowMaxWidthForGuide var(--primaryColor);
+  }
+  100% {
+    box-shadow: inset 0 0 0 4px var(--primaryColor);
+  }
+}
+@keyframes outsetBreath {
+  0% {
+    box-shadow: 0 0 0 4px var(--primaryColor);
+  }
+  50% {
+    box-shadow: 0 0 0 @shadowMaxWidthForGuide var(--primaryColor);
+  }
+  100% {
+    box-shadow: 0 0 0 4px var(--primaryColor);
+  }
+}
+
+@keyframes insetBreathOrange {
+  0% {
+    box-shadow: inset 0 0 0 4px var(--rc07);
+  }
+  50% {
+    box-shadow: inset 0 0 0 @shadowMaxWidthForGuide var(--rc07);
+  }
+  100% {
+    box-shadow: inset 0 0 0 4px var(--rc07);
+  }
+}
+@keyframes outsetBreathOrange {
+  0% {
+    box-shadow: 0 0 0 4px var(--rc07);
+  }
+  50% {
+    box-shadow: 0 0 0 @shadowMaxWidthForGuide var(--rc07);
+  }
+  100% {
+    box-shadow: 0 0 0 4px var(--rc07);
+  }
+}
+
+@breathAnimateDuration: 1.4s;
+
+
+.vika-guide-breath-outset {
+  animation-name: outsetBreath;
+  animation-duration: @breathAnimateDuration;
+  animation-iteration-count: infinite;
+}
+.vika-guide-breath-inset {
+  animation-name: insetBreath;
+  animation-duration: @breathAnimateDuration;
+  animation-iteration-count: infinite;
+}
+.vika-guide-breath-outset-orange {
+  animation-name: outsetBreathOrange;
+  animation-duration: @breathAnimateDuration;
+  animation-iteration-count: infinite;
+}
+.vika-guide-breath-inset-orange {
+  animation-name: insetBreathOrange;
+  animation-duration: @breathAnimateDuration;
+  animation-iteration-count: infinite;
+}
+
+

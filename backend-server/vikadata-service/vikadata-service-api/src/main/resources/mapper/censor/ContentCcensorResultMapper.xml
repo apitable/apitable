@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.modular.censor.mapper.ContentCensorResultMapper">
+
+    <select id="getPageByStatus" resultType="com.vikadata.api.model.vo.censor.ContentCensorResultVo">
+        SELECT
+        r.node_id,
+        s.share_id,
+        n.node_name,
+        r.report_result,
+        r.report_num,
+        r.created_at,
+        r.updated_at
+        FROM
+        ( vika_content_censor_result r INNER JOIN vika_node n ON r.node_id = n.node_id AND r.report_result = #{status} )
+        INNER JOIN vika_node_share_setting s
+        ON r.node_id = s.node_id
+        ORDER BY
+        r.updated_at DESC
+    </select>
+
+    <select id="getByNodeId" resultType="com.vikadata.entity.ContentCensorResultEntity">
+        SELECT * from vika_content_censor_result where node_id = #{nodeId}
+    </select>
+
+</mapper>

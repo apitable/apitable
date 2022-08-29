@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.social.service.dingtalk.mapper.DingTalkOpenSyncBizDataMapper">
+    <select id="selectBySubscribeIdAndCorpIdAndBizTypes"
+            resultType="com.vikadata.social.service.dingtalk.model.dto.SocialTenantBizDataDto">
+        SELECT biz_type, biz_id, biz_data FROM vika_ding_talk_open_sync_biz_data
+        WHERE corp_id = #{corpId}
+        AND subscribe_id = #{subscribeId}
+        AND biz_type in
+        <foreach collection="bizTypes" item="bizType" open="(" separator="," close=")">
+            #{bizType}
+        </foreach>
+    </select>
+</mapper>

@@ -1,0 +1,111 @@
+import Joi from 'joi';
+import { DatasheetActions } from '../datasheet';
+import { DateTimeBaseField } from './date_time_base_field';
+import { DateFormat, FieldType, IDateTimeField, IDateTimeFieldProperty, IField, TimeFormat } from 'types/field_types';
+import { IReduxState } from 'store';
+import { enumKeyToArray, enumToArray } from './validate_schema';
+import { ICellValue } from 'model/record';
+import dayjs from 'dayjs';
+import { IOpenDateTimeFieldProperty } from 'types/open/open_field_read_types';
+import { IUpdateOpenDateTimeFieldProperty } from 'types/open/open_field_write_types';
+
+export class DateTimeField extends DateTimeBaseField {
+  constructor(public field: IDateTimeField, public state: IReduxState) {
+    super(field, state);
+  }
+
+  static propertySchema = Joi.object({
+    dateFormat: Joi.valid(...enumToArray(DateFormat)).required(),
+    timeFormat: Joi.valid(...enumToArray(TimeFormat)).required(),
+    includeTime: Joi.boolean().required(),
+    autoFill: Joi.boolean().required(),
+  }).required();
+
+  static cellValueSchema = Joi.number().custom((value, helpers) => {
+    if (dayjs(value).isValid()) {
+      return value;
+    }
+    return helpers.error('valid date');
+  }, 'custom validation').allow(null).required();
+
+  static openWriteValueSchema = Joi.custom((value: Date | string, helpers) => {
+    if (dayjs(value).isValid()) {
+      return value;
+    }
+    return helpers.error('valid date');
+  }).allow(null).required();
+
+  static defaultDateFormat: string = DateFormat[0];
+  static defaultTimeFormat: string = TimeFormat[0];
+
+  static createDefault(fieldMap: { [fieldId: string]: IField }): IDateTimeField {
+    return {
+      id: DatasheetActions.getNewFieldId(fieldMap),
+      type: FieldType.DateTime,
+      name: DatasheetActions.getDefaultFieldName(fieldMap),
+      property: this.defaultProperty(),
+    };
+  }
+
+  static defaultProperty(): IDateTimeFieldProperty {
+    return {
+      dateFormat: DateFormat['YYYY/MM/DD'],
+      timeFormat: TimeFormat['hh:mm'],
+      includeTime: false,
+      autoFill: false,
+    };
+  }
+
+  defaultValue(): number | null {
+    if (this.field.property.autoFill) {
+      return Date.now();
+    }
+    return null;
+  }
+
+  /* 由于需要遍历 DateTimeFormat 枚举值，但 DateTimeFormat 在编译后会有 keyValue 和 valueKey 形式
+   需要过滤掉 number key 的情况 */
+  validateProperty() {
+    return DateTimeField.propertySchema.validate(this.field.property);
+  }
+
+  validateCellValue(cv: ICellValue) {
+    return DateTimeField.cellValueSchema.validate(cv);
+  }
+
+  validateOpenWriteValue(owv: string | Date | null) {
+    return DateTimeField.openWriteValueSchema.validate(owv);
+  }
+
+  get openFieldProperty(): IOpenDateTimeFieldProperty {
+    const { autoFill, includeTime, dateFormat, timeFormat } = this.field.property;
+    return {
+      dateFormat: DateFormat[dateFormat],
+      timeFormat: TimeFormat[timeFormat],
+      autoFill,
+      includeTime
+    };
+  }
+
+  static openUpdatePropertySchema = Joi.object({
+    dateFormat: Joi.valid(...enumKeyToArray(DateFormat)).required(),
+    timeFormat: Joi.valid(...enumKeyToArray(TimeFormat)),
+    includeTime: Joi.boolean(),
+    autoFill: Joi.boolean(),
+  }).required();
+
+  validateUpdateOpenProperty(updateProperty: IUpdateOpenDateTimeFieldProperty) {
+    return DateTimeField.openUpdatePropertySchema.validate(updateProperty);
+  }
+
+  updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenDateTimeFieldProperty): IDateTimeFieldProperty {
+    const { dateFormat, timeFormat, autoFill, includeTime } = openFieldProperty;
+    const defaultProperty = DateTimeField.defaultProperty();
+    return {
+      dateFormat: DateFormat[dateFormat],
+      timeFormat: timeFormat ? TimeFormat[timeFormat] : defaultProperty.timeFormat,
+      autoFill: autoFill ?? defaultProperty.autoFill,
+      includeTime: includeTime ?? defaultProperty.includeTime
+    };
+  }
+}

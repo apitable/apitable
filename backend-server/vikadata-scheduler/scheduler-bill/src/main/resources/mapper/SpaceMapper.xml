@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.scheduler.bill.mapper.SpaceMapper">
+
+    <select id="selectNullAuditList" resultType="com.vikadata.entity.SpaceEntity">
+        SELECT t.*
+        FROM vika_space t
+        WHERE t.created_by is null and t.is_deleted = 0
+    </select>
+
+    <update id="updateCreatedBy">
+        UPDATE vika_space
+        SET created_by = #{createdBy}
+        WHERE space_id = #{spaceId}
+    </update>
+
+    <update id="updateUpdatedBy">
+        UPDATE vika_space
+        SET updated_by = #{updatedBy}
+        WHERE space_id = #{spaceId}
+    </update>
+</mapper>

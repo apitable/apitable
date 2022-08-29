@@ -1,0 +1,13 @@
+{
+    "meta": {
+        "ts": "1648718454.484126",
+        "uuid": "175bb52efa040bec6815e35b867c60c4"
+    },
+    "type": "app_open",
+    "appId": "cli_a28611a8b9e2900d",
+    "installer": {
+        "openId": "ou_29171dce715afd206f7d39153a9a3083",
+        "unionId": "on_6260e59c856015563ff49bf44a31565a"
+    },
+    "tenantKey": "1155844b3ccf975d"
+}

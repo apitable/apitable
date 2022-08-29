@@ -1,0 +1,137 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.recommendWidgetPanel {
+  height: 100%;
+  user-select: none;
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+
+    .title {
+      font-size: 16px;
+    }
+
+    .closeIcon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+  }
+
+  main {
+    display: flex;
+    position: relative;
+    padding: 4px 8px;
+    height: 100%;
+  }
+
+  .operate {
+    font-size: 13px;
+    color: var(--thirdLevelText);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+
+    .moreWidget {
+      color: var(--primaryColor);
+      margin-left: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .widgetItem {
+    width: 176px;
+    margin-right: 12px;
+    padding: 8px;
+    height: 210px;
+    border-radius: 8px;
+    transition: box-shadow 0.3s;
+    background-color: var(--highBg);
+
+    &:hover {
+      box-shadow: var(--shadowCommonDefault);
+      cursor: pointer;
+    }
+  }
+
+  .widgetContainers {
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--lineColor);
+
+    .widgetIconBox {
+      position: absolute;
+      left: 9px;
+      top: 9px;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      overflow: hidden;
+      border: 1px solid var(--static-white);
+      border-radius: 3.3px;
+      overflow: hidden;
+      background: var(--defaultBg);
+      z-index: 1;
+    }
+  }
+
+  .widgetName {
+    margin-top: 16px;
+    margin-bottom: 4px;
+    font-size: 14px;
+    .ellipsis();
+  }
+
+  .widgetFrom {
+    font-size: 13px;
+    color: var(--thirdLevelText);
+    margin-bottom: 8px;
+    .ellipsis();
+  }
+}
+
+.skeleton {
+  .skeletonHeader {
+    margin-bottom: 40px;
+  }
+
+  .skeletonBody {
+    display: flex;
+    align-items: center;
+
+    & > div {
+      margin-right: 24px;
+    }
+  }
+}
+
+.emptyImg {
+  width: 224px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.widgetCover {
+  width: 160px;
+  height: 90px;
+
+  & > span {
+    position: unset !important;
+
+    img {
+      width: 100% !important;
+      height: 100% !important;
+      max-width: unset !important;
+      max-height: unset !important;
+    }
+  }
+}

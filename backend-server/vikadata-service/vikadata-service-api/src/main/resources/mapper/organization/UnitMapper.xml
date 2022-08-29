@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.organization.mapper.UnitMapper">
+    <insert id="insertBatch">
+        INSERT INTO vika_unit(id, space_id, unit_type, unit_ref_id)
+        VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id},#{item.spaceId},#{item.unitType}, #{item.unitRefId}
+            </trim>
+        </foreach>
+    </insert>
+
+    <select id="selectUnitIdByRefId" resultType="java.lang.Long">
+        SELECT id
+        FROM vika_unit
+        WHERE unit_ref_id = #{refId}
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectRefIdById" resultType="java.lang.Long">
+        SELECT unit_ref_id
+        FROM vika_unit
+        WHERE id = #{unitId} AND is_deleted = 0
+    </select>
+
+
+    <select id="selectByRefId" resultType="com.vikadata.entity.UnitEntity">
+        SELECT *
+        FROM vika_unit
+        WHERE unit_ref_id = #{refId} AND is_deleted = 0
+    </select>
+
+    <select id="selectIdBySpaceId" resultType="java.lang.Long">
+        SELECT id
+        FROM vika_unit
+        WHERE space_id = #{spaceId} AND is_deleted = 0
+    </select>
+
+    <select id="selectIdsByRefIds" resultType="java.lang.Long">
+        SELECT id
+        FROM vika_unit
+        WHERE unit_ref_id in
+        <foreach item="item" index="index" collection="refIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <!--查询空间内的根部门ID-->
+    <select id="selectBySpaceIdAndRefId" resultType="java.lang.Long">
+        SELECT vou.id
+        FROM vika_unit vou
+        WHERE vou.space_id = #{spaceId}
+        AND vou.unit_ref_id = #{refId}
+        AND vou.is_deleted = 0
+    </select>
+
+    <update id="deleteBySpaceIdAndId">
+        UPDATE vika_unit
+        SET is_deleted = 1
+        WHERE space_id = #{spaceId}
+        AND id in
+        <foreach item="item" index="index" collection="ids" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="deleteByUnitRefIds">
+        UPDATE vika_unit
+        SET is_deleted = 1
+        WHERE unit_ref_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="selectRefIdsByUnitIds" resultType="java.lang.Long">
+        SELECT unit_ref_id
+        FROM vika_unit
+        WHERE id IN
+        <foreach item="item" index="index" collection="unitIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectCountBySpaceIdAndIds" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM vika_unit
+        WHERE space_id = #{spaceId} AND is_deleted = 0 AND id IN
+        <foreach item="item" index="index" collection="unitIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <update id="batchRestoreByIds">
+        UPDATE vika_unit
+        SET is_deleted = 0
+        WHERE id in
+        <foreach item="item" index="index" collection="ids" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="selectByRefIds" resultType="com.vikadata.entity.UnitEntity">
+        SELECT *
+        FROM vika_unit
+        WHERE unit_ref_id IN
+        <foreach item="item" index="index" collection="refIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectByUnitIds" resultType="com.vikadata.entity.UnitEntity">
+        SELECT *
+        FROM vika_unit
+        WHERE id IN
+        <foreach item="item" index="index" collection="unitIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <delete id="deleteActualByRefId">
+        DELETE FROM vika_unit
+        WHERE unit_ref_id = #{refId}
+    </delete>
+
+    <update id="batchUpdateIsDeletedBySpaceIdAndRefId">
+        UPDATE vika_unit SET is_deleted = #{isDeleted}
+        WHERE space_id = #{spaceId}
+        AND unit_ref_id IN
+        <foreach item="item" index="index" collection="refIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND unit_type = #{unitType.type}
+    </update>
+</mapper>

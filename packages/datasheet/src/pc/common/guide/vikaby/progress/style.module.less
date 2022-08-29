@@ -1,0 +1,55 @@
+
+@import "~pc/styles/lib_var.less";
+.progress {
+  height: 46px;
+  padding-top: 8px;
+} 
+
+.progressBg{
+  background: #E9E9F5;
+  height: 6px;
+  border-radius: 6px;
+  width: 100px;
+  width: 90%;
+  position: relative;
+}
+
+
+.progressFinished{
+  height: 100%;
+  width: 50%;
+  position: relative;
+  background-color: var(--primaryColor);
+  border-radius: 6px;
+}
+.valueWrap {
+  position: absolute;
+  top: 0;
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+}
+.progressValue {
+  right: 0;
+  transform: translate(9px, -9px);
+  padding: 4px;
+  background: #E9E9F5 center center no-repeat;
+  background-size: 16px 16px;
+  &.highlight {
+    background-color: var(--primaryColor);
+  }
+}
+
+.minValue {
+  left: 0;
+  background: transparent;
+  transform: translate(-9px, -9px);
+}
+span.valueText {
+  position: absolute;
+  right:50%;
+  top: calc(50% + 24px);
+  transform: translate(50%,-50%);
+  color: var(--thirdLevelText);
+  font-size: 12px;
+}

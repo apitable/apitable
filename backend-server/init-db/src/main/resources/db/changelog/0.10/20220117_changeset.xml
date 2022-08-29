@@ -1,0 +1,51 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.10-20220117-001" author="刘斌华" labels="WeCom">
+        <comment>第三方系统-企业微信第三方服务商回调通知信息记录</comment>
+        <sql>
+            CREATE TABLE `vika_social_cp_isv_event_log`
+            (
+                `id`           bigint(20) UNSIGNED NOT NULL COMMENT '主键',
+                `type`         tinyint(4) UNSIGNED NOT NULL COMMENT '消息通知类型。1：create_auth，授权成功；2：change_auth，变更授权；3：cancel_auth，取消授权；11：suite_ticket，第三方服务 suite_ticket；21：change_contact，应用变更成员',
+                `suite_id`     varchar(32) NOT NULL COMMENT '应用套件 ID。对应平台中的 appId',
+                `info_type`    varchar(32) NOT NULL COMMENT '信息类型',
+                `auth_corp_id` varchar(32) NULL COMMENT '授权的企业 ID。对应平台中的 tenantId',
+                `timestamp`    bigint(20) UNSIGNED NOT NULL COMMENT '时间戳',
+                `message`      json        NOT NULL COMMENT '整个消息体',
+                `process_status` tinyint(2) UNSIGNED NOT NULL DEFAULT 1 COMMENT '处理状态。1：待处理；2：处理失败，需要重试；3：处理失败，结束；4：处理成功',
+                `created_at`   timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                `updated_at`   timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY (`id`),
+                INDEX          `idx_suiteId`(`suite_id`) USING BTREE,
+                INDEX          `idx_authCorpId`(`auth_corp_id`) USING BTREE,
+                INDEX          `idx_timestamp`(`timestamp`) USING BTREE,
+                INDEX          `idx_processStatus`(`process_status`) USING BTREE
+            ) ENGINE = InnoDB COMMENT = '第三方平台集成 - 企业微信第三方服务商应用消息通知信息';
+        </sql>
+    </changeSet>
+    <changeSet id="V0.10-20220117-002" author="刘斌华" labels="WeCom">
+        <comment>第三方租户增加授权模式等信息-</comment>
+        <sql>
+            ALTER TABLE `vika_social_tenant`
+            ADD COLUMN `auth_mode` tinyint(2) UNSIGNED NOT NULL DEFAULT 1 COMMENT '授权模式。1：企业授权；2：成员授权' AFTER `contact_auth_scope`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.10-20220117-003" author="刘斌华" labels="WeCom">
+        <comment>第三方租户增加授权模式等信息-</comment>
+        <sql>
+            ALTER TABLE `vika_social_tenant`
+            ADD COLUMN `permanent_code` varchar(256) NULL COMMENT '永久授权码' AFTER `auth_mode`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.10-20220117-004" author="Chambers" labels="widget">
+        <comment>数表组件关联表，增加字段引用来源ID</comment>
+        <sql>
+            ALTER TABLE `vika_datasheet_widget`
+            ADD COLUMN `source_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '小程序引用来源ID，如镜像' AFTER `widget_id`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

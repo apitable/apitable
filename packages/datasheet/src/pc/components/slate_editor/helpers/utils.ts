@@ -1,0 +1,192 @@
+import { Editor, Range, Selection, Node, Element, Location } from 'slate';
+import { ReactEditor } from 'slate-react';
+import _isUrl from 'is-url';
+import { cloneDeep } from 'lodash';
+import { ElementType, LIST_ITEM_TYPE_DICT, IS_WRAP } from '../constant';
+import { IElement } from '../interface/element';
+import { IVikaEditor } from '../interface/editor';
+
+const defaultPoint = {
+  path: [0, 0],
+  offset: 0,
+};
+
+export const defaultSelection = {
+  anchor: cloneDeep(defaultPoint),
+  focus: cloneDeep(defaultPoint),
+};
+
+export const getDefaultSelection = (firstChild: IElement) => {
+  if (!firstChild) {
+    return defaultSelection;
+  }
+  if (IS_WRAP[firstChild.type]) {
+    const point = cloneDeep(defaultPoint);
+    point.path.push(0);
+    return {
+      anchor: point,
+      focus: cloneDeep(point),
+    };
+  }
+  return defaultSelection;
+}; 
+
+export const getValidSelection = (editor: Editor & IVikaEditor) => {
+  // 特别注意！！！
+  // 这里缓存的lastSelection在unwrapNodes时可能会造成通过缓存selection查找节点失败的情况，从而造成crash
+  // 在有需要对节点进行unwrap或者wrap的时候，事先应该主动恢复一下之前的选区
+  return editor.selection || editor.lastSelection || getDefaultSelection(editor.children[0] as IElement);
+};
+
+export const getCurrentElement = (editor, location?: Location) => {
+  const selection = location || getValidSelection(editor) as Selection;
+  const path = !selection ? 
+    [0, 0] : Range.isRange(selection) ?
+      [...selection.focus.path] : Array.isArray(selection) ?
+        [...selection, 0] : [...selection.path, 0];
+  // 最后一个路径为叶子文本节点，需移除
+  path.pop();
+  try {
+    let ele = Node.get(editor, path);
+    while (ele && path.length && !Editor.isBlock(editor, ele)) {
+      path.pop();
+      ele = Node.get(editor, path);
+    }
+    return ele as IElement;
+  } catch (error) {
+    return editor as IElement;
+  }
+  
+};
+
+export const getParentElement = (editor: ReactEditor, curElement: IElement) => {
+  try {
+    const curElementPath = ReactEditor.findPath(editor, curElement);
+    return Node.parent(editor, curElementPath);
+  } catch (error) {
+    return null;
+  }
+};
+
+export const getValidElementType = (editor: ReactEditor, curElement: IElement) => {
+  if (!curElement) {
+    return ElementType.PARAGRAPH;
+  }
+
+  const curType = curElement.type;
+  if (LIST_ITEM_TYPE_DICT[curType]) {
+    const parent = getParentElement(editor, curElement);
+    return parent ? getValidElementType(editor, parent as IElement) : ElementType.PARAGRAPH;
+  }
+
+  return curType;
+};
+
+export const isBlockActive = (editor: Editor, blockType) => {
+  try {
+    const [match] = Editor.nodes(editor, {
+      match: n =>
+        !Editor.isEditor(n) && Element.isElement(n) && (n as IElement).type === blockType,
+      at: getValidSelection(editor),
+    });
+  
+    return !!match;
+    
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
+export const getMarkValue = (editor: Editor, mark: string) => {
+  try {
+    const marks = Editor.marks(editor);
+    return marks && marks[mark];
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
+export const isMarkActive = (editor: Editor, mark: string, value: string | number | boolean = true) => {
+  const markValue = getMarkValue(editor, mark);
+  return markValue ? markValue === value : false;
+};
+
+export const isUrl = _isUrl;
+
+export const isImage = (str: string) => {
+  if (!isUrl(str)) {
+    return false;
+  }
+  return /\.(png|jpg|jpeg|svg|gif|bmp|webp)$/i.test(str);
+};
+
+export interface ICalcPositionOption {
+  anchor: DOMRect,
+  popup: DOMRect,
+  offset?: { x: number, y: number }
+  align?: ['left' | 'center' | 'right', 'top' | 'middle' | 'bottom']
+}
+
+export const getValidPopupPosition = ({
+  anchor,
+  popup,
+  offset = { x: 0, y: 0 },
+  align = ['right', 'top']
+}: ICalcPositionOption) => {
+  const [alh, alv] = align;
+  const { top: at, left: al, height: ah, width: aw } = anchor;
+  let { width: pw, height: ph } = popup;
+  const { x: ox, y: oy } = offset;
+  const wh = window.innerHeight;
+  const ww = window.innerWidth;
+  let top = at + oy, left = al + ox;
+  if (alh === 'center') {
+    pw /= 2;
+    left = al - pw + aw / 2;
+  }
+  if (alv === 'middle') {
+    ph /= 2;
+    top -= ph;
+  }
+  if (alv === 'bottom') {
+    top += ah;
+  }
+  if (left + pw > ww || alh === 'left') {
+    left = al - ox - pw;
+  }
+  if (left < 0) {
+    left = 0;
+  }
+  if (top + ph > wh) {
+    top = at - oy - ph;
+  }
+  if (top < 0) {
+    top = 0;
+  }
+  return { left, top };
+};
+
+export const getImgData = (file: File, url) => {
+  return {
+    name: file.name,
+    url,
+    type: file.type,
+    size: file.size
+  };
+};
+
+export const getValidUrl = (str: string) => {
+  // encode一下url, 防止特殊符号识别错误
+  if (isUrl(encodeURI(str)) || str.startsWith('/')) {
+    return str;
+  }
+  return `https://${str}`;
+};
+
+export const elementIsEmpty = (element: IElement) => {
+  const eleString = Node.string(element);
+  const hasVoidChild = element.children.find((child) => (child as IElement).isVoid);
+  return !hasVoidChild && !eleString;
+};

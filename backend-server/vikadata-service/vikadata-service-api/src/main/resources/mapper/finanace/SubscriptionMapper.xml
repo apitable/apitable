@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.finance.mapper.SubscriptionMapper">
+    <select id="selectBySubscriptionId"
+            resultType="com.vikadata.entity.SubscriptionEntity">
+        SELECT *
+        FROM vika_billing_subscription
+        WHERE subscription_id = #{subscriptionId}
+          AND is_deleted = 0
+    </select>
+
+    <select id="selectBySubscriptionIds"
+            resultType="com.vikadata.entity.SubscriptionEntity">
+        SELECT *
+        FROM vika_billing_subscription
+        WHERE subscription_id IN
+        <foreach item="item" index="index" collection="subscriptionIds" open="("
+                 separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectByBundleId"
+            resultType="com.vikadata.entity.SubscriptionEntity">
+        SELECT *
+        FROM vika_billing_subscription
+        WHERE bundle_id = #{bundleId}
+          AND is_deleted = 0
+    </select>
+
+    <select id="selectByBundleIds"
+            resultType="com.vikadata.entity.SubscriptionEntity">
+        SELECT *
+        FROM vika_billing_subscription
+        WHERE bundle_id IN
+        <foreach item="item" index="index" collection="bundleIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectByBundleIdAndState"
+            resultType="com.vikadata.entity.SubscriptionEntity">
+        SELECT *
+        FROM vika_billing_subscription
+        WHERE bundle_id = #{bundleId}
+          AND state = #{state.name}
+          AND is_deleted = 0
+    </select>
+
+    <update id="updateIsDeletedBySubscriptionIds">
+        UPDATE vika_billing_subscription
+        SET is_deleted = #{isDeleted}
+        WHERE subscription_id IN
+        <foreach item="item" index="index" collection="subscriptionIds" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <resultMap id="spaceSubscriptionDto" type="com.vikadata.api.modular.space.model.SpaceSubscriptionDto">
+        <result column="product_category" property="productCategory"/>
+        <result column="plan_id" property="planId"/>
+        <result column="metadata" property="metadata"/>
+        <result column="expire_date" property="expireTime"/>
+    </resultMap>
+
+    <select id="selectUnExpireCapacityBySpaceId" resultMap="spaceSubscriptionDto">
+        SELECT product_category, plan_id, metadata, expire_date
+        FROM vika_billing_subscription
+        WHERE space_id = #{spaceId}
+          AND state = #{state.name}
+          AND TIMESTAMPDIFF(SECOND,NOW(), expire_date) >= 0
+          AND is_deleted = 0
+    </select>
+
+    <select id="selectExpireCapacityBySpaceId" resultMap="spaceSubscriptionDto">
+        SELECT product_category, plan_id, metadata, expire_date
+        FROM vika_billing_subscription
+        WHERE space_id = #{spaceId}
+          AND TIMESTAMPDIFF(SECOND,NOW(), expire_date) &lt; 0
+          AND is_deleted = 0
+    </select>
+
+    <select id="selectUnExpireGiftCapacityBySpaceId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM vika_billing_subscription
+        WHERE space_id = #{spaceId}
+          AND plan_id = #{planId}
+          AND state = #{state.name}
+          AND TIMESTAMPDIFF(SECOND,NOW(), expire_date) >= 0
+          AND is_deleted = 0
+    </select>
+
+    <select id="selectUnExpireBaseProductBySpaceId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM vika_billing_subscription
+        WHERE space_id = #{spaceId}
+          AND product_category = #{category.name}
+          AND state = #{state.name}
+          AND TIMESTAMPDIFF(SECOND,NOW(), expire_date) >= 0
+          AND is_deleted = 0
+    </select>
+</mapper>

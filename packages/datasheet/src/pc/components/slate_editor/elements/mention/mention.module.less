@@ -1,0 +1,16 @@
+@import '../../styles/var.less';
+
+.wrap {
+  display: inline-block;
+  font-size: 12px;
+  cursor: pointer;
+  margin: 0 4px;
+  .mention {
+    display: inline-block;
+    position: relative;
+    top: 4px;
+    &[contentEditable="true"] {
+      user-select: none !important;
+    }
+  }
+}

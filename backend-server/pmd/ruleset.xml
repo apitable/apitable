@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<ruleset name="project-pmd"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+    <description>代码检查规则</description>
+    <exclude-pattern>.*/test/.*</exclude-pattern>
+    <exclude-pattern>.*/systemconfig/.*</exclude-pattern>
+    <exclude-pattern>.*/developer/.*</exclude-pattern>
+
+    <!--阿里巴巴 P3C 规范-->
+    <rule ref="rulesets/java/ali-comment.xml">
+        <exclude name="RemoveCommentedCodeRule"/>
+    </rule>
+    <rule ref="rulesets/java/ali-concurrent.xml"/>
+    <rule ref="rulesets/java/ali-constant.xml">
+        <exclude name="UndefineMagicConstantRule"/>
+    </rule>
+    <rule ref="rulesets/java/ali-exception.xml"/>
+    <rule ref="rulesets/java/ali-flowcontrol.xml">
+        <exclude name="AvoidNegationOperatorRule"/>
+    </rule>
+    <rule ref="rulesets/java/ali-naming.xml"/>
+    <rule ref="rulesets/java/ali-oop.xml"/>
+    <rule ref="rulesets/java/ali-orm.xml"/>
+    <rule ref="rulesets/java/ali-other.xml">
+        <exclude name="MethodTooLongRule"/>
+    </rule>
+    <rule ref="rulesets/java/ali-set.xml"/>
+</ruleset>

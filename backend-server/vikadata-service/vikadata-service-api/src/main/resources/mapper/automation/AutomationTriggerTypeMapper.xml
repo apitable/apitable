@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.automation.mapper.AutomationTriggerTypeMapper">
+    <resultMap id="triggerTypeDto" type="com.vikadata.api.modular.automation.model.AutomationTriggerTypeDto">
+        <result column="trigger_type_id" property="triggerTypeId"/>
+        <result column="name" property="name"/>
+        <result column="description" property="description"/>
+        <result column="endpoint" property="endpoint"/>
+        <result column="input_json_schema" property="inputJsonSchema"
+                typeHandler="com.vikadata.api.handler.mybatis.JsonHandler"/>
+        <result column="output_json_schema" property="outputJsonSchema"
+                typeHandler="com.vikadata.api.handler.mybatis.JsonHandler"/>
+        <collection property="service" ofType="com.vikadata.api.modular.automation.model.AutomationServiceDto">
+            <result column="service_id" property="serviceId"/>
+            <result column="service_name" property="name"/>
+            <result column="service_logo" property="logo"/>
+            <result column="service_slug" property="slug"/>
+        </collection>
+    </resultMap>
+
+    <select id="getTriggerType" resultMap="triggerTypeDto">
+        SELECT tt.trigger_type_id,
+               tt.name,
+               tt.description,
+               tt.input_json_schema,
+               tt.output_json_schema,
+               s.service_id,
+               s.name AS service_name,
+               s.logo AS service_logo,
+               s.slug AS service_slug
+        FROM vika_automation_trigger_type tt
+                 JOIN vika_automation_service s ON s.service_id = tt.service_id
+        WHERE tt.trigger_type_id = #{triggerTypeId}
+          AND tt.is_deleted = 0;
+    </select>
+
+
+    <select id="getTriggerTypeByEndpoint" resultType="java.lang.String">
+        SELECT tt.trigger_type_id
+        FROM vika_automation_trigger_type tt
+        WHERE tt.endpoint = #{endpoint}
+          AND tt.is_deleted = 0;
+    </select>
+</mapper>

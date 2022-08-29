@@ -1,0 +1,31 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.8-20211027-001" author="Chambers" labels="node">
+        <comment>节点表增加空间ID索引</comment>
+        <sql>
+            ALTER TABLE `vika_node`
+            ADD INDEX `idx_space_id`(`space_id`) USING BTREE;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.8-20211027-002" author="penglongfeng" labels="automation">
+        <comment>机器人表添加服务商、seq_id和请求唯一编码</comment>
+        <sql>
+            ALTER TABLE `vika_automation_robot`
+                ADD COLUMN `seq_id` varchar(64) NULL COMMENT '请源请求号' AFTER `updated_at`,
+                ADD COLUMN `x_service_token` varchar(128) NULL COMMENT '服务商认证Token' AFTER `seq_id`,
+                ADD UNIQUE INDEX `uk_seq_resource_id`(`seq_id`, `resource_id`) USING BTREE COMMENT '单表机器人创建请求唯一编号';
+        </sql>
+    </changeSet>
+    <changeSet id="V0.8-20211027-003" author="penglongfeng" labels="automation">
+        <comment>机器人动表表增加机器ID索引</comment>
+        <sql>
+            ALTER TABLE `vika_automation_action`
+            ADD INDEX `idx_robot_id`(`robot_id`) USING BTREE COMMENT '机器人ID索引';
+        </sql>
+    </changeSet>
+</databaseChangeLog>

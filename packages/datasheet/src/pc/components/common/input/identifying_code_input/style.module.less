@@ -1,0 +1,23 @@
+@import "~pc/styles/lib_screen.less";
+
+.identifyingCodeInput {
+  display: flex;
+
+  .input {
+    flex: 1;
+    margin-right: 16px;
+  }
+
+  .btn {
+    width: 105px;
+    flex-shrink: 0;
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .identifyingCodeInput {
+    .btn {
+      width: auto;
+    }
+  }
+}
