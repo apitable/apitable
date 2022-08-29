@@ -18,6 +18,7 @@ import com.vikadata.api.model.vo.organization.UnitMemberVo;
 import com.vikadata.api.model.vo.space.MainAdminInfoVo;
 import com.vikadata.api.modular.mapper.ExpandBaseMapper;
 import com.vikadata.api.modular.organization.model.MemberBaseInfoDTO;
+import com.vikadata.api.modular.organization.model.MemberTeamRelDTO;
 import com.vikadata.api.modular.social.model.TenantMemberDto;
 import com.vikadata.entity.MemberEntity;
 
@@ -1023,4 +1024,26 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      * @return SpaceMemberIdDto
      */
     List<SpaceMemberIdDto> selectMemberIdsByUserIdAndSpaceIds(@Param("userId")Long userId, @Param("spaceIds") List<String> spaceIds);
+
+    /**
+     * 根据邮箱和spaceId查找ID
+     *
+     * @param keyword  邮箱关键字
+     * @param spaceId 空间ID
+     * @return ids
+     * @author zoe zheng
+     * @date 2022/8/26 11:23
+     */
+    List<Long> selectIdsBySpaceIdAndEmailKeyword(@Param("keyword") String keyword, @Param("spaceId") String spaceId);
+
+    /**
+     * 查询成员的部门列表
+     *
+     * @param spaceId 空间ID
+     * @param memberIds 成员ID
+     * @return List<MemberTeamRelDTO>
+     * @author zoe zheng
+     * @date 2022/8/26 15:25
+     */
+    List<MemberTeamRelDTO> selectMemberTeamsBySpaceIdAndMemberIds(@Param("spaceId") String spaceId, @Param("memberIds") List<Long> memberIds);
 }

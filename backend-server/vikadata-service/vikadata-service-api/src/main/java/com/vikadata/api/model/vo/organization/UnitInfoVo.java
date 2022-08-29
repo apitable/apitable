@@ -1,6 +1,5 @@
 package com.vikadata.api.model.vo.organization;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
@@ -66,5 +65,8 @@ public class UnitInfoVo {
 
     @ApiModelProperty(value = "成员（member）是否修改过昵称", position = 9)
     private Boolean isMemberNameModified;
+
+    @ApiModelProperty(value = "成员所属部门", example = "技术组 | 美术组", position = 10)
+    private String team;
 
 }

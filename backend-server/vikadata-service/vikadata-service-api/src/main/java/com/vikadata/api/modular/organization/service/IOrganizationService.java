@@ -7,6 +7,7 @@ import com.vikadata.api.model.vo.organization.UnitInfoVo;
 import com.vikadata.api.model.vo.organization.UnitMemberVo;
 import com.vikadata.api.model.vo.organization.UnitSearchResultVo;
 import com.vikadata.api.model.vo.organization.UnitTeamVo;
+import com.vikadata.api.modular.organization.model.LoadSearchDTO;
 
 /**
  * <p>
@@ -80,16 +81,12 @@ public interface IOrganizationService {
      *
      * @param userId    用户ID
      * @param spaceId   空间ID
-     * @param likeWord  搜索词
-     * @param unitIds   组织单元ID 列表
-     * @param filterIds 指定过滤的组织单元ID
-     * @param all       是否加载全部
-     * @param sharer    节点分享者的成员ID
+     * @param params  搜索条件
      * @return UnitInfoVo
      * @author Chambers
      * @date 2020/5/27
      */
-    List<UnitInfoVo> loadOrSearchInfo(Long userId, String spaceId, String likeWord, List<Long> unitIds, List<Long> filterIds, boolean all, Long sharer);
+    List<UnitInfoVo> loadOrSearchInfo(Long userId, String spaceId, LoadSearchDTO params, Long sharer);
 
     /**
      * 精准查询组织单元名称
