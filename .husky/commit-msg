@@ -3,4 +3,4 @@
 
 cd apitable
 
-npm_config_registry=https://registry.npmjs.org npx --no-install commitlint --edit $1
+npx --no-install commitlint --edit $1
