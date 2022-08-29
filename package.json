@@ -48,7 +48,7 @@
     "test:ut:room": "yarn workspace @vikadata/room-server test:ut",
     "clear:cache": "rm -rf ./package/datasheet/node_modules/.cache/hard-source",
     "link:widget": "yarn workspace @vikadata/core link && yarn workspace @vikadata/widget-sdk link && yarn workspace @vikadata/components link && yarn workspace @vikadata/icons",
-    "postinstall": "husky install",
+    "postinstall": "cd .. && husky install apitable/.husky",
     "stylelint:datasheet": "yarn workspace @vikadata/datasheet stylelint",
     "lint": "eslint --fix --ext packages/*/src/**/!(*system_config.interface|strings.interface).{js,ts,tsx}",
     "cy:open": "yarn workspace @vikadata/cypress cy:open",

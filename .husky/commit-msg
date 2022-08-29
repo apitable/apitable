@@ -1,4 +1,6 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+cd apitable
+
 npm_config_registry=https://registry.npmjs.org npx --no-install commitlint --edit $1
