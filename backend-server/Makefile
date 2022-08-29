@@ -44,7 +44,7 @@ _test_clean: ## clean the docker in test step
 
 
 _test_dockers:
-	docker network create test
+	docker network create test || true
 	docker run -d --net test --name test_mysql -e MYSQL_PASSWORD=password -e MYSQL_USER=vika -e MYSQL_DATABASE=vika_dev -e MYSQL_ALLOW_EMPTY_PASSWORD=1 mysql mysqld --sql_mode=IGNORE_SPACE,NO_ENGINE_SUBSTITUTION --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 	docker run -d --net test --name test_redis redis
 	docker run -d --net test --name test_rabbitmq -e RABBITMQ_USERNAME=vika -e RABBITMQ_PASSWORD=password -e RABBITMQ_DEFAULT_USER=vika -e RABBITMQ_DEFAULT_PASS=password rabbitmq:3-management
