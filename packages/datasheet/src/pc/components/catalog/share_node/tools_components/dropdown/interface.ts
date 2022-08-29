@@ -10,11 +10,13 @@ export type DropdownSelectedMode = 'icon' | 'background' | 'check';
 
 export interface IDropdownItem {
   label: string;
-  labelTip?: string;
+  labelTip?: string | ReactNode;
   describe?: string;
   value: string;
   icon?: string | ReactNode;
   extra?: string | ReactNode;
+  disabled?: boolean;
+  [propsname: string]: any;
 }
 
 export interface IDropdown {

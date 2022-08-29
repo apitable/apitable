@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
 
+export type TagType = 'default' | 'warning';
+
 export interface ITag {
   /**
    * 类名
@@ -20,6 +22,11 @@ export interface ITag {
    * 图标
    */
   icon?: ReactNode | string;
+
+  /**
+   * 类型
+   */
+  type?: TagType;
 
   /**
    * 是否可关闭

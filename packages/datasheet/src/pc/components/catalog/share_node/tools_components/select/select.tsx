@@ -26,6 +26,7 @@ export const Select: FC<ISelect> = ({
   // 下拉
   autoWidth,
   dropdownFooter,
+  empty,
 }) => {
   const selectRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -144,6 +145,7 @@ export const Select: FC<ISelect> = ({
         value={value}
         mode='global'
         visible={visible}
+        empty={empty}
         footer={dropdownFooter}
         onClick={handleChange}
         onClose={handleCloseDropdown}

@@ -21,6 +21,7 @@ export const Dropdown: FC<IDropdown> = ({
   divide,
   searchable,
   footer,
+  empty,
   labelInDangerHTML,
   triggerRef,
   autoWidth,
@@ -40,6 +41,9 @@ export const Dropdown: FC<IDropdown> = ({
   const [dropdownStyle, setDropdownStyle] = useState<CSSProperties>();
 
   const handleItemClick = (item: IDropdownItem, e: React.MouseEvent<HTMLDivElement>) => {
+    if (item.disabled) {
+      return;
+    }
     if (onClick) {
       onClick(item, e);
     }
@@ -70,7 +74,7 @@ export const Dropdown: FC<IDropdown> = ({
       }
       setDropdownStyle({ height: height, width: autoWidth ? triggerWidth : 'auto' });
     }
-  }, [innerVisible, triggerRef, scrollRef, searchRef, footerRef, autoWidth, data, mode]);
+  }, [innerVisible, triggerRef, scrollRef, searchRef, footerRef, autoWidth, data, mode, empty]);
 
   useClickAway((e) => {
     if (onClose) {
@@ -81,6 +85,16 @@ export const Dropdown: FC<IDropdown> = ({
   const renderIcon = (icon: string | ReactNode) => {
     const iconEle = typeof icon === 'string' ? <img src={icon} alt="" /> : icon;
     return <div className={styles.dropdownIcon}>{iconEle}</div>;
+  };
+
+  const renderEmpty = () => {
+    if (data.length !== 0) {
+      return null;
+    }
+    if (empty) {
+      return empty;
+    }
+    return <div>数据为空</div>;
   };
 
   const isCommon = mode === 'common';
@@ -118,7 +132,10 @@ export const Dropdown: FC<IDropdown> = ({
               <>
                 <div
                   key={`${item.value}_${item.label}`}
-                  className={cls(styles.dropdownItem, { [styles.dropdownItemSelected]: Boolean(selectedItem) })}
+                  className={cls(styles.dropdownItem, {
+                    [styles.dropdownItemSelected]: Boolean(selectedItem),
+                    [styles.dropdownItemDisabled]: item.disabled,
+                  })}
                   onClick={(e) => handleItemClick(item, e)}
                 >
                   {selectedMode === 'check' && (
@@ -144,6 +161,8 @@ export const Dropdown: FC<IDropdown> = ({
             );
           })
         }
+
+        {renderEmpty()}
       </div>
       {footer && (
         <div className={styles.dropdownFooter} ref={footerRef}>

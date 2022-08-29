@@ -12,6 +12,7 @@ export const Tag: FC<ITag> = ({
   closable,
   icon,
   color,
+  type = 'default',
   className,
   childrenInDangerHTML,
   onClose,
@@ -31,7 +32,8 @@ export const Tag: FC<ITag> = ({
   return (
     <span className={cls({
       [styles.tag]: true,
-      [styles.tagDefault]: !color,
+      [styles.tagDefault]: type === 'default' && !color,
+      [styles.tagWarning]: type === 'warning' && !color
     }, className)}>
       {renderIcon(icon)}
       {childrenInDangerHTML ? <div dangerouslySetInnerHTML={{ __html: (children as string) }} /> : <span>{children}</span>}

@@ -1,5 +1,7 @@
 @import "~pc/styles/lib_screen.less";
 
+@textColor: var(--textCommonPrimary);
+
 .dropdownGlobal {
   position: fixed;
   z-index: 10001;
@@ -29,7 +31,7 @@
     z-index: -1;
   }
 
-  &.realVisible {
+  &.dropdownRealClose {
     display: none;
   }
 }
@@ -44,8 +46,22 @@
     display: flex;
     align-items: center;
 
-    &:hover {
+    &:hover:not(.dropdownItemDisabled) {
       background-color: var(--bgBglessHover);
+    }
+
+    // 禁用
+    &.dropdownItemDisabled {
+      cursor: default;
+      .dropdownItemContent {
+        .dropdownItemLabelText {
+          opacity: 0.5;
+        }
+  
+        .dropdownItemDescribe {
+          opacity: .5;
+        }
+      }
     }
 
     // 图标区域
@@ -70,8 +86,17 @@
       flex: 1;
       overflow: hidden;
 
-      .dropdownItemLabelText {
-        color: var(--textCommonPrimary);
+      .dropdownItemLabel {
+        display: flex;
+        align-items: center;
+
+        .dropdownItemLabelText {
+          color: var(--textCommonPrimary);
+        }
+
+        .dropdownItemLabelTip {
+          margin-left: 4px;
+        }
       }
 
       .dropdownItemDescribe {

@@ -3,7 +3,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useRequest } from 'ahooks';
 
 import RcTrigger from 'rc-trigger';
-import { Popover } from 'antd';
+import { Popover, Tooltip } from 'antd';
 
 import { Api, IReduxState, IShareSettings, StoreActions, Strings, t } from '@vikadata/core';
 import { Switch, Typography } from '@vikadata/components';
@@ -18,7 +18,7 @@ import ComponentDisplay, { ScreenSize } from 'pc/components/common/component_dis
 import { Popup } from 'pc/components/common/mobile/popup';
 
 import { ShareLink } from '../share/share_link';
-import { Dropdown } from '../tools_components';
+import { Dropdown, IDropdownItem } from '../tools_components';
 import { DownloadQrCode } from './download_qr_code';
 
 import styles from './style.module.less';
@@ -44,6 +44,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
     userInfo: state.user.info,
     mirrorId: state.pageParams.mirrorId
   }), shallowEqual);
+  const isShareMirror = nodeId.startsWith('mir');
 
   const handleUpdateShareStatus = (status: boolean) => {
     dispatch(StoreActions.updateTreeNodesMap(nodeId, { nodeShared: status }));
@@ -54,6 +55,9 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
     dispatch(StoreActions.updateDatasheet(nodeId, { nodeShared: status }));
   };
 
+  /**
+   * 设置分享权限
+   */
   const handleUpdateShare = (permission: { onlyRead?: boolean, canBeEdited?: boolean, canBeStored?: boolean }) => {
     const onOk = () => Api.updateShare(nodeId, permission).then(res => {
       const { success } = res.data;
@@ -107,7 +111,9 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
     onOk();
   };
 
-  // 关闭分享
+  /**
+   * 关闭分享
+   */
   const handleCloseShare = () => {
     if (!shareSettings) {
       return;
@@ -158,30 +164,52 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
     copy2clipBoard(inviteLink);
   };
 
+  /**
+   * 打开移动端的二维码
+   */
   const handleOpenQrCode = () => {
     if (isMobile) {
       setQrCodeVisible(true);
     }
   }; 
 
-  const Permission = [{
-    value: 'can_view',
+  /**
+   * open share's auth-dropdown
+   */
+  const handleShareAuthClick = (option: IDropdownItem) => {
+    handleUpdateShare({ [option.value]: true });
+  };
+
+  const Permission: IDropdownItem[] = [{
+    value: 'onlyRead',
     label: t(Strings.can_view),
     describe: t(Strings.share_only_desc),
+    disabled: true,
   }, {
-    value: 'can_edit',
+    value: 'canBeEdited',
     label: t(Strings.can_edit),
     describe: t(Strings.share_and_editable_desc),
+    disabled: Boolean(isShareMirror)
   }, {
-    value: 'can_duplicate',
+    value: 'canBeStored',
     label: t(Strings.can_duplicate),
     describe: t(Strings.share_and_save_desc),
+    disabled: Boolean(isShareMirror)
   }];
+  
+  let value = '';
+  if (shareSettings) {
+    const { canBeEdited, onlyRead } = shareSettings.props;
+    value = onlyRead ? 'onlyRead' :
+      canBeEdited ? 'canBeEdited' :
+        'canBeStored';
+  }
+  const shareTitle = !value ? t(Strings.not_shared) : Permission.filter((v) => v.value === value)[0].label;
 
   const renderAuth = () => {
     const element = (
       <Typography variant='body2' className={styles.sharePersonAuth} onClick={handleToggleAuthInMobile}>
-        <span>{t(Strings.can_edit)}</span>
+        <span>{shareTitle}</span>
         <ChevronDownOutlined size={16} />
       </Typography>
     );
@@ -192,7 +220,12 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
       <RcTrigger
         action="click"
         popup={(
-          <Dropdown mode='common' data={Permission} value={['share_and_editable_title']} />
+          <Dropdown
+            mode='common'
+            data={Permission}
+            value={[value]}
+            onClick={handleShareAuthClick}
+          />
         )}
         destroyPopupOnHide
         popupAlign={{
@@ -210,7 +243,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
   const renderPopover = () => {
     return (
       <div className={styles.qrCodePopoverContent} id="downloadInviteContainer">
-        <DownloadQrCode idMobile={isMobile} url={inviteLink} width={188} />
+        <DownloadQrCode isMobile={isMobile} url={inviteLink} width={188} />
       </div>
     );
   };
@@ -246,10 +279,12 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
       )}
       <div className={styles.inviteMore}>
         <Typography className={styles.inviteMoreTitle} variant='body3'>{t(Strings.more_invite_ways)}：</Typography>
-        <Typography className={styles.inviteMoreMethod} variant='body3' onClick={handleCopyInviteLink}>
-          <ColumnUrlOutlined />
-          <span>{t(Strings.invite_via_link)}</span>
-        </Typography>
+        <Tooltip title={t(Strings.default_link_join_tip)} placement="top" overlayStyle={{ width: 190 }}>
+          <Typography className={styles.inviteMoreMethod} variant='body3' onClick={handleCopyInviteLink}>
+            <ColumnUrlOutlined />
+            <span>{t(Strings.invite_via_link)}</span>
+          </Typography>
+        </Tooltip>
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
           <Popover overlayClassName={styles.qrCodePopover} placement="rightBottom" title={null} content={renderPopover()} trigger="click">
             {renderInviteByQrCode()}
@@ -268,7 +303,14 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
           destroyOnClose
           className={styles.sharePersonAuthMobile}
         >
-          <Dropdown mode='common' selectedMode="check" divide data={Permission} value={['edit']} />
+          <Dropdown
+            mode='common'
+            selectedMode="check"
+            divide
+            data={Permission}
+            value={[value]}
+            onClick={handleShareAuthClick}
+          />
         </Popup>
         <Modal
           closable={false}
@@ -285,7 +327,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
           <div className={styles.qrCodeCloseIcon} onClick={() => setQrCodeVisible(false)}>
             <CloseMiddleOutlined size={16} />
           </div>
-          <DownloadQrCode url={inviteLink} width={242} />
+          <DownloadQrCode isMobile={isMobile} url={inviteLink} width={242} />
         </Modal>
       </ComponentDisplay>
     </>

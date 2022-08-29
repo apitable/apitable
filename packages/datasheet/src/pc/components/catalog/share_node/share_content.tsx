@@ -4,19 +4,22 @@ import cls from 'classnames';
 
 import RcTrigger from 'rc-trigger';
 import { useDebounceFn } from 'ahooks';
+import Image from 'next/image';
 
-import { ConfigConstant, INodeRoleMap, IReduxState, StoreActions, Strings, t } from '@vikadata/core';
+import { /*Api, */ConfigConstant, IInviteMemberList, INodeRoleMap, IReduxState/*, isEmail*/, StoreActions, Strings, t } from '@vikadata/core';
 import { Button, stopPropagation, Typography } from '@vikadata/components';
 import { InformationSmallOutlined, AddOutlined, ChevronDownOutlined, ChevronRightOutlined } from '@vikadata/icons';
 
 import { NodeChangeInfoType, useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
+import { execNoTraceVerification } from 'pc/utils';
 import { useInviteRequest } from 'pc/hooks/use_invite_request';
 import ComponentDisplay, { ScreenSize } from 'pc/components/common/component_display/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
-import { Avatar } from 'pc/components/common';
+import { Avatar, Message } from 'pc/components/common';
 import { Tooltip } from 'pc/components/common/tooltip';
+import NotDataImg from 'static/icon/common/common_img_search_default.png';
 
-import { Select, Dropdown, ISelectItem } from './tools_components';
+import { Select, Dropdown, /*ISelectItem, Tag,  */IDropdownItem } from './tools_components';
 import { PublicShareInviteLink } from './public_link';
 import { MembersDetail } from '../permission_settings/permission/members_detail';
 
@@ -67,6 +70,10 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [keyword, setKeyword] = useState('');
   const [membersValue, setMembersValue] = useState<string[]>([]);
+  const [memberList/*, setMemberList*/] = useState<IDropdownItem[]>([]);
+  // const [extraMemberList, setExtraMemberList] = useState<IDropdownItem[]>([]);
+  const [isEmpty/*, setIsEmpty*/] = useState(false);
+  const [footerTip/*, setFooterTip*/] = useState(false);
   const [inviteLink, setInviteLink] = useState<string>('');
 
   const dispatch = useDispatch();
@@ -77,10 +84,12 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
     userInfo: state.user.info,
   }));
   const { getNodeRoleListReq, searchUnitReq } = useCatalogTreeRequest();
-  const { generateLinkReq, linkListReq } = useInviteRequest();
+  const { generateLinkReq, linkListReq, sendInviteReq } = useInviteRequest();
   const { run: getNodeRoleList, data: roleList } = useRequest<INodeRoleMap>(() => getNodeRoleListReq(data.nodeId));
-  const { run: searchUnit, data: searchUnitData } = useRequest<ISearchUnit>(searchUnitReq, { manual: true });
+  const { run: searchUnit/*, data: searchUnitData*/ } = useRequest<ISearchUnit>(searchUnitReq, { manual: true });
+  // const { run: searchMember } = useRequest(Api.searchTeamAndMember, { manual: true });
   const { run: search } = useDebounceFn(searchUnit, { wait: 100 });
+  const { run: sendInvite } = useRequest(sendInviteReq, { manual: true });
 
   /**
    * 打开邀请成员的权限弹窗
@@ -144,19 +153,80 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
     generateInviteLinkByNewToken();
   };
 
+  /**
+   * 发送邀请邮件
+   */
+  const sendInviteEmail = async(nvcVal?: string) => {
+    if (membersValue.length === 0) {
+      return;
+    }
+    const waitInviteMembers: IInviteMemberList[] = [];
+    for (let i = 0; i < membersValue.length; i++) {
+      const val = membersValue[i];
+      const member = memberList.find((item) => item.value === val);
+      // 成员不存在，但是却存在值，认为是站外邮箱
+      waitInviteMembers.push({ email: member?.email || val, teamId: member?.teamId || -1 });
+      
+    }
+    const success = await sendInvite(waitInviteMembers, data.nodeId, nvcVal);
+    if (success) {
+      Message.success({ content: t(Strings.invite_success) });
+    }
+  };
+
+  /**
+   * 添加邀请
+   */
+  const handleAddInvitePerson = () => {
+    window['nvc'] ? execNoTraceVerification(sendInviteEmail) : sendInviteEmail();
+  };
+
   useEffect(() => {
     search(keyword);
-  }, [keyword]);
+  }, [keyword, search]);
 
   useEffect(() => {
     if (socketData && socketData.type === NodeChangeInfoType.UpdateRole) {
       getNodeRoleList();
     }
-  }, [socketData]);
+  }, [socketData, getNodeRoleList]);
 
   useEffect(() => {
     fetchInviteLinkList();
-  }, []);
+  }, [fetchInviteLinkList]);
+
+  // useEffect(() => {
+  // let memberListResult: IDropdownItem[] = [];
+  // 存在搜索关键词
+  // if (keyword) {
+  // memberListResult = searchUnitData?.members.map((v) => {
+  //   return {
+  //     label: v.memberName,
+  //     icon: <Avatar src={v.avatar} id={v.memberId} title={v.originName} />,
+  //     value: v.memberId,
+  //     describe: v.teams,
+  //     email: v.email,
+  //     // teamId: v.teamId,
+  //   };
+  // }) || [];
+  // const validEmail = isEmail(keyword);
+
+  // // 验证为邮箱，且不存在于搜索结果中
+  // const canInvite = validEmail && memberListResult.findIndex((v) => v.email === keyword) < 0;
+  // if (canInvite) {
+  //   memberListResult.push({
+  //     label: keyword,
+  //     icon: <Avatar id={keyword} title={keyword} />,
+  //     value: keyword,
+  //     email: keyword,
+  //     // teamId: -1
+  //     labelTip: <Tag type='warning'>{t(Strings.pending_invite)}</Tag>,
+  //   });
+  // }
+  // setIsEmpty(!canInvite);
+  // }
+  // keyword 在下拉中不存在或者为空时，检查 value 中是否存在不在搜索数据中的，不在搜索数据中的需要手动补充到 memberList 中
+  // }, [keyword, searchUnitData]);
 
   const renderSuffix = () => {
     const element = (
@@ -187,14 +257,29 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
     );
   };
 
-  const members: ISelectItem[] = searchUnitData?.members.map((v) => {
-    return {
-      label: v.memberName,
-      icon: <Avatar src={v.avatar} id={v.memberId} title={v.originName} />,
-      value: v.memberId,
-      describe: v.teams,
-    };
-  }) || [];
+  const renderEmpty = () => {
+    if (isEmpty) {
+      return (
+        <div className={styles.shareInviteEmpty}>
+          <Image src={NotDataImg} alt={t(Strings.no_search_result)} width={160} height={120} />
+          <Typography variant="body4" className={styles.shareInviteEmptyText}>
+            {t(Strings.invite_empty_tip)}
+          </Typography>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const renderFooter = () => {
+    if (isEmpty) {
+      return null;
+    }
+    if (footerTip) {
+      return <div>{t(Strings.empty_email_tip)}</div>;
+    }
+    return <div className={styles.shareMoreInvitor}>{t(Strings.see_more)}</div>;
+  };
 
   return (
     <>
@@ -206,7 +291,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
         <div className={cls(styles.shareFloor, styles.shareInvite)}>
           <Select
             wrapClassName={styles.shareInviteWrap}
-            data={members}
+            data={memberList}
             labelInDangerHTML
             autoWidth
             value={membersValue}
@@ -214,10 +299,11 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
             prefix={<div className={styles.shareInvitePrefix}><AddOutlined size={16} /></div>}
             suffix={renderSuffix()}
             onSearch={handleSearch}
-            dropdownFooter={<div className={styles.shareMoreInvitor}>{t(Strings.see_more)}</div>}
+            dropdownFooter={renderFooter()}
             onChange={handleChange}
+            empty={renderEmpty()}
           />
-          <Button color='primary'>{t(Strings.add)}</Button>
+          <Button onClick={handleAddInvitePerson} color='primary'>{t(Strings.add)}</Button>
         </div>
         <div className={cls(styles.shareFloor, styles.collaborator)}>
           <div className={styles.collaboratorStatus} onClick={() => setDetailModalVisible(true)}>
@@ -238,7 +324,11 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
               {t(Strings.collaborator_number, { number: roleList?.members.length })}
             </Typography>
           </div>
-          <Typography variant='body3' className={styles.collaboratorAuth} onClick={() => dispatch(StoreActions.updatePermissionModalNodeId(data.nodeId))}>
+          <Typography
+            variant='body3'
+            className={styles.collaboratorAuth}
+            onClick={() => dispatch(StoreActions.updatePermissionModalNodeId(data.nodeId))}
+          >
             <span>{t(Strings.setting_permission)}</span>
             <ChevronRightOutlined />
           </Typography>
