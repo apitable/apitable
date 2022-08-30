@@ -28,7 +28,7 @@ pluginManagement {
   }
 }
 
-rootProject.name = 'vikadata-master'
+rootProject.name = 'vikadata-backend'
 
 include 'init-db'
 
