@@ -146,6 +146,7 @@ test-ut-room-local:
     export INSTANCE_COUNT=1
     export APPLICATION_NAME=TEST_NEST_REST_SERVER
 test-ut-room-local:
+	docker-compose -f docker-compose-unit-test.yml down || true
 ifeq ($(sikp-initdb),false)
 	make _test_initdb
 endif
@@ -156,6 +157,7 @@ endif
 
 test-ut-room-docker:
 	@echo "${LIGHTPURPLE}$$(docker-compose --version)${RESET}"
+	docker-compose -f docker-compose-unit-test.yml down  || true
 ifeq ($(sikp-initdb),false)
 	make _test_initdb
 endif
