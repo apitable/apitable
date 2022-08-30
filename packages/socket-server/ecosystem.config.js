@@ -7,8 +7,8 @@ module.exports = {
   apps: [
     {
       name: 'socket',
-      script: 'dist/main.js',
-      cwd: '',
+      script: './dist/main.js',
+      cwd: 'packages/socket-server',
       // 基于内存重启
       max_memory_restart: maxMemoryRestart,
       log_date_format: 'YYYY-MM-DD HH:mm:ss',
