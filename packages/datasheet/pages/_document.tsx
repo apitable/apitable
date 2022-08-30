@@ -28,7 +28,7 @@ class MyDocument extends Document<{ clientInfo: IClientInfo }> {
           <link rel='manifest' href={`${publicRuntimeConfig.staticFolder}/manifest.json`} />
           <script src={`${publicRuntimeConfig.staticFolder}/file/js/browser_check.2.js`} async/>
         </Head>
-        <body className={classNames({ 'lang-en' : clientInfo?.locale === 'en-US' })}>
+        <body>
           <Main />
           <NextScript />
           <Script src='https://g.alicdn.com/AWSC/AWSC/awsc.js' strategy={'beforeInteractive'} />
