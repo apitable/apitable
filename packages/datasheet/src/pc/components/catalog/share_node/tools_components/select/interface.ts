@@ -52,9 +52,9 @@ export interface ISelect {
   labelInDangerHTML?: boolean;
 
   /**
-   * 自定义渲染
+   * 自定义渲染值
    */
-  renderItem?: (item: ISelectItem) => JSX.Element;
+  renderValue?: () => React.ReactNode;
 
   /**
    *  搜索回调
@@ -64,7 +64,7 @@ export interface ISelect {
   /**
    * 下拉值改变回调
    */
-  onChange?: (value: string[], option: IDropdownItem, e: React.MouseEvent<HTMLElement>) => void;
+  onChange?: (value: string[], option: ISelectItem, e: React.MouseEvent<HTMLElement>) => void;
 
   // -------下拉-------
   /**
@@ -91,4 +91,9 @@ export interface ISelect {
    * 空数据
    */
   empty?: ReactNode;
+
+  /**
+   * 自定义渲染
+   */
+  renderItem?: (item: ISelectItem) => JSX.Element;
 }

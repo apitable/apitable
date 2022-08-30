@@ -74,7 +74,7 @@ export const Dropdown: FC<IDropdown> = ({
       }
       setDropdownStyle({ height: height, width: autoWidth ? triggerWidth : 'auto' });
     }
-  }, [innerVisible, triggerRef, scrollRef, searchRef, footerRef, autoWidth, data, mode, empty]);
+  }, [innerVisible, triggerRef, scrollRef, searchRef, footerRef, autoWidth, data, value, mode, empty]);
 
   useClickAway((e) => {
     if (onClose) {
@@ -106,77 +106,79 @@ export const Dropdown: FC<IDropdown> = ({
   });
 
   const renderNode = (
-    <div
-      className={cls(styles.dropdownWrap, positionCls)}
-      ref={popupRef}
-      style={dropdownStyle}
-    >
-      {searchable && (
-        <div className={styles.dropdownSearch} ref={searchRef}>
-          <input type="text" />
-        </div>
-      )}
-      <div className={cls(styles.dropdown)} ref={scrollRef}>
-        {
-          data.map((item, i) => {
-            const selectedItem = value.find((v) => item.value === v);
-            if (renderItem) {
-              return renderItem(item);
-            }
+    <>
+      <div
+        className={cls(styles.dropdownWrap, positionCls)}
+        ref={popupRef}
+        style={dropdownStyle}
+      >
+        {searchable && (
+          <div className={styles.dropdownSearch} ref={searchRef}>
+            <input type="text" />
+          </div>
+        )}
+        <div className={cls(styles.dropdown)} ref={scrollRef}>
+          {
+            data.map((item, i) => {
+              const selectedItem = value.find((v) => item.value === v);
+              if (renderItem) {
+                return renderItem(item);
+              }
 
-            const labelEle = labelInDangerHTML ?
-              <div className={styles.dropdownItemLabelText} dangerouslySetInnerHTML={{ __html: item.label }} /> :
-              <Typography variant='body2' className={styles.dropdownItemLabelText}>{item.label}</Typography>;
+              const labelEle = labelInDangerHTML ?
+                <div className={styles.dropdownItemLabelText} dangerouslySetInnerHTML={{ __html: item.label }} /> :
+                <Typography variant='body2' className={styles.dropdownItemLabelText}>{item.label}</Typography>;
 
-            return (
-              <>
-                <div
-                  key={`${item.value}_${item.label}`}
-                  className={cls(styles.dropdownItem, {
-                    [styles.dropdownItemSelected]: Boolean(selectedItem),
-                    [styles.dropdownItemDisabled]: item.disabled,
-                  })}
-                  onClick={(e) => handleItemClick(item, e)}
-                >
-                  {selectedMode === 'check' && (
-                    <div className={styles.dropdownItemCheckSelected} />
-                  )}
-                  {renderIcon(item.icon)}
-                  <div className={styles.dropdownItemContent}>
-                    <div className={styles.dropdownItemLabel}>
-                      {labelEle}
-                      {item.labelTip && <div className={styles.dropdownItemLabelTip}>{item.labelTip}</div>}
+              return (
+                <>
+                  <div
+                    key={`${item.value}_${item.label}`}
+                    className={cls(styles.dropdownItem, {
+                      [styles.dropdownItemSelected]: Boolean(selectedItem),
+                      [styles.dropdownItemDisabled]: item.disabled,
+                    })}
+                    onClick={(e) => handleItemClick(item, e)}
+                  >
+                    {selectedMode === 'check' && (
+                      <div className={styles.dropdownItemCheckSelected} />
+                    )}
+                    {renderIcon(item.icon)}
+                    <div className={styles.dropdownItemContent}>
+                      <div className={styles.dropdownItemLabel}>
+                        {labelEle}
+                        {item.labelTip && <div className={styles.dropdownItemLabelTip}>{item.labelTip}</div>}
+                      </div>
+                      {item.describe && <Typography variant='body4' className={styles.dropdownItemDescribe}>{item.describe}</Typography>}
                     </div>
-                    {item.describe && <Typography variant='body4' className={styles.dropdownItemDescribe}>{item.describe}</Typography>}
+                    {item.extra && <div className={styles.dropdownItemExtra}>{item.extra}</div>}
+                    {selectedMode === 'icon' && (
+                      <div className={styles.dropdownItemIconSelected}>
+                        <SelectOutlined />
+                      </div>
+                    )}
                   </div>
-                  {item.extra && <div className={styles.dropdownItemExtra}>{item.extra}</div>}
-                  {selectedMode === 'icon' && (
-                    <div className={styles.dropdownItemIconSelected}>
-                      <SelectOutlined />
-                    </div>
-                  )}
-                </div>
-                {divide && i !== data.length - 1 && <div className={styles.dropdownDivide} />}
-              </>
-            );
-          })
-        }
+                  {divide && i !== data.length - 1 && <div className={styles.dropdownDivide} />}
+                </>
+              );
+            })
+          }
 
-        {renderEmpty()}
-      </div>
-      {footer && (
-        <div className={styles.dropdownFooter} ref={footerRef}>
-          {footer}
+          {renderEmpty()}
         </div>
-      )}
-    </div>
+        {footer && (
+          <div className={styles.dropdownFooter} ref={footerRef}>
+            {footer}
+          </div>
+        )}
+      </div>
+      {hoverElement && visible && <div>{hoverElement}</div>}
+    </>
   );
 
   if (mode === 'global') {
     const containerNode = (
       <div style={globalStyle} className={styles.dropdownGlobal}>
         {renderNode}
-        {hoverElement && visible && <div>{hoverElement}</div>}
       </div>
     );
     return ReactDOM.createPortal(containerNode, document.body);
@@ -186,7 +188,6 @@ export const Dropdown: FC<IDropdown> = ({
     return (
       <div className={styles.dropdownLocal}>
         {renderNode}
-        {hoverElement && visible && <div>{hoverElement}</div>}
       </div>
     );
   }

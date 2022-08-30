@@ -22,6 +22,7 @@ export const Select: FC<ISelect> = ({
   labelInDangerHTML,
   onSearch,
   onChange,
+  renderValue,
 
   // 下拉
   autoWidth,
@@ -87,7 +88,11 @@ export const Select: FC<ISelect> = ({
       setWidth(keywordRef.current.scrollWidth || 5);
   }, [keyword]);
 
-  const renderValue = () => {
+  const renderSelectValue = () => {
+    if (renderValue) {
+      return renderValue();
+    }
+
     if (mode === 'tag' || mode === 'multiple') {
       return value.map((v) => {
         const res = data.find((item) => item.value === v);
@@ -123,8 +128,8 @@ export const Select: FC<ISelect> = ({
       >
         {prefix && <div className={styles.selectPrefix}>{prefix}</div>}
         <div className={styles.selectContent}>
-          {placeholder && value.length === 0 && width <= 5 && <div className={styles.selectPlaceholder}>{placeholder}</div>}
-          {renderValue()}
+          {placeholder && value.length === 0 && !keyword && width <= 5 && <div className={styles.selectPlaceholder}>{placeholder}</div>}
+          {renderSelectValue()}
           <input
             style={{ width }}
             type="text"

@@ -89,5 +89,19 @@ export const useInviteRequest = () => {
     });
   };
 
-  return { linkListReq, readTeamReq, getSubTeamsReq, generateLinkReq, deleteLinkReq, sendInviteReq };
+  /**
+   * 搜索成员和小组
+   * @param keyword 关键词
+   */
+  const fetchTeamAndMember = (keyword: string) => {
+    return Api.searchTeamAndMember(keyword).then(res => {
+      const { success, data, message } = res.data;
+      if (success) {
+        return data;
+      }
+      Message.error({ content: message });
+    });
+  }
+
+  return { linkListReq, readTeamReq, getSubTeamsReq, generateLinkReq, deleteLinkReq, sendInviteReq, fetchTeamAndMember };
 };

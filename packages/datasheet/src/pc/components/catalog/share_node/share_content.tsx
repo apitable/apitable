@@ -3,10 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import cls from 'classnames';
 
 import RcTrigger from 'rc-trigger';
-import { useDebounceFn } from 'ahooks';
 import Image from 'next/image';
 
-import { /*Api, */ConfigConstant, IInviteMemberList, INodeRoleMap, IReduxState/*, isEmail*/, StoreActions, Strings, t } from '@vikadata/core';
+import { ConfigConstant, IInviteMemberList, INodeRoleMap, IReduxState, isEmail, StoreActions, Strings, t } from '@vikadata/core';
 import { Button, stopPropagation, Typography } from '@vikadata/components';
 import { InformationSmallOutlined, AddOutlined, ChevronDownOutlined, ChevronRightOutlined } from '@vikadata/icons';
 
@@ -19,7 +18,7 @@ import { Avatar, Message } from 'pc/components/common';
 import { Tooltip } from 'pc/components/common/tooltip';
 import NotDataImg from 'static/icon/common/common_img_search_default.png';
 
-import { Select, Dropdown, /*ISelectItem, Tag,  */IDropdownItem } from './tools_components';
+import { Select, Dropdown, ISelectItem, Tag } from './tools_components';
 import { PublicShareInviteLink } from './public_link';
 import { MembersDetail } from '../permission_settings/permission/members_detail';
 
@@ -35,26 +34,26 @@ export interface IShareContentProps {
   };
 }
 
-interface ISearchUnitMemberItem {
-  avatar: string;
-  email: string;
-  isActive: boolean;
-  isAdmin: boolean;
-  isMemberNameModified: boolean;
-  isNickNameModified: boolean;
-  memberId: string;
-  memberName: string;
-  mobile: string;
-  originName: string;
-  teams: string;
-  unitId: string;
-  userId: string;
-  uuid: string;
-}
+// interface ISearchUnitMemberItem {
+//   avatar: string;
+//   email: string;
+//   isActive: boolean;
+//   isAdmin: boolean;
+//   isMemberNameModified: boolean;
+//   isNickNameModified: boolean;
+//   memberId: string;
+//   memberName: string;
+//   mobile: string;
+//   originName: string;
+//   teams: string;
+//   unitId: string;
+//   userId: string;
+//   uuid: string;
+// }
 
-interface ISearchUnit {
-  members: ISearchUnitMemberItem[];
-}
+// interface ISearchUnit {
+//   members: ISearchUnitMemberItem[];
+// }
 
 const Permission = [
   { label: t(Strings.can_manage), describe: '', value: 'management' },
@@ -68,12 +67,12 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   const [visible, setVisible] = useState(false);
   const [authVisible, setAuthVisible] = useState(false);
   const [detailModalVisible, setDetailModalVisible] = useState(false);
-  const [keyword, setKeyword] = useState('');
   const [membersValue, setMembersValue] = useState<string[]>([]);
-  const [memberList/*, setMemberList*/] = useState<IDropdownItem[]>([]);
-  // const [extraMemberList, setExtraMemberList] = useState<IDropdownItem[]>([]);
-  const [isEmpty/*, setIsEmpty*/] = useState(false);
-  const [footerTip/*, setFooterTip*/] = useState(false);
+  const [memberList, setMemberList] = useState<ISelectItem[]>([]);
+  // 使用一个额外的数组保存已选择下拉的选项，用于搜索数据回显时不丢失显示数据
+  const [extraMemberList, setExtraMemberList] = useState<ISelectItem[]>([]);
+  const [isEmpty, setIsEmpty] = useState(false);
+  const [footerTip, setFooterTip] = useState(false);
   const [inviteLink, setInviteLink] = useState<string>('');
 
   const dispatch = useDispatch();
@@ -83,12 +82,10 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
     socketData :state.catalogTree.socketData,
     userInfo: state.user.info,
   }));
-  const { getNodeRoleListReq, searchUnitReq } = useCatalogTreeRequest();
-  const { generateLinkReq, linkListReq, sendInviteReq } = useInviteRequest();
+  const { getNodeRoleListReq } = useCatalogTreeRequest();
+  const { generateLinkReq, linkListReq, sendInviteReq, fetchTeamAndMember } = useInviteRequest();
   const { run: getNodeRoleList, data: roleList } = useRequest<INodeRoleMap>(() => getNodeRoleListReq(data.nodeId));
-  const { run: searchUnit/*, data: searchUnitData*/ } = useRequest<ISearchUnit>(searchUnitReq, { manual: true });
-  // const { run: searchMember } = useRequest(Api.searchTeamAndMember, { manual: true });
-  const { run: search } = useDebounceFn(searchUnit, { wait: 100 });
+  const { run: searchMember } = useRequest(fetchTeamAndMember, { manual: true });
   const { run: sendInvite } = useRequest(sendInviteReq, { manual: true });
 
   /**
@@ -104,14 +101,76 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   /**
    * 邀请成员搜索
    */
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(e.target.value);
+  const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const keyword = e.target.value;
+    const validEmail = isEmail(keyword);
+    const result = await searchMember(keyword);
+    const { members, teams } = result;
+    const existData = members.length || teams.length;
+
+    // 找不到该成员
+    const notFoundMember = !validEmail && !existData;
+    // 需要邀请该成员
+    const needInviteMember = validEmail && !existData;
+
+    setIsEmpty(notFoundMember);
+    setFooterTip(needInviteMember);
+
+    setMemberList((oldMemberList) => {
+      if (notFoundMember) {
+        return [];
+      }
+
+      const resultList: ISelectItem[] = [];
+
+      if (members) {
+        for (let i = 0; i < members.length; i++) {
+          const item = members[i];
+          resultList.push({
+            label: item.memberName,
+            icon: <Avatar src={item.avatar} id={item.memberId} title={item.originName} />,
+            value: item.memberId,
+            describe: item.team,
+            email: item.email,
+          });
+        }
+      }
+      
+      /**
+       * 完整邮箱：
+       * 1、搜索无结果，手动补充下拉数据添加至搜索结果
+       * 2、搜索有结果，直接返回搜索结果
+       */
+
+      const filterIndex = oldMemberList.findIndex((v) => v.value === keyword);
+      // 搜素找不到成员，但是需要邀请
+      if (filterIndex < 0 && needInviteMember) {
+        resultList.push({
+          value: keyword,
+          label: keyword.split('@')[0],
+          icon: <Avatar id={keyword} title={keyword} />,
+          labelTip: <Tag type='warning'>{t(Strings.pending_invite)}</Tag>,
+          email: keyword,
+          describe: keyword
+        });
+      }
+
+      return resultList;
+    });
   };
 
   /**
    * 设置需要邀请的成员
    */
-  const handleChange = (value: string[]) => {
+  const handleChange = (value: string[], option: ISelectItem) => {
+    const extraMemberIndex = extraMemberList.findIndex((v) => v.value === option.value);
+    setExtraMemberList((oldExtraMemberList) => {
+      if (extraMemberIndex < 0) {
+        return [...oldExtraMemberList, option];
+      }
+      oldExtraMemberList.splice(extraMemberIndex, 1);
+      return oldExtraMemberList;
+    });
     setMembersValue(value);
   };
 
@@ -181,9 +240,10 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
     window['nvc'] ? execNoTraceVerification(sendInviteEmail) : sendInviteEmail();
   };
 
-  useEffect(() => {
-    search(keyword);
-  }, [keyword, search]);
+  const handleRemoveTag = (option: ISelectItem) => {
+    const newValue = extraMemberList.filter((v) => v.value !== option.value).map((v) => v.value);
+    handleChange(newValue, option);
+  };
 
   useEffect(() => {
     if (socketData && socketData.type === NodeChangeInfoType.UpdateRole) {
@@ -193,40 +253,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
 
   useEffect(() => {
     fetchInviteLinkList();
-  }, [fetchInviteLinkList]);
-
-  // useEffect(() => {
-  // let memberListResult: IDropdownItem[] = [];
-  // 存在搜索关键词
-  // if (keyword) {
-  // memberListResult = searchUnitData?.members.map((v) => {
-  //   return {
-  //     label: v.memberName,
-  //     icon: <Avatar src={v.avatar} id={v.memberId} title={v.originName} />,
-  //     value: v.memberId,
-  //     describe: v.teams,
-  //     email: v.email,
-  //     // teamId: v.teamId,
-  //   };
-  // }) || [];
-  // const validEmail = isEmail(keyword);
-
-  // // 验证为邮箱，且不存在于搜索结果中
-  // const canInvite = validEmail && memberListResult.findIndex((v) => v.email === keyword) < 0;
-  // if (canInvite) {
-  //   memberListResult.push({
-  //     label: keyword,
-  //     icon: <Avatar id={keyword} title={keyword} />,
-  //     value: keyword,
-  //     email: keyword,
-  //     // teamId: -1
-  //     labelTip: <Tag type='warning'>{t(Strings.pending_invite)}</Tag>,
-  //   });
-  // }
-  // setIsEmpty(!canInvite);
-  // }
-  // keyword 在下拉中不存在或者为空时，检查 value 中是否存在不在搜索数据中的，不在搜索数据中的需要手动补充到 memberList 中
-  // }, [keyword, searchUnitData]);
+  }, []);
 
   const renderSuffix = () => {
     const element = (
@@ -281,6 +308,23 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
     return <div className={styles.shareMoreInvitor}>{t(Strings.see_more)}</div>;
   };
 
+  const renderValue = () => {
+    return extraMemberList.map((v) => {
+      return (
+        <Tag
+          key={v.value}
+          childrenInDangerHTML
+          closable
+          icon={v.icon}
+          className={styles.shareInputTag}
+          onClose={() => handleRemoveTag(v)}
+        >
+          {v.label}
+        </Tag>
+      );
+    });
+  };
+
   return (
     <>
       <div className={cls(styles.shareContent, { [styles.shareContentMobile]: isMobile })}>
@@ -302,6 +346,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
             dropdownFooter={renderFooter()}
             onChange={handleChange}
             empty={renderEmpty()}
+            renderValue={renderValue}
           />
           <Button onClick={handleAddInvitePerson} color='primary'>{t(Strings.add)}</Button>
         </div>
