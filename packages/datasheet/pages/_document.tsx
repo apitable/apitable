@@ -4,7 +4,6 @@ import Script from 'next/script';
 import React from 'react';
 import { getInitialProps } from '../utils/getInitialProps';
 import '../utils/init_private';
-import classNames from 'classnames';
 import { IClientInfo } from '../utils/interface';
 
 const { publicRuntimeConfig } = getConfig();
