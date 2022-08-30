@@ -4,7 +4,6 @@ import java.time.format.DateTimeFormatter
 
 plugins {
   id 'org.springframework.boot'
-  id "com.gorylenko.gradle-git-properties"
   id 'testing.java-conventions'
 }
 
@@ -106,23 +105,6 @@ jar {
   enabled = false
 }
 
-// Git 配置信息打包
-gitProperties {
-  extProperty = 'gitProps'
-  failOnNoGitDirectory = false
-  dateFormat = "yyyy-MM-dd HH:mm:ss"
-  dateFormatTimeZone = 'CTT'
-}
-
-generateGitProperties.outputs.upToDateWhen { false }
-
-task printGitProperties(dependsOn: 'generateGitProperties') {
-  // make sure generateGitProperties task to execute before accessing generated properties
-  doLast {
-    println "git.commit.id.abbrev=" + project.ext.gitProps['git.commit.id.abbrev']
-  }
-}
-
 // 动态设置变量到resource目录下文件
 // profile和revision在application.yml里面
 processResources {
@@ -153,7 +135,6 @@ bootJar {
     attributes 'Build-OS': System.getProperty("os.name")
     attributes 'Built-By': System.getProperty("user.name")
     attributes 'Build-Jdk': System.getProperty("java.version")
-    attributes 'Build-Revision': "${-> project.ext.gitProps['git.commit.id.abbrev']}"
     attributes 'Build-Timestamp': LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
   }
 }
@@ -168,7 +149,6 @@ springBoot {
       version = rootProject.version
       group = rootProject.group
       name = 'Api Server'
-      version = '0.13.3-' + (System.getenv().containsKey('CI_PIPELINE_ID') ? System.getenv('CI_PIPELINE_ID') : 'NoPipeline')
     }
   }
 }
