@@ -31,7 +31,7 @@ const create500ThousandArray = (itemType) => {
   return arr;
 };
 
-const compare = (fType: any, type: number, itemType: string, expectTime = 500) => {
+const compare = (fType: any, type: number, itemType: string, expectTime = 1000) => {
   const field = {
     id: 'b',
     name: 'b',
@@ -49,29 +49,29 @@ const compare = (fType: any, type: number, itemType: string, expectTime = 500) =
   expect(end - begin).toBeLessThan(expectTime);
 };
 
-// describe('', () => {
-//   it('should ', function() {
-//     console.log(create500ThousandArray, compare);
-//   });
-// });
-//
-// describe('1 万条数据测试 field 排序', () => {
-//   it('中文单行文本排序耗时小于 1000ms', () => {
-//     compare(FieldType.Text, 1, 'zh', 1000);
-//   });
-//   it('数字排序耗时小于 500ms', () => {
-//     compare(FieldType.Number, 2, 'number');
-//   });
-//   it('日期排序耗时小于 500ms', () => {
-//     compare(FieldType.DateTime, 5, 'date');
-//   });
-//   it('链接排序耗时小于 500ms', () => {
-//     compare(FieldType.URL, 8, 'url', 1000);
-//   });
-//   it('邮箱排序耗时小于 500ms', () => {
-//     compare(FieldType.Email, 9, 'email');
-//   });
-//   it('电话排序耗时小于 500ms', () => {
-//     compare(FieldType.Phone, 10, 'phone');
-//   });
-// });
+describe('', () => {
+  it('should ', function() {
+    console.log(create500ThousandArray, compare);
+  });
+});
+
+describe('1 万条数据测试 field 排序', () => {
+  it('中文单行文本排序耗时小于 1000ms', () => {
+    compare(FieldType.Text, 1, 'zh');
+  });
+  it('数字排序耗时小于 1000ms', () => {
+    compare(FieldType.Number, 2, 'number');
+  });
+  it('日期排序耗时小于 1000ms', () => {
+    compare(FieldType.DateTime, 5, 'date');
+  });
+  it('链接排序耗时小于 1000ms', () => {
+    compare(FieldType.URL, 8, 'url');
+  });
+  it('邮箱排序耗时小于 1000ms', () => {
+    compare(FieldType.Email, 9, 'email');
+  });
+  it('电话排序耗时小于 1000ms', () => {
+    compare(FieldType.Phone, 10, 'phone');
+  });
+});
