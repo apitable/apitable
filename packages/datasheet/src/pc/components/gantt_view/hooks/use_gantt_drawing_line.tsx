@@ -45,7 +45,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
   const { snapshot, fieldPermissionMap } = useContext(KonvaGridViewContext);
   const { linkFieldId, startFieldId, endFieldId } = ganttStyle;
   const state = store.getState();
-  const { rowHeight } = instance;
+  const { rowHeight, columnWidth } = instance;
   const arrowRef = useRef<any>();
   const [drawingLinePoints, setDrawingLinePoints] = useState<number[]>([]);
 
@@ -96,7 +96,8 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
   }
   
   const { x: taskX , y: taskY, taskWidth } = taskBlock.current.info || taskMap[sourceRecordId];
-  const x = taskX + taskWidth - 16;
+  
+  const x = taskWidth > columnWidth ? taskX + taskWidth - 16 : taskX + columnWidth - 16;
   const y = taskY + rowHeight - 4;
 
   // 计算当前鼠标位置在哪个task内
