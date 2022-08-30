@@ -56,7 +56,7 @@ describe('', () => {
 });
 
 describe('1 万条数据测试 field 排序', () => {
-  it('中文单行文本排序耗时小于 500ms', () => {
+  it('中文单行文本排序耗时小于 1000ms', () => {
     compare(FieldType.Text, 1, 'zh', 1000);
   });
   it('数字排序耗时小于 500ms', () => {
@@ -66,7 +66,7 @@ describe('1 万条数据测试 field 排序', () => {
     compare(FieldType.DateTime, 5, 'date');
   });
   it('链接排序耗时小于 500ms', () => {
-    compare(FieldType.URL, 8, 'url');
+    compare(FieldType.URL, 8, 'url', 1000);
   });
   it('邮箱排序耗时小于 500ms', () => {
     compare(FieldType.Email, 9, 'email');
