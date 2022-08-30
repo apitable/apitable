@@ -2,11 +2,12 @@ import { ThemeName, ThemeProvider } from '@vikadata/components';
 import { Selectors, StoreActions } from '@vikadata/core';
 import { useKeyPress, useLocalStorageState } from 'ahooks';
 import { SystemTheme } from 'pc/common/theme';
+import { getEnvVariables } from 'pc/utils/env';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const ThemeWrapper: React.FC = (props) => {
-  const [theme, setTheme] = useLocalStorageState<ThemeName>('theme', { defaultValue: ThemeName.Light });
+  const [theme, setTheme] = useLocalStorageState<ThemeName>('theme', { defaultValue: getEnvVariables().THEME || ThemeName.Light });
   const [systemTheme, setSystemTheme] = useLocalStorageState<SystemTheme>('systemTheme', { defaultValue: SystemTheme.Close });
   const dispatch = useDispatch();
   const cacheTheme = useSelector(Selectors.getTheme);

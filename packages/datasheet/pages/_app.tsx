@@ -61,7 +61,7 @@ import { getInitialProps } from '../utils/getInitialProps';
 import { IClientInfo } from '../utils/interface';
 
 const RouterProvider = dynamic(() => import('pc/components/route_manager/router_provider'), { ssr: true });
-const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: true });
+const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });
 const { publicRuntimeConfig } = getConfig();
 
 declare const window: any;
@@ -313,11 +313,11 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
     <div className={classNames({ 'script-loading-wrap': loading !== LoadingStatus.Complete }, '__next_main')}>
       <div style={{ display: loading !== LoadingStatus.Complete ? 'none' : 'block' }} onScroll={onScroll}>
         <Provider store={store}>
-          <ThemeWrapper>
-            <RouterProvider>
+          <RouterProvider>
+            <ThemeWrapper>
               <Component {...pageProps} userInfo={userInfo} />
-            </RouterProvider>
-          </ThemeWrapper>
+            </ThemeWrapper>
+          </RouterProvider>
         </Provider>
       </div>
       {
