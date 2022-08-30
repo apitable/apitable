@@ -55,7 +55,7 @@ describe('', () => {
   });
 });
 
-describe('1 万条数据测试 field 排序', () => {
+describe.skip('1 万条数据测试 field 排序', () => {
   it('中文单行文本排序耗时小于 1000ms', () => {
     compare(FieldType.Text, 1, 'zh');
   });
