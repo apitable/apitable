@@ -153,8 +153,7 @@ export const useTaskLineSetting = () => {
               points={[104, 74, 104, 105]}
               fill={fillColor}
               stroke={fillColor}
-              strokeWidth={2}
-              hitStrokeWidth={2.5}
+              strokeWidth={1}
               lineCap='round'
               pointerLength={5}
               pointerWidth={5}

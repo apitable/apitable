@@ -98,7 +98,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
   const { x: taskX , y: taskY, taskWidth } = taskBlock.current.info || taskMap[sourceRecordId];
   
   const x = taskWidth > columnWidth ? taskX + taskWidth - 16 : taskX + columnWidth - 16;
-  const y = taskY + rowHeight - 4;
+  const y = taskY + rowHeight;
 
   // 计算当前鼠标位置在哪个task内
   const includeTask = (targetX: number, targetY: number) => {
@@ -237,7 +237,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
       />
       <Group
         x={x}
-        y={y}
+        y={y - 4}
       >
         <Circle
           _ref={circle1Ref}
