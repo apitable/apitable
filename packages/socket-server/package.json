@@ -5,6 +5,10 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "bin": "dist/main.js",
+  "pkg": {
+    "scripts": "dist/**/*.js"
+  },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -13,7 +17,6 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
@@ -49,8 +52,6 @@
     "socket.io-redis": "^5.3.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^9.1.1",
-    "@commitlint/config-conventional": "^9.1.1",
     "@nestjs/cli": "^7.0.0",
     "@nestjs/schematics": "^7.0.0",
     "@nestjs/testing": "^7.0.0",
@@ -62,15 +63,7 @@
     "@types/socket.io-redis": "^1.0.26",
     "@types/supertest": "^2.0.8",
     "@types/uid2": "^0.0.0",
-    "@typescript-eslint/eslint-plugin": "^2.23.0",
-    "@typescript-eslint/parser": "^2.23.0",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.0",
-    "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-prettier": "^3.1.4",
-    "husky": "^4.2.5",
     "jest": "^25.1.0",
-    "lint-staged": "^10.2.11",
     "prettier": "^1.19.1",
     "supertest": "^4.0.2",
     "ts-jest": "25.2.1",
@@ -92,25 +85,5 @@
     },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "lint-staged": {
-    "*.ts": [
-      "yarn lint"
-    ],
-    "*.spec.ts": [
-      "yarn lint",
-      "yarn test"
-    ]
-  },
-  "bin": "dist/main.js",
-  "pkg": {
-    "scripts": "dist/**/*.js"
-  },
-  "packageManager": "yarn@3.2.1"
+  }
 }
