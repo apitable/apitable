@@ -194,10 +194,10 @@ buildpush_webserver_op: ## ghcr.io/vikadata/vika/web-server
 	build_docker_unableack dotversion web-server
 
 buildpush_socketserver:
-	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)"; \
-	cd packages/socket-server; \
+	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)";\
+	export DOCKERFILE=./packages/socket-server/Dockerfile;\
 	build_docker socket-server
-      
+
 .PHONY: patch
 patch: # bump version number patch
 	docker run --rm -it --user $(shell id -u):$(shell id -g) -v "$(shell pwd):/app" ghcr.io/vikadata/vika/bumpversion:latest bumpversion patch

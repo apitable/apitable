@@ -3,12 +3,13 @@ FROM node:16.15.0 AS deps
 
 WORKDIR /workspace-install
 
-COPY .yarn ./.yarn
+COPY .yarn/ ./.yarn/
+COPY ./.yarnrc.yml ./yarn.lock ./package.json ./
 
-COPY ./.yarnrc.yml ./package.json ./yarn.lock ./
+COPY packages/socket-server/package.json ./packages/socket-server/
 
 # install packages 可以使用缓存
-RUN yarn install
+RUN yarn workspaces focus @vikadata/websocket root
 
 # stage builder
 FROM node:16.15.0 AS builder
@@ -16,19 +17,27 @@ FROM node:16.15.0 AS builder
 WORKDIR /app
 
 COPY --from=deps /workspace-install/node_modules ./node_modules
+COPY --from=deps /workspace-install/packages/socket-server/node_modules ./packages/socket-server/node_modules
 
-COPY ./ ./.
+COPY .yarn ./.yarn
 
-RUN yarn build
+COPY ./.yarnrc.yml ./package.json ./yarn.lock ./common-tsconfig.json ./
+
+COPY packages/socket-server ./packages/socket-server
+
+RUN yarn workspace @vikadata/websocket build
 
 # stage run
 FROM node:16.15.0 AS runner
 
-WORKDIR /app/socket-server
+WORKDIR /app
 
 ENV NODE_ENV=production
 
-COPY --from=builder /app ./
+COPY --from=builder /app/packages/socket-server/ecosystem.config.js ./packages/socket-server/
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/packages/socket-server/node_modules ./packages/socket-server/node_modules
+COPY --from=builder /app/packages/socket-server/dist ./packages/socket-server/dist
 
 # pm2
 RUN npm install pm2 --global
@@ -44,4 +53,4 @@ EXPOSE 3005
 # rpcx
 EXPOSE 3007
 
-CMD [ "pm2-runtime", "ecosystem.config.js" ]
+CMD [ "pm2-runtime", "packages/socket-server/ecosystem.config.js" ]
