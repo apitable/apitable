@@ -8,7 +8,7 @@ import com.vikadata.api.model.vo.asset.AssetUploadResult;
 
 /**
  * <p>
- * 基础-附件回调 服务类
+ * Asset Upload Callback Service
  * </p>
  *
  * @author Pengap

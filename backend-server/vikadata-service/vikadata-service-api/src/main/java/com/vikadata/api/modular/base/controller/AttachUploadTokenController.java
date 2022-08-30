@@ -61,18 +61,18 @@ public class AttachUploadTokenController {
     @PostResource(name = "获取上传预签名URL", path = "/upload/preSignedUrl", requiredLogin = false)
     @ApiOperation(value = "获取上传预签名URL")
     public ResponseData<List<AssetUploadCertificateVO>> generatePreSignedUrl(@RequestBody @Valid AssetUploadCertificateRO data) {
-        // 未登录状态下，进行人机验证
+        // When not logged in, perform human-machine verification
         Long userId = SessionContext.getUserIdWithoutException();
         if (userId == null) {
             iAssetService.checkBeforeUpload(data.getNodeId(), data.getData());
         }
         if (AssetType.isPublishAsset(data.getType())) {
-            // 上传用户头像、空间LOGO，一定是在已登陆状态
+            // Upload user avatar, space LOGO, must be logged in
             ExceptionUtil.isNotNull(userId, AuthException.UNAUTHORIZED);
             AssetUploadCertificateVO certificate = iAssetUploadTokenService.createPublishAssetPreSignedUrl();
             return ResponseData.success(Collections.singletonList(certificate));
         }
-        // 批量创建空间资源上传凭证
+        // Batch Creation of Space Resource Upload Credentials
         return ResponseData.success(iAssetUploadTokenService.createSpaceAssetPreSignedUrl(userId, data.getNodeId(), data.getType(), data.getCount()));
     }
 

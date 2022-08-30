@@ -52,7 +52,7 @@ import static com.vikadata.api.enums.exception.ParameterException.INCORRECT_ARG;
 
 /**
  * <p>
- * 基础-附件上传Token 服务实现类
+ * Asset Upload Credentials Service Implement Class
  * </p>
  *
  * @author Pengap

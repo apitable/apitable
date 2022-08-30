@@ -71,6 +71,7 @@ vikadata:
     language-tag: ${LANGUAGE_TAG:zh-CN}
     server-domain: ${SERVER_DOMAIN:}
     callback-domain: ${CALLBACK_DOMAIN:}
+    oss-image-audit-creatable: ${OSS_IMAGE_AUDIT_CREATABLE:false}
     # 存储桶配置
     ossBuckets:
       vk_assets_ltd:

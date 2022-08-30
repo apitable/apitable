@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.cache.bean.SpaceAssetDTO;
 import com.vikadata.api.cache.service.IAssetCacheService;
+import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.enums.attach.AssetType;
 import com.vikadata.api.enums.attach.AssetUploadSource;
 import com.vikadata.api.enums.exception.ActionException;
@@ -58,7 +59,7 @@ import static com.vikadata.api.enums.exception.DatabaseException.EDIT_ERROR;
 
 /**
  * <p>
- * 基础-附件回调 服务实现类
+ * Asset Upload Callback Service Implement Class
  * </p>
  *
  * @author Pengap
@@ -92,6 +93,9 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
     @Resource
     private IAssetCacheService iAssetCacheService;
 
+    @Resource
+    private ConstProperties constProperties;
+
     @Deprecated
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -110,18 +114,20 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<AssetUploadResult> loadAssetUploadResult(AssetType assetType, List<String> resourceKeys) {
-        // 非空间资源，只会用到文件访问路径
+        // No space resources, only the file access path is used
         if (!AssetType.isSpaceAsset(assetType)) {
             return resourceKeys.stream().map(AssetUploadResult::new).collect(Collectors.toList());
         }
-        // 获取资源库中 file_url 已经存在的附件
+        // Get attachments that already exist at file_url in db
         List<AssetEntity> assetEntities = assetMapper.selectByFileUrl(resourceKeys);
         if (assetEntities.size() != resourceKeys.size()) {
             throw new BusinessException("resource don't exist");
         }
         List<AssetUploadResult> results = new ArrayList<>(resourceKeys.size());
         for (AssetEntity asset : assetEntities) {
-            // 判断 md5 是否已存在，已存在说明数据库中资源记录信息完整，直接返回；若不存在则请求加载OSS，补全资源记录信息
+            // Determine whether md5 already exists.
+            // If it exists, it means that the resource record information in the database is complete, and return it directly;
+            // if it does not exist, request to load OSS and complete the resource record information.
             if (asset.getChecksum() != null) {
                 AssetUploadResult result = BeanUtil.copyProperties(asset, AssetUploadResult.class);
                 result.setToken(asset.getFileUrl());
@@ -129,11 +135,11 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
                 results.add(result);
                 continue;
             }
-            // 获取文件属性
+            // Get file attributes
             OssStatObject statObject = ossTemplate.getStatObject(asset.getBucketName(), asset.getFileUrl());
-            // 检查限制的文件类型
+            // Check for restricted file types
             this.checkFileType(statObject.getMimeType(), asset.getId(), asset.getBucketName(), asset.getFileUrl());
-            // 构建回调信息
+            // Build callback information
             AssetQiniuUploadCallbackBody body = new AssetQiniuUploadCallbackBody();
             body.setUploadAssetId(asset.getId());
             body.setBucket(asset.getBucketName());
@@ -144,23 +150,23 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
             body.setMimeType(statObject.getMimeType());
             body.setAssetType(assetType.getValue());
             if (assetType != AssetType.DATASHEET) {
-                // 加载缓存数据
+                // Load cached data
                 SpaceAssetDTO spaceAssetDTO = iAssetCacheService.getSpaceAssetDTO(asset.getFileUrl());
                 BeanUtil.copyProperties(spaceAssetDTO, body);
             }
-            // 资源上传处理
-            AssetUploadResult result = this.dealWithAssetUpload(body, false);
+            // Resource upload processing
+            AssetUploadResult result = this.dealWithAssetUpload(body);
             results.add(result);
         }
         return results;
     }
 
     private void checkFileType(String mimeType, Long id, String bucketName, String key) {
-        // 非限制类型，结束返回
+        // Unrestricted type, end return
         if (!MediaType.TEXT_HTML_VALUE.equals(mimeType)) {
             return;
         }
-        // 限制的文件类型，将本次上传的数据清除
+        // Restricted file types, clear the data uploaded this time
         ossTemplate.delete(bucketName, key);
         assetMapper.deleteById(id);
         throw new BusinessException(ActionException.FILE_NOT_SUPPORT_HTML);
@@ -168,42 +174,43 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
 
     @Transactional(rollbackFor = Throwable.class)
     public AssetUploadResult completeSpaceAssetUpload(AssetQiniuUploadCallbackBody body) {
-        // 资源上传处理
-        AssetUploadResult result = this.dealWithAssetUpload(body, true);
+        // Resource upload processing
+        AssetUploadResult result = this.dealWithAssetUpload(body);
         result.setName(body.getFname());
         return result;
     }
 
-    private AssetUploadResult dealWithAssetUpload(AssetQiniuUploadCallbackBody body, boolean createAudit) {
+    private AssetUploadResult dealWithAssetUpload(AssetQiniuUploadCallbackBody body) {
         AssetUploadResult result = new AssetUploadResult();
-        // 锁住 hash，防止并发上传相同的新附件
+        // Lock the hash to prevent concurrent uploads of the same new attachments
         Lock lock = redisLockRegistry.obtain(body.getHash());
         try {
             if (lock.tryLock(1, TimeUnit.MINUTES)) {
                 AssetType assetType = AssetType.of(body.getAssetType());
                 AssetEntity assetEntity = assetMapper.selectByChecksum(body.getHash());
-                // 不存在相同附件，更新补全本次上传的资源数据
+                // The same attachment does not exist, update and complete the resource data uploaded this time
                 if (ObjectUtil.isNull(assetEntity)) {
                     AssetEntity entity = this.supplementAssetEntity(body);
                     BeanUtil.copyProperties(entity, result);
                     result.setBucket(body.getBucketType());
                     result.setSize(body.getFsize());
                     result.setToken(body.getKey());
-                    // 如果是图片，需要创建审核记录
-                    if (createAudit && body.getMimeType().startsWith(IMAGE_PREFIX)) {
+                    // If it is a picture, you need to create an audit record
+                    if (body.getMimeType().startsWith(IMAGE_PREFIX) && constProperties.isOssImageAuditCreatable()) {
                         iAssetAuditService.create(body.getUploadAssetId(), body.getHash(), body.getKey());
                     }
-                    // 数表的引用在op进行更新，无需在上传时更新引用数据
+                    // The reference of the data table is updated in the op,
+                    // there is no need to update the reference data when uploading
                     if (assetType != AssetType.DATASHEET) {
                         iSpaceAssetService.saveAssetInSpace(body.getSpaceId(), body.getNodeId(), body.getUploadAssetId(), body.getHash(), assetType, StrUtil.nullToEmpty(body.getFname()), body.getFsize());
                     }
                 }
                 else {
-                    // 存在相同附件，沿用之前的数据，将本次上传的数据清除
+                    // If the same attachment exists, use the previous data to clear the data uploaded this time
                     BeanUtil.copyProperties(assetEntity, result);
                     result.setSize(assetEntity.getFileSize().longValue());
                     result.setToken(assetEntity.getFileUrl());
-                    // 重复回调，直接返回结束
+                    // Repeat the callback, return directly to the end
                     if (Objects.equals(assetEntity.getId(), body.getUploadAssetId())) {
                         return result;
                     }
@@ -211,10 +218,10 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
                     assetMapper.deleteById(body.getUploadAssetId());
 
                     if (assetType != AssetType.DATASHEET) {
-                        // 判断是否已在该节点上引用该文件，是则累加一次引用次数，否则新增一条空间附件记录
+                        // Determine whether the file has been referenced on the node, if so, add a reference count, otherwise add a space attachment record
                         SpaceAssetDto assetDto = spaceAssetMapper.selectDto(body.getSpaceId(), body.getNodeId(), assetEntity.getId());
                         if (ObjectUtil.isNotNull(assetDto)) {
-                            // 一次作为封面图使用，空间资源记录便硬性记录类型为封面图，方便获取使用过的所有封面图
+                            // Once used as a cover image, the space resource record is rigidly recorded as cover image, which is convenient to obtain all used cover images.
                             boolean flag = !assetDto.getType().equals(AssetType.COVER.getValue()) && assetType.equals(AssetType.COVER);
                             Integer type = flag ? AssetType.COVER.getValue() : null;
                             iSpaceAssetService.edit(assetDto.getId(), assetDto.getCite() + 1, type);
@@ -227,7 +234,7 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
             }
             else {
                 log.error("上传操作过于频繁，请稍后重试。hash:{}", body.getHash());
-                throw new BusinessException("上传操作过于频繁，请稍后重试");
+                throw new BusinessException("Upload operation is too frequent, please try again later.");
             }
         }
         catch (InterruptedException e) {
@@ -249,13 +256,13 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
         entity.setWidth(body.getImageWidth());
         entity.setMimeType(mimeType);
         entity.setExtensionName(MimeTypeMapping.mimeTypeToExtension(mimeType));
-        // 若是 PDF 类型资源，生成预览图并上传
+        // If it is a PDF type resource, generate a preview image and upload it
         if (MediaType.APPLICATION_PDF_VALUE.equals(mimeType)) {
             String pdfImgUploadPath = this.uploadAndSavePdfImg(body.getBucket(), body.getKey());
             entity.setPreview(pdfImgUploadPath);
         }
         else if (body.getImageHeight() == null && mimeType.startsWith(IMAGE_PREFIX)) {
-            // 若是图片，解析图片的高宽
+            // If it is a picture, parse the height and width of the picture
             this.appendImageInfo(body.getBucket(), body.getKey(), entity);
         }
         boolean flag = SqlHelper.retBool(assetMapper.updateById(entity));

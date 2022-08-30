@@ -2,7 +2,7 @@ package com.vikadata.integration.oss;
 
 /**
  * <p>
- * oss upload certificate
+ * oss upload credentials
  * </p>
  *
  * @author Pengap

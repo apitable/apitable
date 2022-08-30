@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 内部服务-附件资源相关接口
+ * Internal Server - Asset API
  * </p>
  *
  * @author Chambers
@@ -57,7 +57,7 @@ public class InternalAssetController {
     @ApiOperation(value = "获取资源信息", notes = "场景：Fusion附件字段数据写入查询")
     @ApiImplicitParam(name = "resourceKey", value = "资源名", required = true, dataTypeClass = String.class, paramType = "query", example = "2019/12/10/159")
     public ResponseData<AssetUploadResult> get(@RequestParam("token") String token) {
-        // 加载资源数据
+        // load asset upload result
         List<AssetUploadResult> results = iAssetCallbackService.loadAssetUploadResult(AssetType.DATASHEET, Collections.singletonList(token));
         return ResponseData.success(results.stream().findFirst().orElse(null));
     }

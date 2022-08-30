@@ -36,6 +36,11 @@ public class ConstProperties {
     private String workbenchUrl = "/workbench";
 
     /**
+     * oss存储 - 是否创建图片审核记录
+     */
+    private boolean ossImageAuditCreatable = false;
+
+    /**
      * oss存储桶配置
      */
     private Map<BucketKey, OssBucketInfo> ossBuckets;

@@ -8,7 +8,7 @@ import com.vikadata.api.modular.base.model.AssetUploadCertificateVO;
 
 /**
  * <p>
- * 基础-附件上传Token 服务类
+ * Asset Upload Credentials Service
  * </p>
  *
  * @author Pengap
