@@ -6,7 +6,7 @@ SHELL := /bin/bash
 patch: # bump version number patch
 	docker run --rm -it --user $(shell id -u):$(shell id -g) -v "$(shell pwd):/app" vikadata/bumpversion bumpversion patch
 
-build-init-db: # local build the init-db
+build-init-db: #  local build the init-db
 	docker build -f Dockerfile.init-db . --tag=${DOCKER_PATH}
 
 env: ## 生成.env文件，读取1Password，用于init-db本地执行调试
