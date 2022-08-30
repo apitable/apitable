@@ -28,6 +28,7 @@
     "build:room-server": "yarn workspace @vikadata/room-server build",
     "build:icons": "yarn workspace @vikadata/icons build",
     "build:components": "yarn workspace @vikadata/components build",
+    "build:components:doc": "yarn workspace @vikadata/components build-storybook",
     "build:components:sg": "yarn workspace @vikadata/components build:sg",
     "build:dst:pre": "yarn workspaces foreach --include '?(@vikadata/i18n-lang|@vikadata/core|@vikadata/icons|@vikadata/components|@vikadata/widget-sdk)' -pt -j 8 run build",
     "build:dst": "yarn workspaces foreach --include '?(@vikadata/i18n-lang|@vikadata/core|@vikadata/icons|@vikadata/components|@vikadata/widget-sdk|@vikadata/datasheet)' -pt -j 8 run build",
