@@ -201,21 +201,6 @@ export const signOut = () => {
 };
 
 /**
- * 上传头像
- * @param formData 头像
- */
-export const uploadAvatar = (formData: any) => {
-  return dispatch => {
-    Api.uploadAttach(formData).then(res => {
-      const { success, data } = res.data;
-      if (success) {
-        dispatch(setUserAvatar(data.token));
-      }
-    });
-  };
-};
-
-/**
  * 设置用户头像
  * @param avatar 头像Url
  */

@@ -69,7 +69,7 @@ export const PreviewItem: React.FC<IPreviewItemProps> = props => {
       )}
       style={style}
     >
-      <div className={styles.cc}>
+      <div className={styles.imgWrapper}>
         <DisplayFile
           className={styles.filePreviewInCard}
           index={index}

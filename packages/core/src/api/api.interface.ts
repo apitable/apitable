@@ -227,3 +227,9 @@ export interface ITemplateRecommendResponse {
     }[]
   }[];
 }
+
+export interface IGetUploadCertificateResponse {
+  token: string;
+  uploadRequestMethod: string;
+  uploadUrl: string;
+}

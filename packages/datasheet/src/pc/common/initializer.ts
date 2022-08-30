@@ -7,7 +7,7 @@ import { Integrations } from '@sentry/tracing';
 import { Api, getLanguage, injectStore, Navigation, Selectors, StatusCode, StoreActions, Strings, t, Url } from '@vikadata/core';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { BillingModal, Modal } from 'pc/components/common';
+import { BillingModal, Modal } from 'pc/components/common/modal/modal';
 import { Method, navigatePath } from 'pc/components/route_manager/use_navigation';
 import { store } from 'pc/store';
 import { getEnvVariables, getInitializationData, getReleaseVersion, getSpaceIdFormTemplate } from 'pc/utils/env';

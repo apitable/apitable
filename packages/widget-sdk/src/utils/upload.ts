@@ -1,20 +1,21 @@
-import { Api, cellValueToImageSrc } from 'core';
+import { uploadAttachToS3, UploadType } from './upload_attach_to_S3';
+import { cellValueToImageSrc } from 'core';
 import { IAttachmentValue, IUploadProgress } from 'interface';
 import { identity, pickBy } from 'lodash';
 
 /**
  * 一个上传文件方法，可以使用此方法上传文件，去完成附件字段的写入
- * 
+ *
  * @param params.file 文件
  * @param params.datasheetId 维格表ID
  * @param params.onProgress 文件上传进度回调方法
  * @returns
- * 
+ *
  * ### 示例
  * ``` ts
  * import React, { useState } from 'react';
  * import { upload, useDatasheet } from '@vikadata/widget-sdk';
- * 
+ *
  * function UploadFile() {
  *   const datasheet = useDatasheet();
  *   const [progress, setProgress] = useState(0);
@@ -55,20 +56,22 @@ export function upload(params: {
   onProgress?: (response: IUploadProgress) => void;
 }): Promise<IAttachmentValue> {
   const { file, datasheetId, onProgress } = params;
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('type', '2');
-  formData.append('nodeId', datasheetId);
   return new Promise(async(resolve, reject) => {
     if (!file || !datasheetId) {
       reject({ message: 'file or datasheetId is required' });
     }
-    const res = await Api.uploadImgOnRichText(formData, {
-      withCredentials: true,
-      onUploadProgress: ({ loaded, total }: IUploadProgress) => {
-        onProgress && onProgress({ loaded, total });
+
+    const res = await uploadAttachToS3({
+      file,
+      fileType: UploadType.DstAttachment,
+      nodeId: datasheetId,
+      axiosConfig: {
+        onUploadProgress: ({ loaded, total }: IUploadProgress) => {
+          onProgress && onProgress({ loaded, total });
+        },
       },
     });
+
     const { success, data, message } = res.data;
     if (!success) {
       reject({

@@ -1,18 +1,16 @@
-import { useState, useRef } from 'react';
-import * as React from 'react';
-import {
-  Avatar,
-  ImageCropUpload, IImageCropUploadRef, AvatarSize, AvatarType,
-} from 'pc/components/common';
-import { useSelector, shallowEqual } from 'react-redux';
+import { useThemeColors } from '@vikadata/components';
+import { IReduxState, Strings, t } from '@vikadata/core';
+import { uploadAttachToS3, UploadType } from '@vikadata/widget-sdk';
 import { Spin } from 'antd';
-import { Strings, t, Api, IReduxState } from '@vikadata/core';
-import styles from './style.module.less';
+import { Avatar, AvatarSize, AvatarType, IImageCropUploadRef, ImageCropUpload } from 'pc/components/common';
 import { ISelectInfo } from 'pc/components/common/image_crop_upload';
 import { useChangeLogo } from 'pc/hooks';
+import * as React from 'react';
+import { useRef, useState } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
 import EditIcon from 'static/icon/datasheet/rightclick/datasheet_icon_rename.svg';
 import AvatarBgImg from 'static/icon/space/space_img_avatarsbj.png';
-import { useThemeColors } from '@vikadata/components';
+import styles from './style.module.less';
 
 const customTips = {
   cropDesc: t(Strings.support_image_formats_limits, { number: 2 })
@@ -27,9 +25,9 @@ export const ChangeLogo = () => {
     spaceResource: state.spacePermissionManage.spaceResource,
     userInfo: state.user.info,
   }), shallowEqual);
-  
+
   const [logoLoading, setLogoLoading] = useState(false);
-  
+
   const cancelChangeLogoModal = () => {
     if (ImageCropUploadRef.current) {
       ImageCropUploadRef.current.clearState();
@@ -38,11 +36,11 @@ export const ChangeLogo = () => {
   const { setLogo, logo } = useChangeLogo(spaceId, cancelChangeLogoModal);
   const confirmChangeLogo = (data: ISelectInfo) => {
     const { customFile } = data;
-    const formData = new FormData();
-    formData.append('file', customFile as File);
-    formData.append('type', '0');
     setLogoLoading(true);
-    Api.uploadAttach(formData).then(res => {
+    return uploadAttachToS3({
+      file: customFile,
+      fileType: UploadType.SpaceLogo
+    }).then(res => {
       setLogoLoading(false);
       const { success, data } = res.data;
       if (success) {
@@ -50,7 +48,7 @@ export const ChangeLogo = () => {
       }
     });
   };
-  
+
   const renderAvatar = (style?: React.CSSProperties) => {
     if (!userInfo || !spaceInfo) return null;
     return (

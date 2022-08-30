@@ -92,7 +92,7 @@ const DisplayFileBase: React.FC<IDisplayFileProps> = props => {
       {
         showOriginImageThumbnail(curFile) ? (
           <div
-            className={classNames(_isGif && styles.gif)}
+            className={classNames(_isGif && styles.gif, styles.imageWrapper)}
             style={{
               backgroundImage: `url(${imgSrc})`,
               backgroundRepeat: 'no-repeat',
@@ -101,10 +101,10 @@ const DisplayFileBase: React.FC<IDisplayFileProps> = props => {
               width: !width ? '100%' : width,
               height: !height ? '100%' : height,
               ...imageStyle,
-              // 这里是为了当单元格激活的时候才显示鼠标提示和触发点击事件
-              // pointerEvents: disablePreview ? 'none' : 'initial',
             }}
-          />
+          >
+            <Image src={imgSrc} layout={'fill'} objectFit={'cover'} />
+          </div>
         ) : (
           <span
             style={{
@@ -115,7 +115,7 @@ const DisplayFileBase: React.FC<IDisplayFileProps> = props => {
           >
             <Image
               src={imgSrc}
-              alt="attachment"
+              alt='attachment'
               layout={'fill'}
               objectFit={'contain'}
             />
