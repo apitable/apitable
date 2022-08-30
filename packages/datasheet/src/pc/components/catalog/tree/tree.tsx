@@ -206,9 +206,9 @@ const TreeBase: FC<ITreeProps> = ({
     }
     /**
      * 权限变更确认
-     * 仅移动顺序或者节点未开启权限设置
+     * 仅移动顺序或者节点开启权限设置
      */
-    if (treeNodesMap[dragNodeId].parentId === treeNodesMap[dropNodeId].parentId || !treeNodesMap[dragNodeId].nodePermitSet) {
+    if (treeNodesMap[dragNodeId].parentId === treeNodesMap[dropNodeId].parentId || treeNodesMap[dragNodeId].nodePermitSet) {
       nodeMove(dragNodeId, dropNodeId, dropPosition);
       return;
     }

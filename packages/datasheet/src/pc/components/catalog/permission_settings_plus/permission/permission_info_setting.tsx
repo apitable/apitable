@@ -115,7 +115,7 @@ const BatchSetting = (props: {
           component="div"
           underline={false}
           suffixIcon={batchSelectVisible ? <ChevronUpOutlined color={buttonIconColor}/> : <ChevronDownOutlined color={buttonIconColor}/>}
-          color={colors.black[1000]}
+          color={colors.firstLevelText}
         >
           {t(Strings.batch_edit_permission)}
         </LinkButton>
