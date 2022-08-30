@@ -1,5 +1,5 @@
 import { CallHandler, ExecutionContext, HttpStatus, Injectable, NestInterceptor } from '@nestjs/common';
-import { CacheManager, computeCache, ExpCache } from '@vikadata/core';
+import { CacheManager, clearCachedSelectors, computeCache, ExpCache } from '@vikadata/core';
 import { InjectLogger, SPACE_ID_HTTP_DECORATE, USER_HTTP_DECORATE } from 'common';
 import { ApiUsageEntity } from 'entities/api.usage.entity';
 import { ApiHttpMethod } from 'enums';
@@ -63,6 +63,7 @@ export class ApiUsageInterceptor implements NestInterceptor {
     if (computeCache) {
       computeCache.clear();
     }
+    clearCachedSelectors();
   }
 
   apiUsage(request: any, response?: ApiResponse<any>, error?: any) {

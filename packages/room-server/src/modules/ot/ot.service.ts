@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {
   clearComputeCache, ConfigConstant, DEFAULT_EDITOR_PERMISSION, IJOTAction, ILocalChangeset, IRemoteChangeset, jot, ResourceIdPrefix, ResourceType
+  , clearCachedSelectors
 } from '@vikadata/core';
 import { NodeTypeReg } from '@vikadata/core/dist/config/constant';
 import { RedisService } from '@vikadata/nestjs-redis';
@@ -227,6 +228,9 @@ export class OtService {
 
     // 用户订阅记录变更事件
     this.datasheetRecordSubscriptionService.handleChangesets(results, context);
+
+    // clear cached selectors, will remove after release/1.0.0
+    clearCachedSelectors();
 
     return results;
   }
