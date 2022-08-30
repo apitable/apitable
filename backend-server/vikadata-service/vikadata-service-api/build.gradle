@@ -135,7 +135,6 @@ bootJar {
     attributes 'Build-OS': System.getProperty("os.name")
     attributes 'Built-By': System.getProperty("user.name")
     attributes 'Build-Jdk': System.getProperty("java.version")
-    attributes 'Build-Revision': "${-> project.ext.gitProps['git.commit.id.abbrev']}"
     attributes 'Build-Timestamp': LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
   }
 }
@@ -150,7 +149,6 @@ springBoot {
       version = rootProject.version
       group = rootProject.group
       name = 'Api Server'
-      version = '0.13.3-' + (System.getenv().containsKey('CI_PIPELINE_ID') ? System.getenv('CI_PIPELINE_ID') : 'NoPipeline')
     }
   }
 }
