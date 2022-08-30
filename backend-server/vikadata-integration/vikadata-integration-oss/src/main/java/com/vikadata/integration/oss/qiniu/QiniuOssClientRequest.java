@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.StopWatch;
@@ -38,6 +39,7 @@ import com.vikadata.integration.oss.OssUploadPolicy;
 import com.vikadata.integration.oss.UrlFetchResponse;
 
 import org.springframework.lang.NonNull;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * 七牛云实现
@@ -74,6 +76,11 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
      */
     private final String callbackBodyType;
 
+    /**
+     * upload url
+     */
+    private final String uploadUrl;
+
     private Configuration configuration;
 
     private BucketManager bucketManager;
@@ -104,10 +111,10 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
     }
 
     public QiniuOssClientRequest(Auth auth, String regionId, String downloadDomain, boolean autoCreateBucket) {
-        this(auth, regionId, downloadDomain, null, null, false);
+        this(auth, regionId, downloadDomain, null, null, null, false);
     }
 
-    public QiniuOssClientRequest(Auth auth, String regionId, String downloadDomain, String callbackUrl, String callbackBodyType, boolean autoCreateBucket) {
+    public QiniuOssClientRequest(Auth auth, String regionId, String downloadDomain, String callbackUrl, String callbackBodyType, String uploadUrl, boolean autoCreateBucket) {
         this.auth = auth;
         this.regionId = regionId;
         this.downloadDomain = downloadDomain;
@@ -121,6 +128,7 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
         this.autoCreateBucket = autoCreateBucket;
         this.callbackUrl = callbackUrl;
         this.callbackBodyType = callbackBodyType;
+        this.uploadUrl = uploadUrl;
     }
 
     @Override
@@ -221,6 +229,19 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
     }
 
     @Override
+    public void executeStreamFunction(String bucketName, String key, Consumer<InputStream> function) {
+        try {
+            DownloadUrl downloadUrl = new DownloadUrl(downloadDomain, true, key);
+            String urlString = downloadUrl.buildURL();
+            InputStream in = URLUtil.getStream(URLUtil.url(urlString));
+            function.accept(in);
+        }
+        catch (QiniuException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public boolean deleteObject(String bucketName, String key) {
         try {
             Response response = bucketManager.delete(bucketName, key);
@@ -247,7 +268,7 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
     }
 
     @Override
-    public OssUploadAuth uoloadToken(String bucket, String key, long expires, @NonNull OssUploadPolicy uploadPolicy) {
+    public OssUploadAuth uploadToken(String bucket, String key, long expires, @NonNull OssUploadPolicy uploadPolicy) {
         isBucketExist(bucket);
         OssUploadAuth ossUploadAuth = new OssUploadAuth();
 
@@ -256,6 +277,8 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
 
         String uploadToken = auth.uploadToken(bucket, key, expires, new StringMap(policy));
         ossUploadAuth.setUploadToken(uploadToken);
+        ossUploadAuth.setUploadUrl(uploadUrl);
+        ossUploadAuth.setUploadRequestMethod(RequestMethod.POST.name());
         return ossUploadAuth;
     }
 
@@ -295,7 +318,7 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
                 .set("imageWidth", "$(imageInfo.width)")
                 .set("imageHeight", "$(imageInfo.height)");
 
-        if (MapUtil.isNotEmpty(callBackBody)) {
+        if (MapUtil.isNotEmpty(putExtra)) {
             callBackBody.putAll(putExtra);
         }
         return callBackBody.toString();

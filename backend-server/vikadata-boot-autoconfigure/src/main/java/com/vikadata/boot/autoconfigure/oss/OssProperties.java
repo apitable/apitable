@@ -146,6 +146,8 @@ public class OssProperties {
 
         private Callback callback;
 
+        private String uploadUrl;
+
         public String getAccessKey() {
             return accessKey;
         }
@@ -184,6 +186,14 @@ public class OssProperties {
 
         public void setCallback(Callback callback) {
             this.callback = callback;
+        }
+
+        public String getUploadUrl() {
+            return uploadUrl;
+        }
+
+        public void setUploadUrl(String uploadUrl) {
+            this.uploadUrl = uploadUrl;
         }
     }
 

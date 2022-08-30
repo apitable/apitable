@@ -2,6 +2,7 @@ package com.vikadata.integration.oss;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.function.Consumer;
 
 /**
  *
@@ -18,11 +19,15 @@ public interface OssClientRequest {
 
     OssObject getObject(String bucketName, String path);
 
+    OssStatObject getStatObject(String bucketName, String key);
+
+    void executeStreamFunction(String bucketName, String key, Consumer<InputStream> function);
+
     boolean deleteObject(String bucketName, String key);
 
     void refreshCdn(String bucketName, String[] url);
 
-    OssUploadAuth uoloadToken(String bucket, String key, long expires, OssUploadPolicy uploadPolicy);
+    OssUploadAuth uploadToken(String bucket, String key, long expires, OssUploadPolicy uploadPolicy);
 
     boolean isValidCallback(String originAuthorization, String url, byte[] body, String contentType);
 

@@ -22,16 +22,19 @@ public class QiniuOssClientRequestFactory implements OssClientRequestFactory {
 
     private final String callbackBodyType;
 
-    public QiniuOssClientRequestFactory(Auth auth, String regionId, String downloadDomain, String callbackUrl, String callbackBodyType) {
+    private final String uploadUrl;
+
+    public QiniuOssClientRequestFactory(Auth auth, String regionId, String downloadDomain, String callbackUrl, String callbackBodyType, String uploadUrl) {
         this.auth = auth;
         this.regionId = regionId;
         this.downloadDomain = downloadDomain;
         this.callbackUrl = callbackUrl;
         this.callbackBodyType = callbackBodyType;
+        this.uploadUrl = uploadUrl;
     }
 
     @Override
     public OssClientRequest createClient() {
-        return new QiniuOssClientRequest(auth, regionId, downloadDomain, callbackUrl, callbackBodyType, true);
+        return new QiniuOssClientRequest(auth, regionId, downloadDomain, callbackUrl, callbackBodyType, uploadUrl, true);
     }
 }

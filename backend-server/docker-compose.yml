@@ -58,6 +58,21 @@ services:
       - RABBITMQ_DEFAULT_PASS=password
     restart: always
 
+  vika-minio:
+    container_name: vika-minio
+    image: minio/minio:RELEASE.2021-03-17T02-33-02Z
+    volumes:
+      - vika-minio-data:/data
+    ports:
+      - "9000:9000"
+    environment:
+      - MINIO_ACCESS_KEY=vika
+      - MINIO_SECRET_KEY=vikadata@com
+      - TZ=Asia/Shanghai
+    restart: always
+    command: server /data
+
 volumes:
   vika-mysql-data:
   vika-rabbitmq-data:
+  vika-minio-data:

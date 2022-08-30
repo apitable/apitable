@@ -7,7 +7,6 @@ import com.qiniu.util.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.vikadata.boot.autoconfigure.mail.TencentMailAutoConfiguration;
 import com.vikadata.boot.autoconfigure.oss.OssProperties.Callback;
 import com.vikadata.boot.autoconfigure.oss.OssProperties.Qiniu;
 import com.vikadata.integration.oss.OssClientRequestFactory;
@@ -44,6 +43,6 @@ public class QiniuCloudAutoConfiguration extends OssConnectionConfiguration {
         Auth auth = Auth.create(qiniu.getAccessKey(), qiniu.getSecretKey());
         Callback callback = Optional.ofNullable(qiniu.getCallback()).orElseGet(Callback::new);
 
-        return new QiniuOssClientRequestFactory(auth, qiniu.getRegion(), qiniu.getDownloadDomain(), callback.getUrl(), callback.getBodyType());
+        return new QiniuOssClientRequestFactory(auth, qiniu.getRegion(), qiniu.getDownloadDomain(), callback.getUrl(), callback.getBodyType(), qiniu.getUploadUrl());
     }
 }

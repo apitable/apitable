@@ -7,6 +7,7 @@ com.vikadata.boot.autoconfigure.mail.MailAutoConfiguration,\
 com.vikadata.boot.autoconfigure.mail.CloudMailAutoConfiguration,\
 com.vikadata.boot.autoconfigure.sms.SmsAutoConfiguration,\
 com.vikadata.boot.autoconfigure.oss.OssAutoConfiguration,\
+com.vikadata.boot.autoconfigure.oss.QiniuTemporaryAutoConfiguration,\
 com.vikadata.boot.autoconfigure.task.XxlAutoConfiguration,\
 com.vikadata.boot.autoconfigure.social.SocialAutoConfiguration,\
 com.vikadata.boot.autoconfigure.socketio.SocketioAutoConfiguration,\

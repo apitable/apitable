@@ -79,4 +79,8 @@ public class AssetQiniuUploadCallbackBody {
 
     private String nodeId;
 
+    private String bucketType;
+
+    private Integer assetType;
+
 }

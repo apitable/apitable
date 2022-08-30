@@ -1,11 +1,14 @@
 package com.vikadata.api.modular.base.service;
 
+import java.util.List;
+
 import com.vikadata.api.model.ro.asset.AssetUploadTokenRo;
 import com.vikadata.api.model.vo.asset.AssetUploadTokenVo;
+import com.vikadata.api.modular.base.model.AssetUploadCertificateVO;
 
 /**
  * <p>
- * 基础-附件上传Token 服务类
+ * Asset Upload Credentials Service
  * </p>
  *
  * @author Pengap
@@ -24,5 +27,27 @@ public interface IAssetUploadTokenService {
      * @date 2022/4/6 17:36:27
      */
     AssetUploadTokenVo createWidgetAssetsUploadToken(Long opUserId, String nodeId, AssetUploadTokenRo assetUploadTokenRo);
+
+    /**
+     * create public asset pre-signed url
+     *
+     * @return AssetUploadCertificateVO
+     * @author Chambers
+     * @date 2022/8/3
+     */
+    AssetUploadCertificateVO createPublishAssetPreSignedUrl();
+
+    /**
+     * batch create space asset pre-signed url
+     *
+     * @param userId            user id
+     * @param nodeId            node id
+     * @param assetType         asset type
+     * @param count             created count
+     * @return AssetUploadCertificateVO
+     * @author Chambers
+     * @date 2022/8/3
+     */
+    List<AssetUploadCertificateVO> createSpaceAssetPreSignedUrl(Long userId, String nodeId, int assetType, int count);
 
 }

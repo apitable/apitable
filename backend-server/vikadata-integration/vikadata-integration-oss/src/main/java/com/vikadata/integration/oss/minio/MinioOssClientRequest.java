@@ -5,26 +5,33 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import cn.hutool.core.util.StrUtil;
 import io.minio.BucketExistsArgs;
 import io.minio.GetObjectArgs;
 import io.minio.GetObjectResponse;
+import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.ObjectWriteResponse;
 import io.minio.PutObjectArgs;
 import io.minio.RemoveObjectArgs;
 import io.minio.SetBucketPolicyArgs;
+import io.minio.StatObjectArgs;
+import io.minio.StatObjectResponse;
+import io.minio.http.Method;
 import okhttp3.Headers;
 
 import com.vikadata.integration.oss.AbstractOssClientRequest;
 import com.vikadata.integration.oss.OssObject;
+import com.vikadata.integration.oss.OssStatObject;
 import com.vikadata.integration.oss.OssUploadAuth;
 import com.vikadata.integration.oss.OssUploadPolicy;
 import com.vikadata.integration.oss.UrlFetchResponse;
 
-import org.springframework.lang.NonNull;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * minio client 实现
@@ -177,6 +184,38 @@ public class MinioOssClientRequest extends AbstractOssClientRequest {
     }
 
     @Override
+    public OssStatObject getStatObject(String bucketName, String key) {
+        try {
+            StatObjectResponse stat = minioClient.statObject(
+                    StatObjectArgs.builder()
+                            .bucket(bucketName)
+                            .object(key)
+                            .build());
+            return new OssStatObject(stat.object(), stat.etag(), stat.size(), stat.headers().get(CONTENT_TYPE));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public void executeStreamFunction(String bucketName, String key, Consumer<InputStream> function) {
+        try (GetObjectResponse response =
+                     minioClient.getObject(
+                             GetObjectArgs.builder()
+                                     .bucket(bucketName)
+                                     .object(key)
+                                     .build()
+                     )) {
+            function.accept(response);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public boolean deleteObject(String bucketName, String key) {
         isBucketExist(bucketName);
         try {
@@ -199,9 +238,25 @@ public class MinioOssClientRequest extends AbstractOssClientRequest {
     }
 
     @Override
-    public OssUploadAuth uoloadToken(String bucket, String key, long expires, @NonNull OssUploadPolicy uploadPolicy) {
-        // TODO minio 马上支持
+    public OssUploadAuth uploadToken(String bucket, String key, long expires, OssUploadPolicy uploadPolicy) {
+        isBucketExist(bucket);
         OssUploadAuth ossUploadAuth = new OssUploadAuth();
+        Map<String, String> reqParams = new HashMap<>();
+        try {
+            String url = minioClient.getPresignedObjectUrl(
+                    GetPresignedObjectUrlArgs.builder()
+                            .method(Method.PUT)
+                            .bucket(bucket)
+                            .object(key)
+                            .expiry((int) expires, TimeUnit.SECONDS)
+                            .extraQueryParams(reqParams)
+                            .build());
+            ossUploadAuth.setUploadUrl(url);
+            ossUploadAuth.setUploadRequestMethod(RequestMethod.PUT.name());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         return ossUploadAuth;
     }
 

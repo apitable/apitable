@@ -39,6 +39,10 @@ function setup_rabbitmq {
     docker-compose -f ./docker-compose.yml up -d vika-rabbit-mq
 }
 
+function setup_minio {
+    docker-compose -f ./docker-compose.yml up -d vika-minio
+}
+
 function run_tests () {
     # Accept Env vars for tests running on CI
     # The default values are for tests running locally
@@ -125,6 +129,7 @@ setup-mysql-for-test \
 init-users \
 prepare-client-release \
 migrate-mysql-custom \
+setup-minio \
 )
 
 function do_command () {
@@ -158,6 +163,9 @@ function do_command () {
             ;;
         migrate-mysql-custom)
             migrate_mysql_custom
+            ;;
+        setup-minio)
+            setup_minio
             ;;
         *)
             echo "No command matched here."

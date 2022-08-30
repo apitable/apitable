@@ -71,6 +71,7 @@ vikadata:
     language-tag: ${LANGUAGE_TAG:zh-CN}
     server-domain: ${SERVER_DOMAIN:}
     callback-domain: ${CALLBACK_DOMAIN:}
+    oss-image-audit-creatable: ${OSS_IMAGE_AUDIT_CREATABLE:false}
     # 存储桶配置
     ossBuckets:
       vk_assets_ltd:
@@ -165,11 +166,18 @@ vikadata-starter:
   #组件：OSS云对象存储，默认开启：七牛云存储
   oss:
     enabled: ${OSS_ENABLED:true}
-    type: ${OSS_TYPE:qiniu}
+    type: ${OSS_TYPE:aws}
+    aws:
+      access-key-id: ${AWS_ACCESS_KEY:B7OyF1ZORX4iHaqJ5uN62qXAgoDnc7Jv7_zf1SpJ}
+      access-key-secret: ${AWS_ACCESS_SECRET:Hp26Vj4D2bv0JQ-qgExXYKlKc5EkFuVVgW1GA1Eh}
+      endpoint: ${AWS_ENDPOINT:s3-cn-south-1.qiniucs.com}
+      region: ${AWS_REGION:cn-south-1}
     qiniu:
       access-key: ${QINIU_ACCESS_KEY:B7OyF1ZORX4iHaqJ5uN62qXAgoDnc7Jv7_zf1SpJ}
       secret-key: ${QINIU_SECRET_KEY:Hp26Vj4D2bv0JQ-qgExXYKlKc5EkFuVVgW1GA1Eh}
       region: ${QINIU_REGION:z2}
+      download-domain: ${QINIU_DOWNLOAD_DOMAIN:s1.vika.cn}
+      upload-url: ${QINIU_UPLOAD_URL:https://up-z2.qiniup.com}
       callback:
         url: ${QINIU_CALLBACK_URL:http://fktcca.natappfree.cc/api/v1/asset/qiniu/uploadCallback}
         body-type: ${QINIU_CALLBACK_BODY_TYPE:application/json}

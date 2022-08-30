@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.function.Consumer;
 
 import cn.hutool.core.util.URLUtil;
 
@@ -23,7 +24,17 @@ public abstract class AbstractOssClientRequest implements OssClientRequest {
     }
 
     @Override
-    public OssUploadAuth uoloadToken(String bucket, String key, long expires, OssUploadPolicy uploadPolicy) {
+    public OssStatObject getStatObject(String bucketName, String key) {
+        throw new NoSuchMethodError("Oss Client NoSuchMethod - 「getStatObject」");
+    }
+
+    @Override
+    public void executeStreamFunction(String bucketName, String key, Consumer<InputStream> function) {
+        throw new NoSuchMethodError("Oss Client NoSuchMethod - 「executeStreamFunction」");
+    }
+
+    @Override
+    public OssUploadAuth uploadToken(String bucket, String key, long expires, OssUploadPolicy uploadPolicy) {
         throw new NoSuchMethodError("Oss Client NoSuchMethod - 「createAuth」");
     }
 
