@@ -89,6 +89,7 @@ import com.vikadata.api.modular.space.mapper.SpaceMapper;
 import com.vikadata.api.modular.space.mapper.SpaceMemberRoleRelMapper;
 import com.vikadata.api.modular.space.model.GetSpaceListFilterCondition;
 import com.vikadata.api.modular.space.model.SpaceUpdateOperate;
+import com.vikadata.api.modular.space.service.IInvitationService;
 import com.vikadata.api.modular.space.service.ISpaceInviteLinkService;
 import com.vikadata.api.modular.space.service.ISpaceRoleService;
 import com.vikadata.api.modular.space.service.ISpaceService;
@@ -235,6 +236,9 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
 
     @Resource
     private RedisTemplate<String, String> redisTemplate;
+
+    @Resource
+    private IInvitationService iInvitationService;
 
     @Override
     public SpaceEntity getBySpaceId(String spaceId) {
@@ -777,6 +781,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         // 关闭邀请成员开关后，没有成员管理权限的成员，生成的空间公开邀请链接均失效
         if (Boolean.FALSE.equals(feature.getInvitable())) {
             TaskManager.me().execute(() -> iSpaceInviteLinkService.delNoPermitMemberLink(spaceId));
+            TaskManager.me().execute(() -> iInvitationService.closeMemberInvitationStatusBySpaceId(spaceId));
         }
     }
 
