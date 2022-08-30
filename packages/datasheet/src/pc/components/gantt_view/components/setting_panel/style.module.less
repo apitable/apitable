@@ -1,4 +1,5 @@
 @import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
 
 .settingPanelContainer {
   width: 100%;
@@ -7,7 +8,10 @@
   background-color: var(--defaultBg);
   border-top-right-radius: 8px;
   border-top: 1px solid var(--sheetLineColor);
-
+  .light-scroll-bar();
+  overflow-y: scroll;
+  overflow-x: hidden;
+   
   .header {
     display: flex;
     align-items: center;
