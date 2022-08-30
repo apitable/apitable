@@ -118,7 +118,7 @@ Why you must know APITable for your next software?
 ## 1 Click deploy
 
 - Heroku
-- OceanDigital
+- Digital Ocean 
 - Microsoft Azure
 - Google Cloud
 - AWS
