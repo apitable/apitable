@@ -4,12 +4,8 @@ import { KonvaGridContext } from 'pc/components/konva_grid';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { KonvaGridViewContext } from 'pc/components/konva_grid/context';
-import { GANTT_HEADER_HEIGHT, 
-  GANTT_HORIZONTAL_DEFAULT_SPACING, GANTT_VERTICAL_DEFAULT_SPACING, IScrollOptions,
-  PointPosition, KonvaGanttViewContext, GanttCoordinate, IScrollState, generateTargetName
-} from 'pc/components/gantt_view';
+import { PointPosition, KonvaGanttViewContext, GanttCoordinate, IScrollState, generateTargetName } from 'pc/components/gantt_view';
 import { CollaCommandName, Selectors, KONVA_DATASHEET_ID, ConfigConstant, t, Strings, fastCloneDeep } from '@vikadata/core';
-import { AreaType } from '../interface';
 import { Message } from '@vikadata/components';
 import { getAllCycleDAG } from 'pc/components/gantt_view/utils/task_line';
 import { onDragScrollSpacing } from 'pc/components/gantt_view/utils';

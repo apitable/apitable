@@ -35,7 +35,7 @@ import { DomGantt } from './dom_gantt';
 import { useGanttScroller } from './hooks/use_gantt_scroller';
 import {
   AreaType, CellBound, IGanttGroupMap, IScrollHandler, IScrollOptions, IScrollState, PointPosition, ScrollViewType, TimeoutID, ITaskLineSetting,
-  TaskPositionYType, ITargetTaskInfo
+  ITargetTaskInfo
 } from './interface';
 import styles from './style.module.less';
 import { getAllTaskLine, getAllCycleDAG, autoTaskScheduling, getCollapsedLinearRows } from './utils';

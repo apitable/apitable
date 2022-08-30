@@ -45,11 +45,16 @@ export const useTaskLineSetting = () => {
   }
  
   const { x, y, sourceId, targetId, fillColor, dashEnabled } = taskLineSetting;
+
   const firstFieldId = visibleColumns[0].fieldId;
-  const sourceRecordTitle = Selectors.getCellValue(state, snapshot, sourceId, firstFieldId) || t(Strings.record_unnamed);
+  const sourceCellValue = Selectors.getCellValue(state, snapshot, sourceId, firstFieldId);
+  const sourceRecordTitle = getRecordName(sourceCellValue, fieldMap[firstFieldId]) || t(Strings.record_unnamed);
+
   const startTimeCellValue = Selectors.getCellValue(state, snapshot, sourceId, endFieldId);
   const startTime = getRecordName(startTimeCellValue, fieldMap[endFieldId]);
-  const targetRecordTitle = Selectors.getCellValue(state, snapshot, targetId, firstFieldId) || t(Strings.record_unnamed);
+
+  const targetCellValue = Selectors.getCellValue(state, snapshot, targetId, firstFieldId);
+  const targetRecordTitle = getRecordName(targetCellValue, fieldMap[firstFieldId]) || t(Strings.record_unnamed);
   const endTimeCellValue = Selectors.getCellValue(state, snapshot, targetId, startFieldId);
   const endTime = getRecordName(endTimeCellValue, fieldMap[startFieldId]);
 
@@ -82,6 +87,7 @@ export const useTaskLineSetting = () => {
   };
 
   const showContactInfo = () => {
+    console.log('sourceRecordTitle targetRecordTitle', sourceRecordTitle, targetRecordTitle);
     setShowConnect(true);
   };
 
