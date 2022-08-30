@@ -39,6 +39,7 @@ import {
 } from './interface';
 import styles from './style.module.less';
 import { getAllTaskLine, getAllCycleDAG, autoTaskScheduling, getCollapsedLinearRows } from './utils';
+import { Message } from 'pc/components/common';
 interface IGanttViewProps {
   height: number;
   width: number;
@@ -847,7 +848,13 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
     if(!linkFieldId || !startFieldId || !endFieldId) {
       return;
     }
-    // TODO 判断开始跟结束时间是否能自动编排(计算字段不可以)
+ 
+    const startTimeIsComputedField = Field.bindModel(fieldMap[startFieldId]).isComputed;
+    const endTimeISComputedField = Field.bindModel(fieldMap[endFieldId]).isComputed;
+    if(startTimeIsComputedField || endTimeISComputedField) {
+      Message.warning({ content: t(Strings.gantt_cant_connect_when_computed_field) });
+      return;
+    }
     const commandData : ISetRecordOptions[] = autoTaskScheduling(visibleRows, state, snapshot, ganttStyle, endData);
     
     resourceService.instance?.commandManager.execute({

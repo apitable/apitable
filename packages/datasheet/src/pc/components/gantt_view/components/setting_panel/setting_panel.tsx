@@ -28,6 +28,7 @@ import { KonvaGridContext } from 'pc/components/konva_grid';
 import { Modal } from 'pc/components/common/modal/modal';
 import { autoTaskScheduling } from 'pc/components/gantt_view/utils';
 import { store } from 'pc/store';
+import { Message } from 'pc/components/common';
 
 const Option = Select.Option;
 const MultiOption = MultiSelect.Option;
@@ -293,6 +294,13 @@ export const SettingPanel = memo(() => {
     onGanttStyleChange(GanttStyleKeyType.AutoTaskLayout, value);
     if(value) {
       // TODO 判断开始跟结束时间是否是计算字段是计算字段不可以修改
+      const startTimeIsComputedField = Field.bindModel(fieldMap[startFieldId]).isComputed;
+      const endTimeISComputedField = Field.bindModel(fieldMap[endFieldId]).isComputed;
+      if(startTimeIsComputedField || endTimeISComputedField) {
+        Message.warning({ content: t(Strings.gantt_cant_connect_when_computed_field) });
+        return;
+      }
+
       const commandDataArr : ISetRecordOptions[] = autoTaskScheduling(visibleRows, state, snapshot, ganttStyle);
 
       resourceService.instance?.commandManager.execute({
