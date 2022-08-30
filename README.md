@@ -172,14 +172,11 @@ curl https://apitable.github.io/install.sh | bash -c
 
 ## License
 
-APITable is under AGPL.
-- You can xxx..
-- You may not....
-
-
-> This is the source code that runs APITable and all the associated services. 
->
+> This repository contains the source code for the Open Source edition of APITable, released under the AGPL.
+> 
 > If you'd like to run your own copy of APITable or contribute to development then this is the place for you.
+>
+> See [LICENSE](./LICENSE) for details.
 >
 > If you want to use APITable online then you don't need to run this code, we offer a hosted version of the app at [APITable.com](https://apitable.com) which optimized for global accelerator.
 
