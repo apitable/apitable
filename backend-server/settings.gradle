@@ -17,7 +17,6 @@ pluginManagement {
     id 'io.spring.dependency-management' version "${spring_dependency_management_version}"
     id 'org.springframework.boot' version "${spring_boot_version}"
     id 'com.github.jakemarsden.git-hooks' version "${git_hook_plugin_version}"
-    id 'com.gorylenko.gradle-git-properties' version "${git_properties_plugin_version}"
     id 'org.owasp.dependencycheck' version "${dependency_check_plugin_version}"
     id 'com.bmuschko.docker-remote-api' version "${gradle_docker_plugin_version}"
     id 'nu.studer.credentials' version '2.1'
@@ -28,7 +27,7 @@ pluginManagement {
   }
 }
 
-rootProject.name = 'vikadata-backend'
+rootProject.name = 'backend'
 
 include 'init-db'
 
@@ -49,7 +48,6 @@ include 'vikadata-project:bill-scheduler'
 include 'vikadata-project:space-scheduler'
 include 'vikadata-project:social-service-dingtalk'
 include 'vikadata-project:private-aider-service'
-include 'vikadata-project:finance-service'
 
 include 'vikadata-scheduler:scheduler-space'
 include 'vikadata-scheduler:scheduler-bill'

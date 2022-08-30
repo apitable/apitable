@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter
 plugins {
   id 'java'
   id 'org.springframework.boot'
-  id "com.gorylenko.gradle-git-properties"
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8

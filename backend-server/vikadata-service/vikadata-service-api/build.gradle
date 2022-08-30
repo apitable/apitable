@@ -4,7 +4,6 @@ import java.time.format.DateTimeFormatter
 
 plugins {
   id 'org.springframework.boot'
-  id "com.gorylenko.gradle-git-properties"
   id 'testing.java-conventions'
 }
 
@@ -104,23 +103,6 @@ dependencies {
 
 jar {
   enabled = false
-}
-
-// Git 配置信息打包
-gitProperties {
-  extProperty = 'gitProps'
-  failOnNoGitDirectory = false
-  dateFormat = "yyyy-MM-dd HH:mm:ss"
-  dateFormatTimeZone = 'CTT'
-}
-
-generateGitProperties.outputs.upToDateWhen { false }
-
-task printGitProperties(dependsOn: 'generateGitProperties') {
-  // make sure generateGitProperties task to execute before accessing generated properties
-  doLast {
-    println "git.commit.id.abbrev=" + project.ext.gitProps['git.commit.id.abbrev']
-  }
 }
 
 // 动态设置变量到resource目录下文件
