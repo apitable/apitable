@@ -1,9 +1,10 @@
 package com.vikadata.api.enums.attach;
 
-import com.vikadata.core.exception.BusinessException;
-import com.vikadata.core.support.serializer.IBaseEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import com.vikadata.core.exception.BusinessException;
+import com.vikadata.core.support.serializer.IBaseEnum;
 
 /**
  * 资源类型
@@ -59,5 +60,10 @@ public enum AssetType implements IBaseEnum {
 
     public static boolean isSpaceAsset(AssetType type) {
         return type.equals(DATASHEET) || type.equals(COVER) || type.equals(NODE_DESC);
+    }
+
+    public static boolean isPublishAsset(Integer value) {
+        AssetType type = AssetType.of(value);
+        return type.equals(USER_AVATAR) || type.equals(SPACE_LOGO);
     }
 }

@@ -2,6 +2,7 @@ package com.vikadata.integration.oss;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.function.Consumer;
 
 /**
  *
@@ -51,6 +52,16 @@ public class OssClientTemplate {
         return request.getObject(bucketName, key);
     }
 
+    public OssStatObject getStatObject(String bucketName, String key) {
+        OssClientRequest request = getOssClientRequestFactory().createClient();
+        return request.getStatObject(bucketName, key);
+    }
+
+    public void executeStreamFunction(String bucketName, String key, Consumer<InputStream> function) {
+        OssClientRequest request = getOssClientRequestFactory().createClient();
+        request.executeStreamFunction(bucketName, key, function);
+    }
+
     public boolean delete(String bucketName, String key) {
         OssClientRequest request = getOssClientRequestFactory().createClient();
         return request.deleteObject(bucketName, key);
@@ -63,7 +74,7 @@ public class OssClientTemplate {
 
     public OssUploadAuth uploadToken(String bucket, String key, long expires, OssUploadPolicy uploadPolicy) {
         OssClientRequest request = getOssClientRequestFactory().createClient();
-        return request.uoloadToken(bucket, key, expires, uploadPolicy);
+        return request.uploadToken(bucket, key, expires, uploadPolicy);
     }
 
     public boolean isValidCallback(String originAuthorization, String url, byte[] body, String contentType) {

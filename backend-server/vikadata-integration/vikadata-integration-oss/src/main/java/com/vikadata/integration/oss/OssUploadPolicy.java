@@ -21,6 +21,11 @@ public class OssUploadPolicy {
     private Integer isPrefixalScope;
 
     /**
+     * 限定为新增语意。如果设置为非 0 值，则无论 scope 设置为什么形式，仅能以新增模式上传文件。
+     */
+    private Integer insertOnly;
+
+    /**
      * 限定上传文件大小最小值，单位Byte。小于限制上传文件大小的最小值会被判为上传失败，返回 403 状态码
      *
      * support：
@@ -66,6 +71,14 @@ public class OssUploadPolicy {
 
     public void setIsPrefixalScope(Integer isPrefixalScope) {
         this.isPrefixalScope = isPrefixalScope;
+    }
+
+    public Integer getInsertOnly() {
+        return insertOnly;
+    }
+
+    public void setInsertOnly(Integer insertOnly) {
+        this.insertOnly = insertOnly;
     }
 
     public Long getFsizeMin() {

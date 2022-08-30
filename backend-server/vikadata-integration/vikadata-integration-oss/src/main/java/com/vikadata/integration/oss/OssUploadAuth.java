@@ -2,7 +2,7 @@ package com.vikadata.integration.oss;
 
 /**
  * <p>
- * 前端直传凭据
+ * oss upload certificate
  * </p>
  *
  * @author Pengap
@@ -11,9 +11,19 @@ package com.vikadata.integration.oss;
 public class OssUploadAuth {
 
     /**
-     * 前端直传token
+     * upload certificate token
      */
     private String uploadToken;
+
+    /**
+     * upload URL
+     */
+    private String uploadUrl;
+
+    /**
+     * upload request method
+     */
+    private String uploadRequestMethod;
 
     public String getUploadToken() {
         return uploadToken;
@@ -21,5 +31,21 @@ public class OssUploadAuth {
 
     public void setUploadToken(String uploadToken) {
         this.uploadToken = uploadToken;
+    }
+
+    public String getUploadUrl() {
+        return uploadUrl;
+    }
+
+    public void setUploadUrl(String uploadUrl) {
+        this.uploadUrl = uploadUrl;
+    }
+
+    public String getUploadRequestMethod() {
+        return uploadRequestMethod;
+    }
+
+    public void setUploadRequestMethod(String uploadRequestMethod) {
+        this.uploadRequestMethod = uploadRequestMethod;
     }
 }

@@ -1,11 +1,14 @@
 package com.vikadata.api.util;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cn.hutool.core.util.StrUtil;
 
+import static com.vikadata.api.constants.DateFormatConstants.SLAVE_DATE_PATTERN;
 import static com.vikadata.api.constants.PatternConstants.PURE_NUMBER;
 
 /**
@@ -88,5 +91,13 @@ public class StringUtil {
             return null;
         }
         return targetStr;
+    }
+
+    /**
+     * build path
+     */
+    public static String buildPath(String prefix) {
+        String date = DateTimeFormatter.ofPattern(SLAVE_DATE_PATTERN).format(LocalDate.now());
+        return StrUtil.join("/", prefix, date, cn.hutool.core.util.IdUtil.fastSimpleUUID());
     }
 }

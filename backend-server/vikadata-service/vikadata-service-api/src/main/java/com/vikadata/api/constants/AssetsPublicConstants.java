@@ -44,4 +44,9 @@ public class AssetsPublicConstants {
     public static final String PUBLIC_PREFIX = "public";
 
     public static final Long CAPACITY_HEX = 1024 * 1024 * 1024L;
+
+    public static final String MIME_LIMIT = "!text/html";
+
+    public static final String IMAGE_PREFIX = "image";
+
 }

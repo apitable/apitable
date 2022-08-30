@@ -1,7 +1,5 @@
 package com.vikadata.api.model.ro.asset;
 
-import javax.validation.constraints.NotNull;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -19,7 +17,7 @@ import lombok.Data;
 @ApiModel("资源直传Token请求参数")
 public class AssetUploadTokenRo {
 
-    @NotNull
+    @Deprecated
     @ApiModelProperty(value = "上传scope（0:单个文件-default；1:多个文件）", position = 1)
     private Integer prefixalScope;
 

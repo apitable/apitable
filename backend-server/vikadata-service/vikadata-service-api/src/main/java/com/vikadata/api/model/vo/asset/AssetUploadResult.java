@@ -48,4 +48,8 @@ public class AssetUploadResult {
     @ApiModelProperty(value = "图片宽度", example = "80", position = 5)
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private Integer width;
+
+    public AssetUploadResult(String token) {
+        this.token = token;
+    }
 }

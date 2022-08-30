@@ -7,7 +7,8 @@ import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.support.serializer.IBaseEnum;
 
 /**
- * 资源上传来源，用于CallBack Body
+ * asset upload source
+ * using: CallBack Body
  *
  * @author Pengap
  * @date 2021/7/21
@@ -17,9 +18,21 @@ import com.vikadata.core.support.serializer.IBaseEnum;
 public enum AssetUploadSource implements IBaseEnum {
 
     /**
-     * 小程序静态资源
+     * widget static resource
      */
-    WIDGET_STATIC(0);
+    WIDGET_STATIC(0),
+
+    /**
+     * space asset
+     */
+    SPACE_ASSET(1),
+
+    /**
+     * public asset
+     */
+    PUBLISH_ASSET(2),
+
+    ;
 
     private final Integer value;
 
@@ -29,7 +42,7 @@ public enum AssetUploadSource implements IBaseEnum {
                 return type;
             }
         }
-        throw new BusinessException("未知的UploadSource");
+        throw new BusinessException("Unknown UploadSource");
     }
 
 }

@@ -1,6 +1,10 @@
 package com.vikadata.api.modular.base.service;
 
+import java.util.List;
+
+import com.vikadata.api.enums.attach.AssetType;
 import com.vikadata.api.model.ro.asset.AssetQiniuUploadCallbackBody;
+import com.vikadata.api.model.vo.asset.AssetUploadResult;
 
 /**
  * <p>
@@ -13,12 +17,25 @@ import com.vikadata.api.model.ro.asset.AssetQiniuUploadCallbackBody;
 public interface IAssetCallbackService {
 
     /**
-     * 七牛云上传回调
+     * qiniu cloud upload callback
      *
-     * @param body  回调内容
+     * @param body  callback body
+     * @return AssetUploadResult
      * @author Pengap
      * @date 2022/4/7 15:02:24
      */
-    void qiniuCallback(AssetQiniuUploadCallbackBody body);
+    @Deprecated
+    AssetUploadResult qiniuCallback(AssetQiniuUploadCallbackBody body);
+
+    /**
+     * asset callback notify after complete upload
+     *
+     * @param assetType     assert type
+     * @param resourceKeys  resource key list
+     * @return AssetUploadResults
+     * @author Chambers
+     * @date 2022/8/8
+     */
+    List<AssetUploadResult> loadAssetUploadResult(AssetType assetType, List<String> resourceKeys);
 
 }

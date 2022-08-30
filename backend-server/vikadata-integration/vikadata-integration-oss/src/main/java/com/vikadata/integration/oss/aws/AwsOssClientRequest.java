@@ -3,11 +3,15 @@ package com.vikadata.integration.oss.aws;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Instant;
+import java.util.Date;
+import java.util.function.Consumer;
 
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
+import com.amazonaws.HttpMethod;
 import com.amazonaws.SdkBaseException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.internal.SkipMd5CheckStrategy;
@@ -22,16 +26,17 @@ import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.s3.transfer.TransferProgress;
 import com.amazonaws.services.s3.transfer.Upload;
-import com.qiniu.cdn.CdnManager;
-import com.qiniu.cdn.CdnResult;
-import com.qiniu.common.QiniuException;
-import com.qiniu.util.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.vikadata.integration.oss.AbstractOssClientRequest;
 import com.vikadata.integration.oss.OssObject;
+import com.vikadata.integration.oss.OssStatObject;
+import com.vikadata.integration.oss.OssUploadAuth;
+import com.vikadata.integration.oss.OssUploadPolicy;
 import com.vikadata.integration.oss.UrlFetchResponse;
+
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * aws s3 client 实现
@@ -202,6 +207,18 @@ public class AwsOssClientRequest extends AbstractOssClientRequest {
     }
 
     @Override
+    public OssStatObject getStatObject(String bucketName, String key) {
+        ObjectMetadata metadata = amazonClient.getObjectMetadata(bucketName, key);
+        return new OssStatObject(key, metadata.getETag(), metadata.getContentLength(), metadata.getContentType());
+    }
+
+    @Override
+    public void executeStreamFunction(String bucketName, String key, Consumer<InputStream> function) {
+        S3Object object = amazonClient.getObject(bucketName, key);
+        function.accept(object.getObjectContent());
+    }
+
+    @Override
     public boolean deleteObject(String bucketName, String key) {
         try {
             amazonClient.deleteObject(bucketName, key);
@@ -216,5 +233,16 @@ public class AwsOssClientRequest extends AbstractOssClientRequest {
     @Override
     public void refreshCdn(String bucketName, String[] url) {
         throw new Error("S3未实现该方法");
+    }
+
+    @Override
+    public OssUploadAuth uploadToken(String bucket, String key, long expires, OssUploadPolicy uploadPolicy) {
+        Date expireDate = Date.from(Instant.now().plusSeconds(expires));
+        String preSignedUrl = amazonClient.generatePresignedUrl(bucket, key, expireDate, HttpMethod.PUT).toString();
+
+        OssUploadAuth ossUploadAuth = new OssUploadAuth();
+        ossUploadAuth.setUploadUrl(preSignedUrl);
+        ossUploadAuth.setUploadRequestMethod(RequestMethod.PUT.name());
+        return ossUploadAuth;
     }
 }

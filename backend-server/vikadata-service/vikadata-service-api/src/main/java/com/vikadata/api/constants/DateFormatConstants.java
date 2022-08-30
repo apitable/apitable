@@ -20,5 +20,7 @@ public class DateFormatConstants {
 
     public static final String TIME_NORM_PATTERN = "yyyy-MM-dd";
 
+    public static final String SLAVE_DATE_PATTERN = "yyyy/MM/dd";
+
     public static final String YEARS_MONTH_PATTERN = "yyyy-MM";
 }

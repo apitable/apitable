@@ -15,7 +15,7 @@
     </select>
 
     <select id="selectByFileUrl" resultType="com.vikadata.entity.AssetEntity">
-        SELECT id, `checksum`, file_url, file_size
+        SELECT *
         FROM vika_asset
         WHERE file_url IN
         <foreach item="item" index="index" collection="fileUrls" open="(" separator="," close=")">

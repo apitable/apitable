@@ -12,6 +12,7 @@ import com.vikadata.core.support.serializer.IBaseEnum;
  * @author Pengap
  * @date 2021/7/21
  */
+@Deprecated
 @Getter
 @AllArgsConstructor
 public enum AssetUploadScope implements IBaseEnum {
@@ -36,7 +37,7 @@ public enum AssetUploadScope implements IBaseEnum {
                 return type;
             }
         }
-        throw new BusinessException("未知的UploadScope");
+        throw new BusinessException("Unknown Upload Scope!");
     }
 
 }
