@@ -96,6 +96,8 @@ export interface ISpaceBasicInfo {
   seats: number;
   sheetNums: number;
   capacityUsedSizes: number;
+  currentBundleCapacityUsedSizes: number;
+  giftCapacityUsedSizes: number;
   formViewNums: number;
   fieldRoleNums: number;
   galleryViewNums: number;

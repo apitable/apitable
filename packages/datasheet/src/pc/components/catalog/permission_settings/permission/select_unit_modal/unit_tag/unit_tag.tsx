@@ -14,10 +14,11 @@ export interface IUnitTagProps {
   deletable?: boolean;
   onClose?: (id: string) => void;
   isLeave?: boolean;
+  maxWidth?: number;
 }
 
 export const UnitTag: FC<IUnitTagProps> = props => {
-  const { deletable = true, avatar, name, isTeam = false, onClose, unitId, isLeave, title } = props;
+  const { deletable = true, avatar, name, isTeam = false, onClose, unitId, isLeave, title, maxWidth } = props;
   return (
     <div className={classNames(styles.unitTag, props.className, { [styles.isLeave]: isLeave })}>
       <div className={classNames([styles.wrapper, isTeam ? styles.rect : styles.circle])}>
@@ -28,7 +29,7 @@ export const UnitTag: FC<IUnitTagProps> = props => {
           size={AvatarSize.Size20}
           type={isTeam ? AvatarType.Team : AvatarType.Member}
         />
-        <div className={styles.name}>{title || name}</div>
+        <div className={styles.name} style={{ maxWidth }}>{title || name}</div>
         {
           deletable &&
           <CloseIcon className={styles.closeBtn} width={8} height={8} onClick={() => onClose && onClose(unitId)} />

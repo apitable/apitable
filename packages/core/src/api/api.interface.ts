@@ -59,6 +59,7 @@ export interface ISignIn {
   areaCode?: string,
   token?: string,
   mode?: ConfigConstant.LoginMode,
+  spaceId?: string,
 }
 
 export interface ISocialWecomGetConfigResponse {

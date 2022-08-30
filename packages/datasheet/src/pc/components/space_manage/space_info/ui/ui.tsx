@@ -10,13 +10,19 @@ import InfoIcon from 'static/icon/common/common_icon_information.svg';
 import { SpaceContext } from '../context';
 import styles from './style.module.less';
 
-export const Advert: FC<{ className?: string }> = ({ className }) => {
+interface IAvertProps {
+  className?: string,
+  desc?: string,
+  linkText?: string,
+  linkUrl?: string,
+}
 
+export const Advert: FC<IAvertProps> = (props) => {
   const { adData } = useContext(SpaceContext);
 
   const handleClick = () => {
     if (adData) {
-      window.open(adData.linkUrl, '_blank');
+      window.open(props.linkUrl || adData.linkUrl, '_blank');
     }
   };
 
@@ -32,14 +38,14 @@ export const Advert: FC<{ className?: string }> = ({ className }) => {
     </div>;
   }
   return (
-    <div className={classnames(styles.advert, className)}>
+    <div className={classnames(styles.advert, props.className)}>
       <span className={styles.advertImg}>
         <Image src={adData.banners?.[0]?.url} width={160} height={110}/>
       </span>
-      <Typography variant="body3" className={styles.content}>{
-        adData.desc
-      }</Typography>
-      <Button color="primary" onClick={handleClick}>{adData.linkText}</Button>
+      <Typography variant="body3" className={styles.content}>
+        {props.desc || adData.desc}
+      </Typography>
+      <Button color="primary" onClick={handleClick}>{props.linkText || adData.linkText}</Button>
     </div>
   );
 };
@@ -47,7 +53,7 @@ export const Advert: FC<{ className?: string }> = ({ className }) => {
 type CardTitleType = {
   title: string;
   tipTitle?: string;
-  link?: { text: string, href: string };
+  link?: { text: string, href?: string, onClick?: () => void };
   button?: { text: string, onClick: () => void };
   isMobile?: boolean;
 };
@@ -63,7 +69,12 @@ export const CardTitle = ({ title, tipTitle, link, button, isMobile }: CardTitle
         </Tooltip>}
       </div>
       {
-        link && <a className={styles.link} href={link.href} target="_blank" rel="noopener noreferrer">
+        link && 
+        <a
+          className={styles.link}
+          {...(link.href ? { href: link.href, target: '_blank', rel: 'noopener noreferrer' } : {})}
+          onClick={link.href ? undefined : link.onClick}
+        >
           {link.text} <ChevronRightOutlined color={colors.deepPurple[500]} />
         </a>
       }

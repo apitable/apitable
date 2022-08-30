@@ -1,0 +1,186 @@
+import React, { FC, useEffect, useState } from 'react';
+import { Modal } from 'pc/components/common/modal/modal/modal';
+import { Table, Tabs } from 'antd';
+import ReactDOM from 'react-dom';
+import { useRequest } from 'pc/hooks';
+import { useCapacityRequest } from 'pc/hooks/use_capacity-reword-request';
+import styles from './style.module.less';
+import { ConfigConstant, Strings, t } from '@vikadata/core';
+import { ColumnsType } from 'antd/lib/table';
+import { UnitTag } from 'pc/components/catalog/permission_settings/permission/select_unit_modal/unit_tag';
+import { TComponent } from 'pc/components/common/t_component';
+import { UserCardTrigger } from 'pc/components/common';
+import { ThemeProvider } from '@vikadata/components';
+import { Provider } from 'react-redux';
+import { store } from 'pc/store';
+
+const { TabPane } = Tabs;
+
+interface ICapacityRewardModalProps {
+  onCancel: () => void
+}
+
+enum CapacityType {
+  InEffect = 'InEffect',
+  Expired = 'Expired',
+}
+
+type IRecord = {
+  quotaSource: string;
+  quota: string;
+  expireDate: string;
+  inviteUserInfo?: {
+    avatar: string,
+    userId: string,
+    userName: string,
+  },
+};
+
+export const CapacityRewardModal: FC<ICapacityRewardModalProps> = ({ onCancel }) => {
+  const columns: ColumnsType<IRecord> = [
+    {
+      title: t(Strings.attachment_capacity_details_model_source),
+      dataIndex: 'quotaSource',
+      width: 330,
+      render(source, record) {
+        const templateFn = {
+          subscription_package_capacity: () => t(Strings.capacity_from_subscription_package), // 订阅套餐
+          official_gift_capacity: () => t(Strings.capacity_from_official_gift), // 官方赠送
+          purchase_capacity: () => t(Strings.capacity_from_purchase), // 购买容量
+          participation_capacity: () => { // 邀请新用户赠送
+            const inviteUserInfo = record.inviteUserInfo;
+            if (!inviteUserInfo) return null;
+            const userId = inviteUserInfo.userId;
+            const avatar = inviteUserInfo.avatar;
+            const userName = inviteUserInfo.userName || t(Strings.guests_per_space);
+            return (
+              <TComponent
+                tkey={t(Strings.capacity_from_participation)}
+                params={{
+                  user: (     
+                    <UserCardTrigger
+                      popupAlign={ {
+                        points: ['tl', 'bl'],
+                        offset: [0, 8],
+                        overflow: { adjustX: true, adjustY: true },
+                      }}
+                      memberId={userId}
+                      permissionVisible={false}
+                    >
+                      <span>
+                        <UnitTag
+                          deletable={false}
+                          isTeam={false}
+                          unitId={userId}
+                          avatar={avatar}
+                          name={userName || t(Strings.guests_per_space)}
+                          maxWidth={100}
+                        />
+                      </span>
+                    </UserCardTrigger>
+                  )
+                }}
+              />
+            );
+          }
+        }[source] || (() => source);
+
+        return templateFn();
+      }
+    },
+    { title: t(Strings.attachment_capacity_details_model_capacity_size), dataIndex: 'quota' },
+    { title: t(Strings.attachment_capacity_details_model_expiry_time), dataIndex: 'expireDate', render(date) {
+      return date == '-1' ? t(Strings.attachment_capacity_details_model_expiry_time_permanent) : date;
+    } }
+  ];
+  const [list, setList] = useState([]);
+
+  const [currTab, setCurrTab] = useState(CapacityType.InEffect);
+  const { getCapacityListReq } = useCapacityRequest();
+  const { run: getCapacityList } = useRequest(getCapacityListReq, { manual: true });
+  const [pageNo, setPageNo] = useState(1);
+  const [total, setTotal] = useState(1);
+
+  useEffect(() => {
+    const isExpire = currTab === CapacityType.Expired;
+    getCapacityList(isExpire, pageNo).then(res => {
+      setList(res.records);
+      setTotal(res.total);
+    });
+  }, [currTab, getCapacityList, pageNo]);
+
+  const TableEl = (
+    <Table
+      columns={columns}
+      dataSource={list}
+      scroll={{ y: 320 }}
+      pagination={{
+        current: pageNo,
+        total: total,
+        defaultPageSize: ConfigConstant.CAPACITY_REWARD_LIST_PAGE_SIZE,
+        onChange(page) {
+          setPageNo(page);
+        },
+        showSizeChanger: false,
+      }}
+    />
+  );
+
+  return (
+    <Modal
+      title={<div>{ t(Strings.attachment_capacity_details_model_title) }</div>}
+      visible
+      className={styles.capacityRewardModal}
+      width={856}
+      centered
+      onCancel={onCancel}
+      footer={null}
+      zIndex={100}
+    >
+      <div className={styles.content}>
+        <Tabs onChange={(type) => {
+          setCurrTab(type as CapacityType);
+          setPageNo(1);
+        }}>
+          <TabPane tab={t(Strings.attachment_capacity_details_model_tab_in_effect)} key={CapacityType.InEffect} />
+          <TabPane tab={t(Strings.attachment_capacity_details_model_tab_expired)} key={CapacityType.Expired} />
+        </Tabs>
+        {TableEl}
+      </div>
+    </Modal>
+  );
+};
+
+export const expandCapacityRewardModal = () => {
+
+  const div = document.createElement('div');
+  document.body.appendChild(div);
+
+  function destroy() {
+    const unmountResult = ReactDOM.unmountComponentAtNode(div);
+    if (unmountResult && div.parentNode) {
+      div.parentNode.removeChild(div);
+    }
+  }
+
+  function close() {
+    setTimeout(() => {
+      destroy();
+    }, 0);
+  }
+
+  const render = () => {
+    ReactDOM.render(
+      (
+        <Provider store={store}>
+          <ThemeProvider>
+            <CapacityRewardModal onCancel={close} />
+          </ThemeProvider>
+        </Provider>
+      ),
+      div
+    );
+  };
+
+  render();
+};

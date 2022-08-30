@@ -17,9 +17,9 @@ export const Memory: React.FC<IMemory> = props => {
   const colors = useThemeColors();
   useEffect(() => {
     Api.searchSpaceSize().then(res => {
-      const { usedCapacity, totalCapacity } = res.data.data;
+      const { usedCapacity, subscriptionCapacity } = res.data.data;
       setUsedMemory(usedCapacity);
-      setTotalMemory(totalCapacity === -1 ? Number.POSITIVE_INFINITY : totalCapacity);
+      setTotalMemory(subscriptionCapacity === -1 ? Number.POSITIVE_INFINITY : subscriptionCapacity);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cellValue]);

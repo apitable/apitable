@@ -7,6 +7,7 @@ import { Method, useNavigation } from 'pc/components/route_manager/use_navigatio
 import { useDispatch } from 'pc/hooks/use_dispatch';
 import { secondStepVerify } from 'pc/hooks/utils';
 import { NotificationStore } from 'pc/notification_store';
+import { store } from 'pc/store';
 import { getSearchParams } from 'pc/utils';
 import { isLocalSite } from 'pc/utils/catalog';
 import { useSelector } from 'react-redux';
@@ -85,7 +86,10 @@ export const useUserRequest = () => {
    * 直接登录/注册
    */
   const loginOrRegisterReq = (loginData: ApiInterface.ISignIn, loginType?: ConfigConstant.LoginTypes) => {
-    return Api.signInOrSignUp(loginData).then((res) => {
+    // 提取邀请加入的 spaceId，赠送空间需要用到
+    const invite = store.getState().invite;
+    const spaceId = invite?.inviteLinkInfo?.data?.spaceId || invite?.inviteEmailInfo?.data?.spaceId;
+    return Api.signInOrSignUp({ ...loginData, spaceId }).then((res) => {
       const { success, code, message, data } = res.data;
       if (success) {
         dispatch(StoreActions.setLoading(true));

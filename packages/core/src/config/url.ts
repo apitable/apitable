@@ -192,6 +192,8 @@ export const SUBSCRIBE_REMIND = '/player/notification/subscribe/remind';
 // 权限相关
 export const SPACE_RESOURCE = '/space/resource';
 export const NO_PERMISSION_MEMBER = '/node/remind/units/noPermission';
+// 赠送附件空间容量明细
+export const CAPACITY_REWARD_LIST = '/space/capacity/detail';
 // 链接邀请
 export const CREATE_LINK = '/space/link/generate';
 export const LINK_LIST = '/space/link/list';

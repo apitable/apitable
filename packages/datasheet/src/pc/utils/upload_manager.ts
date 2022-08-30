@@ -207,8 +207,8 @@ export class UploadManager {
       return;
     }
     Api.searchSpaceSize().then(res => {
-      const { usedCapacity, totalCapacity } = res.data.data;
-      if (usedCapacity > totalCapacity) {
+      const { usedCapacity, subscriptionCapacity } = res.data.data;
+      if (usedCapacity > subscriptionCapacity) {
         triggerUsageAlert(SubscribeKye.MaxCapacitySizeInBytes, { usage: usedCapacity });
       }
     });
