@@ -69,4 +69,7 @@ public class UnitInfoVo {
     @ApiModelProperty(value = "成员所属部门", example = "技术组 | 美术组", position = 10)
     private String team;
 
+    @ApiModelProperty(value = "user email", example = "**@**.**", position = 11)
+    private String email;
+
 }

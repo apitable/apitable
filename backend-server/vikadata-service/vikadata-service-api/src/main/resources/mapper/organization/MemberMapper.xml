@@ -838,6 +838,7 @@
                vum.member_name,
                vu.avatar,
                vu.uuid,
+               vu.email,
                vum.is_active,
                vum.is_deleted,
                vu.is_paused,
