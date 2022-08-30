@@ -177,6 +177,10 @@ buildpush_webserver: ## ghcr.io/vikadata/vika/web-server
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)";\
 	source scripts/build_web.sh
 
+buildpush_componentdoc: ## ghcr.io/vikadata/vika/component-doc
+	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)"; \
+	build_docker component-doc
+
 buildpush_webserver_op: ## ghcr.io/vikadata/vika/web-server
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)";\
   	env_nodejs;\

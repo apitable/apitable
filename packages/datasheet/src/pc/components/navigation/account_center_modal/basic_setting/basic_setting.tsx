@@ -1,5 +1,7 @@
-import { hiddenMobile, IReduxState, StatusCode, StoreActions, Settings, Strings, t, isPrivateDeployment,
-  isIdassPrivateDeployment } from '@vikadata/core';
+import {
+  hiddenMobile, IReduxState, StatusCode, StoreActions, Settings, Strings, t, isPrivateDeployment,
+  isIdassPrivateDeployment
+} from '@vikadata/core';
 import { useRequest } from 'pc/hooks';
 import { Spin } from 'antd';
 import { Avatar, AvatarSize } from 'pc/components/common/avatar';
@@ -9,6 +11,7 @@ import { Modal } from 'pc/components/common/modal/modal';
 import { LinkButton, Button, Typography, stopPropagation, useThemeColors } from '@vikadata/components';
 import { IPreviewShape, ISelectInfo } from 'pc/components/common/image_crop_upload';
 import { useUserRequest } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
 import { FC, useEffect, useState } from 'react';
 import * as React from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
@@ -53,6 +56,7 @@ export const BasicSetting: FC = () => {
 
   // 企微浏览器 + 企微第三方空间站 + 未绑定手机
   const hiddenMobileRes = isWecomFunc() && isWecomSpace && !user!.mobile;
+  const env = getEnvVariables();
 
   const {
     loading: uploadAvatarLoading,
@@ -133,7 +137,7 @@ export const BasicSetting: FC = () => {
           Modal.confirm({
             title: t(Strings.kindly_reminder),
             content: (
-              <Typography variant='body2' >
+              <Typography variant='body2'>
                 {t(Strings.logout_warning)}
               </Typography>
             ),
@@ -149,7 +153,7 @@ export const BasicSetting: FC = () => {
             } as any,
             cancelText: t(Strings.know_how_to_logout),
             closable: false,
-            icon: <div className={styles.statusIcon}><StatusIconFunc type="warning" /></div>,
+            icon: <div className={styles.statusIcon}><StatusIconFunc type='warning' /></div>,
           });
           return;
         }
@@ -230,7 +234,7 @@ export const BasicSetting: FC = () => {
                 </div>
               </div>
               <LinkButton
-                component="button"
+                component='button'
                 underline={false}
                 className={styles.modifyBtn}
                 onClick={() => setUploadModal(true)}
@@ -256,12 +260,12 @@ export const BasicSetting: FC = () => {
               <div className={styles.content}>{realNickName}</div>
               {
                 !isIdassPrivateDeployment() &&
-                <LinkButton component="button" underline={false} onClick={() => setNameModal(true)}>
+                <LinkButton component='button' underline={false} onClick={() => setNameModal(true)}>
                   {t(Strings.modal_title_modify_nickname)}
                 </LinkButton>
               }
             </div>
-            {!hiddenMobileRes && (
+            {!hiddenMobileRes && !env.HIDDEN_BIND_PHONE && (
               <div className={styles.item}>
                 <div className={styles.label}>{t(Strings.label_bind_phone)}:</div>
                 <div className={styles.content}>{mobileContent()}</div>
@@ -269,15 +273,15 @@ export const BasicSetting: FC = () => {
                   !isIdassPrivateDeployment() &&
                   <>
                     <LinkButton
-                      component="button"
+                      component='button'
                       underline={false}
                       onClick={() => setMobileModal(true)}
                     >
                       {user!.mobile ? t(Strings.button_change_phone) : t(Strings.button_bind_now)}
                     </LinkButton>
                     {
-                    user!.mobile && <LinkButton
-                        component="button"
+                      user!.mobile && <LinkButton
+                        component='button'
                         underline={false}
                         onClick={() => unBind('mobile')}
                         color={colors.errorColor}
@@ -289,30 +293,32 @@ export const BasicSetting: FC = () => {
                 }
               </div>
             )}
-            <div className={styles.item}>
-              <div className={styles.label}>{t(Strings.label_bind_email)}:</div>
-              <div className={styles.content}>
-                {user?.email || t(Strings.unbound)}
-              </div>
-              {
-                !isIdassPrivateDeployment() &&
-                <>
-                  <LinkButton component="button" underline={false} onClick={() => setEmailModal(true)}>
-                    {user!.email ? t(Strings.change_email) : t(Strings.button_bind_now)}
-                  </LinkButton>
-                  {
-                user!.email && <LinkButton
-                      component="button"
-                      underline={false}
-                      onClick={() => unBind('email')}
-                      color={colors.errorColor}
-                    >
-                      {t(Strings.unbind)}
+            {
+              !env.HIDDEN_BIND_MAIL && <div className={styles.item}>
+                <div className={styles.label}>{t(Strings.label_bind_email)}:</div>
+                <div className={styles.content}>
+                  {user?.email || t(Strings.unbound)}
+                </div>
+                {
+                  !isIdassPrivateDeployment() &&
+                  <>
+                    <LinkButton component='button' underline={false} onClick={() => setEmailModal(true)}>
+                      {user!.email ? t(Strings.change_email) : t(Strings.button_bind_now)}
                     </LinkButton>
-                  }
-                </>
-              }
-            </div>
+                    {
+                      user!.email && <LinkButton
+                        component='button'
+                        underline={false}
+                        onClick={() => unBind('email')}
+                        color={colors.errorColor}
+                      >
+                        {t(Strings.unbind)}
+                      </LinkButton>
+                    }
+                  </>
+                }
+              </div>
+            }
           </div>
           {!isPrivateDeployment() &&
             <div className={styles.logout}>

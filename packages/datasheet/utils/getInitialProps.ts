@@ -5,8 +5,8 @@ import { getPageParams, getRegResult, spaceIdReg } from 'pc/hooks';
 import { NextPageContext } from 'next';
 
 export interface IUserInfoError {
-  code: number
-  message: string
+  code: number;
+  message: string;
 }
 
 export const getInitialProps = async(context: { ctx: NextPageContext }) => {
