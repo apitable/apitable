@@ -61,7 +61,7 @@ export const AccountCenterModal: FC<IAccountCenterModalProps> = props => {
       key: AccountCenterModules.BasicSetting,
       name: t(Strings.user_profile_setting),
       component: <BasicSetting />,
-      hidden: (isPrivateDeployment() && isMobile) || env.HIDDEN_BASE_USER_PROFILE
+      hidden: (isPrivateDeployment() && isMobile)
     },
     {
       key: AccountCenterModules.ModifyPassword,

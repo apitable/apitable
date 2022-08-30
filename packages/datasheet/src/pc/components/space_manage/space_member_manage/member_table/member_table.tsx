@@ -1,3 +1,4 @@
+import { getEnvVariables } from 'pc/utils/env';
 import { useRef, FC, useState, ReactText, useLayoutEffect, useEffect } from 'react';
 import * as React from 'react';
 import { Table, Pagination } from 'antd';
@@ -13,11 +14,13 @@ import { EditMemberModal } from '../modal';
 import IconCheck from 'static/icon/common/common_icon_select.svg';
 import { List, lightColors } from '@vikadata/components';
 import styles from './style.module.less';
+
 interface IMemberTable {
-  searchMemberRes: IMemberInfoInSpace[]
-  setSearchMemberRes: React.Dispatch<React.SetStateAction<IMemberInfoInSpace[]>>
+  searchMemberRes: IMemberInfoInSpace[];
+  setSearchMemberRes: React.Dispatch<React.SetStateAction<IMemberInfoInSpace[]>>;
 }
-export const MemberTable:FC<IMemberTable> = (props) => {
+
+export const MemberTable: FC<IMemberTable> = (props) => {
   const tableRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const [pageNo, setPageNo] = useState(1);
@@ -122,6 +125,9 @@ export const MemberTable:FC<IMemberTable> = (props) => {
     }
     dispatch(StoreActions.updateSelectMemberListInSpace([]));
   };
+
+  const env = getEnvVariables();
+
   const columns: ColumnProps<IMemberInfoInSpace>[] = [
     {
       title: t(Strings.edit_member_name),
@@ -149,7 +155,7 @@ export const MemberTable:FC<IMemberTable> = (props) => {
             title: t(Strings.not_joined_members),
             onClick: () => {
               setSelectOuter(!selectOuter);
-              const isActive = selectEnter ? (!selectOuter ? undefined : '1') : (!selectOuter ? '0' : '-1') ; 
+              const isActive = selectEnter ? (!selectOuter ? undefined : '1') : (!selectOuter ? '0' : '-1');
               if (isActive === '-1') {
                 setEmptyData(true);
               } else {
@@ -181,13 +187,6 @@ export const MemberTable:FC<IMemberTable> = (props) => {
       ),
     },
     {
-      title: t(Strings.phone_number),
-      dataIndex: 'mobile',
-      key: 'mobile',
-      align: 'center',
-      ellipsis: true,
-    },
-    {
       title: t(Strings.email),
       dataIndex: 'email',
       key: 'email',
@@ -210,8 +209,18 @@ export const MemberTable:FC<IMemberTable> = (props) => {
     },
   ];
 
+  if (!env.HIDDEN_BIND_PHONE) {
+    columns.splice(2, 0, {
+      title: t(Strings.phone_number),
+      dataIndex: 'mobile',
+      key: 'mobile',
+      align: 'center',
+      ellipsis: true,
+    });
+  }
+
   // 如果为玉符私有化去掉操作列
-  if(isIdassPrivateDeployment()) {
+  if (isIdassPrivateDeployment()) {
     columns.length = columns.length - 1;
   }
 
@@ -222,7 +231,7 @@ export const MemberTable:FC<IMemberTable> = (props) => {
   };
 
   const tableProps = {
-    columns: spaceResource && spaceResource.permissions.includes(ConfigConstant.PermissionCode.MEMBER) && !isBindSocial 
+    columns: spaceResource && spaceResource.permissions.includes(ConfigConstant.PermissionCode.MEMBER) && !isBindSocial
       ? columns : columns.filter((item, index) => index !== columns.length - 1),
     dataSource: isEmptyData ? [] : props.searchMemberRes.length > 0 ? props.searchMemberRes : memberListInSpace,
     rowSelection: isBindSocial ? undefined : {

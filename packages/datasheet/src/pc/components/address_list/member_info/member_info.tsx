@@ -1,3 +1,4 @@
+import { getEnvVariables } from 'pc/utils/env';
 import { FC, useState, useEffect } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import { IReduxState, ITeams, Strings, t, ConfigConstant, IMemberInfoInAddressList, isIdassPrivateDeployment } from '@vikadata/core';
@@ -13,9 +14,9 @@ import { Identity } from 'pc/components/space_manage/identity';
 import { getSocialWecomUnitName, isSocialPlatformEnabled } from 'pc/components/home/social_platform';
 
 export const getIdentity = (memberInfo: IMemberInfoInAddressList) => {
-  if(!memberInfo.isActive) return 'inactive';
-  if(memberInfo.isAdmin) return 'subAdmin';
-  if(memberInfo.isMainAdmin) return 'mainAdmin';
+  if (!memberInfo.isActive) return 'inactive';
+  if (memberInfo.isAdmin) return 'subAdmin';
+  if (memberInfo.isMainAdmin) return 'mainAdmin';
   return '';
 };
 
@@ -31,6 +32,7 @@ export const MemberInfo: FC = () => {
   const [nameLengthErr, setNameLengthErr] = useState(false);
   const [editIcon, { set: setEditIcon }] = useToggle(false);
   const { editMemberName, editOwnMemberNameInAddress } = useAddressRequest();
+  const env = getEnvVariables();
   const editNameClick = () => {
     setInEditName(true);
   };
@@ -112,7 +114,7 @@ export const MemberInfo: FC = () => {
           {
             identity &&
             <div className={styles.identityWrap}>
-              <Identity type={identity} className={styles.identity}/>
+              <Identity type={identity} className={styles.identity} />
             </div>
           }
         </div>
@@ -124,15 +126,15 @@ export const MemberInfo: FC = () => {
             <span>{displayMemberName}</span>
             {
               editIcon && !isIdassPrivateDeployment() &&
-              <ButtonPlus.Icon onClick={editNameClick} className={styles.editIcon}><EditIcon fill="currentColor" /></ButtonPlus.Icon>
+              <ButtonPlus.Icon onClick={editNameClick} className={styles.editIcon}><EditIcon fill='currentColor' /></ButtonPlus.Icon>
             }
           </div>
           {inEditName &&
-            <Tooltip title={t(Strings.member_err)} placement="top" visible={nameLengthErr}>
+            <Tooltip title={t(Strings.member_err)} placement='top' visible={nameLengthErr}>
               <Input
                 defaultValue={memberName}
                 className={classNames(styles.input, { [styles.err]: nameLengthErr })}
-                size="small"
+                size='small'
                 autoFocus
                 onChange={inputChange}
                 onPressEnter={onPressEnter}
@@ -148,12 +150,15 @@ export const MemberInfo: FC = () => {
           {parser(renderTeams(teams)) || selectedMemberInfo.teamTitle}
         </span>
       </div>
-      <div className={styles.infoItem}>
-        <span className={styles.infoTitle}>{t(Strings.phone_number)}</span>
-        <span className={classNames(styles.infoDetail, { [styles.emptyDetail]: !mobile })}>
-          {mobile || '-'}
-        </span>
-      </div>
+      {
+        !env.HIDDEN_BIND_PHONE && <div className={styles.infoItem}>
+          <span className={styles.infoTitle}>{t(Strings.phone_number)}</span>
+          <span className={classNames(styles.infoDetail, { [styles.emptyDetail]: !mobile })}>
+            {mobile || '-'}
+          </span>
+        </div>
+      }
+
       <div className={styles.infoItem}>
         <span className={styles.infoTitle}>{t(Strings.email)}</span>
         <span className={classNames(styles.infoDetail, { [styles.emptyDetail]: !email })}>

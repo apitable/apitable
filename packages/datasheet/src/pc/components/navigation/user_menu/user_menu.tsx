@@ -26,7 +26,7 @@ import { usePlatform } from 'pc/hooks/use_platform';
 import { NotificationStore } from 'pc/notification_store';
 import { resourceService } from 'pc/resource_service';
 import { copy2clipBoard } from 'pc/utils';
-import { isMobileApp } from 'pc/utils/env';
+import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import { dispatch } from 'pc/worker/store';
 import * as React from 'react';
 import { FC, useRef, useState } from 'react';
@@ -57,6 +57,7 @@ const customTips = {
 
 export const UserMenu: FC<IUserMenuProps> = (props) => {
   const colors = useThemeColors();
+  const env = getEnvVariables();
   const { userInfo, spaceId, spaceInfo, unitMap } = useSelector(
     (state: IReduxState) => ({
       userInfo: state.user.info,
@@ -414,7 +415,7 @@ export const UserMenu: FC<IUserMenuProps> = (props) => {
       <div className={styles.userMenuCenter}>
         <div className={styles.menuListWrapper}>
           <div className={styles.centerTitle}>{t(Strings.personal_info)}</div>
-          {!hiddenMobileRes && (
+          {!hiddenMobileRes && !env.HIDDEN_BIND_PHONE && (
             <div className={styles.centerItem}>
               <span className={styles.label}>{t(Strings.phone_number)}</span>
               {mobile ? hiddenMobile(mobile) : t(Strings.unbound)}
