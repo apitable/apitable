@@ -574,3 +574,7 @@ export const IDAAS_GET_SPACE_BIND_INFO = '/idaas/auth/:spaceId/bindInfo';
 // 获取URL相关信息, URL列识别用
 export const GET_URL_META = '/internal/field/url/awareContent';
 export const GET_URL_META_BATCH = '/internal/field/url/awareContents';
+
+// 附件直传
+export const UPLOAD_PRESIGNED_URL = '/asset/upload/preSignedUrl';
+export const UPLOAD_CALLBACK = 'asset/upload/callback';

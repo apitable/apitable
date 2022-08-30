@@ -1,12 +1,14 @@
-import Quill, { StringMap } from 'quill';
-import { useCallback, useMemo } from 'react';
-import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
-import ReactQuill from 'react-quill';
-import { UploadManager } from '../utils/upload_manager';
-import { useSelector } from 'react-redux';
-import { Api, t, Strings, Settings, getImageThumbSrc } from '@vikadata/core';
+import { getImageThumbSrc, Settings, Strings, t } from '@vikadata/core';
+import { uploadAttachToS3, UploadType } from '@vikadata/widget-sdk';
 import { Message } from 'pc/components/common';
+import Quill, { StringMap } from 'quill';
+import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
 import MarkdownShortcuts from 'quill-markdown-shortcuts';
+import { useCallback, useMemo } from 'react';
+import ReactQuill from 'react-quill';
+import { useSelector } from 'react-redux';
+import { UploadManager } from '../utils/upload_manager';
+
 Quill.register('modules/imageDropAndPaste', QuillImageDropAndPaste);
 Quill.register('modules/markdownShortcuts', MarkdownShortcuts);
 
@@ -28,11 +30,13 @@ type IUseQuillOption = (
 ) => StringMap;
 
 export const useQuillOption: IUseQuillOption = quillRef => {
-  const { folderId, datasheetId } = useSelector(state => state.pageParams);
+  const { folderId, datasheetId, nodeId } = useSelector(state => state.pageParams);
 
   function uploadImage(fd: FormData) {
-    return Api.uploadImgOnRichText(fd, {
-      withCredentials: true,
+    return uploadAttachToS3({
+      file: fd.get('file'),
+      nodeId,
+      fileType: UploadType.NodeDesc
     });
   }
 
@@ -50,6 +54,7 @@ export const useQuillOption: IUseQuillOption = quillRef => {
       'image',
       getImageThumbSrc(Settings[bucket].value + token, { format: 'jpg', quality: 100 }),
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [folderId, datasheetId, quillRef]);
 
   const pasteImageHandler = useCallback(value => {

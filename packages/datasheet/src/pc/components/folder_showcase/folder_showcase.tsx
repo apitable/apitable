@@ -1,8 +1,9 @@
 import { Button, ContextMenu, Skeleton, useContextMenu } from '@vikadata/components';
 import {
-  Api, AutoTestID, ConfigConstant, CutMethod, Events, FOLDER_SHOWCASE_ID, getImageThumbSrc, INodePermissions, integrateCdnHost, IReduxState,
-  Navigation, Player, Settings, StoreActions, Strings, t,
+  AutoTestID, ConfigConstant, CutMethod, Events, FOLDER_SHOWCASE_ID, getImageThumbSrc, INodePermissions, integrateCdnHost, IReduxState, Navigation,
+  Player, Settings, StoreActions, Strings, t,
 } from '@vikadata/core';
+import { uploadAttachToS3 } from '@vikadata/widget-sdk';
 import { useToggle, useUnmount } from 'ahooks';
 import { Spin } from 'antd';
 import classNames from 'classnames';
@@ -275,7 +276,9 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
     if (!showcaseData) {
       return;
     }
-    Api.uploadAttach(formData).then(res => {
+    uploadAttachToS3({
+      file: formData.get('file'), fileType: 3, nodeId: folderId
+    }).then(res => {
       const { success, data } = res.data;
       if (success) {
         setShowcaseData({ ...showcaseData, cover: data.token });

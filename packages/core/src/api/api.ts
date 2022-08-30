@@ -10,8 +10,8 @@ import { IAxiosResponse } from 'types';
 import urlcat from 'urlcat';
 import { NodeType, ShowRecordHistory } from '../config/constant';
 import {
-  IAdData, ICommitRemind, ICreateNotification, ICreateOrderResponse, IGetSpaceAuditReq, ILabsFeatureListResponse, ILoadOrSearchArg,
-  INodeInfoWindowResponse, INoPermissionMemberResponse, IPayOrderResponse, IQueryOrderDiscountResponse, IQueryOrderPriceResponse,
+  IAdData, ICommitRemind, ICreateNotification, ICreateOrderResponse, IGetSpaceAuditReq, IGetUploadCertificateResponse, ILabsFeatureListResponse,
+  ILoadOrSearchArg, INodeInfoWindowResponse, INoPermissionMemberResponse, IPayOrderResponse, IQueryOrderDiscountResponse, IQueryOrderPriceResponse,
   IQueryOrderStatusResponse, ISignIn, ISocialWecomGetConfigResponse, ISyncMemberRequest, ITemplateRecommendResponse, IUpdateSecuritySetting,
   IWecomAgentBindSpaceResponse,
 } from './api.interface';
@@ -410,23 +410,6 @@ export function getMemberInfo({ memberId, uuid }: { memberId?: string, uuid?: st
       uuid,
     },
   });
-}
-
-/**
- * @description 上传图片
- * @export
- * @param {FormData} formData
- * @param {*} options axios的配置，可以自己定义，是个对象
- * @description 提供富文本编辑器的上传
- *
- * 选项配置不一定，因此使用 any 作为类型
- * @returns
- */
-export function uploadImgOnRichText(
-  formData: any,
-  options: { [key: string]: any },
-) {
-  return axios.post(Url.UPLOAD_ATTACH, formData, options);
 }
 
 /**
@@ -2119,3 +2102,11 @@ export function spaceBindIdaasInfo(spaceId: string) {
 
 // 批量获取URL相关信息, URL列识别用
 export const getURLMetaBatch = (urls: string[]) => axios.post(Url.GET_URL_META_BATCH, { urls });
+
+export const getUploadCertificate = (params: { count: number, data: string, nodeId?: string, type: number }) => {
+  return axios.post<IApiWrapper & { data: IGetUploadCertificateResponse[] }>(Url.UPLOAD_PRESIGNED_URL, params);
+};
+
+export const getS3Callback = (params: { resourceKeys: string[], type: number }) => {
+  return axios.post<IApiWrapper & { data: IGetUploadCertificateResponse[] }>(Url.UPLOAD_CALLBACK, params);
+};

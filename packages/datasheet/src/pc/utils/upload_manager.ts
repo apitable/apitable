@@ -1,6 +1,7 @@
 import {
   Api, CollaCommandManager, CollaCommandName, getNewId, IAttachmentValue, IDPrefix, Selectors, StatusCode, Strings, SubscribeKye, t
 } from '@vikadata/core';
+import { uploadAttachToS3, UploadType } from '@vikadata/widget-sdk';
 import { uniqBy } from 'lodash';
 import mime from 'mime-types';
 import { triggerUsageAlert } from 'pc/common/billing';
@@ -374,10 +375,15 @@ export class UploadManager {
     return new Promise((resolve, reject) => {
       const request = async(nvcVal?: string) => {
         nvcVal && formData.append('data', nvcVal);
-        const res = await Api.uploadImgOnRichText(formData, {
-          withCredentials: true,
-          onUploadProgress: ({ loaded, total }) => {
-            this.emitProgress(cellId, fileId, loaded, total);
+        const res = await uploadAttachToS3({
+          file: formData.get('file'),
+          fileType: UploadType.DstAttachment,
+          data: nvcVal,
+          nodeId: (formData.get('nodeId') as string) || '',
+          axiosConfig: {
+            onUploadProgress: ({ loaded, total }) => {
+              this.emitProgress(cellId, fileId, loaded, total);
+            },
           },
         });
         resolve(res);

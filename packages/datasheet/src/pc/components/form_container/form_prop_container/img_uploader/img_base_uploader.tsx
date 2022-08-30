@@ -1,4 +1,5 @@
-import { Api, Strings, t } from '@vikadata/core';
+import { Strings, t } from '@vikadata/core';
+import { uploadAttachToS3, UploadType } from '@vikadata/widget-sdk';
 import { Spin } from 'antd';
 import classnames from 'classnames';
 import Image from 'next/image';
@@ -53,7 +54,9 @@ export const ImgBaseUploader: React.FC<IImgBaseUploader> = (props) => {
   };
 
   const uploadFile = (formData: FormData) => {
-    Api.uploadAttach(formData).then(res => {
+    return uploadAttachToS3({
+      file: formData.get('file'), fileType: UploadType.CoverImage
+    }).then(res => {
       const { success, data } = res.data;
       if (success) {
         onChange(data, IFileType.Custom);

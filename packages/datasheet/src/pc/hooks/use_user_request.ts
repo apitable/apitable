@@ -1,4 +1,5 @@
 import { Api, ApiInterface, ConfigConstant, IReduxState, IUnitValue, Navigation, StatusCode, StoreActions, Strings, t } from '@vikadata/core';
+import { uploadAttachToS3, UploadType } from '@vikadata/widget-sdk';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal';
 import { openSliderVerificationModal } from 'pc/components/common/slider_verification';
@@ -278,7 +279,7 @@ export const useUserRequest = () => {
       if (success) {
         if (data.needRedirect) {
           window.location.href = data.redirectUri;
-        } else{
+        } else {
           // navigationTo 方法会带上 reference，所以直接使用 location.href
           window.location.href = '/login';
         }
@@ -407,10 +408,10 @@ export const useUserRequest = () => {
       return await updateAvatar(token, false);
     }
     if (file) {
-      const formData = new FormData();
-      formData.append('file', file as File);
-      formData.append('type', '0');
-      return Api.uploadAttach(formData).then(async(res) => {
+      return uploadAttachToS3({
+        file: file,
+        fileType: UploadType.UserAvatar
+      }).then(async(res) => {
         const { success, data } = res.data;
         if (success) {
           return await updateAvatar(data.token, false);
