@@ -417,6 +417,8 @@ export const defaultSubscribe: ISubscription = {
   maxRowsInSpace: 11,
   maxSheetNums: 2,
   maxCapacitySizeInBytes: 1000000000,
+  subscriptionCapacity: 1000000000,
+  unExpireGiftCapacity: 0,
   maxSeats: 10,
   maxGalleryViewsInSpace: 2,
   maxKanbanViewsInSpace: 100,

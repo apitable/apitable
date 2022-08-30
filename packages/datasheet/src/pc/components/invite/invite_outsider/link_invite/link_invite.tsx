@@ -1,6 +1,6 @@
 import { Api, IReduxState, ITeamList, StoreActions, Strings, t } from '@vikadata/core';
 import { TreeSelect, Input } from 'antd';
-import { Button, ButtonGroup, useThemeColors, Skeleton } from '@vikadata/components';
+import { Button, ButtonGroup, useThemeColors, Skeleton, Alert } from '@vikadata/components';
 import { Message, Tooltip, Popconfirm } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
 import { Modal } from 'pc/components/common/mobile/modal';
@@ -183,6 +183,11 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
   };
   return (
     <div className={styles.linkInvite}>
+      <Alert
+        type='default'
+        className={styles.alert}
+        content={t(Strings.invite_give_capacity_intro)}
+      />
       <div className={styles.subTitle}>{t(Strings.create_public_invitation_link)}</div>
       <div className={styles.addNewLink}>
         {

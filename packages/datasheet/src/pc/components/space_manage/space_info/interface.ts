@@ -97,7 +97,7 @@ export interface IHooksResult {
   remain: number,
   usedPercent: number,
   remainPercent: number,
-  remainText: string
+  remainText: string,
 }
 
 export interface IMultiLineItemProps {

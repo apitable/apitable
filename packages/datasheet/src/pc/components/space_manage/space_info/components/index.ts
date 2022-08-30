@@ -9,4 +9,5 @@ export * from './del_success/del.success';
 export * from './recover_space/recover_space';
 export * from './block';
 export * from './card';
+export * from './capacity-with-reward-card';
 export * from './multi_line_card';

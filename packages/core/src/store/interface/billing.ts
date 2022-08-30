@@ -100,9 +100,19 @@ export interface ISubscribeResponseData {
   maxSheetNums: number;
 
   /**
-   * @description 空间站的最大附件容量数
+   * @description 空间站的总容量（包括赠送容量，单位为 byte）
    */
   maxCapacitySizeInBytes: number;
+
+  /**
+   * @description 套餐容量（不含赠送）
+   */
+  subscriptionCapacity: number;
+
+  /**
+   * @description 赠送的未过期容量(单位：byte)
+   */
+  unExpireGiftCapacity: number;
 
   /**
    * @description 空间站支持的最大席位数

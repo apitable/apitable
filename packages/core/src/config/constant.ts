@@ -333,6 +333,9 @@ export const MEMBER_LIST_PAGE_SIZE = 13;
 // 空间管理-子管理员-子管理员列表查询页数
 export const SUB_ADMIN_LIST_PAGE_SIZE = 12;
 
+// 赠送空间查询页数
+export const CAPACITY_REWARD_LIST_PAGE_SIZE = 12;
+
 // 个人中心
 export const DINGDING = 0;
 export const WECHAT = 1;

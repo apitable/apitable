@@ -10,14 +10,15 @@ import { Typography, useThemeColors } from '@vikadata/components';
 import { ProgressProps } from 'antd/lib/progress';
 import { useAnimationNum } from '../../hooks/use_animation_num';
 import { ISpaceLevelType, needHideUnLimitedSpaceLevel } from '../../interface';
+import { expandInviteModal } from 'pc/components/invite';
 
 interface ICardProps {
   trailColor: string;
   strokeColor: string;
-  shape: 'line' | 'circle'
   unit?: string;
   title: string;
   titleTip: string;
+
   total: number;
   used: number;
   remain: number;
@@ -26,6 +27,7 @@ interface ICardProps {
   usedText: string;
   usedPercent: number;
   remainPercent: number;
+
   titleLink?: { text: string, href?: string, onClick?: () => void };
   titleButton?: { text: string, onClick: () => void };
   valueIntro?: string;
@@ -35,19 +37,29 @@ interface ICardProps {
   className?: string;
   level?: ISpaceLevelType;
   isMobile?: boolean;
+
+  giftUsed: number,
+  giftUsedText: string,
+  giftTotal: number,
+  giftTotalText: string,
+  giftRemain: number,
+  giftUsedPercent: number,
+  giftRemainPercent: number,
+  giftRemainText: string
 }
 
-export const Card: FC<ICardProps> = (props) => {
+export const CapacityWithRewardCard: FC<ICardProps> = (props) => {
   const {
     title,
+
     usedPercent,
     usedText,
     remainText,
     totalText,
     remainPercent,
+  
     trailColor,
     strokeColor,
-    shape,
     unit,
     titleTip,
     titleLink,
@@ -59,16 +71,25 @@ export const Card: FC<ICardProps> = (props) => {
     className,
     level,
     isMobile,
+
+    giftUsedText,
+    giftUsedPercent,
+    giftRemainPercent,
+    giftRemainText
   } = props;
 
   const colors = useThemeColors();
-  const isLine = shape === 'line';
   const overflow = usedPercent === 100;
   const _strokeColor = overflow ? colors.red[500] : strokeColor;
   const unLimited = +totalText === -1;
   // UI反馈当总数无限时，给一个默认的比率进度条会美观些
-  const showFakePercent = unLimited && +usedText;
+  const showFakePercent = unLimited && +usedText; // 无限情况下，展示虚假的百分比 5%
   const percent = useAnimationNum({ value: showFakePercent ? 5 : usedPercent, duration: 1000, easing: 'linear', isFloat: true }) as number;
+
+  const giftPercent = useAnimationNum({ 
+    value: giftUsedPercent || .5, duration: 1000, easing: 'linear', isFloat: true 
+  }) as number;
+
   const usedTitleText = useAnimationNum({ value: usedText, duration: 1000, easing: 'linear', format: true, isFloat: usedTextIsFloat });
   const hiddenUnLimitedText = needHideUnLimitedSpaceLevel[level!];
 
@@ -77,31 +98,95 @@ export const Card: FC<ICardProps> = (props) => {
     return { minHeight };
   }, [minHeight]);
 
-  const detail = (
-    <>
-      {/* 已用 */}
-      <Desc 
-        color={_strokeColor}
-        label={t(Strings.used)}
-        text={usedText}
-        unit={unit}
-        showPercent={showPercent}
-        usedPercent={usedPercent}
-      />
-      {/* 剩余 */}
-      {
-        !unLimited &&
-        <Desc 
-          color={trailColor}
-          label={t(Strings.remain)}
-          text={remainText}
-          unit={unit}
-          showPercent={showPercent}
-          usedPercent={remainPercent}
-        />
-      }
-    </>
-  );
+  /**
+   * 容量信息，带有赠送信息
+   */
+  const CapacityInfoWithReward = () => {
+    return (
+      <div>
+        <div style={{ marginTop: 24, fontSize: 13 }}>{t(Strings.attachment_capacity_subscription_capacity)}</div>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          margin: '8px 0',
+        }}>
+          <Desc
+            color={_strokeColor}
+            label={t(Strings.used)}
+            text={usedText}
+            unit={unit}
+            showPercent={showPercent}
+            usedPercent={usedPercent}
+          />
+          {
+            !unLimited &&
+            <Desc 
+              color={trailColor}
+              label={t(Strings.remain)}
+              text={remainText}
+              unit={unit}
+              showPercent={showPercent}
+              usedPercent={remainPercent}
+            />
+          }
+        </div>
+        <div className={styles.progressWrap} data-is-line>
+          <ProgressInCard 
+            type={'line'}
+            trailColor={trailColor}
+            strokeColor={_strokeColor}
+            percent={percent}
+            showInfo={false}
+            style={{ lineHeight: '12px', color: _strokeColor }}
+          />
+        </div>
+
+        <div style={{ marginTop: 24, fontSize: 13 }}>
+          {t(Strings.attachment_capacity_gift_capacity)}
+          <span
+            style={{ marginLeft: 8, cursor: 'pointer', color: colors.rainbowPurple5 }} 
+            onClick={() => expandInviteModal()}
+          >{t(Strings.attachment_capacity_gift_capacity_access_portal)}</span>
+        </div>
+
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          margin: '8px 0',
+        }}>
+          <Desc
+            color={colors.rainbowPurple5}
+            label={t(Strings.used)}
+            text={giftUsedText}
+            unit={unit}
+            showPercent={showPercent}
+            usedPercent={giftUsedPercent}
+          />
+          {
+            !unLimited &&
+            <Desc 
+              color={colors.rainbowPurple1}
+              label={t(Strings.remain)}
+              text={giftRemainText}
+              unit={unit}
+              showPercent={showPercent}
+              usedPercent={giftRemainPercent}
+            />
+          }
+        </div>
+        <div className={styles.progressWrap} data-is-line>
+          <ProgressInCard 
+            type={'line'}
+            trailColor={colors.rainbowPurple1}
+            strokeColor={colors.rainbowPurple5}
+            percent={giftPercent}
+            showInfo={false}
+            style={{ lineHeight: '12px', color: colors.rainbowPurple5 }}
+          />
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className={classNames(styles.card, className)} style={style}>
@@ -120,25 +205,7 @@ export const Card: FC<ICardProps> = (props) => {
           </>
         }
       </div>
-      <div className={styles.progressWrap} data-is-line={isLine}>
-        {
-          isLine && <div className={styles.lineDesc}> {detail} </div>
-        }
-        <ProgressInCard
-          type={shape}
-          trailColor={trailColor}
-          strokeColor={_strokeColor}
-          percent={percent}
-          showInfo={!isLine}
-          style={isLine ? { lineHeight: '12px', color: _strokeColor }: undefined}
-        />
-      </div>
-      {/* 显示 已用xx，剩余 xx */}
-      {
-        !isLine && <div className={styles.descWrap}>
-          <div> {detail} </div>
-        </div>
-      }
+      <CapacityInfoWithReward />
     </div>
   );
 };
@@ -173,7 +240,7 @@ const Desc: FC<IDescProps> = ({ color, label, text, unit, showPercent, usedPerce
  */
 interface IProgressInCardProps extends ProgressProps {
   /**
-   * 指定 showInfo 为 true 时，文字的颜色
+   * showInfo 为 true 时，文字的颜色
    */
   color?: string;
 }
@@ -193,7 +260,8 @@ const ProgressInCard: FC<IProgressInCardProps> = (props) => {
       color={color}
       className={styles.progressFormat}
     >
-      {percent}<PercentOutlined color={color} />
+      {percent}
+      <PercentOutlined color={color} />
     </Typography>,
   });
   const progressConfig = {

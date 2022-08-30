@@ -12,7 +12,8 @@ export const Alert = (
     content,
     closable = false,
     onClose,
-    style
+    style,
+    className
   }: IAlertProps) => {
 
   const [hidden, setHidden] = useState(false);
@@ -36,7 +37,7 @@ export const Alert = (
     return null;
   }
   return (
-    <AlertWrapper title={title} type={type} style={style}>
+    <AlertWrapper title={title} type={type} style={style} className={className}>
       <AlertInnerComponent>
         <Icon size={iconSize} />
         <Box
@@ -47,7 +48,7 @@ export const Alert = (
         >
           {title && <Typography variant="h7"> {title} </Typography>}
           <div style={{ marginTop: title ? 4 : 0 }}>
-            <Typography variant="body3" color={title ? theme.color.fill0 : theme.color.primaryColor}> {content} </Typography>
+            <Typography variant="body3" color={theme.color.firstLevelText}> {content} </Typography>
           </div>
         </Box>
         {closable && <IconButton size={'small'} onClick={handleClose} icon={CloseLargeOutlined} />}

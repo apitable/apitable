@@ -5,14 +5,16 @@ import {
   Info,
   LevelCard,
   Card,
-  MultiLineCard
+  MultiLineCard,
+  CapacityWithRewardCard,
 } from '../components';
 import { Advert } from '../ui';
 import { SpaceLevelInfo } from '../utils';
 import { useCapacity, useApi, useFile, useRecord, useMember, useView, useOthers } from '../hooks';
-import { isSocialPlatformEnabled } from 'pc/components/home/social_platform/utils';
+import { isSocialPlatformEnabled, inSocialApp, isSocialFeiShu } from 'pc/components/home/social_platform';
 import { buildSpaceCertSheetUrl } from '../components/basic_info/helper';
 import { isMobileApp } from 'pc/utils/env';
+import { expandCapacityRewardModal } from '../components/capacity-reward-modal/capacity-reward-modal';
 
 interface ICardProps {
   minHeight?: string | number
@@ -20,7 +22,6 @@ interface ICardProps {
 
 export const useCards = (props: ILayoutProps) => {
   const { showContextMenu, handleDelSpace, level, spaceId, spaceInfo, spaceFeatures, subscription, onUpgrade, isMobile } = props;
-  const capacityData = useCapacity({ spaceInfo, subscription });
   const apiData = useApi({ spaceInfo, subscription });
   const fileData = useFile({ spaceInfo, subscription });
   const recordData = useRecord({ spaceInfo, subscription });
@@ -47,9 +48,19 @@ export const useCards = (props: ILayoutProps) => {
     return !!spaceInfo && isSocialPlatformEnabled(spaceInfo);
   }, [spaceInfo]);
 
+  // 是 第三方空间站 或 通过第三方浏览器打开
+  const isSocial = isSocialEnabled || inSocialApp() || isSocialFeiShu();
+  const capacityData = useCapacity({ spaceInfo, subscription }, isSocial);
+
   return useMemo(() => { 
     return {
-      AdCard: (props) => <Advert {...props} />,
+      AdCard: (props) => 
+        <Advert
+          {...props}
+          desc={isSocial ? undefined : t(Strings.space_setting_social_ad_decs)}
+          linkText={isSocial ? undefined : t(Strings.space_setting_social_ad_btn)}
+          linkUrl={ buildSpaceCertSheetUrl(spaceId) }
+        />,
       LevelCard: (props: ICardProps) => (
         <LevelCard
           {...props}
@@ -94,21 +105,29 @@ export const useCards = (props: ILayoutProps) => {
         titleTip={t(Strings.api_usage_info)}
       />,
 
-      CapacityCard: (props: ICardProps) => <Card
-        {...props}
-        {...capacityData}
-        isMobile={isMobile}
-        usedTextIsFloat
-        shape="circle"
-        trailColor={trailColor}
-        strokeColor={strokeColor}
-        title={t(Strings.space_capacity)}
-        titleTip={t(Strings.member_data_desc_of_appendix)}
-        titleLink={(basicCert || isSocialEnabled || isMobileApp() || isPrivateDeployment()) ? undefined : {
-          text: t(Strings.space_free_capacity_expansion),
-          href: buildSpaceCertSheetUrl(spaceId),
-        }}
-      />,
+      CapacityCard: (props: ICardProps) => {
+        // 如果是第三方环境，使用 Card（不带赠送空间信息），否则使用 CapacityWithRewardCard（带赠送信息）
+        const Component = isSocial ? Card : CapacityWithRewardCard;
+        return (
+          <Component
+            {...props}
+            {...capacityData}
+            isMobile={isMobile}
+            usedTextIsFloat
+            shape="circle"
+            trailColor={trailColor}
+            strokeColor={strokeColor}
+            title={t(Strings.space_capacity)}
+            titleTip={t(Strings.member_data_desc_of_appendix)}
+            titleLink={(basicCert || isSocial || isMobileApp() || isMobile || isPrivateDeployment()) ? undefined : {
+              text: t(Strings.attachment_capacity_details_entry),
+              onClick: () => {
+                expandCapacityRewardModal();
+              }
+            }}
+          />
+        );
+      },
 
       FileCard: (props: ICardProps) => <Card
         {...props}

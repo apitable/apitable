@@ -1181,6 +1181,22 @@ export function createLink(teamId: string) {
   });
 }
 
+// 空间赠送信息
+export function getCapacityRewardList(isExpire: boolean, pageNo: number ) {
+  const pageObjectParams = JSON.stringify({
+    pageSize: ConfigConstant.CAPACITY_REWARD_LIST_PAGE_SIZE,
+    order: 'createdAt',
+    sort: ConfigConstant.SORT_DESC,
+    pageNo,
+  });
+  return axios.get(Url.CAPACITY_REWARD_LIST, {
+    params: {
+      pageObjectParams,
+      isExpire,
+    }
+  });
+}
+
 // 获取链接列表
 export function getLinkList() {
   return axios.get(Url.LINK_LIST);
