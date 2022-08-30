@@ -61,13 +61,17 @@ export const useGanttMouseEvent = ({
     dragTaskId, setDragTaskId,
     transformerId, setTransformerId,
     dragSplitterInfo, setDragSplitterInfo,
+    isTaskLineDrawing,
+    setIsTaskLineDrawing,
+    taskLineSetting,
+    setTaskLineSetting
   } = useContext(KonvaGanttViewContext);
   const {
     isMobile,
     setMouseStyle,
     scrollHandler
   } = useContext(KonvaGridContext);
-
+  
   const { startFieldId, endFieldId } = ganttStyle;
   const startField = fieldMap[startFieldId];
   const endField = fieldMap[endFieldId];
@@ -79,7 +83,6 @@ export const useGanttMouseEvent = ({
   const editable = _editable && !isValidSameField;
   const { containerWidth: gridWidth } = gridInstance;
   const { rowHeight, columnWidth, containerWidth: ganttWidth } = ganttInstance;
-
   const getTaskData = (rowIndex: number) => {
     if (rowIndex !== -1) {
       const { recordId, type } = linearRows[rowIndex];
@@ -96,7 +99,7 @@ export const useGanttMouseEvent = ({
   };
 
   const onTransformerAttach = (e: KonvaEventObject<MouseEvent>) => {
-    if (pointTargetName !== KONVA_DATASHEET_ID.GANTT_TASK) return setTransformerId('');
+    if (![KONVA_DATASHEET_ID.GANTT_TASK, KONVA_DATASHEET_ID.GANTT_LINE_POINT].includes(pointTargetName)) return setTransformerId('');
     const task = getTaskData(pointRowIndex);
     if (task == null) return setTransformerId('');
     const taskId = `task-${task.recordId}`;
@@ -152,11 +155,16 @@ export const useGanttMouseEvent = ({
     const pos = target.getStage()?.getPointerPosition();
     if (pos == null) return;
     const { x, y } = pos;
-    const { realAreaType, targetName, rowIndex } = getMousePosition(x, y, _targetName);
+    const { realAreaType, targetName, rowIndex, offsetLeft, offsetTop } = getMousePosition(x, y, _targetName);
     if (realAreaType !== AreaType.Gantt) return;
     const pointRecordId = linearRows[rowIndex]?.recordId;
     // 移动端下只跳转到离边界 1 格的距离，PC 端是 3 格
     const columnDistanceCount = isMobile ? 1 : 3;
+    console.log('targetName--->', targetName);
+    if(targetName !== KONVA_DATASHEET_ID.GANTT_LINE_SETTING) {
+      setTaskLineSetting(null);
+    }
+
     switch (targetName) {
       // 回到当前时间
       case KONVA_DATASHEET_ID.GANTT_BACK_TO_NOW_BUTTON: {
@@ -190,6 +198,7 @@ export const useGanttMouseEvent = ({
       }
       // 点击空白处，新建任务
       case KONVA_DATASHEET_ID.GANTT_BLANK: {
+        if(taskLineSetting) return;
         return clickBlankHandler();
       }
       // 上一页
@@ -200,18 +209,42 @@ export const useGanttMouseEvent = ({
       case KONVA_DATASHEET_ID.GANTT_NEXT_PAGE_BUTTON: {
         return scrollIntoView(ScrollViewType.Next);
       }
+      //任务关联线设置
+      case KONVA_DATASHEET_ID.GANTT_LINE_TASK: {
+        const { sourceId, targetId, dashEnabled, fillColor } = e.target.attrs;
+        setTaskLineSetting({
+          x: offsetLeft,
+          y: offsetTop,
+          sourceId,
+          targetId,
+          dashEnabled,
+          fillColor
+        });
+      }
     }
   };
 
   const onMouseDown = (e: KonvaEventObject<MouseEvent>) => {
+    const target = e.target;
+    const _targetName = target.name();
+    const pos = target.getStage()?.getPointerPosition();
+    if (pos == null) return;
+    const { x, y } = pos;
+    const { targetName } = getMousePosition(x, y, _targetName);
+
+    if(targetName === KONVA_DATASHEET_ID.GANTT_LINE_POINT) {
+      setIsTaskLineDrawing(true);
+    }
+
     if (mirrorId || view.lockInfo) return;
-    const targetName = e.target.name();
-    if (targetName === KONVA_DATASHEET_ID.GANTT_SPLITTER) {
+
+    if (_targetName === KONVA_DATASHEET_ID.GANTT_SPLITTER) {
       setDragSplitterInfo({
         x: pointX,
         visible: true
       });
     }
+    
   };
 
   const onHighlightSplitterMove = (e: KonvaEventObject<MouseEvent>) => {
@@ -224,8 +257,9 @@ export const useGanttMouseEvent = ({
     }
   };
 
-  const onMouseUp = () => {
+  const onMouseUp = (e: KonvaEventObject<MouseEvent>) => {
     const { x, visible } = dragSplitterInfo;
+
     if (visible) {
       const MAX_WIDTH = Math.round((gridWidth + ganttWidth) * 0.4);
       const curWidth = Math.max(Math.min(x, MAX_WIDTH), 280);
@@ -253,6 +287,7 @@ export const useGanttMouseEvent = ({
         })
       });
     }
+    setIsTaskLineDrawing(false);
   };
 
   const onMouseMove = (e: KonvaEventObject<MouseEvent>) => {
@@ -292,7 +327,7 @@ export const useGanttMouseEvent = ({
       });
       return recordsData;
     }, []);
-
+    
     resourceService.instance!.commandManager!.execute({
       cmd: CollaCommandName.SetRecords,
       data: recordsData,
@@ -368,6 +403,11 @@ export const useGanttMouseEvent = ({
   };
 
   const handleMouseStyle = (targetName: string) => {
+  
+    if(isTaskLineDrawing) {
+      setMouseStyle('grabbing');
+      return;
+    }
     switch (targetName) {
       case KONVA_DATASHEET_ID.GANTT_TASK:
       case KONVA_DATASHEET_ID.GANTT_BACK_TO_NOW_BUTTON:
@@ -376,7 +416,10 @@ export const useGanttMouseEvent = ({
       case KONVA_DATASHEET_ID.GANTT_ERROR_TASK_TIP:
       case KONVA_DATASHEET_ID.GANTT_GROUP_TOGGLE_BUTTON:
       case KONVA_DATASHEET_ID.GANTT_BACK_TO_TASK_BUTTON_LEFT:
-      case KONVA_DATASHEET_ID.GANTT_BACK_TO_TASK_BUTTON_RIGHT: {
+      case KONVA_DATASHEET_ID.GANTT_BACK_TO_TASK_BUTTON_RIGHT: 
+      case KONVA_DATASHEET_ID.GANTT_LINE_POINT:
+      case KONVA_DATASHEET_ID.GANTT_LINE_TASK: 
+      case KONVA_DATASHEET_ID.GANTT_LINE_SETTING: {
         return setMouseStyle('pointer');
       }
       default:
@@ -388,13 +431,14 @@ export const useGanttMouseEvent = ({
     if (getParentNodeByClass(e.target as HTMLElement, 'vikaGanttView')) return;
     scrollHandler.stopScroll();
     setDragTaskId(null);
+    setTaskLineSetting(null);
   }, [scrollHandler, setDragTaskId]);
 
   useEffect(() => {
     document.addEventListener('mouseup', mouseUp);
     return () => document.removeEventListener('mouseup', mouseUp);
   }, [mouseUp]);
-
+  
   return {
     onClick,
     onMouseUp,
@@ -403,6 +447,6 @@ export const useGanttMouseEvent = ({
     onDragStart,
     onDragMove,
     onDragEnd,
-    handleMouseStyle,
+    handleMouseStyle
   };
 };

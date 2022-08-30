@@ -593,14 +593,11 @@ export interface StringsInterface {
     cambodia: String;
     cameroon: String;
     can_control: String;
-    can_duplicate: String;
     can_edit: String;
-    can_manage: String;
     can_not_un_bind_content: String;
     can_not_un_bind_title: String;
     can_read: String;
     can_updater: String;
-    can_view: String;
     canada: String;
     cancel: String;
     cancel_favorite_success: String;
@@ -750,7 +747,6 @@ export interface StringsInterface {
     code_block: String;
     code_sweep: String;
     collaborate_and_share: String;
-    collaborator_number: String;
     collapse: String;
     collapse_all_group: String;
     collapse_full_screen: String;
@@ -998,7 +994,6 @@ export interface StringsInterface {
     default_datasheet_title: String;
     default_file_copy: String;
     default_invitation_code_tip: String;
-    default_link_join_tip: String;
     default_picture: String;
     default_theme: String;
     default_value: String;
@@ -1193,7 +1188,6 @@ export interface StringsInterface {
     empty_dashboard_list: String;
     empty_data: String;
     empty_datasheet: String;
-    empty_email_tip: String;
     empty_nodes: String;
     empty_record: String;
     empty_trash: String;
@@ -1935,7 +1929,6 @@ export interface StringsInterface {
     get_invitation_code: String;
     get_invite_code: String;
     get_invite_code_tip: String;
-    get_link_person_on_internet: String;
     get_v_coins: String;
     get_verification_code: String;
     get_verification_code_err_button: String;
@@ -2165,7 +2158,6 @@ export interface StringsInterface {
     invitation_to_join_desc: String;
     invitation_validation_tip: String;
     invitation_validation_title: String;
-    invite_by_qr_code: String;
     invite_code: String;
     invite_code_add_official: String;
     invite_code_cannot_use_mine: String;
@@ -2182,7 +2174,6 @@ export interface StringsInterface {
     invite_code_tab_submit_input_placeholder: String;
     invite_code_tab_sumbit_get_v_coin_both: String;
     invite_email_already_exist: String;
-    invite_empty_tip: String;
     invite_exist_mail_failed: String;
     invite_friends: String;
     invite_give_capacity_intro: String;
@@ -2207,7 +2198,6 @@ export interface StringsInterface {
     invite_reward: String;
     invite_success: String;
     invite_team_and_collaborating: String;
-    invite_via_link: String;
     invite_your_join: String;
     invitee: String;
     invitee_default_permission_desc: String;
@@ -2607,8 +2597,6 @@ export interface StringsInterface {
     menu_duplicate_record: String;
     menu_expand_record: String;
     menu_insert_record: String;
-    menu_insert_record_above: String;
-    menu_insert_record_below: String;
     message_bind_email_succeed: String;
     message_call_sharing_function_with_browser: String;
     message_can_not_associated_because_of_no_editable: String;
@@ -2690,7 +2678,6 @@ export interface StringsInterface {
     more_color: String;
     more_data_to_come: String;
     more_education: String;
-    more_invite_ways: String;
     more_login_mode: String;
     more_member_count: String;
     more_setting: String;
@@ -3047,7 +3034,6 @@ export interface StringsInterface {
     payment_record: String;
     payment_reminder: String;
     payment_reminder_content: String;
-    pending_invite: String;
     people: String;
     per_person_per_year: String;
     percent_bar_chart: String;
@@ -3371,7 +3357,6 @@ export interface StringsInterface {
     public_link: String;
     public_link_desc: String;
     publish_link_tip: String;
-    publish_share_link_with_anyone: String;
     publish_to_dingtalk_workbench: String;
     publishing: String;
     puerto_rico: String;
@@ -3810,7 +3795,6 @@ export interface StringsInterface {
     save_template_disabled: String;
     save_this_modified: String;
     save_to_space: String;
-    scan_code_to_join_team: String;
     scan_to_login: String;
     scan_to_login_by_method: String;
     scatter_chart: String;
@@ -4014,7 +3998,6 @@ export interface StringsInterface {
     set_sort: String;
     setting_nickname_sub_title: String;
     setting_nickname_title: String;
-    setting_permission: String;
     seychelles: String;
     share: String;
     share_and_editable_desc: String;

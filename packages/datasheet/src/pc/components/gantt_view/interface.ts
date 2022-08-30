@@ -1,5 +1,5 @@
 import { Dayjs } from 'dayjs';
-import { DateUnitType } from '@vikadata/core';
+import { DateUnitType, ILinearRow } from '@vikadata/core';
 import { ICoordinate } from 'pc/components/konva_grid';
 import { DateTimeType } from './utils';
 
@@ -120,4 +120,39 @@ export interface ITargetNameDetail {
   fieldId?: string | null, 
   recordId?: string | null, 
   mouseStyle?: string | null 
+}
+
+export interface ITaskLineSetting {
+  x: number;
+  y: number;
+  sourceId: string;
+  targetId: string;
+  dashEnabled: boolean;
+  fillColor: string;
+}
+
+export enum TaskPositionYType {
+  Top = 'Top',
+  Bottom = 'Bottom',
+  Collapse = 'Collapse',
+  Viewable = 'Viewable'
+}
+
+export interface IRowsCellValueMap {
+  isCollapse?: boolean;
+  startTime?: string;
+  endTime?: string;
+  positionYType?: TaskPositionYType;
+  rowIndex?: number;
+  groupHeadRecordId?: string;
+}
+
+export type IGroupLinearRow = ILinearRow & {
+  groupHeadRecordId?: string;
+  groupDepth?: number;
+};
+
+export interface ITargetTaskInfo {
+  recordId: string;
+  dashEnabled: boolean;
 }

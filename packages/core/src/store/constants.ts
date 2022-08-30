@@ -337,6 +337,8 @@ export enum GanttStyleKeyType {
   EndFieldId = 'endFieldId',
   WorkDays = 'workDays',
   OnlyCalcWorkDay = 'onlyCalcWorkDay',
+  LinkFieldId = 'linkFieldId',
+  AutoTaskLayout= 'autoTaskLayout',
 }
 
 export enum CalendarStyleKeyType {

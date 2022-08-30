@@ -1,11 +1,15 @@
-import { black, Select, Typography, IOption, Tooltip, LinkButton, Switch } from '@vikadata/components';
+import { black, Select, Typography, IOption, Tooltip, Switch } from '@vikadata/components';
 import { Select as MultiSelect } from 'antd';
 import {
   BasicValueType, CollaCommandName, Field, GanttColorType, GanttStyleKeyType, Selectors,
   StoreActions, IGanttViewColumn, FieldType, t, Strings, ConfigConstant, getNewId, IDPrefix, 
-  DateTimeField, getUniqName, ExecuteResult, Settings, DATASHEET_ID, DEFAULT_WORK_DAYS
+  DateTimeField, getUniqName, ExecuteResult, Settings, DEFAULT_WORK_DAYS,
+  IGanttViewProperty, ILinkField, ISetRecordOptions, LinkFieldSet
 } from '@vikadata/core';
-import { CloseMiddleOutlined, InformationSmallOutlined, ClassroomOutlined, ChevronRightOutlined, AddOutlined } from '@vikadata/icons';
+import { 
+  CloseMiddleOutlined, InformationSmallOutlined, ClassroomOutlined, ChevronRightOutlined, AddOutlined, 
+  ColumnLinktableFilled 
+} from '@vikadata/icons';
 import { resourceService } from 'pc/resource_service';
 import { memo, useContext, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
@@ -21,6 +25,9 @@ import classNames from 'classnames';
 import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { KonvaGridContext } from 'pc/components/konva_grid';
+import { Modal } from 'pc/components/common/modal/modal';
+import { autoTaskScheduling } from 'pc/components/gantt_view/utils';
+import { store } from 'pc/store';
 
 const Option = Select.Option;
 const MultiOption = MultiSelect.Option;
@@ -103,13 +110,20 @@ export const SettingPanel = memo(() => {
   const columnCount = columns.length;
   const { datasheetId, viewId } = useSelector(state => state.pageParams);
   const spaceId = useSelector(state => state.space.activeId);
-  const { startFieldId, endFieldId, colorOption, workDays = DEFAULT_WORK_DAYS, onlyCalcWorkDay = false } = ganttStyle;
+  const { startFieldId, endFieldId, colorOption, workDays = DEFAULT_WORK_DAYS, 
+    onlyCalcWorkDay = false, linkFieldId, autoTaskLayout = false } = ganttStyle;
   const startFieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, startFieldId);
   const endFieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, endFieldId);
   const isCryptoStartField = Boolean(startFieldRole && startFieldRole === ConfigConstant.Role.None);
   const isCryptoEndField = Boolean(endFieldRole && endFieldRole === ConfigConstant.Role.None);
   const noRequiredField = startFieldId == null && endFieldId == null;
   const manageable = permissions.manageable;
+  const activeView = useSelector((state) => Selectors.getCurrentView(state)) as IGanttViewProperty;
+  const linkFieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, linkFieldId);
+  const isCryptoLinkField = Boolean(linkFieldRole && linkFieldRole === ConfigConstant.Role.None);
+  const visibleRows = useSelector((state) => Selectors.getVisibleRows(state));
+  const snapshot = useSelector((state) => Selectors.getSnapshot(state)!);
+  const state = store.getState();
 
   const fieldOptions = columns.map(({ fieldId }) => {
     const field = fieldMap[fieldId];
@@ -133,6 +147,45 @@ export const SettingPanel = memo(() => {
     }
     return null;
   }).filter(v => v) as IOption[];
+
+  const linkFieldOptions = useMemo(() => {
+    const options: IOption[] = [];
+    if (isCryptoLinkField) {
+      options.push({
+        value: linkFieldId,
+        label: t(Strings.crypto_field),
+        disabled: true,
+        suffixIcon: <FieldPermissionLock fieldId={linkFieldId} tooltip={t(Strings.field_permission_lock_tips)} />,
+      });
+    }
+
+    activeView.columns.filter((column) => fieldMap[column.fieldId].type === FieldType.Link)
+      .forEach((column) => {
+        const columnFieldId = column.fieldId;
+        options.push({
+          value: columnFieldId,
+          label: fieldMap[columnFieldId].name,
+          disabled: (fieldMap[columnFieldId] as ILinkField).property.foreignDatasheetId !== datasheetId,
+          prefixIcon: <ColumnLinktableFilled color={colors.thirdLevelText} />,
+          disabledTip: t(Strings.org_chart_choose_a_self_link_field),
+        });
+      });
+
+    options.push({
+      label: t(Strings.org_chart_init_fields_button),
+      value: 'add',
+      disabled: !permissions.manageable,
+      prefixIcon: <AddOutlined color={colors.thirdLevelText} />,
+    });
+
+    options.unshift({
+      label: t(Strings.gantt_no_dependency),
+      value: '',
+      disabled: !permissions.manageable,
+    });
+
+    return options;
+  }, [activeView, fieldMap, datasheetId, isCryptoLinkField, linkFieldId, permissions, colors]);
 
   const onClose = () => {
     dispatch(StoreActions.toggleGanttSettingPanel(false, datasheetId!));
@@ -163,20 +216,24 @@ export const SettingPanel = memo(() => {
   };
 
   const onFieldSelect = (styleKey: GanttStyleKeyType, value: string) => {
-    if (value === 'add') {
+    if (value === LinkFieldSet.Add) {
       if (!manageable) {
         return;
       }
+      const isLinkFieldType = styleKey === GanttStyleKeyType.LinkFieldId;
       const newFieldId = getNewId(IDPrefix.Field);
-      const newFieldName = styleKey === GanttStyleKeyType.StartFieldId ? t(Strings.gantt_start_field_name) : t(Strings.gantt_end_field_name);
+      const newFieldName = isLinkFieldType ? t(Strings.field_title_link) : 
+        styleKey === GanttStyleKeyType.StartFieldId ? t(Strings.gantt_start_field_name) : t(Strings.gantt_end_field_name);
       const result = resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.AddFields,
         data: [{
           data: {
             id: newFieldId,
             name: getUniqName(newFieldName, exitFieldNames),
-            type: FieldType.DateTime,
-            property: DateTimeField.defaultProperty(),
+            type: isLinkFieldType ? FieldType.Link : FieldType.DateTime,
+            property: isLinkFieldType ? {
+              foreignDatasheetId: datasheetId,
+            } : DateTimeField.defaultProperty(),
           },
           viewId,
           index: columnCount,
@@ -230,6 +287,45 @@ export const SettingPanel = memo(() => {
 
   const onSwitchClick = (status: boolean) => {
     onGanttStyleChange(GanttStyleKeyType.OnlyCalcWorkDay, status);
+  };
+
+  const autoAllRecords = (value: boolean) => {
+    onGanttStyleChange(GanttStyleKeyType.AutoTaskLayout, value);
+    if(value) {
+      // TODO 判断开始跟结束时间是否是计算字段是计算字段不可以修改
+      const commandDataArr : ISetRecordOptions[] = autoTaskScheduling(visibleRows, state, snapshot, ganttStyle);
+
+      resourceService.instance?.commandManager.execute({
+        cmd: CollaCommandName.SetRecords,
+        data: commandDataArr
+      });
+    }
+   
+  };
+
+  const onSwitchAutoTaskLayoutClick = (status: boolean) => {
+    if(status) {
+      Modal.info({
+        title: t(Strings.gantt_historical_data_warning),
+        content: t(Strings.gantt_open_auto_schedule_warning),
+        onOk: () => autoAllRecords(status),
+        okText: t(Strings.gantt_open_auto_schedule_switch),
+        onCancel: () => onGanttStyleChange(GanttStyleKeyType.AutoTaskLayout, status),
+        cancelText: t(Strings.gantt_open_auto_schedule_warning_no),
+        hiddenCancelBtn: false
+      });
+    } else {
+      onGanttStyleChange(GanttStyleKeyType.AutoTaskLayout, status);
+    }
+  };
+
+  const onLinkFieldIdChange = (option) => {
+    if (option.value === LinkFieldSet.Add) {
+      onFieldSelect(GanttStyleKeyType.LinkFieldId, LinkFieldSet.Add);
+    } else {
+      onGanttStyleChange(GanttStyleKeyType.LinkFieldId, option.value as string);
+    }
+    onGanttStyleChange(GanttStyleKeyType.OnlyCalcWorkDay, false);
   };
 
   useMemo(() => {
@@ -363,19 +459,21 @@ export const SettingPanel = memo(() => {
 
       {/* 设置任务条颜色 */}
       <div className={styles.setting}>
-        <Typography className={styles.settingTitle} variant="h7">
-          {t(Strings.gantt_color_setting)}
-        </Typography>
-
-        <LinkButton
-          className={styles.guide}
-          underline={false}
-          href={Settings.gantt_config_color_help_url.value}
-          target="_blank"
-          id={DATASHEET_ID.GANTT_CONFIG_COLOR_HELP}
-        >
-          {t(Strings.gantt_config_color_help)}
-        </LinkButton>
+        <div className={styles.settingHeader}>
+          <Typography className={styles.settingTitle} variant="h7">
+            {t(Strings.gantt_color_setting)}
+          </Typography>
+          <Tooltip content={t(Strings.gantt_config_color_help)}>
+            <a
+              href={Settings.gantt_config_color_help_url.value}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.helpIcon}
+            >
+              <InformationSmallOutlined color={colors.thirdLevelText} />
+            </a>
+          </Tooltip>
+        </div>
 
         <div className={styles.settingLayout}>
           <Select
@@ -485,6 +583,43 @@ export const SettingPanel = memo(() => {
           </span>
         </div>
       </div>
+      <div className={styles.setting}>
+        <div className={styles.settingHeader}>
+          <Typography className={styles.settingTitle} variant="h7">
+            {t(Strings.gantt_dependency_setting)}
+          </Typography>
+          <Tooltip content={t(Strings.gantt_config_color_help)}>
+            <a
+              href={Settings.gantt_config_task_contact_help_url.value}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.helpIcon}
+            >
+              <InformationSmallOutlined color={colors.thirdLevelText} />
+            </a>
+          </Tooltip>
+        </div>
+        <div className={styles.settingLayout}>
+          <div className={styles.selectField}>
+            <Select
+              value={activeView.style.linkFieldId}
+              onSelected={onLinkFieldIdChange}
+              options={linkFieldOptions}
+              dropdownMatchSelectWidth
+              placeholder={t(Strings.org_chart_pick_link_field)}
+            />
+          </div>
+        </div>
+        { linkFieldId === '' ? null :
+          <div className={styles.settingLayout} style={{ marginTop: 16 }}>
+            <Switch checked={Boolean(autoTaskLayout)} onClick={onSwitchAutoTaskLayoutClick} />
+            <span style={{ marginLeft: 4 }}>
+              {t(Strings.gantt_open_auto_schedule_switch)}
+            </span>
+          </div>
+        }
+      </div>
+     
     </div>
   );
 });

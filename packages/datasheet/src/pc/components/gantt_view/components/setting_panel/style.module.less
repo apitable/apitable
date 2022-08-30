@@ -63,6 +63,18 @@
 
   .setting {
     position: relative;
+    .settingHeader {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      .helpIcon {
+        margin-left: 4px;
+        display: flex;
+        align-items: center;
+      }
+      
+    }
     .settingTitle {
       padding-left: 6px;
       position: relative;
@@ -113,6 +125,10 @@
 
     .workDayTag {
       margin-right: 4px;
+    }
+
+    .selectField {
+      width: 100%;
     }
 
     :global {

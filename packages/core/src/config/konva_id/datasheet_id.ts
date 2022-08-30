@@ -41,6 +41,9 @@ export const GANTT_PREV_PAGE_BUTTON = 'GANTT_PREV_PAGE_BUTTON'; // ”向前翻�
 export const GANTT_NEXT_PAGE_BUTTON = 'GANTT_NEXT_PAGE_BUTTON'; // ”向后翻页“ 按钮
 export const GANTT_GROUP_TOGGLE_BUTTON = 'GANTT_GROUP_TOGGLE_BUTTON'; // 分组展开/收起按钮
 export const GANTT_ERROR_TASK_TIP = 'GANTT_ERROR_TASK_TIP'; // 错误日期的提示
+export const GANTT_LINE_POINT = 'GANTT_LINE_POINT'; // 甘特图任务关联链接点
+export const GANTT_LINE_TASK = 'GANTT_LINE_TASK'; // 甘特图任务连接线
+export const GANTT_LINE_SETTING = 'GANTT_LINE_SETTING'; // 甘特图连接线设置
 
 // contextMenu
 export const GRID_STAT_MENU = 'GRID_STAT_MENU'; // 统计栏左键Menu

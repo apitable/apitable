@@ -1,8 +1,10 @@
 import { Circle as KonvaCircle } from 'react-konva';
 
 const Circle = (props) => {
+  const { _ref, ...rest } = props;
   return <KonvaCircle
-    {...props}
+    ref={_ref}
+    {...rest}
   />;
 };
 

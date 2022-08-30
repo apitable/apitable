@@ -541,6 +541,8 @@ export interface IGanttViewStyle {
   };
   workDays: number[];
   onlyCalcWorkDay: boolean;
+  linkFieldId: string;
+  autoTaskLayout: boolean;
 }
 
 export interface IGanttViewProperty extends IViewPropertyBase {
@@ -915,8 +917,18 @@ interface ISetGanttStyleOnlyCalcWorkDay {
   styleValue: boolean;
 }
 
-export type ISetGanttStyle = ISetGanttStyleColorOption | ISetGanttStyleStartFieldId |
-  ISetGanttStyleEndFieldId | ISetGanttStyleWorkDays | ISetGanttStyleOnlyCalcWorkDay;
+interface ISetGanttStyleLinkFieldId {
+  styleKey: GanttStyleKeyType.LinkFieldId;
+  styleValue: string;
+}
+
+interface ISetGanttStyAutoTaskLayout {
+  styleKey: GanttStyleKeyType.AutoTaskLayout;
+  styleValue: boolean;
+}
+
+export type ISetGanttStyle = ISetGanttStyleColorOption | ISetGanttStyleStartFieldId | ISetGanttStyAutoTaskLayout |
+  ISetGanttStyleEndFieldId | ISetGanttStyleWorkDays | ISetGanttStyleOnlyCalcWorkDay | ISetGanttStyleLinkFieldId;
 
 interface ISetCalendarStyleColorOption {
   styleKey: CalendarStyleKeyType.ColorOption;

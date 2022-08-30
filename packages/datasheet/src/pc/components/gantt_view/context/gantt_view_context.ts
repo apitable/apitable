@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { IGanttGroupMap, ISplitterProps } from '../interface';
+import { IGanttGroupMap, ISplitterProps, ITaskLineSetting, IRowsCellValueMap, ITargetTaskInfo } from '../interface';
 import { IGanttViewStatus, IGanttViewStyle, IViewColumn } from '@vikadata/core';
 
 export interface IKonvaGanttViewContextProps {
@@ -17,6 +17,14 @@ export interface IKonvaGanttViewContextProps {
   ganttVisibleColumns: IViewColumn[];
   backTo: (dateTime: any, offsetX?: number) => void;
   setRecord: (recordId: string, startUnitIndex: number | null, endUnitIndex: number | null) => void;
+  isTaskLineDrawing: boolean;
+  setIsTaskLineDrawing: (isTaskLineDrawing: boolean) => void;
+  rowsCellValueMap: IRowsCellValueMap | null;
+  linkCycleEdges: any;
+  targetTaskInfo: ITargetTaskInfo | null;
+  setTargetTaskInfo: (targetTaskInfo: ITargetTaskInfo) => void;
+  taskLineSetting: ITaskLineSetting | null;
+  setTaskLineSetting: (taskLineSetting: ITaskLineSetting | null) => void;
 }
 
 export const KonvaGanttViewContext = createContext({} as IKonvaGanttViewContextProps);

@@ -473,6 +473,10 @@ export interface ILinkField extends IBaseField {
   type: FieldType.Link;
 }
 
+export enum LinkFieldSet {
+  Add = 'add'
+}
+
 export interface IAttachmentValue {
   /** id 用来做 follow key，目前和 attachmentToken 一样 */
   id: string;

@@ -68,6 +68,13 @@ export const change = (markDay: DateTimeType, num: number, unit: OpUnitType = 'd
   return getStartOfDate(markDay).subtract(Math.abs(num), unit);
 };
 
+export const originalChange = (markDay: DateTimeType, num: number, unit: OpUnitType = 'day') => {
+  if (num >= 0) {
+    return getDayjs(markDay).add(num, unit);
+  }
+  return getDayjs(markDay).subtract(Math.abs(num), unit);
+};
+
 /**
  * 获取当天的 0 点开始的时间戳
  */

@@ -1,5 +1,6 @@
 import { 
-  GanttCoordinate, PointPosition, IScrollState, useTask, useStatus, useButton, useTimelineLayer
+  GanttCoordinate, PointPosition, IScrollState, useTask, useStatus, useButton, useTimelineLayer,
+  useGanttAssocitionLine, useGanttDrawingLine, useTaskLineSetting
 } from 'pc/components/gantt_view';
 
 export interface IUseGanttProps {
@@ -86,6 +87,7 @@ export const useGantt = (props: IUseGanttProps) => {
     willAddTaskPoint,
     willFillTaskPoint,
     backToTaskButtons,
+    taskMap
   } = useTask({
     instance,
     rowStartIndex,
@@ -94,6 +96,34 @@ export const useGantt = (props: IUseGanttProps) => {
     scrollState,
     gridWidth
   });
+
+  /**
+   * 绘制任务关联链接线
+   */
+  const { 
+    lineTooltip,
+    taskLineList
+  } = useGanttAssocitionLine({
+    instance,
+    rowStartIndex,
+    rowStopIndex,
+    pointPosition,
+    scrollState
+  });
+
+  const {
+    drawingLine
+  } = useGanttDrawingLine({
+    instance,
+    taskMap,
+    gridWidth,
+    pointPosition,
+    scrollState
+  });
+
+  const {
+    lineSettingModels
+  } = useTaskLineSetting();
 
   return {
     hoverRow,
@@ -116,6 +146,10 @@ export const useGantt = (props: IUseGanttProps) => {
     skipButtons,
     transformer,
     tooltip,
-    dragSplitter
+    dragSplitter,
+    lineTooltip,
+    taskLineList,
+    drawingLine,
+    lineSettingModels
   };
 };

@@ -14,6 +14,11 @@ export const useTooltip = (props: IUseTooltip) => {
     text: '',
     x: 0,
     y: 0,
+    pointerDirection: '',
+    pointerWidth: 0,
+    pointerHeight: 0,
+    background: undefined,
+    fill: undefined
   });
 
   const clearTooltip = useCallback(() => {
@@ -26,12 +31,17 @@ export const useTooltip = (props: IUseTooltip) => {
       clearTooltip();
       return null;
     }
-    const { x, y, text } = tooltipInfo;
+    const { x, y, text, pointerDirection, pointerWidth, pointerHeight, background, fill } = tooltipInfo;
     return (
       <ToolTip 
         x={x}
         y={y}
         text={text}
+        pointerDirection={pointerDirection}
+        pointerWidth={pointerWidth}
+        pointerHeight={pointerHeight}
+        background={background}
+        fill={fill}
       />
     );
   }, [tooltipInfo, clearTooltip, isScrolling]);
