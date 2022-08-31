@@ -177,7 +177,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
       switchArrowStyle(colors.fc10, true);
       setTargetTaskInfo({ recordId: targetRecordId, dashEnabled: true });
     } else {
-      switchArrowStyle(colors.deepPurple[500], false);
+      switchArrowStyle(colors.borderBrand, false);
       setTargetTaskInfo({ recordId: targetRecordId, dashEnabled: false });
     }
     
@@ -224,8 +224,8 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
       <Arrow
         _ref={arrowRef}
         points={drawingLinePoints}
-        fill={colors.deepPurple[500]}
-        stroke={colors.deepPurple[500]}
+        fill={colors.borderBrand}
+        stroke={colors.borderBrand}
         strokeWidth={1}
         lineCap='round'
         dash={[2, 5]}

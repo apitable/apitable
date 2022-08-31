@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { KonvaGridContext } from 'pc/components/konva_grid';
 import { ClearOutlined, ConnectOutlined } from '@vikadata/icons';
@@ -10,12 +10,14 @@ import { store } from 'pc/store';
 import { Selectors, CollaCommandName, t, Strings, KONVA_DATASHEET_ID, ConfigConstant } from '@vikadata/core';
 import { getRecordName } from 'pc/components/expand_record';
 import { Message } from '@vikadata/components';
+import { Text, autoSizerCanvas } from 'pc/components/konva_components';
+import { hexToRGB } from 'pc/utils';
 
 const Rect = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/rect'), { ssr: false });
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 const Line = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/line'), { ssr: false });
 const Arrow = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/arrow'), { ssr: false });
-const Text = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/text'), { ssr: false });
+// const Text = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/text'), { ssr: false });
 
 const ClearOutlinedPath = ClearOutlined.toString();
 const ConnectOutlinedPath = ConnectOutlined.toString();
@@ -31,6 +33,7 @@ export const useTaskLineSetting = () => {
   const [showConnect, setShowConnect] = useState(false);
   const [delateTootip, setDelateTootip] = useState(false);
   const [relationTootip, setRelationTootip] = useState(false);
+  const textSizer = useRef(autoSizerCanvas);
 
   useEffect(() => {
     setShowConnect(false);
@@ -48,15 +51,20 @@ export const useTaskLineSetting = () => {
 
   const firstFieldId = visibleColumns[0].fieldId;
   const sourceCellValue = Selectors.getCellValue(state, snapshot, sourceId, firstFieldId);
-  const sourceRecordTitle = getRecordName(sourceCellValue, fieldMap[firstFieldId]) || t(Strings.record_unnamed);
+  const sourceTitle = getRecordName(sourceCellValue, fieldMap[firstFieldId]) || t(Strings.record_unnamed);
+  const sourceRecordTitle = textSizer.current.measureText(sourceTitle, 160, 1).text;
 
   const startTimeCellValue = Selectors.getCellValue(state, snapshot, sourceId, endFieldId);
-  const startTime = getRecordName(startTimeCellValue, fieldMap[endFieldId]);
+  const startTimeStr = getRecordName(startTimeCellValue, fieldMap[endFieldId]);
+  const startTime = textSizer.current.measureText(startTimeStr, 100, 1).text;
 
   const targetCellValue = Selectors.getCellValue(state, snapshot, targetId, firstFieldId);
-  const targetRecordTitle = getRecordName(targetCellValue, fieldMap[firstFieldId]) || t(Strings.record_unnamed);
+  const targetTitle = getRecordName(targetCellValue, fieldMap[firstFieldId]) || t(Strings.record_unnamed);
+  const targetRecordTitle = textSizer.current.measureText(targetTitle, 160, 1).text;
+
   const endTimeCellValue = Selectors.getCellValue(state, snapshot, targetId, startFieldId);
-  const endTime = getRecordName(endTimeCellValue, fieldMap[startFieldId]);
+  const endTimeStr = getRecordName(endTimeCellValue, fieldMap[startFieldId]);
+  const endTime = textSizer.current.measureText(endTimeStr, 100, 1).text;
 
   const deleteTaskLine = () => {
     const cellValue = Selectors.getCellValue(state, snapshot, targetId, linkFieldId) || [];
@@ -108,18 +116,18 @@ export const useTaskLineSetting = () => {
               y={0}
               width={208}
               height={180}
-              fill={colors.fc8}
+              fill={colors.bgCommonHigh}
               cornerRadius={4}
               shadowEnabled
               shadowBlur={16}
-              shadowColor={'rgba(38, 38, 38, 0.16)'}
+              shadowColor={hexToRGB(colors.shadowCommonHigh, 0.16)}
             />
             <Rect
               x={16}
               y={16}
               width={176}
               height={58}
-              fill={colors.fc6}
+              fill={colors.bgControlsDefault}
               cornerRadius={4}
             />
             <Text
@@ -137,7 +145,6 @@ export const useTaskLineSetting = () => {
               text={t(Strings.end_time)}
               fill={colors.fc3}
               height={20}
-              fontStyle={'bold'}
               verticalAlign={'middle'}
             />
             <Text
@@ -165,7 +172,7 @@ export const useTaskLineSetting = () => {
               y={106}
               width={176}
               height={58}
-              fill={colors.fc6}
+              fill={colors.bgControlsDefault}
               cornerRadius={4}
             />
             <Text
@@ -192,14 +199,13 @@ export const useTaskLineSetting = () => {
               text={endTime}
               fill={colors.fc1}
               height={20}
-              fontStyle={'bold'}
               verticalAlign={'middle'}
             />
           </Group> 
           :
           <Group
             x={x - 40}
-            y={y - 42}
+            y={dashEnabled ? y + 2 : y - 42}
           >
             <Rect
               name={generateTargetName({
@@ -210,11 +216,11 @@ export const useTaskLineSetting = () => {
               y={0}
               width={80}
               height={40}
-              fill={colors.fc8}
+              fill={colors.bgCommonHigh}
               cornerRadius={4}
               shadowEnabled
               shadowBlur={16}
-              shadowColor={'rgba(38, 38, 38, 0.16)'}
+              shadowColor={hexToRGB(colors.shadowCommonHigh, 0.16)}
             />
             <Icon
               x={8}
@@ -231,11 +237,11 @@ export const useTaskLineSetting = () => {
                 x={20}
                 y={8}
                 text={t(Strings.gantt_check_connection)}
-                background={colors.black[900]}
-                fill={colors.black[50]}
+                background={colors.fc13}
+                fill={colors.defaultBg}
                 pointerDirection={'down'}
                 pointerWidth={5}
-                pointerHeight={5}
+                pointerHeight={2.5}
               />
             }
             <Line
@@ -258,11 +264,11 @@ export const useTaskLineSetting = () => {
                 x={60}
                 y={8}
                 text={t(Strings.gantt_disconnect)}
-                background={colors.black[900]}
-                fill={colors.black[50]}
+                background={colors.fc13}
+                fill={colors.defaultBg}
                 pointerDirection={'down'}
                 pointerWidth={5}
-                pointerHeight={5}
+                pointerHeight={2.5}
               />
             }
           </Group>

@@ -112,7 +112,7 @@ export const SettingPanel = memo(() => {
   const { datasheetId, viewId } = useSelector(state => state.pageParams);
   const spaceId = useSelector(state => state.space.activeId);
   const { startFieldId, endFieldId, colorOption, workDays = DEFAULT_WORK_DAYS, 
-    onlyCalcWorkDay = false, linkFieldId, autoTaskLayout = false } = ganttStyle;
+    onlyCalcWorkDay = false, linkFieldId = '', autoTaskLayout = false } = ganttStyle;
   const startFieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, startFieldId);
   const endFieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, endFieldId);
   const isCryptoStartField = Boolean(startFieldRole && startFieldRole === ConfigConstant.Role.None);
