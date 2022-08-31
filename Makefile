@@ -81,10 +81,10 @@ conf: ## 同步数表配置
 java: ## 生成 java code，默认 ../vikadata-master 为 java 工程
 	export VIKA_SERVER_PATH=$$PWD/../vikadata-master && yarn scripts:makeconfig-javacode
 
-install: ## npm 包安装
-	- yarn config get npmRegistryServer
-	- yarn -v
-	- yarn install
+# install: ## npm 包安装
+# 	- yarn config get npmRegistryServer
+# 	- yarn -v
+# 	- yarn install
 icon: ## 同步设计 icons 并打包
 	- yarn sync:icons
 	- yarn build:icons
@@ -166,7 +166,7 @@ endif
 	@echo "${GREEN}finished unit test，clean up images...${RESET}"
 	docker-compose -f docker-compose-unit-test.yml down  || true
 
-###### 【room server unit test】 ######
+###### buildpush ######
 
 buildpush: buildpush_roomserver buildpush_webserver # buildpush all
 	echo 'finish buildpush all'
@@ -197,27 +197,63 @@ buildpush_socketserver:
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)";\
 	export DOCKERFILE=./packages/socket-server/Dockerfile;\
 	build_docker socket-server
-
+     
+# bumpversion 
 .PHONY: patch
 patch: # bump version number patch
 	docker run --rm -it --user $(shell id -u):$(shell id -g) -v "$(shell pwd):/app" ghcr.io/vikadata/vika/bumpversion:latest bumpversion patch
 
 
-### run
+### up
 
 .PHONY: up
 up: ## start the application
-ifndef CR_PAT
-	read -p "Please enter CR_PAT: " CR_PAT;
-	echo $$CR_PAT | docker login ghcr.io -u vikadata --password-stdin
+	@echo "Please execute 'make pull' first to download & upgrade all images to your machine."
 	docker compose up -d
+
+.PHONY: pull
+pull: ## pull all containers and ready to up
+ifndef CR_PAT
+	read -p "Please enter CR_PAT: " CR_PAT ;\
+	echo $$CR_PAT | docker login ghcr.io -u vikadata --password-stdin ;\
+	docker compose pull
 endif
 ifdef CR_PAT
-	echo $$CR_PAT | docker login ghcr.io -u vikadata --password-stdin
-	docker compose up -d
+	echo $$CR_PAT | docker login ghcr.io -u vikadata --password-stdin ;\
+	docker compose pull
 endif
 
-### scripts
+
+### run
+run:
+	echo "TODO As daemon"
+
+run-web-server: ## run local codes as service 
+	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) web-server yarn sd 
+
+run-room-server: ## run local codes as service 
+	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) room-server yarn sd 
+
+run-socket-server: ## run local codes as service 
+	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) socket-server yarn sd 
+
+### install
+
+.PHONY: install-backend-server
+install-backend-server: ## graldew install backend-server dependencies
+	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) backend-server ./gradlew
+
+.PHONY: install-web-server
+install-web-server: ## graldew install backend-server dependencies
+	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) web-server yarn install
+	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) web-server yarn build:dst:pre
+	  
+
+.PHONY: install
+install: install-backend-server install-web-server ## install all dependencies
+	echo 'Finished'
+
+### help
 .PHONY: search
 search:
 	@echo " "
