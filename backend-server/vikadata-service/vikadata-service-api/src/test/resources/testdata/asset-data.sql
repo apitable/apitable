@@ -15,11 +15,5 @@ VALUES (1506201075392774146, 'DekwyNBgUj3Shi1FzCfl1A==', NULL, 'QNY1', 658436,
         NULL, 0, NULL, NULL),
        (1504393156275056641, '39BpTncpg3+m5vtnKwoM7w==', NULL, 'QNY1', 221179294,
         'space/2022/03/17/bd2ed27814224345920b8a616100bdb2', 'video/mp4', 'mp4', NULL, 0,
-        NULL, NULL);
-
-INSERT INTO `vika_asset` (`id`, `checksum`, `head_sum`, `bucket`, `file_size`,
-                                     `file_url`, `mime_type`, `extension_name`, `preview`,
-                                     `is_template`, `height`, `width`, `is_deleted`)
-VALUES (41, 'checksum',
-        'checksum', 'bucket', 41,
-        'url', 'type', 'extension', NULL, 0, 41, 41, 0);
+        NULL, NULL),
+       (41, 'checksum', 'checksum', 'bucket', 41, 'url', 'type', 'extension', NULL, 0, 41, 41);
