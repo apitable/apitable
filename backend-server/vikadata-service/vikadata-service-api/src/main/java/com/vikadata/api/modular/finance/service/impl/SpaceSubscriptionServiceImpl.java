@@ -620,6 +620,9 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
         // 构建附件容量明细对象集合
         List<SpaceCapacityPageVO> spaceCapacityPageVos = new ArrayList<>();
         for (SpaceSubscriptionDto spaceSubscriptionDto : spaceSubscriptionDtoIPage.getRecords()) {
+            if("capacity_0.3G".equals(spaceSubscriptionDto.getPlanId()) && StrUtil.isEmpty(spaceSubscriptionDto.getMetadata())){
+                continue;
+            }
             // 对planId进行处理，去除_monthly、_biannual、_annual、_v1
             List<String> removeStrings= CollUtil.newArrayList("_monthly", "_biannual", "_annual", "_v1");
             String planId = spaceSubscriptionDto.getPlanId();
