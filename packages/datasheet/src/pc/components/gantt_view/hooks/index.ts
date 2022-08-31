@@ -12,4 +12,4 @@ export * from './use_view_export';
 export * from './use_brand_desc';
 export * from './use_gantt_task_line';
 export * from './use_gantt_drawing_line';
-export * from './use_gantt_task_line_setting';
+export * from './use_gantt_task_line_setting_modal';
