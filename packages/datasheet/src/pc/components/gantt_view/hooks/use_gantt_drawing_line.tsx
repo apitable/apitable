@@ -1,4 +1,4 @@
-import { useContext, useRef, useState, useEffect, useCallback } from 'react';
+import { useContext, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { KonvaGridContext } from 'pc/components/konva_grid';
 import { resourceService } from 'pc/resource_service';
@@ -58,7 +58,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
   const circle2Ref = useRef<any>();
   const taskBlock = useRef<any>();
 
-  const setLinePointStyle = useCallback((radius: number, color: string) => {
+  const setLinePointStyle = (radius: number, color: string) => {
     if(isTaskLineDrawing || !circle1Ref.current || !circle2Ref.current) {
       return;
     }
@@ -67,14 +67,10 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
     circle2Ref.current.fill(color);
     circle2Ref.current.radius(radius);
     circle2Ref.current.strokeWidth(radius);
-  }, [isTaskLineDrawing]);
+    circle1Ref.current.moveToTop();
+    circle2Ref.current.moveToTop();
+  };
   
-  useEffect(() => {
-    if(!isTaskLineDrawing) {
-      setLinePointStyle(2, colors.blackBlue[400]);
-    }
-  }, [isTaskLineDrawing, colors.blackBlue, setLinePointStyle]);
-
   if(!transformerId || dragTaskId || !linkFieldId || isLocking ) {
     return {
       drawingLine: null
@@ -98,7 +94,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
   const { x: taskX , y: taskY, taskWidth } = taskBlock.current.info || taskMap[sourceRecordId];
   
   const x = taskWidth > columnWidth ? taskX + taskWidth - 16 : taskX + columnWidth - 16;
-  const y = taskY + rowHeight;
+  const y = taskY + rowHeight - 4;
 
   // 计算当前鼠标位置在哪个task内
   const includeTask = (targetX: number, targetY: number) => {
@@ -187,7 +183,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
 
   const onDragEnd = (e) => {
     setDrawingLinePoints([]);
-    
+    setLinePointStyle(2, colors.blackBlue[400]);
     if(targetTaskInfo && targetTaskInfo.recordId !== '') {
       if(targetTaskInfo.recordId === sourceRecordId) {
         return;
@@ -237,7 +233,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
       />
       <Group
         x={x}
-        y={y - 4}
+        y={y}
       >
         <Circle
           _ref={circle1Ref}
