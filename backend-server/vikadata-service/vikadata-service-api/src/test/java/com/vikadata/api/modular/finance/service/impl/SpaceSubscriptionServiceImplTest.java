@@ -370,6 +370,7 @@ public class SpaceSubscriptionServiceImplTest extends AbstractIntegrationTest {
                 .bundleId(bundle.getBundleId())
                 .planId(price.getPlanId())
                 .productName(price.getProduct())
+                .metadata("{\"capacity\":\"participation_capacity\"}")
                 .productCategory(product.getCategory())
                 .state(SubscriptionState.ACTIVATED.name())
                 .bundleStartDate(bundle.getStartDate())
