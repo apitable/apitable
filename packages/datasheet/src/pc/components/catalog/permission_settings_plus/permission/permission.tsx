@@ -256,7 +256,7 @@ export const Permission: FC<IPermissionSettingProps> = ({ data }) => {
           roleUnits={roleMap.roleUnits}
           onDelete={deleteUnit}
           onChange={changeUnitRole}
-          isAppointMode={isAppointMode}
+          isAppointMode={isAppointMode || isRootNode}
           readonly={!nodeAssignable}
         />
       </div>
