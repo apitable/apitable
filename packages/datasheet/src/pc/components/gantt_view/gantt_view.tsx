@@ -841,7 +841,7 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
    
     });
     return cellValueMap;
-  }, [visibleRows, linkFieldId, groupCollapseIds, rowsIndexMap, startFieldId, endFieldId]);
+  }, [visibleRows, linkFieldId, groupCollapseIds, rowsIndexMap, startFieldId, endFieldId, state, snapshot, ganttLinearRowsAfterCollapseMap]);
 
   // 单任务修改自动编排
   const autoSingleTask = (endData) => {

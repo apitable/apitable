@@ -122,7 +122,7 @@ const Task: FC<ITaskProps> = (props) => {
   const {
     workDays, onlyCalcWorkDay,
     unitWidth, rowHeight, columnWidth, columnThreshold,
-    containerWidth: ganttWidth, containerHeight: ganttHeight,
+    containerWidth: ganttWidth,
   } = instance;
   const taskHeight = rowHeight;
   const threshold = unitWidth / 2;
