@@ -523,7 +523,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
                 .ganttViewNums(viewVO.getGanttViews())
                 .build();
         // 空间订阅计划附件容量
-        long currentBundleCapacity = iSpaceSubscriptionService.getPlanMaxCapacity(spaceId);
+        long currentBundleCapacity = iSpaceSubscriptionService.getSpaceSubscription(spaceId).getSubscriptionCapacity();
         // 如果已使用附件容量小于空间订阅计划容量，那么当前已用附件容量即为当前套餐已用容量
         if (capacityUsedSize <= currentBundleCapacity) {
             vo.setCurrentBundleCapacityUsedSizes(capacityUsedSize);
@@ -533,7 +533,13 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
             vo.setCurrentBundleCapacityUsedSizes(currentBundleCapacity);
             // 赠送的附件容量
             Long giftCapacity = iSpaceSubscriptionService.getSpaceUnExpireGiftCapacity(spaceId);
-            vo.setGiftCapacityUsedSizes(currentBundleCapacity + giftCapacity - capacityUsedSize);
+            // 如果附件容量使用超量，已用赠送附件容量等于赠送的附件容量大小
+            if (capacityUsedSize > currentBundleCapacity + giftCapacity) {
+                vo.setGiftCapacityUsedSizes(giftCapacity);
+            } else {
+                // 未超量情况
+                vo.setGiftCapacityUsedSizes(currentBundleCapacity + giftCapacity - capacityUsedSize);
+            }
         }
         // 拥有者信息
         if (entity.getOwner() != null) {
