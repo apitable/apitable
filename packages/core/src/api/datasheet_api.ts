@@ -189,5 +189,5 @@ export const unsubscribeRecordByIds = ({ datasheetId, mirrorId, recordIds }: ISu
 
 // 批量删除权限
 export const batchDeletePermissionRole = (dstId: string, fieldId: string, option: { unitIds: string[] }) => {
-  return axios.delete<IApiWrapper>(urlcat(Url.BATCH_DELETE_PERMISSION_ROLE, { dstId, fieldId }), { data: option, baseURL });
+  return axios.delete<IApiWrapper>(urlcat(Url.BATCH_DELETE_PERMISSION_ROLE, { dstId, fieldId }), { data: option });
 };

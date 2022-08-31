@@ -2951,9 +2951,9 @@
             "zh_HK": "可另存為副本"
         },
         "can_edit": {
-            "zh_CN": "可编辑",
-            "en_US": "can edit",
-            "zh_HK": "可編輯"
+            "zh_CN": "可以编辑",
+            "en_US": "Editor",
+            "zh_HK": "可以編輯"
         },
         "can_manage": {
             "zh_CN": "可管理",
@@ -14082,19 +14082,19 @@
             "zh_HK": "你是文件管理員，擁有此文件的可管理權限"
         },
         "node_permission_item_tips_other_he": {
-            "zh_CN": "他拥有${role}",
-            "en_US": "He owns ${role}",
-            "zh_HK": "他擁有${role}"
+            "zh_CN": "他${role}该文件",
+            "en_US": "He is ${role}",
+            "zh_HK": "他${role}该文件"
         },
         "node_permission_item_tips_other_he_edit": {
-            "zh_CN": "，你可以点击右侧菜单修改或移除他的权限",
-            "en_US": ", you can click the menu on the right to modify or remove his permission",
-            "zh_HK": "，你可以點擊右側菜單修改或移除他的權限"
+            "zh_CN": "，你可以点击右侧菜单修改或移除权限",
+            "en_US": ", you can click the menu on the right to modify or remove permission",
+            "zh_HK": "，你可以點擊右側菜單修改或移除權限"
         },
         "node_permission_item_tips_other_you": {
-            "zh_CN": "你拥有${role}",
-            "en_US": "You owns ${role}",
-            "zh_HK": "你擁有${role}"
+            "zh_CN": "你${role}该文件",
+            "en_US": "You is ${role}",
+            "zh_HK": "你${role}该文件"
         },
         "node_permission_label_space_and_file": {
             "zh_CN": "空间站&文件管理员",
@@ -17455,9 +17455,9 @@
             "zh_HK": "恢復權限"
         },
         "reset_permission_content": {
-            "zh_CN": "成员和小组将恢复继承对上级文件夹的权限，且已设置的权限会同时关闭",
+            "zh_CN": "成员和小组将恢复为继承上级文件夹的权限，已设置的权限会同时关闭",
             "en_US": "Members and groups will restore inherited permissions to the parent folder, and the set permissions will be closed at the same time",
-            "zh_HK": "成員和小組將恢復繼承對上級文件夾的權限，且已設置的權限會同時關閉"
+            "zh_HK": "成員和小組將恢復为繼承對上級文件夾的權限，且已設置的權限會同時關閉"
         },
         "reset_permission_default": {
             "zh_CN": "恢复默认",
