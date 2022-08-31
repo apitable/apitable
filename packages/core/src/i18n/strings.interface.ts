@@ -1,4 +1,3 @@
-
 export interface StringsInterface {
   strings: {
     access_to_space_station_editors: String;
@@ -3059,6 +3058,7 @@ export interface StringsInterface {
     percent_stacked_by_field: String;
     percent_stacked_column_chart: String;
     percent_stacked_line_chart: String;
+    permission: String;
     permission_add_failed: String;
     permission_add_success: String;
     permission_allow_other_to_edit: String;
@@ -5085,19 +5085,18 @@ export interface StringsInterface {
 }
 
 export interface String {
-
-    zh_CN?:         string;
-    en_US?:         string;
-    zh_HK?:         string;
-    终端?:            终端;
-    notifications?: Notifications;
-    废弃时间?:          number;
+  zh_CN?: string;
+  en_US?: string;
+  zh_HK?: string;
+  终端?: 终端;
+  notifications?: Notifications;
+  废弃时间?: number;
 }
 
 export interface Notifications {
-    "social_templates copy": string[];
+  "social_templates copy": string[];
 }
 
 export enum 终端 {
-    App = "APP",
+  App = "APP"
 }
