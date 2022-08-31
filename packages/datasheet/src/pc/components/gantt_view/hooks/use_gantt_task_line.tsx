@@ -198,7 +198,7 @@ export const useGanttAssocitionLine = (props: IAssociaLinePorps) => {
 
     const sourcePoint = { 
       x: sourceTask.x + sourceTask.taskWidth - taskRightOffset, 
-      y: sourceTask.y + rowHeight
+      y: sourceTask.y + rowHeight - 2
     };
     const targetPoint = { 
       x: targetTask.x,

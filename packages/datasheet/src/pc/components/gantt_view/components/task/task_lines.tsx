@@ -44,9 +44,9 @@ export const TaskLine : FC<ITaskLineProps> = (props) => {
         y: pointY - 4,
         pointerDirection: 'down',
         pointerWidth: 10,
-        pointerHeight: 10,
-        background: colors.black[900],
-        fill: colors.black[50]
+        pointerHeight: 5,
+        background: colors.fc13,
+        fill: colors.defaultBg
       });
     } else {
       setLineTooltipInfo({
