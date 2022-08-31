@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
@@ -19,6 +20,7 @@ import static org.mockito.BDDMockito.willReturn;
 /**
  * @author tao
  */
+@Disabled("no assert")
 public class TemplateConfigRedisImplTest extends AbstractIntegrationTest {
 
     private final static String CATEGORIES_LIST_CONFIG =

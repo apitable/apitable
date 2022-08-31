@@ -10,6 +10,7 @@ import java.util.Objects;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
@@ -69,6 +70,7 @@ public class LarkOrderServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
+    @Disabled("no assert")
     public void testTrailOrder() {
         OrderPaidEvent event = getOrderPaidEvent("social/feishu/order/base_10_1_trail.json");
         Objects.requireNonNull(event).setPricePlanType(PricePlanType.TRIAL.getType());
