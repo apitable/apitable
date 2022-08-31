@@ -12994,12 +12994,12 @@
     },
     "menu_insert_record_above": {
       "zh_CN": "向上方插入${lineCount}行",
-      "en_US": "Insert${lineCount}records above",
+      "en_US": "Insert${lineCount}above",
       "zh_HK": "向上方插入${lineCount}行"
     },
     "menu_insert_record_below": {
       "zh_CN": "向下方插入${lineCount}行",
-      "en_US": "Insert${lineCount}records below",
+      "en_US": "Insert${lineCount}below",
       "zh_HK": "向下方插入${lineCount}行"
     },
     "message_bind_email_succeed": {

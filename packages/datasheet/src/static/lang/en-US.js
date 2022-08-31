@@ -3241,8 +3241,8 @@ window.vika_i18n = {
   menu_duplicate_record: "Duplicate record",
   menu_expand_record: "Expand record",
   menu_insert_record: "Insert record ${direction}",
-  menu_insert_record_above: "Insert${lineCount}records above",
-  menu_insert_record_below: "Insert${lineCount}records below",
+  menu_insert_record_above: "Insert${lineCount}above",
+  menu_insert_record_below: "Insert${lineCount}below",
   message_bind_email_succeed: "Email address changed successfully",
   message_call_sharing_function_with_browser:
     "Please call the sharing function of your browser",
