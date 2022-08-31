@@ -24,6 +24,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import com.vikadata.api.modular.space.model.SpaceCapacityUsedInfo;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.cp.bean.WxCpTpAuthInfo.Agent;
@@ -522,25 +523,10 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
                 .galleryViewNums(viewVO.getGalleryViews())
                 .ganttViewNums(viewVO.getGanttViews())
                 .build();
-        // 空间订阅计划附件容量
-        long currentBundleCapacity = iSpaceSubscriptionService.getSpaceSubscription(spaceId).getSubscriptionCapacity();
-        // 如果已使用附件容量小于空间订阅计划容量，那么当前已用附件容量即为当前套餐已用容量
-        if (capacityUsedSize <= currentBundleCapacity) {
-            vo.setCurrentBundleCapacityUsedSizes(capacityUsedSize);
-            // 因为优先使用套餐容量的缘故，所以已使用赠送附件容量为0
-            vo.setGiftCapacityUsedSizes(0L);
-        } else {
-            vo.setCurrentBundleCapacityUsedSizes(currentBundleCapacity);
-            // 赠送的附件容量
-            Long giftCapacity = iSpaceSubscriptionService.getSpaceUnExpireGiftCapacity(spaceId);
-            // 如果附件容量使用超量，已用赠送附件容量等于赠送的附件容量大小
-            if (capacityUsedSize > currentBundleCapacity + giftCapacity) {
-                vo.setGiftCapacityUsedSizes(giftCapacity);
-            } else {
-                // 未超量情况
-                vo.setGiftCapacityUsedSizes(currentBundleCapacity + giftCapacity - capacityUsedSize);
-            }
-        }
+        // 空间附件容量用量信息
+        SpaceCapacityUsedInfo spaceCapacityUsedInfo = this.getSpaceCapacityUsedInfo(spaceId, capacityUsedSize);
+        vo.setCurrentBundleCapacityUsedSizes(spaceCapacityUsedInfo.getCurrentBundleCapacityUsedSizes());
+        vo.setGiftCapacityUsedSizes(spaceCapacityUsedInfo.getGiftCapacityUsedSizes());
         // 拥有者信息
         if (entity.getOwner() != null) {
             MemberDto ownerMember = memberMapper.selectDtoByMemberId(entity.getOwner());
@@ -587,6 +573,31 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         vo.setSocial(bindInfo);
 
         return vo;
+    }
+
+    @Override
+    public SpaceCapacityUsedInfo getSpaceCapacityUsedInfo(String spaceId, Long capacityUsedSize) {
+        SpaceCapacityUsedInfo spaceCapacityUsedInfo = new SpaceCapacityUsedInfo();
+        // 空间订阅计划附件容量
+        Long currentBundleCapacity = iSpaceSubscriptionService.getSpaceSubscription(spaceId).getSubscriptionCapacity();
+        // 如果已使用附件容量小于空间订阅计划容量，那么当前已用附件容量即为当前套餐已用容量
+        if (capacityUsedSize <= currentBundleCapacity) {
+            spaceCapacityUsedInfo.setCurrentBundleCapacityUsedSizes(capacityUsedSize);
+            // 因为优先使用套餐容量的缘故，所以已使用赠送附件容量为0
+            spaceCapacityUsedInfo.setGiftCapacityUsedSizes(0L);
+        } else {
+            spaceCapacityUsedInfo.setCurrentBundleCapacityUsedSizes(currentBundleCapacity);
+            // 赠送的附件容量
+            Long giftCapacity = iSpaceSubscriptionService.getSpaceUnExpireGiftCapacity(spaceId);
+            // 如果附件容量使用超量，已用赠送附件容量等于赠送的附件容量大小
+            if (capacityUsedSize > currentBundleCapacity + giftCapacity) {
+                spaceCapacityUsedInfo.setGiftCapacityUsedSizes(giftCapacity);
+            } else {
+                // 未超量情况
+                spaceCapacityUsedInfo.setGiftCapacityUsedSizes(capacityUsedSize - currentBundleCapacity);
+            }
+        }
+        return spaceCapacityUsedInfo;
     }
 
     @Override
