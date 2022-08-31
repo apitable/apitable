@@ -94,6 +94,7 @@
           AND state = #{state.name}
           AND TIMESTAMPDIFF(SECOND,NOW(), expire_date) >= 0
           AND is_deleted = 0
+          AND metadata IS NOT NULL
     </select>
 
     <select id="selectUnExpireBaseProductBySpaceId" resultType="java.lang.Integer">

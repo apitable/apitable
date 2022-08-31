@@ -617,9 +617,13 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
     @Override
     public IPage<SpaceCapacityPageVO> handleCapacitySubscription(IPage<SpaceSubscriptionDto> spaceSubscriptionDtoIPage, Page page) {
         log.info("处理附件容量订单信息");
+        String giftSubscriptionPlanId = "capacity_0.3G";
         // 构建附件容量明细对象集合
         List<SpaceCapacityPageVO> spaceCapacityPageVos = new ArrayList<>();
         for (SpaceSubscriptionDto spaceSubscriptionDto : spaceSubscriptionDtoIPage.getRecords()) {
+            if(giftSubscriptionPlanId.equals(spaceSubscriptionDto.getPlanId()) && StrUtil.isEmpty(spaceSubscriptionDto.getMetadata())){
+                continue;
+            }
             // 对planId进行处理，去除_monthly、_biannual、_annual、_v1
             List<String> removeStrings= CollUtil.newArrayList("_monthly", "_biannual", "_annual", "_v1");
             String planId = spaceSubscriptionDto.getPlanId();
