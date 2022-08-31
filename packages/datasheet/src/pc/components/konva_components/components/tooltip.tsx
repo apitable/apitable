@@ -9,7 +9,7 @@ const Tag = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timel
 
 interface IToolTipProps extends ShapeConfig {
   text: string;
-  background?: string;
+  background?: string | null;
 }
 
 export const ToolTip: FC<IToolTipProps> = (props) => {
@@ -22,6 +22,9 @@ export const ToolTip: FC<IToolTipProps> = (props) => {
     fill = colors.firstLevelText,
     padding = 10,
     cornerRadius = 4,
+    pointerDirection = '',
+    pointerWidth = 10,
+    pointerHeight = 10,
   } = props;
 
   return (
@@ -34,6 +37,9 @@ export const ToolTip: FC<IToolTipProps> = (props) => {
         listening={false}
         perfectDrawEnabled={false}
         cornerRadius={cornerRadius}
+        pointerDirection={pointerDirection}
+        pointerWidth={pointerWidth}
+        pointerHeight={pointerHeight}
       />
       <Text
         text={text}

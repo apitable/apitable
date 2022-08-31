@@ -4921,7 +4921,7 @@
             "en_US": "New file",
             "zh_HK": "新建節點"
         },
-  ,      "default_create_folder": {
+        "default_create_folder": {
             "zh_CN": "新建文件夹",
             "en_US": "New folder",
             "zh_HK": "新建文件夾"
@@ -9212,6 +9212,10 @@
             "en_US": "${unitType}",
             "zh_HK": "按${unitType}查看"
         },
+        "gantt_cant_connect_when_computed_field": {
+            "zh_CN": "当前设置中的开始和结束日期字段中含有计算字段（不允许用户主动写入值的字段类型），请尝试调整字段后再试。",
+            "en_US": "The date fields contain computed field that is not allowed to write manually, please adjust the field and try again."
+        },
         "gantt_check_connection": {
             "zh_CN": "查看关联关系",
             "en_US": "Check the connection"
@@ -11034,8 +11038,19 @@
         },
         "is_empty_widget_panel": {
             "zh_CN": "小程序面板暂未添加小程序，请前往 PC 端添加",
+            "废弃时间": 1660820089876,
             "en_US": "No widgets, please add widgets on the PC",
             "zh_HK": "小程序面板暫未添加小程序，請前往 PC 端添加"
+        },
+        "is_empty_widget_panel_mobile": {
+            "zh_CN": "小程序面板暂未添加小程序，请前往 PC 端添加",
+            "en_US": "No widgets, please add widgets on the PC",
+            "zh_HK": "小程序面板暫未添加小程序，請前往 PC 端添加"
+        },
+        "is_empty_widget_panel_pc": {
+            "zh_CN": "小程序面板暂未添加小程序",
+            "en_US": "No widgets",
+            "zh_HK": "小程序面板暫未添加小程序"
         },
         "is_not_empty": {
             "zh_CN": "不为空",
@@ -12243,7 +12258,7 @@
         },
         "lookup_counta_example": {
             "zh_CN": "COUNTA(1, 3, 5, \"\", \"七\") => 4",
-            "en_US": "COUNTA(1, 3, 5, \"\", \"VIKA\") => 4",
+            "en_US": "COUNTA(1, 3, 5, \"\", \"Apple\") => 4",
             "zh_HK": "COUNTA(1, 3, 5, \"\", \"七\") => 4"
         },
         "lookup_counta_summary": {
@@ -12303,7 +12318,7 @@
         },
         "lookup_max_example": {
             "zh_CN": "MAX(1, 3, 5, \"\", \"七\") => 5, MAX(2020/01/12, 1993/06/08, 2021/12/12, \"\", \"七\") => 2021/12/12",
-            "en_US": "MAX(1, 3, 5, \"\", \"VIKA\") => 5; MAX(2020/01/12, 1993/06/08, 2021/12/12, \"\", \"VIKA\") => 2021/12/12",
+            "en_US": "MAX(1, 3, 5, \"\", \"Apple\") => 5; MAX(2020/01/12, 1993/06/08, 2021/12/12, \"\", \"Apple\") => 2021/12/12",
             "zh_HK": "MAX(1, 3, 5, \"\", \"七\") => 5, MAX(2020/01/12, 1993/06/08, 2021/12/12, \"\", \"七\") => 2021/12/12"
         },
         "lookup_max_summary": {
@@ -12358,7 +12373,7 @@
         },
         "lookup_sum_example": {
             "zh_CN": "SUM(1, 3, 5, \"\", \"VIKA\") => 9 (1+3+5)",
-            "en_US": "SUM(1, 3, 5, \"\", \"VIKA\") => 9 (1+3+5)",
+            "en_US": "SUM(1, 3, 5, \"\", \"Apple\") => 9 (1+3+5)",
             "zh_HK": "SUM(1, 3, 5, \"\", \"VIKA\") => 9 (1+3+5)"
         },
         "lookup_sum_summary": {
@@ -20324,13 +20339,16 @@
             "en_US": "Show field description",
             "zh_HK": "顯示列描述"
         },
+        "show_hidden_field_within_mirror": {
+            "zh_CN": "镜像中显示隐藏字段"
+        },
         "show_hidden_fields_by_count": {
             "zh_CN": "显示 ${count} 个隐藏字段",
             "en_US": "Expand ${count} hidden field(s)",
             "zh_HK": "顯示 ${count} 個隱藏字段"
         },
         "show_name": {
-            "zh_CN": "列名",
+            "zh_CN": "显示列名称",
             "en_US": "Show name",
             "zh_HK": "列名"
         },

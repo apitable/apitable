@@ -24,6 +24,7 @@ export interface IGanttProps {
   ganttScrollState: IScrollState;
   pointPosition: PointPosition;
   isExporting?: boolean;
+  drawingLine?: any;
 }
 
 const Gantt: FC<IGanttProps> = memo((props) => {
@@ -42,7 +43,8 @@ const Gantt: FC<IGanttProps> = memo((props) => {
     isExporting = false,
   } = props;
 
-  const { isMobile } = useContext(KonvaGridContext);
+  const { isMobile, theme } = useContext(KonvaGridContext);
+  const colors = theme.color;
 
   const { scrollLeft: gridScrollLeft } = gridScrollState;
   const { scrollLeft: ganttScrollLeft, scrollTop } = ganttScrollState;
@@ -118,7 +120,11 @@ const Gantt: FC<IGanttProps> = memo((props) => {
     selectedRows,
     dragRowHighlightLine,
     tooltip,
-    dragSplitter
+    dragSplitter,
+    lineTooltip,
+    taskLineList,
+    drawingLine,
+    lineSettingModels
   } = useGantt({
     instance: ganttInstance,
     columnStartIndex,
@@ -141,10 +147,6 @@ const Gantt: FC<IGanttProps> = memo((props) => {
     containerHeight,
     isExporting
   });
-
-  const { theme } = useContext(KonvaGridContext);
-  const colors = theme.color;
-
   return (
     <Layer>
       {
@@ -221,13 +223,17 @@ const Gantt: FC<IGanttProps> = memo((props) => {
               clipHeight={containerHeight - rowInitSize}
             >
               <Group offsetX={ganttScrollLeft} offsetY={scrollTop}>
+                <Group>
+                  {taskLineList}
+                </Group>
                 {willFillTaskPoint}
                 {willAddTaskPoint}
                 {taskGroupHeaders}
                 <Group>{taskList}</Group>
                 {transformer}
+                {drawingLine}
+                {lineSettingModels}
               </Group>
-
               <Group offsetY={scrollTop}>
                 {backToTaskButtons}
                 {errTaskTips}
@@ -397,7 +403,9 @@ const Gantt: FC<IGanttProps> = memo((props) => {
             <Group listening={false}>
               {tooltip}
             </Group>
-
+            <Group listening={false}>
+              {lineTooltip}
+            </Group>
             {dragSplitter}
           </>
         }

@@ -52,6 +52,8 @@ export class GanttView extends View {
       },
       workDays: DEFAULT_WORK_DAYS,
       onlyCalcWorkDay: false,
+      linkFieldId: '',
+      autoTaskLayout: false
     };
   }
 

@@ -77,7 +77,9 @@ export const useTask = (props: IUseTaskProps) => {
     transformerId,
     ganttStyle,
     ganttGroupMap,
-    dragSplitterInfo
+    dragSplitterInfo,
+    targetTaskInfo,
+    isTaskLineDrawing
   } = useContext(KonvaGanttViewContext);
   const {
     isMobile: _isMobile,
@@ -121,7 +123,6 @@ export const useTask = (props: IUseTaskProps) => {
   const isGanttArea = pointAreaType === AreaType.Gantt;
 
   const { tooltip, setTooltipInfo: setKonvaTooltipInfo } = useTooltip({ isScrolling });
-
   const cellValueMap = useMemo(() => {
     const result = {};
     if (!renderEnable) return result;
@@ -141,7 +142,7 @@ export const useTask = (props: IUseTaskProps) => {
 
   // 绘制 Gantt Hover 状态下，将要添加任务的区域
   const willAddTaskPoint = useMemo(() => {
-    if (!renderEnable || isScrolling || splitterVisible) return null;
+    if (!renderEnable || isScrolling || splitterVisible || isTaskLineDrawing) return null;
     if (!cellEditable || !isGanttArea || dragTaskId || pointRowType !== CellType.Add) {
       return null;
     }
@@ -163,12 +164,12 @@ export const useTask = (props: IUseTaskProps) => {
   }, [
     renderEnable, isScrolling, splitterVisible, cellEditable, isGanttArea,
     dragTaskId, pointRowType, instance, pointColumnIndex, pointRowIndex, columnWidth,
-    colors
+    colors, isTaskLineDrawing
   ]);
 
   // 绘制 Gantt Hover 状态下，将要填充任务的区域
   const willFillTaskPoint = (() => {
-    if (!renderEnable || isScrolling || pointRowType !== CellType.Record || splitterVisible) return null;
+    if (!renderEnable || isScrolling || pointRowType !== CellType.Record || splitterVisible || isTaskLineDrawing) return null;
     if (!isSameField && (!leftAnchorEnable || !rightAnchorEnable || !cellEditable)) return null;
     if (NotFillTargetNames.has(pointTargetName) || !isGanttArea || dragTaskId) return null;
 
@@ -311,6 +312,7 @@ export const useTask = (props: IUseTaskProps) => {
 
   // 绘制任务列表
   const taskList: React.ReactNode[] = [];
+  const taskMap = {};
 
   const taskRenderer = (rowIndex: number) => {
     const { recordId } = linearRows[rowIndex];
@@ -322,6 +324,12 @@ export const useTask = (props: IUseTaskProps) => {
     const taskId = `task-${recordId}`;
     const x = (startOffset ?? endOffset)!;
     const taskWidth = width ?? unitWidth;
+    // TODO task转到更高的组件中去计算
+    taskMap[recordId] = {
+      x,
+      y,
+      taskWidth,
+    };
     return (
       <Task
         key={taskId}
@@ -338,6 +346,7 @@ export const useTask = (props: IUseTaskProps) => {
         leftAnchorEnable={leftAnchorEnable}
         rightAnchorEnable={rightAnchorEnable}
         setTooltipInfo={setKonvaTooltipInfo}
+        targetTaskInfo={targetTaskInfo}
       />
     );
   };
@@ -350,7 +359,7 @@ export const useTask = (props: IUseTaskProps) => {
       if (recordId === dragTaskId) isDragRendered = true;
       taskList.push(taskRenderer(rowIndex));
     }
-
+    taskMap['taskListLength'] = taskList.length;
     // 拖拽中的任务
     if (dragTaskId && !isDragRendered) {
       const rowIndex = rowsIndexMap.get(`${CellType.Record}_${dragTaskId}`);
@@ -380,6 +389,10 @@ export const useTask = (props: IUseTaskProps) => {
     );
   }
 
+  /**
+   * Task链接线
+   */
+  
   return {
     tooltip,
     taskList,
@@ -389,5 +402,6 @@ export const useTask = (props: IUseTaskProps) => {
     willAddTaskPoint,
     willFillTaskPoint,
     backToTaskButtons,
+    taskMap
   };
 };

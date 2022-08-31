@@ -6,8 +6,8 @@ import { KonvaEventObject } from 'konva/lib/Node';
 import { Shape, ShapeConfig } from 'konva/lib/Shape';
 import dynamic from 'next/dynamic';
 import {
-  GANTT_HEADER_HEIGHT, GANTT_HORIZONTAL_DEFAULT_SPACING, GANTT_INNER_HANDLER_HEIGHT, GANTT_TASK_GAP_SIZE, GANTT_VERTICAL_DEFAULT_SPACING,
-  GanttCoordinate, generateTargetName, getDiffCount, getDiffCountByWorkdays, IScrollOptions, KonvaGanttViewContext, PointPosition, useUpdate,
+  GANTT_HORIZONTAL_DEFAULT_SPACING, GANTT_INNER_HANDLER_HEIGHT, GANTT_TASK_GAP_SIZE,
+  GanttCoordinate, generateTargetName, getDiffCount, getDiffCountByWorkdays, KonvaGanttViewContext, PointPosition, useUpdate,
 } from 'pc/components/gantt_view';
 import TaskContent from 'pc/components/gantt_view/components/task/task_content';
 import { Rect } from 'pc/components/konva_components';
@@ -16,7 +16,8 @@ import { setColor } from 'pc/components/multi_grid/format';
 import { resourceService } from 'pc/resource_service';
 import { COLOR_INDEX_THRESHOLD, rgbaToHex } from 'pc/utils';
 import { FC, useContext, useMemo, useRef, useState } from 'react';
-import { AreaType } from '../../interface';
+import { AreaType, ITargetTaskInfo } from '../../interface';
+import { onDragScrollSpacing, getSpeed } from 'pc/components/gantt_view/utils';
 
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 const ShapeComponent = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/shape'), { ssr: false });
@@ -35,6 +36,7 @@ interface ITaskProps {
   leftAnchorEnable?: boolean;
   rightAnchorEnable?: boolean;
   setTooltipInfo: (info) => void;
+  targetTaskInfo: ITargetTaskInfo | null;
 }
 
 enum TipType {
@@ -102,8 +104,9 @@ const Task: FC<ITaskProps> = (props) => {
     setTooltipInfo,
     leftAnchorEnable = true,
     rightAnchorEnable = true,
+    targetTaskInfo
   } = props;
-  const { setLocking, ganttStyle, setRecord } = useContext(KonvaGanttViewContext);
+  const { setLocking, ganttStyle, setRecord, isTaskLineDrawing } = useContext(KonvaGanttViewContext);
   const {
     view,
     recordMap,
@@ -150,7 +153,6 @@ const Task: FC<ITaskProps> = (props) => {
     distanceToTaskLeft, distanceToBoundaryLeft, distanceToTaskTop, distanceToBoundaryRight
   } = taskPosition;
   const isCustomColor = colorOption.type === GanttColorType.Custom;
-
   const taskCornerRadius = useMemo(() => {
     switch (rowHeight) {
       case GanttRowHeight.Short:
@@ -196,6 +198,8 @@ const Task: FC<ITaskProps> = (props) => {
   }, [colors.defaultBg, isCustomColor, colorOption.color, colorOption.fieldId, cacheTheme, fieldMap, recordMap, recordId]);
   const color = colorMap.colorIndex >= COLOR_INDEX_THRESHOLD ? colors.defaultBg : colors.firstLevelText;
 
+  const isDrawTargetTask = targetTaskInfo?.recordId === recordId;
+
   const setTaskPosition = (data) => _setTaskPosition(prev => ({ ...prev, ...data }));
 
   const onTooltipShow = (taskX: number, taskWidth: number, toolTipX: number, toolTipY: number, tipType = TipType.All) => {
@@ -233,13 +237,7 @@ const Task: FC<ITaskProps> = (props) => {
     });
   };
 
-  const getSpeed = (spacing: number) => {
-    const baseSpeed = 3;
-    return Math.ceil((GANTT_HORIZONTAL_DEFAULT_SPACING - spacing) * baseSpeed / GANTT_HORIZONTAL_DEFAULT_SPACING);
-  };
-
   const wheelingRef = useRef<number | null>(null); // 存储定时器，保证拖拽出现 tooltip 时的流畅性
-
   const onTransformStart = (e: KonvaEventObject<Event>) => {
     const node = e.target;
     const transformer: any = node.getStage()?.findOne('.transformer');
@@ -256,7 +254,6 @@ const Task: FC<ITaskProps> = (props) => {
       distanceToBoundaryRight: gridWidth + ganttWidth - pointX,
     });
   };
-
   const onTransform = (e: KonvaEventObject<Event>) => {
     const pos = e.target.getStage()?.getPointerPosition();
     if (pos == null) return;
@@ -334,6 +331,7 @@ const Task: FC<ITaskProps> = (props) => {
     // 防止任务被遮挡
     node.moveToTop();
     contentRef.current.moveToTop();
+   
     setTaskPosition({
       isOperating: true,
       distanceToTaskLeft: pointOffsetLeft - x,
@@ -341,57 +339,35 @@ const Task: FC<ITaskProps> = (props) => {
     });
   };
 
-  const onScrollSpacing = (x, y) => {
-    const leftSpacing = pointX - gridWidth;
-    const rightSpacing = ganttWidth + gridWidth - pointX;
-    const topSpacing = pointY - GANTT_HEADER_HEIGHT;
-    const bottomSpacing = ganttHeight - pointY;
-    const needScrollToLeft = leftSpacing < GANTT_HORIZONTAL_DEFAULT_SPACING;
-    const needScrollToRight = rightSpacing < GANTT_HORIZONTAL_DEFAULT_SPACING;
-    const needScrollToTop = topSpacing < GANTT_VERTICAL_DEFAULT_SPACING && scrollTop !== 0;
-    const needScrollToBottom = bottomSpacing < GANTT_VERTICAL_DEFAULT_SPACING;
-    const isHorizontalScroll = needScrollToLeft || needScrollToRight;
-    const isVerticalScroll = needScrollToTop || needScrollToBottom;
-
-    // 无需进行拖拽滚动
-    if (!isHorizontalScroll && !isVerticalScroll) {
-      scrollHandler.stopScroll();
-      setTaskPosition({ x, y });
-      return onTooltipShow(x, taskWidth, pointX, pointY + 20);
-    }
-
-    // 需要进行拖拽滚动
-    const scrollOptions: IScrollOptions = {};
-    const horizontalScrollCb = ({ scrollLeft }) => setTaskPosition({ x: scrollLeft + pointX - gridWidth - distanceToTaskLeft, y });
-    const verticalScrollCb = ({ scrollTop }) => setTaskPosition({ x, y: scrollTop + pointY - distanceToTaskTop });
+  const onDragMove = (e: KonvaEventObject<DragEvent>) => {
+    const node = e.target;
+    const curX = Math.round(node.x());
+    const curY = Math.round(node.y());
+   
+    const scrollState = { scrollTop };
+    const noScrollCb = () => { 
+      setTaskPosition({ x: curX, y: curY });
+      onTooltipShow(curX, taskWidth, pointX, pointY + 20);
+    };
+    const horizontalScrollCb = ({ scrollLeft }) => setTaskPosition({ x: scrollLeft + pointX - gridWidth - distanceToTaskLeft, y: curY });
+    const verticalScrollCb = ({ scrollTop }) => setTaskPosition({ x: curX, y: scrollTop + pointY - distanceToTaskTop });
     const allScrollCb = ({ scrollLeft, scrollTop }) => setTaskPosition({
       x: scrollLeft + pointX - gridWidth - distanceToTaskLeft,
       y: scrollTop + pointY - distanceToTaskTop
     });
 
-    if (isHorizontalScroll) {
-      scrollOptions.columnSpeed = needScrollToLeft ? -getSpeed(leftSpacing) : getSpeed(rightSpacing);
-    }
-    if (isVerticalScroll) {
-      scrollOptions.rowSpeed = needScrollToTop ? -getSpeed(topSpacing) : getSpeed(bottomSpacing);
-    }
-    if (isHorizontalScroll && !isVerticalScroll) {
-      scrollOptions.scrollCb = horizontalScrollCb;
-    }
-    if (isVerticalScroll && !isHorizontalScroll) {
-      scrollOptions.scrollCb = verticalScrollCb;
-    }
-    if (isVerticalScroll && isHorizontalScroll) {
-      scrollOptions.scrollCb = allScrollCb;
-    }
-    return scrollHandler.scrollByValue(scrollOptions, AreaType.Gantt);
-  };
+    onDragScrollSpacing(
+      scrollHandler,
+      gridWidth,
+      instance, 
+      scrollState, 
+      pointPosition,
+      noScrollCb,
+      horizontalScrollCb,
+      verticalScrollCb,
+      allScrollCb
+    );
 
-  const onDragMove = (e: KonvaEventObject<DragEvent>) => {
-    const node = e.target;
-    const curX = Math.round(node.x());
-    const curY = Math.round(node.y());
-    onScrollSpacing(curX, curY);
   };
 
   const onDragEnd = (e: KonvaEventObject<DragEvent>) => {
@@ -429,7 +405,10 @@ const Task: FC<ITaskProps> = (props) => {
   };
 
   const onMouseMove = () => {
-    if (isOperating) return;
+    if (isOperating || isTaskLineDrawing) {
+      setTooltipInfo({ visible: false });
+      return;
+    }
     onTooltipShow(_x, taskWidth, pointX, _y - (pointOffsetTop - pointY) + rowHeight);
   };
 
@@ -502,6 +481,19 @@ const Task: FC<ITaskProps> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isTransform]);
 
+  const getTaskStroke = () => {
+    if(isTransform || isDrawTargetTask) {
+      if(isTaskLineDrawing) {
+        return targetTaskInfo?.dashEnabled ? colors.fc10 : colors.deepPurple[500];
+      } 
+      return colorMap.handlerColor;
+      
+    } else if(colorMap.bgColor === colors.defaultBg) {
+      return '#B9BCD3';
+    } 
+    return colorMap.bgColor;
+  };
+
   return (
     <>
       <Group
@@ -543,8 +535,8 @@ const Task: FC<ITaskProps> = (props) => {
           width={width}
           height={taskHeight - GANTT_TASK_GAP_SIZE}
           fill={colorMap.bgColor}
-          stroke={isTransform ? colorMap.handlerColor : (colorMap.bgColor === colors.defaultBg ? '#B9BCD3' : colorMap.bgColor)}
-          strokeWidth={0.5}
+          stroke={getTaskStroke()}
+          strokeWidth={((isTransform && isTaskLineDrawing) || isDrawTargetTask) ? 1 : 0.5}
           cornerRadius={taskCornerRadius}
         />
       </Group>
@@ -567,7 +559,7 @@ const Task: FC<ITaskProps> = (props) => {
           color={color}
         />
         {
-          isTransform &&
+          isTransform && !isTaskLineDrawing &&
           <ShapeComponent
             fill={colorMap.handlerColor}
             stroke={colors.defaultBg}

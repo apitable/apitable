@@ -34,10 +34,12 @@ import { GANTT_HEADER_HEIGHT, GANTT_MONTH_HEADER_HEIGHT } from './constant';
 import { DomGantt } from './dom_gantt';
 import { useGanttScroller } from './hooks/use_gantt_scroller';
 import {
-  AreaType, CellBound, IGanttGroupMap, IScrollHandler, IScrollOptions, IScrollState, PointPosition, ScrollViewType, TimeoutID,
+  AreaType, CellBound, IGanttGroupMap, IScrollHandler, IScrollOptions, IScrollState, PointPosition, ScrollViewType, TimeoutID, ITaskLineSetting,
+  ITargetTaskInfo
 } from './interface';
 import styles from './style.module.less';
-
+import { getAllTaskLine, getAllCycleDAG, autoTaskScheduling, getCollapsedLinearRows } from './utils';
+import { Message } from 'pc/components/common';
 interface IGanttViewProps {
   height: number;
   width: number;
@@ -158,7 +160,7 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
   const state = store.getState();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const { startFieldId, endFieldId, workDays = DEFAULT_WORK_DAYS, onlyCalcWorkDay } = ganttStyle;
+  const { startFieldId, endFieldId, workDays = DEFAULT_WORK_DAYS, onlyCalcWorkDay, autoTaskLayout, linkFieldId } = ganttStyle;
   const rowCount = linearRows.length; // 总行数
   const dispatch = useDispatch();
   const {
@@ -248,6 +250,11 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
   const [dragTaskId, setDragTaskId] = useState<string | null>(null);
   const [transformerId, setTransformerId] = useState<string>('');
   const [draggingOutlineInfo, setDraggingOutlineInfo] = useState<IDraggingOutlineInfoProps | null>(null);
+
+  // 任务关联相关
+  const [isTaskLineDrawing, setIsTaskLineDrawing] = useState<boolean>(false);
+  const [targetTaskInfo, setTargetTaskInfo] = useState<ITargetTaskInfo| null>(null);
+  const [taskLineSetting, setTaskLineSetting] = useState<ITaskLineSetting | null>(null);
 
   const rowIndicesMap = useMemo(() => {
     const rowIndicesMap: IndicesMap = {};
@@ -523,13 +530,18 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
       data.push(getData(startFieldId, startUnitIndex));
     }
     if (endUnitIndex != null && endField != null && !isSameField) {
-      data.push(getData(endFieldId, endUnitIndex));
+      const endData = getData(endFieldId, endUnitIndex);
+      data.push(endData);
+      // 如果开启了自动编排而且结束时间遭到了修改
+      if(autoTaskLayout) {
+        autoSingleTask(endData);
+      }
     }
     resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.SetRecords,
       datasheetId,
       data,
-    });
+    }); 
   };
 
   // 上一页/下一页
@@ -658,6 +670,10 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
   // 限制滚动阈值，实现虚拟滚动
   useUpdateEffect(() => {
     if (scrollLeft <= 0) {
+      if(isTaskLineDrawing) {
+        scrollHandler.stopScroll();
+        return;
+      }
       ganttInstance.prevTimelineStep();
       const currentScrollLeft = ganttInstance.getColumnOffset(ganttInstance.columnThreshold) + scrollLeft;
       scrollTo({ scrollLeft: currentScrollLeft }, AreaType.Gantt);
@@ -668,6 +684,10 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
     // 与最大滚动距离的差值
     const scrollMaxDiff = scrollLeft - scrollMaxSize;
     if (scrollMaxDiff >= 0) {
+      if(isTaskLineDrawing) {
+        scrollHandler.stopScroll();
+        return;
+      }
       ganttInstance.nextTimelineStep();
       const currentScrollLeft = (
         ganttInstance.getColumnOffset(ganttInstance.columnThreshold) - ganttHorizontalBarRef.current.clientWidth + scrollMaxDiff
@@ -744,6 +764,104 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
     }
   }, [clearTooltipInfo, isScrolling]);
   const theme = useTheme();
+
+  // 任务关联相关
+  const linkCycleEdges = useMemo(() => {
+    
+    if(!linkFieldId) {
+      return {
+        taskEdges: [],
+        cycleEdges: [],
+        targetAdj: null
+      };
+    }
+    // target adjacency list
+    const targetAdj = {};
+    const nodeIdMap : string[] = [];
+    visibleRows.forEach(row => {
+      const linkCellValue = Selectors.getCellValue(state, snapshot, row.recordId, linkFieldId) || [];
+      if(linkCellValue.length > 0) {
+        targetAdj[row.recordId] = linkCellValue;
+      }
+      nodeIdMap.push(row.recordId);
+    });
+    const { taskLineList: taskEdges, sourceAdj } = getAllTaskLine(targetAdj);
+    const cycleEdges = getAllCycleDAG(nodeIdMap, sourceAdj);
+
+    return {
+      taskEdges,
+      cycleEdges,
+      targetAdj,
+      sourceAdj,
+      nodeIdMap
+    };
+  }, [visibleRows, linkFieldId, state, snapshot]);
+  
+  // 根据分组隐藏信息补充ganttLinearRows
+  const ganttLinearRowsAfterCollapseMap = useMemo(() => {
+
+    return getCollapsedLinearRows(ganttLinearRows, groupCollapseIds);
+
+  }, [ganttLinearRows, groupCollapseIds]);
+
+  const rowsCellValueMap = useMemo(() => {
+  
+    if(!linkFieldId || !startFieldId || !endFieldId) {
+      return {
+        cellValueMap: null
+      };
+    }
+    const groupingCollapseSet = new Set<string>(groupCollapseIds);
+
+    const cellValueMap = {};
+    visibleRows.forEach(row => {
+      
+      const startTime = Selectors.getCellValue(state, snapshot, row.recordId, startFieldId);
+      const endTime = Selectors.getCellValue(state, snapshot, row.recordId, endFieldId);
+   
+      const { groupHeadRecordId, groupDepth }= ganttLinearRowsAfterCollapseMap.get(row.recordId);
+      const isCollapse = groupingCollapseSet.has(groupHeadRecordId + '_' + groupDepth);
+     
+      let rowIndex;
+      if(isCollapse) {
+        rowIndex = rowsIndexMap.get(`${CellType.GroupTab}_${groupHeadRecordId}`);
+      } else {
+        rowIndex = rowsIndexMap.get(`${CellType.Record}_${row.recordId}`);
+      }
+
+      if(startTime && endTime) {
+        cellValueMap[row.recordId] = {
+          startTime,
+          endTime,
+          isCollapse,
+          rowIndex,
+          groupHeadRecordId
+        };
+      }
+   
+    });
+    return cellValueMap;
+  }, [visibleRows, linkFieldId, groupCollapseIds, rowsIndexMap, startFieldId, endFieldId]);
+
+  // 单任务修改自动编排
+  const autoSingleTask = (endData) => {
+    if(!linkFieldId || !startFieldId || !endFieldId) {
+      return;
+    }
+ 
+    const startTimeIsComputedField = Field.bindModel(fieldMap[startFieldId]).isComputed;
+    const endTimeISComputedField = Field.bindModel(fieldMap[endFieldId]).isComputed;
+    if(startTimeIsComputedField || endTimeISComputedField) {
+      Message.warning({ content: t(Strings.gantt_cant_connect_when_computed_field) });
+      return;
+    }
+    const commandData : ISetRecordOptions[] = autoTaskScheduling(visibleRows, state, snapshot, ganttStyle, endData);
+    
+    resourceService.instance?.commandManager.execute({
+      cmd: CollaCommandName.SetRecords,
+      data: commandData
+    });
+  };
 
   const konvaGridContext = {
     theme,
@@ -828,6 +946,14 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
     ganttViewStatus,
     dragSplitterInfo,
     setDragSplitterInfo,
+    isTaskLineDrawing,
+    setIsTaskLineDrawing,
+    rowsCellValueMap,
+    linkCycleEdges,
+    targetTaskInfo,
+    setTargetTaskInfo,
+    taskLineSetting,
+    setTaskLineSetting
   };
 
   return (

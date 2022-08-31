@@ -208,7 +208,7 @@ const GanttStage: FC<IGanttStageProps> = memo((props) => {
     pointPosition,
     rowStartIndex,
     rowStopIndex,
-    getMousePosition
+    getMousePosition,
   });
 
   const onMouseDown = (e: KonvaEventObject<MouseEvent>) => {
@@ -226,6 +226,7 @@ const GanttStage: FC<IGanttStageProps> = memo((props) => {
 
     wheelingRef.current = window.requestAnimationFrame(() => {
       const eventTargetName = e.target.name();
+
       const pos = stageRef.current?.getPointerPosition();
       if (pos == null) {
         return;
@@ -233,6 +234,7 @@ const GanttStage: FC<IGanttStageProps> = memo((props) => {
       const { x, y } = pos;
       const curMousePosition = getMousePosition(x, y, eventTargetName);
       const { realAreaType, areaType, targetName } = curMousePosition;
+     
       // 处理鼠标样式
       if (realAreaType === AreaType.Grid) {
         handleGridMouseStyle(targetName);
@@ -252,7 +254,7 @@ const GanttStage: FC<IGanttStageProps> = memo((props) => {
 
   const onMouseUp = (e: KonvaEventObject<MouseEvent>) => {
     onGridMouseUp(e);
-    onGanttMouseUp();
+    onGanttMouseUp(e);
   };
 
   const onClick = (e: any) => {

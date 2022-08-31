@@ -1851,6 +1851,7 @@ export interface StringsInterface {
     gantt_add_task_text: String;
     gantt_back_to_now_button: String;
     gantt_by_unit_type: String;
+    gantt_cant_connect_when_computed_field: String;
     gantt_check_connection: String;
     gantt_color_more: String;
     gantt_color_setting: String;
@@ -4088,6 +4089,7 @@ export interface StringsInterface {
     show_empty_values: String;
     show_empty_values_describle: String;
     show_field_desc: String;
+    show_hidden_field_within_mirror: String;
     show_hidden_fields_by_count: String;
     show_name: String;
     show_record_history: String;

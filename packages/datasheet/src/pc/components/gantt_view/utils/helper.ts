@@ -1,5 +1,8 @@
 import { CellType, ViewType } from '@vikadata/core';
-import { ITargetNameDetail, TimeoutID } from '../interface';
+import { ITargetNameDetail, TimeoutID, AreaType } from '../interface';
+import { GANTT_HEADER_HEIGHT, 
+  GANTT_HORIZONTAL_DEFAULT_SPACING, GANTT_VERTICAL_DEFAULT_SPACING, IScrollOptions,
+} from 'pc/components/gantt_view';
 
 export const cancelTimeout = (timeoutID: TimeoutID) => {
   cancelAnimationFrame(timeoutID.id);
@@ -80,4 +83,63 @@ export const getDetailByTargetName = (_targetName: string | null): ITargetNameDe
  */
 export const getGanttGroupId = (recordId: string, depth: number) => {
   return `${recordId}-${depth}`;
+};
+
+export const getSpeed = (spacing: number) => {
+  const baseSpeed = 3;
+  return Math.ceil((GANTT_HORIZONTAL_DEFAULT_SPACING - spacing) * baseSpeed / GANTT_HORIZONTAL_DEFAULT_SPACING);
+};
+
+export const onDragScrollSpacing = (
+  scrollHandler, 
+  gridWidth, 
+  instance, 
+  scrollState, 
+  pointPosition,
+  noScrollSet,
+  horizontalScrollCb,
+  verticalScrollCb,
+  allScrollCb
+) => {
+  const { containerWidth: ganttWidth, containerHeight: ganttHeight } = instance;
+  const { scrollTop } = scrollState;
+  const {
+    x: pointX,
+    y: pointY,
+  } = pointPosition;
+  const leftSpacing = pointX - gridWidth;
+  const rightSpacing = ganttWidth + gridWidth - pointX ;
+  const topSpacing = pointY - GANTT_HEADER_HEIGHT;
+  const bottomSpacing = ganttHeight - pointY;
+  const needScrollToLeft = leftSpacing < GANTT_HORIZONTAL_DEFAULT_SPACING;
+  const needScrollToRight = rightSpacing < GANTT_HORIZONTAL_DEFAULT_SPACING;
+  const needScrollToTop = topSpacing < GANTT_VERTICAL_DEFAULT_SPACING && scrollTop !== 0;
+  const needScrollToBottom = bottomSpacing < GANTT_VERTICAL_DEFAULT_SPACING;
+  const isHorizontalScroll = needScrollToLeft || needScrollToRight;
+  const isVerticalScroll = needScrollToTop || needScrollToBottom;
+
+  // 无需进行拖拽滚动
+  if (!isHorizontalScroll && !isVerticalScroll) {
+    scrollHandler.stopScroll();
+    noScrollSet();
+    return;
+  }
+  // 需要进行拖拽滚动
+  const scrollOptions: IScrollOptions = {};
+  if (isHorizontalScroll) {
+    scrollOptions.columnSpeed = needScrollToLeft ? -getSpeed(leftSpacing) : getSpeed(rightSpacing);
+  }
+  if (isVerticalScroll) {
+    scrollOptions.rowSpeed = needScrollToTop ? -getSpeed(topSpacing) : getSpeed(bottomSpacing);
+  }
+  if (isHorizontalScroll && !isVerticalScroll) {
+    scrollOptions.scrollCb = horizontalScrollCb;
+  }
+  if (isVerticalScroll && !isHorizontalScroll) {
+    scrollOptions.scrollCb = verticalScrollCb;
+  }
+  if (isVerticalScroll && isHorizontalScroll) {
+    scrollOptions.scrollCb = allScrollCb;
+  }
+  return scrollHandler.scrollByValue(scrollOptions, AreaType.Gantt);
 };
