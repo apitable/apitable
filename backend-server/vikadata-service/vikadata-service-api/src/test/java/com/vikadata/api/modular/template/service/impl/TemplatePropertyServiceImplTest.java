@@ -3,6 +3,7 @@ package com.vikadata.api.modular.template.service.impl;
 import java.util.List;
 
 import cn.hutool.core.collection.CollUtil;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
@@ -23,6 +24,7 @@ import static org.mockito.BDDMockito.given;
 /**
  * @author tao
  */
+@Disabled("no assert")
 public class TemplatePropertyServiceImplTest extends AbstractIntegrationTest {
 
     @SpyBean
@@ -43,7 +45,7 @@ public class TemplatePropertyServiceImplTest extends AbstractIntegrationTest {
                 TemplatePropertyDto.builder().propertyCode("pc3").propertyName("pcn3").build()
         );
         given(templatePropertyMapper.selectTemplatePropertiesWithLangAndOrder(
-                        TemplatePropertyType.CATEGORY.getType(), lang))
+                TemplatePropertyType.CATEGORY.getType(), lang))
                 .willReturn(properties);
         List<String> propertyCodes = CollUtil.newArrayList("pc1", "pc2", "pc3");
         List<TemplatePropertyRelDto> templatePropertyRelList = CollUtil.newArrayList(
