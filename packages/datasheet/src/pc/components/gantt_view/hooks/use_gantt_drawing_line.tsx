@@ -7,7 +7,7 @@ import { KonvaGridViewContext } from 'pc/components/konva_grid/context';
 import { PointPosition, KonvaGanttViewContext, GanttCoordinate, IScrollState, generateTargetName } from 'pc/components/gantt_view';
 import { CollaCommandName, Selectors, KONVA_DATASHEET_ID, ConfigConstant, t, Strings, fastCloneDeep } from '@vikadata/core';
 import { Message } from '@vikadata/components';
-import { getAllCycleDAG } from 'pc/components/gantt_view/utils/task_line';
+import { getAllCycleDAG, getTaskLineName } from 'pc/components/gantt_view/utils/task_line';
 import { onDragScrollSpacing } from 'pc/components/gantt_view/utils';
 
 const Arrow = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/arrow'), { ssr: false });
@@ -67,8 +67,6 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
     circle2Ref.current.fill(color);
     circle2Ref.current.radius(radius);
     circle2Ref.current.strokeWidth(radius);
-    circle1Ref.current.moveToTop();
-    circle2Ref.current.moveToTop();
   };
   
   if(!transformerId || dragTaskId || !linkFieldId || isLocking ) {
@@ -122,15 +120,19 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
     if(targetStartValue && sourceEndValue && targetStartValue <= sourceEndValue) {
       return true;
     }
-    const { taskEdges, nodeIdMap } = linkCycleEdges;
-    const taskEdgesCopy = fastCloneDeep(taskEdges);
+    const { sourceAdj, nodeIdMap } = linkCycleEdges;
+    const sourceAdjCopy = fastCloneDeep(sourceAdj);
     const nodeIdMapCopy = fastCloneDeep(nodeIdMap);
-    taskEdgesCopy.push([sourceId, targetId]);
+   
+    sourceAdjCopy[sourceId] = sourceAdjCopy[sourceId] ? sourceAdjCopy[sourceId].push(targetId) : [targetId];
+    
     if(!nodeIdMapCopy.includes(sourceId)) nodeIdMapCopy.push(sourceId);
     if(!nodeIdMapCopy.includes(targetId)) nodeIdMapCopy.push(targetId);
 
-    const cycleEdges = getAllCycleDAG(nodeIdMapCopy, taskEdgesCopy); 
-    if(cycleEdges.includes(`taskLine-${sourceId}-${targetId}`)) {
+    const cycleEdges = getAllCycleDAG(nodeIdMapCopy, sourceAdjCopy);
+ 
+    const taskLineName = getTaskLineName(sourceId, targetId);
+    if(cycleEdges.includes(taskLineName)) {
       return true;
     }
 
