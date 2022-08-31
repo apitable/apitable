@@ -1,10 +1,13 @@
-import { CSSProperties, FC, ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { ChangeEvent, CSSProperties, FC, ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import cls from 'classnames';
 import { useClickAway } from 'ahooks';
 
 import { Typography } from '@vikadata/components';
 import { SelectOutlined } from '@vikadata/icons';
+import { Strings, t } from '@vikadata/core';
+
+import { LineSearchInput } from 'pc/components/list/common_list/line_search_input/line_search_input';
 
 import { calcSize } from './utils';
 import { IDropdown, IDropdownItem } from './interface';
@@ -28,17 +31,27 @@ export const Dropdown: FC<IDropdown> = ({
   hoverElement,
   renderItem,
   onClick,
-  onClose
+  onClose,
+  onSearch,
+  onClear,
+  onMouseenter,
 }) => {
   const handleRef = useRef<number>();
   const popupRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
+  const [keyword, setKeyword] = useState('');
   const [innerVisible, setInnerVisible] = useState(false);
   const [realVisible, setRealVisible] = useState(false);
   const [globalStyle, setGlobalStyle] = useState<CSSProperties>();
   const [dropdownStyle, setDropdownStyle] = useState<CSSProperties>();
+
+  const handleItemMouseEnter = (option: IDropdownItem, triggerElement: HTMLElement, e: React.MouseEvent<HTMLDivElement>) => {
+    if (onMouseenter) {
+      onMouseenter(option, triggerElement, e);
+    }
+  }
 
   const handleItemClick = (item: IDropdownItem, e: React.MouseEvent<HTMLDivElement>) => {
     if (item.disabled) {
@@ -48,6 +61,19 @@ export const Dropdown: FC<IDropdown> = ({
       onClick(item, e);
     }
   };
+
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setKeyword(e.target.value);
+    if (onSearch) {
+      onSearch(e);
+    }
+  };
+
+  const handleClear = () => {
+    if (onClear) {
+      onClear();
+    }
+  }
 
   // 控制显示
   useLayoutEffect(() => {
@@ -94,7 +120,7 @@ export const Dropdown: FC<IDropdown> = ({
     if (empty) {
       return empty;
     }
-    return <div>数据为空</div>;
+    return <div>{t(Strings.empty_data)}</div>;
   };
 
   const isCommon = mode === 'common';
@@ -114,7 +140,15 @@ export const Dropdown: FC<IDropdown> = ({
       >
         {searchable && (
           <div className={styles.dropdownSearch} ref={searchRef}>
-            <input type="text" />
+            {/* TODO: need to replace searchInput with component library */}
+            <LineSearchInput
+              size='small'
+              value={keyword}
+              allowClear
+              onClear={handleClear}
+              onChange={handleSearch}
+              placeholder={t(Strings.view_find)}
+            />
           </div>
         )}
         <div className={cls(styles.dropdown)} ref={scrollRef}>
@@ -138,6 +172,7 @@ export const Dropdown: FC<IDropdown> = ({
                       [styles.dropdownItemDisabled]: item.disabled,
                     })}
                     onClick={(e) => handleItemClick(item, e)}
+                    onMouseEnter={(e) => handleItemMouseEnter(item, e.target as HTMLElement, e)}
                   >
                     {selectedMode === 'check' && (
                       <div className={styles.dropdownItemCheckSelected} />
@@ -171,7 +206,7 @@ export const Dropdown: FC<IDropdown> = ({
           </div>
         )}
       </div>
-      {hoverElement && visible && <div>{hoverElement}</div>}
+      {hoverElement && innerVisible && <div>{hoverElement}</div>}
     </>
   );
 

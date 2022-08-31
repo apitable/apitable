@@ -45,6 +45,10 @@ export const Display: React.FC<IDisplay> = props => {
     const permissions = Selectors.getPermissions(state);
     return permissions.visualizationEditable || permissions.editable;
   });
+  const canOpenShare = useSelector(state => {
+    const permissions = Selectors.getPermissions(state);
+    return permissions.editable || permissions.manageable;
+  });
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state)!);
   const activeView = useSelector(state => Selectors.getCurrentView(state))!;
   const mirrorId = useSelector(state => state.pageParams.mirrorId);
@@ -87,9 +91,15 @@ export const Display: React.FC<IDisplay> = props => {
       return;
     }
 
-    if (disabledToolBarWithMirror) {
+    if (disabledToolBarWithMirror && type !== ToolHandleType.Share) {
       return;
     }
+
+    // 分享只有具有可编辑可管理权限的人才能打开
+    if (type === ToolHandleType.Share && !canOpenShare) {
+      return;
+    }
+
     setToolbarMenuCardOpen(popupVisible);
     onVisibleChange && onVisibleChange(popupVisible);
     dispatch(batchActions([StoreActions.clearSelection(datasheetId), StoreActions.clearActiveFieldState(datasheetId)]));

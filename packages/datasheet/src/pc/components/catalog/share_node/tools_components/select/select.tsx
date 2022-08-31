@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useLayoutEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, FC, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import cls from 'classnames';
 
 import { stopPropagation } from '@vikadata/components';
@@ -20,6 +20,8 @@ export const Select: FC<ISelect> = ({
   className,
   wrapClassName,
   labelInDangerHTML,
+  maxRow,
+  visible: selectVisible,
   onSearch,
   onChange,
   renderValue,
@@ -88,6 +90,18 @@ export const Select: FC<ISelect> = ({
       setWidth(keywordRef.current.scrollWidth || 5);
   }, [keyword]);
 
+  useEffect(() => {
+    if (selectVisible !== undefined) {
+      setVisible(selectVisible);
+    }
+  }, [selectVisible]);
+
+  const contentStyle: React.CSSProperties = {};
+  if (maxRow) {
+    contentStyle.maxHeight = maxRow * 28;
+    contentStyle.overflowY = 'auto';
+  }
+
   const renderSelectValue = () => {
     if (renderValue) {
       return renderValue();
@@ -127,7 +141,7 @@ export const Select: FC<ISelect> = ({
         ref={selectRef}
       >
         {prefix && <div className={styles.selectPrefix}>{prefix}</div>}
-        <div className={styles.selectContent}>
+        <div className={styles.selectContent} style={contentStyle}>
           {placeholder && value.length === 0 && !keyword && width <= 5 && <div className={styles.selectPlaceholder}>{placeholder}</div>}
           {renderSelectValue()}
           <input

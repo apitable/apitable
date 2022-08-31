@@ -34,6 +34,16 @@
   &.dropdownRealClose {
     display: none;
   }
+
+  .dropdownSearch {
+    padding: 8px 16px;
+  }
+  
+  .dropdownSearchInput {
+    background: var(--defaultBg);
+    border-bottom: 1px solid var(--lineColor);
+    overflow: hidden;
+  }
 }
 
 .dropdown {
@@ -52,7 +62,7 @@
 
     // 禁用
     &.dropdownItemDisabled {
-      cursor: default;
+      cursor: not-allowed;
       .dropdownItemContent {
         .dropdownItemLabelText {
           opacity: 0.5;

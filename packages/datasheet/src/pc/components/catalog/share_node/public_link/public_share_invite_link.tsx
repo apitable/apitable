@@ -177,6 +177,9 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
    * open share's auth-dropdown
    */
   const handleShareAuthClick = (option: IDropdownItem) => {
+    if (option.value === value) {
+      return;
+    }
     handleUpdateShare({ [option.value]: true });
   };
 
@@ -184,7 +187,6 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
     value: 'onlyRead',
     label: t(Strings.can_view),
     describe: t(Strings.share_only_desc),
-    disabled: true,
   }, {
     value: 'canBeEdited',
     label: t(Strings.can_edit),
@@ -206,6 +208,10 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
   }
   const shareTitle = !value ? t(Strings.not_shared) : Permission.filter((v) => v.value === value)[0].label;
 
+  // const renderHover = () => {
+  //   return <div style={{ background: '#29e', position: 'absolute', top: 0, left: -81 }}>sdfksjdflkjsfd</div>;
+  // };
+
   const renderAuth = () => {
     const element = (
       <Typography variant='body2' className={styles.sharePersonAuth} onClick={handleToggleAuthInMobile}>
@@ -225,6 +231,8 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
             data={Permission}
             value={[value]}
             onClick={handleShareAuthClick}
+            // hoverElement={renderHover()}
+            visible
           />
         )}
         destroyPopupOnHide

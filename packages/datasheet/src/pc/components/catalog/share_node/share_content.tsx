@@ -5,7 +5,7 @@ import cls from 'classnames';
 import RcTrigger from 'rc-trigger';
 import Image from 'next/image';
 
-import { ConfigConstant, IInviteMemberList, INodeRoleMap, IReduxState, isEmail, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, ConfigConstant, IInviteMemberList, INodeRoleMap, IReduxState, isEmail, Selectors, StoreActions, Strings, t } from '@vikadata/core';
 import { Button, stopPropagation, Typography } from '@vikadata/components';
 import { InformationSmallOutlined, AddOutlined, ChevronDownOutlined, ChevronRightOutlined } from '@vikadata/icons';
 
@@ -18,7 +18,7 @@ import { Avatar, Message } from 'pc/components/common';
 import { Tooltip } from 'pc/components/common/tooltip';
 import NotDataImg from 'static/icon/common/common_img_search_default.png';
 
-import { Select, Dropdown, ISelectItem, Tag } from './tools_components';
+import { Select, Dropdown, ISelectItem, Tag, IDropdownItem } from './tools_components';
 import { PublicShareInviteLink } from './public_link';
 import { MembersDetail } from '../permission_settings/permission/members_detail';
 
@@ -55,11 +55,6 @@ export interface IShareContentProps {
 //   members: ISearchUnitMemberItem[];
 // }
 
-const Permission = [
-  { label: t(Strings.can_manage), describe: '', value: 'management' },
-  { label: t(Strings.can_edit), describe: '', value: 'edit' },
-  { label: t(Strings.can_read), describe: '', value: 'readonly' },
-];
 
 const ROOT_TEAM_ID = '0';
 
@@ -74,14 +69,19 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   const [isEmpty, setIsEmpty] = useState(false);
   const [footerTip, setFooterTip] = useState(false);
   const [inviteLink, setInviteLink] = useState<string>('');
+  const [inviteAuthType, setInviteAuthType] = useState(ConfigConstant.permission.editor);
 
   const dispatch = useDispatch();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const { socketData, userInfo } = useSelector((state: IReduxState) => ({
-    socketData :state.catalogTree.socketData,
-    userInfo: state.user.info,
-  }));
+  const { socketData, userInfo, canEditInviteAuthType } = useSelector((state: IReduxState) => {
+    const permissions = Selectors.getPermissions(state);
+    return {
+      socketData :state.catalogTree.socketData,
+      userInfo: state.user.info,
+      canEditInviteAuthType: permissions.manageable,
+    }
+  });
   const { getNodeRoleListReq } = useCatalogTreeRequest();
   const { generateLinkReq, linkListReq, sendInviteReq, fetchTeamAndMember } = useInviteRequest();
   const { run: getNodeRoleList, data: roleList } = useRequest<INodeRoleMap>(() => getNodeRoleListReq(data.nodeId));
@@ -101,8 +101,8 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   /**
    * 邀请成员搜索
    */
-  const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const keyword = e.target.value;
+  const handleSearch = async (e?: React.ChangeEvent<HTMLInputElement>) => {
+    const keyword = e ? e.target.value : '';
     const validEmail = isEmail(keyword);
     const result = await searchMember(keyword);
     const { members, teams } = result;
@@ -213,9 +213,9 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   };
 
   /**
-   * 发送邀请邮件
+   * 发送邀请邮件，并给角色添加表权限
    */
-  const sendInviteEmail = async(nvcVal?: string) => {
+  const handleAddInvite = async(nvcVal?: string) => {
     if (membersValue.length === 0) {
       return;
     }
@@ -227,9 +227,17 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
       waitInviteMembers.push({ email: member?.email || val, teamId: member?.teamId || -1 });
       
     }
+    // 发送邀请邮件
     const success = await sendInvite(waitInviteMembers, data.nodeId, nvcVal);
-    if (success) {
-      Message.success({ content: t(Strings.invite_success) });
+    if (!success) {
+      return;
+    }
+
+    // 添加权限
+    const { data: roleData } = await Api.addRole(data.nodeId, [], inviteAuthType);
+    const { success: roleSuccess, message: roleMsg } = roleData;
+    if (!roleSuccess) {
+      Message.error({ content: roleMsg });
     }
   };
 
@@ -237,12 +245,19 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
    * 添加邀请
    */
   const handleAddInvitePerson = () => {
-    window['nvc'] ? execNoTraceVerification(sendInviteEmail) : sendInviteEmail();
+    window['nvc'] ? execNoTraceVerification(handleAddInvite) : handleAddInvite();
   };
 
+  /**
+   * 移除选择的成员
+   */
   const handleRemoveTag = (option: ISelectItem) => {
     const newValue = extraMemberList.filter((v) => v.value !== option.value).map((v) => v.value);
     handleChange(newValue, option);
+  };
+
+  const handleChangeInviteAuth = (option: IDropdownItem) => {
+    setInviteAuthType(option.value);
   };
 
   useEffect(() => {
@@ -253,12 +268,21 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
 
   useEffect(() => {
     fetchInviteLinkList();
+    handleSearch();
   }, []);
 
+  
+  const Permission: ISelectItem[] = [
+    { label: t(Strings.can_manage), value: ConfigConstant.permission.manager, disabled: !canEditInviteAuthType },
+    { label: t(Strings.can_edit), value: ConfigConstant.permission.editor, disabled: !canEditInviteAuthType },
+    { label: t(Strings.can_read), value: ConfigConstant.permission.reader, disabled: !canEditInviteAuthType },
+  ];
+
   const renderSuffix = () => {
+    const permissionItem = Permission.find((v) => v.value === inviteAuthType);
     const element = (
       <Typography variant='body2' className={cls(styles.shareInviteAuth, { [styles.shareInviteAuthOpen]: visible })} onClick={handleOpenAuth}>
-        <span>{t(Strings.can_edit)}</span>
+        <span>{permissionItem?.label}</span>
         <ChevronDownOutlined size={16} />
       </Typography>
     );
@@ -269,7 +293,12 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
       <RcTrigger
         action="click"
         popup={(
-          <Dropdown mode='common' data={Permission} value={['edit']} />
+          <Dropdown
+            mode='common'
+            data={Permission}
+            value={[inviteAuthType]}
+            onClick={handleChangeInviteAuth}
+          />
         )}
         destroyPopupOnHide
         popupAlign={{
@@ -347,6 +376,8 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
             onChange={handleChange}
             empty={renderEmpty()}
             renderValue={renderValue}
+            maxRow={2}
+            visible={!visible}
           />
           <Button onClick={handleAddInvitePerson} color='primary'>{t(Strings.add)}</Button>
         </div>
@@ -390,7 +421,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
           destroyOnClose
           className={styles.collaboratorMobile}
         >
-          <Dropdown mode='common' selectedMode="check" divide data={Permission} value={['edit']} />
+          <Dropdown mode='common' selectedMode="check" divide data={Permission} value={[inviteAuthType]} onClick={handleChangeInviteAuth} />
         </Popup>
       </ComponentDisplay>
     </>

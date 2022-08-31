@@ -42,6 +42,16 @@ export interface ISelect {
   className?: string;
 
   /**
+   * 选择框最大行数
+   */
+  maxRow?: number;
+
+  /**
+   * 下拉可见性
+   */
+  visible?: boolean;
+
+  /**
    * 容器类名
    */
   wrapClassName?: string;

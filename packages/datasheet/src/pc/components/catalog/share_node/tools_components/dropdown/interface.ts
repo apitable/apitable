@@ -96,9 +96,14 @@ export interface IDropdown {
   onSearch?: (e: ChangeEvent<HTMLInputElement>) => void;
 
   /**
+   * 清空搜索
+   */
+  onClear?: () => void;
+
+  /**
    * hover 回调
    */
-  onMouseenter?: (option: IDropdownItem, triggerElement: HTMLElement, e: MouseEventHandler<HTMLDivElement>) => void;
+  onMouseenter?: (option: IDropdownItem, triggerElement: HTMLElement, e: React.MouseEvent<HTMLDivElement>) => void;
 
   /**
    * click 回调
