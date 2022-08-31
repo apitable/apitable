@@ -5,7 +5,7 @@ import { TaskLine } from 'pc/components/gantt_view/components/task/task_line';
 import { PointPosition, TaskPositionYType } from '../interface';
 import { KonvaGridContext } from 'pc/components/konva_grid';
 import { useTooltip } from './use_gantt_tooltip';
-import { gettaskLineName } from 'pc/components/gantt_view/utils';
+import { getTaskLineName } from 'pc/components/gantt_view/utils';
 import { fastCloneDeep } from '@vikadata/core';
 
 interface IAssociaLinePorps {
@@ -204,7 +204,7 @@ export const useGanttAssocitionLine = (props: IAssociaLinePorps) => {
       x: targetTask.x,
       y: targetTask.y + rowHeight / 2
     };
-    const taskLineName = gettaskLineName(sourceId, targetId);
+    const taskLineName = getTaskLineName(sourceId, targetId);
     const isCycleLine = cycleEdges.includes(taskLineName);
     let fillColor = isCycleLine ? colors.fc10 : colors.black[400];
     let dashEnabled = isCycleLine ? true : false;

@@ -156,3 +156,7 @@ export interface ITargetTaskInfo {
   recordId: string;
   dashEnabled: boolean;
 }
+
+export interface IAdjacency { 
+  [recordId: string] : string[] 
+}

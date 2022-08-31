@@ -324,6 +324,7 @@ export const useTask = (props: IUseTaskProps) => {
     const taskId = `task-${recordId}`;
     const x = (startOffset ?? endOffset)!;
     const taskWidth = width ?? unitWidth;
+    // TODO task转到更高的组件中去计算
     taskMap[recordId] = {
       x,
       y,

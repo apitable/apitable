@@ -1,18 +1,18 @@
-import { IGroupLinearRow } from '../interface';
+import { IGroupLinearRow, IAdjacency } from '../interface';
 import { CellType } from '@vikadata/core';
 /*
 * nodes: task recordId List
 */
 export const getAllCycleDAG = (nodes: string[], sourceAdj) => {
-  const pre: { [key: string]: any } = {};
+  const pre: { [key: string]: string } = {};
   const color: { [key: string]: number | null } = {};
   
-  const cycles : any[] = [];
+  const cycles : string[][] = [];
  
   // 记录起来 在访问情况为1的时候直接判断有环存起来，因为1是在找查找的链条上
   // 如果有是1证明跑回来了
-  const buildCycle = (start: any, end: any) => {
-    const cycle : any[] = [start];
+  const buildCycle = (start: string, end: string) => {
+    const cycle : string[] = [start];
     for(let cur = end; cur !== start; cur = pre[cur]) {
       cycle.push(cur);
     }
@@ -20,14 +20,14 @@ export const getAllCycleDAG = (nodes: string[], sourceAdj) => {
     cycles.push(cycle.reverse());
   };
 
-  const dfs = (source: any) => {
+  const dfs = (source: string) => {
     if(!sourceAdj[source]) {
       return;
     }
     // 首先将节点的访问情况设置为1
     color[source] = 1;
     // 遍历节点的字节点
-    sourceAdj[source].forEach((target: any) => {
+    sourceAdj[source].forEach((target: string) => {
       // 如果节点的访问情况为null，记录该节点的父节点，并且递归访问
       // 如果节点的访问情况为1，有环记录起来
       // 节访问情况为2，则是完全访问过
@@ -48,10 +48,10 @@ export const getAllCycleDAG = (nodes: string[], sourceAdj) => {
     }
   });
 
-  const cycleEdges : any[] = [];
+  const cycleEdges : string[] = [];
   cycles.forEach(element => {
     for(let i = 1; i < element.length; i++) {
-      const taskLineName = gettaskLineName(element[i-1], element[i]);
+      const taskLineName = getTaskLineName(element[i-1], element[i]);
       cycleEdges.push(taskLineName);
     }
   });
@@ -60,7 +60,7 @@ export const getAllCycleDAG = (nodes: string[], sourceAdj) => {
 
 export const getAllTaskLine = (taskListJson) => {
 
-  const taskLineList : any[] = [];
+  const taskLineList : string[][] = [];
   
   Object.keys(taskListJson).forEach(taskLine => {
     taskListJson[taskLine].forEach(element => {
@@ -69,7 +69,7 @@ export const getAllTaskLine = (taskListJson) => {
   });
 
   // source adjacency list
-  const sourceAdj : any = {}; 
+  const sourceAdj : IAdjacency = {}; 
   taskLineList.forEach(edge => {
     const [source, target] = edge;
     if(sourceAdj[source] == null) {
@@ -84,7 +84,7 @@ export const getAllTaskLine = (taskListJson) => {
   };
 };
 
-export const gettaskLineName = (sourceId, targetId) => {
+export const getTaskLineName = (sourceId: string, targetId: string) => {
   return `taskLine-${sourceId}-${targetId}`;
 };
 
