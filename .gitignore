@@ -3,6 +3,9 @@
 __pycache__
 *.pyc
 
+/data
+logs
+
 /blueprint-templates
 
 # dependencies
