@@ -253,6 +253,13 @@ install-web-server: ## graldew install backend-server dependencies
 install: install-backend-server install-web-server ## install all dependencies
 	echo 'Finished'
 
+
+.PHONY: build
+build: ## build apitable all services
+	export TAG=latest ;\
+	export EDITION=apitable;\
+	docker buildx bake -f docker-bake.hcl init-db backend-server web-server room-server socket-server
+
 ### help
 .PHONY: search
 search:
