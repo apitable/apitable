@@ -54,8 +54,9 @@ export const ImgBaseUploader: React.FC<IImgBaseUploader> = (props) => {
   };
 
   const uploadFile = (formData: FormData) => {
+    const file = formData.get('file');
     return uploadAttachToS3({
-      file: formData.get('file'), fileType: UploadType.CoverImage
+      file: file as File, fileType: UploadType.CoverImage
     }).then(res => {
       const { success, data } = res.data;
       if (success) {
@@ -92,9 +93,9 @@ export const ImgBaseUploader: React.FC<IImgBaseUploader> = (props) => {
           })}>
             {
               imgUrl ? <span style={{ width: '100%', height: '100%', objectFit: 'cover' }}>
-                <Image src={imgUrl} alt="banner" width={210} height={70}/>
+                <Image src={imgUrl} alt='banner' width={210} height={70} />
               </span>
-                : <Image src={EmptyState} width={106} height={80}/>
+                : <Image src={EmptyState} width={106} height={80} />
             }
           </div>
         }

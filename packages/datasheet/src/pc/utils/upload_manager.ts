@@ -376,7 +376,7 @@ export class UploadManager {
       const request = async(nvcVal?: string) => {
         nvcVal && formData.append('data', nvcVal);
         const res = await uploadAttachToS3({
-          file: formData.get('file'),
+          file: formData.get('file') as File,
           fileType: UploadType.DstAttachment,
           data: nvcVal,
           nodeId: (formData.get('nodeId') as string) || '',

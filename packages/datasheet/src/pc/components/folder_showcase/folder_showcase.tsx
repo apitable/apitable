@@ -277,7 +277,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
       return;
     }
     uploadAttachToS3({
-      file: formData.get('file'), fileType: 3, nodeId: folderId
+      file: formData.get('file') as File, fileType: 3, nodeId: folderId
     }).then(res => {
       const { success, data } = res.data;
       if (success) {
@@ -340,15 +340,15 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
         <div style={{ display: 'flex' }}>
           <div><Skeleton image style={{ width: 240, height: 240 }} /></div>
           <div style={{ flexGrow: 1, marginLeft: 8 }}>
-            <Skeleton width="38%" />
+            <Skeleton width='38%' />
             <Skeleton count={2} />
-            <Skeleton width="61%" />
+            <Skeleton width='61%' />
           </div>
         </div>
         <div style={{ marginTop: 80 }}>
-          <Skeleton width="38%" />
+          <Skeleton width='38%' />
           <Skeleton count={2} />
-          <Skeleton width="61%" />
+          <Skeleton width='61%' />
         </div>
       </div>
     );
@@ -378,12 +378,12 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
             <Spin spinning={bannerLoading}>
               <div className={styles.folderShowcaseBanner}>
                 <div className={styles.banner}>
-                  <Image src={bannerImgUrl} alt="banner" layout={'fill'} />
+                  <Image src={bannerImgUrl} alt='banner' layout={'fill'} />
                   {
                     permissions.descriptionEditable &&
                     (
                       <div className={styles.editBtn}>
-                        <ButtonPlus.Icon size="small" onClick={() => toggleIsBannerModal()} icon={<BannerEditIcon />} />
+                        <ButtonPlus.Icon size='small' onClick={() => toggleIsBannerModal()} icon={<BannerEditIcon />} />
                       </div>
                     )
                   }
@@ -418,7 +418,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
                 >
                   {
                     memoDesc ?
-                      <SlateEditor className={styles.onlyReadEditor} sectionSpacing="small" value={memoDesc} readOnly /> :
+                      <SlateEditor className={styles.onlyReadEditor} sectionSpacing='small' value={memoDesc} readOnly /> :
                       <span className={styles.defaultText}>{t(Strings.edit_node_desc)}</span>
                   }
                   {/* {showcaseData.description ? htmlParser(JSON.parse(showcaseData.description).data) : '暂无描述'} */}
@@ -430,10 +430,10 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
                   (
                     <Button
                       className={styles.shareBtn}
-                      shape="round"
-                      size="small"
+                      shape='round'
+                      size='small'
                       onClick={() => setShareNodeId(nodeInfo.id)}
-                      prefixIcon={<ShareIcon fill="currentColor" />}
+                      prefixIcon={<ShareIcon fill='currentColor' />}
                     >
                       {t(Strings.share)}
                     </Button>
@@ -453,15 +453,15 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
                 {
                   (permissions.nodeAssignable || permissions.templateCreatable) &&
                   (
-                    <ContextMenuTrigger id="folder_showcase_moreBtn" ref={moreRef}>
+                    <ContextMenuTrigger id='folder_showcase_moreBtn' ref={moreRef}>
                       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
                         <Button
                           id={FOLDER_SHOWCASE_ID.BTN_MORE}
                           className={styles.settingBtn}
-                          size="small"
+                          size='small'
                           onClick={openMoreContextMenu}
-                          shape="round"
-                          prefixIcon={<MoreIcon fill="currentColor" />}
+                          shape='round'
+                          prefixIcon={<MoreIcon fill='currentColor' />}
                         />
                       </ComponentDisplay>
                       {/* <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
@@ -482,7 +482,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
             >
               {
                 memoDesc ?
-                  <SlateEditor sectionSpacing="small" value={memoDesc} readOnly /> :
+                  <SlateEditor sectionSpacing='small' value={memoDesc} readOnly /> :
                   <span className={styles.defaultText}>{t(Strings.edit_node_desc)}</span>
               }
               {/* {showcaseData.description ? htmlParser(JSON.parse(showcaseData.description).data) : '暂无描述'} */}
@@ -520,7 +520,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
         confirm={data => uploadConfirm(data)}
         initPreview={
           <span style={{ width: '100%', height: '100%', objectFit: 'cover' }} className={styles.imgWrapper}>
-            <Image src={bannerImgUrl} alt="banner" layout={'fill'} />
+            <Image src={bannerImgUrl} alt='banner' layout={'fill'} />
           </span>
         }
         customTips={customTips}
