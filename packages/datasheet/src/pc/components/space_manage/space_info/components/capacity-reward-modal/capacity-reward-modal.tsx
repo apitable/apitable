@@ -110,20 +110,22 @@ export const CapacityRewardModal: FC<ICapacityRewardModalProps> = ({ onCancel })
   }, [currTab, getCapacityList, pageNo]);
 
   const TableEl = (
-    <Table
-      columns={columns}
-      dataSource={list}
-      scroll={{ y: 320 }}
-      pagination={{
-        current: pageNo,
-        total: total,
-        defaultPageSize: ConfigConstant.CAPACITY_REWARD_LIST_PAGE_SIZE,
-        onChange(page) {
-          setPageNo(page);
-        },
-        showSizeChanger: false,
-      }}
-    />
+    <div className={styles.rewardTable}>
+      <Table
+        columns={columns}
+        dataSource={list}
+        scroll={{ y: 320 }}
+        pagination={{
+          current: pageNo,
+          total: total,
+          defaultPageSize: ConfigConstant.CAPACITY_REWARD_LIST_PAGE_SIZE,
+          onChange(page) {
+            setPageNo(page);
+          },
+          showSizeChanger: false,
+        }}
+      />
+    </div>
   );
 
   return (
