@@ -510,7 +510,7 @@ export const FIELD_PERMISSION_STATUS = 'datasheet/:dstId/field/:fieldId/permissi
 export const FIELD_PERMISSION_UPDATE_SETTING = 'datasheet/:dstId/field/:fieldId/updateRoleSetting';
 export const GET_FIELD_PERMISSION_MAP = 'datasheet/field/permission';
 export const BATCH_EDIT_PERMISSION_ROLE = 'datasheet/:dstId/field/:fieldId/batchEditRole';
-export const BATCH_DELETE_PERMISSION_ROLE = 'datasheet/:dstId/field/:fieldId/batchEditRole';
+export const BATCH_DELETE_PERMISSION_ROLE = 'datasheet/:dstId/field/:fieldId/batchDeleteRole';
 // ================ 列权限 相关 end ======================
 
 // ================ mirror 相关 start ======================
