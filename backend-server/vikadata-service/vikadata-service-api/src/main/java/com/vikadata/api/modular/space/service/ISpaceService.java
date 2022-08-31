@@ -3,6 +3,7 @@ package com.vikadata.api.modular.space.service;
 import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.vikadata.api.modular.space.model.SpaceCapacityUsedInfo;
 import org.apache.ibatis.annotations.Param;
 
 import com.vikadata.api.lang.SpaceGlobalFeature;
@@ -142,6 +143,17 @@ public interface ISpaceService extends IService<SpaceEntity> {
      * @date 2019/11/29
      */
     SpaceInfoVO getSpaceInfo(String spaceId);
+
+    /**
+     * get space capacity used sizes information
+     *
+     * @param spaceId          space ID
+     * @param capacityUsedSize space capacity used sizes
+     * @return SpaceCapacityUsedInfo space capacity used information
+     * @author liuzijing
+     * @date 2022/8/31
+     */
+    SpaceCapacityUsedInfo getSpaceCapacityUsedInfo(String spaceId, Long capacityUsedSize);
 
     /**
      * 获取空间的用量信息

@@ -1,0 +1,17 @@
+services:
+  backend-server:
+    image: amazoncorretto:8
+    restart: always
+    working_dir: /app
+    environment:
+      - HOME=/app
+    volumes:
+      - ${PWD}/backend-server:/app
+  web-server:
+    image: node:16.15.0-alpine
+    restart: always
+    working_dir: /app
+    environment:
+      - HOME=/app
+    volumes:
+      - ${PWD}:/app

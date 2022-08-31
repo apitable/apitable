@@ -168,7 +168,7 @@ export class RestService {
     if (response.data?.isAllowOverLimit) {
       return false;
     }
-    return response.data.subscriptionCapacity - response.data.usedCapacity < 0;
+    return response.data.totalCapacity - response.data.usedCapacity < 0;
   }
 
   async checkSpacePermission(headers: IAuthHeader): Promise<boolean> {

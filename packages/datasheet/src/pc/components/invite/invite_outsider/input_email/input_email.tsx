@@ -10,6 +10,7 @@ import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
 import WarnIcon from 'static/icon/common/common_tip_default_small.svg';
 import SuccessIcon from 'static/icon/common/common_tip_success_small.svg';
 import styles from './style.module.less';
+import { InviteAlert } from '../components/invite-alert';
 
 interface IInputEmailProps {
   cancel: () => void;
@@ -157,6 +158,9 @@ export const InputEmail = forwardRef(({
   };
   return (
     <div className={styles.inputEmail}>
+      <div className={styles.inviteAlertWrapper}>
+        <InviteAlert />
+      </div>
       {
         isInvited ?
           (

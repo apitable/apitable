@@ -195,7 +195,7 @@ export const FieldCode: React.FC<IFieldCode> = props => {
   const getExampleConfig = () => {
     const commonContext = {
       apiToken: token,
-      githubIcon: githubIcon,
+      githubIcon: githubIcon.src,
       datasheetId,
       res: '',
       tips: '',
@@ -270,7 +270,7 @@ export const FieldCode: React.FC<IFieldCode> = props => {
       <ButtonGroup className={styles.radioGroup}>
         <LinkButton
           underline={false}
-          component="button"
+          component='button'
           className={classNames({ [styles.radioActive]: CodeLanguage.Curl === language })}
           onClick={() => setLanguage(CodeLanguage.Curl)}
         >
@@ -278,7 +278,7 @@ export const FieldCode: React.FC<IFieldCode> = props => {
         </LinkButton>
         <LinkButton
           underline={false}
-          component="button"
+          component='button'
           className={classNames({ [styles.radioActive]: CodeLanguage.Js === language })}
           onClick={() => setLanguage(CodeLanguage.Js)}
         >
@@ -286,7 +286,7 @@ export const FieldCode: React.FC<IFieldCode> = props => {
         </LinkButton>
         <LinkButton
           underline={false}
-          component="button"
+          component='button'
           className={classNames({ [styles.radioActive]: CodeLanguage.Python === language })}
           onClick={() => setLanguage(CodeLanguage.Python)}
         >
@@ -294,7 +294,7 @@ export const FieldCode: React.FC<IFieldCode> = props => {
         </LinkButton>
         <LinkButton
           underline={false}
-          component="button"
+          component='button'
           onClick={() => {
             window.open(MORE_SDK_URL, '_blank');
           }}

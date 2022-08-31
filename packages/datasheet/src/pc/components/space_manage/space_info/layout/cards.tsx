@@ -23,6 +23,7 @@ interface ICardProps {
 export const useCards = (props: ILayoutProps) => {
   const { showContextMenu, handleDelSpace, level, spaceId, spaceInfo, spaceFeatures, subscription, onUpgrade, isMobile } = props;
   const apiData = useApi({ spaceInfo, subscription });
+  const capacityData = useCapacity({ spaceInfo, subscription });
   const fileData = useFile({ spaceInfo, subscription });
   const recordData = useRecord({ spaceInfo, subscription });
   const memberData = useMember({ spaceInfo, subscription });
@@ -50,7 +51,6 @@ export const useCards = (props: ILayoutProps) => {
 
   // 是 第三方空间站 或 通过第三方浏览器打开
   const isSocial = isSocialEnabled || inSocialApp() || isSocialFeiShu();
-  const capacityData = useCapacity({ spaceInfo, subscription }, isSocial);
 
   return useMemo(() => { 
     return {
@@ -107,26 +107,48 @@ export const useCards = (props: ILayoutProps) => {
 
       CapacityCard: (props: ICardProps) => {
         // 如果是第三方环境，使用 Card（不带赠送空间信息），否则使用 CapacityWithRewardCard（带赠送信息）
-        const Component = isSocial ? Card : CapacityWithRewardCard;
         return (
-          <Component
-            {...props}
-            {...capacityData}
-            isMobile={isMobile}
-            usedTextIsFloat
-            shape="circle"
-            trailColor={trailColor}
-            strokeColor={strokeColor}
-            title={t(Strings.space_capacity)}
-            titleTip={t(Strings.member_data_desc_of_appendix)}
-            titleLink={(basicCert || isSocial || isMobileApp() || isMobile || isPrivateDeployment()) ? undefined : {
-              text: t(Strings.attachment_capacity_details_entry),
-              onClick: () => {
-                expandCapacityRewardModal();
-              }
-            }}
-          />
-        );
+          isSocial
+            ? 
+            <Card
+              {...props}
+              totalText={capacityData.allTotalText}
+              remainText={capacityData.allRemainText}
+              usedText={capacityData.allUsedText}
+              usedPercent={capacityData.allUsedPercent}
+              remainPercent={capacityData.allRemainPercent}
+              isMobile={isMobile}
+              usedTextIsFloat
+              shape="circle"
+              trailColor={trailColor}
+              strokeColor={strokeColor}
+              title={t(Strings.space_capacity)}
+              titleTip={t(Strings.member_data_desc_of_appendix)}
+              titleLink={(basicCert || isSocial || isMobileApp() || isMobile || isPrivateDeployment()) ? undefined : {
+                text: t(Strings.attachment_capacity_details_entry),
+                onClick: () => {
+                  expandCapacityRewardModal();
+                }
+              }}
+            />
+            :
+            <CapacityWithRewardCard
+              {...props}
+              {...capacityData}
+              isMobile={isMobile}
+              usedTextIsFloat
+              trailColor={trailColor}
+              strokeColor={strokeColor}
+              title={t(Strings.space_capacity)}
+              titleTip={t(Strings.member_data_desc_of_appendix)}
+              titleLink={(basicCert || isSocial || isMobileApp() || isMobile || isPrivateDeployment()) ? undefined : {
+                text: t(Strings.attachment_capacity_details_entry),
+                onClick: () => {
+                  expandCapacityRewardModal();
+                }
+              }}
+            />
+        )
       },
 
       FileCard: (props: ICardProps) => <Card

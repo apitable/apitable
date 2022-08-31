@@ -241,13 +241,14 @@ const Popover: FC<IPopoverOptions> = (options) => {
   };
   const positionOnTopCenter = (elementPosition: Position): IPositionInfo => {
     const pageSize = getFullPageSize();
-    const popoverMargin = padding + 10;
+    const { width } = getSize(targetNode);
     const popoverInfo = {
       top: '',
-      left: `${elementPosition.bottom + popoverMargin + offsetX}px`,
+      left: `${elementPosition.left + (width / 2) + offsetX}px`,
       right: '',
       bottom: `${pageSize.height - elementPosition.top - offsetY}px`,
       tipNodeClasses: ['bottom', 'position-center'],
+      transform: 'translateX(-50%)'
     };
     return popoverInfo;
   };

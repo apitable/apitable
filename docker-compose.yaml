@@ -204,8 +204,8 @@ services:
       - "9000"
     volumes:
       - /etc/localtime:/etc/localtime
-      - ${PWD}/minio/data:/data
-      - ${PWD}/minio/config:/root/.minio
+      - ${PWD}/data/minio/data:/data
+      - ${PWD}/data/minio/config:/root/.minio
     environment:
       - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
       - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
@@ -221,7 +221,7 @@ services:
       - "6379"
     volumes:
       - /etc/localtime:/etc/localtime
-      - ${PWD}/redis/data:/data
+      - ${PWD}/data/redis/data:/data
     #  - ${PWD}/redis/redis.conf:/etc/redis.conf
     environment:
       - TZ=Asia/Singapore
@@ -233,10 +233,8 @@ services:
     restart: always
     volumes:
     - /etc/localtime:/etc/localtime
-    - ${PWD}/mysql/data:/var/lib/mysql
-    #   - ${PWD}/mysql/config:/etc/mysql/conf.d
-    #   - ${PWD}/mysql/my.cnf:/etc/mysql/my.cnf
-    - ${PWD}/mysql/initdb:/docker-entrypoint-initdb.d
+    - ${PWD}/data/mysql/data:/var/lib/mysql
+    - ${PWD}/data/mysql/initdb:/docker-entrypoint-initdb.d
     #ports:
     #  - 3306:3306
     expose:
@@ -255,7 +253,7 @@ services:
   rabbit-mq:
     image: ${RABBIT_MQ_IMAGE}
     volumes:
-      - ${PWD}/rabbit-mq:/var/lib/rabbitmq
+      - ${PWD}/data/rabbit-mq:/var/lib/rabbitmq
     expose:
       - "5671"
       - "5672"

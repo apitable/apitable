@@ -8,7 +8,8 @@ import PullDownIcon from 'static/icon/datasheet/rightclick/rightclick_icon_retra
 import classNames from 'classnames';
 import styles from './style.module.less';
 import HelpIcon from 'static/icon/common/common_icon_information.svg';
-import { Tooltip, Modal, IModalProps } from 'pc/components/common';
+import { Tooltip, IModalProps } from 'pc/components/common';
+import { Modal } from 'pc/components/common/modal/modal';
 import { colorVars } from '@vikadata/components';
 
 const { Panel } = Collapse;

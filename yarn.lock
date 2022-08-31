@@ -12865,6 +12865,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/minimatch@npm:^3.0.3":
+  version: 3.0.5
+  resolution: "@types/minimatch@npm:3.0.5"
+  checksum: c41d136f67231c3131cf1d4ca0b06687f4a322918a3a5adddc87ce90ed9dbd175a3610adee36b106ae68c0b92c637c35e02b58c8a56c424f71d30993ea220b92
+  languageName: node
+  linkType: hard
+
 "@types/minimist@npm:^1.2.0":
   version: 1.2.1
   resolution: "@types/minimist@npm:1.2.1"
@@ -14024,7 +14031,7 @@ __metadata:
     ts-jest: 26.4.4
     tsc-alias: ^1.6.11
     tsconfig-paths-webpack-plugin: ^3.5.1
-    typescript: 4.6.4
+    typescript: ^4.8.2
   peerDependencies:
     react: ^17.0.2
     react-dom: ^17.0.0
@@ -14068,7 +14075,7 @@ __metadata:
     ts-node: ^8.6.2
     ts-toolbelt: ^9.6.0
     tsc-alias: ^1.6.11
-    typescript: 4.6.4
+    typescript: ^4.8.2
     urlcat: ^2.0.4
   languageName: unknown
   linkType: soft
@@ -14087,7 +14094,7 @@ __metadata:
     cypress-wait-until: ^1.7.1
     request: ^2.88.2
     ts-node: ^10.2.0
-    typescript: 4.6.4
+    typescript: ^4.8.2
     urlcat: ^2.0.4
   languageName: unknown
   linkType: soft
@@ -14281,7 +14288,7 @@ __metadata:
     stylelint: 13.9.0
     svgo-loader: 3.0.0
     swr: ^1.3.0
-    typescript: 4.6.4
+    typescript: ^4.8.2
     use-long-press: ^1.2.0
     web-vitals: ^1.0.1
     webkit-line-clamp: ^1.2.2
@@ -14321,7 +14328,7 @@ __metadata:
     "@types/styled-components": ^5.1.4
     eslint: ^7.21.0
     styled-components: ">=5.2.1"
-    typescript: 4.6.4
+    typescript: ^4.8.2
   peerDependencies:
     react: 17.0.2
   languageName: unknown
@@ -14476,7 +14483,7 @@ __metadata:
     ts-node: ^8.6.2
     tsconfig-paths: ^3.9.0
     typeorm: ^0.2.38
-    typescript: 4.6.4
+    typescript: ^4.8.2
     winston: ^3.3.3
     winston-daily-rotate-file: ^4.5.5
     zipkin: ^0.22.0
@@ -14555,7 +14562,7 @@ __metadata:
     ts-loader: ^6.2.1
     ts-node: ^8.6.2
     tsconfig-paths: ^3.9.0
-    typescript: ^4.7.4
+    typescript: ^4.8.2
   bin:
     websocket: dist/main.js
   languageName: unknown
@@ -14610,7 +14617,7 @@ __metadata:
     tsc-alias: ^1.6.11
     typedoc: 0.21.9
     typedoc-plugin-markdown: 3.10.4
-    typescript: 4.6.4
+    typescript: ^4.8.2
     typescript-plugin-styled-components: ^2.0.0
   peerDependencies:
     react: ^17.0.2
@@ -15907,6 +15914,13 @@ __metadata:
   version: 2.1.0
   resolution: "array-differ@npm:2.1.0"
   checksum: b6dd516de6afbba5843080d149152078a5d58c9d5a417ab406ce06eab36aad92d6776ddb5462af4bd0e26820903ca799a8fa6f663ebfec2be9106247faa01a52
+  languageName: node
+  linkType: hard
+
+"array-differ@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "array-differ@npm:3.0.0"
+  checksum: 117edd9df5c1530bd116c6e8eea891d4bd02850fd89b1b36e532b6540e47ca620a373b81feca1c62d1395d9ae601516ba538abe5e8172d41091da2c546b05fb7
   languageName: node
   linkType: hard
 
@@ -33684,6 +33698,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"mri@npm:^1.1.5":
+  version: 1.2.0
+  resolution: "mri@npm:1.2.0"
+  checksum: 83f515abbcff60150873e424894a2f65d68037e5a7fcde8a9e2b285ee9c13ac581b63cfc1e6826c4732de3aeb84902f7c1e16b7aff46cd3f897a0f757a894e85
+  languageName: node
+  linkType: hard
+
 "mrmime@npm:^1.0.0":
   version: 1.0.1
   resolution: "mrmime@npm:1.0.1"
@@ -33744,6 +33765,19 @@ fsevents@^1.2.7:
     arrify: ^1.0.1
     minimatch: ^3.0.4
   checksum: 0929c225a8f690e6f3d3aab724c3dab21136cccb5174844104903826ef93740e0a2965062b4943ab1894b66392592f18fca17d3294614a74de0443dfe4a24a03
+  languageName: node
+  linkType: hard
+
+"multimatch@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "multimatch@npm:4.0.0"
+  dependencies:
+    "@types/minimatch": ^3.0.3
+    array-differ: ^3.0.0
+    array-union: ^2.1.0
+    arrify: ^2.0.1
+    minimatch: ^3.0.4
+  checksum: bdb6a98dad4e919d9a1a2a0db872f44fa2337315f2fd5827d91ae005cf22f4425782bdfa97c10b80d567f0cb3c226c31f4e85f8f6a4a4be4facf9af0de1bb0c2
   languageName: node
   linkType: hard
 
@@ -37128,6 +37162,24 @@ fsevents@^1.2.7:
   version: 1.0.3
   resolution: "pretty-hrtime@npm:1.0.3"
   checksum: bae0e6832fe13c3de43d1a3d43df52bf6090499d74dc65a17f5552cb1a94f1f8019a23284ddf988c3c408a09678d743901e1d8f5b7a71bec31eeeac445bef371
+  languageName: node
+  linkType: hard
+
+"pretty-quick@npm:^3.1.3":
+  version: 3.1.3
+  resolution: "pretty-quick@npm:3.1.3"
+  dependencies:
+    chalk: ^3.0.0
+    execa: ^4.0.0
+    find-up: ^4.1.0
+    ignore: ^5.1.4
+    mri: ^1.1.5
+    multimatch: ^4.0.0
+  peerDependencies:
+    prettier: ">=2.0.0"
+  bin:
+    pretty-quick: bin/pretty-quick.js
+  checksum: 28bdc32571e6308e049497f58a9245f272275973782b6ed7fbcf98937101cc605a81b3ab48629dba4687b7e86c87a3733febacdc0746ca4da5d1c80a0b88cf45
   languageName: node
   linkType: hard
 
@@ -41280,11 +41332,12 @@ resolve@^2.0.0-next.3:
     lerna: ^3.22.1
     lint-staged: 13.0.3
     lodash: ^4.17.20
+    pretty-quick: ^3.1.3
     quicktype: ^15.0.212
     svgo: ^2.3.0
     ts-node: ^8.6.2
     ts-pnp: 1.1.2
-    typescript: 4.6.4
+    typescript: ^4.8.2
   bin:
     root: packages/room-server/dist/main.js
   languageName: unknown
@@ -45498,7 +45551,7 @@ typescript@4.2.3:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.7.4":
+"typescript@npm:^4.8.2":
   version: 4.8.2
   resolution: "typescript@npm:4.8.2"
   bin:
@@ -45528,7 +45581,7 @@ typescript@4.2.3:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.7.4#~builtin<compat/typescript>":
+"typescript@patch:typescript@^4.8.2#~builtin<compat/typescript>":
   version: 4.8.2
   resolution: "typescript@patch:typescript@npm%3A4.8.2#~builtin<compat/typescript>::version=4.8.2&hash=7ad353"
   bin:

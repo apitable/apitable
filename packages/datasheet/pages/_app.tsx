@@ -95,7 +95,12 @@ enum LoadingStatus {
 
 function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppProps) {
   const router = useRouter();
-  const [loading, setLoading] = useState(LoadingStatus.None);
+  const [loading, setLoading] = useState(() => {
+    if (router.asPath.includes('widget-stage')) {
+      return LoadingStatus.Complete;
+    }
+    return LoadingStatus.None;
+  });
   const navigationTo = useNavigation();
 
   useEffect(() => {

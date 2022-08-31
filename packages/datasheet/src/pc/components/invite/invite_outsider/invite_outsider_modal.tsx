@@ -3,6 +3,7 @@ import { Api, ConfigConstant, Events, getCustomConfig, Player, Strings, t } from
 import { useMount } from 'ahooks';
 import { Tabs } from 'antd';
 import classNames from 'classnames';
+import { getEnvVars } from 'get_env';
 import { isObject } from 'lodash';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
@@ -34,7 +35,7 @@ export const InviteOutsiderTabs: FC<IInviteOutsiderTabsProps> = props => {
   const [secondVerify, setSecondVerify] = useState<null | string>(null);
   const isAdmin = useSelector(state => state.user.info?.isAdmin);
   const isOrgIsolated = useSelector(state => state.space.spaceFeatures?.orgIsolated);
-
+  const env = getEnvVars();
   useMount(() => {
     Player.doTrigger(Events.invite_entrance_modal_shown);
   });
@@ -57,18 +58,18 @@ export const InviteOutsiderTabs: FC<IInviteOutsiderTabsProps> = props => {
   const innerLabel = showLabelInInviteModal ? '(' + t(Strings.private_internal_person_only) + ')' : '';
   const outerLabel = showLabelInInviteModal ? '(' + t(Strings.private_external_person_only) + ')' : '';
   return (
-    <Tabs defaultActiveKey="inviteViaLink" className={classNames({ [styles.showLabel]: showLabelInInviteModal })}>
-      <TabPane tab={t(Strings.link_invite) + innerLabel} key="inviteViaLink">
+    <Tabs defaultActiveKey='inviteViaLink' className={classNames({ [styles.showLabel]: showLabelInInviteModal })}>
+      <TabPane tab={t(Strings.link_invite) + innerLabel} key='inviteViaLink'>
         <LinkInvite shareId={shareId} />
       </TabPane>
       {
         !emailInvitationDisable && (isAdmin || !isOrgIsolated) &&
         <>
-          <TabPane tab={t(Strings.email_invite) + outerLabel} key="emailOfTab">
+          <TabPane tab={t(Strings.email_invite) + outerLabel} key='emailOfTab'>
             <InputEmail cancel={cancelModal} setMemberInvited={setMemberInvited} shareId={shareId} secondVerify={secondVerify}
               setSecondVerify={setSecondVerify} />
           </TabPane>
-          {isPC && !shareId && <TabPane tab={t(Strings.batch_import) + outerLabel} key="fileOfTab">
+          {isPC && !shareId && !env.HIDDEN_BATCH_IMPORT_USER && <TabPane tab={t(Strings.batch_import) + outerLabel} key='fileOfTab'>
             <ImportFile closeModal={cancelModal} setMemberInvited={setMemberInvited} secondVerify={secondVerify} setSecondVerify={setSecondVerify} />
           </TabPane>}
         </>
@@ -93,7 +94,7 @@ export const expandInviteModal = (data?: { resUpdate?: () => void, shareId?: str
     }
     const wx = (window as any).wx;
     const spaceId = state.space.activeId;
-    if(isObject(wx) && spaceId) {
+    if (isObject(wx) && spaceId) {
       // https://developer.work.weixin.qq.com/document/path/94516
       getWecomAgentConfig(spaceId, () => {
         (wx as any).invoke('selectPrivilegedContact', {

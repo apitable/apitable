@@ -19,9 +19,15 @@ interface ICardProps {
   title: string;
   titleTip: string;
 
-  total: number;
-  used: number;
-  remain: number;
+  allUsed: number;
+  allUsedText: string;
+  allTotal: number;
+  allTotalText: string;
+  allRemain: number;
+  allUsedPercent: number;
+  allRemainPercent: number;
+  allRemainText: string;
+
   totalText: string;
   remainText: string;
   usedText: string;
@@ -38,11 +44,8 @@ interface ICardProps {
   level?: ISpaceLevelType;
   isMobile?: boolean;
 
-  giftUsed: number,
   giftUsedText: string,
-  giftTotal: number,
   giftTotalText: string,
-  giftRemain: number,
   giftUsedPercent: number,
   giftRemainPercent: number,
   giftRemainText: string
@@ -51,6 +54,8 @@ interface ICardProps {
 export const CapacityWithRewardCard: FC<ICardProps> = (props) => {
   const {
     title,
+
+    allTotalText,
 
     usedPercent,
     usedText,
@@ -198,7 +203,7 @@ export const CapacityWithRewardCard: FC<ICardProps> = (props) => {
         {
           !hiddenUnLimitedText && <>
             <span className={classNames(!unLimited && styles.totalNum, { [styles.unlimited]: unLimited })}>
-              /{unLimited ? t(Strings.unlimited) : totalText}
+              /{unLimited ? t(Strings.unlimited) : allTotalText}
             </span>
             <span className={styles.totalUnit}>{unit}</span>
             {valueIntro && <span className={styles.numIntro}>({valueIntro})</span>}
