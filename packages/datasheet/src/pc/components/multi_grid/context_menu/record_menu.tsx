@@ -39,6 +39,7 @@ import { copy2clipBoard } from '../../../utils/dom';
 import { flatContextData, isNumberKey, printableKey } from 'pc/utils';
 import { IInputEditor, InputMenuItem } from './input_menu_item';
 import { isInteger } from 'lodash';
+import { isWindowsOS } from 'pc/utils/os';
 
 export const GRID_RECORD_MENU = 'GRID_RECORD_MENU';
 
@@ -416,9 +417,9 @@ export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
 
   return (
     <ContextMenu
-      menuId={menuId || GRID_RECORD_MENU}
+      menuId={menuId}
       overlay={contextMenuData}
-      width={280}
+      width={isWindowsOS() ? 320 : 280}
     />
   );
 };
