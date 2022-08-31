@@ -4,6 +4,16 @@ import { getPercent } from '../utils';
 import { IHooksParams, IHooksResult } from '../interface';
 
 interface IHooksResultWithGift extends IHooksResult {
+
+  allUsed: number;
+  allUsedText: string;
+  allTotal: number;
+  allTotalText: string;
+  allRemain: number;
+  allUsedPercent: number;
+  allRemainPercent: number;
+  allRemainText: string;
+
   giftUsed: number;
   giftUsedText: string;
   giftTotal: number;
@@ -14,25 +24,36 @@ interface IHooksResultWithGift extends IHooksResult {
   giftRemainText: string;
 }
 
-type IUseCapacity = (
-  hooksParams: IHooksParams,
-  // Return total capacity when true, and return subscription and gift capacity when false
-  isTotal: boolean
-) => IHooksResultWithGift;
+type IUseCapacity = (hooksParams: IHooksParams) => IHooksResultWithGift;
 
-export const useCapacity: IUseCapacity = ({ subscription, spaceInfo }, isTotal) => {
+export const useCapacity: IUseCapacity = ({ subscription, spaceInfo }) => {
 
-  const { used, total, giftUsed, giftTotal } = useMemo(() => {
+  const { allUsed, allTotal, used, total, giftUsed, giftTotal } = useMemo(() => {
+    const used = spaceInfo?.capacityUsedSizes || 0;
     return {
-      used: spaceInfo?.capacityUsedSizes || 0,
-      total: (isTotal ? subscription?.maxCapacitySizeInBytes : subscription?.subscriptionCapacity) || 0,
+      used, // 订阅已用
+      total: subscription?.subscriptionCapacity || 0, // 订阅总容量
+
       giftUsed: spaceInfo?.giftCapacityUsedSizes || 0,
       giftTotal: subscription?.unExpireGiftCapacity || 0,
+
+      allUsed: used,
+      allTotal: subscription?.maxCapacitySizeInBytes || 0,
     };
-  }, [subscription, spaceInfo, isTotal]);
+  }, [subscription, spaceInfo]);
   return useMemo(() => {
-    
     // 总容量
+    const allRemain = allTotal - allUsed;
+    const allUsedArr = byteMGArr(allUsed);
+    const allUsedText = `${allUsedArr[0]}${allUsedArr[1]}`;
+    const allTotalArr = byteMGArr(allTotal);
+    const allTotalText = `${allTotalArr[0]}${allTotalArr[1]}`;
+    const allUsedPercent = decimalCeil(getPercent((allUsedArr[2]) / (allTotalArr[2])) * 100);
+    const allRemainArr = byteMGArr(allRemain, false);
+    const allRemainText = `${allRemainArr[0]}${allRemainArr[1]}`;
+    const allRemainPercent = 100 - allUsedPercent;
+
+    // 订阅容量
     const remain = total - used;
     const usedArr = byteMGArr(used);
     const usedText = `${usedArr[0]}${usedArr[1]}`;
@@ -55,8 +76,18 @@ export const useCapacity: IUseCapacity = ({ subscription, spaceInfo }, isTotal) 
     const giftRemainText = `${giftRemainArr[0]}${giftRemainArr[1]}`;
     const giftRemainPercent = 100 - giftUsedPercent;
 
-    if (total === -1) {
+    if (allTotal === -1) {
       return {
+
+        allUsed,
+        allUsedText,
+        allTotal,
+        allTotalText: '-1',
+        allRemain,
+        allUsedPercent: allUsed ? 5 : 0,
+        allRemainPercent: allUsed ? 95 : 100,
+        allRemainText: t(Strings.unlimited),
+
         used,
         usedText,
         total,
@@ -77,6 +108,15 @@ export const useCapacity: IUseCapacity = ({ subscription, spaceInfo }, isTotal) 
       };
     }
     return {
+      allUsed,
+      allUsedText,
+      allTotal,
+      allTotalText,
+      allRemain,
+      allUsedPercent,
+      allRemainPercent,
+      allRemainText,
+
       used,
       usedText,
       total,
@@ -95,5 +135,5 @@ export const useCapacity: IUseCapacity = ({ subscription, spaceInfo }, isTotal) 
       giftRemainPercent,
       giftRemainText,
     };
-  }, [total, used, giftTotal, giftUsed]);
+  }, [total, used, giftTotal, giftUsed, allUsed, allTotal]);
 };
