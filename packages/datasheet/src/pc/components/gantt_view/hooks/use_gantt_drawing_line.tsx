@@ -1,4 +1,4 @@
-import { useContext, useRef, useState, useEffect } from 'react';
+import { useContext, useRef, useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { KonvaGridContext } from 'pc/components/konva_grid';
 import { resourceService } from 'pc/resource_service';
@@ -58,7 +58,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
   const circle2Ref = useRef<any>();
   const taskBlock = useRef<any>();
 
-  const setLinePointStyle = (radius: number, color: string) => {
+  const setLinePointStyle = useCallback((radius: number, color: string) => {
     if(isTaskLineDrawing || !circle1Ref.current || !circle2Ref.current) {
       return;
     }
@@ -67,13 +67,13 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
     circle2Ref.current.fill(color);
     circle2Ref.current.radius(radius);
     circle2Ref.current.strokeWidth(radius);
-  };
+  }, [isTaskLineDrawing]);
   
   useEffect(() => {
     if(!isTaskLineDrawing) {
       setLinePointStyle(2, colors.blackBlue[400]);
     }
-  }, [isTaskLineDrawing, colors.blackBlue]);
+  }, [isTaskLineDrawing, colors.blackBlue, setLinePointStyle]);
 
   if(!transformerId || dragTaskId || !linkFieldId || isLocking ) {
     return {
@@ -220,7 +220,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
 
   const drawingLine = (
     <Group
-      onMouseMove={() => setLinePointStyle(3.5, colors.deepPurple[500])}
+      onMouseMove={() => setLinePointStyle(3.5, colors.borderBrand)}
       onMouseLeave={() => setLinePointStyle(2, colors.blackBlue[400])}
     >
       <Arrow

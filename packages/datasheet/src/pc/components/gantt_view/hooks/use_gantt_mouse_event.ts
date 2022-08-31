@@ -432,7 +432,7 @@ export const useGanttMouseEvent = ({
     scrollHandler.stopScroll();
     setDragTaskId(null);
     setTaskLineSetting(null);
-  }, [scrollHandler, setDragTaskId]);
+  }, [scrollHandler, setDragTaskId, setTaskLineSetting]);
 
   useEffect(() => {
     document.addEventListener('mouseup', mouseUp);

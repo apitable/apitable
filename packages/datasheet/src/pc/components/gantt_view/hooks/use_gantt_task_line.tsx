@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { KonvaGanttViewContext } from 'pc/components/gantt_view/context';
 import { GanttCoordinate, GANTT_TASK_GAP_SIZE, IScrollState } from 'pc/components/gantt_view';
-import { TaskLine } from 'pc/components/gantt_view/components/task/task_line';
+import { TaskLine } from 'pc/components/gantt_view/components/task/task_lines';
 import { PointPosition, TaskPositionYType } from '../interface';
 import { KonvaGridContext } from 'pc/components/konva_grid';
 import { useTooltip } from './use_gantt_tooltip';

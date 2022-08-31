@@ -19,7 +19,7 @@ export const useImageUpload = () => {
     const type = file.type || '';
     const isSvgOrGif = /(svg|gif)/i.test(type);
     return uploadAttachToS3({
-      file: fd.get('file'),
+      file: fd.get('file')! as File,
       nodeId: folderId || datasheetId!,
       fileType: UploadType.NodeDesc
     }).then((res) => {

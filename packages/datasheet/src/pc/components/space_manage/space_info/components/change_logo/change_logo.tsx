@@ -38,7 +38,7 @@ export const ChangeLogo = () => {
     const { customFile } = data;
     setLogoLoading(true);
     return uploadAttachToS3({
-      file: customFile,
+      file: customFile as File,
       fileType: UploadType.SpaceLogo
     }).then(res => {
       setLogoLoading(false);
