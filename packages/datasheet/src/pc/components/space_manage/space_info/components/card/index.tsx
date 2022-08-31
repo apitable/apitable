@@ -18,14 +18,13 @@ interface ICardProps {
   unit?: string;
   title: string;
   titleTip: string;
-  total: number;
-  used: number;
-  remain: number;
+
   totalText: string;
   remainText: string;
   usedText: string;
   usedPercent: number;
   remainPercent: number;
+
   titleLink?: { text: string, href?: string, onClick?: () => void };
   titleButton?: { text: string, onClick: () => void };
   valueIntro?: string;
