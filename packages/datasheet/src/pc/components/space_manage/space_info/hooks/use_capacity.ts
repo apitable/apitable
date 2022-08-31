@@ -29,15 +29,16 @@ type IUseCapacity = (hooksParams: IHooksParams) => IHooksResultWithGift;
 export const useCapacity: IUseCapacity = ({ subscription, spaceInfo }) => {
 
   const { allUsed, allTotal, used, total, giftUsed, giftTotal } = useMemo(() => {
-    const used = spaceInfo?.capacityUsedSizes || 0;
+    const allUsed = spaceInfo?.capacityUsedSizes || 0;
+    const giftUsed = spaceInfo?.giftCapacityUsedSizes || 0;
     return {
-      used, // 订阅已用
+      used: Math.max(allUsed - giftUsed, 0), // 订阅已用
       total: subscription?.subscriptionCapacity || 0, // 订阅总容量
 
-      giftUsed: spaceInfo?.giftCapacityUsedSizes || 0,
+      giftUsed,
       giftTotal: subscription?.unExpireGiftCapacity || 0,
 
-      allUsed: used,
+      allUsed,
       allTotal: subscription?.maxCapacitySizeInBytes || 0,
     };
   }, [subscription, spaceInfo]);
