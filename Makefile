@@ -241,12 +241,15 @@ run-socket-server: ## run local codes as service
 
 .PHONY: install-backend-server
 install-backend-server: ## graldew install backend-server dependencies
-	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) backend-server ./gradlew
+	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) backend-server ./gradlew build 
 
 .PHONY: install-web-server
 install-web-server: ## graldew install backend-server dependencies
-	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) web-server yarn install
-	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) web-server yarn build:dst:pre
+	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) web-server sh -c "yarn set version stable && yarn install && yarn build:dst:pre"
+
+.PHONY: install-socket-server
+install-socket-server:
+	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) socket-server sh -c "yarn set version stable && yarn"
 	  
 
 .PHONY: install
