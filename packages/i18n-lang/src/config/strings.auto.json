@@ -2489,7 +2489,7 @@
     },
     "batch_edit_permission": {
       "zh_CN": "批量编辑权限",
-      "en_US": "Batch edit permission",
+      "en_US": "Bulk edit permissions",
       "zh_HK": "批量編輯權限"
     },
     "batch_import": {
@@ -10373,7 +10373,7 @@
     },
     "inherit_permission_tip": {
       "zh_CN": "下方成员或小组的访问权来自上级文件夹",
-      "en_US": "The following members or teams have permission to this file as they have to the superior file",
+      "en_US": "Access is inherited from the parent folder",
       "zh_HK": "下方成員或小組的訪問權來自上級文件夾"
     },
     "inherit_permission_tip_root": {
@@ -12993,14 +12993,14 @@
       "zh_HK": "向${direction}插入${recordShowName}"
     },
     "menu_insert_record_above": {
-      "zh_CN": "向上方插入${lineCount}行",
+      "zh_CN": "向上插入${lineCount}行",
       "en_US": "Insert${lineCount}above",
-      "zh_HK": "向上方插入${lineCount}行"
+      "zh_HK": "向上插入${lineCount}行"
     },
     "menu_insert_record_below": {
-      "zh_CN": "向下方插入${lineCount}行",
+      "zh_CN": "向下插入${lineCount}行",
       "en_US": "Insert${lineCount}below",
-      "zh_HK": "向下方插入${lineCount}行"
+      "zh_HK": "向下插入${lineCount}行"
     },
     "message_bind_email_succeed": {
       "zh_CN": "邮箱绑定成功",
@@ -14090,7 +14090,7 @@
     },
     "node_permission_label_space_and_file": {
       "zh_CN": "空间站&文件管理员",
-      "en_US": "Space Station & File Manager",
+      "en_US": "Space & File Manager",
       "zh_HK": "空間站&文件管理員"
     },
     "node_with_link_share_reminder": {
@@ -17462,7 +17462,7 @@
     },
     "reset_permission_desc": {
       "zh_CN": "已限制权限，不再继承上级文件夹的权限",
-      "en_US": "Permission has been restricted, and the permission of the parent folder is no longer inherited",
+      "en_US": "Permission has been restricted, and no longer inherit from parent folders",
       "zh_HK": "已限制權限，不再繼承上級文件夾的權限"
     },
     "reset_permission_desc_root": {

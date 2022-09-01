@@ -3001,64 +3001,40 @@
     "trigger": [
       {
         "actions": ["open_guide_wizards([4])"],
-        "rules": [
-          "identity_ALL_OF_TRUE_['main_admin']",
-          "device_IS_pc",
-          "sign_up_time_IS_AFTER_2022-08-19 20:58"
-        ],
+        "rules": ["identity_ALL_OF_TRUE_['main_admin']", "device_IS_pc", "sign_up_time_IS_AFTER_2022-08-19 20:58"],
         "id": "address_shown,[identity_ALL_OF_TRUE_['main_admin'], device_IS_pc, sign_up_time_IS_AFTER_2022-06-24 00:46],[open_guide_wizards([4])]",
         "event": ["address_shown"]
       },
       {
         "actions": ["open_guide_wizard(35)"],
-        "rules": [
-          "device_IS_pc",
-          "url_EXCLUDES_templateId",
-          "url_EXCLUDES_shareId"
-        ],
+        "rules": ["device_IS_pc", "url_EXCLUDES_templateId", "url_EXCLUDES_shareId"],
         "id": "datasheet_add_new_view,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizard(35)]",
         "event": ["datasheet_add_new_view"],
         "eventState": "{\"viewType\":6}"
       },
       {
         "actions": ["open_guide_wizard(38)"],
-        "rules": [
-          "device_IS_pc",
-          "url_EXCLUDES_templateId",
-          "url_EXCLUDES_shareId"
-        ],
+        "rules": ["device_IS_pc", "url_EXCLUDES_templateId", "url_EXCLUDES_shareId"],
         "id": "datasheet_add_new_view,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizard(38)]",
         "event": ["datasheet_add_new_view"],
         "eventState": "{\"viewType\":5}"
       },
       {
         "actions": ["open_guide_wizard(55)"],
-        "rules": [
-          "device_IS_pc",
-          "url_EXCLUDES_templateId",
-          "url_EXCLUDES_shareId"
-        ],
+        "rules": ["device_IS_pc", "url_EXCLUDES_templateId", "url_EXCLUDES_shareId"],
         "id": "datasheet_add_new_view,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizard(55)]",
         "event": ["datasheet_add_new_view"],
         "eventState": "{\"viewType\":7}"
       },
       {
         "actions": ["open_guide_wizard(30)"],
-        "rules": [
-          "device_IS_pc",
-          "url_EXCLUDES_templateId",
-          "url_EXCLUDES_shareId"
-        ],
+        "rules": ["device_IS_pc", "url_EXCLUDES_templateId", "url_EXCLUDES_shareId"],
         "id": "datasheet_dashboard_panel_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizard(30)]",
         "event": ["datasheet_dashboard_panel_shown"]
       },
       {
         "actions": ["open_guide_wizard(88)"],
-        "rules": [
-          "device_IS_pc",
-          "url_EXCLUDES_templateId",
-          "url_EXCLUDES_shareId"
-        ],
+        "rules": ["device_IS_pc", "url_EXCLUDES_templateId", "url_EXCLUDES_shareId"],
         "id": "datasheet_gantt_view_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizard(88)]",
         "event": ["datasheet_gantt_view_shown"]
       },
@@ -3070,12 +3046,7 @@
       },
       {
         "actions": ["open_guide_wizards([31])"],
-        "rules": [
-          "device_IS_pc",
-          "sign_up_time_IS_AFTER_2022-08-19 20:58",
-          "url_EXCLUDES_templateId",
-          "url_EXCLUDES_shareId"
-        ],
+        "rules": ["device_IS_pc", "sign_up_time_IS_AFTER_2022-08-19 20:58", "url_EXCLUDES_templateId", "url_EXCLUDES_shareId"],
         "id": "datasheet_wigdet_empty_panel_shown,[device_IS_pc, sign_up_time_IS_AFTER_2022-06-24 00:46, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([31])]",
         "event": ["datasheet_wigdet_empty_panel_shown"]
       },
@@ -3087,34 +3058,19 @@
       },
       {
         "actions": ["open_guide_wizard(41)"],
-        "rules": [
-          "device_IS_pc",
-          "url_EXCLUDES_shareId",
-          "wizard[42].count_GREATER_THAN_300",
-          "wizard[43].count_GREATER_THAN_100"
-        ],
+        "rules": ["device_IS_pc", "url_EXCLUDES_shareId", "wizard[42].count_GREATER_THAN_300", "wizard[43].count_GREATER_THAN_100"],
         "id": "questionnaire_shown,[device_IS_pc, url_EXCLUDES_shareId, wizard[42].count_GREATER_THAN_300, wizard[43].count_GREATER_THAN_100],[open_guide_wizard(41)]",
         "event": ["questionnaire_shown"]
       },
       {
         "actions": ["open_guide_wizard(41)"],
-        "rules": [
-          "wizard[42].count_GREATER_THAN_1000",
-          "device_IS_pc",
-          "url_EXCLUDES_shareId",
-          "wizard[43].count_GREATER_THAN_200"
-        ],
+        "rules": ["wizard[42].count_GREATER_THAN_1000", "device_IS_pc", "url_EXCLUDES_shareId", "wizard[43].count_GREATER_THAN_200"],
         "id": "questionnaire_shown,[wizard[42].count_GREATER_THAN_1000, device_IS_pc, url_EXCLUDES_shareId, wizard[43].count_GREATER_THAN_200],[open_guide_wizard(41)]",
         "event": ["questionnaire_shown"]
       },
       {
         "actions": ["open_guide_wizard(41)"],
-        "rules": [
-          "wizard[42].count_GREATER_THAN_6000",
-          "identity_ALL_OF_TRUE_['main_admin']",
-          "device_IS_pc",
-          "url_EXCLUDES_shareId"
-        ],
+        "rules": ["wizard[42].count_GREATER_THAN_6000", "identity_ALL_OF_TRUE_['main_admin']", "device_IS_pc", "url_EXCLUDES_shareId"],
         "id": "questionnaire_shown,[wizard[42].count_GREATER_THAN_6000, identity_ALL_OF_TRUE_['main_admin'], device_IS_pc, url_EXCLUDES_shareId],[open_guide_wizard(41)]",
         "event": ["questionnaire_shown"]
       },
@@ -3132,11 +3088,7 @@
       },
       {
         "actions": ["open_guide_wizard(78)"],
-        "rules": [
-          "device_IS_pc",
-          "url_EXCLUDES_templateId",
-          "url_EXCLUDES_shareId"
-        ],
+        "rules": ["device_IS_pc", "url_EXCLUDES_templateId", "url_EXCLUDES_shareId"],
         "id": "view_add_panel_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizard(78)]",
         "event": ["view_add_panel_shown"]
       },
@@ -3160,11 +3112,7 @@
       },
       {
         "actions": ["open_guide_wizard(22)"],
-        "rules": [
-          "device_IS_pc",
-          "url_EXCLUDES_templateId",
-          "url_EXCLUDES_shareId"
-        ],
+        "rules": ["device_IS_pc", "url_EXCLUDES_templateId", "url_EXCLUDES_shareId"],
         "id": "workbench_create_form_bth_clicked,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizard(22)]",
         "event": ["workbench_create_form_bth_clicked"],
         "suspended": true
@@ -3177,65 +3125,37 @@
       },
       {
         "actions": ["open_guide_wizard(46)"],
-        "rules": [
-          "device_IS_pc",
-          "url_EXCLUDES_templateId",
-          "url_EXCLUDES_shareId"
-        ],
+        "rules": ["device_IS_pc", "url_EXCLUDES_templateId", "url_EXCLUDES_shareId"],
         "id": "workbench_form_container_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizard(46)]",
         "event": ["workbench_form_container_shown"]
       },
       {
         "actions": ["open_guide_wizard(25)"],
-        "rules": [
-          "device_IS_pc",
-          "url_EXCLUDES_templateId",
-          "url_EXCLUDES_shareId"
-        ],
+        "rules": ["device_IS_pc", "url_EXCLUDES_templateId", "url_EXCLUDES_shareId"],
         "id": "workbench_hidden_vikaby_btn_clicked,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizard(25)]",
         "event": ["workbench_hidden_vikaby_btn_clicked"]
       },
       {
         "actions": ["open_guide_wizards([1, 24])"],
-        "rules": [
-          "device_IS_pc",
-          "sign_up_time_IS_AFTER_2022-08-19 20:58",
-          "url_EXCLUDES_templateId",
-          "url_EXCLUDES_shareId"
-        ],
+        "rules": ["device_IS_pc", "sign_up_time_IS_AFTER_2022-08-19 20:58", "url_EXCLUDES_templateId", "url_EXCLUDES_shareId"],
         "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2022-06-24 00:46, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([1, 24])]",
         "event": ["workbench_shown"]
       },
       {
         "actions": ["open_guide_wizards([29, 76, 98])"],
-        "rules": [
-          "device_IS_pc",
-          "sign_up_time_IS_BEFORE_2022-08-19 20:58",
-          "url_EXCLUDES_templateId",
-          "url_EXCLUDES_shareId"
-        ],
+        "rules": ["device_IS_pc", "sign_up_time_IS_BEFORE_2022-08-19 20:58", "url_EXCLUDES_templateId", "url_EXCLUDES_shareId"],
         "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_BEFORE_2022-06-24 00:46, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([29, 76, 92])]",
         "event": ["workbench_shown"]
       },
       {
         "actions": ["open_guide_wizards([76, 98])"],
-        "rules": [
-          "sign_up_time_IS_BEFORE_2022-08-19 20:58",
-          "device_IS_mobile",
-          "url_EXCLUDES_templateId",
-          "url_EXCLUDES_shareId"
-        ],
+        "rules": ["sign_up_time_IS_BEFORE_2022-08-19 20:58", "device_IS_mobile", "url_EXCLUDES_templateId", "url_EXCLUDES_shareId"],
         "id": "workbench_shown,[sign_up_time_IS_BEFORE_2022-06-24 00:46, device_IS_mobile, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([76, 92])]",
         "event": ["workbench_shown"]
       },
       {
         "actions": ["open_guide_wizards([76, 87])"],
-        "rules": [
-          "sign_up_time_IS_BEFORE_2022-08-19 20:58",
-          "url_EXCLUDES_templateId",
-          "url_EXCLUDES_shareId",
-          "device_IS_app"
-        ],
+        "rules": ["sign_up_time_IS_BEFORE_2022-08-19 20:58", "url_EXCLUDES_templateId", "url_EXCLUDES_shareId", "device_IS_app"],
         "id": "workbench_shown,[sign_up_time_IS_BEFORE_2022-06-24 00:46, url_EXCLUDES_templateId, url_EXCLUDES_shareId, device_IS_app],[open_guide_wizards([76, 87])]",
         "event": ["workbench_shown"]
       }
@@ -3859,12 +3779,7 @@
         "command": "set_wizard_completed",
         "commandArgs": "{\"curWizard\": true}",
         "guide": {
-          "step": [
-            "recQExamygtJd",
-            "recgn9PAJNAtX",
-            "recE9LnXquMPZ",
-            "recSkdfQ9C4uM"
-          ]
+          "step": ["recQExamygtJd", "recgn9PAJNAtX", "recE9LnXquMPZ", "recSkdfQ9C4uM"]
         }
       },
       {
@@ -4043,9 +3958,7 @@
       },
       "26": {
         "completeIndex": 0,
-        "manualActions": [
-          "open_vikaby({\n\"visible\":true,\n\"defaultExpandTodo\": true,\n\"defaultExpandMenu\": false\n})"
-        ]
+        "manualActions": ["open_vikaby({\n\"visible\":true,\n\"defaultExpandTodo\": true,\n\"defaultExpandMenu\": false\n})"]
       },
       "27": {
         "completeIndex": 0,
@@ -4775,10 +4688,7 @@
         "onPlay": ["set_wizard_completed({\"wizardId\": 14})"],
         "onNext": ["open_guide_next_step({\"clearAllPrevUi\":true})"],
         "uiConfig": "{\n\"title\":\"一分钟快速入门\",\n\"video\":\"space/2021/03/10/a68dbf1e2e7943b09b1550175253fdab\",\n\"videoId\":\"VIKA_GUIDE_VIDEO_NEW_USER\",\n\"autoPlay\":true\n}\n",
-        "onClose": [
-          "open_guide_next_step({\"clearAllPrevUi\":true})",
-          "open_guide_wizard(18)"
-        ]
+        "onClose": ["open_guide_next_step({\"clearAllPrevUi\":true})", "open_guide_wizard(18)"]
       },
       "45": {
         "uiConfigId": "player_step_ui_config_45",
@@ -5094,10 +5004,7 @@
       "85": {
         "uiConfigId": "player_step_ui_config_85",
         "uiType": "popover",
-        "onNext": [
-          "open_guide_next_step({\"clearAllPrevUi\":true})",
-          "clear_guide_uis([\"popover\"])"
-        ],
+        "onNext": ["open_guide_next_step({\"clearAllPrevUi\":true})", "clear_guide_uis([\"popover\"])"],
         "next": "好的",
         "nextId": "okay",
         "uiConfig": "{\n \"element\": \"#DATASHEET_ORG_CHART_RECORD_LIST\",\n\"placement\": \"left\",\n \"title\": \"为它创建一个子级\", \n\"description\": \"你可以将记录拖至左侧的记录卡片中，自动成为卡片的子级\",\n\"offsetY\": 144\n}"
@@ -5137,10 +5044,7 @@
       "91": {
         "uiConfigId": "player_step_ui_config_91",
         "uiType": "popover",
-        "onNext": [
-          "open_guide_next_step({\"clearAllPrevUi\":true})",
-          "clear_guide_uis([\"popover\"])"
-        ],
+        "onNext": ["open_guide_next_step({\"clearAllPrevUi\":true})", "clear_guide_uis([\"popover\"])"],
         "next": "好的",
         "nextId": "okay",
         "uiConfig": "{\n \"element\": \"#DATASHEET_TOOL_BAR_VIEW_SETTING\",\n\"placement\": \"bottom\",\n \"title\": \"重新查看教学视频\", \n\"description\": \"你可以点击「设置」，在里面找到「架构视图」的教学视频重新观看噢~\" \n}"
@@ -5156,17 +5060,11 @@
       "93": {
         "uiConfigId": "player_step_ui_config_93",
         "uiType": "privacyModal",
-        "onNext": [
-          "set_wizard_completed({\"curWizard\": true})",
-          "open_guide_next_step({\"clearAllPrevUi\":true})"
-        ],
+        "onNext": ["set_wizard_completed({\"curWizard\": true})", "open_guide_next_step({\"clearAllPrevUi\":true})"],
         "next": "好的",
         "nextId": "okay",
         "uiConfig": "{\n  \"title\": \"维格隐私政策\",\n  \"children\": \"<h3><strong>1. 我们如何收集并使用您的信息</strong></h3>\\n<p>在您使用维格表提供的以下服务或功能过程中，我们将基于以下基本功能收集您的相关必要个人信息。</p>\\n<h3><strong>1.1 账号的注册及使用</strong></h3>\\n<p>您首先需要注册一个维格表账号成为维格表的注册用户。当您注册时，您需要向我们提供您本人的手机号码或者电子邮箱，我们将通过发送短信验证码或者邮件验证码的方式来验证您的身份是否有效。如果您不提供该信息，您也可以通过第三方平台（微信、钉钉、飞书、企业微信）授权的形式快速完成注册，此方式需要您授权维格表获得您在第三方平台的头像、昵称。</p>\\n<h3><strong>1.2 基本业务使用</strong></h3>\\n<p><strong><strong>1.2.1 空间站的通讯录</strong></strong></p>\\n<p>空间站的通讯录中可能会展示您在此空间站的昵称、头像、电话号码以及邮箱。注：非本空间站的成员将不会看到您的个人信息。</p>\\n<p><strong><strong>1.2.2 发布记录评论</strong></strong></p>\\n<p>您可以对表格中的记录进行评论，评论的信息将会带上您的昵称以及头像。注：非本空间站的成员将不会看到您的个人信息。</p>\\n<p><strong><strong>1.2.3 带有成员相关信息的字段</strong></strong></p>\\n<p>在表格中使用成员字段的相关功能，将会带上您的昵称以及头像信息。</p>\\n<p><strong><strong>1.2.4 文件的公开链接</strong></strong></p>\\n<p>利用文件的公开链接能力进行分享，在分享的页面上将会带上您的昵称、头像以及空间站的名称信息。</p>\\n<p><strong><strong>1.2.5 “维格社区”公开发布功能</strong></strong></p>\\n<p>您可通过“维格社区”的问题、文章、活动、评论功能公开发布信息，相关页面将显示您的昵称和头像。您公开发布的信息中可能会涉及您或他人的个人信息甚至个人敏感信息，请您谨慎地考虑，是否在使用我们的服务时公开发布相关信息。若您公开发布的信息中涉及他人个人信息的，您需在发布前征得他人的同意。</p>\\n<h3><strong>1.3 客户服务</strong></h3>\\n<p>为了更好为您排查使用中的问题，我们会收集以下信息来帮助工程师定位问题。</p>\\n<p><strong><strong>1.3.1 设备信息</strong></strong></p>\\n<p>我们会根据您在具体使用维格表时的操作，收集您所使用的设备相关信息：包括设备型号、操作系统版本、设备设置、 MAC 地址及 IMEI 等相关信息。</p>\\n<p><strong><strong>1.3.2 服务日志</strong></strong></p>\\n<p>我们会收集您在使用维格表服务时的操作日志进行保存，包括：浏览记录、点击事件、浏览器类型、电信运营商、IP 地址、访问时长、访问日期及时间。</p>\\n<h3><strong>1.4 授权同意之外</strong></h3>\\n<p>根据法律法规的规定，在以下情形中，我们可未经您授权的情况下收集并使用以下信息：</p>\\n<ol>\\n<li>\\n<p>与国家安全、国防安全直接相关的；</p>\\n</li>\\n<li>\\n<p>与公共安全、公共卫生、重大公共利益直接相关的；</p>\\n</li>\\n<li>\\n<p>与犯罪侦查、起诉、审判和判决执行等直接相关的；</p>\\n</li>\\n<li>\\n<p>依照《中华人民共和国个人信息保护法》规定在合理的范围内处理您自行公开或者其他已经合法公开的个人信息；</p>\\n</li>\\n<li>\\n<p>从合法公开披露的信息中收集到您的个人信息，如从合法的新闻报道、政府信息公开等渠道；</p>\\n</li>\\n<li>\\n<p>根据您的要求签订和履行合同所必需的；</p>\\n</li>\\n<li>\\n<p>用于维护维格表的产品和/或服务的安全稳定运行所必需的；</p>\\n</li>\\n<li>\\n<p>法律法规规定的其他情形。</p>\\n</li>\\n</ol>\\n<h3><strong>2. 我们保证信息的安全性</strong></h3>\\n<p>维格表为保障用户的数据安全不遗余力。我们始终以软件行业最高安全标准保护用户数据，所使用的安全模型和策略全部基于国际标准和行业最佳实践。</p>\\n<p>我们将严格保护您的信息的安全。使用各种安全技术和程序来保护您的信息不被未经授权的访问、使用或泄漏。如果您对隐私保护有任何置疑，请发送邮件至 <a href=\\\"mailto:devops@vikadata.com\\\">devops@vikadata.com</a>。</p>\\n<h3><strong>2.1 技术措施</strong></h3>\\n<p><strong><strong>2.1.1 数据位置</strong></strong></p>\\n<p>维格表的数据全部托管在亚马逊中国（AWS）宁夏区域、北京区域、阿里云的多个数据中心的可用区中，采用多副本冗余存储。他们是中国最顶尖的云服务提供商，数据托管在他们的基础设施上，避免了硬盘被盗或失效、甚至整个区域故障导致的数据丢失风险。</p>\\n<p><strong><strong>2.1.2 数据灾备与恢复</strong></strong></p>\\n<p>维格表每天都会对数据进行备份，备份数据也存储在多个数据中心的可用区中，并使用 AES-256 算法进行加密， 所有备份都会定期追踪其完整性并进行验证检查，以确保故障发生时，我们可以迅速启动恢复流程并立即修复数据。</p>\\n<p><strong><strong>2.1.3 服务器安全</strong></strong></p>\\n<p><strong>网络安全</strong></p>\\n<p>维格表采用亚马逊云中国（AWS）云提供的、具有多层保护和防御机制的网络安全技术，通过防火墙阻挡未经授权的访问，同时还采用多个交换机和安全网关来确保网络冗余，防止内部网络的单点故障。</p>\\n<p><strong>DDoS 防御</strong></p>\\n<p>维格表使用新一代Amazon WAF（Web 应用防护系统）技术来防止对服务器的 DDoS 攻击，只允许正常的流量通过，防止恶意流量攻击造成的业务中断，使网站和 API 保持高可用性和高性能。</p>\\n<p><strong>服务器强化</strong></p>\\n<p>维格表所有服务器未使用的端口和帐户都被禁用，我们定期对云服务器进行安全扫描和补丁升级。</p>\\n<p><strong>服务灾难恢复和业务连续性</strong></p>\\n<p>维格表的服务均采用多副本冗余机制，分布在多个不同区域内，在单个区域发生故障的情况下，其他区域会接管并平稳地进行切换操作。除此之外，我们还制定了业务连续性计划并对基础架构进行持续监控，确保维格表的各项服务能够正常运行。</p>\\n<p><strong>管理权限</strong></p>\\n<p>维格表采用访问控制技术严格管理服务器的访问权限。基于最小特权和基于角色的权限控制原则，最大程度地减少数据泄露的风险。登录服务器被要求使用受密码保护的 SSH 密钥和双因素身份验证，并记录所有的服务器操作，日常审核。</p>\\n<p><strong><strong>2.1.4 软件服务安全</strong></strong></p>\\n<p><strong>代码安全</strong></p>\\n<p>维格表的所有代码在部署到服务器之前均经过严格的安全检验，包括威胁建模、自动化测试、自动扫描和代码审核。同时我们的开发人员会进行安全培训，以保证他们掌握最新、最佳的安全开发实践，防止隐患产生。</p>\\n<p><strong>通信加密</strong></p>\\n<p>当用户执行访问网站或上传附件等操作时，数据会在他的设备和我们的数据中心之间加密传输。我们设置了多重安全防护来保护用户数据的传输：要求所有与服务器的连接均使用 TLS 1.2 / TLS 1.3 和现代密码算法对流量进行加密；启用了 HTTPS 安全协议，要求浏览器仅能通过加密连接与我们建立连接。</p>\\n<p><strong>数据鉴权和隔离</strong></p>\\n<p>为了确保数据的合法访问，维格表使用国际标准的鉴权体系，提供身份管理、认证管理和角色授权三位一体的用户业务鉴权服务。通过用户身份标识、用户授权检查、业务身份标识形成端对端的鉴权体系，防止非授权的数据访问发生。以鉴权的安全性为基础，维格表依照 SaaS 服务多租户的最佳实践，设计实现了用户团队之间数据的隔离性。</p>\\n<p><strong>网站安全加固</strong></p>\\n<p>维格表定期进行专业漏洞扫描, 通过Web漏洞扫描、操作系统漏洞扫描、资产内容合规检测、配置基线扫描、弱密码检测五大方面，自动发现网站或服务器暴露在网络中的安全风险，为云上业务提供多维度的安全检测服务，满足合规要求，让安全弱点无所遁形。</p>\\n<h3><strong>2.2 安全认证</strong></h3>\\n<p><strong><strong>2.2.1 网络安全等级保护 2.0</strong></strong></p>\\n<p>依据网络安全等级保护 2.0 的标准及相关条例规定，维格表对整个系统进行安全加固，正在申请认证机关的审核，将于 2022 年内完成此项认证。</p>\\n<p>中国网络安全等级保护 2.0（简称等保 2.0）于 2019 年 12 月 1 日起正式实施。等保 2.0 更加注重主动防御，从被动防御到事前、事中、事后全流程的安全可信、动态感知和全面审计，实现了对传统信息系统、基础信息网络、云计算、移动互联、物联网、大数据和工业控制系统等级保护对象的全覆盖。</p>\\n<p><strong><strong>2.2.2 ISO/IEC 27001:2013 信息安全管理体系</strong></strong></p>\\n<p>维格表按照 ISO 27001 的各项标准及相关条例规定，维格表对整个系统进行安全加固，正在申请认证机关的审核，将于2022年内完成此项认证。</p>\\n<p>通过 ISO 27001 认证，能体现企业对安全的承诺，表明企业信息安全管理已建立起一套科学有效的管理体系，能够为用户提供可靠的信息服务。目前国内外许多政府机构、银行、证券、保险公司、电信运营商、网络公司及许多跨国公司均采用了此项 ISO 标准对自己的信息安全进行系统的管理。</p>\\n<h3><strong>3. 我们如何使用 cookie 和同类技术</strong></h3>\\n<p>为确保网站正常运转，我们会在您的计算机或移动设备上存储名为 cookie 的数据文件。cookie 通常包含用户身份标识符、城市名称以及一些字符。cookie 主要的功能是便于您使用网站产品和服务，以及帮助网站统计独立访客数量等。运用 cookie 技术，我们能够为您提供更加周到的服务。我们不会将 cookie 用于本政策所述目的之外的任何用途。您可根据自己的偏好管理或删除 cookie。您可以清除计算机上保存的所有 cookie，大部分网络浏览器都设有阻止 cookie 的功能。但如果您这么做，则需要在每一次访问我们的网站时亲自更改用户设置，但您可能因为该等修改，无法登录或使用依赖于 cookie 的维格表提供的服务或功能。您可以通过更改您的浏览器设置限制维格表对 cookie 的使用。以 Chrome 浏览器为例，您可以在 Chrome 浏览器右上方的下拉菜单的“浏览器设置”中，通过“设置-高级-清除浏览数据”，选择清除您的 cookie。</p>\\n<h3><strong>4. 我们如何共享、转让、披露收集到的信息</strong></h3>\\n<h3><strong>4.1 共享您的个人信息</strong></h3>\\n<p>我们在获得您的明确同意后，会在以下地方或与授权的第三方合作伙伴共享您的个人信息。共享的个人信息的用途限制：提供基础的业务服务、协助我们向您提供服务。</p>\\n<ol>\\n<li>\\n<p>我们在法律法规及您本人的允许下，根据申请方的请求对外共享您的个人信息。</p>\\n</li>\\n<li>\\n<p>与授权的第三方合作伙伴共享：我们与我们授权过的第三方共享您的个人信息，但仅会出于本隐私权政策声明的合法、正当、必要、特定、明确的目的共享您的信息，比如您使用的设备信息、操作的时间、访问页面时长等来收集您功能的使用情况，以此帮助我们改进功能的设计。我们会审慎选择第三方和第三方服务，督促相关第三方在按照本政策或另行与您达成的约定收集和使用您的个人信息，并采取适当的安全技术和管理措施保障您的个人信息安全。</p>\\n</li>\\n</ol>\\n<h3><strong>4.2 转让及披露您的个人信息</strong></h3>\\n<p>除非获取您明确的同意，否则我们不会公开转让、披露您的个人信息。</p>\\n<p>但在以下情形中，我们可以在不征求您的授权同意下，共享、转让、披露您的个人信息：</p>\\n<ol>\\n<li>\\n<p>与国家安全相关；</p>\\n</li>\\n<li>\\n<p>与犯罪侦查、起诉、审批和判决执行等有关；</p>\\n</li>\\n<li>\\n<p>行政、司法机关依法提出的要求；</p>\\n</li>\\n<li>\\n<p>为了维护您所属维格表团队的财产安全或出于其他企业主提出的合法权益合理且必要的用途</p>\\n</li>\\n<li>\\n<p>您主动公开的个人信息；</p>\\n</li>\\n<li>\\n<p>从合法渠道收集到的个人信息；</p>\\n</li>\\n<li>\\n<p>法律法规的其他情形。</p>\\n</li>\\n</ol>\\n<p>如您主动公开、共享个人信息，不受本协议限制。</p>\\n<h3><strong>5. 有害信息处理</strong></h3>\\n<p>根据法律法规，我们禁止用户写入并存储一切有害信息，包括：</p>\\n<ol>\\n<li>\\n<p>违反宪法的基本原则的内容；</p>\\n</li>\\n<li>\\n<p>危害国家安全，泄露国家秘密的内容；</p>\\n</li>\\n<li>\\n<p>一切反动、破坏国家统一的言论；</p>\\n</li>\\n<li>\\n<p>破坏国家关系、民族和谐统一的内容；</p>\\n</li>\\n<li>\\n<p>封建迷信的内容；</p>\\n</li>\\n<li>\\n<p>散布谣言或不实消息扰乱社会秩序、破坏社会稳定的内容；</p>\\n</li>\\n<li>\\n<p>侵犯他人名誉、隐私等合法权益的内容；</p>\\n</li>\\n<li>\\n<p>散布淫秽、色情、赌博、暴力恐怖犯罪信息的内容；</p>\\n</li>\\n<li>\\n<p>违反国家法律、行政法规禁止的其他内容；</p>\\n</li>\\n</ol>\\n<p>我们将对以上信息进行屏蔽处理。如果后续的举报中发现，我们有权对违反政策的内容进行删除，并对违反政策的用户进行封号处理，同时保留依法追究当事人的法律责任的权利。</p>\\n<h3><strong>6. 您的权利</strong></h3>\\n<p>我们根据法律法规支持并保护您个人的隐私，您对自己的个人信息拥有访问、修改、删除以及撤回的权利。</p>\\n<ol>\\n<li>\\n<p>管理账号信息：您可在【用户中心】中修改您的昵称、头像、手机号、邮箱以及密码。</p>\\n</li>\\n<li>\\n<p>账号注销：您可在【个人中心】中点击【注销】，根据页面具体提示来提交您的账号注销申请，并在您符合注销条件的情况下，我们将在30个工作日后完成注销。注销申请可在操作成功后的30日内撤回。在您主动注销账号之后，我们将停止为您提供产品或服务，并根据法律的要求删除您的个人信息，或对其进行匿名化处理，因法律规定需要留存个人信息的，我们不会再将其用于日常业务活动中。</p>\\n</li>\\n</ol>\\n<p>在以下情形中，您可以通过与客服沟通向我们提出删除个人信息的请求，我们会对应做出删除响应：</p>\\n<ol>\\n<li>\\n<p>我们收集并使用了您的信息但未经过您的允许或同意；</p>\\n</li>\\n<li>\\n<p>在您同意我们收集并使用的情况下，我们使用您的个人信息时严重违反了与您的约定；</p>\\n</li>\\n<li>\\n<p>我们使用您的信息时，违反了法律法规。</p>\\n</li>\\n</ol>\\n<p>在以下情形中，我们不能响应您删除的请求：</p>\\n<ol>\\n<li>\\n<p>国家安全相关；</p>\\n</li>\\n<li>\\n<p>有证据表明您存在侵权行为；</p>\\n</li>\\n<li>\\n<p>与犯罪侦查、起诉、审批和判决执行相关；</p>\\n</li>\\n<li>\\n<p>行政、司法机关依法提出的要求；</p>\\n</li>\\n<li>\\n<p>响应您的请求将损害他人或企业的合法权益。</p>\\n</li>\\n</ol>\\n<h3><strong>7. 面对未成年人的的隐私策略</strong></h3>\\n<p>我们非常重视对未成年人个人信息的保护。根据相关法律法规的规定，若您是 18 周岁以下的未成年人，在使用维格表服务前，应事先取得您的家长或法定监护人的书面同意。若您是未成年人的监护人，当您对您所监护的未成年人的个人信息有相关疑问时，请通过邮件<a href=\\\"mailto:support@vikadata.com\\\">support@vikadata.com</a>向我们告知。</p>\\n<h3><strong>8. 免责说明</strong></h3>\\n<p>就下列相关事宜的发生，我们不承担任何法律责任：</p>\\n<ol>\\n<li>\\n<p>根据法律规定或相关政府的要求提供您的企业或个人信息。</p>\\n</li>\\n<li>\\n<p>由于您将用户密码告知他人或与他人共享账户，由此导致的任何企业或个人信息的泄漏，或其他非因服务原因导致的个人信息的泄漏。</p>\\n</li>\\n<li>\\n<p>在各服务条款及声明中列明的使用方式或免责情形。</p>\\n</li>\\n<li>\\n<p>因不可抗力导致的任何后果。</p>\\n</li>\\n</ol>\\n<h3><strong>9. 联系我们</strong></h3>\\n<p>有关本隐私政策或相关的隐私措施的问题，请发送邮件至 <a href=\\\"mailto:support@vikadata.com\\\">support@vikadata.com</a>。</p>\\n<h3><strong>10. 附录</strong></h3>\\n<p><strong>第三方SDK共享信息</strong></p>\\n<ol>\\n<li>\\n<p>为保障维格表的稳定运行、功能实现，使您能够使用和体验更丰富的服务及功能，我们的应用中会嵌入授权合作伙伴的 SDK。</p>\\n</li>\\n<li>\\n<p>我们会对软件工具开发包（SDK）进行严格的安全检测，并约定严格的数据保护措施。</p>\\n</li>\\n<li>\\n<p>此外，当您使用本平台接入的第三方服务时，您的信息将适用该第三方的隐私政策，建议您在接受相关服务前阅读并确认理解相关协议。</p>\\n</li>\\n</ol>\\n<p>对我们与之共享用户信息的公司、组织和个人，我们会与其签署严格的保密协议以及信息保护约定，要求他们严格遵守我们关于数据隐私保护的说明、本隐私政策以及其他任何相关的保密和安全措施来处理用户个人信息。</p>\\n<p><img src=\\\"https://s1.vika.cn/space/2022/01/19/dfd3e93ff351452cb1164c8a4e3ccb1f?attname=image.png\\\" alt=\\\"在这里插入图片描述\\\"></p>\"\n}",
-        "onClose": [
-          "set_wizard_completed({\"curWizard\": true})",
-          "open_guide_next_step({\"clearAllPrevUi\":true})"
-        ]
+        "onClose": ["set_wizard_completed({\"curWizard\": true})", "open_guide_next_step({\"clearAllPrevUi\":true})"]
       },
       "94": {
         "uiConfigId": "player_step_ui_config_94",
@@ -5192,10 +5090,7 @@
         "next": "已完成添加",
         "nextId": "player_contact_us_confirm_btn",
         "uiConfig": "{\n\t\"vikaby\": {\n\t\t\"title\": \"Hello~\",\n\t\t\"description\": \"如果在使用过程中遇到问题，请扫描右侧二维码联系我解决\",\n\t\t\"list\": \"<ul><li>刚注册维格表，不知道怎么用</li><li>维格表可以实现我想要的效果吗</li><li>使用过程出现异常问题</li><li>后续支持的功能有哪些</li><li>获取官方邀请码</li></ul>\",\n\t\t\"tip\": \"扫码添加客服\"\n\t},\n\t\"questionnaire\": {\n\t\t\"title\": \"您好，我是维格表数字化顾问\",\n\t\t\"list\": \"[{\\\"title\\\": \\\"Bug 吐槽\\\", \\\"icon\\\": \\\"BugOutlined\\\"}, {\\\"title\\\": \\\"需求反馈\\\", \\\"icon\\\": \\\"AdviseSmallOutlined\\\"}, {\\\"title\\\": \\\"服务支持\\\", \\\"icon\\\": \\\"ServeOutlined\\\"}, {\\\"title\\\": \\\"案例推荐\\\", \\\"icon\\\": \\\"ZanOutlined\\\"}, {\\\"title\\\": \\\"解决方案\\\", \\\"icon\\\": \\\"SolutionSmallOutlined\\\"}, {\\\"title\\\": \\\"产品答疑\\\", \\\"icon\\\": \\\"InformationLargeOutlined\\\"}]\",\n\t\t\"tip\": \"扫码添加微信，获得更多专属服务\"\n\t},\n\t\"website\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/02/15/696b6ba95dd743f1a6668daeeef2c4f7\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/02/09/30ecf54d91cc43389a37e182d4349c65\"\n\t},\n\t\"dingtalk\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/04/26/9ce1dcfc51374ba19ade19c5a8e7118c?attname=125_866034f0cb9febc960f82a093d13e732.png\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/04/26/9ce1dcfc51374ba19ade19c5a8e7118c?attname=125_866034f0cb9febc960f82a093d13e732.png\",\n\"tip\": \"请使用钉钉扫码，加入交流群\"\n\t},\n\t\"wecom\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/02/09/b9cab8d995a146a3ac7c0fcdaee1a919\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/02/09/d94a1a6777b04c43aa394587de6a68b9\"\n\t},\n\t\"feishu\": {\n\t\t\"title\": \"扫码添加客服\",\n\t\t\"tip\": \"请使用飞书扫码，添加客服号备用\",\n\t\t\"description\": \"以便使用过程中遇到问题，可以随时获得服务和解答\",\n\t\t\"originUrl\": \"https://u.vika.cn/z9ygm\"\n\t}\n}",
-        "onClose": [
-          "set_wizard_completed({\"curWizard\": true})",
-          "open_guide_next_step({\"clearAllPrevUi\":true})"
-        ]
+        "onClose": ["set_wizard_completed({\"curWizard\": true})", "open_guide_next_step({\"clearAllPrevUi\":true})"]
       },
       "98": {
         "uiConfigId": "player_step_ui_config_notice_0_10_5",
@@ -5204,10 +5099,7 @@
         "next": "查看更多",
         "nextId": "see_more",
         "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/01/21/fe33887f388649579947379203ece53b\",\n    \"readMoreTxt\": \"查看更多\",\n    \"readMoreUrl\": \"https://cn.bing.com\",\n    \"children\": \"<h3>2022年1月更新：第二弹</h3>\\n<ul>\\n<li>维格表功能界面支持英文语言，点亮 Hello World</li>\\n<li>新增文件信息窗展示创建人和创建时间，管理更有序</li>\\n<li>回收舱取消「彻底删除」，避免其他成员误删除导致无法恢复</li>\\n<li>小助手增加「历史更新」，游历社区挖掘更多功能使用小技巧</li>\\n</ul>\"\n}",
-        "onClose": [
-          "clear_guide_all_ui()",
-          "set_wizard_completed({\"curWizard\": true})"
-        ]
+        "onClose": ["clear_guide_all_ui()", "set_wizard_completed({\"curWizard\": true})"]
       },
       "99": {
         "uiConfigId": "player_step_ui_config_99",
@@ -5238,10 +5130,7 @@
         "next": "查看更多",
         "nextId": "see_more",
         "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/01/21/0c57f86937e941289aae077071fc4338\",\n    \"readMoreUrl\": \"https://u.vika.cn/0c85m\",\n    \"children\": \"<h3>2022年1月更新｜第二弹</h3><ul><li>维格表功能界面支持英文语言，点亮 Hello World</li><li>回收舱取消「彻底删除」，避免其他成员误删除导致无法恢复</li><li>小助手增加「历史更新」，游历社区挖掘更多功能使用小技巧</li></ul>\"\n}",
-        "onClose": [
-          "clear_guide_all_ui()",
-          "set_wizard_completed({\"curWizard\": true})"
-        ]
+        "onClose": ["clear_guide_all_ui()", "set_wizard_completed({\"curWizard\": true})"]
       },
       "105": {
         "uiConfigId": "player_step_ui_config_105",
@@ -5274,10 +5163,7 @@
         "next": "查看更多",
         "nextId": "see_more",
         "uiConfig": "{\n  \"headerImg\": \"https://s1.vika.cn/space/2022/02/21/d9519262565a4a96a7b838ad0bd44522\",\n  \"readMoreUrl\": \"https://bbs.vika.cn/article/127\",\n  \"children\": \"<ul style=\\\"margin-top: 10px;\\\"><li>数据录入有窍门，日期、数字按序列自动填充，又快又稳</li><li>文件信息用处多，查看创建人和创建时间，避免信息断层</li><li>数据关联一步到位，基于现有架构层级轻松创建记录卡片</li><li>协作空间按需采购，管理员可自主完成升级，避免创作受限</li><li>打通企业微信，无需复杂配置，扫码集成后将自动同步通讯录</li></ul>\"\n}",
-        "onClose": [
-          "set_wizard_completed({\"curWizard\": true})",
-          "open_guide_next_step({\"clearAllPrevUi\":true})"
-        ]
+        "onClose": ["set_wizard_completed({\"curWizard\": true})", "open_guide_next_step({\"clearAllPrevUi\":true})"]
       },
       "111": {
         "uiConfigId": "player_step_ui_config_111",
@@ -5286,10 +5172,7 @@
         "next": "查看更多",
         "nextId": "see_more",
         "uiConfig": "{\n  \"headerImg\": \"https://s1.vika.cn/space/2022/03/02/38faa635d13f4c158f0e91c3659af653?attname=Update_cover%402x.png\",\n  \"readMoreUrl\": \"https://bbs.vika.cn/article/136\",\n  \"children\": \"<ul style=\\\"margin-top: 10px;\\\"><li>透视表小程序来啦，多维度的数据分析更简单</li><li>单/多选列支持设置默认值，数据录入更工整规范</li><li>仪表盘的小程序拖动更加丝滑流畅，排列组合更便捷</li><li>API创建记录和更新记录接口支持指定 viewId 参数</li></ul>\"\n}",
-        "onClose": [
-          "set_wizard_completed({\"curWizard\": true})",
-          "open_guide_next_step({\"clearAllPrevUi\":true})"
-        ]
+        "onClose": ["set_wizard_completed({\"curWizard\": true})", "open_guide_next_step({\"clearAllPrevUi\":true})"]
       },
       "124": {
         "uiConfigId": "player_step_ui_config_124",
@@ -5334,10 +5217,7 @@
         "next": "查看更多",
         "nextId": "see_more",
         "uiConfig": "{\n\"headerImg\":\"https://s1.vika.cn/space/2022/03/17/f85104a4c8c145acb83379e13cfea0dd?attname=Update_cover%402x%202.png\",\n  \"readMoreUrl\": \"https://bbs.vika.cn/article/151\",\n  \"children\": \"<h3>🚀  本次更新内容</h3><ul><li>小程序新品上架，支持 Excel 追加导入数据和网址字段快速预览</li><li>架构视图新增横向布局，竖向和横向布局自由选择</li><li>小程序 SDK 更新，支持创建/删除字段</li><li>维格表安卓客户端上线，支持安卓系统手机安装使用</li></ul>\"\n}",
-        "onClose": [
-          "set_wizard_completed({\"curWizard\": true})",
-          "open_guide_next_step({\"clearAllPrevUi\":true})"
-        ]
+        "onClose": ["set_wizard_completed({\"curWizard\": true})", "open_guide_next_step({\"clearAllPrevUi\":true})"]
       },
       "132": {
         "uiConfigId": "player_step_ui_config_132",
@@ -5346,19 +5226,13 @@
         "next": "查看更多",
         "nextId": "see_more",
         "uiConfig": "{\n\"headerImg\":\"https://s1.vika.cn/space/2022/03/31/bb9cf7f3453e457c9473def81b081080?attname=%E4%BB%BB%E5%8A%A1%E5%88%B0%E6%9C%9F%E6%8F%90%E9%86%92.png\",\n  \"readMoreUrl\": \"https://bbs.vika.cn/article/153\",\n  \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul>\\n<li>在日期单元格里轻轻一点，即可开启到期提醒</li>\\n<li>维格视图支持冻结多列</li>\\n<li>镜像支持导出 Excel 文件</li>\\n<li>新增 API 接口，可创建新的维格表</li>\\n<li>开发者自建小程序可申请上架「官方推荐」</li>\\n</ul>\"\n}",
-        "onClose": [
-          "set_wizard_completed({\"curWizard\": true})",
-          "open_guide_next_step({\"clearAllPrevUi\":true})"
-        ]
+        "onClose": ["set_wizard_completed({\"curWizard\": true})", "open_guide_next_step({\"clearAllPrevUi\":true})"]
       },
       "133": {
         "uiConfigId": "player_step_ui_config_133",
         "uiType": "breath",
         "uiConfig": "{\n\"element\": \".style_name__29FFH\",\n\"color\": \"orange\"\n}",
-        "onTarget": [
-          "set_wizard_completed({\"curWizard\": true})",
-          "open_guide_next_step({\"clearAllPrevUi\":true})"
-        ]
+        "onTarget": ["set_wizard_completed({\"curWizard\": true})", "open_guide_next_step({\"clearAllPrevUi\":true})"]
       },
       "134": {
         "uiConfigId": "player_step_ui_config_134",
@@ -5382,10 +5256,7 @@
         "next": "查看更多",
         "nextId": "see_more",
         "uiConfig": "{\n\"headerImg\":\"https://s1.vika.cn/space/2022/04/15/5769ab6bf20943fc8119f74f498a7cfe?attname=%E8%A1%8C%E6%95%B0%E6%8D%AE%E6%94%AF%E6%8C%81%E5%85%B3%E6%B3%A8%E6%8F%90%E9%86%92.png\",\n  \"readMoreUrl\": \"https://bbs.vika.cn/article/156\",\n  \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul>\\n<li>主动关注行数据，发生变化时立即提醒</li>\\n<li>小程序支持全屏显示，还可以URL分享同事好友</li>\\n<li>新增两个 API 接口，创建字段和删除字段</li>\\n<li>若干模板更新升级，支持更多新功能特性</li>\\n<li>福利来了，完成空间站认证送免费附件容量</li></ul>\"\n}",
-        "onClose": [
-          "set_wizard_completed({\"curWizard\": true})",
-          "open_guide_next_step({\"clearAllPrevUi\":true})"
-        ]
+        "onClose": ["set_wizard_completed({\"curWizard\": true})", "open_guide_next_step({\"clearAllPrevUi\":true})"]
       },
       "138": {
         "uiConfigId": "player_step_ui_config_138",
@@ -5394,10 +5265,7 @@
         "next": "查看更多",
         "nextId": "see_more",
         "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/04/27/6a2167ddd8074078a6b13f04fa6a3f1c?attname=v0.12.7Update_cover%402x.png\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/158\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul>\\n<li>甘特图支持设置工作日，日期和星期可同时显示</li>\\n<li>转化分析好帮手，漏斗图小程序上架</li>\\n<li>统计栏数据支持复制，右键即可获取数据</li>\\n<li>优化新增行的操作体验，防止误增空白行</li>\\n<li>日期字段支持指定接收提醒的成员或小组</li>\\n<li>维格表已上架苹果App Store 和各大安卓应用商店</li>\\n</ul>\"\n}",
-        "onClose": [
-          "set_wizard_completed({\"curWizard\": true})",
-          "open_guide_next_step({\"clearAllPrevUi\":true})"
-        ]
+        "onClose": ["set_wizard_completed({\"curWizard\": true})", "open_guide_next_step({\"clearAllPrevUi\":true})"]
       },
       "139": {
         "uiConfigId": "player_step_ui_config_139",
@@ -5434,10 +5302,7 @@
         "next": "查看详情",
         "nextId": "check_detail",
         "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/05/12/988aad1e382d49f88119873473c2ffe9\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/180\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul>\\n<li>腾讯云HiFlow场景连接器，办公自动化流程小程序上线</li>\\n<li>甘特图自定义显示字段数量，任务条更清爽</li><li>神奇表单支持修改配置信息，提升表单编辑效率</li><li>镜像功能再升级，镜像也可以对外分享</li></ul>\"\n}",
-        "onClose": [
-          "set_wizard_completed({\"curWizard\": true})",
-          "open_guide_next_step({\"clearAllPrevUi\":true})"
-        ]
+        "onClose": ["set_wizard_completed({\"curWizard\": true})", "open_guide_next_step({\"clearAllPrevUi\":true})"]
       },
       "145": {
         "uiConfigId": "player_step_ui_config_145",
@@ -5446,10 +5311,7 @@
         "next": "查看详情",
         "nextId": "check_detail",
         "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/05/26/620822443f6244c4ba665bcc8e056135\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/185\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul>\\n<li>暗黑模式正式上线，给你全新的视觉体验</li>\\n<li>看板视图支持隐藏分组，分组信息显示更自由</li><li>维格列名称支持换行，名称再长也能显示</li><li>安全设置升级，可按权限角色限制导出文件</li><li>空间站成员管理，支持筛选已加入和未加入的成员</li><li>若干模板上新，覆盖更多行业场景</li></ul>\"\n}",
-        "onClose": [
-          "set_wizard_completed({\"curWizard\": true})",
-          "open_guide_next_step({\"clearAllPrevUi\":true})"
-        ]
+        "onClose": ["set_wizard_completed({\"curWizard\": true})", "open_guide_next_step({\"clearAllPrevUi\":true})"]
       },
       "152": {
         "uiConfigId": "player_step_ui_config_152",
@@ -5458,10 +5320,7 @@
         "next": "查看详情",
         "nextId": "check_detail",
         "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/06/13/0cea3e8831a94518b2c9e546b1ccbb8e\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/194\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul>\\n<li>甘特视图、维格视图导出功能升级，可生成图片</li>\\n<li>安全设置权限升级，可设置显示成员和小组的范围</li><li>日历视图交互优化，年份月份切换更便捷</li><li>安全设置升级，可按权限角色限制导出文件</li><li>7个模板上新，覆盖更多行业场景</li></ul>\"\n}",
-        "onClose": [
-          "set_wizard_completed({\"curWizard\": true})",
-          "open_guide_next_step({\"clearAllPrevUi\":true})"
-        ]
+        "onClose": ["set_wizard_completed({\"curWizard\": true})", "open_guide_next_step({\"clearAllPrevUi\":true})"]
       },
       "153": {
         "uiConfigId": "player_step_ui_config_153",
@@ -5470,10 +5329,7 @@
         "next": "查看详情",
         "nextId": "check_detail",
         "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/06/23/6aa909506bba4e30aa9f3c57c9d07364\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/200\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul><li>空间站操作日志上线，成员操作明细一个不漏</li><li>移动端管理功能升级，支持空间站的增删改查</li><li>电商节拼单攻略等7个模板上架，覆盖更多使用场景</li></ul>\"\n}",
-        "onClose": [
-          "set_wizard_completed({\"curWizard\": true})",
-          "open_guide_next_step({\"clearAllPrevUi\":true})"
-        ]
+        "onClose": ["set_wizard_completed({\"curWizard\": true})", "open_guide_next_step({\"clearAllPrevUi\":true})"]
       },
       "154": {
         "uiConfigId": "player_step_ui_config_154",
@@ -5482,10 +5338,7 @@
         "next": "查看详情",
         "nextId": "check_detail",
         "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/07/23/ad9d1b758e7f46e6839b0e6791a8fb31\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/209\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul><li>网址字段升级，可自动获取网页标题</li><li>「隐藏列」列名称支持点击快速在表格里高亮定位</li><li>管理员可禁止成员在根目录下创建文件</li><li>手机端支持查看和使用表格里的小程序</li><li>「坐标地图」、「Airtable 导入」两款小程序上架</li></ul>\"\n}",
-        "onClose": [
-          "set_wizard_completed({\"curWizard\": true})",
-          "open_guide_next_step({\"clearAllPrevUi\":true})"
-        ]
+        "onClose": ["set_wizard_completed({\"curWizard\": true})", "open_guide_next_step({\"clearAllPrevUi\":true})"]
       },
       "155": {
         "uiConfigId": "player_step_ui_config_155",
@@ -5494,10 +5347,7 @@
         "next": "查看详情",
         "nextId": "check_detail",
         "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/08/04/0712f98ea50943f08e2213a3f1ebe601\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/220\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul><li>新增「只可更新」权限，协作更精细化</li><li>记录卡片新增“侧边栏”和“全屏”两种布局</li><li>记录卡片支持修改列配置，操作更轻便</li><li>12个模板上新，覆盖更多行业和使用场景</li><li>API 面板新增调试入口</li></ul>\"\n}",
-        "onClose": [
-          "set_wizard_completed({\"curWizard\": true})",
-          "open_guide_next_step({\"clearAllPrevUi\":true})"
-        ]
+        "onClose": ["set_wizard_completed({\"curWizard\": true})", "open_guide_next_step({\"clearAllPrevUi\":true})"]
       },
       "156": {
         "uiConfigId": "player_step_ui_config_156",
@@ -5530,10 +5380,7 @@
         "next": "查看详情",
         "nextId": "check_detail",
         "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/08/19/bca3cedf0783402b953e02b83463e8f4\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/227\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul><li>日历视图支持筛选后新增记录</li><li>工作目录可根据右侧面板状态自动回弹</li><li>新能源车配件管理和食材配送等7 个模板上新</li></ul>\"\n}",
-        "onClose": [
-          "set_wizard_completed({\"curWizard\": true})",
-          "open_guide_next_step({\"clearAllPrevUi\":true})"
-        ]
+        "onClose": ["set_wizard_completed({\"curWizard\": true})", "open_guide_next_step({\"clearAllPrevUi\":true})"]
       }
     }
   },

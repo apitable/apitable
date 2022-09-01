@@ -5094,9 +5094,9 @@ export interface String {
 }
 
 export interface Notifications {
-  "social_templates copy": string[];
+  'social_templates copy': string[];
 }
 
 export enum 终端 {
-  App = "APP"
+  App = 'APP',
 }
