@@ -107,7 +107,7 @@ public class SpaceLinkController {
     @ApiOperation(value = "公开链接加入空间站", notes = "状态码返回201未授权跳转至登陆页面")
     public ResponseData<Void> join(@RequestBody @Valid InviteValidRo data) {
         Long userId = SessionContext.getUserId();
-        iSpaceInviteLinkService.join(userId, data.getToken());
+        iSpaceInviteLinkService.join(userId, data.getToken(), data.getNodeId());
         return ResponseData.success();
     }
 }

@@ -12,17 +12,13 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import com.vikadata.api.modular.finance.service.IBillingOfflineService;
-import com.vikadata.define.constants.RedisConstants;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.component.TaskManager;
 import com.vikadata.api.context.SessionContext;
 import com.vikadata.api.enums.audit.InviteType;
 import com.vikadata.api.enums.exception.DatabaseException;
@@ -30,6 +26,7 @@ import com.vikadata.api.enums.vcode.VCodeType;
 import com.vikadata.api.model.dto.space.SpaceLinkDto;
 import com.vikadata.api.model.vo.space.SpaceLinkInfoVo;
 import com.vikadata.api.modular.audit.service.IAuditInviteRecordService;
+import com.vikadata.api.modular.finance.service.IBillingOfflineService;
 import com.vikadata.api.modular.organization.mapper.MemberMapper;
 import com.vikadata.api.modular.organization.mapper.TeamMapper;
 import com.vikadata.api.modular.organization.mapper.TeamMemberRelMapper;
@@ -40,13 +37,16 @@ import com.vikadata.api.modular.space.mapper.SpaceApplyMapper;
 import com.vikadata.api.modular.space.mapper.SpaceInviteLinkMapper;
 import com.vikadata.api.modular.space.mapper.SpaceMapper;
 import com.vikadata.api.modular.space.mapper.SpaceResourceMapper;
+import com.vikadata.api.modular.space.model.InvitationUserDTO;
 import com.vikadata.api.modular.space.model.SpaceMemberResourceDto;
+import com.vikadata.api.modular.space.service.IInvitationService;
 import com.vikadata.api.modular.space.service.ISpaceInviteLinkService;
 import com.vikadata.api.modular.space.service.ISpaceService;
 import com.vikadata.api.modular.vcode.mapper.VCodeMapper;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.HttpContextUtil;
+import com.vikadata.define.constants.RedisConstants;
 import com.vikadata.entity.SpaceInviteLinkEntity;
 
 import org.springframework.data.redis.core.RedisTemplate;
@@ -118,6 +118,9 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
 
     @Resource
     private IBillingOfflineService iBillingOfflineService;
+
+    @Resource
+    private IInvitationService invitationService;
 
     @Override
     public String saveOrUpdate(String spaceId, Long teamId, Long memberId) {
@@ -192,39 +195,25 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void join(Long userId, String token) {
+    public void join(Long userId, String token, String nodeId) {
         log.info("公开链接加入空间站");
         Lock lock = redisLockRegistry.obtain(StrUtil.format("space:link:{}", userId));
         boolean locked = false;
         try {
             locked = lock.tryLock();
             if (locked) {
-                // 获取链接的信息，包含空间信息、创建成员信息、链接来源部门信息
-                SpaceLinkDto dto = baseMapper.selectDtoByToken(token);
-                // 链接所对应的信息有一者不存在，皆判定为失效
-                ExceptionUtil.isTrue(ObjectUtil.isNotNull(dto) && ObjectUtil.isNotNull(dto.getSpaceId())
-                        && ObjectUtil.isNotNull(dto.getTeamId()) && ObjectUtil.isNotNull(dto.getMemberId()), INVITE_EXPIRE);
-                // 判断空间是否开启了第三方
-                boolean isBoundSocial = iSocialTenantBindService.getSpaceBindStatus(dto.getSpaceId());
-                ExceptionUtil.isFalse(isBoundSocial, INVITE_EXPIRE);
-                // 用户在空间内有存在历史成员，直接复用以前的成员ID；在空间中但不在指定部门时，加入该部门
-                boolean isExist = this.joinTeamIfInSpace(userId, dto.getSpaceId(), dto.getTeamId());
-                if (isExist) {
-                    return;
+                InvitationUserDTO dto;
+                if (StrUtil.isNotBlank(nodeId)) {
+                    dto = invitationService.invitedUserJoinSpaceByToken(userId, token);
                 }
-                // 判断是否是新用户加入空间站，并发放奖励，异步操作
-                TaskManager.me().execute(() -> this.checkIsNewUserRewardCapacity(userId, dto.getMemberName(), dto.getSpaceId()));
-                // 创建成员
-                Long memberId = iMemberService.createMember(userId, dto.getSpaceId(), dto.getTeamId());
-                // 链接累加成功受邀人数，创建审计邀请记录
-                boolean flag = SqlHelper.retBool(baseMapper.updateInviteNumByInviteToken(token));
-                ExceptionUtil.isTrue(flag, INSERT_ERROR);
-                iAuditInviteRecordService.save(dto.getSpaceId(), dto.getMemberId(), memberId, InviteType.LINK_INVITE.getType());
-                // 发送邀请通知，异步操作
-                TaskManager.me().execute(() -> iMemberService.sendInviteNotification(memberMapper.selectUserIdByMemberId(dto.getMemberId()), ListUtil.toList(memberId), dto.getSpaceId(), true));
-                // 令主动加入空间的申请失效
-                TaskManager.me().execute(() ->
-                        spaceApplyMapper.invalidateTheApply(ListUtil.toList(userId), dto.getSpaceId(), InviteType.LINK_INVITE.getType()));
+                else {
+                    dto = invitedUserJoinSpaceByToken(userId, token);
+                }
+                if (dto != null) {
+                    iAuditInviteRecordService.save(dto.getSpaceId(), dto.getCreator(), dto.getMemberId(),
+                            InviteType.LINK_INVITE.getType());
+                    invitationService.asyncActionsForSuccessJoinSpace(dto);
+                }
             }
             else {
                 log.warn("用户「{}」使用邀请链接「{}」加入空间站操作过于频繁", userId, token);
@@ -236,6 +225,29 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
                 lock.unlock();
             }
         }
+    }
+
+    @Override
+    public InvitationUserDTO invitedUserJoinSpaceByToken(Long userId, String token) {
+        // 获取链接的信息，包含空间信息、创建成员信息、链接来源部门信息
+        SpaceLinkDto dto = baseMapper.selectDtoByToken(token);
+        // 链接所对应的信息有一者不存在，皆判定为失效
+        ExceptionUtil.isTrue(ObjectUtil.isNotNull(dto) && ObjectUtil.isNotNull(dto.getSpaceId())
+                && ObjectUtil.isNotNull(dto.getTeamId()) && ObjectUtil.isNotNull(dto.getMemberId()), INVITE_EXPIRE);
+        // 判断空间是否开启了第三方
+        boolean isBoundSocial = iSocialTenantBindService.getSpaceBindStatus(dto.getSpaceId());
+        ExceptionUtil.isFalse(isBoundSocial, INVITE_EXPIRE);
+        // 用户在空间内有存在历史成员，直接复用以前的成员ID；在空间中但不在指定部门时，加入该部门
+        boolean isExist = this.joinTeamIfInSpace(userId, dto.getSpaceId(), dto.getTeamId());
+        if (isExist) {
+            return null;
+        }
+        // 创建成员
+        Long memberId = iMemberService.createMember(userId, dto.getSpaceId(), dto.getTeamId());
+        // 链接累加成功受邀人数，创建审计邀请记录
+        boolean flag = SqlHelper.retBool(baseMapper.updateInviteNumByInviteToken(token));
+        ExceptionUtil.isTrue(flag, INSERT_ERROR);
+        return InvitationUserDTO.builder().userId(userId).memberId(memberId).spaceId(dto.getSpaceId()).creator(dto.getMemberId()).build();
     }
 
     /**

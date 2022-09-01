@@ -17,4 +17,19 @@
         AND node_id != ''
         AND is_deleted = 0
     </update>
+
+    <select id="selectByInviteToken" resultType="com.vikadata.entity.InvitationEntity">
+        SELECT *
+        FROM vika_invitation
+        WHERE invite_token = #{inviteToken}
+        AND is_deleted = 0
+    </select>
+
+    <update id="updateInviteNumByInviteToken">
+        UPDATE vika_invitation
+        SET invite_num = invite_num + 1
+        WHERE invite_token = #{inviteToken}
+        AND is_deleted = 0
+        AND status = 1
+    </update>
 </mapper>

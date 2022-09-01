@@ -14,6 +14,15 @@ import com.vikadata.entity.InvitationEntity;
  */
 public interface InvitationMapper extends BaseMapper<InvitationEntity> {
     /**
+     * find by token
+     * @param inviteToken invitation token
+     * @return InvitationEntity
+     * @author zoe zheng
+     * @date 2022/8/31 18:23
+     */
+    InvitationEntity selectByInviteToken(@Param("inviteToken") String inviteToken);
+
+    /**
      * update status by space id
      *
      * @param spaceId space id
@@ -36,4 +45,14 @@ public interface InvitationMapper extends BaseMapper<InvitationEntity> {
     InvitationEntity selectByMemberIdAndSpaceIdAndNodeId(@Param("memberId") Long memberId,
             @Param("spaceId") String spaceId, @Param("nodeId") String nodeId);
 
+
+    /**
+     * Accumulate the number of successful invitees
+     *
+     * @param inviteToken invitation token
+     * @return number of rows affected
+     * @author zoe zheng
+     * @date 2022/9/1 10:42
+     */
+    int updateInviteNumByInviteToken(@Param("inviteToken") String inviteToken);
 }
