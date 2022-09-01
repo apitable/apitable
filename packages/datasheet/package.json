@@ -11,6 +11,8 @@
     "build": "rm -rf ./web_build &&  NODE_OPTIONS=--max-old-space-size=4096 next build",
     "stylelint": "stylelint --fix",
     "test": "next test",
+    "check": "tsc --noEmit",
+    "check:watch": "tsc --noEmit --watch",
     "lint": "next lint --dir ./src  --dir ./utils --dir ./pages",
     "lint:fix": "eslint --fix --no-cache ./src ./pages"
   },
