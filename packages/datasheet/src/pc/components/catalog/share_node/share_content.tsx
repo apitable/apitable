@@ -34,27 +34,21 @@ export interface IShareContentProps {
   };
 }
 
-// interface ISearchUnitMemberItem {
-//   avatar: string;
-//   email: string;
-//   isActive: boolean;
-//   isAdmin: boolean;
-//   isMemberNameModified: boolean;
-//   isNickNameModified: boolean;
-//   memberId: string;
-//   memberName: string;
-//   mobile: string;
-//   originName: string;
-//   teams: string;
-//   unitId: string;
-//   userId: string;
-//   uuid: string;
-// }
-
-// interface ISearchUnit {
-//   members: ISearchUnitMemberItem[];
-// }
-
+interface ISearchUnitMemberItem {
+  avatar: string;
+  email: string;
+  isActive: boolean;
+  isDeleted: boolean;
+  isMemberNameModified: boolean;
+  isNickNameModified: boolean;
+  name: string;
+  team: string;
+  type: number;
+  unitId: string;
+  unitRefId: string;
+  userId: string;
+  uuid: string;
+}
 
 const ROOT_TEAM_ID = '0';
 
@@ -74,13 +68,13 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   const dispatch = useDispatch();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const { socketData, userInfo, canEditInviteAuthType } = useSelector((state: IReduxState) => {
+  const { socketData, userInfo, canEditInvite } = useSelector((state: IReduxState) => {
     const permissions = Selectors.getPermissions(state);
     return {
       socketData :state.catalogTree.socketData,
       userInfo: state.user.info,
-      canEditInviteAuthType: permissions.manageable,
-    }
+      canEditInvite: permissions.manageable,
+    };
   });
   const { getNodeRoleListReq } = useCatalogTreeRequest();
   const { generateLinkReq, linkListReq, sendInviteReq, fetchTeamAndMember } = useInviteRequest();
@@ -104,14 +98,12 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   const handleSearch = async (e?: React.ChangeEvent<HTMLInputElement>) => {
     const keyword = e ? e.target.value : '';
     const validEmail = isEmail(keyword);
-    const result = await searchMember(keyword);
-    const { members, teams } = result;
-    const existData = members.length || teams.length;
+    const result: ISearchUnitMemberItem[] = await searchMember(keyword, true);
 
     // 找不到该成员
-    const notFoundMember = !validEmail && !existData;
+    const notFoundMember = !validEmail && !result.length;
     // 需要邀请该成员
-    const needInviteMember = validEmail && !existData;
+    const needInviteMember = validEmail && !result.length;
 
     setIsEmpty(notFoundMember);
     setFooterTip(needInviteMember);
@@ -123,17 +115,16 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
 
       const resultList: ISelectItem[] = [];
 
-      if (members) {
-        for (let i = 0; i < members.length; i++) {
-          const item = members[i];
-          resultList.push({
-            label: item.memberName,
-            icon: <Avatar src={item.avatar} id={item.memberId} title={item.originName} />,
-            value: item.memberId,
-            describe: item.team,
-            email: item.email,
-          });
-        }
+      for (let i = 0; i < result.length; i++) {
+        const item = result[i];
+        resultList.push({
+          label: item.name,
+          icon: <Avatar src={item.avatar} id={item.uuid} title={item.name} />,
+          value: item.userId,
+          describe: item.team,
+          email: item.email,
+          unitId: item.unitId
+        });
       }
       
       /**
@@ -141,7 +132,6 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
        * 1、搜索无结果，手动补充下拉数据添加至搜索结果
        * 2、搜索有结果，直接返回搜索结果
        */
-
       const filterIndex = oldMemberList.findIndex((v) => v.value === keyword);
       // 搜素找不到成员，但是需要邀请
       if (filterIndex < 0 && needInviteMember) {
@@ -202,6 +192,9 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
    */
   const fetchInviteLinkList = async() => {
     const linkList = await linkListReq();
+    if (!linkList) {
+      return;
+    }
     // TODO - 需要判断链接是否已经失效，失效则需要从新生成
     const generateInviteLinkItem = linkList.find((v) => v.teamId === ROOT_TEAM_ID);// 已经存在链接
     if (generateInviteLinkItem) {
@@ -216,36 +209,37 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
    * 发送邀请邮件，并给角色添加表权限
    */
   const handleAddInvite = async(nvcVal?: string) => {
-    if (membersValue.length === 0) {
+    if (extraMemberList.length === 0) {
       return;
     }
     const waitInviteMembers: IInviteMemberList[] = [];
-    for (let i = 0; i < membersValue.length; i++) {
-      const val = membersValue[i];
-      const member = memberList.find((item) => item.value === val);
+    for (let i = 0; i < extraMemberList.length; i++) {
+      const member = extraMemberList[i];
       // 成员不存在，但是却存在值，认为是站外邮箱
-      waitInviteMembers.push({ email: member?.email || val, teamId: member?.teamId || -1 });
-      
+      waitInviteMembers.push({ email: member.email, teamId: ROOT_TEAM_ID });
     }
     // 发送邀请邮件
-    const success = await sendInvite(waitInviteMembers, data.nodeId, nvcVal);
-    if (!success) {
+    const { success: inviteSuccess, data: inviteData } = await sendInvite(waitInviteMembers, data.nodeId);
+    if (!inviteSuccess) {
       return;
     }
 
+    console.log(inviteData);
+
     // 添加权限
-    const { data: roleData } = await Api.addRole(data.nodeId, [], inviteAuthType);
-    const { success: roleSuccess, message: roleMsg } = roleData;
-    if (!roleSuccess) {
-      Message.error({ content: roleMsg });
-    }
+    // const { data: roleData } = await Api.addRole(data.nodeId, [], inviteAuthType);
+    // const { success: roleSuccess, message: roleMsg } = roleData;
+    // if (!roleSuccess) {
+    //   Message.error({ content: roleMsg });
+    // }
   };
 
   /**
    * 添加邀请
    */
   const handleAddInvitePerson = () => {
-    window['nvc'] ? execNoTraceVerification(handleAddInvite) : handleAddInvite();
+    handleAddInvite();
+    // window['nvc'] ? execNoTraceVerification(handleAddInvite) : handleAddInvite();
   };
 
   /**
@@ -269,13 +263,13 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   useEffect(() => {
     fetchInviteLinkList();
     handleSearch();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   
   const Permission: ISelectItem[] = [
-    { label: t(Strings.can_manage), value: ConfigConstant.permission.manager, disabled: !canEditInviteAuthType },
-    { label: t(Strings.can_edit), value: ConfigConstant.permission.editor, disabled: !canEditInviteAuthType },
-    { label: t(Strings.can_read), value: ConfigConstant.permission.reader, disabled: !canEditInviteAuthType },
+    { label: t(Strings.can_manage), value: ConfigConstant.permission.manager, disabled: !canEditInvite },
+    { label: t(Strings.can_edit), value: ConfigConstant.permission.editor, disabled: !canEditInvite },
+    { label: t(Strings.can_read), value: ConfigConstant.permission.reader, disabled: !canEditInvite },
   ];
 
   const renderSuffix = () => {
@@ -332,7 +326,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
       return null;
     }
     if (footerTip) {
-      return <div>{t(Strings.empty_email_tip)}</div>;
+      return <Typography variant="body2" className={styles.emptyEmail}>{t(Strings.empty_email_tip)}</Typography>;
     }
     return <div className={styles.shareMoreInvitor}>{t(Strings.see_more)}</div>;
   };
@@ -409,7 +403,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
             <ChevronRightOutlined />
           </Typography>
         </div>
-        <PublicShareInviteLink inviteLink={inviteLink} nodeId={data.nodeId} isMobile={isMobile} />
+        <PublicShareInviteLink inviteLink={inviteLink} nodeId={data.nodeId} isMobile={isMobile} canEditInvite={canEditInvite} />
       </div>
       {detailModalVisible && roleList && <MembersDetail data={roleList} onCancel={() => setDetailModalVisible(false)} />}
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>

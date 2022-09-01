@@ -27,9 +27,10 @@ export interface IPublicShareLinkProps {
   nodeId: string;
   isMobile: boolean;
   inviteLink: string;
+  canEditInvite: boolean;
 }
 
-export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMobile, inviteLink }) => {
+export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMobile, inviteLink, canEditInvite }) => {
   const [visible, setVisible] = useState(false);
   const [authVisible, setAuthVisible] = useState(false);
   const [qrCodeVisible, setQrCodeVisible] = useState(false);
@@ -42,7 +43,6 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
   const { userInfo, treeNodesMap } = useSelector((state: IReduxState) => ({
     treeNodesMap: state.catalogTree.treeNodesMap,
     userInfo: state.user.info,
-    mirrorId: state.pageParams.mirrorId
   }), shallowEqual);
   const isShareMirror = nodeId.startsWith('mir');
 
@@ -285,23 +285,25 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
           />
         </>
       )}
-      <div className={styles.inviteMore}>
-        <Typography className={styles.inviteMoreTitle} variant='body3'>{t(Strings.more_invite_ways)}：</Typography>
-        <Tooltip title={t(Strings.default_link_join_tip)} placement="top" overlayStyle={{ width: 190 }}>
-          <Typography className={styles.inviteMoreMethod} variant='body3' onClick={handleCopyInviteLink}>
-            <ColumnUrlOutlined />
-            <span>{t(Strings.invite_via_link)}</span>
-          </Typography>
-        </Tooltip>
-        <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-          <Popover overlayClassName={styles.qrCodePopover} placement="rightBottom" title={null} content={renderPopover()} trigger="click">
+      {canEditInvite && (
+        <div className={styles.inviteMore}>
+          <Typography className={styles.inviteMoreTitle} variant='body3'>{t(Strings.more_invite_ways)}：</Typography>
+          <Tooltip title={t(Strings.default_link_join_tip)} placement="top" overlayStyle={{ width: 190 }}>
+            <Typography className={styles.inviteMoreMethod} variant='body3' onClick={handleCopyInviteLink}>
+              <ColumnUrlOutlined />
+              <span>{t(Strings.invite_via_link)}</span>
+            </Typography>
+          </Tooltip>
+          <ComponentDisplay minWidthCompatible={ScreenSize.md}>
+            <Popover overlayClassName={styles.qrCodePopover} placement="rightBottom" title={null} content={renderPopover()} trigger="click">
+              {renderInviteByQrCode()}
+            </Popover>
+          </ComponentDisplay>
+          <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
             {renderInviteByQrCode()}
-          </Popover>
-        </ComponentDisplay>
-        <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-          {renderInviteByQrCode()}
-        </ComponentDisplay>
-      </div>
+          </ComponentDisplay>
+        </div>
+      )}
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <Popup
           title={t(Strings.setting_permission)}
