@@ -1,0 +1,30 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.13-20220829-001" author="Zoe" labels="workbench">
+        <comment>workbench-create an invited link table</comment>
+        <sql>
+            CREATE TABLE `vika_invitation` (
+              `id` bigint(20) NOT NULL COMMENT 'primary key',
+              `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'space ID(linked#vika_space#space_id)',
+              `team_id` bigint NOT NULL COMMENT 'team ID(linked#vika_unit_team#id)',
+              `node_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'node ID(linked#vika_node#node_id)',
+              `creator` bigint NOT NULL COMMENT 'the creator member ID(linked#vika_unit_member#id)',
+              `invite_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'invite token',
+              `invite_num` int(11) unsigned DEFAULT '0' COMMENT 'number of successful invitees',
+              `status` tinyint(2) unsigned DEFAULT '1' COMMENT 'link status(0:inactivated, 1:activation)',
+              `is_deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT 'delete marker(0:false,1:true)',
+              `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'creation time',
+              `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'update time',
+              PRIMARY KEY (`id`) USING BTREE,
+              UNIQUE KEY `idx_invite_token` (`invite_token`) USING BTREE COMMENT 'unique token',
+              KEY `idx_creator` (`creator`) USING BTREE,
+              KEY `idx_space_node_id` (`space_id`, `node_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='workbench-invitation table';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
