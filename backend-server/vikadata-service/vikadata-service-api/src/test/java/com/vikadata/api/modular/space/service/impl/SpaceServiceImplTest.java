@@ -2,19 +2,20 @@ package com.vikadata.api.modular.space.service.impl;
 
 import javax.annotation.Resource;
 
-import com.vikadata.api.modular.finance.service.impl.SpaceSubscriptionServiceImpl;
-import com.vikadata.api.modular.space.model.SpaceCapacityUsedInfo;
-import com.vikadata.api.modular.space.model.vo.SpaceSubscribeVo;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.enums.social.SocialPlatformType;
 import com.vikadata.api.lang.SpaceGlobalFeature;
 import com.vikadata.api.mock.bean.MockUserSpace;
+import com.vikadata.api.modular.finance.service.impl.SpaceSubscriptionServiceImpl;
 import com.vikadata.api.modular.social.enums.SocialAppType;
 import com.vikadata.api.modular.social.service.ISocialTenantService;
+import com.vikadata.api.modular.space.model.SpaceCapacityUsedInfo;
 import com.vikadata.api.modular.space.model.SpaceUpdateOperate;
+import com.vikadata.api.modular.space.model.vo.SpaceSubscribeVo;
 import com.vikadata.core.exception.BusinessException;
+
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -77,11 +78,8 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
         iSocialTenantService.createTenant(SocialPlatformType.FEISHU, SocialAppType.ISV, "app01", "lark01",
                 "{}");
         iSocialTenantBindService.addTenantBind("app01", "lark01", userSpace.getSpaceId());
-        BusinessException exception =
-                assertThrows(BusinessException.class,
-                        () -> iSpaceService.checkCanOperateSpaceUpdate(userSpace.getSpaceId(),
-                                SpaceUpdateOperate.UPDATE_MEMBER));
-        assertEquals(411, exception.getCode());
+        assertDoesNotThrow(() -> iSpaceService.checkCanOperateSpaceUpdate(userSpace.getSpaceId(),
+                SpaceUpdateOperate.UPDATE_MEMBER));
     }
 
     @Test
@@ -91,11 +89,8 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
                 "{}");
         iSocialTenantBindService.addTenantBind("app01", "lark01", userSpace.getSpaceId());
         iSocialTenantService.updateTenantStatus("app01", "lark01", false);
-        BusinessException exception =
-                assertThrows(BusinessException.class,
-                        () -> iSpaceService.checkCanOperateSpaceUpdate(userSpace.getSpaceId(),
-                                SpaceUpdateOperate.UPDATE_MEMBER));
-        assertEquals(411, exception.getCode());
+        assertDoesNotThrow(() -> iSpaceService.checkCanOperateSpaceUpdate(userSpace.getSpaceId(),
+                SpaceUpdateOperate.UPDATE_MEMBER));
     }
 
     @Test
@@ -463,7 +458,7 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void testGetSpaceCapacityUsedInfoIsOverUsed(){
+    void testGetSpaceCapacityUsedInfoIsOverUsed() {
         String spaceId = "spc01";
         Long capacityUsedSize = 2147483648L;
         SpaceSubscribeVo vo = new SpaceSubscribeVo();
@@ -479,7 +474,7 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void testGetSpaceCapacityUsedInfoAndGiftCapacityIsNotUse(){
+    void testGetSpaceCapacityUsedInfoAndGiftCapacityIsNotUse() {
         String spaceId = "spc01";
         Long capacityUsedSize = 1073741824L;
         SpaceSubscribeVo vo = new SpaceSubscribeVo();
@@ -495,7 +490,7 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void testGetSpaceCapacityUsedInfoAndGiftCapacityIsUse(){
+    void testGetSpaceCapacityUsedInfoAndGiftCapacityIsUse() {
         String spaceId = "spc01";
         Long capacityUsedSize = 1073741830L;
         SpaceSubscribeVo vo = new SpaceSubscribeVo();
