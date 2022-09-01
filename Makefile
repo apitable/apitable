@@ -259,27 +259,27 @@ run:
 	echo "TODO As daemon"
 
 run-web-server: ## run local codes as service 
-	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) web-server yarn sd 
+	docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) web-server yarn sd 
 
 run-room-server: ## run local codes as service 
-	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) room-server yarn sd 
+	docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) room-server yarn sd 
 
 run-socket-server: ## run local codes as service 
-	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) socket-server yarn sd 
+	docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) socket-server yarn sd 
 
 ### install
 
 .PHONY: install-backend-server
 install-backend-server: ## graldew install backend-server dependencies
-	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) backend-server ./gradlew build 
+	docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) backend-server ./gradlew build -x test
 
 .PHONY: install-web-server
 install-web-server: ## graldew install backend-server dependencies
-	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) web-server sh -c "yarn set version stable && yarn install && yarn build:dst:pre"
+	docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) web-server sh -c "yarn set version stable && yarn install && yarn build:dst:pre"
 
 .PHONY: install-socket-server
 install-socket-server:
-	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) socket-server sh -c "yarn set version stable && yarn"
+	docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) socket-server sh -c "yarn set version stable && yarn"
 	  
 
 .PHONY: install
