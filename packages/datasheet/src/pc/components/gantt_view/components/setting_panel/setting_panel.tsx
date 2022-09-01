@@ -1,12 +1,5 @@
-import {
-  black,
-  Select,
-  Typography,
-  IOption,
-  Tooltip,
-  Switch
-} from "@vikadata/components";
-import { Select as MultiSelect } from "antd";
+import { black, Select, Typography, IOption, Tooltip, Switch } from '@vikadata/components';
+import { Select as MultiSelect } from 'antd';
 import {
   BasicValueType,
   CollaCommandName,
@@ -30,35 +23,35 @@ import {
   IGanttViewProperty,
   ILinkField,
   ISetRecordOptions,
-  LinkFieldSet
-} from "@vikadata/core";
+  LinkFieldSet,
+} from '@vikadata/core';
 import {
   CloseMiddleOutlined,
   InformationSmallOutlined,
   ClassroomOutlined,
   ChevronRightOutlined,
   AddOutlined,
-  ColumnLinktableFilled
-} from "@vikadata/icons";
-import { resourceService } from "pc/resource_service";
-import { memo, useContext, useMemo } from "react";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import styles from "./style.module.less";
-import { StorageName, setStorage } from "pc/utils/storage/storage";
-import { ColorGroup } from "pc/components/common/color_picker/color_group";
-import { OptionSetting, ColorPicker } from "pc/components/common/color_picker";
-import { getFieldTypeIcon } from "pc/components/multi_grid/field_setting";
-import { FieldPermissionLock } from "pc/components/field_permission";
-import { notify } from "pc/components/common/notify";
-import { NotifyKey } from "pc/components/common/notify/notify.interface";
-import classNames from "classnames";
-import { TriggerCommands } from "pc/common/apphook/trigger_commands";
-import { executeCommandWithMirror } from "pc/utils/execute_command_with_mirror";
-import { KonvaGridContext } from "pc/components/konva_grid";
-import { Modal } from "pc/components/common/modal/modal";
-import { autoTaskScheduling } from "pc/components/gantt_view/utils";
-import { store } from "pc/store";
-import { Message } from "pc/components/common";
+  ColumnLinktableFilled,
+} from '@vikadata/icons';
+import { resourceService } from 'pc/resource_service';
+import { memo, useContext, useMemo } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import styles from './style.module.less';
+import { StorageName, setStorage } from 'pc/utils/storage/storage';
+import { ColorGroup } from 'pc/components/common/color_picker/color_group';
+import { OptionSetting, ColorPicker } from 'pc/components/common/color_picker';
+import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
+import { FieldPermissionLock } from 'pc/components/field_permission';
+import { notify } from 'pc/components/common/notify';
+import { NotifyKey } from 'pc/components/common/notify/notify.interface';
+import classNames from 'classnames';
+import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
+import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
+import { KonvaGridContext } from 'pc/components/konva_grid';
+import { Modal } from 'pc/components/common/modal/modal';
+import { autoTaskScheduling } from 'pc/components/gantt_view/utils';
+import { store } from 'pc/store';
+import { Message } from 'pc/components/common';
 
 const Option = Select.Option;
 const MultiOption = MultiSelect.Option;
@@ -66,68 +59,57 @@ const MultiOption = MultiSelect.Option;
 const colorOptions = [
   {
     label: t(Strings.gantt_config_color_by_custom),
-    value: GanttColorType.Custom
+    value: GanttColorType.Custom,
   },
   {
     label: t(Strings.gantt_config_color_by_single_select_field),
-    value: GanttColorType.SingleSelect
-  }
+    value: GanttColorType.SingleSelect,
+  },
 ];
 
 const weekOptions = [
   {
     value: 1,
     label: t(Strings.gantt_config_monday),
-    selectLabel: t(Strings.gantt_config_monday_in_select)
+    selectLabel: t(Strings.gantt_config_monday_in_select),
   },
   {
     value: 2,
     label: t(Strings.gantt_config_tuesday),
-    selectLabel: t(Strings.gantt_config_tuesday_in_select)
+    selectLabel: t(Strings.gantt_config_tuesday_in_select),
   },
   {
     value: 3,
     label: t(Strings.gantt_config_wednesday),
-    selectLabel: t(Strings.gantt_config_wednesday_in_select)
+    selectLabel: t(Strings.gantt_config_wednesday_in_select),
   },
   {
     value: 4,
     label: t(Strings.gantt_config_thursday),
-    selectLabel: t(Strings.gantt_config_thursday_in_select)
+    selectLabel: t(Strings.gantt_config_thursday_in_select),
   },
   {
     value: 5,
     label: t(Strings.gantt_config_friday),
-    selectLabel: t(Strings.gantt_config_friday_in_select)
+    selectLabel: t(Strings.gantt_config_friday_in_select),
   },
   {
     value: 6,
     label: t(Strings.gantt_config_saturday),
-    selectLabel: t(Strings.gantt_config_saturday_in_select)
+    selectLabel: t(Strings.gantt_config_saturday_in_select),
   },
   {
     value: 0,
     label: t(Strings.gantt_config_sunday),
-    selectLabel: t(Strings.gantt_config_sunday_in_select)
-  }
+    selectLabel: t(Strings.gantt_config_sunday_in_select),
+  },
 ];
 
 export const SettingPanel = memo(() => {
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
-  const {
-    view,
-    fieldMap,
-    ganttStyle,
-    ganttViewStatus,
-    fieldPermissionMap,
-    permissions,
-    exitFieldNames
-  } = useSelector(state => {
-    const fieldMap = Selectors.getFieldMap(
-      state,
-      state.pageParams.datasheetId!
-    )!;
+  const { view, fieldMap, ganttStyle, ganttViewStatus, fieldPermissionMap, permissions, exitFieldNames } = useSelector(state => {
+    const fieldMap = Selectors.getFieldMap(state, state.pageParams.datasheetId!)!;
     return {
       fieldMap,
       view: Selectors.getCurrentView(state)!,
@@ -135,7 +117,7 @@ export const SettingPanel = memo(() => {
       ganttViewStatus: Selectors.getGanttViewStatus(state)!,
       fieldPermissionMap: Selectors.getFieldPermissionMap(state),
       permissions: Selectors.getPermissions(state),
-      exitFieldNames: Object.values(fieldMap).map(field => field.name)
+      exitFieldNames: Object.values(fieldMap).map(field => field.name),
     };
   }, shallowEqual);
 
@@ -151,34 +133,17 @@ export const SettingPanel = memo(() => {
     workDays = DEFAULT_WORK_DAYS,
     onlyCalcWorkDay = false,
     linkFieldId,
-    autoTaskLayout = false
+    autoTaskLayout = false,
   } = ganttStyle;
-  const startFieldRole = Selectors.getFieldRoleByFieldId(
-    fieldPermissionMap,
-    startFieldId
-  );
-  const endFieldRole = Selectors.getFieldRoleByFieldId(
-    fieldPermissionMap,
-    endFieldId
-  );
-  const isCryptoStartField = Boolean(
-    startFieldRole && startFieldRole === ConfigConstant.Role.None
-  );
-  const isCryptoEndField = Boolean(
-    endFieldRole && endFieldRole === ConfigConstant.Role.None
-  );
+  const startFieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, startFieldId);
+  const endFieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, endFieldId);
+  const isCryptoStartField = Boolean(startFieldRole && startFieldRole === ConfigConstant.Role.None);
+  const isCryptoEndField = Boolean(endFieldRole && endFieldRole === ConfigConstant.Role.None);
   const noRequiredField = startFieldId == null && endFieldId == null;
   const manageable = permissions.manageable;
-  const activeView = useSelector(state =>
-    Selectors.getCurrentView(state)
-  ) as IGanttViewProperty;
-  const linkFieldRole = Selectors.getFieldRoleByFieldId(
-    fieldPermissionMap,
-    linkFieldId
-  );
-  const isCryptoLinkField = Boolean(
-    linkFieldRole && linkFieldRole === ConfigConstant.Role.None
-  );
+  const activeView = useSelector(state => Selectors.getCurrentView(state)) as IGanttViewProperty;
+  const linkFieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, linkFieldId);
+  const isCryptoLinkField = Boolean(linkFieldRole && linkFieldRole === ConfigConstant.Role.None);
   const linkField = fieldMap[linkFieldId];
   const visibleRows = useSelector(state => Selectors.getVisibleRows(state));
   const snapshot = useSelector(state => Selectors.getSnapshot(state)!);
@@ -187,16 +152,11 @@ export const SettingPanel = memo(() => {
   const fieldOptions = columns
     .map(({ fieldId }) => {
       const field = fieldMap[fieldId];
-      if (
-        [
-          Field.bindModel(field).basicValueType,
-          Field.bindModel(field).innerBasicValueType
-        ].includes(BasicValueType.DateTime)
-      ) {
+      if ([Field.bindModel(field).basicValueType, Field.bindModel(field).innerBasicValueType].includes(BasicValueType.DateTime)) {
         return {
           label: field.name,
           value: fieldId,
-          prefixIcon: getFieldTypeIcon(field.type)
+          prefixIcon: getFieldTypeIcon(field.type),
         };
       }
       return null;
@@ -209,7 +169,7 @@ export const SettingPanel = memo(() => {
       if (field.type === FieldType.SingleSelect) {
         return {
           label: field.name,
-          value: fieldId
+          value: fieldId,
         };
       }
       return null;
@@ -223,12 +183,7 @@ export const SettingPanel = memo(() => {
         value: linkFieldId,
         label: t(Strings.crypto_field),
         disabled: true,
-        suffixIcon: (
-          <FieldPermissionLock
-            fieldId={linkFieldId}
-            tooltip={t(Strings.field_permission_lock_tips)}
-          />
-        )
+        suffixIcon: <FieldPermissionLock fieldId={linkFieldId} tooltip={t(Strings.field_permission_lock_tips)} />,
       });
     }
 
@@ -239,45 +194,35 @@ export const SettingPanel = memo(() => {
         options.push({
           value: columnFieldId,
           label: fieldMap[columnFieldId].name,
-          disabled:
-            (fieldMap[columnFieldId] as ILinkField).property
-              .foreignDatasheetId !== datasheetId,
+          disabled: (fieldMap[columnFieldId] as ILinkField).property.foreignDatasheetId !== datasheetId,
           prefixIcon: <ColumnLinktableFilled color={colors.thirdLevelText} />,
-          disabledTip: t(Strings.org_chart_choose_a_self_link_field)
+          disabledTip: t(Strings.org_chart_choose_a_self_link_field),
         });
       });
 
     options.push({
       label: t(Strings.org_chart_init_fields_button),
-      value: "add",
+      value: 'add',
       disabled: !permissions.manageable,
-      prefixIcon: <AddOutlined color={colors.thirdLevelText} />
+      prefixIcon: <AddOutlined color={colors.thirdLevelText} />,
     });
 
     options.unshift({
       label: t(Strings.gantt_no_dependency),
-      value: "",
-      disabled: !permissions.manageable
+      value: '',
+      disabled: !permissions.manageable,
     });
 
     return options;
-  }, [
-    activeView,
-    fieldMap,
-    datasheetId,
-    isCryptoLinkField,
-    linkFieldId,
-    permissions,
-    colors
-  ]);
+  }, [activeView, fieldMap, datasheetId, isCryptoLinkField, linkFieldId, permissions, colors]);
 
   const onClose = () => {
     dispatch(StoreActions.toggleGanttSettingPanel(false, datasheetId!));
     setStorage(StorageName.GanttStatusMap, {
       [`${spaceId}_${datasheetId}_${viewId}`]: {
         ...ganttViewStatus,
-        settingPanelVisible: false
-      }
+        settingPanelVisible: false,
+      },
     });
   };
 
@@ -290,17 +235,17 @@ export const SettingPanel = memo(() => {
           data: [
             {
               styleKey,
-              styleValue
-            }
-          ]
+              styleValue,
+            },
+          ],
         });
       },
       {
         style: {
           ...ganttStyle,
-          [styleKey]: styleValue
-        }
-      }
+          [styleKey]: styleValue,
+        },
+      },
     );
   };
 
@@ -326,19 +271,19 @@ export const SettingPanel = memo(() => {
               type: isLinkFieldType ? FieldType.Link : FieldType.DateTime,
               property: isLinkFieldType
                 ? {
-                    foreignDatasheetId: datasheetId
+                    foreignDatasheetId: datasheetId,
                   }
-                : DateTimeField.defaultProperty()
+                : DateTimeField.defaultProperty(),
             },
             viewId,
-            index: columnCount
-          }
-        ]
+            index: columnCount,
+          },
+        ],
       });
       if (ExecuteResult.Success === result.result) {
         notify.open({
           message: t(Strings.toast_add_field_success),
-          key: NotifyKey.AddField
+          key: NotifyKey.AddField,
         });
 
         onGanttStyleChange(styleKey, newFieldId);
@@ -351,27 +296,23 @@ export const SettingPanel = memo(() => {
   const onColorOptionSelect = option => {
     onGanttStyleChange(GanttStyleKeyType.ColorOption, {
       ...colorOption,
-      type: option.value
+      type: option.value,
     });
   };
 
   const onSingleFieldSelect = option => {
     onGanttStyleChange(GanttStyleKeyType.ColorOption, {
       ...colorOption,
-      fieldId: option.value
+      fieldId: option.value,
     });
   };
 
-  const onColorPick = (
-    type: OptionSetting,
-    id: string,
-    value: string | number
-  ) => {
+  const onColorPick = (type: OptionSetting, id: string, value: string | number) => {
     if (type === OptionSetting.SETCOLOR) {
       onGanttStyleChange(GanttStyleKeyType.ColorOption, {
         ...colorOption,
         type: GanttColorType.Custom,
-        color: Number(value)
+        color: Number(value),
       });
     }
   };
@@ -393,27 +334,20 @@ export const SettingPanel = memo(() => {
     onGanttStyleChange(GanttStyleKeyType.AutoTaskLayout, value);
     if (value) {
       // TODO 判断开始跟结束时间是否是计算字段是计算字段不可以修改
-      const startTimeIsComputedField = Field.bindModel(fieldMap[startFieldId])
-        .isComputed;
-      const endTimeISComputedField = Field.bindModel(fieldMap[endFieldId])
-        .isComputed;
+      const startTimeIsComputedField = Field.bindModel(fieldMap[startFieldId]).isComputed;
+      const endTimeISComputedField = Field.bindModel(fieldMap[endFieldId]).isComputed;
       if (startTimeIsComputedField || endTimeISComputedField) {
         Message.warning({
-          content: t(Strings.gantt_cant_connect_when_computed_field)
+          content: t(Strings.gantt_cant_connect_when_computed_field),
         });
         return;
       }
 
-      const commandDataArr: ISetRecordOptions[] = autoTaskScheduling(
-        visibleRows,
-        state,
-        snapshot,
-        ganttStyle
-      );
+      const commandDataArr: ISetRecordOptions[] = autoTaskScheduling(visibleRows, state, snapshot, ganttStyle);
 
       resourceService.instance?.commandManager.execute({
         cmd: CollaCommandName.SetRecords,
-        data: commandDataArr
+        data: commandDataArr,
       });
     }
   };
@@ -425,10 +359,9 @@ export const SettingPanel = memo(() => {
         content: t(Strings.gantt_open_auto_schedule_warning),
         onOk: () => autoAllRecords(status),
         okText: t(Strings.gantt_open_auto_schedule_switch),
-        onCancel: () =>
-          onGanttStyleChange(GanttStyleKeyType.AutoTaskLayout, status),
+        onCancel: () => onGanttStyleChange(GanttStyleKeyType.AutoTaskLayout, status),
         cancelText: t(Strings.gantt_open_auto_schedule_warning_no),
-        hiddenCancelBtn: false
+        hiddenCancelBtn: false,
       });
     } else {
       onGanttStyleChange(GanttStyleKeyType.AutoTaskLayout, status);
@@ -453,12 +386,7 @@ export const SettingPanel = memo(() => {
         value: startFieldId,
         label: t(Strings.crypto_field),
         disabled: true,
-        suffixIcon: (
-          <FieldPermissionLock
-            fieldId={startFieldId}
-            tooltip={t(Strings.field_permission_lock_tips)}
-          />
-        )
+        suffixIcon: <FieldPermissionLock fieldId={startFieldId} tooltip={t(Strings.field_permission_lock_tips)} />,
       });
     }
     if (isCryptoEndField) {
@@ -466,26 +394,13 @@ export const SettingPanel = memo(() => {
         value: endFieldId,
         label: t(Strings.crypto_field),
         disabled: true,
-        suffixIcon: (
-          <FieldPermissionLock
-            fieldId={endFieldId}
-            tooltip={t(Strings.field_permission_lock_tips)}
-          />
-        )
+        suffixIcon: <FieldPermissionLock fieldId={endFieldId} tooltip={t(Strings.field_permission_lock_tips)} />,
       });
     }
-  }, [
-    endFieldId,
-    fieldOptions,
-    isCryptoEndField,
-    isCryptoStartField,
-    startFieldId
-  ]);
+  }, [endFieldId, fieldOptions, isCryptoEndField, isCryptoStartField, startFieldId]);
 
   const onPlayGuideVideo = () => {
-    TriggerCommands.open_guide_wizard(
-      ConfigConstant.WizardIdConstant.REPLAY_GANTT_VIDEO
-    );
+    TriggerCommands.open_guide_wizard(ConfigConstant.WizardIdConstant.REPLAY_GANTT_VIDEO);
   };
 
   return (
@@ -494,22 +409,12 @@ export const SettingPanel = memo(() => {
         <div className={styles.title}>
           <Typography variant="body1">{t(Strings.gantt_setting)}</Typography>
           <Tooltip content={t(Strings.gantt_setting_help_tips)}>
-            <a
-              href={t(Strings.gantt_setting_help_url)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.helpIcon}
-            >
+            <a href={t(Strings.gantt_setting_help_url)} target="_blank" rel="noopener noreferrer" className={styles.helpIcon}>
               <InformationSmallOutlined color={colors.thirdLevelText} />
             </a>
           </Tooltip>
         </div>
-        <CloseMiddleOutlined
-          className={styles.closeIcon}
-          size={16}
-          color={black[500]}
-          onClick={onClose}
-        />
+        <CloseMiddleOutlined className={styles.closeIcon} size={16} color={black[500]} onClick={onClose} />
       </header>
 
       {/* 视频教学按钮 */}
@@ -532,49 +437,29 @@ export const SettingPanel = memo(() => {
           {[startFieldId, endFieldId].map((fieldId, fieldIndex) => {
             const isStartField = fieldIndex === 0;
             return (
-              <div
-                key={fieldIndex}
-                className={styles.selectField}
-                style={{ marginLeft: isStartField ? 0 : 16 }}
-              >
+              <div key={fieldIndex} className={styles.selectField} style={{ marginLeft: isStartField ? 0 : 16 }}>
                 <Select
                   value={fieldId}
                   onSelected={option =>
-                    onFieldSelect(
-                      isStartField
-                        ? GanttStyleKeyType.StartFieldId
-                        : GanttStyleKeyType.EndFieldId,
-                      option.value as string
-                    )
+                    onFieldSelect(isStartField ? GanttStyleKeyType.StartFieldId : GanttStyleKeyType.EndFieldId, option.value as string)
                   }
-                  placeholder={
-                    isStartField
-                      ? t(Strings.gantt_pick_start_time)
-                      : t(Strings.gantt_pick_end_time)
-                  }
+                  placeholder={isStartField ? t(Strings.gantt_pick_start_time) : t(Strings.gantt_pick_end_time)}
                   dropdownMatchSelectWidth
                   triggerStyle={{
                     width: 128,
-                    border:
-                      fieldId == null ? `1px solid ${colors.rc08}` : "none"
+                    border: fieldId == null ? `1px solid ${colors.rc08}` : 'none',
                   }}
                 >
                   {fieldOptions.map((option, index) => {
                     return (
-                      <Option
-                        key={option.value}
-                        value={option.value}
-                        disabled={option.disabled}
-                        currentIndex={index}
-                        prefixIcon={option.prefixIcon}
-                      >
+                      <Option key={option.value} value={option.value} disabled={option.disabled} currentIndex={index} prefixIcon={option.prefixIcon}>
                         {option.label}
                       </Option>
                     );
                   })}
                   <Option
-                    key={"add"}
-                    value={"add"}
+                    key={'add'}
+                    value={'add'}
                     currentIndex={fieldOptions.length}
                     disabled={!manageable}
                     prefixIcon={<AddOutlined color={colors.thirdLevelText} />}
@@ -582,20 +467,12 @@ export const SettingPanel = memo(() => {
                     {t(Strings.gantt_add_date_time_field)}
                   </Option>
                 </Select>
-                {!noRequiredField && fieldId == null && (
-                  <span className={styles.errorText}>
-                    {t(Strings.gantt_pick_dates_tips)}
-                  </span>
-                )}
+                {!noRequiredField && fieldId == null && <span className={styles.errorText}>{t(Strings.gantt_pick_dates_tips)}</span>}
               </div>
             );
           })}
         </div>
-        {noRequiredField && (
-          <span className={styles.errorText}>
-            {t(Strings.gantt_pick_two_dates_tips)}
-          </span>
-        )}
+        {noRequiredField && <span className={styles.errorText}>{t(Strings.gantt_pick_two_dates_tips)}</span>}
       </div>
 
       {/* 设置任务条颜色 */}
@@ -605,12 +482,7 @@ export const SettingPanel = memo(() => {
             {t(Strings.gantt_color_setting)}
           </Typography>
           <Tooltip content={t(Strings.gantt_config_color_help)}>
-            <a
-              href={Settings.gantt_config_color_help_url.value}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.helpIcon}
-            >
+            <a href={Settings.gantt_config_color_help_url.value} target="_blank" rel="noopener noreferrer" className={styles.helpIcon}>
               <InformationSmallOutlined color={colors.thirdLevelText} />
             </a>
           </Tooltip>
@@ -631,9 +503,7 @@ export const SettingPanel = memo(() => {
               onSelected={onSingleFieldSelect}
               dropdownMatchSelectWidth
               triggerStyle={{ width: 128, marginLeft: 16 }}
-              placeholder={t(
-                Strings.gantt_config_color_by_single_select_pleaseholder
-              )}
+              placeholder={t(Strings.gantt_config_color_by_single_select_pleaseholder)}
             />
           )}
         </div>
@@ -643,28 +513,24 @@ export const SettingPanel = memo(() => {
               <ColorGroup
                 colorGroup={Array.from({ length: 11 }, (_, i) => i - 1)}
                 option={{
-                  id: "",
-                  name: "",
-                  color: colorOption.color
+                  id: '',
+                  name: '',
+                  color: colorOption.color,
                 }}
                 onChange={onColorPick}
-                style={{ flexWrap: "unset" }}
+                style={{ flexWrap: 'unset' }}
               />
             </div>
             <ColorPicker
               onChange={onColorPick}
               option={{
-                id: "",
-                name: "",
-                color: colorOption.color
+                id: '',
+                name: '',
+                color: colorOption.color,
               }}
               mask
               triggerComponent={
-                <Typography
-                  variant="body3"
-                  className={styles.more}
-                  component={"span"}
-                >
+                <Typography variant="body3" className={styles.more} component={'span'}>
                   {t(Strings.gantt_color_more)}
                 </Typography>
               }
@@ -689,16 +555,14 @@ export const SettingPanel = memo(() => {
             showArrow
             showSearch={false}
             className={styles.workDaySelect}
-            style={{ width: "100%" }}
+            style={{ width: '100%' }}
             dropdownClassName={styles.workDaySelectDropdown}
             virtual={false}
-            tagRender={({ label }) => (
-              <span className={styles.workDayTag}>{label}</span>
-            )}
+            tagRender={({ label }) => <span className={styles.workDayTag}>{label}</span>}
             onChange={onWorkDayChange}
-            tokenSeparators={[","]}
+            tokenSeparators={[',']}
             defaultValue={workDays}
-            size={"middle"}
+            size={'middle'}
           >
             {weekOptions.map(item => {
               return (
@@ -706,8 +570,8 @@ export const SettingPanel = memo(() => {
                   key={item.value}
                   value={item.value}
                   style={{
-                    margin: "0 8px",
-                    borderRadius: 8
+                    margin: '0 8px',
+                    borderRadius: 8,
                   }}
                 >
                   {item.selectLabel}
@@ -719,9 +583,7 @@ export const SettingPanel = memo(() => {
 
         <div className={styles.settingLayout} style={{ marginTop: 16 }}>
           <Switch checked={Boolean(onlyCalcWorkDay)} onClick={onSwitchClick} />
-          <span style={{ marginLeft: 4 }}>
-            {t(Strings.gantt_config_only_count_workdays)}
-          </span>
+          <span style={{ marginLeft: 4 }}>{t(Strings.gantt_config_only_count_workdays)}</span>
         </div>
       </div>
       <div className={styles.setting}>
@@ -730,12 +592,7 @@ export const SettingPanel = memo(() => {
             {t(Strings.gantt_dependency_setting)}
           </Typography>
           <Tooltip content={t(Strings.gantt_config_color_help)}>
-            <a
-              href={Settings.gantt_config_task_contact_help_url.value}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.helpIcon}
-            >
+            <a href={Settings.gantt_config_task_contact_help_url.value} target="_blank" rel="noopener noreferrer" className={styles.helpIcon}>
               <InformationSmallOutlined color={colors.thirdLevelText} />
             </a>
           </Tooltip>
@@ -743,13 +600,7 @@ export const SettingPanel = memo(() => {
         <div className={styles.settingLayout}>
           <div className={styles.selectField}>
             <Select
-              value={
-                linkFieldId
-                  ? linkField
-                    ? linkFieldId
-                    : ""
-                  : activeView.style.linkFieldId
-              }
+              value={linkFieldId ? (linkField ? linkFieldId : '') : activeView.style.linkFieldId}
               onSelected={onLinkFieldIdChange}
               options={linkFieldOptions}
               dropdownMatchSelectWidth
@@ -757,15 +608,10 @@ export const SettingPanel = memo(() => {
             />
           </div>
         </div>
-        {linkFieldId === "" ? null : (
+        {linkFieldId === '' ? null : (
           <div className={styles.settingLayout} style={{ marginTop: 16 }}>
-            <Switch
-              checked={Boolean(autoTaskLayout)}
-              onClick={onSwitchAutoTaskLayoutClick}
-            />
-            <span style={{ marginLeft: 4 }}>
-              {t(Strings.gantt_open_auto_schedule_switch)}
-            </span>
+            <Switch checked={Boolean(autoTaskLayout)} onClick={onSwitchAutoTaskLayoutClick} />
+            <span style={{ marginLeft: 4 }}>{t(Strings.gantt_open_auto_schedule_switch)}</span>
           </div>
         )}
       </div>
