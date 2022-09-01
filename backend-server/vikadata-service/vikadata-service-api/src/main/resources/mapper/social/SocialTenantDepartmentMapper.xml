@@ -25,7 +25,7 @@
             resultType="com.vikadata.entity.SocialTenantDepartmentEntity">
         SELECT *
         FROM vika_social_tenant_department
-        WHERE tenant_id = #{tenantId} AND space_id = #{spaceId} AND department_id = #{departmentId} LIMIT 0,1
+        WHERE tenant_id = #{tenantId} AND space_id = #{spaceId} AND department_id = #{departmentId}
     </select>
 
     <select id="selectDepartmentIdsByTenantId"

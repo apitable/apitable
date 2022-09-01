@@ -45,8 +45,4 @@ public enum SpaceUpdateOperate {
 
     }
 
-    public static boolean larIsvCanOperated(SpaceUpdateOperate value) {
-        return value.equals(UPDATE_MEMBER);
-    }
-
 }

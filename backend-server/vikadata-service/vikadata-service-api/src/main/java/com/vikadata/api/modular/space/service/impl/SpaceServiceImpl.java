@@ -24,6 +24,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import com.vikadata.api.modular.space.model.SpaceCapacityUsedInfo;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.cp.bean.WxCpTpAuthInfo.Agent;
@@ -87,7 +88,6 @@ import com.vikadata.api.modular.social.service.IWeComService;
 import com.vikadata.api.modular.space.mapper.SpaceMapper;
 import com.vikadata.api.modular.space.mapper.SpaceMemberRoleRelMapper;
 import com.vikadata.api.modular.space.model.GetSpaceListFilterCondition;
-import com.vikadata.api.modular.space.model.SpaceCapacityUsedInfo;
 import com.vikadata.api.modular.space.model.SpaceUpdateOperate;
 import com.vikadata.api.modular.space.service.ISpaceInviteLinkService;
 import com.vikadata.api.modular.space.service.ISpaceRoleService;
@@ -585,16 +585,14 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
             spaceCapacityUsedInfo.setCurrentBundleCapacityUsedSizes(capacityUsedSize);
             // 因为优先使用套餐容量的缘故，所以已使用赠送附件容量为0
             spaceCapacityUsedInfo.setGiftCapacityUsedSizes(0L);
-        }
-        else {
+        } else {
             spaceCapacityUsedInfo.setCurrentBundleCapacityUsedSizes(currentBundleCapacity);
             // 赠送的附件容量
             Long giftCapacity = iSpaceSubscriptionService.getSpaceUnExpireGiftCapacity(spaceId);
             // 如果附件容量使用超量，已用赠送附件容量等于赠送的附件容量大小
             if (capacityUsedSize > currentBundleCapacity + giftCapacity) {
                 spaceCapacityUsedInfo.setGiftCapacityUsedSizes(giftCapacity);
-            }
-            else {
+            } else {
                 // 未超量情况
                 spaceCapacityUsedInfo.setGiftCapacityUsedSizes(capacityUsedSize - currentBundleCapacity);
             }
@@ -806,11 +804,6 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
             else if (SocialPlatformType.WECOM.getValue().equals(entity.getPlatform()) &&
                     SocialAppType.ISV.getType() == entity.getAppType() &&
                     SpaceUpdateOperate.weComIsvCanOperated(spaceUpdateOperate)) {
-                return;
-            }
-            else if (SocialPlatformType.FEISHU.getValue().equals(entity.getPlatform()) &&
-                    SocialAppType.ISV.getType() == entity.getAppType() &&
-                    SpaceUpdateOperate.larIsvCanOperated(spaceUpdateOperate)) {
                 return;
             }
             if (spaceUpdateOperate == SpaceUpdateOperate.DELETE_SPACE) {
