@@ -86,6 +86,9 @@ export const CapacityWithRewardCard: FC<ICardProps> = props => {
   const colors = useThemeColors();
   const overflow = usedPercent === 100;
   const _strokeColor = overflow ? colors.red[500] : strokeColor;
+
+  const giftStrokeColor = giftUsedPercent === 100 ? colors.red[500] : colors.rainbowPurple5;
+
   const unLimited = +totalText === -1;
   // UI反馈当总数无限时，给一个默认的比率进度条会美观些
   const showFakePercent = unLimited && +usedText; // 无限情况下，展示虚假的百分比 5%
@@ -159,7 +162,7 @@ export const CapacityWithRewardCard: FC<ICardProps> = props => {
             }}
           >
             <Desc
-              color={colors.rainbowPurple5}
+              color={giftStrokeColor}
               label={t(Strings.used)}
               text={giftUsedText}
               unit={unit}
@@ -181,10 +184,10 @@ export const CapacityWithRewardCard: FC<ICardProps> = props => {
             <ProgressInCard
               type={'line'}
               trailColor={colors.rainbowPurple1}
-              strokeColor={colors.rainbowPurple5}
+              strokeColor={giftStrokeColor}
               percent={giftPercent}
               showInfo={false}
-              style={{ lineHeight: '12px', color: colors.rainbowPurple5 }}
+              style={{ lineHeight: '12px', color: giftStrokeColor }}
             />
           </div>
         </div>

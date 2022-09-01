@@ -320,10 +320,8 @@ public class SocialServiceImpl implements ISocialService {
                     SocialAppType.ISV.equals(SocialAppType.of(entity.getAppType()));
             boolean isWeComIsv = SocialPlatformType.WECOM.getValue().equals(entity.getPlatform()) &&
                     SocialAppType.ISV.getType() == entity.getAppType();
-            boolean isLarkIsv = SocialPlatformType.FEISHU.getValue().equals(entity.getPlatform()) &&
-                    SocialAppType.ISV.getType() == entity.getAppType();
-            if (isDingTalkIsv || isWeComIsv || isLarkIsv) {
-                return Arrays.asList("MANAGE_NORMAL_MEMBER", "MANAGE_TEAM");
+            if (isDingTalkIsv || isWeComIsv) {
+                return new ArrayList<>();
             }
         }
         return bindInfo != null ? Arrays.asList("MANAGE_NORMAL_MEMBER", "MANAGE_TEAM", "MANAGE_MEMBER") : new ArrayList<>();
@@ -559,72 +557,6 @@ public class SocialServiceImpl implements ISocialService {
         contactMeta.openDeptToTeamMap.put(deptBaseInfo.getDeptId(), openDeptToTeam);
     }
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder(toBuilder = true)
-    protected static class OpenUserToMember {
-
-        private Long memberId;
-
-        private String openId;
-
-        private String memberName;
-
-        private Set<Long> oldUnitTeamIds;
-
-        @Builder.Default
-        private Set<Long> newUnitTeamIds = new HashSet<>();
-
-        @Builder.Default
-        private Boolean isNew = false;
-
-        @Builder.Default
-        private Boolean isCurrentSync = false;
-
-        @Builder.Default
-        private Boolean isDeleted = false;
-
-    }
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Accessors(chain = true)
-    @Builder(toBuilder = true)
-    protected static class OpenDeptToTeam {
-        private Long id;
-
-        private String departmentName;
-
-        private Long departmentId;
-
-        private Long parentDepartmentId;
-
-        private Long openDepartmentId;
-
-        private Long parentOpenDepartmentId;
-
-        private Long teamId;
-
-        private Long parentTeamId;
-
-        private Integer internalSequence;
-
-        @Builder.Default
-        private Boolean isNew = false;
-
-        @Builder.Default
-        private Boolean isCurrentSync = false;
-
-        private SyncOperation op;
-
-        enum SyncOperation {
-            ADD, UPDATE, KEEP
-        }
-
-    }
-
     class ContactMeta {
         String spaceId;
 
@@ -667,6 +599,34 @@ public class SocialServiceImpl implements ISocialService {
             iTeamService.updateBatchById(updateTeamEntities);
             iTeamMemberRelService.createBatch(teamMemberRelEntities);
         }
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder(toBuilder = true)
+    protected static class OpenUserToMember {
+
+        private Long memberId;
+
+        private String openId;
+
+        private String memberName;
+
+        private Set<Long> oldUnitTeamIds;
+
+        @Builder.Default
+        private Set<Long> newUnitTeamIds = new HashSet<>();
+
+        @Builder.Default
+        private Boolean isNew = false;
+
+        @Builder.Default
+        private Boolean isCurrentSync = false;
+
+        @Builder.Default
+        private Boolean isDeleted = false;
+
     }
 
     class DingTalkContactMeta extends ContactMeta {
@@ -793,6 +753,44 @@ public class SocialServiceImpl implements ISocialService {
             // 更新主管理员信息
             iMemberService.updateById(MemberEntity.builder().memberName(adminMember.getMemberName()).id(adminMember.getMemberId()).openId(adminMember.getOpenId()).build());
         }
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Builder(toBuilder = true)
+    protected static class OpenDeptToTeam {
+        enum SyncOperation {
+            ADD, UPDATE, KEEP
+        }
+
+        private Long id;
+
+        private String departmentName;
+
+        private Long departmentId;
+
+        private Long parentDepartmentId;
+
+        private Long openDepartmentId;
+
+        private Long parentOpenDepartmentId;
+
+        private Long teamId;
+
+        private Long parentTeamId;
+
+        private Integer internalSequence;
+
+        @Builder.Default
+        private Boolean isNew = false;
+
+        @Builder.Default
+        private Boolean isCurrentSync = false;
+
+        private SyncOperation op;
+
     }
 
 }

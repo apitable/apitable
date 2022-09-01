@@ -6,7 +6,7 @@ import { IReduxState, Api, ITeamsInSearch, IMembersInSearch } from '@vikadata/co
 import { SearchList, ListType } from './search_list';
 import { useClickAway } from 'ahooks';
 import { ScreenSize } from '../component_display/component_display';
-import { useResponsive } from 'pc/hooks';
+import { useRequest, useResponsive } from 'pc/hooks';
 import classNames from 'classnames';
 
 interface ISearchTeamAndMemberProps {
@@ -24,19 +24,30 @@ export const SearchTeamAndMember: FC<ISearchTeamAndMemberProps> = ({ setInSearch
   // 搜索结果数据-成员
   const [searchMembers, setSearchMembers] = useState<IMembersInSearch[]>([]);
 
-  useClickAway(() => {
-    setInSearch(false);
-  }, ref, 'mousedown');
+  const { run: searchTeamAndMember } = useRequest(Api.searchTeamAndMember, {
+    manual: true,
+    debounceWait: 200,
+  });
+
+  useClickAway(
+    () => {
+      setInSearch(false);
+    },
+    ref,
+    'mousedown',
+  );
 
   useEffect(() => {
-    keyword && spaceId && Api.searchTeamAndMember(keyword).then(res => {
-      const { success, data } = res.data;
-      if (success) {
-        setSearchTeams(data.teams);
-        setSearchMembers(data.members);
-      }
-    });
-  }, [keyword, spaceId]);
+    if (keyword && spaceId) {
+      searchTeamAndMember(keyword).then(res => {
+        const { success, data } = res.data;
+        if (success) {
+          setSearchTeams(data.teams);
+          setSearchMembers(data.members);
+        }
+      });
+    }
+  }, [keyword, searchTeamAndMember, spaceId]);
 
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -46,41 +57,14 @@ export const SearchTeamAndMember: FC<ISearchTeamAndMemberProps> = ({ setInSearch
       <div
         className={classNames(styles.searchInputWrapper, {
           [styles.inputWrapperMobile]: isMobile,
-        }) }
+        })}
       >
-        <SearchInput
-          keyword={keyword}
-          change={setKeyword}
-          autoFocus
-          size='small'
-          className={styles.searchInput}
-        />
+        <SearchInput keyword={keyword} change={setKeyword} autoFocus size="small" className={styles.searchInput} />
       </div>
-      <div
-        className={styles.searchResultWrapper}
-        style={{ opacity: keyword ? 1 : 0.5 }}
-        onClick={() => setInSearch(false)}
-      >
-        {
-          keyword !== '' && searchTeams.length === 0 && searchMembers.length === 0 &&
-          <SearchEmpty />
-        }
-        {
-          keyword !== '' && searchTeams.length ?
-            <SearchList
-              type={ListType.DepartmentsList}
-              dataSource={searchTeams}
-              listClick={teamClick}
-            /> : null
-        }
-        {
-          keyword !== '' && searchMembers.length ?
-            <SearchList
-              type={ListType.MemberList}
-              dataSource={searchMembers}
-              listClick={memberClick}
-            /> : null
-        }
+      <div className={styles.searchResultWrapper} style={{ opacity: keyword ? 1 : 0.5 }} onClick={() => setInSearch(false)}>
+        {keyword !== '' && searchTeams.length === 0 && searchMembers.length === 0 && <SearchEmpty />}
+        {keyword !== '' && searchTeams.length ? <SearchList type={ListType.DepartmentsList} dataSource={searchTeams} listClick={teamClick} /> : null}
+        {keyword !== '' && searchMembers.length ? <SearchList type={ListType.MemberList} dataSource={searchMembers} listClick={memberClick} /> : null}
       </div>
     </div>
   );
