@@ -1,7 +1,20 @@
 import { Button, useThemeColors } from '@vikadata/components';
 import {
-  Api, ConfigConstant, Events, getCustomConfig, hiddenMobile, IReduxState, isIdassPrivateDeployment, isPrivateDeployment, NAV_ID, Player, Selectors,
-  Settings, StoreActions, Strings, t,
+  Api,
+  ConfigConstant,
+  Events,
+  getCustomConfig,
+  hiddenMobile,
+  IReduxState,
+  isIdassPrivateDeployment,
+  isPrivateDeployment,
+  NAV_ID,
+  Player,
+  Selectors,
+  Settings,
+  StoreActions,
+  Strings,
+  t,
 } from '@vikadata/core';
 import { ChevronRightOutlined, CopyOutlined } from '@vikadata/icons';
 import { useClickAway, useMount } from 'ahooks';
@@ -17,9 +30,10 @@ import {
   getSocialWecomUnitName,
   inSocialApp,
   isSocialDingTalk,
+  isSocialFeiShu,
   isSocialPlatformEnabled,
   isSocialWecom,
-  isWecomFunc
+  isWecomFunc,
 } from 'pc/components/home/social_platform';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import { usePlatform } from 'pc/hooks/use_platform';
@@ -55,7 +69,7 @@ const customTips = {
   cropDesc: t(Strings.support_image_formats_limits, { number: 2 }),
 };
 
-export const UserMenu: FC<IUserMenuProps> = (props) => {
+export const UserMenu: FC<IUserMenuProps> = props => {
   const colors = useThemeColors();
   const env = getEnvVariables();
   const { userInfo, spaceId, spaceInfo, unitMap } = useSelector(
@@ -65,24 +79,20 @@ export const UserMenu: FC<IUserMenuProps> = (props) => {
       spaceInfo: state.space.curSpaceInfo,
       unitMap: Selectors.getUnitMap(state),
     }),
-    shallowEqual
+    shallowEqual,
   );
   const isWecomSpace = isSocialWecom(spaceInfo);
   const [inEditName, setInEditName] = useState(false);
   const [nameLengthErr, setNameLengthErr] = useState(false);
   const [uploadModal, setUploadModal] = useState(false);
-  const { signOutReq, editOwnerMemberName, customOrOfficialAvatarUpload } =
-    useUserRequest();
-  const { loading: avatarLoading, run: updateAvatar } = useRequest(
-    customOrOfficialAvatarUpload,
-    { manual: true }
-  );
+  const { signOutReq, editOwnerMemberName, customOrOfficialAvatarUpload } = useUserRequest();
+  const { loading: avatarLoading, run: updateAvatar } = useRequest(customOrOfficialAvatarUpload, { manual: true });
   const lottieAnimate = useRef<AnimationItem>();
 
   const renderLottie = () => {
     const el = document.querySelector('#' + NAV_ID.USER_MENU_INVITE_ICON)!;
     if (!isMobile && el && !el.hasChildNodes()) {
-      import('lottie-web/build/player/lottie_svg').then((module) => {
+      import('lottie-web/build/player/lottie_svg').then(module => {
         const lottie = module.default;
         lottieAnimate.current = lottie.loadAnimation({
           container: el,
@@ -104,7 +114,7 @@ export const UserMenu: FC<IUserMenuProps> = (props) => {
   });
 
   const { run: getConfig } = useRequest(
-    async(spaceId) => {
+    async spaceId => {
       const res = await Api.getDingtalkConfig(spaceId, window.location.href);
       try {
         const { data, success } = res.data;
@@ -118,16 +128,16 @@ export const UserMenu: FC<IUserMenuProps> = (props) => {
 
         dd.ready(() => {
           dd.device.base.getUUID({
-            onSuccess: (data) => {
+            onSuccess: data => {
               console.log(`uuid: ${data.uuid}`);
             },
-            onFail: (err) => {
+            onFail: err => {
               console.warn(`uuid err: ${err}`);
             },
           });
         });
 
-        dd.error((err) => {
+        dd.error(err => {
           console.warn(`dingtalk error: ${err}`);
         });
       } catch (err) {
@@ -136,7 +146,7 @@ export const UserMenu: FC<IUserMenuProps> = (props) => {
     },
     {
       manual: true,
-    }
+    },
   );
 
   const openUserCenter = () => {
@@ -166,12 +176,7 @@ export const UserMenu: FC<IUserMenuProps> = (props) => {
     if (isIdassPrivateDeployment()) {
       return;
     }
-    if (
-      spaceInfo &&
-      isSocialPlatformEnabled(spaceInfo) &&
-      !isSocialDingTalk(spaceInfo) &&
-      !isWecomSpace
-    ) {
+    if (spaceInfo && isSocialPlatformEnabled(spaceInfo) && !isSocialDingTalk(spaceInfo) && !isSocialFeiShu(spaceInfo) && !isWecomSpace) {
       Modal.warning({
         title: t(Strings.kindly_reminder),
         content: t(Strings.third_party_edit_space_name_err),
@@ -180,21 +185,17 @@ export const UserMenu: FC<IUserMenuProps> = (props) => {
     }
     setInEditName(true);
   };
-  const onPressEnter = (e) => {
+  const onPressEnter = e => {
     if (nameLengthErr) {
       return;
     }
     setInEditName(false);
     if (!nameLengthErr && e.target.value !== userInfo!.memberName) {
-      editOwnerMemberName(
-        e.target.value,
-        unitMap && userInfo && unitMap[userInfo?.unitId],
-        true
-      );
+      editOwnerMemberName(e.target.value, unitMap && userInfo && unitMap[userInfo?.unitId], true);
     }
     setNameLengthErr(false);
   };
-  const inputChange = (e) => {
+  const inputChange = e => {
     if (e.target.value.length > ConfigConstant.MEMBER_NAME_LENGTH) {
       !nameLengthErr && setNameLengthErr(true);
     } else {
@@ -239,14 +240,7 @@ export const UserMenu: FC<IUserMenuProps> = (props) => {
   };
 
   const PrivacyItem = ({ label, onClick }) => (
-    <div
-      className={classNames(
-        styles.centerItem,
-        styles.inviteItem,
-        styles.linkItem
-      )}
-      onClick={onClick}
-    >
+    <div className={classNames(styles.centerItem, styles.inviteItem, styles.linkItem)} onClick={onClick}>
       <span className={styles.label}>{label}</span>
       <div className={styles.valueWrapper}>
         <ChevronRightOutlined />
@@ -255,12 +249,8 @@ export const UserMenu: FC<IUserMenuProps> = (props) => {
   );
 
   const _isMobileApp = isMobileApp();
-  const linkToPrivacyPolicy = _isMobileApp
-    ? Settings.link_to_privacy_policy_in_app.value
-    : Settings.link_to_privacy_policy.value;
-  const linkToTermsOfService = _isMobileApp
-    ? Settings.link_to_terms_of_service_in_app.value
-    : Settings.link_to_terms_of_service.value;
+  const linkToPrivacyPolicy = _isMobileApp ? Settings.link_to_privacy_policy_in_app.value : Settings.link_to_privacy_policy.value;
+  const linkToTermsOfService = _isMobileApp ? Settings.link_to_terms_of_service_in_app.value : Settings.link_to_terms_of_service.value;
 
   const items = [
     {
@@ -280,13 +270,13 @@ export const UserMenu: FC<IUserMenuProps> = (props) => {
     },
     {
       label: t(Strings.user_feedback),
-      onClick: async() => {
+      onClick: async () => {
         try {
           await (window as any).WebViewJavascriptBridge.callHandler(
             ConfigConstant.JSBridgeMethod.OpenAppFeedback,
             JSON.stringify({
               userId: userInfo?.userId || '',
-            })
+            }),
           );
         } catch (e) {
           console.warn(e);
@@ -298,17 +288,7 @@ export const UserMenu: FC<IUserMenuProps> = (props) => {
 
   const { mobile: isMobile } = usePlatform();
   if (!userInfo) return null;
-  const {
-    avatar,
-    nickName,
-    memberId,
-    memberName,
-    spaceName,
-    mobile,
-    email,
-    inviteCode,
-    isMemberNameModified,
-  } = userInfo;
+  const { avatar, nickName, memberId, memberName, spaceName, mobile, email, inviteCode, isMemberNameModified } = userInfo;
   const realMemberName = getSocialWecomUnitName({
     name: memberName,
     isModified: isMemberNameModified,
@@ -327,12 +307,7 @@ export const UserMenu: FC<IUserMenuProps> = (props) => {
           className={styles.avatarWrap}
         >
           <Spin spinning={avatarLoading}>
-            <Avatar
-              id={memberId}
-              src={avatar}
-              title={nickName}
-              size={AvatarSize.Size64}
-            />
+            <Avatar id={memberId} src={avatar} title={nickName} size={AvatarSize.Size64} />
           </Spin>
           <div className={styles.svgWrap}>
             <EditIcon fill={colors.black[50]} />
@@ -340,7 +315,7 @@ export const UserMenu: FC<IUserMenuProps> = (props) => {
         </div>
         <ImageCropUpload
           title={t(Strings.upload_avatar)}
-          confirm={(data) => uploadImgConfirm(data)}
+          confirm={data => uploadImgConfirm(data)}
           visible={uploadModal}
           officialImgs={defaultAvatars}
           initPreview={
@@ -374,11 +349,7 @@ export const UserMenu: FC<IUserMenuProps> = (props) => {
               </button>
             )}
             {inEditName && (
-              <Tooltip
-                title={t(Strings.member_err)}
-                placement="top"
-                visible={nameLengthErr}
-              >
+              <Tooltip title={t(Strings.member_err)} placement="top" visible={nameLengthErr}>
                 <Input
                   defaultValue={memberName}
                   className={classNames(styles.input, {
@@ -401,10 +372,7 @@ export const UserMenu: FC<IUserMenuProps> = (props) => {
               <span className={styles.label}>{t(Strings.space_id)}</span>
               <span className={styles.valueWrap}>
                 <span className={styles.value}>{spaceId}</span>
-                <span
-                  className={classNames(styles.copy, styles.bgIsPrimary)}
-                  onClick={() => copy2clipBoard(spaceId, copySuccess)}
-                >
+                <span className={classNames(styles.copy, styles.bgIsPrimary)} onClick={() => copy2clipBoard(spaceId, copySuccess)}>
                   <CopyOutlined />
                 </span>
               </span>
@@ -427,38 +395,19 @@ export const UserMenu: FC<IUserMenuProps> = (props) => {
           </div>
           {!isWecomSpace && !isPrivateDeployment() && (
             <div className={classNames(styles.centerItem, styles.inviteItem)}>
-              <span className={styles.label}>
-                {t(Strings.personal_invite_code_usercenter)}
-              </span>
+              <span className={styles.label}>{t(Strings.personal_invite_code_usercenter)}</span>
               <div className={styles.valueWrapper}>
                 <div>
                   {inviteCode}
-                  <span
-                    className={classNames(styles.copy, styles.bgIsWhite)}
-                    onClick={() =>
-                      copy2clipBoard(getInviteCodeUrl(), copySuccess)
-                    }
-                  >
+                  <span className={classNames(styles.copy, styles.bgIsWhite)} onClick={() => copy2clipBoard(getInviteCodeUrl(), copySuccess)}>
                     <CopyOutlined />
                   </span>
                 </div>
               </div>
             </div>
           )}
-          {isMobile &&
-            items
-              .filter((item) => item.visible)
-              .map((item) => (
-                <PrivacyItem
-                  key={item.label}
-                  label={item.label}
-                  onClick={item.onClick}
-                />
-              ))}
-          {!isMobile &&
-            !isMobileApp() &&
-            !isWecomSpace &&
-            !isPrivateDeployment() && (
+          {isMobile && items.filter(item => item.visible).map(item => <PrivacyItem key={item.label} label={item.label} onClick={item.onClick} />)}
+          {!isMobile && !isMobileApp() && !isWecomSpace && !isPrivateDeployment() && (
             <div className={styles.inviteCodeBtnWrap}>
               <div
                 className={styles.inviteCodeBtn}
@@ -467,10 +416,7 @@ export const UserMenu: FC<IUserMenuProps> = (props) => {
                   props.setShowInviteCode(true);
                 }}
               >
-                <span
-                  id={NAV_ID.USER_MENU_INVITE_ICON}
-                  className={styles.inviteIcon}
-                />
+                <span id={NAV_ID.USER_MENU_INVITE_ICON} className={styles.inviteIcon} />
                 {t(Strings.invite_code_get_v_coin)}
               </div>
             </div>
@@ -480,7 +426,7 @@ export const UserMenu: FC<IUserMenuProps> = (props) => {
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
             <div className={styles.centerTip}>
               <span>{t(Strings.invitation_code_usage_tip)}</span>
-              <Image src={Vikaji} alt="vikaji" width={36} height={36}/>
+              <Image src={Vikaji} alt="vikaji" width={36} height={36} />
             </div>
           </ComponentDisplay>
         )}

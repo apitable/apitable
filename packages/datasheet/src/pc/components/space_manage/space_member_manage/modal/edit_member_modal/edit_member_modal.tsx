@@ -13,7 +13,7 @@ import { ChangeMemberTeam } from '../change_member_team';
 import styles from './style.module.less';
 import { useMemberManage } from 'pc/hooks';
 import { isPrimaryOrOwnFunc } from '../../utils';
-import { isSocialDingTalk, isSocialWecom } from 'pc/components/home/social_platform';
+import { isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'pc/components/home/social_platform';
 import { WecomOpenData } from 'pc/components/address_list';
 
 interface IModalProps {
@@ -24,22 +24,17 @@ interface IModalProps {
 }
 
 export const EditMemberModal: FC<IModalProps> = ({ cancelModalVisible, pageNo, removeCallback }) => {
-  const {
-    spaceId, teamId, memberInfoInSpace, selectedTeamInfoInSpace, userInfo, selectMemberListInSpace, spaceInfo
-  } = useSelector(
+  const { spaceId, teamId, memberInfoInSpace, selectedTeamInfoInSpace, userInfo, selectMemberListInSpace, spaceInfo } = useSelector(
     (state: IReduxState) => ({
       spaceId: state.space.activeId || '',
-      teamId: state.spaceMemberManage.selectedTeamInfoInSpace
-        ? state.spaceMemberManage.selectedTeamInfoInSpace.teamId
-        : ConfigConstant.ROOT_TEAM_ID,
+      teamId: state.spaceMemberManage.selectedTeamInfoInSpace ? state.spaceMemberManage.selectedTeamInfoInSpace.teamId : ConfigConstant.ROOT_TEAM_ID,
       memberInfoInSpace: state.spaceMemberManage.memberInfoInSpace,
       selectMemberListInSpace: state.spaceMemberManage.selectMemberListInSpace,
-      selectedTeamInfoInSpace:
-      state.spaceMemberManage.selectedTeamInfoInSpace,
+      selectedTeamInfoInSpace: state.spaceMemberManage.selectedTeamInfoInSpace,
       userInfo: state.user.info,
-      spaceInfo: state.space.curSpaceInfo
+      spaceInfo: state.space.curSpaceInfo,
     }),
-    shallowEqual
+    shallowEqual,
   );
   const { removeMember } = useMemberManage();
   const dispatch = useDispatch();
@@ -48,28 +43,25 @@ export const EditMemberModal: FC<IModalProps> = ({ cancelModalVisible, pageNo, r
     memberName: '',
     nickName: '',
     mobile: '',
-    email: ''
+    email: '',
   });
   const [formErr, setFormErr] = useState({
     memberName: '',
     nickName: '',
     mobile: '',
-    email: ''
+    email: '',
   });
   const { memberName, email, memberId, avatar, teams, nickName, mobile, isMemberNameModified, isNickNameModified } = memberInfoInSpace!;
   const [formData, setFormData] = useState<IUpdateMemberInfo>();
   const [teamList, setTeamList] = useState<ITeamsInSpace[]>([]);
-  const [
-    changeMemberTeamModalVisible,
-    setChangeMemberTeamModalVisible
-  ] = useState(false);
+  const [changeMemberTeamModalVisible, setChangeMemberTeamModalVisible] = useState(false);
   const [setStart] = useEditMember(formData!, spaceId, teamId, pageNo, cancelModalVisible);
   useEffect(() => {
     setForm({
       memberName: memberName || '',
       nickName: nickName || '',
       mobile: mobile || '',
-      email: email || ''
+      email: email || '',
     });
   }, [memberName, nickName, mobile, email]);
   useEffect(() => {
@@ -96,7 +88,7 @@ export const EditMemberModal: FC<IModalProps> = ({ cancelModalVisible, pageNo, r
     }
     setForm({
       ...form,
-      [property]: e.target.value.trim()
+      [property]: e.target.value.trim(),
     });
   };
   const verifyMemberName = () => {
@@ -104,7 +96,7 @@ export const EditMemberModal: FC<IModalProps> = ({ cancelModalVisible, pageNo, r
     if (form.memberName.length > ConfigConstant.MEMBER_NAME_LENGTH) {
       setFormErr({
         ...formErr,
-        memberName: t(Strings.member_err)
+        memberName: t(Strings.member_err),
       });
     }
   };
@@ -133,32 +125,26 @@ export const EditMemberModal: FC<IModalProps> = ({ cancelModalVisible, pageNo, r
             removeCallback && removeCallback();
             dispatch(StoreActions.updateSelectMemberListInSpace(newSelect));
             cancelModalVisible();
-          }
+          },
         });
       },
-      type: 'danger'
+      type: 'danger',
     });
-
   };
   const getTeamRemoveList = () => {
     if (!selectedTeamInfoInSpace) {
       return;
     }
-    const tempList = teamList.length === 0 ?
-      [{ teamId: ConfigConstant.ROOT_TEAM_ID, teamName: userInfo!.spaceName }]
-      : teamList;
+    const tempList = teamList.length === 0 ? [{ teamId: ConfigConstant.ROOT_TEAM_ID, teamName: userInfo!.spaceName }] : teamList;
     return tempList.map(item => {
       return (
         <span className={styles.teamWrapper} key={item.teamId}>
           <span className={styles.teamText}>{item.teamName}</span>
-          {
-            teamList.length > 0 &&
-            (
-              <span className={styles.teamRemoveIcon} onClick={() => removeTeam(item.teamId)}>
-                <CloseIcon />
-              </span>
-            )
-          }
+          {teamList.length > 0 && (
+            <span className={styles.teamRemoveIcon} onClick={() => removeTeam(item.teamId)}>
+              <CloseIcon />
+            </span>
+          )}
         </span>
       );
     });
@@ -186,28 +172,24 @@ export const EditMemberModal: FC<IModalProps> = ({ cancelModalVisible, pageNo, r
         width={400}
       >
         <div className={styles.portrait}>
-          <Avatar
-            src={avatar}
-            title={memberName || ''}
-            size={80}
-            id={memberId}
-          />
+          <Avatar src={avatar} title={memberName || ''} size={80} id={memberId} />
         </div>
         <div className={styles.item}>
           <label className={styles.label}>{t(Strings.nickname_in_space)}</label>
           <div className={styles.content}>
-            {
-              wecomMemberNameVisible &&
+            {wecomMemberNameVisible && (
               <div className={styles.wecomLayer}>
                 <WecomOpenData openId={form.memberName} />
               </div>
-            }
+            )}
             <TextInput
               style={{
-                color: wecomMemberNameVisible ? 'transparent' : colorVars.fc1
+                color: wecomMemberNameVisible ? 'transparent' : colorVars.fc1,
               }}
               value={form.memberName}
-              onChange={e => { handleChange(e, 'memberName'); }}
+              onChange={e => {
+                handleChange(e, 'memberName');
+              }}
               onBlur={verifyMemberName}
               onClick={() => setMemberInputFocus(true)}
               disabled={isIdassPrivateDeployment()}
@@ -219,18 +201,17 @@ export const EditMemberModal: FC<IModalProps> = ({ cancelModalVisible, pageNo, r
         <div className={styles.item}>
           <label className={styles.label}>{t(Strings.personal_nickname)}</label>
           <div className={styles.content}>
-            {
-              wecomNickNameVisible &&
+            {wecomNickNameVisible && (
               <div className={styles.wecomLayer} style={{ color: colorVars.black[500] }}>
                 <WecomOpenData openId={form.nickName} />
               </div>
-            }
+            )}
             <TextInput
               style={{
                 color: wecomNickNameVisible ? 'transparent' : colorVars.black[500],
-                WebkitTextFillColor: wecomNickNameVisible ? 'transparent' : colorVars.black[500]
+                WebkitTextFillColor: wecomNickNameVisible ? 'transparent' : colorVars.black[500],
               }}
-              type='text'
+              type="text"
               value={form.nickName}
               disabled
               block
@@ -242,45 +223,31 @@ export const EditMemberModal: FC<IModalProps> = ({ cancelModalVisible, pageNo, r
           <label className={styles.label}>{t(Strings.team)}</label>
           <div className={styles.deptItem}>
             {getTeamRemoveList()}
-            <Button
-              onClick={toChangeTeamModal}
-              size='small'
-              className={styles.addBtn}
-              prefixIcon={<AddIcon fill='currentColor' />}
-            >
-              {t(Strings.add)}
-            </Button>
+            {!isSocialFeiShu(spaceInfo) && (
+              <Button onClick={toChangeTeamModal} size="small" className={styles.addBtn} prefixIcon={<AddIcon fill="currentColor" />}>
+                {t(Strings.add)}
+              </Button>
+            )}
           </div>
         </div>
-        {
-          !env.HIDDEN_BIND_PHONE && <div className={styles.item}>
+        {!env.HIDDEN_BIND_PHONE && (
+          <div className={styles.item}>
             <label className={styles.label}>{t(Strings.phone_number)}</label>
-            <TextInput
-              value={form.mobile}
-              disabled
-              block
-            />
+            <TextInput value={form.mobile} disabled block />
             <div className={styles.err}>{formErr.mobile}</div>
           </div>
-        }
+        )}
 
         <div className={styles.item}>
           <label className={styles.label}>{t(Strings.mail)}</label>
-          <TextInput
-            value={form.email}
-            disabled
-            block
-          />
+          <TextInput value={form.email} disabled block />
           <div className={styles.err}>{formErr.email}</div>
         </div>
-        {!isSocialDingTalk(spaceInfo) && !isSocialWecom(spaceInfo) && <TextButton
-          color='danger'
-          onClick={removeFromSpace}
-          size='small'
-          style={{ position: 'absolute', bottom: '24px', left: '24px' }}
-        >
-          {t(Strings.remove_from_space)}
-        </TextButton>}
+        {!isSocialDingTalk(spaceInfo) && !isSocialWecom(spaceInfo) && !isSocialFeiShu(spaceInfo) && (
+          <TextButton color="danger" onClick={removeFromSpace} size="small" style={{ position: 'absolute', bottom: '24px', left: '24px' }}>
+            {t(Strings.remove_from_space)}
+          </TextButton>
+        )}
       </Modal>
       {/* {changeMemberTeamModalVisible && (
        <ChangeMemberTeamModal
@@ -292,17 +259,9 @@ export const EditMemberModal: FC<IModalProps> = ({ cancelModalVisible, pageNo, r
        }}
        />
        )} */}
-      {
-        changeMemberTeamModalVisible &&
-        (
-          <ChangeMemberTeam
-            onCancel={() => setChangeMemberTeamModalVisible(false)}
-            inEditMember
-            setTeamList={setTeamList}
-            teamList={teamList}
-          />
-        )
-      }
+      {changeMemberTeamModalVisible && (
+        <ChangeMemberTeam onCancel={() => setChangeMemberTeamModalVisible(false)} inEditMember setTeamList={setTeamList} teamList={teamList} />
+      )}
     </>
   );
 };
