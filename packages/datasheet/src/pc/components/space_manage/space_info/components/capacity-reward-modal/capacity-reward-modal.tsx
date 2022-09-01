@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-import { Table, Tabs } from 'antd';
+import { ConfigProvider, Table, Tabs } from 'antd';
 import ReactDOM from 'react-dom';
 import { useRequest } from 'pc/hooks';
 import { useCapacityRequest } from 'pc/hooks/use_capacity-reword-request';
@@ -13,11 +13,12 @@ import { UserCardTrigger } from 'pc/components/common';
 import { ThemeProvider } from '@vikadata/components';
 import { Provider } from 'react-redux';
 import { store } from 'pc/store';
+import { antdConfig } from 'pc/components/route_manager/router_provider';
 
 const { TabPane } = Tabs;
 
 interface ICapacityRewardModalProps {
-  onCancel: () => void
+  onCancel: () => void;
 }
 
 enum CapacityType {
@@ -30,10 +31,10 @@ type IRecord = {
   quota: string;
   expireDate: string;
   inviteUserInfo?: {
-    avatar: string,
-    userId: string,
-    userName: string,
-  },
+    avatar: string;
+    userId: string;
+    userName: string;
+  };
 };
 
 export const CapacityRewardModal: FC<ICapacityRewardModalProps> = ({ onCancel }) => {
@@ -43,55 +44,64 @@ export const CapacityRewardModal: FC<ICapacityRewardModalProps> = ({ onCancel })
       dataIndex: 'quotaSource',
       width: 330,
       render(source, record) {
-        const templateFn = {
-          subscription_package_capacity: () => t(Strings.capacity_from_subscription_package), // 订阅套餐
-          official_gift_capacity: () => t(Strings.capacity_from_official_gift), // 官方赠送
-          purchase_capacity: () => t(Strings.capacity_from_purchase), // 购买容量
-          participation_capacity: () => { // 邀请新用户赠送
-            const inviteUserInfo = record.inviteUserInfo;
-            if (!inviteUserInfo) return null;
-            const userId = inviteUserInfo.userId;
-            const avatar = inviteUserInfo.avatar;
-            const userName = inviteUserInfo.userName || t(Strings.guests_per_space);
-            return (
-              <TComponent
-                tkey={t(Strings.capacity_from_participation)}
-                params={{
-                  user: (     
-                    <UserCardTrigger
-                      popupAlign={ {
-                        points: ['tl', 'bl'],
-                        offset: [0, 8],
-                        overflow: { adjustX: true, adjustY: true },
-                      }}
-                      memberId={userId}
-                      permissionVisible={false}
-                    >
-                      <span>
-                        <UnitTag
-                          deletable={false}
-                          isTeam={false}
-                          unitId={userId}
-                          avatar={avatar}
-                          name={userName || t(Strings.guests_per_space)}
-                          maxWidth={100}
-                        />
-                      </span>
-                    </UserCardTrigger>
-                  )
-                }}
-              />
-            );
-          }
-        }[source] || (() => source);
+        const templateFn =
+          {
+            subscription_package_capacity: () => t(Strings.capacity_from_subscription_package), // 订阅套餐
+            official_gift_capacity: () => t(Strings.capacity_from_official_gift), // 官方赠送
+            purchase_capacity: () => t(Strings.capacity_from_purchase), // 购买容量
+            participation_capacity: () => {
+              // 邀请新用户赠送
+              const inviteUserInfo = record.inviteUserInfo;
+              if (!inviteUserInfo) return null;
+              const userId = inviteUserInfo.userId;
+              const avatar = inviteUserInfo.avatar;
+              const userName = inviteUserInfo.userName || t(Strings.guests_per_space);
+              return (
+                <div className={styles.source}>
+                  <TComponent
+                    tkey={t(Strings.capacity_from_participation)}
+                    params={{
+                      user: (
+                        <UserCardTrigger
+                          popupAlign={{
+                            points: ['tl', 'bl'],
+                            offset: [0, 8],
+                            overflow: { adjustX: true, adjustY: true },
+                          }}
+                          memberId={userId}
+                          permissionVisible={false}
+                        >
+                          <span>
+                            <UnitTag
+                              className={styles.unitTag}
+                              deletable={false}
+                              isTeam={false}
+                              unitId={userId}
+                              avatar={avatar}
+                              name={userName || t(Strings.guests_per_space)}
+                              maxWidth={100}
+                            />
+                          </span>
+                        </UserCardTrigger>
+                      ),
+                    }}
+                  />
+                </div>
+              );
+            },
+          }[source] || (() => source);
 
         return templateFn();
-      }
+      },
     },
     { title: t(Strings.attachment_capacity_details_model_capacity_size), dataIndex: 'quota' },
-    { title: t(Strings.attachment_capacity_details_model_expiry_time), dataIndex: 'expireDate', render(date) {
-      return date == '-1' ? t(Strings.attachment_capacity_details_model_expiry_time_permanent) : date;
-    } }
+    {
+      title: t(Strings.attachment_capacity_details_model_expiry_time),
+      dataIndex: 'expireDate',
+      render(date) {
+        return date == '-1' ? t(Strings.attachment_capacity_details_model_expiry_time_permanent) : date;
+      },
+    },
   ];
   const [list, setList] = useState([]);
 
@@ -130,7 +140,7 @@ export const CapacityRewardModal: FC<ICapacityRewardModalProps> = ({ onCancel })
 
   return (
     <Modal
-      title={<div>{ t(Strings.attachment_capacity_details_model_title) }</div>}
+      title={<div>{t(Strings.attachment_capacity_details_model_title)}</div>}
       visible
       className={styles.capacityRewardModal}
       width={856}
@@ -140,10 +150,12 @@ export const CapacityRewardModal: FC<ICapacityRewardModalProps> = ({ onCancel })
       zIndex={100}
     >
       <div className={styles.content}>
-        <Tabs onChange={(type) => {
-          setCurrTab(type as CapacityType);
-          setPageNo(1);
-        }}>
+        <Tabs
+          onChange={type => {
+            setCurrTab(type as CapacityType);
+            setPageNo(1);
+          }}
+        >
           <TabPane tab={t(Strings.attachment_capacity_details_model_tab_in_effect)} key={CapacityType.InEffect} />
           <TabPane tab={t(Strings.attachment_capacity_details_model_tab_expired)} key={CapacityType.Expired} />
         </Tabs>
@@ -154,7 +166,6 @@ export const CapacityRewardModal: FC<ICapacityRewardModalProps> = ({ onCancel })
 };
 
 export const expandCapacityRewardModal = () => {
-
   const div = document.createElement('div');
   document.body.appendChild(div);
 
@@ -173,14 +184,14 @@ export const expandCapacityRewardModal = () => {
 
   const render = () => {
     ReactDOM.render(
-      (
+      <ConfigProvider {...antdConfig}>
         <Provider store={store}>
           <ThemeProvider>
             <CapacityRewardModal onCancel={close} />
           </ThemeProvider>
         </Provider>
-      ),
-      div
+      </ConfigProvider>,
+      div,
     );
   };
 

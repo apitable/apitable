@@ -34,8 +34,8 @@ interface ICardProps {
   usedPercent: number;
   remainPercent: number;
 
-  titleLink?: { text: string, href?: string, onClick?: () => void };
-  titleButton?: { text: string, onClick: () => void };
+  titleLink?: { text: string; href?: string; onClick?: () => void };
+  titleButton?: { text: string; onClick: () => void };
   valueIntro?: string;
   showPercent?: boolean;
   usedTextIsFloat?: boolean;
@@ -44,14 +44,14 @@ interface ICardProps {
   level?: ISpaceLevelType;
   isMobile?: boolean;
 
-  giftUsedText: string,
-  giftTotalText: string,
-  giftUsedPercent: number,
-  giftRemainPercent: number,
-  giftRemainText: string
+  giftUsedText: string;
+  giftTotalText: string;
+  giftUsedPercent: number;
+  giftRemainPercent: number;
+  giftRemainText: string;
 }
 
-export const CapacityWithRewardCard: FC<ICardProps> = (props) => {
+export const CapacityWithRewardCard: FC<ICardProps> = props => {
   const {
     title,
 
@@ -62,7 +62,7 @@ export const CapacityWithRewardCard: FC<ICardProps> = (props) => {
     remainText,
     totalText,
     remainPercent,
-  
+
     trailColor,
     strokeColor,
     unit,
@@ -80,7 +80,7 @@ export const CapacityWithRewardCard: FC<ICardProps> = (props) => {
     giftUsedText,
     giftUsedPercent,
     giftRemainPercent,
-    giftRemainText
+    giftRemainText,
   } = props;
 
   const colors = useThemeColors();
@@ -91,8 +91,11 @@ export const CapacityWithRewardCard: FC<ICardProps> = (props) => {
   const showFakePercent = unLimited && +usedText; // 无限情况下，展示虚假的百分比 5%
   const percent = useAnimationNum({ value: showFakePercent ? 5 : usedPercent, duration: 1000, easing: 'linear', isFloat: true }) as number;
 
-  const giftPercent = useAnimationNum({ 
-    value: giftUsedPercent || .5, duration: 1000, easing: 'linear', isFloat: true 
+  const giftPercent = useAnimationNum({
+    value: giftUsedPercent || 0.5,
+    duration: 1000,
+    easing: 'linear',
+    isFloat: true,
   }) as number;
 
   const usedTitleText = useAnimationNum({ value: usedText, duration: 1000, easing: 'linear', format: true, isFloat: usedTextIsFloat });
@@ -108,86 +111,82 @@ export const CapacityWithRewardCard: FC<ICardProps> = (props) => {
    */
   const CapacityInfoWithReward = () => {
     return (
-      <div>
-        <div style={{ marginTop: 24, fontSize: 13 }}>{t(Strings.attachment_capacity_subscription_capacity)}</div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          margin: '8px 0',
-        }}>
-          <Desc
-            color={_strokeColor}
-            label={t(Strings.used)}
-            text={usedText}
-            unit={unit}
-            showPercent={showPercent}
-            usedPercent={usedPercent}
-          />
-          {
-            !unLimited &&
-            <Desc 
-              color={trailColor}
-              label={t(Strings.remain)}
-              text={remainText}
+      <div className={styles.detail}>
+        <div>
+          <div style={{ fontSize: 13 }}>{t(Strings.attachment_capacity_subscription_capacity)}</div>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              margin: '8px 0',
+            }}
+          >
+            <Desc color={_strokeColor} label={t(Strings.used)} text={usedText} unit={unit} showPercent={showPercent} usedPercent={usedPercent} />
+            {!unLimited && (
+              <Desc
+                color={trailColor}
+                label={t(Strings.remain)}
+                text={remainText}
+                unit={unit}
+                showPercent={showPercent}
+                usedPercent={remainPercent}
+              />
+            )}
+          </div>
+          <div className={styles.progressWrap} data-is-line>
+            <ProgressInCard
+              type={'line'}
+              trailColor={trailColor}
+              strokeColor={_strokeColor}
+              percent={percent}
+              showInfo={false}
+              style={{ lineHeight: '12px', color: _strokeColor }}
+            />
+          </div>
+
+          <div style={{ marginTop: 24, fontSize: 13 }}>
+            {t(Strings.attachment_capacity_gift_capacity)}
+            <span style={{ marginLeft: 8, cursor: 'pointer', color: colors.rainbowPurple5 }} onClick={() => expandInviteModal()}>
+              {t(Strings.attachment_capacity_gift_capacity_access_portal)}
+            </span>
+          </div>
+
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              margin: '8px 0',
+            }}
+          >
+            <Desc
+              color={colors.rainbowPurple5}
+              label={t(Strings.used)}
+              text={giftUsedText}
               unit={unit}
               showPercent={showPercent}
-              usedPercent={remainPercent}
+              usedPercent={giftUsedPercent}
             />
-          }
-        </div>
-        <div className={styles.progressWrap} data-is-line>
-          <ProgressInCard 
-            type={'line'}
-            trailColor={trailColor}
-            strokeColor={_strokeColor}
-            percent={percent}
-            showInfo={false}
-            style={{ lineHeight: '12px', color: _strokeColor }}
-          />
-        </div>
-
-        <div style={{ marginTop: 24, fontSize: 13 }}>
-          {t(Strings.attachment_capacity_gift_capacity)}
-          <span
-            style={{ marginLeft: 8, cursor: 'pointer', color: colors.rainbowPurple5 }} 
-            onClick={() => expandInviteModal()}
-          >{t(Strings.attachment_capacity_gift_capacity_access_portal)}</span>
-        </div>
-
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          margin: '8px 0',
-        }}>
-          <Desc
-            color={colors.rainbowPurple5}
-            label={t(Strings.used)}
-            text={giftUsedText}
-            unit={unit}
-            showPercent={showPercent}
-            usedPercent={giftUsedPercent}
-          />
-          {
-            !unLimited &&
-            <Desc 
-              color={colors.rainbowPurple1}
-              label={t(Strings.remain)}
-              text={giftRemainText}
-              unit={unit}
-              showPercent={showPercent}
-              usedPercent={giftRemainPercent}
+            {!unLimited && (
+              <Desc
+                color={colors.rainbowPurple1}
+                label={t(Strings.remain)}
+                text={giftRemainText}
+                unit={unit}
+                showPercent={showPercent}
+                usedPercent={giftRemainPercent}
+              />
+            )}
+          </div>
+          <div className={styles.progressWrap} data-is-line>
+            <ProgressInCard
+              type={'line'}
+              trailColor={colors.rainbowPurple1}
+              strokeColor={colors.rainbowPurple5}
+              percent={giftPercent}
+              showInfo={false}
+              style={{ lineHeight: '12px', color: colors.rainbowPurple5 }}
             />
-          }
-        </div>
-        <div className={styles.progressWrap} data-is-line>
-          <ProgressInCard 
-            type={'line'}
-            trailColor={colors.rainbowPurple1}
-            strokeColor={colors.rainbowPurple5}
-            percent={giftPercent}
-            showInfo={false}
-            style={{ lineHeight: '12px', color: colors.rainbowPurple5 }}
-          />
+          </div>
         </div>
       </div>
     );
@@ -196,19 +195,17 @@ export const CapacityWithRewardCard: FC<ICardProps> = (props) => {
   return (
     <div className={classNames(styles.card, className)} style={style}>
       <CardTitle isMobile={isMobile} title={title} tipTitle={titleTip} link={titleLink} button={titleButton} />
-      <div className={styles.cardNumber} >
-        <span className={styles.usedNum}>
-          {usedTitleText}
-        </span>
-        {
-          !hiddenUnLimitedText && <>
+      <div className={styles.cardNumber}>
+        <span className={styles.usedNum}>{usedTitleText}</span>
+        {!hiddenUnLimitedText && (
+          <>
             <span className={classNames(!unLimited && styles.totalNum, { [styles.unlimited]: unLimited })}>
               /{unLimited ? t(Strings.unlimited) : allTotalText}
             </span>
             <span className={styles.totalUnit}>{unit}</span>
             {valueIntro && <span className={styles.numIntro}>({valueIntro})</span>}
           </>
-        }
+        )}
       </div>
       <CapacityInfoWithReward />
     </div>
@@ -219,12 +216,12 @@ export const CapacityWithRewardCard: FC<ICardProps> = (props) => {
  * 用量描述
  */
 interface IDescProps {
-  color: string,
-  label: string,
-  text: string,
-  unit?: string,
-  showPercent?: boolean
-  usedPercent: number,
+  color: string;
+  label: string;
+  text: string;
+  unit?: string;
+  showPercent?: boolean;
+  usedPercent: number;
 }
 
 const Desc: FC<IDescProps> = ({ color, label, text, unit, showPercent, usedPercent }) => {
@@ -234,8 +231,14 @@ const Desc: FC<IDescProps> = ({ color, label, text, unit, showPercent, usedPerce
       <span>{label}</span>
       <span className={styles.customFont} style={{ fontSize: 14 }}>
         {text}
-      </span>{unit}{' '}
-      {showPercent && <span className={styles.customFont}>({t(Strings.proportion)}{usedPercent}%)</span>}
+      </span>
+      {unit}{' '}
+      {showPercent && (
+        <span className={styles.customFont}>
+          ({t(Strings.proportion)}
+          {usedPercent}%)
+        </span>
+      )}
     </Typography>
   );
 };
@@ -250,7 +253,7 @@ interface IProgressInCardProps extends ProgressProps {
   color?: string;
 }
 
-const ProgressInCard: FC<IProgressInCardProps> = (props) => {
+const ProgressInCard: FC<IProgressInCardProps> = props => {
   const color = props.color;
 
   const colors = useThemeColors();
@@ -260,18 +263,16 @@ const ProgressInCard: FC<IProgressInCardProps> = (props) => {
     strokeWidth: 6,
     strokeColor: 'red',
     trailColor: colors.lineColor,
-    format: percent => <Typography
-      variant="h3"
-      color={color}
-      className={styles.progressFormat}
-    >
-      {percent}
-      <PercentOutlined color={color} />
-    </Typography>,
+    format: percent => (
+      <Typography variant="h3" color={color} className={styles.progressFormat}>
+        {percent}
+        <PercentOutlined color={color} />
+      </Typography>
+    ),
   });
   const progressConfig = {
     ...getDefaultProgressConfig(color),
-    ...props
+    ...props,
   };
   return <Progress {...progressConfig} />;
 };
