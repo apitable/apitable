@@ -45,8 +45,13 @@ async function notify(uploadCertificate: IGetUploadCertificateResponse, type: Up
 
 export async function uploadAttachToS3(optional: IUploadFileForSaaS): Promise<any> {
   const { nodeId, fileType, file, axiosConfig, data = '' } = optional;
-  const uploadCertificates = await getCertificate({ count: 1, type: fileType, data, nodeId });
   const _fileType = file.type;
+
+  if(_fileType==='text/html'){
+    return;
+  }
+
+  const uploadCertificates = await getCertificate({ count: 1, type: fileType, data, nodeId });
 
   if (!Array.isArray(uploadCertificates)) {
     // 如果在获取预签名时报错，就直接返回预签名的报错信息
