@@ -1,19 +1,56 @@
 import { useTheme } from '@vikadata/components';
 import {
-  BasicValueType, CellType, CollaCommandName, DateUnitType, DEFAULT_WORK_DAYS, Events, Field, ICell, IGanttViewProperty, ILinearRowRecord,
-  ISetRecordOptions, KONVA_DATASHEET_ID, Player, RowHeightLevel, Selectors, StoreActions, Strings, t, ViewType,
+  BasicValueType,
+  CellType,
+  CollaCommandName,
+  DateUnitType,
+  DEFAULT_WORK_DAYS,
+  Events,
+  Field,
+  ICell,
+  IGanttViewProperty,
+  ILinearRowRecord,
+  ISetRecordOptions,
+  KONVA_DATASHEET_ID,
+  Player,
+  RowHeightLevel,
+  Selectors,
+  StoreActions,
+  Strings,
+  t,
+  ViewType,
 } from '@vikadata/core';
 import { useCreation, useMount, useUpdate, useUpdateEffect } from 'ahooks';
 import classNames from 'classnames';
 import { isEqual } from 'lodash';
 import {
-  cancelTimeout, GanttCoordinate, getDetailByTargetName, getGanttGroupId, getLinearRowHeight, getTimeStampOfDate, ICellScrollState, ISplitterProps,
-  KonvaGanttViewContext, requestTimeout,
+  cancelTimeout,
+  GanttCoordinate,
+  getDetailByTargetName,
+  getGanttGroupId,
+  getLinearRowHeight,
+  getTimeStampOfDate,
+  ICellScrollState,
+  ISplitterProps,
+  KonvaGanttViewContext,
+  requestTimeout,
 } from 'pc/components/gantt_view';
 import GanttStage from 'pc/components/gantt_view/gantt_stage/gantt_stage';
 import {
-  DEFAULT_POINT_POSITION, DEFAULT_TOOLTIP_PROPS, DomGrid, GRID_BOTTOM_STAT_HEIGHT, GRID_ROW_HEAD_WIDTH, GRID_SCROLL_REMAIN_SPACING, GridCoordinate,
-  IDraggingOutlineInfoProps, IndicesMap, ITooltipInfo, KonvaGridContext, KonvaGridViewContext, useGridMessage, useScrollbarTip
+  DEFAULT_POINT_POSITION,
+  DEFAULT_TOOLTIP_PROPS,
+  DomGrid,
+  GRID_BOTTOM_STAT_HEIGHT,
+  GRID_ROW_HEAD_WIDTH,
+  GRID_SCROLL_REMAIN_SPACING,
+  GridCoordinate,
+  IDraggingOutlineInfoProps,
+  IndicesMap,
+  ITooltipInfo,
+  KonvaGridContext,
+  KonvaGridViewContext,
+  useGridMessage,
+  useScrollbarTip,
 } from 'pc/components/konva_grid';
 import { useDisabledOperateWithMirror } from 'pc/components/tool_bar';
 import { useDispatch, useResponsive, useSetState } from 'pc/hooks';
@@ -34,8 +71,17 @@ import { GANTT_HEADER_HEIGHT, GANTT_MONTH_HEADER_HEIGHT } from './constant';
 import { DomGantt } from './dom_gantt';
 import { useGanttScroller } from './hooks/use_gantt_scroller';
 import {
-  AreaType, CellBound, IGanttGroupMap, IScrollHandler, IScrollOptions, IScrollState, PointPosition, ScrollViewType, TimeoutID, ITaskLineSetting,
-  ITargetTaskInfo
+  AreaType,
+  CellBound,
+  IGanttGroupMap,
+  IScrollHandler,
+  IScrollOptions,
+  IScrollState,
+  PointPosition,
+  ScrollViewType,
+  TimeoutID,
+  ITaskLineSetting,
+  ITargetTaskInfo,
 } from './interface';
 import styles from './style.module.less';
 import { getAllTaskLine, getAllCycleDAG, autoTaskScheduling, getCollapsedLinearRows } from './utils';
@@ -46,10 +92,7 @@ interface IGanttViewProps {
 }
 
 export const getGanttHeaderHeight = (dateUnitType: DateUnitType): number => {
-  return [
-    DateUnitType.Month,
-    DateUnitType.Week
-  ].includes(dateUnitType) ? GANTT_MONTH_HEADER_HEIGHT : GANTT_HEADER_HEIGHT;
+  return [DateUnitType.Month, DateUnitType.Week].includes(dateUnitType) ? GANTT_MONTH_HEADER_HEIGHT : GANTT_HEADER_HEIGHT;
 };
 
 export const DEFAULT_SCROLL_STATE = {
@@ -58,7 +101,7 @@ export const DEFAULT_SCROLL_STATE = {
   isScrolling: false,
 };
 
-export const GanttView: FC<IGanttViewProps> = memo((props) => {
+export const GanttView: FC<IGanttViewProps> = memo(props => {
   const { width: _containerWidth, height: containerHeight } = props;
   const {
     datasheetId,
@@ -105,7 +148,7 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
     mirrorId,
     isViewLock,
     exportViewId,
-  } = useSelector((state) => {
+  } = useSelector(state => {
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const view = Selectors.getCurrentView(state)! as IGanttViewProperty;
     const rowHeightLevel = view.rowHeightLevel || RowHeightLevel.Short;
@@ -193,12 +236,13 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
    * 当前兼容的情况：
    * 兼容用户没有对应日期列的权限，但此时不需要弹出弹窗，因为有日期列存在
    */
-  const dateTimeTypeFields = useMemo(() => Object.values(entityFieldMap).filter(field => {
-    return [
-      Field.bindModel(field).basicValueType,
-      Field.bindModel(field).innerBasicValueType
-    ].includes(BasicValueType.DateTime);
-  }), [entityFieldMap]);
+  const dateTimeTypeFields = useMemo(
+    () =>
+      Object.values(entityFieldMap).filter(field => {
+        return [Field.bindModel(field).basicValueType, Field.bindModel(field).innerBasicValueType].includes(BasicValueType.DateTime);
+      }),
+    [entityFieldMap],
+  );
 
   // 设置新增一行的行为状态
   const [canAppendRow, setCanAppendRow] = useState(true);
@@ -219,7 +263,7 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
   const [cellScrollState, setCellScrollState] = useSetState<ICellScrollState>({
     scrollTop: 0,
     totalHeight: 0,
-    isOverflow: false
+    isOverflow: false,
   });
   const { scrollLeft, scrollTop, isScrolling } = ganttScrollState;
   // 落点
@@ -253,7 +297,7 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
 
   // 任务关联相关
   const [isTaskLineDrawing, setIsTaskLineDrawing] = useState<boolean>(false);
-  const [targetTaskInfo, setTargetTaskInfo] = useState<ITargetTaskInfo| null>(null);
+  const [targetTaskInfo, setTargetTaskInfo] = useState<ITargetTaskInfo | null>(null);
   const [taskLineSetting, setTaskLineSetting] = useState<ITaskLineSetting | null>(null);
 
   const rowIndicesMap = useMemo(() => {
@@ -330,46 +374,51 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
    * 当前 gantt 的数据实例
    * 提供与时间轴和甘特图坐标相关的方法
    */
-  const ganttInstance = useCreation<GanttCoordinate>(() => new GanttCoordinate({
-    rowHeight,
-    columnWidth: 0,
-    rowCount,
-    columnCount: ganttVisibleColumns.length,
-    containerWidth: ganttWidth,
-    containerHeight,
-    dateUnitType,
-    rowHeightLevel,
-    rowInitSize: getGanttHeaderHeight(dateUnitType),
-    rowIndicesMap,
-    workDays,
-    onlyCalcWorkDay
-  }), []);
+  const ganttInstance = useCreation<GanttCoordinate>(
+    () =>
+      new GanttCoordinate({
+        rowHeight,
+        columnWidth: 0,
+        rowCount,
+        columnCount: ganttVisibleColumns.length,
+        containerWidth: ganttWidth,
+        containerHeight,
+        dateUnitType,
+        rowHeightLevel,
+        rowInitSize: getGanttHeaderHeight(dateUnitType),
+        rowIndicesMap,
+        workDays,
+        onlyCalcWorkDay,
+      }),
+    [],
+  );
 
   /**
    * 当前 gantt 的左侧任务栏数据实例
    * 提供与任务栏坐标相关的方法
    */
-  const gridInstance = useCreation<GridCoordinate>(() => new GridCoordinate({
-    rowHeight,
-    columnWidth: 0,
-    rowCount,
-    columnCount: gridVisibleColumns.length,
-    containerWidth: gridWidth,
-    containerHeight,
-    rowIndicesMap,
-    columnIndicesMap,
-    autoHeadHeight,
-    rowInitSize: getGanttHeaderHeight(dateUnitType),
-    columnInitSize: GRID_ROW_HEAD_WIDTH,
-    rowHeightLevel,
-    frozenColumnCount: 1,
-  }), [rowCount, rowHeight, rowIndicesMap, JSON.stringify(columnIndicesMap), rowHeightLevel, dateUnitType, autoHeadHeight]);
+  const gridInstance = useCreation<GridCoordinate>(
+    () =>
+      new GridCoordinate({
+        rowHeight,
+        columnWidth: 0,
+        rowCount,
+        columnCount: gridVisibleColumns.length,
+        containerWidth: gridWidth,
+        containerHeight,
+        rowIndicesMap,
+        columnIndicesMap,
+        autoHeadHeight,
+        rowInitSize: getGanttHeaderHeight(dateUnitType),
+        columnInitSize: GRID_ROW_HEAD_WIDTH,
+        rowHeightLevel,
+        frozenColumnCount: 1,
+      }),
+    [rowCount, rowHeight, rowIndicesMap, JSON.stringify(columnIndicesMap), rowHeightLevel, dateUnitType, autoHeadHeight],
+  );
 
   const { totalWidth: ganttTotalWidth, todayIndex, columnThreshold, unitType, rowInitSize } = ganttInstance;
-  const totalHeight = Math.max(
-    ganttInstance.totalHeight + GRID_SCROLL_REMAIN_SPACING,
-    containerHeight - rowInitSize - GRID_BOTTOM_STAT_HEIGHT
-  ); // 甘特图总高
+  const totalHeight = Math.max(ganttInstance.totalHeight + GRID_SCROLL_REMAIN_SPACING, containerHeight - rowInitSize - GRID_BOTTOM_STAT_HEIGHT); // 甘特图总高
   const { realTargetName, areaType } = pointPosition;
   const { isOverflow } = cellScrollState;
 
@@ -394,14 +443,10 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
     totalHeight,
     isCellScrolling,
     cellVerticalBarRef,
-    pointAreaType: isMobile ? AreaType.Gantt : areaType
+    pointAreaType: isMobile ? AreaType.Gantt : areaType,
   });
 
-  const {
-    onMouseEnter,
-    clearTooltip: clearScrollbarTooltip,
-    tooltip: scrollbarTooltip
-  } = useScrollbarTip({
+  const { onMouseEnter, clearTooltip: clearScrollbarTooltip, tooltip: scrollbarTooltip } = useScrollbarTip({
     horizontalBarRef: ganttHorizontalBarRef,
     containerWidth,
     totalWidth: ganttTotalWidth,
@@ -409,7 +454,7 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
 
   const clearTooltipInfo = useCallback(() => setTooltipInfo(DEFAULT_TOOLTIP_PROPS), [setTooltipInfo]);
 
-  const handleGridHorizontalScroll = (e) => {
+  const handleGridHorizontalScroll = e => {
     const { scrollLeft } = e.target;
     setGridScrollState({
       scrollLeft,
@@ -419,7 +464,7 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
     resetScrollingDebounced();
   };
 
-  const handleGanttHorizontalScroll = (e) => {
+  const handleGanttHorizontalScroll = e => {
     const { scrollLeft } = e.target;
     setGanttScrollState({
       scrollLeft,
@@ -429,7 +474,7 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
     resetScrollingDebounced();
   };
 
-  const handleVerticalScroll = (e) => {
+  const handleVerticalScroll = e => {
     const { scrollTop } = e.target;
     setGanttScrollState({
       scrollTop,
@@ -452,14 +497,11 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
     if (resetScrollingTimeoutID.current !== null) {
       cancelTimeout(resetScrollingTimeoutID.current);
     }
-    resetScrollingTimeoutID.current = requestTimeout(
-      resetScrolling,
-      150,
-    );
+    resetScrollingTimeoutID.current = requestTimeout(resetScrolling, 150);
   }, [resetScrolling]);
 
   // 设置鼠标样式
-  const setMouseStyle = useCallback((mouseStyle: string) => containerRef.current.style.cursor = mouseStyle, []);
+  const setMouseStyle = useCallback((mouseStyle: string) => (containerRef.current.style.cursor = mouseStyle), []);
 
   useGridMessage({
     text: t(Strings.freeze_tips_when_windows_too_narrow_in_gantt),
@@ -468,45 +510,49 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
   });
 
   // 滚动到某个单元格
-  const scrollToItem = useCallback((
-    { rowIndex, columnIndex }: { rowIndex?: number, columnIndex?: number },
-  ) => {
-    let _scrollTop;
-    let _scrollLeft;
-    if (rowIndex != null) {
-      const offset = gridInstance.getRowOffset(rowIndex);
-      const { rowInitSize } = gridInstance;
-      if (offset - rowInitSize < scrollTop) {
-        _scrollTop = offset - rowInitSize;
+  const scrollToItem = useCallback(
+    ({ rowIndex, columnIndex }: { rowIndex?: number; columnIndex?: number }) => {
+      let _scrollTop;
+      let _scrollLeft;
+      if (rowIndex != null) {
+        const offset = gridInstance.getRowOffset(rowIndex);
+        const { rowInitSize } = gridInstance;
+        if (offset - rowInitSize < scrollTop) {
+          _scrollTop = offset - rowInitSize;
+        }
+        if (offset + rowHeight > scrollTop + containerHeight - GRID_BOTTOM_STAT_HEIGHT) {
+          _scrollTop = offset - containerHeight + rowHeight + GRID_BOTTOM_STAT_HEIGHT;
+        }
       }
-      if (offset + rowHeight > scrollTop + containerHeight - GRID_BOTTOM_STAT_HEIGHT) {
-        _scrollTop = offset - containerHeight + rowHeight + GRID_BOTTOM_STAT_HEIGHT;
+      if (columnIndex != null && columnIndex !== 0) {
+        const offset = gridInstance.getColumnOffset(columnIndex);
+        if (offset - GRID_ROW_HEAD_WIDTH < scrollLeft) {
+          _scrollLeft = offset - GRID_ROW_HEAD_WIDTH - columnIndicesMap[0];
+        }
+        const columnWidth = columnIndicesMap[columnIndex];
+        if (offset + columnWidth > scrollLeft + containerWidth) {
+          _scrollLeft = offset - containerWidth + columnWidth;
+        }
       }
-    }
-    if (columnIndex != null && columnIndex !== 0) {
-      const offset = gridInstance.getColumnOffset(columnIndex);
-      if (offset - GRID_ROW_HEAD_WIDTH < scrollLeft) {
-        _scrollLeft = offset - GRID_ROW_HEAD_WIDTH - columnIndicesMap[0];
-      }
-      const columnWidth = columnIndicesMap[columnIndex];
-      if (offset + columnWidth > scrollLeft + containerWidth) {
-        _scrollLeft = offset - containerWidth + columnWidth;
-      }
-    }
-    scrollTo({
-      scrollTop: _scrollTop,
-      scrollLeft: _scrollLeft
-    });
-  }, [columnIndicesMap, containerHeight, containerWidth, gridInstance, rowHeight, scrollLeft, scrollTo, scrollTop]);
+      scrollTo({
+        scrollTop: _scrollTop,
+        scrollLeft: _scrollLeft,
+      });
+    },
+    [columnIndicesMap, containerHeight, containerWidth, gridInstance, rowHeight, scrollLeft, scrollTo, scrollTop],
+  );
 
   // 返回某个时间
-  const backTo = useCallback((dateTime, offsetX: number = -ganttWidth / 2) => {
-    ganttInstance.initTimeline(dateUnitType, dateTime);
-    const columnIndex = ganttInstance.getIndexFromStartDate(dateTime, unitType);
-    const currentScrollLeft = ganttInstance.getColumnOffset(columnIndex) + offsetX;
-    scrollTo({ scrollLeft: currentScrollLeft }, AreaType.Gantt);
-    forceRender();
-  }, [dateUnitType, forceRender, ganttWidth, ganttInstance, scrollTo, unitType]);
+  const backTo = useCallback(
+    (dateTime, offsetX: number = -ganttWidth / 2) => {
+      ganttInstance.initTimeline(dateUnitType, dateTime);
+      const columnIndex = ganttInstance.getIndexFromStartDate(dateTime, unitType);
+      const currentScrollLeft = ganttInstance.getColumnOffset(columnIndex) + offsetX;
+      scrollTo({ scrollLeft: currentScrollLeft }, AreaType.Gantt);
+      forceRender();
+    },
+    [dateUnitType, forceRender, ganttWidth, ganttInstance, scrollTo, unitType],
+  );
 
   /**
    * 设置起止字段时间，并保留日期内的时间
@@ -529,11 +575,13 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
     if (startUnitIndex != null && startField != null) {
       data.push(getData(startFieldId, startUnitIndex));
     }
-    if (endUnitIndex != null && endField != null && !isSameField) {
+    if (endUnitIndex != null && endField != null) {
       const endData = getData(endFieldId, endUnitIndex);
-      data.push(endData);
+      if (!isSameField) {
+        data.push(endData);
+      }
       // 如果开启了自动编排而且结束时间遭到了修改
-      if(autoTaskLayout) {
+      if (autoTaskLayout) {
         autoSingleTask(endData);
       }
     }
@@ -541,16 +589,19 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
       cmd: CollaCommandName.SetRecords,
       datasheetId,
       data,
-    }); 
+    });
   };
 
   // 上一页/下一页
-  const scrollIntoView = useCallback((type: ScrollViewType) => {
-    const scrollLeft = ganttHorizontalBarRef.current.scrollLeft;
-    const currentScrollLeft = type === ScrollViewType.Next ? scrollLeft + ganttWidth : scrollLeft - ganttWidth;
-    scrollTo({ scrollLeft: currentScrollLeft }, AreaType.Gantt);
-    forceRender();
-  }, [forceRender, ganttWidth, scrollTo]);
+  const scrollIntoView = useCallback(
+    (type: ScrollViewType) => {
+      const scrollLeft = ganttHorizontalBarRef.current.scrollLeft;
+      const currentScrollLeft = type === ScrollViewType.Next ? scrollLeft + ganttWidth : scrollLeft - ganttWidth;
+      scrollTo({ scrollLeft: currentScrollLeft }, AreaType.Gantt);
+      forceRender();
+    },
+    [forceRender, ganttWidth, scrollTo],
+  );
 
   const scrollHandler: IScrollHandler = useCreation(() => {
     let isStop = false;
@@ -565,7 +616,7 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
         return;
       }
       const { rowSpeed, columnSpeed, scrollCb } = _scrollOptions;
-      const options: { scrollLeft?: number; scrollTop?: number; } = {};
+      const options: { scrollLeft?: number; scrollTop?: number } = {};
       if (rowSpeed != null) {
         const currentScrollTop = Math.max(verticalBarRef.current.scrollTop + rowSpeed, 0);
         options.scrollTop = currentScrollTop;
@@ -670,7 +721,7 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
   // 限制滚动阈值，实现虚拟滚动
   useUpdateEffect(() => {
     if (scrollLeft <= 0) {
-      if(isTaskLineDrawing) {
+      if (isTaskLineDrawing) {
         scrollHandler.stopScroll();
         return;
       }
@@ -684,14 +735,13 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
     // 与最大滚动距离的差值
     const scrollMaxDiff = scrollLeft - scrollMaxSize;
     if (scrollMaxDiff >= 0) {
-      if(isTaskLineDrawing) {
+      if (isTaskLineDrawing) {
         scrollHandler.stopScroll();
         return;
       }
       ganttInstance.nextTimelineStep();
-      const currentScrollLeft = (
-        ganttInstance.getColumnOffset(ganttInstance.columnThreshold) - ganttHorizontalBarRef.current.clientWidth + scrollMaxDiff
-      );
+      const currentScrollLeft =
+        ganttInstance.getColumnOffset(ganttInstance.columnThreshold) - ganttHorizontalBarRef.current.clientWidth + scrollMaxDiff;
       scrollTo({ scrollLeft: currentScrollLeft }, AreaType.Gantt);
       forceRender();
     }
@@ -767,20 +817,19 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
 
   // 任务关联相关
   const linkCycleEdges = useMemo(() => {
-    
-    if(!linkFieldId) {
+    if (!linkFieldId) {
       return {
         taskEdges: [],
         cycleEdges: [],
-        targetAdj: null
+        targetAdj: null,
       };
     }
     // target adjacency list
     const targetAdj = {};
-    const nodeIdMap : string[] = [];
+    const nodeIdMap: string[] = [];
     visibleRows.forEach(row => {
       const linkCellValue = Selectors.getCellValue(state, snapshot, row.recordId, linkFieldId) || [];
-      if(linkCellValue.length > 0) {
+      if (linkCellValue.length > 0) {
         targetAdj[row.recordId] = linkCellValue;
       }
       nodeIdMap.push(row.recordId);
@@ -793,73 +842,68 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
       cycleEdges,
       targetAdj,
       sourceAdj,
-      nodeIdMap
+      nodeIdMap,
     };
   }, [visibleRows, linkFieldId, state, snapshot]);
-  
+
   // 根据分组隐藏信息补充ganttLinearRows
   const ganttLinearRowsAfterCollapseMap = useMemo(() => {
-
     return getCollapsedLinearRows(ganttLinearRows, groupCollapseIds);
-
   }, [ganttLinearRows, groupCollapseIds]);
 
   const rowsCellValueMap = useMemo(() => {
-  
-    if(!linkFieldId || !startFieldId || !endFieldId) {
+    if (!linkFieldId || !startFieldId || !endFieldId) {
       return {
-        cellValueMap: null
+        cellValueMap: null,
       };
     }
     const groupingCollapseSet = new Set<string>(groupCollapseIds);
 
     const cellValueMap = {};
     visibleRows.forEach(row => {
-      
       const startTime = Selectors.getCellValue(state, snapshot, row.recordId, startFieldId);
       const endTime = Selectors.getCellValue(state, snapshot, row.recordId, endFieldId);
-   
-      const { groupHeadRecordId, groupDepth }= ganttLinearRowsAfterCollapseMap.get(row.recordId);
+
+      const { groupHeadRecordId, groupDepth } = ganttLinearRowsAfterCollapseMap.get(row.recordId);
       const isCollapse = groupingCollapseSet.has(groupHeadRecordId + '_' + groupDepth);
-     
+
       let rowIndex;
-      if(isCollapse) {
+      if (isCollapse) {
         rowIndex = rowsIndexMap.get(`${CellType.GroupTab}_${groupHeadRecordId}`);
       } else {
         rowIndex = rowsIndexMap.get(`${CellType.Record}_${row.recordId}`);
       }
 
-      if(startTime && endTime) {
+      if (startTime && endTime) {
         cellValueMap[row.recordId] = {
           startTime,
           endTime,
           isCollapse,
           rowIndex,
-          groupHeadRecordId
+          groupHeadRecordId,
         };
       }
-   
     });
     return cellValueMap;
   }, [visibleRows, linkFieldId, groupCollapseIds, rowsIndexMap, startFieldId, endFieldId, state, snapshot, ganttLinearRowsAfterCollapseMap]);
 
   // 单任务修改自动编排
-  const autoSingleTask = (endData) => {
-    if(!linkFieldId || !startFieldId || !endFieldId) {
+  const autoSingleTask = endData => {
+    if (!linkFieldId || !startFieldId || !endFieldId) {
       return;
     }
- 
+
     const startTimeIsComputedField = Field.bindModel(fieldMap[startFieldId]).isComputed;
     const endTimeISComputedField = Field.bindModel(fieldMap[endFieldId]).isComputed;
-    if(startTimeIsComputedField || endTimeISComputedField) {
+    if (startTimeIsComputedField || endTimeISComputedField) {
       Message.warning({ content: t(Strings.gantt_cant_connect_when_computed_field) });
       return;
     }
-    const commandData : ISetRecordOptions[] = autoTaskScheduling(visibleRows, state, snapshot, ganttStyle, endData);
-    
+    const commandData: ISetRecordOptions[] = autoTaskScheduling(visibleRows, state, snapshot, ganttStyle, endData);
+
     resourceService.instance?.commandManager.execute({
       cmd: CollaCommandName.SetRecords,
-      data: commandData
+      data: commandData,
     });
   };
 
@@ -953,7 +997,7 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
     targetTaskInfo,
     setTargetTaskInfo,
     taskLineSetting,
-    setTaskLineSetting
+    setTaskLineSetting,
   };
 
   return (
@@ -989,11 +1033,7 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
                       setPointPosition={setPointPosition}
                       scrollIntoView={scrollIntoView}
                     />
-                    {
-                      exportViewId != null &&
-                      exportViewId === view.id &&
-                      <GanttExport />
-                    }
+                    {exportViewId != null && exportViewId === view.id && <GanttExport />}
                   </KonvaGanttViewContext.Provider>
                 </KonvaGridViewContext.Provider>
               </div>
@@ -1060,15 +1100,7 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
               </div>
             </div>
           }
-          panelRight={
-            <div style={{ width: '100%', height: '100%' }}>
-              {
-                !isMobile &&
-                settingPanelVisible &&
-                <SettingPanel />
-              }
-            </div>
-          }
+          panelRight={<div style={{ width: '100%', height: '100%' }}>{!isMobile && settingPanelVisible && <SettingPanel />}</div>}
           primary="second"
           split="vertical"
           onChange={onPanelSizeChange}
@@ -1090,18 +1122,10 @@ export const GanttView: FC<IGanttViewProps> = memo((props) => {
         />
 
         {/* 甘特图 DOM 坐标系 */}
-        <DomGantt
-          containerWidth={ganttViewWidth}
-          containerHeight={containerHeight}
-          gridWidth={gridWidth}
-          gridVisible={gridVisible}
-        />
+        <DomGantt containerWidth={ganttViewWidth} containerHeight={containerHeight} gridWidth={gridWidth} gridVisible={gridVisible} />
 
         {/* 创建列模态框 */}
-        {
-          !dateTimeTypeFields.length &&
-          <CreateFieldModal />
-        }
+        {!dateTimeTypeFields.length && <CreateFieldModal />}
       </div>
     </KonvaGridContext.Provider>
   );

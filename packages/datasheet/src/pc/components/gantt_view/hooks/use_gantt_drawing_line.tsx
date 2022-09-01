@@ -109,7 +109,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
     const sourceAdjCopy = fastCloneDeep(sourceAdj);
     const nodeIdMapCopy = fastCloneDeep(nodeIdMap);
 
-    sourceAdjCopy[sourceId] = sourceAdjCopy[sourceId] ? sourceAdjCopy[sourceId].push(targetId) : [targetId];
+    sourceAdjCopy[sourceId] = sourceAdjCopy[sourceId] ? [...sourceAdjCopy[sourceId], targetId] : [targetId];
 
     if (!nodeIdMapCopy.includes(sourceId)) nodeIdMapCopy.push(sourceId);
     if (!nodeIdMapCopy.includes(targetId)) nodeIdMapCopy.push(targetId);
