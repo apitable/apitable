@@ -15973,6 +15973,11 @@
             "en_US": "{\n \"element\": \".style_templateItem__1UDe0\"\n}\n",
             "zh_HK": "{\n \"element\": \".style_templateItem__1UDe0\"\n}\n"
         },
+        "player_step_ui_config_160": {
+            "zh_CN": "{\n  \"element\": \".permission_setting_class\"\n }",
+            "en_US": "{\n  \"element\": \".permission_setting_class\"\n }",
+            "zh_HK": "{\n  \"element\": \".permission_setting_class\"\n }"
+        },
         "player_step_ui_config_17": {
             "zh_CN": "{\n \"element\": \"#TEMPLATE_CENTER_USE_TEMPLATE_BTN>button\", \n\"placement\": \"rightBottom\",\n\"offsetY\": 20,\n \"title\": \"使用模板教程\", \n\"description\": \"点击左侧按钮使用模板\", \"children\":\"\" \n}",
             "en_US": "{\n \"element\": \"#TEMPLATE_CENTER_USE_TEMPLATE_BTN>button\", \n\"placement\": \"rightBottom\",\n\"offsetY\": 20,\n \"title\": \"How to use a template\", \n\"description\": \"Click the button on the left to use the template\", \"children\":\"\" \n}",

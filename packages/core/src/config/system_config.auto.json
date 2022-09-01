@@ -4868,7 +4868,7 @@
             },
             "95": {
                 "completeIndex": 0,
-                "steps": "[[156]]"
+                "steps": "[[156,160]]"
             },
             "96": {
                 "completeIndex": 0,
@@ -6348,6 +6348,11 @@
                     "set_wizard_completed({\"curWizard\": true})",
                     "open_guide_next_step({\"clearAllPrevUi\":true})"
                 ]
+            },
+            "160": {
+                "uiConfigId": "player_step_ui_config_160",
+                "uiType": "breath",
+                "uiConfig": "{\n  \"element\": \".permission_setting_class\"\n }"
             }
         }
     },
