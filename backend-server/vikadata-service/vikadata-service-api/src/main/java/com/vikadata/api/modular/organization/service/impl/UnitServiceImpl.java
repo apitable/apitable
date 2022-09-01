@@ -210,6 +210,7 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
                     unitInfoVo.setIsNickNameModified(baseInfo.getIsNickNameModified());
                     unitInfoVo.setIsMemberNameModified(baseInfo.getIsMemberNameModified());
                     unitInfoVo.setTeam(memberTeamMap.get(unitEntity.getUnitRefId()));
+                    unitInfoVo.setEmail(baseInfo.getEmail());
                 }
                 // 冷静期/已注销用户
                 if (baseInfo == null || !baseInfo.getIsPaused()) {
