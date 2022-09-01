@@ -29,7 +29,7 @@
     <select id="selectByTenantId" resultType="com.vikadata.entity.SocialTenantDepartmentBindEntity">
         SELECT *
         FROM vika_social_tenant_department_bind
-        WHERE tenant_id = #{tenantId} AND space_id = #{spaceId}
+        WHERE tenant_id = #{tenantId} AND space_id = #{spaceId} GROUP BY tenant_department_id
     </select>
 
     <delete id="deleteByTenantDepartmentId">
