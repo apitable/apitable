@@ -9,7 +9,7 @@ import {
   KonvaGanttViewContext,
   GanttCoordinate,
   IScrollState,
-  generateTargetName,
+  generateTargetName
 } from "pc/components/gantt_view";
 import {
   CollaCommandName,
@@ -18,12 +18,12 @@ import {
   ConfigConstant,
   t,
   Strings,
-  fastCloneDeep,
+  fastCloneDeep
 } from "@vikadata/core";
 import { Message } from "@vikadata/components";
 import {
   getAllCycleDAG,
-  getTaskLineName,
+  getTaskLineName
 } from "pc/components/gantt_view/utils/task_line";
 import { onDragScrollSpacing } from "pc/components/gantt_view/utils";
 
@@ -60,10 +60,11 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
     isTaskLineDrawing,
     dragTaskId,
     isLocking,
-    linkCycleEdges,
+    linkCycleEdges
   } = useContext(KonvaGanttViewContext);
-  const { snapshot, fieldPermissionMap, fieldMap } =
-    useContext(KonvaGridViewContext);
+  const { snapshot, fieldPermissionMap, fieldMap } = useContext(
+    KonvaGridViewContext
+  );
   const { linkFieldId, startFieldId, endFieldId } = ganttStyle;
   const state = store.getState();
   const { rowHeight, columnWidth } = instance;
@@ -91,7 +92,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
 
   if (!transformerId || dragTaskId || !linkField || isLocking) {
     return {
-      drawingLine: null,
+      drawingLine: null
     };
   }
   const sourceRecordId = isTaskLineDrawing
@@ -100,39 +101,35 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
 
   if (!taskMap[sourceRecordId] && !isTaskLineDrawing) {
     return {
-      drawingLine: null,
+      drawingLine: null
     };
   }
 
   if (!isTaskLineDrawing) {
     taskBlock.current = {
       info: taskMap[sourceRecordId],
-      id: sourceRecordId,
+      id: sourceRecordId
     };
   }
 
-  const {
-    x: taskX,
-    y: taskY,
-    taskWidth,
-  } = taskBlock.current.info || taskMap[sourceRecordId];
+  const { x: taskX, y: taskY, taskWidth } =
+    taskBlock.current.info || taskMap[sourceRecordId];
 
   const x =
-    taskWidth > columnWidth ? taskX + taskWidth - 16 : taskX + columnWidth - 16;
+    taskWidth >
+    (columnWidth ? taskX + taskWidth - 16 : taskX + columnWidth - 16);
   const y = taskY + rowHeight - 4;
 
   // 计算当前鼠标位置在哪个task内
   const includeTask = (targetX: number, targetY: number) => {
     let res = "";
-    Object.keys(taskMap).forEach((task) => {
+    Object.keys(taskMap).forEach(task => {
       if (task === "taskListlength") {
         return;
       }
-      const {
-        x: taskX2,
-        y: taskY2,
-        taskWidth: targetTaskwidth,
-      } = taskMap[task];
+      const { x: taskX2, y: taskY2, taskWidth: targetTaskwidth } = taskMap[
+        task
+      ];
       if (
         targetX <= taskX2 + targetTaskwidth &&
         targetX >= taskX2 &&
@@ -198,7 +195,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
     arrowRef?.current?.dashEnabled(dashEnabled);
   };
 
-  const onDragMove = (e) => {
+  const onDragMove = e => {
     const node = e.target;
     const curX = node.x();
     const curY = node.y();
@@ -214,7 +211,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
         x,
         curY,
         scrollLeft + pointX - gridWidth,
-        curY,
+        curY
       ]);
     };
     const verticalScrollCb = ({ scrollTop }) =>
@@ -224,7 +221,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
         x,
         scrollTop + pointY,
         curX,
-        scrollTop + pointY,
+        scrollTop + pointY
       ]);
     const allScrollCb = ({ scrollLeft, scrollTop }) =>
       setDrawingLinePoints([
@@ -233,7 +230,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
         x,
         scrollTop + pointY,
         scrollLeft + pointX - gridWidth,
-        scrollTop + pointY,
+        scrollTop + pointY
       ]);
     onDragScrollSpacing(
       scrollHandler,
@@ -259,7 +256,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
     }
   };
 
-  const onDragEnd = (e) => {
+  const onDragEnd = e => {
     setDrawingLinePoints([]);
     setLinePointStyle(2, colors.blackBlue[400]);
     if (targetTaskInfo && targetTaskInfo.recordId !== "") {
@@ -277,7 +274,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
 
       if (!isDrawPermission) {
         Message.warning({
-          content: t(Strings.gantt_not_rights_to_link_warning),
+          content: t(Strings.gantt_not_rights_to_link_warning)
         });
         return;
       }
@@ -294,7 +291,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
         Message.warning({
           content: t(
             Strings.gantt_not_allow_link_multuble_records_gantt_warning
-          ),
+          )
         });
         return;
       }
@@ -304,9 +301,9 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
           {
             recordId: targetTaskInfo.recordId,
             fieldId: linkFieldId,
-            value: [...cellValue, sourceRecordId],
-          },
-        ],
+            value: [...cellValue, sourceRecordId]
+          }
+        ]
       });
     }
   };
@@ -341,7 +338,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
       <Circle
         name={generateTargetName({
           targetName: KONVA_DATASHEET_ID.GANTT_LINE_POINT,
-          recordId: sourceRecordId,
+          recordId: sourceRecordId
         })}
         x={x}
         y={y}
@@ -354,6 +351,6 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
   );
 
   return {
-    drawingLine,
+    drawingLine
   };
 };

@@ -4,7 +4,7 @@ import {
   Typography,
   IOption,
   Tooltip,
-  Switch,
+  Switch
 } from "@vikadata/components";
 import { Select as MultiSelect } from "antd";
 import {
@@ -30,7 +30,7 @@ import {
   IGanttViewProperty,
   ILinkField,
   ISetRecordOptions,
-  LinkFieldSet,
+  LinkFieldSet
 } from "@vikadata/core";
 import {
   CloseMiddleOutlined,
@@ -38,7 +38,7 @@ import {
   ClassroomOutlined,
   ChevronRightOutlined,
   AddOutlined,
-  ColumnLinktableFilled,
+  ColumnLinktableFilled
 } from "@vikadata/icons";
 import { resourceService } from "pc/resource_service";
 import { memo, useContext, useMemo } from "react";
@@ -66,50 +66,50 @@ const MultiOption = MultiSelect.Option;
 const colorOptions = [
   {
     label: t(Strings.gantt_config_color_by_custom),
-    value: GanttColorType.Custom,
+    value: GanttColorType.Custom
   },
   {
     label: t(Strings.gantt_config_color_by_single_select_field),
-    value: GanttColorType.SingleSelect,
-  },
+    value: GanttColorType.SingleSelect
+  }
 ];
 
 const weekOptions = [
   {
     value: 1,
     label: t(Strings.gantt_config_monday),
-    selectLabel: t(Strings.gantt_config_monday_in_select),
+    selectLabel: t(Strings.gantt_config_monday_in_select)
   },
   {
     value: 2,
     label: t(Strings.gantt_config_tuesday),
-    selectLabel: t(Strings.gantt_config_tuesday_in_select),
+    selectLabel: t(Strings.gantt_config_tuesday_in_select)
   },
   {
     value: 3,
     label: t(Strings.gantt_config_wednesday),
-    selectLabel: t(Strings.gantt_config_wednesday_in_select),
+    selectLabel: t(Strings.gantt_config_wednesday_in_select)
   },
   {
     value: 4,
     label: t(Strings.gantt_config_thursday),
-    selectLabel: t(Strings.gantt_config_thursday_in_select),
+    selectLabel: t(Strings.gantt_config_thursday_in_select)
   },
   {
     value: 5,
     label: t(Strings.gantt_config_friday),
-    selectLabel: t(Strings.gantt_config_friday_in_select),
+    selectLabel: t(Strings.gantt_config_friday_in_select)
   },
   {
     value: 6,
     label: t(Strings.gantt_config_saturday),
-    selectLabel: t(Strings.gantt_config_saturday_in_select),
+    selectLabel: t(Strings.gantt_config_saturday_in_select)
   },
   {
     value: 0,
     label: t(Strings.gantt_config_sunday),
-    selectLabel: t(Strings.gantt_config_sunday_in_select),
-  },
+    selectLabel: t(Strings.gantt_config_sunday_in_select)
+  }
 ];
 
 export const SettingPanel = memo(() => {
@@ -122,8 +122,8 @@ export const SettingPanel = memo(() => {
     ganttViewStatus,
     fieldPermissionMap,
     permissions,
-    exitFieldNames,
-  } = useSelector((state) => {
+    exitFieldNames
+  } = useSelector(state => {
     const fieldMap = Selectors.getFieldMap(
       state,
       state.pageParams.datasheetId!
@@ -135,15 +135,15 @@ export const SettingPanel = memo(() => {
       ganttViewStatus: Selectors.getGanttViewStatus(state)!,
       fieldPermissionMap: Selectors.getFieldPermissionMap(state),
       permissions: Selectors.getPermissions(state),
-      exitFieldNames: Object.values(fieldMap).map((field) => field.name),
+      exitFieldNames: Object.values(fieldMap).map(field => field.name)
     };
   }, shallowEqual);
 
   const dispatch = useDispatch();
   const columns = view.columns as IGanttViewColumn[];
   const columnCount = columns.length;
-  const { datasheetId, viewId } = useSelector((state) => state.pageParams);
-  const spaceId = useSelector((state) => state.space.activeId);
+  const { datasheetId, viewId } = useSelector(state => state.pageParams);
+  const spaceId = useSelector(state => state.space.activeId);
   const {
     startFieldId,
     endFieldId,
@@ -151,7 +151,7 @@ export const SettingPanel = memo(() => {
     workDays = DEFAULT_WORK_DAYS,
     onlyCalcWorkDay = false,
     linkFieldId,
-    autoTaskLayout = false,
+    autoTaskLayout = false
   } = ganttStyle;
   const startFieldRole = Selectors.getFieldRoleByFieldId(
     fieldPermissionMap,
@@ -169,7 +169,7 @@ export const SettingPanel = memo(() => {
   );
   const noRequiredField = startFieldId == null && endFieldId == null;
   const manageable = permissions.manageable;
-  const activeView = useSelector((state) =>
+  const activeView = useSelector(state =>
     Selectors.getCurrentView(state)
   ) as IGanttViewProperty;
   const linkFieldRole = Selectors.getFieldRoleByFieldId(
@@ -180,8 +180,8 @@ export const SettingPanel = memo(() => {
     linkFieldRole && linkFieldRole === ConfigConstant.Role.None
   );
   const linkField = fieldMap[linkFieldId];
-  const visibleRows = useSelector((state) => Selectors.getVisibleRows(state));
-  const snapshot = useSelector((state) => Selectors.getSnapshot(state)!);
+  const visibleRows = useSelector(state => Selectors.getVisibleRows(state));
+  const snapshot = useSelector(state => Selectors.getSnapshot(state)!);
   const state = store.getState();
 
   const fieldOptions = columns
@@ -190,18 +190,18 @@ export const SettingPanel = memo(() => {
       if (
         [
           Field.bindModel(field).basicValueType,
-          Field.bindModel(field).innerBasicValueType,
+          Field.bindModel(field).innerBasicValueType
         ].includes(BasicValueType.DateTime)
       ) {
         return {
           label: field.name,
           value: fieldId,
-          prefixIcon: getFieldTypeIcon(field.type),
+          prefixIcon: getFieldTypeIcon(field.type)
         };
       }
       return null;
     })
-    .filter((v) => v) as IOption[];
+    .filter(v => v) as IOption[];
 
   const singleFieldOptions = columns
     .map(({ fieldId }) => {
@@ -209,12 +209,12 @@ export const SettingPanel = memo(() => {
       if (field.type === FieldType.SingleSelect) {
         return {
           label: field.name,
-          value: fieldId,
+          value: fieldId
         };
       }
       return null;
     })
-    .filter((v) => v) as IOption[];
+    .filter(v => v) as IOption[];
 
   const linkFieldOptions = useMemo(() => {
     const options: IOption[] = [];
@@ -228,13 +228,13 @@ export const SettingPanel = memo(() => {
             fieldId={linkFieldId}
             tooltip={t(Strings.field_permission_lock_tips)}
           />
-        ),
+        )
       });
     }
 
     activeView.columns
-      .filter((column) => fieldMap[column.fieldId].type === FieldType.Link)
-      .forEach((column) => {
+      .filter(column => fieldMap[column.fieldId].type === FieldType.Link)
+      .forEach(column => {
         const columnFieldId = column.fieldId;
         options.push({
           value: columnFieldId,
@@ -243,7 +243,7 @@ export const SettingPanel = memo(() => {
             (fieldMap[columnFieldId] as ILinkField).property
               .foreignDatasheetId !== datasheetId,
           prefixIcon: <ColumnLinktableFilled color={colors.thirdLevelText} />,
-          disabledTip: t(Strings.org_chart_choose_a_self_link_field),
+          disabledTip: t(Strings.org_chart_choose_a_self_link_field)
         });
       });
 
@@ -251,13 +251,13 @@ export const SettingPanel = memo(() => {
       label: t(Strings.org_chart_init_fields_button),
       value: "add",
       disabled: !permissions.manageable,
-      prefixIcon: <AddOutlined color={colors.thirdLevelText} />,
+      prefixIcon: <AddOutlined color={colors.thirdLevelText} />
     });
 
     options.unshift({
       label: t(Strings.gantt_no_dependency),
       value: "",
-      disabled: !permissions.manageable,
+      disabled: !permissions.manageable
     });
 
     return options;
@@ -268,7 +268,7 @@ export const SettingPanel = memo(() => {
     isCryptoLinkField,
     linkFieldId,
     permissions,
-    colors,
+    colors
   ]);
 
   const onClose = () => {
@@ -276,8 +276,8 @@ export const SettingPanel = memo(() => {
     setStorage(StorageName.GanttStatusMap, {
       [`${spaceId}_${datasheetId}_${viewId}`]: {
         ...ganttViewStatus,
-        settingPanelVisible: false,
-      },
+        settingPanelVisible: false
+      }
     });
   };
 
@@ -290,16 +290,16 @@ export const SettingPanel = memo(() => {
           data: [
             {
               styleKey,
-              styleValue,
-            },
-          ],
+              styleValue
+            }
+          ]
         });
       },
       {
         style: {
           ...ganttStyle,
-          [styleKey]: styleValue,
-        },
+          [styleKey]: styleValue
+        }
       }
     );
   };
@@ -326,19 +326,19 @@ export const SettingPanel = memo(() => {
               type: isLinkFieldType ? FieldType.Link : FieldType.DateTime,
               property: isLinkFieldType
                 ? {
-                    foreignDatasheetId: datasheetId,
+                    foreignDatasheetId: datasheetId
                   }
-                : DateTimeField.defaultProperty(),
+                : DateTimeField.defaultProperty()
             },
             viewId,
-            index: columnCount,
-          },
-        ],
+            index: columnCount
+          }
+        ]
       });
       if (ExecuteResult.Success === result.result) {
         notify.open({
           message: t(Strings.toast_add_field_success),
-          key: NotifyKey.AddField,
+          key: NotifyKey.AddField
         });
 
         onGanttStyleChange(styleKey, newFieldId);
@@ -348,17 +348,17 @@ export const SettingPanel = memo(() => {
     onGanttStyleChange(styleKey, value);
   };
 
-  const onColorOptionSelect = (option) => {
+  const onColorOptionSelect = option => {
     onGanttStyleChange(GanttStyleKeyType.ColorOption, {
       ...colorOption,
-      type: option.value,
+      type: option.value
     });
   };
 
-  const onSingleFieldSelect = (option) => {
+  const onSingleFieldSelect = option => {
     onGanttStyleChange(GanttStyleKeyType.ColorOption, {
       ...colorOption,
-      fieldId: option.value,
+      fieldId: option.value
     });
   };
 
@@ -371,7 +371,7 @@ export const SettingPanel = memo(() => {
       onGanttStyleChange(GanttStyleKeyType.ColorOption, {
         ...colorOption,
         type: GanttColorType.Custom,
-        color: Number(value),
+        color: Number(value)
       });
     }
   };
@@ -393,15 +393,13 @@ export const SettingPanel = memo(() => {
     onGanttStyleChange(GanttStyleKeyType.AutoTaskLayout, value);
     if (value) {
       // TODO 判断开始跟结束时间是否是计算字段是计算字段不可以修改
-      const startTimeIsComputedField = Field.bindModel(
-        fieldMap[startFieldId]
-      ).isComputed;
-      const endTimeISComputedField = Field.bindModel(
-        fieldMap[endFieldId]
-      ).isComputed;
+      const startTimeIsComputedField = Field.bindModel(fieldMap[startFieldId])
+        .isComputed;
+      const endTimeISComputedField = Field.bindModel(fieldMap[endFieldId])
+        .isComputed;
       if (startTimeIsComputedField || endTimeISComputedField) {
         Message.warning({
-          content: t(Strings.gantt_cant_connect_when_computed_field),
+          content: t(Strings.gantt_cant_connect_when_computed_field)
         });
         return;
       }
@@ -415,7 +413,7 @@ export const SettingPanel = memo(() => {
 
       resourceService.instance?.commandManager.execute({
         cmd: CollaCommandName.SetRecords,
-        data: commandDataArr,
+        data: commandDataArr
       });
     }
   };
@@ -430,14 +428,14 @@ export const SettingPanel = memo(() => {
         onCancel: () =>
           onGanttStyleChange(GanttStyleKeyType.AutoTaskLayout, status),
         cancelText: t(Strings.gantt_open_auto_schedule_warning_no),
-        hiddenCancelBtn: false,
+        hiddenCancelBtn: false
       });
     } else {
       onGanttStyleChange(GanttStyleKeyType.AutoTaskLayout, status);
     }
   };
 
-  const onLinkFieldIdChange = (option) => {
+  const onLinkFieldIdChange = option => {
     if (option.value === LinkFieldSet.Add) {
       onFieldSelect(GanttStyleKeyType.LinkFieldId, LinkFieldSet.Add);
     } else {
@@ -460,7 +458,7 @@ export const SettingPanel = memo(() => {
             fieldId={startFieldId}
             tooltip={t(Strings.field_permission_lock_tips)}
           />
-        ),
+        )
       });
     }
     if (isCryptoEndField) {
@@ -473,7 +471,7 @@ export const SettingPanel = memo(() => {
             fieldId={endFieldId}
             tooltip={t(Strings.field_permission_lock_tips)}
           />
-        ),
+        )
       });
     }
   }, [
@@ -481,7 +479,7 @@ export const SettingPanel = memo(() => {
     fieldOptions,
     isCryptoEndField,
     isCryptoStartField,
-    startFieldId,
+    startFieldId
   ]);
 
   const onPlayGuideVideo = () => {
@@ -541,7 +539,7 @@ export const SettingPanel = memo(() => {
               >
                 <Select
                   value={fieldId}
-                  onSelected={(option) =>
+                  onSelected={option =>
                     onFieldSelect(
                       isStartField
                         ? GanttStyleKeyType.StartFieldId
@@ -558,7 +556,7 @@ export const SettingPanel = memo(() => {
                   triggerStyle={{
                     width: 128,
                     border:
-                      fieldId == null ? `1px solid ${colors.rc08}` : "none",
+                      fieldId == null ? `1px solid ${colors.rc08}` : "none"
                   }}
                 >
                   {fieldOptions.map((option, index) => {
@@ -647,7 +645,7 @@ export const SettingPanel = memo(() => {
                 option={{
                   id: "",
                   name: "",
-                  color: colorOption.color,
+                  color: colorOption.color
                 }}
                 onChange={onColorPick}
                 style={{ flexWrap: "unset" }}
@@ -658,7 +656,7 @@ export const SettingPanel = memo(() => {
               option={{
                 id: "",
                 name: "",
-                color: colorOption.color,
+                color: colorOption.color
               }}
               mask
               triggerComponent={
@@ -702,14 +700,14 @@ export const SettingPanel = memo(() => {
             defaultValue={workDays}
             size={"middle"}
           >
-            {weekOptions.map((item) => {
+            {weekOptions.map(item => {
               return (
                 <MultiOption
                   key={item.value}
                   value={item.value}
                   style={{
                     margin: "0 8px",
-                    borderRadius: 8,
+                    borderRadius: 8
                   }}
                 >
                   {item.selectLabel}

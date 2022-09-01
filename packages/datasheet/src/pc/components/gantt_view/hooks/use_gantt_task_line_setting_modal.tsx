@@ -4,7 +4,7 @@ import { KonvaGridContext } from "pc/components/konva_grid";
 import { ClearOutlined, ConnectOutlined } from "@vikadata/icons";
 import {
   KonvaGanttViewContext,
-  generateTargetName,
+  generateTargetName
 } from "pc/components/gantt_view";
 import { KonvaGridViewContext } from "pc/components/konva_grid/context";
 import { Icon, ToolTip } from "pc/components/konva_components";
@@ -16,7 +16,7 @@ import {
   t,
   Strings,
   KONVA_DATASHEET_ID,
-  ConfigConstant,
+  ConfigConstant
 } from "@vikadata/core";
 import { getRecordName } from "pc/components/expand_record";
 import { Message } from "@vikadata/components";
@@ -47,8 +47,9 @@ export const useTaskLineSetting = () => {
   const { taskLineSetting, ganttStyle, setTaskLineSetting } = useContext(
     KonvaGanttViewContext
   );
-  const { snapshot, visibleColumns, fieldMap, fieldPermissionMap } =
-    useContext(KonvaGridViewContext);
+  const { snapshot, visibleColumns, fieldMap, fieldPermissionMap } = useContext(
+    KonvaGridViewContext
+  );
   const state = store.getState();
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
@@ -66,7 +67,7 @@ export const useTaskLineSetting = () => {
 
   if (!taskLineSetting || !linkFieldId) {
     return {
-      settingLineComponments: null,
+      settingLineComponments: null
     };
   }
 
@@ -82,11 +83,8 @@ export const useTaskLineSetting = () => {
   const sourceTitle =
     getRecordName(sourceCellValue, fieldMap[firstFieldId]) ||
     t(Strings.record_unnamed);
-  const sourceRecordTitle = textSizer.current.measureText(
-    sourceTitle,
-    160,
-    1
-  ).text;
+  const sourceRecordTitle = textSizer.current.measureText(sourceTitle, 160, 1)
+    .text;
 
   const startTimeCellValue = Selectors.getCellValue(
     state,
@@ -106,11 +104,8 @@ export const useTaskLineSetting = () => {
   const targetTitle =
     getRecordName(targetCellValue, fieldMap[firstFieldId]) ||
     t(Strings.record_unnamed);
-  const targetRecordTitle = textSizer.current.measureText(
-    targetTitle,
-    160,
-    1
-  ).text;
+  const targetRecordTitle = textSizer.current.measureText(targetTitle, 160, 1)
+    .text;
 
   const endTimeCellValue = Selectors.getCellValue(
     state,
@@ -150,9 +145,9 @@ export const useTaskLineSetting = () => {
         {
           recordId: targetId,
           fieldId: linkFieldId,
-          value: newCellValue,
-        },
-      ],
+          value: newCellValue
+        }
+      ]
     });
     setTaskLineSetting(null);
   };
@@ -173,7 +168,7 @@ export const useTaskLineSetting = () => {
           <Rect
             name={generateTargetName({
               targetName: KONVA_DATASHEET_ID.GANTT_LINE_SETTING,
-              recordId: sourceId,
+              recordId: sourceId
             })}
             x={0}
             y={0}
@@ -270,7 +265,7 @@ export const useTaskLineSetting = () => {
           <Rect
             name={generateTargetName({
               targetName: KONVA_DATASHEET_ID.GANTT_LINE_SETTING,
-              recordId: sourceId,
+              recordId: sourceId
             })}
             x={0}
             y={0}
@@ -333,6 +328,6 @@ export const useTaskLineSetting = () => {
   );
 
   return {
-    lineSettingModels,
+    lineSettingModels
   };
 };

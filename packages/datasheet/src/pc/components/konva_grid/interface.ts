@@ -1,4 +1,10 @@
-import { ICellValue, IField, RowHeightLevel, ViewType, ThemeName } from '@vikadata/core';
+import {
+  ICellValue,
+  IField,
+  RowHeightLevel,
+  ViewType,
+  ThemeName
+} from "@vikadata/core";
 
 // index - size
 export type IndicesMap = Record<number, number>;
@@ -11,13 +17,13 @@ export type CellMetaData = {
 };
 
 export enum ItemType {
-  Row = 'Row',
-  Column = 'Column',
+  Row = "Row",
+  Column = "Column"
 }
 
 export interface ICoordinate {
   rowCount: number;
-  columnCount: number; 
+  columnCount: number;
   containerWidth: number;
   containerHeight: number;
   rowHeight: number;
@@ -46,7 +52,7 @@ export interface IRenderProps {
   editable?: boolean;
   rowHeightLevel: RowHeightLevel;
   style: IRenderStyleProps;
-  callback?: ({ width: number }) => void;
+  callback?: ({ width }: { width: number }) => void;
   viewType?: ViewType;
   realField?: IField;
   unitTitleMap?: object;
@@ -56,8 +62,8 @@ export interface IRenderProps {
 export interface IRenderStyleProps {
   color?: string;
   bgColor?: string; // 背景颜色，供甘特图使用
-  textAlign?: 'left' | 'right' | 'center' | 'start' | 'end';
-  fontWeight?: 'normal' | 'bold' | 'bolder' | 'lighter';
+  textAlign?: "left" | "right" | "center" | "start" | "end";
+  fontWeight?: "normal" | "bold" | "bolder" | "lighter";
 }
 
 export interface ICellHeightProps {
