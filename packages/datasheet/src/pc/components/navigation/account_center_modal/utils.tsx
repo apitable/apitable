@@ -32,7 +32,7 @@ export type IDelSpaceConfig = IRefreshConfigConfig;
 
 type IGetVerifyDataFuncRes = IChangePasswordConfig | IRefreshConfigConfig | IChangeMainAdminConfig | IDelSpaceConfig | null;
 
-export const getVerifyData: ({ key: VerifyTypes }) => IGetVerifyDataFuncRes = ({ key }) => {
+export const getVerifyData: ({ key }: { key: VerifyTypes }) => IGetVerifyDataFuncRes = ({ key }) => {
   const state = store.getState();
   const user = state.user.info;
   const mainAdminInfo = state.spacePermissionManage.mainAdminInfo;
@@ -50,7 +50,7 @@ export const getVerifyData: ({ key: VerifyTypes }) => IGetVerifyDataFuncRes = ({
       let accountText = '';
       // 输入框中显示的账号：带*的手机号或邮箱
       let label = t(Strings.phone_number);
-      let prefixIcon = (<PhonenumberFilled size={16} />);
+      let prefixIcon = <PhonenumberFilled size={16} />;
       // 短信类型
       let smsType: ConfigConstant.SmsTypes | undefined = ConfigConstant.SmsTypes.MODIFY_PASSWORD;
       if (user?.mobile) {
@@ -59,9 +59,18 @@ export const getVerifyData: ({ key: VerifyTypes }) => IGetVerifyDataFuncRes = ({
         label = t(Strings.email);
         accountText = user.email;
         smsType = undefined;
-        prefixIcon = (<EmailSigninFilled size={16} />);
+        prefixIcon = <EmailSigninFilled size={16} />;
       }
-      return { codeMode, accountText, label, smsType, emailType, areaCode, verifyAccount, prefixIcon } as IChangePasswordConfig;
+      return {
+        codeMode,
+        accountText,
+        label,
+        smsType,
+        emailType,
+        areaCode,
+        verifyAccount,
+        prefixIcon,
+      } as IChangePasswordConfig;
     }
     case VerifyTypes.REFRESH_TOKEN: {
       // 输入框中显示的账号：带*的手机号或邮箱
@@ -69,12 +78,23 @@ export const getVerifyData: ({ key: VerifyTypes }) => IGetVerifyDataFuncRes = ({
       // 短信类型
       let smsType: ConfigConstant.SmsTypes | undefined = ConfigConstant.SmsTypes.CHANGE_DEVELOPER_CONFIG;
       if (user?.mobile) {
-        title = t(Strings.send_verification_code_to, { mobile: `${user?.areaCode} ${hiddenMobile(user!.mobile)}` });
+        title = t(Strings.send_verification_code_to, {
+          mobile: `${user?.areaCode} ${hiddenMobile(user!.mobile)}`,
+        });
       } else if (user?.email) {
-        title = t(Strings.send_verification_code_to, { mobile: `${user?.areaCode} ${user.email}` });
+        title = t(Strings.send_verification_code_to, {
+          mobile: `${user?.areaCode} ${user.email}`,
+        });
         smsType = undefined;
       }
-      return { codeMode, title, smsType, emailType, areaCode, verifyAccount } as IRefreshConfigConfig;
+      return {
+        codeMode,
+        title,
+        smsType,
+        emailType,
+        areaCode,
+        verifyAccount,
+      } as IRefreshConfigConfig;
     }
     case VerifyTypes.CHANGE_MAIN_ADMIN: {
       // 输入框中显示的账号：带*的手机号或邮箱
@@ -88,7 +108,14 @@ export const getVerifyData: ({ key: VerifyTypes }) => IGetVerifyDataFuncRes = ({
         inputText = mainAdminInfo.email;
         smsType = undefined;
       }
-      return { codeMode, inputText, verifyAccount, smsType, emailType, areaCode } as IChangeMainAdminConfig;
+      return {
+        codeMode,
+        inputText,
+        verifyAccount,
+        smsType,
+        emailType,
+        areaCode,
+      } as IChangeMainAdminConfig;
     }
     case VerifyTypes.DEL_SPACE: {
       // 输入框中显示的账号：带*的手机号或邮箱
@@ -96,12 +123,23 @@ export const getVerifyData: ({ key: VerifyTypes }) => IGetVerifyDataFuncRes = ({
       // 短信类型
       let smsType: ConfigConstant.SmsTypes | undefined = ConfigConstant.SmsTypes.DEL_SPACE;
       if (user?.mobile) {
-        title = t(Strings.send_verification_code_to, { mobile: `${user?.areaCode} ${hiddenMobile(user!.mobile)}` });
+        title = t(Strings.send_verification_code_to, {
+          mobile: `${user?.areaCode} ${hiddenMobile(user!.mobile)}`,
+        });
       } else if (user?.email) {
-        title = t(Strings.send_verification_code_to, { mobile: `${user?.areaCode} ${user.email}` });
+        title = t(Strings.send_verification_code_to, {
+          mobile: `${user?.areaCode} ${user.email}`,
+        });
         smsType = undefined;
       }
-      return { codeMode, title, smsType, emailType, areaCode, verifyAccount } as IDelSpaceConfig;
+      return {
+        codeMode,
+        title,
+        smsType,
+        emailType,
+        areaCode,
+        verifyAccount,
+      } as IDelSpaceConfig;
     }
     default:
       return null;
@@ -110,7 +148,7 @@ export const getVerifyData: ({ key: VerifyTypes }) => IGetVerifyDataFuncRes = ({
 
 /**
  * uskbjQCFxC20n89xjK2H5uC => uskb***************H5uC
- * @param token 
+ * @param token
  */
 export const getMaskToken = (token: string) => {
   if (!token || token.length <= 8) {

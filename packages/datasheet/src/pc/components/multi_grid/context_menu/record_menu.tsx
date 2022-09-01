@@ -1,19 +1,16 @@
-
 import { useRef, KeyboardEvent } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { ContextMenu, contextMenuShow, IContextMenuItemProps, useThemeColors } from '@vikadata/components';
-import {
-  CollaCommandName, ExecuteResult, ICellValue,
-  Selectors, StoreActions, Strings, t, View, ViewType,
-  DatasheetApi,
-} from '@vikadata/core';
+import { CollaCommandName, ExecuteResult, ICellValue, Selectors, StoreActions, Strings, t, View, ViewType, DatasheetApi } from '@vikadata/core';
 import {
   ArrowDownOutlined,
   ArrowLeftOutlined,
-  ArrowRightOutlined, ArrowUpOutlined,
+  ArrowRightOutlined,
+  ArrowUpOutlined,
   ColumnUrlOutlined,
-  CopyOutlined, DeleteOutlined,
+  CopyOutlined,
+  DeleteOutlined,
   ExpandRecordOutlined,
   AttentionOutlined,
   DuplicateOutlined,
@@ -66,7 +63,7 @@ interface ITriggerRecordMenuProps<T> {
     recordIndex?: number;
     cellValue?: { [fieldId: string]: ICellValue };
     fieldIndex?: number;
-  } & T
+  } & T;
 }
 
 export function triggerRecordMenu<T>(props: ITriggerRecordMenuProps<T>) {
@@ -82,7 +79,7 @@ export function copyRecord(recordId: string) {
   });
 }
 
-export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
+export const RecordMenu: React.FC<IRecordMenuProps> = props => {
   const colors = useThemeColors();
   const { insertDirection = 'vertical', hideInsert, menuId, extraData } = props;
   const recordRanges = useSelector(state => Selectors.getSelectionRecordRanges(state));
@@ -141,16 +138,14 @@ export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
     });
 
     if (ExecuteResult.Success === result) {
-      notifyWithUndo(t(Strings.notification_delete_record_by_count, {
-        count: data.length,
-      }), NotifyKey.DeleteRecord);
+      notifyWithUndo(
+        t(Strings.notification_delete_record_by_count, {
+          count: data.length,
+        }),
+        NotifyKey.DeleteRecord,
+      );
 
-      dispatch(batchActions(
-        [
-          StoreActions.clearSelection(datasheetId),
-          StoreActions.clearActiveRowInfo(datasheetId),
-        ]
-      ));
+      dispatch(batchActions([StoreActions.clearSelection(datasheetId), StoreActions.clearActiveRowInfo(datasheetId)]));
     }
   }
 
@@ -191,19 +186,19 @@ export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
           : t(Strings.record_watch_multiple, { count: recordIds.length });
       }
 
-      return subscriptions.includes(selectRecords[0].recordId) ? t(Strings.cancel_watch_record_single) : t(Strings.record_watch_single); 
+      return subscriptions.includes(selectRecords[0].recordId) ? t(Strings.cancel_watch_record_single) : t(Strings.record_watch_single);
     }
 
     if (recordRanges) {
       if (recordRanges.length > 1) {
         return [...new Set([...subscriptions, ...recordRanges])].length === subscriptions.length
           ? t(Strings.cancel_watch_record_multiple, { count: recordRanges.length })
-          : t(Strings.record_watch_multiple, { count: recordRanges.length }); 
+          : t(Strings.record_watch_multiple, { count: recordRanges.length });
       }
-      
+
       return [...new Set([...subscriptions, ...recordRanges])].length === subscriptions.length
         ? t(Strings.cancel_watch_record_single)
-        : t(Strings.record_watch_single); 
+        : t(Strings.record_watch_single);
     }
 
     return t(Strings.record_watch_single);
@@ -219,7 +214,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
       const selectRecords = Selectors.getRangeRecords(store.getState(), selection[0]);
 
       if (!selectRecords) return;
-      
+
       const recordIds = selectRecords.map(el => el.recordId);
       // 判断已选中的record是否全部在subscription中
       if ([...new Set([...subscriptions, ...recordIds])].length === subscriptions.length) {
@@ -227,7 +222,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
       } else {
         onSubscribe(recordIds);
       }
-      
+
       return;
     }
 
@@ -240,7 +235,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
     }
   };
 
-  const onSubscribe = async(recordIds: string[]) => {
+  const onSubscribe = async (recordIds: string[]) => {
     const { data } = await subscribeRecordByIds({ datasheetId, mirrorId, recordIds });
 
     if (data?.success) {
@@ -251,9 +246,9 @@ export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
     }
   };
 
-  const onUnsubscribe = async(recordIds: string[]) => {
+  const onUnsubscribe = async (recordIds: string[]) => {
     const { data } = await unsubscribeRecordByIds({ datasheetId, mirrorId, recordIds });
-    
+
     if (data?.success) {
       Message.info({ content: t(Strings.cancel_watch_record_success) });
       dispatch(StoreActions.setSubscriptionsAction(difference(subscriptions, recordIds)));
@@ -280,7 +275,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
     }
   };
 
-  const handleCopy = (e) => {
+  const handleCopy = e => {
     resourceService.instance!.clipboard.copy(e);
   };
 
@@ -289,7 +284,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
    * contextMenu中只有PointerEvent，获取不到ClipboardEvent
    * 重写Clipboard中的方法过于冗余
    * 能打开ContextMenu的condition下，EditorContainerBase必然是存在的，故execCommand以最大化复用
-   * 
+   *
    * context-menu 重构后无法触发到编辑器的 onCopy，所以需要手动监听
    */
   const onCopy = () => {
@@ -310,20 +305,22 @@ export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
         icon: <ColumnUrlOutlined color={colors.thirdLevelText} />,
         text: t(Strings.menu_copy_record_url, { recordShowName }),
         hidden: !onlyOperateOneRecord,
-        onClick: ({ props: { recordId }}) => { copyLink(recordId); },
+        onClick: ({ props: { recordId } }) => {
+          copyLink(recordId);
+        },
       },
       {
         icon: <DuplicateOutlined color={colors.thirdLevelText} />,
         text: t(Strings.menu_duplicate_record, { recordShowName }),
         hidden: !onlyOperateOneRecord || !rowCreatable,
-        onClick: ({ props: { recordId }}) => copyRecord(recordId),
+        onClick: ({ props: { recordId } }) => copyRecord(recordId),
       },
       {
         icon: <ExpandRecordOutlined color={colors.thirdLevelText} />,
         text: t(Strings.menu_expand_record, { recordShowName }),
         shortcutKey: getShortcutKeyString(ShortcutActionName.ExpandRecord),
         hidden: !onlyOperateOneRecord,
-        onClick: ({ props: { recordId }}) => {
+        onClick: ({ props: { recordId } }) => {
           expandRecordIdNavigate(recordId);
         },
       },
@@ -331,7 +328,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
         icon: <AttentionOutlined color={colors.thirdLevelText} />,
         text: subOrUnsubText,
         hidden: isCalendar || !!shareId || !!templateId,
-        onClick: ({ props: { recordId }}) => onSubOrUnsub(recordId),
+        onClick: ({ props: { recordId } }) => onSubOrUnsub(recordId),
       },
     ],
     [
@@ -339,7 +336,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
         icon: <DeleteOutlined color={colors.thirdLevelText} />,
         text: getDeleteString(),
         hidden: !rowRemovable,
-        onClick: ({ props: { recordId }}) => {
+        onClick: ({ props: { recordId } }) => {
           deleteRecord(recordId);
         },
       },
@@ -347,67 +344,75 @@ export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
   ];
 
   if (!hideInsert) {
-    data = [[
-      {
-        icon: <IconInsertBefore color={colors.thirdLevelText} />,
-        text: (
-          <InputMenuItem
-            ref={beforeInputRef}
-            initValue={1}
-            text={t(Strings.menu_insert_record_above)}
-            textKey={'lineCount'}
-            onChange={(value) => onInputChange(value, beforeInputRef)}
-            onKeyDown={onInputKeyDown}
-          />
-        ),
-        shortcutKey: getShortcutKeyString(ShortcutActionName.PrependRow),
-        hidden: !allowInsertRecord,
-        onClick: ({ props: { recordId }}) => appendRow({ 
-          recordId, 
-          direction: Direction.Up, 
-          count: Number(beforeInputRef.current?.getValue() || 1)
-        }),
-      },
-      {
-        icon: <IconInsertAfter color={colors.thirdLevelText} />,
-        text: (
-          <InputMenuItem
-            ref={afterInputRef}
-            initValue={1}
-            text={t(Strings.menu_insert_record_below)}
-            textKey={'lineCount'}
-            onChange={(value) => onInputChange(value, afterInputRef)}
-            onKeyDown={onInputKeyDown}
-          />
-        ),
-        shortcutKey: getShortcutKeyString(ShortcutActionName.AppendRow),
-        hidden: !allowInsertRecord,
-        onClick: ({ props: { recordId }}) => appendRow({ 
-          recordId, 
-          direction: Direction.Down,
-          count: Number(afterInputRef.current?.getValue() || 1)
-        })
-      },
-    ], ...data];
+    data = [
+      [
+        {
+          icon: <IconInsertBefore color={colors.thirdLevelText} />,
+          text: (
+            <InputMenuItem
+              ref={beforeInputRef}
+              initValue={1}
+              text={t(Strings.menu_insert_record_above)}
+              textKey={'lineCount'}
+              onChange={value => onInputChange(value, beforeInputRef)}
+              onKeyDown={onInputKeyDown}
+            />
+          ),
+          shortcutKey: getShortcutKeyString(ShortcutActionName.PrependRow),
+          hidden: !allowInsertRecord,
+          onClick: ({ props: { recordId } }) =>
+            appendRow({
+              recordId,
+              direction: Direction.Up,
+              count: Number(beforeInputRef.current?.getValue() || 1),
+            }),
+        },
+        {
+          icon: <IconInsertAfter color={colors.thirdLevelText} />,
+          text: (
+            <InputMenuItem
+              ref={afterInputRef}
+              initValue={1}
+              text={t(Strings.menu_insert_record_below)}
+              textKey={'lineCount'}
+              onChange={value => onInputChange(value, afterInputRef)}
+              onKeyDown={onInputKeyDown}
+            />
+          ),
+          shortcutKey: getShortcutKeyString(ShortcutActionName.AppendRow),
+          hidden: !allowInsertRecord,
+          onClick: ({ props: { recordId } }) =>
+            appendRow({
+              recordId,
+              direction: Direction.Down,
+              count: Number(afterInputRef.current?.getValue() || 1),
+            }),
+        },
+      ],
+      ...data,
+    ];
   }
 
-  data = [[
-    {
-      icon: <CopyOutlined color={colors.thirdLevelText} />,
-      text: t(Strings.copy_from_cell),
-      shortcutKey: getShortcutKeyString(ShortcutActionName.Copy),
-      hidden: isCalendar,
-      onClick: onCopy,
-    },
-    // TODO: paste因为浏览器安全性限制，需去保存一份copy内容再处理数据，且不支持外部内容copy
-    // {
-    //   icon: <PasteOutlined color={colors.thirdLevelText} />,
-    //   text: t(Strings.paste),
-    //   shortcutKey: getShortcutKeyString(ShortcutActionName.Paste),
-    //   hidden: isCalendar,
-    //   onClick: () => onPaste(),
-    // },
-  ], ...data];
+  data = [
+    [
+      {
+        icon: <CopyOutlined color={colors.thirdLevelText} />,
+        text: t(Strings.copy_from_cell),
+        shortcutKey: getShortcutKeyString(ShortcutActionName.Copy),
+        hidden: isCalendar,
+        onClick: onCopy,
+      },
+      // TODO: paste因为浏览器安全性限制，需去保存一份copy内容再处理数据，且不支持外部内容copy
+      // {
+      //   icon: <PasteOutlined color={colors.thirdLevelText} />,
+      //   text: t(Strings.paste),
+      //   shortcutKey: getShortcutKeyString(ShortcutActionName.Paste),
+      //   hidden: isCalendar,
+      //   onClick: () => onPaste(),
+      // },
+    ],
+    ...data,
+  ];
 
   if (extraData) {
     data.splice(data.length - 1, 0, extraData);
@@ -415,11 +420,5 @@ export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
 
   const contextMenuData = flatContextData(data, true);
 
-  return (
-    <ContextMenu
-      menuId={menuId}
-      overlay={contextMenuData}
-      width={isWindowsOS() ? 320 : 280}
-    />
-  );
+  return <ContextMenu menuId={menuId || GRID_RECORD_MENU} overlay={contextMenuData} width={isWindowsOS() ? 320 : 280} />;
 };

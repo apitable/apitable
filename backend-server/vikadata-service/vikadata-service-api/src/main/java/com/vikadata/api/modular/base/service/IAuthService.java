@@ -128,10 +128,11 @@ public interface IAuthService {
     /**
      * 邀请新用户附件容量奖励
      *
-     * @param inactiveMembers 成员集合
-     * @param spaceId         空间ID
+     * @param userId   成员ID
+     * @param userName 成员名称
+     * @param spaceId  空间ID
      * @author liuzijing
      * @date 2022/8/19
      */
-    void checkSpaceRewardCapacity(List<MemberDto> inactiveMembers, String spaceId);
+    void checkSpaceRewardCapacity(Long userId, String userName, String spaceId);
 }

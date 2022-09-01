@@ -1,5 +1,5 @@
 # Install dependencies only when needed
-FROM node:16.15.0 AS deps
+FROM docker.vika.ltd/vikadata/vika/alinode:7.6.0 AS deps
 
 WORKDIR /workspace-install
 
@@ -12,7 +12,7 @@ COPY packages/socket-server/package.json ./packages/socket-server/
 RUN yarn workspaces focus @vikadata/websocket root
 
 # stage builder
-FROM node:16.15.0 AS builder
+FROM docker.vika.ltd/vikadata/vika/alinode:7.6.0 AS builder
 
 WORKDIR /app
 
@@ -28,13 +28,20 @@ COPY packages/socket-server ./packages/socket-server
 RUN yarn workspace @vikadata/websocket build
 
 # stage run
-FROM node:16.15.0 AS runner
+FROM docker.vika.ltd/vikadata/vika/alinode:7.6.0 AS runner
 
 WORKDIR /app
 
 ENV NODE_ENV=production
 
-COPY --from=builder /app/packages/socket-server/ecosystem.config.js ./packages/socket-server/
+# agenthub配置
+COPY --from=builder /app/packages/socket-server/app-config.json /root/
+
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/packages/socket-server/ecosystem.config.js \
+                    /app/packages/socket-server/package.json \
+                    ./packages/socket-server/
+
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/packages/socket-server/node_modules ./packages/socket-server/node_modules
 COPY --from=builder /app/packages/socket-server/dist ./packages/socket-server/dist

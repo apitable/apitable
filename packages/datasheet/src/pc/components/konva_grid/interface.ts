@@ -17,7 +17,7 @@ export enum ItemType {
 
 export interface ICoordinate {
   rowCount: number;
-  columnCount: number; 
+  columnCount: number;
   containerWidth: number;
   containerHeight: number;
   rowHeight: number;
@@ -46,7 +46,7 @@ export interface IRenderProps {
   editable?: boolean;
   rowHeightLevel: RowHeightLevel;
   style: IRenderStyleProps;
-  callback?: ({ width: number }) => void;
+  callback?: ({ width }: { width: number }) => void;
   viewType?: ViewType;
   realField?: IField;
   unitTitleMap?: object;

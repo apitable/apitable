@@ -44,7 +44,9 @@ const defaultSubscribe: ISubscription = {
   securitySettingDownloadFile: true,
   securitySettingCopyCellData: true,
   securitySettingMobile: true,
-  securitySettingAddressListIsolation: true
+  securitySettingAddressListIsolation: true,
+  subscriptionCapacity: 0,
+  unExpireGiftCapacity: 0,
 };
 
 describe('test subscribeUsageChecker', () => {
@@ -54,7 +56,6 @@ describe('test subscribeUsageChecker', () => {
 
     // 注入用户的全局配置
     store.dispatch(StoreActions.updateUserInfo({ sendSubscriptionNotify: true } as any));
-
   });
 
   it('maxRowsInSpace usage over limit', () => {
@@ -92,5 +93,4 @@ describe('test subscribeUsageChecker', () => {
     const result = subscribeUsageCheck.triggerVikabyAlert('rainbowLabel');
     expect(result).toBe(undefined);
   });
-
 });

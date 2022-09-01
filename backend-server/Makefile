@@ -64,7 +64,7 @@ _test_unittest: ## unittest and codecov upload
 	docker run -e JVM_OPTS="-Xmx3200m" --net test --rm -w /app --user $(shell id -u):$(shell id -g) -v $(shell pwd):/app \
 	-e MYSQL_HOST=test_mysql -e REDIS_HOST=test_redis -e RABBITMQ_HOST=test_rabbitmq \
 	amazoncorretto:8 \
-	./gradlew testCodeCoverageReport
+	./gradlew testCodeCoverageReport --stacktrace
 
 _test_codecov:
 	curl https://uploader.codecov.io/latest/linux/codecov -o /tmp/codecov

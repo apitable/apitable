@@ -1,9 +1,7 @@
 package com.vikadata.api.modular.base.service.impl;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.vikadata.api.model.dto.organization.MemberDto;
@@ -202,27 +200,20 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testCheckSpaceRewardCapacity(){
-        // 第一条数据
         MemberDto firstMemberDto = new MemberDto();
         firstMemberDto.setId(123L);
         firstMemberDto.setSpaceId("spc123");
         firstMemberDto.setMemberName("firstUser");
-        // 第二条数据
-        MemberDto secondMemberDto = new MemberDto();
-        secondMemberDto.setId(456L);
-        secondMemberDto.setSpaceId("spc456");
-        secondMemberDto.setMemberName("secondUSer");
-        List<MemberDto> inactiveMembers = CollUtil.newArrayList(firstMemberDto, secondMemberDto);
         SpaceEntity space = SpaceEntity.builder()
             .id(IdWorker.getId())
-            .spaceId("spc456")
+            .spaceId("spc123")
             .name("测试空间")
             .build();
         spaceMapper.insert(space);
         // 匹配空间站，发放奖励
-        iAuthService.checkSpaceRewardCapacity(inactiveMembers, "spc456");
+        iAuthService.checkSpaceRewardCapacity(firstMemberDto.getUserId(), firstMemberDto.getMemberName(), "spc123");
         // 查询奖励记录
-        Long number = iSpaceSubscriptionService.getSpaceUnExpireGiftCapacity("spc456");
+        Long number = iSpaceSubscriptionService.getSpaceUnExpireGiftCapacity("spc123");
         assertThat(number).isEqualTo(314572800);
     }
 

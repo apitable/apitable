@@ -14,7 +14,7 @@ COPY packages/core/package.json ./packages/core/
 
 COPY packages/room-server/package.json ./packages/room-server/
 
-RUN yarn workspaces focus @vikadata/room-server
+RUN yarn workspaces focus @vikadata/room-server root
 
 # stage builder
 FROM docker.vika.ltd/vikadata/vika/alinode:7.6.0 AS builder
@@ -34,11 +34,7 @@ COPY packages/core ./packages/core
 
 COPY packages/room-server ./packages/room-server
 
-RUN yarn workspace @vikadata/i18n-lang run build && yarn workspace @vikadata/core run build && yarn workspace @vikadata/room-server run prebuild && yarn workspace @vikadata/room-server run build
-
-ARG test=false
-
-# RUN if test "$test" = 'true'; then yarn test:nest; else echo Argument test not true; fi
+RUN yarn build:sr
 
 # stage runner
 FROM docker.vika.ltd/vikadata/vika/alinode:7.6.0 AS runner
@@ -48,11 +44,11 @@ WORKDIR /home/vikadata
 ENV NODE_ENV production
 
 # agenthub配置
-COPY ./app-config.json /root/
+COPY --from=builder /tmp/vikadata/packages/room-server/app-config.json /root/
+COPY --from=builder /tmp/vikadata /home/vikadata
+
 # pm2
 RUN npm install pm2 --global
-
-COPY --from=builder /tmp/vikadata /home/vikadata
 
 # local 配置
 #ENV APP_ID 87508
