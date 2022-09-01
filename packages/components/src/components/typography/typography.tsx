@@ -64,14 +64,24 @@ export const Typography: FC<ITypographyProps> = (props) => {
 
   const textNode = <TypographyBase className={classNames('typography', className)} ref={typographyRef} as={tag} rows={rows} children={children}
     cssTextOverflow={cssTextOverflow} cssLineClamp={cssLineClamp} {...more} />;
+
   if ((typeof ellipsis !== 'boolean' && ellipsis.tooltip) || isWithTooltip) {
-    return <Tooltip
-      visible={typeof ellipsis !== 'boolean' ? ellipsis.visible : undefined}
-      zIndex={tooltipsZIndex}
-      content={tooltip || (isReactText(children) ? children as string : '')}
-    >
-      {textNode}
-    </Tooltip>;
+    const content = tooltip || (isReactText(children) ? children as string : '');
+    return (
+      <>
+        {
+          Boolean(content) ?
+            <Tooltip
+              visible={typeof ellipsis !== 'boolean' ? ellipsis.visible : undefined}
+              zIndex={tooltipsZIndex}
+              content={content}
+            >
+              {textNode}
+            </Tooltip> :
+            textNode
+        }
+      </>
+    );
   }
   return textNode;
 };
