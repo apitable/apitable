@@ -11,13 +11,13 @@ import { SpaceContext } from '../context';
 import styles from './style.module.less';
 
 interface IAvertProps {
-  className?: string,
-  desc?: string,
-  linkText?: string,
-  linkUrl?: string,
+  className?: string;
+  desc?: string;
+  linkText?: string;
+  linkUrl?: string;
 }
 
-export const Advert: FC<IAvertProps> = (props) => {
+export const Advert: FC<IAvertProps> = props => {
   const { adData } = useContext(SpaceContext);
 
   const handleClick = () => {
@@ -31,21 +31,25 @@ export const Advert: FC<IAvertProps> = (props) => {
   }
 
   if (!adData) {
-    return <div className={styles.advert}>
-      <Skeleton width="38%" />
-      <Skeleton count={2} />
-      <Skeleton width="61%"/>
-    </div>;
+    return (
+      <div className={styles.advert}>
+        <Skeleton width="38%" />
+        <Skeleton count={2} />
+        <Skeleton width="61%" />
+      </div>
+    );
   }
   return (
     <div className={classnames(styles.advert, props.className)}>
       <span className={styles.advertImg}>
-        <Image src={adData.banners?.[0]?.url} width={160} height={110}/>
+        <Image src={adData.banners?.[0]?.url} width={160} height={110} />
       </span>
       <Typography variant="body3" className={styles.content}>
         {props.desc || adData.desc}
       </Typography>
-      <Button color="primary" onClick={handleClick}>{props.linkText || adData.linkText}</Button>
+      <Button color="primary" onClick={handleClick}>
+        {props.linkText || adData.linkText}
+      </Button>
     </div>
   );
 };
@@ -53,8 +57,8 @@ export const Advert: FC<IAvertProps> = (props) => {
 type CardTitleType = {
   title: string;
   tipTitle?: string;
-  link?: { text: string, href?: string, onClick?: () => void };
-  button?: { text: string, onClick: () => void };
+  link?: { text: string; href?: string; onClick?: () => void };
+  button?: { text: string; onClick: () => void };
   isMobile?: boolean;
 };
 
@@ -63,48 +67,62 @@ export const CardTitle = ({ title, tipTitle, link, button, isMobile }: CardTitle
   return (
     <div className={styles.cardTitle}>
       <div className={styles.titleText}>
-        <Typography variant='h7' className={styles.title}>{title}</Typography>
-        {!isMobile && <Tooltip title={tipTitle} trigger="hover" placement="top">
-          <span className={styles.infoIcon}><InfoIcon className={styles.infoIconInDesc}/></span>
-        </Tooltip>}
+        <Typography variant="h7" className={styles.title}>
+          {title}
+        </Typography>
+        {!isMobile && (
+          <Tooltip title={tipTitle} trigger="hover" placement="top">
+            <span className={styles.infoIcon}>
+              <InfoIcon className={styles.infoIconInDesc} />
+            </span>
+          </Tooltip>
+        )}
       </div>
-      {
-        link && 
+      {link && (
         <a
           className={styles.link}
           {...(link.href ? { href: link.href, target: '_blank', rel: 'noopener noreferrer' } : {})}
           onClick={link.href ? undefined : link.onClick}
         >
-          {link.text} <ChevronRightOutlined color={colors.deepPurple[500]} />
+          {link.text} <ChevronRightOutlined color={colors.textCommonSecondary} />
         </a>
-      }
-      {
-        button && <a className={styles.link} onClick={button.onClick}>
+      )}
+      {button && (
+        <a className={styles.link} onClick={button.onClick}>
           {button.text} <ChevronRightOutlined color={colors.deepPurple[500]} />
         </a>
-      }
+      )}
     </div>
   );
 };
 
-export const PlotTitle = (data: { name: string, value: string, style?: React.CSSProperties, themeColor?: string }) => {
+export const PlotTitle = (data: { name: string; value: string; style?: React.CSSProperties; themeColor?: string }) => {
   const { name, value, style, themeColor } = data;
   return (
     <div className={styles.plotTitle} style={style}>
-      <Typography variant="body4" className={styles.name}>{name}</Typography>
-      <Typography variant="h5" className={styles.value} color={themeColor}>{value}</Typography>
+      <Typography variant="body4" className={styles.name}>
+        {name}
+      </Typography>
+      <Typography variant="h5" className={styles.value} color={themeColor}>
+        {value}
+      </Typography>
     </div>
   );
 };
 
-export const InfoHighlightTitle = (data: { value: number, unit: string, desc: string, style?: React.CSSProperties, themeColor?: string }) => {
+export const InfoHighlightTitle = (data: { value: number; unit: string; desc: string; style?: React.CSSProperties; themeColor?: string }) => {
   const { value, unit, desc, style, themeColor } = data;
   return (
     <div className={styles.infoHighlightTitle} style={style}>
-      <Typography variant="h1" className={styles.value} color={themeColor}>{value.toLocaleString()}</Typography>
-      <Typography variant="h6" className={styles.unit} color={themeColor}>{unit}</Typography>
-      <Typography variant="body4" className={styles.desc}>{desc}</Typography>
+      <Typography variant="h1" className={styles.value} color={themeColor}>
+        {value.toLocaleString()}
+      </Typography>
+      <Typography variant="h6" className={styles.unit} color={themeColor}>
+        {unit}
+      </Typography>
+      <Typography variant="body4" className={styles.desc}>
+        {desc}
+      </Typography>
     </div>
   );
 };
-

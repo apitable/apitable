@@ -32,7 +32,7 @@ const customizeRenderEmpty = () => (
   </div>
 );
 
-const antdConfig = {
+export const antdConfig = {
   autoInsertSpaceInButton: false,
   renderEmpty: customizeRenderEmpty,
 };
@@ -49,7 +49,7 @@ const RouterProvider = ({ children }) => {
   // 解决在飞书中路由跳转需要带上一个飞书标识，所以把 a 标签的行为代理到 navigationToUrl 中一起处理
   useEffect(() => {
     const isFeishu = navigator.userAgent.toLowerCase().indexOf('lark') > -1;
-    const clickHandler = (e) => {
+    const clickHandler = e => {
       // 由于配置表中有写死的url(vika.cn开头)，为了多环境测试，需要开放vika.cn
       const reg = new RegExp(`^(${window.location.origin}|(http|https)://vika.cn)`);
       const paths = ['/user', '/login', '/org', '/workbench', '/notify', '/management', '/invite', '/template', '/share'];
@@ -58,7 +58,7 @@ const RouterProvider = ({ children }) => {
         element = element.parentNode;
       }
       const url: string = element?.href;
-      if (!url || !isFeishu || (element.tagName !== 'A') || !reg.test(url)) {
+      if (!url || !isFeishu || element.tagName !== 'A' || !reg.test(url)) {
         return;
       }
       const isIgnore = paths.some(item => url.includes(item));
@@ -96,30 +96,30 @@ const RouterProvider = ({ children }) => {
 
   useEffect(() => {
     // 添加请求拦截器
-    axios.interceptors.request.use(config => {
-      // console.log(config);
-      // 在发送请求之前做些什么
-      config.headers['X-XSRF-TOKEN'] = getCookie('XSRF-TOKEN');
-      return config;
-    }, error => {
-      // 对请求错误做些什么
-      return Promise.reject(error);
-    });
+    axios.interceptors.request.use(
+      config => {
+        // console.log(config);
+        // 在发送请求之前做些什么
+        config.headers['X-XSRF-TOKEN'] = getCookie('XSRF-TOKEN');
+        return config;
+      },
+      error => {
+        // 对请求错误做些什么
+        return Promise.reject(error);
+      },
+    );
   }, [dispatch]);
 
-  useEffect(
-    () => {
-      const onResize = () => {
-        dispatch(StoreActions.setScreenWidth(window.innerWidth));
-      };
+  useEffect(() => {
+    const onResize = () => {
       dispatch(StoreActions.setScreenWidth(window.innerWidth));
-      window.addEventListener('resize', onResize);
-      return () => {
-        window.removeEventListener('resize', onResize);
-      };
-    },
-    [dispatch],
-  );
+    };
+    dispatch(StoreActions.setScreenWidth(window.innerWidth));
+    window.addEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('resize', onResize);
+    };
+  }, [dispatch]);
 
   const changeCacheScroll = (value: IScrollOffset, dsId?: string, vId?: string) => {
     if (!store) {
@@ -134,25 +134,29 @@ const RouterProvider = ({ children }) => {
       ...cacheScrollMap.current,
       [key]: {
         ...oldCacheValue,
-        ...value
-      }
+        ...value,
+      },
     };
 
     cacheScrollMap.current = next;
   };
 
-  return <ConfigProvider {...antdConfig}>
-    <ResourceContext.Provider value={resourceService.instance}>
-      <DndProvider backend={HTML5Backend}>
-        <ScrollContext.Provider value={{
-          cacheScrollMap,
-          changeCacheScroll
-        }}>
-          {children}
-        </ScrollContext.Provider>
-      </DndProvider>
-      <VersionUpdater />
-    </ResourceContext.Provider>
-  </ConfigProvider>;
+  return (
+    <ConfigProvider {...antdConfig}>
+      <ResourceContext.Provider value={resourceService.instance}>
+        <DndProvider backend={HTML5Backend}>
+          <ScrollContext.Provider
+            value={{
+              cacheScrollMap,
+              changeCacheScroll,
+            }}
+          >
+            {children}
+          </ScrollContext.Provider>
+        </DndProvider>
+        <VersionUpdater />
+      </ResourceContext.Provider>
+    </ConfigProvider>
+  );
 };
 export default RouterProvider;
