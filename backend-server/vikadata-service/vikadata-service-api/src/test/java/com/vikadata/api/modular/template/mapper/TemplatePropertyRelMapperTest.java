@@ -1,10 +1,11 @@
+package com.vikadata.api.modular.template.mapper;
+
 import java.util.List;
 
 import cn.hutool.core.collection.CollUtil;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.modular.template.mapper.TemplatePropertyRelMapper;
 import com.vikadata.api.modular.template.model.TemplatePropertyRelDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,5 @@ public class TemplatePropertyRelMapperTest extends AbstractMyBatisMapperTest {
         assertThat(templatePropertyRelDtoList).isNotNull();
         assertThat(templatePropertyRelDtoList.size()).isEqualTo(3);
     }
-
 
 }

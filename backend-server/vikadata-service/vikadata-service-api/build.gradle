@@ -153,34 +153,28 @@ springBoot {
   }
 }
 
-//test {
-//  // set a system property for the test JVM(s)
-////  systemProperty 'REDIS_HOST', System.getProperty("REDIS_HOST", "127.0.0.1")
-////  systemProperty 'REDIS_DB', System.getProperty("REDIS_DB", "5")
-////  systemProperty 'DB_HOST', System.getProperty("MYSQL_HOST", "127.0.0.1")
-////  systemProperty 'DB_PORT', System.getProperty("MYSQL_PORT", "33061")
-////  systemProperty 'DB_DATABASE', System.getProperty("MYSQL_DATABASE", "vika_test")
-//
-//  useJUnitPlatform()
-//
-//  // listen to events in the test execution lifecycle
-//  beforeTest { descriptor ->
-//    logger.lifecycle("Running test: {}", descriptor)
-//  }
-//
-//  // Stops test execution after the first failed test.
-//  failFast = true
-//
-//  // listen to standard out and standard error of the test JVM(s)
-//  onOutput { descriptor, event ->
-//    if (event.destination == TestOutputEvent.Destination.StdErr) {
-//      logger.error("Test: {}, error: {}", descriptor, event.message)
-//    }
-//  }
-//
-////  finalizedBy jacocoTestReport // report is always generated after tests run
-//}
-
-//jacocoTestReport {
-//  dependsOn test // tests are required to run before generating the report
-//}
+test {
+  //  useJUnitPlatform()
+  
+  // listen to events in the test execution lifecycle
+  //  beforeTest { descriptor ->
+  //    logger.lifecycle("Running test: {}", descriptor)
+  //  }
+  
+  //  doFirst {
+  //    forkEvery = 5
+  //    minHeapSize = "256m"
+  //    maxHeapSize = "2048m"
+  //    jvmArgs "-XX:MetaspaceSize=64m", "-XX:MaxMetaspaceSize=256m"
+  //  }
+  
+  // Stops test execution after the first failed test.
+  failFast = true
+  
+  // listen to standard out and standard error of the test JVM(s)
+  //  onOutput { descriptor, event ->
+  //    if (event.destination == TestOutputEvent.Destination.StdErr) {
+  //      logger.error("Test: {}, error: {}", descriptor, event.message)
+  //    }
+  //  }
+}

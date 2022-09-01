@@ -25,7 +25,7 @@
     "build:i18n": "yarn workspace @vikadata/i18n-lang build",
     "build:datasheet": "yarn workspace @vikadata/datasheet build",
     "build:widget-sdk": "yarn workspace @vikadata/widget-sdk build",
-    "build:room-server": "yarn workspace @vikadata/room-server build",
+    "build:sr": "yarn workspaces foreach --include '?(@vikadata/i18n-lang|@vikadata/core|@vikadata/room-server)' -pt -j 8 run build",
     "build:icons": "yarn workspace @vikadata/icons build",
     "build:components": "yarn workspace @vikadata/components build",
     "build:components:doc": "yarn workspace @vikadata/components build-storybook",

@@ -157,14 +157,44 @@ endif
 
 test-ut-room-docker:
 	@echo "${LIGHTPURPLE}$$(docker-compose --version)${RESET}"
-	docker-compose -f docker-compose-unit-test.yml down  || true
-ifeq ($(sikp-initdb),false)
-	make _test_initdb
-endif
+	docker rm -f $$(docker ps -a --filter "name=test-.*-"$${CI_GROUP_TAG:-0} --format "{{.ID}}") || true
+	docker-compose -f docker-compose-unit-test.yml run -d --name test-mysql-$${CI_GROUP_TAG:-0} test-mysql
+	docker-compose -f docker-compose-unit-test.yml run -d --name test-redis-$${CI_GROUP_TAG:-0} test-redis
+	docker-compose -f docker-compose-unit-test.yml run -d --name test-rabbitmq-$${CI_GROUP_TAG:-0} test-rabbitmq
+	sleep 20
+	docker-compose -f docker-compose-unit-test.yml run --rm -e DB_HOST=test-mysql-$${CI_GROUP_TAG:-0} test-initdb
 	docker-compose -f docker-compose-unit-test.yml build unit-test-room
-	docker-compose -f docker-compose-unit-test.yml run --rm unit-test-room
+	docker-compose -f docker-compose-unit-test.yml run --rm \
+		-e MYSQL_HOST=test-mysql-$${CI_GROUP_TAG:-0} \
+		-e REDIS_HOST=test-redis-$${CI_GROUP_TAG:-0} \
+		-e RABBITMQ_HOST=test-rabbitmq-$${CI_GROUP_TAG:-0} \
+		unit-test-room
 	@echo "${GREEN}finished unit test，clean up images...${RESET}"
-	docker-compose -f docker-compose-unit-test.yml down  || true
+	docker rm -f $$(docker ps -a --filter "name=test-.*-"$${CI_GROUP_TAG:-0} --format "{{.ID}}") || true
+
+###### 【room server unit test】 ######
+
+###### 【backend server unit test】 ######
+
+test-ut-backend-docker:
+	@echo "${LIGHTPURPLE}$$(docker-compose --version)${RESET}"
+	docker rm -f $$(docker ps -a --filter "name=test-.*-"$${CI_GROUP_TAG:-0} --format "{{.ID}}") || true
+	docker-compose -f docker-compose-unit-test.yml run -d --name test-mysql-$${CI_GROUP_TAG:-0} test-mysql
+	docker-compose -f docker-compose-unit-test.yml run -d --name test-mongo-$${CI_GROUP_TAG:-0} test-mongo
+	docker-compose -f docker-compose-unit-test.yml run -d --name test-redis-$${CI_GROUP_TAG:-0} test-redis
+	docker-compose -f docker-compose-unit-test.yml run -d --name test-rabbitmq-$${CI_GROUP_TAG:-0} test-rabbitmq
+	sleep 20
+	docker-compose -f docker-compose-unit-test.yml run --rm -e DB_HOST=test-mysql-$${CI_GROUP_TAG:-0} test-initdb
+	docker-compose -f docker-compose-unit-test.yml run -u $(shell id -u):$(shell id -g) --rm \
+		-e MYSQL_HOST=test-mysql-$${CI_GROUP_TAG:-0} \
+		-e REDIS_HOST=test-redis-$${CI_GROUP_TAG:-0} \
+		-e RABBITMQ_HOST=test-rabbitmq-$${CI_GROUP_TAG:-0} \
+		-e MONGO_HOST=test-mongo-$${CI_GROUP_TAG:-0} \
+		unit-test-backend
+	@echo "${GREEN}finished unit test，clean up images...${RESET}"
+	docker rm -f $$(docker ps -a --filter "name=test-.*-"$${CI_GROUP_TAG:-0} --format "{{.ID}}") || true
+
+###### 【backend server unit test】 ######
 
 ###### buildpush ######
 
