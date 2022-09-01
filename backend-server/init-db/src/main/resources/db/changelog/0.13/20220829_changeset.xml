@@ -34,7 +34,7 @@
                 `id`         bigint                                               NOT NULL COMMENT '主键',
                 `space_id`   varchar(50)                                          NOT NULL COMMENT '空间ID(关联#vika_space#space_id)',
                 `role_name`  varchar(100)                                         NOT NULL COMMENT '角色名称',
-                `sequence`   tinyint unsigned        DEFAULT '1'                  NOT NULL COMMENT '角色序列号(默认从1开始)',
+                `position`   int unsigned            DEFAULT '2000'               NOT NULL COMMENT '角色排序位置(默认从2000开始，新角色该值为空间最大position乘2)',
                 `is_deleted` tinyint(1) unsigned     DEFAULT '0'                  NOT NULL COMMENT '删除标记(0:否,1:是)',
                 `create_by`  bigint                                               NOT NULL COMMENT '创建人',
                 `update_by`  bigint                                               NULL COMMENT '更新人',
