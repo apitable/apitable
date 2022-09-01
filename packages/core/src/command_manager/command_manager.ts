@@ -1,7 +1,22 @@
 import { ErrorCode, ErrorType, IError } from 'types/error_types';
-import { COLLA_COMMAND_MAP, CollaCommandName, ICollaCommandOptions } from '../commands';
-import { CollaCommand, ICollaCommandDef, ICollaCommandDefExecuteResult, ICollaCommandDefExecuteSuccessResult } from './command';
-import { ExecuteFailReason, ExecuteResult, ExecuteType, ICollaCommandExecuteResult, ICollaCommandOptionsBase } from './types';
+import {
+  COLLA_COMMAND_MAP,
+  CollaCommandName,
+  ICollaCommandOptions,
+} from '../commands';
+import {
+  CollaCommand,
+  ICollaCommandDef,
+  ICollaCommandDefExecuteResult,
+  ICollaCommandDefExecuteSuccessResult,
+} from './command';
+import {
+  ExecuteFailReason,
+  ExecuteResult,
+  ExecuteType,
+  ICollaCommandExecuteResult,
+  ICollaCommandOptionsBase,
+} from './types';
 import { IOperation } from 'engine/ot/interface';
 import { IReduxState, ISubscription, Selectors } from 'store';
 import { AnyAction, Store } from 'redux';
@@ -18,14 +33,17 @@ export type IResourceOpsCollect = {
   resourceType: ResourceType;
   operations: IOperation[];
   fieldTypeMap?: {
-    [fieldId: string]: FieldType
-  }
+    [fieldId: string]: FieldType;
+  };
 };
 
 export interface ICollaCommandManagerListener {
   handleCommandExecuted?(resourceOpsCollects: IResourceOpsCollect[]);
   getRoomId?(): string;
-  handleCommandExecuteError?(error: IError, type?: 'message' | 'modal' | 'subscribeUsage');
+  handleCommandExecuteError?(
+    error: IError,
+    type?: 'message' | 'modal' | 'subscribeUsage'
+  );
 }
 
 export class CollaCommandManager {
@@ -34,11 +52,15 @@ export class CollaCommandManager {
   private linkIntegrityChecker!: LinkIntegrityChecker;
   private subscribeUsageCheck!: SubscribeUsageCheck;
 
-  addUndoStack?(cmd: CollaCommandName, commandResult: ICollaCommandDefExecuteSuccessResult, executeType: ExecuteType): void;
+  addUndoStack?(
+    cmd: CollaCommandName,
+    commandResult: ICollaCommandDefExecuteSuccessResult,
+    executeType: ExecuteType
+  ): void;
 
   constructor(
     private _listener: ICollaCommandManagerListener = {},
-    private store: Store<IReduxState, AnyAction>,
+    private store: Store<IReduxState, AnyAction>
   ) {
     const commandNames = Object.keys(COLLA_COMMAND_MAP);
     commandNames.forEach(commandName => {
@@ -51,7 +73,10 @@ export class CollaCommandManager {
 
   register(name: string, commandDef: ICollaCommandDef) {
     if (this._commands[name]) {
-      console.warn(`the command name ${name} is registered and will be unregistered`, this._commands[name]);
+      console.warn(
+        `the command name ${name} is registered and will be unregistered`,
+        this._commands[name]
+      );
       this.unregister(name);
     }
     this._commands[name] = new CollaCommand(commandDef, name);
@@ -72,10 +97,13 @@ export class CollaCommandManager {
    * @param datasheetOpsCollects
    */
   didExecutedHook(datasheetOpsCollects: IResourceOpsCollect[]) {
-    this._listener.handleCommandExecuted && this._listener.handleCommandExecuted(datasheetOpsCollects);
+    this._listener.handleCommandExecuted &&
+      this._listener.handleCommandExecuted(datasheetOpsCollects);
   }
 
-  execute<R = {}>(options: ICollaCommandOptions): ICollaCommandExecuteResult<R> {
+  execute<R = {}>(
+    options: ICollaCommandOptions
+  ): ICollaCommandExecuteResult<R> {
     const optionsFull = this.fullFillOptions(options);
     let ret = this._execute<R>(optionsFull);
     if (ret === null) {
@@ -93,7 +121,9 @@ export class CollaCommandManager {
   /**
    * @desc 工具方法，传入基础的 command option ，返回结构化的参数
    * */
-  private fullFillOptions(options: ICollaCommandOptions): ICollaCommandOptionsBase {
+  private fullFillOptions(
+    options: ICollaCommandOptions
+  ): ICollaCommandOptionsBase {
     let resourceId: string | undefined = undefined;
     // 不填 resourceType 默认是 datasheet
     // TODO: 全局修改要填上 resourceType
@@ -120,7 +150,9 @@ export class CollaCommandManager {
     };
   }
 
-  private _execute<R>(options: ICollaCommandOptionsBase): ICollaCommandExecuteResult<R> | null {
+  private _execute<R>(
+    options: ICollaCommandOptionsBase
+  ): ICollaCommandExecuteResult<R> | null {
     const name = options.cmd;
     const command = this._commands[name];
     if (!command) {
@@ -139,11 +171,12 @@ export class CollaCommandManager {
           resourceType: options.resourceType,
         },
       });
-      this._listener.handleCommandExecuteError && this._listener.handleCommandExecuteError({
-        type: ErrorType.CollaError,
-        code: ErrorCode.CommandExecuteFailed,
-        message: e.message,
-      });
+      this._listener.handleCommandExecuteError &&
+        this._listener.handleCommandExecuteError({
+          type: ErrorType.CollaError,
+          code: ErrorCode.CommandExecuteFailed,
+          message: e.message,
+        });
       return {
         resourceId: options.resourceId,
         resourceType: options.resourceType,
@@ -161,8 +194,12 @@ export class CollaCommandManager {
       return ret;
     }
 
-    const flushedActions = context.ldcMaintainer.flushLinkedActions(context.model);
-    const memberFieldAction = context.memberFieldMaintainer.flushMemberAction(context.model);
+    const flushedActions = context.ldcMaintainer.flushLinkedActions(
+      context.model
+    );
+    const memberFieldAction = context.memberFieldMaintainer.flushMemberAction(
+      context.model
+    );
 
     if (memberFieldAction.length) {
       ret.actions.push(...memberFieldAction);
@@ -184,13 +221,20 @@ export class CollaCommandManager {
       memberFieldMaintainer: new MemberFieldMaintainer(),
       fieldMapSnapshot: {},
       subscribeUsageCheck: (functionName: keyof ISubscription, value: any) => {
-        const checkResult = this.subscribeUsageCheck.underUsageLimit(functionName, value);
+        const checkResult = this.subscribeUsageCheck.underUsageLimit(
+          functionName,
+          value
+        );
         if (checkResult) {
           return;
         }
         if (this._listener.handleCommandExecuteError && !checkResult) {
           return this._listener.handleCommandExecuteError(
-            new EnhanceError({ message: functionName, extra: { usage: value }}) as any, 'subscribeUsage',
+            new EnhanceError({
+              message: functionName,
+              extra: { usage: value },
+            }) as any,
+            'subscribeUsage'
           );
         }
         throw new Error('subscribeUsage error');
@@ -202,22 +246,34 @@ export class CollaCommandManager {
   _executeActions<R = any>(
     cmd: CollaCommandName,
     ret: ICollaCommandDefExecuteSuccessResult<R>,
-    executeType: ExecuteType,
+    executeType: ExecuteType
   ): ICollaCommandExecuteResult<R> | null {
-    const { actions, resourceId, resourceType, linkedActions, fieldMapSnapshot } = ret;
+    const {
+      actions,
+      resourceId,
+      resourceType,
+      linkedActions,
+      fieldMapSnapshot,
+    } = ret;
     const command = this._commands[cmd];
     const context = this._getContext();
 
     if (!command || !resourceId) {
-      console.error('can\'t find command or resource', command, resourceId);
+      console.error("can't find command or resource", command, resourceId);
       return null;
     }
 
-    if (executeType === ExecuteType.Redo && !command.canRedo(context, actions)) {
+    if (
+      executeType === ExecuteType.Redo &&
+      !command.canRedo(context, actions)
+    ) {
       return null;
     }
 
-    if (executeType === ExecuteType.Undo && !command.canUndo(context, actions)) {
+    if (
+      executeType === ExecuteType.Undo &&
+      !command.canUndo(context, actions)
+    ) {
       return null;
     }
 
@@ -234,10 +290,23 @@ export class CollaCommandManager {
 
     if (resourceType === ResourceType.Datasheet) {
       // 这里调整成对所有涉及到单元格写入的 op 进行检查，一种是判断类型，如果类型一致则检查格式
-      _actions = this.cellFormatChecker.parse(_actions, resourceId, _fieldMapSnapshot);
+      _actions = this.cellFormatChecker.parse(
+        _actions,
+        resourceId,
+        _fieldMapSnapshot
+      );
 
-      if (executeType === ExecuteType.Redo || executeType === ExecuteType.Undo) {
-        _actions = _fieldMapSnapshot ? _actions : this.linkIntegrityChecker.parse(_actions, resourceId, linkedActions);
+      if (
+        executeType === ExecuteType.Redo ||
+        executeType === ExecuteType.Undo
+      ) {
+        _actions = _fieldMapSnapshot
+          ? _actions
+          : this.linkIntegrityChecker.parse(
+              _actions,
+              resourceId,
+              linkedActions
+            );
       }
     }
 
@@ -261,10 +330,13 @@ export class CollaCommandManager {
     const datasheetOpsCollects: IResourceOpsCollect[] = [];
 
     datasheetOpsCollects.push({
-      resourceId, resourceType, operations: [
-        linkedActions?.length ?
-          { ...operation, mainLinkDstId: resourceId } : operation
-      ]
+      resourceId,
+      resourceType,
+      operations: [
+        linkedActions?.length
+          ? { ...operation, mainLinkDstId: resourceId }
+          : operation,
+      ],
     });
 
     if (linkedActions) {
@@ -272,8 +344,16 @@ export class CollaCommandManager {
         if (!lCmd.actions.length) {
           return;
         }
-        const op = { cmd: _cmd, actions: lCmd.actions, mainLinkDstId: resourceId };
-        datasheetOpsCollects.push({ resourceId: lCmd.datasheetId, resourceType, operations: [op] });
+        const op = {
+          cmd: _cmd,
+          actions: lCmd.actions,
+          mainLinkDstId: resourceId,
+        };
+        datasheetOpsCollects.push({
+          resourceId: lCmd.datasheetId,
+          resourceType,
+          operations: [op],
+        });
       });
     }
 
