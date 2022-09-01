@@ -67,9 +67,11 @@ public class UnitInfoVo {
     private Boolean isMemberNameModified;
 
     @ApiModelProperty(value = "成员所属部门", example = "技术组 | 美术组", position = 10)
+    @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String team;
 
     @ApiModelProperty(value = "user email", example = "**@**.**", position = 11)
+    @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String email;
 
 }
