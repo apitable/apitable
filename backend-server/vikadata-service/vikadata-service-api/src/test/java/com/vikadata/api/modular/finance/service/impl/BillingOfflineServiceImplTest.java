@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,7 @@ import static com.vikadata.api.util.billing.BillingConfigManager.getPlan;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Lists.list;
 
+@Disabled("no assert")
 public class BillingOfflineServiceImplTest extends AbstractIntegrationTest {
 
     protected static final Logger log = LoggerFactory.getLogger(BillingOfflineServiceImplTest.class);
@@ -607,7 +609,7 @@ public class BillingOfflineServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void testCreateGiftCapacityOrder(){
+    public void testCreateGiftCapacityOrder() {
         MockUserSpace mockUserSpace = createSingleUserAndSpace();
         String userName = "testUserName";
         // 下单300MB附加订阅计划

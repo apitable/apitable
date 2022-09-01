@@ -5,7 +5,7 @@ import { IAuthHeader } from 'interfaces/axios.interfaces';
  * @param cookie 会话KEY
  * @param token Authorization Header
  */
-export const createAuthHeaders = ({ cookie, token }: IAuthHeader): any => {
+export function createAuthHeaders({ cookie, token }: IAuthHeader): any {
   if (cookie) {
     return {
       Cookie: cookie,
@@ -17,8 +17,8 @@ export const createAuthHeaders = ({ cookie, token }: IAuthHeader): any => {
       Authorization: token,
     };
   }
-};
+}
 
-export const withSpaceIdHeader = (header: any, spaceId?: string) => {
+export function withSpaceIdHeader(header: any, spaceId?: string) {
   return spaceId ? { ...header, 'X-Space-Id': spaceId } : header;
-};
+}

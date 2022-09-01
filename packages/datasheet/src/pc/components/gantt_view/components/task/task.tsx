@@ -489,7 +489,7 @@ const Task: FC<ITaskProps> = (props) => {
       return colorMap.handlerColor;
       
     } else if(colorMap.bgColor === colors.defaultBg) {
-      return '#B9BCD3';
+      return colors.borderCommon;
     } 
     return colorMap.bgColor;
   };

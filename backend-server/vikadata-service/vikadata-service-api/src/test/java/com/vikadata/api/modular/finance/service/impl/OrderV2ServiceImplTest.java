@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import com.vikadata.system.config.billing.Price;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Disabled("no assert")
 public class OrderV2ServiceImplTest extends AbstractIntegrationTest {
 
     protected static final Logger log = LoggerFactory.getLogger(OrderV2ServiceImplTest.class);

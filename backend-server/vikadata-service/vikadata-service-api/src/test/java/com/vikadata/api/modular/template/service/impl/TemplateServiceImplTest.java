@@ -9,10 +9,10 @@ import javax.annotation.Resource;
 
 import cn.hutool.core.collection.CollUtil;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.enums.exception.TemplateException;
 import com.vikadata.api.cache.service.ITemplateConfigService;
 import com.vikadata.api.enums.exception.TemplateException;
 import com.vikadata.api.model.dto.template.TemplateDto;
@@ -38,6 +38,7 @@ import static org.mockito.BDDMockito.willReturn;
 /**
  * @author tao
  */
+@Disabled("no assert")
 public class TemplateServiceImplTest extends AbstractIntegrationTest {
 
     @SpyBean
@@ -148,7 +149,7 @@ public class TemplateServiceImplTest extends AbstractIntegrationTest {
         // when
         boolean isException = false;
         try {
-            templateService.checkDatasheetTemplate(CollUtil.newArrayList("dst123"),true, TemplateException.NODE_LINK_FOREIGN_NODE);
+            templateService.checkDatasheetTemplate(CollUtil.newArrayList("dst123"), true, TemplateException.NODE_LINK_FOREIGN_NODE);
         }
         catch (BusinessException e) {
             isException = true;

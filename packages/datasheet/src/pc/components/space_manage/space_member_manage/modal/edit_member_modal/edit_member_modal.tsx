@@ -4,6 +4,7 @@ import { Avatar } from 'pc/components/common/avatar';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal';
 import { useEditMember } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
 import { useEffect, useState, FC } from 'react';
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 import AddIcon from 'static/icon/common/common_icon_add_content.svg';
@@ -42,6 +43,7 @@ export const EditMemberModal: FC<IModalProps> = ({ cancelModalVisible, pageNo, r
   );
   const { removeMember } = useMemberManage();
   const dispatch = useDispatch();
+  const env = getEnvVariables();
   const [form, setForm] = useState({
     memberName: '',
     nickName: '',
@@ -250,15 +252,18 @@ export const EditMemberModal: FC<IModalProps> = ({ cancelModalVisible, pageNo, r
             </Button>
           </div>
         </div>
-        <div className={styles.item}>
-          <label className={styles.label}>{t(Strings.phone_number)}</label>
-          <TextInput
-            value={form.mobile}
-            disabled
-            block
-          />
-          <div className={styles.err}>{formErr.mobile}</div>
-        </div>
+        {
+          !env.HIDDEN_BIND_PHONE && <div className={styles.item}>
+            <label className={styles.label}>{t(Strings.phone_number)}</label>
+            <TextInput
+              value={form.mobile}
+              disabled
+              block
+            />
+            <div className={styles.err}>{formErr.mobile}</div>
+          </div>
+        }
+
         <div className={styles.item}>
           <label className={styles.label}>{t(Strings.mail)}</label>
           <TextInput

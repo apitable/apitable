@@ -2,6 +2,9 @@ package com.vikadata.api.modular.space.service.impl;
 
 import javax.annotation.Resource;
 
+import com.vikadata.api.modular.finance.service.impl.SpaceSubscriptionServiceImpl;
+import com.vikadata.api.modular.space.model.SpaceCapacityUsedInfo;
+import com.vikadata.api.modular.space.model.vo.SpaceSubscribeVo;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
@@ -12,11 +15,13 @@ import com.vikadata.api.modular.social.enums.SocialAppType;
 import com.vikadata.api.modular.social.service.ISocialTenantService;
 import com.vikadata.api.modular.space.model.SpaceUpdateOperate;
 import com.vikadata.core.exception.BusinessException;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
 
 /**
  * @author tao
@@ -25,6 +30,9 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
 
     @Resource
     private ISocialTenantService iSocialTenantService;
+
+    @MockBean
+    private SpaceSubscriptionServiceImpl spaceSubscriptionService;
 
     @Test
     void testGetFalseRootManageable() {
@@ -454,4 +462,51 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
                 SpaceUpdateOperate.DELETE_SPACE));
     }
 
+    @Test
+    void testGetSpaceCapacityUsedInfoIsOverUsed(){
+        String spaceId = "spc01";
+        Long capacityUsedSize = 2147483648L;
+        SpaceSubscribeVo vo = new SpaceSubscribeVo();
+        vo.setSubscriptionCapacity(1073741824L);
+        // given
+        given(spaceSubscriptionService.getSpaceSubscription(spaceId)).willReturn(vo);
+        given(spaceSubscriptionService.getSpaceUnExpireGiftCapacity(spaceId)).willReturn(314572800L);
+        // when
+        SpaceCapacityUsedInfo spaceCapacityUsedInfo = iSpaceService.getSpaceCapacityUsedInfo(spaceId, capacityUsedSize);
+        // then
+        assertThat(spaceCapacityUsedInfo.getCurrentBundleCapacityUsedSizes()).isEqualTo(1073741824L);
+        assertThat(spaceCapacityUsedInfo.getGiftCapacityUsedSizes()).isEqualTo(314572800L);
+    }
+
+    @Test
+    void testGetSpaceCapacityUsedInfoAndGiftCapacityIsNotUse(){
+        String spaceId = "spc01";
+        Long capacityUsedSize = 1073741824L;
+        SpaceSubscribeVo vo = new SpaceSubscribeVo();
+        vo.setSubscriptionCapacity(1073741824L);
+        // given
+        given(spaceSubscriptionService.getSpaceSubscription(spaceId)).willReturn(vo);
+        given(spaceSubscriptionService.getSpaceUnExpireGiftCapacity(spaceId)).willReturn(314572800L);
+        // when
+        SpaceCapacityUsedInfo spaceCapacityUsedInfo = iSpaceService.getSpaceCapacityUsedInfo(spaceId, capacityUsedSize);
+        // then
+        assertThat(spaceCapacityUsedInfo.getCurrentBundleCapacityUsedSizes()).isEqualTo(1073741824L);
+        assertThat(spaceCapacityUsedInfo.getGiftCapacityUsedSizes()).isEqualTo(0L);
+    }
+
+    @Test
+    void testGetSpaceCapacityUsedInfoAndGiftCapacityIsUse(){
+        String spaceId = "spc01";
+        Long capacityUsedSize = 1073741830L;
+        SpaceSubscribeVo vo = new SpaceSubscribeVo();
+        vo.setSubscriptionCapacity(1073741824L);
+        // given
+        given(spaceSubscriptionService.getSpaceSubscription(spaceId)).willReturn(vo);
+        given(spaceSubscriptionService.getSpaceUnExpireGiftCapacity(spaceId)).willReturn(314572800L);
+        // when
+        SpaceCapacityUsedInfo spaceCapacityUsedInfo = iSpaceService.getSpaceCapacityUsedInfo(spaceId, capacityUsedSize);
+        // then
+        assertThat(spaceCapacityUsedInfo.getCurrentBundleCapacityUsedSizes()).isEqualTo(1073741824L);
+        assertThat(spaceCapacityUsedInfo.getGiftCapacityUsedSizes()).isEqualTo(6L);
+    }
 }

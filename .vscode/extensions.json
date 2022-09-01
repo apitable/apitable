@@ -1,5 +1,6 @@
 {
   "recommendations": [
+    "esbenp.prettier-vscode",
     "eamodio.gitlens",
     "arcanis.vscode-zipfs",
     "dbaeumer.vscode-eslint",

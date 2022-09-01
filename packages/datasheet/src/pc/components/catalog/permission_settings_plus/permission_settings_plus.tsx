@@ -34,8 +34,8 @@ export const PermissionSettingsPlus: FC<IPermissionSettingsProps> = ({ data, vis
   const Title = () => {
 
     return <Tooltip content={t(Strings.instruction_of_node_permission)}>
-      <span className={styles.helpBtn} onClick={() => setPermDescModalVisible(true)}>
-        <InformationSmallOutlined color={colors.thirdLevelText} className={styles.infoIcon} />
+      <span className={styles.helpBtn}>
+        <InformationSmallOutlined color={colors.thirdLevelText} onClick={() => setPermDescModalVisible(true)} className={styles.infoIcon} />
       </span>
     </Tooltip>;
   };

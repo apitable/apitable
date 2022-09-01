@@ -15,3 +15,11 @@ services:
       - HOME=/app
     volumes:
       - ${PWD}:/app
+  socket-server:
+    image: node:16.15.0-alpine
+    restart: always
+    working_dir: /app
+    environment:
+      - HOME=/app
+    volumes:
+      - ${PWD}/packages/socket-server:/app

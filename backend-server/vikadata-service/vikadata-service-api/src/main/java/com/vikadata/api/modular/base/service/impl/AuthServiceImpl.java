@@ -20,7 +20,6 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.json.JSONUtil;
-import com.vikadata.api.modular.finance.service.IBillingOfflineService;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.cache.bean.SocialAuthInfo;
@@ -40,6 +39,7 @@ import com.vikadata.api.model.ro.user.LoginRo;
 import com.vikadata.api.model.vo.asset.AssetUploadResult;
 import com.vikadata.api.modular.base.service.IAssetService;
 import com.vikadata.api.modular.base.service.IAuthService;
+import com.vikadata.api.modular.finance.service.IBillingOfflineService;
 import com.vikadata.api.modular.integral.enums.IntegralAlterType;
 import com.vikadata.api.modular.integral.service.IIntegralService;
 import com.vikadata.api.modular.organization.service.IMemberService;
@@ -310,7 +310,7 @@ public class AuthServiceImpl implements IAuthService {
             String nickName = socialLogin ? authInfo.getNickName() : null;
             String avatar = socialLogin ? authInfo.getAvatar() : null;
             userId = registerUserUsingMobilePhone(areaCode, mobile, nickName, avatar);
-            if(StrUtil.isNotEmpty(loginRo.getSpaceId())){
+            if (StrUtil.isNotEmpty(loginRo.getSpaceId())) {
                 // 缓存，用于邀请用户赠送附件容量
                 this.handleCache(userId, loginRo.getSpaceId());
             }
@@ -379,7 +379,7 @@ public class AuthServiceImpl implements IAuthService {
         else {
             // 邮箱自动注册用户不提供第三方扫码登录绑定
             userId = registerUserUsingEmail(email, loginRo.getSpaceId());
-            if(StrUtil.isNotEmpty(loginRo.getSpaceId())){
+            if (StrUtil.isNotEmpty(loginRo.getSpaceId())) {
                 // 缓存，用于邀请用户赠送附件容量
                 this.handleCache(userId, loginRo.getSpaceId());
             }
@@ -588,12 +588,9 @@ public class AuthServiceImpl implements IAuthService {
 
     @Override
     public void checkSpaceRewardCapacity(List<MemberDto> inactiveMembers, String spaceId) {
-        // 匹配空间站
-        MemberDto memberDto = inactiveMembers.stream().filter(e -> spaceId.equals(e.getSpaceId())).findFirst().get();
-        if(ObjectUtil.isNotEmpty(memberDto)){
-            // 邀请的成员成功激活，空间站获赠300M附件容量
-            iBillingOfflineService.createGiftCapacityOrder(memberDto.getUserId(), memberDto.getMemberName(), spaceId);
-        }
+        // the invited members are successfully activated, and the space station will receive a 300M accessory capacity
+        inactiveMembers.stream().filter(e -> spaceId.equals(e.getSpaceId())).findFirst()
+                .ifPresent(memberDto -> iBillingOfflineService.createGiftCapacityOrder(memberDto.getUserId(), memberDto.getMemberName(), spaceId));
     }
 
     @Override
@@ -713,7 +710,7 @@ public class AuthServiceImpl implements IAuthService {
         }
     }
 
-    private void handleCache(Long userId, String spaceId){
+    private void handleCache(Long userId, String spaceId) {
         String key = RedisConstants.getUserInvitedJoinSpaceKey(userId, spaceId);
         redisTemplate.opsForValue().set(key, userId, 5, TimeUnit.MINUTES);
     }

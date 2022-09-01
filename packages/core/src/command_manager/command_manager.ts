@@ -225,7 +225,7 @@ export class CollaCommandManager {
       return null;
     }
 
-    if (this.addUndoStack && command.undoable) {
+    if (this.addUndoStack && command.undoable()) {
       this.addUndoStack(cmd, ret, executeType);
     }
 
