@@ -406,7 +406,7 @@ public class AuthServiceImpl implements IAuthService {
         // 查询是否有邮箱对应的空间成员，只有新注册才会有这个操作
         List<MemberDto> inactiveMembers = iMemberService.getInactiveMemberDtoByEmail(email);
         // 邀请新用户加入空间站奖励附件容量，异步操作
-        TaskManager.me().execute(() -> this.checkSpaceRewardCapacity(inactiveMembers, spaceId));
+        TaskManager.me().execute(() -> this.checkSpaceRewardCapacity(user.getId(), user.getNickName(), spaceId));
         createOrActiveSpace(user, inactiveMembers.stream().map(MemberDto::getId).collect(Collectors.toList()));
         return user.getId();
     }
@@ -587,10 +587,11 @@ public class AuthServiceImpl implements IAuthService {
     }
 
     @Override
-    public void checkSpaceRewardCapacity(List<MemberDto> inactiveMembers, String spaceId) {
+    public void checkSpaceRewardCapacity(Long userId, String userName, String spaceId) {
         // the invited members are successfully activated, and the space station will receive a 300M accessory capacity
-        inactiveMembers.stream().filter(e -> spaceId.equals(e.getSpaceId())).findFirst()
-                .ifPresent(memberDto -> iBillingOfflineService.createGiftCapacityOrder(memberDto.getUserId(), memberDto.getMemberName(), spaceId));
+        if (spaceId != null) {
+            iBillingOfflineService.createGiftCapacityOrder(userId, userName, spaceId);
+        }
     }
 
     @Override
