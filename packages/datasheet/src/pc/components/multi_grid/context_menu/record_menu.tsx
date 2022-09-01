@@ -79,22 +79,22 @@ export function copyRecord(recordId: string) {
   });
 }
 
-export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
+export const RecordMenu: React.FC<IRecordMenuProps> = props => {
   const colors = useThemeColors();
   const { insertDirection = 'vertical', hideInsert, menuId, extraData } = props;
-  const recordRanges = useSelector((state) => Selectors.getSelectionRecordRanges(state));
-  const view = useSelector((state) => Selectors.getCurrentView(state))!;
+  const recordRanges = useSelector(state => Selectors.getSelectionRecordRanges(state));
+  const view = useSelector(state => Selectors.getCurrentView(state))!;
   const isCalendar = view.type === ViewType.Calendar;
   const commandManager = resourceService.instance!.commandManager;
   const dispatch = useDispatch();
   const { rowCreatable, rowRemovable } = useSelector(Selectors.getPermissions);
   const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
-  const { mirrorId, shareId, templateId } = useSelector((state) => state.pageParams);
+  const { mirrorId, shareId, templateId } = useSelector(state => state.pageParams);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const beforeInputRef = useRef<IInputEditor>(null);
   const afterInputRef = useRef<IInputEditor>(null);
   const selection = useSelector(Selectors.getSelectRanges);
-  const subscriptions = useSelector((state) => state.subscriptions)!;
+  const subscriptions = useSelector(state => state.subscriptions)!;
 
   const { run: subscribeRecordByIds } = useRequest(DatasheetApi.subscribeRecordByIds, { manual: true });
   const { run: unsubscribeRecordByIds } = useRequest(DatasheetApi.unsubscribeRecordByIds, { manual: true });
@@ -125,7 +125,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
       // 处理选区的删除
       for (const v of selection) {
         const selectRecords = Selectors.getRangeRecords(store.getState(), v);
-        selectRecords && data.push(...selectRecords.map((r) => r.recordId));
+        selectRecords && data.push(...selectRecords.map(r => r.recordId));
       }
     } else {
       // 处理直接右键的删除
@@ -179,7 +179,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
       if (!selectRecords) return t(Strings.record_watch_single);
 
       if (selectRecords?.length > 1) {
-        const recordIds = selectRecords.map((el) => el.recordId);
+        const recordIds = selectRecords.map(el => el.recordId);
         // 判断已选中的record是否全部在subscription中
         return [...new Set([...subscriptions, ...recordIds])].length === subscriptions.length
           ? t(Strings.cancel_watch_record_multiple, { count: recordIds.length })
@@ -215,7 +215,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
 
       if (!selectRecords) return;
 
-      const recordIds = selectRecords.map((el) => el.recordId);
+      const recordIds = selectRecords.map(el => el.recordId);
       // 判断已选中的record是否全部在subscription中
       if ([...new Set([...subscriptions, ...recordIds])].length === subscriptions.length) {
         onUnsubscribe(recordIds);
@@ -275,7 +275,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
     }
   };
 
-  const handleCopy = (e) => {
+  const handleCopy = e => {
     resourceService.instance!.clipboard.copy(e);
   };
 
@@ -354,7 +354,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
               initValue={1}
               text={t(Strings.menu_insert_record_above)}
               textKey={'lineCount'}
-              onChange={(value) => onInputChange(value, beforeInputRef)}
+              onChange={value => onInputChange(value, beforeInputRef)}
               onKeyDown={onInputKeyDown}
             />
           ),
@@ -375,7 +375,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = (props) => {
               initValue={1}
               text={t(Strings.menu_insert_record_below)}
               textKey={'lineCount'}
-              onChange={(value) => onInputChange(value, afterInputRef)}
+              onChange={value => onInputChange(value, afterInputRef)}
               onKeyDown={onInputKeyDown}
             />
           ),
