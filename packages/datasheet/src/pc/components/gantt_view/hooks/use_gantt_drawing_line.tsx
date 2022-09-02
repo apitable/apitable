@@ -55,7 +55,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
 
   const linkField = fieldMap[linkFieldId];
 
-  if (!transformerId || dragTaskId || !linkField || isLocking) {
+  if (!transformerId || dragTaskId || !linkField || isLocking || !startFieldId || !endFieldId) {
     return {
       drawingLine: null,
     };
