@@ -123,7 +123,9 @@ export const useGantt = (props: IUseGanttProps) => {
 
   const {
     lineSettingModels
-  } = useTaskLineSetting();
+  } = useTaskLineSetting({
+    scrollState
+  });
 
   return {
     hoverRow,

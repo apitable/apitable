@@ -91,7 +91,7 @@ export const autoTaskScheduling = (
       }
     });
   } else {
-    if(!rowsTimeList[autoEntrance.recordId]) {
+    if(!rowsTimeList[autoEntrance.recordId] || rowsTimeList[autoEntrance.recordId]['endTime']) {
       return [];
     }
     rowsTimeList[autoEntrance.recordId]['endTime'] = autoEntrance.value;
