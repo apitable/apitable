@@ -110,30 +110,29 @@ export const useTaskLineSetting = (props: ITaskLineSettingProps) => {
   const showContactInfo = () => {
     setShowConnect(true);
   };
-
+  
   // TODO 抽出一个变量
-
   const shadowProps =
     cacheTheme === 'light'
       ? {
-          stroke: rgbaToHex(colors.borderCommon, 1),
-          strokeWidth: 1,
-          shadowColor: rgbaToHex(colors.shadowBg, 0.12),
-          shadowBlur: 12,
-          // shadowOffsetX: 2,
-          shadowOffsetY: 6,
-          shadowEnabled: true,
-        }
+        stroke: rgbaToHex(colors.borderCommon, 1),
+        strokeWidth: 1,
+        shadowColor: rgbaToHex(colors.shadowBg, 0.12),
+        shadowBlur: 12,
+        // shadowOffsetX: 2,
+        shadowOffsetY: 6,
+        shadowEnabled: true,
+      }
       : {
-          stroke: rgbaToHex(colors.borderCommon, 1),
-          strokeWidth: 1,
-          shadowColor: '#000000',
-          shadowOpacity: 0.12,
-          shadowBlur: 12,
-          // shadowOffsetX: 2,
-          shadowOffsetY: 6,
-          shadowEnabled: true,
-        };
+        stroke: rgbaToHex(colors.borderCommon, 1),
+        strokeWidth: 1,
+        shadowColor: '#000000',
+        shadowOpacity: 0.12,
+        shadowBlur: 12,
+        // shadowOffsetX: 2,
+        shadowOffsetY: 6,
+        shadowEnabled: true,
+      };
 
   const lineSettingModels = (
     <>
@@ -173,7 +172,7 @@ export const useTaskLineSetting = (props: ITaskLineSettingProps) => {
           <Text x={90} y={138} text={endTime} fill={colors.fc1} height={20} verticalAlign={'middle'} />
         </Group>
       ) : (
-        <Group x={x - 40} y={dashEnabled || y - scrollTop < 100 ? y + 2 : y - 42}>
+        <Group x={x - 40} y={(dashEnabled || y - scrollTop < 200) ? y + 2 : y - 42}>
           <Rect
             name={generateTargetName({
               targetName: KONVA_DATASHEET_ID.GANTT_LINE_SETTING,
