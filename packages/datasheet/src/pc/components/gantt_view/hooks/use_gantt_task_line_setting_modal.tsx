@@ -9,7 +9,7 @@ import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { Selectors, CollaCommandName, t, Strings, KONVA_DATASHEET_ID, ConfigConstant } from '@vikadata/core';
 import { getRecordName } from 'pc/components/expand_record';
-import { Message } from '@vikadata/components';
+import { lightColors, Message } from '@vikadata/components';
 import { Text, autoSizerCanvas } from 'pc/components/konva_components';
 import { rgbaToHex } from 'pc/utils';
 
@@ -25,13 +25,18 @@ interface ITaskLineSettingProps {
   scrollState: IScrollState;
 }
 
+enum TextMaxWidth {
+  TitleWidth = 200,
+  TimeWidth = 130,
+}
+
 export const useTaskLineSetting = (props: ITaskLineSettingProps) => {
   const { scrollState } = props;
   const { taskLineSetting, ganttStyle, setTaskLineSetting } = useContext(KonvaGanttViewContext);
   const { snapshot, visibleColumns, fieldMap, fieldPermissionMap, cacheTheme } = useContext(KonvaGridViewContext);
   const state = store.getState();
   const { theme } = useContext(KonvaGridContext);
-  const colors = theme.color;
+  const colors = theme.color as typeof lightColors;
 
   const { linkFieldId, startFieldId, endFieldId } = ganttStyle;
   const [showConnect, setShowConnect] = useState(false);
@@ -58,19 +63,19 @@ export const useTaskLineSetting = (props: ITaskLineSettingProps) => {
   const firstFieldId = visibleColumns[0].fieldId;
   const sourceCellValue = Selectors.getCellValue(state, snapshot, sourceId, firstFieldId);
   const sourceTitle = getRecordName(sourceCellValue, fieldMap[firstFieldId]) || t(Strings.record_unnamed);
-  const sourceRecordTitle = textSizer.current.measureText(sourceTitle, 200, 1).text;
+  const sourceRecordTitle = textSizer.current.measureText(sourceTitle, TextMaxWidth.TitleWidth, 1).text;
 
   const startTimeCellValue = Selectors.getCellValue(state, snapshot, sourceId, endFieldId);
   const startTimeStr = getRecordName(startTimeCellValue, fieldMap[endFieldId]);
-  const startTime = textSizer.current.measureText(startTimeStr, 130, 1).text;
+  const startTime = textSizer.current.measureText(startTimeStr, TextMaxWidth.TimeWidth, 1).text;
 
   const targetCellValue = Selectors.getCellValue(state, snapshot, targetId, firstFieldId);
   const targetTitle = getRecordName(targetCellValue, fieldMap[firstFieldId]) || t(Strings.record_unnamed);
-  const targetRecordTitle = textSizer.current.measureText(targetTitle, 200, 1).text;
+  const targetRecordTitle = textSizer.current.measureText(targetTitle, TextMaxWidth.TitleWidth, 1).text;
 
   const endTimeCellValue = Selectors.getCellValue(state, snapshot, targetId, startFieldId);
   const endTimeStr = getRecordName(endTimeCellValue, fieldMap[startFieldId]);
-  const endTime = textSizer.current.measureText(endTimeStr, 130, 1).text;
+  const endTime = textSizer.current.measureText(endTimeStr, TextMaxWidth.TimeWidth, 1).text;
 
   const deleteTaskLine = () => {
     const cellValue = Selectors.getCellValue(state, snapshot, targetId, linkFieldId) || [];
@@ -107,26 +112,29 @@ export const useTaskLineSetting = (props: ITaskLineSettingProps) => {
   };
 
   // TODO 抽出一个变量
-  
-  const shadowProps = cacheTheme === 'light' ? {
-    stroke: rgbaToHex(colors.borderCommon, 1),
-    strokeWidth: 1,
-    shadowColor: rgbaToHex('#262626', 0.12),
-    shadowBlur: 12,
-    // shadowOffsetX: 2,
-    shadowOffsetY: 6,
-    shadowEnabled: true
-  } : {
-    stroke: rgbaToHex(colors.borderCommon, 1),
-    strokeWidth: 1,
-    shadowColor: '#000000',
-    shadowOpacity: 0.12,
-    shadowBlur: 12,
-    // shadowOffsetX: 2,
-    shadowOffsetY: 6,
-    shadowEnabled: true
-  };
- 
+
+  const shadowProps =
+    cacheTheme === 'light'
+      ? {
+          stroke: rgbaToHex(colors.borderCommon, 1),
+          strokeWidth: 1,
+          shadowColor: rgbaToHex(colors.shadowBg, 0.12),
+          shadowBlur: 12,
+          // shadowOffsetX: 2,
+          shadowOffsetY: 6,
+          shadowEnabled: true,
+        }
+      : {
+          stroke: rgbaToHex(colors.borderCommon, 1),
+          strokeWidth: 1,
+          shadowColor: '#000000',
+          shadowOpacity: 0.12,
+          shadowBlur: 12,
+          // shadowOffsetX: 2,
+          shadowOffsetY: 6,
+          shadowEnabled: true,
+        };
+
   const lineSettingModels = (
     <>
       {showConnect ? (
@@ -165,7 +173,7 @@ export const useTaskLineSetting = (props: ITaskLineSettingProps) => {
           <Text x={90} y={138} text={endTime} fill={colors.fc1} height={20} verticalAlign={'middle'} />
         </Group>
       ) : (
-        <Group x={x - 40} y={(dashEnabled || y - scrollTop < 100 ) ? y + 2 : y - 42}>
+        <Group x={x - 40} y={dashEnabled || y - scrollTop < 100 ? y + 2 : y - 42}>
           <Rect
             name={generateTargetName({
               targetName: KONVA_DATASHEET_ID.GANTT_LINE_SETTING,
