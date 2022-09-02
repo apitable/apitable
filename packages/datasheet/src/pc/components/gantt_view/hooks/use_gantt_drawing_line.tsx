@@ -5,10 +5,13 @@ import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { KonvaGridViewContext } from 'pc/components/konva_grid/context';
 import { PointPosition, KonvaGanttViewContext, GanttCoordinate, IScrollState, generateTargetName } from 'pc/components/gantt_view';
-import { CollaCommandName, Selectors, KONVA_DATASHEET_ID, ConfigConstant, t, Strings, fastCloneDeep } from '@vikadata/core';
+import { CollaCommandName, Selectors, KONVA_DATASHEET_ID, ConfigConstant, 
+  t, Strings, fastCloneDeep, ExecuteResult, ISetRecordOptions 
+} from '@vikadata/core';
 import { Message } from '@vikadata/components';
 import { getAllCycleDAG, getTaskLineName } from 'pc/components/gantt_view/utils/task_line';
 import { onDragScrollSpacing } from 'pc/components/gantt_view/utils';
+import { autoTaskScheduling } from '../utils';
 
 const Arrow = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/arrow'), { ssr: false });
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
@@ -26,10 +29,17 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
   const { taskMap, gridWidth, pointPosition, instance, scrollState } = props;
   const { theme, scrollHandler } = useContext(KonvaGridContext);
   const colors = theme.color;
-  const { setTargetTaskInfo, targetTaskInfo, ganttStyle, transformerId, isTaskLineDrawing, dragTaskId, isLocking, linkCycleEdges } = useContext(
-    KonvaGanttViewContext,
-  );
-  const { snapshot, fieldPermissionMap, fieldMap } = useContext(KonvaGridViewContext);
+  const { 
+    setTargetTaskInfo, 
+    targetTaskInfo, 
+    ganttStyle, transformerId, 
+    isTaskLineDrawing, 
+    dragTaskId, 
+    isLocking, 
+    linkCycleEdges,
+    
+  } = useContext(KonvaGanttViewContext);
+  const { snapshot, fieldPermissionMap, fieldMap, visibleRows } = useContext(KonvaGridViewContext);
   const { linkFieldId, startFieldId, endFieldId } = ganttStyle;
   const state = store.getState();
   const { rowHeight, columnWidth } = instance;
@@ -193,7 +203,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
         });
         return;
       }
-      resourceService?.instance?.commandManager?.execute({
+      const result = resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetRecords,
         data: [
           {
@@ -203,6 +213,24 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
           },
         ],
       });
+      
+      if (ExecuteResult.Success === result.result) {
+        
+        const endTime = Selectors.getCellValue(state, snapshot, sourceRecordId, endFieldId);
+        if(!endTime) {
+          return;
+        }
+        const sourceRecordData = {
+          recordId: sourceRecordId,
+          endTime,
+          targetRecordId: targetTaskInfo.recordId
+        };
+        const commandData : ISetRecordOptions[] = autoTaskScheduling(visibleRows, state, snapshot, ganttStyle, sourceRecordData);
+        resourceService.instance!.commandManager.execute({
+          cmd: CollaCommandName.SetRecords,
+          data: commandData,
+        });
+      }
     }
   };
 

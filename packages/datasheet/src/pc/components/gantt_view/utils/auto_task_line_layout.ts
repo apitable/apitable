@@ -3,7 +3,13 @@ import { originalChange } from './date';
 import { ISetRecordOptions, Selectors, fastCloneDeep } from '@vikadata/core';
 import { getAllTaskLine, getAllCycleDAG } from './task_line';
 
-export const autoTaskScheduling = (visibleRows, state, snapshot, ganttStyle, autoEntrance: any = null) => {
+interface ISourceRecordData {
+  recordId: string;
+  endTime: number;
+  targetRecordId?: string;
+}
+
+export const autoTaskScheduling = (visibleRows, state, snapshot, ganttStyle, sourceRecord?: ISourceRecordData) => {
   const { linkFieldId, startFieldId, endFieldId } = ganttStyle;
   // target adjacency list
   const targetAdj = {};
@@ -18,7 +24,7 @@ export const autoTaskScheduling = (visibleRows, state, snapshot, ganttStyle, aut
 
     const startTime = Selectors.getCellValue(state, snapshot, row.recordId, startFieldId);
     const endTime = Selectors.getCellValue(state, snapshot, row.recordId, endFieldId);
-    if (startTime && endTime) {
+    if (startTime && endTime && getDiffCount(startTime, endTime)) {
       visibleRowsTime[row.recordId] = {
         startTime,
         endTime,
@@ -32,19 +38,19 @@ export const autoTaskScheduling = (visibleRows, state, snapshot, ganttStyle, aut
 
   const rowsTimeList = fastCloneDeep(visibleRowsTime);
 
-  const autoDFS = recordId => {
+  const autoDFS = sourceId => {
     // 查看是否有关联任务
-    if (!sourceAdj[recordId]) {
+    if (!sourceAdj[sourceId]) {
       return;
     }
-    sourceAdj[recordId].forEach(targetId => {
-      if (cycleEdges.includes(`taskLine-${recordId}-${targetId}`) || !rowsTimeList[targetId]) {
+    sourceAdj[sourceId].forEach(targetId => {
+      if (cycleEdges.includes(`taskLine-${sourceId}-${targetId}`) || !rowsTimeList[targetId] || !rowsTimeList[sourceId]) {
         return;
       }
       // 比较所有后置任务所有前置任务的大小取最靠近的那个
       let recentRecordId;
       if (targetAdj[targetId].length == 1) {
-        recentRecordId = recordId;
+        recentRecordId = sourceId;
       } else {
         let recentTime;
         targetAdj[targetId].forEach((sourceItem, index) => {
@@ -62,10 +68,10 @@ export const autoTaskScheduling = (visibleRows, state, snapshot, ganttStyle, aut
       // 更新当前的时间
 
       const nodeEndTime = rowsTimeList[recentRecordId]?.endTime;
-      const startTime = rowsTimeList[targetId].startTime;
+      const startTime = rowsTimeList[targetId]?.startTime;
       const endTime = rowsTimeList[targetId]?.endTime;
       const diffTime = getDiffCount(startTime, endTime);
-
+    
       rowsTimeList[targetId] = {
         startTime: originalChange(nodeEndTime, 1, 'day').valueOf(),
         endTime: originalChange(nodeEndTime, 1 + diffTime, 'day').valueOf(),
@@ -77,18 +83,24 @@ export const autoTaskScheduling = (visibleRows, state, snapshot, ganttStyle, aut
   };
 
   // 遍历一下所有task 发现入度为0的递归设置
-  if (!autoEntrance) {
+  if (!sourceRecord) {
     visibleRows.forEach(row => {
       if (!targetAdj[row.recordId]) {
         autoDFS(row.recordId);
       }
     });
   } else {
-    if (!rowsTimeList[autoEntrance.recordId] || !rowsTimeList[autoEntrance.recordId].endTime) {
+    const { recordId: sourceId, endTime, targetRecordId: targetId } = sourceRecord;
+    if (!rowsTimeList[sourceId] || !endTime) {
       return [];
     }
-    rowsTimeList[autoEntrance.recordId].endTime = autoEntrance.value;
-    autoDFS(autoEntrance.recordId);
+    rowsTimeList[sourceId].endTime = endTime;
+    
+    if(targetId) {
+      sourceAdj[sourceId] = sourceAdj[sourceId] ? [...sourceAdj[sourceId], targetId] : [targetId];
+      targetAdj[targetId] = targetAdj[targetId] ? [...targetAdj[targetId], sourceId] : [sourceId];
+    }
+    autoDFS(sourceId);
   }
 
   const res: ISetRecordOptions[] = [];
