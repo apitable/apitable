@@ -3,7 +3,6 @@ import { Api, ConfigConstant, Events, getCustomConfig, Player, Strings, t } from
 import { useMount } from 'ahooks';
 import { Tabs } from 'antd';
 import classNames from 'classnames';
-import { getEnvVars } from 'get_env';
 import { isObject } from 'lodash';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
@@ -12,6 +11,7 @@ import { isSocialPlatformEnabled, isSocialWecom, isWecomFunc, SocialPlatformMap 
 import { useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
 import { getWecomAgentConfig, initNoTraceVerification, stopPropagation } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import { FC, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider, useSelector } from 'react-redux';
@@ -36,7 +36,7 @@ export const InviteOutsiderTabs: FC<IInviteOutsiderTabsProps> = props => {
   const [secondVerify, setSecondVerify] = useState<null | string>(null);
   const isAdmin = useSelector(state => state.user.info?.isAdmin);
   const isOrgIsolated = useSelector(state => state.space.spaceFeatures?.orgIsolated);
-  const env = getEnvVars();
+  const env = getEnvVariables();
   useMount(() => {
     Player.doTrigger(Events.invite_entrance_modal_shown);
   });
@@ -58,6 +58,7 @@ export const InviteOutsiderTabs: FC<IInviteOutsiderTabsProps> = props => {
   const isPC = screenIsAtLeast(ScreenSize.md);
   const innerLabel = showLabelInInviteModal ? '(' + t(Strings.private_internal_person_only) + ')' : '';
   const outerLabel = showLabelInInviteModal ? '(' + t(Strings.private_external_person_only) + ')' : '';
+
   return (
     <Tabs defaultActiveKey="inviteViaLink" className={classNames({ [styles.showLabel]: showLabelInInviteModal })}>
       <TabPane tab={t(Strings.link_invite) + innerLabel} key="inviteViaLink">
