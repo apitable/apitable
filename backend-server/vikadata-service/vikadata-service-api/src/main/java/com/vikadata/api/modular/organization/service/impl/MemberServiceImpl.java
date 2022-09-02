@@ -1266,11 +1266,11 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     }
 
     @Override
-    public boolean batchUpdateIsDeletedByIds(List<Long> ids, boolean isDeleted) {
+    public boolean batchResetIsDeletedAndUserIdByIds(List<Long> ids) {
         if (CollUtil.isEmpty(ids)) {
             return true;
         }
-        return SqlHelper.retBool(baseMapper.updateIsDeletedByIds(ids, isDeleted));
+        return SqlHelper.retBool(baseMapper.updateIsDeletedAndUserIdToDefaultByIds(ids));
     }
 
     @Override
@@ -1281,7 +1281,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             return;
         }
         // 恢复成员
-        batchUpdateIsDeletedByIds(memberIds, false);
+        batchResetIsDeletedAndUserIdByIds(memberIds);
         // todo 恢复部门迁移到此处？
         // 从组织单元恢复成员
         iUnitService.batchUpdateIsDeletedBySpaceIdAndRefId(spaceId, memberIds, UnitType.MEMBER, false);
