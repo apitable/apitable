@@ -1,7 +1,16 @@
 import { Button, Typography } from '@vikadata/components';
 import {
-  CalendarStyleKeyType, CollaCommandName, DateTimeField, ExecuteResult, FieldType, getNewId, getUniqName, IDPrefix, integrateCdnHost, Selectors,
-  Settings, Strings, t
+  CalendarStyleKeyType,
+  CollaCommandName,
+  DateTimeField,
+  ExecuteResult,
+  FieldType,
+  getNewId,
+  getUniqName,
+  IDPrefix,
+  Selectors,
+  Strings,
+  t,
 } from '@vikadata/core';
 import { Modal } from 'antd';
 import Image from 'next/image';
@@ -12,16 +21,12 @@ import { resourceService } from 'pc/resource_service';
 import { memo } from 'react';
 import { useSelector } from 'react-redux';
 import GanttCreationDate from 'static/icon/account/gantt_creation.png';
+import OrgChartCreationNoPermission from 'static/icon/account/org_chart_creation_no_permission.png';
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import styles from './style.module.less';
 
 export const CreateFieldModal = memo(() => {
-  const {
-    viewId,
-    columnCount,
-    exitFieldNames,
-    permissions,
-  } = useSelector(state => {
+  const { viewId, columnCount, exitFieldNames, permissions } = useSelector(state => {
     const fieldMap = Selectors.getFieldMap(state, state.pageParams.datasheetId!)!;
     return {
       viewId: Selectors.getActiveView(state)!,
@@ -49,11 +54,13 @@ export const CreateFieldModal = memo(() => {
     const startFieldId = getNewId(IDPrefix.Field);
     const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddFields,
-      data: [{
-        data: generateField(startFieldId, t(Strings.start_field_name)),
-        viewId,
-        index: columnCount,
-      }],
+      data: [
+        {
+          data: generateField(startFieldId, t(Strings.start_field_name)),
+          viewId,
+          index: columnCount,
+        },
+      ],
     });
 
     if (ExecuteResult.Success === result.result) {
@@ -65,10 +72,12 @@ export const CreateFieldModal = memo(() => {
       resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetCalendarStyle,
         viewId: viewId!,
-        data: [{
-          styleKey: CalendarStyleKeyType.StartFieldId,
-          styleValue: startFieldId,
-        }]
+        data: [
+          {
+            styleKey: CalendarStyleKeyType.StartFieldId,
+            styleValue: startFieldId,
+          },
+        ],
       });
     }
   };
@@ -92,10 +101,10 @@ export const CreateFieldModal = memo(() => {
         <div className={styles.banner}>
           <div className={styles.bannerImg}>
             <Image
-              src={
-                manageable ? GanttCreationDate : integrateCdnHost(Settings.calendar_guide_no_permission.value)
-              } alt={t(Strings.calendar_create_img_alt)}
-              layout="fill"
+              src={manageable ? GanttCreationDate : OrgChartCreationNoPermission}
+              alt={t(Strings.calendar_create_img_alt)}
+              width={320}
+              height={192}
             />
           </div>
         </div>

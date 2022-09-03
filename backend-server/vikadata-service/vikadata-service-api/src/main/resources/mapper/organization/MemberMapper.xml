@@ -1015,9 +1015,9 @@
         is_deleted = VALUES(is_deleted)
     </insert>
 
-    <update id="updateIsDeletedByIds">
+    <update id="updateIsDeletedAndUserIdToDefaultByIds">
         UPDATE vika_unit_member
-        SET is_deleted = #{isDeleted}
+        SET is_deleted = 0, user_id = NULL
         where id in
         <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
             #{item}

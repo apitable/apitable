@@ -188,7 +188,7 @@ export const useGanttAssocitionLine = (props: IAssociaLinePorps) => {
 
     const sourcePoint = {
       x: sourceTask.x + sourceTask.taskWidth - taskRightOffset,
-      y: sourceTask.y + rowHeight - 2,
+      y: sourceTask.y + rowHeight - 4,
     };
     const targetPoint = {
       x: targetTask.x - 2,
@@ -234,6 +234,19 @@ export const useGanttAssocitionLine = (props: IAssociaLinePorps) => {
 
     if (targetTask.isCollapse) {
       points = [sourcePoint.x, sourcePoint.y, sourcePoint.x, targetPoint.y - 8, targetPoint.x, targetPoint.y - 8, targetPoint.x, targetPoint.y];
+    }
+
+    if(targetPoint.x > sourcePoint.x ) {
+      points = [
+        sourcePoint.x,
+        sourcePoint.y,
+        sourcePoint.x,
+        targetPoint.y,
+        targetPoint.x - 8,
+        targetPoint.y,
+        targetPoint.x,
+        targetPoint.y,
+      ];
     }
 
     return (

@@ -98,12 +98,24 @@ export const TemplateCategorySide: FC = () => {
   const clearKeyword = () => {
     triggerTrack(keywords);
     setKeywords('');
+    bindSearchQuery('');
   };
 
   const onSearchInputKeyDown = (e) => {
     if (e.keyCode === KeyCode.Enter) {
       triggerTrack(keywords);
     }
+  };
+
+  const bindSearchQuery = (keywords: string) => {
+    const urlObj = new URL(window.location.href);
+    const searchParams = urlObj.searchParams;
+    if (keywords) {
+      searchParams.set('searchKey', keywords);
+    } else {
+      searchParams.delete('searchKey');
+    }
+    router.replace(urlObj.pathname + urlObj.search);
   };
 
   useUnmount(() => {
@@ -116,18 +128,6 @@ export const TemplateCategorySide: FC = () => {
     debounceTriggerTrack(keywords);
   }, [debounceTriggerTrack, keywords]);
 
-  useEffect(() => {
-    const urlObj = new URL(window.location.href);
-    const searchParams = urlObj.searchParams;
-    if (keywords) {
-      searchParams.set('searchKey', keywords);
-    } else {
-      searchParams.delete('searchKey');
-    }
-    router.replace(urlObj.pathname + urlObj.search);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [keywords, searchTemplateResult]);
-
   return (
     <div className={styles.templateClass}>
       <div className={classNames(styles.templateCategory, !spaceId && styles.templateCategoryBg)}>
@@ -135,7 +135,7 @@ export const TemplateCategorySide: FC = () => {
           {!spaceId &&
             <Tooltip title={t(Strings.jump_official_website)}>
               <div className={styles.logo} onClick={jumpOfficialWebsite}>
-                <Logo theme={ThemeName.Light} size="large" text={false} />
+                <Logo theme={ThemeName.Light} size='large' text={false} />
               </div>
             </Tooltip>
           }
@@ -146,14 +146,15 @@ export const TemplateCategorySide: FC = () => {
             className={styles.templateSearch}
             keyword={keywords}
             change={setKeywords}
-            size="small"
+            size='small'
+            onBlur={() => bindSearchQuery(keywords)}
             onKeyDown={onSearchInputKeyDown}
             suffix={keywords && <CloseIcon className={styles.closeBtn} onClick={clearKeyword} />}
           />
         </div>
         <div className={styles.listContainer}>
           <div className={styles.officialTemplate}>
-            <Typography className={classNames(styles.subTitle, styles.officialSubTitle)} variant="h6">{t(Strings.official_template)}</Typography>
+            <Typography className={classNames(styles.subTitle, styles.officialSubTitle)} variant='h6'>{t(Strings.official_template)}</Typography>
             <div className={styles.officialTemplateList}>
               {categoryList.map((category, index) => (
                 <div
@@ -178,7 +179,7 @@ export const TemplateCategorySide: FC = () => {
           {
             spaceId &&
             <div className={styles.spaceTemplate}>
-              <Typography variant="h6" className={styles.subTitle}>{t(Strings.space_template)}</Typography>
+              <Typography variant='h6' className={styles.subTitle}>{t(Strings.space_template)}</Typography>
               <div
                 className={classNames({
                   [styles.categoryItem]: true,
@@ -202,11 +203,11 @@ export const TemplateCategorySide: FC = () => {
                 <>
                   {searchTemplateResult.map(item => (
                     <div className={styles.item} key={item.templateId} onClick={() => jumpTemplate(item.categoryCode, item.templateId)}>
-                      <Typography className={styles.nameContainer} variant="body2">
+                      <Typography className={styles.nameContainer} variant='body2'>
                         <TemplateIcon width={16} height={16} fill={colors.staticWhite0} />
                         <span className={styles.name} dangerouslySetInnerHTML={{ __html: item.templateName }} />
                       </Typography>
-                      <Typography className={styles.tags} variant="body3">
+                      <Typography className={styles.tags} variant='body3'>
                         {item.tags.map(tag => (
                           <span className={styles.tag} dangerouslySetInnerHTML={{ __html: tag }} />
                         ))}
@@ -215,7 +216,7 @@ export const TemplateCategorySide: FC = () => {
                   ))}
                 </> :
                 <div className={styles.emptyList}>
-                  <Image src={SearchDefaultPng} alt="empty" />
+                  <Image src={SearchDefaultPng} alt='empty' />
                   <div className={styles.tip}>{t(Strings.no_search_result)}</div>
                 </div>
               }

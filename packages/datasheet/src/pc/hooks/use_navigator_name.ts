@@ -70,5 +70,5 @@ export const useNavigatorName = () => {
       document.title = combineEmojiAndName(icon, name);
     });
 
-  }, [treeNodesMap, nodeId, categoryId, router.asPath, isSkuPage]);
+  }, [treeNodesMap, nodeId, categoryId, router.asPath, isSkuPage, router.query]);
 };

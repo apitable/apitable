@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useRef } from 'react';
+import { FC, useState, useRef, useEffect } from 'react';
 import { SearchInput, SearchEmpty } from '../index';
 import styles from './style.module.less';
 import { useSelector } from 'react-redux';

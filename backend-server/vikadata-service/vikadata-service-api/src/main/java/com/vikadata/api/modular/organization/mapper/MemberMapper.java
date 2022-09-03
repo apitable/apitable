@@ -998,14 +998,13 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
     Integer batchUpdateNameAndIsDeletedByIds(@Param("updateEntities") List<MemberEntity> updateEntities);
 
     /**
-     * 批量更新isDeleted
-     * @param ids 主表ID
-     * @param isDeleted 是否删除
+     * batch update is deleted and user id fields to default values
+     * @param ids member table primary key
      * @return Integer
      * @author zoe zheng
      * @date 2022/4/24 15:00
      */
-    Integer updateIsDeletedByIds(@Param("ids") List<Long> ids, @Param("isDeleted") boolean isDeleted);
+    Integer updateIsDeletedAndUserIdToDefaultByIds(@Param("ids") List<Long> ids);
 
     /**
      * 根据成员ID查询所属部门ID

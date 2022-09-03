@@ -625,14 +625,13 @@ public interface IMemberService extends IService<MemberEntity> {
     boolean batchUpdateNameAndOpenIdAndIsDeletedByIds(List<MemberEntity> updateEntities);
 
     /**
-     * 批量更新isDeleted字段
-     * @param ids 主表ID
-     * @param isDeleted 是否删除
+     * batch reset isDeleted and userId
+     * @param ids primary key of members
      * @return boolean
      * @author zoe zheng
      * @date 2022/4/24 14:25
      */
-    boolean batchUpdateIsDeletedByIds(List<Long> ids, boolean isDeleted);
+    boolean batchResetIsDeletedAndUserIdByIds(List<Long> ids);
 
     /**
      * 从空间恢复成员
