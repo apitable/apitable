@@ -2,16 +2,16 @@ import { useContext, useEffect, useState, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { KonvaGridContext } from 'pc/components/konva_grid';
 import { ClearOutlined, ConnectOutlined } from '@vikadata/icons';
-import { KonvaGanttViewContext, generateTargetName } from 'pc/components/gantt_view';
+import { KonvaGanttViewContext, generateTargetName, IScrollState } from 'pc/components/gantt_view';
 import { KonvaGridViewContext } from 'pc/components/konva_grid/context';
 import { Icon, ToolTip } from 'pc/components/konva_components';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { Selectors, CollaCommandName, t, Strings, KONVA_DATASHEET_ID, ConfigConstant } from '@vikadata/core';
 import { getRecordName } from 'pc/components/expand_record';
-import { Message } from '@vikadata/components';
+import { lightColors, Message } from '@vikadata/components';
 import { Text, autoSizerCanvas } from 'pc/components/konva_components';
-import { hexToRGB } from 'pc/utils';
+import { rgbaToHex } from 'pc/utils';
 
 const Rect = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/rect'), { ssr: false });
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
@@ -21,17 +21,30 @@ const Arrow = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_tim
 const ClearOutlinedPath = ClearOutlined.toString();
 const ConnectOutlinedPath = ConnectOutlined.toString();
 
-export const useTaskLineSetting = () => {
+interface ITaskLineSettingProps {
+  scrollState: IScrollState;
+}
+
+enum TextMaxWidth {
+  TitleWidth = 200,
+  TimeWidth = 130,
+}
+
+export const useTaskLineSetting = (props: ITaskLineSettingProps) => {
+  const { scrollState } = props;
   const { taskLineSetting, ganttStyle, setTaskLineSetting } = useContext(KonvaGanttViewContext);
-  const { snapshot, visibleColumns, fieldMap, fieldPermissionMap } = useContext(KonvaGridViewContext);
+  const { snapshot, visibleColumns, fieldMap, fieldPermissionMap, cacheTheme } = useContext(KonvaGridViewContext);
   const state = store.getState();
   const { theme } = useContext(KonvaGridContext);
-  const colors = theme.color;
+  const colors = theme.color as typeof lightColors;
+
   const { linkFieldId, startFieldId, endFieldId } = ganttStyle;
   const [showConnect, setShowConnect] = useState(false);
   const [delateTootip, setDelateTootip] = useState(false);
   const [relationTootip, setRelationTootip] = useState(false);
   const textSizer = useRef(autoSizerCanvas);
+
+  const { scrollTop } = scrollState;
 
   useEffect(() => {
     setShowConnect(false);
@@ -50,19 +63,19 @@ export const useTaskLineSetting = () => {
   const firstFieldId = visibleColumns[0].fieldId;
   const sourceCellValue = Selectors.getCellValue(state, snapshot, sourceId, firstFieldId);
   const sourceTitle = getRecordName(sourceCellValue, fieldMap[firstFieldId]) || t(Strings.record_unnamed);
-  const sourceRecordTitle = textSizer.current.measureText(sourceTitle, 160, 1).text;
+  const sourceRecordTitle = textSizer.current.measureText(sourceTitle, TextMaxWidth.TitleWidth, 1).text;
 
   const startTimeCellValue = Selectors.getCellValue(state, snapshot, sourceId, endFieldId);
   const startTimeStr = getRecordName(startTimeCellValue, fieldMap[endFieldId]);
-  const startTime = textSizer.current.measureText(startTimeStr, 100, 1).text;
+  const startTime = textSizer.current.measureText(startTimeStr, TextMaxWidth.TimeWidth, 1).text;
 
   const targetCellValue = Selectors.getCellValue(state, snapshot, targetId, firstFieldId);
   const targetTitle = getRecordName(targetCellValue, fieldMap[firstFieldId]) || t(Strings.record_unnamed);
-  const targetRecordTitle = textSizer.current.measureText(targetTitle, 160, 1).text;
+  const targetRecordTitle = textSizer.current.measureText(targetTitle, TextMaxWidth.TitleWidth, 1).text;
 
   const endTimeCellValue = Selectors.getCellValue(state, snapshot, targetId, startFieldId);
   const endTimeStr = getRecordName(endTimeCellValue, fieldMap[startFieldId]);
-  const endTime = textSizer.current.measureText(endTimeStr, 100, 1).text;
+  const endTime = textSizer.current.measureText(endTimeStr, TextMaxWidth.TimeWidth, 1).text;
 
   const deleteTaskLine = () => {
     const cellValue = Selectors.getCellValue(state, snapshot, targetId, linkFieldId) || [];
@@ -95,9 +108,31 @@ export const useTaskLineSetting = () => {
   };
 
   const showContactInfo = () => {
-    console.log('sourceRecordTitle targetRecordTitle', sourceRecordTitle, targetRecordTitle);
     setShowConnect(true);
   };
+  
+  // TODO 抽出一个变量
+  const shadowProps =
+    cacheTheme === 'light'
+      ? {
+        stroke: rgbaToHex(colors.borderCommon, 1),
+        strokeWidth: 1,
+        shadowColor: rgbaToHex(colors.shadowBg, 0.12),
+        shadowBlur: 12,
+        // shadowOffsetX: 2,
+        shadowOffsetY: 6,
+        shadowEnabled: true,
+      }
+      : {
+        stroke: rgbaToHex(colors.borderCommon, 1),
+        strokeWidth: 1,
+        shadowColor: '#000000',
+        shadowOpacity: 0.12,
+        shadowBlur: 12,
+        // shadowOffsetX: 2,
+        shadowOffsetY: 6,
+        shadowEnabled: true,
+      };
 
   const lineSettingModels = (
     <>
@@ -110,20 +145,18 @@ export const useTaskLineSetting = () => {
             })}
             x={0}
             y={0}
-            width={208}
+            width={248}
             height={180}
             fill={colors.bgCommonHigh}
             cornerRadius={4}
-            shadowEnabled
-            shadowBlur={16}
-            shadowColor={hexToRGB(colors.shadowCommonHigh, 0.16)}
+            {...shadowProps}
           />
-          <Rect x={16} y={16} width={176} height={58} fill={colors.bgControlsDefault} cornerRadius={4} />
+          <Rect x={16} y={16} width={216} height={58} fill={colors.bgControlsDefault} cornerRadius={4} />
           <Text x={24} y={24} text={sourceRecordTitle} fill={colors.fc1} height={20} fontStyle={'bold'} verticalAlign={'middle'} />
           <Text x={24} y={48} text={t(Strings.end_time)} fill={colors.fc3} height={20} verticalAlign={'middle'} />
-          <Text x={86} y={48} text={startTime} fill={colors.fc1} height={20} fontStyle={'bold'} verticalAlign={'middle'} />
+          <Text x={90} y={48} text={startTime} fill={colors.fc1} height={20} verticalAlign={'middle'} />
           <Arrow
-            points={[104, 74, 104, 105]}
+            points={[124, 74, 124, 105]}
             fill={fillColor}
             stroke={fillColor}
             strokeWidth={1}
@@ -133,13 +166,13 @@ export const useTaskLineSetting = () => {
             dash={[2, 5]}
             dashEnabled={dashEnabled}
           />
-          <Rect x={16} y={106} width={176} height={58} fill={colors.bgControlsDefault} cornerRadius={4} />
+          <Rect x={16} y={106} width={216} height={58} fill={colors.bgControlsDefault} cornerRadius={4} />
           <Text x={24} y={114} text={targetRecordTitle} fill={colors.fc1} height={20} fontStyle={'bold'} verticalAlign={'middle'} />
-          <Text x={24} y={138} text={t(Strings.start_field_name)} fill={colors.fc3} height={20} fontStyle={'bold'} verticalAlign={'middle'} />
-          <Text x={86} y={138} text={endTime} fill={colors.fc1} height={20} verticalAlign={'middle'} />
+          <Text x={24} y={138} text={t(Strings.start_field_name)} fill={colors.fc3} height={20} verticalAlign={'middle'} />
+          <Text x={90} y={138} text={endTime} fill={colors.fc1} height={20} verticalAlign={'middle'} />
         </Group>
       ) : (
-        <Group x={x - 40} y={dashEnabled ? y + 2 : y - 42}>
+        <Group x={x - 40} y={(dashEnabled || y - scrollTop < 200) ? y + 2 : y - 42}>
           <Rect
             name={generateTargetName({
               targetName: KONVA_DATASHEET_ID.GANTT_LINE_SETTING,
@@ -151,9 +184,7 @@ export const useTaskLineSetting = () => {
             height={40}
             fill={colors.bgCommonHigh}
             cornerRadius={4}
-            shadowEnabled
-            shadowBlur={16}
-            shadowColor={hexToRGB(colors.shadowCommonHigh, 0.16)}
+            {...shadowProps}
           />
           <Icon
             x={8}

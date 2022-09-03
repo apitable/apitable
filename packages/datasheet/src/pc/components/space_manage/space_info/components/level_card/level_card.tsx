@@ -41,7 +41,7 @@ export const LevelCard: FC<ILevelCard> = ({ type, minHeight, deadline, className
       expirationColor,
       upgradeBtnColor,
     },
-    strokeColor
+    strokeColor,
   } = useLevelInfo(type, deadline);
   const colors = useThemeColors();
   const space = useSelector(state => state.space);
@@ -69,96 +69,110 @@ export const LevelCard: FC<ILevelCard> = ({ type, minHeight, deadline, className
     }
     if (appType === 1) {
       // 自建应用不允许订阅，续费和升级，统一联系客服
-      return <Button
-        onClick={() => { showUpgradeContactUs();}}
-        color={colors.black[50]}
-        size="small"
-        style={{ color: upgradeBtnColor || titleColor || strokeColor, fontSize: 12, opacity: 0.8 }}
-      >
-        {t(Strings.contact_us)}
-      </Button>;
+      return (
+        <Button
+          onClick={() => {
+            showUpgradeContactUs();
+          }}
+          color={colors.black[50]}
+          size="small"
+          style={{ color: upgradeBtnColor || titleColor || strokeColor, fontSize: 12, opacity: 0.8 }}
+        >
+          {t(Strings.contact_us)}
+        </Button>
+      );
     }
     if (type === LevelType.Bronze || type === LevelType.Enterprise) {
-      return <Button
-        onClick={() => {
-          type === LevelType.Bronze ?
-            window.open(`/space/${space.activeId}/upgrade`, '_blank', 'noopener,noreferrer') :
-            showUpgradeContactUs();
-        }}
-        color={colors.black[50]}
-        size="small"
-        style={{ color: upgradeBtnColor || titleColor || strokeColor, fontSize: 12, opacity: 0.8 }}
-      >
-        {
-          type === LevelType.Bronze ?
-            t(Strings.upgrade) : t(Strings.contact_us)
-        }
-      </Button>;
+      return (
+        <Button
+          onClick={() => {
+            type === LevelType.Bronze ? window.open(`/space/${space.activeId}/upgrade`, '_blank', 'noopener,noreferrer') : showUpgradeContactUs();
+          }}
+          color={colors.black[50]}
+          size="small"
+          style={{ color: upgradeBtnColor || titleColor || strokeColor, fontSize: 12, opacity: 0.8 }}
+        >
+          {type === LevelType.Bronze ? t(Strings.upgrade) : t(Strings.contact_us)}
+        </Button>
+      );
     }
     const commonStyle = {
-      color: upgradeBtnColor || titleColor || strokeColor, fontSize: 12, opacity: 0.8
+      color: upgradeBtnColor || titleColor || strokeColor,
+      fontSize: 12,
+      opacity: 0.8,
     };
-    return <ButtonGroup withSeparate>
-      <React.Fragment key=".0">
-        <Button
-          style={{ ...commonStyle, borderRadius: '16px 0px 0px 16px' }}
-          size="small"
-          color={colors.black[50]}
-          onClick={() => {
-            window.open(`/space/${space.activeId}/upgrade?pageType=${SubscribePageType.Renewal}`, '_blank', 'noopener,noreferrer');
-          }}
-        >
-          {t(Strings.renewal)}
-        </Button>
-        <Button
-          style={{ ...commonStyle, borderRadius: '0px 16px 16px 0px', marginLeft: 0 }}
-          size="small"
-          className={styles.beforeBg}
-          color={colors.black[50]}
-          onClick={() => {
-            window.open(`/space/${space.activeId}/upgrade?pageType=${SubscribePageType.Upgrade}`, '_blank', 'noopener,noreferrer');
-          }}
-        >
-          {t(Strings.upgrade)}
-        </Button>
-      </React.Fragment>
-    </ButtonGroup>;
+    return (
+      <ButtonGroup withSeparate>
+        <React.Fragment key=".0">
+          <Button
+            style={{ ...commonStyle, borderRadius: '16px 0px 0px 16px' }}
+            size="small"
+            color={colors.black[50]}
+            onClick={() => {
+              window.open(`/space/${space.activeId}/upgrade?pageType=${SubscribePageType.Renewal}`, '_blank', 'noopener,noreferrer');
+            }}
+          >
+            {t(Strings.renewal)}
+          </Button>
+          <Button
+            style={{ ...commonStyle, borderRadius: '0px 16px 16px 0px', marginLeft: 0 }}
+            size="small"
+            className={styles.beforeBg}
+            color={colors.black[50]}
+            onClick={() => {
+              window.open(`/space/${space.activeId}/upgrade?pageType=${SubscribePageType.Upgrade}`, '_blank', 'noopener,noreferrer');
+            }}
+          >
+            {t(Strings.upgrade)}
+          </Button>
+        </React.Fragment>
+      </ButtonGroup>
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appType, space.activeId, type]);
 
   return (
     <div className={classnames(styles.levelCard, className)} style={{ ...style }}>
-      {cardBg && <Image className={styles.cardBg} src={cardBg}/>}
-      {cardSkin && <span className={styles.skin} style={skinStyle}><Image src={cardSkin} alt="skin" width={68} height={82}/></span>}
+      {cardBg && <Image className={styles.cardBg} src={cardBg} layout={'fill'} />}
+      {cardSkin && (
+        <span className={styles.skin} style={skinStyle}>
+          <Image src={cardSkin} alt="skin" width={68} height={82} />
+        </span>
+      )}
       <div className={classnames(styles.tag, { [styles.tagLeft]: isLeftTag })} style={tagStyle}>
         {tagText}
       </div>
       <div className={classnames(styles.titleWrap, { [styles.mt24]: isLeftTag })}>
-        <Typography variant="h6" color={titleColor}>{title}</Typography>
-        {!isMobile && <Tooltip title={titleTip || t(Strings.grade_desc)} placement="top">
-          <span className={styles.infoIcon}><InformationSmallOutlined color={secondTextColor || strokeColor} /></span>
-        </Tooltip>}
+        <Typography variant="h6" color={titleColor}>
+          {title}
+        </Typography>
+        {!isMobile && (
+          <Tooltip title={titleTip || t(Strings.grade_desc)} placement="top">
+            <span className={styles.infoIcon}>
+              <InformationSmallOutlined color={secondTextColor || strokeColor} />
+            </span>
+          </Tooltip>
+        )}
       </div>
       <div className={styles.buttonWrap}>
         <div className={styles.expiration} style={{ color: expirationColor || secondTextColor || strokeColor }}>
-          {
-            unlimited ? <span>
-              {t(Strings.expiration, { date: expirationText })}
-            </span>
-              : <span>
-                {/* 暂时隐藏支付记录入口 */}
-                {/* <a
+          {unlimited ? (
+            <span>{t(Strings.expiration, { date: expirationText })}</span>
+          ) : (
+            <span>
+              {/* 暂时隐藏支付记录入口 */}
+              {/* <a
                  className={styles.payRecord}
                  style={{ color: secondTextColor || strokeColor }} >
                  {t(Strings.payment_record)} <ChevronRightOutlined color={secondTextColor ||strokeColor} />
                  </a>
                  <br /> */}
-                <span>
-                  <span className={styles.expirationText}>{expirationText}</span>
-                  <span style={{ fontSize: 14 }}>{t(Strings.expire)}</span>
-                </span>
+              <span>
+                <span className={styles.expirationText}>{expirationText}</span>
+                <span style={{ fontSize: 14 }}>{t(Strings.expire)}</span>
               </span>
-          }
+            </span>
+          )}
         </div>
         {operateButton}
       </div>

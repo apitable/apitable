@@ -259,8 +259,8 @@ export const SettingPanel = memo(() => {
       const newFieldName = isLinkFieldType
         ? t(Strings.field_title_link)
         : styleKey === GanttStyleKeyType.StartFieldId
-        ? t(Strings.gantt_start_field_name)
-        : t(Strings.gantt_end_field_name);
+          ? t(Strings.gantt_start_field_name)
+          : t(Strings.gantt_end_field_name);
       const result = resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.AddFields,
         data: [
@@ -271,8 +271,8 @@ export const SettingPanel = memo(() => {
               type: isLinkFieldType ? FieldType.Link : FieldType.DateTime,
               property: isLinkFieldType
                 ? {
-                    foreignDatasheetId: datasheetId,
-                  }
+                  foreignDatasheetId: datasheetId,
+                }
                 : DateTimeField.defaultProperty(),
             },
             viewId,
@@ -608,7 +608,7 @@ export const SettingPanel = memo(() => {
             />
           </div>
         </div>
-        {linkFieldId === '' ? null : (
+        {linkField && (
           <div className={styles.settingLayout} style={{ marginTop: 16 }}>
             <Switch checked={Boolean(autoTaskLayout)} onClick={onSwitchAutoTaskLayoutClick} />
             <span style={{ marginLeft: 4 }}>{t(Strings.gantt_open_auto_schedule_switch)}</span>

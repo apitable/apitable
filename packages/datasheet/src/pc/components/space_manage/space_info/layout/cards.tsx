@@ -53,7 +53,7 @@ export const useCards = (props: ILayoutProps) => {
           {...props}
           desc={isSocial ? undefined : t(Strings.space_setting_social_ad_decs)}
           linkText={isSocial ? undefined : t(Strings.space_setting_social_ad_btn)}
-          linkUrl={buildSpaceCertSheetUrl(spaceId)}
+          linkUrl={isSocial ? undefined : buildSpaceCertSheetUrl(spaceId)}
         />
       ),
       LevelCard: (props: ICardProps) => (

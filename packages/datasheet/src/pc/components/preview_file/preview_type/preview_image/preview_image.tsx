@@ -1,20 +1,18 @@
-import { stopPropagation } from '@vikadata/components';
-import { cellValueToImageSrc, isWebp } from '@vikadata/core';
-import classNames from 'classnames';
-import Image from 'next/image';
-import { browser } from 'pc/common/browser';
-import { FileType, getDownloadSrc, isSupportImage, renderFileIconUrl } from 'pc/utils/file_type';
-import * as React from 'react';
 import { useRef } from 'react';
-import IconImg from 'static/icon/datasheet/attachment/attachment_ img_placeholder_filled.png'; // img
-import { MIN_SCALE } from '../../preview_main';
-import { NoSupport } from '../no_support';
+import * as React from 'react';
 import { IPreviewTypeBase } from '../preview_type.interface';
-import { useEvents } from './hooks/use_events';
+import { cellValueToImageSrc, isWebp } from '@vikadata/core';
 import styles from './style.module.less';
+import { FileType, getDownloadSrc, isSupportImage, renderFileIconUrl } from 'pc/utils/file_type';
+import { browser } from 'pc/common/browser';
+import { NoSupport } from '../no_support';
+import IconImg from 'static/icon/datasheet/attachment/attachment_ img_placeholder_filled.png'; // img
+import { useEvents } from './hooks/use_events';
+import { stopPropagation } from '@vikadata/components';
+import { MIN_SCALE } from '../../preview_main';
+import classNames from 'classnames';
 
 export const PreviewImage: React.FC<IPreviewTypeBase> = props => {
-
   const { file, transformInfo, setTransformInfo, disabledDownload } = props;
   const { rotate, scale, translatePosition } = transformInfo;
 
@@ -24,18 +22,13 @@ export const PreviewImage: React.FC<IPreviewTypeBase> = props => {
   const wrapperRef = useRef<HTMLImageElement>(null);
 
   const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    const target = (event.target as HTMLImageElement);
-    const {
-      naturalWidth: width,
-      naturalHeight: height,
-    } = target;
+    const target = event.target as HTMLImageElement;
+    const { naturalWidth: width, naturalHeight: height } = target;
 
-    const {
-      offsetWidth,
-      offsetHeight,
-    } = wrapperRef.current as HTMLDivElement;
+    const { offsetWidth, offsetHeight } = wrapperRef.current as HTMLDivElement;
 
-    let initActualScale = 1, scale = 1;
+    let initActualScale = 1,
+      scale = 1;
 
     let translatePosition = {
       x: 0,
@@ -73,24 +66,20 @@ export const PreviewImage: React.FC<IPreviewTypeBase> = props => {
       ...transformInfo,
       initActualScale,
       scale,
-      translatePosition
+      translatePosition,
     });
-
   };
 
   const transformWebpIfNeeded =
-    isWebp(fileLikeProps) && (
-      browser.satisfies({
-        safari: '<14',
-      }) ||
-      browser.is('iOS')
-    );
+    isWebp(fileLikeProps) &&
+    (browser.satisfies({
+      safari: '<14',
+    }) ||
+      browser.is('iOS'));
 
   const isRotated = rotate % 180 !== 0;
 
-  const {
-    overflow
-  } = useEvents({
+  const { overflow } = useEvents({
     scale,
     isRotated,
     imageEle: imgRef.current!,
@@ -102,15 +91,7 @@ export const PreviewImage: React.FC<IPreviewTypeBase> = props => {
   if (!isSupportImage(file.mimeType)) {
     return (
       <NoSupport
-        icon={
-          <span className={styles.displayImg}>
-            <Image
-              src={IconImg}
-              alt={file.name}
-              draggable={false}
-            />
-          </span>
-        }
+        icon={<img src={IconImg.src} alt={file.name} draggable={false} className={styles.displayImg} />}
         disabledDownload={disabledDownload}
         downloadUrl={getDownloadSrc(file)}
         fileName={file.name}
@@ -120,7 +101,7 @@ export const PreviewImage: React.FC<IPreviewTypeBase> = props => {
   }
 
   const src = !isSupportImage(file.mimeType)
-    ? renderFileIconUrl(fileLikeProps)
+    ? renderFileIconUrl(fileLikeProps).src
     : cellValueToImageSrc(file, transformWebpIfNeeded ? { formatToJPG: true } : undefined);
 
   return (
@@ -128,36 +109,24 @@ export const PreviewImage: React.FC<IPreviewTypeBase> = props => {
       ref={wrapperRef}
       className={classNames(styles.imgWrapper, styles.transition)}
       style={{
-        transform: `translate3d(${translatePosition.x}px, ${translatePosition.y}px, 0)`
+        transform: `translate3d(${translatePosition.x}px, ${translatePosition.y}px, 0)`,
       }}
       draggable={false}
     >
-      <span
+      <img
         onMouseDown={stopPropagation}
         onLoad={handleImageLoad}
         ref={imgRef}
-        className={classNames(
-          styles.displayImg,
-          styles.transition, {
-            [styles.overflow]: overflow,
-          })
-        }
-      >
-        <span
-          draggable={false}
-        >
-          <Image
-            style={{
-              transform: `rotate(${rotate}deg) scale3d(${scale}, ${scale}, 1)`,
-            }}
-            src={src}
-            alt={file.name}
-            layout={'fill'}
-            objectFit={'scale-down'}
-          />
-        </span>
-
-      </span>
+        src={src as string}
+        alt={file.name}
+        draggable={false}
+        className={classNames(styles.displayImg, styles.transition, {
+          [styles.overflow]: overflow,
+        })}
+        style={{
+          transform: `rotate(${rotate}deg) scale3d(${scale}, ${scale}, 1)`,
+        }}
+      />
     </div>
   );
 };

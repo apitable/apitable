@@ -581,8 +581,8 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
         data.push(endData);
       }
       // 如果开启了自动编排而且结束时间遭到了修改
-      if (autoTaskLayout) {
-        autoSingleTask(endData);
+      if (autoTaskLayout && endData) {
+        autoSingleTask({ recordId: endData.recordId, endTime: endData.value });
       }
     }
     resourceService.instance!.commandManager.execute({

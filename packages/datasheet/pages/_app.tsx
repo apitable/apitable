@@ -236,7 +236,8 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
   const userInfo = clientInfo && clientInfo.userInfo ? JSON.parse(clientInfo.userInfo) : undefined;
   return <>
     <Head>
-      {/*<div dangerouslySetInnerHTML={{ __html: clientInfo?.metaContent }} />*/}
+      <title>{t(Strings.vikadata)}</title>
+      <meta name="description" content="维格表, 积木式多媒体数据表格, 维格表技术首创者, 数据整理神器, 让人人都是数据设计师" />
       <meta
         name='keywords'
         content='维格表,vika,vikadata,维格智数,大数据,数字化,数字化转型,数据中台,业务中台,数据资产,

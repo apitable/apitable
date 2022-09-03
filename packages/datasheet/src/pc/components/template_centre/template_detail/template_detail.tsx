@@ -1,31 +1,25 @@
 import { useThemeColors } from '@vikadata/components';
 import {
-  AutoTestID, ConfigConstant, Events, findNode, IReduxState, ITemplateDirectory, ITemplateTree, Navigation, Player, Selectors, Settings, StoreActions,
+  AutoTestID, Events, findNode, IReduxState, ITemplateDirectory, Navigation, Player, Selectors, Settings, StoreActions,
 } from '@vikadata/core';
 import { useMount, useRequest, useUnmount } from 'ahooks';
-import { Tree } from 'antd';
 import { openTryoutSku } from 'dingtalk-design-libs';
 import dd from 'dingtalk-jsapi';
-import { getNodeIcon } from 'pc/components/catalog/tree/node_icon';
 import { Loading } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
 import { CommonSide } from 'pc/components/common_side';
 import { DashboardPanel } from 'pc/components/dashboard_panel';
+import { DataSheetPane } from 'pc/components/datasheet_pane';
 import { FolderShowcase } from 'pc/components/folder_showcase';
 import { FormPanel } from 'pc/components/form_panel';
 import { isDingtalkSkuPage } from 'pc/components/home/social_platform';
 import { MirrorRoute } from 'pc/components/mirror/mirror_route';
 import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
-import { INodeTree } from 'pc/components/share';
 import { useQuery, useResponsive, useSideBarVisible, useTemplateRequest } from 'pc/hooks';
-import { FC, ReactText, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SplitPane from 'react-split-pane';
-import PullDownIcon from 'static/icon/common/common_icon_pulldown.svg';
-import { DataSheetPane } from '../../datasheet_pane';
 import styles from './style.module.less';
-
-const { DirectoryTree, TreeNode } = Tree;
 
 export const TemplateDetail: FC = () => {
   const colors = useThemeColors();
@@ -201,78 +195,3 @@ export const TemplateDetail: FC = () => {
   );
 };
 
-interface INodeTreeProps {
-  nodeTree: ITemplateTree;
-}
-
-export const NodeTree: FC<INodeTreeProps> = props => {
-  const colors = useThemeColors();
-  const { nodeTree } = props;
-  const nodeId = useSelector(state => Selectors.getNodeId(state))!;
-  const { templateId, categoryId } = useSelector((state: IReduxState) => state.pageParams);
-  const spaceId = useSelector(state => state.space.activeId);
-  const navigationTo = useNavigation();
-  const { screenIsAtMost } = useResponsive();
-  const isMobile = screenIsAtMost(ScreenSize.md);
-
-  const { setSideBarVisible } = useSideBarVisible();
-
-  if (!nodeTree) {
-    return <></>;
-  }
-
-  function onSelect(selectedKeys: ReactText[]) {
-    const [dsId] = selectedKeys;
-    navigationTo({
-      path: Navigation.TEMPLATE,
-      params: {
-        spaceId,
-        templateId,
-        categoryId,
-        nodeId: dsId as string,
-      },
-    });
-    isMobile && setSideBarVisible(false);
-  }
-
-  const renderNode = (node: INodeTree[] | undefined, colors) => {
-    if (!node || !node.length) {
-      return <></>;
-    }
-    return node!.map(item => {
-      const icon = getNodeIcon(item.icon, item.type, { size: 16, emojiSize: 18, actived: item.nodeId === nodeId, normalColor: colors.defaultBg });
-      if (item.type === ConfigConstant.NodeType.FOLDER) {
-        return (
-          <TreeNode
-            title={item.nodeName}
-            key={item.nodeId}
-            style={{ width: '100%' }}
-            icon={icon}
-          >
-            {renderNode(item.children, colors)}
-          </TreeNode>
-        );
-      }
-      return (
-        <TreeNode
-          title={item.nodeName}
-          key={item.nodeId}
-          style={{ width: '100%' }}
-          isLeaf
-          icon={icon}
-        />
-      );
-    });
-  };
-  return (
-    <DirectoryTree
-      defaultExpandAll
-      onSelect={onSelect}
-      switcherIcon={<span><PullDownIcon /></span>}
-      selectedKeys={[nodeId]}
-      expandAction={false}
-    >
-      {renderNode([nodeTree], colors)}
-    </DirectoryTree>
-  );
-};
