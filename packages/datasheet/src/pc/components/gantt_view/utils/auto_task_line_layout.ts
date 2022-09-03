@@ -24,7 +24,7 @@ export const autoTaskScheduling = (visibleRows, state, snapshot, ganttStyle, sou
 
     const startTime = Selectors.getCellValue(state, snapshot, row.recordId, startFieldId);
     const endTime = Selectors.getCellValue(state, snapshot, row.recordId, endFieldId);
-    if (startTime && endTime && getDiffCount(startTime, endTime)) {
+    if (startTime && endTime) {
       visibleRowsTime[row.recordId] = {
         startTime,
         endTime,
