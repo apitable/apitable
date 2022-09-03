@@ -203,6 +203,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
         });
         return;
       }
+      if(cellValue.includes(sourceRecordId)) return;
       const result = resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetRecords,
         data: [
