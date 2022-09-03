@@ -275,11 +275,11 @@ install-backend-server: ## graldew install backend-server dependencies
 
 .PHONY: install-web-server
 install-web-server: ## graldew install backend-server dependencies
-	docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) web-server sh -c "yarn set version stable && yarn install && yarn build:dst:pre"
+	docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) web-server sh -c "yarn install && yarn build:dst:pre"
 
 .PHONY: install-socket-server
 install-socket-server:
-	docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) socket-server sh -c "yarn set version stable && yarn"
+	docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) socket-server sh -c "yarn"
 	  
 
 .PHONY: install
