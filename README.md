@@ -5,7 +5,9 @@
 
 <p align="center">
     <em>
-        APITable is <b>an API-oriented Visual Database for everyone </b>and <b>the best Airtable open-source alternative</b>.
+        APITable is an <b>API-oriented & Embed-friendly Visual Database</b> for everyone
+        <br />
+        and the best <b>Airtable open-source alternative</b>.
     </em>
 </p>
 <p align="center">
@@ -105,6 +107,28 @@ Why you must know APITable for your next software?
     - Central configuration management.
     - All-in-one enterprise database that **connect all** your software.
     - ......and more.
+
+## API-oriented
+
+##### API UI Panel
+
+Click the `API` button at the right corner will show the API Panel
+
+##### SQL-like query
+
+APITable provides a Datasheet Query Language(DQL) to query your database-spreadsheet contents.
+
+## Embed-friendly
+
+##### Share and Embed
+Share your datasheet table or folder.
+Embed them by HTML script copy & paste.
+
+##### Enterprise-ready Embedding
+
+[APITable.com](https://apitable.com) provides more Enterprise-ready Embedding features for securities.
+
+
 
 ## Roadmap
 
