@@ -6,6 +6,7 @@ import { Modal, Wrapper } from 'pc/components/common';
 import { IdentifyingCodeLogin, ISubmitRequestParam } from 'pc/components/home/login';
 import { useNavigation } from 'pc/components/route_manager/use_navigation';
 import { useUserRequest } from 'pc/hooks';
+import { store } from 'pc/store';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { InviteTitle } from '../components';
@@ -35,7 +36,7 @@ const MailBindPhone: FC = () => {
           ...res.data,
           success: false,
           code: StatusCode.ACCOUNT_ERROR,
-          message: t(Strings.current_phone_has_been_binded_with_other_email)
+          message: t(Strings.current_phone_has_been_binded_with_other_email),
         };
       }
       // 未绑定邮箱
@@ -62,14 +63,19 @@ const MailBindPhone: FC = () => {
 
   // TODO: 这里貌似可以用登录那边的复用
   const submitRequest = (data: ISubmitRequestParam) => {
+    // 提取邀请加入的 spaceId，赠送空间需要用到
+    const invite = store.getState().invite;
+    const spaceId = invite?.inviteLinkInfo?.data?.spaceId || invite?.inviteEmailInfo?.data?.spaceId;
     const loginData: ApiInterface.ISignIn = {
       areaCode: data.areaCode,
       username: data.account,
       type: data.type,
       credential: data.credential,
       data: data.nvcVal,
+      spaceId,
     };
-    return Api.signIn(loginData).then(res => {
+
+    return Api.signInOrSignUp(loginData).then(res => {
       const { success, data: loginToken } = res.data;
       if (success && loginToken && isPrivate) {
         signUpReq(loginToken);
@@ -99,8 +105,7 @@ const MailBindPhone: FC = () => {
   return (
     <Wrapper>
       <div className={classNames('invite-children-center', styles.linkInviteLogin)}>
-        {
-          inviteEmailInfo &&
+        {inviteEmailInfo && (
           <InviteTitle
             inviter={inviteEmailInfo.data.inviter}
             spaceName={inviteEmailInfo.data.spaceName}
@@ -109,14 +114,14 @@ const MailBindPhone: FC = () => {
             })}
             titleMarginBottom="40px"
           />
-        }
+        )}
         <div className={styles.loginContent}>
           <IdentifyingCodeLogin
             submitRequest={submitRequest}
             submitText={t(Strings.confirm_join)}
             mode={ConfigConstant.LoginMode.MAIL}
             footer={parser(t(Strings.old_user_turn_to_home))}
-            config={{ mail: { defaultValue: inviteEmailInfo?.data.inviteEmail, disabled: true }}}
+            config={{ mail: { defaultValue: inviteEmailInfo?.data.inviteEmail, disabled: true } }}
           />
         </div>
       </div>
