@@ -258,14 +258,17 @@ endif
 run:
 	echo "TODO As daemon"
 
-run-web-server: ## run local codes as service 
+run-web-server: ## run local web-server code
 	docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) web-server yarn sd 
 
-run-room-server: ## run local codes as service 
+run-room-server: ## run local room-server code
 	docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) room-server yarn sd 
 
-run-socket-server: ## run local codes as service 
+run-socket-server: ## run local socket-server code
 	docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) socket-server yarn sd 
+
+run-backend-server: ## run local backend-server code
+	docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) backend-server ./gradlew build -x test
 
 ### install
 
