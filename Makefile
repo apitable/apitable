@@ -1,4 +1,3 @@
-# 参考文档：https://www.ruanyifeng.com/blog/2015/03/build-website-with-make.html
 .DEFAULT_GOAL := help
 PATH  := node_modules/.bin:$(PATH)
 SHELL := /bin/bash
