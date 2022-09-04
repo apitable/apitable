@@ -17,12 +17,12 @@
 
 
 <p align="center">
-    <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="TypeScript Language, NestJS Framework" />
-    <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java Language, Spring Framework" />
-    <img src="https://img.shields.io/badge/LICENSE-AGPL-ff69b4" alt="APITable License Badge AGPL" />
     <a href="https://gitpod.io/#https://github.com/apitable/apitable">
         <img src="https://img.shields.io/badge/gitpod-devenv-orange" alt="APITable Gitpod Development Environment" />
     </a>
+    <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="TypeScript Language, NestJS Framework" />
+    <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java Language, Spring Framework" />
+    <img src="https://img.shields.io/badge/LICENSE-AGPL-ff69b4" alt="APITable License Badge AGPL" />
     <a href="https://render.com/deploy?repo=https://github.com/apitable/apitable">
         <img src="https://img.shields.io/badge/render-deploy-5364e9" />
     </a>
