@@ -3,6 +3,8 @@
 PATH  := node_modules/.bin:$(PATH)
 SHELL := /bin/bash
 
+DEVENV := docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) 
+
 SEMVER3 := $(shell cat .version)
 define ANNOUNCE_BODY
 
@@ -258,31 +260,33 @@ endif
 run:
 	echo "TODO As daemon"
 
+
+
 run-web-server: ## run local web-server code
-	docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) web-server yarn sd 
+	$(DEVENV) web-server yarn sd 
 
 run-room-server: ## run local room-server code
-	docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) room-server yarn sd 
+	$(DEVENV) room-server yarn sd 
 
 run-socket-server: ## run local socket-server code
-	docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) socket-server yarn sd 
+	$(DEVENV) socket-server yarn sd 
 
 run-backend-server: ## run local backend-server code
-	docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) backend-server ./gradlew build -x test
+	$(DEVENV) backend-server ./gradlew build -x test
 
 ### install
 
 .PHONY: install-backend-server
 install-backend-server: ## graldew install backend-server dependencies
-	docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) backend-server ./gradlew build -x test
+	$(DEVENV) backend-server ./gradlew build -x test
 
 .PHONY: install-web-server
 install-web-server: ## graldew install backend-server dependencies
-	docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) web-server sh -c "yarn install && yarn build:dst:pre"
+	$(DEVENV) web-server sh -c "yarn install && yarn build:dst:pre"
 
 .PHONY: install-socket-server
 install-socket-server:
-	docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) socket-server sh -c "yarn"
+	$(DEVENV) socket-server sh -c "yarn"
 	  
 
 .PHONY: install
