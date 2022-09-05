@@ -4,7 +4,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import styles from '../styles.module.less';
 import { Input } from 'antd';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
 import { Select, Switch } from '@vikadata/components';
 
@@ -43,19 +43,11 @@ export const LookUpFormatNumber: React.FC<IFormateNumberProps> = (props: IFormat
     });
   };
 
-  const {
-    formatType,
-    precision,
-    symbol,
-    commaStyle,
-  } = currentField.property.formatting as INumberFormatFieldProperty || {};
+  const { formatType, precision, symbol, commaStyle } = (currentField.property.formatting as INumberFormatFieldProperty) || {};
 
   return (
     <div className={styles.sectionWrapper}>
-      <div
-        className={classNames(styles.section, styles.sectionLeft)}
-        style={{ marginRight: 12 }}
-      >
+      <div className={classNames(styles.section, styles.sectionLeft)} style={{ marginRight: 12 }}>
         <div className={styles.sectionTitle}>{t(Strings.field_configuration_numerical_value_format)}</div>
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
           <Select
@@ -68,11 +60,7 @@ export const LookUpFormatNumber: React.FC<IFormateNumberProps> = (props: IFormat
         </ComponentDisplay>
 
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-          <MobileSelect
-            defaultValue={formatType}
-            optionData={optionData4Number}
-            onChange={value => onChange({ formatType: value as number })}
-          />
+          <MobileSelect defaultValue={formatType} optionData={optionData4Number} onChange={value => onChange({ formatType: value as number })} />
         </ComponentDisplay>
       </div>
       <div className={classNames(styles.section, formatType === FieldType.Currency ? styles.sectionCenter : styles.sectionRight)}>
@@ -87,34 +75,21 @@ export const LookUpFormatNumber: React.FC<IFormateNumberProps> = (props: IFormat
           />
         </ComponentDisplay>
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-          <MobileSelect
-            defaultValue={precision}
-            onChange={value => onChange({ precision: value as number })}
-            optionData={optionData4Precision}
-          />
+          <MobileSelect defaultValue={precision} onChange={value => onChange({ precision: value as number })} optionData={optionData4Precision} />
         </ComponentDisplay>
-        {
-          formatType === FieldType.Number && 
+        {formatType === FieldType.Number && (
           <div className={styles.commaStyleSwitch}>
-            <Switch
-              size="small"
-              checked={Boolean(commaStyle)}
-              onChange={value => onChange({ commaStyle: value ? DefaultCommaStyle : undefined })}
-            />
-            <span className={styles.commaStyleText}>
-              {t(Strings.comma_style)}
-            </span>
+            <Switch size="small" checked={Boolean(commaStyle)} onChange={value => onChange({ commaStyle: value ? DefaultCommaStyle : undefined })} />
+            <span className={styles.commaStyleText}>{t(Strings.comma_style)}</span>
           </div>
-        }
+        )}
       </div>
-      {formatType === FieldType.Currency && <div className={styles.section}>
-        <div className={styles.sectionTitle}>{t(Strings.currency_field_configuration_symbol)}</div>
-        <Input
-          style={{ width: 70 }}
-          value={symbol}
-          onChange={e => onChange({ symbol: e.target.value as string })}
-        />
-      </div>}
+      {formatType === FieldType.Currency && (
+        <div className={styles.section}>
+          <div className={styles.sectionTitle}>{t(Strings.currency_field_configuration_symbol)}</div>
+          <Input style={{ width: 70 }} value={symbol} onChange={e => onChange({ symbol: e.target.value as string })} />
+        </div>
+      )}
     </div>
   );
 };

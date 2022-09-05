@@ -1,6 +1,6 @@
 import { Strings, t } from '@vikadata/core';
 import { runInContext } from 'lodash';
-import { CodeLanguage } from '../field_codes';
+import { CodeLanguage } from '../enum';
 import { markdown as md } from './markdown_render';
 
 const lodash = runInContext();

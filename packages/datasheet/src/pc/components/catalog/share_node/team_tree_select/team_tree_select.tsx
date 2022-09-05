@@ -11,7 +11,7 @@ import CheckIcon from 'static/icon/common/common_tip_success_small.svg';
 import { useThemeColors } from '@vikadata/components';
 import classnames from 'classnames';
 import RcTrigger from 'rc-trigger';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { Popup } from 'pc/components/common/mobile/popup';
 
@@ -46,11 +46,15 @@ export const TeamTreeSelect: FC<ITeamTreeSelectProps> = ({ className, onChange }
 
   // 设置子节点
   useEffect(() => {
-    if (!subTeams) { return; }
+    if (!subTeams) {
+      return;
+    }
 
     const nextTeamTree = produce(teamTree, draftTeamTree => {
       const node = findNode(draftTeamTree, subTeams[0].parentId);
-      if (!node) { return; }
+      if (!node) {
+        return;
+      }
       node.children = subTeams;
     });
     setTeamTree(nextTeamTree);
@@ -79,10 +83,12 @@ export const TeamTreeSelect: FC<ITeamTreeSelectProps> = ({ className, onChange }
 
   const renderTreeNodes = (data: ITeamTreeNode[]) => {
     return data.map(item => {
-      const nodeLabel = <div className={styles.nodeLabel}>
-        <div className={styles.teamName}>{item.teamName}</div>
-        {item.teamId === checkedTeamId && isMobile && <CheckIcon width={16} height={16} fill={colors.primaryColor} />}
-      </div>;
+      const nodeLabel = (
+        <div className={styles.nodeLabel}>
+          <div className={styles.teamName}>{item.teamName}</div>
+          {item.teamId === checkedTeamId && isMobile && <CheckIcon width={16} height={16} fill={colors.primaryColor} />}
+        </div>
+      );
       if (item.children?.length) {
         return (
           <TreeItem nodeId={item.teamId} label={nodeLabel}>
@@ -91,9 +97,7 @@ export const TeamTreeSelect: FC<ITeamTreeSelectProps> = ({ className, onChange }
         );
       }
 
-      return (
-        <TreeItem isLeaf={!item.hasChildren} nodeId={item.teamId} label={nodeLabel} />
-      );
+      return <TreeItem isLeaf={!item.hasChildren} nodeId={item.teamId} label={nodeLabel} />;
     });
   };
 

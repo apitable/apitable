@@ -1,7 +1,16 @@
 import { IconButton, Typography, useContextMenu, useThemeColors } from '@vikadata/components';
 import {
-  ConfigConstant, IReduxState, IRightClickInfo, Navigation, Selectors, shallowEqual, StoreActions, Strings, t, WORKBENCH_SIDE_ID,
-  isIdassPrivateDeployment
+  ConfigConstant,
+  IReduxState,
+  IRightClickInfo,
+  Navigation,
+  Selectors,
+  shallowEqual,
+  StoreActions,
+  Strings,
+  t,
+  WORKBENCH_SIDE_ID,
+  isIdassPrivateDeployment,
 } from '@vikadata/core';
 import { AddOutlined, FavoriteFilled, SearchOutlined, TitleWorkFilled } from '@vikadata/icons';
 import { useRequest } from 'pc/hooks';
@@ -15,7 +24,7 @@ import { PermissionSettingsPlus } from 'pc/components/catalog/permission_setting
 import { Search } from 'pc/components/catalog/search';
 import { Share } from 'pc/components/catalog/share';
 import { Modal } from 'pc/components/common';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { Tooltip } from 'pc/components/common/tooltip';
 import { SearchPanel, SubColumnType } from 'pc/components/datasheet_search_panel';
 import { ShareModal as FormShare } from 'pc/components/form_panel/form_tab/tool_bar/share_modal';
@@ -59,13 +68,7 @@ export const WorkbenchSide: FC = () => {
   const [activeKey, setActiveKey] = useState<string[]>([]);
   const [isSearch, setIsSearch] = useState(false);
   // 打开数表选择弹框，用以选择神奇表单单关联的数表视图
-  const {
-    panelVisible,
-    panelInfo,
-    onChange,
-    setPanelInfo,
-    setPanelVisible,
-  } = useSearchPanel();
+  const { panelVisible, panelInfo, onChange, setPanelInfo, setPanelVisible } = useSearchPanel();
   const navigationTo = useNavigation();
   const {
     spaceId,
@@ -94,7 +97,7 @@ export const WorkbenchSide: FC = () => {
   }, shallowEqual);
 
   const isFormShare = /fom\w+/.test(shareModalNodeId);
-  const activedNodeId = useSelector((state) => Selectors.getNodeId(state));
+  const activedNodeId = useSelector(state => Selectors.getNodeId(state));
   const { getTreeDataReq } = useCatalogTreeRequest();
   const { run: getTreeData } = useRequest(getTreeDataReq, { manual: true });
   const { getPositionNodeReq } = useCatalogTreeRequest();
@@ -107,9 +110,9 @@ export const WorkbenchSide: FC = () => {
   const isMobile = screenIsAtMost(ScreenSize.md);
   const dispatch = useDispatch();
 
-  const userInfo = useSelector((state) => state.user.info);
+  const userInfo = useSelector(state => state.user.info);
   const spaceFeatures = useSelector(state => state.space.spaceFeatures);
-  const spacePermissions = useSelector((state) => state.spacePermissionManage.spaceResource?.permissions);
+  const spacePermissions = useSelector(state => state.spacePermissionManage.spaceResource?.permissions);
   const isSpaceAdmin = spacePermissions && spacePermissions.includes('MANAGE_WORKBENCH');
   const rootManageable = userInfo?.isMainAdmin || isSpaceAdmin || spaceFeatures?.rootManageable;
 
@@ -119,32 +122,26 @@ export const WorkbenchSide: FC = () => {
       [
         ShortcutActionName.Permission,
         () => {
-          activeNodeId &&
-            treeNodesMap[activeNodeId] &&
-            dispatch(StoreActions.updatePermissionModalNodeId(activeNodeId));
+          activeNodeId && treeNodesMap[activeNodeId] && dispatch(StoreActions.updatePermissionModalNodeId(activeNodeId));
         },
       ],
       [
         ShortcutActionName.Share,
         () => {
-          activeNodeId &&
-            treeNodesMap[activeNodeId] &&
-            dispatch(StoreActions.updateShareModalNodeId(activeNodeId));
+          activeNodeId && treeNodesMap[activeNodeId] && dispatch(StoreActions.updateShareModalNodeId(activeNodeId));
         },
       ],
       [
         ShortcutActionName.SaveAsTemplate,
         () => {
-          dispatch(
-            StoreActions.updateSaveAsTemplateModalNodeId(activeNodeId || '')
-          );
+          dispatch(StoreActions.updateSaveAsTemplateModalNodeId(activeNodeId || ''));
         },
       ],
       [
         ShortcutActionName.SearchNode,
         () => {
           setIsSearch(!isSearch);
-        }
+        },
       ],
     ]);
 
@@ -195,12 +192,8 @@ export const WorkbenchSide: FC = () => {
 
   /* 读取本地存储的sidebar展开状态 */
   useEffect(() => {
-    const defaultActiveKeyString = localStorage.getItem(
-      'vika_workbench_active_key'
-    );
-    const defaultActiveKey = defaultActiveKeyString
-      ? JSON.parse(defaultActiveKeyString)
-      : [ConfigConstant.Modules.CATALOG];
+    const defaultActiveKeyString = localStorage.getItem('vika_workbench_active_key');
+    const defaultActiveKey = defaultActiveKeyString ? JSON.parse(defaultActiveKeyString) : [ConfigConstant.Modules.CATALOG];
     setActiveKey(defaultActiveKey);
   }, []);
 
@@ -211,13 +204,13 @@ export const WorkbenchSide: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, activeNodeId]);
 
-  const changeHandler = (key) => {
+  const changeHandler = key => {
     setActiveKey(key);
     localStorage.setItem('vika_workbench_active_key', JSON.stringify(key));
   };
 
   const jumpTrash = () => {
-    navigationTo({ path: Navigation.TRASH, params: { spaceId }});
+    navigationTo({ path: Navigation.TRASH, params: { spaceId } });
   };
 
   const jumpSpaceTemplate = () => {
@@ -258,19 +251,21 @@ export const WorkbenchSide: FC = () => {
     }
   };
 
-  const providerValue = useMemo(() => ({
-    rightClickInfo,
-    setRightClickInfo,
-    openFavorite,
-    onSetContextMenu,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }), [rightClickInfo, setRightClickInfo, onSetContextMenu, activeKey, setActiveKey]);
+  const providerValue = useMemo(
+    () => ({
+      rightClickInfo,
+      setRightClickInfo,
+      openFavorite,
+      onSetContextMenu,
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }),
+    [rightClickInfo, setRightClickInfo, onSetContextMenu, activeKey, setActiveKey],
+  );
 
   const permissionCommitRemindStatus = useSelector(state => state.catalogTree.permissionCommitRemindStatus);
 
   // 权限设置弹窗关闭
   function onClosePermissionSettingModal() {
-
     dispatch(StoreActions.updatePermissionModalNodeId(''));
 
     if (permissionCommitRemindStatus) {
@@ -288,17 +283,19 @@ export const WorkbenchSide: FC = () => {
         <div className={styles.header}>
           <SpaceInfo />
           <div className={styles.search}>
-            {isSearch ? <Search closeSearch={() => setIsSearch(false)} /> :
+            {isSearch ? (
+              <Search closeSearch={() => setIsSearch(false)} />
+            ) : (
               <IconButton
                 shape="square"
                 className={styles.searchBtn}
                 icon={SearchOutlined}
-                onClick={(e) => {
+                onClick={e => {
                   stopPropagation(e);
                   setIsSearch(true);
                 }}
               />
-            }
+            )}
           </div>
         </div>
 
@@ -308,34 +305,20 @@ export const WorkbenchSide: FC = () => {
             paddingRight: isMobile ? '12px' : '0',
           }}
         >
-          <div
-            className={styles.mainContainer}
-            id={WORKBENCH_SIDE_ID.NODE_WRAPPER}
-          >
-            <Collapse
-              className={styles.collapse}
-              onChange={changeHandler}
-              activeKey={activeKey}
-              ghost
-            >
+          <div className={styles.mainContainer} id={WORKBENCH_SIDE_ID.NODE_WRAPPER}>
+            <Collapse className={styles.collapse} onChange={changeHandler} activeKey={activeKey} ghost>
               <Panel
                 className={styles.favorite}
                 key={ConfigConstant.Modules.FAVORITE}
                 header={
                   <div className={styles.groupName}>
                     <FavoriteFilled color={colors.warningColor} />
-                    <Typography
-                      className={styles.text}
-                      variant="h9"
-                      color={colors.secondLevelText}
-                    >
+                    <Typography className={styles.text} variant="h9" color={colors.secondLevelText}>
                       {t(Strings.favorite)}
                     </Typography>
                     <ArrowIcon
                       className={classnames(styles.arrow, {
-                        [styles.active]: activeKey.includes(
-                          ConfigConstant.Modules.FAVORITE
-                        ),
+                        [styles.active]: activeKey.includes(ConfigConstant.Modules.FAVORITE),
                       })}
                     />
                   </div>
@@ -352,30 +335,20 @@ export const WorkbenchSide: FC = () => {
                 header={
                   <div className={styles.groupName}>
                     <TitleWorkFilled color={colors.primaryColor} />
-                    <Typography
-                      className={styles.text}
-                      variant="h9"
-                      color={colors.secondLevelText}
-                    >
+                    <Typography className={styles.text} variant="h9" color={colors.secondLevelText}>
                       {t(Strings.catalog)}
                     </Typography>
                     <ArrowIcon
                       className={classnames(styles.arrow, {
-                        [styles.active]: activeKey.includes(
-                          ConfigConstant.Modules.CATALOG
-                        ),
+                        [styles.active]: activeKey.includes(ConfigConstant.Modules.CATALOG),
                       })}
                     />
                   </div>
                 }
                 extra={
                   rootManageable ? (
-                    <IconButton
-                      style={{ marginRight: 10 }}
-                      onClick={openDefaultMenu}
-                      icon={AddOutlined}
-                      id={WORKBENCH_SIDE_ID.ADD_NODE_BTN}
-                    />) : null
+                    <IconButton style={{ marginRight: 10 }} onClick={openDefaultMenu} icon={AddOutlined} id={WORKBENCH_SIDE_ID.ADD_NODE_BTN} />
+                  ) : null
                 }
                 showArrow={false}
               >
@@ -389,32 +362,19 @@ export const WorkbenchSide: FC = () => {
         <div className={styles.fixedGroup}>
           {!isMobile && (
             <Tooltip title={t(Strings.trash)}>
-              <div
-                className={styles.groupItem}
-                onClick={jumpTrash}
-                data-sensors-click
-                id={WORKBENCH_SIDE_ID.RECYCLE_BIN}
-              >
+              <div className={styles.groupItem} onClick={jumpTrash} data-sensors-click id={WORKBENCH_SIDE_ID.RECYCLE_BIN}>
                 <TrashIcon fill={colors.rc04} />
               </div>
             </Tooltip>
           )}
           <Tooltip title={t(Strings.workbench_side_space_template)}>
-            <div
-              className={styles.groupItem}
-              onClick={jumpSpaceTemplate}
-              data-sensors-click
-              id={WORKBENCH_SIDE_ID.TO_SPACE_TEMPLATE}
-            >
+            <div className={styles.groupItem} onClick={jumpSpaceTemplate} data-sensors-click id={WORKBENCH_SIDE_ID.TO_SPACE_TEMPLATE}>
               <TemplateIcon fill={colors.rc02} />
             </div>
           </Tooltip>
           {inviteStatus && !isIdassPrivateDeployment() && (
             <Tooltip title={t(Strings.invite_friends)}>
-              <div
-                className={styles.groupItem}
-                onClick={() => expandInviteModal()}
-              >
+              <div className={styles.groupItem} onClick={() => expandInviteModal()}>
                 <InviteIcon fill={colors.primaryColor} />
               </div>
             </Tooltip>
@@ -430,19 +390,9 @@ export const WorkbenchSide: FC = () => {
           openCatalog={openCatalog}
         />
         {saveAsTemplateModalNodeId && (
-          <GenerateTemplate
-            nodeId={saveAsTemplateModalNodeId}
-            onCancel={() =>
-              dispatch(StoreActions.updateSaveAsTemplateModalNodeId(''))
-            }
-          />
+          <GenerateTemplate nodeId={saveAsTemplateModalNodeId} onCancel={() => dispatch(StoreActions.updateSaveAsTemplateModalNodeId(''))} />
         )}
-        {importModalNodeId && (
-          <ImportFile
-            parentId={importModalNodeId}
-            onCancel={() => dispatch(StoreActions.updateImportModalNodeId(''))}
-          />
-        )}
+        {importModalNodeId && <ImportFile parentId={importModalNodeId} onCancel={() => dispatch(StoreActions.updateImportModalNodeId(''))} />}
         {panelVisible && (
           <SearchPanel
             folderId={panelInfo!.folderId}
@@ -459,12 +409,7 @@ export const WorkbenchSide: FC = () => {
             onClose={() => dispatch(StoreActions.updateShareModalNodeId(''))}
           />
         )}
-        {!isFormShare && (
-          <Share
-            nodeId={shareModalNodeId}
-            onClose={() => dispatch(StoreActions.updateShareModalNodeId(''))}
-          />
-        )}
+        {!isFormShare && <Share nodeId={shareModalNodeId} onClose={() => dispatch(StoreActions.updateShareModalNodeId(''))} />}
         <PermissionSettingsMain
           data={{
             nodeId: permissionModalNodeId,

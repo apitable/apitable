@@ -1,7 +1,7 @@
 import { CollaCommandName, FieldType, ISortInfo, Selectors, Strings, t } from '@vikadata/core';
 import { Col, Row, Switch } from 'antd';
 import produce from 'immer';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { useCallback, useMemo, useRef } from 'react';
 import * as React from 'react';
@@ -50,30 +50,34 @@ export const ViewSort: React.FC<IViewSetting> = props => {
   function submitSort(viewInfo: ISortInfo, applySort?: boolean) {
     const sortInfo = viewInfo?.rules?.length ? viewInfo : undefined;
     const _applySort = applySort && editable;
-    executeCommandWithMirror(() => {
-      resourceService.instance!.commandManager.execute({
-        cmd: CollaCommandName.SetSortInfo,
-        viewId: activityViewId,
-        data: sortInfo,
-        applySort: _applySort,
-      });
-    }, {
-      sortInfo: sortInfo,
-    }, () => {
-      if (_applySort) {
+    executeCommandWithMirror(
+      () => {
         resourceService.instance!.commandManager.execute({
           cmd: CollaCommandName.SetSortInfo,
           viewId: activityViewId,
           data: sortInfo,
           applySort: _applySort,
         });
-      }
-    });
+      },
+      {
+        sortInfo: sortInfo,
+      },
+      () => {
+        if (_applySort) {
+          resourceService.instance!.commandManager.execute({
+            cmd: CollaCommandName.SetSortInfo,
+            viewId: activityViewId,
+            data: sortInfo,
+            applySort: _applySort,
+          });
+        }
+      },
+    );
   }
 
   const invalidFieldsByGroup = useMemo(() => {
     const invalidFields: string[] = [];
-    activeViewGroupInfo.forEach((item) => {
+    activeViewGroupInfo.forEach(item => {
       const field = fieldMap[item.fieldId];
       // 非多选 FieldType 分组后，排序无效
       if (field && ![FieldType.MultiSelect].includes(field.type)) {
@@ -148,9 +152,11 @@ export const ViewSort: React.FC<IViewSetting> = props => {
 
   // TODO: 重新布局
   const manualSort = sortInfo && !sortInfo.keepSort;
-  const mainContentStyle: React.CSSProperties = isMobile ? {
-    maxHeight: manualSort ? 'calc(100% - 104px)' : 'calc(100% - 36px)',
-  } : {};
+  const mainContentStyle: React.CSSProperties = isMobile
+    ? {
+        maxHeight: manualSort ? 'calc(100% - 104px)' : 'calc(100% - 36px)',
+      }
+    : {};
 
   React.useEffect(() => {
     onListenResize();
@@ -159,34 +165,24 @@ export const ViewSort: React.FC<IViewSetting> = props => {
   return (
     <div className={styles.viewSort} style={!isMobile ? style : undefined} ref={containerRef}>
       <div className={styles.boxTop}>
-        {
-          !isMobile && <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant={'h7'}>
-              {t(Strings.set_sort)}
-            </Typography>
-            <a
-              href={t(Strings.sort_help_url)}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+        {!isMobile && (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Typography variant={'h7'}>{t(Strings.set_sort)}</Typography>
+            <a href={t(Strings.sort_help_url)} target="_blank" rel="noopener noreferrer">
               <InformationLargeOutlined color={colors.thirdLevelText} />
             </a>
           </div>
-        }
-        {
-          Boolean(sortInfo && sortInfo.rules.length) &&
+        )}
+        {Boolean(sortInfo && sortInfo.rules.length) && (
           <div className={styles.keepSort}>
             {t(Strings.keep_sort)}
             <Switch checked={sortInfo!.keepSort} size={isMobile ? 'default' : 'small'} style={{ marginLeft: isMobile ? 8 : 4 }} onChange={onChange} />
           </div>
-        }
+        )}
       </div>
-      {
-        !isMobile && <SyncViewTip style={{ paddingLeft: 20 }} />
-      }
+      {!isMobile && <SyncViewTip style={{ paddingLeft: 20 }} />}
       <main style={mainContentStyle}>
-        {
-          sortInfo &&
+        {sortInfo && (
           <CommonViewSet
             onDragEnd={onDragEnd}
             dragData={sortInfo.rules}
@@ -197,7 +193,7 @@ export const ViewSort: React.FC<IViewSetting> = props => {
             invalidFieldIds={invalidFieldsByGroup}
             invalidTip={t(Strings.invalid_action_sort_tip)}
           />
-        }
+        )}
       </main>
       <div className={styles.selectField}>
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
@@ -224,15 +220,14 @@ export const ViewSort: React.FC<IViewSetting> = props => {
           </Row>
         </ComponentDisplay>
       </div>
-      {
-        manualSort &&
+      {manualSort && (
         <div className={styles.buttonWrapper}>
           {isMobile ? (
             <Button
               style={{ marginRight: '16px' }}
               size="large"
               onClick={e => {
-                props.close(e as any as React.MouseEvent);
+                props.close((e as any) as React.MouseEvent);
               }}
               block
             >
@@ -243,7 +238,7 @@ export const ViewSort: React.FC<IViewSetting> = props => {
               style={{ marginRight: '16px' }}
               size="small"
               onClick={e => {
-                props.close(e as any as React.MouseEvent);
+                props.close((e as any) as React.MouseEvent);
               }}
             >
               <span style={{ color: colors.thirdLevelText }}>{t(Strings.cancel)}</span>
@@ -254,14 +249,14 @@ export const ViewSort: React.FC<IViewSetting> = props => {
             size={isMobile ? 'large' : 'small'}
             onClick={e => {
               sortInfo && submitSort(sortInfo, true);
-              props.close(e as any as React.MouseEvent);
+              props.close((e as any) as React.MouseEvent);
             }}
             block={isMobile}
           >
             <span>{t(Strings.sort_apply)}</span>
           </Button>
         </div>
-      }
+      )}
     </div>
   );
 };

@@ -1,7 +1,8 @@
 import { Button, ThemeProvider } from '@vikadata/components';
 import { Selectors, TrackEvents } from '@vikadata/core';
 import { useMount } from 'ahooks';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay } from 'pc/components/common/component_display';
+import { ScreenSize } from 'pc/components/common/component_display/enum';
 import { isSocialWecom } from 'pc/components/home/social_platform';
 import { Method, navigationToUrl } from 'pc/components/route_manager/use_navigation';
 import { store } from 'pc/store';
@@ -41,29 +42,38 @@ const Notice: FC<IGuideNoticeOptions> = props => {
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <Modal
           width={288}
-          onClose={() => { onClose && onClose(); }}
+          onClose={() => {
+            onClose && onClose();
+          }}
         >
           <div className="vika-guide-notice">
             <div className={'vika-guide-notice-content'}>
-              <div className={'vika-guide-notice-head-img'}
+              <div
+                className={'vika-guide-notice-head-img'}
                 style={{
                   backgroundImage: `url(${headerImg})`,
                 }}
                 onClick={navHistoryUpdatePage}
               />
-              <div className={'vika-guide-notice-body'}>
-                {children}
-              </div>
+              <div className={'vika-guide-notice-body'}>{children}</div>
             </div>
-            {!isWecomSpace && <div className="vika-guide-notice-btnWrap">
-              <Button color="primary" block onClick={navHistoryUpdatePage}>{readMoreTxt}</Button>
-            </div>}
+            {!isWecomSpace && (
+              <div className="vika-guide-notice-btnWrap">
+                <Button color="primary" block onClick={navHistoryUpdatePage}>
+                  {readMoreTxt}
+                </Button>
+              </div>
+            )}
           </div>
         </Modal>
       </ComponentDisplay>
       {/* 移动端 */}
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <MobileModal onClose={() => { onClose && onClose(); }}>
+        <MobileModal
+          onClose={() => {
+            onClose && onClose();
+          }}
+        >
           <div className="vika-guide-notice">
             <div className={'vika-guide-notice-content'}>
               <div>
@@ -71,18 +81,19 @@ const Notice: FC<IGuideNoticeOptions> = props => {
                   <img src={headerImg} style={{ width: '100%' }} />
                 </span>
               </div>
-              <div className={'vika-guide-notice-body'}>
-                {children}
-              </div>
+              <div className={'vika-guide-notice-body'}>{children}</div>
             </div>
-            {!isWecomSpace && <div className="vika-guide-notice-btnWrap">
-              <Button color="primary" block onClick={navHistoryUpdatePage}>{readMoreTxt}</Button>
-            </div>}
+            {!isWecomSpace && (
+              <div className="vika-guide-notice-btnWrap">
+                <Button color="primary" block onClick={navHistoryUpdatePage}>
+                  {readMoreTxt}
+                </Button>
+              </div>
+            )}
           </div>
         </MobileModal>
       </ComponentDisplay>
     </>
-
   );
 };
 export const showNotice = (props: IGuideNoticeOptions) => {
@@ -99,12 +110,11 @@ export const showNotice = (props: IGuideNoticeOptions) => {
         } catch (e) {
           console.error(e);
         }
-
       });
     }
   };
 
-  const NoticeWithTheme = (props) => {
+  const NoticeWithTheme = props => {
     const { children, ...rest } = props;
     const cacheTheme = useSelector(Selectors.getTheme);
     return (
@@ -120,14 +130,11 @@ export const showNotice = (props: IGuideNoticeOptions) => {
       div.setAttribute('class', 'vika-guide-modal');
       document.body.appendChild(div);
       ReactDOM.render(
-        (
-          <Provider store={store}>
-            <NoticeWithTheme {...rest}>
-              {children}
-            </NoticeWithTheme>
-          </Provider>
-        ),
-        div);
+        <Provider store={store}>
+          <NoticeWithTheme {...rest}>{children}</NoticeWithTheme>
+        </Provider>,
+        div,
+      );
     });
   };
 

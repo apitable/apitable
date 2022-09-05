@@ -11,7 +11,7 @@ import { IFilterDateProps } from '../../interface';
 import { DateDuration, FilterDateDuration } from './filter_date_duration';
 import { useClickOutside } from '@huse/click-outside';
 import { useResponsive } from 'pc/hooks';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { DatePicker } from './date_picker';
 import { LocalFormat } from './local_format';
 import { DateRangePickerMobile } from 'pc/components/tool_bar/view_filter/filter_value/filter_date/date_range_picker_mobile';
@@ -43,7 +43,8 @@ export const FilterDate: React.FC<IFilterDateProps> = props => {
 
   if (field.type === FieldType.DateTime) {
     noDateProperty = {
-      ...field, property: {
+      ...field,
+      property: {
         dateFormat: field.property.dateFormat,
         timeFormat: field.property.timeFormat,
         includeTime: false,
@@ -53,7 +54,7 @@ export const FilterDate: React.FC<IFilterDateProps> = props => {
   }
 
   if (defaultValue && durationValue === FilterDuration.ExactDate && defaultValue[1]) {
-    dataValue = (new Date(defaultValue[1]!)).getTime();
+    dataValue = new Date(defaultValue[1]!).getTime();
   }
 
   if (defaultValue && durationValue === FilterDuration.DateRange && defaultValue[1]) {
@@ -118,50 +119,56 @@ export const FilterDate: React.FC<IFilterDateProps> = props => {
       return null;
     }
     if (condition.value[0] === FilterDuration.ExactDate) {
-      return <DateTimeEditor
-        style={{ position: 'unset' }}
-        ref={dateEditorRef}
-        editable
-        editing
-        width={160}
-        datasheetId={datasheetId}
-        height={35}
-        field={noDateProperty as IDateTimeField}
-        commandFn={commandDateFn}
-        dataValue={dataValue}
-      />;
+      return (
+        <DateTimeEditor
+          style={{ position: 'unset' }}
+          ref={dateEditorRef}
+          editable
+          editing
+          width={160}
+          datasheetId={datasheetId}
+          height={35}
+          field={noDateProperty as IDateTimeField}
+          commandFn={commandDateFn}
+          dataValue={dataValue}
+        />
+      );
     }
     if (condition.value[0] === FilterDuration.DateRange) {
       const lang = getLanguage().split('-')[0];
-      return <>
-        <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-          <RangePicker
-            onChange={rangePickerChange}
-            format="YYYY-MM-DD"
-            className={styles.dateRange}
-            allowClear={false}
-            suffixIcon={null}
-            value={dataValue as any}
-            locale={lang ==='en' ? undefined : LocalFormat.getDefinedChineseLocal()}
-          />
-        </ComponentDisplay>
-        <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-          <DateRangePickerMobile {...props} rangePickerChange={rangePickerChange} dataValue={dataValue} />
-        </ComponentDisplay>
-      </>;
+      return (
+        <>
+          <ComponentDisplay minWidthCompatible={ScreenSize.md}>
+            <RangePicker
+              onChange={rangePickerChange}
+              format="YYYY-MM-DD"
+              className={styles.dateRange}
+              allowClear={false}
+              suffixIcon={null}
+              value={dataValue as any}
+              locale={lang === 'en' ? undefined : LocalFormat.getDefinedChineseLocal()}
+            />
+          </ComponentDisplay>
+          <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
+            <DateRangePickerMobile {...props} rangePickerChange={rangePickerChange} dataValue={dataValue} />
+          </ComponentDisplay>
+        </>
+      );
     }
     if (condition.value[0] === FilterDuration.SomeDayBefore || condition.value[0] === FilterDuration.SomeDayAfter) {
-      return <NumberEditor
-        style={{}}
-        ref={numberRef}
-        editable
-        editing
-        width={160}
-        datasheetId={datasheetId}
-        height={editorHeight}
-        field={field}
-        commandFn={commandNumberFn}
-      />;
+      return (
+        <NumberEditor
+          style={{}}
+          ref={numberRef}
+          editable
+          editing
+          width={160}
+          datasheetId={datasheetId}
+          height={editorHeight}
+          field={field}
+          commandFn={commandNumberFn}
+        />
+      );
     }
     return null;
   };
@@ -170,27 +177,12 @@ export const FilterDate: React.FC<IFilterDateProps> = props => {
 
   return (
     <div className={classNames(styles.filterDate, 'filterDate')} onClick={stopPropagation} ref={ref}>
-      {
-        (
-          operator !== FOperator.IsEmpty && operator !== FOperator.IsNotEmpty
-        ) &&
-        <FilterDateDuration
-          changeFilter={changeFilter}
-          condition={condition}
-          conditionIndex={conditionIndex}
-        />
-      }
-      <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-        {dom}
-      </ComponentDisplay>
+      {operator !== FOperator.IsEmpty && operator !== FOperator.IsNotEmpty && (
+        <FilterDateDuration changeFilter={changeFilter} condition={condition} conditionIndex={conditionIndex} />
+      )}
+      <ComponentDisplay minWidthCompatible={ScreenSize.md}>{dom}</ComponentDisplay>
 
-      <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        {
-          Boolean(dom) && <div className={styles.wrapper}>
-            {dom}
-          </div>
-        }
-      </ComponentDisplay>
+      <ComponentDisplay maxWidthCompatible={ScreenSize.md}>{Boolean(dom) && <div className={styles.wrapper}>{dom}</div>}</ComponentDisplay>
     </div>
   );
 };

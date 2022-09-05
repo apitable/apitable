@@ -1,6 +1,6 @@
 import { Api, ConfigConstant, Navigation } from '@vikadata/core';
 import { Spin } from 'antd';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { useNavigation } from 'pc/components/route_manager/use_navigation';
 import { useQuery, useResponsive } from 'pc/hooks';
 import { isLocalSite } from 'pc/utils';
@@ -79,7 +79,6 @@ const QqCallback: FC = props => {
     setTimeout(() => {
       window.close();
     }, 300);
-
   };
   useEffect(() => {
     Api.qqLoginCallback(code, accessToken, expiresIn, type).then(res => {

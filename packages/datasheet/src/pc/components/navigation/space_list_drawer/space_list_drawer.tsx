@@ -6,7 +6,7 @@ import CloseIcon from 'static/icon/common/common_icon_close_small.svg';
 import { useThemeColors } from '@vikadata/components';
 import { useResponsive } from 'pc/hooks';
 import classnames from 'classnames';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { t, Strings, Player, Events } from '@vikadata/core';
 import { useEffect } from 'react';
 
@@ -15,10 +15,7 @@ export interface ISpaceListDrawerProps {
   onClose: (value: boolean) => void;
 }
 
-export const SpaceListDrawer: FC<ISpaceListDrawerProps> = ({
-  visible,
-  onClose,
-}) => {
+export const SpaceListDrawer: FC<ISpaceListDrawerProps> = ({ visible, onClose }) => {
   const colors = useThemeColors();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -33,10 +30,12 @@ export const SpaceListDrawer: FC<ISpaceListDrawerProps> = ({
   return (
     <Drawer
       className={classnames(styles.spaceListDrawer, isMobile && styles.mobile)}
-      title={<div>
-        <div className={styles.title}>{t(Strings.space_list)}</div>
-        {isMobile && <div className={styles.tip}>{t(Strings.mobile_space_list_tip)}</div>}
-      </div>}
+      title={
+        <div>
+          <div className={styles.title}>{t(Strings.space_list)}</div>
+          {isMobile && <div className={styles.tip}>{t(Strings.mobile_space_list_tip)}</div>}
+        </div>
+      }
       width={isMobile ? '100%' : 336}
       placement={isMobile ? 'bottom' : 'left'}
       height={isMobile ? '90%' : '100%'}

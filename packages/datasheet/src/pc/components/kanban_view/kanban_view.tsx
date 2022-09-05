@@ -1,8 +1,19 @@
 import {
-  CollaCommandName, ConfigConstant, DropDirectionType, FieldType,
+  CollaCommandName,
+  ConfigConstant,
+  DropDirectionType,
+  FieldType,
   IKanbanViewProperty,
-  IMemberField, IMemberProperty, ISelectFieldOption, ISelectFieldProperty, moveArrayElement, Selectors,
-  StoreActions, Strings, t, UN_GROUP,
+  IMemberField,
+  IMemberProperty,
+  ISelectFieldOption,
+  ISelectFieldProperty,
+  moveArrayElement,
+  Selectors,
+  StoreActions,
+  Strings,
+  t,
+  UN_GROUP,
 } from '@vikadata/core';
 import classNames from 'classnames';
 import { resourceService } from 'pc/resource_service';
@@ -10,13 +21,10 @@ import { useResponsive } from 'pc/hooks';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage/storage';
 import { useEffect, useRef, useState } from 'react';
 import * as React from 'react';
-import {
-  DragDropContext, Draggable, DraggableProvided,
-  DraggableStateSnapshot, DragStart, Droppable, DropResult,
-} from 'react-beautiful-dnd';
+import { DragDropContext, Draggable, DraggableProvided, DraggableStateSnapshot, DragStart, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { stopPropagation } from '../../utils/dom';
-import { ScreenSize } from '../common/component_display/component_display';
+import { ScreenSize } from '../common/component_display';
 import { RecordMenu } from '../multi_grid/context_menu/record_menu';
 import { AddGroup } from './add_group';
 import { GroupHeader } from './group_header';
@@ -60,7 +68,7 @@ export const KanbanView: React.FC<IKanbanViewProps> = props => {
 
   const [toolTipLeft, setToolTipLeft] = useState(0);
 
-  const fieldRole = useSelector((state) => {
+  const fieldRole = useSelector(state => {
     if (!kanbanFieldId) {
       return;
     }
@@ -74,7 +82,7 @@ export const KanbanView: React.FC<IKanbanViewProps> = props => {
 
   useEffect(() => {
     const collapse = getStorage(StorageName.KanbanCollapse);
-    setCollapse((collapse && collapse[storageId]) ? collapse[storageId] : []);
+    setCollapse(collapse && collapse[storageId] ? collapse[storageId] : []);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storageId]);
 
@@ -115,8 +123,8 @@ export const KanbanView: React.FC<IKanbanViewProps> = props => {
         recordId,
         fieldId: kanbanFieldId!,
         fieldType: field.type,
-        value: destination!.droppableId === UN_GROUP ?
-          null : FieldType.Member === field.type ? [destination!.droppableId!] : destination?.droppableId!,
+        value:
+          destination!.droppableId === UN_GROUP ? null : FieldType.Member === field.type ? [destination!.droppableId!] : destination?.droppableId!,
       },
     ];
   }
@@ -131,10 +139,7 @@ export const KanbanView: React.FC<IKanbanViewProps> = props => {
 
   function moveRow(result: DropResult) {
     const { destination, source } = result;
-    if (
-      source.droppableId === destination?.droppableId &&
-      source.index === destination?.index
-    ) {
+    if (source.droppableId === destination?.droppableId && source.index === destination?.index) {
       return;
     }
 
@@ -155,7 +160,6 @@ export const KanbanView: React.FC<IKanbanViewProps> = props => {
 
     if (destination!.index !== 0 && destination!.index !== destinationRows.length) {
       dragOverRecordId = destinationRows[destination!.index].id;
-
     }
 
     const moveData = {
@@ -178,8 +182,7 @@ export const KanbanView: React.FC<IKanbanViewProps> = props => {
 
   function dragGroup(result: DropResult) {
     const { destination, source } = result;
-    const headIds = field.type === FieldType.SingleSelect ?
-      field.property.options : (field as IMemberField).property.unitIds;
+    const headIds = field.type === FieldType.SingleSelect ? field.property.options : (field as IMemberField).property.unitIds;
     const headIdsCopy = [...headIds];
     const newProperty = {
       ...field.property,
@@ -222,31 +225,27 @@ export const KanbanView: React.FC<IKanbanViewProps> = props => {
   function onDragStart(initial: DragStart) {
     setDraggingInfo({
       isDragging: true,
-      dragId: initial.draggableId
+      dragId: initial.draggableId,
     });
   }
 
   function renderKanbanGroup(groupId: string, provided?: DraggableProvided, snapshot?: DraggableStateSnapshot) {
-    return <KanbanGroup
-      provided={provided}
-      groupId={groupId}
-      height={height}
-      kanbanFieldId={kanbanFieldId!}
-      setCollapse={setCollapse}
-      isDragging={snapshot?.isDragging || draggingInfo.isDragging}
-      dragId={draggingInfo.dragId}
-      isLastGroup={visibleGroupIds[visibleGroupIds.length - 1] === groupId}
-    />;
+    return (
+      <KanbanGroup
+        provided={provided}
+        groupId={groupId}
+        height={height}
+        kanbanFieldId={kanbanFieldId!}
+        setCollapse={setCollapse}
+        isDragging={snapshot?.isDragging || draggingInfo.isDragging}
+        dragId={draggingInfo.dragId}
+        isLastGroup={visibleGroupIds[visibleGroupIds.length - 1] === groupId}
+      />
+    );
   }
 
   function renderGroupHeader(groupId: string, provided?: DraggableProvided) {
-    return <GroupHeader
-      groupId={groupId}
-      kanbanGroupMap={kanbanGroupMap}
-      provided={provided}
-      setCollapse={setCollapse}
-      collapse={collapse}
-    />;
+    return <GroupHeader groupId={groupId} kanbanGroupMap={kanbanGroupMap} provided={provided} setCollapse={setCollapse} collapse={collapse} />;
   }
 
   const commonStyle: React.CSSProperties = {
@@ -279,94 +278,81 @@ export const KanbanView: React.FC<IKanbanViewProps> = props => {
   };
 
   return (
-    <div
-      className={styles.viewContainer}
-      style={{ width, height }}
-      onMouseMove={handleMouseMove}
-      onScroll={() => setToolTipLeft(0)}
-    >
-      {
-        !kanbanFieldId ?
-          <KanbanFieldSettingModal /> :
-          <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
-            <Droppable
-              droppableId={viewId!}
-              direction="horizontal"
-              type="column"
-            >
-              {provided => {
-                provided?.innerRef(ref.current);
-                return (
-                  <div
-                    {...provided?.droppableProps}
-                    ref={ref}
-                    onContextMenu={stopPropagation}
-                    style={{
-                      display: 'flex',
-                      height,
-                      width: 'min-content',
-                    }}
-                  >
-                    {!hiddenGroupMap[UN_GROUP] &&
-                      (collapse.includes(UN_GROUP) ?
-                        <div
-                          style={{
-                            marginLeft: (screenIsAtMost(ScreenSize.md)) ? 24 : 0,
-                            ...commonStyle,
-                          }}
-                        >
-                          <div className={styles.collapse}>
-                            {renderGroupHeader(UN_GROUP)}
-                          </div>
-                        </div>
-                        : renderKanbanGroup(UN_GROUP))
-                    }
-                    {visibleGroupIds.map((groupId, index) => {
-                      return (
-                        <Draggable draggableId={groupId} index={index} key={groupId} isDragDisabled={!fieldPropertyEditable}>
-                          {(provided, snapshot) => (
-                            <>
-                              {
-                                collapse.includes(groupId) ?
-                                  <div {...provided?.draggableProps} ref={provided.innerRef}>
-                                    <div
-                                      style={
-                                        {
-                                          ...commonStyle,
-                                          width: 80,
-                                        }
-                                      }
-                                    >
-                                      <div
-                                        className={
-                                          classNames({
-                                            [styles.collapse]: true, [styles.isDragging]: snapshot.isDragging,
-                                          })}
-                                      >
-                                        {renderGroupHeader(groupId, provided)}
-                                      </div>
-                                    </div>
-                                  </div>
-                                  : renderKanbanGroup(groupId, provided, snapshot)
-                              }
-                            </>
-                          )}
-                        </Draggable>
-                      );
-                    })}
-                    {provided.placeholder}
-                    {
-                      fieldPropertyEditable && (!fieldRole || fieldRole === ConfigConstant.Role.Editor) &&
-                      <div>
-                        <AddGroup kanbanFieldId={kanbanFieldId!} />
+    <div className={styles.viewContainer} style={{ width, height }} onMouseMove={handleMouseMove} onScroll={() => setToolTipLeft(0)}>
+      {!kanbanFieldId ? (
+        <KanbanFieldSettingModal />
+      ) : (
+        <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
+          <Droppable droppableId={viewId!} direction="horizontal" type="column">
+            {provided => {
+              provided?.innerRef(ref.current);
+              return (
+                <div
+                  {...provided?.droppableProps}
+                  ref={ref}
+                  onContextMenu={stopPropagation}
+                  style={{
+                    display: 'flex',
+                    height,
+                    width: 'min-content',
+                  }}
+                >
+                  {!hiddenGroupMap[UN_GROUP] &&
+                    (collapse.includes(UN_GROUP) ? (
+                      <div
+                        style={{
+                          marginLeft: screenIsAtMost(ScreenSize.md) ? 24 : 0,
+                          ...commonStyle,
+                        }}
+                      >
+                        <div className={styles.collapse}>{renderGroupHeader(UN_GROUP)}</div>
                       </div>
-                    }
-                  </div>
-                );
-              }}
-            </Droppable>
-          </DragDropContext>
-      }
+                    ) : (
+                      renderKanbanGroup(UN_GROUP)
+                    ))}
+                  {visibleGroupIds.map((groupId, index) => {
+                    return (
+                      <Draggable draggableId={groupId} index={index} key={groupId} isDragDisabled={!fieldPropertyEditable}>
+                        {(provided, snapshot) => (
+                          <>
+                            {collapse.includes(groupId) ? (
+                              <div {...provided?.draggableProps} ref={provided.innerRef}>
+                                <div
+                                  style={{
+                                    ...commonStyle,
+                                    width: 80,
+                                  }}
+                                >
+                                  <div
+                                    className={classNames({
+                                      [styles.collapse]: true,
+                                      [styles.isDragging]: snapshot.isDragging,
+                                    })}
+                                  >
+                                    {renderGroupHeader(groupId, provided)}
+                                  </div>
+                                </div>
+                              </div>
+                            ) : (
+                              renderKanbanGroup(groupId, provided, snapshot)
+                            )}
+                          </>
+                        )}
+                      </Draggable>
+                    );
+                  })}
+                  {provided.placeholder}
+                  {fieldPropertyEditable && (!fieldRole || fieldRole === ConfigConstant.Role.Editor) && (
+                    <div>
+                      <AddGroup kanbanFieldId={kanbanFieldId!} />
+                    </div>
+                  )}
+                </div>
+              );
+            }}
+          </Droppable>
+        </DragDropContext>
+      )}
       <RecordMenu />
       <GroupHeadMenu />
       {!kanbanFieldId && <KanbanSkeleton />}
@@ -376,35 +362,26 @@ export const KanbanView: React.FC<IKanbanViewProps> = props => {
 };
 
 export const FancyTooltip: React.FC<{ left: number }> = ({ left }) => {
-
   const shareId = useSelector(state => state.pageParams.shareId);
 
-  return (
-    ReactDOM.createPortal((
-      <CSSMotion
-        motionName='zoom-big-fast'
-      >
-        {({ className: motionClassName }) => {
-          return (
-            <div
-              className={
-                classNames(
-                  motionClassName,
-                  styles.tooltip
-                )
-              }
-              style={{
-                left: left - 83,
-                bottom: shareId ? 40 : 20,
-              }}
-            >
-              {t(Strings.tip_shift_scroll)}
-              <div className={styles.arrow} />
-            </div>
-          );
-        }}
-      </CSSMotion>
+  return ReactDOM.createPortal(
+    <CSSMotion motionName="zoom-big-fast">
+      {({ className: motionClassName }) => {
+        return (
+          <div
+            className={classNames(motionClassName, styles.tooltip)}
+            style={{
+              left: left - 83,
+              bottom: shareId ? 40 : 20,
+            }}
+          >
+            {t(Strings.tip_shift_scroll)}
+            <div className={styles.arrow} />
+          </div>
+        );
+      }}
+    </CSSMotion>,
 
-    ), document.body)
+    document.body,
   );
 };

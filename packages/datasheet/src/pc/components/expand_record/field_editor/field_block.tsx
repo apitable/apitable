@@ -10,11 +10,12 @@ import {
   ILinkIds,
   IRecord,
   IRecordAlarmClient,
-  isUrl, SegmentType,
+  isUrl,
+  SegmentType,
   Selectors,
   StoreActions,
 } from '@vikadata/core';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { CheckboxEditor } from 'pc/components/editors/checkbox_editor';
 import { convertAlarmStructure } from 'pc/components/editors/date_time_editor/date_time_alarm/utils';
 import { FocusHolder } from 'pc/components/editors/focus_holder';
@@ -67,13 +68,7 @@ export interface IFieldBlockProps {
 export const FieldBlock: React.FC<IFieldBlockProps> = props => {
   const { commonProps: _commonProps, cellValue, isFocus, onMouseDown, showAlarm } = props;
 
-  const {
-    datasheetId,
-    mirrorId,
-    field,
-    record,
-    ref: editorRef,
-  } = _commonProps;
+  const { datasheetId, mirrorId, field, record, ref: editorRef } = _commonProps;
 
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -87,12 +82,14 @@ export const FieldBlock: React.FC<IFieldBlockProps> = props => {
       cmd: CollaCommandName.SetRecords,
       datasheetId,
       alarm: convertAlarmStructure(curAlarm as IRecordAlarmClient),
-      data: [{
-        recordId: record!.id,
-        fieldId: field.id,
-        value,
-      }],
-      mirrorId
+      data: [
+        {
+          recordId: record!.id,
+          fieldId: field.id,
+          value,
+        },
+      ],
+      mirrorId,
     });
 
     if (field.type === FieldType.URL && field.property?.isRecogURLFlag && Array.isArray(value)) {
@@ -103,16 +100,18 @@ export const FieldBlock: React.FC<IFieldBlockProps> = props => {
         resourceService.instance!.commandManager.execute({
           cmd: CollaCommandName.SetRecords,
           datasheetId,
-          data: [{
-            recordId: record.id,
-            fieldId: field.id,
-            value: value.map(v => ({
-              ...v,
-              type: SegmentType.Url,
-              title: meta?.title,
-              favicon: meta?.favicon,
-            })),
-          }],
+          data: [
+            {
+              recordId: record.id,
+              fieldId: field.id,
+              value: value.map(v => ({
+                ...v,
+                type: SegmentType.Url,
+                title: meta?.title,
+                favicon: meta?.favicon,
+              })),
+            },
+          ],
         });
       };
 
@@ -131,7 +130,9 @@ export const FieldBlock: React.FC<IFieldBlockProps> = props => {
   };
 
   const FocusHolderWrapper = (
-    <div style={{ height: 0, width: 0 }}><FocusHolder ref={editorRef} /></div>
+    <div style={{ height: 0, width: 0 }}>
+      <FocusHolder ref={editorRef} />
+    </div>
   );
 
   switch (field.type) {
@@ -154,45 +155,20 @@ export const FieldBlock: React.FC<IFieldBlockProps> = props => {
       );
     case FieldType.Text:
     case FieldType.SingleText:
-      return (
-        <TextEditor
-          {...commonProps}
-          minRows={4}
-        />
-      );
+      return <TextEditor {...commonProps} minRows={4} />;
     case FieldType.URL:
     case FieldType.Email:
     case FieldType.Phone:
-      return (
-        <EnhanceTextEditor
-          {...commonProps}
-          cellValue={cellValue}
-        />
-      );
+      return <EnhanceTextEditor {...commonProps} cellValue={cellValue} />;
     case FieldType.Number:
     case FieldType.Currency:
     case FieldType.Percent:
-      return (
-        <ExpandNumber
-          isFocus={isFocus}
-          cellValue={cellValue as number}
-          {...commonProps}
-        />
-      );
+      return <ExpandNumber isFocus={isFocus} cellValue={cellValue as number} {...commonProps} />;
     case FieldType.Rating:
-      return (
-        <RatingEditor
-          {...commonProps}
-          style={mobileEditorWidth}
-        />
-      );
+      return <RatingEditor {...commonProps} style={mobileEditorWidth} />;
     case FieldType.Checkbox:
       return (
-        <CheckboxEditor
-          {...commonProps}
-          cellValue={cellValue as boolean}
-          style={{ paddingLeft: 9, justifyContent: 'flex-start', height: 32 }}
-        />
+        <CheckboxEditor {...commonProps} cellValue={cellValue as boolean} style={{ paddingLeft: 9, justifyContent: 'flex-start', height: 32 }} />
       );
     case FieldType.DateTime:
       return (
@@ -216,7 +192,7 @@ export const FieldBlock: React.FC<IFieldBlockProps> = props => {
             recordId={record.id}
             cellValue={cellValue as IAttachmentValue[]}
             onClick={onMouseDown}
-            onSave={(cellValue) => {              
+            onSave={cellValue => {
               dispatch(StoreActions.setPreviewFileCellActive(cellValue));
               commonProps.onSave(cellValue);
             }}
@@ -239,11 +215,7 @@ export const FieldBlock: React.FC<IFieldBlockProps> = props => {
       const { ref, ...restProps } = commonProps;
       return (
         <>
-          <ExpandLookUp
-            recordId={record.id}
-            {...restProps}
-            field={field}
-          />
+          <ExpandLookUp recordId={record.id} {...restProps} field={field} />
           {FocusHolderWrapper}
         </>
       );
@@ -257,11 +229,7 @@ export const FieldBlock: React.FC<IFieldBlockProps> = props => {
     case FieldType.AutoNumber:
       return (
         <>
-          <CellAutoNumber
-            field={field}
-            cellValue={cellValue}
-            isFromExpand
-          />
+          <CellAutoNumber field={field} cellValue={cellValue} isFromExpand />
           {FocusHolderWrapper}
         </>
       );
@@ -269,11 +237,7 @@ export const FieldBlock: React.FC<IFieldBlockProps> = props => {
     case FieldType.LastModifiedTime:
       return (
         <>
-          <CellCreatedTime
-            field={field}
-            cellValue={cellValue}
-            isFromExpand
-          />
+          <CellCreatedTime field={field} cellValue={cellValue} isFromExpand />
           {FocusHolderWrapper}
         </>
       );
@@ -281,11 +245,7 @@ export const FieldBlock: React.FC<IFieldBlockProps> = props => {
     case FieldType.LastModifiedBy:
       return (
         <>
-          <CellCreatedBy
-            field={field}
-            cellValue={cellValue}
-            isFromExpand
-          />
+          <CellCreatedBy field={field} cellValue={cellValue} isFromExpand />
           {FocusHolderWrapper}
         </>
       );

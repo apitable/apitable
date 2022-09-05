@@ -5,7 +5,7 @@ import { ExecuteFilterFn } from '../interface';
 import produce from 'immer';
 import { MobileSelect } from 'pc/components/common';
 import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { Select } from '@vikadata/components';
 
 interface IConjunctionProps {
@@ -23,7 +23,7 @@ export const FilterConjunction: React.FC<IConjunctionProps> = props => {
   if (conditionIndex === 0) {
     return (
       <div className={styles.junction} style={{ paddingLeft: '10px' }}>
-        { t(Strings.where) }
+        {t(Strings.where)}
       </div>
     );
   }

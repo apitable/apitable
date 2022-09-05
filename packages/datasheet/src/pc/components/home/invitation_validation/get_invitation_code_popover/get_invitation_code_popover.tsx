@@ -5,7 +5,7 @@ import { Popover } from 'antd';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { ButtonPlus, Logo } from 'pc/components/common';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { TComponent } from 'pc/components/common/t_component';
 import { getEnvVariables } from 'pc/utils/env';
@@ -30,20 +30,30 @@ export const GetInvitationCodePopover: FC = ({ children }) => {
         <Typography className={styles.desc} variant="body2" color={colors.secondLevelText}>
           <TComponent
             tkey={t(Strings.personal_invitation_code_desc1)}
-            params={{ text: <Typography variant="h7" color={colors.primaryColor}>{t(Strings.personal_invite_code_usercenter)}</Typography> }}
+            params={{
+              text: (
+                <Typography variant="h7" color={colors.primaryColor}>
+                  {t(Strings.personal_invite_code_usercenter)}
+                </Typography>
+              ),
+            }}
           />
         </Typography>
         <Typography className={styles.desc} variant="body2" color={colors.secondLevelText}>
           <TComponent
             tkey={t(Strings.personal_invitation_code_desc2)}
-            params={{ text: <Typography variant="h7" color={colors.primaryColor}>{t(Strings.personal_invitation_code_desc2_text)}</Typography> }}
+            params={{
+              text: (
+                <Typography variant="h7" color={colors.primaryColor}>
+                  {t(Strings.personal_invitation_code_desc2_text)}
+                </Typography>
+              ),
+            }}
           />
         </Typography>
         <div className={styles.imgWrapper}>
           <span className={styles.invitePng}>
-            <Image
-              src={InvitePng}
-            />
+            <Image src={InvitePng} />
           </span>
         </div>
       </div>
@@ -56,21 +66,30 @@ export const GetInvitationCodePopover: FC = ({ children }) => {
         <Typography className={styles.desc} variant="body2" color={colors.secondLevelText}>
           <TComponent
             tkey={t(Strings.official_invitation_code_desc1)}
-            params={{ text: <Typography variant="h7" color={colors.primaryColor}>{t(Strings.official_invitation_code)}</Typography> }}
+            params={{
+              text: (
+                <Typography variant="h7" color={colors.primaryColor}>
+                  {t(Strings.official_invitation_code)}
+                </Typography>
+              ),
+            }}
           />
         </Typography>
         <Typography className={styles.desc} variant="body2" color={colors.secondLevelText}>
           <TComponent
             tkey={t(Strings.official_invitation_code_desc2)}
-            params={{ text: <Typography variant="h7" color={colors.primaryColor}>{t(Strings.v_500)}</Typography> }}
+            params={{
+              text: (
+                <Typography variant="h7" color={colors.primaryColor}>
+                  {t(Strings.v_500)}
+                </Typography>
+              ),
+            }}
           />
         </Typography>
         <div className={styles.qrCodeWrapper}>
           <span className={styles.qrCode}>
-            <Image
-              src={getEnvVariables().WECHAT_MP_QR_CODE!}
-              alt="QrCode"
-            />
+            <Image src={getEnvVariables().WECHAT_MP_QR_CODE!} alt="QrCode" />
           </span>
           <Logo className={styles.logo} size="large" text={false} />
         </div>

@@ -6,6 +6,7 @@ import PayingModalHeaderDefaultBg from 'static/icon/space/space_img_silverbj.png
 import { PrivilegeList } from '../stateless_ui';
 import { Capacity } from './capacity';
 import { GradesChecklist } from './grades_checklist';
+import { ICheckoutSessionConfig } from './interface';
 import { Renewal } from './renewal';
 import { Seats } from './seats';
 
@@ -17,33 +18,19 @@ export enum CheckoutSessionType {
   // 续费
   Renewal = 'Renewal',
   // 升级容量包
-  Capacity = 'Capacity'
+  Capacity = 'Capacity',
 }
 
 export const CheckoutSessionTypes = ['GradesChecklist', 'Seats', 'Renewal', 'Capacity'];
 
-export interface ICheckoutSessionMain {
-  onCancel: () => void | null,
-  themeColor: string,
-  contentRight: React.ReactNode,
-}
-export interface ICheckoutSessionConfig{
-  modalHeaderTitle: React.ReactNode,
-  modalHeaderMessage: React.ReactNode,
-  modalHeaderBg: React.ReactNode,
-  themeColor: string,
-  contentRight: React.ReactNode,
-  Main: React.FC<ICheckoutSessionMain>,
-}
-
-export const CheckoutSessionConfig: { [key in CheckoutSessionType]: ICheckoutSessionConfig} = {
+export const CheckoutSessionConfig: { [key in CheckoutSessionType]: ICheckoutSessionConfig } = {
   // 购买等级时长以及席位
   [CheckoutSessionType.GradesChecklist]: {
     modalHeaderTitle: '升级你的空间站',
     modalHeaderMessage: '超值白银级空间站来袭，2021年助你弯道超车',
     modalHeaderBg: PayingModalHeaderDefaultBg,
     themeColor: lightColors.primaryColor,
-    contentRight: <PrivilegeList{...JSON.parse(t(Strings.privilege_list_of_sliver))} themeColor={lightColors.primaryColor}/>,
+    contentRight: <PrivilegeList {...JSON.parse(t(Strings.privilege_list_of_sliver))} themeColor={lightColors.primaryColor} />,
     Main: GradesChecklist,
   },
   // 提高成员数上限
@@ -52,7 +39,7 @@ export const CheckoutSessionConfig: { [key in CheckoutSessionType]: ICheckoutSes
     modalHeaderMessage: '超值白银级空间站来袭，2021年助你弯道超车',
     modalHeaderBg: PayingModalHeaderDefaultBg,
     themeColor: lightColors.primaryColor,
-    contentRight: <PrivilegeList{...JSON.parse(t(Strings.privilege_list_of_sliver))} themeColor={lightColors.primaryColor} />,
+    contentRight: <PrivilegeList {...JSON.parse(t(Strings.privilege_list_of_sliver))} themeColor={lightColors.primaryColor} />,
     Main: Seats,
   },
   // 空间站等级续费
@@ -61,7 +48,7 @@ export const CheckoutSessionConfig: { [key in CheckoutSessionType]: ICheckoutSes
     modalHeaderMessage: '超值白银级空间站来袭，2021年助你弯道超车',
     modalHeaderBg: PayingModalHeaderDefaultBg,
     themeColor: lightColors.primaryColor,
-    contentRight: <PrivilegeList{...JSON.parse(t(Strings.privilege_list_of_sliver))} themeColor={lightColors.primaryColor} />,
+    contentRight: <PrivilegeList {...JSON.parse(t(Strings.privilege_list_of_sliver))} themeColor={lightColors.primaryColor} />,
     Main: Renewal,
   },
   // 升级容量包
@@ -70,7 +57,7 @@ export const CheckoutSessionConfig: { [key in CheckoutSessionType]: ICheckoutSes
     modalHeaderMessage: '超值白银级空间站来袭，2021年助你弯道超车',
     modalHeaderBg: PayingModalHeaderCapacityBg,
     themeColor: lightColors.teal[500],
-    contentRight: <PrivilegeList{...JSON.parse(t(Strings.privilege_list_of_sliver))} themeColor={lightColors.teal[500]} />,
+    contentRight: <PrivilegeList {...JSON.parse(t(Strings.privilege_list_of_sliver))} themeColor={lightColors.teal[500]} />,
     Main: Capacity,
   },
 };

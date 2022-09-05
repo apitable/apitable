@@ -1,16 +1,6 @@
 import { useResponsive } from 'pc/hooks/use_responsive';
 import * as React from 'react';
-
-/* eslint-disable */
-export enum ScreenSize {
-  xs = 'xs',  // 0
-  sm = 'sm',  // 576
-  md = 'md',  // 768
-  lg = 'lg',  // 992
-  xl = 'xl',  // 1200
-  xxl = 'xxl',  // 1440
-  xxxl = 'xxxl', // 1600
-}
+import { ScreenSize } from './enum';
 
 interface IComponentDisplay {
   maxWidthCompatible?: ScreenSize; // 显示组件需要的最大尺寸
@@ -32,16 +22,16 @@ export const ComponentDisplay: React.FC<IComponentDisplay> = props => {
       console.warn('! ' + '显示组件的最大值不能小于最小值。检查参数的顺序是否正确');
       return <></>;
     }
-    return (<>{props.children}</>);
+    return <>{props.children}</>;
   }
   if (maxWidthCompatible && screenIsAtMost(maxWidthCompatible)) {
-    return (<>{props.children}</>);
+    return <>{props.children}</>;
   }
   if (minWidthCompatible && screenIsAtLeast(minWidthCompatible)) {
-    return (<>{props.children}</>);
+    return <>{props.children}</>;
   }
 
-  return (<></>);
+  return <></>;
 };
 
-export default ComponentDisplay
+export default ComponentDisplay;

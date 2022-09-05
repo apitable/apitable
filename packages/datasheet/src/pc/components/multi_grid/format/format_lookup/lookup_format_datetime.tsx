@@ -6,7 +6,7 @@ import styles from '../styles.module.less';
 import { Switch } from 'antd';
 import settingStyles from '../../field_setting/styles.module.less';
 import { Divider } from 'pc/components/common/divider';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
 import { Select } from '@vikadata/components';
 
@@ -32,10 +32,7 @@ const optionData4Time = [
 ];
 
 export const LookUpFormatDateTime: React.FC<IFormatDateTime> = (props: IFormatDateTime) => {
-  const {
-    includeTime, dateFormat, autoFill,
-    timeFormat,
-  } = props.currentField.property.formatting as IDateTimeFieldProperty || {};
+  const { includeTime, dateFormat, autoFill, timeFormat } = (props.currentField.property.formatting as IDateTimeFieldProperty) || {};
 
   const handleDateFormatChange = (value: DateFormat) => {
     props.setCurrentField({
@@ -89,32 +86,26 @@ export const LookUpFormatDateTime: React.FC<IFormatDateTime> = (props: IFormatDa
         <Select
           triggerCls={styles.customSelect}
           value={dateFormat}
-          onSelected={option => { handleDateFormatChange(option.value as DateFormat); }}
+          onSelected={option => {
+            handleDateFormatChange(option.value as DateFormat);
+          }}
           dropdownMatchSelectWidth={false}
           options={optionData4Date}
         />
       </ComponentDisplay>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <MobileSelect
-          defaultValue={dateFormat}
-          onChange={handleDateFormatChange}
-          optionData={optionData4Date}
-        />
+        <MobileSelect defaultValue={dateFormat} onChange={handleDateFormatChange} optionData={optionData4Date} />
       </ComponentDisplay>
       <section className={settingStyles.section} style={{ marginTop: 16 }}>
         <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>
           {t(Strings.include_time)}
-          <Switch
-            size="small"
-            checked={includeTime}
-            onChange={handleIncludeTimeChange}
-          />
+          <Switch size="small" checked={includeTime} onChange={handleIncludeTimeChange} />
         </div>
       </section>
       {includeTime && <Divider />}
-      {
-        includeTime && <section className={settingStyles.section}>
+      {includeTime && (
+        <section className={settingStyles.section}>
           <div className={settingStyles.sectionTitle}>{t(Strings.time_format)}</div>
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
             <Select
@@ -126,14 +117,10 @@ export const LookUpFormatDateTime: React.FC<IFormatDateTime> = (props: IFormatDa
             />
           </ComponentDisplay>
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-            <MobileSelect
-              defaultValue={timeFormat}
-              onChange={handleTimeFormatChange}
-              optionData={optionData4Time}
-            />
+            <MobileSelect defaultValue={timeFormat} onChange={handleTimeFormatChange} optionData={optionData4Time} />
           </ComponentDisplay>
         </section>
-      }
+      )}
     </div>
   );
 };

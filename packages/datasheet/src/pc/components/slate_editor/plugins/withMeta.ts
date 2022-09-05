@@ -1,10 +1,6 @@
 import { ReactEditor } from 'slate-react';
 import { IMetaEditor, IEditorMeta } from '../interface/editor';
 
-export const META_KEYS = {
-  imageSize: 'imageSize',
-};
-
 export const defaultMeta: IEditorMeta = {
   imageSize: 0,
 };
@@ -27,7 +23,7 @@ export const withMeta = <T extends ReactEditor>(inEditor: T) => {
     });
   };
 
-  editor.setMeta = (meta) => {
+  editor.setMeta = meta => {
     editor.meta = meta;
     Promise.resolve(() => {
       onChange();
@@ -40,5 +36,4 @@ export const withMeta = <T extends ReactEditor>(inEditor: T) => {
   };
 
   return editor;
-
 };

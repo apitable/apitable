@@ -1,18 +1,25 @@
 import { Typography, Divider, useThemeColors } from '@vikadata/components';
 import {
-  Field, IField, ISelectField, ISelectFieldProperty, isSelectField,
-  moveArrayElement, SelectField, Selectors, Strings, t, ThemeName,
+  Field,
+  IField,
+  ISelectField,
+  ISelectFieldProperty,
+  isSelectField,
+  moveArrayElement,
+  SelectField,
+  Selectors,
+  Strings,
+  t,
+  ThemeName,
 } from '@vikadata/core';
 import produce from 'immer';
-import { OptionSetting } from 'pc/components/common/color_picker/color_picker';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { OptionSetting } from 'pc/components/common/color_picker';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { createRainbowColorsArr } from 'pc/utils/color_utils';
 import { Dispatch, SetStateAction, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import {
-  SortableContainer as sortableContainer,
-} from 'react-sortable-hoc';
+import { SortableContainer as sortableContainer } from 'react-sortable-hoc';
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import styles from '../styles.module.less';
 import { FormatSelectItem } from './format_select_item';
@@ -33,11 +40,8 @@ const COLOR_COUNT = 50;
 export function setColor(index: number, theme: ThemeName) {
   const [baseColor, vipColor] = createRainbowColorsArr(theme);
 
-  const ColorWheel: string[] = [
-    ...baseColor,
-    ...vipColor,
-  ];
-  
+  const ColorWheel: string[] = [...baseColor, ...vipColor];
+
   if (index < COLOR_COUNT) {
     return ColorWheel[index];
   }
@@ -55,9 +59,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
   const { currentField, setCurrentField, isMulti, datasheetId } = props;
   const { options, defaultValue } = currentField.property;
   const fieldMap = useSelector(state => Selectors.getFieldMap(state, datasheetId || state.pageParams.datasheetId!))!;
-  const isPreview = isSelectField(currentField) &&
-    fieldMap[currentField.id] &&
-    !isSelectField(fieldMap[currentField.id]);
+  const isPreview = isSelectField(currentField) && fieldMap[currentField.id] && !isSelectField(fieldMap[currentField.id]);
 
   function addNewItem() {
     const newItem = (Field.bindModel(currentField) as SelectField).createNewOption('');
@@ -94,7 +96,10 @@ const FormatSelectBase = (props: IFormatSelect) => {
 
   // 这里因为在 ColorPiker 里定义了通用的属性设置方法, 所以有个 unused 参数
   const onOptionChange = (type: OptionSetting, id: string, value: number | string) => {
-    selectColor(options.findIndex(item => item.id === id), value as number);
+    selectColor(
+      options.findIndex(item => item.id === id),
+      value as number,
+    );
   };
 
   const listStyle: React.CSSProperties = {};
@@ -107,10 +112,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
 
   return (
     <>
-      {
-        Boolean(isPreview && options.length)
-        && <div className={styles.preview}>{t(Strings.to_select_tip)}</div>
-      }
+      {Boolean(isPreview && options.length) && <div className={styles.preview}>{t(Strings.to_select_tip)}</div>}
       <div style={listStyle} className={classNames(styles.selection, styles.selectList)}>
         <SortableContainer useDragHandle onSortEnd={onSortEnd} distance={5}>
           {options.map((item, index) => {
@@ -136,22 +138,26 @@ const FormatSelectBase = (props: IFormatSelect) => {
       </div>
       {options.length > 0 && (
         <div className={styles.section}>
-          <Divider className={styles.divider}/>
-          <Typography className={styles.defaultValueTitle} color={colors.fc3} variant="body3">{t(Strings.default_value)}</Typography>
+          <Divider className={styles.divider} />
+          <Typography className={styles.defaultValueTitle} color={colors.fc3} variant="body3">
+            {t(Strings.default_value)}
+          </Typography>
           <FilterGeneralSelect
             popupClass={styles.selectDefault}
             placeholder={t(Strings.placeholder_add_record_default_complete)}
             searchPlaceholder={t(Strings.find)}
             field={currentField}
             isMulti={isMulti}
-            onChange={(val) => {
-              const property: ISelectFieldProperty = val ? {
-                ...currentField.property,
-                defaultValue: val,
-              } : omit(currentField.property, 'defaultValue');
+            onChange={val => {
+              const property: ISelectFieldProperty = val
+                ? {
+                    ...currentField.property,
+                    defaultValue: val,
+                  }
+                : omit(currentField.property, 'defaultValue');
               setCurrentField({
                 ...currentField,
-                property
+                property,
               });
             }}
             cellValue={defaultValue}

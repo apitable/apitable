@@ -3,7 +3,7 @@ import { CutMethod, getImageThumbSrc, integrateCdnHost, isGif, Settings, Strings
 import classnames from 'classnames';
 import Image from 'next/image';
 import { ICropShape, IPreviewShape } from 'pc/components/common';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { getCellValueThumbSrc } from 'pc/utils';
 import * as React from 'react';
@@ -27,10 +27,10 @@ const customTips = {
   previewTip: t(Strings.form_cover_crop_tip),
   previewDesc: t(Strings.form_cover_crop_desc),
   cropTip: t(Strings.form_cover_crop_tip),
-  cropDesc: t(Strings.form_cover_crop_desc)
+  cropDesc: t(Strings.form_cover_crop_desc),
 };
 
-export const CoverImgUploader: React.FC<ICoverImgUploaderProps> = (props) => {
+export const CoverImgUploader: React.FC<ICoverImgUploaderProps> = props => {
   const { formId, mode, coverUrl, updateProps } = props;
   const [isModalShow, setModalShow] = useState(false);
   const officialImgs = Settings.folder_showcase_banners.value.split(',');
@@ -42,12 +42,10 @@ export const CoverImgUploader: React.FC<ICoverImgUploaderProps> = (props) => {
     let coverUrl;
 
     if (type === IFileType.Custom) {
-      coverUrl = getCellValueThumbSrc(file,
-        {
-          h: 240 * (window.devicePixelRatio || 1),
-          formatToJPG: isGif({ name: file.name, type: file.mimeType }),
-        },
-      );
+      coverUrl = getCellValueThumbSrc(file, {
+        h: 240 * (window.devicePixelRatio || 1),
+        formatToJPG: isGif({ name: file.name, type: file.mimeType }),
+      });
     } else {
       coverUrl = getImageThumbSrc(integrateCdnHost(file), officialImgParams);
     }
@@ -69,16 +67,14 @@ export const CoverImgUploader: React.FC<ICoverImgUploaderProps> = (props) => {
     >
       <div className={styles.coverImgWrapper}>
         <span className={styles.coverImg}>
-          <Image src={coverImgUrl} alt="cover" layout={'fill'}/>
+          <Image src={coverImgUrl} alt="cover" layout={'fill'} />
         </span>
 
-        {
-          mode === IModeEnum.Edit && (
-            <div className={classnames(styles.editBtn, isMobile && styles.editBtnMobile)}>
-              <IconButton onClick={() => setModalShow(true)} size="large" variant="background" icon={() => <BannerEditIcon />} />
-            </div>
-          )
-        }
+        {mode === IModeEnum.Edit && (
+          <div className={classnames(styles.editBtn, isMobile && styles.editBtnMobile)}>
+            <IconButton onClick={() => setModalShow(true)} size="large" variant="background" icon={() => <BannerEditIcon />} />
+          </div>
+        )}
       </div>
     </ImgBaseUploader>
   );

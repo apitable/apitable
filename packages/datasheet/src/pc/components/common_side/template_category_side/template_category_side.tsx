@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Logo } from 'pc/components/common';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { SearchInput } from 'pc/components/common/search_input';
 import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
 import { useQuery, useRequest, useResponsive, useSideBarVisible, useTemplateRequest } from 'pc/hooks';
@@ -41,8 +41,8 @@ export const TemplateCategorySide: FC = () => {
     if (templateCategory) {
       setCategoryList([
         { categoryCode: ConfigConstant.TEMPLATE_CHOICE_CATEGORY_ID, categoryName: t(Strings.template_recommend_title) },
-        ...templateCategory],
-      );
+        ...templateCategory,
+      ]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [templateCategory]);
@@ -62,12 +62,12 @@ export const TemplateCategorySide: FC = () => {
   const isMobile = screenIsAtMost(ScreenSize.md);
 
   const handleClick = (categoryId: string) => {
-    navigationTo({ path: Navigation.TEMPLATE, params: { spaceId, categoryId }});
+    navigationTo({ path: Navigation.TEMPLATE, params: { spaceId, categoryId } });
     isMobile && setSideBarVisible(false);
   };
 
   const jumpOfficialWebsite = () => {
-    navigationTo({ path: Navigation.HOME, method: Method.NewTab, query: { home: 1 }});
+    navigationTo({ path: Navigation.HOME, method: Method.NewTab, query: { home: 1 } });
   };
 
   /**
@@ -79,20 +79,20 @@ export const TemplateCategorySide: FC = () => {
    * 4. 点击清空上报当前结果
    * 5. 输入框enter
    */
-  const triggerTrack = useCallback((keywords) => {
+  const triggerTrack = useCallback(keywords => {
     if (!keywords || hasTrackSearchKeyWords.current === keywords) {
       return;
     }
     hasTrackSearchKeyWords.current = keywords;
     console.log(`template keyword track: ${keywords}`);
     tracker.track(TrackEvents.TemplateKeyword, {
-      keyword: keywords
+      keyword: keywords,
     });
   }, []);
 
   const jumpTemplate = (categoryCode: string, templateId: string) => {
     triggerTrack(keywords);
-    navigationTo({ path: Navigation.TEMPLATE, params: { spaceId, categoryId: categoryCode, templateId }});
+    navigationTo({ path: Navigation.TEMPLATE, params: { spaceId, categoryId: categoryCode, templateId } });
   };
 
   const clearKeyword = () => {
@@ -101,7 +101,7 @@ export const TemplateCategorySide: FC = () => {
     bindSearchQuery('');
   };
 
-  const onSearchInputKeyDown = (e) => {
+  const onSearchInputKeyDown = e => {
     if (e.keyCode === KeyCode.Enter) {
       triggerTrack(keywords);
     }
@@ -132,13 +132,13 @@ export const TemplateCategorySide: FC = () => {
     <div className={styles.templateClass}>
       <div className={classNames(styles.templateCategory, !spaceId && styles.templateCategoryBg)}>
         <div className={styles.title}>
-          {!spaceId &&
+          {!spaceId && (
             <Tooltip title={t(Strings.jump_official_website)}>
               <div className={styles.logo} onClick={jumpOfficialWebsite}>
-                <Logo theme={ThemeName.Light} size='large' text={false} />
+                <Logo theme={ThemeName.Light} size="large" text={false} />
               </div>
             </Tooltip>
-          }
+          )}
           {t(Strings.template_centre)}
         </div>
         <div className={styles.searchContainer}>
@@ -146,7 +146,7 @@ export const TemplateCategorySide: FC = () => {
             className={styles.templateSearch}
             keyword={keywords}
             change={setKeywords}
-            size='small'
+            size="small"
             onBlur={() => bindSearchQuery(keywords)}
             onKeyDown={onSearchInputKeyDown}
             suffix={keywords && <CloseIcon className={styles.closeBtn} onClick={clearKeyword} />}
@@ -154,75 +154,67 @@ export const TemplateCategorySide: FC = () => {
         </div>
         <div className={styles.listContainer}>
           <div className={styles.officialTemplate}>
-            <Typography className={classNames(styles.subTitle, styles.officialSubTitle)} variant='h6'>{t(Strings.official_template)}</Typography>
+            <Typography className={classNames(styles.subTitle, styles.officialSubTitle)} variant="h6">
+              {t(Strings.official_template)}
+            </Typography>
             <div className={styles.officialTemplateList}>
               {categoryList.map((category, index) => (
                 <div
                   key={index}
                   className={classNames(styles.categoryItem, {
-                    [styles.active]: category.categoryCode === categoryId ||
-                    (!categoryId && index === 0),
+                    [styles.active]: category.categoryCode === categoryId || (!categoryId && index === 0),
                     [styles.activedCategoryMobile]: isMobile,
-
                   })}
                   onClick={() => handleClick(category.categoryCode)}
                 >
-                  <div
-                    className={classNames(styles.categoryName)}
-                  >
-                    {category.categoryName}
-                  </div>
+                  <div className={classNames(styles.categoryName)}>{category.categoryName}</div>
                 </div>
               ))}
             </div>
           </div>
-          {
-            spaceId &&
+          {spaceId && (
             <div className={styles.spaceTemplate}>
-              <Typography variant='h6' className={styles.subTitle}>{t(Strings.space_template)}</Typography>
+              <Typography variant="h6" className={styles.subTitle}>
+                {t(Strings.space_template)}
+              </Typography>
               <div
                 className={classNames({
                   [styles.categoryItem]: true,
                   [styles.active]: 'tpcprivate' === categoryId,
                   [styles.activedCategoryMobile]: isMobile,
-
                 })}
                 onClick={() => handleClick('tpcprivate')}
               >
-                <div
-                  className={styles.categoryName}
-                >
-                  {t(Strings.all)}
-                </div>
+                <div className={styles.categoryName}>{t(Strings.all)}</div>
               </div>
             </div>
-          }
+          )}
           {keywords && (
             <div className={styles.searchResult}>
-              {searchTemplateResult?.length ?
+              {searchTemplateResult?.length ? (
                 <>
                   {searchTemplateResult.map(item => (
                     <div className={styles.item} key={item.templateId} onClick={() => jumpTemplate(item.categoryCode, item.templateId)}>
-                      <Typography className={styles.nameContainer} variant='body2'>
+                      <Typography className={styles.nameContainer} variant="body2">
                         <TemplateIcon width={16} height={16} fill={colors.staticWhite0} />
                         <span className={styles.name} dangerouslySetInnerHTML={{ __html: item.templateName }} />
                       </Typography>
-                      <Typography className={styles.tags} variant='body3'>
+                      <Typography className={styles.tags} variant="body3">
                         {item.tags.map(tag => (
                           <span className={styles.tag} dangerouslySetInnerHTML={{ __html: tag }} />
                         ))}
                       </Typography>
                     </div>
                   ))}
-                </> :
+                </>
+              ) : (
                 <div className={styles.emptyList}>
-                  <Image src={SearchDefaultPng} alt='empty' />
+                  <Image src={SearchDefaultPng} alt="empty" />
                   <div className={styles.tip}>{t(Strings.no_search_result)}</div>
                 </div>
-              }
+              )}
             </div>
-          )
-          }
+          )}
         </div>
       </div>
     </div>

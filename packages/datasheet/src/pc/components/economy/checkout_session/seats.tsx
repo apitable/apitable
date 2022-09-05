@@ -1,11 +1,16 @@
 import * as React from 'react';
 import { PayingLayout, ModalContentLayout } from '../components/paying_layout';
 import {
-  PayingModalTitle, OrderDetails,
-  BlockSelector, ParamsComparison, PriceTotal,
-  PayingTotal, showPaymentFailed, PaySucceed
+  PayingModalTitle,
+  OrderDetails,
+  BlockSelector,
+  ParamsComparison,
+  PriceTotal,
+  PayingTotal,
+  showPaymentFailed,
+  PaySucceed,
 } from '../stateless_ui';
-import { ICheckoutSessionMain } from './config';
+import { ICheckoutSessionMain } from './interface';
 const SeatsOptionData = [
   { key: 2, value: '2人' },
   { key: 5, value: '5人' },
@@ -42,13 +47,7 @@ export const Seats: React.FC<ICheckoutSessionMain> = ({ onCancel, themeColor, co
   if (succeed) {
     return (
       <ModalContentLayout>
-        <PaySucceed
-          title="容量包"
-          time="2020-10-03"
-          originalPrice={9000000}
-          count={90}
-          finalPrice={0}
-        />
+        <PaySucceed title="容量包" time="2020-10-03" originalPrice={9000000} count={90} finalPrice={0} />
       </ModalContentLayout>
     );
   }
@@ -60,20 +59,25 @@ export const Seats: React.FC<ICheckoutSessionMain> = ({ onCancel, themeColor, co
           <BlockSelector optionData={SeatsOptionData} />
           <PayingModalTitle title="选择购买时长" />
           <BlockSelector optionData={TimeOptionData} />
-          <PayingModalTitle title="订单详情"/>
+          <PayingModalTitle title="订单详情" />
           <OrderDetails
             title="白银级套餐"
-            spaceName='维格'
-            seats={<ParamsComparison prev="2人" cur="200人"/>}
-            expireTime={<span style={{ display:'flex' }}>1年(<ParamsComparison prev="2010-09-20" cur="2013-09-20"/>)</span>}
+            spaceName="维格"
+            seats={<ParamsComparison prev="2人" cur="200人" />}
+            expireTime={
+              <span style={{ display: 'flex' }}>
+                1年(
+                <ParamsComparison prev="2010-09-20" cur="2013-09-20" />)
+              </span>
+            }
             subtotal={7890}
             total={<PriceTotal type="default" price={200} />}
-            discount={<PriceTotal type="red" price={200}/>}
+            discount={<PriceTotal type="red" price={200} />}
           />
         </>
       }
       contentRight={contentRight}
-      footerLeft={<PayingTotal totalV={900} curV={90} discount={ 50} curPrice={90} />}
+      footerLeft={<PayingTotal totalV={900} curV={90} discount={50} curPrice={90} />}
       onSubmit={onSubmit}
       loading={loading}
       themeColor={themeColor}

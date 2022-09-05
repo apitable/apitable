@@ -4,7 +4,7 @@ import { useClickAway, useUpdateEffect } from 'ahooks';
 import cls from 'classnames';
 import dayjs from 'dayjs';
 import { get, pick } from 'lodash';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Message } from 'pc/components/common/message';
 import SlateEditor from 'pc/components/draft_editor/slate_editor';
 import { ITextNode, serialize, transformNodes2Link, walk } from 'pc/components/draft_editor/utils';
@@ -25,7 +25,7 @@ import styles from './style.module.less';
 
 const MAX_COMMENT_LENGTH = 1000;
 
-export const CommentEditor: React.FC<IActivityPaneProps> = (props) => {
+export const CommentEditor: React.FC<IActivityPaneProps> = props => {
   const { datasheetId, expandRecordId, viewId } = props;
   const unitId = useSelector(state => state.user.info?.unitId)!;
   const curViewId = useSelector(state => viewId || state.pageParams.viewId);
@@ -67,11 +67,13 @@ export const CommentEditor: React.FC<IActivityPaneProps> = (props) => {
       nodeId: mirrorId || datasheetId,
       viewId: curViewId,
       linkId: '',
-      unitRecs: [{
-        recordIds: [expandRecordId],
-        unitIds: unitIds,
-        recordTitle: recordTitle,
-      }],
+      unitRecs: [
+        {
+          recordIds: [expandRecordId],
+          unitIds: unitIds,
+          recordTitle: recordTitle,
+        },
+      ],
       type: IApi.MindType.Comment,
       extra: {
         content: serialize(content, spaceInfo, true).join(''),
@@ -98,7 +100,7 @@ export const CommentEditor: React.FC<IActivityPaneProps> = (props) => {
   }
 
   const isCommentEmpty = useCallback(() => {
-    const _text = serialize(content as unknown as ITextNode).join('');
+    const _text = serialize((content as unknown) as ITextNode).join('');
     const _content = checkPlainText(_text);
     return !_content;
   }, [content]);
@@ -121,7 +123,7 @@ export const CommentEditor: React.FC<IActivityPaneProps> = (props) => {
             type: 'dfs',
             reply: pick(replyText, ['commentId']),
             content: _content,
-            html: ''
+            html: '',
           },
         },
       ],
@@ -139,24 +141,28 @@ export const CommentEditor: React.FC<IActivityPaneProps> = (props) => {
     }
   }
 
-  const onClick = (e) => {
+  const onClick = e => {
     !focusStatus && setFocus && setFocus(true);
   };
 
-  useClickAway((event: MouseEvent | TouchEvent) => {
-    // 点击回复时，聚焦评论
-    const replyClass = get(event, 'target.className');
-    if (replyClass && typeof replyClass === 'string' && replyClass.includes('replyIcon')) {
-      editRef.current?.focus(true);
-      return;
-    }
-    if (isCommentEmpty()) {
-      setFocus(false);
-      setReplyText(undefined);
-      setReplyUnitId(undefined);
-      editRef.current?.clear();
-    }
-  }, commentEditRef, 'click');
+  useClickAway(
+    (event: MouseEvent | TouchEvent) => {
+      // 点击回复时，聚焦评论
+      const replyClass = get(event, 'target.className');
+      if (replyClass && typeof replyClass === 'string' && replyClass.includes('replyIcon')) {
+        editRef.current?.focus(true);
+        return;
+      }
+      if (isCommentEmpty()) {
+        setFocus(false);
+        setReplyText(undefined);
+        setReplyUnitId(undefined);
+        editRef.current?.clear();
+      }
+    },
+    commentEditRef,
+    'click',
+  );
 
   const contentChangeHandler = (content: Descendant[]) => {
     // 储存state
@@ -165,10 +171,15 @@ export const CommentEditor: React.FC<IActivityPaneProps> = (props) => {
 
   return (
     <div className={styles.commentEditWrapper} id="commentEdit" ref={commentEditRef}>
-      {replyText && <ReplyComment reply={replyText} handleClose={() => {
-        setReplyText(undefined);
-        setReplyUnitId(undefined);
-      }} />}
+      {replyText && (
+        <ReplyComment
+          reply={replyText}
+          handleClose={() => {
+            setReplyText(undefined);
+            setReplyUnitId(undefined);
+          }}
+        />
+      )}
       <div className={styles.commentEdit}>
         <div
           data-test-id={EXPAND_RECORD_COMMENT_WRAPPER}
@@ -184,18 +195,18 @@ export const CommentEditor: React.FC<IActivityPaneProps> = (props) => {
               maxRow={4}
               ref={editRef}
               onBlur={() => {
-                if (mobile){
+                if (mobile) {
                   window.scrollTo(0, Math.max(document.body.clientHeight, document.documentElement.clientHeight));
                 }
               }}
             />
           </div>
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-            <div
-              className={styles.submitWrapper}
-            >
+            <div className={styles.submitWrapper}>
               <div className={styles.shortKeyTip}>
-                {t(Strings.new_a_line)}{t(Strings.comma)}{t(Strings.send_comment_tip)}
+                {t(Strings.new_a_line)}
+                {t(Strings.comma)}
+                {t(Strings.send_comment_tip)}
               </div>
               <Button disabled={isCommentEmpty()} data-test-id={COMMENT_SUBMIT_BUTTON} onClick={slateSubmit} color="primary" size={'small'}>
                 {t(Strings.send)}
@@ -204,9 +215,7 @@ export const CommentEditor: React.FC<IActivityPaneProps> = (props) => {
           </ComponentDisplay>
         </div>
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-          <div
-            className={styles.submitWrapper}
-          >
+          <div className={styles.submitWrapper}>
             <LinkButton onTouchEnd={slateSubmit} underline={false} component={'button'}>
               {t(Strings.send)}
             </LinkButton>

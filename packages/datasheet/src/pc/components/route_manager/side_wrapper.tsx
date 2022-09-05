@@ -2,7 +2,7 @@ import { IReduxState, StoreActions } from '@vikadata/core';
 import { useUnmount } from 'ahooks';
 import { values } from 'lodash';
 import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSideBar } from 'pc/components/mobile_side_bar';
 import { Navigation } from 'pc/components/navigation';
 import styles from 'pc/components/route_manager/style.module.less';
@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { isDingtalkSkuPage, isSocialWecom } from '../home/social_platform';
 import { useWxTitleMap } from '../konva_grid';
 
-export const SideWrapper = (props) => {
+export const SideWrapper = props => {
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const watermarkEnable = useSelector((state: IReduxState) => state.space.spaceFeatures?.watermarkEnable);
   const dispatch = useDispatch();
@@ -25,10 +25,14 @@ export const SideWrapper = (props) => {
   const isSkuPage = isDingtalkSkuPage(purchaseToken);
   const user = useSelector((state: IReduxState) => state.user.info);
   const { unitTitleMap } = useWxTitleMap({
-    userNames: user ? [{
-      name: user.memberName,
-      unitId: user.unitId
-    }] : undefined
+    userNames: user
+      ? [
+          {
+            name: user.memberName,
+            unitId: user.unitId,
+          },
+        ]
+      : undefined,
   });
   const curUnitTitle = values(unitTitleMap)[0];
   const { initSpaceWM, removeSpaceWM } = useSpaceWatermark({ manual: true, watermark_txt: curUnitTitle });
@@ -57,7 +61,12 @@ export const SideWrapper = (props) => {
 
   useEffect(() => {
     const eventBundle = new Map([
-      [ShortcutActionName.Help, () => { dispatch(StoreActions.setShortcutKeyPanelVisible(!shortcutKeyPanelVisible)); }],
+      [
+        ShortcutActionName.Help,
+        () => {
+          dispatch(StoreActions.setShortcutKeyPanelVisible(!shortcutKeyPanelVisible));
+        },
+      ],
     ]);
     eventBundle.forEach((cb, key) => {
       ShortcutActionManager.bind(key as any, cb);
@@ -77,30 +86,20 @@ export const SideWrapper = (props) => {
   const isWorkbench = window.location.pathname.startsWith('/workbench');
 
   return (
-    <div
-      className={'layout-row f-g-1 ' + styles.spaceContainer}
-      onScroll={scrollFix}
-    >
-      {
-        !isSkuPage &&
+    <div className={'layout-row f-g-1 ' + styles.spaceContainer} onScroll={scrollFix}>
+      {!isSkuPage && (
         <>
-          <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-            {!isWorkbench && <Navigation />}
-          </ComponentDisplay>
+          <ComponentDisplay minWidthCompatible={ScreenSize.md}>{!isWorkbench && <Navigation />}</ComponentDisplay>
 
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
             <MobileSideBar />
           </ComponentDisplay>
         </>
-      }
+      )}
 
       {props.children}
 
-      {
-        !isSkuPage &&
-        shortcutKeyPanelVisible &&
-        <ShortcutsPanel />
-      }
+      {!isSkuPage && shortcutKeyPanelVisible && <ShortcutsPanel />}
     </div>
   );
 };

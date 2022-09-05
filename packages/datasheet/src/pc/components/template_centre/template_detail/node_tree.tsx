@@ -2,7 +2,7 @@ import { useThemeColors } from '@vikadata/components';
 import { ConfigConstant, IReduxState, ITemplateTree, Navigation, Selectors } from '@vikadata/core';
 import { Tree } from 'antd';
 import { getNodeIcon } from 'pc/components/catalog/tree/node_icon';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { useNavigation } from 'pc/components/route_manager/use_navigation';
 import { INodeTree } from 'pc/components/share';
 import { useResponsive, useSideBarVisible } from 'pc/hooks';

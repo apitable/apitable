@@ -2,23 +2,23 @@ import { colors } from '@vikadata/components';
 import { IReduxState, IUserInfo } from '@vikadata/core';
 import Konva from 'konva';
 import { debounce } from 'lodash';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-interface IWatermarkSettings{
-  watermark_id: string;//水印总体的id
-  watermark_prefix: string;//小水印的id前缀
-  watermark_txt: string;//水印的内容
+interface IWatermarkSettings {
+  watermark_id: string; //水印总体的id
+  watermark_prefix: string; //小水印的id前缀
+  watermark_txt: string; //水印的内容
   watermark_x: number; //水印起始位置x轴坐标
-  watermark_x_gap: number;//水印x轴间隔
-  watermark_y_gap: number;//水印y轴间隔
-  watermark_color: string;//水印字体颜色
+  watermark_x_gap: number; //水印x轴间隔
+  watermark_y_gap: number; //水印y轴间隔
+  watermark_color: string; //水印字体颜色
   watermark_fontsize: number; //水印字体大小
   watermark_opacity: number; //水印透明度，要求设置在大于等于0.005
   watermark_rotate: number; //水印倾斜度数
-  watermark_parent_width: number;//水印的总体宽度（默认值：body的scrollWidth和clientWidth的较大值）
+  watermark_parent_width: number; //水印的总体宽度（默认值：body的scrollWidth和clientWidth的较大值）
   watermark_parent_height: number; //水印的总体高度（默认值：body的scrollHeight和clientHeight的较大值）
   watermark_parent_node: null | string; //水印插件挂载的父元素element,不输入则默认挂在body上
   watermark_z_index: number; // 水印的z-index值
@@ -28,16 +28,16 @@ interface IWatermarkSettings{
 const defaultSettings: IWatermarkSettings = {
   watermark_id: 'wm_div_id',
   watermark_prefix: 'maskDiv_id',
-  watermark_txt:'维格星球',
-  watermark_x:55,
-  watermark_x_gap:80,
+  watermark_txt: '维格星球',
+  watermark_x: 55,
+  watermark_x_gap: 80,
   watermark_y_gap: 80,
-  watermark_color:colors.thirdLevelText,
+  watermark_color: colors.thirdLevelText,
   watermark_fontsize: 12,
-  watermark_opacity:0.1,
-  watermark_rotate:-15,
-  watermark_parent_width:0,
-  watermark_parent_height:0,
+  watermark_opacity: 0.1,
+  watermark_rotate: -15,
+  watermark_parent_width: 0,
+  watermark_parent_height: 0,
   watermark_parent_node: null,
   watermark_z_index: 99999,
   manual: false,
@@ -57,7 +57,7 @@ const MutationObserverOption = {
   subtree: true,
 };
 
-export function useRefCallback<T extends(...args: any[]) => any>(callback: T) {
+export function useRefCallback<T extends (...args: any[]) => any>(callback: T) {
   const callbackRef = useRef(callback);
   callbackRef.current = callback;
   return useCallback((...args: any[]) => callbackRef.current(...args), []) as T;
@@ -118,7 +118,7 @@ export const useWatermark = (props?: Partial<IWatermarkSettings>) => {
     wrapDom.id = settings.watermark_id;
     wrapDom.setAttribute(
       'style',
-      `pointer-events: none !important; display: block !important; position: absolute; left:0; top: 0;z-index:${settings.watermark_z_index}`
+      `pointer-events: none !important; display: block !important; position: absolute; left:0; top: 0;z-index:${settings.watermark_z_index}`,
     );
     parentEle.appendChild(wrapDom);
 
@@ -140,7 +140,7 @@ export const useWatermark = (props?: Partial<IWatermarkSettings>) => {
     const textDomHeight = textDom.getClientRect().height;
     const textDomAlignX = Math.ceil(Math.abs(textDom.getClientRect().x));
     const textDomAlignY = Math.ceil(Math.abs(textDom.getClientRect().y));
-    const countX = Math.ceil(parentWidth/(textDomWidth+settings.watermark_x_gap));
+    const countX = Math.ceil(parentWidth / (textDomWidth + settings.watermark_x_gap));
     const countY = Math.ceil(parentHeight / (textDomHeight + settings.watermark_y_gap));
 
     const initX = settings.watermark_x + textDomAlignX;
@@ -150,14 +150,14 @@ export const useWatermark = (props?: Partial<IWatermarkSettings>) => {
       if (i % 2 !== 0) {
         x = x + textDomWidth;
       }
-      for (let j = 0; j < countX; j++){
+      for (let j = 0; j < countX; j++) {
         const newText = new Konva.Text({
           x,
           y,
           text: settings.watermark_txt,
           fontSize: settings.watermark_fontsize,
           fill: settings.watermark_color,
-          opacity: settings.watermark_opacity
+          opacity: settings.watermark_opacity,
         });
         newText.rotate(settings.watermark_rotate);
         layer.add(newText);
@@ -174,12 +174,13 @@ export const useWatermark = (props?: Partial<IWatermarkSettings>) => {
 
   const initWM = useRefCallback((settings?: Partial<IWatermarkSettings>) => {
     const newSettings = { ...globalSetting, watermark_id: settings && settings.watermark_id ? settings.watermark_id : getUuid() };
-    settings && Object.keys(settings).forEach(key => {
-      if (key === 'watermark_id') return;
-      if (newSettings.hasOwnProperty(key) && newSettings[key] !== settings[key]) {
-        newSettings[key] = settings[key];
-      }
-    });
+    settings &&
+      Object.keys(settings).forEach(key => {
+        if (key === 'watermark_id') return;
+        if (newSettings.hasOwnProperty(key) && newSettings[key] !== settings[key]) {
+          newSettings[key] = settings[key];
+        }
+      });
     setGlobalSetting(newSettings);
     resizeLoadMark.current = debounce(() => {
       loadMark(newSettings);
@@ -215,8 +216,8 @@ export const useWatermark = (props?: Partial<IWatermarkSettings>) => {
     return () => {
       run && removeWM();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return { initWM, removeWM };
 };
 
@@ -230,11 +231,13 @@ export const useWatermarkText = () => {
 export const useSpaceWatermark = (props?: Partial<IWatermarkSettings>) => {
   const txt = useWatermarkText();
   const id = 'VIKA_WATER_MARK_ID';
-  const initSetting = props ? {
-    ...props,
-    watermark_txt: props?.watermark_txt || txt,
-    watermark_id: props?.watermark_id || id,
-  } : undefined;
+  const initSetting = props
+    ? {
+        ...props,
+        watermark_txt: props?.watermark_txt || txt,
+        watermark_id: props?.watermark_id || id,
+      }
+    : undefined;
 
   const { initWM: initWM, removeWM } = useWatermark(initSetting ? { ...initSetting, manual: true } : { manual: true });
 
@@ -251,7 +254,7 @@ export const useSpaceWatermark = (props?: Partial<IWatermarkSettings>) => {
     return () => {
       run && removeSpaceWM();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return { initSpaceWM, removeSpaceWM };
 };

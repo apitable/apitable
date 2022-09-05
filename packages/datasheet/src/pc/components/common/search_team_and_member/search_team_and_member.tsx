@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { IReduxState, Api, ITeamsInSearch, IMembersInSearch } from '@vikadata/core';
 import { SearchList, ListType } from './search_list';
 import { useClickAway } from 'ahooks';
-import { ScreenSize } from '../component_display/component_display';
+import { ScreenSize } from '../component_display';
 import { useRequest, useResponsive } from 'pc/hooks';
 import classNames from 'classnames';
 

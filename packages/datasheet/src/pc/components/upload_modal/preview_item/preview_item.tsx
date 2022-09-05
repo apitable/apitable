@@ -6,7 +6,7 @@ import IconDelete from 'static/icon/common/common_icon_delete.svg';
 import IconDownload from 'static/icon/datasheet/datasheet_icon_download.svg';
 import styles from './styles.module.less';
 import classnames from 'classnames';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { download } from 'pc/components/preview_file/tool_bar';
 import { useSelector } from 'react-redux';
 import { Tooltip } from '@vikadata/components';
@@ -43,15 +43,13 @@ export const useAllowDownloadAttachment = (fieldId: string, datasheetId?: string
 };
 
 export const PreviewItem: React.FC<IPreviewItemProps> = props => {
-  const {
-    name, cellValue, id, index, readonly, style, onSave, setPreviewIndex, recordId, field, datasheetId
-  } = props;
+  const { name, cellValue, id, index, readonly, style, onSave, setPreviewIndex, recordId, field, datasheetId } = props;
   const file = cellValue.find(item => item.id === id);
   const fieldId = field.id;
   const allowDownload = useAllowDownloadAttachment(fieldId, datasheetId);
   const colors = useThemeColors();
   function deleteFile(id: string) {
-    return cellValue!.filter((item) => item.id !== id);
+    return cellValue!.filter(item => item.id !== id);
   }
 
   function onChange(value: IAttachmentValue[]) {
@@ -62,13 +60,7 @@ export const PreviewItem: React.FC<IPreviewItemProps> = props => {
   }
 
   return (
-    <div
-      className={classnames(
-        styles.previewItem,
-        'attachmentPreviewItem'
-      )}
-      style={style}
-    >
+    <div className={classnames(styles.previewItem, 'attachmentPreviewItem')} style={style}>
       <div className={styles.imgWrapper}>
         <DisplayFile
           className={styles.filePreviewInCard}
@@ -83,28 +75,21 @@ export const PreviewItem: React.FC<IPreviewItemProps> = props => {
           disabledDownload={!allowDownload}
         />
       </div>
-      <Tooltip content={name} placement='bottom-center'>
-        <div className={styles.imgName}>
-          {name}
-        </div>
+      <Tooltip content={name} placement="bottom-center">
+        <div className={styles.imgName}>{name}</div>
       </Tooltip>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-        <div
-          className={styles.toolBar}
-        >
-          {
-            allowDownload && <div
-              className={styles.iconDownload}
-              onClick={() => download(file!)}
-            >
+        <div className={styles.toolBar}>
+          {allowDownload && (
+            <div className={styles.iconDownload} onClick={() => download(file!)}>
               <IconDownload fill={colors.black[50]} />
             </div>
-          }
-          {
-            !readonly && <div className={styles.iconDelete} onClick={() => onChange(deleteFile(id))}>
+          )}
+          {!readonly && (
+            <div className={styles.iconDelete} onClick={() => onChange(deleteFile(id))}>
               <IconDelete fill={colors.black[50]} />
             </div>
-          }
+          )}
         </div>
       </ComponentDisplay>
     </div>

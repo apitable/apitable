@@ -1,8 +1,6 @@
 import { FC, useState } from 'react';
 import * as React from 'react';
-import {
-  BaseModal,
-} from 'pc/components/common';
+import { BaseModal } from 'pc/components/common';
 import { IUnit, UnitItem, Strings, t, Selectors } from '@vikadata/core';
 import { Button, ThemeProvider, TextButton } from '@vikadata/components';
 import styles from './style.module.less';
@@ -15,7 +13,7 @@ import { store } from 'pc/store';
 import ReactDOM from 'react-dom';
 import { SelectUnitLeft } from './select_unit_left';
 import { SelectUnitRight } from './select_unit_right';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { SelectUnitPopup } from './select_unit_popup';
 import { useSpaceInfo } from 'pc/hooks';
 
@@ -60,7 +58,7 @@ export const SelectUnitModal: FC<ISelectUnitModalProps> = props => {
   } = props;
 
   // 企微管理面板不在空间内，需要单独处理 spaceInfo
-  const { spaceInfo }= useSpaceInfo(spaceId);
+  const { spaceInfo } = useSpaceInfo(spaceId);
   const cacheTheme = useSelector(Selectors.getTheme);
 
   // 已选列表（数据源）
@@ -94,27 +92,25 @@ export const SelectUnitModal: FC<ISelectUnitModalProps> = props => {
         style={{
           display: 'flex',
           justifyContent: showInviteIcon ? 'space-between' : 'flex-end',
-          alignItems: 'center'
+          alignItems: 'center',
         }}
       >
-        {
-          showInviteIcon && <span className={styles.invite} onClick={() => { expandInviteModal(); }}>
-            <InviteIcon />{t(Strings.invite_member)}
-          </span>
-        }
-        <div className={styles.buttonWrapper}>
-          <TextButton
-            size={'small'}
-            onClick={onCancel}
+        {showInviteIcon && (
+          <span
+            className={styles.invite}
+            onClick={() => {
+              expandInviteModal();
+            }}
           >
+            <InviteIcon />
+            {t(Strings.invite_member)}
+          </span>
+        )}
+        <div className={styles.buttonWrapper}>
+          <TextButton size={'small'} onClick={onCancel}>
             {t(Strings.cancel)}
           </TextButton>
-          <Button
-            color="primary"
-            size="small"
-            onClick={onOk}
-            disabled={!allowEmtpyCheckedList && checkedList.length === 0}
-          >
+          <Button color="primary" size="small" onClick={onOk} disabled={!allowEmtpyCheckedList && checkedList.length === 0}>
             {t(Strings.submit)}
           </Button>
         </div>
@@ -124,25 +120,17 @@ export const SelectUnitModal: FC<ISelectUnitModalProps> = props => {
 
   return (
     <ThemeProvider theme={cacheTheme}>
-      <div
-        onMouseDown={stopPropagation}
-        onClick={stopPropagation}
-      >
+      <div onMouseDown={stopPropagation} onClick={stopPropagation}>
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
           <BaseModal
             title={source === SelectUnitSource.ChangeMemberTeam ? t(Strings.choose_a_team) : t(Strings.choose_a_member)}
             width={560}
             onOk={onOk}
             onCancel={onCancel}
-            footer={
-              Footer()
-            }
+            footer={Footer()}
             {...rest}
           >
-            <div
-              className={styles.selectUnitModal}
-              onKeyDown={stopPropagation}
-            >
+            <div className={styles.selectUnitModal} onKeyDown={stopPropagation}>
               <SelectUnitLeft
                 isSingleSelect={isSingleSelect}
                 source={source}
@@ -154,12 +142,7 @@ export const SelectUnitModal: FC<ISelectUnitModalProps> = props => {
                 setUnits={setUnits}
                 spaceInfo={spaceInfo}
               />
-              <SelectUnitRight
-                source={source}
-                checkedList={checkedList}
-                cancelCheck={cancelCheck}
-                spaceInfo={spaceInfo}
-              />
+              <SelectUnitRight source={source} checkedList={checkedList} cancelCheck={cancelCheck} spaceInfo={spaceInfo} />
             </div>
           </BaseModal>
         </ComponentDisplay>
@@ -184,9 +167,7 @@ export const SelectUnitModal: FC<ISelectUnitModalProps> = props => {
   );
 };
 
-export const expandUnitModal = (
-  options: Omit<ISelectUnitModalProps, 'onCancel'>
-) => {
+export const expandUnitModal = (options: Omit<ISelectUnitModalProps, 'onCancel'>) => {
   const container = document.createElement('div');
   document.body.appendChild(container);
   const onModalClose = () => {
@@ -195,11 +176,10 @@ export const expandUnitModal = (
     options.onClose?.();
   };
 
-  ReactDOM.render((
+  ReactDOM.render(
     <Provider store={store}>
       <SelectUnitModal {...options} onCancel={() => onModalClose()} />
-    </Provider>
-  ),
-  container,
+    </Provider>,
+    container,
   );
 };

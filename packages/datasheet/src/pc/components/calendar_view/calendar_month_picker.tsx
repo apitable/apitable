@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { useState } from 'react';
-import { ComponentDisplay, ScreenSize } from '../common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { FORMAT_DATE } from './constants';
 import { formatString2Date } from './utils';
 import { PickerContent } from '../editors/date_time_editor/mobile/picker_content';
@@ -17,18 +17,19 @@ export const CalendarMonthPicker = (props: ICalendarMonthPicker) => {
   const { showValue, lang, setDate } = props;
 
   const isZh = lang === 'zh';
-  const format =isZh ? 'YYYY年MM月' : 'YYYY MM';
+  const format = isZh ? 'YYYY年MM月' : 'YYYY MM';
 
   const [open, setOpen] = useState(false);
 
-  useClickAway((event) => {
-    const targetCls = get(event, 'target.className');
-    if (targetCls && typeof targetCls === 'string' && targetCls.includes('cp-calendar')) {
-      return;
-    }
-    setOpen(false);
-  },
-  () => document.querySelector('.cp-calendar')
+  useClickAway(
+    event => {
+      const targetCls = get(event, 'target.className');
+      if (targetCls && typeof targetCls === 'string' && targetCls.includes('cp-calendar')) {
+        return;
+      }
+      setOpen(false);
+    },
+    () => document.querySelector('.cp-calendar'),
   );
 
   return (
@@ -42,7 +43,7 @@ export const CalendarMonthPicker = (props: ICalendarMonthPicker) => {
             offset: [-8, 31],
           }}
           value={dayjs(formatString2Date(showValue))}
-          onChange={(val) => {
+          onChange={val => {
             setDate(val);
             setOpen(!open);
           }}
@@ -63,7 +64,7 @@ export const CalendarMonthPicker = (props: ICalendarMonthPicker) => {
           onVisibleChange={() => {
             setOpen(!open);
           }}
-          onChange={(val) => {
+          onChange={val => {
             setDate(dayjs(val));
             setOpen(!open);
           }}

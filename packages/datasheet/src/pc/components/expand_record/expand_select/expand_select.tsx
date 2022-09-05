@@ -11,7 +11,7 @@ import { CellMember } from 'pc/components/multi_grid/cell/cell_member';
 import { MemberEditor } from 'pc/components/editors/member_editor/member_editor';
 import { useClickAway } from 'ahooks';
 import styles from '../style.module.less';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import classNames from 'classnames';
 import { useResponsive } from 'pc/hooks';
 import RcTrigger from 'rc-trigger';
@@ -53,10 +53,10 @@ export const ExpandSelect: React.FC<IExpandSelectProps> = React.forwardRef((prop
   };
 
   useEffect(() => {
-    if (!editing && onClose){
+    if (!editing && onClose) {
       onClose();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editing]);
 
   useLayoutEffect(() => {
@@ -65,12 +65,16 @@ export const ExpandSelect: React.FC<IExpandSelectProps> = React.forwardRef((prop
     }
   }, [editing, cellValue]);
 
-  useClickAway(() => {
-    if (isMobile) {
-      return;
-    }
-    editing && isFocus && setEditing(false);
-  }, containerRef, 'mousedown');
+  useClickAway(
+    () => {
+      if (isMobile) {
+        return;
+      }
+      editing && isFocus && setEditing(false);
+    },
+    containerRef,
+    'mousedown',
+  );
 
   useMemo(() => {
     if (!isFocus) {
@@ -79,23 +83,28 @@ export const ExpandSelect: React.FC<IExpandSelectProps> = React.forwardRef((prop
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocus]);
 
-  useImperativeHandle(selfRef, (): IExpandFieldEditRef => {
-    const editor = editorRef.current;
-    const noop = () => { return; };
-    if (!editor) {
+  useImperativeHandle(
+    selfRef,
+    (): IExpandFieldEditRef => {
+      const editor = editorRef.current;
+      const noop = () => {
+        return;
+      };
+      if (!editor) {
+        return {
+          focus: noop,
+          setValue: noop,
+          saveValue: noop,
+        };
+      }
+
       return {
-        focus: noop,
-        setValue: noop,
+        focus: editor.focus,
+        setValue: editor.setValue,
         saveValue: noop,
       };
-    }
-
-    return {
-      focus: editor.focus,
-      setValue: editor.setValue,
-      saveValue: noop,
-    };
-  });
+    },
+  );
 
   function onChange(value: ICellValue) {
     if (_onChange) {
@@ -103,15 +112,18 @@ export const ExpandSelect: React.FC<IExpandSelectProps> = React.forwardRef((prop
       return;
     }
     const commandManager = resourceService.instance!.commandManager;
-    editable && commandManager.execute({
-      cmd: CollaCommandName.SetRecords,
-      datasheetId,
-      data: [{
-        recordId: recordId,
-        fieldId: field.id,
-        value,
-      }],
-    });
+    editable &&
+      commandManager.execute({
+        cmd: CollaCommandName.SetRecords,
+        datasheetId,
+        data: [
+          {
+            recordId: recordId,
+            fieldId: field.id,
+            value,
+          },
+        ],
+      });
   }
 
   const setEditingByKeyDown = (event: React.KeyboardEvent) => {
@@ -171,9 +183,7 @@ export const ExpandSelect: React.FC<IExpandSelectProps> = React.forwardRef((prop
             popupVisible={editing}
             mask
           >
-            <div
-              onClick={() => setEditing(!editing)}
-            >
+            <div onClick={() => setEditing(!editing)}>
               <Cell
                 field={field as IMemberField}
                 cellValue={cellValue}
@@ -188,30 +198,20 @@ export const ExpandSelect: React.FC<IExpandSelectProps> = React.forwardRef((prop
       </ComponentDisplay>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <div
-          className={classNames(styles.displayBox, styles.option)}
-          onClick={() => editable && setEditing(!editing)}
-          ref={containerRef}
-        >
-          <Cell
-            cellValue={cellValue}
-            field={field as IMemberField}
-            isActive
-            deletable={false}
-            readonly={!editable}
-            className={styles.pointer}
-          />
+        <div className={classNames(styles.displayBox, styles.option)} onClick={() => editable && setEditing(!editing)} ref={containerRef}>
+          <Cell cellValue={cellValue} field={field as IMemberField} isActive deletable={false} readonly={!editable} className={styles.pointer} />
         </div>
-        {editing &&
-        <CellEditor
-          ref={editorRef}
-          linkId={linkId}
-          recordId={recordId}
-          unitMap={unitMap}
-          {...commonProps}
-          editing={editing}
-          toggleEditing={() => setEditing(false)}
-        />}
+        {editing && (
+          <CellEditor
+            ref={editorRef}
+            linkId={linkId}
+            recordId={recordId}
+            unitMap={unitMap}
+            {...commonProps}
+            editing={editing}
+            toggleEditing={() => setEditing(false)}
+          />
+        )}
       </ComponentDisplay>
     </>
   );

@@ -1,7 +1,20 @@
 import { Button, ContextMenu, Skeleton, useContextMenu } from '@vikadata/components';
 import {
-  AutoTestID, ConfigConstant, CutMethod, Events, FOLDER_SHOWCASE_ID, getImageThumbSrc, INodePermissions, integrateCdnHost, IReduxState, Navigation,
-  Player, Settings, StoreActions, Strings, t,
+  AutoTestID,
+  ConfigConstant,
+  CutMethod,
+  Events,
+  FOLDER_SHOWCASE_ID,
+  getImageThumbSrc,
+  INodePermissions,
+  integrateCdnHost,
+  IReduxState,
+  Navigation,
+  Player,
+  Settings,
+  StoreActions,
+  Strings,
+  t,
 } from '@vikadata/core';
 import { uploadAttachToS3 } from '@vikadata/widget-sdk';
 import { useToggle, useUnmount } from 'ahooks';
@@ -11,7 +24,7 @@ import Image from 'next/image';
 import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
 import { Share } from 'pc/components/catalog/share';
 import { ButtonPlus } from 'pc/components/common';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { IPreviewShape, ISelectInfo } from 'pc/components/common/image_crop_upload';
 import { useNavigation } from 'pc/components/route_manager/use_navigation';
 import { Deserializer, SlateEditor } from 'pc/components/slate_editor';
@@ -59,7 +72,7 @@ export interface IChildrenNode {
 }
 
 const customTips = {
-  cropDesc: t(Strings.custom_upload_tip)
+  cropDesc: t(Strings.custom_upload_tip),
 };
 
 const template = /(\/)?template(\/)?/; // 模板中心
@@ -124,9 +137,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
           Message.success({
             content: t(Strings.using_templates_successful),
           });
-          setStorage(StorageName.DingTalkVisitedFolders, [
-            folderId
-          ]);
+          setStorage(StorageName.DingTalkVisitedFolders, [folderId]);
         }
       }
       if (showcaseData?.extra?.sourceTemplateId) {
@@ -193,7 +204,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
   useEffect(() => {
     if (getChildNodeListLoading) return;
     if (!hasChildren) return setChildrenNodeIdList([]);
-    const fetchNodeList = async() => {
+    const fetchNodeList = async () => {
       const result = await getChildNodeList(folderId);
       if (result) {
         setChildrenNodeIdList(result);
@@ -277,7 +288,9 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
       return;
     }
     uploadAttachToS3({
-      file: formData.get('file') as File, fileType: 3, nodeId: folderId
+      file: formData.get('file') as File,
+      fileType: 3,
+      nodeId: folderId,
     }).then(res => {
       const { success, data } = res.data;
       if (success) {
@@ -338,17 +351,19 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
     return (
       <div className={styles.folderShowcaseSkeleton}>
         <div style={{ display: 'flex' }}>
-          <div><Skeleton image style={{ width: 240, height: 240 }} /></div>
+          <div>
+            <Skeleton image style={{ width: 240, height: 240 }} />
+          </div>
           <div style={{ flexGrow: 1, marginLeft: 8 }}>
-            <Skeleton width='38%' />
+            <Skeleton width="38%" />
             <Skeleton count={2} />
-            <Skeleton width='61%' />
+            <Skeleton width="61%" />
           </div>
         </div>
         <div style={{ marginTop: 80 }}>
-          <Skeleton width='38%' />
+          <Skeleton width="38%" />
           <Skeleton count={2} />
-          <Skeleton width='61%' />
+          <Skeleton width="61%" />
         </div>
       </div>
     );
@@ -365,10 +380,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
     size: 470 * window.devicePixelRatio || 1,
   });
   return (
-    <div
-      id={AutoTestID.SHARE_CONTAINER}
-      className={classNames(styles.folderShowcaseWrapper, readOnly && styles.readOnly)}
-    >
+    <div id={AutoTestID.SHARE_CONTAINER} className={classNames(styles.folderShowcaseWrapper, readOnly && styles.readOnly)}>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <MobileBar />
       </ComponentDisplay>
@@ -378,15 +390,12 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
             <Spin spinning={bannerLoading}>
               <div className={styles.folderShowcaseBanner}>
                 <div className={styles.banner}>
-                  <Image src={bannerImgUrl} alt='banner' layout={'fill'} />
-                  {
-                    permissions.descriptionEditable &&
-                    (
-                      <div className={styles.editBtn}>
-                        <ButtonPlus.Icon size='small' onClick={() => toggleIsBannerModal()} icon={<BannerEditIcon />} />
-                      </div>
-                    )
-                  }
+                  <Image src={bannerImgUrl} alt="banner" layout={'fill'} />
+                  {permissions.descriptionEditable && (
+                    <div className={styles.editBtn}>
+                      <ButtonPlus.Icon size="small" onClick={() => toggleIsBannerModal()} icon={<BannerEditIcon />} />
+                    </div>
+                  )}
                 </div>
               </div>
             </Spin>
@@ -412,115 +421,84 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
               <div
                 id={FOLDER_SHOWCASE_ID.DESCRIPTION}
                 onClick={() => toggleIsDescriptionModal()}
-                className={classNames(styles.descWrapper, permissions.sharable && styles.needPadding)}>
-                <div
-                  className={styles.desc}
-                >
-                  {
-                    memoDesc ?
-                      <SlateEditor className={styles.onlyReadEditor} sectionSpacing='small' value={memoDesc} readOnly /> :
-                      <span className={styles.defaultText}>{t(Strings.edit_node_desc)}</span>
-                  }
+                className={classNames(styles.descWrapper, permissions.sharable && styles.needPadding)}
+              >
+                <div className={styles.desc}>
+                  {memoDesc ? (
+                    <SlateEditor className={styles.onlyReadEditor} sectionSpacing="small" value={memoDesc} readOnly />
+                  ) : (
+                    <span className={styles.defaultText}>{t(Strings.edit_node_desc)}</span>
+                  )}
                   {/* {showcaseData.description ? htmlParser(JSON.parse(showcaseData.description).data) : '暂无描述'} */}
                 </div>
               </div>
               <div className={styles.btnGroup}>
-                {
-                  permissions.sharable &&
-                  (
-                    <Button
-                      className={styles.shareBtn}
-                      shape='round'
-                      size='small'
-                      onClick={() => setShareNodeId(nodeInfo.id)}
-                      prefixIcon={<ShareIcon fill='currentColor' />}
-                    >
-                      {t(Strings.share)}
-                    </Button>
-                  )
-                }
-                {
-                  isInDingTalk &&
-                  socialInfo?.dingTalkSuiteKey &&
-                  socialInfo?.dingTalkCorpId &&
-                  Boolean(socialInfo?.dingTalkDaStatus) &&
-                  <DingTalkDa
-                    suiteKey={socialInfo.dingTalkSuiteKey}
-                    corpId={socialInfo.dingTalkCorpId}
-                    bizAppId={folderId}
-                  />
-                }
-                {
-                  (permissions.nodeAssignable || permissions.templateCreatable) &&
-                  (
-                    <ContextMenuTrigger id='folder_showcase_moreBtn' ref={moreRef}>
-                      <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-                        <Button
-                          id={FOLDER_SHOWCASE_ID.BTN_MORE}
-                          className={styles.settingBtn}
-                          size='small'
-                          onClick={openMoreContextMenu}
-                          shape='round'
-                          prefixIcon={<MoreIcon fill='currentColor' />}
-                        />
-                      </ComponentDisplay>
-                      {/* <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
+                {permissions.sharable && (
+                  <Button
+                    className={styles.shareBtn}
+                    shape="round"
+                    size="small"
+                    onClick={() => setShareNodeId(nodeInfo.id)}
+                    prefixIcon={<ShareIcon fill="currentColor" />}
+                  >
+                    {t(Strings.share)}
+                  </Button>
+                )}
+                {isInDingTalk && socialInfo?.dingTalkSuiteKey && socialInfo?.dingTalkCorpId && Boolean(socialInfo?.dingTalkDaStatus) && (
+                  <DingTalkDa suiteKey={socialInfo.dingTalkSuiteKey} corpId={socialInfo.dingTalkCorpId} bizAppId={folderId} />
+                )}
+                {(permissions.nodeAssignable || permissions.templateCreatable) && (
+                  <ContextMenuTrigger id="folder_showcase_moreBtn" ref={moreRef}>
+                    <ComponentDisplay minWidthCompatible={ScreenSize.md}>
+                      <Button
+                        id={FOLDER_SHOWCASE_ID.BTN_MORE}
+                        className={styles.settingBtn}
+                        size="small"
+                        onClick={openMoreContextMenu}
+                        shape="round"
+                        prefixIcon={<MoreIcon fill="currentColor" />}
+                      />
+                    </ComponentDisplay>
+                    {/* <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
                        <div className={styles.disabledBtn}>
                        <MoreIcon />
                        </div>
                        </ComponentDisplay> */}
-                    </ContextMenuTrigger>
-                  )
-                }
+                  </ContextMenuTrigger>
+                )}
               </div>
             </div>
           </div>
           <div className={styles.mobileDescWrapper}>
-            <div
-              className={styles.desc}
-              onClick={openDescModal}
-            >
-              {
-                memoDesc ?
-                  <SlateEditor sectionSpacing='small' value={memoDesc} readOnly /> :
-                  <span className={styles.defaultText}>{t(Strings.edit_node_desc)}</span>
-              }
+            <div className={styles.desc} onClick={openDescModal}>
+              {memoDesc ? (
+                <SlateEditor sectionSpacing="small" value={memoDesc} readOnly />
+              ) : (
+                <span className={styles.defaultText}>{t(Strings.edit_node_desc)}</span>
+              )}
               {/* {showcaseData.description ? htmlParser(JSON.parse(showcaseData.description).data) : '暂无描述'} */}
             </div>
           </div>
           <div className={styles.nodes} id={FOLDER_SHOWCASE_ID.NODES_CONTAINER}>
-            {
-              childrenNodeIdList.map((node, index) => {
-                const idBase = index === 0 ? { id: FOLDER_SHOWCASE_ID.FIRST_NODE } : {};
-                return (
-                  <div className={styles.nodeItem} key={node.nodeId} onClick={() => jumpNode(node.nodeId)} {...idBase}>
-                    {getNodeIcon(node.icon, node.type)}
-                    <span className={styles.nodeName}>
-                      {node.nodeName}
-                    </span>
-                  </div>
-                );
-              })
-            }
+            {childrenNodeIdList.map((node, index) => {
+              const idBase = index === 0 ? { id: FOLDER_SHOWCASE_ID.FIRST_NODE } : {};
+              return (
+                <div className={styles.nodeItem} key={node.nodeId} onClick={() => jumpNode(node.nodeId)} {...idBase}>
+                  {getNodeIcon(node.icon, node.type)}
+                  <span className={styles.nodeName}>{node.nodeName}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
-      {
-        isDescriptionModal &&
-        (
-          <DescriptionModal
-            onCancel={toggleIsDescriptionModal}
-            nodeInfo={showcaseData}
-            updateDesc={updateDesc}
-          />
-        )
-      }
+      {isDescriptionModal && <DescriptionModal onCancel={toggleIsDescriptionModal} nodeInfo={showcaseData} updateDesc={updateDesc} />}
       <ImageCropUpload
         visible={isBannerModal}
         confirm={data => uploadConfirm(data)}
         initPreview={
           <span style={{ width: '100%', height: '100%', objectFit: 'cover' }} className={styles.imgWrapper}>
-            <Image src={bannerImgUrl} alt='banner' layout={'fill'} />
+            <Image src={bannerImgUrl} alt="banner" layout={'fill'} />
           </span>
         }
         customTips={customTips}
@@ -528,23 +506,12 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
         officialImgs={Settings.folder_showcase_banners.value.split(',')}
         cancel={() => toggleIsBannerModal()}
       />
-      <Share
-        nodeId={shareNodeId}
-        onClose={() => setShareNodeId('')}
-      />
-      {
-        isGenerateTempalte &&
-        (
-          <GenerateTemplate
-            nodeId={nodeId}
-            onCancel={() => toggleIsGenerateTemplate()}
-          />
-        )
-      }
+      <Share nodeId={shareNodeId} onClose={() => setShareNodeId('')} />
+      {isGenerateTempalte && <GenerateTemplate nodeId={nodeId} onCancel={() => toggleIsGenerateTemplate()} />}
       <ContextMenu
         menuId={ConfigConstant.ContextMenuType.FOLDER_SHOWCASE}
-        overlay={
-          flatContextData([
+        overlay={flatContextData(
+          [
             [
               {
                 icon: makeNodeIconComponent(NodeIcon.Permission),
@@ -559,8 +526,9 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
                 hidden: !permissions.templateCreatable,
               },
             ],
-          ], true)
-        }
+          ],
+          true,
+        )}
       />
     </div>
   );

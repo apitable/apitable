@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import parser from 'html-react-parser';
 import Image from 'next/image';
 import { Loading, LoginCard, Message, MobileSelect, Modal, Wrapper } from 'pc/components/common';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { useNavigation } from 'pc/components/route_manager/use_navigation';
 import { useQuery, useRequest, useResponsive } from 'pc/hooks';
 import { useEffect, useState } from 'react';
@@ -15,7 +15,7 @@ import styles from './style.module.less';
 
 interface IEnhancedSpaceInfo extends ISpaceInfo {
   label: string;
-  value: string
+  value: string;
 }
 
 const FeiShuBindSpace = () => {
@@ -32,11 +32,11 @@ const FeiShuBindSpace = () => {
 
   // 获取可管理的空间列表
   const { loading: listLoading } = useRequest(() => Api.spaceList(true), {
-    onSuccess: (res) => {
+    onSuccess: res => {
       const { data, success, message } = res.data;
       if (success) {
         const option: IEnhancedSpaceInfo[] = [];
-        data.forEach((item) => {
+        data.forEach(item => {
           if (item.preDeleted || (item.social && item.social.enabled)) {
             return;
           }
@@ -56,64 +56,58 @@ const FeiShuBindSpace = () => {
     },
     onError: () => {
       Message.error({ content: t(Strings.error) });
-    }
+    },
   });
   // 获取飞书企业的信息
-  const { run: getFeiShuTenantInfo, loading: numberLoading } = useRequest(
-    (tenantKey) => Api.getFeiShuTenantInfo(tenantKey),
-    {
-      onSuccess: (res) => {
-        const { data, success, message } = res.data;
-        if (success) {
-          setMaxCount(data.memberCount);
-        } else {
-          Message.error({ content: message });
-        }
-      },
-      onError: () => {
-        Message.error({ content: t(Strings.error) });
-      },
-      manual: true,
-    }
-  );
+  const { run: getFeiShuTenantInfo, loading: numberLoading } = useRequest(tenantKey => Api.getFeiShuTenantInfo(tenantKey), {
+    onSuccess: res => {
+      const { data, success, message } = res.data;
+      if (success) {
+        setMaxCount(data.memberCount);
+      } else {
+        Message.error({ content: message });
+      }
+    },
+    onError: () => {
+      Message.error({ content: t(Strings.error) });
+    },
+    manual: true,
+  });
 
   // 飞书企业绑定空间站
-  const { loading: btnLoading, run: bindSpace } = useRequest(
-    (tenantKey, spaceList) => Api.socialFeiShuBindSpace(tenantKey, spaceList),
-    {
-      onSuccess: (res) => {
-        const { success, message, code } = res.data;
-        if (success) {
-          setErr('');
-          navigationTo({
-            path: Navigation.WORKBENCH,
-            params: { spaceId: curSpace!.spaceId },
-          });
-        } else if (code === StatusCode.PAYMENT_PLAN) {
-          Modal.confirm({
-            type: 'warning',
-            title: t(Strings.please_note),
-            okText: t(Strings.submit_requirements),
-            onOk: () => {
-              window.open(Settings.feishu_seats_form.value);
-            },
-            content: t(Strings.feishu_bind_space_need_upgrade, {
-              maxSeat: String(curSpace?.maxSeat),
-              maxCount,
-            }),
-          });
-          return;
-        } else {
-          setErr(message);
-          return;
-        }
-      },
-      onError: () => {
-        Message.error({ content: t(Strings.error) });
-      },
-      manual: true,
-    }
-  );
+  const { loading: btnLoading, run: bindSpace } = useRequest((tenantKey, spaceList) => Api.socialFeiShuBindSpace(tenantKey, spaceList), {
+    onSuccess: res => {
+      const { success, message, code } = res.data;
+      if (success) {
+        setErr('');
+        navigationTo({
+          path: Navigation.WORKBENCH,
+          params: { spaceId: curSpace!.spaceId },
+        });
+      } else if (code === StatusCode.PAYMENT_PLAN) {
+        Modal.confirm({
+          type: 'warning',
+          title: t(Strings.please_note),
+          okText: t(Strings.submit_requirements),
+          onOk: () => {
+            window.open(Settings.feishu_seats_form.value);
+          },
+          content: t(Strings.feishu_bind_space_need_upgrade, {
+            maxSeat: String(curSpace?.maxSeat),
+            maxCount,
+          }),
+        });
+        return;
+      } else {
+        setErr(message);
+        return;
+      }
+    },
+    onError: () => {
+      Message.error({ content: t(Strings.error) });
+    },
+    manual: true,
+  });
   useMount(() => {
     tenantKey && getFeiShuTenantInfo(tenantKey);
   });
@@ -121,21 +115,17 @@ const FeiShuBindSpace = () => {
     if (numberLoading || listLoading || typeof maxCount !== 'number') {
       return;
     }
-    const defaultSelect = optionData.find((item) =>
-      numberRule(item.maxSeat, maxCount)
-    );
+    const defaultSelect = optionData.find(item => numberRule(item.maxSeat, maxCount));
     defaultSelect && setCurSpace(defaultSelect);
   }, [numberLoading, listLoading, maxCount, optionData]);
   const numberRule = (number, condition) => {
     return number >= condition;
   };
-  const onChange = (value) => {
-    const space = optionData.find((item) => item.spaceId === value);
+  const onChange = value => {
+    const space = optionData.find(item => item.spaceId === value);
     if (space) {
       setCurSpace(space);
-      const errStr = numberRule(space.maxSeat, maxCount)
-        ? ''
-        : parser(t(Strings.feishu_bind_space_err, { count: space.maxSeat }));
+      const errStr = numberRule(space.maxSeat, maxCount) ? '' : parser(t(Strings.feishu_bind_space_err, { count: space.maxSeat }));
       setErr(errStr);
     }
   };
@@ -157,26 +147,17 @@ const FeiShuBindSpace = () => {
   }
   return (
     <Wrapper hiddenLogo className={styles.center}>
-      <div
-        className={classNames(styles.commonWrapper, styles.bindSpaceWrapper, styles.center)}
-      >
+      <div className={classNames(styles.commonWrapper, styles.bindSpaceWrapper, styles.center)}>
         <div className={styles.commonImgWrapper}>
           <Image src={BothImg} />
         </div>
-        <LoginCard
-          className={classNames(
-            styles.commonLoginCardWrapper,
-            styles.bindSpaceCard
-          )}
-        >
+        <LoginCard className={classNames(styles.commonLoginCardWrapper, styles.bindSpaceCard)}>
           <div className={styles.cardTop}>
-            <div className={styles.commonCardTitle}>
-              {t(Strings.feishu_bind_space_select_title)}
-            </div>
-            {(listLoading || numberLoading) ? (
+            <div className={styles.commonCardTitle}>{t(Strings.feishu_bind_space_select_title)}</div>
+            {listLoading || numberLoading ? (
               <div style={{ width: '100%' }}>
                 <Skeleton count={2} />
-                <Skeleton width="61%"/>
+                <Skeleton width="61%" />
               </div>
             ) : isMobile ? (
               <MobileSelect
@@ -198,26 +179,17 @@ const FeiShuBindSpace = () => {
               />
             )}
             {err && <div className={styles.err}>{err}</div>}
-            <div className={styles.subTitle}>
-              {t(Strings.feishu_bind_space_config_title)}
-            </div>
+            <div className={styles.subTitle}>{t(Strings.feishu_bind_space_config_title)}</div>
             {numberLoading ? (
               <div style={{ width: '100%' }}>
                 <Skeleton count={2} />
-                <Skeleton width="61%"/>
+                <Skeleton width="61%" />
               </div>
-            ) : <div className={styles.desc}>
-              {t(Strings.feishu_bind_space_config_detail, { maxCount })}
-            </div>}
+            ) : (
+              <div className={styles.desc}>{t(Strings.feishu_bind_space_config_detail, { maxCount })}</div>
+            )}
           </div>
-          <Button
-            color="primary"
-            block
-            size="large"
-            onClick={bindSpaceBtnClick}
-            loading={btnLoading}
-            disabled={btnLoading}
-          >
+          <Button color="primary" block size="large" onClick={bindSpaceBtnClick} loading={btnLoading} disabled={btnLoading}>
             {t(Strings.feishu_bind_space_btn)}
           </Button>
         </LoginCard>

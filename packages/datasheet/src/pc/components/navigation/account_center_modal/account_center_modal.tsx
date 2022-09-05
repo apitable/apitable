@@ -2,7 +2,7 @@ import { IconButton, useThemeColors } from '@vikadata/components';
 import { getCustomConfig, IReduxState, Strings, t, isPrivateDeployment } from '@vikadata/core';
 import { CloseLargeOutlined } from '@vikadata/icons';
 import { Drawer } from 'antd';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/modal/modal';
 import { isSocialWecom } from 'pc/components/home/social_platform';
 import { usePlatform } from 'pc/hooks/use_platform';
@@ -44,7 +44,7 @@ export const AccountCenterModal: FC<IAccountCenterModalProps> = props => {
   const isMobile = screenIsAtMost(ScreenSize.md);
 
   const colors = useThemeColors();
-  const [activeItem, setActiveItem] = useState(props.defaultActiveItem || isPrivateDeployment() && isMobile ? 1 : 0);
+  const [activeItem, setActiveItem] = useState(props.defaultActiveItem || (isPrivateDeployment() && isMobile) ? 1 : 0);
   const [showNav, setShowNav] = useState(false);
   const userInfo = useSelector((state: IReduxState) => state.user.info);
   const { socialLinkDisable, accountWalletDisable } = getCustomConfig();
@@ -61,69 +61,58 @@ export const AccountCenterModal: FC<IAccountCenterModalProps> = props => {
       key: AccountCenterModules.BasicSetting,
       name: t(Strings.user_profile_setting),
       component: <BasicSetting />,
-      hidden: (isPrivateDeployment() && isMobile)
+      hidden: isPrivateDeployment() && isMobile,
     },
     {
       key: AccountCenterModules.ModifyPassword,
       name: userInfo!.needPwd ? t(Strings.set_password) : t(Strings.change_password),
       component: <ModifyPassword setActiveItem={setActiveItem} />,
       // 针对未绑定手机或邮箱的账号，用户中心的“修改密码”这一栏是直接屏蔽掉
-      hidden: (!(userInfo?.email || userInfo?.mobile)) || env.HIDDEN_USER_CHANGE_PASSWORD
+      hidden: !(userInfo?.email || userInfo?.mobile) || env.HIDDEN_USER_CHANGE_PASSWORD,
     }, // '修改密码'
     {
       key: AccountCenterModules.AccountWallet,
       name: t(Strings.account_wallet),
       component: <AccountWallet />,
-      hidden: accountWalletDisable || isMobileApp()
+      hidden: accountWalletDisable || isMobileApp(),
     },
     {
       key: AccountCenterModules.AccountManager,
       name: t(Strings.account_ass_manage),
       component: <AccountManager />,
-      hidden: socialLinkDisable || mobile || isMobileApp() || isSocialWecom() || env.HIDDEN_ACCOUNT_LINK_MANAGER
+      hidden: socialLinkDisable || mobile || isMobileApp() || isSocialWecom() || env.HIDDEN_ACCOUNT_LINK_MANAGER,
     },
     {
       key: AccountCenterModules.DeveloperConfiguration,
       name: t(Strings.developer_configuration),
-      component: <DeveloperConfiguration setActiveItem={setActiveItem} />
+      component: <DeveloperConfiguration setActiveItem={setActiveItem} />,
     },
     {
       key: AccountCenterModules.PersonalizedSetting,
       name: t(Strings.personalized_setting),
-      component: <PersonalizedSetting />
+      component: <PersonalizedSetting />,
     },
     {
       key: AccountCenterModules.TestFunction,
       name: t(Strings.test_function),
-      component: <TestFunction isUser />
-    }
+      component: <TestFunction isUser />,
+    },
   ];
 
-  const CustomTitle = ({
-    title,
-    onClose,
-    onClickNav
-  }) => {
+  const CustomTitle = ({ title, onClose, onClickNav }) => {
     return (
       <div
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'center'
+          alignItems: 'center',
         }}
       >
-        <div
-          onClick={onClickNav}
-          className={styles.side}
-        >
+        <div onClick={onClickNav} className={styles.side}>
           <IconSide width={20} height={20} fill={onClickNav ? colors.fc1 : colors.white} />
         </div>
         <span>{title}</span>
-        <IconButton
-          icon={CloseLargeOutlined}
-          onClick={onClose}
-          size='large'
-        />
+        <IconButton icon={CloseLargeOutlined} onClick={onClose} size="large" />
       </div>
     );
   };
@@ -145,15 +134,9 @@ export const AccountCenterModal: FC<IAccountCenterModalProps> = props => {
           <div className={styles.wrapper}>
             <div className={styles.accountCenterWrapper}>
               <div className={styles.left}>
-                <Nav
-                  activeItem={activeItem}
-                  setActiveItem={setActiveItem}
-                  navlist={listData}
-                />
+                <Nav activeItem={activeItem} setActiveItem={setActiveItem} navlist={listData} />
               </div>
-              <div className={styles.right}>
-                {listData[activeItem].component}
-              </div>
+              <div className={styles.right}>{listData[activeItem].component}</div>
             </div>
           </div>
         </Modal>
@@ -161,40 +144,34 @@ export const AccountCenterModal: FC<IAccountCenterModalProps> = props => {
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <Drawer
-          title={(
+          title={
             <CustomTitle
               title={`${t(Strings.user_setting)} - ${listData[activeItem].name}`}
               onClose={closeModal}
               onClickNav={() => setShowNav(true)}
             />
-          )}
+          }
           height={'100%'}
           push={{
-            distance: 0
+            distance: 0,
           }}
           visible
           maskClosable
           closable={false}
-          placement='bottom'
+          placement="bottom"
           bodyStyle={{
-            padding: 16
+            padding: 16,
           }}
         >
           {listData[activeItem].component}
           <Drawer
             visible={showNav}
-            placement='left'
+            placement="left"
             closable={false}
-            title={(
-              <CustomTitle
-                title={listData[activeItem].name}
-                onClose={() => setShowNav(false)}
-                onClickNav={null}
-              />
-            )}
+            title={<CustomTitle title={listData[activeItem].name} onClose={() => setShowNav(false)} onClickNav={null} />}
             onClose={() => setShowNav(false)}
             bodyStyle={{
-              padding: 16
+              padding: 16,
             }}
           >
             <Nav

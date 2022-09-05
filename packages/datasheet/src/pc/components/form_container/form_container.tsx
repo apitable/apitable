@@ -1,8 +1,32 @@
 import * as Sentry from '@sentry/react';
 import { Button, ContextMenu, TextButton, useThemeColors } from '@vikadata/components';
 import {
-  Api, AutoTestID, CacheManager, ConfigConstant, Events, ExpCache, Field, FieldOperateType, FieldType, FormApi, getNewId, IDPrefix, IField, IFieldMap,
-  IFormState, IRecord, ISegment, isPrivateDeployment, Navigation, Player, Selectors, StatusCode, StoreActions, string2Segment, Strings, t,
+  Api,
+  AutoTestID,
+  CacheManager,
+  ConfigConstant,
+  Events,
+  ExpCache,
+  Field,
+  FieldOperateType,
+  FieldType,
+  FormApi,
+  getNewId,
+  IDPrefix,
+  IField,
+  IFieldMap,
+  IFormState,
+  IRecord,
+  ISegment,
+  isPrivateDeployment,
+  Navigation,
+  Player,
+  Selectors,
+  StatusCode,
+  StoreActions,
+  string2Segment,
+  Strings,
+  t,
 } from '@vikadata/core';
 import { ArrowDownOutlined, ArrowUpOutlined, EditDescribeOutlined, EditOutlined } from '@vikadata/icons';
 import { useDebounceFn, useMount, useUnmount } from 'ahooks';
@@ -26,7 +50,7 @@ import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'r
 import { shallowEqual, useSelector } from 'react-redux';
 import IconSuccess from 'static/icon/datasheet/form/successful.png';
 import CompleteAnimationJson from 'static/json/complete_form.json';
-import { ScreenSize } from '../common/component_display/component_display';
+import { ScreenSize } from '../common/component_display';
 import { TComponent } from '../common/t_component';
 import { getRecordName } from '../expand_record';
 import { Method, useNavigation } from '../route_manager/use_navigation';
@@ -41,7 +65,7 @@ enum IFormContentType {
   Welcome = 'Welcome',
 }
 
-const isEmptyValue = (value) => {
+const isEmptyValue = value => {
   if (value == null) {
     return true;
   }
@@ -51,13 +75,10 @@ const isEmptyValue = (value) => {
   return false;
 };
 
-const shownComputedTypes = [
-  FieldType.LookUp,
-  FieldType.Formula
-];
+const shownComputedTypes = [FieldType.LookUp, FieldType.Formula];
 const defaultMeta = {
   views: [],
-  fieldMap: {}
+  fieldMap: {},
 };
 
 const tempRecordID = `${getNewId(IDPrefix.Record)}_temp`;
@@ -103,14 +124,7 @@ export const FormContainer: React.FC = () => {
     };
   }, shallowEqual);
   const { formProps } = snapshot;
-  const {
-    fullScreen,
-    coverVisible,
-    brandVisible,
-    fillAnonymous = false,
-    submitLimit = 0,
-    hasSubmitted,
-  } = formProps;
+  const { fullScreen, coverVisible, brandVisible, fillAnonymous = false, submitLimit = 0, hasSubmitted } = formProps;
   const [formData, setFormData] = useState({});
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState<boolean>(false);
@@ -157,9 +171,7 @@ export const FormContainer: React.FC = () => {
 
       const formSheetAccessible = Selectors.getFormSheetAccessibleByFieldId(fieldPermissionMap, fieldId);
 
-      return !hidden
-        && formSheetAccessible
-        && (!Field.bindModel(field).isComputed || shownComputedTypes.includes(field.type));
+      return !hidden && formSheetAccessible && (!Field.bindModel(field).isComputed || shownComputedTypes.includes(field.type));
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentView, fieldMap, fieldPermissionMap]);
@@ -258,7 +270,7 @@ export const FormContainer: React.FC = () => {
           recordIds: [recordId],
           unitIds: [unitId],
           recordTitle: getRecordName(formData[frozenFieldId], frozenField) || '',
-          fieldName: fieldMap[firstMemberFieldId]?.name
+          fieldName: fieldMap[firstMemberFieldId]?.name,
         });
       });
 
@@ -273,7 +285,6 @@ export const FormContainer: React.FC = () => {
         postData['linkId'] = shareId;
       }
       Api.commitRemind(postData);
-
     } catch (error) {
       Sentry.captureMessage(String(error));
     }
@@ -385,7 +396,7 @@ export const FormContainer: React.FC = () => {
 
   // 跳转官网
   const onJump = () => {
-    navigationTo({ path: Navigation.HOME, method: Method.NewTab, query: { home: 1 }});
+    navigationTo({ path: Navigation.HOME, method: Method.NewTab, query: { home: 1 } });
   };
 
   // 再次填写
@@ -401,8 +412,9 @@ export const FormContainer: React.FC = () => {
         className={styles.loginBtn}
         onClick={() => {
           localStorage.setItem('reference', window.location.href);
-          navigationTo({ path: Navigation.LOGIN, query: { reference: window.location.href, spaceId: shareInfo.spaceId }});
-        }}>
+          navigationTo({ path: Navigation.LOGIN, query: { reference: window.location.href, spaceId: shareInfo.spaceId } });
+        }}
+      >
         {t(Strings.login)}
       </i>
     </>
@@ -545,39 +557,45 @@ export const FormContainer: React.FC = () => {
     }
   }, [loading]);
 
-  const patchRecord = useCallback((record: IRecord) => {
-    // 防止因为子组件卸载时调用setFormData，从而patch一条假记录到数表
-    if (unmounted.current) return;
-    const preSnapshot = Selectors.getSnapshot(store.getState(), sourceInfo.datasheetId);
-    if (!preSnapshot) {
-      return;
-    }
-    const newSnapshot = produce(preSnapshot, draft => {
-      const view = draft.meta.views.find(view => view.id === viewId);
-      if (view) {
-        if (!view.rows.find(row => row.recordId === recordId)) {
-          view.rows.push({ recordId });
-        }
-        draft.recordMap[recordId] = record;
+  const patchRecord = useCallback(
+    (record: IRecord) => {
+      // 防止因为子组件卸载时调用setFormData，从而patch一条假记录到数表
+      if (unmounted.current) return;
+      const preSnapshot = Selectors.getSnapshot(store.getState(), sourceInfo.datasheetId);
+      if (!preSnapshot) {
+        return;
       }
-      return draft;
-    });
-    clearCache();
-    dispatch(StoreActions.updateSnapshot(datasheetId, newSnapshot));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [datasheetId, dispatch, viewId, recordId, sourceInfo.datasheetId]);
+      const newSnapshot = produce(preSnapshot, draft => {
+        const view = draft.meta.views.find(view => view.id === viewId);
+        if (view) {
+          if (!view.rows.find(row => row.recordId === recordId)) {
+            view.rows.push({ recordId });
+          }
+          draft.recordMap[recordId] = record;
+        }
+        return draft;
+      });
+      clearCache();
+      dispatch(StoreActions.updateSnapshot(datasheetId, newSnapshot));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [datasheetId, dispatch, viewId, recordId, sourceInfo.datasheetId],
+  );
   // 收集表数据写入localStorage
-  const { run: setFormToStorage } = useDebounceFn((formData) => {
-    const formFieldContainer = getStorage(storageName);
-    setStorage(
-      storageName,
-      {
-        ...formFieldContainer,
-        [id]: formData
-      },
-      StorageMethod.Set
-    );
-  }, { wait: 300 });
+  const { run: setFormToStorage } = useDebounceFn(
+    formData => {
+      const formFieldContainer = getStorage(storageName);
+      setStorage(
+        storageName,
+        {
+          ...formFieldContainer,
+          [id]: formData,
+        },
+        StorageMethod.Set,
+      );
+    },
+    { wait: 300 },
+  );
 
   useEffect(() => {
     setFormToStorage(formData);
@@ -613,14 +631,17 @@ export const FormContainer: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fieldMap]);
 
-  const _setFormData = useCallback((fieldId, value) => {
-    setFormData(prev => {
-      const data = { ...prev, [fieldId]: value };
-      patchRecord({ id: recordId, data } as IRecord);
-      return data;
-    });
-    setFormErrors({ ...formErrors, [fieldId]: '' });
-  }, [formErrors, patchRecord, recordId]);
+  const _setFormData = useCallback(
+    (fieldId, value) => {
+      setFormData(prev => {
+        const data = { ...prev, [fieldId]: value };
+        patchRecord({ id: recordId, data } as IRecord);
+        return data;
+      });
+      setFormErrors({ ...formErrors, [fieldId]: '' });
+    },
+    [formErrors, patchRecord, recordId],
+  );
 
   return (
     <FormContext.Provider
@@ -634,111 +655,95 @@ export const FormContainer: React.FC = () => {
         },
         setFormToStorage: (fieldId, value) => {
           setFormToStorage({ ...formData, [fieldId]: value });
-        }
+        },
       }}
     >
       <div className={classnames(styles.formContainer, 'vikaFormContainer')} id={AutoTestID.FORM_CONTAINER}>
         {/* 表单填写页 */}
-        {
-          realContentType === IFormContentType.Form &&
-          (
+        {realContentType === IFormContentType.Form && (
+          <div
+            className={classnames(styles.formContent, {
+              [styles.fullScreen]: fullScreen || isMobile,
+              [styles.noCover]: !fullScreen && !coverVisible,
+              [styles.formContentMobile]: isMobile,
+            })}
+          >
+            {/* 神奇表单自有属性 */}
+            <FormPropContainer
+              formId={id}
+              title={name}
+              formProps={formProps}
+              // 只有管理权限才能进行属性编辑
+              editable={manageable}
+            />
+
+            {/* 列属性和填写的数据 */}
             <div
-              className={classnames(styles.formContent, {
-                [styles.fullScreen]: fullScreen || isMobile,
-                [styles.noCover]: !fullScreen && !coverVisible,
-                [styles.formContentMobile]: isMobile,
+              className={classnames(styles.formFieldContainer, {
+                [styles.formFieldContainerMobile]: isMobile,
               })}
             >
-              {/* 神奇表单自有属性 */}
-              <FormPropContainer
-                formId={id}
-                title={name}
-                formProps={formProps}
-                // 只有管理权限才能进行属性编辑
-                editable={manageable}
+              <FormFieldContainer
+                filteredColumns={filteredColumns}
+                datasheetId={datasheetId}
+                viewId={viewId}
+                meta={formRelMeta}
+                editable={editable}
+                recordId={recordId}
               />
-
-              {/* 列属性和填写的数据 */}
-              <div className={classnames(styles.formFieldContainer, {
-                [styles.formFieldContainerMobile]: isMobile,
-              })}>
-                <FormFieldContainer
-                  filteredColumns={filteredColumns}
-                  datasheetId={datasheetId}
-                  viewId={viewId}
-                  meta={formRelMeta}
-                  editable={editable}
-                  recordId={recordId}
-                />
-              </div>
-
-              {/* 提交按钮 */}
-              <div
-                className={classnames(styles.submitWrapper, {
-                  [styles.submitWrapperMobile]: isMobile,
-                  [styles.submitWrapperLoading]: loading || animationLoading,
-                })}
-              >
-                <Button
-                  className={styles.submitBtn}
-                  block
-                  style={{
-                    height: '100%',
-                  }}
-                  color="primary"
-                  onClick={onSubmit}
-                  disabled={loading || !editable}
-                >
-                  {animationLoading && <span className={classnames(styles.submitLoading, 'formSubmitLoading')} />}
-                  {
-                    animationLoading && !loading && t(Strings.form_submit_success)
-                  }
-                  {
-                    !animationLoading && !loading && ((fillAnonymous && shareId) ? t(Strings.form_fill_anonymous) : t(Strings.form_submit))
-                  }
-                  {
-                    animationLoading && loading && t(Strings.form_submit_loading)
-                  }
-                </Button>
-              </div>
             </div>
-          )
-        }
+
+            {/* 提交按钮 */}
+            <div
+              className={classnames(styles.submitWrapper, {
+                [styles.submitWrapperMobile]: isMobile,
+                [styles.submitWrapperLoading]: loading || animationLoading,
+              })}
+            >
+              <Button
+                className={styles.submitBtn}
+                block
+                style={{
+                  height: '100%',
+                }}
+                color="primary"
+                onClick={onSubmit}
+                disabled={loading || !editable}
+              >
+                {animationLoading && <span className={classnames(styles.submitLoading, 'formSubmitLoading')} />}
+                {animationLoading && !loading && t(Strings.form_submit_success)}
+                {!animationLoading && !loading && (fillAnonymous && shareId ? t(Strings.form_fill_anonymous) : t(Strings.form_submit))}
+                {animationLoading && loading && t(Strings.form_submit_loading)}
+              </Button>
+            </div>
+          </div>
+        )}
 
         {/* 表单欢迎页 */}
-        {
-          realContentType === IFormContentType.Welcome &&
-          (
-            <div
-              className={classnames(styles.welcomeWrapper, {
-                [styles.welcomeWrapperMobile]: isMobile,
-              })}
-            >
-              <div
-                className={styles.welcome}
-              >
-                <div className={styles.welcomeInner}>
-                  <span className={styles.iconSuccess}>
-                    <Image src={IconSuccess} alt="submit_success" width={100} height={80}/>
-                  </span>
-                  <span className={styles.thankText}>
-                    {t(Strings.form_thank_text)}
-                  </span>
-                  {
-                    (submitLimit === 0) &&
-                    <TextButton color="primary" className={styles.linkBtn} onClick={onFillAgain}>
-                      {t(Strings.form_fill_again)}
-                    </TextButton>
-                  }
-                </div>
+        {realContentType === IFormContentType.Welcome && (
+          <div
+            className={classnames(styles.welcomeWrapper, {
+              [styles.welcomeWrapperMobile]: isMobile,
+            })}
+          >
+            <div className={styles.welcome}>
+              <div className={styles.welcomeInner}>
+                <span className={styles.iconSuccess}>
+                  <Image src={IconSuccess} alt="submit_success" width={100} height={80} />
+                </span>
+                <span className={styles.thankText}>{t(Strings.form_thank_text)}</span>
+                {submitLimit === 0 && (
+                  <TextButton color="primary" className={styles.linkBtn} onClick={onFillAgain}>
+                    {t(Strings.form_fill_again)}
+                  </TextButton>
+                )}
               </div>
             </div>
-          )
-        }
+          </div>
+        )}
 
         {/* 页脚：品牌水印 */}
-        {
-          brandVisible &&
+        {brandVisible && (
           <div className={styles.brandContainerWrapper}>
             <div
               className={classnames(styles.brandContainer, {
@@ -749,72 +754,77 @@ export const FormContainer: React.FC = () => {
               <TComponent
                 tkey={t(Strings.brand_desc)}
                 params={{
-                  logo: (<span className={styles.logoWrap} onClick={onJump}>
-                    <Logo size="mini" />
-                  </span>)
+                  logo: (
+                    <span className={styles.logoWrap} onClick={onJump}>
+                      <Logo size="mini" />
+                    </span>
+                  ),
                 }}
               />
             </div>
           </div>
-        }
+        )}
 
         {/* 左上角：品牌 logo */}
-        {
-          shareId && !fullScreen && !isMobile &&
+        {shareId && !fullScreen && !isMobile && (
           <div className={classnames('formVikaLogo', styles.logoContainer)}>
             <span className={styles.img} onClick={onJump}>
               <Logo />
             </span>
           </div>
-        }
+        )}
 
         {/* 编辑字段Modal */}
-        {
-          activeFieldId &&
-          activeFieldOperateType === FieldOperateType.FieldSetting &&
+        {activeFieldId && activeFieldOperateType === FieldOperateType.FieldSetting && (
           <FieldSetting
             datasheetId={datasheetId}
             viewId={viewId}
             targetDOM={document.querySelector('.vikaFormContainer') as HTMLElement}
             showAdvancedFields={false}
           />
-        }
+        )}
 
         {/* 编辑字段描述Modal */}
-        {
-          activeFieldId &&
-          activeFieldOperateType === FieldOperateType.FieldDesc &&
+        {activeFieldId && activeFieldOperateType === FieldOperateType.FieldDesc && (
           <FieldDesc
             fieldId={activeFieldId}
             datasheetId={datasheetId}
             readOnly={!manageable}
             targetDOM={document.querySelector('.vikaFormContainer') as HTMLElement}
           />
-        }
+        )}
 
         <ContextMenu
           menuId={ConfigConstant.ContextMenuType.FORM_FIELD_OP}
-          overlay={flatContextData([
-            [{
-              icon: <EditOutlined color={colors.thirdLevelText} />,
-              text: t(Strings.modify_field),
-              hidden: ({ props }) => !props?.onEdit,
-              onClick: ({ props }) => props?.onEdit && props.onEdit(),
-            }, {
-              icon: <EditDescribeOutlined color={colors.thirdLevelText} />,
-              text: t(Strings.editing_field_desc),
-              onClick: ({ props }) => props?.onEditDesc && props.onEditDesc(),
-            }, {
-              icon: <ArrowUpOutlined color={colors.thirdLevelText} />,
-              text: t(Strings.insert_field_above),
-              disabled: ({ props }) => !props.onInsertAbove,
-              onClick: ({ props }) => props?.onInsertAbove && props.onInsertAbove(),
-            }, {
-              icon: <ArrowDownOutlined color={colors.thirdLevelText} />,
-              text: t(Strings.insert_field_below),
-              onClick: ({ props }) => props?.onInsertBelow && props.onInsertBelow(),
-            }]
-          ], true)}
+          overlay={flatContextData(
+            [
+              [
+                {
+                  icon: <EditOutlined color={colors.thirdLevelText} />,
+                  text: t(Strings.modify_field),
+                  hidden: ({ props }) => !props?.onEdit,
+                  onClick: ({ props }) => props?.onEdit && props.onEdit(),
+                },
+                {
+                  icon: <EditDescribeOutlined color={colors.thirdLevelText} />,
+                  text: t(Strings.editing_field_desc),
+                  onClick: ({ props }) => props?.onEditDesc && props.onEditDesc(),
+                },
+                {
+                  icon: <ArrowUpOutlined color={colors.thirdLevelText} />,
+                  text: t(Strings.insert_field_above),
+                  disabled: ({ props }) => !props.onInsertAbove,
+                  onClick: ({ props }) => props?.onInsertAbove && props.onInsertAbove(),
+                },
+                {
+                  icon: <ArrowDownOutlined color={colors.thirdLevelText} />,
+                  text: t(Strings.insert_field_below),
+                  onClick: ({ props }) => props?.onInsertBelow && props.onInsertBelow(),
+                },
+              ],
+            ],
+            true,
+          )}
         />
       </div>
     </FormContext.Provider>

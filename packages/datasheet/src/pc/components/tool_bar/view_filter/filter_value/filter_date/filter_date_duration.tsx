@@ -5,7 +5,7 @@ import { ExecuteFilterFn } from '../../interface';
 import produce from 'immer';
 import { MobileSelect } from 'pc/components/common';
 import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { Select, useThemeColors } from '@vikadata/components';
 import { snake } from 'naming-style';
 
@@ -80,7 +80,7 @@ export const FilterDateDuration: React.FC<IFilterDateDurationProps> = props => {
           padding: '12px 8px',
           width: 0,
           flex: 1,
-          maxWidth: 150
+          maxWidth: 150,
         }}
       />
     );
@@ -90,7 +90,9 @@ export const FilterDateDuration: React.FC<IFilterDateDurationProps> = props => {
     <Select
       value={!condition.value ? '' : condition.value[0]}
       options={createOptionData()}
-      onSelected={(option) => { onChange(option.value as string); }}
+      onSelected={option => {
+        onChange(option.value as string);
+      }}
       triggerCls={styles.dataDuration}
       dropdownMatchSelectWidth={false}
       openSearch={false}

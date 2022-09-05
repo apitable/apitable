@@ -4,7 +4,7 @@ import { NewtabOutlined } from '@vikadata/icons';
 import classnames from 'classnames';
 import { Modal } from 'pc/components/common/modal/modal';
 import { Tooltip } from 'pc/components/common/tooltip';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
 import { copy2clipBoard } from 'pc/utils';
 import * as React from 'react';
@@ -20,7 +20,7 @@ interface IShareLinkProps {
   shareName: string;
 }
 
-export const ShareLink: React.FC<IShareLinkProps> = (props) => {
+export const ShareLink: React.FC<IShareLinkProps> = props => {
   const shareHost = `${window.location.protocol}//${window.location.host}/share/`;
   const colors = useThemeColors();
   const { shareSettings, userInfo, shareName } = props;
@@ -41,7 +41,7 @@ export const ShareLink: React.FC<IShareLinkProps> = (props) => {
     setTimeout(() => setIsCopied(false), 1000);
     const shareText = t(Strings.vika_share_link_template, {
       nickName: userInfo!.memberName || t(Strings.friend),
-      nodeName: shareSettings.nodeName
+      nodeName: shareSettings.nodeName,
     });
     copy2clipBoard(`${shareHost}${shareSettings.shareId} ${shareText}`);
   };
@@ -51,7 +51,7 @@ export const ShareLink: React.FC<IShareLinkProps> = (props) => {
       <div className={styles.shareLink}>
         <div className={styles.inputContainer}>
           <input
-            type='text'
+            type="text"
             className={classnames(styles.link, { [styles.highBorder]: isCopied })}
             value={shareHost + shareSettings.shareId}
             id={shareSettings.shareId}
@@ -59,18 +59,18 @@ export const ShareLink: React.FC<IShareLinkProps> = (props) => {
           />
         </div>
         <ButtonGroup style={{ display: 'flex' }}>
-          <Tooltip title={t(Strings.copy_link)} placement='top'>
+          <Tooltip title={t(Strings.copy_link)} placement="top">
             <Button onClick={copyLinkHandler}>
               <CopyIcon fill={colors.secondLevelText} />
             </Button>
           </Tooltip>
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-            <Tooltip title={t(Strings.preview)} placement='top'>
+            <Tooltip title={t(Strings.preview)} placement="top">
               <Button onClick={previewHandler}>
                 <NewtabOutlined color={colors.secondLevelText} />
               </Button>
             </Tooltip>
-            <Tooltip title={t(Strings.share_qr_code_tips)} placement='top'>
+            <Tooltip title={t(Strings.share_qr_code_tips)} placement="top">
               <Button onClick={() => setShareCodeVisible(true)}>
                 <ShareQrCodeIcon fill={colors.secondLevelText} />
               </Button>
@@ -78,16 +78,8 @@ export const ShareLink: React.FC<IShareLinkProps> = (props) => {
           </ComponentDisplay>
         </ButtonGroup>
       </div>
-      {
-        shareCodeVisible &&
-        <Modal
-          className={styles.shareCodeModal}
-          closable={false}
-          footer={null}
-          visible
-          centered
-          onCancel={() => setShareCodeVisible(false)}
-        >
+      {shareCodeVisible && (
+        <Modal className={styles.shareCodeModal} closable={false} footer={null} visible centered onCancel={() => setShareCodeVisible(false)}>
           <ShareQrCode
             url={`${shareHost}${shareSettings.shareId}`}
             user={userInfo?.memberName ?? ''}
@@ -95,7 +87,7 @@ export const ShareLink: React.FC<IShareLinkProps> = (props) => {
             onClose={() => setShareCodeVisible(false)}
           />
         </Modal>
-      }
+      )}
     </>
   );
 };

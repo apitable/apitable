@@ -9,7 +9,7 @@ import styles from './styles.module.less';
 import { EMOJI_SIZE } from '../../catalog/tree/tree';
 import classNames from 'classnames';
 import { EmojiPicker } from 'pc/components/common/emoji_picker';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
 
 interface IFormateRatingProps {
@@ -47,11 +47,7 @@ export const FormateRating: React.FC<IFormateRatingProps> = (props: IFormateRati
       <div className={styles.horizontalItem}>
         <div className={styles.horizontalItemTitle}>{t(Strings.icon_setting)}</div>
         <EmojiPicker onSelect={onSelect}>
-          <Button
-            style={btnStyle}
-            className={styles.emojiBtn}
-            suffixIcon={<ArrowIcon width={16} height={16} fill={colors.fourthLevelText} />}
-          >
+          <Button style={btnStyle} className={styles.emojiBtn} suffixIcon={<ArrowIcon width={16} height={16} fill={colors.fourthLevelText} />}>
             <Emoji emoji={props.currentField.property.icon} set="apple" size={EMOJI_SIZE} />
           </Button>
         </EmojiPicker>

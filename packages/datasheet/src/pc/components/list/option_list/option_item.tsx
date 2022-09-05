@@ -1,7 +1,7 @@
 import { ExecuteResult, ICollaCommandExecuteResult, IFieldProperty, ISelectFieldOption, Strings, t } from '@vikadata/core';
 import classNames from 'classnames';
 import { produce } from 'immer';
-import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker/color_picker';
+import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
 import { notifyWithUndo } from 'pc/components/common/notify';
 import { OptionTag } from './option_tag';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
@@ -25,13 +25,7 @@ interface IOptionItem {
 }
 
 const OptionItemBase: React.FC<IOptionItem> = props => {
-  const {
-    curOption,
-    getRealIndexOfOptions,
-    setCurrentField,
-    dragOption,
-    fieldEditable,
-  } = props;
+  const { curOption, getRealIndexOfOptions, setCurrentField, dragOption, fieldEditable } = props;
   const colors = useThemeColors();
   const deleteItem = (optionId: string): ICollaCommandExecuteResult<{}> => {
     const trulyIndex = getRealIndexOfOptions && getRealIndexOfOptions(optionId);
@@ -43,9 +37,7 @@ const OptionItemBase: React.FC<IOptionItem> = props => {
     });
   };
 
-  const setOptionProperty = (
-    optionIndex: number, propertyName: string, newValue: number | string
-  ): ICollaCommandExecuteResult<{}> => {
+  const setOptionProperty = (optionIndex: number, propertyName: string, newValue: number | string): ICollaCommandExecuteResult<{}> => {
     return setCurrentField!(field => {
       return produce(field, draft => {
         draft.property.options[optionIndex][propertyName] = newValue;
@@ -99,14 +91,11 @@ const OptionItemBase: React.FC<IOptionItem> = props => {
       onMouseDown={onDragHandleMouseDown}
       onMouseUp={onDragHandleMouseUp}
     >
-      <DragOutlined size={10} color={colors.thirdLevelText}/>
+      <DragOutlined size={10} color={colors.thirdLevelText} />
     </div>
   ));
 
-  const showPickerAndDragBtn = (
-    fieldEditable
-    && dragOption
-  );
+  const showPickerAndDragBtn = fieldEditable && dragOption;
 
   return (
     <div className={styles.displayListItem}>
@@ -115,12 +104,7 @@ const OptionItemBase: React.FC<IOptionItem> = props => {
       <div className={styles.colorReview}>
         {showPickerAndDragBtn && (
           <div className={styles.pickerAdapter}>
-            <ColorPicker
-              showRenameInput
-              onChange={onOptionChange}
-              option={curOption}
-              mask
-            />
+            <ColorPicker showRenameInput onChange={onOptionChange} option={curOption} mask />
           </div>
         )}
         <OptionTag option={curOption} />
@@ -129,4 +113,4 @@ const OptionItemBase: React.FC<IOptionItem> = props => {
   );
 };
 
-export const OptionItem = React.memo((OptionItemBase));
+export const OptionItem = React.memo(OptionItemBase);

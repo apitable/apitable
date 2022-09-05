@@ -1,12 +1,10 @@
 import { useThemeColors } from '@vikadata/components';
-import {
-  AutoTestID, Events, findNode, IReduxState, ITemplateDirectory, Navigation, Player, Selectors, Settings, StoreActions,
-} from '@vikadata/core';
+import { AutoTestID, Events, findNode, IReduxState, ITemplateDirectory, Navigation, Player, Selectors, Settings, StoreActions } from '@vikadata/core';
 import { useMount, useRequest, useUnmount } from 'ahooks';
 import { openTryoutSku } from 'dingtalk-design-libs';
 import dd from 'dingtalk-jsapi';
 import { Loading } from 'pc/components/common';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { CommonSide } from 'pc/components/common_side';
 import { DashboardPanel } from 'pc/components/dashboard_panel';
 import { DataSheetPane } from 'pc/components/datasheet_pane';
@@ -24,9 +22,7 @@ import styles from './style.module.less';
 export const TemplateDetail: FC = () => {
   const colors = useThemeColors();
   const { sideBarVisible: _sideBarVisible } = useSideBarVisible();
-  const {
-    datasheetId, folderId, templateId, categoryId, formId, dashboardId, mirrorId,
-  } = useSelector((state: IReduxState) => state.pageParams);
+  const { datasheetId, folderId, templateId, categoryId, formId, dashboardId, mirrorId } = useSelector((state: IReduxState) => state.pageParams);
   const spaceId = useSelector(state => state.space.activeId);
   const activeNodeId = useSelector((state: IReduxState) => Selectors.getNodeId(state));
   const navigationTo = useNavigation();
@@ -63,7 +59,6 @@ export const TemplateDetail: FC = () => {
     if (templateId && categoryId !== 'tpcprivate') {
       dispatch(StoreActions.fetchMarketplaceApps(Settings.template_space_id.value));
     }
-
   }, [templateId, getTemplateDirectory, categoryId, dispatch, spaceId]);
 
   useEffect(() => {
@@ -124,24 +119,26 @@ export const TemplateDetail: FC = () => {
       corpId,
       appId: appId ? Number(appId) : undefined,
       token: purchaseToken,
-    }).then((res: any) => {
-      const { action, corpId } = res;
+    })
+      .then((res: any) => {
+        const { action, corpId } = res;
 
-      if (action === 'ok') {
-        const url = new URL(window.location.origin);
+        if (action === 'ok') {
+          const url = new URL(window.location.origin);
 
-        url.pathname = '/user/dingtalk/social_bind_space';
-        url.searchParams.set('corpId', corpId);
-        url.searchParams.set('suiteId', '19704002');
-        url.searchParams.set('ddtab', 'true');
+          url.pathname = '/user/dingtalk/social_bind_space';
+          url.searchParams.set('corpId', corpId);
+          url.searchParams.set('suiteId', '19704002');
+          url.searchParams.set('ddtab', 'true');
 
-        if (isMobile) {
-          dd.biz.util.openLink({ url: url.href }).then(() => dd.biz.navigation.close({}));
-        } else {
-          window.location.href = url.href;
+          if (isMobile) {
+            dd.biz.util.openLink({ url: url.href }).then(() => dd.biz.navigation.close({}));
+          } else {
+            window.location.href = url.href;
+          }
         }
-      }
-    }).catch((err) => {});
+      })
+      .catch(err => {});
   };
 
   const MainComponent = () => {
@@ -150,15 +147,8 @@ export const TemplateDetail: FC = () => {
     }
 
     return (
-      <div
-        className={styles.right}
-        style={{ borderLeft: !sideBarVisible ? `16px solid ${colors.blackBlue[900]}` : '' }}
-        onClick={openSku}
-      >
-        <div
-          className={styles.content}
-          style={{ pointerEvents: isSkuPage ? 'none' : 'auto' }}
-        >
+      <div className={styles.right} style={{ borderLeft: !sideBarVisible ? `16px solid ${colors.blackBlue[900]}` : '' }} onClick={openSku}>
+        <div className={styles.content} style={{ pointerEvents: isSkuPage ? 'none' : 'auto' }}>
           {templateDirectory && getComponent()}
         </div>
       </div>
@@ -178,20 +168,13 @@ export const TemplateDetail: FC = () => {
           allowResize={sideBarVisible}
           resizerStyle={{ backgroundColor: colors.blackBlue[900] }}
         >
-          {
-            isSkuPage ?
-              <div /> :
-              <CommonSide />
-          }
+          {isSkuPage ? <div /> : <CommonSide />}
           {MainComponent()}
         </SplitPane>
       </ComponentDisplay>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <div className={styles.mobile}>
-          {MainComponent()}
-        </div>
+        <div className={styles.mobile}>{MainComponent()}</div>
       </ComponentDisplay>
     </div>
   );
 };
-

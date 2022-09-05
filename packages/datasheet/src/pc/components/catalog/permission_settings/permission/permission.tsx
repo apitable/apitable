@@ -10,7 +10,7 @@ import styles from './style.module.less';
 import { useDispatch, useSelector } from 'react-redux';
 import { MembersDetail } from './members_detail';
 import { UnitList } from './unit_list';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { permissionMenuData } from 'pc/utils';
 import { ChevronRightOutlined } from '@vikadata/icons';
 import { Skeleton, IOption, Switch, Typography, useThemeColors } from '@vikadata/components';
@@ -151,7 +151,7 @@ export const Permission: FC<IPermissionSettingProps> = ({ data }) => {
       Modal.confirm({
         title: isAppointMode ? t(Strings.permission_switch_to_superior) : t(Strings.permission_switch_specified),
         content: isAppointMode ? t(Strings.permission_switched_inherit_superior) : t(Strings.permission_switched_reallocate),
-        onOk: toggleMode
+        onOk: toggleMode,
       });
       return;
     }
@@ -172,7 +172,7 @@ export const Permission: FC<IPermissionSettingProps> = ({ data }) => {
   return (
     <div className={styles.permission}>
       {/* <div className={styles.mainContainer}> */}
-      {nodeAssignable &&
+      {nodeAssignable && (
         <div className={styles.mainWrapper}>
           {/* 切换指定模式的按钮 */}
           <div className={styles.toggleSwitchWrapper}>
@@ -180,9 +180,10 @@ export const Permission: FC<IPermissionSettingProps> = ({ data }) => {
               <Popconfirm
                 overlayClassName={styles.modTip}
                 title={isAppointMode ? t(Strings.permission_switch_to_superior) : t(Strings.permission_switch_specified)}
-                content={<Typography variant="body4" color={colors.thirdLevelText}>
-                  {isAppointMode ? t(Strings.permission_switched_inherit_superior) : t(Strings.permission_switched_reallocate)}
-                </Typography>
+                content={
+                  <Typography variant="body4" color={colors.thirdLevelText}>
+                    {isAppointMode ? t(Strings.permission_switched_inherit_superior) : t(Strings.permission_switched_reallocate)}
+                  </Typography>
                 }
                 visible={visible}
                 onVisibleChange={visible => onVisibleChange(visible, true)}
@@ -202,25 +203,22 @@ export const Permission: FC<IPermissionSettingProps> = ({ data }) => {
             </Typography>
           </div>
 
-          {isAppointMode &&
-            <UnitPermissionSelect
-              classNames={styles.permissionSelect}
-              permissionList={optionData}
-              onSubmit={onSubmit}
-            />
-          }
+          {isAppointMode && <UnitPermissionSelect classNames={styles.permissionSelect} permissionList={optionData} onSubmit={onSubmit} />}
         </div>
-      }
+      )}
       {/* 当前权限的描述 */}
       <div className={styles.tipContainer}>
         <Typography variant="body4" className={styles.tip} color={colors.thirdLevelText}>
           {t(isAppointMode ? Strings.appoint_permission_tip : Strings.inherit_permission_tip)}
         </Typography>
-        {!isMobile && <div className={styles.viewByPersonBtn} onClick={() => toggleIsMemberDetail()}>
-          <Typography variant="body4" color={colors.thirdLevelText}>{t(Strings.view_by_person)}</Typography>
-          <ChevronRightOutlined color={colors.fourthLevelText} />
-        </div>
-        }
+        {!isMobile && (
+          <div className={styles.viewByPersonBtn} onClick={() => toggleIsMemberDetail()}>
+            <Typography variant="body4" color={colors.thirdLevelText}>
+              {t(Strings.view_by_person)}
+            </Typography>
+            <ChevronRightOutlined color={colors.fourthLevelText} />
+          </div>
+        )}
       </div>
       <div className={styles.scrollContainer}>
         <UnitList
@@ -233,15 +231,7 @@ export const Permission: FC<IPermissionSettingProps> = ({ data }) => {
           readonly={!nodeAssignable || !isAppointMode}
         />
       </div>
-      {
-        isMemberDetail &&
-        (
-          <MembersDetail
-            data={roleList}
-            onCancel={toggleIsMemberDetail}
-          />
-        )
-      }
+      {isMemberDetail && <MembersDetail data={roleList} onCancel={toggleIsMemberDetail} />}
     </div>
   );
 };

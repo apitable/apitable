@@ -3,8 +3,18 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { IEditor } from 'pc/components/editors/interface';
 import debounce from 'lodash/debounce';
-import { IField, INumberField, IPercentField, ICurrencyField,
-  Selectors, t, Strings, FieldType, SymbolAlign, INumberFieldProperty, DefaultCommaStyle
+import {
+  IField,
+  INumberField,
+  IPercentField,
+  ICurrencyField,
+  Selectors,
+  t,
+  Strings,
+  FieldType,
+  SymbolAlign,
+  INumberFieldProperty,
+  DefaultCommaStyle,
 } from '@vikadata/core';
 import styles from './styles.module.less';
 import { Select, Switch } from '@vikadata/components';
@@ -12,7 +22,7 @@ import { SelectValue } from 'antd/lib/select';
 import { NumberEditor } from 'pc/components/editors/number_editor';
 import { Input } from 'antd';
 import { Divider } from 'pc/components/common/divider';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
 
 interface IFormateNumberProps {
@@ -51,44 +61,49 @@ export const FormateNumber: React.FC<IFormateNumberProps> = (props: IFormateNumb
     const { symbolAlign, symbol, commaStyle } = property as INumberFieldProperty;
 
     const getOptions = (symbol, symbolAlign, commaStyle?: string) => {
-      return optionData.map((item) => {
+      return optionData.map(item => {
         let label: React.ReactNode = item.label;
         if (commaStyle) {
           label = (label as string).replace('1', `1${DefaultCommaStyle}000`);
         }
         switch (symbolAlign) {
           case SymbolAlign.left:
-            label = <div className={styles.formatItemWrap}>
-              <div className={styles.formatItemSymbol}>{symbol}</div>
-              <div className={styles.formatItemPrecision}>{label}</div>
-            </div>;
+            label = (
+              <div className={styles.formatItemWrap}>
+                <div className={styles.formatItemSymbol}>{symbol}</div>
+                <div className={styles.formatItemPrecision}>{label}</div>
+              </div>
+            );
             break;
           case SymbolAlign.right:
-            label = <div className={styles.formatItemWrap} data-align="right">
-              {label} {symbol}
-            </div>;
+            label = (
+              <div className={styles.formatItemWrap} data-align="right">
+                {label} {symbol}
+              </div>
+            );
             break;
           default:
-            label = <div className={styles.formatItemWrap} data-align="default">
-              <div className={styles.formatItemSymbol}>{symbol}</div>
-              <div className={styles.formatItemPrecision}>{label}</div>
-            </div>;
+            label = (
+              <div className={styles.formatItemWrap} data-align="default">
+                <div className={styles.formatItemSymbol}>{symbol}</div>
+                <div className={styles.formatItemPrecision}>{label}</div>
+              </div>
+            );
             break;
         }
         return { value: item.value, label };
       });
     };
-    
+
     if (type === FieldType.Number) {
       return getOptions(symbol, SymbolAlign.right, commaStyle);
     }
-    
+
     if (type === FieldType.Currency || symbol) {
       return getOptions(symbol, symbolAlign);
     }
 
     return optionData;
-
   }, [property, type]);
 
   useEffect(() => {
@@ -104,7 +119,7 @@ export const FormateNumber: React.FC<IFormateNumberProps> = (props: IFormateNumb
       ...currentField,
       property: {
         ...currentField.property,
-        symbolAlign: (value as number),
+        symbolAlign: value as number,
       } as any,
     });
   };
@@ -114,7 +129,7 @@ export const FormateNumber: React.FC<IFormateNumberProps> = (props: IFormateNumb
       ...currentField,
       property: {
         ...currentField.property,
-        precision: (value as number),
+        precision: value as number,
       } as any,
     });
   };
@@ -124,12 +139,12 @@ export const FormateNumber: React.FC<IFormateNumberProps> = (props: IFormateNumb
       ...currentField,
       property: {
         ...currentField.property,
-        symbol: (e.target.value as string),
+        symbol: e.target.value as string,
       } as any,
     });
   };
 
-  const handleChangeNumberFieldSymbol = (data) => {
+  const handleChangeNumberFieldSymbol = data => {
     setCurrentField({
       ...currentField,
       property: {
@@ -144,7 +159,7 @@ export const FormateNumber: React.FC<IFormateNumberProps> = (props: IFormateNumb
       ...currentField,
       property: {
         ...currentField.property,
-        defaultValue: (value as string),
+        defaultValue: value as string,
       } as any,
     });
   }, 500);
@@ -168,24 +183,13 @@ export const FormateNumber: React.FC<IFormateNumberProps> = (props: IFormateNumb
   const precisionSelect = (
     <>
       <div className={styles.sectionTitle}>
-        {
-          currentField.type === FieldType.Percent
-            ? t(Strings.currency_field_configuration_precision)
-            : t(Strings.number_field_format)
-        }
-        {
-          currentField.type === FieldType.Number
-          && <div className={styles.commaStyleSwitch}>
-            <Switch
-              size="small"
-              checked={Boolean(currentField.property.commaStyle)}
-              onChange={handleChangeNumberFieldSymbol}
-            />
-            <span className={styles.commaStyleText}>
-              {t(Strings.comma_style)}
-            </span>
+        {currentField.type === FieldType.Percent ? t(Strings.currency_field_configuration_precision) : t(Strings.number_field_format)}
+        {currentField.type === FieldType.Number && (
+          <div className={styles.commaStyleSwitch}>
+            <Switch size="small" checked={Boolean(currentField.property.commaStyle)} onChange={handleChangeNumberFieldSymbol} />
+            <span className={styles.commaStyleText}>{t(Strings.comma_style)}</span>
           </div>
-        }
+        )}
       </div>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <Select
@@ -197,11 +201,7 @@ export const FormateNumber: React.FC<IFormateNumberProps> = (props: IFormateNumb
         />
       </ComponentDisplay>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <MobileSelect
-          defaultValue={currentField.property.precision}
-          optionData={formatOptions}
-          onChange={value => handleSelectChange({ value })}
-        />
+        <MobileSelect defaultValue={currentField.property.precision} optionData={formatOptions} onChange={value => handleSelectChange({ value })} />
       </ComponentDisplay>
     </>
   );
@@ -213,14 +213,14 @@ export const FormateNumber: React.FC<IFormateNumberProps> = (props: IFormateNumb
         <Select
           triggerCls={styles.customSelect}
           dropdownMatchSelectWidth={false}
-          value={(currentField as unknown as ICurrencyField).property.symbolAlign || 0}
+          value={((currentField as unknown) as ICurrencyField).property.symbolAlign || 0}
           onSelected={handleChangeSymbolAlign}
           options={symbolAlignOptions}
         />
       </ComponentDisplay>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <MobileSelect
-          defaultValue={(currentField as unknown as ICurrencyField).property.symbolAlign || 0}
+          defaultValue={((currentField as unknown) as ICurrencyField).property.symbolAlign || 0}
           optionData={symbolAlignOptions}
           onChange={value => handleChangeSymbolAlign({ value })}
         />
@@ -230,41 +230,33 @@ export const FormateNumber: React.FC<IFormateNumberProps> = (props: IFormateNumb
 
   return (
     <div>
-      {currentField.type !== FieldType.Percent &&
-        (
-          <div className={styles.section}>
-            {
-              isCurrency
-                ? <div className={styles.sectionTitle}>{t(Strings.currency_field_configuration_symbol)}</div>
-                : <div className={styles.sectionTitle}>
-                  {t(Strings.number_field_configuration_symbol)}
-                  <span className={styles.optional}>（{t(Strings.field_configuration_optional)}）</span>
-                </div>
-            }
-            
-            <Input
-              value={currentField.property.symbol}
-              onChange={handleSymbolChange}
-              placeholder={isCurrency ? t(Strings.currency_field_symbol_placeholder) : t(Strings.number_field_symbol_placeholder)}
-            />
-          </div>
-        )
-      }
-      <div className={styles.section}>
-        {
-          isCurrency
-            ? <div className={styles.selectWrap}>
-              <div className={styles.alignSelectWrap}>
-                {symbolAlginSelect}
-              </div>
-              <div className={styles.precisionSelectWrap}>
-                {precisionSelect}
-              </div>
+      {currentField.type !== FieldType.Percent && (
+        <div className={styles.section}>
+          {isCurrency ? (
+            <div className={styles.sectionTitle}>{t(Strings.currency_field_configuration_symbol)}</div>
+          ) : (
+            <div className={styles.sectionTitle}>
+              {t(Strings.number_field_configuration_symbol)}
+              <span className={styles.optional}>（{t(Strings.field_configuration_optional)}）</span>
             </div>
-            : precisionSelect
+          )}
 
-        }
-
+          <Input
+            value={currentField.property.symbol}
+            onChange={handleSymbolChange}
+            placeholder={isCurrency ? t(Strings.currency_field_symbol_placeholder) : t(Strings.number_field_symbol_placeholder)}
+          />
+        </div>
+      )}
+      <div className={styles.section}>
+        {isCurrency ? (
+          <div className={styles.selectWrap}>
+            <div className={styles.alignSelectWrap}>{symbolAlginSelect}</div>
+            <div className={styles.precisionSelectWrap}>{precisionSelect}</div>
+          </div>
+        ) : (
+          precisionSelect
+        )}
       </div>
       <Divider />
       <div className={styles.section}>
@@ -272,11 +264,7 @@ export const FormateNumber: React.FC<IFormateNumberProps> = (props: IFormateNumb
           {t(Strings.default)}
           <span className={styles.optional}>（{t(Strings.field_configuration_optional)}）</span>
         </div>
-        <NumberEditor
-          style={{}}
-          ref={numberRef}
-          {...commonProps}
-        />
+        <NumberEditor style={{}} ref={numberRef} {...commonProps} />
       </div>
     </div>
   );

@@ -5,13 +5,11 @@ import { Modal } from 'antd';
 import { IField, Strings, t } from '@vikadata/core';
 import { store } from 'pc/store';
 import { FormulaModal } from './formula_modal';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import styles from './styles.module.less';
 
-export function openFormulaModal(
-  props: { field: IField, expression: string, onSave?: (exp: string) => void, onClose?: () => void },
-) {
+export function openFormulaModal(props: { field: IField; expression: string; onSave?: (exp: string) => void; onClose?: () => void }) {
   const { field, expression, onSave, onClose } = props;
 
   const container = document.createElement('div');
@@ -32,16 +30,9 @@ export function openFormulaModal(
     onSave && onSave(v);
   };
 
-  const Content: React.ReactElement = (
-    <FormulaModal
-      field={field}
-      expression={expression}
-      onSave={onModalSave}
-      onClose={onModalClose}
-    />
-  );
+  const Content: React.ReactElement = <FormulaModal field={field} expression={expression} onSave={onModalSave} onClose={onModalClose} />;
 
-  ReactDOM.render((
+  ReactDOM.render(
     <Provider store={store}>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <Modal
@@ -60,17 +51,11 @@ export function openFormulaModal(
       </ComponentDisplay>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <Popup
-          visible
-          onClose={onModalClose}
-          height='90%'
-          title={t(Strings.input_formula)}
-        >
+        <Popup visible onClose={onModalClose} height="90%" title={t(Strings.input_formula)}>
           {Content}
         </Popup>
       </ComponentDisplay>
-    </Provider>
-  ),
-  container,
+    </Provider>,
+    container,
   );
 }

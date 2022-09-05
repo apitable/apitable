@@ -1,21 +1,13 @@
 import { ConfigConstant, ILinkField, ILinkIds, Selectors, Strings, t } from '@vikadata/core';
 import classNames from 'classnames';
 import { JumpIconMode, LinkJump } from 'pc/components/common';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { useResponsive } from 'pc/hooks';
 import { useThemeColors, Skeleton } from '@vikadata/components';
 import { stopPropagation, KeyCode } from 'pc/utils';
 
-import {
-  forwardRef,
-  memo,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
+import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
@@ -34,7 +26,7 @@ import { Divider } from 'antd';
 
 export enum LinkEditorModalLayout {
   Center = 'Center', // 居中
-  CenterRight = 'CenterRight' // 中间靠右
+  CenterRight = 'CenterRight', // 中间靠右
 }
 
 export interface ILinkEditorProps extends IBaseEditorProps {
@@ -47,7 +39,7 @@ export interface ILinkEditorProps extends IBaseEditorProps {
   gridCellEditor?: boolean;
   loading?: boolean;
   toggleEditing?: (next?: boolean) => void;
-  layout?: LinkEditorModalLayout
+  layout?: LinkEditorModalLayout;
 }
 
 interface ISearchContentRefProps {
@@ -58,16 +50,37 @@ interface ISearchContentRefProps {
 
 const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> = (props, ref) => {
   const {
-    editing, datasheetId, recordId, field, cellValue, toggleEditing: _toggleEditing, onSave, loading, layout = LinkEditorModalLayout.Center
+    editing,
+    datasheetId,
+    recordId,
+    field,
+    cellValue,
+    toggleEditing: _toggleEditing,
+    onSave,
+    loading,
+    layout = LinkEditorModalLayout.Center,
   } = props;
   const colors = useThemeColors();
-  useImperativeHandle(ref, (): IEditor => ({
-    focus: () => { focus(); },
-    onEndEdit: () => { onEndEdit(); },
-    onStartEdit: () => { return; },
-    setValue: () => { return; },
-    saveValue: () => { return; },
-  }));
+  useImperativeHandle(
+    ref,
+    (): IEditor => ({
+      focus: () => {
+        focus();
+      },
+      onEndEdit: () => {
+        onEndEdit();
+      },
+      onStartEdit: () => {
+        return;
+      },
+      setValue: () => {
+        return;
+      },
+      saveValue: () => {
+        return;
+      },
+    }),
+  );
 
   const editorRef = useRef<{ focus() }>(null);
   const searchContentRef = useRef<ISearchContentRefProps>(null);
@@ -118,13 +131,16 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
     setSearchValue('');
   }, []);
 
-  const saveValue = useCallback((value: string[] | null) => {
-    onSave && onSave(value);
-    if ((field as ILinkField).property.limitSingleRecord) {
-      _toggleEditing && _toggleEditing();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [field, datasheetId, recordId, editing]);
+  const saveValue = useCallback(
+    (value: string[] | null) => {
+      onSave && onSave(value);
+      if ((field as ILinkField).property.limitSingleRecord) {
+        _toggleEditing && _toggleEditing();
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [field, datasheetId, recordId, editing],
+  );
 
   // TODO: 结束编辑的时候，如果不是 cancel 的状态下。并且 rows 里面只有一个元素，需要进行选中操作
   // 目前因为编辑器的调用逻辑问题，暂未实现，重构后再搞
@@ -193,57 +209,48 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
 
   const IconClose = isMobile ? CloseIcon : IconNarrow;
   const PortalChild = (
-    <div
-      className={classNames(style.linkCard, { [style.rightLayout]: layout === LinkEditorModalLayout.CenterRight })}
-      onKeyDown={onKeydown}
-    >
-      <IconClose
-        className={style.iconClose}
-        width={24}
-        height={24}
-        fill={colors.thirdLevelText}
-        onClick={toggleEditing}
-      />
-      {
-        loading
-          ? <div className={style.loadingWrap}>
-            <Skeleton />
-            <Divider />
-            <Skeleton count={2} />
-            <Skeleton count={1} width="61%"/>
-            <Divider />
-            <Skeleton count={2} />
-            <Skeleton count={1} width="61%"/>
-          </div>
-          : <>
-            <h2
-              className={style.linkCardTitle}
-            >
-              {
-                foreignDatasheetId &&
+    <div className={classNames(style.linkCard, { [style.rightLayout]: layout === LinkEditorModalLayout.CenterRight })} onKeyDown={onKeydown}>
+      <IconClose className={style.iconClose} width={24} height={24} fill={colors.thirdLevelText} onClick={toggleEditing} />
+      {loading ? (
+        <div className={style.loadingWrap}>
+          <Skeleton />
+          <Divider />
+          <Skeleton count={2} />
+          <Skeleton count={1} width="61%" />
+          <Divider />
+          <Skeleton count={2} />
+          <Skeleton count={1} width="61%" />
+        </div>
+      ) : (
+        <>
+          <h2 className={style.linkCardTitle}>
+            {foreignDatasheetId && (
               <TComponent
                 tkey={t(Strings.function_associate_sheet)}
                 params={{
-                  datasheetname: <>
+                  datasheetname: (
+                    <>
                       「{<span className={style.linkTitle}>{foreignDatasheetName}</span>}」
-                    <LinkJump mode={JumpIconMode.Badge} foreignDatasheetId={foreignDatasheetId} />
-                  </>,
+                      <LinkJump mode={JumpIconMode.Badge} foreignDatasheetId={foreignDatasheetId} />
+                    </>
+                  ),
                 }}
               />
-              }
-            </h2>
-            <SearchControl
-              ref={editorRef}
-              onValueChange={onValueChange}
-              onSwitcherChange={onSwitcherChange}
-              onCancelClick={onCancelClick}
-              onkeyDown={onSearchKeyDown}
-              placeholder={t(Strings.search_associate_record)}
-              checkboxText={t(Strings.check_selected_record)}
-              checked={onlyShowSelected}
-              value={searchValue}
-            />
-            {editing && <SearchContent
+            )}
+          </h2>
+          <SearchControl
+            ref={editorRef}
+            onValueChange={onValueChange}
+            onSwitcherChange={onSwitcherChange}
+            onCancelClick={onCancelClick}
+            onkeyDown={onSearchKeyDown}
+            placeholder={t(Strings.search_associate_record)}
+            checkboxText={t(Strings.check_selected_record)}
+            checked={onlyShowSelected}
+            value={searchValue}
+          />
+          {editing && (
+            <SearchContent
               ref={searchContentRef}
               field={field}
               cellValue={cellValue}
@@ -252,31 +259,26 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
               focusIndex={focusIndex}
               onChange={saveValue}
               datasheetId={datasheetId}
-            />}
-          </>
-      }
+            />
+          )}
+        </>
+      )}
     </div>
   );
 
   if (isMobile) {
     return (
       <>
-        {editing &&
-          <Popup
-            width='100%'
-            height='90%'
-            visible={editing}
-            onClose={toggleEditing}
-            closable={false}
-            className={style.drawerPopup}
-          >
+        {editing && (
+          <Popup width="100%" height="90%" visible={editing} onClose={toggleEditing} closable={false} className={style.drawerPopup}>
             {PortalChild}
-          </Popup>}
+          </Popup>
+        )}
       </>
     );
   }
 
-  return ReactDOM.createPortal((
+  return ReactDOM.createPortal(
     <div
       style={{
         ...offsetStyle,
@@ -289,17 +291,17 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
       className={classNames(
         style.linkEditorPortalContainer,
         /**
-           * 由于 link editor 是渲染在dom 根节点的，所以需要增加一个 gridCellEditor 标致位。
-           * 是用来给快捷键模块判断是否应该响应快捷键操作，只有在组件作为gridView单元格编辑组件使用的时候，才会生效。
-           */
+         * 由于 link editor 是渲染在dom 根节点的，所以需要增加一个 gridCellEditor 标致位。
+         * 是用来给快捷键模块判断是否应该响应快捷键操作，只有在组件作为gridView单元格编辑组件使用的时候，才会生效。
+         */
         { [ConfigConstant.GIRD_CELL_EDITOR]: props.gridCellEditor },
       )}
       tabIndex={-1}
     >
       {PortalChild}
-    </div>
-  ),
-  document.body);
+    </div>,
+    document.body,
+  );
 };
 
 export const LinkEditor = memo(forwardRef(LinkEditorBase));

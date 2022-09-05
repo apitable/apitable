@@ -24,10 +24,10 @@ import classNames from 'classnames';
 import { pick } from 'lodash';
 import { CloseMiddleOutlined } from '@vikadata/icons';
 import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 
 export interface ICacheType {
-  [key: string]: ActivitySelectType
+  [key: string]: ActivitySelectType;
 }
 
 export interface IChooseComment {
@@ -47,7 +47,7 @@ export interface IActivityPaneProps {
   onClose?: () => void;
 }
 
-export const ActivityPaneBase: React.FC<IActivityPaneProps> = (props) => {
+export const ActivityPaneBase: React.FC<IActivityPaneProps> = props => {
   const { expandRecordId, datasheetId, viewId, mirrorId, fromCurrentDatasheet, style, closable, onClose } = props;
   const colors = useThemeColors();
   const { screenIsAtMost } = useResponsive();
@@ -66,22 +66,26 @@ export const ActivityPaneBase: React.FC<IActivityPaneProps> = (props) => {
   // 当前操作模式
   const unitMap = useSelector(state => Selectors.getUnitMap(state));
   const showRecordHistory = useSelector(state => Selectors.getRecordHistoryStatus(state, datasheetId))!;
-  const [cacheType, setCacheType] = useLocalStorageState<ICacheType>('vika_activity_type', { defaultValue: {}});
-  const handleCacheType = useCallback((type: ActivitySelectType) => {
-    setCacheType({
-      ...cacheType,
-      [datasheetId]: type
-    });
-  }, [cacheType, datasheetId, setCacheType]);
+  const [cacheType, setCacheType] = useLocalStorageState<ICacheType>('vika_activity_type', { defaultValue: {} });
+  const handleCacheType = useCallback(
+    (type: ActivitySelectType) => {
+      setCacheType({
+        ...cacheType,
+        [datasheetId]: type,
+      });
+    },
+    [cacheType, datasheetId, setCacheType],
+  );
   const [selectType, setSelectType] = useState<ActivitySelectType>(() => {
     let curDSType = cacheType && cacheType[datasheetId];
-    if (curDSType === ActivitySelectType.NONE) { // 屏蔽掉 NONE 的情况，因为 ACTIVITY_SELECT_MAP 没有 NONE 对应的值
+    if (curDSType === ActivitySelectType.NONE) {
+      // 屏蔽掉 NONE 的情况，因为 ACTIVITY_SELECT_MAP 没有 NONE 对应的值
       curDSType = ActivitySelectType.All;
     }
     if (!showRecordHistory && curDSType !== ActivitySelectType.Comment) {
       handleCacheType(ActivitySelectType.Comment);
     }
-    return showRecordHistory ? (curDSType || ActivitySelectType.All) : ActivitySelectType.Comment;
+    return showRecordHistory ? curDSType || ActivitySelectType.All : ActivitySelectType.Comment;
   });
 
   useEffect(() => {
@@ -100,27 +104,29 @@ export const ActivityPaneBase: React.FC<IActivityPaneProps> = (props) => {
   };
 
   return (
-    <ActivityContext.Provider value={{
-      replyText, setReplyText,
-      emojis, setEmojis,
-      unitMap, datasheetId,
-      focus, setFocus,
-      replyUnitId, setReplyUnitId,
-      commentReplyMap, updateCommentReplyMap
-    }}>
+    <ActivityContext.Provider
+      value={{
+        replyText,
+        setReplyText,
+        emojis,
+        setEmojis,
+        unitMap,
+        datasheetId,
+        focus,
+        setFocus,
+        replyUnitId,
+        setReplyUnitId,
+        commentReplyMap,
+        updateCommentReplyMap,
+      }}
+    >
       <div className={styles.activityPane} style={style}>
         <div className={styles.paneHeader}>
-          {
-            !closable
-            &&
+          {!closable && (
             <div className={styles.paneTitle}>
               {t(Strings.activity)}
               <Tooltip title={t(Strings.activity_tip)} trigger={'hover'}>
-                <a
-                  href={Settings.recorded_comments.value}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
+                <a href={Settings.recorded_comments.value} rel="noopener noreferrer" target="_blank">
                   <HelpIcon
                     style={{ cursor: 'pointer', verticalAlign: '-0.125em', marginLeft: 4, display: 'inline-block' }}
                     fill={colors.thirdLevelText}
@@ -128,22 +134,24 @@ export const ActivityPaneBase: React.FC<IActivityPaneProps> = (props) => {
                 </a>
               </Tooltip>
             </div>
-          }
+          )}
           <div>
             <Dropdown
               trigger={['click']}
               placement={closable ? 'bottomLeft' : 'bottomRight'}
               className={styles.activitySelect}
               onVisibleChange={visible => setSelectOpen(visible)}
-              overlay={(
+              overlay={
                 <Menu onClick={handleMenuClick}>
-                  {Object.entries(
-                    showRecordHistory ? ACTIVITY_SELECT_MAP : pick(ACTIVITY_SELECT_MAP, ActivitySelectType.Comment)
-                  ).map(([sKey, sValue]) => (
-                    <Menu.Item className={classNames({ active: sKey === selectType })} key={sKey}>{sValue[1]}</Menu.Item>
-                  ))}
+                  {Object.entries(showRecordHistory ? ACTIVITY_SELECT_MAP : pick(ACTIVITY_SELECT_MAP, ActivitySelectType.Comment)).map(
+                    ([sKey, sValue]) => (
+                      <Menu.Item className={classNames({ active: sKey === selectType })} key={sKey}>
+                        {sValue[1]}
+                      </Menu.Item>
+                    ),
+                  )}
                 </Menu>
-              )}
+              }
             >
               <div>
                 {ACTIVITY_SELECT_MAP[selectType][1]}
@@ -153,10 +161,15 @@ export const ActivityPaneBase: React.FC<IActivityPaneProps> = (props) => {
               </div>
             </Dropdown>
           </div>
-          {
-            closable && !isMobile &&
-            <IconButton icon={CloseMiddleOutlined} shape='square' onClick={() => { onClose && onClose(); }} />
-          }
+          {closable && !isMobile && (
+            <IconButton
+              icon={CloseMiddleOutlined}
+              shape="square"
+              onClick={() => {
+                onClose && onClose();
+              }}
+            />
+          )}
         </div>
         <ActivityList
           expandRecordId={expandRecordId}
@@ -169,17 +182,15 @@ export const ActivityPaneBase: React.FC<IActivityPaneProps> = (props) => {
         {selectType !== ActivitySelectType.Changeset && (
           <div className={styles.panelBottom}>
             <div className={styles.dividerLine} />
-            <CommentEditor
-              expandRecordId={expandRecordId}
-              datasheetId={datasheetId}
-              viewId={viewId}
-            />
+            <CommentEditor expandRecordId={expandRecordId} datasheetId={datasheetId} viewId={viewId} />
           </div>
         )}
         <MobileContextMenu
           title={t(Strings.operation)}
           visible={Boolean(chooseComment)}
-          onClose={() => { setChooseComment(undefined); }}
+          onClose={() => {
+            setChooseComment(undefined);
+          }}
           data={[
             [
               {
