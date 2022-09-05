@@ -95,7 +95,7 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
         new FormulaExprParser(lexer, { field: { ...field, id: field.name }, fieldMap: convertedFieldMap, state: store.getState() }).parse();
       setExpError('');
     } catch (e) {
-      setExpError(e.message);
+      setExpError((e as any).message);
     }
   };
 
@@ -136,7 +136,7 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
       exp = expressionTransform(expression, { fieldMap, fieldPermissionMap }, 'id');
     } catch (e) {
       console.error(e);
-      Message.error(e.message);
+      Message.error((e as any).message);
       return;
     }
 
