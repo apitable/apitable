@@ -351,8 +351,9 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
         return;
       }
       // 考虑到可能会有 undefined 的情况，影响后续 min/max 的计算
-      const start = Selectors.getCellValueByGanttDateTimeFieldId(state, snapshot, recordId, startFieldId) || null;
-      const end = Selectors.getCellValueByGanttDateTimeFieldId(state, snapshot, recordId, endFieldId) || null;
+      let start = Selectors.getCellValueByGanttDateTimeFieldId(state, snapshot, recordId, startFieldId) || null;
+      const end = Selectors.getCellValueByGanttDateTimeFieldId(state, snapshot, recordId, endFieldId) || start;
+      start = start ?? end;
       const groupId = getGanttGroupId((row as ILinearRowRecord).groupHeadRecordId, depth - 1);
 
       if (groupCount === 1) setGroupDataMap(dataMap, groupId, start, end);
@@ -874,7 +875,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
         rowIndex = rowsIndexMap.get(`${CellType.Record}_${row.recordId}`);
       }
 
-      if (startTime && endTime) {
+      if (startTime || endTime) {
         cellValueMap[row.recordId] = {
           startTime,
           endTime,
