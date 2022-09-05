@@ -7,6 +7,7 @@ import { Method, navigationToUrl } from 'pc/components/route_manager/use_navigat
 import VersionUpdater from 'pc/components/version_updater';
 import { IScrollOffset, ScrollContext } from 'pc/context';
 import { useNavigatorName } from 'pc/hooks';
+import { useBlackSpace } from 'pc/hooks/use_black_space';
 import { useViewTypeTrack } from 'pc/hooks/use_view_type_track';
 import { ResourceContext, resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
@@ -93,6 +94,7 @@ const RouterProvider = ({ children }) => {
 
   useNavigatorName();
   useViewTypeTrack(); // 视图类型埋点
+  useBlackSpace();
 
   useEffect(() => {
     // 添加请求拦截器
