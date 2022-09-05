@@ -2,7 +2,7 @@ import { FieldType, IFieldMap, Strings, t } from '@vikadata/core';
 import { ChevronDownOutlined } from '@vikadata/icons';
 import { useClickAway } from 'ahooks';
 import classNames from 'classnames';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { FieldList } from 'pc/components/editors/date_time_editor/date_time_alarm/field_select/field_list';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
@@ -19,7 +19,7 @@ interface IFieldSelectProps {
   onChange(ids: string[]): void;
 }
 
-export const FieldSelect: React.FC<IFieldSelectProps> = (props) => {
+export const FieldSelect: React.FC<IFieldSelectProps> = props => {
   const { selectedFieldIds, fieldMap, onChange } = props;
 
   const [visible, setVisible] = useState(false);
@@ -31,45 +31,39 @@ export const FieldSelect: React.FC<IFieldSelectProps> = (props) => {
   // TODO 解决神奇引用筛选面板不关闭问题，临时解决方案，强行关闭
   const refSelect = useRef<HTMLDivElement>(null);
   const refSelectItem = useRef<HTMLDivElement>(null);
-  
+
   useClickAway(() => setVisible(false), [refSelect, refSelectItem], 'click');
 
   const renderPopup = () => {
     return (
       <div ref={refSelectItem}>
-        <FieldList
-          fields={listData}
-          selectedFieldIds={selectedFieldIds}
-          onChange={onChange}
-        />
+        <FieldList fields={listData} selectedFieldIds={selectedFieldIds} onChange={onChange} />
       </div>
     );
   };
 
-  const selectedFieldsValue = <div className={styles.selectedFieldsValue}>
-    {
-      selectedFieldIds.map(fieldId => {
+  const selectedFieldsValue = (
+    <div className={styles.selectedFieldsValue}>
+      {selectedFieldIds.map(fieldId => {
         const field = fieldMap[fieldId];
-        return <div className={styles.value} key={fieldId}>
-          <span className={styles.icon}>{getFieldTypeIcon(field.type, colorVars.thirdLevelText)}</span>
-          {field.name}
-        </div>;
-      })
-    }
-  </div>;
+        return (
+          <div className={styles.value} key={fieldId}>
+            <span className={styles.icon}>{getFieldTypeIcon(field.type, colorVars.thirdLevelText)}</span>
+            {field.name}
+          </div>
+        );
+      })}
+    </div>
+  );
 
   return (
     <div className={styles.select} ref={refSelect}>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <Trigger
           action={['click']}
-          popup={
-            renderPopup()
-          }
+          popup={renderPopup()}
           destroyPopupOnHide
-          popupAlign={
-            { points: ['tl', 'bl'], offset: [0, 8], overflow: { adjustX: true, adjustY: true }}
-          }
+          popupAlign={{ points: ['tl', 'bl'], offset: [0, 8], overflow: { adjustX: true, adjustY: true } }}
           popupVisible={visible}
           onPopupVisibleChange={visible => setVisible(visible)}
           stretch="width,height"

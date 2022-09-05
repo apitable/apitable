@@ -1,12 +1,25 @@
 import { Button, TextButton, useThemeColors } from '@vikadata/components';
 import {
-  expressionTransform, Field, FormulaExprLexer, FormulaExprParser, FormulaFuncType, FunctionExample, Functions, IField, IFunction, IViewColumn,
-  Selectors, Strings, t, Token, TokenType,
+  expressionTransform,
+  Field,
+  FormulaExprLexer,
+  FormulaExprParser,
+  FormulaFuncType,
+  FunctionExample,
+  Functions,
+  IField,
+  IFunction,
+  IViewColumn,
+  Selectors,
+  Strings,
+  t,
+  Token,
+  TokenType,
 } from '@vikadata/core';
 import classNames from 'classnames';
 import Fuse from 'fuse.js';
 import { Message } from 'pc/components/common';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { useSelectIndex } from 'pc/hooks';
 import { store } from 'pc/store';
@@ -47,7 +60,9 @@ interface IFunctionItem {
 }
 
 // TODO：这里先做 ISERROR 的兼容，刷完用户数据后统一删掉
-const FunctionsArray = Array.from(Functions).map(item => item[1]).filter(item => item.name !== 'ISERROR');
+const FunctionsArray = Array.from(Functions)
+  .map(item => item[1])
+  .filter(item => item.name !== 'ISERROR');
 export const FormulaModal: React.FC<IFormulaModal> = props => {
   const colors = useThemeColors();
   const { field, expression: initExpression, onClose, onSave } = props;
@@ -55,8 +70,7 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
   const formulaInputEleRef = useRef<HTMLElement>();
   const formulaColorantEleRef = useRef<HTMLElement>();
-  const columns = (useSelector(state => Selectors.getCurrentView(state)!.columns)! as IViewColumn[])
-    .filter(column => column.fieldId !== field.id); // 公式字段不允许选择自己。
+  const columns = (useSelector(state => Selectors.getCurrentView(state)!.columns)! as IViewColumn[]).filter(column => column.fieldId !== field.id); // 公式字段不允许选择自己。
   const [expError, setExpError] = useState<string>('');
   const [tokens, setTokens] = useState<Token[]>();
   const [activeToken, setActiveToken] = useState<Token>();
@@ -77,11 +91,10 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
       for (const key in fieldMap) {
         convertedFieldMap[fieldMap[key].name] = fieldMap[key];
       }
-      lexer.matches.length && new FormulaExprParser(
-        lexer, { field: { ...field, id: field.name }, fieldMap: convertedFieldMap, state: store.getState() },
-      ).parse();
+      lexer.matches.length &&
+        new FormulaExprParser(lexer, { field: { ...field, id: field.name }, fieldMap: convertedFieldMap, state: store.getState() }).parse();
       setExpError('');
-    } catch (e: any) {
+    } catch (e) {
       setExpError(e.message);
     }
   };
@@ -121,7 +134,7 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
     let exp = expression.trim();
     try {
       exp = expressionTransform(expression, { fieldMap, fieldPermissionMap }, 'id');
-    } catch (e: any) {
+    } catch (e) {
       console.error(e);
       Message.error(e.message);
       return;
@@ -160,10 +173,10 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
     key = type === 'field' ? key.replace(/(\{|\})/g, '\\$0') : key;
     if (activeToken) {
       const activeTokenLength = activeToken.value.length;
-      const start = activeNodeIndex > 0 ? cursorOffset - activeTokenLength: activeToken.index;
-      insertText((type === 'field' ? `{${key}}` : `${key}()`), start, activeTokenLength);
+      const start = activeNodeIndex > 0 ? cursorOffset - activeTokenLength : activeToken.index;
+      insertText(type === 'field' ? `{${key}}` : `${key}()`, start, activeTokenLength);
     } else {
-      insertText((type === 'field' ? `{${key}}` : `${key}()`), cursorOffset);
+      insertText(type === 'field' ? `{${key}}` : `${key}()`, cursorOffset);
     }
   };
 
@@ -183,7 +196,7 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
     if (!tokens) {
       return;
     }
-    return tokens.find(token => token.index < index && (token.index + token.value.length) >= index);
+    return tokens.find(token => token.index < index && token.index + token.value.length >= index);
   };
 
   const onSelectStart = () => {
@@ -209,12 +222,10 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
 
     const token = findTokenByIndex(anchorOffset);
 
-    if (token && (
-      token.type === TokenType.Value ||
-      token.type === TokenType.PureValue ||
-      token.type === TokenType.Call ||
-      token.type === TokenType.Number
-    )) {
+    if (
+      token &&
+      (token.type === TokenType.Value || token.type === TokenType.PureValue || token.type === TokenType.Call || token.type === TokenType.Number)
+    ) {
       setActiveToken(findTokenByIndex(anchorOffset));
     } else {
       setActiveToken(undefined);
@@ -254,8 +265,7 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
       [FormulaFuncType.Record]: { title: t(Strings.record_functions), list: [], prevCount: 0, sortIdx: -1 },
     };
     // 经过筛选后的 Function List
-    const filteredList = searchValue ?
-      fuse.search(searchValue) : FunctionsArray.map((c, i) => ({ item: c, refIndex: i }));
+    const filteredList = searchValue ? fuse.search(searchValue) : FunctionsArray.map((c, i) => ({ item: c, refIndex: i }));
     // 符合最终顺序的 Function List
     const finalFilteredList: any = [];
     filteredList.forEach((res, index) => {
@@ -349,12 +359,15 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
       <h2 className={styles.title}>{t(Strings.pick_field_or_function)}</h2>
       <div className={styles.pickerContainer}>
         <div className={styles.leftPane} ref={leftPaneRef}>
-          {!filteredFields.length && !filteredFunctions.filteredList.length &&
-            <div className={styles.listGroup}><h3>{t(Strings.no_search_result)}</h3></div>}
-          {filteredFields.length > 0 && <div className={styles.listGroup}>
-            <h3>{t(Strings.field)}</h3>
-            {
-              (filteredFields as any).map((result, index) => {
+          {!filteredFields.length && !filteredFunctions.filteredList.length && (
+            <div className={styles.listGroup}>
+              <h3>{t(Strings.no_search_result)}</h3>
+            </div>
+          )}
+          {filteredFields.length > 0 && (
+            <div className={styles.listGroup}>
+              <h3>{t(Strings.field)}</h3>
+              {(filteredFields as any).map((result, index) => {
                 const fld = result.item;
                 const active = suggestId === fld.id && suggestType === 'field';
                 return (
@@ -365,56 +378,47 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
                     className={classNames(styles.listItem, active && styles.active, active && 'active')}
                   >
                     {<ValueTypeIcon valueType={Field.bindModel(fld).basicValueType} />}
-                    <span className={styles.fieldName}>
-                      {fld.name}
-                    </span>
+                    <span className={styles.fieldName}>{fld.name}</span>
                     {<FieldPermissionLock fieldId={fld.id} />}
                   </div>
                 );
-              })
-            }
-          </div>}
-          {filteredFunctions.filteredList.length > 0 && <div className={styles.listGroup}>
-            {
-              filteredFunctions.formatList.map(result => {
+              })}
+            </div>
+          )}
+          {filteredFunctions.filteredList.length > 0 && (
+            <div className={styles.listGroup}>
+              {filteredFunctions.formatList.map(result => {
                 return (
                   <div key={result.title}>
                     <h3>{result.title}</h3>
-                    {
-                      result.list.map((fn, index) => {
-                        const name = fn.name;
-                        const active = suggestId === name && suggestType === 'func';
-                        return (
-                          <div
-                            key={name}
-                            // 设置 currentIndex 值为从 维格列名 开始到当前 Function 的索引值
-                            onMouseEnter={() => setCurrentIndex(filteredFields.length + result.prevCount + index)}
-                            onClick={() => onItemClick(name, 'func')}
-                            className={classNames(styles.listItem, active && styles.active, active && 'active')}
-                          >
-                            {<ValueTypeIcon valueType={fn.func.getReturnType()} />}
-                            <span className={styles.fieldName}>
-                              {name}
-                            </span>
-                          </div>
-                        );
-                      })
-                    }
+                    {result.list.map((fn, index) => {
+                      const name = fn.name;
+                      const active = suggestId === name && suggestType === 'func';
+                      return (
+                        <div
+                          key={name}
+                          // 设置 currentIndex 值为从 维格列名 开始到当前 Function 的索引值
+                          onMouseEnter={() => setCurrentIndex(filteredFields.length + result.prevCount + index)}
+                          onClick={() => onItemClick(name, 'func')}
+                          className={classNames(styles.listItem, active && styles.active, active && 'active')}
+                        >
+                          {<ValueTypeIcon valueType={fn.func.getReturnType()} />}
+                          <span className={styles.fieldName}>{name}</span>
+                        </div>
+                      );
+                    })}
                   </div>
                 );
-              })
-            }
-          </div>}
+              })}
+            </div>
+          )}
         </div>
         <div className={styles.rightPane}>
-          {
-            suggestType === 'func' ?
-              <FormulaGuiding
-                type={'func'}
-                item={(Functions.get(suggestId) || FunctionExample) as IFunction}
-              /> :
-              <FormulaGuiding type={'field'} item={fieldMap[suggestId]} />
-          }
+          {suggestType === 'func' ? (
+            <FormulaGuiding type={'func'} item={(Functions.get(suggestId) || FunctionExample) as IFunction} />
+          ) : (
+            <FormulaGuiding type={'field'} item={fieldMap[suggestId]} />
+          )}
         </div>
       </div>
       <div className={styles.btnGroup}>

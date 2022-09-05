@@ -2,7 +2,7 @@ import { colorVars } from '@vikadata/components';
 import { ConfigConstant, EmojisConfig } from '@vikadata/core';
 import { makeNodeIconComponent } from 'pc/components/catalog/node_context_menu';
 import { Emoji } from 'pc/components/common';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { nodeConfigData } from 'pc/utils';
 import { FC } from 'react';
@@ -34,16 +34,14 @@ export const NodeIcon: FC<INodeIconProps> = ({
   hasChildren = false,
   editable = true,
   actived = false,
-  size = 18
+  size = 18,
 }) => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
   return (
     <EmojiPopover nodeId={nodeId} type={type} iconEditable={editable && !isMobile}>
-      <span className={styles.iconWrapper}>
-        {getNodeIcon(icon, type, { expanded, hasChildren, size, emojiSize: size, actived })}
-      </span>
+      <span className={styles.iconWrapper}>{getNodeIcon(icon, type, { expanded, hasChildren, size, emojiSize: size, actived })}</span>
     </EmojiPopover>
   );
 };
@@ -54,24 +52,40 @@ export const NodeIcon: FC<INodeIconProps> = ({
  * @param type 节点类型
  * @param options 其它参数(size: 默认节点图标的大小，emojiSize：emoji的大小，expanded: 是否是打开状态，hasChildren：是否有子节点)
  */
-export const getNodeIcon = (icon: string | null | undefined, type: ConfigConstant.NodeType,
+export const getNodeIcon = (
+  icon: string | null | undefined,
+  type: ConfigConstant.NodeType,
   options: {
-                              size?: number, emojiSize?: number, expanded?: boolean, hasChildren?: boolean, actived?: boolean,
-                              normalColor?: string, activedColor?: string,
-                            } = {}) => {
+    size?: number;
+    emojiSize?: number;
+    expanded?: boolean;
+    hasChildren?: boolean;
+    actived?: boolean;
+    normalColor?: string;
+    activedColor?: string;
+  } = {},
+) => {
   const {
-    size = 20, emojiSize = 20, expanded, hasChildren = true, actived = false,
-    normalColor = colorVars.fourthLevelText, activedColor = colorVars.primaryColor
+    size = 20,
+    emojiSize = 20,
+    expanded,
+    hasChildren = true,
+    actived = false,
+    normalColor = colorVars.fourthLevelText,
+    activedColor = colorVars.primaryColor,
   } = options;
   if (icon) {
     const url = EmojisConfig[icon]?.url;
-    return (
-      url ?
-        <img src={EmojisConfig[icon]?.url} style={{
+    return url ? (
+      <img
+        src={EmojisConfig[icon]?.url}
+        style={{
           width: emojiSize,
           height: emojiSize,
-        }} /> :
-        <Emoji emoji={icon} size={emojiSize} set="apple" />
+        }}
+      />
+    ) : (
+      <Emoji emoji={icon} size={emojiSize} set="apple" />
     );
   }
   const nodeConfig = nodeConfigData.find(item => item.type === type);

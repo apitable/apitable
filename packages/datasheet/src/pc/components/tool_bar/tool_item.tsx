@@ -2,7 +2,7 @@ import { TextButton, Button } from '@vikadata/components';
 import { useResponsive } from 'pc/hooks';
 import { ReactNode } from 'react';
 import * as React from 'react';
-import { ScreenSize } from '../common/component_display/component_display';
+import { ScreenSize } from '../common/component_display';
 import classNames from 'classnames';
 import styles from './style.module.less';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
@@ -40,7 +40,7 @@ export const ToolItem: React.FC<IToolItemProps> = props => {
       [styles.onlyIcon]: !shouldShowText,
     }),
     disabled,
-    onClick: (e) => {
+    onClick: e => {
       if (showViewLockModal) {
         expandViewLock(activeView.id);
         return;
@@ -63,17 +63,14 @@ export const ToolItem: React.FC<IToolItemProps> = props => {
           flexShrink: isMobile ? 0 : 'initial',
         }}
       >
-        {(isActive) ? (
+        {isActive ? (
           <Button variant="jelly" color="primary" {...buttonProps}>
             {shouldShowText && text}
           </Button>
         ) : (
-          <TextButton {...buttonProps}>
-            {shouldShowText && text}
-          </TextButton>
+          <TextButton {...buttonProps}>{shouldShowText && text}</TextButton>
         )}
       </span>
-
     </WrapperTooltip>
   );
 };

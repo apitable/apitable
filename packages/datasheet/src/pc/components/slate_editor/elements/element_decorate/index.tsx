@@ -13,7 +13,7 @@ import { BUILT_IN_EVENTS } from '../../plugins/withEventBus';
 import styles from './decorate.module.less';
 import { elementIsEmpty } from 'pc/components/slate_editor/helpers/utils';
 import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 
 interface IDecorateProps {
   element: IElement;
@@ -28,143 +28,144 @@ interface IDecorateProps {
   operationStyle?: React.CSSProperties;
 }
 
-const ElementDecorate = React.memo(({
-  children,
-  element,
-  className: propsClassName,
-  style: propsStyle = {},
-  indentProperty = 'paddingLeft',
-  startIndent,
-  indentSpace
-}: IDecorateProps) => {
-  const timer = useRef<null | number>(null);
-  const [imeInputting, setImeInputting] = useState(false);
-  const { i18nText, placeholder, mode } = useContext(EditorContext);
-  const editor = useSlate() as ReactEditor & IEventBusEditor;
-  const elementData = element.data;
-  const isVoid = element.isVoid;
-  const elementType = element.type;
-  const readOnly = useReadOnly();
-  const { screenIsAtLeast } = useResponsive();
-  const isFullMode = mode === 'full' && screenIsAtLeast(ScreenSize.sm);
+const ElementDecorate = React.memo(
+  ({
+    children,
+    element,
+    className: propsClassName,
+    style: propsStyle = {},
+    indentProperty = 'paddingLeft',
+    startIndent,
+    indentSpace,
+  }: IDecorateProps) => {
+    const timer = useRef<null | number>(null);
+    const [imeInputting, setImeInputting] = useState(false);
+    const { i18nText, placeholder, mode } = useContext(EditorContext);
+    const editor = useSlate() as ReactEditor & IEventBusEditor;
+    const elementData = element.data;
+    const isVoid = element.isVoid;
+    const elementType = element.type;
+    const readOnly = useReadOnly();
+    const { screenIsAtLeast } = useResponsive();
+    const isFullMode = mode === 'full' && screenIsAtLeast(ScreenSize.sm);
 
-  const elementEmpty = useMemo(() => elementIsEmpty(element), [element]);
+    const elementEmpty = useMemo(() => elementIsEmpty(element), [element]);
 
-  const algin = useMemo(() => {
-    if (!elementData.align) {
-      return ALIGN.LEFT;
-    }
-    return elementData.align;
-  }, [elementData.align]);
-
-  const indentStyle = useMemo(() => {
-    const style = {} as React.CSSProperties;
-    if (elementData.indent) {
-      style[indentProperty] = elementData.indent * (indentSpace || INDENT_SPACE) + (startIndent ?? 0);
-    }
-    return style;
-  }, [elementData.indent, indentProperty, startIndent, indentSpace]);
-
-  const placeholderVisible = useMemo(() => {
-    try {
-      const elementPath = ReactEditor.findPath(editor, element);
-      const isBasicElement = BASIC_ELEMENT.includes(elementType);
-      const topPath = elementPath[0];
-      const { selection, children } = editor;
-      if (imeInputting || readOnly) {
-        return false;
+    const algin = useMemo(() => {
+      if (!elementData.align) {
+        return ALIGN.LEFT;
       }
-      // 只有一个节点的情况，不管编辑器是否focus都需要显示placeholder
-      if (topPath === 0 && children.length === 1 && elementEmpty && isBasicElement) {
+      return elementData.align;
+    }, [elementData.align]);
+
+    const indentStyle = useMemo(() => {
+      const style = {} as React.CSSProperties;
+      if (elementData.indent) {
+        style[indentProperty] = elementData.indent * (indentSpace || INDENT_SPACE) + (startIndent ?? 0);
+      }
+      return style;
+    }, [elementData.indent, indentProperty, startIndent, indentSpace]);
+
+    const placeholderVisible = useMemo(() => {
+      try {
+        const elementPath = ReactEditor.findPath(editor, element);
+        const isBasicElement = BASIC_ELEMENT.includes(elementType);
+        const topPath = elementPath[0];
+        const { selection, children } = editor;
+        if (imeInputting || readOnly) {
+          return false;
+        }
+        // 只有一个节点的情况，不管编辑器是否focus都需要显示placeholder
+        if (topPath === 0 && children.length === 1 && elementEmpty && isBasicElement) {
+          return true;
+        }
+        // 节点有文本或者不是初始的段落元素，不需要显示
+        if (isVoid || !elementEmpty || elementType !== ElementType.PARAGRAPH || !isFullMode) {
+          return false;
+        }
+        // 没有焦点，或者焦点没有闭合
+        if (!selection || !Range.isCollapsed(selection)) {
+          return false;
+        }
+
+        const match = Editor.nodes(editor, {
+          match: n => !Editor.isEditor(n) && Editor.isBlock(editor, n),
+        });
+
+        if (!match) {
+          return false;
+        }
+        const [[_node]] = match;
+        const node = (_node as unknown) as IElement;
+
+        if ((node.data.align && node.data.align !== ALIGN.LEFT) || node.data.indent) {
+          return false;
+        }
+
+        if (node.type !== ElementType.PARAGRAPH || node._id !== element._id) {
+          return false;
+        }
+
         return true;
-      }
-      // 节点有文本或者不是初始的段落元素，不需要显示
-      if (isVoid || !elementEmpty || elementType !== ElementType.PARAGRAPH || !isFullMode) {
+      } catch (error) {
+        console.log(error);
         return false;
       }
-      // 没有焦点，或者焦点没有闭合
-      if (!selection || !Range.isCollapsed(selection)) {
-        return false;
-      }
-  
-      const match = Editor.nodes(editor, {
-        match: (n) => !Editor.isEditor(n) && Editor.isBlock(editor, n),
-      });
+      //  确定需要editor.selection这个依赖，editor为一个memo的缓存对象一直不变，只有selection会因为光标变化而改变
+      // eslint-disable-next-line
+    }, [isVoid, elementEmpty, elementType, editor, element, editor.selection, imeInputting, isFullMode, readOnly]);
 
-      if (!match) {
-        return false;
+    const placeholderText = useMemo(() => {
+      const elementPath = ReactEditor.findPath(editor, element);
+      const topPath = elementPath[0];
+      // 第一个节点需要优先显示外部传入的placeholder
+      if (topPath === 0) {
+        return placeholder || i18nText.placeholder;
       }
-      const [[_node]] = match;
-      const node = _node as unknown as IElement;
-  
-      if ((node.data.align && node.data.align !== ALIGN.LEFT) || node.data.indent) {
-        return false;
-      }
-  
-      if (node.type !== ElementType.PARAGRAPH || node._id !== element._id) {
-        return false;
-      }
-  
-      return true;
-      
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
-    //  确定需要editor.selection这个依赖，editor为一个memo的缓存对象一直不变，只有selection会因为光标变化而改变
-    // eslint-disable-next-line
-  }, [isVoid, elementEmpty, elementType, editor, element, editor.selection, imeInputting, isFullMode, readOnly]);
+      return i18nText.placeholder;
+    }, [placeholder, element, i18nText.placeholder, editor]);
 
-  const placeholderText = useMemo(() => {
-    const elementPath = ReactEditor.findPath(editor, element);
-    const topPath = elementPath[0];
-    // 第一个节点需要优先显示外部传入的placeholder
-    if (topPath === 0) {
-      return placeholder || i18nText.placeholder;
-    }
-    return i18nText.placeholder;
-  }, [placeholder, element, i18nText.placeholder, editor]);
+    useEffect(() => {
+      return () => {
+        if (timer.current) {
+          window.clearTimeout(timer.current);
+          timer.current = null;
+        }
+      };
+    }, []);
 
-  useEffect(() => {
-    return () => {
-      if (timer.current) {
-        window.clearTimeout(timer.current);
-        timer.current = null;
-      }
+    useEffect(() => {
+      const handleImeInputStart = () => setImeInputting(true);
+      const handleImeInputEnd = () => setImeInputting(false);
+
+      editor.on(BUILT_IN_EVENTS.IME_INPUT_START, handleImeInputStart);
+      editor.on(BUILT_IN_EVENTS.IME_INPUT_END, handleImeInputEnd);
+
+      return () => {
+        editor.off(BUILT_IN_EVENTS.IME_INPUT_START, handleImeInputStart);
+        editor.off(BUILT_IN_EVENTS.IME_INPUT_END, handleImeInputEnd);
+      };
+    }, [editor]);
+
+    const elementProps = {
+      ...children.props,
+      style: { ...indentStyle, ...propsStyle },
+      className: cx(styles.elementDecorate, propsClassName, children.props.className),
+      children: [
+        children.props.children,
+        !readOnly && placeholderVisible && (
+          <span key="placeholder" data-visible={placeholderVisible} className={styles.placeholder} contentEditable={false}>
+            {placeholderText}
+          </span>
+        ),
+      ],
+      'data-element-type': element.type,
+      'data-node-type': element.object,
+      'data-id': element._id,
+      'data-align': algin,
     };
-  }, []);
-
-  useEffect(() => {
-    const handleImeInputStart = () => setImeInputting(true);
-    const handleImeInputEnd = () => setImeInputting(false);
-
-    editor.on(BUILT_IN_EVENTS.IME_INPUT_START, handleImeInputStart);
-    editor.on(BUILT_IN_EVENTS.IME_INPUT_END, handleImeInputEnd);
-
-    return () => {
-      editor.off(BUILT_IN_EVENTS.IME_INPUT_START, handleImeInputStart);
-      editor.off(BUILT_IN_EVENTS.IME_INPUT_END, handleImeInputEnd);
-    };
-  }, [editor]);
-
-  const elementProps = {
-    ...children.props,
-    style: { ...indentStyle, ...propsStyle },
-    className: cx(styles.elementDecorate, propsClassName, children.props.className),
-    children: [
-      children.props.children,
-      !readOnly && placeholderVisible && <span
-        key="placeholder"
-        data-visible={placeholderVisible}
-        className={styles.placeholder}
-        contentEditable={false}>{placeholderText}</span>,
-    ],
-    'data-element-type': element.type,
-    'data-node-type': element.object,
-    'data-id': element._id,
-    'data-align': algin,
-  };
-  return React.cloneElement(children, elementProps);
-});
+    return React.cloneElement(children, elementProps);
+  },
+);
 
 export default ElementDecorate;

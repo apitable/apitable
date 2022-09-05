@@ -3,7 +3,7 @@ import { Strings, t } from '@vikadata/core';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { Loading, LoginCard, MobileSelect, Wrapper } from 'pc/components/common';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import * as React from 'react';
 import { forwardRef, useImperativeHandle, useState } from 'react';
@@ -19,8 +19,8 @@ interface IBindSpaceBase {
   optionData?: IFormatSelectOptionData[] | null;
   err?: React.ReactNode;
   defaultValue?: React.Key;
-  onChange?: ((value: React.Key) => void);
-  onClick?: ((value: React.Key) => void);
+  onChange?: (value: React.Key) => void;
+  onClick?: (value: React.Key) => void;
   // maxCount设置为null或undefined，则出现骨架屏
   maxCount?: number | null;
   type: 1 | 2 | 3;
@@ -29,19 +29,21 @@ export interface IBindSpaceRef {
   setErr: (err?: React.ReactNode) => void;
 }
 const BindSpaceBase = (props: IBindSpaceBase, ref) => {
-  useImperativeHandle(ref, () => ({
-    setErr: (err?: React.ReactNode) => {
-      setSelectErr(err);
-    }
-  } as IBindSpaceRef));
+  useImperativeHandle(
+    ref,
+    () =>
+      ({
+        setErr: (err?: React.ReactNode) => {
+          setSelectErr(err);
+        },
+      } as IBindSpaceRef),
+  );
   const { screenIsAtMost } = useResponsive();
-  const {
-    loading, btnLoading, optionData, err, onClick, maxCount, onChange, type, defaultValue
-  } = props;
+  const { loading, btnLoading, optionData, err, onClick, maxCount, onChange, type, defaultValue } = props;
   const isMobile = screenIsAtMost(ScreenSize.md);
   const [selectErr, setSelectErr] = useState(err);
   const [value, setValue] = useState<React.Key | undefined>(defaultValue);
-  const handleChange = (value) => {
+  const handleChange = value => {
     setValue(value);
     onChange && onChange(value);
   };
@@ -51,27 +53,23 @@ const BindSpaceBase = (props: IBindSpaceBase, ref) => {
     onClick && onClick(value);
   };
   if (loading) return <Loading />;
-  const { logoWithVika, bindSpace: { cardTitle, subTitle, desc }} = SocialPlatformMap[type];
+  const {
+    logoWithVika,
+    bindSpace: { cardTitle, subTitle, desc },
+  } = SocialPlatformMap[type];
   return (
     <Wrapper hiddenLogo className={'center'}>
       <div className={classNames('commonWrapper', styles.bindSpaceWrapper)}>
         <div className={'commonImgWrapper'}>
           <Image src={logoWithVika as string} />
         </div>
-        <LoginCard
-          className={classNames(
-            'commonLoginCardWrapper',
-            styles.bindSpaceCard
-          )}
-        >
+        <LoginCard className={classNames('commonLoginCardWrapper', styles.bindSpaceCard)}>
           <div className={styles.cardTop}>
-            <div className={'commonCardTitle'}>
-              {t(Strings.feishu_bind_space_select_title)}
-            </div>
-            {((!Array.isArray(optionData)) || typeof maxCount !== 'number') ? (
+            <div className={'commonCardTitle'}>{t(Strings.feishu_bind_space_select_title)}</div>
+            {!Array.isArray(optionData) || typeof maxCount !== 'number' ? (
               <div style={{ width: '100%' }}>
                 <Skeleton count={2} />
-                <Skeleton width="61%"/>
+                <Skeleton width="61%" />
               </div>
             ) : isMobile ? (
               <MobileSelect
@@ -98,9 +96,11 @@ const BindSpaceBase = (props: IBindSpaceBase, ref) => {
             {typeof maxCount !== 'number' ? (
               <div style={{ width: '100%' }}>
                 <Skeleton count={2} />
-                <Skeleton width="61%"/>
+                <Skeleton width="61%" />
               </div>
-            ) : <div className={styles.desc}>{desc(maxCount)}</div>}
+            ) : (
+              <div className={styles.desc}>{desc(maxCount)}</div>
+            )}
           </div>
           <Button
             color="primary"

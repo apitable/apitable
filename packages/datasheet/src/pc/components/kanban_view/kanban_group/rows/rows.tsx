@@ -1,6 +1,6 @@
 import { IKanbanViewProperty, IRecord, Selectors } from '@vikadata/core';
 import classNames from 'classnames';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { GRID_RECORD_MENU } from 'pc/components/multi_grid/context_menu/record_menu';
 import { useResponsive } from 'pc/hooks';
 import * as React from 'react';
@@ -55,10 +55,13 @@ export const Card: React.FC<ICardProps> = props => {
       {...provided.draggableProps}
       {...provided.dragHandleProps}
       ref={provided.innerRef}
-      className={classNames({
-        [styles.cardWrapper]: true,
-        [styles.isDragging]: isDragging,
-      }, className)}
+      className={classNames(
+        {
+          [styles.cardWrapper]: true,
+          [styles.isDragging]: isDragging,
+        },
+        className,
+      )}
       style={{
         ...provided.draggableProps.style,
         ...style,
@@ -69,7 +72,9 @@ export const Card: React.FC<ICardProps> = props => {
       }}
       onContextMenu={onContextMenu}
       tabIndex={0}
-      onMouseDown={() => {document.activeElement?.dispatchEvent(new Event('blur'));}}
+      onMouseDown={() => {
+        document.activeElement?.dispatchEvent(new Event('blur'));
+      }}
     >
       <RecordCard
         showEmptyCover={false}
@@ -119,16 +124,17 @@ const RowBase: React.FC<IRowBaseProps> = props => {
 
   return (
     <Draggable draggableId={row.id} index={index} key={row.id} isDragDisabled={!rowSortable}>
-      {provided => <Card
-        provided={provided}
-        row={row}
-        style={style}
-        cardHeight={cardHeight}
-        groupId={groupId}
-        isLastCard={index === rows.length - 1}
-        className={getHidePlaceholderCls()}
-      />
-      }
+      {provided => (
+        <Card
+          provided={provided}
+          row={row}
+          style={style}
+          cardHeight={cardHeight}
+          groupId={groupId}
+          isLastCard={index === rows.length - 1}
+          className={getHidePlaceholderCls()}
+        />
+      )}
     </Draggable>
   );
 };

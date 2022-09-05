@@ -24,7 +24,7 @@ import dd from 'dingtalk-jsapi';
 import { AnimationItem } from 'lottie-web';
 import Image from 'next/image';
 import { Avatar, AvatarSize, ImageCropUpload, Message, Modal, Tooltip } from 'pc/components/common';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { IPreviewShape, ISelectInfo } from 'pc/components/common/image_crop_upload';
 import {
   getSocialWecomUnitName,

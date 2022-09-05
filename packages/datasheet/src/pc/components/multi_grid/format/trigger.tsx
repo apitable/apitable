@@ -1,5 +1,5 @@
 import { useClickAway } from 'ahooks';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import Trigger, { TriggerProps as RcTriggerProps } from 'rc-trigger';
 import * as React from 'react';
@@ -33,11 +33,7 @@ export const MyTrigger: React.FC<ITriggerProps> = memo((props: ITriggerProps) =>
         <Trigger
           action={action}
           mouseLeaveDelay={0.1}
-          popup={
-            <div ref={ref}>
-              {popup}
-            </div>
-          }
+          popup={<div ref={ref}>{popup}</div>}
           destroyPopupOnHide
           // alignPoint
           forceRender
@@ -47,20 +43,18 @@ export const MyTrigger: React.FC<ITriggerProps> = memo((props: ITriggerProps) =>
           }}
           defaultPopupVisible={false}
           popupVisible={showPopup}
-          popupAlign={
-            {
-              points: ['tl', 'tr'],
-              offset: [20, 0],
-              overflow: {
-                adjustX: true,
-                adjustY: true,
-                // alwaysByViewport: true,
-              },
-              useCssRight: true,
-              useCssBottom: true,
-              useCssTransform: true,
-            }
-          }
+          popupAlign={{
+            points: ['tl', 'tr'],
+            offset: [20, 0],
+            overflow: {
+              adjustX: true,
+              adjustY: true,
+              // alwaysByViewport: true,
+            },
+            useCssRight: true,
+            useCssBottom: true,
+            useCssTransform: true,
+          }}
           popupStyle={{
             width: 320, // 占位
             // zIndex: 101,
@@ -68,24 +62,15 @@ export const MyTrigger: React.FC<ITriggerProps> = memo((props: ITriggerProps) =>
           ref={triggerSelfRef}
           {...rest}
         >
-          <div ref={triggerRef}>
-            {trigger}
-          </div>
+          <div ref={triggerRef}>{trigger}</div>
         </Trigger>
       </ComponentDisplay>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <Popup
-          visible={showPopup}
-          onClose={() => setShowPopup(false)}
-          bodyStyle={{ padding: 0 }}
-          height='90%'
-        >
+        <Popup visible={showPopup} onClose={() => setShowPopup(false)} bodyStyle={{ padding: 0 }} height="90%">
           {popup}
         </Popup>
-        <div onClick={() => setShowPopup(true)}>
-          {trigger}
-        </div>
+        <div onClick={() => setShowPopup(true)}>{trigger}</div>
       </ComponentDisplay>
     </>
   );

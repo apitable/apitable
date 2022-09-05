@@ -1,7 +1,7 @@
 import { ConfigConstant, IAttachmentValue, Strings, t } from '@vikadata/core';
 import { Tooltip } from 'antd';
 import classNames from 'classnames';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { ExpandAttachContext } from 'pc/components/expand_record/expand_attachment';
 import { resourceService } from 'pc/resource_service';
 import { useThemeColors } from '@vikadata/components';
@@ -22,7 +22,7 @@ import { uniqBy } from 'lodash';
 export enum UploadTabType {
   Drag = 'Drag',
   Paste = 'Paste',
-  Link = 'Link'
+  Link = 'Link',
 }
 
 const tabConfig = {
@@ -57,10 +57,10 @@ interface IUploadTabProps {
 
 export interface ICommonTabRef {
   focus(): void;
-  trigger?(): void
+  trigger?(): void;
 }
 
-export const UploadTab: React.FC<IUploadTabProps> = (props) => {
+export const UploadTab: React.FC<IUploadTabProps> = props => {
   const colors = useThemeColors();
   const { recordId, fieldId, setUploadList, className, cellValue } = props;
   const uploadManager = resourceService.instance!.uploadManager;
@@ -104,81 +104,60 @@ export const UploadTab: React.FC<IUploadTabProps> = (props) => {
 
   function calcActiveLineOffset() {
     const activeIndex = tabConfig[currentTab].index;
-    return (parseInt(styles.tabWidth, 10) * activeIndex) - (2 * parseInt(styles.activeLineWidth, 10));
+    return parseInt(styles.tabWidth, 10) * activeIndex - 2 * parseInt(styles.activeLineWidth, 10);
   }
 
   return (
     <div className={classNames(styles.uploadTab, className)}>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <nav className={styles.nav}>
-          {
-            Object.entries(tabConfig).map(([id, config]) => {
-              if (!config.open) {
-                return;
-              }
-              const Icon = config.icon;
-              const isActive = id === currentTab;
-              return (
-                <Tooltip title={config.tip} key={id}>
-                  <span
-                    className={styles.tab}
-                    onMouseDown={() => {
-                      setCurrentTab(id as UploadTabType);
-                    }}
-                    onClick={() => {
-                      if (id === UploadTabType.Drag) {
-                        tabInfoRef.current?.trigger?.();
-                        return;
-                      }
-                      tabInfoRef.current?.focus();
-                    }}
-                  >
-                    <Icon width={16} height={16} fill={showActiveIcon(isActive) ? colors.primaryColor : colors.fourthLevelText} />
-                  </span>
-                </Tooltip>
-              );
-            })
-          }
+          {Object.entries(tabConfig).map(([id, config]) => {
+            if (!config.open) {
+              return;
+            }
+            const Icon = config.icon;
+            const isActive = id === currentTab;
+            return (
+              <Tooltip title={config.tip} key={id}>
+                <span
+                  className={styles.tab}
+                  onMouseDown={() => {
+                    setCurrentTab(id as UploadTabType);
+                  }}
+                  onClick={() => {
+                    if (id === UploadTabType.Drag) {
+                      tabInfoRef.current?.trigger?.();
+                      return;
+                    }
+                    tabInfoRef.current?.focus();
+                  }}
+                >
+                  <Icon width={16} height={16} fill={showActiveIcon(isActive) ? colors.primaryColor : colors.fourthLevelText} />
+                </span>
+              </Tooltip>
+            );
+          })}
           <span
             className={classNames({
               [styles.activeLine]: true,
               [styles.grayColor]: isFocus === false,
             })}
-            style={{ transform: `translateX(${calcActiveLineOffset()}px)` }} />
+            style={{ transform: `translateX(${calcActiveLineOffset()}px)` }}
+          />
         </nav>
       </ComponentDisplay>
 
       <div className={styles.uploadTabInfo}>
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-          {
-            currentTab === UploadTabType.Drag &&
-            <UploadZone
-              onUpload={onUpload}
-              recordId={recordId}
-              fieldId={fieldId}
-              cellValue={cellValue}
-              ref={tabInfoRef}
-            />
-          }
-          {
-            currentTab === UploadTabType.Paste &&
-            <UploadPaste
-              onUpload={onUpload}
-              ref={tabInfoRef}
-              fieldId={fieldId}
-              recordId={recordId}
-              cellValue={cellValue}
-            />
-          }
+          {currentTab === UploadTabType.Drag && (
+            <UploadZone onUpload={onUpload} recordId={recordId} fieldId={fieldId} cellValue={cellValue} ref={tabInfoRef} />
+          )}
+          {currentTab === UploadTabType.Paste && (
+            <UploadPaste onUpload={onUpload} ref={tabInfoRef} fieldId={fieldId} recordId={recordId} cellValue={cellValue} />
+          )}
         </ComponentDisplay>
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-          <UploadZone
-            onUpload={onUpload}
-            recordId={recordId}
-            fieldId={fieldId}
-            cellValue={cellValue}
-            ref={tabInfoRef}
-          />
+          <UploadZone onUpload={onUpload} recordId={recordId} fieldId={fieldId} cellValue={cellValue} ref={tabInfoRef} />
         </ComponentDisplay>
       </div>
     </div>

@@ -1,9 +1,23 @@
 import { Divider, IconButton, Loading, useContextMenu, useThemeColors } from '@vikadata/components';
 import {
-  CollaCommandName, ExecuteResult, ResourceType, Selectors, StoreActions, Strings, t, WidgetPackageStatus, WidgetReleaseType
+  CollaCommandName,
+  ExecuteResult,
+  ResourceType,
+  Selectors,
+  StoreActions,
+  Strings,
+  t,
+  WidgetPackageStatus,
+  WidgetReleaseType,
 } from '@vikadata/core';
 import {
-  CloseMiddleOutlined, DragOutlined, MoreOutlined, RefreshOutlined, SettingOutlined, WidgetExpandOutlined, WidgetNarrowOutlined
+  CloseMiddleOutlined,
+  DragOutlined,
+  MoreOutlined,
+  RefreshOutlined,
+  SettingOutlined,
+  WidgetExpandOutlined,
+  WidgetNarrowOutlined,
 } from '@vikadata/icons';
 import { mainWidgetMessage, RuntimeEnv } from '@vikadata/widget-sdk';
 import { WidgetLoadError } from '@vikadata/widget-sdk/dist/initialize_widget';
@@ -33,7 +47,7 @@ import { WIDGET_MENU } from '../widget_list';
 import styles from './style.module.less';
 import { WidgetBlock } from './widget_block';
 import { WidgetIframe } from './widget_iframe';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { WidgetHeaderMobile } from './widget_header';
 import { usePreLoadError } from '../../hooks/use_pre_load_error';
 
@@ -70,11 +84,9 @@ declare global {
   }
 }
 
-export const getWidgetItemWrapperId = (widgetId: string) => (
-  `${widgetId}_WIDGET_ITEM_WRAPPER`
-);
+export const getWidgetItemWrapperId = (widgetId: string) => `${widgetId}_WIDGET_ITEM_WRAPPER`;
 
-export const WidgetItem: React.FC<IWidgetItemProps> = (props) => {
+export const WidgetItem: React.FC<IWidgetItemProps> = props => {
   const { widgetPanelId, widgetId, readonly, isMobile, config, setDevWidgetId, dragging, setDragging } = props;
 
   const widget = useSelector(state => Selectors.getWidget(state, widgetId));
@@ -113,19 +125,14 @@ export const WidgetItem: React.FC<IWidgetItemProps> = (props) => {
     }
     const state = store.getState();
     if (widgetSnapshot?.sourceId?.startsWith('mir')) {
-      dispatch(
-        StoreActions.fetchMirrorPack(widgetSnapshot?.sourceId)
-      );
+      dispatch(StoreActions.fetchMirrorPack(widgetSnapshot?.sourceId));
       return;
     }
     const datasheet = Selectors.getDatasheet(state, widgetBindDatasheetId);
     if (datasheet && !datasheet.isPartOfData) {
       return;
     }
-    dispatch(
-      StoreActions.fetchDatasheet(widgetBindDatasheetId)
-    );
-
+    dispatch(StoreActions.fetchDatasheet(widgetBindDatasheetId));
   }, [widgetBindDatasheetId, dispatch, widgetSnapshot?.sourceId]);
 
   // 关闭 expand widget 的时候去尝试清除setting状态
@@ -145,7 +152,7 @@ export const WidgetItem: React.FC<IWidgetItemProps> = (props) => {
       resourceId: widgetId,
       resourceType: ResourceType.Widget,
       dstId: datasheetId,
-      sourceId: mirrorId
+      sourceId: mirrorId,
     });
     if (result.result === ExecuteResult.Success) {
       dispatch(StoreActions.fetchDatasheet(datasheetId));
@@ -153,25 +160,30 @@ export const WidgetItem: React.FC<IWidgetItemProps> = (props) => {
     setSearchPanelVisible(false);
   };
 
-  const toggleFullscreen = useCallback((state?) => {
-    (state == null || state === true) && (isExpandWidget ? closeWidgetRoute(widgetId) : expandWidgetRoute(widgetId));
-  }, [widgetId, isExpandWidget]);
+  const toggleFullscreen = useCallback(
+    (state?) => {
+      (state == null || state === true) && (isExpandWidget ? closeWidgetRoute(widgetId) : expandWidgetRoute(widgetId));
+    },
+    [widgetId, isExpandWidget],
+  );
 
   const toggleSetting = useCallback(() => {
     (isExpandWidget || isSettingOpened) && toggleSettingOpened();
   }, [isExpandWidget, toggleSettingOpened, isSettingOpened]);
 
   return (
-    <div className={classNames(
-      styles.widgetWrapper,
-      isExpandWidget && styles.widgetWrapperExpand,
-      isFullScreenWidget && styles.widgetWrapperFullscreen,
-      isMobile && styles.widgetWrapperMobile,
-      (isExpandWidget && isMobile) && styles.widgetWrapperExpandMobile
-    )} onClick={() => toggleFullscreen()}>
-      <div className={styles.widgetContainer} onClick={(e) => e.stopPropagation()}>
+    <div
+      className={classNames(
+        styles.widgetWrapper,
+        isExpandWidget && styles.widgetWrapperExpand,
+        isFullScreenWidget && styles.widgetWrapperFullscreen,
+        isMobile && styles.widgetWrapperMobile,
+        isExpandWidget && isMobile && styles.widgetWrapperExpandMobile,
+      )}
+      onClick={() => toggleFullscreen()}
+    >
+      <div className={styles.widgetContainer} onClick={e => e.stopPropagation()}>
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-
           <WidgetHeader
             widgetId={widgetId}
             widgetPanelId={widgetPanelId}
@@ -205,73 +217,69 @@ export const WidgetItem: React.FC<IWidgetItemProps> = (props) => {
             dragging={dragging}
           />
         </ComponentDisplay>
-        <div className={classNames(
-          styles.widgetBody,
-          isExpandWidget && styles.widgetIsExpandBody
-        )}>
-          {
-            widget &&
-            (doNotBindDatasheet ?
-              <div
-                className={styles.mask}
-              >
+        <div className={classNames(styles.widgetBody, isExpandWidget && styles.widgetIsExpandBody)}>
+          {widget &&
+            (doNotBindDatasheet ? (
+              <div className={styles.mask}>
                 <Image src={PngLinkdatasheet} alt="" />
-                {
-                  !linkId &&
-                    <span
-                      onClick={() => {
-                        if (readonly) {
-                          return;
-                        }
-                        setSearchPanelVisible(true);
-                      }}
-                    >
-                      {t(Strings.bind_resource)}
-                    </span>
-                }
-              </div> :
-              (
-                PreLoadError ||
-                  (
-                    sandboxLoad ? (
-                      isCiLowVersion ? <ErrorWidget content={t(Strings.widget_cli_upgrade_tip)} />
-                        : (mainWidgetMessage.enable && (isTestFunctionAvailable || sandbox) ? <WidgetIframe
-                          widgetId={widgetId}
-                          widgetPackageId={widget.widgetPackageId}
-                          ref={widgetLoader}
-                          nodeId={widgetBindDatasheetId!}
-                          isExpandWidget={isExpandWidget}
-                          isSettingOpened={isSettingOpened}
-                          toggleSetting={toggleSetting}
-                          toggleFullscreen={toggleFullscreen}
-                          expandRecord={expandRecordInCenter}
-                          isDevMode={config?.isDevMode}
-                          setDevWidgetId={setDevWidgetId}
-                          dragging={dragging}
-                          key={props.index}
-                          runtimeEnv={runtimeEnv}
-                        /> : <WidgetBlock
-                          widgetId={widgetId}
-                          nodeId={widgetBindDatasheetId!}
-                          isExpandWidget={isExpandWidget}
-                          isSettingOpened={isSettingOpened}
-                          toggleSetting={toggleSetting}
-                          toggleFullscreen={toggleFullscreen}
-                          expandRecord={expandRecordInCenter}
-                          widgetLoader={widgetLoader}
-                          isDevMode={config?.isDevMode}
-                          setDevWidgetId={setDevWidgetId}
-                          runtimeEnv={runtimeEnv}
-                        />
-                        )
-                    ) : <div><Loading /></div>
-                  )
-              )
-            )
-          }
+                {!linkId && (
+                  <span
+                    onClick={() => {
+                      if (readonly) {
+                        return;
+                      }
+                      setSearchPanelVisible(true);
+                    }}
+                  >
+                    {t(Strings.bind_resource)}
+                  </span>
+                )}
+              </div>
+            ) : (
+              PreLoadError ||
+              (sandboxLoad ? (
+                isCiLowVersion ? (
+                  <ErrorWidget content={t(Strings.widget_cli_upgrade_tip)} />
+                ) : mainWidgetMessage.enable && (isTestFunctionAvailable || sandbox) ? (
+                  <WidgetIframe
+                    widgetId={widgetId}
+                    widgetPackageId={widget.widgetPackageId}
+                    ref={widgetLoader}
+                    nodeId={widgetBindDatasheetId!}
+                    isExpandWidget={isExpandWidget}
+                    isSettingOpened={isSettingOpened}
+                    toggleSetting={toggleSetting}
+                    toggleFullscreen={toggleFullscreen}
+                    expandRecord={expandRecordInCenter}
+                    isDevMode={config?.isDevMode}
+                    setDevWidgetId={setDevWidgetId}
+                    dragging={dragging}
+                    key={props.index}
+                    runtimeEnv={runtimeEnv}
+                  />
+                ) : (
+                  <WidgetBlock
+                    widgetId={widgetId}
+                    nodeId={widgetBindDatasheetId!}
+                    isExpandWidget={isExpandWidget}
+                    isSettingOpened={isSettingOpened}
+                    toggleSetting={toggleSetting}
+                    toggleFullscreen={toggleFullscreen}
+                    expandRecord={expandRecordInCenter}
+                    widgetLoader={widgetLoader}
+                    isDevMode={config?.isDevMode}
+                    setDevWidgetId={setDevWidgetId}
+                    runtimeEnv={runtimeEnv}
+                  />
+                )
+              ) : (
+                <div>
+                  <Loading />
+                </div>
+              ))
+            ))}
         </div>
-        {
-          searchPanelVisible && !readonly &&
+        {searchPanelVisible && !readonly && (
           <SearchPanel
             folderId={rootNodeId}
             activeDatasheetId={''}
@@ -280,7 +288,7 @@ export const WidgetItem: React.FC<IWidgetItemProps> = (props) => {
             noCheckPermission
             showMirrorNode
           />
-        }
+        )}
       </div>
     </div>
   );
@@ -303,11 +311,23 @@ interface IWidgetHeaderProps extends IWidgetPropsBase {
   toggleFullScreenWidget: () => void;
 }
 
-export const WidgetHeader: React.FC<IWidgetHeaderProps> = (props) => {
+export const WidgetHeader: React.FC<IWidgetHeaderProps> = props => {
   const {
-    className, widgetId, widgetPanelId, displayMode = 'hover', dragging, setDragging,
-    config = {}, closeModal, isSettingOpened, toggleSetting, toggleWidgetDevMode, widgetLoader, refreshVersion,
-    isFullScreenWidget, toggleFullScreenWidget
+    className,
+    widgetId,
+    widgetPanelId,
+    displayMode = 'hover',
+    dragging,
+    setDragging,
+    config = {},
+    closeModal,
+    isSettingOpened,
+    toggleSetting,
+    toggleWidgetDevMode,
+    widgetLoader,
+    refreshVersion,
+    isFullScreenWidget,
+    toggleFullScreenWidget,
   } = props;
   const colors = useThemeColors();
   const inputRef = React.useRef<Input>(null);
@@ -343,23 +363,28 @@ export const WidgetHeader: React.FC<IWidgetHeaderProps> = (props) => {
             setDevWidgetId(undefined);
             return;
           }
-          widget?.widgetPackageId && setCodeUrl && expandWidgetDevConfig({
-            codeUrl, widgetId, onConfirm: (devUrl) => {
-              devUrl && setCodeUrl(devUrl);
-            }, widgetPackageId: widget.widgetPackageId
-          });
+          widget?.widgetPackageId &&
+            setCodeUrl &&
+            expandWidgetDevConfig({
+              codeUrl,
+              widgetId,
+              onConfirm: devUrl => {
+                devUrl && setCodeUrl(devUrl);
+              },
+              widgetPackageId: widget.widgetPackageId,
+            });
           toggleWidgetDevMode?.();
         },
         toggleSetting,
         refreshWidget: () => {
           refreshVersion();
           widgetLoader.current?.refresh();
-        }
+        },
       },
     });
   };
 
-  const saveWidgetName = (e) => {
+  const saveWidgetName = e => {
     setDragging(false);
     const value = e.target.value;
     setRename(false);
@@ -405,25 +430,27 @@ export const WidgetHeader: React.FC<IWidgetHeaderProps> = (props) => {
     }
   };
 
-  const nameMouseDown = () => window.__pressTimer = new Date();
+  const nameMouseDown = () => (window.__pressTimer = new Date());
 
   // TODO widget header 上的操作按钮重构一下，太乱了这里
-  return <div className={classNames(
-    styles.widgetHeader,
-    config.isDevMode && styles.widgetHeaderDev,
-    isExpandWidget && styles.widgetIsExpandHeader,
-    className,
-    !config.hideDrag && 'dragHandle',
-    dragging && styles.dragging,
-  )}>
-    {
-      !config.hideDrag && <span className={classNames(styles.dragHandle, styles.operateButton)}>
-        <DragOutlined size={10} color={colors.thirdLevelText} />
-      </span>
-    }
-    <span className={styles.widgetName}>
-      {
-        rename && !config.hideEditName ?
+  return (
+    <div
+      className={classNames(
+        styles.widgetHeader,
+        config.isDevMode && styles.widgetHeaderDev,
+        isExpandWidget && styles.widgetIsExpandHeader,
+        className,
+        !config.hideDrag && 'dragHandle',
+        dragging && styles.dragging,
+      )}
+    >
+      {!config.hideDrag && (
+        <span className={classNames(styles.dragHandle, styles.operateButton)}>
+          <DragOutlined size={10} color={colors.thirdLevelText} />
+        </span>
+      )}
+      <span className={styles.widgetName}>
+        {rename && !config.hideEditName ? (
           <Tooltip title={errTip} visible={Boolean(errTip)} placement={tooltipPlacement}>
             <Input
               defaultValue={widget?.snapshot.widgetName}
@@ -434,105 +461,100 @@ export const WidgetHeader: React.FC<IWidgetHeaderProps> = (props) => {
               onBlur={saveWidgetName}
               autoFocus
               onChange={onChange}
-              onMouseDown={(e) => {
+              onMouseDown={e => {
                 e.stopPropagation();
               }}
               className={classNames({
                 [styles.error]: Boolean(errTip),
               })}
             />
-          </Tooltip> :
+          </Tooltip>
+        ) : (
           <>
-            <span
-              onMouseDown={nameMouseDown}
-              onMouseUp={nameMouseUp}
-              onTouchEnd={nameMouseUp}
-              onTouchStart={nameMouseDown}
-              className={styles.name}
-            >
+            <span onMouseDown={nameMouseDown} onMouseUp={nameMouseUp} onTouchEnd={nameMouseUp} onTouchStart={nameMouseDown} className={styles.name}>
               {widget?.snapshot.widgetName}
             </span>
-            {
-              config.isDevMode ?
-                <span className={classNames(styles.tag, styles.tagSuccess)}>{t(Strings.widget_item_developing)}</span> :
-                (
-                  widget?.releaseType === WidgetReleaseType.Space &&
-                  <span className={classNames(styles.tag, styles.tagPrimary)}>{t(Strings.widget_item_build)}</span>
-                )
-            }
+            {config.isDevMode ? (
+              <span className={classNames(styles.tag, styles.tagSuccess)}>{t(Strings.widget_item_developing)}</span>
+            ) : (
+              widget?.releaseType === WidgetReleaseType.Space && (
+                <span className={classNames(styles.tag, styles.tagPrimary)}>{t(Strings.widget_item_build)}</span>
+              )
+            )}
           </>
-      }
+        )}
+      </span>
+      {!config.hideSetting && (widget?.status !== WidgetPackageStatus.Developing || config.isDevMode) && (
+        <span
+          className={classNames(
+            {
+              [styles.npOpacity]: displayMode === 'always' || config.isDevMode || isExpandWidget,
+            },
+            styles.operateButton,
+          )}
+          onClick={() => toggleSetting?.()}
+          onMouseDown={e => e.stopPropagation()}
+        >
+          <Tooltip
+            title={isSettingOpened ? t(Strings.widget_hide_settings_tooltip) : t(Strings.widget_show_settings_tooltip)}
+            placement={tooltipPlacement}
+          >
+            <IconButton icon={SettingOutlined} active={isSettingOpened} />
+          </Tooltip>
+        </span>
+      )}
 
-    </span>
-    {
-      !config.hideSetting &&
-      (widget?.status !== WidgetPackageStatus.Developing || config.isDevMode) &&
-      <span className={classNames({
-        [styles.npOpacity]: displayMode === 'always' || config.isDevMode || isExpandWidget,
-      }, styles.operateButton)} onClick={() => toggleSetting?.()} onMouseDown={e => e.stopPropagation()}>
-        <Tooltip
-          title={isSettingOpened ? t(Strings.widget_hide_settings_tooltip) : t(Strings.widget_show_settings_tooltip)}
-          placement={tooltipPlacement}
+      {!config.hideExpand && (
+        <span
+          className={classNames(
+            {
+              [styles.npOpacity]: displayMode === 'always' || config.isDevMode,
+            },
+            styles.operateButton,
+            'dragHandleDisabled',
+          )}
+          onClick={expand}
+          onMouseDown={e => {
+            hideAll();
+          }}
         >
-          <IconButton
-            icon={SettingOutlined}
-            active={isSettingOpened}
-          />
-        </Tooltip>
-      </span>
-    }
-
-    {
-      !config.hideExpand &&
-      <span className={classNames({
-        [styles.npOpacity]: displayMode === 'always' || config.isDevMode,
-      }, styles.operateButton, 'dragHandleDisabled')} onClick={expand} onMouseDown={e => {
-        hideAll();
-      }}>
-        <Tooltip
-          title={isExpandWidget ? t(Strings.widget_collapse_tooltip) : t(Strings.widget_expand_tooltip)}
-          placement={tooltipPlacement}
+          <Tooltip title={isExpandWidget ? t(Strings.widget_collapse_tooltip) : t(Strings.widget_expand_tooltip)} placement={tooltipPlacement}>
+            <IconButton icon={ReactIconExpand} />
+          </Tooltip>
+        </span>
+      )}
+      {config.isDevMode && (
+        <span
+          data-guide-id="WIDGET_ITEM_REFRESH"
+          className={classNames(styles.npOpacity, styles.operateButton, 'dragHandleDisabled')}
+          onClick={() => {
+            refreshVersion();
+            widgetLoader?.current?.refresh?.();
+          }}
         >
-          <IconButton icon={ReactIconExpand} />
-        </Tooltip>
-      </span>
-    }
-    {
-      config.isDevMode &&
-      <span data-guide-id="WIDGET_ITEM_REFRESH"
-        className={classNames(styles.npOpacity, styles.operateButton, 'dragHandleDisabled')}
-        onClick={() => {
-          refreshVersion();
-          widgetLoader?.current?.refresh?.();
-        }}
-      >
-        <Tooltip
-          title={t(Strings.widget_operate_refresh)}
-          placement={tooltipPlacement}
+          <Tooltip title={t(Strings.widget_operate_refresh)} placement={tooltipPlacement}>
+            <IconButton icon={RefreshOutlined} size="small" />
+          </Tooltip>
+        </span>
+      )}
+      {!config.hideMoreOperate && (
+        <span
+          data-guide-id="WIDGET_ITEM_MORE"
+          className={classNames(
+            {
+              [styles.npOpacity]: displayMode === 'always' || config.isDevMode || isExpandWidget,
+            },
+            styles.operateButton,
+            'dragHandleDisabled',
+          )}
+          onClick={triggerMenu}
         >
-          <IconButton
-            icon={RefreshOutlined}
-            size="small"
-          />
-        </Tooltip>
-      </span>
-    }
-    {
-      !config.hideMoreOperate &&
-      <span data-guide-id="WIDGET_ITEM_MORE" className={classNames({
-        [styles.npOpacity]: displayMode === 'always' || config.isDevMode || isExpandWidget,
-      }, styles.operateButton, 'dragHandleDisabled')} onClick={triggerMenu}
-      >
-        <Tooltip
-          title={t(Strings.widget_more_settings_tooltip)}
-          placement={tooltipPlacement}
-        >
-          <IconButton icon={ReactMoreOutlined} />
-        </Tooltip>
-      </span>
-    }
-    {
-      isExpandWidget && (
+          <Tooltip title={t(Strings.widget_more_settings_tooltip)} placement={tooltipPlacement}>
+            <IconButton icon={ReactMoreOutlined} />
+          </Tooltip>
+        </span>
+      )}
+      {isExpandWidget && (
         <>
           <DividerMargin8 />
           <Tooltip
@@ -554,7 +576,7 @@ export const WidgetHeader: React.FC<IWidgetHeaderProps> = (props) => {
             }}
           />
         </>
-      )
-    }
-  </div>;
+      )}
+    </div>
+  );
 };

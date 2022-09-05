@@ -9,7 +9,7 @@ import styles from './style.module.less';
 import RcTrigger from 'rc-trigger';
 import { t, Strings, Settings } from '@vikadata/core';
 import { ContextmenuItem } from 'pc/components/common';
-import { ComponentDisplay, ScreenSize } from '../common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { navigationToUrl } from '../route_manager/use_navigation';
 import { InformationSmallOutlined } from '@vikadata/icons';
 
@@ -24,39 +24,38 @@ export const ReportWeb: FC<IReportWeb> = ({ nodeId }) => {
   const [reasonModalVisible, setReasonModalVisible] = useState(false);
   const isFeishu = navigator.userAgent.toLowerCase().indexOf('lark') > -1;
   // import { IContextMenuData } from '@vikadata/components'; 'error'
-  const menuData: any[] = [[
-    {
-      icon: <AdviseIcon />,
-      text: t(Strings.vomit_a_slot),
-      onClick: () => navigationToUrl(Settings['user_feedback_url'].value),
-    }, {
-      icon: <InformationSmallOutlined />,
-      text: t(Strings.help_center),
-      onClick: () => navigationToUrl(`${window.location.origin}/help`),
-    }, {
-      icon: <ReportIcon />,
-      text: t(Strings.inform),
-      onClick: () => setReasonModalVisible(true),
-    }, {
-      icon: <JoinCommunityIcon />,
-      text: t(Strings.join_the_community),
-      onClick: () => navigationToUrl(isFeishu ? `${window.location.origin}/feishu/` : `${window.location.origin}/chatgroup/`),
-    },
-  ]];
+  const menuData: any[] = [
+    [
+      {
+        icon: <AdviseIcon />,
+        text: t(Strings.vomit_a_slot),
+        onClick: () => navigationToUrl(Settings['user_feedback_url'].value),
+      },
+      {
+        icon: <InformationSmallOutlined />,
+        text: t(Strings.help_center),
+        onClick: () => navigationToUrl(`${window.location.origin}/help`),
+      },
+      {
+        icon: <ReportIcon />,
+        text: t(Strings.inform),
+        onClick: () => setReasonModalVisible(true),
+      },
+      {
+        icon: <JoinCommunityIcon />,
+        text: t(Strings.join_the_community),
+        onClick: () => navigationToUrl(isFeishu ? `${window.location.origin}/feishu/` : `${window.location.origin}/chatgroup/`),
+      },
+    ],
+  ];
 
   const renderMenu = () => {
     return (
       <div className={styles.feedbackMenu}>
         <div onClick={() => setMenuVisible(false)}>
-          {
-            menuData[0].map(item => (
-              <ContextmenuItem
-                name={item.text}
-                icon={item.icon}
-                onClick={item.onClick}
-              />
-            ))
-          }
+          {menuData[0].map(item => (
+            <ContextmenuItem name={item.text} icon={item.icon} onClick={item.onClick} />
+          ))}
         </div>
       </div>
     );
@@ -83,25 +82,13 @@ export const ReportWeb: FC<IReportWeb> = ({ nodeId }) => {
         {reasonModalVisible && <ReportReason nodeId={nodeId} onClose={() => setReasonModalVisible(false)} />}
       </ComponentDisplay>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <MobileContextMenu
-          title={t(Strings.help)}
-          visible={menuVisible}
-          height="50%"
-          data={menuData}
-          onClose={() => setMenuVisible(false)}
-        />
+        <MobileContextMenu title={t(Strings.help)} visible={menuVisible} height="50%" data={menuData} onClose={() => setMenuVisible(false)} />
         <ButtonPlus.Font onClick={() => setMenuVisible(true)} className={styles.feedbackBtn} icon={<FeedbackIcon />} size="small" shadow />
-        {reasonModalVisible &&
-          <Modal
-            className={styles.reasonModal}
-            onCancel={() => setReasonModalVisible(false)}
-            centered
-            footer={null}
-            visible
-          >
+        {reasonModalVisible && (
+          <Modal className={styles.reasonModal} onCancel={() => setReasonModalVisible(false)} centered footer={null} visible>
             <ReportReason nodeId={nodeId} onClose={() => setReasonModalVisible(false)} />
           </Modal>
-        }
+        )}
       </ComponentDisplay>
     </div>
   );

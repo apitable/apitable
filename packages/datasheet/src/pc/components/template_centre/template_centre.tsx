@@ -5,12 +5,12 @@ import { usePageParams, useQuery, useRequest, useUserRequest } from 'pc/hooks';
 import { useWecomContact } from 'pc/hooks/use_wecom_contact';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { ComponentDisplay, ScreenSize } from '../common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { isDingtalkSkuPage } from '../home/social_platform';
 import { MobileSideBar } from '../mobile_side_bar';
 import styles from './style.module.less';
 
-const TemplateCentre: FC = (props) => {
+const TemplateCentre: FC = props => {
   const { getLoginStatusReq } = useUserRequest();
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const { run: getLoginStatus, loading } = useRequest(getLoginStatusReq, { manual: true });
@@ -31,27 +31,20 @@ const TemplateCentre: FC = (props) => {
     return null;
   }
 
-  return (
-    spaceId ? (
-      <SideWrapper>
-        <div className={styles.bg} data-height="20px" />
-        <div className={styles.templateCentre}>
-          {props.children}
-        </div>
-      </SideWrapper>
-    ) : (
-      <>
-        {
-          !isSkuPage &&
-          <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-            <MobileSideBar />
-          </ComponentDisplay>
-        }
-        <div className={styles.templateCentre}>
-          {props.children}
-        </div>
-      </>
-    )
+  return spaceId ? (
+    <SideWrapper>
+      <div className={styles.bg} data-height="20px" />
+      <div className={styles.templateCentre}>{props.children}</div>
+    </SideWrapper>
+  ) : (
+    <>
+      {!isSkuPage && (
+        <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
+          <MobileSideBar />
+        </ComponentDisplay>
+      )}
+      <div className={styles.templateCentre}>{props.children}</div>
+    </>
   );
 };
 

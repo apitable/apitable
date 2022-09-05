@@ -1,6 +1,14 @@
 import {
-  DateFormat, TimeFormat, IDateTimeBaseField, IField, t, Strings,
-  FieldType, CollectType, ILastModifiedTimeFieldProperty, ILastModifiedTimeField,
+  DateFormat,
+  TimeFormat,
+  IDateTimeBaseField,
+  IField,
+  t,
+  Strings,
+  FieldType,
+  CollectType,
+  ILastModifiedTimeFieldProperty,
+  ILastModifiedTimeField,
 } from '@vikadata/core';
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import * as React from 'react';
@@ -11,7 +19,7 @@ import settingStyles from '../../field_setting/styles.module.less';
 import { CollectTypeSelect } from './collect_type_select';
 import { FieldSelectModal } from './field_select_modal';
 import { Divider } from 'pc/components/common/divider';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
 import { Select } from '@vikadata/components';
 
@@ -80,37 +88,49 @@ export const FormatDateTime: React.FC<IFormatDateTime> = (props: IFormatDateTime
     });
   };
 
-  const handleCollectTypeChange = useCallback((type: number) => {
-    setCurrentField({
-      ...currentField,
-      property: {
-        ...currentField.property,
-        collectType: type,
-      } as any,
-    });
-  }, [currentField, setCurrentField]);
+  const handleCollectTypeChange = useCallback(
+    (type: number) => {
+      setCurrentField({
+        ...currentField,
+        property: {
+          ...currentField.property,
+          collectType: type,
+        } as any,
+      });
+    },
+    [currentField, setCurrentField],
+  );
 
-  const handleFieldIdCollectionChange = useCallback((collection: string[]) => {
-    setCurrentField({
-      ...currentField,
-      property: {
-        ...currentField.property,
-        fieldIdCollection: collection,
-      } as any,
-    });
-  }, [currentField, setCurrentField]);
+  const handleFieldIdCollectionChange = useCallback(
+    (collection: string[]) => {
+      setCurrentField({
+        ...currentField,
+        property: {
+          ...currentField.property,
+          fieldIdCollection: collection,
+        } as any,
+      });
+    },
+    [currentField, setCurrentField],
+  );
 
-  const handleCollectTypeSelectedChange = useCallback((type: number) => {
-    if (type === CollectType.SpecifiedFields) {
-      setModalShow(true);
-    }
-    handleCollectTypeChange(type);
-  }, [handleCollectTypeChange]);
+  const handleCollectTypeSelectedChange = useCallback(
+    (type: number) => {
+      if (type === CollectType.SpecifiedFields) {
+        setModalShow(true);
+      }
+      handleCollectTypeChange(type);
+    },
+    [handleCollectTypeChange],
+  );
 
-  const handleModalDataChange = useCallback((collection: string[]) => {
-    setModalShow(false);
-    handleFieldIdCollectionChange(collection);
-  }, [handleFieldIdCollectionChange]);
+  const handleModalDataChange = useCallback(
+    (collection: string[]) => {
+      setModalShow(false);
+      handleFieldIdCollectionChange(collection);
+    },
+    [handleFieldIdCollectionChange],
+  );
 
   const handleModalDataCancel = useCallback(() => {
     setModalShow(false);
@@ -127,14 +147,9 @@ export const FormatDateTime: React.FC<IFormatDateTime> = (props: IFormatDateTime
 
   return (
     <div className={styles.section}>
-      {
-        currentField.type === FieldType.LastModifiedTime && (
-          <CollectTypeSelect
-            field={currentField as ILastModifiedTimeField}
-            onChange={handleCollectTypeSelectedChange}
-          />
-        )
-      }
+      {currentField.type === FieldType.LastModifiedTime && (
+        <CollectTypeSelect field={currentField as ILastModifiedTimeField} onChange={handleCollectTypeSelectedChange} />
+      )}
       <div className={styles.sectionTitle}>{t(Strings.datetime_format)}</div>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <Select
@@ -157,28 +172,20 @@ export const FormatDateTime: React.FC<IFormatDateTime> = (props: IFormatDateTime
       <section className={settingStyles.section} style={{ marginTop: 16 }}>
         <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>
           {t(Strings.include_time)}
-          <Switch
-            size="small"
-            checked={includeTime}
-            onChange={handleIncludeTimeChange}
-          />
+          <Switch size="small" checked={includeTime} onChange={handleIncludeTimeChange} />
         </div>
       </section>
-      {
-        currentField.type === FieldType.DateTime && <section className={settingStyles.section}>
+      {currentField.type === FieldType.DateTime && (
+        <section className={settingStyles.section}>
           <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>
             {t(Strings.autofill_createtime)}
-            <Switch
-              size="small"
-              checked={currentField.property.autoFill}
-              onChange={handleFillChange}
-            />
+            <Switch size="small" checked={currentField.property.autoFill} onChange={handleFillChange} />
           </div>
         </section>
-      }
+      )}
       {includeTime && <Divider />}
-      {
-        includeTime && <section className={settingStyles.section}>
+      {includeTime && (
+        <section className={settingStyles.section}>
           <div className={settingStyles.sectionTitle}>{t(Strings.time_format)}</div>
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
             <Select
@@ -199,14 +206,8 @@ export const FormatDateTime: React.FC<IFormatDateTime> = (props: IFormatDateTime
             />
           </ComponentDisplay>
         </section>
-      }
-      {
-        isModalShow && <FieldSelectModal
-          field={currentField}
-          onCancel={handleModalDataCancel}
-          onOk={handleModalDataChange}
-        />
-      }
+      )}
+      {isModalShow && <FieldSelectModal field={currentField} onCancel={handleModalDataCancel} onOk={handleModalDataChange} />}
     </div>
   );
 };

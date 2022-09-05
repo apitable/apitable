@@ -3,7 +3,7 @@ import { ConfigConstant, IReduxState, Strings, t } from '@vikadata/core';
 import classNames from 'classnames';
 import { Avatar, AvatarSize } from 'pc/components/common/avatar';
 import { ButtonBase } from 'pc/components/common/button_base/button_base';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Tag } from 'pc/components/common/tag/tag';
 import { MyTrigger } from 'pc/components/multi_grid/format/trigger';
 import React, { useState } from 'react';
@@ -58,21 +58,36 @@ export interface ITemplateItemProps {
   deleteTemplate?: (templateId: string) => void;
   // 使用模板
   usingTemplate: React.Dispatch<React.SetStateAction<string>>;
-  onClick?: ({ event, templateId }: { event: React.MouseEvent, templateId: string }) => void;
+  onClick?: ({ event, templateId }: { event: React.MouseEvent; templateId: string }) => void;
 }
 
 export const TemplateItem: React.FC<ITemplateItemProps> = props => {
   const colors = useThemeColors();
   const {
-    img, name, description, templateId, creator, deleteTemplate, nodeType, onClick, bannerDesc, tags,
-    height = 160, type = Types.BANNER, isOfficial = true, bannerType = ConfigConstant.BannerType.LARGE
+    img,
+    name,
+    description,
+    templateId,
+    creator,
+    deleteTemplate,
+    nodeType,
+    onClick,
+    bannerDesc,
+    tags,
+    height = 160,
+    type = Types.BANNER,
+    isOfficial = true,
+    bannerType = ConfigConstant.BannerType.LARGE,
   } = props;
   // moreBtn菜单是否显示
   const [showPopup, setShowPopup] = useState(false);
-  const { user, spaceResource } = useSelector((state: IReduxState) => ({
-    user: state.user.info,
-    spaceResource: state.spacePermissionManage.spaceResource,
-  }), shallowEqual);
+  const { user, spaceResource } = useSelector(
+    (state: IReduxState) => ({
+      user: state.user.info,
+      spaceResource: state.spacePermissionManage.spaceResource,
+    }),
+    shallowEqual,
+  );
 
   const delTemplate = () => {
     setShowPopup(false);
@@ -141,23 +156,23 @@ export const TemplateItem: React.FC<ITemplateItemProps> = props => {
   };
 
   const menu = () => {
-    const deletable = !isOfficial && (user?.isMainAdmin ||
-      spaceResource?.permissions.includes(ConfigConstant.PermissionCode.TEMPLATE) ||
-      (creator && creator.userId === user?.uuid)
-    );
+    const deletable =
+      !isOfficial &&
+      (user?.isMainAdmin ||
+        spaceResource?.permissions.includes(ConfigConstant.PermissionCode.TEMPLATE) ||
+        (creator && creator.userId === user?.uuid));
     return (
       <div className={styles.moreContextMenu}>
         <div className={styles.contextMenuItem} onClick={useTemplate}>
           <TemplateIcon className={styles.icon} />
           <div className={styles.name}>{t(Strings.use_the_template)}</div>
         </div>
-        {
-          deletable &&
+        {deletable && (
           <div className={styles.contextMenuItem} onClick={delTemplate}>
             <DeleteIcon className={styles.icon} />
             <div className={styles.name}>{t(Strings.delete)}</div>
           </div>
-        }
+        )}
       </div>
     );
   };
@@ -192,22 +207,14 @@ export const TemplateItem: React.FC<ITemplateItemProps> = props => {
                 adjustY: true,
               },
             }}
-            trigger={
-              <ButtonBase
-                size="x-small"
-                shape="circle"
-                shadow
-                icon={<MoreIcon fill={colors.secondLevelText} />}
-                className={styles.moreBtn}
-              />
-            }
+            trigger={<ButtonBase size="x-small" shape="circle" shadow icon={<MoreIcon fill={colors.secondLevelText} />} className={styles.moreBtn} />}
           />
         </ComponentDisplay>
       </div>
       <div
         className={classNames(styles.wrapper, {
           [styles.banner]: type === Types.BANNER,
-          [styles.mediumBanner]: bannerType === ConfigConstant.BannerType.MIDDLE
+          [styles.mediumBanner]: bannerType === ConfigConstant.BannerType.MIDDLE,
         })}
         style={{ height: `${height}px` }}
       >
@@ -217,44 +224,44 @@ export const TemplateItem: React.FC<ITemplateItemProps> = props => {
             backgroundImage: `url(${img})`,
           }}
         />
-        {
-          creator && !isOfficial &&
+        {creator && !isOfficial && (
           <>
             <AvatarBgIcon className={styles.avatarBackground} />
             <div className={styles.userAvatar} data-name={creator.name}>
-              <Avatar
-                id={creator.userId}
-                src={creator.avatar}
-                title={creator.name}
-                size={AvatarSize.Size32}
-              />
+              <Avatar id={creator.userId} src={creator.avatar} title={creator.name} size={AvatarSize.Size32} />
             </div>
           </>
-        }
-        {
-          bannerDesc && type === Types.BANNER &&
+        )}
+        {bannerDesc && type === Types.BANNER && (
           <div className={styles.bannerDesc}>
-            <div className={styles.title} style={bannerDesc.color ? { color: bannerDesc.color } : undefined}>{bannerDesc.title}</div>
-            <div className={styles.desc} style={bannerDesc.color ? { color: bannerDesc.color } : undefined}>{bannerDesc.desc}</div>
+            <div className={styles.title} style={bannerDesc.color ? { color: bannerDesc.color } : undefined}>
+              {bannerDesc.title}
+            </div>
+            <div className={styles.desc} style={bannerDesc.color ? { color: bannerDesc.color } : undefined}>
+              {bannerDesc.desc}
+            </div>
           </div>
-        }
+        )}
       </div>
-      {
-        type !== Types.BANNER &&
-        < div className={styles.templateInfo}>
-          <Typography variant="h6" className={styles.name} ellipsis>{name}</Typography>
+      {type !== Types.BANNER && (
+        <div className={styles.templateInfo}>
+          <Typography variant="h6" className={styles.name} ellipsis>
+            {name}
+          </Typography>
           <Typography className={styles.desc} ellipsis={{ rows: 2 }} variant="body3">
             {nodeType && description && convertDescription(nodeType, description)}
           </Typography>
-          {tags && tags.length !== 0 &&
+          {tags && tags.length !== 0 && (
             <div className={styles.tags}>
               {tags.map((tag, index) => (
-                <Tag key={index} className={styles.tag}>{tag}</Tag>
+                <Tag key={index} className={styles.tag}>
+                  {tag}
+                </Tag>
               ))}
             </div>
-          }
+          )}
         </div>
-      }
+      )}
     </div>
   );
 };

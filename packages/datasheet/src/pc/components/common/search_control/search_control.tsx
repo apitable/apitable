@@ -5,7 +5,7 @@ import style from './style.module.less';
 
 import { stopPropagation } from '../../../utils/dom';
 import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from '../component_display/component_display';
+import { ScreenSize } from '../component_display';
 import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
 interface ISearchControlProps {
   onValueChange?: (searchValue: string) => void;
@@ -20,9 +20,18 @@ interface ISearchControlProps {
   switchVisible?: boolean;
 }
 
-const SearchControlBase: React.ForwardRefRenderFunction<{ focus (): void }, ISearchControlProps> = (props, ref) => {
-  const { 
-    value, checked, onValueChange, onSwitcherChange, onCancelClick, checkboxText, placeholder, onFocus, switchVisible = true, onkeyDown,
+const SearchControlBase: React.ForwardRefRenderFunction<{ focus(): void }, ISearchControlProps> = (props, ref) => {
+  const {
+    value,
+    checked,
+    onValueChange,
+    onSwitcherChange,
+    onCancelClick,
+    checkboxText,
+    placeholder,
+    onFocus,
+    switchVisible = true,
+    onkeyDown,
   } = props;
 
   const editorRef = useRef<Input>(null);
@@ -31,7 +40,9 @@ const SearchControlBase: React.ForwardRefRenderFunction<{ focus (): void }, ISea
   const isMobile = screenIsAtMost(ScreenSize.md);
 
   useImperativeHandle(ref, () => ({
-    focus: () => { focus(); },
+    focus: () => {
+      focus();
+    },
   }));
 
   const focus = () => {
@@ -52,17 +63,12 @@ const SearchControlBase: React.ForwardRefRenderFunction<{ focus (): void }, ISea
           onClear={onCancelClick}
         />
       </div>
-      {
-        switchVisible && 
+      {switchVisible && (
         <div className={style.searchOption}>
           {checkboxText}
-          <Switch
-            size={isMobile ? 'default' : 'small'}
-            checked={checked}
-            onChange={onSwitcherChange}
-          />
+          <Switch size={isMobile ? 'default' : 'small'} checked={checked} onChange={onSwitcherChange} />
         </div>
-      }
+      )}
     </div>
   );
 };

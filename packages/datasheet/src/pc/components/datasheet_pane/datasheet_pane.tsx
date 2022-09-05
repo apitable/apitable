@@ -14,7 +14,7 @@ import * as React from 'react';
 import { FC, useCallback, useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { ComponentDisplay, ScreenSize } from '../common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { DevToolsPanel } from '../development/dev_tools_panel';
 import { closeAllExpandRecord } from '../expand_record';
 import { ExpandRecordPanel } from '../expand_record_panel';
@@ -28,27 +28,14 @@ import { WidgetPanel } from '../widget';
 import styles from './style.module.less';
 import { useSideBar, SideBarType, SideBarClickType } from 'pc/context';
 
-const DatasheetMain = ({
-  loading,
-  datasheetErrorCode,
-  isNoPermission,
-  shareId,
-  datasheetId,
-  preview,
-  testFunctions,
-  handleExitTest,
-  mirrorId
-}) => {
+const DatasheetMain = ({ loading, datasheetErrorCode, isNoPermission, shareId, datasheetId, preview, testFunctions, handleExitTest, mirrorId }) => {
   return (
     <div style={{ width: '100%', height: '100%' }}>
-      <div
-        className={classNames(styles.dataspaceRight, 'dataspaceRight', loading && styles.loading)}
-        style={{ height: '100%' }}
-      >
+      <div className={classNames(styles.dataspaceRight, 'dataspaceRight', loading && styles.loading)} style={{ height: '100%' }}>
         {!datasheetErrorCode ? (
           <>
-            {
-              !mirrorId && <>
+            {!mirrorId && (
+              <>
                 <ComponentDisplay minWidthCompatible={ScreenSize.md}>
                   <TabBar loading={loading} />
                 </ComponentDisplay>
@@ -56,7 +43,7 @@ const DatasheetMain = ({
                   <MobileToolBar loading={loading} />
                 </ComponentDisplay>
               </>
-            }
+            )}
 
             <ViewContainer loading={loading} />
           </>
@@ -90,22 +77,20 @@ const DefaultPanelWidth = {
 
 const DISABLED_CLOSE_SIDEBAR_WIDTH = 1920;
 
-const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = (props) => {
+const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
   const { shareId, datasheetId, templateId, mirrorId } = useSelector(state => {
     const { shareId, datasheetId, templateId, mirrorId } = state.pageParams;
     return { shareId, datasheetId, templateId, mirrorId };
   }, shallowEqual);
   const isShareMode = shareId || templateId;
   const { isMobile } = useResponsive();
-  const rightPanelWidth = useSelector((state) => state.rightPane.width);
-  const datasheetErrorCode = useSelector((state) =>
-    Selectors.getDatasheetErrorCode(state)
-  );
-  const loading = useSelector((state) => {
+  const rightPanelWidth = useSelector(state => state.rightPane.width);
+  const datasheetErrorCode = useSelector(state => Selectors.getDatasheetErrorCode(state));
+  const loading = useSelector(state => {
     const datasheet = Selectors.getDatasheet(state);
     return Boolean(!datasheet || datasheet.isPartOfData || datasheet.sourceId);
   });
-  const preview = useSelector((state) => {
+  const preview = useSelector(state => {
     const datasheet = Selectors.getDatasheet(state);
     return datasheet && datasheet.preview;
   });
@@ -125,8 +110,8 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = (props) => {
     const resourceId = mirrorId || datasheetId || '';
     return Selectors.getResourceWidgetPanelStatus(state, resourceId, resourceType);
   })!;
-  const isApiPanelOpen = useSelector((state) => state.space.isApiPanelOpen);
-  const isSideRecordOpen = useSelector((state) => state.space.isSideRecordOpen);
+  const isApiPanelOpen = useSelector(state => state.space.isApiPanelOpen);
+  const isSideRecordOpen = useSelector(state => state.space.isSideRecordOpen);
   const isTimeMachinePanelOpen = useSelector(state => {
     const clientState = Selectors.getDatasheetClient(state, datasheetId);
     return clientState && clientState.isTimeMachinePanelOpen;
@@ -135,11 +120,14 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = (props) => {
 
   const [isDevToolsOpen, { toggle: toggleDevToolsOpen, set: setDevToolsOpen }] = useToggle();
   const [isRobotPanelOpen, { toggle: toggleRobotPanelOpen, set: setRobotPanelOpen }] = useToggle();
-  const toggleTimeMachineOpen = useCallback((state?: boolean) => {
-    if (activeDatasheetId) {
-      dispatch(StoreActions.toggleTimeMachinePanel(activeDatasheetId, state));
-    }
-  }, [dispatch, activeDatasheetId]);
+  const toggleTimeMachineOpen = useCallback(
+    (state?: boolean) => {
+      if (activeDatasheetId) {
+        dispatch(StoreActions.toggleTimeMachinePanel(activeDatasheetId, state));
+      }
+    },
+    [dispatch, activeDatasheetId],
+  );
   const { onSetSideBarVisibleByOhter, onSetPanelVisible, toggleType, clickType, sideBarVisible } = useSideBar();
 
   // TODO: 统一优化右侧边栏展开/收起状态的控制逻辑
@@ -161,24 +149,15 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = (props) => {
   }, [dispatch, isSideRecordOpen, widgetPanelStatus]);
 
   useEffect(() => {
-    ShortcutActionManager.bind(
-      ShortcutActionName.ToggleDevPanel,
-      toggleDevToolsOpen
-    );
+    ShortcutActionManager.bind(ShortcutActionName.ToggleDevPanel, toggleDevToolsOpen);
   }, [toggleDevToolsOpen]);
 
   useEffect(() => {
-    ShortcutActionManager.bind(
-      ShortcutActionName.ToggleRobotPanel,
-      toggleRobotPanelOpen
-    );
+    ShortcutActionManager.bind(ShortcutActionName.ToggleRobotPanel, toggleRobotPanelOpen);
   }, [toggleRobotPanelOpen]);
 
   useEffect(() => {
-    ShortcutActionManager.bind(
-      ShortcutActionName.ToggleTimeMachinePanel,
-      toggleTimeMachineOpen
-    );
+    ShortcutActionManager.bind(ShortcutActionName.ToggleTimeMachinePanel, toggleTimeMachineOpen);
   }, [toggleTimeMachineOpen]);
 
   useEffect(() => {
@@ -298,9 +277,7 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = (props) => {
     if (isSideRecordOpen) {
       const width = getStorage(StorageName.SideRecordWidth);
 
-      return width && width < window.innerWidth &&
-        width > DefaultPanelWidth.SideRecord ?
-        width : DefaultPanelWidth.SideRecord;
+      return width && width < window.innerWidth && width > DefaultPanelWidth.SideRecord ? width : DefaultPanelWidth.SideRecord;
     }
     if (widgetPanelStatus?.opening) {
       return widgetPanelStatus.width;
@@ -370,9 +347,7 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = (props) => {
                 {isSideRecordOpen && <ExpandRecordPanel />}
                 <WidgetPanel />
                 {!isShareMode && <ApiPanel />}
-                {isDevToolsOpen && (
-                  <DevToolsPanel onClose={setDevToolsOpen} />
-                )}
+                {isDevToolsOpen && <DevToolsPanel onClose={setDevToolsOpen} />}
                 {isRobotPanelOpen && <RobotPanel />}
                 {isTimeMachinePanelOpen && <TimeMachine onClose={toggleTimeMachineOpen} />}
               </div>

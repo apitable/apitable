@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 import { Menu, MenuItem } from '../menu';
 import { ChevronDownOutlined, ChevronUpOutlined } from '@vikadata/icons';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { PermissionSelectMobile } from './permission_select_mobile';
 import { useResponsive } from 'pc/hooks';
 
@@ -33,13 +33,9 @@ export const DEFAULT_ROLE: IRoleOption[] = [
   },
 ];
 
-export const UnitItem: FC<IUnitItemProps> = (props) => {
+export const UnitItem: FC<IUnitItemProps> = props => {
   const colors = useThemeColors();
-  const {
-    unit, role, identity, className,
-    roleOptions = DEFAULT_ROLE, isAppointMode,
-    disabled, onChange, onRemove, isDetail
-  } = props;
+  const { unit, role, identity, className, roleOptions = DEFAULT_ROLE, isAppointMode, disabled, onChange, onRemove, isDetail } = props;
   const isAdmin = identity?.admin;
   const isOwner = identity?.permissionOpener;
 
@@ -49,7 +45,7 @@ export const UnitItem: FC<IUnitItemProps> = (props) => {
   const title = getSocialWecomUnitName({
     name: unit.name,
     isModified: unit.isMemberNameModified,
-    spaceInfo
+    spaceInfo,
   });
 
   const { screenIsAtMost } = useResponsive();
@@ -65,7 +61,7 @@ export const UnitItem: FC<IUnitItemProps> = (props) => {
     let backgroundColor = colors.deepPurple[100];
     let color = colors.deepPurple[500];
     let str = t(Strings.space_admin);
-  
+
     if (!isAdmin && isOwner) {
       backgroundColor = colors.teal[100];
       color = colors.teal[500];
@@ -78,14 +74,14 @@ export const UnitItem: FC<IUnitItemProps> = (props) => {
     }
     return (
       <Box backgroundColor={backgroundColor} className={styles.identifyTag}>
-        <Typography className={styles.tagContent} color={color} variant='h9'>
+        <Typography className={styles.tagContent} color={color} variant="h9">
           {str}
         </Typography>
       </Box>
     );
   };
   const arrowIconProps = { color: colors.textCommonPrimary, size: 12 };
-  const arrow = menuVisible ? <ChevronUpOutlined {...arrowIconProps}/> : <ChevronDownOutlined {...arrowIconProps}/>;
+  const arrow = menuVisible ? <ChevronUpOutlined {...arrowIconProps} /> : <ChevronDownOutlined {...arrowIconProps} />;
   const getUnitItemTips = () => {
     if (isAdmin) {
       return unit.id === curUnitId ? t(Strings.node_permission_item_tips_admin_you) : t(Strings.node_permission_item_tips_admin_he);
@@ -101,20 +97,14 @@ export const UnitItem: FC<IUnitItemProps> = (props) => {
   };
 
   const itemContentMain = (
-    <div className={classnames(
-      styles.unitItem,
-      className,
-      !disabled && styles.unitItemOperation,
-      (isDetail || isMobile) && styles.unitItemMobile)}>
+    <div className={classnames(styles.unitItem, className, !disabled && styles.unitItemOperation, (isDetail || isMobile) && styles.unitItemMobile)}>
       <div className={styles.unitInfo}>
         <InfoCard
           title={title}
           token={
-            (
-              <Space align="center" size={4}>
-                <Tag />
-              </Space>
-            )
+            <Space align="center" size={4}>
+              <Tag />
+            </Space>
           }
           description={unit.info || ''}
           extra={!isAppointMode ? t(Strings.node_permission_extend_desc) : ''}
@@ -129,23 +119,22 @@ export const UnitItem: FC<IUnitItemProps> = (props) => {
         />
       </div>
       <div className={classnames(styles.permission)}>
-        <span className={classnames(
-          styles.onlyShowPermission,
-          disabled && styles.onlyShowPermissionDisabled
-        )}>
+        <span className={classnames(styles.onlyShowPermission, disabled && styles.onlyShowPermissionDisabled)}>
           {roleOptions.find(item => item.value === role)!.label}
         </span>
-        {
-          !disabled && arrow
-        }
+        {!disabled && arrow}
       </div>
     </div>
   );
   const itemContent = (
     <div className={styles.itemContent}>
-      {isMobile || isDetail ? itemContentMain : <Tooltip placement={'left-center'} trigger='hover' content={getUnitItemTips()}>
-        {itemContentMain}
-      </Tooltip>}
+      {isMobile || isDetail ? (
+        itemContentMain
+      ) : (
+        <Tooltip placement={'left-center'} trigger="hover" content={getUnitItemTips()}>
+          {itemContentMain}
+        </Tooltip>
+      )}
     </div>
   );
   if (disabled) {
@@ -166,21 +155,19 @@ export const UnitItem: FC<IUnitItemProps> = (props) => {
         <Dropdown
           overlayStyle={{
             minWidth: 'auto',
-            right: 0
-          }} placement={'bottomRight'}
+            right: 0,
+          }}
+          placement={'bottomRight'}
           trigger={['click']}
           visible={menuVisible}
           onVisibleChange={setMenuVisible}
           disabled={disabled}
           overlay={
             <Menu>
-              {roleOptions.map(v => <MenuItem key={v.value} onClick={() => clickRole(unit.id, v.value)} active={role === v.value} {...v} />)}
-              <MenuItem
-                className={styles.delete}
-                label={t(Strings.remove_role)}
-                value={'remove'}
-                onClick={() => removeRole(unit.id)}
-              >
+              {roleOptions.map(v => (
+                <MenuItem key={v.value} onClick={() => clickRole(unit.id, v.value)} active={role === v.value} {...v} />
+              ))}
+              <MenuItem className={styles.delete} label={t(Strings.remove_role)} value={'remove'} onClick={() => removeRole(unit.id)}>
                 {t(Strings.remove_role)}
               </MenuItem>
             </Menu>
@@ -190,13 +177,7 @@ export const UnitItem: FC<IUnitItemProps> = (props) => {
         </Dropdown>
       </ComponentDisplay>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <PermissionSelectMobile
-          role={role}
-          onChange={onChange}
-          unitId={unit.id}
-          onRemove={removeRole}
-          roleOptions={roleOptions}
-        >
+        <PermissionSelectMobile role={role} onChange={onChange} unitId={unit.id} onRemove={removeRole} roleOptions={roleOptions}>
           {itemContent}
         </PermissionSelectMobile>
       </ComponentDisplay>

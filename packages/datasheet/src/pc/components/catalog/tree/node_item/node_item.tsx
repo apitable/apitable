@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useCatalogTreeRequest, useResponsive } from 'pc/hooks';
 import { useRequest } from 'pc/hooks';
 import { TComponent } from 'pc/components/common/t_component';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { Popconfirm } from 'pc/components/common';
 import { getContextTypeByNodeType } from 'pc/utils';
 import { Modal } from 'pc/components/common/mobile/modal';
@@ -34,16 +34,7 @@ export interface INodeItemProps {
   level: string;
 }
 
-const NodeItemBase: FC<INodeItemProps> = ({
-  node,
-  expanded = false,
-  actived = false,
-  hasChildren = false,
-  editing,
-  deleting,
-  from,
-  level,
-}) => {
+const NodeItemBase: FC<INodeItemProps> = ({ node, expanded = false, actived = false, hasChildren = false, editing, deleting, from, level }) => {
   const { deleteNodeReq } = useCatalogTreeRequest();
   const { run: deleteNode } = useRequest(deleteNodeReq, { manual: true });
   const dispatch = useDispatch();
@@ -51,8 +42,7 @@ const NodeItemBase: FC<INodeItemProps> = ({
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const currentLevel = level.split('-').length - 1;
-  const childCreatable = node.type === ConfigConstant.NodeType.FOLDER &&
-    node.permissions.childCreatable && currentLevel < 5;
+  const childCreatable = node.type === ConfigConstant.NodeType.FOLDER && node.permissions.childCreatable && currentLevel < 5;
   useEffect(() => {
     if (actived) {
       const activeElem = document.getElementById(`${ConfigConstant.Modules.CATALOG}${node.nodeId}`);
@@ -92,12 +82,16 @@ const NodeItemBase: FC<INodeItemProps> = ({
   };
 
   const ConfirmContent = (
-    <div className={styles.deleteTitle}>{<TComponent
-      tkey={t(Strings.confirm_delete_node_name_as)}
-      params={{
-        nodeNameDiv: <div className={styles.deleteNodeName}>{truncate(node.nodeName, { length: 9 })}</div>,
-      }}
-    />}</div>
+    <div className={styles.deleteTitle}>
+      {
+        <TComponent
+          tkey={t(Strings.confirm_delete_node_name_as)}
+          params={{
+            nodeNameDiv: <div className={styles.deleteNodeName}>{truncate(node.nodeName, { length: 9 })}</div>,
+          }}
+        />
+      }
+    </div>
   );
 
   useEffect(() => {
@@ -112,7 +106,7 @@ const NodeItemBase: FC<INodeItemProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deleting]);
 
-  return (deleting && !isMobile) ? (
+  return deleting && !isMobile ? (
     <Popconfirm
       visible={deleting}
       overlayClassName={styles.deleteNode}
@@ -135,19 +129,21 @@ const NodeItemBase: FC<INodeItemProps> = ({
         node={node}
       />
     </Popconfirm>
-  ) : <ItemRender
-    id={`${from}${node.nodeId}`}
-    actived={actived}
-    isMobile={isMobile}
-    iconClassNames={classnames(styles.nodeIcon, !node.permissions.renamable && styles.disabled)}
-    editing={editing}
-    childCreatable={childCreatable}
-    onClickMore={moreOperationHandler}
-    onNodeAdd={addNodeHandler}
-    expanded={expanded}
-    hasChildren={hasChildren}
-    node={node}
-  />;
+  ) : (
+    <ItemRender
+      id={`${from}${node.nodeId}`}
+      actived={actived}
+      isMobile={isMobile}
+      iconClassNames={classnames(styles.nodeIcon, !node.permissions.renamable && styles.disabled)}
+      editing={editing}
+      childCreatable={childCreatable}
+      onClickMore={moreOperationHandler}
+      onNodeAdd={addNodeHandler}
+      expanded={expanded}
+      hasChildren={hasChildren}
+      node={node}
+    />
+  );
 };
 
 export const NodeItem = React.memo(NodeItemBase);

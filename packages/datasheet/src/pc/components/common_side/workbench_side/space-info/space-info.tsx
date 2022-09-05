@@ -1,5 +1,5 @@
 import { Popover } from 'antd';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { OrganizationHead } from 'pc/components/organization_head';
 import { ISpaceLevelType, LevelType } from 'pc/components/space_manage/space_info/interface';
 import { SpaceLevelInfo } from 'pc/components/space_manage/space_info/utils';
@@ -11,14 +11,14 @@ import styles from './style.module.less';
 const Content: FC = () => {
   const subscription = useSelector(state => state.billing.subscription, shallowEqual);
   const level = (subscription ? subscription.product.toLowerCase() : LevelType.Bronze) as ISpaceLevelType;
-  const { spaceLevelTag:{ logo }} = SpaceLevelInfo[level] || SpaceLevelInfo.bronze;
+  const {
+    spaceLevelTag: { logo },
+  } = SpaceLevelInfo[level] || SpaceLevelInfo.bronze;
 
   return (
     <>
       <OrganizationHead className={styles.spaceName} hideTooltip />
-      <div className={styles.logo}>
-        { logo }
-      </div>
+      <div className={styles.logo}>{logo}</div>
     </>
   );
 };
@@ -28,8 +28,8 @@ export const SpaceInfo: FC = () => {
     <>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <Popover
-          trigger='hover'
-          placement='bottomLeft'
+          trigger="hover"
+          placement="bottomLeft"
           align={{
             offset: [10, 0],
           }}

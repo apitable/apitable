@@ -7,13 +7,12 @@ import { Portal } from 'pc/components/portal';
 import { Z_INDEX, DISABLE_TOOLBAR_ELEMENT } from '../../constant';
 import { IEventBusEditor } from '../../interface/editor';
 import { BUILT_IN_EVENTS } from '../../plugins/withEventBus';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 
 import styles from './style.module.less';
 
 export const HoveringToolbar = () => {
-
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const editor = useSlate() as ReactEditor & IEventBusEditor;
   const timer = useRef<number | null>(null);
@@ -34,25 +33,18 @@ export const HoveringToolbar = () => {
       window.clearTimeout(timer.current);
     }
     const curElement = getCurrentElement(editor);
-    if (
-      !curElement ||
-      DISABLE_TOOLBAR_ELEMENT[curElement.type] ||
-      !screenIsAtLeast(ScreenSize.sm)) {
+    if (!curElement || DISABLE_TOOLBAR_ELEMENT[curElement.type] || !screenIsAtLeast(ScreenSize.sm)) {
       el.removeAttribute('style');
       return;
     }
 
     timer.current = window.setTimeout(() => {
       timer.current = null;
-      if (
-        !selection ||
-        Range.isCollapsed(selection) ||
-        Editor.string(editor, selection) === ''
-      ) {
+      if (!selection || Range.isCollapsed(selection) || Editor.string(editor, selection) === '') {
         el.removeAttribute('style');
         return;
       }
-  
+
       try {
         const domRange = ReactEditor.toDOMRange(editor, selection);
         const rect = domRange.getBoundingClientRect();
@@ -64,7 +56,7 @@ export const HoveringToolbar = () => {
           anchor: rect,
           popup: el.getBoundingClientRect(),
           offset: { x: 0, y: -5 - popupRect.height },
-          align: ['center', 'top']
+          align: ['center', 'top'],
         });
         el.style.opacity = '1';
         el.style.top = `${position.top}px`;
@@ -72,17 +64,18 @@ export const HoveringToolbar = () => {
       } catch (error) {
         console.log(error);
       }
-
     }, 200);
-
   });
 
-  useEffect(() => () => {
-    if (timer.current) {
-      window.clearTimeout(timer.current);
-      timer.current = null;
-    }
-  }, []);
+  useEffect(
+    () => () => {
+      if (timer.current) {
+        window.clearTimeout(timer.current);
+        timer.current = null;
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
     const hide = () => {
@@ -104,9 +97,11 @@ export const HoveringToolbar = () => {
     };
   }, [editor]);
 
-  return <Portal zIndex={Z_INDEX.HOVERING_TOOLBAR}>
-    <div className={styles.wrap} ref={wrapRef}>
-      <Toolbar borderLess />
-    </div>
-  </Portal>;
+  return (
+    <Portal zIndex={Z_INDEX.HOVERING_TOOLBAR}>
+      <div className={styles.wrap} ref={wrapRef}>
+        <Toolbar borderLess />
+      </div>
+    </Portal>
+  );
 };

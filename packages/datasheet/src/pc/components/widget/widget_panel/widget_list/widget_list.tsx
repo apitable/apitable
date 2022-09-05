@@ -1,6 +1,15 @@
 import { ContextMenu, useThemeColors } from '@vikadata/components';
 import {
-  CollaCommandName, ConfigConstant, IWidget, ResourceType, Selectors, Strings, SystemConfig, t, WidgetPackageStatus, WidgetReleaseType
+  CollaCommandName,
+  ConfigConstant,
+  IWidget,
+  ResourceType,
+  Selectors,
+  Strings,
+  SystemConfig,
+  t,
+  WidgetPackageStatus,
+  WidgetReleaseType,
 } from '@vikadata/core';
 import { CodeFilled, DashboardOutlined, DeleteOutlined, EditOutlined, InformationSmallOutlined, SettingOutlined } from '@vikadata/icons';
 import { useLocalStorageState } from 'ahooks';
@@ -9,7 +18,7 @@ import { keyBy } from 'lodash';
 import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
 import { EmitterEventName } from 'pc/common/simple_emitter';
 import { Modal } from 'pc/components/common';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { simpleEmitter as panelSimpleEmitter } from 'pc/components/common/vika_split_panel';
 import { expandWidgetRoute } from 'pc/components/widget/expand_widget';
 import { useResponsive } from 'pc/hooks';
@@ -53,14 +62,14 @@ export const WidgetList = () => {
   const isMobile = screenIsAtMost(ScreenSize.md);
 
   useEffect(() => {
-    simpleEmitter.bind(EmitterEventName.ToggleWidgetDevMode, (widgetId) => {
+    simpleEmitter.bind(EmitterEventName.ToggleWidgetDevMode, widgetId => {
       setDevWidgetId(widgetId);
     });
     return () => simpleEmitter.unbind(EmitterEventName.ToggleWidgetDevMode);
   }, [setDevWidgetId]);
 
   useEffect(() => {
-    panelSimpleEmitter.bind(EmitterEventName.PanelDragging, (panelDragging) => {
+    panelSimpleEmitter.bind(EmitterEventName.PanelDragging, panelDragging => {
       setDragging(panelDragging);
     });
     return () => panelSimpleEmitter.unbind(EmitterEventName.PanelDragging);
@@ -76,11 +85,7 @@ export const WidgetList = () => {
     });
   };
 
-  const onResizeStop = (
-    layout,
-    oldItem,
-    newItem,
-  ) => {
+  const onResizeStop = (layout, oldItem, newItem) => {
     setDragging(false);
     recordWidgetHeight(newItem.i, newItem.h);
   };
@@ -101,7 +106,6 @@ export const WidgetList = () => {
       },
       type: 'danger',
     });
-
   };
 
   const onDragStop = (layout, oldItem, newItem) => {
@@ -173,7 +177,7 @@ export const WidgetList = () => {
         hidden: readonly || !isShowWidget || !isWidgetDev(),
         onClick: () => {
           expandPublishHelp();
-        }
+        },
       },
       {
         icon: <DashboardOutlined color={colors.thirdLevelText} />,
@@ -183,7 +187,7 @@ export const WidgetList = () => {
           openSendToDashboard(widgetId);
         },
         hidden: Boolean(linkId) || !isWidgetPublished() || isWidgetDev(),
-      }
+      },
     ],
     [
       {
@@ -191,63 +195,66 @@ export const WidgetList = () => {
         text: t(Strings.widget_operate_delete),
         hidden: !manageable,
         onClick: deleteWidget,
-      }
-    ]
+      },
+    ],
   ];
 
-  return <div className={styles.widgetList}>
-    <ResponsiveGridLayout
-      cols={{
-        lg: 1, md: 1, sm: 1, xs: 1, xxs: 1,
-      }}
-      layouts={{
-        lg: widgetList!.map(item => {
-          return { w: 1, h: item.height, x: 0, y: item.y ?? 0, minH: 6.2, i: item.id };
-        }),
-      }}
-      preventCollision={false}
-      rowHeight={16}
-      useCSSTransforms
-      onDrag={() => setDragging(true)}
-      onResizeStart={() => setDragging(true)}
-      onResizeStop={onResizeStop}
-      onDragStop={onDragStop}
-      isBounded={false}
-      draggableHandle={'.dragHandle'}
-      draggableCancel={'.dragHandleDisabled'}
-      isDroppable={manageable}
-      isResizable={manageable}
-      margin={[0, 24]}
-    >
-      {
-        widgetList.map((item, index) => {
+  return (
+    <div className={styles.widgetList}>
+      <ResponsiveGridLayout
+        cols={{
+          lg: 1,
+          md: 1,
+          sm: 1,
+          xs: 1,
+          xxs: 1,
+        }}
+        layouts={{
+          lg: widgetList!.map(item => {
+            return { w: 1, h: item.height, x: 0, y: item.y ?? 0, minH: 6.2, i: item.id };
+          }),
+        }}
+        preventCollision={false}
+        rowHeight={16}
+        useCSSTransforms
+        onDrag={() => setDragging(true)}
+        onResizeStart={() => setDragging(true)}
+        onResizeStop={onResizeStop}
+        onDragStop={onDragStop}
+        isBounded={false}
+        draggableHandle={'.dragHandle'}
+        draggableCancel={'.dragHandleDisabled'}
+        isDroppable={manageable}
+        isResizable={manageable}
+        margin={[0, 24]}
+      >
+        {widgetList.map((item, index) => {
           const widgetMapItem = widgetMap?.[item.id]?.widget;
           const isDevMode = widgetMapItem?.status !== WidgetPackageStatus.Ban && devWidgetId === item.id;
-          return <div
-            key={item.id}
-            data-widget-id={item.id}
-            data-guide-id="WIDGET_ITEM_WRAPPER"
-            tabIndex={-1}
-            className={classNames(
-              styles.widgetItemWrap,
-              widgetId === item.id && styles.isFullscreen
-            )}
-          >
-            <WidgetItem
-              index={index}
-              widgetId={item.id}
-              widgetPanelId={activeWidgetPanel.id}
-              readonly={readonly}
-              config={{ isDevMode, hideMoreOperate: isMobile }}
-              setDevWidgetId={setDevWidgetId}
-              dragging={dragging}
-              setDragging={setDragging}
-              isMobile={isMobile}
-            />
-          </div>;
-        })
-      }
-    </ResponsiveGridLayout>
-    <ContextMenu overlay={flatContextData(menuData, true)} onShown={({ props }) => setActiveMenuWidget(props?.widget)} menuId={WIDGET_MENU} />
-  </div>;
+          return (
+            <div
+              key={item.id}
+              data-widget-id={item.id}
+              data-guide-id="WIDGET_ITEM_WRAPPER"
+              tabIndex={-1}
+              className={classNames(styles.widgetItemWrap, widgetId === item.id && styles.isFullscreen)}
+            >
+              <WidgetItem
+                index={index}
+                widgetId={item.id}
+                widgetPanelId={activeWidgetPanel.id}
+                readonly={readonly}
+                config={{ isDevMode, hideMoreOperate: isMobile }}
+                setDevWidgetId={setDevWidgetId}
+                dragging={dragging}
+                setDragging={setDragging}
+                isMobile={isMobile}
+              />
+            </div>
+          );
+        })}
+      </ResponsiveGridLayout>
+      <ContextMenu overlay={flatContextData(menuData, true)} onShown={({ props }) => setActiveMenuWidget(props?.widget)} menuId={WIDGET_MENU} />
+    </div>
+  );
 };

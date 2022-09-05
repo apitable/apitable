@@ -5,7 +5,7 @@ import { Tabs } from 'antd';
 import classNames from 'classnames';
 import { getEnvVars } from 'get_env';
 import { isObject } from 'lodash';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { isSocialPlatformEnabled, isSocialWecom, isWecomFunc, SocialPlatformMap } from 'pc/components/home/social_platform';
@@ -58,27 +58,38 @@ export const InviteOutsiderTabs: FC<IInviteOutsiderTabsProps> = props => {
   const innerLabel = showLabelInInviteModal ? '(' + t(Strings.private_internal_person_only) + ')' : '';
   const outerLabel = showLabelInInviteModal ? '(' + t(Strings.private_external_person_only) + ')' : '';
   return (
-    <Tabs defaultActiveKey='inviteViaLink' className={classNames({ [styles.showLabel]: showLabelInInviteModal })}>
-      <TabPane tab={t(Strings.link_invite) + innerLabel} key='inviteViaLink'>
+    <Tabs defaultActiveKey="inviteViaLink" className={classNames({ [styles.showLabel]: showLabelInInviteModal })}>
+      <TabPane tab={t(Strings.link_invite) + innerLabel} key="inviteViaLink">
         <LinkInvite shareId={shareId} />
       </TabPane>
-      {
-        !emailInvitationDisable && (isAdmin || !isOrgIsolated) &&
+      {!emailInvitationDisable && (isAdmin || !isOrgIsolated) && (
         <>
-          <TabPane tab={t(Strings.email_invite) + outerLabel} key='emailOfTab'>
-            <InputEmail cancel={cancelModal} setMemberInvited={setMemberInvited} shareId={shareId} secondVerify={secondVerify}
-              setSecondVerify={setSecondVerify} />
+          <TabPane tab={t(Strings.email_invite) + outerLabel} key="emailOfTab">
+            <InputEmail
+              cancel={cancelModal}
+              setMemberInvited={setMemberInvited}
+              shareId={shareId}
+              secondVerify={secondVerify}
+              setSecondVerify={setSecondVerify}
+            />
           </TabPane>
-          {isPC && !shareId && !env.HIDDEN_BATCH_IMPORT_USER && <TabPane tab={t(Strings.batch_import) + outerLabel} key='fileOfTab'>
-            <ImportFile closeModal={cancelModal} setMemberInvited={setMemberInvited} secondVerify={secondVerify} setSecondVerify={setSecondVerify} />
-          </TabPane>}
+          {isPC && !shareId && !env.HIDDEN_BATCH_IMPORT_USER && (
+            <TabPane tab={t(Strings.batch_import) + outerLabel} key="fileOfTab">
+              <ImportFile
+                closeModal={cancelModal}
+                setMemberInvited={setMemberInvited}
+                secondVerify={secondVerify}
+                setSecondVerify={setSecondVerify}
+              />
+            </TabPane>
+          )}
         </>
-      }
+      )}
     </Tabs>
   );
 };
 
-export const expandInviteModal = (data?: { resUpdate?: () => void, shareId?: string }) => {
+export const expandInviteModal = (data?: { resUpdate?: () => void; shareId?: string }) => {
   const state = store.getState();
   const spaceInfo = state.space.curSpaceInfo;
 
@@ -97,22 +108,26 @@ export const expandInviteModal = (data?: { resUpdate?: () => void, shareId?: str
     if (isObject(wx) && spaceId) {
       // https://developer.work.weixin.qq.com/document/path/94516
       getWecomAgentConfig(spaceId, () => {
-        (wx as any).invoke('selectPrivilegedContact', {
-          fromDepartmentId: -1,
-          mode: 'multi',// 必填，选择模式，single表示单选，multi表示多选
-          selectedContextContact: 0,	// 是否勾选当前环境的参与者。例如在群+号聊天附件栏打开，默认勾选当前群成员。
-        }, function(res) {
-          if (res.err_msg == 'selectPrivilegedContact:ok') {
-            const selectedTicket = res.result.selectedTicket;	// 已选的集合Ticket
-            Api.postWecomUnauthMemberInvite(spaceId, [selectedTicket]).then(rlt => {
-              if (rlt.data.message === 'SUCCESS') {
-                Message.success({ content: t(Strings.success) });
-              } else {
-                Message.error({ content: t(Strings.error) });
-              }
-            });
-          }
-        });
+        (wx as any).invoke(
+          'selectPrivilegedContact',
+          {
+            fromDepartmentId: -1,
+            mode: 'multi', // 必填，选择模式，single表示单选，multi表示多选
+            selectedContextContact: 0, // 是否勾选当前环境的参与者。例如在群+号聊天附件栏打开，默认勾选当前群成员。
+          },
+          function(res) {
+            if (res.err_msg == 'selectPrivilegedContact:ok') {
+              const selectedTicket = res.result.selectedTicket; // 已选的集合Ticket
+              Api.postWecomUnauthMemberInvite(spaceId, [selectedTicket]).then(rlt => {
+                if (rlt.data.message === 'SUCCESS') {
+                  Message.success({ content: t(Strings.success) });
+                } else {
+                  Message.error({ content: t(Strings.error) });
+                }
+              });
+            }
+          },
+        );
       });
     }
     return;
@@ -142,43 +157,31 @@ export const expandInviteModal = (data?: { resUpdate?: () => void, shareId?: str
   function render() {
     setTimeout(() => {
       ReactDOM.render(
-        (
-          <Provider store={store}>
-            <ThemeProvider>
-              <div onMouseDown={stopPropagation} onClick={stopPropagation}>
-                <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-                  <Modal
-                    title={
-                      <div>
-                        {t(Strings.invite_member)}
-                      </div>
-                    }
-                    visible
-                    onCancel={close}
-                    className={styles.inviteOutsiderTabs}
-                    footer={null}
-                    width={640}
-                    centered
-                    style={{ minWidth: '640px' }}
-                  >
-                    <InviteOutsiderTabs cancelModal={close} resUpdate={data?.resUpdate} shareId={data?.shareId} />
-                  </Modal>
-                </ComponentDisplay>
-                <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-                  <Popup
-                    title={t(Strings.invite_member)}
-                    onClose={close}
-                    visible
-                    height={'90%'}
-                    className={styles.inviteDrawer}
-                  >
-                    <InviteOutsiderTabs cancelModal={close} resUpdate={data?.resUpdate} />
-                  </Popup>
-                </ComponentDisplay>
-              </div>
-            </ThemeProvider>
-          </Provider>
-        ),
+        <Provider store={store}>
+          <ThemeProvider>
+            <div onMouseDown={stopPropagation} onClick={stopPropagation}>
+              <ComponentDisplay minWidthCompatible={ScreenSize.md}>
+                <Modal
+                  title={<div>{t(Strings.invite_member)}</div>}
+                  visible
+                  onCancel={close}
+                  className={styles.inviteOutsiderTabs}
+                  footer={null}
+                  width={640}
+                  centered
+                  style={{ minWidth: '640px' }}
+                >
+                  <InviteOutsiderTabs cancelModal={close} resUpdate={data?.resUpdate} shareId={data?.shareId} />
+                </Modal>
+              </ComponentDisplay>
+              <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
+                <Popup title={t(Strings.invite_member)} onClose={close} visible height={'90%'} className={styles.inviteDrawer}>
+                  <InviteOutsiderTabs cancelModal={close} resUpdate={data?.resUpdate} />
+                </Popup>
+              </ComponentDisplay>
+            </div>
+          </ThemeProvider>
+        </Provider>,
         div,
       );
     });

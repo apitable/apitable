@@ -1,6 +1,6 @@
 import { ScreenWidth } from '@vikadata/core';
 import { useSize } from 'ahooks';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display/enum';
 import { isRenderServer } from 'pc/utils';
 import { useEffect, useState } from 'react';
 
@@ -33,7 +33,7 @@ export const getScreen = (width: number, height: number): IScreen<{ [name: strin
     screenIsAtLeast,
     screenIsAtMost,
     clientWidth: width,
-    isMobile: screenIsAtMost(ScreenSize.md)
+    isMobile: screenIsAtMost(ScreenSize.md),
   };
 };
 

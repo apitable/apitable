@@ -1,12 +1,28 @@
 import { Message } from '@vikadata/components';
 import {
-  CollaCommandName, DATASHEET_ID, Field, FieldOperateType, ICell, KONVA_DATASHEET_ID, RecordMoveType, Selectors, StoreActions, Strings, t
+  CollaCommandName,
+  DATASHEET_ID,
+  Field,
+  FieldOperateType,
+  ICell,
+  KONVA_DATASHEET_ID,
+  RecordMoveType,
+  Selectors,
+  StoreActions,
+  Strings,
+  t,
 } from '@vikadata/core';
 import classNames from 'classnames';
 import { Tooltip } from 'pc/components/common';
 import { getDetailByTargetName, IScrollState, PointPosition } from 'pc/components/gantt_view';
 import {
-  getCellHeight, getCellHorizontalPosition, getCellOffsetLeft, GRID_BOTTOM_STAT_HEIGHT, GRID_ROW_HEAD_WIDTH, GridCoordinate, KonvaGridContext
+  getCellHeight,
+  getCellHorizontalPosition,
+  getCellOffsetLeft,
+  GRID_BOTTOM_STAT_HEIGHT,
+  GRID_ROW_HEAD_WIDTH,
+  GridCoordinate,
+  KonvaGridContext,
 } from 'pc/components/konva_grid';
 import { useDispatch, useMemorizePreviousValue } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
@@ -18,7 +34,8 @@ import * as React from 'react';
 import { forwardRef, ForwardRefRenderFunction, memo, useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef } from 'react';
 import { isIPad13 } from 'react-device-detect';
 import { shallowEqual, useSelector } from 'react-redux';
-import { IContainerEdit, PureEditorContainer } from '../editors';
+import { PureEditorContainer } from '../editors';
+import { IContainerEdit } from '../editors/interface';
 import { EXPAND_RECORD, expandRecordIdNavigate } from '../expand_record';
 import { ContextMenu } from '../multi_grid/context_menu';
 import { Drag } from '../multi_grid/drag';
@@ -47,35 +64,30 @@ interface IDomGridBaseProps {
 
 const DEFAULT_COORD = {
   x: 0,
-  y: 0
+  y: 0,
 };
 
 const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> = (props, ref) => {
-  useImperativeHandle(ref, (): IContainerEdit => ({
-    onViewMouseDown(activeCell?: ICell) {
-      containerRef.current?.onViewMouseDown(activeCell);
-    },
-    focus() { containerRef.current?.focus(); },
-  }));
+  useImperativeHandle(
+    ref,
+    (): IContainerEdit => ({
+      onViewMouseDown(activeCell?: ICell) {
+        containerRef.current?.onViewMouseDown(activeCell);
+      },
+      focus() {
+        containerRef.current?.focus();
+      },
+    }),
+  );
 
-  const {
-    pointPosition, instance, containerWidth, containerHeight, scrollState,
-    wrapperRef, offsetX = 0, cellVerticalBarRef
-  } = props;
+  const { pointPosition, instance, containerWidth, containerHeight, scrollState, wrapperRef, offsetX = 0, cellVerticalBarRef } = props;
 
-  const {
-    x: pointX,
-    y: pointY,
-    rowIndex: pointRowIndex,
-    columnIndex: pointColumnIndex,
-    targetName,
-    realTargetName
-  } = pointPosition;
+  const { x: pointX, y: pointY, rowIndex: pointRowIndex, columnIndex: pointColumnIndex, targetName, realTargetName } = pointPosition;
 
   const { scrollLeft, scrollTop, isScrolling } = scrollState;
-  const {
-    tooltipInfo, scrollToItem, activeCellBound, setCellDown, cellScrollState, setCellScrollState, scrollHandler
-  } = useContext(KonvaGridContext);
+  const { tooltipInfo, scrollToItem, activeCellBound, setCellDown, cellScrollState, setCellScrollState, scrollHandler } = useContext(
+    KonvaGridContext,
+  );
   const { totalHeight: cellTotalHeight, isOverflow } = cellScrollState;
   const containerRef = useRef<IContainerEdit | null>(null);
   const {
@@ -117,7 +129,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     };
   }, shallowEqual);
   const recordId = linearRows[pointRowIndex]?.recordId;
-  const showTips = (recordMoveType && [RecordMoveType.WillMove, RecordMoveType.OutOfView].includes(recordMoveType));
+  const showTips = recordMoveType && [RecordMoveType.WillMove, RecordMoveType.OutOfView].includes(recordMoveType);
   const lastRanges = useMemorizePreviousValue(selectRanges![0]);
   const { rowHeight, frozenColumnWidth, frozenColumnCount, rowInitSize } = instance;
   const frozenField = visibleColumns[0];
@@ -145,7 +157,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
         KONVA_DATASHEET_ID.GRID_CELL_LINK_ICON,
         KONVA_DATASHEET_ID.GRID_ROW_DRAG_HANDLER,
         KONVA_DATASHEET_ID.GRID_ROW_SELECT_CHECKBOX,
-        KONVA_DATASHEET_ID.GRID_ROW_EXPAND_RECORD
+        KONVA_DATASHEET_ID.GRID_ROW_EXPAND_RECORD,
       ].includes(targetName)
     ) {
       return null;
@@ -156,66 +168,68 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     const { depth } = row;
     const left = getCellOffsetLeft(depth);
 
-    return (
-      <QuickAppend
-        hoverRecordId={recordId}
-        top={top}
-        left={left}
-        length={containerWidth}
-      />
-    );
+    return <QuickAppend hoverRecordId={recordId} top={top} left={left} length={containerWidth} />;
   }, [containerWidth, instance, permissions.rowCreatable, recordId, pointRowIndex, targetName, isScrolling, linearRows]);
 
-  const rectCalculator = useCallback(({ recordId, fieldId }) => {
-    const state = store.getState();
-    const activeCellUIIndex = Selectors.getCellUIIndex(state, {
-      recordId,
-      fieldId,
-    });
-
-    if (activeCellUIIndex != null) {
-      const { rowIndex, columnIndex } = activeCellUIIndex;
-      if (rowIndex == null || columnIndex == null) {
-        return null;
-      }
-      const { x, y, width: columnWidth } = instance.getCellRect(rowIndex, columnIndex);
-      if (!linearRows[rowIndex]) {
-        return null;
-      }
-      const { depth } = linearRows[rowIndex];
-      const { offset, width } = getCellHorizontalPosition({
-        depth,
-        columnWidth,
-        columnIndex,
-        columnCount: totalColumnCount
+  const rectCalculator = useCallback(
+    ({ recordId, fieldId }) => {
+      const state = store.getState();
+      const activeCellUIIndex = Selectors.getCellUIIndex(state, {
+        recordId,
+        fieldId,
       });
-      const isFrozenColumn = columnIndex < frozenColumnCount;
-      const height = getCellHeight({
-        field: fieldMap[fieldId],
-        rowHeight,
-        isActive: true,
-        activeHeight: activeCellBound.height
-      });
-      const finalX = (
-        isFrozenColumn ?
-          scrollLeft + x + offset :
-          Math.min(Math.max(x + offset, scrollLeft), scrollLeft + containerWidth - width - offsetX)
-      ) + 1;
 
-      return {
-        x: finalX,
-        y: Math.max(y, scrollTop) + 0.5,
-        width: width - 1,
-        height: height - 2,
-        columnIndex,
-        rowIndex
-      };
-    }
-    return null;
-  }, [
-    instance, linearRows, totalColumnCount, fieldMap, rowHeight, activeCellBound.height,
-    scrollLeft, containerWidth, offsetX, scrollTop, frozenColumnCount
-  ]);
+      if (activeCellUIIndex != null) {
+        const { rowIndex, columnIndex } = activeCellUIIndex;
+        if (rowIndex == null || columnIndex == null) {
+          return null;
+        }
+        const { x, y, width: columnWidth } = instance.getCellRect(rowIndex, columnIndex);
+        if (!linearRows[rowIndex]) {
+          return null;
+        }
+        const { depth } = linearRows[rowIndex];
+        const { offset, width } = getCellHorizontalPosition({
+          depth,
+          columnWidth,
+          columnIndex,
+          columnCount: totalColumnCount,
+        });
+        const isFrozenColumn = columnIndex < frozenColumnCount;
+        const height = getCellHeight({
+          field: fieldMap[fieldId],
+          rowHeight,
+          isActive: true,
+          activeHeight: activeCellBound.height,
+        });
+        const finalX =
+          (isFrozenColumn ? scrollLeft + x + offset : Math.min(Math.max(x + offset, scrollLeft), scrollLeft + containerWidth - width - offsetX)) + 1;
+
+        return {
+          x: finalX,
+          y: Math.max(y, scrollTop) + 0.5,
+          width: width - 1,
+          height: height - 2,
+          columnIndex,
+          rowIndex,
+        };
+      }
+      return null;
+    },
+    [
+      instance,
+      linearRows,
+      totalColumnCount,
+      fieldMap,
+      rowHeight,
+      activeCellBound.height,
+      scrollLeft,
+      containerWidth,
+      offsetX,
+      scrollTop,
+      frozenColumnCount,
+    ],
+  );
 
   const scrollPosition = useMemo(() => {
     if (activeCell == null || !isOverflow) return null;
@@ -235,10 +249,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
   const getClickCellId = (e: MouseEvent) => {
     if (!checkInGrid(e)) return { recordId: null, fieldId: null };
     const { recordId, fieldId } = getDetailByTargetName(realTargetName);
-    if ([
-      KONVA_DATASHEET_ID.GRID_FIELD_HEAD,
-      KONVA_DATASHEET_ID.GRID_ROW_DRAG_HANDLER
-    ].includes(prevTargetName.current || '')) {
+    if ([KONVA_DATASHEET_ID.GRID_FIELD_HEAD, KONVA_DATASHEET_ID.GRID_ROW_DRAG_HANDLER].includes(prevTargetName.current || '')) {
       return {
         recordId,
         fieldId,
@@ -266,7 +277,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
       const posX = getPositionX(x);
       const left = isFrozenArea ? posX : posX - scrollLeft;
       const right = left + columnWidth;
-      const offsetX = isFrozenArea ? (pointX - x) : (pointX - x + scrollLeft);
+      const offsetX = isFrozenArea ? pointX - x : pointX - x + scrollLeft;
       return {
         left,
         right,
@@ -286,7 +297,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
       bottom: top + rowHeight,
       width: 0,
       height: rowHeight,
-      offsetY: pointY - top + containerOffsetY
+      offsetY: pointY - top + containerOffsetY,
     };
   };
 
@@ -306,22 +317,19 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
       const y = instance.getRowOffset(rowIndex) - scrollTop;
       return {
         x: x + columnWidth - 150,
-        y: y + 48 + containerOffsetY
+        y: y + 48 + containerOffsetY,
       };
     }
     // Bottom Stat
     return {
       x: x + columnWidth - 150,
-      y: containerHeight + containerOffsetY - 48
+      y: containerHeight + containerOffsetY - 48,
     };
   };
 
   const getStatMenuBoundary = (e: MouseEvent) => {
     const { targetName, fieldId } = getDetailByTargetName(realTargetName);
-    if ([
-      KONVA_DATASHEET_ID.GRID_GROUP_STAT,
-      KONVA_DATASHEET_ID.GRID_BOTTOM_STAT
-    ].includes(targetName!)) {
+    if ([KONVA_DATASHEET_ID.GRID_GROUP_STAT, KONVA_DATASHEET_ID.GRID_BOTTOM_STAT].includes(targetName!)) {
       const rowIndex = targetName === KONVA_DATASHEET_ID.GRID_BOTTOM_STAT ? null : pointRowIndex;
       const pos = getStatPositionInfo(pointColumnIndex, rowIndex);
       return {
@@ -334,9 +342,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
 
   const getBottomStatMenuBoundary = (e: MouseEvent) => {
     const { targetName, fieldId } = getDetailByTargetName(realTargetName);
-    if ([
-      KONVA_DATASHEET_ID.GRID_BOTTOM_STAT
-    ].includes(targetName!)) {
+    if ([KONVA_DATASHEET_ID.GRID_BOTTOM_STAT].includes(targetName!)) {
       const rowIndex = targetName === KONVA_DATASHEET_ID.GRID_BOTTOM_STAT ? null : pointRowIndex;
       const pos = getStatPositionInfo(pointColumnIndex, rowIndex);
       return {
@@ -349,14 +355,11 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
 
   const getGroupMenuBoundary = (e: MouseEvent) => {
     const { targetName } = getDetailByTargetName(realTargetName);
-    if ([
-      KONVA_DATASHEET_ID.GRID_GROUP_STAT,
-      KONVA_DATASHEET_ID.GRID_GROUP_TAB,
-    ].includes(targetName!)) {
+    if ([KONVA_DATASHEET_ID.GRID_GROUP_STAT, KONVA_DATASHEET_ID.GRID_GROUP_TAB].includes(targetName!)) {
       return {
         x: getPositionX(pointX),
         y: pointY + containerOffsetY,
-        row: linearRows[pointRowIndex]
+        row: linearRows[pointRowIndex],
       };
     }
     return null;
@@ -375,7 +378,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
         left: gridRect.left + frozenColumnWidth + GRID_ROW_HEAD_WIDTH,
         right: gridRect.right,
         width: 0,
-        height: 0
+        height: 0,
       } as any,
       70,
     );
@@ -434,39 +437,50 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     }
   };
 
-  const clickFieldHead = useCallback((operateType: FieldOperateType, fieldId: string) => {
-    let left = 0;
-    let x = 0;
-    let columnIndex = 0;
+  const clickFieldHead = useCallback(
+    (operateType: FieldOperateType, fieldId: string) => {
+      let left = 0;
+      let x = 0;
+      let columnIndex = 0;
 
-    if (fieldId !== ButtonOperateType.AddField) {
-      const field = fieldMap[fieldId];
+      if (fieldId !== ButtonOperateType.AddField) {
+        const field = fieldMap[fieldId];
 
-      if (field && !Field.bindModel(field).propertyEditable()) return;
-      if (!permissions.manageable) return;
-      columnIndex = visibleColumnIndexMap.get(fieldId) || 0;
-      x = instance.getColumnOffset(columnIndex);
-    } else {
-      columnIndex = totalColumnCount;
-      x = instance.getColumnOffset(columnIndex);
-    }
-    left = getPositionX(x);
-    dispatch(
-      StoreActions.setActiveFieldState(datasheetId, {
-        fieldId,
-        fieldRectLeft: left,
-        fieldRectBottom: containerOffsetY + fieldHeadHeight,
-        clickLogOffsetX: 0,
-        fieldIndex: columnIndex,
-        operate: operateType,
-      }),
-    );
-  }, [
-    datasheetId, dispatch, fieldMap, getPositionX, instance, permissions.manageable,
-    visibleColumnIndexMap, totalColumnCount, containerOffsetY, fieldHeadHeight
-  ]);
+        if (field && !Field.bindModel(field).propertyEditable()) return;
+        if (!permissions.manageable) return;
+        columnIndex = visibleColumnIndexMap.get(fieldId) || 0;
+        x = instance.getColumnOffset(columnIndex);
+      } else {
+        columnIndex = totalColumnCount;
+        x = instance.getColumnOffset(columnIndex);
+      }
+      left = getPositionX(x);
+      dispatch(
+        StoreActions.setActiveFieldState(datasheetId, {
+          fieldId,
+          fieldRectLeft: left,
+          fieldRectBottom: containerOffsetY + fieldHeadHeight,
+          clickLogOffsetX: 0,
+          fieldIndex: columnIndex,
+          operate: operateType,
+        }),
+      );
+    },
+    [
+      datasheetId,
+      dispatch,
+      fieldMap,
+      getPositionX,
+      instance,
+      permissions.manageable,
+      visibleColumnIndexMap,
+      totalColumnCount,
+      containerOffsetY,
+      fieldHeadHeight,
+    ],
+  );
 
-  const onDblClick = (e) => {
+  const onDblClick = e => {
     e.preventDefault();
     if (targetName === KONVA_DATASHEET_ID.GRID_FIELD_HEAD) {
       const pointFieldId = visibleColumns[pointColumnIndex]?.fieldId;
@@ -474,7 +488,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     }
   };
 
-  const onClick = (e) => {
+  const onClick = e => {
     e.preventDefault();
     if (prevTargetName.current != null && prevTargetName.current !== targetName) return;
     if (targetName === KONVA_DATASHEET_ID.GRID_FIELD_ADD_BUTTON) {
@@ -486,9 +500,9 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     }
   };
 
-  const editFieldSetting = useCallback((fieldId) => clickFieldHead(FieldOperateType.FieldSetting, fieldId), [clickFieldHead]);
+  const editFieldSetting = useCallback(fieldId => clickFieldHead(FieldOperateType.FieldSetting, fieldId), [clickFieldHead]);
 
-  const editFieldDesc = useCallback((fieldId) => clickFieldHead(FieldOperateType.FieldDesc, fieldId), [clickFieldHead]);
+  const editFieldDesc = useCallback(fieldId => clickFieldHead(FieldOperateType.FieldDesc, fieldId), [clickFieldHead]);
 
   const onMouseDown = (e: MouseEvent) => {
     prevTargetName.current = targetName;
@@ -522,14 +536,12 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     const modalRoot = document.querySelector('.ant-modal-root');
     // 侧边展示的记录卡片，点击它时也不让单元格失焦
     const sideRecordContainer = document.getElementById(DATASHEET_ID.SIDE_RECORD_PANEL);
-    if (
-      modalRoot && modalRoot.contains(e.target as HTMLElement) ||
-      (sideRecordContainer && sideRecordContainer.contains(e.target as HTMLElement))
-    ) return true;
+    if ((modalRoot && modalRoot.contains(e.target as HTMLElement)) || (sideRecordContainer && sideRecordContainer.contains(e.target as HTMLElement)))
+      return true;
     return false;
   }
 
-  const onGlobalMouseDown = (e) => {
+  const onGlobalMouseDown = e => {
     if (isClickInExpandModal(e)) return;
     if (getParentNodeByClass(e.target as HTMLElement, ['vikaGridView', 'hideenFieldItem'])) return;
 
@@ -566,7 +578,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     };
   });
 
-  const handleCellVerticalScroll = (e) => {
+  const handleCellVerticalScroll = e => {
     const { scrollTop } = e.target;
     setCellScrollState({
       scrollTop,
@@ -575,20 +587,24 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
 
   const renderTooltip = () => {
     const {
-      visible, title, placement, width, height, x, y, rowIndex,
-      columnIndex, coordXEnable = true, coordYEnable = true, rowsNumber
+      visible,
+      title,
+      placement,
+      width,
+      height,
+      x,
+      y,
+      rowIndex,
+      columnIndex,
+      coordXEnable = true,
+      coordYEnable = true,
+      rowsNumber,
     } = tooltipInfo;
     if (!visible) return null;
-    const left = coordXEnable ? (x || instance.getColumnOffset(columnIndex)) : scrollLeft + x;
-    const top = coordYEnable ? (y || instance.getRowOffset(rowIndex)) : scrollTop + y;
+    const left = coordXEnable ? x || instance.getColumnOffset(columnIndex) : scrollLeft + x;
+    const top = coordYEnable ? y || instance.getRowOffset(rowIndex) : scrollTop + y;
     return (
-      <Tooltip
-        title={title}
-        visible={visible}
-        placement={placement}
-        showTipAnyway
-        rowsNumber={rowsNumber}
-      >
+      <Tooltip title={title} visible={visible} placement={placement} showTipAnyway rowsNumber={rowsNumber}>
         <div
           style={{
             position: 'absolute',
@@ -615,16 +631,18 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
       return;
     }
 
-    executeCommandWithMirror(() => {
-      resourceService.instance!.commandManager.execute({
-        cmd: CollaCommandName.SetViewFrozenColumnCount,
-        viewId: view.id,
-        count: columnIndex + 1,
-      });
-    }, {
-      frozenColumnCount: columnIndex + 1
-    });
-
+    executeCommandWithMirror(
+      () => {
+        resourceService.instance!.commandManager.execute({
+          cmd: CollaCommandName.SetViewFrozenColumnCount,
+          viewId: view.id,
+          count: columnIndex + 1,
+        });
+      },
+      {
+        frozenColumnCount: columnIndex + 1,
+      },
+    );
   };
 
   let moveTipOffsetY: null | number = null;
@@ -637,27 +655,15 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
 
   return (
     <>
-      <div
-        id={DATASHEET_ID.DOM_CONTAINER}
-        className={styles.domGrid}
-      >
+      <div id={DATASHEET_ID.DOM_CONTAINER} className={styles.domGrid}>
         <div
           style={{
             transform: `translateY(-${scrollTop}px)`,
             pointerEvents: 'auto',
           }}
         >
-          {
-            !gridViewDragState.dragTarget?.recordId &&
-            quickAppend
-          }
-          {
-            moveTipOffsetY != null &&
-            <RecordWillMoveTips
-              rowHeight={rowHeight}
-              y={moveTipOffsetY}
-            />
-          }
+          {!gridViewDragState.dragTarget?.recordId && quickAppend}
+          {moveTipOffsetY != null && <RecordWillMoveTips rowHeight={rowHeight} y={moveTipOffsetY} />}
         </div>
 
         <div
@@ -667,8 +673,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
           }}
         >
           {/* Editor */}
-          {
-            selection &&
+          {selection && (
             <PureEditorContainer
               ref={containerRef}
               record={selectRecord!}
@@ -681,12 +686,10 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
               scrollLeft={scrollLeft}
               scrollTop={scrollTop}
             />
-          }
+          )}
 
           {/* Tooltip */}
-          {
-            renderTooltip()
-          }
+          {renderTooltip()}
         </div>
 
         <div
@@ -701,8 +704,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
         >
           <div style={{ transform: `translate3d(-${scrollLeft}px, -${scrollTop}px, 0)` }}>
             {/* 激活单元格滚动 */}
-            {
-              scrollPosition != null &&
+            {scrollPosition != null && (
               <div
                 ref={cellVerticalBarRef}
                 className={classNames(styles.verticalScrollBarWrapper, styles.cellVerticalScrollBarWrapper)}
@@ -723,7 +725,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
                   }}
                 />
               </div>
-            }
+            )}
           </div>
         </div>
 
@@ -744,22 +746,13 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
       </div>
 
       {/* 分组组头菜单 */}
-      <GroupMenu
-        parentRef={wrapperRef}
-        getBoundary={getGroupMenuBoundary}
-      />
+      <GroupMenu parentRef={wrapperRef} getBoundary={getGroupMenuBoundary} />
 
       {/* 统计栏菜单 */}
-      <StatMenu
-        parentRef={wrapperRef}
-        getBoundary={getStatMenuBoundary}
-      />
+      <StatMenu parentRef={wrapperRef} getBoundary={getStatMenuBoundary} />
 
       {/* 统计栏右键菜单 */}
-      <StatRightClickMenu
-        parentRef={wrapperRef}
-        getBoundary={getBottomStatMenuBoundary}
-      />
+      <StatRightClickMenu parentRef={wrapperRef} getBoundary={getBottomStatMenuBoundary} />
 
       {/* 右键菜单 */}
       <ContextMenu
@@ -771,20 +764,14 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
       />
 
       {/* 列设置 */}
-      {
-        activeFieldId &&
-        activeFieldOperateType === FieldOperateType.FieldSetting &&
-        !document.querySelector(`.${EXPAND_RECORD}`) &&
+      {activeFieldId && activeFieldOperateType === FieldOperateType.FieldSetting && !document.querySelector(`.${EXPAND_RECORD}`) && (
         <FieldSetting scrollToItem={scrollToItem} />
-      }
+      )}
 
       {/* 列描述 */}
-      {
-        activeFieldId &&
-        activeFieldOperateType === FieldOperateType.FieldDesc &&
-        !document.querySelector(`.${EXPAND_RECORD}`) &&
+      {activeFieldId && activeFieldOperateType === FieldOperateType.FieldDesc && !document.querySelector(`.${EXPAND_RECORD}`) && (
         <FieldDesc fieldId={activeFieldId} datasheetId={datasheetId} readOnly={!permissions.descriptionEditable} />
-      }
+      )}
     </>
   );
 };

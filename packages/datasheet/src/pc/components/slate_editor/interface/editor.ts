@@ -1,6 +1,6 @@
 import { Selection } from 'slate';
 import { IElement } from './element';
-import { META_KEYS } from '../plugins/withMeta';
+import { META_KEYS } from '../plugins/constant';
 
 export declare type EditorValue = Array<IElement>;
 
@@ -22,7 +22,7 @@ export interface ISlateEditorProps {
   mode?: 'lite' | 'full';
   readOnly?: boolean;
   onChange?: (data: IEditorData) => void;
-  value?: IEditorData | EditorValue
+  value?: IEditorData | EditorValue;
   height?: number | string;
   headerToolbarEnabled?: boolean;
   hoveringToolbarEnabled?: boolean;
@@ -51,11 +51,11 @@ export interface IEventBusEditor {
   on: (eventType: string, EventHandle) => void;
   off: (eventType: string, EventHandle) => boolean;
   clear: () => void;
-  dispatch: (eventType: string, ...params:Array<any>) => void;
+  dispatch: (eventType: string, ...params: Array<any>) => void;
 }
 export interface IMetaEditor {
   meta: IEditorMeta;
   updateMeta: (key: keyof typeof META_KEYS, value: number, op?: 'add' | 'desc') => void;
-  setMeta: ( meta: IEditorMeta ) => void;
+  setMeta: (meta: IEditorMeta) => void;
   resetMeta: () => void;
 }

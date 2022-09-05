@@ -1,8 +1,19 @@
 import { ErrorBoundary } from '@sentry/react';
 import { IconButton, Skeleton, ThemeProvider, useThemeColors } from '@vikadata/components';
 import {
-  Api, DatasheetApi, FieldOperateType, Navigation, RecordVision, ResourceIdPrefix, ResourceType, Selectors, SetFieldFrom, StatusCode, StoreActions,
-  Strings, t,
+  Api,
+  DatasheetApi,
+  FieldOperateType,
+  Navigation,
+  RecordVision,
+  ResourceIdPrefix,
+  ResourceType,
+  Selectors,
+  SetFieldFrom,
+  StatusCode,
+  StoreActions,
+  Strings,
+  t,
 } from '@vikadata/core';
 import { AttentionOutlined, CommentOutlined } from '@vikadata/icons';
 import { useLocalStorageState, useMount, useToggle, useUpdateEffect } from 'ahooks';
@@ -14,7 +25,10 @@ import { Message, Modal as CustomModal, Tooltip } from 'pc/components/common';
 import { QRCodeModalContent } from 'pc/components/common/modal/qr_code_modal_content';
 import { EXPAND_RECORD, RecordType } from 'pc/components/expand_record/expand_record.enum';
 import {
-  IExpandRecordComponentProp, IExpandRecordInnerProp, IExpandRecordWrapperProp, IPaneIconProps
+  IExpandRecordComponentProp,
+  IExpandRecordInnerProp,
+  IExpandRecordWrapperProp,
+  IPaneIconProps,
 } from 'pc/components/expand_record/expand_record.interface';
 import { ExpandRecordMoreOption } from 'pc/components/expand_record/expand_record_more_option';
 import { RecordPageTurn } from 'pc/components/expand_record/record_page_turn';
@@ -33,7 +47,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider, shallowEqual, useDispatch, useSelector } from 'react-redux';
 import IconNarrow from 'static/icon/datasheet/datasheet_icon_narrow_record16.svg';
-import { ComponentDisplay, ScreenSize } from '../common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { Method, navigatePath } from '../route_manager/use_navigation';
 import { ActivityPane, ICacheType } from './activity_pane';
 import { EditorContainer } from './editor_container';
@@ -63,7 +77,7 @@ const CommentButton = ({ active, onClick }: IPaneIconProps): JSX.Element => {
 const SubscribeButton = ({ active, onSubOrUnsub }): JSX.Element => {
   const [updating, setUpdating] = useState(false);
 
-  const _onSubOrUnsub = async() => {
+  const _onSubOrUnsub = async () => {
     setUpdating(true);
 
     await onSubOrUnsub();
@@ -125,7 +139,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
 
   recordModalCloseFns.unshift(modalClose);
 
-  const monitorBodyFocus = (e) => {
+  const monitorBodyFocus = e => {
     if (!focusHolderRef.current) {
       return;
     }
@@ -154,19 +168,15 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
     modalClose,
   };
 
-  ReactDOM.render((
+  ReactDOM.render(
     <Provider store={store}>
-      <ExpandRecordModal
-        onCancel={modalClose}
-        wrapClassName={styles.mobileWrapper}
-        forceCenter={props.forceCenter}
-      >
+      <ExpandRecordModal onCancel={modalClose} wrapClassName={styles.mobileWrapper} forceCenter={props.forceCenter}>
         <ErrorBoundary
           onError={() => {
             clearExpandModal();
             setTimeout(() => Api.keepTabbar({}), 500);
           }}
-          beforeCapture={(scope) => {
+          beforeCapture={scope => {
             scope.setTag('catcher', 'expandRecordCrash');
           }}
         >
@@ -180,9 +190,8 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
           }}
         />
       </ExpandRecordModal>
-    </Provider>
-  ),
-  container,
+    </Provider>,
+    container,
   );
 };
 
@@ -193,36 +202,34 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
   const [realRecordIds, setRealRecordIds] = useState(recordIds);
   const isMirror = nodeId.startsWith(ResourceIdPrefix.Mirror);
   const [datasheetId, setDatasheetId] = useState<string | undefined>(nodeId);
-  const {
-    snapshot,
-    isPartOfData,
-    visibleRows,
-    datasheetErrorCode,
-    pageParamsRecordId,
-    activeDatasheetId,
-    mirrorSourceDstId,
-  } = useSelector(state => ({
-    snapshot: Selectors.getSnapshot(state, datasheetId)!,
-    isPartOfData: Selectors.getDatasheet(state, datasheetId)?.isPartOfData,
-    datasheetErrorCode: isMirror ? Selectors.getMirrorErrorCode(state, nodeId) : Selectors.getDatasheetErrorCode(state, datasheetId),
-    visibleRows: Selectors.getVisibleRows(state),
-    pageParamsRecordId: state.pageParams.recordId,
-    activeDatasheetId: Selectors.getActiveDatasheetId(state),
-    mirrorSourceDstId: Selectors.getMirrorSourceInfo(state, nodeId)?.datasheetId,
-  }), shallowEqual);
+  const { snapshot, isPartOfData, visibleRows, datasheetErrorCode, pageParamsRecordId, activeDatasheetId, mirrorSourceDstId } = useSelector(
+    state => ({
+      snapshot: Selectors.getSnapshot(state, datasheetId)!,
+      isPartOfData: Selectors.getDatasheet(state, datasheetId)?.isPartOfData,
+      datasheetErrorCode: isMirror ? Selectors.getMirrorErrorCode(state, nodeId) : Selectors.getDatasheetErrorCode(state, datasheetId),
+      visibleRows: Selectors.getVisibleRows(state),
+      pageParamsRecordId: state.pageParams.recordId,
+      activeDatasheetId: Selectors.getActiveDatasheetId(state),
+      mirrorSourceDstId: Selectors.getMirrorSourceInfo(state, nodeId)?.datasheetId,
+    }),
+    shallowEqual,
+  );
   const hasRecordIdsData = () => snapshot && recordIds.every(recordId => snapshot.recordMap && snapshot.recordMap?.[recordId]);
   const [independentDataLoading, setIndependentDataLoading] = useState<boolean>(isIndependent && isPartOfData !== false && !hasRecordIdsData());
 
   useEffect(() => {
     if (independentDataLoading) {
-      resourceService.instance!.switchResource({
-        to: nodeId,
-        resourceType: isMirror ? ResourceType.Mirror : ResourceType.Datasheet,
-        extra: { recordIds: recordIds },
-      }).catch(() => { }).then(() => {
-        setIndependentDataLoading(false);
-        isMirror && setDatasheetId(store.getState().mirrorMap[nodeId].mirror?.sourceInfo.datasheetId);
-      });
+      resourceService
+        .instance!.switchResource({
+          to: nodeId,
+          resourceType: isMirror ? ResourceType.Mirror : ResourceType.Datasheet,
+          extra: { recordIds: recordIds },
+        })
+        .catch(() => {})
+        .then(() => {
+          setIndependentDataLoading(false);
+          isMirror && setDatasheetId(store.getState().mirrorMap[nodeId].mirror?.sourceInfo.datasheetId);
+        });
     }
   }, [independentDataLoading, recordIds, nodeId, isMirror]);
 
@@ -235,63 +242,66 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
     isIndependent && viewId && datasheetId && activeDatasheetId !== datasheetId && dispatch(StoreActions.switchView(datasheetId, viewId));
   }, [isIndependent, datasheetId, viewId, activeDatasheetId]);
 
-  const errorHandle = useMemo(() => (errorCode, recordIds?, activeRecordId?) => {
-    let customModal;
-    switch (errorCode) {
-      case StatusCode.NODE_NOT_EXIST:
-      case StatusCode.NODE_DELETED:
-        customModal = CustomModal.warning({
+  const errorHandle = useMemo(
+    () => (errorCode, recordIds?, activeRecordId?) => {
+      let customModal;
+      switch (errorCode) {
+        case StatusCode.NODE_NOT_EXIST:
+        case StatusCode.NODE_DELETED:
+          customModal = CustomModal.warning({
+            title: t(Strings.open_failed),
+            content: QRCodeModalContent({
+              content: t(Strings.node_not_exist_content),
+              onOk: () => {
+                modalClose();
+                customModal.destroy();
+              },
+              modalButtonType: 'warning',
+              okText: t(Strings.submit), // '确认',
+            }),
+            footer: null,
+            maskClosable: false,
+          });
+          break;
+        case StatusCode.FORM_FOREIGN_DATASHEET_NOT_EXIST:
+          // 镜像源表被删除
+          customModal = CustomModal.warning({
+            title: t(Strings.open_failed),
+            content: QRCodeModalContent({
+              content: t(Strings.mirror_resource_dst_been_deleted),
+              onOk: () => {
+                modalClose();
+                customModal.destroy();
+              },
+              modalButtonType: 'warning',
+              okText: t(Strings.submit),
+            }),
+            footer: null,
+            maskClosable: false,
+          });
+          break;
+        default:
+      }
+      // 对于加载回来的数据为空的情况
+      if (!errorCode && activeRecordId && !snapshot.recordMap[activeRecordId]) {
+        const customModal = CustomModal.error({
           title: t(Strings.open_failed),
           content: QRCodeModalContent({
-            content: t(Strings.node_not_exist_content),
+            content: t(Strings.error_record_not_exist_now),
             onOk: () => {
               modalClose();
               customModal.destroy();
             },
-            modalButtonType: 'warning',
-            okText: t(Strings.submit), // '确认',
-          }),
-          footer: null,
-          maskClosable: false,
-        });
-        break;
-      case StatusCode.FORM_FOREIGN_DATASHEET_NOT_EXIST:
-        // 镜像源表被删除
-        customModal = CustomModal.warning({
-          title: t(Strings.open_failed),
-          content: QRCodeModalContent({
-            content: t(Strings.mirror_resource_dst_been_deleted),
-            onOk: () => {
-              modalClose();
-              customModal.destroy();
-            },
-            modalButtonType: 'warning',
+            modalButtonType: 'error',
             okText: t(Strings.submit),
           }),
           footer: null,
           maskClosable: false,
         });
-        break;
-      default:
-    }
-    // 对于加载回来的数据为空的情况
-    if (!errorCode && activeRecordId && !snapshot.recordMap[activeRecordId]) {
-      const customModal = CustomModal.error({
-        title: t(Strings.open_failed),
-        content: QRCodeModalContent({
-          content: t(Strings.error_record_not_exist_now),
-          onOk: () => {
-            modalClose();
-            customModal.destroy();
-          },
-          modalButtonType: 'error',
-          okText: t(Strings.submit),
-        }),
-        footer: null,
-        maskClosable: false,
-      });
-    }
-  }, [modalClose, snapshot]);
+      }
+    },
+    [modalClose, snapshot],
+  );
 
   useEffect(() => {
     if (!independentDataLoading && datasheetErrorCode && datasheetId) {
@@ -304,19 +314,21 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
     let curRecordIds: string[];
     let curActiveRecordId: string;
     switch (recordType) {
-      case RecordType.Independent: {
-        const { recordMap } = snapshot;
-        // 传入的和现有的交集，因为可能有被删除的，所以这里求交集
-        curRecordIds = recordIds.filter(id => recordMap[id]);
-        // 默认使用 activeRecord，如果 activeRecord 被过滤掉了，就用第一个，realActiveRecordId 作为切换后
-        curActiveRecordId =
-          (realActiveRecordId && recordMap?.[realActiveRecordId]?.id) || (activeRecordId && recordMap?.[activeRecordId]?.id) || curRecordIds[0];
-      }
+      case RecordType.Independent:
+        {
+          const { recordMap } = snapshot;
+          // 传入的和现有的交集，因为可能有被删除的，所以这里求交集
+          curRecordIds = recordIds.filter(id => recordMap[id]);
+          // 默认使用 activeRecord，如果 activeRecord 被过滤掉了，就用第一个，realActiveRecordId 作为切换后
+          curActiveRecordId =
+            (realActiveRecordId && recordMap?.[realActiveRecordId]?.id) || (activeRecordId && recordMap?.[activeRecordId]?.id) || curRecordIds[0];
+        }
         break;
-      case RecordType.Datasheet: {
-        curRecordIds = visibleRows.map(row => row.recordId);
-        curActiveRecordId = pageParamsRecordId!;
-      }
+      case RecordType.Datasheet:
+        {
+          curRecordIds = visibleRows.map(row => row.recordId);
+          curActiveRecordId = pageParamsRecordId!;
+        }
         break;
     }
     setRealRecordIds(curRecordIds);
@@ -325,21 +337,26 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [snapshot, datasheetErrorCode, independentDataLoading, pageParamsRecordId]);
 
-  const switchRecord = useCallback((index: number) => {
-    if (recordType === RecordType.Datasheet) {
-      expandRecordIdNavigate(realRecordIds[index]);
-      expandRecordIdNavigate.flush();
-    }
-    setRealActiveRecordId(realRecordIds[index]);
+  const switchRecord = useCallback(
+    (index: number) => {
+      if (recordType === RecordType.Datasheet) {
+        expandRecordIdNavigate(realRecordIds[index]);
+        expandRecordIdNavigate.flush();
+      }
+      setRealActiveRecordId(realRecordIds[index]);
 
-    // 更新 previewFile 的 datasheetId 参数，并将 activeIndex 重置为第一个附件
-    const previewFile = store.getState().previewFile;
-    dispatch(StoreActions.setPreviewFile({
-      ...previewFile,
-      recordId: realRecordIds[index],
-      activeIndex: 0
-    }));
-  }, [realRecordIds, recordType]);
+      // 更新 previewFile 的 datasheetId 参数，并将 activeIndex 重置为第一个附件
+      const previewFile = store.getState().previewFile;
+      dispatch(
+        StoreActions.setPreviewFile({
+          ...previewFile,
+          recordId: realRecordIds[index],
+          activeIndex: 0,
+        }),
+      );
+    },
+    [realRecordIds, recordType],
+  );
 
   if (!realActiveRecordId) {
     return (
@@ -360,12 +377,12 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
     recordIds: realRecordIds,
     switchRecord,
     datasheetId: datasheetId!,
-    mirrorId: isMirror ? nodeId : undefined
+    mirrorId: isMirror ? nodeId : undefined,
   };
   return <ExpandRecordComponent {...commonProps} />;
 };
 
-const WrapperWithTheme = (props) => {
+const WrapperWithTheme = props => {
   const cacheTheme = useSelector(Selectors.getTheme);
   return (
     <ThemeProvider theme={cacheTheme}>
@@ -377,14 +394,17 @@ const WrapperWithTheme = (props) => {
 const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props => {
   const colors = useThemeColors();
   const { activeRecordId, datasheetId, mirrorId, recordIds, modalClose, switchRecord, recordType, pageParamsRecordId } = props;
-  const { allowShowCommentPane, activeDatasheetId, snapshot, shareId, templateId } = useSelector(state => ({
-    nodeName: mirrorId ? Selectors.getMirror(state, mirrorId)?.name : Selectors.getDatasheet(state, datasheetId)!.name,
-    allowShowCommentPane: Selectors.allowShowCommentPane(state),
-    activeDatasheetId: Selectors.getActiveDatasheetId(state),
-    snapshot: Selectors.getSnapshot(state, datasheetId)!,
-    shareId: state.pageParams.shareId,
-    templateId: state.pageParams.templateId,
-  }), shallowEqual);
+  const { allowShowCommentPane, activeDatasheetId, snapshot, shareId, templateId } = useSelector(
+    state => ({
+      nodeName: mirrorId ? Selectors.getMirror(state, mirrorId)?.name : Selectors.getDatasheet(state, datasheetId)!.name,
+      allowShowCommentPane: Selectors.allowShowCommentPane(state),
+      activeDatasheetId: Selectors.getActiveDatasheetId(state),
+      snapshot: Selectors.getSnapshot(state, datasheetId)!,
+      shareId: state.pageParams.shareId,
+      templateId: state.pageParams.templateId,
+    }),
+    shallowEqual,
+  );
   // const { fieldId: activeFieldId, operate: activeFieldOperateType } = useSelector(state => Selectors.gridViewActiveFieldState(state, datasheetId));
   const subscriptions = useSelector(state => state.subscriptions)!;
   const [commentPaneShow, { toggle: toggleCommentPane, set: setCommentPane }] = useToggle(Boolean(allowShowCommentPane));
@@ -399,29 +419,30 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
   const { run: subscribeRecordByIds } = useRequest(DatasheetApi.subscribeRecordByIds, { manual: true });
   const { run: unsubscribeRecordByIds } = useRequest(DatasheetApi.unsubscribeRecordByIds, { manual: true });
 
-  const [
-    fieldDescCollapseStatusMap,
-    setFieldDescCollapseStatusMap
-  ] = useLocalStorageState<IFieldDescCollapseStatus>(StorageName.FieldDescCollapseStatus, { defaultValue: {}});
+  const [fieldDescCollapseStatusMap, setFieldDescCollapseStatusMap] = useLocalStorageState<IFieldDescCollapseStatus>(
+    StorageName.FieldDescCollapseStatus,
+    { defaultValue: {} },
+  );
 
   const isSideRecordOpen = useSelector(state => state.space.isSideRecordOpen);
   const recordVision = useSelector(state => state.recordVision);
-  const isColumnLayout = (recordVision === RecordVision.Side) && isSideRecordOpen && !props.forceCenter;
+  const isColumnLayout = recordVision === RecordVision.Side && isSideRecordOpen && !props.forceCenter;
   const isSetFocusIdByClickFieldRef = useRef(false);
 
-  const [cacheType, setCacheType] = useLocalStorageState<ICacheType>('vika_activity_type', { defaultValue: {}});
-  const handleCacheType = useCallback((type: ActivitySelectType) => {
-    setCacheType({
-      ...cacheType,
-      [datasheetId]: type
-    });
-  }, [cacheType, datasheetId, setCacheType]);
+  const [cacheType, setCacheType] = useLocalStorageState<ICacheType>('vika_activity_type', { defaultValue: {} });
+  const handleCacheType = useCallback(
+    (type: ActivitySelectType) => {
+      setCacheType({
+        ...cacheType,
+        [datasheetId]: type,
+      });
+    },
+    [cacheType, datasheetId, setCacheType],
+  );
 
-  const {
-    fieldId: activeFieldId,
-    operate: activeFieldOperateType,
-    from: setFieldFrom
-  } = useSelector(state => Selectors.gridViewActiveFieldState(state, datasheetId));
+  const { fieldId: activeFieldId, operate: activeFieldOperateType, from: setFieldFrom } = useSelector(state =>
+    Selectors.gridViewActiveFieldState(state, datasheetId),
+  );
 
   useMount(() => {
     if (!allowShowCommentPane) {
@@ -447,7 +468,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
 
   // 如果是侧边栏模式时，打开侧边栏
   useEffect(() => {
-    (recordVision === RecordVision.Side) && _dispatch(StoreActions.toggleSideRecord(true));
+    recordVision === RecordVision.Side && _dispatch(StoreActions.toggleSideRecord(true));
   }, [_dispatch, recordVision]);
 
   const fromCurrentDatasheet = datasheetId === activeDatasheetId;
@@ -490,30 +511,36 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
     return list.includes(`${datasheetId},${view.id}`);
   });
 
-  const _setShowHiddenField = useCallback((state: React.SetStateAction<boolean>) => {
-    if (hasMirrorId && hasShareId) {
-      return;
-    }
-    setShowHiddenField(state);
-  }, [hasMirrorId, hasShareId]);
+  const _setShowHiddenField = useCallback(
+    (state: React.SetStateAction<boolean>) => {
+      if (hasMirrorId && hasShareId) {
+        return;
+      }
+      setShowHiddenField(state);
+    },
+    [hasMirrorId, hasShareId],
+  );
 
   useUpdateEffect(() => {
     setFocusFieldId(activeId);
   }, [activeRecordId]);
 
-  const updateFocusFieldId = useCallback((fieldId: string | null) => {
-    const dom = fieldId && document.getElementById(fieldId);
-    if (!dom) {
-      return;
-    }
-    // https://stackoverflow.com/questions/19669786/check-if-element-is-visible-in-dom
-    // dom 不在可视区时 offsetParent 为 null
-    if (dom.offsetParent === null) {
-      _setShowHiddenField(true);
-    }
-    dom.scrollIntoView(true);
-    setFocusFieldId(fieldId);
-  }, [_setShowHiddenField]);
+  const updateFocusFieldId = useCallback(
+    (fieldId: string | null) => {
+      const dom = fieldId && document.getElementById(fieldId);
+      if (!dom) {
+        return;
+      }
+      // https://stackoverflow.com/questions/19669786/check-if-element-is-visible-in-dom
+      // dom 不在可视区时 offsetParent 为 null
+      if (dom.offsetParent === null) {
+        _setShowHiddenField(true);
+      }
+      dom.scrollIntoView(true);
+      setFocusFieldId(fieldId);
+    },
+    [_setShowHiddenField],
+  );
 
   const title = getRecordName(
     Selectors.getCellValue(store.getState(), snapshot, activeRecordId, view.columns[0].fieldId),
@@ -530,10 +557,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
 
   // 侧边模式下，其他面板的发生鼠标按下事件时，让记录展开卡片失焦
   useEffect(() => {
-    const els = [
-      document.querySelector('.workspaceMenu'),
-      document.querySelector('.dataspaceRight'),
-    ];
+    const els = [document.querySelector('.workspaceMenu'), document.querySelector('.dataspaceRight')];
     const _onMouseDown = onMouseDown;
     els.forEach(el => {
       el && el.addEventListener('mousedown', _onMouseDown, true);
@@ -555,26 +579,26 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
         path: Navigation.SHARE_SPACE,
         params: { nodeId: mirrorId || datasheetId, viewId, shareId, datasheetId },
         method: Method.Redirect,
-        query
+        query,
       });
     } else if (templateId) {
       navigatePath({
         path: Navigation.TEMPLATE,
         params: { nodeId: mirrorId || datasheetId, viewId, categoryId, templateId, datasheetId },
         method: Method.Redirect,
-        query
+        query,
       });
     } else {
       navigatePath({
         path: Navigation.WORKBENCH,
         params: { nodeId: mirrorId || datasheetId, viewId, datasheetId },
         method: Method.Redirect,
-        query
+        query,
       });
     }
   };
 
-  const onSubOrUnsub = async() => {
+  const onSubOrUnsub = async () => {
     if (subscriptions.includes(activeRecordId)) {
       const { data } = await unsubscribeRecordByIds({
         datasheetId,
@@ -606,11 +630,14 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
     }
   };
 
-  const EditorTitleContextVal = useMemo(() => ({
-    updateFocusFieldId,
-    fieldDescCollapseStatusMap,
-    setFieldDescCollapseStatusMap,
-  }), [fieldDescCollapseStatusMap, setFieldDescCollapseStatusMap, updateFocusFieldId]);
+  const EditorTitleContextVal = useMemo(
+    () => ({
+      updateFocusFieldId,
+      fieldDescCollapseStatusMap,
+      setFieldDescCollapseStatusMap,
+    }),
+    [fieldDescCollapseStatusMap, setFieldDescCollapseStatusMap, updateFocusFieldId],
+  );
 
   const _setFocusFieldId = (id: string) => {
     isSetFocusIdByClickFieldRef.current = true;
@@ -619,10 +646,12 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
     }, 10);
     // 侧边模式下，点击卡片中的输入框，左侧会进行聚焦
     if (!props.forceCenter && isSideRecordOpen && pageParamsRecordId && activeDatasheetId === datasheetId) {
-      dispatch(StoreActions.setActiveCell(datasheetId, {
-        recordId: pageParamsRecordId,
-        fieldId: id,
-      }));
+      dispatch(
+        StoreActions.setActiveCell(datasheetId, {
+          recordId: pageParamsRecordId,
+          fieldId: id,
+        }),
+      );
       setTimeout(() => {
         setFocusFieldId(id);
       }, 150);
@@ -632,14 +661,9 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
   };
 
   return (
-    <EditorTitleContext.Provider
-      value={EditorTitleContextVal}
-    >
+    <EditorTitleContext.Provider value={EditorTitleContextVal}>
       <div
-        className={classNames(
-          isMobile ? styles.mobileContainer : styles.pcContainer,
-          { isSideExpandRecord: isSideRecordOpen }
-        )}
+        className={classNames(isMobile ? styles.mobileContainer : styles.pcContainer, { isSideExpandRecord: isSideRecordOpen })}
         onMouseDown={onMouseDown}
       >
         {/* pc 端的显示 */}
@@ -668,17 +692,15 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
                 sourceViewId={viewId}
                 fromCurrentDatasheet={fromCurrentDatasheet}
               />
-              {
-                allowShowCommentPane && (
-                  <CommentButton
-                    active={commentPaneShow}
-                    onClick={() => {
-                      handleCacheType(commentPaneShow ? ActivitySelectType.NONE : ActivitySelectType.All);
-                      toggleCommentPane();
-                    }}
-                  />
-                )
-              }
+              {allowShowCommentPane && (
+                <CommentButton
+                  active={commentPaneShow}
+                  onClick={() => {
+                    handleCacheType(commentPaneShow ? ActivitySelectType.NONE : ActivitySelectType.All);
+                    toggleCommentPane();
+                  }}
+                />
+              )}
               {!shareId && !templateId && <SubscribeButton active={subscriptions.includes(activeRecordId)} onSubOrUnsub={() => onSubOrUnsub()} />}
             </div>
           </div>
@@ -699,52 +721,50 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
                   disappearHiddenField={Boolean(shareId && mirrorId)}
                 />
                 {/* 编辑字段Modal */}
-                {
-                  activeFieldId &&
-                  activeFieldOperateType === FieldOperateType.FieldSetting &&
+                {activeFieldId && activeFieldOperateType === FieldOperateType.FieldSetting && (
                   <FieldSetting
                     datasheetId={datasheetId}
                     viewId={viewId}
-                    targetDOM={
-                      setFieldFrom === SetFieldFrom.EXPAND_RECORD ? document.querySelector(`.${styles.pcContainer}`) as HTMLElement : null
-                    }
+                    targetDOM={setFieldFrom === SetFieldFrom.EXPAND_RECORD ? (document.querySelector(`.${styles.pcContainer}`) as HTMLElement) : null}
                     showAdvancedFields
                   />
-                }
+                )}
                 {/* 编辑字段描述Modal */}
-                {
-                  activeFieldId &&
-                  activeFieldOperateType === FieldOperateType.FieldDesc &&
+                {activeFieldId && activeFieldOperateType === FieldOperateType.FieldDesc && (
                   <FieldDesc
                     fieldId={activeFieldId}
                     datasheetId={datasheetId}
                     readOnly={false}
-                    targetDOM={
-                      setFieldFrom === SetFieldFrom.EXPAND_RECORD ? document.querySelector(`.${styles.pcContainer}`) as HTMLElement : null
-                    }
+                    targetDOM={setFieldFrom === SetFieldFrom.EXPAND_RECORD ? (document.querySelector(`.${styles.pcContainer}`) as HTMLElement) : null}
                   />
-                }
+                )}
               </main>
             </div>
-            {commentPaneShow && <ActivityPane
-              fromCurrentDatasheet={fromCurrentDatasheet}
-              datasheetId={datasheetId}
-              mirrorId={mirrorId}
-              expandRecordId={activeRecordId}
-              viewId={viewId}
-              closable={!isMobile && !props.forceCenter && isSideRecordOpen}
-              onClose={() => {
-                handleCacheType(ActivitySelectType.NONE);
-                setCommentPane(false);
-              }} // 侧边栏模式下会显示关闭按钮
-              style={isColumnLayout ? {
-                height: 150,
-                width: '100%',
-                maxWidth: '100%',
-                borderTop: '1px solid var(--fc5)',
-                flexGrow: 1,
-              } : undefined}
-            />}
+            {commentPaneShow && (
+              <ActivityPane
+                fromCurrentDatasheet={fromCurrentDatasheet}
+                datasheetId={datasheetId}
+                mirrorId={mirrorId}
+                expandRecordId={activeRecordId}
+                viewId={viewId}
+                closable={!isMobile && !props.forceCenter && isSideRecordOpen}
+                onClose={() => {
+                  handleCacheType(ActivitySelectType.NONE);
+                  setCommentPane(false);
+                }} // 侧边栏模式下会显示关闭按钮
+                style={
+                  isColumnLayout
+                    ? {
+                        height: 150,
+                        width: '100%',
+                        maxWidth: '100%',
+                        borderTop: '1px solid var(--fc5)',
+                        flexGrow: 1,
+                      }
+                    : undefined
+                }
+              />
+            )}
           </div>
           {/* {
            activeFieldId &&
@@ -754,20 +774,12 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
         </ComponentDisplay>
         {/* 手机端的显示 */}
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-          <div
-            className={styles.mobileRecordHeader}>
-            <div
-              className={styles.toggleRecordBtnWrapper}
-              onClick={modalClose}
-            >
-              <IconButton
-                icon={() => <IconNarrow width={16} height={16} fill={colors.black[50]} />}
-              />
+          <div className={styles.mobileRecordHeader}>
+            <div className={styles.toggleRecordBtnWrapper} onClick={modalClose}>
+              <IconButton icon={() => <IconNarrow width={16} height={16} fill={colors.black[50]} />} />
             </div>
             <span className={styles.recordName}>{title}</span>
-            <div
-              className={styles.toCommentBtnWrapper}
-            >
+            <div className={styles.toCommentBtnWrapper}>
               {allowShowCommentPane && (
                 <IconButton
                   shape="square"

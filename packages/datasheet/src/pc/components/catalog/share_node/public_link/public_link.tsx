@@ -8,7 +8,7 @@ import { DisabledShareFile } from 'pc/components/catalog/share_node/disabled_sha
 import { ShareTab } from 'pc/components/catalog/share_node/share_node';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { TComponent } from 'pc/components/common/t_component';
 import { useCatalogTreeRequest, useResponsive } from 'pc/hooks';
 import { getNodeTypeByNodeId } from 'pc/utils';
@@ -30,8 +30,9 @@ export const PublicLink: FC<IPublicLinkProps> = ({ nodeId, setActiveTab }) => {
   const colors = useThemeColors();
   const { getShareSettingsReq, disableShareReq } = useCatalogTreeRequest();
   const { run: disableShare, loading: disableShareLoading } = useRequest(() => disableShareReq(nodeId), { manual: true });
-  const { run: getShareSettings, data: shareSettings, loading, mutate: setShareSettings } =
-    useRequest<IShareSettings>(() => getShareSettingsReq(nodeId));
+  const { run: getShareSettings, data: shareSettings, loading, mutate: setShareSettings } = useRequest<IShareSettings>(() =>
+    getShareSettingsReq(nodeId),
+  );
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const dispatch = useDispatch();
@@ -50,60 +51,63 @@ export const PublicLink: FC<IPublicLinkProps> = ({ nodeId, setActiveTab }) => {
     dispatch(StoreActions.updateDatasheet(nodeId, { nodeShared: status }));
   };
 
-  const updateShare = (permission: { onlyRead?: boolean, canBeEdited?: boolean, canBeStored?: boolean }) => {
-    const onOk = () => Api.updateShare(nodeId, permission).then(res => {
-      const { success } = res.data;
-      if (success) {
-        getShareSettings();
-        updateShareStatus(true);
-        Message.success({ content: t(Strings.share_settings_tip, { status: t(Strings.success) }) });
-      } else {
-        Message.error({ content: t(Strings.share_settings_tip, { status: t(Strings.fail) }) });
-      }
-    });
+  const updateShare = (permission: { onlyRead?: boolean; canBeEdited?: boolean; canBeStored?: boolean }) => {
+    const onOk = () =>
+      Api.updateShare(nodeId, permission).then(res => {
+        const { success } = res.data;
+        if (success) {
+          getShareSettings();
+          updateShareStatus(true);
+          Message.success({ content: t(Strings.share_settings_tip, { status: t(Strings.success) }) });
+        } else {
+          Message.error({ content: t(Strings.share_settings_tip, { status: t(Strings.fail) }) });
+        }
+      });
     if (shareSettings?.linkNodes.length) {
       Modal.confirm({
         type: 'warning',
         title: t(Strings.share_and_permission_popconfirm_title),
-        content: <>
-          {shareSettings.containMemberFld &&
+        content: (
+          <>
+            {shareSettings.containMemberFld && (
+              <div className={styles.tipItem}>
+                <div className={styles.tipContent1}>
+                  <TComponent
+                    tkey={t(Strings.share_edit_exist_member_tip)}
+                    params={{
+                      content: <span className={styles.bold}>{t(Strings.member_type_field)}</span>,
+                    }}
+                  />
+                </div>
+              </div>
+            )}
             <div className={styles.tipItem}>
-              <div className={styles.tipContent1}>
+              <div className={styles.tipContent2}>
                 <TComponent
-                  tkey={t(Strings.share_edit_exist_member_tip)}
+                  tkey={t(Strings.share_exist_something_tip)}
                   params={{
-                    content: <span className={styles.bold}>{t(Strings.member_type_field)}</span>
+                    content: <span className={styles.bold}>{t(Strings.link_other_datasheet)}</span>,
                   }}
                 />
               </div>
             </div>
-          }
-          <div className={styles.tipItem}>
-            <div className={styles.tipContent2}>
-              <TComponent
-                tkey={t(Strings.share_exist_something_tip)}
-                params={{
-                  content: <span className={styles.bold}>{t(Strings.link_other_datasheet)}</span>
-                }}
-              />
+            <div className={styles.linkNodes}>
+              {shareSettings.linkNodes.map((item, index) => (
+                <div key={item + index} className={styles.linkNode}>
+                  <div className={styles.linkNodeName}>{item}</div>
+                </div>
+              ))}
             </div>
-          </div>
-          <div className={styles.linkNodes}>
-            {shareSettings.linkNodes.map((item, index) => (
-              <div key={item + index} className={styles.linkNode}>
-                <div className={styles.linkNodeName}>{item}</div>
-              </div>
-            ))}
-          </div>
-        </>,
-        onOk
+          </>
+        ),
+        onOk,
       });
       return;
     }
     onOk();
   };
 
-  const handleClosePublicLink = async() => {
+  const handleClosePublicLink = async () => {
     if (disableShareLoading) {
       return;
     }
@@ -124,38 +128,41 @@ export const PublicLink: FC<IPublicLinkProps> = ({ nodeId, setActiveTab }) => {
 
   return (
     <div className={classnames(styles.publicLink, isMobile && styles.mobilePublicLink)}>
-      {
-        shareSettings.shareOpened ?
-          <div className={styles.sharing}>
-            <Share shareSettings={shareSettings} onChange={onChange} nodeId={nodeId} />
-            {
-              shareSettings.shareOpened && !shareSettings.operatorHasPermission &&
-              <div className={styles.disabledLink}>
-                <Typography className={styles.title} variant="h6" color={colors.firstLevelText}>
-                  「{getNodeIcon(shareSettings.nodeIcon, getNodeTypeByNodeId(shareSettings.nodeId))}{shareSettings.nodeName}」{t(Strings.link_failed)}
-                </Typography>
-                <Typography className={styles.subTitle} variant="body2"
-                  color={colors.secondLevelText}>{t(Strings.disabled_link_subtitle)}</Typography>
-                <Button
-                  className={styles.reopenBtn}
-                  color="primary"
-                  style={{ width: '156px' }}
-                  onClick={() => updateShare(pickBy(shareSettings.props, (value) => value))}
-                >
-                  {t(Strings.reopen)}
-                </Button>
-                <LinkButton onClick={handleClosePublicLink} underline={false} color={colors.thirdLevelText}>
-                  {t(Strings.quick_close_public_link)}
-                </LinkButton>
-              </div>
-            }
-          </div> :
-          <div className={styles.unShare}>
-            {isMobile && <Image src={DefaultPng} alt='placeholder' />}
-            <Button color='primary' onClick={() => updateShare({ onlyRead: true })}>{t(Strings.open_public_link)}</Button>
-            <div className={styles.tip}>{t(Strings.publish_link_tip)}</div>
-          </div>
-      }
+      {shareSettings.shareOpened ? (
+        <div className={styles.sharing}>
+          <Share shareSettings={shareSettings} onChange={onChange} nodeId={nodeId} />
+          {shareSettings.shareOpened && !shareSettings.operatorHasPermission && (
+            <div className={styles.disabledLink}>
+              <Typography className={styles.title} variant="h6" color={colors.firstLevelText}>
+                「{getNodeIcon(shareSettings.nodeIcon, getNodeTypeByNodeId(shareSettings.nodeId))}
+                {shareSettings.nodeName}」{t(Strings.link_failed)}
+              </Typography>
+              <Typography className={styles.subTitle} variant="body2" color={colors.secondLevelText}>
+                {t(Strings.disabled_link_subtitle)}
+              </Typography>
+              <Button
+                className={styles.reopenBtn}
+                color="primary"
+                style={{ width: '156px' }}
+                onClick={() => updateShare(pickBy(shareSettings.props, value => value))}
+              >
+                {t(Strings.reopen)}
+              </Button>
+              <LinkButton onClick={handleClosePublicLink} underline={false} color={colors.thirdLevelText}>
+                {t(Strings.quick_close_public_link)}
+              </LinkButton>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className={styles.unShare}>
+          {isMobile && <Image src={DefaultPng} alt="placeholder" />}
+          <Button color="primary" onClick={() => updateShare({ onlyRead: true })}>
+            {t(Strings.open_public_link)}
+          </Button>
+          <div className={styles.tip}>{t(Strings.publish_link_tip)}</div>
+        </div>
+      )}
       {
         <div className={classnames(styles.jumpBtn, { [styles.center]: isMobile })}>
           <EyeIcon />
@@ -173,6 +180,5 @@ export const PublicLink: FC<IPublicLinkProps> = ({ nodeId, setActiveTab }) => {
         </div>
       }
     </div>
-
   );
 };

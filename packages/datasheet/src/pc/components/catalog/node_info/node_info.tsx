@@ -9,7 +9,7 @@ import { useRequest } from 'pc/hooks';
 import { Api, Strings, t } from '@vikadata/core';
 import { Skeleton } from '@vikadata/components';
 import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display/enum';
 import { getNodeIcon } from '../tree/node_icon';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
@@ -20,7 +20,7 @@ interface INodeInfoProps {
   onClose?: () => void;
 }
 
-const NodeInfoModal: React.FC<INodeInfoProps> = (props) => {
+const NodeInfoModal: React.FC<INodeInfoProps> = props => {
   const { onClose, nodeId } = props;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -49,26 +49,28 @@ const NodeInfoModal: React.FC<INodeInfoProps> = (props) => {
 
   const timeFormat = `${t(Strings.time_format_year_month_and_day)}`;
 
-  const nameTitle = (!loading && nodeInfo) ? getSocialWecomUnitName({
-    name: nodeInfo.creator.memberName,
-    isModified: nodeInfo.creator.isMemberNameModified,
-    spaceInfo
-  }) : '';
+  const nameTitle =
+    !loading && nodeInfo
+      ? getSocialWecomUnitName({
+          name: nodeInfo.creator.memberName,
+          isModified: nodeInfo.creator.isMemberNameModified,
+          spaceInfo,
+        })
+      : '';
 
-  const content = (loading || !nodeInfo) ? <>
-    <Skeleton width="38%" />
-    <Skeleton count={2} />
-    <Skeleton width="61%" />
-  </> : (
-    <ul className={styles.contentInfo}>
-      <li>
-        <div className={styles.label}>{t(Strings.node_info_createdby)}</div>
-        <div className={classNames(
-          styles.value,
-          nodeInfo.creator.isDeleted && styles.isLeave
-        )}>
-          {
-            nodeInfo.creator.memberName ? (
+  const content =
+    loading || !nodeInfo ? (
+      <>
+        <Skeleton width="38%" />
+        <Skeleton count={2} />
+        <Skeleton width="61%" />
+      </>
+    ) : (
+      <ul className={styles.contentInfo}>
+        <li>
+          <div className={styles.label}>{t(Strings.node_info_createdby)}</div>
+          <div className={classNames(styles.value, nodeInfo.creator.isDeleted && styles.isLeave)}>
+            {nodeInfo.creator.memberName ? (
               <>
                 <Avatar
                   className={styles.avatar}
@@ -80,25 +82,21 @@ const NodeInfoModal: React.FC<INodeInfoProps> = (props) => {
                 />
                 {nameTitle || nodeInfo.creator.memberName}
               </>
-            ) : '-'
-          }
-        </div>
-      </li>
-      <li>
-        <div className={styles.label}>{t(Strings.node_info_created_time)}</div>
-        <div className={styles.value}>
-          {nodeInfo.creator.time ? dayjs(nodeInfo.creator.time).format(timeFormat) : '-'}
-        </div>
-      </li>
-    </ul>
-  );
+            ) : (
+              '-'
+            )}
+          </div>
+        </li>
+        <li>
+          <div className={styles.label}>{t(Strings.node_info_created_time)}</div>
+          <div className={styles.value}>{nodeInfo.creator.time ? dayjs(nodeInfo.creator.time).format(timeFormat) : '-'}</div>
+        </li>
+      </ul>
+    );
 
   return (
     <Modal
-      className={classNames(
-        styles.nodeInfo,
-        isMobile && styles.nodeInfoMobile
-      )}
+      className={classNames(styles.nodeInfo, isMobile && styles.nodeInfoMobile)}
       closable={!isMobile}
       title={<Title />}
       footer={isMobile && <Footer />}
@@ -123,14 +121,10 @@ export const expandNodeInfo = (props: INodeInfoProps) => {
     onClose && onClose();
   };
 
-  ReactDOM.render((
+  ReactDOM.render(
     <Provider store={store}>
-      <NodeInfoModal
-        {...props}
-        onClose={onModalClose}
-      />
-    </Provider>
-  ),
-  container,
+      <NodeInfoModal {...props} onClose={onModalClose} />
+    </Provider>,
+    container,
   );
 };

@@ -1,7 +1,18 @@
 import { ContextMenu, Message, useThemeColors } from '@vikadata/components';
 import {
-  CollaCommandName, Events, IWidget, Navigation, Player, Selectors, StoreActions, Strings, SystemConfig, t,
-  WidgetApi, WidgetPackageStatus, WidgetReleaseType
+  CollaCommandName,
+  Events,
+  IWidget,
+  Navigation,
+  Player,
+  Selectors,
+  StoreActions,
+  Strings,
+  SystemConfig,
+  t,
+  WidgetApi,
+  WidgetPackageStatus,
+  WidgetReleaseType,
 } from '@vikadata/core';
 import { AddOutlined, CodeFilled, DeleteOutlined, EditOutlined, GotoLargeOutlined, SettingOutlined } from '@vikadata/icons';
 import { useLocalStorageState, useMount, useUpdateEffect } from 'ahooks';
@@ -10,7 +21,7 @@ import classNames from 'classnames';
 import { keyBy } from 'lodash';
 import { EmitterEventName } from 'pc/common/simple_emitter';
 import { Modal } from 'pc/components/common';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { simpleEmitter as panelSimpleEmitter } from 'pc/components/common/vika_split_panel';
 import { isDingtalkSkuPage } from 'pc/components/home/social_platform';
 import { useNavigation } from 'pc/components/route_manager/use_navigation';
@@ -102,14 +113,14 @@ export const Dashboard = () => {
   useExpandWidget();
 
   useEffect(() => {
-    simpleEmitter.bind(EmitterEventName.ToggleWidgetDevMode, (widgetId) => {
+    simpleEmitter.bind(EmitterEventName.ToggleWidgetDevMode, widgetId => {
       setDevWidgetId(widgetId);
     });
     return () => simpleEmitter.unbind(EmitterEventName.ToggleWidgetDevMode);
   }, [setDevWidgetId]);
 
   useEffect(() => {
-    panelSimpleEmitter.bind(EmitterEventName.PanelDragging, (panelDragging) => {
+    panelSimpleEmitter.bind(EmitterEventName.PanelDragging, panelDragging => {
       setDragging(panelDragging);
     });
     return () => panelSimpleEmitter.unbind(EmitterEventName.PanelDragging);
@@ -126,13 +137,17 @@ export const Dashboard = () => {
     decisionOpenRecommend();
   }, [connect]);
 
-  const renameWidget = (arg) => {
-    const { props: { renameCb }} = arg;
+  const renameWidget = arg => {
+    const {
+      props: { renameCb },
+    } = arg;
     renameCb && renameCb();
   };
 
-  const jumpToDatasheet = (arg) => {
-    const { props: { widgetId, pickerViewId }} = arg;
+  const jumpToDatasheet = arg => {
+    const {
+      props: { widgetId, pickerViewId },
+    } = arg;
     const state = store.getState();
     const { shareId, templateId, categoryId } = state.pageParams;
     const spaceId = state.space.activeId;
@@ -140,11 +155,8 @@ export const Dashboard = () => {
     const isMirrorWidget = widgetSnapshot.sourceId?.startsWith('mir');
 
     if (
-      !Selectors.getPermissions(
-        store.getState(),
-        widgetSnapshot.datasheetId,
-        undefined,
-        isMirrorWidget ? widgetSnapshot.sourceId : undefined)?.readable
+      !Selectors.getPermissions(store.getState(), widgetSnapshot.datasheetId, undefined, isMirrorWidget ? widgetSnapshot.sourceId : undefined)
+        ?.readable
     ) {
       return Message.warning({
         content: t(Strings.no_access_view),
@@ -177,8 +189,10 @@ export const Dashboard = () => {
     return widgetSnapshot?.datasheetId;
   };
 
-  const deleteWidget = (arg) => {
-    const { props: { widgetId, deleteCb }} = arg;
+  const deleteWidget = arg => {
+    const {
+      props: { widgetId, deleteCb },
+    } = arg;
     Modal.confirm({
       title: t(Strings.delete_widget_title),
       content: t(Strings.delete_widget_content),
@@ -198,59 +212,65 @@ export const Dashboard = () => {
   const isWidgetDev = () => activeMenuWidget?.id === devWidgetId;
   const hadWidgetExpanding = Boolean(widgetId);
   const isWidgetGlobal = () => Boolean(activeMenuWidget?.id && widgetMap[activeMenuWidget.id]?.widget.releaseType === WidgetReleaseType.Global);
-  const menuData = [[
-    {
-      icon: <SettingOutlined color={colors.thirdLevelText} />,
-      text: t(Strings.widget_operate_setting),
-      hidden: readonly || hadWidgetExpanding,
-      onClick: ({ props }: { props?: any }) => {
-        const { widgetId } = props;
-        props.toggleSetting();
-        expandWidgetRoute(widgetId);
+  const menuData = [
+    [
+      {
+        icon: <SettingOutlined color={colors.thirdLevelText} />,
+        text: t(Strings.widget_operate_setting),
+        hidden: readonly || hadWidgetExpanding,
+        onClick: ({ props }: { props?: any }) => {
+          const { widgetId } = props;
+          props.toggleSetting();
+          expandWidgetRoute(widgetId);
+        },
       },
-    },
-    {
-      icon: <CodeFilled color={colors.thirdLevelText} />,
-      text: t(Strings.widget_operate_enter_dev),
-      hidden: readonly || !isShowWidget || isWidgetBan() || isWidgetDev() || isWidgetGlobal(),
-      onClick: ({ props }: { props?: any }) => {
-        props?.toggleWidgetDevMode(devWidgetId, setDevWidgetId);
+      {
+        icon: <CodeFilled color={colors.thirdLevelText} />,
+        text: t(Strings.widget_operate_enter_dev),
+        hidden: readonly || !isShowWidget || isWidgetBan() || isWidgetDev() || isWidgetGlobal(),
+        onClick: ({ props }: { props?: any }) => {
+          props?.toggleWidgetDevMode(devWidgetId, setDevWidgetId);
+        },
+        disabled: arg => {
+          const {
+            props: { widgetId },
+          } = arg;
+          return !widgetHasBindDstId(widgetId);
+        },
       },
-      disabled: (arg) => {
-        const { props: { widgetId }} = arg;
-        return !widgetHasBindDstId(widgetId);
+      {
+        icon: <CodeFilled color={colors.thirdLevelText} />,
+        text: t(Strings.widget_operate_exit_dev),
+        hidden: readonly || !isShowWidget || isWidgetBan() || !isWidgetDev(),
+        onClick: ({ props }: { props?: any }) => {
+          props?.toggleWidgetDevMode(devWidgetId, setDevWidgetId);
+        },
       },
-    },
-    {
-      icon: <CodeFilled color={colors.thirdLevelText} />,
-      text: t(Strings.widget_operate_exit_dev),
-      hidden: readonly || !isShowWidget || isWidgetBan() || !isWidgetDev(),
-      onClick: ({ props }: { props?: any }) => {
-        props?.toggleWidgetDevMode(devWidgetId, setDevWidgetId);
+      {
+        icon: <EditOutlined color={colors.thirdLevelText} />,
+        text: t(Strings.widget_operate_rename),
+        onClick: renameWidget,
+        hidden: readonly,
       },
-    },
-    {
-      icon: <EditOutlined color={colors.thirdLevelText} />,
-      text: t(Strings.widget_operate_rename),
-      onClick: renameWidget,
-      hidden: readonly,
-    },
-    {
-      icon: <GotoLargeOutlined color={colors.thirdLevelText} />,
-      text: t(Strings.jump_link_url),
-      onClick: jumpToDatasheet,
-      disabled: (arg) => {
-        const { props: { widgetId }} = arg;
-        return !widgetHasBindDstId(widgetId);
+      {
+        icon: <GotoLargeOutlined color={colors.thirdLevelText} />,
+        text: t(Strings.jump_link_url),
+        onClick: jumpToDatasheet,
+        disabled: arg => {
+          const {
+            props: { widgetId },
+          } = arg;
+          return !widgetHasBindDstId(widgetId);
+        },
       },
-    },
-    {
-      icon: <DeleteOutlined color={colors.thirdLevelText} />,
-      text: t(Strings.widget_operate_delete),
-      onClick: deleteWidget,
-      hidden: isMobile || !manageable,
-    }
-  ]];
+      {
+        icon: <DeleteOutlined color={colors.thirdLevelText} />,
+        text: t(Strings.widget_operate_delete),
+        onClick: deleteWidget,
+        hidden: isMobile || !manageable,
+      },
+    ],
+  ];
 
   const installWidget = () => {
     expandWidgetCenter(InstallPosition.Dashboard);
@@ -274,11 +294,13 @@ export const Dashboard = () => {
      */
     const isAllEqual = dashboardLayout.every((item, index) => {
       const _item = _currentLayout[index];
-      return item.column === _item.x &&
+      return (
+        item.column === _item.x &&
         (item.row === _item.y || item.row === Number.MAX_SAFE_INTEGER) &&
         item.id === _item.i &&
         item.heightInRoes === _item.h &&
-        item.widthInColumns === _item.w;
+        item.widthInColumns === _item.w
+      );
     });
     if (isAllEqual) {
       return;
@@ -314,87 +336,88 @@ export const Dashboard = () => {
     return null;
   }
 
-  return <div
-    style={{
-      padding: (isMobile || templateId || shareId) ? 0 : 16,
-      height: '100%',
-      width: '100%',
-      position: 'relative',
-    }}
-    id={DASHBOARD_PANEL_ID}
-  >
-    <div className={styles.dashboardPanel} ref={containerRef}>
-      <TabBar
-        dashboardId={dashboardId!}
-        containerRef={containerRef}
-        setVisibleRecommend={setVisibleRecommend}
-        visibleRecommend={visibleRecommend}
-        readonly={readonly}
-        isMobile={isMobile}
-        canImportWidget={manageable}
-        setIsFullScreen={setIsFullScreen}
-        installedWidgetHandle={installedWidgetHandle}
-      />
-      <div
-        className={styles.widgetArea}
-        style={{ pointerEvents: 'auto' }}
-      >
-        {
-          installedWidgetInDashboard &&
-          <ResponsiveGridLayout
-            isDroppable={!readonly}
-            isResizable={!readonly}
-            isBounded
-            isDraggable={!readonly}
-            cols={{
-              lg: 12, md: 12, sm: 12, xs: 1, xxs: 1,
-              // lg: 12, md: 8, sm: 4, xs: 4, xxs: 4,
-            }}
-            breakpoints={{
-              lg: 992, md: 768, sm: 576, xs: 400,
-            }}
-            layouts={{
-              lg: dashboardLayout!.map(item => {
-                return { w: item.widthInColumns, h: item.heightInRoes, x: item.column, y: item.row, minH: 6, minW: 3, i: item.id };
-              }),
-              xs: dashboardLayout!.map(item => {
-                return { w: 1, h: item.heightInRoes, x: item.column, y: item.row, minH: 6, maxW: 1, i: item.id };
-              }),
-            }}
-            preventCollision={false}
-            rowHeight={16}
-            onLayoutChange={onLayout}
-            useCSSTransforms
-            draggableHandle={'.dragHandle'}
-            draggableCancel={'.dragHandleDisabled'}
-            margin={[24, 24]}
-            containerPadding={[24, 24]}
-            onDrag={() => setDragging(true)}
-            onDragStart={() => {
-              setAllowChangeLayout(true);
-            }}
-            onResizeStart={() => {
-              setDragging(true);
-              setAllowChangeLayout(true);
-            }}
-            style={{ pointerEvents: isSkuPage ? 'none' : 'auto' }}
-            onDragStop={() => setDragging(false)}
-            onResizeStop={() => setDragging(false)}
-          >
-            {
-              dashboardLayout!.map(item => {
+  return (
+    <div
+      style={{
+        padding: isMobile || templateId || shareId ? 0 : 16,
+        height: '100%',
+        width: '100%',
+        position: 'relative',
+      }}
+      id={DASHBOARD_PANEL_ID}
+    >
+      <div className={styles.dashboardPanel} ref={containerRef}>
+        <TabBar
+          dashboardId={dashboardId!}
+          containerRef={containerRef}
+          setVisibleRecommend={setVisibleRecommend}
+          visibleRecommend={visibleRecommend}
+          readonly={readonly}
+          isMobile={isMobile}
+          canImportWidget={manageable}
+          setIsFullScreen={setIsFullScreen}
+          installedWidgetHandle={installedWidgetHandle}
+        />
+        <div className={styles.widgetArea} style={{ pointerEvents: 'auto' }}>
+          {installedWidgetInDashboard && (
+            <ResponsiveGridLayout
+              isDroppable={!readonly}
+              isResizable={!readonly}
+              isBounded
+              isDraggable={!readonly}
+              cols={{
+                lg: 12,
+                md: 12,
+                sm: 12,
+                xs: 1,
+                xxs: 1,
+                // lg: 12, md: 8, sm: 4, xs: 4, xxs: 4,
+              }}
+              breakpoints={{
+                lg: 992,
+                md: 768,
+                sm: 576,
+                xs: 400,
+              }}
+              layouts={{
+                lg: dashboardLayout!.map(item => {
+                  return { w: item.widthInColumns, h: item.heightInRoes, x: item.column, y: item.row, minH: 6, minW: 3, i: item.id };
+                }),
+                xs: dashboardLayout!.map(item => {
+                  return { w: 1, h: item.heightInRoes, x: item.column, y: item.row, minH: 6, maxW: 1, i: item.id };
+                }),
+              }}
+              preventCollision={false}
+              rowHeight={16}
+              onLayoutChange={onLayout}
+              useCSSTransforms
+              draggableHandle={'.dragHandle'}
+              draggableCancel={'.dragHandleDisabled'}
+              margin={[24, 24]}
+              containerPadding={[24, 24]}
+              onDrag={() => setDragging(true)}
+              onDragStart={() => {
+                setAllowChangeLayout(true);
+              }}
+              onResizeStart={() => {
+                setDragging(true);
+                setAllowChangeLayout(true);
+              }}
+              style={{ pointerEvents: isSkuPage ? 'none' : 'auto' }}
+              onDragStop={() => setDragging(false)}
+              onResizeStop={() => setDragging(false)}
+            >
+              {dashboardLayout!.map(item => {
                 const isDevMode = widgetMap?.[item.id]?.widget?.status !== WidgetPackageStatus.Ban && devWidgetId === item.id;
                 return (
-                  <div key={item.id} className={classNames(
-                    widgetId === item.id && styles.isFullscreen
-                  )} data-widget-id={item.id} tabIndex={-1}>
+                  <div key={item.id} className={classNames(widgetId === item.id && styles.isFullscreen)} data-widget-id={item.id} tabIndex={-1}>
                     <WidgetItem
                       widgetId={item.id}
                       readonly={readonly}
                       isMobile={isMobile}
                       config={{
                         isDevMode,
-                        hideMoreOperate: isFullScreen
+                        hideMoreOperate: isFullScreen,
                       }}
                       setDevWidgetId={setDevWidgetId}
                       dragging={dragging}
@@ -402,52 +425,44 @@ export const Dashboard = () => {
                     />
                   </div>
                 );
-              })
-            }
-          </ResponsiveGridLayout>
-        }
-        {
-          !installedWidgetInDashboard && !readonly && <div className={styles.addNewWidget} onClick={installWidget}>
-            <AddOutlined size={68} color={colors.fourthLevelText} />
-            {
-              manageable ?
-                t(Strings.add_widget) :
-                t(Strings.no_permission_add_widget)
-            }
-          </div>
-        }
+              })}
+            </ResponsiveGridLayout>
+          )}
+          {!installedWidgetInDashboard && !readonly && (
+            <div className={styles.addNewWidget} onClick={installWidget}>
+              <AddOutlined size={68} color={colors.fourthLevelText} />
+              {manageable ? t(Strings.add_widget) : t(Strings.no_permission_add_widget)}
+            </div>
+          )}
+        </div>
       </div>
+      <Drawer
+        placement={'bottom'}
+        closable={false}
+        onClose={status => {
+          setVisibleRecommend(false);
+        }}
+        visible={isMobile || !manageable ? false : visibleRecommend}
+        key={'bottom'}
+        getContainer={false}
+        mask={false}
+        height={312}
+        style={{
+          position: 'absolute',
+          borderRadius: '8px 8px 0 0',
+          boxShadow: '0px 2px 12px rgba(38, 38, 38, 0.1)',
+          overflow: 'hidden',
+        }}
+        zIndex={11}
+      >
+        <RecommendWidgetPanel
+          setVisibleRecommend={setVisibleRecommend}
+          visibleRecommend={visibleRecommend}
+          readonly={!manageable}
+          installedWidgetHandle={installedWidgetHandle}
+        />
+      </Drawer>
+      <ContextMenu overlay={flatContextData(menuData, true)} menuId={WIDGET_MENU} onShown={({ props }) => setActiveMenuWidget(props?.widget)} />
     </div>
-    <Drawer
-      placement={'bottom'}
-      closable={false}
-      onClose={(status) => {
-        setVisibleRecommend(false);
-      }}
-      visible={(isMobile || !manageable) ? false : visibleRecommend}
-      key={'bottom'}
-      getContainer={false}
-      mask={false}
-      height={312}
-      style={{
-        position: 'absolute',
-        borderRadius: '8px 8px 0 0',
-        boxShadow: '0px 2px 12px rgba(38, 38, 38, 0.1)',
-        overflow: 'hidden'
-      }}
-      zIndex={11}
-    >
-      <RecommendWidgetPanel
-        setVisibleRecommend={setVisibleRecommend}
-        visibleRecommend={visibleRecommend}
-        readonly={!manageable}
-        installedWidgetHandle={installedWidgetHandle}
-      />
-    </Drawer>
-    <ContextMenu
-      overlay={flatContextData(menuData, true)}
-      menuId={WIDGET_MENU}
-      onShown={({ props }) => setActiveMenuWidget(props?.widget)}
-    />
-  </div>;
+  );
 };

@@ -1,6 +1,6 @@
 import { Strings, t } from '@vikadata/core';
 import classNames from 'classnames';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { PopStructureContext } from 'pc/components/editors/pop_structure/context';
 import { useResponsive } from 'pc/hooks';
 import { KeyCode, stopPropagation } from 'pc/utils';
@@ -19,11 +19,25 @@ const MAX_HEIGHT = 336;
 const MIN_HGEIGHT = 80;
 const CLS = 'scroll-color-relative-absolute';
 
-export const CommonList: React.FC<ICommonListProps> & { Option: React.FC<IOptionItemProps> } = (props) => {
+export const CommonList: React.FC<ICommonListProps> & { Option: React.FC<IOptionItemProps> } = props => {
   const {
-    inputPlaceHolder, showInput, inputRef, children, noDataTip = t(Strings.kanban_no_data), onInputEnter, activeIndex: DraftActiveIndex,
-    noSearchResult = t(Strings.no_search_result), footerComponent, value, onClickItem, onSearchChange, className, monitorId, inputStyle,
-    getListContainer, onInputClear,
+    inputPlaceHolder,
+    showInput,
+    inputRef,
+    children,
+    noDataTip = t(Strings.kanban_no_data),
+    onInputEnter,
+    activeIndex: DraftActiveIndex,
+    noSearchResult = t(Strings.no_search_result),
+    footerComponent,
+    value,
+    onClickItem,
+    onSearchChange,
+    className,
+    monitorId,
+    inputStyle,
+    getListContainer,
+    onInputClear,
   } = props;
   const { restHeight } = useContext(PopStructureContext);
   const [listHeight, setListHeight] = useState(MAX_HEIGHT);
@@ -88,7 +102,7 @@ export const CommonList: React.FC<ICommonListProps> & { Option: React.FC<IOption
     setListHeight(finalHeight);
 
     const scrollHeight = ele.scrollHeight;
-    
+
     const parent = ele.parentElement as HTMLElement;
     if (scrollHeight < finalHeight) {
       parent.classList.remove(CLS);
@@ -122,7 +136,7 @@ export const CommonList: React.FC<ICommonListProps> & { Option: React.FC<IOption
   };
 
   const cloneChild = () => {
-    return React.Children.map(children, (item) => {
+    return React.Children.map(children, item => {
       const props = item?.['props'];
 
       if (!React.isValidElement<IOptionItemProps>(item)) {
@@ -152,9 +166,12 @@ export const CommonList: React.FC<ICommonListProps> & { Option: React.FC<IOption
             inputRef?.current && inputRef?.current.focus();
           },
           isChecked: value ? value.includes(child.props.id) : false,
-          className: classNames({
-            [styles.hoverBg]: activeIndex === child.props.currentIndex,
-          }, child.props.className),
+          className: classNames(
+            {
+              [styles.hoverBg]: activeIndex === child.props.currentIndex,
+            },
+            child.props.className,
+          ),
         });
       }
 
@@ -188,94 +205,79 @@ export const CommonList: React.FC<ICommonListProps> & { Option: React.FC<IOption
     }
     const editing = getEditingStatus();
     if (editing) {
-      onInputEnter && onInputEnter(() => {
-        setKeyword('');
-      });
+      onInputEnter &&
+        onInputEnter(() => {
+          setKeyword('');
+        });
     }
   }
 
   const showNoDataTip = Boolean(!keyword.length && !childrenCount);
-  const _noDataTip = typeof noDataTip === 'string' ? noDataTip : (noDataTip && noDataTip());
+  const _noDataTip = typeof noDataTip === 'string' ? noDataTip : noDataTip && noDataTip();
 
   const showNoSearchResult = Boolean(keyword.length && !childrenCount);
-  const _noSearchResultTip = typeof noSearchResult === 'string' ? noSearchResult : (noSearchResult && noSearchResult());
+  const _noSearchResultTip = typeof noSearchResult === 'string' ? noSearchResult : noSearchResult && noSearchResult();
 
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
-  return <div
-    ref={containerRef}
-    tabIndex={0}
-    onKeyDown={keydownForContainer}
-    className={
-      classNames(styles.listContainer, className)
-    }
-  >
-    {/* 搜索部分 */}
-    {
-      showInput && <div
-        className={styles.searchField}
-        style={inputStyle}
-      >
-        <LineSearchInput
-          onKeyDown={inputKeydown}
-          onChange={changInput}
-          value={keyword}
-          onClear={() => {
-            setKeyword('');
-            onInputClear?.();
-            onSearchChange && onSearchChange(null, '');
-          }}
-          placeholder={inputPlaceHolder}
-          ref={inputRef}
-          allowClear
-        />
-      </div>
-    }
-    {/* 列表部分 */}
-    {
-      (showNoDataTip || showNoSearchResult) && <span className={styles.noResult}>
-        {
-          showNoDataTip ? _noDataTip : _noSearchResultTip
-        }
-      </span>
-    }
-    {
-      Boolean(childrenCount) &&
-      <div>
-        <div
-          ref={listRef}
-          className={classNames('listBox', styles.listBox)}
-          style={{ maxHeight: listHeight }}
-          onScroll={!isMobile ? handleScroll : undefined}
-        >
-          {getListContainer ? getListContainer(cloneChild()) : cloneChild()}
+  return (
+    <div ref={containerRef} tabIndex={0} onKeyDown={keydownForContainer} className={classNames(styles.listContainer, className)}>
+      {/* 搜索部分 */}
+      {showInput && (
+        <div className={styles.searchField} style={inputStyle}>
+          <LineSearchInput
+            onKeyDown={inputKeydown}
+            onChange={changInput}
+            value={keyword}
+            onClear={() => {
+              setKeyword('');
+              onInputClear?.();
+              onSearchChange && onSearchChange(null, '');
+            }}
+            placeholder={inputPlaceHolder}
+            ref={inputRef}
+            allowClear
+          />
         </div>
-      </div>
-    }
+      )}
+      {/* 列表部分 */}
+      {(showNoDataTip || showNoSearchResult) && <span className={styles.noResult}>{showNoDataTip ? _noDataTip : _noSearchResultTip}</span>}
+      {Boolean(childrenCount) && (
+        <div>
+          <div
+            ref={listRef}
+            className={classNames('listBox', styles.listBox)}
+            style={{ maxHeight: listHeight }}
+            onScroll={!isMobile ? handleScroll : undefined}
+          >
+            {getListContainer ? getListContainer(cloneChild()) : cloneChild()}
+          </div>
+        </div>
+      )}
 
-    {
-      footerComponent && Boolean(footerComponent()) &&
-      <div className={styles.footerContainer} onClick={clearStatus}>
-        {footerComponent()}
-      </div>
-    }
-  </div>;
+      {footerComponent && Boolean(footerComponent()) && (
+        <div className={styles.footerContainer} onClick={clearStatus}>
+          {footerComponent()}
+        </div>
+      )}
+    </div>
+  );
 };
 
-CommonList.Option = (props) => {
+CommonList.Option = props => {
   const { currentIndex, children, isChecked, className, ...rest } = props;
-  return <div
-    role={'option'}
-    data-tab-index={currentIndex}
-    className={classNames(styles.optionItem, className, {
-      [styles.isChecked]: isChecked,
-      ['isChecked']: isChecked,
-    })}
-    {...rest}
-  >
-    {
-      children
-    }
-  </div>;
+  return (
+    <div
+      role={'option'}
+      data-tab-index={currentIndex}
+      className={classNames(styles.optionItem, className, {
+        [styles.isChecked]: isChecked,
+        ['isChecked']: isChecked,
+      })}
+      {...rest}
+    >
+      {children}
+    </div>
+  );
 };

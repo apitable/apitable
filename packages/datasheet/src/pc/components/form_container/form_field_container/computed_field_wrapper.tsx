@@ -1,6 +1,6 @@
 import { Tooltip } from 'antd';
 import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { FC } from 'react';
 
 interface IComputedFieldWrapperProps {

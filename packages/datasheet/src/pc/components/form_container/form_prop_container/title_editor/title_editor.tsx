@@ -9,7 +9,7 @@ import { IModeEnum, IBasePropEditorProps } from '../interface';
 import { useEffect } from 'react';
 import { useResponsive, useCatalogTreeRequest } from 'pc/hooks';
 import { useRequest } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 
 export const TitleEditor: React.FC<IBasePropEditorProps> = props => {
   const { mode, formId } = props;
@@ -49,20 +49,22 @@ export const TitleEditor: React.FC<IBasePropEditorProps> = props => {
   }, [title, setValue]);
 
   return (
-    <div className={classnames(styles.titleEditor, {
-      [styles.titleEditorMobile]: isMobile,
-    })}>
-      {
-        mode === IModeEnum.Edit ? (
-          <input
-            className={styles.titleInput}
-            value={value}
-            placeholder={t(Strings.form_title_placeholder)}
-            onChange={(e) => setValue(e.target.value)}
-            onBlur={onBlur}
-          />
-        ) : title
-      }
+    <div
+      className={classnames(styles.titleEditor, {
+        [styles.titleEditorMobile]: isMobile,
+      })}
+    >
+      {mode === IModeEnum.Edit ? (
+        <input
+          className={styles.titleInput}
+          value={value}
+          placeholder={t(Strings.form_title_placeholder)}
+          onChange={e => setValue(e.target.value)}
+          onBlur={onBlur}
+        />
+      ) : (
+        title
+      )}
     </div>
   );
 };

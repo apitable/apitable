@@ -6,7 +6,7 @@ import styles from './style.module.less';
 import { useUnmount, useMount } from 'ahooks';
 import { FieldEditor } from './field_editor';
 import { usePrevious, useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { IEditor } from 'pc/components/editors/interface';
 import { FormContext } from '../form_context';
 import { useSelector } from 'react-redux';
@@ -27,56 +27,34 @@ interface IFormFieldProps {
 }
 
 // 移动端不需要背景色的 Field
-const _notNeedBgFieldMobile = [
-  FieldType.Attachment,
-  FieldType.Link,
-  FieldType.LookUp,
-];
+const _notNeedBgFieldMobile = [FieldType.Attachment, FieldType.Link, FieldType.LookUp];
 
 // 不需要背景色的 Field
-const _notNeedBgField = [
-  FieldType.Attachment,
-  FieldType.Link,
-  FieldType.LookUp,
-  FieldType.Rating,
-];
+const _notNeedBgField = [FieldType.Attachment, FieldType.Link, FieldType.LookUp, FieldType.Rating];
 
 // 不需要激活态的 Field
-const _notNeedActiveField = [
-  FieldType.Checkbox,
-  FieldType.Rating,
-  FieldType.Formula
-];
+const _notNeedActiveField = [FieldType.Checkbox, FieldType.Rating, FieldType.Formula];
 
-const needPositionField = [
-  FieldType.Member,
-];
+const needPositionField = [FieldType.Member];
 
-const needTriggerStartEditField = [
-  FieldType.Number,
-  FieldType.Percent,
-  FieldType.Currency
-];
+const needTriggerStartEditField = [FieldType.Number, FieldType.Percent, FieldType.Currency];
 
-const compactField = [
-  FieldType.SingleSelect,
-  FieldType.MultiSelect,
-];
+const compactField = [FieldType.SingleSelect, FieldType.MultiSelect];
 
 export const FormField: React.FC<IFormFieldProps> = props => {
   const colors = useThemeColors();
   const shareId = useSelector(state => state.pageParams.shareId);
   const { datasheetId, field, isFocus = false, setFocusId, onClose, editable, recordId } = props;
   const previousFocus = usePrevious(isFocus);
-  const editorRef = useRef<IFieldEditRef & HTMLDivElement | null>(null) as any as React.MutableRefObject<IEditor>;
+  const editorRef = (useRef<(IFieldEditRef & HTMLDivElement) | null>(null) as any) as React.MutableRefObject<IEditor>;
   const { formData, formProps } = useContext(FormContext);
   const fieldId = field.id;
   // TODO(kailang) 下个 sprint 支持表单默认值
   // const hasSetField = has(formData, fieldId);
   // const defaultValue = Field.bindModel(field).defaultValue();
   // const cellValue = hasSetField ? (formData[fieldId] ?? null) : defaultValue;
-  const cellValue = formData ? (formData[fieldId] ?? null) : null;
-  const isLogin = useSelector((state) => state.user.isLogin);
+  const cellValue = formData ? formData[fieldId] ?? null : null;
+  const isLogin = useSelector(state => state.user.isLogin);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const compactMode = formProps?.compactMode;
@@ -98,17 +76,20 @@ export const FormField: React.FC<IFormFieldProps> = props => {
   const notNeedBgField = compactMode ? _notNeedBgField : [..._notNeedBgField, ...compactField];
   const notNeedActiveField = compactMode ? _notNeedActiveField : [..._notNeedActiveField, ...compactField];
 
-  const setFocusFunc = useCallback((status: boolean) => {
-    if (!editable) {
-      return;
-    }
-    if (status && !isFocus) {
-      setFocusId && setFocusId(fieldId);
-    }
-    if (!status && isFocus) {
-      setFocusId && setFocusId(null);
-    }
-  }, [editable, fieldId, isFocus, setFocusId]);
+  const setFocusFunc = useCallback(
+    (status: boolean) => {
+      if (!editable) {
+        return;
+      }
+      if (status && !isFocus) {
+        setFocusId && setFocusId(fieldId);
+      }
+      if (!status && isFocus) {
+        setFocusId && setFocusId(null);
+      }
+    },
+    [editable, fieldId, isFocus, setFocusId],
+  );
 
   const onEndEdit = useCallback(() => {
     setFocusFunc(false);
@@ -137,10 +118,7 @@ export const FormField: React.FC<IFormFieldProps> = props => {
     Message.destroy();
   });
 
-  const {
-    entityField,
-    lookupCellValue,
-  } = useSelector(state => {
+  const { entityField, lookupCellValue } = useSelector(state => {
     if (field.type !== FieldType.LookUp) {
       return {
         entityField: undefined,
@@ -182,16 +160,12 @@ export const FormField: React.FC<IFormFieldProps> = props => {
     }
   };
 
-  const lookingUpOption = (field.type === FieldType.LookUp && [FieldType.SingleSelect, FieldType.MultiSelect].includes(entityFieldType));
+  const lookingUpOption = field.type === FieldType.LookUp && [FieldType.SingleSelect, FieldType.MultiSelect].includes(entityFieldType);
   const _isNeedBgField = isMobile ? !notNeedBgFieldMobile.includes(entityFieldType) : !notNeedBgField.includes(entityFieldType);
   const isNeedBgField = _isNeedBgField || lookingUpOption;
 
   if (field.type === FieldType.LookUp && lookupCellValue == null) {
-    return (
-      <div style={{ color: colors.fc3, fontSize: '14px' }}>
-        {t(Strings.this_field_no_reference_data_yet)}
-      </div>
-    );
+    return <div style={{ color: colors.fc3, fontSize: '14px' }}>{t(Strings.this_field_no_reference_data_yet)}</div>;
   }
 
   const disableField = entityFieldType === FieldType.LookUp || entityFieldType === FieldType.Formula;
@@ -212,14 +186,7 @@ export const FormField: React.FC<IFormFieldProps> = props => {
       onMouseDown={onMouseDown}
       tabIndex={0}
     >
-      <FieldEditor
-        ref={editorRef}
-        isFocus={isFocus}
-        onClose={onClose}
-        cellValue={cellValue}
-        commonProps={commonProps}
-        onMouseDown={onMouseDown}
-      />
+      <FieldEditor ref={editorRef} isFocus={isFocus} onClose={onClose} cellValue={cellValue} commonProps={commonProps} onMouseDown={onMouseDown} />
     </div>
   );
 };

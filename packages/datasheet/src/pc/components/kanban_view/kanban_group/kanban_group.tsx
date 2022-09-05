@@ -13,7 +13,7 @@ import { Card, Row } from './rows';
 import styles from './styles.module.less';
 import { sum } from 'lodash';
 import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { MARGIN_DISTANCE } from './rows/rows';
 import { Button, useThemeColors } from '@vikadata/components';
 import { AddOutlined } from '@vikadata/icons';
@@ -55,8 +55,7 @@ export function useAddNewCard(groupId: string, cb?: () => void, insertPlace?: In
   const recordIndex = useSelector(state => {
     const rowIndexMap = Selectors.getRowsIndexMap(state);
     const records = kanbanGroupMap[groupId] || [];
-    const targetRecord = insertPlace === InsertPlace.Bottom ?
-      records.length && records[records.length - 1] : records[0];
+    const targetRecord = insertPlace === InsertPlace.Bottom ? records.length && records[records.length - 1] : records[0];
     if (!targetRecord) {
       return 0;
     }
@@ -69,12 +68,9 @@ export function useAddNewCard(groupId: string, cb?: () => void, insertPlace?: In
     const result = command.addRecords(
       recordIndex,
       1,
-      groupId === UN_GROUP ? [{}] :
-        [{ [kanbanFieldId]: field.type === FieldType.Member ? [groupId] : groupId }],
+      groupId === UN_GROUP ? [{}] : [{ [kanbanFieldId]: field.type === FieldType.Member ? [groupId] : groupId }],
     );
-    if (
-      ExecuteResult.Success === result.result
-    ) {
+    if (ExecuteResult.Success === result.result) {
       const recordId: string = result.data && result.data[0];
       expandRecordIdNavigate(recordId);
     }
@@ -89,15 +85,17 @@ export const KanbanGroup: React.FC<IKanbanGroupProps> = props => {
   const { provided, groupId, height, setCollapse, isDragging, kanbanFieldId, dragId } = props;
   const kanbanGroupMap = useSelector(Selectors.getKanbanGroupMap)!;
   const activeView = useSelector(state => Selectors.getCurrentView(state))!;
-  const rows = useMemo(() => kanbanGroupMap[groupId] || [], [groupId, kanbanGroupMap]); 
+  const rows = useMemo(() => kanbanGroupMap[groupId] || [], [groupId, kanbanGroupMap]);
   const rowsCount = rows.length;
   const listRef = useRef<VariableSizeList>(null);
   const coverFieldId = useSelector(state => {
     const activeView = Selectors.getCurrentView(state) as IKanbanViewProperty;
     return activeView.style.coverFieldId;
   });
-  const isColNameVisible = (activeView.type !== ViewType.Gantt && activeView.type !== ViewType.Calendar && activeView.type !== ViewType.Grid) ?
-    getIsColNameVisible(activeView.style.isColNameVisible) : true;
+  const isColNameVisible =
+    activeView.type !== ViewType.Gantt && activeView.type !== ViewType.Calendar && activeView.type !== ViewType.Grid
+      ? getIsColNameVisible(activeView.style.isColNameVisible)
+      : true;
   const getCardHeight = useCardHeight({
     cardCoverHeight: 140,
     coverFieldId,
@@ -197,10 +195,7 @@ export const KanbanGroup: React.FC<IKanbanGroupProps> = props => {
   };
 
   return (
-    <div
-      {...provided?.draggableProps}
-      ref={provided?.innerRef}
-    >
+    <div {...provided?.draggableProps} ref={provided?.innerRef}>
       {/* TODO: 这里有个奇怪的 Bug，开启自动排序后。开启 devtool 的情况下，卡片无法拖动，和 tooltip 组件有关。先取消 tooltip */}
       {/* <Tooltip title={t(Strings.kanban_keep_sort_tip)} visible={Boolean(showSortBorder)} align={{ offset: [0, 2] }}> */}
       <div
@@ -214,29 +209,14 @@ export const KanbanGroup: React.FC<IKanbanGroupProps> = props => {
           [styles.isDragging]: isDragging && groupId === dragId,
         })}
       >
-        <GroupHeader
-          groupId={groupId}
-          kanbanGroupMap={kanbanGroupMap}
-          provided={provided}
-          setCollapse={setCollapse}
-          scrollToItem={scrollToItem}
-        />
+        <GroupHeader groupId={groupId} kanbanGroupMap={kanbanGroupMap} provided={provided} setCollapse={setCollapse} scrollToItem={scrollToItem} />
         <div className={styles.groupContent}>
           <Droppable
             droppableId={groupId || UN_GROUP}
             mode="virtual"
             renderClone={(provided, snapshot, rubric) => {
               const row = rows[rubric.source.index];
-              return (
-                <Card
-                  provided={provided}
-                  row={row}
-                  style={{}}
-                  isDragging={snapshot.isDragging}
-                  cardHeight={getCardHeight}
-                  groupId={groupId}
-                />
-              );
+              return <Card provided={provided} row={row} style={{}} isDragging={snapshot.isDragging} cardHeight={getCardHeight} groupId={groupId} />;
             }}
           >
             {(provided, snapshot) => {
@@ -246,18 +226,14 @@ export const KanbanGroup: React.FC<IKanbanGroupProps> = props => {
               // 分组B 的卡片数量应该是 2+1（i.e.,下面提到的 itemCount）
               // 分组B 的高度应该是 2 * cardHeight + 1 * placeHolderCardHeight（i.e.,下面提到的 extraHeight ）
               const recordIds = rows.map(item => item.id);
-              const dragInDiffGroup = snapshot.isUsingPlaceholder &&
-                !recordIds.includes((snapshot.draggingFromThisWith || snapshot.draggingOverWith)!);
-              const itemCount = (dragInDiffGroup && !keepSort) ? rowsCount + 1 : rowsCount;
+              const dragInDiffGroup =
+                snapshot.isUsingPlaceholder && !recordIds.includes((snapshot.draggingFromThisWith || snapshot.draggingOverWith)!);
+              const itemCount = dragInDiffGroup && !keepSort ? rowsCount + 1 : rowsCount;
               const extraHeight = dragInDiffGroup ? getCardHeight(snapshot.draggingOverWith || '', isMobile) : 0;
 
-              const virtualHeightInner = getFixedListHeight(
-                sum(
-                  recordIds.map(recordId => getCardHeight(recordId, isMobile) + CARD_MARGIN),
-                ),
-                extraHeight,
-                !dragInDiffGroup,
-              ) - CARD_MARGIN;
+              const virtualHeightInner =
+                getFixedListHeight(sum(recordIds.map(recordId => getCardHeight(recordId, isMobile) + CARD_MARGIN)), extraHeight, !dragInDiffGroup) -
+                CARD_MARGIN;
 
               const _maxVirtualHeight = height - (isMobile ? SMALL_SCREEN_PADDING : TOTAL_PC_OATHER_PADDING);
               const maxVirtualHeight = !rowCreatable ? _maxVirtualHeight + ADD_BUTTON_HEIGHT : _maxVirtualHeight;
@@ -268,32 +244,30 @@ export const KanbanGroup: React.FC<IKanbanGroupProps> = props => {
               } else {
                 setShowSortBorder(false);
               }
-              return (
-                itemCount === 0 ? (
-                  <div ref={provided.innerRef} className={styles.placeHolder}>
-                    {t(Strings.kanban_no_data)}
-                  </div>
-                ): (
-                  <div {...provided.droppableProps} ref={provided.innerRef}>
-                    <VariableSizeList
-                      // height={
-                      //   isMobile ? (virtualHeight - (2 * MARGIN_DISTANCE)) : virtualHeight
-                      // }
-                      height={virtualHeight}
-                      itemCount={itemCount}
-                      itemSize={(rowIndex) => cardHeight(rowIndex, MARGIN_DISTANCE)}
-                      width={BOARD_WIDTH + SCROLL_WIDTH}
-                      itemData={{ rows, cardHeight: getCardHeight, groupId, keepSort, dragInDiffGroup }}
-                      ref={listRef}
-                      style={{
-                        overflowX: 'hidden',
-                      }}
-                      className={styles.fixList}
-                    >
-                      {Row}
-                    </VariableSizeList>
-                  </div>
-                )
+              return itemCount === 0 ? (
+                <div ref={provided.innerRef} className={styles.placeHolder}>
+                  {t(Strings.kanban_no_data)}
+                </div>
+              ) : (
+                <div {...provided.droppableProps} ref={provided.innerRef}>
+                  <VariableSizeList
+                    // height={
+                    //   isMobile ? (virtualHeight - (2 * MARGIN_DISTANCE)) : virtualHeight
+                    // }
+                    height={virtualHeight}
+                    itemCount={itemCount}
+                    itemSize={rowIndex => cardHeight(rowIndex, MARGIN_DISTANCE)}
+                    width={BOARD_WIDTH + SCROLL_WIDTH}
+                    itemData={{ rows, cardHeight: getCardHeight, groupId, keepSort, dragInDiffGroup }}
+                    ref={listRef}
+                    style={{
+                      overflowX: 'hidden',
+                    }}
+                    className={styles.fixList}
+                  >
+                    {Row}
+                  </VariableSizeList>
+                </div>
               );
             }}
           </Droppable>
@@ -304,8 +278,7 @@ export const KanbanGroup: React.FC<IKanbanGroupProps> = props => {
             <div className={styles.autoSortSubTitle}>{t(Strings.kanban_keep_sort_sub_tip)}</div>
           </div>
         )}
-        {
-          rowCreatable &&
+        {rowCreatable && (
           <div style={{ padding: '8px 16px 0 16px' }}>
             <Button
               prefixIcon={<AddOutlined />}
@@ -318,7 +291,7 @@ export const KanbanGroup: React.FC<IKanbanGroupProps> = props => {
               color={colors.defaultBg}
             />
           </div>
-        }
+        )}
       </div>
       {/* </Tooltip> */}
     </div>

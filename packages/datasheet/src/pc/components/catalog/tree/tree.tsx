@@ -1,10 +1,7 @@
-import {
-  ConfigConstant, IReduxState, Navigation, NodeErrorType, Selectors, StoreActions,
-  Strings, t,
-} from '@vikadata/core';
+import { ConfigConstant, IReduxState, Navigation, NodeErrorType, Selectors, StoreActions, Strings, t } from '@vikadata/core';
 import { useRequest } from 'pc/hooks';
 import classnames from 'classnames';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { ITreeViewRef, TreeItem, TreeView } from 'pc/components/common/tree_view';
 import { useNavigation, Method } from 'pc/components/route_manager/use_navigation';
 import { useCatalogTreeRequest, useResponsive } from 'pc/hooks';
@@ -23,9 +20,7 @@ export interface ITreeProps {
   rightClick: (e: React.MouseEvent, id?: ConfigConstant.ContextMenuType) => void;
 }
 
-const TreeBase: FC<ITreeProps> = ({
-  rightClick,
-}) => {
+const TreeBase: FC<ITreeProps> = ({ rightClick }) => {
   const catalogTree = useSelector((state: IReduxState) => state.catalogTree);
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
   const activeNodeId = useSelector(state => Selectors.getNodeId(state));
@@ -49,10 +44,14 @@ const TreeBase: FC<ITreeProps> = ({
     }
     rightClick(e, data);
   };
-  const leafNodes = new Set([ConfigConstant.NodeType.DATASHEET, ConfigConstant.NodeType.FORM, ConfigConstant.NodeType.DASHBOARD,
-    ConfigConstant.NodeType.MIRROR]);
+  const leafNodes = new Set([
+    ConfigConstant.NodeType.DATASHEET,
+    ConfigConstant.NodeType.FORM,
+    ConfigConstant.NodeType.DASHBOARD,
+    ConfigConstant.NodeType.MIRROR,
+  ]);
 
-  const onContextMenu = (e) => {
+  const onContextMenu = e => {
     e.stopPropagation();
     e.preventDefault();
   };
@@ -78,50 +77,54 @@ const TreeBase: FC<ITreeProps> = ({
         expanded: expandedKeys.includes(nodeId),
       };
       if (type === ConfigConstant.NodeType.FOLDER) {
-        return <TreeItem
-          key={nodeId}
-          nodeId={nodeId}
-          className={classNames}
-          label={<NodeItem {...nodeItemProps} />}
-          pos={currentLevel}
-          data={nodeInfo}
-          draggable={!operating}
-          parentNode={parentNodeId}
-        >
-          {
-            errType !== NodeErrorType.ChildNodes ? (
-              hasChildren && children.length ? 
-                renderTreeItem(children, nodeId, currentLevel) :
+        return (
+          <TreeItem
+            key={nodeId}
+            nodeId={nodeId}
+            className={classNames}
+            label={<NodeItem {...nodeItemProps} />}
+            pos={currentLevel}
+            data={nodeInfo}
+            draggable={!operating}
+            parentNode={parentNodeId}
+          >
+            {errType !== NodeErrorType.ChildNodes ? (
+              hasChildren && children.length ? (
+                renderTreeItem(children, nodeId, currentLevel)
+              ) : (
                 <div className={styles.emptyNodes} onContextMenu={onContextMenu}>
                   {t(Strings.empty_nodes)}
                 </div>
+              )
             ) : (
-              <div 
-                className={classnames(styles.emptyNodes, styles.errorTip)} 
-                onContextMenu={onContextMenu} 
+              <div
+                className={classnames(styles.emptyNodes, styles.errorTip)}
+                onContextMenu={onContextMenu}
                 onClick={() => {
                   treeViewRef.current?.setLoadingNodeId(nodeId);
-                  loadData(nodeId).then((res) => {
+                  loadData(nodeId).then(res => {
                     treeViewRef.current?.setLoadingNodeId('');
                   });
                 }}
               >
                 {t(Strings.request_tree_node_error_tips)}
               </div>
-            )
-          }
-        </TreeItem>;
+            )}
+          </TreeItem>
+        );
       }
-      return <TreeItem
-        key={nodeId}
-        nodeId={nodeId}
-        label={<NodeItem {...nodeItemProps} />}
-        parentNode={parentNodeId}
-        className={classNames}
-        data={nodeInfo}
-        draggable={!operating}
-        isLeaf={leafNodes.has(type)}
-      />;
+      return (
+        <TreeItem
+          key={nodeId}
+          nodeId={nodeId}
+          label={<NodeItem {...nodeItemProps} />}
+          parentNode={parentNodeId}
+          className={classNames}
+          data={nodeInfo}
+          draggable={!operating}
+          isLeaf={leafNodes.has(type)}
+        />
+      );
     });
   };
 
@@ -154,10 +157,7 @@ const TreeBase: FC<ITreeProps> = ({
      * 1. 没有子节点
      * 2. 当前节点是根节点
      */
-    if (
-      !treeNodesMap[nodeId]?.hasChildren || 
-      rootId === nodeId
-    ) {
+    if (!treeNodesMap[nodeId]?.hasChildren || rootId === nodeId) {
       return new Promise(resolve => {
         resolve(false);
       });
@@ -194,7 +194,8 @@ const TreeBase: FC<ITreeProps> = ({
     timerRef.current = null;
     lastOverNodeIdRef.current = null;
     const { dragNodeId, dropNodeId, dropPosition } = info;
-    if (dragNodeId === dropNodeId ||
+    if (
+      dragNodeId === dropNodeId ||
       (dropNodeId === treeNodesMap[dragNodeId].preNodeId && dropPosition === 1) ||
       (dragNodeId === treeNodesMap[dropNodeId].preNodeId && dropPosition === -1)
     ) {
@@ -215,23 +216,27 @@ const TreeBase: FC<ITreeProps> = ({
     const modal = Modal.confirm({
       type: 'warning',
       title: t(Strings.set_permission_include_oneself_tips_title),
-      content: <TComponent
-        tkey={t(Strings.move_node_modal_content)}
-        params={{
-          nodeSet: 
-          <span
-            className={styles.permissionSetBtn}
-            onClick={() => {
-              dispatch(StoreActions.updatePermissionModalNodeId(dragNodeId));
-              modal.destroy();
-            }}>
-            {t(Strings.permission_setting)}
-          </span>,
-        }}
-      />,
+      content: (
+        <TComponent
+          tkey={t(Strings.move_node_modal_content)}
+          params={{
+            nodeSet: (
+              <span
+                className={styles.permissionSetBtn}
+                onClick={() => {
+                  dispatch(StoreActions.updatePermissionModalNodeId(dragNodeId));
+                  modal.destroy();
+                }}
+              >
+                {t(Strings.permission_setting)}
+              </span>
+            ),
+          }}
+        />
+      ),
       onOk: () => {
         nodeMove(dragNodeId, dropNodeId, dropPosition);
-      }
+      },
     });
   };
 

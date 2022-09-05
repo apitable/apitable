@@ -9,7 +9,7 @@ import { useCatalogTreeRequest, useImageUpload, useResponsive } from 'pc/hooks';
 import { useSelector } from 'react-redux';
 import { Network } from 'pc/components/network_status';
 // import classNames from 'classnames';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { SlateEditor, Deserializer, EditorValue, IEditorData, Serializer } from 'pc/components/slate_editor';
 
@@ -43,9 +43,12 @@ export const DescriptionModal: FC<IDescriptionModalProps> = props => {
   const { updateNodeDescriptionReq } = useCatalogTreeRequest();
   const { uploadImage } = useImageUpload();
   const { run: updateNodeDescrition } = useRequest(updateNodeDescriptionReq, { manual: true });
-  const { run: sendUpdateDesc } = useDebounceFn(async(nodeId, desc) => {
-    await updateNodeDescrition(nodeId, desc);
-  }, { wait: 500 });
+  const { run: sendUpdateDesc } = useDebounceFn(
+    async (nodeId, desc) => {
+      await updateNodeDescrition(nodeId, desc);
+    },
+    { wait: 500 },
+  );
   useMount(() => {
     if (nodeInfo.description) {
       setValue(polyfillData(nodeInfo.description));
@@ -63,7 +66,7 @@ export const DescriptionModal: FC<IDescriptionModalProps> = props => {
       text: Serializer.text(slateData.document),
       slateData,
       // 实际存储的是html dom树，正式替换为slate编辑器后将字段名改为html更好
-      data: html
+      data: html,
     };
     setValue(slateData);
     const desc = JSON.stringify(dataStruct);
@@ -87,31 +90,21 @@ export const DescriptionModal: FC<IDescriptionModalProps> = props => {
         sectionSpacing="small"
         autoFocus
         readOnly={!nodeInfo.permissions.descriptionEditable}
-        height={isPc ? '70vh' : 'calc(90vh - 94px)' } />
+        height={isPc ? '70vh' : 'calc(90vh - 94px)'}
+      />
     </div>
   );
 
   return (
     <>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-        <BaseModal
-          width={605}
-          title={nodeInfo.nodeName}
-          onCancel={onClose}
-          footer={null}
-        >
+        <BaseModal width={605} title={nodeInfo.nodeName} onCancel={onClose} footer={null}>
           {editorContent}
         </BaseModal>
       </ComponentDisplay>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <Popup
-          title={nodeInfo.nodeName}
-          height={'90%'}
-          visible
-          className={styles.folderShowCaseDrawer}
-          onClose={onClose}
-        >
+        <Popup title={nodeInfo.nodeName} height={'90%'} visible className={styles.folderShowCaseDrawer} onClose={onClose}>
           {editorContent}
         </Popup>
       </ComponentDisplay>

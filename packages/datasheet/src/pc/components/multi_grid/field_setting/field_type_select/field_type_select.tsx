@@ -1,8 +1,14 @@
 import {
-  DATASHEET_ID, Field, FieldType, FieldTypeDescriptionMap,
-  getFieldClass, ISegment,
+  DATASHEET_ID,
+  Field,
+  FieldType,
+  FieldTypeDescriptionMap,
+  getFieldClass,
+  ISegment,
   SelectField,
-  Strings, t, DatasheetActions,
+  Strings,
+  t,
+  DatasheetActions,
 } from '@vikadata/core';
 import { Tooltip } from 'pc/components/common';
 import { useThemeColors } from '@vikadata/components';
@@ -18,7 +24,7 @@ import { TypeSelect } from '../../type_select';
 import { IField, ISnapshot, Selectors } from '@vikadata/core';
 import { useSelector } from 'react-redux';
 import { store } from 'pc/store';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { useClickAway } from 'ahooks';
 import omit from 'lodash/omit';
@@ -38,23 +44,16 @@ function isSelectField(field: IField) {
   return Field.bindModel(field) instanceof SelectField;
 }
 
-export const FieldTypeSelect: React.FC<IFieldTypeSelectProps> = (props) => {
-  const {
-    setCurrentField,
-    currentField,
-    activeFieldId,
-    activeFieldIndex,
-    snapshot,
-    datasheetId,
-    isMobile,
-    showAdvancedFields,
-  } = props;
+export const FieldTypeSelect: React.FC<IFieldTypeSelectProps> = props => {
+  const { setCurrentField, currentField, activeFieldId, activeFieldIndex, snapshot, datasheetId, isMobile, showAdvancedFields } = props;
   const colors = useThemeColors();
   const [visible, setVisible] = useState(false);
   const field = useSelector(state => Selectors.getField(state, activeFieldId, snapshot.datasheetId));
   const typeSelectTriggerRef = useRef<HTMLDivElement>(null);
   const typeSelectPanelRef = useRef<HTMLDivElement>(null);
-  useClickAway(() => { setVisible(false); }, [typeSelectTriggerRef, typeSelectPanelRef]);
+  useClickAway(() => {
+    setVisible(false);
+  }, [typeSelectTriggerRef, typeSelectPanelRef]);
 
   useEffect(() => {
     setVisible(false);
@@ -74,17 +73,13 @@ export const FieldTypeSelect: React.FC<IFieldTypeSelectProps> = (props) => {
         if (!isConvertWithinSelectField) {
           property = getFieldClass(type).defaultProperty();
         }
-        
+
         // 存在单多选类型切换，进行默认值转换
         if (isConvertWithinSelectField && property.defaultValue != null) {
-          property = type === FieldType.MultiSelect ?
-            { ...property, defaultValue: [property.defaultValue] } :
-            omit(property, 'defaultValue');
+          property = type === FieldType.MultiSelect ? { ...property, defaultValue: [property.defaultValue] } : omit(property, 'defaultValue');
         }
 
-        const isOtherField2SelectField = field &&
-          !isSelectField(field) &&
-          isSelectField({ ...field, type } as IField);
+        const isOtherField2SelectField = field && !isSelectField(field) && isSelectField({ ...field, type } as IField);
 
         if (isOtherField2SelectField) {
           // 从非 selectField 转换成 selectField ,需要支持预览
@@ -103,7 +98,8 @@ export const FieldTypeSelect: React.FC<IFieldTypeSelectProps> = (props) => {
       });
       setVisible(false);
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentField.type],
+    },
+    [currentField.type],
   );
 
   const getFieldHelpLink = () => {
@@ -125,28 +121,13 @@ export const FieldTypeSelect: React.FC<IFieldTypeSelectProps> = (props) => {
       <div className={styles.sectionTitle}>
         {t(Strings.field_type)}
         <Tooltip title={t(Strings.click_to_view_instructions)} trigger={'hover'}>
-          <a
-            href={getFieldHelpLink()}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ display: 'inline-block' }}
-          >
-            <HelpIcon
-              style={{ cursor: 'pointer', verticalAlign: '-0.125em', marginLeft: 8 }}
-              fill={colors.thirdLevelText}
-            />
+          <a href={getFieldHelpLink()} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block' }}>
+            <HelpIcon style={{ cursor: 'pointer', verticalAlign: '-0.125em', marginLeft: 8 }} fill={colors.thirdLevelText} />
           </a>
         </Tooltip>
       </div>
-      <div
-        className={styles.sectionInfo}
-        onClick={onClick}
-        id={DATASHEET_ID.GRID_CUR_COLUMN_TYPE}
-        ref={typeSelectTriggerRef}
-      >
-        <div className={settingStyles.iconType}>
-          {getFieldTypeIcon(currentField.type)}
-        </div>
+      <div className={styles.sectionInfo} onClick={onClick} id={DATASHEET_ID.GRID_CUR_COLUMN_TYPE} ref={typeSelectTriggerRef}>
+        <div className={settingStyles.iconType}>{getFieldTypeIcon(currentField.type)}</div>
         <div className={styles.text}>{FieldTypeDescriptionMap[currentField.type].title}</div>
         <div className={styles.arrow}>
           <IconArrow width={10} height={10} fill={colors.thirdLevelText} />
@@ -156,7 +137,6 @@ export const FieldTypeSelect: React.FC<IFieldTypeSelectProps> = (props) => {
         <>
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
             <div ref={typeSelectPanelRef}>
-
               <AutoLayout boxWidth={318} datasheetId={datasheetId}>
                 <TypeSelect
                   onClick={onTypeSelectClick}
@@ -170,12 +150,7 @@ export const FieldTypeSelect: React.FC<IFieldTypeSelectProps> = (props) => {
 
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
             {visible && (
-              <Popup
-                visible={visible}
-                onClose={() => setVisible(false)}
-                height="90%"
-                bodyStyle={{ padding: 0 }}
-              >
+              <Popup visible={visible} onClose={() => setVisible(false)} height="90%" bodyStyle={{ padding: 0 }}>
                 <TypeSelect
                   onClick={onTypeSelectClick}
                   currentFieldType={currentField.type}

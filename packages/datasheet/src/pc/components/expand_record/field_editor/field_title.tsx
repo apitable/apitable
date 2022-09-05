@@ -1,11 +1,22 @@
 import { IconButton, LinkButton, useContextMenu, useThemeColors } from '@vikadata/components';
 import {
-  ConfigConstant, Field, FieldType, IAttachmentValue, ICellValue, IFieldMap, IGridViewProperty, Selectors, StoreActions, Strings, t, ViewType
+  ConfigConstant,
+  Field,
+  FieldType,
+  IAttachmentValue,
+  ICellValue,
+  IFieldMap,
+  IGridViewProperty,
+  Selectors,
+  StoreActions,
+  Strings,
+  t,
+  ViewType,
 } from '@vikadata/core';
 import { AddOutlined, EditDescribeFilled, EditDescribeOutlined, MoreOutlined } from '@vikadata/icons';
 import classNames from 'classnames';
 import { Tooltip } from 'pc/components/common';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { useAppendField } from 'pc/components/expand_record/hooks/use_append_field';
 import { useEditDesc } from 'pc/components/expand_record/hooks/use_edit_desc';
 import { useEditField } from 'pc/components/expand_record/hooks/use_edit_field';
@@ -57,8 +68,23 @@ export interface IFieldDescCollapseStatus {
 
 export const FieldTitle: React.FC<IFieldTitleProps> = props => {
   const {
-    isFocus, recordId, fieldId, datasheetId, onMouseDown, hideDesc, cellValue, hideLock,
-    marker, iconColor, hover, hideRequired, showAlarm, allowToInsertField, colIndex, fieldMap, showFieldSetting
+    isFocus,
+    recordId,
+    fieldId,
+    datasheetId,
+    onMouseDown,
+    hideDesc,
+    cellValue,
+    hideLock,
+    marker,
+    iconColor,
+    hover,
+    hideRequired,
+    showAlarm,
+    allowToInsertField,
+    colIndex,
+    fieldMap,
+    showFieldSetting,
   } = props;
   const [openAlarm, setOpenAlarm] = useState(false);
 
@@ -87,7 +113,7 @@ export const FieldTitle: React.FC<IFieldTitleProps> = props => {
 
   const colors = useThemeColors();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const copyField = fieldMap ? getCopyField(field, fieldMap, view.id, datasheetId) : () => { };
+  const copyField = fieldMap ? getCopyField(field, fieldMap, view.id, datasheetId) : () => {};
   const firstColumnId = view.columns[0].fieldId;
   const columnIndexOfView = view.columns.findIndex(col => col.fieldId === fieldId);
 
@@ -112,7 +138,6 @@ export const FieldTitle: React.FC<IFieldTitleProps> = props => {
       return !fieldDescCollapse;
     }
     return false;
-
   }, [fieldDescCollapse, collapseAllFiledDesc, hideDesc]);
 
   const toggleCollapseDesc = () => {
@@ -128,18 +153,18 @@ export const FieldTitle: React.FC<IFieldTitleProps> = props => {
     });
   };
   const columnHidden = view.columns[columnIndexOfView]?.hidden;
-  const onShowMenu = (e) => {
+  const onShowMenu = e => {
     showMenu(e, {
       props: {
         onInsertAbove: firstColumnId !== fieldId ? () => onAppendField(e, Number(columnIndexOfView) - 1, columnHidden) : null,
         onInsertBelow: () => onAppendField(e, Number(columnIndexOfView), columnHidden),
         onEdit: () => onEditField(e),
         onEditDesc: () => onEditDesc(e),
-        onCopyField: (!fieldCreatable || fieldError || !fieldPropertyEditable) ? null :
-          () => copyField(Number(columnIndexOfView) + 1, field.id, 1, columnHidden),
-        onHiddenField: (!editable || firstColumnId === fieldId || columnHidden) ? null : () => hiddenField(),
-        onDeleteField: !((fieldRemovable && firstColumnId !== fieldId) || (fieldError && field.type === FieldType.Link)) ? null : () => deleteField()
-      }
+        onCopyField:
+          !fieldCreatable || fieldError || !fieldPropertyEditable ? null : () => copyField(Number(columnIndexOfView) + 1, field.id, 1, columnHidden),
+        onHiddenField: !editable || firstColumnId === fieldId || columnHidden ? null : () => hiddenField(),
+        onDeleteField: !((fieldRemovable && firstColumnId !== fieldId) || (fieldError && field.type === FieldType.Link)) ? null : () => deleteField(),
+      },
     });
   };
 
@@ -152,86 +177,59 @@ export const FieldTitle: React.FC<IFieldTitleProps> = props => {
           onMouseDown={onMouseDown}
           className={classNames(styles.fieldTitle, 'fieldTitle', {
             [styles.hover]: hover,
-            [styles.wrap]: isTitleWrap
+            [styles.wrap]: isTitleWrap,
           })}
         >
           <div className={styles.iconType}>
             {getFieldTypeIcon(field.type, iconColor ? iconColor : isFocus ? colors.primaryColor : colors.thirdLevelText)}
           </div>
-          <div
-            style={{ color: isFocus ? colors.primaryColor : '' }}
-            className={classNames(isTitleWrap ? styles.wrapName : styles.text)}
-          >
+          <div style={{ color: isFocus ? colors.primaryColor : '' }} className={classNames(isTitleWrap ? styles.wrapName : styles.text)}>
             {field.name}
           </div>
 
-          {
-            !hideDesc && Field.bindModel(field).isComputed && renderComputeFieldError(field, t(Strings.field_configuration_err), isMobile)
-          }
+          {!hideDesc && Field.bindModel(field).isComputed && renderComputeFieldError(field, t(Strings.field_configuration_err), isMobile)}
 
-          {
-            field.desc &&
-            !hideDesc &&
-            <div
-              className={styles.iconDisplayIcon}
-              onMouseDown={stopPropagation}
-            >
-              <span
-                onClick={toggleCollapseDesc}
-              >
-                {showDesc
-                  ? <EditDescribeFilled />
-                  : <EditDescribeOutlined />
-                }
-              </span>
+          {field.desc && !hideDesc && (
+            <div className={styles.iconDisplayIcon} onMouseDown={stopPropagation}>
+              <span onClick={toggleCollapseDesc}>{showDesc ? <EditDescribeFilled /> : <EditDescribeOutlined />}</span>
             </div>
-          }
+          )}
         </div>
         <div className={classNames('right', styles.right)}>
-          {field.type === FieldType.Attachment
-            && (cellValue as IAttachmentValue[])?.length
-            && !isMobile
-            && allowDownload
-            && (
-              <BulkDownload
-                files={cellValue as IAttachmentValue[]}
-                className="more"
-                datasheetId={datasheetId}
-              />
-            )
-          }
-          {
-            showAlarm && field.type === FieldType.DateTime && isMobile && Boolean(cellValue) && (
-              <LinkButton underline={false} onClick={() => setOpenAlarm(true)}>
-                {t(Strings.task_reminder_entry)}
-              </LinkButton>
-            )
-          }
+          {field.type === FieldType.Attachment && (cellValue as IAttachmentValue[])?.length && !isMobile && allowDownload && (
+            <BulkDownload files={cellValue as IAttachmentValue[]} className="more" datasheetId={datasheetId} />
+          )}
+          {showAlarm && field.type === FieldType.DateTime && isMobile && Boolean(cellValue) && (
+            <LinkButton underline={false} onClick={() => setOpenAlarm(true)}>
+              {t(Strings.task_reminder_entry)}
+            </LinkButton>
+          )}
 
           {!hideLock && <FieldPermissionLockEnhance fieldId={fieldId} className="more" />}
 
-          {
-            allowToInsertField &&
-            (manageable && (!fieldPermissionMap || !fieldPermissionMap[fieldId] || fieldPermissionMap[fieldId].manageable)) &&
-            !mirrorId && nodeId &&
-            <div className={styles.buttonsGroup} style={{ display: showFieldSetting ? 'flex' : '' }}>
-              <Tooltip title={t(Strings.insert_new_field_below)}>
-                <IconButton
-                  component="button"
-                  shape="square"
-                  icon={() => <AddOutlined size={16} color={colors.fc3} />}
-                  onClick={(e) => onAppendField(e, Number(columnIndexOfView), columnHidden)}
-                />
-              </Tooltip>
-              <Tooltip title={t(Strings.config)}>
-                <IconButton
-                  component="button"
-                  shape="square"
-                  icon={() => <MoreOutlined size={16} color={colors.fc3} />}
-                  onClick={(e) => onShowMenu(e)}
-                />
-              </Tooltip>
-            </div>}
+          {allowToInsertField &&
+            manageable && (!fieldPermissionMap || !fieldPermissionMap[fieldId] || fieldPermissionMap[fieldId].manageable) &&
+            !mirrorId &&
+            nodeId && (
+              <div className={styles.buttonsGroup} style={{ display: showFieldSetting ? 'flex' : '' }}>
+                <Tooltip title={t(Strings.insert_new_field_below)}>
+                  <IconButton
+                    component="button"
+                    shape="square"
+                    icon={() => <AddOutlined size={16} color={colors.fc3} />}
+                    onClick={e => onAppendField(e, Number(columnIndexOfView), columnHidden)}
+                  />
+                </Tooltip>
+                <Tooltip title={t(Strings.config)}>
+                  <IconButton
+                    component="button"
+                    shape="square"
+                    icon={() => <MoreOutlined size={16} color={colors.fc3} />}
+                    onClick={e => onShowMenu(e)}
+                  />
+                </Tooltip>
+              </div>
+            )}
         </div>
 
         {Boolean(recordId) && openAlarm && (
@@ -244,15 +242,8 @@ export const FieldTitle: React.FC<IFieldTitleProps> = props => {
             cellValue={cellValue}
           />
         )}
-
       </div>
-      {field.desc && Boolean(recordId) && showDesc && (
-        <FieldDescWithTitle
-          field={field}
-          datasheetId={datasheetId}
-          readOnly={!descriptionEditable}
-        />
-      )}
+      {field.desc && Boolean(recordId) && showDesc && <FieldDescWithTitle field={field} datasheetId={datasheetId} readOnly={!descriptionEditable} />}
     </>
   );
 };

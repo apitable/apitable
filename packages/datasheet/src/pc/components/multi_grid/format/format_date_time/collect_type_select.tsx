@@ -9,7 +9,7 @@ import IconArrow from 'static/icon/datasheet/datasheet_icon_calender_right.svg';
 import IconEdit from 'static/icon/datasheet/rightclick/datasheet_icon_rename.svg';
 import { TextButton, useThemeColors } from '@vikadata/components';
 import RcTrigger from 'rc-trigger';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
 import { useClickAway } from 'ahooks';
 
@@ -24,12 +24,17 @@ export const CollectTypeSelect = memo((props: ICollectTypeSelectProps) => {
   const { collectType, fieldIdCollection } = currentField.property;
   const fieldMap = useSelector(state => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
   const [visible, setVisible] = useState(false);
-  const collectTypeOptions = useMemo(() => ([
-    { type: CollectType.AllFields, name: t(Strings.all_editable_fields) },
-    { type: CollectType.SpecifiedFields, name: t(Strings.specified_fields) },
-  ]), []);
+  const collectTypeOptions = useMemo(
+    () => [
+      { type: CollectType.AllFields, name: t(Strings.all_editable_fields) },
+      { type: CollectType.SpecifiedFields, name: t(Strings.specified_fields) },
+    ],
+    [],
+  );
   const colletTypeSelectRef = useRef<HTMLDivElement>(null);
-  useClickAway(() => { setVisible(false); }, colletTypeSelectRef);
+  useClickAway(() => {
+    setVisible(false);
+  }, colletTypeSelectRef);
 
   const handleClick = () => {
     setVisible(!visible);
@@ -86,12 +91,8 @@ export const CollectTypeSelect = memo((props: ICollectTypeSelectProps) => {
     return (
       <div key={fieldId} className={styles.selectedFiledItem}>
         <div className={styles.selectedFieldIconAndTitle}>
-          <div className={styles.iconType}>
-            {getFieldTypeIcon(fieldMap[fieldId].type)}
-          </div>
-          <div className={styles.fieldName}>
-            {fieldMap[fieldId].name}
-          </div>
+          <div className={styles.iconType}>{getFieldTypeIcon(fieldMap[fieldId].type)}</div>
+          <div className={styles.fieldName}>{fieldMap[fieldId].name}</div>
         </div>
       </div>
     );
@@ -104,17 +105,12 @@ export const CollectTypeSelect = memo((props: ICollectTypeSelectProps) => {
     return (
       <>
         <div className={styles.selectedFieldList}>
-          {
-            fieldIdCollection.map(
-              fieldId => <SelectedFieldItem fieldId={fieldId} key={fieldId} />,
-            )
-          }
+          {fieldIdCollection.map(fieldId => (
+            <SelectedFieldItem fieldId={fieldId} key={fieldId} />
+          ))}
         </div>
         <div className={styles.editField}>
-          <TextButton
-            className={styles.editBtn}
-            onClick={() => onChange(CollectType.SpecifiedFields)}
-          >
+          <TextButton className={styles.editBtn} onClick={() => onChange(CollectType.SpecifiedFields)}>
             <IconEdit width={16} height={16} fill={colors.thirdLevelText} />
             <span className={styles.editText}>{t(Strings.edit_selected_field)}</span>
           </TextButton>
@@ -142,9 +138,7 @@ export const CollectTypeSelect = memo((props: ICollectTypeSelectProps) => {
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <div className={settingStyles.sectionInfo} onClick={handleClick} ref={colletTypeSelectRef}>
           {TriggerComponent}
-          {
-            renderAutoLayout()
-          }
+          {renderAutoLayout()}
         </div>
       </ComponentDisplay>
 
@@ -152,11 +146,7 @@ export const CollectTypeSelect = memo((props: ICollectTypeSelectProps) => {
         <MobileSelect
           title={t(Strings.please_choose)}
           height="auto"
-          triggerComponent={(
-            <div className={settingStyles.sectionInfo}>
-              {TriggerComponent}
-            </div>
-          )}
+          triggerComponent={<div className={settingStyles.sectionInfo}>{TriggerComponent}</div>}
           optionData={optionData}
           onChange={onSelectItemClick}
         />

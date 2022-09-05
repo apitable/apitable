@@ -9,10 +9,10 @@ import { stopPropagation } from 'pc/utils';
 import { useState } from 'react';
 import * as React from 'react';
 import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
-import { ScreenSize } from '../component_display/component_display';
+import { ScreenSize } from '../component_display/enum';
 import { Modal } from '../mobile/modal';
 import { ColorGroup } from './color_group';
-import { OptionSetting } from './color_picker';
+import { OptionSetting } from './enum';
 import styles from './style.module.less';
 import cls from 'classnames';
 import { colorVars } from '@vikadata/components';
@@ -25,39 +25,32 @@ export interface IColorPickerPane {
 }
 
 const ColorPickerPaneBase: React.FC<IColorPickerPane> = props => {
-  const {
-    option,
-    showRenameInput = false,
-    onChange,
-    onClose,
-  } = props;
+  const { option, showRenameInput = false, onChange, onClose } = props;
   const [newName, setNewName] = useState(option.name);
   const colors = useThemeColors();
 
   const renderMenu = (title: string, colorGroup: number[], showTag?: boolean, isBase?: boolean) => (
     <div className={cls(styles.menu, { [styles.bg]: showTag })}>
-      <div className={cls(styles.menuTitle, {
-        [styles.base]: isBase
-      })}>
+      <div
+        className={cls(styles.menuTitle, {
+          [styles.base]: isBase,
+        })}
+      >
         <div
           style={{
             fontWeight: showTag ? 'bold' : 'normal',
-            color: colorVars.firstLevelText
+            color: colorVars.firstLevelText,
           }}
         >
           {title}
         </div>
-        {
-          showTag && <SubscribeLabel grade={SubscribeGrade.Silver} />
-        }
+        {showTag && <SubscribeLabel grade={SubscribeGrade.Silver} />}
       </div>
       <ColorGroup
         colorGroup={colorGroup}
         option={option}
         onChange={(type: OptionSetting, id: string, value: string | number) => {
-          if (
-            title === t(Strings.option_configuration_silver_palette)
-          ) {
+          if (title === t(Strings.option_configuration_silver_palette)) {
             triggerUsageAlert(SubscribeKye.RainbowLabel);
           }
           onChange?.(type, id, value);
@@ -114,40 +107,31 @@ const ColorPickerPaneBase: React.FC<IColorPickerPane> = props => {
                 closeAndSave();
               }}
               defaultValue={option.name}
-              onMouseMove={e => stopPropagation(e as any as React.MouseEvent)}
+              onMouseMove={e => stopPropagation((e as any) as React.MouseEvent)}
               value={newName}
             />
             <div className={styles.deleteIconWrap}>
-              <DeleteIcon
-                width={16}
-                height={16}
-                fill={colors.thirdLevelText}
-                onClick={onDelete}
-              />
+              <DeleteIcon width={16} height={16} fill={colors.thirdLevelText} onClick={onDelete} />
             </div>
           </div>
           <div className={styles.divider} />
         </>
       )}
       <div className={styles.colorMenuGroup}>
-        {
-          renderMenu(
-            t(Strings.option_configuration_basic_palette),
-            Array.from({ length: 20 }, (item, index) => index),
-            false,
-            true
-          )
-        }
-        {
-          renderMenu(
-            t(Strings.option_configuration_advance_palette),
-            Array.from({ length: 30 }, (item, index) => index + 20),
-            true
-          )
-        }
+        {renderMenu(
+          t(Strings.option_configuration_basic_palette),
+          Array.from({ length: 20 }, (item, index) => index),
+          false,
+          true,
+        )}
+        {renderMenu(
+          t(Strings.option_configuration_advance_palette),
+          Array.from({ length: 30 }, (item, index) => index + 20),
+          true,
+        )}
       </div>
     </div>
   );
 };
 
-export const ColorPickerPane = React.memo((ColorPickerPaneBase));
+export const ColorPickerPane = React.memo(ColorPickerPaneBase);

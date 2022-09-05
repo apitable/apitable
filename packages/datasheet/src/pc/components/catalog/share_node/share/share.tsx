@@ -5,7 +5,7 @@ import { Popover, Radio } from 'antd';
 import classnames from 'classnames';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { TComponent } from 'pc/components/common/t_component';
 import { useCatalogTreeRequest, useResponsive } from 'pc/hooks';
@@ -17,8 +17,8 @@ import { ShareLink } from './share_link';
 import styles from './style.module.less';
 
 export interface IShareProps {
-  shareSettings: IShareSettings,
-  nodeId: string,
+  shareSettings: IShareSettings;
+  nodeId: string;
   onChange?: (data: IShareSettings) => void;
 }
 
@@ -29,15 +29,19 @@ export const Share: FC<IShareProps> = ({ shareSettings, onChange, nodeId }) => {
   const dispatch = useDispatch();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const { userInfo, treeNodesMap } = useSelector((state: IReduxState) => ({
-    treeNodesMap: state.catalogTree.treeNodesMap,
-    userInfo: state.user.info,
-    mirrorId: state.pageParams.mirrorId
-  }), shallowEqual);
+  const { userInfo, treeNodesMap } = useSelector(
+    (state: IReduxState) => ({
+      treeNodesMap: state.catalogTree.treeNodesMap,
+      userInfo: state.user.info,
+      mirrorId: state.pageParams.mirrorId,
+    }),
+    shallowEqual,
+  );
   const { getShareSettingsReq } = useCatalogTreeRequest();
   const isShareMirror = nodeId.startsWith('mir');
-  const { run: getShareSettings, data: newShareSettings } =
-    useRequest<IShareSettings>(() => getShareSettingsReq(shareSettings.nodeId), { manual: true });
+  const { run: getShareSettings, data: newShareSettings } = useRequest<IShareSettings>(() => getShareSettingsReq(shareSettings.nodeId), {
+    manual: true,
+  });
 
   useEffect(() => {
     if (newShareSettings) {
@@ -81,53 +85,56 @@ export const Share: FC<IShareProps> = ({ shareSettings, onChange, nodeId }) => {
   };
 
   // 分享设置
-  const updateShare = (permission: { onlyRead?: boolean, canBeEdited?: boolean, canBeStored?: boolean }) => {
-    const onOk = () => Api.updateShare(shareSettings.nodeId, permission).then(res => {
-      const { success } = res.data;
-      if (success) {
-        getShareSettings();
-        updateShareStatus(true);
-        Message.success({ content: t(Strings.share_settings_tip, { status: t(Strings.success) }) });
-      } else {
-        Message.error({ content: t(Strings.share_settings_tip, { status: t(Strings.fail) }) });
-      }
-    });
+  const updateShare = (permission: { onlyRead?: boolean; canBeEdited?: boolean; canBeStored?: boolean }) => {
+    const onOk = () =>
+      Api.updateShare(shareSettings.nodeId, permission).then(res => {
+        const { success } = res.data;
+        if (success) {
+          getShareSettings();
+          updateShareStatus(true);
+          Message.success({ content: t(Strings.share_settings_tip, { status: t(Strings.success) }) });
+        } else {
+          Message.error({ content: t(Strings.share_settings_tip, { status: t(Strings.fail) }) });
+        }
+      });
     if (shareSettings.linkNodes.length) {
       Modal.confirm({
         type: 'warning',
         title: t(Strings.share_and_permission_popconfirm_title),
-        content: <>
-          {shareSettings.containMemberFld &&
+        content: (
+          <>
+            {shareSettings.containMemberFld && (
+              <div className={styles.tipItem}>
+                <div className={styles.tipContent1}>
+                  <TComponent
+                    tkey={t(Strings.share_edit_exist_member_tip)}
+                    params={{
+                      content: <span className={styles.bold}>{t(Strings.member_type_field)}</span>,
+                    }}
+                  />
+                </div>
+              </div>
+            )}
             <div className={styles.tipItem}>
-              <div className={styles.tipContent1}>
+              <div className={styles.tipContent2}>
                 <TComponent
-                  tkey={t(Strings.share_edit_exist_member_tip)}
+                  tkey={t(Strings.share_exist_something_tip)}
                   params={{
-                    content: <span className={styles.bold}>{t(Strings.member_type_field)}</span>
+                    content: <span className={styles.bold}>{t(Strings.link_other_datasheet)}</span>,
                   }}
                 />
               </div>
             </div>
-          }
-          <div className={styles.tipItem}>
-            <div className={styles.tipContent2}>
-              <TComponent
-                tkey={t(Strings.share_exist_something_tip)}
-                params={{
-                  content: <span className={styles.bold}>{t(Strings.link_other_datasheet)}</span>
-                }}
-              />
+            <div className={styles.linkNodes}>
+              {shareSettings.linkNodes.map((item, index) => (
+                <div key={item + index} className={styles.linkNode}>
+                  <div className={styles.linkNodeName}>{item}</div>
+                </div>
+              ))}
             </div>
-          </div>
-          <div className={styles.linkNodes}>
-            {shareSettings.linkNodes.map((item, index) => (
-              <div key={item + index} className={styles.linkNode}>
-                <div className={styles.linkNodeName}>{item}</div>
-              </div>
-            ))}
-          </div>
-        </>,
-        onOk
+          </>
+        ),
+        onOk,
       });
       return;
     }
@@ -136,45 +143,50 @@ export const Share: FC<IShareProps> = ({ shareSettings, onChange, nodeId }) => {
 
   // 关闭分享
   const closeShare = () => {
-    const onOk = () => Api.disableShare(shareSettings.nodeId).then(res => {
-      const { success } = res.data;
-      if (success) {
-        getShareSettings();
-        updateShareStatus(false);
-        Message.success({ content: t(Strings.close_share_tip, { status: t(Strings.success) }) });
-      } else {
-        Message.error({ content: t(Strings.close_share_tip, { status: t(Strings.fail) }) });
-      }
-    });
+    const onOk = () =>
+      Api.disableShare(shareSettings.nodeId).then(res => {
+        const { success } = res.data;
+        if (success) {
+          getShareSettings();
+          updateShareStatus(false);
+          Message.success({ content: t(Strings.close_share_tip, { status: t(Strings.success) }) });
+        } else {
+          Message.error({ content: t(Strings.close_share_tip, { status: t(Strings.fail) }) });
+        }
+      });
 
     Modal.confirm({
       title: t(Strings.close_share_link),
       content: t(Strings.link_failed_after_close_share_link),
       onOk,
-      type: 'danger'
+      type: 'danger',
     });
   };
 
   const Menu = () => {
     const { shareOpened, props } = shareSettings;
-    const data = [{
-      title: t(Strings.share_only_title),
-      desc: t(Strings.share_only_desc),
-      onClick: () => updateShare({ onlyRead: true }),
-      active: shareOpened && props.onlyRead
-    }, {
-      title: t(Strings.share_and_editable_title),
-      desc: t(Strings.share_and_editable_desc),
-      onClick: () => updateShare({ canBeEdited: true }),
-      active: shareOpened && props.canBeEdited,
-      disabled: Boolean(isShareMirror)
-    }, {
-      title: t(Strings.share_and_save_title),
-      desc: t(Strings.share_and_save_desc),
-      onClick: () => updateShare({ canBeStored: true }),
-      active: shareOpened && props.canBeStored,
-      disabled: Boolean(isShareMirror)
-    }];
+    const data = [
+      {
+        title: t(Strings.share_only_title),
+        desc: t(Strings.share_only_desc),
+        onClick: () => updateShare({ onlyRead: true }),
+        active: shareOpened && props.onlyRead,
+      },
+      {
+        title: t(Strings.share_and_editable_title),
+        desc: t(Strings.share_and_editable_desc),
+        onClick: () => updateShare({ canBeEdited: true }),
+        active: shareOpened && props.canBeEdited,
+        disabled: Boolean(isShareMirror),
+      },
+      {
+        title: t(Strings.share_and_save_title),
+        desc: t(Strings.share_and_save_desc),
+        onClick: () => updateShare({ canBeStored: true }),
+        active: shareOpened && props.canBeStored,
+        disabled: Boolean(isShareMirror),
+      },
+    ];
 
     return (
       <div className={styles.menu} onClick={() => setMenuVisible(false)}>
@@ -182,13 +194,10 @@ export const Share: FC<IShareProps> = ({ shareSettings, onChange, nodeId }) => {
           {data.map(item => (
             <div
               key={item.title}
-              className={classnames(
-                styles.item,
-                item.active && styles.active,
-                isMobile && styles.itemMobile,
-                item.disabled && styles.disabled
-              )}
-              onClick={() => { !item.disabled && item.onClick(); }}
+              className={classnames(styles.item, item.active && styles.active, isMobile && styles.itemMobile, item.disabled && styles.disabled)}
+              onClick={() => {
+                !item.disabled && item.onClick();
+              }}
             >
               {isMobile && <Radio checked={item.active} />}
               <div>
@@ -248,13 +257,11 @@ export const Share: FC<IShareProps> = ({ shareSettings, onChange, nodeId }) => {
       </div>
 
       <div className={styles.tip}>{t(Strings.share_and_permission_share_link)}</div>
-      <ShareLink
-        shareName={treeNodesMap[shareSettings.nodeId]?.nodeName}
-        shareSettings={shareSettings}
-        userInfo={userInfo}
-      />
+      <ShareLink shareName={treeNodesMap[shareSettings.nodeId]?.nodeName} shareSettings={shareSettings} userInfo={userInfo} />
       {isMobile && <div className={styles.anyoneCanSeeTip}>{t(Strings.public_link_desc)}</div>}
-      <Button className={styles.closeShare} color="danger" onClick={closeShare}>{t(Strings.close_share_link)}</Button>
+      <Button className={styles.closeShare} color="danger" onClick={closeShare}>
+        {t(Strings.close_share_link)}
+      </Button>
     </>
   );
 };

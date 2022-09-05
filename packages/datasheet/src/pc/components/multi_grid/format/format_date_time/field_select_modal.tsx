@@ -7,7 +7,7 @@ import { IDateTimeBaseField, Selectors, IViewColumn, Strings, t, ILastModifiedBy
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { Switch } from 'antd';
 import styles from './styles.module.less';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
 import { useResponsive } from 'pc/hooks';
@@ -31,8 +31,13 @@ export const FieldSelectModal: React.FC<IFieldSelectModalProps> = (props: IField
   // 排除 当前字段、计算字段 和 无法编辑 的字段类型
   const filteredColumns = useMemo(() => {
     const computedFields = new Set([
-      FieldType.Formula, FieldType.LookUp, FieldType.CreatedTime, FieldType.LastModifiedTime,
-      FieldType.CreatedBy, FieldType.LastModifiedBy, FieldType.AutoNumber,
+      FieldType.Formula,
+      FieldType.LookUp,
+      FieldType.CreatedTime,
+      FieldType.LastModifiedTime,
+      FieldType.CreatedBy,
+      FieldType.LastModifiedBy,
+      FieldType.AutoNumber,
     ]);
     return columns.filter(column => {
       const columnFieldId = column.fieldId;
@@ -55,8 +60,7 @@ export const FieldSelectModal: React.FC<IFieldSelectModalProps> = (props: IField
   };
 
   const onChange = (fieldId: string) => {
-    const newCollection =
-      collection.includes(fieldId) ? collection.filter(id => id !== fieldId) : [...collection, fieldId];
+    const newCollection = collection.includes(fieldId) ? collection.filter(id => id !== fieldId) : [...collection, fieldId];
     setCollection(newCollection);
   };
 
@@ -99,15 +103,13 @@ export const FieldSelectModal: React.FC<IFieldSelectModalProps> = (props: IField
       <div
         key={fieldId}
         className={styles.fieldItem}
-        onClick={() => { onChange(fieldId); }}
+        onClick={() => {
+          onChange(fieldId);
+        }}
       >
         <div className={styles.fieldIconAndTitle}>
-          <div className={styles.iconType}>
-            {getFieldTypeIcon(fieldMap[fieldId].type)}
-          </div>
-          <div className={styles.fieldName}>
-            {fieldMap[fieldId].name}
-          </div>
+          <div className={styles.iconType}>{getFieldTypeIcon(fieldMap[fieldId].type)}</div>
+          <div className={styles.fieldName}>{fieldMap[fieldId].name}</div>
         </div>
         <Switch checked={collection.includes(fieldId)} size={isMobile ? 'default' : 'small'} />
       </div>
@@ -115,33 +117,27 @@ export const FieldSelectModal: React.FC<IFieldSelectModalProps> = (props: IField
   };
 
   const modalDesc = useMemo(() => {
-    return currentField.type === FieldType.LastModifiedBy ?
-      t(Strings.last_modified_by_select_modal_desc) : t(Strings.last_modified_time_select_modal_desc);
+    return currentField.type === FieldType.LastModifiedBy
+      ? t(Strings.last_modified_by_select_modal_desc)
+      : t(Strings.last_modified_time_select_modal_desc);
   }, [currentField]);
 
   const Content = (
     <>
       <div className={styles.desc}>{modalDesc}</div>
       <div className={styles.searchField}>
-        <LineSearchInput
-          placeholder={t(Strings.search_field)}
-          onChange={e => setQuery(e.target.value)}
-          value={query}
-        />
+        <LineSearchInput placeholder={t(Strings.search_field)} onChange={e => setQuery(e.target.value)} value={query} />
       </div>
       <div className={styles.fieldListWrapper}>
-        {
-          searchedColumns.length ? (
-            <div className={styles.fieldList}>
-              {
-                searchedColumns.map(column => <SelectedFieldItem fieldId={column.fieldId} key={column.fieldId} />)
-              }
-            </div>
-          ) :
-            <div className={styles.noResult}>
-              {t(Strings.no_search_result)}
-            </div>
-        }
+        {searchedColumns.length ? (
+          <div className={styles.fieldList}>
+            {searchedColumns.map(column => (
+              <SelectedFieldItem fieldId={column.fieldId} key={column.fieldId} />
+            ))}
+          </div>
+        ) : (
+          <div className={styles.noResult}>{t(Strings.no_search_result)}</div>
+        )}
       </div>
     </>
   );
@@ -155,13 +151,9 @@ export const FieldSelectModal: React.FC<IFieldSelectModalProps> = (props: IField
           closable={false}
           onOk={onOkHandler}
           onCancel={onCancelHandler}
-          footer={
-            renderFooter()
-          }
+          footer={renderFooter()}
         >
-          <div className={styles.modelBody}>
-            {Content}
-          </div>
+          <div className={styles.modelBody}>{Content}</div>
         </BaseModal>
       </ComponentDisplay>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
@@ -170,17 +162,11 @@ export const FieldSelectModal: React.FC<IFieldSelectModalProps> = (props: IField
           onClose={onCancelHandler}
           title={t(Strings.field_select_modal_title)}
           height="90%"
-          footer={(
-            <Button
-              color="primary"
-              size="large"
-              block
-              onClick={onOkHandler}
-              disabled={!collection.length}
-            >
+          footer={
+            <Button color="primary" size="large" block onClick={onOkHandler} disabled={!collection.length}>
               {t(Strings.submit)}
             </Button>
-          )}
+          }
         >
           <div className={styles.flowBox}>
             {Content}

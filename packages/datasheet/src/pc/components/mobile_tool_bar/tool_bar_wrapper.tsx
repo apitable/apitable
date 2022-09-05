@@ -13,19 +13,20 @@ import { useNetwork } from 'pc/hooks/use_network';
 import { ResourceType, Selectors, ViewType } from '@vikadata/core';
 import { useSelector } from 'react-redux';
 import { Find } from './find';
-import { ScreenSize } from '../common/component_display/component_display';
+import { ScreenSize } from '../common/component_display';
 import { WidgetTool } from './widget_tool/widget_tool';
 
 export interface IToolBarWrapperProps {
-  hideToolBar?: boolean
+  hideToolBar?: boolean;
 }
 
 export const ToolBarWrapper: React.FC<IToolBarWrapperProps> = ({ hideToolBar }) => {
   const { setSideBarVisible } = useSideBarVisible();
   const [viewMenuVisible, setViewMenuVisible] = useState(false);
   const { datasheetId, mirrorId } = useSelector(state => state.pageParams);
-  const networkParams: [boolean, string, ResourceType] = mirrorId ? [true, mirrorId!, ResourceType.Mirror] :
-    [true, datasheetId!, ResourceType.Datasheet];
+  const networkParams: [boolean, string, ResourceType] = mirrorId
+    ? [true, mirrorId!, ResourceType.Mirror]
+    : [true, datasheetId!, ResourceType.Datasheet];
   useNetwork(...networkParams);
   const colors = useThemeColors();
   const hideViewList = Boolean(mirrorId);
@@ -36,23 +37,18 @@ export const ToolBarWrapper: React.FC<IToolBarWrapperProps> = ({ hideToolBar }) 
   return (
     <>
       <div className={styles.mobileToolBar}>
-        <div
-          onClick={() => setSideBarVisible(true)}
-          className={styles.side}
-        >
+        <div onClick={() => setSideBarVisible(true)} className={styles.side}>
           <IconSide width={20} height={20} fill={colors.black[50]} />
         </div>
-        {
-          !hideToolBar && <Toolbar />
-        }
+        {!hideToolBar && <Toolbar />}
         <div className={styles.toolRight}>
           {!(isCalendarView && isMobile) && <Find datasheetId={datasheetId!} />}
           <MoreTool />
           <WidgetTool />
         </div>
       </div>
-      {
-        !hideViewList && <div className={styles.viewToolsWrapper}>
+      {!hideViewList && (
+        <div className={styles.viewToolsWrapper}>
           <div className={styles.menuOpenContainer} onClick={() => setViewMenuVisible(true)}>
             <div className={styles.menuIconWrapper}>
               <IconViewList width={16} height={16} fill={colors.secondLevelText} />
@@ -61,8 +57,7 @@ export const ToolBarWrapper: React.FC<IToolBarWrapperProps> = ({ hideToolBar }) 
           <ViewMenu visible={viewMenuVisible} onClose={() => setViewMenuVisible(false)} />
           <ViewSwitcherHorizontal />
         </div>
-      }
-
+      )}
     </>
   );
 };

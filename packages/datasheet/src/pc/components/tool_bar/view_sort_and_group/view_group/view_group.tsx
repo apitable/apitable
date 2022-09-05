@@ -8,7 +8,7 @@ import { SyncViewTip } from '../../sync_view_tip';
 import { CommonViewSet } from '../common_view_set';
 import styles from '../style.module.less';
 import { ViewFieldOptions } from '../view_field_options';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { PopUpTitle } from 'pc/components/common';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { resourceService } from 'pc/resource_service';
@@ -22,7 +22,7 @@ interface IViewSetting {
 const MIN_HEIGHT = 120;
 const MAX_HEIGHT = 340;
 
-export const ViewGroup: React.FC<IViewSetting> = (props) => {
+export const ViewGroup: React.FC<IViewSetting> = props => {
   const { triggerInfo } = props;
   const activeViewGroupInfo = useSelector(state => Selectors.getActiveViewGroupInfo(state)); // store 总存储的数据
   const activityView = useSelector(state => Selectors.getCurrentView(state))!;
@@ -37,33 +37,41 @@ export const ViewGroup: React.FC<IViewSetting> = (props) => {
 
   const activityViewId = activityView.id;
   const exitFieldIds = activeViewGroupInfo.map(item => item.fieldId);
-  const submitGroup = useCallback((data: IGroupInfo | null) => {
-    executeCommandWithMirror(() => {
-      resourceService.instance!.commandManager.execute({
-        cmd: CollaCommandName.SetGroup,
-        viewId: activityViewId,
-        data: data || undefined,
-      });
-    }, {
-      groupInfo: data || undefined,
-    });
-  }, [activityViewId]);
+  const submitGroup = useCallback(
+    (data: IGroupInfo | null) => {
+      executeCommandWithMirror(
+        () => {
+          resourceService.instance!.commandManager.execute({
+            cmd: CollaCommandName.SetGroup,
+            viewId: activityViewId,
+            data: data || undefined,
+          });
+        },
+        {
+          groupInfo: data || undefined,
+        },
+      );
+    },
+    [activityViewId],
+  );
   // 相册仅支持一级分组
-  const fieldSelectVisible = [ViewType.Gallery].includes(activityView.type) ?
-    !activeViewGroupInfo.length :
-    (activeViewGroupInfo && activeViewGroupInfo.length < 3);
+  const fieldSelectVisible = [ViewType.Gallery].includes(activityView.type)
+    ? !activeViewGroupInfo.length
+    : activeViewGroupInfo && activeViewGroupInfo.length < 3;
 
   function setGroupField(index: number, fieldId: string) {
-    submitGroup(produce(activeViewGroupInfo, draft => {
-      if (!exitFieldIds.length) {
-        // 第一次添加
-        draft.push({ fieldId, desc: false });
-      } else {
-        // 第二次更新，刷新数据
-        draft[index] = { fieldId, desc: false };
-      }
-      return draft;
-    }));
+    submitGroup(
+      produce(activeViewGroupInfo, draft => {
+        if (!exitFieldIds.length) {
+          // 第一次添加
+          draft.push({ fieldId, desc: false });
+        } else {
+          // 第二次更新，刷新数据
+          draft[index] = { fieldId, desc: false };
+        }
+        return draft;
+      }),
+    );
   }
 
   // 拖动结束之后修改顺序
@@ -73,10 +81,12 @@ export const ViewGroup: React.FC<IViewSetting> = (props) => {
       if (!destination) {
         return;
       }
-      submitGroup(produce(activeViewGroupInfo, draft => {
-        draft.splice(destination.index, 0, draft.splice(source.index, 1)[0]);
-        return draft;
-      }));
+      submitGroup(
+        produce(activeViewGroupInfo, draft => {
+          draft.splice(destination.index, 0, draft.splice(source.index, 1)[0]);
+          return draft;
+        }),
+      );
     },
     [submitGroup, activeViewGroupInfo],
   );
@@ -120,8 +130,7 @@ export const ViewGroup: React.FC<IViewSetting> = (props) => {
           deleteItem={deleteItem}
         />
       </main>
-      {
-        fieldSelectVisible &&
+      {fieldSelectVisible && (
         <div className={styles.selectField}>
           <ViewFieldOptions
             isAddNewOption
@@ -130,7 +139,7 @@ export const ViewGroup: React.FC<IViewSetting> = (props) => {
             existFieldIds={exitFieldIds}
           />
         </div>
-      }
+      )}
     </div>
   );
 };

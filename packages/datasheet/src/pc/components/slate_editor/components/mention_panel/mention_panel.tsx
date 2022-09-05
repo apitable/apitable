@@ -16,7 +16,7 @@ import { IVikaEditor } from '../../interface/editor';
 import styles from './mention.module.less';
 import { useDebounceFn } from 'ahooks';
 import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 
 export const MentionPanel = () => {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -33,28 +33,31 @@ export const MentionPanel = () => {
   const [index, setIndex] = useState(0);
   const { screenIsAtLeast } = useResponsive();
 
-  const setPanelVisibleAndPosition = useCallback((position?: { top: number; left: number }) => {
-    const el = wrapRef.current;
-    if (!el) {
-      return;
-    }
-    if (position && screenIsAtLeast(ScreenSize.sm)) {
-      editor.hasMentionPanel = true;
-      visibleRef.current = true;
-      el.style.opacity = '1';
-      el.style.top = `${position.top}px`;
-      el.style.left = `${position.left}px`;
-    } else {
-      el.removeAttribute('style');
-      visibleRef.current = false;
-      editor.hasMentionPanel = false;
-    }
-  }, [editor, screenIsAtLeast]);
+  const setPanelVisibleAndPosition = useCallback(
+    (position?: { top: number; left: number }) => {
+      const el = wrapRef.current;
+      if (!el) {
+        return;
+      }
+      if (position && screenIsAtLeast(ScreenSize.sm)) {
+        editor.hasMentionPanel = true;
+        visibleRef.current = true;
+        el.style.opacity = '1';
+        el.style.top = `${position.top}px`;
+        el.style.left = `${position.left}px`;
+      } else {
+        el.removeAttribute('style');
+        visibleRef.current = false;
+        editor.hasMentionPanel = false;
+      }
+    },
+    [editor, screenIsAtLeast],
+  );
 
   const getMembers = useCallback((keyword = '') => {
     setLoading(true);
     Api.loadOrSearch({ keyword })
-      .then((res) => {
+      .then(res => {
         setMembers(res.data?.data ?? []);
       })
       .finally(() => {
@@ -62,30 +65,39 @@ export const MentionPanel = () => {
       });
   }, []);
 
-  const { run: searchTextChange } = useDebounceFn((keyword: string) => {
-    setIndex(0);
-    getMembers(keyword);
-    searchTextRef.current = keyword;
-  }, { wait: 200 });
+  const { run: searchTextChange } = useDebounceFn(
+    (keyword: string) => {
+      setIndex(0);
+      getMembers(keyword);
+      searchTextRef.current = keyword;
+    },
+    { wait: 200 },
+  );
 
-  const insertMention = useCallback((mentionData) => {
-    const selection = getValidSelection(editor);
-    Transforms.select(editor, selection);
-    // 需要多删除一个@字符
-    Transforms.delete(editor, { distance: searchTextRef.current.length + 1, reverse: true, unit: 'character' });
-    // 在后面多插入一个空格
-    const mention = GENERATOR.mention({ data: mentionData });
-    Transforms.insertFragment(editor, [mention, { text: ' ' }]);
-  }, [editor]);
+  const insertMention = useCallback(
+    mentionData => {
+      const selection = getValidSelection(editor);
+      Transforms.select(editor, selection);
+      // 需要多删除一个@字符
+      Transforms.delete(editor, { distance: searchTextRef.current.length + 1, reverse: true, unit: 'character' });
+      // 在后面多插入一个空格
+      const mention = GENERATOR.mention({ data: mentionData });
+      Transforms.insertFragment(editor, [mention, { text: ' ' }]);
+    },
+    [editor],
+  );
 
-  const handleMemberItemClick = useCallback((data) => {
-    const memberId = data && data[0];
-    const member = members.find((item) => item.unitId === memberId);
-    if (member) {
-      insertMention(member);
-    }
-    setPanelVisibleAndPosition();
-  }, [members, insertMention, setPanelVisibleAndPosition]);
+  const handleMemberItemClick = useCallback(
+    data => {
+      const memberId = data && data[0];
+      const member = members.find(item => item.unitId === memberId);
+      if (member) {
+        insertMention(member);
+      }
+      setPanelVisibleAndPosition();
+    },
+    [members, insertMention, setPanelVisibleAndPosition],
+  );
 
   const handleOk = useCallback(() => {
     const member = members[index];
@@ -95,20 +107,22 @@ export const MentionPanel = () => {
     setPanelVisibleAndPosition();
   }, [index, members, insertMention, setPanelVisibleAndPosition]);
 
-  const handleChangeIndex = useCallback((isAdd: boolean) => {
-    const length = members.length;
-    if (length < 2) {
-      return;
-    }
-    let next = index + (isAdd ? 1 : -1);
-    if (next < 0) {
-      next = length - 1;
-    } else if (next === length) {
-      next = 0;
-    }
-    setIndex(next);
-
-  }, [index, members.length]);
+  const handleChangeIndex = useCallback(
+    (isAdd: boolean) => {
+      const length = members.length;
+      if (length < 2) {
+        return;
+      }
+      let next = index + (isAdd ? 1 : -1);
+      if (next < 0) {
+        next = length - 1;
+      } else if (next === length) {
+        next = 0;
+      }
+      setIndex(next);
+    },
+    [index, members.length],
+  );
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -120,7 +134,7 @@ export const MentionPanel = () => {
             handleChangeIndex(false);
             break;
           }
-  
+
           // down
           case 'ArrowDown': {
             e.preventDefault();
@@ -177,7 +191,7 @@ export const MentionPanel = () => {
       visibleRef.current = false;
       return;
     }
-    
+
     const domRange = ReactEditor.toDOMRange(editor, selection);
     const rect = domRange?.getBoundingClientRect();
     if (rect && rect.x === 0 && rect.y === 0 && rect.width === 0) {
@@ -187,19 +201,20 @@ export const MentionPanel = () => {
     const position = getValidPopupPosition({
       anchor: rect,
       popup: el.getBoundingClientRect(),
-      offset: { x: 0, y: rect.height }
+      offset: { x: 0, y: rect.height },
     });
     setPanelVisibleAndPosition(position);
   }, [editor, selection, searchTextChange, setPanelVisibleAndPosition]);
 
-  return <Portal zIndex={Z_INDEX.HOVERING_TOOLBAR}>
-    <div className={styles.wrap} ref={wrapRef}>
-      {
-        loading
-          ? <div className={styles.loading}>
+  return (
+    <Portal zIndex={Z_INDEX.HOVERING_TOOLBAR}>
+      <div className={styles.wrap} ref={wrapRef}>
+        {loading ? (
+          <div className={styles.loading}>
             <Spin size="small" indicator={<LoadingOutlined />} />
           </div>
-          : <MemberOptionList
+        ) : (
+          <MemberOptionList
             listData={members}
             showMoreTipButton={false}
             uniqId="unitId"
@@ -211,7 +226,8 @@ export const MentionPanel = () => {
             activeIndex={index}
             existValues={[]}
           />
-      }
-    </div>
-  </Portal>;
+        )}
+      </div>
+    </Portal>
+  );
 };

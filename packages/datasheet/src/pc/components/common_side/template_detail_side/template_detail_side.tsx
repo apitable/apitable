@@ -1,7 +1,7 @@
 import { ConfigConstant, integrateCdnHost, Navigation, Settings, Strings, t, TEMPLATE_CENTER_ID, isIdassPrivateDeployment } from '@vikadata/core';
 import classNames from 'classnames';
 import { Avatar, AvatarSize, AvatarType, Message, Tooltip } from 'pc/components/common';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { useNavigation } from 'pc/components/route_manager/use_navigation';
 import { useSideBarVisible, useSpaceInfo } from 'pc/hooks';
 import { copy2clipBoard } from 'pc/utils';

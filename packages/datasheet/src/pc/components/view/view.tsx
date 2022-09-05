@@ -14,7 +14,7 @@ import { useEffect, useMemo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { CalendarView } from '../calendar_view';
-import { ComponentDisplay, ScreenSize } from '../common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { expandRecordIdNavigate } from '../expand_record';
 import { GalleryView } from '../gallery_view';
 import { GanttView } from '../gantt_view';
@@ -28,26 +28,23 @@ import styles from './style.module.less';
 export const DATASHEET_VIEW_CONTAINER_ID = 'DATASHEET_VIEW_CONTAINER_ID';
 export const View: React.FC = () => {
   const colors = useThemeColors();
-  const { currentView, rows, linearRows } = useSelector(
-    (state: IReduxState) => {
-      const currentView = Selectors.getCurrentView(state)!;
-      return {
-        rows: Selectors.getVisibleRows(state),
-        linearRows: Selectors.getLinearRows(state),
-        currentView,
-      };
-    },
-    shallowEqual
-  );
+  const { currentView, rows, linearRows } = useSelector((state: IReduxState) => {
+    const currentView = Selectors.getCurrentView(state)!;
+    return {
+      rows: Selectors.getVisibleRows(state),
+      linearRows: Selectors.getLinearRows(state),
+      currentView,
+    };
+  }, shallowEqual);
   const { screenIsAtMost } = useResponsive();
   const query = useQuery();
   const activeRecordId = query.get('activeRecordId');
   const views = useSelector(Selectors.getViewsList);
-  const { datasheetId, mirrorId, shareId, templateId } = useSelector((state) => {
+  const { datasheetId, mirrorId, shareId, templateId } = useSelector(state => {
     const { datasheetId, mirrorId, shareId, templateId } = state.pageParams;
     return { datasheetId, mirrorId, shareId, templateId };
   }, shallowEqual);
-  const isSideRecordOpen = useSelector((state) => state.space.isSideRecordOpen);
+  const isSideRecordOpen = useSelector(state => state.space.isSideRecordOpen);
   const router = useRouter();
 
   useEffect(() => {
@@ -101,7 +98,7 @@ export const View: React.FC = () => {
         position: 'relative',
         padding: isMobile ? '0' : '',
         height: '100%',
-        background: (currentView.type === ViewType.Kanban) ? colors.defaultBg : '',
+        background: currentView.type === ViewType.Kanban ? colors.defaultBg : '',
       }}
     >
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
@@ -113,75 +110,26 @@ export const View: React.FC = () => {
             switch (currentView.type) {
               case ViewType.Grid: {
                 if (isMobile) {
-                  return (
-                    <MobileGrid
-                      width={width}
-                      height={height - 40}
-                    />
-                  );
+                  return <MobileGrid width={width} height={height - 40} />;
                 }
                 return useKonva ? (
-                  <KonvaGridView
-                    width={width}
-                    height={height}
-                  />
+                  <KonvaGridView width={width} height={height} />
                 ) : (
-                  <GridViewContainer
-                    linearRows={linearRows}
-                    rows={rows}
-                    rowCount={linearRows.length}
-                    height={height}
-                    width={width}
-                  />
+                  <GridViewContainer linearRows={linearRows} rows={rows} rowCount={linearRows.length} height={height} width={width} />
                 );
-
               }
               case ViewType.Gallery:
-                return (
-                  <GalleryView
-                    height={height}
-                    width={width}
-                  />
-                );
+                return <GalleryView height={height} width={width} />;
               case ViewType.Calendar:
-                return (
-                  <CalendarView
-                    height={height}
-                    width={width}
-                  />
-                );
+                return <CalendarView height={height} width={width} />;
               case ViewType.Kanban:
-                return (
-                  <KanbanView
-                    height={height}
-                    width={width}
-                  />
-                );
+                return <KanbanView height={height} width={width} />;
               case ViewType.Gantt:
-                return (
-                  <GanttView
-                    width={width}
-                    height={height}
-                  />
-                );
+                return <GanttView width={width} height={height} />;
               case ViewType.OrgChart:
-                return (
-                  <OrgChartView
-                    width={width}
-                    height={height - (isMobile ? 40 : 0)}
-                    isMobile={isMobile}
-                  />
-                );
+                return <OrgChartView width={width} height={height - (isMobile ? 40 : 0)} isMobile={isMobile} />;
               default:
-                return (
-                  <GridViewContainer
-                    linearRows={linearRows}
-                    rows={rows}
-                    rowCount={linearRows.length}
-                    height={height}
-                    width={width}
-                  />
-                );
+                return <GridViewContainer linearRows={linearRows} rows={rows} rowCount={linearRows.length} height={height} width={width} />;
             }
           }}
         </AutoSizer>
@@ -189,42 +137,53 @@ export const View: React.FC = () => {
 
       <ContextMenu
         menuId={ConfigConstant.ContextMenuType.EXPAND_RECORD_FIELD}
-        overlay={flatContextData([
-          [{
-            icon: <EditOutlined color={colors.thirdLevelText} />,
-            text: t(Strings.modify_field),
-            hidden: ({ props }) => !props?.onEdit,
-            onClick: ({ props }) => props?.onEdit && props.onEdit(),
-          }, {
-            icon: <EditDescribeOutlined color={colors.thirdLevelText} />,
-            text: t(Strings.editing_field_desc),
-            onClick: ({ props }) => props?.onEditDesc && props.onEditDesc(),
-          }, {
-            icon: <ArrowUpOutlined color={colors.thirdLevelText} />,
-            text: t(Strings.insert_field_above),
-            disabled: ({ props }) => !props.onInsertAbove,
-            onClick: ({ props }) => props?.onInsertAbove && props.onInsertAbove(),
-          }, {
-            icon: <ArrowDownOutlined color={colors.thirdLevelText} />,
-            text: t(Strings.insert_field_below),
-            onClick: ({ props }) => props?.onInsertBelow && props.onInsertBelow(),
-          }, {
-            icon: <CopyOutlined color={colors.thirdLevelText} />,
-            text: t(Strings.duplicate_field),
-            hidden: ({ props }) => !props?.onCopyField,
-            onClick: ({ props }) => props?.onCopyField && props.onCopyField(),
-          }, {
-            icon: <HideFilled color={colors.thirdLevelText} />,
-            text: t(Strings.hide_fields),
-            hidden: ({ props }) => !props?.onHiddenField,
-            onClick: ({ props }) => props?.onHiddenField && props.onHiddenField(),
-          }, {
-            icon: <DeleteOutlined color={colors.thirdLevelText} />,
-            text: t(Strings.delete_field),
-            hidden: ({ props }) => !props?.onDeleteField,
-            onClick: ({ props }) => props?.onDeleteField && props.onDeleteField(),
-          }]
-        ], true)}
+        overlay={flatContextData(
+          [
+            [
+              {
+                icon: <EditOutlined color={colors.thirdLevelText} />,
+                text: t(Strings.modify_field),
+                hidden: ({ props }) => !props?.onEdit,
+                onClick: ({ props }) => props?.onEdit && props.onEdit(),
+              },
+              {
+                icon: <EditDescribeOutlined color={colors.thirdLevelText} />,
+                text: t(Strings.editing_field_desc),
+                onClick: ({ props }) => props?.onEditDesc && props.onEditDesc(),
+              },
+              {
+                icon: <ArrowUpOutlined color={colors.thirdLevelText} />,
+                text: t(Strings.insert_field_above),
+                disabled: ({ props }) => !props.onInsertAbove,
+                onClick: ({ props }) => props?.onInsertAbove && props.onInsertAbove(),
+              },
+              {
+                icon: <ArrowDownOutlined color={colors.thirdLevelText} />,
+                text: t(Strings.insert_field_below),
+                onClick: ({ props }) => props?.onInsertBelow && props.onInsertBelow(),
+              },
+              {
+                icon: <CopyOutlined color={colors.thirdLevelText} />,
+                text: t(Strings.duplicate_field),
+                hidden: ({ props }) => !props?.onCopyField,
+                onClick: ({ props }) => props?.onCopyField && props.onCopyField(),
+              },
+              {
+                icon: <HideFilled color={colors.thirdLevelText} />,
+                text: t(Strings.hide_fields),
+                hidden: ({ props }) => !props?.onHiddenField,
+                onClick: ({ props }) => props?.onHiddenField && props.onHiddenField(),
+              },
+              {
+                icon: <DeleteOutlined color={colors.thirdLevelText} />,
+                text: t(Strings.delete_field),
+                hidden: ({ props }) => !props?.onDeleteField,
+                onClick: ({ props }) => props?.onDeleteField && props.onDeleteField(),
+              },
+            ],
+          ],
+          true,
+        )}
       />
     </div>
   );

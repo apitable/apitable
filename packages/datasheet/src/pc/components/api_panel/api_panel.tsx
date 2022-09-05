@@ -9,7 +9,8 @@ import IconDelete from 'static/icon/common/common_icon_close_small.svg';
 import { Message } from '../common';
 import { InlineNodeName } from '../common/inline_node_name';
 import { AccountCenterModal } from '../navigation/account_center_modal';
-import { CodeLanguage, CodeType, FieldCode } from './field_codes/field_codes';
+import { FieldCode } from './field_codes/field_codes';
+import { CodeLanguage, CodeType } from './field_codes/enum';
 import { FieldDocs } from './field_docs';
 import styles from './styles.module.less';
 
@@ -81,21 +82,10 @@ export const ApiPanel: React.FC = () => {
         </Button>
       </h1>
       <h2 className={styles.panelName}>
-        <InlineNodeName
-          nodeId={datasheetId}
-          nodeName={datasheet?.name}
-          nodeIcon={datasheet?.icon}
-          withIcon
-        />
+        <InlineNodeName nodeId={datasheetId} nodeName={datasheet?.name} nodeIcon={datasheet?.icon} withIcon />
       </h2>
 
-      <IconDelete
-        className={styles.iconDelete}
-        onClick={() => dispatch(StoreActions.toggleApiPanel())}
-        width={24}
-        height={24}
-        fill="white"
-      />
+      <IconDelete className={styles.iconDelete} onClick={() => dispatch(StoreActions.toggleApiPanel())} width={24} height={24} fill="white" />
 
       <div className={styles.operationArea}>
         <div className={styles.switchApiToken}>

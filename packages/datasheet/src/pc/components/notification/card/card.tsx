@@ -10,17 +10,10 @@ import { useRequest } from 'pc/hooks';
 
 import classNames from 'classnames';
 import { AnimationItem } from 'lottie-web/index';
-import {
-  canJumpWhenClickCard,
-  getNoticeUrlParams,
-  isAskForJoiningMsg,
-  NotifyType,
-  renderNoticeBody,
-  commentContentFormat
-} from './utils';
+import { canJumpWhenClickCard, getNoticeUrlParams, isAskForJoiningMsg, NotifyType, renderNoticeBody, commentContentFormat } from './utils';
 import { timeFormatter } from 'pc/utils';
 
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { NoticeTypesConstant } from '../utils';
 import { navigationToConfigUrl } from '../publish';
 import { Method, navigationToUrl } from 'pc/components/route_manager/use_navigation';
@@ -57,7 +50,7 @@ export const Card: FC<ICard> = ({ data, isProcessed }) => {
       Modal.warning({
         title: t(Strings.please_note),
         content: message,
-        onOk: () => toRead(data)
+        onOk: () => toRead(data),
       });
     },
   });
@@ -104,7 +97,7 @@ export const Card: FC<ICard> = ({ data, isProcessed }) => {
         viewId: viewId,
         activeRecordId: recordId,
         recordIds: recordIds,
-        datasheetId: nodeId!
+        datasheetId: nodeId!,
       });
       !isProcessed && transferNoticeToRead([data]);
       return;
@@ -132,7 +125,7 @@ export const Card: FC<ICard> = ({ data, isProcessed }) => {
     e.preventDefault();
   };
 
-  const BottomText: FC<{ type: string, notifyBody: INotifyBody }> = ({ type, notifyBody }): React.ReactElement => {
+  const BottomText: FC<{ type: string; notifyBody: INotifyBody }> = ({ type, notifyBody }): React.ReactElement => {
     let text = '';
     switch (type) {
       case NoticeTypesConstant.system: {
@@ -149,7 +142,7 @@ export const Card: FC<ICard> = ({ data, isProcessed }) => {
         break;
       }
     }
-    return (<div className={styles.text}>{text}</div>);
+    return <div className={styles.text}>{text}</div>;
   };
 
   const rejectJoinSpace = e => {
@@ -175,85 +168,80 @@ export const Card: FC<ICard> = ({ data, isProcessed }) => {
   const MesQuickProcessInMobile = (): React.ReactElement => {
     return (
       <ButtonGroup className={styles.quickProcessWrap} withSeparate>
-        <Button size="small" onClick={rejectJoinSpace}>{t(Strings.reject)}</Button>
-        <Button size="small" onClick={agreeJoinSpace}>{t(Strings.agree)}</Button>
+        <Button size="small" onClick={rejectJoinSpace}>
+          {t(Strings.reject)}
+        </Button>
+        <Button size="small" onClick={agreeJoinSpace}>
+          {t(Strings.agree)}
+        </Button>
       </ButtonGroup>
     );
   };
   const showCommentContent = data.notifyBody.extras?.commentContent;
   const getCardDataTestId = () => {
     switch (data.notifyType) {
-      case NotifyType.Record: return NOTIFICATION_ITEM_RECORD;
-      default: return '';
+      case NotifyType.Record:
+        return NOTIFICATION_ITEM_RECORD;
+      default:
+        return '';
     }
   };
 
   return (
-    <QueueAnim
-      type={'scale'}
-      ease={'easeInOutQuart'}
-      appear={false}
-      key={'anim' + data.id}
-    >
-      {
-        show ?
-          (
-            <div
-              data-test-id={getCardDataTestId()}
-              key={data.id}
-              id={data.id}
-              className={classNames(styles.msgCard, { [styles.canJump]: canJump || toastUrl })}
-              onClick={() => {
-                if (mouseTimerRef.current + 300 > new Date().getTime()) {
-                  cardClick(data);
-                }
-              }}
-              onMouseDown={() => mouseTimerRef.current = new Date().getTime()}
-            >
-              <div className={styles.content}>
-                <div className={styles.cardTop}>
-                  <div className={classnames(
-                    styles.msgContent,
-                    showCommentContent && styles.msgContentComment
-                  )}>
-                    {notifyType === NoticeTypesConstant.system && <OfficialAvatar />}
-                    {renderNoticeBody(data, { pureString: false, spaceInfo })}
-                  </div>
-                  <div className={classnames(
-                    styles.cardTopRight,
-                    showCommentContent && styles.cardTopRightComment
-                  )} style={{ width: getCardTopRightWidth() }}>
-                    <HandleMsg
-                      onProcess={handleWrapClick}
-                      onAgreeJoinSpace={agreeJoinSpace}
-                      onRejectJoinSpace={rejectJoinSpace}
-                      isProcessed={isProcessed}
-                      data={data}
-                    />
-                  </div>
-                </div>
-                {showCommentContent && (
-                  <div className={styles.commentContentWrap}>
-                    <span>{commentContentFormat(data.notifyBody.extras?.commentContent, spaceInfo)}</span>
-                  </div>
-                )}
-                <div className={styles.cardBottom}>
-                  <div className={styles.bottomLeft}>
-                    <BottomMsgAvatar
-                      title={data.notifyBody.space?.spaceName}
-                      src={data.notifyBody.space?.logo}
-                      id={data.notifyBody.space?.spaceId}
-                      notifyType={notifyType}
-                    />
-                    <BottomText type={notifyType} notifyBody={data.notifyBody} />
-                  </div>
-                  <div className={styles.time}>{timeFormatter(data.createdAt)}</div>
-                </div>
+    <QueueAnim type={'scale'} ease={'easeInOutQuart'} appear={false} key={'anim' + data.id}>
+      {show ? (
+        <div
+          data-test-id={getCardDataTestId()}
+          key={data.id}
+          id={data.id}
+          className={classNames(styles.msgCard, { [styles.canJump]: canJump || toastUrl })}
+          onClick={() => {
+            if (mouseTimerRef.current + 300 > new Date().getTime()) {
+              cardClick(data);
+            }
+          }}
+          onMouseDown={() => (mouseTimerRef.current = new Date().getTime())}
+        >
+          <div className={styles.content}>
+            <div className={styles.cardTop}>
+              <div className={classnames(styles.msgContent, showCommentContent && styles.msgContentComment)}>
+                {notifyType === NoticeTypesConstant.system && <OfficialAvatar />}
+                {renderNoticeBody(data, { pureString: false, spaceInfo })}
               </div>
-              {isAskForJoining && !isProcessed && isMobile && <MesQuickProcessInMobile />}
+              <div
+                className={classnames(styles.cardTopRight, showCommentContent && styles.cardTopRightComment)}
+                style={{ width: getCardTopRightWidth() }}
+              >
+                <HandleMsg
+                  onProcess={handleWrapClick}
+                  onAgreeJoinSpace={agreeJoinSpace}
+                  onRejectJoinSpace={rejectJoinSpace}
+                  isProcessed={isProcessed}
+                  data={data}
+                />
+              </div>
             </div>
-          ) : null
-      }
+            {showCommentContent && (
+              <div className={styles.commentContentWrap}>
+                <span>{commentContentFormat(data.notifyBody.extras?.commentContent, spaceInfo)}</span>
+              </div>
+            )}
+            <div className={styles.cardBottom}>
+              <div className={styles.bottomLeft}>
+                <BottomMsgAvatar
+                  title={data.notifyBody.space?.spaceName}
+                  src={data.notifyBody.space?.logo}
+                  id={data.notifyBody.space?.spaceId}
+                  notifyType={notifyType}
+                />
+                <BottomText type={notifyType} notifyBody={data.notifyBody} />
+              </div>
+              <div className={styles.time}>{timeFormatter(data.createdAt)}</div>
+            </div>
+          </div>
+          {isAskForJoining && !isProcessed && isMobile && <MesQuickProcessInMobile />}
+        </div>
+      ) : null}
     </QueueAnim>
   );
 };

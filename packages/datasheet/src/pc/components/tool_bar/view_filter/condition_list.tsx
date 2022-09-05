@@ -1,12 +1,21 @@
 import { useState, useEffect, FC } from 'react';
 import {
-  ConfigConstant, FieldType, FilterConjunction as FilterConjunctionEnum, IFieldMap, IFilterInfo, ILookUpField, IViewColumn, Selectors, Strings, t,
+  ConfigConstant,
+  FieldType,
+  FilterConjunction as FilterConjunctionEnum,
+  IFieldMap,
+  IFilterInfo,
+  ILookUpField,
+  IViewColumn,
+  Selectors,
+  Strings,
+  t,
 } from '@vikadata/core';
 import { useSelector } from 'react-redux';
 import { Col, Row } from 'antd';
 import { IconButton, colorVars } from '@vikadata/components';
 import { checkComputeRef } from 'pc/components/multi_grid/field_setting';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { FilterConjunction } from './filter_conjunction/filter_conjunction';
 import { FilterFieldList } from './filter_field_list';
 import { FilterOperate } from './filter_operate';
@@ -76,42 +85,22 @@ const ConditionList: FC<IConditionList> = props => {
           conditionIndex: index,
           changeFilter,
           isCryptoField,
-          fieldNotFound
+          fieldNotFound,
         };
 
         return (
-          <div
-            key={item.conditionId}
-            className={styles.conditionItem}
-          >
+          <div key={item.conditionId} className={styles.conditionItem}>
             <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-              <FilterConjunction
-                conditionIndex={index}
-                conjunction={conjunction}
-                changeFilter={changeFilter}
-              />
-              <FilterFieldList
-                columns={columns}
-                fieldMap={fieldMap}
-                warnTextObj={warnTextObj}
-                {...publicProps}
-              />
-              {
-                (!isCryptoField && !fieldNotFound) ?
-                  <>
-                    <FilterOperate
-                      conditions={conditions}
-                      fieldMap={fieldMap}
-                      field={field}
-                      {...publicProps}
-                    />
-                    <FilterValue
-                      field={field}
-                      {...publicProps}
-                    />
-                  </> :
-                  <InvalidValue style={{ maxWidth: 298 }} content={fieldNotFound ? t(Strings.current_field_fail) : undefined} />
-              }
+              <FilterConjunction conditionIndex={index} conjunction={conjunction} changeFilter={changeFilter} />
+              <FilterFieldList columns={columns} fieldMap={fieldMap} warnTextObj={warnTextObj} {...publicProps} />
+              {!isCryptoField && !fieldNotFound ? (
+                <>
+                  <FilterOperate conditions={conditions} fieldMap={fieldMap} field={field} {...publicProps} />
+                  <FilterValue field={field} {...publicProps} />
+                </>
+              ) : (
+                <InvalidValue style={{ maxWidth: 298 }} content={fieldNotFound ? t(Strings.current_field_fail) : undefined} />
+              )}
               <IconButton
                 onClick={deleteFilter.bind(null, index)}
                 icon={() => <IconDelete width={15} height={15} fill={colorVars.thirdLevelText} />}
@@ -119,51 +108,34 @@ const ConditionList: FC<IConditionList> = props => {
             </ComponentDisplay>
 
             <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-              <FilterConjunction
-                conditionIndex={index}
-                conjunction={conjunction}
-                changeFilter={changeFilter}
-              />
+              <FilterConjunction conditionIndex={index} conjunction={conjunction} changeFilter={changeFilter} />
               <Row align="middle" style={{ width: '100%' }} gutter={[0, 8]}>
                 <Col span={22}>
                   <Row align="middle" style={{ width: '100%' }} gutter={[0, 8]}>
                     <Col span={16}>
-                      <FilterFieldList
-                        columns={columns}
-                        fieldMap={fieldMap}
-                        warnTextObj={warnTextObj}
-                        {...publicProps}
-                      />
+                      <FilterFieldList columns={columns} fieldMap={fieldMap} warnTextObj={warnTextObj} {...publicProps} />
                     </Col>
                     <Col span={8}>
-                      {
-                        (!isCryptoField && !fieldNotFound) ?
-                          <FilterOperate
-                            conditions={conditions}
-                            fieldMap={fieldMap}
-                            field={field}
-                            {...publicProps}
-                          /> :
-                          <InvalidValue style={{ maxWidth: 298 }} content={fieldNotFound ? t(Strings.current_field_fail) : undefined} />
-                      }
+                      {!isCryptoField && !fieldNotFound ? (
+                        <FilterOperate conditions={conditions} fieldMap={fieldMap} field={field} {...publicProps} />
+                      ) : (
+                        <InvalidValue style={{ maxWidth: 298 }} content={fieldNotFound ? t(Strings.current_field_fail) : undefined} />
+                      )}
                     </Col>
                   </Row>
-                  {
-                    (!isCryptoField && !fieldNotFound) && <Row align="middle" style={{ width: '100%' }}>
+                  {!isCryptoField && !fieldNotFound && (
+                    <Row align="middle" style={{ width: '100%' }}>
                       <Col span={24} style={{ paddingLeft: 1 }}>
-                        <FilterValue
-                          field={field}
-                          {...publicProps}
-                        />
+                        <FilterValue field={field} {...publicProps} />
                       </Col>
                     </Row>
-                  }
+                  )}
                 </Col>
                 <Col
                   span={2}
                   style={{
                     display: 'flex',
-                    justifyContent: 'flex-end'
+                    justifyContent: 'flex-end',
                   }}
                 >
                   <IconButton
@@ -172,7 +144,6 @@ const ConditionList: FC<IConditionList> = props => {
                   />
                 </Col>
               </Row>
-
             </ComponentDisplay>
           </div>
         );

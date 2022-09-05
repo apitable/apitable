@@ -4,7 +4,7 @@ import { CloseLargeOutlined } from '@vikadata/icons';
 import { useMount } from 'ahooks';
 import Image from 'next/image';
 import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { shallowEqual, useSelector } from 'react-redux';
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
@@ -24,48 +24,33 @@ const EmptyPanel = ({ onClosePanel }: { onClosePanel?: () => void }) => {
   useMount(() => {
     Player.doTrigger(Events.datasheet_wigdet_empty_panel_shown);
   });
-  return <div className={styles.emptyPanel}>
-    {
-      onClosePanel &&
-      <IconButton
-        onClick={onClosePanel}
-        className={styles.closeIcon}
-        icon={CloseLargeOutlined}
-      />
-    }
-    <span className={styles.ikon}>
-      <Image
-        src={integrateCdnHost(Settings.widget_empty.value)}
-        alt=""
-        width={240}
-        height={180}
-      />
-    </span>
+  return (
+    <div className={styles.emptyPanel}>
+      {onClosePanel && <IconButton onClick={onClosePanel} className={styles.closeIcon} icon={CloseLargeOutlined} />}
+      <span className={styles.ikon}>
+        <Image src={integrateCdnHost(Settings.widget_empty.value)} alt="" width={240} height={180} />
+      </span>
 
-    <p className={styles.desc}>
-      {t(isMobile ? Strings.is_empty_widget_panel_mobile : Strings.is_empty_widget_panel_pc)}
-    </p>
-    {!isMobile && <Button
-      size={'middle'}
-      color={'primary'}
-      className={styles.buttonWrapper}
-      prefixIcon={<IconAdd width={16} height={16} fill={'white'} />}
-      onClick={addNewPanel}
-      disabled={Boolean(linkId)}
-    >
-      {t(Strings.add_widget)}
-    </Button>}
-    <p className={styles.docTip}>
-      <a
-        href={t(Strings.intro_widget)}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{ display: 'inline-block' }}
-      >
-        {t(Strings.intro_widget_tips)}
-      </a>
-    </p>
-  </div>;
+      <p className={styles.desc}>{t(isMobile ? Strings.is_empty_widget_panel_mobile : Strings.is_empty_widget_panel_pc)}</p>
+      {!isMobile && (
+        <Button
+          size={'middle'}
+          color={'primary'}
+          className={styles.buttonWrapper}
+          prefixIcon={<IconAdd width={16} height={16} fill={'white'} />}
+          onClick={addNewPanel}
+          disabled={Boolean(linkId)}
+        >
+          {t(Strings.add_widget)}
+        </Button>
+      )}
+      <p className={styles.docTip}>
+        <a href={t(Strings.intro_widget)} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block' }}>
+          {t(Strings.intro_widget_tips)}
+        </a>
+      </p>
+    </div>
+  );
 };
 
 export const WidgetPanel = () => {
@@ -79,7 +64,7 @@ export const WidgetPanel = () => {
   const isEmptyPanel = !activeWidgetPanel;
   const isEmptyWidget = !(activeWidgetPanel && activeWidgetPanel.widgets.length);
   const { opening: isPanelOpening } = useSelector(state => {
-    return Selectors.getResourceWidgetPanelStatus(state, resourceId, resourceType) || {} as IWidgetPanelStatus;
+    return Selectors.getResourceWidgetPanelStatus(state, resourceId, resourceType) || ({} as IWidgetPanelStatus);
   });
   const onClosePanel = () => {
     ShortcutActionManager.trigger(ShortcutActionName.ToggleWidgetPanel);
@@ -92,26 +77,27 @@ export const WidgetPanel = () => {
   }
 
   if (netWorking?.loading) {
-    return <div className={styles.skeletonWrapper}>
-      <div className={styles.skeletonHeader}>
-        <Skeleton width="40px" height="40px" circle />
-        <Skeleton height="22px" />
+    return (
+      <div className={styles.skeletonWrapper}>
+        <div className={styles.skeletonHeader}>
+          <Skeleton width="40px" height="40px" circle />
+          <Skeleton height="22px" />
+        </div>
+        <Skeleton count={2} height="40px" className={styles.skeletonInput} />
       </div>
-      <Skeleton count={2} height="40px" className={styles.skeletonInput} />
-    </div>;
+    );
   }
 
-  return <div className={styles.widgetPanelContainer}>
-    {
-      isEmptyPanel ?
-        <EmptyPanel onClosePanel={onClosePanel} /> :
+  return (
+    <div className={styles.widgetPanelContainer}>
+      {isEmptyPanel ? (
+        <EmptyPanel onClosePanel={onClosePanel} />
+      ) : (
         <div className={styles.widgetPanel}>
           <WidgetPanelHeader onClosePanel={onClosePanel} />
-          {
-            isEmptyWidget ? <EmptyPanel /> :
-              <WidgetList />
-          }
+          {isEmptyWidget ? <EmptyPanel /> : <WidgetList />}
         </div>
-    }
-  </div>;
+      )}
+    </div>
+  );
 };
