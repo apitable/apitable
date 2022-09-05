@@ -9,8 +9,8 @@ import { Api, ConfigConstant, IInviteMemberList, INodeRoleMap, IReduxState, isEm
 import { Button, stopPropagation, Typography } from '@vikadata/components';
 import { InformationSmallOutlined, AddOutlined, ChevronDownOutlined, ChevronRightOutlined } from '@vikadata/icons';
 
-import { NodeChangeInfoType, useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
-import { execNoTraceVerification } from 'pc/utils';
+import { NodeChangeInfoType, useCatalogTreeRequest, useRequest, useResponsive/* , useSpaceRequest */ } from 'pc/hooks';
+import { execNoTraceVerification, initNoTraceVerification } from 'pc/utils';
 import { useInviteRequest } from 'pc/hooks/use_invite_request';
 import ComponentDisplay, { ScreenSize } from 'pc/components/common/component_display/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
@@ -23,6 +23,7 @@ import { PublicShareInviteLink } from './public_link';
 import { MembersDetail } from '../permission_settings/permission/members_detail';
 
 import styles from './style.module.less';
+import { useMount } from 'ahooks';
 
 export interface IShareContentProps {
   /** 被操作节点相关的信息 */
@@ -50,6 +51,10 @@ interface ISearchUnitMemberItem {
   uuid: string;
 }
 
+interface IInviteMembers {
+  unitIds: string[];
+}
+
 const ROOT_TEAM_ID = '0';
 
 export const ShareContent: FC<IShareContentProps> = ({ data }) => {
@@ -64,6 +69,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   const [footerTip, setFooterTip] = useState(false);
   const [inviteLink, setInviteLink] = useState<string>('');
   const [inviteAuthType, setInviteAuthType] = useState(ConfigConstant.permission.editor);
+  const [secondVerify, setSecondVerify] = useState<null | string>(null);
 
   const dispatch = useDispatch();
   const { screenIsAtMost } = useResponsive();
@@ -76,11 +82,13 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
       canEditInvite: permissions.manageable,
     };
   });
+  // const { checkEmailReq } = useSpaceRequest();
   const { getNodeRoleListReq } = useCatalogTreeRequest();
   const { generateLinkReq, linkListReq, sendInviteReq, fetchTeamAndMember } = useInviteRequest();
   const { run: getNodeRoleList, data: roleList } = useRequest<INodeRoleMap>(() => getNodeRoleListReq(data.nodeId));
   const { run: searchMember } = useRequest(fetchTeamAndMember, { manual: true });
   const { run: sendInvite } = useRequest(sendInviteReq, { manual: true });
+  // const { run: checkEmail } = useRequest(checkEmailReq, { manual: true });
 
   /**
    * 打开邀请成员的权限弹窗
@@ -95,7 +103,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   /**
    * 邀请成员搜索
    */
-  const handleSearch = async (e?: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = async(e?: React.ChangeEvent<HTMLInputElement>) => {
     const keyword = e ? e.target.value : '';
     const validEmail = isEmail(keyword);
     const result: ISearchUnitMemberItem[] = await searchMember(keyword, true);
@@ -212,34 +220,43 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
     if (extraMemberList.length === 0) {
       return;
     }
-    const waitInviteMembers: IInviteMemberList[] = [];
-    for (let i = 0; i < extraMemberList.length; i++) {
-      const member = extraMemberList[i];
-      // 成员不存在，但是却存在值，认为是站外邮箱
-      waitInviteMembers.push({ email: member.email, teamId: ROOT_TEAM_ID });
+
+    // 人机验证
+    if (secondVerify) {
+      setSecondVerify(null);
     }
+
+    const waitInviteMembers: IInviteMemberList[] = extraMemberList.map((v) => ({
+      email: v.email,
+      teamId: ROOT_TEAM_ID,
+    }));
     // 发送邀请邮件
-    const { success: inviteSuccess, data: inviteData } = await sendInvite(waitInviteMembers, data.nodeId);
+    const { success: inviteSuccess, data: inviteData } = await sendInvite(waitInviteMembers, data.nodeId, nvcVal);
     if (!inviteSuccess) {
       return;
     }
 
-    console.log(inviteData);
-
     // 添加权限
-    // const { data: roleData } = await Api.addRole(data.nodeId, [], inviteAuthType);
-    // const { success: roleSuccess, message: roleMsg } = roleData;
-    // if (!roleSuccess) {
-    //   Message.error({ content: roleMsg });
-    // }
+    const { data: roleData } = await Api.addRole(data.nodeId, (inviteData as IInviteMembers).unitIds, inviteAuthType);
+    const { success: roleSuccess, message: roleMsg } = roleData;
+    if (!roleSuccess) {
+      Message.error({ content: roleMsg });
+      return;
+    }
+    Message.success({ content: t(Strings.invite_success) });
   };
 
   /**
    * 添加邀请
    */
   const handleAddInvitePerson = () => {
-    handleAddInvite();
-    // window['nvc'] ? execNoTraceVerification(handleAddInvite) : handleAddInvite();
+    // TODO: 考虑是否添加此代码验证已邀请的邮箱
+    // const isExist = await checkEmail(inviteEmail);
+    // if (isExist) {
+    //   Message.error({ content: t(Strings.invite_email_already_exist) });
+    //   return;
+    // }
+    window['nvc'] ? execNoTraceVerification(handleAddInvite) : handleAddInvite();
   };
 
   /**
@@ -253,6 +270,15 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   const handleChangeInviteAuth = (option: IDropdownItem) => {
     setInviteAuthType(option.value);
   };
+  
+  useMount(() => {
+    initNoTraceVerification(setSecondVerify, ConfigConstant.CaptchaIds.LOGIN);
+  });
+
+  useEffect(() => {
+    secondVerify && extraMemberList.length > 0 && handleAddInvite(secondVerify);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [secondVerify]);
 
   useEffect(() => {
     if (socketData && socketData.type === NodeChangeInfoType.UpdateRole) {

@@ -80,8 +80,10 @@ export const useInviteRequest = () => {
   const sendInviteReq = (invite: IInviteMemberList[], nodeId?: string, nvcVal?: string) => {
     return Api.sendInvite(invite, nodeId, nvcVal).then(res => {
       const { success, message, code, data } = res.data;
-      Message.error({ content: message });
-      secondStepVerify(code);
+      if (!success) {
+        Message.error({ content: message });
+        secondStepVerify(code);
+      }
       return { success, data };
     });
   };
