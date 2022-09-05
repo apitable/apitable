@@ -19,7 +19,7 @@ import { useCallback, useContext, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Descendant } from 'slate';
 import { ActivityContext } from '../activity_context';
-import { IActivityPaneProps } from '../activity_pane';
+import { IActivityPaneProps } from '../interface';
 import { ReplyComment } from '../reply_comment';
 import styles from './style.module.less';
 

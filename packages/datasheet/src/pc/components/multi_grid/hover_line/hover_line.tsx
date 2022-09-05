@@ -1,24 +1,11 @@
 import { DATASHEET_ID, DropDirectionType, Selectors } from '@vikadata/core';
 import { useThemeColors } from '@vikadata/components';
-import {
-  CELL_CLASS, FIELD_DOT, FIELD_HEAD_CLASS, getElementDataset, getParentNodeByClass,
-  OPACITY_LINE_CLASS, OPERATE_HEAD_CLASS,
-} from 'pc/utils';
+import { CELL_CLASS, FIELD_DOT, FIELD_HEAD_CLASS, getElementDataset, getParentNodeByClass, OPACITY_LINE_CLASS, OPERATE_HEAD_CLASS } from 'pc/utils';
 import { useEffect, useMemo, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { IDragOption, IDragProps } from '../drag/drag';
-
-export interface IElementRectProps {
-  left: number;
-  right: number;
-  top: number;
-  bottom: number;
-  width: number;
-  height: number;
-  offsetX?: number;
-  offsetY?: number;
-}
+import { IElementRectProps, MoveType } from './interface';
+import { IDragOption, IDragProps } from '../drag/interface';
 
 interface IHoverLineOwnProps {
   isChangeColumnsWidth: boolean;
@@ -34,14 +21,17 @@ type IHoverLine = IHoverLineOwnProps & Pick<IDragProps, 'width' | 'height' | 'ro
 
 type IPosition = { x: number; y: number } | null;
 
-export enum MoveType {
-  Column = 'Column',
-  Row = 'Row'
-}
-
 export const HoverLine: React.FC<IHoverLine> = props => {
-  const { 
-    isChangeColumnsWidth, setDirection, dragOption: { overTargetId }, rowHeight, width, height, getFieldId, getRecordId, getElementRect 
+  const {
+    isChangeColumnsWidth,
+    setDirection,
+    dragOption: { overTargetId },
+    rowHeight,
+    width,
+    height,
+    getFieldId,
+    getRecordId,
+    getElementRect,
   } = props;
   const colors = useThemeColors();
   const dragTarget = useSelector(state => Selectors.getGridViewDragState(state).dragTarget);
@@ -54,10 +44,7 @@ export const HoverLine: React.FC<IHoverLine> = props => {
   function dragMoveForField(e: MouseEvent, element: HTMLElement) {
     const target = e.target as HTMLDivElement;
 
-    if (
-      target.classList.contains(FIELD_DOT) ||
-      getParentNodeByClass(target, FIELD_DOT)?.classList.contains(FIELD_DOT)
-    ) {
+    if (target.classList.contains(FIELD_DOT) || getParentNodeByClass(target, FIELD_DOT)?.classList.contains(FIELD_DOT)) {
       return;
     }
 
@@ -65,7 +52,9 @@ export const HoverLine: React.FC<IHoverLine> = props => {
     const info: any = getElementRect?.(e, MoveType.Column) || element.getBoundingClientRect();
     const overFieldId = getFieldId?.(e) || getElementDataset(element, 'fieldId');
 
-    if (overFieldId == null || primaryFieldId === overTargetId || opacityLine) { return; }
+    if (overFieldId == null || primaryFieldId === overTargetId || opacityLine) {
+      return;
+    }
 
     const isLayoutColumnLeft = (info?.offsetX || e.offsetX) <= Math.ceil(info.width / 2);
     setDirection(isLayoutColumnLeft ? DropDirectionType.BEFORE : DropDirectionType.AFTER);
@@ -79,7 +68,9 @@ export const HoverLine: React.FC<IHoverLine> = props => {
     const info: any = getElementRect?.(e, MoveType.Row) || element.getBoundingClientRect();
     const overRecordId = getRecordId?.(e) || getElementDataset(element, 'recordId');
 
-    if (overRecordId == null) { return; }
+    if (overRecordId == null) {
+      return;
+    }
 
     const isLayoutRowTop = (info?.offsetY || e.offsetY) <= Math.ceil(rowHeight / 2);
     setDirection(isLayoutRowTop ? DropDirectionType.BEFORE : DropDirectionType.AFTER);
@@ -109,7 +100,9 @@ export const HoverLine: React.FC<IHoverLine> = props => {
   }
 
   function changeColumnsWidth(e: MouseEvent) {
-    if (!isChangeColumnsWidth) { return; }
+    if (!isChangeColumnsWidth) {
+      return;
+    }
     setPosition({
       x: e.pageX,
       y: e.pageY,
@@ -153,7 +146,5 @@ export const HoverLine: React.FC<IHoverLine> = props => {
     style = { ...style, height: 2, width, top: position.y - containerRect.top, left: 0 };
   }
 
-  return (
-    <div style={style} />
-  );
+  return <div style={style} />;
 };

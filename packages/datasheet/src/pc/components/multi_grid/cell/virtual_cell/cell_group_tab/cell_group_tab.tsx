@@ -9,6 +9,7 @@ import { useShowKeepSortBorder } from '../../hooks';
 import { useIsGroupCollapsing } from '../../hooks/use_is_group_collapsing';
 import styles from '../../styles.module.less';
 import { GroupTab } from './group_tab/group_tab';
+import { GROUP_HEIGHT } from './constant';
 
 export function groupColor(level: number) {
   if (level === 1) {
@@ -19,8 +20,6 @@ export function groupColor(level: number) {
   }
   return [styles.groupBg80, styles.groupBg40, styles.groupBg];
 }
-
-export const GROUP_HEIGHT = 48;
 
 interface ICellGroupTab {
   actualColumnIndex: number;
@@ -39,7 +38,7 @@ export const CellGroupTab: React.FC<ICellGroupTab> = React.memo(props => {
   // const groupingCollapseMap = useSelector(state => Selectors.getGroupingCollapseMap(state));
   let width = parseInt(style.width as string, 10);
   if (actualColumnIndex === 0) {
-    width = width + (groupInfo.length) * GROUP_OFFSET;
+    width = width + groupInfo.length * GROUP_OFFSET;
   }
 
   const pathLength = row.depth + 1;
@@ -51,7 +50,7 @@ export const CellGroupTab: React.FC<ICellGroupTab> = React.memo(props => {
   const isCollapsing = useIsGroupCollapsing(row);
 
   function reviseWidth(width: number) {
-    if ((actualColumnIndex === 0) && groupInfo) {
+    if (actualColumnIndex === 0 && groupInfo) {
       width = width - pathLength * GROUP_OFFSET;
     }
     if (columnsLength > 1 && actualColumnIndex === columnsLength - 1 && groupInfo.length === 3) {
@@ -61,7 +60,6 @@ export const CellGroupTab: React.FC<ICellGroupTab> = React.memo(props => {
   }
 
   function getMainStyle() {
-
     function getBorderRight() {
       if (showKeepSortBorder && actualColumnIndex === columnsLength - 1) {
         return PRIMARY_COLOR_BORDER;
@@ -115,24 +113,19 @@ export const CellGroupTab: React.FC<ICellGroupTab> = React.memo(props => {
       }}
       className={classNames(
         actualColumnIndex === 0 ? styles['groupLevel' + pathLength] : styles.groupBase,
-        groupColor(groupInfo.length)[pathLength - 1]
+        groupColor(groupInfo.length)[pathLength - 1],
       )}
     >
       <div
         style={{
-          marginLeft: (actualColumnIndex === 0 && pathLength === 1) ? '0px' : '',
+          marginLeft: actualColumnIndex === 0 && pathLength === 1 ? '0px' : '',
           width: '100%',
           height: GROUP_HEIGHT,
         }}
         className={classNames(styles.groupTitle, GROUP_TITLE, actualColumnIndex === 0 ? styles.groupTitleLeft : '')}
         data-group-head-record-id={isEndGroupHead ? row.recordId : ''}
       >
-        <GroupTab
-          actualColumnIndex={actualColumnIndex}
-          row={row}
-          groupInfo={groupInfo}
-          isSort={isSort}
-        />
+        <GroupTab actualColumnIndex={actualColumnIndex} row={row} groupInfo={groupInfo} isSort={isSort} />
       </div>
     </div>
   );

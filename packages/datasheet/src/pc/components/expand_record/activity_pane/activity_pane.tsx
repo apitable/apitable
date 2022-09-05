@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { useLocalStorageState } from 'ahooks';
-import { Selectors, Strings, t, CollaCommandName, IComments, Settings } from '@vikadata/core';
+import { Selectors, Strings, t, CollaCommandName, Settings } from '@vikadata/core';
 
 import { CommentEditor } from './comment_editor';
 import { ActivityList } from './activity_list/activity_list';
@@ -11,12 +11,9 @@ import { Modal } from 'pc/components/common/mobile/modal';
 import IconDelete from 'static/icon/common/common_icon_delete.svg';
 import HelpIcon from 'static/icon/common/common_icon_information.svg';
 import IconArrow from 'static/icon/common/common_icon_pulldown_line.svg';
-
 import { resourceService } from 'pc/resource_service';
 import { ActivityContext } from './activity_context';
-
 import { ActivitySelectType, ACTIVITY_SELECT_MAP } from 'pc/utils';
-
 import styles from './style.module.less';
 import { IconButton, useThemeColors } from '@vikadata/components';
 import { Dropdown, Menu } from 'antd';
@@ -25,27 +22,7 @@ import { pick } from 'lodash';
 import { CloseMiddleOutlined } from '@vikadata/icons';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
-
-export interface ICacheType {
-  [key: string]: ActivitySelectType;
-}
-
-export interface IChooseComment {
-  comment: IComments;
-  datasheetId: string;
-  expandRecordId: string;
-}
-
-export interface IActivityPaneProps {
-  fromCurrentDatasheet?: boolean;
-  expandRecordId: string;
-  datasheetId: string;
-  mirrorId?: string;
-  viewId?: string;
-  style?: React.CSSProperties;
-  closable?: boolean;
-  onClose?: () => void;
-}
+import { IActivityPaneProps, ICacheType, IChooseComment } from './interface';
 
 export const ActivityPaneBase: React.FC<IActivityPaneProps> = props => {
   const { expandRecordId, datasheetId, viewId, mirrorId, fromCurrentDatasheet, style, closable, onClose } = props;

@@ -8,7 +8,7 @@ import { Api, Strings, t } from '@vikadata/core';
 import { copy2clipBoard } from 'pc/utils';
 import { FormItem } from '../../wecom_integration/components/form_item';
 import classNames from 'classnames';
-import { IFeishuConfigParams } from '../feishu_integration_config';
+import { IFeishuConfigParams } from '../interface';
 
 export const copyButton = (value, colors) => (
   <Tooltip title={t(Strings.copy_link)} placement="top">
@@ -18,7 +18,9 @@ export const copyButton = (value, colors) => (
       onClick={() => {
         copy2clipBoard(value);
       }}
-    ><CopyOutlined className={styles.buttonIcon} color={colors.secondLevelText}/></Button>
+    >
+      <CopyOutlined className={styles.buttonIcon} color={colors.secondLevelText} />
+    </Button>
   </Tooltip>
 );
 
@@ -39,7 +41,7 @@ const errorMap = {
   [ErrorStatus.Success]: <SelectOutlined />,
 };
 
-export const EventVerification: React.FC<IEventVerification> = (props) => {
+export const EventVerification: React.FC<IEventVerification> = props => {
   const { config, appInstanceId, nextStep } = props;
   const [error, setError] = useState<ErrorStatus>(ErrorStatus.Normal);
   const [loading, setLoading] = useState(false);
@@ -50,7 +52,7 @@ export const EventVerification: React.FC<IEventVerification> = (props) => {
 
   useEffect(() => {
     setFormData({
-      eventUrl: config.eventUrl
+      eventUrl: config.eventUrl,
     });
   }, [config.eventUrl]);
 
@@ -58,12 +60,11 @@ export const EventVerification: React.FC<IEventVerification> = (props) => {
     eventUrl: {
       label: t(Strings.lark_integration_step5_request_url),
       readonly: true,
-      suffix:
-        copyButton(formData.eventUrl, colors)
-    }
+      suffix: copyButton(formData.eventUrl, colors),
+    },
   };
 
-  const onClick = async() => {
+  const onClick = async () => {
     setLoading(true);
     const res = await Api.getAppInstanceById(appInstanceId);
     const { success, data, message } = res.data;
@@ -81,23 +82,15 @@ export const EventVerification: React.FC<IEventVerification> = (props) => {
   };
 
   return (
-    <div className={classNames(
-      styles.createApplication,
-      styles.formPage
-    )}>
+    <div className={classNames(styles.createApplication, styles.formPage)}>
       <div className={styles.formWrap}>
         <div className={styles.form}>
           <div className={styles.formTitle}>{t(Strings.lark_integration_step5_title)}</div>
-          <div
-            className={styles.formDesc}
-            dangerouslySetInnerHTML={{ __html: t(Strings.lark_integration_step5_content) }}
-          />
+          <div className={styles.formDesc} dangerouslySetInnerHTML={{ __html: t(Strings.lark_integration_step5_content) }} />
           <div className={styles.formContent}>
-            {
-              Object.keys(schema).map(key => (
-                <FormItem key={key} formData={formData} formItem={{ ...schema[key], key }} />
-              ))
-            }
+            {Object.keys(schema).map(key => (
+              <FormItem key={key} formData={formData} formItem={{ ...schema[key], key }} />
+            ))}
           </div>
         </div>
         <div style={{ marginTop: 33 }}>
@@ -108,11 +101,11 @@ export const EventVerification: React.FC<IEventVerification> = (props) => {
             prefixIcon={error !== ErrorStatus.Normal ? errorMap[error] : undefined}
             disabled={error === ErrorStatus.Success}
           >
-            {
-              error === ErrorStatus.Normal ? t(Strings.lark_integration_step5_request_button)
-                : error === ErrorStatus.Error ? t(Strings.lark_integration_step5_request_button_error)
-                  : t(Strings.lark_integration_step5_request_button_success)
-            }
+            {error === ErrorStatus.Normal
+              ? t(Strings.lark_integration_step5_request_button)
+              : error === ErrorStatus.Error
+              ? t(Strings.lark_integration_step5_request_button_error)
+              : t(Strings.lark_integration_step5_request_button_success)}
           </Button>
           {error === ErrorStatus.Error && (
             <div className={styles.verificationError}>
@@ -126,12 +119,7 @@ export const EventVerification: React.FC<IEventVerification> = (props) => {
         </div>
       </div>
       <div className={styles.buttonWrap}>
-        <Button
-          color="primary"
-          onClick={nextStep}
-          disabled={error !== ErrorStatus.Success}
-          block
-        >
+        <Button color="primary" onClick={nextStep} disabled={error !== ErrorStatus.Success} block>
           {t(Strings.next_step)}
         </Button>
       </div>

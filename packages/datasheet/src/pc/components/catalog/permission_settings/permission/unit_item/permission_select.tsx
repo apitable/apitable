@@ -9,7 +9,7 @@ import { ConfigConstant, Strings, t } from '@vikadata/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
 import PulldownIcon from 'static/icon/common/common_icon_pulldown_line.svg';
-import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
+import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header/wrapper_tooltip';
 
 const Option = Select.Option!;
 

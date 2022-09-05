@@ -6,7 +6,7 @@ import { Strings, t } from '@vikadata/core';
 import { IScriptRef, Script } from '../../wecom_integration/components/srcipt';
 
 import styles from './styles.module.less';
-import { IFeishuConfigParams } from '../feishu_integration_config';
+import { IFeishuConfigParams } from '../interface';
 
 enum STATUS {
   Scan = 1,
@@ -19,7 +19,7 @@ interface IBindManage {
   step: number;
 }
 
-export const BindManager: React.FC<IBindManage> = (props) => {
+export const BindManager: React.FC<IBindManage> = props => {
   const { config, step } = props;
   const [status, setStatus] = useState<STATUS>(STATUS.Scan);
   const [isLoadingScript, setIsLoadingScript] = useState(true);
@@ -36,19 +36,18 @@ export const BindManager: React.FC<IBindManage> = (props) => {
     const appId = config.appId;
     const redirectUrl = encodeURIComponent(config.redirectUrl);
     const id = 'lark_integration_qr_code';
-    const goto =
-      `https://passport.feishu.cn/suite/passport/oauth/authorize?client_id=${appId}&redirect_uri=${redirectUrl}&response_type=code&state=adminScan`;
+    const goto = `https://passport.feishu.cn/suite/passport/oauth/authorize?client_id=${appId}&redirect_uri=${redirectUrl}&response_type=code&state=adminScan`;
     const qrLoginObj = QRLogin({
       id,
       goto,
       width: '250',
       height: '257',
-      style: 'outline: none; border: none;'
+      style: 'outline: none; border: none;',
     });
-    const handleMessage = (event) => {
+    const handleMessage = event => {
       const origin = event.origin;
       // 使用 matchOrigin 方法来判断 message 是否来自飞书页面
-      if(qrLoginObj.matchOrigin(origin) ) {
+      if (qrLoginObj.matchOrigin(origin)) {
         const loginTmpCode = event.data;
         // 在授权页面地址上拼接上参数 tmp_code，并跳转
         window.location.href = `${goto}&tmp_code=${loginTmpCode}`;
@@ -67,9 +66,7 @@ export const BindManager: React.FC<IBindManage> = (props) => {
     return (
       <div className={styles.bindManagerScanArea}>
         <div className={styles.bindManagerTitle}>{t(Strings.lark_integration_step6_title)}</div>
-        <div
-          className={classNames(styles.bindManagerDesc)}
-        >
+        <div className={classNames(styles.bindManagerDesc)}>
           <p>{t(Strings.lark_integration_step6_content)}</p>
         </div>
         {step === 5 && <div id="lark_integration_qr_code" className={styles.larkIntegrationQrCode} />}

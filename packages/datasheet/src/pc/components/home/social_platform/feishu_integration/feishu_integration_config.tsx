@@ -9,17 +9,6 @@ import { FormItem } from '../wecom_integration/components/form_item';
 import { copyButton } from './detail/create_application';
 import styles from './styles.module.less';
 
-export interface IFeishuConfigParams {
-  appId: string;
-  appSecret: string;
-  encryptKey: string;
-  verificationToken: string;
-  pcUrl: string;
-  mobileUrl: string;
-  redirectUrl: string;
-  eventUrl: string;
-}
-
 export const defaultFieldConfig = {
   appId: '',
   appSecret: '',
@@ -67,11 +56,11 @@ const FeishuConfig: React.FC = () => {
   const schema2 = {
     appId: {
       label: t(Strings.lark_integration_step2_appid),
-      readonly: true
+      readonly: true,
     },
     appSecret: {
       label: t(Strings.lark_integration_step2_appsecret),
-      readonly: true
+      readonly: true,
     },
     encryptKey: {
       label: t(Strings.lark_integration_step4_encryptkey),
@@ -84,18 +73,18 @@ const FeishuConfig: React.FC = () => {
     pcUrl: {
       label: t(Strings.lark_integration_step3_desktop),
       readonly: true,
-      suffix: copyButton(formData.pcUrl, colors)
+      suffix: copyButton(formData.pcUrl, colors),
     },
     mobileUrl: {
       label: t(Strings.lark_integration_step3_mobile),
       readonly: true,
-      suffix: copyButton(formData.mobileUrl, colors)
+      suffix: copyButton(formData.mobileUrl, colors),
     },
     redirectUrl: {
       label: t(Strings.lark_integration_step3_redirect),
       readonly: true,
-      suffix: copyButton(formData.redirectUrl, colors)
-    }
+      suffix: copyButton(formData.redirectUrl, colors),
+    },
   };
   return (
     <>
@@ -109,11 +98,9 @@ const FeishuConfig: React.FC = () => {
         </div>
         <div className={styles.infoWrap}>
           <div className={styles.infoTitle}>{t(Strings.lark_integration_config_title)}</div>
-          {
-            Object.keys(schema2).map(key => (
-              <FormItem key={key} formData={formData || {}} formItem={{ ...schema2[key], key }} />
-            ))
-          }
+          {Object.keys(schema2).map(key => (
+            <FormItem key={key} formData={formData || {}} formItem={{ ...schema2[key], key }} />
+          ))}
         </div>
       </div>
     </>

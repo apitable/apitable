@@ -2,8 +2,19 @@
  * @doc https://www.notion.so/vikadata/50b41920a64f4bffaf55f7f9b4427985
  */
 import {
-  ConfigConstant, Field, FieldType, Group, IGroupInfo, ILinearRowGroupTab,
-  ISelectFieldOption, LookUpField, Selectors, setComplement, StoreActions, Strings, t,
+  ConfigConstant,
+  Field,
+  FieldType,
+  Group,
+  IGroupInfo,
+  ILinearRowGroupTab,
+  ISelectFieldOption,
+  LookUpField,
+  Selectors,
+  setComplement,
+  StoreActions,
+  Strings,
+  t,
 } from '@vikadata/core';
 import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
 import { GROUP_OFFSET } from 'pc/components/multi_grid/grid_views';
@@ -21,7 +32,7 @@ import IconRetract from 'static/icon/datasheet/rightclick/rightclick_icon_retrac
 import IconRetractAll from 'static/icon/datasheet/rightclick/rightclick_icon_retract_all.svg';
 import { StatOption } from '../../../stat_option';
 import styles from '../../../styles.module.less';
-import { GROUP_HEIGHT } from '../cell_group_tab';
+import { GROUP_HEIGHT } from '../constant';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { dispatch } from 'pc/worker/store';
 
@@ -45,16 +56,7 @@ const GroupTabBase: React.FC<IGroupTab> = props => {
   const fieldId = groupInfo[row.depth]?.fieldId;
   const pathKey = `${row.recordId}_${row.depth}`;
   const colors = useThemeColors();
-  const {
-    field,
-    statTypeFieldId,
-    viewId,
-    datasheetId,
-    groupingCollapseIds,
-    isSearching,
-    fieldPermissionMap,
-  } = useSelector(state => {
-
+  const { field, statTypeFieldId, viewId, datasheetId, groupingCollapseIds, isSearching, fieldPermissionMap } = useSelector(state => {
     const columns = Selectors.getVisibleColumns(state);
     const statTypeFieldId = columns[actualColumnIndex].fieldId;
     return {
@@ -72,28 +74,29 @@ const GroupTabBase: React.FC<IGroupTab> = props => {
   const isCryptoField = fieldRole === ConfigConstant.Role.None;
   const triggerRef = useRef<any>();
 
-  const changeGroupCollapseState = useCallback((newState: string[]) => {
-    // 表内查找时，屏蔽折叠分组操作
-    if (isSearching) {
-      return;
-    }
-    dispatch(StoreActions.setGroupingCollapse(datasheetId, newState));
-    // QuickAppend 组件显示依赖于 hoverRecordId, 分组折叠的情况下应该清空, 避免产生视觉误导
-    dispatch(StoreActions.setHoverRecordId(datasheetId, null));
-    setStorage(StorageName.GroupCollapse,
-      { [`${datasheetId},${viewId}`]: newState },
-    );
-  }, [datasheetId, viewId, isSearching]);
+  const changeGroupCollapseState = useCallback(
+    (newState: string[]) => {
+      // 表内查找时，屏蔽折叠分组操作
+      if (isSearching) {
+        return;
+      }
+      dispatch(StoreActions.setGroupingCollapse(datasheetId, newState));
+      // QuickAppend 组件显示依赖于 hoverRecordId, 分组折叠的情况下应该清空, 避免产生视觉误导
+      dispatch(StoreActions.setHoverRecordId(datasheetId, null));
+      setStorage(StorageName.GroupCollapse, { [`${datasheetId},${viewId}`]: newState });
+    },
+    [datasheetId, viewId, isSearching],
+  );
 
   const state = store.getState();
   const groupSketch = useMemo(() => {
     return new Group(groupInfo, Selectors.getGroupBreakpoint(state));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(groupInfo)]);
   const allGroupTabIds: string[] = useMemo(() => {
     if (!groupInfo) return [];
     return Array.from(groupSketch.getAllGroupTabIdsByRecomputed(state).keys());
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupSketch]);
 
   if (!groupInfo.length) {
@@ -112,18 +115,15 @@ const GroupTabBase: React.FC<IGroupTab> = props => {
 
   function partOfToggle() {
     return (
-      <div
-        className={styles.icon}
-        onClick={clickExpandToggle}
-      >
+      <div className={styles.icon} onClick={clickExpandToggle}>
         <IconArrow
           fill={colors.thirdLevelText}
           width={10}
           height={8}
           style={{
             transition: 'all 0.3s',
-            transform: groupingCollapseIdsMap.has(pathKey) ?
-              'rotate(-90deg)' : 'rotate(0)', marginRight: '8px',
+            transform: groupingCollapseIdsMap.has(pathKey) ? 'rotate(-90deg)' : 'rotate(0)',
+            marginRight: '8px',
           }}
         />
       </div>
@@ -152,7 +152,9 @@ const GroupTabBase: React.FC<IGroupTab> = props => {
     const recordId = row.recordId;
     const cellValue = Selectors.getCellValue(state, snapshot, recordId, fieldId);
     const commonStyle: React.CSSProperties = {
-      color: colors.thirdLevelText, flex: '1', whiteSpace: 'nowrap',
+      color: colors.thirdLevelText,
+      flex: '1',
+      whiteSpace: 'nowrap',
     };
     if (cellValue === undefined) {
       return <div style={commonStyle}>({t(Strings.data_error)})</div>;
@@ -231,43 +233,63 @@ const GroupTabBase: React.FC<IGroupTab> = props => {
 
     return (
       <ul className={styles.contextMenu}>
-        {
-          childGroupTabKey.some(item => groupingCollapseIdsMap.has(item)) ?
-            <li onMouseDown={e => { groupCommand(ExpandType.Pull, e); }}>
-              <div className={styles.icon}>
-                <IconPullDown width={15} height={15} fill={colors.thirdLevelText} />
-              </div>
-              {t(Strings.expand_subgroup)}
-            </li> : <></>
-        }
-        {
-          childGroupTabKey.some(item => !groupingCollapseIdsMap.has(item)) ?
-            <li onMouseDown={e => { groupCommand(ExpandType.Retract, e); }}>
-              <div className={styles.icon}>
-                <IconRetract width={15} height={15} fill={colors.thirdLevelText} />
-              </div>
-              {t(Strings.collapse_subgroup)}
-            </li> : <></>
-        }
-        {
-          allGroupTabIds.some(item => groupingCollapseIdsMap.has(item)) ?
-            <li onMouseDown={e => { groupCommand(ExpandType.PullAll, e); }}>
-              <div className={styles.icon}>
-                <IconPullDownAll width={15} height={15} fill={colors.thirdLevelText} />
-              </div>
-              {t(Strings.expand_all_group)}
-            </li> : <></>
-        }
-        {
-          // 存在没有折叠的组头时
-          setComplement(Array.from(groupingCollapseIdsMap.keys()), allGroupTabIds).length > 0 ?
-            <li onMouseDown={e => { groupCommand(ExpandType.RetractAll, e); }}>
-              <div className={styles.icon}>
-                <IconRetractAll width={15} height={15} fill={colors.thirdLevelText} />
-              </div>
-              {t(Strings.collapse_all_group)}
-            </li> : <></>
-        }
+        {childGroupTabKey.some(item => groupingCollapseIdsMap.has(item)) ? (
+          <li
+            onMouseDown={e => {
+              groupCommand(ExpandType.Pull, e);
+            }}
+          >
+            <div className={styles.icon}>
+              <IconPullDown width={15} height={15} fill={colors.thirdLevelText} />
+            </div>
+            {t(Strings.expand_subgroup)}
+          </li>
+        ) : (
+          <></>
+        )}
+        {childGroupTabKey.some(item => !groupingCollapseIdsMap.has(item)) ? (
+          <li
+            onMouseDown={e => {
+              groupCommand(ExpandType.Retract, e);
+            }}
+          >
+            <div className={styles.icon}>
+              <IconRetract width={15} height={15} fill={colors.thirdLevelText} />
+            </div>
+            {t(Strings.collapse_subgroup)}
+          </li>
+        ) : (
+          <></>
+        )}
+        {allGroupTabIds.some(item => groupingCollapseIdsMap.has(item)) ? (
+          <li
+            onMouseDown={e => {
+              groupCommand(ExpandType.PullAll, e);
+            }}
+          >
+            <div className={styles.icon}>
+              <IconPullDownAll width={15} height={15} fill={colors.thirdLevelText} />
+            </div>
+            {t(Strings.expand_all_group)}
+          </li>
+        ) : (
+          <></>
+        )}
+        {// 存在没有折叠的组头时
+        setComplement(Array.from(groupingCollapseIdsMap.keys()), allGroupTabIds).length > 0 ? (
+          <li
+            onMouseDown={e => {
+              groupCommand(ExpandType.RetractAll, e);
+            }}
+          >
+            <div className={styles.icon}>
+              <IconRetractAll width={15} height={15} fill={colors.thirdLevelText} />
+            </div>
+            {t(Strings.collapse_all_group)}
+          </li>
+        ) : (
+          <></>
+        )}
       </ul>
     );
   }
@@ -278,11 +300,7 @@ const GroupTabBase: React.FC<IGroupTab> = props => {
       color: colors.thirdLevelText,
       whiteSpace: 'nowrap',
     };
-    return (
-      <div style={fieldStyles}>
-        {field?.name}
-      </div>
-    );
+    return <div style={fieldStyles}>{field?.name}</div>;
   };
 
   const builtinPlacements = {
@@ -292,23 +310,21 @@ const GroupTabBase: React.FC<IGroupTab> = props => {
   };
 
   const FirstColumnGroupTab = () => {
-    return <div className={styles.cellWrapper} style={{ flex: '1', height: '100%' }}>
-      {
-        isCryptoField ?
+    return (
+      <div className={styles.cellWrapper} style={{ flex: '1', height: '100%' }}>
+        {isCryptoField ? (
           <div className={styles.lockedTab}>
             {t(Strings.crypto_field)}
             <FieldPermissionLock fieldId={fieldId} />
-          </div> :
+          </div>
+        ) : (
           <>
-            {
-              getFieldName()
-            }
-            {
-              partOfCellValue()
-            }
+            {getFieldName()}
+            {partOfCellValue()}
           </>
-      }
-    </div>;
+        )}
+      </div>
+    );
   };
 
   return (
@@ -351,19 +367,13 @@ const GroupTabBase: React.FC<IGroupTab> = props => {
             width: 'calc(100% - 16px)',
             height: '100%',
           }}
-          onClick={e => { triggerRef.current!.onContextMenuClose(e); }}
+          onClick={e => {
+            triggerRef.current!.onContextMenuClose(e);
+          }}
         >
-          {
-            actualColumnIndex === 0 &&
-            <FirstColumnGroupTab />
-          }
+          {actualColumnIndex === 0 && <FirstColumnGroupTab />}
 
-          {
-            <StatOption
-              fieldId={statTypeFieldId}
-              row={row}
-            />
-          }
+          {<StatOption fieldId={statTypeFieldId} row={row} />}
         </div>
       </div>
     </Trigger>

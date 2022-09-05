@@ -15,7 +15,8 @@ import { getWecomAgentConfig, initNoTraceVerification, stopPropagation } from 'p
 import { FC, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider, useSelector } from 'react-redux';
-import { ImportFile, InputEmail } from './index';
+import { ImportFile } from './import_file';
+import { InputEmail } from './input_email';
 import { LinkInvite } from './link_invite';
 import styles from './style.module.less';
 

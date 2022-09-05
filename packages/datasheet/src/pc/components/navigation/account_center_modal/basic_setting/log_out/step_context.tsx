@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StepStatus } from './step';
+import { StepStatus } from './enum';
 
 export interface IUserData {
   email: string;

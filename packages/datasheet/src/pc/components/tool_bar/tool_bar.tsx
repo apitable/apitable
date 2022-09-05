@@ -56,6 +56,7 @@ import { getRowHeightIcon } from './change_row_height';
 import { Display } from './display/display';
 import { Find } from './find';
 import { ForeignForm } from './foreign_form';
+import { useDisabledOperateWithMirror } from './hooks';
 import { ToolHandleType } from './interface';
 import styles from './style.module.less';
 import { ToolItem } from './tool_item';
@@ -72,17 +73,6 @@ export const HIDDEN_TREE_WIDTH = 763;
 const HIDDEN_TOOLBAR_RIGHT_WIDTH = 465;
 const OFFSET_INPUT_WIDTH = 230;
 const SIDERBAR_WIDTH = 333;
-
-export const useDisabledOperateWithMirror = () => {
-  return useSelector(state => {
-    const mirrorId = state.pageParams.mirrorId;
-    const spaceManualSaveViewIsOpen = state.labs.includes('view_manual_save') || Boolean(state.share.featureViewManualSave);
-    if (!mirrorId) {
-      return false;
-    }
-    return !spaceManualSaveViewIsOpen;
-  });
-};
 
 const ToolbarBase = () => {
   const colors = useThemeColors();

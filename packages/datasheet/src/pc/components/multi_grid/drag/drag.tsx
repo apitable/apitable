@@ -1,7 +1,18 @@
 import {
-  ISetRecordOptions, ICellValue, IGridViewColumn, IGridViewProperty, IReduxState,
-  CollaCommandName, ConfigConstant, DropDirectionType, FieldType, MIN_COLUMN_WIDTH,
-  Selectors, StoreActions, ISnapshot, IFieldPermissionMap,
+  ISetRecordOptions,
+  ICellValue,
+  IGridViewColumn,
+  IGridViewProperty,
+  IReduxState,
+  CollaCommandName,
+  ConfigConstant,
+  DropDirectionType,
+  FieldType,
+  MIN_COLUMN_WIDTH,
+  Selectors,
+  StoreActions,
+  ISnapshot,
+  IFieldPermissionMap,
 } from '@vikadata/core';
 import { useBoolean } from 'ahooks';
 import { resourceService } from 'pc/resource_service';
@@ -12,56 +23,27 @@ import * as React from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { getCellValuesForGroupRecord } from '../../../common/shortcut_key/shortcut_actions/append_row';
-import { HoverLine, IElementRectProps, MoveType } from '../hover_line/hover_line';
+import { HoverLine } from '../hover_line/hover_line';
 import { MicroComponent } from '../micro_component';
 import { useCacheScroll } from 'pc/context';
 import { getMoveColumnsResult } from 'pc/utils/datasheet';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
-
-export interface IDragProps {
-  width: number;
-  height: number;
-  rowHeight: number;
-  gridRef: React.RefObject<HTMLElement> | undefined;
-  scrollWhenHitViewEdg(e: MouseEvent): void;
-  getFieldId?: (e: MouseEvent) => string | null | undefined;
-  getRecordId?: (e: MouseEvent) => string | null | undefined;
-  checkInGrid?: (e: MouseEvent) => boolean;
-  checkIsOpacityLine?: (e: MouseEvent) => boolean;
-  getClickCellId?: (e: MouseEvent) => { fieldId?: string | null; recordId?: string | null; }
-  getElementRect?: (e, type: MoveType) => IElementRectProps;
-}
-
-interface INeedChangeColumnsWidthRef {
-  current: Element | null; // 当前点击的 fieldHead
-  pageX: number; // 点击下去时的pageX
-  scrollLeft: number; // 拖动会对页面进行滑动，需要计算划过的距离才是真的宽度
-  changeWidthFieldId: string;
-}
-
-export interface IDragOption {
-  overTargetId: string;
-  overGroupPath: string;
-  dragOffsetX: number;
-  dragOffsetY: number;
-}
-
-type IGlobalRef = INeedChangeColumnsWidthRef & { originPageX: number };
+import { IDragOption, IDragProps, IGlobalRef } from './interface';
 
 export const dependsGroup2ChangeData = (
   dragData: { recordId: string }[],
   overTargetId: string,
   options: {
-    groupLevel: number,
-    snapshot: ISnapshot,
-    view: IGridViewProperty,
-    fieldPermissionMap?: IFieldPermissionMap,
-  }
+    groupLevel: number;
+    snapshot: ISnapshot;
+    view: IGridViewProperty;
+    fieldPermissionMap?: IFieldPermissionMap;
+  },
 ) => {
   const { groupLevel, snapshot, view, fieldPermissionMap } = options;
   if (groupLevel) {
     const targetRecordData = snapshot.recordMap[overTargetId].data;
-    const setRecordList: { recordId: string; fieldId: string; fieldType: FieldType; value: ICellValue; }[] = [];
+    const setRecordList: { recordId: string; fieldId: string; fieldType: FieldType; value: ICellValue }[] = [];
     for (const v of dragData) {
       for (const vs of view.groupInfo!) {
         const groupFieldId = vs.fieldId;
@@ -102,10 +84,7 @@ export const Drag: React.FC<IDragProps> = props => {
     fieldIndexMap,
     rowsIndexMap,
   } = useSelector((state: IReduxState) => {
-    const {
-      columnSortable,
-      columnWidthEditable
-    } = Selectors.getPermissions(state);
+    const { columnSortable, columnWidthEditable } = Selectors.getPermissions(state);
 
     return {
       columnSortable,
@@ -125,12 +104,11 @@ export const Drag: React.FC<IDragProps> = props => {
     };
   }, shallowEqual);
 
-  const fieldIndexRanges = fieldRanges ? visibleColumns
-    .map(column => fieldIndexMap.get(column.fieldId)!)
-    .slice(
-      fieldIndexMap.get(fieldRanges[0]),
-      fieldIndexMap.get(fieldRanges[fieldRanges.length - 1])! + 1
-    ) : [];
+  const fieldIndexRanges = fieldRanges
+    ? visibleColumns
+        .map(column => fieldIndexMap.get(column.fieldId)!)
+        .slice(fieldIndexMap.get(fieldRanges[0]), fieldIndexMap.get(fieldRanges[fieldRanges.length - 1])! + 1)
+    : [];
 
   const dispatch = useDispatch();
   const [direction, setDirection] = useState<DropDirectionType>(DropDirectionType.NONE);
@@ -218,7 +196,7 @@ export const Drag: React.FC<IDragProps> = props => {
 
   const mouseDown = (e: MouseEvent) => {
     const isChangeColumnWidth = Boolean(
-      checkIsOpacityLine ? checkIsOpacityLine(e) : getParentNodeByClass(e.target as HTMLElement, OPACITY_LINE_CLASS)
+      checkIsOpacityLine ? checkIsOpacityLine(e) : getParentNodeByClass(e.target as HTMLElement, OPACITY_LINE_CLASS),
     );
     if (isChangeColumnWidth && columnWidthEditable && !view.lockInfo) {
       // 有修改的权限，并且点击的是修改列宽的dom，则开始修改列宽
@@ -285,7 +263,7 @@ export const Drag: React.FC<IDragProps> = props => {
       });
     } else {
       // 拖动距离超过5个像素，出现拖动条
-      const dragOffsetX = (Math.abs(e.pageX - getGlobalRef().originPageX) > 5) ? e.pageX : 0;
+      const dragOffsetX = Math.abs(e.pageX - getGlobalRef().originPageX) > 5 ? e.pageX : 0;
       const dragOffsetY = e.pageY;
       if (!dragOffsetX) {
         return;
@@ -301,10 +279,7 @@ export const Drag: React.FC<IDragProps> = props => {
   // 清除 redux 中的状态
   const clearOperateState = () => {
     setGlobalRef({ originPageX: 0 });
-    dispatch(batchActions([
-      StoreActions.setDragTarget(datasheetId, {}),
-      StoreActions.setHoverGroupPath(datasheetId, null),
-    ]));
+    dispatch(batchActions([StoreActions.setDragTarget(datasheetId, {}), StoreActions.setHoverGroupPath(datasheetId, null)]));
     setDragOptionFunc({
       overTargetId: '',
       dragOffsetX: -1000,
@@ -326,18 +301,21 @@ export const Drag: React.FC<IDragProps> = props => {
     const originWidth = Selectors.getColumnWidth(changeWidthColumn as IGridViewColumn);
     const finalWidth = Math.max(originWidth + changeWidthSum, MIN_COLUMN_WIDTH); // 如果小于最小宽度，则使用最小宽度
 
-    executeCommandWithMirror(() => {
-      commandManager.execute({
-        cmd: CollaCommandName.SetColumnsProperty,
-        viewId: view.id,
-        fieldId: getGlobalRef().changeWidthFieldId,
-        data: {
-          width: finalWidth,
-        },
-      });
-    }, {
-      columns: visibleColumns.map(column => column.fieldId === getGlobalRef().changeWidthFieldId ? { ...column, width: finalWidth } : column)
-    });
+    executeCommandWithMirror(
+      () => {
+        commandManager.execute({
+          cmd: CollaCommandName.SetColumnsProperty,
+          viewId: view.id,
+          fieldId: getGlobalRef().changeWidthFieldId,
+          data: {
+            width: finalWidth,
+          },
+        });
+      },
+      {
+        columns: visibleColumns.map(column => (column.fieldId === getGlobalRef().changeWidthFieldId ? { ...column, width: finalWidth } : column)),
+      },
+    );
     setGlobalRef({ current: null });
     clearOperateState();
   };
@@ -347,10 +325,7 @@ export const Drag: React.FC<IDragProps> = props => {
     if (!gridRef!.current!.contains(e.target as Element)) {
       return;
     }
-    if (
-      overTargetId === '' ||
-      fieldRanges?.includes(overTargetId)
-    ) {
+    if (overTargetId === '' || fieldRanges?.includes(overTargetId)) {
       return clearOperateState();
     }
     // let direction: DropDirectionType = DropDirectionType.NONE;
@@ -376,26 +351,28 @@ export const Drag: React.FC<IDragProps> = props => {
       return {
         fieldId,
         overTargetId,
-        direction
+        direction,
       };
     });
 
     dispatch(StoreActions.clearSelection(datasheetId));
 
-    executeCommandWithMirror(() => {
-      commandManager!.execute({
-        cmd: CollaCommandName.MoveColumn,
-        viewId: view.id,
-        data: prepareForMoveColumns,
-      });
-    }, {
-      columns: getMoveColumnsResult({
-        viewId: view.id,
-        data: prepareForMoveColumns,
-        datasheetId
-      })
-    });
-
+    executeCommandWithMirror(
+      () => {
+        commandManager!.execute({
+          cmd: CollaCommandName.MoveColumn,
+          viewId: view.id,
+          data: prepareForMoveColumns,
+        });
+      },
+      {
+        columns: getMoveColumnsResult({
+          viewId: view.id,
+          data: prepareForMoveColumns,
+          datasheetId,
+        }),
+      },
+    );
   }
 
   /**
@@ -466,11 +443,13 @@ export const Drag: React.FC<IDragProps> = props => {
       });
     } else {
       // 当前正在操作的 record 不处于勾选状态
-      data = [{
-        recordId: dragTarget.recordId,
-        overTargetId,
-        direction,
-      }];
+      data = [
+        {
+          recordId: dragTarget.recordId,
+          overTargetId,
+          direction,
+        },
+      ];
     }
 
     const targetIndex = rowsIndexMap.get(overTargetId);
@@ -538,26 +517,17 @@ export const Drag: React.FC<IDragProps> = props => {
 
   const { overTargetId } = dragOption;
 
-  const hoverLineVisible = (
+  const hoverLineVisible =
     isChangeColumns ||
-    Object.keys(gridViewDragState.dragTarget).length > 0 &&
-    dragOption.dragOffsetX &&
-    (!keepSort || (keepSort && fieldRanges)) &&
-    !fieldRanges?.includes(overTargetId)
-  );
+    (Object.keys(gridViewDragState.dragTarget).length > 0 &&
+      dragOption.dragOffsetX &&
+      (!keepSort || (keepSort && fieldRanges)) &&
+      !fieldRanges?.includes(overTargetId));
 
   return (
     <>
       <MicroComponent dragOption={dragOption} />
-      {
-        hoverLineVisible &&
-        <HoverLine
-          dragOption={dragOption}
-          isChangeColumnsWidth={isChangeColumns}
-          setDirection={setDirection}
-          {...props}
-        />
-      }
+      {hoverLineVisible && <HoverLine dragOption={dragOption} isChangeColumnsWidth={isChangeColumns} setDirection={setDirection} {...props} />}
     </>
   );
 };

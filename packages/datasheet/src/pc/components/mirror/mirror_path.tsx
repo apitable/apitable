@@ -4,11 +4,11 @@ import { Tooltip } from 'antd';
 import throttle from 'lodash/throttle';
 import { InlineNodeName } from 'pc/components/common/inline_node_name';
 import { NodeInfoBar } from 'pc/components/common/node_info_bar';
-import { gstMirrorIconByViewType } from 'pc/components/mirror/mirror_list';
 import { useNavigation } from 'pc/components/route_manager/use_navigation';
 import { useSideBarVisible } from 'pc/hooks';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
+import { gstMirrorIconByViewType } from './mirror_list/utils';
 import styles from './style.module.less';
 
 interface IMirrorPath {
@@ -17,7 +17,7 @@ interface IMirrorPath {
   nodeInfo: INodeMeta;
 }
 
-export const MirrorPath: React.FC<IMirrorPath> = (props) => {
+export const MirrorPath: React.FC<IMirrorPath> = props => {
   const colors = useThemeColors();
   const { breadInfo, permission, nodeInfo } = props;
   const { sideBarVisible } = useSideBarVisible();
@@ -50,37 +50,35 @@ export const MirrorPath: React.FC<IMirrorPath> = (props) => {
       });
     }
 
-    navigationTo({ path: Navigation.WORKBENCH, params: { nodeId: breadInfo.datasheetId, viewId: breadInfo.viewId }});
+    navigationTo({ path: Navigation.WORKBENCH, params: { nodeId: breadInfo.datasheetId, viewId: breadInfo.viewId } });
   }, 5000);
 
   if (!view) {
     return null;
   }
 
-  return <div
-    style={{ height: 48 }}
-  >
-    <div className={styles.breadcrumbsBar} style={{ paddingLeft: !sideBarVisible ? 60 : '' }}>
-      <div className={styles.container}>
-        <div>
-          <NodeInfoBar
-            data={{
-              nodeId: nodeInfo.id!,
-              name: nodeInfo.name,
-              type: ConfigConstant.NodeType.MIRROR,
-              icon: nodeInfo.icon,
-              role: nodeInfo.role === ConfigConstant.Role.Foreigner && permission.editable ? ConfigConstant.Role.Editor : nodeInfo.role,
-              favoriteEnabled: nodeInfo.nodeFavorite,
-              nameEditable: permission.manageable,
-              iconEditable: permission.iconEditable,
-            }}
-            hiddenModule={{ favorite: Boolean(shareId || templateId) }}
-            style={{ maxWidth: '256px', width: 'auto' }}
-          />
-        </div>
-        {/* 来源信息 */}
-        {
-          !shareId && (
+  return (
+    <div style={{ height: 48 }}>
+      <div className={styles.breadcrumbsBar} style={{ paddingLeft: !sideBarVisible ? 60 : '' }}>
+        <div className={styles.container}>
+          <div>
+            <NodeInfoBar
+              data={{
+                nodeId: nodeInfo.id!,
+                name: nodeInfo.name,
+                type: ConfigConstant.NodeType.MIRROR,
+                icon: nodeInfo.icon,
+                role: nodeInfo.role === ConfigConstant.Role.Foreigner && permission.editable ? ConfigConstant.Role.Editor : nodeInfo.role,
+                favoriteEnabled: nodeInfo.nodeFavorite,
+                nameEditable: permission.manageable,
+                iconEditable: permission.iconEditable,
+              }}
+              hiddenModule={{ favorite: Boolean(shareId || templateId) }}
+              style={{ maxWidth: '256px', width: 'auto' }}
+            />
+          </div>
+          {/* 来源信息 */}
+          {!shareId && (
             <div className={styles.sourceInfo}>
               <span style={{ whiteSpace: 'pre-wrap' }}>{t(Strings.mirror_from)}</span>
               <InlineNodeName
@@ -92,23 +90,17 @@ export const MirrorPath: React.FC<IMirrorPath> = (props) => {
                 iconSize={16}
                 iconEditable={false}
               />
-              <span style={{ margin: '0 4px' }}>
-                    /
-              </span>
+              <span style={{ margin: '0 4px' }}>/</span>
               <Tooltip title={isGhostNode ? t(Strings.ghost_node_no_access) : t(Strings.form_to_datasheet_view)}>
                 <span className={styles.viewInfo} onClick={jumpHandler}>
-                  <span className={styles.viewIcon}>
-                    {
-                      gstMirrorIconByViewType(view!.type, colors.fourthLevelText)
-                    }
-                  </span>
+                  <span className={styles.viewIcon}>{gstMirrorIconByViewType(view!.type, colors.fourthLevelText)}</span>
                   <span className={styles.viewName}>{view?.name}</span>
                 </span>
               </Tooltip>
             </div>
-          )
-        }
+          )}
+        </div>
       </div>
     </div>
-  </div>;
+  );
 };

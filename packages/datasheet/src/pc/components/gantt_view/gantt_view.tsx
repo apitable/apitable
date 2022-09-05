@@ -52,7 +52,6 @@ import {
   useGridMessage,
   useScrollbarTip,
 } from 'pc/components/konva_grid';
-import { useDisabledOperateWithMirror } from 'pc/components/tool_bar';
 import { useDispatch, useResponsive, useSetState } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
@@ -86,6 +85,7 @@ import {
 import styles from './style.module.less';
 import { getAllTaskLine, getAllCycleDAG, autoTaskScheduling, getCollapsedLinearRows } from './utils';
 import { Message } from 'pc/components/common';
+import { useDisabledOperateWithMirror } from '../tool_bar/hooks';
 interface IGanttViewProps {
   height: number;
   width: number;

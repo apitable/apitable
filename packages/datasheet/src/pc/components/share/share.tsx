@@ -1,5 +1,5 @@
 import { useThemeColors } from '@vikadata/components';
-import { ConfigConstant, findNode, IShareInfo, Navigation, Selectors, StoreActions, Strings, t } from '@vikadata/core';
+import { findNode, IShareInfo, Navigation, Selectors, StoreActions, Strings, t } from '@vikadata/core';
 import classNames from 'classnames';
 import { Message } from 'pc/components/common/message';
 import { Tooltip } from 'pc/components/common/tooltip';
@@ -23,28 +23,7 @@ import { ShareFail } from './share_fail';
 import { ShareMobile } from './share_mobile/share_mobile';
 import styles from './style.module.less';
 import Head from 'next/head';
-
-export interface IShareSpaceInfo {
-  shareId: string;
-  spaceName: string;
-  spaceId: string;
-  allowSaved: boolean;
-  allowApply: boolean;
-  allowEdit: boolean;
-  lastModifiedAvatar: string;
-  lastModifiedBy: string;
-  hasLogin: boolean;
-  isFolder: boolean;
-}
-
-export interface INodeTree {
-  nodeId: string;
-  nodeName: string;
-  children: INodeTree[];
-  type: ConfigConstant.NodeType;
-  icon: string;
-  shareType?: ConfigConstant.NodeType;
-}
+import { INodeTree, IShareSpaceInfo } from './interface';
 
 export const ShareContext = React.createContext({} as { shareInfo: IShareSpaceInfo });
 

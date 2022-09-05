@@ -11,12 +11,12 @@ import { stopPropagation } from '../../../../utils/dom';
 import { useVerifyOperateItemTitle } from '../../../tool_bar/view_switcher/view_switcher';
 import styles from './style.module.less';
 import { useUnmount } from 'ahooks';
-import { WrapperTooltip } from './widget_panel_header';
 import { InformationSmallOutlined } from '@vikadata/icons';
 import { useThemeColors } from '@vikadata/components';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { FC } from 'react';
+import { WrapperTooltip } from './wrapper_tooltip';
 
 export const WidgetPanelList: FC<{ onClickItem?: (panelIndex: number) => void }> = ({ onClickItem }) => {
   const { screenIsAtMost } = useResponsive();

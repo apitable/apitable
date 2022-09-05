@@ -5,7 +5,7 @@ import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
 import { CellOptions } from 'pc/components/multi_grid/cell/cell_options';
 import { useEffect, useRef, useState } from 'react';
 import * as React from 'react';
-import { IHeadOptionProps } from 'pc/components/kanban_view/group_header/group_head_menu';
+import { IHeadOptionProps } from './interface';
 import styles from './styles.module.less';
 import { useThemeColors } from '@vikadata/components';
 
