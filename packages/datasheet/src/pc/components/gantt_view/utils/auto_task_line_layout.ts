@@ -1,4 +1,4 @@
-import { getDiffCount } from 'pc/components/gantt_view';
+import { getDiffOriginalCount } from 'pc/components/gantt_view';
 import { originalChange } from './date';
 import { ISetRecordOptions, Selectors, fastCloneDeep } from '@vikadata/core';
 import { getAllTaskLine, getAllCycleDAG } from './task_line';
@@ -24,10 +24,12 @@ export const autoTaskScheduling = (visibleRows, state, snapshot, ganttStyle, sou
 
     const startTime = Selectors.getCellValue(state, snapshot, row.recordId, startFieldId);
     const endTime = Selectors.getCellValue(state, snapshot, row.recordId, endFieldId);
-    if (startTime && endTime) {
+    const diffCount = getDiffOriginalCount(startTime, endTime);
+    if (startTime || endTime) {
       visibleRowsTime[row.recordId] = {
         startTime,
         endTime,
+        diffCount,
       };
     }
   });
@@ -40,41 +42,46 @@ export const autoTaskScheduling = (visibleRows, state, snapshot, ganttStyle, sou
 
   const autoDFS = sourceId => {
     // 查看是否有关联任务
-    if (!sourceAdj[sourceId]) {
-      return;
-    }
+    if (!sourceAdj[sourceId] || !rowsTimeList[sourceId]) return;
+
+    if (rowsTimeList[sourceId].diffCount < 0) return;
+
     sourceAdj[sourceId].forEach(targetId => {
-      if (cycleEdges.includes(`taskLine-${sourceId}-${targetId}`) || !rowsTimeList[targetId] || !rowsTimeList[sourceId]) {
-        return;
-      }
+      if (cycleEdges.includes(`taskLine-${sourceId}-${targetId}`) || !rowsTimeList[targetId]) return;
+      const { diffCount } = rowsTimeList[targetId];
+      if (diffCount < 0) return;
       // 比较所有后置任务所有前置任务的大小取最靠近的那个
+      let recentTime;
       let recentRecordId;
-      if (targetAdj[targetId].length == 1) {
-        recentRecordId = sourceId;
-      } else {
-        let recentTime;
-        targetAdj[targetId].forEach((sourceItem, index) => {
-          const sourceItemTime = rowsTimeList[sourceItem]?.endTime;
-          if (index === 0) {
-            recentTime = sourceItemTime;
-            recentRecordId = sourceItem;
-          } else if (sourceItemTime > recentTime) {
-            recentTime = sourceItemTime;
-            recentRecordId = sourceItem;
-          }
-        });
-      }
+
+      recentRecordId = sourceId;
+      recentTime = rowsTimeList[sourceId].endTime ?? rowsTimeList[sourceId].startTime;
+
+      targetAdj[targetId].forEach((sourceItem, index) => {
+        const { diffCount: sourceItemDiffTime } = rowsTimeList[sourceItem];
+        if (sourceItemDiffTime < 0) {
+          return;
+        }
+        const sourceItemTime = rowsTimeList[sourceItem]?.endTime ?? rowsTimeList[sourceItem]?.startTime;
+
+        recentTime = sourceItemTime;
+        recentRecordId = sourceItem;
+        if (sourceItemTime > recentTime) {
+          recentTime = sourceItemTime;
+          recentRecordId = sourceItem;
+        }
+      });
 
       // 更新当前的时间
 
-      const nodeEndTime = rowsTimeList[recentRecordId]?.endTime;
+      const nodeEndTime = rowsTimeList[recentRecordId]?.endTime ?? rowsTimeList[recentRecordId]?.startTime;
       const startTime = rowsTimeList[targetId]?.startTime;
       const endTime = rowsTimeList[targetId]?.endTime;
-      const diffTime = getDiffCount(startTime, endTime);
-    
+      const diffTime = getDiffOriginalCount(startTime, endTime) || 0;
+
       rowsTimeList[targetId] = {
-        startTime: originalChange(nodeEndTime, 1, 'day').valueOf(),
-        endTime: originalChange(nodeEndTime, 1 + diffTime, 'day').valueOf(),
+        startTime: startTime ? originalChange(nodeEndTime, 1, 'day').valueOf() : startTime,
+        endTime: endTime ? originalChange(nodeEndTime, 1 + diffTime, 'day').valueOf() : endTime,
       };
 
       // 沿着路径递归更新
@@ -95,8 +102,8 @@ export const autoTaskScheduling = (visibleRows, state, snapshot, ganttStyle, sou
       return [];
     }
     rowsTimeList[sourceId].endTime = endTime;
-    
-    if(targetId) {
+
+    if (targetId) {
       sourceAdj[sourceId] = sourceAdj[sourceId] ? [...sourceAdj[sourceId], targetId] : [targetId];
       targetAdj[targetId] = targetAdj[targetId] ? [...targetAdj[targetId], sourceId] : [sourceId];
     }

@@ -3,7 +3,14 @@ import { GanttLeftFilled, GanttRightFilled, WarningTriangleNonzeroFilled } from 
 import dynamic from 'next/dynamic';
 import { getRecordName } from 'pc/components/expand_record';
 import {
-  AreaType, GANTT_COMMON_ICON_SIZE, GanttCoordinate, generateTargetName, getGanttGroupId, getStartOfDate, IScrollState, PointPosition
+  AreaType,
+  GANTT_COMMON_ICON_SIZE,
+  GanttCoordinate,
+  generateTargetName,
+  getGanttGroupId,
+  getStartOfDate,
+  IScrollState,
+  PointPosition,
 } from 'pc/components/gantt_view';
 import Task from 'pc/components/gantt_view/components/task/task';
 import TaskGroupHeader from 'pc/components/gantt_view/components/task_group_header/task_group_header';
@@ -52,42 +59,16 @@ interface IUseTaskProps {
 }
 
 export const useTask = (props: IUseTaskProps) => {
-  const {
-    instance,
-    rowStartIndex,
-    rowStopIndex,
-    pointPosition,
-    scrollState,
-    gridWidth
-  } = props;
+  const { instance, rowStartIndex, rowStopIndex, pointPosition, scrollState, gridWidth } = props;
 
   // Context
-  const {
-    fieldMap,
-    snapshot,
-    groupInfo,
-    linearRows,
-    rowsIndexMap,
-    permissions,
-    visibleColumns,
-    fieldPermissionMap
-  } = useContext(KonvaGridViewContext);
-  const {
-    dragTaskId,
-    transformerId,
-    ganttStyle,
-    ganttGroupMap,
-    dragSplitterInfo,
-    targetTaskInfo,
-    isTaskLineDrawing
-  } = useContext(KonvaGanttViewContext);
-  const {
-    isMobile: _isMobile,
-    isTouchDevice,
-    setTooltipInfo,
-    clearTooltipInfo,
-    theme,
-  } = useContext(KonvaGridContext);
+  const { fieldMap, snapshot, groupInfo, linearRows, rowsIndexMap, permissions, visibleColumns, fieldPermissionMap } = useContext(
+    KonvaGridViewContext,
+  );
+  const { dragTaskId, transformerId, ganttStyle, ganttGroupMap, dragSplitterInfo, targetTaskInfo, isTaskLineDrawing } = useContext(
+    KonvaGanttViewContext,
+  );
+  const { isMobile: _isMobile, isTouchDevice, setTooltipInfo, clearTooltipInfo, theme } = useContext(KonvaGridContext);
   const colors = theme.color;
 
   const {
@@ -116,10 +97,7 @@ export const useTask = (props: IUseTaskProps) => {
   const rightAnchorEnable = !isSameField && checkFieldEditable(endField, fieldPermissionMap);
   const draggable = cellEditable && ((leftAnchorEnable && rightAnchorEnable) || isSameField);
 
-  const {
-    recordId: pointRecordId,
-    type: pointRowType,
-  } = linearRows[pointRowIndex] || {};
+  const { recordId: pointRecordId, type: pointRowType } = linearRows[pointRowIndex] || {};
   const isGanttArea = pointAreaType === AreaType.Gantt;
 
   const { tooltip, setTooltipInfo: setKonvaTooltipInfo } = useTooltip({ isScrolling });
@@ -150,21 +128,33 @@ export const useTask = (props: IUseTaskProps) => {
     const y = instance.getRowOffset(pointRowIndex);
     const height = instance.getRowHeight(pointRowIndex) - 8;
 
-    return <GanttTask
-      colors={colors}
-      x={x + 0.5}
-      y={y + 4}
-      text={t(Strings.gantt_add_task_text)}
-      width={columnWidth}
-      height={height}
-      fill={colors.fourthLevelText}
-      opacity={0.4}
-      cornerRadius={4}
-    />;
+    return (
+      <GanttTask
+        colors={colors}
+        x={x + 0.5}
+        y={y + 4}
+        text={t(Strings.gantt_add_task_text)}
+        width={columnWidth}
+        height={height}
+        fill={colors.fourthLevelText}
+        opacity={0.4}
+        cornerRadius={4}
+      />
+    );
   }, [
-    renderEnable, isScrolling, splitterVisible, cellEditable, isGanttArea,
-    dragTaskId, pointRowType, instance, pointColumnIndex, pointRowIndex, columnWidth,
-    colors, isTaskLineDrawing
+    renderEnable,
+    isScrolling,
+    splitterVisible,
+    cellEditable,
+    isGanttArea,
+    dragTaskId,
+    pointRowType,
+    instance,
+    pointColumnIndex,
+    pointRowIndex,
+    columnWidth,
+    colors,
+    isTaskLineDrawing,
   ]);
 
   // 绘制 Gantt Hover 状态下，将要填充任务的区域
@@ -183,17 +173,19 @@ export const useTask = (props: IUseTaskProps) => {
     const title = Selectors.getCellValue(state, snapshot, pointRecordId, firstFieldId);
     const text = getRecordName(title, firstField) || t(Strings.record_unnamed);
 
-    return <GanttTask
-      colors={colors}
-      x={x + 0.5}
-      y={y + 4}
-      text={text}
-      width={columnWidth}
-      height={rowHeight - 8}
-      fill={colors.fourthLevelText}
-      opacity={0.4}
-      cornerRadius={4}
-    />;
+    return (
+      <GanttTask
+        colors={colors}
+        x={x + 0.5}
+        y={y + 4}
+        text={text}
+        width={columnWidth}
+        height={rowHeight - 8}
+        fill={colors.fourthLevelText}
+        opacity={0.4}
+        cornerRadius={4}
+      />
+    );
   })();
 
   /**
@@ -220,7 +212,7 @@ export const useTask = (props: IUseTaskProps) => {
           groupCount={groupInfo.length}
           pointPosition={pointPosition}
           setTooltipInfo={setKonvaTooltipInfo}
-        />
+        />,
       );
     }
     return result;
@@ -229,38 +221,42 @@ export const useTask = (props: IUseTaskProps) => {
   /**
    * 绘制错误日期任务的提示
    */
-  const errTaskTips = renderEnable ? Array.from({ length: rowStopIndex - rowStartIndex }, (_, index) => {
-    return rowStartIndex + index;
-  }).map(rowIndex => {
-    const { recordId, type } = linearRows[rowIndex];
-    if (type !== CellType.Record) return null;
-    const startTime = cellValueMap[generateKeyName(startFieldId, recordId)];
-    const endTime = cellValueMap[generateKeyName(endFieldId, recordId)];
-    if (!startTime || !endTime) return null;
-    // 如果起止时间是正常的，就不进行提示（错误任务的起止时间比较只精确到 “天”）
-    if (getStartOfDate(startTime) <= getStartOfDate(endTime)) return null;
+  const errTaskTips = renderEnable
+    ? Array.from({ length: rowStopIndex - rowStartIndex }, (_, index) => {
+        return rowStartIndex + index;
+      }).map(rowIndex => {
+        const { recordId, type } = linearRows[rowIndex];
+        if (type !== CellType.Record) return null;
+        const startTime = cellValueMap[generateKeyName(startFieldId, recordId)];
+        const endTime = cellValueMap[generateKeyName(endFieldId, recordId)];
+        if (!startTime || !endTime) return null;
+        // 如果起止时间是正常的，就不进行提示（错误任务的起止时间比较只精确到 “天”）
+        if (getStartOfDate(startTime) <= getStartOfDate(endTime)) return null;
 
-    const offsetY = (rowHeight - GANTT_COMMON_ICON_SIZE) / 2;
-    const y = instance.getRowOffset(rowIndex) + offsetY;
-    return (
-      <Icon
-        key={`err-task-tip-${recordId}`}
-        name={KONVA_DATASHEET_ID.GANTT_ERROR_TASK_TIP}
-        x={10}
-        y={y}
-        data={WarningTriangleFilledPath}
-        fill={colors.warningColor}
-        onMouseEnter={() => setTooltipInfo({
-          visible: true,
-          x: gridWidth + 10,
-          y: instance.getRowOffset(pointRowIndex),
-          width: GANTT_COMMON_ICON_SIZE,
-          title: t(Strings.gantt_error_date_tip),
-        })}
-        onMouseOut={() => clearTooltipInfo()}
-      />
-    );
-  }) : null;
+        const offsetY = (rowHeight - GANTT_COMMON_ICON_SIZE) / 2;
+        const y = instance.getRowOffset(rowIndex) + offsetY;
+        return (
+          <Icon
+            key={`err-task-tip-${recordId}`}
+            name={KONVA_DATASHEET_ID.GANTT_ERROR_TASK_TIP}
+            x={10}
+            y={y}
+            data={WarningTriangleFilledPath}
+            fill={colors.warningColor}
+            onMouseEnter={() =>
+              setTooltipInfo({
+                visible: true,
+                x: gridWidth + 10,
+                y: instance.getRowOffset(pointRowIndex),
+                width: GANTT_COMMON_ICON_SIZE,
+                title: t(Strings.gantt_error_date_tip),
+              })
+            }
+            onMouseOut={() => clearTooltipInfo()}
+          />
+        );
+      })
+    : null;
 
   /**
    * 绘制 ”回到任务“ 按钮集合
@@ -285,7 +281,7 @@ export const useTask = (props: IUseTaskProps) => {
         const key = `back-to-task-${isLeft ? 'left' : 'right'}-${recordId}`;
         const name = generateTargetName({
           targetName: isLeft ? KONVA_DATASHEET_ID.GANTT_BACK_TO_TASK_BUTTON_LEFT : KONVA_DATASHEET_ID.GANTT_BACK_TO_TASK_BUTTON_RIGHT,
-          recordId
+          recordId,
         });
         const background = pointRealTargetName === name ? colors.primaryColor : colors.fourthLevelText;
         const iconPath = isLeft ? GanttLeftFilledPath : GanttRightFilledPath;
@@ -322,7 +318,7 @@ export const useTask = (props: IUseTaskProps) => {
     const { startOffset, endOffset, width } = instance.getTaskData(startTime, endTime);
     if (startOffset == null && endOffset == null) return null;
     const taskId = `task-${recordId}`;
-    const x = (startOffset ?? endOffset)!;
+    const x = (startOffset ?? endOffset! - unitWidth)!;
     const taskWidth = width ?? unitWidth;
     // TODO task转到更高的组件中去计算
     taskMap[recordId] = {
@@ -392,7 +388,7 @@ export const useTask = (props: IUseTaskProps) => {
   /**
    * Task链接线
    */
-  
+
   return {
     tooltip,
     taskList,
@@ -402,6 +398,6 @@ export const useTask = (props: IUseTaskProps) => {
     willAddTaskPoint,
     willFillTaskPoint,
     backToTaskButtons,
-    taskMap
+    taskMap,
   };
 };
