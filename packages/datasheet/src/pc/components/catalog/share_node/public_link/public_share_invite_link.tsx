@@ -14,7 +14,8 @@ import { copy2clipBoard } from 'pc/utils';
 import { Message } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
-import ComponentDisplay, { ScreenSize } from 'pc/components/common/component_display/component_display';
+import ComponentDisplay from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 
 import { ShareLink } from '../share/share_link';

@@ -12,7 +12,8 @@ import { InformationSmallOutlined, AddOutlined, ChevronDownOutlined, ChevronRigh
 import { NodeChangeInfoType, useCatalogTreeRequest, useRequest, useResponsive/* , useSpaceRequest */ } from 'pc/hooks';
 import { execNoTraceVerification, initNoTraceVerification } from 'pc/utils';
 import { useInviteRequest } from 'pc/hooks/use_invite_request';
-import ComponentDisplay, { ScreenSize } from 'pc/components/common/component_display/component_display';
+import ComponentDisplay from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { Avatar, Message } from 'pc/components/common';
 import { Tooltip } from 'pc/components/common/tooltip';
