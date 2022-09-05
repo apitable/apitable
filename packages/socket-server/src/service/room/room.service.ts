@@ -159,16 +159,7 @@ export class RoomService {
   async roomChange(message: any, client: Socket): Promise<any> {
     const room = message.roomId;
     const grpcMetadata = getGlobalGrpcMetadata();
-    const cTraceId = grpcMetadata.get('X-C-TraceId')[0];
 
-    if (!client.rooms[room]) {
-      logger(`C-TraceId[${cTraceId}] RoomService:RoomChange:RoomNotExist`).error({ room, message });
-      return {
-        code: ServerErrorCode.NoRoom,
-        message: '链接未建立，请刷新重试',
-        success: false,
-      };
-    }
     // 通知 NestServer 处理消息
     const result = await this.nestClient.roomChange(this.injectMessage(client, message, true), grpcMetadata);
     if ('success' in result && result.success) {
