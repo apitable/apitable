@@ -28,14 +28,14 @@
     </a>
 </p>
 
-## Quick Start
+## ✨ Quick Start
 
 If you just want try out APITable[^info], using our hosted version at [apitable.com](https://apitable.com).
 
 If you want to install APITable on your local or cloud, See [Installation](#installation)
 
 
-## Features
+## 🔥 Features
 
 APITable provides incredible powerful features, from the personal to the Enterprise.
 
@@ -84,7 +84,7 @@ APITable provides incredible powerful features, from the personal to the Enterpr
 
 and more and more with extensible widgets and plugins.
 
-## Use Cases
+## 💥 Use Cases
 
 Why you must know APITable for your next software?
 
@@ -108,7 +108,7 @@ Why you must know APITable for your next software?
     - All-in-one enterprise database that **connect all** your software.
     - ......and more.
 
-## API-oriented
+## 💞 API-oriented
 
 ##### API UI Panel
 
@@ -118,7 +118,7 @@ Click the `API` button at the right corner will show the API Panel
 
 APITable provides a Datasheet Query Language(DQL) to query your database-spreadsheet contents.
 
-## Embed-friendly
+## 💝 Embed-friendly
 
 ##### Share and Embed
 Share your datasheet table or folder.
@@ -130,7 +130,7 @@ Embed them by HTML script copy & paste.
 
 
 
-## Roadmap
+## 🛣 Roadmap
 
 - Heavy-code Interface Builder
 - Embbedable  3rd party documentation components
@@ -138,7 +138,7 @@ Embed them by HTML script copy & paste.
 - As an IdP;
 - ...
 
-## Why we create APITable and open-source?
+## 🌏 Why we create APITable and open-source?
 
 - We believe that `Database is the cornerstone` of all the software.
 - We believe that making a `Visual Database with rich and easy user interface for everyone` can reduce the difficulty of software industry and increase the world's digitalization adoption.
@@ -155,7 +155,7 @@ Embed them by HTML script copy & paste.
 - AWS
 
 
-## Screenshot
+## 📺 Screenshot
 
 - Invite
 
@@ -190,12 +190,8 @@ curl https://apitable.github.io/install.sh | bash -c
 - Google Cloud
 - AWS
 
-## Screenshot
 
-- Invite
-
-
-## License
+## 🥰 License
 
 > This repository contains the source code for the Open Source edition of APITable, released under the AGPL.
 > 
