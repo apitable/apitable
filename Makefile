@@ -2,7 +2,7 @@
 PATH  := node_modules/.bin:$(PATH)
 SHELL := /bin/bash
 
-DEVENV := docker compose -f docker-compose.devenv.yaml run --rm --user $(shell id -u):$(shell id -g) 
+DEVENV := docker compose -f docker-compose.devenv.yaml --env-file .env run --rm --user $(shell id -u):$(shell id -g) 
 
 SEMVER3 := $(shell cat .version)
 define ANNOUNCE_BODY
@@ -303,18 +303,17 @@ build: ## build apitable all services
 .PHONY: search
 search:
 	@echo " "
-	@read -p "搜索命令:" s; \
+	@read -p "Search Command:" s; \
 	echo  && grep -E "$$s.*?## .*" $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}';
 	@echo ' ';
-	@read -p "输入执行命令:" command; \
+	@read -p "What do you want?>>" command; \
 	make $$command;
 
 .PHONY: help
 help:
 	@echo "$$ANNOUNCE_BODY"
-	@echo "What you want to do?"
 	@echo ' ';
 	@grep -E '^[0-9a-zA-Z-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}';
 	@echo '  '
-	@read -p "INPUT YOUR COMMAND >> " command; \
+	@read -p "What do you want?>> " command; \
 	make $$command;
