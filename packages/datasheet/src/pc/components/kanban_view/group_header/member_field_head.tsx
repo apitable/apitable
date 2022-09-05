@@ -6,18 +6,14 @@ import { CellMember } from 'pc/components/multi_grid/cell/cell_member';
 import { stopPropagation } from 'pc/utils';
 import { useRef } from 'react';
 import * as React from 'react';
-import { IHeadMemberProps } from 'pc/components/kanban_view/group_header/group_head_menu';
+import { IHeadMemberProps } from './interface';
 import styles from './styles.module.less';
 import { useSelector } from 'react-redux';
 
 export const MemberFieldHead: React.FC<IHeadMemberProps> = props => {
   const { cellValue, field, editing, setEditing, onCommand, readOnly, isNewBoard } = props;
   const divRef = useRef(null);
-  const {
-    datasheetId,
-    linkId,
-    unitMap,
-  } = useSelector(state => ({
+  const { datasheetId, linkId, unitMap } = useSelector(state => ({
     datasheetId: Selectors.getActiveDatasheetId(state)!,
     linkId: Selectors.getLinkId(state),
     unitMap: Selectors.getUnitMap(state),
@@ -34,7 +30,9 @@ export const MemberFieldHead: React.FC<IHeadMemberProps> = props => {
   }
 
   function onDoubleClick() {
-    if (editing || readOnly) { return; }
+    if (editing || readOnly) {
+      return;
+    }
     setEditing(true);
   }
 
@@ -44,16 +42,13 @@ export const MemberFieldHead: React.FC<IHeadMemberProps> = props => {
   return (
     <>
       <div onClick={onDoubleClick} ref={divRef} style={{ position: 'relative', overflow: 'hidden', ...style }}>
-        {
-          editing &&
+        {editing && (
           <div className={styles.memberEdit} onMouseDown={stopPropagation}>
             <CellMember field={field} cellValue={cellValue} className={classNames(styles.memberHeader, styles.whiteBg)} />
           </div>
-        }
+        )}
 
-        {
-          !editing && <CellMember field={field} cellValue={cellValue} className={styles.memberHeader} />
-        }
+        {!editing && <CellMember field={field} cellValue={cellValue} className={styles.memberHeader} />}
       </div>
       {editing && (
         <MemberOptionList
@@ -68,7 +63,7 @@ export const MemberFieldHead: React.FC<IHeadMemberProps> = props => {
           existValues={cellValue}
           multiMode={false}
           className={classNames(styles.memberList, styles.editing, {
-            [styles.newBoard]: isNewBoard
+            [styles.newBoard]: isNewBoard,
           })}
         />
       )}

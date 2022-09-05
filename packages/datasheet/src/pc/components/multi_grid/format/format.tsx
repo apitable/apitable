@@ -1,7 +1,7 @@
 import { SetStateAction } from 'react';
 import * as React from 'react';
 import { FieldType, IField } from '@vikadata/core';
-import { FormatSelect } from './index';
+import { FormatSelect } from './format_select/format_select';
 import { Dispatch } from 'react';
 import { FormateNumber } from './format_number';
 import { FormatDateTime } from './format_date_time';
@@ -26,8 +26,7 @@ interface IFieldFormatProps {
 export const FieldFormat: React.FC<IFieldFormatProps> = props => {
   const { from, currentField, setCurrentField, hideOperateBox, datasheetId } = props;
 
-  if ((!currentField.property) &&
-    (currentField.type === FieldType.SingleSelect || currentField.type === FieldType.MultiSelect)) {
+  if (!currentField.property && (currentField.type === FieldType.SingleSelect || currentField.type === FieldType.MultiSelect)) {
     setCurrentField({
       ...currentField,
       property: {
@@ -64,58 +63,20 @@ export const FieldFormat: React.FC<IFieldFormatProps> = props => {
     case FieldType.LastModifiedTime:
       return <FormatDateTime currentField={currentField} setCurrentField={setCurrentField} />;
     case FieldType.Link:
-      return (
-        <FormateLink
-          currentField={currentField}
-          setCurrentField={setCurrentField}
-          hideOperateBox={hideOperateBox}
-          datasheetId={datasheetId}
-        />
-      );
+      return <FormateLink currentField={currentField} setCurrentField={setCurrentField} hideOperateBox={hideOperateBox} datasheetId={datasheetId} />;
     case FieldType.Formula:
-      return (
-        <FormatFormula
-          from={from}
-          currentField={currentField}
-          setCurrentField={setCurrentField}
-          datasheetId={datasheetId}
-        />
-      );
+      return <FormatFormula from={from} currentField={currentField} setCurrentField={setCurrentField} datasheetId={datasheetId} />;
     case FieldType.LookUp:
-      return (
-        <FormateLookUp
-          currentField={currentField}
-          setCurrentField={setCurrentField}
-          datasheetId={datasheetId}
-        />
-      );
+      return <FormateLookUp currentField={currentField} setCurrentField={setCurrentField} datasheetId={datasheetId} />;
     case FieldType.Member:
-      return (
-        <FormatMember
-          currentField={currentField}
-          setCurrentField={setCurrentField}
-        />
-      );
+      return <FormatMember currentField={currentField} setCurrentField={setCurrentField} />;
     case FieldType.SingleText:
-      return (
-        <FormatSingleText currentField={currentField} setCurrentField={setCurrentField} />
-      );
+      return <FormatSingleText currentField={currentField} setCurrentField={setCurrentField} />;
     case FieldType.LastModifiedBy:
-      return (
-        <FormatLastModifiedBy
-          currentField={currentField}
-          setCurrentField={setCurrentField}
-        />
-      );
+      return <FormatLastModifiedBy currentField={currentField} setCurrentField={setCurrentField} />;
     case FieldType.URL:
-      return (
-        <FormatURL
-          currentField={currentField}
-          setCurrentField={setCurrentField}
-        />
-      );
+      return <FormatURL currentField={currentField} setCurrentField={setCurrentField} />;
     default:
       return <></>;
   }
-
 };

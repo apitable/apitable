@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useContext } from 'react';
-import { AccountType } from '../log_out/step';
+import { AccountType } from '../log_out/enum';
 import { StepContext } from '../log_out/step_context';
 import styles from './styles.module.less';
 
@@ -15,14 +15,12 @@ interface IChooseAccountTypeProps {
 }
 
 export const ChooseAccountType: FC<IChooseAccountTypeProps> = props => {
-
-  const {
-    accountType,
-    setAccountType,
-  } = props;
+  const { accountType, setAccountType } = props;
   const colors = useThemeColors();
 
-  const { userData: { email, mobile, areaCode }} = useContext(StepContext);
+  const {
+    userData: { email, mobile, areaCode },
+  } = useContext(StepContext);
 
   const radioData = [
     {
@@ -49,7 +47,7 @@ export const ChooseAccountType: FC<IChooseAccountTypeProps> = props => {
         variant="body2"
         style={{
           marginBottom: 16,
-          color: colors.fc2
+          color: colors.fc2,
         }}
       >
         {t(Strings.log_out_verify_tip)}
@@ -67,36 +65,21 @@ export const ChooseAccountType: FC<IChooseAccountTypeProps> = props => {
             return (
               <Radio
                 value={item.value}
-                className={
-                  classNames(styles.radio, {
-                    [styles.checked]: checked,
-                  })
-                }
+                className={classNames(styles.radio, {
+                  [styles.checked]: checked,
+                })}
               >
                 <div className={styles.item}>
                   <div className={styles.icon}>
                     <span className={styles.img}>
-                      <Image
-                        src={item.imgSrc}
-                        alt={item.alt}
-                        width={40}
-                        height={40}
-                      />
+                      <Image src={item.imgSrc} alt={item.alt} width={40} height={40} />
                     </span>
                   </div>
                   <div className={styles.text}>
-                    <Typography
-                      variant="h7"
-                      color={checked ? colors.primaryColor : colors.fc2}
-                      ellipsis
-                    >
+                    <Typography variant="h7" color={checked ? colors.primaryColor : colors.fc2} ellipsis>
                       {item.h7}
                     </Typography>
-                    <Typography
-                      variant="body4"
-                      color={checked ? colors.primaryColor : colors.fc2}
-                      ellipsis
-                    >
+                    <Typography variant="body4" color={checked ? colors.primaryColor : colors.fc2} ellipsis>
                       {item.body4}
                     </Typography>
                   </div>

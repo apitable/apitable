@@ -4,19 +4,27 @@ import * as React from 'react';
 import styles from './style.module.less';
 import { copy2clipBoard, getDownloadSrc, isSupportImage } from 'pc/utils';
 import { ITransFormInfo } from '../preview_file.interface';
-import { CloseLargeOutlined, ColumnUrlOutlined, DeleteOutlined, DownloadOutlined, 
-  FullscreenOutlined, NewtabOutlined, RotateOutlined, UnfullscreenOutlined } from '@vikadata/icons';
+import {
+  CloseLargeOutlined,
+  ColumnUrlOutlined,
+  DeleteOutlined,
+  DownloadOutlined,
+  FullscreenOutlined,
+  NewtabOutlined,
+  RotateOutlined,
+  UnfullscreenOutlined,
+} from '@vikadata/icons';
 import IconZoomIn from 'static/icon/datasheet/datasheet_icon_zoom_in.svg';
 import IconZoomOut from 'static/icon/datasheet/datasheet_icon_zoom_out.svg';
 import { IPreviewToolItem, PreviewToolItem } from './tool_item';
 import { Message } from 'pc/components/common';
-import { MAX_SCALE, MIN_SCALE } from '../preview_main';
 import { Loading, useThemeColors } from '@vikadata/components';
 import { navigationToUrl } from 'pc/components/route_manager/use_navigation';
 import { getFile } from '../preview_main/util';
 import FileSaver from 'file-saver';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
+import { MAX_SCALE, MIN_SCALE } from '../preview_main/constant';
 
 interface IToolBar {
   transformInfo: ITransFormInfo;
@@ -54,16 +62,13 @@ export function directDownload(href: string, name: string) {
 
 export async function download(fileInfo: IAttachmentValue) {
   const href = getDownloadSrc(fileInfo);
-  const {
-    name,
-    mimeType: type
-  } = fileInfo;
+  const { name, mimeType: type } = fileInfo;
   const isImageType = isImage({ name, type });
   let mode: 'stream' | 'direct' = 'direct';
   if (isImageType && !isPrivateDeployment()) {
     Message.loading({
       content: t(Strings.downloading_attachments),
-      duration: 0
+      duration: 0,
     });
     const resp = await DatasheetApi.getContentDisposition(href);
     const contentDisposition = resp.data.data;
@@ -100,10 +105,7 @@ export const ToolBar: React.FC<IToolBar> = props => {
     toggleIsFullScreen,
   } = props;
   const colors = useThemeColors();
-  const {
-    scale,
-    initActualScale,
-  } = transformInfo;
+  const { scale, initActualScale } = transformInfo;
 
   const [adaptiveMode, setAdaptiveMode] = useState(true);
   const isSideRecordOpen = useSelector(state => state.space.isSideRecordOpen);
@@ -119,26 +121,17 @@ export const ToolBar: React.FC<IToolBar> = props => {
   const toolBarData: IPreviewToolBar = {
     toolLeft: [
       {
-        visible:
-          isImage({ name: fileInfo.name, type: fileInfo.mimeType }) &&
-          isSupportImage(fileInfo.mimeType),
+        visible: isImage({ name: fileInfo.name, type: fileInfo.mimeType }) && isSupportImage(fileInfo.mimeType),
         group: [
           {
-            component: <IconZoomOut
-              width={16}
-              height={16}
-              fill={colors.black[50]}
-              opacity={scale * initActualScale <= MIN_SCALE ? 0.5 : 1}
-            />,
+            component: <IconZoomOut width={16} height={16} fill={colors.black[50]} opacity={scale * initActualScale <= MIN_SCALE ? 0.5 : 1} />,
             tip: t(Strings.zoom_out),
             onClick: () => onZoom(scale / MULTIPLE),
-            style: { marginRight: 0 }
+            style: { marginRight: 0 },
           },
           {
             // 实际缩放比例 = 初始缩放比例 * scale
-            component: initActualScale == -1
-              ? <Loading currentColor />
-              : Math.floor((areEqualToInitial ? 1 : initActualScale * scale) * 100) + '%',
+            component: initActualScale == -1 ? <Loading currentColor /> : Math.floor((areEqualToInitial ? 1 : initActualScale * scale) * 100) + '%',
             tip: adaptiveMode ? t(Strings.initial_size) : t(Strings.adaptive),
             onClick: () => {
               if (adaptiveMode) {
@@ -148,15 +141,17 @@ export const ToolBar: React.FC<IToolBar> = props => {
               }
               setAdaptiveMode(!adaptiveMode);
             },
-            className: styles.zoomText
+            className: styles.zoomText,
           },
           {
-            component: <IconZoomIn
-              width={16}
-              height={16}
-              fill={colors.black[50]}
-              opacity={(scale * initActualScale >= MAX_SCALE || initActualScale === -1) ? 0.5 : 1}
-            />,
+            component: (
+              <IconZoomIn
+                width={16}
+                height={16}
+                fill={colors.black[50]}
+                opacity={scale * initActualScale >= MAX_SCALE || initActualScale === -1 ? 0.5 : 1}
+              />
+            ),
             tip: t(Strings.zoom_in),
             onClick: () => onZoom(scale * MULTIPLE),
           },
@@ -166,13 +161,13 @@ export const ToolBar: React.FC<IToolBar> = props => {
             onClick: onRotate,
           },
         ],
-        divider: !disabledDownload
+        divider: !disabledDownload,
       },
       {
         visible: (isDocType || isPdf({ name: fileInfo.name, type: fileInfo.mimeType })) && previewEnable,
         component: <NewtabOutlined color={colors.black[50]} size={15} />,
         tip: t(Strings.open_in_new_tab),
-        onClick: () => officePreviewUrl && navigationToUrl(officePreviewUrl)
+        onClick: () => officePreviewUrl && navigationToUrl(officePreviewUrl),
       },
       {
         visible: !disabledDownload,
@@ -183,9 +178,8 @@ export const ToolBar: React.FC<IToolBar> = props => {
           if (isPrivateDeployment()) {
             addr = window.location.origin + addr;
           }
-          copy2clipBoard(addr,
-            () => Message.success({ content: t(Strings.preview_copy_attach_url_succeed) }));
-        }
+          copy2clipBoard(addr, () => Message.success({ content: t(Strings.preview_copy_attach_url_succeed) }));
+        },
       },
       {
         visible: !disabledDownload,
@@ -193,24 +187,21 @@ export const ToolBar: React.FC<IToolBar> = props => {
         tip: t(Strings.download),
         onClick: () => {
           download(fileInfo);
-        }
+        },
       },
       {
         visible: !readonly,
         tip: t(Strings.delete),
         component: <DeleteOutlined size={16} color={colors.black[50]} />,
         onClick: onDelete,
-        style: { marginRight: 0 }
-      }
+        style: { marginRight: 0 },
+      },
     ],
     title: fileInfo.name,
     toolRight: [
       {
-        component: () => isFullScreen ? 
-          <UnfullscreenOutlined size={16} color={colors.black[50]} />
-          :
-          <FullscreenOutlined size={16} color={colors.black[50]} />
-        ,
+        component: () =>
+          isFullScreen ? <UnfullscreenOutlined size={16} color={colors.black[50]} /> : <FullscreenOutlined size={16} color={colors.black[50]} />,
         tip: () => t(isFullScreen ? Strings.attachment_preview_exit_fullscreen : Strings.attachment_preview_fullscreen),
         onClick: () => toggleIsFullScreen(),
         className: styles.rightIcon,
@@ -221,30 +212,21 @@ export const ToolBar: React.FC<IToolBar> = props => {
         tip: t(Strings.close),
         onClick: onClose,
         className: classNames(styles.rightIcon, styles.iconClose),
-      }
-    ]
+      },
+    ],
   };
 
   const renderToolItem = (toolItemProps: IPreviewToolItem, index) => {
-    return (
-      <PreviewToolItem
-        key={index}
-        {...toolItemProps}
-      />
-    );
+    return <PreviewToolItem key={index} {...toolItemProps} />;
   };
 
   return (
     <div className={styles.toolbar}>
-      <div className={styles.toolLeft}>
-        {toolBarData.toolLeft.map(renderToolItem)}
-      </div>
+      <div className={styles.toolLeft}>{toolBarData.toolLeft.map(renderToolItem)}</div>
 
       <h4>{toolBarData.title}</h4>
 
-      <div className={styles.toolRight}>
-        {toolBarData.toolRight.map(renderToolItem)}
-      </div>
+      <div className={styles.toolRight}>{toolBarData.toolRight.map(renderToolItem)}</div>
     </div>
   );
 };

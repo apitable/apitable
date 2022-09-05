@@ -29,7 +29,7 @@ import styles from './style.module.less';
 import { defaultAvatars } from './default_avatar';
 import { IUnbindType, UnBindModal } from 'pc/components/navigation/account_center_modal/basic_setting/un_bind_modal';
 import { Logout } from './log_out';
-import { StepStatus } from './log_out/step';
+import { StepStatus } from './log_out/enum';
 import { StatusIconFunc } from 'pc/components/common/icon';
 import { getSocialWecomUnitName, isSocialWecom, isWecomFunc } from 'pc/components/home/social_platform';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';

@@ -4,7 +4,7 @@ import { Tree } from 'antd';
 import { getNodeIcon } from 'pc/components/catalog/tree/node_icon';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useNavigation } from 'pc/components/route_manager/use_navigation';
-import { INodeTree } from 'pc/components/share';
+import { INodeTree } from 'pc/components/share/interface';
 import { useResponsive, useSideBarVisible } from 'pc/hooks';
 import { FC, ReactText } from 'react';
 import { useSelector } from 'react-redux';

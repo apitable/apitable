@@ -20,6 +20,7 @@ import { stopPropagation, useThemeColors } from '@vikadata/components';
 import { useKeyPress } from 'ahooks';
 import { useSelector } from 'react-redux';
 import { isFocusingInput } from './util';
+import { initTransformInfo, initTranslatePosition, MAX_SCALE, MIN_SCALE } from './constant';
 
 interface IPreviewMain {
   activeIndex: number;
@@ -35,18 +36,6 @@ interface IPreviewMain {
   isFullScreen: boolean;
   toggleIsFullScreen: () => void;
 }
-
-export const initTranslatePosition = { x: 0, y: 0 };
-
-export const MAX_SCALE = 5;
-export const MIN_SCALE = 0.1;
-
-export const initTransformInfo = {
-  scale: 1,
-  rotate: 0,
-  translatePosition: initTranslatePosition,
-  initActualScale: -1,
-};
 
 export const PreviewMain: React.FC<IPreviewMain> = props => {
   const {

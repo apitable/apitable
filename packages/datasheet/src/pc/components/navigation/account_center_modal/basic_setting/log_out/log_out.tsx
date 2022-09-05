@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import * as React from 'react';
-import { StepStatus } from './step';
+import { StepStatus } from './enum';
 import { IUserData, StepContext } from './step_context';
 import { Step } from './step';
 interface ILogoutProps {
@@ -10,19 +10,14 @@ interface ILogoutProps {
 }
 
 export const Logout: FC<ILogoutProps> = props => {
-
-  const {
-    userData,
-    setStep,
-    step,
-  } = props;
+  const { userData, setStep, step } = props;
 
   return (
     <StepContext.Provider
       value={{
         userData,
         step,
-        setStep
+        setStep,
       }}
     >
       <Step />

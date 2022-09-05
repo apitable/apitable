@@ -1,7 +1,7 @@
 import { ConfigConstant, ResourceType, Selectors, Strings, t } from '@vikadata/core';
 import { ChevronLeftOutlined, CloseLargeOutlined } from '@vikadata/icons';
 import RcTrigger from 'rc-trigger';
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
@@ -11,20 +11,14 @@ import styles from './style.module.less';
 import { WidgetPanelList } from './widget_panel_list';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage/storage';
 import { IconButton, useThemeColors } from '@vikadata/components';
-import { Tooltip } from 'antd';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
+import { WrapperTooltip } from './wrapper_tooltip';
 
 const ReactIconAdd = () => {
   const colors = useThemeColors();
   return <IconAdd width={16} height={16} fill={colors.thirdLevelText} />;
 };
-
-interface IWrapperTooltip {
-  wrapper: boolean;
-  tip: string;
-  style?: React.CSSProperties;
-}
 
 export const installedWidgetHandle = (widgetId: string, isFocus = true) => {
   const widgetDom = document.querySelector(`div[data-widget-id=${widgetId}]`);
@@ -34,19 +28,6 @@ export const installedWidgetHandle = (widgetId: string, isFocus = true) => {
   widgetDom.scrollIntoView({ block: 'nearest' });
   isFocus && (widgetDom as HTMLDivElement).classList.add(styles.newInstalledWidget);
   isFocus && (widgetDom as HTMLDivElement).focus();
-};
-
-export const WrapperTooltip: React.FC<IWrapperTooltip> = props => {
-  const { tip, wrapper, children, style } = props;
-
-  if (wrapper) {
-    return (
-      <Tooltip title={tip}>
-        <span style={{ display: 'inline-block', ...style }}>{children}</span>
-      </Tooltip>
-    );
-  }
-  return <Fragment>{children}</Fragment>;
 };
 
 export const WidgetPanelHeader = (props: { onClosePanel: () => void }) => {

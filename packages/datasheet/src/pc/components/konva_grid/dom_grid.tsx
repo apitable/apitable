@@ -41,7 +41,7 @@ import { ContextMenu } from '../multi_grid/context_menu';
 import { Drag } from '../multi_grid/drag';
 import { FieldDesc } from '../multi_grid/field_desc';
 import { FieldSetting } from '../multi_grid/field_setting';
-import { IElementRectProps, MoveType } from '../multi_grid/hover_line';
+import { IElementRectProps, MoveType } from '../multi_grid/hover_line/interface';
 import { QuickAppend } from '../multi_grid/quick_append';
 import { RecordWillMoveTips } from '../multi_grid/record_will_move_tips/record_will_move_tips';
 import { MouseDownType } from '../selection_wrapper';

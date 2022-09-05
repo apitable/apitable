@@ -50,21 +50,11 @@ import { WidgetIframe } from './widget_iframe';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { WidgetHeaderMobile } from './widget_header';
 import { usePreLoadError } from '../../hooks/use_pre_load_error';
+import { IWidgetPropsBase } from './interface';
 
 export const IS_IFRAME = false;
 
 export const simpleEmitter = new SimpleEmitter();
-
-export interface IWidgetPropsBase {
-  config?: {
-    hideDrag?: boolean;
-    hideSetting?: boolean;
-    hideMoreOperate?: boolean;
-    hideExpand?: boolean;
-    hideEditName?: boolean;
-    isDevMode?: boolean;
-  };
-}
 
 interface IWidgetItemProps extends IWidgetPropsBase {
   widgetId: string;
