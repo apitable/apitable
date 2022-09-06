@@ -20,6 +20,7 @@ public class NodeUpdaterRole extends NodeReaderRole{
         super(inherit);
 
         permissions.add(NodePermission.EDIT_CELL);
+        permissions.add(NodePermission.CREATE_ROW);
     }
 
     @Override
