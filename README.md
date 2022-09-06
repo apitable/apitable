@@ -5,7 +5,9 @@
 
 <p align="center">
     <em>
-        APITable is <b>an API-oriented Visual Database for everyone </b>and <b>the best Airtable open-source alternative</b>.
+        APITable is an <b>API-oriented & Embed-friendly Visual Database</b> for everyone
+        <br />
+        and the best <b>Airtable open-source alternative</b>.
     </em>
 </p>
 <p align="center">
@@ -15,19 +17,37 @@
 
 
 <p align="center">
-    <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" />
-    <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" />
-    <img src="https://img.shields.io/badge/LICENSE-AGPL-ff69b4" alt="APITable License Badge AGPL" />
+    <!-- Gitpod -->
+    <a href="https://gitpod.io/#https://github.com/apitable/apitable">
+        <img src="https://img.shields.io/badge/gitpod-devenv-orange" alt="APITable Gitpod Development Environment" />
+    </a>
+    <!-- NodeJS -->
+    <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="TypeScript Language, NestJS Framework" />
+    <!-- Java -->
+    <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java Language, Spring Framework" />
+    <!-- LICENSE -->
+    <a href="https://github.com/apitable/apitable/blob/main/LICENSE">
+        <img src="https://img.shields.io/badge/LICENSE-AGPL--3.0-ff69b4" alt="APITable License Badge AGPL" />
+    </a>
+    <!-- Discord -->
+    <a href="https://discord.gg/TwNb9nfdBU">
+        <img src="https://img.shields.io/discord/1016320471010115666" />
+    </a>
+    <!-- Render -->
+    <a href="https://render.com/deploy?repo=https://github.com/apitable/apitable">
+        <img src="https://img.shields.io/badge/render-deploy-5364e9" />
+    </a>
+    
 </p>
 
-## Quick Start
+## ✨ Quick Start
 
-If you just want try out APITable, using our hosted version at [apitable.com](https://apitable.com).
+If you just want try out APITable[^info], using our hosted version at [apitable.com](https://apitable.com).
 
 If you want to install APITable on your local or cloud, See [Installation](#installation)
 
 
-## Features
+## 🔥 Features
 
 APITable provides incredible powerful features, from the personal to the Enterprise.
 
@@ -76,12 +96,13 @@ APITable provides incredible powerful features, from the personal to the Enterpr
 
 and more and more with extensible widgets and plugins.
 
-## Use Cases
+## 💥 Use Cases
 
 Why you must know APITable for your next software?
 
-> APITable puts 1000 softwares in your own cloud.
-> APITable embeds 1000 softwares in your softwares.
+> APITable puts 1000 softwares in your own.
+>
+> Embed APITable into your 1000 softwares.
 
 - As a Management Software
     - Flexible Project Management & Task/Issues Managements.
@@ -100,7 +121,29 @@ Why you must know APITable for your next software?
     - All-in-one enterprise database that **connect all** your software.
     - ......and more.
 
-## Roadmap
+## 💞 API-oriented
+
+##### API UI Panel
+
+Click the `API` button at the right corner will show the API Panel
+
+##### SQL-like query
+
+APITable provides a Datasheet Query Language(DQL) to query your database-spreadsheet contents.
+
+## 💝 Embed-friendly
+
+##### Share and Embed
+Share your datasheet table or folder.
+Embed them by HTML script copy & paste.
+
+##### Enterprise-ready Embedding
+
+[APITable.com](https://apitable.com) provides more Enterprise-ready Embedding features for securities.
+
+
+
+## 🛣 Roadmap
 
 - Heavy-code Interface Builder
 - Embbedable  3rd party documentation components
@@ -108,7 +151,7 @@ Why you must know APITable for your next software?
 - As an IdP;
 - ...
 
-## Why we create APITable and open-source?
+## 🌏 Why we create APITable and open-source?
 
 - We believe that `Database is the cornerstone` of all the software.
 - We believe that making a `Visual Database with rich and easy user interface for everyone` can reduce the difficulty of software industry and increase the world's digitalization adoption.
@@ -118,13 +161,14 @@ Why you must know APITable for your next software?
 ## 1 Click deploy
 
 - Heroku
-- Digital Ocean 
+- Digital Ocean
+- Render
 - Microsoft Azure
 - Google Cloud
 - AWS
 
 
-## Screenshot
+## 📺 Screenshot
 
 - Invite
 
@@ -159,20 +203,18 @@ curl https://apitable.github.io/install.sh | bash -c
 - Google Cloud
 - AWS
 
-## Screenshot
 
-- Invite
+## 🥰 License
 
-
-## License
-
-APITable is under AGPL.
-- You can xxx..
-- You may not....
-
-
-> This is the source code that runs APITable and all the associated services. 
->
+> This repository contains the source code for the Open Source edition of APITable, released under the AGPL.
+> 
 > If you'd like to run your own copy of APITable or contribute to development then this is the place for you.
 >
+> See [LICENSE](./LICENSE) for details.
+>
 > If you want to use APITable online then you don't need to run this code, we offer a hosted version of the app at [APITable.com](https://apitable.com) which optimized for global accelerator.
+
+
+<br/>
+
+[^info]: Licensed with AGPL-3.0. Designed by APITable. PTE. LTD.
