@@ -546,7 +546,6 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
   };
 
   const onSave = useCallback((value: ICellValue) => {
-    console.log('时间改变');
     if (!record || !field) {
       return;
     }
@@ -626,7 +625,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
         }],
       });
     }
-
+    
     if (activeView && activeView.type === ViewType.Gantt) {
       const { linkFieldId, endFieldId } = activeView?.style;
       if (!(linkFieldId && endFieldId === field.id)) return;
