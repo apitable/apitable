@@ -3,7 +3,7 @@ import { ISocialAppType, StoreActions, Strings, t } from '@vikadata/core';
 import { isBoolean } from 'lodash';
 import { triggerUsageAlert } from 'pc/common/billing';
 import { SubscribeUsageTipType } from 'pc/common/billing/subscribe_usage_check';
-import { Modal, SwitchInfo } from 'pc/components/common';
+import { SwitchInfo } from 'pc/components/common';
 import { isSocialPlatformEnabled, SocialPlatformMap } from 'pc/components/home/social_platform';
 import { labelMap, SubscribeGrade } from 'pc/components/subscribe_system/subscribe_label';
 import { useRequest, useSpaceRequest } from 'pc/hooks';
@@ -341,7 +341,6 @@ export const Security: FC = () => {
         {t(Strings.permission_and_security_content)}
       </Typography>
       <div className={styles.content}>{SwitchList}</div>
-      <Modal />
     </div>
   );
 };
