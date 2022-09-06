@@ -1,4 +1,19 @@
+//////////////////////////////////////////////
+//                                          //
+//  currently only available in unit test   //
+//                                          //
+//////////////////////////////////////////////
 // db = db.getSiblingDB('vikadata');
+
+db.auth(_getEnv('MONGO_INITDB_ROOT_USERNAME'), _getEnv('MONGO_INITDB_ROOT_PASSWORD'));
+
+db = db.getSiblingDB(_getEnv('MONGO_INITDB_DATABASE'));
+
+db.createUser({
+  user: _getEnv('MONGO_USERNAME'),
+  pwd: _getEnv('MONGO_PASSWORD'),
+  roles: [{role: 'readWrite', db: _getEnv('MONGO_INITDB_DATABASE')}]
+});
 
 // ----------------------------
 // Collection structure for vika_audit_space

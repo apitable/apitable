@@ -117,17 +117,20 @@ test-ut-core:
 
 ###### 【room server unit test】 ######
 
-_docker_network = $(shell docker network ls | grep -w "unit-test" | awk '{ print $$2 }')
 sikp-initdb=false
+_test_docker_network = $(shell docker network ls | grep -w "unit-test" | awk '{ print $$2 }')
 
-_test_initdb:
-ifeq ($(_docker_network),)
+_test_init_db:
+ifeq ($(_test_docker_network),)
 	docker network create unit-test
 endif
 	@echo "${YELLOW}pull [init-db:latest] the latest image...${RESET}"
 	docker-compose -f docker-compose-unit-test.yml pull test-initdb
-	docker-compose -f docker-compose-unit-test.yml run --rm test-initdb
+	docker-compose -f docker-compose-unit-test.yml run --rm -e DB_HOST=test-mysql-$${CI_GROUP_TAG:-0} test-initdb
 	@echo "${GREEN}initialize unit test db completed...${RESET}"
+
+_test_clean: ## clean the docker in test step
+	docker rm -fv $$(docker ps -a --filter "name=test-.*-"$${CI_GROUP_TAG:-0} --format "{{.ID}}") || true
 
 test-ut-room-local:
     export MYSQL_HOST=127.0.0.1
@@ -147,23 +150,26 @@ test-ut-room-local:
     export INSTANCE_COUNT=1
     export APPLICATION_NAME=TEST_NEST_REST_SERVER
 test-ut-room-local:
-	docker-compose -f docker-compose-unit-test.yml down || true
+	make _test_clean
+	docker-compose -f docker-compose-unit-test.yml run -d --name test-mysql-$${CI_GROUP_TAG:-0} test-mysql
+	docker-compose -f docker-compose-unit-test.yml run -d --name test-redis-$${CI_GROUP_TAG:-0} test-redis
+	docker-compose -f docker-compose-unit-test.yml run -d --name test-rabbitmq-$${CI_GROUP_TAG:-0} test-rabbitmq
 ifeq ($(sikp-initdb),false)
-	make _test_initdb
+	sleep 20
+	make _test_init_db
 endif
-	docker-compose -f docker-compose-unit-test.yml up -d test-redis test-rabbitmq
 	make build-room
 	yarn test:ut:room
-	docker-compose -f docker-compose-unit-test.yml down || true
+	make _test_clean
 
 test-ut-room-docker:
 	@echo "${LIGHTPURPLE}$$(docker-compose --version)${RESET}"
-	docker rm -f $$(docker ps -a --filter "name=test-.*-"$${CI_GROUP_TAG:-0} --format "{{.ID}}") || true
+	make _test_clean
 	docker-compose -f docker-compose-unit-test.yml run -d --name test-mysql-$${CI_GROUP_TAG:-0} test-mysql
 	docker-compose -f docker-compose-unit-test.yml run -d --name test-redis-$${CI_GROUP_TAG:-0} test-redis
 	docker-compose -f docker-compose-unit-test.yml run -d --name test-rabbitmq-$${CI_GROUP_TAG:-0} test-rabbitmq
 	sleep 20
-	docker-compose -f docker-compose-unit-test.yml run --rm -e DB_HOST=test-mysql-$${CI_GROUP_TAG:-0} test-initdb
+	make _test_init_db
 	docker-compose -f docker-compose-unit-test.yml build unit-test-room
 	docker-compose -f docker-compose-unit-test.yml run --rm \
 		-e MYSQL_HOST=test-mysql-$${CI_GROUP_TAG:-0} \
@@ -171,29 +177,14 @@ test-ut-room-docker:
 		-e RABBITMQ_HOST=test-rabbitmq-$${CI_GROUP_TAG:-0} \
 		unit-test-room
 	@echo "${GREEN}finished unit test，clean up images...${RESET}"
-	docker rm -f $$(docker ps -a --filter "name=test-.*-"$${CI_GROUP_TAG:-0} --format "{{.ID}}") || true
+	make _test_clean
 
 ###### 【room server unit test】 ######
 
 ###### 【backend server unit test】 ######
 
 test-ut-backend-docker:
-	@echo "${LIGHTPURPLE}$$(docker-compose --version)${RESET}"
-	docker rm -f $$(docker ps -a --filter "name=test-.*-"$${CI_GROUP_TAG:-0} --format "{{.ID}}") || true
-	docker-compose -f docker-compose-unit-test.yml run -d --name test-mysql-$${CI_GROUP_TAG:-0} test-mysql
-	docker-compose -f docker-compose-unit-test.yml run -d --name test-mongo-$${CI_GROUP_TAG:-0} test-mongo
-	docker-compose -f docker-compose-unit-test.yml run -d --name test-redis-$${CI_GROUP_TAG:-0} test-redis
-	docker-compose -f docker-compose-unit-test.yml run -d --name test-rabbitmq-$${CI_GROUP_TAG:-0} test-rabbitmq
-	sleep 20
-	docker-compose -f docker-compose-unit-test.yml run --rm -e DB_HOST=test-mysql-$${CI_GROUP_TAG:-0} test-initdb
-	docker-compose -f docker-compose-unit-test.yml run -u $(shell id -u):$(shell id -g) --rm \
-		-e MYSQL_HOST=test-mysql-$${CI_GROUP_TAG:-0} \
-		-e REDIS_HOST=test-redis-$${CI_GROUP_TAG:-0} \
-		-e RABBITMQ_HOST=test-rabbitmq-$${CI_GROUP_TAG:-0} \
-		-e MONGO_HOST=test-mongo-$${CI_GROUP_TAG:-0} \
-		unit-test-backend
-	@echo "${GREEN}finished unit test，clean up images...${RESET}"
-	docker rm -f $$(docker ps -a --filter "name=test-.*-"$${CI_GROUP_TAG:-0} --format "{{.ID}}") || true
+	 make -C ./backend-server test-ut-backend-docker
 
 ###### 【backend server unit test】 ######
 
@@ -208,7 +199,7 @@ buildpush_roomserver: ## ghcr.io/vikadata/vika/room-server
 
 buildpush_webserver: ## ghcr.io/vikadata/vika/web-server
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)";\
-	source scripts/build_web.sh
+	source scripts/build_web.sh build_saas
 
 buildpush_componentdoc: ## ghcr.io/vikadata/vika/component-doc
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)"; \
@@ -216,13 +207,7 @@ buildpush_componentdoc: ## ghcr.io/vikadata/vika/component-doc
 
 buildpush_webserver_op: ## ghcr.io/vikadata/vika/web-server
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)";\
-  	env_nodejs;\
-	echo -ne "\nWEB_CLIENT_VERSION=op-$${SEMVER_FULL}" >> packages/datasheet/.env;\
-	sed -i~ 's/NEXT_ASSET_PREFIX=.*/NEXT_ASSET_PREFIX=/g' packages/datasheet/.env;\
-	sed -i~ 's/NEXT_PUBLIC_ASSET_PREFIX=.*/NEXT_PUBLIC_ASSET_PREFIX=/g' packages/datasheet/.env;\
-  	export DOCKERFILE=Dockerfile.next;\
-  	export TARGET_DOCKER_TAGS="latest-op"\ \"v$${SEMVER_NUMBER}-op_build$$BUILD_NUM\";\
-	build_docker_unableack dotversion web-server
+  	source scripts/build_web.sh build_op
 
 buildpush_socketserver:
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)";\

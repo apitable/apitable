@@ -69,6 +69,8 @@ services:
     environment:
       - TZ=Asia/Singapore
       - MONGO_INITDB_DATABASE=vika_test
+      - MONGO_USERNAME=vika
+      - MONGO_PASSWORD=password
       - MONGO_INITDB_ROOT_USERNAME=vika
       - MONGO_INITDB_ROOT_PASSWORD=password
     healthcheck:

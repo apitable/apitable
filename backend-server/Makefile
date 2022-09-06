@@ -36,35 +36,34 @@ docker_build_init_db:
 	export DOCKERFILE=Dockerfile.init-db; \
 	build_docker init-db
 
+
+###### 【backend server unit test】 ######
+
+_test_docker_network = $(shell docker network ls | grep -w "unit-test" | awk '{ print $$2 }')
+
 _test_clean: ## clean the docker in test step
-	docker rm -f test_mysql || true
-	docker rm -f test_redis || true
-	docker rm -f test_rabbitmq || true
-	docker network rm test || true
+	docker rm -fv $$(docker ps -a --filter "name=test-.*-"$${CI_GROUP_TAG:-0} --format "{{.ID}}") || true
 
+_test_dockers: ## run depends container in test step
+	docker-compose -f ../docker-compose-unit-test.yml run -d --name test-mysql-$${CI_GROUP_TAG:-0} test-mysql
+	docker-compose -f ../docker-compose-unit-test.yml run -d --name test-mongo-$${CI_GROUP_TAG:-0} test-mongo
+	docker-compose -f ../docker-compose-unit-test.yml run -d --name test-redis-$${CI_GROUP_TAG:-0} test-redis
+	docker-compose -f ../docker-compose-unit-test.yml run -d --name test-rabbitmq-$${CI_GROUP_TAG:-0} test-rabbitmq
 
-_test_dockers:
-	docker network create test || true
-	docker run -d --net test --name test_mysql -e MYSQL_PASSWORD=password -e MYSQL_USER=vika -e MYSQL_DATABASE=vika_dev -e MYSQL_ALLOW_EMPTY_PASSWORD=1 mysql mysqld --sql_mode=IGNORE_SPACE,NO_ENGINE_SUBSTITUTION --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-	docker run -d --net test --name test_redis redis
-	docker run -d --net test --name test_rabbitmq -e RABBITMQ_USERNAME=vika -e RABBITMQ_PASSWORD=password -e RABBITMQ_DEFAULT_USER=vika -e RABBITMQ_DEFAULT_PASS=password rabbitmq:3-management
+_test_init_db: ## Initialize the database in test step
+ifeq ($(_test_docker_network),)
+	docker network create unit-test
+endif
+	docker-compose -f ../docker-compose-unit-test.yml pull test-initdb
+	docker-compose -f ../docker-compose-unit-test.yml run --rm -e DB_HOST=test-mysql-$${CI_GROUP_TAG:-0} test-initdb
 
-
-_test_initdb:
-	docker build . -f Dockerfile.init-db --tag=init-db
-	docker run --net test -t --rm -e ACTION=update \
-	-e DB_HOST=test_mysql \
-	-e DB_PORT=3306 \
-	-e DB_NAME=vika_dev \
-	-e DB_USERNAME=vika \
-	-e DB_PASSWORD=password \
-	init-db
-
-_test_unittest: ## unittest and codecov upload
-	docker run -e JVM_OPTS="-Xmx3200m" --net test --rm -w /app --user $(shell id -u):$(shell id -g) -v $(shell pwd):/app \
-	-e MYSQL_HOST=test_mysql -e REDIS_HOST=test_redis -e RABBITMQ_HOST=test_rabbitmq \
-	amazoncorretto:8 \
-	./gradlew testCodeCoverageReport --stacktrace
+_test_unit_test: ## unittest and codecov upload
+	docker-compose -f ../docker-compose-unit-test.yml run -u $(shell id -u):$(shell id -g) --rm \
+		-e MYSQL_HOST=test-mysql-$${CI_GROUP_TAG:-0} \
+		-e REDIS_HOST=test-redis-$${CI_GROUP_TAG:-0} \
+		-e RABBITMQ_HOST=test-rabbitmq-$${CI_GROUP_TAG:-0} \
+		-e MONGO_HOST=test-mongo-$${CI_GROUP_TAG:-0} \
+		unit-test-backend
 
 _test_codecov:
 	curl https://uploader.codecov.io/latest/linux/codecov -o /tmp/codecov
@@ -77,11 +76,15 @@ ifdef CODECOV_TOKEN
 	/tmp/codecov -f code-coverage-report/build/reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml -t $$CODECOV_TOKEN
 endif
 
-test:
+###### 【backend server unit test】 ######
+
+test-ut-backend-docker:
+	@echo "$$(docker-compose --version)"
 	make _test_clean
 	make _test_dockers
 	sleep 20
-	make _test_initdb
-	make _test_unittest
+	make _test_init_db
+	make _test_unit_test
 	make _test_codecov
+	@echo "finished unit test，clean up images..."
 	make _test_clean

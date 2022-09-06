@@ -21,15 +21,23 @@ RUN yarn workspaces focus @vikadata/datasheet root
 # stage builder
 FROM docker.vika.ltd/vikadata/vika/node:16.15.0-alpine AS builder
 
+ARG SEMVER_FULL="development"
+ARG NEXT_ASSET_PREFIX=""
+ARG NEXT_PUBLIC_ASSET_PREFIX=""
+
 WORKDIR /app
 
 COPY --from=deps /workspace-install/node_modules ./node_modules
 COPY --from=deps /workspace-install/packages/datasheet/node_modules ./packages/datasheet/node_modules
 
 COPY .yarn ./.yarn
-COPY ./.yarnrc.yml ./package.json ./yarn.lock ./common-tsconfig.json ./
+COPY ./.yarnrc.yml ./package.json ./yarn.lock ./common-tsconfig.json ./tsconfig.json ./.eslintrc ./
 COPY packages/ ./packages/
-COPY .eslintrc ./packages/datasheet/
+
+RUN set -eux; \
+    sed -i~ '$a\WEB_CLIENT_VERSION='${SEMVER_FULL}'' packages/datasheet/.env; \
+    sed -i~ 's/NEXT_ASSET_PREFIX=.*/NEXT_ASSET_PREFIX='${NEXT_ASSET_PREFIX}'/g' packages/datasheet/.env; \
+    sed -i~ 's/NEXT_PUBLIC_ASSET_PREFIX=.*/NEXT_PUBLIC_ASSET_PREFIX='${NEXT_PUBLIC_ASSET_PREFIX}'/g' packages/datasheet/.env
 
 RUN yarn build:dst
 
