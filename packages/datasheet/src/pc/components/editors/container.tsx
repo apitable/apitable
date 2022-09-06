@@ -546,6 +546,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
   };
 
   const onSave = useCallback((value: ICellValue) => {
+    console.log('时间改变');
     if (!record || !field) {
       return;
     }
@@ -640,7 +641,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
       });
     }
 
-  }, [datasheetId, field, record, cellValue, snapshot]);
+  }, [datasheetId, field, record, cellValue, snapshot, activeView, state, visibleRows]);
 
   useMemo(calcEditorRect,
     // eslint-disable-next-line react-hooks/exhaustive-deps
