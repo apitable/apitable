@@ -24,6 +24,7 @@ import {
   IHyperlinkSegment,
   isUrl,
   SegmentType,
+  ViewType
 } from '@vikadata/core';
 
 import { isEqual, noop } from 'lodash';
@@ -60,6 +61,7 @@ import { useCellEditorVisibleStyle } from './hooks';
 import { IEditor } from './interface';
 import { LinkEditor } from './link_editor';
 import { MemberEditor } from './member_editor';
+import { autoTaskScheduling } from 'pc/components/gantt_view/utils/auto_task_line_layout';
 
 // Editors
 import { NoneEditor } from './none_editor';
@@ -137,6 +139,10 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     groupBreakpoint: Selectors.getGroupBreakpoint(state),
     visibleRowsIndexMap: Selectors.getPureVisibleRowsIndexMap(state)
   }), shallowEqual);
+
+  const activeView = useSelector(state => Selectors.getCurrentView(state));
+  const visibleRows = useSelector(state => Selectors.getVisibleRows(state));
+  const state = store.getState();
 
   // FIXME: 这里还是使用组件内部 editing 控制状态，使用 redux 的 isEditing 状态，编辑框会闪烁一下。
   const [editing, setEditing] = useState(false);
@@ -605,21 +611,36 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
         fieldId: field.id,
         alarm: convertAlarmStructure(formatCurAlarm as IRecordAlarmClient) || null,
       });
-      return;
+ 
+    } else {
+      // 考虑同时新增闹钟和日期单元格数据需要合并操作，在这个理处理闹钟逻辑
+      resourceService.instance!.commandManager.execute({
+        cmd: CollaCommandName.SetRecords,
+        datasheetId,
+        alarm: convertAlarmStructure(formatCurAlarm as IRecordAlarmClient),
+        data: [{
+          recordId: record.id,
+          fieldId: field.id,
+          value,
+        }],
+      });
+    }
+    
+    if (activeView && activeView.type === ViewType.Gantt) {
+      const { linkFieldId, endFieldId } = activeView?.style;
+      if (!(linkFieldId && endFieldId === field.id)) return;
+      const sourceRecordData = {
+        recordId: record!.id,
+        endTime: value as number | null,
+      };
+      const commandDataArr = autoTaskScheduling(visibleRows, state, snapshot, activeView.style, sourceRecordData);
+      resourceService.instance?.commandManager.execute({
+        cmd: CollaCommandName.SetRecords,
+        data: commandDataArr,
+      });
     }
 
-    // 考虑同时新增闹钟和日期单元格数据需要合并操作，在这个理处理闹钟逻辑
-    resourceService.instance!.commandManager.execute({
-      cmd: CollaCommandName.SetRecords,
-      datasheetId,
-      alarm: convertAlarmStructure(formatCurAlarm as IRecordAlarmClient),
-      data: [{
-        recordId: record.id,
-        fieldId: field.id,
-        value,
-      }],
-    });
-  }, [datasheetId, field, record, cellValue, snapshot]);
+  }, [datasheetId, field, record, cellValue, snapshot, activeView, state, visibleRows]);
 
   useMemo(calcEditorRect,
     // eslint-disable-next-line react-hooks/exhaustive-deps

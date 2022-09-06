@@ -5,7 +5,7 @@ import { getAllTaskLine, getAllCycleDAG } from './task_line';
 
 interface ISourceRecordData {
   recordId: string;
-  endTime: number;
+  endTime: number | null;
   targetRecordId?: string;
 }
 
@@ -51,21 +51,17 @@ export const autoTaskScheduling = (visibleRows, state, snapshot, ganttStyle, sou
       const { diffCount } = rowsTimeList[targetId];
       if (diffCount < 0) return;
       // 比较所有后置任务所有前置任务的大小取最靠近的那个
-      let recentTime;
-      let recentRecordId;
 
-      recentRecordId = sourceId;
-      recentTime = rowsTimeList[sourceId].endTime ?? rowsTimeList[sourceId].startTime;
+      let recentRecordId = sourceId;
+      let recentTime = rowsTimeList[sourceId].endTime ?? rowsTimeList[sourceId].startTime;
 
-      targetAdj[targetId].forEach((sourceItem, index) => {
+      targetAdj[targetId].forEach(sourceItem => {
         const { diffCount: sourceItemDiffTime } = rowsTimeList[sourceItem];
         if (sourceItemDiffTime < 0) {
           return;
         }
         const sourceItemTime = rowsTimeList[sourceItem]?.endTime ?? rowsTimeList[sourceItem]?.startTime;
 
-        recentTime = sourceItemTime;
-        recentRecordId = sourceItem;
         if (sourceItemTime > recentTime) {
           recentTime = sourceItemTime;
           recentRecordId = sourceItem;
