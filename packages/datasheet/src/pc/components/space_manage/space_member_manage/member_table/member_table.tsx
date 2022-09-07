@@ -9,7 +9,7 @@ import { ColumnProps } from 'antd/es/table';
 import { isPrimaryOrOwnFunc } from '../utils';
 import { nameColRender, OperateCol } from '../ui';
 import { useUpdateMemberListInSpace, useMemberManage } from 'pc/hooks';
-import { isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'pc/components/home/social_platform';
+import { isSocialDingTalk, isSocialFeiShu, isSocialPlatformEnabled, isSocialWecom } from 'pc/components/home/social_platform';
 import { EditMemberModal } from '../modal';
 import IconCheck from 'static/icon/common/common_icon_select.svg';
 import { List, lightColors } from '@vikadata/components';
@@ -80,9 +80,9 @@ export const MemberTable: FC<IMemberTable> = (props) => {
   }, [updateScroll]);
 
   const hideDelBtn = React.useCallback((record: IMemberInfoInSpace) => {
-    return (isRootTeam && isPrimaryOrOwn(record)) ||
+    return isSocialFeiShu(spaceInfo) || (isRootTeam && isPrimaryOrOwn(record)) ||
       (selectedTeamInfoInSpace && selectedTeamInfoInSpace.teamId === ConfigConstant.ROOT_TEAM_ID);
-  }, [isPrimaryOrOwn, isRootTeam, selectedTeamInfoInSpace]);
+  }, [isPrimaryOrOwn, isRootTeam, selectedTeamInfoInSpace, spaceInfo]);
 
   const changePageNo = (pageNo: number) => {
     const isActive = selectOuter ? selectEnter ? undefined : '0' : '1';
