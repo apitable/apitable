@@ -56,7 +56,13 @@ const UsageWarnModalInner: React.FC<IUsageWarnModalParams> = ({
           </span>
           <span style={{ position: 'relative', left: 3 }}>{t(Strings.upgrade_now)}</span>
         </Button>
-        <LinkButton color="default" className={styles.checkMorePrivileges} onClick={() => goToUpgrade()} underline={false} block>
+        <LinkButton
+          color="default"
+          className={styles.checkMorePrivileges}
+          onClick={() => window.open('/pricing', '_blank', 'noopener,noreferrer')}
+          underline={false}
+          block
+        >
           {t(Strings.check_more_privileges)}
         </LinkButton>
       </div>
