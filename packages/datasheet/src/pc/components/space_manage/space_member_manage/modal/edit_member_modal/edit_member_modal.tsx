@@ -140,7 +140,7 @@ export const EditMemberModal: FC<IModalProps> = ({ cancelModalVisible, pageNo, r
       return (
         <span className={styles.teamWrapper} key={item.teamId}>
           <span className={styles.teamText}>{item.teamName}</span>
-          {teamList.length > 0 && (
+          {teamList.length > 0 && !isSocialFeiShu(spaceInfo) && (
             <span className={styles.teamRemoveIcon} onClick={() => removeTeam(item.teamId)}>
               <CloseIcon />
             </span>
