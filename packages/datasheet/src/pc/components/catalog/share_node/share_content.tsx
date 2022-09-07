@@ -11,7 +11,7 @@ import { NodeChangeInfoType, useCatalogTreeRequest, useRequest, useResponsive/* 
 import { permissionMenuData } from 'pc/utils';
 import { useInviteRequest } from 'pc/hooks/use_invite_request';
 import { ScreenSize } from 'pc/components/common/component_display';
-import { Avatar, Message, IAvatarProps } from 'pc/components/common';
+import { Avatar, Message } from 'pc/components/common';
 import { Tooltip } from 'pc/components/common/tooltip';
 import { PublicShareInviteLink } from './public_link';
 import { MembersDetail } from '../permission_settings/permission/members_detail';
@@ -23,7 +23,7 @@ export interface IShareContentProps {
   data: {
     nodeId: string,
     type: ConfigConstant.NodeType,
-    icon: IAvatarProps,
+    icon: string,
     name: string,
   };
 }
