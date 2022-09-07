@@ -15,17 +15,17 @@ interface IUsageWarnModalParams {
 }
 
 const UsageWarnModalInner: React.FC<IUsageWarnModalParams> = ({
-  alertContent = '你触发了本空间站 5,000 行 的总记录数上限，你可以选择升级以获得更高的用量',
+  alertContent
 }) => {
   const colors = useThemeColors();
 
   const renderAvatar = opacity => (
     <div className={styles.avatar} style={{ borderColor: `rgba(123, 103, 238, ${opacity})` }}>
       <div className={styles.avatarIcon}>
-        <Image src={Settings.customer_qrcode_url.value} alt="" width={64} height={64} />
+        <Image src={Settings.customer_qrcode_url.value} alt='' width={64} height={64} />
       </div>
       <div className={styles.avatarStar}>
-        <TitleFavoriteFilled color={colors.fc14} size="12px" />
+        <TitleFavoriteFilled color={colors.fc14} size='12px' />
       </div>
     </div>
   );
@@ -44,20 +44,20 @@ const UsageWarnModalInner: React.FC<IUsageWarnModalParams> = ({
     <div className={styles.wrapper}>
       <div className={styles.pageLeft}>
         {renderAvatar(0.3)}
-        <Typography variant="h5" className={classnames(styles.textCenter, styles.alertTitle)}>
+        <Typography variant='h5' className={classnames(styles.textCenter, styles.alertTitle)}>
           {t(Strings.usage_overlimit_alert_title)}
         </Typography>
-        <Typography variant="h5" className={classnames(styles.textCenter, styles.alertContent)}>
+        <Typography variant='h5' className={classnames(styles.textCenter, styles.alertContent)}>
           {alertContent}
         </Typography>
-        <Button color="primary" size={'middle'} className={styles.upgradeBtn} onClick={() => goToUpgrade()} block>
+        <Button color='primary' size={'middle'} className={styles.upgradeBtn} onClick={() => goToUpgrade()} block>
           <span style={{ position: 'relative', top: 3 }}>
-            <Emoji emoji={'star2'} set="apple" size={ConfigConstant.CELL_EMOJI_SIZE} />
+            <Emoji emoji={'star2'} set='apple' size={ConfigConstant.CELL_EMOJI_SIZE} />
           </span>
           <span style={{ position: 'relative', left: 3 }}>{t(Strings.upgrade_now)}</span>
         </Button>
         <LinkButton
-          color="default"
+          color='default'
           className={styles.checkMorePrivileges}
           onClick={() => window.open('/pricing', '_blank', 'noopener,noreferrer')}
           underline={false}
@@ -68,10 +68,10 @@ const UsageWarnModalInner: React.FC<IUsageWarnModalParams> = ({
       </div>
       <div className={styles.pageRight}>
         <div className={styles.qrCodeImageContentBorder}>
-          <Typography variant="h6" className={styles.qrCodeImageTip}>
+          <Typography variant='h6' className={styles.qrCodeImageTip}>
             {t(Strings.startup_company_support_program)}
           </Typography>
-          <Typography variant="body3" className={styles.qrCodeImageSubTip}>
+          <Typography variant='body3' className={styles.qrCodeImageSubTip}>
             {t(Strings.contact_us_to_join_company_support)}
           </Typography>
           {renderQrCode(194)}
@@ -96,7 +96,7 @@ export const usageWarnModal = (params: IUsageWarnModalParams) => {
       closeIcon={<CloseMiddleOutlined color={colorVars.fc3} size={8} />}
       onCancel={onModalClose}
       destroyOnClose
-      width="720px"
+      width='720px'
       footer={null}
       centered
     >
