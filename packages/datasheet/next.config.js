@@ -190,6 +190,11 @@ module.exports = withPlugins(plugins, {
       ],
     });
 
+    if(!isProd) {
+      const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+      config.plugins.push(new ForkTsCheckerWebpackPlugin());
+    }
+
     return config;
   },
   distDir: 'web_build',
