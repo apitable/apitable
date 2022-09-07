@@ -325,6 +325,19 @@
   margin-bottom: 16px !important;
 }
 
+.doubleSelect {
+  border: none !important;
+  height: 20px;
+  padding-right: 32px;
+  background: transparent !important;
+  :global {
+    .optionLabel {
+      color: var(--textBrandDefault) !important;
+      font-size: 14px !important;
+    }
+  }
+}
+
 @media screen and (max-width: @w-md) {
   .sharePersonAuthMobile {
     :global {
@@ -332,6 +345,9 @@
         background-color: var(--bgCommonLower);
       }
     }
+  }
+  .inviteMore {
+    padding-bottom: 0;
   }
 }
 

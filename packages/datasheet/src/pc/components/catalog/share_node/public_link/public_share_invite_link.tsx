@@ -1,25 +1,18 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useRequest } from 'ahooks';
-
-import RcTrigger from 'rc-trigger';
 import { Popover, Tooltip } from 'antd';
 
 import { Api, IReduxState, IShareSettings, StoreActions, Strings, t } from '@vikadata/core';
-import { Switch, Typography } from '@vikadata/components';
-import { InformationSmallOutlined, ChevronDownOutlined, ShareQrcodeOutlined, ColumnUrlOutlined, CloseMiddleOutlined } from '@vikadata/icons';
+import { DoubleSelect, IDoubleOptions, Switch, Typography } from '@vikadata/components';
+import { InformationSmallOutlined, ShareQrcodeOutlined, ColumnUrlOutlined } from '@vikadata/icons';
 
 import { useCatalogTreeRequest } from 'pc/hooks';
 import { copy2clipBoard } from 'pc/utils';
 import { Message } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
-import ComponentDisplay from 'pc/components/common/component_display/component_display';
-import { ScreenSize } from 'pc/components/common/component_display';
-import { Popup } from 'pc/components/common/mobile/popup';
-
 import { ShareLink } from '../share/share_link';
-import { Dropdown, IDropdownItem } from '../tools_components';
 import { DownloadQrCode } from './download_qr_code';
 
 import styles from './style.module.less';
@@ -32,10 +25,6 @@ export interface IPublicShareLinkProps {
 }
 
 export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMobile, inviteLink, canEditInvite }) => {
-  const [visible, setVisible] = useState(false);
-  const [authVisible, setAuthVisible] = useState(false);
-  const [qrCodeVisible, setQrCodeVisible] = useState(false);
-
   const dispatch = useDispatch();
   const { getShareSettingsReq/*, disableShareReq*/ } = useCatalogTreeRequest();
   // const { run: disableShare, loading: disableShareLoading } = useRequest(() => disableShareReq(nodeId), { manual: true });
@@ -148,15 +137,6 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
     }
     handleCloseShare();
   };
-
-  /**
-   * 移动端打开分享链接弹窗
-   */
-  const handleToggleAuthInMobile = () => {
-    if (isMobile) {
-      setAuthVisible((val) => !val);
-    }
-  };
   
   /**
    * 复制邀请链接
@@ -166,37 +146,28 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
   };
 
   /**
-   * 打开移动端的二维码
-   */
-  const handleOpenQrCode = () => {
-    if (isMobile) {
-      setQrCodeVisible(true);
-    }
-  }; 
-
-  /**
    * open share's auth-dropdown
    */
-  const handleShareAuthClick = (option: IDropdownItem) => {
+  const handleShareAuthClick = (option: IDoubleOptions) => {
     if (option.value === value) {
       return;
     }
     handleUpdateShare({ [option.value]: true });
   };
 
-  const Permission: IDropdownItem[] = [{
+  const Permission: IDoubleOptions[] = [{
     value: 'onlyRead',
     label: t(Strings.can_view),
-    describe: t(Strings.share_only_desc),
+    subLabel: t(Strings.share_only_desc),
   }, {
     value: 'canBeEdited',
     label: t(Strings.can_edit),
-    describe: t(Strings.share_and_editable_desc),
+    subLabel: t(Strings.share_and_editable_desc),
     disabled: Boolean(isShareMirror)
   }, {
     value: 'canBeStored',
     label: t(Strings.can_duplicate),
-    describe: t(Strings.share_and_save_desc),
+    subLabel: t(Strings.share_and_save_desc),
     disabled: Boolean(isShareMirror)
   }];
   
@@ -207,47 +178,6 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
       canBeEdited ? 'canBeEdited' :
         'canBeStored';
   }
-  const shareTitle = !value ? t(Strings.not_shared) : Permission.filter((v) => v.value === value)[0].label;
-
-  // const renderHover = () => {
-  //   return <div style={{ background: '#29e', position: 'absolute', top: 0, left: -81 }}>sdfksjdflkjsfd</div>;
-  // };
-
-  const renderAuth = () => {
-    const element = (
-      <Typography variant='body2' className={styles.sharePersonAuth} onClick={handleToggleAuthInMobile}>
-        <span>{shareTitle}</span>
-        <ChevronDownOutlined size={16} />
-      </Typography>
-    );
-    if (isMobile) {
-      return element;
-    }
-    return (
-      <RcTrigger
-        action="click"
-        popup={(
-          <Dropdown
-            mode='common'
-            data={Permission}
-            value={[value]}
-            onClick={handleShareAuthClick}
-            // hoverElement={renderHover()}
-            visible
-          />
-        )}
-        destroyPopupOnHide
-        popupAlign={{
-          points: ['tl', 'bl'],
-        }}
-        popupVisible={visible}
-        onPopupVisibleChange={setVisible}
-        zIndex={1000}
-      >
-        {element}
-      </RcTrigger>
-    );
-  };
 
   const renderPopover = () => {
     return (
@@ -259,7 +189,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
 
   const renderInviteByQrCode = () => {
     return (
-      <Typography className={styles.inviteMoreMethod} variant='body3' onClick={handleOpenQrCode}>
+      <Typography className={styles.inviteMoreMethod} variant='body3'>
         <ShareQrcodeOutlined />
         <span>{t(Strings.invite_by_qr_code)}</span>
       </Typography>
@@ -277,7 +207,19 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
         <>
           <div className={styles.sharePerson}>
             <Typography className={styles.sharePersonContent} variant='body2'>{t(Strings.get_link_person_on_internet)}</Typography>
-            {renderAuth()}
+            <DoubleSelect
+              value={value}
+              disabled={false}
+              onSelected={(op, index) => handleShareAuthClick(op)}
+              triggerCls={styles.doubleSelect}
+              options={Permission.map(item => {
+                return {
+                  label: item.label,
+                  subLabel: item.subLabel,
+                  value: item.value,
+                };
+              })}
+            />
           </div>
           <ShareLink
             shareName={treeNodesMap[shareSettings.nodeId]?.nodeName}
@@ -295,52 +237,17 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
               <span>{t(Strings.invite_via_link)}</span>
             </Typography>
           </Tooltip>
-          <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-            <Popover overlayClassName={styles.qrCodePopover} placement="rightBottom" title={null} content={renderPopover()} trigger="click">
-              {renderInviteByQrCode()}
-            </Popover>
-          </ComponentDisplay>
-          <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
+          <Popover
+            overlayClassName={styles.qrCodePopover}
+            placement={isMobile ? 'topRight' : 'rightBottom'}
+            title={null}
+            content={renderPopover()}
+            trigger="click"
+          >
             {renderInviteByQrCode()}
-          </ComponentDisplay>
+          </Popover>
         </div>
       )}
-      <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <Popup
-          title={t(Strings.setting_permission)}
-          visible={authVisible}
-          onClose={handleToggleAuthInMobile}
-          height="auto"
-          destroyOnClose
-          className={styles.sharePersonAuthMobile}
-        >
-          <Dropdown
-            mode='common'
-            selectedMode="check"
-            divide
-            data={Permission}
-            value={[value]}
-            onClick={handleShareAuthClick}
-          />
-        </Popup>
-        <Modal
-          closable={false}
-          footer={null}
-          visible={qrCodeVisible}
-          centered
-          onCancel={() => setQrCodeVisible(false)}
-          zIndex={1001}
-          width={310}
-          maskClosable={false}
-          bodyStyle={{ padding: 24, boxSizing: 'border-box' }}
-          className={styles.qrCodeMobile}
-        >
-          <div className={styles.qrCodeCloseIcon} onClick={() => setQrCodeVisible(false)}>
-            <CloseMiddleOutlined size={16} />
-          </div>
-          <DownloadQrCode isMobile={isMobile} url={inviteLink} width={242} />
-        </Modal>
-      </ComponentDisplay>
     </>
   );
 };

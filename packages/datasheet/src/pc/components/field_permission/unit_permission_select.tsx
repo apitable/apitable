@@ -189,7 +189,7 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
           </ComponentDisplay>
         </div>
         {editing && (
-          <div ref={unitListRef}>
+          <div ref={unitListRef} className={styles.memberListWrapper}>
             <PopStructure style={{}} width={280} height={height} editing className={styles.memberList} onClose={() => {}}>
               <MemberOptionList
                 showSearchInput
