@@ -54,6 +54,7 @@ APITable provides incredible powerful features, from the personal to the Enterpr
 - Advanced technology stack and open-source
     - `Realtime collaboration` allow multiple users to edit together in real time, or simultaneously with Operational-Transformation(OT) Algorithm.
     - Extremely smoothly / user-friendly / superfast database-spreadsheet in  `<canvas>` Rendering Engine.
+    - Database native architecture: Changeset / Operation / Action / Snapshot and so on.
     - **100k+** Data Rows real-time collaboration available.
     - Full-stack API access, from Data to `Metadata`.
     - One-direction / Bi-direction Table Link and `Infinite Cross Links` 
