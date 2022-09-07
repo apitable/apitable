@@ -31,6 +31,7 @@ public class AwsS3OssClientRequestFactory implements OssClientRequestFactory {
                 AmazonS3ClientBuilder.standard()
                         .withCredentials(new AWSStaticCredentialsProvider(credentials))
                         .withEndpointConfiguration(configuration)
+                        .enablePathStyleAccess()
                         .build();
         return new AwsOssClientRequest(s3Client, true);
     }
