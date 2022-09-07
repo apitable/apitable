@@ -242,12 +242,16 @@ endif
 
 ### run
 run:
-	echo "TODO As daemon"
+	@echo "You can run with commands:"
+	@echo "  make run-web-server"
+	@echo "  make run-room-server"
+	@echo "  make run-socket-server"
+	@echo "  make run-backend-server"
 
 
 
 run-web-server: ## run local web-server code
-	$(DEVENV) web-server yarn sd 
+	$(DEVENV) web-server yarn sd:r
 
 run-room-server: ## run local room-server code
 	$(DEVENV) room-server yarn sd 
