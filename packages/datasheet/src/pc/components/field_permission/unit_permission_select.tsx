@@ -21,7 +21,7 @@ import { Message } from 'pc/components/common/message/message';
 
 export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props => {
   const colors = useThemeColors();
-  const { permissionList, onSubmit, classNames, adminAndOwnerUnitIds = [] } = props;
+  const { permissionList, onSubmit, classNames, adminAndOwnerUnitIds = [], showTeams, searchEmail } = props;
   const unitMap =
     useSelector(state => {
       return Selectors.getUnitMap(state);
@@ -201,6 +201,8 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
                 sourceId={datasheetId}
                 unitMap={unitMap}
                 inputRef={inputRef}
+                searchEmail={searchEmail}
+                showTeams={showTeams}
               />
             </PopStructure>
           </div>

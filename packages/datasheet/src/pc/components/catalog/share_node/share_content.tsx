@@ -140,6 +140,8 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
             permissionList={optionData}
             onSubmit={onSubmit}
             adminAndOwnerUnitIds={adminAndOwnerUnitIds}
+            showTeams
+            searchEmail
           />
         </div>
         <div className={cls(styles.shareFloor, styles.collaborator)}>

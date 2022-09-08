@@ -31,7 +31,8 @@ export interface IUserMap {
 
 export interface IUnitValue extends IUnitBase {
   unitId: string;
-  type: MemberType
+  type: MemberType;
+  unitRefId: string;
 }
 
 export interface IUserValue extends IUnitBase {
