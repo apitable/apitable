@@ -1,6 +1,6 @@
 FROM liquibase/liquibase:4.8
 RUN lpm add mysql --global
-ADD init-db/src/main/resources /liquibase/changelog
+ADD src/main/resources /liquibase/changelog
 
 CMD ["sh", "-c", "echo ${ACTION}; docker-entrypoint.sh \
                     --classpath=/liquibase/changelog \

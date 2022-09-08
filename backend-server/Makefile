@@ -1,23 +1,9 @@
 
-DOCKER_PATH=ghcr.io/vikadata/vika/init-db
 SHELL := /bin/bash
 
 .PHONY: patch
 patch: # bump version number patch
 	docker run --rm -it --user $(shell id -u):$(shell id -g) -v "$(shell pwd):/app" vikadata/bumpversion bumpversion patch
-
-build-init-db: #  local build the init-db
-	docker build -f Dockerfile.init-db . --tag=${DOCKER_PATH}
-
-env: ## 生成.env文件，读取1Password，用于init-db本地执行调试
-	bash ./scripts/env.sh
-
-plan: build-init-db ## init-db dry update
-	docker run --rm --env-file .env -e ACTION=updateSQL ${DOCKER_PATH}
-
-apply: build-init-db ## init-db 本地环境更新远端数据库结构
-	docker build -f Dockerfile.init-db . --tag=${DOCKER_PATH}
-	docker run --rm --env-file .env -e ACTION=update ${DOCKER_PATH}
 
 docker_build_app:
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)"; \
@@ -31,11 +17,6 @@ docker_build_space_job_executor:
 	export DOCKERFILE=Dockerfile; \
 	build_docker space-job-executor
       
-docker_build_init_db:
-	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)"; \
-	export DOCKERFILE=Dockerfile.init-db; \
-	build_docker init-db
-
 
 ###### 【backend server unit test】 ######
 

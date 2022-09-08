@@ -190,8 +190,12 @@ test-ut-backend-docker:
 
 ###### buildpush ######
 
-buildpush: buildpush_roomserver buildpush_webserver # buildpush all
+buildpush: buildpush_roomserver buildpush_webserver buildpush-init-db ## buildpush all
 	echo 'finish buildpush all'
+
+buildpush-init-db: ## build and push the `init-db`container 
+	cd init-db ;\
+	make buildpush
 
 buildpush_roomserver: ## ghcr.io/vikadata/vika/room-server
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)";\
