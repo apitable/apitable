@@ -46,7 +46,7 @@ public class InternalAssetController {
     @ApiOperation(value = "获取上传预签名URL")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "nodeId", value = "节点ID", required = true, dataTypeClass = String.class, paramType = "query", example = "dst123"),
-            @ApiImplicitParam(name = "count", value = "创建的数量（默认为1，最大为100）", dataTypeClass = String.class, paramType = "query", example = "2")
+            @ApiImplicitParam(name = "count", value = "创建的数量（默认为1，最大为20）", dataTypeClass = String.class, paramType = "query", example = "2")
     })
     public ResponseData<List<AssetUploadCertificateVO>> getSpaceCapacity(@RequestParam("nodeId") String nodeId, @RequestParam(name = "count", defaultValue = "1") Integer count) {
         Long userId = SessionContext.getUserId();

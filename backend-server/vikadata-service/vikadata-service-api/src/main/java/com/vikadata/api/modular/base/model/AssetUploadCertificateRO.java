@@ -22,7 +22,7 @@ public class AssetUploadCertificateRO {
 
     @ApiModelProperty(value = "创建的凭证数量（默认为1，最大为100）", position = 1)
     @Min(value = 1, message = "数量错误")
-    @Max(value = 100, message = "数量错误")
+    @Max(value = 20, message = "数量错误")
     private Integer count = 1;
 
     @ApiModelProperty(value = "类型(0:用户头像;1:空间logo;2:数表附件;3:封面图;4:节点描述)", example = "0", position = 2, required = true)
