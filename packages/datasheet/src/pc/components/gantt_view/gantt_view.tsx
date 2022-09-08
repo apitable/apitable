@@ -683,7 +683,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     ganttInstance.rowIndicesMap = rowIndicesMap;
     ganttInstance.rowHeightLevel = rowHeightLevel;
     forceRender();
-  }, [rowIndicesMap]);
+  }, [rowIndicesMap, dateUnitType]);
 
   // resize
   useUpdateEffect(() => {

@@ -36,7 +36,7 @@ export class GanttCoordinate extends Coordinate {
     this._workDays = new Set(workDays);
     this.onlyCalcWorkDay = onlyCalcWorkDay;
     this._columnThreshold = columnThreshold;
-    initDateTime ? this.initTimeline(dateUnitType, initDateTime, true) : this.initTimeline(dateUnitType);
+    initDateTime ? this.initTimeline(dateUnitType, initDateTime) : this.initTimeline(dateUnitType);
   }
 
   get workDays() {
@@ -127,15 +127,14 @@ export class GanttCoordinate extends Coordinate {
   }
 
   // 初始化时间轴相关的参数
-  public initTimeline(dateUnitType: DateUnitType, dateTime: DateTimeType = this.nowTime, isCurrent = false) {
-    const isQuarter = dateUnitType === DateUnitType.Quarter;
-    let currentDate = getDayjs(dateTime);
-    if (!isCurrent) {
-      currentDate = isQuarter ? currentDate.startOf('week') : currentDate.startOf('month');
-    }
+  public initTimeline(dateUnitType: DateUnitType, dateTime: DateTimeType = this.nowTime) {
     this.dateUnitType = dateUnitType;
-    const rangeStartDate = change(currentDate, - this.columnThreshold, this.unitType);
-    const rangeEndDate = change(currentDate, this.columnThreshold, this.unitType);
+    const isQuarter = dateUnitType === DateUnitType.Quarter;
+    const currentDate = getDayjs(dateTime);
+    const startDate = isQuarter ? currentDate.startOf('week') : currentDate.startOf('month');
+    const diffCount = getDiffCount(startDate, currentDate.startOf('day'));
+    const rangeStartDate = change(change(currentDate, - this.columnThreshold, this.unitType), - diffCount);
+    const rangeEndDate = change(change(currentDate, this.columnThreshold, this.unitType), - diffCount);
     this.startDateIndex = this.getIndexFromUnix(rangeStartDate);
     this.endDateIndex = this.getIndexFromUnix(rangeEndDate);
   }
