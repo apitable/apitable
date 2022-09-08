@@ -1,4 +1,4 @@
-
+DOCKER_PATH=ghcr.io/vikadata/vika/init-db
 SHELL := /bin/bash
 
 build-init-db: #  local build the init-db
