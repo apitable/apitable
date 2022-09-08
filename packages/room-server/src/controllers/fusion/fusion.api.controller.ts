@@ -83,7 +83,7 @@ export class FusionApiController {
     summary: '查询表格记录',
     description: '获取某个维格表的N条记录',
     deprecated: false,
-  })
+    })
   @ApiProduces('application/json')
   @UseGuards(ApiDatasheetGuard)
   @UseInterceptors(ApiCacheInterceptor)
@@ -105,11 +105,11 @@ export class FusionApiController {
   @ApiOperation({
     summary: '给指定的维格表插入多条记录',
     description:
-      '单次请求可最多创建10条记录。在Request Header中需带上`Content-Type：application/json`，以raw json的格式提交数据。\n' +
-      'POST数据是一个JSON对象，其中需包含一个数组：`records`，records数组包含多条将要创建的记录。\n' +
-      '对象`fields`包含一条记录中要新建的字段值，可以包含任意数量的字段值，不一定要包含全部字段。如果有设置字段默认值，没有传入的字段值将根据设置字段时的默认值进行保存',
+    '单次请求可最多创建10条记录。在Request Header中需带上`Content-Type：application/json`，以raw json的格式提交数据。\n' +
+    'POST数据是一个JSON对象，其中需包含一个数组：`records`，records数组包含多条将要创建的记录。\n' +
+    '对象`fields`包含一条记录中要新建的字段值，可以包含任意数量的字段值，不一定要包含全部字段。如果有设置字段默认值，没有传入的字段值将根据设置字段时的默认值进行保存',
     deprecated: false,
-  })
+    })
   @ApiBody({ description: '添加记录参数', type: RecordCreateRo })
   @ApiProduces('application/json')
   @ApiConsumes('application/json')
@@ -134,7 +134,7 @@ export class FusionApiController {
     summary: '获取维格附件的预签名URL',
     description: '',
     deprecated: false,
-  })
+    })
   @ApiProduces('application/json')
   @NodePermissions(NodePermissionEnum.EDITABLE)
   @UseGuards(ApiDatasheetGuard)
@@ -147,22 +147,22 @@ export class FusionApiController {
       return Promise.reject(error);
     }
     const results = await this.restService.getUploadPresignedUrl({ token: req.headers.authorization }, datasheet.nodeId, query.count);
-    return ApiResponse.success(results);
+    return ApiResponse.success({ results });
   }
 
   @Post('/datasheets/:datasheetId/attachments')
   @ApiOperation({
     summary: '上传维格附件',
     description:
-      '在Request Header中需带上`Content-Type：multipart/form-data`，以form的形式提交数据。\n' +
-      'POST数据是一个`formData`对象。\n' +
-      '上传附件接口，每次仅允许接收一个附件。如果需要上传多份文件，需要重复调用此接口。',
+    '在Request Header中需带上`Content-Type：multipart/form-data`，以form的形式提交数据。\n' +
+    'POST数据是一个`formData`对象。\n' +
+    '上传附件接口，每次仅允许接收一个附件。如果需要上传多份文件，需要重复调用此接口。',
     deprecated: true,
-  })
+    })
   @ApiBody({
     description: '附件',
     type: AttachmentUploadRo,
-  })
+    })
   @ApiInternalServerErrorResponse()
   @ApiConsumes('multipart/form-data')
   @ApiProduces('application/json')
@@ -225,11 +225,11 @@ export class FusionApiController {
     summary: '更新记录',
     description: '更新某个维格表的若干条记录。使用PATCH方法提交，只有被指定的字段才会更新数据，没有被指定的字段会保留旧值。',
     deprecated: false,
-  })
+    })
   @ApiBody({
     description: '修改记录参数',
     type: RecordUpdateRo,
-  })
+    })
   @ApiProduces('application/json')
   @ApiConsumes('application/json')
   @UseGuards(ApiDatasheetGuard)
@@ -248,11 +248,11 @@ export class FusionApiController {
     summary: '更新记录',
     description: '更新某个维格表的若干条记录。使用PUT方法提交，只有被指定的字段才会更新数据，没有被指定的字段会保留旧值。',
     deprecated: false,
-  })
+    })
   @ApiBody({
     description: '修改记录参数',
     type: RecordUpdateRo,
-  })
+    })
   @ApiProduces('application/json')
   @ApiConsumes('application/json')
   @UseGuards(ApiDatasheetGuard)
@@ -271,7 +271,7 @@ export class FusionApiController {
     summary: '删除记录',
     description: '删除某个维格表的若干条记录',
     deprecated: false,
-  })
+    })
   @ApiProduces('application/json')
   @UseGuards(ApiDatasheetGuard)
   public async deleteRecord(@Param() param: RecordParamRo, @Query() query: RecordDeleteRo): Promise<RecordDeleteVo> {
@@ -287,7 +287,7 @@ export class FusionApiController {
     summary: '查询表格的所有字段',
     description: '表格的所有字段，不分页',
     deprecated: false,
-  })
+    })
   @ApiProduces('application/json')
   @UseGuards(ApiDatasheetGuard)
   public async datasheetFields(@Param() param: RecordParamRo, @Query() query: FieldQueryRo): Promise<FieldListVo> {
@@ -304,7 +304,7 @@ export class FusionApiController {
     summary: '查询表格的所有视图',
     description: '一张维格表可以建立最多 30 张视图。请求视图时一次性返回，不分页。',
     deprecated: false,
-  })
+    })
   @ApiProduces('application/json')
   @UseGuards(ApiDatasheetGuard)
   public async datasheetViews(@Param() param: RecordParamRo): Promise<ViewListVo> {
@@ -321,7 +321,7 @@ export class FusionApiController {
     summary: '查询空间列表',
     description: '返回当前用户的空间列表。一次性返回，不分页。',
     deprecated: false,
-  })
+    })
   @ApiProduces('application/json')
   // 这个接口暂时不统计 API 使用量
   public async spaceList() {
@@ -336,11 +336,11 @@ export class FusionApiController {
     summary: '新增字段',
     description: '新增字段',
     deprecated: false,
-  })
+    })
   @ApiBody({
     description: '新增字段',
     type: FieldCreateRo,
-  })
+    })
   @ApiProduces('application/json')
   @ApiConsumes('application/json')
   @UseGuards(ApiFieldGuard)
@@ -361,11 +361,11 @@ export class FusionApiController {
     summary: '删除字段',
     description: '删除字段',
     deprecated: false,
-  })
+    })
   @ApiBody({
     description: '删除字段',
     type: FieldCreateRo,
-  })
+    })
   @ApiProduces('application/json')
   @ApiConsumes('application/json')
   @UseGuards(ApiFieldGuard)
@@ -390,11 +390,11 @@ export class FusionApiController {
     summary: '创建表格',
     description: '创建表格及其字段',
     deprecated: false,
-  })
+    })
   @ApiBody({
     description: '创建表格',
     type: DatasheetCreateRo,
-  })
+    })
   @ApiProduces('application/json')
   @ApiConsumes('application/json')
   @UseGuards(ApiSpaceGuard)
@@ -423,7 +423,7 @@ export class FusionApiController {
     summary: '查询空间站一级文件节点列表',
     description: '返回指定空间站一级文件节点列表。一次性返回，不分页。',
     deprecated: false,
-  })
+    })
   @ApiProduces('application/json')
   @UseGuards(ApiSpaceGuard)
   public async nodeList(@Param() param: NodeListParamRo) {
@@ -440,7 +440,7 @@ export class FusionApiController {
     summary: '查询节点详情',
     description: '查询指定文件节点详情',
     deprecated: true,
-  })
+    })
   @ApiProduces('application/json')
   @UseGuards(ApiSpaceGuard)
   public async _nodeDetail(@Param() param: OldNodeDetailParamRo) {
@@ -454,7 +454,7 @@ export class FusionApiController {
     summary: '查询节点详情',
     description: '查询指定文件节点详情',
     deprecated: false,
-  })
+    })
   @ApiProduces('application/json')
   @UseGuards(ApiNodeGuard)
   public async nodeDetail(@Param() param: NodeDetailParamRo) {
@@ -471,7 +471,7 @@ export class FusionApiController {
     summary: '创建资源的 op',
     description: '为了灵活性考虑，也为了内部的自动化测试，提供一个自由创建 command 的接口',
     deprecated: false,
-  })
+    })
   @ApiProduces('application/json')
   public async executeCommand(
     @Body() body: ICollaCommandOptions,

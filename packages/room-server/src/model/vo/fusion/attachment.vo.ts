@@ -20,7 +20,12 @@ export class AssetVo {
 
 }
 
-export class AssetView extends ApiResponse<Object> {
+export class AssetResults {
   @ApiProperty({ type: AssetVo })
-  data: AssetVo[];
+  results: AssetVo[];
+}
+
+export class AssetView extends ApiResponse<AssetResults> {
+  @ApiProperty({ type: AssetResults })
+  data: AssetResults;
 }
