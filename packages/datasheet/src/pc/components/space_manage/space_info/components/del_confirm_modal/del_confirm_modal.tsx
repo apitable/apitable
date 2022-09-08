@@ -3,7 +3,7 @@ import { Api, IReduxState, Strings, t } from '@vikadata/core';
 import { Drawer } from 'antd';
 import Image from 'next/image';
 import { Message } from 'pc/components/common/message';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
 import { useRequest } from 'pc/hooks';
 import * as React from 'react';

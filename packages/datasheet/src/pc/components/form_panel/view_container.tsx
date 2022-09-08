@@ -2,10 +2,6 @@ import { Skeleton } from '@vikadata/components';
 import styles from './style.module.less';
 import { FormContainer } from '../form_container';
 
-export interface ITableViewProps {
-  loading: boolean;
-}
-
 export const ViewContainer = (props) => {
   if (props.loading) {
     return (

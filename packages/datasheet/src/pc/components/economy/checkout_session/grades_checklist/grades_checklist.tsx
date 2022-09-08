@@ -1,28 +1,21 @@
-import { FC, useState } from 'react';
-import * as React from 'react';
-import { showPayingModalBase } from '../../components/paying_modal/paying_modal';
-import { PayingModalHeader, LevelPrice, LevelOperation } from '../../stateless_ui';
-import styles from './style.module.less';
-import { SpaceLevelInfo } from 'pc/components/space_manage/space_info/utils';
 import { Typography } from '@vikadata/components';
-import classNames from 'classnames';
 import { Strings, t } from '@vikadata/core';
-export const showGradesChecklist = () => {
-  showPayingModalBase({
-    header: (<PayingModalHeader title="升级你的空间站" subTitle="超值白银级空间站来袭，2021年助你弯道超车" />),
-    main: (<GradesChecklist />),
-    footer: null,
-  });
-};
+import classNames from 'classnames';
+import { SpaceLevelInfo } from 'pc/components/space_manage/space_info/utils';
+import * as React from 'react';
+import { FC, useState } from 'react';
+import { LevelOperation, LevelPrice } from '../../stateless_ui';
+import styles from './style.module.less';
+
 const getSpaceLevelInfo = () => {
   const data = JSON.parse(t(Strings.subscription_grades_checklist));
   return data.reduce((last, item) => {
-    if(last[item.group]){  
-      last[item.group].push(item);  
-    }else{  
-      last[item.group]=[item];  
-    }  
-    return last; 
+    if(last[item.group]){
+      last[item.group].push(item);
+    }else{
+      last[item.group]=[item];
+    }
+    return last;
   },{});
 };
 const InfoList: FC<{ valueKey: 'title' | 'bronze' | 'silver' | 'enterprise' }> = ({ valueKey }): React.ReactElement => {
@@ -103,7 +96,7 @@ export const GradesChecklist = () => {
             <LevelOperation type="upgradeSeats"/>
           </li>
           <li>
-            <LevelOperation type="customerService"/> 
+            <LevelOperation type="customerService"/>
           </li>
         </ul>
       </div>

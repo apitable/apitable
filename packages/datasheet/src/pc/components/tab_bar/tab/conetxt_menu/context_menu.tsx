@@ -31,8 +31,6 @@ interface IContextMenuProps {
   setEditIndex: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
-export const VIEW_TAB_CONTEXT_MENU = 'VIEW_TAB_CONTEXT_MENU';
-
 export const ContextMenu: React.FC<IContextMenuProps> = props => {
   const {
     activeViewId,

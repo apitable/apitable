@@ -10,10 +10,6 @@ export interface IRenameInputProps extends InputProps {
   customStyle?: string;
 }
 
-export interface IRenameRef {
-  focus (): void;
-}
-
 const RenameInputBase: ForwardRefRenderFunction<any, IRenameInputProps> = (props, ref) => {
   const inputRef = useRef<Input>(null);
 

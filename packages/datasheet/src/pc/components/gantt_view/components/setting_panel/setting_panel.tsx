@@ -48,7 +48,7 @@ import classNames from 'classnames';
 import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { KonvaGridContext } from 'pc/components/konva_grid';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { autoTaskScheduling } from 'pc/components/gantt_view/utils';
 import { store } from 'pc/store';
 import { Message } from 'pc/components/common';

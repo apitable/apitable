@@ -1,7 +1,7 @@
 import { Api, ApiInterface, ConfigConstant, IReduxState, IUnitValue, Navigation, StatusCode, StoreActions, Strings, t } from '@vikadata/core';
 import { uploadAttachToS3, UploadType } from '@vikadata/widget-sdk';
 import { Message } from 'pc/components/common/message';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { openSliderVerificationModal } from 'pc/components/common/slider_verification';
 import { useLinkInvite } from 'pc/components/invite/use_invite';
 import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';

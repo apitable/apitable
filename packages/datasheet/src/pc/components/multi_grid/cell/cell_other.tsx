@@ -1,13 +1,10 @@
-import {
-  ICollaboratorCursor, stringHash2Number,
-  CellType, IGroupInfo, Strings, t, ICollaborator, DATASHEET_ID,
-} from '@vikadata/core';
-import { store } from 'pc/store';
-import { Avatar, AvatarSize } from 'pc/components/common';
 import { lightColors } from '@vikadata/components';
+import { DATASHEET_ID, ICollaborator, ICollaboratorCursor, stringHash2Number, Strings, t } from '@vikadata/core';
+import { Tooltip } from 'antd';
+import { Avatar, AvatarSize } from 'pc/components/common';
+import { store } from 'pc/store';
 import * as React from 'react';
 import styles from './styles.module.less';
-import { Tooltip } from 'antd';
 
 export const getCollaboratorColor = (collaborator: ICollaboratorCursor): string => {
   const colorsWheel = [
@@ -86,22 +83,3 @@ export function renderFillHandle(
     <div className={styles.fillHandleArea} id={DATASHEET_ID.FILL_HANDLE_AREA} style={{ ...addStyle }} />;
 }
 
-// 修正存在分组的前提下，每个分组的rowIndex 从 1 开始，
-// 否则则返回默认的rowIndex
-export function reviseOperateHeadRowIndex(
-  rows: {
-    path: number[]; type: string; recordId: string; offset: number; areaIndex: number;
-  }[],
-  index: number,
-  groupInfo: IGroupInfo,
-) {
-  if (!groupInfo.length) return index + 1;
-  if (!rows[index]) return index;
-  if (!rows[index].recordId) return index;
-  for (let i = index - 1; i >= 0; i--) {
-    if (rows[i].type && rows[i].type === CellType.GroupTab) {
-      return index - i;
-    }
-  }
-  return index;
-}

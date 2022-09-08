@@ -54,20 +54,10 @@ export interface IImageProps extends IGraphProps {
   clipFunc?: (ctx) => void;
 }
 
-export type ILabelProps = Omit<IRectProps & ITextProps, 'fillStyle'> & { 
-  background: string; 
-  color?: string; 
-  padding?: number; 
-};
-
-export type ILabelsProps = Omit<ILabelProps, 'text'> & {
-  width: number;
-  texts: string[];
-  itemHeight: number;
-  maxRow?: number;
-  itemLeft?: number;
-  itemTop?: number;
-  itemPadding?: number;
+export type ILabelProps = Omit<IRectProps & ITextProps, 'fillStyle'> & {
+  background: string;
+  color?: string;
+  padding?: number;
 };
 
 export interface ICtxStyleProps {
@@ -77,17 +67,11 @@ export interface ICtxStyleProps {
   strokeStyle?: string;
 }
 
-export interface ITextEllipsisProps { 
-  text: string; 
-  maxWidth?: number; 
-  fontSize?: number; 
+export interface ITextEllipsisProps {
+  text: string;
+  maxWidth?: number;
+  fontSize?: number;
   fontWeight?: IFontWeight;
-}
-
-export enum FieldPosType {
-  First = 'First',
-  Last = 'Last',
-  Other = 'Other',
 }
 
 export interface IRenderEndBlankProps {

@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/react';
 import { dataSelfHelper } from '@vikadata/core';
 import { loadRecords } from 'pc/utils/load_records';
 import { getDstNetworkData } from './helper';
@@ -8,9 +7,6 @@ import { getDstNetworkData } from './helper';
     (window as any).getDstNetworkData = getDstNetworkData;
   }
 })();
-
-// [当前表id]: [dstId-fieldId-recordId] 缺失的 cell key
-export const missingRecordDataMap = new Map<string, Set<string>>();
 
 export const fixData = (store) => {
   if (dataSelfHelper.needHelper) {
@@ -51,23 +47,3 @@ export const fixData = (store) => {
   return;
 };
 
-export const uploadError = () => {
-  if (missingRecordDataMap.size > 0) {
-    try {
-      const metaData: any = {};
-      missingRecordDataMap.forEach((value, dstId) => {
-        metaData[dstId] = {
-          missingData: Array.from(value),
-          network: getDstNetworkData(dstId),
-        };
-      });
-      Sentry.captureMessage('Missing RecordData', {
-        extra: metaData,
-      });
-    } catch (error) {
-
-    } finally {
-      missingRecordDataMap.clear();
-    }
-  }
-};

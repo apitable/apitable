@@ -7,7 +7,7 @@ import {
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
 import Image from 'next/image';
-import { Modal as ModalBase } from 'pc/components/common/modal/modal';
+import { Modal as ModalBase } from 'pc/components/common/modal/modal/modal';
 import { isSocialPlatformEnabled } from 'pc/components/home/social_platform';
 import { store } from 'pc/store';
 import { tracker } from 'pc/utils/tracker';

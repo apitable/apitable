@@ -76,8 +76,8 @@ export class GridLayout extends KonvaDrawer {
     const x = this.x + this.columnWidth;
     const y = this.y;
     const rowHeight = this.rowHeight;
-    this.rect({ 
-      x: x + 0.5, 
+    this.rect({
+      x: x + 0.5,
       y: y - 0.5,
       width,
       height: rowHeight + 1,
@@ -141,5 +141,3 @@ export class GridLayout extends KonvaDrawer {
     });
   }
 }
-
-export const gridLayout = new GridLayout();

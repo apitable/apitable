@@ -8,14 +8,6 @@ import { Strings, t, WidgetPackageStatus, Settings } from '@vikadata/core';
 import { WidgetLoadError } from '@vikadata/widget-sdk/dist/initialize_widget';
 import { useSelector } from 'react-redux';
 
-export enum IWidgetStatus {
-  NoPublish,
-  NoAgree,
-  WaitPublish,
-  Published,
-  UnPublished
-}
-
 interface IErrorWidget {
   title?: string;
   content: string | React.ReactNode;
@@ -53,7 +45,7 @@ export const WidgetLoader: React.FC<{
       res.success && refresh();
     });
   }, [refresh]);
-  
+
   useEffect(() => {
     if (!isDevMode) {
       return;
@@ -74,7 +66,7 @@ export const WidgetLoader: React.FC<{
         <div className={styles.title}>
           <span>{t(Strings.widget_loader_developing_title)}</span>
           <a href={Settings.widget_release_help.value} target="_blank" className={styles.helpIcon} rel="noreferrer">
-            <InformationSmallOutlined size={16} color={colors.fc4}/> 
+            <InformationSmallOutlined size={16} color={colors.fc4}/>
           </a>
         </div>
         <div className={styles.tips}>{t(Strings.widget_loader_developing_content)}</div>

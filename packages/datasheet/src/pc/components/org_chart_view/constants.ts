@@ -8,7 +8,6 @@ export const RANKSEP = 36;
 export const NODESEP = 64;
 
 export const GHOST_NODE_SIZE = 48;
-export const BASE_PADDING = 8;
 
 export const CYCLE_NODE_WIDTH = 108;
 export const CYCLE_NODE_HEIGHT = 36;
@@ -47,16 +46,3 @@ export enum NodeType {
 
 export const SHOW_EPMTY_COVER = true;
 export const SHOW_EPMTY_FIELD = true;
-
-export const bottomLeftCorner = (x: number, y: number, size: number): string =>
-  `L ${x},${y - size}Q ${x},${y} ${x + size},${y}`;
-export const leftBottomCorner = (x: number, y: number, size: number): string =>
-  `L ${x + size},${y}Q ${x},${y} ${x},${y - size}`;
-export const bottomRightCorner = (x: number, y: number, size: number): string =>
-  `L ${x},${y - size}Q ${x},${y} ${x - size},${y}`;
-export const rightBottomCorner = (x: number, y: number, size: number): string =>
-  `L ${x - size},${y}Q ${x},${y} ${x},${y - size}`;
-export const leftTopCorner = (x: number, y: number, size: number): string => `L ${x + size},${y}Q ${x},${y} ${x},${y + size}`;
-export const topLeftCorner = (x: number, y: number, size: number): string => `L ${x},${y + size}Q ${x},${y} ${x + size},${y}`;
-export const topRightCorner = (x: number, y: number, size: number): string => `L ${x},${y + size}Q ${x},${y} ${x - size},${y}`;
-export const rightTopCorner = (x: number, y: number, size: number): string => `L ${x - size},${y}Q ${x},${y} ${x},${y + size}`;

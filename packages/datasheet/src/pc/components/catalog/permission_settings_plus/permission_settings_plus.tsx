@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { ConfigConstant, Strings, t } from '@vikadata/core';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { Permission } from './permission';
 import { PermissionDescModal } from 'pc/components/space_manage/workbench/permission_desc';
 import styles from './style.module.less';

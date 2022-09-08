@@ -67,7 +67,7 @@ export const TemplateCategoryDetail: FC<ITemplateCategoryDetailProps> = props =>
   }, [templateData]);
 
   const delTemplateConfirm = (templateId: string) => {
-    import('pc/components/common/modal/modal').then(({ Modal }) => {
+    import('pc/components/common/modal/modal/modal').then(({ Modal }) => {
       Modal.confirm({
         type: 'danger',
         title: t(Strings.delete_template_title),

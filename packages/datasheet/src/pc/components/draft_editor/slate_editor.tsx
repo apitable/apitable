@@ -2,39 +2,18 @@ import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
 import { Api, DatasheetApi, StoreActions, Strings, t } from '@vikadata/core';
 import { Spin, Tooltip } from 'antd';
 import { find, keyBy, toPairs, values, keys, get } from 'lodash';
-import {
-  expandUnitModal,
-  SelectUnitSource
-} from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
+import { expandUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
 import { MemberOptionList } from 'pc/components/list';
 import { usePlatform } from 'pc/hooks/use_platform';
 import { useSelector } from 'react-redux';
 import styles from './styles/style.module.less';
-
-import {
-  useMemo,
-  useCallback,
-  useRef,
-  useEffect,
-  useState,
-  useContext,
-  useImperativeHandle,
-  forwardRef,
-} from 'react';
-
+import { useMemo, useCallback, useRef, useEffect, useState, useContext, useImperativeHandle, forwardRef } from 'react';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { Editor, Transforms, Range, createEditor, Descendant, Text, Node } from 'slate';
 import { withHistory } from 'slate-history';
 import { MemberItem } from 'pc/components/multi_grid/cell/cell_member/member_item';
-import {
-  Slate,
-  Editable,
-  ReactEditor,
-  withReact,
-  useSelected,
-  useFocused
-} from 'slate-react';
+import { Slate, Editable, ReactEditor, withReact, useSelected, useFocused } from 'slate-react';
 import { IS_FIREFOX } from 'pc/components/slate_editor/helpers/browser';
 import { store } from 'pc/store';
 import { Emoji } from 'pc/components/common';
@@ -45,7 +24,7 @@ import { getValidSelection } from 'pc/components/slate_editor/helpers/utils';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 import { fixImeInputBug } from 'pc/components/slate_editor/slate_editor';
 
-const withLastSelection = editor =>{ // 失焦记录位置
+const withLastSelection = editor => { // 失焦记录位置
   const { onChange } = editor;
   editor.onChange = (...params) => {
     // 记录最后一次selection值，确保编辑器失焦后能将新节点插入正确的位置，比如新加一个链接元素
@@ -84,15 +63,19 @@ export type ILinkElement = {
 };
 
 const LINE_HEIGHT = 22;
-function calcContainerStyle(maxRow: number): React.CSSProperties{
+
+function calcContainerStyle(maxRow: number): React.CSSProperties {
   return {
     maxHeight: maxRow * LINE_HEIGHT + 'px',
     overflowY: 'auto',
   };
 }
+
 const SlateEditor = (props, ref) => {
-  const { readOnly, placeHolder, submit, syncContent, noMention, maxRow,
-    initialValue, emojis, handleEmoji, onBlur, className } = props;
+  const {
+    readOnly, placeHolder, submit, syncContent, noMention, maxRow,
+    initialValue, emojis, handleEmoji, onBlur, className
+  } = props;
   // blocks
   const membersListRef = useRef<HTMLDivElement | null>(null);
   const [value, setValue] = useState<Descendant[]>(() => {
@@ -144,7 +127,7 @@ const SlateEditor = (props, ref) => {
             DatasheetApi.fetchUserList(datasheetId, [userId]).then(res => {
               const { data: { data: resData, success }} = res as any;
               if (!resData?.length || !success) {
-                console.log(`用户 ${userId} 获取失败` );
+                console.log(`用户 ${userId} 获取失败`);
               } else {
                 store.dispatch(StoreActions.updateUserMap(keyBy(resData, 'userId')));
               }
@@ -153,7 +136,7 @@ const SlateEditor = (props, ref) => {
         });
       }
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [datasheetId, JSON.stringify(emojis), unitMap]);
 
   const [index, setIndex] = useState(0);
@@ -161,7 +144,7 @@ const SlateEditor = (props, ref) => {
   const [members, setMembers] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
-  const renderElement = useCallback(props => <Element {...props}/>, []);
+  const renderElement = useCallback(props => <Element {...props} />, []);
   const editor = useMemo(
     () => withLink(withMentions(withReact(withHistory(withLastSelection(createEditor() as ReactEditor))))),
     []
@@ -199,9 +182,9 @@ const SlateEditor = (props, ref) => {
     Transforms.move(editor);
   }, [search.length]);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (readOnly) return;
-    if (replyUnitId){
+    if (replyUnitId) {
       const unit = unitMap![replyUnitId];
       const isSelf = selfUserId === unit.userId;
       if (!isSelf) {
@@ -223,10 +206,10 @@ const SlateEditor = (props, ref) => {
         clearContent();
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [replyUnitId]);
 
-  useImperativeHandle(ref, ()=>({
+  useImperativeHandle(ref, () => ({
     clear: clearContent,
     focus,
   }));
@@ -269,11 +252,11 @@ const SlateEditor = (props, ref) => {
             break;
         }
       } else {
-        if (event.keyCode === 13){
+        if (event.keyCode === 13) {
           if (mobile) {
             return;
           }
-          if (event.shiftKey){
+          if (event.shiftKey) {
             return;
           }
           event.preventDefault();
@@ -380,17 +363,17 @@ const SlateEditor = (props, ref) => {
             <div
               ref={membersListRef}
               className={styles.members}
-              data-cy="mentions-portal"
+              data-cy='mentions-portal'
             >
               {loading ? <div className={styles.loading}>
-                <Spin size="small" indicator={<LoadingOutlined />} />
+                <Spin size='small' indicator={<LoadingOutlined />} />
               </div> :
                 <>
                   <MemberOptionList
                     listData={members}
                     existValues={[]}
                     multiMode={false}
-                    onClickItem={(data)=>{
+                    onClickItem={(data) => {
                       const memberId = data && data[0];
                       const member = members.find((item) => item.unitId === memberId);
                       if (member) {
@@ -414,7 +397,7 @@ const SlateEditor = (props, ref) => {
                           source: SelectUnitSource.Member,
                           onSubmit: values => {
                             const _member = values[0];
-                            if (get(_member, 'teamId') ) {
+                            if (get(_member, 'teamId')) {
                               if ('teamName' in _member) {
                                 insertMention(editor, {
                                   ..._member,
@@ -452,7 +435,7 @@ const SlateEditor = (props, ref) => {
       </Slate>
       {Boolean(emojis) && (
         <div className={styles.emojiWrapper}>
-          {keys(emojis).map((k,index) => {
+          {keys(emojis).map((k, index) => {
             const v = emojis[k];
             if (!v || !v.length) {
               return null;
@@ -501,7 +484,7 @@ const withMentions = editor => {
     return element.type === 'mention' || isInline(element);
   };
 
-  editor.isVoid = element =>{
+  editor.isVoid = element => {
     return element.type === 'mention' || isVoid(element);
   };
 
@@ -515,7 +498,7 @@ const withLink = editor => {
     return element.type === 'link' || isInline(element);
   };
 
-  editor.isVoid = element =>{
+  editor.isVoid = element => {
     return element.type === 'link' || isVoid(element);
   };
 
@@ -524,8 +507,8 @@ const withLink = editor => {
 
 const Element = props => {
   const { attributes, children, element } = props;
-  if (element.type === 'link'){
-    return <LinkElement {...props}/>;
+  if (element.type === 'link') {
+    return <LinkElement {...props} />;
   } else if (element.type === 'mention') {
     return <MentionElement {...props} />;
   }
@@ -549,20 +532,20 @@ const MentionElement = ({ attributes, children, element }) => {
         <MemberItem
           selected={selected && focused}
           unitInfo={element.data}
-          style={{ margin: 0 }}/>
+          style={{ margin: 0 }} />
       </span>
       {children}
     </span>
   );
 };
 
-const LinkElement = ({ attributes, children, element })=>{
+const LinkElement = ({ attributes, children, element }) => {
   return (
     <span
       {...attributes}
       className={styles.link}
     >
-      <a href={element.data.href} target='_blank' rel="noreferrer">{element.data.raw}</a>
+      <a href={element.data.href} target='_blank' rel='noreferrer'>{element.data.raw}</a>
       {children}
     </span>);
 };

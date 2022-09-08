@@ -1,5 +1,4 @@
 import { ConfigConstant } from '@vikadata/core';
-import { browser } from 'pc/common/browser';
 import { isMobileApp } from './env';
 
 export const isWindowsOS = () => {
@@ -39,11 +38,4 @@ export const getPlatformType = () => {
   }
 
   return ConfigConstant.PlatFormTypes.Web;
-};
-
-export const isSafari15 = () => {
-  return browser.satisfies({
-    safari: '~15',
-    ios: '~15'
-  });
 };

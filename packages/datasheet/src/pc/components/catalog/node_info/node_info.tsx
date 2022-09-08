@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { Provider, useSelector } from 'react-redux';
 import styles from './styles.module.less';
 import { Avatar, AvatarSize } from 'pc/components/common/avatar';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useRequest } from 'pc/hooks';
 import { Api, Strings, t } from '@vikadata/core';
 import { Skeleton } from '@vikadata/components';
@@ -52,10 +52,10 @@ const NodeInfoModal: React.FC<INodeInfoProps> = props => {
   const nameTitle =
     !loading && nodeInfo
       ? getSocialWecomUnitName({
-          name: nodeInfo.creator.memberName,
-          isModified: nodeInfo.creator.isMemberNameModified,
-          spaceInfo,
-        })
+        name: nodeInfo.creator.memberName,
+        isModified: nodeInfo.creator.isMemberNameModified,
+        spaceInfo,
+      })
       : '';
 
   const content =

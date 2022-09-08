@@ -17,7 +17,7 @@ import { EmitterEventName } from 'pc/common/simple_emitter';
 import { Loading } from 'pc/components/common/loading';
 import { Message } from 'pc/components/common/message';
 import { Tooltip as CommonTooltip } from 'pc/components/common/tooltip';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { ModalOutsideOperate } from 'pc/components/common/modal_outside_operate';
 import { TComponent } from 'pc/components/common/t_component';
 import { resourceService } from 'pc/resource_service';

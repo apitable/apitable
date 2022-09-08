@@ -43,9 +43,6 @@ export const IS_WRAP = {
   ...LIST_TYPE_DICT,
 };
 
-// 所有的Element
-export const ELEMENT_LIST = Object.values(ElementType);
-
 export const BASIC_ELEMENT = [
   ElementType.PARAGRAPH,
   ElementType.HEADING_ONE,

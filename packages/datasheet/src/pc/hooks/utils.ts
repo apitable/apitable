@@ -1,5 +1,5 @@
 import { StatusCode, Strings, t } from '@vikadata/core';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { openSliderVerificationModal } from 'pc/components/common/slider_verification';
 
 export const secondStepVerify = (code: number) => {

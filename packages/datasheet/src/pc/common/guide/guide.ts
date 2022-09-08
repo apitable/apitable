@@ -12,10 +12,9 @@ import parser from 'html-react-parser';
 // import { Message } from 'pc/components/common';
 import { startActions, TriggerCommands } from 'pc/common/apphook/trigger_commands';
 import {
-  destroyBreath, destroyContactUs, destroyModal, destroyNotice, destroyQuestionnaire, destroySlideout, IAroundMaskProps, IGuideBreathOptions,
-  IGuideContactUsOptions, IGuideModalOptions, IGuideNoticeOptions, IGuideSlideOutProps, IHotspotProps, IQuestionnaireProps, IShowPopoverOptions,
-  IUnderlyingMaskProps, showAroundMask, showBreath, showContactUs, showHotspot, showModal, showNotice, showPopover, showQuestionnaire, showSlideout,
-  showUnderlyingMask
+  destroyBreath, destroyContactUs, destroyModal, destroyNotice, destroyQuestionnaire, destroySlideout, IGuideBreathOptions, IGuideContactUsOptions,
+  IGuideModalOptions, IGuideNoticeOptions, IGuideSlideOutProps, IQuestionnaireProps, IShowPopoverOptions, showBreath, showContactUs, showModal,
+  showNotice, showPopover, showQuestionnaire, showSlideout
 } from 'pc/common/guide/ui';
 import { store } from 'pc/store';
 import { getInitializationData } from 'pc/utils/env';
@@ -23,33 +22,6 @@ import { isMobile } from 'react-device-detect';
 import { destroyPrivacyModal, IPrivacyModalProps, showPrivacyModal } from './ui/privacy_modal';
 import { destroyTaskList, IGuideTaskListProps, showTaskList } from './ui/task_list';
 import { addWizardNumberAndApiRun } from './utils';
-
-export interface IGuideStep {
-  ui_type: string;
-  next?: number[];
-  title: string[];
-  description?: string[];
-  position?: string;
-}
-
-/**
- * 快速消息类型
- *
- * @export
- * @enum {number}
- */
-export enum QuickMessageType {
-  Info = 'info',
-  Success = 'success',
-  Error = 'error',
-  Warning = 'warning',
-}
-
-export const GUIDE_CONTACT_MAP = {
-  wecom: 'wxwork',
-  dingtalk: 'dingtalk',
-  feishu: 'lark'
-};
 
 /**
  * 新手引导Service类
@@ -281,18 +253,6 @@ export class Guide {
 
   static showBreath(props: IGuideBreathOptions) {
     showBreath(props);
-  }
-
-  static showHotspot(props: IHotspotProps) {
-    showHotspot(props);
-  }
-
-  static showUnderlyingMask(props: IUnderlyingMaskProps) {
-    showUnderlyingMask(props);
-  }
-
-  static showAroundMask(props: IAroundMaskProps) {
-    showAroundMask(props);
   }
 
   /* nps 需求的相关文档：https://vikadata.feishu.cn/docs/doccnWmDDh29H89CdKMSYOiHRaf */

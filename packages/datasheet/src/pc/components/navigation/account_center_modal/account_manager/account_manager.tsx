@@ -1,7 +1,7 @@
 import { BindAccount, ConfigConstant, QrAction, StatusCode, StoreActions, Strings, t } from '@vikadata/core';
 import classnames from 'classnames';
 import { Message } from 'pc/components/common/message';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
 import { QrCode } from 'pc/components/home/qr_code/qr_code';
 import { navigationToUrl } from 'pc/components/route_manager/use_navigation';

@@ -1,7 +1,3 @@
-import { TestFunction } from '@vikadata/core/src/config/system_config.interface';
-
-export type FeatureKeyType = keyof TestFunction;
-
 // 申请类型
 export enum ApplicantType {
   USER_TYPE, // 用户级别生效

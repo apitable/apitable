@@ -11,14 +11,6 @@ export const verifyTeamName = async(spaceId: string, teamId: string, inputConten
   return questRes;
 };
 // 查询直属小组下的子小组
-export const getSubTeams = async(spaceId: string, teamId: string) => {
-  let resData = [];
-  const { data: { success, data }} = await Api.getSubTeams(teamId);
-  if (success) {
-    resData = data;
-  }
-  return resData;
-};
 
 // 转化小组名称
 export const getContent = (arr: ITagsInSpace[] | ISubTeamListInSpaceBase[], name: string) => {

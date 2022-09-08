@@ -8,7 +8,7 @@ import {
 import { useSetState } from 'pc/hooks';
 import { Form } from 'antd';
 import { IdentifyingCodeInput, WithTipWrapper } from 'pc/components/common/input';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { FC, useState } from 'react';
 import * as React from 'react';
 import { useSelector, shallowEqual } from 'react-redux';

@@ -1,11 +1,11 @@
 // import { Message } from '@vikadata/components';
+import { ConfigConstant, getLanguage, isPrivateDeployment, Selectors, Strings, SystemConfig, t } from '@vikadata/core';
 import { Message } from 'pc/components/common';
-import { getLanguage, Selectors, Strings, t, ConfigConstant, isPrivateDeployment, SystemConfig } from '@vikadata/core';
 import { useAllColumns } from 'pc/hooks';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import useSWR from 'swr';
-import { activeRobot, deActiveRobot, deleteRobotAction, nestReq, refreshRobotList, updateRobotName as APIUpdateRobotName } from './api';
+import { activeRobot, deActiveRobot, deleteRobotAction, nestReq, refreshRobotList } from './api';
 import { IActionType, INodeType, IRobotTrigger, ITriggerType } from './interface';
 import { RobotContext } from './robot_context';
 import { getFields } from './robot_detail/trigger/helper';
@@ -120,7 +120,7 @@ export const useRobotActionTypes = (robotId: string) => {
 
 /**
  * 默认获取当前机器人，传入 robotId，则获取指定机器人
- * @param robotId 
+ * @param robotId
  */
 export const useRobot = (_robotId?: string) => {
   const { state, dispatch } = useContext(RobotContext);
@@ -288,23 +288,6 @@ export const useNodeTypeByIds = () => {
 export const useRobotDispatch = () => {
   const { dispatch } = useRobotContext();
   return dispatch;
-};
-
-export const useUpdateRobotName = () => {
-  const dispatch = useRobotDispatch();
-  const updateRobotName = useCallback(async(robotId, name) => {
-    await APIUpdateRobotName(robotId, name);
-    dispatch({
-      type: 'updateRobot',
-      payload: {
-        robot: {
-          robotId,
-          name
-        }
-      }
-    });
-  }, [dispatch]);
-  return updateRobotName;
 };
 
 // 对于当记录创建这种只有一个选项，且存在默认值的 trigger。在创建 trigger 带上默认的表单信息。

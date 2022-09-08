@@ -68,7 +68,7 @@ export const useTemplateRequest = () => {
         return true;
       }
       if (code === StatusCode.TEMPLATE_NOT_EXIST) {
-        import('pc/components/common/modal/modal').then(({ Modal }) => {
+        import('pc/components/common/modal/modal/modal').then(({ Modal }) => {
           Modal.error({
             title: t(Strings.template_has_been_deleted_title),
             content: t(Strings.template_has_been_deleted),
@@ -111,7 +111,7 @@ export const useTemplateRequest = () => {
         return data;
       }
       if (code === StatusCode.TEMPLATE_NOT_EXIST) {
-        import('pc/components/common/modal/modal').then(({ Modal }) => {
+        import('pc/components/common/modal/modal/modal').then(({ Modal }) => {
           Modal.error({
             title: t(Strings.template_has_been_deleted_title),
             content: t(Strings.template_has_been_deleted),

@@ -8,14 +8,6 @@ const { template, templateSettings } = lodash;
 
 templateSettings.interpolate = /{{([\s\S]+?)}}/g;
 
-export enum MethodType {
-  Get,
-  Delete,
-  Add,
-  Update,
-  Upload,
-}
-
 export const getDocHtml = (lang: CodeLanguage, method: string, context: any) => {
   let docs: string;
   let partDoc: string;

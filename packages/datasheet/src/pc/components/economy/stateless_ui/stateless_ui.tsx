@@ -1,5 +1,5 @@
 import { Button, Checkbox, Typography, useThemeColors } from '@vikadata/components';
-import { ArrowRightOutlined, CheckOutlined, ChevronRightOutlined, SelectOutlined, UpgradeFilled } from '@vikadata/icons';
+import { ArrowRightOutlined, CheckOutlined, ChevronRightOutlined, SelectOutlined } from '@vikadata/icons';
 import { useMount } from 'ahooks';
 import { Col, Modal, Row } from 'antd';
 import classNames from 'classnames';
@@ -78,14 +78,6 @@ export const LevelOperation: FC<{
     default:
       return <Typography variant="body2" className={classNames(classBase, styles.text)}>免费</Typography>;
   }
-};
-
-// 等级对比-footer
-export const LevelOperationFooter: FC<{
-  type: 'upgradeSeats' | 'upgradeLevel' | 'customerService' | 'free',
-  className?: string
-}> = ({ type, className }): React.ReactElement => {
-  return <div><LevelOperation type="upgradeSeats" /></div>;
 };
 
 // 特权列表
@@ -435,39 +427,6 @@ export const PayingTotal = (data: { totalV: number, curV: number, curPrice: numb
   );
 };
 
-// TODO: del
-export const PayingFooter = () => {
-  return (
-    <div className={styles.payingFooter}>
-      <Row>
-        <Col span={17}>
-          <div className={styles.payingTotal}>
-            <div className={styles.left}>
-              <Typography variant="body2" className={styles.curVCount}>当前v币：<span className={styles.bold}>2000</span></Typography>
-              <Checkbox>
-                <span className={styles.checkBox}>
-                  <Typography variant="body2" className={styles.usedVCount}>已用<span className={styles.bold}>2679242</span></Typography>
-                  <span className={styles.goldImg}>
-                    <Image src={GoldImg} />
-                  </span>
-                  <Typography variant="body2" className={styles.voucher}>抵用<span className={styles.bold}>2000</span>元</Typography>
-                </span>
-              </Checkbox>
-            </div>
-            <div className={styles.right}>
-              <Typography variant="body3" className={styles.cutDown}>已省 1,500 元</Typography>
-              <PriceTotal type="total" price={900} label="总计：" />
-            </div>
-          </div>
-        </Col>
-        <Col span={7} className={styles.buttonWrap}>
-          <Button color="primary">支付订单</Button>
-        </Col>
-      </Row>
-    </div>
-  );
-};
-
 // 支付失败
 export const showPaymentFailed = () => {
   console.log('ssss');
@@ -559,12 +518,3 @@ export const PaySucceed = (data: {
   );
 };
 
-// 左侧粘粘升级button
-export const FixedUpgrade = () => {
-  return (
-    <div className={styles.fixedUpgrade}>
-      <UpgradeFilled />
-      升 级
-    </div>
-  );
-};

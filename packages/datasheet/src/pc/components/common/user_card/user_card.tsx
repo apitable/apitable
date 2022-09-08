@@ -1,14 +1,13 @@
-import { FC, useState, CSSProperties } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRequest } from 'pc/hooks';
-import { Api, t, Strings, Selectors, ConfigConstant, IRoleMember, IShareSettings, StoreActions } from '@vikadata/core';
 import { Typography, useThemeColors } from '@vikadata/components';
+import { Api, ConfigConstant, IRoleMember, IShareSettings, Selectors, StoreActions, Strings, t } from '@vikadata/core';
 import { SettingOutlined } from '@vikadata/icons';
-import { Tag, Loading, Avatar } from 'pc/components/common';
-import styles from './style.module.less';
-import { useCatalogTreeRequest } from 'pc/hooks';
-import { TagColors } from '../tag';
+import { Avatar, Loading, Tag } from 'pc/components/common';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
+import { useCatalogTreeRequest, useRequest } from 'pc/hooks';
+import { FC, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { TagColors } from '../tag';
+import styles from './style.module.less';
 
 export interface IUserCard {
   // 通知中心使用
@@ -24,12 +23,6 @@ export interface IUserCard {
   // 关闭悬浮卡片
   onClose?: () => void;
 }
-
-export const UserCardWidth: CSSProperties = {
-  width: 'auto',
-  minWidth: '120px',
-  maxWidth: '240px',
-};
 enum TAGTYPE {
   Visitor = 'Visitor',
   Member = 'Member',

@@ -3,7 +3,7 @@ import { Api, IReduxState, Navigation, StatusCode, StoreActions, Strings, t } fr
 import { Drawer, Form, Input } from 'antd';
 import cls from 'classnames';
 import Image from 'next/image';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { isSocialDomain } from 'pc/components/home/social_platform';
 import { Method, navigationToUrl, useNavigation } from 'pc/components/route_manager/use_navigation';
 import { useRequest } from 'pc/hooks';

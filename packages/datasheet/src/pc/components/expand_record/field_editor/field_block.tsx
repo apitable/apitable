@@ -42,8 +42,6 @@ import { ExpandLookUp } from '../expand_lookup';
 import { ExpandNumber } from '../expand_number';
 import { ExpandSelect } from '../expand_select';
 
-export type IExpandFieldEditRef = Pick<IEditor, 'focus' | 'setValue' | 'saveValue'>;
-
 export interface ICommonProps {
   style: React.CSSProperties;
   datasheetId: string;

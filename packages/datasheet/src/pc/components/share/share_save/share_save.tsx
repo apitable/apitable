@@ -4,7 +4,7 @@ import { Modal, Radio } from 'antd';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { Avatar, AvatarSize, AvatarType } from 'pc/components/common/avatar';
-import { Modal as CustomModal } from 'pc/components/common/modal/modal';
+import { Modal as CustomModal } from 'pc/components/common/modal/modal/modal';
 import { Message } from 'pc/components/common/message';
 import CreateSpace from 'pc/components/create_space/create_space';
 import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
@@ -50,7 +50,7 @@ export const ShareSave: React.FC<IShareSave> = props => {
         content: t(Strings.require_login_tip),
         okText: t(Strings.go_login),
         onOk: () => {
-          navigationTo({ path: Navigation.LOGIN, query: { reference: window.location.href } });
+          navigationTo({ path: Navigation.LOGIN, query: { reference: window.location.href }});
         },
         onCancel: () => setVisible(false),
         okButtonProps: { id: AutoTestID.GO_LOGIN_BTN },
@@ -71,7 +71,7 @@ export const ShareSave: React.FC<IShareSave> = props => {
       setVisible(false);
     }
 
-    const request = async () => {
+    const request = async() => {
       const res = await Api.spaceList();
       const { success, code, message, data } = res.data;
       if (success) {
@@ -94,7 +94,7 @@ export const ShareSave: React.FC<IShareSave> = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shareSpace.hasLogin]);
 
-  const saveToSpace = async (spaceId?: string) => {
+  const saveToSpace = async(spaceId?: string) => {
     if (!shareId) return;
     const saveKey = spaceId ? spaceId : radio;
     Message.loading({ content: t(Strings.loading), key: saveKey });
@@ -193,7 +193,7 @@ export const ShareSave: React.FC<IShareSave> = props => {
     );
   };
 
-  const createSpace = async (name: string) => {
+  const createSpace = async(name: string) => {
     const res = await Api.createSpace(name);
     const { success, message, code, data } = res.data;
     if (success) {

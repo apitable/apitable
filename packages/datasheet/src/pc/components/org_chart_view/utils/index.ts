@@ -79,29 +79,6 @@ export const findCycles = (nodes: Array<string>, adj: IAdj) => {
   return cycle.reverse();
 };
 
-export const getDegrees = (data: IGraphData): IDegrees => {
-
-  const degrees: IDegrees = {};
-  const { nodes = [], edges = [] } = data;
-
-  nodes.forEach((node) => {
-    degrees[node.id] = {
-      degree: 0,
-      inDegree: 0,
-      outDegree: 0,
-    };
-  });
-
-  edges.forEach((edge) => {
-    degrees[edge.source].degree++;
-    degrees[edge.source].outDegree++;
-    degrees[edge.target].degree++;
-    degrees[edge.target].inDegree++;
-  });
-
-  return degrees;
-};
-
 export const getPre = (data: IGraphData, nodesMap: INodesMap): IPre => {
   const pre: IPre = {};
   const { nodes = [] } = data;

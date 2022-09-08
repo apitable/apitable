@@ -68,9 +68,3 @@ export const getWizardRunCount = (user: IUser, wizardId: number) => {
   if (!curWizards.hasOwnProperty(wizardId)) return 0;
   return curWizards[wizardId];
 };
-
-export const getCurWizardId = () => {
-  const state = store.getState();
-  const hooks = state.hooks;
-  return hooks.curGuideWizardId;
-};

@@ -96,20 +96,6 @@ export const CardTitle = ({ title, tipTitle, link, button, isMobile }: CardTitle
   );
 };
 
-export const PlotTitle = (data: { name: string; value: string; style?: React.CSSProperties; themeColor?: string }) => {
-  const { name, value, style, themeColor } = data;
-  return (
-    <div className={styles.plotTitle} style={style}>
-      <Typography variant="body4" className={styles.name}>
-        {name}
-      </Typography>
-      <Typography variant="h5" className={styles.value} color={themeColor}>
-        {value}
-      </Typography>
-    </div>
-  );
-};
-
 export const InfoHighlightTitle = (data: { value: number; unit: string; desc: string; style?: React.CSSProperties; themeColor?: string }) => {
   const { value, unit, desc, style, themeColor } = data;
   return (

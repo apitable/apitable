@@ -3,8 +3,6 @@ import { DateUnitType, ILinearRow } from '@vikadata/core';
 import { ICoordinate } from 'pc/components/konva_grid';
 import { DateTimeType } from './utils';
 
-export type CellPositionMap = Record<string, CellPosition>;
-
 export type CellPosition = {
   x: number;
   y: number;
@@ -84,17 +82,6 @@ export type PointPosition = {
   offsetLeft: number;
 };
 
-export type EditorPosition = {
-  rowIndex: number;
-  columnIndex: number;
-  recordId: string | null | undefined;
-};
-
-export type Splitter = {
-  x: number;
-  visible: boolean;
-};
-
 export type CellBound = {
   width: number;
   height: number;
@@ -116,10 +103,10 @@ export interface ISplitterProps {
 }
 
 export interface ITargetNameDetail {
-  targetName: string | null, 
-  fieldId?: string | null, 
-  recordId?: string | null, 
-  mouseStyle?: string | null 
+  targetName: string | null,
+  fieldId?: string | null,
+  recordId?: string | null,
+  mouseStyle?: string | null
 }
 
 export interface ITaskLineSetting {
@@ -157,6 +144,6 @@ export interface ITargetTaskInfo {
   dashEnabled: boolean;
 }
 
-export interface IAdjacency { 
-  [recordId: string] : string[] 
+export interface IAdjacency {
+  [recordId: string]: string[];
 }

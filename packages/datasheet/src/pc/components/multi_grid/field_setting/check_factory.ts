@@ -82,18 +82,6 @@ class CheckFieldOption {
     return true;
   }
 
-  static checkNameLen(curField: IMultiSelectField | ISingleSelectField) {
-    return produce(curField, (draft: IMultiSelectField | ISingleSelectField) => {
-      draft.property.options.map(item => {
-        if (item.name.length > 100) {
-          item.name = item.name.slice(0, 100);
-        }
-        return item;
-      });
-      return draft;
-    });
-  }
-
   static checkOptionBlank(curField: IMultiSelectField | ISingleSelectField, datasheetId?: string) {
     return produce(curField, draft => {
       const state = store.getState();

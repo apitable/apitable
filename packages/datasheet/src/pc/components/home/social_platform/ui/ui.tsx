@@ -25,16 +25,3 @@ export const Copyright = () => {
     </footer>
   );
 };
-
-export const TitleWrapper = () => {
-  return (
-    <div className={styles.titleWrapper}>
-      <Typography variant="h3" className={styles.title}>
-        {t(Strings.feishu_admin_panel_title)}
-      </Typography>
-      <Typography variant="body2" className={styles.msg}>
-        {t(Strings.feishu_admin_panel_message)}
-      </Typography>
-    </div>
-  );
-};

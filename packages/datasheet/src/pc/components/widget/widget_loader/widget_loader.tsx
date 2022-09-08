@@ -32,14 +32,6 @@ export interface IWidgetLoaderRefs {
   codeUrl?: string
 }
 
-export enum IWidgetStatus {
-  NoPublish,
-  NoAgree,
-  WaitPublish,
-  Published,
-  UnPublished
-}
-
 interface IErrorWidget {
   title?: string;
   content: string | React.ReactNode;
