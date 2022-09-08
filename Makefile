@@ -132,23 +132,23 @@ endif
 _test_clean: ## clean the docker in test step
 	docker rm -fv $$(docker ps -a --filter "name=test-.*-"$${CI_GROUP_TAG:-0} --format "{{.ID}}") || true
 
-test-ut-room-local:
-    export MYSQL_HOST=127.0.0.1
-    export MYSQL_PORT=23306
-    export MYSQL_USERNAME=vika
-    export MYSQL_PASSWORD=password
-    export MYSQL_DATABASE=vika_test
-    export MYSQL_USE_SSL=false
-    export REDIS_HOST=127.0.0.1
-    export REDIS_PORT=26379
-    export REDIS_DB=4
-    export REDIS_PASSWORD=
-    export RABBITMQ_HOST=127.0.0.1
-    export RABBITMQ_PORT=25672
-    export RABBITMQ_USERNAME=vika
-    export RABBITMQ_PASSWORD=password
-    export INSTANCE_COUNT=1
-    export APPLICATION_NAME=TEST_NEST_REST_SERVER
+# test-ut-room-local:
+#     export MYSQL_HOST=127.0.0.1
+#     export MYSQL_PORT=23306
+#     export MYSQL_USERNAME=vika
+#     export MYSQL_PASSWORD=password
+#     export MYSQL_DATABASE=vika_test
+#     export MYSQL_USE_SSL=false
+#     export REDIS_HOST=127.0.0.1
+#     export REDIS_PORT=26379
+#     export REDIS_DB=4
+#     export REDIS_PASSWORD=
+#     export RABBITMQ_HOST=127.0.0.1
+#     export RABBITMQ_PORT=25672
+#     export RABBITMQ_USERNAME=vika
+#     export RABBITMQ_PASSWORD=password
+#     export INSTANCE_COUNT=1
+#     export APPLICATION_NAME=TEST_NEST_REST_SERVER
 test-ut-room-local:
 	make _test_clean
 	docker-compose -f docker-compose-unit-test.yml run -d --name test-mysql-$${CI_GROUP_TAG:-0} test-mysql

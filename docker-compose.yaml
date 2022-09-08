@@ -1,17 +1,13 @@
 services:
-  init-db:
-    image: ${INIT_DB_IMAGE}
-    restart: always
   web-server:
-    image: ${WEB_SERVER_IMAGE}
+    image: ${IMAGE_SERVICE_REGISTRY}/${IMAGE_WEB_SERVER}
     restart: always
     expose:
       - 8080
-    volumes:
-      - /etc/localtime:/etc/localtime
-      - ${PWD}/.env:/.env
-    environment:
-      - TZ=Asia/Singapore
+    env_file:
+      - .env
+    networks:
+      - apitable
     depends_on:
       - mysql
       - minio
@@ -19,49 +15,48 @@ services:
       - room-server
       - socket-server
       - imageproxy-server
-    networks:
-      - vikadata
 
   imageproxy-server:
-    image: ${IMAGEPROXY_SERVER_IMAGE}
+    image: ${IMAGE_REGISTRY}/${IMAGE_IMAGEPROXY_SERVER}
     restart: always
     expose:
       - "8080"
-    volumes:
-      - /etc/localtime:/etc/localtime
+
     command: ["/app/imageproxy"]
     environment:
-      - TZ=Asia/Singapore
-      - BASEURL=http://minio:9000
+      - TZ=${TIMEZONE}
+      - BASEURL=${MINIO_ENDPOINT}
     networks:
-      - vikadata
+      - apitable
 
   backend-server:
-    image: ${BACKEND_SERVER_IMAGE}
-    volumes:
-      - /etc/localtime:/etc/localtime
-      - ${PWD}/logs/backend-server:/logs
+    image: ${IMAGE_SERVICE_REGISTRY}/${IMAGE_BACKEND_SERVER}
     ports:
       - "8081:8081"
     env_file:
-      - ${PWD}/.env
+      - .env
     expose:
       - "8081"
     restart: always
     environment:
-      - TZ=Asia/Singapore
+      - TZ=${TIMEZONE}
+      - OSS_TYPE=aws
+    networks:
+      - apitable
     depends_on:
       - mysql
       - redis
       - socket-server
       - minio
-      - rabbit-mq
-    networks:
-      - vikadata
-
+      - rabbitmq
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sS 'http://localhost:8081' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
 
   room-server:
-    image: ${ROOM_SERVER_IMAGE}
+    image: ${IMAGE_SERVICE_REGISTRY}/${IMAGE_ROOM_SERVER}
     restart: always
     #ports:
     #  - 3333:3333
@@ -69,27 +64,21 @@ services:
     expose:
       - "3333"
       - "3334"
-    volumes:
-      - /etc/localtime:/etc/localtime
-      #- ${PWD}/room-server/config/config.yml:/home/vikadata/packages/room-server/dist/config/config.yaml
-      - ${PWD}/logs/room-server:/home/vikadata/logs
     env_file:
-      - ${PWD}/.env
+      - .env
     environment:
       - NODE_ENV=${ENV}
       - NODE_OPTIONS=--max-old-space-size=2048 --max-http-header-size=80000
-      - TZ=Asia/Singapore
-      - SERVER_DOMAIN=${SERVER_DOMAIN}
       - API_MAX_MODIFY_RECORD_COUNTS=${API_MAX_MODIFY_RECORD_COUNTS:-30}
       - INSTANCE_MAX_MEMORY=4096M
+    networks:
+      - apitable
     depends_on:
       - redis
       - mysql
-    networks:
-      - vikadata
 
   scheduler-server:
-    image: ${ROOM_SERVER_IMAGE}
+    image: ${IMAGE_SERVICE_REGISTRY}/${IMAGE_ROOM_SERVER}
     restart: always
     #ports:
     #  - 3333:3333
@@ -97,95 +86,61 @@ services:
     expose:
       - "3333"
       - "3334"
-    volumes:
-      - /etc/localtime:/etc/localtime
-      - ${PWD}/logs/room-server:/home/vikadata/logs
+    env_file:
+      - .env
     environment:
       - NODE_ENV=${ENV}
       - NODE_OPTIONS=--max-old-space-size=2048 --max-http-header-size=80000
-      - TZ=Asia/Singapore
-      - SERVER_DOMAIN=${SERVER_DOMAIN}
       - API_MAX_MODIFY_RECORD_COUNTS=${API_MAX_MODIFY_RECORD_COUNTS:-30}
       - INSTANCE_MAX_MEMORY=4096M
       - APPLICATION_NAME=SCHEDULE_SERVER
       # 只有一个服务开启
       - ENABLE_SCHED=true
-    env_file:
-      - ${PWD}/.env
+    networks:
+      - apitable
     depends_on:
       - redis
       - mysql
-    networks:
-      - vikadata
 
   socket-server:
-    image: ${SOCKET_SERVER_IMAGE}
+    image: ${IMAGE_SERVICE_REGISTRY}/${IMAGE_SOCKET_SERVER}
     restart: always
-#    ports:
-#      - 3001:3001
-#      - 3002:3002
-#      - 3005:3005
+    #    ports:
+    #      - 3001:3001
+    #      - 3002:3002
+    #      - 3005:3005
     expose:
       - "3001"
       - "3002"
       - "3005"
       - "3007"
-    volumes:
-      - /etc/localtime:/etc/localtime
-      - ${PWD}/logs/socket-server:/home/vikadata/logs
     environment:
-      - NODE_ENV=${ENV}
-      - REDIS_HOST=${REDIS_HOST:-redis}
-      - REDIS_PASS=${REDIS_PASSWORD}
-      - REDIS_PORT=${REDIS_PORT:-6379}
-      - REDIS_DB=${REDIS_DB:-0}
       - PORT=3001
       - NOTIFICATION_PORT=3002
       - SYS_MEMORY_RATIO=100
       - NODE_MEMORY_RATIO=80
       - NEST_GRPC_URL=room-server:3334
-      - LOG_LEVEL=info
-      - TZ=Asia/Singapore
     env_file:
-      - ${PWD}/.env
+      - .env
+    networks:
+      - apitable
     depends_on:
       - redis
-      - rabbit-mq
-    networks:
-      - vikadata
-
+      - rabbitmq
 
   ### Third Party Dockers
-
-  # aider-server:
-  #   image: ${AIDER_SERVER_IMAGE}
-  #   restart: always
-  #   ports:
-  #     - 8082:8082
-  #   expose:
-  #     - 8082
-  #   volumes:
-  #     - /etc/localtime:/etc/localtime
-  #     - ${PWD}/aider-server/config:/opt/config
-  #     - ${PWD}/logs/aider-server:/logs
-  #   environment:
-  #     - TZ=Asia/Singapore
-  #   depends_on:
-  #     - mysql
-  #   networks:
-  #     - vikadata
   openresty:
-    image: ${OPENRESTY_IMAGE}
+    image: ${IMAGE_OPENRESTY}
     restart: always
     ports:
       - ${NGINX_HTTP_PORT:-80}:80
       - ${NGINX_HTTPS_PORT:-443}:443
     volumes:
-      - /etc/localtime:/etc/localtime
-      - ${PWD}/openresty/conf.d:/etc/nginx/conf.d
-      - ${PWD}/openresty/static:/static
+      - ./config/openresty/conf.d:/etc/nginx/conf.d
     environment:
-      - TZ=Asia/Singapore
+      - TZ=${TIMEZONE}
+    networks:
+      - apitable
     depends_on:
       - mysql
       - minio
@@ -193,67 +148,78 @@ services:
       - room-server
       - socket-server
       - imageproxy-server
-    networks:
-      - vikadata
 
   minio:
-    image: ${MINIO_IMAGE}
+    image: ${IMAGE_MINIO}
     restart: always
     command: server /data
     expose:
       - "9000"
     volumes:
-      - /etc/localtime:/etc/localtime
-      - ${PWD}/data/minio/data:/data
-      - ${PWD}/data/minio/config:/root/.minio
+      - ${DATA_PATH}/data/minio/data:/data
+      - ${DATA_PATH}/data/minio/config:/root/.minio
     environment:
       - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
       - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
-      - TZ=Asia/Singapore
+      - TZ=${TIMEZONE}
     networks:
-      - vikadata
+      - apitable
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sS 'http://localhost:9000' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   redis:
-    image: ${REDIS_IMAGE}
+    image: ${IMAGE_REDIS}
     restart: always
-    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD}"]
+    command:
+      [
+          "redis-server",
+          "--appendonly",
+          "yes",
+          "--requirepass",
+          "${REDIS_PASSWORD}",
+      ]
     expose:
       - "6379"
     volumes:
-      - /etc/localtime:/etc/localtime
-      - ${PWD}/data/redis/data:/data
-    #  - ${PWD}/redis/redis.conf:/etc/redis.conf
+      - ${DATA_PATH}/data/redis:/data
     environment:
-      - TZ=Asia/Singapore
+      - TZ=${TIMEZONE}
     networks:
-      - vikadata
+      - apitable
 
   mysql:
-    image: ${MYSQL_IMAGE}
+    image: ${IMAGE_MYSQL}
     restart: always
     volumes:
-    - /etc/localtime:/etc/localtime
-    - ${PWD}/data/mysql/data:/var/lib/mysql
-    - ${PWD}/data/mysql/initdb:/docker-entrypoint-initdb.d
-    #ports:
-    #  - 3306:3306
+      - ${DATA_PATH}/data/mysql:/var/lib/mysql
+    ports:
+      - 3306:3306
     expose:
       - "3306"
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - TZ=Asia/Singapore
-    command:
-      --default-authentication-plugin=mysql_native_password
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - TZ=${TIMEZONE}
+    command: --default-authentication-plugin=mysql_native_password
       --character-set-server=utf8mb4
       --collation-server=utf8mb4_general_ci
       --sql_mode=IGNORE_SPACE,NO_ENGINE_SUBSTITUTION
+      --lower_case_table_names=1
+    healthcheck:
+      test: "mysql ${MYSQL_DATABASE} -u${MYSQL_USERNAME} -p${MYSQL_PASSWORD} -e 'SELECT 1;'"
+      interval: 30s
+      timeout: 10s
+      retries: 10
     networks:
-      - vikadata
+      - apitable
 
-  rabbit-mq:
-    image: ${RABBIT_MQ_IMAGE}
+  rabbitmq:
+    image: ${IMAGE_RABBITMQ}
     volumes:
-      - ${PWD}/data/rabbit-mq:/var/lib/rabbitmq
+      - ${DATA_PATH}/data/rabbitmq:/var/lib/rabbitmq
     expose:
       - "5671"
       - "5672"
@@ -265,7 +231,96 @@ services:
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
     restart: always
     networks:
-      - vikadata
+      - apitable
+
+  mongodb:
+    image: ${IMAGE_MONGODB}
+    volumes:
+      - ${DATA_PATH}/data/mongo:/data/db
+    #    ports:
+    #      - 27017
+    expose:
+      - "27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+      - TZ=${TIMEZONE}
+    restart: always
+    networks:
+      - apitable
+    #  ################
+
+  # #### init data
+  init-schema:
+    image: ${IMAGE_REGISTRY}/${IMAGE_INIT_SCHEMA}
+    environment:
+      - TZ=${TIMEZONE}
+      - DB_HOST=${MYSQL_HOST}
+      - DB_PORT=${MYSQL_PORT}
+      - DB_NAME=${MYSQL_DATABASE}
+      - DB_USERNAME=${MYSQL_USERNAME}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+      - ACTION=update
+    networks:
+      - apitable
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  init-data-mysql:
+    image: ${IMAGE_REGISTRY}/${IMAGE_INIT_DATA_MYSQL}
+    environment:
+      - TZ=${TIMEZONE}
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_PORT=${MYSQL_PORT}
+      - MYSQL_USERNAME=${MYSQL_USERNAME}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    env_file:
+      - .env
+    networks:
+      - apitable
+    depends_on:
+      mysql:
+        condition: service_healthy
+    command:
+      - /bin/bash
+      - -c
+      - |
+        # wait init-schema
+        sleep 180
+        sh run.sh
+
+  init-data-minio:
+    image: ${IMAGE_REGISTRY}/${IMAGE_INIT_DATA_MINIO}
+    environment:
+      - TZ=${TIMEZONE}
+    env_file:
+      - .env
+    networks:
+      - apitable
+    depends_on:
+      minio:
+        condition: service_healthy
+
+  init-data-user:
+    image: ${IMAGE_INIT_DATA_USER}
+    restart: always
+    environment:
+      - TZ=${TIMEZONE}
+    command:
+      - /bin/sh
+      - -c
+      - |
+        sleep 180
+        curl -X POST http://backend-server:8081/api/v1/gm/new/users
+        tail -f /etc/os-release
+    networks:
+      - apitable
+    depends_on:
+      backend-server:
+        condition: service_healthy
+
 networks:
-  vikadata:
+  apitable:
     driver: bridge
