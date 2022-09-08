@@ -15,7 +15,7 @@ function build_saas {
   #npx --yes @sentry/cli  --url $SENTRY_URL --auth-token $SENTRY_API_TOKEN releases --project datasheet --org $SENTRY_ORG_SLUG files "$SEMVER_FULL" upload-sourcemaps ./packages/datasheet/build/static/ --url-prefix "~/web_build/static" || echo "$SEMVER_FULL"
 
   export DOCKERFILE=Dockerfile.next
-  export BUILD_ARG="--build-arg SEMVER_FULL=${SEMVER_FULL} --build-arg NEXT_ASSET_PREFIX=https:\/\/s4.vika.cn --build-arg NEXT_PUBLIC_ASSET_PREFIX=\$NEXT_ASSET_PREFIX\/_next\/public"
+  export BUILD_ARG="--build-arg SEMVER_FULL=${SEMVER_FULL} --build-arg NEXT_ASSET_PREFIX=https://s4.vika.cn --build-arg NEXT_PUBLIC_ASSET_PREFIX=\$NEXT_ASSET_PREFIX/_next/public"
   build_docker_unableack node web-server
 
   # copy static resources ready upload
