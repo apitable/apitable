@@ -156,8 +156,8 @@ services:
     expose:
       - "9000"
     volumes:
-      - ${DATA_PATH}/data/minio/data:/data
-      - ${DATA_PATH}/data/minio/config:/root/.minio
+      - ${DATA_PATH}/.data/minio/data:/data
+      - ${DATA_PATH}/.data/minio/config:/root/.minio
     environment:
       - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
       - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
@@ -184,7 +184,7 @@ services:
     expose:
       - "6379"
     volumes:
-      - ${DATA_PATH}/data/redis:/data
+      - ${DATA_PATH}/.data/redis:/data
     environment:
       - TZ=${TIMEZONE}
     networks:
@@ -194,7 +194,7 @@ services:
     image: ${IMAGE_MYSQL}
     restart: always
     volumes:
-      - ${DATA_PATH}/data/mysql:/var/lib/mysql
+      - ${DATA_PATH}/.data/mysql:/var/lib/mysql
     ports:
       - 3306:3306
     expose:
@@ -219,7 +219,7 @@ services:
   rabbitmq:
     image: ${IMAGE_RABBITMQ}
     volumes:
-      - ${DATA_PATH}/data/rabbitmq:/var/lib/rabbitmq
+      - ${DATA_PATH}/.data/rabbitmq:/var/lib/rabbitmq
     expose:
       - "5671"
       - "5672"
@@ -236,7 +236,7 @@ services:
   mongodb:
     image: ${IMAGE_MONGODB}
     volumes:
-      - ${DATA_PATH}/data/mongo:/data/db
+      - ${DATA_PATH}/.data/mongo:/data/db
     #    ports:
     #      - 27017
     expose:

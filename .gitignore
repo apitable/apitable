@@ -3,8 +3,10 @@
 __pycache__
 *.pyc
 
-/data
+.data
+data
 logs
+.logs
 
 /blueprint-templates
 
