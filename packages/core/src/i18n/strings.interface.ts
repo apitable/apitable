@@ -5145,18 +5145,18 @@ export interface StringsInterface {
 
 export interface String {
 
-    zh_CN?:         string;
-    en_US?:         string;
-    zh_HK?:         string;
-    终端?:            终端;
+    zh_CN?: string;
+    en_US?: string;
+    zh_HK?: string;
+    终端?: 终端;
     notifications?: Notifications;
-    废弃时间?:          number;
+    废弃时间?: number;
 }
 
 export interface Notifications {
-    "social_templates copy": string[];
+    'social_templates copy': string[];
 }
 
 export enum 终端 {
-    App = "APP",
+    App = 'APP',
 }
