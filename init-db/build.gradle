@@ -5,7 +5,7 @@ plugins {
 
 description = 'Vikadata DB Manage'
 group = "com.vikadata"
-version = "${revision}"
+version = "0.13.5"
 
 repositories {
   maven { url 'https://maven.aliyun.com/repository/public' }
