@@ -1,3 +1,0 @@
-vika
-pymongo
-rich
