@@ -172,7 +172,12 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
             <ChevronRightOutlined />
           </Typography>
         </div>
-        <PublicShareInviteLink inviteLink={inviteLink} nodeId={data.nodeId} isMobile={isMobile} canEditInvite={canEditInvite} />
+        <PublicShareInviteLink
+          inviteLink={inviteLink}
+          nodeId={data.nodeId}
+          isMobile={isMobile}
+          canEditInvite={canEditInvite && Boolean(inviteLink)}
+        />
       </div>
       {detailModalVisible && roleList && <MembersDetail data={roleList} onCancel={() => setDetailModalVisible(false)} />}
     </>
