@@ -13,8 +13,8 @@ import { NotificationStore } from 'pc/notification_store';
 import { getNodeTypeByNodeId, getResourceTypeByNodeType } from 'pc/utils';
 import { has } from 'lodash';
 import { WorkbenchSideContext } from 'pc/components/common_side/workbench_side/workbench_side_context';
-import { QRCodeModalContent } from 'pc/components/common/modal/qr_code_modal_content';
-import { Modal } from 'pc/components/common';
+import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
+import { Modal } from 'pc/components/common/modal/modal';
 import { WarnFilled, ErrorFilled } from '@vikadata/icons';
 
 export enum NodeChangeInfoType {
@@ -167,18 +167,15 @@ export const useWorkbenchSideSync = () => {
       });
     };
 
-    const modal = Modal.warning({
+    const modalConfig = getModalConfig({
       title: t(Strings.file_notification),
-      content: QRCodeModalContent({
-        content,
-        onOk: popErrorModalClose,
-        modalButtonType
-      }),
-      footer: null,
+      content: content,
+      onOk: popErrorModalClose,
       maskClosable: false,
-      width: 416,
-      icon
+      icon,
+      modalButtonType,
     });
+    const modal = Modal.warning(modalConfig);
     
   };
 

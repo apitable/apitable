@@ -43,6 +43,8 @@ import { UpgradeBtn } from './upgrade_btn';
 // import { NavigationItem } from './navigation_item';
 import { User } from './user';
 
+import { getEnvVariables } from 'pc/utils/env';
+import { useIntercom } from 'react-use-intercom';
 enum NavKey {
   SpaceManagement = 'management',
   Org = 'org',
@@ -81,7 +83,8 @@ export const Navigation: FC = () => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const [clickCount, setClickCount] = useState(0);
-
+  const env = getEnvVariables();
+  const { update: updateIntercom } = useIntercom();
   // 请求消息总数
   useRequest(notificationStatistics);
   // 查看是否有系统横幅通知需要显示
@@ -242,6 +245,17 @@ export const Navigation: FC = () => {
       </>
     );
   }, [notice, noticeIcon, unReadMsgCount, noticeIconClick, search, router.pathname]);
+
+  useEffect(() => {
+    if(!env.HIDDEN_QRCODE || isMobile) {
+      return;
+    }
+    if(router.pathname.includes('workbench')) {
+      updateIntercom({ hideDefaultLauncher: false });
+    } else {
+      updateIntercom({ hideDefaultLauncher: true });
+    }
+  }, [router.pathname, isMobile, env.HIDDEN_QRCODE, updateIntercom]);
 
   const onNoticeClose = () => {
     setNotice(false);

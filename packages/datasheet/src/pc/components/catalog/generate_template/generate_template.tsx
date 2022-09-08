@@ -9,7 +9,8 @@ import { useUpdateEffect } from 'ahooks';
 import { useRequest } from 'pc/hooks';
 import { useNavigation } from 'pc/components/route_manager/use_navigation';
 import { useSelector } from 'react-redux';
-import { QRCodeModalContent } from 'pc/components/common/modal/qr_code_modal_content';
+import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
+import { getEnvVariables } from 'pc/utils/env';
 
 export interface IGenerateTemplateProps {
   nodeId?: string;
@@ -30,6 +31,7 @@ export const GenerateTemplate: FC<IGenerateTemplateProps> = ({
   const { createTemplateReq, templateNameValidateReq } = useTemplateRequest();
   const { run: createTemplate, data: createTemplateData, loading } = useRequest(createTemplateReq, { manual: true });
   const { run: templateNameValidate } = useRequest(templateNameValidateReq, { manual: true });
+  const env = getEnvVariables();
 
   useUpdateEffect(() => {
     if (!createTemplateData) {
@@ -58,19 +60,16 @@ export const GenerateTemplate: FC<IGenerateTemplateProps> = ({
       onCancel();
     } else {
       if (createTemplateData.code === 430) {
-        const customModal = Modal.warning({
+        const modalConfig = getModalConfig({
           title: t(Strings.save_template_disabled),
-          content: QRCodeModalContent({
-            content: createTemplateData.message,
-            onOk: () => {
-              customModal.destroy();
-            },
-            modalButtonType: 'warning',
-            okText: t(Strings.submit),
-          }),
-          footer: null,
-          maskClosable: false,
+          content:  createTemplateData.message,
+          onOk: () => {
+            customModal.destroy();
+          },
+          modalButtonType: 'warning',
+          okText: t(Strings.submit),
         });
+        const customModal = Modal.warning(modalConfig);
       } else {
         setErrorMsg(createTemplateData.message);
         Message.error({

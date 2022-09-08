@@ -10,6 +10,7 @@ export const getEnvVars = () => {
     WECOM_SHOP_SUITEID: process.env.WECOM_SHOP_SUITEID,
     WECOM_SHOP_CORPID: process.env.WECOM_SHOP_CORPID,
     WECHAT_MP_QR_CODE: process.env.WECHAT_MP_QR_CODE,
+    INTERCOM_APPID:  process.env.INTERCOM_APPID,
     FORCE_HTTPS: process.env.FORCE_HTTPS,
     SENTRY_DSN: process.env.SENTRY_DSN,
     SHOW_RECORD_CARD_SETTING: process.env.SHOW_RECORD_CARD_SETTING,
@@ -21,5 +22,6 @@ export const getEnvVars = () => {
     HIDDEN_BIND_PHONE: process.env.HIDDEN_BIND_PHONE === 'true',
     HIDDEN_BIND_MAIL: process.env.HIDDEN_BIND_MAIL === 'true',
     HIDDEN_BATCH_IMPORT_USER: process.env.HIDDEN_BATCH_IMPORT_USER === 'true',
+    HIDDEN_QRCODE: process.env.HIDDEN_QRCODE === 'true'
   };
 };

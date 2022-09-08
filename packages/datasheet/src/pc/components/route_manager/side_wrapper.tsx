@@ -14,6 +14,7 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { isDingtalkSkuPage, isSocialWecom } from '../home/social_platform';
 import { useWxTitleMap } from '../konva_grid';
+import { IntercomWrapper } from 'pc/common/intercom';
 
 export const SideWrapper = props => {
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
@@ -86,20 +87,26 @@ export const SideWrapper = props => {
   const isWorkbench = window.location.pathname.startsWith('/workbench');
 
   return (
-    <div className={'layout-row f-g-1 ' + styles.spaceContainer} onScroll={scrollFix}>
-      {!isSkuPage && (
-        <>
-          <ComponentDisplay minWidthCompatible={ScreenSize.md}>{!isWorkbench && <Navigation />}</ComponentDisplay>
+    <IntercomWrapper>
+      <div className={'layout-row f-g-1 ' + styles.spaceContainer} onScroll={scrollFix}>
+        {!isSkuPage && (
+          <>
+            <ComponentDisplay minWidthCompatible={ScreenSize.md}>
+           
+              {!isWorkbench && <Navigation />}
+            
+            </ComponentDisplay>
 
-          <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-            <MobileSideBar />
-          </ComponentDisplay>
-        </>
-      )}
+            <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
+              <MobileSideBar />
+            </ComponentDisplay>
+          </>
+        )}
 
-      {props.children}
+        {props.children}
 
-      {!isSkuPage && shortcutKeyPanelVisible && <ShortcutsPanel />}
-    </div>
+        {!isSkuPage && shortcutKeyPanelVisible && <ShortcutsPanel />}
+      </div>
+    </IntercomWrapper>
   );
 };

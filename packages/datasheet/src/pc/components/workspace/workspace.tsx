@@ -22,6 +22,7 @@ import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { CommonSide } from '../common_side';
 import styles from './style.module.less';
 import { ISideBarContextProps, SideBarClickType, SideBarContext, SideBarType } from 'pc/context';
+import { getEnvVariables } from 'pc/utils/env';
 
 // 恢复用户上次打开的数表
 const resumeUserHistory = (path: string) => {
@@ -88,7 +89,8 @@ export const Workspace: React.FC = () => {
   const isMobile = screenIsAtMost(ScreenSize.md);
   const query = useQuery();
   const router = useRouter();
-
+  const env = getEnvVariables();
+ 
   // 目录树切换来源态，目录树点击态，侧边栏开关
   const [toggleType, setToggleType] = useState<SideBarType>(SideBarType.None);
   const [clickType, setClickType] = useState<SideBarClickType>(SideBarClickType.None);
@@ -137,16 +139,17 @@ export const Workspace: React.FC = () => {
   }, [sideBarVisible]);
 
   useEffect(() => {
-    if (isMobile || shareId) {
+    if (isMobile || shareId || env.HIDDEN_QRCODE) {
       destroyVikaby();
       return;
     }
+   
     const isVikabyClosed = Boolean(localStorage.getItem('vikaby_closed'));
     !isVikabyClosed && showVikaby();
     return () => {
       destroyVikaby();
     };
-  }, [isMobile, shareId]);
+  }, [isMobile, shareId, env.HIDDEN_QRCODE]);
 
   // 绑定/解绑快捷键
   useEffect(() => {

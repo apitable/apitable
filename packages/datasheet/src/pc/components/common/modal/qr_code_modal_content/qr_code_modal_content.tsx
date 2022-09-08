@@ -6,6 +6,7 @@ import { t, Strings } from '@vikadata/core';
 import { store } from 'pc/store';
 import { Provider } from 'react-redux';
 import { upperFirst } from 'lodash';
+import { getEnvVariables } from 'pc/utils/env';
 interface IModalContentProps {
   content: string;
   onOk: () => void;
@@ -46,3 +47,25 @@ export const QRCodeModalContent: React.FC<IModalContentProps> = (props) => {
     </Provider>
   );
 };
+
+export const getModalConfig = (props) => {
+  const { isShowQRCode = false, title, content, onOk, okText, modalButtonType } = props;
+  const env = getEnvVariables();
+  if(isShowQRCode && !env.HIDDEN_QRCODE) {
+    return {
+      title,
+      content: QRCodeModalContent({
+        content,
+        onOk,
+        okText,
+        modalButtonType,
+      }) ,
+      footer: null,
+      maskClosable: false,
+    };
+  }
+  return {
+    ...props
+  };
+};
+

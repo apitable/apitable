@@ -3,12 +3,12 @@ import { ISubscription, Navigation, OnOkType, OtErrorCode, StatusCode, Strings, 
 import { IServiceError } from '@vikadata/widget-sdk';
 import { triggerUsageAlert } from 'pc/common/billing';
 import { Message } from 'pc/components/common/message';
-import { Modal } from 'pc/components/common/modal/modal/modal';
-import { QRCodeModalContent } from 'pc/components/common/modal/qr_code_modal_content';
+import { Modal } from 'pc/components/common/modal/modal';
+import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
 import { Method, navigatePath } from 'pc/components/route_manager/use_navigation';
 
 export const onError: IServiceError = (error, type) => {
-  console.log('error', error, type);
+  
   if (type === 'modal') {
     Sentry.captureMessage(error.message, {
       extra: error as any,
@@ -40,23 +40,16 @@ export const onError: IServiceError = (error, type) => {
       }
     };
     const isShowQrcode = error.isShowQrcode || error.isShowQrcode === undefined ? true : error.isShowQrcode;
-    const modalConfig = isShowQrcode ? {
-      title: error.title ? error.title : t(Strings.kindly_reminder),
-      content: QRCodeModalContent({
-        content: contentMessage,
-        onOk: modalOnOk,
-        okText: error.okText || t(Strings.refresh),
-        modalButtonType: modalType
-      }) ,
-      footer: null,
-      maskClosable: false,
-    } : {
+
+    const modalConfig = getModalConfig({
       title: error.title ? error.title : t(Strings.kindly_reminder),
       content: contentMessage,
       okText: error.okText || t(Strings.refresh),
       onOk: modalOnOk,
       maskClosable: false,
-    };
+      modalButtonType: modalType,
+      isShowQrcode
+    });
     const modal = Modal[modalType](modalConfig);
     return;
   }

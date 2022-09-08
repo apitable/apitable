@@ -22,7 +22,7 @@ import { expandRecordManager } from 'pc/common/expand_record_manager';
 
 import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
 import { Message, Modal as CustomModal, Tooltip } from 'pc/components/common';
-import { QRCodeModalContent } from 'pc/components/common/modal/qr_code_modal_content';
+import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
 import { EXPAND_RECORD, RecordType } from 'pc/components/expand_record/expand_record.enum';
 import {
   IExpandRecordComponentProp,
@@ -249,56 +249,44 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
       switch (errorCode) {
         case StatusCode.NODE_NOT_EXIST:
         case StatusCode.NODE_DELETED:
-          customModal = CustomModal.warning({
+          customModal = CustomModal.warning(getModalConfig({
             title: t(Strings.open_failed),
-            content: QRCodeModalContent({
-              content: t(Strings.node_not_exist_content),
-              onOk: () => {
-                modalClose();
-                customModal.destroy();
-              },
-              modalButtonType: 'warning',
-              okText: t(Strings.submit), // '确认',
-            }),
-            footer: null,
-            maskClosable: false,
-          });
+            content: t(Strings.node_not_exist_content),
+            onOk: () => {
+              modalClose();
+              customModal.destroy();
+            },
+            modalButtonType: 'warning',
+            okText: t(Strings.submit), // '确认',
+          }));
           break;
         case StatusCode.FORM_FOREIGN_DATASHEET_NOT_EXIST:
           // 镜像源表被删除
-          customModal = CustomModal.warning({
+          customModal = CustomModal.warning(getModalConfig({
             title: t(Strings.open_failed),
-            content: QRCodeModalContent({
-              content: t(Strings.mirror_resource_dst_been_deleted),
-              onOk: () => {
-                modalClose();
-                customModal.destroy();
-              },
-              modalButtonType: 'warning',
-              okText: t(Strings.submit),
-            }),
-            footer: null,
-            maskClosable: false,
-          });
+            content: t(Strings.mirror_resource_dst_been_deleted),
+            onOk: () => {
+              modalClose();
+              customModal.destroy();
+            },
+            modalButtonType: 'warning',
+            okText: t(Strings.submit),
+          }));
           break;
         default:
       }
       // 对于加载回来的数据为空的情况
       if (!errorCode && activeRecordId && !snapshot.recordMap[activeRecordId]) {
-        const customModal = CustomModal.error({
+        const customModal = CustomModal.error(getModalConfig({
           title: t(Strings.open_failed),
-          content: QRCodeModalContent({
-            content: t(Strings.error_record_not_exist_now),
-            onOk: () => {
-              modalClose();
-              customModal.destroy();
-            },
-            modalButtonType: 'error',
-            okText: t(Strings.submit),
-          }),
-          footer: null,
-          maskClosable: false,
-        });
+          content: t(Strings.error_record_not_exist_now),
+          onOk: () => {
+            modalClose();
+            customModal.destroy();
+          },
+          modalButtonType: 'error',
+          okText: t(Strings.submit),
+        }));
       }
     },
     [modalClose, snapshot],

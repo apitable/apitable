@@ -1,5 +1,5 @@
 import { Button } from '@vikadata/components';
-import { integrateCdnHost, Strings, t } from '@vikadata/core';
+import { integrateCdnHost, Strings, t, Settings } from '@vikadata/core';
 import Image from 'next/image';
 import { ServiceQrCode } from 'pc/common/guide/ui/qr_code';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
@@ -7,19 +7,26 @@ import { MobileBar } from 'pc/components/mobile_bar';
 import { FC } from 'react';
 import ServerErrorPng from 'static/icon/common/common_img_500.png';
 import styles from './style.module.less';
+import { getEnvVariables } from 'pc/utils/env';
 
 export const ServerError: FC = () => {
   const refresh = () => {
     window.location.reload();
   };
 
+  const env = getEnvVariables();
+  console.log('Settings.server_error_page_bg.value', Settings.server_error_page_bg.value);
   return (
     <div className={styles.serverPageWrapper}>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <MobileBar />
         <div className={styles.serverError}>
           <div className={styles.container}>
-            <Image src={ServerErrorPng} alt="server error" />
+            { env.HIDDEN_QRCODE ? 
+              <Image src={integrateCdnHost(Settings.server_error_page_bg.value)} alt="server error" width={230} height={230} /> 
+              : 
+              <Image src={ServerErrorPng} alt="server error" /> 
+            }
             <div className={styles.tip}>{t(Strings.server_error_tip)}</div>
             <div className={styles.button}>
               <Button color="primary" size="large" block onClick={refresh}>
@@ -34,10 +41,16 @@ export const ServerError: FC = () => {
         <div className={styles.serverError}>
           <div className={styles.container}>
             <div className={styles.imgContent}>
-              <Image src={integrateCdnHost(t(Strings.server_error_page_bg))} alt="server error" layout={'fill'} />
-              <div className={styles.qrcode}>
-                <ServiceQrCode />
-              </div>
+              { env.HIDDEN_QRCODE ? 
+                <Image src={integrateCdnHost(Settings.server_error_page_bg.value)} alt="server error" width={230} height={230} />
+                : 
+                <>
+                  <Image src={integrateCdnHost(t(Strings.server_error_page_bg))} alt="server error" width={468} height={362} />
+                  <div className={styles.qrcode}>
+                    <ServiceQrCode />
+                  </div>
+                </>
+              }
             </div>
             <div className={styles.tip}>{t(Strings.server_error_tip)}</div>
             <div className={styles.button}>
