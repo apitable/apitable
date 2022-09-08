@@ -233,4 +233,11 @@ public class ControlRoleTest {
         assertThat(nodeRole.getPermissions()).contains(FieldPermission.READ_FIELD_DATA);
         assertThat(nodeRole.getPermissions()).doesNotContain(FieldPermission.EDIT_FIELD_DATA);
     }
+
+    @Test
+    public void testUpdaterRoleCanCreateRow(){
+        ControlRole updater = ControlRoleManager.parseNodeRole("updater");
+        assertThat(updater.getPermissions()).contains(NodePermission.EDIT_CELL);
+        assertThat(updater.getPermissions()).contains(NodePermission.CREATE_ROW);
+    }
 }
