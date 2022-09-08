@@ -44,16 +44,19 @@ scripts/design_token/__pycache__
 .yarn/install-state.gz
 .yarn/unplugged
 
-# cypree
+# cypress
 /packages/cypress/cypress/videos/*
 /packages/cypress/cypress/screenshots/*
 
-# ddatasheet
+# datasheet
 /packages/datasheet/.next
 /packages/datasheet/out
 /packages/datasheet/web_build
 /packages/datasheet/settings/custom
 /packages/datasheet/settings/public
+
+# init-db
+/init-db/bin
 
 # typescript
 /packages/**/tsconfig.tsbuildinfo
