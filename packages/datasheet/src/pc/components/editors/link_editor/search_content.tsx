@@ -32,10 +32,10 @@ interface ISearchContentProps {
   onChange: (value: string[] | null) => void;
   // 这里的 datasheetId 有两种理解，如果是单纯的展开卡片，则针对的是当前的数表 id
   // 如果在本表的展开记录中打开关联的展开记录，datasheetId 指的就是关联数表的 id
-  datasheetId: string
+  datasheetId: string;
 }
 
-const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows (): { [key: string]: string }[] }, ISearchContentProps> = (props, ref) => {
+const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [key: string]: string }[] }, ISearchContentProps> = (props, ref) => {
   const { field, searchValue: _searchValue, onlyShowSelected, cellValue, onChange, focusIndex, datasheetId } = props;
   const foreignDatasheetId = field.property.foreignDatasheetId;
   const colors = useThemeColors();
@@ -318,8 +318,6 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows (): { 
     // eslint-disable-next-line
   }, [foreignDatasheet.isPartOfData, foreignDatasheet.id, dispatch, formId, mirrorId, datasheetId]);
 
-  const showAddRecordOnBottom = Boolean(onlyShowSelected || rows.length);
-
   return (
     <>
       <div className={style.cardMiddle}>
@@ -372,35 +370,31 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows (): { 
             </div>
         }
       </div>
-      {
-        // TODO: info 需要改为指定颜色
-        showAddRecordOnBottom &&
-        <Tooltip
-          title={foreignDatasheetEditable ? '' : t(Strings.no_permission_to_edit_datasheet)}
-          trigger="hover"
-        >
-          <div className={classNames(style.addRecord)}>
-            <LinkButton
-              component="button"
-              underline={false}
-              onClick={addNewRecord}
-              color={colors.fc2}
-              prefixIcon={<IconAdd fill="currentColor" />}
-              disabled={!foreignDatasheetEditable}
-              block
-            >
-              {
-                <TComponent
-                  tkey={t(Strings.add_new_record_by_name)}
-                  params={{
-                    span: searchValue && <>"<span className={style.searchValue}>{searchValue}</span>"</>,
-                  }}
-                />
-              }
-            </LinkButton>
-          </div>
-        </Tooltip>
-      }
+      <Tooltip
+        title={foreignDatasheetEditable ? '' : t(Strings.no_permission_to_edit_datasheet)}
+        trigger="hover"
+      >
+        <div className={classNames(style.addRecord)}>
+          <LinkButton
+            component="button"
+            underline={false}
+            onClick={addNewRecord}
+            color={colors.fc2}
+            prefixIcon={<IconAdd fill="currentColor" />}
+            disabled={!foreignDatasheetEditable}
+            block
+          >
+            {
+              <TComponent
+                tkey={t(Strings.add_new_record_by_name)}
+                params={{
+                  span: searchValue && <>"<span className={style.searchValue}>{searchValue}</span>"</>,
+                }}
+              />
+            }
+          </LinkButton>
+        </div>
+      </Tooltip>
     </>
   );
 };
