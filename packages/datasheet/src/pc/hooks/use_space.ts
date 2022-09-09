@@ -1,19 +1,10 @@
-import { AxiosResponse } from 'axios';
-import { useEffect, useState } from 'react';
 import {
-  StoreActions,
-  IUserInfo,
-  Api,
-  IUpdateMemberInfo,
-  IAddIsActivedMemberInfo,
-  t,
-  Strings,
-  StatusCode,
-  ISpaceInfo,
-  ISpaceBasicInfo,
+  Api, IAddIsActivedMemberInfo, ISpaceBasicInfo, ISpaceInfo, IUpdateMemberInfo, IUserInfo, StatusCode, StoreActions, Strings, t,
 } from '@vikadata/core';
-import { useDispatch } from 'react-redux';
+import { AxiosResponse } from 'axios';
 import { Message } from 'pc/components/common';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useSelectTeamChange } from './use_address';
 
 // 更换空间logo
@@ -96,65 +87,6 @@ export const useEditMember = (
   return [setStart];
 };
 
-// 调整员工所在部门
-export const useChangeMemberTeam = (
-  userId: string,
-  spaceId: string,
-  teamId: string,
-  memberIds: string[],
-  newTeamIds: string[],
-  cancel: () => void,
-) => {
-  const dispatch = useDispatch();
-  const [start, setStart] = useState(false);
-
-  useEffect(() => {
-    start && Api.updateMemberTeam(memberIds, newTeamIds).then(res => {
-      const { success } = res.data;
-      if (success) {
-        dispatch(StoreActions.getMemberListDataInSpace(1, teamId));
-        Message.success({ content: t(Strings.change_member_team_success) });
-      } else {
-        Message.error({ content: t(Strings.change_member_team_fail) });
-      }
-      dispatch(StoreActions.updateSelectMemberListInSpace([]));
-      dispatch(StoreActions.selectedTeamKeysInModal([]));
-      dispatch(StoreActions.selecteTeamRowsInModal([]));
-      cancel();
-    });
-
-    return () => {
-      setStart(false);
-    };
-
-  }, [start, dispatch, teamId, memberIds, newTeamIds, cancel, userId]);
-
-  return [setStart];
-};
-
-// 增加子管理员
-export const useAddSubAdmin = (memberIds: string[], resourceCodes: string[], cancel: () => void) => {
-  const dispatch = useDispatch();
-  const [start, setStart] = useState(false);
-
-  useEffect(() => {
-    start && Api.addSubMember(memberIds, resourceCodes).then(res => {
-      const { success } = res.data;
-      if (success) {
-        dispatch(StoreActions.getSubAdminList(1));
-        Message.success({ content: t(Strings.add_sub_admin_success) });
-      } else {
-        Message.error({ content: t(Strings.add_sub_admin_fail) });
-      }
-      cancel();
-    });
-    return () => {
-      setStart(false);
-    };
-  }, [start, dispatch, memberIds, resourceCodes, cancel]);
-  return [setStart];
-};
-
 // 编辑子管理员
 export const useEditSubAdmin = (id: string, memberId: string, resourceCodes: string[], cancel: () => void) => {
   const dispatch = useDispatch();
@@ -175,36 +107,6 @@ export const useEditSubAdmin = (id: string, memberId: string, resourceCodes: str
     };
   }, [start, dispatch, id, memberId, resourceCodes, cancel]);
   return [setEditStart];
-};
-
-export const useEditSpaceNameAndSpace = () => {
-  const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
-  const editSpaceNameAndSpace = (spaceId: string, name?: string, logo?: string, resFun?: () => void) => {
-    setLoading(true);
-    return Api.updateSpace(name, logo).then(res => {
-      const { success } = res.data;
-      if (success) {
-        Api.spaceInfo(spaceId).then(res => {
-          const { data, success } = res.data;
-          if (success) {
-            dispatch(StoreActions.setSpaceInfo(data));
-            dispatch(StoreActions.updateUserInfo({
-              spaceName: data.spaceName,
-              spaceLogo: data.spaceLogo,
-            }));
-          }
-          setLoading(false);
-          if (resFun) {
-            resFun();
-          }
-        });
-      } else {
-        setLoading(false);
-      }
-    });
-  };
-  return { editSpaceNameAndSpace, loading };
 };
 
 export const useSpaceInfo = (spaceId?: string | null) => {
@@ -268,7 +170,7 @@ export const useMemberManage = () => {
       dispatch(StoreActions.selecteTeamRowsInModal([]));
     });
   };
-  
+
   // 移除成员
   const removeMember = (props: IRemoveMemberProps) => {
     const { teamId, memberIdArr, isDeepDel, resFunc } = props;
@@ -285,7 +187,7 @@ export const useMemberManage = () => {
       }
       resFunc();
     };
-    
+
     if(memberIdArr.length === 1) {
       return Api.singleDeleteMember(teamId, memberIdArr[0], isDeepDel).then(res => {
         deleteRes(res);

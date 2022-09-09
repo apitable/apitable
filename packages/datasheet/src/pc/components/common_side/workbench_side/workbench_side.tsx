@@ -47,13 +47,6 @@ import { WorkbenchSideContext } from './workbench_side_context';
 import { stopPropagation } from 'pc/utils';
 
 const { Panel } = Collapse;
-
-export interface IRightClickNodeInfo {
-  nodeId: string;
-  type: string;
-  menuId: string;
-}
-
 export interface IDatasheetPanelInfo {
   folderId: string;
   datasheetId?: string;
@@ -210,7 +203,7 @@ export const WorkbenchSide: FC = () => {
   };
 
   const jumpTrash = () => {
-    navigationTo({ path: Navigation.TRASH, params: { spaceId } });
+    navigationTo({ path: Navigation.TRASH, params: { spaceId }});
   };
 
   const jumpSpaceTemplate = () => {

@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { DisabledShareFile } from 'pc/components/catalog/share_node/disabled_share_file/disabled_share_file';
 import { ShareTab } from 'pc/components/catalog/share_node/share_node';
 import { Message } from 'pc/components/common/message';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { TComponent } from 'pc/components/common/t_component';
 import { useCatalogTreeRequest, useResponsive } from 'pc/hooks';
@@ -107,7 +107,7 @@ export const PublicLink: FC<IPublicLinkProps> = ({ nodeId, setActiveTab }) => {
     onOk();
   };
 
-  const handleClosePublicLink = async () => {
+  const handleClosePublicLink = async() => {
     if (disableShareLoading) {
       return;
     }

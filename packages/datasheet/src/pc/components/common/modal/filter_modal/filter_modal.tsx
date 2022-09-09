@@ -1,6 +1,7 @@
+import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
 import { FC } from 'react';
 import * as React from 'react';
-import { IModalProps, BaseModal, Message } from 'pc/components/common';
+import { BaseModal, Message } from 'pc/components/common';
 import { ModalViewFilter } from 'pc/components/tool_bar/view_filter';
 import { t, Strings, IFilterInfo, IFilterCondition, FilterConjunction, ILookUpField } from '@vikadata/core';
 import styles from './style.module.less';

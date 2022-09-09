@@ -4,7 +4,7 @@ import { useRequest } from 'pc/hooks';
 import { Popover, Radio } from 'antd';
 import classnames from 'classnames';
 import { Message } from 'pc/components/common/message';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { TComponent } from 'pc/components/common/t_component';

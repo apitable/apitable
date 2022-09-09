@@ -18,7 +18,7 @@ import {
 } from '@vikadata/core';
 import { Switch } from 'antd';
 import classNames from 'classnames';
-import { FilterModal, Message, Modal, Tooltip } from 'pc/components/common';
+import { Message, Modal, Tooltip } from 'pc/components/common';
 import { InlineNodeName } from 'pc/components/common/inline_node_name';
 import { TComponent } from 'pc/components/common/t_component';
 import { store } from 'pc/store';
@@ -44,6 +44,7 @@ import { LinkFieldPanel } from 'pc/components/multi_grid/format/format_lookup/li
 import { Select, TextButton } from '@vikadata/components';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { StringKeysType } from '@vikadata/core/dist/i18n/stringkeys.interface';
+import { FilterModal } from 'pc/components/common/modal/filter_modal/filter_modal';
 
 const Option = Select.Option;
 
@@ -76,13 +77,6 @@ export const RollUpFuncNameMap = {
   [RollUpFuncType.ARRAYJOIN]: Strings.lookup_arrayjoin,
   [RollUpFuncType.ARRAYUNIQUE]: Strings.lookup_arrayunique,
   [RollUpFuncType.ARRAYCOMPACT]: Strings.lookup_arraycompact,
-};
-
-export const linkedFieldVerify = (field: IField) => {
-  if (!field.property.foreignDatasheetId) {
-    return false;
-  }
-  return true;
 };
 
 export const assignDefaultFormatting = (showFormatType: BasicValueType, newCurrentField: IField) => {
@@ -138,8 +132,8 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
   const foreignDatasheetFields =
     foreignDatasheetFieldMap && foreignDatasheetActiveView && foreignDatasheetReadable
       ? (foreignDatasheetActiveView.columns as IViewColumn[]).map(column => {
-          return foreignDatasheetFieldMap[column.fieldId];
-        })
+        return foreignDatasheetFieldMap[column.fieldId];
+      })
       : [];
 
   const lookUpField = foreignDatasheetFieldMap && foreignDatasheetFieldMap[lookUpTargetFieldId];
@@ -370,7 +364,7 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
           />
           <div className={classNames(settingStyles.sectionTitle, settingStyles.enhance)}>
             <Switch
-              size="small"
+              size='small'
               onChange={() => {
                 const isForeignDstReadable = handleForeignDstReadable();
                 isForeignDstReadable && setFieldProperty('openFilter')(!openFilter);
@@ -389,7 +383,7 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
                 }}
               >
                 {isFilterTypeSwitch && (
-                  <Tooltip title={t(Strings.loopkup_filter_pane_tip)} placement="top">
+                  <Tooltip title={t(Strings.loopkup_filter_pane_tip)} placement='top'>
                     <WarnTriangleIcon fill={colors.warningColor} width={20} height={16} className={settingStyles.warningIcon} />
                   </Tooltip>
                 )}
@@ -398,8 +392,8 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
                     {!filterInfo?.conditions.length
                       ? t(Strings.add_filter)
                       : t(Strings.contain_filter_count, {
-                          count: filterInfo.conditions.length,
-                        })}
+                        count: filterInfo.conditions.length,
+                      })}
                   </span>
                 </div>
                 <div className={settingStyles.arrow}>
@@ -412,7 +406,7 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
                   <WarnTriangleIcon fill={colors.warningColor} width={20} height={16} className={settingStyles.warningIcon} />
                   {t(Strings.filter_delete_tip)}
                 </div>
-                <TextButton color="danger" size="small" onClick={() => setFieldProperty('filterInfo')(undefined)}>
+                <TextButton color='danger' size='small' onClick={() => setFieldProperty('filterInfo')(undefined)}>
                   {t(Strings.clear)}
                 </TextButton>
               </div>
@@ -449,7 +443,7 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
                   <Option value={func.value} key={func.value} currentIndex={index}>
                     <Tooltip
                       mouseEnterDelay={0.5}
-                      placement="left"
+                      placement='left'
                       title={
                         <div>
                           <div className={lookupStyles.funcLabelName}>

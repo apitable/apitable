@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { Loading } from 'pc/components/common/loading';
 import { Logo } from 'pc/components/common/logo';
 import { Message } from 'pc/components/common/message';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { StatusIconFunc } from 'pc/components/common/icon';
 import { TComponent } from 'pc/components/common/t_component';
 import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';

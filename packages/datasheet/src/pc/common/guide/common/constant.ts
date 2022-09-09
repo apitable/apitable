@@ -1,20 +1,5 @@
-
-export const MutationObserverConfig = {
-  attributes: true,
-  characterData: true,
-  childList: true,
-  subtree: true,
-  attributeOldValue: true,
-  characterDataOldValue: true,
-};
-
 // slideout
 export const GUIDE_SLIDEOUT_Z_INDEX = 1001;
-
-// keycode
-export const ESC_KEY_CODE = 27;
-export const LEFT_KEY_CODE = 37;
-export const RIGHT_KEY_CODE = 39;
 
 // around_mask
 export const GUIDE_AROUND_MASK_Z_INDEX = 2000;

@@ -2,7 +2,6 @@ export * from './use_space';
 export * from '../components/invite/use_invite';
 export * from './use_previous';
 export * from './use_home';
-export * from './use_utils';
 export * from './use_user_request';
 export * from './use_catalogtree_request';
 export * from './use_template_request';

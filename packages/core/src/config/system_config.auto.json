@@ -213,7 +213,7 @@
             "value": "https://bbs.vika.cn/article/134"
         },
         "gantt_config_task_contact_help_url": {
-            "value": "https://vika.cn/help/manual-gantt-view"
+            "value": "https://help.vika.cn/docs/guide/manual-gantt-view/#%E8%AE%BE%E7%BD%AE%E4%BB%BB%E5%8A%A1%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB"
         },
         "gantt_guide_video": {
             "value": "space/2021/06/02/8bd6c5263ba444aabc138ed051b83c8c"
@@ -325,6 +325,9 @@
         "modal_logout_step2_icon_mobile": {
             "value": "space/2022/01/11/ba4572da263c46ccb94843046a2a8e6c"
         },
+        "no_permission_img_url": {
+            "value": "/space/2022/09/07/6e95e804d5f44fe4a0dec81d228b0286?attname=filecannotbeaccessed%402x.png"
+        },
         "node_count_trigger": {
             "value": "13"
         },
@@ -397,8 +400,14 @@
         "release_log_history_url": {
             "value": "https://bbs.vika.cn/column/details/13"
         },
+        "role_empty": {
+            "value": "space/2022/08/03/3fbdff65d66547a8ab796e1b808d45b0"
+        },
+        "role_help_url": {
+            "value": "/help/manual-role-management/"
+        },
         "server_error_page_bg": {
-            "value": "/space/2022/05/17/8a52cfd504a84e419e74fd5f4df0b6c0?attname=500%20%E7%BC%BA%E7%9C%81%E5%9B%BE%402x.png"
+            "value": "/space/2022/09/07/cbaf2ee93be24f6bbe361a85db0efba7?attname=theserverisundermaintenance.%402x.png"
         },
         "solution": {
             "value": "https://vika.cn/solutions/"
@@ -3298,7 +3307,7 @@
                 "rules": [
                     "identity_ALL_OF_TRUE_['main_admin']",
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2022-08-19 20:58"
+                    "sign_up_time_IS_AFTER_2022-09-02 21:30"
                 ],
                 "id": "address_shown,[identity_ALL_OF_TRUE_['main_admin'], device_IS_pc, sign_up_time_IS_AFTER_2022-06-24 00:46],[open_guide_wizards([4])]",
                 "event": [
@@ -3396,7 +3405,7 @@
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2022-08-19 20:58",
+                    "sign_up_time_IS_AFTER_2022-09-02 21:30",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
                 ],
@@ -3470,7 +3479,7 @@
                 "rules": [
                     "device_IS_pc",
                     "identity_ALL_OF_TRUE_['main_admin']",
-                    "sign_up_time_IS_AFTER_2022-08-19 20:58",
+                    "sign_up_time_IS_AFTER_2022-09-02 21:30",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
                 ],
@@ -3591,7 +3600,7 @@
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2022-08-19 20:58",
+                    "sign_up_time_IS_AFTER_2022-09-02 21:30",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
                 ],
@@ -3602,11 +3611,11 @@
             },
             {
                 "actions": [
-                    "open_guide_wizards([29, 76, 98])"
+                    "open_guide_wizards([29, 76, 99])"
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_BEFORE_2022-08-19 20:58",
+                    "sign_up_time_IS_BEFORE_2022-09-02 21:30",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
                 ],
@@ -3617,10 +3626,10 @@
             },
             {
                 "actions": [
-                    "open_guide_wizards([76, 98])"
+                    "open_guide_wizards([76, 99])"
                 ],
                 "rules": [
-                    "sign_up_time_IS_BEFORE_2022-08-19 20:58",
+                    "sign_up_time_IS_BEFORE_2022-09-02 21:30",
                     "device_IS_mobile",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
@@ -3635,7 +3644,7 @@
                     "open_guide_wizards([76, 87])"
                 ],
                 "rules": [
-                    "sign_up_time_IS_BEFORE_2022-08-19 20:58",
+                    "sign_up_time_IS_BEFORE_2022-09-02 21:30",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId",
                     "device_IS_app"
@@ -3958,14 +3967,14 @@
             {
                 "operator": "IS_AFTER",
                 "condition": "sign_up_time",
-                "id": "sign_up_time_IS_AFTER_2022-08-19 20:58",
-                "conditionArgs": "2022-08-19 20:58"
+                "id": "sign_up_time_IS_AFTER_2022-09-02 21:30",
+                "conditionArgs": "2022-09-02 21:30"
             },
             {
                 "operator": "IS_BEFORE",
                 "condition": "sign_up_time",
-                "id": "sign_up_time_IS_BEFORE_2022-08-19 20:58",
-                "conditionArgs": "2022-08-19 20:58"
+                "id": "sign_up_time_IS_BEFORE_2022-09-02 21:30",
+                "conditionArgs": "2022-09-02 21:30"
             },
             {
                 "operator": "EXCLUDES",
@@ -4228,9 +4237,9 @@
                 "commandArgs": "[21]"
             },
             {
-                "id": "open_guide_wizards([29, 76, 98])",
+                "id": "open_guide_wizards([29, 76, 99])",
                 "command": "open_guide_wizards",
-                "commandArgs": "[29, 76, 98]"
+                "commandArgs": "[29, 76, 99]"
             },
             {
                 "id": "open_guide_wizards([31])",
@@ -4248,9 +4257,9 @@
                 "commandArgs": "[76, 87]"
             },
             {
-                "id": "open_guide_wizards([76, 98])",
+                "id": "open_guide_wizards([76, 99])",
                 "command": "open_guide_wizards",
-                "commandArgs": "[76, 98]"
+                "commandArgs": "[76, 99]"
             },
             {
                 "id": "open_guide_wizards(47)",
@@ -4880,7 +4889,11 @@
             },
             "98": {
                 "completeIndex": -1,
-                "steps": "[[159]]",
+                "steps": "[[159]]"
+            },
+            "99": {
+                "completeIndex": -1,
+                "steps": "[[161]]",
                 "player": {
                     "action": [
                         "recBtbbzXDolQ",
@@ -6323,7 +6336,7 @@
                 ],
                 "next": "好的",
                 "nextId": "okay",
-                "uiConfig": "{\n  \"element\": \"#resetPermissionButton\",\n  \"placement\": \"topCenter\",\n  \"title\": \"已设置权限\",\n  \"offsetY\": -15,\n  \"description\": \"这里已经设置过权限，所以仅下方列表的成员对此可见。你可以点击这里，恢复到默认权限。\",\n  \"children\":\"\" \n}"
+                "uiConfig": "{\n  \"element\": \"#resetPermissionButton\",\n  \"placement\": \"topCenter\",\n  \"title\": \"权限已限制\",\n  \"offsetY\": -15,\n  \"description\": \"因为已经设置过权限，所以仅下方列表中的成员对此可见。你可以点击这里，恢复到默认权限。\",\n  \"children\":\"\" \n}"
             },
             "158": {
                 "uiConfigId": "player_step_ui_config_158",
@@ -6353,6 +6366,20 @@
                 "uiConfigId": "player_step_ui_config_160",
                 "uiType": "breath",
                 "uiConfig": "{\n  \"element\": \".permission_setting_class\"\n }"
+            },
+            "161": {
+                "uiConfigId": "player_step_ui_config_161",
+                "uiType": "notice",
+                "onNext": [
+                    "open_guide_next_step({\"clearAllPrevUi\":true})"
+                ],
+                "next": "查看详情",
+                "nextId": "check_detail",
+                "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/09/02/3ec8ee88a8c64ee2875cc24e3650a0b3\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/242\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul><li>甘特图新增任务依赖和自动编排功能</li><li>简化权限设置界面，提升操作体验</li><li>右键菜单可批量插入新行，助力效率提升</li><li>模板中心新增中秋专题、开学季两大板块</li><li>邀请好友注册并加入空间站，可获赠更多附件容量</li></ul>\"\n}",
+                "onClose": [
+                    "set_wizard_completed({\"curWizard\": true})",
+                    "open_guide_next_step({\"clearAllPrevUi\":true})"
+                ]
             }
         }
     },
@@ -6401,6 +6428,20 @@
                 "is_mobile": true,
                 "is_browser": true,
                 "format_string": "space_assigned_to_group",
+                "url": "/management",
+                "is_component": true
+            },
+            "assigned_to_role": {
+                "can_jump": true,
+                "to_tag": "members",
+                "notifications_type": "member",
+                "formatString": [
+                    "space_assigned_to_role"
+                ],
+                "is_notification": true,
+                "is_mobile": true,
+                "is_browser": true,
+                "format_string": "space_assigned_to_role",
                 "url": "/management",
                 "is_component": true
             },
@@ -6494,6 +6535,20 @@
                 "is_mobile": true,
                 "is_browser": true,
                 "format_string": "remove_from_group",
+                "url": "/management",
+                "is_component": true
+            },
+            "remove_from_role": {
+                "can_jump": true,
+                "to_tag": "members",
+                "notifications_type": "member",
+                "formatString": [
+                    "remove_from_role"
+                ],
+                "is_notification": true,
+                "is_mobile": true,
+                "is_browser": true,
+                "format_string": "remove_from_role",
                 "url": "/management",
                 "is_component": true
             },

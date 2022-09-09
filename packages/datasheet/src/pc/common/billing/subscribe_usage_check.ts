@@ -4,11 +4,6 @@ import { store as storeState } from 'pc/store';
 import { isMobileApp } from 'pc/utils/env';
 import store, { StoreAPI } from 'store2';
 
-export interface ITriggerEventProps {
-  title: string;
-  content: string;
-}
-
 const SUBSCRIBE_USAGE = 'SUBSCRIBE_USAGE';
 
 export enum SubscribeUsageTipType {

@@ -1,3 +1,4 @@
+import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
 import { FC } from 'react';
 import * as React from 'react';
 import { Collapse, Row, Col } from 'antd';
@@ -8,8 +9,8 @@ import PullDownIcon from 'static/icon/datasheet/rightclick/rightclick_icon_retra
 import classNames from 'classnames';
 import styles from './style.module.less';
 import HelpIcon from 'static/icon/common/common_icon_information.svg';
-import { Tooltip, IModalProps } from 'pc/components/common';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Tooltip } from 'pc/components/common';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { colorVars } from '@vikadata/components';
 
 const { Panel } = Collapse;

@@ -21,8 +21,6 @@ export enum CheckoutSessionType {
   Capacity = 'Capacity',
 }
 
-export const CheckoutSessionTypes = ['GradesChecklist', 'Seats', 'Renewal', 'Capacity'];
-
 export const CheckoutSessionConfig: { [key in CheckoutSessionType]: ICheckoutSessionConfig } = {
   // 购买等级时长以及席位
   [CheckoutSessionType.GradesChecklist]: {

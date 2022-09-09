@@ -32,11 +32,6 @@ export interface IEditorProps extends IBaseEditorProps {
   toggleEditing?: (next?: boolean) => void;
 }
 
-export enum ErrorType {
-  Repeat = 'Repeat',
-  Illegal = 'Illegal',
-}
-
 export const OptionsEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorProps> = (props, ref) => {
   useImperativeHandle(
     ref,
@@ -160,10 +155,10 @@ export const OptionsEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorP
         dragOption={
           fieldPropertyEditable
             ? {
-                afterDrag: afterDrag,
-                draggingId: draggingId,
-                setDraggingId: setDraggingId,
-              }
+              afterDrag: afterDrag,
+              draggingId: draggingId,
+              setDraggingId: setDraggingId,
+            }
             : undefined
         }
         inputRef={inputRef}

@@ -29,12 +29,6 @@ interface ICellAttachmentProps extends ICellComponentProps {
   keyPrefix?: string; // 主动传入 keyPrefix 时，使用 keyPrefix + index 作为 map 下的 children key
 }
 
-export enum AttachmentMimeType {
-  Jpeg = 'image/jpeg',
-  Png = 'image/png',
-  Gif = 'image/gif',
-}
-
 const CELL_PADDING_OFFSET = 10;
 
 const Loading = () => {

@@ -29,10 +29,6 @@ export interface IRobotContext {
   isEditingRobotDesc: boolean;
 }
 
-export interface IRobotStateProps {
-  robot: IRobot;
-  setRobot?: (robot: IRobot | null) => void;
-}
 interface INodeBaseType {
   name: string;
   description: string;

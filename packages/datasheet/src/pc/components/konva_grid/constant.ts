@@ -5,8 +5,6 @@ export const GRID_SCROLL_BASE_SPEED = 15; // 基础滚动速度
 export const GRID_DEFAULT_VERTICAL_SPACING = 70; // 竖向滚动的触发阈值
 export const GRID_DEFAULT_HORIZONTAL_SPACING = 70; // 横向滚动的触发阈值
 
-export const GRID_FROZEN_COLUMN_ADJUST_SPACING = 160; // 限制最小可滚动空间，以触发冻结区域自适应用户屏幕宽度
-
 export const GRID_SCROLL_BAR_OFFSET_X = 50; // 滚动条的偏移量
 
 export const GRID_SCROLL_REMAIN_SPACING = 200; // 视图拥有 200px 的多余滚动空间
@@ -42,7 +40,6 @@ export const GRID_MEMBER_ITEM_AVATAR_MARGIN_RIGHT = 8; // 成员字段 item avat
 export const GRID_CELL_MEMBER_ITEM_MARGIN_TOP = 3; // 成员字段 item avatar 距成员名的距离
 
 // Option
-export const GRID_OPTION_ITEM_MARGIN = 10; // 单/多选字段 item 间的距离
 export const GRID_OPTION_ITEM_PADDING = 10; // 单/多选字段 item 的内边距
 export const GRID_OPTION_ITEM_HEIGHT = 20; // 单/多选字段高度
 

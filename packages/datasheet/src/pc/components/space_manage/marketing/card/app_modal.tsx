@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { triggerUsageAlert } from 'pc/common/billing';
 import { Message } from 'pc/components/common/message';
 import { Tooltip } from 'pc/components/common/tooltip';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { ModalOutsideOperate } from 'pc/components/common/modal_outside_operate';
 import { Method, navigationToUrl } from 'pc/components/route_manager/use_navigation';
 import { DINGTALK_APP_ID, OFFICE_APP_ID, WEWORK_APP_ID } from 'pc/components/space_manage/marketing/marketing';

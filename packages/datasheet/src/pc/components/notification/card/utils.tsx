@@ -93,19 +93,6 @@ interface IRenderNoticeBodyOptions {
   spaceInfo?: ISpaceBasicInfo | null;
 }
 
-export const getMemberTagName = (info: IFromUserInfo) => {
-  switch (info.playerType) {
-    case MemberTypeInNotice.IsDeleted:
-    case MemberTypeInNotice.IsMember: {
-      return info.memberName || t(Strings.unnamed);
-    }
-    case MemberTypeInNotice.IsVisitor: {
-      return t(Strings.guests_per_space);
-    }
-    default:
-      return '';
-  }
-};
 const triggerBase = {
   popupClassName: styles.triggerInNotice,
   popupAlign: {
@@ -193,22 +180,6 @@ export const renderMember = (info: IFromUserInfo, spaceName: string, spaceInfo?:
       </UserCardTrigger>
     </div>
   );
-};
-export const renderNoticeType = (data: INoticeDetail) => {
-  switch (data.notifyType) {
-    case NotifyType.Record:
-    case NotifyType.Member: {
-      return t(Strings.notify_type_member);
-    }
-    case NotifyType.Space: {
-      return t(Strings.notify_type_space);
-    }
-    case NotifyType.System: {
-      return t(Strings.notify_type_system);
-    }
-    default:
-      return '';
-  }
 };
 
 export const getNoticeUrlParams = (data: INoticeDetail) => {

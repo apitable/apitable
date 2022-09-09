@@ -23,7 +23,6 @@ const { getColumnWidth } = Selectors;
 export const HEADER_ROW_FIXED_COUNT = 1;
 export const STET_BAR_HEIGHT = 40;
 export const HEADER_ROW_HEIGHT = 40;
-export const ADD_FIELD_COLUMN_WIDTH = 100;
 export const GROUP_OFFSET = 16;
 export const GROUP_TAB = 48;
 
@@ -151,10 +150,10 @@ export const GridViewsBase: React.ForwardRefRenderFunction<{}, IGridViewOwnProps
     const activeSelectFieldId = activeCell.fieldId;
     const fieldIndex = visibleColumns.findIndex(field => field.fieldId === activeSelectFieldId);
     bottomRightRef.current?.scrollToItem({
-      columnIndex: fieldIndex - 1 
+      columnIndex: fieldIndex - 1
     });
     upperRightRef.current?.scrollToItem({
-      columnIndex: fieldIndex - 1 
+      columnIndex: fieldIndex - 1
     });
 
   }, [activeCell]);

@@ -9,16 +9,6 @@ import styles from '../styles.module.less';
 import { IDegree, IEdge, IDegrees, IAdj, IGraphData, INode, INodeStateMap } from '../interfaces';
 import { useCreation } from 'ahooks';
 
-export interface ICellData {
-  label: string;
-  linkFieldId: string;
-  datasheetId: string;
-  linkIds: string[];
-  degree: IDegree;
-  parents: INode[];
-  recordName: string;
-}
-
 export const useElements = (props: {
   fieldMap: IFieldMap;
   getCardHeight: (recordId: string | null) => number;

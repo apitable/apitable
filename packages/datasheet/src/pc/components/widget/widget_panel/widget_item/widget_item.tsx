@@ -52,8 +52,6 @@ import { WidgetHeaderMobile } from './widget_header';
 import { usePreLoadError } from '../../hooks/use_pre_load_error';
 import { IWidgetPropsBase } from './interface';
 
-export const IS_IFRAME = false;
-
 export const simpleEmitter = new SimpleEmitter();
 
 interface IWidgetItemProps extends IWidgetPropsBase {
@@ -73,8 +71,6 @@ declare global {
     __pressTimer: Date;
   }
 }
-
-export const getWidgetItemWrapperId = (widgetId: string) => `${widgetId}_WIDGET_ITEM_WRAPPER`;
 
 export const WidgetItem: React.FC<IWidgetItemProps> = props => {
   const { widgetPanelId, widgetId, readonly, isMobile, config, setDevWidgetId, dragging, setDragging } = props;
@@ -211,7 +207,7 @@ export const WidgetItem: React.FC<IWidgetItemProps> = props => {
           {widget &&
             (doNotBindDatasheet ? (
               <div className={styles.mask}>
-                <Image src={PngLinkdatasheet} alt="" />
+                <Image src={PngLinkdatasheet} alt='' />
                 {!linkId && (
                   <span
                     onClick={() => {
@@ -354,15 +350,15 @@ export const WidgetHeader: React.FC<IWidgetHeaderProps> = props => {
             return;
           }
           widget?.widgetPackageId &&
-            setCodeUrl &&
-            expandWidgetDevConfig({
-              codeUrl,
-              widgetId,
-              onConfirm: devUrl => {
-                devUrl && setCodeUrl(devUrl);
-              },
-              widgetPackageId: widget.widgetPackageId,
-            });
+          setCodeUrl &&
+          expandWidgetDevConfig({
+            codeUrl,
+            widgetId,
+            onConfirm: devUrl => {
+              devUrl && setCodeUrl(devUrl);
+            },
+            widgetPackageId: widget.widgetPackageId,
+          });
           toggleWidgetDevMode?.();
         },
         toggleSetting,
@@ -404,7 +400,7 @@ export const WidgetHeader: React.FC<IWidgetHeaderProps> = props => {
   const ReactIconExpand = () => <IconExpand width={16} height={16} fill={colors.thirdLevelText} />;
   const ReactMoreOutlined = () => <MoreOutlined size={16} color={colors.thirdLevelText} className={styles.rotateIcon} />;
 
-  const DividerMargin8 = () => <Divider style={{ margin: '8px' }} orientation="vertical" />;
+  const DividerMargin8 = () => <Divider style={{ margin: '8px' }} orientation='vertical' />;
 
   const nameMouseUp = e => {
     setDragging(false);
@@ -446,7 +442,7 @@ export const WidgetHeader: React.FC<IWidgetHeaderProps> = props => {
               defaultValue={widget?.snapshot.widgetName}
               ref={inputRef}
               onPressEnter={saveWidgetName}
-              size="small"
+              size='small'
               style={{ height: 24, fontSize: '12px' }}
               onBlur={saveWidgetName}
               autoFocus
@@ -515,7 +511,7 @@ export const WidgetHeader: React.FC<IWidgetHeaderProps> = props => {
       )}
       {config.isDevMode && (
         <span
-          data-guide-id="WIDGET_ITEM_REFRESH"
+          data-guide-id='WIDGET_ITEM_REFRESH'
           className={classNames(styles.npOpacity, styles.operateButton, 'dragHandleDisabled')}
           onClick={() => {
             refreshVersion();
@@ -523,13 +519,13 @@ export const WidgetHeader: React.FC<IWidgetHeaderProps> = props => {
           }}
         >
           <Tooltip title={t(Strings.widget_operate_refresh)} placement={tooltipPlacement}>
-            <IconButton icon={RefreshOutlined} size="small" />
+            <IconButton icon={RefreshOutlined} size='small' />
           </Tooltip>
         </span>
       )}
       {!config.hideMoreOperate && (
         <span
-          data-guide-id="WIDGET_ITEM_MORE"
+          data-guide-id='WIDGET_ITEM_MORE'
           className={classNames(
             {
               [styles.npOpacity]: displayMode === 'always' || config.isDevMode || isExpandWidget,
@@ -559,7 +555,7 @@ export const WidgetHeader: React.FC<IWidgetHeaderProps> = props => {
           </Tooltip>
           <IconButton
             icon={CloseMiddleOutlined}
-            size="small"
+            size='small'
             onClick={() => {
               isFullScreenWidget && toggleFullScreenWidget();
               closeWidgetRoute(widgetId);

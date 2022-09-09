@@ -390,18 +390,18 @@ export const CalendarView: FC<ICalendarViewProps> = props => {
           extraData={
             editable && !(isStartDisabled || isEndDisabled)
               ? [
-                  {
-                    icon: <ClearOutlined color={colors.thirdLevelText} />,
-                    text: t(Strings.clear_date),
-                    onClick: ({ props: { recordId } }) => setRecord(recordId, null, null),
-                  },
-                ]
+                {
+                  icon: <ClearOutlined color={colors.thirdLevelText} />,
+                  text: t(Strings.clear_date),
+                  onClick: ({ props: { recordId }}) => setRecord(recordId, null, null),
+                },
+              ]
               : undefined
           }
         />
         <VikaSplitPanel
-          primary="second"
-          split="vertical"
+          primary='second'
+          split='vertical'
           style={{ overflow: 'none' }}
           size={size}
           allowResize={false}
@@ -414,7 +414,7 @@ export const CalendarView: FC<ICalendarViewProps> = props => {
                   })}
                   onClick={() => onPanelSizeChange(!gridVisible)}
                 >
-                  <Button size="small" prefixIcon={<ListOutlined size={16} color={colors.fc3} />}>
+                  <Button size='small' prefixIcon={<ListOutlined size={16} color={colors.fc3} />}>
                     {t(Strings.calendar_list_toggle_btn)}
                   </Button>
                 </div>
@@ -433,8 +433,8 @@ export const CalendarView: FC<ICalendarViewProps> = props => {
                 startListStyle={
                   listColor
                     ? {
-                        borderLeft: `2px solid ${listColor}`,
-                      }
+                      borderLeft: `2px solid ${listColor}`,
+                    }
                     : undefined
                 }
                 tasks={calendarRecords as any}
@@ -443,7 +443,7 @@ export const CalendarView: FC<ICalendarViewProps> = props => {
                 moreText={isMobile ? t(Strings.calendar_view_all_records_mobile) : t(Strings.calendar_view_all_records)}
                 warnText={
                   <Tooltip content={t(Strings.calendar_error_record)}>
-                    <span className="warning">
+                    <span className='warning'>
                       <WarningTriangleNonzeroFilled size={16} color={colors.warningColor} />
                     </span>
                   </Tooltip>
@@ -457,7 +457,7 @@ export const CalendarView: FC<ICalendarViewProps> = props => {
         />
         {dateTypeAccessibleFields.length === 0 && <CreateFieldModal />}
         {isVisible && <DragDropModal recordId={recordModal && recordModal[0]} style={recordModal![2]} />}
-        {isMobile && rowCreatable && ReactDOM.createPortal(<AddRecord size="large" />, document.getElementById(DATASHEET_ID.ADD_RECORD_BTN)!)}
+        {isMobile && rowCreatable && ReactDOM.createPortal(<AddRecord size='large' />, document.getElementById(DATASHEET_ID.ADD_RECORD_BTN)!)}
       </div>
     </CalendarContext.Provider>
   );

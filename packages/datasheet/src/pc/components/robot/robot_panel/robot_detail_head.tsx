@@ -7,7 +7,7 @@ import {
   ChevronLeftOutlined,
   DeleteOutlined, EditDescribeOutlined, EditOutlined, HistoryOutlined, InformationSmallOutlined, MoreStandOutlined
 } from '@vikadata/icons';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useSelector } from 'react-redux';
 import { deleteRobot, refreshRobotList } from '../api';
 import { useRobot } from '../hooks';

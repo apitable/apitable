@@ -53,7 +53,3 @@ export declare type TText = Text & IMarks;
 export interface ILeafRenderProps extends RenderLeafProps {
   leaf: TText;
 }
-
-export interface ILeaf {
-  text: string;
-}

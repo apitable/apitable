@@ -2,7 +2,6 @@ import { Strings, t } from '@vikadata/core';
 import classNames from 'classnames';
 import { Message } from 'pc/components/common/message/message';
 import React from 'react';
-import { shallowEqual } from 'react-redux';
 import { CELL_CLASS, FIELD_HEAD_CLASS, GROUP_TITLE, OPERATE_BUTTON_CLASS, OPERATE_HEAD_CLASS } from './constant';
 
 interface IPoint {
@@ -157,22 +156,6 @@ export const getGroupHeadRecordId = (e: React.MouseEvent | MouseEvent) => {
   );
   return groupHeadRecordId;
 };
-
-// 用于排查细嫩的工具函数
-export function findRenderCause<T>(pre: T, cur: T, except?: string[]) {
-  for (const k in pre) {
-    if (except && except.includes(k)) {
-      continue;
-    }
-    if (pre[k] !== cur[k]) {
-      console.group(k);
-      console.log(pre[k]);
-      console.log(cur[k]);
-      console.groupEnd();
-    }
-  }
-  return shallowEqual(pre, cur);
-}
 
 export const getCookie = (name: string) => {
   if (document.cookie.length > 0) {

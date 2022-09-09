@@ -1,17 +1,14 @@
 // 任务上下间距
-export const GANTT_TASK_GAP_SIZE = 8; 
+export const GANTT_TASK_GAP_SIZE = 8;
 
 // 任务拖拽把手内部的竖条高度
-export const GANTT_INNER_HANDLER_HEIGHT = 12; 
+export const GANTT_INNER_HANDLER_HEIGHT = 12;
 
 // 甘特图触发横向滚动的阈值
 export const GANTT_HORIZONTAL_DEFAULT_SPACING = 50;
 
 // 甘特图触发纵向滚动的阈值
 export const GANTT_VERTICAL_DEFAULT_SPACING = 50;
-
-// 甘特图中维格表的列头高度
-export const GANTT_GRID_FIELD_HEAD_HEIGHT = 72;
 
 // 甘特图中图形区域 tabbar 高度
 export const GANTT_TAB_BAR_HEIGHT = 40;
@@ -33,9 +30,6 @@ export const GANTT_SHORT_TASK_MEMBER_ITEM_HEIGHT = 20;
 
 // 甘特图中的 icon 大小
 export const GANTT_COMMON_ICON_SIZE = 16;
-
-// 甘特图中任务字段展示的初始距离
-export const GANTT_TASK_INIT_PADDING_LEFT = 14;
 
 // 导出图片的内间距
 export const EXPORT_IMAGE_PADDING = 16;

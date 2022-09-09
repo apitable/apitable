@@ -58,24 +58,13 @@ export const FIELD_HEIGHT_MAP_MOBILE = {
 // 不在 FIELD_HEIGHT_MAP 中的字段，都是以单行文本高度展示。
 export const DEFAULT_SINGLE_TEXT_HEIGHT = 21;
 
-export const ADD_NEW_RECORD = 'ADD_NEW_RECORD';
-
 // 卡片大于等于这个宽度的时候显示缩略图，同时这个宽度也是超过 1920 px 后的固定卡片宽度
 export const SHOW_THUMBIAL_WIDTH = 336;
 
-export enum CardType {
-  Blank = 'blank',
-  Add = 'add',
-  Title = 'title',
-  Default = 'default'
-}
-
 export const PADDING_TOP = 32;
-export const GROUP_TITLE_CARD_HEIGHT = 38;
 export const GROUP_TITLE_DEFAULT_HEIGHT = 14;
 export const GROUP_TITLE_RATING_HEIGHT = 18;
 export const GROUP_TITLE_CHECKBOX_HEIGHT = 16;
-export const GROUP_TITLE_SELECT_LINK_HEIGHT = 20;
 export const GROUP_TITLE_PERSON_HEIGHT = 20;
 export const PADDING_RIGHT = 18;
 export const PADDING_BOTTOM = 40;

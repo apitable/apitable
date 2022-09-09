@@ -28,7 +28,6 @@ export * from './button_plus';
 export * from './button_base';
 export * from './link_jump';
 export * from './icon';
-export * from './share_link';
 export * from './vika_split_panel';
 export * from './input';
 export * from './pop_up_title';

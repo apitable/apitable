@@ -53,12 +53,6 @@ export interface ILevelCard {
   upgradeBtnColor?: string;
 }
 
-export interface IAdvert {
-  buttonText: string,
-  onClick: () => void,
-  content: string
-}
-
 export interface ISpaceLevelInfoValue {
   title: string,
   strokeColor: string,

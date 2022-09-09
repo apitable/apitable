@@ -9,7 +9,7 @@ import { clearStorage } from 'pc/utils/storage';
 import { IdentifyingCodeModes, IIdentifyingCodeConfig } from 'pc/components/home/login/identifying_code_login/identifying_code_modes';
 import { useQuery } from 'pc/hooks';
 import styles from './style.module.less';
-import { Modal as AntModal } from 'pc/components/common/modal/modal';
+import { Modal as AntModal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
 import { usePlatform } from 'pc/hooks/use_platform';
 import { Modal } from 'pc/components/common/mobile/modal';

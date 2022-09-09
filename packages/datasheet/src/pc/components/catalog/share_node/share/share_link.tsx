@@ -2,7 +2,7 @@ import { Button, ButtonGroup, useThemeColors } from '@vikadata/components';
 import { IUserInfo, Navigation, Strings, t } from '@vikadata/core';
 import { NewtabOutlined } from '@vikadata/icons';
 import classnames from 'classnames';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { Tooltip } from 'pc/components/common/tooltip';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';

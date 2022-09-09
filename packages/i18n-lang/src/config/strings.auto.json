@@ -362,10 +362,34 @@
             "en_US": "Your datasheet <a class=\"nodeName\"></a> has <a class=\"usage\"></a> records and will reach the maximum limit (<a class=\"count\"></a> records) soon. To continue to add records via API, please clean up your outdated data or write data into another datasheet before you reach the limit.",
             "zh_HK": "<a class=\"nodeName\"></a> 當前記錄數已達 <a class=\"usage\"></a> 條。單個表格的行數上限是 <a class=\"count\"></a> 條，請注意及時清理數據或者更換其他表格，以免 API 無法正常寫入新的記錄"
         },
+        "add_role_btn": {
+            "zh_CN": "新增角色",
+            "en_US": "New role"
+        },
+        "add_role_error_empty": {
+            "zh_CN": "角色名不能为空",
+            "en_US": "Role name cannot be empty"
+        },
+        "add_role_error_exists": {
+            "zh_CN": "该角色名称已存在，请修改",
+            "en_US": "The role name already exists, please modify"
+        },
+        "add_role_error_limit": {
+            "zh_CN": "角色的名称不能超过 ${max} 字",
+            "en_US": "The name of the role cannot exceed ${max} characters"
+        },
         "add_role_success": {
             "zh_CN": "添加权限成功",
             "en_US": "Permission added successfully",
             "zh_HK": "添加權限成功"
+        },
+        "add_role_success_message": {
+            "zh_CN": "角色创建成功",
+            "en_US": "Role created successfully"
+        },
+        "add_role_title": {
+            "zh_CN": "添加角色",
+            "en_US": "Add role"
         },
         "add_row_button_tip": {
             "zh_CN": "新增一行",
@@ -2775,6 +2799,9 @@
             "en_US": "monthly",
             "zh_HK": "按月"
         },
+        "by_the_year": {
+            "zh_CN": "按年"
+        },
         "calendar_add_date_time_field": {
             "zh_CN": "创建日期",
             "en_US": "Create Date field",
@@ -3140,6 +3167,15 @@
             "en_US": "Cascader must have minimum two levels",
             "zh_HK": "多級聯動至少需要選擇兩個字段作為層級關係"
         },
+        "cascader_mobile_unavailable_tip": {
+            "zh_CN": "手机端无法编辑数据源和规则",
+            "en_US": "Not supported to edit cascader source and rules on mobile devices",
+            "zh_HK": "手机端无法编辑数据源和规则"
+        },
+        "cascader_new_field_tip": {
+            "zh_CN": "选择列",
+            "en_US": "choose field"
+        },
         "cascader_no_data_field_error": {
             "zh_CN": "存在没有数据的字段，请重新选择或者补充数据后再进行尝试",
             "en_US": "Some fields have no data. Please reselect or create data and try again",
@@ -3169,6 +3205,11 @@
             "zh_CN": "级联规则",
             "en_US": "Cascader rules",
             "zh_HK": "級聯規則"
+        },
+        "cascader_rules_help_tip": {
+            "zh_CN": "级联规则帮助",
+            "en_US": "cascader rules help tip",
+            "zh_HK": "级联规则帮助"
         },
         "cascader_select_tip": {
             "zh_CN": "选择上方数据源表，展示级联关系",
@@ -3430,6 +3471,9 @@
             "en_US": "Select a datasheet to link to",
             "zh_HK": "請選擇要關聯的維格表"
         },
+        "check_more_privileges": {
+            "zh_CN": "查看更多特权"
+        },
         "check_network_status": {
             "zh_CN": "请检查网络连接",
             "en_US": "Please check the network connection",
@@ -3655,6 +3699,9 @@
             "zh_CN": "关闭卡片 Esc",
             "en_US": "Press \"Esc\" to close the card",
             "zh_HK": "關閉卡片 Esc"
+        },
+        "close_menu": {
+            "zh_CN": "关闭菜单"
         },
         "close_node_permission_label": {
             "zh_CN": "指定成员或小组",
@@ -3982,6 +4029,9 @@
             "en_US": "Forum",
             "zh_HK": "交流群"
         },
+        "community": {
+            "zh_CN": "社区版"
+        },
         "community_and_local_interest": {
             "zh_CN": "社区与本地兴趣",
             "en_US": "Community and local interest",
@@ -3991,6 +4041,9 @@
             "zh_CN": "开源社区版",
             "en_US": "Community",
             "zh_HK": "開源社區版"
+        },
+        "community_grade_desc": {
+            "zh_CN": "免费且开源，可以自助安装"
         },
         "comoros": {
             "zh_CN": "科摩罗",
@@ -4197,6 +4250,9 @@
             "zh_CN": "使用过程中遇到问题，可以随时获得服务和解答",
             "en_US": "Service and answers are always available when you have questions during use",
             "zh_HK": "使用過程中遇到問題，可以隨時獲得服務和解答"
+        },
+        "contact_us_to_join_company_support": {
+            "zh_CN": "扫码添加我们的客服，申请创业公司扶持计划"
         },
         "contacts": {
             "zh_CN": "通讯录",
@@ -4668,6 +4724,9 @@
             "en_US": "Custom feature development",
             "zh_HK": "定制功能開發"
         },
+        "custom_grade_desc": {
+            "zh_CN": "提供代理部署，私有化安装，您可以获得帮助支持和定制化专业服务"
+        },
         "custom_picture": {
             "zh_CN": "自定义图片",
             "en_US": "Customized picture",
@@ -5120,6 +5179,30 @@
             "zh_CN": "删除这 ${count} 条记录",
             "en_US": "Delete ${count} records",
             "zh_HK": "刪除這 ${count} 條記錄"
+        },
+        "delete_role_member_content": {
+            "zh_CN": "确认后该成员将会被移出当前角色",
+            "en_US": "After confirmation, the member will be removed from the current role"
+        },
+        "delete_role_member_success": {
+            "zh_CN": "移除成功",
+            "en_US": "Removed successfully"
+        },
+        "delete_role_member_title": {
+            "zh_CN": "移除角色",
+            "en_US": "Remove role"
+        },
+        "delete_role_success_message": {
+            "zh_CN": "角色删除成功",
+            "en_US": "Role deleted successfully"
+        },
+        "delete_role_warning_content": {
+            "zh_CN": "你需要将该角色内的成员都移出组后，才能进行删除操作",
+            "en_US": "You need to move all members in this role out of the group before deleting"
+        },
+        "delete_role_warning_title": {
+            "zh_CN": "无法删除",
+            "en_US": "Cannot delete"
         },
         "delete_row": {
             "zh_CN": "删除行",
@@ -9784,7 +9867,7 @@
             "zh_HK": "{\"bronze\":\"免費\",\"silver\":\"1 元\",\"gold\":\"1.5 元\",\"enterprise\":\"按需定制\"}"
         },
         "grade_price_by_month": {
-            "zh_CN": "{\"bronze\":\"免费\",\"silver\":\"约 36 元 人/月\",\"gold\":\"约 43.8 元 人/月\",\"enterprise\":\"按需定制\"}",
+            "zh_CN": "{\n  \"bronze\": \"免费\",\n  \"silver\": \"约 36 元 人/月\",\n  \"gold\": \"约 43.8 元 人/月\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}",
             "en_US": "{\"bronze\":\"free\",\"silver\":\"about 36 yuan per person/month\",\"gold\":\"about 43.8 yuan per person/month\",\"enterprise\":\"customized on demand\"}",
             "zh_HK": "{\"bronze\":\"免費\",\"silver\":\"約 36 元 人/月\",\"gold\":\"約 43.8 元 人/月\",\"enterprise\":\"按需定制\"}"
         },
@@ -9794,7 +9877,7 @@
             "zh_HK": "{\"bronze\":\"\",\"silver\":\"\",\"gold\":\"\",\"enterprise\":\"\"}"
         },
         "grade_price_by_year": {
-            "zh_CN": "{\"bronze\":\"免费\",\"silver\":\"约 368 元 人/年\",\"gold\":\"约 538.8 元 人/年\",\"enterprise\":\"按需定制\"}",
+            "zh_CN": "{\n  \"bronze\": \"免费\",\n  \"silver\": \"约 368 元 人/年\",\n  \"gold\": \"约 538.8 元 人/年\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}",
             "en_US": "{\"bronze\":\"免费\",\"silver\":\"368 元 人/年\",\"gold\":\"538.8 元 人/年\",\"enterprise\":\"按需定制\"}",
             "zh_HK": "{\"bronze\":\"免費\",\"silver\":\"約 368 元 人/年\",\"gold\":\"約 538.8 元 人/年\",\"enterprise\":\"按需定制\"}"
         },
@@ -10386,6 +10469,10 @@
             "zh_CN": "成员和小组继承上级文件夹「${nodeName}」的权限",
             "en_US": "Members and teams inherit permissions from superior folder \"${nodeName}\" ",
             "zh_HK": "成員和小組繼承上級文件夾「${nodeName}」的權限"
+        },
+        "init_roles": {
+            "zh_CN": "财务,市场,IT,人事,法务",
+            "en_US": "Finance,Marketing,IT,HR,Legal"
         },
         "initial_size": {
             "zh_CN": "原始尺寸",
@@ -12506,6 +12593,26 @@
             "en_US": "Manage members",
             "zh_HK": "成員設置"
         },
+        "manage_role_empty_btn": {
+            "zh_CN": "开始使用",
+            "en_US": "Start using"
+        },
+        "manage_role_empty_desc1": {
+            "zh_CN": "你可以自由创建角色，并将任意部门/成员添加到一个或多个角色内，可以实现更灵活地权限控制，详情请查看<a target=\"_blank\" href=\"${url}\">帮助说明</a>",
+            "en_US": "You can freely create roles and add any department / member to one or more roles to achieve more flexible permission control. For details, please see the <a target=\"_blank\" href=\"${url}\">help</a>"
+        },
+        "manage_role_empty_desc2": {
+            "zh_CN": "例如：你可以创建一个“项目经理”的角色，把组织架构中项目经理岗位的成员都添加进去，这样就可以实现在成员列或者在记录的评论中直接选择“项目经理”这个角色并通知到他们了",
+            "en_US": "For example, you can create a role of \"project manager\" and add all the members of the project manager position in the organizational structure. In this way, you can directly select the role of \"project manager\" in the member column or in the recorded comments and notify them"
+        },
+        "manage_role_empty_title": {
+            "zh_CN": "欢迎使用角色",
+            "en_US": "Welcome to roles"
+        },
+        "manage_role_header_desc": {
+            "zh_CN": "你可以自由创建角色，并将任意部门/成员添加到一个或多个角色内，可以实现更灵活地权限控制。<a target=\"_blank\" href=\"${url}\">帮助文档</a>",
+            "en_US": "You can freely create roles and add any department / member to one or more roles to achieve more flexible permission control<a target=\"_blank\" href=\"${url}\"> help document</a>"
+        },
         "manage_team": {
             "zh_CN": "小组设置",
             "en_US": "Manage teams",
@@ -13461,6 +13568,10 @@
             "en_US": "Morocco",
             "zh_HK": "摩洛哥"
         },
+        "move": {
+            "zh_CN": "移动",
+            "en_US": "Move"
+        },
         "move_favorite_node_fail": {
             "zh_CN": "移动节点失败，系统将会自动更新列表",
             "en_US": "Node moving failed. The system will update the list automatically. ",
@@ -13469,6 +13580,14 @@
         "move_node_modal_content": {
             "zh_CN": "移动后，文件的可见性可能会受到上级文件夹的影响，你可以查看 ${nodeSet} 状态了解详情",
             "en_US": "After moving, the visibility of the file may be affected by the parent folder. You can check the ${nodeset} status for details"
+        },
+        "move_to": {
+            "zh_CN": "移动至",
+            "en_US": "Move to"
+        },
+        "move_to_modal_title": {
+            "zh_CN": "将【${name}】移动到",
+            "en_US": "Move [${name}] to"
         },
         "mozambique": {
             "zh_CN": "莫桑比克",
@@ -13923,7 +14042,7 @@
         },
         "no_permission_setting_admin": {
             "zh_CN": "无权限修改「管理员」的权限",
-            "en_US": "No permission to modify the permission of \"Administrator\"",
+            "en_US": "No permission to modify the permission of \"Admin\"",
             "zh_HK": "無權限修改「管理員」的權限"
         },
         "no_permission_tips_description": {
@@ -14082,7 +14201,7 @@
             "zh_HK": "你是文件管理員，擁有此文件的可管理權限"
         },
         "node_permission_item_tips_other_he": {
-            "zh_CN": "他${role}该文件",
+            "zh_CN": "他${role}数据",
             "en_US": "He is ${role}",
             "zh_HK": "他${role}该文件"
         },
@@ -14092,7 +14211,7 @@
             "zh_HK": "，你可以點擊右側菜單修改或移除權限"
         },
         "node_permission_item_tips_other_you": {
-            "zh_CN": "你${role}该文件",
+            "zh_CN": "你${role}数据",
             "en_US": "You is ${role}",
             "zh_HK": "你${role}该文件"
         },
@@ -14361,6 +14480,12 @@
             "en_US": "Verification code not obtained or expired",
             "zh_HK": "未獲取驗證碼或已過期，請重新獲取"
         },
+        "offical_website_footer_nav_data": {
+            "zh_CN": "[{\n  \"title\": \"产品\",\n  \"lists\": [{\n    \"name\": \"快速入门\",\n    \"url\": \"/help/tutorial-1-quick-start/\"\n  }, {\n    \"name\": \"产品指南\",\n    \"url\": \"/help/manual-1-what-is-vikadata/\"\n  }, {\n    \"name\": \"产品价格\",\n    \"url\": \"/pricing/\"\n  }, {\n    \"name\": \"产品路线图\",\n    \"url\": \"https://vika.cn/share/shrvp76H9lQBFLaRG1wSY/dstB1RtGAw5qMoqnnY/viw9giKo0IcT5\"\n  }]\n}, {\n  \"title\": \"关于我们\",\n  \"lists\": [{\n    \"name\": \"公司介绍\",\n    \"url\": \"/company/\"\n  }, {\n    \"name\": \"加入我们\",\n    \"url\": \"/join-us/\"\n  }, {\n    \"name\": \"媒体报道\",\n    \"url\": \"/press/\"\n  }, {\n    \"name\": \"vika维格课堂\",\n    \"url\": \"https://u.vika.cn/vikaxueyuan\"\n  }, {\n    \"name\": \"维格合伙人\",\n    \"url\": \"/partners/\"\n  }]\n}, {\n  \"title\": \"解决方案\",\n  \"lists\": [{\n    \"name\": \"PMO项目群管理\",\n    \"url\": \"/business-pmo/\"\n  }, {\n    \"name\": \"智慧电商运营\",\n    \"url\": \"/ecommerce/\"\n  }, {\n    \"name\": \"CRM客户管理\",\n    \"url\": \"/crm/\"\n  }, {\n    \"name\": \"HR人力资源管理\",\n    \"url\": \"/hr/\"\n  }, {\n    \"name\": \"Scrum敏捷开发管理\",\n    \"url\": \"/scrum/\"\n  }, {\n    \"name\": \"营销策划与市场运营\",\n    \"url\": \"/marketing/\"\n  }, {\n    \"name\": \"OKR目标管理\",\n    \"url\": \"/okr/\"\n  }, {\n    \"name\": \"教育培训管理\",\n    \"url\": \"/education/\"\n  }, {\n    \"name\": \"智慧门店管理\",\n    \"url\": \"/shop/\"\n  }]\n}, {\n  \"title\": \"支持\",\n  \"lists\": [{\n    \"name\": \"意见反馈\",\n    \"url\": \"https://vika.cn/share/shrzw0miJVmSkJ7eBBa9k/fomx5qPX0JGPFvfEEP\"\n  }, {\n    \"name\": \"帮助中心\",\n    \"url\": \"/help/\"\n  }, {\n    \"name\": \"开发者中心\",\n    \"url\": \"/developers/\"\n  }, {\n    \"name\": \"服务条款\",\n    \"url\": \"/service-agreement/\"\n  }, {\n    \"name\": \"隐私协议\",\n    \"url\": \"/service-agreement/\"\n  }, {\n    \"name\": \"安全与合规\",\n    \"url\": \"/security/\"\n  }]\n}, {\n  \"title\": \"服务\",\n  \"lists\": [{\n    \"name\": \"加入社群\",\n    \"url\": \"/chatgroup/\"\n  }, {\n    \"name\": \"Github开源\",\n    \"url\": \"https://github.com/vikadata\"\n  }, {\n    \"name\": \"预约演示\",\n    \"url\": \"https://vika.cn/share/shrlRw3YWmqZ4BMl0B7qZ/fomUMtKMblNchCG7Ef\"\n  }, {\n    \"name\": \"专有云部署\",\n    \"url\": \"https://vika.cn/share/shrVrGPclBql6w9ysUHzR/fomed5397fFJfdcRvL\"\n  }, {\n    \"name\": \"应用连接\",\n    \"url\": \"/connections/\"\n  }]\n}, {\n  \"title\": \"联系我们\",\n  \"lists\": [{\n    \"name\": \"地址：深圳市南山区国信投资大厦1710\",\n    \"url\": \"https://ditu.amap.com/place/B0FFJ14BJ7\"\n  }, {\n    \"name\": \"售前咨询：点击联系商务\",\n    \"url\": \"https://vika.cn/share/shrlRw3YWmqZ4BMl0B7qZ/fomUMtKMblNchCG7Ef\"\n  }, {\n    \"name\": \"合作：bd@vikadata.com\",\n    \"url\": \"mailto:bd@vikadata.com\"\n  }, {\n    \"name\": \"媒体：pr@vikadata.com\",\n    \"url\": \"mailto:pr@vikadata.com\"\n  }, {\n    \"name\": \"招聘：hr@vikadata.com\",\n    \"url\": \"mailto:hr@vikadata.com\"\n  }]\n}]"
+        },
+        "offical_website_nav_data": {
+            "zh_CN": "[{\n  \"name\": \"产品\",\n  \"href\": \"/login\",\n  \"children\": [\n    {\n      \"name\": \"vika维格表 Overview\",\n      \"href\": \"/login/\"\n    },\n    {\n      \"name\": \"应用连接 Integration\",\n      \"href\": \"/connections/\"\n    },\n    {\n      \"name\": \"客户端（Beta） Download\",\n      \"href\": \"/download/\"\n    }\n  ]\n}, {\n  \"name\": \"解决方案\",\n  \"href\": \"/\",\n  \"children\": [{\n    \"name\": \"PMO项目群管理\",\n    \"href\": \"/business-pmo/\"\n  }, {\n    \"name\": \"智慧电商运营\",\n    \"href\": \"/ecommerce/\"\n  }, {\n    \"name\": \"CRM客户管理\",\n    \"href\": \"/crm/\"\n  }, {\n    \"name\": \"HR人力资源管理\",\n    \"href\": \"/hr/\"\n  }, {\n    \"name\": \"Scrum敏捷开发管理\",\n    \"href\": \"/scrum/\"\n  }, {\n    \"name\": \"营销策划与市场运营\",\n    \"href\": \"/marketing/\"\n  }, {\n    \"name\": \"OKR目标管理\",\n    \"href\": \"/okr/\"\n  }, {\n    \"name\": \"教育培训管理\",\n    \"href\": \"/education/\"\n  }, {\n    \"name\": \"智慧门店管理\",\n    \"href\": \"/shop/\"\n  }, {\n    \"name\": \"更多解决方案 >\",\n    \"href\": \"/solutions/\"\n  }]\n}, {\n  \"name\": \"模板/案例\",\n  \"href\": \"/template\",\n  \"children\": [\n    {\n      \"name\": \"模板中心 Tempaltes\",\n      \"href\": \"/template\"\n    },\n    {\n      \"name\": \"客户案例 Customers\",\n      \"href\": \"/cases/\"\n    }\n  ]\n},\n  {\n    \"name\": \"首页\",\n    \"href\": \"/?home=1\"\n  },\n  {\n    \"name\": \"学习资源\",\n    \"href\": \"https://edu.vika.cn/index\",\n    \"children\": [\n      {\n        \"name\": \"快速入门 Tutorials\",\n        \"href\": \"/help/tutorial/\"\n      },\n      {\n        \"name\": \"产品手册 Manual\",\n        \"href\": \"/help/manual/\"\n      },\n      {\n        \"name\": \"维格课堂 Vika Education\",\n        \"href\": \"https://edu.vika.cn/\"\n      },\n      {\n        \"name\": \"维格社区 Vika BBS\",\n        \"href\": \"https://bbs.vika.cn/\"\n      },\n      {\n        \"name\": \"第三方连接 Integration\",\n        \"href\": \"/help/connection/\"\n      },\n      {\n        \"name\": \"开发者中心 Developer Center\",\n        \"href\": \"/developers/\"\n      },\n      {\n        \"name\": \"常见问题 FAQ\",\n        \"href\": \"/help/questions/\"\n      }\n    ]\n  }]"
+        },
         "office_preview": {
             "zh_CN": "Office 文件预览",
             "en_US": "Preview Office Files",
@@ -14445,6 +14570,9 @@
             "zh_CN": "官网",
             "en_US": "Official website",
             "zh_HK": "官網"
+        },
+        "official_website_partners": {
+            "zh_CN": "[{\n  \"name\": \"五源资本\",\n  \"url\": \"https://www.5ycap.com/\"\n}, {\n  \"name\": \"IDG资本\",\n  \"url\": \"https://cn.idgcapital.com/\"\n}, {\n  \"name\": \"天图资本\",\n  \"url\": \"http://www.tiantu.com.cn/cn/index.aspx\"\n}, {\n  \"name\": \"软族科技\",\n  \"url\": \"https://ruanzu.com/\"\n}, {\n  \"name\": \"惟客数据\",\n  \"url\": \"https://wakedata.com/\"\n}, {\n  \"name\": \"才云科技\",\n  \"url\": \"https://caicloud.io/\"\n}, {\n  \"name\": \"方云智能\",\n  \"url\": \"https://www.ironz.com/\"\n}, {\n  \"name\": \"SegmentFault思否\",\n  \"url\": \"https://segmentfault.com/\"\n}, {\n  \"name\": \"字符科技\",\n  \"url\": \"http://www.alphabets.cn/\"\n}, {\n  \"name\": \"ones.ai\",\n  \"url\": \"https://ones.ai/\"\n}, {\n  \"name\": \"集简云\",\n  \"url\": \"https://jijyun.cn/\"\n}, {\n  \"name\": \"粤湾商盟\",\n  \"url\": \"http://www.gbabusiness.cn/\"\n},{\n  \"name\": \"语鹦企服\",\n  \"url\": \"https://crm.bytell.cn/\"\n}, {\n  \"name\": \"ShowMeBug\",\n  \"url\": \"https://www.showmebug.com/\"\n}, {\n  \"name\": \"ucbug软件站\",\n  \"url\": \"http://www.ucbug.com/\"\n}, {\n  \"name\": \"flomo 浮墨笔记\",\n  \"url\": \"https://flomoapp.com/\"\n}, {\n  \"name\": \"高瓴资本\",\n  \"url\": \"https://www.hillhousecap.com/zh-hans/\"\n}, {\n  \"name\": \"靖亚资本\",\n  \"url\": \"http://www.emventures.cn/\"\n}, {\n  \"name\": \"AdsPower指纹浏览器\",\n  \"url\": \"https://www.adspower.net/\"\n}, {\n  \"name\": \"微伴助手\",\n  \"url\": \"https://weibanzhushou.com/\"\n}, {\n  \"name\": \"Tapdata\",\n  \"url\": \"https://tapdata.net/\"\n}, {\n  \"name\": \"CodeFun\",\n  \"url\": \"https://code.fun/\"\n}]"
         },
         "official_website_without_abbr": {
             "zh_CN": "官方网站",
@@ -15956,7 +16084,7 @@
             "zh_HK": "{\n  \"element\": \".permission_setting_class\",\n  \"placement\": \"leftCenter\",\n  \"title\": \"默認許可權\",\n  \"description\": \"未指定許可權時會顯示默認的許可權角色，你可以在這裡直接給成員或小組指定許可權\",\n  \"children\":\"\" \n }"
         },
         "player_step_ui_config_157": {
-            "zh_CN": "{\n  \"element\": \"#resetPermissionButton\",\n  \"placement\": \"topCenter\",\n  \"title\": \"已设置权限\",\n  \"offsetY\": -15,\n  \"description\": \"这里已经设置过权限，所以仅下方列表的成员对此可见。你可以点击这里，恢复到默认权限。\",\n  \"children\":\"\" \n}",
+            "zh_CN": "{\n  \"element\": \"#resetPermissionButton\",\n  \"placement\": \"topCenter\",\n  \"title\": \"权限已限制\",\n  \"offsetY\": -15,\n  \"description\": \"因为已经设置过权限，所以仅下方列表中的成员对此可见。你可以点击这里，恢复到默认权限。\",\n  \"children\":\"\" \n}",
             "en_US": "{\n  \"element\": \"#resetPermissionButton\",\n  \"placement\": \"topCenter\",\n  \"title\": \"Restricted permissions\",\n  \"offsetY\": -15,\n  \"description\": \"Permissions have been set here, so only the members of the list below are visible. You can click here to restore the default permissions.\",\n  \"children\":\"\" \n}",
             "zh_HK": "{\n  \"element\": \"#resetPermissionButton\",\n  \"placement\": \"topCenter\",\n  \"title\": \"已設置許可權\",\n  \"offsetY\": -15,\n  \"description\": \"這裡已經設置過許可權，所以僅下方列表的成員對此可見。你可以點擊這裡，恢復到默認許可權。\",\n  \"children\":\"\" \n}"
         },
@@ -15977,6 +16105,9 @@
             "zh_CN": "{\n  \"element\": \".permission_setting_class\"\n }",
             "en_US": "{\n  \"element\": \".permission_setting_class\"\n }",
             "zh_HK": "{\n  \"element\": \".permission_setting_class\"\n }"
+        },
+        "player_step_ui_config_161": {
+            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/09/02/3ec8ee88a8c64ee2875cc24e3650a0b3\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/242\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul><li>甘特图新增任务依赖和自动编排功能</li><li>简化权限设置界面，提升操作体验</li><li>右键菜单可批量插入新行，助力效率提升</li><li>模板中心新增中秋专题、开学季两大板块</li><li>邀请好友注册并加入空间站，可获赠更多附件容量</li></ul>\"\n}"
         },
         "player_step_ui_config_17": {
             "zh_CN": "{\n \"element\": \"#TEMPLATE_CENTER_USE_TEMPLATE_BTN>button\", \n\"placement\": \"rightBottom\",\n\"offsetY\": 20,\n \"title\": \"使用模板教程\", \n\"description\": \"点击左侧按钮使用模板\", \"children\":\"\" \n}",
@@ -16718,6 +16849,15 @@
             "en_US": " Internal person only",
             "zh_HK": "內部人員專用"
         },
+        "private_product_point": {
+            "zh_CN": "一键拥有自己的维格表平台"
+        },
+        "privatized_deployment": {
+            "zh_CN": "私有化部署"
+        },
+        "privatized_deployment_desc": {
+            "zh_CN": "将产品部署到你选择的公有云 或者企业自有云"
+        },
         "privilege_list_of_sliver": {
             "zh_CN": "{\"title\":\"白银级空间站特权\",\"privilegeList\":[\"独享更换主题色\",\"独享更换主题色\",\"独享更换主题色\",\"独享更换主题色\"],\"helper\":\"了解用户服务联系客服\"}",
             "en_US": "{\"title\": \"Silver Space Station privilege\", \"privilegeList\": [\"exclusive change theme color\", \"exclusive change theme color\"], \"helper\": \"understand user service and contact customer service\"}",
@@ -16772,6 +16912,12 @@
             "zh_CN": "公测期",
             "en_US": "Public Beta Period",
             "zh_HK": "公測期"
+        },
+        "public_cloud": {
+            "zh_CN": "公有云"
+        },
+        "public_cloud_desc": {
+            "zh_CN": "通过互联网可以便捷访问产品，数据存储到 vika.cn"
         },
         "public_link": {
             "zh_CN": "公开链接",
@@ -16962,6 +17108,10 @@
             "zh_CN": "最近添加的小程序（${count} 个）",
             "en_US": "Recently installed widgets (${count})",
             "zh_HK": "最近添加的小程序（${count} 個）"
+        },
+        "recently_used_files": {
+            "zh_CN": "最近使用的文件",
+            "en_US": "Recently used files"
         },
         "recommend": {
             "zh_CN": "推荐",
@@ -17217,6 +17367,11 @@
             "en_US": "You were removed from the \"<a class=\"teamName\"></a>\" team of the \"<a class=\"spaceName\"></a>\" Space by <a class=\"memberName\"></a>.",
             "zh_HK": "<a class=\"memberName\"></a>將你移出空間站「<a class=\"spaceName\"></a>」的「<a class=\"teamName\"></a>」小組"
         },
+        "remove_from_role": {
+            "zh_CN": "<a class=\"memberName\"></a>将你移出空间站「<a class=\"spaceName\"></a>」的「<a class=\"roleName\"></a>」小组",
+            "en_US": "You were removed from the \"<a class=\"roleName\"></a>\" role of the \"<a class=\"spaceName\"></a>\" Space by <a class=\"memberName\"></a>.",
+            "zh_HK": "<a class=\"memberName\"></a>將你移出空間站「<a class=\"spaceName\"></a>」的「<a class=\"roleName\"></a>」角色"
+        },
         "remove_from_space": {
             "zh_CN": "移出空间",
             "en_US": "Remove from Space",
@@ -17311,6 +17466,14 @@
             "zh_CN": "重命名",
             "en_US": "Rename",
             "zh_HK": "重命名"
+        },
+        "rename_role_success_message": {
+            "zh_CN": "角色重命名成功",
+            "en_US": "Role renamed successfully"
+        },
+        "rename_role_title": {
+            "zh_CN": "修改名称",
+            "en_US": "Modify name"
         },
         "rename_team": {
             "zh_CN": "重命名小组",
@@ -18634,6 +18797,26 @@
             "en_US": "${column_type} name",
             "zh_HK": "${column_type} name"
         },
+        "role_context_item_delete": {
+            "zh_CN": "删除",
+            "en_US": "delete"
+        },
+        "role_context_item_rename": {
+            "zh_CN": "重命名",
+            "en_US": "rename"
+        },
+        "role_member_table_empty": {
+            "zh_CN": "该角色暂无成员，你可以",
+            "en_US": "There are no members in this role. You can"
+        },
+        "role_member_table_header_name": {
+            "zh_CN": "成员/团队",
+            "en_US": "Member / Team"
+        },
+        "role_member_table_header_team": {
+            "zh_CN": "团队",
+            "en_US": "Team"
+        },
         "role_permission_manage_integration": {
             "zh_CN": "管理第三方应用集成",
             "en_US": "Manage integrations",
@@ -18653,6 +18836,10 @@
             "zh_CN": "普通成员设置",
             "en_US": "Manage members",
             "zh_HK": "普通成員設置"
+        },
+        "role_permission_manage_role": {
+            "zh_CN": "角色管理",
+            "en_US": "Role management"
         },
         "role_permission_manage_security": {
             "zh_CN": "安全设置管理",
@@ -19069,6 +19256,10 @@
             "en_US": "Find or add an option",
             "zh_HK": "查找或添加"
         },
+        "search_role_placeholder": {
+            "zh_CN": "搜索角色",
+            "en_US": "Search roles"
+        },
         "seats": {
             "zh_CN": "席位数量",
             "en_US": "Seats",
@@ -19181,7 +19372,7 @@
             "zh_HK": "什麼是維格表？"
         },
         "security_address_list_isolation": {
-            "zh_CN": "通讯录显示所有成员和小组",
+            "zh_CN": "禁止通讯录显示所有成员和小组",
             "en_US": "The contacts shows all members and teams",
             "zh_HK": "通訊錄顯示所有成員和小組"
         },
@@ -19361,7 +19552,7 @@
             "zh_HK": "分享頁面會顯示「申請加入空間站」的入口，站外用戶可申請。關閉該功能後，該入口不再顯示。"
         },
         "security_setting_apply_join_space_title": {
-            "zh_CN": "站外用户可申请加入空间站",
+            "zh_CN": "禁止站外用户可申请加入空间站",
             "en_US": "Allow requests to join the Space",
             "zh_HK": "站外用戶可申請加入空間站"
         },
@@ -19376,7 +19567,7 @@
             "zh_HK": "普通成員可以在“工作目錄”的根目錄新增、刪除文件節點。關閉後，僅空間站管理員可進行此操作"
         },
         "security_setting_catalog_management_title": {
-            "zh_CN": "成员可在根目录增删文件",
+            "zh_CN": "禁止成员可在根目录增删文件",
             "en_US": "Members can create new nodes to the root of the Working catalog",
             "zh_HK": "成員可在根目錄增刪文件"
         },
@@ -19391,7 +19582,7 @@
             "zh_HK": "在站內和站外，擁有「只可閱讀」權限的用戶也可以復製表格內的數據。關閉該功能後，將無法複製數據"
         },
         "security_setting_copy_cell_data_title": {
-            "zh_CN": "「只可阅读」用户可复制数据",
+            "zh_CN": "禁止「只可阅读」用户可复制数据",
             "en_US": "Allow read-only users to copy cell data",
             "zh_HK": "「只可閱讀」用戶可複制數據"
         },
@@ -19406,7 +19597,7 @@
             "zh_HK": "在站內和站外，擁有「只可閱讀」權限的用戶也可以下載單元格內的附件。關閉該功能後，下載入口將屏蔽"
         },
         "security_setting_download_file_title": {
-            "zh_CN": "「只可阅读」用户可下载附件",
+            "zh_CN": "禁止「只可阅读」用户可下载附件",
             "en_US": "Allow read-only users to download attachments",
             "zh_HK": "「只可閱讀」用戶可下載附件"
         },
@@ -19436,7 +19627,7 @@
             "zh_HK": "只可閱讀及以上"
         },
         "security_setting_export_data_title": {
-            "zh_CN": "成员可导出维格表和视图",
+            "zh_CN": "禁止成员可导出维格表和视图",
             "en_US": "Allow to export files",
             "zh_HK": "成員可導出維格表和視圖"
         },
@@ -19461,7 +19652,7 @@
             "zh_HK": "普通成員可以邀請用戶加入空間站。關閉功能後僅空間站管理員可邀請成員加入空間站，普通成員創建的邀請鏈接會失效"
         },
         "security_setting_invite_member_title": {
-            "zh_CN": "成员可邀请站外用户加入空间站",
+            "zh_CN": "禁止成员可邀请站外用户加入空间站",
             "en_US": "Members can Invite off-space users to join the space",
             "zh_HK": "成員可邀請站外用戶加入空間站"
         },
@@ -19481,7 +19672,7 @@
             "zh_HK": "成員可以將工作目錄的文件節點創建公開鏈接分享給外部用戶。關閉該功能後，已生成的公開分享鏈接將暫時失效，包括管理員在內所有人無法創建公開鏈接。"
         },
         "security_setting_share_title": {
-            "zh_CN": "成员可创建文件节点的公开链接",
+            "zh_CN": "禁止成员可创建文件节点的公开链接",
             "en_US": "Allow to create public link",
             "zh_HK": "成員可創建文件節點的公開鏈接"
         },
@@ -20760,6 +20951,11 @@
             "en_US": "<a class=\"memberName\"></a> assigned you to the \"<a class=\"teamName\"></a>\" team in the \"<a class=\"spaceName\"></a>\" Space.",
             "zh_HK": "<a class=\"memberName\"></a>將你分配到空間站「<a class=\"spaceName\"></a>」的小組「<a class=\"teamName\"></a>」"
         },
+        "space_assigned_to_role": {
+            "zh_CN": "<a class=\"memberName\"></a>将你分配到空间站「<a class=\"spaceName\"></a>」的角色「<a class=\"roleName\"></a>」",
+            "en_US": "<a class=\"memberName\"></a> assigned you to the \"<a class=\"roleName\"></a>\" role in the \"<a class=\"spaceName\"></a>\" Space.",
+            "zh_HK": "<a class=\"memberName\"></a>將你分配到空間站「<a class=\"spaceName\"></a>」的角色「<a class=\"roleName\"></a>」"
+        },
         "space_calendar_limit": {
             "zh_CN": "空间站日历视图数已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升级可获得更高用量",
             "en_US": "Your Space has the maximum number of calendar views (<a class=\"usage\"></a>/<a class=\"specification\"></a>). You can upgrade the plan to get more usage.",
@@ -21329,6 +21525,9 @@
             "en_US": "Startup",
             "zh_HK": "創業"
         },
+        "startup_company_support_program": {
+            "zh_CN": "创业公司扶持计划"
+        },
         "stat_average": {
             "zh_CN": "平均值",
             "en_US": "Average",
@@ -21669,7 +21868,7 @@
             "zh_HK": "訂閱費用：${fee}"
         },
         "subscription_grades_checklist": {
-            "zh_CN": "[\n  {\n    \"group\": \"用量\",\n    \"id\": \"datasheet_number\",\n    \"title\": \"文件节点数量\",\n    \"bronze\": \"30 个\",\n    \"silver\": \"300 个\",\n    \"gold\": \"1000 个\",\n    \"enterprise\": \"1 万个\"\n  },\n  {\n    \"group\": \"用量\",\n    \"id\": \"datasheet_rows\",\n    \"title\": \"单维格表行数\",\n    \"bronze\": \"5,000 行\",\n    \"silver\": \"1 万行\",\n    \"gold\": \"2 万行\",\n    \"enterprise\": \"5 万行\"\n  },\n  {\n    \"group\": \"用量\",\n    \"id\": \"space_rows\",\n    \"title\": \"空间站总行数\",\n    \"bronze\": \"2 万行\",\n    \"silver\": \"300 万行\",\n    \"gold\": \"2000 万行\",\n    \"enterprise\": \"5 亿行\"\n  },\n  {\n    \"group\": \"用量\",\n    \"id\": \"space_capacity\",\n    \"title\": \"附件容量\",\n    \"bronze\": \"1GB 默认\",\n    \"silver\": \"席位数 * 5GB\",\n    \"gold\": \"席位数 * 7GB\",\n    \"enterprise\": \"席位数 * 10GB\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"star_marker\",\n    \"title\": \"星标\",\n    \"bronze\": true,\n    \"silver\": true,\n    \"gold\": true,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"album_view\",\n    \"title\": \"相册视图\",\n    \"bronze\": true,\n    \"silver\": true,\n    \"gold\": true,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"kanban_view\",\n    \"title\": \"看板视图\",\n    \"bronze\": true,\n    \"silver\": true,\n    \"gold\": true,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"org_chart_view\",\n    \"title\": \"架构视图\",\n    \"bronze\": true,\n    \"silver\": true,\n    \"gold\": true,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"gantt_view\",\n    \"title\": \"甘特视图\",\n    \"bronze\": \"单空间站 10 个\",\n    \"silver\": \"单空间站 50 个\",\n    \"gold\": \"单空间站 200 个\",\n    \"enterprise\": \"不限\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"calendar_view\",\n    \"title\": \"日历视图\",\n    \"bronze\": \"单空间站 5 个\",\n    \"silver\": \"单空间站 50 个\",\n    \"gold\": \"单空间站 200 个\",\n    \"enterprise\": \"不限\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"collection_table\",\n    \"title\": \"神奇表单\",\n    \"bronze\": \"单空间站 20 张\",\n    \"silver\": \"单空间站 100 张\",\n    \"gold\": \"单空间站 300 张\",\n    \"enterprise\": \"不限\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"mirror\",\n    \"title\": \"镜像（行权限）\",\n    \"bronze\": \"单空间站 5 个\",\n    \"silver\": \"单空间站 50 个\",\n    \"gold\": \"单空间站 100 个\",\n    \"enterprise\": \"不限\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"widget\",\n    \"title\": \"小程序\",\n    \"bronze\": \"不限，基础 + 自建\",\n    \"silver\": \"不限，基础 + 自建\",\n    \"gold\": \"不限，基础 + 自建\",\n    \"enterprise\": \"不限，基础 + 自建 + 定制\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"dashboard\",\n    \"title\": \"仪表盘\",\n    \"bronze\": \"单空间站 5 个\",\n    \"silver\": \"单空间站 50 个\",\n    \"gold\": \"单空间站 100 个\",\n    \"enterprise\": \"不限\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"rainbow_tags\",\n    \"title\": \"彩虹标签\",\n    \"bronze\": \"基础色系（20 个）\",\n    \"silver\": \"彩虹色系（50 个）\",\n    \"gold\": \"彩虹色系（50 个）\",\n    \"enterprise\": \"彩虹色系（50 个）\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"full_platform_client_support\",\n    \"title\": \"全平台客户端支持\",\n    \"bronze\": true,\n    \"silver\": true,\n    \"gold\": true,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"space_capacity\",\n    \"title\": \"时光机（历史记录）\",\n    \"bronze\": \"追溯 14 天\",\n    \"silver\": \"追溯 3 个月\",\n    \"gold\": \"追溯 6 个月\",\n    \"enterprise\": \"追溯 24 个月\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"recycle_bin\",\n    \"title\": \"回收舱（历史文件）\",\n    \"bronze\": \"追溯 14 天\",\n    \"silver\": \"追溯 3 个月\",\n    \"gold\": \"追溯 6 个月\",\n    \"enterprise\": \"追溯 24 个月\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"api_limits\",\n    \"title\": \"API 用量\",\n    \"bronze\": \"1 万次请求/月\",\n    \"silver\": \"10 万次请求/月\",\n    \"gold\": \"50 万次请求/月\",\n    \"enterprise\": \"100 万次请求/月\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"robot\",\n    \"title\": \"机器人\",\n    \"bronze\": \"限时免费\",\n    \"silver\": \"限时免费\",\n    \"gold\": \"限时免费\",\n    \"enterprise\": \"限时免费\"\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"column_permission\",\n    \"title\": \"列权限\",\n    \"bronze\": \"单空间站 10 列\",\n    \"silver\": \"单空间站 50 列\",\n    \"gold\": \"单空间站 200 列\",\n    \"enterprise\": \"不限\"\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"folder_permission\",\n    \"title\": \"文件权限\",\n    \"bronze\": \"单空间站 10 个\",\n    \"silver\": \"单空间站 50 个\",\n    \"gold\": \"单空间站 200 个\",\n    \"enterprise\": \"不限\"\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"admin_counts\",\n    \"title\": \"管理员数量\",\n    \"bronze\": \"3 个\",\n    \"silver\": \"5 个\",\n    \"gold\": \"10 个\",\n    \"enterprise\": \"不限\"\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"marketplace_integration_app_name_officepreview\",\n    \"title\": \"Office 文件预览\",\n    \"bronze\": true,\n    \"silver\": true,\n    \"gold\": true,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"feishu_integration\",\n    \"title\": \"飞书集成\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"dingtalk_integration\",\n    \"title\": \"钉钉集成\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"wecom_integration\",\n    \"title\": \"企业微信集成\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"watermark\",\n    \"title\": \"全局水印\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"security_disabled_export_data\",\n    \"title\": \"禁止导出数据\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": true,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"security_disabled_share\",\n    \"title\": \"禁止创建公开链接\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"security_disabled_copy\",\n    \"title\": \"禁止复制数据\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"security_disabled_download_file\",\n    \"title\": \"禁止下载附件\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"security_disabled_invite_members\",\n    \"title\": \"禁止邀请站外用户\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"security_show_mobile\",\n    \"title\": \"通讯录显示手机号\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": true,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"single_sign_on\",\n    \"title\": \"*单点登录（SSO）\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"支持服务\",\n    \"id\": \"online_server\",\n    \"title\": \"在线支持\",\n    \"bronze\": \"基础服务\",\n    \"silver\": \"高级服务\",\n    \"gold\": \"专业顾问 24 小时服务\",\n    \"enterprise\": \"VIP 顾问 24 小时服务\"\n  },\n  {\n    \"group\": \"支持服务\",\n    \"id\": \"customer_support_group\",\n    \"title\": \"客户支持群\",\n    \"bronze\": \"用户社群\",\n    \"silver\": \"高级客户群\",\n    \"gold\": \"专业客户群\",\n    \"enterprise\": \"VIP 客户群\"\n  },\n  {\n    \"group\": \"支持服务\",\n    \"id\": \"muti_language_email\",\n    \"title\": \"中英文邮件支持\",\n    \"bronze\": true,\n    \"silver\": true,\n    \"gold\": true,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"支持服务\",\n    \"id\": \"free_online_video_train\",\n    \"title\": \"免费在线视频培训\",\n    \"bronze\": true,\n    \"silver\": true,\n    \"gold\": true,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"支持服务\",\n    \"id\": \"exclusive_v_consultant\",\n    \"title\": \"专属 V+ 顾问\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"支持服务\",\n    \"id\": \"customized_features\",\n    \"title\": \"定制功能开发（费用另计）\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"支持服务\",\n    \"id\": \"enterprise_consulting_training\",\n    \"title\": \"企业级咨询培训\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  }\n]",
+            "zh_CN": "{\n  \"用量\": [\n    {\n      \"group\": \"用量\",\n      \"id\": \"datasheet_number\",\n      \"title\": \"文件节点数量\",\n      \"bronze\": \"30 个\",\n      \"silver\": \"300 个\",\n      \"gold\": \"1000 个\",\n      \"enterprise\": \"1 万个\",\n      \"community\":\"1 个\",\n      \"custom\":\"1 个\"\n    },\n    {\n      \"group\": \"用量\",\n      \"id\": \"datasheet_rows\",\n      \"title\": \"单维格表行数\",\n      \"bronze\": \"5,000 行\",\n      \"silver\": \"1 万行\",\n      \"gold\": \"2 万行\",\n      \"enterprise\": \"5 万行\"\n    },\n    {\n      \"group\": \"用量\",\n      \"id\": \"space_rows\",\n      \"title\": \"空间站总行数\",\n      \"bronze\": \"2 万行\",\n      \"silver\": \"300 万行\",\n      \"gold\": \"2000 万行\",\n      \"enterprise\": \"5 亿行\"\n    },\n    {\n      \"group\": \"用量\",\n      \"id\": \"space_capacity\",\n      \"title\": \"附件容量\",\n      \"bronze\": \"1GB 默认\",\n      \"silver\": \"席位数 * 5GB\",\n      \"gold\": \"席位数 * 7GB\",\n      \"enterprise\": \"席位数 * 10GB\"\n    }\n  ],\n  \"功能\": [\n    {\n      \"group\": \"功能\",\n      \"id\": \"star_marker\",\n      \"title\": \"星标\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"album_view\",\n      \"title\": \"相册视图\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"kanban_view\",\n      \"title\": \"看板视图\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"org_chart_view\",\n      \"title\": \"架构视图\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"gantt_view\",\n      \"title\": \"甘特视图\",\n      \"bronze\": \"单空间站 10 个\",\n      \"silver\": \"单空间站 50 个\",\n      \"gold\": \"单空间站 200 个\",\n      \"enterprise\": \"不限\"\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"calendar_view\",\n      \"title\": \"日历视图\",\n      \"bronze\": \"单空间站 5 个\",\n      \"silver\": \"单空间站 50 个\",\n      \"gold\": \"单空间站 200 个\",\n      \"enterprise\": \"不限\"\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"collection_table\",\n      \"title\": \"神奇表单\",\n      \"bronze\": \"单空间站 20 张\",\n      \"silver\": \"单空间站 100 张\",\n      \"gold\": \"单空间站 300 张\",\n      \"enterprise\": \"不限\"\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"mirror\",\n      \"title\": \"镜像（行权限）\",\n      \"bronze\": \"单空间站 5 个\",\n      \"silver\": \"单空间站 50 个\",\n      \"gold\": \"单空间站 100 个\",\n      \"enterprise\": \"不限\"\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"widget\",\n      \"title\": \"小程序\",\n      \"bronze\": \"不限，基础 + 自建\",\n      \"silver\": \"不限，基础 + 自建\",\n      \"gold\": \"不限，基础 + 自建\",\n      \"enterprise\": \"不限，基础 + 自建 + 定制\"\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"dashboard\",\n      \"title\": \"仪表盘\",\n      \"bronze\": \"单空间站 5 个\",\n      \"silver\": \"单空间站 50 个\",\n      \"gold\": \"单空间站 100 个\",\n      \"enterprise\": \"不限\"\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"rainbow_tags\",\n      \"title\": \"彩虹标签\",\n      \"bronze\": \"基础色系（20 个）\",\n      \"silver\": \"彩虹色系（50 个）\",\n      \"gold\": \"彩虹色系（50 个）\",\n      \"enterprise\": \"彩虹色系（50 个）\"\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"full_platform_client_support\",\n      \"title\": \"全平台客户端支持\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"space_capacity\",\n      \"title\": \"时光机（历史记录）\",\n      \"bronze\": \"追溯 14 天\",\n      \"silver\": \"追溯 3 个月\",\n      \"gold\": \"追溯 6 个月\",\n      \"enterprise\": \"追溯 24 个月\"\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"recycle_bin\",\n      \"title\": \"回收舱（历史文件）\",\n      \"bronze\": \"追溯 14 天\",\n      \"silver\": \"追溯 3 个月\",\n      \"gold\": \"追溯 6 个月\",\n      \"enterprise\": \"追溯 24 个月\"\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"api_limits\",\n      \"title\": \"API 用量\",\n      \"bronze\": \"1 万次请求/月\",\n      \"silver\": \"10 万次请求/月\",\n      \"gold\": \"50 万次请求/月\",\n      \"enterprise\": \"100 万次请求/月\"\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"robot\",\n      \"title\": \"机器人\",\n      \"bronze\": \"限时免费\",\n      \"silver\": \"限时免费\",\n      \"gold\": \"限时免费\",\n      \"enterprise\": \"限时免费\"\n    }\n  ],\n  \"管理和安全\": [\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"column_permission\",\n      \"title\": \"列权限\",\n      \"bronze\": \"单空间站 10 列\",\n      \"silver\": \"单空间站 50 列\",\n      \"gold\": \"单空间站 200 列\",\n      \"enterprise\": \"不限\"\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"folder_permission\",\n      \"title\": \"文件权限\",\n      \"bronze\": \"单空间站 10 个\",\n      \"silver\": \"单空间站 50 个\",\n      \"gold\": \"单空间站 200 个\",\n      \"enterprise\": \"不限\"\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"admin_counts\",\n      \"title\": \"管理员数量\",\n      \"bronze\": \"3 个\",\n      \"silver\": \"5 个\",\n      \"gold\": \"10 个\",\n      \"enterprise\": \"不限\"\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"marketplace_integration_app_name_officepreview\",\n      \"title\": \"Office 文件预览\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"feishu_integration\",\n      \"title\": \"飞书集成\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"dingtalk_integration\",\n      \"title\": \"钉钉集成\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"wecom_integration\",\n      \"title\": \"企业微信集成\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"watermark\",\n      \"title\": \"全局水印\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"security_disabled_export_data\",\n      \"title\": \"禁止导出数据\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": true,\n      \"enterprise\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"security_disabled_share\",\n      \"title\": \"禁止创建公开链接\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"security_disabled_copy\",\n      \"title\": \"禁止复制数据\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"security_disabled_download_file\",\n      \"title\": \"禁止下载附件\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"security_disabled_invite_members\",\n      \"title\": \"禁止邀请站外用户\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"security_show_mobile\",\n      \"title\": \"通讯录显示手机号\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": true,\n      \"enterprise\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"single_sign_on\",\n      \"title\": \"*单点登录（SSO）\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true\n    }\n  ],\n  \"支持服务\": [\n    {\n      \"group\": \"支持服务\",\n      \"id\": \"online_server\",\n      \"title\": \"在线支持\",\n      \"bronze\": \"基础服务\",\n      \"silver\": \"高级服务\",\n      \"gold\": \"专业顾问 24 小时服务\",\n      \"enterprise\": \"VIP 顾问 24 小时服务\"\n    },\n    {\n      \"group\": \"支持服务\",\n      \"id\": \"customer_support_group\",\n      \"title\": \"客户支持群\",\n      \"bronze\": \"用户社群\",\n      \"silver\": \"高级客户群\",\n      \"gold\": \"专业客户群\",\n      \"enterprise\": \"VIP 客户群\"\n    },\n    {\n      \"group\": \"支持服务\",\n      \"id\": \"muti_language_email\",\n      \"title\": \"中英文邮件支持\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true\n    },\n    {\n      \"group\": \"支持服务\",\n      \"id\": \"free_online_video_train\",\n      \"title\": \"免费在线视频培训\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true\n    },\n    {\n      \"group\": \"支持服务\",\n      \"id\": \"exclusive_v_consultant\",\n      \"title\": \"专属 V+ 顾问\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true\n    },\n    {\n      \"group\": \"支持服务\",\n      \"id\": \"customized_features\",\n      \"title\": \"定制功能开发（费用另计）\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true\n    },\n    {\n      \"group\": \"支持服务\",\n      \"id\": \"enterprise_consulting_training\",\n      \"title\": \"企业级咨询培训\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true\n    }\n  ]\n}",
             "zh_HK": "[\n  {\n    \"group\": \"用量\",\n    \"id\": \"datasheet_number\",\n    \"title\": \"文件節點數量\",\n    \"bronze\": \"30 個\",\n    \"silver\": \"300 個\",\n    \"gold\": \"1000 個\",\n    \"enterprise\": \"1 萬個\"\n  },\n  {\n    \"group\": \"用量\",\n    \"id\": \"datasheet_rows\",\n    \"title\": \"單維格表行數\",\n    \"bronze\": \"5,000 行\",\n    \"silver\": \"1 萬行\",\n    \"gold\": \"2 萬行\",\n    \"enterprise\": \"5 萬行\"\n  },\n  {\n    \"group\": \"用量\",\n    \"id\": \"space_rows\",\n    \"title\": \"空間站總行數\",\n    \"bronze\": \"2 萬行\",\n    \"silver\": \"300 萬行\",\n    \"gold\": \"2000 萬行\",\n    \"enterprise\": \"5 億行\"\n  },\n  {\n    \"group\": \"用量\",\n    \"id\": \"space_capacity\",\n    \"title\": \"附件容量\",\n    \"bronze\": \"1GB 默認\",\n    \"silver\": \"席位數 * 5GB\",\n    \"gold\": \"席位數 * 7GB\",\n    \"enterprise\": \"席位數 * 10GB\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"star_marker\",\n    \"title\": \"星標\",\n    \"bronze\": true,\n    \"silver\": true,\n    \"gold\": true,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"album_view\",\n    \"title\": \"相冊視圖\",\n    \"bronze\": true,\n    \"silver\": true,\n    \"gold\": true,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"kanban_view\",\n    \"title\": \"看板視圖\",\n    \"bronze\": true,\n    \"silver\": true,\n    \"gold\": true,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"org_chart_view\",\n    \"title\": \"架構視圖\",\n    \"bronze\": true,\n    \"silver\": true,\n    \"gold\": true,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"gantt_view\",\n    \"title\": \"甘特視圖\",\n    \"bronze\": \"單空間站 10 個\",\n    \"silver\": \"單空間站 50 個\",\n    \"gold\": \"單空間站 200 個\",\n    \"enterprise\": \"不限\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"calendar_view\",\n    \"title\": \"日曆視圖\",\n    \"bronze\": \"單空間站 5 個\",\n    \"silver\": \"單空間站 50 個\",\n    \"gold\": \"單空間站 200 個\",\n    \"enterprise\": \"不限\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"collection_table\",\n    \"title\": \"神奇表單\",\n    \"bronze\": \"單空間站 20 張\",\n    \"silver\": \"單空間站 100 張\",\n    \"gold\": \"單空間站 300 張\",\n    \"enterprise\": \"不限\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"mirror\",\n    \"title\": \"鏡像（行權限）\",\n    \"bronze\": \"單空間站 5 個\",\n    \"silver\": \"單空間站 50 個\",\n    \"gold\": \"單空間站 100 個\",\n    \"enterprise\": \"不限\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"widget\",\n    \"title\": \"小程序\",\n    \"bronze\": \"不限，基礎 + 自建\",\n    \"silver\": \"不限，基礎 + 自建\",\n    \"gold\": \"不限，基礎 + 自建\",\n    \"enterprise\": \"不限，基礎 + 自建 + 定制\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"dashboard\",\n    \"title\": \"儀錶盤\",\n    \"bronze\": \"單空間站 5 個\",\n    \"silver\": \"單空間站 50 個\",\n    \"gold\": \"單空間站 100 個\",\n    \"enterprise\": \"不限\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"rainbow_tags\",\n    \"title\": \"彩虹標籤\",\n    \"bronze\": \"基礎色系（20 個）\",\n    \"silver\": \"彩虹色系（50 個）\",\n    \"gold\": \"彩虹色系（50 個）\",\n    \"enterprise\": \"彩虹色系（50 個）\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"full_platform_client_support\",\n    \"title\": \"全平台客戶端支持\",\n    \"bronze\": true,\n    \"silver\": true,\n    \"gold\": true,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"space_capacity\",\n    \"title\": \"時光機（歷史記錄）\",\n    \"bronze\": \"追溯 14 天\",\n    \"silver\": \"追溯 3 個月\",\n    \"gold\": \"追溯 6 個月\",\n    \"enterprise\": \"追溯 24 個月\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"recycle_bin\",\n    \"title\": \"回收艙（歷史文件）\",\n    \"bronze\": \"追溯 14 天\",\n    \"silver\": \"追溯 3 個月\",\n    \"gold\": \"追溯 6 個月\",\n    \"enterprise\": \"追溯 24 個月\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"api_limits\",\n    \"title\": \"API 用量\",\n    \"bronze\": \"1 萬次請求/月\",\n    \"silver\": \"10 萬次請求/月\",\n    \"gold\": \"50 萬次請求/月\",\n    \"enterprise\": \"100 萬次請求/月\"\n  },\n  {\n    \"group\": \"功能\",\n    \"id\": \"robot\",\n    \"title\": \"機器人\",\n    \"bronze\": \"限時免費\",\n    \"silver\": \"限時免費\",\n    \"gold\": \"限時免費\",\n    \"enterprise\": \"限時免費\"\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"column_permission\",\n    \"title\": \"列權限\",\n    \"bronze\": \"單空間站 10 列\",\n    \"silver\": \"單空間站 50 列\",\n    \"gold\": \"單空間站 200 列\",\n    \"enterprise\": \"不限\"\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"folder_permission\",\n    \"title\": \"文件權限\",\n    \"bronze\": \"單空間站 10 個\",\n    \"silver\": \"單空間站 50 個\",\n    \"gold\": \"單空間站 200 個\",\n    \"enterprise\": \"不限\"\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"admin_counts\",\n    \"title\": \"管理員數量\",\n    \"bronze\": \"3 個\",\n    \"silver\": \"5 個\",\n    \"gold\": \"10 個\",\n    \"enterprise\": \"不限\"\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"marketplace_integration_app_name_officepreview\",\n    \"title\": \"Office 文件預覽\",\n    \"bronze\": true,\n    \"silver\": true,\n    \"gold\": true,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"feishu_integration\",\n    \"title\": \"飛書集成\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"dingtalk_integration\",\n    \"title\": \"釘釘集成\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"wecom_integration\",\n    \"title\": \"企業微信集成\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"watermark\",\n    \"title\": \"全局水印\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"security_disabled_export_data\",\n    \"title\": \"禁止導出數據\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": true,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"security_disabled_share\",\n    \"title\": \"禁止創建公開鏈接\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"security_disabled_copy\",\n    \"title\": \"禁止複制數據\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"security_disabled_download_file\",\n    \"title\": \"禁止下載附件\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"security_disabled_invite_members\",\n    \"title\": \"禁止邀請站外用戶\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"security_show_mobile\",\n    \"title\": \"通訊錄顯示手機號\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": true,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"管理和安全\",\n    \"id\": \"single_sign_on\",\n    \"title\": \"*單點登錄（SSO）\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"支持服務\",\n    \"id\": \"online_server\",\n    \"title\": \"在線支持\",\n    \"bronze\": \"基礎服務\",\n    \"silver\": \"高級服務\",\n    \"gold\": \"專業顧問 24 小時服務\",\n    \"enterprise\": \"VIP 顧問 24 小時服務\"\n  },\n  {\n    \"group\": \"支持服務\",\n    \"id\": \"customer_support_group\",\n    \"title\": \"客戶支持群\",\n    \"bronze\": \"用戶社群\",\n    \"silver\": \"高級客戶群\",\n    \"gold\": \"專業客戶群\",\n    \"enterprise\": \"VIP 客戶群\"\n  },\n  {\n    \"group\": \"支持服務\",\n    \"id\": \"muti_language_email\",\n    \"title\": \"中英文郵件支持\",\n    \"bronze\": true,\n    \"silver\": true,\n    \"gold\": true,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"支持服務\",\n    \"id\": \"free_online_video_train\",\n    \"title\": \"免費在線視頻培訓\",\n    \"bronze\": true,\n    \"silver\": true,\n    \"gold\": true,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"支持服務\",\n    \"id\": \"exclusive_v_consultant\",\n    \"title\": \"專屬 V+ 顧問\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"支持服務\",\n    \"id\": \"customized_features\",\n    \"title\": \"定制功能開發（費用另計）\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  },\n  {\n    \"group\": \"支持服務\",\n    \"id\": \"enterprise_consulting_training\",\n    \"title\": \"企業級諮詢培訓\",\n    \"bronze\": false,\n    \"silver\": false,\n    \"gold\": false,\n    \"enterprise\": true\n  }\n]"
         },
         "subscription_grades_checklist_mobile": {
@@ -21868,6 +22067,14 @@
             "zh_CN": "想要新建表？点击这里",
             "en_US": "Create a datasheet instead",
             "zh_HK": "想要新建表？點擊這裡"
+        },
+        "tab_org": {
+            "zh_CN": "组织架构",
+            "en_US": "Organizational structure"
+        },
+        "tab_role": {
+            "zh_CN": "角色",
+            "en_US": "Role"
         },
         "table": {
             "zh_CN": "表格",
@@ -23319,6 +23526,9 @@
             "en_US": "Uruguay",
             "zh_HK": "烏拉圭"
         },
+        "usage_overlimit_alert_title": {
+            "zh_CN": "功能超限提示"
+        },
         "use_the_template": {
             "zh_CN": "使用该模板",
             "en_US": "Use template",
@@ -23574,6 +23784,10 @@
             "zh_CN": "想要规范化录入数据？使用神奇表单试试",
             "en_US": "Want to populate data to your datasheet in a uniform way? Form is the best choice",
             "zh_HK": "想要規範化錄入數據？使用神奇表單試試"
+        },
+        "view_full_catalog": {
+            "zh_CN": "查看完整工作目录",
+            "en_US": "View full working directory"
         },
         "view_has_locked_not_deletes": {
             "zh_CN": "该视图被锁定，无法被删除",
