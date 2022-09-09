@@ -4,7 +4,7 @@ import { CloseMiddleOutlined, TitleFavoriteFilled } from '@vikadata/icons';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { Emoji } from 'pc/components/common';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import styles from './styles.module.less';
