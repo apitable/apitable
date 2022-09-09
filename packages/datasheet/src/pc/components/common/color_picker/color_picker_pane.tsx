@@ -2,6 +2,7 @@ import { ISelectFieldOption, Strings, SubscribeKye, t } from '@vikadata/core';
 import { useUnmount } from 'ahooks';
 import { Input } from 'antd';
 import { triggerUsageAlert } from 'pc/common/billing';
+import { SubscribeUsageTipType } from 'pc/common/billing/subscribe_usage_check';
 import { SubscribeGrade, SubscribeLabel } from 'pc/components/subscribe_system/subscribe_label';
 import { useResponsive } from 'pc/hooks';
 import { useThemeColors } from '@vikadata/components';
@@ -50,8 +51,9 @@ const ColorPickerPaneBase: React.FC<IColorPickerPane> = props => {
         colorGroup={colorGroup}
         option={option}
         onChange={(type: OptionSetting, id: string, value: string | number) => {
-          if (title === t(Strings.option_configuration_silver_palette)) {
-            triggerUsageAlert(SubscribeKye.RainbowLabel);
+          if (title === t(Strings.option_configuration_advance_palette)) {
+            const result = triggerUsageAlert(SubscribeKye.RainbowLabel, { alwaysAlert: true }, SubscribeUsageTipType.Alert);
+            if (result) return;
           }
           onChange?.(type, id, value);
         }}

@@ -3,7 +3,7 @@ import { ISocialAppType, StoreActions, Strings, t } from '@vikadata/core';
 import { isBoolean } from 'lodash';
 import { triggerUsageAlert } from 'pc/common/billing';
 import { SubscribeUsageTipType } from 'pc/common/billing/subscribe_usage_check';
-import { Modal, SwitchInfo } from 'pc/components/common';
+import { SwitchInfo } from 'pc/components/common';
 import { isSocialPlatformEnabled, SocialPlatformMap } from 'pc/components/home/social_platform';
 import { labelMap, SubscribeGrade } from 'pc/components/subscribe_system/subscribe_label';
 import { useRequest, useSpaceRequest } from 'pc/hooks';
@@ -275,7 +275,7 @@ export const Security: FC = () => {
       }
 
       const onOk = async() => {
-        const newStatus = [SwitchType.ExportLevel].includes(switchType) ? (data.switchValue === true ? 2 : Number(data.switchValue)) : switchValue;
+        const newStatus = [SwitchType.ExportLevel].includes(switchType) ? (data.switchValue === false ? 2 : Number(data.switchValue)) : switchValue;
         // 仅当切换 Switch 组件时，需要 loading 状态；切换 Radio 组件则不需要；
         const res = await switchReq({ key: switchType, status: newStatus, loadingEnabled: isBoolean(switchValue) });
         setSettingLoading(null);
@@ -341,7 +341,6 @@ export const Security: FC = () => {
         {t(Strings.permission_and_security_content)}
       </Typography>
       <div className={styles.content}>{SwitchList}</div>
-      <Modal />
     </div>
   );
 };

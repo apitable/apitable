@@ -41,36 +41,44 @@ export const SpaceInfo = () => {
     setTimeout(() => {
       // 文件数量
       if (subscribeUsageCheck.shouldAlertToUser('maxSheetNums', spaceInfo?.sheetNums, true)) {
-        return triggerUsageAlert('maxSheetNums', { usage: spaceInfo?.sheetNums }, SubscribeUsageTipType.Alert);
+        triggerUsageAlert('maxSheetNums', { usage: spaceInfo?.sheetNums }, SubscribeUsageTipType.Alert);
+        return;
       }
       // 记录行数
       if (subscribeUsageCheck.shouldAlertToUser('maxRowsInSpace', spaceInfo?.recordNums, true)) {
-        return triggerUsageAlert('maxRowsInSpace', { usage: spaceInfo?.recordNums }, SubscribeUsageTipType.Alert);
+        triggerUsageAlert('maxRowsInSpace', { usage: spaceInfo?.recordNums }, SubscribeUsageTipType.Alert);
+        return;
       }
       // 高级视图
       // 甘特图
       if (subscribeUsageCheck.shouldAlertToUser('maxGanttViewsInSpace', spaceInfo?.ganttViewNums, true)) {
-        return triggerUsageAlert('maxGanttViewsInSpace', { usage: spaceInfo?.ganttViewNums }, SubscribeUsageTipType.Alert);
+        triggerUsageAlert('maxGanttViewsInSpace', { usage: spaceInfo?.ganttViewNums }, SubscribeUsageTipType.Alert);
+        return;
       }
       // 相册视图
       if (subscribeUsageCheck.shouldAlertToUser('maxGalleryViewsInSpace', spaceInfo?.galleryViewNums, true)) {
-        return triggerUsageAlert('maxGalleryViewsInSpace', { usage: spaceInfo?.galleryViewNums }, SubscribeUsageTipType.Alert);
+        triggerUsageAlert('maxGalleryViewsInSpace', { usage: spaceInfo?.galleryViewNums }, SubscribeUsageTipType.Alert);
+        return;
       }
       // 日历视图
       if (subscribeUsageCheck.shouldAlertToUser('maxCalendarViewsInSpace', spaceInfo?.calendarViewNums, true)) {
-        return triggerUsageAlert('maxCalendarViewsInSpace', { usage: spaceInfo?.calendarViewNums }, SubscribeUsageTipType.Alert);
+        triggerUsageAlert('maxCalendarViewsInSpace', { usage: spaceInfo?.calendarViewNums }, SubscribeUsageTipType.Alert);
+        return;
       }
       // 看板视图
       if (subscribeUsageCheck.shouldAlertToUser('maxKanbanViewsInSpace', spaceInfo?.kanbanViewNums, true)) {
-        return triggerUsageAlert('maxKanbanViewsInSpace', { usage: spaceInfo?.kanbanViewNums }, SubscribeUsageTipType.Alert);
+        triggerUsageAlert('maxKanbanViewsInSpace', { usage: spaceInfo?.kanbanViewNums }, SubscribeUsageTipType.Alert);
+        return;
       }
       // 表单
       if (subscribeUsageCheck.shouldAlertToUser('maxFormViewsInSpace', spaceInfo?.formViewNums, true)) {
-        return triggerUsageAlert('maxFormViewsInSpace', { usage: spaceInfo?.formViewNums }, SubscribeUsageTipType.Alert);
+        triggerUsageAlert('maxFormViewsInSpace', { usage: spaceInfo?.formViewNums }, SubscribeUsageTipType.Alert);
+        return;
       }
       // 附件容量
       if (subscribeUsageCheck.shouldAlertToUser('maxCapacitySizeInBytes', spaceInfo?.capacityUsedSizes, true)) {
-        return triggerUsageAlert('maxCapacitySizeInBytes', { usage: spaceInfo?.capacityUsedSizes }, SubscribeUsageTipType.Alert);
+        triggerUsageAlert('maxCapacitySizeInBytes', { usage: spaceInfo?.capacityUsedSizes }, SubscribeUsageTipType.Alert);
+        return;
       }
     }, 0);
   });
