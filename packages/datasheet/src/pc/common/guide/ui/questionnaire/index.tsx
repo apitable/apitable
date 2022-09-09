@@ -6,7 +6,7 @@ import classNames from 'classnames';
 // import './questionnaire.less';
 import Image from 'next/image';
 import { ScrollBar } from 'pc/common/guide/scroll_bar';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display/enum';
 import { isSocialDingTalk, isSocialFeiShu, isSocialWecom, isWecomFunc } from 'pc/components/home/social_platform';
 import { useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
@@ -35,10 +35,10 @@ interface IQuestionnaireConfig {
   submit?: boolean;
   next?: boolean;
   platform?: {
-    website: string,
-    dingtalk: string,
-    wecom: string,
-    feishu: string,
+    website: string;
+    dingtalk: string;
+    wecom: string;
+    feishu: string;
   };
 }
 
@@ -59,14 +59,15 @@ const QuestionnaireContent: FC<IQuestionnaireProps> = props => {
   const { screenIsAtLeast } = useResponsive();
   const checkboxValues = useRef<any[]>();
 
-  const StepTitle = (data: { cur: number, all: number, title: string, type: string }): React.ReactElement => {
+  const StepTitle = (data: { cur: number; all: number; title: string; type: string }): React.ReactElement => {
     return (
       <>
-        {data.type !== 'contactUs' && <div className={`${CLASS_PREFIX}-stepTitle`}>
-          <span className={`${CLASS_PREFIX}-curStep`}>{`0${data.cur}`}</span>
-          {`of 0${data.all}`}
-        </div>
-        }
+        {data.type !== 'contactUs' && (
+          <div className={`${CLASS_PREFIX}-stepTitle`}>
+            <span className={`${CLASS_PREFIX}-curStep`}>{`0${data.cur}`}</span>
+            {`of 0${data.all}`}
+          </div>
+        )}
         <div className={`${CLASS_PREFIX}-questionTitle`}>{data.title}</div>
       </>
     );
@@ -122,13 +123,13 @@ const QuestionnaireContent: FC<IQuestionnaireProps> = props => {
 
   const submit = () => {
     const submitData = {};
-    Object.keys(answers).forEach((value => {
+    Object.keys(answers).forEach(value => {
       const targetConfig = config.find(item => item.key === Number(value));
       if (!targetConfig) {
         return;
       }
       submitData[targetConfig.name] = answers[value];
-    }));
+    });
     onSubmit && onSubmit(submitData); // 提交。onSubmit 配置中有关闭的逻辑。
   };
 
@@ -151,18 +152,21 @@ const QuestionnaireContent: FC<IQuestionnaireProps> = props => {
           <>
             <StepTitle cur={key} all={config.length - 1} title={title} type={type} />
             <Radio.Group onChange={e => onRadioChange(info, e)} value={curValue}>
-              {
-                answersConfig &&
+              {answersConfig &&
                 answersConfig.map((item, index) => {
                   const radioMarginTop = screenIsAtLeast(ScreenSize.md) ? '24px' : '8px';
-                  const isElseSelected = Boolean(lastAllowInput && index === answersConfig.length - 1 &&
-                    answers.hasOwnProperty(key) && removeRadioElseAnswer(answers[key]) === item);
+                  const isElseSelected = Boolean(
+                    lastAllowInput &&
+                      index === answersConfig.length - 1 &&
+                      answers.hasOwnProperty(key) &&
+                      removeRadioElseAnswer(answers[key]) === item,
+                  );
                   return (
                     <div key={item}>
                       <Radio value={item} style={{ marginBottom: index === answersConfig.length - 1 ? '0' : radioMarginTop }}>
                         {item}
                       </Radio>
-                      {isElseSelected &&
+                      {isElseSelected && (
                         <div className={`${CLASS_PREFIX}-inputWrap`}>
                           <Input
                             onChange={e => setAnswers({ ...answers, [key]: `${item}-${e.target.value}` })}
@@ -173,14 +177,14 @@ const QuestionnaireContent: FC<IQuestionnaireProps> = props => {
                             value={curElseInputValue}
                             onPressEnter={enterNext}
                           />
-                          <Button color="primary" shape="round" className={`${CLASS_PREFIX}-nextBtn`}
-                                  onClick={enterNext}>{t(Strings.next_page)}</Button>
+                          <Button color="primary" shape="round" className={`${CLASS_PREFIX}-nextBtn`} onClick={enterNext}>
+                            {t(Strings.next_page)}
+                          </Button>
                         </div>
-                      }
+                      )}
                     </div>
                   );
-                })
-              }
+                })}
             </Radio.Group>
           </>
         );
@@ -194,17 +198,18 @@ const QuestionnaireContent: FC<IQuestionnaireProps> = props => {
                 checkboxValues.current = e;
               }}
             >
-              {
-                answersConfig && answersConfig.map((item, index) => {
+              {answersConfig &&
+                answersConfig.map((item, index) => {
                   const checkboxMarginTop = screenIsAtLeast(ScreenSize.md) ? '24px' : '8px';
-                  const isElseSelected = Boolean(lastAllowInput && index === answersConfig.length - 1 &&
-                    answers.hasOwnProperty(key) && answers[key].split(';').includes(item));
+                  const isElseSelected = Boolean(
+                    lastAllowInput && index === answersConfig.length - 1 && answers.hasOwnProperty(key) && answers[key].split(';').includes(item),
+                  );
                   return (
                     <div key={item}>
                       <Checkbox value={item} style={{ marginBottom: index === answersConfig.length - 1 ? '0' : checkboxMarginTop }}>
                         {item}
                       </Checkbox>
-                      {isElseSelected &&
+                      {isElseSelected && (
                         <div className={`${CLASS_PREFIX}-inputWrap`}>
                           <Input
                             onBlur={e => setAnswers({ ...answers, [key]: changeCheckboxLastValue(answers[key], `${item}-${e.target.value}`) })}
@@ -214,11 +219,10 @@ const QuestionnaireContent: FC<IQuestionnaireProps> = props => {
                             placeholder={t(Strings.placeholder_input)}
                           />
                         </div>
-                      }
+                      )}
                     </div>
                   );
-                })
-              }
+                })}
             </Checkbox.Group>
             <Button
               color="primary"
@@ -227,7 +231,9 @@ const QuestionnaireContent: FC<IQuestionnaireProps> = props => {
               onClick={e => {
                 onCheckboxChange(info, checkboxValues.current || []);
                 enterNext();
-              }} block={true}>
+              }}
+              block={true}
+            >
               {t(Strings.next_page)}
             </Button>
           </>
@@ -246,18 +252,23 @@ const QuestionnaireContent: FC<IQuestionnaireProps> = props => {
                 onChange={e => onInputChange(info, e)}
                 placeholder={t(Strings.placeholder_input)}
               />
-              {
-                (_submit || (curIndex === 2 && isWecomFunc())) ?
-                  <Button color="primary" shape="round" className={`${CLASS_PREFIX}-nextBtn`} onClick={() => {
+              {_submit || (curIndex === 2 && isWecomFunc()) ? (
+                <Button
+                  color="primary"
+                  shape="round"
+                  className={`${CLASS_PREFIX}-nextBtn`}
+                  onClick={() => {
                     submit();
                     enterNext();
-                  }}>
-                    {t(Strings.fill_in_completed)}
-                  </Button> : <Button color="primary" shape="round" className={`${CLASS_PREFIX}-nextBtn`} onClick={enterNext}>
-                    {t(Strings.next_page)}
-                  </Button>
-              }
-
+                  }}
+                >
+                  {t(Strings.fill_in_completed)}
+                </Button>
+              ) : (
+                <Button color="primary" shape="round" className={`${CLASS_PREFIX}-nextBtn`} onClick={enterNext}>
+                  {t(Strings.next_page)}
+                </Button>
+              )}
             </div>
           </>
         );
@@ -279,20 +290,9 @@ const QuestionnaireContent: FC<IQuestionnaireProps> = props => {
             <div className={`${CLASS_PREFIX}-contactUsWrap`}>
               <div className={`${CLASS_PREFIX}-contactUsDesc`}>{t(Strings.contact_us_qr_code_desc)}</div>
               <div className={`${CLASS_PREFIX}-qrCodeBoxWrap`}>
-                {
-                  isFeiShuSpace
-                    ?
-                    <QrCodeArea url={feishu}></QrCodeArea>
-                    :
-                    <QrCodeArea img={platformImg}></QrCodeArea>
-                }
+                {isFeiShuSpace ? <QrCodeArea url={feishu}></QrCodeArea> : <QrCodeArea img={platformImg}></QrCodeArea>}
               </div>
-              <Button
-                color="primary"
-                shape="round"
-                className={`${CLASS_PREFIX}-nextBtn`}
-                onClick={onNext}
-              >
+              <Button color="primary" shape="round" className={`${CLASS_PREFIX}-nextBtn`} onClick={onNext}>
                 {t(Strings.player_contact_us_confirm_btn)}
               </Button>
             </div>
@@ -304,9 +304,7 @@ const QuestionnaireContent: FC<IQuestionnaireProps> = props => {
       }
     }
   };
-  return (
-    <>{getItemInfo(config[curIndex])}</>
-  );
+  return <>{getItemInfo(config[curIndex])}</>;
 };
 
 const Questionnaire: FC<IQuestionnaireProps> = props => {
@@ -329,15 +327,11 @@ const Questionnaire: FC<IQuestionnaireProps> = props => {
       <ScrollBar>
         <div className={`${CLASS_PREFIX}-imgWrap`}>
           <span className={`${CLASS_PREFIX}-img`}>
-          <Image src={img} alt="questionnaire" />
+            <Image src={img} alt="questionnaire" />
           </span>
         </div>
         <div className={`${CLASS_PREFIX}-content`}>
-          <QuestionnaireContent
-            config={config}
-            onSubmit={onSubmit}
-            onNext={onNext}
-          />
+          <QuestionnaireContent config={config} onSubmit={onSubmit} onNext={onNext} />
         </div>
       </ScrollBar>
     </AntdModal>
@@ -353,7 +347,11 @@ export const showQuestionnaire = (props: IQuestionnaireProps) => {
       div.setAttribute('class', CLASS_PREFIX);
       document.body.appendChild(div);
       ReactDOM.render(
-        (<Provider store={store}><Questionnaire {...rest}>{children}</Questionnaire></Provider>), div);
+        <Provider store={store}>
+          <Questionnaire {...rest}>{children}</Questionnaire>
+        </Provider>,
+        div,
+      );
     });
   };
 

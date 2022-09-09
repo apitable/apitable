@@ -9,7 +9,7 @@ import { NoSupport } from '../no_support';
 import IconImg from 'static/icon/datasheet/attachment/attachment_ img_placeholder_filled.png'; // img
 import { useEvents } from './hooks/use_events';
 import { stopPropagation } from '@vikadata/components';
-import { MIN_SCALE } from '../../preview_main';
+import { MIN_SCALE } from '../../preview_main/constant';
 import classNames from 'classnames';
 
 export const PreviewImage: React.FC<IPreviewTypeBase> = props => {
@@ -28,7 +28,7 @@ export const PreviewImage: React.FC<IPreviewTypeBase> = props => {
     const { offsetWidth, offsetHeight } = wrapperRef.current as HTMLDivElement;
 
     let initActualScale = 1,
-      scale = 1;
+        scale = 1;
 
     let translatePosition = {
       x: 0,

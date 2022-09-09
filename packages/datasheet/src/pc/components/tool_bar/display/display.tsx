@@ -13,15 +13,14 @@ import { ViewSwitcher } from '../view_switcher';
 import { SetGalleryLayout } from '../set_gallery_layout';
 import { batchActions } from 'redux-batched-actions';
 import { useKeyPress } from 'ahooks';
-import { useToolbarMenuCardOpen } from '../hooks';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { useDisabledOperateWithMirror, useToolbarMenuCardOpen } from '../hooks';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import styles from './style.module.less';
 import { useResponsive } from 'pc/hooks';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { SetCalendarLayout } from '../set_calendar_layout';
 import classNames from 'classnames';
 import { expandViewLock } from 'pc/components/view_lock/expand_view_lock';
-import { useDisabledOperateWithMirror } from 'pc/components/tool_bar/tool_bar';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { HiddenKanbanGroup } from '../hidden_kanban_group';
 import { closeAllExpandRecord } from 'pc/components/expand_record';
@@ -91,10 +90,7 @@ export const Display: React.FC<IDisplay> = props => {
     }
     setToolbarMenuCardOpen(popupVisible);
     onVisibleChange && onVisibleChange(popupVisible);
-    dispatch(batchActions([
-      StoreActions.clearSelection(datasheetId),
-      StoreActions.clearActiveFieldState(datasheetId),
-    ]));
+    dispatch(batchActions([StoreActions.clearSelection(datasheetId), StoreActions.clearActiveFieldState(datasheetId)]));
   }
 
   function onHideFieldVisibleChange(popupVisible: boolean) {
@@ -113,7 +109,8 @@ export const Display: React.FC<IDisplay> = props => {
       }
       ref.current && ref.current.close(e);
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ref],
+    },
+    [ref],
   );
 
   useKeyPress('Esc', event => {
@@ -124,60 +121,33 @@ export const Display: React.FC<IDisplay> = props => {
     let renderNode = <></>;
     switch (type) {
       case ToolHandleType.ViewSort:
-        renderNode = (
-          <ViewSort
-            close={close}
-            triggerInfo={triggerInfo}
-          />
-        );
+        renderNode = <ViewSort close={close} triggerInfo={triggerInfo} />;
         break;
       case ToolHandleType.ViewSwitcher:
-        renderNode = (
-          <ViewSwitcher
-            close={close}
-            triggerInfo={triggerInfo}
-          />
-        );
+        renderNode = <ViewSwitcher close={close} triggerInfo={triggerInfo} />;
         break;
       case ToolHandleType.HideField:
-        renderNode = (
-          <HiddenField triggerInfo={triggerInfo} mobileModalclose={onHideFieldVisibleChange} />
-        );
+        renderNode = <HiddenField triggerInfo={triggerInfo} mobileModalclose={onHideFieldVisibleChange} />;
         break;
       case ToolHandleType.HiddenKanbanGroup:
-        renderNode = (
-          <HiddenKanbanGroup triggerInfo={triggerInfo} />
-        );
+        renderNode = <HiddenKanbanGroup triggerInfo={triggerInfo} />;
         break;
       // 隐藏视图专属的列（如甘特图右侧图形区域的列）
       case ToolHandleType.HideExclusiveField:
-        renderNode = (
-          <HiddenField triggerInfo={triggerInfo} type={HideFieldType.Exclusive} />
-        );
+        renderNode = <HiddenField triggerInfo={triggerInfo} type={HideFieldType.Exclusive} />;
         break;
       case ToolHandleType.ChangeRowHeight:
-        renderNode = (
-          <ChangeRowHeight triggerInfo={triggerInfo} />
-        );
+        renderNode = <ChangeRowHeight triggerInfo={triggerInfo} />;
         break;
 
       case ToolHandleType.ViewFilter:
-        renderNode = (
-          <ViewFilter triggerInfo={triggerInfo} />
-        );
+        renderNode = <ViewFilter triggerInfo={triggerInfo} />;
         break;
       case ToolHandleType.ViewGroup:
-        renderNode = (
-          <ViewGroup
-            close={close}
-            triggerInfo={triggerInfo}
-          />
-        );
+        renderNode = <ViewGroup close={close} triggerInfo={triggerInfo} />;
         break;
       case ToolHandleType.GallerySetting:
-        renderNode = (
-          <SetGalleryLayout triggerInfo={triggerInfo} />
-        );
+        renderNode = <SetGalleryLayout triggerInfo={triggerInfo} />;
         break;
       case ToolHandleType.CalendarSetting:
         renderNode = <SetCalendarLayout />;
@@ -187,11 +157,8 @@ export const Display: React.FC<IDisplay> = props => {
     }
 
     const getTitle = (type: ToolHandleType) => {
-
       if (type === ToolHandleType.HideField) {
-        return [ViewType.Kanban, ViewType.Gallery].includes(activeView.type) ?
-          t(Strings.custom_style) :
-          t(Strings.hide_fields);
+        return [ViewType.Kanban, ViewType.Gallery].includes(activeView.type) ? t(Strings.custom_style) : t(Strings.hide_fields);
       }
 
       if (type === ToolHandleType.ViewSort) {
@@ -206,9 +173,7 @@ export const Display: React.FC<IDisplay> = props => {
     };
     return (
       <>
-        <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-          {renderNode}
-        </ComponentDisplay>
+        <ComponentDisplay minWidthCompatible={ScreenSize.md}>{renderNode}</ComponentDisplay>
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
           <Popup
             title={getTitle(type)}
@@ -262,7 +227,7 @@ export const Display: React.FC<IDisplay> = props => {
           popupVisible={open}
           onPopupVisibleChange={onMenuVisibleChange}
           className={classNames(className, {
-            [styles.toolbarItemOpened]: !disableAutoActiveItem && open
+            [styles.toolbarItemOpened]: !disableAutoActiveItem && open,
           })}
           mask
         >
@@ -271,7 +236,9 @@ export const Display: React.FC<IDisplay> = props => {
       </ComponentDisplay>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <div className={styles.toolItemWrapper} onClick={onToolItemClick}>{children}</div>
+        <div className={styles.toolItemWrapper} onClick={onToolItemClick}>
+          {children}
+        </div>
         {PopupContent()}
       </ComponentDisplay>
     </>

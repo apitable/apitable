@@ -2,7 +2,7 @@ import { validateMagicForm } from '@vikadata/core';
 import Ajv from 'ajv';
 import { JSONSchema7 } from 'json-schema';
 import toPath from 'lodash/toPath';
-import { isObject, mergeObjects } from './utils';
+import { isObject, mergeObjects } from './func';
 
 const ajv = createAjvInstance();
 
@@ -18,14 +18,11 @@ function createAjvInstance() {
   });
 
   // add custom formats
-  ajv.addFormat(
-    'data-url',
-    /^data:([a-z]+\/[a-z0-9-+.]+)?;(?:name=(.*);)?base64,(.*)$/
-  );
+  ajv.addFormat('data-url', /^data:([a-z]+\/[a-z0-9-+.]+)?;(?:name=(.*);)?base64,(.*)$/);
   ajv.addFormat(
     'color',
     // eslint-disable-next-line
-    /^(#?([0-9A-Fa-f]{3}){1,2}\b|aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple|red|silver|teal|white|yellow|(rgb\(\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*\))|(rgb\(\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*\)))$/
+    /^(#?([0-9A-Fa-f]{3}){1,2}\b|aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple|red|silver|teal|white|yellow|(rgb\(\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*\))|(rgb\(\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*\)))$/,
   );
   return ajv;
 }
@@ -49,7 +46,7 @@ function toErrorSchema(errors: any[]) {
   if (!errors.length) {
     return {};
   }
-  return errors.reduce((errorSchema: any, error: { property: any; message: any; }) => {
+  return errors.reduce((errorSchema: any, error: { property: any; message: any }) => {
     const { property, message } = error;
     const path = toPath(property);
     let parent = errorSchema;
@@ -83,8 +80,8 @@ function toErrorSchema(errors: any[]) {
 
 /**
  * 全部字段的错误信息。
- * @param errorSchema 
- * @param fieldName 
+ * @param errorSchema
+ * @param fieldName
  */
 export function toErrorList(errorSchema: any, fieldName = 'root') {
   // XXX: We should transform fieldName as a full field path string.
@@ -95,7 +92,7 @@ export function toErrorList(errorSchema: any, fieldName = 'root') {
         return {
           stack: `${fieldName}: ${stack}`,
         };
-      })
+      }),
     );
   }
   return Object.keys(errorSchema).reduce((acc, key) => {
@@ -108,7 +105,7 @@ export function toErrorList(errorSchema: any, fieldName = 'root') {
 
 /**
  * 暂时没起作用
- * @param formData 
+ * @param formData
  */
 function createErrorHandler(formData: object) {
   const handler: {
@@ -181,15 +178,27 @@ export default function validateFormData(
   formData: any,
   schema: string | boolean | object,
   customValidate: ((arg0: any, arg1: any) => any) | undefined = undefined,
-  transformErrors: ((arg0: {
-    name: never; property: string; message: never; params: never; // specific to ajv
-    stack: string; schemaPath: never;
-  }[]) => {
-    name: never; property: string; message: never; params: never; // specific to ajv
-    stack: string; schemaPath: never;
-  }[]) | undefined = undefined,
+  transformErrors:
+    | ((
+        arg0: {
+          name: never;
+          property: string;
+          message: never;
+          params: never; // specific to ajv
+          stack: string;
+          schemaPath: never;
+        }[],
+      ) => {
+        name: never;
+        property: string;
+        message: never;
+        params: never; // specific to ajv
+        stack: string;
+        schemaPath: never;
+      }[])
+    | undefined = undefined,
   additionalMetaSchemas = [],
-  customFormats = {}
+  customFormats = {},
 ) {
   // Include form data with undefined values, which is required for validation.
   const rootSchema = schema as JSONSchema7;
@@ -267,17 +276,13 @@ export default function validateFormData(
  * Recursively prefixes all $ref's in a schema with `ROOT_SCHEMA_PREFIX`
  * This is used in isValid to make references to the rootSchema
  */
-export function withIdRefPrefix(schemaNode: { constructor: ObjectConstructor; }) {
+export function withIdRefPrefix(schemaNode: { constructor: ObjectConstructor }) {
   let obj: any = schemaNode;
   if (schemaNode.constructor === Object) {
     obj = { ...schemaNode };
     for (const key in obj) {
       const value = obj[key];
-      if (
-        key === '$ref' &&
-        typeof value === 'string' &&
-        value.startsWith('#')
-      ) {
+      if (key === '$ref' && typeof value === 'string' && value.startsWith('#')) {
         obj[key] = ROOT_SCHEMA_PREFIX + value;
       } else {
         obj[key] = withIdRefPrefix(value);
@@ -303,9 +308,7 @@ export function isValid(schema: any, data: any, rootSchema: object | object[]) {
     // then rewrite the schema ref's to point to the rootSchema
     // this accounts for the case where schema have references to models
     // that lives in the rootSchema but not in the schema in question.
-    return ajv
-      .addSchema(rootSchema, ROOT_SCHEMA_PREFIX)
-      .validate(withIdRefPrefix(schema), data);
+    return ajv.addSchema(rootSchema, ROOT_SCHEMA_PREFIX).validate(withIdRefPrefix(schema), data);
   } catch (e) {
     return false;
   } finally {

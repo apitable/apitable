@@ -7,7 +7,7 @@ import throttle from 'lodash/throttle';
 import Image from 'next/image';
 import { ShortcutActionName } from 'pc/common/shortcut_key';
 import { getShortcutKeyString } from 'pc/common/shortcut_key/keybinding_config';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
 import { useResponsive, useSelectIndex } from 'pc/hooks';
 import { getElementDataset, KeyCode, nodeConfigData } from 'pc/utils';
@@ -37,7 +37,7 @@ export interface ISearchProps {
 export const Search: FC<ISearchProps> = ({ className, closeSearch }) => {
   const colors = useThemeColors();
   const [keyword, setKeyword] = useState('');
-  const [groupData, setGroupData] = useState<{ name: string, data: ISearchNode[] }[]>([]);
+  const [groupData, setGroupData] = useState<{ name: string; data: ISearchNode[] }[]>([]);
   const inputRef = useRef<Input>(null);
   const listContainerRef = useRef<any>(null);
   const totalSearchResultItemsCount = groupData.reduce((total, item) => total + item.data.length, 0);
@@ -81,7 +81,7 @@ export const Search: FC<ISearchProps> = ({ className, closeSearch }) => {
   });
 
   const groupingByNodeType = (nodes: ISearchNode[]) => {
-    const data: { name: string, data: ISearchNode[] }[] = [];
+    const data: { name: string; data: ISearchNode[] }[] = [];
     for (const nodeConfigItem of nodeConfigData) {
       const filterData = nodes.filter(node => node.type === nodeConfigItem.type);
       if (!filterData.length) {
@@ -100,14 +100,16 @@ export const Search: FC<ISearchProps> = ({ className, closeSearch }) => {
     if (reqToken) {
       reqToken();
     }
-    Api.findNode(val, c => reqToken = c).then(res => {
-      const { data, success } = res.data;
-      if (success) {
-        groupingByNodeType(data);
-      }
-    }).catch(() => {
-      console.log('捕获取消请求');
-    });
+    Api.findNode(val, c => (reqToken = c))
+      .then(res => {
+        const { data, success } = res.data;
+        if (success) {
+          groupingByNodeType(data);
+        }
+      })
+      .catch(() => {
+        console.log('捕获取消请求');
+      });
   }, 500);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -153,37 +155,36 @@ export const Search: FC<ISearchProps> = ({ className, closeSearch }) => {
           ref={inputRef}
           className={styles.searchInput}
           size="small"
-          placeholder={isMobile ? t(Strings.search) : t(Strings.search_node_pleaseholder,
-            { shortcutKey: getShortcutKeyString(ShortcutActionName.SearchNode) })
+          placeholder={
+            isMobile ? t(Strings.search) : t(Strings.search_node_pleaseholder, { shortcutKey: getShortcutKeyString(ShortcutActionName.SearchNode) })
           }
           autoFocus
           value={keyword}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           prefix={<SearchIcon />}
-          suffix={(
-            keyword &&
-            <div onClick={clearKeyword} className={styles.closeBtn}>
-              <CloseIcon width={15} height={15} fill={colors.thirdLevelText} />
-            </div>
-          )}
+          suffix={
+            keyword && (
+              <div onClick={clearKeyword} className={styles.closeBtn}>
+                <CloseIcon width={15} height={15} fill={colors.thirdLevelText} />
+              </div>
+            )
+          }
         />
       </Form>
-      {keyword &&
+      {keyword && (
         <div
           className={styles.nodeList}
           onClick={handleNodeClick}
           style={{ background: keyword ? colors.defaultBg : 'transparent' }}
           ref={listContainerRef}
         >
-          {!groupData.length && keyword &&
-            (
-              <div className={styles.emptyResult}>
-                <Image src={EmptyResultIcon} alt={t(Strings.no_search_result)} />
-                <div className={styles.tip}>{t(Strings.no_search_result)}</div>
-              </div>
-            )
-          }
+          {!groupData.length && keyword && (
+            <div className={styles.emptyResult}>
+              <Image src={EmptyResultIcon} alt={t(Strings.no_search_result)} />
+              <div className={styles.tip}>{t(Strings.no_search_result)}</div>
+            </div>
+          )}
           {groupData.map(group => (
             <div key={group.name}>
               <div className={styles.title}>{group.name}</div>
@@ -197,7 +198,7 @@ export const Search: FC<ISearchProps> = ({ className, closeSearch }) => {
             </div>
           ))}
         </div>
-      }
+      )}
     </div>
   );
 };

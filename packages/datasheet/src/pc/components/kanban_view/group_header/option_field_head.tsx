@@ -1,12 +1,11 @@
 import { useClickAway } from 'ahooks';
 import { Input } from 'antd';
 import produce from 'immer';
-import { ColorPicker } from 'pc/components/common/color_picker';
+import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
 import { CellOptions } from 'pc/components/multi_grid/cell/cell_options';
 import { useEffect, useRef, useState } from 'react';
 import * as React from 'react';
-import { OptionSetting } from '../../common/color_picker/color_picker';
-import { IHeadOptionProps } from 'pc/components/kanban_view/group_header/group_head_menu';
+import { IHeadOptionProps } from './interface';
 import styles from './styles.module.less';
 import { useThemeColors } from '@vikadata/components';
 
@@ -23,10 +22,14 @@ export const OptionFieldHead: React.FC<IHeadOptionProps> = props => {
   const optionItem = fieldClone.property.options.find(item => item.id === cellValue)!;
 
   function onOptionChange(type: OptionSetting, id: string, value: string | number) {
-    if (type !== OptionSetting.SETCOLOR) { return; }
+    if (type !== OptionSetting.SETCOLOR) {
+      return;
+    }
     const newField = produce(fieldClone, draft => {
       draft.property.options.map(item => {
-        if (id === item.id) { item.color = value as number; }
+        if (id === item.id) {
+          item.color = value as number;
+        }
         return item;
       });
       return draft;
@@ -35,12 +38,16 @@ export const OptionFieldHead: React.FC<IHeadOptionProps> = props => {
   }
 
   function onDoubleClick() {
-    if (editing || readOnly) { return; }
+    if (editing || readOnly) {
+      return;
+    }
     setEditing(true);
   }
 
   function onPressEnter() {
-    if (!inputRef.current) { return; }
+    if (!inputRef.current) {
+      return;
+    }
     const value = inputRef.current!.input.value;
     if (!value.length) {
       setEditing(false);
@@ -59,28 +66,35 @@ export const OptionFieldHead: React.FC<IHeadOptionProps> = props => {
     return;
   }
 
-  useClickAway(() => {
-    onPressEnter();
-  }, editAreaRef, 'mousedown');
+  useClickAway(
+    () => {
+      onPressEnter();
+    },
+    editAreaRef,
+    'mousedown',
+  );
 
-  if (!optionItem) { return <></>; }
+  if (!optionItem) {
+    return <></>;
+  }
 
-  return <div onClick={onDoubleClick} style={{ padding: isAdd ? '0px 16px' : '0 8px 0 0', overflow: 'hidden' }}>
-    {editing ? <div className={styles.optionEditArea} ref={editAreaRef}>
-      <ColorPicker
-        onChange={onOptionChange}
-        option={optionItem}
-      />
-      <Input
-        ref={inputRef}
-        size={'small'}
-        defaultValue={optionItem.name}
-        onPressEnter={onPressEnter}
-        autoFocus
-        style={{ marginLeft: 4 , background: colors.defaultBg }}
-      />
-    </div> :
-      <CellOptions cellValue={cellValue} field={field} className={styles.optionHeader} />
-    }
-  </div>;
+  return (
+    <div onClick={onDoubleClick} style={{ padding: isAdd ? '0px 16px' : '0 8px 0 0', overflow: 'hidden' }}>
+      {editing ? (
+        <div className={styles.optionEditArea} ref={editAreaRef}>
+          <ColorPicker onChange={onOptionChange} option={optionItem} />
+          <Input
+            ref={inputRef}
+            size={'small'}
+            defaultValue={optionItem.name}
+            onPressEnter={onPressEnter}
+            autoFocus
+            style={{ marginLeft: 4, background: colors.defaultBg }}
+          />
+        </div>
+      ) : (
+        <CellOptions cellValue={cellValue} field={field} className={styles.optionHeader} />
+      )}
+    </div>
+  );
 };

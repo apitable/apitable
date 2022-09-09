@@ -2,8 +2,21 @@ import { useEffect, useState } from 'react';
 import * as React from 'react';
 import styles from './style.module.less';
 import {
-  Strings, t, ConfigConstant, StoreActions, Api, IApi, IReduxState, Navigation, ADDRESS_ID,
-  Player, Events, getCustomConfig, IMember, ITeam, isIdassPrivateDeployment
+  Strings,
+  t,
+  ConfigConstant,
+  StoreActions,
+  Api,
+  IApi,
+  IReduxState,
+  Navigation,
+  ADDRESS_ID,
+  Player,
+  Events,
+  getCustomConfig,
+  IMember,
+  ITeam,
+  isIdassPrivateDeployment,
 } from '@vikadata/core';
 import { Input } from 'antd';
 import { expandInviteModal } from 'pc/components/invite';
@@ -15,7 +28,7 @@ import { useRequest } from 'pc/hooks';
 import { useUserRequest, useSideBarVisible, useResponsive } from 'pc/hooks';
 import { useNavigation } from 'pc/components/route_manager/use_navigation';
 import { OrganizationHead } from 'pc/components/organization_head';
-import { ScreenSize, ComponentDisplay } from 'pc/components/common/component_display/component_display';
+import { ScreenSize, ComponentDisplay } from 'pc/components/common/component_display';
 import classNames from 'classnames';
 import { expandMemberInfo } from 'pc/components/address_list/expand_member_info';
 import { Button } from '@vikadata/components';
@@ -26,15 +39,14 @@ import { isSocialPlatformEnabled } from 'pc/components/home/social_platform';
 import { stopPropagation } from 'pc/utils';
 
 export const AddressSide: React.FC = () => {
-  const {
-    teamList,
-    spaceId,
-    userInfo,
-  } = useSelector((state: IReduxState) => ({
-    teamList: state.addressList.teamList,
-    spaceId: state.space.activeId,
-    userInfo: state.user.info,
-  }), shallowEqual);
+  const { teamList, spaceId, userInfo } = useSelector(
+    (state: IReduxState) => ({
+      teamList: state.addressList.teamList,
+      spaceId: state.space.activeId,
+      userInfo: state.user.info,
+    }),
+    shallowEqual,
+  );
 
   const { isAdmin } = userInfo!;
 
@@ -57,20 +69,25 @@ export const AddressSide: React.FC = () => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   // 操作-选择小组，获取所选小组信息，以及小组成员列表
-  const teamClick = React.useCallback((teamId: string) => {
-    Api.readTeam(teamId).then(res => {
-      const { success, data } = res.data;
-      if (success) {
-        dispatch(StoreActions.updateSelectedTeamInfo({
-          teamTitle: data.teamName,
-          memberCount: data.memberCount,
-          teamId: data.teamId,
-        }));
-      }
-    });
-    isMobile && setSideBarVisible(false);
-    dispatch(StoreActions.updateMemberInfo({ memberId: '', email: '' }));
-  }, [isMobile, setSideBarVisible, dispatch]);
+  const teamClick = React.useCallback(
+    (teamId: string) => {
+      Api.readTeam(teamId).then(res => {
+        const { success, data } = res.data;
+        if (success) {
+          dispatch(
+            StoreActions.updateSelectedTeamInfo({
+              teamTitle: data.teamName,
+              memberCount: data.memberCount,
+              teamId: data.teamId,
+            }),
+          );
+        }
+      });
+      isMobile && setSideBarVisible(false);
+      dispatch(StoreActions.updateMemberInfo({ memberId: '', email: '' }));
+    },
+    [isMobile, setSideBarVisible, dispatch],
+  );
   const navigationTo = useNavigation();
 
   // 操作-选择成员
@@ -83,12 +100,12 @@ export const AddressSide: React.FC = () => {
 
   const { syncTeamsAndMembersLinkId = '' } = getCustomConfig();
 
-  const isSyncingMembers = (syncTeamsAndMembersLinkId && isAdmin);
+  const isSyncingMembers = syncTeamsAndMembersLinkId && isAdmin;
   const btnSize = isSyncingMembers ? 'large' : 'middle';
 
   const OperateButton = React.useMemo(() => {
     // 玉符私有化隐藏按钮
-    if(isIdassPrivateDeployment()){
+    if (isIdassPrivateDeployment()) {
       return;
     }
 
@@ -97,7 +114,7 @@ export const AddressSide: React.FC = () => {
         <>
           {isSyncingMembers && (
             <Button
-              color='primary'
+              color="primary"
               prefixIcon={<AddOutlined />}
               id={ADDRESS_ID.INVITE_BTN}
               className={classNames({ [styles.inviteBtnMobile]: isMobile })}
@@ -105,15 +122,18 @@ export const AddressSide: React.FC = () => {
                 expandUnitModal({
                   source: SelectUnitSource.SyncMember,
                   onSubmit: values => {
-                    const data = values.reduce((prev: IApi.ISyncMemberRequest, cur) => {
-                      if ((cur as IMember).memberId) {
-                        const { syncingTeamId, memberId, memberName } = cur as (IMember & { syncingTeamId: string });
-                        prev.members.push({ teamId: syncingTeamId, memberId, memberName });
-                      } else if ((cur as ITeam).teamId) {
-                        prev.teamIds.push((cur as ITeam).teamId);
-                      }
-                      return prev;
-                    }, { members: [], linkId: syncTeamsAndMembersLinkId, teamIds: [] });
+                    const data = values.reduce(
+                      (prev: IApi.ISyncMemberRequest, cur) => {
+                        if ((cur as IMember).memberId) {
+                          const { syncingTeamId, memberId, memberName } = cur as IMember & { syncingTeamId: string };
+                          prev.members.push({ teamId: syncingTeamId, memberId, memberName });
+                        } else if ((cur as ITeam).teamId) {
+                          prev.teamIds.push((cur as ITeam).teamId);
+                        }
+                        return prev;
+                      },
+                      { members: [], linkId: syncTeamsAndMembersLinkId, teamIds: [] },
+                    );
 
                     Message.loading({ content: t(Strings.syncing) });
                     Api.syncOrgMembers(data).then(res => {
@@ -141,7 +161,7 @@ export const AddressSide: React.FC = () => {
           )}
           <Button
             size={btnSize}
-            color={(isSyncingMembers) ? 'default' : 'primary'}
+            color={isSyncingMembers ? 'default' : 'primary'}
             prefixIcon={<AddressOutlined />}
             id={ADDRESS_ID.INVITE_BTN}
             className={classNames({
@@ -160,54 +180,44 @@ export const AddressSide: React.FC = () => {
   }, [loading, isMobile, teamClick, inviteRes, syncTeamsAndMembersLinkId, dispatch, userInfo, isSyncingMembers, btnSize]);
 
   return (
-    <div
-      className={styles.leftContent}
-    >
+    <div className={styles.leftContent}>
       <OrganizationHead />
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <div className={styles.searchItem}>
           {t(Strings.contacts)}
-          <span onClick={(e) => {
-            stopPropagation(e);
-            setInSearch(true);
-          }}><SearchIcon /></span>
+          <span
+            onClick={e => {
+              stopPropagation(e);
+              setInSearch(true);
+            }}
+          >
+            <SearchIcon />
+          </span>
         </div>
       </ComponentDisplay>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        {<div className={styles.searchInputWrapper}>
-          <Input
-            className={styles.searchInput}
-            prefix={<SearchIcon />}
-            size="small"
-            placeholder={t(Strings.search)}
-            onClick={() => setInSearch(true)}
-          />
-        </div>}
+        {
+          <div className={styles.searchInputWrapper}>
+            <Input
+              className={styles.searchInput}
+              prefix={<SearchIcon />}
+              size="small"
+              placeholder={t(Strings.search)}
+              onClick={() => setInSearch(true)}
+            />
+          </div>
+        }
       </ComponentDisplay>
 
       <div className={styles.listWrapper}>
-        <div
-          style={{ filter: inSearch ? ConfigConstant.GLASS_FILTER : 'none' }}
-          className={styles.filter}
-        >
+        <div style={{ filter: inSearch ? ConfigConstant.GLASS_FILTER : 'none' }} className={styles.filter}>
           {OperateButton}
           <div className={styles.menu}>
-            <AddressTreeMenu
-              listData={teamList}
-              onSelect={keys => teamClick(keys[0])}
-              inSearch={inSearch}
-            />
+            <AddressTreeMenu listData={teamList} onSelect={keys => teamClick(keys[0])} inSearch={inSearch} />
           </div>
         </div>
         {/* <ComponentDisplay minWidthCompatible={ScreenSize.md}> */}
-        {inSearch &&
-          (
-            <SearchTeamAndMember
-              setInSearch={search => setInSearch(search)}
-              teamClick={teamClick}
-              memberClick={memberClick}
-            />
-          )}
+        {inSearch && <SearchTeamAndMember setInSearch={search => setInSearch(search)} teamClick={teamClick} memberClick={memberClick} />}
         {/* </ComponentDisplay> */}
       </div>
     </div>

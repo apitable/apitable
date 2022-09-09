@@ -2,8 +2,17 @@ import { forwardRef, useRef, useContext, useCallback } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import {
-  IField, FieldType, ICellValue, IDateTimeField,
-  ConfigConstant, ILinkIds, ILinkField, t, Strings, IAttachmentValue, Api,
+  IField,
+  FieldType,
+  ICellValue,
+  IDateTimeField,
+  ConfigConstant,
+  ILinkIds,
+  ILinkField,
+  t,
+  Strings,
+  IAttachmentValue,
+  Api,
 } from '@vikadata/core';
 import styles from './style.module.less';
 import { Button } from '@vikadata/components';
@@ -18,7 +27,7 @@ import { OptionFieldEditor, MemberFieldEditor } from './form_editors';
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import { FormContext } from '../form_context';
 import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { difference } from 'lodash';
 import { ExpandLookUpBase } from 'pc/components/expand_record/expand_lookup';
 import { ExpandFormula } from 'pc/components/expand_record/expand_formula';
@@ -63,69 +72,71 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
   const compactMode = formProps?.compactMode;
 
   // 各个类型数据提交成功后的执行函数
-  const onSave = useCallback((value) => {
-    let finalValue: ICellValue = null;
+  const onSave = useCallback(
+    value => {
+      let finalValue: ICellValue = null;
 
-    if (value == null) {
-      setFormData && setFormData(field.id, null);
-      return;
-    }
-    switch (field.type) {
-      case FieldType.Number:
-      case FieldType.Currency:
-      case FieldType.Percent:
-        finalValue = Number(value);
-        break;
-      case FieldType.URL:
-      case FieldType.Email:
-      case FieldType.Phone:
-      case FieldType.Text:
-      case FieldType.SingleText:
-      case FieldType.Checkbox:
-      case FieldType.Rating:
-      case FieldType.DateTime:
-      case FieldType.Link:
-        finalValue = value;
-        break;
-      case FieldType.SingleSelect:
-      case FieldType.MultiSelect:
-        if (!value.length) {
-          setFormData && setFormData(field.id, null);
-          return;
-        }
-        finalValue = value;
-        break;
-      case FieldType.Attachment:
-        attachmentRef.current = value;
-        finalValue = attachmentRef.current;
-        if (!value.length) {
-          setFormData && setFormData(field.id, null);
-          return;
-        }
-        break;
-      case FieldType.Member:
-        if (!shareId) {
-          const diff = difference(value, cellValue as string[]);
-          Api.commitRemind({
-            isNotify: false,
-            unitRecs: [{
-              unitIds: diff,
-            }],
-          });
-        }
-        finalValue = value;
-        break;
-      default:
-        finalValue = value;
-    }
-    setFormData && setFormData(field.id, finalValue);
-  }, [field.id, field.type, shareId, cellValue, setFormData]);
+      if (value == null) {
+        setFormData && setFormData(field.id, null);
+        return;
+      }
+      switch (field.type) {
+        case FieldType.Number:
+        case FieldType.Currency:
+        case FieldType.Percent:
+          finalValue = Number(value);
+          break;
+        case FieldType.URL:
+        case FieldType.Email:
+        case FieldType.Phone:
+        case FieldType.Text:
+        case FieldType.SingleText:
+        case FieldType.Checkbox:
+        case FieldType.Rating:
+        case FieldType.DateTime:
+        case FieldType.Link:
+          finalValue = value;
+          break;
+        case FieldType.SingleSelect:
+        case FieldType.MultiSelect:
+          if (!value.length) {
+            setFormData && setFormData(field.id, null);
+            return;
+          }
+          finalValue = value;
+          break;
+        case FieldType.Attachment:
+          attachmentRef.current = value;
+          finalValue = attachmentRef.current;
+          if (!value.length) {
+            setFormData && setFormData(field.id, null);
+            return;
+          }
+          break;
+        case FieldType.Member:
+          if (!shareId) {
+            const diff = difference(value, cellValue as string[]);
+            Api.commitRemind({
+              isNotify: false,
+              unitRecs: [
+                {
+                  unitIds: diff,
+                },
+              ],
+            });
+          }
+          finalValue = value;
+          break;
+        default:
+          finalValue = value;
+      }
+      setFormData && setFormData(field.id, finalValue);
+    },
+    [field.id, field.type, shareId, cellValue, setFormData],
+  );
 
   const disabledStatusButton = (
-    <Button
-      className={styles.addBtn}
-      size="small"
-    >
+    <Button className={styles.addBtn} size="small">
       <span className={styles.inner}>
         {<IconAdd fill="currentColor" className={styles.addIcon} />}
         {t(Strings.add)}
@@ -137,7 +148,7 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
     return attachmentRef.current as IAttachmentValue[];
   };
 
-  const handleFieldChange = (value) => {
+  const handleFieldChange = value => {
     setFormErrors(field.id, '');
     setFormToStorage && setFormToStorage(field.id, value);
   };
@@ -159,24 +170,9 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
         />
       );
     case FieldType.SingleText:
-      return (
-        <TextEditor
-          ref={ref}
-          {...commonProps}
-          onBlur={onClose}
-        />
-      );
+      return <TextEditor ref={ref} {...commonProps} onBlur={onClose} />;
     case FieldType.Text:
-      return (
-        <TextEditor
-          ref={ref}
-          {...commonProps}
-          onBlur={onClose}
-          minRows={4}
-          height={90}
-          needEditorTip={false}
-        />
-      );
+      return <TextEditor ref={ref} {...commonProps} onBlur={onClose} minRows={4} height={90} needEditorTip={false} />;
     case FieldType.Checkbox: {
       return (
         <CheckboxEditor
@@ -195,7 +191,7 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
         <DateTimeEditor
           {...commonProps}
           onClose={onClose}
-          ref={ele => ((ref as React.MutableRefObject<IEditor>).current as any) = (ele as any)}
+          ref={ele => (((ref as React.MutableRefObject<IEditor>).current as any) = ele as any)}
           field={field as IDateTimeField}
           style={{ height: isMobile ? 48 : 40, alignItems: 'center' }}
         />
@@ -216,30 +212,13 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
     case FieldType.URL:
     case FieldType.Email:
     case FieldType.Phone:
-      return (
-        <EnhanceTextEditor
-          ref={ref}
-          {...commonProps}
-        />
-      );
+      return <EnhanceTextEditor ref={ref} {...commonProps} />;
     case FieldType.SingleSelect: // 单选、多选
     case FieldType.MultiSelect:
-      return (
-        compactMode ?
-          <ExpandSelect
-            {...commonProps}
-            unitMap={null}
-            cellValue={cellValue}
-            isFocus={isFocus}
-            onClose={onClose}
-            onChange={onSave}
-          />
-          :
-          <OptionFieldEditor
-            ref={ref}
-            {...commonProps}
-            cellValue={cellValue}
-          />  
+      return compactMode ? (
+        <ExpandSelect {...commonProps} unitMap={null} cellValue={cellValue} isFocus={isFocus} onClose={onClose} onChange={onSave} />
+      ) : (
+        <OptionFieldEditor ref={ref} {...commonProps} cellValue={cellValue} />
       );
     case FieldType.Attachment:
       if (!(cellValue as IAttachmentValue[] | null)?.length) {
@@ -247,62 +226,46 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
       } else {
         attachmentRef.current = cellValue as IAttachmentValue[];
       }
-      return (
-        editable ?
-          <ExpandAttachContext.Provider value={{ isFocus }}>
-            <ExpandAttachment
-              {...commonProps}
-              recordId={recordId}
-              cellValue={attachmentRef.current as IAttachmentValue[]}
-              getCellValueFn={getCellValueFn}
-              onClick={onMouseDown}
-            />
-          </ExpandAttachContext.Provider> :
-          disabledStatusButton
-      );
-    case FieldType.Member:
-      return (
-        <MemberFieldEditor
-          {...commonProps}
-          cellValue={cellValue}
-          isFocus={isFocus}
-          onClose={onClose}
-        />
-      );
-    case FieldType.Link:
-      return (
-        editable ?
-          <ExpandLink
-            ref={ref}
+      return editable ? (
+        <ExpandAttachContext.Provider value={{ isFocus }}>
+          <ExpandAttachment
             {...commonProps}
             recordId={recordId}
-            field={commonProps.field as ILinkField}
+            cellValue={attachmentRef.current as IAttachmentValue[]}
+            getCellValueFn={getCellValueFn}
             onClick={onMouseDown}
-            cellValue={cellValue as ILinkIds}
-            addBtnText={t(Strings.form_field_add_btn)}
-            rightLayout={false}
-            manualFetchForeignDatasheet={FetchForeignTimes.OnlyOnce}
-          /> : disabledStatusButton
+          />
+        </ExpandAttachContext.Provider>
+      ) : (
+        disabledStatusButton
+      );
+    case FieldType.Member:
+      return <MemberFieldEditor {...commonProps} cellValue={cellValue} isFocus={isFocus} onClose={onClose} />;
+    case FieldType.Link:
+      return editable ? (
+        <ExpandLink
+          ref={ref}
+          {...commonProps}
+          recordId={recordId}
+          field={commonProps.field as ILinkField}
+          onClick={onMouseDown}
+          cellValue={cellValue as ILinkIds}
+          addBtnText={t(Strings.form_field_add_btn)}
+          rightLayout={false}
+          manualFetchForeignDatasheet={FetchForeignTimes.OnlyOnce}
+        />
+      ) : (
+        disabledStatusButton
       );
     case FieldType.LookUp:
       return (
-        <ComputedFieldWrapper
-          title={t(Strings.tooltip_edit_form_lookup_field)}
-          className={styles.formLookup}
-        >
-          {ExpandLookUpBase({ ...commonProps, field }) || (
-            <div className={styles.formLookUpFieldEmpty}>
-              {t(Strings.form_link_field_empty)}
-            </div>
-          )}
-        </ComputedFieldWrapper >
+        <ComputedFieldWrapper title={t(Strings.tooltip_edit_form_lookup_field)} className={styles.formLookup}>
+          {ExpandLookUpBase({ ...commonProps, field }) || <div className={styles.formLookUpFieldEmpty}>{t(Strings.form_link_field_empty)}</div>}
+        </ComputedFieldWrapper>
       );
     case FieldType.Formula:
       return (
-        <ComputedFieldWrapper
-          className={styles.formFormula}
-          title={t(Strings.tooltip_edit_form_formula_field)}
-        >
+        <ComputedFieldWrapper className={styles.formFormula} title={t(Strings.tooltip_edit_form_formula_field)}>
           <ExpandFormula {...commonProps} recordId={recordId} />
         </ComputedFieldWrapper>
       );

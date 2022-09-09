@@ -2,7 +2,7 @@ import { IField, ISelectField, ISelectFieldOption } from '@vikadata/core';
 import { Input } from 'antd';
 import classNames from 'classnames';
 import produce from 'immer';
-import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker/color_picker';
+import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
 import { useThemeColors } from '@vikadata/components';
 import { stopPropagation } from 'pc/utils';
 import { useRef } from 'react';
@@ -23,15 +23,10 @@ export interface IFormatSelectItem {
   addNewItem: () => void;
 }
 
-export const SortableItem = sortableElement(({ children }) => (
-  <>{children}</>
-));
+export const SortableItem = sortableElement(({ children }) => <>{children}</>);
 
 export const FormatSelectItem: React.FC<IFormatSelectItem> = props => {
-  const {
-    item, index, onOptionChange, draggingId,
-    setDraggingId, currentField, setCurrentField, addNewItem,
-  } = props;
+  const { item, index, onOptionChange, draggingId, setDraggingId, currentField, setCurrentField, addNewItem } = props;
   const colorPickerRef = useRef(null);
   const colors = useThemeColors();
   const onChange = (index, e) => {
@@ -91,7 +86,7 @@ export const FormatSelectItem: React.FC<IFormatSelectItem> = props => {
       onMouseDown={onDragHandleMouseDown}
       onMouseUp={onDragHandleMouseUp}
     >
-      <DragOutlined size={10} color={colors.thirdLevelText}/>
+      <DragOutlined size={10} color={colors.thirdLevelText} />
     </div>
   ));
 
@@ -100,11 +95,7 @@ export const FormatSelectItem: React.FC<IFormatSelectItem> = props => {
       <div className={styles.selectionItem}>
         <DragHandle />
         <div onClick={stopPropagation} ref={colorPickerRef}>
-          <ColorPicker
-            onChange={onOptionChange}
-            option={item}
-            mask
-          />
+          <ColorPicker onChange={onOptionChange} option={item} mask />
         </div>
         <div style={{ flex: 1 }}>
           <Input

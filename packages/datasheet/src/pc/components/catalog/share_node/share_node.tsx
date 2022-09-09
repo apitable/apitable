@@ -2,7 +2,7 @@ import { ConfigConstant, IReduxState, Strings, t } from '@vikadata/core';
 import { Tabs } from 'antd';
 import classnames from 'classnames';
 import Image from 'next/image';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
@@ -20,10 +20,10 @@ const { TabPane } = Tabs;
 export interface IShareNodeProps {
   /** 被操作节点相关的信息 */
   data: {
-    nodeId: string,
-    type: ConfigConstant.NodeType,
-    icon: string,
-    name: string,
+    nodeId: string;
+    type: ConfigConstant.NodeType;
+    icon: string;
+    name: string;
   };
   /** 模态框显隐控制 */
   visible: boolean;
@@ -36,11 +36,7 @@ export enum ShareTab {
   PublicLink = 'publiclink',
 }
 
-export const ShareNode: FC<IShareNodeProps> = ({
-  data,
-  visible,
-  onClose
-}) => {
+export const ShareNode: FC<IShareNodeProps> = ({ data, visible, onClose }) => {
   const [activeTab, setActiveTab] = useState(ShareTab.PublicLink);
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
   const { nodeName } = treeNodesMap[data.nodeId];
@@ -66,7 +62,7 @@ export const ShareNode: FC<IShareNodeProps> = ({
                 onClick={() => setActiveTab(ShareTab.PublicLink)}
               >
                 <div className={styles.tabContent}>
-                  <Image src={ShareNodePng} alt='public link' width={144} height={80} />
+                  <Image src={ShareNodePng} alt="public link" width={144} height={80} />
                   <div className={styles.title}>{t(Strings.public_link)}</div>
                   <div className={styles.subTitle}>{t(Strings.public_link_desc)}</div>
                 </div>
@@ -76,7 +72,7 @@ export const ShareNode: FC<IShareNodeProps> = ({
                 onClick={() => setActiveTab(ShareTab.Teamwork)}
               >
                 <div className={styles.tabContent}>
-                  <Image src={InvitePng} alt='teamwork' width={144} height={80} />
+                  <Image src={InvitePng} alt="teamwork" width={144} height={80} />
                   <div className={styles.title}>{t(Strings.teamwork)}</div>
                   <div className={styles.subTitle}>{t(Strings.teamwork_desc)}</div>
                 </div>
@@ -84,16 +80,14 @@ export const ShareNode: FC<IShareNodeProps> = ({
             </div>
             <div className={styles.tabPanel}>
               <div className={styles.nodeTitle}>
-                <TComponent
-                  tkey={t(Strings.share_title)}
-                  params={{ node: <div className={styles.name}>{nodeName}</div> }}
-                />
+                <TComponent tkey={t(Strings.share_title)} params={{ node: <div className={styles.name}>{nodeName}</div> }} />
               </div>
               <div className={styles.main}>
-                {activeTab === ShareTab.Teamwork ?
-                  <Teamwork nodeId={data.nodeId} jumpPublicLink={() => setActiveTab(ShareTab.PublicLink)} /> :
+                {activeTab === ShareTab.Teamwork ? (
+                  <Teamwork nodeId={data.nodeId} jumpPublicLink={() => setActiveTab(ShareTab.PublicLink)} />
+                ) : (
                   <PublicLink nodeId={data.nodeId} setActiveTab={setActiveTab} />
-                }
+                )}
               </div>
             </div>
           </div>
@@ -106,13 +100,12 @@ export const ShareNode: FC<IShareNodeProps> = ({
           className={styles.shareNodeDrawer}
           visible={visible}
           onClose={onClose}
-          height='90%'
-          title={<div className={styles.nodeTitle}>
-            <TComponent
-              tkey={t(Strings.share_title)}
-              params={{ node: <div className={styles.name}>{nodeName}</div> }}
-            />
-          </div>}
+          height="90%"
+          title={
+            <div className={styles.nodeTitle}>
+              <TComponent tkey={t(Strings.share_title)} params={{ node: <div className={styles.name}>{nodeName}</div> }} />
+            </div>
+          }
         >
           <Tabs activeKey={activeTab} onChange={activeKey => setActiveTab(activeKey as ShareTab)} className={styles.tabs}>
             <TabPane tab={t(Strings.public_link)} key={ShareTab.PublicLink}>

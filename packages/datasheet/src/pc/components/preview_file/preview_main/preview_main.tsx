@@ -1,12 +1,7 @@
-import {
-  Api,
-  IAttachmentValue,
-  isImage,
-  IUserInfo,
-} from '@vikadata/core';
+import { Api, IAttachmentValue, isImage, IUserInfo } from '@vikadata/core';
 import NextFilled from 'static/icon/common/next_filled.svg';
 import PreviousFilled from 'static/icon/common/previous_filled.svg';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { DOC_MIME_TYPE, getDownloadSrc, isSupportImage, KeyCode } from 'pc/utils';
 import { useCallback, useEffect, useState } from 'react';
@@ -25,6 +20,7 @@ import { stopPropagation, useThemeColors } from '@vikadata/components';
 import { useKeyPress } from 'ahooks';
 import { useSelector } from 'react-redux';
 import { isFocusingInput } from './util';
+import { initTransformInfo, initTranslatePosition, MAX_SCALE, MIN_SCALE } from './constant';
 
 interface IPreviewMain {
   activeIndex: number;
@@ -41,18 +37,6 @@ interface IPreviewMain {
   toggleIsFullScreen: () => void;
 }
 
-export const initTranslatePosition = { x: 0, y: 0 };
-
-export const MAX_SCALE = 5;
-export const MIN_SCALE = 0.1;
-
-export const initTransformInfo = {
-  scale: 1,
-  rotate: 0,
-  translatePosition: initTranslatePosition,
-  initActualScale: -1,
-};
-
 export const PreviewMain: React.FC<IPreviewMain> = props => {
   const {
     activeIndex,
@@ -66,13 +50,13 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
     officePreviewEnable,
     disabledDownload,
     isFullScreen,
-    toggleIsFullScreen
+    toggleIsFullScreen,
   } = props;
   const colors = useThemeColors();
   const { screenIsAtMost, clientWidth: _clientWidth } = useResponsive();
   const rightPaneWidth = useSelector(state => state.rightPane.width);
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const clientWidth = (typeof rightPaneWidth == 'number' && !isFullScreen) ? (_clientWidth - rightPaneWidth) : _clientWidth;
+  const clientWidth = typeof rightPaneWidth == 'number' && !isFullScreen ? _clientWidth - rightPaneWidth : _clientWidth;
 
   // 当前正在预览的 fileInfo 实例
   const activeFile: IAttachmentValue = files[activeIndex];
@@ -102,23 +86,29 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeIndex]);
 
-  const handlePrev = useCallback((e) => {
-    e.stopPropagation();
+  const handlePrev = useCallback(
+    e => {
+      e.stopPropagation();
 
-    if (activeIndex - 1 >= 0) {
-      setTransformInfo(initTransformInfo, true);
-      setActiveIndex(activeIndex - 1);
-    }
-  }, [activeIndex, setActiveIndex, setTransformInfo]);
+      if (activeIndex - 1 >= 0) {
+        setTransformInfo(initTransformInfo, true);
+        setActiveIndex(activeIndex - 1);
+      }
+    },
+    [activeIndex, setActiveIndex, setTransformInfo],
+  );
 
-  const handleNext = useCallback((e) => {
-    e.stopPropagation();
+  const handleNext = useCallback(
+    e => {
+      e.stopPropagation();
 
-    if (activeIndex + 1 < files.length) {
-      setTransformInfo(initTransformInfo, true);
-      setActiveIndex(activeIndex + 1);
-    }
-  }, [activeIndex, files.length, setActiveIndex, setTransformInfo]);
+      if (activeIndex + 1 < files.length) {
+        setTransformInfo(initTransformInfo, true);
+        setActiveIndex(activeIndex + 1);
+      }
+    },
+    [activeIndex, files.length, setActiveIndex, setTransformInfo],
+  );
 
   useKeyPress([KeyCode.Left], e => {
     if (isFocusingInput()) return;
@@ -129,35 +119,38 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
     handleNext(e);
   });
 
-  const onZoom = useCallback((newScale: number) => {
-    const { initActualScale } = transformInfo;
+  const onZoom = useCallback(
+    (newScale: number) => {
+      const { initActualScale } = transformInfo;
 
-    const minTransformScale = MIN_SCALE / initActualScale;
-    const maxTransformScale = MAX_SCALE / initActualScale;
+      const minTransformScale = MIN_SCALE / initActualScale;
+      const maxTransformScale = MAX_SCALE / initActualScale;
 
-    setTransformInfo(state => {
-      if (newScale <= minTransformScale) {
+      setTransformInfo(state => {
+        if (newScale <= minTransformScale) {
+          return {
+            ...state,
+            scale: minTransformScale,
+            translatePosition: initTranslatePosition,
+          };
+        }
+
+        if (newScale >= maxTransformScale) {
+          return {
+            ...state,
+            scale: maxTransformScale,
+            translatePosition: initTranslatePosition,
+          };
+        }
         return {
           ...state,
-          scale: minTransformScale,
-          translatePosition: initTranslatePosition
+          scale: newScale,
+          translatePosition: initTranslatePosition,
         };
-      }
-
-      if (newScale >= maxTransformScale) {
-        return {
-          ...state,
-          scale: maxTransformScale,
-          translatePosition: initTranslatePosition
-        };
-      }
-      return {
-        ...state,
-        scale: newScale,
-        translatePosition: initTranslatePosition
-      };
-    });
-  }, [setTransformInfo, transformInfo]);
+      });
+    },
+    [setTransformInfo, transformInfo],
+  );
 
   const onRotate = useCallback(() => {
     setTransformInfo(state => {
@@ -165,7 +158,7 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
       return {
         ...state,
         rotate: rotate + 90,
-        translatePosition: initTranslatePosition
+        translatePosition: initTranslatePosition,
       };
     });
   }, [setTransformInfo]);
@@ -175,7 +168,7 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
   }
 
   const showPrevBtn = activeIndex !== 0 && !isMobile;
-  const showNextBtn = (activeIndex !== files.length - 1) && !isMobile;
+  const showNextBtn = activeIndex !== files.length - 1 && !isMobile;
 
   return (
     <div className={styles.mainContainer}>
@@ -209,39 +202,23 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
           onDelete={onDelete}
           disabledDownload={disabledDownload}
         />
-        {isImage({ name: activeFile.name, type: activeFile.mimeType }) &&
-        isSupportImage(activeFile.mimeType) &&
-        <div onClick={onRotate} className={styles.rotate}>
-          <IconRotate fill={colors.defaultBg} width={16} height={16} />
-        </div>
-        }
+        {isImage({ name: activeFile.name, type: activeFile.mimeType }) && isSupportImage(activeFile.mimeType) && (
+          <div onClick={onRotate} className={styles.rotate}>
+            <IconRotate fill={colors.defaultBg} width={16} height={16} />
+          </div>
+        )}
       </ComponentDisplay>
 
-      <main
-        className={styles.container}
-        onMouseDown={onClose}
-      >
+      <main className={styles.container} onMouseDown={onClose}>
         <div className={styles.left}>
-          {
-            // 左侧箭头
-            (showPrevBtn) && (
-              <div
-                className={styles.iconPre}
-                onClick={handlePrev}
-                onMouseDown={stopPropagation}
-              >
-                <PreviousFilled
-                  width={40}
-                  height={40}
-                  className={styles.prev}
-                />
+          {// 左侧箭头
+            showPrevBtn && (
+              <div className={styles.iconPre} onClick={handlePrev} onMouseDown={stopPropagation}>
+                <PreviousFilled width={40} height={40} className={styles.prev} />
               </div>
-            )
-          }
+            )}
         </div>
-        <div
-          className={styles.middle}
-        >
+        <div className={styles.middle}>
           <Swiper
             transformInfo={transformInfo}
             clientWidth={clientWidth}
@@ -261,28 +238,18 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
         </div>
 
         <div className={styles.right}>
-          {
-            // 右侧箭头
-            (showNextBtn) && (
-              <div
-                className={styles.iconNext}
-                onClick={handleNext}
-                onMouseDown={stopPropagation}
-              >
-                <NextFilled
-                  width={40}
-                  height={40}
-                  className={styles.next}
-                />
+          {// 右侧箭头
+            showNextBtn && (
+              <div className={styles.iconNext} onClick={handleNext} onMouseDown={stopPropagation}>
+                <NextFilled width={40} height={40} className={styles.next} />
               </div>
-            )
-          }
+            )}
         </div>
       </main>
 
       <PreviewDisplayList
         activeIndex={activeIndex}
-        setActiveIndex={(newActiveIndex) => {
+        setActiveIndex={newActiveIndex => {
           if (newActiveIndex !== activeIndex) {
             setTransformInfo(initTransformInfo, true);
             setActiveIndex(newActiveIndex);

@@ -18,13 +18,12 @@ import { IVikaEditor, IEventBusEditor } from '../../interface/editor';
 import { BUILT_IN_EVENTS } from '../../plugins/withEventBus';
 import { toggleBlock } from '../../commands';
 import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { getElementDataset } from 'pc/utils';
 
 const defaultSelected = '0-0';
 
 export const InsertPanel = () => {
-
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const editor = useSlate() as ReactEditor & IVikaEditor & IEventBusEditor;
   const timer = useRef<number | null>(null);
@@ -42,19 +41,19 @@ export const InsertPanel = () => {
         title: i18nText.commonFormat,
         size: formatList.length,
         list: formatList,
-        type: MenuType.FORMAT
+        type: MenuType.FORMAT,
       },
       {
         weight: 1,
         title: i18nText.mediaElement,
         size: mediaList.length,
         list: mediaList,
-        type: MenuType.MEDIA
-      }
+        type: MenuType.MEDIA,
+      },
     ];
   }, [formatList, mediaList, i18nText]);
 
-  const changeSelected = (isUp) => {
+  const changeSelected = isUp => {
     const menusSize = menus.length;
     const current = selected.split('-').map(i => +i);
     const currentGroup = menus[current[0]];
@@ -69,7 +68,6 @@ export const InsertPanel = () => {
         }
         nextMenuItem = menus[nextGroup].size - 1;
       }
-
     } else {
       nextMenuItem += 1;
       if (nextMenuItem >= currentGroupSize) {
@@ -108,69 +106,77 @@ export const InsertPanel = () => {
     editor.hasInsertPanel = false;
   }, [editor]);
 
-  const action = useCallback((menuKey: string) => {
-    hide();
-    const [groupIdx, itemIdx] = menuKey.split('-').map(i => +i);
-    const group = menus[groupIdx];
-    if (!group) {
-      return;
-    }
-    Transforms.delete(editor, { distance: 1, unit: 'character', reverse: true });
-    const item = group.list[itemIdx];
-    const match = Editor.nodes(editor, {
-      match: (n) => Editor.isBlock(editor, n),
-      mode: 'lowest',
-    });
-    if (!match) {
-      return ;
-    }
-    try {
-      const [[_node, path]] = match;
-      const node = _node as IElement;
-      const curIsList = LIST_ITEM_TYPE_DICT[node.type];
-      const nextPath = Path.next(path);
-      const generate = GENERATOR[item.value] || GENERATOR.paragraph;
-      const nextElement = generate({});
-      if (node.type === ElementType.PARAGRAPH && Node.string(node) === '' && !nextElement.isVoid) {
-        toggleBlock(editor, item.value);
+  const action = useCallback(
+    (menuKey: string) => {
+      hide();
+      const [groupIdx, itemIdx] = menuKey.split('-').map(i => +i);
+      const group = menus[groupIdx];
+      if (!group) {
         return;
       }
-      // 如果插入的位置原本为列表，则先插入一个段落元素，然后分割列表再设置成应该插入的元素，是否有更高效的方式？
-      Transforms.insertNodes(editor, curIsList ? GENERATOR.paragraph({}) : nextElement, { at: nextPath });
-      Transforms.select(editor, nextPath);
-      if (curIsList) {
-        Transforms.unwrapNodes(editor, {
-          match: (n) => !Editor.isEditor(n) && Element.isElement(n) && LIST_TYPE_DICT[(n as IElement).type],
-          split: true,
-        });
-        Transforms.setNodes(editor, nextElement);
+      Transforms.delete(editor, { distance: 1, unit: 'character', reverse: true });
+      const item = group.list[itemIdx];
+      const match = Editor.nodes(editor, {
+        match: n => Editor.isBlock(editor, n),
+        mode: 'lowest',
+      });
+      if (!match) {
+        return;
       }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [editor, hide, menus]);
+      try {
+        const [[_node, path]] = match;
+        const node = _node as IElement;
+        const curIsList = LIST_ITEM_TYPE_DICT[node.type];
+        const nextPath = Path.next(path);
+        const generate = GENERATOR[item.value] || GENERATOR.paragraph;
+        const nextElement = generate({});
+        if (node.type === ElementType.PARAGRAPH && Node.string(node) === '' && !nextElement.isVoid) {
+          toggleBlock(editor, item.value);
+          return;
+        }
+        // 如果插入的位置原本为列表，则先插入一个段落元素，然后分割列表再设置成应该插入的元素，是否有更高效的方式？
+        Transforms.insertNodes(editor, curIsList ? GENERATOR.paragraph({}) : nextElement, { at: nextPath });
+        Transforms.select(editor, nextPath);
+        if (curIsList) {
+          Transforms.unwrapNodes(editor, {
+            match: n => !Editor.isEditor(n) && Element.isElement(n) && LIST_TYPE_DICT[(n as IElement).type],
+            split: true,
+          });
+          Transforms.setNodes(editor, nextElement);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [editor, hide, menus],
+  );
 
   const handleOk = useCallback(() => {
     action(selected);
   }, [action, selected]);
 
-  const handleMenuClick = useCallback((e: React.MouseEvent<HTMLLIElement>) => {
-    e.stopPropagation();
-    e.nativeEvent.stopImmediatePropagation();
-    e.preventDefault();
-    const target = e.currentTarget;
-    if (!target) {
-      return;
-    }
-    const dataKey = getElementDataset(target, 'key');
-    if (!dataKey) {
-      return;
-    }
-    action(dataKey);
-  }, [action]);
+  const handleMenuClick = useCallback(
+    (e: React.MouseEvent<HTMLLIElement>) => {
+      e.stopPropagation();
+      e.nativeEvent.stopImmediatePropagation();
+      e.preventDefault();
+      const target = e.currentTarget;
+      if (!target) {
+        return;
+      }
+      const dataKey = getElementDataset(target, 'key');
+      if (!dataKey) {
+        return;
+      }
+      action(dataKey);
+    },
+    [action],
+  );
 
   useEffect(() => {
-    const changeVisible = (next: boolean) => { next ? show() : hide(); };
+    const changeVisible = (next: boolean) => {
+      next ? show() : hide();
+    };
     const handleScroll = () => changeVisible(false);
     editor.on(BUILT_IN_EVENTS.TOGGLE_INSERT_PANEL, changeVisible);
     editor.on(BUILT_IN_EVENTS.EDITOR_SCROLL, handleScroll);
@@ -246,19 +252,22 @@ export const InsertPanel = () => {
     const position = getValidPopupPosition({
       anchor: rect,
       popup: el.getBoundingClientRect(),
-      offset: { x: 10, y: 0 }
+      offset: { x: 10, y: 0 },
     });
     el.style.opacity = '1';
     el.style.top = `${position.top}px`;
     el.style.left = `${position.left}px`;
   }, [visible, editor, hide]);
 
-  useEffect(() => () => {
-    if (timer.current) {
-      window.clearTimeout(timer.current);
-      timer.current = null;
-    }
-  }, []);
+  useEffect(
+    () => () => {
+      if (timer.current) {
+        window.clearTimeout(timer.current);
+        timer.current = null;
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
     const el = wrapRef.current;
@@ -273,18 +282,17 @@ export const InsertPanel = () => {
       const wrapHeight = el.offsetHeight;
       const wrapScrollTop = el.scrollTop;
       // 有一半在可见范围外，则需要滚动。
-      if (
-        offsetTop > (wrapHeight + wrapScrollTop - halfHeight)
-        || (offsetTop + halfHeight) < wrapScrollTop
-      ) {
+      if (offsetTop > wrapHeight + wrapScrollTop - halfHeight || offsetTop + halfHeight < wrapScrollTop) {
         activeEle.scrollIntoView({ behavior: 'smooth' });
       }
     }
   });
 
-  return <Portal zIndex={Z_INDEX.HOVERING_TOOLBAR}>
-    <div className={styles.wrap} ref={wrapRef}>
-      <Menu menus={menus} active={selected} onMenuClick={handleMenuClick} />
-    </div>
-  </Portal>;
+  return (
+    <Portal zIndex={Z_INDEX.HOVERING_TOOLBAR}>
+      <div className={styles.wrap} ref={wrapRef}>
+        <Menu menus={menus} active={selected} onMenuClick={handleMenuClick} />
+      </div>
+    </Portal>
+  );
 };

@@ -1,4 +1,4 @@
-import { ICellValue, IField, IRecordAlarmClient, WithOptional } from '@vikadata/core';
+import { ICell, ICellValue, IField, IRecordAlarmClient, WithOptional } from '@vikadata/core';
 
 export interface IEditor {
   focus(preventScroll?: boolean): void;
@@ -26,4 +26,9 @@ export interface IBaseEditorProps {
   disabled?: boolean;
   onSave?: (val: any, alarm?: WithOptional<IRecordAlarmClient, 'id'>) => void;
   onChange?: (val: any) => void;
+}
+
+export interface IContainerEdit {
+  onViewMouseDown(activeCell?: ICell): void;
+  focus(): void;
 }

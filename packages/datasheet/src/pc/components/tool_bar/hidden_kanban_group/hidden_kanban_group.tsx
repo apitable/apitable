@@ -1,13 +1,23 @@
 import { Button, Typography, useThemeColors, useListenVisualHeight } from '@vikadata/components';
 import {
-  FieldType, IKanbanViewProperty, IMemberField, IMemberProperty, ISelectFieldOption, ISelectFieldProperty, KanbanStyleKey, moveArrayElement,
-  Selectors, Strings, t, UN_GROUP
+  FieldType,
+  IKanbanViewProperty,
+  IMemberField,
+  IMemberProperty,
+  ISelectFieldOption,
+  ISelectFieldProperty,
+  KanbanStyleKey,
+  moveArrayElement,
+  Selectors,
+  Strings,
+  t,
+  UN_GROUP,
 } from '@vikadata/core';
 import { DragOutlined } from '@vikadata/icons';
 import { Switch } from 'antd';
 import classNames from 'classnames';
 import produce from 'immer';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { useCommand } from 'pc/components/kanban_view/hooks/use_command';
 import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
 import { CellMember } from 'pc/components/multi_grid/cell/cell_member';
@@ -24,7 +34,7 @@ import styles from './styles.module.less';
 const MIN_HEIGHT = 120;
 const MAX_HEIGHT = 340;
 
-export const HiddenKanbanGroup = (props) => {
+export const HiddenKanbanGroup = props => {
   const { triggerInfo } = props;
   const { mobile } = usePlatform();
 
@@ -73,8 +83,7 @@ export const HiddenKanbanGroup = (props) => {
 
   const handleDragEnd = (result: DropResult) => {
     const { destination, source } = result;
-    const headIds = field.type === FieldType.SingleSelect ?
-      field.property.options : (field as IMemberField).property.unitIds;
+    const headIds = field.type === FieldType.SingleSelect ? field.property.options : (field as IMemberField).property.unitIds;
     const headIdsCopy = [...headIds];
     const newProperty = {
       ...field.property,
@@ -95,7 +104,7 @@ export const HiddenKanbanGroup = (props) => {
   const handleDragStart = () => {
     setIsDragging(true);
   };
-  
+
   const toggleHidden = (id: string | null, status?: boolean) => {
     const nextHiddenGroupMap = produce(hiddenGroupMap, draft => {
       if (!id) {
@@ -110,7 +119,7 @@ export const HiddenKanbanGroup = (props) => {
 
     command.setKanbanStyle({
       styleKey: KanbanStyleKey.HiddenGroupMap,
-      styleValue: nextHiddenGroupMap
+      styleValue: nextHiddenGroupMap,
     });
   };
 
@@ -128,36 +137,17 @@ export const HiddenKanbanGroup = (props) => {
       {...provided.dragHandleProps}
       onClick={() => toggleHidden(id)}
     >
-      <div
-        className={styles.dragHandle}
-      >
-        {!isDragDisabled &&
-          <DragOutlined
-            size={10}
-            color={mobile ? colors.fc3 : colors.fc4}
-          />
-        }
-      </div>
-      {id !== UN_GROUP ?
-        <CellWrapper
-          cellValue={isMemberField ? [id] : id}
-          field={field as IMemberField}
-        /> :
-        <div
-          className={styles.optionWrapper}
-        >
+      <div className={styles.dragHandle}>{!isDragDisabled && <DragOutlined size={10} color={mobile ? colors.fc3 : colors.fc4} />}</div>
+      {id !== UN_GROUP ? (
+        <CellWrapper cellValue={isMemberField ? [id] : id} field={field as IMemberField} />
+      ) : (
+        <div className={styles.optionWrapper}>
           <div className={styles.optionText}>
-            <span className={styles.name}>
-              {t(Strings.kaban_not_group)}
-            </span>
+            <span className={styles.name}>{t(Strings.kaban_not_group)}</span>
           </div>
         </div>
-      }
-      <Switch
-        onChange={() => toggleHidden(id)}
-        checked={visible}
-        size={mobile ? 'default' : 'small'}
-      />
+      )}
+      <Switch onChange={() => toggleHidden(id)} checked={visible} size={mobile ? 'default' : 'small'} />
     </div>
   );
 
@@ -166,23 +156,16 @@ export const HiddenKanbanGroup = (props) => {
       <div className={styles.header}>
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
           <div className={styles.title}>
-            <Typography variant="h7">
-              {t(Strings.set_grouping)}
-            </Typography>
+            <Typography variant="h7">{t(Strings.set_grouping)}</Typography>
           </div>
-          <SyncViewTip
-            style={{ padding: '2px 0px 0px' }}
-            content={t(Strings.view_sync_property_tip_short)}
-          />
+          <SyncViewTip style={{ padding: '2px 0px 0px' }} content={t(Strings.view_sync_property_tip_short)} />
         </ComponentDisplay>
 
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
           <LineSearchInput
             placeholder={t(Strings.search)}
             value={query}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setQuery(e.target.value)
-            }
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
           />
         </ComponentDisplay>
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
@@ -191,9 +174,7 @@ export const HiddenKanbanGroup = (props) => {
               size="small"
               placeholder={t(Strings.search)}
               value={query}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setQuery(e.target.value)
-              }
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
             />
           </div>
         </ComponentDisplay>
@@ -203,19 +184,14 @@ export const HiddenKanbanGroup = (props) => {
         {groupInfoForRender.length > 0 ? (
           <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
             <Droppable droppableId="kanbanGroupList" direction="vertical">
-              {(provided) => (
+              {provided => (
                 <div ref={provided.innerRef} {...provided.droppableProps}>
                   {groupInfoForRender.map(({ id }, index) => {
                     const isDragDisabled = Boolean(query.length > 0 || id === UN_GROUP);
                     const visible = !hiddenGroupMap?.[id];
                     return (
-                      <Draggable
-                        key={id}
-                        draggableId={id}
-                        index={index}
-                        isDragDisabled={isDragDisabled}
-                      >
-                        {(provided) => groupItem(provided, isDragDisabled, visible, id)}
+                      <Draggable key={id} draggableId={id} index={index} isDragDisabled={isDragDisabled}>
+                        {provided => groupItem(provided, isDragDisabled, visible, id)}
                       </Draggable>
                     );
                   })}
@@ -228,23 +204,14 @@ export const HiddenKanbanGroup = (props) => {
           <div className={styles.noResult}>
             <span>{t(Strings.no_search_result)}</span>
           </div>
-        )
-        }
+        )}
       </div>
 
       <div className={styles.opAll}>
-        <Button
-          size="small"
-          onClick={() => toggleHidden(null, true)}
-          block
-        >
+        <Button size="small" onClick={() => toggleHidden(null, true)} block>
           {t(Strings.hide_all_fields)}
         </Button>
-        <Button
-          size="small"
-          onClick={() => toggleHidden(null, false)}
-          block
-        >
+        <Button size="small" onClick={() => toggleHidden(null, false)} block>
           {t(Strings.show_all_fields)}
         </Button>
       </div>

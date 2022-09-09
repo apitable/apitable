@@ -8,11 +8,11 @@ import { IBaseEditorProps, IEditor } from 'pc/components/editors/interface';
 import { useState } from 'react';
 import { FieldType, t, Strings, ICellValue } from '@vikadata/core';
 import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 
 interface IOptionFieldEditorProps extends IBaseEditorProps {
   style: React.CSSProperties;
-  cellValue: ICellValue
+  cellValue: ICellValue;
 }
 
 const OptionFieldEditorBase: React.ForwardRefRenderFunction<IEditor, IOptionFieldEditorProps> = (props, ref) => {
@@ -24,17 +24,22 @@ const OptionFieldEditorBase: React.ForwardRefRenderFunction<IEditor, IOptionFiel
   const isMobile = screenIsAtMost(ScreenSize.md);
   const optionList = field.property.options;
 
-  useImperativeHandle(ref, (): IEditor => ({
-    focus: () => {},
-    onEndEdit: (cancel: boolean) => {},
-    onStartEdit: (value?: string | string[] | null) => {},
-    setValue: (value?: string | string[] | null) => {
-      setValue(value || defaultValue);
-    },
-    saveValue: () => { saveValue(); },
-  }));
+  useImperativeHandle(
+    ref,
+    (): IEditor => ({
+      focus: () => {},
+      onEndEdit: (cancel: boolean) => {},
+      onStartEdit: (value?: string | string[] | null) => {},
+      setValue: (value?: string | string[] | null) => {
+        setValue(value || defaultValue);
+      },
+      saveValue: () => {
+        saveValue();
+      },
+    }),
+  );
 
-  const onChange = (e) => {
+  const onChange = e => {
     if (disabled) {
       return;
     }
@@ -66,48 +71,38 @@ const OptionFieldEditorBase: React.ForwardRefRenderFunction<IEditor, IOptionFiel
   const ChildComponent = isSingleSelect ? Radio : Checkbox;
 
   return (
-    <div 
+    <div
       className={classnames(styles.optionEditor, {
         [styles.disabled]: disabled,
         [styles.empty]: !optionList.length,
       })}
     >
-      {
-        optionList.length ?
-          <GroupComponent 
-            value={value} 
-            onChange={onChange}
-          >
-            {
-              optionList.map(option => {
-                return (
-                  <div 
-                    className={styles.optionItemWrapper}
-                    key={option.id}
-                  >
-                    <ChildComponent value={option.id} onClick={(e: any) => {
-                      if (disabled) {
-                        return;
-                      }
-                      // 表单单选支持反选
-                      if (isSingleSelect && e.target.value === value) {
-                        clearSingleSelect();
-                      }
-                    }}>
-                      <OptionTag 
-                        option={option} 
-                        style={commonStyle} 
-                        className="optionFieldTag" 
-                        ellipsis={!isMobile}
-                      />
-                    </ChildComponent>
-                  </div>
-                );
-              })
-            }
-          </GroupComponent> :
-          t(Strings.form_not_configure_options)
-      }
+      {optionList.length ? (
+        <GroupComponent value={value} onChange={onChange}>
+          {optionList.map(option => {
+            return (
+              <div className={styles.optionItemWrapper} key={option.id}>
+                <ChildComponent
+                  value={option.id}
+                  onClick={(e: any) => {
+                    if (disabled) {
+                      return;
+                    }
+                    // 表单单选支持反选
+                    if (isSingleSelect && e.target.value === value) {
+                      clearSingleSelect();
+                    }
+                  }}
+                >
+                  <OptionTag option={option} style={commonStyle} className="optionFieldTag" ellipsis={!isMobile} />
+                </ChildComponent>
+              </div>
+            );
+          })}
+        </GroupComponent>
+      ) : (
+        t(Strings.form_not_configure_options)
+      )}
     </div>
   );
 };

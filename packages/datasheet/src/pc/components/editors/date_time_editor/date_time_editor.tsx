@@ -1,7 +1,21 @@
 import { Loading, lightColors } from '@vikadata/components';
 import {
-  DATASHEET_ID, DateFormat, Field, getDay, getLanguage, getToday, IDateTimeField, IRecordAlarmClient, ITimestamp, notInTimestampRange, Selectors,
-  str2time, str2timestamp, Strings, t, WithOptional
+  DATASHEET_ID,
+  DateFormat,
+  Field,
+  getDay,
+  getLanguage,
+  getToday,
+  IDateTimeField,
+  IRecordAlarmClient,
+  ITimestamp,
+  notInTimestampRange,
+  Selectors,
+  str2time,
+  str2timestamp,
+  Strings,
+  t,
+  WithOptional,
 } from '@vikadata/core';
 import { NotificationSmallOutlined } from '@vikadata/icons';
 import { usePrevious } from 'ahooks';
@@ -13,7 +27,7 @@ import 'dayjs/locale/zh-cn';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { isEqual } from 'lodash';
 import { Tooltip } from 'pc/components/common';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { printableKey, stopPropagation } from 'pc/utils';
 import { forwardRef, useEffect, useState } from 'react';
 import * as React from 'react';
@@ -103,7 +117,6 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
 
   // 给 parent 组件调用的回调
   setEditorValue(timestamp: ITimestamp | null) {
-
     if (timestamp == null) {
       this.setState({
         dateValue: '',
@@ -137,12 +150,12 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
       this.shouldUseOriginTime = true;
     }
     // 不显示时间，且时间还未赋值时 ignoreSetTime 为 true
-    const ignoreSetTime = isSetTime ? false : (!timeOpen && !timeValue);
+    const ignoreSetTime = isSetTime ? false : !timeOpen && !timeValue;
 
     return this.setState({
       dateValue,
       displayDateStr,
-      timeValue: date && !ignoreSetTime ? date.format('HH:mm') : (date === null ? '' : timeValue)
+      timeValue: date && !ignoreSetTime ? date.format('HH:mm') : date === null ? '' : timeValue,
     });
   };
 
@@ -161,29 +174,20 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
   };
 
   componentDidUpdate(cur: IDateTimeEditorProps) {
-    if (
-      this.props.editing !== cur.editing
-    ) {
+    if (this.props.editing !== cur.editing) {
       this.setState({
         isIllegal: false,
       });
       return;
     }
-    if (
-      cur.dataValue &&
-      dayjs(cur.dataValue).format(Field.bindModel(this.props.field).dateFormat) === this.state.displayDateStr
-    ) {
+    if (cur.dataValue && dayjs(cur.dataValue).format(Field.bindModel(this.props.field).dateFormat) === this.state.displayDateStr) {
       return;
     }
     if (!cur.dataValue && !this.state.displayDateStr) {
       return;
     }
     // 筛选仅用精确到天
-    this.props.commandFn?.(
-      this.getValue() !== null ?
-        getDay(new Date(this.getValue()!)).getTime()
-        : null
-    );
+    this.props.commandFn?.(this.getValue() !== null ? getDay(new Date(this.getValue()!)).getTime() : null);
   }
 
   onTimeValueChange = (timeValue: string) => {
@@ -270,7 +274,6 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
       return this.timestamp;
     }
     return this.getInputValue();
-
   }
 
   setValueToRecord() {
@@ -288,8 +291,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
       const parentRect = parentElement.getBoundingClientRect();
       const bottomHeight = window.innerHeight - parentRect.bottom;
       const topHeight = parentRect.top;
-      if (bottomHeight > topHeight || bottomHeight > DATE_COMPONENT_HEIGHT
-        || topHeight < DATE_COMPONENT_HEIGHT) {
+      if (bottomHeight > topHeight || bottomHeight > DATE_COMPONENT_HEIGHT || topHeight < DATE_COMPONENT_HEIGHT) {
         this.setState({
           point: 'bottom',
         });
@@ -371,7 +373,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
   render() {
     const lang = {
       'zh-CN': zhCN,
-      'en-US': enUS
+      'en-US': enUS,
     }[getLanguage()];
 
     const locale = {
@@ -425,23 +427,20 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
         className={style.dateEditor}
         style={{
           ...this.props.style,
-          maxWidth: this.props.editing ? '100%' : 0
+          maxWidth: this.props.editing ? '100%' : 0,
         }}
         ref={this.setDivRef}
         onMouseMove={stopPropagation}
         onClick={e => e.stopPropagation}
         onWheel={stopPropagation}
       >
-        <Tooltip
-          visible={isIllegal}
-          getTooltipContainer={this.getCalendarContainer}
-          title={t(Strings.date_cell_input_tips)}
-          placement="top"
-        >
+        <Tooltip visible={isIllegal} getTooltipContainer={this.getCalendarContainer} title={t(Strings.date_cell_input_tips)} placement="top">
           <div className={style.dateWrapper}>
-            <div className={classNames(style.dateContent, {
-              [style.limitDateWidth]: field.property.includeTime
-            })}>
+            <div
+              className={classNames(style.dateContent, {
+                [style.limitDateWidth]: field.property.includeTime,
+              })}
+            >
               <React.Suspense fallback={<Loading />}>
                 <DatePicker
                   ref={this.setDateEditorRef}
@@ -466,26 +465,28 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
                   disabledDate={this.disabledDate}
                   disabled={Boolean(this.props.disabled)}
                   onKeyDown={this.keyDown}
-                  renderFooter={() => showAlarm && (
-                    <DateTimeAlarm
-                      datasheetId={datasheetId}
-                      recordId={recordId || ''}
-                      fieldId={field.id}
-                      includeTime={field.property.includeTime}
-                      dateValue={dateValue}
-                      timeValue={timeValue}
-                      curAlarm={this.props.curAlarm}
-                      handleDateTimeChange={(value: dayjs.Dayjs, isSetTime?: boolean) =>
-                        this.onDateValueChange(value, value && value.format(DateFormat[1]), (value && value.format(dateFormat)), isSetTime)
-                      }
-                      handleDateAlarm={(curAlarm?: WithOptional<IRecordAlarmClient, 'id'>) => {
-                        this.props.setCurAlarm?.(curAlarm);
-                      }}
-                    />
-                  )}
+                  renderFooter={() =>
+                    showAlarm && (
+                      <DateTimeAlarm
+                        datasheetId={datasheetId}
+                        recordId={recordId || ''}
+                        fieldId={field.id}
+                        includeTime={field.property.includeTime}
+                        dateValue={dateValue}
+                        timeValue={timeValue}
+                        curAlarm={this.props.curAlarm}
+                        handleDateTimeChange={(value: dayjs.Dayjs, isSetTime?: boolean) =>
+                          this.onDateValueChange(value, value && value.format(DateFormat[1]), value && value.format(dateFormat), isSetTime)
+                        }
+                        handleDateAlarm={(curAlarm?: WithOptional<IRecordAlarmClient, 'id'>) => {
+                          this.props.setCurAlarm?.(curAlarm);
+                        }}
+                      />
+                    )
+                  }
                 />
               </React.Suspense>
-              {field.property.includeTime &&
+              {field.property.includeTime && (
                 <TimePicker
                   prefixCls="cp-time-picker"
                   className={style.timeInput}
@@ -502,7 +503,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
                   onOpenChange={this.onTimeOpenChange}
                   value={timeValue}
                 />
-              }
+              )}
             </div>
             {showAlarm && Boolean(this.props.curAlarm) && (
               <span className={style.alarm}>

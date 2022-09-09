@@ -8,7 +8,7 @@ import { DescEditor } from './desc_editor';
 import { CoverImgUploader, LogoImgUploader } from './img_uploader';
 import { IModeEnum } from './interface';
 import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { resourceService } from 'pc/resource_service';
 
 interface IFormPropContainerProps {
@@ -18,23 +18,15 @@ interface IFormPropContainerProps {
   formProps: IFormProps;
 }
 
-export const FormPropContainer: React.FC<IFormPropContainerProps> = (props) => {
+export const FormPropContainer: React.FC<IFormPropContainerProps> = props => {
   const { formId, editable, formProps } = props;
-  const {
-    description,
-    fullScreen,
-    coverVisible,
-    logoVisible,
-    logoUrl,
-    coverUrl,
-  } = formProps;
+  const { description, fullScreen, coverVisible, logoVisible, logoUrl, coverUrl } = formProps;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { shareId } = useSelector(state => state.pageParams);
-  const mode = (Boolean(shareId) || !editable) ? IModeEnum.Preview : IModeEnum.Edit;
+  const mode = Boolean(shareId) || !editable ? IModeEnum.Preview : IModeEnum.Edit;
 
   const updateProps = (partProps: Partial<IFormProps>) => {
-
     resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.UpdateFormProps,
       formId,
@@ -49,21 +41,20 @@ export const FormPropContainer: React.FC<IFormPropContainerProps> = (props) => {
   };
 
   return (
-    <div className={classNames(styles.formPropContainer, {
-      [styles.noRadius]: fullScreen || isMobile,
-    })}>
-      {
-        coverVisible && (
-          <div className={classNames(styles.coverImgUploader, {
+    <div
+      className={classNames(styles.formPropContainer, {
+        [styles.noRadius]: fullScreen || isMobile,
+      })}
+    >
+      {coverVisible && (
+        <div
+          className={classNames(styles.coverImgUploader, {
             [styles.coverImgUploaderMobile]: isMobile,
-          })}>
-            <CoverImgUploader
-              {...commonProps}
-              coverUrl={coverUrl}
-            />
-          </div>
-        )
-      }
+          })}
+        >
+          <CoverImgUploader {...commonProps} coverUrl={coverUrl} />
+        </div>
+      )}
       <div
         className={classNames(styles.limitStyle, {
           [styles.limitStyleMobile]: isMobile,
@@ -73,23 +64,13 @@ export const FormPropContainer: React.FC<IFormPropContainerProps> = (props) => {
           [styles.shareLogoPadding]: Boolean(shareId && isMobile),
         })}
       >
-        {
-          logoVisible && (
-            <div className={classNames(styles.logoImgUploader, isMobile && styles.logoImgUploaderMobile)}>
-              <LogoImgUploader
-                {...commonProps}
-                logoUrl={logoUrl}
-              />
-            </div>
-          )
-        }
-        <TitleEditor
-          {...commonProps}
-        />
-        <DescEditor
-          {...commonProps}
-          descData={description}
-        />
+        {logoVisible && (
+          <div className={classNames(styles.logoImgUploader, isMobile && styles.logoImgUploaderMobile)}>
+            <LogoImgUploader {...commonProps} logoUrl={logoUrl} />
+          </div>
+        )}
+        <TitleEditor {...commonProps} />
+        <DescEditor {...commonProps} descData={description} />
       </div>
     </div>
   );

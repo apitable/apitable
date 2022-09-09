@@ -1,10 +1,19 @@
 import {
-  CollaCommandName, ExecuteResult, Field, FieldType,
-  ICollaCommandExecuteResult, IFieldProperty, IReduxState, ISelectField, ISelectFieldOption,
-  moveArrayElement, SelectField, Selectors,
+  CollaCommandName,
+  ExecuteResult,
+  Field,
+  FieldType,
+  ICollaCommandExecuteResult,
+  IFieldProperty,
+  IReduxState,
+  ISelectField,
+  ISelectFieldOption,
+  moveArrayElement,
+  SelectField,
+  Selectors,
 } from '@vikadata/core';
 import { produce } from 'immer';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { OptionList } from 'pc/components/list';
 import { resourceService } from 'pc/resource_service';
 import { useResponsive } from 'pc/hooks';
@@ -29,19 +38,23 @@ export enum ErrorType {
 }
 
 export const OptionsEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorProps> = (props, ref) => {
-  useImperativeHandle(ref, (): IEditor => ({
-    focus: (preventScroll?: boolean) => {
-      inputRef.current && inputRef.current!.focus({ preventScroll: preventScroll });
-    },
-    onEndEdit: () => { },
-    onStartEdit: () => { return; },
-    setValue: () => { return; },
-    saveValue: () => { },
-  }));
-  const {
-    field, recordId, style, datasheetId, height, width,
-    editing, toggleEditing, onSave
-  } = props;
+  useImperativeHandle(
+    ref,
+    (): IEditor => ({
+      focus: (preventScroll?: boolean) => {
+        inputRef.current && inputRef.current!.focus({ preventScroll: preventScroll });
+      },
+      onEndEdit: () => {},
+      onStartEdit: () => {
+        return;
+      },
+      setValue: () => {
+        return;
+      },
+      saveValue: () => {},
+    }),
+  );
+  const { field, recordId, style, datasheetId, height, width, editing, toggleEditing, onSave } = props;
   const inputRef = useRef<HTMLInputElement>(null);
   const { fieldPropertyEditable } = useSelector(state => Selectors.getPermissions(state, datasheetId));
   const cellValue = useSelector((state: IReduxState) => {
@@ -68,9 +81,7 @@ export const OptionsEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorP
     inputRef.current && inputRef.current!.focus();
   }
 
-  const setCurrentField = (
-    getNewField: (newField: IFieldProperty) => IFieldProperty,
-  ): ICollaCommandExecuteResult<{}> => {
+  const setCurrentField = (getNewField: (newField: IFieldProperty) => IFieldProperty): ICollaCommandExecuteResult<{}> => {
     const newField = getNewField(field);
 
     return resourceService.instance!.commandManager.execute({
@@ -109,7 +120,7 @@ export const OptionsEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorP
       datasheetId,
       fieldId: field.id,
       data: {
-        ...currentFieldInfo as ISelectField,
+        ...(currentFieldInfo as ISelectField),
         property: {
           options: [...currentFieldInfo.property.options, newItem],
         },
@@ -123,7 +134,6 @@ export const OptionsEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorP
         newValue = cellValue;
       }
       command(isMulti ? [...newValue, newItem!.id] : newItem!.id);
-
     }
   }
 
@@ -138,14 +148,7 @@ export const OptionsEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorP
   }, [editing]);
 
   return (
-    <PopStructure
-      style={style}
-      height={height}
-      editing={editing}
-      className={styles.optionsEditor}
-      width={width}
-      onClose={onClose}
-    >
+    <PopStructure style={style} height={height} editing={editing} className={styles.optionsEditor} width={width} onClose={onClose}>
       <OptionList
         listData={Number(style.width) === 0 ? [] : options}
         onAddHandle={fieldPropertyEditable ? insertNewItem : undefined}
@@ -154,13 +157,14 @@ export const OptionsEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorP
         datasheetId={datasheetId}
         onClickItem={command}
         multiMode={isMulti}
-        dragOption={fieldPropertyEditable ?
-          {
-            afterDrag: afterDrag,
-            draggingId: draggingId,
-            setDraggingId: setDraggingId,
-
-          } : undefined
+        dragOption={
+          fieldPropertyEditable
+            ? {
+              afterDrag: afterDrag,
+              draggingId: draggingId,
+              setDraggingId: setDraggingId,
+            }
+            : undefined
         }
         inputRef={inputRef}
         monitorId={`${recordId},${field.id},${editing}`}

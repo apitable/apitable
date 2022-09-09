@@ -8,7 +8,7 @@ import { Strings, t } from '@vikadata/core';
 import { copy2clipBoard } from 'pc/utils';
 import { FormItem } from '../../wecom_integration/components/form_item';
 import classNames from 'classnames';
-import { IFeishuConfigParams } from '../feishu_integration_config';
+import { IFeishuConfigParams } from '../interface';
 
 interface ICreateRouter {
   nextStep: () => void;
@@ -16,7 +16,7 @@ interface ICreateRouter {
   config: IFeishuConfigParams;
 }
 
-export const copyButton = (value) => (
+export const copyButton = value => (
   <Tooltip title={t(Strings.copy_link)} placement="top">
     <Button
       className={styles.iconButton}
@@ -24,11 +24,13 @@ export const copyButton = (value) => (
       onClick={() => {
         copy2clipBoard(value);
       }}
-    ><CopyOutlined className={styles.buttonIcon} color={colorVars.secondLevelText}/></Button>
+    >
+      <CopyOutlined className={styles.buttonIcon} color={colorVars.secondLevelText} />
+    </Button>
   </Tooltip>
 );
 
-export const CreateRouter: React.FC<ICreateRouter> = (props) => {
+export const CreateRouter: React.FC<ICreateRouter> = props => {
   const { nextStep, config } = props;
   const [checked, setChecked] = useState(false);
   const [formData, setFormData] = useState({
@@ -49,18 +51,18 @@ export const CreateRouter: React.FC<ICreateRouter> = (props) => {
     pcUrl: {
       label: t(Strings.lark_integration_step3_desktop),
       readonly: true,
-      suffix: copyButton(formData.pcUrl)
+      suffix: copyButton(formData.pcUrl),
     },
     mobileUrl: {
       label: t(Strings.lark_integration_step3_mobile),
       readonly: true,
-      suffix: copyButton(formData.mobileUrl)
+      suffix: copyButton(formData.mobileUrl),
     },
     redirectUrl: {
       label: t(Strings.lark_integration_step3_redirect),
       readonly: true,
-      suffix: copyButton(formData.redirectUrl)
-    }
+      suffix: copyButton(formData.redirectUrl),
+    },
   };
 
   const onClick = () => {
@@ -71,33 +73,27 @@ export const CreateRouter: React.FC<ICreateRouter> = (props) => {
   };
 
   return (
-    <div className={classNames(
-      styles.createApplication,
-      styles.formPage
-    )}>
+    <div className={classNames(styles.createApplication, styles.formPage)}>
       <div className={styles.formWrap}>
         <div className={styles.form}>
           <div className={styles.formTitle}>{t(Strings.lark_integration_step3_title)}</div>
-          <div
-            className={styles.formDesc}
-            dangerouslySetInnerHTML={{ __html: t(Strings.lark_integration_step3_content) }}
-          />
+          <div className={styles.formDesc} dangerouslySetInnerHTML={{ __html: t(Strings.lark_integration_step3_content) }} />
           <div className={styles.formContent}>
-            {
-              Object.keys(schema).map(key => (
-                <FormItem key={key} formData={formData} formItem={{ ...schema[key], key }} />
-              ))
-            }
+            {Object.keys(schema).map(key => (
+              <FormItem key={key} formData={formData} formItem={{ ...schema[key], key }} />
+            ))}
           </div>
         </div>
       </div>
       <div className={styles.checkboxWrap}>
-        <Checkbox checked={checked} onChange={() => setChecked(!checked)} >
+        <Checkbox checked={checked} onChange={() => setChecked(!checked)}>
           <span className={styles.checkboxText}>{t(Strings.lark_integration_step3_checkbox)}</span>
         </Checkbox>
       </div>
       <div className={styles.buttonWrap}>
-        <Button color="primary" onClick={onClick} disabled={!checked} block >{t(Strings.next_step)}</Button>
+        <Button color="primary" onClick={onClick} disabled={!checked} block>
+          {t(Strings.next_step)}
+        </Button>
       </div>
     </div>
   );

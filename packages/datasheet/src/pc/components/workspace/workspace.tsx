@@ -18,7 +18,7 @@ import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Tooltip, VikaSplitPanel } from '../common';
-import { ComponentDisplay, ScreenSize } from '../common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { CommonSide } from '../common_side';
 import styles from './style.module.less';
 import { ISideBarContextProps, SideBarClickType, SideBarContext, SideBarType } from 'pc/context';
@@ -42,7 +42,7 @@ const resumeUserHistory = (path: string) => {
           recordId,
           widgetId,
         },
-        method: Method.Replace
+        method: Method.Replace,
       });
       return;
     }
@@ -55,17 +55,18 @@ const resumeUserHistory = (path: string) => {
         recordId,
         widgetId,
       },
-      method: Method.Replace
+      method: Method.Replace,
     });
   } else {
     navigatePath({
-      path: Navigation.WORKBENCH, params: {
+      path: Navigation.WORKBENCH,
+      params: {
         spaceId,
         nodeId,
         viewId,
         recordId,
       },
-      method: Method.Replace
+      method: Method.Replace,
     });
   }
 };
@@ -99,7 +100,7 @@ export const Workspace: React.FC = () => {
    */
   const handleSetSideBarByUser = (visible, panel) => {
     // 判断目录树切换类型，右侧面板处于展开或者右侧面板在关闭情况下用户同时关闭了目录树，则认为是用户点击操作，则展开和关闭面板不应当影响目录树状态
-    const resToggleType = (panel || (!panel && sideBarVisible)) ? SideBarType.User : SideBarType.UserWithoutPanel;
+    const resToggleType = panel || (!panel && sideBarVisible) ? SideBarType.User : SideBarType.UserWithoutPanel;
     setToggleType(resToggleType);
     // 右侧面板未展开或者右侧面板展开并且目录树也处于展开状态时需要，设置目录树开关的点击类型认为是用户操作
     if (!panel || (panel && sideBarVisible)) {
@@ -112,7 +113,7 @@ export const Workspace: React.FC = () => {
   /**
    * 目录树开关来源 - 面板
    */
-  const handleSetSideBarByOther = (visible) => {
+  const handleSetSideBarByOther = visible => {
     setStorage(StorageName.IsPanelClosed, visible, StorageMethod.Set);
     dispatch(StoreActions.setSideBarVisible(visible));
   };
@@ -150,7 +151,12 @@ export const Workspace: React.FC = () => {
   // 绑定/解绑快捷键
   useEffect(() => {
     const eventBundle = new Map([
-      [ShortcutActionName.ToggleCatalogPanel, () => { handleSetSideBarByUser(!sideBarVisible, panelVisible); }],
+      [
+        ShortcutActionName.ToggleCatalogPanel,
+        () => {
+          handleSetSideBarByUser(!sideBarVisible, panelVisible);
+        },
+      ],
     ]);
 
     eventBundle.forEach((cb, key) => {
@@ -161,7 +167,6 @@ export const Workspace: React.FC = () => {
       eventBundle.forEach((_cb, key) => {
         ShortcutActionManager.unbind(key);
       });
-
     };
   });
 
@@ -232,11 +237,7 @@ export const Workspace: React.FC = () => {
           {/* TODO：SplitPane 上直接设置 pane1Style 加动画会导致无法拖动的问题， 下个版本解决。0.4 暂时不加动画 */}
           <VikaSplitPanel
             panelLeft={
-              <div
-                style={{ width: sideBarVisible ? '100%' : 0 }}
-                className={styles.splitLeft}
-                data-test-id="workspace-sidebar"
-              >
+              <div style={{ width: sideBarVisible ? '100%' : 0 }} className={styles.splitLeft} data-test-id="workspace-sidebar">
                 <div
                   style={{
                     width: sideBarVisible ? '100%' : templeVisible ? defaultSidePanelSize : 0,
@@ -244,7 +245,7 @@ export const Workspace: React.FC = () => {
                   }}
                   className={classNames(styles.menuWrap, 'workspaceMenu', {
                     [styles.animationOpen]: templeVisible,
-                    [styles.animationClose]: notVisible
+                    [styles.animationClose]: notVisible,
                   })}
                   ref={menuRef}
                 >
@@ -254,9 +255,7 @@ export const Workspace: React.FC = () => {
                   </div>
                 </div>
                 <Tooltip
-                  title={`${!sideBarVisible ?
-                    t(Strings.expand) : t(Strings.hidden)} ${getShortcutKeyString(ShortcutActionName.ToggleCatalogPanel)}`
-                  }
+                  title={`${!sideBarVisible ? t(Strings.expand) : t(Strings.hidden)} ${getShortcutKeyString(ShortcutActionName.ToggleCatalogPanel)}`}
                   placement={!sideBarVisible ? 'right' : 'bottom'}
                   arrowPointAtCenter
                 >
@@ -277,11 +276,7 @@ export const Workspace: React.FC = () => {
                 </Tooltip>
               </div>
             }
-            panelRight={
-              <div className={styles.splitRight}>
-                {children}
-              </div>
-            }
+            panelRight={<div className={styles.splitRight}>{children}</div>}
             split="vertical"
             minSize={335}
             defaultSize={defaultSidePanelSize}
@@ -303,4 +298,3 @@ export const Workspace: React.FC = () => {
     </div>
   );
 };
-

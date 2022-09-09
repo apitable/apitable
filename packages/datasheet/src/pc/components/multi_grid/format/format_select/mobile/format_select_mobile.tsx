@@ -1,12 +1,9 @@
-import {
-  Field, IField, ISelectField, isSelectField,
-  moveArrayElement, SelectField, Selectors, Strings, t,
-} from '@vikadata/core';
+import { Field, IField, ISelectField, isSelectField, moveArrayElement, SelectField, Selectors, Strings, t } from '@vikadata/core';
 import classNames from 'classnames';
 import produce from 'immer';
 import { Message } from 'pc/components/common';
 import { OptionSetting } from 'pc/components/common/color_picker';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { usePrevious } from 'pc/components/common/hooks/use_previous';
 import { Modal } from 'pc/components/common/mobile/modal';
 import { useResponsive } from 'pc/hooks';
@@ -31,9 +28,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
 
   const { currentField, setCurrentField } = props;
   const fieldMap = useSelector(state => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
-  const isPreview = isSelectField(currentField) &&
-    fieldMap[currentField.id] &&
-    !isSelectField(fieldMap[currentField.id]);
+  const isPreview = isSelectField(currentField) && fieldMap[currentField.id] && !isSelectField(fieldMap[currentField.id]);
 
   function addNewItem() {
     const newItem = (Field.bindModel(currentField) as SelectField).createNewOption('');
@@ -77,7 +72,6 @@ const FormatSelectBase = (props: IFormatSelect) => {
   };
 
   const onChange = (type: OptionSetting, id: string, value: number | string) => {
-
     setCurrentField(preState => {
       const index = preState.property.options.findIndex(item => item.id === id);
       return produce(preState, draft => {
@@ -125,10 +119,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
 
   return (
     <>
-      {
-        Boolean(isPreview && curOptsLen)
-        && <div className={styles.preview}>{t(Strings.to_select_tip)}</div>
-      }
+      {Boolean(isPreview && curOptsLen) && <div className={styles.preview}>{t(Strings.to_select_tip)}</div>}
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId={currentField.id} direction="vertical">
           {provided => {

@@ -9,7 +9,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Avatar, AvatarSize, AvatarType, Message, Tooltip } from 'pc/components/common';
 import {
-  IDingTalkModalType, showModalInDingTalk, showModalInFeiShu, showModalInWecom, UpgradeInDDContent, UpgradeInFeiShuContent, UpgradeInWecomContent
+  IDingTalkModalType,
+  showModalInDingTalk,
+  showModalInFeiShu,
+  showModalInWecom,
+  UpgradeInDDContent,
+  UpgradeInFeiShuContent,
+  UpgradeInWecomContent,
 } from 'pc/components/economy/upgrade_modal';
 import { inSocialApp, isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'pc/components/home/social_platform';
 import { Notification } from 'pc/components/notification';
@@ -24,7 +30,7 @@ import AddressIcon from 'static/icon/workbench/workbench_tab_icon_address_normal
 import TemplateIcon from 'static/icon/workbench/workbench_tab_icon_template_normal.svg';
 import WorkplaceIcon from 'static/icon/workbench/workbench_tab_icon_workingtable_normal.svg';
 import AnimationJson from 'static/json/notification_new.json';
-import { ComponentDisplay, ScreenSize } from '../common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { Popup } from '../common/mobile/popup';
 import { openEruda } from '../development/dev_tools_panel';
 import { navigationToUrl } from '../route_manager/use_navigation';
@@ -55,13 +61,16 @@ export const Navigation: FC = () => {
   const [notice, { toggle: toggleNotice, set: setNotice }] = useToggle(false);
   const [upgradePopup, { set: setUpgradePopup }] = useToggle(false);
   const dispatch = useDispatch();
-  const { user, space, unReadCount, newNoticeListFromWs } = useSelector((state: IReduxState) => ({
-    user: state.user.info,
-    space: state.space.curSpaceInfo,
-    unReadCount: state.notification.unReadCount,
-    newNoticeListFromWs: state.notification.newNoticeListFromWs,
-    spaceInfo: state.space.curSpaceInfo,
-  }), shallowEqual);
+  const { user, space, unReadCount, newNoticeListFromWs } = useSelector(
+    (state: IReduxState) => ({
+      user: state.user.info,
+      space: state.space.curSpaceInfo,
+      unReadCount: state.notification.unReadCount,
+      newNoticeListFromWs: state.notification.newNoticeListFromWs,
+      spaceInfo: state.space.curSpaceInfo,
+    }),
+    shallowEqual,
+  );
   const { notificationStatistics, getNotificationList } = useNotificationRequest();
   // const location = useLocation();
   const router = useRouter();
@@ -175,20 +184,23 @@ export const Navigation: FC = () => {
       text: t(Strings.nav_workbench), // '工作台',
       key: NavKey.Workbench,
       domId: NAV_ID.ICON_WORKBENCH,
-    }, {
+    },
+    {
       routeAddress: '/org' + search,
       icon: AddressIcon,
       text: t(Strings.nav_team), // '通讯录',
       key: NavKey.Org,
       domId: NAV_ID.ICON_ADDRESS,
-    }, {
+    },
+    {
       routeAddress: '/template' + search,
       icon: TemplateIcon,
       // icon: <NavigationItem animationData={TemplateAnimationJSON} style={{ width: '24px', height: '24px' }} />,
       text: t(Strings.nav_templates), // '模板',
       key: NavKey.Template,
       domId: NAV_ID.ICON_TEMPLATE,
-    }, {
+    },
+    {
       routeAddress: '/management' + search,
       icon: ManageOutlined,
       text: t(Strings.nav_space_settings), // '空间管理',
@@ -212,27 +224,18 @@ export const Navigation: FC = () => {
     return (
       <>
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-          <Link
-            href={'/notify' + search}
-            onClick={noticeIconClick}
-          >
+          <Link href={'/notify' + search} onClick={noticeIconClick}>
             <a
-              className={classNames(
-                styles.notificationNavLink,
-                {
-                  [styles.navActiveItem]: router.pathname.includes('notify')
-                }
-              )}
+              className={classNames(styles.notificationNavLink, {
+                [styles.navActiveItem]: router.pathname.includes('notify'),
+              })}
             >
               {dom}
             </a>
           </Link>
         </ComponentDisplay>
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-          <div
-            onClick={noticeIconClick}
-            className={styles.notificationNavLink}
-          >
+          <div onClick={noticeIconClick} className={styles.notificationNavLink}>
             {dom}
           </div>
         </ComponentDisplay>
@@ -286,31 +289,16 @@ export const Navigation: FC = () => {
         closeSpaceListDrawer: () => setSpaceListDrawerVisible(false),
       }}
     >
-      <div
-        className={classNames(styles.navigation,
-          templateActive && styles.templateActived, notice && styles.noticeOpend)
-        }
-      >
+      <div className={classNames(styles.navigation, templateActive && styles.templateActived, notice && styles.noticeOpend)}>
         <div className={styles.spaceLogo} onClick={openSpaceMenu} data-sensors-click>
-          <div
-            className={styles.spaceImg}
-          >
-            <Avatar
-              type={AvatarType.Space}
-              title={user!.spaceName}
-              id={user!.spaceId}
-              src={user!.spaceLogo}
-              size={AvatarSize.Size32}
-            />
+          <div className={styles.spaceImg}>
+            <Avatar type={AvatarType.Space} title={user!.spaceName} id={user!.spaceId} src={user!.spaceLogo} size={AvatarSize.Size32} />
           </div>
-          <div
-            className={styles.spaceDown}
-          >
-            <Tooltip
-              title={t(Strings.workspace_list)}
-              placement="bottom"
-            >
-              <div><HomeDown className={styles.spaceIcon} /></div>
+          <div className={styles.spaceDown}>
+            <Tooltip title={t(Strings.workspace_list)} placement="bottom">
+              <div>
+                <HomeDown className={styles.spaceIcon} />
+              </div>
             </Tooltip>
           </div>
         </div>
@@ -329,14 +317,12 @@ export const Navigation: FC = () => {
             }
             const isActive = router.pathname.includes(item.key);
             const NavItem = (): React.ReactElement => (
-              <Link
-                href={item.routeAddress}
-              >
+              <Link href={item.routeAddress}>
                 <a
                   id={item.domId}
                   className={classNames(styles.navItem, {
                     [styles.navActiveItem]: isActive,
-                    [styles.templateActiveItem]: router.pathname.includes('template') && item.routeAddress.includes('template')
+                    [styles.templateActiveItem]: router.pathname.includes('template') && item.routeAddress.includes('template'),
                   })}
                 >
                   <NavIcon className={styles.navIcon} />
@@ -347,10 +333,7 @@ export const Navigation: FC = () => {
 
             return (
               <div key={item.key}>
-                <Tooltip
-                  title={item.text}
-                  placement="right"
-                >
+                <Tooltip title={item.text} placement="right">
                   <span>{NavItem()}</span>
                 </Tooltip>
               </div>
@@ -366,31 +349,25 @@ export const Navigation: FC = () => {
               style={{ backgroundColor: colors.defaultBg }}
             >
               {isDingTalkSpace && <UpgradeInDDContent onClick={() => setUpgradePopup(false)} />}
-              {
-                isFeiShuSpace &&
-                <UpgradeInFeiShuContent content={t(Strings.lark_can_not_upgrade)} onClick={() => setUpgradePopup(false)} />
-              }
+              {isFeiShuSpace && <UpgradeInFeiShuContent content={t(Strings.lark_can_not_upgrade)} onClick={() => setUpgradePopup(false)} />}
               {isWecomSpace && <UpgradeInWecomContent onClick={() => setUpgradePopup(false)} />}
             </Popup>
           </ComponentDisplay>
         </div>
-        <Tooltip
-          title={t(Strings.notification_center)}
-          placement="right"
-          key="notification_center"
-        >
+        <Tooltip title={t(Strings.notification_center)} placement="right" key="notification_center">
           <span className={styles.notification}>
             {NotificationNav}
-            <span
-              id={NAV_ID.ICON_NOTIFICATION}
-              className={styles.noticeAnimate}
-            />
+            <span id={NAV_ID.ICON_NOTIFICATION} className={styles.noticeAnimate} />
           </span>
         </Tooltip>
-        {
-          !inSocialApp() && !isMobileApp() && <div className={styles.help}><Help templateActived={templateActive} /></div>
-        }
-        <div className={styles.userIcon}><User /></div>
+        {!inSocialApp() && !isMobileApp() && (
+          <div className={styles.help}>
+            <Help templateActived={templateActive} />
+          </div>
+        )}
+        <div className={styles.userIcon}>
+          <User />
+        </div>
         {showCreateModal && <CreateSpaceModal isMobile={isMobile} setShowCreateModal={setShowCreateModal} />}
       </div>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>

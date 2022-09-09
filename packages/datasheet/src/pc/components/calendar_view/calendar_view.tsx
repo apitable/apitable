@@ -8,8 +8,22 @@ import { RecordList } from './record_list';
 import { ClearOutlined, ListOutlined, WarningTriangleNonzeroFilled } from '@vikadata/icons';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import {
-  BasicValueType, CacheManager, CollaCommandName, ConfigConstant, DATASHEET_ID, defaultCalendarViewStatus as defaultViewStatus, Field, FieldType,
-  ICalendarViewStatus, IField, ISetRecordOptions, Selectors, StoreActions, Strings, t, getLanguage,
+  BasicValueType,
+  CacheManager,
+  CollaCommandName,
+  ConfigConstant,
+  DATASHEET_ID,
+  defaultCalendarViewStatus as defaultViewStatus,
+  Field,
+  FieldType,
+  ICalendarViewStatus,
+  IField,
+  ISetRecordOptions,
+  Selectors,
+  StoreActions,
+  Strings,
+  t,
+  getLanguage,
 } from '@vikadata/core';
 import { CalendarSettingPanel } from './calendar_setting_panel';
 import { CreateFieldModal } from './create_field_modal';
@@ -27,7 +41,7 @@ import { CalendarContext, IRecordModal } from './calendar_context';
 import { DragDropModal } from './drag_drop_modal';
 import { AddRecord } from '../mobile_grid/add_record';
 import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from '../common/component_display/component_display';
+import { ScreenSize } from '../common/component_display/enum';
 import { CalendarMonthPicker } from './calendar_month_picker';
 import { isClickDragDropModal } from './utils';
 
@@ -36,7 +50,7 @@ interface ICalendarViewProps {
   width: number;
 }
 
-export const CalendarView: FC<ICalendarViewProps> = (props) => {
+export const CalendarView: FC<ICalendarViewProps> = props => {
   const colors = useThemeColors();
   const [keyword, setKeyword] = useState<string>('');
   const {
@@ -97,12 +111,7 @@ export const CalendarView: FC<ICalendarViewProps> = (props) => {
   });
   const { cellEditable: editable, rowCreatable, visualizationEditable } = permissions;
   const firstFieldId = snapshot.meta.views[0].columns[0].fieldId;
-  const {
-    gridVisible,
-    gridWidth,
-    settingPanelVisible: _settingPanelVisible,
-    settingPanelWidth,
-  } = calendarViewStatus;
+  const { gridVisible, gridWidth, settingPanelVisible: _settingPanelVisible, settingPanelWidth } = calendarViewStatus;
   const settingPanelVisible = (visualizationEditable || editable) && _settingPanelVisible;
   const { startFieldId, endFieldId, colorOption, isColNameVisible } = calendarStyle;
   const startFieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, startFieldId);
@@ -163,8 +172,10 @@ export const CalendarView: FC<ICalendarViewProps> = (props) => {
   const isStartDisabled = isReaderStartField || (startField ? startField.type !== FieldType.DateTime : true);
   const isEndDisabled = isReaderEndField || (endField ? endField.type !== FieldType.DateTime : true);
 
-  const draggable = (startField || endField) &&
-    !isReaderStartField && !isReaderEndField &&
+  const draggable =
+    (startField || endField) &&
+    !isReaderStartField &&
+    !isReaderEndField &&
     (startField ? startField.type === FieldType.DateTime : true) &&
     (endField ? endField.type === FieldType.DateTime : true);
 
@@ -190,10 +201,10 @@ export const CalendarView: FC<ICalendarViewProps> = (props) => {
     const records: {
       id: string;
       title: string;
-      startDate: Date | null,
+      startDate: Date | null;
       endDate: Date | null;
-      startDisabled: boolean,
-      endDisabled: boolean,
+      startDisabled: boolean;
+      endDisabled: boolean;
     }[] = [];
 
     visibleRows.forEach(({ recordId }) => {
@@ -267,12 +278,7 @@ export const CalendarView: FC<ICalendarViewProps> = (props) => {
     if (calendarStatusMap) {
       status = calendarStatusMap[`${spaceId}_${datasheetId}_${view.id}`] || {};
       if (settingPanelVisible) {
-        dispatch(
-          batchActions([
-            StoreActions.toggleCalendarGrid(visible, datasheetId),
-            StoreActions.toggleCalendarSettingPanel(false, datasheetId),
-          ]),
-        );
+        dispatch(batchActions([StoreActions.toggleCalendarGrid(visible, datasheetId), StoreActions.toggleCalendarSettingPanel(false, datasheetId)]));
       } else {
         dispatch(StoreActions.toggleCalendarGrid(visible, datasheetId));
       }
@@ -348,25 +354,50 @@ export const CalendarView: FC<ICalendarViewProps> = (props) => {
   const lang = getLanguage().split('-')[0];
 
   return (
-    <CalendarContext.Provider value={{
-      setRecordModal, recordModal, currentSearchCell, fieldMap,
-      columns, snapshot, calendarStyle, view, calendarViewStatus, firstFieldId,
-      isStartDateTimeField, isEndDateTimeField, isSearching, datasheetId, permissions,
-      getCellValue, draggable, isCryptoStartField, isCryptoEndField, isMobile,
-      onCloseGrid: () => onPanelSizeChange(false),
-      keyword, setKeyword,
-      tasks: calendarRecords as any,
-      activeCell
-    }}>
+    <CalendarContext.Provider
+      value={{
+        setRecordModal,
+        recordModal,
+        currentSearchCell,
+        fieldMap,
+        columns,
+        snapshot,
+        calendarStyle,
+        view,
+        calendarViewStatus,
+        firstFieldId,
+        isStartDateTimeField,
+        isEndDateTimeField,
+        isSearching,
+        datasheetId,
+        permissions,
+        getCellValue,
+        draggable,
+        isCryptoStartField,
+        isCryptoEndField,
+        isMobile,
+        onCloseGrid: () => onPanelSizeChange(false),
+        keyword,
+        setKeyword,
+        tasks: calendarRecords as any,
+        activeCell,
+      }}
+    >
       <div className={styles.calendarView}>
         <RecordMenu
           hideInsert
           menuId={CALENDAR_RECORD_MENU}
-          extraData={editable && !(isStartDisabled || isEndDisabled) ? [{
-            icon: <ClearOutlined color={colors.thirdLevelText} />,
-            text: t(Strings.clear_date),
-            onClick: ({ props: { recordId }}) => setRecord(recordId, null, null),
-          }] : undefined}
+          extraData={
+            editable && !(isStartDisabled || isEndDisabled)
+              ? [
+                {
+                  icon: <ClearOutlined color={colors.thirdLevelText} />,
+                  text: t(Strings.clear_date),
+                  onClick: ({ props: { recordId }}) => setRecord(recordId, null, null),
+                },
+              ]
+              : undefined
+          }
         />
         <VikaSplitPanel
           primary="second"
@@ -374,7 +405,7 @@ export const CalendarView: FC<ICalendarViewProps> = (props) => {
           style={{ overflow: 'none' }}
           size={size}
           allowResize={false}
-          panelLeft={(
+          panelLeft={
             <div className={styles.left}>
               {!isMobile && (
                 <div
@@ -383,7 +414,9 @@ export const CalendarView: FC<ICalendarViewProps> = (props) => {
                   })}
                   onClick={() => onPanelSizeChange(!gridVisible)}
                 >
-                  <Button size="small" prefixIcon={<ListOutlined size={16} color={colors.fc3} />}>{t(Strings.calendar_list_toggle_btn)}</Button>
+                  <Button size="small" prefixIcon={<ListOutlined size={16} color={colors.fc3} />}>
+                    {t(Strings.calendar_list_toggle_btn)}
+                  </Button>
                 </div>
               )}
               <Calendar
@@ -391,48 +424,40 @@ export const CalendarView: FC<ICalendarViewProps> = (props) => {
                 resizable={startFieldId !== endFieldId && !isMobile}
                 defaultDate={defaultDate || date?.toDate()}
                 disabled={!editable || (isStartDisabled && isEndDisabled)}
-                monthPicker={(showValue: string) => (
-                  <CalendarMonthPicker
-                    lang={lang}
-                    showValue={showValue}
-                    setDate={setDate}
-                  />
-                )}
+                monthPicker={(showValue: string) => <CalendarMonthPicker lang={lang} showValue={showValue} setDate={setDate} />}
                 listStyle={{
                   // color: listColor || undefined,
                   height: recordHeight + 'px',
                 }}
                 rowMixCount={columns.length ? Math.max(Math.floor(3 / columns.length), 1) : 3}
-                startListStyle={listColor ? {
-                  borderLeft: `2px solid ${listColor}`,
-                } : undefined}
+                startListStyle={
+                  listColor
+                    ? {
+                      borderLeft: `2px solid ${listColor}`,
+                    }
+                    : undefined
+                }
                 tasks={calendarRecords as any}
                 dnd={[Drag, Drop]}
                 update={setRecord}
                 moreText={isMobile ? t(Strings.calendar_view_all_records_mobile) : t(Strings.calendar_view_all_records)}
-                warnText={(
+                warnText={
                   <Tooltip content={t(Strings.calendar_error_record)}>
                     <span className="warning">
                       <WarningTriangleNonzeroFilled size={16} color={colors.warningColor} />
                     </span>
                   </Tooltip>
-                )}
+                }
                 lang={lang}
                 moveTaskId={activeCell?.recordId}
               />
             </div>
-          )}
+          }
           panelRight={panelRight}
         />
         {dateTypeAccessibleFields.length === 0 && <CreateFieldModal />}
         {isVisible && <DragDropModal recordId={recordModal && recordModal[0]} style={recordModal![2]} />}
-        {
-          isMobile && rowCreatable &&
-          ReactDOM.createPortal(
-            <AddRecord size="large" />,
-            document.getElementById(DATASHEET_ID.ADD_RECORD_BTN)!,
-          )
-        }
+        {isMobile && rowCreatable && ReactDOM.createPortal(<AddRecord size="large" />, document.getElementById(DATASHEET_ID.ADD_RECORD_BTN)!)}
       </div>
     </CalendarContext.Provider>
   );

@@ -3,7 +3,7 @@ import styles from './style.module.less';
 import classNames from 'classnames';
 import { Tooltip } from '../tooltip';
 import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from '../component_display/component_display';
+import { ScreenSize } from '../component_display';
 
 export interface IRateProps {
   value: number | null;
@@ -42,7 +42,6 @@ export function Rate(props: IRateProps) {
         onChange(newValue);
       }
     }
-
   };
   const handleMouseOver = (v: number) => {
     if (isMobile) return;
@@ -55,40 +54,31 @@ export function Rate(props: IRateProps) {
   // 只读状态下只显示 checked value
   const transMax = disabled ? transValue + 1 : max + 1;
   return (
-    <div
-      className={styles.rate}
-      onMouseOut={() => setPendingValue(value)}
-    >
-      {
-        [...Array(transMax).keys()].splice(1).map(item => {
-          let willChecked = false;
-          const checked = item <= transValue;
-          const unChecked = item <= max && item > transValue;
-          if (pendingValue > transValue) willChecked = item > transValue && item <= pendingValue;
-          if (pendingValue < transValue) willChecked = item <= transValue && item > pendingValue;
-          const classname = classNames({
+    <div className={styles.rate} onMouseOut={() => setPendingValue(value)}>
+      {[...Array(transMax).keys()].splice(1).map(item => {
+        let willChecked = false;
+        const checked = item <= transValue;
+        const unChecked = item <= max && item > transValue;
+        if (pendingValue > transValue) willChecked = item > transValue && item <= pendingValue;
+        if (pendingValue < transValue) willChecked = item <= transValue && item > pendingValue;
+        const classname = classNames(
+          {
             [styles.checked]: checked,
             [styles.unChecked]: unChecked,
             [styles.willChecked]: willChecked,
-          }, styles.character);
-          const Wrapper = disabled ? Fragment : Tooltip;
-          const wrapperProps: any = disabled ? {} : { title: item, placement: 'top' };
-          return (
-            <Wrapper
-              key={item}
-              {...wrapperProps}
-            >
-              <span
-                onMouseDown={() => handleClick(item)}
-                onMouseOver={() => handleMouseOver(item)}
-                className={classname}
-              >
-                {character}
-              </span>
-            </Wrapper>
-          );
-        })
-      }
+          },
+          styles.character,
+        );
+        const Wrapper = disabled ? Fragment : Tooltip;
+        const wrapperProps: any = disabled ? {} : { title: item, placement: 'top' };
+        return (
+          <Wrapper key={item} {...wrapperProps}>
+            <span onMouseDown={() => handleClick(item)} onMouseOver={() => handleMouseOver(item)} className={classname}>
+              {character}
+            </span>
+          </Wrapper>
+        );
+      })}
     </div>
   );
 }

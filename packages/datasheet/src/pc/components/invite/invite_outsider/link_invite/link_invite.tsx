@@ -2,7 +2,7 @@ import { Api, IReduxState, ITeamList, StoreActions, Strings, t } from '@vikadata
 import { TreeSelect, Input } from 'antd';
 import { Button, ButtonGroup, useThemeColors, Skeleton } from '@vikadata/components';
 import { Message, Tooltip, Popconfirm } from 'pc/components/common';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/mobile/modal';
 import { copy2clipBoard } from 'pc/utils';
 import { FC, useEffect, useState } from 'react';
@@ -24,11 +24,14 @@ export interface ILinkInviteProps {
 export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
   const colors = useThemeColors();
   const dispatch = useDispatch();
-  const { linkList, userInfo, teamList } = useSelector((state: IReduxState) => ({
-    linkList: state.invite.linkList,
-    userInfo: state.user.info,
-    teamList: state.addressList.teamList,
-  }), shallowEqual);
+  const { linkList, userInfo, teamList } = useSelector(
+    (state: IReduxState) => ({
+      linkList: state.invite.linkList,
+      userInfo: state.user.info,
+      teamList: state.addressList.teamList,
+    }),
+    shallowEqual,
+  );
   const [value, setValue] = useState('');
   const [showPopconfirmKey, setShowPopconfirmKey] = useState('');
 
@@ -76,9 +79,7 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
           </TreeNode>
         );
       }
-      return (
-        <TreeNode {...config} isLeaf={userInfo!.isAdmin && item.children?.length ? false : true} key={item.teamId} />
-      );
+      return <TreeNode {...config} isLeaf={userInfo!.isAdmin && item.children?.length ? false : true} key={item.teamId} />;
     });
   };
 
@@ -88,7 +89,9 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
       Message.warning({ content: t(Strings.placeholder_choose_group) });
       return;
     }
-    const { data: { success, message }} = await Api.createLink(teamId);
+    const {
+      data: { success, message },
+    } = await Api.createLink(teamId);
     if (success) {
       Message.success({ content: t(Strings.create_link_succeed) });
       // 查询已创建的链接
@@ -101,7 +104,9 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
 
   // 删除链接
   const deleteLink = async(teamId: string) => {
-    const { data: { success, message }} = await Api.deleteLink(teamId);
+    const {
+      data: { success, message },
+    } = await Api.deleteLink(teamId);
     if (success) {
       Message.success({ content: t(Strings.link_delete_succeed) });
       // 重新查询已创建的链接
@@ -159,7 +164,9 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
                   visible={showPopconfirmKey === item.token}
                   onVisibleChange={v => popconfirmVisibleChange(item.token, v)}
                 >
-                  <Button><DeleteIcon fill={colors.secondLevelText} /></Button>
+                  <Button>
+                    <DeleteIcon fill={colors.secondLevelText} />
+                  </Button>
                 </Popconfirm>
               </ComponentDisplay>
               <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
@@ -187,39 +194,39 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
       <InviteAlert />
       <div className={styles.subTitle}>{t(Strings.create_public_invitation_link)}</div>
       <div className={styles.addNewLink}>
-        {
-          teamList.length === 0 ? <Skeleton /> : (
-            <>
-              <TreeSelect
-                value={value === '' ? undefined : value}
-                placeholder={t(Strings.placeholder_choose_group)}
-                onChange={value => onChange(value)}
-                suffixIcon={<PulldownIcon />}
-                treeIcon
-                switcherIcon={<RetractIcon />}
-                showSearch={false}
-                dropdownClassName="dropdownInvite"
-                treeDefaultExpandedKeys={[firstTeamId]}
-                listHeight={200}
-              >
-                {renderTreeNodes(teamList || [])}
-              </TreeSelect>
-              <Button onClick={() => createBtnClick(value)} className={styles.createBtn}>
-                {t(Strings.create)}
-              </Button>
-            </>
-          )
-        }
+        {teamList.length === 0 ? (
+          <Skeleton />
+        ) : (
+          <>
+            <TreeSelect
+              value={value === '' ? undefined : value}
+              placeholder={t(Strings.placeholder_choose_group)}
+              onChange={value => onChange(value)}
+              suffixIcon={<PulldownIcon />}
+              treeIcon
+              switcherIcon={<RetractIcon />}
+              showSearch={false}
+              dropdownClassName="dropdownInvite"
+              treeDefaultExpandedKeys={[firstTeamId]}
+              listHeight={200}
+            >
+              {renderTreeNodes(teamList || [])}
+            </TreeSelect>
+            <Button onClick={() => createBtnClick(value)} className={styles.createBtn}>
+              {t(Strings.create)}
+            </Button>
+          </>
+        )}
       </div>
-      {
-        linkList.length > 0 &&
+      {linkList.length > 0 && (
         <>
-          <div className={styles.historyTitle}><HistoryIcon />{t(Strings.invitation_link_old)}</div>
-          <div className={styles.linkWrapper}>
-            {renderLinkList()}
+          <div className={styles.historyTitle}>
+            <HistoryIcon />
+            {t(Strings.invitation_link_old)}
           </div>
+          <div className={styles.linkWrapper}>{renderLinkList()}</div>
         </>
-      }
+      )}
     </div>
   );
 };

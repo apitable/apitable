@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { truncate } from 'lodash';
 import Image from 'next/image';
 import { Avatar, AvatarSize, AvatarType, ButtonPlus, ContextmenuItem, Modal, Tooltip } from 'pc/components/common';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { TComponent } from 'pc/components/common/t_component';
 import { SocialPlatformMap } from 'pc/components/home/social_platform/config';
 import { isSocialPlatformEnabled } from 'pc/components/home/social_platform/utils';
@@ -28,12 +28,7 @@ export interface ISpaceListItemProps {
   refreshList?: () => void;
 }
 
-export const SpaceListItem: FC<ISpaceListItemProps> = ({
-  spaceInfo,
-  actived = false,
-  managable = false,
-  refreshList,
-}) => {
+export const SpaceListItem: FC<ISpaceListItemProps> = ({ spaceInfo, actived = false, managable = false, refreshList }) => {
   const colors = useThemeColors();
   const [visible, setVisible] = useState(false);
   const navigationTo = useNavigation();
@@ -43,8 +38,8 @@ export const SpaceListItem: FC<ISpaceListItemProps> = ({
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { spaceId, spaceDomain, name, logo, point } = spaceInfo;
-  const domain = process.env.NODE_ENV === 'production' && spaceDomain && document.domain !== spaceDomain ?
-    `${window.location.protocol}//${spaceDomain}` : '';
+  const domain =
+    process.env.NODE_ENV === 'production' && spaceDomain && document.domain !== spaceDomain ? `${window.location.protocol}//${spaceDomain}` : '';
 
   useUpdateEffect(() => {
     if (user) {
@@ -72,12 +67,14 @@ export const SpaceListItem: FC<ISpaceListItemProps> = ({
       title: t(Strings.confirm_exit),
       content: (
         <div className={styles.quitSpaceContent}>
-          {<TComponent
-            tkey={t(Strings.confirm_exit_space_with_name)}
-            params={{
-              spaceNameDiv: <div className={styles.spaceName}>{truncate(name, { length: 16 })} </div>,
-            }}
-          />}
+          {
+            <TComponent
+              tkey={t(Strings.confirm_exit_space_with_name)}
+              params={{
+                spaceNameDiv: <div className={styles.spaceName}>{truncate(name, { length: 16 })} </div>,
+              }}
+            />
+          }
         </div>
       ),
       onOk: () => memberQuitSpaceAndNotice(spaceId, refreshList),
@@ -97,45 +94,35 @@ export const SpaceListItem: FC<ISpaceListItemProps> = ({
     <div
       className={classnames(styles.spaceListItem, actived && styles.actived, isMobile && styles.mobile)}
       onClick={() => {
-        if(actived) {
+        if (actived) {
           closeSpaceListDrawer();
           return;
         }
         window.location.href = `${domain}/workbench?spaceId=${spaceId}`;
       }}
     >
-
       <div className={styles.logo}>
-        <Avatar
-          title={name}
-          size={AvatarSize.Size32}
-          id={spaceId}
-          src={logo}
-          type={AvatarType.Space}
-        />
+        <Avatar title={name} size={AvatarSize.Size32} id={spaceId} src={logo} type={AvatarType.Space} />
         {point && <div className={styles.redDot} />}
       </div>
       <div className={styles.leftItem}>
-        <div className={styles.name}>
-          {name}
-        </div>
-        {
-          isSocialPlatformEnabled(spaceInfo) &&
+        <div className={styles.name}>{name}</div>
+        {isSocialPlatformEnabled(spaceInfo) && (
           <Tooltip title={SocialPlatformMap[spaceInfo.social.platform].toolTipInSpaceListItem} placement="top">
             <span className={styles.platformTag}>
-              <Image src={SocialPlatformMap[spaceInfo.social.platform].logo} alt={''}/>
+              <Image src={SocialPlatformMap[spaceInfo.social.platform].logo} alt={''} />
             </span>
           </Tooltip>
-        }
+        )}
       </div>
-      {managable ?
+      {managable ? (
         <ButtonPlus.Icon
           icon={<ManagerIcon width={16} height={16} />}
           onClick={jumpSpaceManagement}
           className={classnames(styles.moreBtn, { [styles.visible]: isMobile })}
-        /> :
-        (
-          !isSocialPlatformEnabled(spaceInfo) &&
+        />
+      ) : (
+        !isSocialPlatformEnabled(spaceInfo) && (
           <Popover
             overlayClassName={styles.menu}
             trigger="click"
@@ -157,7 +144,7 @@ export const SpaceListItem: FC<ISpaceListItemProps> = ({
             />
           </Popover>
         )
-      }
+      )}
     </div>
   );
 };

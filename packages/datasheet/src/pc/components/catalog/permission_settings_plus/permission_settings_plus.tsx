@@ -5,7 +5,7 @@ import { Permission } from './permission';
 import { PermissionDescModal } from 'pc/components/space_manage/workbench/permission_desc';
 import styles from './style.module.less';
 import { Popup } from 'pc/components/common/mobile/popup';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { getNodeIcon } from '../tree/node_icon';
 import { PermissionModalHeader } from 'pc/components/field_permission/permission_modal_header';
 import { InformationSmallOutlined } from '@vikadata/icons';
@@ -18,7 +18,7 @@ export interface IPermissionSettingsProps {
     name: string;
     type: ConfigConstant.NodeType;
     icon: string;
-  }
+  };
   visible: boolean;
   onClose: () => void;
 }
@@ -32,19 +32,19 @@ export const PermissionSettingsPlus: FC<IPermissionSettingsProps> = ({ data, vis
   }
 
   const Title = () => {
-
-    return <Tooltip content={t(Strings.instruction_of_node_permission)}>
-      <span className={styles.helpBtn}>
-        <InformationSmallOutlined color={colors.thirdLevelText} onClick={() => setPermDescModalVisible(true)} className={styles.infoIcon} />
-      </span>
-    </Tooltip>;
+    return (
+      <Tooltip content={t(Strings.instruction_of_node_permission)}>
+        <span className={styles.helpBtn}>
+          <InformationSmallOutlined color={colors.thirdLevelText} onClick={() => setPermDescModalVisible(true)} className={styles.infoIcon} />
+        </span>
+      </Tooltip>
+    );
   };
 
   return (
     <>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        {
-          visible &&
+        {visible && (
           <Popup
             className={styles.permissionDrawer}
             height="90%"
@@ -64,10 +64,10 @@ export const PermissionSettingsPlus: FC<IPermissionSettingsProps> = ({ data, vis
           >
             <Permission data={data} />
           </Popup>
-        }
+        )}
       </ComponentDisplay>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-        {visible &&
+        {visible && (
           <Modal
             visible
             title={
@@ -88,16 +88,10 @@ export const PermissionSettingsPlus: FC<IPermissionSettingsProps> = ({ data, vis
           >
             <>
               <Permission data={data} />
-              {
-                permDescModalVisible &&
-                <PermissionDescModal
-                  visible
-                  onCancel={(() => setPermDescModalVisible(false))}
-                />
-              }
+              {permDescModalVisible && <PermissionDescModal visible onCancel={() => setPermDescModalVisible(false)} />}
             </>
           </Modal>
-        }
+        )}
       </ComponentDisplay>
     </>
   );

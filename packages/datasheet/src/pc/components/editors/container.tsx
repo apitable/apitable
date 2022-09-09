@@ -37,17 +37,7 @@ import { store } from 'pc/store';
 import { printableKey, recognizeURLAndSetTitle, IURLMeta } from 'pc/utils';
 import { EDITOR_CONTAINER } from 'pc/utils/constant';
 
-import {
-  ClipboardEvent,
-  forwardRef,
-  KeyboardEvent,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { ClipboardEvent, forwardRef, KeyboardEvent, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -58,7 +48,7 @@ import { CheckboxEditor } from './checkbox_editor';
 import { DateTimeEditor } from './date_time_editor';
 import { EnhanceTextEditor } from './enhance_text_editor';
 import { useCellEditorVisibleStyle } from './hooks';
-import { IEditor } from './interface';
+import { IContainerEdit, IEditor } from './interface';
 import { LinkEditor } from './link_editor';
 import { MemberEditor } from './member_editor';
 import { autoTaskScheduling } from 'pc/components/gantt_view/utils/auto_task_line_layout';
@@ -74,11 +64,6 @@ import { TextEditor } from './text_editor';
 import { expandRecordIdNavigate } from '../expand_record';
 import { useUnmount } from 'ahooks';
 import { setEndEditCell } from './end_edit_cell';
-
-export interface IContainerEdit {
-  onViewMouseDown(activeCell?: ICell): void;
-  focus(): void;
-}
 
 export interface IEditorPosition {
   width: number;
@@ -102,14 +87,17 @@ const CELL_EDITOR = 'CELL_EDITOR';
 
 // TODO: 区分 SimpleEditor 和 customEditor
 const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, EditorContainerProps> = (props, ref) => {
-  useImperativeHandle(ref, (): IContainerEdit => ({
-    onViewMouseDown(activeCell?: ICell) {
-      onViewMouseDown(activeCell);
-    },
-    focus() {
-      focus();
-    },
-  }));
+  useImperativeHandle(
+    ref,
+    (): IContainerEdit => ({
+      onViewMouseDown(activeCell?: ICell) {
+        onViewMouseDown(activeCell);
+      },
+      focus() {
+        focus();
+      },
+    }),
+  );
   const { record, field, selectionRange, selection, activeCell, scrollLeft, scrollTop, rectCalculator } = props;
   const collaborators = useSelector(state => Selectors.collaboratorSelector(state));
   const snapshot = useSelector(state => Selectors.getSnapshot(state)!);
@@ -202,10 +190,12 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
    */
   const startEdit = (keepValue = false) => {
     if (!recordEditable) {
-      fieldPermissionMap && fieldPermissionMap[field.id] && Message.warning({
-        content: t(Strings.readonly_column),
-        messageKey: CELL_EDITOR
-      });
+      fieldPermissionMap &&
+        fieldPermissionMap[field.id] &&
+        Message.warning({
+          content: t(Strings.readonly_column),
+          messageKey: CELL_EDITOR,
+        });
       return;
     }
     if (Field.bindModel(field).isComputed) {
@@ -311,7 +301,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
         viewId,
         fieldId: field.id,
         recordId: record.id,
-        time: (new Date()).getTime(),
+        time: new Date().getTime(),
       });
     }
   }, [collaborators.length, datasheetId, field, record, viewId, recordEditable]);
@@ -403,28 +393,118 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
 
   useEffect(() => {
     const eventBundle = new Map([
-      [ShortcutActionName.CellUp, () => { cellMove(CellDirection.Up); }],
-      [ShortcutActionName.CellDown, () => { cellMove(CellDirection.Down); }],
-      [ShortcutActionName.CellLeft, () => { cellMove(CellDirection.Left); }],
-      [ShortcutActionName.CellRight, () => { cellMove(CellDirection.Right); }],
-      [ShortcutActionName.CellUpEdge, () => { cellMove(CellDirection.UpEdge); }],
-      [ShortcutActionName.CellDownEdge, () => { cellMove(CellDirection.DownEdge); }],
-      [ShortcutActionName.CellLeftEdge, () => { cellMove(CellDirection.LeftEdge); }],
-      [ShortcutActionName.CellRightEdge, () => { cellMove(CellDirection.RightEdge); }],
+      [
+        ShortcutActionName.CellUp,
+        () => {
+          cellMove(CellDirection.Up);
+        },
+      ],
+      [
+        ShortcutActionName.CellDown,
+        () => {
+          cellMove(CellDirection.Down);
+        },
+      ],
+      [
+        ShortcutActionName.CellLeft,
+        () => {
+          cellMove(CellDirection.Left);
+        },
+      ],
+      [
+        ShortcutActionName.CellRight,
+        () => {
+          cellMove(CellDirection.Right);
+        },
+      ],
+      [
+        ShortcutActionName.CellUpEdge,
+        () => {
+          cellMove(CellDirection.UpEdge);
+        },
+      ],
+      [
+        ShortcutActionName.CellDownEdge,
+        () => {
+          cellMove(CellDirection.DownEdge);
+        },
+      ],
+      [
+        ShortcutActionName.CellLeftEdge,
+        () => {
+          cellMove(CellDirection.LeftEdge);
+        },
+      ],
+      [
+        ShortcutActionName.CellRightEdge,
+        () => {
+          cellMove(CellDirection.RightEdge);
+        },
+      ],
 
-      [ShortcutActionName.SelectionUp, () => { selectionMove(RangeDirection.Up); }],
-      [ShortcutActionName.SelectionDown, () => { selectionMove(RangeDirection.Down); }],
-      [ShortcutActionName.SelectionLeft, () => { selectionMove(RangeDirection.Left); }],
-      [ShortcutActionName.SelectionRight, () => { selectionMove(RangeDirection.Right); }],
-      [ShortcutActionName.SelectionUpEdge, () => { selectionMove(RangeDirection.UpEdge); }],
-      [ShortcutActionName.SelectionDownEdge, () => { selectionMove(RangeDirection.DownEdge); }],
-      [ShortcutActionName.SelectionLeftEdge, () => { selectionMove(RangeDirection.LeftEdge); }],
-      [ShortcutActionName.SelectionRightEdge, () => { selectionMove(RangeDirection.RightEdge); }],
-      [ShortcutActionName.SelectionAll, () => { selectionMove(RangeDirection.All); }],
+      [
+        ShortcutActionName.SelectionUp,
+        () => {
+          selectionMove(RangeDirection.Up);
+        },
+      ],
+      [
+        ShortcutActionName.SelectionDown,
+        () => {
+          selectionMove(RangeDirection.Down);
+        },
+      ],
+      [
+        ShortcutActionName.SelectionLeft,
+        () => {
+          selectionMove(RangeDirection.Left);
+        },
+      ],
+      [
+        ShortcutActionName.SelectionRight,
+        () => {
+          selectionMove(RangeDirection.Right);
+        },
+      ],
+      [
+        ShortcutActionName.SelectionUpEdge,
+        () => {
+          selectionMove(RangeDirection.UpEdge);
+        },
+      ],
+      [
+        ShortcutActionName.SelectionDownEdge,
+        () => {
+          selectionMove(RangeDirection.DownEdge);
+        },
+      ],
+      [
+        ShortcutActionName.SelectionLeftEdge,
+        () => {
+          selectionMove(RangeDirection.LeftEdge);
+        },
+      ],
+      [
+        ShortcutActionName.SelectionRightEdge,
+        () => {
+          selectionMove(RangeDirection.RightEdge);
+        },
+      ],
+      [
+        ShortcutActionName.SelectionAll,
+        () => {
+          selectionMove(RangeDirection.All);
+        },
+      ],
 
       [ShortcutActionName.ToggleEditing, toggleEditing],
       [ShortcutActionName.ToggleNextEditing, () => toggleEditing(true)],
-      [ShortcutActionName.ExitEditing, () => { exitEdit(); }],
+      [
+        ShortcutActionName.ExitEditing,
+        () => {
+          exitEdit();
+        },
+      ],
       [ShortcutActionName.Focus, () => editorRef.current?.focus?.()],
       [ShortcutActionName.CellTab, rightShift],
       [ShortcutActionName.CellShiftTab, leftShift],
@@ -545,50 +625,57 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     }
   };
 
-  const onSave = useCallback((value: ICellValue) => {
-    if (!record || !field) {
-      return;
-    }
-    resourceService.instance!.commandManager.execute({
-      cmd: CollaCommandName.SetRecords,
-      datasheetId,
-      data: [{
-        recordId: record.id,
-        fieldId: field.id,
-        value,
-      }],
-    });
-
-    // URL列开启识别，调用API加载meta信息并额外发起一次SetRecords
-    if (field.type === FieldType.URL && field.property?.isRecogURLFlag && Array.isArray(value)) {
-      const _value = value as IHyperlinkSegment[];
-      const url = _value.reduce((acc: string, cur: IHyperlinkSegment) => (cur.text || '') + acc, '');
-
-      const callback = (meta: IURLMeta) => {
-        resourceService.instance!.commandManager.execute({
-          cmd: CollaCommandName.SetRecords,
-          datasheetId,
-          data: [{
+  const onSave = useCallback(
+    (value: ICellValue) => {
+      if (!record || !field) {
+        return;
+      }
+      resourceService.instance!.commandManager.execute({
+        cmd: CollaCommandName.SetRecords,
+        datasheetId,
+        data: [
+          {
             recordId: record.id,
             fieldId: field.id,
-            value: value.map(v => ({
-              ...v,
-              type: SegmentType.Url,
-              title: meta?.title,
-              favicon: meta?.favicon,
-            })),
-          }],
-        });
-      };
+            value,
+          },
+        ],
+      });
 
-      if (isUrl(url)) {
-        recognizeURLAndSetTitle({
-          url,
-          callback,
-        });
+      // URL列开启识别，调用API加载meta信息并额外发起一次SetRecords
+      if (field.type === FieldType.URL && field.property?.isRecogURLFlag && Array.isArray(value)) {
+        const _value = value as IHyperlinkSegment[];
+        const url = _value.reduce((acc: string, cur: IHyperlinkSegment) => (cur.text || '') + acc, '');
+
+        const callback = (meta: IURLMeta) => {
+          resourceService.instance!.commandManager.execute({
+            cmd: CollaCommandName.SetRecords,
+            datasheetId,
+            data: [
+              {
+                recordId: record.id,
+                fieldId: field.id,
+                value: value.map(v => ({
+                  ...v,
+                  type: SegmentType.Url,
+                  title: meta?.title,
+                  favicon: meta?.favicon,
+                })),
+              },
+            ],
+          });
+        };
+
+        if (isUrl(url)) {
+          recognizeURLAndSetTitle({
+            url,
+            callback,
+          });
+        }
       }
-    }
-  }, [datasheetId, record, field]);
+    },
+    [datasheetId, record, field],
+  );
 
   const onSaveForDateCell = useCallback((value: ICellValue, curAlarm: any) => {
     if (!record || !field) {
@@ -642,7 +729,8 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
 
   }, [datasheetId, field, record, cellValue, snapshot, activeView, state, visibleRows]);
 
-  useMemo(calcEditorRect,
+  useMemo(
+    calcEditorRect,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [editing, activeCell, editorX, editorY, field],
   );
@@ -670,88 +758,34 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
 
   function Editor() {
     if (!field || !record) {
-      return (
-        <NoneEditor
-          style={editorRect}
-          ref={editorRef}
-          {...commonProps}
-        />
-      );
+      return <NoneEditor style={editorRect} ref={editorRef} {...commonProps} />;
     }
     switch (field.type) {
       case FieldType.Text:
       case FieldType.SingleText:
-        return (
-          <TextEditor
-            style={editorRect}
-            ref={editorRef}
-            {...commonProps}
-          />
-        );
+        return <TextEditor style={editorRect} ref={editorRef} {...commonProps} />;
       case FieldType.URL:
       case FieldType.Email:
       case FieldType.Phone:
-        return (
-          <EnhanceTextEditor
-            style={editorRect}
-            ref={editorRef}
-            {...commonProps}
-          />
-        );
+        return <EnhanceTextEditor style={editorRect} ref={editorRef} {...commonProps} />;
       case FieldType.Rating:
-        return (
-          <RatingEditor
-            style={editorRect}
-            ref={editorRef}
-            cellValue={cellValue}
-            {...commonProps}
-          />
-        );
+        return <RatingEditor style={editorRect} ref={editorRef} cellValue={cellValue} {...commonProps} />;
       case FieldType.Checkbox:
-        return (
-          <CheckboxEditor
-            style={editorRect}
-            ref={editorRef}
-            {...commonProps}
-            cellValue={cellValue}
-          />
-        );
+        return <CheckboxEditor style={editorRect} ref={editorRef} {...commonProps} cellValue={cellValue} />;
       case FieldType.Attachment:
-        return (
-          <AttachmentEditor
-            style={editorRect}
-            ref={editorRef}
-            cellValue={cellValue}
-            recordId={record.id}
-            {...commonProps}
-          />
-        );
+        return <AttachmentEditor style={editorRect} ref={editorRef} cellValue={cellValue} recordId={record.id} {...commonProps} />;
       case FieldType.SingleSelect:
       case FieldType.MultiSelect:
-        return (
-          <OptionsEditor
-            style={editorRect}
-            ref={editorRef}
-            recordId={record.id}
-            toggleEditing={toggleEditing}
-            {...commonProps}
-          />
-        );
+        return <OptionsEditor style={editorRect} ref={editorRef} recordId={record.id} toggleEditing={toggleEditing} {...commonProps} />;
       case FieldType.Number:
       case FieldType.Currency:
       case FieldType.Percent:
-        return (
-          <NumberEditor
-            style={editorRect}
-            ref={editorRef}
-            {...commonProps}
-          />
-        );
+        return <NumberEditor style={editorRect} ref={editorRef} {...commonProps} />;
       case FieldType.DateTime:
         return (
           <DateTimeEditor
             style={editorRect}
-            ref={ele => editorRef.current = ele}
+            ref={ele => (editorRef.current = ele)}
             {...commonProps}
             recordId={record.id}
             field={field}
@@ -789,13 +823,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
           />
         );
       default:
-        return (
-          <NoneEditor
-            style={editorRect}
-            ref={editorRef}
-            {...commonProps}
-          />
-        );
+        return <NoneEditor style={editorRect} ref={editorRef} {...commonProps} />;
     }
   }
 

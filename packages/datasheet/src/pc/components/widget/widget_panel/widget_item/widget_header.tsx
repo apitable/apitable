@@ -7,7 +7,7 @@ import { Tooltip } from 'pc/components/common';
 import { resourceService } from 'pc/resource_service';
 import { useSelector } from 'react-redux';
 import { closeWidgetRoute, expandWidgetRoute } from '../../expand_widget';
-import { IWidgetPropsBase } from './widget_item';
+import { IWidgetPropsBase } from './interface';
 import styles from './style.module.less';
 import { useCheckInput } from 'pc/hooks';
 
@@ -23,11 +23,8 @@ interface IWidgetHeaderProps extends IWidgetPropsBase {
   dragging: boolean;
 }
 
-export const WidgetHeaderMobile: React.FC<IWidgetHeaderProps> = (props) => {
-  const {
-    className, widgetId, widgetPanelId, displayMode = 'always', dragging,
-    config = {}
-  } = props;
+export const WidgetHeaderMobile: React.FC<IWidgetHeaderProps> = props => {
+  const { className, widgetId, widgetPanelId, displayMode = 'always', dragging, config = {}} = props;
   const colors = useThemeColors();
   const inputRef = useRef<Input>(null);
   const [rename, setRename] = useState(false);
@@ -46,12 +43,12 @@ export const WidgetHeaderMobile: React.FC<IWidgetHeaderProps> = (props) => {
       props: {
         widgetId,
         widgetPanelId,
-        widget
+        widget,
       },
     });
   };
 
-  const saveWidgetName = (e) => {
+  const saveWidgetName = e => {
     const value = e.target.value;
     setRename(false);
     setErrTip('');
@@ -90,30 +87,30 @@ export const WidgetHeaderMobile: React.FC<IWidgetHeaderProps> = (props) => {
 
   if (isExpandWidget) {
     return (
-      <div className={classNames(
-        styles.widgetExpandHeaderMobile
-      )}>
-        <NarrowRecordOutlined className={styles.closeIcon} color={colors.firstLevelText} onClick={() => closeWidgetRoute(widgetId)}/>
+      <div className={classNames(styles.widgetExpandHeaderMobile)}>
+        <NarrowRecordOutlined className={styles.closeIcon} color={colors.firstLevelText} onClick={() => closeWidgetRoute(widgetId)} />
         <h2>{widget?.snapshot.widgetName}</h2>
       </div>
     );
   }
 
-  return <div className={classNames(
-    styles.widgetHeader,
-    isExpandWidget && styles.widgetIsExpandHeader,
-    className,
-    !config.hideDrag && 'dragHandle',
-    dragging && styles.dragging,
-  )}>
-    {
-      !config.hideDrag && <span className={classNames(styles.dragHandle, styles.operateButton)}>
-        <DragOutlined size={10} color={colors.thirdLevelText} />
-      </span>
-    }
-    <span className={styles.widgetName}>
-      {
-        rename && !config.hideEditName ?
+  return (
+    <div
+      className={classNames(
+        styles.widgetHeader,
+        isExpandWidget && styles.widgetIsExpandHeader,
+        className,
+        !config.hideDrag && 'dragHandle',
+        dragging && styles.dragging,
+      )}
+    >
+      {!config.hideDrag && (
+        <span className={classNames(styles.dragHandle, styles.operateButton)}>
+          <DragOutlined size={10} color={colors.thirdLevelText} />
+        </span>
+      )}
+      <span className={styles.widgetName}>
+        {rename && !config.hideEditName ? (
           <Tooltip title={errTip} visible={Boolean(errTip)}>
             <Input
               defaultValue={widget?.snapshot.widgetName}
@@ -124,57 +121,62 @@ export const WidgetHeaderMobile: React.FC<IWidgetHeaderProps> = (props) => {
               onBlur={saveWidgetName}
               autoFocus
               onChange={onChange}
-              onMouseDown={(e) => {
+              onMouseDown={e => {
                 e.stopPropagation();
               }}
               className={classNames({
                 [styles.error]: Boolean(errTip),
               })}
             />
-          </Tooltip> :
+          </Tooltip>
+        ) : (
           <>
-            <span
-              onMouseUp={nameMouseUp}
-              onTouchEnd={nameMouseUp}
-              className={styles.name}
-            >
+            <span onMouseUp={nameMouseUp} onTouchEnd={nameMouseUp} className={styles.name}>
               {widget?.snapshot.widgetName}
             </span>
-            {
-              widget?.releaseType === WidgetReleaseType.Space &&
-                  <span className={classNames(styles.tag, styles.tagPrimary)}>{t(Strings.widget_item_build)}</span>
-            }
+            {widget?.releaseType === WidgetReleaseType.Space && (
+              <span className={classNames(styles.tag, styles.tagPrimary)}>{t(Strings.widget_item_build)}</span>
+            )}
           </>
-      }
-
-    </span>
-
-    {
-      !config.hideExpand &&
-      <span className={classNames({
-        [styles.npOpacity]: displayMode === 'always' || config.isDevMode,
-      }, styles.operateButton, 'dragHandleDisabled')} onClick={expand} onMouseDown={e => {
-        hideAll();
-      }}>
-        <Tooltip
-          title={isExpandWidget ? t(Strings.widget_collapse_tooltip) : t(Strings.widget_expand_tooltip)}
-        >
-          <IconButton icon={ReactIconExpand} />
-        </Tooltip>
+        )}
       </span>
-    }
-    {
-      !config.hideMoreOperate &&
-      <span data-guide-id="WIDGET_ITEM_MORE" className={classNames({
-        [styles.npOpacity]: displayMode === 'always' || config.isDevMode || isExpandWidget,
-      }, styles.operateButton, 'dragHandleDisabled')} onClick={triggerMenu}
-      >
-        <Tooltip
-          title={t(Strings.widget_more_settings_tooltip)}
+
+      {!config.hideExpand && (
+        <span
+          className={classNames(
+            {
+              [styles.npOpacity]: displayMode === 'always' || config.isDevMode,
+            },
+            styles.operateButton,
+            'dragHandleDisabled',
+          )}
+          onClick={expand}
+          onMouseDown={e => {
+            hideAll();
+          }}
         >
-          <IconButton icon={ReactMoreOutlined} />
-        </Tooltip>
-      </span>
-    }
-  </div>;
+          <Tooltip title={isExpandWidget ? t(Strings.widget_collapse_tooltip) : t(Strings.widget_expand_tooltip)}>
+            <IconButton icon={ReactIconExpand} />
+          </Tooltip>
+        </span>
+      )}
+      {!config.hideMoreOperate && (
+        <span
+          data-guide-id="WIDGET_ITEM_MORE"
+          className={classNames(
+            {
+              [styles.npOpacity]: displayMode === 'always' || config.isDevMode || isExpandWidget,
+            },
+            styles.operateButton,
+            'dragHandleDisabled',
+          )}
+          onClick={triggerMenu}
+        >
+          <Tooltip title={t(Strings.widget_more_settings_tooltip)}>
+            <IconButton icon={ReactMoreOutlined} />
+          </Tooltip>
+        </span>
+      )}
+    </div>
+  );
 };

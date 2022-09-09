@@ -7,7 +7,7 @@ import { InfoCard } from 'pc/components/common';
 import { useNavigation } from 'pc/components/route_manager/use_navigation';
 import { useState } from 'react';
 import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display/enum';
 import { expandMemberInfo } from '../expand_member_info';
 import { Identity } from 'pc/components/space_manage/identity';
 import { getIdentity } from '../member_info';
@@ -20,7 +20,6 @@ export interface IMemberList {
 }
 
 export const MemberList: FC<IMemberList> = props => {
-
   const { memberList } = props;
 
   const dispatch = useDispatch();
@@ -39,9 +38,7 @@ export const MemberList: FC<IMemberList> = props => {
   const isMobile = screenIsAtMost(ScreenSize.md);
 
   const onSelect = (data: IMemberInfoInAddressList) => {
-    const {
-      memberId,
-    } = data;
+    const { memberId } = data;
     setSelectedMemberId(memberId);
     navigationTo({ path: Navigation.MEMBER_DETAIL, params: { spaceId, memberId }});
     isMobile && expandMemberInfo();
@@ -58,10 +55,10 @@ export const MemberList: FC<IMemberList> = props => {
         const title = getSocialWecomUnitName({
           name: memberName,
           isModified: isMemberNameModified,
-          spaceInfo
+          spaceInfo,
         });
         const desc = () => {
-          if (email && (!isActive)) {
+          if (email && !isActive) {
             return t(Strings.added_not_yet);
           }
           if (email && isActive) {
@@ -74,10 +71,7 @@ export const MemberList: FC<IMemberList> = props => {
         };
         const identity = getIdentity(item);
         return (
-          <List.Item
-            onClick={() => onSelect(item)}
-            className={(selectedMemberId === memberId || curMemberId === memberId) ? styles.selectItem : ''}
-          >
+          <List.Item onClick={() => onSelect(item)} className={selectedMemberId === memberId || curMemberId === memberId ? styles.selectItem : ''}>
             <InfoCard
               title={title || ''}
               description={desc()}

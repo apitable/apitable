@@ -1,5 +1,15 @@
 import {
-  Api, ConfigConstant, DATASHEET_ID, DatasheetActions, getMaxViewCountPerSheet, IViewProperty, Selectors, StoreActions, Strings, t, ViewType,
+  Api,
+  ConfigConstant,
+  DATASHEET_ID,
+  DatasheetActions,
+  getMaxViewCountPerSheet,
+  IViewProperty,
+  Selectors,
+  StoreActions,
+  Strings,
+  t,
+  ViewType,
 } from '@vikadata/core';
 import { store } from 'pc/store';
 import { Modal } from 'pc/components/common';
@@ -17,7 +27,7 @@ import { ViewFilter } from './view_filter';
 import classNames from 'classnames';
 import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
 import { useViewAction } from './action';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { Alert, Button, useThemeColors, IUseListenTriggerInfo, useListenVisualHeight } from '@vikadata/components';
 import { useUnmount } from 'ahooks';
 
@@ -26,10 +36,7 @@ interface IViewSwitcherProperty {
   triggerInfo?: IUseListenTriggerInfo;
 }
 
-export const useVerifyOperateItemTitle = (
-  list: any,
-  keyPressEnterCb?: (id: string, value: string) => void,
-) => {
+export const useVerifyOperateItemTitle = (list: any, keyPressEnterCb?: (id: string, value: string) => void) => {
   const [errMsg, setErrMsg] = useState('');
   const [editingValue, setEditingValue] = useState('');
   const [editingId, setEditingId] = useState('');
@@ -73,9 +80,7 @@ export const useVerifyOperateItemTitle = (
 
   const verifyEditingValue = () => {
     let errorMsg = '';
-    const isExitSameName = list.findIndex(
-      item => item.name === editingValue && item.id !== editingId,
-    );
+    const isExitSameName = list.findIndex(item => item.name === editingValue && item.id !== editingId);
 
     if (isExitSameName !== -1) {
       errorMsg = t(Strings.name_repeat);
@@ -106,7 +111,7 @@ export const AddNewViewList: React.FC<{
   addNewViews(e: React.MouseEvent, viewType: ViewType): void;
   style?: React.CSSProperties;
   isMobile?: boolean;
-  isViewCountOverLimit?: boolean
+  isViewCountOverLimit?: boolean;
 }> = props => {
   const colors = useThemeColors();
   const { addNewViews, style, isMobile, isViewCountOverLimit } = props;
@@ -120,18 +125,18 @@ export const AddNewViewList: React.FC<{
   return (
     <div className={styles.addNewViewContainer}>
       {!isMobile && <span className={styles.addNewText}>{t(Strings.new_view)}</span>}
-      {
-        isViewCountOverLimit && <Alert
+      {isViewCountOverLimit && (
+        <Alert
           type={'error'}
           content={t(Strings.view_count_over_limit, { count: getMaxViewCountPerSheet() })}
           style={{ padding: 8, margin: '8px 0px' }}
         />
-      }
+      )}
 
       <div className={styles.viewTypeContainer}>
         <Button
           className={styles.viewType}
-          onClick={e => addNewViews(e as any as React.MouseEvent, ViewType.Grid)}
+          onClick={e => addNewViews((e as any) as React.MouseEvent, ViewType.Grid)}
           style={btnStyle}
           id={DATASHEET_ID.VIEW_LIST_CREATE_GRID_VIEW}
           data-test-id={DATASHEET_ID.VIEW_LIST_CREATE_GRID_VIEW}
@@ -145,7 +150,7 @@ export const AddNewViewList: React.FC<{
         </Button>
         <Button
           className={styles.viewType}
-          onClick={e => addNewViews(e as any as React.MouseEvent, ViewType.Gallery)}
+          onClick={e => addNewViews((e as any) as React.MouseEvent, ViewType.Gallery)}
           style={btnStyle}
           id={DATASHEET_ID.VIEW_LIST_CREATE_GALLERY_VIEW}
           data-test-id={DATASHEET_ID.VIEW_LIST_CREATE_GALLERY_VIEW}
@@ -157,25 +162,26 @@ export const AddNewViewList: React.FC<{
           </div>
           <AddIcon fill={colors.thirdLevelText} />
         </Button>
-        {!isMobile && <Button
-          className={styles.viewType}
-          onClick={e => addNewViews(e as any as React.MouseEvent, ViewType.Kanban)}
-          style={btnStyle}
-          id={DATASHEET_ID.VIEW_LIST_CREATE_KANBAN_VIEW}
-          data-test-id={DATASHEET_ID.VIEW_LIST_CREATE_KANBAN_VIEW}
-          disabled={isViewCountOverLimit}
-        >
-          <div className={classNames('flex item-center', styles.text)}>
-            <ViewIcon viewType={ViewType.Kanban} fill={colors.primaryColor} />
-            <span>{t(Strings.kanban_view)}</span>
-          </div>
-          <AddIcon fill={colors.thirdLevelText} />
-        </Button>}
-        {
-          !isMobile &&
+        {!isMobile && (
           <Button
             className={styles.viewType}
-            onClick={e => addNewViews(e as any as React.MouseEvent, ViewType.Gantt)}
+            onClick={e => addNewViews((e as any) as React.MouseEvent, ViewType.Kanban)}
+            style={btnStyle}
+            id={DATASHEET_ID.VIEW_LIST_CREATE_KANBAN_VIEW}
+            data-test-id={DATASHEET_ID.VIEW_LIST_CREATE_KANBAN_VIEW}
+            disabled={isViewCountOverLimit}
+          >
+            <div className={classNames('flex item-center', styles.text)}>
+              <ViewIcon viewType={ViewType.Kanban} fill={colors.primaryColor} />
+              <span>{t(Strings.kanban_view)}</span>
+            </div>
+            <AddIcon fill={colors.thirdLevelText} />
+          </Button>
+        )}
+        {!isMobile && (
+          <Button
+            className={styles.viewType}
+            onClick={e => addNewViews((e as any) as React.MouseEvent, ViewType.Gantt)}
             style={btnStyle}
             id={DATASHEET_ID.VIEW_LIST_CREATE_GANTT_VIEW}
             data-test-id={DATASHEET_ID.VIEW_LIST_CREATE_GANTT_VIEW}
@@ -187,12 +193,11 @@ export const AddNewViewList: React.FC<{
             </div>
             <AddIcon fill={colors.thirdLevelText} />
           </Button>
-        }
-        {
-          !isMobile &&
+        )}
+        {!isMobile && (
           <Button
             className={styles.viewType}
-            onClick={e => addNewViews(e as any as React.MouseEvent, ViewType.Calendar)}
+            onClick={e => addNewViews((e as any) as React.MouseEvent, ViewType.Calendar)}
             style={btnStyle}
             id={DATASHEET_ID.CREATE_CALENDAR_IN_VIEW_LIST}
             data-test-id={DATASHEET_ID.CREATE_CALENDAR_IN_VIEW_LIST}
@@ -204,12 +209,11 @@ export const AddNewViewList: React.FC<{
             </div>
             <AddIcon fill={colors.thirdLevelText} />
           </Button>
-        }
-        {
-          !isMobile &&
+        )}
+        {!isMobile && (
           <Button
             className={styles.viewType}
-            onClick={e => addNewViews(e as any as React.MouseEvent, ViewType.OrgChart)}
+            onClick={e => addNewViews((e as any) as React.MouseEvent, ViewType.OrgChart)}
             style={btnStyle}
             id={DATASHEET_ID.CREATE_ORG_IN_VIEW_LIST}
             data-test-id={DATASHEET_ID.CREATE_ORG_IN_VIEW_LIST}
@@ -221,7 +225,7 @@ export const AddNewViewList: React.FC<{
             </div>
             <AddIcon fill={colors.thirdLevelText} />
           </Button>
-        }
+        )}
       </div>
     </div>
   );
@@ -232,21 +236,8 @@ const MAX_HEIGHT = 340;
 export const ViewSwitcher: React.FC<IViewSwitcherProperty> = props => {
   const { close, triggerInfo } = props;
   const activityViewId = useSelector(state => state.pageParams.viewId);
-  const {
-    viewCreatable,
-    viewRenamable,
-    viewMovable,
-    viewRemovable,
-    views,
-    datasheetId,
-  } = useSelector(state => {
-
-    const {
-      viewCreatable,
-      viewRenamable,
-      viewMovable,
-      viewRemovable,
-    } = Selectors.getPermissions(state);
+  const { viewCreatable, viewRenamable, viewMovable, viewRemovable, views, datasheetId } = useSelector(state => {
+    const { viewCreatable, viewRenamable, viewMovable, viewRemovable } = Selectors.getPermissions(state);
 
     return {
       viewCreatable,
@@ -254,7 +245,7 @@ export const ViewSwitcher: React.FC<IViewSwitcherProperty> = props => {
       viewMovable,
       viewRemovable,
       views: Selectors.getSnapshot(state)!.meta.views,
-      datasheetId: state.pageParams.datasheetId
+      datasheetId: state.pageParams.datasheetId,
     };
   });
 
@@ -287,9 +278,7 @@ export const ViewSwitcher: React.FC<IViewSwitcherProperty> = props => {
     // 上层组件收起来当前组件
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
-    const newView = DatasheetActions.deriveDefaultViewProperty(
-      Selectors.getSnapshot(store.getState())!, viewType, activityViewId,
-    );
+    const newView = DatasheetActions.deriveDefaultViewProperty(Selectors.getSnapshot(store.getState())!, viewType, activityViewId);
     ViewAction.addView(newView, views.length);
     switchView(e, newView.id, 'add');
     setEditingId(newView.id);
@@ -368,7 +357,12 @@ export const ViewSwitcher: React.FC<IViewSwitcherProperty> = props => {
     let content = t(Strings.del_view_content, {
       view_name: view.name,
     });
-    const [formList, { data: { data: mirrorList }}] = await Promise.all([
+    const [
+      formList,
+      {
+        data: { data: mirrorList },
+      },
+    ] = await Promise.all([
       StoreActions.fetchForeignFormList(datasheetId!, view.id!),
       Api.getRelateNodeByDstId(datasheetId!, view.id!, ConfigConstant.NodeType.MIRROR),
     ]);
@@ -409,7 +403,7 @@ export const ViewSwitcher: React.FC<IViewSwitcherProperty> = props => {
   // const viewListWrapperHeight = useMemo(() => {
   //   const itemHeight = 40;
   //   const wrapperHeight = (!query ? viewLength : searchedViewsLength) * itemHeight + 10;
-  
+
   //   if (wrapperHeight <= minHeight) {
   //     return minHeight;
   //   }
@@ -427,25 +421,28 @@ export const ViewSwitcher: React.FC<IViewSwitcherProperty> = props => {
   return (
     <div
       className={styles.viewSwitcherContainer}
-      onClick={() => { onKeyPressEnter(); }}
+      onClick={() => {
+        onKeyPressEnter();
+      }}
       ref={containerRef}
     >
-      {
-        !isMobile &&
+      {!isMobile && (
         <div className={styles.viewListText}>
           {t(Strings.view_list)}
           <span className={isViewCountOverLimit ? styles.overCount : ''}>
             （{views.length}/{getMaxViewCountPerSheet()}）
           </span>
         </div>
-      }
+      )}
       <div className={styles.searchField} data-test-id={'viewSearchInput'}>
         <LineSearchInput
           size="default"
           value={query}
           allowClear
           onClear={() => setQuery('')}
-          onChange={(e) => { setQuery(e.target.value); }}
+          onChange={e => {
+            setQuery(e.target.value);
+          }}
           placeholder={t(Strings.view_find)}
         />
       </div>
@@ -454,62 +451,54 @@ export const ViewSwitcher: React.FC<IViewSwitcherProperty> = props => {
         // style={{ height: viewListWrapperHeight }}
         style={style}
       >
-        {
-          query && <ViewFilter viewsList={searchedViews} {...commonProps} />
-        }
-        {
-          !query && <DragDropContext onDragEnd={onDragEnd}>
+        {query && <ViewFilter viewsList={searchedViews} {...commonProps} />}
+        {!query && (
+          <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="view-switcher" direction="vertical">
               {provided => {
-                return <div
-                  className={styles.droppable}
-                  ref={element => {
-                    provided.innerRef(element);
-                    scrollRef.current = element;
-                  }}
-                  {...provided.droppableProps}
-                >
-                  {views.map((item: IViewProperty, index: number) => {
-                    return (
-                      <Draggable
-                        draggableId={item.id}
-                        index={index}
-                        key={item.id}
-                        isDragDisabled={!viewMovable}
-                      >
-                        {(providedChild) => (
-                          <div
-                            className={styles.draggable}
-                            ref={providedChild.innerRef}
-                            {...providedChild.draggableProps}
-                            {...providedChild.dragHandleProps}
-                          >
-                            {
-                              <ViewItem
-                                currentViewId={item.id}
-                                currentViewName={item.name}
-                                currentViewIndex={index}
-                                viewType={item.type}
-                                autoSave={item.autoSave}
-                                isViewLock={Boolean(item.lockInfo)}
-                                {...commonProps as any}
-                              />
-                            }
-                          </div>
-                        )}
-                      </Draggable>
-                    );
-                  })}
-                </div>;
+                return (
+                  <div
+                    className={styles.droppable}
+                    ref={element => {
+                      provided.innerRef(element);
+                      scrollRef.current = element;
+                    }}
+                    {...provided.droppableProps}
+                  >
+                    {views.map((item: IViewProperty, index: number) => {
+                      return (
+                        <Draggable draggableId={item.id} index={index} key={item.id} isDragDisabled={!viewMovable}>
+                          {providedChild => (
+                            <div
+                              className={styles.draggable}
+                              ref={providedChild.innerRef}
+                              {...providedChild.draggableProps}
+                              {...providedChild.dragHandleProps}
+                            >
+                              {
+                                <ViewItem
+                                  currentViewId={item.id}
+                                  currentViewName={item.name}
+                                  currentViewIndex={index}
+                                  viewType={item.type}
+                                  autoSave={item.autoSave}
+                                  isViewLock={Boolean(item.lockInfo)}
+                                  {...(commonProps as any)}
+                                />
+                              }
+                            </div>
+                          )}
+                        </Draggable>
+                      );
+                    })}
+                  </div>
+                );
               }}
             </Droppable>
           </DragDropContext>
-        }
+        )}
       </div>
-      {
-        viewCreatable && <AddNewViewList addNewViews={addNewViews} isMobile={isMobile} isViewCountOverLimit={isViewCountOverLimit} />
-      }
+      {viewCreatable && <AddNewViewList addNewViews={addNewViews} isMobile={isMobile} isViewCountOverLimit={isViewCountOverLimit} />}
     </div>
   );
 };
-

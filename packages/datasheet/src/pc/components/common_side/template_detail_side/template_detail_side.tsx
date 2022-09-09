@@ -1,7 +1,7 @@
 import { ConfigConstant, integrateCdnHost, Navigation, Settings, Strings, t, TEMPLATE_CENTER_ID, isIdassPrivateDeployment } from '@vikadata/core';
 import classNames from 'classnames';
 import { Avatar, AvatarSize, AvatarType, Message, Tooltip } from 'pc/components/common';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { useNavigation } from 'pc/components/route_manager/use_navigation';
 import { useSideBarVisible, useSpaceInfo } from 'pc/hooks';
 import { copy2clipBoard } from 'pc/utils';
@@ -27,17 +27,17 @@ export const TemplateDetailSide: React.FC = () => {
 
   const navigationTo = useNavigation();
   const goBack = () => {
-    navigationTo({ path: Navigation.TEMPLATE, params: { spaceId, categoryId } });
+    navigationTo({ path: Navigation.TEMPLATE, params: { spaceId, categoryId }});
   };
 
   const { sideBarVisible, setSideBarVisible } = useSideBarVisible();
   const templateDirectory = useSelector(state => state.templateCentre.directory);
   const title = templateDirectory
     ? getSocialWecomUnitName({
-        name: templateDirectory.nickName,
-        isModified: templateDirectory.isMemberNameModified,
-        spaceInfo,
-      })
+      name: templateDirectory.nickName,
+      isModified: templateDirectory.isMemberNameModified,
+      spaceInfo,
+    })
     : '';
 
   const isOfficial = categoryId !== 'tpcprivate';
@@ -92,8 +92,8 @@ export const TemplateDetailSide: React.FC = () => {
                     categoryId === ConfigConstant.TEMPLATE_CHOICE_CATEGORY_ID
                       ? t(Strings.template_recommend_title)
                       : templateDirectory.categoryName
-                      ? templateDirectory.categoryName
-                      : t(Strings.space_template),
+                        ? templateDirectory.categoryName
+                        : t(Strings.space_template),
                 })}
               </span>
             </div>

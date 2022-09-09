@@ -2,23 +2,20 @@ import NotificationIcon from 'static/icon/datasheet/datasheet_icon_notification.
 import { useEffect, useRef } from 'react';
 import * as React from 'react';
 import { Button, IconButton, useThemeColors } from '@vikadata/components';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { INoticeDetail, Strings, t } from '@vikadata/core';
 import styles from './style.module.less';
 import AnimationJson from 'static/json/notification_motion_white(1).json';
 import { useHover, useMount } from 'ahooks';
 import { AnimationItem } from 'lottie-web/index';
-import { 
-  isAskForJoiningMsg, 
-  JoinMsgApplyStatus,
-} from './utils';
+import { isAskForJoiningMsg, JoinMsgApplyStatus } from './utils';
 
 interface ICard {
   data: INoticeDetail;
   isProcessed?: boolean;
-  onRejectJoinSpace?: (event: React.MouseEvent<HTMLElement, MouseEvent>)=> void;
-  onAgreeJoinSpace?: (event: React.MouseEvent<HTMLElement, MouseEvent>)=> void;
-  onProcess?: (event: React.MouseEvent<HTMLElement, MouseEvent>)=> void;
+  onRejectJoinSpace?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+  onAgreeJoinSpace?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+  onProcess?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
 export const HandleMsg = (props: ICard) => {
@@ -55,9 +52,7 @@ export const HandleMsg = (props: ICard) => {
   // 已处理消息，并且是“申请加入的消息“
   if (isProcessed && isAskForJoining) {
     const applyStatus = data.notifyBody.extras?.applyStatus;
-    return (
-      <JoinMsgApplyStatus status={applyStatus} />
-    );
+    return <JoinMsgApplyStatus status={applyStatus} />;
   }
 
   // 未处理消息，并且是“申请加入的消息“
@@ -65,8 +60,12 @@ export const HandleMsg = (props: ICard) => {
     return (
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <div className={styles.handleButtonWrapInPc}>
-          <Button size="small" onClick={onRejectJoinSpace}>{t(Strings.reject)}</Button>
-          <Button color="primary" onClick={onAgreeJoinSpace} size="small">{t(Strings.agree)}</Button>
+          <Button size="small" onClick={onRejectJoinSpace}>
+            {t(Strings.reject)}
+          </Button>
+          <Button color="primary" onClick={onAgreeJoinSpace} size="small">
+            {t(Strings.agree)}
+          </Button>
         </div>
       </ComponentDisplay>
     );
@@ -95,5 +94,4 @@ export const HandleMsg = (props: ICard) => {
   }
   // 已处理消息，不是““申请加入的消息”
   return <></>;
-
 };

@@ -1,5 +1,5 @@
 import { cellValueToImageSrc, Strings, t } from '@vikadata/core';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
@@ -25,12 +25,12 @@ const PreviewPdf: React.FC<IPreviewTypeBase> = props => {
   });
 
   function pre(e: React.MouseEvent) {
-    setPageNumber(state => state <= 1 ? 1 : --state);
+    setPageNumber(state => (state <= 1 ? 1 : --state));
     stopPropagation(e);
   }
 
   function next(e: React.MouseEvent) {
-    setPageNumber(state => state >= numPages! ? numPages! : ++state);
+    setPageNumber(state => (state >= numPages! ? numPages! : ++state));
     stopPropagation(e);
   }
 
@@ -40,11 +40,7 @@ const PreviewPdf: React.FC<IPreviewTypeBase> = props => {
         file={cellValueToImageSrc(file)}
         onLoadSuccess={onDocumentLoadSuccess}
         className={styles.pdf}
-        loading={
-          <div className={styles.loading}>
-            {t(Strings.loading_file)}
-          </div>
-        }
+        loading={<div className={styles.loading}>{t(Strings.loading_file)}</div>}
         // onMouseDown={stopPropagation}
         options={{
           cMapUrl: process.env.NEXT_PUBLIC_PUBLIC_URL + '/file/pdf/',
@@ -54,27 +50,18 @@ const PreviewPdf: React.FC<IPreviewTypeBase> = props => {
         <Page
           pageNumber={pageNumber}
           width={screenIsAtMost(ScreenSize.md) ? clientWidth : 800}
-          loading={
-            <div className={styles.loading}>
-              {t(Strings.loading_file)}
-            </div>
-          }
+          loading={<div className={styles.loading}>{t(Strings.loading_file)}</div>}
         />
       </Document>
       <div className={styles.pagination} onMouseDown={stopPropagation}>
-        <button
-          className={styles.pageLeft}
-          onClick={pre}
-          onMouseDown={stopPropagation}
-        >
+        <button className={styles.pageLeft} onClick={pre} onMouseDown={stopPropagation}>
           {t(Strings.previous_page)}
         </button>
-        <p> {pageNumber} of {numPages}</p>
-        <button
-          className={styles.pageRight}
-          onClick={next}
-          onMouseDown={stopPropagation}
-        >
+        <p>
+          {' '}
+          {pageNumber} of {numPages}
+        </p>
+        <button className={styles.pageRight} onClick={next} onMouseDown={stopPropagation}>
           {t(Strings.next_page)}
         </button>
       </div>

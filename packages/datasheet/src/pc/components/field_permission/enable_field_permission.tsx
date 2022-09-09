@@ -16,9 +16,9 @@ import { permission } from '@vikadata/core/dist/config/constant';
 import { MembersDetail } from 'pc/components/catalog/permission_settings/permission/members_detail';
 import { MultiplemembersFilled } from '@vikadata/icons';
 import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 
-export const EnableFieldPermission: React.FC<IEnablePermission> = (props) => {
+export const EnableFieldPermission: React.FC<IEnablePermission> = props => {
   const colors = useThemeColors();
   const { permissionStatus, onClose, field } = props;
   const [confirmPopVisible, setConfirmPopVisible] = useState(false);
@@ -40,7 +40,7 @@ export const EnableFieldPermission: React.FC<IEnablePermission> = (props) => {
         setRoleList(roles);
         setSetting(setting);
       }
-    }
+    },
   });
 
   useMount(() => {
@@ -56,7 +56,8 @@ export const EnableFieldPermission: React.FC<IEnablePermission> = (props) => {
     });
     const role = permission.value + '';
     const res = await DatasheetApi.addFieldPermissionRole(datasheetId, field.id, {
-      role, unitIds
+      role,
+      unitIds,
     });
     const { success, message } = res.data;
     if (!success) {
@@ -64,7 +65,7 @@ export const EnableFieldPermission: React.FC<IEnablePermission> = (props) => {
       return;
     }
     Message.success({
-      content: t(Strings.add_role_success)
+      content: t(Strings.add_role_success),
     });
     await fetchRoleList();
   };
@@ -84,7 +85,7 @@ export const EnableFieldPermission: React.FC<IEnablePermission> = (props) => {
 
   const handleErrMsg = (content: string) => {
     Message.warning({
-      content
+      content,
     });
   };
 
@@ -100,7 +101,8 @@ export const EnableFieldPermission: React.FC<IEnablePermission> = (props) => {
 
   const editRole = async(unitId: string, role: string) => {
     const res = await DatasheetApi.editFieldPermissionRole(datasheetId, field.id, {
-      role, unitId
+      role,
+      unitId,
     });
     const { success, message } = res.data;
     if (!success) {
@@ -108,7 +110,7 @@ export const EnableFieldPermission: React.FC<IEnablePermission> = (props) => {
       return;
     }
     Message.success({
-      content: t(Strings.operate_success)
+      content: t(Strings.operate_success),
     });
     await fetchRoleList();
   };
@@ -121,7 +123,7 @@ export const EnableFieldPermission: React.FC<IEnablePermission> = (props) => {
       return;
     }
     Message.success({
-      content: t(Strings.operate_success)
+      content: t(Strings.operate_success),
     });
     await fetchRoleList();
   };
@@ -138,7 +140,7 @@ export const EnableFieldPermission: React.FC<IEnablePermission> = (props) => {
       return;
     }
     Message.success({
-      content: t(Strings.operate_success)
+      content: t(Strings.operate_success),
     });
     await fetchRoleList();
   };
@@ -149,125 +151,115 @@ export const EnableFieldPermission: React.FC<IEnablePermission> = (props) => {
       avatar: item.avatar,
       name: item.unitName,
       info: item.teams,
-      isTeam: item.unitType === MemberType.Team
+      isTeam: item.unitType === MemberType.Team,
     };
   };
 
-  return <div className={styles.openPermissionWrapper}>
-    <div className={styles.switchWrapper}>
-      <Popconfirm
-        title={t(Strings.field_permission_close)}
-        content={<div>{t(Strings.field_permisson_close_tip)}</div>}
-        visible={confirmPopVisible}
-        onCancel={() => { setConfirmPopVisible(false); }}
-        onOk={closeFieldPermission}
-        type="warning"
-      >
+  return (
+    <div className={styles.openPermissionWrapper}>
+      <div className={styles.switchWrapper}>
+        <Popconfirm
+          title={t(Strings.field_permission_close)}
+          content={<div>{t(Strings.field_permisson_close_tip)}</div>}
+          visible={confirmPopVisible}
+          onCancel={() => {
+            setConfirmPopVisible(false);
+          }}
+          onOk={closeFieldPermission}
+          type="warning"
+        >
+          <Switch
+            size={'small'}
+            checked={permissionStatus}
+            style={{ marginRight: 8 }}
+            onClick={() => {
+              setConfirmPopVisible(true);
+            }}
+            disabled={readonly}
+          />
+        </Popconfirm>
+        <Typography variant={'body2'}>{t(Strings.field_permission_switch_open)}</Typography>
+      </div>
+      {!readonly && <UnitPermissionSelect classNames={styles.permissionSelect} permissionList={permissionList} onSubmit={submitAddRole} />}
+      <div className={styles.collaboratorTip}>
+        <span className={styles.leftTip}>
+          <MultiplemembersFilled color={[colors.thirdLevelText, 'transparent']} />
+          <Typography variant={'body4'} component={'span'} className={styles.customColor}>
+            {t(Strings.field_permission_modal_tip)}
+          </Typography>
+        </span>
+        {screenIsAtLeast(ScreenSize.md) && (
+          <LinkButton color={'default'} className={styles.rightButton} onClick={() => toggleIsMemberDetail()} underline={false}>
+            <Typography variant={'body4'} component={'span'} className={styles.customColor}>
+              {t(Strings.view_by_person)}
+            </Typography>
+            <ArrowRightIcon fill={colors.thirdLevelText} />
+          </LinkButton>
+        )}
+      </div>
+      {screenIsAtMost(ScreenSize.md) && (
+        <span className={styles.mobileMemberList} onClick={() => toggleIsMemberDetail()}>
+          {t(Strings.view_collaborative_members, {
+            number: memberList.length,
+          })}
+        </span>
+      )}
+      <div className={styles.unitPermissionList}>
+        {roleList.map(item => {
+          const roleOptions = [
+            {
+              value: permission.editor,
+              label: t(Strings.can_edit),
+              disabled: !item.canEdit,
+              disabledTip: t(Strings.cannot_switch_field_permission),
+            },
+            {
+              value: permission.reader,
+              label: t(Strings.can_read),
+              disabled: !item.canRead,
+              disabledTip: t(Strings.cannot_switch_field_permission),
+            },
+          ];
+          return (
+            <UnitItem
+              key={item.unitId}
+              unit={createStandardUnit(item)}
+              role={item.role}
+              roleOptions={roleOptions}
+              allowRemove={item.canRemove}
+              onChange={editRole}
+              onRemove={onRemove}
+              roleInvalid={item.roleInvalid}
+              identity={{
+                admin: item.isAdmin,
+                permissionOpener: item.isOwner,
+                permissionOpenerTip: t(Strings.permisson_model_field_owner),
+              }}
+              disabled={item.nodeManageable || readonly}
+              disabledTip={readonly ? '' : t(Strings.field_permission_uneditable_tooltips)}
+            />
+          );
+        })}
+      </div>
+      <div className={styles.openFormPermission}>
         <Switch
           size={'small'}
-          checked={permissionStatus}
           style={{ marginRight: 8 }}
-          onClick={() => { setConfirmPopVisible(true); }}
+          checked={setting.formSheetAccessible}
+          onChange={changeFormSheetAccessible}
           disabled={readonly}
         />
-      </Popconfirm>
-      <Typography variant={'body2'}>
-        {t(Strings.field_permission_switch_open)}
-      </Typography>
-    </div>
-    {
-      !readonly && <UnitPermissionSelect
-        classNames={styles.permissionSelect}
-        permissionList={permissionList}
-        onSubmit={submitAddRole}
-      />
-    }
-    <div className={styles.collaboratorTip}>
-      <span className={styles.leftTip}>
-        <MultiplemembersFilled color={[colors.thirdLevelText, 'transparent']} />
-        <Typography variant={'body4'} component={'span'} className={styles.customColor}>
-          {t(Strings.field_permission_modal_tip)}
-        </Typography>
-      </span>
-      {
-        screenIsAtLeast(ScreenSize.md) && <LinkButton
-          color={'default'}
-          className={styles.rightButton}
-          onClick={() => toggleIsMemberDetail()}
-          underline={false}
-        >
-          <Typography variant={'body4'} component={'span'} className={styles.customColor}>
-            {t(Strings.view_by_person)}
-          </Typography>
-          <ArrowRightIcon fill={colors.thirdLevelText} />
-        </LinkButton>
-      }
-
-    </div>
-    {
-      screenIsAtMost(ScreenSize.md) && <span className={styles.mobileMemberList} onClick={() => toggleIsMemberDetail()}>
-        {
-          t(Strings.view_collaborative_members, {
-            number: memberList.length
-          })
-        }
-      </span>
-    }
-    <div className={styles.unitPermissionList}>
-      {
-        roleList.map(item => {
-          const roleOptions = [{
-            value: permission.editor,
-            label: t(Strings.can_edit),
-            disabled: !item.canEdit,
-            disabledTip: t(Strings.cannot_switch_field_permission)
-          }, {
-            value: permission.reader,
-            label: t(Strings.can_read),
-            disabled: !item.canRead,
-            disabledTip: t(Strings.cannot_switch_field_permission)
-          }];
-          return <UnitItem
-            key={item.unitId}
-            unit={createStandardUnit(item)}
-            role={item.role}
-            roleOptions={roleOptions}
-            allowRemove={item.canRemove}
-            onChange={editRole}
-            onRemove={onRemove}
-            roleInvalid={item.roleInvalid}
-            identity={{
-              admin: item.isAdmin,
-              permissionOpener: item.isOwner,
-              permissionOpenerTip: t(Strings.permisson_model_field_owner)
-            }}
-            disabled={item.nodeManageable || readonly}
-            disabledTip={readonly ? '' : t(Strings.field_permission_uneditable_tooltips)}
-          />;
-        })
-      }
-    </div>
-    <div className={styles.openFormPermission}>
-      <Switch
-        size={'small'}
-        style={{ marginRight: 8 }}
-        checked={setting.formSheetAccessible}
-        onChange={changeFormSheetAccessible}
-        disabled={readonly}
-      />
-      {t(Strings.field_permission_form_sheet_accessable)}
-    </div>
-    {
-      isMemberDetail &&
-      (
+        {t(Strings.field_permission_form_sheet_accessable)}
+      </div>
+      {isMemberDetail && (
         <MembersDetail
           data={{
             members: memberList,
-            admins: memberList.filter(member => member.isAdmin) as any as IMember[]
+            admins: (memberList.filter(member => member.isAdmin) as any) as IMember[],
           }}
           onCancel={toggleIsMemberDetail}
         />
-      )
-    }
-  </div>;
+      )}
+    </div>
+  );
 };

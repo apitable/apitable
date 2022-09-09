@@ -8,7 +8,7 @@ import { useRequest } from 'pc/hooks';
 import { useResponsive, useSpaceRequest } from 'pc/hooks';
 import { AutoTestID, DATASHEET_ID, IReduxState, Navigation, Strings, t } from '@vikadata/core';
 import { TComponent } from 'pc/components/common/t_component';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import JoinIcon from 'static/icon/datasheet/share/datasheet_icon_share_join.svg';
 import classnames from 'classnames';
 import { useSelector } from 'react-redux';
@@ -34,14 +34,20 @@ export const ApplicationJoinSpaceAlert: FC<IApplicationJoinSpaceAlertProps> = ({
 
   const renderMinimized = () => {
     const container = document.getElementById(DATASHEET_ID.APPLICATION_JOIN_SPACE_BTN);
-    return container ? ReactDOM.createPortal(<ButtonPlus.Font
-      className={classnames(styles.joinBtn, minimized && !isMobile && styles.fadeIn)}
-      onClick={() => applicationJoinHandler()}
-      icon={<JoinIcon width={24} height={24} fill={colors.secondLevelText} />}
-      size="small"
-      shadow
-    />, container) : <></>;
-
+    return container ? (
+      ReactDOM.createPortal(
+        <ButtonPlus.Font
+          className={classnames(styles.joinBtn, minimized && !isMobile && styles.fadeIn)}
+          onClick={() => applicationJoinHandler()}
+          icon={<JoinIcon width={24} height={24} fill={colors.secondLevelText} />}
+          size="small"
+          shadow
+        />,
+        container,
+      )
+    ) : (
+      <></>
+    );
   };
 
   const closeHandler = () => {
@@ -59,16 +65,15 @@ export const ApplicationJoinSpaceAlert: FC<IApplicationJoinSpaceAlertProps> = ({
           navigationTo({ path: Navigation.LOGIN, query: { reference: window.location.href }});
         },
         okButtonProps: { id: AutoTestID.GO_LOGIN_BTN },
-        type: 'warning'
+        type: 'warning',
       });
       return;
     }
     Modal.confirm({
       title: t(Strings.apply_join_space_modal_title),
-      content: <TComponent
-        tkey={t(Strings.apply_join_space_modal_content)}
-        params={{ spaceName: <span className={styles.spaceName}>{spaceName}</span> }}
-      />,
+      content: (
+        <TComponent tkey={t(Strings.apply_join_space_modal_content)} params={{ spaceName: <span className={styles.spaceName}>{spaceName}</span> }} />
+      ),
       okText: t(Strings.join),
       onOk: () => applyJoinSpace(spaceId),
     });
@@ -76,7 +81,7 @@ export const ApplicationJoinSpaceAlert: FC<IApplicationJoinSpaceAlertProps> = ({
 
   return (
     <div className={classnames(styles.applicationJoinSpace, minimized && !isMobile && styles.fadeout)}>
-      {!isMobile &&
+      {!isMobile && (
         <div className={styles.container}>
           <span className={styles.text}>{t(Strings.apply_join_space_alert_text)}</span>
           <Button
@@ -89,9 +94,11 @@ export const ApplicationJoinSpaceAlert: FC<IApplicationJoinSpaceAlertProps> = ({
           >
             {t(Strings.apply_join_space)}
           </Button>
-          <div className={styles.closeBtn} onClick={closeHandler}><CloseIcon /></div>
+          <div className={styles.closeBtn} onClick={closeHandler}>
+            <CloseIcon />
+          </div>
         </div>
-      }
+      )}
       {renderMinimized()}
     </div>
   );

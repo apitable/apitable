@@ -1,13 +1,24 @@
 import { Button, Checkbox, IUseListenTriggerInfo, Select, Typography, useListenVisualHeight, useThemeColors } from '@vikadata/components';
 import {
-  CalendarStyleKeyType, CollaCommandName, DropDirectionType, GalleryStyleKeyType, IViewColumn, KanbanStyleKey, NO_COVER_FIELD_ID,
-  OrgChartStyleKeyType, Selectors, StoreActions, Strings, t, ViewType
+  CalendarStyleKeyType,
+  CollaCommandName,
+  DropDirectionType,
+  GalleryStyleKeyType,
+  IViewColumn,
+  KanbanStyleKey,
+  NO_COVER_FIELD_ID,
+  OrgChartStyleKeyType,
+  Selectors,
+  StoreActions,
+  Strings,
+  t,
+  ViewType,
 } from '@vikadata/core';
 import { DragOutlined, EditDescribeOutlined, InformationSmallOutlined } from '@vikadata/icons';
 import { Switch, Tooltip } from 'antd';
 import classNames from 'classnames';
 import { Message } from 'pc/components/common';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { getCoverFields } from 'pc/components/gallery_view/utils';
 import { HighlightWords } from 'pc/components/highlight_words';
@@ -49,26 +60,18 @@ const FieldItem = ({
   isMobile,
   hiddenProp,
   setActiveField,
-  modalClose
+  modalClose,
 }) => {
   const colors = useThemeColors();
-  const fieldRole = Selectors.getFieldRoleByFieldId(
-    fieldPermissionMap,
-    item.fieldId
-  );
+  const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, item.fieldId);
   const { name, type } = fieldMap[item.fieldId];
 
   const activeCell = useSelector(state => Selectors.getActiveCell(state));
   const isFocus = activeCell && activeCell?.fieldId === item.fieldId;
 
   return (
-    <Draggable
-      key={item.fieldId}
-      draggableId={item.fieldId}
-      index={index}
-      isDragDisabled={disabledDrag}
-    >
-      {(provided) => (
+    <Draggable key={item.fieldId} draggableId={item.fieldId} index={index} isDragDisabled={disabledDrag}>
+      {provided => (
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
@@ -78,16 +81,9 @@ const FieldItem = ({
           onClick={() => setActiveField(item.fieldId, item[hiddenProp]!, modalClose)}
           tabIndex={index}
         >
-          {!disabledDrag && (
-            <DragOutlined
-              size={10}
-              color={isMobile ? colors.thirdLevelText : colors.fourthLevelText}
-            />
-          )}
+          {!disabledDrag && <DragOutlined size={10} color={isMobile ? colors.thirdLevelText : colors.fourthLevelText} />}
           <div className={styles.fieldIconAndTitle}>
-            <div className={styles.iconType}>
-              {getFieldTypeIcon(type)}
-            </div>
+            <div className={styles.iconType}>{getFieldTypeIcon(type)}</div>
             <div className={styles.fieldName}>
               <HighlightWords keyword={keyword} words={name} />
             </div>
@@ -141,7 +137,7 @@ const getFreeColumnsByViewType = (columns: IViewColumn[], viewType: ViewType, hi
 const MIN_HEIGHT = 120;
 const MAX_HEIGHT = 490;
 
-export const HiddenField: React.FC<IHiddenFieldProps> = (props) => {
+export const HiddenField: React.FC<IHiddenFieldProps> = props => {
   const { type: hideFieldType = HideFieldType.Common, triggerInfo, mobileModalclose } = props;
   const colors = useThemeColors();
   const datasheetId = useSelector(state => state.pageParams.datasheetId)!;
@@ -157,9 +153,7 @@ export const HiddenField: React.FC<IHiddenFieldProps> = (props) => {
   const freeColumns = getFreeColumnsByViewType(columns, viewType, hideFieldType);
   const coverFields = getCoverFields(fieldMap);
   const [query, setQuery] = useState('');
-  const execute = resourceService.instance!.commandManager.execute.bind(
-    resourceService.instance!.commandManager
-  );
+  const execute = resourceService.instance!.commandManager.execute.bind(resourceService.instance!.commandManager);
   const hiddenProp = getHiddenProps(viewType, hideFieldType);
   const handleHideField = useHideField(activeView, hiddenProp);
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
@@ -178,25 +172,30 @@ export const HiddenField: React.FC<IHiddenFieldProps> = (props) => {
     if (!destination) {
       return;
     }
-    const data = [{
-      fieldId: freeColumns[source.index].fieldId,
-      overTargetId: freeColumns[destination.index].fieldId,
-      direction: source.index > destination.index ? DropDirectionType.BEFORE : DropDirectionType.AFTER,
-    }];
+    const data = [
+      {
+        fieldId: freeColumns[source.index].fieldId,
+        overTargetId: freeColumns[destination.index].fieldId,
+        direction: source.index > destination.index ? DropDirectionType.BEFORE : DropDirectionType.AFTER,
+      },
+    ];
 
-    executeCommandWithMirror(() => {
-      execute({
-        cmd: CollaCommandName.MoveColumn,
-        viewId: activeView.id,
-        data,
-      });
-    }, {
-      columns: getMoveColumnsResult({
-        viewId: activeView.id,
-        data,
-        datasheetId
-      })
-    });
+    executeCommandWithMirror(
+      () => {
+        execute({
+          cmd: CollaCommandName.MoveColumn,
+          viewId: activeView.id,
+          data,
+        });
+      },
+      {
+        columns: getMoveColumnsResult({
+          viewId: activeView.id,
+          data,
+          datasheetId,
+        }),
+      },
+    );
   };
 
   function onChange(fieldId: string, checked: boolean) {
@@ -227,16 +226,18 @@ export const HiddenField: React.FC<IHiddenFieldProps> = (props) => {
     const firstRecord = visibleRows[0];
     const lastRecord = visibleRows[visibleRows.length - 1];
     dispatch(StoreActions.setFieldRanges(datasheetId, [fieldId]));
-    dispatch(StoreActions.setSelection({
-      start: {
-        recordId: firstRecord.recordId,
-        fieldId
-      },
-      end: {
-        recordId: lastRecord.recordId,
-        fieldId
-      },
-    }));
+    dispatch(
+      StoreActions.setSelection({
+        start: {
+          recordId: firstRecord.recordId,
+          fieldId,
+        },
+        end: {
+          recordId: lastRecord.recordId,
+          fieldId,
+        },
+      }),
+    );
 
     if (isMobile && modalClose) {
       modalClose(false);
@@ -256,56 +257,65 @@ export const HiddenField: React.FC<IHiddenFieldProps> = (props) => {
     const newColumns: IViewColumn[] = columns.slice(0, 1);
     const isHidden = type === ActionType.Hide;
     if (isGanttView) {
-      newColumns.push(...freeColumns.map((item) => ({ ...item, [hiddenProp]: isHidden })));
+      newColumns.push(...freeColumns.map(item => ({ ...item, [hiddenProp]: isHidden })));
     } else {
-      newColumns.push(...freeColumns.map((item) => ({ ...item, hidden: isHidden, [hiddenProp]: isHidden })));
+      newColumns.push(...freeColumns.map(item => ({ ...item, hidden: isHidden, [hiddenProp]: isHidden })));
     }
 
-    executeCommandWithMirror(() => {
-      execute({
-        cmd: CollaCommandName.ModifyViews,
-        data: [
-          {
-            viewId: activeView.id,
-            key: 'columns',
-            value: newColumns,
-          },
-        ],
-      });
-    }, { columns: newColumns });
+    executeCommandWithMirror(
+      () => {
+        execute({
+          cmd: CollaCommandName.ModifyViews,
+          data: [
+            {
+              viewId: activeView.id,
+              key: 'columns',
+              value: newColumns,
+            },
+          ],
+        });
+      },
+      { columns: newColumns },
+    );
   }
 
   // 是否封面拉伸
   const switchCoverFit = (checked: boolean) => {
     if (activeView.type === ViewType.Kanban || activeView.type === ViewType.Gallery) {
-      executeCommandWithMirror(() => {
-        execute({
-          cmd: activeView.type === ViewType.Kanban ? CollaCommandName.SetKanbanStyle : CollaCommandName.SetGalleryStyle,
-          viewId: activeView.id,
-          styleKey: (activeView.type === ViewType.Kanban ? KanbanStyleKey.IsCoverFit : GalleryStyleKeyType.IsCoverFit) as any,
-          styleValue: !checked,
-        });
-      }, {
-        style: {
-          ...activeView.style,
-          [GalleryStyleKeyType.IsCoverFit]: !checked
-        }
-      } as any);
+      executeCommandWithMirror(
+        () => {
+          execute({
+            cmd: activeView.type === ViewType.Kanban ? CollaCommandName.SetKanbanStyle : CollaCommandName.SetGalleryStyle,
+            viewId: activeView.id,
+            styleKey: (activeView.type === ViewType.Kanban ? KanbanStyleKey.IsCoverFit : GalleryStyleKeyType.IsCoverFit) as any,
+            styleValue: !checked,
+          });
+        },
+        {
+          style: {
+            ...activeView.style,
+            [GalleryStyleKeyType.IsCoverFit]: !checked,
+          },
+        } as any,
+      );
     }
     if (activeView.type === ViewType.OrgChart) {
-      executeCommandWithMirror(() => {
-        execute({
-          cmd: CollaCommandName.SetOrgChartStyle,
-          viewId: activeView.id,
-          styleKey: OrgChartStyleKeyType.IsCoverFit,
-          styleValue: !checked,
-        });
-      }, {
-        style: {
-          ...activeView.style,
-          [OrgChartStyleKeyType.IsCoverFit]: !checked
-        }
-      });
+      executeCommandWithMirror(
+        () => {
+          execute({
+            cmd: CollaCommandName.SetOrgChartStyle,
+            viewId: activeView.id,
+            styleKey: OrgChartStyleKeyType.IsCoverFit,
+            styleValue: !checked,
+          });
+        },
+        {
+          style: {
+            ...activeView.style,
+            [OrgChartStyleKeyType.IsCoverFit]: !checked,
+          },
+        },
+      );
       return;
     }
   };
@@ -313,130 +323,147 @@ export const HiddenField: React.FC<IHiddenFieldProps> = (props) => {
   // 是否显示隐藏维格列名称
   const switchColNameVisible = (checked: boolean) => {
     if (activeView.type === ViewType.Gallery) {
-      executeCommandWithMirror(() => {
-        execute({
-          cmd: CollaCommandName.SetGalleryStyle,
-          viewId: activeView.id,
-          styleKey: GalleryStyleKeyType.IsColNameVisible,
-          styleValue: checked,
-        });
-      }, {
-        style: {
-          ...activeView.style,
-          [GalleryStyleKeyType.IsColNameVisible]: checked
-        }
-      });
+      executeCommandWithMirror(
+        () => {
+          execute({
+            cmd: CollaCommandName.SetGalleryStyle,
+            viewId: activeView.id,
+            styleKey: GalleryStyleKeyType.IsColNameVisible,
+            styleValue: checked,
+          });
+        },
+        {
+          style: {
+            ...activeView.style,
+            [GalleryStyleKeyType.IsColNameVisible]: checked,
+          },
+        },
+      );
       return;
     }
     if (activeView.type === ViewType.Calendar) {
-      executeCommandWithMirror(() => {
-        execute({
-          cmd: CollaCommandName.SetCalendarStyle,
-          viewId: activeView.id,
-          data: [{
-            styleKey: CalendarStyleKeyType.IsColNameVisible,
+      executeCommandWithMirror(
+        () => {
+          execute({
+            cmd: CollaCommandName.SetCalendarStyle,
+            viewId: activeView.id,
+            data: [
+              {
+                styleKey: CalendarStyleKeyType.IsColNameVisible,
+                styleValue: checked,
+              },
+            ],
+          });
+        },
+        {
+          style: {
+            ...activeView.style,
+            [GalleryStyleKeyType.IsColNameVisible]: checked,
+          },
+        },
+      );
+      return;
+    }
+    if (activeView.type === ViewType.OrgChart) {
+      executeCommandWithMirror(
+        () => {
+          execute({
+            cmd: CollaCommandName.SetOrgChartStyle,
+            viewId: activeView.id,
+            styleKey: OrgChartStyleKeyType.IsColNameVisible,
             styleValue: checked,
-          }]
-        });
-      }, {
-        style: {
-          ...activeView.style,
-          [GalleryStyleKeyType.IsColNameVisible]: checked
-        }
-      });
-      return;
-    }
-    if (activeView.type === ViewType.OrgChart) {
-      executeCommandWithMirror(() => {
-        execute({
-          cmd: CollaCommandName.SetOrgChartStyle,
-          viewId: activeView.id,
-          styleKey: OrgChartStyleKeyType.IsColNameVisible,
-          styleValue: checked,
-        });
-      }, {
-        style: {
-          ...activeView.style,
-          [OrgChartStyleKeyType.IsColNameVisible]: checked
-        }
-      });
+          });
+        },
+        {
+          style: {
+            ...activeView.style,
+            [OrgChartStyleKeyType.IsColNameVisible]: checked,
+          },
+        },
+      );
       return;
     }
     if (activeView.type === ViewType.Kanban) {
-      executeCommandWithMirror(() => {
-        execute({
-          cmd: CollaCommandName.SetKanbanStyle,
-          viewId: activeView.id,
-          styleKey: KanbanStyleKey.IsColNameVisible,
-          styleValue: checked,
-        });
-      }, {
-        style: {
-          ...activeView.style,
-          [GalleryStyleKeyType.IsColNameVisible]: checked
-        }
-      });
-
+      executeCommandWithMirror(
+        () => {
+          execute({
+            cmd: CollaCommandName.SetKanbanStyle,
+            viewId: activeView.id,
+            styleKey: KanbanStyleKey.IsColNameVisible,
+            styleValue: checked,
+          });
+        },
+        {
+          style: {
+            ...activeView.style,
+            [GalleryStyleKeyType.IsColNameVisible]: checked,
+          },
+        },
+      );
     }
-  }
-  ;
+  };
   // 是否显示封面
-  const changeCoverField = (value) => {
+  const changeCoverField = value => {
     if (activeView.type === ViewType.Gallery) {
-      executeCommandWithMirror(() => {
-        execute({
-          cmd: CollaCommandName.SetGalleryStyle,
-          viewId: activeView.id,
-          styleKey: GalleryStyleKeyType.CoverFieldId,
-          styleValue: value === NO_COVER_FIELD_ID ? undefined : value,
-        });
-      }, {
-        style: {
-          ...activeView.style,
-          [GalleryStyleKeyType.CoverFieldId]: value === NO_COVER_FIELD_ID ? undefined : value
-        }
-      });
+      executeCommandWithMirror(
+        () => {
+          execute({
+            cmd: CollaCommandName.SetGalleryStyle,
+            viewId: activeView.id,
+            styleKey: GalleryStyleKeyType.CoverFieldId,
+            styleValue: value === NO_COVER_FIELD_ID ? undefined : value,
+          });
+        },
+        {
+          style: {
+            ...activeView.style,
+            [GalleryStyleKeyType.CoverFieldId]: value === NO_COVER_FIELD_ID ? undefined : value,
+          },
+        },
+      );
     }
     if (activeView.type === ViewType.OrgChart) {
-      executeCommandWithMirror(() => {
-        execute({
-          cmd: CollaCommandName.SetOrgChartStyle,
-          viewId: activeView.id,
-          styleKey: OrgChartStyleKeyType.CoverFieldId,
-          styleValue: value === NO_COVER_FIELD_ID ? undefined : value,
-        });
-      }, {
-        style: {
-          ...activeView.style,
-          [OrgChartStyleKeyType.CoverFieldId]: value === NO_COVER_FIELD_ID ? undefined : value
-        }
-      });
+      executeCommandWithMirror(
+        () => {
+          execute({
+            cmd: CollaCommandName.SetOrgChartStyle,
+            viewId: activeView.id,
+            styleKey: OrgChartStyleKeyType.CoverFieldId,
+            styleValue: value === NO_COVER_FIELD_ID ? undefined : value,
+          });
+        },
+        {
+          style: {
+            ...activeView.style,
+            [OrgChartStyleKeyType.CoverFieldId]: value === NO_COVER_FIELD_ID ? undefined : value,
+          },
+        },
+      );
     }
     if (activeView.type === ViewType.Kanban) {
-      executeCommandWithMirror(() => {
-        execute({
-          cmd: CollaCommandName.SetKanbanStyle,
-          viewId: activeView.id,
-          styleKey: KanbanStyleKey.CoverFieldId,
-          styleValue: value === NO_COVER_FIELD_ID ? undefined : value,
-        });
-      }, {
-        style: {
-          ...activeView.style,
-          [KanbanStyleKey.CoverFieldId]: value === NO_COVER_FIELD_ID ? undefined : value
-        }
-      });
+      executeCommandWithMirror(
+        () => {
+          execute({
+            cmd: CollaCommandName.SetKanbanStyle,
+            viewId: activeView.id,
+            styleKey: KanbanStyleKey.CoverFieldId,
+            styleValue: value === NO_COVER_FIELD_ID ? undefined : value,
+          });
+        },
+        {
+          style: {
+            ...activeView.style,
+            [KanbanStyleKey.CoverFieldId]: value === NO_COVER_FIELD_ID ? undefined : value,
+          },
+        },
+      );
     }
   };
   const getDefaultCoverValue = () => {
-    if (
-      activeView.type !== ViewType.Gallery &&
-      activeView.type !== ViewType.Kanban &&
-      activeView.type !== ViewType.OrgChart
-    ) {
+    if (activeView.type !== ViewType.Gallery && activeView.type !== ViewType.Kanban && activeView.type !== ViewType.OrgChart) {
       return;
     }
-    if (coverFields.find((item) => item.id === activeView.style.coverFieldId)) {
+    if (coverFields.find(item => item.id === activeView.style.coverFieldId)) {
       return activeView.style.coverFieldId;
     }
     return NO_COVER_FIELD_ID;
@@ -445,28 +472,23 @@ export const HiddenField: React.FC<IHiddenFieldProps> = (props) => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
-  const filterFreeColumns = freeColumns.filter((field) =>
-    fieldMap[field.fieldId].name.includes(query)
-  );
+  const filterFreeColumns = freeColumns.filter(field => fieldMap[field.fieldId].name.includes(query));
 
   return (
     <div ref={containerRef} style={style} className={styles.hideField} onClick={stopPropagation}>
-
       <div className={styles.header}>
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
           <div className={styles.title}>
             <Typography variant="h7">
               {[ViewType.Gallery, ViewType.Kanban].includes(activeView.type)
                 ? t(Strings.set_gallery_card_style)
-                : ((isExclusive && isGanttView) ? t(Strings.set_graphic_field) : t(Strings.set_field))}
+                : isExclusive && isGanttView
+                  ? t(Strings.set_graphic_field)
+                  : t(Strings.set_field)}
             </Typography>
             {[ViewType.Gallery, ViewType.Kanban].includes(activeView.type) && (
               <a
-                href={
-                  activeView.type === ViewType.Gallery
-                    ? t(Strings.gallery_style_setting_url)
-                    : t(Strings.kanban_style_setting_url)
-                }
+                href={activeView.type === ViewType.Gallery ? t(Strings.gallery_style_setting_url) : t(Strings.kanban_style_setting_url)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.helpIcon}
@@ -475,41 +497,23 @@ export const HiddenField: React.FC<IHiddenFieldProps> = (props) => {
               </a>
             )}
           </div>
-          <SyncViewTip
-            style={{ padding: '2px 0px 0px' }}
-            content={t(Strings.view_sync_property_tip_short)}
-          />
+          <SyncViewTip style={{ padding: '2px 0px 0px' }} content={t(Strings.view_sync_property_tip_short)} />
         </ComponentDisplay>
 
-        {activeView.type !== ViewType.Grid &&
-          activeView.type !== ViewType.Gantt && (
+        {activeView.type !== ViewType.Grid && activeView.type !== ViewType.Gantt && (
           <>
             {activeView.type !== ViewType.Calendar && (
               <>
-                <div
-                  className={styles.coverSetting}
-                  style={{ margin: '0 0 8px' }}
-                >
-                  <span className={styles.label}>
-                    {t(Strings.cover_field)}
-                  </span>
+                <div className={styles.coverSetting} style={{ margin: '0 0 8px' }}>
+                  <span className={styles.label}>{t(Strings.cover_field)}</span>
                   <div className={styles.switchCoverFit}>
-                    <span style={{ paddingRight: 4 }}>
-                      {t(Strings.gallery_img_stretch)}
-                    </span>
-                    <Checkbox
-                      checked={!activeView.style.isCoverFit}
-                      onChange={switchCoverFit}
-                      size={14}
-                    />
+                    <span style={{ paddingRight: 4 }}>{t(Strings.gallery_img_stretch)}</span>
+                    <Checkbox checked={!activeView.style.isCoverFit} onChange={switchCoverFit} size={14} />
                   </div>
                 </div>
                 <Select
                   value={getDefaultCoverValue() || ''}
-                  disabled={
-                    activeView.style.coverFieldId === undefined &&
-                      coverFields.length === 0
-                  }
+                  disabled={activeView.style.coverFieldId === undefined && coverFields.length === 0}
                   onSelected={({ value }) => {
                     changeCoverField(value);
                   }}
@@ -517,63 +521,38 @@ export const HiddenField: React.FC<IHiddenFieldProps> = (props) => {
                   <Option value={NO_COVER_FIELD_ID} currentIndex={0}>
                     <div className={styles.coverOption}>
                       <div className={styles.optionIcon}>
-                        <NoCoverIcon
-                          fill={colors.thirdLevelText}
-                          width={15}
-                          height={15}
-                        />
+                        <NoCoverIcon fill={colors.thirdLevelText} width={15} height={15} />
                       </div>
-                      <div className={styles.coverOptionTitle}>
-                        {t(Strings.no_cover)}
-                      </div>
+                      <div className={styles.coverOptionTitle}>{t(Strings.no_cover)}</div>
                     </div>
                   </Option>
                   {coverFields.map((coverField, index) => (
-                    <Option
-                      key={coverField.id}
-                      value={coverField.id}
-                      currentIndex={index + 1}
-                    >
+                    <Option key={coverField.id} value={coverField.id} currentIndex={index + 1}>
                       <div className={styles.coverOption}>
                         <div className={styles.optionIcon}>
-                          <CoverIcon
-                            fill={colors.thirdLevelText}
-                            width={15}
-                            height={15}
-                          />
+                          <CoverIcon fill={colors.thirdLevelText} width={15} height={15} />
                         </div>
-                        <div className={styles.coverOptionTitle}>
-                          {coverField.name}
-                        </div>
+                        <div className={styles.coverOptionTitle}>{coverField.name}</div>
                       </div>
                     </Option>
                   ))}
                 </Select>
               </>
             )}
-            <div
-              className={styles.coverSetting}
-              style={{ margin: '24px 0 4px' }}
-            >
+            <div className={styles.coverSetting} style={{ margin: '24px 0 4px' }}>
               <span className={styles.label}>
                 {t(Strings.vika_column)}
                 {activeView.type === ViewType.Calendar && (
                   <Tooltip title={t(Strings.hidden_field_calendar_tips)} trigger={['hover']}>
-                    <span className={styles.tip}><EditDescribeOutlined /></span>
+                    <span className={styles.tip}>
+                      <EditDescribeOutlined />
+                    </span>
                   </Tooltip>
                 )}
               </span>
               <div className={styles.switchCoverFit}>
-                <span style={{ paddingRight: 4 }}>
-                  {t(Strings.show_name)}
-                </span>
-                <Checkbox
-                  checked={getIsColNameVisible(
-                    activeView.style.isColNameVisible
-                  )}
-                  onChange={switchColNameVisible}
-                  size={14}
-                />
+                <span style={{ paddingRight: 4 }}>{t(Strings.show_name)}</span>
+                <Checkbox checked={getIsColNameVisible(activeView.style.isColNameVisible)} onChange={switchColNameVisible} size={14} />
               </div>
             </div>
           </>
@@ -582,9 +561,7 @@ export const HiddenField: React.FC<IHiddenFieldProps> = (props) => {
           <LineSearchInput
             placeholder={t(Strings.search)}
             value={query}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setQuery(e.target.value)
-            }
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
           />
         </ComponentDisplay>
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
@@ -593,9 +570,7 @@ export const HiddenField: React.FC<IHiddenFieldProps> = (props) => {
               size="small"
               placeholder={t(Strings.search)}
               value={query}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setQuery(e.target.value)
-              }
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
             />
           </div>
         </ComponentDisplay>
@@ -604,7 +579,7 @@ export const HiddenField: React.FC<IHiddenFieldProps> = (props) => {
         {filterFreeColumns.length > 0 ? (
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="fieldList" direction="vertical">
-              {(provided) => (
+              {provided => (
                 <div ref={provided.innerRef} {...provided.droppableProps} id="hiddenCard">
                   {filterFreeColumns.map((item, index) => (
                     <FieldItem
@@ -635,16 +610,10 @@ export const HiddenField: React.FC<IHiddenFieldProps> = (props) => {
         )}
       </div>
       <div className={styles.opAll}>
-        <Button
-          size="small"
-          onClick={() => hideOrShowAllField(ActionType.Hide)}
-        >
+        <Button size="small" onClick={() => hideOrShowAllField(ActionType.Hide)}>
           {t(Strings.hide_all_fields)}
         </Button>
-        <Button
-          size="small"
-          onClick={() => hideOrShowAllField(ActionType.Show)}
-        >
+        <Button size="small" onClick={() => hideOrShowAllField(ActionType.Show)}>
           {t(Strings.show_all_fields)}
         </Button>
       </div>

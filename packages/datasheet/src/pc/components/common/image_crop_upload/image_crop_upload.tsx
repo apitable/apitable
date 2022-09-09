@@ -4,7 +4,7 @@ import { Col, Row, Tabs, Upload } from 'antd';
 import { RowProps } from 'antd/lib/row';
 import classNames from 'classnames';
 import Image from 'next/image';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { Message } from 'pc/components/common/message/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useResponsive } from 'pc/hooks';
@@ -23,13 +23,13 @@ enum TabKeys {
 export enum ICropShape {
   AnyShape = 'AnyShape',
   Square = 'Square',
-  Rectangle = 'Rectangle'
+  Rectangle = 'Rectangle',
 }
 
 export enum IPreviewShape {
   Circle = 'Circle',
   Square = 'Square',
-  Rectangle = 'Rectangle'
+  Rectangle = 'Rectangle',
 }
 
 const { TabPane } = Tabs;
@@ -105,15 +105,17 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
   const isCropRectangle = cropShape === ICropShape.Rectangle;
   const isPreviewRectangle = previewShape === IPreviewShape.Rectangle;
   const isPreviewCircle = previewShape === IPreviewShape.Circle;
-  const thumbOptions = isCropRectangle ? {
-    method: CutMethod.CUT, w: 420, h: 140,
-  } : {
-    method: CutMethod.CUT, size: 470,
-  };
-  const {
-    cropTip,
-    cropDesc,
-  } = customTips;
+  const thumbOptions = isCropRectangle
+    ? {
+      method: CutMethod.CUT,
+      w: 420,
+      h: 140,
+    }
+    : {
+      method: CutMethod.CUT,
+      size: 470,
+    };
+  const { cropTip, cropDesc } = customTips;
   const { width: imgWidth, height: imgHeight } = imgRef.current || {};
 
   const previewTip = customTips.previewTip || cropTip;
@@ -181,14 +183,14 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
   // 绘制正方形裁剪区域
   const cropSquareView = (image, percentCrop) => {
     const canvas = document.createElement('canvas');
-    const computedSize = Math.floor(image.naturalHeight * percentCrop.height / 100);
+    const computedSize = Math.floor((image.naturalHeight * percentCrop.height) / 100);
     canvas.width = computedSize;
     canvas.height = computedSize;
     const ctx = canvas.getContext('2d');
     ctx!.drawImage(
       image,
-      Math.floor(image.naturalWidth * percentCrop.x / 100),
-      Math.floor(image.naturalHeight * percentCrop.y / 100),
+      Math.floor((image.naturalWidth * percentCrop.x) / 100),
+      Math.floor((image.naturalHeight * percentCrop.y) / 100),
       computedSize,
       computedSize,
       0,
@@ -203,14 +205,14 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
   // 绘制长方形裁剪区域
   const cropRectangleView = (image, percentCrop) => {
     const canvas = document.createElement('canvas');
-    const computedSize = Math.floor(image.naturalWidth * percentCrop.width / 100);
+    const computedSize = Math.floor((image.naturalWidth * percentCrop.width) / 100);
     canvas.width = computedSize;
     canvas.height = computedSize / 3;
     const ctx = canvas.getContext('2d');
     ctx!.drawImage(
       image,
-      Math.floor(image.naturalWidth * percentCrop.x / 100),
-      Math.floor(image.naturalHeight * percentCrop.y / 100),
+      Math.floor((image.naturalWidth * percentCrop.x) / 100),
+      Math.floor((image.naturalHeight * percentCrop.y) / 100),
       computedSize,
       computedSize / 3,
       0,
@@ -222,7 +224,7 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
     canvasToFile(canvas);
   };
 
-  const canvasToFile = (canvas) => {
+  const canvasToFile = canvas => {
     canvas.toBlob(blob => {
       if (!blob) {
         new Error('Canvas is empty');
@@ -247,31 +249,32 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
     return new File([ab], fileName, { type: mime });
   };
 
-  const beforeUpload = (file: File): Promise<void> => new Promise<void>((res, rej) => {
-    setIsGif(Boolean(file.type === 'image/gif'));
+  const beforeUpload = (file: File): Promise<void> =>
+    new Promise<void>((res, rej) => {
+      setIsGif(Boolean(file.type === 'image/gif'));
 
-    const reader = new FileReader();
-    // 因为读取文件需要时间,所以要在回调函数中使用读取的结果
-    reader.onload = () => {
-      const isLt2M = fileLimit ? (file as File).size / 1024 / 1024 > fileLimit : false;
-      if (isLt2M) {
-        Message.error({ content: t(Strings.image_limit, { number: fileLimit }) });
-        setDisabled(true);
-        rej();
-        return;
-      }
+      const reader = new FileReader();
+      // 因为读取文件需要时间,所以要在回调函数中使用读取的结果
+      reader.onload = () => {
+        const isLt2M = fileLimit ? (file as File).size / 1024 / 1024 > fileLimit : false;
+        if (isLt2M) {
+          Message.error({ content: t(Strings.image_limit, { number: fileLimit }) });
+          setDisabled(true);
+          rej();
+          return;
+        }
 
-      setUpImg(reader.result as string);
-      setOfficialImgToken('');
-      setUpImgFile(file);
-      setPreviewUrl(window.URL.createObjectURL(file));
-      setDisabled(false);
-      props.children && setInnerControlModal(true);
-      res();
-    };
+        setUpImg(reader.result as string);
+        setOfficialImgToken('');
+        setUpImgFile(file);
+        setPreviewUrl(window.URL.createObjectURL(file));
+        setDisabled(false);
+        props.children && setInnerControlModal(true);
+        res();
+      };
 
-    reader.readAsDataURL(file);
-  });
+      reader.readAsDataURL(file);
+    });
 
   const cancelBtnClick = () => {
     clearState();
@@ -280,12 +283,13 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
   };
 
   const confirmBtnClick = () => {
-    props.confirm && props.confirm({
-      officialToken: officialImgToken,
-      officialUrl: officialImgToken ? getImageThumbSrc(integrateCdnHost(officialImgToken), { method: CutMethod.CUT, size: 480 }) : '',
-      customUrl: upImg,
-      customFile: upImgFile,
-    });
+    props.confirm &&
+      props.confirm({
+        officialToken: officialImgToken,
+        officialUrl: officialImgToken ? getImageThumbSrc(integrateCdnHost(officialImgToken), { method: CutMethod.CUT, size: 480 }) : '',
+        customUrl: upImg,
+        customFile: upImgFile,
+      });
     cancelBtnClick();
   };
 
@@ -303,7 +307,9 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
     if (tabKey === TabKeys.Default || (tabKey === TabKeys.Custom && !upImg)) {
       return (
         <div className={styles.leftBtnWrap}>
-          <TextButton color="primary" onClick={clearSelect} style={{ height: 36 }}>{t(Strings.deselect)}</TextButton>
+          <TextButton color="primary" onClick={clearSelect} style={{ height: 36 }}>
+            {t(Strings.deselect)}
+          </TextButton>
         </div>
       );
     }
@@ -311,12 +317,10 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
       return (
         <>
           <div className={styles.leftBtnWrap}>
-            <Upload
-              showUploadList={false}
-              beforeUpload={beforeUpload}
-              accept={ConfigConstant.ACCEPT_FILE_TYPE}
-            >
-              <TextButton color="primary" disabled={!upImg} style={{ height: 36 }}>{t(Strings.reselect)}</TextButton>
+            <Upload showUploadList={false} beforeUpload={beforeUpload} accept={ConfigConstant.ACCEPT_FILE_TYPE}>
+              <TextButton color="primary" disabled={!upImg} style={{ height: 36 }}>
+                {t(Strings.reselect)}
+              </TextButton>
             </Upload>
             <div className={styles.leftReselectDesc}>
               <div style={{ color: colors.firstLevelText }}>{previewTip || t(Strings.support_image_formats)}</div>
@@ -331,16 +335,11 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
 
   return (
     <>
-      {
-        children &&
-        <Upload
-          showUploadList={false}
-          beforeUpload={beforeUpload}
-          accept={ConfigConstant.ACCEPT_FILE_TYPE}
-        >
+      {children && (
+        <Upload showUploadList={false} beforeUpload={beforeUpload} accept={ConfigConstant.ACCEPT_FILE_TYPE}>
           {children}
         </Upload>
-      }
+      )}
       <Modal
         title={title}
         visible={children ? innerControlModal : visible}
@@ -355,25 +354,17 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
           <div className={styles.leftContent}>
             <div className={styles.title}>{t(Strings.preview)}</div>
             <div
-              className={classNames(
-                styles.preview,
-                isPreviewRectangle && styles.previewRectangle,
-                isPreviewCircle && styles.previewCircle
-              )}
+              className={classNames(styles.preview, isPreviewRectangle && styles.previewRectangle, isPreviewCircle && styles.previewCircle)}
               style={{ flexDirection: isMobile ? 'row' : 'column' }}
             >
               <div className={styles.previewImg}>
-                {
-                  (upImg || officialImgToken) ?
-                    <span className={styles.previewImgWrapper}>
-                      <Image
-                        src={previewUrl}
-                        layout={'fill'}
-                        alt={''}
-                      />
-                    </span> :
-                    initPreview
-                }
+                {upImg || officialImgToken ? (
+                  <span className={styles.previewImgWrapper}>
+                    <Image src={previewUrl} layout={'fill'} alt={''} />
+                  </span>
+                ) : (
+                  initPreview
+                )}
               </div>
               {renderReselect()}
             </div>
@@ -382,99 +373,73 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
             <Tabs
               activeKey={tabKey}
               className={classNames(styles.imgSelector, isCropRectangle && styles.imgRectangleSelector)}
-              onChange={key => setTabKey(key)}>
-              {
-                officialImgs?.length &&
+              onChange={key => setTabKey(key)}
+            >
+              {officialImgs?.length && (
                 <TabPane tab={t(Strings.default)} key={TabKeys.Default}>
                   <div className={styles.scrollWrapper}>
                     <div className={styles.banners}>
                       <Row {...rowConfig}>
-                        {
-                          officialImgs.map((imgToken) => {
-                            const url = getImageThumbSrc(integrateCdnHost(imgToken), thumbOptions);
-                            return (
-                              <Col
-                                key={imgToken}
-                                span={isCropRectangle ? 12 : 8}
-                              >
-                                <div
-                                  className={styles.bannerPreviewImg}
-                                  onClick={() => officialImgClick(imgToken, url)}
-                                >
-                                  <span className={styles.bannerPreviewImgWrapper}>
-                                    <Image src={url} alt="vika.cn" layout={'fill'}/>
-                                  </span>
-                                  {
-                                    officialImgToken === imgToken &&
-                                    <div className={styles.checked}>
-                                      <SelectedIcon />
-                                    </div>
-                                  }
-                                </div>
-                              </Col>
-                            );
-                          })
-                        }
+                        {officialImgs.map(imgToken => {
+                          const url = getImageThumbSrc(integrateCdnHost(imgToken), thumbOptions);
+                          return (
+                            <Col key={imgToken} span={isCropRectangle ? 12 : 8}>
+                              <div className={styles.bannerPreviewImg} onClick={() => officialImgClick(imgToken, url)}>
+                                <span className={styles.bannerPreviewImgWrapper}>
+                                  <Image src={url} alt="vika.cn" layout={'fill'} />
+                                </span>
+                                {officialImgToken === imgToken && (
+                                  <div className={styles.checked}>
+                                    <SelectedIcon />
+                                  </div>
+                                )}
+                              </div>
+                            </Col>
+                          );
+                        })}
                       </Row>
                     </div>
                   </div>
                 </TabPane>
-              }
+              )}
               <TabPane tab={t(Strings.custom)} key={TabKeys.Custom}>
                 <div className={styles.uploadWrapper}>
-                  {!upImg ?
+                  {!upImg ? (
                     <div className={styles.upload}>
-                      <Upload
-                        showUploadList={false}
-                        beforeUpload={beforeUpload}
-                        accept={ConfigConstant.ACCEPT_FILE_TYPE}
-                      >
-                        <Button
-                          color="primary"
-                          style={{ marginBottom: 24 }}
-                        >
+                      <Upload showUploadList={false} beforeUpload={beforeUpload} accept={ConfigConstant.ACCEPT_FILE_TYPE}>
+                        <Button color="primary" style={{ marginBottom: 24 }}>
                           {title}
                         </Button>
                       </Upload>
                       {cropTip && <div className={styles.tip}>{cropTip}</div>}
                       {cropDesc && <div className={styles.desc}>{cropDesc}</div>}
-                    </div> :
-                    (isGif ?
-                      <div className={styles.imageWrapper}>
-                        <span className={styles.gifImgWrapper}>
-                          <Image src={upImg} alt="logo" layout={'fill'}/>
-                        </span>
-                      </div> :
-                      <div
-                        className={
-                          classNames(styles.imageWrapper, {
-                            [styles.circleImageWrapper]: isPreviewCircle,
-                            [styles.squareImageWrapper]: imgWidth != null && imgWidth === imgHeight,
-                          })
-                        }
-                      >
-                        <ReactCrop
-                          src={upImg}
-                          onImageLoaded={onLoad}
-                          crop={crop}
-                          onChange={c => setCrop(c)}
-                          onComplete={onComplete}
-                        />
-                      </div>)
-                  }
+                    </div>
+                  ) : isGif ? (
+                    <div className={styles.imageWrapper}>
+                      <span className={styles.gifImgWrapper}>
+                        <Image src={upImg} alt="logo" layout={'fill'} />
+                      </span>
+                    </div>
+                  ) : (
+                    <div
+                      className={classNames(styles.imageWrapper, {
+                        [styles.circleImageWrapper]: isPreviewCircle,
+                        [styles.squareImageWrapper]: imgWidth != null && imgWidth === imgHeight,
+                      })}
+                    >
+                      <ReactCrop src={upImg} onImageLoaded={onLoad} crop={crop} onChange={c => setCrop(c)} onComplete={onComplete} />
+                    </div>
+                  )}
                 </div>
               </TabPane>
             </Tabs>
           </div>
         </div>
         <div className={styles.footerBtn}>
-          <TextButton size="small" onClick={cancelBtnClick}>{t(Strings.cancel)}</TextButton>
-          <Button
-            size="small"
-            color="primary"
-            onClick={confirmBtnClick}
-            disabled={disabled || !(upImg || officialImgToken)}
-          >
+          <TextButton size="small" onClick={cancelBtnClick}>
+            {t(Strings.cancel)}
+          </TextButton>
+          <Button size="small" color="primary" onClick={confirmBtnClick} disabled={disabled || !(upImg || officialImgToken)}>
             {t(Strings.confirm)}
           </Button>
         </div>

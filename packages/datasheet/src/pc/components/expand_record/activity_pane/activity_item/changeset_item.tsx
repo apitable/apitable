@@ -1,7 +1,7 @@
 import { usePlatform } from 'pc/hooks/use_platform';
 import { useContext, useMemo } from 'react';
 import * as React from 'react';
-import { IActivityPaneProps, IChooseComment } from '../activity_pane';
+import { IActivityPaneProps, IChooseComment } from '../interface';
 import { CollaCommandName, IDPrefix, IJOTAction, IOperation, IRemoteChangeset, IUnitValue, jot, Strings, t, WithOptional } from '@vikadata/core';
 import { Avatar, AvatarSize, Emoji, Modal } from 'pc/components/common';
 import { useSelector } from 'react-redux';
@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 import { commandTran } from 'pc/utils';
 import { Popover, Tooltip } from 'antd';
 import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { ChangesetItemAction } from './changeset_item_action';
 import { find, get, toPairs } from 'lodash';
 import { IconButton } from '@vikadata/components';
@@ -30,7 +30,7 @@ type IChangesetItem = IActivityPaneProps & {
   setChooseComment: (item: IChooseComment) => void;
 };
 
-const ChangesetItemBase: React.FC<IChangesetItem> = (props) => {
+const ChangesetItemBase: React.FC<IChangesetItem> = props => {
   const { expandRecordId, changeset, cacheFieldOptions, datasheetId, setChooseComment, unit } = props;
   const { operations, userId, createdAt, revision } = changeset;
 
@@ -57,7 +57,7 @@ const ChangesetItemBase: React.FC<IChangesetItem> = (props) => {
       actions = toPairs(get(oi, 'data', {})).map(([k, v]) => ({
         n,
         oi: v,
-        p: [...p, 'data', k]
+        p: [...p, 'data', k],
       }));
     }
     actionArr = actionArr.concat(actions);
@@ -95,19 +95,21 @@ const ChangesetItemBase: React.FC<IChangesetItem> = (props) => {
     let itemActions: (IJOTAction | number | undefined)[] = [];
     // 多条评论合并一起发送时，需要分成多条记录展示
     if (commentOperations.length > 0) {
-      const systemOp = find(commentOperations, { cmd:  CollaCommandName.SystemCorrectComment });
+      const systemOp = find(commentOperations, { cmd: CollaCommandName.SystemCorrectComment });
       // SystemCorrectComment 服务端更新修正评论时间
       if (systemOp) {
         const serverFixActions = systemOp.actions.map((at, idx) => ({
           ...at,
-          p: [idx]
-        }));
-        // InsertComment 客户端添加评论
-        const clientActions = commentOperations.filter(op => !op.cmd.includes('System')).map((op, idx) => ({
-          ...op.actions[0],
           p: [idx],
         }));
-        itemActions = jot.apply(clientActions, serverFixActions) as unknown as IJOTAction[];
+        // InsertComment 客户端添加评论
+        const clientActions = commentOperations
+          .filter(op => !op.cmd.includes('System'))
+          .map((op, idx) => ({
+            ...op.actions[0],
+            p: [idx],
+          }));
+        itemActions = (jot.apply(clientActions, serverFixActions) as unknown) as IJOTAction[];
       } else {
         itemActions = commentOperations.map(op => get(op, 'actions.0.li'));
       }
@@ -137,12 +139,12 @@ const ChangesetItemBase: React.FC<IChangesetItem> = (props) => {
         commentMsg: {
           ...commentMsg,
           emojis: {
-            [emojiKey]: [selfUserId]
-          }
-        }
+            [emojiKey]: [selfUserId],
+          },
+        },
       },
       // emojiAction 为 false 表示取消点赞
-      emojiAction: !emojiUsers.includes(selfUserId!)
+      emojiAction: !emojiUsers.includes(selfUserId!),
     });
   };
 
@@ -161,7 +163,7 @@ const ChangesetItemBase: React.FC<IChangesetItem> = (props) => {
   const title = getSocialWecomUnitName({
     name: unit?.name,
     isModified: unit?.isMemberNameModified,
-    spaceInfo
+    spaceInfo,
   });
 
   return (
@@ -174,25 +176,27 @@ const ChangesetItemBase: React.FC<IChangesetItem> = (props) => {
         >
           <div className={styles.activityHeader}>
             <div className={styles.activityHeaderLeft}>
-              {<Avatar
-                id={unit.unitId}
-                title={unit.name}
-                src={unit.avatar}
-                size={screenIsAtLeast(ScreenSize.md) ? AvatarSize.Size32 : AvatarSize.Size40}
-              />}
+              {
+                <Avatar
+                  id={unit.unitId}
+                  title={unit.name}
+                  src={unit.avatar}
+                  size={screenIsAtLeast(ScreenSize.md) ? AvatarSize.Size32 : AvatarSize.Size40}
+                />
+              }
             </div>
             <div className={cls('activityHeaderRight', styles.activityHeaderRight)}>
               <div className={styles.title}>
                 <div className={styles.activityInfo}>
                   <div className={styles.nickName}>
-                    <span className={styles.name}>{isSelf ? t(Strings.you) : (title || unit.name)}</span>
+                    <span className={styles.name}>{isSelf ? t(Strings.you) : title || unit.name}</span>
                     <span className={styles.op}>{commandTran(cmd)}</span>
                   </div>
                   {Boolean(action) && (
                     <div className={styles.activityAction}>
                       <Popover
                         overlayClassName={styles.commentPopover}
-                        content={(
+                        content={
                           <div className={styles.emojiList}>
                             <span onClick={() => handleEmoji('good')}>
                               <Emoji emoji="+1" size={16} />
@@ -201,60 +205,52 @@ const ChangesetItemBase: React.FC<IChangesetItem> = (props) => {
                               <Emoji emoji="ok_hand" size={16} />
                             </span>
                           </div>
-                        )}>
-                        <IconButton
-                          icon={EmojiOutlined}
-                          shape="square"
-                          className={styles.icon}
-                        />
+                        }
+                      >
+                        <IconButton icon={EmojiOutlined} shape="square" className={styles.icon} />
                       </Popover>
-                      <IconButton
-                        onClick={handleReply}
-                        icon={CommentOutlined}
-                        shape="square"
-                        className={cls('replyIcon', styles.icon)}
-                      />
-                      {allowDeleteComment && <IconButton
-                        onClick={(e) => {
-                          const commentItem = {
-                            comment: get(changeset, 'operations.0.actions.0.li'),
-                            expandRecordId,
-                            datasheetId,
-                            setChooseComment,
-                          };
-                          if (isMobile) {
-                            setChooseComment(commentItem);
-                          } else {
-                            Modal.confirm({
-                              title: t(Strings.delete_comment_tip_title),
-                              content: t(Strings.delete_comment_tip_content),
-                              okText: t(Strings.submit),
-                              cancelText: t(Strings.cancel),
-                              type: 'danger',
-                              onOk: () => {
-                                resourceService.instance!.commandManager.execute({
-                                  cmd: CollaCommandName.DeleteComment,
-                                  datasheetId: datasheetId,
-                                  recordId: expandRecordId,
-                                  comment: commentItem.comment,
-                                });
-                              },
-                            });
-                          }
-                        }}
-                        shape="square"
-                        icon={DeleteOutlined}
-                        className={styles.icon}
-                        data-test-id={EXPAND_RECORD_DELETE_COMMENT_MORE}
-                      />}
+                      <IconButton onClick={handleReply} icon={CommentOutlined} shape="square" className={cls('replyIcon', styles.icon)} />
+                      {allowDeleteComment && (
+                        <IconButton
+                          onClick={e => {
+                            const commentItem = {
+                              comment: get(changeset, 'operations.0.actions.0.li'),
+                              expandRecordId,
+                              datasheetId,
+                              setChooseComment,
+                            };
+                            if (isMobile) {
+                              setChooseComment(commentItem);
+                            } else {
+                              Modal.confirm({
+                                title: t(Strings.delete_comment_tip_title),
+                                content: t(Strings.delete_comment_tip_content),
+                                okText: t(Strings.submit),
+                                cancelText: t(Strings.cancel),
+                                type: 'danger',
+                                onOk: () => {
+                                  resourceService.instance!.commandManager.execute({
+                                    cmd: CollaCommandName.DeleteComment,
+                                    datasheetId: datasheetId,
+                                    recordId: expandRecordId,
+                                    comment: commentItem.comment,
+                                  });
+                                },
+                              });
+                            }
+                          }}
+                          shape="square"
+                          icon={DeleteOutlined}
+                          className={styles.icon}
+                          data-test-id={EXPAND_RECORD_DELETE_COMMENT_MORE}
+                        />
+                      )}
                     </div>
                   )}
                 </div>
                 <div className={styles.activityInfo}>
                   <Tooltip title={dayjs(Number(createdAt)).format('YYYY-MM-DD HH:mm:ss')}>
-                    <span className={styles.relativeTime}>
-                      {relativeTime}
-                    </span>
+                    <span className={styles.relativeTime}>{relativeTime}</span>
                   </Tooltip>
                 </div>
               </div>
@@ -264,12 +260,7 @@ const ChangesetItemBase: React.FC<IChangesetItem> = (props) => {
             {action ? (
               <ReplyBox action={action} handleEmoji={handleEmoji} datasheetId={datasheetId} expandRecordId={expandRecordId} />
             ) : (
-              <ChangesetItemAction
-                revision={revision}
-                actions={actions}
-                datasheetId={datasheetId}
-                cacheFieldOptions={cacheFieldOptions}
-              />
+              <ChangesetItemAction revision={revision} actions={actions} datasheetId={datasheetId} cacheFieldOptions={cacheFieldOptions} />
             )}
           </div>
         </div>

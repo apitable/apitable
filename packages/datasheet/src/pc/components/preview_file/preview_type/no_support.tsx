@@ -5,7 +5,7 @@ import { stopPropagation, Typography, Button, LinkButton } from '@vikadata/compo
 import { Navigation, SpacePathType, Strings, t } from '@vikadata/core';
 import IconDownload from 'static/icon/datasheet/datasheet_icon_download.svg';
 import { useNavigation } from 'pc/components/route_manager/use_navigation';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { FileType } from 'pc/utils';
 import { directDownload } from '../tool_bar';
@@ -28,17 +28,7 @@ const getExt = fileName => {
 };
 
 export const NoSupport: FC<INoSupportProps> = props => {
-  const {
-    icon,
-    downloadUrl,
-    isMainAdmin,
-    footer,
-    spaceId,
-    onClose,
-    fileName,
-    type,
-    disabledDownload
-  } = props;
+  const { icon, downloadUrl, isMainAdmin, footer, spaceId, onClose, fileName, type, disabledDownload } = props;
   const navigationTo = useNavigation();
 
   const { screenIsAtMost } = useResponsive();
@@ -47,23 +37,16 @@ export const NoSupport: FC<INoSupportProps> = props => {
   const Notice = {
     [FileType.Other]: {
       error: `.${getExt(fileName)} ${t(Strings.preview_cannot_preview)}`,
-      tip: t(Strings.please_download_to_view_locally)
+      tip: t(Strings.please_download_to_view_locally),
     },
     [FileType.Doc]: {
-      error:
-        isMainAdmin
-          ? t(Strings.preview_doc_error_no_support_in_this_station)
-          : t(Strings.preview_guide_open_office_preview)
-      ,
-      tip: isMobile ? ' ' :
-        isMainAdmin
-          ? t(Strings.preview_guide_enable_it)
-          : t(Strings.preview_tip_contact_main_admin)
+      error: isMainAdmin ? t(Strings.preview_doc_error_no_support_in_this_station) : t(Strings.preview_guide_open_office_preview),
+      tip: isMobile ? ' ' : isMainAdmin ? t(Strings.preview_guide_enable_it) : t(Strings.preview_tip_contact_main_admin),
     },
     [FileType.Image]: {
       error: t(Strings.preview_the_image_not_support_yet),
-      tip: t(Strings.please_download_to_view_locally)
-    }
+      tip: t(Strings.please_download_to_view_locally),
+    },
   };
 
   const handleDownload = () => {
@@ -71,65 +54,55 @@ export const NoSupport: FC<INoSupportProps> = props => {
   };
 
   return (
-    <div
-      className={styles.noSupport}
-      onMouseDown={stopPropagation}
-    >
+    <div className={styles.noSupport} onMouseDown={stopPropagation}>
       <main>
-        <div className={styles.iconWrapper}>
-          {icon}
-        </div>
-        <Typography variant='h5' className={styles.error}>
+        <div className={styles.iconWrapper}>{icon}</div>
+        <Typography variant="h5" className={styles.error}>
           {Notice[type].error}
         </Typography>
 
         {Notice[type].tip && (
-          <Typography variant='body4' className={styles.tip}>
+          <Typography variant="body4" className={styles.tip}>
             {Notice[type].tip}
           </Typography>
         )}
         {isMainAdmin && (
           <div className={styles.btnGroup}>
-            {!isMobile && <Button
-              color='primary'
-              block
-              onClick={() => {
-                navigationTo({
-                  path: Navigation.SPACE_MANAGE,
-                  params: {
-                    spaceId,
-                    pathInSpace: SpacePathType.MARKETING,
-                  },
-                });
-                onClose?.();
-              }}
-            >
-              {t(Strings.enable)}
-            </Button>}
-            {!disabledDownload &&
-              <div
-                className={styles.download}
-                onClick={handleDownload}
+            {!isMobile && (
+              <Button
+                color="primary"
+                block
+                onClick={() => {
+                  navigationTo({
+                    path: Navigation.SPACE_MANAGE,
+                    params: {
+                      spaceId,
+                      pathInSpace: SpacePathType.MARKETING,
+                    },
+                  });
+                  onClose?.();
+                }}
               >
+                {t(Strings.enable)}
+              </Button>
+            )}
+            {!disabledDownload && (
+              <div className={styles.download} onClick={handleDownload}>
                 {isMobile ? (
-                  <Button color="primary">
-                    {t(Strings.download)}
-                  </Button>
+                  <Button color="primary">{t(Strings.download)}</Button>
                 ) : (
                   <LinkButton underline={false} component="button" style={{ width: '100%' }}>
                     {t(Strings.download)}
                   </LinkButton>
                 )}
               </div>
-            }
+            )}
           </div>
         )}
-        {!isMainAdmin && (
-          !disabledDownload &&
-          <div
-            className={styles.download}
-            onClick={handleDownload}>
-            <Button color='primary' block>
+        {!isMainAdmin &&
+          !disabledDownload && (
+          <div className={styles.download} onClick={handleDownload}>
+            <Button color="primary" block>
               <IconDownload fill="currentColor" />
               <span style={{ marginLeft: 4 }}>{t(Strings.download)}</span>
             </Button>

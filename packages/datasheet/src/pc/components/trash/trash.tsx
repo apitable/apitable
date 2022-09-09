@@ -13,7 +13,7 @@ import RecoverIcon from 'static/icon/datasheet/rightclick/recover.svg';
 import EmptyPng from 'static/icon/workbench/notification/workbench_img_no_notification.png';
 import { UnitTag } from '../catalog/permission_settings/permission/select_unit_modal/unit_tag';
 import { ButtonPlus, Message, Tooltip } from '../common';
-import { ComponentDisplay, ScreenSize } from '../common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { TComponent } from '../common/t_component';
 import { useNavigation } from '../route_manager/use_navigation';
 import styles from './style.module.less';
@@ -42,7 +42,7 @@ const Trash: FC = () => {
   const [trashList, setTrashList] = useState<ITrashItem[]>([]);
   const dispatch = useDispatch();
   const navigationTo = useNavigation();
-  const { loading: recoverLoading, run: trashRecover } = useRequest((nodeId) => Api.trashRecover(nodeId), { manual: true });
+  const { loading: recoverLoading, run: trashRecover } = useRequest(nodeId => Api.trashRecover(nodeId), { manual: true });
 
   const [lastNodeId, setLastNodeId] = useState<string | undefined>(undefined);
   const [noMore, setNoMore] = useState(false);
@@ -66,12 +66,16 @@ const Trash: FC = () => {
     onSuccess: handleSuccess,
   });
 
-  const { loading: moreLoading, run: loadMore } = useRequest(() => Api.getTrashList({
-    lastNodeId,
-  }), {
-    manual: true,
-    onSuccess: handleSuccess
-  });
+  const { loading: moreLoading, run: loadMore } = useRequest(
+    () =>
+      Api.getTrashList({
+        lastNodeId,
+      }),
+    {
+      manual: true,
+      onSuccess: handleSuccess,
+    },
+  );
 
   const deleteTrashItem = (nodeId: string) => {
     setTrashList(trashList.filter(item => item.nodeId !== nodeId));
@@ -94,11 +98,13 @@ const Trash: FC = () => {
     Message.error({ content: t(Strings.recover_node_fail) });
   };
 
-  const data = [{
-    icon: <RecoverIcon />,
-    text: t(Strings.recover_node),
-    onClick: recoverHandler,
-  }];
+  const data = [
+    {
+      icon: <RecoverIcon />,
+      text: t(Strings.recover_node),
+      onClick: recoverHandler,
+    },
+  ];
 
   return (
     <div className={styles.trashWrapper}>
@@ -106,11 +112,7 @@ const Trash: FC = () => {
         <div className={styles.title}>
           {t(Strings.trash)}
           <Tooltip title={t(Strings.form_tour_desc)} trigger="hover" placement="right">
-            <a
-              href={Settings.trash_url.value}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
+            <a href={Settings.trash_url.value} rel="noopener noreferrer" target="_blank">
               <HelpIcon
                 style={{
                   cursor: 'pointer',
@@ -143,81 +145,67 @@ const Trash: FC = () => {
             </div>
           </ComponentDisplay>
 
-          {
-            trashList?.length ? (
-              <div className={styles.listBody}>
-                {trashList.map(trashItem => {
-                  const title = getSocialWecomUnitName({
-                    name: trashItem.memberName,
-                    isModified: trashItem.isMemberNameModified,
-                    spaceInfo
-                  });
-                  return (
-                    <div className={styles.trashListItem} key={trashItem.nodeId}>
-                      <Typography ellipsis className={styles.nodeName}>{trashItem.nodeName}</Typography>
-                      <div className={styles.remainingTime}>
-                        <div
-                          className={classnames([styles.days, (trashItem.remainDay <= 3 && styles.redPrompt)])}
-                        >
-                          {trashItem.remainDay < 0 ? t(Strings.expired) : trashItem.remainDay}
-                        </div>
-                        {trashItem.remainDay > 0 && t(Strings.day)}
+          {trashList?.length ? (
+            <div className={styles.listBody}>
+              {trashList.map(trashItem => {
+                const title = getSocialWecomUnitName({
+                  name: trashItem.memberName,
+                  isModified: trashItem.isMemberNameModified,
+                  spaceInfo,
+                });
+                return (
+                  <div className={styles.trashListItem} key={trashItem.nodeId}>
+                    <Typography ellipsis className={styles.nodeName}>
+                      {trashItem.nodeName}
+                    </Typography>
+                    <div className={styles.remainingTime}>
+                      <div className={classnames([styles.days, trashItem.remainDay <= 3 && styles.redPrompt])}>
+                        {trashItem.remainDay < 0 ? t(Strings.expired) : trashItem.remainDay}
                       </div>
-                      <div className={styles.user}>
-                        <UnitTag
-                          unitId={trashItem.uuid}
-                          avatar={trashItem.avatar}
-                          name={trashItem.memberName}
-                          deletable={false}
-                          title={title}
-                        />
-                      </div>
-                      <Tooltip
-                        title={trashItem.deletedAt}
-                        textEllipsis
-                      >
-                        <div className={styles.expirationTime}>{trashItem.deletedAt}</div>
-                      </Tooltip>
-
-                      <Tooltip
-                        title={trashItem.delPath || spaceName}
-                        textEllipsis
-                      >
-                        <div className={styles.path}>{trashItem.delPath || spaceName}</div>
-                      </Tooltip>
-                      <TrashContextMenu nodeId={trashItem.nodeId} data={data}>
-                        <ButtonPlus.Icon icon={<MoreIcon />} />
-                      </TrashContextMenu>
+                      {trashItem.remainDay > 0 && t(Strings.day)}
                     </div>
-                  );
-                })}
-                <div className={styles.bottom}>
-                  {noMore ? <span className={styles.end}>{t(Strings.end)}</span> :
-                    moreLoading ? (
-                      <Button loading variant="jelly">
-                        {t(Strings.loading)}
-                      </Button>
-                    ) : (
-                      <TextButton onClick={loadMore} color="primary">
-                        {t(Strings.click_load_more)}
-                      </TextButton>
-                    )
-                  }
-                </div>
+                    <div className={styles.user}>
+                      <UnitTag unitId={trashItem.uuid} avatar={trashItem.avatar} name={trashItem.memberName} deletable={false} title={title} />
+                    </div>
+                    <Tooltip title={trashItem.deletedAt} textEllipsis>
+                      <div className={styles.expirationTime}>{trashItem.deletedAt}</div>
+                    </Tooltip>
+
+                    <Tooltip title={trashItem.delPath || spaceName} textEllipsis>
+                      <div className={styles.path}>{trashItem.delPath || spaceName}</div>
+                    </Tooltip>
+                    <TrashContextMenu nodeId={trashItem.nodeId} data={data}>
+                      <ButtonPlus.Icon icon={<MoreIcon />} />
+                    </TrashContextMenu>
+                  </div>
+                );
+              })}
+              <div className={styles.bottom}>
+                {noMore ? (
+                  <span className={styles.end}>{t(Strings.end)}</span>
+                ) : moreLoading ? (
+                  <Button loading variant="jelly">
+                    {t(Strings.loading)}
+                  </Button>
+                ) : (
+                  <TextButton onClick={loadMore} color="primary">
+                    {t(Strings.click_load_more)}
+                  </TextButton>
+                )}
               </div>
-            ) : (loading || moreLoading) ? (
-              <>
-                <Skeleton width="38%" />
-                <Skeleton />
-                <Skeleton width="61%" />
-              </>
-            ) : (
-              <div className={styles.empty}>
-                <Image src={EmptyPng} alt="empty" width={320} height={240}/>
-                <div className={styles.tip}>{t(Strings.empty_trash, { day: maxRemainTrashDays })}</div>
-              </div>
-            )
-          }
+            </div>
+          ) : loading || moreLoading ? (
+            <>
+              <Skeleton width="38%" />
+              <Skeleton />
+              <Skeleton width="61%" />
+            </>
+          ) : (
+            <div className={styles.empty}>
+              <Image src={EmptyPng} alt="empty" width={320} height={240} />
+              <div className={styles.tip}>{t(Strings.empty_trash, { day: maxRemainTrashDays })}</div>
+            </div>
+          )}
         </div>
       </div>
     </div>

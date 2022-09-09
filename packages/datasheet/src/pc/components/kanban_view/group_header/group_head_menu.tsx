@@ -1,8 +1,15 @@
-import { 
-  ConfigConstant, FieldType, IField, IMemberField, 
-  IRecord, ISelectField, Selectors, Strings, 
-  t, ThemeName, UN_GROUP, IKanbanViewProperty,
-  KanbanStyleKey, 
+import {
+  ConfigConstant,
+  FieldType,
+  IField,
+  IMemberField,
+  Selectors,
+  Strings,
+  t,
+  ThemeName,
+  UN_GROUP,
+  IKanbanViewProperty,
+  KanbanStyleKey,
 } from '@vikadata/core';
 import classNames from 'classnames';
 import produce from 'immer';
@@ -16,7 +23,6 @@ import { inquiryValueByKey } from 'pc/components/multi_grid/cell/cell_options';
 import { store } from 'pc/store';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import * as React from 'react';
-import { DraggableProvided } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
 import IconDot from 'static/icon/common/common_icon_more.svg';
 import { useClickAway } from 'ahooks';
@@ -27,48 +33,24 @@ import { useCommand } from '../hooks/use_command';
 import { MemberFieldHead } from './member_field_head';
 import { OptionFieldHead } from './option_field_head';
 import styles from './styles.module.less';
-
-interface IGroupHeaderProps {
-  groupId: string;
-  kanbanGroupMap: {
-    [key: string]: IRecord[];
-  };
-  setCollapse: (value: string[]) => void;
-  scrollToItem?(index: number): void;
-  provided?: DraggableProvided;
-  collapse?: string[];
-}
-
-interface IHeadProps<T, K, P> {
-  cellValue: T;
-  field: K;
-  editing: boolean;
-  setEditing: React.Dispatch<React.SetStateAction<boolean>>;
-  onCommand(result: P): void;
-  readOnly?: boolean;
-  isAdd?: boolean;
-  isNewBoard?: boolean;
-}
-
-export type IHeadOptionProps = IHeadProps<string, ISelectField, IField>;
-export type IHeadMemberProps = IHeadProps<string[], IMemberField, string[]>;
+import { IGroupHeaderProps } from './interface';
 
 const CollapseWrapper = ({ isCollapse, children }) => {
   if (isCollapse) {
-    return <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        height: '100%',
-        overflow: 'hidden',
-      }}
-    >
-      {children}
-    </div>;
+    return (
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          height: '100%',
+          overflow: 'hidden',
+        }}
+      >
+        {children}
+      </div>
+    );
   }
-  return <>
-    {children}
-  </>;
+  return <>{children}</>;
 };
 
 export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
@@ -111,14 +93,16 @@ export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
 
   function setRecord(value: string[] | null) {
     const records = kanbanGroupMap[groupId] || [];
-    command.setRecords(records.map(item => {
-      return {
-        recordId: item.id,
-        fieldId: kanbanFieldId,
-        fieldType: FieldType.Member,
-        value,
-      };
-    }));
+    command.setRecords(
+      records.map(item => {
+        return {
+          recordId: item.id,
+          fieldId: kanbanFieldId,
+          fieldType: FieldType.Member,
+          value,
+        };
+      }),
+    );
   }
 
   function deleteMemberGroup() {
@@ -166,7 +150,7 @@ export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
     if (isCollapse) {
       const grandParentNode = parentNode?.parentElement;
       const height = grandParentNode?.clientHeight;
-      parentNode.style.width = (height! - 24) + 'px';
+      parentNode.style.width = height! - 24 + 'px';
       return;
     }
     parentNode.style.width = '';
@@ -189,10 +173,14 @@ export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
   const simpleCount = kanbanGroupMap[groupId]?.length || 0;
   // numeral(kanbanGroupMap[groupId]?.length).format('0a');
 
-  const addNewRecord = useAddNewCard(groupId, () => {
-    triggerRef.current?.close();
-    scrollToItem && scrollToItem(0);
-  }, InsertPlace.Top);
+  const addNewRecord = useAddNewCard(
+    groupId,
+    () => {
+      triggerRef.current?.close();
+      scrollToItem && scrollToItem(0);
+    },
+    InsertPlace.Top,
+  );
 
   function collapseGroup() {
     const state = store.getState();
@@ -208,7 +196,7 @@ export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
 
     command.setKanbanStyle({
       styleKey: KanbanStyleKey.HiddenGroupMap,
-      styleValue: nextHiddenGroupMap
+      styleValue: nextHiddenGroupMap,
     });
   }
 
@@ -229,15 +217,12 @@ export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
           property: { ...field.property, options: field.property.options.filter(item => item.id !== groupId) },
         };
         setFieldAttr(newField);
-        notifyWithUndo(
-          t(Strings.delete_kanban_group),
-          NotifyKey.DeleteKanbanGroup,
-        );
+        notifyWithUndo(t(Strings.delete_kanban_group), NotifyKey.DeleteKanbanGroup);
       },
     });
   }
 
-  const showMore = (e) => {
+  const showMore = e => {
     e.preventDefault();
     show(e, {
       props: {
@@ -246,15 +231,19 @@ export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
         hideGroup,
         addNewRecord,
         setEditing,
-        groupId
-      }
+        groupId,
+      },
     });
   };
 
   // 在成员列上层实现，是为了成员列可以超出显示省略号并且自适应右侧统计数字宽度
-  useClickAway(() => {
-    field.type !== FieldType.SingleSelect && setEditing(false);
-  }, wrapperRef, 'mousedown');
+  useClickAway(
+    () => {
+      field.type !== FieldType.SingleSelect && setEditing(false);
+    },
+    wrapperRef,
+    'mousedown',
+  );
 
   return (
     <div
@@ -267,7 +256,9 @@ export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
       onClick={onClick}
       onContextMenu={!isCollapse ? showMore : undefined}
       tabIndex={0}
-      onMouseDown={(e) => { e.currentTarget.focus(); }}
+      onMouseDown={e => {
+        e.currentTarget.focus();
+      }}
       ref={divRef}
     >
       <div
@@ -278,68 +269,61 @@ export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
         style={{ background: getBgColor(cacheTheme) }}
       />
       <CollapseWrapper isCollapse={isCollapse}>
-        {
-          isCollapse && <span className={styles.count} style={{ marginRight: 16, marginLeft: 24 }}>
+        {isCollapse && (
+          <span className={styles.count} style={{ marginRight: 16, marginLeft: 24 }}>
             ({simpleCount})
           </span>
-        }
+        )}
         <div
           className={classNames({
             [styles.innerWrapper]: true,
             [styles.collapse]: isCollapse,
-            [styles.noPermission]: fieldRole
+            [styles.noPermission]: fieldRole,
           })}
           ref={wrapperRef}
         >
-          {
-            groupId === UN_GROUP &&
+          {groupId === UN_GROUP && (
             <span
               className={styles.noGroupHead}
               style={{
                 color: isCryptoField ? colors.fourthLevelText : '',
               }}
             >
-              {
-                isCryptoField ? t(Strings.kanban_no_permission) : t(Strings.kaban_not_group)
-              }
+              {isCryptoField ? t(Strings.kanban_no_permission) : t(Strings.kaban_not_group)}
             </span>
-          }
-          {
-            groupId !== UN_GROUP &&
-            (
-              field.type === FieldType.SingleSelect ?
-                <OptionFieldHead
-                  cellValue={cellValue as string}
-                  field={field}
-                  editing={editing}
-                  setEditing={setEditing}
-                  onCommand={onCommand}
-                  readOnly={readOnly}
-                /> :
-                <MemberFieldHead
-                  cellValue={cellValue as string[]}
-                  field={field as IMemberField}
-                  editing={editing}
-                  setEditing={setEditing}
-                  onCommand={onCommand}
-                  readOnly={readOnly}
-                />
-            )
-          }
-          {
-            (!collapse || !collapse.includes(groupId)) &&
+          )}
+          {groupId !== UN_GROUP &&
+            (field.type === FieldType.SingleSelect ? (
+              <OptionFieldHead
+                cellValue={cellValue as string}
+                field={field}
+                editing={editing}
+                setEditing={setEditing}
+                onCommand={onCommand}
+                readOnly={readOnly}
+              />
+            ) : (
+              <MemberFieldHead
+                cellValue={cellValue as string[]}
+                field={field as IMemberField}
+                editing={editing}
+                setEditing={setEditing}
+                onCommand={onCommand}
+                readOnly={readOnly}
+              />
+            ))}
+          {(!collapse || !collapse.includes(groupId)) && (
             <span onClick={() => setEditing(false)} className={styles.count}>
               ({simpleCount})
             </span>
-          }
+          )}
         </div>
       </CollapseWrapper>
-      {
-        (!collapse || !collapse.includes(groupId)) &&
+      {(!collapse || !collapse.includes(groupId)) && (
         <span className={styles.more} onClick={showMore}>
           <IconDot className={styles.dot} fill={colors.thirdLevelText} />
         </span>
-      }
+      )}
     </div>
   );
 };

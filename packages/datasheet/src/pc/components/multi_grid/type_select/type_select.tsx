@@ -3,7 +3,7 @@ import { FieldGroup, FieldType, FieldTypeDescriptionMap, Strings, t } from '@vik
 import { useMount, useSize, useUnmount } from 'ahooks';
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
 import { useResponsive } from 'pc/hooks';
 import * as React from 'react';
@@ -50,14 +50,14 @@ const fieldSequence: FieldType[] = [
 ];
 
 interface ITypeSelectItemProps extends ITypeSelect {
-  setInfo: React.Dispatch<React.SetStateAction<{ top: number; title: string; desc: string; }>>,
-  fieldType: FieldType,
-  index: number,
-  fieldList: FieldType[],
+  setInfo: React.Dispatch<React.SetStateAction<{ top: number; title: string; desc: string }>>;
+  fieldType: FieldType;
+  index: number;
+  fieldList: FieldType[];
   style?: React.CSSProperties;
 }
 
-const TypeSelectItem: React.FC<ITypeSelectItemProps> = (props) => {
+const TypeSelectItem: React.FC<ITypeSelectItemProps> = props => {
   const { fieldList, fieldType, index, setInfo, style } = props;
   const colors = useThemeColors();
   const divRef = useRef<HTMLDivElement>(null);
@@ -108,13 +108,10 @@ const TypeSelectItem: React.FC<ITypeSelectItemProps> = (props) => {
 
   return (
     <div
-      className={
-        classNames(
-          styles.typeSelectItem, {
-            [styles.active]: fieldType === props.currentFieldType,
-            [getClassName()]: true,
-          })
-      }
+      className={classNames(styles.typeSelectItem, {
+        [styles.active]: fieldType === props.currentFieldType,
+        [getClassName()]: true,
+      })}
       onClick={onClick}
       key={index}
       onMouseOver={onMouseEnter}
@@ -123,9 +120,7 @@ const TypeSelectItem: React.FC<ITypeSelectItemProps> = (props) => {
       ref={divRef}
       style={style}
     >
-      <div className={styles.icon}>
-        {getFieldTypeIcon(fieldType, isActiveFieldType ? colors.primaryColor : colors.thirdLevelText, 24, 24)}
-      </div>
+      <div className={styles.icon}>{getFieldTypeIcon(fieldType, isActiveFieldType ? colors.primaryColor : colors.thirdLevelText, 24, 24)}</div>
       <div className={styles.desc}>
         <div className={styles.title}>{title}</div>
       </div>
@@ -134,16 +129,14 @@ const TypeSelectItem: React.FC<ITypeSelectItemProps> = (props) => {
 };
 
 function filterCommonGroup(fieldType: FieldType) {
-  return FieldTypeDescriptionMap[fieldType] &&
-    FieldTypeDescriptionMap[fieldType].fieldGroup === FieldGroup.Common;
+  return FieldTypeDescriptionMap[fieldType] && FieldTypeDescriptionMap[fieldType].fieldGroup === FieldGroup.Common;
 }
 
 function filterAdvanceGroup(fieldType: FieldType) {
-  return FieldTypeDescriptionMap[fieldType] &&
-    FieldTypeDescriptionMap[fieldType].fieldGroup === FieldGroup.Advanced;
+  return FieldTypeDescriptionMap[fieldType] && FieldTypeDescriptionMap[fieldType].fieldGroup === FieldGroup.Advanced;
 }
 
-export const TypeSelectBase: React.FC<ITypeSelect> = (props) => {
+export const TypeSelectBase: React.FC<ITypeSelect> = props => {
   const colors = useThemeColors();
   const divRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -281,77 +274,35 @@ export const TypeSelectBase: React.FC<ITypeSelect> = (props) => {
           </Typography>
         </div>
       )}
-      <LineSearchInput
-        onChange={onChange}
-        className={styles.searchInput}
-        ref={inputRef}
-        value={keyword}
-        onClear={() => setKeyword('')}
-        allowClear
-      />
-      <div
-        className={styles.scroll}
-        ref={scrollRef}
-        onScroll={handleScroll}
-      >
-        {
-          Boolean(basicFieldList.length) &&
+      <LineSearchInput onChange={onChange} className={styles.searchInput} ref={inputRef} value={keyword} onClear={() => setKeyword('')} allowClear />
+      <div className={styles.scroll} ref={scrollRef} onScroll={handleScroll}>
+        {Boolean(basicFieldList.length) && (
           <section className={styles.fieldDisplayList}>
             <h2>{t(Strings.basis)}</h2>
             <main>
-              {
-                basicFieldList
-                  .map((item, index, array) => {
-                    return (
-                      <TypeSelectItem
-                        {...props}
-                        setInfo={setInfo}
-                        index={index}
-                        key={index}
-                        fieldType={item}
-                        fieldList={array}
-                        style={itemStyle}
-                      />
-                    );
-                  })
-              }
+              {basicFieldList.map((item, index, array) => {
+                return <TypeSelectItem {...props} setInfo={setInfo} index={index} key={index} fieldType={item} fieldList={array} style={itemStyle} />;
+              })}
             </main>
           </section>
-        }
-        {
-          Boolean(advanceFieldList.length) && props.showAdvancedFields &&
+        )}
+        {Boolean(advanceFieldList.length) && props.showAdvancedFields && (
           <section className={styles.fieldDisplayList}>
             <h2>{t(Strings.advanced)}</h2>
             <main>
-              {
-                advanceFieldList
-                  .map((item, index, array) => {
-                    return (
-                      <TypeSelectItem
-                        {...props}
-                        setInfo={setInfo}
-                        index={index}
-                        key={index}
-                        fieldType={item}
-                        fieldList={array}
-                        style={itemStyle}
-                      />
-                    );
-                  })
-              }
+              {advanceFieldList.map((item, index, array) => {
+                return <TypeSelectItem {...props} setInfo={setInfo} index={index} key={index} fieldType={item} fieldList={array} style={itemStyle} />;
+              })}
             </main>
           </section>
-        }
-        {
-          !(basicFieldList.length + advanceFieldList.length) &&
+        )}
+        {!(basicFieldList.length + advanceFieldList.length) && (
           <div className={styles.noSearchTip}>
-            {
-              t(Strings.no_search_field, {
-                keyword: keyword,
-              })
-            }
+            {t(Strings.no_search_field, {
+              keyword: keyword,
+            })}
           </div>
-        }
+        )}
       </div>
       <div ref={scrollShadowRef} className={classNames(!isMobile && styles.scrollShadow)} />
     </div>

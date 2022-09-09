@@ -7,7 +7,7 @@ import { CopyOutlined } from '@vikadata/icons';
 import { Strings, t, Api } from '@vikadata/core';
 import { copy2clipBoard } from 'pc/utils';
 import { FormItem, IFormItem } from '../../wecom_integration/components/form_item';
-import { IFeishuConfigParams } from '../feishu_integration_config';
+import { IFeishuConfigParams } from '../interface';
 import styles from './styles.module.less';
 
 export interface IConfigForm {
@@ -30,22 +30,24 @@ export const copyButton = (value, colors) => (
       onClick={() => {
         copy2clipBoard(value);
       }}
-    ><CopyOutlined className={styles.buttonIcon} color={colors.secondLevelText}/></Button>
+    >
+      <CopyOutlined className={styles.buttonIcon} color={colors.secondLevelText} />
+    </Button>
   </Tooltip>
 );
 
-export const CreateApplication: React.FC<ICreateApplicationProps> = (props) => {
+export const CreateApplication: React.FC<ICreateApplicationProps> = props => {
   const { nextStep, onSetConfig, appInstanceId, config } = props;
   const [isValidForm, setIsValidForm] = useState(false);
   const [loading, setLoading] = useState(false);
-  
+
   const [formData, setFormData] = useState<IConfigForm>({
     appId: config.appId,
     appSecret: config.appSecret,
   });
   const [formError, setFormError] = useState({
     appId: '',
-    appSecret: ''
+    appSecret: '',
   });
 
   const handleChange = (e, item: IFormItem) => {
@@ -55,7 +57,7 @@ export const CreateApplication: React.FC<ICreateApplicationProps> = (props) => {
     }
     const form = {
       ...formData,
-      [item.key]: e.target.value
+      [item.key]: e.target.value,
     };
     setFormData(form);
   };
@@ -67,14 +69,14 @@ export const CreateApplication: React.FC<ICreateApplicationProps> = (props) => {
   const schema1 = {
     appId: {
       label: t(Strings.lark_integration_step2_appid),
-      required: true
+      required: true,
     },
     appSecret: {
       label: t(Strings.lark_integration_step2_appsecret),
-      required: true
-    }
+      required: true,
+    },
   };
-  
+
   const setError = () => {
     const error = {};
     Object.keys(schema1).forEach(key => {
@@ -83,7 +85,7 @@ export const CreateApplication: React.FC<ICreateApplicationProps> = (props) => {
     setFormError({ ...formError, ...error });
   };
 
-  const validator = (properties) => {
+  const validator = properties => {
     return Object.keys(properties).every(key => {
       const property = properties[key];
       const value = formData[key];
@@ -97,11 +99,9 @@ export const CreateApplication: React.FC<ICreateApplicationProps> = (props) => {
 
   const setLarkConfig = async(formData: IConfigForm) => {
     setLoading(true);
-    const { data: { success, message, data }} = await Api.updateLarkBaseConfig(
-      appInstanceId,
-      formData.appId.trim(),
-      formData.appSecret.trim()
-    );
+    const {
+      data: { success, message, data },
+    } = await Api.updateLarkBaseConfig(appInstanceId, formData.appId.trim(), formData.appSecret.trim());
     setLoading(false);
     if (success) {
       nextStep();
@@ -125,28 +125,22 @@ export const CreateApplication: React.FC<ICreateApplicationProps> = (props) => {
   };
 
   return (
-    <div className={classNames(
-      styles.createApplication,
-      styles.formPage
-    )}>
+    <div className={classNames(styles.createApplication, styles.formPage)}>
       <div className={styles.formWrap}>
         <div className={styles.form}>
           <div className={styles.formTitle}>{t(Strings.lark_integration_step2_title)}</div>
-          <div
-            className={styles.formDesc}
-            dangerouslySetInnerHTML={{ __html: t(Strings.lark_integration_step2_content) }}
-          />
+          <div className={styles.formDesc} dangerouslySetInnerHTML={{ __html: t(Strings.lark_integration_step2_content) }} />
           <div className={styles.formContent}>
-            {
-              Object.keys(schema1).map(key => (
-                <FormItem key={key} formData={formData} formItem={{ ...schema1[key], key }} error={formError[key]} onChange={handleChange}/>
-              ))
-            }
+            {Object.keys(schema1).map(key => (
+              <FormItem key={key} formData={formData} formItem={{ ...schema1[key], key }} error={formError[key]} onChange={handleChange} />
+            ))}
           </div>
         </div>
       </div>
       <div className={styles.buttonWrap}>
-        <Button color="primary" onClick={onClick} disabled={!isValidForm} block loading={loading}>{t(Strings.lark_integration_step2_next)}</Button>
+        <Button color="primary" onClick={onClick} disabled={!isValidForm} block loading={loading}>
+          {t(Strings.lark_integration_step2_next)}
+        </Button>
       </div>
     </div>
   );

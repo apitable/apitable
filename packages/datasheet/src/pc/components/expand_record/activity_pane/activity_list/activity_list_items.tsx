@@ -1,8 +1,25 @@
 import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
 import { LinkButton, Typography, useThemeColors } from '@vikadata/components';
 import {
-  Api, CollaCommandName, ConfigConstant, DatasheetApi, IActivityListParams, ICommentMsg, IJOTAction, integrateCdnHost, IRemoteChangeset, MemberType,
-  OPEventNameEnums, OtherTypeUnitId, ResourceType, Selectors, Settings, StoreActions, Strings, t, WithOptional
+  Api,
+  CollaCommandName,
+  ConfigConstant,
+  DatasheetApi,
+  IActivityListParams,
+  ICommentMsg,
+  IJOTAction,
+  integrateCdnHost,
+  IRemoteChangeset,
+  MemberType,
+  OPEventNameEnums,
+  OtherTypeUnitId,
+  ResourceType,
+  Selectors,
+  Settings,
+  StoreActions,
+  Strings,
+  t,
+  WithOptional,
 } from '@vikadata/core';
 import { Spin } from 'antd';
 import axios, { CancelTokenSource } from 'axios';
@@ -20,7 +37,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import IconNoList from 'static/icon/datasheet/activity/datasheet_img_activity_record.png';
 import { ActivityContext } from '../activity_context';
 import { ChangesetItem } from '../activity_item';
-import { IActivityPaneProps, IChooseComment } from '../activity_pane';
+import { IActivityPaneProps, IChooseComment } from '../interface';
 import styles from './style.module.less';
 
 // 默认分页获取 10 条数据
@@ -76,7 +93,7 @@ export const ActivityListItems: FC<IActivityListProps & {
       }
       const height = listDom.offsetHeight;
       // 38 是 loading 占用的高度
-      containerDom.scrollTop = isBottom ? height : (height - listHeight - 38);
+      containerDom.scrollTop = isBottom ? height : height - listHeight - 38;
       setListHeight(height);
     });
   };
@@ -143,7 +160,11 @@ export const ActivityListItems: FC<IActivityListProps & {
           const [[emojiKey, emojiUserIds]] = toPairs(curEmojis);
           const newEmojis = clone(emojis);
           const newUserIds = get(newEmojis, `${commentId}.${emojiKey}`, []) as string[];
-          set(newEmojis, `${commentId}.${emojiKey}`, newUserIds.filter(id => id !== emojiUserIds[0]));
+          set(
+            newEmojis,
+            `${commentId}.${emojiKey}`,
+            newUserIds.filter(id => id !== emojiUserIds[0]),
+          );
           setEmojis(newEmojis);
           return;
         }
@@ -156,10 +177,12 @@ export const ActivityListItems: FC<IActivityListProps & {
               {
                 createdAt,
                 resourceId: datasheetId,
-                operations: [{
-                  cmd: CollaCommandName.InsertComment,
-                  actions: [action]
-                }],
+                operations: [
+                  {
+                    cmd: CollaCommandName.InsertComment,
+                    actions: [action],
+                  },
+                ],
                 revision: revision + 1,
                 userId: uid || userId,
               },
@@ -177,14 +200,18 @@ export const ActivityListItems: FC<IActivityListProps & {
             addComment();
           } else {
             Api.loadOrSearch({ unitIds: unitId }).then(res => {
-              const { data: { data: resData, success }} = res;
+              const {
+                data: { data: resData, success },
+              } = res;
               if (!resData.length || !success) {
                 return;
               }
               const newUser = resData[0];
-              dispatch(StoreActions.updateUnitMap({
-                [unitId]: newUser
-              }));
+              dispatch(
+                StoreActions.updateUnitMap({
+                  [unitId]: newUser,
+                }),
+              );
               addComment(newUser.userId);
             });
           }
@@ -246,7 +273,7 @@ export const ActivityListItems: FC<IActivityListProps & {
 
       if (!success) {
         Message.warning({
-          content: message
+          content: message,
         });
         return;
       }
@@ -361,9 +388,7 @@ export const ActivityListItems: FC<IActivityListProps & {
   if (isEmpty(recordList) && cancelsRef.current.length > 0 && loading) {
     return (
       <div className={styles.spin}>
-        <Spin
-          indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
-        />
+        <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
       </div>
     );
   }
@@ -374,23 +399,17 @@ export const ActivityListItems: FC<IActivityListProps & {
         <div>{t(Strings.no_comment_tip)}</div>
         <div>
           {selectType !== ActivitySelectType.Comment && t(Strings.history_view_tip, { day: maxRemainRecordActivityDays })}
-          <LinkButton
-            href={Settings.recorded_comments.value}
-            color={colors.thirdLevelText}
-            className={styles.more}
-            target="_blank"
-          >
+          <LinkButton href={Settings.recorded_comments.value} color={colors.thirdLevelText} className={styles.more} target="_blank">
             {t(Strings.know_more)}
           </LinkButton>
         </div>
-        {
-          selectType !== ActivitySelectType.Comment && maxRemainRecordActivityDays !== MAX_LIMIT_DAY &&
+        {selectType !== ActivitySelectType.Comment && maxRemainRecordActivityDays !== MAX_LIMIT_DAY && (
           <div onClick={loadOverLimitData} className={styles.loadMaxList} style={{ marginTop: 8 }}>
             <Typography variant={'body3'} color={colors.primaryColor}>
               {t(Strings.history_view_more)}
             </Typography>
           </div>
-        }
+        )}
       </div>
     );
   }
@@ -418,44 +437,38 @@ export const ActivityListItems: FC<IActivityListProps & {
             setChooseComment={setChooseComment}
             unit={unit}
           />
-
         );
       })}
       {more && <div className={styles.loadTrigger} ref={topRef} onClick={() => loadMore()} />}
       {isAdding && (
         <div className={styles.spin}>
-          <Spin
-            indicator={<LoadingOutlined style={{ fontSize: 14 }} spin />}
-          />
+          <Spin indicator={<LoadingOutlined style={{ fontSize: 14 }} spin />} />
         </div>
       )}
-      {end && (selectType === ActivitySelectType.Comment ? <div className={styles.commentTop} /> : (
-        <div className={styles.top}>
-          {
-            maxRemainRecordActivityDays !== MAX_LIMIT_DAY && <div onClick={loadOverLimitData} className={styles.loadMaxList}>
-              <Typography variant={'body3'} color={colors.primaryColor}>
-                {t(Strings.history_view_more)}
-              </Typography>
-            </div>
-          }
-          {
-            maxRemainRecordActivityDays !== MAX_LIMIT_DAY ? <div>
-              「{product}」
-              {t(Strings.history_view_tip, { day: maxRemainRecordActivityDays })}
-              <LinkButton
-                href={t(Strings.record_history_help_url)}
-                color={colors.thirdLevelText}
-                className={styles.more}
-                target="_blank"
-              >
-                {t(Strings.know_more)}
-              </LinkButton>
-            </div> : <div>
-              {t(Strings.record_activity_experience_tips, { day: MAX_LIMIT_DAY })}
-            </div>
-          }
-        </div>
-      ))}
+      {end &&
+        (selectType === ActivitySelectType.Comment ? (
+          <div className={styles.commentTop} />
+        ) : (
+          <div className={styles.top}>
+            {maxRemainRecordActivityDays !== MAX_LIMIT_DAY && (
+              <div onClick={loadOverLimitData} className={styles.loadMaxList}>
+                <Typography variant={'body3'} color={colors.primaryColor}>
+                  {t(Strings.history_view_more)}
+                </Typography>
+              </div>
+            )}
+            {maxRemainRecordActivityDays !== MAX_LIMIT_DAY ? (
+              <div>
+                「{product}」{t(Strings.history_view_tip, { day: maxRemainRecordActivityDays })}
+                <LinkButton href={t(Strings.record_history_help_url)} color={colors.thirdLevelText} className={styles.more} target="_blank">
+                  {t(Strings.know_more)}
+                </LinkButton>
+              </div>
+            ) : (
+              <div>{t(Strings.record_activity_experience_tips, { day: MAX_LIMIT_DAY })}</div>
+            )}
+          </div>
+        ))}
     </>
   );
 };

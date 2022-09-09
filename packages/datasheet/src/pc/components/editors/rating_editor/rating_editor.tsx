@@ -6,7 +6,7 @@ import { IBaseEditorProps, IEditor } from '../interface';
 import style from './style.module.less';
 import { Emoji } from 'pc/components/common/emoji';
 import { FocusHolder } from '../focus_holder';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { RatingEditorMobile } from './rating_editor_mobile';
 import { isNumberKey, isTouchDevice } from 'pc/utils';
 import { Message } from '@vikadata/components';
@@ -27,13 +27,26 @@ const RatingEditorBase: React.ForwardRefRenderFunction<IEditor, IRatingEditorPro
   const editorRef = useRef<HTMLInputElement>(null);
   const [lastTime, setLastTime] = useState(0);
 
-  useImperativeHandle(ref, (): IEditor => ({
-    focus: () => { focus(); },
-    onEndEdit: (cancel: boolean) => { onEndEdit(cancel); },
-    onStartEdit: (value?: number | null) => { onStartEdit(value); },
-    setValue: (value?: number | null) => { onStartEdit(value); },
-    saveValue: () => { saveValue(); },
-  }));
+  useImperativeHandle(
+    ref,
+    (): IEditor => ({
+      focus: () => {
+        focus();
+      },
+      onEndEdit: (cancel: boolean) => {
+        onEndEdit(cancel);
+      },
+      onStartEdit: (value?: number | null) => {
+        onStartEdit(value);
+      },
+      setValue: (value?: number | null) => {
+        onStartEdit(value);
+      },
+      saveValue: () => {
+        saveValue();
+      },
+    }),
+  );
 
   const setEditorValue = (value: number | null) => {
     setValue(value);
@@ -72,31 +85,33 @@ const RatingEditorBase: React.ForwardRefRenderFunction<IEditor, IRatingEditorPro
     }
   };
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
-    const { key } = e;
-    let rate: number | null = Number(key);
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      const { key } = e;
+      let rate: number | null = Number(key);
 
-    // 非数字
-    if (!isNumberKey(e as any)) {
-      rate = value !== null ? value : cellValue;
-    } else {
-
-      const currentTime = Date.now();
-      // 当输入的评分为 0 时，向前推 0.3 秒追溯是否为 10 分
-      if (rate === 0 && currentTime - lastTime <= 300) {
-        rate = Number(`${value}${rate}`);
-      }
-
-      if (rate > props.field.property.max) {
-        Message.error({ content: t(Strings.update_rate_error_notify), duration: 1.5 });
-        // value 存在为 null 情况，调用 cellValue 赋值
+      // 非数字
+      if (!isNumberKey(e as any)) {
         rate = value !== null ? value : cellValue;
-      }
-    }
+      } else {
+        const currentTime = Date.now();
+        // 当输入的评分为 0 时，向前推 0.3 秒追溯是否为 10 分
+        if (rate === 0 && currentTime - lastTime <= 300) {
+          rate = Number(`${value}${rate}`);
+        }
 
-    setLastTime(Date.now());
-    setEditorValue(rate);
-  }, [value, lastTime, cellValue, props.field.property.max]);
+        if (rate > props.field.property.max) {
+          Message.error({ content: t(Strings.update_rate_error_notify), duration: 1.5 });
+          // value 存在为 null 情况，调用 cellValue 赋值
+          rate = value !== null ? value : cellValue;
+        }
+      }
+
+      setLastTime(Date.now());
+      setEditorValue(rate);
+    },
+    [value, lastTime, cellValue, props.field.property.max],
+  );
 
   return (
     <div

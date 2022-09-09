@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import IconNoSpace from 'static/icon/datasheet/datasheet_img_modal_nospace.png';
-import { IShareSpaceInfo } from '../share';
+import { IShareSpaceInfo } from '../interface';
 import styles from './style.module.less';
 
 enum ModalType {
@@ -35,7 +35,7 @@ export const ShareSave: React.FC<IShareSave> = props => {
   const dispatch = useDispatch();
   const navigationTo = useNavigation();
   const [radio, setRadio] = useState('');
-  const [spaceList, setSpaceList] = useState<{ spaceId: string; name: string, logo: string }[]>([]);
+  const [spaceList, setSpaceList] = useState<{ spaceId: string; name: string; logo: string }[]>([]);
   const [modalType, setModalType] = useState<ModalType | null>(null);
 
   const onCancel = () => {
@@ -54,7 +54,7 @@ export const ShareSave: React.FC<IShareSave> = props => {
         },
         onCancel: () => setVisible(false),
         okButtonProps: { id: AutoTestID.GO_LOGIN_BTN },
-        type: 'warning'
+        type: 'warning',
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -82,10 +82,12 @@ export const ShareSave: React.FC<IShareSave> = props => {
         setSpaceList(data);
         setModalType(ModalType.SpaceList);
       } else {
-        dispatch(StoreActions.setHttpErrInfo({
-          code,
-          msg: message
-        }));
+        dispatch(
+          StoreActions.setHttpErrInfo({
+            code,
+            msg: message,
+          }),
+        );
       }
     };
     request();
@@ -103,9 +105,9 @@ export const ShareSave: React.FC<IShareSave> = props => {
         path: Navigation.WORKBENCH,
         params: {
           spaceId: radio,
-          nodeId: shareSpace.isFolder ? '' : data.nodeId
+          nodeId: shareSpace.isFolder ? '' : data.nodeId,
         },
-        method: Method.Redirect
+        method: Method.Redirect,
       });
     };
     if (success) {
@@ -113,12 +115,10 @@ export const ShareSave: React.FC<IShareSave> = props => {
         content: (
           <>
             {t(Strings.operate_success)}
-            <i onClick={toSpace}>
-              {t(Strings.click_to_view)}
-            </i>
+            <i onClick={toSpace}>{t(Strings.click_to_view)}</i>
           </>
         ),
-        key: saveKey
+        key: saveKey,
       });
       setVisible(false);
       setRadio('');
@@ -137,41 +137,35 @@ export const ShareSave: React.FC<IShareSave> = props => {
 
     return (
       <div className={styles.spaceList}>
-        <p className={styles.desc}>
-          {t(Strings.check_save_space)}
-        </p>
+        <p className={styles.desc}>{t(Strings.check_save_space)}</p>
         <Radio.Group onChange={onChange} value={radio} style={{ width: '100%' }} className={styles.listContainer}>
-          {
-            spaceList.map(item => {
-              return (
-                <Radio value={item.spaceId} key={item.spaceId} className={styles.listItem}>
-                  <div className={styles.content}>
-                    <Avatar
-                      type={AvatarType.Space}
-                      title={item.name}
-                      id={item.spaceId}
-                      src={item.logo}
-                      size={AvatarSize.Size32}
-                    />
-                    <div className={styles.name}>{item.name}</div>
-                  </div>
-                </Radio>
-              );
-            })
-          }
+          {spaceList.map(item => {
+            return (
+              <Radio value={item.spaceId} key={item.spaceId} className={styles.listItem}>
+                <div className={styles.content}>
+                  <Avatar type={AvatarType.Space} title={item.name} id={item.spaceId} src={item.logo} size={AvatarSize.Size32} />
+                  <div className={styles.name}>{item.name}</div>
+                </div>
+              </Radio>
+            );
+          })}
         </Radio.Group>
         <div className={styles.buttonWrapper}>
           <TextButton
-            onClick={() => { setVisible(false); }}
+            onClick={() => {
+              setVisible(false);
+            }}
             style={{ marginRight: '8px' }}
-            size='small'
+            size="small"
           >
             {t(Strings.cancel)}
           </TextButton>
           <Button
-            color='primary'
-            size='small'
-            onClick={() => { saveToSpace(); }}
+            color="primary"
+            size="small"
+            onClick={() => {
+              saveToSpace();
+            }}
           >
             {t(Strings.submit)}
           </Button>
@@ -188,15 +182,11 @@ export const ShareSave: React.FC<IShareSave> = props => {
       <div className={styles.noSpaceTip}>
         <p className={styles.desc}>
           {t(Strings.check_save_space)}
-          <span>
-            {t(Strings.choose_your_own_space)}
-          </span>
+          <span>{t(Strings.choose_your_own_space)}</span>
         </p>
-        <Image src={IconNoSpace} alt='' style={{ margin: '0 auto', display: 'block' }} />
-        <p className={styles.tip}>
-          {t(Strings.no_sapce_save)}
-        </p>
-        <Button color='primary' size='large' onClick={onClick} className={styles.button}>
+        <Image src={IconNoSpace} alt="" style={{ margin: '0 auto', display: 'block' }} />
+        <p className={styles.tip}>{t(Strings.no_sapce_save)}</p>
+        <Button color="primary" size="large" onClick={onClick} className={styles.button}>
           {t(Strings.quickly_create_space)}
         </Button>
       </div>
@@ -209,10 +199,12 @@ export const ShareSave: React.FC<IShareSave> = props => {
     if (success) {
       saveToSpace(data.spaceId);
     } else {
-      dispatch(StoreActions.setHttpErrInfo({
-        code,
-        msg: message
-      }));
+      dispatch(
+        StoreActions.setHttpErrInfo({
+          code,
+          msg: message,
+        }),
+      );
     }
   };
 

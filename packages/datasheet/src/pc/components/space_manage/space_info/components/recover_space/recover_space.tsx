@@ -5,7 +5,7 @@ import cls from 'classnames';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import { Modal } from 'pc/components/common';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -34,16 +34,15 @@ export const RecoverSpace = () => {
   };
   const handleClick = () => {
     if (isMobile) {
-      ModalMobile.alert(
-        t(Strings.restore_space),
-        t(Strings.modal_restore_space),
-        [{
+      ModalMobile.alert(t(Strings.restore_space), t(Strings.modal_restore_space), [
+        {
           text: t(Strings.cancel),
-        }, {
+        },
+        {
           text: t(Strings.confirm),
           onPress: recoverSpaceConfirm,
-        }]
-      );
+        },
+      ]);
       return;
     }
     Modal.confirm({
@@ -52,7 +51,6 @@ export const RecoverSpace = () => {
       onOk: recoverSpaceConfirm,
       type: 'warning',
     });
-
   };
   const delNowConfirm = () => {
     Api.deleteSpaceNow().then(res => {
@@ -64,17 +62,16 @@ export const RecoverSpace = () => {
   };
   const delNow = () => {
     if (isMobile) {
-      ModalMobile.alert(
-        t(Strings.del_space_now),
-        t(Strings.del_space_now_tip),
-        [{
+      ModalMobile.alert(t(Strings.del_space_now), t(Strings.del_space_now_tip), [
+        {
           text: t(Strings.cancel),
-        }, {
+        },
+        {
           text: t(Strings.confirm),
           onPress: delNowConfirm,
-          style: { color: colors.errorColor }
-        }]
-      );
+          style: { color: colors.errorColor },
+        },
+      ]);
       return;
     }
     Modal.confirm({
@@ -94,30 +91,15 @@ export const RecoverSpace = () => {
     return (
       <div className={cls(styles.recoverSpace, { [styles.mobileRecoverSpace]: isMobile })}>
         <div className={styles.wrapper}>
-          <Image
-            style={{ maxWidth: 'calc(100% - 150px)' }}
-            src={DeleteIcon} alt={t(Strings.delete_space)} />
+          <Image style={{ maxWidth: 'calc(100% - 150px)' }} src={DeleteIcon} alt={t(Strings.delete_space)} />
           <div className={styles.tip}>
             {dayjs(delDate).format('YYYY-MM-DD HH:mm')} {t(Strings.restore_space_confirm_delete)}
           </div>
-          <div className={styles.subTip}>
-            {t(Strings.tip_del_success)}
-          </div>
-          <Button
-            color="primary"
-            block
-            onClick={handleClick}
-            size="large"
-            prefixIcon={<ReturnIcon fill="currentColor" />}
-          >
+          <div className={styles.subTip}>{t(Strings.tip_del_success)}</div>
+          <Button color="primary" block onClick={handleClick} size="large" prefixIcon={<ReturnIcon fill="currentColor" />}>
             {t(Strings.restore_space)}
           </Button>
-          <TextButton
-            color="danger"
-            block
-            onClick={delNow}
-            size="large"
-          >
+          <TextButton color="danger" block onClick={delNow} size="large">
             {t(Strings.delete_now)}
           </TextButton>
           {delSuccess && <DelSuccess tip={t(Strings.delete_workspace_succeed)} />}
@@ -129,24 +111,13 @@ export const RecoverSpace = () => {
   return (
     <div className={styles.recoverSpace}>
       <div className={styles.wrapper}>
-        <Button
-          color="primary"
-          block
-          onClick={handleClick}
-          size="large"
-          prefixIcon={<ReturnIcon fill="currentColor" />}
-        >
+        <Button color="primary" block onClick={handleClick} size="large" prefixIcon={<ReturnIcon fill="currentColor" />}>
           {t(Strings.restore_space)}
         </Button>
         <div className={styles.tip}>
           {dayjs(delDate).format('YYYY-MM-DD HH:mm')} {t(Strings.restore_space_confirm_delete)}
         </div>
-        <TextButton
-          color="danger"
-          block
-          onClick={delNow}
-          size="large"
-        >
+        <TextButton color="danger" block onClick={delNow} size="large">
           {t(Strings.delete_now)}
         </TextButton>
       </div>

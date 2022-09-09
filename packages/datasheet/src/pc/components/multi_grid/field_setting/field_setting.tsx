@@ -1,7 +1,23 @@
 import { Button, Checkbox, TextButton, useListenVisualHeight, useThemeColors } from '@vikadata/components';
 import {
-  CollaCommandName, DatasheetActions, Events, ExecuteResult, Field, FieldType, FieldTypeDescriptionMap, getFieldClass, getNewId, IDPrefix, IField,
-  ISegment, IViewColumn, Player, Selectors, StoreActions, Strings, t,
+  CollaCommandName,
+  DatasheetActions,
+  Events,
+  ExecuteResult,
+  Field,
+  FieldType,
+  FieldTypeDescriptionMap,
+  getFieldClass,
+  getNewId,
+  IDPrefix,
+  IField,
+  ISegment,
+  IViewColumn,
+  Player,
+  Selectors,
+  StoreActions,
+  Strings,
+  t,
 } from '@vikadata/core';
 import { useKeyPress } from 'ahooks';
 import { Input } from 'antd';
@@ -10,7 +26,7 @@ import { ContextName, ShortcutContext } from 'pc/common/shortcut_key';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal';
 import { Tooltip } from 'pc/components/common/tooltip';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Divider } from 'pc/components/common/divider';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { notify } from 'pc/components/common/notify';
@@ -63,16 +79,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
   const colors = useThemeColors();
   const { scrollToItem, datasheetId: propDatasheetId, viewId: propViewId, targetDOM, showAdvancedFields = true } = props;
   const dispatch = useDispatch();
-  const {
-    visibleColumnsCount,
-    columns,
-    columnCount,
-    snapshot,
-    activeFieldState,
-    viewId,
-    linkId,
-    datasheetId,
-  } = useSelector(state => {
+  const { visibleColumnsCount, columns, columnCount, snapshot, activeFieldState, viewId, linkId, datasheetId } = useSelector(state => {
     const columnCount = Selectors.getColumnCount(state)!;
     const datasheetId = propDatasheetId || Selectors.getActiveDatasheetId(state)!;
     const snapshot = Selectors.getSnapshot(state, datasheetId)!;
@@ -150,7 +157,6 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
       });
       hideOperateBox();
     }
-
   }, [columns, hideOperateBox, activeFieldState.fieldId]);
 
   useEffect(() => {
@@ -171,13 +177,15 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
     };
   }, []);
 
-  const fieldInfoForState = field ? field : {
-    id: getNewId(IDPrefix.Field),
-    // 新增字段，不再默认填充一个字段名称
-    name: '',
-    type: FieldType.Text,
-    property: getFieldClass(FieldType.Text).defaultProperty(),
-  } as IField;
+  const fieldInfoForState = field
+    ? field
+    : ({
+      id: getNewId(IDPrefix.Field),
+      // 新增字段，不再默认填充一个字段名称
+      name: '',
+      type: FieldType.Text,
+      property: getFieldClass(FieldType.Text).defaultProperty(),
+    } as IField);
   const [currentField, setCurrentField] = useState(fieldInfoForState);
   const [baseErrMsg, setBaseErrMsg] = useState('');
   const [optionErrMsg, setOptionErrMsg] = useState('');
@@ -216,7 +224,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
     }
     // reRenderHeight();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentField.type, currentField.property/* , reRenderHeight */]);
+  }, [currentField.type, currentField.property]);
 
   // useEffect(() => {
   //   if (mobile) {
@@ -272,7 +280,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
       };
       const hasTheSameName = Object.keys(fieldMap).some(fieldId => {
         const item = fieldMap[fieldId];
-        return (item.name === value && pre.id !== item.id);
+        return item.name === value && pre.id !== item.id;
       });
       setBaseErrMsg(hasTheSameName ? t(Strings.is_repeat_column_name) : '');
       return newField;
@@ -313,7 +321,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
     hideOperateBox();
   };
 
-  const handleFieldRequiredChange = (required) => {
+  const handleFieldRequiredChange = required => {
     setCurrentField((curField: IField) => {
       return { ...curField, required };
     });
@@ -322,14 +330,16 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
   function addField(newField: IField, colIndex?: number) {
     const result = commandManager.execute({
       cmd: CollaCommandName.AddFields,
-      data: [{
-        data: {
-          ...newField,
+      data: [
+        {
+          data: {
+            ...newField,
+          },
+          viewId,
+          index: typeof colIndex === 'number' ? colIndex : columnCount,
+          hiddenColumn: activeFieldState.hiddenColumn,
         },
-        viewId,
-        index: typeof colIndex === 'number' ? colIndex : columnCount,
-        hiddenColumn: activeFieldState.hiddenColumn
-      }],
+      ],
       datasheetId,
     });
     if (ExecuteResult.Success === result.result) {
@@ -344,9 +354,10 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
       hideOperateBox();
 
       setTimeout(() => {
-        scrollToItem && scrollToItem({
-          columnIndex: visibleColumnsCount,
-        });
+        scrollToItem &&
+          scrollToItem({
+            columnIndex: visibleColumnsCount,
+          });
       }, 0);
     }
   }
@@ -365,9 +376,12 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
   const checkMemberField = async(checkResult: IField) => {
     if (checkResult.type === FieldType.Member) {
       const cellValues = DatasheetActions.getCellValuesByFieldId(store.getState(), snapshot, checkResult.id);
-      const stdVals = cellValues.map(cv => {
-        return Field.bindModel(field).cellValueToStdValue(cv as ISegment[]);
-      }).map(item => item.data[0] && item.data[0].text).filter(item => item);
+      const stdVals = cellValues
+        .map(cv => {
+          return Field.bindModel(field).cellValueToStdValue(cv as ISegment[]);
+        })
+        .map(item => item.data[0] && item.data[0].text)
+        .filter(item => item);
 
       await dispatch(StoreActions.loadLackUnitMap(stdVals.join(','), linkId) as any);
     }
@@ -379,8 +393,9 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
       isModal && renderModal(baseErrMsg);
       return;
     }
-    const checkResult = checkFactory[currentField.type] ?
-      checkFactory[currentField.type](currentField, propDatasheetId) : CheckFieldSettingBase.checkStream(currentField, propDatasheetId);
+    const checkResult = checkFactory[currentField.type]
+      ? checkFactory[currentField.type](currentField, propDatasheetId)
+      : CheckFieldSettingBase.checkStream(currentField, propDatasheetId);
 
     if (typeof checkResult === 'string') {
       setOptionErrMsg(checkResult);
@@ -401,7 +416,9 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
           title: t(Strings.confirm_change_field),
           content: t(Strings.convert_tip),
           okText: t(Strings.convert),
-          onOk: () => { checkMemberField(checkResult); },
+          onOk: () => {
+            checkMemberField(checkResult);
+          },
         });
         return;
       }
@@ -431,10 +448,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
             maxLength={100}
           />
         </div>
-        {
-          baseErrMsg.length > 0 &&
-          <p className={styles.error}>{baseErrMsg}</p>
-        }
+        {baseErrMsg.length > 0 && <p className={styles.error}>{baseErrMsg}</p>}
       </section>
       <FieldTypeSelect
         snapshot={snapshot}
@@ -454,35 +468,26 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
         hideOperateBox={hideOperateBox}
         datasheetId={propDatasheetId}
       />
-      {
-        optionErrMsg &&
-        (
-          <section className={styles.error}>
-            {optionErrMsg}
-          </section>
-        )
-      }
+      {optionErrMsg && <section className={styles.error}>{optionErrMsg}</section>}
 
       {!isComputedField && (
         <>
           <Divider />
           <div className={styles.requiredBox}>
-            <Checkbox
-              size={14}
-              checked={currentField.required}
-              onChange={handleFieldRequiredChange}
-            >
+            <Checkbox size={14} checked={currentField.required} onChange={handleFieldRequiredChange}>
               {t(Strings.set_field_required)}
             </Checkbox>
-            <Tooltip title={
-              <span>
-                {t(Strings.set_field_required_tip_title)}
-                <br />
-                {t(Strings.set_field_required_tip_1)}
-                <br />
-                {t(Strings.set_field_required_tip_2)}
-              </span>
-            }>
+            <Tooltip
+              title={
+                <span>
+                  {t(Strings.set_field_required_tip_title)}
+                  <br />
+                  {t(Strings.set_field_required_tip_1)}
+                  <br />
+                  {t(Strings.set_field_required_tip_2)}
+                </span>
+              }
+            >
               <span className={styles.requiredTip}>
                 <HelpIcon fill="currentColor" />
               </span>
@@ -516,7 +521,13 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
             <TextButton size="small" onClick={hideOperateBox} style={{ color: colors.thirdLevelText }}>
               {t(Strings.cancel)}
             </TextButton>
-            <Button size="small" onClick={() => { onSubmit(); }} color="primary">
+            <Button
+              size="small"
+              onClick={() => {
+                onSubmit();
+              }}
+              color="primary"
+            >
               {t(Strings.submit)}
             </Button>
           </section>
@@ -530,19 +541,12 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
           height="90%"
           title={t(Strings.choose_type_of_vika_field)}
           footer={
-            <Button
-              color="primary"
-              size="large"
-              block
-              onClick={() => onSubmit()}
-            >
+            <Button color="primary" size="large" block onClick={() => onSubmit()}>
               {t(Strings.confirm)}
             </Button>
           }
         >
-          <div className={styles.content}>
-            {MainComponent}
-          </div>
+          <div className={styles.content}>{MainComponent}</div>
         </Popup>
       </ComponentDisplay>
     </>

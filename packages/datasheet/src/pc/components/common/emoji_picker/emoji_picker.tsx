@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Picker } from 'pc/components/common';
 import { Popover } from 'antd';
 import styles from './style.module.less';
-import { ComponentDisplay, ScreenSize } from '../component_display/component_display';
+import { ComponentDisplay, ScreenSize } from '../component_display';
 import { Popup } from '../mobile/popup';
 import { Strings, t } from '@vikadata/core';
 import { useClickAway } from 'ahooks';
@@ -14,21 +14,22 @@ export interface IEmojiPopoverProps {
 }
 
 export const EmojiPickerBase: FC<PropsWithChildren<IEmojiPopoverProps>> = props => {
-  const {
-    children,
-    onSelect,
-  } = props;
+  const { children, onSelect } = props;
   const ref = useRef<HTMLDivElement | null>(null);
   const { screenIsAtMost } = useResponsive();
 
   const [visible, setVisible] = useState(false);
 
-  useClickAway(() => {
-    if (!visible || screenIsAtMost(ScreenSize.md)) {
-      return;
-    }
-    setVisible(false);
-  }, ref, 'mousedown');
+  useClickAway(
+    () => {
+      if (!visible || screenIsAtMost(ScreenSize.md)) {
+        return;
+      }
+      setVisible(false);
+    },
+    ref,
+    'mousedown',
+  );
 
   const EmojiPicker = () => {
     return (
@@ -58,7 +59,6 @@ export const EmojiPickerBase: FC<PropsWithChildren<IEmojiPopoverProps>> = props 
           onVisibleChange={visible => setVisible(visible)}
           destroyTooltipOnHide={{ keepParent: false }}
           placement="bottom"
-
         >
           {children as React.ReactElement}
         </Popover>
@@ -68,16 +68,14 @@ export const EmojiPickerBase: FC<PropsWithChildren<IEmojiPopoverProps>> = props 
         <Popup
           visible={visible}
           onClose={() => setVisible(false)}
-          height='90%'
+          height="90%"
           title={t(Strings.please_choose)}
           bodyStyle={{ padding: 0 }}
           destroyOnClose
         >
           {EmojiPicker()}
         </Popup>
-        <div onClick={() => setVisible(true)}>
-          {children as React.ReactElement}
-        </div>
+        <div onClick={() => setVisible(true)}>{children as React.ReactElement}</div>
       </ComponentDisplay>
     </>
   );

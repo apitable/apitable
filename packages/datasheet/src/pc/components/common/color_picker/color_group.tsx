@@ -6,7 +6,7 @@ import { rgbaToHex, stopPropagation } from 'pc/utils';
 import { FC, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { OptionSetting } from './color_picker';
+import { OptionSetting } from './enum';
 import styles from './style.module.less';
 
 export interface IColorGroupProps {
@@ -16,7 +16,7 @@ export interface IColorGroupProps {
   style?: React.CSSProperties;
 }
 
-export const ColorGroup: FC<IColorGroupProps> = (props) => {
+export const ColorGroup: FC<IColorGroupProps> = props => {
   const { colorGroup, option, onChange, style } = props;
   const [colorIdx, setColorIdx] = useState<number>();
   const colors = useThemeColors();
@@ -27,10 +27,7 @@ export const ColorGroup: FC<IColorGroupProps> = (props) => {
       {colorGroup.map(colorIndex => {
         const selected = colorIndex === option.color;
         return (
-          <li
-            className={styles.item}
-            key={option.id + colorIndex}
-          >
+          <li className={styles.item} key={option.id + colorIndex}>
             <div
               className={classNames(styles.outer, {
                 [styles.colorSelected]: selected,
@@ -48,7 +45,7 @@ export const ColorGroup: FC<IColorGroupProps> = (props) => {
                   className={styles.inner}
                   style={{
                     background: colorIndex === -1 ? colors.defaultBg : setColor(colorIndex, cacheTheme),
-                    border: colorIndex === -1 ? `1px solid ${rgbaToHex(colors.fourthLevelText, 0.8)}` : 'none'
+                    border: colorIndex === -1 ? `1px solid ${rgbaToHex(colors.fourthLevelText, 0.8)}` : 'none',
                   }}
                 />
               </div>

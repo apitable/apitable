@@ -8,7 +8,7 @@ import { useResponsive } from 'pc/hooks';
 import styles from './style.module.less';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
 import { isMobile as isTouchDevice } from 'react-device-detect';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { getStyleConfig } from 'pc/common/style_config';
 import { KonvaGridContext } from 'pc/components/konva_grid';
 
@@ -38,7 +38,7 @@ const unitOptions = [
   },
 ];
 
-export const DomGantt: FC<IDomGanttBaseProps> = (props) => {
+export const DomGantt: FC<IDomGanttBaseProps> = props => {
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
   const { containerWidth, gridWidth, gridVisible } = props;
@@ -54,11 +54,11 @@ export const DomGantt: FC<IDomGanttBaseProps> = (props) => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
-  const unitTypeSelectWidth = (isMobile || isTouchDevice) ? getStyleConfig('gantt_mobile_unit_select_width') : 90;
+  const unitTypeSelectWidth = isMobile || isTouchDevice ? getStyleConfig('gantt_mobile_unit_select_width') : 90;
 
   const onGanttStatusChange = (key: string, value: any) => {
     const ganttStatusMap = getStorage(StorageName.GanttStatusMap);
-    const ganttStatus = ganttStatusMap?.[`${spaceId}_${datasheetId}_${viewId}`] || {} as IGanttViewStatus;
+    const ganttStatus = ganttStatusMap?.[`${spaceId}_${datasheetId}_${viewId}`] || ({} as IGanttViewStatus);
     setStorage(StorageName.GanttStatusMap, {
       [`${spaceId}_${datasheetId}_${viewId}`]: {
         ...ganttStatus,
@@ -67,7 +67,7 @@ export const DomGantt: FC<IDomGanttBaseProps> = (props) => {
     });
   };
 
-  const onSelected = (option) => {
+  const onSelected = option => {
     const dateUnitType = option.value;
     onGanttStatusChange('dateUnitType', option.value);
     dispatch(StoreActions.setGanttDateUnitType(dateUnitType, datasheetId!));
@@ -82,8 +82,7 @@ export const DomGantt: FC<IDomGanttBaseProps> = (props) => {
   return (
     <div className={styles.domGantt}>
       <div style={{ pointerEvents: 'auto' }}>
-        {
-          containerWidth - gridWidth > 0 &&
+        {containerWidth - gridWidth > 0 && (
           <Select
             options={unitOptions}
             value={dateUnitType}
@@ -96,31 +95,21 @@ export const DomGantt: FC<IDomGanttBaseProps> = (props) => {
               transition: 'none',
             }}
             listStyle={{
-              textAlign: 'center'
+              textAlign: 'center',
             }}
-            renderValue={
-              (option) => (isMobile || isTouchDevice) ? option.label : t(Strings.gantt_by_unit_type, { unitType: option.label })
-            }
+            renderValue={option => (isMobile || isTouchDevice ? option.label : t(Strings.gantt_by_unit_type, { unitType: option.label }))}
           />
-        }
-        {
-          !isMobile && 
-          <div
-            className={styles.toggleBtnWrapper}
-            style={{ left: gridVisible ? gridWidth - 11 : -11 }}
-          >
+        )}
+        {!isMobile && (
+          <div className={styles.toggleBtnWrapper} style={{ left: gridVisible ? gridWidth - 11 : -11 }}>
             <ButtonPlus.Icon
-              icon={
-                gridVisible ?
-                  <GanttPackupOutlined color={colors.thirdLevelText} /> :
-                  <GanttOpenupOutlined color={colors.thirdLevelText} />
-              }
+              icon={gridVisible ? <GanttPackupOutlined color={colors.thirdLevelText} /> : <GanttOpenupOutlined color={colors.thirdLevelText} />}
               size="x-small"
               className={styles.toggleBtn}
               onClick={onToggleBtnClick}
             />
           </div>
-        }
+        )}
       </div>
     </div>
   );

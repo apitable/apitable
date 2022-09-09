@@ -4,4 +4,4 @@
 cd apitable
 
 npx lint-staged
-npx pretty-quick --pattern "**/*.*(ts|tsx)" --staged
+# npx pretty-quick --pattern "**/*.*(ts|tsx)" --staged

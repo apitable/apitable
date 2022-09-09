@@ -1,7 +1,8 @@
-# 参考文档：https://www.ruanyifeng.com/blog/2015/03/build-website-with-make.html
 .DEFAULT_GOAL := help
 PATH  := node_modules/.bin:$(PATH)
 SHELL := /bin/bash
+
+DEVENV := docker compose -f docker-compose.devenv.yaml --env-file .env run --rm --user $(shell id -u):$(shell id -g) 
 
 SEMVER3 := $(shell cat .version)
 define ANNOUNCE_BODY
@@ -258,28 +259,33 @@ endif
 run:
 	echo "TODO As daemon"
 
-run-web-server: ## run local codes as service 
-	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) web-server yarn sd 
 
-run-room-server: ## run local codes as service 
-	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) room-server yarn sd 
 
-run-socket-server: ## run local codes as service 
-	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) socket-server yarn sd 
+run-web-server: ## run local web-server code
+	$(DEVENV) web-server yarn sd 
+
+run-room-server: ## run local room-server code
+	$(DEVENV) room-server yarn sd 
+
+run-socket-server: ## run local socket-server code
+	$(DEVENV) socket-server yarn sd 
+
+run-backend-server: ## run local backend-server code
+	$(DEVENV) backend-server ./gradlew build -x test
 
 ### install
 
 .PHONY: install-backend-server
 install-backend-server: ## graldew install backend-server dependencies
-	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) backend-server ./gradlew build 
+	$(DEVENV) backend-server ./gradlew build -x test
 
 .PHONY: install-web-server
 install-web-server: ## graldew install backend-server dependencies
-	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) web-server sh -c "yarn set version stable && yarn install && yarn build:dst:pre"
+	$(DEVENV) web-server sh -c "yarn install && yarn build:dst:pre"
 
 .PHONY: install-socket-server
 install-socket-server:
-	docker compose -f docker-compose.devenv.yaml run --user $(shell id -u):$(shell id -g) socket-server sh -c "yarn set version stable && yarn"
+	$(DEVENV) socket-server sh -c "yarn"
 	  
 
 .PHONY: install
@@ -297,18 +303,17 @@ build: ## build apitable all services
 .PHONY: search
 search:
 	@echo " "
-	@read -p "搜索命令:" s; \
+	@read -p "Search Command:" s; \
 	echo  && grep -E "$$s.*?## .*" $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}';
 	@echo ' ';
-	@read -p "输入执行命令:" command; \
+	@read -p "What do you want?>>" command; \
 	make $$command;
 
 .PHONY: help
 help:
 	@echo "$$ANNOUNCE_BODY"
-	@echo "What you want to do?"
 	@echo ' ';
 	@grep -E '^[0-9a-zA-Z-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}';
 	@echo '  '
-	@read -p "INPUT YOUR COMMAND >> " command; \
+	@read -p "What do you want?>> " command; \
 	make $$command;

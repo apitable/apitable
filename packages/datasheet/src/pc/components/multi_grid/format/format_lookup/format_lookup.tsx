@@ -1,7 +1,20 @@
 import {
-  BasicValueType, ConfigConstant, DateTimeField, Field, FieldType, Functions, IField, ILookUpField, ILookUpProperty, IViewColumn, LookUpField,
+  BasicValueType,
+  ConfigConstant,
+  DateTimeField,
+  Field,
+  FieldType,
+  Functions,
+  IField,
+  ILookUpField,
+  ILookUpProperty,
+  IViewColumn,
+  LookUpField,
   NOT_FORMAT_FUNC_SET,
-  RollUpFuncType, Selectors, Strings, t,
+  RollUpFuncType,
+  Selectors,
+  Strings,
+  t,
 } from '@vikadata/core';
 import { Switch } from 'antd';
 import classNames from 'classnames';
@@ -24,7 +37,7 @@ import { MyTrigger } from '../trigger';
 import { LookUpFormatDateTime } from './lookup_format_datetime';
 import { LookUpFormatNumber } from './lookup_format_number';
 import lookupStyles from './styles.module.less';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
 import { LookupFieldPanel } from 'pc/components/multi_grid/format/format_lookup/look_field_panel';
 import { LinkFieldPanel } from 'pc/components/multi_grid/format/format_lookup/link_field_panel';
@@ -122,18 +135,19 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
   const foreignDatasheetReadable = useSelector(state => Selectors.getPermissions(state, relatedLinkField?.property.foreignDatasheetId).readable);
   const foreignFieldPermissionMap = useSelector(state => Selectors.getFieldPermissionMap(state, relatedLinkField?.property.foreignDatasheetId));
 
-  const foreignDatasheetFields = foreignDatasheetFieldMap && foreignDatasheetActiveView && foreignDatasheetReadable ?
-    (foreignDatasheetActiveView.columns as IViewColumn[]).map(column => {
-      return foreignDatasheetFieldMap[column.fieldId];
-    }) : [];
+  const foreignDatasheetFields =
+    foreignDatasheetFieldMap && foreignDatasheetActiveView && foreignDatasheetReadable
+      ? (foreignDatasheetActiveView.columns as IViewColumn[]).map(column => {
+        return foreignDatasheetFieldMap[column.fieldId];
+      })
+      : [];
 
   const lookUpField = foreignDatasheetFieldMap && foreignDatasheetFieldMap[lookUpTargetFieldId];
   const isCryptoLookField = Selectors.getFieldRoleByFieldId(foreignFieldPermissionMap, lookUpTargetFieldId) === ConfigConstant.Role.None;
 
   const getFieldValueType = (field: ILookUpField) => {
     let showFormatType = lookUpField ? LookUpField.bindModel(field).basicValueType : BasicValueType.String;
-    showFormatType = showFormatType === BasicValueType.Array ?
-      (LookUpField.bindModel(field!) as any).innerBasicValueType : showFormatType;
+    showFormatType = showFormatType === BasicValueType.Array ? (LookUpField.bindModel(field!) as any).innerBasicValueType : showFormatType;
     return showFormatType;
   };
   const showFormatType = getFieldValueType(currentField);
@@ -162,8 +176,7 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
   }, [showFormatType]);
 
   const getRollUpFunctions = () => {
-    return Object
-      .values(RollUpFuncType)
+    return Object.values(RollUpFuncType)
       .filter(item => !isNumber(item))
       .map(func => {
         if (func === RollUpFuncType.VALUES) {
@@ -217,7 +230,8 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
       } else if (
         // 关闭筛选按钮会导致筛选数据清空，给出提示
         propertyKey === 'openFilter' &&
-        openFilter && Boolean(filterInfo && filterInfo.conditions.length > 0)
+        openFilter &&
+        Boolean(filterInfo && filterInfo.conditions.length > 0)
       ) {
         Modal.confirm({
           title: t(Strings.operate_info),
@@ -254,28 +268,26 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
   const LookupFieldTrigger = () => {
     const renderInner = () => {
       if (lookUpTargetFieldId && lookUpField) {
-        return <div className={lookupStyles.fieldIconAndTitle}>
-          <div className={lookupStyles.iconType}>
-            {getFieldTypeIcon(lookUpField.type)}
+        return (
+          <div className={lookupStyles.fieldIconAndTitle}>
+            <div className={lookupStyles.iconType}>{getFieldTypeIcon(lookUpField.type)}</div>
+            <div className={lookupStyles.fieldName}>{lookUpField.name}</div>
           </div>
-          <div className={lookupStyles.fieldName}>
-            {lookUpField.name}
-          </div>
-        </div>;
+        );
       }
       if (isCryptoLookField) {
-        return <span className={lookupStyles.cryptoLinkField}>
-          <FieldPermissionLock isLock />
-          {t(Strings.crypto_field)}
-        </span>;
+        return (
+          <span className={lookupStyles.cryptoLinkField}>
+            <FieldPermissionLock isLock />
+            {t(Strings.crypto_field)}
+          </span>
+        );
       }
       return <span className={lookupStyles.plzSelectFieldText}>{t(Strings.check_field)}</span>;
     };
     return (
       <div className={settingStyles.sectionInfo}>
-        <div className={classNames(settingStyles.text)}>
-          {renderInner()}
-        </div>
+        <div className={classNames(settingStyles.text)}>{renderInner()}</div>
         <div className={settingStyles.arrow}>
           <IconArrow width={10} height={10} fill={colors.thirdLevelText} />
         </div>
@@ -286,128 +298,108 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
   return (
     <>
       <section className={settingStyles.section}>
-        <div
-          className={settingStyles.sectionTitle}
-        >
-          {t(Strings.lookup_link)}
-        </div>
+        <div className={settingStyles.sectionTitle}>{t(Strings.lookup_link)}</div>
         <MyTrigger
           showPopup={showDatasheetPanel}
           setShowPopup={setShowDatasheetPanel}
           popupAlign={popupAlign}
           popup={
-            (
-              <LinkFieldPanel
-                fields={linkFields}
-                activeFieldId={relatedLinkFieldId}
-                setSearchPanelVisible={setShowDatasheetPanel}
-                onChange={setFieldProperty('relatedLinkFieldId')}
-              />
-            )
+            <LinkFieldPanel
+              fields={linkFields}
+              activeFieldId={relatedLinkFieldId}
+              setSearchPanelVisible={setShowDatasheetPanel}
+              onChange={setFieldProperty('relatedLinkFieldId')}
+            />
           }
           trigger={
-            (
-              <div className={relatedLinkFieldId && relatedLinkField ? settingStyles.sectionMultiInfo : settingStyles.sectionInfo}>
-                <div
-                  className={classNames(settingStyles.text, lookupStyles.fieldItem)}
-                >
-                  {relatedLinkFieldId && relatedLinkField
-                    ? (
-                      <div>
-                        <div className={lookupStyles.fieldIconAndTitle}>
-                          <div className={lookupStyles.iconType}>
-                            {getFieldTypeIcon(relatedLinkField.type)}
-                          </div>
-                          <div className={lookupStyles.fieldName}>
-                            {relatedLinkField.name}
-                          </div>
-                        </div>
-                        <div className={lookupStyles.relatedSheetName}>
-                          {renderInlineNodeName(t(Strings.association_table), relatedLinkField.property.foreignDatasheetId)}
-                        </div>
-                      </div>
-                    )
-                    : <span className={lookupStyles.plzSelectFieldText}>
-                      {t(Strings.lookup_link)}
-                    </span>
-                  }
-
-                </div>
-                <div className={settingStyles.arrow}>
-                  <IconArrow width={10} height={10} fill={colors.thirdLevelText} />
-                </div>
+            <div className={relatedLinkFieldId && relatedLinkField ? settingStyles.sectionMultiInfo : settingStyles.sectionInfo}>
+              <div className={classNames(settingStyles.text, lookupStyles.fieldItem)}>
+                {relatedLinkFieldId && relatedLinkField ? (
+                  <div>
+                    <div className={lookupStyles.fieldIconAndTitle}>
+                      <div className={lookupStyles.iconType}>{getFieldTypeIcon(relatedLinkField.type)}</div>
+                      <div className={lookupStyles.fieldName}>{relatedLinkField.name}</div>
+                    </div>
+                    <div className={lookupStyles.relatedSheetName}>
+                      {renderInlineNodeName(t(Strings.association_table), relatedLinkField.property.foreignDatasheetId)}
+                    </div>
+                  </div>
+                ) : (
+                  <span className={lookupStyles.plzSelectFieldText}>{t(Strings.lookup_link)}</span>
+                )}
               </div>
-            )
+              <div className={settingStyles.arrow}>
+                <IconArrow width={10} height={10} fill={colors.thirdLevelText} />
+              </div>
+            </div>
           }
         />
 
-        {
-          linkFields.length === 0 && (
-            <span className={lookupStyles.warningText}>
-              <WarnIcon fill={colors.thirdLevelText} width={12} height={12} /> {t(Strings.table_link_err)}
-            </span>
-          )
-        }
+        {linkFields.length === 0 && (
+          <span className={lookupStyles.warningText}>
+            <WarnIcon fill={colors.thirdLevelText} width={12} height={12} /> {t(Strings.table_link_err)}
+          </span>
+        )}
       </section>
-      {
-        relatedLinkFieldId && relatedLinkField && (
-          <section className={classNames(settingStyles.section, styles.border)} style={{ marginBottom: 8 }}>
-            <div className={classNames(settingStyles.sectionTitle, settingStyles.flex)} style={{ marginBottom: 4 }}>
-              <TComponent
-                tkey={t(Strings.from_select_link_column)}
-                params={{
-                  name: renderInlineNodeName(
-                    '',
-                    relatedLinkField.property.foreignDatasheetId,
-                    { maxWidth: '90px' },
-                  )
-                }}
-              />
-            </div>
-            <MyTrigger
-              popupVisibleCheck={handleForeignDstReadable}
-              trigger={LookupFieldTrigger()}
-              popup={
-                (
-                  <LookupFieldPanel
-                    fields={foreignDatasheetFields}
-                    field={currentField}
-                    activeFieldId={lookUpTargetFieldId}
-                    setSearchPanelVisible={setShowTargetFieldPanel}
-                    onChange={setFieldProperty('lookUpTargetFieldId')}
-                    relatedLinkField={relatedLinkField}
-                  />
-                )
-              }
-              popupAlign={popupAlign}
-              showPopup={showTargetFieldPanel}
-              setShowPopup={setShowTargetFieldPanel}
+      {relatedLinkFieldId && relatedLinkField && (
+        <section className={classNames(settingStyles.section, styles.border)} style={{ marginBottom: 8 }}>
+          <div className={classNames(settingStyles.sectionTitle, settingStyles.flex)} style={{ marginBottom: 4 }}>
+            <TComponent
+              tkey={t(Strings.from_select_link_column)}
+              params={{
+                name: renderInlineNodeName('', relatedLinkField.property.foreignDatasheetId, { maxWidth: '90px' }),
+              }}
             />
-            <div className={classNames(settingStyles.sectionTitle, settingStyles.enhance)}>
-              <Switch size="small" onChange={() => {
+          </div>
+          <MyTrigger
+            popupVisibleCheck={handleForeignDstReadable}
+            trigger={LookupFieldTrigger()}
+            popup={
+              <LookupFieldPanel
+                fields={foreignDatasheetFields}
+                field={currentField}
+                activeFieldId={lookUpTargetFieldId}
+                setSearchPanelVisible={setShowTargetFieldPanel}
+                onChange={setFieldProperty('lookUpTargetFieldId')}
+                relatedLinkField={relatedLinkField}
+              />
+            }
+            popupAlign={popupAlign}
+            showPopup={showTargetFieldPanel}
+            setShowPopup={setShowTargetFieldPanel}
+          />
+          <div className={classNames(settingStyles.sectionTitle, settingStyles.enhance)}>
+            <Switch
+              size="small"
+              onChange={() => {
                 const isForeignDstReadable = handleForeignDstReadable();
                 isForeignDstReadable && setFieldProperty('openFilter')(!openFilter);
-              }} checked={openFilter} />
-              {t(Strings.filter_link_data)}
-            </div>
-            {openFilter && (!isFilterError ? (
-              <div className={settingStyles.sectionInfo} onClick={() => {
-                const isForeignDstReadable = handleForeignDstReadable();
-                isForeignDstReadable && setFilterModal(true);
-              }}>
+              }}
+              checked={openFilter}
+            />
+            {t(Strings.filter_link_data)}
+          </div>
+          {openFilter &&
+            (!isFilterError ? (
+              <div
+                className={settingStyles.sectionInfo}
+                onClick={() => {
+                  const isForeignDstReadable = handleForeignDstReadable();
+                  isForeignDstReadable && setFilterModal(true);
+                }}
+              >
                 {isFilterTypeSwitch && (
-                  <Tooltip
-                    title={t(Strings.loopkup_filter_pane_tip)}
-                    placement="top"
-                  >
+                  <Tooltip title={t(Strings.loopkup_filter_pane_tip)} placement="top">
                     <WarnTriangleIcon fill={colors.warningColor} width={20} height={16} className={settingStyles.warningIcon} />
                   </Tooltip>
                 )}
                 <div className={classNames(settingStyles.text)}>
                   <span>
-                    {!filterInfo?.conditions.length ? t(Strings.add_filter) : t(Strings.contain_filter_count, {
-                      count: filterInfo.conditions.length,
-                    })}
+                    {!filterInfo?.conditions.length
+                      ? t(Strings.add_filter)
+                      : t(Strings.contain_filter_count, {
+                        count: filterInfo.conditions.length,
+                      })}
                   </span>
                 </div>
                 <div className={settingStyles.arrow}>
@@ -420,111 +412,88 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
                   <WarnTriangleIcon fill={colors.warningColor} width={20} height={16} className={settingStyles.warningIcon} />
                   {t(Strings.filter_delete_tip)}
                 </div>
-                <TextButton
-                  color="danger"
-                  size="small"
-                  onClick={() => setFieldProperty('filterInfo')(undefined)}
-                >
+                <TextButton color="danger" size="small" onClick={() => setFieldProperty('filterInfo')(undefined)}>
                   {t(Strings.clear)}
                 </TextButton>
               </div>
             ))}
-            {filterModal && (
-              <FilterModal
-                title={
-                  <div>
-                    {t(Strings.add_filter)}
-                    <div className={lookupStyles.modalSubtitle}>
-                      {t(Strings.to_filter_link_data)}
-                    </div>
-                  </div>
-                }
-                field={currentField}
-                handleCancel={() => setFilterModal(false)}
-                datasheetId={relatedLinkField.property.foreignDatasheetId}
-                filterInfo={filterInfo}
-                handleOk={setFieldProperty('filterInfo')}
-              />
-            )}
-          </section>
-        )}
-      {
-        Boolean(relatedLinkFieldId && lookUpTargetFieldId) && (
-          <section className={classNames(settingStyles.section, styles.border)}>
-            <div className={settingStyles.sectionTitle}>
-              {t(Strings.statistical_link_data)}
-            </div>
-            <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-              <Select
-                value={rollUpType || RollUpFuncType.VALUES}
-                onSelected={({ value }) => { setFieldProperty('rollUpType')(value); }}
-              >
-                {
-                  getRollUpFunctions().map((func, index) => {
-                    return (
-                      <Option value={func.value} key={func.value} currentIndex={index}>
-                        <Tooltip
-                          mouseEnterDelay={0.5}
-                          placement="left"
-                          title={
-                            (
-                              <div>
-                                <div className={lookupStyles.funcLabelName}>{t(func.name)} ({func.value})</div>
-                                <div className={lookupStyles.funcLabel}>{func.label}</div>
-                                <div className={lookupStyles.funcLabel}>{func.example}</div>
-                              </div>
-                            )
-                          }
-                          arrowPointAtCenter
-                        >
-                          <div>
-                            {t(func.name)} <span className={lookupStyles.funcOptLabel}>({func.value})</span>
+          {filterModal && (
+            <FilterModal
+              title={
+                <div>
+                  {t(Strings.add_filter)}
+                  <div className={lookupStyles.modalSubtitle}>{t(Strings.to_filter_link_data)}</div>
+                </div>
+              }
+              field={currentField}
+              handleCancel={() => setFilterModal(false)}
+              datasheetId={relatedLinkField.property.foreignDatasheetId}
+              filterInfo={filterInfo}
+              handleOk={setFieldProperty('filterInfo')}
+            />
+          )}
+        </section>
+      )}
+      {Boolean(relatedLinkFieldId && lookUpTargetFieldId) && (
+        <section className={classNames(settingStyles.section, styles.border)}>
+          <div className={settingStyles.sectionTitle}>{t(Strings.statistical_link_data)}</div>
+          <ComponentDisplay minWidthCompatible={ScreenSize.md}>
+            <Select
+              value={rollUpType || RollUpFuncType.VALUES}
+              onSelected={({ value }) => {
+                setFieldProperty('rollUpType')(value);
+              }}
+            >
+              {getRollUpFunctions().map((func, index) => {
+                return (
+                  <Option value={func.value} key={func.value} currentIndex={index}>
+                    <Tooltip
+                      mouseEnterDelay={0.5}
+                      placement="left"
+                      title={
+                        <div>
+                          <div className={lookupStyles.funcLabelName}>
+                            {t(func.name)} ({func.value})
                           </div>
-                        </Tooltip>
-                      </Option>
-                    );
-                  })
-                }
-              </Select>
-            </ComponentDisplay>
-
-            <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-              <MobileSelect
-                defaultValue={rollUpType || RollUpFuncType.VALUES}
-                optionData={getRollUpFunctions().map(func => {
-                  return {
-                    label: (
-                      <>
+                          <div className={lookupStyles.funcLabel}>{func.label}</div>
+                          <div className={lookupStyles.funcLabel}>{func.example}</div>
+                        </div>
+                      }
+                      arrowPointAtCenter
+                    >
+                      <div>
                         {t(func.name)} <span className={lookupStyles.funcOptLabel}>({func.value})</span>
-                      </>
-                    ),
-                    value: func.value,
-                  };
-                })}
-                onChange={setFieldProperty('rollUpType')}
-                style={{ padding: 0 }}
-              />
-            </ComponentDisplay>
-          </section>
-        )
-      }
-      {
-        showFormatType === BasicValueType.DateTime && (
-          <LookUpFormatDateTime
-            currentField={currentField}
-            setCurrentField={setCurrentField}
-          />
-        )
-      }
-      {
-        !NOT_FORMAT_FUNC_SET.has(rollUpType as RollUpFuncType) &&
-        showFormatType === BasicValueType.Number && (
-          <LookUpFormatNumber
-            currentField={currentField}
-            setCurrentField={setCurrentField}
-          />
-        )
-      }
+                      </div>
+                    </Tooltip>
+                  </Option>
+                );
+              })}
+            </Select>
+          </ComponentDisplay>
+
+          <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
+            <MobileSelect
+              defaultValue={rollUpType || RollUpFuncType.VALUES}
+              optionData={getRollUpFunctions().map(func => {
+                return {
+                  label: (
+                    <>
+                      {t(func.name)} <span className={lookupStyles.funcOptLabel}>({func.value})</span>
+                    </>
+                  ),
+                  value: func.value,
+                };
+              })}
+              onChange={setFieldProperty('rollUpType')}
+              style={{ padding: 0 }}
+            />
+          </ComponentDisplay>
+        </section>
+      )}
+      {showFormatType === BasicValueType.DateTime && <LookUpFormatDateTime currentField={currentField} setCurrentField={setCurrentField} />}
+      {!NOT_FORMAT_FUNC_SET.has(rollUpType as RollUpFuncType) && showFormatType === BasicValueType.Number && (
+        <LookUpFormatNumber currentField={currentField} setCurrentField={setCurrentField} />
+      )}
     </>
   );
 });

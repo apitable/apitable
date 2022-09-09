@@ -1,11 +1,18 @@
 import {
-  BasicValueType, Field, FieldType,
-  FilterDuration, FOperator, IField, IFilterCondition, IFieldMap,
+  BasicValueType,
+  Field,
+  FieldType,
+  FilterDuration,
+  FOperator,
+  IField,
+  IFilterCondition,
+  IFieldMap,
   IFilterInfo,
-  Strings, t,
+  Strings,
+  t,
 } from '@vikadata/core';
 import produce from 'immer';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
 import { useResponsive } from 'pc/hooks';
 import * as React from 'react';
@@ -35,7 +42,7 @@ export const FilterOperate: React.FC<IFilterOperateProps> = props => {
   function generateValue(operator: FOperator) {
     const field = fieldMap[condition.fieldId];
     const { valueType } = Field.bindModel(field);
-    const isNullOperator= checkNullOperator(operator);
+    const isNullOperator = checkNullOperator(operator);
     // 切换为空/非空，清除掉所有的条件，对所有字段类型生效
     if (isNullOperator) {
       return null;
@@ -45,15 +52,11 @@ export const FilterOperate: React.FC<IFilterOperateProps> = props => {
       // 日期字段的筛选条件从 「空」或者「非空」切换成其他条件，需要设置 value 为 [FilterDuration.ExactDate, null]
       // 否则切换后，选择日期区间的组件不会出现
       const lastOperateIsEmpty = checkNullOperator(condition.operator);
-      return lastOperateIsEmpty && !isNullOperator ?
-        [FilterDuration.ExactDate, null] : [FilterDuration.ExactDate, condition.value[1]];
+      return lastOperateIsEmpty && !isNullOperator ? [FilterDuration.ExactDate, null] : [FilterDuration.ExactDate, condition.value[1]];
     }
     if (
       field.type === FieldType.SingleSelect &&
-      (
-        condition.operator === FOperator.DoesNotContain ||
-        condition.operator === FOperator.Contains
-      ) &&
+      (condition.operator === FOperator.DoesNotContain || condition.operator === FOperator.Contains) &&
       (operator === FOperator.Is || operator === FOperator.IsNot)
     ) {
       return null;
@@ -69,12 +72,12 @@ export const FilterOperate: React.FC<IFilterOperateProps> = props => {
         label: Field.bindModel(field).showFOperatorDesc(item),
         value: item,
         disabled: isRepeatCondition && isRepeatCondition.conditionId !== condition.conditionId,
-        disabledTip: t(Strings.is_repeat_disable_tip)
+        disabledTip: t(Strings.is_repeat_disable_tip),
       };
     }
     return {
       label: Field.bindModel(field).showFOperatorDesc(item),
-      value: item
+      value: item,
     };
   }
 
@@ -98,9 +101,7 @@ export const FilterOperate: React.FC<IFilterOperateProps> = props => {
     return (
       <MobileSelect
         defaultValue={condition.operator}
-        optionData={
-          Field.bindModel(field).acceptFilterOperators.map(fop => mapHandle(field, fop))
-        }
+        optionData={Field.bindModel(field).acceptFilterOperators.map(fop => mapHandle(field, fop))}
         onChange={onChange}
         title={t(Strings.please_choose)}
         style={{

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { Selectors } from '@vikadata/core';
 import { MicroColumn } from '../micro_column/micro_column';
 import { MicroRow } from '../micro_row/micro_row';
-import { IDragOption } from '../drag/drag';
+import { IDragOption } from '../drag/interface';
 
 interface IMicroComponent {
   dragOption: IDragOption;
@@ -31,9 +31,7 @@ export const MicroComponent: React.FC<IMicroComponent> = props => {
 
   return (
     <div style={microRowStyle} className={styles.microWrapper}>
-      {
-        Micro()
-      }
+      {Micro()}
     </div>
   );
 };

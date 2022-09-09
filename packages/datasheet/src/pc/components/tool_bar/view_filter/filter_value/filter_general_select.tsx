@@ -2,7 +2,7 @@ import { FieldType, ICellValue, IField, IMultiSelectedIds, ISelectFieldOption, I
 import { ChevronDownOutlined } from '@vikadata/icons';
 import { useClickAway } from 'ahooks';
 import classNames from 'classnames';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { OptionList } from 'pc/components/list';
 import { MemberOptionList } from 'pc/components/list/member_option_list';
@@ -25,7 +25,7 @@ interface IFilterGeneralSelectProps {
   isMulti: boolean;
   onChange: (value: string | IMultiSelectedIds | null) => void;
   cellValue?: ICellValue;
-  listData: ((IUnitValue | IUserValue)[]) | ISelectFieldOption[];
+  listData: (IUnitValue | IUserValue)[] | ISelectFieldOption[];
 }
 
 export const FilterGeneralSelect: React.FC<IFilterGeneralSelectProps> = props => {
@@ -77,7 +77,7 @@ export const FilterGeneralSelect: React.FC<IFilterGeneralSelectProps> = props =>
           showSearchInput
           multiMode={isMulti}
           existValues={cellValue as string[]}
-          listData={(listData || [])}
+          listData={listData || []}
           uniqId={isMemberField ? 'unitId' : 'userId'}
           unitMap={unitMap}
           placeholder={searchPlaceholder}
@@ -91,13 +91,9 @@ export const FilterGeneralSelect: React.FC<IFilterGeneralSelectProps> = props =>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <Trigger
           action={['click']}
-          popup={
-            renderPopup()
-          }
+          popup={renderPopup()}
           destroyPopupOnHide
-          popupAlign={
-            { points: ['tl', 'bl'], offset: [0, 8], overflow: { adjustX: true, adjustY: true }}
-          }
+          popupAlign={{ points: ['tl', 'bl'], offset: [0, 8], overflow: { adjustX: true, adjustY: true }}}
           popupVisible={visible}
           onPopupVisibleChange={visible => setVisible(visible)}
           stretch="width,height"
@@ -105,10 +101,10 @@ export const FilterGeneralSelect: React.FC<IFilterGeneralSelectProps> = props =>
         >
           <div className={classNames(styles.displayBox, styles.option)}>
             {!cellValue && placeholder ? (
-              <div className={styles.placeholder}>
-                {placeholder}
-              </div>
-            ) : <DisplayComponent cellValue={cellValue} field={field} />}
+              <div className={styles.placeholder}>{placeholder}</div>
+            ) : (
+              <DisplayComponent cellValue={cellValue} field={field} />
+            )}
             <div className={styles.iconArrow}>
               <ChevronDownOutlined color={colors.black[500]} />
             </div>

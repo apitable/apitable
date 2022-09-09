@@ -3,7 +3,7 @@ import { ConfigConstant, IReduxState, Navigation, NodeErrorType, Selectors, Stor
 import classnames from 'classnames';
 import Image from 'next/image';
 import { NodeItem } from 'pc/components/catalog/tree/node_item';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { ITreeViewRef, TreeItem, TreeView } from 'pc/components/common/tree_view';
 import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
 import { useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
@@ -21,16 +21,23 @@ const FavoriteBase: FC = () => {
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const activeNodeId = useSelector((state: IReduxState) => Selectors.getNodeId(state));
   const {
-    favoriteTreeNodeIds: _favoriteTreeNodeIds, favoriteDelNodeId, favoriteEditNodeId, favoriteLoading,
-    favoriteExpandedKeys, treeNodesMap,
-  } = useSelector((state: IReduxState) => ({
-    favoriteTreeNodeIds: state.catalogTree.favoriteTreeNodeIds,
-    favoriteDelNodeId: state.catalogTree.favoriteDelNodeId,
-    favoriteEditNodeId: state.catalogTree.favoriteEditNodeId,
-    favoriteLoading: state.catalogTree.favoriteLoading,
-    favoriteExpandedKeys: state.catalogTree.favoriteExpandedKeys,
-    treeNodesMap: state.catalogTree.treeNodesMap,
-  }), shallowEqual);
+    favoriteTreeNodeIds: _favoriteTreeNodeIds,
+    favoriteDelNodeId,
+    favoriteEditNodeId,
+    favoriteLoading,
+    favoriteExpandedKeys,
+    treeNodesMap,
+  } = useSelector(
+    (state: IReduxState) => ({
+      favoriteTreeNodeIds: state.catalogTree.favoriteTreeNodeIds,
+      favoriteDelNodeId: state.catalogTree.favoriteDelNodeId,
+      favoriteEditNodeId: state.catalogTree.favoriteEditNodeId,
+      favoriteLoading: state.catalogTree.favoriteLoading,
+      favoriteExpandedKeys: state.catalogTree.favoriteExpandedKeys,
+      treeNodesMap: state.catalogTree.treeNodesMap,
+    }),
+    shallowEqual,
+  );
   const { moveFavoriteNodeReq } = useCatalogTreeRequest();
   const { run: moveFavoriteNode } = useRequest(moveFavoriteNodeReq, { manual: true });
   const { screenIsAtMost } = useResponsive();
@@ -44,14 +51,16 @@ const FavoriteBase: FC = () => {
     dispatch(StoreActions.setExpandedKeys(nodeIds, ConfigConstant.Modules.FAVORITE));
   };
 
-  const onContextMenu = (e) => {
+  const onContextMenu = e => {
     e.stopPropagation();
     e.preventDefault();
   };
 
   const renderTreeItem = (children: string[], parentNode: any = null, level = '0') => {
     const leafNodes = new Set([
-      ConfigConstant.NodeType.DATASHEET, ConfigConstant.NodeType.FORM, ConfigConstant.NodeType.DASHBOARD,
+      ConfigConstant.NodeType.DATASHEET,
+      ConfigConstant.NodeType.FORM,
+      ConfigConstant.NodeType.DASHBOARD,
       ConfigConstant.NodeType.MIRROR,
     ]);
     return children.map((nodeId, index) => {
@@ -80,50 +89,54 @@ const FavoriteBase: FC = () => {
         expanded: favoriteExpandedKeys.includes(nodeId),
       };
       if (type === ConfigConstant.NodeType.FOLDER) {
-        return <TreeItem
-          key={nodeId}
-          nodeId={nodeId}
-          label={<NodeItem {...nodeItemProps} />}
-          pos={pos}
-          data={nodeInfo}
-          className={classNames}
-          draggable={!operating}
-        >
-          {
-            errType !== NodeErrorType.ChildNodes ? (
-              hasChildren && children.length ?
-                renderTreeItem(children, nodeId, pos) :
+        return (
+          <TreeItem
+            key={nodeId}
+            nodeId={nodeId}
+            label={<NodeItem {...nodeItemProps} />}
+            pos={pos}
+            data={nodeInfo}
+            className={classNames}
+            draggable={!operating}
+          >
+            {errType !== NodeErrorType.ChildNodes ? (
+              hasChildren && children.length ? (
+                renderTreeItem(children, nodeId, pos)
+              ) : (
                 <div className={styles.emptyNodes} onContextMenu={onContextMenu}>
                   {t(Strings.empty_nodes)}
                 </div>
+              )
             ) : (
               <div
                 className={classnames(styles.emptyNodes, styles.errorTip)}
                 onContextMenu={onContextMenu}
                 onClick={() => {
                   treeViewRef.current?.setLoadingNodeId(nodeId);
-                  loadData(nodeId).then((res) => {
+                  loadData(nodeId).then(res => {
                     treeViewRef.current?.setLoadingNodeId('');
                   });
                 }}
               >
                 {t(Strings.request_tree_node_error_tips)}
               </div>
-            )
-          }
-        </TreeItem>;
+            )}
+          </TreeItem>
+        );
       }
-      return <TreeItem
-        key={nodeId}
-        nodeId={nodeId}
-        label={<NodeItem {...nodeItemProps} />}
-        parentNode={parentNode}
-        pos={pos}
-        data={nodeInfo}
-        className={classNames}
-        draggable={!operating}
-        isLeaf={leafNodes.has(type)}
-      />;
+      return (
+        <TreeItem
+          key={nodeId}
+          nodeId={nodeId}
+          label={<NodeItem {...nodeItemProps} />}
+          parentNode={parentNode}
+          pos={pos}
+          data={nodeInfo}
+          className={classNames}
+          draggable={!operating}
+          isLeaf={leafNodes.has(type)}
+        />
+      );
     });
   };
 
@@ -161,15 +174,15 @@ const FavoriteBase: FC = () => {
         params: {
           spaceId,
           nodeId: selectedKeys,
-        }, method: isOpenNewTab ? Method.NewTab : Method.Push,
+        },
+        method: isOpenNewTab ? Method.NewTab : Method.Push,
       });
     }
   };
 
   const dropHandler = (info: any) => {
     const { dragNodeId, dropNodeId, dropPosition } = info;
-    if (favoriteTreeNodeIds.findIndex(nodeId => [dropNodeId, dragNodeId].includes(nodeId)) === -1 || !dropPosition ||
-      dragNodeId === dropNodeId) {
+    if (favoriteTreeNodeIds.findIndex(nodeId => [dropNodeId, dragNodeId].includes(nodeId)) === -1 || !dropPosition || dragNodeId === dropNodeId) {
       return;
     }
 
@@ -190,36 +203,36 @@ const FavoriteBase: FC = () => {
       <div style={{ margin: '0 8px', width: '100%' }}>
         <Skeleton width="38%" />
         <Skeleton />
-        <Skeleton width="61%"/>
+        <Skeleton width="61%" />
       </div>
     );
   }
 
   return (
     <div className={styles.favorite}>
-      {
-        favoriteTreeNodeIds.length ?
-          <TreeView
-            module={ConfigConstant.Modules.FAVORITE}
-            expandedKeys={favoriteExpandedKeys}
-            onExpand={expandHandler}
-            loadData={loadData}
-            onRightClick={rightClickHandler}
-            onSelect={selectNodeHandler}
-            selectedKeys={activeNodeId ? [activeNodeId] : []}
-            onDrop={dropHandler}
-            draggable
-          >
-            {renderTreeItem(favoriteTreeNodeIds)}
-          </TreeView> :
-          <div className={styles.empty}>
-            <span className={styles.emptyFavoritePng}>
-              <Image src={EmptyFavoritePng} alt="empty favorite" width={60} height={44}/>
-            </span>
-            <div className={styles.tip}>{t(Strings.favorite_empty_tip1)}</div>
-            <div className={styles.tip}>{t(Strings.favorite_empty_tip2)}~</div>
-          </div>
-      }
+      {favoriteTreeNodeIds.length ? (
+        <TreeView
+          module={ConfigConstant.Modules.FAVORITE}
+          expandedKeys={favoriteExpandedKeys}
+          onExpand={expandHandler}
+          loadData={loadData}
+          onRightClick={rightClickHandler}
+          onSelect={selectNodeHandler}
+          selectedKeys={activeNodeId ? [activeNodeId] : []}
+          onDrop={dropHandler}
+          draggable
+        >
+          {renderTreeItem(favoriteTreeNodeIds)}
+        </TreeView>
+      ) : (
+        <div className={styles.empty}>
+          <span className={styles.emptyFavoritePng}>
+            <Image src={EmptyFavoritePng} alt="empty favorite" width={60} height={44} />
+          </span>
+          <div className={styles.tip}>{t(Strings.favorite_empty_tip1)}</div>
+          <div className={styles.tip}>{t(Strings.favorite_empty_tip2)}~</div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,5 +1,17 @@
 import {
-  Api, ConfigConstant, DatasheetApi, Events, IMeta, INode, IParent, Player, Selectors, StoreActions, Strings, t, ViewType,
+  Api,
+  ConfigConstant,
+  DatasheetApi,
+  Events,
+  IMeta,
+  INode,
+  IParent,
+  Player,
+  Selectors,
+  StoreActions,
+  Strings,
+  t,
+  ViewType,
 } from '@vikadata/core';
 import { useMount, usePrevious } from 'ahooks';
 import throttle from 'lodash/throttle';
@@ -18,7 +30,7 @@ import ReactDOM from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import HelpIcon from 'static/icon/common/common_icon_information.svg';
 import IconNarrow from 'static/icon/datasheet/datasheet_icon_narrow_record.svg';
-import { ScreenSize } from '../common/component_display/component_display';
+import { ScreenSize } from '../common/component_display/enum';
 import { Popup } from '../common/mobile/popup';
 import { useFocusEffect } from '../editors/hooks/use_focus_effect';
 import styles from './style.module.less';
@@ -27,12 +39,7 @@ interface ISearchPanelProps {
   folderId: string;
   activeDatasheetId: string;
   setSearchPanelVisible(v: boolean);
-  onChange(result: {
-    datasheetId?: string;
-    mirrorId?: string;
-    viewId?: string;
-    widgetIds?: string[];
-  });
+  onChange(result: { datasheetId?: string; mirrorId?: string; viewId?: string; widgetIds?: string[] });
   // 小组件选择数据源，只需要检查有当前的可查看权限即可
   noCheckPermission?: boolean;
   // 标记右侧副栏目应该显示什么内容，展示视图或者小组件
@@ -43,16 +50,7 @@ interface ISearchPanelProps {
 // 副栏目的显示内容
 export enum SubColumnType {
   Widget,
-  View
-}
-
-export interface INodeInstalledWidget {
-  datasheetId: string;
-  datasheetName: string;
-  widgetId: string;
-  widgetName: string;
-  widgetPackageCover: string;
-  widgetPackageIcon: string;
+  View,
 }
 
 const DISABLE_TIP = {
@@ -91,7 +89,7 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
 
   const [showSearch, setShowSearch] = useState(false);
   const [searchValue, setSearchValue] = useState('');
-  const [searchResult, setSearchResult] = useState<{ folders: INode[], files: INode[] } | string>('');
+  const [searchResult, setSearchResult] = useState<{ folders: INode[]; files: INode[] } | string>('');
 
   const [currentFolderId, setCurrentFolderId] = useState<string>(folderId);
   const [currentDatasheetId, setCurrentDatasheetId] = useState<string>(activeDatasheetId);
@@ -101,7 +99,7 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
   const [currentMeta, setCurrentMeta] = useState<IMeta | null>(null);
 
   const [parents, setParents] = useState<IParent[]>([]);
-  const [nodes, setNodes] = useState<(ICommonNode)[]>([]);
+  const [nodes, setNodes] = useState<ICommonNode[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [onlyShowEditableNode, setOnlyShowEditableNode] = useState<boolean>(() => {
     if (showSubColumnWithView) {
@@ -120,7 +118,9 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
   const datasheet = useSelector(state => {
     return currentDatasheetId ? Selectors.getDatasheet(state, currentDatasheetId) : undefined;
   });
-  const mirror = useSelector(state => {return currentMirrorId ? Selectors.getMirror(state, currentMirrorId) : undefined;});
+  const mirror = useSelector(state => {
+    return currentMirrorId ? Selectors.getMirror(state, currentMirrorId) : undefined;
+  });
 
   const search = useMemo(() => {
     return throttle((spaceId: string, val: string) => {
@@ -145,21 +145,24 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
   useEffect(() => {
     setLoading(true);
     setFolderLoaded(false);
-    Promise.all([Api.getParents(currentFolderId), Api.getChildNodeList(currentFolderId)]).then(list => {
-      const [parentsRes, childNodeListRes] = list;
-      if (parentsRes.data.success) {
-        setParents(parentsRes.data.data);
-      }
+    Promise.all([Api.getParents(currentFolderId), Api.getChildNodeList(currentFolderId)])
+      .then(list => {
+        const [parentsRes, childNodeListRes] = list;
+        if (parentsRes.data.success) {
+          setParents(parentsRes.data.data);
+        }
 
-      if (childNodeListRes.data.success) {
-        const nodes = childNodeListRes.data.data || [];
-        setShowSearch(false);
-        setNodes(nodes);
-      }
-    }).catch().then(() => {
-      setLoading(false);
-      setFolderLoaded(true);
-    });
+        if (childNodeListRes.data.success) {
+          const nodes = childNodeListRes.data.data || [];
+          setShowSearch(false);
+          setNodes(nodes);
+        }
+      })
+      .catch()
+      .then(() => {
+        setLoading(false);
+        setFolderLoaded(true);
+      });
   }, [currentFolderId]);
 
   useFocusEffect(() => {
@@ -175,15 +178,17 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
     }
     if (showSubColumnWithView && currentMeta && folderLoaded) {
       const views = currentMeta.views;
-      const viewNodes = views.filter(view => {
-        return view.type === ViewType.Grid;
-      }).map(({ id, name, type, columns }) => ({
-        nodeId: id,
-        nodeName: name,
-        type: ConfigConstant.NodeType.VIEW,
-        viewType: type,
-        columns,
-      }));
+      const viewNodes = views
+        .filter(view => {
+          return view.type === ViewType.Grid;
+        })
+        .map(({ id, name, type, columns }) => ({
+          nodeId: id,
+          nodeName: name,
+          type: ConfigConstant.NodeType.VIEW,
+          viewType: type,
+          columns,
+        }));
       const tempNodes = nodes.filter(node => node.type !== ConfigConstant.NodeType.VIEW);
       const index = tempNodes.findIndex(node => node.nodeId === currentDatasheetId);
       tempNodes.splice(index + 1, 0, ...viewNodes);
@@ -320,7 +325,7 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
     if (node.type === ConfigConstant.NodeType.VIEW || noCheckPermission) {
       return;
     }
-    let disable: { budget: string, message: string } | undefined;
+    let disable: { budget: string; message: string } | undefined;
 
     if (!node.permissions.editable) {
       disable = DISABLE_TIP.permission;
@@ -356,31 +361,17 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
   const viewDataLoaded = Boolean(currentMeta && currentViewId);
 
   const SearchPanel = (
-    <div
-      className={styles.searchPanel}
-      onClick={e => e.stopPropagation()}
-    >
-      {
-        !isMobile &&
-        <ButtonPlus.Icon
-          className={styles.narrowBtn}
-          icon={<IconNarrow width={24} height={24} />}
-          size="small"
-          onClick={hidePanel}
-        />
-      }
+    <div className={styles.searchPanel} onClick={e => e.stopPropagation()}>
+      {!isMobile && <ButtonPlus.Icon className={styles.narrowBtn} icon={<IconNarrow width={24} height={24} />} size="small" onClick={hidePanel} />}
       <h2 className={styles.searchPanelTitle}>
-        {
-          getModalTitle(subColumnType)
-        }
-        {
-          showSubColumnWithView &&
+        {getModalTitle(subColumnType)}
+        {showSubColumnWithView && (
           <Tooltip title={t(Strings.form_tour_desc)}>
             <a href={t(Strings.form_tour_link)} className={styles.helpBtn} target="_blank" rel="noreferrer">
               <HelpIcon fill={colors.firstLevelText} />
             </a>
           </Tooltip>
-        }
+        )}
       </h2>
       <SearchControl
         ref={editorRef}
@@ -395,13 +386,15 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
         switchVisible={!showSubColumnWithView}
       />
       {!showSearch && <FolderBreadcrumb parents={parents} onNodeClick={onNodeClick} />}
-      {
-        showSearch ? <SearchResult
+      {showSearch ? (
+        <SearchResult
           searchResult={searchResult}
           checkNodeDisable={checkNodeDisable}
           onlyShowAvailable={onlyShowEditableNode}
           onNodeClick={onNodeClick}
-        /> : <FolderContent
+        />
+      ) : (
+        <FolderContent
           nodes={nodes}
           currentViewId={currentViewId}
           currentMirrorId={currentMirrorId}
@@ -413,7 +406,7 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
           onNodeClick={onNodeClick}
           showMirrorNode={showMirrorNode}
         />
-      }
+      )}
       {loading && <Loading className={styles.loading} />}
     </div>
   );
@@ -434,32 +427,25 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
 
   return (
     <>
-      {
-        !isMobile ?
-          ReactDOM.createPortal((
-            <div
-              onMouseDown={e => e.nativeEvent.stopImmediatePropagation()}
-              onWheel={stopPropagation}
-              onClick={onClickPortalContainer}
-              className={styles.portalContainer}
-              tabIndex={-1}
-              onKeyDown={onKeyDown}
-            >
-              {SearchContainer}
-            </div>
-          ), document.body)
-          : (
-            <Popup
-              visible
-              height="90%"
-              bodyStyle={{ padding: 0 }}
-              onClose={hidePanel}
-              className={styles.portalContainerDrawer}
-            >
-              {SearchContainer}
-            </Popup>
-          )
-      }
+      {!isMobile ? (
+        ReactDOM.createPortal(
+          <div
+            onMouseDown={e => e.nativeEvent.stopImmediatePropagation()}
+            onWheel={stopPropagation}
+            onClick={onClickPortalContainer}
+            className={styles.portalContainer}
+            tabIndex={-1}
+            onKeyDown={onKeyDown}
+          >
+            {SearchContainer}
+          </div>,
+          document.body,
+        )
+      ) : (
+        <Popup visible height="90%" bodyStyle={{ padding: 0 }} onClose={hidePanel} className={styles.portalContainerDrawer}>
+          {SearchContainer}
+        </Popup>
+      )}
     </>
   );
 };

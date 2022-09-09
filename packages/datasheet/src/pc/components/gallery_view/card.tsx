@@ -3,7 +3,7 @@ import { DropDirectionType, Selectors, Strings, t, StoreActions } from '@vikadat
 import { areEqual } from '@vikadata/react-window';
 import classNames from 'classnames';
 import { XYCoord } from 'dnd-core';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { GRID_RECORD_MENU } from 'pc/components/multi_grid/context_menu/record_menu';
 import { useResponsive } from 'pc/hooks';
 import { getIsColNameVisible } from 'pc/utils/datasheet';
@@ -25,9 +25,24 @@ import { useDebounceFn } from 'ahooks';
 const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }) => {
   const colors = useThemeColors();
   const {
-    visibleRecords, columnCount, cardWidth, cardHeight, galleryStyle, imageHeight, linearRows,
-    moveCard, commitMove, addRecord, keepSort, rowSortable, onChangeGroupCollapse, groupInfo,
-    onDoTransition, transitionRecordIds, isGrouped, _visibleRecords
+    visibleRecords,
+    columnCount,
+    cardWidth,
+    cardHeight,
+    galleryStyle,
+    imageHeight,
+    linearRows,
+    moveCard,
+    commitMove,
+    addRecord,
+    keepSort,
+    rowSortable,
+    onChangeGroupCollapse,
+    groupInfo,
+    onDoTransition,
+    transitionRecordIds,
+    isGrouped,
+    _visibleRecords,
   } = data;
 
   const { datasheetId, templateId, editable, viewId, groupingCollapseIds, isSearching } = useSelector(state => {
@@ -58,29 +73,30 @@ const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }) => {
     id: GRID_RECORD_MENU,
   });
   const canCollapse = transitionRecordIds.includes(groupHeadId);
-  
-  const dispatchDOMDisplay = (recordId) => {
+
+  const dispatchDOMDisplay = recordId => {
     if (isSearching || !datasheetId) return;
     if (groupingCollapseIdsMap.has(recordId)) {
       groupingCollapseIdsMap.delete(recordId);
-    } else{
+    } else {
       groupingCollapseIdsMap.set(recordId, true);
     }
     const newState = Array.from(groupingCollapseIdsMap.keys());
     dispatch(StoreActions.setGroupingCollapse(datasheetId, newState));
     // QuickAppend 组件显示依赖于 hoverRecordId, 分组折叠的情况下应该清空, 避免产生视觉误导
     dispatch(StoreActions.setHoverRecordId(datasheetId, null));
-    setStorage(StorageName.GroupCollapse,
-      { [`${datasheetId},${viewId}`]: newState },
-    );
+    setStorage(StorageName.GroupCollapse, { [`${datasheetId},${viewId}`]: newState });
     onChangeGroupCollapse();
   };
 
   const { run, cancel } = useDebounceFn(dispatchDOMDisplay, { wait: 100 });
 
-  useEffect(() => () => {
-    cancel();
-  }, [cancel]);
+  useEffect(
+    () => () => {
+      cancel();
+    },
+    [cancel],
+  );
 
   function onContextMenu(e: React.MouseEvent) {
     e.preventDefault();
@@ -91,7 +107,7 @@ const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }) => {
       },
     });
   }
-  const changeGroupCollapseState = (recordId) => {
+  const changeGroupCollapseState = recordId => {
     // // 表内查找时，屏蔽折叠分组操作
     if (isSearching || !datasheetId) return;
     if (!canCollapse) {
@@ -138,15 +154,15 @@ const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }) => {
       }
 
       const direction = currentX < dropMiddleX ? DropDirectionType.BEFORE : DropDirectionType.AFTER;
-      
+
       if (isGrouped) {
         const dragItem = linearRows[dragIndex];
         const dropItem = linearRows[hoverIndex];
         if (!dragItem || !dropItem) {
           return;
         }
-        dragIndex = _visibleRecords.findIndex((v) => v.recordId === dragItem.recordId);
-        hoverIndex = _visibleRecords.findIndex((v) => v.recordId === dropItem.recordId);
+        dragIndex = _visibleRecords.findIndex(v => v.recordId === dragItem.recordId);
+        hoverIndex = _visibleRecords.findIndex(v => v.recordId === dropItem.recordId);
       }
 
       if (dragIndex === -1 || hoverIndex === -1) {
@@ -158,7 +174,7 @@ const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }) => {
 
   drag(drop(ref));
 
-  const opacity = (isDragging || canCollapse) ? 0 : 1;
+  const opacity = isDragging || canCollapse ? 0 : 1;
   let transitionStyle: React.CSSProperties = {};
   if (canCollapse) {
     transitionStyle = { height: 0, padding: 0, overflow: 'hidden' };
@@ -166,25 +182,29 @@ const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }) => {
   const WIDTH = isMobile ? cardWidth - 24 : cardWidth - 16;
   const cardStyle = { padding: '16px 8px 0' };
 
-  const mobileStyle = isMobile ? {
-    paddingTop: 16,
-    paddingLeft: 10,
-    paddingRight: 0,
-    paddingBottom: 0,
-  } : {};
+  const mobileStyle = isMobile
+    ? {
+      paddingTop: 16,
+      paddingLeft: 10,
+      paddingRight: 0,
+      paddingBottom: 0,
+    }
+    : {};
 
   if (!recordId) {
     return null;
   }
-  if (cardItem.type === GalleryGroupItemType.GroupHeadBlank ) {
-    return <div
-      style={{
-        ...style,
-        padding: '0 8px 0',
-        ...mobileStyle,
-      }}
-      className={styles.cardGroupTitle}
-    />;
+  if (cardItem.type === GalleryGroupItemType.GroupHeadBlank) {
+    return (
+      <div
+        style={{
+          ...style,
+          padding: '0 8px 0',
+          ...mobileStyle,
+        }}
+        className={styles.cardGroupTitle}
+      />
+    );
   }
 
   if (cardItem.type === GalleryGroupItemType.GroupTitle) {
@@ -198,18 +218,14 @@ const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }) => {
         }}
         className={styles.cardGroupTitle}
       >
-        <div
-          className={styles.icon}
-          onClick={()=>changeGroupCollapseState(recordId)}
-        >
+        <div className={styles.icon} onClick={() => changeGroupCollapseState(recordId)}>
           <IconArrow
             fill={colors.thirdLevelText}
             width={10}
             height={8}
             style={{
               transition: 'all 0.3s',
-              transform: groupingCollapseIds && groupingCollapseIds.includes(recordId) ?
-                'rotate(-90deg)' : 'rotate(0)'
+              transform: groupingCollapseIds && groupingCollapseIds.includes(recordId) ? 'rotate(-90deg)' : 'rotate(0)',
             }}
           />
         </div>
@@ -259,10 +275,7 @@ const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }) => {
             height: cardHeight - 16,
           }}
         >
-          <TextButton
-            prefixIcon={<AddIcon width={14} height={14} fill="currentColor" />}
-            size={'small'}
-          >
+          <TextButton prefixIcon={<AddIcon width={14} height={14} fill="currentColor" />} size={'small'}>
             {t(Strings.add_record)}
           </TextButton>
         </div>

@@ -45,6 +45,18 @@ export function useToolbarMenuCardOpen(type: ToolHandleType) {
 
   const open = type === toolHandleType;
   return {
-    open, setToolbarMenuCardOpen,
+    open,
+    setToolbarMenuCardOpen,
   };
 }
+
+export const useDisabledOperateWithMirror = () => {
+  return useSelector(state => {
+    const mirrorId = state.pageParams.mirrorId;
+    const spaceManualSaveViewIsOpen = state.labs.includes('view_manual_save') || Boolean(state.share.featureViewManualSave);
+    if (!mirrorId) {
+      return false;
+    }
+    return !spaceManualSaveViewIsOpen;
+  });
+};

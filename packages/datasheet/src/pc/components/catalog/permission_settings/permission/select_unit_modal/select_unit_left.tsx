@@ -1,6 +1,15 @@
-import { 
-  IBreadCrumbData, IMember, ITeam, IUnit, Selectors, Strings,
-  t, UnitItem, getCustomConfig, ISpaceInfo, ISpaceBasicInfo
+import {
+  IBreadCrumbData,
+  IMember,
+  ITeam,
+  IUnit,
+  Selectors,
+  Strings,
+  t,
+  UnitItem,
+  getCustomConfig,
+  ISpaceInfo,
+  ISpaceBasicInfo,
 } from '@vikadata/core';
 import { Breadcrumb, Radio, Checkbox } from 'antd';
 import { AvatarType, ButtonPlus, HorizontalScroll, InfoCard, SearchInput } from 'pc/components/common';
@@ -15,7 +24,7 @@ import { useDebounceFn } from 'ahooks';
 import { useCatalogTreeRequest, useResponsive, useRequest } from 'pc/hooks';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { useSelector } from 'react-redux';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import classnames from 'classnames';
 import { Loading, stopPropagation, useThemeColors } from '@vikadata/components';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
@@ -36,20 +45,9 @@ const BreadcrumbItem = Breadcrumb.Item;
 
 export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
   const colors = useThemeColors();
-  const {
-    isSingleSelect,
-    source,
-    disableList,
-    disableIdList,
-    units,
-    setUnits,
-    checkedList,
-    setCheckedList,
-    spaceInfo: wecomSpaceInfo,
-  } = props;
+  const { isSingleSelect, source, disableList, disableIdList, units, setUnits, checkedList, setCheckedList, spaceInfo: wecomSpaceInfo } = props;
   const { getSubUnitListReq, searchUnitReq } = useCatalogTreeRequest();
-  const { run: getSubUnitList, data: unitsData, loading: unitListloading } =
-    useRequest(getSubUnitListReq, { manual: true });
+  const { run: getSubUnitList, data: unitsData, loading: unitListloading } = useRequest(getSubUnitListReq, { manual: true });
   const { run: searchUnit, data: searchUnitData } = useRequest(searchUnitReq, { manual: true });
   const { run: search } = useDebounceFn(searchUnit, { wait: 100 });
   // 面包屑数据源
@@ -92,29 +90,32 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
   }, [unitsData, source]);
 
   // 判断是否disabled
-  const isDisabled = useCallback((data: UnitItem) => {
-    if (source === SelectUnitSource.Admin && 'teamId' in data) {
-      return true;
-    }
-    if (disableList) {
-      return disableList.includes(data.unitId);
-    }
-    if (source === SelectUnitSource.Admin && disableIdList) {
-      return disableIdList.includes((data as IMember).memberId);
-    }
-    if (source === SelectUnitSource.ChangeMemberTeam && disableIdList) {
-      return disableIdList.includes((data as ITeam).teamId);
-    }
-    if (source === SelectUnitSource.TeamAddMember && disableIdList) {
-      if ('teamId' in data) {
-        return disableIdList.includes((data as ITeam).teamId);
+  const isDisabled = useCallback(
+    (data: UnitItem) => {
+      if (source === SelectUnitSource.Admin && 'teamId' in data) {
+        return true;
       }
-      if ('memberId' in data) {
+      if (disableList) {
+        return disableList.includes(data.unitId);
+      }
+      if (source === SelectUnitSource.Admin && disableIdList) {
         return disableIdList.includes((data as IMember).memberId);
       }
-    }
-    return false;
-  }, [disableList, disableIdList, source]);
+      if (source === SelectUnitSource.ChangeMemberTeam && disableIdList) {
+        return disableIdList.includes((data as ITeam).teamId);
+      }
+      if (source === SelectUnitSource.TeamAddMember && disableIdList) {
+        if ('teamId' in data) {
+          return disableIdList.includes((data as ITeam).teamId);
+        }
+        if ('memberId' in data) {
+          return disableIdList.includes((data as IMember).memberId);
+        }
+      }
+      return false;
+    },
+    [disableList, disableIdList, source],
+  );
   // 判断是否有下一级
   const canEntrySubItem = (item: ITeam) => {
     if (source === SelectUnitSource.ChangeMemberTeam) {
@@ -129,12 +130,14 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
     // 判断当前数据是否全部在已选列表中
     const unitsMemberWithoutDisabled = units.members.filter(item => !isDisabled(item));
     const unitsTeamWithoutDisabled = units.teams.filter(item => !isDisabled(item));
-    const membersCheckedAll = unitsMemberWithoutDisabled.length !== 0 ?
-      unitsMemberWithoutDisabled.every(item => checkedList.findIndex(checkedItem =>
-        checkedItem.unitId === item.unitId) !== -1) : true;
-    const teamsCheckedAll = unitsTeamWithoutDisabled.length !== 0 ?
-      unitsTeamWithoutDisabled.every(item => checkedList.findIndex(checkedItem =>
-        checkedItem.unitId === item.unitId) !== -1) : true;
+    const membersCheckedAll =
+      unitsMemberWithoutDisabled.length !== 0
+        ? unitsMemberWithoutDisabled.every(item => checkedList.findIndex(checkedItem => checkedItem.unitId === item.unitId) !== -1)
+        : true;
+    const teamsCheckedAll =
+      unitsTeamWithoutDisabled.length !== 0
+        ? unitsTeamWithoutDisabled.every(item => checkedList.findIndex(checkedItem => checkedItem.unitId === item.unitId) !== -1)
+        : true;
     setCheckedAll(membersCheckedAll && teamsCheckedAll);
   }, [units, checkedList, isDisabled]);
 
@@ -175,25 +178,24 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
     );
   }
 
-  const ItemWrapper = (props: { item: IMember | ITeam, children: ReactChild }) => {
+  const ItemWrapper = (props: { item: IMember | ITeam; children: ReactChild }) => {
     const { item, children } = props;
     if (isSingleSelect) {
       return React.createElement(Radio, {
         value: item.unitId,
-        disabled: source === SelectUnitSource.Admin &&
-          ('teamId' in item || (disableIdList && disableIdList.includes((item as IMember).memberId))),
-        children
+        disabled: source === SelectUnitSource.Admin && ('teamId' in item || (disableIdList && disableIdList.includes((item as IMember).memberId))),
+        children,
       });
     }
-    const shouldDisableCheckbox = (
-      (disableList && disableList.includes(item.unitId)) || (source === SelectUnitSource.Admin && 'teamId' in item) ||
+    const shouldDisableCheckbox =
+      (disableList && disableList.includes(item.unitId)) ||
+      (source === SelectUnitSource.Admin && 'teamId' in item) ||
       (disableIdList && disableIdList.includes((item as IMember).memberId)) ||
-      (source === SelectUnitSource.TeamAddMember && disableIdList &&
+      (source === SelectUnitSource.TeamAddMember &&
+        disableIdList &&
         (('teamId' in item && disableIdList.includes((item as ITeam).teamId)) ||
-          ('memberId' in item && disableIdList.includes((item as IMember).memberId)))
-      ) ||
-      (source === SelectUnitSource.ChangeMemberTeam && disableIdList && disableIdList.includes((item as ITeam).teamId))
-    );
+          ('memberId' in item && disableIdList.includes((item as IMember).memberId)))) ||
+      (source === SelectUnitSource.ChangeMemberTeam && disableIdList && disableIdList.includes((item as ITeam).teamId));
     return React.createElement(Checkbox, {
       value: item.unitId,
       onChange: e => onChangeChecked(e, item),
@@ -212,11 +214,13 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
       } as any;
     }
 
-    const title = spaceInfo ? getSocialWecomUnitName({
-      name: _item.originName || _item.memberName,
-      isModified: _item.isMemberNameModified,
-      spaceInfo
-    }) : '';
+    const title = spaceInfo
+      ? getSocialWecomUnitName({
+        name: _item.originName || _item.memberName,
+        isModified: _item.isMemberNameModified,
+        spaceInfo,
+      })
+      : '';
 
     return (
       <div className={classnames(styles.item, inSearch && styles.searchItem)} key={_item.unitId}>
@@ -265,18 +269,15 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
           </div>
         </ItemWrapper>
       </div>
-      {
-        canEntrySubItem(item) && !inSearch &&
-        (
-          <ButtonPlus.Icon
-            onClick={e => {
-              stopPropagation(e);
-              onClickTeamItem(item);
-            }}
-            icon={<LevelRightIcon width={16} height={16} fill={colors.fourthLevelText} />}
-          />
-        )
-      }
+      {canEntrySubItem(item) && !inSearch && (
+        <ButtonPlus.Icon
+          onClick={e => {
+            stopPropagation(e);
+            onClickTeamItem(item);
+          }}
+          icon={<LevelRightIcon width={16} height={16} fill={colors.fourthLevelText} />}
+        />
+      )}
     </div>
   );
 
@@ -285,7 +286,11 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
 
     function handleRadioChecked(e: RadioChangeEvent) {
       const unitId = e.target.value;
-      const selectUnit = units ? Object.values(units).flat(1).filter(item => item.unitId === unitId) : [];
+      const selectUnit = units
+        ? Object.values(units)
+          .flat(1)
+          .filter(item => item.unitId === unitId)
+        : [];
       setCheckedList(selectUnit);
     }
 
@@ -308,15 +313,15 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
       if (isSingleSelect) return;
       // 全选时
       if (!checkedAll) {
-        const newCheckedList: UnitItem[] = Object
-          .values(units)
+        const newCheckedList: UnitItem[] = Object.values(units)
           .flat()
           .filter(item => {
             if (isDisabled(item)) {
               return false;
             }
             return checkedList.findIndex(listItem => listItem.unitId === item.unitId) === -1;
-          }).map(item => {
+          })
+          .map(item => {
             if ((item as IMember).memberId) {
               return {
                 ...item,
@@ -347,10 +352,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
     return (
       <>
         <div className={styles.allCheck}>
-          <Checkbox
-            onChange={onCheckAllChange}
-            checked={checkedAll}
-          >
+          <Checkbox onChange={onCheckAllChange} checked={checkedAll}>
             {t(Strings.select_all)}
           </Checkbox>
         </div>
@@ -366,8 +368,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
     );
   }
 
-  const searchData = source === SelectUnitSource.ChangeMemberTeam ?
-    (searchUnitData && { ...searchUnitData, tags: [], members: [] }) : searchUnitData;
+  const searchData = source === SelectUnitSource.ChangeMemberTeam ? searchUnitData && { ...searchUnitData, tags: [], members: [] } : searchUnitData;
 
   return (
     <div className={styles.left}>
@@ -381,35 +382,23 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
       </div>
       <div className={styles.breadcrumb}>
         <HorizontalScroll>
-          <Breadcrumb separator='/'>
-            {
-              breadCrumbData.map(breadItem => (
-                <BreadcrumbItem
-                  key={breadItem.teamId || breadItem.name}
-                  onClick={() => skipUnit(breadItem.teamId)}
-                >
-                  {breadItem.name}
-                </BreadcrumbItem>
-              ),
-              )
-            }
+          <Breadcrumb separator="/">
+            {breadCrumbData.map(breadItem => (
+              <BreadcrumbItem key={breadItem.teamId || breadItem.name} onClick={() => skipUnit(breadItem.teamId)}>
+                {breadItem.name}
+              </BreadcrumbItem>
+            ))}
           </Breadcrumb>
         </HorizontalScroll>
       </div>
       {isSingleSelect ? RadioList(units) : CheckboxList(units)}
-      {keyword &&
-        (
-          <div className={styles.searchListWrapper}>
-            <SearchResult
-              data={searchData}
-              checkedList={checkedList}
-              onChangeChecked={onChangeChecked}
-            >
-              {isSingleSelect ? RadioList(searchData, true) : CheckboxList(searchData, true)}
-            </SearchResult>
-          </div>
-        )
-      }
+      {keyword && (
+        <div className={styles.searchListWrapper}>
+          <SearchResult data={searchData} checkedList={checkedList} onChangeChecked={onChangeChecked}>
+            {isSingleSelect ? RadioList(searchData, true) : CheckboxList(searchData, true)}
+          </SearchResult>
+        </div>
+      )}
     </div>
   );
 };

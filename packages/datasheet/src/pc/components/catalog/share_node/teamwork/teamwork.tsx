@@ -4,7 +4,7 @@ import { useMount } from 'ahooks';
 import { useRequest } from 'pc/hooks';
 import classnames from 'classnames';
 import { Message, Tooltip } from 'pc/components/common';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { isSocialPlatformEnabled } from 'pc/components/home/social_platform';
 import { useCatalogTreeRequest, useResponsive, useSpaceRequest, useUserRequest } from 'pc/hooks';
 import { NodeChangeInfoType } from 'pc/hooks/use_catalog';
@@ -101,55 +101,51 @@ export const Teamwork: FC<ITeamworkProps> = ({ nodeId, jumpPublicLink }) => {
       <div className={styles.descContainer}>
         <div className={styles.desc}>
           {t(Strings.teamwork_number_tip, { number: roleList.members.length })}
-          <span className={styles.viewDetails} onClick={() => setDetailModalVisible(true)}>{t(Strings.check_detail)}</span>
+          <span className={styles.viewDetails} onClick={() => setDetailModalVisible(true)}>
+            {t(Strings.check_detail)}
+          </span>
         </div>
-        {
-          nodeAssignable ?
-            <div
-              className={styles.permissionSettingBtn}
-              onClick={() => dispatch(StoreActions.updatePermissionModalNodeId(nodeId))}
-            >
-              {t(Strings.permission_setting)}<RightArrowIcon />
-            </div> :
-            <Tooltip title={t(Strings.no_permission_setting)}>
-              <div
-                className={classnames(styles.permissionSettingBtn, !nodeAssignable && styles.disable)}
-              >
-                {t(Strings.permission_setting)}<RightArrowIcon />
-              </div>
-            </Tooltip>
-        }
+        {nodeAssignable ? (
+          <div className={styles.permissionSettingBtn} onClick={() => dispatch(StoreActions.updatePermissionModalNodeId(nodeId))}>
+            {t(Strings.permission_setting)}
+            <RightArrowIcon />
+          </div>
+        ) : (
+          <Tooltip title={t(Strings.no_permission_setting)}>
+            <div className={classnames(styles.permissionSettingBtn, !nodeAssignable && styles.disable)}>
+              {t(Strings.permission_setting)}
+              <RightArrowIcon />
+            </div>
+          </Tooltip>
+        )}
       </div>
 
       <div className={styles.memberList}>
         <AutoSizer style={{ width: '100%', height: '100%' }}>
           {({ height, width }) => {
-            return <List
-              height={height}
-              width={width}
-              itemCount={roleList.members.length}
-              itemSize={56}
-              itemKey={(index: number) => roleList.members[index].memberId}
-              itemData={{
-                roleList: roleList
-              }}
-            >
-              {Row}
-            </List>;
+            return (
+              <List
+                height={height}
+                width={width}
+                itemCount={roleList.members.length}
+                itemSize={56}
+                itemKey={(index: number) => roleList.members[index].memberId}
+                itemData={{
+                  roleList: roleList,
+                }}
+              >
+                {Row}
+              </List>
+            );
           }}
         </AutoSizer>
       </div>
-      {inviteStatus && !isSocialPlatformEnabled(spaceInfo) &&
+      {inviteStatus && !isSocialPlatformEnabled(spaceInfo) && (
         <div className={styles.inviteContainer}>
           <div className={styles.label}>{t(Strings.share_email_invite)}</div>
           <div className={styles.invite}>
             <div className={styles.inputContainer}>
-              <TextInput
-                value={inviteEmail}
-                placeholder={t(Strings.placeholder_input_member_email)}
-                onChange={inviteEmailChange}
-                block
-              />
+              <TextInput value={inviteEmail} placeholder={t(Strings.placeholder_input_member_email)} onChange={inviteEmailChange} block />
               <TeamTreeSelect className={styles.teamTreeSelect} onChange={checkedTeamId => setJoinTeamId(checkedTeamId)} />
             </div>
             <Button
@@ -163,23 +159,23 @@ export const Teamwork: FC<ITeamworkProps> = ({ nodeId, jumpPublicLink }) => {
             </Button>
           </div>
         </div>
-      }
-      <div className={styles.jumpBtn} onClick={jumpPublicLink}><EyeIcon />{t(Strings.teamwork_click_here)}</div>
+      )}
+      <div className={styles.jumpBtn} onClick={jumpPublicLink}>
+        <EyeIcon />
+        {t(Strings.teamwork_click_here)}
+      </div>
       {detailModalVisible && <MembersDetail data={roleList} onCancel={() => setDetailModalVisible(false)} />}
     </div>
   );
 };
 
-const Row = (props) => {
+const Row = props => {
   const { index, data, style } = props;
   const { roleList } = data;
   const { members, admins, owner } = roleList;
   const member = members[index];
   return (
-    <div
-      style={style}
-      key={member.memberId}
-    >
+    <div style={style} key={member.memberId}>
       <UnitItem
         key={member.memberId}
         unit={{
@@ -191,7 +187,7 @@ const Row = (props) => {
         }}
         identity={{
           admin: Boolean(admins.find(item => item.memberId === member.memberId)),
-          permissionOpener: owner?.memberId === member.memberId
+          permissionOpener: owner?.memberId === member.memberId,
         }}
         disabled
         role={member.role}

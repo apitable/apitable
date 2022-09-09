@@ -1,6 +1,6 @@
 import { FieldType, Selectors, IField } from '@vikadata/core';
 import debounce from 'lodash/debounce';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { IEditor } from 'pc/components/editors/interface';
 import { useResponsive } from 'pc/hooks';
 import { useEffect, useRef } from 'react';
@@ -49,17 +49,19 @@ export const FilterNumber: React.FC<Omit<IFilterNumberProps, 'execute'>> = props
 
   return (
     <div className={styles.numberContainer}>
-      {numberTypes.has(fieldType) && <NumberEditor
-        style={{}}
-        ref={numberRef}
-        editable
-        editing
-        width={160}
-        datasheetId={datasheetId}
-        height={editorHeight}
-        field={field}
-        commandFn={commandNumberFn}
-      />}
+      {numberTypes.has(fieldType) && (
+        <NumberEditor
+          style={{}}
+          ref={numberRef}
+          editable
+          editing
+          width={160}
+          datasheetId={datasheetId}
+          height={editorHeight}
+          field={field}
+          commandFn={commandNumberFn}
+        />
+      )}
     </div>
   );
 };

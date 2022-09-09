@@ -3,7 +3,7 @@ import { ConfigConstant, getCustomConfig, IReduxState, isPrivateDeployment, Navi
 import { AuditOutlined, ManagePowerOutlined, RocketOutlined, TestOutlined } from '@vikadata/icons';
 import { Tree } from 'antd';
 import { useRouter } from 'next/router';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { OrganizationHead } from 'pc/components/organization_head';
 import { useNavigation } from 'pc/components/route_manager/use_navigation';
 import { useResponsive } from 'pc/hooks';
@@ -26,9 +26,7 @@ const DEFAULT_PATH_KEY = SPACE_INFO_KEY;
 const getPathKey = (menuTree: ISpaceNavInfo[], pathname: string): string[] => {
   const pathList = pathname.split('/');
   const pathKey = pathList[pathList.length - 1];
-  if (
-    menuTree.find(item => item.key === pathKey || (item.children && item.children.find(item => item.key === pathKey)))
-  ) {
+  if (menuTree.find(item => item.key === pathKey || (item.children && item.children.find(item => item.key === pathKey)))) {
     return [pathKey];
   }
   return [DEFAULT_PATH_KEY];
@@ -76,9 +74,7 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
     title: t(Strings.organization_and_role),
     key: 'addressManage',
     icon: <AddressIcon />,
-    valid: isMainAdmin ||
-      permissions.includes(ConfigConstant.PermissionCode.TEAM) ||
-      permissions.includes(ConfigConstant.PermissionCode.MEMBER),
+    valid: isMainAdmin || permissions.includes(ConfigConstant.PermissionCode.TEAM) || permissions.includes(ConfigConstant.PermissionCode.MEMBER),
     children: [
       {
         routeAddress: '/managemember',
@@ -114,16 +110,19 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
     icon: <TestOutlined />,
     routeAddress: '/test-function',
     valid: true,
-  }
+  },
 ];
 
 export const SpaceMenuTree: React.FC = () => {
-  const { spaceId, spaceResource, userInfo, appType } = useSelector((state: IReduxState) => ({
-    spaceId: state.space.activeId || '',
-    spaceResource: state.spacePermissionManage.spaceResource,
-    userInfo: state.user.info,
-    appType: state.space.curSpaceInfo?.social.appType,
-  }), shallowEqual);
+  const { spaceId, spaceResource, userInfo, appType } = useSelector(
+    (state: IReduxState) => ({
+      spaceId: state.space.activeId || '',
+      spaceResource: state.spacePermissionManage.spaceResource,
+      userInfo: state.user.info,
+      appType: state.space.curSpaceInfo?.social.appType,
+    }),
+    shallowEqual,
+  );
   const navigationTo = useNavigation();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -159,7 +158,7 @@ export const SpaceMenuTree: React.FC = () => {
     if (!spaceResource || !data || !data.length) {
       return null;
     }
-    return data.map((item) => {
+    return data.map(item => {
       if (userInfo && userInfo.isDelSpace && item.key !== SPACE_INFO_KEY) {
         return [];
       }
@@ -168,37 +167,29 @@ export const SpaceMenuTree: React.FC = () => {
       }
       if (item.children && item.children.length) {
         return (
-          <TreeNode
-            title={item.title}
-            key={item.key}
-            selectable={false}
-            icon={item.icon}
-          >
+          <TreeNode title={item.title} key={item.key} selectable={false} icon={item.icon}>
             {renderTreeNode(item.children)}
           </TreeNode>
         );
       }
-      return (
-        <TreeNode
-          title={item.title}
-          key={item.key}
-          icon={item.icon}
-          className={item.icon ? styles.noIcon : ''}
-          isLeaf
-        />
-      );
+      return <TreeNode title={item.title} key={item.key} icon={item.icon} className={item.icon ? styles.noIcon : ''} isLeaf />;
     });
   };
 
   return (
     <div className={styles.spaceMenuTree}>
       <OrganizationHead />
-      <Typography variant="h8" className={styles.spaceSubTitle}>{t(Strings.space_setting)}</Typography>
-      {
-        spaceResource && menuTree.length > 0 &&
+      <Typography variant="h8" className={styles.spaceSubTitle}>
+        {t(Strings.space_setting)}
+      </Typography>
+      {spaceResource && menuTree.length > 0 && (
         <DirectoryTree
           onSelect={onSelect}
-          switcherIcon={<div><PullDownIcon /></div>}
+          switcherIcon={
+            <div>
+              <PullDownIcon />
+            </div>
+          }
           // defaultSelectedKeys={[SPACE_INFO_KEY]}
           showIcon
           expandAction={false}
@@ -207,7 +198,7 @@ export const SpaceMenuTree: React.FC = () => {
         >
           {renderTreeNode(menuTree)}
         </DirectoryTree>
-      }
+      )}
     </div>
   );
 };

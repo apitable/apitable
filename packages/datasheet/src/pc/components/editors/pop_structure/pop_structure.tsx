@@ -4,7 +4,7 @@ import { stopPropagation } from 'pc/utils/dom';
 import { DEFAULT_COLUMN_WIDTH as MIN_POP_STRUCTURE_WIDTH, t, Strings } from '@vikadata/core';
 import { useLayoutEffect } from 'react';
 import { useDebounceFn } from 'ahooks';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { PopStructureContext } from './context';
@@ -15,21 +15,13 @@ interface IPopStructureProps {
   width: number;
   className: string;
   style: React.CSSProperties;
-  onClose (): void;
+  onClose(): void;
 }
 
 const SECURITY_PADDING = 30; // 给屏幕边缘预留的安全距离
 
 export const PopStructure: React.FC<IPopStructureProps> = props => {
-  const {
-    children,
-    editing,
-    height,
-    className,
-    style,
-    width,
-    onClose,
-  } = props;
+  const { children, editing, height, className, style, width, onClose } = props;
 
   const [position, setPosition] = useState({});
   const [restHeight, setRestHeight] = useState(0);
@@ -40,11 +32,13 @@ export const PopStructure: React.FC<IPopStructureProps> = props => {
   const editContainerRef = useRef<HTMLDivElement>(null);
 
   const setReflowSize = useCallback(() => {
-    if (!editContainerRef.current || !editContainerRef.current.parentElement) { return; }
+    if (!editContainerRef.current || !editContainerRef.current.parentElement) {
+      return;
+    }
     const rect = editContainerRef.current.parentElement.getBoundingClientRect();
     const modal = document.querySelector('.ant-modal');
     const bottomEdge = (modal && modal.getBoundingClientRect().bottom) || window.innerHeight;
-    const isOverVertical = rect.top > (bottomEdge / 2);
+    const isOverVertical = rect.top > bottomEdge / 2;
     const isOverHorizontal = rect.left + MIN_POP_STRUCTURE_WIDTH + SECURITY_PADDING > window.innerWidth;
 
     // 设置存放下拉菜单区域的高度
@@ -71,7 +65,9 @@ export const PopStructure: React.FC<IPopStructureProps> = props => {
       return;
     }
 
-    if (isMobile) { return; }
+    if (isMobile) {
+      return;
+    }
     setReflowSize();
   }, [editing, setReflowSize, isMobile]);
 
@@ -81,7 +77,7 @@ export const PopStructure: React.FC<IPopStructureProps> = props => {
   }, [run]);
 
   const context = { restHeight };
-  
+
   return (
     <>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
@@ -97,19 +93,12 @@ export const PopStructure: React.FC<IPopStructureProps> = props => {
             minWidth: style.width ? MIN_POP_STRUCTURE_WIDTH : 'auto',
           }}
         >
-          <PopStructureContext.Provider value={context}>
-            {children}
-          </PopStructureContext.Provider>
+          <PopStructureContext.Provider value={context}>{children}</PopStructureContext.Provider>
         </div>
       </ComponentDisplay>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <Popup
-          title={t(Strings.please_choose)}
-          height='80%'
-          visible={editing}
-          onClose={onClose}
-        >
+        <Popup title={t(Strings.please_choose)} height="80%" visible={editing} onClose={onClose}>
           {children}
         </Popup>
       </ComponentDisplay>

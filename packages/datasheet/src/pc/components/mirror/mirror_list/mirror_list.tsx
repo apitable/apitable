@@ -1,62 +1,17 @@
 import { FC, useEffect, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import { Api, ConfigConstant, DATASHEET_ID, Selectors, Strings, t, ViewType } from '@vikadata/core';
+import { Api, ConfigConstant, DATASHEET_ID, Selectors, Strings, t } from '@vikadata/core';
 import styles from './style.module.less';
 import classnames from 'classnames';
-import { useThemeColors, colorVars } from '@vikadata/components';
+import { useThemeColors } from '@vikadata/components';
 import Trigger from 'rc-trigger';
 import { ToolItem } from 'pc/components/tool_bar/tool_item';
 import { MirrorListInner } from 'pc/components/mirror/mirror_list/mirror_list_inner';
 import { TComponent } from 'pc/components/common/t_component';
-import { 
-  MirrorArchitectureFilled, 
-  MirrorCalendarFilled, 
-  MirrorGalleryFilled, 
-  MirrorGanttFilled, 
-  MirrorGridFilled, 
-  MirrorKanbanFilled, 
-  MirrorOutlined 
-} from '@vikadata/icons';
+import { MirrorOutlined } from '@vikadata/icons';
+import { IForeignFormProps, IMirrorItem } from './interface';
 
-export interface IForeignFormProps {
-  className: string;
-  showLabel?: boolean;
-  isHide?: boolean;
-}
-
-export interface IMirrorItem {
-  nodeName: string;
-  nodeId: string;
-  type: number
-}
-
-export const gstMirrorIconByViewType = (viewType: ViewType, color: string = colorVars.thirdLevelText) => {
-  switch (viewType) {
-    case ViewType.Gallery: {
-      return <MirrorGalleryFilled color={color} />;
-    }
-    case ViewType.Kanban: {
-      return <MirrorKanbanFilled color={color} />;
-    }
-    case ViewType.Gantt: {
-      return <MirrorGanttFilled color={color} />;
-    }
-    case ViewType.Grid: {
-      return <MirrorGridFilled color={color} />;
-    }
-    case ViewType.Calendar: {
-      return <MirrorCalendarFilled color={color} />;
-    }
-    case ViewType.OrgChart: {
-      return <MirrorArchitectureFilled color={color} />;
-    }
-    default: {
-      return <MirrorOutlined color={color} />;
-    }
-  }
-};
-
-export const MirrorList: FC<IForeignFormProps> = (props) => {
+export const MirrorList: FC<IForeignFormProps> = props => {
   const colors = useThemeColors();
   const { className, showLabel = true, isHide } = props;
   const [loading, setLoading] = useState(false);
@@ -73,7 +28,7 @@ export const MirrorList: FC<IForeignFormProps> = (props) => {
     const datasheet = Selectors.getDatasheet(state, datasheetId);
     const activeView = Selectors.getActiveView(state)!;
     const views = datasheet?.snapshot.meta.views || [];
-    const viewName = views.find((item) => item.id === activeView)?.name;
+    const viewName = views.find(item => item.id === activeView)?.name;
     return {
       folderId: Selectors.getDatasheetParentId(state)!,
       datasheetId,
@@ -112,13 +67,9 @@ export const MirrorList: FC<IForeignFormProps> = (props) => {
     <>
       <Trigger
         action={['click']}
-        popup={
-          <MirrorListInner creatable={creatable} mirrorList={mirrorList} loading={loading} />
-        }
+        popup={<MirrorListInner creatable={creatable} mirrorList={mirrorList} loading={loading} />}
         destroyPopupOnHide
-        popupAlign={
-          { points: ['tr', 'br'], offset: [0, 0], overflow: { adjustX: true, adjustY: true }}
-        }
+        popupAlign={{ points: ['tr', 'br'], offset: [0, 0], overflow: { adjustX: true, adjustY: true }}}
         popupStyle={{ width: 400 }}
         popupVisible={panelVisible}
         onPopupVisibleChange={visible => setPanelVisible(visible)}
@@ -129,17 +80,8 @@ export const MirrorList: FC<IForeignFormProps> = (props) => {
           className={classnames(className, styles.mirrorItem, {
             [styles.active]: panelVisible,
           })}
-          text={
-            mirrorList.length ?
-              <TComponent tkey={t(Strings.view_mirror_count)} params={{ count: mirrorList.length }} /> :
-              t(Strings.mirror)
-          }
-          icon={
-            <MirrorOutlined
-              color={panelVisible ? colors.primaryColor : colors.secondLevelText}
-              className={styles.toolIcon}
-            />
-          }
+          text={mirrorList.length ? <TComponent tkey={t(Strings.view_mirror_count)} params={{ count: mirrorList.length }} /> : t(Strings.mirror)}
+          icon={<MirrorOutlined color={panelVisible ? colors.primaryColor : colors.secondLevelText} className={styles.toolIcon} />}
           onClick={onClick}
           id={DATASHEET_ID.FORM_BTN}
         />

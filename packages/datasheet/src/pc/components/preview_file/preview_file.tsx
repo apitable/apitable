@@ -14,7 +14,7 @@ import { OFFICE_APP_ID } from '../space_manage/marketing';
 import { store } from 'pc/store';
 import { ContextName, ShortcutContext } from 'pc/common/shortcut_key';
 import { ThemeProvider, stopPropagation } from '@vikadata/components';
-import { ScreenSize } from '../common/component_display/component_display';
+import { ScreenSize } from '../common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { dispatch } from 'pc/worker/store';
 import classNames from 'classnames';
@@ -28,15 +28,7 @@ const PreviewFileModal: React.FC<IPreviewFileModal> = props => {
   const { onClose } = props;
   const [isFullScreen, { toggle: toggleIsFullScreen }] = useToggle(false);
   const previewFile = useSelector(state => state.previewFile, shallowEqual);
-  const {
-    datasheetId,
-    recordId,
-    fieldId,
-    activeIndex,
-    editable,
-    onChange,
-    disabledDownload
-  } = previewFile;
+  const { datasheetId, recordId, fieldId, activeIndex, editable, onChange, disabledDownload } = previewFile;
   let _cellValue = previewFile.cellValue;
 
   if (datasheetId && recordId && fieldId) {
@@ -53,29 +45,22 @@ const PreviewFileModal: React.FC<IPreviewFileModal> = props => {
     }
   }
 
-  const {
-    userInfo,
-    marketplaceApps,
-    spaceId,
-    shareInfo,
-    rightPaneWidth,
-    isSideRecordOpen,
-    isRecordFullScreen,
-    shareId,
-    templateId,
-  } = useSelector((state: IReduxState) => {
-    return {
-      spaceId: state.space.activeId,
-      userInfo: state.user.info,
-      shareInfo: state.share,
-      marketplaceApps: state.space.marketplaceApps,
-      rightPaneWidth: state.rightPane.width,
-      isSideRecordOpen: state.space.isSideRecordOpen,
-      isRecordFullScreen: state.space.isRecordFullScreen,
-      shareId: state.pageParams.shareId,
-      templateId: state.pageParams.templateId,
-    };
-  }, shallowEqual);
+  const { userInfo, marketplaceApps, spaceId, shareInfo, rightPaneWidth, isSideRecordOpen, isRecordFullScreen, shareId, templateId } = useSelector(
+    (state: IReduxState) => {
+      return {
+        spaceId: state.space.activeId,
+        userInfo: state.user.info,
+        shareInfo: state.share,
+        marketplaceApps: state.space.marketplaceApps,
+        rightPaneWidth: state.rightPane.width,
+        isSideRecordOpen: state.space.isSideRecordOpen,
+        isRecordFullScreen: state.space.isRecordFullScreen,
+        shareId: state.pageParams.shareId,
+        templateId: state.pageParams.templateId,
+      };
+    },
+    shallowEqual,
+  );
   const dispatch = useDispatch();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -84,12 +69,17 @@ const PreviewFileModal: React.FC<IPreviewFileModal> = props => {
 
   const officePreviewEnable = marketplaceApps.find(app => app.appId === OFFICE_APP_ID)?.status ? true : false;
 
-  const setActiveIndex = useCallback((activeIndex: number) => {
-    dispatch(StoreActions.setPreviewFile({
-      ...previewFile,
-      activeIndex
-    }));
-  }, [dispatch, previewFile]);
+  const setActiveIndex = useCallback(
+    (activeIndex: number) => {
+      dispatch(
+        StoreActions.setPreviewFile({
+          ...previewFile,
+          activeIndex,
+        }),
+      );
+    },
+    [dispatch, previewFile],
+  );
 
   const cellValue = useMemo(() => {
     if (!_cellValue) return [];
@@ -98,32 +88,29 @@ const PreviewFileModal: React.FC<IPreviewFileModal> = props => {
 
   const readonly = !editable;
 
-  const onDelete = useCallback(
-    () => {
-      if (readonly) {
-        return;
-      }
-      const filteredCellValue = cellValue.filter(item => item.id !== cellValue[activeIndex].id);
-      onChange(filteredCellValue);
-      const lastIndex = filteredCellValue.length - 1;
-      if (activeIndex > lastIndex) {
-        setActiveIndex(lastIndex);
-      }
-      if (cellValue.length === 1) {
-        onClose();
-        return;
-      }
-    },
-    [activeIndex, cellValue, onChange, onClose, readonly, setActiveIndex],
-  );
+  const onDelete = useCallback(() => {
+    if (readonly) {
+      return;
+    }
+    const filteredCellValue = cellValue.filter(item => item.id !== cellValue[activeIndex].id);
+    onChange(filteredCellValue);
+    const lastIndex = filteredCellValue.length - 1;
+    if (activeIndex > lastIndex) {
+      setActiveIndex(lastIndex);
+    }
+    if (cellValue.length === 1) {
+      onClose();
+      return;
+    }
+  }, [activeIndex, cellValue, onChange, onClose, readonly, setActiveIndex]);
 
   useEffect(() => {
     if (!cellValue || cellValue.length === 0) {
       return;
     }
-    
+
     if (containerRef.current) {
-      containerRef.current!.focus();      
+      containerRef.current!.focus();
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -187,8 +174,7 @@ const PreviewFileModal: React.FC<IPreviewFileModal> = props => {
       tabIndex={0}
       onMouseDown={stopPropagation}
     >
-      {
-        cellValue[activeIndex] != null &&
+      {cellValue[activeIndex] != null && (
         <PreviewMain
           files={cellValue}
           setActiveIndex={setActiveIndex}
@@ -203,7 +189,7 @@ const PreviewFileModal: React.FC<IPreviewFileModal> = props => {
           isFullScreen={isFullScreen}
           toggleIsFullScreen={toggleIsFullScreen}
         />
-      }
+      )}
     </div>
   );
 };
@@ -234,34 +220,32 @@ export const expandPreviewModal = (props: IExpandPreviewModalFuncProps): IExpand
   preCloseModalFn = close;
 
   const render = (props: IExpandPreviewModalFuncProps) => {
-    dispatch(StoreActions.setPreviewFile({
-      ...props,
-      onChange: (files: IAttachmentValue[]) => {
-        props.onChange(files);
-        if (files.length > 0) {
-          update({
-            ...props,
-            cellValue: files,
-          });
-        }
-      }
-    }));
+    dispatch(
+      StoreActions.setPreviewFile({
+        ...props,
+        onChange: (files: IAttachmentValue[]) => {
+          props.onChange(files);
+          if (files.length > 0) {
+            update({
+              ...props,
+              cellValue: files,
+            });
+          }
+        },
+      }),
+    );
 
     ReactDOM.render(
       <Provider store={store}>
         <ThemeProvider>
-          <PreviewFileModal
-            onClose={close}
-          />
+          <PreviewFileModal onClose={close} />
         </ThemeProvider>
-      </Provider>
-      ,
+      </Provider>,
       div,
     );
   };
 
   const update = (updatedProps: IExpandPreviewModalFuncProps) => {
-
     render(updatedProps);
 
     return {

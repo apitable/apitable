@@ -1,18 +1,14 @@
-import { ITransFormInfo } from 'pc/components/preview_file/preview_file.interface';
+import { ITransFormInfo, ITranslatePosition } from 'pc/components/preview_file/preview_file.interface';
 import { MouseDownType } from 'pc/components/selection_wrapper';
 import { isWindowsOS } from 'pc/utils/os';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ITranslatePosition } from '../../preview_type.interface';
 import getFixedState from '../get_fixed_state';
 
 interface IImageEventsProps {
   imageEle: HTMLImageElement;
   wrapperEle: HTMLDivElement;
   transformInfo: ITransFormInfo;
-  setTransformInfo: (
-    transformInfo: ITransFormInfo,
-    immediately?: boolean
-  ) => void;
+  setTransformInfo: (transformInfo: ITransFormInfo, immediately?: boolean) => void;
   scale: number;
   isRotated: boolean;
 }
@@ -32,14 +28,7 @@ const originPosition: IOriginPosition = {
 };
 
 export const useEvents = (props: IImageEventsProps) => {
-  const {
-    imageEle,
-    wrapperEle,
-    scale,
-    transformInfo,
-    setTransformInfo,
-    isRotated,
-  } = props;
+  const { imageEle, wrapperEle, scale, transformInfo, setTransformInfo, isRotated } = props;
 
   const { translatePosition } = transformInfo;
 
@@ -73,14 +62,7 @@ export const useEvents = (props: IImageEventsProps) => {
       const { width, height, containerWidth, containerHeight } = getSize();
 
       // 对边界情况做处理，返回修正后的结果
-      const revisedState = getFixedState(
-        width,
-        height,
-        position.x,
-        position.y,
-        containerWidth,
-        containerHeight
-      );
+      const revisedState = getFixedState(width, height, position.x, position.y, containerWidth, containerHeight);
 
       setTransformInfo({
         ...transformInfo,
@@ -88,7 +70,7 @@ export const useEvents = (props: IImageEventsProps) => {
       });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [setTransformInfo, transformInfo]
+    [setTransformInfo, transformInfo],
   );
 
   const handleWheel = (event: WheelEvent) => {
@@ -158,7 +140,7 @@ export const useEvents = (props: IImageEventsProps) => {
     } else {
       setOverflow(false);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scale, isRotated]);
 
   return {

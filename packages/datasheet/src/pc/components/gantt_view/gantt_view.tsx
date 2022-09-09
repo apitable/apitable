@@ -52,7 +52,6 @@ import {
   useGridMessage,
   useScrollbarTip,
 } from 'pc/components/konva_grid';
-import { useDisabledOperateWithMirror } from 'pc/components/tool_bar';
 import { useDispatch, useResponsive, useSetState } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
@@ -62,8 +61,8 @@ import { isMobile as isTouchDevice } from 'react-device-detect';
 import { shallowEqual, useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { VikaSplitPanel } from '../common';
-import { ScreenSize } from '../common/component_display/component_display';
-import { IContainerEdit } from '../editors';
+import { ScreenSize } from '../common/component_display/enum';
+import { IContainerEdit } from '../editors/interface';
 import { useWxTitleMap } from '../konva_grid/hooks/use_wx_title_map';
 import { GanttExport, SettingPanel } from './components';
 import { CreateFieldModal } from './components/create_field_modal';
@@ -86,6 +85,7 @@ import {
 import styles from './style.module.less';
 import { getAllTaskLine, getAllCycleDAG, autoTaskScheduling, getCollapsedLinearRows } from './utils';
 import { Message } from 'pc/components/common';
+import { useDisabledOperateWithMirror } from '../tool_bar/hooks';
 interface IGanttViewProps {
   height: number;
   width: number;

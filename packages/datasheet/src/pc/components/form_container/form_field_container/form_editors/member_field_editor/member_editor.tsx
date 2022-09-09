@@ -11,7 +11,7 @@ import { CellMember } from './cell_member';
 import { IBaseEditorProps, IEditor } from 'pc/components/editors/interface';
 import { IExpandFieldEditRef } from 'pc/components/expand_record/field_editor';
 import { MemberEditor } from 'pc/components/editors/member_editor/member_editor';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 
 export interface IMemberFieldEditorProps extends IBaseEditorProps {
   style: React.CSSProperties;
@@ -45,10 +45,10 @@ export const MemberFieldEditor: React.FC<IMemberFieldEditorProps> = React.forwar
   };
 
   useEffect(() => {
-    if (!editing && onClose){
+    if (!editing && onClose) {
       onClose();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editing]);
 
   useLayoutEffect(() => {
@@ -57,12 +57,16 @@ export const MemberFieldEditor: React.FC<IMemberFieldEditorProps> = React.forwar
     }
   }, [editing, cellValue]);
 
-  useClickAway(() => {
-    if (isMobile) {
-      return;
-    }
-    editing && isFocus && setEditing(false);
-  }, containerRef, 'mousedown');
+  useClickAway(
+    () => {
+      if (isMobile) {
+        return;
+      }
+      editing && isFocus && setEditing(false);
+    },
+    containerRef,
+    'mousedown',
+  );
 
   useMemo(() => {
     if (!isFocus) {
@@ -71,22 +75,33 @@ export const MemberFieldEditor: React.FC<IMemberFieldEditorProps> = React.forwar
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocus]);
 
-  useImperativeHandle(ref, (): IExpandFieldEditRef => {
-    const editor = editorRef.current;
-    if (!editor) {
-      return {
-        focus: () => { return; },
-        setValue: () => { return; },
-        saveValue: () => { return; },
-      };
-    }
+  useImperativeHandle(
+    ref,
+    (): IExpandFieldEditRef => {
+      const editor = editorRef.current;
+      if (!editor) {
+        return {
+          focus: () => {
+            return;
+          },
+          setValue: () => {
+            return;
+          },
+          saveValue: () => {
+            return;
+          },
+        };
+      }
 
-    return {
-      focus: editor.focus,
-      setValue: editor.setValue,
-      saveValue: () => { return; },
-    };
-  });
+      return {
+        focus: editor.focus,
+        setValue: editor.setValue,
+        saveValue: () => {
+          return;
+        },
+      };
+    },
+  );
 
   const setEditingByKeyDown = (event: React.KeyboardEvent) => {
     if (editing) {
@@ -104,7 +119,7 @@ export const MemberFieldEditor: React.FC<IMemberFieldEditorProps> = React.forwar
     }
   };
 
-  const onChange = (cellValue) => {
+  const onChange = cellValue => {
     onSave && onSave(cellValue);
   };
 
@@ -126,8 +141,8 @@ export const MemberFieldEditor: React.FC<IMemberFieldEditorProps> = React.forwar
             />
           </div>
           <div style={{ position: 'absolute', left: 0, top: 0 }}>
-            {
-              editing && <MemberEditor
+            {editing && (
+              <MemberEditor
                 ref={editorRef}
                 {...props}
                 unitMap={unitMap}
@@ -141,17 +156,13 @@ export const MemberFieldEditor: React.FC<IMemberFieldEditorProps> = React.forwar
                   zIndex: 1000,
                 }}
               />
-            }
+            )}
           </div>
         </div>
       </ComponentDisplay>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <div
-          className={classNames(styles.displayBox, styles.option)}
-          onClick={() => editable && setEditing(!editing)}
-          ref={containerRef}
-        >
+        <div className={classNames(styles.displayBox, styles.option)} onClick={() => editable && setEditing(!editing)} ref={containerRef}>
           <CellMember
             field={field}
             cellValue={cellValue}
@@ -163,16 +174,9 @@ export const MemberFieldEditor: React.FC<IMemberFieldEditorProps> = React.forwar
             onChange={onChange}
           />
         </div>
-        {editing &&
-        <MemberEditor
-          ref={editorRef}
-          {...props}
-          unitMap={unitMap}
-          editing={editing}
-          linkId={shareId}
-          toggleEditing={() => setEditing(false)}
-        />
-        }
+        {editing && (
+          <MemberEditor ref={editorRef} {...props} unitMap={unitMap} editing={editing} linkId={shareId} toggleEditing={() => setEditing(false)} />
+        )}
       </ComponentDisplay>
     </>
   );

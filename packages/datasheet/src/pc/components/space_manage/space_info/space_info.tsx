@@ -5,7 +5,7 @@ import { triggerUsageAlert } from 'pc/common/billing';
 import { subscribeUsageCheck, SubscribeUsageTipType } from 'pc/common/billing/subscribe_usage_check';
 import { ScrollBar } from 'pc/common/guide/scroll_bar';
 import { Modal } from 'pc/components/common';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display/enum';
 import { isSocialPlatformEnabled } from 'pc/components/home/social_platform';
 import { useDispatch, useResponsive, useSideBarVisible } from 'pc/hooks';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -22,9 +22,9 @@ export const SpaceInfo = () => {
       spaceInfo: state.space.curSpaceInfo,
       spaceFeatures: state.space.spaceFeatures,
       subscription: state.billing.subscription,
-      spaceId: state.space.activeId
+      spaceId: state.space.activeId,
     }),
-    shallowEqual
+    shallowEqual,
   );
   const { setSideBarVisible } = useSideBarVisible();
   const [isDelConfirmModal, setIsDelConfirmModal] = useState(false);
@@ -50,23 +50,19 @@ export const SpaceInfo = () => {
       // 高级视图
       // 甘特图
       if (subscribeUsageCheck.shouldAlertToUser('maxGanttViewsInSpace', spaceInfo?.ganttViewNums, true)) {
-        return triggerUsageAlert('maxGanttViewsInSpace', { usage: spaceInfo?.ganttViewNums },
-          SubscribeUsageTipType.Alert);
+        return triggerUsageAlert('maxGanttViewsInSpace', { usage: spaceInfo?.ganttViewNums }, SubscribeUsageTipType.Alert);
       }
       // 相册视图
       if (subscribeUsageCheck.shouldAlertToUser('maxGalleryViewsInSpace', spaceInfo?.galleryViewNums, true)) {
-        return triggerUsageAlert('maxGalleryViewsInSpace', { usage: spaceInfo?.galleryViewNums },
-          SubscribeUsageTipType.Alert);
+        return triggerUsageAlert('maxGalleryViewsInSpace', { usage: spaceInfo?.galleryViewNums }, SubscribeUsageTipType.Alert);
       }
       // 日历视图
       if (subscribeUsageCheck.shouldAlertToUser('maxCalendarViewsInSpace', spaceInfo?.calendarViewNums, true)) {
-        return triggerUsageAlert('maxCalendarViewsInSpace', { usage: spaceInfo?.calendarViewNums },
-          SubscribeUsageTipType.Alert);
+        return triggerUsageAlert('maxCalendarViewsInSpace', { usage: spaceInfo?.calendarViewNums }, SubscribeUsageTipType.Alert);
       }
       // 看板视图
       if (subscribeUsageCheck.shouldAlertToUser('maxKanbanViewsInSpace', spaceInfo?.kanbanViewNums, true)) {
-        return triggerUsageAlert('maxKanbanViewsInSpace', { usage: spaceInfo?.kanbanViewNums },
-          SubscribeUsageTipType.Alert);
+        return triggerUsageAlert('maxKanbanViewsInSpace', { usage: spaceInfo?.kanbanViewNums }, SubscribeUsageTipType.Alert);
       }
       // 表单
       if (subscribeUsageCheck.shouldAlertToUser('maxFormViewsInSpace', spaceInfo?.formViewNums, true)) {
@@ -74,8 +70,7 @@ export const SpaceInfo = () => {
       }
       // 附件容量
       if (subscribeUsageCheck.shouldAlertToUser('maxCapacitySizeInBytes', spaceInfo?.capacityUsedSizes, true)) {
-        return triggerUsageAlert('maxCapacitySizeInBytes', { usage: spaceInfo?.capacityUsedSizes },
-          SubscribeUsageTipType.Alert);
+        return triggerUsageAlert('maxCapacitySizeInBytes', { usage: spaceInfo?.capacityUsedSizes }, SubscribeUsageTipType.Alert);
       }
     }, 0);
   });
@@ -85,18 +80,17 @@ export const SpaceInfo = () => {
   const isMobile = screenIsAtMost(ScreenSize.md);
 
   useEffect(() => {
-    Api.getSpaceAdList()
-      .then((res) => {
-        const data = res.data;
-        const lang = getLanguage();
-        const isZh = /^zh/i.test(lang);
-        if (!isZh) {
-          data.desc = data.descEn || data.desc;
-          data.linkText = data.linkTextEn || data.linkText;
-        }
-        console.log(setAd);
-        setAd(data);
-      });
+    Api.getSpaceAdList().then(res => {
+      const data = res.data;
+      const lang = getLanguage();
+      const isZh = /^zh/i.test(lang);
+      if (!isZh) {
+        data.desc = data.descEn || data.desc;
+        data.linkText = data.linkTextEn || data.linkText;
+      }
+      console.log(setAd);
+      setAd(data);
+    });
   }, []);
 
   useEffect(() => {
@@ -119,9 +113,7 @@ export const SpaceInfo = () => {
     }
     return Lg;
   }, [clientWidth]);
-  const handleUpgrade = useCallback(() => {
-
-  }, []);
+  const handleUpgrade = useCallback(() => {}, []);
   const { show: showContextMenu } = useContextMenu({ id: DELETE_SPACE_CONTEXT_MENU_ID });
 
   const handleDelSpace = useCallback(() => {
@@ -157,18 +149,9 @@ export const SpaceInfo = () => {
       <ScrollBar style={{ width: '100%', height: '100%' }}>
         <Layout {...layoutProps} />
         {isDelConfirmModal && (
-          <DelConfirmModal
-            setIsDelSpaceModal={setIsDelSpaceModal}
-            setIsDelConfirmModal={setIsDelConfirmModal}
-            isMobile={isMobile}
-          />
+          <DelConfirmModal setIsDelSpaceModal={setIsDelSpaceModal} setIsDelConfirmModal={setIsDelConfirmModal} isMobile={isMobile} />
         )}
-        {isDelSpaceModal && (
-          <DelSpaceModal
-            setIsDelSpaceModal={setIsDelSpaceModal}
-            setIsDelSuccessModal={setIsDelSuccessModal}
-          />
-        )}
+        {isDelSpaceModal && <DelSpaceModal setIsDelSpaceModal={setIsDelSpaceModal} setIsDelSuccessModal={setIsDelSuccessModal} />}
         {isDelSuccessModal && <DelSuccess tip={t(Strings.tip_del_success)} />}
       </ScrollBar>
     </SpaceContext.Provider>

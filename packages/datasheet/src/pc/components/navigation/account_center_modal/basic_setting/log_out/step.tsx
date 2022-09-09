@@ -12,33 +12,15 @@ import { Api, ConfigConstant, Navigation, Strings, t } from '@vikadata/core';
 import { Verify } from '../modify_mobile_modal/verify';
 import { Method, navigatePath } from 'pc/components/route_manager/use_navigation';
 import { usePlatform } from 'pc/hooks/use_platform';
-
-export enum StepStatus {
-  None = -1,
-  Reading = 0,
-  ChooseAccountType = 1,
-  VerifyAccount = 2,
-  ConfirmAgain = 3,
-  Done = 4,
-}
+import { AccountType, StepStatus } from './enum';
 
 export interface IErrorMsg {
   accountErrMsg: string;
   identifyingCodeErrMsg: string;
 }
 
-export enum AccountType {
-  EMAIL = 1,
-  MOBILE = 0,
-}
-
 export const Step: React.FC = () => {
-
-  const {
-    step,
-    setStep,
-    userData,
-  } = useContext(StepContext);
+  const { step, setStep, userData } = useContext(StepContext);
   const colors = useThemeColors();
 
   const [errMsg, setErrMsg] = useSetState<IErrorMsg>();
@@ -68,9 +50,7 @@ export const Step: React.FC = () => {
     setLoading(false);
   };
 
-  const handleIdentifyingCodeChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleIdentifyingCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (errMsg.identifyingCodeErrMsg) {
       setErrMsg({ identifyingCodeErrMsg: '' });
     }
@@ -85,12 +65,7 @@ export const Step: React.FC = () => {
       case StepStatus.Reading:
         return <Reading />;
       case StepStatus.ChooseAccountType:
-        return (
-          <ChooseAccountType
-            accountType={verifyAccountType}
-            setAccountType={setVerifyAccountType}
-          />
-        );
+        return <ChooseAccountType accountType={verifyAccountType} setAccountType={setVerifyAccountType} />;
       case StepStatus.VerifyAccount:
         return (
           <Verify
@@ -105,12 +80,7 @@ export const Step: React.FC = () => {
           />
         );
       case StepStatus.ConfirmAgain:
-        return (
-          <ConfirmAgainModal
-            confirmText={confirmText}
-            setConfirmText={setConfirmText}
-          />
-        );
+        return <ConfirmAgainModal confirmText={confirmText} setConfirmText={setConfirmText} />;
       default:
         return null;
     }
@@ -138,30 +108,29 @@ export const Step: React.FC = () => {
         disabled: !confirmText || confirmText !== t(Strings.confirm_logout),
         onClick: () => {
           setLoading(true);
-          Api.logout().then((res) => {
-            setLoading(false);
-            setStep(StepStatus.Done);
-            const {
-              success,
-              message,
-            } = res.data;
-            if (success) {
-              Message.success({ content: t(Strings.log_out_succeed) });
-              navigatePath({
-                path: Navigation.APPLY_LOGOUT,
-                method: Method.Push,
-              });
-            } else {
-              Message.error({ content: message });
-            }
-          }).catch((err) => {
-            setLoading(false);
-            Message.error({ content: err.toString() });
-          });
+          Api.logout()
+            .then(res => {
+              setLoading(false);
+              setStep(StepStatus.Done);
+              const { success, message } = res.data;
+              if (success) {
+                Message.success({ content: t(Strings.log_out_succeed) });
+                navigatePath({
+                  path: Navigation.APPLY_LOGOUT,
+                  method: Method.Push,
+                });
+              } else {
+                Message.error({ content: message });
+              }
+            })
+            .catch(err => {
+              setLoading(false);
+              Message.error({ content: err.toString() });
+            });
         },
         okBtnText: t(Strings.confirm_logout),
         color: 'danger',
-      }
+      },
     };
 
     switch (step) {
@@ -178,7 +147,7 @@ export const Step: React.FC = () => {
         };
         return (
           <Button
-            color='primary'
+            color="primary"
             onClick={() => {
               setStep(getNextStep());
               if (!userData.email) {
@@ -202,20 +171,11 @@ export const Step: React.FC = () => {
           lastStep = StepStatus.Reading;
         }
         return (
-          <div className={styles.footer} >
-            <LinkButton
-              color={colors.fc3}
-              onClick={() => setStep(lastStep)}
-              underline={false}
-            >
+          <div className={styles.footer}>
+            <LinkButton color={colors.fc3} onClick={() => setStep(lastStep)} underline={false}>
               {t(Strings.last_step)}
             </LinkButton>
-            <Button
-              color='primary'
-              loading={loading}
-              type='submit'
-              {...btnPropsMap[step]}
-            >
+            <Button color="primary" loading={loading} type="submit" {...btnPropsMap[step]}>
               {btnPropsMap[step].okBtnText}
             </Button>
           </div>

@@ -12,7 +12,7 @@ import { batchActions } from 'redux-batched-actions';
 import { expandRecordIdNavigate } from '../expand_record';
 import { useAttachEvent } from '../konva_grid';
 import { GRID_VIEWS_ID } from '../multi_grid/grid_views';
-import { IContainerEdit } from './container';
+import { IContainerEdit } from './interface';
 
 interface IScrollToItem {
   align?: 'auto' | 'smart' | 'center' | 'end' | 'start';
@@ -33,9 +33,20 @@ export const attachEventHoc = WrapperComponent => {
     const { scrollToItem } = props;
     const containerRef = useRef<IContainerEdit | null>(null);
     const {
-      columns, visibleRows, selectRanges, selectField, rowIndexMap, recordId,
-      selectRecord, activeCell, datasheetId, selection, currentSearchCell,
-      isSearching, fieldRanges,fieldIndexMap
+      columns,
+      visibleRows,
+      selectRanges,
+      selectField,
+      rowIndexMap,
+      recordId,
+      selectRecord,
+      activeCell,
+      datasheetId,
+      selection,
+      currentSearchCell,
+      isSearching,
+      fieldRanges,
+      fieldIndexMap,
     } = useSelector(state => {
       return {
         selection: Selectors.getSelection(state),
@@ -55,15 +66,9 @@ export const attachEventHoc = WrapperComponent => {
       };
     }, shallowEqual);
 
-    const isSideRecordOpen = useSelector((state) => state.space.isSideRecordOpen);
+    const isSideRecordOpen = useSelector(state => state.space.isSideRecordOpen);
 
-    const {
-      handleForCell,
-      handleForFillBar,
-      handleForHeader,
-      handleForOperateColumn,
-      handleForOtherArea,
-    } = useAttachEvent({
+    const { handleForCell, handleForFillBar, handleForHeader, handleForOperateColumn, handleForOtherArea } = useAttachEvent({
       datasheetId,
       fieldRanges,
       selectRanges,
@@ -103,10 +108,12 @@ export const attachEventHoc = WrapperComponent => {
       }
       const view = Selectors.getCurrentView(store.getState());
       const fieldId = view!.columns[0].fieldId;
-      dispatch(StoreActions.setActiveCell(datasheetId, {
-        recordId,
-        fieldId,
-      }));
+      dispatch(
+        StoreActions.setActiveCell(datasheetId, {
+          recordId,
+          fieldId,
+        }),
+      );
       if (isSideRecordOpen) {
         expandRecordIdNavigate(recordId);
       }
@@ -130,10 +137,7 @@ export const attachEventHoc = WrapperComponent => {
       // 当前用户正在编辑，但是编辑单元格所在的「列」或「行」被隐藏或者删除
       if (!isEditColumnExit || !isEditRecordExit) {
         Message.warning({ content: t(Strings.cell_not_exist_content) });
-        dispatch(batchActions([
-          StoreActions.clearSelection(datasheetId),
-          StoreActions.setEditStatus(datasheetId, null),
-        ]));
+        dispatch(batchActions([StoreActions.clearSelection(datasheetId), StoreActions.setEditStatus(datasheetId, null)]));
       }
     }, [columns, rowIndexMap, dispatch, datasheetId]);
 
@@ -142,7 +146,7 @@ export const attachEventHoc = WrapperComponent => {
       if (isSearching) {
         return;
       }
-      
+
       if (selection && selection.fieldRanges) {
         return;
       }
@@ -152,9 +156,10 @@ export const attachEventHoc = WrapperComponent => {
         return;
       }
       const activeUICell = Selectors.getCellUIIndex(state, activeCell)!;
-      activeUICell && setTimeout(() => {
-        scrollToItem(activeUICell);
-      }, 0);
+      activeUICell &&
+        setTimeout(() => {
+          scrollToItem(activeUICell);
+        }, 0);
     }, [isSearching]);
 
     const mouseDown = (e: MouseEvent) => {
@@ -162,10 +167,7 @@ export const attachEventHoc = WrapperComponent => {
       const { fieldId, recordId } = getClickCellId(target);
       const hoverCell = { recordId: recordId!, fieldId: fieldId! };
       if (fieldId && !recordId) {
-        const columnIndex = Number(getElementDataset(
-          getParentNodeByClass(e.target as HTMLElement, [CELL_CLASS, FIELD_HEAD_CLASS]),
-          'columnIndex'
-        ));
+        const columnIndex = Number(getElementDataset(getParentNodeByClass(e.target as HTMLElement, [CELL_CLASS, FIELD_HEAD_CLASS]), 'columnIndex'));
         const isChangeColumnWidth = Boolean(getParentNodeByClass(target, OPACITY_LINE_CLASS));
         handleForHeader(e, fieldId, columnIndex, isChangeColumnWidth);
         return;
@@ -197,10 +199,7 @@ export const attachEventHoc = WrapperComponent => {
         return;
       }
 
-      if (
-        document.getElementById(GRID_VIEWS_ID)?.contains(e.target as HTMLElement) && activeCell && containerRef.current
-      ) {
-
+      if (document.getElementById(GRID_VIEWS_ID)?.contains(e.target as HTMLElement) && activeCell && containerRef.current) {
         if (isTouchDevice()) {
           return;
         }

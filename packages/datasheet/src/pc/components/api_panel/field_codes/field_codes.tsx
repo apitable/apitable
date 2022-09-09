@@ -1,5 +1,4 @@
 import { Field, FieldType, Selectors, Strings, t } from '@vikadata/core';
-// import { Field, FieldType, Selectors } from '@vikadata/core';
 import classNames from 'classnames';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
@@ -10,10 +9,11 @@ import githubIcon from 'static/icon/common/github_octopus.png';
 import { Loading } from 'pc/components/common';
 import { LinkButton, ButtonGroup } from '@vikadata/components';
 import dynamic from 'next/dynamic';
+import { CodeLanguage, CodeType } from './enum';
 
 const DocInnerHtml = dynamic(() => import('./doc_inner_html'), {
   ssr: false,
-  loading: () => <Loading className={styles.loading} />
+  loading: () => <Loading className={styles.loading} />,
 });
 
 export type IFieldValueBase = number | string | boolean | { [key: string]: any };
@@ -31,20 +31,6 @@ export interface IRecord {
    * 只有当 record 某一列存在内容时，data 中才会有这一列的fieldId key
    */
   fields: IFieldValueMap;
-}
-
-export enum CodeType {
-  Get,
-  Delete,
-  Add,
-  Update,
-  Upload,
-}
-
-export enum CodeLanguage {
-  Curl,
-  Js,
-  Python,
 }
 
 interface IFieldCode {
@@ -89,9 +75,7 @@ export const FieldCode: React.FC<IFieldCode> = props => {
   };
 
   const getInvalidFieldNames = () => {
-    const invalidFieldNames = columns.filter(field => !VARIABLE_REG.test(fieldMap[field.fieldId].name)).map(
-      field => fieldMap[field.fieldId].name
-    );
+    const invalidFieldNames = columns.filter(field => !VARIABLE_REG.test(fieldMap[field.fieldId].name)).map(field => fieldMap[field.fieldId].name);
     return invalidFieldNames;
   };
   const hasInvalidFieldNames = () => {
@@ -99,36 +83,40 @@ export const FieldCode: React.FC<IFieldCode> = props => {
   };
 
   const getExampleRecords = (type: RecordType): Partial<IRecord>[] => {
-    return rows.slice(0, 10).map(row => {
-      const fields = {};
-      columns.forEach(column => {
-        const field = fieldMap[column.fieldId];
-        const cellValue = Selectors.getCellValue(store.getState(), snapshot, row.recordId, field.id);
-        const apiValue = Field.bindModel(field).cellValueToApiStandardValue(cellValue);
-        if (apiValue != null) {
-          switch (type) {
-            case RecordType.Add:
-            case RecordType.Update:
-              // 字段可编辑时才能写入。
-              if (Field.bindModel(field).recordEditable()) {
-                // 空值不显示
+    return rows
+      .slice(0, 10)
+      .map(row => {
+        const fields = {};
+        columns.forEach(column => {
+          const field = fieldMap[column.fieldId];
+          const cellValue = Selectors.getCellValue(store.getState(), snapshot, row.recordId, field.id);
+          const apiValue = Field.bindModel(field).cellValueToApiStandardValue(cellValue);
+          if (apiValue != null) {
+            switch (type) {
+              case RecordType.Add:
+              case RecordType.Update:
+                // 字段可编辑时才能写入。
+                if (Field.bindModel(field).recordEditable()) {
+                  // 空值不显示
+                  fields[byFieldId ? field.id : field.name] = apiValue;
+                }
+                break;
+              default:
                 fields[byFieldId ? field.id : field.name] = apiValue;
-              }
-              break;
-            default:
-              fields[byFieldId ? field.id : field.name] = apiValue;
-              break;
+                break;
+            }
           }
+        });
+        if (type === RecordType.Add) {
+          return { fields };
         }
-      });
-      if (type === RecordType.Add) {
-        return { fields };
-      }
-      return {
-        recordId: row.recordId,
-        fields,
-      };
-    }).filter(record => Object.keys(record.fields).length).slice(0, 2);
+        return {
+          recordId: row.recordId,
+          fields,
+        };
+      })
+      .filter(record => Object.keys(record.fields).length)
+      .slice(0, 2);
   };
 
   const exampleResponseRecords = getExampleRecords(RecordType.Response) as IRecord[];
@@ -138,14 +126,15 @@ export const FieldCode: React.FC<IFieldCode> = props => {
 
   const getExampleRecordKV = (isWriteMode?: boolean) => {
     const exampleRecords = isWriteMode ? exampleAddRecords : exampleResponseRecords;
-    if (!exampleRecords.length) return {
-      oneRecord: {
-        recordId: 'null',
-        fields: {},
-      },
-      oneFieldKey: 'null',
-      oneFieldValue: 'null',
-    };
+    if (!exampleRecords.length)
+      return {
+        oneRecord: {
+          recordId: 'null',
+          fields: {},
+        },
+        oneFieldKey: 'null',
+        oneFieldValue: 'null',
+      };
     const oneRecord = exampleRecords[0];
     const oneFieldKey = Object.keys(oneRecord.fields)[0];
     const oneFieldValue = oneRecord.fields[oneFieldKey];
@@ -166,7 +155,11 @@ export const FieldCode: React.FC<IFieldCode> = props => {
       case 'add':
         return JSON.stringify(exampleAddRecords[0]?.fields, null, 2);
       case 'bulk_add':
-        return JSON.stringify(exampleAddRecords.map(record => record.fields), null, 2);
+        return JSON.stringify(
+          exampleAddRecords.map(record => record.fields),
+          null,
+          2,
+        );
       case 'update':
         return JSON.stringify(oneRecord.fields, null, 2);
       default:
@@ -270,7 +263,7 @@ export const FieldCode: React.FC<IFieldCode> = props => {
       <ButtonGroup className={styles.radioGroup}>
         <LinkButton
           underline={false}
-          component='button'
+          component="button"
           className={classNames({ [styles.radioActive]: CodeLanguage.Curl === language })}
           onClick={() => setLanguage(CodeLanguage.Curl)}
         >
@@ -278,7 +271,7 @@ export const FieldCode: React.FC<IFieldCode> = props => {
         </LinkButton>
         <LinkButton
           underline={false}
-          component='button'
+          component="button"
           className={classNames({ [styles.radioActive]: CodeLanguage.Js === language })}
           onClick={() => setLanguage(CodeLanguage.Js)}
         >
@@ -286,7 +279,7 @@ export const FieldCode: React.FC<IFieldCode> = props => {
         </LinkButton>
         <LinkButton
           underline={false}
-          component='button'
+          component="button"
           className={classNames({ [styles.radioActive]: CodeLanguage.Python === language })}
           onClick={() => setLanguage(CodeLanguage.Python)}
         >
@@ -294,7 +287,7 @@ export const FieldCode: React.FC<IFieldCode> = props => {
         </LinkButton>
         <LinkButton
           underline={false}
-          component='button'
+          component="button"
           onClick={() => {
             window.open(MORE_SDK_URL, '_blank');
           }}

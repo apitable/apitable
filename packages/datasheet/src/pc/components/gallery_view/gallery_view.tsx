@@ -2,12 +2,15 @@ import {
   CollaCommandName,
   DATASHEET_ID,
   DropDirectionType,
-  ExecuteResult, Field, FieldType, ICellValue,
+  ExecuteResult,
+  Field,
+  FieldType,
+  ICellValue,
   IField,
   LookUpField,
   Selectors,
   IGridViewProperty,
-  ViewType
+  ViewType,
 } from '@vikadata/core';
 import { VariableSizeGrid as Grid } from '@vikadata/react-window';
 import { useDebounceFn } from 'ahooks';
@@ -21,7 +24,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { shallowEqual, useSelector } from 'react-redux';
-import { ScreenSize } from '../common/component_display/component_display';
+import { ScreenSize } from '../common/component_display';
 import { useCardHeight } from '../common/hooks/use_card_height';
 import { expandRecordIdNavigate } from '../expand_record';
 import { AddRecord } from '../mobile_grid/add_record';
@@ -50,10 +53,23 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const {
-    getCurrentView, getPureVisibleRows, getRowsIndexMap, getVisibleColumns,
-    getFieldMap, getCurrentGalleryViewStyle, getActiveDatasheetId, getPermissions,
-    getCurrentSearchItem, getActiveViewGroupInfo, getActiveViewSortInfo, getGalleryGroupedRows,
-    getCellValue, getGroupingCollapseIds, getGroupLevel, getSnapshot, getFieldPermissionMap
+    getCurrentView,
+    getPureVisibleRows,
+    getRowsIndexMap,
+    getVisibleColumns,
+    getFieldMap,
+    getCurrentGalleryViewStyle,
+    getActiveDatasheetId,
+    getPermissions,
+    getCurrentSearchItem,
+    getActiveViewGroupInfo,
+    getActiveViewSortInfo,
+    getGalleryGroupedRows,
+    getCellValue,
+    getGroupingCollapseIds,
+    getGroupLevel,
+    getSnapshot,
+    getFieldPermissionMap,
   } = Selectors;
   const datasheetId = useSelector(getActiveDatasheetId)!;
   const {
@@ -75,7 +91,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
     snapshot,
     fieldPermissionMap,
     templateId,
-    editable
+    editable,
   } = useSelector(state => {
     const groupInfo = getActiveViewGroupInfo(state);
     const isGrouped = groupInfo && groupInfo.length;
@@ -113,7 +129,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
   const galleryViewRef = useRef<Grid>(null);
   const [visibleRecords, setVisibleRecords] = useState(_visibleRecords);
   const commitRef = useRef<ICommitDragDropState>();
-  
+
   const isGrouped = groupInfo && groupInfo.length > 0;
 
   const setVisibleTransition = () => {
@@ -128,7 +144,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
     // 初始化与展开走这里添加数据
     if (isGrouped && groupingCollapseIds != null && groupingCollapseIds.length !== lastTransitionIds.length) {
       const arr: string[] = [];
-      groupRows.forEach((eachGroupRows) => {
+      groupRows.forEach(eachGroupRows => {
         const groupHeadRecordId = eachGroupRows[0];
         if (groupingCollapseIds.includes(groupHeadRecordId)) {
           arr.push(groupHeadRecordId);
@@ -155,10 +171,30 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
 
   useEffect(() => {
     const eventBundle = new Map([
-      [ShortcutActionName.PageDown, () => { pageUpOrPageDown(true); }],
-      [ShortcutActionName.PageUp, () => { pageUpOrPageDown(false); }],
-      [ShortcutActionName.PageDownEdge, () => { pageUpEdgeOrPageDownEdge(true); }],
-      [ShortcutActionName.PageUpEdge, () => { pageUpEdgeOrPageDownEdge(false); }],
+      [
+        ShortcutActionName.PageDown,
+        () => {
+          pageUpOrPageDown(true);
+        },
+      ],
+      [
+        ShortcutActionName.PageUp,
+        () => {
+          pageUpOrPageDown(false);
+        },
+      ],
+      [
+        ShortcutActionName.PageDownEdge,
+        () => {
+          pageUpEdgeOrPageDownEdge(true);
+        },
+      ],
+      [
+        ShortcutActionName.PageUpEdge,
+        () => {
+          pageUpEdgeOrPageDownEdge(false);
+        },
+      ],
     ]);
 
     eventBundle.forEach((cb, key) => {
@@ -181,10 +217,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
       cellValues: cellValue ? [cellValue] : undefined,
     });
     const recordId = 'data' in result && result.data && result.data[0];
-    if (
-      ExecuteResult.Success === result.result &&
-      !rowsIndexMap.has(recordId)
-    ) {
+    if (ExecuteResult.Success === result.result && !rowsIndexMap.has(recordId)) {
       expandRecordIdNavigate(recordId);
     }
   };
@@ -193,9 +226,9 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
   const pageUpOrPageDown = (down: boolean) => {
     const gridEle = ReactDOM.findDOMNode(galleryViewRef.current) as Element;
     if (down) {
-      gridEle.scrollTop += (height || 0);
+      gridEle.scrollTop += height || 0;
     } else {
-      gridEle.scrollTop -= (height || 0);
+      gridEle.scrollTop -= height || 0;
     }
   };
 
@@ -217,8 +250,8 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
   const { columnCount, cardWidth } = getColumnWidthAndCount(containerWidth!, isMobile, galleryStyle!);
   const isOneColumnMode = columnCount === 1;
   const cardCoverHeight = toMobileImgHeight(columnCount > 3 ? 240 : 320);
-  const isColNameVisible = (activeView.type !== ViewType.Gantt && activeView.type !== ViewType.Grid) ?
-    getIsColNameVisible(activeView.style.isColNameVisible) : true;
+  const isColNameVisible =
+    activeView.type !== ViewType.Gantt && activeView.type !== ViewType.Grid ? getIsColNameVisible(activeView.style.isColNameVisible) : true;
 
   const getCardHeight = useCardHeight({
     cardCoverHeight,
@@ -240,9 +273,8 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
       return getGroupLinearRows(groupRows, groupingCollapseIds || [], showAddCard, columnCount);
     }
     return getGalleryLinearRows(_visibleRecords, showAddCard);
-
   }, [groupRows, showAddCard, columnCount, isGrouped, _visibleRecords, groupingCollapseIds]);
-    
+
   useEffect(() => {
     galleryViewRef.current?.resetAfterRowIndex(0, true);
   }, [linearRows]);
@@ -253,9 +285,9 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
 
   useEffect(() => {
     if (currentSearchItem) {
-      galleryViewRef && galleryViewRef.current && galleryViewRef.current.scrollToItem(
-        getSearchItemIndex(currentSearchItem as string ,linearRows,_visibleRecords, columnCount, isGrouped)
-      );
+      galleryViewRef &&
+        galleryViewRef.current &&
+        galleryViewRef.current.scrollToItem(getSearchItemIndex(currentSearchItem as string, linearRows, _visibleRecords, columnCount, isGrouped));
     }
   }, [currentSearchItem, _visibleRecords, columnCount, linearRows, isGrouped]);
 
@@ -266,11 +298,13 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
     }
     const { dragRecordId, dropRecordId, direction } = commitRef.current;
     const commandManager = resourceService.instance!.commandManager;
-    const data = [{
-      recordId: dragRecordId,
-      overTargetId: dropRecordId,
-      direction,
-    }];
+    const data = [
+      {
+        recordId: dragRecordId,
+        overTargetId: dropRecordId,
+        direction,
+      },
+    ];
     commandManager!.execute({
       cmd: CollaCommandName.MoveRow,
       viewId,
@@ -279,8 +313,8 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
         groupLevel,
         snapshot,
         view: activeView as IGridViewProperty,
-        fieldPermissionMap
-      })
+        fieldPermissionMap,
+      }),
     });
   };
 
@@ -292,19 +326,22 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
       direction,
     };
   };
-  
+
   const onChangeGroupCollapse = () => {
     galleryViewRef.current?.resetAfterRowIndex(0, true);
   };
 
-  const onDoTransition = React.useCallback((recordId) => {
-    if (groupingCollapseIds == null) return;
-    // 有 recordId 被认为是隐藏，会先做动画，再移除 dom
-    // 展开动画时，由于会先添加 dom，所以会先移除 groupingCollapseIds 的 headId，所以此处无需再额外设置 setTransitionRecordIds
-    if (recordId) {
-      setTransitionRecordIds((recordIds) => [...recordIds, recordId]);
-    }
-  }, [groupingCollapseIds, setTransitionRecordIds]);
+  const onDoTransition = React.useCallback(
+    recordId => {
+      if (groupingCollapseIds == null) return;
+      // 有 recordId 被认为是隐藏，会先做动画，再移除 dom
+      // 展开动画时，由于会先添加 dom，所以会先移除 groupingCollapseIds 的 headId，所以此处无需再额外设置 setTransitionRecordIds
+      if (recordId) {
+        setTransitionRecordIds(recordIds => [...recordIds, recordId]);
+      }
+    },
+    [groupingCollapseIds, setTransitionRecordIds],
+  );
 
   const itemContextData = {
     // method
@@ -343,7 +380,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
 
   // 根据字段类型返回对应高度，高度 = 内容 + padding
   const getRowHeightByFieldType = (field: IField, paddingTop: number) => {
-    switch(field.type) {
+    switch (field.type) {
       case FieldType.Text:
       case FieldType.URL:
       case FieldType.Email:
@@ -380,7 +417,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
         return GROUP_TITLE_DEFAULT_HEIGHT + paddingTop;
     }
   };
-  
+
   const getRowHeight = (rowIndex: number) => {
     const realIndex = rowIndex * columnCount;
     const record = linearRows[realIndex];
@@ -406,10 +443,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
   };
   return (
     <>
-      <div
-        onContextMenu={stopPropagation}
-        className={cls(styles.galleryViewContainer, { [styles.galleryViewContainerMobile]: isMobile })}
-      >
+      <div onContextMenu={stopPropagation} className={cls(styles.galleryViewContainer, { [styles.galleryViewContainerMobile]: isMobile })}>
         <Grid
           ref={galleryViewRef}
           width={isOneColumnMode ? ONE_COLUMN_MODE_CONTAINER_WIDTH : innerWidth!}
@@ -427,11 +461,8 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
         >
           {GalleryItemCard}
         </Grid>
-        {
-          permissions.rowCreatable && ReactDOM.createPortal(<AddRecord
-            size={isMobile ? 'large' : 'default'}
-          />, document.getElementById(DATASHEET_ID.ADD_RECORD_BTN)!)
-        }
+        {permissions.rowCreatable &&
+          ReactDOM.createPortal(<AddRecord size={isMobile ? 'large' : 'default'} />, document.getElementById(DATASHEET_ID.ADD_RECORD_BTN)!)}
       </div>
       <RecordMenu insertDirection={'horizontal'} />
     </>
@@ -439,4 +470,3 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
 };
 
 export const GalleryView = React.memo(GalleryViewBase);
-

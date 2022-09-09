@@ -3,7 +3,7 @@ import { BaseModal } from 'pc/components/common';
 import styles from './style.module.less';
 import { UnitItem } from '../unit_item';
 import { INodeRoleMap, t, Strings } from '@vikadata/core';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 
 export interface IMembersDetailProps {
@@ -12,10 +12,7 @@ export interface IMembersDetailProps {
   onCancel: () => void;
 }
 
-export const MembersDetail: FC<IMembersDetailProps> = ({
-  data,
-  onCancel,
-}) => {
+export const MembersDetail: FC<IMembersDetailProps> = ({ data, onCancel }) => {
   const close = () => {
     onCancel();
   };
@@ -24,11 +21,11 @@ export const MembersDetail: FC<IMembersDetailProps> = ({
     return (
       <div className={styles.scrollWrapper}>
         <div className={styles.memberList}>
-          {
-            data.members.map(member => {
-              const isAdmin = Boolean(data.admins.find(item => item.memberId === member.memberId));
-              const isPermissionOpener = data.owner?.memberId === member.memberId;
-              return <UnitItem
+          {data.members.map(member => {
+            const isAdmin = Boolean(data.admins.find(item => item.memberId === member.memberId));
+            const isPermissionOpener = data.owner?.memberId === member.memberId;
+            return (
+              <UnitItem
                 key={member.memberId}
                 unit={{
                   id: member.memberId,
@@ -43,28 +40,21 @@ export const MembersDetail: FC<IMembersDetailProps> = ({
                 }}
                 disabled
                 role={member.role}
-              />;
-            })
-          }
+              />
+            );
+          })}
         </div>
       </div>
-
     );
   };
 
   return (
     <>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-        <BaseModal
-          footer={null}
-          onCancel={close}
-          width={560}
-        >
+        <BaseModal footer={null} onCancel={close} width={560}>
           <div className={styles.membersDetail}>
             <div className={styles.container}>
-              <div className={styles.title}>
-                {t(Strings.share_and_permission_member_detail, { count: data.members.length })}
-              </div>
+              <div className={styles.title}>{t(Strings.share_and_permission_member_detail, { count: data.members.length })}</div>
               {renderMemberList()}
             </div>
           </div>

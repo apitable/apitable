@@ -1,5 +1,5 @@
 import { ConfigConstant, Selectors, Strings, t } from '@vikadata/core';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { useThemeColors } from '@vikadata/components';
 import { useState } from 'react';
 import * as React from 'react';
@@ -17,7 +17,7 @@ import { InvalidValue } from 'pc/components/tool_bar/view_filter/invalid_value';
 
 interface ICommonViewSetProps {
   onDragEnd(result: DropResult, provided: ResponderProvided): void;
-  dragData: { fieldId: string, desc: boolean }[];
+  dragData: { fieldId: string; desc: boolean }[];
   setField(index: number, fieldId: string): void;
   existFieldIds: string[];
   setRules(index: number, desc: boolean): void;
@@ -67,17 +67,11 @@ export const CommonViewSet: React.FC<ICommonViewSetProps> = props => {
             fieldNotFound={fieldNotFound}
           />
           {/* 排序规则 */}
-          {
-            (isCryptoField || fieldNotFound) ?
-              <InvalidValue style={{ marginLeft: 20, maxWidth: 185 }} content={fieldNotFound ? t(Strings.current_field_fail) : undefined} /> :
-              <ViewRules
-                index={index}
-                onChange={setRules.bind(null, index)}
-                rulesItem={dragData[index]}
-                invalid={isInvalid}
-                invalidTip={invalidTip}
-              />
-          }
+          {isCryptoField || fieldNotFound ? (
+            <InvalidValue style={{ marginLeft: 20, maxWidth: 185 }} content={fieldNotFound ? t(Strings.current_field_fail) : undefined} />
+          ) : (
+            <ViewRules index={index} onChange={setRules.bind(null, index)} rulesItem={dragData[index]} invalid={isInvalid} invalidTip={invalidTip} />
+          )}
 
           <ButtonPlus.Icon
             onClick={() => deleteItem(index)}
@@ -88,11 +82,7 @@ export const CommonViewSet: React.FC<ICommonViewSetProps> = props => {
         </ComponentDisplay>
 
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-          <Row
-            align="middle" gutter={[0, 8]}
-            style={{ width: '100%' }}
-            onTouchMove={onMouseOver}
-          >
+          <Row align="middle" gutter={[0, 8]} style={{ width: '100%' }} onTouchMove={onMouseOver}>
             <Col span={1}>
               <div className={styles.iconDrag}>
                 <DragOutlined size={10} color={colors.thirdLevelText} />
@@ -108,21 +98,20 @@ export const CommonViewSet: React.FC<ICommonViewSetProps> = props => {
                   fieldNotFound={fieldNotFound}
                 />
               </div>
-
             </Col>
             <Col span={12}>
               {/* 排序规则 */}
-              {
-                (isCryptoField || fieldNotFound) ?
-                  <InvalidValue style={{ marginLeft: 20, maxWidth: 185 }} content={fieldNotFound ? t(Strings.current_field_fail) : undefined} /> :
-                  <ViewRules
-                    index={index}
-                    onChange={setRules.bind(null, index)}
-                    rulesItem={dragData[index]}
-                    invalid={isInvalid}
-                    invalidTip={invalidTip}
-                  />
-              }
+              {isCryptoField || fieldNotFound ? (
+                <InvalidValue style={{ marginLeft: 20, maxWidth: 185 }} content={fieldNotFound ? t(Strings.current_field_fail) : undefined} />
+              ) : (
+                <ViewRules
+                  index={index}
+                  onChange={setRules.bind(null, index)}
+                  rulesItem={dragData[index]}
+                  invalid={isInvalid}
+                  invalidTip={invalidTip}
+                />
+              )}
             </Col>
             <Col span={2}>
               <div className={styles.delBtnWrapper}>
@@ -133,7 +122,6 @@ export const CommonViewSet: React.FC<ICommonViewSetProps> = props => {
                   icon={<IconDelete width={15} height={15} fill={colors.fourthLevelText} />}
                 />
               </div>
-
             </Col>
           </Row>
         </ComponentDisplay>
@@ -144,22 +132,13 @@ export const CommonViewSet: React.FC<ICommonViewSetProps> = props => {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="common-view-set" direction="vertical">
-        {(provided) => {
-          return <div
-            className={styles.droppable}
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-          >
-            {
-              dragData.map((item, index) => {
+        {provided => {
+          return (
+            <div className={styles.droppable} ref={provided.innerRef} {...provided.droppableProps}>
+              {dragData.map((item, index) => {
                 return (
-                  <Draggable
-                    draggableId={item.fieldId + index}
-                    index={index}
-                    key={index}
-                    isDragDisabled={disableDrag}
-                  >
-                    {(providedChild) => (
+                  <Draggable draggableId={item.fieldId + index} index={index} key={index} isDragDisabled={disableDrag}>
+                    {providedChild => (
                       <div
                         className={styles.draggable}
                         ref={providedChild.innerRef}
@@ -171,10 +150,10 @@ export const CommonViewSet: React.FC<ICommonViewSetProps> = props => {
                     )}
                   </Draggable>
                 );
-              })
-            }
-            {provided.placeholder}
-          </div>;
+              })}
+              {provided.placeholder}
+            </div>
+          );
         }}
       </Droppable>
     </DragDropContext>

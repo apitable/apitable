@@ -7,18 +7,41 @@ import { CellType, ICell, IGridViewProperty, KONVA_DATASHEET_ID, RowHeightLevel,
 import { useAllowDownloadAttachment } from 'pc/components/upload_modal/preview_item';
 import { useDispatch } from 'pc/hooks';
 import { useCacheScroll } from 'pc/context';
-import { IContainerEdit } from '../editors';
+import { IContainerEdit } from '../editors/interface';
 import { getDetailByTargetName, getLinearRowHeight } from 'pc/components/gantt_view';
 import {
-  AreaType, CellBound, IScrollHandler, IScrollOptions, IScrollState, ICellScrollState, PointPosition, TimeoutID
+  AreaType,
+  CellBound,
+  IScrollHandler,
+  IScrollOptions,
+  IScrollState,
+  ICellScrollState,
+  PointPosition,
+  TimeoutID,
 } from 'pc/components/gantt_view/interface';
 import { cancelTimeout, requestTimeout } from 'pc/components/gantt_view/utils';
 import styles from './style.module.less';
 import {
-  GridCoordinate, KonvaGridStage, KonvaGridContext, KonvaGridViewContext, DomGrid,
-  useAttachmentEvent, useScrollbarTip, useGridMessage, ITooltipInfo, useWxTitleMap, IndicesMap,
-  GRID_CELL_VALUE_PADDING, GRID_ICON_COMMON_SIZE, GRID_SCROLL_REMAIN_SPACING, useGridScroller,
-  GRID_BOTTOM_STAT_HEIGHT, GRID_FIELD_HEAD_HEIGHT, GRID_SCROLL_BAR_OFFSET_X, GRID_ROW_HEAD_WIDTH, GridExport
+  GridCoordinate,
+  KonvaGridStage,
+  KonvaGridContext,
+  KonvaGridViewContext,
+  DomGrid,
+  useAttachmentEvent,
+  useScrollbarTip,
+  useGridMessage,
+  ITooltipInfo,
+  useWxTitleMap,
+  IndicesMap,
+  GRID_CELL_VALUE_PADDING,
+  GRID_ICON_COMMON_SIZE,
+  GRID_SCROLL_REMAIN_SPACING,
+  useGridScroller,
+  GRID_BOTTOM_STAT_HEIGHT,
+  GRID_FIELD_HEAD_HEIGHT,
+  GRID_SCROLL_BAR_OFFSET_X,
+  GRID_ROW_HEAD_WIDTH,
+  GridExport,
 } from 'pc/components/konva_grid';
 import { useTheme } from '@vikadata/components';
 import { autoSizerCanvas } from '../konva_components';
@@ -30,7 +53,7 @@ interface IGridViewProps {
 
 const DEFAULT_COORD = {
   x: 0,
-  y: 0
+  y: 0,
 };
 
 export const DEFAULT_TOOLTIP_PROPS: ITooltipInfo = {
@@ -60,7 +83,7 @@ export const DEFAULT_POINT_POSITION = {
   offsetLeft: 0,
 };
 
-export const KonvaGridView: FC<IGridViewProps> = memo((props) => {
+export const KonvaGridView: FC<IGridViewProps> = memo(props => {
   const { width: _containerWidth, height: containerHeight } = props;
   const {
     datasheetId,
@@ -101,8 +124,8 @@ export const KonvaGridView: FC<IGridViewProps> = memo((props) => {
     groupBreakpoint,
     viewId,
     isManualSaveView,
-    exportViewId
-  } = useSelector((state) => {
+    exportViewId,
+  } = useSelector(state => {
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const view = Selectors.getCurrentView(state)! as IGridViewProperty;
     const rowHeightLevel = view.rowHeightLevel || RowHeightLevel.Short;
@@ -179,7 +202,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo((props) => {
   const [cellScrollState, setCellScrollState] = useSetState<ICellScrollState>({
     scrollTop: 0,
     totalHeight: 0,
-    isOverflow: false
+    isOverflow: false,
   });
   const { scrollTop, scrollLeft, isScrolling } = scrollState;
   const { isOverflow } = cellScrollState;
@@ -240,7 +263,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo((props) => {
     let count = view.columns.slice(0, originFrozenColumnCount).filter(column => !column.hidden).length;
     let curWidth = GRID_ROW_HEAD_WIDTH + offsetX;
 
-    for (let i = 0; i < count; i ++) {
+    for (let i = 0; i < count; i++) {
       const curColumn = visibleColumns[i];
       curWidth += Selectors.getColumnWidth(curColumn);
 
@@ -256,23 +279,25 @@ export const KonvaGridView: FC<IGridViewProps> = memo((props) => {
    * 当前 grid 的数据实例
    * 提供与时间轴和坐标相关的方法
    */
-  const instance = useCreation<GridCoordinate>(() => new GridCoordinate(
-    {
-      rowHeight,
-      columnWidth: 0,
-      rowHeightLevel,
-      autoHeadHeight,
-      rowCount,
-      columnCount: visibleColumns.length,
-      containerWidth,
-      containerHeight,
-      rowInitSize: autoHeadHeight ? fieldHeadHeight : GRID_FIELD_HEAD_HEIGHT,
-      columnInitSize: GRID_ROW_HEAD_WIDTH,
-      rowIndicesMap,
-      columnIndicesMap,
-      frozenColumnCount
-    },
-  ), []);
+  const instance = useCreation<GridCoordinate>(
+    () =>
+      new GridCoordinate({
+        rowHeight,
+        columnWidth: 0,
+        rowHeightLevel,
+        autoHeadHeight,
+        rowCount,
+        columnCount: visibleColumns.length,
+        containerWidth,
+        containerHeight,
+        rowInitSize: autoHeadHeight ? fieldHeadHeight : GRID_FIELD_HEAD_HEIGHT,
+        columnInitSize: GRID_ROW_HEAD_WIDTH,
+        rowIndicesMap,
+        columnIndicesMap,
+        frozenColumnCount,
+      }),
+    [],
+  );
 
   // 数表总宽度
   const totalWidth = instance.totalWidth + GRID_SCROLL_REMAIN_SPACING;
@@ -297,19 +322,15 @@ export const KonvaGridView: FC<IGridViewProps> = memo((props) => {
     totalHeight,
     isCellScrolling,
     cellVerticalBarRef,
-    pointAreaType: AreaType.Grid
+    pointAreaType: AreaType.Grid,
   });
 
   useGridMessage({
     containerWidth: _containerWidth,
-    firstColumnWidth
+    firstColumnWidth,
   });
 
-  const {
-    onMouseEnter,
-    clearTooltip: clearScrollbarTooltip,
-    tooltip: scrollbarTooltip
-  } = useScrollbarTip({
+  const { onMouseEnter, clearTooltip: clearScrollbarTooltip, tooltip: scrollbarTooltip } = useScrollbarTip({
     horizontalBarRef,
     containerWidth,
     totalWidth,
@@ -323,12 +344,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo((props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [containerRef.current, containerWidth, containerHeight]);
 
-  const {
-    onDrop,
-    onDragOver,
-    draggingOutlineInfo,
-    setDraggingOutlineInfo
-  } = useAttachmentEvent({
+  const { onDrop, onDragOver, draggingOutlineInfo, setDraggingOutlineInfo } = useAttachmentEvent({
     instance,
     gridBound,
     scrollTop,
@@ -336,9 +352,9 @@ export const KonvaGridView: FC<IGridViewProps> = memo((props) => {
     offsetX,
   });
 
-  const handleHorizontalScroll = (e) => {
+  const handleHorizontalScroll = e => {
     const { scrollLeft } = e.target;
-    setScrollState((prev) => ({
+    setScrollState(prev => ({
       ...prev,
       isScrolling: true,
       scrollLeft,
@@ -348,9 +364,9 @@ export const KonvaGridView: FC<IGridViewProps> = memo((props) => {
     resetScrollingDebounced();
   };
 
-  const handleVerticalScroll = (e) => {
+  const handleVerticalScroll = e => {
     const { scrollTop } = e.target;
-    setScrollState((prev) => ({
+    setScrollState(prev => ({
       ...prev,
       isScrolling: true,
       scrollTop,
@@ -360,7 +376,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo((props) => {
   };
 
   const resetScrolling = useCallback(() => {
-    setScrollState((prev) => {
+    setScrollState(prev => {
       return {
         ...prev,
         isScrolling: false,
@@ -373,14 +389,11 @@ export const KonvaGridView: FC<IGridViewProps> = memo((props) => {
     if (resetScrollingTimeoutID.current !== null) {
       cancelTimeout(resetScrollingTimeoutID.current);
     }
-    resetScrollingTimeoutID.current = requestTimeout(
-      resetScrolling,
-      100,
-    );
+    resetScrollingTimeoutID.current = requestTimeout(resetScrolling, 100);
   }, [resetScrolling]);
 
   // 设置鼠标样式
-  const setMouseStyle = useCallback((mouseStyle: string) => containerRef.current.style.cursor = mouseStyle, []);
+  const setMouseStyle = useCallback((mouseStyle: string) => (containerRef.current.style.cursor = mouseStyle), []);
 
   useEffect(() => {
     const next = { scrollLeft, scrollTop, isScrolling: false };
@@ -400,40 +413,38 @@ export const KonvaGridView: FC<IGridViewProps> = memo((props) => {
   }, [viewId]);
 
   // 滚动到某个单元格
-  const scrollToItem = useCallback((
-    { rowIndex, columnIndex }: { rowIndex?: number, columnIndex?: number },
-  ) => {
-    let _scrollTop;
-    let _scrollLeft;
-    if (rowIndex != null) {
-      const offset = instance.getRowOffset(rowIndex);
-      if (offset - fieldHeadHeight < scrollTop) {
-        _scrollTop = offset - fieldHeadHeight;
+  const scrollToItem = useCallback(
+    ({ rowIndex, columnIndex }: { rowIndex?: number; columnIndex?: number }) => {
+      let _scrollTop;
+      let _scrollLeft;
+      if (rowIndex != null) {
+        const offset = instance.getRowOffset(rowIndex);
+        if (offset - fieldHeadHeight < scrollTop) {
+          _scrollTop = offset - fieldHeadHeight;
+        }
+        if (offset + rowHeight > scrollTop + containerHeight - GRID_BOTTOM_STAT_HEIGHT) {
+          _scrollTop = offset - containerHeight + rowHeight + GRID_BOTTOM_STAT_HEIGHT;
+        }
       }
-      if (offset + rowHeight > scrollTop + containerHeight - GRID_BOTTOM_STAT_HEIGHT) {
-        _scrollTop = offset - containerHeight + rowHeight + GRID_BOTTOM_STAT_HEIGHT;
+      if (columnIndex != null && columnIndex !== 0) {
+        if (columnIndex < frozenColumnCount) return;
+        const offset = instance.getColumnOffset(columnIndex);
+        const frozenAreaWidth = instance.frozenColumnWidth + GRID_ROW_HEAD_WIDTH;
+        if (offset < scrollLeft + frozenAreaWidth) {
+          _scrollLeft = offset - frozenAreaWidth;
+        }
+        const columnWidth = columnIndicesMap[columnIndex];
+        if (offset + columnWidth + offsetX > scrollLeft + containerWidth) {
+          _scrollLeft = offset - containerWidth + columnWidth + offsetX;
+        }
       }
-    }
-    if (columnIndex != null && columnIndex !== 0) {
-      if (columnIndex < frozenColumnCount) return;
-      const offset = instance.getColumnOffset(columnIndex);
-      const frozenAreaWidth = instance.frozenColumnWidth + GRID_ROW_HEAD_WIDTH;
-      if (offset < scrollLeft + frozenAreaWidth) {
-        _scrollLeft = offset - frozenAreaWidth;
-      }
-      const columnWidth = columnIndicesMap[columnIndex];
-      if (offset + columnWidth + offsetX > scrollLeft + containerWidth) {
-        _scrollLeft = offset - containerWidth + columnWidth + offsetX;
-      }
-    }
-    scrollTo({
-      scrollTop: _scrollTop,
-      scrollLeft: _scrollLeft,
-    });
-  }, [
-    scrollTo, instance, scrollTop, rowHeight, containerHeight, scrollLeft,
-    columnIndicesMap, containerWidth, frozenColumnCount, fieldHeadHeight
-  ]);
+      scrollTo({
+        scrollTop: _scrollTop,
+        scrollLeft: _scrollLeft,
+      });
+    },
+    [scrollTo, instance, scrollTop, rowHeight, containerHeight, scrollLeft, columnIndicesMap, containerWidth, frozenColumnCount, fieldHeadHeight],
+  );
 
   const scrollHandler: IScrollHandler = useCreation(() => {
     let isStop = false;
@@ -447,7 +458,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo((props) => {
         return;
       }
       const { rowSpeed, columnSpeed, scrollCb } = _scrollOptions;
-      const options: { scrollLeft?: number; scrollTop?: number; } = {};
+      const options: { scrollLeft?: number; scrollTop?: number } = {};
       if (rowSpeed != null) {
         const currentScrollTop = Math.max(verticalBarRef.current.scrollTop + rowSpeed, 0);
         options.scrollTop = currentScrollTop;
@@ -518,7 +529,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo((props) => {
     instance.containerWidth = containerWidth;
     instance.containerHeight = containerHeight;
     if (containerWidth >= totalWidth + GRID_SCROLL_BAR_OFFSET_X) {
-      return setScrollState((prev) => ({ ...prev, scrollLeft: 0 }));
+      return setScrollState(prev => ({ ...prev, scrollLeft: 0 }));
     }
     forceRender();
   }, [instance, containerWidth, containerHeight, forceRender, totalWidth]);
@@ -626,13 +637,9 @@ export const KonvaGridView: FC<IGridViewProps> = memo((props) => {
               setPointPosition={setPointPosition}
               offsetX={offsetX}
             />
-            {
-              exportViewId != null &&
-              exportViewId === view.id &&
-              <GridExport
-                fieldHeadHeight={autoHeadHeight ? fieldHeadHeight : GRID_FIELD_HEAD_HEIGHT}
-              />
-            }
+            {exportViewId != null && exportViewId === view.id && (
+              <GridExport fieldHeadHeight={autoHeadHeight ? fieldHeadHeight : GRID_FIELD_HEAD_HEIGHT} />
+            )}
           </KonvaGridViewContext.Provider>
         </div>
 

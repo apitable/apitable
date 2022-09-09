@@ -3,22 +3,31 @@ services:
     image: amazoncorretto:8
     restart: always
     working_dir: /app
+    ports:
+      - 8081:8081
     environment:
       - HOME=/app
     volumes:
       - ${PWD}/backend-server:/app
   web-server:
-    image: node:16.15.0-alpine
+    image: ghcr.io/vikadata/vika/nodepy
     restart: always
     working_dir: /app
+    ports:
+      - 8080:8080
     environment:
       - HOME=/app
     volumes:
       - ${PWD}:/app
   socket-server:
-    image: node:16.15.0-alpine
+    image: ghcr.io/vikadata/vika/nodepy
     restart: always
     working_dir: /app
+    ports:
+      - 3001:3001
+      - 3002:3002
+      - 3005:3005
+      - 3007:3007
     environment:
       - HOME=/app
     volumes:

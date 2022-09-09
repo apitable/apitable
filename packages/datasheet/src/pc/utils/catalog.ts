@@ -1,6 +1,17 @@
 import {
-  ConfigConstant, Field, IDatasheetState, ISpaceBasicInfo, ISpaceInfo, ITreeNodesMap, IViewProperty, ResourceType, Selectors, StoreActions, Strings,
-  t, UnitItem
+  ConfigConstant,
+  Field,
+  IDatasheetState,
+  ISpaceBasicInfo,
+  ISpaceInfo,
+  ITreeNodesMap,
+  IViewProperty,
+  ResourceType,
+  Selectors,
+  StoreActions,
+  Strings,
+  t,
+  UnitItem,
 } from '@vikadata/core';
 import { Workbook } from 'exceljs';
 import { browser } from 'pc/common/browser';
@@ -8,39 +19,45 @@ import { NodeIcon } from 'pc/components/catalog/node_context_menu/node_icons';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
-import { IShareSpaceInfo } from 'pc/components/share';
+import { IShareSpaceInfo } from 'pc/components/share/interface';
 import { store } from 'pc/store';
 
-export const nodeConfigData = [{
-  type: ConfigConstant.NodeType.FOLDER,
-  icon: NodeIcon.EmptyFolder,
-  notEmptyIcon: NodeIcon.Folder,
-  openedIcon: NodeIcon.OpenFolder,
-  name: t(Strings.folder),
-}, {
-  type: ConfigConstant.NodeType.DATASHEET,
-  icon: NodeIcon.Datasheet,
-  name: t(Strings.datasheet),
-}, {
-  type: ConfigConstant.NodeType.FORM,
-  icon: NodeIcon.Form,
-  name: t(Strings.vika_form),
-}, {
-  type: ConfigConstant.NodeType.DASHBOARD,
-  icon: NodeIcon.Dashboard,
-  name: t(Strings.dashboard),
-}, {
-  type: ConfigConstant.NodeType.MIRROR,
-  icon: NodeIcon.Mirror,
-  name: t(Strings.mirror),
-}];
+export const nodeConfigData = [
+  {
+    type: ConfigConstant.NodeType.FOLDER,
+    icon: NodeIcon.EmptyFolder,
+    notEmptyIcon: NodeIcon.Folder,
+    openedIcon: NodeIcon.OpenFolder,
+    name: t(Strings.folder),
+  },
+  {
+    type: ConfigConstant.NodeType.DATASHEET,
+    icon: NodeIcon.Datasheet,
+    name: t(Strings.datasheet),
+  },
+  {
+    type: ConfigConstant.NodeType.FORM,
+    icon: NodeIcon.Form,
+    name: t(Strings.vika_form),
+  },
+  {
+    type: ConfigConstant.NodeType.DASHBOARD,
+    icon: NodeIcon.Dashboard,
+    name: t(Strings.dashboard),
+  },
+  {
+    type: ConfigConstant.NodeType.MIRROR,
+    icon: NodeIcon.Mirror,
+    name: t(Strings.mirror),
+  },
+];
 
 // 检查该url是否是属于本站点
 export const isLocalSite = (url: string, originUrl: string) => {
   url = decodeURIComponent(url);
   originUrl = decodeURIComponent(originUrl);
-  const urlHost = (new URL(url)).host;
-  const originUrlHost = (new URL(originUrl)).host;
+  const urlHost = new URL(url).host;
+  const originUrlHost = new URL(originUrl).host;
   return urlHost === originUrlHost;
 };
 
@@ -53,50 +70,59 @@ export const isLocalSite = (url: string, originUrl: string) => {
  * }
  * @param item 用户信息
  */
-export const generateUserInfo =
-  (item: UnitItem, spaceInfo?: ISpaceInfo | ISpaceBasicInfo | null): {
-    id: string, avatar: string, name: string, title?: string | JSX.Element, info: string, isTeam: boolean
-  } => {
-    if ('teamId' in item) {
-      return {
-        id: item.unitId,
-        avatar: '',
-        name: item.originName || item.teamName,
-        info: t(Strings.display_person_count, {
-          count: item.memberCount,
-        }),
-        isTeam: true,
-      };
-    }
-    if ('tagId' in item) {
-      return {
-        id: item.unitId,
-        avatar: item.tagName,
-        name: item.originName || item.tagName,
-        info: t(Strings.display_person_count, {
-          count: item.memberCount,
-        }),
-        isTeam: true,
-      };
-    }
-    if ('memberId' in item) {
-      const title = spaceInfo ? getSocialWecomUnitName({
+export const generateUserInfo = (
+  item: UnitItem,
+  spaceInfo?: ISpaceInfo | ISpaceBasicInfo | null,
+): {
+  id: string;
+  avatar: string;
+  name: string;
+  title?: string | JSX.Element;
+  info: string;
+  isTeam: boolean;
+} => {
+  if ('teamId' in item) {
+    return {
+      id: item.unitId,
+      avatar: '',
+      name: item.originName || item.teamName,
+      info: t(Strings.display_person_count, {
+        count: item.memberCount,
+      }),
+      isTeam: true,
+    };
+  }
+  if ('tagId' in item) {
+    return {
+      id: item.unitId,
+      avatar: item.tagName,
+      name: item.originName || item.tagName,
+      info: t(Strings.display_person_count, {
+        count: item.memberCount,
+      }),
+      isTeam: true,
+    };
+  }
+  if ('memberId' in item) {
+    const title = spaceInfo
+      ? getSocialWecomUnitName({
         name: item.originName || item.memberName,
         isModified: item.isMemberNameModified,
-        spaceInfo
-      }) : item.memberName;
+        spaceInfo,
+      })
+      : item.memberName;
 
-      return {
-        id: item.unitId,
-        avatar: item.avatar,
-        name: item.originName || item.memberName || t(Strings.unnamed),
-        title: title || item.originName || t(Strings.unnamed),
-        info: item.teams || '',
-        isTeam: false,
-      };
-    }
-    return { id: '', avatar: '', name: '', info: '', isTeam: false };
-  };
+    return {
+      id: item.unitId,
+      avatar: item.avatar,
+      name: item.originName || item.memberName || t(Strings.unnamed),
+      title: title || item.originName || t(Strings.unnamed),
+      info: item.teams || '',
+      isTeam: false,
+    };
+  }
+  return { id: '', avatar: '', name: '', info: '', isTeam: false };
+};
 
 /**
  *  获取当前节点下所有子节点的指定的属性
@@ -120,12 +146,14 @@ export const getPropertyByTree = (treeNodesMap: ITreeNodesMap, nodeId: string, e
 };
 
 export const exportMirror = (mirrorId: string, exportType: string) => {
-  store.dispatch(StoreActions.fetchMirrorPack(mirrorId, () => {
-    const state = store.getState();
-    const mirrorSource = Selectors.getMirrorSourceInfo(state, mirrorId)!;
-    const view = Selectors.getViewById(Selectors.getSnapshot(state, mirrorSource?.datasheetId)!, mirrorSource?.viewId!);
-    exportDatasheet(mirrorSource?.datasheetId, exportType, { view, mirrorId });
-  }));
+  store.dispatch(
+    StoreActions.fetchMirrorPack(mirrorId, () => {
+      const state = store.getState();
+      const mirrorSource = Selectors.getMirrorSourceInfo(state, mirrorId)!;
+      const view = Selectors.getViewById(Selectors.getSnapshot(state, mirrorSource?.datasheetId)!, mirrorSource?.viewId!);
+      exportDatasheet(mirrorSource?.datasheetId, exportType, { view, mirrorId });
+    }),
+  );
 };
 
 /**
@@ -135,61 +163,62 @@ export const exportMirror = (mirrorId: string, exportType: string) => {
  * @param exportType 导出的文件类型（csv/xlsx）
  * @param view 要导出数表的视图ID
  */
-export const exportDatasheet = (datasheetId: string, exportType: string, option: { view?: IViewProperty, mirrorId?: string } = {}) => {
+export const exportDatasheet = (datasheetId: string, exportType: string, option: { view?: IViewProperty; mirrorId?: string } = {}) => {
   const { view, mirrorId } = option;
-  store.dispatch(StoreActions.fetchDatasheet(datasheetId, async() => {
-    const state = store.getState();
-    const datasheet = Selectors.getDatasheet(state, datasheetId)!;
-    const permission = Selectors.getPermissions(state, datasheetId, undefined, mirrorId);
-    const fieldMap = Selectors.getFieldMap(state, datasheetId);
-    const fieldPermissionMap = Selectors.getFieldPermissionMap(state);
-    if (!datasheet || !fieldMap) {
-      return;
-    }
-    if (!permission.exportable) {
-      Modal.error({
-        title: t(Strings.no_permission_tips_title),
-        content: t(Strings.no_permission_tips_description),
-        okText: t(Strings.refresh),
-        onOk: () => {
-          window.location.reload();
-        },
-      });
-      return;
-    }
-    const { rows, cols } = getRowsAndCols(datasheet, view);
-    // 过滤掉没有权限的列
-    const visibleCols = cols.filter(col => Selectors.getFieldRoleByFieldId(fieldPermissionMap, col.fieldId) !== ConfigConstant.Role.None);
+  store.dispatch(
+    StoreActions.fetchDatasheet(datasheetId, async() => {
+      const state = store.getState();
+      const datasheet = Selectors.getDatasheet(state, datasheetId)!;
+      const permission = Selectors.getPermissions(state, datasheetId, undefined, mirrorId);
+      const fieldMap = Selectors.getFieldMap(state, datasheetId);
+      const fieldPermissionMap = Selectors.getFieldPermissionMap(state);
+      if (!datasheet || !fieldMap) {
+        return;
+      }
+      if (!permission.exportable) {
+        Modal.error({
+          title: t(Strings.no_permission_tips_title),
+          content: t(Strings.no_permission_tips_description),
+          okText: t(Strings.refresh),
+          onOk: () => {
+            window.location.reload();
+          },
+        });
+        return;
+      }
+      const { rows, cols } = getRowsAndCols(datasheet, view);
+      // 过滤掉没有权限的列
+      const visibleCols = cols.filter(col => Selectors.getFieldRoleByFieldId(fieldPermissionMap, col.fieldId) !== ConfigConstant.Role.None);
 
-    const data = rows.map(row => {
-      return visibleCols.map(col => {
-        const cellValue = Selectors.getCellValue(state, datasheet.snapshot, row.recordId, col.fieldId);
-        const propsField = fieldMap[col.fieldId];
-        return Field.bindModel(propsField).cellValueToString(cellValue) || '';
+      const data = rows.map(row => {
+        return visibleCols.map(col => {
+          const cellValue = Selectors.getCellValue(state, datasheet.snapshot, row.recordId, col.fieldId);
+          const propsField = fieldMap[col.fieldId];
+          return Field.bindModel(propsField).cellValueToString(cellValue) || '';
+        });
       });
-    });
-    // 新建workbook对象
-    const Excel = await import('exceljs');
-    const workbook = new Excel.Workbook();
-    const nodeName = datasheet.name;
-    const viewName = view ? view.name : ConfigConstant.EXPORT_ALL_SHEET_NAME;
-    // 新建sheet
-    const tempWorksheet = workbook.addWorksheet(`${viewName}`);
-    const columnHeader = getColumnHeader(datasheet, visibleCols);
-    // 定义column标题
-    tempWorksheet.columns = columnHeader;
-    tempWorksheet.addRows(data);
-    const fileName = `${nodeName}-${viewName}`;
-    switch (exportType) {
-      case ConfigConstant.EXPORT_TYPE_XLSX:
-        exportExcel(workbook, fileName, !!view);
-        break;
-      case ConfigConstant.EXPORT_TYPE_CSV:
-      default:
-        exportCSV(workbook, fileName, !!view);
-    }
-  }) as any);
-
+      // 新建workbook对象
+      const Excel = await import('exceljs');
+      const workbook = new Excel.Workbook();
+      const nodeName = datasheet.name;
+      const viewName = view ? view.name : ConfigConstant.EXPORT_ALL_SHEET_NAME;
+      // 新建sheet
+      const tempWorksheet = workbook.addWorksheet(`${viewName}`);
+      const columnHeader = getColumnHeader(datasheet, visibleCols);
+      // 定义column标题
+      tempWorksheet.columns = columnHeader;
+      tempWorksheet.addRows(data);
+      const fileName = `${nodeName}-${viewName}`;
+      switch (exportType) {
+        case ConfigConstant.EXPORT_TYPE_XLSX:
+          exportExcel(workbook, fileName, !!view);
+          break;
+        case ConfigConstant.EXPORT_TYPE_CSV:
+        default:
+          exportCSV(workbook, fileName, !!view);
+      }
+    }) as any,
+  );
 };
 
 export const exportExcelBase = (workbook: Workbook, fileName: string, extraFunc?: () => void) => {
@@ -303,23 +332,28 @@ export const shouldOpenInNewTab = (e: React.MouseEvent) => {
 
 // 切换权限的菜单数据源
 export const permissionMenuData = (nodeType: ConfigConstant.NodeType) => {
-  const data = [{
-    value: ConfigConstant.permission.manager,
-    label: t(Strings.add_manager),
-    subLabel: ConfigConstant.nodePermissionMap.get(nodeType)![ConfigConstant.permission.manager],
-  }, {
-    value: ConfigConstant.permission.editor,
-    label: t(Strings.add_editor),
-    subLabel: ConfigConstant.nodePermissionMap.get(nodeType)![ConfigConstant.permission.editor],
-  }, {
-    value: ConfigConstant.permission.updater,
-    label: t(Strings.add_updater),
-    subLabel: ConfigConstant.nodePermissionMap.get(nodeType)![ConfigConstant.permission.updater],
-  }, {
-    value: ConfigConstant.permission.reader,
-    label: t(Strings.add_reader),
-    subLabel: ConfigConstant.nodePermissionMap.get(nodeType)![ConfigConstant.permission.reader],
-  }];
+  const data = [
+    {
+      value: ConfigConstant.permission.manager,
+      label: t(Strings.add_manager),
+      subLabel: ConfigConstant.nodePermissionMap.get(nodeType)![ConfigConstant.permission.manager],
+    },
+    {
+      value: ConfigConstant.permission.editor,
+      label: t(Strings.add_editor),
+      subLabel: ConfigConstant.nodePermissionMap.get(nodeType)![ConfigConstant.permission.editor],
+    },
+    {
+      value: ConfigConstant.permission.updater,
+      label: t(Strings.add_updater),
+      subLabel: ConfigConstant.nodePermissionMap.get(nodeType)![ConfigConstant.permission.updater],
+    },
+    {
+      value: ConfigConstant.permission.reader,
+      label: t(Strings.add_reader),
+      subLabel: ConfigConstant.nodePermissionMap.get(nodeType)![ConfigConstant.permission.reader],
+    },
+  ];
   return data;
 };
 
@@ -345,7 +379,9 @@ export const getContextTypeByNodeType = (type: ConfigConstant.NodeType) => {
 export const getNodeTypeByNodeId = (nodeId: string): ConfigConstant.NodeType => {
   const nodeTypeReg = ConfigConstant.NodeTypeReg;
   const nodeType = ConfigConstant.NodeType;
-  const getReg = (nodeType: string) => { return new RegExp('^' + nodeType); };
+  const getReg = (nodeType: string) => {
+    return new RegExp('^' + nodeType);
+  };
 
   switch (true) {
     case getReg(nodeTypeReg.FOLDER).test(nodeId):
@@ -417,6 +453,4 @@ export const getResourceTypeByNodeType = (nodeType: ConfigConstant.NodeType) => 
       return ResourceType.Datasheet;
     }
   }
-
 };
-

@@ -1,6 +1,16 @@
 import {
-  BasicValueType, CollaCommandName, Field, FilterConjunction as CoreFilterConjunction, FilterDuration, getNewId, IDPrefix, IFilterInfo,
-  IGridViewProperty, Selectors, Strings, t,
+  BasicValueType,
+  CollaCommandName,
+  Field,
+  FilterConjunction as CoreFilterConjunction,
+  FilterDuration,
+  getNewId,
+  IDPrefix,
+  IFilterInfo,
+  IGridViewProperty,
+  Selectors,
+  Strings,
+  t,
 } from '@vikadata/core';
 import { resourceService } from 'pc/resource_service';
 import { useCallback, useEffect, useRef } from 'react';
@@ -14,13 +24,13 @@ import classNames from 'classnames';
 import styles from './style.module.less';
 import { PopUpTitle } from 'pc/components/common';
 import { SyncViewTip } from '../sync_view_tip';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { useResponsive } from 'pc/hooks';
 
 const MIN_HEIGHT = 70;
 const MAX_HEIGHT = 260;
-const ViewFilterBase = (props) => {
+const ViewFilterBase = props => {
   const { triggerInfo } = props;
   const containerRef = useRef<HTMLDivElement>(null);
   const childRef = useRef<HTMLDivElement>(null);
@@ -58,26 +68,29 @@ const ViewFilterBase = (props) => {
 
   const filterCommand = useCallback(
     (data: IFilterInfo | null) => {
-      executeCommandWithMirror(() => {
-        resourceService.instance!.commandManager.execute({
-          cmd: CollaCommandName.SetViewFilter,
-          viewId: view.id,
-          data: data || undefined,
-        });
-      }, {
-        filterInfo: data || undefined,
-      });
+      executeCommandWithMirror(
+        () => {
+          resourceService.instance!.commandManager.execute({
+            cmd: CollaCommandName.SetViewFilter,
+            viewId: view.id,
+            data: data || undefined,
+          });
+        },
+        {
+          filterInfo: data || undefined,
+        },
+      );
     },
     [view.id],
   );
 
-  const changeFilter = useCallback((cb: ExecuteFilterFn) => {
-    const result = cb(activeViewFilter!);
-    filterCommand(result);
-  }, [
-    activeViewFilter,
-    filterCommand,
-  ]);
+  const changeFilter = useCallback(
+    (cb: ExecuteFilterFn) => {
+      const result = cb(activeViewFilter!);
+      filterCommand(result);
+    },
+    [activeViewFilter, filterCommand],
+  );
 
   // 标记是否已添加新的筛选项，直接在 commandForAddViewFilter 函数中滚动到底部无效
   const added = useRef<boolean>(false);
@@ -89,14 +102,16 @@ const ViewFilterBase = (props) => {
     const newOperate = acceptFilterOperators[0];
     filterCommand({
       conjunction: activeViewFilter ? activeViewFilter.conjunction : CoreFilterConjunction.And,
-      conditions: [...(activeViewFilter ? activeViewFilter.conditions : []), {
-        conditionId: getNewId(IDPrefix.Condition, exitIds),
-        fieldId: columns[0].fieldId,
-        operator: newOperate,
-        fieldType: firstColumns.type as any,
-        value: Field.bindModel(firstColumns).valueType === BasicValueType.DateTime ?
-          [FilterDuration.ExactDate, null] : null,
-      }],
+      conditions: [
+        ...(activeViewFilter ? activeViewFilter.conditions : []),
+        {
+          conditionId: getNewId(IDPrefix.Condition, exitIds),
+          fieldId: columns[0].fieldId,
+          operator: newOperate,
+          fieldType: firstColumns.type as any,
+          value: Field.bindModel(firstColumns).valueType === BasicValueType.DateTime ? [FilterDuration.ExactDate, null] : null,
+        },
+      ],
     });
     added.current = true;
   }
@@ -130,12 +145,7 @@ const ViewFilterBase = (props) => {
         <SyncViewTip />
       </ComponentDisplay>
       <div ref={childRef} style={{ ...style, overflow: 'auto' }}>
-        <ConditionList
-          filterInfo={activeViewFilter}
-          fieldMap={fieldMap}
-          changeFilter={changeFilter}
-          deleteFilter={deleteFilter}
-        />
+        <ConditionList filterInfo={activeViewFilter} fieldMap={fieldMap} changeFilter={changeFilter} deleteFilter={deleteFilter} />
         <div ref={scrollShadowRef} className={classNames(!isMobile && styles.scrollShadow)} />
       </div>
       <div className={styles.addNewButton} onClick={commandForAddViewFilter}>

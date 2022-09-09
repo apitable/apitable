@@ -1,9 +1,18 @@
 import {
-  cellValueToImageSrc, CutMethod, Field, FieldType, IAttachmentValue, IField, IFieldMap, ILookUpValue, isImage, Selectors,
+  cellValueToImageSrc,
+  CutMethod,
+  Field,
+  FieldType,
+  IAttachmentValue,
+  IField,
+  IFieldMap,
+  ILookUpValue,
+  isImage,
+  Selectors,
 } from '@vikadata/core';
 import { compact } from 'lodash';
 import Image from 'next/image';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { DisplayFile } from 'pc/components/display_file';
 import { useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
@@ -17,11 +26,8 @@ import styles from './style.module.less';
 
 const getImageSrc = (value: IAttachmentValue, height: number): string => {
   const file = { name: value.name, type: value.mimeType };
-  if (
-    !isImage(file)
-    || !isSupportImage(file.type)
-  ) {
-    return renderFileIconUrl(file) as any as string;
+  if (!isImage(file) || !isSupportImage(file.type)) {
+    return (renderFileIconUrl(file) as any) as string;
   }
 
   return cellValueToImageSrc(value, {
@@ -57,8 +63,9 @@ export const CardHeader: React.FC<ICardHeaderProps> = props => {
   // 没附件字段直接不展示封面
   if (!showCover) return null;
 
-  const coverField: IField = coverFieldId ? fieldMap[coverFieldId] :
-    Object.values(fieldMap as IFieldMap).find((item: IField) => {
+  const coverField: IField = coverFieldId
+    ? fieldMap[coverFieldId]
+    : Object.values(fieldMap as IFieldMap).find((item: IField) => {
       return item.type === FieldType.Attachment;
     })!;
 
@@ -76,10 +83,7 @@ export const CardHeader: React.FC<ICardHeaderProps> = props => {
     const editable = Field.bindModel(field).recordEditable() && permissions.cellEditable;
 
     return (
-      <div
-        style={{ height }}
-        className={styles.boxWrapper}
-      >
+      <div style={{ height }} className={styles.boxWrapper}>
         <DisplayFile
           width={width}
           height={height}
@@ -130,6 +134,5 @@ export const CardHeader: React.FC<ICardHeaderProps> = props => {
         objectPosition={'center center'}
       />
     </div>
-
   );
 };

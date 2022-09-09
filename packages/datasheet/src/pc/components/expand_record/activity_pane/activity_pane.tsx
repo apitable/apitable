@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { useLocalStorageState } from 'ahooks';
-import { Selectors, Strings, t, CollaCommandName, IComments, Settings } from '@vikadata/core';
+import { Selectors, Strings, t, CollaCommandName, Settings } from '@vikadata/core';
 
 import { CommentEditor } from './comment_editor';
 import { ActivityList } from './activity_list/activity_list';
@@ -11,12 +11,9 @@ import { Modal } from 'pc/components/common/mobile/modal';
 import IconDelete from 'static/icon/common/common_icon_delete.svg';
 import HelpIcon from 'static/icon/common/common_icon_information.svg';
 import IconArrow from 'static/icon/common/common_icon_pulldown_line.svg';
-
 import { resourceService } from 'pc/resource_service';
 import { ActivityContext } from './activity_context';
-
 import { ActivitySelectType, ACTIVITY_SELECT_MAP } from 'pc/utils';
-
 import styles from './style.module.less';
 import { IconButton, useThemeColors } from '@vikadata/components';
 import { Dropdown, Menu } from 'antd';
@@ -24,30 +21,10 @@ import classNames from 'classnames';
 import { pick } from 'lodash';
 import { CloseMiddleOutlined } from '@vikadata/icons';
 import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { IActivityPaneProps, ICacheType, IChooseComment } from './interface';
 
-export interface ICacheType {
-  [key: string]: ActivitySelectType
-}
-
-export interface IChooseComment {
-  comment: IComments;
-  datasheetId: string;
-  expandRecordId: string;
-}
-
-export interface IActivityPaneProps {
-  fromCurrentDatasheet?: boolean;
-  expandRecordId: string;
-  datasheetId: string;
-  mirrorId?: string;
-  viewId?: string;
-  style?: React.CSSProperties;
-  closable?: boolean;
-  onClose?: () => void;
-}
-
-export const ActivityPaneBase: React.FC<IActivityPaneProps> = (props) => {
+export const ActivityPaneBase: React.FC<IActivityPaneProps> = props => {
   const { expandRecordId, datasheetId, viewId, mirrorId, fromCurrentDatasheet, style, closable, onClose } = props;
   const colors = useThemeColors();
   const { screenIsAtMost } = useResponsive();
@@ -67,21 +44,25 @@ export const ActivityPaneBase: React.FC<IActivityPaneProps> = (props) => {
   const unitMap = useSelector(state => Selectors.getUnitMap(state));
   const showRecordHistory = useSelector(state => Selectors.getRecordHistoryStatus(state, datasheetId))!;
   const [cacheType, setCacheType] = useLocalStorageState<ICacheType>('vika_activity_type', { defaultValue: {}});
-  const handleCacheType = useCallback((type: ActivitySelectType) => {
-    setCacheType({
-      ...cacheType,
-      [datasheetId]: type
-    });
-  }, [cacheType, datasheetId, setCacheType]);
+  const handleCacheType = useCallback(
+    (type: ActivitySelectType) => {
+      setCacheType({
+        ...cacheType,
+        [datasheetId]: type,
+      });
+    },
+    [cacheType, datasheetId, setCacheType],
+  );
   const [selectType, setSelectType] = useState<ActivitySelectType>(() => {
     let curDSType = cacheType && cacheType[datasheetId];
-    if (curDSType === ActivitySelectType.NONE) { // 屏蔽掉 NONE 的情况，因为 ACTIVITY_SELECT_MAP 没有 NONE 对应的值
+    if (curDSType === ActivitySelectType.NONE) {
+      // 屏蔽掉 NONE 的情况，因为 ACTIVITY_SELECT_MAP 没有 NONE 对应的值
       curDSType = ActivitySelectType.All;
     }
     if (!showRecordHistory && curDSType !== ActivitySelectType.Comment) {
       handleCacheType(ActivitySelectType.Comment);
     }
-    return showRecordHistory ? (curDSType || ActivitySelectType.All) : ActivitySelectType.Comment;
+    return showRecordHistory ? curDSType || ActivitySelectType.All : ActivitySelectType.Comment;
   });
 
   useEffect(() => {
@@ -100,27 +81,29 @@ export const ActivityPaneBase: React.FC<IActivityPaneProps> = (props) => {
   };
 
   return (
-    <ActivityContext.Provider value={{
-      replyText, setReplyText,
-      emojis, setEmojis,
-      unitMap, datasheetId,
-      focus, setFocus,
-      replyUnitId, setReplyUnitId,
-      commentReplyMap, updateCommentReplyMap
-    }}>
+    <ActivityContext.Provider
+      value={{
+        replyText,
+        setReplyText,
+        emojis,
+        setEmojis,
+        unitMap,
+        datasheetId,
+        focus,
+        setFocus,
+        replyUnitId,
+        setReplyUnitId,
+        commentReplyMap,
+        updateCommentReplyMap,
+      }}
+    >
       <div className={styles.activityPane} style={style}>
         <div className={styles.paneHeader}>
-          {
-            !closable
-            &&
+          {!closable && (
             <div className={styles.paneTitle}>
               {t(Strings.activity)}
               <Tooltip title={t(Strings.activity_tip)} trigger={'hover'}>
-                <a
-                  href={Settings.recorded_comments.value}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
+                <a href={Settings.recorded_comments.value} rel="noopener noreferrer" target="_blank">
                   <HelpIcon
                     style={{ cursor: 'pointer', verticalAlign: '-0.125em', marginLeft: 4, display: 'inline-block' }}
                     fill={colors.thirdLevelText}
@@ -128,22 +111,24 @@ export const ActivityPaneBase: React.FC<IActivityPaneProps> = (props) => {
                 </a>
               </Tooltip>
             </div>
-          }
+          )}
           <div>
             <Dropdown
               trigger={['click']}
               placement={closable ? 'bottomLeft' : 'bottomRight'}
               className={styles.activitySelect}
               onVisibleChange={visible => setSelectOpen(visible)}
-              overlay={(
+              overlay={
                 <Menu onClick={handleMenuClick}>
-                  {Object.entries(
-                    showRecordHistory ? ACTIVITY_SELECT_MAP : pick(ACTIVITY_SELECT_MAP, ActivitySelectType.Comment)
-                  ).map(([sKey, sValue]) => (
-                    <Menu.Item className={classNames({ active: sKey === selectType })} key={sKey}>{sValue[1]}</Menu.Item>
-                  ))}
+                  {Object.entries(showRecordHistory ? ACTIVITY_SELECT_MAP : pick(ACTIVITY_SELECT_MAP, ActivitySelectType.Comment)).map(
+                    ([sKey, sValue]) => (
+                      <Menu.Item className={classNames({ active: sKey === selectType })} key={sKey}>
+                        {sValue[1]}
+                      </Menu.Item>
+                    ),
+                  )}
                 </Menu>
-              )}
+              }
             >
               <div>
                 {ACTIVITY_SELECT_MAP[selectType][1]}
@@ -153,10 +138,15 @@ export const ActivityPaneBase: React.FC<IActivityPaneProps> = (props) => {
               </div>
             </Dropdown>
           </div>
-          {
-            closable && !isMobile &&
-            <IconButton icon={CloseMiddleOutlined} shape='square' onClick={() => { onClose && onClose(); }} />
-          }
+          {closable && !isMobile && (
+            <IconButton
+              icon={CloseMiddleOutlined}
+              shape="square"
+              onClick={() => {
+                onClose && onClose();
+              }}
+            />
+          )}
         </div>
         <ActivityList
           expandRecordId={expandRecordId}
@@ -169,17 +159,15 @@ export const ActivityPaneBase: React.FC<IActivityPaneProps> = (props) => {
         {selectType !== ActivitySelectType.Changeset && (
           <div className={styles.panelBottom}>
             <div className={styles.dividerLine} />
-            <CommentEditor
-              expandRecordId={expandRecordId}
-              datasheetId={datasheetId}
-              viewId={viewId}
-            />
+            <CommentEditor expandRecordId={expandRecordId} datasheetId={datasheetId} viewId={viewId} />
           </div>
         )}
         <MobileContextMenu
           title={t(Strings.operation)}
           visible={Boolean(chooseComment)}
-          onClose={() => { setChooseComment(undefined); }}
+          onClose={() => {
+            setChooseComment(undefined);
+          }}
           data={[
             [
               {

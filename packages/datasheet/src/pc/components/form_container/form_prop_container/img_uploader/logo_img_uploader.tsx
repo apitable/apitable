@@ -3,7 +3,7 @@ import { isGif, Strings, t } from '@vikadata/core';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { ICropShape } from 'pc/components/common';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { getCellValueThumbSrc } from 'pc/utils';
 import * as React from 'react';
@@ -20,10 +20,10 @@ interface ILogoImgUploaderProps extends IBasePropEditorProps {
 }
 
 const customTips = {
-  cropDesc: t(Strings.custom_upload_tip)
+  cropDesc: t(Strings.custom_upload_tip),
 };
 
-export const LogoImgUploader: React.FC<ILogoImgUploaderProps> = (props) => {
+export const LogoImgUploader: React.FC<ILogoImgUploaderProps> = props => {
   const colors = useThemeColors();
   const { formId, mode, logoUrl, updateProps } = props;
   const [isModalShow, setModalShow] = useState(false);
@@ -34,55 +34,52 @@ export const LogoImgUploader: React.FC<ILogoImgUploaderProps> = (props) => {
   const logoWrapClassName = classnames(styles.logoImgWrapper, isMobile && styles.logoWrapMobile);
 
   const onChange = (file: any, type: IFileType) => {
-    const logoUrl = getCellValueThumbSrc(file,
-      {
-        w: logoSize * (window.devicePixelRatio || 1),
-        formatToJPG: isGif({ name: file.name, type: file.mimeType }),
-      },
-    );
+    const logoUrl = getCellValueThumbSrc(file, {
+      w: logoSize * (window.devicePixelRatio || 1),
+      formatToJPG: isGif({ name: file.name, type: file.mimeType }),
+    });
     updateProps({ logoUrl });
   };
 
   return (
     <>
-      {
-        mode === IModeEnum.Edit ? (
+      {mode === IModeEnum.Edit ? (
+        <div className={logoWrapClassName}>
+          <ImgBaseUploader
+            formId={formId}
+            visible={isModalShow}
+            imgUrl={logoUrl}
+            cropShape={ICropShape.Square}
+            customTips={customTips}
+            setVisible={setModalShow}
+            onChange={onChange}
+            fileLimit={2}
+          >
+            <div className={styles.logoImg} onClick={() => setModalShow(true)}>
+              {!logoUrl && (
+                <div className={classnames(styles.logoPlaceHolder, isMobile && styles.placeholderMobile)}>
+                  <IconAdd width={logoAddIconSize} height={logoAddIconSize} fill={colors.fourthLevelText} />
+                  <span>{t(Strings.add_form_logo)}</span>
+                </div>
+              )}
+              {logoUrl && <Image src={logoUrl} alt="cover" layout={'fill'} />}
+              {logoUrl && (
+                <div className={classnames(styles.editBtn, isMobile && styles.editBtnMobile)}>
+                  <ButtonPlus.Icon size="small" onClick={() => setModalShow(true)} icon={<BannerEditIcon />} />
+                </div>
+              )}
+            </div>
+          </ImgBaseUploader>
+        </div>
+      ) : (
+        logoUrl && (
           <div className={logoWrapClassName}>
-            <ImgBaseUploader
-              formId={formId}
-              visible={isModalShow}
-              imgUrl={logoUrl}
-              cropShape={ICropShape.Square}
-              customTips={customTips}
-              setVisible={setModalShow}
-              onChange={onChange}
-              fileLimit={2}
-            >
-              <div className={styles.logoImg} onClick={() => setModalShow(true)}>
-                {!logoUrl && (
-                  <div className={classnames(styles.logoPlaceHolder, isMobile && styles.placeholderMobile)}>
-                    <IconAdd width={logoAddIconSize} height={logoAddIconSize} fill={colors.fourthLevelText} />
-                    <span>{t(Strings.add_form_logo)}</span>
-                  </div>
-                )}
-                {logoUrl && <Image src={logoUrl} alt="cover" layout={'fill'}/>}
-                {
-                  logoUrl &&
-                  <div className={classnames(styles.editBtn, isMobile && styles.editBtnMobile)}>
-                    <ButtonPlus.Icon size="small" onClick={() => setModalShow(true)} icon={<BannerEditIcon />} />
-                  </div>
-                }
-              </div>
-            </ImgBaseUploader>
-          </div>
-        ) : (
-          logoUrl && <div className={logoWrapClassName}>
             <div className={styles.logoImg}>
-              <Image src={logoUrl} alt="cover" layout={'fill'}/>
+              <Image src={logoUrl} alt="cover" layout={'fill'} />
             </div>
           </div>
         )
-      }
+      )}
     </>
   );
 };

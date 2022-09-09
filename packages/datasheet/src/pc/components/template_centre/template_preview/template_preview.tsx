@@ -1,6 +1,6 @@
 import { ConfigConstant, IReduxState, IUserInfo, Navigation } from '@vikadata/core';
 import { useRequest } from 'ahooks';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { CommonSide } from 'pc/components/common_side';
 import { LoginModal } from 'pc/components/home/login_modal';
 import { MobileBar } from 'pc/components/mobile_bar';
@@ -52,7 +52,7 @@ export const TemplatePreview: FC = () => {
         navigationTo({ path: Navigation.IMPROVING_INFO, query: { token: data, reference: window.location.href }});
       }
     } else {
-      const userInfo = (await getLoginStatus() as any as IUserInfo);
+      const userInfo = ((await getLoginStatus()) as any) as IUserInfo;
       if (!userInfo) {
         return;
       }
@@ -66,57 +66,37 @@ export const TemplatePreview: FC = () => {
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
           <MobileBar />
         </ComponentDisplay>
-        {
-          categoryId === ConfigConstant.TEMPLATE_CHOICE_CATEGORY_ID || !categoryId ?
-            <TemplateChoice
-              setUsingTemplate={setUsingTemplate}
-            /> :
-            <TemplateCategoryDetail
-              isOfficial={isOfficial}
-              templateCategory={templateCategory || []}
-              setUsingTemplate={setUsingTemplate}
-            />
-        }
+        {categoryId === ConfigConstant.TEMPLATE_CHOICE_CATEGORY_ID || !categoryId ? (
+          <TemplateChoice setUsingTemplate={setUsingTemplate} />
+        ) : (
+          <TemplateCategoryDetail isOfficial={isOfficial} templateCategory={templateCategory || []} setUsingTemplate={setUsingTemplate} />
+        )}
       </div>
-      {
-        usingTemplate && userInfo && spaceId &&
-        <UsingTemplateModal
-          templateId={usingTemplate!}
-          onCancel={setUsingTemplate}
-        />
-      }
-      {
-        openLoginModal &&
-        <LoginModal
-          onCancel={() => setOpenLoginModal(false)}
-          afterLogin={afterLogin}
-        />
-      }
+      {usingTemplate && userInfo && spaceId && <UsingTemplateModal templateId={usingTemplate!} onCancel={setUsingTemplate} />}
+      {openLoginModal && <LoginModal onCancel={() => setOpenLoginModal(false)} afterLogin={afterLogin} />}
     </>
   );
 
   return (
     <div className={styles.templatePreview}>
-      {
-        /**
-         * note: 这里是给 SSR 准备的，也就是方便返回 html 模板数据方便抓取，下面被 ComponentDisplay 包裹的内容，由于需要判断浏览器尺寸，
-         * 在 server 端是不会运行的
-         * 这里渲染的内容在页面上不会渲染出来，所以不用担心
-         */
-        isRenderServer() && <div style={{ display: 'none' }}>
-          <CommonSide />
-          {MainComponent()}
-        </div>
-      }
+      {/**
+       * note: 这里是给 SSR 准备的，也就是方便返回 html 模板数据方便抓取，下面被 ComponentDisplay 包裹的内容，由于需要判断浏览器尺寸，
+       * 在 server 端是不会运行的
+       * 这里渲染的内容在页面上不会渲染出来，所以不用担心
+       */
+        isRenderServer() && (
+          <div style={{ display: 'none' }}>
+            <CommonSide />
+            {MainComponent()}
+          </div>
+        )}
 
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <CommonSide />
         {MainComponent()}
       </ComponentDisplay>
 
-      <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        {MainComponent()}
-      </ComponentDisplay>
+      <ComponentDisplay maxWidthCompatible={ScreenSize.md}>{MainComponent()}</ComponentDisplay>
     </div>
   );
 };

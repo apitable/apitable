@@ -11,12 +11,12 @@ import { stopPropagation } from '../../../../utils/dom';
 import { useVerifyOperateItemTitle } from '../../../tool_bar/view_switcher/view_switcher';
 import styles from './style.module.less';
 import { useUnmount } from 'ahooks';
-import { WrapperTooltip } from './widget_panel_header';
 import { InformationSmallOutlined } from '@vikadata/icons';
 import { useThemeColors } from '@vikadata/components';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { FC } from 'react';
+import { WrapperTooltip } from './wrapper_tooltip';
 
 export const WidgetPanelList: FC<{ onClickItem?: (panelIndex: number) => void }> = ({ onClickItem }) => {
   const { screenIsAtMost } = useResponsive();
@@ -25,7 +25,7 @@ export const WidgetPanelList: FC<{ onClickItem?: (panelIndex: number) => void }>
   const colors = useThemeColors();
   const dispatch = useDispatch();
   const { datasheetId, mirrorId } = useSelector(state => state.pageParams);
-  const { manageable, editable } = useSelector((state) => {
+  const { manageable, editable } = useSelector(state => {
     return Selectors.getResourcePermission(state, datasheetId!, ResourceType.Datasheet);
   });
 
@@ -36,7 +36,6 @@ export const WidgetPanelList: FC<{ onClickItem?: (panelIndex: number) => void }>
     return Selectors.getResourceWidgetPanels(state, resourceId, resourceType);
   })!;
   const activeWidgetPanel = useSelector(state => {
-
     return Selectors.getResourceActiveWidgetPanel(state, resourceId, resourceType);
   })!;
 
@@ -46,12 +45,14 @@ export const WidgetPanelList: FC<{ onClickItem?: (panelIndex: number) => void }>
       panelId: id,
       panelName: name,
       resourceId: resourceId!,
-      resourceType: resourceType
+      resourceType: resourceType,
     });
   };
 
-  const { errMsg, editingId: editPanelId, setEditingId: setEditPanelId, onChange, onKeyPressEnter, setEditingValue } =
-    useVerifyOperateItemTitle(widgetPanels, modifyWidgetName);
+  const { errMsg, editingId: editPanelId, setEditingId: setEditPanelId, onChange, onKeyPressEnter, setEditingValue } = useVerifyOperateItemTitle(
+    widgetPanels,
+    modifyWidgetName,
+  );
 
   useUnmount(() => {
     onKeyPressEnter();
@@ -81,7 +82,7 @@ export const WidgetPanelList: FC<{ onClickItem?: (panelIndex: number) => void }>
       panelId: movingPanelId,
       targetIndex: destination.index,
       resourceId: resourceId!,
-      resourceType: resourceType
+      resourceType: resourceType,
     });
   };
 
@@ -93,7 +94,7 @@ export const WidgetPanelList: FC<{ onClickItem?: (panelIndex: number) => void }>
     const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddWidgetPanel,
       resourceId: resourceId!,
-      resourceType: resourceType
+      resourceType: resourceType,
     });
     if (result.result === ExecuteResult.Success) {
       const { panelId } = result.data as { panelId: string };
@@ -106,7 +107,7 @@ export const WidgetPanelList: FC<{ onClickItem?: (panelIndex: number) => void }>
       cmd: CollaCommandName.DeleteWidgetPanel,
       deletePanelId: id,
       resourceId: resourceId!,
-      resourceType: resourceType
+      resourceType: resourceType,
     });
   };
 
@@ -141,125 +142,108 @@ export const WidgetPanelList: FC<{ onClickItem?: (panelIndex: number) => void }>
     });
   };
 
-  return <div className={classNames(
-    styles.widgetListWrapper,
-    isMobile && styles.widgetListWrapperMobile
-  )}>
-    <h2>
-      {t(Strings.widget_panel)}
-      （{widgetPanels.length}/3）
-      <Tooltip title={t(Strings.click_to_view_instructions)} trigger={'hover'}>
-        <a
-          href={t(Strings.intro_widget)}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ display: 'inline-block' }}
+  return (
+    <div className={classNames(styles.widgetListWrapper, isMobile && styles.widgetListWrapperMobile)}>
+      <h2>
+        {t(Strings.widget_panel)}（{widgetPanels.length}/3）
+        <Tooltip title={t(Strings.click_to_view_instructions)} trigger={'hover'}>
+          <a href={t(Strings.intro_widget)} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block' }}>
+            <InformationSmallOutlined color={colors.thirdLevelText} />
+          </a>
+        </Tooltip>
+      </h2>
+      {widgetPanels && (
+        <div className={styles.panelList}>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId={'1'} direction="vertical">
+              {provided => {
+                return (
+                  <div
+                    className={styles.droppable}
+                    ref={element => {
+                      provided.innerRef(element);
+                    }}
+                    {...provided.droppableProps}
+                  >
+                    {widgetPanels.map((item, index) => {
+                      const itemBox = (
+                        <OperateItem
+                          key={item.id}
+                          allowSort={editable && !isMobile}
+                          editing={editPanelId === item.id}
+                          isActive={activeWidgetPanel.id === item.id}
+                          prefixIcon={<IconWidget width={16} height={16} />}
+                          onItemClick={() => {
+                            panelItemClick(index);
+                          }}
+                          id={widgetPanels[index].id}
+                          inputData={{
+                            value: item.name,
+                            errMsg: errMsg,
+                            onChange: onChange,
+                            onEnter: onKeyPressEnter,
+                          }}
+                          operateData={{
+                            delete: {
+                              show: manageable,
+                              tooltip: t(Strings.delete),
+                              onClick(e, id) {
+                                stopPropagation(e);
+                                deleteWidgetPanel(id);
+                              },
+                            },
+                            rename: {
+                              show: editable,
+                              tooltip: t(Strings.rename),
+                              onClick(e, id) {
+                                stopPropagation(e);
+                                setEditPanelId(id);
+                                setEditingValue(widgetPanels[index].name);
+                              },
+                            },
+                          }}
+                        />
+                      );
+                      if (isMobile) {
+                        return itemBox;
+                      }
+                      return (
+                        <Draggable draggableId={item.id + index} index={index} key={index} isDragDisabled={!editable}>
+                          {providedChild => (
+                            <div ref={providedChild.innerRef} {...providedChild.draggableProps} {...providedChild.dragHandleProps}>
+                              {itemBox}
+                            </div>
+                          )}
+                        </Draggable>
+                      );
+                    })}
+                    {provided.placeholder}
+                  </div>
+                );
+              }}
+            </Droppable>
+          </DragDropContext>
+        </div>
+      )}
+      {!isMobile && (
+        <WrapperTooltip
+          wrapper={panelCountOverLimit || !manageable}
+          tip={!manageable ? t(Strings.no_permission_add_widget_panel) : t(Strings.widget_panel_count_limit)}
+          style={{ width: '100%' }}
         >
-          <InformationSmallOutlined color={colors.thirdLevelText} />
-        </a>
-      </Tooltip>
-
-    </h2>
-    {
-      widgetPanels &&
-      <div className={styles.panelList}>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId={'1'} direction="vertical">
-            {provided => {
-              return <div
-                className={styles.droppable}
-                ref={element => {
-                  provided.innerRef(element);
-                }}
-                {...provided.droppableProps}
-              >
-                {widgetPanels.map((item, index) => {
-                  const itemBox = 
-                    <OperateItem
-                      key={item.id}
-                      allowSort={editable && !isMobile}
-                      editing={editPanelId === item.id}
-                      isActive={activeWidgetPanel.id === item.id}
-                      prefixIcon={<IconWidget width={16} height={16} />}
-                      onItemClick={() => { panelItemClick(index); }}
-                      id={widgetPanels[index].id}
-                      inputData={{
-                        value: item.name,
-                        errMsg: errMsg,
-                        onChange: onChange,
-                        onEnter: onKeyPressEnter,
-                      }}
-                      operateData={{
-                        delete: {
-                          show: manageable,
-                          tooltip: t(Strings.delete),
-                          onClick(e, id) {
-                            stopPropagation(e);
-                            deleteWidgetPanel(id);
-                          },
-                        },
-                        rename: {
-                          show: editable,
-                          tooltip: t(Strings.rename),
-                          onClick(e, id) {
-                            stopPropagation(e);
-                            setEditPanelId(id);
-                            setEditingValue(widgetPanels[index].name);
-                          },
-                        },
-
-                      }}
-                    />;
-                  if (isMobile) {
-                    return itemBox;
-                  }
-                  return (
-                    <Draggable
-                      draggableId={item.id + index}
-                      index={index}
-                      key={index}
-                      isDragDisabled={!editable}
-                    >
-                      {(providedChild) => (
-                        <div
-                          ref={providedChild.innerRef}
-                          {...providedChild.draggableProps}
-                          {...providedChild.dragHandleProps}
-                        >
-                          {itemBox}
-                        </div>
-                      )}
-                    </Draggable>
-                  );
-                })}
-                {provided.placeholder}
-              </div>;
-            }}
-          </Droppable>
-        </DragDropContext>
-      </div>
-    }
-    {!isMobile && <WrapperTooltip
-      wrapper={panelCountOverLimit || !manageable}
-      tip={
-        !manageable ? t(Strings.no_permission_add_widget_panel) :
-          t(Strings.widget_panel_count_limit)
-      }
-      style={{ width: '100%' }}
-    >
-      <div
-        className={classNames(styles.addPanel, {
-          [styles.disable]: panelCountOverLimit || !manageable,
-        })}
-        onClick={addNewPanel}
-      >
-        <span className={styles.addIcon}>
-          <IconAdd fill="currentColor" width={16} height={16} />
-        </span>
-        <span className={styles.text}>
-          {t(Strings.add_widget_panel)}
-        </span>
-      </div>
-    </WrapperTooltip>}
-  </div>;
+          <div
+            className={classNames(styles.addPanel, {
+              [styles.disable]: panelCountOverLimit || !manageable,
+            })}
+            onClick={addNewPanel}
+          >
+            <span className={styles.addIcon}>
+              <IconAdd fill="currentColor" width={16} height={16} />
+            </span>
+            <span className={styles.text}>{t(Strings.add_widget_panel)}</span>
+          </div>
+        </WrapperTooltip>
+      )}
+    </div>
+  );
 };

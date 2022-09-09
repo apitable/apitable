@@ -1,6 +1,13 @@
 import {
-  hiddenMobile, IReduxState, StatusCode, StoreActions, Settings, Strings, t, isPrivateDeployment,
-  isIdassPrivateDeployment
+  hiddenMobile,
+  IReduxState,
+  StatusCode,
+  StoreActions,
+  Settings,
+  Strings,
+  t,
+  isPrivateDeployment,
+  isIdassPrivateDeployment,
 } from '@vikadata/core';
 import { useRequest } from 'pc/hooks';
 import { Spin } from 'antd';
@@ -22,17 +29,17 @@ import styles from './style.module.less';
 import { defaultAvatars } from './default_avatar';
 import { IUnbindType, UnBindModal } from 'pc/components/navigation/account_center_modal/basic_setting/un_bind_modal';
 import { Logout } from './log_out';
-import { StepStatus } from './log_out/step';
+import { StepStatus } from './log_out/enum';
 import { StatusIconFunc } from 'pc/components/common/icon';
 import { getSocialWecomUnitName, isSocialWecom, isWecomFunc } from 'pc/components/home/social_platform';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import classNames from 'classnames';
 import { ChevronRightOutlined } from '@vikadata/icons';
 
 const customTips = {
   cropDesc: t(Strings.support_image_formats_limits, {
     number: 2,
-  })
+  }),
 };
 
 export const BasicSetting: FC = () => {
@@ -40,9 +47,9 @@ export const BasicSetting: FC = () => {
     (state: IReduxState) => ({
       user: state.user.info,
       reqStatus: state.user.reqStatus,
-      spaceInfo: state.space.curSpaceInfo
+      spaceInfo: state.space.curSpaceInfo,
     }),
-    shallowEqual
+    shallowEqual,
   );
   const isWecomSpace = isSocialWecom(spaceInfo);
   const colors = useThemeColors();
@@ -58,15 +65,9 @@ export const BasicSetting: FC = () => {
   const hiddenMobileRes = isWecomFunc() && isWecomSpace && !user!.mobile;
   const env = getEnvVariables();
 
-  const {
-    loading: uploadAvatarLoading,
-    run: updateAvatar,
-  } = useRequest(customOrOfficialAvatarUpload, { manual: true });
+  const { loading: uploadAvatarLoading, run: updateAvatar } = useRequest(customOrOfficialAvatarUpload, { manual: true });
 
-  const {
-    run: getUserCanLogout,
-    loading: getUserLoading,
-  } = useRequest(getUserCanLogoutReq, { manual: true });
+  const { run: getUserCanLogout, loading: getUserLoading } = useRequest(getUserCanLogoutReq, { manual: true });
 
   const dispatch = useDispatch();
 
@@ -94,16 +95,7 @@ export const BasicSetting: FC = () => {
     if (!user) {
       return;
     }
-    return (
-      <Avatar
-        id={user.memberId}
-        src={user.avatar}
-        title={user.nickName}
-        size={AvatarSize.Size80}
-        className={styles.avatorImg}
-        style={style}
-      />
-    );
+    return <Avatar id={user.memberId} src={user.avatar} title={user.nickName} size={AvatarSize.Size80} className={styles.avatorImg} style={style} />;
   };
   const uploadImgConfirm = (data: ISelectInfo) => {
     const { officialToken, customFile } = data;
@@ -130,30 +122,30 @@ export const BasicSetting: FC = () => {
   };
 
   const handleUserLogout = () => {
-    getUserCanLogout().then((res) => {
+    getUserCanLogout().then(res => {
       const { success, message, code } = res;
       if (!success) {
         if (code === StatusCode.LOG_OUT_UNSATISFIED) {
           Modal.confirm({
             title: t(Strings.kindly_reminder),
-            content: (
-              <Typography variant='body2'>
-                {t(Strings.logout_warning)}
-              </Typography>
-            ),
+            content: <Typography variant="body2">{t(Strings.logout_warning)}</Typography>,
             okButtonProps: {
               color: 'warning',
             },
             cancelButtonProps: {
               className: styles.cancelBtn,
-              onClick: (e) => {
+              onClick: e => {
                 stopPropagation(e);
                 window.open(Settings.know_how_to_logout.value);
               },
             } as any,
             cancelText: t(Strings.know_how_to_logout),
             closable: false,
-            icon: <div className={styles.statusIcon}><StatusIconFunc type='warning' /></div>,
+            icon: (
+              <div className={styles.statusIcon}>
+                <StatusIconFunc type="warning" />
+              </div>
+            ),
           });
           return;
         }
@@ -181,7 +173,7 @@ export const BasicSetting: FC = () => {
   const realNickName = getSocialWecomUnitName({
     name: nickName,
     isModified: isNickNameModified,
-    spaceInfo
+    spaceInfo,
   });
 
   const items = [
@@ -217,7 +209,7 @@ export const BasicSetting: FC = () => {
       label: t(Strings.user_log_out),
       onClick: handleUserLogout,
       visible: true,
-    }
+    },
   ];
 
   return (
@@ -233,17 +225,12 @@ export const BasicSetting: FC = () => {
                   <Spin spinning={!nameModal && uploadAvatarLoading}>{renderAvatar()}</Spin>
                 </div>
               </div>
-              <LinkButton
-                component='button'
-                underline={false}
-                className={styles.modifyBtn}
-                onClick={() => setUploadModal(true)}
-              >
+              <LinkButton component="button" underline={false} className={styles.modifyBtn} onClick={() => setUploadModal(true)}>
                 {t(Strings.change_avatar)}
               </LinkButton>
               <ImageCropUpload
                 title={t(Strings.upload_avatar)}
-                confirm={(data) => uploadImgConfirm(data)}
+                confirm={data => uploadImgConfirm(data)}
                 visible={uploadModal}
                 officialImgs={defaultAvatars}
                 initPreview={renderAvatar({ width: '100%', height: '100%' })}
@@ -258,69 +245,50 @@ export const BasicSetting: FC = () => {
             <div className={styles.item}>
               <div className={styles.label}>{t(Strings.personal_nickname)}:</div>
               <div className={styles.content}>{realNickName}</div>
-              {
-                !isIdassPrivateDeployment() &&
-                <LinkButton component='button' underline={false} onClick={() => setNameModal(true)}>
+              {!isIdassPrivateDeployment() && (
+                <LinkButton component="button" underline={false} onClick={() => setNameModal(true)}>
                   {t(Strings.modal_title_modify_nickname)}
                 </LinkButton>
-              }
+              )}
             </div>
             {!hiddenMobileRes && !env.HIDDEN_BIND_PHONE && (
               <div className={styles.item}>
                 <div className={styles.label}>{t(Strings.label_bind_phone)}:</div>
                 <div className={styles.content}>{mobileContent()}</div>
-                {
-                  !isIdassPrivateDeployment() &&
+                {!isIdassPrivateDeployment() && (
                   <>
-                    <LinkButton
-                      component='button'
-                      underline={false}
-                      onClick={() => setMobileModal(true)}
-                    >
+                    <LinkButton component="button" underline={false} onClick={() => setMobileModal(true)}>
                       {user!.mobile ? t(Strings.button_change_phone) : t(Strings.button_bind_now)}
                     </LinkButton>
-                    {
-                      user!.mobile && <LinkButton
-                        component='button'
-                        underline={false}
-                        onClick={() => unBind('mobile')}
-                        color={colors.errorColor}
-                      >
+                    {user!.mobile && (
+                      <LinkButton component="button" underline={false} onClick={() => unBind('mobile')} color={colors.errorColor}>
                         {t(Strings.unbind)}
                       </LinkButton>
-                    }
+                    )}
                   </>
-                }
+                )}
               </div>
             )}
-            {
-              !env.HIDDEN_BIND_MAIL && <div className={styles.item}>
+            {!env.HIDDEN_BIND_MAIL && (
+              <div className={styles.item}>
                 <div className={styles.label}>{t(Strings.label_bind_email)}:</div>
-                <div className={styles.content}>
-                  {user?.email || t(Strings.unbound)}
-                </div>
-                {
-                  !isIdassPrivateDeployment() &&
+                <div className={styles.content}>{user?.email || t(Strings.unbound)}</div>
+                {!isIdassPrivateDeployment() && (
                   <>
-                    <LinkButton component='button' underline={false} onClick={() => setEmailModal(true)}>
+                    <LinkButton component="button" underline={false} onClick={() => setEmailModal(true)}>
                       {user!.email ? t(Strings.change_email) : t(Strings.button_bind_now)}
                     </LinkButton>
-                    {
-                      user!.email && <LinkButton
-                        component='button'
-                        underline={false}
-                        onClick={() => unBind('email')}
-                        color={colors.errorColor}
-                      >
+                    {user!.email && (
+                      <LinkButton component="button" underline={false} onClick={() => unBind('email')} color={colors.errorColor}>
                         {t(Strings.unbind)}
                       </LinkButton>
-                    }
+                    )}
                   </>
-                }
+                )}
               </div>
-            }
+            )}
           </div>
-          {!isPrivateDeployment() &&
+          {!isPrivateDeployment() && (
             <div className={styles.logout}>
               <Button
                 loading={getUserLoading}
@@ -335,21 +303,15 @@ export const BasicSetting: FC = () => {
                 {t(Strings.user_log_out)}
               </Button>
             </div>
-          }
+          )}
         </div>
       </ComponentDisplay>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <div className={styles.mobileSetting}>
           {items
             .filter(_ => _.visible)
-            .map(({
-              onClick,
-              label,
-            }) => (
-              <div
-                className={classNames(styles.linkItem)}
-                onClick={onClick}
-              >
+            .map(({ onClick, label }) => (
+              <div className={classNames(styles.linkItem)} onClick={onClick}>
                 <label className={styles.label}>{label}</label>
                 <div className={styles.value}>
                   <ChevronRightOutlined />
@@ -358,40 +320,11 @@ export const BasicSetting: FC = () => {
             ))}
         </div>
       </ComponentDisplay>
-      {nameModal && (
-        <ModifyNameModal
-          setNameModal={setNameModal}
-          originName={nickName}
-        />
-      )}
-      {emailModal && (
-        <ModifyEmailModal
-          setEmailModal={setEmailModal}
-          data={userData}
-        />
-      )}
-      {mobileModal && (
-        <ModifyMobileModal
-          setMobileModal={setMobileModal}
-          data={userData}
-        />
-      )}
-      {
-        unBindModal && (
-          <UnBindModal
-            setUnBindModal={setUnBindModal}
-            unbindType={unBindModal}
-            data={userData}
-          />
-        )
-      }
-      {logoutStepVisible && (
-        <Logout
-          userData={userData}
-          step={step}
-          setStep={setStep}
-        />
-      )}
+      {nameModal && <ModifyNameModal setNameModal={setNameModal} originName={nickName} />}
+      {emailModal && <ModifyEmailModal setEmailModal={setEmailModal} data={userData} />}
+      {mobileModal && <ModifyMobileModal setMobileModal={setMobileModal} data={userData} />}
+      {unBindModal && <UnBindModal setUnBindModal={setUnBindModal} unbindType={unBindModal} data={userData} />}
+      {logoutStepVisible && <Logout userData={userData} step={step} setStep={setStep} />}
     </>
   );
 };

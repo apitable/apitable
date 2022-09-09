@@ -3,7 +3,7 @@ import { FC, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { ITransFormInfo } from '../preview_file.interface';
 import { PreviewType } from '../preview_type';
-import { MAX_SCALE, MIN_SCALE } from './preview_main';
+import { MAX_SCALE, MIN_SCALE } from './constant';
 import styles from './style.module.less';
 
 interface ISwiperProps {
@@ -28,7 +28,6 @@ interface ITouchPosition {
 }
 
 export const Swiper: FC<ISwiperProps> = props => {
-
   const {
     transformInfo,
     activeIndex,
@@ -42,7 +41,7 @@ export const Swiper: FC<ISwiperProps> = props => {
     officePreviewEnable,
     previewUrl,
     setTransformInfo,
-    disabledDownload
+    disabledDownload,
   } = props;
 
   const [translate, setTranslate] = useState(0);
@@ -79,7 +78,7 @@ export const Swiper: FC<ISwiperProps> = props => {
     onTouchStart(e: React.TouchEvent) {
       const touches = e.touches;
       if (touches.length !== 2) return;
-    
+
       if (!scaling) {
         setScaling(true);
         setOriginScale(transformInfo.scale);
@@ -168,40 +167,38 @@ export const Swiper: FC<ISwiperProps> = props => {
       }}
       ref={fileThumbRef}
     >
-      {
-        files.map((file, index) => {
-          return (
-            <div
-              // lookup 中可能会存在同样的附件id
-              key={file.id + index}
-              className={styles.swiperItem}
-              draggable={false}
-              {...mobileHandler}
-              onContextMenu={(e)=>{
-                if (disabledDownload){
-                  e.preventDefault();
-                  return false;
-                }
-                return true;
-              }}
-            >
-              {index === activeIndex && (
-                <PreviewType
-                  file={file}
-                  transformInfo={transformInfo}
-                  userInfo={userInfo}
-                  spaceId={spaceId}
-                  onClose={onClose}
-                  officePreviewEnable={officePreviewEnable}
-                  previewUrl={previewUrl}
-                  setTransformInfo={setTransformInfo}
-                  disabledDownload={disabledDownload}
-                />
-              )}
-            </div>
-          );
-        })
-      }
+      {files.map((file, index) => {
+        return (
+          <div
+            // lookup 中可能会存在同样的附件id
+            key={file.id + index}
+            className={styles.swiperItem}
+            draggable={false}
+            {...mobileHandler}
+            onContextMenu={e => {
+              if (disabledDownload) {
+                e.preventDefault();
+                return false;
+              }
+              return true;
+            }}
+          >
+            {index === activeIndex && (
+              <PreviewType
+                file={file}
+                transformInfo={transformInfo}
+                userInfo={userInfo}
+                spaceId={spaceId}
+                onClose={onClose}
+                officePreviewEnable={officePreviewEnable}
+                previewUrl={previewUrl}
+                setTransformInfo={setTransformInfo}
+                disabledDownload={disabledDownload}
+              />
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 };

@@ -1,8 +1,18 @@
 import {
-  BasicValueType, checkTypeSwitch, Field, FieldType, FilterDuration, IFieldMap, IFilterCondition, IViewColumn, Selectors, Strings, t
+  BasicValueType,
+  checkTypeSwitch,
+  Field,
+  FieldType,
+  FilterDuration,
+  IFieldMap,
+  IFilterCondition,
+  IViewColumn,
+  Selectors,
+  Strings,
+  t,
 } from '@vikadata/core';
 import produce from 'immer';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { renderComputeFieldError } from 'pc/components/multi_grid/header';
@@ -104,7 +114,7 @@ const FilterFieldListBase: React.FC<IFilterFieldListProps> = props => {
       value: condition.fieldId,
       label: t(Strings.crypto_field),
       disabled: true,
-      suffixIcon: <FieldPermissionLock fieldId={condition.fieldId} tooltip={t(Strings.field_permission_view_lock_tips)} />
+      suffixIcon: <FieldPermissionLock fieldId={condition.fieldId} tooltip={t(Strings.field_permission_view_lock_tips)} />,
     });
   }, [condition.fieldId, isCryptoField, fieldNotFound, options]);
 
@@ -115,22 +125,17 @@ const FilterFieldListBase: React.FC<IFilterFieldListProps> = props => {
         onChange={onChange}
         defaultValue={condition.fieldId}
         title={t(Strings.please_choose)}
-        triggerComponent={(
+        triggerComponent={
           <div
             className={classNames(styles.trigger, {
-              [styles.error]: (isCryptoField || fieldNotFound) ? false : Field.bindModel(fieldMap[condition.fieldId]).hasError,
+              [styles.error]: isCryptoField || fieldNotFound ? false : Field.bindModel(fieldMap[condition.fieldId]).hasError,
             })}
           >
             <span>{options.filter(option => option.value === condition.fieldId)[0]?.label}</span>
             {renderComputeFieldError(fieldMap[condition.fieldId], t(Strings.error_configuration_and_invalid_filter_option))}
-            <ArrowIcon
-              className={styles.arrow}
-              width={16}
-              height={16}
-              fill={colors.fourthLevelText}
-            />
+            <ArrowIcon className={styles.arrow} width={16} height={16} fill={colors.fourthLevelText} />
           </div>
-        )}
+        }
       />
     );
   }
@@ -139,20 +144,22 @@ const FilterFieldListBase: React.FC<IFilterFieldListProps> = props => {
     <Select
       options={options}
       value={condition.fieldId}
-      onSelected={(option) => { onChange(option.value as string); }}
+      onSelected={option => {
+        onChange(option.value as string);
+      }}
       triggerCls={classNames(styles.field, 'filterField')}
       hideSelectedOption={isCryptoField || fieldNotFound}
       dropdownMatchSelectWidth={false}
       openSearch
       searchPlaceholder={t(Strings.search)}
       suffixIcon={
-        checkTypeSwitch(condition, fieldMap[condition.fieldId]) && !isCryptoField ?
-          <Tooltip
-            title={t(Strings.lookup_filter_condition_tip)}
-            placement="top"
-          >
+        checkTypeSwitch(condition, fieldMap[condition.fieldId]) && !isCryptoField ? (
+          <Tooltip title={t(Strings.lookup_filter_condition_tip)} placement="top">
             <WarnTriangleIcon fill={colors.warningColor} width={20} height={16} />
-          </Tooltip> : undefined
+          </Tooltip>
+        ) : (
+          undefined
+        )
       }
     />
   );

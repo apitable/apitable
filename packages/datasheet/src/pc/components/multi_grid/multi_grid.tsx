@@ -1,6 +1,16 @@
 import { contextMenuHideAll } from '@vikadata/components';
 import {
-  CellType, DATASHEET_ID, Field, FieldOperateType, IGridViewProperty, IReduxState, RecordMoveType, RowHeight, RowHeightLevel, Selectors, StoreActions,
+  CellType,
+  DATASHEET_ID,
+  Field,
+  FieldOperateType,
+  IGridViewProperty,
+  IReduxState,
+  RecordMoveType,
+  RowHeight,
+  RowHeightLevel,
+  Selectors,
+  StoreActions,
 } from '@vikadata/core';
 import classNames from 'classnames';
 import { clamp, debounce, throttle } from 'lodash';
@@ -21,7 +31,7 @@ import { ScrollBarHorizon } from '../scroll_bar/scroll_bar_horizon';
 import { ScrollBarVertical } from '../scroll_bar/scroll_bar_vertical';
 import { attachSelection } from '../selection_wrapper';
 import { OPERATE_COLUMN_WIDTH } from './cell';
-import { GROUP_HEIGHT } from './cell/virtual_cell/cell_group_tab/cell_group_tab';
+import { GROUP_HEIGHT } from './cell/virtual_cell/cell_group_tab/constant';
 import { GRID_VIEW_BLANK_HEIGHT } from './constant';
 import { ContextMenu } from './context_menu/context_menu';
 import { Drag } from './drag';
@@ -60,10 +70,30 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
 
   componentDidMount = () => {
     const eventBundle = new Map([
-      [ShortcutActionName.PageDown, () => { this.pageUpOrPageDown(true); }],
-      [ShortcutActionName.PageUp, () => { this.pageUpOrPageDown(false); }],
-      [ShortcutActionName.PageRight, () => { this.pageLeftOrPageRight(true); }],
-      [ShortcutActionName.PageLeft, () => { this.pageLeftOrPageRight(false); }],
+      [
+        ShortcutActionName.PageDown,
+        () => {
+          this.pageUpOrPageDown(true);
+        },
+      ],
+      [
+        ShortcutActionName.PageUp,
+        () => {
+          this.pageUpOrPageDown(false);
+        },
+      ],
+      [
+        ShortcutActionName.PageRight,
+        () => {
+          this.pageLeftOrPageRight(true);
+        },
+      ],
+      [
+        ShortcutActionName.PageLeft,
+        () => {
+          this.pageLeftOrPageRight(false);
+        },
+      ],
     ]);
 
     this.eventBundle = eventBundle;
@@ -77,7 +107,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     }
   };
 
-  componentDidUpdate = (preProps) => {
+  componentDidUpdate = preProps => {
     const { viewId, datasheetId } = this.props;
     if (preProps.viewId !== viewId && preProps.datasheetId !== datasheetId) {
       const cacheScroll = this.getCacheScrollPosition();
@@ -122,16 +152,24 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     if (!bottomRightReg) {
       return;
     }
-    this.setState({
-      scrolling: false,
-      scrollTop: bottomRightReg.scrollTop,
-      scrollLeft: bottomRightReg.scrollLeft,
-    }, () => {
-      this.context.changeCacheScroll && this.context.changeCacheScroll({
-        scrollTop: this.state.scrollTop,
-        scrollLeft: this.state.scrollLeft,
-      }, this.props.datasheetId, this.props.viewId);
-    });
+    this.setState(
+      {
+        scrolling: false,
+        scrollTop: bottomRightReg.scrollTop,
+        scrollLeft: bottomRightReg.scrollLeft,
+      },
+      () => {
+        this.context.changeCacheScroll &&
+          this.context.changeCacheScroll(
+            {
+              scrollTop: this.state.scrollTop,
+              scrollLeft: this.state.scrollLeft,
+            },
+            this.props.datasheetId,
+            this.props.viewId,
+          );
+      },
+    );
   }, 300);
 
   updateCacheDomInfo = (dom: Element) => {
@@ -143,7 +181,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     }
   };
 
-  scrollProcess = (scrollData: { scrollTop: number, scrollLeft: number }) => {
+  scrollProcess = (scrollData: { scrollTop: number; scrollLeft: number }) => {
     this.scrollProcessDebounce();
     const gridRef = this.gridRef.current;
     if (!gridRef) {
@@ -212,9 +250,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     }
     const left = bottomRightReg.scrollLeft;
     const { width, frozenColumns } = this.props;
-    const fixedColumnWidth = frozenColumns.reduce(
-      (pre, cur) => pre + Selectors.getColumnWidth(cur), OPERATE_COLUMN_WIDTH,
-    );
+    const fixedColumnWidth = frozenColumns.reduce((pre, cur) => pre + Selectors.getColumnWidth(cur), OPERATE_COLUMN_WIDTH);
     const unFixedRowHeight = width - fixedColumnWidth;
     if (right) {
       this.rowScroll(left + unFixedRowHeight);
@@ -260,11 +296,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     if (!bottomRightRect) {
       return;
     }
-    const scrollObj = checkPointInContainer(
-      { x: e.clientX, y: e.clientY },
-      bottomRightRect!,
-      70,
-    );
+    const scrollObj = checkPointInContainer({ x: e.clientX, y: e.clientY }, bottomRightRect!, 70);
     if (scrollObj.shouldScroll) {
       this.columnScrollHandler.columnScrollByValue(scrollObj);
     } else {
@@ -287,14 +319,20 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
       const bottomRightRegTop = gridRef.getReg(GridReg.BottomRightReg).scrollTop;
       gridRef.changeScroll(GridReg.UpperRightReg, { scrollLeft: upperRightRegLeft + _scrollObj.rowSpeed, scrollTop: 0 });
       gridRef.changeScroll(GridReg.GroupStatRightReg, { scrollLeft: groupStatRightRefLeft + _scrollObj.rowSpeed, scrollTop: 0 });
-      gridRef.changeScroll(GridReg.BottomRightReg,
-        { scrollLeft: bottomRightRegLeft + _scrollObj.rowSpeed, scrollTop: bottomRightRegTop + _scrollObj.columnSpeed },
-      );
-      gridRef.changeScroll(GridReg.BottomLeftReg, { scrollTop: bottomLeftRegTop + _scrollObj.columnSpeed, scrollLeft: 0 });
-      this.context.changeCacheScroll && this.context.changeCacheScroll({
-        scrollTop: bottomRightRegTop + _scrollObj.columnSpeed,
+      gridRef.changeScroll(GridReg.BottomRightReg, {
         scrollLeft: bottomRightRegLeft + _scrollObj.rowSpeed,
-      }, this.props.datasheetId, this.props.viewId);
+        scrollTop: bottomRightRegTop + _scrollObj.columnSpeed,
+      });
+      gridRef.changeScroll(GridReg.BottomLeftReg, { scrollTop: bottomLeftRegTop + _scrollObj.columnSpeed, scrollLeft: 0 });
+      this.context.changeCacheScroll &&
+        this.context.changeCacheScroll(
+          {
+            scrollTop: bottomRightRegTop + _scrollObj.columnSpeed,
+            scrollLeft: bottomRightRegLeft + _scrollObj.rowSpeed,
+          },
+          this.props.datasheetId,
+          this.props.viewId,
+        );
       window.requestAnimationFrame(columnScrollByValue);
     };
 
@@ -460,8 +498,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
 
   getHoverRowOfAddRecord = (target: HTMLElement) => {
     const element = getParentNodeByClass(target, [OPERATE_BUTTON_CLASS]);
-    return getElementDataset(element, 'operateType') === ButtonOperateType.AddRecord ?
-      getElementDataset(element, 'path') : null;
+    return getElementDataset(element, 'operateType') === ButtonOperateType.AddRecord ? getElementDataset(element, 'path') : null;
   };
 
   updateHoverInfo = throttle((target: HTMLElement) => {
@@ -473,11 +510,13 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     }
 
     const datasheetId = this.props.datasheetId;
-    dispatch(batchActions([
-      setHoverRecordId(datasheetId, recordId || null),
-      setGridViewHoverFieldId(fieldId || null, datasheetId),
-      setHoverRowOfAddRecord(datasheetId, hoverAddRecord || null),
-    ]));
+    dispatch(
+      batchActions([
+        setHoverRecordId(datasheetId, recordId || null),
+        setGridViewHoverFieldId(fieldId || null, datasheetId),
+        setHoverRowOfAddRecord(datasheetId, hoverAddRecord || null),
+      ]),
+    );
 
     recordId && this.showQuickAppendRows(recordId);
   }, 50);
@@ -498,11 +537,9 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
 
   onMouseLeave = () => {
     const datasheetId = this.props.datasheetId;
-    dispatch(batchActions([
-      setHoverRecordId(datasheetId, null),
-      setGridViewHoverFieldId(null, datasheetId),
-      setHoverRowOfAddRecord(datasheetId, null),
-    ]));
+    dispatch(
+      batchActions([setHoverRecordId(datasheetId, null), setGridViewHoverFieldId(null, datasheetId), setHoverRowOfAddRecord(datasheetId, null)]),
+    );
   };
 
   onMouseUp = (e: React.MouseEvent) => {
@@ -517,26 +554,28 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     const { rows, rowHeight, view, linearRows } = this.props;
     // 视图底部会有150像素的高度撑起一部分空白区域
     if (view.groupInfo && view.groupInfo.length) {
-      return linearRows.reduce((height, cur) => {
-        if (cur.type === CellType.Record) {
-          height += rowHeight;
-        }
-        if (cur.type === CellType.GroupTab) {
-          height += GROUP_HEIGHT;
-        }
-        if (cur.type === CellType.Blank) {
-          height += 10;
-        }
-        if (cur.type === CellType.Add) {
-          height += RowHeight.Short;
-        }
-        return height;
-      }, 0) + GRID_VIEW_BLANK_HEIGHT;
+      return (
+        linearRows.reduce((height, cur) => {
+          if (cur.type === CellType.Record) {
+            height += rowHeight;
+          }
+          if (cur.type === CellType.GroupTab) {
+            height += GROUP_HEIGHT;
+          }
+          if (cur.type === CellType.Blank) {
+            height += 10;
+          }
+          if (cur.type === CellType.Add) {
+            height += RowHeight.Short;
+          }
+          return height;
+        }, 0) + GRID_VIEW_BLANK_HEIGHT
+      );
     }
     return rows.length * rowHeight + GRID_VIEW_BLANK_HEIGHT;
   };
 
-  setScrollState = (props: { scrollLeft?: number, scrollTop?: number }) => {
+  setScrollState = (props: { scrollLeft?: number; scrollTop?: number }) => {
     this.setState({
       ...this.state,
       ...props,
@@ -545,46 +584,43 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
 
   render() {
     const {
-      height, width, frozenColumns, exceptFrozenColumns, linearRows,
-      rowHeight, activeFieldId, view, activeFieldOperateType, permissions, isEditing,
-      gridViewDragState, recordMoveType,
+      height,
+      width,
+      frozenColumns,
+      exceptFrozenColumns,
+      linearRows,
+      rowHeight,
+      activeFieldId,
+      view,
+      activeFieldOperateType,
+      permissions,
+      isEditing,
+      gridViewDragState,
+      recordMoveType,
     } = this.props;
-    const showTips = (recordMoveType && [RecordMoveType.WillMove, RecordMoveType.OutOfView].includes(recordMoveType));
-    const {
-      quickAppendBtnTop,
-      quickAppendToolLength,
-      scrolling,
-      scrollLeft,
-      scrollTop,
-    } = this.state;
+    const showTips = recordMoveType && [RecordMoveType.WillMove, RecordMoveType.OutOfView].includes(recordMoveType);
+    const { quickAppendBtnTop, quickAppendToolLength, scrolling, scrollLeft, scrollTop } = this.state;
 
     const fixedRowHeight = HEADER_ROW_HEIGHT * HEADER_ROW_FIXED_COUNT;
-    const fixedColumnWidth = frozenColumns.reduce(
-      (pre, cur) => pre + Selectors.getColumnWidth(cur), OPERATE_COLUMN_WIDTH,
-    );
+    const fixedColumnWidth = frozenColumns.reduce((pre, cur) => pre + Selectors.getColumnWidth(cur), OPERATE_COLUMN_WIDTH);
     const unFixedRowHeight = height - fixedRowHeight;
     const unFixedColumnWidth = width - fixedColumnWidth;
     const scrollWidth = exceptFrozenColumns.reduce((pre, cur) => pre + Selectors.getColumnWidth(cur), 0);
     const scrollHeight = this.calcTotalRowHeight();
     const groupOffset = view.groupInfo ? (view.groupInfo.length - 1) * GROUP_OFFSET : 0;
-    const {
-      hoverRecordId,
-      dragTarget,
-    } = gridViewDragState;
+    const { hoverRecordId, dragTarget } = gridViewDragState;
     const BOTTOM_RIGHT_TOP = this.getBottomRightTop();
-    const {
-      editable,
-    } = permissions;
+    const { editable } = permissions;
     const showQuickAppendTool = Boolean(
       !scrolling &&
-      hoverRecordId &&
-      // 拖动行时不显示
-      !dragTarget.recordId &&
-      quickAppendBtnTop >= BOTTOM_RIGHT_TOP &&
-      editable,
+        hoverRecordId &&
+        // 拖动行时不显示
+        !dragTarget.recordId &&
+        quickAppendBtnTop >= BOTTOM_RIGHT_TOP &&
+        editable,
     );
     // TODO: 分组状态与普通状态 border 保持统一
-    const offsetY = (BOTTOM_RIGHT_TOP - fixedRowHeight) - (groupOffset > 0 ? 1 : 0);
+    const offsetY = BOTTOM_RIGHT_TOP - fixedRowHeight - (groupOffset > 0 ? 1 : 0);
 
     return (
       <Fragment>
@@ -604,15 +640,9 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
           ref={this.props.refs}
           style={{ height: '100%', width: '100%', position: 'relative' }}
         >
-          {
-            showQuickAppendTool &&
-            <QuickAppend
-              hoverRecordId={hoverRecordId!}
-              top={quickAppendBtnTop - offsetY}
-              left={groupOffset}
-              length={quickAppendToolLength}
-            />
-          }
+          {showQuickAppendTool && (
+            <QuickAppend hoverRecordId={hoverRecordId!} top={quickAppendBtnTop - offsetY} left={groupOffset} length={quickAppendToolLength} />
+          )}
           <GridViews
             ref={this.gridRef}
             frozenColumns={frozenColumns}
@@ -628,12 +658,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
             setScrollState={this.setScrollState}
           />
 
-          <EditorContainer
-            scrollToItem={this.scrollToItem}
-            parentRef={this.props.refs}
-            scrollLeft={scrollLeft}
-            scrollTop={scrollTop}
-          />
+          <EditorContainer scrollToItem={this.scrollToItem} parentRef={this.props.refs} scrollLeft={scrollLeft} scrollTop={scrollTop} />
 
           {showTips && <RecordWillMoveTips rowHeight={rowHeight} />}
         </div>
@@ -651,39 +676,23 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
           scrollAreaLength={width - fixedColumnWidth - 30}
           onGridScroll={this.rowScroll}
         />
-        {
-          activeFieldId &&
-          activeFieldOperateType === FieldOperateType.FieldSetting &&
-          !document.querySelector(`.${EXPAND_RECORD}`) &&
+        {activeFieldId && activeFieldOperateType === FieldOperateType.FieldSetting && !document.querySelector(`.${EXPAND_RECORD}`) && (
           <FieldSetting scrollToItem={this.scrollToItem} />
-        }
-        {
-          activeFieldId &&
-          activeFieldOperateType === FieldOperateType.FieldDesc &&
-          !document.querySelector(`.${EXPAND_RECORD}`) &&
+        )}
+        {activeFieldId && activeFieldOperateType === FieldOperateType.FieldDesc && !document.querySelector(`.${EXPAND_RECORD}`) && (
           <FieldDesc fieldId={activeFieldId} readOnly={!permissions.descriptionEditable} datasheetId={this.props.datasheetId} />
-        }
+        )}
         <ContextMenu parentRef={this.props.refs} />
-        <Drag
-          height={height}
-          width={width}
-          rowHeight={rowHeight}
-          gridRef={this.props.refs}
-          scrollWhenHitViewEdg={this.scrollWhenHitViewEdg}
-        />
+        <Drag height={height} width={width} rowHeight={rowHeight} gridRef={this.props.refs} scrollWhenHitViewEdg={this.scrollWhenHitViewEdg} />
         <ShallowLine scrollLeft={scrollLeft} groupOffset={groupOffset} frozenColumns={frozenColumns} />
       </Fragment>
     );
   }
-
 }
 
 const mapStateToProps = (state: IReduxState): IMultiGridStateProps => {
-  const
-    view = Selectors.getCurrentView(state)! as IGridViewProperty;
-  const {
-    fieldId, operate,
-  } = Selectors.gridViewActiveFieldState(state);
+  const view = Selectors.getCurrentView(state)! as IGridViewProperty;
+  const { fieldId, operate } = Selectors.gridViewActiveFieldState(state);
   const recordMoveType = Selectors.getRecordMoveType(state);
 
   return {
@@ -711,4 +720,7 @@ const mapStateToProps = (state: IReduxState): IMultiGridStateProps => {
 };
 
 // eslint-disable-next-line
-export const GridViewContainer:any = connect<IMultiGridStateProps, {}, IMultiGridOwnProps, IReduxState>(mapStateToProps, {})(attachSelection(MultiGridsBase));
+export const GridViewContainer: any = connect<IMultiGridStateProps, {}, IMultiGridOwnProps, IReduxState>(
+  mapStateToProps,
+  {},
+)(attachSelection(MultiGridsBase));

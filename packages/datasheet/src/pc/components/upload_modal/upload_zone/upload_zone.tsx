@@ -1,6 +1,6 @@
 import { IAttachmentValue, Strings, t } from '@vikadata/core';
 import classNames from 'classnames';
-import { ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { resourceService } from 'pc/resource_service';
 import { useResponsive } from 'pc/hooks';
 import { stopPropagation } from 'pc/utils';
@@ -39,22 +39,23 @@ export const UploadZoneBase: React.ForwardRefRenderFunction<ICommonTabRef, IUplo
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
-  useImperativeHandle<ICommonTabRef, ICommonTabRef>(
-    ref,
-    () => ({
-      focus() {
-        return;
-      },
-      trigger() {
-        uploadRef.current?.click();
-      }
-    }),
-  );
+  useImperativeHandle<ICommonTabRef, ICommonTabRef>(ref, () => ({
+    focus() {
+      return;
+    },
+    trigger() {
+      uploadRef.current?.click();
+    },
+  }));
 
   const { getRootProps, getInputProps, isFocused, isFileDialogActive } = useDropzone({
     accept: accept || '',
-    onDragOver() { setDragOver(true); },
-    onDragLeave() { setDragOver(false); },
+    onDragOver() {
+      setDragOver(true);
+    },
+    onDragLeave() {
+      setDragOver(false);
+    },
     onDrop(acceptedFiles: File[]) {
       onUpload(resourceService.instance!.uploadManager.buildStdUploadList(acceptedFiles, recordId, fieldId, cellValue));
       setDragOver(false);
@@ -96,16 +97,14 @@ export const UploadZoneBase: React.ForwardRefRenderFunction<ICommonTabRef, IUplo
     >
       {/* 微信小程序input不支持multiple, 小程序端强制设置为false */}
       <input {...getInputProps()} defaultValue="" {...(isMiniProgram && { multiple: false })} />
-      {
-        !layoutOpacity && <>
+      {!layoutOpacity && (
+        <>
           <span onMouseDown={stopPropagation} style={{ display: 'flex', alignItems: 'center' }} ref={uploadRef}>
             <AddOutlined color={colors.fourthLevelText} />
           </span>
-          {isMobile ?
-            (isMiniProgram ? t(Strings.upload_on_your_phone)
-              : t(Strings.take_photos_or_upload)) : t(Strings.select_local_file)}
+          {isMobile ? (isMiniProgram ? t(Strings.upload_on_your_phone) : t(Strings.take_photos_or_upload)) : t(Strings.select_local_file)}
         </>
-      }
+      )}
     </div>
   );
 };

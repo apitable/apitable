@@ -1,6 +1,6 @@
 import { memo, useRef } from 'react';
 import styles from './styles.module.less';
-import RcTrigger, {} from 'rc-trigger';
+import RcTrigger from 'rc-trigger';
 import { IViewProperty, t, Strings } from '@vikadata/core';
 import classNames from 'classnames';
 import settingStyles from '../../field_setting/styles.module.less';
@@ -8,7 +8,7 @@ import { Switch } from 'antd';
 import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import IconArrow from 'static/icon/datasheet/datasheet_icon_calender_right.svg';
 import { useState } from 'react';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display/component_display';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
 import { WrapperTooltip, useThemeColors } from '@vikadata/components';
 import { useClickAway } from 'ahooks';
@@ -28,7 +28,9 @@ export const ViewSelect = memo((props: IViewSelect) => {
   const view = selectedView ? selectedView : views[0];
   const [showViewPanel, setShowViewPanel] = useState(false);
   const viewSelectTriggerRef = useRef<HTMLDivElement>(null);
-  useClickAway(() => { setShowViewPanel(false); }, viewSelectTriggerRef);
+  useClickAway(() => {
+    setShowViewPanel(false);
+  }, viewSelectTriggerRef);
 
   const handleTriggerClick = () => {
     setShowViewPanel(!showViewPanel);
@@ -69,9 +71,7 @@ export const ViewSelect = memo((props: IViewSelect) => {
       <div className={settingStyles.icon}>
         <ViewIcon width={16} height={16} viewType={view.type} />
       </div>
-      <div className={settingStyles.text}>
-        {view.name}
-      </div>
+      <div className={settingStyles.text}>{view.name}</div>
       <div className={settingStyles.arrow}>
         <IconArrow width={10} height={10} fill={colors.thirdLevelText} />
       </div>
@@ -95,14 +95,13 @@ export const ViewSelect = memo((props: IViewSelect) => {
             <Switch
               size="small"
               checked={Boolean(selectedView)}
-              onChange={checked => checked ? onChange(view.id) : onChange(undefined)}
+              onChange={checked => (checked ? onChange(view.id) : onChange(undefined))}
               disabled={!foreignDatasheetReadable}
             />
           </span>
         </WrapperTooltip>
       </div>
-      {
-        selectedView &&
+      {selectedView && (
         <>
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
             <RcTrigger
@@ -123,15 +122,10 @@ export const ViewSelect = memo((props: IViewSelect) => {
           </ComponentDisplay>
 
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-            <MobileSelect
-              onChange={onSelectItemClick}
-              optionData={optionData}
-              defaultValue={view.id}
-              triggerComponent={Trigger}
-            />
+            <MobileSelect onChange={onSelectItemClick} optionData={optionData} defaultValue={view.id} triggerComponent={Trigger} />
           </ComponentDisplay>
         </>
-      }
+      )}
     </section>
   );
 });
