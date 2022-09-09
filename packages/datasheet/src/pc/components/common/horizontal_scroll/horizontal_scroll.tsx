@@ -5,11 +5,7 @@ import RightScrollIcon from 'static/icon/workbench/workbench_tab_arrow_right.svg
 import { useThemeColors } from '@vikadata/components';
 import styles from './style.module.less';
 import { ConfigConstant } from '@vikadata/core';
-// IBreadCrumbData
-export interface IBreadCrumbBase {
-  teamId?: string;
-  name: string;
-}
+
 export const HorizontalScroll: FC = props => {
   const [scrollLeft, setScrollLeft] = useState(0);
   const [scrollMax, setScrollMax] = useState(0);

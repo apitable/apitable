@@ -64,7 +64,7 @@ export const EventVerification: React.FC<IEventVerification> = props => {
     },
   };
 
-  const onClick = async () => {
+  const onClick = async() => {
     setLoading(true);
     const res = await Api.getAppInstanceById(appInstanceId);
     const { success, data, message } = res.data;
@@ -104,8 +104,8 @@ export const EventVerification: React.FC<IEventVerification> = props => {
             {error === ErrorStatus.Normal
               ? t(Strings.lark_integration_step5_request_button)
               : error === ErrorStatus.Error
-              ? t(Strings.lark_integration_step5_request_button_error)
-              : t(Strings.lark_integration_step5_request_button_success)}
+                ? t(Strings.lark_integration_step5_request_button_error)
+                : t(Strings.lark_integration_step5_request_button_success)}
           </Button>
           {error === ErrorStatus.Error && (
             <div className={styles.verificationError}>

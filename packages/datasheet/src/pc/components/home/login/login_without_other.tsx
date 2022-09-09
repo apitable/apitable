@@ -59,10 +59,10 @@ export const LoginWithoutOther: FC<ILoginWithoutOtherProps> = ({ defaultEmail, s
         <IdentifyingCodeLogin
           submitRequest={submitRequest}
           submitText={submitText}
-          config={{ mail: { defaultValue: defaultEmail, disabled: true } }}
+          config={{ mail: { defaultValue: defaultEmail, disabled: true }}}
         />
       ) : (
-        <PasswordLogin submitRequest={submitRequest} config={{ mail: { defaultValue: defaultEmail, disabled: true } }} />
+        <PasswordLogin submitRequest={submitRequest} config={{ mail: { defaultValue: defaultEmail, disabled: true }}} />
       )}
       <div className={styles.buttonGroup}>
         <LinkButton underline={false} component="button" id={AutoTestID.CHANGE_MODE_BTN} onClick={changeLoginMod} style={{ paddingLeft: 0 }}>

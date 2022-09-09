@@ -1,6 +1,7 @@
+import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
 import { FC } from 'react';
 import * as React from 'react';
-import { Modal, IModalProps } from '../modal';
+import { Modal } from '../modal/modal';
 import classNames from 'classnames';
 import { t, Strings } from '@vikadata/core';
 import styles from './style.module.less';

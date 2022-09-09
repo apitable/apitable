@@ -65,7 +65,7 @@ services:
     networks:
       - unit-test
     volumes:
-      - ./backend-server/init-db/src/main/resources/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./init-db/src/main/resources/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     environment:
       - TZ=Asia/Singapore
       - MONGO_INITDB_DATABASE=vika_test

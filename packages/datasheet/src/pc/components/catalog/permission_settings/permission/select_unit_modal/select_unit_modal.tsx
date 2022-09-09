@@ -1,3 +1,4 @@
+import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
 import { FC, useState } from 'react';
 import * as React from 'react';
 import { BaseModal } from 'pc/components/common';
@@ -8,7 +9,6 @@ import { stopPropagation } from 'pc/utils';
 import InviteIcon from 'static/icon/space/space_icon_invite.svg';
 import { expandInviteModal } from 'pc/components/invite';
 import { useSelector, Provider } from 'react-redux';
-import { IModalProps } from 'pc/components/common';
 import { store } from 'pc/store';
 import ReactDOM from 'react-dom';
 import { SelectUnitLeft } from './select_unit_left';

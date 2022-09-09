@@ -39,10 +39,6 @@ export enum ButtonOperateType {
   OpenFieldDesc = 'openFieldDesc',
 }
 
-// 色盘基础颜色
-export type ColorBase = 'purple' | 'deepPurple' | 'indigo' | 'blue' | 'teal' | 'green'
-  | 'yellow' | 'orange' | 'tangerine' | 'pink' | 'red' | 'brown' | 'black' | 'blackBlue';
-
 export const UNDO = 'UNDO';
 
 export enum ActivitySelectType {

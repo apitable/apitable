@@ -50,7 +50,7 @@ export const MirrorPath: React.FC<IMirrorPath> = props => {
       });
     }
 
-    navigationTo({ path: Navigation.WORKBENCH, params: { nodeId: breadInfo.datasheetId, viewId: breadInfo.viewId } });
+    navigationTo({ path: Navigation.WORKBENCH, params: { nodeId: breadInfo.datasheetId, viewId: breadInfo.viewId }});
   }, 5000);
 
   if (!view) {

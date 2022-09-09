@@ -106,10 +106,10 @@ export const generateUserInfo = (
   if ('memberId' in item) {
     const title = spaceInfo
       ? getSocialWecomUnitName({
-          name: item.originName || item.memberName,
-          isModified: item.isMemberNameModified,
-          spaceInfo,
-        })
+        name: item.originName || item.memberName,
+        isModified: item.isMemberNameModified,
+        spaceInfo,
+      })
       : item.memberName;
 
     return {
@@ -166,7 +166,7 @@ export const exportMirror = (mirrorId: string, exportType: string) => {
 export const exportDatasheet = (datasheetId: string, exportType: string, option: { view?: IViewProperty; mirrorId?: string } = {}) => {
   const { view, mirrorId } = option;
   store.dispatch(
-    StoreActions.fetchDatasheet(datasheetId, async () => {
+    StoreActions.fetchDatasheet(datasheetId, async() => {
       const state = store.getState();
       const datasheet = Selectors.getDatasheet(state, datasheetId)!;
       const permission = Selectors.getPermissions(state, datasheetId, undefined, mirrorId);
@@ -250,7 +250,7 @@ const exportExcel = (workbook: Workbook, fileName: string, isView?: boolean) => 
  * @param workbook workbook对象
  * @param fileName csv文件的名称
  */
-const exportCSV = async (workbook: Workbook, fileName: string, isView?: boolean) => {
+const exportCSV = async(workbook: Workbook, fileName: string, isView?: boolean) => {
   await workbook.csv.writeBuffer({ encoding: 'UTF-8' }).then(buffer => {
     const blob = new Blob(['\uFEFF' + buffer], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
@@ -397,42 +397,6 @@ export const getNodeTypeByNodeId = (nodeId: string): ConfigConstant.NodeType => 
     default:
       return nodeType.FOLDER;
   }
-};
-
-interface INodeTypeInfo {
-  contextMenuType: ConfigConstant.ContextMenuType;
-  typeText: string;
-}
-
-/** 根据节点类型获取对应的节点类型信息（中文名称、右击菜单类型） */
-export const getTypeInfoByNodeType = (type: ConfigConstant.NodeType): INodeTypeInfo => {
-  const data = {
-    contextMenuType: ConfigConstant.ContextMenuType.DEFAULT,
-    typeText: t(Strings.folder),
-  };
-  switch (type) {
-    case ConfigConstant.NodeType.DATASHEET:
-      data.contextMenuType = ConfigConstant.ContextMenuType.DATASHEET;
-      data.typeText = t(Strings.datasheet);
-      break;
-    case ConfigConstant.NodeType.FORM:
-      data.contextMenuType = ConfigConstant.ContextMenuType.FORM;
-      data.typeText = t(Strings.form);
-      break;
-    case ConfigConstant.NodeType.FOLDER:
-      data.contextMenuType = ConfigConstant.ContextMenuType.FOLDER;
-      data.typeText = t(Strings.folder);
-      break;
-    case ConfigConstant.NodeType.DASHBOARD:
-      data.contextMenuType = ConfigConstant.ContextMenuType.DASHBOARD;
-      data.typeText = t(Strings.dashboard);
-      break;
-    case ConfigConstant.NodeType.MIRROR:
-      data.contextMenuType = ConfigConstant.ContextMenuType.DASHBOARD;
-      data.typeText = t(Strings.dashboard);
-      break;
-  }
-  return data;
 };
 
 export const getResourceTypeByNodeType = (nodeType: ConfigConstant.NodeType) => {

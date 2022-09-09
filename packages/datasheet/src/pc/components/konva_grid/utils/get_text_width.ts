@@ -21,19 +21,3 @@ export const getTextWidth = (ctx: CanvasRenderingContext2D, text: string, font: 
 
   return width;
 };
-
-export const getTextData = (text: string, font: string) => {
-  if (!text || typeof text !== 'string') {
-    return null;
-  }
-  return textDataCache.get(text);
-};
-
-export const setTextData = (text: string, font: string, textData: IWrapTextResultProps) => {
-  let cacheOfFont = textDataCache[font];
-  if (!cacheOfFont) {
-    cacheOfFont = textDataCache[font] = new LRU(500);
-  }
-  cacheOfFont.set(text, textData);
-};
-

@@ -1,15 +1,11 @@
 import {
-  ACTION_INPUT_PARSER_BASE_FUNCTIONS,
-  ACTION_INPUT_PARSER_PASS_THROUGH_FUNCTIONS, ConfigConstant, Field, IField, IFieldMap, IFieldPermissionMap,
-  InputParser, integrateCdnHost, MagicVariableParser, Selectors,
-  Strings, t
+  ACTION_INPUT_PARSER_BASE_FUNCTIONS, ACTION_INPUT_PARSER_PASS_THROUGH_FUNCTIONS, ConfigConstant, Field, IField, IFieldPermissionMap, InputParser,
+  integrateCdnHost, MagicVariableParser, Selectors, Strings, t
 } from '@vikadata/core';
-import produce from 'immer';
 import { createElement } from 'react';
 import { isWecomFunc } from '../home/social_platform';
 import {
-  IActionType, IJsonSchema, INodeOutputSchema, INodeType, IRobotAction,
-  IRobotBaseInfo, IRobotCardInfo, IRobotTrigger, ITriggerType
+  IActionType, IJsonSchema, INodeOutputSchema, INodeType, IRobotAction, IRobotBaseInfo, IRobotCardInfo, IRobotTrigger, ITriggerType
 } from './interface';
 
 /**
@@ -20,49 +16,6 @@ export const operand2PureValue = (operand: any) => {
   const inputParser = new InputParser(parser);
   const res = inputParser.render(operand, {});
   return res;
-};
-
-export const literalValue2Operand = (literalValue: any) => {
-  return {
-    type: 'Literal',
-    value: literalValue,
-  };
-};
-
-export const operand2LiteralValue = (operand: any) => {
-  if (!operand) return null;
-  if (operand.type === 'Literal') {
-    return operand.value;
-  }
-  return operand;
-};
-
-export const formInput2Operand = (input: object, magicVariableKeyList?: string[]) => {
-  return Object.keys(input).reduce((acc, key) => {
-    const value = input[key];
-    if (magicVariableKeyList && magicVariableKeyList.includes(key)) {
-      acc[key] = value;
-    } else {
-      acc[key] = literalValue2Operand(value);
-    }
-    return acc;
-  }, {});
-};
-
-/**
- * {
- *  "url": IOperand,
- *  "method": IOperand
- * }
- * operand 中的字面量转化为值，将 operand 中的表达式原样输出。
- */
-export const nodeInput2fromInput = (triggerInput: any, inputJsonSchema?: IJsonSchema): any => {
-  if (!triggerInput) return {};
-  return Object.keys(triggerInput).reduce((acc, key) => {
-    const value = triggerInput[key];
-    acc[key] = operand2LiteralValue(value);
-    return acc;
-  }, {});
 };
 
 export const getNodeTypeOptions = (nodeTypes: INodeType[]) => {
@@ -78,26 +31,6 @@ export const getNodeTypeOptions = (nodeTypes: INodeType[]) => {
         }
       }, null)
     };
-  });
-};
-
-export const transformFilter = (filter: string | object) => {
-  if (typeof filter === 'string') {
-    return JSON.parse(filter);
-  }
-  return filter;
-};
-
-export const enrichTriggerOutputSchema = (schema: IJsonSchema, fieldMap: IFieldMap) => {
-  // 对于内置的触发器来说，fields 需要用 fieldMap 来填充
-  // TODO: 需要将每个字段类型的输出值类型，转化为 json schema 类型
-  return produce(schema, draft => {
-    if (draft.properties?.fields?.type === 'object') {
-      draft.properties.fields.properties = {
-
-      };
-    }
-    return draft;
   });
 };
 

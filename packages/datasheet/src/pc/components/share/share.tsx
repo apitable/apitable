@@ -139,7 +139,7 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
           {t(Strings.share_edit_tip)}
           <i
             onClick={() => {
-              navigationTo({ path: Navigation.LOGIN, query: { reference: window.location.href, spaceId: shareSpace ? shareSpace.spaceId : '' } });
+              navigationTo({ path: Navigation.LOGIN, query: { reference: window.location.href, spaceId: shareSpace ? shareSpace.spaceId : '' }});
             }}
           >
             {t(Strings.login)}

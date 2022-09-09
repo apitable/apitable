@@ -2,11 +2,6 @@ import { useMemo } from 'react';
 import { isTouchDevice } from 'pc/utils';
 import { useMobileScroller, useScroller, AreaType } from 'pc/components/gantt_view';
 
-export interface IScrollCoordsProps {
-  scrollLeft?: number;
-  scrollTop?: number;
-}
-
 interface IUseGridScrollerProps {
   containerRef: React.RefObject<any>;
   verticalBarRef: React.RefObject<HTMLDivElement>;
@@ -21,7 +16,7 @@ interface IUseGridScrollerProps {
 }
 
 export const useGridScroller = (props: IUseGridScrollerProps) => {
-  const { 
+  const {
     containerRef,
     gridHorizontalBarRef,
     verticalBarRef,

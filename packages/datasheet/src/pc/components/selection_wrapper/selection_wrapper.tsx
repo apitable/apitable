@@ -4,21 +4,16 @@ import {
 } from '@vikadata/core';
 import { zip } from 'lodash';
 import { notify } from 'pc/components/common/notify';
+import { IMultiGridProps } from 'pc/components/multi_grid/interface';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { CELL_CLASS, getParentNodeByClass } from 'pc/utils';
 import { getClickCellId } from 'pc/utils/dom';
 import * as React from 'react';
-import { batchActions } from 'redux-batched-actions';
 import { NotifyKey } from '../common/notify/notify.interface';
 import { MultiGridsBase } from '../multi_grid';
-import { IMultiGridProps } from 'pc/components/multi_grid/interface';
 
-const { setSelection, setDragTarget, setFillHandleStatus } = StoreActions;
-
-export interface IState {
-  isDown: boolean;
-}
+const { setSelection, setFillHandleStatus } = StoreActions;
 
 export enum MouseDownType {
   Left,
@@ -42,8 +37,6 @@ export const attachSelection = WrappedComponent => {
       row: 0,
       column: 0,
     };
-    // 避免重复计算，在 activeCell 的 row 没有发生变化的时候，存储第一次计算的结果
-    groupObjectRecordById: Map<string, { [id: string]: { recordId: string, hidden?: boolean } }> = new Map();
 
     // 单元格按下
     // 这里的操作限定和直接和选取相关的，亦直接对cell的操作，除此以外像是列宽和拖动都不在这里处理
@@ -136,18 +129,6 @@ export const attachSelection = WrappedComponent => {
           return;
         }
       }
-    };
-
-    // 清除redux 中的状态
-    clearOperateState = () => {
-      this.originPageX = 0;
-      this.isDrag = false;
-      this.wrappedComponentRef.current &&
-      this.wrappedComponentRef.current.columnScrollHandler.stopScroll();
-      const datasheetId = Selectors.getActiveDatasheetId(store.getState())!;
-      store.dispatch(batchActions([
-        setDragTarget(datasheetId, {}),
-      ]));
     };
 
     onContextMenu = () => {

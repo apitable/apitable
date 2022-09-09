@@ -78,7 +78,7 @@ const CommentButton = ({ active, onClick }: IPaneIconProps): JSX.Element => {
 const SubscribeButton = ({ active, onSubOrUnsub }): JSX.Element => {
   const [updating, setUpdating] = useState(false);
 
-  const _onSubOrUnsub = async () => {
+  const _onSubOrUnsub = async() => {
     setUpdating(true);
 
     await onSubOrUnsub();
@@ -422,7 +422,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
 
   const [fieldDescCollapseStatusMap, setFieldDescCollapseStatusMap] = useLocalStorageState<IFieldDescCollapseStatus>(
     StorageName.FieldDescCollapseStatus,
-    { defaultValue: {} },
+    { defaultValue: {}},
   );
 
   const isSideRecordOpen = useSelector(state => state.space.isSideRecordOpen);
@@ -430,7 +430,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
   const isColumnLayout = recordVision === RecordVision.Side && isSideRecordOpen && !props.forceCenter;
   const isSetFocusIdByClickFieldRef = useRef(false);
 
-  const [cacheType, setCacheType] = useLocalStorageState<ICacheType>('vika_activity_type', { defaultValue: {} });
+  const [cacheType, setCacheType] = useLocalStorageState<ICacheType>('vika_activity_type', { defaultValue: {}});
   const handleCacheType = useCallback(
     (type: ActivitySelectType) => {
       setCacheType({
@@ -599,7 +599,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
     }
   };
 
-  const onSubOrUnsub = async () => {
+  const onSubOrUnsub = async() => {
     if (subscriptions.includes(activeRecordId)) {
       const { data } = await unsubscribeRecordByIds({
         datasheetId,
@@ -756,12 +756,12 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
                 style={
                   isColumnLayout
                     ? {
-                        height: 150,
-                        width: '100%',
-                        maxWidth: '100%',
-                        borderTop: '1px solid var(--fc5)',
-                        flexGrow: 1,
-                      }
+                      height: 150,
+                      width: '100%',
+                      maxWidth: '100%',
+                      borderTop: '1px solid var(--fc5)',
+                      flexGrow: 1,
+                    }
                     : undefined
                 }
               />

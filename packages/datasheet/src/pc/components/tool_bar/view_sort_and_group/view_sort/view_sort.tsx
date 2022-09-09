@@ -154,8 +154,8 @@ export const ViewSort: React.FC<IViewSetting> = props => {
   const manualSort = sortInfo && !sortInfo.keepSort;
   const mainContentStyle: React.CSSProperties = isMobile
     ? {
-        maxHeight: manualSort ? 'calc(100% - 104px)' : 'calc(100% - 36px)',
-      }
+      maxHeight: manualSort ? 'calc(100% - 104px)' : 'calc(100% - 36px)',
+    }
     : {};
 
   React.useEffect(() => {

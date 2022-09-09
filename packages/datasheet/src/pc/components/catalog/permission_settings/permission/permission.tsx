@@ -4,7 +4,7 @@ import { useToggle } from 'ahooks';
 import { Api, INodePermissionData, INodeRoleMap, IReduxState, IUnitValue, StoreActions, Strings, t } from '@vikadata/core';
 import { Popconfirm } from 'pc/components/common/popconfirm';
 import { Message } from 'pc/components/common/message';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useCatalogTreeRequest, useResponsive } from 'pc/hooks';
 import styles from './style.module.less';
 import { useDispatch, useSelector } from 'react-redux';

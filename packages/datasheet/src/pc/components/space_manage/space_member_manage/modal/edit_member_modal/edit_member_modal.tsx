@@ -2,7 +2,7 @@ import { ConfigConstant, IReduxState, ITeamsInSpace, IUpdateMemberInfo, Strings,
 import { TextInput, Button, TextButton, colorVars } from '@vikadata/components';
 import { Avatar } from 'pc/components/common/avatar';
 import { Message } from 'pc/components/common/message';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useEditMember } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
 import { useEffect, useState, FC } from 'react';

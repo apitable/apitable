@@ -14,7 +14,7 @@ import { Spin } from 'antd';
 import { Avatar, AvatarSize } from 'pc/components/common/avatar';
 import { Message } from 'pc/components/common/message';
 import { ImageCropUpload } from 'pc/components/common/image_crop_upload';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { LinkButton, Button, Typography, stopPropagation, useThemeColors } from '@vikadata/components';
 import { IPreviewShape, ISelectInfo } from 'pc/components/common/image_crop_upload';
 import { useUserRequest } from 'pc/hooks';

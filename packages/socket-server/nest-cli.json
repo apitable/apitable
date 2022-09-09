@@ -4,7 +4,7 @@
   "compilerOptions": {
     "assets": [
       {
-        "include": "**/*.proto",
+        "include": "./grpc/proto/*.proto",
         "outDir": "./dist"
       },
       {

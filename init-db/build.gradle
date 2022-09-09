@@ -1,0 +1,35 @@
+plugins {
+  id 'java'
+  id 'org.liquibase.gradle' version "2.0.4"
+}
+
+description = 'Vikadata DB Manage'
+group = "com.vikadata"
+version = "0.13.5"
+
+repositories {
+  maven { url 'https://maven.aliyun.com/repository/public' }
+  mavenCentral()
+}
+
+dependencies {
+  liquibaseRuntime 'mysql:mysql-connector-java:8.0.28'
+  liquibaseRuntime 'org.liquibase:liquibase-core:4.8.0'
+}
+
+liquibase {
+  activities {
+    main {
+      driver "com.mysql.cj.jdbc.Driver"
+      url "jdbc:mysql://${System.getenv("DB_HOST")}:${System.getenv("DB_PORT")}/${System.getenv("DB_NAME")}?characterEncoding=utf8&autoReconnect=true&useSSL=true"
+      username "${System.getenv("DB_USERNAME")}"
+      password "${System.getenv("DB_PASSWORD")}"
+      changeLogFile "src/main/resources/db/changelog/db.changelog-master.xml"
+      logLevel "warning"
+      classpath "src/main/resources/"
+      databaseChangeLogTableName 'vika_db_changelog'
+      databaseChangeLogLockTableName 'vika_db_changelog_lock'
+      outputFile "update.sql"
+    }
+  }
+}

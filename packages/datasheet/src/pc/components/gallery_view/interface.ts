@@ -7,11 +7,6 @@ export interface ICommitDragDropState {
   direction: DropDirectionType;
 }
 
-export interface IDragAndDropCardState {
-  recordId: string;
-  direction?: DropDirectionType;
-}
-
 /**
  * 对于 react-window 来说，item 的 interface 应该是通用的。在分组的情况下，类型不同而已。
  */

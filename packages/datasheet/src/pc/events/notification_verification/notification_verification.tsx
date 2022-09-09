@@ -21,7 +21,7 @@ export const sendRemind = () => {
 };
 
 //获取无权限人员列表
-export const getNoPermissionMemberList = async (nodeId: string, unitsIds: string[]): Promise<IApi.INoPermissionMemberResponseData[] | null> => {
+export const getNoPermissionMemberList = async(nodeId: string, unitsIds: string[]): Promise<IApi.INoPermissionMemberResponseData[] | null> => {
   if (!nodeId) {
     return null;
   }
@@ -33,7 +33,7 @@ export const getNoPermissionMemberList = async (nodeId: string, unitsIds: string
   return null;
 };
 
-export const verificationPermission = async (commitRemindParam: IApi.ICommitRemind) => {
+export const verificationPermission = async(commitRemindParam: IApi.ICommitRemind) => {
   // 设置详细参数
   const newCommitRemindParam = fastCloneDeep(commitRemindParam);
   dispatch(StoreActions.setPermissionCommitRemindParameter(newCommitRemindParam));

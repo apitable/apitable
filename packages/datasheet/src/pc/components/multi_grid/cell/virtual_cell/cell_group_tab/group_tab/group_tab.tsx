@@ -276,20 +276,20 @@ const GroupTabBase: React.FC<IGroupTab> = props => {
           <></>
         )}
         {// 存在没有折叠的组头时
-        setComplement(Array.from(groupingCollapseIdsMap.keys()), allGroupTabIds).length > 0 ? (
-          <li
-            onMouseDown={e => {
-              groupCommand(ExpandType.RetractAll, e);
-            }}
-          >
-            <div className={styles.icon}>
-              <IconRetractAll width={15} height={15} fill={colors.thirdLevelText} />
-            </div>
-            {t(Strings.collapse_all_group)}
-          </li>
-        ) : (
-          <></>
-        )}
+          setComplement(Array.from(groupingCollapseIdsMap.keys()), allGroupTabIds).length > 0 ? (
+            <li
+              onMouseDown={e => {
+                groupCommand(ExpandType.RetractAll, e);
+              }}
+            >
+              <div className={styles.icon}>
+                <IconRetractAll width={15} height={15} fill={colors.thirdLevelText} />
+              </div>
+              {t(Strings.collapse_all_group)}
+            </li>
+          ) : (
+            <></>
+          )}
       </ul>
     );
   }

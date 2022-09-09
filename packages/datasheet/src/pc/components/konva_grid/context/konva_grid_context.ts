@@ -27,11 +27,6 @@ export interface IDraggingOutlineInfoProps {
   columnIndex: number;
 }
 
-export interface IFieldHeadHeightInfo {
-  height: number;
-  index: number;
-}
-
 export interface IKonvaGridContext {
   theme: ITheme;
   tooltipInfo: ITooltipInfo;

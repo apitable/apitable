@@ -29,8 +29,6 @@ pluginManagement {
 
 rootProject.name = 'backend'
 
-include 'init-db'
-
 include 'code-coverage-report'
 
 include 'system-config'

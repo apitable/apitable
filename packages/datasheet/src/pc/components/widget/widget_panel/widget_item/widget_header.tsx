@@ -24,7 +24,7 @@ interface IWidgetHeaderProps extends IWidgetPropsBase {
 }
 
 export const WidgetHeaderMobile: React.FC<IWidgetHeaderProps> = props => {
-  const { className, widgetId, widgetPanelId, displayMode = 'always', dragging, config = {} } = props;
+  const { className, widgetId, widgetPanelId, displayMode = 'always', dragging, config = {}} = props;
   const colors = useThemeColors();
   const inputRef = useRef<Input>(null);
   const [rename, setRename] = useState(false);

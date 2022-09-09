@@ -1,7 +1,7 @@
 import { integrateCdnHost, TrackEvents } from '@vikadata/core';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
-import { Modal as ModalBase } from 'pc/components/common/modal/modal';
+import { Modal as ModalBase } from 'pc/components/common/modal/modal/modal';
 import { Loading } from 'pc/components/preview_file/preview_type/preview_doc/loading';
 import { tracker } from 'pc/utils/tracker';
 import { FC, useState } from 'react';

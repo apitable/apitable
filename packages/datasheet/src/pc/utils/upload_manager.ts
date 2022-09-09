@@ -21,13 +21,6 @@ interface IUploadMapItem {
   failQueue: IQueue[];
 }
 
-export interface IUploadParams {
-  nodeId: string | undefined;
-  fieldId: string;
-  recordId: string;
-  cellValue: IAttachmentValue[];
-}
-
 export enum UploadStatus {
   Pending,
   Loading,

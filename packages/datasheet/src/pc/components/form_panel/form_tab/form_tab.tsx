@@ -50,7 +50,7 @@ const FormTabBase = props => {
     const { renamable, iconEditable, editable } = permissions;
     const { datasheetId, viewId, datasheetName, datasheetIcon } = sourceInfo;
     let viewName = '',
-      viewType = ViewType.Form;
+        viewType = ViewType.Form;
     if (formRelMeta) {
       viewName = formRelMeta.views[0].name;
       viewType = formRelMeta.views[0].type;
@@ -79,7 +79,7 @@ const FormTabBase = props => {
   const showLabel = tabSize?.width! > HIDDEN_TOOLBAR_RIGHT_LABEL_WIDTH;
 
   const jumpHandler = () => {
-    navigationTo({ path: Navigation.WORKBENCH, params: { spaceId, nodeId: datasheetId, viewId } });
+    navigationTo({ path: Navigation.WORKBENCH, params: { spaceId, nodeId: datasheetId, viewId }});
   };
   return (
     <div

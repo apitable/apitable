@@ -1,5 +1,5 @@
 import { Tabs } from 'antd';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { FC } from 'react';
 import * as React from 'react';
 import styles from './style.module.less';

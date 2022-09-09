@@ -36,8 +36,8 @@ COPY packages/ ./packages/
 
 RUN set -eux; \
     sed -i~ '$a\WEB_CLIENT_VERSION='${SEMVER_FULL}'' packages/datasheet/.env; \
-    sed -i~ 's/NEXT_ASSET_PREFIX=.*/NEXT_ASSET_PREFIX='${NEXT_ASSET_PREFIX}'/g' packages/datasheet/.env; \
-    sed -i~ 's/NEXT_PUBLIC_ASSET_PREFIX=.*/NEXT_PUBLIC_ASSET_PREFIX='${NEXT_PUBLIC_ASSET_PREFIX}'/g' packages/datasheet/.env
+    sed -i~ 's~^NEXT_ASSET_PREFIX=.*~NEXT_ASSET_PREFIX='${NEXT_ASSET_PREFIX}'~' packages/datasheet/.env; \
+    sed -i~ 's~^NEXT_PUBLIC_ASSET_PREFIX=.*~NEXT_PUBLIC_ASSET_PREFIX='${NEXT_PUBLIC_ASSET_PREFIX}'~' packages/datasheet/.env
 
 RUN yarn build:dst
 

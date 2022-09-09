@@ -216,10 +216,10 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
 
     const title = spaceInfo
       ? getSocialWecomUnitName({
-          name: _item.originName || _item.memberName,
-          isModified: _item.isMemberNameModified,
-          spaceInfo,
-        })
+        name: _item.originName || _item.memberName,
+        isModified: _item.isMemberNameModified,
+        spaceInfo,
+      })
       : '';
 
     return (
@@ -288,8 +288,8 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
       const unitId = e.target.value;
       const selectUnit = units
         ? Object.values(units)
-            .flat(1)
-            .filter(item => item.unitId === unitId)
+          .flat(1)
+          .filter(item => item.unitId === unitId)
         : [];
       setCheckedList(selectUnit);
     }

@@ -42,7 +42,6 @@ interface ITimePickerState {
 
 export class TimePicker extends React.Component<ITimePickerProps, ITimePickerState> {
   saveInputRef: any;
-  savePanelRef: any;
 
   static defaultProps: Partial<ITimePickerProps> = {
     prefixCls: 'cp-time-picker',

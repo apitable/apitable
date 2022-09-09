@@ -1,23 +1,11 @@
-import { useRef, KeyboardEvent } from 'react';
-import * as React from 'react';
-import { useSelector } from 'react-redux';
-import { ContextMenu, contextMenuShow, IContextMenuItemProps, useThemeColors } from '@vikadata/components';
-import { CollaCommandName, ExecuteResult, ICellValue, Selectors, StoreActions, Strings, t, View, ViewType, DatasheetApi } from '@vikadata/core';
+import { ContextMenu, IContextMenuItemProps, useThemeColors } from '@vikadata/components';
+import { CollaCommandName, DatasheetApi, ExecuteResult, Selectors, StoreActions, Strings, t, View, ViewType } from '@vikadata/core';
 import {
-  ArrowDownOutlined,
-  ArrowLeftOutlined,
-  ArrowRightOutlined,
-  ArrowUpOutlined,
-  ColumnUrlOutlined,
-  CopyOutlined,
-  DeleteOutlined,
-  ExpandRecordOutlined,
-  AttentionOutlined,
-  DuplicateOutlined,
-  // PasteOutlined,
+  ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, AttentionOutlined, ColumnUrlOutlined, CopyOutlined, DeleteOutlined,
+  DuplicateOutlined, ExpandRecordOutlined,
 } from '@vikadata/icons';
 import { useMount } from 'ahooks';
-import { useRequest } from 'pc/hooks';
+import { isInteger } from 'lodash';
 import difference from 'lodash/difference';
 import path from 'path-browserify';
 import { ShortcutActionName } from 'pc/common/shortcut_key';
@@ -27,16 +15,18 @@ import { Message } from 'pc/components/common';
 import { notifyWithUndo } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
-import { useDispatch } from 'pc/hooks';
-import { EDITOR_CONTAINER } from 'pc/utils/constant';
+import { useDispatch, useRequest } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { flatContextData, isNumberKey, printableKey } from 'pc/utils';
+import { EDITOR_CONTAINER } from 'pc/utils/constant';
+import { isWindowsOS } from 'pc/utils/os';
+import * as React from 'react';
+import { KeyboardEvent, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { copy2clipBoard } from '../../../utils/dom';
-import { flatContextData, isNumberKey, printableKey } from 'pc/utils';
 import { IInputEditor, InputMenuItem } from './input_menu_item';
-import { isInteger } from 'lodash';
-import { isWindowsOS } from 'pc/utils/os';
 
 export const GRID_RECORD_MENU = 'GRID_RECORD_MENU';
 
@@ -53,22 +43,6 @@ interface IRecordMenuProps {
   hideInsert?: boolean;
   menuId?: string;
   extraData?: any[];
-}
-
-interface ITriggerRecordMenuProps<T> {
-  id: string;
-  event: MouseEvent | TouchEvent | React.MouseEvent | React.TouchEvent;
-  props?: {
-    recordId?: string;
-    recordIndex?: number;
-    cellValue?: { [fieldId: string]: ICellValue };
-    fieldIndex?: number;
-  } & T;
-}
-
-export function triggerRecordMenu<T>(props: ITriggerRecordMenuProps<T>) {
-  const { id, event, props: TriggerProps } = props;
-  contextMenuShow(event as React.MouseEvent<HTMLElement>, id, TriggerProps);
 }
 
 // 复制记录
@@ -235,7 +209,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
     }
   };
 
-  const onSubscribe = async (recordIds: string[]) => {
+  const onSubscribe = async(recordIds: string[]) => {
     const { data } = await subscribeRecordByIds({ datasheetId, mirrorId, recordIds });
 
     if (data?.success) {
@@ -246,7 +220,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
     }
   };
 
-  const onUnsubscribe = async (recordIds: string[]) => {
+  const onUnsubscribe = async(recordIds: string[]) => {
     const { data } = await unsubscribeRecordByIds({ datasheetId, mirrorId, recordIds });
 
     if (data?.success) {
@@ -305,7 +279,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
         icon: <ColumnUrlOutlined color={colors.thirdLevelText} />,
         text: t(Strings.menu_copy_record_url, { recordShowName }),
         hidden: !onlyOperateOneRecord,
-        onClick: ({ props: { recordId } }) => {
+        onClick: ({ props: { recordId }}) => {
           copyLink(recordId);
         },
       },
@@ -313,14 +287,14 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
         icon: <DuplicateOutlined color={colors.thirdLevelText} />,
         text: t(Strings.menu_duplicate_record, { recordShowName }),
         hidden: !onlyOperateOneRecord || !rowCreatable,
-        onClick: ({ props: { recordId } }) => copyRecord(recordId),
+        onClick: ({ props: { recordId }}) => copyRecord(recordId),
       },
       {
         icon: <ExpandRecordOutlined color={colors.thirdLevelText} />,
         text: t(Strings.menu_expand_record, { recordShowName }),
         shortcutKey: getShortcutKeyString(ShortcutActionName.ExpandRecord),
         hidden: !onlyOperateOneRecord,
-        onClick: ({ props: { recordId } }) => {
+        onClick: ({ props: { recordId }}) => {
           expandRecordIdNavigate(recordId);
         },
       },
@@ -328,7 +302,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
         icon: <AttentionOutlined color={colors.thirdLevelText} />,
         text: subOrUnsubText,
         hidden: isCalendar || !!shareId || !!templateId,
-        onClick: ({ props: { recordId } }) => onSubOrUnsub(recordId),
+        onClick: ({ props: { recordId }}) => onSubOrUnsub(recordId),
       },
     ],
     [
@@ -336,7 +310,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
         icon: <DeleteOutlined color={colors.thirdLevelText} />,
         text: getDeleteString(),
         hidden: !rowRemovable,
-        onClick: ({ props: { recordId } }) => {
+        onClick: ({ props: { recordId }}) => {
           deleteRecord(recordId);
         },
       },
@@ -360,7 +334,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
           ),
           shortcutKey: getShortcutKeyString(ShortcutActionName.PrependRow),
           hidden: !allowInsertRecord,
-          onClick: ({ props: { recordId } }) =>
+          onClick: ({ props: { recordId }}) =>
             appendRow({
               recordId,
               direction: Direction.Up,
@@ -381,7 +355,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
           ),
           shortcutKey: getShortcutKeyString(ShortcutActionName.AppendRow),
           hidden: !allowInsertRecord,
-          onClick: ({ props: { recordId } }) =>
+          onClick: ({ props: { recordId }}) =>
             appendRow({
               recordId,
               direction: Direction.Down,

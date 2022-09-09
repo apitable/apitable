@@ -122,11 +122,6 @@ export class NotificationStore {
     return ws;
   }
 
-  // 离开空间时
-  static leaveSpace() {
-    this.socket?.emit('LEAVE_SPACE', {});
-  }
-
   // 进入空间时
   static joinSpace(spaceId: string) {
     this.socket.emit('WATCH_SPACE', { spaceId }, (result) => {

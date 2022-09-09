@@ -79,7 +79,7 @@ export const CreateEvent: React.FC<ICreateEvent> = props => {
   );
 
   const setLarkConfig = useCallback(
-    async (formData: IConfigForm) => {
+    async(formData: IConfigForm) => {
       setLoading(true);
       const { data: result } = await Api.updateLarkEventConfig(
         appInstanceId,

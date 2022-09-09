@@ -62,12 +62,12 @@ export const TemplateCategorySide: FC = () => {
   const isMobile = screenIsAtMost(ScreenSize.md);
 
   const handleClick = (categoryId: string) => {
-    navigationTo({ path: Navigation.TEMPLATE, params: { spaceId, categoryId } });
+    navigationTo({ path: Navigation.TEMPLATE, params: { spaceId, categoryId }});
     isMobile && setSideBarVisible(false);
   };
 
   const jumpOfficialWebsite = () => {
-    navigationTo({ path: Navigation.HOME, method: Method.NewTab, query: { home: 1 } });
+    navigationTo({ path: Navigation.HOME, method: Method.NewTab, query: { home: 1 }});
   };
 
   /**
@@ -92,7 +92,7 @@ export const TemplateCategorySide: FC = () => {
 
   const jumpTemplate = (categoryCode: string, templateId: string) => {
     triggerTrack(keywords);
-    navigationTo({ path: Navigation.TEMPLATE, params: { spaceId, categoryId: categoryCode, templateId } });
+    navigationTo({ path: Navigation.TEMPLATE, params: { spaceId, categoryId: categoryCode, templateId }});
   };
 
   const clearKeyword = () => {

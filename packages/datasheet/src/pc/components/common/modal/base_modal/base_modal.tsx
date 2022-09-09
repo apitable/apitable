@@ -1,8 +1,9 @@
+import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
 import { FC } from 'react';
 import classNames from 'classnames';
 import { t, Strings } from '@vikadata/core';
 import styles from './style.module.less';
-import { Modal, IModalProps } from '../modal';
+import { Modal } from '../modal/modal';
 const config = {
   centered: true,
   maskClosable: false,

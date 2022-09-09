@@ -81,7 +81,7 @@ const Trash: FC = () => {
     setTrashList(trashList.filter(item => item.nodeId !== nodeId));
   };
 
-  const recoverHandler = async (nodeId: string) => {
+  const recoverHandler = async(nodeId: string) => {
     if (recoverLoading) {
       return;
     }
@@ -91,7 +91,7 @@ const Trash: FC = () => {
       dispatch(StoreActions.addNodeToMap([data]));
       dispatch(StoreActions.datasheetErrorCode(nodeId, null));
       deleteTrashItem(nodeId);
-      navigationTo({ path: Navigation.WORKBENCH, params: { spaceId, nodeId } });
+      navigationTo({ path: Navigation.WORKBENCH, params: { spaceId, nodeId }});
       Message.success({ content: t(Strings.recover_node_success) });
       return;
     }

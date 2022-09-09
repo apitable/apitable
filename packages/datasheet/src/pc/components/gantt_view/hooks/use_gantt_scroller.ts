@@ -4,11 +4,6 @@ import { AreaType } from '../interface';
 import { useMobileScroller } from './use_mobile_scroller';
 import { useScroller } from './use_scroller';
 
-export interface IScrollCoordsProps {
-  scrollLeft?: number;
-  scrollTop?: number;
-}
-
 interface IUseGanttScrollerProps {
   containerRef: React.RefObject<any>;
   verticalBarRef: React.RefObject<HTMLDivElement>;
@@ -26,7 +21,7 @@ interface IUseGanttScrollerProps {
 }
 
 export const useGanttScroller = (props: IUseGanttScrollerProps) => {
-  const { 
+  const {
     containerRef,
     gridHorizontalBarRef,
     ganttHorizontalBarRef = { current: null },

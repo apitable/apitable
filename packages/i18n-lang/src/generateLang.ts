@@ -4,15 +4,15 @@ import path from 'path';
 type HashMap = { [key: string]: string };
 
 // 配置项
-const inputPath = 'packages/i18n-lang/src/config/strings.auto.json'; // 解析源
-const allPkgPath = 'packages/i18n-lang/src/config/strings.json'; // 全语言包导出的位置
-const pkgsPath = 'packages/datasheet/src/static/lang'; // 各种语言包
+const inputPath = 'apitable/packages/i18n-lang/src/config/strings.auto.json'; // 解析源
+const allPkgPath = 'apitable/packages/i18n-lang/src/config/strings.json'; // 全语言包导出的位置
+const pkgsPath = 'apitable/packages/datasheet/src/static/lang'; // 各种语言包
 const map: HashMap = {
   'zh-CN': 'zh_CN',
   'en-US': 'en_US',
 };
 const backupLang = 'zh-CN'; // 特定 key 的其他语言文案找不到，就用 zh-CN 文案。
-const keysTypeOutputPath = 'packages/core/src/i18n/stringkeys.interface.ts'; // key 的接口类型
+const keysTypeOutputPath = 'apitable/packages/core/src/i18n/stringkeys.interface.ts'; // key 的接口类型
 
 console.log('==========开始============');
 console.log('生成语言包中...');

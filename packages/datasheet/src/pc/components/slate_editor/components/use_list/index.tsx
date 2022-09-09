@@ -5,18 +5,6 @@ import { hotkeyMap } from '../../hotkeys/map';
 
 import styles from './style.module.less';
 
-export const useList = (list: Array<string>) => {
-  const { i18nText } = useContext(EditorContext);
-  return list.map((item) => {
-    const label = i18nText[item];
-    return {
-      value: item,
-      label,
-      option: label,
-    };
-  });
-};
-
 export const useListWithIcons = (list: Array<string>) => {
   const { i18nText } = useContext(EditorContext);
   return list.map((item) => {
@@ -27,7 +15,7 @@ export const useListWithIcons = (list: Array<string>) => {
       value: key,
       label,
       option: (
-        <span className={styles.iconAndLabel} >
+        <span className={styles.iconAndLabel}>
           <span className={styles.iconWrap}>
             <Icon />
           </span>
@@ -48,7 +36,7 @@ export const useListWithIconAndHotkey = (list: Array<string>) => {
       value: key,
       label,
       option: (
-        <span className={styles.iconAndHotkeyWrap} >
+        <span className={styles.iconAndHotkeyWrap}>
           <span className={styles.iconAndLabel}>
             <span className={styles.iconWrap}>
               <Icon />
@@ -56,7 +44,7 @@ export const useListWithIconAndHotkey = (list: Array<string>) => {
             {label}
           </span>
           <span className={styles.hotkey}>
-            { hotkeyMap[key] && hotkeyMap[key].platform }
+            {hotkeyMap[key] && hotkeyMap[key].platform}
           </span>
         </span>
       ),

@@ -93,7 +93,7 @@ export const FilterGeneralSelect: React.FC<IFilterGeneralSelectProps> = props =>
           action={['click']}
           popup={renderPopup()}
           destroyPopupOnHide
-          popupAlign={{ points: ['tl', 'bl'], offset: [0, 8], overflow: { adjustX: true, adjustY: true } }}
+          popupAlign={{ points: ['tl', 'bl'], offset: [0, 8], overflow: { adjustX: true, adjustY: true }}}
           popupVisible={visible}
           onPopupVisibleChange={visible => setVisible(visible)}
           stretch="width,height"

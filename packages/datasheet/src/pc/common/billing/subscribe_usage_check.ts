@@ -4,16 +4,11 @@ import { store as storeState } from 'pc/store';
 import { isMobileApp } from 'pc/utils/env';
 import store, { StoreAPI } from 'store2';
 
-export interface ITriggerEventProps {
-  title: string;
-  content: string;
-}
-
 const SUBSCRIBE_USAGE = 'SUBSCRIBE_USAGE';
 
 export enum SubscribeUsageTipType {
   Vikaby,
-  Alert
+  Alert,
 }
 
 class SubscribeUsageCheckEnhance extends SubscribeUsageCheck {
@@ -32,25 +27,27 @@ class SubscribeUsageCheckEnhance extends SubscribeUsageCheck {
     }
 
     // 检查在当前时间段内是否触发过
-    if (!this.shouldAlertToUser(functionName, extra?.usage)) {
+    if (!this.shouldAlertToUser(functionName, extra?.usage, extra?.alwaysAlert)) {
       return;
     }
 
     const state = storeState.getState();
     const subscription = state.billing.subscription!;
     const title = typeof subscription[functionName] !== 'number' ? t(Strings.billing_subscription_warning) : t(Strings.billing_usage_warning);
-    const content = extra?.message || t(Strings[underscore(functionName)], {
-      usage: functionName === 'maxCapacitySizeInBytes' ? byteMG(extra?.usage) : extra?.usage,
-      specification: functionName === 'maxCapacitySizeInBytes' ? byteMG(subscription[functionName]) : subscription[functionName],
-      grade: extra?.grade || ''
-    });
+    const content =
+      extra?.message ||
+      t(Strings[underscore(functionName)], {
+        usage: functionName === 'maxCapacitySizeInBytes' ? byteMG(extra?.usage) : extra?.usage,
+        specification: functionName === 'maxCapacitySizeInBytes' ? byteMG(subscription[functionName]) : subscription[functionName],
+        grade: extra?.grade || '',
+      });
 
     // this.triggerNotifyAdmin(functionName, extra);
 
     return {
       content,
       title,
-      spaceId: state.space.activeId
+      spaceId: state.space.activeId,
     };
   }
 
@@ -92,7 +89,7 @@ class SubscribeUsageCheckEnhance extends SubscribeUsageCheck {
       }
       this.storage.set(spaceId, {
         // 提醒的过期时间调整为 2 天
-        expireDate: new Date().setHours(24, 0, 0, 0) + (86400000 * 1),
+        expireDate: new Date().setHours(24, 0, 0, 0) + 86400000 * 1,
         alertFunctionName: [functionName],
       });
       return true;

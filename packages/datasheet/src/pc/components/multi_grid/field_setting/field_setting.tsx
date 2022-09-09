@@ -24,7 +24,7 @@ import { Input } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import { ContextName, ShortcutContext } from 'pc/common/shortcut_key';
 import { Message } from 'pc/components/common/message';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { Tooltip } from 'pc/components/common/tooltip';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Divider } from 'pc/components/common/divider';
@@ -180,12 +180,12 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
   const fieldInfoForState = field
     ? field
     : ({
-        id: getNewId(IDPrefix.Field),
-        // 新增字段，不再默认填充一个字段名称
-        name: '',
-        type: FieldType.Text,
-        property: getFieldClass(FieldType.Text).defaultProperty(),
-      } as IField);
+      id: getNewId(IDPrefix.Field),
+      // 新增字段，不再默认填充一个字段名称
+      name: '',
+      type: FieldType.Text,
+      property: getFieldClass(FieldType.Text).defaultProperty(),
+    } as IField);
   const [currentField, setCurrentField] = useState(fieldInfoForState);
   const [baseErrMsg, setBaseErrMsg] = useState('');
   const [optionErrMsg, setOptionErrMsg] = useState('');
@@ -224,7 +224,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
     }
     // reRenderHeight();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentField.type, currentField.property /* , reRenderHeight */]);
+  }, [currentField.type, currentField.property]);
 
   // useEffect(() => {
   //   if (mobile) {
@@ -373,7 +373,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
   }
 
   // 如果转换的结果是成员字段，扫描数据，加载新的成员信息
-  const checkMemberField = async (checkResult: IField) => {
+  const checkMemberField = async(checkResult: IField) => {
     if (checkResult.type === FieldType.Member) {
       const cellValues = DatasheetActions.getCellValuesByFieldId(store.getState(), snapshot, checkResult.id);
       const stdVals = cellValues

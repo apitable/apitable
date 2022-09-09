@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NodeItem } from './node_item';
 import styles from './style.module.less';
 import { isTouchDevice, shouldOpenInNewTab } from 'pc/utils';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
 
 export const EMOJI_SIZE = 20;

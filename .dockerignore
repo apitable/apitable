@@ -27,6 +27,7 @@ docker-compose.yml
 
 # Log files
 logs
+.logs
 *.log
 
 # Temp files

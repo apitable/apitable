@@ -410,6 +410,7 @@ export interface SystemConfigInterfaceNotifications {
 export interface Templates {
     add_sub_admin:                               LivingstoneSouthernWhiteFacedOwl;
     assigned_to_group:                           LivingstoneSouthernWhiteFacedOwl;
+    assigned_to_role:                            LivingstoneSouthernWhiteFacedOwl;
     changed_ordinary_user:                       LivingstoneSouthernWhiteFacedOwl;
     invite_member_toadmin:                       LivingstoneSouthernWhiteFacedOwl;
     invite_member_tomyself:                      LivingstoneSouthernWhiteFacedOwl;
@@ -417,6 +418,7 @@ export interface Templates {
     member_applied_to_close_account:             LivingstoneSouthernWhiteFacedOwl;
     quit_space:                                  LivingstoneSouthernWhiteFacedOwl;
     remove_from_group:                           LivingstoneSouthernWhiteFacedOwl;
+    remove_from_role:                            LivingstoneSouthernWhiteFacedOwl;
     removed_from_space_toadmin:                  LivingstoneSouthernWhiteFacedOwl;
     removed_from_space_touser:                   LivingstoneSouthernWhiteFacedOwl;
     removed_member_tomyself:                     LivingstoneSouthernWhiteFacedOwl;
@@ -775,6 +777,7 @@ export interface Settings {
     modal_logout_step1_cover:               ArakGroundhog;
     modal_logout_step2_icon_mail:           ArakGroundhog;
     modal_logout_step2_icon_mobile:         ArakGroundhog;
+    no_permission_img_url:                  ArakGroundhog;
     node_count_trigger:                     ArakGroundhog;
     official_avatar:                        ArakGroundhog;
     org_chart_setting_help_url:             ArakGroundhog;
@@ -799,6 +802,8 @@ export interface Settings {
     qq_connect_web_appid_staging:           ArakGroundhog;
     recorded_comments:                      ArakGroundhog;
     release_log_history_url:                ArakGroundhog;
+    role_empty:                             ArakGroundhog;
+    role_help_url:                          ArakGroundhog;
     server_error_page_bg:                   ArakGroundhog;
     solution:                               ArakGroundhog;
     space_corp_cert_url:                    ArakGroundhog;

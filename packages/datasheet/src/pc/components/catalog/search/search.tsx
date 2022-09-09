@@ -76,7 +76,7 @@ export const Search: FC<ISearchProps> = ({ className, closeSearch }) => {
       }
       closeSearch();
       setKeyword('');
-      navigationTo({ path: Navigation.WORKBENCH, params: { spaceId, nodeId: node.nodeId } });
+      navigationTo({ path: Navigation.WORKBENCH, params: { spaceId, nodeId: node.nodeId }});
     },
   });
 

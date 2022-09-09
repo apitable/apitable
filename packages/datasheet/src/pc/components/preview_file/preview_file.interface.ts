@@ -13,17 +13,9 @@ export interface IExpandPreviewModalFuncProps {
   disabledDownload: boolean;
 }
 
-export type IPreviewFileModal = {
-  onClose: () => void;
-} & IExpandPreviewModalFuncProps;
-
 export interface ITransFormInfo {
   rotate: number;
   scale: number;
   translatePosition: ITranslatePosition;
   initActualScale: number;
-}
-
-export interface ICacheGlobalRef {
-  cellValue: IAttachmentValue[];
 }

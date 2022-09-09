@@ -3,7 +3,7 @@ import { getCustomConfig, IReduxState, Strings, t, isPrivateDeployment } from '@
 import { CloseLargeOutlined } from '@vikadata/icons';
 import { Drawer } from 'antd';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { isSocialWecom } from 'pc/components/home/social_platform';
 import { usePlatform } from 'pc/hooks/use_platform';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';

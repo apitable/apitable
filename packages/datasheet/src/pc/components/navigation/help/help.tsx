@@ -62,7 +62,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
       openVikaby({ visible: true, defaultExpandMenu: true });
     } else {
       localStorage.removeItem('vikaby_closed');
-      navigationTo({ path: Navigation.WORKBENCH, params: { spaceId } });
+      navigationTo({ path: Navigation.WORKBENCH, params: { spaceId }});
     }
   };
 

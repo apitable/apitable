@@ -40,7 +40,7 @@ export const MemberList: FC<IMemberList> = props => {
   const onSelect = (data: IMemberInfoInAddressList) => {
     const { memberId } = data;
     setSelectedMemberId(memberId);
-    navigationTo({ path: Navigation.MEMBER_DETAIL, params: { spaceId, memberId } });
+    navigationTo({ path: Navigation.MEMBER_DETAIL, params: { spaceId, memberId }});
     isMobile && expandMemberInfo();
     dispatch(StoreActions.updateMemberInfo(data));
   };

@@ -8,7 +8,7 @@ import { ShareLink } from 'pc/components/catalog/share_node/share/share_link';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Message } from 'pc/components/common/message';
 import { Popup } from 'pc/components/common/mobile/popup';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { Popconfirm } from 'pc/components/common/popconfirm';
 import { Tooltip } from 'pc/components/common/tooltip';
 import { useResponsive } from 'pc/hooks';
@@ -134,9 +134,9 @@ export const ShareModal: React.FC<IShareModalProps> = props => {
     const checked = e.target.value;
     const params = checked
       ? {
-          fillAnonymous: checked,
-          submitLimit: 0,
-        }
+        fillAnonymous: checked,
+        submitLimit: 0,
+      }
       : { fillAnonymous: checked };
 
     updateProps(params);

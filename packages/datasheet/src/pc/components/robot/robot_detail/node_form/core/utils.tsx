@@ -688,7 +688,7 @@ export function mergeSchemas(obj1: any, obj2: any) {
   const acc = Object.assign({}, obj1); // Prevent mutation of source object.
   return Object.keys(obj2).reduce((acc, key) => {
     const left = obj1 ? obj1[key] : {},
-      right = obj2[key];
+          right = obj2[key];
     if (obj1 && obj1.hasOwnProperty(key) && isObject(right)) {
       acc[key] = mergeSchemas(left, right);
     } else if (
@@ -1041,36 +1041,6 @@ export function getMatchingOption(formData: any, options: JSONSchema7[], rootSch
   return 0;
 }
 
-// Check to see if a schema specifies that a value must be true
-export function schemaRequiresTrueValue(schema: JSONSchema7): boolean {
-  // Check if const is a truthy value
-  if (schema.const) {
-    return true;
-  }
-
-  // Check if an enum has a single value of true
-  if (schema.enum && schema.enum.length === 1 && schema.enum[0] === true) {
-    return true;
-  }
-
-  // If anyOf has a single value, evaluate the subschema
-  if (schema.anyOf && schema.anyOf.length === 1) {
-    return schemaRequiresTrueValue((schema.anyOf as JSONSchema7[])[0]);
-  }
-
-  // If oneOf has a single value, evaluate the subschema
-  if (schema.oneOf && schema.oneOf.length === 1) {
-    return schemaRequiresTrueValue((schema.oneOf as JSONSchema7[])[0]);
-  }
-
-  // Evaluate each subschema in allOf, to see if one of them requires a true
-  // value
-  if (schema.allOf) {
-    return (schema.allOf as JSONSchema7[]).some(schemaRequiresTrueValue);
-  }
-  return false;
-}
-
 export const getStateFromProps = (props: IFormProps<any>, inputFormData: any, state: any = {}): any => {
   const { extraErrors, idPrefix, liveValidate, schema, uiSchema, customFormats, additionalMetaSchemas, noValidate } = props;
   const edit = typeof inputFormData !== 'undefined';
@@ -1081,7 +1051,7 @@ export const getStateFromProps = (props: IFormProps<any>, inputFormData: any, st
 
   const getCurrentErrors = () => {
     if (noValidate) {
-      return { errors: [], errorSchema: {} };
+      return { errors: [], errorSchema: {}};
     } else if (!liveValidate) {
       return {
         errors: state.schemaValidationErrors || [],

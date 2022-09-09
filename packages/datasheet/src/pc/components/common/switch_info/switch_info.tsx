@@ -42,12 +42,12 @@ export const SwitchInfo: FC<ISwitchInfoProps> = props => {
       {/* Radio 权限组 */}
       {
         Boolean(permissionList.length) &&
-        <div className={classNames(styles.radioGroup, !checked && styles.radioGroupDisabled)}>
+        <div className={classNames(styles.radioGroup, checked && styles.radioGroupDisabled)}>
           <Radio.Group
             name="inline"
             onChange={(e) => props.onClick?.(e.target.value)}
             value={String(permissionType)}
-            disabled={!checked}
+            disabled={checked}
           >
             {
               permissionList.map(item => {
@@ -55,9 +55,9 @@ export const SwitchInfo: FC<ISwitchInfoProps> = props => {
                 const isCurrent = String(value) === String(permissionType);
                 const radioComponent = (
                   <Radio key={value} value={String(value)}>
-                    <span 
+                    <span
                       className={classNames({
-                        [styles.radioText]: checked, 
+                        [styles.radioText]: checked,
                         [styles.radioTextSelected]: checked && isCurrent
                       })}
                     >
@@ -66,7 +66,7 @@ export const SwitchInfo: FC<ISwitchInfoProps> = props => {
                   </Radio>
                 );
                 return (
-                  !checked && disableTip ?
+                  checked && disableTip ?
                     <Tooltip title={disableTip} key={value}>
                       <span className={styles.radioWrapper}>
                         {radioComponent}

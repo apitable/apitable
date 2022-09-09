@@ -33,10 +33,8 @@ export type IPathSchema<T = any> = IFieldPath & {
 };
 
 export interface IWidgetProps
-  extends Pick<
-  React.HTMLAttributes<HTMLElement>,
-  Exclude<keyof React.HTMLAttributes<HTMLElement>, 'onBlur' | 'onFocus'>
-  > {
+  extends Pick<React.HTMLAttributes<HTMLElement>,
+    Exclude<keyof React.HTMLAttributes<HTMLElement>, 'onBlur' | 'onFocus'>> {
   id: string;
   schema: JSONSchema7;
   uiSchema: IUiSchema;
@@ -59,15 +57,6 @@ export interface IWidgetProps
 }
 
 export type IWidget = React.ElementType<IWidgetProps> | React.ComponentClass<IWidgetProps>;
-
-export interface IDateObject {
-  year: number;
-  month: number;
-  day: number;
-  hour: number;
-  minute: number;
-  second: number;
-}
 
 export interface IRangeSpec {
   min?: number;
