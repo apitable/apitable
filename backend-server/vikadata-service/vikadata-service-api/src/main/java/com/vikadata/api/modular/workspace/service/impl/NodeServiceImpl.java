@@ -1867,7 +1867,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public void checkEnableOperateRootNodeBySpaceFeature(Long memberId, String spaceId) {
         SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
-        Boolean rootManageable = feature.getRootManageable();
+        Boolean rootManageable = feature.rootManageableOrDefault();
         // 1. 安全设置是否开启普通成员根目录可操作权限控制
         if (rootManageable) {
             return;
