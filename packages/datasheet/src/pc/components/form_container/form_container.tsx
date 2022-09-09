@@ -396,7 +396,7 @@ export const FormContainer: React.FC = () => {
 
   // 跳转官网
   const onJump = () => {
-    navigationTo({ path: Navigation.HOME, method: Method.NewTab, query: { home: 1 } });
+    navigationTo({ path: Navigation.HOME, method: Method.NewTab, query: { home: 1 }});
   };
 
   // 再次填写
@@ -412,7 +412,7 @@ export const FormContainer: React.FC = () => {
         className={styles.loginBtn}
         onClick={() => {
           localStorage.setItem('reference', window.location.href);
-          navigationTo({ path: Navigation.LOGIN, query: { reference: window.location.href, spaceId: shareInfo.spaceId } });
+          navigationTo({ path: Navigation.LOGIN, query: { reference: window.location.href, spaceId: shareInfo.spaceId }});
         }}
       >
         {t(Strings.login)}

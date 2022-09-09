@@ -27,11 +27,11 @@ export const SideWrapper = props => {
   const { unitTitleMap } = useWxTitleMap({
     userNames: user
       ? [
-          {
-            name: user.memberName,
-            unitId: user.unitId,
-          },
-        ]
+        {
+          name: user.memberName,
+          unitId: user.unitId,
+        },
+      ]
       : undefined,
   });
   const curUnitTitle = values(unitTitleMap)[0];

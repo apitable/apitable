@@ -84,7 +84,7 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
   };
 
   // 创建链接
-  const createBtnClick = async (teamId: string) => {
+  const createBtnClick = async(teamId: string) => {
     if (!teamId) {
       Message.warning({ content: t(Strings.placeholder_choose_group) });
       return;
@@ -103,7 +103,7 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
   };
 
   // 删除链接
-  const deleteLink = async (teamId: string) => {
+  const deleteLink = async(teamId: string) => {
     const {
       data: { success, message },
     } = await Api.deleteLink(teamId);

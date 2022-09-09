@@ -27,7 +27,7 @@ interface IImgBaseUploader {
   onChange: (file: any, type: IFileType) => void;
 }
 
-export const ImgBaseUploader: React.FC<IImgBaseUploader> = (props) => {
+export const ImgBaseUploader: React.FC<IImgBaseUploader> = props => {
   const {
     formId,
     visible,
@@ -45,18 +45,15 @@ export const ImgBaseUploader: React.FC<IImgBaseUploader> = (props) => {
   const uploadCoverImg = (file: File) => {
     if (!formId) return false;
     setCoverLoading(true);
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('type', '3');
-    formData.append('nodeId', formId);
-    uploadFile(formData);
+    uploadFile(file, formId);
     return false;
   };
 
-  const uploadFile = (formData: FormData) => {
-    const file = formData.get('file');
+  const uploadFile = (file: File, nodeId: string) => {
     return uploadAttachToS3({
-      file: file as File, fileType: UploadType.CoverImage
+      file: file,
+      fileType: UploadType.CoverImage,
+      nodeId,
     }).then(res => {
       const { success, data } = res.data;
       if (success) {
@@ -68,7 +65,7 @@ export const ImgBaseUploader: React.FC<IImgBaseUploader> = (props) => {
     });
   };
 
-  const uploadConfirm = (data) => {
+  const uploadConfirm = data => {
     const { customFile, officialToken } = data;
     if (officialToken) {
       onChange(officialToken, IFileType.Default);
@@ -81,22 +78,23 @@ export const ImgBaseUploader: React.FC<IImgBaseUploader> = (props) => {
 
   return (
     <div className={styles.uploadContainer}>
-      <Spin spinning={coverLoading}>
-        {props.children}
-      </Spin>
+      <Spin spinning={coverLoading}>{props.children}</Spin>
       <ImageCropUpload
         visible={visible}
         initPreview={
-          <div className={classnames(styles.initPreview, {
-            [styles.initBorder]: imgUrl,
-            [styles.initBackground]: !imgUrl,
-          })}>
-            {
-              imgUrl ? <span style={{ width: '100%', height: '100%', objectFit: 'cover' }}>
-                <Image src={imgUrl} alt='banner' width={210} height={70} />
+          <div
+            className={classnames(styles.initPreview, {
+              [styles.initBorder]: imgUrl,
+              [styles.initBackground]: !imgUrl,
+            })}
+          >
+            {imgUrl ? (
+              <span style={{ width: '100%', height: '100%', objectFit: 'cover' }}>
+                <Image src={imgUrl} alt="banner" width={210} height={70} />
               </span>
-                : <Image src={EmptyState} width={106} height={80} />
-            }
+            ) : (
+              <Image src={EmptyState} width={106} height={80} />
+            )}
           </div>
         }
         cropShape={cropShape}

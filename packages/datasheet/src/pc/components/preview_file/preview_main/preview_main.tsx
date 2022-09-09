@@ -68,7 +68,7 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
   const isDocType = DOC_MIME_TYPE.includes(mime.lookup(activeFile.name));
   const isPdf = mime.lookup(activeFile.name) === 'application/pdf';
 
-  const fetchPreviewUrl = async () => {
+  const fetchPreviewUrl = async() => {
     if (activeFile && (isDocType || isPdf) && officePreviewEnable) {
       const res = await Api.getAttachPreviewUrl(spaceId!, activeFile.token, activeFile.name);
       const { data, message, success } = res.data;
@@ -212,11 +212,11 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
       <main className={styles.container} onMouseDown={onClose}>
         <div className={styles.left}>
           {// 左侧箭头
-          showPrevBtn && (
-            <div className={styles.iconPre} onClick={handlePrev} onMouseDown={stopPropagation}>
-              <PreviousFilled width={40} height={40} className={styles.prev} />
-            </div>
-          )}
+            showPrevBtn && (
+              <div className={styles.iconPre} onClick={handlePrev} onMouseDown={stopPropagation}>
+                <PreviousFilled width={40} height={40} className={styles.prev} />
+              </div>
+            )}
         </div>
         <div className={styles.middle}>
           <Swiper
@@ -239,11 +239,11 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
 
         <div className={styles.right}>
           {// 右侧箭头
-          showNextBtn && (
-            <div className={styles.iconNext} onClick={handleNext} onMouseDown={stopPropagation}>
-              <NextFilled width={40} height={40} className={styles.next} />
-            </div>
-          )}
+            showNextBtn && (
+              <div className={styles.iconNext} onClick={handleNext} onMouseDown={stopPropagation}>
+                <NextFilled width={40} height={40} className={styles.next} />
+              </div>
+            )}
         </div>
       </main>
 

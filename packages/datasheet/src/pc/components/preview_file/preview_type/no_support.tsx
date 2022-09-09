@@ -101,13 +101,13 @@ export const NoSupport: FC<INoSupportProps> = props => {
         )}
         {!isMainAdmin &&
           !disabledDownload && (
-            <div className={styles.download} onClick={handleDownload}>
-              <Button color="primary" block>
-                <IconDownload fill="currentColor" />
-                <span style={{ marginLeft: 4 }}>{t(Strings.download)}</span>
-              </Button>
-            </div>
-          )}
+          <div className={styles.download} onClick={handleDownload}>
+            <Button color="primary" block>
+              <IconDownload fill="currentColor" />
+              <span style={{ marginLeft: 4 }}>{t(Strings.download)}</span>
+            </Button>
+          </div>
+        )}
         <footer>{footer}</footer>
       </main>
     </div>

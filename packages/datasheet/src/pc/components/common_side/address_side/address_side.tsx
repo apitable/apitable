@@ -92,7 +92,7 @@ export const AddressSide: React.FC = () => {
 
   // 操作-选择成员
   const memberClick = (memberId: string) => {
-    navigationTo({ path: Navigation.MEMBER_DETAIL, params: { spaceId, memberId } });
+    navigationTo({ path: Navigation.MEMBER_DETAIL, params: { spaceId, memberId }});
     isMobile && expandMemberInfo();
     teamClick(ConfigConstant.ROOT_TEAM_ID);
     dispatch(StoreActions.getMemberInfoData(memberId));

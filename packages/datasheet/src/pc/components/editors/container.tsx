@@ -24,6 +24,7 @@ import {
   IHyperlinkSegment,
   isUrl,
   SegmentType,
+  ViewType
 } from '@vikadata/core';
 
 import { isEqual, noop } from 'lodash';
@@ -50,6 +51,7 @@ import { useCellEditorVisibleStyle } from './hooks';
 import { IContainerEdit, IEditor } from './interface';
 import { LinkEditor } from './link_editor';
 import { MemberEditor } from './member_editor';
+import { autoTaskScheduling } from 'pc/components/gantt_view/utils/auto_task_line_layout';
 
 // Editors
 import { NoneEditor } from './none_editor';
@@ -116,14 +118,19 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     return Boolean(_allowCopyDataToExternal);
   });
   const role = useSelector(state => Selectors.getDatasheet(state, datasheetId)!.role);
-  const { groupInfo, groupBreakpoint, visibleRowsIndexMap } = useSelector(
-    state => ({
-      groupInfo: Selectors.getActiveViewGroupInfo(state),
-      groupBreakpoint: Selectors.getGroupBreakpoint(state),
-      visibleRowsIndexMap: Selectors.getPureVisibleRowsIndexMap(state),
-    }),
-    shallowEqual,
-  );
+  const {
+    groupInfo,
+    groupBreakpoint,
+    visibleRowsIndexMap
+  } = useSelector(state => ({
+    groupInfo: Selectors.getActiveViewGroupInfo(state),
+    groupBreakpoint: Selectors.getGroupBreakpoint(state),
+    visibleRowsIndexMap: Selectors.getPureVisibleRowsIndexMap(state)
+  }), shallowEqual);
+
+  const activeView = useSelector(state => Selectors.getCurrentView(state));
+  const visibleRows = useSelector(state => Selectors.getVisibleRows(state));
+  const state = store.getState();
 
   // FIXME: 这里还是使用组件内部 editing 控制状态，使用 redux 的 isEditing 状态，编辑框会闪烁一下。
   const [editing, setEditing] = useState(false);
@@ -141,14 +148,10 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
    * 此时缓存理应记录单元格 B 的数据，但是因为并非通过点击操作，所以事实上缓存的依然是单元格 A 的数据，如果此时在单元格 B 编辑完数据，再点回 A，B 的数据并不会保存，而是会被当做 A 的数据展示。
    * 所以为了解决该问题，明确一点，键盘操作应该和鼠标操作保持一致，都需要缓存即将要激活的单元格信息 缓存 = 要点击的单元格 或者 要切换过去的单元格
    */
-  const activeCellRef = useRef<ICell | null>(
-    field && record
-      ? {
-          recordId: record.id,
-          fieldId: field.id,
-        }
-      : null,
-  );
+  const activeCellRef = useRef<ICell | null>((field && record) ? {
+    recordId: record.id,
+    fieldId: field.id,
+  } : null);
   const dispatch = useDispatch();
   const [editPositionInfo, setEditPositionInfo] = useState<IEditorPosition>(() => ({
     x: 0,
@@ -674,51 +677,57 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     [datasheetId, record, field],
   );
 
-  const onSaveForDateCell = useCallback(
-    (value: ICellValue, curAlarm: any) => {
-      if (!record || !field) {
-        return;
-      }
-      const alarm = Selectors.getDateTimeCellAlarmForClient(snapshot, record.id, field.id);
-      // time 允许输入，如果 time 为空值，保存为 00:00
-      const formatCurAlarm = curAlarm
-        ? {
-            ...curAlarm,
-            time: curAlarm.time === '' ? '00:00' : curAlarm.time,
-          }
-        : undefined;
+  const onSaveForDateCell = useCallback((value: ICellValue, curAlarm: any) => {
+    if (!record || !field) {
+      return;
+    }
+    const alarm = Selectors.getDateTimeCellAlarmForClient(snapshot, record.id, field.id);
+    // time 允许输入，如果 time 为空值，保存为 00:00
+    const formatCurAlarm = curAlarm ? {
+      ...curAlarm,
+      time: curAlarm.time === '' ? '00:00' : curAlarm.time
+    } : undefined;
 
-      if (
-        // 处理单纯修改提醒，而没有操作日期的情况
-        field.type === FieldType.DateTime &&
-        isEqual(cellValue, value) &&
-        !isEqual(alarm, formatCurAlarm)
-      ) {
-        resourceService.instance!.commandManager!.execute({
-          cmd: CollaCommandName.SetDateTimeCellAlarm,
-          recordId: record.id,
-          fieldId: field.id,
-          alarm: convertAlarmStructure(formatCurAlarm as IRecordAlarmClient) || null,
-        });
-        return;
-      }
-
+    if (
+      // 处理单纯修改提醒，而没有操作日期的情况
+      field.type === FieldType.DateTime && isEqual(cellValue, value) && !isEqual(alarm, formatCurAlarm)
+    ) {
+      resourceService.instance!.commandManager!.execute({
+        cmd: CollaCommandName.SetDateTimeCellAlarm,
+        recordId: record.id,
+        fieldId: field.id,
+        alarm: convertAlarmStructure(formatCurAlarm as IRecordAlarmClient) || null,
+      });
+ 
+    } else {
       // 考虑同时新增闹钟和日期单元格数据需要合并操作，在这个理处理闹钟逻辑
       resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetRecords,
         datasheetId,
         alarm: convertAlarmStructure(formatCurAlarm as IRecordAlarmClient),
-        data: [
-          {
-            recordId: record.id,
-            fieldId: field.id,
-            value,
-          },
-        ],
+        data: [{
+          recordId: record.id,
+          fieldId: field.id,
+          value,
+        }],
       });
-    },
-    [datasheetId, field, record, cellValue, snapshot],
-  );
+    }
+    
+    if (activeView && activeView.type === ViewType.Gantt) {
+      const { linkFieldId, endFieldId } = activeView?.style;
+      if (!(linkFieldId && endFieldId === field.id)) return;
+      const sourceRecordData = {
+        recordId: record!.id,
+        endTime: value as number | null,
+      };
+      const commandDataArr = autoTaskScheduling(visibleRows, state, snapshot, activeView.style, sourceRecordData);
+      resourceService.instance?.commandManager.execute({
+        cmd: CollaCommandName.SetRecords,
+        data: commandDataArr,
+      });
+    }
+
+  }, [datasheetId, field, record, cellValue, snapshot, activeView, state, visibleRows]);
 
   useMemo(
     calcEditorRect,

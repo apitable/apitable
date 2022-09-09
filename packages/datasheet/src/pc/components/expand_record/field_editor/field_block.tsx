@@ -14,6 +14,7 @@ import {
   SegmentType,
   Selectors,
   StoreActions,
+  ViewType
 } from '@vikadata/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { CheckboxEditor } from 'pc/components/editors/checkbox_editor';
@@ -29,6 +30,8 @@ import { dispatch } from 'pc/worker/store';
 import * as React from 'react';
 import { EnhanceTextEditor } from '../../editors/enhance_text_editor';
 import { IURLMeta, recognizeURLAndSetTitle } from 'pc/utils';
+import { useSelector } from 'react-redux';
+import { autoTaskScheduling } from 'pc/components/gantt_view/utils/auto_task_line_layout';
 
 // Editors
 import { TextEditor } from '../../editors/text_editor';
@@ -74,6 +77,9 @@ export const FieldBlock: React.FC<IFieldBlockProps> = props => {
   const mobileEditorWidth: React.CSSProperties = isMobile ? { width: '100%' } : {};
 
   const state = store.getState();
+  const activeView = useSelector(state => Selectors.getCurrentView(state));
+  const visibleRows = useSelector(state => Selectors.getVisibleRows(state));
+  const snapshot = useSelector(state => Selectors.getSnapshot(state)!);
 
   const onSave = (value: ICellValue, curAlarm?: Omit<IRecordAlarmClient, 'id'>) => {
     resourceService.instance!.commandManager.execute({
@@ -119,6 +125,19 @@ export const FieldBlock: React.FC<IFieldBlockProps> = props => {
           callback,
         });
       }
+    }
+    if (activeView && activeView.type === ViewType.Gantt) {
+      const { linkFieldId, endFieldId } = activeView?.style;
+      if (!(linkFieldId && endFieldId === field.id)) return;
+      const sourceRecordData = {
+        recordId: record!.id,
+        endTime: value as number | null,
+      };
+      const commandDataArr = autoTaskScheduling(visibleRows, state, snapshot, activeView.style, sourceRecordData);
+      resourceService.instance?.commandManager.execute({
+        cmd: CollaCommandName.SetRecords,
+        data: commandDataArr,
+      });
     }
   };
 

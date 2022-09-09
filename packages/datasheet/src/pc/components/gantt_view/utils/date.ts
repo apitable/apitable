@@ -28,6 +28,12 @@ export const getDiffCount = (startTime: DateTimeType, endTime: DateTimeType, uni
   return Math.abs(end.diff(start, unit));
 };
 
+export const getDiffOriginalCount = (startTime: DateTimeType, endTime: DateTimeType, unit: OpUnitType = 'day') => {
+  const end = getDayjs(endTime);
+  const start = getDayjs(startTime);
+  return end.diff(start, unit);
+};
+
 /**
  * 根据单位获取获取起止时间的时间差，排除休息日
  */
@@ -42,21 +48,21 @@ export const getDiffCountByWorkdays = (startTime: DateTimeType, endTime: DateTim
   const end = getDayjs(endTime);
   const first = getStartOfDate(start.endOf('week'));
   const last = getStartOfDate(end.startOf('week'));
-  const middleDays = Math.floor(last.diff(first, 'day') * workDayCount / TOTAL_DAY_COUNT);
+  const middleDays = Math.floor((last.diff(first, 'day') * workDayCount) / TOTAL_DAY_COUNT);
   // 获取第一周的工作日天数
   const startDayIndex = start.day();
   const startDiffCount = getDiffCount(start, first, 'day');
   const startDays = Array.from({ length: startDiffCount + 1 }, (_, index) => {
     const curIndex = startDayIndex + index;
     return curIndex > 6 ? curIndex - 7 : curIndex;
-  }).filter((dayIndex) => workDays.has(dayIndex)).length;
+  }).filter(dayIndex => workDays.has(dayIndex)).length;
   // 获取最后周的工作日天数
   const lastDayIndex = last.day();
   const endDiffCount = getDiffCount(end, last, 'day');
   const endDays = Array.from({ length: endDiffCount + 1 }, (_, index) => {
     const curIndex = lastDayIndex + index;
     return curIndex > 6 ? curIndex - 7 : curIndex;
-  }).filter((dayIndex) => workDays.has(dayIndex)).length;
+  }).filter(dayIndex => workDays.has(dayIndex)).length;
   // 总工作日
   return startDays + middleDays + endDays;
 };

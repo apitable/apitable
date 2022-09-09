@@ -32,7 +32,7 @@ export const useGanttAssocitionLine = (props: IAssociaLinePorps) => {
     };
   }
 
-  const { rowHeight } = instance;
+  const { rowHeight, unitWidth } = instance;
   const { taskEdges, cycleEdges } = linkCycleEdges;
 
   const topY = scrollTop - rowHeight * 5;
@@ -51,11 +51,12 @@ export const useGanttAssocitionLine = (props: IAssociaLinePorps) => {
   const getTaskXPosition = (startFiledValue: string, endFiledValue: string) => {
     const { startOffset, endOffset, width } = instance.getTaskData(startFiledValue, endFiledValue);
     if (startOffset == null && endOffset == null) return null;
-    if (!width) return null;
-    const x = (startOffset ?? endOffset)!;
+
+    const x = (startOffset ?? endOffset! - unitWidth)!;
+    const taskWidth = width ?? unitWidth;
     return {
       x,
-      width,
+      width: taskWidth,
     };
   };
 
@@ -236,17 +237,8 @@ export const useGanttAssocitionLine = (props: IAssociaLinePorps) => {
       points = [sourcePoint.x, sourcePoint.y, sourcePoint.x, targetPoint.y - 8, targetPoint.x, targetPoint.y - 8, targetPoint.x, targetPoint.y];
     }
 
-    if(targetPoint.x > sourcePoint.x ) {
-      points = [
-        sourcePoint.x,
-        sourcePoint.y,
-        sourcePoint.x,
-        targetPoint.y,
-        targetPoint.x - 8,
-        targetPoint.y,
-        targetPoint.x,
-        targetPoint.y,
-      ];
+    if (targetPoint.x > sourcePoint.x) {
+      points = [sourcePoint.x, sourcePoint.y, sourcePoint.x, targetPoint.y, targetPoint.x - 8, targetPoint.y, targetPoint.x, targetPoint.y];
     }
 
     return (

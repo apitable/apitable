@@ -116,7 +116,7 @@ export const ShareMenu: React.FC<IShareMenu> = ({ shareSpace, shareNode, visible
       content: t(Strings.require_login_tip),
       okText: t(Strings.go_login),
       onOk: () => {
-        navigationTo({ path: Navigation.LOGIN, query: { reference: window.location.href, spaceId: shareSpace.spaceId } });
+        navigationTo({ path: Navigation.LOGIN, query: { reference: window.location.href, spaceId: shareSpace.spaceId }});
       },
       okButtonProps: { id: AutoTestID.GO_LOGIN_BTN },
       type: 'warning',

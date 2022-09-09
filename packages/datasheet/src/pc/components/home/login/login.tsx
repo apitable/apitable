@@ -135,22 +135,22 @@ export const Login: FC<ILoginProps> = ({ afterLogin }) => {
   return (
     <>
       {// 私有化和移动端不显示
-      !isPrivateDeployment() && responsive.large && !isMobileApp() && (
-        <>
-          <div className={styles.otherLogin}>
-            {isWecom ? (
-              <WecomLoginBtn />
-            ) : (
-              <>
-                <div className={styles.otherDivider}>
-                  <div className={styles.text}>{t(Strings.quick_login)}</div>
-                </div>
-                <OtherLogin afterLogin={afterLogin} />
-              </>
-            )}
-          </div>
-        </>
-      )}
+        !isPrivateDeployment() && responsive.large && !isMobileApp() && (
+          <>
+            <div className={styles.otherLogin}>
+              {isWecom ? (
+                <WecomLoginBtn />
+              ) : (
+                <>
+                  <div className={styles.otherDivider}>
+                    <div className={styles.text}>{t(Strings.quick_login)}</div>
+                  </div>
+                  <OtherLogin afterLogin={afterLogin} />
+                </>
+              )}
+            </div>
+          </>
+        )}
       {!isMobile && (
         <div className={styles.divider}>
           <div className={styles.text}>{modTitleText}</div>
@@ -160,9 +160,30 @@ export const Login: FC<ILoginProps> = ({ afterLogin }) => {
       {loginComponent}
       <div className={styles.buttonGroup}>
         {// 移动端或者企业微信专属域名
-        !responsive.large || !isWecom ? (
-          <>
-            <div>
+          !responsive.large || !isWecom ? (
+            <>
+              <div>
+                {toggleLoginModBtnVisible && (
+                  <LinkButton
+                    underline={false}
+                    component="button"
+                    id={AutoTestID.CHANGE_MODE_BTN}
+                    className="toggleLoginModeBtn"
+                    onClick={changeLoginMod}
+                    style={{ paddingLeft: 0 }}
+                  >
+                    {changeModText}
+                  </LinkButton>
+                )}
+              </div>
+              {!resetPasswordDisable && (
+                <LinkButton underline={false} component="button" onClick={goResetPwd} style={{ paddingRight: 0 }}>
+                  {t(Strings.retrieve_password)}
+                </LinkButton>
+              )}
+            </>
+          ) : (
+            <div className={styles.buttonGroupDesktop}>
               {toggleLoginModBtnVisible && (
                 <LinkButton
                   underline={false}
@@ -170,52 +191,31 @@ export const Login: FC<ILoginProps> = ({ afterLogin }) => {
                   id={AutoTestID.CHANGE_MODE_BTN}
                   className="toggleLoginModeBtn"
                   onClick={changeLoginMod}
-                  style={{ paddingLeft: 0 }}
                 >
                   {changeModText}
                 </LinkButton>
               )}
-            </div>
-            {!resetPasswordDisable && (
-              <LinkButton underline={false} component="button" onClick={goResetPwd} style={{ paddingRight: 0 }}>
-                {t(Strings.retrieve_password)}
-              </LinkButton>
-            )}
-          </>
-        ) : (
-          <div className={styles.buttonGroupDesktop}>
-            {toggleLoginModBtnVisible && (
-              <LinkButton
-                underline={false}
-                component="button"
-                id={AutoTestID.CHANGE_MODE_BTN}
-                className="toggleLoginModeBtn"
-                onClick={changeLoginMod}
+              <Trigger
+                action={['click']}
+                popup={loginOtherPopup}
+                destroyPopupOnHide
+                popupAlign={{ points: ['b', 'c'], offset: [0, -20], overflow: { adjustX: true, adjustY: true }}}
+                popupStyle={{ width: 240 }}
+                popupVisible={isPopupVisible}
+                onPopupVisibleChange={() => popupVisibleToggle()}
+                zIndex={10000}
               >
-                {changeModText}
-              </LinkButton>
-            )}
-            <Trigger
-              action={['click']}
-              popup={loginOtherPopup}
-              destroyPopupOnHide
-              popupAlign={{ points: ['b', 'c'], offset: [0, -20], overflow: { adjustX: true, adjustY: true } }}
-              popupStyle={{ width: 240 }}
-              popupVisible={isPopupVisible}
-              onPopupVisibleChange={() => popupVisibleToggle()}
-              zIndex={10000}
-            >
-              <LinkButton underline={false} component="button">
-                {t(Strings.other_login)}
-              </LinkButton>
-            </Trigger>
-            {!resetPasswordDisable && (
-              <LinkButton underline={false} component="button" onClick={goResetPwd}>
-                {t(Strings.retrieve_password)}
-              </LinkButton>
-            )}
-          </div>
-        )}
+                <LinkButton underline={false} component="button">
+                  {t(Strings.other_login)}
+                </LinkButton>
+              </Trigger>
+              {!resetPasswordDisable && (
+                <LinkButton underline={false} component="button" onClick={goResetPwd}>
+                  {t(Strings.retrieve_password)}
+                </LinkButton>
+              )}
+            </div>
+          )}
       </div>
     </>
   );

@@ -57,7 +57,7 @@ const MutationObserverOption = {
   subtree: true,
 };
 
-export function useRefCallback<T extends (...args: any[]) => any>(callback: T) {
+export function useRefCallback<T extends(...args: any[]) => any>(callback: T) {
   const callbackRef = useRef(callback);
   callbackRef.current = callback;
   return useCallback((...args: any[]) => callbackRef.current(...args), []) as T;
@@ -233,10 +233,10 @@ export const useSpaceWatermark = (props?: Partial<IWatermarkSettings>) => {
   const id = 'VIKA_WATER_MARK_ID';
   const initSetting = props
     ? {
-        ...props,
-        watermark_txt: props?.watermark_txt || txt,
-        watermark_id: props?.watermark_id || id,
-      }
+      ...props,
+      watermark_txt: props?.watermark_txt || txt,
+      watermark_id: props?.watermark_id || id,
+    }
     : undefined;
 
   const { initWM: initWM, removeWM } = useWatermark(initSetting ? { ...initSetting, manual: true } : { manual: true });

@@ -27,17 +27,17 @@ export const TemplateDetailSide: React.FC = () => {
 
   const navigationTo = useNavigation();
   const goBack = () => {
-    navigationTo({ path: Navigation.TEMPLATE, params: { spaceId, categoryId } });
+    navigationTo({ path: Navigation.TEMPLATE, params: { spaceId, categoryId }});
   };
 
   const { sideBarVisible, setSideBarVisible } = useSideBarVisible();
   const templateDirectory = useSelector(state => state.templateCentre.directory);
   const title = templateDirectory
     ? getSocialWecomUnitName({
-        name: templateDirectory.nickName,
-        isModified: templateDirectory.isMemberNameModified,
-        spaceInfo,
-      })
+      name: templateDirectory.nickName,
+      isModified: templateDirectory.isMemberNameModified,
+      spaceInfo,
+    })
     : '';
 
   const isOfficial = categoryId !== 'tpcprivate';
@@ -92,8 +92,8 @@ export const TemplateDetailSide: React.FC = () => {
                     categoryId === ConfigConstant.TEMPLATE_CHOICE_CATEGORY_ID
                       ? t(Strings.template_recommend_title)
                       : templateDirectory.categoryName
-                      ? templateDirectory.categoryName
-                      : t(Strings.space_template),
+                        ? templateDirectory.categoryName
+                        : t(Strings.space_template),
                 })}
               </span>
             </div>

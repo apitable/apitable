@@ -117,7 +117,7 @@ export const ActivityListItems: FC<IActivityListProps & {
   };
 
   const loadMore = () => {
-    const getRecordList = async () => {
+    const getRecordList = async() => {
       setAdding(true);
       await getActivityList(resourceId, expandRecordId, ACTIVITY_SELECT_MAP[selectType][0] as ConfigConstant.ActivityListParamsType);
       // 获取新数据后滚动到原先位置

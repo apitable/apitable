@@ -47,7 +47,7 @@ export const EnableFieldPermission: React.FC<IEnablePermission> = props => {
     fetchRoleList();
   });
 
-  const submitAddRole = async (unitInfos: IUnitValue[], permission: IOption) => {
+  const submitAddRole = async(unitInfos: IUnitValue[], permission: IOption) => {
     if (!unitInfos.length || !permission) {
       return;
     }
@@ -89,7 +89,7 @@ export const EnableFieldPermission: React.FC<IEnablePermission> = props => {
     });
   };
 
-  const closeFieldPermission = async () => {
+  const closeFieldPermission = async() => {
     const res = await DatasheetApi.setFieldPermissionStatus(datasheetId, field.id, false);
     const { success, message } = res.data;
     if (!success) {
@@ -99,7 +99,7 @@ export const EnableFieldPermission: React.FC<IEnablePermission> = props => {
     onClose();
   };
 
-  const editRole = async (unitId: string, role: string) => {
+  const editRole = async(unitId: string, role: string) => {
     const res = await DatasheetApi.editFieldPermissionRole(datasheetId, field.id, {
       role,
       unitId,
@@ -115,7 +115,7 @@ export const EnableFieldPermission: React.FC<IEnablePermission> = props => {
     await fetchRoleList();
   };
 
-  const onRemove = async (unitId: string) => {
+  const onRemove = async(unitId: string) => {
     const res = await DatasheetApi.deleteFieldPermissionRole(datasheetId, field.id, unitId);
     const { success, message } = res.data;
     if (!success) {
@@ -128,11 +128,11 @@ export const EnableFieldPermission: React.FC<IEnablePermission> = props => {
     await fetchRoleList();
   };
 
-  const fetchRoleList = async () => {
+  const fetchRoleList = async() => {
     await run(datasheetId, field.id);
   };
 
-  const changeFormSheetAccessible = async (checked: boolean) => {
+  const changeFormSheetAccessible = async(checked: boolean) => {
     const res = await DatasheetApi.updateFieldPermissionSetting(datasheetId, field.id, checked);
     const { success, message } = res.data;
     if (!success) {

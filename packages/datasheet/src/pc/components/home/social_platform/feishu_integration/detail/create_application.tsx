@@ -97,7 +97,7 @@ export const CreateApplication: React.FC<ICreateApplicationProps> = props => {
     });
   };
 
-  const setLarkConfig = async (formData: IConfigForm) => {
+  const setLarkConfig = async(formData: IConfigForm) => {
     setLoading(true);
     const {
       data: { success, message, data },

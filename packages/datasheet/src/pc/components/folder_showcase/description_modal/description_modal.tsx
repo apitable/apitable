@@ -44,7 +44,7 @@ export const DescriptionModal: FC<IDescriptionModalProps> = props => {
   const { uploadImage } = useImageUpload();
   const { run: updateNodeDescrition } = useRequest(updateNodeDescriptionReq, { manual: true });
   const { run: sendUpdateDesc } = useDebounceFn(
-    async (nodeId, desc) => {
+    async(nodeId, desc) => {
       await updateNodeDescrition(nodeId, desc);
     },
     { wait: 500 },

@@ -270,7 +270,7 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
               openImportModal(targetId);
             }),
           ],
-          [contextItemMap.get(ContextItemKey.CreateFromTemplate)(() => navigationTo({ path: Navigation.TEMPLATE, params: { spaceId } }))],
+          [contextItemMap.get(ContextItemKey.CreateFromTemplate)(() => navigationTo({ path: Navigation.TEMPLATE, params: { spaceId }}))],
         ];
         // 往菜单注入新功能
         Player.applyFilters(Events.get_context_menu_root_add, data);

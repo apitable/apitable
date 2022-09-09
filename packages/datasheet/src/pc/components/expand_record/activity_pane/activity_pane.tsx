@@ -43,7 +43,7 @@ export const ActivityPaneBase: React.FC<IActivityPaneProps> = props => {
   // 当前操作模式
   const unitMap = useSelector(state => Selectors.getUnitMap(state));
   const showRecordHistory = useSelector(state => Selectors.getRecordHistoryStatus(state, datasheetId))!;
-  const [cacheType, setCacheType] = useLocalStorageState<ICacheType>('vika_activity_type', { defaultValue: {} });
+  const [cacheType, setCacheType] = useLocalStorageState<ICacheType>('vika_activity_type', { defaultValue: {}});
   const handleCacheType = useCallback(
     (type: ActivitySelectType) => {
       setCacheType({

@@ -593,8 +593,8 @@ const ToolbarBase = () => {
               text={
                 isExitGroup
                   ? t(Strings.group_amount, {
-                      amount: (activeView as IGridViewProperty).groupInfo!.length,
-                    })
+                    amount: (activeView as IGridViewProperty).groupInfo!.length,
+                  })
                   : t(Strings.group)
               }
               showViewLockModal={showViewLockModal}
@@ -748,8 +748,8 @@ function FilterNode(props: { showLabel: boolean; disabled: boolean; showViewLock
         isMobile
           ? t(Strings.filter)
           : t(Strings.filters_amount, {
-              amount: actualFilterCont,
-            })
+            amount: actualFilterCont,
+          })
       }
     />
   );

@@ -62,7 +62,7 @@ export const ApplicationJoinSpaceAlert: FC<IApplicationJoinSpaceAlertProps> = ({
         content: t(Strings.require_login_tip),
         okText: t(Strings.go_login),
         onOk: () => {
-          navigationTo({ path: Navigation.LOGIN, query: { reference: window.location.href } });
+          navigationTo({ path: Navigation.LOGIN, query: { reference: window.location.href }});
         },
         okButtonProps: { id: AutoTestID.GO_LOGIN_BTN },
         type: 'warning',

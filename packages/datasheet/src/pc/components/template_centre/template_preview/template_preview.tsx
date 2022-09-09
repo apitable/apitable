@@ -38,25 +38,25 @@ export const TemplatePreview: FC = () => {
     }
     // 当前用户已登录时
     if (userInfo && userInfo.spaceId && usingTemplate && !spaceId) {
-      navigationTo({ path: Navigation.TEMPLATE, params: { categoryId, templateId: usingTemplate, spaceId: userInfo!.spaceId } });
+      navigationTo({ path: Navigation.TEMPLATE, params: { categoryId, templateId: usingTemplate, spaceId: userInfo!.spaceId }});
       return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usingTemplate]);
 
-  const afterLogin = async (data: string, loginMode: ConfigConstant.LoginMode) => {
+  const afterLogin = async(data: string, loginMode: ConfigConstant.LoginMode) => {
     if (data) {
       if (loginMode === ConfigConstant.LoginMode.PHONE) {
-        navigationTo({ path: Navigation.INVITATION_VALIDATION, query: { token: data, reference: window.location.href } });
+        navigationTo({ path: Navigation.INVITATION_VALIDATION, query: { token: data, reference: window.location.href }});
       } else if (loginMode === ConfigConstant.LoginMode.MAIL) {
-        navigationTo({ path: Navigation.IMPROVING_INFO, query: { token: data, reference: window.location.href } });
+        navigationTo({ path: Navigation.IMPROVING_INFO, query: { token: data, reference: window.location.href }});
       }
     } else {
       const userInfo = ((await getLoginStatus()) as any) as IUserInfo;
       if (!userInfo) {
         return;
       }
-      navigationTo({ path: Navigation.TEMPLATE, params: { categoryId, templateId: usingTemplate, spaceId: userInfo!.spaceId } });
+      navigationTo({ path: Navigation.TEMPLATE, params: { categoryId, templateId: usingTemplate, spaceId: userInfo!.spaceId }});
     }
   };
 
@@ -84,12 +84,12 @@ export const TemplatePreview: FC = () => {
        * 在 server 端是不会运行的
        * 这里渲染的内容在页面上不会渲染出来，所以不用担心
        */
-      isRenderServer() && (
-        <div style={{ display: 'none' }}>
-          <CommonSide />
-          {MainComponent()}
-        </div>
-      )}
+        isRenderServer() && (
+          <div style={{ display: 'none' }}>
+            <CommonSide />
+            {MainComponent()}
+          </div>
+        )}
 
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <CommonSide />

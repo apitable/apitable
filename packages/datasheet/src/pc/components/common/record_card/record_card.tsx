@@ -82,7 +82,7 @@ export const RecordCard: React.FC<IRecordCardProps> = props => {
               const cellValue = Selectors.getCellValue(
                 state,
                 {
-                  meta: { fieldMap: { [field.id]: field } },
+                  meta: { fieldMap: { [field.id]: field }},
                   recordMap: { [record.id]: record },
                   datasheetId,
                 },
@@ -113,7 +113,7 @@ export const RecordCard: React.FC<IRecordCardProps> = props => {
     const cellValue = Selectors.getCellValue(
       state,
       {
-        meta: { fieldMap: { [field.id]: field } },
+        meta: { fieldMap: { [field.id]: field }},
         recordMap: { [record.id]: record },
       },
       record.id,

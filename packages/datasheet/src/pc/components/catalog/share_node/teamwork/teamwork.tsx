@@ -72,7 +72,7 @@ export const Teamwork: FC<ITeamworkProps> = ({ nodeId, jumpPublicLink }) => {
     setInviteEmail(value);
   };
 
-  const sendInviteEmail = async (nvcVal?: string) => {
+  const sendInviteEmail = async(nvcVal?: string) => {
     if (secondVerify) {
       setSecondVerify(null);
     }
@@ -82,7 +82,7 @@ export const Teamwork: FC<ITeamworkProps> = ({ nodeId, jumpPublicLink }) => {
     }
   };
 
-  const sendInviteHandler = async () => {
+  const sendInviteHandler = async() => {
     const isExist = await checkEmail(inviteEmail);
     if (isExist) {
       Message.error({ content: t(Strings.invite_email_already_exist) });

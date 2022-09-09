@@ -66,8 +66,8 @@ export const CardHeader: React.FC<ICardHeaderProps> = props => {
   const coverField: IField = coverFieldId
     ? fieldMap[coverFieldId]
     : Object.values(fieldMap as IFieldMap).find((item: IField) => {
-        return item.type === FieldType.Attachment;
-      })!;
+      return item.type === FieldType.Attachment;
+    })!;
 
   let coverValue = compact(Selectors.getCellValue(store.getState(), recordSnapshot, recordId, coverField.id));
   if (coverField.type === FieldType.LookUp && coverValue) {
