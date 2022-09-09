@@ -9,8 +9,7 @@ import { InformationSmallOutlined, ShareQrcodeOutlined, ColumnUrlOutlined } from
 
 import { useCatalogTreeRequest } from 'pc/hooks';
 import { copy2clipBoard } from 'pc/utils';
-import { Message } from 'pc/components/common';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Message, Modal } from 'pc/components/common';
 import { TComponent } from 'pc/components/common/t_component';
 import { ShareLink } from '../share/share_link';
 import { DownloadQrCode } from './download_qr_code';
