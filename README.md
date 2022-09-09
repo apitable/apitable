@@ -1,14 +1,6 @@
 
-<p align="center">
-    <img width="200" src="docs/static/logo.svg" alt="APITable Logo Image" />
-</p>
 
-<p align="center">
-    <em>
-        APITable is an <b>API-oriented & Embed-friendly Visual Database</b> for everyone
-        <br />
-        and the best <b>Airtable open-source alternative</b>.
-    </em>
+
 </p>
 <p align="center">
     <img src="docs/static/cover.png" alt="APITable Cover Image" />
