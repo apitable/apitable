@@ -2,7 +2,9 @@
 PATH  := node_modules/.bin:$(PATH)
 SHELL := /bin/bash
 
-DEVENV := docker compose -f docker-compose.devenv.yaml --env-file .env run --rm --user $(shell id -u):$(shell id -g) 
+_DEVENV := docker compose -f docker-compose.devenv.yaml --env-file .env 
+RUNNER := $(_DEVENV) run --rm --user $(shell id -u):$(shell id -g)
+BUILDER := docker buildx bake -f docker-compose.build.yaml
 
 SEMVER3 := $(shell cat .version)
 define ANNOUNCE_BODY
@@ -188,32 +190,104 @@ test-ut-backend-docker:
 
 ###### 【backend server unit test】 ######
 
+buildpush: ## build all and push all to hub.docker.io registry
+	echo $$APITABLE_DOCKER_HUB_TOKEN | docker login -u apitable --password-stdin ;\
+	$(BUILDER) --push
+	
+.PHONY: build
+build: ## build all containers
+	$(BUILDER)
+
+###### development environtments ######
+.PHONY: devenv
+devenv: devenv-up ## debug all devenv services with docker compose up -d
+
+.PHONY: devenv-up
+devenv-up: ## debug all devenv services with docker compose up -d
+	$(_DEVENV) up -d
+
+.PHONY: devenv-down
+devenv-down: ## debug all devenv services with docker compose up -d
+	$(_DEVENV) down
+
+devenv-logs:
+	$(_DEVENV) logs -f
+devenv-ps:
+	$(_DEVENV) ps
+
+.PHONY: build-init-db
+build-init-db:
+	$(BUILDER) init-db
+.PHONY: build-backend-server
+build-backend-server:
+	$(BUILDER) backend-server
+
+.PHONY: install-backend-server
+install-backend-server: ## graldew install backend-server dependencies
+	$(RUNNER) backend-server ./gradlew build -x test
+
+.PHONY: devenv-backend-server
+devenv-backend-server: ## debug backend-server
+	$(RUNNER) backend-server java -jar vikadata-service/vikadata-service-api/build/libs/vikadata-service-api.jar
+
+
+.PHONY: install-web-server
+install-web-server: ## install web-server dependencies
+	$(RUNNER) web-server sh -c "yarn install"
+
+.PHONY: devenv-web-server
+devenv-web-server: ## debug web-server dependencies
+	$(RUNNER) web-server sh -c "yarn install"
+
+.PHONY: install-room-server
+install-room-server:
+	$(RUNNER) room-server yarn install
+
+.PHONY: devenv-room-server
+devenv-room-server: ## run local room-server code
+	$(RUNNER) room-server yarn start:room-server
+
+
+.PHONY: build-socket-server
+build-socket-server:
+	$(RUNNER) socket-server 
+
+.PHONY: install-socket-server
+install-socket-server:
+	$(RUNNER) socket-server sh -c "cd packages/socket-server/ && yarn"
+	  
+.PHONY: devenv-socket-server
+devenv-socket-server: ## run local web-server code
+	$(RUNNER) socket-server sh -c "cd packages/socket-server/ && yarn run start:dev"
+
+.PHONY: install
+install: install-backend-server install-web-server install-socket-server install-room-server ## install all dependencies
+	echo 'Install Finished'
+
 ###### buildpush ######
 
-buildpush: buildpush_roomserver buildpush_webserver buildpush-init-db ## buildpush all
-	echo 'finish buildpush all'
 
 buildpush-init-db: ## build and push the `init-db`container 
 	cd init-db ;\
 	make buildpush
 
-buildpush_roomserver: ## ghcr.io/vikadata/vika/room-server
+buildpush-roomserver: ## ghcr.io/vikadata/vika/room-server
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)";\
 	build_docker room-server
 
-buildpush_webserver: ## ghcr.io/vikadata/vika/web-server
+buildpush-webserver: ## ghcr.io/vikadata/vika/web-server
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)";\
 	source scripts/build_web.sh build_saas
 
-buildpush_componentdoc: ## ghcr.io/vikadata/vika/component-doc
+buildpush-componentdoc: ## ghcr.io/vikadata/vika/component-doc
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)"; \
 	build_docker component-doc
 
-buildpush_webserver_op: ## ghcr.io/vikadata/vika/web-server
+buildpush-webserver_op: ## ghcr.io/vikadata/vika/web-server
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)";\
   	source scripts/build_web.sh build_op
 
-buildpush_socketserver:
+buildpush-socketserver:
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)";\
 	export DOCKERFILE=./packages/socket-server/Dockerfile;\
 	build_docker socket-server
@@ -224,12 +298,34 @@ patch: # bump version number patch
 	docker run --rm -it --user $(shell id -u):$(shell id -g) -v "$(shell pwd):/app" ghcr.io/vikadata/vika/bumpversion:latest bumpversion patch
 
 
-### up
+### data environement
+.PHONY: dataenv
+dataenv:
+	make dataenv-up
+
+DATAENV_SERVICES := mysql minio redis rabbitmq mongodb init-schema init-data-mysql init-data-minio
+
+.PHONY: dataenv-up
+dataenv-up:
+	docker compose up -d $(DATAENV_SERVICES)
+
+dataenv-down:
+	docker compose down
+
+### production environment
 
 .PHONY: up
-up: ## start the application
+up: ## startup the application
 	@echo "Please execute 'make pull' first to download & upgrade all images to your machine."
 	docker compose up -d
+
+.PHONY: down
+down: ## shutdown the application
+	docker compose down
+
+.PHONY:ps
+ps: ## docker compose ps
+	docker compose ps
 
 .PHONY: pull
 pull: ## pull all containers and ready to up
@@ -255,42 +351,18 @@ run:
 
 
 run-web-server: ## run local web-server code
-	$(DEVENV) web-server yarn sd:r
+	$(RUNNER) web-server
 
 run-room-server: ## run local room-server code
-	$(DEVENV) room-server yarn sd 
+	$(RUNNER) room-server
 
 run-socket-server: ## run local socket-server code
-	$(DEVENV) socket-server yarn sd 
+	$(RUNNER) socket-server
 
 run-backend-server: ## run local backend-server code
-	$(DEVENV) backend-server ./gradlew build -x test
+	$(RUNNER) backend-server
 
 ### install
-
-.PHONY: install-backend-server
-install-backend-server: ## graldew install backend-server dependencies
-	$(DEVENV) backend-server ./gradlew build -x test
-
-.PHONY: install-web-server
-install-web-server: ## graldew install backend-server dependencies
-	$(DEVENV) web-server sh -c "yarn install && yarn build:dst:pre"
-
-.PHONY: install-socket-server
-install-socket-server:
-	$(DEVENV) socket-server sh -c "yarn"
-	  
-
-.PHONY: install
-install: install-backend-server install-web-server ## install all dependencies
-	echo 'Finished'
-
-
-.PHONY: build
-build: ## build apitable all services
-	export TAG=latest ;\
-	export EDITION=apitable;\
-	docker buildx bake -f docker-bake.hcl init-db backend-server web-server room-server socket-server
 
 ### help
 .PHONY: search
