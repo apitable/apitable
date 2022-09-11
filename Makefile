@@ -2,8 +2,20 @@
 PATH  := node_modules/.bin:$(PATH)
 SHELL := /bin/bash
 
-_DEVENV := docker compose -f docker-compose.devenv.yaml --env-file .env 
-RUNNER := $(_DEVENV) run --rm --user $(shell id -u):$(shell id -g)
+ifndef UID
+UID := $(shell id -u)
+export UID
+endif
+
+ifndef GID
+GID := $(shell id -g)
+export GID
+endif
+
+
+_DATAENV := docker compose -p apitable-devenv -f docker-compose.yaml
+_DEVENV := docker compose -p apitable-devenv -f docker-compose.devenv.yaml 
+RUNNER := $(_DEVENV) run --rm --user $$UID:$$GID 
 BUILDER := docker buildx bake -f docker-compose.build.yaml
 
 SEMVER3 := $(shell cat .version)
@@ -250,7 +262,7 @@ devenv-room-server: ## run local room-server code
 
 .PHONY: build-socket-server
 build-socket-server:
-	$(RUNNER) socket-server 
+	$(BUILDER) socket-server 
 
 .PHONY: install-socket-server
 install-socket-server:
@@ -307,10 +319,16 @@ DATAENV_SERVICES := mysql minio redis rabbitmq mongodb init-schema init-data-mys
 
 .PHONY: dataenv-up
 dataenv-up:
-	docker compose up -d $(DATAENV_SERVICES)
+	$(_DATAENV) up -d $(DATAENV_SERVICES)
 
 dataenv-down:
-	docker compose down
+	$(_DATAENV) down
+
+dataenv-ps:
+	$(_DATAENV) ps
+
+dataenv-logs:
+	$(_DATAENV) logs -f
 
 ### production environment
 
@@ -327,6 +345,8 @@ down: ## shutdown the application
 ps: ## docker compose ps
 	docker compose ps
 
+### docker stuffs
+
 .PHONY: pull
 pull: ## pull all containers and ready to up
 ifndef CR_PAT
@@ -338,31 +358,6 @@ ifdef CR_PAT
 	echo $$CR_PAT | docker login ghcr.io -u vikadata --password-stdin ;\
 	docker compose pull
 endif
-
-
-### run
-run:
-	@echo "You can run with commands:"
-	@echo "  make run-web-server"
-	@echo "  make run-room-server"
-	@echo "  make run-socket-server"
-	@echo "  make run-backend-server"
-
-
-
-run-web-server: ## run local web-server code
-	$(RUNNER) web-server
-
-run-room-server: ## run local room-server code
-	$(RUNNER) room-server
-
-run-socket-server: ## run local socket-server code
-	$(RUNNER) socket-server
-
-run-backend-server: ## run local backend-server code
-	$(RUNNER) backend-server
-
-### install
 
 ### help
 .PHONY: search

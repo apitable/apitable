@@ -1,39 +1,48 @@
 services:
 
   backend-server:
-    image: amazoncorretto:8
+    image: apitable/devenv:latest
+    user: "${UID}:${GID}"
     restart: always
     ports:
       - 8081:8081
     expose:
       - "8081"
     working_dir: /devenv
+    env_file:
+      - .env
     volumes:
       - ./backend-server:/devenv
+      - ~/:/home
     environment:
-      - HOME=/devenv
+      - HOME=/home
     networks:
       - apitable
     command: sh -c "./gradlew build -x test && java -jar vikadata-service/vikadata-service-api/build/libs/vikadata-service-api.jar"
 
   web-server:
-    image: node:16.15.0-alpine
+    image: apitable/devenv:latest
+    user: "${UID}:${GID}"
     restart: always
     ports:
       - 3000:3000
     expose:
       - "3000"
     working_dir: /devenv
+    env_file:
+      - .env
     volumes:
       - ./:/devenv
+      - ~/:/home
     environment:
-      - HOME=/devenv
+      - HOME=/home
     networks:
       - apitable
     command: sh -c "yarn install && yarn build:dst:pre && yarn sd:r"
 
   room-server:
-    image: node:16.15.0-alpine
+    image: apitable/devenv:latest
+    user: "${UID}:${GID}"
     restart: always
     ports:
      - 3333:3333
@@ -42,15 +51,19 @@ services:
       - "3333"
       - "3334"
     working_dir: /devenv
+    env_file:
+      - .env
     volumes:
       - ./:/devenv
+      - ~/:/home
     environment:
-      - HOME=/devenv
+      - HOME=/home
     networks:
       - apitable
     command: sh -c "yarn install && yarn start:room-server"
   socket-server:
-    image: node:16.15.0-alpine
+    image: apitable/devenv:latest
+    user: "${UID}:${GID}"
     restart: always
     ports:
       - 3001:3001
@@ -63,10 +76,13 @@ services:
       - "3005"
       - "3007"
     working_dir: /devenv
+    env_file:
+      - .env
     volumes:
       - ./:/devenv
+      - ~/:/home
     environment:
-      - HOME=/devenv
+      - HOME=/home
     networks:
       - apitable
     command: sh -c "cd packages/socket-server/ && yarn && yarn run start:dev"
