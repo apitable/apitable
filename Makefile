@@ -253,7 +253,7 @@ devenv-web-server: ## debug web-server dependencies
 
 .PHONY: install-room-server
 install-room-server:
-	$(RUNNER) room-server yarn install
+	$(RUNNER) room-server sh -c "yarn install && yarn build:dst:pre"
 
 .PHONY: devenv-room-server
 devenv-room-server: ## run local room-server code
