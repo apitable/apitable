@@ -25,12 +25,11 @@ public class ShopServiceImplTest extends AbstractIntegrationTest {
         List<ProductPriceVo> productPriceVos = isShopService.getPricesByProduct(ProductEnum.SILVER.name());
         // 白银级有21个付费方案
         assertThat(productPriceVos).isNotEmpty().hasSize(21);
-        // 席位有7个档位
     }
 
     @Test
     public void testGetBeforeEventDiscountPriceOnSilver() {
-        final OffsetDateTime nowTime = OffsetDateTime.of(2022, 2, 19, 23, 58, 0, 0, testTimeZone);
+        final OffsetDateTime nowTime = OffsetDateTime.of(2022, 8, 31, 17, 0, 0, 0, testTimeZone);
         getClock().setTime(nowTime);
         // 活动开始之前，优惠价格不存在
         List<ProductPriceVo> productPriceVos = isShopService.getPricesByProduct(ProductEnum.SILVER.name());
@@ -39,7 +38,7 @@ public class ShopServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testGetExpireEventDiscountPriceOnSilver() {
-        final OffsetDateTime nowTime = OffsetDateTime.of(2022, 8, 1, 0, 0, 0, 0, testTimeZone);
+        final OffsetDateTime nowTime = OffsetDateTime.of(2022, 10, 1, 0, 0, 0, 0, testTimeZone);
         getClock().setTime(nowTime);
         // 活动过期，优惠价格不存在
         List<ProductPriceVo> productPriceVos = isShopService.getPricesByProduct(ProductEnum.SILVER.name());
@@ -48,7 +47,7 @@ public class ShopServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testGetLastEventDateDiscountPriceOnSilver() {
-        final OffsetDateTime nowTime = OffsetDateTime.of(2022, 7, 30, 23, 23, 30, 0, testTimeZone);
+        final OffsetDateTime nowTime = OffsetDateTime.of(2022, 9, 30, 23, 23, 30, 0, testTimeZone);
         getClock().setTime(nowTime);
         // 活动过期，优惠价格不存在
         List<ProductPriceVo> productPriceVos = isShopService.getPricesByProduct(ProductEnum.SILVER.name());
