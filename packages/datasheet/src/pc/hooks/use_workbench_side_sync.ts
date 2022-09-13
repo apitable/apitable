@@ -14,7 +14,7 @@ import { getNodeTypeByNodeId, getResourceTypeByNodeType } from 'pc/utils';
 import { has } from 'lodash';
 import { WorkbenchSideContext } from 'pc/components/common_side/workbench_side/workbench_side_context';
 import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { WarnFilled, ErrorFilled } from '@vikadata/icons';
 
 export enum NodeChangeInfoType {

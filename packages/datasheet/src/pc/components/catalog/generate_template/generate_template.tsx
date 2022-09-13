@@ -10,7 +10,6 @@ import { useRequest } from 'pc/hooks';
 import { useNavigation } from 'pc/components/route_manager/use_navigation';
 import { useSelector } from 'react-redux';
 import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
-import { getEnvVariables } from 'pc/utils/env';
 
 export interface IGenerateTemplateProps {
   nodeId?: string;
@@ -31,7 +30,6 @@ export const GenerateTemplate: FC<IGenerateTemplateProps> = ({
   const { createTemplateReq, templateNameValidateReq } = useTemplateRequest();
   const { run: createTemplate, data: createTemplateData, loading } = useRequest(createTemplateReq, { manual: true });
   const { run: templateNameValidate } = useRequest(templateNameValidateReq, { manual: true });
-  const env = getEnvVariables();
 
   useUpdateEffect(() => {
     if (!createTemplateData) {

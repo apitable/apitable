@@ -35,7 +35,7 @@ import {
 import { inSocialApp } from 'pc/components/home/social_platform';
 import { Tooltip, Typography, useThemeColors } from '@vikadata/components';
 import { isMobileApp } from 'pc/utils/env';
-import { getEnvVariables } from 'pc/utils/env';
+import { isHiddenQRCode } from 'pc/utils/env';
 import { useIntercom } from 'react-use-intercom';
 
 export interface IHelpProps {
@@ -52,7 +52,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const isFeishu = inSocialApp(ConfigConstant.SocialType.FEISHU);
-  const env = getEnvVariables();
+
   const { showMessages } = useIntercom();
   const openShortcutKeyPanel = () => {
     dispatch(StoreActions.setShortcutKeyPanelVisible(true));
@@ -183,7 +183,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
         icon: <ViewContactOutlined />,
         text: t(Strings.player_contact_us),
         onClick: () => {
-          if(env.HIDDEN_QRCODE) {
+          if(isHiddenQRCode()) {
             showMessages();
           } else {
             dispatch(StoreActions.clearWizardsData());

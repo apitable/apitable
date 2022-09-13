@@ -3,7 +3,7 @@ import { ISubscription, Navigation, OnOkType, OtErrorCode, StatusCode, Strings, 
 import { IServiceError } from '@vikadata/widget-sdk';
 import { triggerUsageAlert } from 'pc/common/billing';
 import { Message } from 'pc/components/common/message';
-import { Modal } from 'pc/components/common/modal/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
 import { Method, navigatePath } from 'pc/components/route_manager/use_navigation';
 
