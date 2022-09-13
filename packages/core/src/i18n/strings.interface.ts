@@ -729,6 +729,7 @@ export interface StringsInterface {
     click_refresh: String;
     click_to_activate_space: String;
     click_to_agree: String;
+    click_to_compare_with_detail: String;
     click_to_view: String;
     click_to_view_instructions: String;
     click_top_right_to_share: String;
@@ -2522,6 +2523,7 @@ export interface StringsInterface {
     mail_invite_success: String;
     main_admin_name: String;
     main_admin_page_desc: String;
+    main_contain: String;
     malawi: String;
     malaysia: String;
     maldives: String;
@@ -4071,6 +4073,7 @@ export interface StringsInterface {
     setting_permission: String;
     seychelles: String;
     share: String;
+    share_and_collaboration: String;
     share_and_editable_desc: String;
     share_and_editable_title: String;
     share_and_permission_member_detail: String;
@@ -4409,7 +4412,8 @@ export interface StringsInterface {
     subscription_expire_error: String;
     subscription_fee: String;
     subscription_grades_checklist: String;
-    subscription_grades_checklist_mobile: String;
+    subscription_grades_checklist_mobile_saas: String;
+    subscription_grades_checklist_mobile_selfhost: String;
     subscription_information: String;
     subscription_level: String;
     subscription_product_seats: String;

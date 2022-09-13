@@ -4033,7 +4033,8 @@
             "zh_HK": "交流群"
         },
         "community": {
-            "zh_CN": "社区版"
+            "zh_CN": "社区版",
+            "en_US": "Community"
         },
         "community_and_local_interest": {
             "zh_CN": "社区与本地兴趣",
@@ -4046,7 +4047,7 @@
             "zh_HK": "開源社區版"
         },
         "community_grade_desc": {
-            "zh_CN": "免费且开源，可以自助安装"
+            "zh_CN": "【即将开放，敬请期待】免费且开源，可以自助安装"
         },
         "comoros": {
             "zh_CN": "科摩罗",
@@ -9875,7 +9876,7 @@
             "zh_HK": "{\"bronze\":\"免費\",\"silver\":\"約 36 元 人/月\",\"gold\":\"約 43.8 元 人/月\",\"enterprise\":\"按需定制\"}"
         },
         "grade_price_by_month_origin": {
-            "zh_CN": "{\"bronze\":\"\",\"silver\":\"\",\"gold\":\"\",\"enterprise\":\"\"}",
+            "zh_CN": "{\n  \"bronze\": \"免费\",\n  \"silver\": \"约 28元 人/月\",\n  \"gold\": \"约 38.8元 人/月\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}",
             "en_US": "{\"bronze\":\"\",\"silver\":\"\",\"gold\":\"\",\"enterprise\":\"\"}",
             "zh_HK": "{\"bronze\":\"\",\"silver\":\"\",\"gold\":\"\",\"enterprise\":\"\"}"
         },
@@ -9885,9 +9886,9 @@
             "zh_HK": "{\"bronze\":\"免費\",\"silver\":\"約 368 元 人/年\",\"gold\":\"約 538.8 元 人/年\",\"enterprise\":\"按需定制\"}"
         },
         "grade_price_by_year_origin": {
-            "zh_CN": "{\"bronze\":\"\",\"silver\":\"\",\"gold\":\"\",\"enterprise\":\"\"}",
-            "en_US": "{\"bronze\":\"\",\"silver\":\"\",\"gold\":\"\",\"enterprise\":\"\"}",
-            "zh_HK": "{\"bronze\":\"\",\"silver\":\"\",\"gold\":\"\",\"enterprise\":\"\"}"
+            "zh_CN": "{\n  \"bronze\": \"免费\",\n  \"silver\": \"约 228元 人/年,\n  \"gold\": \"约 388.8元 人/年\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}",
+            "en_US": "{\n  \"bronze\": \"免费\",\n  \"silver\": \"约 228元 人/年,\n  \"gold\": \"约 388.8元 人/年\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}",
+            "zh_HK": "{\n  \"bronze\": \"免费\",\n  \"silver\": \"约 228元 人/年,\n  \"gold\": \"约 388.8元 人/年\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}"
         },
         "grades_restriction_prompt": {
             "zh_CN": "你的功能使用量已经超出上限，升级可获得更多功能用量。",
@@ -20038,7 +20039,7 @@
         },
         "set_field_required": {
             "zh_CN": "设置为神奇表单必填项",
-            "en_US": "Set as required in forms",
+            "en_US": "Set as required on forms",
             "zh_HK": "設置為神奇表單必填項"
         },
         "set_field_required_tip_1": {
@@ -20191,6 +20192,10 @@
             "zh_CN": "分享",
             "en_US": "Share",
             "zh_HK": "分享"
+        },
+        "share_and_collaboration": {
+            "zh_CN": "分享与协作",
+            "en_US": "Sharing and collaboration"
         },
         "share_and_editable_desc": {
             "zh_CN": "他人可以在分享页面下协作编辑表格的内容",

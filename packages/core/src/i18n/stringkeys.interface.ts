@@ -4072,6 +4072,7 @@ export type StringKeysMapType = {
   'setting_permission': 'setting_permission',
   'seychelles': 'seychelles',
   'share': 'share',
+  'share_and_collaboration': 'share_and_collaboration',
   'share_and_editable_desc': 'share_and_editable_desc',
   'share_and_editable_title': 'share_and_editable_title',
   'share_and_permission_member_detail': 'share_and_permission_member_detail',
