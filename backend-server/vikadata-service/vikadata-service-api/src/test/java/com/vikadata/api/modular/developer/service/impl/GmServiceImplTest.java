@@ -1,5 +1,8 @@
 package com.vikadata.api.modular.developer.service.impl;
 
+import java.util.List;
+
+import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.junit.jupiter.api.Test;
 
@@ -12,11 +15,14 @@ import com.vikadata.entity.MemberEntity;
 import com.vikadata.entity.SocialTenantBindEntity;
 import com.vikadata.entity.SpaceEntity;
 import com.vikadata.entity.UserEntity;
+import com.vikadata.integration.vika.model.UserContactInfo;
 
 import static com.vikadata.api.enums.exception.PermissionException.MEMBER_NOT_IN_SPACE;
 import static com.vikadata.api.enums.exception.SpaceException.NOT_SPACE_ADMIN;
 import static com.vikadata.api.enums.exception.SpaceException.NO_ALLOW_OPERATE;
 import static com.vikadata.api.enums.exception.SpaceException.SPACE_ALREADY_CERTIFIED;
+import static com.vikadata.api.enums.exception.UserException.USER_NOT_BIND_EMAIL;
+import static com.vikadata.api.enums.exception.UserException.USER_NOT_BIND_PHONE;
 import static com.vikadata.api.enums.exception.UserException.USER_NOT_EXIST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -93,6 +99,67 @@ public class GmServiceImplTest extends AbstractIntegrationTest {
         iGmService.spaceCertification(spaceId, uuid, SpaceCertification.BASIC);
         SpaceSubscribeVo afterSubscribe = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
         assertThat(5 * 1024 * 1024 * 1024L).isEqualTo(afterSubscribe.getMaxCapacitySizeInBytes() - beforeSubscribe.getMaxCapacitySizeInBytes());
+    }
+
+    @Test
+    public void testGetUserPhoneAndEmailByUserIdThatUserIsExist(){
+        // init user
+        UserEntity user = UserEntity.builder().uuid("1").code("+86").mobilePhone("12312312312")
+                .email("test@vikadata.com").build();
+        iUserService.save(user);
+        UserContactInfo userContactInfo = new UserContactInfo();
+        userContactInfo.setRecordId("1");
+        userContactInfo.setUuid("1");
+        List<UserContactInfo> userContactInfos = CollUtil.newArrayList(userContactInfo);
+        userContactInfos = iGmService.getUserPhoneAndEmailByUserId(userContactInfos);
+        assertThat(userContactInfos.get(0).getCode()).isEqualTo("+86");
+        assertThat(userContactInfos.get(0).getMobilePhone()).isEqualTo("12312312312");
+        assertThat(userContactInfos.get(0).getEmail()).isEqualTo("test@vikadata.com");
+    }
+
+    @Test
+    public void testGetUserPhoneAndEmailByUserIdThatUserIsNotBindMobilePhone(){
+        // init user
+        UserEntity user = UserEntity.builder().uuid("1").email("test@vikadata.com").build();
+        iUserService.save(user);
+        UserContactInfo userContactInfo = new UserContactInfo();
+        userContactInfo.setRecordId("1");
+        userContactInfo.setUuid("1");
+        List<UserContactInfo> userContactInfos = CollUtil.newArrayList(userContactInfo);
+        userContactInfos = iGmService.getUserPhoneAndEmailByUserId(userContactInfos);
+        assertThat(userContactInfos.get(0).getCode()).isEqualTo(USER_NOT_BIND_PHONE.getMessage());
+        assertThat(userContactInfos.get(0).getMobilePhone()).isEqualTo(USER_NOT_BIND_PHONE.getMessage());
+        assertThat(userContactInfos.get(0).getEmail()).isEqualTo("test@vikadata.com");
+    }
+
+    @Test
+    public void testGetUserPhoneAndEmailByUserIdThatUserIsNotBindEmail(){
+        // init user
+        UserEntity user = UserEntity.builder().uuid("1").code("+86").mobilePhone("12312312312").build();
+        iUserService.save(user);
+        UserContactInfo userContactInfo = new UserContactInfo();
+        userContactInfo.setRecordId("1");
+        userContactInfo.setUuid("1");
+        List<UserContactInfo> userContactInfos = CollUtil.newArrayList(userContactInfo);
+        userContactInfos = iGmService.getUserPhoneAndEmailByUserId(userContactInfos);
+        assertThat(userContactInfos.get(0).getCode()).isEqualTo("+86");
+        assertThat(userContactInfos.get(0).getMobilePhone()).isEqualTo("12312312312");
+        assertThat(userContactInfos.get(0).getEmail()).isEqualTo(USER_NOT_BIND_EMAIL.getMessage());
+    }
+
+    @Test
+    public void testGetUserPhoneAndEmailByUserIdThatUserIsNotExist(){
+        // init user
+        UserEntity user = UserEntity.builder().id(1L).build();
+        iUserService.save(user);
+        UserContactInfo userContactInfo = new UserContactInfo();
+        userContactInfo.setRecordId("1");
+        userContactInfo.setUuid("1");
+        List<UserContactInfo> userContactInfos = CollUtil.newArrayList(userContactInfo);
+        userContactInfos = iGmService.getUserPhoneAndEmailByUserId(userContactInfos);
+        assertThat(userContactInfos.get(0).getCode()).isEqualTo(USER_NOT_EXIST.getMessage());
+        assertThat(userContactInfos.get(0).getMobilePhone()).isEqualTo(USER_NOT_EXIST.getMessage());
+        assertThat(userContactInfos.get(0).getEmail()).isEqualTo(USER_NOT_EXIST.getMessage());
     }
 
     private void prepareSpaceSubscriptionData(String spaceId, Long userId) {

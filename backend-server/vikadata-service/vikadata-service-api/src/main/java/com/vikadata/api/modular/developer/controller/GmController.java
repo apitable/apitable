@@ -52,6 +52,7 @@ import com.vikadata.api.model.vo.labs.GmLabFeatureVo;
 import com.vikadata.api.modular.developer.model.ConfigDatasheetRo;
 import com.vikadata.api.modular.developer.model.HqAddUserRo;
 import com.vikadata.api.modular.developer.model.HqAddUserVo;
+import com.vikadata.api.modular.developer.model.QueryUserInfoRo;
 import com.vikadata.api.modular.developer.model.SpaceBlacklistRo;
 import com.vikadata.api.modular.developer.model.SpaceCertificationRo;
 import com.vikadata.api.modular.developer.model.UnlockRo;
@@ -734,5 +735,16 @@ public class GmController {
         log.info("玉符 IDaaS 私有化部署绑定应用和空间站：" + JSONUtil.toJsonStr(request));
         IdaasAppBindVo idaasAppBindVo = idaasAppBindService.bindTenantApp(request);
         return ResponseData.success(idaasAppBindVo);
+    }
+
+    @PostResource(path = "/user/writeContactInfo", requiredPermission = false)
+    @ApiOperation(value = "query user's mobile phone and email by user's id")
+    public ResponseData<Void> userContactInfoQuery(@RequestBody QueryUserInfoRo ro) {
+        log.info("Operator 「{}」 query user mobile phone and email", SessionContext.getUserId());
+        // check permission
+        iGmService.validPermission(SessionContext.getUserId(), GmAction.CONTACT_INFO_QUERY);
+        // query and write back user's mobile phone and email
+        iGmService.queryAndWriteBackUserContactInfo(ro.getHost(), ro.getDatasheetId(), ro.getViewId(), ro.getToken());
+        return ResponseData.success();
     }
 }

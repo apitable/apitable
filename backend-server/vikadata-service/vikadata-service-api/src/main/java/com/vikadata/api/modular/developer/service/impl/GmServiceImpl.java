@@ -2,6 +2,9 @@ package com.vikadata.api.modular.developer.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -32,11 +35,14 @@ import com.vikadata.api.modular.social.service.IFeishuService;
 import com.vikadata.api.modular.social.service.IFeishuTenantContactService;
 import com.vikadata.api.modular.social.service.ISocialTenantBindService;
 import com.vikadata.api.modular.space.service.ISpaceService;
+import com.vikadata.api.modular.user.mapper.UserMapper;
 import com.vikadata.api.modular.user.service.IUserService;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
+import com.vikadata.entity.UserEntity;
 import com.vikadata.integration.vika.VikaOperations;
 import com.vikadata.integration.vika.model.GmPermissionInfo;
+import com.vikadata.integration.vika.model.UserContactInfo;
 import com.vikadata.social.feishu.model.v3.FeishuDeptObject;
 import com.vikadata.social.feishu.model.v3.FeishuUserObject;
 
@@ -50,6 +56,8 @@ import static com.vikadata.api.enums.exception.PermissionException.MEMBER_NOT_IN
 import static com.vikadata.api.enums.exception.SpaceException.NOT_SPACE_ADMIN;
 import static com.vikadata.api.enums.exception.SpaceException.SPACE_ALREADY_CERTIFIED;
 import static com.vikadata.api.enums.exception.SpaceException.SPACE_NOT_EXIST;
+import static com.vikadata.api.enums.exception.UserException.USER_NOT_BIND_EMAIL;
+import static com.vikadata.api.enums.exception.UserException.USER_NOT_BIND_PHONE;
 import static com.vikadata.api.enums.exception.UserException.USER_NOT_EXIST;
 
 /**
@@ -100,6 +108,8 @@ public class GmServiceImpl implements IGmService {
     @Resource
     private ISocialTenantBindService iSocialTenantBindService;
 
+    @Resource
+    private UserMapper userMapper;
 
     @Override
     public void validPermission(Long userId, GmAction action) {
@@ -216,4 +226,41 @@ public class GmServiceImpl implements IGmService {
         // 处理未绑定空间的订阅信息
         iFeishuEventService.handleTenantOrders(tenantId, iFeishuService.getIsvAppId());
     }
+
+    @Override
+    public void queryAndWriteBackUserContactInfo(String host, String datasheetId, String viewId, String token) {
+        // read user's id from datasheet by vika api
+        List<UserContactInfo> userContactInfos = vikaOperations.getUserIdFromDatasheet(host, datasheetId, viewId, token);
+        if (userContactInfos.isEmpty()) {
+            throw new BusinessException("There are no records that meet the conditions.");
+        }
+        // query user's contact information by user's id
+        List<UserContactInfo> userContactInfoList = this.getUserPhoneAndEmailByUserId(userContactInfos);
+        // write back user's mobile phone and email
+        for (UserContactInfo userContactInfo : userContactInfoList) {
+            vikaOperations.writeBackUserContactInfo(host, token, datasheetId, userContactInfo);
+        }
+    }
+
+    @Override
+    public List<UserContactInfo> getUserPhoneAndEmailByUserId(List<UserContactInfo> userContactInfos) {
+        // query user's mobile phone and email by user's id
+        List<UserEntity> userEntities = userMapper.selectByUuIds(userContactInfos.stream().map(UserContactInfo::getUuid).collect(Collectors.toList()));
+        Map<String, UserEntity> handleInfoMap = userEntities.stream().collect(Collectors.toMap(UserEntity::getUuid, Function.identity()));
+        // handle write back information
+        for (UserContactInfo userContactInfo : userContactInfos) {
+            if (handleInfoMap.containsKey(userContactInfo.getUuid())) {
+                userContactInfo.setCode(handleInfoMap.get(userContactInfo.getUuid()).getCode() != null ? handleInfoMap.get(userContactInfo.getUuid()).getCode() : USER_NOT_BIND_PHONE.getMessage());
+                userContactInfo.setMobilePhone(handleInfoMap.get(userContactInfo.getUuid()).getMobilePhone() != null ? handleInfoMap.get(userContactInfo.getUuid()).getMobilePhone() : USER_NOT_BIND_PHONE.getMessage());
+                userContactInfo.setEmail(handleInfoMap.get(userContactInfo.getUuid()).getEmail() != null ? handleInfoMap.get(userContactInfo.getUuid()).getEmail() : USER_NOT_BIND_EMAIL.getMessage());
+            }
+            else {
+                userContactInfo.setCode(USER_NOT_EXIST.getMessage());
+                userContactInfo.setMobilePhone(USER_NOT_EXIST.getMessage());
+                userContactInfo.setEmail(USER_NOT_EXIST.getMessage());
+            }
+        }
+        return userContactInfos;
+    }
+
 }

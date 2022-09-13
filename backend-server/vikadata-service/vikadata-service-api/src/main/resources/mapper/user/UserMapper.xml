@@ -95,6 +95,16 @@
         AND is_deleted = 0
     </select>
 
+    <select id="selectByUuIds" resultType="com.vikadata.entity.UserEntity">
+        SELECT *
+        FROM vika_user vu
+        WHERE vu.uuid IN
+        <foreach collection="uuids" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
     <select id="selectAllUserIdByIgnoreDelete" resultType="java.lang.Long">
         SELECT id
         FROM vika_user

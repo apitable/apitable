@@ -1,7 +1,10 @@
 package com.vikadata.api.modular.developer.service;
 
+import java.util.List;
+
 import com.vikadata.api.enums.developer.GmAction;
 import com.vikadata.api.enums.space.SpaceCertification;
+import com.vikadata.integration.vika.model.UserContactInfo;
 
 /**
  * <p>
@@ -49,4 +52,26 @@ public interface IGmService {
      * @param tenantId 租户
      */
     void handleFeishuEvent(String tenantId);
+
+    /**
+     * query and write back user's mobile phone and email by userId
+     *
+     * @param host        host
+     * @param datasheetId datasheet's id
+     * @param viewId      view's id
+     * @param token       api token
+     * @author liuzijing
+     * @date 2022/9/5
+     */
+    void queryAndWriteBackUserContactInfo(String host, String datasheetId, String viewId, String token);
+
+    /**
+     * query user's mobile phone and email by userId
+     *
+     * @param userContactInfos user's contact info
+     * @return UserContactInfos user's contact info
+     * @author liuzijing
+     * @date 2022/9/5
+     */
+    List<UserContactInfo> getUserPhoneAndEmailByUserId(List<UserContactInfo> userContactInfos);
 }
