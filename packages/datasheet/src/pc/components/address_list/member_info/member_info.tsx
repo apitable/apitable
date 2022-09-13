@@ -11,7 +11,7 @@ import { Input } from 'antd';
 import { useToggle } from 'ahooks';
 import parser from 'html-react-parser';
 import { Identity } from 'pc/components/space_manage/identity';
-import { getSocialWecomUnitName, isSocialPlatformEnabled } from 'pc/components/home/social_platform';
+import { getSocialWecomUnitName, isSocialFeiShu, isSocialPlatformEnabled } from 'pc/components/home/social_platform';
 
 export const getIdentity = (memberInfo: IMemberInfoInAddressList) => {
   if (!memberInfo.isActive) return 'inactive';
@@ -82,7 +82,7 @@ export const MemberInfo: FC = () => {
     const hasPerm = user.isAdmin && !user.isMainAdmin && spaceResource &&
       spaceResource.permissions.includes(ConfigConstant.PermissionCode.MEMBER);
 
-    const isBindSocial = spaceInfo && isSocialPlatformEnabled(spaceInfo);
+    const isBindSocial = spaceInfo && isSocialPlatformEnabled(spaceInfo) && !isSocialFeiShu(spaceInfo);
     if (!isBindSocial && (memberInfo.memberId === user.memberId || user.isMainAdmin || hasPerm)) {
       !editIcon && setEditIcon(true);
       return;
