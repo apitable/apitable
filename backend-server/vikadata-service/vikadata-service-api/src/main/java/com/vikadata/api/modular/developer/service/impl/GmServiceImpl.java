@@ -249,9 +249,7 @@ public class GmServiceImpl implements IGmService {
         // handle write back information
         for (UserContactInfo info : userContactInfos) {
             if (!uuidToUserMap.containsKey(info.getUuid())) {
-                info.setCode(UserContactInfo.USER_NOT_EXIST_OR_BAN);
-                info.setMobilePhone(UserContactInfo.USER_NOT_EXIST_OR_BAN);
-                info.setEmail(UserContactInfo.USER_NOT_EXIST_OR_BAN);
+                continue;
             }
             BeanUtil.copyProperties(uuidToUserMap.get(info.getUuid()), info);
         }

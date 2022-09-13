@@ -12,11 +12,9 @@ public class UserContactInfo {
 
     private String email;
 
-    public final static String USER_NOT_BIND_PHONE = "USER NOT BIND PHONE";
+    private final static String USER_NOT_BIND_PHONE = "USER NOT BIND PHONE";
 
-    public final static String USER_NOT_BIND_EMIAL = "USER NOT BIND EMAIL";
-
-    public final static String USER_NOT_EXIST_OR_BAN = "USER NOT EXIST OR BAN";
+    private final static String USER_NOT_BIND_EMIAL = "USER NOT BIND EMAIL";
 
     public String getRecordId() {
         return recordId;

@@ -125,8 +125,8 @@ public class GmServiceImplTest extends AbstractIntegrationTest {
         userContactInfo.setUuid("1");
         List<UserContactInfo> userContactInfos = CollUtil.newArrayList(userContactInfo);
         iGmService.getUserPhoneAndEmailByUserId(userContactInfos);
-        assertThat(userContactInfos.get(0).getCode()).isEqualTo(UserContactInfo.USER_NOT_BIND_PHONE);
-        assertThat(userContactInfos.get(0).getMobilePhone()).isEqualTo(UserContactInfo.USER_NOT_BIND_PHONE);
+        assertThat(userContactInfos.get(0).getCode()).isEqualTo("USER NOT BIND PHONE");
+        assertThat(userContactInfos.get(0).getMobilePhone()).isEqualTo("USER NOT BIND PHONE");
         assertThat(userContactInfos.get(0).getEmail()).isEqualTo("test@vikadata.com");
     }
 
@@ -142,7 +142,7 @@ public class GmServiceImplTest extends AbstractIntegrationTest {
         iGmService.getUserPhoneAndEmailByUserId(userContactInfos);
         assertThat(userContactInfos.get(0).getCode()).isEqualTo("+86");
         assertThat(userContactInfos.get(0).getMobilePhone()).isEqualTo("12312312312");
-        assertThat(userContactInfos.get(0).getEmail()).isEqualTo(UserContactInfo.USER_NOT_BIND_EMIAL);
+        assertThat(userContactInfos.get(0).getEmail()).isEqualTo("USER NOT BIND EMAIL");
     }
 
     @Test
@@ -155,9 +155,9 @@ public class GmServiceImplTest extends AbstractIntegrationTest {
         userContactInfo.setUuid("1");
         List<UserContactInfo> userContactInfos = CollUtil.newArrayList(userContactInfo);
         iGmService.getUserPhoneAndEmailByUserId(userContactInfos);
-        assertThat(userContactInfos.get(0).getCode()).isEqualTo(UserContactInfo.USER_NOT_EXIST_OR_BAN);
-        assertThat(userContactInfos.get(0).getMobilePhone()).isEqualTo(UserContactInfo.USER_NOT_EXIST_OR_BAN);
-        assertThat(userContactInfos.get(0).getEmail()).isEqualTo(UserContactInfo.USER_NOT_EXIST_OR_BAN);
+        assertThat(userContactInfos.get(0).getCode()).isEqualTo("USER NOT BIND PHONE");
+        assertThat(userContactInfos.get(0).getMobilePhone()).isEqualTo("USER NOT BIND PHONE");
+        assertThat(userContactInfos.get(0).getEmail()).isEqualTo("USER NOT BIND EMAIL");
     }
 
     private void prepareSpaceSubscriptionData(String spaceId, Long userId) {
