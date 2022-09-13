@@ -328,7 +328,7 @@ buildpush-componentdoc: ## ghcr.io/vikadata/vika/component-doc
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)"; \
 	build_docker component-doc
 
-buildpush-webserver_op: ## ghcr.io/vikadata/vika/web-server
+buildpush-webserver-op: ## ghcr.io/vikadata/vika/web-server
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)";\
   	source scripts/build_web.sh build_op
 
