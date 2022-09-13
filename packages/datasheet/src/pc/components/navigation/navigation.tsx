@@ -20,7 +20,7 @@ import {
 import { inSocialApp, isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'pc/components/home/social_platform';
 import { Notification } from 'pc/components/notification';
 import { useNotificationRequest, useRequest, useResponsive } from 'pc/hooks';
-import { isMobileApp } from 'pc/utils/env';
+import { isMobileApp, isHiddenQRCode } from 'pc/utils/env';
 import * as React from 'react';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
@@ -42,8 +42,6 @@ import styles from './style.module.less';
 import { UpgradeBtn } from './upgrade_btn';
 // import { NavigationItem } from './navigation_item';
 import { User } from './user';
-
-import { getEnvVariables } from 'pc/utils/env';
 import { useIntercom } from 'react-use-intercom';
 enum NavKey {
   SpaceManagement = 'management',
@@ -83,7 +81,6 @@ export const Navigation: FC = () => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const [clickCount, setClickCount] = useState(0);
-  const env = getEnvVariables();
   const { update: updateIntercom } = useIntercom();
   // 请求消息总数
   useRequest(notificationStatistics);
@@ -247,15 +244,11 @@ export const Navigation: FC = () => {
   }, [notice, noticeIcon, unReadMsgCount, noticeIconClick, search, router.pathname]);
 
   useEffect(() => {
-    if(!env.HIDDEN_QRCODE || isMobile) {
+    if(!isHiddenQRCode() || isMobile) {
       return;
     }
-    if(router.pathname.includes('workbench')) {
-      updateIntercom({ hideDefaultLauncher: false });
-    } else {
-      updateIntercom({ hideDefaultLauncher: true });
-    }
-  }, [router.pathname, isMobile, env.HIDDEN_QRCODE, updateIntercom]);
+    updateIntercom({ hideDefaultLauncher: !router.pathname.includes('workbench') });
+  }, [router.pathname, isMobile, updateIntercom]);
 
   const onNoticeClose = () => {
     setNotice(false);
