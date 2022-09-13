@@ -235,5 +235,10 @@ public enum GmAction {
      */
     WECOM_ISV_PERMIT_ENSURE_ALL,
 
+    /**
+     * query user mobile phone and email by user's id
+     */
+    CONTACT_INFO_QUERY,
+
     ;
 }

@@ -117,6 +117,13 @@ public class UserMapperTest extends AbstractMyBatisMapperTest {
         assertThat(entities).isNotEmpty();
     }
 
+    @Test
+    @Sql("/testdata/user-data.sql")
+    void testSelectByUuIds() {
+        List<UserEntity> entities = userMapper.selectByUuIds(CollUtil.newArrayList("23a5f52cd1ee4e6abdc8a77e9b73cdeb"));
+        assertThat(entities).isNotEmpty();
+    }
+
 
     @Test
     @Sql("/testdata/user-data.sql")

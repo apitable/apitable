@@ -148,6 +148,16 @@ public interface UserMapper extends BaseMapper<UserEntity> {
     List<UserEntity> selectByIds(@Param("userIds") List<Long> userIds);
 
     /**
+     * query userEntity by uuid
+     *
+     * @param uuids user's uuid
+     * @return List<UserEntity>
+     * @author liuzijing
+     * @date 2022/9/8
+     */
+    List<UserEntity> selectByUuIds(@Param("uuids") List<String> uuids);
+
+    /**
      * todo 希望添加created_at为索引，然后数据量多的时候根据时间进行分区
      * 游标查询当前时间的所有用户ID
      *

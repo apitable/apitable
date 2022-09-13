@@ -20,6 +20,7 @@ import com.vikadata.integration.vika.model.IntegralRewardInfo;
 import com.vikadata.integration.vika.model.OnlineTemplateInfo;
 import com.vikadata.integration.vika.model.OriginalWhite;
 import com.vikadata.integration.vika.model.RecommendTemplateInfo;
+import com.vikadata.integration.vika.model.UserContactInfo;
 import com.vikadata.integration.vika.model.UserOrder;
 
 /**
@@ -221,4 +222,29 @@ public interface VikaOperations {
      * @param payments 订单支付详情
      */
     void syncOrder(BillingOrder order, List<BillingOrderItem> items, List<BillingOrderPayment> payments);
+
+    /**
+     * get user's id from datasheet
+     *
+     * @param host        host
+     * @param datasheetId datasheet's id
+     * @param viewId      view's id
+     * @param token       api token
+     * @return UserContactInfo    recordId and user's id
+     * @author liuzijing
+     * @date 2022/9/5
+     */
+    List<UserContactInfo> getUserIdFromDatasheet(String host, String datasheetId, String viewId, String token);
+
+    /**
+     * write back user's contact info
+     *
+     * @param host        host
+     * @param token       token
+     * @param dstId       datasheet's id
+     * @param userContactInfo user's contact information
+     * @author liuzijing
+     * @date 2022/9/5
+     */
+    void writeBackUserContactInfo(String host, String token, String dstId, UserContactInfo userContactInfo);
 }

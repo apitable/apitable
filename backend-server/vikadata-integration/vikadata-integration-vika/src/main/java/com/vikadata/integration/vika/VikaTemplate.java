@@ -62,6 +62,7 @@ import com.vikadata.integration.vika.model.MemberField;
 import com.vikadata.integration.vika.model.OnlineTemplateInfo;
 import com.vikadata.integration.vika.model.OriginalWhite;
 import com.vikadata.integration.vika.model.RecommendTemplateInfo;
+import com.vikadata.integration.vika.model.UserContactInfo;
 import com.vikadata.integration.vika.model.UserOrder;
 
 /**
@@ -742,6 +743,40 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
         getClient().getRecordApi().addRecords(config.getStr("order_payment"), new CreateRecordRequest()
                 .withFieldKey(FieldKey.Name)
                 .withRecords(orderPaymentRecordMaps));
+    }
+
+    @Override
+    public List<UserContactInfo> getUserIdFromDatasheet(String host, String datasheetId, String viewId, String token) {
+        // build return object
+        List<UserContactInfo> userContactInfos = new ArrayList<>();
+        // build query condition
+        ApiQueryParam apiQueryParam = new ApiQueryParam()
+                .withView(viewId);
+        // read user's id from datasheet by vika api
+        Pager<Record> records = this.getClient(host, token).getRecordApi().getRecords(datasheetId, apiQueryParam);
+        while (records.hasNext()) {
+            for (Record record : records.next()) {
+                Map<String, Object> recordMap = record.getFields();
+                UserContactInfo userContactInfo = new UserContactInfo();
+                userContactInfo.setRecordId(record.getRecordId());
+                userContactInfo.setUuid(MapUtil.getStr(recordMap, "USER_ID"));
+                userContactInfos.add(userContactInfo);
+            }
+        }
+        return userContactInfos;
+    }
+
+    @Override
+    public void writeBackUserContactInfo(String host, String token, String dstId, UserContactInfo userContactInfo) {
+        UpdateRecord updateRecord = new UpdateRecord()
+                .withRecordId(userContactInfo.getRecordId())
+                .withField("AREA_CODE", userContactInfo.getCode())
+                .withField("MOBILE_PHONE", userContactInfo.getMobilePhone())
+                .withField("EMAIL", userContactInfo.getEmail())
+                .withField("STATUS", true);
+        UpdateRecordRequest updateRecordRequest = new UpdateRecordRequest()
+                .withRecords(Collections.singletonList(updateRecord));
+        this.getClient(host, token).getRecordApi().updateRecords(dstId, updateRecordRequest);
     }
 
     private JSONObject loadOrderConfig(String env) {
