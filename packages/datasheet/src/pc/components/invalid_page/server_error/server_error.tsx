@@ -7,14 +7,13 @@ import { MobileBar } from 'pc/components/mobile_bar';
 import { FC } from 'react';
 import ServerErrorPng from 'static/icon/common/common_img_500.png';
 import styles from './style.module.less';
-import { getEnvVariables } from 'pc/utils/env';
+import { isHiddenQRCode } from 'pc/utils/env';
 
 export const ServerError: FC = () => {
   const refresh = () => {
     window.location.reload();
   };
 
-  const env = getEnvVariables();
   console.log('Settings.server_error_page_bg.value', Settings.server_error_page_bg.value);
   return (
     <div className={styles.serverPageWrapper}>
@@ -22,7 +21,7 @@ export const ServerError: FC = () => {
         <MobileBar />
         <div className={styles.serverError}>
           <div className={styles.container}>
-            { env.HIDDEN_QRCODE ? 
+            { isHiddenQRCode() ? 
               <Image src={integrateCdnHost(Settings.server_error_page_bg.value)} alt="server error" width={230} height={230} /> 
               : 
               <Image src={ServerErrorPng} alt="server error" /> 
@@ -41,7 +40,7 @@ export const ServerError: FC = () => {
         <div className={styles.serverError}>
           <div className={styles.container}>
             <div className={styles.imgContent}>
-              { env.HIDDEN_QRCODE ? 
+              { isHiddenQRCode() ? 
                 <Image src={integrateCdnHost(Settings.server_error_page_bg.value)} alt="server error" width={230} height={230} />
                 : 
                 <>

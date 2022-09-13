@@ -11,12 +11,11 @@ import NoPermissionPng from 'static/icon/common/common_img_noaccess.png';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { MobileBar } from '../mobile_bar';
 import styles from './style.module.less';
-import { getEnvVariables } from 'pc/utils/env';
+import { isHiddenQRCode } from 'pc/utils/env';
 
 export const NoPermission: FC<{ desc?: string }> = ({ desc }) => {
   const pageParams = useSelector((state: IReduxState) => state.pageParams);
   const dispatch = useDispatch();
-  const env = getEnvVariables();
   const { setSideBarVisible } = useSideBarVisible();
 
   useUpdateEffect(() => {
@@ -39,7 +38,7 @@ export const NoPermission: FC<{ desc?: string }> = ({ desc }) => {
           <div className={styles.content}>
             <div className={styles.imgContent}>
               {
-                env.HIDDEN_QRCODE ?
+                isHiddenQRCode() ?
                   <Image src={integrateCdnHost(Settings.no_permission_img_url.value)} width={230} height={200} />
                   :
                   <>
@@ -68,7 +67,7 @@ export const NoPermission: FC<{ desc?: string }> = ({ desc }) => {
         <div className={styles.noPermissionWrapper}>
           <div className={styles.content}>
             {
-              env.HIDDEN_QRCODE ?
+              isHiddenQRCode() ?
                 <Image src={integrateCdnHost(Settings.no_permission_img_url.value)} width={230} height={200} />
                 :
                 <Image src={NoPermissionPng} alt={t(Strings.no_permission)} />
