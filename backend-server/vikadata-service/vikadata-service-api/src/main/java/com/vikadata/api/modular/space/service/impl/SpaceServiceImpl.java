@@ -24,7 +24,6 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import com.vikadata.api.modular.space.model.SpaceCapacityUsedInfo;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.cp.bean.WxCpTpAuthInfo.Agent;
@@ -88,6 +87,7 @@ import com.vikadata.api.modular.social.service.IWeComService;
 import com.vikadata.api.modular.space.mapper.SpaceMapper;
 import com.vikadata.api.modular.space.mapper.SpaceMemberRoleRelMapper;
 import com.vikadata.api.modular.space.model.GetSpaceListFilterCondition;
+import com.vikadata.api.modular.space.model.SpaceCapacityUsedInfo;
 import com.vikadata.api.modular.space.model.SpaceUpdateOperate;
 import com.vikadata.api.modular.space.service.IInvitationService;
 import com.vikadata.api.modular.space.service.ISpaceInviteLinkService;
@@ -589,14 +589,16 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
             spaceCapacityUsedInfo.setCurrentBundleCapacityUsedSizes(capacityUsedSize);
             // 因为优先使用套餐容量的缘故，所以已使用赠送附件容量为0
             spaceCapacityUsedInfo.setGiftCapacityUsedSizes(0L);
-        } else {
+        }
+        else {
             spaceCapacityUsedInfo.setCurrentBundleCapacityUsedSizes(currentBundleCapacity);
             // 赠送的附件容量
             Long giftCapacity = iSpaceSubscriptionService.getSpaceUnExpireGiftCapacity(spaceId);
             // 如果附件容量使用超量，已用赠送附件容量等于赠送的附件容量大小
             if (capacityUsedSize > currentBundleCapacity + giftCapacity) {
                 spaceCapacityUsedInfo.setGiftCapacityUsedSizes(giftCapacity);
-            } else {
+            }
+            else {
                 // 未超量情况
                 spaceCapacityUsedInfo.setGiftCapacityUsedSizes(capacityUsedSize - currentBundleCapacity);
             }
@@ -781,7 +783,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         // 关闭邀请成员开关后，没有成员管理权限的成员，生成的空间公开邀请链接均失效
         if (Boolean.FALSE.equals(feature.getInvitable())) {
             TaskManager.me().execute(() -> iSpaceInviteLinkService.delNoPermitMemberLink(spaceId));
-            TaskManager.me().execute(() -> iInvitationService.closeMemberInvitationStatusBySpaceId(spaceId));
+            TaskManager.me().execute(() -> iInvitationService.closeMemberInvitationBySpaceId(spaceId));
         }
     }
 

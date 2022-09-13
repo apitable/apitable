@@ -27,7 +27,7 @@ public interface IInvitationService extends IService<InvitationEntity> {
      * @author zoe zheng
      * @date 2022/8/30 17:03
      */
-    void closeMemberInvitationStatusBySpaceId(String spaceId);
+    void closeMemberInvitationBySpaceId(String spaceId);
 
     /**
      *  get member invitation token by node id

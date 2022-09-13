@@ -80,13 +80,11 @@ public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, Invitat
             iMemberService.sendInviteNotification(creatorUserId, ListUtil.toList(dto.getMemberId()), dto.getSpaceId(), true);
         });
         // To invalidate the application to actively join the space
-        TaskManager.me().execute(() -> {
-            spaceApplyMapper.invalidateTheApply(ListUtil.toList(dto.getUserId()), dto.getSpaceId(), InviteType.LINK_INVITE.getType());
-        });
+        TaskManager.me().execute(() -> spaceApplyMapper.invalidateTheApply(ListUtil.toList(dto.getUserId()), dto.getSpaceId(), InviteType.LINK_INVITE.getType()));
     }
 
     @Override
-    public void closeMemberInvitationStatusBySpaceId(String spaceId) {
+    public void closeMemberInvitationBySpaceId(String spaceId) {
         invitationMapper.updateStatusBySpaceIdAndNodeIdNotEmpty(spaceId, false);
     }
 
