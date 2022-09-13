@@ -151,7 +151,7 @@ public class AssetUploadTokenServiceImpl implements IAssetUploadTokenService {
 
     @Override
     public List<AssetUploadCertificateVO> createSpaceAssetPreSignedUrl(Long userId, String nodeId, int assetType, int count) {
-        ExceptionUtil.isTrue(count <= 100, INCORRECT_ARG);
+        ExceptionUtil.isTrue(count <= 20, INCORRECT_ARG);
         ExceptionUtil.isNotBlank(nodeId, INCORRECT_ARG);
         // query space, including whether the check node exists
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);

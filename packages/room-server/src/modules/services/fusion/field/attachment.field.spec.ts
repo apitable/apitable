@@ -4,10 +4,10 @@ import { CellFormatEnum, FieldType, getNewId, IAttacheField, ICellValue, IDPrefi
 import { AppModule } from 'app.module';
 import { EnvConfigKey } from 'common';
 import { EnvConfigService } from 'config/env.config.service';
-import { AssetEntity } from 'entities/asset.entity';
 import { ApiException } from 'exception/api.exception';
 import { IOssConfig } from 'interfaces';
-import { AssetRepository } from 'modules/repository/asset.repository';
+import { IAssetDTO } from 'modules/rest/rest.interface';
+import { RestService } from 'modules/rest/rest.service';
 import { AttachmentField } from 'modules/services/fusion/field/attachment.field';
 import { applyMiddleware, createStore, Store } from 'redux';
 import { batchDispatchMiddleware } from 'redux-batched-actions';
@@ -19,7 +19,7 @@ describe('AttachmentField', () => {
   let fieldClass: AttachmentField;
   let field: IAttacheField;
   let oss: IOssConfig;
-  let repository: AssetRepository;
+  let restService: RestService;
   let store: Store<IReduxState>;
   beforeAll(async () => {
     jest.setTimeout(60000);
@@ -28,10 +28,10 @@ describe('AttachmentField', () => {
     }).compile();
     app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
     await app.init();
-    repository = app.get(AssetRepository);
+    restService = app.get(RestService);
     const envConfigService = app.get(EnvConfigService);
     oss = envConfigService.getRoomConfig(EnvConfigKey.OSS);
-    fieldClass = new AttachmentField(repository);
+    fieldClass = new AttachmentField(restService);
     field = {
       id: 'fldpRxaCC8Mhe',
       name: '附件',
@@ -168,8 +168,8 @@ describe('AttachmentField', () => {
 
   describe('roTransform', () => {
     it('token值不存在--should throw ServerException', async () => {
-      jest.spyOn(repository, 'selectBaseInfoByFileUrl').mockImplementationOnce(
-        async (): Promise<AssetEntity | undefined> => {
+      jest.spyOn(restService, 'getAssetInfo').mockImplementationOnce(
+        async (): Promise<IAssetDTO | undefined> => {
           return undefined;
         },
       );
@@ -197,25 +197,14 @@ describe('AttachmentField', () => {
     });
 
     it('pdf--should return without height/with but preview', async () => {
-      jest.spyOn(repository, 'selectBaseInfoByFileUrl').mockImplementationOnce(
-        async (): Promise<AssetEntity | undefined> => {
+      jest.spyOn(restService, 'getAssetInfo').mockImplementationOnce(
+        async (): Promise<IAssetDTO | undefined> => {
           return {
             // tslint:disable-next-line:no-empty
-            beforeInsert(): void {},
-            fileSize: 5008519,
+            size: 5008519,
             height: null,
-            checksum: null,
-            createdAt: new Date(),
-            createdBy: '',
-            fileUrl: '',
-            headSum: '',
-            id: '',
-            isDeleted: false,
-            isTemplate: 0,
-            updatedAt: null,
-            updatedBy: '',
+            token: '',
             width: 0,
-            extensionName: 'pdf',
             mimeType: 'application/pdf',
             bucket: 'QNY1',
             preview: 'space/2020/06/20/166113199f5848e7884207c4b54d521f',
@@ -248,25 +237,14 @@ describe('AttachmentField', () => {
     });
 
     it('pdf--should return without height/with but preview without host', async () => {
-      jest.spyOn(repository, 'selectBaseInfoByFileUrl').mockImplementationOnce(
-        async (): Promise<AssetEntity | undefined> => {
+      jest.spyOn(restService, 'getAssetInfo').mockImplementationOnce(
+        async (): Promise<IAssetDTO | undefined> => {
           return {
             // tslint:disable-next-line:no-empty
-            beforeInsert(): void {},
-            fileSize: 5008519,
+            size: 5008519,
             height: null,
-            checksum: null,
-            createdAt: new Date(),
-            createdBy: '',
-            fileUrl: '',
-            headSum: '',
-            id: '',
-            isDeleted: false,
-            isTemplate: 0,
-            updatedAt: null,
-            updatedBy: '',
+            token: '',
             width: 0,
-            extensionName: 'pdf',
             mimeType: 'application/pdf',
             bucket: 'QNY1',
             preview: 'space/2020/09/22/11cacb59a7c647528011fe35164d3ef8',

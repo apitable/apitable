@@ -1,15 +1,20 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { IFieldPermissionMap, IFieldPermissionRoleListData, INode, INodeRoleMap, ISpaceInfo, ISpacePermissionManage, IUserInfo } from '@vikadata/core';
+import { 
+  IFieldPermissionMap, IFieldPermissionRoleListData, INode, INodeRoleMap, ISpaceInfo, ISpacePermissionManage, IUserInfo
+} from '@vikadata/core';
 import { CommonStatusCode, InjectLogger } from 'common';
 import { CommonException, PermissionException, ServerException } from 'exception';
 import { IAuthHeader, IHttpSuccessResponse, INotificationCreateRo, IOpAttachCiteRo, IUserBaseInfo, NodePermission } from 'interfaces';
-import { concat, keyBy } from 'lodash';
+import { keyBy } from 'lodash';
 import { DatasheetCreateRo } from 'model/ro/fusion/datasheet.create.ro';
+import { AssetVo } from 'model/vo/fusion/attachment.vo';
 import { InternalCreateDatasheetVo, InternalSpaceSubscriptionView, InternalSpaceUsageView, WidgetMap } from 'models';
+import { lastValueFrom } from 'rxjs';
 import { sprintf } from 'sprintf-js';
 import { Logger } from 'winston';
 import { HttpHelper } from '../../helpers';
+import { IAssetDTO } from './rest.interface';
 
 /**
  * RestApi 远程调用服务
@@ -36,6 +41,9 @@ export class RestService {
   private NODE_DETAIL = 'node/get';
   private NODE_CHILDREN = 'node/children';
 
+  // 附件资源
+  private GET_UPLOAD_PRESIGNED_URL = 'internal/asset/upload/preSignedUrl';
+  private GET_ASSET = 'internal/asset/get';
   // 数表op附件引用计算
   private DST_ATTACH_CITE = 'base/attach/cite';
   private SUBSCRIBE_REMIND = 'internal/subscribe/remind';
@@ -169,6 +177,21 @@ export class RestService {
       return false;
     }
     return response.data.totalCapacity - response.data.usedCapacity < 0;
+  }
+
+  async getUploadPresignedUrl(headers: IAuthHeader, nodeId: string, count: number): Promise<AssetVo[]> {
+    const response = await lastValueFrom(this.httpService.get(this.GET_UPLOAD_PRESIGNED_URL, {
+      headers: HttpHelper.createAuthHeaders(headers),
+      params: { nodeId, count },
+    }));
+    return response.data;
+  }
+
+  async getAssetInfo(token: string): Promise<IAssetDTO | undefined> {
+    const response = await lastValueFrom(this.httpService.get(this.GET_ASSET, {
+      params: { token },
+    }));
+    return response.data;
   }
 
   async checkSpacePermission(headers: IAuthHeader): Promise<boolean> {
@@ -328,13 +351,13 @@ export class RestService {
     return response.data;
   }
 
-  public async createDatasheet(spaceId: string, headers: IAuthHeader, 
+  public async createDatasheet(spaceId: string, headers: IAuthHeader,
     creareDatasheetRo: DatasheetCreateRo): Promise<InternalCreateDatasheetVo> {
     const url = sprintf(this.CREATE_DATASHEET_API_URL, { spaceId });
     const response = await this.httpService.post<InternalCreateDatasheetVo>(url, creareDatasheetRo, {
       headers: HttpHelper.withSpaceIdHeader(
         HttpHelper.createAuthHeaders(headers),
-      ) 
+      )
     }).toPromise();
     return response.data;
   }
@@ -344,7 +367,7 @@ export class RestService {
     const response = await this.httpService.post<InternalCreateDatasheetVo>(url, {}, {
       headers: HttpHelper.withSpaceIdHeader(
         HttpHelper.createAuthHeaders(headers),
-      ) 
+      )
     }).toPromise();
     return response.data;
   }
@@ -441,7 +464,7 @@ export class RestService {
   async getNodePermissionRoleList(auth: IAuthHeader, spaceId: string, nodeId: string): Promise<INodeRoleMap> {
     const url = sprintf(this.LIST_NODE_ROLES, { nodeId });
     const response = await this.httpService.get(
-      url, 
+      url,
       { headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(auth), spaceId) }
     ).toPromise();
     return response.data;

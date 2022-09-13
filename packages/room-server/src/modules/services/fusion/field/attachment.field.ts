@@ -2,13 +2,14 @@ import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { getNewId, IAttachmentValue, ICellValue, IDPrefix, IField } from '@vikadata/core';
 import { isString } from 'class-validator';
 import { IFieldValue } from 'interfaces';
-import { AssetRepository } from 'modules/repository/asset.repository';
+import { IAssetDTO } from 'modules/rest/rest.interface';
+import { RestService } from 'modules/rest/rest.service';
 import { BaseField } from 'modules/services/fusion/field/base.field';
 import { FieldManager } from '../field.manager';
 
 @Injectable()
 export class AttachmentField extends BaseField implements OnApplicationBootstrap {
-  constructor(private readonly assetRepo: AssetRepository) {
+  constructor(private readonly restService: RestService) {
     super();
   }
 
@@ -32,7 +33,7 @@ export class AttachmentField extends BaseField implements OnApplicationBootstrap
     const ids = [];
     const cellValues: IAttachmentValue[] = [];
     for (const value of fieldValues as any) {
-      const asset = await this.assetRepo.selectBaseInfoByFileUrl(value.token);
+      const asset: IAssetDTO = await this.restService.getAssetInfo(value.token);
       if (!asset) {
         this.throwException(field, 'api_param_attachment_not_exists');
         break;
@@ -40,7 +41,7 @@ export class AttachmentField extends BaseField implements OnApplicationBootstrap
       cellValues.push({
         id: getNewId(IDPrefix.File, ids),
         name: value.name,
-        size: asset.fileSize,
+        size: asset.size,
         token: value.token,
         width: asset.width || undefined,
         height: asset.height || undefined,
