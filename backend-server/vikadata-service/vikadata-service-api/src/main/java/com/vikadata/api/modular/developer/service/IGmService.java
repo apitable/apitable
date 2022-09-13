@@ -69,9 +69,8 @@ public interface IGmService {
      * query user's mobile phone and email by userId
      *
      * @param userContactInfos user's contact info
-     * @return UserContactInfos user's contact info
      * @author liuzijing
      * @date 2022/9/5
      */
-    List<UserContactInfo> getUserPhoneAndEmailByUserId(List<UserContactInfo> userContactInfos);
+    void getUserPhoneAndEmailByUserId(List<UserContactInfo> userContactInfos);
 }

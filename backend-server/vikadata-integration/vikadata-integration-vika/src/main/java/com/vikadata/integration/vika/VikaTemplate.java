@@ -759,7 +759,7 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
                 Map<String, Object> recordMap = record.getFields();
                 UserContactInfo userContactInfo = new UserContactInfo();
                 userContactInfo.setRecordId(record.getRecordId());
-                userContactInfo.setUuid(MapUtil.getStr(recordMap, "userId"));
+                userContactInfo.setUuid(MapUtil.getStr(recordMap, "USER_ID"));
                 userContactInfos.add(userContactInfo);
             }
         }
@@ -770,10 +770,10 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
     public void writeBackUserContactInfo(String host, String token, String dstId, UserContactInfo userContactInfo) {
         UpdateRecord updateRecord = new UpdateRecord()
                 .withRecordId(userContactInfo.getRecordId())
-                .withField("code", userContactInfo.getCode())
-                .withField("mobile_phone", userContactInfo.getMobilePhone())
-                .withField("email", userContactInfo.getEmail())
-                .withField("status", true);
+                .withField("AREA_CODE", userContactInfo.getCode())
+                .withField("MOBILE_PHONE", userContactInfo.getMobilePhone())
+                .withField("EMAIL", userContactInfo.getEmail())
+                .withField("STATUS", true);
         UpdateRecordRequest updateRecordRequest = new UpdateRecordRequest()
                 .withRecords(Collections.singletonList(updateRecord));
         this.getClient(host, token).getRecordApi().updateRecords(dstId, updateRecordRequest);

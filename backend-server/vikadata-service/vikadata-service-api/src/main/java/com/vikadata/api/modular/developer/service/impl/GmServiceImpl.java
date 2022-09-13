@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.lang.Dict;
@@ -56,8 +57,6 @@ import static com.vikadata.api.enums.exception.PermissionException.MEMBER_NOT_IN
 import static com.vikadata.api.enums.exception.SpaceException.NOT_SPACE_ADMIN;
 import static com.vikadata.api.enums.exception.SpaceException.SPACE_ALREADY_CERTIFIED;
 import static com.vikadata.api.enums.exception.SpaceException.SPACE_NOT_EXIST;
-import static com.vikadata.api.enums.exception.UserException.USER_NOT_BIND_EMAIL;
-import static com.vikadata.api.enums.exception.UserException.USER_NOT_BIND_PHONE;
 import static com.vikadata.api.enums.exception.UserException.USER_NOT_EXIST;
 
 /**
@@ -235,32 +234,27 @@ public class GmServiceImpl implements IGmService {
             throw new BusinessException("There are no records that meet the conditions.");
         }
         // query user's contact information by user's id
-        List<UserContactInfo> userContactInfoList = this.getUserPhoneAndEmailByUserId(userContactInfos);
+        this.getUserPhoneAndEmailByUserId(userContactInfos);
         // write back user's mobile phone and email
-        for (UserContactInfo userContactInfo : userContactInfoList) {
+        for (UserContactInfo userContactInfo : userContactInfos) {
             vikaOperations.writeBackUserContactInfo(host, token, datasheetId, userContactInfo);
         }
     }
 
     @Override
-    public List<UserContactInfo> getUserPhoneAndEmailByUserId(List<UserContactInfo> userContactInfos) {
+    public void getUserPhoneAndEmailByUserId(List<UserContactInfo> userContactInfos) {
         // query user's mobile phone and email by user's id
         List<UserEntity> userEntities = userMapper.selectByUuIds(userContactInfos.stream().map(UserContactInfo::getUuid).collect(Collectors.toList()));
-        Map<String, UserEntity> handleInfoMap = userEntities.stream().collect(Collectors.toMap(UserEntity::getUuid, Function.identity()));
+        Map<String, UserEntity> uuidToUserMap = userEntities.stream().collect(Collectors.toMap(UserEntity::getUuid, Function.identity()));
         // handle write back information
-        for (UserContactInfo userContactInfo : userContactInfos) {
-            if (handleInfoMap.containsKey(userContactInfo.getUuid())) {
-                userContactInfo.setCode(handleInfoMap.get(userContactInfo.getUuid()).getCode() != null ? handleInfoMap.get(userContactInfo.getUuid()).getCode() : USER_NOT_BIND_PHONE.getMessage());
-                userContactInfo.setMobilePhone(handleInfoMap.get(userContactInfo.getUuid()).getMobilePhone() != null ? handleInfoMap.get(userContactInfo.getUuid()).getMobilePhone() : USER_NOT_BIND_PHONE.getMessage());
-                userContactInfo.setEmail(handleInfoMap.get(userContactInfo.getUuid()).getEmail() != null ? handleInfoMap.get(userContactInfo.getUuid()).getEmail() : USER_NOT_BIND_EMAIL.getMessage());
+        for (UserContactInfo info : userContactInfos) {
+            if (!uuidToUserMap.containsKey(info.getUuid())) {
+                info.setCode(UserContactInfo.USER_NOT_EXIST_OR_BAN);
+                info.setMobilePhone(UserContactInfo.USER_NOT_EXIST_OR_BAN);
+                info.setEmail(UserContactInfo.USER_NOT_EXIST_OR_BAN);
             }
-            else {
-                userContactInfo.setCode(USER_NOT_EXIST.getMessage());
-                userContactInfo.setMobilePhone(USER_NOT_EXIST.getMessage());
-                userContactInfo.setEmail(USER_NOT_EXIST.getMessage());
-            }
+            BeanUtil.copyProperties(uuidToUserMap.get(info.getUuid()), info);
         }
-        return userContactInfos;
     }
 
 }

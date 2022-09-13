@@ -21,8 +21,6 @@ import static com.vikadata.api.enums.exception.PermissionException.MEMBER_NOT_IN
 import static com.vikadata.api.enums.exception.SpaceException.NOT_SPACE_ADMIN;
 import static com.vikadata.api.enums.exception.SpaceException.NO_ALLOW_OPERATE;
 import static com.vikadata.api.enums.exception.SpaceException.SPACE_ALREADY_CERTIFIED;
-import static com.vikadata.api.enums.exception.UserException.USER_NOT_BIND_EMAIL;
-import static com.vikadata.api.enums.exception.UserException.USER_NOT_BIND_PHONE;
 import static com.vikadata.api.enums.exception.UserException.USER_NOT_EXIST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -111,7 +109,7 @@ public class GmServiceImplTest extends AbstractIntegrationTest {
         userContactInfo.setRecordId("1");
         userContactInfo.setUuid("1");
         List<UserContactInfo> userContactInfos = CollUtil.newArrayList(userContactInfo);
-        userContactInfos = iGmService.getUserPhoneAndEmailByUserId(userContactInfos);
+        iGmService.getUserPhoneAndEmailByUserId(userContactInfos);
         assertThat(userContactInfos.get(0).getCode()).isEqualTo("+86");
         assertThat(userContactInfos.get(0).getMobilePhone()).isEqualTo("12312312312");
         assertThat(userContactInfos.get(0).getEmail()).isEqualTo("test@vikadata.com");
@@ -126,9 +124,9 @@ public class GmServiceImplTest extends AbstractIntegrationTest {
         userContactInfo.setRecordId("1");
         userContactInfo.setUuid("1");
         List<UserContactInfo> userContactInfos = CollUtil.newArrayList(userContactInfo);
-        userContactInfos = iGmService.getUserPhoneAndEmailByUserId(userContactInfos);
-        assertThat(userContactInfos.get(0).getCode()).isEqualTo(USER_NOT_BIND_PHONE.getMessage());
-        assertThat(userContactInfos.get(0).getMobilePhone()).isEqualTo(USER_NOT_BIND_PHONE.getMessage());
+        iGmService.getUserPhoneAndEmailByUserId(userContactInfos);
+        assertThat(userContactInfos.get(0).getCode()).isEqualTo(UserContactInfo.USER_NOT_BIND_PHONE);
+        assertThat(userContactInfos.get(0).getMobilePhone()).isEqualTo(UserContactInfo.USER_NOT_BIND_PHONE);
         assertThat(userContactInfos.get(0).getEmail()).isEqualTo("test@vikadata.com");
     }
 
@@ -141,10 +139,10 @@ public class GmServiceImplTest extends AbstractIntegrationTest {
         userContactInfo.setRecordId("1");
         userContactInfo.setUuid("1");
         List<UserContactInfo> userContactInfos = CollUtil.newArrayList(userContactInfo);
-        userContactInfos = iGmService.getUserPhoneAndEmailByUserId(userContactInfos);
+        iGmService.getUserPhoneAndEmailByUserId(userContactInfos);
         assertThat(userContactInfos.get(0).getCode()).isEqualTo("+86");
         assertThat(userContactInfos.get(0).getMobilePhone()).isEqualTo("12312312312");
-        assertThat(userContactInfos.get(0).getEmail()).isEqualTo(USER_NOT_BIND_EMAIL.getMessage());
+        assertThat(userContactInfos.get(0).getEmail()).isEqualTo(UserContactInfo.USER_NOT_BIND_EMIAL);
     }
 
     @Test
@@ -156,10 +154,10 @@ public class GmServiceImplTest extends AbstractIntegrationTest {
         userContactInfo.setRecordId("1");
         userContactInfo.setUuid("1");
         List<UserContactInfo> userContactInfos = CollUtil.newArrayList(userContactInfo);
-        userContactInfos = iGmService.getUserPhoneAndEmailByUserId(userContactInfos);
-        assertThat(userContactInfos.get(0).getCode()).isEqualTo(USER_NOT_EXIST.getMessage());
-        assertThat(userContactInfos.get(0).getMobilePhone()).isEqualTo(USER_NOT_EXIST.getMessage());
-        assertThat(userContactInfos.get(0).getEmail()).isEqualTo(USER_NOT_EXIST.getMessage());
+        iGmService.getUserPhoneAndEmailByUserId(userContactInfos);
+        assertThat(userContactInfos.get(0).getCode()).isEqualTo(UserContactInfo.USER_NOT_EXIST_OR_BAN);
+        assertThat(userContactInfos.get(0).getMobilePhone()).isEqualTo(UserContactInfo.USER_NOT_EXIST_OR_BAN);
+        assertThat(userContactInfos.get(0).getEmail()).isEqualTo(UserContactInfo.USER_NOT_EXIST_OR_BAN);
     }
 
     private void prepareSpaceSubscriptionData(String spaceId, Long userId) {
