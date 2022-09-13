@@ -1,34 +1,91 @@
 services:
+
   backend-server:
-    image: amazoncorretto:8
+    image: apitable/devenv:latest
+    user: "${UID}:${GID}"
     restart: always
-    working_dir: /app
     ports:
       - 8081:8081
-    environment:
-      - HOME=/app
+    expose:
+      - "8081"
+    working_dir: /devenv
+    env_file:
+      - .env
     volumes:
-      - ${PWD}/backend-server:/app
+      - ./backend-server:/devenv
+      - ~/:/home
+    environment:
+      - HOME=/home
+    networks:
+      - apitable
+    command: sh -c "./gradlew build -x test && java -jar vikadata-service/vikadata-service-api/build/libs/vikadata-service-api.jar"
+
   web-server:
-    image: ghcr.io/vikadata/vika/nodepy
+    image: apitable/devenv:latest
+    user: "${UID}:${GID}"
     restart: always
-    working_dir: /app
     ports:
       - 3000:3000
-    environment:
-      - HOME=/app
+    expose:
+      - "3000"
+    working_dir: /devenv
+    env_file:
+      - .env
     volumes:
-      - ${PWD}:/app
-  socket-server:
-    image: ghcr.io/vikadata/vika/nodepy
+      - ./:/devenv
+      - ~/:/home
+    environment:
+      - HOME=/home
+    networks:
+      - apitable
+    command: sh -c "yarn install && yarn build:dst:pre && yarn sd:r"
+
+  room-server:
+    image: apitable/devenv:latest
+    user: "${UID}:${GID}"
     restart: always
-    working_dir: /app
+    ports:
+     - 3333:3333
+     - 3334:3334
+    expose:
+      - "3333"
+      - "3334"
+    working_dir: /devenv
+    env_file:
+      - .env
+    volumes:
+      - ./:/devenv
+      - ~/:/home
+    environment:
+      - HOME=/home
+    networks:
+      - apitable
+    command: sh -c "yarn install && yarn build:dst:pre && yarn start:room-server"
+  socket-server:
+    image: apitable/devenv:latest
+    user: "${UID}:${GID}"
+    restart: always
     ports:
       - 3001:3001
       - 3002:3002
       - 3005:3005
       - 3007:3007
-    environment:
-      - HOME=/app
+    expose:
+      - "3001"
+      - "3002"
+      - "3005"
+      - "3007"
+    working_dir: /devenv
+    env_file:
+      - .env
     volumes:
-      - ${PWD}/packages/socket-server:/app
+      - ./:/devenv
+      - ~/:/home
+    environment:
+      - HOME=/home
+    networks:
+      - apitable
+    command: sh -c "cd packages/socket-server/ && yarn && yarn run start:dev"
+networks:
+  apitable:
+    driver: bridge

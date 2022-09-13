@@ -185,7 +185,7 @@ export const Display: React.FC<IDisplay> = props => {
       }
 
       if (type === ToolHandleType.Share) {
-        return '分享与协作';
+        return t(Strings.share);
       }
 
       return t(Strings.filter);

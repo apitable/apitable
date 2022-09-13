@@ -5,9 +5,10 @@ import { getBillingInfo } from 'pc/common/billing/get_billing_info';
 import { ContextName } from 'pc/common/shortcut_key/enum';
 import { ShortcutContext } from 'pc/common/shortcut_key/shortcut_key';
 import { FooterBtnInModal } from 'pc/components/common/modal/components/footer_btn';
-import { confirm, danger, info, success, warning } from 'pc/components/common/modal/modal/modal.function';
-import { IModalFuncProps, IModalProps, IModalReturn } from 'pc/components/common/modal/modal/modal.interface';
-import { ModalWithTheme } from 'pc/components/common/modal/modal/modal_with_theme';
+import { confirm, danger, info, success, warning } from './modal.function';
+import { IModalFuncProps, IModalProps, IModalReturn } from './modal.interface';
+import { destroyFns } from './utils';
+import { ModalWithTheme } from './modal_with_theme';
 import { IDingTalkModalType, showModalInDingTalk } from 'pc/components/economy/upgrade_modal';
 import { isSocialDingTalk } from 'pc/components/home/social_platform/utils';
 import { store } from 'pc/store';
@@ -15,8 +16,6 @@ import React, { FC, useEffect } from 'react';
 import { Provider } from 'react-redux';
 import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import styles from './style.module.less';
-
-export const destroyFns: Array<() => void> = [];
 
 const ModalBase: FC<IModalProps> = (props) => {
   const {

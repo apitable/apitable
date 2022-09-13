@@ -12,6 +12,8 @@ import { GenerateQrCode } from './generate_qr_code';
 
 import styles from './style.module.less';
 
+const DOWNLOAD_QR_CODE_AREA = 'downloadQrCodeArea';
+
 export interface IDownloadQrCodeProps {
   url: string;
   width: number;
@@ -34,7 +36,7 @@ export const DownloadQrCode: FC<IDownloadQrCodeProps> = ({
   }
 
   const downloadImage = () => {
-    const downloadNode = document.querySelector('.downloadQrCodeArea') as HTMLElement;
+    const downloadNode = document.querySelector(`.${DOWNLOAD_QR_CODE_AREA}`) as HTMLElement;
     if (!downloadNode) { return; }
     domtoimage.toPng(downloadNode, {
       width: downloadNode.offsetWidth + 48,
@@ -62,13 +64,13 @@ export const DownloadQrCode: FC<IDownloadQrCodeProps> = ({
 
   return (
     <>
-      <div className="downloadQrCodeArea">
+      <div className={DOWNLOAD_QR_CODE_AREA}>
         <div className={styles.downloadQrCodeHeader}>
           <Avatar
             src={spaceInfo.spaceLogo}
             id={spaceId}
             title={spaceInfo.spaceName}
-            style={{ borderRadius: '3px', width: 24, height: 24 }}
+            style={{ borderRadius: '3px', width: '24px', height: '24px' }}
             type={AvatarType.Space}
           />
           <Typography variant="body2" className={styles.downloadQrCodeTitle}>{spaceInfo.spaceName}</Typography>

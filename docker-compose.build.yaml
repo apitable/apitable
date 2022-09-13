@@ -1,0 +1,29 @@
+services:
+  init-db:
+    image: ${DISTRO:-apitable}/init-db:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: init-db/Dockerfile.build
+    
+  backend-server:
+    image: ${DISTRO:-apitable}/backend-server:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: backend-server/Dockerfile.build
+
+  web-server:
+    image: ${DISTRO:-apitable}/web-server:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile.next
+
+  room-server:
+    image: ${DISTRO:-apitable}/room-server:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
+  socket-server:
+    image: ${DISTRO:-apitable}/socket-server:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: packages/socket-server/Dockerfile
