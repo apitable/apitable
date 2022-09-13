@@ -136,6 +136,27 @@ Embed them by HTML script copy & paste.
 
 
 
+
+## Development & Contributing
+
+### Installation
+
+### Contributing
+
+
+APITable use common accepted conventions:
+
+- What's our Git branching model?: [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
+- How to collaborate on your fork projects?[Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
+- How to write good commit message?: [Conventional Commits](https://www.conventionalcommits.org/)
+- How to versioning and tagging?: [Semantic Versioning](https://semver.org/)
+
+If you computer has installed Docker Machine, run this:
+
+```
+curl https://apitable.github.io/install.sh | bash -c
+```
+
 ## 🛣 Roadmap
 
 - Heavy-code Interface Builder
@@ -144,14 +165,11 @@ Embed them by HTML script copy & paste.
 - As an IdP;
 - ...
 
-## 🌏 Why we create APITable and open-source?
 
-- We believe that `Database is the cornerstone` of all the software.
-- We believe that making a `Visual Database with rich and easy user interface for everyone` can reduce the difficulty of software industry and increase the world's digitalization adoption.
-- We believe that open-sourcing `APITable` work can `Push Human Beings Forward`.
+## Deployment & Production
 
 
-## 1 Click deploy
+### 1 Click deploy
 
 - Heroku
 - Digital Ocean
@@ -161,14 +179,8 @@ Embed them by HTML script copy & paste.
 - AWS
 
 
-## 📺 Screenshot
 
-- Invite
-
-(.....)
-
-
-## Hosted and Enterprise versions offer advanced features
+### Hosted and Enterprise versions offer advanced features
 
 - As an IdP;
 - SAML
@@ -177,26 +189,20 @@ Embed them by HTML script copy & paste.
 - Database Backup
 - Watermark
 
+## 🌏 Why we create APITable and open-source?
+
+- We believe that `Database is the cornerstone` of all the software.
+- We believe that making a `Visual Database with rich and easy user interface for everyone` can reduce the difficulty of software industry and increase the world's digitalization adoption.
+- We believe that open-sourcing `APITable` work can `Push Human Beings Forward`.
 
 
-## Installation
 
 
-If you computer has installed Docker Machine, run this:
+## 📺 Screenshot
 
-```
-curl https://apitable.github.io/install.sh | bash -c
-```
+- Invite
 
-## Cloud Deployment:
-
-- Heroku
-- Oceandigital
-- Microsoft Azure
-- Google Cloud
-- AWS
-
-
+(.....)
 ## 🥰 License
 
 > This repository contains the source code for the Open Source edition of APITable, released under the AGPL.
