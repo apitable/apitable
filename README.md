@@ -93,9 +93,6 @@ and more and more with extensible widgets and plugins.
 
 Why you must know APITable for your next software?
 
-> APITable puts 1000 softwares in your own.
->
-> Embed APITable into your 1000 softwares.
 
 - As a Management Software
     - Flexible Project Management & Task/Issues Managements.
@@ -105,14 +102,14 @@ Why you must know APITable for your next software?
     - People-Friendly Forms and Surveys
     - Flexible ERP.
     - Low-code and no-code platform.
-    - ......and more.
+    - ......and more, APITable puts 1000 softwares in your own.
 - As a Visual Database infrastructure
     - **Embed** APITable into your own software UIs.
     - Visual Database with REST API.
     - Admin dashboard.
     - Central configuration management.
     - All-in-one enterprise database that **connect all** your software.
-    - ......and more.
+    - ......and more, APITable connects unlimited softwares.
 
 ## 💞 API-oriented
 
