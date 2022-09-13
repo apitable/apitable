@@ -109,7 +109,7 @@ Why you must know APITable for your next software?
     - Admin dashboard.
     - Central configuration management.
     - All-in-one enterprise database that **connect all** your software.
-    - ......and more, APITable connects unlimited softwares.
+    - ......and more, APITable connects everything.
 
 ## 💞 API-oriented
 
