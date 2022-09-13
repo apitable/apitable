@@ -151,6 +151,7 @@ services:
 
   minio:
     image: ${IMAGE_MINIO}
+    user: "${UID}:${GID}"
     restart: always
     command: server /data
     expose:
@@ -173,6 +174,7 @@ services:
   redis:
     image: ${IMAGE_REDIS}
     restart: always
+    user: "${UID}:${GID}"
     command:
       [
           "redis-server",
@@ -193,6 +195,7 @@ services:
   mysql:
     image: ${IMAGE_MYSQL}
     restart: always
+    user: "${UID}:${GID}"
     volumes:
       - ${DATA_PATH}/.data/mysql:/var/lib/mysql
     ports:
@@ -218,6 +221,7 @@ services:
 
   rabbitmq:
     image: ${IMAGE_RABBITMQ}
+    user: "${UID}:${GID}"
     volumes:
       - ${DATA_PATH}/.data/rabbitmq:/var/lib/rabbitmq
     expose:
@@ -235,6 +239,7 @@ services:
 
   mongodb:
     image: ${IMAGE_MONGODB}
+    user: "${UID}:${GID}"
     volumes:
       - ${DATA_PATH}/.data/mongo:/data/db
     #    ports:

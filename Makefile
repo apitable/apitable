@@ -12,11 +12,22 @@ GID := $(shell id -g)
 export GID
 endif
 
-
 _DATAENV := docker compose -p apitable-devenv -f docker-compose.yaml
 _DEVENV := docker compose -p apitable-devenv -f docker-compose.devenv.yaml 
-RUNNER := $(_DEVENV) run --rm --user $$UID:$$GID 
+
+OS_NAME := $(shell uname -s | tr A-Z a-z)
+ifeq ($(OS_NAME), darwin)
+    # macOS don't set user for some priviliges problem
+	RUNNER := $(_DEVENV) run --rm
+else
+    # Not found
+	RUNNER := $(_DEVENV) run --rm --user $$UID:$$GID 
+endif
 BUILDER := docker buildx bake -f docker-compose.build.yaml
+
+ttt:
+	echo $(OS_NAME)
+	echo $(RUNNER)
 
 SEMVER3 := $(shell cat .version)
 define ANNOUNCE_BODY
@@ -211,8 +222,27 @@ build: ## build all containers
 	$(BUILDER)
 
 ###### development environtments ######
+
+define DEVENV_TXT
+Which devenv do you want to start run?
+  0) UP ALL
+  1) backend-server
+  2) room-server
+  3) web-server
+  4) socket-server
+endef
+export DEVENV_TXT
+
 .PHONY: devenv
-devenv: devenv-up ## debug all devenv services with docker compose up -d
+devenv: ## debug all devenv services with docker compose up -d
+	@echo "$$DEVENV_TXT"
+	@read -p "ENTER THE NUMBER: " DEVENV_NUMBER ;\
+ 	if [ "$$DEVENV_NUMBER" = "0" ]; then make devenv-up; fi ;\
+ 	if [ "$$DEVENV_NUMBER" = "1" ]; then make devenv-backend-server; fi ;\
+ 	if [ "$$DEVENV_NUMBER" = "2" ]; then make devenv-room-server; fi ;\
+ 	if [ "$$DEVENV_NUMBER" = "3" ]; then make devenv-web-server; fi ;\
+ 	if [ "$$DEVENV_NUMBER" = "4" ]; then make devenv-socket-server; fi
+
 
 .PHONY: devenv-up
 devenv-up: ## debug all devenv services with docker compose up -d
@@ -222,7 +252,7 @@ devenv-up: ## debug all devenv services with docker compose up -d
 devenv-down: ## debug all devenv services with docker compose up -d
 	$(_DEVENV) down
 
-devenv-logs:
+devenv-logs: ## follow all devenv services logs
 	$(_DEVENV) logs -f
 devenv-ps:
 	$(_DEVENV) ps
@@ -235,28 +265,28 @@ build-backend-server:
 	$(BUILDER) backend-server
 
 .PHONY: install-backend-server
-install-backend-server: ## graldew install backend-server dependencies
+_install-backend-server: ## graldew install backend-server dependencies
 	$(RUNNER) backend-server ./gradlew build -x test
 
 .PHONY: devenv-backend-server
-devenv-backend-server: ## debug backend-server
+devenv-backend-server:
 	$(RUNNER) backend-server java -jar vikadata-service/vikadata-service-api/build/libs/vikadata-service-api.jar
 
 
 .PHONY: install-web-server
-install-web-server: ## install web-server dependencies
+_install-web-server: ## install web-server dependencies
 	$(RUNNER) web-server sh -c "yarn install"
 
 .PHONY: devenv-web-server
-devenv-web-server: ## debug web-server dependencies
-	$(RUNNER) web-server sh -c "yarn install"
+devenv-web-server:
+	$(RUNNER) web-server sh -c "yarn install && yarn sd:r"
 
 .PHONY: install-room-server
-install-room-server:
+_install-room-server:
 	$(RUNNER) room-server sh -c "yarn install && yarn build:dst:pre"
 
 .PHONY: devenv-room-server
-devenv-room-server: ## run local room-server code
+devenv-room-server: 
 	$(RUNNER) room-server yarn start:room-server
 
 
@@ -265,17 +295,20 @@ build-socket-server:
 	$(BUILDER) socket-server 
 
 .PHONY: install-socket-server
-install-socket-server:
+_install-socket-server:
 	$(RUNNER) socket-server sh -c "cd packages/socket-server/ && yarn"
 	  
 .PHONY: devenv-socket-server
-devenv-socket-server: ## run local web-server code
+devenv-socket-server:
 	$(RUNNER) socket-server sh -c "cd packages/socket-server/ && yarn run start:dev"
 
 .PHONY: install
-install: install-backend-server install-web-server install-socket-server install-room-server ## install all dependencies
+install: _install-web-server _install-backend-server _install-socket-server _install-room-server ## install all dependencies
 	echo 'Install Finished'
 
+.PHONY:
+clean: ## clean and delete git ignore and dirty files
+	git clean -fxd
 ###### buildpush ######
 
 
