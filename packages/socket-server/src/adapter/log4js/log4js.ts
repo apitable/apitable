@@ -28,19 +28,19 @@ export class Log4js implements LoggerService {
   }
 
   log(message: any, context?: string) {
-    this.getLogger(context).info(this.getMessage(message));
+    this.getLogger().info(this.getMessage(message), context);
   }
 
   error(message: any, trace?: string, context?: string) {
-    this.getLogger(context).error(this.getMessage(message), trace);
+    this.getLogger().error(this.getMessage(message), trace, context);
   }
 
   warn(message: any, context?: string) {
-    this.getLogger(context).warn(this.getMessage(message));
+    this.getLogger().warn(this.getMessage(message), context);
   }
 
   debug(message: any, context?: string) {
-    this.getLogger(context).debug(this.getMessage(message));
+    this.getLogger().debug(this.getMessage(message), context);
   }
 
   getLogLevel() {
