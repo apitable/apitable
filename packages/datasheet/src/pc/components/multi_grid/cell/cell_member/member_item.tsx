@@ -21,7 +21,7 @@ export function isUnitLeave(unit: IUnitValue | IUserValue) {
 
 export const MemberItem: React.FC<IMemberItemProps> = props => {
   const { unitInfo, children, style, selected, showTeams } = props;
-  const { unitId, avatar, name, type, userId, isSelf, desc, isMemberNameModified, team, email } = unitInfo as any;
+  const { unitId, avatar, name, type, userId, isSelf, desc, isMemberNameModified, team, email, isActive } = unitInfo as any;
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
 
   const title = getSocialWecomUnitName({
@@ -43,7 +43,10 @@ export const MemberItem: React.FC<IMemberItemProps> = props => {
           isDefaultIcon={isSelf}
         />
         <div className={styles.memberWithTeamsDesc}>
-          <div className={classNames('unitName', styles.unitName)}>{title}</div>
+          <div className={classNames('unitName', styles.unitName)}>
+            {title}
+            {!isActive && <div className={styles.unInvited}>待邀请</div>}
+          </div>
           {team && <div className={styles.teams}>{team}</div>}
           {email && <div className={styles.teams}>{email}</div>}
         </div>
