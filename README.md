@@ -141,6 +141,12 @@ Embed them by HTML script copy & paste.
 
 ### Installation
 
+If you computer has installed Docker Machine, run this:
+
+```
+curl https://apitable.github.io/install.sh | bash -c
+```
+
 ### Contributing
 
 
@@ -150,12 +156,6 @@ APITable use common accepted conventions:
 - How to collaborate on your fork projects?[Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
 - How to write good commit message?: [Conventional Commits](https://www.conventionalcommits.org/)
 - How to versioning and tagging?: [Semantic Versioning](https://semver.org/)
-
-If you computer has installed Docker Machine, run this:
-
-```
-curl https://apitable.github.io/install.sh | bash -c
-```
 
 ## 🛣 Roadmap
 
