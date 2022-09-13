@@ -1,6 +1,6 @@
 import {
   IModalFuncProps,
-  IModalFuncs
+  IModalFuncs,
 } from './interface';
 import { ModalBase } from './components/modal_base';
 import {

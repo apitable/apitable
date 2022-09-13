@@ -1,15 +1,15 @@
 import classNames from 'classnames';
 import { StatusIconFunc } from 'pc/components/common/icon';
 import { FooterBtnInModal } from 'pc/components/common/modal/components/footer_btn';
-import { destroyFns } from 'pc/components/common/modal/modal/modal';
-import { IModalFuncBaseProps } from 'pc/components/common/modal/modal/modal.interface';
-import { ModalWithTheme } from 'pc/components/common/modal/modal/modal_with_theme';
-import styles from 'pc/components/common/modal/modal/style.module.less';
+import { IModalFuncBaseProps } from './modal.interface';
+import { ModalWithTheme } from './modal_with_theme';
+import styles from './style.module.less';
 import { store } from 'pc/store';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
+import { destroyFns } from './utils';
 
 export const FuncModalBase = (config: IModalFuncBaseProps) => {
   const {

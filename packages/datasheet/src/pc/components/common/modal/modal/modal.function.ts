@@ -1,5 +1,5 @@
-import { FuncModalBase } from 'pc/components/common/modal/modal/func_modal_base';
-import { IModalFuncProps } from 'pc/components/common/modal/modal/modal.interface';
+import { FuncModalBase } from './func_modal_base';
+import { IModalFuncProps } from './modal.interface';
 
 export const confirm = (props?: IModalFuncProps) => {
   return FuncModalBase({ ...props });
