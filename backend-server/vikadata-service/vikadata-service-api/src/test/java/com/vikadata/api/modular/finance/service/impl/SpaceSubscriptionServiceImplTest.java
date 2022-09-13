@@ -144,6 +144,7 @@ public class SpaceSubscriptionServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
+    @Disabled("without capacity price id")
     public void testBundleSubscriptionsExpiredButHaveAddon() {
         MockUserSpace userSpace = createSingleUserAndSpace();
         OffsetDateTime nowTime = getClock().getNow(testTimeZone);

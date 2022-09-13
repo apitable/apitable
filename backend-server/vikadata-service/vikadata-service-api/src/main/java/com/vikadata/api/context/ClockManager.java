@@ -19,15 +19,21 @@ import static com.vikadata.api.constants.TimeZoneConstants.DEFAULT_TIME_ZONE;
 @Slf4j
 public class ClockManager {
 
+    private final Clock clock;
+
+    public ClockManager(Clock clock) {
+        this.clock = clock;
+    }
+
     public static ClockManager me() {
         return SpringContextHolder.getBean(ClockManager.class);
     }
 
     public LocalDate getLocalDateNow() {
-        return SpringContextHolder.getBean(Clock.class).getToday(DEFAULT_TIME_ZONE);
+        return clock.getToday(DEFAULT_TIME_ZONE);
     }
 
     public LocalDateTime getLocalDateTimeNow() {
-        return SpringContextHolder.getBean(Clock.class).getNow(DEFAULT_TIME_ZONE).toLocalDateTime();
+        return clock.getNow(DEFAULT_TIME_ZONE).toLocalDateTime();
     }
 }
