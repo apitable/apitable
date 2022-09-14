@@ -3,16 +3,46 @@ import axios from 'axios';
 import { ConfigConstant, Url } from 'config';
 import { ILocalChangeset } from 'engine';
 import {
-  BindAccount, IAddIsActivedMemberInfo, IApiWrapper, IInviteMemberList, ILocateIdMap, IMemberInfoInAddressList, INode, INodesMapItem, IParent,
-  IRubbishListParams, IUpdateMemberInfo, IUpdateRoleData, ILogoutResult, IUserInfo, QrAction,
+  BindAccount,
+  IAddIsActivedMemberInfo,
+  IApiWrapper,
+  IInviteMemberList,
+  ILocateIdMap,
+  ILogoutResult,
+  IMemberInfoInAddressList,
+  INode,
+  INodesMapItem,
+  IParent,
+  IRubbishListParams,
+  IUpdateMemberInfo,
+  IUpdateRoleData,
+  IUserInfo,
+  QrAction,
 } from 'store';
 import { IAxiosResponse } from 'types';
 import urlcat from 'urlcat';
 import { NodeType, ShowRecordHistory } from '../config/constant';
 import {
-  IAdData, ICommitRemind, ICreateNotification, ICreateOrderResponse, IGetSpaceAuditReq, IGetUploadCertificateResponse, ILabsFeatureListResponse,
-  ILoadOrSearchArg, INodeInfoWindowResponse, INoPermissionMemberResponse, IPayOrderResponse, IQueryOrderDiscountResponse, IQueryOrderPriceResponse,
-  IQueryOrderStatusResponse, ISignIn, ISocialWecomGetConfigResponse, ISyncMemberRequest, ITemplateRecommendResponse, IUpdateSecuritySetting,
+  IAdData,
+  ICommitRemind,
+  ICreateNotification,
+  ICreateOrderResponse,
+  IGetSpaceAuditReq,
+  IGetUploadCertificateResponse,
+  ILabsFeatureListResponse,
+  ILoadOrSearchArg,
+  INodeInfoWindowResponse,
+  INoPermissionMemberResponse,
+  IPayOrderResponse,
+  IQueryOrderDiscountResponse,
+  IQueryOrderPriceResponse,
+  IQueryOrderStatusResponse,
+  ISignIn,
+  ISocialWecomGetConfigResponse,
+  ISubscribeActiveEventResponse,
+  ISyncMemberRequest,
+  ITemplateRecommendResponse,
+  IUpdateSecuritySetting,
   IWecomAgentBindSpaceResponse,
 } from './api.interface';
 
@@ -32,7 +62,7 @@ export function signIn(data: ISignIn) {
 
 // 登出
 export function signOut() {
-  return axios.post<IApiWrapper & {data: ILogoutResult}>(Url.SIGN_OUT);
+  return axios.post<IApiWrapper & { data: ILogoutResult }>(Url.SIGN_OUT);
 }
 
 // 注销
@@ -58,11 +88,7 @@ export function signUp(token?: string, inviteCode?: string) {
   });
 }
 
-export function dingtalkLoginCallback(
-  state: string,
-  code: string,
-  type = 0,
-) {
+export function dingtalkLoginCallback(state: string, code: string, type = 0) {
   return axios.get(Url.DINGTALK_LOGIN_CALLBACK, {
     params: {
       state,
@@ -72,12 +98,7 @@ export function dingtalkLoginCallback(
   });
 }
 
-export function qqLoginCallback(
-  code: string,
-  accessToken: string,
-  expiresIn: string,
-  type = 0,
-) {
+export function qqLoginCallback(code: string, accessToken: string, expiresIn: string, type = 0) {
   return axios.get(Url.QQ_LOGIN_CALLBACK, {
     params: {
       code,
@@ -136,17 +157,13 @@ export function getSmsCode(areaCode: string, phone: string, type: number, data?:
 }
 
 // 获取个人信息
-export function getUserMe(
-  locateIdMap: ILocateIdMap = { spaceId: '', nodeId: '' },
-  filter = false,
-  headers?: Record<string, string>
-) {
+export function getUserMe(locateIdMap: ILocateIdMap = { spaceId: '', nodeId: '' }, filter = false, headers?: Record<string, string>) {
   return axios.get<IApiWrapper & { data: IUserInfo }>(Url.USER_ME, {
     params: {
       ...locateIdMap,
       filter,
     },
-    headers
+    headers,
   });
 }
 
@@ -178,12 +195,7 @@ export function emailBind() {
  * 编辑用户信息
  * @param info 要设置的信息
  */
-export function updateUser(info: {
-  avatar?: string;
-  nickName?: string | null;
-  locale?: string,
-  init?: boolean;
-}) {
+export function updateUser(info: { avatar?: string; nickName?: string | null; locale?: string; init?: boolean }) {
   return axios.post(Url.UPDATE_USER, info);
 }
 
@@ -211,14 +223,11 @@ export function getRootNode() {
 
 // 查询子节点列表
 export function getChildNodeList(nodeId: string) {
-  return axios.get<IApiWrapper & { data: Omit<INodesMapItem, 'children'>[] }>(
-    Url.GET_NODE_LIST,
-    {
-      params: {
-        nodeId,
-      },
+  return axios.get<IApiWrapper & { data: Omit<INodesMapItem, 'children'>[] }>(Url.GET_NODE_LIST, {
+    params: {
+      nodeId,
     },
-  );
+  });
 }
 
 export function getParents(nodeId: string) {
@@ -295,13 +304,7 @@ export function nodeMove(nodeId: string, parentId: string, preNodeId?: string) {
  * @param parentId 父节点ID
  * @param spaceId 空间ID
  */
-export function addNode(nodeInfo: {
-  parentId: string;
-  type: number;
-  nodeName?: string;
-  preNodeId?: string;
-  extra?: { [key: string]: any };
-}) {
+export function addNode(nodeInfo: { parentId: string; type: number; nodeName?: string; preNodeId?: string; extra?: { [key: string]: any } }) {
   return axios.post(Url.ADD_NODE, nodeInfo);
 }
 
@@ -326,10 +329,7 @@ export function getSpecifyNodeList(nodeType: NodeType) {
  * @param nodeId 节点ID
  * @param nodeName 节点名称
  */
-export function editNode(
-  nodeId: string,
-  data: { nodeName?: string; icon?: string; cover?: string; showRecordHistory?: ShowRecordHistory },
-) {
+export function editNode(nodeId: string, data: { nodeName?: string; icon?: string; cover?: string; showRecordHistory?: ShowRecordHistory }) {
   return axios.post(Url.EDIT_NODE + nodeId, data);
 }
 
@@ -403,7 +403,7 @@ export function getMemberList(teamId?: string): Promise<IAxiosResponse<IMemberIn
  * @param memberId  成员ID
  * @param userId    用户ID
  */
-export function getMemberInfo({ memberId, uuid }: { memberId?: string, uuid?: string }) {
+export function getMemberInfo({ memberId, uuid }: { memberId?: string; uuid?: string }) {
   return axios.get<IApiWrapper & { data: IMemberInfoInAddressList }>(Url.MEMBER_INFO, {
     params: {
       memberId,
@@ -441,11 +441,7 @@ export function uploadAttach(file: any) {
  * 获取附件预览地址
  * @param token 云端文件名/key
  */
-export function getAttachPreviewUrl(
-  spaceId: string,
-  token: string,
-  attname: string,
-) {
+export function getAttachPreviewUrl(spaceId: string, token: string, attname: string) {
   return axios.post(urlcat(Url.OFFICE_PREVIEW, { spaceId }), {
     token,
     attname,
@@ -459,16 +455,12 @@ export function getAttachPreviewUrl(
  * @param teamId 部门ID，根部门可不填，默认为0
  * @param isActive 成员是否加入空间站
  */
-export function getMemberListInSpace(
-  pageObjectParams: string,
-  teamId?: string,
-  isActive?: string,
-) {
+export function getMemberListInSpace(pageObjectParams: string, teamId?: string, isActive?: string) {
   return axios.get(Url.MEMBER_LIST_IN_SPACE, {
     params: {
       pageObjectParams,
       teamId,
-      isActive
+      isActive,
     },
   });
 }
@@ -480,11 +472,7 @@ export function getMemberListInSpace(
  * @param superId 父级ID,如果父级是根,则为0
  * @param teamName 部门名称
  */
-export function updateTeamInfo(
-  teamId: string,
-  superId: string,
-  teamName?: string,
-) {
+export function updateTeamInfo(teamId: string, superId: string, teamName?: string) {
   return axios.post(Url.UPDATE_TEAM, {
     teamId,
     teamName,
@@ -543,11 +531,7 @@ export function updateMember(data: IUpdateMemberInfo) {
  * @param memberId 成员ID
  * @param action 删除动作（0：本部门删除，1：彻底从组织架构删除）
  */
-export function singleDeleteMember(
-  teamId: string,
-  memberId: string,
-  isDeepDel: boolean,
-) {
+export function singleDeleteMember(teamId: string, memberId: string, isDeepDel: boolean) {
   return axios.delete(Url.SINGLE_DELETE_MEMBER, {
     data: {
       memberId,
@@ -564,11 +548,7 @@ export function singleDeleteMember(
  * @param teamId 部门ID
  * @param action 删除动作（0：本部门删除，1：彻底从组织架构删除）
  */
-export function BatchDeleteMember(
-  teamId: string,
-  memberId: string[],
-  isDeepDel: boolean,
-) {
+export function BatchDeleteMember(teamId: string, memberId: string[], isDeepDel: boolean) {
   return axios.delete(Url.BATCH_DELETE_MEMBER, {
     data: {
       memberId,
@@ -597,10 +577,7 @@ export function getSubTeams(teamId: string) {
  * @param unitList 部门或成员列表
  * @param teamId 部门ID
  */
-export function addIsActivedMembersInSpace(
-  unitList: IAddIsActivedMemberInfo[],
-  teamId: string,
-) {
+export function addIsActivedMembersInSpace(unitList: IAddIsActivedMemberInfo[], teamId: string) {
   return axios.post(Url.TEAM_ADD_MEMBER, {
     unitList,
     teamId,
@@ -655,11 +632,7 @@ export function searchTeamAndMember(keyword: string) {
  * @param preTeamId 原部门ID,必填
  * @param newTeamIds 调整后的部门ID列表
  */
-export function updateMemberTeam(
-  memberIds: string[],
-  newTeamIds: string[],
-  preTeamId?: string,
-) {
+export function updateMemberTeam(memberIds: string[], newTeamIds: string[], preTeamId?: string) {
   return axios.post(Url.UPDATE_MEMBER_TEAM, {
     memberIds,
     newTeamIds,
@@ -747,7 +720,7 @@ export function sendInvite(invite: IInviteMemberList[], nodeId?: string, nvcVal?
   return axios.post(Url.SEND_INVITE, {
     invite,
     nodeId,
-    data: nvcVal
+    data: nvcVal,
   });
 }
 
@@ -777,11 +750,7 @@ export function inviteEmailVerify(token: string) {
 /**
  * 空间站-上传通讯录文件
  */
-export function uploadMemberFile(
-  formData: any,
-  onUploadProgress: any,
-  ctx: any,
-) {
+export function uploadMemberFile(formData: any, onUploadProgress: any, ctx: any) {
   return axios.post(Url.UPLOAD_MEMBER_FILE, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
     onUploadProgress,
@@ -1003,11 +972,7 @@ export function addSubMember(memberIds: string[], resourceCodes: string[]) {
  * @param memberId 成员ID
  * @param resourceCodes 操作资源集合，不分排序，自动校验
  */
-export function editSubMember(
-  id: string,
-  memberId: string,
-  resourceCodes: string[],
-) {
+export function editSubMember(id: string, memberId: string, resourceCodes: string[]) {
   return axios.post(Url.EDIT_SUB_ADMIN, {
     id,
     memberId,
@@ -1073,7 +1038,7 @@ export function deleteSubAdmin(memberId: string) {
 /**
  * 空间站-更改成员设置
  */
-export function updateMemberSetting(data: { invitable?: boolean, joinable?: boolean, mobileShowable?: boolean }) {
+export function updateMemberSetting(data: { invitable?: boolean; joinable?: boolean; mobileShowable?: boolean }) {
   return axios.post(Url.UPDATE_MEMBER_SETTING, {
     ...data,
   });
@@ -1165,7 +1130,7 @@ export function createLink(teamId: string) {
 }
 
 // 空间赠送信息
-export function getCapacityRewardList(isExpire: boolean, pageNo: number ) {
+export function getCapacityRewardList(isExpire: boolean, pageNo: number) {
   const pageObjectParams = JSON.stringify({
     pageSize: ConfigConstant.CAPACITY_REWARD_LIST_PAGE_SIZE,
     order: 'createdAt',
@@ -1176,7 +1141,7 @@ export function getCapacityRewardList(isExpire: boolean, pageNo: number ) {
     params: {
       pageObjectParams,
       isExpire,
-    }
+    },
   });
 }
 
@@ -1209,7 +1174,7 @@ export function changeNodeDesc(nodeId: string, desc: string) {
 
 export function readShareInfo(shareId: string, headers?: Record<string, string>) {
   return axios.get(Url.READ_SHARE_INFO + `/${shareId}`, {
-    headers
+    headers,
   });
 }
 
@@ -1355,11 +1320,7 @@ export function refreshApiKey(code?: string, type?: string) {
 }
 
 // 创建模板
-export function createTemplate(
-  nodeId: string,
-  name: string,
-  data = true,
-) {
+export function createTemplate(nodeId: string, name: string, data = true) {
   return axios.post(Url.CREATE_TEMPLATE, {
     nodeId,
     name,
@@ -1383,7 +1344,7 @@ export function getTemplateList(categoryCode?: string, isPrivate?: boolean, head
       categoryCode,
       isPrivate,
     },
-    headers
+    headers,
   });
 }
 
@@ -1393,11 +1354,7 @@ export const deleteTemplate = (tempalte: string) => {
 };
 
 // 获取模板目录信息
-export const templateDirectory = (
-  templateId: string,
-  isPrivate: boolean,
-  categoryCode?: string,
-) => {
+export const templateDirectory = (templateId: string, isPrivate: boolean, categoryCode?: string) => {
   return axios.get(Url.TEMPLATE_DIRECTORY, {
     params: {
       templateId,
@@ -1408,11 +1365,7 @@ export const templateDirectory = (
 };
 
 // 引用模板
-export const useTemplate = (
-  templateId: string,
-  parentId: string,
-  data?: boolean,
-) => {
+export const useTemplate = (templateId: string, parentId: string, data?: boolean) => {
   return axios.post(Url.USE_TEMPLATE, {
     templateId,
     parentId,
@@ -1437,7 +1390,7 @@ export const templateNameValidate = (name: string) => {
 // 获取热门推荐内容
 export const templateRecommend = (headers?: Record<string, string>) => {
   return axios.get<IApiWrapper & { data: ITemplateRecommendResponse }>(Url.TEMPLATE_RECOMMEND, {
-    headers
+    headers,
   });
 };
 
@@ -1498,12 +1451,7 @@ export function deleteRole(nodeId: string, unitId: string) {
 }
 
 // 查询节点角色列表
-export function listRole(
-  nodeId: string,
-  includeAdmin?: boolean,
-  includeExtend?: boolean,
-  includeSelf?: string,
-) {
+export function listRole(nodeId: string, includeAdmin?: boolean, includeExtend?: boolean, includeSelf?: string) {
   return axios.get(Url.NODE_LIST_ROLE, {
     params: {
       nodeId,
@@ -1526,14 +1474,16 @@ export function editRole(nodeId: string, unitId: string, role: string) {
 // 批量修改节点组织单元所属角色
 export function batchEditRole(nodeId: string, unitIds: string[], role: string) {
   return axios.post(Url.BATCH_EDIT_ROLE, {
-    nodeId, unitIds, role
+    nodeId,
+    unitIds,
+    role,
   });
 }
 
 // 批量删除节点权限
 export function batchDeleteRole(nodeId: string, unitIds: string[]) {
   return axios.delete(Url.BATCH_DELETE_ROLE, {
-    data: { unitIds, nodeId }
+    data: { unitIds, nodeId },
   });
 }
 
@@ -1551,8 +1501,7 @@ export function submitQuestionnaire(data: any) {
   return axios({
     method: 'post',
     headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-    url:
-      'https://e6l40faiq2.execute-api.cn-northwest-1.amazonaws.com.cn/funsion-feeback-form',
+    url: 'https://e6l40faiq2.execute-api.cn-northwest-1.amazonaws.com.cn/funsion-feeback-form',
     data: { data },
   });
 }
@@ -1617,14 +1566,12 @@ export function getUserIntegralRecords(pageNo: number) {
 }
 
 // 分页查询空间审计日志
-export const getSpaceAudit = ({
-  spaceId,
-  ...params
-}: IGetSpaceAuditReq) => axios.get(urlcat(Url.SPACE_AUDIT, { spaceId }), {
-  params: {
-    ...params,
-  },
-});
+export const getSpaceAudit = ({ spaceId, ...params }: IGetSpaceAuditReq) =>
+  axios.get(urlcat(Url.SPACE_AUDIT, { spaceId }), {
+    params: {
+      ...params,
+    },
+  });
 
 // 兑换v码
 export function vCodeExchange(code: string) {
@@ -1676,13 +1623,7 @@ export function socialFeiShuCheckTenantBind(tenantKey: string) {
 }
 
 //飞书账号绑定维格账号
-export function socialFeiShuBindUser(
-  areaCode: string,
-  mobile: string,
-  code: string,
-  openId: string,
-  tenantKey: string,
-) {
+export function socialFeiShuBindUser(areaCode: string, mobile: string, code: string, openId: string, tenantKey: string) {
   return axios.post(Url.SOCIAL_FEISHU_BIND_USER, {
     areaCode,
     openId,
@@ -1694,10 +1635,7 @@ export function socialFeiShuBindUser(
 
 //飞书应用绑定空间站
 export function socialFeiShuBindSpace(tenantKey: string, spaceList: any[]) {
-  return axios.post(
-    urlcat(Url.SOCIAL_FEISHU_BIND_SPACE, { tenantKey }),
-    spaceList,
-  );
+  return axios.post(urlcat(Url.SOCIAL_FEISHU_BIND_SPACE, { tenantKey }), spaceList);
 }
 
 //获取飞书企业的信息
@@ -1712,9 +1650,7 @@ export function feishuUserLogin(openId: string, tenantKey: string) {
 
 //获取飞书企业绑定详情
 export function feishuTenantBindDetail(tenantKey: string) {
-  return axios.get(
-    urlcat(Url.SOCIAL_FEISHU_TENANT_BIND_DETAIL, { tenantKey }),
-  );
+  return axios.get(urlcat(Url.SOCIAL_FEISHU_TENANT_BIND_DETAIL, { tenantKey }));
 }
 
 //飞书-获取租户绑定的信息
@@ -1724,50 +1660,39 @@ export function getFeiShuTenant(tenantKey: string) {
 
 //飞书-变更主管理员
 export function feishuChangeMainAdmin(tenantKey, spaceId, memberId) {
-  return axios.post(Url.SOCIAL_CHANGE_ADMIN,
-    { memberId, spaceId, tenantKey }
-  );
+  return axios.post(Url.SOCIAL_CHANGE_ADMIN, { memberId, spaceId, tenantKey });
 }
 
 // 钉钉（第三方）- 登陆接口
 export function dingTalkUserLogin(suiteId: string, corpId: string, code: string, bizAppId?: string) {
   const data: Record<string, string> = {
     corpId,
-    code
+    code,
   };
 
   if (bizAppId) {
     data.bizAppId = bizAppId;
   }
 
-  return axios.post(
-    urlcat(Url.SOCIAL_DINGTALK_USER_LOGIN, { suiteId }),
-    data
-  );
+  return axios.post(urlcat(Url.SOCIAL_DINGTALK_USER_LOGIN, { suiteId }), data);
 }
 
 // 钉钉（第三方）- 免登接口
 export function dingTalkBindSpace(suiteId: string, corpId: string) {
-  return axios.get(
-    urlcat(Url.SOCIAL_DINGTALK_BIND_SPACE, { suiteId }),
-    {
-      params: {
-        corpId
-      }
-    }
-  );
+  return axios.get(urlcat(Url.SOCIAL_DINGTALK_BIND_SPACE, { suiteId }), {
+    params: {
+      corpId,
+    },
+  });
 }
 
 // 钉钉（第三方）- 获取租户绑定的信息
 export function dingTalkAdminDetail(suiteId: string, corpId: string) {
-  return axios.get(
-    urlcat(Url.SOCIAL_DINGTALK_ADMIN_DETAIL, { suiteId }),
-    {
-      params: {
-        corpId
-      }
-    }
-  );
+  return axios.get(urlcat(Url.SOCIAL_DINGTALK_ADMIN_DETAIL, { suiteId }), {
+    params: {
+      corpId,
+    },
+  });
 }
 
 // 钉钉（第三方）- 后台管理员登录
@@ -1778,40 +1703,26 @@ export function dingTalkAdminLogin(suiteId: string, code: string, corpId: string
     data.corpId = corpId;
   }
 
-  return axios.post(
-    urlcat(Url.SOCIAL_DINGTALK_ADMIN_LOGIN, { suiteId }),
-    data
-  );
+  return axios.post(urlcat(Url.SOCIAL_DINGTALK_ADMIN_LOGIN, { suiteId }), data);
 }
 
 // 钉钉（第三方）- 后台管理员变更
 export function dingTalkChangeAdmin(suiteId: string, corpId: string, spaceId: string, memberId: string) {
-  return axios.post(
-    urlcat(Url.SOCIAL_DINGTALK_CHANGE_ADMIN, { suiteId }),
-    { corpId, spaceId, memberId }
-  );
+  return axios.post(urlcat(Url.SOCIAL_DINGTALK_CHANGE_ADMIN, { suiteId }), { corpId, spaceId, memberId });
 }
 
 //钉钉扫码登陆回调
 export function dingtalkH5UserLogin(agentId: string, code: string) {
-  return axios.post(
-    urlcat(Url.DINGTALK_H5_USER_LOGIN, { agentId }),
-    { code },
-  );
+  return axios.post(urlcat(Url.DINGTALK_H5_USER_LOGIN, { agentId }), { code });
 }
 
 //钉钉绑定空间
 export function dingtalkH5BindSpace(agentId: string, spaceId: string) {
-  return axios.post(
-    urlcat(Url.DINGTALK_H5_BIND_SPACE, { agentId }),
-    { spaceId },
-  );
+  return axios.post(urlcat(Url.DINGTALK_H5_BIND_SPACE, { agentId }), { spaceId });
 }
 
 export function getDingtalkH5BindSpaceId(agentId: string) {
-  return axios.get(
-    urlcat(Url.DINGTALK_H5_BIND_SPACE, { agentId }),
-  );
+  return axios.get(urlcat(Url.DINGTALK_H5_BIND_SPACE, { agentId }));
 }
 
 export function freshDingtalkOrg() {
@@ -1870,18 +1781,12 @@ export function getAppInstanceById(appInstanceId: string) {
 
 // 更新飞书基础配置
 export function updateLarkBaseConfig(appInstanceId: string, appKey: string, appSecret: string) {
-  return axios.put(
-    urlcat(Url.UPDATE_LARK_BASE_CONFIG, { appInstanceId }),
-    { appKey, appSecret }
-  );
+  return axios.put(urlcat(Url.UPDATE_LARK_BASE_CONFIG, { appInstanceId }), { appKey, appSecret });
 }
 
 // 更新飞书事件配置
 export function updateLarkEventConfig(appInstanceId: string, eventEncryptKey: string, eventVerificationToken: string) {
-  return axios.put(
-    urlcat(Url.UPDATE_LARK_EVENT_CONFIG, { appInstanceId }),
-    { eventEncryptKey, eventVerificationToken }
-  );
+  return axios.put(urlcat(Url.UPDATE_LARK_EVENT_CONFIG, { appInstanceId }), { eventEncryptKey, eventVerificationToken });
 }
 
 /* ----- 我是分割线 ----- */
@@ -1903,36 +1808,18 @@ export function getAvInfo(url: string) {
 }
 
 // 企业微信验证授权应用配置
-export function socialWecomCheckConfig(
-  {
-    agentId,
-    agentSecret,
-    appHomepageUrl,
-    authCallbackDomain,
-    corpId,
-    trustedDomain
-  }
-) {
-  return axios.post(
-    Url.SOCIAL_WECOM_CHECK_CONFIG,
-    { agentId, agentSecret, appHomepageUrl, authCallbackDomain, corpId, trustedDomain }
-  );
+export function socialWecomCheckConfig({ agentId, agentSecret, appHomepageUrl, authCallbackDomain, corpId, trustedDomain }) {
+  return axios.post(Url.SOCIAL_WECOM_CHECK_CONFIG, { agentId, agentSecret, appHomepageUrl, authCallbackDomain, corpId, trustedDomain });
 }
 
 // 企业微信绑定
 export function socialWecomBindConfig(configSha: string, code: string, spaceId: string) {
-  return axios.post(
-    urlcat(Url.SOCIAL_WECOM_BIND_CONFIG, { configSha }),
-    { code, spaceId }
-  );
+  return axios.post(urlcat(Url.SOCIAL_WECOM_BIND_CONFIG, { configSha }), { code, spaceId });
 }
 
 // 企业微信校验-域名转换IP
 export function socialWecomDomainCheck(domain: string) {
-  return axios.post(
-    Url.SOCIAL_WECOM_DOMAIN_CHECK,
-    { domain }
-  );
+  return axios.post(Url.SOCIAL_WECOM_DOMAIN_CHECK, { domain });
 }
 
 // 企业微信获取配置
@@ -1961,7 +1848,7 @@ export function unBindEmail(code: string) {
 }
 
 // 经济系统用量提示
-export function subscribeRemind(params: { nodeId?: string, spaceId: string, specification?: string, templateId: string, usage: string }) {
+export function subscribeRemind(params: { nodeId?: string; spaceId: string; specification?: string; templateId: string; usage: string }) {
   return axios.post(Url.SUBSCRIBE_REMIND, params);
 }
 
@@ -1980,7 +1867,7 @@ export function updateLabsFeatureList(key: string, isEnabled: boolean, spaceId: 
   return axios.post<IApiWrapper>(Url.GET_LABS_FEATURE, {
     key,
     isEnabled,
-    spaceId
+    spaceId,
   });
 }
 
@@ -1994,12 +1881,14 @@ export function syncOrgMembers(data: ISyncMemberRequest) {
 
 export function applyResourceChangesets(changesets: ILocalChangeset[], roomId: string) {
   return axios.post<IApiWrapper & { data: IGetCommentsByIdsResponse }>(
-    Url.APPLY_RESOURCE_CHANGESETS, {
+    Url.APPLY_RESOURCE_CHANGESETS,
+    {
       changesets,
-      roomId
-    }, {
-      baseURL: nestBaseURL
-    }
+      roomId,
+    },
+    {
+      baseURL: nestBaseURL,
+    },
   );
 }
 
@@ -2014,11 +1903,11 @@ export function queryOrderPriceList(product: 'GOLD' | 'SILVER') {
   return axios.get<IApiWrapper & { data: IQueryOrderPriceResponse[] }>(Url.ORDER_PRICE, {
     params: {
       product,
-    }
+    },
   });
 }
 
-export function createOrder(params: { month: number, product: string, seat: number, spaceId: string }) {
+export function createOrder(params: { month: number; product: string; seat: number; spaceId: string }) {
   return axios.post<IApiWrapper & { data: ICreateOrderResponse }>(Url.ORDER_CREATE, params);
 }
 
@@ -2078,14 +1967,14 @@ export function postWecomUnauthMemberInvite(spaceId: string, selectedTickets: st
 // 获取企业微信 config 参数
 export function getWecomCommonConfig(spaceId: string, url: string) {
   return axios.get(Url.GET_WECOM_CONFIG, {
-    params: { spaceId, url }
+    params: { spaceId, url },
   });
 }
 
 // 获取企业微信 agentConfig 参数
 export function getWecomAgentConfig(spaceId: string, url: string) {
   return axios.get(Url.GET_WECOM_AGENT_CONFIG, {
-    params: { spaceId, url }
+    params: { spaceId, url },
   });
 }
 
@@ -2121,10 +2010,14 @@ export function spaceBindIdaasInfo(spaceId: string) {
 // 批量获取URL相关信息, URL列识别用
 export const getURLMetaBatch = (urls: string[]) => axios.post(Url.GET_URL_META_BATCH, { urls });
 
-export const getUploadCertificate = (params: { count: number, data: string, nodeId?: string, type: number }) => {
+export const getUploadCertificate = (params: { count: number; data: string; nodeId?: string; type: number }) => {
   return axios.post<IApiWrapper & { data: IGetUploadCertificateResponse[] }>(Url.UPLOAD_PRESIGNED_URL, params);
 };
 
-export const getS3Callback = (params: { resourceKeys: string[], type: number }) => {
+export const getS3Callback = (params: { resourceKeys: string[]; type: number }) => {
   return axios.post<IApiWrapper & { data: IGetUploadCertificateResponse[] }>(Url.UPLOAD_CALLBACK, params);
+};
+
+export const getSubscribeActiveEvents = () => {
+  return axios.get<IApiWrapper & { data: ISubscribeActiveEventResponse }>(Url.SUBSCRIBE_ACTIVE_EVENT);
 };
