@@ -1395,14 +1395,7 @@ export const templateRecommend = (headers?: Record<string, string>) => {
 };
 
 // 加载或者搜索成员，显示最近选择过的最多 10 条记录。用于成员字段下拉选择
-export function loadOrSearch({
-  filterIds,
-  keyword,
-  names,
-  unitIds,
-  linkId,
-  all,
-}: ILoadOrSearchArg): Promise<IAxiosResponse<any>> {
+export function loadOrSearch({ filterIds, keyword, names, unitIds, linkId, all }: ILoadOrSearchArg): Promise<IAxiosResponse<any>> {
   return axios.get(Url.LOAD_OR_SEARCH, {
     params: {
       filterIds,
