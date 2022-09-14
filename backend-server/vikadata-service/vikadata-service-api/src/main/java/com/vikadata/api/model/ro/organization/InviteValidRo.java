@@ -21,7 +21,4 @@ public class InviteValidRo {
     @NotBlank
     @ApiModelProperty(value = "邀请链接一次性令牌", example = "b10e5e36cd7249bdaeab3e424308deed", position = 1)
     private String token;
-
-    @ApiModelProperty(value = "nodeId", example = "dst****", position = 2)
-    private String nodeId;
 }
