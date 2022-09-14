@@ -85,10 +85,11 @@ export const RobotCreateGuideStep3 = (props: IStepProps) => {
       >
         <Tooltip
           content={t(Strings.robot_create_wizard_step_3_desc)}
-          color={theme.color.fc0}
+          color={theme.color.textStaticPrimary}
           visible={isActive}
           style={{
             backgroundColor: theme.color.primaryColor,
+            zIndex: 1000
           }}
           placement="right-center"
         >
