@@ -113,21 +113,21 @@ Why you must know APITable for your next software?
 
 ## 💞 API-oriented
 
-##### API UI Panel
+#### API UI Panel
 
 Click the `API` button at the right corner will show the API Panel
 
-##### SQL-like query
+#### SQL-like query
 
 APITable provides a Datasheet Query Language(DQL) to query your database-spreadsheet contents.
 
 ## 💝 Embed-friendly
 
-##### Share and Embed
+#### Share and Embed
 Share your datasheet table or folder.
 Embed them by HTML script copy & paste.
 
-##### Enterprise-ready Embedding
+#### Enterprise-ready Embedding
 
 [APITable.com](https://apitable.com) provides more Enterprise-ready Embedding features for securities.
 
@@ -160,7 +160,7 @@ More details, input `make` command for help.
 
 ### Contributing
 
-##### Basic
+#### Basic
 
 1. Create an issue and describe your idea -> [APITable issues](https://github.com/apitable/apitable/issues)
 2. Fork this project -> [Fork APITable project](https://github.com/apitable/apitable/fork)
@@ -169,7 +169,7 @@ More details, input `make` command for help.
 5. Publish the branch (`git push origin my-new-feature`)
 6. Create a new Pull Request -> [Create pull request across forks](https://github.com/apitable/apitable/compare)
 
-##### Conventions
+#### Conventions
 APITable use common use conventions:
 
 - What's our Git branching model? -> [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
