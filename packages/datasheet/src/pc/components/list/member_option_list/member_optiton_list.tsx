@@ -23,7 +23,7 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
   const {
     linkId, unitMap, listData, onClickItem, showSearchInput,
     showMoreTipButton, multiMode, existValues, uniqId, activeIndex, showInviteTip = true,
-    inputRef, monitorId, className, showTeams, searchEmail
+    inputRef, monitorId, className,
   } = props;
   const initList = Array.isArray(listData) ? listData : memberStash.getMemberStash();
   const [memberList, setMemberList] = useState<(IUnitValue | IUserValue)[]>(() => {
@@ -63,7 +63,7 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
     if (!keyword?.length) {
       return initList;
     }
-    const res = await Api.loadOrSearch({ filterIds: '', keyword, linkId, searchEmail });
+    const res = await Api.loadOrSearch({ filterIds: '', keyword, linkId });
     const data: IUnitValue[] = res.data.data;
     if (uniqId === 'userId') {
       return data.filter(unitValue => unitValue.type === MemberType.Member && Boolean(unitValue.userId));
@@ -238,17 +238,11 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
                 onMouseDown={(e: React.MouseEvent) => {
                   e.preventDefault();
                 }}
-                className={classNames(
-                  styles.memberOptionItemWrapper, showTeams && styles.showTeams
-                )}
+                className={styles.memberOptionItemWrapper}
               >
-                {showTeams ? (
-                  <MemberItem unitInfo={item} showTeams />
-                ): (
-                  <span style={{ flex: 1, width: 0 }}>
-                    <MemberItem unitInfo={item} />
-                  </span>
-                )}
+                <span style={{ flex: 1, width: 0 }}>
+                  <MemberItem unitInfo={item} />
+                </span>
                 <Check isChecked={Boolean(existValues && existValues.includes(unitId!))} />
               </CommonList.Option>
             );

@@ -1,5 +1,6 @@
 package com.vikadata.api.util.billing;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -277,5 +278,13 @@ public class BillingConfigManagerTest {
     public void testPriceListConfigIsNotNull() {
         Map<String, PriceList> priceListConfig = BillingConfigManager.getBillingConfig().getPricelist();
         assertNotNull(priceListConfig);
+    }
+
+    @Test
+    public void testGetEventOnEffectiveDate() {
+        assertThat(BillingConfigManager.getEventOnEffectiveDate(LocalDate.of(2022, 8, 31))).isNull();
+        assertThat(BillingConfigManager.getEventOnEffectiveDate(LocalDate.of(2022, 9, 1))).isNotNull();
+        assertThat(BillingConfigManager.getEventOnEffectiveDate(LocalDate.of(2022, 9, 30))).isNotNull();
+        assertThat(BillingConfigManager.getEventOnEffectiveDate(LocalDate.of(2022, 10, 1))).isNull();
     }
 }

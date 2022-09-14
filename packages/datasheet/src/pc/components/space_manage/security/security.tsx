@@ -56,7 +56,7 @@ export const SwitchData: ISwitchDataItem[] = [
   {
     [SwitchType.AllowInvite]: {
       switchText: t(Strings.security_setting_invite_member_title),
-      tipContent: t(Strings.security_setting_invite_member_describle),
+      tipContent: t(Strings.security_setting_invite_member_description),
       disabledWhenSocialPlatEnabled: true,
       onClickBefore: (appType?: ISocialAppType, value?: boolean) => {
         return (
@@ -72,7 +72,7 @@ export const SwitchData: ISwitchDataItem[] = [
     },
     [SwitchType.JoinSpace]: {
       switchText: t(Strings.security_setting_apply_join_space_title),
-      tipContent: t(Strings.security_setting_apply_join_space_describle),
+      tipContent: t(Strings.security_setting_apply_join_space_description),
       disabledWhenSocialPlatEnabled: true,
       onClickBefore: (appType?: ISocialAppType, value?: boolean) => {
         return (
@@ -88,7 +88,7 @@ export const SwitchData: ISwitchDataItem[] = [
     },
     [SwitchType.ShareNode]: {
       switchText: t(Strings.security_setting_share_title),
-      tipContent: t(Strings.security_setting_share_describle),
+      tipContent: t(Strings.security_setting_share_description),
       onClickBefore: (appType?: ISocialAppType, value?: boolean) => {
         return (
           value &&
@@ -105,7 +105,7 @@ export const SwitchData: ISwitchDataItem[] = [
   {
     [SwitchType.ManageRoot]: {
       switchText: t(Strings.security_setting_catalog_management_title),
-      tipContent: t(Strings.security_setting_catalog_management_describle),
+      tipContent: t(Strings.security_setting_catalog_management_description),
       onClickBefore: (appType?: ISocialAppType, value?: boolean) => {
         return (
           value &&
@@ -120,7 +120,7 @@ export const SwitchData: ISwitchDataItem[] = [
     },
     [SwitchType.ExportLevel]: {
       switchText: t(Strings.security_setting_export_data_title),
-      tipContent: t(Strings.security_setting_export_data_describle),
+      tipContent: t(Strings.security_setting_export_data_description),
       onClickBefore: (appType?: ISocialAppType, value?: boolean | string) => {
         if (typeof value === 'string') {
           return false;
@@ -160,7 +160,7 @@ export const SwitchData: ISwitchDataItem[] = [
     },
     [SwitchType.DownloadFile]: {
       switchText: t(Strings.security_setting_download_file_title),
-      tipContent: t(Strings.security_setting_download_file_describle),
+      tipContent: t(Strings.security_setting_download_file_description),
       onClickBefore: (appType?: ISocialAppType, value?: boolean) => {
         return (
           value &&
@@ -175,7 +175,7 @@ export const SwitchData: ISwitchDataItem[] = [
     },
     [SwitchType.CopyCellData]: {
       switchText: t(Strings.security_setting_copy_cell_data_title),
-      tipContent: t(Strings.security_setting_copy_cell_data_describle),
+      tipContent: t(Strings.security_setting_copy_cell_data_description),
       onClickBefore: (appType?: ISocialAppType, value?: boolean) => {
         return (
           value &&
@@ -192,7 +192,7 @@ export const SwitchData: ISwitchDataItem[] = [
   {
     [SwitchType.ShowMobile]: {
       switchText: t(Strings.security_show_mobile),
-      tipContent: t(Strings.security_show_mobile_describle),
+      tipContent: t(Strings.security_show_mobile_description),
       onClickBefore: (appType?: ISocialAppType, value?: boolean) => {
         return (
           value &&
@@ -207,7 +207,7 @@ export const SwitchData: ISwitchDataItem[] = [
     },
     [SwitchType.WatermarkEnable]: {
       switchText: t(Strings.security_show_watermark),
-      tipContent: t(Strings.security_show_watermark_describle),
+      tipContent: t(Strings.security_show_watermark_description),
       onClickBefore: (appType?: ISocialAppType, value?: boolean) => {
         return (
           value &&
@@ -218,7 +218,7 @@ export const SwitchData: ISwitchDataItem[] = [
     },
     [SwitchType.OrgIsolated]: {
       switchText: t(Strings.security_address_list_isolation),
-      tipContent: t(Strings.security_address_list_isolation_describe),
+      tipContent: t(Strings.security_address_list_isolation_description),
       onClickBefore: (appType?: ISocialAppType, value?: boolean) => {
         return (
           value &&
@@ -235,7 +235,18 @@ export const SwitchData: ISwitchDataItem[] = [
 ];
 
 // 需要取反的开关：对于一些开关，需要取反来符合语义
-const reversedSwitches = [SwitchType.ShowMobile, SwitchType.WatermarkEnable, SwitchType.OrgIsolated];
+const reversedSwitches = [SwitchType.ShowMobile, SwitchType.WatermarkEnable, SwitchType.OrgIsolated, SwitchType.ExportLevel];
+
+/**
+ * switchType === SwitchType.ExportLevel，data.switchValue 的值由五种可能，分别为 true，false，'1'，'2'，'3'，'4'
+ * 当 switchValue === true 时，默认选中可管理权限，也即返回 2
+ */
+function exportLevelHandle(value: boolean | PermissionType) {
+  if (typeof value === 'boolean') {
+    return value ? 2 : 0;
+  }
+  return Number(value);
+}
 
 export const Security: FC = () => {
   const { spaceFeaturesReq, updateSecuritySettingReq } = useSpaceRequest();
@@ -261,7 +272,7 @@ export const Security: FC = () => {
     (data: { switchType: SwitchType; switchValue: SwitchValue; sectionData: ISwitchDataItem }) => {
       const { switchType, sectionData } = data;
       let switchValue = !data.switchValue;
-      if ([...reversedSwitches, SwitchType.ExportLevel].includes(switchType)) {
+      if (reversedSwitches.includes(switchType)) {
         switchValue = !switchValue;
       }
 
@@ -275,7 +286,7 @@ export const Security: FC = () => {
       }
 
       const onOk = async() => {
-        const newStatus = [SwitchType.ExportLevel].includes(switchType) ? (data.switchValue === true ? 2 : Number(data.switchValue)) : switchValue;
+        const newStatus = [SwitchType.ExportLevel].includes(switchType) ? exportLevelHandle(data.switchValue) : switchValue;
         // 仅当切换 Switch 组件时，需要 loading 状态；切换 Radio 组件则不需要；
         const res = await switchReq({ key: switchType, status: newStatus, loadingEnabled: isBoolean(switchValue) });
         setSettingLoading(null);

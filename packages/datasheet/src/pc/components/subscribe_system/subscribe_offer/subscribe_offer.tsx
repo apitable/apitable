@@ -1,43 +1,47 @@
 import { Typography } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Api, Strings, t } from '@vikadata/core';
 import { ClockFilled } from '@vikadata/icons';
-import dayjs from 'dayjs';
+import { useRequest } from 'ahooks';
 import styles from 'pc/components/subscribe_system/styles.module.less';
 import { SubscribeLevelTab } from 'pc/components/subscribe_system/subscribe_header/subscribe_header';
-import { useMemo } from 'react';
 import * as React from 'react';
+import { useMemo } from 'react';
 
 interface ISubscribeOfferProps {
   levelTab: SubscribeLevelTab;
 }
 
-const DISCOUNT_DEADLINE = '2022-06-30';
-
-export const SubscribeOffer: React.FC<ISubscribeOfferProps> = (props) => {
+export const SubscribeOffer: React.FC<ISubscribeOfferProps> = props => {
   const { levelTab } = props;
+  const { data: eventData } = useRequest(Api.getSubscribeActiveEvents);
 
-  const showDiscountDeadline = useMemo(() => {
-    return dayjs().valueOf() <= dayjs(DISCOUNT_DEADLINE).valueOf();
-  }, []);
+  const endDate = useMemo(() => {
+    if (!eventData) return null;
+    const { data, success } = eventData?.data;
+    if (!success) {
+      return null;
+    }
+    return data.endDate;
+  }, [eventData?.data]);
 
-  if (!showDiscountDeadline) {
+  if (!endDate) {
     return null;
   }
 
-  return <div className={styles.limitedTimeOffer} style={{ opacity: levelTab !== 'ENTERPRISE' ? 1 : 0 }}>
-    <ClockFilled color={'#fff'} />
-    <Typography variant="h9" color={'#fff'}>
-      {t(Strings.limited_time_offer)}
-    </Typography>
-    <span>
-            |
-    </span>
-    <Typography variant="body4" color={'#fff'}>
-      {t(Strings.discount_price_deadline)}
-    </Typography>
-    &nbsp;
-    <Typography variant="h9" color={'#fff'}>
-      {DISCOUNT_DEADLINE}
-    </Typography>
-  </div>;
+  return (
+    <div className={styles.limitedTimeOffer} style={{ opacity: levelTab !== 'ENTERPRISE' ? 1 : 0 }}>
+      <ClockFilled color={'#fff'} />
+      <Typography variant="h9" color={'#fff'}>
+        {t(Strings.limited_time_offer)}
+      </Typography>
+      <span>|</span>
+      <Typography variant="body4" color={'#fff'}>
+        {t(Strings.discount_price_deadline)}
+      </Typography>
+      &nbsp;
+      <Typography variant="h9" color={'#fff'}>
+        {endDate}
+      </Typography>
+    </div>
+  );
 };

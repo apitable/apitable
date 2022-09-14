@@ -3,6 +3,9 @@ package com.vikadata.api.lang;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.enums.lang.ExportLevelEnum;
@@ -16,11 +19,13 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class SpaceGlobalFeatureTest {
 
     @Test
-    void givenJSONAllowedNodeExportableWithEmptyExportLevelWhenDeserializeJSONThenGetPojoWithExportLevelBeyondEditableValue() {
-        String emptyLevel = "{\"nodeExportable\": 1}";
+    void givenEmptyJsonStringWhenDeserializeJSONThenGetPojoWithExportLevelBeyondEditableValue() throws JsonProcessingException {
+        String emptyLevel = "{}";
         SpaceGlobalFeature spaceGlobalFeature = JSONUtil.toBean(emptyLevel, SpaceGlobalFeature.class);
-        assertThat(spaceGlobalFeature.getNodeExportable()).isTrue();
-        assertThat(spaceGlobalFeature.getExportLevel()).isEqualTo(ExportLevelEnum.LEVEL_BEYOND_EDIT.getValue());
+        ObjectMapper jsonMapper = new ObjectMapper();
+        String feature = jsonMapper.writeValueAsString(spaceGlobalFeature);
+        assertThat(feature.contains("\"rootManageable\":true")).isTrue();
+        assertThat(feature.contains("\"exportLevel\":0")).isTrue();
     }
 
     @Test
@@ -29,23 +34,6 @@ public class SpaceGlobalFeatureTest {
         SpaceGlobalFeature spaceGlobalFeature = JSONUtil.toBean(emptyLevel, SpaceGlobalFeature.class);
         assertThat(spaceGlobalFeature.getNodeExportable()).isTrue();
         assertThat(spaceGlobalFeature.getExportLevel()).isEqualTo(ExportLevelEnum.LEVEL_BEYOND_READ.getValue());
-    }
-
-    @Test
-    void givenJSONDisallowedNodeExportableWithExportLevelWhenDeserializeJSONThenGetPojoWithExportLevelClosedValue() {
-        String emptyLevel = "{\"nodeExportable\": 0}";
-        SpaceGlobalFeature spaceGlobalFeature = JSONUtil.toBean(emptyLevel, SpaceGlobalFeature.class);
-        assertThat(spaceGlobalFeature.getNodeExportable()).isFalse();
-        assertThat(spaceGlobalFeature.getExportLevel()).isEqualTo(ExportLevelEnum.LEVEL_CLOSED.getValue());
-    }
-
-    @Test
-    void givenPojoAllowedNodeExportableWithoutExportLevelWhenSerializePojoThenGetJsonWithExportLevelDefaultValue() {
-        SpaceGlobalFeature spaceGlobalFeature = new SpaceGlobalFeature();
-        spaceGlobalFeature.setNodeExportable(true);
-        JSONObject parseJSON = JSONUtil.parseObj(spaceGlobalFeature);
-        assertThat(parseJSON.containsKey("exportLevel")).isEqualTo(true);
-        assertThat(parseJSON.get("exportLevel")).isEqualTo(ExportLevelEnum.LEVEL_BEYOND_EDIT.getValue());
     }
 
     @Test
@@ -58,13 +46,10 @@ public class SpaceGlobalFeatureTest {
     }
 
     @Test
-    void givenPojoDisallowedNodeExportableWithExportLevelWhenSerializePojoThenGetJsonWithExportLevelSpecialValue() {
+    void givenPojoNullExportLevelWhenSerializePojoThenNoExistExportLevel() {
         SpaceGlobalFeature spaceGlobalFeature = new SpaceGlobalFeature();
-        spaceGlobalFeature.setNodeExportable(false);
         JSONObject parseJSON = JSONUtil.parseObj(spaceGlobalFeature);
-        assertThat(parseJSON.get("nodeExportable")).isEqualTo(false);
-        assertThat(parseJSON.containsKey("exportLevel")).isEqualTo(true);
-        assertThat(parseJSON.get("exportLevel")).isEqualTo(ExportLevelEnum.LEVEL_CLOSED.getValue());
+        assertThat(parseJSON.containsKey("exportLevel")).isEqualTo(false);
     }
 
     @Test

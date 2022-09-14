@@ -1,5 +1,6 @@
 package com.vikadata.api.util.billing;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -121,6 +122,12 @@ public class BillingConfigManager {
                 .filter(price -> price.getProduct().equals(product.getName()) && price.getSeat() == seat && price.getMonth() == month)
                 .findFirst()
                 .orElse(null);
+    }
+
+    public static Event getEventOnEffectiveDate(LocalDate now) {
+        return getBillingConfig().getEvents().values().stream()
+                .filter(event -> event.getStartDate().compareTo(now) <= 0 && event.getEndDate().compareTo(now) >= 0)
+                .findFirst().orElse(null);
     }
 
     public static Event getByEventId(String eventId) {

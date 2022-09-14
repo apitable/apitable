@@ -39,15 +39,14 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.vikadata.api.util.AssertUtil.verifyNonNullOrEmpty;
 
 /**
- * 订单模块 v2版本
+ * Billing order Api
  * @author Shawn Deng
- * @date 2022-05-14 00:39:02
  */
 @RestController
-@Api(tags = "订单模块v2相关接口")
+@Api(tags = "Billing Order API")
 @ApiResource(path = "/")
 @Slf4j
-public class OrderV2Controller {
+public class OrderController {
 
     @Resource
     private IMemberService iMemberService;

@@ -3,16 +3,26 @@ package com.vikadata.api.modular.finance.service.impl;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
 import cn.hutool.json.JSONObject;
-import com.vikadata.api.enums.finance.*;
-import com.vikadata.api.enums.finance.Currency;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.context.ClockManager;
+import com.vikadata.api.enums.finance.BundleState;
+import com.vikadata.api.enums.finance.CapacityType;
+import com.vikadata.api.enums.finance.Currency;
+import com.vikadata.api.enums.finance.OrderChannel;
+import com.vikadata.api.enums.finance.OrderStatus;
+import com.vikadata.api.enums.finance.OrderType;
+import com.vikadata.api.enums.finance.SubscriptionState;
 import com.vikadata.api.modular.developer.model.CreateBusinessOrderRo;
 import com.vikadata.api.modular.developer.model.CreateEntitlementWithAddOn;
 import com.vikadata.api.modular.finance.core.Bundle;
@@ -475,7 +485,7 @@ public class BillingOfflineServiceImpl implements IBillingOfflineService {
         log.info("下单300MB附加订阅计划，用于邀请用户增容附件容量");
         CreateEntitlementWithAddOn createEntitlementWithAddOn = new CreateEntitlementWithAddOn();
         createEntitlementWithAddOn.setSpaceId(spaceId);
-        createEntitlementWithAddOn.setPlanId("capacity_0.3G");
+        createEntitlementWithAddOn.setPlanId("capacity_300_MB");
         createEntitlementWithAddOn.setStartDate(LocalDate.now().toString());
         createEntitlementWithAddOn.setMonths(12);
         // 构建请求体中remark备注信息，包括userId、userName、capacityType

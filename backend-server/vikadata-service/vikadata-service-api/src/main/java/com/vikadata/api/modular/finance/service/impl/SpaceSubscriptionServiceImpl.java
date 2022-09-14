@@ -3,7 +3,14 @@ package com.vikadata.api.modular.finance.service.impl;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -18,19 +25,9 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.vikadata.api.constants.DateFormatConstants;
-import com.vikadata.api.enums.finance.*;
-import com.vikadata.api.modular.finance.mapper.SubscriptionMapper;
-import com.vikadata.api.modular.space.model.InviteUserInfo;
-import com.vikadata.api.modular.space.model.SpaceSubscriptionDto;
-import com.vikadata.api.modular.space.model.vo.SpaceCapacityPageVO;
-import com.vikadata.api.modular.user.mapper.UserMapper;
-import com.vikadata.api.util.billing.BillingConfigManager;
-import com.vikadata.api.util.billing.model.*;
-import com.vikadata.system.config.billing.Feature;
-import lombok.extern.slf4j.Slf4j;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.cache.service.SpaceCapacityCacheService;
 import com.vikadata.api.component.TaskManager;
@@ -38,10 +35,17 @@ import com.vikadata.api.component.notification.NotificationManager;
 import com.vikadata.api.component.notification.NotificationTemplateId;
 import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.config.properties.SelfHostProperties;
+import com.vikadata.api.constants.DateFormatConstants;
 import com.vikadata.api.constants.MailPropConstants;
 import com.vikadata.api.context.ClockManager;
 import com.vikadata.api.enums.exception.BillingException;
 import com.vikadata.api.enums.exception.SubscribeFunctionException;
+import com.vikadata.api.enums.finance.BundleState;
+import com.vikadata.api.enums.finance.CapacityType;
+import com.vikadata.api.enums.finance.OrderChannel;
+import com.vikadata.api.enums.finance.OrderPhase;
+import com.vikadata.api.enums.finance.SubscriptionPhase;
+import com.vikadata.api.enums.finance.SubscriptionState;
 import com.vikadata.api.enums.social.SocialPlatformType;
 import com.vikadata.api.enums.space.SpaceCertification;
 import com.vikadata.api.factory.NotifyMailFactory;
@@ -50,6 +54,7 @@ import com.vikadata.api.lang.SpaceGlobalFeature;
 import com.vikadata.api.modular.eco.service.IEconomicOrderService;
 import com.vikadata.api.modular.finance.core.Bundle;
 import com.vikadata.api.modular.finance.core.Subscription;
+import com.vikadata.api.modular.finance.mapper.SubscriptionMapper;
 import com.vikadata.api.modular.finance.service.IBundleService;
 import com.vikadata.api.modular.finance.service.ISpaceSubscriptionService;
 import com.vikadata.api.modular.finance.service.ISubscriptionService;
@@ -60,13 +65,23 @@ import com.vikadata.api.modular.social.service.ISocialTenantBindService;
 import com.vikadata.api.modular.social.service.ISocialTenantService;
 import com.vikadata.api.modular.space.mapper.SpaceAssetMapper;
 import com.vikadata.api.modular.space.mapper.SpaceMapper;
+import com.vikadata.api.modular.space.model.InviteUserInfo;
+import com.vikadata.api.modular.space.model.SpaceSubscriptionDto;
+import com.vikadata.api.modular.space.model.vo.SpaceCapacityPageVO;
 import com.vikadata.api.modular.space.model.vo.SpaceSubscribeVo;
 import com.vikadata.api.modular.space.service.ISpaceService;
 import com.vikadata.api.modular.statics.model.NodeStaticsVO;
 import com.vikadata.api.modular.statics.service.IStaticsService;
+import com.vikadata.api.modular.user.mapper.UserMapper;
 import com.vikadata.api.modular.user.model.UserLangDTO;
 import com.vikadata.api.modular.user.service.IUserService;
+import com.vikadata.api.util.billing.BillingConfigManager;
 import com.vikadata.api.util.billing.WeComPlanConfigManager;
+import com.vikadata.api.util.billing.model.BillingPlanFeature;
+import com.vikadata.api.util.billing.model.ProductCategory;
+import com.vikadata.api.util.billing.model.ProductChannel;
+import com.vikadata.api.util.billing.model.ProductEnum;
+import com.vikadata.api.util.billing.model.SubscribePlanInfo;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.SqlTool;
@@ -76,6 +91,7 @@ import com.vikadata.entity.SubscriptionEntity;
 import com.vikadata.system.config.BillingWhiteListConfig;
 import com.vikadata.system.config.BillingWhiteListConfigManager;
 import com.vikadata.system.config.FeatureSetting;
+import com.vikadata.system.config.billing.Feature;
 import com.vikadata.system.config.billing.Plan;
 import com.vikadata.system.config.billing.Price;
 import com.vikadata.system.config.billing.Product;
@@ -572,7 +588,7 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
     public Long getSpaceUnExpireGiftCapacity(String spaceId) {
         log.info("获取空间赠送的未过期附件容量");
         // 赠送附件容量planId
-        String planId = "capacity_0.3G";
+        String planId = "capacity_300_MB";
         // 获取赠送附件容量的附加订阅计划数量
         Integer planCount = subscriptionMapper.selectUnExpireGiftCapacityBySpaceId(spaceId, planId, SubscriptionState.ACTIVATED);
         // 获取方案套餐特性
@@ -617,7 +633,7 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
     @Override
     public IPage<SpaceCapacityPageVO> handleCapacitySubscription(IPage<SpaceSubscriptionDto> spaceSubscriptionDtoIPage, Page page) {
         log.info("处理附件容量订单信息");
-        String giftSubscriptionPlanId = "capacity_0.3G";
+        String giftSubscriptionPlanId = "capacity_300_MB";
         // 构建附件容量明细对象集合
         List<SpaceCapacityPageVO> spaceCapacityPageVos = new ArrayList<>();
         for (SpaceSubscriptionDto spaceSubscriptionDto : spaceSubscriptionDtoIPage.getRecords()) {
@@ -641,7 +657,7 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
             // 附件容量额度
             if (feature.getSpecification() == -1) {
                 spaceCapacityPageVO.setQuota("-1");
-            } else if (Objects.equals(feature.getSpecification(), getBillingConfig().getFeatures().get("storage_capacity_0.3").getSpecification())) {
+            } else if (Objects.equals(feature.getSpecification(), getBillingConfig().getFeatures().get("storage_capacity_300_mb").getSpecification())) {
                 spaceCapacityPageVO.setQuota(StrUtil.format("{}MB", feature.getSpecification()));
             } else {
                 spaceCapacityPageVO.setQuota(StrUtil.format("{}GB", feature.getSpecification()));

@@ -189,6 +189,7 @@ export const SPACE_STATISTICS = '/space/statistics';
 // 订阅
 export const SUBSCRIBE_INFO = '/space/subscribe/';
 export const SUBSCRIBE_REMIND = '/player/notification/subscribe/remind';
+export const SUBSCRIBE_ACTIVE_EVENT = '/events/active';
 // 权限相关
 export const SPACE_RESOURCE = '/space/resource';
 export const NO_PERMISSION_MEMBER = '/node/remind/units/noPermission';

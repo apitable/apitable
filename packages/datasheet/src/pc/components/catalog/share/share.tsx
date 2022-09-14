@@ -5,11 +5,10 @@ import { ShareNode } from '../share_node';
 
 export interface IShareProps {
   nodeId: string;
-  onClose?: () => void;
-  isTriggerRender?: boolean;
+  onClose: () => void;
 }
 
-export const Share: FC<IShareProps> = ({ nodeId, onClose, isTriggerRender }) => {
+export const Share: FC<IShareProps> = ({ nodeId, onClose }) => {
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
   if (!nodeId) { return null; }
   return (
@@ -22,7 +21,6 @@ export const Share: FC<IShareProps> = ({ nodeId, onClose, isTriggerRender }) => 
       }}
       onClose={onClose}
       visible
-      isTriggerRender={isTriggerRender}
     />
   );
 };

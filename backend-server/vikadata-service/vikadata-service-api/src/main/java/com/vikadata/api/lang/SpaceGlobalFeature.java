@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import com.vikadata.api.enums.lang.ExportLevelEnum;
 import com.vikadata.api.support.serializer.EmptyBooleanSerializer;
 import com.vikadata.api.support.serializer.NullBooleanSerializer;
+import com.vikadata.api.support.serializer.NullNumberSerializer;
 import com.vikadata.api.support.serializer.NullStringSerializer;
 
 /**
@@ -86,6 +87,7 @@ public class SpaceGlobalFeature {
     @ApiModelProperty(value = "能够导出的成员权限等级",
             notes = "0 禁止导出或权限/1 只读及以上/2 可编辑以上/3 管理的成员/4 可更新及以上可以将目录中的维格表或视图导出到本地",
             example = "2", position = 12)
+    @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Integer exportLevel;
 
     @ApiModelProperty(value = "是否开启通讯录隔离", example = "false", position = 13)
@@ -94,9 +96,10 @@ public class SpaceGlobalFeature {
 
     // 根目录操作权限控制
     @ApiModelProperty(value = "是否禁止普通成员根目录的「管理」操作", example = "false", position = 14)
+    @JsonSerialize(nullsUsing = EmptyBooleanSerializer.class)
     private Boolean rootManageable;
 
-    public Integer getExportLevel() {
+    public Integer exportLevelOrDefault() {
         if (exportLevel != null) {
             return exportLevel;
         }
@@ -107,7 +110,7 @@ public class SpaceGlobalFeature {
                 : ExportLevelEnum.LEVEL_CLOSED.getValue();
     }
 
-    public Boolean getRootManageable() {
+    public Boolean rootManageableOrDefault() {
         return rootManageable != null ? rootManageable : true;
     }
 }

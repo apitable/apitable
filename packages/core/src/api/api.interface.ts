@@ -11,15 +11,15 @@ export interface ICreateNotification {
   toMemberId?: string[];
   body?: {
     extras: {
-      viewId?: string, // 视图ID
-      recordIds?: string, // 涉及到的表格的记录行ID
-    },
+      viewId?: string; // 视图ID
+      recordIds?: string; // 涉及到的表格的记录行ID
+    };
   };
 }
 
 export enum MindType {
   Member = 1,
-  Comment = 2
+  Comment = 2,
 }
 
 export interface ICommitRemind {
@@ -45,22 +45,21 @@ export interface ILoadOrSearchArg {
   filterIds?: string;
   keyword?: string;
   names?: string;
-  unitIds?: string;
-  searchEmail?: boolean;
+  unitIds?: string,
   // linkId 用来标注站外的操作，目前支持 templateId 和 shareId，
   linkId?: string | undefined;
   all?: boolean;
 }
 
 export interface ISignIn {
-  username: string,
-  credential: string,
-  type: string,
-  data?: string,
-  areaCode?: string,
-  token?: string,
-  mode?: ConfigConstant.LoginMode,
-  spaceId?: string,
+  username: string;
+  credential: string;
+  type: string;
+  data?: string;
+  areaCode?: string;
+  token?: string;
+  mode?: ConfigConstant.LoginMode;
+  spaceId?: string;
 }
 
 export interface ISocialWecomGetConfigResponse {
@@ -84,7 +83,7 @@ export interface ILabsFeatureListResponse {
     features: {
       space: ILabsFeature[];
       user: ILabsFeature[];
-    }
+    };
   };
 }
 
@@ -120,14 +119,14 @@ export interface IAdData {
   linkText: string;
   linkTextEn: string;
   linkUrl: string;
-  banners: { url: string, name: string }[];
+  banners: { url: string; name: string }[];
   desc: string;
   descEn: string;
 }
 
 export interface ISyncMemberRequest {
   linkId: string;
-  members: { teamId: string; memberId: string; memberName: string; }[];
+  members: { teamId: string; memberId: string; memberName: string }[];
   teamIds: string[];
 }
 
@@ -140,7 +139,7 @@ export interface INodeInfoWindowResponse {
     memberName?: string;
     avatar?: string;
     time?: string;
-    isDeleted: boolean
+    isDeleted: boolean;
     isMemberNameModified?: boolean;
   };
 }
@@ -160,10 +159,10 @@ export interface ICreateOrderResponse {
 }
 
 export interface IPayOrderResponse {
-  alipayPcDirectCharge: string,
-  orderNo: string,
-  wxQrCodeLink: string,
-  payTransactionNo: string
+  alipayPcDirectCharge: string;
+  orderNo: string;
+  wxQrCodeLink: string;
+  payTransactionNo: string;
 }
 
 export interface IQueryOrderStatusResponse {
@@ -213,19 +212,19 @@ export interface ITemplateRecommendResponse {
   categories: {
     categoryName: string;
     templateVos: {
-      'templateId': string;
-      'templateName': string;
-      'nodeId': string;
-      'nodeType': number;
-      'cover': string;
-      'description': string;
-      'userId': string;
-      'uuid': string;
-      'avatar': string;
-      'nickName': string;
-      'isNickNameModified': null | boolean,
-      'tags': string[];
-    }[]
+      templateId: string;
+      templateName: string;
+      nodeId: string;
+      nodeType: number;
+      cover: string;
+      description: string;
+      userId: string;
+      uuid: string;
+      avatar: string;
+      nickName: string;
+      isNickNameModified: null | boolean;
+      tags: string[];
+    }[];
   }[];
 }
 
@@ -233,4 +232,9 @@ export interface IGetUploadCertificateResponse {
   token: string;
   uploadRequestMethod: string;
   uploadUrl: string;
+}
+
+export interface ISubscribeActiveEventResponse {
+  endDate: string;
+  startDate: string;
 }
