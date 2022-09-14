@@ -156,7 +156,7 @@ curl https://apitable.github.io/install.sh | bash -c
 6. Create a new Pull Request -> [Create pull request across forks](https://github.com/apitable/apitable/compare)
 
 ##### Conventions
-APITable use common accepted conventions:
+APITable use common use conventions:
 
 - What's our Git branching model? -> [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
 - How to collaborate on your fork projects? -> [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
