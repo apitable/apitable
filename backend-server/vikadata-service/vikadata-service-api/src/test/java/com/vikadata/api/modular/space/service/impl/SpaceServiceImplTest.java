@@ -41,14 +41,14 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
         iSpaceService.switchSpacePros(userSpace.getUserId(), userSpace.getSpaceId(),
                 SpaceGlobalFeature.builder().rootManageable(false).build());
         SpaceGlobalFeature globalFeature = iSpaceService.getSpaceGlobalFeature(userSpace.getSpaceId());
-        assertThat(globalFeature.getRootManageable()).isFalse();
+        assertThat(globalFeature.rootManageableOrDefault()).isFalse();
     }
 
     @Test
     void testGetDefaultRootManageable() {
         MockUserSpace userSpace = createSingleUserAndSpace();
         SpaceGlobalFeature globalFeature = iSpaceService.getSpaceGlobalFeature(userSpace.getSpaceId());
-        assertThat(globalFeature.getRootManageable()).isTrue();
+        assertThat(globalFeature.rootManageableOrDefault()).isTrue();
     }
 
     @Test

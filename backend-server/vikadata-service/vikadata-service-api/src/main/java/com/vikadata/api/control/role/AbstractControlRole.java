@@ -119,7 +119,7 @@ abstract class AbstractControlRole implements ControlRole {
     }
 
     private boolean isAllowedNodeExport(SpaceGlobalFeature feature) {
-        Integer exportLevel = feature.getExportLevel();
+        Integer exportLevel = feature.exportLevelOrDefault();
         // 1. 没有节点导出信息。
         boolean isNoExportLevelInfo = ObjectUtil.isNull(feature);
         // 2. 不允许节点导出。
