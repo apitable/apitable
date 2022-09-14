@@ -18,30 +18,28 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.vikadata.api.lang.SpaceGlobalFeature;
+import com.vikadata.api.model.vo.space.SpaceRoleDetailVo;
+import com.vikadata.api.modular.organization.model.MemberIsolatedInfo;
+import com.vikadata.api.modular.organization.model.TeamCteInfo;
+import com.vikadata.api.modular.space.service.ISpaceRoleService;
+import com.vikadata.api.modular.space.service.ISpaceService;
+import com.vikadata.core.support.tree.DefaultTreeBuildFactory;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.enums.organization.UnitType;
-import com.vikadata.api.lang.SpaceGlobalFeature;
-import com.vikadata.api.model.dto.organization.MemberTeamDto;
 import com.vikadata.api.model.dto.organization.TeamMemberDto;
 import com.vikadata.api.model.vo.organization.TeamInfoVo;
 import com.vikadata.api.model.vo.organization.TeamTreeVo;
-import com.vikadata.api.model.vo.space.SpaceRoleDetailVo;
 import com.vikadata.api.modular.organization.mapper.MemberMapper;
 import com.vikadata.api.modular.organization.mapper.TeamMapper;
 import com.vikadata.api.modular.organization.mapper.TeamMemberRelMapper;
 import com.vikadata.api.modular.organization.mapper.UnitMapper;
-import com.vikadata.api.modular.organization.model.MemberIsolatedInfo;
-import com.vikadata.api.modular.organization.model.MemberTeamRelDTO;
-import com.vikadata.api.modular.organization.model.TeamCteInfo;
 import com.vikadata.api.modular.organization.service.ITeamMemberRelService;
 import com.vikadata.api.modular.organization.service.ITeamService;
 import com.vikadata.api.modular.organization.service.IUnitService;
 import com.vikadata.api.modular.space.mapper.SpaceMapper;
 import com.vikadata.api.modular.space.service.ISpaceInviteLinkService;
-import com.vikadata.api.modular.space.service.ISpaceRoleService;
-import com.vikadata.api.modular.space.service.ISpaceService;
-import com.vikadata.core.support.tree.DefaultTreeBuildFactory;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.SqlTool;
 import com.vikadata.entity.SpaceEntity;
@@ -139,17 +137,17 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         // 获取空间站主管理员Id
         Long spaceMainAdminId = iSpaceService.getSpaceMainAdminMemberId(spaceId);
         // 判断是否开启通讯录隔离
-        if (Boolean.TRUE.equals(features.getOrgIsolated()) && Boolean.FALSE.equals(spaceMainAdminId.equals(memberId))) {
+        if(Boolean.TRUE.equals(features.getOrgIsolated()) && Boolean.FALSE.equals(spaceMainAdminId.equals(memberId))){
             // 获取管理员信息
             SpaceRoleDetailVo spaceRoleDetailVo = iSpaceRoleService.getRoleDetail(spaceId, memberId);
             // 判断是否拥有通讯录管理权限
-            if (Boolean.FALSE.equals(spaceRoleDetailVo.getResources().contains("MANAGE_MEMBER")) && Boolean.FALSE.equals(spaceRoleDetailVo.getResources().contains("MANAGE_TEAM"))) {
+            if(Boolean.FALSE.equals(spaceRoleDetailVo.getResources().contains("MANAGE_MEMBER")) && Boolean.FALSE.equals(spaceRoleDetailVo.getResources().contains("MANAGE_TEAM"))){
                 // 获取空间站的根部门ID
                 Long rootTeamId = teamMapper.selectRootIdBySpaceId(spaceId);
                 // 获取成员所属部门ID
                 List<Long> teamIds = memberMapper.selectTeamIdsByMemberId(memberId);
                 // 判断成员是否直属根部门
-                if (Boolean.FALSE.equals(teamIds.contains(rootTeamId))) {
+                if(Boolean.FALSE.equals(teamIds.contains(rootTeamId))){
                     memberIsolatedInfo.setIsolated(true);
                     memberIsolatedInfo.setTeamIds(teamIds);
                     return memberIsolatedInfo;
@@ -562,25 +560,13 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         // 构建默认加载的组织树
         List<TeamTreeVo> teamTreeVoList = new DefaultTreeBuildFactory<TeamTreeVo>().doTreeBuild(treeList);
         // 将根部门ID处理为0
-        for (TeamTreeVo teamTreeVo : teamTreeVoList) {
-            if (teamTreeVo.getParentId() == 0) {
-                teamTreeVo.setTeamId(0L);
-            }
-        }
+       for(TeamTreeVo teamTreeVo : teamTreeVoList){
+           if(teamTreeVo.getParentId() == 0){
+               teamTreeVo.setTeamId(0L);
+           }
+       }
         return teamTreeVoList;
     }
-
-    @Override
-    public Map<Long, String> getMembersTeamTreeString(String spaceId, List<Long> memberIds) {
-        Map<Long, String> memberTeamMap = new HashMap<>();
-        List<MemberTeamRelDTO> memberTeams = memberMapper.selectMemberTeamsBySpaceIdAndMemberIds(spaceId, memberIds);
-        memberTeams.forEach(i -> {
-            String teamName = i.getTeams().stream().map(MemberTeamDto::getTeamName).collect(Collectors.joining("｜"));
-            memberTeamMap.put(i.getMemberId(), teamName);
-        });
-        return memberTeamMap;
-    }
-
 
     /**
      * 递归处理

@@ -24,7 +24,4 @@ public class SpaceLinkOpRo {
     @ApiModelProperty(value = "部门ID", dataType = "java.lang.String", example = "1254", position = 1, required = true)
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long teamId;
-
-    @ApiModelProperty(value = "nodeId", dataType = "java.lang.String", example = "dst***", position = 2)
-    private String nodeId;
 }

@@ -8,7 +8,10 @@ import javax.validation.Valid;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Editor;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
+import com.vikadata.api.modular.organization.model.MemberIsolatedInfo;
+import com.vikadata.api.modular.organization.service.ITeamService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -35,11 +38,8 @@ import com.vikadata.api.model.vo.organization.UnitInfoVo;
 import com.vikadata.api.model.vo.organization.UnitSearchResultVo;
 import com.vikadata.api.modular.organization.mapper.MemberMapper;
 import com.vikadata.api.modular.organization.mapper.TeamMapper;
-import com.vikadata.api.modular.organization.model.LoadSearchDTO;
-import com.vikadata.api.modular.organization.model.MemberIsolatedInfo;
 import com.vikadata.api.modular.organization.service.IMemberService;
 import com.vikadata.api.modular.organization.service.IOrganizationService;
-import com.vikadata.api.modular.organization.service.ITeamService;
 import com.vikadata.api.modular.space.service.ISpaceService;
 import com.vikadata.api.modular.template.service.ITemplateService;
 import com.vikadata.api.modular.workspace.mapper.NodeShareSettingMapper;
@@ -221,15 +221,17 @@ public class OrganizationController {
         @ApiImplicitParam(name = "keyword", value = "搜索词", dataTypeClass = String.class, paramType = "query", example = "张三"),
         @ApiImplicitParam(name = "unitIds", value = "组织单元ID 列表", dataTypeClass = String.class, paramType = "query", example = "1271,1272"),
         @ApiImplicitParam(name = "filterIds", value = "指定过滤的组织单元", dataTypeClass = String.class, paramType = "query", example = "123,124"),
-        @ApiImplicitParam(name = "all", value = "是否加载全部部门和成员", defaultValue = "false", dataTypeClass = Boolean.class, paramType = "query"),
-        @ApiImplicitParam(name = "searchEmail", value = "是否搜索邮件", defaultValue = "false", dataTypeClass = Boolean.class, paramType = "query")
+        @ApiImplicitParam(name = "all", value = "是否加载全部部门和成员", defaultValue = "false", dataTypeClass = Boolean.class, paramType = "query")
     })
-    public ResponseData<List<UnitInfoVo>> loadOrSearch(@Valid LoadSearchDTO params) {
+    public ResponseData<List<UnitInfoVo>> loadOrSearch(@RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "linkId", required = false) String linkId,
+            @RequestParam(value = "unitIds", required = false) List<Long> unitIds,
+            @RequestParam(value = "filterIds", required = false) List<Long> filterIds,
+            @RequestParam(value = "all", required = false, defaultValue = "false") Boolean all) {
         // 分享节点/模板 未登录用户调用处理
         Long userId = null;
         String spaceId;
         Long sharer = null;
-        String linkId = params.getLinkId();
         if (StrUtil.isBlank(linkId)) {
             userId = SessionContext.getUserId();
             spaceId = LoginContext.me().getSpaceId();
@@ -252,7 +254,7 @@ public class OrganizationController {
             }
             spaceId = templateSpaceId;
         }
-        List<UnitInfoVo> vos = iOrganizationService.loadOrSearchInfo(userId, spaceId, params, sharer);
+        List<UnitInfoVo> vos = iOrganizationService.loadOrSearchInfo(userId, spaceId, CharSequenceUtil.trim(keyword), unitIds, filterIds, all, sharer);
         return ResponseData.success(vos);
     }
 

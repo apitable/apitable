@@ -315,11 +315,10 @@ public interface IMemberService extends IService<MemberEntity> {
      * @param spaceId 空间ID
      * @param teamId  部门ID
      * @param emails  邀请邮箱列表
-     * @return unit id list
      * @author Shawn Deng
      * @date 2019/11/18 18:55
      */
-    List<Long> inviteMember(String spaceId, Long teamId, List<String> emails);
+    void inviteMember(String spaceId, Long teamId, List<String> emails);
 
     /**
      * 恢复成员

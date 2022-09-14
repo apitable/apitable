@@ -262,7 +262,7 @@ public class MemberController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
-    public ResponseData<MemberUnitsVo> inviteMember(@RequestBody @Valid InviteRo data) {
+    public ResponseData<Void> inviteMember(@RequestBody @Valid InviteRo data) {
         // 人机验证
         afsCheckService.noTraceCheck(data.getData());
         //邀请的空间ID
@@ -275,12 +275,11 @@ public class MemberController {
         //判断成员数量上限，白名单空间跳过
         // iSubscriptionService.checkSeat(spaceId);
         List<InviteMemberRo> inviteMembers = data.getInvite();
-        MemberUnitsVo unitsVo = MemberUnitsVo.builder().build();
         List<String> inviteEmails = inviteMembers.stream()
                 .map(InviteMemberRo::getEmail)
                 .filter(StrUtil::isNotBlank).collect(Collectors.toList());
         if (CollUtil.isEmpty(inviteEmails)) {
-            return ResponseData.success(unitsVo);
+            return ResponseData.success();
         }
         // 空间的所有成员
         List<String> allInviteEmails = new ArrayList<>();
@@ -308,8 +307,7 @@ public class MemberController {
             List<String> distinctEmails = CollectionUtil.distinctIgnoreCase(newMemberEmails);
             allInviteEmails.addAll(distinctEmails);
             // 邀请新成员
-            List<Long> unitIds = iMemberService.inviteMember(spaceId, teamId, distinctEmails);
-            unitsVo.setUnitIds(unitIds);
+            iMemberService.inviteMember(spaceId, teamId, distinctEmails);
         }
         final String defaultLang = LocaleContextHolder.getLocale().toLanguageTag();
         //发送邀请通知，异步操作
@@ -325,7 +323,7 @@ public class MemberController {
                 iMemberService.sendInviteNotification(userId, memberIds, spaceId, false);
             });
         }
-        return ResponseData.success(unitsVo);
+        return ResponseData.success();
     }
 
     @PostResource(path = "/sendInviteSingle", tags = "INVITE_MEMBER")

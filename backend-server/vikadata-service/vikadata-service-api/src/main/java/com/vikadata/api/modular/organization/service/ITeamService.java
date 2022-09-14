@@ -327,14 +327,4 @@ public interface ITeamService extends IService<TeamEntity> {
      * @date 2022/5/17
      */
     List<TeamTreeVo> loadMemberTeamTree(String spaceId, Long memberId);
-
-    /**
-     * get string of member department tree
-     * @param spaceId space id
-     * @param memberIds list of member id
-     * @return Map<Long, String>  unitId->team1|team1-1
-     * @author zoe zheng
-     * @date 2022/9/1 14:03
-     */
-    Map<Long, String> getMembersTeamTreeString(String spaceId, List<Long> memberIds);
 }

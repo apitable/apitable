@@ -35,9 +35,4 @@ public class MemberBaseInfoDTO {
      */
     private Boolean isMemberNameModified;
 
-    /**
-     * user email
-     */
-    private String email;
-
 }
