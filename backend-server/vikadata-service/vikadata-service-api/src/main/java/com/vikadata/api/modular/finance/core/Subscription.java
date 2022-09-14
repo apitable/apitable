@@ -67,4 +67,15 @@ public class Subscription {
      * 订阅阶段
      */
     private SubscriptionPhase phase;
+
+    /**
+     * ensure not exist capacity_0.3G data in production db before delete
+     */
+    @Deprecated
+    public String getPlanId() {
+        if (planId != null && planId.equals("capacity_0.3G")) {
+            return "capacity_300_MB";
+        }
+        return planId;
+    }
 }

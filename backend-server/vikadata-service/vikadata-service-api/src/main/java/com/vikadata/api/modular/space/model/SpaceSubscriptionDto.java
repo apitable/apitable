@@ -40,4 +40,15 @@ public class SpaceSubscriptionDto {
      * 过期时间
      */
     private LocalDateTime expireTime;
+
+    /**
+     * ensure not exist capacity_0.3G data in production db before delete
+     */
+    @Deprecated
+    public String getPlanId() {
+        if (planId != null && planId.equals("capacity_0.3G")) {
+            return "capacity_300_MB";
+        }
+        return planId;
+    }
 }
