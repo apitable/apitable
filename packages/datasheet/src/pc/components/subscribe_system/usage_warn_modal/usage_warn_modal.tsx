@@ -1,14 +1,14 @@
-import { Button, colorVars, LinkButton, Typography, useThemeColors } from '@vikadata/components';
+import { Button, colorVars, TextButton, Typography, useThemeColors } from '@vikadata/components';
 import { ConfigConstant, integrateCdnHost, Settings, Strings, t } from '@vikadata/core';
 import { CloseMiddleOutlined, TitleFavoriteFilled } from '@vikadata/icons';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { Emoji } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
+import { goToUpgrade } from 'pc/components/subscribe_system';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import styles from './styles.module.less';
-import { goToUpgrade } from 'pc/components/subscribe_system';
 
 interface IUsageWarnModalParams {
   alertContent: string;
@@ -56,15 +56,14 @@ const UsageWarnModalInner: React.FC<IUsageWarnModalParams> = ({
           </span>
           <span style={{ position: 'relative', left: 3 }}>{t(Strings.upgrade_now)}</span>
         </Button>
-        <LinkButton
+        <TextButton
           color='default'
           className={styles.checkMorePrivileges}
           onClick={() => window.open('/pricing', '_blank', 'noopener,noreferrer')}
-          underline={false}
           block
         >
           {t(Strings.check_more_privileges)}
-        </LinkButton>
+        </TextButton>
       </div>
       <div className={styles.pageRight}>
         <div className={styles.qrCodeImageContentBorder}>
