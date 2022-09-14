@@ -223,39 +223,39 @@ export const useTask = (props: IUseTaskProps) => {
    */
   const errTaskTips = renderEnable
     ? Array.from({ length: rowStopIndex - rowStartIndex }, (_, index) => {
-        return rowStartIndex + index;
-      }).map(rowIndex => {
-        const { recordId, type } = linearRows[rowIndex];
-        if (type !== CellType.Record) return null;
-        const startTime = cellValueMap[generateKeyName(startFieldId, recordId)];
-        const endTime = cellValueMap[generateKeyName(endFieldId, recordId)];
-        if (!startTime || !endTime) return null;
-        // 如果起止时间是正常的，就不进行提示（错误任务的起止时间比较只精确到 “天”）
-        if (getStartOfDate(startTime) <= getStartOfDate(endTime)) return null;
+      return rowStartIndex + index;
+    }).map(rowIndex => {
+      const { recordId, type } = linearRows[rowIndex];
+      if (type !== CellType.Record) return null;
+      const startTime = cellValueMap[generateKeyName(startFieldId, recordId)];
+      const endTime = cellValueMap[generateKeyName(endFieldId, recordId)];
+      if (!startTime || !endTime) return null;
+      // 如果起止时间是正常的，就不进行提示（错误任务的起止时间比较只精确到 “天”）
+      if (getStartOfDate(startTime) <= getStartOfDate(endTime)) return null;
 
-        const offsetY = (rowHeight - GANTT_COMMON_ICON_SIZE) / 2;
-        const y = instance.getRowOffset(rowIndex) + offsetY;
-        return (
-          <Icon
-            key={`err-task-tip-${recordId}`}
-            name={KONVA_DATASHEET_ID.GANTT_ERROR_TASK_TIP}
-            x={10}
-            y={y}
-            data={WarningTriangleFilledPath}
-            fill={colors.warningColor}
-            onMouseEnter={() =>
-              setTooltipInfo({
-                visible: true,
-                x: gridWidth + 10,
-                y: instance.getRowOffset(pointRowIndex),
-                width: GANTT_COMMON_ICON_SIZE,
-                title: t(Strings.gantt_error_date_tip),
-              })
-            }
-            onMouseOut={() => clearTooltipInfo()}
-          />
-        );
-      })
+      const offsetY = (rowHeight - GANTT_COMMON_ICON_SIZE) / 2;
+      const y = instance.getRowOffset(rowIndex) + offsetY;
+      return (
+        <Icon
+          key={`err-task-tip-${recordId}`}
+          name={KONVA_DATASHEET_ID.GANTT_ERROR_TASK_TIP}
+          x={10}
+          y={y}
+          data={WarningTriangleFilledPath}
+          fill={colors.warningColor}
+          onMouseEnter={() =>
+            setTooltipInfo({
+              visible: true,
+              x: gridWidth + 10,
+              y: instance.getRowOffset(pointRowIndex),
+              width: GANTT_COMMON_ICON_SIZE,
+              title: t(Strings.gantt_error_date_tip),
+            })
+          }
+          onMouseOut={() => clearTooltipInfo()}
+        />
+      );
+    })
     : null;
 
   /**

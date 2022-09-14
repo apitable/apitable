@@ -183,4 +183,12 @@ public class SpaceSubscribeVo {
     @ApiModelProperty(value = "套餐容量(单位：byte)", dataType = "java.lang.String", example = "1024", position = 24)
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long subscriptionCapacity;
+
+    @ApiModelProperty(value = "安全设置-通讯录隐藏", example = "false", position = 25)
+    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+    private Boolean securitySettingAddresslistIsolation;
+
+    @ApiModelProperty(value = "安全设置-禁止成员在根目录增删文件", example = "false", position = 26)
+    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+    private Boolean securitySettingCatalogManagement;
 }

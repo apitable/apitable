@@ -168,7 +168,17 @@ public enum BillingFunctionEnum {
     /**
      * 审计日志
      */
-    AUDIT_QUERY("audit_query")
+    AUDIT_QUERY("audit_query"),
+
+    /**
+     * 安全设置-通讯录隐藏
+     */
+    SECURITY_SETTING_ADDRESSLIST_ISOLATION("security_setting_addresslist_isolation"),
+
+    /**
+     * 安全设置-禁止成员在根目录增删文件
+     */
+    SECURITY_SETTING_CATALOG_MANAGEMENT("security_setting_catalog_management")
 
     ;
 

@@ -56,12 +56,10 @@
             "zh_CN": "318天，78次功能迭代<br/>\n和维格表一起，从萌新到成熟<br/>\n邀请好友注册，同享盛夏钜惠"
         },
         "activity_integral_income_notify": {
-            "zh_CN": "恭喜你获得「<a class=\"activityName\"></a>」奖励：<a class=\"count\"></a> V币，后续可兑换白银级空间站等服务，详情可前往「个人设置>账户钱包」查看",
-            "en_US": "Congratulations on getting the reward of  \"<a class=\"activityName\"></a>\": <a class=\"count\"></a>  V coins. You can use them to buy a plan or sevices. For more information, please go to \"Personal Settings > Wallet \"."
+            "zh_CN": "恭喜你获得「<a class=\"activityName\"></a>」奖励：<a class=\"count\"></a> V币，后续可兑换白银级空间站等服务，详情可前往「个人设置>账户钱包」查看"
         },
         "activity_integral_income_toadmin": {
-            "zh_CN": "恭喜你的空间站「<a class=\"spaceName\"></a>」获得「<a class=\"activityName\"></a>」活动奖励：<a class=\"count\"></a> V币，V币后续可兑换白银级空间站等服务，详情可前往「个人设置>账户钱包」查看",
-            "en_US": "Congratulations on your space getting the reward of  \"<a class=\"activityName\"></a>\": <a class=\"count\"></a>  V coins. You can use them to buy a plan or sevices. For more information, please go to \"Personal Settings > Wallet \"."
+            "zh_CN": "恭喜你的空间站「<a class=\"spaceName\"></a>」获得「<a class=\"activityName\"></a>」活动奖励：<a class=\"count\"></a> V币，V币后续可兑换白银级空间站等服务，详情可前往「个人设置>账户钱包」查看"
         },
         "activity_login_desc": {
             "zh_CN": "你的好友「${nickname}」邀请你注册使用维格表"
@@ -255,8 +253,7 @@
             "en_US": "View named \"${viewName}\" added"
         },
         "add_on_api_call": {
-            "zh_CN": "增值 API 容量",
-            "en_US": "Increase API capacity"
+            "zh_CN": "增值 API 容量"
         },
         "add_or_cancel_favorite_fail": {
             "zh_CN": "取消/设置星标失败",
@@ -443,8 +440,7 @@
             "en_US": "Approved"
         },
         "alarm_no_member_field_tips": {
-            "zh_CN": "请在表中先新建一列成员字段",
-            "en_US": "Please create a new member field first"
+            "zh_CN": "请在表中先新建一列成员字段"
         },
         "alarm_save_fail": {
             "zh_CN": "日期提醒配置不全，保存失败",
@@ -489,10 +485,6 @@
         "align_right": {
             "zh_CN": "居右对齐",
             "en_US": "Align Right"
-        },
-        "alipay": {
-            "zh_CN": "支付宝",
-            "en_US": "Alipay"
         },
         "all": {
             "zh_CN": "全部",
@@ -1262,57 +1254,46 @@
         },
         "app_launch_guide_text_1": {
             "zh_CN": "千人同时操作一张维格表，高效实时协同",
-            "en_US": "Thousands of members operate one datasheet at the same time, efficient real-time collaboration",
             "终端": "APP"
         },
         "app_launch_guide_text_2": {
             "zh_CN": "动态数据仪表盘，实时关注重点数据",
-            "en_US": "Dynamic data dashboard, focus on key data in real time",
             "终端": "APP"
         },
         "app_launch_guide_text_3": {
             "zh_CN": "随需而变，全面适配不同场景需求",
-            "en_US": "Change as needed, fully adapt to the needs of different scenarios",
             "终端": "APP"
         },
         "app_launch_guide_text_4": {
             "zh_CN": "多维视图任意变换，展示个性化数据",
-            "en_US": "Switch multi-dimensional views at your will  to display personalized data",
             "终端": "APP"
         },
         "app_launch_guide_title_1": {
             "zh_CN": "团队协作",
-            "en_US": "Teamwork",
             "终端": "APP"
         },
         "app_launch_guide_title_2": {
             "zh_CN": "数据可视化",
-            "en_US": "Data visualization",
             "终端": "APP"
         },
         "app_launch_guide_title_3": {
             "zh_CN": "海量模板",
-            "en_US": "Massive templates",
             "终端": "APP"
         },
         "app_launch_guide_title_4": {
             "zh_CN": "丰富视图",
-            "en_US": "Multiple Views",
             "终端": "APP"
         },
         "app_load_failed": {
             "zh_CN": "加载失败，请刷新后再试",
-            "en_US": "Loading failed, please refresh and try again",
             "终端": "APP"
         },
         "app_modal_content_policy": {
             "zh_CN": "感谢你使用维格表的服务，以下政策将帮助你了解维格表收集、使用、保存你的个人信息的情况，以及你所享有的相关权利。\\n请你查阅",
-            "en_US": "Thank you for using our services, the following policies will help you understand the collection, usage, and storage of your personal information, and your related rights. \\nPlease check",
             "终端": "APP"
         },
         "app_modal_content_policy_suffix": {
             "zh_CN": "，点击同意开始接受我们的服务。",
-            "en_US": "Click agree to start receiving our service.",
             "终端": "APP"
         },
         "app_opening": {
@@ -1321,12 +1302,10 @@
         },
         "app_reload": {
             "zh_CN": "重新加载",
-            "en_US": "Try loading again",
             "终端": "APP"
         },
         "app_timeout_to_refresh": {
             "zh_CN": "网络连接超时，请刷新后再试",
-            "en_US": "The network connection timed out, please refresh and try again",
             "终端": "APP"
         },
         "application_integration_information": {
@@ -1422,12 +1401,10 @@
             "en_US": "Async computing"
         },
         "at_least_select_one": {
-            "zh_CN": "至少要选择一个人",
-            "en_US": "Select at least one member"
+            "zh_CN": "至少要选择一个人"
         },
         "at_least_select_one_field": {
-            "zh_CN": "至少要选择一个成员字段",
-            "en_US": "Select at least one member field"
+            "zh_CN": "至少要选择一个成员字段"
         },
         "attachment_data": {
             "zh_CN": "附件数据",
@@ -1446,24 +1423,20 @@
             "en_US": "english"
         },
         "audit_add_node_role": {
-            "zh_CN": "添加文件节点权限",
+            "zh_CN": "添加文件权限",
             "en_US": "Add file permissions"
         },
         "audit_add_node_role_detail": {
-            "zh_CN": "添加文件节点权限，将「${unitNames}」设置为<a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a>的「${role}」角色",
-            "en_US": "Add node permission，set「${unitNames}」to「${role}」of <a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a>"
+            "zh_CN": "审计内容",
+            "en_US": "Audit"
+        },
+        "audit_add_template": {
+            "zh_CN": "添加模板",
+            "en_US": "Add template"
         },
         "audit_admin_permission_change_event": {
             "zh_CN": "管理员权限变更",
             "en_US": "Change admin permissions"
-        },
-        "audit_create_template": {
-            "zh_CN": "创建模板",
-            "en_US": "Create template"
-        },
-        "audit_create_template_detail": {
-            "zh_CN": "创建模板内容",
-            "en_US": "Create template"
         },
         "audit_datasheet_field_permission_change_event": {
             "zh_CN": "表格列权限变更",
@@ -1478,19 +1451,15 @@
             "en_US": "Audit"
         },
         "audit_delete_node_role": {
-            "zh_CN": "删除文件节点权限",
-            "en_US": "Delete node permission"
+            "zh_CN": "删除文件权限",
+            "en_US": "Delete file permissions"
         },
         "audit_delete_node_role_detail": {
-            "zh_CN": "删除文件节点权限，将「${unitNames}」在<a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a>的「${role}」角色删除",
-            "en_US": "Delete node permission，delete「${unitNames}」`s 「${role}」role of <a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a>"
+            "zh_CN": "审计内容",
+            "en_US": "Audit"
         },
         "audit_delete_template": {
             "zh_CN": "删除模板",
-            "en_US": "Delete template"
-        },
-        "audit_delete_template_detail": {
-            "zh_CN": "删除模板内容",
             "en_US": "Delete template"
         },
         "audit_disable_field_role": {
@@ -1506,16 +1475,16 @@
             "en_US": "Disable file permissions"
         },
         "audit_disable_node_role_detail": {
-            "zh_CN": "关闭${nodeType}权限，名称为<a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a>",
-            "en_US": "Disable ${nodeType} permission，name is <a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a>"
+            "zh_CN": "审计内容",
+            "en_US": "Audit"
         },
         "audit_disable_node_share": {
-            "zh_CN": "关闭文件节点公开链接",
-            "en_US": "Close node public link"
+            "zh_CN": "关闭文件分享",
+            "en_US": "english"
         },
         "audit_disable_node_share_detail": {
-            "zh_CN": "关闭${nodeType}「${currentNodeName}」的公开链接",
-            "en_US": "Restore ${nodeType}  to the space,name is 「${currentNodeName}」"
+            "zh_CN": "审计内容",
+            "en_US": "Audit"
         },
         "audit_enable_field_role": {
             "zh_CN": "开启列权限",
@@ -1530,16 +1499,16 @@
             "en_US": "Enable file permissions"
         },
         "audit_enable_node_role_detail": {
-            "zh_CN": "开启${nodeType}权限，名称为 <a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a>",
-            "en_US": "Enable ${nodeType} permission，name is <a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a>"
+            "zh_CN": "审计内容",
+            "en_US": "Audit"
         },
         "audit_enable_node_share": {
-            "zh_CN": "开启文件节点公开链接",
-            "en_US": "englishOpen node public link"
+            "zh_CN": "开启文件分享",
+            "en_US": "english"
         },
         "audit_enable_node_share_detail": {
-            "zh_CN": "开启${nodeType} <a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a> 的公开链接",
-            "en_US": "Open ${nodeType} <a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a> public link"
+            "zh_CN": "审计内容",
+            "en_US": "Audit"
         },
         "audit_login_event": {
             "zh_CN": "登录事件",
@@ -1550,8 +1519,7 @@
             "en_US": "english"
         },
         "audit_organization_change_event": {
-            "zh_CN": "通讯录组织架构变更",
-            "en_US": "The organizational structure of the contacts has changed"
+            "zh_CN": "通讯录组织架构变更"
         },
         "audit_quote_template": {
             "zh_CN": "引用模板",
@@ -1566,6 +1534,10 @@
             "en_US": "Audit"
         },
         "audit_space_cancel_delete_detail": {
+            "zh_CN": "审计内容",
+            "en_US": "Audit"
+        },
+        "audit_space_change_detail": {
             "zh_CN": "审计内容",
             "en_US": "Audit"
         },
@@ -1613,29 +1585,37 @@
             "zh_CN": "审计内容",
             "en_US": "Audit"
         },
+        "audit_space_node_change": {
+            "zh_CN": "审计内容",
+            "en_US": "Audit"
+        },
+        "audit_space_node_change_detail": {
+            "zh_CN": "审计内容",
+            "en_US": "Audit"
+        },
         "audit_space_node_copy": {
-            "zh_CN": "复制文件节点",
-            "en_US": "Duplicate node"
+            "zh_CN": "审计内容",
+            "en_US": "Audit"
         },
         "audit_space_node_copy_detail": {
-            "zh_CN": "复制${nodeType}「${sourceNodeName}」，新文件节点名称为<a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a>",
-            "en_US": "Duplicate ${nodeType} 「${sourceNodeName}」, the new node Name is <a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a>"
+            "zh_CN": "审计内容",
+            "en_US": "Audit"
         },
         "audit_space_node_create": {
-            "zh_CN": "创建文件节点",
-            "en_US": "create node"
+            "zh_CN": "审计内容",
+            "en_US": "Audit"
         },
         "audit_space_node_create_detail": {
-            "zh_CN": "创建${nodeType}，名称为<a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a>",
-            "en_US": "Create ${nodeType}, name is <a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a>"
+            "zh_CN": "审计内容",
+            "en_US": "Audit"
         },
         "audit_space_node_delete": {
-            "zh_CN": "删除文件节点",
-            "en_US": "Delete node"
+            "zh_CN": "删除工作目录文件",
+            "en_US": "english"
         },
         "audit_space_node_delete_detail": {
-            "zh_CN": "删除${nodeType}，名称为<a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a>",
-            "en_US": "Delete ${nodeType}, name is  <a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a>"
+            "zh_CN": "成员 ${member_name} 删除工作目录文件 ${node_name}",
+            "en_US": "english"
         },
         "audit_space_node_export": {
             "zh_CN": "导出数表",
@@ -1646,66 +1626,22 @@
             "en_US": "english"
         },
         "audit_space_node_import": {
-            "zh_CN": "导入文件节点",
-            "en_US": "Import node"
+            "zh_CN": "审计内容",
+            "en_US": "Audit"
         },
         "audit_space_node_import_detail": {
-            "zh_CN": "导入文件节点，名称为 <a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${nodeName}」</a>",
-            "en_US": "Import node, name is <a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${nodeName}」</a>"
+            "zh_CN": "审计内容",
+            "en_US": "Audit"
         },
         "audit_space_node_move": {
-            "zh_CN": "移动文件节点",
-            "en_US": "Move node"
+            "zh_CN": "审计内容",
+            "en_US": "Audit"
         },
         "audit_space_node_move_detail": {
-            "zh_CN": "移动${nodeType}<a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a>到文件夹「${parentName}」下方",
-            "en_US": "Move ${nodeType}<a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a>to below the folder「${parentName}」"
-        },
-        "audit_space_node_rename": {
-            "zh_CN": "重命名文件节点",
-            "en_US": "Rename node"
-        },
-        "audit_space_node_rename_detail": {
-            "zh_CN": "重命名${nodeType}，将「${oldNodeName}」名称修改为<a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${nodeName}」</a>",
-            "en_US": "Rename ${nodeType}，Modify「${oldNodeName}」to <a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${nodeName}」</a>"
-        },
-        "audit_space_node_sort": {
-            "zh_CN": "审计内容",
-            "en_US": "Audit"
-        },
-        "audit_space_node_sort_detail": {
-            "zh_CN": "审计内容",
-            "en_US": "Audit"
-        },
-        "audit_space_node_update_cover": {
-            "zh_CN": "审计内容",
-            "en_US": "Audit"
-        },
-        "audit_space_node_update_cover_detail": {
-            "zh_CN": "审计内容",
-            "en_US": "Audit"
-        },
-        "audit_space_node_update_desc": {
-            "zh_CN": "审计内容",
-            "en_US": "Audit"
-        },
-        "audit_space_node_update_desc_detail": {
-            "zh_CN": "审计内容",
-            "en_US": "Audit"
-        },
-        "audit_space_node_update_icon": {
-            "zh_CN": "审计内容",
-            "en_US": "Audit"
-        },
-        "audit_space_node_update_icon_detail": {
             "zh_CN": "审计内容",
             "en_US": "Audit"
         },
         "audit_space_rename": {
-            "zh_CN": "审计内容",
-            "en_US": "Audit"
-        },
-        "audit_space_rename_detail": {
             "zh_CN": "审计内容",
             "en_US": "Audit"
         },
@@ -1718,32 +1654,23 @@
             "en_US": "Audit"
         },
         "audit_space_rubbish_node_recover": {
-            "zh_CN": "恢复回收舱节点",
-            "en_US": "Audit"
-        },
-        "audit_space_rubbish_node_recover_detail": {
-            "zh_CN": "从回收舱恢复${nodeType}，名称为<a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a>",
-            "en_US": "Recover ${nodeType} <a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a> form the trash"
-        },
-        "audit_space_template_event": {
-            "zh_CN": "空间站模板事件",
-            "en_US": "Template change"
-        },
-        "audit_space_update_logo": {
             "zh_CN": "审计内容",
             "en_US": "Audit"
         },
-        "audit_space_update_logo_detail": {
+        "audit_space_rubbish_node_recover_detail": {
             "zh_CN": "审计内容",
             "en_US": "Audit"
         },
         "audit_store_share_node": {
-            "zh_CN": "转存文件节点",
+            "zh_CN": "审计内容",
             "en_US": "Audit"
         },
         "audit_store_share_node_detail": {
-            "zh_CN": "将${nodeType}转存到本空间站，名称为 <a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${nodeName}」</a>",
-            "en_US": "Restore ${nodeType}  to the space,name is <a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${nodeName}」</a>"
+            "zh_CN": "审计内容",
+            "en_US": "Audit"
+        },
+        "audit_template_event": {
+            "zh_CN": "模板变更"
         },
         "audit_update_field_role": {
             "zh_CN": "审计内容",
@@ -1754,32 +1681,28 @@
             "en_US": "Audit"
         },
         "audit_update_node_role": {
-            "zh_CN": "修改文件节点权限",
-            "en_US": "Modify node permission"
+            "zh_CN": "审计内容",
+            "en_US": "Audit"
         },
         "audit_update_node_role_detail": {
-            "zh_CN": "修改文件节点权限，将「${unitNames}」修改为<a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a>的「${role}」",
-            "en_US": "Modify node permission，modify「${unitNames}」`s role to「${role}」of <a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a>"
+            "zh_CN": "审计内容",
+            "en_US": "Audit"
         },
         "audit_update_node_share_setting": {
-            "zh_CN": "修改文件节点公开链接",
-            "en_US": "Modify node public link settings"
+            "zh_CN": "更改节点分享设置"
         },
-        "audit_update_node_share_setting_detail": {
-            "zh_CN": "修改${nodeType} <a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a> 的公开链接的设置",
-            "en_US": "Modify ${nodeType} <a href=\"${currentNodeURL}\" target=\"_blank\" class=\"auditSourceLink\">「${currentNodeName}」</a> public link"
-        },
+        "audit_update_node_share_setting_detail": {},
         "audit_user_login": {
-            "zh_CN": "用户登录",
-            "en_US": "User login"
+            "zh_CN": "审计内容",
+            "en_US": "Audit"
         },
         "audit_user_login_detail": {
             "zh_CN": "审计内容",
             "en_US": "Audit"
         },
         "audit_user_logout": {
-            "zh_CN": "用户登出",
-            "en_US": "User logout"
+            "zh_CN": "审计内容",
+            "en_US": "Audit"
         },
         "audit_user_logout_detail": {
             "zh_CN": "审计内容",
@@ -1799,12 +1722,10 @@
             "en_US": "english"
         },
         "audit_work_catalog_permission_change_event": {
-            "zh_CN": "工作目录权限变更",
-            "en_US": "Explorer permissions changed"
+            "zh_CN": "工作目录权限变更"
         },
         "audit_work_catalog_share_event": {
-            "zh_CN": "工作目录节点分享事件",
-            "en_US": "Sharing events of nodes in Explorer"
+            "zh_CN": "工作目录节点分享事件"
         },
         "augmented_views": {
             "zh_CN": "无限使用增强视图",
@@ -2032,8 +1953,7 @@
             "en_US": "Want to get quick access to a view from the Explorer? Mirror is your shortcut to a view"
         },
         "black_space_alert": {
-            "zh_CN": "你所在的空间站已经超限很久咯，为了不影响你的正常使用，请点击这里升级",
-            "en_US": "The space you are in has exceeded the limit for a long time. In order not to affect your regular use, please click here to upgrade"
+            "zh_CN": "你所在的空间站已经超限很久咯，为了不影响你的正常使用，请点击这里升级"
         },
         "bold": {
             "zh_CN": "加粗",
@@ -2134,20 +2054,17 @@
             "en_US": "Use field ID"
         },
         "by_the_day": {
-            "zh_CN": "按天",
-            "en_US": "By day"
+            "zh_CN": "按天"
         },
         "by_the_month": {
-            "zh_CN": "按月",
-            "en_US": "monthly"
+            "zh_CN": "按月"
         },
         "calendar_add_date_time_field": {
             "zh_CN": "创建日期",
             "en_US": "Create Date field"
         },
         "calendar_color_more": {
-            "zh_CN": "更多颜色",
-            "en_US": "More colors"
+            "zh_CN": "更多颜色"
         },
         "calendar_create_img_alt": {
             "zh_CN": "日历视图创建时间图片",
@@ -2554,7 +2471,8 @@
         },
         "check_field": {
             "zh_CN": "请设置需要查询的字段",
-            "en_US": "Select a field"
+            "en_US": "Select a field",
+            "zh_HK": "請設置需要查詢的字段"
         },
         "check_link_table": {
             "zh_CN": "请选择要关联的维格表",
@@ -2562,27 +2480,28 @@
         },
         "check_network_status": {
             "zh_CN": "请检查网络连接",
-            "en_US": "Please check the network connection"
-        },
-        "check_order_status": {
-            "zh_CN": "已支付？${action}",
-            "en_US": "Paid?${action}"
+            "en_US": "Please check the network connection",
+            "zh_HK": "請檢查網絡連接"
         },
         "check_save_space": {
             "zh_CN": "你需要选择一个空间站来存放该文件",
-            "en_US": "Please select a Space to save"
+            "en_US": "Please select a Space to save",
+            "zh_HK": "你需要選擇一個空間站來存放該文件"
         },
         "check_selected_record": {
             "zh_CN": "只看已选记录",
-            "en_US": "Show selected only"
+            "en_US": "Show selected only",
+            "zh_HK": "只看已選記錄"
         },
         "check_table_link_field": {
             "zh_CN": "请选择「神奇关联」维格列",
-            "en_US": "Select a Magic Link field"
+            "en_US": "Select a Magic Link field",
+            "zh_HK": "請選擇「神奇關聯」維格列"
         },
         "checked_the_checkbox": {
             "zh_CN": "请勾选同意协议",
-            "en_US": "Please tick the checkbox to agree"
+            "en_US": "Please tick the checkbox to agree",
+            "zh_HK": "請勾選同意協議"
         },
         "chile": {
             "zh_CN": "智利",
@@ -2594,15 +2513,18 @@
         },
         "choose_a_member": {
             "zh_CN": "选择成员",
-            "en_US": "Select members"
+            "en_US": "Select members",
+            "zh_HK": "選擇成員"
         },
         "choose_a_team": {
             "zh_CN": "选择小组",
-            "en_US": "Select team"
+            "en_US": "Select team",
+            "zh_HK": "選擇小組"
         },
         "choose_datasheet_to_link": {
             "zh_CN": "请选择要关联的维格表",
-            "en_US": "Select a datasheet to link to"
+            "en_US": "Select a datasheet to link to",
+            "zh_HK": "請選擇要關聯的維格表"
         },
         "choose_pey_method": {
             "zh_CN": "选择支付方式",
@@ -2649,8 +2571,7 @@
             "en_US": "Clean cell data"
         },
         "click_here": {
-            "zh_CN": "请点击这里",
-            "en_US": "Please click here"
+            "zh_CN": "请点击这里"
         },
         "click_load_more": {
             "zh_CN": "点击加载更多",
@@ -2754,8 +2675,7 @@
             "en_US": "Close the sharing of this node"
         },
         "close_public_link_success": {
-            "zh_CN": "关闭公开链接成功",
-            "en_US": "Disable public link successfully"
+            "zh_CN": "关闭公开链接成功"
         },
         "close_share_link": {
             "zh_CN": "关闭公开链接",
@@ -2766,12 +2686,10 @@
             "en_US": "Disable sharing ${status}"
         },
         "close_view_sync_success": {
-            "zh_CN": "视图配置不再协同给其他成员",
-            "en_US": "The view configuration is no longer syncing with other members"
+            "zh_CN": "视图配置不再协同给其他成员"
         },
         "close_view_sync_tip": {
-            "zh_CN": "关闭视图配置协同",
-            "en_US": "Turn off view configuration synchronization"
+            "zh_CN": "关闭视图配置协同"
         },
         "CNY": {
             "zh_CN": "人民币",
@@ -2786,8 +2704,7 @@
             "en_US": "Scan code to join"
         },
         "collapse": {
-            "zh_CN": "收起",
-            "en_US": "Collapse"
+            "zh_CN": "收起"
         },
         "collapse_all_group": {
             "zh_CN": "收起所有分组",
@@ -2996,8 +2913,7 @@
             "en_US": "Comoros"
         },
         "company_grade_desc": {
-            "zh_CN": "适用于有企业级安全及顾问需求的组织",
-            "en_US": "Suitable for organizations with enterprise-level security and consulting needs"
+            "zh_CN": "适用于有企业级安全及顾问需求的组织"
         },
         "company_security": {
             "zh_CN": "安全设置",
@@ -3133,8 +3049,7 @@
             "en_US": "Enter the new password again"
         },
         "connect_us": {
-            "zh_CN": "联系我们",
-            "en_US": "Contact us"
+            "zh_CN": "联系我们"
         },
         "contact_data": {
             "zh_CN": "通讯录数据",
@@ -3188,10 +3103,6 @@
             "zh_CN": "内容生产",
             "en_US": "Content production"
         },
-        "continue_to_pay": {
-            "zh_CN": "继续支付",
-            "en_US": "Continue to pay"
-        },
         "convert": {
             "zh_CN": "转换",
             "en_US": "Convert"
@@ -3221,8 +3132,7 @@
             "en_US": "Copy URL"
         },
         "copy_elink_share": {
-            "zh_CN": "复制 elink 分享链接",
-            "en_US": "Copy the elink sharing link"
+            "zh_CN": "复制 elink 分享链接"
         },
         "copy_failed": {
             "zh_CN": "复制失败",
@@ -3497,8 +3407,7 @@
             "en_US": "The form is invalid because  the original view has been deleted"
         },
         "current_grade": {
-            "zh_CN": "当前等级",
-            "en_US": "Current plan"
+            "zh_CN": "当前等级"
         },
         "current_main_admin": {
             "zh_CN": "当前主管理员",
@@ -3509,8 +3418,7 @@
             "en_US": "The phone number has been bound to another email address"
         },
         "current_subscribe_plan": {
-            "zh_CN": "当前方案：${product} ${seats} 人",
-            "en_US": "Current plan: ${product} ${seats} member(s)"
+            "zh_CN": "当前方案：${product} ${seats} 人"
         },
         "current_team": {
             "zh_CN": "当前小组",
@@ -3593,8 +3501,7 @@
             "en_US": "Data error"
         },
         "data_loading": {
-            "zh_CN": "数据加载中...",
-            "en_US": "Loading..."
+            "zh_CN": "数据加载中..."
         },
         "datasheet": {
             "zh_CN": "维格表",
@@ -4058,8 +3965,7 @@
             "en_US": "DingTalk Apps"
         },
         "dingtalk_da_from": {
-            "zh_CN": "维格表官方模板中心",
-            "en_US": "Vika Official Template Center"
+            "zh_CN": "维格表官方模板中心"
         },
         "dingtalk_enterprise": {
             "zh_CN": "钉钉旗舰版",
@@ -4122,8 +4028,7 @@
             "zh_CN": "504217dbf0f44b21b8ae0fc7a2b0051b"
         },
         "dingtalk_login_fail_tips": {
-            "zh_CN": "登录失败，请联系客服",
-            "en_US": "Login failed, please contact us"
+            "zh_CN": "登录失败，请联系客服"
         },
         "dingtalk_member_contact_syncing_tips": {
             "zh_CN": "你的企业人数较多，正在同步通讯录，<br/>\n同步成功后，你将收到使用通知，届时可登录使用维格表",
@@ -4138,8 +4043,7 @@
             "en_US": "Pro Plan with DingTalk"
         },
         "dingtalk_single_record_member_mention_title": {
-            "zh_CN": "🔔成员通知",
-            "en_US": "🔔 You're mentioned in a record"
+            "zh_CN": "🔔成员通知"
         },
         "dingtalk_social_deactivate_tip": {
             "zh_CN": "如需停用应用，请前往「钉钉企业管理后台 > 工作台 > 维格表应用」进行操作",
@@ -4158,8 +4062,7 @@
             "en_US": "After manually synchronizing the address book, you need to reassign administrators, file permissions and column permissions for members and departments. Please know"
         },
         "dingtalk_tenant_not_exist_tips": {
-            "zh_CN": "企业未授权，请联系管理员",
-            "en_US": "The enterprise didn't authorized, please contact the administrator"
+            "zh_CN": "企业未授权，请联系管理员"
         },
         "direction_above": {
             "zh_CN": "上方",
@@ -4182,15 +4085,13 @@
             "en_US": "Disable"
         },
         "disabled_apply_join_space": {
-            "zh_CN": "禁止申请加入空间站",
-            "en_US": "Prohibit apply to join the space"
+            "zh_CN": "禁止申请加入空间站"
         },
         "disabled_crypto_field": {
             "zh_CN": "当前列设置了权限，配置无法生效"
         },
         "disabled_expand_link_record": {
-            "zh_CN": "没有关联表的查看权限，无法展开标签",
-            "en_US": "You don't have the permission to view the related datasheet, you can't expand the record"
+            "zh_CN": "没有关联表的查看权限，无法展开标签"
         },
         "disabled_file_shared": {
             "zh_CN": "已禁止公开链接分享",
@@ -4212,10 +4113,6 @@
         "disconnect_from_the_server": {
             "zh_CN": "与服务器断开连接",
             "en_US": "Can't connect to the server"
-        },
-        "discount_amount": {
-            "zh_CN": "折扣金额",
-            "en_US": "Discount amount"
         },
         "discount_price_deadline": {
             "zh_CN": "活动优惠价格截止日期",
@@ -4294,8 +4191,7 @@
             "en_US": "Download image"
         },
         "downloading_attachments": {
-            "zh_CN": "正在下载附件资源",
-            "en_US": "Downloading attachment resources"
+            "zh_CN": "正在下载附件资源"
         },
         "duplicate": {
             "zh_CN": "复制\n",
@@ -4340,11 +4236,6 @@
         "edit_cell_data": {
             "zh_CN": "激活单元格编辑状态",
             "en_US": "Activate cell to start editing"
-        },
-        "edit_field_name": {
-            "zh_CN": "编辑维格列名",
-            "en_US": "Edit field name",
-            "zh_HK": "編輯維格列名"
         },
         "edit_member": {
             "zh_CN": "编辑成员",
@@ -4546,11 +4437,6 @@
         "end_day": {
             "zh_CN": "天内",
             "en_US": "days"
-        },
-        "end_time": {
-            "zh_CN": "结束时间",
-            "en_US": "End time",
-            "zh_HK": "结束时间"
         },
         "enjoy": {
             "zh_CN": "期待～",
@@ -4825,8 +4711,7 @@
             "en_US": "The obtained ChangesetLength revisions are inconsistent"
         },
         "error_the_version_is_inconsistent_while_preparing_to_merge": {
-            "zh_CN": "待合并的关联表数据版本不一致",
-            "en_US": "Inconsistent data versions of related tables to be merged"
+            "zh_CN": "待合并的关联表数据版本不一致"
         },
         "error_wrong_conjunction_type": {
             "zh_CN": "错误的 conjunction 类型: ${conjunction}",
@@ -4877,8 +4762,7 @@
             "en_US": "As .xlsx format"
         },
         "exception_form_foreign_datasheet_not_exist": {
-            "zh_CN": "神奇表单映射的数表不存在",
-            "en_US": "The datasheet for form mapping does not exist"
+            "zh_CN": "神奇表单映射的数表不存在"
         },
         "exception_network_exception": {
             "zh_CN": "网络异常",
@@ -4893,8 +4777,7 @@
             "en_US": "Note: The redeem code can be used once only"
         },
         "exclusive_consultant": {
-            "zh_CN": "专属 V+ 顾问",
-            "en_US": "Exclusive V+ consultant"
+            "zh_CN": "专属 V+ 顾问"
         },
         "exits_space": {
             "zh_CN": "退出空间",
@@ -4932,29 +4815,14 @@
             "zh_CN": "该附件内容为空",
             "en_US": "expand record attachment empty\n"
         },
-        "expand_record_vision_btn_tooltip_center": {
-            "zh_CN": "居中展示",
-            "en_US": "Centered display"
-        },
-        "expand_record_vision_btn_tooltip_full_screen": {
-            "zh_CN": "全屏展示",
-            "en_US": "Full screen"
-        },
-        "expand_record_vision_btn_tooltip_side": {
-            "zh_CN": "侧边展示",
-            "en_US": "Side display"
-        },
         "expand_record_vision_setting": {
-            "zh_CN": "记录卡片样式",
-            "en_US": "Style of the record card"
+            "zh_CN": "记录展开卡片"
         },
         "expand_record_vision_setting_center": {
-            "zh_CN": "居中",
-            "en_US": "Center"
+            "zh_CN": "居中"
         },
         "expand_record_vision_setting_side": {
-            "zh_CN": "侧边",
-            "en_US": "Side"
+            "zh_CN": "侧边栏"
         },
         "expand_rest_records_by_count": {
             "zh_CN": "展开剩余的 ${record_count} 条记录",
@@ -4982,19 +4850,11 @@
         },
         "expire": {
             "zh_CN": "到期",
-            "en_US": "End"
+            "en_US": "Expire"
         },
         "expired": {
             "zh_CN": "已过期",
             "en_US": "Expired"
-        },
-        "export": {
-            "zh_CN": "正在导出…",
-            "en_US": "Exporting..."
-        },
-        "export_brand_desc": {
-            "zh_CN": "提供技术支持",
-            "en_US": "Powered by"
         },
         "export_gantt_button_tips": {
             "zh_CN": "导出为图片",
@@ -5011,10 +4871,6 @@
         "export_view_data": {
             "zh_CN": "导出视图数据",
             "en_US": "Export view data"
-        },
-        "export_view_image_warning": {
-            "zh_CN": "请点击切换到视图内再导出",
-            "en_US": "Please click to switch to the view and export again"
         },
         "extra_tip": {
             "zh_CN": "特别提示",
@@ -5503,7 +5359,7 @@
         },
         "field_permission_nums": {
             "zh_CN": "空间站的列权限使用数上限为 ${specification} 个，目前已开启 ${usage} 个，升级可获得更高用量。",
-            "en_US": "The maximum number of field permissions to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage."
+            "en_US": "空间站的列权限使用数上限为 ${specification} 个，目前已开启 ${usage} 个，升级可获得更高用量。"
         },
         "field_permission_open": {
             "zh_CN": "开启列权限",
@@ -5690,8 +5546,7 @@
             "en_US": "${limit} file limits in one space"
         },
         "file_name_with_bulk_download": {
-            "zh_CN": "${fileName} 等 ${count} 个文件.zip",
-            "en_US": "${fileName}, etc. ${count} files. Zip"
+            "zh_CN": "${fileName} 等 ${count} 个文件.zip"
         },
         "file_notification": {
             "zh_CN": "文件提示",
@@ -5799,8 +5654,7 @@
             "en_US": "Folder"
         },
         "folder_banner_desc": {
-            "zh_CN": "推荐使用宽度大于 800Px 的图片以达到更好的视觉体验",
-            "en_US": "It is recommended to use pictures with a width larger than 800 px to achieve a better visual experience."
+            "zh_CN": "推荐使用宽度大于 800Px 的图片以达到更好的视觉体验"
         },
         "folder_contains": {
             "zh_CN": "${folders} 个文件夹，${files} 个文件",
@@ -5855,15 +5709,14 @@
             "en_US": "Food and drink"
         },
         "for_each_person_every_day": {
-            "zh_CN": "每人每天",
-            "en_US": "Per person per day"
+            "zh_CN": "每人每天"
         },
         "foreign_filed": {
             "zh_CN": "关联的列",
             "en_US": "Linked field"
         },
         "form": {
-            "zh_CN": "神奇表单",
+            "zh_CN": "填表单",
             "en_US": "Form"
         },
         "form_back_workspace": {
@@ -5965,8 +5818,7 @@
             "zh_HK": "顯示序號"
         },
         "form_link_field_empty": {
-            "zh_CN": "引用的列无内容",
-            "en_US": "The referenced field has no content"
+            "zh_CN": "引用的列无内容"
         },
         "form_logo_visible": {
             "zh_CN": "显示 Logo",
@@ -6021,8 +5873,7 @@
             "en_US": "Collected data to"
         },
         "form_space_capacity_over_limit": {
-            "zh_CN": "空间站附件容量已满，无法提交带附件的表单",
-            "en_US": "The attachment capacity of space has reached the limit, and the form with attachment cannot be submitted"
+            "zh_CN": "空间站附件容量已满，无法提交带附件的表单"
         },
         "form_submit": {
             "zh_CN": "提交",
@@ -6066,7 +5917,7 @@
         },
         "form_thank_text": {
             "zh_CN": "数据提交成功，感谢你的填写",
-            "en_US": "Thank you for your submission"
+            "en_US": "Form submitted. Thank you for your submission."
         },
         "form_the_full": {
             "zh_CN": "表格全文",
@@ -6149,12 +6000,10 @@
             "en_US": "free subscription"
         },
         "free_trial": {
-            "zh_CN": "立即体验",
-            "en_US": "Start trial now"
+            "zh_CN": "立即体验"
         },
         "free_update": {
-            "zh_CN": "免费升级",
-            "en_US": "Upgrade for free"
+            "zh_CN": "免费升级"
         },
         "freeze_click_when_windows_too_narrow": {
             "zh_CN": "调整列宽",
@@ -6192,10 +6041,6 @@
             "zh_CN": "同步通讯录",
             "en_US": "Sync contacts"
         },
-        "fresh_order_status_action": {
-            "zh_CN": "刷新状态",
-            "en_US": "Refresh Status"
-        },
         "friend": {
             "zh_CN": "好友",
             "en_US": "Friend"
@@ -6213,12 +6058,10 @@
             "en_US": "Look up a field in ${name}"
         },
         "front_version_error_desc": {
-            "zh_CN": "检测到系统版本已更新，需要您刷新后才能使用",
-            "en_US": "Detected that the system version has been updated, please refresh the page to use"
+            "zh_CN": "检测到系统版本已更新，需要您刷新后才能使用"
         },
         "front_version_error_title": {
-            "zh_CN": "版本更新",
-            "en_US": "Version Updated"
+            "zh_CN": "版本更新"
         },
         "full_memory_tip": {
             "zh_CN": "容量已满，无法继续上传附件",
@@ -7256,8 +7099,7 @@
             "en_US": "Something wrong about the dates. Please expand the record to edit."
         },
         "gantt_field_config_tip": {
-            "zh_CN": "该字段未配置",
-            "en_US": "This field is not configured"
+            "zh_CN": "该字段未配置"
         },
         "gantt_guide_desc": {
             "zh_CN": "更方便的管理项目进度，调整任务时间",
@@ -7304,12 +7146,8 @@
             "en_US": "Auto schedule"
         },
         "gantt_open_auto_schedule_warning": {
-            "zh_CN": "是否要根据依赖关系对目前已有的任务进行自动编排？编排后部分后置任务的开始和结束日期会被自动修改",
-            "en_US": "When turned on, Do you want tasks with dependencies will be aligned automatically? the date of some tasks will be changed"
-        },
-        "gantt_open_auto_schedule_warning_no": {
-            "zh_CN": "不修改历史数据",
-            "en_US": "Do not modify historical data"
+            "zh_CN": "开启后将根据依赖关系对目前已有的任务进行自动编排，编排后部分后置任务的开始和结束日期会被修改",
+            "en_US": "When turned on, tasks with dependencies will be aligned automatically, the date of some tasks will be changed"
         },
         "gantt_pick_dates_tips": {
             "zh_CN": "请选择日期字段",
@@ -7331,10 +7169,6 @@
             "zh_CN": "季",
             "en_US": "Quarter"
         },
-        "gantt_set_depedency_field_description": {
-            "zh_CN": "需要一个关联本表的神奇关联字段，该字段关联前置任务",
-            "en_US": "Need a Magic Link field with current table, which is associated with the front task"
-        },
         "gantt_set_depedency_field_tips": {
             "zh_CN": "请选择依赖关系字段",
             "en_US": "Please select the dependency field"
@@ -7348,7 +7182,7 @@
             "en_US": "Help manual"
         },
         "gantt_setting_help_url": {
-            "zh_CN": "/help/manual-gantt-view/",
+            "zh_CN": "/help/manual-gantt-view/ ",
             "en_US": "/help/manual-gantt-view/ "
         },
         "gantt_start_field_name": {
@@ -7448,8 +7282,7 @@
             "en_US": "Ghana"
         },
         "ghost_node_no_access": {
-            "zh_CN": "无访问原表的权限",
-            "en_US": "No permission to access the source datasheet"
+            "zh_CN": "无访问原表的权限"
         },
         "gibraltar": {
             "zh_CN": "直布罗陀",
@@ -7509,8 +7342,7 @@
             "en_US": "Gold"
         },
         "gold_grade_desc": {
-            "zh_CN": "适用于有复杂业务流程的团队或组织",
-            "en_US": "For teams or organizations with complex business procedures"
+            "zh_CN": "适用于有复杂业务流程的团队或组织"
         },
         "golden_grade": {
             "zh_CN": "黄金级",
@@ -7538,27 +7370,23 @@
         },
         "grade_price_by_day": {
             "zh_CN": "{\"bronze\":\"免费\",\"silver\":\"1 元\",\"gold\":\"1.5 元\",\"enterprise\":\"按需定制\"}",
-            "en_US": "{\"bronze\":\"free\",\"silver\":\"1 yuan\",\"gold\":\"1.5 yuan\",\"enterprise\":\"customized on demand\"}"
+            "en_US": "{\"bronze\":\"免费\",\"silver\":\"1 元\",\"gold\":\"1.5 元\",\"enterprise\":\"按需定制\"}"
         },
         "grade_price_by_month": {
-            "zh_CN": "{\"bronze\":\"免费\",\"silver\":\"约 28元 人/月\",\"gold\":\"约 38.8元 人/月\",\"enterprise\":\"按需定制\"}",
-            "en_US": "{\"bronze\":\"free\",\"silver\":\"about 28 yuan per person/month\",\"gold\":\"about 38.8 yuan per person/month\",\"enterprise\":\"customized on demand\"}"
+            "zh_CN": "{\"bronze\":\"免费\",\"silver\":\"约 28元 人/月\",\"gold\":\"约 38.8元 人/月\",\"enterprise\":\"按需定制\"}"
         },
         "grade_price_by_month_origin": {
-            "zh_CN": "{\"bronze\":\"\",\"silver\":\"\",\"gold\":\"约 43.8元 人/月\",\"enterprise\":\"\"}",
-            "en_US": "{\"bronze\":\"\",\"silver\":\"\",\"gold\":\"About 43.8 yuan per person/month\",\"enterprise\":\"\"}"
+            "zh_CN": "{\"bronze\":\"\",\"silver\":\"\",\"gold\":\"约 43.8元 人/月\",\"enterprise\":\"\"}"
         },
         "grade_price_by_year": {
             "zh_CN": "{\"bronze\":\"免费\",\"silver\":\"约 228元 人/年\",\"gold\":\"约 388.8元 人/年\",\"enterprise\":\"按需定制\"}",
             "en_US": "{\"bronze\":\"免费\",\"silver\":\"228元 人/年\",\"gold\":\"388.8元 人/年\",\"enterprise\":\"按需定制\"}"
         },
         "grade_price_by_year_origin": {
-            "zh_CN": "{\"bronze\":\"\",\"silver\":\"约 368元 人/年\",\"gold\":\"约 538.8元 人/年\",\"enterprise\":\"\"}",
-            "en_US": "{\"bronze\":\"\",\"silver\":\"about 368 yuan person/year\",\"gold\":\"about 538.8 yuan person/year\",\"enterprise\":\"\"}"
+            "zh_CN": "{\"bronze\":\"\",\"silver\":\"约 368元 人/年\",\"gold\":\"约 538.8元 人/年\",\"enterprise\":\"\"}"
         },
         "grades_restriction_prompt": {
-            "zh_CN": "你的功能使用量已经超出上限，升级可获得更多功能用量。",
-            "en_US": "Your feature usage has exceeded the upper limit, and you can upgrade to get higher usage."
+            "zh_CN": "你的功能使用量已经超出上限，升级可获得更多功能用量。"
         },
         "greece": {
             "zh_CN": "希腊",
@@ -7601,8 +7429,7 @@
             "en_US": "Group by"
         },
         "group_field_error_tips": {
-            "zh_CN": "分组条件出错，请重新设置",
-            "en_US": "Grouping condition error, please reset"
+            "zh_CN": "分组条件出错，请重新设置"
         },
         "group_fields": {
             "zh_CN": "按「${field_name}」分组",
@@ -7795,9 +7622,6 @@
             "zh_CN": "隐藏列",
             "en_US": "Hide fields"
         },
-        "hide_fields_not_go": {
-            "en_US": "Can't go to the hidden field"
-        },
         "hide_graphic_field_tips_in_gantt": {
             "zh_CN": "点击即可自定义右侧图形区任务条上的显示字段",
             "en_US": "Click to adjust the display fields in the task item"
@@ -7887,20 +7711,16 @@
             "en_US": "Custom icon"
         },
         "icp1": {
-            "zh_CN": "粤ICP备 19106018号",
-            "en_US": "粤ICP备 19106018号"
+            "zh_CN": "粤ICP备 19106018号"
         },
         "icp1_mobile": {
-            "zh_CN": "粤ICP备: 19106018号",
-            "en_US": "粤ICP备: 19106018号"
+            "zh_CN": "粤ICP备: 19106018号"
         },
         "icp2": {
-            "zh_CN": "公安备案 44030402004286",
-            "en_US": "公安备案 44030402004286"
+            "zh_CN": "公安备案 44030402004286"
         },
         "icp2_mobile": {
-            "zh_CN": "公安备案: 44030402004286",
-            "en_US": "公安备案: 44030402004286"
+            "zh_CN": "公安备案: 44030402004286"
         },
         "identification": {
             "zh_CN": "身份验证",
@@ -8134,7 +7954,7 @@
         },
         "integration_app_wecom_config_item1_title": {
             "zh_CN": "企业专属域名",
-            "en_US": "Enterprise exclusive domain"
+            "en_US": "Enterprise exclusive domain name"
         },
         "integration_app_wecom_config_item2_title": {
             "zh_CN": "企业微信应用对接信息",
@@ -8237,20 +8057,16 @@
             "en_US": "wecom integration"
         },
         "integration_wecom_disable_button": {
-            "zh_CN": "确认停用",
-            "en_US": "Confirm"
+            "zh_CN": "确认停用"
         },
         "integration_wecom_disable_contact": {
-            "zh_CN": "遇到问题联系客服",
-            "en_US": "Contact us if you need help"
+            "zh_CN": "遇到问题联系客服"
         },
         "integration_wecom_disable_tips_message": {
-            "zh_CN": "<ul>\n          <li>\n            因企业微信服务商运营规则变更，维格表的集成方式需要进行调整，<i>因此停用后短时间内将无法再次采用自建应用模式集成企业微信</i>。不便之处，敬请谅解\n          </li>\n          <li>\n            你可以采用“企业微信第三方应用”模式快速创建一个已集成的新空间站 <a href=\"https://vika.cn/help/integration-wecom/\">点击查看第三方应用简介</a>\n          </li>\n</ul>",
-            "en_US": "<ul>\n         <li>\n          Due to the change in the operation rules for sevice provider of WeCom, the integration mode of the vikadata table needs to be adjusted. <i> therefore, it will be impossible to integrate WeCom with self-built application mode shortly after you disable the application. </i>. We apologize for the inconvenience.\n        </li>\n        <li>\n         You can use the \"WeCom third-party application\"  to quickly create an integrated new space <a href= \"https://vika.cn/help/integration-wecom/\"> click to view the introduction of third-party application </a>\n        </li>\n</ul>"
+            "zh_CN": "<ul>\n          <li>\n            因企业微信服务商运营规则变更，维格表的集成方式需要进行调整，<i>因此停用后短时间内将无法再次采用自建应用模式集成企业微信</i>。不便之处，敬请谅解\n          </li>\n          <li>\n            你可以采用“企业微信第三方应用”模式快速创建一个已集成的新空间站 <a href=\"https://vika.cn/help/integration-wecom/\">点击查看第三方应用简介</a>\n          </li>\n</ul>"
         },
         "integration_wecom_disable_tips_title": {
-            "zh_CN": "停用须知",
-            "en_US": "Notice"
+            "zh_CN": "停用须知"
         },
         "integration_yozo_office": {
             "zh_CN": "你正在体验高级功能：office 文件预览，升级可解锁该功能。",
@@ -8468,17 +8284,8 @@
             "zh_CN": "发送邀请",
             "en_US": "Send invitation"
         },
-        "invite_qr_code_download": {
-            "zh_CN": "下载二维码",
-            "en_US": "Download this QR code"
-        },
-        "invite_qr_code_introduction": {
-            "zh_CN": "扫一扫，快速加入团队",
-            "en_US": "Scan code to join the team"
-        },
         "invite_reward": {
-            "zh_CN": "邀请有礼",
-            "en_US": "Invite to get rewarded"
+            "zh_CN": "邀请有礼"
         },
         "invite_success": {
             "zh_CN": "邀请成功",
@@ -8718,8 +8525,7 @@
             "en_US": "Learn more"
         },
         "known": {
-            "zh_CN": "知道啦",
-            "en_US": "I knew"
+            "zh_CN": "知道啦"
         },
         "kuwait": {
             "zh_CN": "科威特",
@@ -9030,28 +8836,22 @@
             "en_US": "This Space's contacts are managed by the Lark integration. Please go to the Lark admin backend to edit contacts. "
         },
         "lark_single_record_member_mention": {
-            "zh_CN": "**记录: **{recordTitle}\n**提及人: **{memberName}\n**维格表: **{nodeName}",
-            "en_US": "**Record: **{recordTitle}\n**Mentioned by: **{memberName}\n**Datasheet: **{nodeName}"
+            "zh_CN": "**记录: **{recordTitle}\n**提及人: **{memberName}\n**维格表: **{nodeName}"
         },
         "lark_single_record_member_mention_title": {
-            "zh_CN": "**有人在记录中提及你**",
-            "en_US": "** You're mentioned in a record**"
+            "zh_CN": "**有人在记录中提及你**"
         },
         "lark_subscribed_record_cell_updated": {
-            "zh_CN": "**记录:** {recordTitle}\n**原内容:** {oldDisplayValue}\n**修改后的内容:** {newDisplayValue}\n**修改人:** {memberName}\n**维格表:** {nodeName}",
-            "en_US": "**Record:** {recordTitle}\n**Before:** {oldDisplayValue}\n**After:** {newDisplayValue}\n**Member:** {memberName}\n**Datasheet:** {nodeName}"
+            "zh_CN": "**记录:** {recordTitle}\n**原内容:** {oldDisplayValue}\n**修改后的内容:** {newDisplayValue}\n**修改人:** {memberName}\n**维格表:** {nodeName}"
         },
         "lark_subscribed_record_cell_updated_title": {
-            "zh_CN": "**关注的记录被修改**",
-            "en_US": "**Someone has changed the record you are watching in**"
+            "zh_CN": "**关注的记录被修改**"
         },
         "lark_subscribed_record_commented": {
-            "zh_CN": "**记录:** {recordTitle}\n**评论的内容:** {content}\n**评论人:** {memberName}\n**维格表:** {nodeName}",
-            "en_US": "**Record:** {recordTitle}\n**Comment:** {content}\n**Member:** {memberName}\n**Datasheet:** {nodeName}"
+            "zh_CN": "**记录:** {recordTitle}\n**评论的内容:** {content}\n**评论人:** {memberName}\n**维格表:** {nodeName}"
         },
         "lark_subscribed_record_commented_title": {
-            "zh_CN": "**关注的记录有一条新评论**",
-            "en_US": "**The record you are watching received a new comment**"
+            "zh_CN": "**关注的记录有一条新评论**"
         },
         "lark_version_enterprise": {
             "zh_CN": "飞书企业版",
@@ -9078,8 +8878,7 @@
             "en_US": "Back"
         },
         "last_update_time": {
-            "zh_CN": "最近修改时间",
-            "en_US": "Last modified time"
+            "zh_CN": "最近修改时间"
         },
         "latvia": {
             "zh_CN": "拉脱维亚",
@@ -9235,8 +9034,8 @@
             "en_US": "Local Business"
         },
         "local_data_conflict": {
-            "zh_CN": "资源在初始化的过程中出现数据错误，请刷新重试",
-            "en_US": "Resources in the process of initialization of data errors, please refresh and retry"
+            "zh_CN": "资源在初始化的过程中出现数据错误，请刷新重试，如有疑问请扫描右方的二维码添加客服，让我们来帮助你解决",
+            "en_US": "Resources in the process of initialization of data errors, please refresh and retry, if you have questions, please scan the QR code on the right to add customer service, let us help you."
         },
         "local_drag_upload": {
             "zh_CN": "本地上传",
@@ -9366,8 +9165,7 @@
             "en_US": "Since your account is managed by more than one person (greater than or equal to 2 people), please change the main administrator to someone else on the \"Station Settings\" page before deleting."
         },
         "long_time_no_operate": {
-            "zh_CN": "该维格表已经很久未操作，请刷新页面保持数据为最新~",
-            "en_US": "The datasheet has not been operated for a long time, please refresh the page to keep the data up-to-date~"
+            "zh_CN": "该维格表已经很久未操作，请刷新页面保持数据为最新~"
         },
         "long_time_not_editor": {
             "zh_CN": "数据加载中...",
@@ -9666,8 +9464,7 @@
             "en_US": "My Spaces"
         },
         "manage_company_security": {
-            "zh_CN": "权限与安全页设置",
-            "en_US": "Permissions and Security Page Settings"
+            "zh_CN": "权限与安全页设置"
         },
         "manage_members": {
             "zh_CN": "成员设置",
@@ -9694,38 +9491,12 @@
             "en_US": "Save"
         },
         "manual_save_view_error": {
-            "zh_CN": "哎呀，数据同步出了点问题，麻烦刷新一下",
-            "en_US": "Oops, there's something wrong with the data synchronization, please refresh it"
+            "zh_CN": "视图的协同状态发生变更时出现错误，请刷新重试，如有疑问请扫描右方的二维码添加客服，让我们来帮助你解决",
+            "en_US": "There was an error when the synoptic state of the view changed, please refresh and try again, if you have any questions, please contact us by scanning the QR code on the right and let us help you solve it"
         },
         "manufacturing": {
             "zh_CN": "制造业",
             "en_US": "Manufacturing"
-        },
-        "map_select_data": {
-            "zh_CN": "选择一个视图来读取地理位置",
-            "en_US": "Select a view as data source"
-        },
-        "map_select_label_field": {
-            "zh_CN": "选择一个字段作为地址名称"
-        },
-        "map_select_location_field": {
-            "zh_CN": "选择一个包含地址或者经纬度的字段"
-        },
-        "map_select_location_type": {
-            "zh_CN": "切换地址的数据类型"
-        },
-        "map_select_location_type_dd": {
-            "zh_CN": "经纬度坐标"
-        },
-        "map_select_location_type_text": {
-            "zh_CN": "详细地址"
-        },
-        "map_select_location_type_url": {
-            "zh_CN": "数据类型说明"
-        },
-        "map_setting": {
-            "zh_CN": "地图配置",
-            "en_US": "Map settings"
         },
         "mark_all_as_processed": {
             "zh_CN": "一键处理",
@@ -9860,20 +9631,20 @@
             "en_US": "Mauritius"
         },
         "max_admin_nums": {
-            "zh_CN": "空间站的子管理数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-            "en_US": "The maximum number of sub-admin in space is ${specification}. So far, there are ${usage} admins, and you can upgrade to get higher usage."
+            "zh_CN": "空间站的子管理数上线为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+            "en_US": "空间站的子管理数上线为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。"
         },
         "max_api_call": {
             "zh_CN": "空间站的API用量已超出上限（ ${usage}/${specification} ），升级可获得更高用量。",
-            "en_US": "The API usage of this space has reached the limit（ ${usage}/${specification} ）， and you can upgrade to get higher usage."
+            "en_US": "空间站的API用量已超出上限（ ${usage}/${specification} ），升级可获得更高用量。"
         },
         "max_calendar_views_in_space": {
             "zh_CN": "空间站的日历视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-            "en_US": "The maximum number of calendar views to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage."
+            "en_US": "空间站的日历视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。"
         },
         "max_capacity_size_in_bytes": {
             "zh_CN": "空间站的附件容量上限为 ${specification} ，当前已上传 ${usage} ，升级可获得更高用量。",
-            "en_US": "The maximum attachment capacity to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage."
+            "en_US": "空间站的附件容量上限为 ${specification} ，当前已上传 ${usage} ，升级可获得更高用量。"
         },
         "max_consumption": {
             "zh_CN": "用量额度：${count} 次/月",
@@ -9881,19 +9652,19 @@
         },
         "max_form_views_in_space": {
             "zh_CN": "空间站的神奇表单数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-            "en_US": "The maximum number of forms to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage."
+            "en_US": "空间站的神奇表单数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。"
         },
         "max_gallery_views_in_space": {
             "zh_CN": "空间站的相册视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-            "en_US": "The maximum number of Gallery views to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage."
+            "en_US": "空间站的相册视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。"
         },
         "max_gantt_views_in_space": {
             "zh_CN": "空间站的甘特视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-            "en_US": "The maximum number of Gantt views to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage."
+            "en_US": "空间站的甘特视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。"
         },
         "max_kanban_views_in_space": {
             "zh_CN": "空间站的看板视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-            "en_US": "The maximum number of Kanban views to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage."
+            "en_US": "空间站的看板视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。"
         },
         "max_records": {
             "zh_CN": "记录数上限：${count}条",
@@ -9905,27 +9676,27 @@
         },
         "max_remain_timemachine_days": {
             "zh_CN": "空间站仅显示 ${specification}  天内的记录动态，升级后可查看更久的动态。",
-            "en_US": "The space only shows the record activity within ${specification} days, upgrade to view more record activity."
+            "en_US": "空间站仅显示 ${specification}  天内的记录动态，升级后可查看更久的动态。"
         },
         "max_remain_trash_days": {
             "zh_CN": "本空间站支持查看 ${specification}  天内的历史文件，升级后可查看更久的历史文件。",
-            "en_US": "This space supports viewing historical files within ${specification} days, upgrade to view more historical files "
+            "en_US": "本空间站支持查看 ${specification}  天内的历史文件，升级后可查看更久的历史文件。"
         },
         "max_rows_in_space": {
             "zh_CN": "空间站记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。",
-            "en_US": "The maximum number of records in space is ${specification}. So far, ${usage} records have been created, and you can upgrade to get higher usage."
+            "en_US": "空间站记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。"
         },
         "max_rows_per_sheet": {
             "zh_CN": "单张维格表记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。",
-            "en_US": "The maximum number of records in one datasheet is ${specification}. So far, ${usage} records have been created, and you can upgrade to get higher usage."
+            "en_US": "单张维格表记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。"
         },
         "max_seats": {
             "zh_CN": "空间站的席位数上限为 ${specification} 个，当前已邀请 ${usage} 个，升级可获得更高用量。",
-            "en_US": "The maximum number of seats in the space is ${specification}, and ${usage} are currently invited, and you can upgrade to get higher usage."
+            "en_US": "空间站的席位数上限为 ${specification} 个，当前已邀请 ${usage} 个，升级可获得更高用量。"
         },
         "max_sheet_nums": {
             "zh_CN": "文件节点数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-            "en_US": "The maximum number of file nodes to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage."
+            "en_US": "文件节点数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。"
         },
         "max_value": {
             "zh_CN": "最大值",
@@ -10008,8 +9779,7 @@
             "en_US": "Member Number"
         },
         "member_per_space": {
-            "zh_CN": "空间站成员",
-            "en_US": "Space members"
+            "zh_CN": "空间站成员"
         },
         "member_preview_list": {
             "zh_CN": "预览成员列表",
@@ -10133,8 +9903,7 @@
             "en_US": "Failed to get the sharing settings of the file"
         },
         "message_hidden_field_desc": {
-            "zh_CN": "已取消显示列描述",
-            "en_US": "Field descriptions have been hidden"
+            "zh_CN": "已取消显示列描述"
         },
         "message_img_size_limit": {
             "zh_CN": "图片请勿超过${size}",
@@ -10173,8 +9942,7 @@
             "en_US": "Password set successfully"
         },
         "message_shown_field_desc": {
-            "zh_CN": "已显示列描述",
-            "en_US": "Field descriptions have been shown"
+            "zh_CN": "已显示列描述"
         },
         "message_upload_img_failed": {
             "zh_CN": "上传图片失败",
@@ -10205,8 +9973,7 @@
             "en_US": "Mirror"
         },
         "mirror_editor_label": {
-            "zh_CN": "只可增删记录，无法编辑列",
-            "en_US": "You can only add or delete records, and you can't edit fields"
+            "zh_CN": "只可增删记录，无法编辑列"
         },
         "mirror_from": {
             "zh_CN": "镜像来自：",
@@ -10217,12 +9984,10 @@
             "en_US": "/help/manual-mirror/"
         },
         "mirror_manager_label": {
-            "zh_CN": "可以删除镜像或设置权限",
-            "en_US": "You can delete mirrors or set permissions"
+            "zh_CN": "可以删除镜像或设置权限"
         },
         "mirror_reader_label": {
-            "zh_CN": "只可查看镜像，无法进行编辑",
-            "en_US": "You can only view the mirror, not edit it"
+            "zh_CN": "只可查看镜像，无法进行编辑"
         },
         "mirror_resource_dst_been_deleted": {
             "zh_CN": "生成当前镜像的原表已被删除，无法继续访问",
@@ -10273,8 +10038,7 @@
             "en_US": "Normal operation box"
         },
         "modal_privacy_ok_btn_text": {
-            "zh_CN": "我已阅读并同意",
-            "en_US": "I have read and agree"
+            "zh_CN": "我已阅读并同意"
         },
         "modal_res_title": {
             "zh_CN": "结果提示框",
@@ -10331,10 +10095,6 @@
         "modal_verify_admin_phone": {
             "zh_CN": "验证主管理员手机号",
             "en_US": "Verify the admin's phone number"
-        },
-        "modify": {
-            "zh_CN": "修改",
-            "en_US": "Modify"
         },
         "modify_field": {
             "zh_CN": "修改列名称/列类型",
@@ -10425,8 +10185,7 @@
             "en_US": "Mozambique"
         },
         "multilingual_mail": {
-            "zh_CN": "中英文邮件",
-            "en_US": "Chinese and English mail"
+            "zh_CN": "中英文邮件"
         },
         "must_one_date": {
             "zh_CN": "至少选择一个日期字段",
@@ -10481,8 +10240,7 @@
             "en_US": "Workbench"
         },
         "navigation_activity_tip": {
-            "zh_CN": "免费升级",
-            "en_US": "Upgrade for free"
+            "zh_CN": "免费升级"
         },
         "nepal": {
             "zh_CN": "尼泊尔",
@@ -10595,7 +10353,8 @@
         },
         "next_step": {
             "zh_CN": "下一步",
-            "en_US": "Next"
+            "en_US": "Next",
+            "终端": "APP"
         },
         "nicaragua": {
             "zh_CN": "尼加拉瓜",
@@ -10714,8 +10473,7 @@
             "en_US": "You can't edit this record outside the Space"
         },
         "no_more": {
-            "zh_CN": "已经到底",
-            "en_US": "End"
+            "zh_CN": "已经到底"
         },
         "no_next_record_tips": {
             "zh_CN": "没有下一条记录",
@@ -10742,8 +10500,7 @@
             "en_US": "No permission"
         },
         "no_permission_access": {
-            "zh_CN": "无权限访问",
-            "en_US": "No permission to access"
+            "zh_CN": "无权限访问"
         },
         "no_permission_add_option": {
             "zh_CN": "没有权限添加新的选项",
@@ -10762,8 +10519,7 @@
             "en_US": "No permission to create widget"
         },
         "no_permission_edit_value": {
-            "zh_CN": "无权限修改数据",
-            "en_US": "No permission to modify the data"
+            "zh_CN": "无权限修改数据"
         },
         "no_permission_img_url": {
             "zh_CN": "/space/2022/04/07/c5b54944e5574609bef058b93da7473e?attname=Chinese.png",
@@ -10774,8 +10530,7 @@
             "en_US": "No permission to search datasheet"
         },
         "no_permission_select_view": {
-            "zh_CN": "没有关联表的可查看权限，不可以指定视图",
-            "en_US": "You don't have the permission to view the related datasheet, you can't specify a view"
+            "zh_CN": "没有关联表的可查看权限，不可以指定视图"
         },
         "no_permission_setting": {
             "zh_CN": "当前无权限进行此操作",
@@ -10915,8 +10670,7 @@
             "en_US": "Norway"
         },
         "not_available": {
-            "zh_CN": "暂无",
-            "en_US": "None"
+            "zh_CN": "暂无"
         },
         "not_equal": {
             "zh_CN": "不等于",
@@ -10955,8 +10709,7 @@
             "en_US": "After turning this on, user(s) outside the Space can view content you shared via the public links."
         },
         "not_support_yet": {
-            "zh_CN": "暂不支持",
-            "en_US": "Not supported for this moment"
+            "zh_CN": "暂不支持"
         },
         "notes_delete_the_view_linked_to_form": {
             "zh_CN": "当前视图下生成了神奇表单，继续删除将会使对应的神奇表单失效，确定要删除视图「${view_name}」吗？",
@@ -11125,16 +10878,13 @@
             "en_US": "Official gift"
         },
         "official_invitation_code": {
-            "zh_CN": "官方邀请码",
-            "en_US": "Official Invitation Code"
+            "zh_CN": "官方邀请码"
         },
         "official_invitation_code_desc1": {
-            "zh_CN": "微信扫码并关注下方公众号，获取${text}",
-            "en_US": "Scan the code on WeChat and follow the official account below to get ${text}"
+            "zh_CN": "微信扫码并关注下方公众号，获取${text}"
         },
         "official_invitation_code_desc2": {
-            "zh_CN": "使用后即可获得${text}奖励",
-            "en_US": "After use, you can get ${text} reward"
+            "zh_CN": "使用后即可获得${text}奖励"
         },
         "official_invitation_reward": {
             "zh_CN": "官方邀请奖励",
@@ -11145,8 +10895,7 @@
             "en_US": "To get the official invitation code: reply \"vika\" to the official WeChat account of \"vikadata\"."
         },
         "official_mode": {
-            "zh_CN": "方式二：填写官方邀请码",
-            "en_US": "Method 2: the official invitation code"
+            "zh_CN": "方式二：填写官方邀请码"
         },
         "official_name": {
             "zh_CN": "vika维格表",
@@ -11183,25 +10932,15 @@
             "zh_CN": "阿曼",
             "en_US": "Oman"
         },
-        "one_month": {
-            "zh_CN": "1 个月",
-            "en_US": "1 month"
-        },
-        "one_year": {
-            "zh_CN": "1 年",
-            "en_US": "1 year"
-        },
         "online_custome_service": {
-            "zh_CN": "在线客服",
-            "en_US": "Online customer service"
+            "zh_CN": "在线客服"
         },
         "online_edition": {
             "zh_CN": "在线版",
             "en_US": "Online"
         },
         "online_video_training": {
-            "zh_CN": "在线视频培训",
-            "en_US": "Online video training"
+            "zh_CN": "在线视频培训"
         },
         "open": {
             "zh_CN": "开启",
@@ -11240,12 +10979,10 @@
             "en_US": "Open shortcuts"
         },
         "open_node_permission": {
-            "zh_CN": "开启节点权限",
-            "en_US": "Enable node permissions"
+            "zh_CN": "开启节点权限"
         },
         "open_node_permission_content": {
-            "zh_CN": "开启列权限需要先指定当前节点的权限",
-            "en_US": "To enable field permissions, you need to specify the permissions of the current node first."
+            "zh_CN": "开启列权限需要先指定当前节点的权限"
         },
         "open_node_permission_label": {
             "zh_CN": "指定成员或小组",
@@ -11515,8 +11252,7 @@
             "en_US": "The operation cannot be executed"
         },
         "org_chart_layout_horizontal": {
-            "zh_CN": "横向布局",
-            "en_US": "Horizontal layout"
+            "zh_CN": "横向布局"
         },
         "org_chart_must_have_a_link_field": {
             "zh_CN": "选择一个关联本表的神奇关联列",
@@ -11579,12 +11315,12 @@
             "en_US": "Organization & Role"
         },
         "orgin_plan_discount": {
-            "zh_CN": "原方案抵扣",
+            "zh_CN": "原方案折扣",
             "en_US": "Original Program Discounts"
         },
         "origin_price": {
             "zh_CN": "原价",
-            "en_US": "price"
+            "en_US": "Original price"
         },
         "other_equitys": {
             "zh_CN": "其他权益",
@@ -11595,8 +11331,7 @@
             "en_US": "Depending on the subscription level of the space station there will be different restrictions on other benefits"
         },
         "other_invitation_rule": {
-            "zh_CN": "其他方式邀请成员",
-            "en_US": "Other ways to invite members"
+            "zh_CN": "其他方式邀请成员"
         },
         "other_login": {
             "zh_CN": "其他登录",
@@ -11757,24 +11492,14 @@
             "en_US": "Pay order"
         },
         "payment_record": {
-            "zh_CN": "支付记录",
-            "en_US": "Payment record"
-        },
-        "payment_reminder": {
-            "zh_CN": "支付提醒",
-            "en_US": "Payment Reminder"
-        },
-        "payment_reminder_content": {
-            "zh_CN": "你所选择的新方案抵扣金额大于待支付金额，建议你选择更长时长的新方案。如果你确认这样做，超出的金额将不能退还。如有疑问请 ${action}",
-            "en_US": "The new plan you have selected is more deductible than the amount to be paid. It is recommended that you choose the new plan with a longer duration. If you confirm to do so, the excess amount will not be refundable. ${action} if in doubt"
+            "zh_CN": "支付记录"
         },
         "people": {
             "zh_CN": "人",
             "en_US": " member(s)"
         },
         "per_person_per_year": {
-            "zh_CN": "每人每年",
-            "en_US": "Per person per year"
+            "zh_CN": "每人每年"
         },
         "percent_bar_chart": {
             "zh_CN": "百分比条形图",
@@ -11945,12 +11670,10 @@
             "en_US": "Account information"
         },
         "personal_invitation_code_desc1": {
-            "zh_CN": "进入空间站并点击左下方头像可以看到${text}",
-            "en_US": "You can see ${text} by entering the space and clicking on the avatar at the bottom left"
+            "zh_CN": "进入空间站并点击左下方头像可以看到${text}"
         },
         "personal_invitation_code_desc2": {
-            "zh_CN": "使用即可与好友${text}奖励",
-            "en_US": "Use to get ${text} reward with friends"
+            "zh_CN": "使用即可与好友${text}奖励"
         },
         "personal_invitation_code_desc2_text": {
             "zh_CN": "各获得 1000 V 币",
@@ -11965,8 +11688,7 @@
             "en_US": "Invite code"
         },
         "personal_mode": {
-            "zh_CN": "方式一：好友的个人邀请码",
-            "en_US": "Method 1: the personal invitation code of your friends"
+            "zh_CN": "方式一：好友的个人邀请码"
         },
         "personal_nickname": {
             "zh_CN": "个人昵称",
@@ -12153,11 +11875,11 @@
         },
         "plan_model_benefits_gold": {
             "zh_CN": "文件节点数量支持1000个;\n单维格表行数支持20000行;\nAPI请求次数高达50万次/月;\n权限设置数量支持200个;\n历史记录和历史文件回溯6个月;\n空间站附件容量大幅提升;\n高级视图和神奇表单数量大幅提升;",
-            "en_US": "1,000 node files per space；\n20,000 records per datasheet;\n500  thousand api call per month;\n200 node files permission per space;\n6 months history to go back;\nattachment capacity increased;\nadvanced views and magic forms increased;"
+            "en_US": "文件数量支持1000个;\n单维格表行数支持20000行;\nAPI请求次数高达50万次/月;\n权限设置数量支持200个;\n历史记录和历史文件回溯6个月;\n空间站附件容量大幅提升;\n高级视图和神奇表单数量大幅提升;"
         },
         "plan_model_benefits_sliver": {
             "zh_CN": "文件节点数量支持300个;\n单维格表行数支持10000行;\nAPI请求次数高达10万次/月;\n彩虹标签色系支持50个;\n空间站附件容量大幅提升;\n高级视图和神奇表单数量大幅提升;",
-            "en_US": "300 node files per space；\n10,000 records per datasheet;\n100  thousand api call per month;\n6 months history to go back;\nattachment capacity increased;\nadvanced views and magic forms increased;"
+            "en_US": "文件数量支持300个;\n单维格表行数支持10000行;\nAPI请求次数高达10万次/月;\n彩虹标签色系支持50个;\n空间站附件容量大幅提升;\n高级视图和神奇表单数量大幅提升;"
         },
         "plan_model_benefits_title": {
             "zh_CN": "${space_level}特权",
@@ -12192,8 +11914,7 @@
             "en_US": "Space members"
         },
         "planet_dwellers": {
-            "zh_CN": "星球居民",
-            "en_US": "Planet dwellers"
+            "zh_CN": "星球居民"
         },
         "platform_synchronization": {
             "zh_CN": "全平台同步",
@@ -12220,8 +11941,7 @@
             "en_US": "{\n \"element\": \".style_linkWrapper__12Kgi  .style_urlWrapper__2IVlG button\", \n\"placement\": \"bottomRight\",\n \"title\": \"Copy and share\",\n\"description\": \"Click to copy the link and share it with members\", \"children\":\"\" \n} "
         },
         "player_step_ui_config_100": {
-            "zh_CN": "{\n  \"element\": \"#VIKABY_UPDATE_LOGS_HISTORY\",\n  \"shadowDirection\":\"inset\"\n}",
-            "en_US": "{\n  \"element\": \"#VIKABY_UPDATE_LOGS_HISTORY\",\n  \"shadowDirection\":\"inset\"\n}"
+            "zh_CN": "{\n  \"element\": \"#VIKABY_UPDATE_LOGS_HISTORY\",\n  \"shadowDirection\":\"inset\"\n}"
         },
         "player_step_ui_config_101": {
             "zh_CN": "{\n  \"element\": \"#VIKABY_UPDATE_LOGS_HISTORY\",\n  \"offsetY\": 23,\n  \"placement\": \"leftCenter\",\n  \"title\": \"智能引导\",\n  \"description\": \"来不及查看的本期更新和历史更新记录，都可以在这里找回哦\"\n}",
@@ -12235,16 +11955,14 @@
             "en_US": "{\n \"element\": \"#NODE_CONTEXT_MENU_ID .react-contexify__item:last-of-type\", \n\"placement\": \"rightCenter\",\n \"title\": \"How to use a datasheet\", \n\"description\": \"The templates center offers more than 1000 business automation solutions and is free for download.\", \"children\":\"\" \n}"
         },
         "player_step_ui_config_106": {
-            "zh_CN": "{\n \"element\": \"#NODE_CONTEXT_MENU_ID > .react-contexify__item:last-of-type .react-contexify__item__content > div:nth-of-type(1)\",\n\"shadowDirection\":\"inset\"\n} ",
-            "en_US": "{\n \"element\": \"#NODE_CONTEXT_MENU_ID > .react-contexify__item:last-of-type .react-contexify__item__content > div:nth-of-type(1)\",\n\"shadowDirection\":\"inset\"\n} "
+            "zh_CN": "{\n \"element\": \"#NODE_CONTEXT_MENU_ID > .react-contexify__item:last-of-type .react-contexify__item__content > div:nth-of-type(1)\",\n\"shadowDirection\":\"inset\"\n} "
         },
         "player_step_ui_config_107": {
             "zh_CN": "{ \n\"element\": \"#WORKBENCH_SIDE_ADD_NODE_BTN\", \"placement\": \"bottom\", \"title\": \"智能引导\", \"description\": \"还没想好怎么搭建业务场景？那就先从模板开始吧～\", \"children\":\"\" }",
             "en_US": "{\n \"element\": \"#WORKBENCH_SIDE_ADD_NODE_BTN\", \n\"placement\": \"bottom\",\n \"title\": \"How to use a datasheet\", \n\"description\": \"Still trying to figure out your business scenarios? Give these templates a shot~\", \"children\":\"\" \n}"
         },
         "player_step_ui_config_108": {
-            "zh_CN": "{\n \"element\": \"#WORKBENCH_SIDE_ADD_NODE_BTN\"\n}",
-            "en_US": "{\n \"element\": \"#WORKBENCH_SIDE_ADD_NODE_BTN\"\n}"
+            "zh_CN": "{\n \"element\": \"#WORKBENCH_SIDE_ADD_NODE_BTN\"\n}"
         },
         "player_step_ui_config_109": {
             "zh_CN": "{\n  \"headerImg\": \"https://s1.vika.cn/space/2022/02/21/d9519262565a4a96a7b838ad0bd44522\",\n  \"readMoreUrl\": \"https://bbs.vika.cn/article/127\",\n  \"children\": \"<ul style=\\\"margin-top: 10px;\\\"><li>数据录入有窍门，日期、数字按序列自动填充，又快又稳</li><li>文件信息用处多，查看创建人和创建时间，避免信息断层</li><li>数据关联一步到位，基于现有架构层级轻松创建记录卡片</li><li>协作空间按需采购，管理员可自主完成升级，避免创作受限</li><li>打通企业微信，无需复杂配置，扫码集成后将自动同步通讯录</li></ul>\"\n}"
@@ -12265,20 +11983,17 @@
             "en_US": "{\n \"element\": \".styles_controls__3Uc0- > div\",\n\"placement\": \"left\",\n \"title\": \"Expand/hide record\", \n\"description\": \"Pending records are stored here. You can expand or hide them by clicking on them\", \n\"children\": \"\"\n}"
         },
         "player_step_ui_config_125": {
-            "zh_CN": "{\n \"element\": \".styles_controls__3Uc0- > div\"\n}",
-            "en_US": "{\n \"element\": \".styles_controls__3Uc0- > div\"\n}"
+            "zh_CN": "{\n \"element\": \".styles_controls__3Uc0- > div\"\n}"
         },
         "player_step_ui_config_126": {
             "zh_CN": "{\n \"element\": \"#DATASHEET_ORG_CHART_RECORD_LIST\",\n\"placement\": \"left\",\n \"title\": \"创建卡片\", \n\"description\": \"选择一条记录，拖动至左侧图形区\",\n\"offsetY\": 144\n}",
             "en_US": "{\n \"element\": \"#DATASHEET_ORG_CHART_RECORD_LIST\",\n\"placement\": \"left\",\n \"title\": \"Create a card\", \n\"description\": \"Choose a record, and drag it to the graphic area on the left\",\n\"offsetY\": 144\n}"
         },
         "player_step_ui_config_127": {
-            "zh_CN": "{\n \"element\": \"#DATASHEET_ORG_CHART_RECORD_LIST\"\n}",
-            "en_US": "{\n \"element\": \"#DATASHEET_ORG_CHART_RECORD_LIST\"\n}"
+            "zh_CN": "{\n \"element\": \"#DATASHEET_ORG_CHART_RECORD_LIST\"\n}"
         },
         "player_step_ui_config_128": {
-            "zh_CN": "{\n\"element\": \".react-flow__node\"\n}",
-            "en_US": "{\n\"element\": \".react-flow__node\"\n}"
+            "zh_CN": "{\n\"element\": \".react-flow__node\"\n}"
         },
         "player_step_ui_config_129": {
             "zh_CN": "{\n \"element\": \".react-flow__node\",\n\"placement\": \"bottom\",\n \"title\": \"建立卡片关系\", \n\"description\": \"再选择一条记录并拖动至卡片中，建立记录的层级关系\", \n\"children\": \"\"\n}",
@@ -12315,8 +12030,7 @@
             "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/04/27/6a2167ddd8074078a6b13f04fa6a3f1c?attname=v0.12.7Update_cover%402x.png\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/158\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul>\\n<li>甘特图支持设置工作日，日期和星期可同时显示</li>\\n<li>转化分析好帮手，漏斗图小程序上架</li>\\n<li>统计栏数据支持复制，右键即可获取数据</li>\\n<li>优化新增行的操作体验，防止误增空白行</li>\\n<li>日期字段支持指定接收提醒的成员或小组</li>\\n<li>维格表已上架苹果App Store 和各大安卓应用商店</li>\\n</ul>\"\n}"
         },
         "player_step_ui_config_139": {
-            "zh_CN": "{\n\"element\": \"#toolHideField\"\n}",
-            "en_US": "{\n\"element\": \"#toolHideField\"\n}"
+            "zh_CN": "{\n\"element\": \"#toolHideField\"\n}"
         },
         "player_step_ui_config_14": {
             "zh_CN": "{\n \"placement\": \"bottomRight\",\n  \"description\": \"欢迎来到维格模板中心，这里有丰富的模板，让我来给你介绍一下如何使用一个模板吧\"\n}",
@@ -12327,8 +12041,7 @@
             "en_US": "{\n \"element\": \"#toolHideField\",\n\"placement\": \"bottom\",\n \"title\": \"Hide fields\", \n\"description\": \"Click to adjust the display fields in the task area\", \n\"children\": \"\"\n}"
         },
         "player_step_ui_config_141": {
-            "zh_CN": "{\n\"element\": \"#toolHideExclusiveField\"\n}",
-            "en_US": "{\n\"element\": \"#toolHideExclusiveField\"\n}"
+            "zh_CN": "{\n\"element\": \"#toolHideExclusiveField\"\n}"
         },
         "player_step_ui_config_143": {
             "zh_CN": "{\n \"element\": \"#toolHideExclusiveField\",\n\"placement\": \"bottom\",\n \"title\": \"隐藏图示\", \n\"description\": \"点击即可自定义右侧图形区任务条上的显示字段\", \n\"children\": \"\"\n}",
@@ -12345,7 +12058,10 @@
             "en_US": "{\n \"element\": \".style_templateItem__1UDe0\", \n\"placement\": \"bottom\",\n \"title\": \"How to use a template\", \n\"description\": \"Let's pick a template first, then click to preview it\", \"children\":\"\" \n}"
         },
         "player_step_ui_config_152": {
-            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/06/13/0cea3e8831a94518b2c9e546b1ccbb8e\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/194\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul>\\n<li>甘特视图、维格视图导出功能升级，可生成图片</li>\\n<li>安全设置权限升级，可设置显示成员和小组的范围</li><li>日历视图交互优化，年份月份切换更便捷</li><li>安全设置升级，可按权限角色限制导出文件</li><li>7个模板上新，覆盖更多行业场景</li></ul>\"\n}"
+            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/06/13/0cea3e8831a94518b2c9e546b1ccbb8e\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/194\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul>\\n<li>甘特视图、维格视图导出功能升级，可生成图片</li>\\n<li>安全设置权限升级，可设置显示成员和小组的范围</li><li>日历视图交互优化，年份月份切换更便捷</li><li>7个模板上新，覆盖更多行业场景</li></ul>\"\n}"
+        },
+        "player_step_ui_config_153": {
+            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/06/23/6aa909506bba4e30aa9f3c57c9d07364\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/200\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul><li>空间站操作日志上线，成员操作明细一个不漏</li><li>移动端管理功能升级，支持空间站的增删改查</li><li>电商节拼单攻略等7个模板上架，覆盖更多使用场景</li></ul>\"\n}"
         },
         "player_step_ui_config_16": {
             "zh_CN": "{\n \"element\": \".style_templateItem__1UDe0\"\n}\n",
@@ -12395,16 +12111,14 @@
             "en_US": "{\n \"element\": \"#WORKBENCH_SIDE_ADD_NODE_BTN\", \n\"placement\": \"bottom\",\n \"title\": \"How to use a datasheet\", \n\"description\": \"First, Let's start by creating a blank datasheet\", \"children\":\"\" \n}"
         },
         "player_step_ui_config_27": {
-            "zh_CN": "{\n \"element\": \"#WORKBENCH_SIDE_ADD_NODE_BTN\"\n}",
-            "en_US": "{\n \"element\": \"#WORKBENCH_SIDE_ADD_NODE_BTN\"\n}"
+            "zh_CN": "{\n \"element\": \"#WORKBENCH_SIDE_ADD_NODE_BTN\"\n}"
         },
         "player_step_ui_config_28": {
             "zh_CN": "{\n \"element\": \"#NODE_CONTEXT_MENU_ID .react-contexify__item:nth-of-type(1)\", \n\"placement\": \"rightCenter\",\n \"title\": \"智能引导\", \n\"description\": \"接着，选择“新建空白维格表”\", \"children\":\"\" \n}",
             "en_US": "{\n \"element\": \"#NODE_CONTEXT_MENU_ID .react-contexify__item:nth-of-type(1)\", \n\"placement\": \"rightCenter\",\n \"title\": \"How to use a datasheet\", \n\"description\": \"Then, click 'New datasheet'\", \"children\":\"\" \n}"
         },
         "player_step_ui_config_29": {
-            "zh_CN": "{\n \"element\": \"#NODE_CONTEXT_MENU_ID > .react-contexify__item:nth-of-type(1) .react-contexify__item__content > div:nth-of-type(1)\",\n\"shadowDirection\":\"inset\"\n} ",
-            "en_US": "{\n \"element\": \"#NODE_CONTEXT_MENU_ID > .react-contexify__item:nth-of-type(1) .react-contexify__item__content > div:nth-of-type(1)\",\n\"shadowDirection\":\"inset\"\n} "
+            "zh_CN": "{\n \"element\": \"#NODE_CONTEXT_MENU_ID > .react-contexify__item:nth-of-type(1) .react-contexify__item__content > div:nth-of-type(1)\",\n\"shadowDirection\":\"inset\"\n} "
         },
         "player_step_ui_config_3": {
             "zh_CN": "{\n    \"title\": \"更新公告\",\n    \"children\": \"<h2 style='text-align: center;line-height:2em'>✨ Hello, 星球居民们~ </h2><p style='margin-bottom:30px;'>伴随12月的前奏，维格星球又迎来了一波更新，动动手指探索下最新的资源吧 🎉</p><h2 style='line-height: 1.2em;'>🎊 播报 News</h2><ul style='line-height:2em;'><li>手机端支持编辑啦，现在你可以直接在手机上探索维格表</li><li>维格表API 增加Golang语言的SDK</li><li>新增记录的「动态评论」，你和小伙伴可以在维格表内展开深入的讨论</li><li>「空间站管理-普通成员」页面新增全局开关，可以控制是否在分享页面展示「申请加入空间站」的入口</li></ul><h2>🍜 优化 Enhancement</h2><ul style='line-height:2em;'><li>分享模态窗改版，可以更清晰地选择自己的协作方式</li><li>权限模态窗改版，设置权限变成独立的页面</li><li>看板视图可以在卡片上切换封面图片，高清无码大图如此性感</li><li>单选/多选/成员的选项列表支持键盘快捷键上下选择选项，解放互联网冲浪达人的双手</li></ul>\"\n  }"
@@ -12613,7 +12327,7 @@
         },
         "player_step_ui_config_80": {
             "zh_CN": "{\n \"element\": \"#AUTO_SAVE_SVG_ID\",\n\"placement\": \"bottomLeft\",\n \"arrowStyle\": { \"left\": \"6px\" },\n \"title\": \"当前视图已开启自动保存\",\n\"description\": \"你现在进行筛选、分组、排序等视图配置操作会自动保存并同步给其他人\" \n}",
-            "en_US": "{\n \"element\": \"#AUTO_SAVE_SVG_ID\",\n\"placement\": \"bottomLeft\",\n \"arrowStyle\": { \"left\": \"6px\" },\n \"title\": \"This view is now autosave\",\n\"description\": \"You now change view configuration such as filtering, grouping, sorting, etc. will be automatically saved and synchronized to others\" \n}"
+            "en_US": "{\n \"element\": \"#AUTO_SAVE_SVG_ID\",\n\"placement\": \"bottomLeft\",\n \"arrowStyle\": { \"left\": \"6px\" },\n \"title\": \"当前视图已开启自动保存\",\n\"description\": \"你现在进行筛选、分组、排序等视图配置操作会自动保存并同步给其他人\" \n}"
         },
         "player_step_ui_config_81": {
             "zh_CN": "{\n    \"title\": \"🌟星球居民们🌟\",\n    \"children\": \"<p class='body2'>你们反馈的每个需求和场景，我们都记在小本本上，快来康康本期更新，有你想要的吗？</p><h3 class='h5' id='🛸-全新驾驶舱'>🛸&nbsp;全新驾驶舱</h3><p class='body3'>细分功能模块，空间站管理员可清晰地查看套餐总量和可用余量，了解团队协作情况。</p><p class='body3'><img src='https://s1.vika.cn/space/2021/11/25/6675a9ee262242bd98d17dc375220dfb' style='width:100%; border-radius:4px;'    alt='https://s1.vika.cn/space/2021/11/25/6675a9ee262242bd98d17dc375220dfb'></p><h3 class='h5' id='️--批量粘贴记录的优化'>↕️&nbsp; 批量粘贴记录的优化</h3><p class='body3'>小明在维格视图的分组状态下，批量粘贴记录后发现覆盖了下一分组中的数据。因此他只能撤销粘贴操作，在当前分组下新增足够的行数再进行粘贴。</p><p class='body3'>对此，维格表进行优化，分组下批量粘贴记录时询问是否新增行，避免覆盖原有记录。</p><p class='body3'><img src='https://s1.vika.cn/space/2021/11/25/f0c66d4656b947f1a3f6a85df7a5fe99' style='width:100%; border-radius:4px;'    alt='https://s1.vika.cn/space/2021/11/25/f0c66d4656b947f1a3f6a85df7a5fe99'></p><h3 class='h5' id='️-维格机器人'>🛰️&nbsp;维格机器人</h3><p class='body3'>维格机器人选择变量时支持插入公式列，发送至钉钉/飞书/企业微信群的消息内容中将展示公式计算结果。比如：小明在维格表中创建智能公式列，用于计算任务到期天数</p><p class='body3'><img src='https://s1.vika.cn/space/2021/11/25/295938afe27d44b095beabb5fad254e7' style='width:100%; border-radius:4px;'    alt='https://s1.vika.cn/space/2021/11/25/295938afe27d44b095beabb5fad254e7'></p><p class='body3'>维格列设置权限或删除，维格机器人中与之相关的匹配条件和变量值也将实时同步异常状态。</p><p class='body3'><img src='https://s1.vika.cn/space/2021/11/25/5aba8bf2c5864d8aaf15b805aee6e740' style='width:100%; border-radius:4px;'    alt='https://s1.vika.cn/space/2021/11/25/5aba8bf2c5864d8aaf15b805aee6e740'></p><h3 class='h5' id='-功能优化'>💡&nbsp;功能优化</h3><p class='body3'>工作目录树新增自动折叠和悬浮效果，为工作台腾出更多操作空间</p><p class='body3'><img src='https://s1.vika.cn/space/2021/11/25/11a92b3dc9074f2589f0c8f20361d08e' style='width:100%; border-radius:4px;'    alt='https://s1.vika.cn/space/2021/11/25/11a92b3dc9074f2589f0c8f20361d08e'></p><p class='body3'>优化视图标签栏，支持显示文件描述，多视图下自动进行收纳</p><p class='body3'><img src='https://s1.vika.cn/space/2021/11/25/0d49558ebbae4f3cb9368fe1c588c9d5' style='width:100%; border-radius:4px;'    alt='https://s1.vika.cn/space/2021/11/25/0d49558ebbae4f3cb9368fe1c588c9d5'></p>\"\n}"
@@ -12623,8 +12337,7 @@
             "en_US": "{\n\"title\":\"How to use an Architecture view\",\n\"video\":\"space/2022/04/26/bebe4536c330427c81e6b26627263904\"\n}"
         },
         "player_step_ui_config_83": {
-            "zh_CN": "{\n \"element\": \"#DATASHEET_CREATOR_ORG_CHART\",\n\"shadowDirection\": \"none\"\n}",
-            "en_US": "{\n \"element\": \"#DATASHEET_CREATOR_ORG_CHART\",\n\"shadowDirection\": \"none\"\n}"
+            "zh_CN": "{\n \"element\": \"#DATASHEET_CREATOR_ORG_CHART\",\n\"shadowDirection\": \"none\"\n}"
         },
         "player_step_ui_config_84": {
             "zh_CN": "{\n \"element\": \"#DATASHEET_CREATOR_ORG_CHART\",\n\"placement\": \"right\",\n \"title\": \"架构视图上线\", \n\"description\": \"赶紧来体验一下吧\", \n\"children\": \"\"\n}",
@@ -12639,8 +12352,7 @@
             "en_US": "{\n \"element\": \"#DATASHEET_ORG_CHART_RECORD_LIST\",\n\"placement\": \"left\",\n \"title\": \"Unlink record\", \n\"description\": \"You can drag a record card to the pending area on the right to unlink record quickly\",\n\"offsetY\": 144\n}"
         },
         "player_step_ui_config_87": {
-            "zh_CN": "{\n \"element\": \"#DATASHEET_ORG_CHART_RECORD_LIST\"\n}",
-            "en_US": "{\n \"element\": \"#DATASHEET_ORG_CHART_RECORD_LIST\"\n}"
+            "zh_CN": "{\n \"element\": \"#DATASHEET_ORG_CHART_RECORD_LIST\"\n}"
         },
         "player_step_ui_config_88": {
             "zh_CN": "{\n \"element\": \"#toolHideField\"\n}"
@@ -12650,8 +12362,7 @@
             "en_US": "{\n \"element\": \"#toolHideField\",\n\"placement\": \"bottom\",\n \"title\": \"Styling the card\", \n\"description\": \"You can customize the fields and cover effects of the card\" \n}"
         },
         "player_step_ui_config_9": {
-            "zh_CN": "{\n \"element\": \"#ADDRESS_INVITE_BTN\"\n} ",
-            "en_US": "{\n \"element\": \"#ADDRESS_INVITE_BTN\"\n} "
+            "zh_CN": "{\n \"element\": \"#ADDRESS_INVITE_BTN\"\n} "
         },
         "player_step_ui_config_90": {
             "zh_CN": "{\n \"element\": \"#DATASHEET_TOOL_BAR_VIEW_SETTING\"\n}"
@@ -12721,8 +12432,7 @@
             "en_US": "As .png format"
         },
         "poc_sync_members": {
-            "zh_CN": "通过组织架构添加人员",
-            "en_US": "Add members through organizational structure"
+            "zh_CN": "通过组织架构添加人员"
         },
         "poland": {
             "zh_CN": "波兰",
@@ -12737,8 +12447,7 @@
             "en_US": "PR & Communications"
         },
         "pre_set_node_permission": {
-            "zh_CN": "需要在工作目录开启当前表格的文件权限后，才能设置列权限",
-            "en_US": "Field permissions can only be set after the file permissions of the current datasheet are enabled in the explorer"
+            "zh_CN": "需要在工作目录开启当前表格的文件权限后，才能设置列权限"
         },
         "precision": {
             "zh_CN": "精度",
@@ -12746,7 +12455,6 @@
         },
         "press_again_to_exit": {
             "zh_CN": "再次点击退出!",
-            "en_US": "Press again to exit!",
             "终端": "APP"
         },
         "preview": {
@@ -12758,8 +12466,7 @@
             "en_US": "This file can't be preview"
         },
         "preview_click_reset_image_size": {
-            "zh_CN": "点击回到原始尺寸",
-            "en_US": "Click to return to the original size"
+            "zh_CN": "点击回到原始尺寸"
         },
         "preview_copy_attach_url": {
             "zh_CN": "复制附件 URL",
@@ -12781,8 +12488,7 @@
             "zh_CN": "c"
         },
         "preview_fail_title": {
-            "zh_CN": "预览失败",
-            "en_US": "Preview failed"
+            "zh_CN": "预览失败"
         },
         "preview_form_title": {
             "zh_CN": "神奇表单",
@@ -12809,8 +12515,7 @@
             "en_US": "Only MP4 videos with H.264 video codecs can be preview"
         },
         "preview_revision": {
-            "zh_CN": "预览此版本",
-            "en_US": "Preview"
+            "zh_CN": "预览此版本"
         },
         "preview_see_more": {
             "zh_CN": "想要了解更多「office 文件预览」功能？请点击这里",
@@ -12854,15 +12559,13 @@
             "en_US": "last week"
         },
         "price_bottom_secction_desc": {
-            "zh_CN": "让普通人都能随意 DIY 出业务软件系统​的黑科技",
-            "en_US": "The black technology that allows everyone to DIY business software systems at will"
+            "zh_CN": "让普通人都能随意 DIY 出业务软件系统​的黑科技"
         },
         "price_bottom_secction_title": {
             "zh_CN": "没有维格，不算科技"
         },
         "price_discount_activity_info": {
-            "zh_CN": "活动优惠价截止时间 2022-06-30",
-            "en_US": "Discount will end on 2022-06-30."
+            "zh_CN": "活动优惠价截止时间 2022-06-18"
         },
         "price_question_title": {
             "zh_CN": "产品价格问答"
@@ -12871,12 +12574,10 @@
             "zh_CN": "[{\n\t\"question\": \"什么是空间站等级？\",\n\t\"answer\": \"空间站是组织或团队所有成员的共享工作区，在「维格表」里点击左上角空间站图标即可查看自己管理或受邀的空间站。空间站等级分为青铜级（永久免费）、白银级、黄金级和企业级。不同等级的空间站享有不同的权益，空间站成员享有所处等级空间站的相关权益。\"\n}, {\n\t\"question\": \"如何查看空间站的当前等级和用量情况？\",\n\t\"answer\": \"在「空间站管理 > 空间站驾驶舱」中可查看。\"\n}, {\n\t\"question\": \"白银级/黄金级/企业级付费时长结束后，维格表数量/行数/附件等超出用量限制，会被删除吗？\",\n\t\"answer\": \"空间站到期后等级自动降级为青铜级，享受青铜级的权益。超出青铜级用量上限部分的数据不会被删除，可以正常使用。当你再新增数据时，如果超出了青铜级上限，则会触发上限提醒。\"\n}, {\n\t\"question\": \"文件节点数量是什么？\",\n\t\"answer\": \"文件节点数量包含工作目录中所有文件（表格、仪表盘、神奇表单、镜像）的数量统计。被删除的文件节点不计入统计。\"\n}, {\n\t\"question\": \"席位数是什么？\",\n\t\"answer\": \"席位数是空间站内席位成员的名额上限，席位成员属于正式成员，可以作为协作成员对文件进行编辑。\"\n}, {\n\t\"question\": \"空间站内的V币是什么？\",\n\t\"answer\": \"V币是维格表赠送的平台积分，与人民币的兑换比例为 100:1，可用于兑换维格表内的服务。如白银级空间站每人每月需要 30 元，即可用 3000 V币进行兑换。\"\n}, {\n\t\"question\": \"如何获取V币？\",\n\t\"answer\": \"V币的获取方式包括但不限于：完成新手任务、邀请好友、参与维格表相关活动等。\"\n}, {\n\t\"question\": \"为什么有的功能名称左侧标了星号「*」？\",\n\t\"answer\": \"标星号「*」表示目前该功能未上线，在未来会推出。\"\n}, {\n\t\"question\": \"有的功能是限时免费的，截止日期是多少？\",\n\t\"answer\": \"某些维格表新功能上线后，会有一段不定周期的时间给用户进行免费体验。功能正式收费后，免费体验期间创建的数据不会受到影响，请大家放心使用。\"\n}, {\n\t\"question\": \"企业级的定制小程序怎么收费？\",\n\t\"answer\": \"我们将根据企业级客户的实际业务需求，提供付费定制开发小程序的服务。如果想要了解定制费用详情，请点击右下角的「联系客服」进行咨询；移动端用户请点击底部的「联系客服」。\"\n}, {\n\t\"question\": \"如何了解具体的收费计划和使用规则？\",\n\t\"answer\": \"如果想要了解企业级的费用详情，请点击右下角的「联系客服」进行咨询；移动端用户请点击底部的「联系客服」。\"\n}, {\n\t\"question\": \"数据安全如何得到保障？\",\n\t\"answer\": \"数据安全是维格表的生命线。数据通过 HTTPS/SSL/TLS 协议配置 CA 证书进行加密传输，并存储于云服务商，由云厂商进行安全运维保障，数据实时备份不会丢失。此外，维格表中所有应用的数据授权，均通过 Vault 密钥钱包进行安全验证管理。考虑到企业更高的数据安全需求，维格表提供私有化部署服务，建立全面、稳定的技术防御。\"\n}]"
         },
         "price_sub_title": {
-            "zh_CN": "1 元/人/天 = 100+ 个办公工作模板",
-            "en_US": "1 yuan / person / day = 100 + office work templates"
+            "zh_CN": "1 元/人/天 = 100+ 个办公工作模板"
         },
         "price_title1": {
-            "zh_CN": "vika维格表",
-            "en_US": "Vika"
+            "zh_CN": "vika维格表"
         },
         "price_title2": {
             "zh_CN": "空间站等级价目表"
@@ -12939,8 +12640,7 @@
             "en_US": " Internal person only"
         },
         "privilege_list_of_sliver": {
-            "zh_CN": "{\"title\":\"白银级空间站特权\",\"privilegeList\":[\"独享更换主题色\",\"独享更换主题色\",\"独享更换主题色\",\"独享更换主题色\"],\"helper\":\"了解用户服务联系客服\"}",
-            "en_US": "{\"title\": \"Silver Space Station privilege\", \"privilegeList\": [\"exclusive change theme color\", \"exclusive change theme color\"], \"helper\": \"understand user service and contact customer service\"}"
+            "zh_CN": "{\"title\":\"白银级空间站特权\",\"privilegeList\":[\"独享更换主题色\",\"独享更换主题色\",\"独享更换主题色\",\"独享更换主题色\"],\"helper\":\"了解用户服务联系客服\"}"
         },
         "process": {
             "zh_CN": "处理",
@@ -13007,8 +12707,7 @@
             "en_US": "Puerto Rico"
         },
         "purchase_capacity": {
-            "zh_CN": "购买容量",
-            "en_US": "Purchase capacity"
+            "zh_CN": "购买容量"
         },
         "put_away_record_comments": {
             "zh_CN": "折叠记录评论面板",
@@ -13039,16 +12738,14 @@
             "en_US": "Scan the QR code and I will assist you to solve"
         },
         "quick_close_public_link": {
-            "zh_CN": "快速关闭公开链接",
-            "en_US": "Disable public link"
+            "zh_CN": "快速关闭公开链接"
         },
         "quick_compass": {
             "zh_CN": "飞梭系统",
             "en_US": "Quick Compass"
         },
         "quick_free_trial": {
-            "zh_CN": "立即开启免费体验",
-            "en_US": "Start your free trial now"
+            "zh_CN": "立即开启免费体验"
         },
         "quick_import_widget": {
             "zh_CN": "快速导入已有的小程序",
@@ -13107,8 +12804,7 @@
             "en_US": "read only"
         },
         "readonly_column": {
-            "zh_CN": "当前列只读，无法编辑",
-            "en_US": "The current field is read-only and can't be edited"
+            "zh_CN": "当前列只读，无法编辑"
         },
         "real_estate": {
             "zh_CN": "房地产",
@@ -13132,11 +12828,7 @@
         },
         "recommend": {
             "zh_CN": "推荐",
-            "en_US": "Hot"
-        },
-        "reconciled_data": {
-            "zh_CN": "正在核对数据……",
-            "en_US": "Data is being reconciled"
+            "en_US": "popular"
         },
         "record": {
             "zh_CN": "记录",
@@ -13144,7 +12836,7 @@
         },
         "record_activity_experience_tips": {
             "zh_CN": "高级空间站特权体验中，可查看  ${day}  天的修改历史",
-            "en_US": "You are experiencing advanced space privileges, you can view record activity of  ${day}  days"
+            "en_US": "高级空间站特权体验中，可查看  ${day}  天的修改历史"
         },
         "record_comment": {
             "zh_CN": "仅评论",
@@ -13293,8 +12985,7 @@
             "en_US": "remain:"
         },
         "remain_capacity": {
-            "zh_CN": "剩余容量",
-            "en_US": "Remaining capacity"
+            "zh_CN": "剩余容量"
         },
         "remaining_records": {
             "zh_CN": "剩余记录数：${count}条",
@@ -13317,8 +13008,7 @@
             "en_US": "Remove"
         },
         "remove_cover": {
-            "zh_CN": "移除封面",
-            "en_US": "Remove cover"
+            "zh_CN": "移除封面"
         },
         "remove_favorite": {
             "zh_CN": "取消星标",
@@ -13429,20 +13119,17 @@
             "en_US": "Rendering optimization"
         },
         "renew": {
-            "zh_CN": "立即续费",
-            "en_US": "Renew immediately"
+            "zh_CN": "立即续费"
         },
         "renewal": {
             "zh_CN": "续费",
             "en_US": "renewal"
         },
         "renewal_seat_warning": {
-            "zh_CN": "续费不支持等级和人数的变更，如需提高等级或人数，${link}",
-            "en_US": "If you need to upgrade or increase the number of members, ${link}"
+            "zh_CN": "续费不支持等级和人数的变更，如需提高等级或人数，${link}"
         },
         "reopen": {
-            "zh_CN": "重新打开",
-            "en_US": "Reopen it"
+            "zh_CN": "重新打开"
         },
         "report_reason_1": {
             "zh_CN": "违反国家法规定",
@@ -14479,76 +14166,45 @@
             "en_US": "Rollback"
         },
         "rollback_fail_content": {
-            "zh_CN": "当前版本出现数据冲突，不支持回滚，<a href=\"${url}\" target=\"_blank\">了解更多</a>",
-            "en_US": "The current version has data conflicts and does not support rollback, <a href=\"${url}\" target=\"_blank\">Learn more</a>"
+            "zh_CN": "当前版本出现数据冲突，不支持回滚，<a href=\"${url}\" target=\"_blank\">了解更多</a>"
         },
         "rollback_fail_tip": {
-            "zh_CN": "${type}失败，请重试！",
-            "en_US": "${type} Failed, please try again!"
+            "zh_CN": "${type}失败，请重试！"
         },
         "rollback_fail_title": {
-            "zh_CN": "回滚失败",
-            "en_US": "Rollback failed"
+            "zh_CN": "回滚失败"
         },
         "rollback_history_empty": {
-            "zh_CN": "无可用历史版本",
-            "en_US": "No available historic version"
+            "zh_CN": "无可用历史版本"
         },
         "rollback_operator_field": {
-            "zh_CN": "操作人：",
-            "en_US": "Operators："
+            "zh_CN": "操作人："
         },
         "rollback_revision": {
-            "zh_CN": "回滚到这里",
-            "en_US": "Restore"
+            "zh_CN": "回滚到这里"
         },
         "rollback_time_field": {
-            "zh_CN": "时间：",
-            "en_US": "Time："
+            "zh_CN": "时间："
         },
         "rollback_tip": {
-            "zh_CN": "已执行回滚操作，请查看表格数据",
-            "en_US": "The rollback operation has been executed, please view the data in the datasheet"
+            "zh_CN": "已执行回滚操作，请查看表格数据"
         },
         "rollback_title": {
-            "zh_CN": "回滚到${revision}版本",
-            "en_US": "Rollback to ${revision} version"
+            "zh_CN": "回滚到${revision}版本"
         },
         "rollback_version_field": {
-            "zh_CN": "版本：",
-            "en_US": "Version："
+            "zh_CN": "版本："
         },
         "rollbacking": {
-            "zh_CN": "加载中，请稍后...",
-            "en_US": "Loading, please wait a moment..."
+            "zh_CN": "加载中，请稍后..."
         },
         "rollup_field": {
             "zh_CN": "关联表中被引用的维格列",
             "en_US": "Column referenced in the related datasheet"
         },
-        "rollup_filter_condition_numbers": {
-            "zh_CN": "{FILTER_NUM} 个筛选条件",
-            "en_US": "{FILTER_NUM} filter conditions"
-        },
         "rollup_formula": {
             "zh_CN": "引用方式",
             "en_US": "Reference method"
-        },
-        "rollup_sort_conditions_number": {
-            "zh_CN": "{ORDER_NUM} 个排序条件",
-            "en_US": "{ORDER_NUM} sort conditions"
-        },
-        "rollup_sort_description": {
-            "zh_CN": "可以为引用的数据指定一个字段进行排序",
-            "en_US": "You can set a field to sort data order by this field\n"
-        },
-        "rollup_sort_limit_description": {
-            "zh_CN": "返回引用的前 X 条数据",
-            "en_US": "Limit the amount of output data"
-        },
-        "rollup_sort_limit_warning": {
-            "zh_CN": "请填写正整数，为空则返回全部",
-            "en_US": "Please fill in the positive integer, or Keep empty"
         },
         "romania": {
             "zh_CN": "罗马尼亚",
@@ -14611,12 +14267,10 @@
             "en_US": "Security warning"
         },
         "safety_verification": {
-            "zh_CN": "安全验证",
-            "en_US": "Security verification"
+            "zh_CN": "安全验证"
         },
         "safety_verification_tip": {
-            "zh_CN": "请拖动下方滑块完成验证",
-            "en_US": "Please drag the slider below to complete the verification"
+            "zh_CN": "请拖动下方滑块完成验证"
         },
         "saint_kitts_and_nevis": {
             "zh_CN": "圣基茨和尼维斯",
@@ -14833,12 +14487,10 @@
             "en_US": "What is vikadata?"
         },
         "security_address_list_isolation": {
-            "zh_CN": "通讯录显示所有成员和小组",
-            "en_US": "The contacts shows all members and teams"
+            "zh_CN": "通讯录仅显示成员所在小组"
         },
         "security_address_list_isolation_describe": {
-            "zh_CN": "所有人可以在通讯录查看其它成员和小组。关闭该功能后，普通成员在「通讯录」中仅能查看自己所在的小组和成员（包含下级小组）",
-            "en_US": "Everyone can view all teams and members in the contacts.\nWhen this function is turned off, members can only view their teams and members (including lower teams) in the contacts."
+            "zh_CN": "普通成员在「通讯录」中仅能查看自己所在的小组和成员（包含下级小组）"
         },
         "security_advanced_tip": {
             "zh_CN": "高级空间站专享功能",
@@ -14877,12 +14529,10 @@
             "en_US": "Allow read-only users to copy data "
         },
         "security_disabled_copy_cell_date": {
-            "zh_CN": "禁止只读的成员将数据复制到站外",
-            "en_US": "Prohibit read-only members from copying data to outside the space"
+            "zh_CN": "禁止只读的成员将数据复制到站外"
         },
         "security_disabled_copy_cell_date_tip": {
-            "zh_CN": "禁止成员复制维格表的的数据到 Execl 等其他软件",
-            "en_US": "Prohibit all members from copying the data of the datasheet to other software such as Excel"
+            "zh_CN": "禁止成员复制维格表的的数据到 Execl 等其他软件"
         },
         "security_disabled_download_file": {
             "zh_CN": "禁止只读用户下载附件",
@@ -14905,8 +14555,7 @@
             "en_US": "Users with \"read-Only\" permission cannot download attachments in cells"
         },
         "security_disabled_export": {
-            "zh_CN": "禁止分享文件",
-            "en_US": "Prohibition of file sharing"
+            "zh_CN": "禁止分享文件"
         },
         "security_disabled_export_data": {
             "zh_CN": "禁止导出维格表和视图",
@@ -14925,8 +14574,7 @@
             "en_US": "Allow to export files"
         },
         "security_disabled_export_tip": {
-            "zh_CN": "禁止所有成员将文件分享到站外",
-            "en_US": "Prohibit all members from sharing files outside the space"
+            "zh_CN": "禁止所有成员将文件分享到站外"
         },
         "security_disabled_invite_member": {
             "zh_CN": "禁止普通成员进行邀请操作",
@@ -14964,20 +14612,16 @@
             "zh_CN": "权限安全",
             "en_US": "Security"
         },
-        "security_setting_address_list_isolation": {
-            "zh_CN": "你正在体验${grade}空间站专属功能，升级后可以解锁该功能",
-            "en_US": "You are experiencing the ${grade} space exclusive feature, which will be unlocked when you upgrade"
-        },
         "security_setting_apply_join_space": {
             "zh_CN": "你正在体验${grade}空间站专属功能，升级后可以解锁该功能",
             "en_US": "You are experiencing the ${grade} space exclusive feature, which will be unlocked when you upgrade"
         },
         "security_setting_apply_join_space_describle": {
-            "zh_CN": "分享页面会显示「申请加入空间站」的入口，站外用户可申请。关闭该功能后，该入口不再显示。",
+            "zh_CN": "分享页面会显示「申请加入空间站」的入口，站外用户可申请。关闭后功能，该入口不再显示。",
             "en_US": "After the function is disabled,the \"Apply to join this Space\" entry is no longer displayed on the sharing page, and users cannot request for joining"
         },
         "security_setting_apply_join_space_title": {
-            "zh_CN": "站外用户可申请加入空间站",
+            "zh_CN": "站外用户申请加入空间站",
             "en_US": "Allow requests to join the Space"
         },
         "security_setting_copy_cell_data": {
@@ -14989,7 +14633,7 @@
             "en_US": "After the function is disabled,users with \"read-Only\" permission cannot copy cell data, both on and off the Space"
         },
         "security_setting_copy_cell_data_title": {
-            "zh_CN": "只读用户可复制数据",
+            "zh_CN": "只读用户复制数据",
             "en_US": "Allow read-only users to copy cell data"
         },
         "security_setting_download_file": {
@@ -15001,7 +14645,7 @@
             "en_US": "After the function is disabled,users with \"read-Only\" permission cannot download attachments in cells, both on and off the Space"
         },
         "security_setting_download_file_title": {
-            "zh_CN": "只读用户可下载附件",
+            "zh_CN": "只读用户下载附件",
             "en_US": "Allow read-only users to download attachments"
         },
         "security_setting_export": {
@@ -15009,7 +14653,7 @@
             "en_US": "You are experiencing the ${grade} space exclusive feature, which will be unlocked when you upgrade"
         },
         "security_setting_export_data_describle": {
-            "zh_CN": "对应角色的成员可以将工作目录中的维格表或者视图数据导出到本地。关闭该功能后，导出入口将屏蔽。",
+            "zh_CN": "成员可以将工作目录中的维格表或者视图数据导出到本地。关闭该功能后，导出入口将屏蔽。",
             "en_US": "After the function is disabled,all members cannot export datasheet or view data locally"
         },
         "security_setting_export_data_editable": {
@@ -15025,7 +14669,7 @@
             "en_US": "above “Read-only”"
         },
         "security_setting_export_data_title": {
-            "zh_CN": "成员可导出维格表和视图",
+            "zh_CN": "导出维格表和视图",
             "en_US": "Allow to export files"
         },
         "security_setting_export_data_tooltips": {
@@ -15041,8 +14685,8 @@
             "en_US": "After the function is disabled,no one can invite users to join the Space except Space admin,and the generated invitation link will be invalid"
         },
         "security_setting_invite_member_title": {
-            "zh_CN": "成员可邀请站外用户加入空间站",
-            "en_US": "Members can Invite off-space users to join the space"
+            "zh_CN": "邀请站外用户加入空间站",
+            "en_US": "Invite off-space users to join the space"
         },
         "security_setting_mobile": {
             "zh_CN": "你正在体验${grade}空间站专属功能，升级后可以解锁该功能",
@@ -15057,7 +14701,7 @@
             "en_US": "After the function is disabled,all members cannot creat the public link of the file, and the generated public link becomes invalid"
         },
         "security_setting_share_title": {
-            "zh_CN": "成员可创建文件节点的公开链接",
+            "zh_CN": "创建文件节点的公开链接",
             "en_US": "Allow to create public link"
         },
         "security_show_mobile": {
@@ -15145,8 +14789,7 @@
             "en_US": "Function settings"
         },
         "select_end_date": {
-            "zh_CN": "选择结束时间",
-            "en_US": "Select an end time"
+            "zh_CN": "选择结束时间"
         },
         "select_layout": {
             "zh_CN": "选择布局",
@@ -15162,7 +14805,6 @@
         },
         "select_phone_code": {
             "zh_CN": "选择国家和地区",
-            "en_US": "Select country and region",
             "终端": "APP"
         },
         "select_sort_rule": {
@@ -15174,8 +14816,7 @@
             "en_US": "Select the space to save"
         },
         "select_start_date": {
-            "zh_CN": "选择开始时间",
-            "en_US": "Select a start time"
+            "zh_CN": "选择开始时间"
         },
         "select_theme_color": {
             "zh_CN": "选择配色方案",
@@ -15287,8 +14928,7 @@
         },
         "server_pre_publish": {},
         "set_as_the_template": {
-            "zh_CN": "设为模板",
-            "en_US": "Set as template"
+            "zh_CN": "设为模板"
         },
         "set_field": {
             "zh_CN": "设置列",
@@ -15527,10 +15167,6 @@
             "zh_CN": "通过公开链接填写神奇表单",
             "en_US": "Fill in the form via the public link"
         },
-        "share_invite_no_permission": {
-            "zh_CN": "你没有邀请成员的权限",
-            "en_US": "You do not have permission to invite members"
-        },
         "share_link_text": {
             "zh_CN": "${url}# vika维格表是一款最近很火的生产力工具🧑‍💻听说世界百强企业都在用，我也觉得很好用，墙裂推荐给你[机智]"
         },
@@ -15543,8 +15179,7 @@
             "en_US": "88% of people get a better experience by editing on the computer"
         },
         "share_modal_desc": {
-            "zh_CN": "复制下方专属链接~ <br/>邀请好友使用维格表<br/>与朋友一起“友”福同享",
-            "en_US": "Copy the exclusive link below~ <br/>Invite friends to use Vikadata<br/>Share with friends"
+            "zh_CN": "复制下方专属链接~ <br/>邀请好友使用维格表<br/>与朋友一起“友”福同享"
         },
         "share_modal_title": {
             "zh_CN": "分享",
@@ -15663,8 +15298,7 @@
             "en_US": "Click on the upper right corner to share"
         },
         "shelf_manage": {
-            "zh_CN": "上架管理",
-            "en_US": "Shelf management"
+            "zh_CN": "上架管理"
         },
         "shortcut_key": {
             "zh_CN": "快捷键",
@@ -15781,10 +15415,6 @@
             "zh_CN": "想要邀请成员？点击这里",
             "en_US": "Want to invite members? Click here"
         },
-        "six_months": {
-            "zh_CN": "6 个月",
-            "en_US": "6 months"
-        },
         "skip": {
             "zh_CN": "跳过",
             "en_US": "Skip"
@@ -15802,44 +15432,37 @@
             "en_US": "Slovenia"
         },
         "social_dingtalk_single_record_member_mention": {
-            "zh_CN": "### 🔔有人在记录中提及你\n\n**记录:** {recordTitle}\n\n**提及人:** {memberName}\n\n**维格表:** {nodeName}\n\n**操作时间:** {createdAt}",
-            "en_US": "### 🔔 You're mentioned in a record\n\n** record: ** {recordTitle}\n\n** Mentioned by: ** {memberName}\n\n** Datasheet: ** {nodeName}\n\n** Operation time: ** {createdAt}"
+            "zh_CN": "### 🔔有人在记录中提及你\n\n**记录:** {recordTitle}\n\n**提及人:** {memberName}\n\n**维格表:** {nodeName}\n\n**操作时间:** {createdAt}"
         },
         "social_dingtalk_subscribed_record_cell_updated": {
-            "zh_CN": "### 关注的记录被修改\n\n**记录:** {recordTitle}\n\n**原内容:** {oldDisplayValue}\n\n**修改后的内容:** {newDisplayValue}\n\n**修改人:** {memberName}\n\n**维格表:** {nodeName}",
-            "en_US": "### Someone has changed the record you are watching in\n\n**Record:** {recordTitle}\n\n**Before:** {oldDisplayValue}\n\n**After:** {newDisplayValue}\n\n**Member:** {memberName}\n\n**Datasheet:** {nodeName}"
+            "zh_CN": "### 关注的记录被修改\n\n**记录:** {recordTitle}\n\n**原内容:** {oldDisplayValue}\n\n**修改后的内容:** {newDisplayValue}\n\n**修改人:** {memberName}\n\n**维格表:** {nodeName}"
         },
         "social_dingtalk_subscribed_record_cell_updated_title": {
             "zh_CN": "关注的记录被修改",
             "en_US": "Records modified by others"
         },
         "social_dingtalk_subscribed_record_commented": {
-            "zh_CN": "### 关注的记录有一条新评论\n\n**记录:** {recordTitle}\n\n**评论的内容:** {content}\n\n**评论人:** {memberName}\n\n**维格表:** {nodeName}",
-            "en_US": "### The record you are watching received a new comment\n\n**Record:** {recordTitle}\n\n**Comment:** {content}\n\n**Member:** {memberName}\n\n**Datasheet:** {nodeName}"
+            "zh_CN": "### 关注的记录有一条新评论\n\n**记录:** {recordTitle}\n\n**评论的内容:** {content}\n\n**评论人:** {memberName}\n\n**维格表:** {nodeName}"
         },
         "social_dingtalk_subscribed_record_commented_title": {
             "zh_CN": "关注的记录有一条新评论",
             "en_US": "Record received a new comment"
         },
         "social_dingtalk_task_reminder": {
-            "zh_CN": "### 🔔表中的记录已到提醒时间\n\n**记录标题：** {recordTitle}\n\n**到期时间：** {taskExpireAt}\n\n**所在表：** {nodeName}",
-            "en_US": "### 🔔The record in the datasheet has reached the reminder time\n\n** Record title: ** {recordTitle}\n\n** Expiration time: ** {taskExpireAt}\n\n** Datasheet: ** {nodeName}"
+            "zh_CN": "### 🔔表中的记录已到提醒时间\n\n**记录标题：** {recordTitle}\n\n**到期时间：** {taskExpireAt}\n\n**所在表：** {nodeName}"
         },
         "social_lark_task_reminder": {
-            "zh_CN": "**记录标题：**{recordTitle}\n**到期时间：**{taskExpireAt}\n**所在表：**{nodeName}",
-            "en_US": "** Record title: ** {recordTitle}\n** Expiration time: ** {taskExpireAt}\n** Datasheet: ** {nodeName}"
+            "zh_CN": "**记录标题：**{recordTitle}\n**到期时间：**{taskExpireAt}\n**所在表：**{nodeName}"
         },
         "social_lark_task_reminder_title": {
-            "zh_CN": "**表中的记录已到提醒时间**",
-            "en_US": "** The record in the datasheet has reached the reminder time * *"
+            "zh_CN": "**表中的记录已到提醒时间**"
         },
         "social_media": {
             "zh_CN": "新媒体运营",
             "en_US": "New media operations"
         },
         "social_notification_url_title": {
-            "zh_CN": "进入查看",
-            "en_US": "view"
+            "zh_CN": "进入查看"
         },
         "social_open_card_btn_text": {
             "zh_CN": "详情",
@@ -15862,20 +15485,16 @@
             "en_US": "🔔 Reminder"
         },
         "social_wecom_single_record_member_mention": {
-            "zh_CN": "记录：{recordTitle}\n提及人：{memberName}\n维格表：{nodeName}",
-            "en_US": "Record：{recordTitle}\nMentioned by：{memberName}\nDatasheet：{nodeName}"
+            "zh_CN": "  \n记录：{recordTitle}\n提及人：{memberName}\n维格表：{nodeName}"
         },
         "social_wecom_subscribed_record_cell_updated": {
-            "zh_CN": "记录：{recordTitle}\n原内容：{oldDisplayValue}\n修改后的内容：{newDisplayValue}\n修改人：{memberName}\n维格表：{nodeName}",
-            "en_US": "Record：{recordTitle}\nBefore：{oldDisplayValue}\nAfter：{newDisplayValue}\nMember：{memberName}\nDatasheet：{nodeName}"
+            "zh_CN": "\n记录：{recordTitle}\n原内容：{oldDisplayValue}\n修改后的内容：{newDisplayValue}\n修改人：{memberName}\n维格表：{nodeName}"
         },
         "social_wecom_subscribed_record_commented": {
-            "zh_CN": "记录：{recordTitle}\n评论的内容：{content}\n评论人：{memberName}\n维格表：{nodeName}",
-            "en_US": "Record：{recordTitle}\nComment：{content}\nMember：{memberName}\nDatasheet：{nodeName}"
+            "zh_CN": "\n记录：{recordTitle}\n评论的内容：{content}\n评论人：{memberName}\n维格表：{nodeName}"
         },
         "social_wecom_task_reminder": {
-            "zh_CN": "记录标题：{recordTitle}\n到期时间：{taskExpireAt} \n所在表：{nodeName}",
-            "en_US": "Record title: {recordTitle}\nExpiration time: {taskExpireAt}\nDatasheet: {nodeName}"
+            "zh_CN": "   \n记录标题：{recordTitle}\n到期时间：{taskExpireAt} \n所在表：{nodeName}"
         },
         "socket_error_network": {
             "zh_CN": "糟糕，网络突然中断了，请刷新浏览器进行恢复",
@@ -16028,8 +15647,7 @@
             "en_US": "The size of the attachment space has been exceeded, and you can enjoy a large space after upgrading to a premium space"
         },
         "space_certification_fail_notify": {
-            "zh_CN": "很抱歉，你的空间站认证未通过审核，原因可能是：<br>\n1. 此空间站不存在或已删除 <br>\n2. 你不是此空间站内的成员 <br>",
-            "en_US": "Sorry, your space certification failed. The reason may be: < br >\n1. This space does not exist or has been deleted < br >\n2. You are not a member of this space< br >"
+            "zh_CN": "很抱歉，你的空间站认证未通过审核，原因可能是：<br>\n1. 此空间站不存在或已删除 <br>\n2. 你不是此空间站内的成员 <br>"
         },
         "space_certification_notify": {
             "zh_CN": " 恭喜你完成维格空间站认证，获得<a class=\"specification\"></a>GB 附件容量，详情请前往「空间站设置-空间站驾驶舱-附件容量」查看",
@@ -16176,64 +15794,9 @@
             "zh_CN": "空间站列表",
             "en_US": "Spaces"
         },
-        "space_log_action_time": {
-            "zh_CN": "操作时间",
-            "en_US": "Action time",
-            "zh_HK": "操作时间"
-        },
-        "space_log_action_type": {
-            "zh_CN": "操作类型",
-            "en_US": "Action types",
-            "zh_HK": "操作类型"
-        },
-        "space_log_actions": {
-            "zh_CN": "操作事件",
-            "en_US": "Actions",
-            "zh_HK": "操作事件"
-        },
-        "space_log_download_button": {
-            "zh_CN": "下载日志",
-            "en_US": "Download logs",
-            "zh_HK": "下载日志"
-        },
-        "space_log_file_name": {
-            "zh_CN": "文件名称",
-            "en_US": "File name",
-            "zh_HK": "文件名称"
-        },
-        "space_log_operator": {
-            "zh_CN": "操作人",
-            "en_US": "Operator",
-            "zh_HK": "操作人"
-        },
-        "space_log_title": {
-            "zh_CN": "空间站操作日志",
-            "en_US": "Space logs",
-            "zh_HK": "空间站操作日志"
-        },
-        "space_log_trial_button": {
-            "zh_CN": "立即试用",
-            "en_US": "Try now",
-            "zh_HK": "立即试用"
-        },
-        "space_log_trial_desc1": {
-            "zh_CN": "你可以在当前页面查看 90 天内的操作日志",
-            "en_US": "You can view the space logs within 90 days",
-            "zh_HK": "你可以在当前页面查看 90 天内的操作日志"
-        },
-        "space_log_trial_desc2": {
-            "zh_CN": "企业级空间站专属功能，限时开放试用",
-            "en_US": "Now free trial of exclusive feature only for enterprise spaces",
-            "zh_HK": "企业级空间站专属功能，限时开放试用"
-        },
         "space_logo": {
             "zh_CN": "空间站LOGO图标",
             "en_US": "space_logo"
-        },
-        "space_logs": {
-            "zh_CN": "操作日志",
-            "en_US": "Space logs",
-            "zh_HK": "操作日志"
         },
         "space_manage_choose_new_primary_admin": {
             "zh_CN": "选择新的主管理员",
@@ -16287,8 +15850,7 @@
             "en_US": "You are not a member of this Space, so you can't access it. Please contact the Space admin to join in."
         },
         "space_origin": {
-            "zh_CN": "来源空间站",
-            "en_US": "Original space"
+            "zh_CN": "来源空间站"
         },
         "space_overview": {
             "zh_CN": "空间站驾驶舱",
@@ -16299,8 +15861,7 @@
             "en_US": "You have successfully purchased \"<a class=\"planName\"></a>\". The amount paid is <a class=\"payFee\"></a>."
         },
         "space_rainbow_label_limit": {
-            "zh_CN": "空间站正在使用白银级空间站专属功能「彩虹标签彩色色系」，请升级以继续使用",
-            "en_US": "The space is using the exclusive function \"Rainbow Label Color System\" for the silver-level space. Please upgrade to continue using it"
+            "zh_CN": "空间站正在使用白银级空间站专属功能「彩虹标签彩色色系」，请升级以继续使用"
         },
         "space_rainbow_label_limit_email_title": {
             "zh_CN": "「{SPACE_NAME}」空间站正在使用白银级空间站专属功能「彩虹标签彩色色系」"
@@ -16313,8 +15874,7 @@
             "zh_CN": "「{SPACE_NAME}」空间站的记录数已超出上限（{USAGE}/{SPECIFICATION}）"
         },
         "space_seat_info": {
-            "zh_CN": "空间站人数：${num} 人",
-            "en_US": "Number of members in the space: ${num} "
+            "zh_CN": "空间站人数：${num} 人"
         },
         "space_seats_limit": {
             "zh_CN": "空间站现有付费成员数已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升级可获得更高用量",
@@ -16364,9 +15924,6 @@
         "space_watermark_notify_email_title": {
             "zh_CN": "「{SPACE_NAME}」空间站正在使用企业级空间站专属功能「全局水印」",
             "en_US": "The {SPACE_NAME} Space is using the enterprise-level feature \"Global Watermarks\""
-        },
-        "space_wecom_api_trial_end": {
-            "zh_CN": "因为企业微信应用市场修改了运营规则，维格表已根据指引进行了收费模式的调整，企业客户安装维格表后，接口许可免费试用期过期后，企业微信接口将无法正常调用。\n因此，${number} 天后您将可能无法进入应用、无法使用同步通讯录和收取应用消息等功能，为了不影响您的正常使用，请联系您的专属客服，客服将为您提供协助。"
         },
         "space_wecom_notify": {
             "zh_CN": "空间站正在使用企业级空间站专属功能「企业微信集成」，请升级以继续使用"
@@ -16437,29 +15994,21 @@
             "en_US": "Stacked Line Chart"
         },
         "Standalone_Capacity": {
-            "zh_CN": "独立附加容量",
-            "en_US": "Independent add-on capacity"
+            "zh_CN": "独立附加容量"
         },
         "standard": {
             "zh_CN": "标准版",
             "en_US": "Standard"
         },
         "start_field_name": {
-            "zh_CN": "开始时间",
-            "en_US": "Start time"
+            "zh_CN": "开始时间"
         },
         "start_onfiguration": {
             "zh_CN": "开始配置",
             "en_US": "Start configuration"
         },
-        "start_time": {
-            "zh_CN": "起始时间",
-            "en_US": "Start time",
-            "zh_HK": "起始时间"
-        },
         "start_use": {
-            "zh_CN": "开始使用",
-            "en_US": "Start using"
+            "zh_CN": "开始使用"
         },
         "startup": {
             "zh_CN": "创业",
@@ -16591,7 +16140,7 @@
         },
         "stop_dingtalk_h5_modal_content": {
             "zh_CN": "自建应用将与本空间站解除绑定，请确认停用。",
-            "en_US": "The self-built application will be unbound from this space. Please confirm ."
+            "en_US": "自建应用将与本空间站解除绑定，请确认停用。"
         },
         "storage_per_seats": {
             "zh_CN": "增值附件容量"
@@ -16692,10 +16241,6 @@
             "zh_CN": "提交需求",
             "en_US": "Submit requirements"
         },
-        "subscribe": {
-            "zh_CN": "订阅",
-            "en_US": "Subscribe"
-        },
         "subscribe_demonstrate": {
             "zh_CN": "预约演示",
             "en_US": "Request demos"
@@ -16727,10 +16272,6 @@
         "subscribed_record_commented": {
             "zh_CN": "<a class=\"memberName\"></a>在「<a class=\"nodeName\"></a>」维格表「<a class=\"recordTitle\"></a>」的记录进行了评论：「<a class=\"content\"></a>」",
             "en_US": "<a class=\"memberName\"></a> made comments from the \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\" datasheet：\"<a class=\"content\"></a>\""
-        },
-        "subscription_expire_error": {
-            "zh_CN": "您的订阅状态已过期",
-            "en_US": "Your subscription status has expired"
         },
         "subscription_fee": {
             "zh_CN": "订阅费用：${fee}",
@@ -16869,16 +16410,13 @@
             "en_US": "Switzerland"
         },
         "sync_failed": {
-            "zh_CN": "同步失败",
-            "en_US": "Synchronization failed"
+            "zh_CN": "同步失败"
         },
         "sync_success": {
-            "zh_CN": "同步成功",
-            "en_US": "Synchronization succeeded"
+            "zh_CN": "同步成功"
         },
         "syncing": {
-            "zh_CN": "正在同步",
-            "en_US": "Synchronizing"
+            "zh_CN": "正在同步"
         },
         "syria": {
             "zh_CN": "叙利亚",
@@ -17683,8 +17221,7 @@
             "en_US": "Total"
         },
         "total_capacity": {
-            "zh_CN": "总容量",
-            "en_US": "Total capacity"
+            "zh_CN": "总容量"
         },
         "total_error_records_count": {
             "zh_CN": "共 ${errorCount} 条记录",
@@ -17706,17 +17243,12 @@
             "zh_CN": "空间站容量上限：${memory}",
             "en_US": "Maximum: ${memory}"
         },
-        "transfer_to_public": {
-            "zh_CN": "对公转账",
-            "en_US": "Corporate transfer "
-        },
         "trash": {
             "zh_CN": "回收舱",
             "en_US": "Trash"
         },
         "trash_over_limit_tip": {
-            "zh_CN": "「白银级」空间站可查看 ${day} 天历史文件，限时开放体验",
-            "en_US": "\"Silver\" space can view ${day} days of historical files, limited-time open experience"
+            "zh_CN": "「白银级」空间站可查看 ${day} 天历史文件，限时开放体验"
         },
         "trash_tip": {
             "zh_CN": "回收舱会显示最近 ${day} 天内删除的文件，你仅可查看具有「可管理」权限的文件",
@@ -17807,8 +17339,7 @@
             "en_US": "Unactive Space"
         },
         "unauthorized_operation": {
-            "zh_CN": "您的权限不足，不能进行此操作",
-            "en_US": "You do not have sufficient permissions to perform this operation"
+            "zh_CN": "您的权限不足，不能进行此操作"
         },
         "unbind": {
             "zh_CN": "解绑",
@@ -17831,8 +17362,7 @@
             "en_US": "Underline"
         },
         "under_use_restrictions": {
-            "zh_CN": "体验中",
-            "en_US": "Experiencing"
+            "zh_CN": "体验中"
         },
         "understand_and_accept": {
             "zh_CN": "我已了解并接受",
@@ -17867,8 +17397,7 @@
             "en_US": "United States"
         },
         "unlimited": {
-            "zh_CN": "无限",
-            "en_US": "Unlimited"
+            "zh_CN": "无限"
         },
         "unlimited_search_tips": {
             "zh_CN": "升级到白银PRO空间站，享受快速全局搜索维格表",
@@ -17889,10 +17418,6 @@
         "unordered_list": {
             "zh_CN": "无序列表",
             "en_US": "Bulleted list"
-        },
-        "unpaid_order_status": {
-            "zh_CN": "暂未收到款项，再次 ${action}",
-            "en_US": "No payment received yet, again ${action}"
         },
         "unprocessed": {
             "zh_CN": "未处理",
@@ -17947,16 +17472,14 @@
             "en_US": "upgrade"
         },
         "upgrade_expire_time_warning": {
-            "zh_CN": "到期时间与原方案保持一致",
-            "en_US": "The expiration time is consistent with the original plan."
+            "zh_CN": "到期时间与原方案保持一致"
         },
         "upgrade_guide": {
             "zh_CN": "升级指南",
             "en_US": "How to upgrade"
         },
         "upgrade_now": {
-            "zh_CN": "立即升级",
-            "en_US": "Upgrade now"
+            "zh_CN": "立即升级"
         },
         "upgrade_pure": {
             "zh_CN": "升级",
@@ -17975,8 +17498,8 @@
             "en_US": "Upgrade Success"
         },
         "upgrade_success_1_desc": {
-            "zh_CN": "恭喜你${orderType}成功，可前往 ${position} 查看最新权益",
-            "en_US": "Congratulations on your ${orderType}. Check out ${position} for the latest benefits"
+            "zh_CN": "恭喜你升级成功，可前往 ${position} 查看最新权益",
+            "en_US": "Congratulations on your upgrade. Check out ${position} for the latest benefits"
         },
         "upgrade_success_2_desc": {
             "zh_CN": "我们为你分配了专属顾问，微信扫码联系我可获得更便捷的售后服务",
@@ -17987,12 +17510,11 @@
             "en_US": "I've finished adding"
         },
         "upgrade_success_model": {
-            "zh_CN": "${orderType}成功",
-            "en_US": "${orderType} success"
+            "zh_CN": "升级成功",
+            "en_US": "Upgrade success"
         },
         "upgrade_success_tip": {
-            "zh_CN": "恭喜，空间站已升级成功，可在空间站驾驶舱查看相关权益",
-            "en_US": "Congrats, the space has been upgraded successfully, and you can check your benefits in the Overview."
+            "zh_CN": "恭喜，空间站已升级成功，可在空间站驾驶舱查看相关权益"
         },
         "upgrade_to_silver_get_unlimited_search": {
             "zh_CN": "升级到白银PRO空间站，享受快速全局搜索维格表",
@@ -18019,8 +17541,7 @@
             "en_US": "Upload later"
         },
         "upload_on_your_phone": {
-            "zh_CN": " 从手机上传",
-            "en_US": "Upload from mobile"
+            "zh_CN": " 从手机上传"
         },
         "upload_success": {
             "zh_CN": "上传成功",
@@ -18293,8 +17814,7 @@
             "en_US": "Saving will update the view for everyone."
         },
         "view_property_sync_content_2": {
-            "zh_CN": "视图配置包括：筛选、分组、排序、隐藏列、布局、样式等",
-            "en_US": "View configuration includes filtering, grouping, sorting, hiding fields, layout, styles, etc."
+            "zh_CN": "视图配置包括：筛选、分组、排序、隐藏列、布局、样式等"
         },
         "view_property_sync_success": {
             "zh_CN": "视图配置已保存并同步给其他成员",
@@ -18329,8 +17849,7 @@
             "en_US": "/help/manual-sort/"
         },
         "view_sync_property_close_tip": {
-            "zh_CN": "视图配置协同已关闭，配置不会同步给其他成员，刷新后清除",
-            "en_US": "View configuration synchronization is turned off, the configuration will not be synchronized to other members, and it will be cleared after refresh"
+            "zh_CN": "视图配置协同已关闭，配置不会同步给其他成员，刷新后清除"
         },
         "view_sync_property_tip": {
             "zh_CN": "视图配置处于协同中，你的操作也会同步给其他成员",
@@ -18393,8 +17912,7 @@
             "en_US": "From vikadata: ${nickName} invited you to join \"${spaceName}\" Space. Open it via a computer browser for a better experience."
         },
         "vika_official_accounts": {
-            "zh_CN": "官方公众号",
-            "en_US": "Official account"
+            "zh_CN": "官方公众号"
         },
         "vika_privacy_policy": {
             "zh_CN": "《维格隐私政策》",
@@ -18417,8 +17935,7 @@
             "en_US": "Vika Planet"
         },
         "vikaby_activity_train_camp": {
-            "zh_CN": "限时福利",
-            "en_US": "Time-limited welfare"
+            "zh_CN": "限时福利"
         },
         "vikaby_first_menu1": {
             "zh_CN": "新手任务",
@@ -18593,10 +18110,6 @@
             "zh_CN": "微信扫码登录",
             "en_US": "Use WeChat scan code to log in"
         },
-        "wechat_payment": {
-            "zh_CN": "微信支付",
-            "en_US": "WeChat Pay"
-        },
         "wechat_qr_code": {
             "zh_CN": "微信扫码",
             "en_US": "wechat QR code",
@@ -18607,12 +18120,10 @@
             "en_US": "WeCom"
         },
         "wecom_admin_desc": {
-            "zh_CN": "用于企业微信企业管理员管理应用下的空间站",
-            "en_US": "For WeCom organization's adminstrators managing spaces"
+            "zh_CN": "用于企业微信企业管理员管理应用下的空间站"
         },
         "wecom_admin_title": {
-            "zh_CN": "企业微信空间站管理面板",
-            "en_US": "WeCom space admin panel"
+            "zh_CN": "企业微信空间站管理面板"
         },
         "wecom_app_desc": {
             "zh_CN": "<p>在企业微信上使用维格表应用，你可以</p>\n\n<ul><li>免登录，直接在企业微信进入维格表空间站，访问空间站数据</li><li>通过企业微信，收取空间站里的通知</li><li>在企业微信设置应用可见范围，并同步企业微信的通讯录</li></ul>",
@@ -18647,8 +18158,7 @@
             "en_US": "Please do not close or refresh the page while the configuration is in progress"
         },
         "wecom_invite_member_browser_tips": {
-            "zh_CN": "在浏览器内暂不支持站内邀请成员，请前往「企业微信 > 工作台 > vika维格表应用」邀请成员",
-            "en_US": "Inviting members in the space is not supported in the browser. Please go to \"WeCom > Workbench > vika Application\" to invite members."
+            "zh_CN": "在浏览器内暂不支持站内邀请成员，请前往「企业微信 > 工作台 > vika维格表应用」邀请成员"
         },
         "wecom_invite_member_version_tips": {
             "zh_CN": "无法邀请成员，可能是企业微信版本过低，请前往「企业微信 > 关于 > 检查更新」，升级版本后再尝试操作",
@@ -18659,32 +18169,27 @@
             "en_US": "WeCom login"
         },
         "wecom_login_application_uninstall": {
-            "zh_CN": "请检查应用是否被删除",
-            "en_US": "Please check whether the application is deleted"
+            "zh_CN": "请检查应用是否被删除"
         },
         "wecom_login_btn_text": {
             "zh_CN": "使用企业微信扫码登录",
             "en_US": "Please scan the wecom code to log in"
         },
         "wecom_login_fail_button": {
-            "zh_CN": "返回首页登录",
-            "en_US": "Back to home page"
+            "zh_CN": "返回首页登录"
         },
         "wecom_login_fail_tips_title": {
             "zh_CN": "登录失败",
             "en_US": "Login failed"
         },
         "wecom_login_Internet_error": {
-            "zh_CN": "网络异常，请返回重试",
-            "en_US": "Network exception, please go back and try again"
+            "zh_CN": "网络异常，请返回重试"
         },
         "wecom_login_out_of_range": {
-            "zh_CN": "请检查账号是否被移出应用可见范围\n",
-            "en_US": "Please check whether you are removed from the visible range of the WeCom application."
+            "zh_CN": "请检查账号是否被移出应用可见范围\n"
         },
         "wecom_login_tenant_not_exsist": {
-            "zh_CN": "企业未安装第三方应用，自建应用用户请使用专属域名登录",
-            "en_US": "Your organization didn't install the WeCom third-party application. If you're the user of WeCom self-built application, please log in with the enterprise's exclusive domain."
+            "zh_CN": "企业未安装第三方应用，自建应用用户请使用专属域名登录"
         },
         "wecom_logo_unauthorized_error": {
             "zh_CN": "租户用户未授权, 请联系管理员同步通讯录后在尝试操作",
@@ -18703,16 +18208,15 @@
             "en_US": "Failed to enter the space"
         },
         "wecom_org_manage_reject_msg": {
-            "zh_CN": "正通过企业微信集成管理通讯录，如需邀请成员请前往企业微信管理后台 <a href='/wecom-integration/#question' target=\\\"_blank\\\">如何邀请？</a>",
-            "en_US": "This Space's contacts are managed by the WeCom integration. Please go to the WeCom admin backend to invite members. <a href='/wecom-integration/#question' target=\\\"_blank\\\">How to invite？</a>"
+            "zh_CN": "正通过企业微信集成管理通讯录，如需邀请成员请前往企业微信管理后台 <a href='/help/integration-wecom/#10-toc-title' target=\\\"_blank\\\">如何邀请？</a>",
+            "en_US": "This Space's contacts are managed by the WeCom integration. Please go to the WeCom admin backend to invite members. <a href='/help/integration-wecom/#10-toc-title' target=\\\"_blank\\\">How to invite？</a>"
         },
         "wecom_profession": {
             "zh_CN": "企业微信专业版",
             "en_US": "Pro Plan with WeCom"
         },
         "wecom_single_record_member_mention_title": {
-            "zh_CN": "有人在记录中提及你",
-            "en_US": " You're mentioned in a record"
+            "zh_CN": "有人在记录中提及你"
         },
         "wecom_social_deactivate_tip": {
             "zh_CN": "如需停用应用，请前往「企业微信管理后台 > 应用管理 > 维格表 > 删除应用」",
@@ -18727,12 +18231,10 @@
             "en_US": "Standard Plan with WeCom"
         },
         "wecom_subscribed_record_cell_updated_title": {
-            "zh_CN": "关注的记录被修改",
-            "en_US": "Someone has changed the record you are watching in"
+            "zh_CN": "关注的记录被修改"
         },
         "wecom_subscribed_record_commented_title": {
-            "zh_CN": "关注的记录有一条新评论",
-            "en_US": "The record you are watching received a new comment"
+            "zh_CN": "关注的记录有一条新评论"
         },
         "wecom_sync_address_error": {
             "zh_CN": "你已被移出企业微信应用可见范围，同步通讯录将使空间站缺失主管理员，请更换主管理员后再同步通讯录",
@@ -18976,18 +18478,6 @@
             "zh_CN": "展开小程序",
             "en_US": "Expand widget"
         },
-        "widget_filter_add_filter": {
-            "zh_CN": "添加筛选条件",
-            "en_US": "Add filter"
-        },
-        "widget_filter_condition_numbers": {
-            "zh_CN": "{FILTER_NUM} 个筛选条件",
-            "en_US": "{FILTER_NUM} filter"
-        },
-        "widget_filter_tips": {
-            "zh_CN": "被筛选过滤的数据不会被小程序读取",
-            "en_US": "Filtered data is not read by widget"
-        },
         "widget_has_be_delete": {
             "zh_CN": "该小程序已被删除，无法查看",
             "en_US": "The widget has been deleted"
@@ -18999,58 +18489,6 @@
         "widget_homepage_tooltip": {
             "zh_CN": "小程序主页",
             "en_US": "Widget homepage"
-        },
-        "widget_import_from_airtable_done": {
-            "zh_CN": "Airtable 数据导入成功，本次共导入 ${ROW_NUM} 行数据",
-            "en_US": "Airtable data is successfully imported, included $ {ROW_NUM} records"
-        },
-        "widget_import_from_airtable_done_button": {
-            "zh_CN": "重新导入",
-            "en_US": "Re-import"
-        },
-        "widget_import_from_airtable_start_import": {
-            "zh_CN": "开始导入",
-            "en_US": "Click here to import"
-        },
-        "widget_import_from_airtable_start_import_description": {
-            "zh_CN": "点击下方按钮或展开小程序即可开始导入Airtable 数据",
-            "en_US": "Click the button or expand the widget to start import"
-        },
-        "widget_import_from_airtable_step_1_title": {
-            "zh_CN": "1. 请前往 Airtable 获取下方参数信息 ",
-            "en_US": "1. Please enter the required information from airtable"
-        },
-        "widget_import_from_airtable_step_1_viewid": {
-            "zh_CN": "View ID（可选）",
-            "en_US": "View ID（Optional）"
-        },
-        "widget_import_from_airtable_step_1_warning_content": {
-            "zh_CN": "请确认填写内容正确后重试",
-            "en_US": "Please confirm that the content of the filling is correct"
-        },
-        "widget_import_from_airtable_step_2_fields": {
-            "zh_CN": "待导入的字段名",
-            "en_US": "Fields"
-        },
-        "widget_import_from_airtable_step_2_fields_type": {
-            "zh_CN": "字段类型",
-            "en_US": "Field types"
-        },
-        "widget_import_from_airtable_step_2_title": {
-            "zh_CN": "2. 请选择字段类型",
-            "en_US": "2. Configure field type"
-        },
-        "widget_import_from_airtable_step_3_button": {
-            "zh_CN": "停止导入",
-            "en_US": "Stop importing"
-        },
-        "widget_import_from_airtable_step_3_description": {
-            "zh_CN": "正在从 Airtable 导入数据……",
-            "en_US": "Importing data from Airtable……"
-        },
-        "widget_import_from_airtable_tutorial": {
-            "zh_CN": "查看教程",
-            "en_US": "View tutorial"
         },
         "widget_item_build": {
             "zh_CN": "自建",

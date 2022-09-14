@@ -182,6 +182,8 @@ public class BillingConfigManager {
         billingPlanFeature.setSecuritySettingShare(defaultIfNull(getPlanFeatureValue(basePlanFeatureMap, BillingFunctionEnum.SECURITY_SETTING_SHARE, Boolean.class)));
         billingPlanFeature.setSecuritySettingMobile(defaultIfNull(getPlanFeatureValue(basePlanFeatureMap, BillingFunctionEnum.SECURITY_SETTING_MOBILE, Boolean.class)));
         billingPlanFeature.setMaxAuditQueryDays(getPlanFeatureValue(basePlanFeatureMap, BillingFunctionEnum.AUDIT_QUERY, Long.class));
+        billingPlanFeature.setSecuritySettingAddresslistIsolation(getPlanFeatureValue(basePlanFeatureMap, BillingFunctionEnum.SECURITY_SETTING_ADDRESSLIST_ISOLATION, Boolean.class));
+        billingPlanFeature.setSecuritySettingCatalogManagement(getPlanFeatureValue(basePlanFeatureMap, BillingFunctionEnum.SECURITY_SETTING_CATALOG_MANAGEMENT, Boolean.class));
         // 可叠加订阅方案限制值
         Long baseCapacitySize = getPlanFeatureValue(basePlanFeatureMap, BillingFunctionEnum.CAPACITY, Long.class);
         if (baseCapacitySize != null) {
