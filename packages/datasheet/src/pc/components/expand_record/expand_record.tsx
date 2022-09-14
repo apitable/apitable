@@ -205,7 +205,7 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
   const [datasheetId, setDatasheetId] = useState<string | undefined>(nodeId);
   const { snapshot, isPartOfData, visibleRows, datasheetErrorCode, pageParamsRecordId, activeDatasheetId, mirrorSourceDstId } = useSelector(
     state => ({
-      snapshot: Selectors.getSnapshot(state, datasheetId)!,
+      snapshot: Selectors.getSnapshot(state, datasheetId),
       isPartOfData: Selectors.getDatasheet(state, datasheetId)?.isPartOfData,
       datasheetErrorCode: isMirror ? Selectors.getMirrorErrorCode(state, nodeId) : Selectors.getDatasheetErrorCode(state, datasheetId),
       visibleRows: Selectors.getVisibleRows(state),
@@ -217,7 +217,6 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
   );
   const hasRecordIdsData = () => snapshot && recordIds.every(recordId => snapshot.recordMap && snapshot.recordMap?.[recordId]);
   const [independentDataLoading, setIndependentDataLoading] = useState<boolean>(isIndependent && isPartOfData !== false && !hasRecordIdsData());
-  const { recordMap } = snapshot;
   
   useEffect(() => {
     if (independentDataLoading) {
@@ -277,7 +276,7 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
         default:
       }
       // 对于加载回来的数据为空的情况
-      if (!errorCode && activeRecordId && !snapshot.recordMap[activeRecordId]) {
+      if (!errorCode && activeRecordId && !snapshot?.recordMap[activeRecordId]) {
         const customModal = CustomModal.error(getModalConfig({
           title: t(Strings.open_failed),
           content: t(Strings.error_record_not_exist_now),
@@ -298,7 +297,7 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
       errorHandle(datasheetErrorCode);
       return;
     }
-    if (independentDataLoading || !recordMap) {
+    if (independentDataLoading || !snapshot?.recordMap) {
       return;
     }
     let curRecordIds: string[];
@@ -308,10 +307,11 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
         {
           
           // 传入的和现有的交集，因为可能有被删除的，所以这里求交集
-          curRecordIds = recordIds.filter(id => recordMap[id]);
+          curRecordIds = recordIds.filter(id => snapshot?.recordMap[id]);
           // 默认使用 activeRecord，如果 activeRecord 被过滤掉了，就用第一个，realActiveRecordId 作为切换后
           curActiveRecordId =
-            (realActiveRecordId && recordMap?.[realActiveRecordId]?.id) || (activeRecordId && recordMap?.[activeRecordId]?.id) || curRecordIds[0];
+            (realActiveRecordId && snapshot?.recordMap?.[realActiveRecordId]?.id)
+            || (activeRecordId && snapshot?.recordMap?.[activeRecordId]?.id) || curRecordIds[0];
         }
         break;
       case RecordType.Datasheet:
@@ -325,7 +325,7 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
     setRealActiveRecordId(curActiveRecordId);
     errorHandle(datasheetErrorCode, curRecordIds, curActiveRecordId || 'not recordId');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [recordMap, datasheetErrorCode, independentDataLoading, pageParamsRecordId]);
+  }, [snapshot?.recordMap, datasheetErrorCode, independentDataLoading, pageParamsRecordId]);
 
   const switchRecord = useCallback(
     (index: number) => {
