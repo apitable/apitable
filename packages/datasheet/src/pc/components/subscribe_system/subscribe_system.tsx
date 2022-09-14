@@ -19,7 +19,7 @@ import { SubscribePayMethod } from 'pc/components/subscribe_system/subscribe_pay
 import { SubscribeSeat } from 'pc/components/subscribe_system/subscribe_seat/subscribe_seat';
 import { SubscribeTime } from 'pc/components/subscribe_system/subscribe_time/subscribe_time';
 import { useQuery, useUserRequest } from 'pc/hooks';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './styles.module.less';
 
@@ -50,7 +50,7 @@ export const SubScribeSystem = () => {
   const subscription = useSelector(state => state.billing.subscription);
 
   const spaceInfo = space.curSpaceInfo;
-  const levelInfo = paySystemConfig[(levelTab === SubscribeLevelTab.UNUSED || levelTab == null) ? SubscribeLevelTab.SILVER : levelTab];
+  const levelInfo = paySystemConfig[levelTab === SubscribeLevelTab.UNUSED || levelTab == null ? SubscribeLevelTab.SILVER : levelTab];
 
   useEffect(() => {
     if (seat == null) {
@@ -111,9 +111,9 @@ export const SubScribeSystem = () => {
           navigateTo({
             path: Navigation.LOGIN,
             query: {
-              reference: location.href
+              reference: location.href,
             },
-            method: Method.Redirect
+            method: Method.Redirect,
           });
         }, 1000);
         return;
@@ -153,10 +153,12 @@ export const SubScribeSystem = () => {
       const { data, success } = res.data;
       if (success) {
         dispatch(StoreActions.setSpaceInfo(data));
-        dispatch(StoreActions.updateUserInfo({
-          spaceName: data.spaceName,
-          spaceLogo: data.spaceLogo,
-        }));
+        dispatch(
+          StoreActions.updateUserInfo({
+            spaceName: data.spaceName,
+            spaceLogo: data.spaceLogo,
+          }),
+        );
       }
     });
   }, [spaceId, dispatch]);
@@ -176,25 +178,25 @@ export const SubScribeSystem = () => {
     setSubscribeLongs(6);
   };
 
-  const showDiscountDeadline = useMemo(() => {
-    return dayjs().valueOf() <= dayjs('2022-06-30').valueOf();
-  }, []);
-
   const calcExpireDate = () => {
     if (getPageType() !== SubscribePageType.Renewal) {
       // 如果是订阅，到期时间应该是在今天的基础上+用户订阅的时间
-      return dayjs().add(Number(subscribeLongs), 'month').format('YYYY-MM-DD');
+      return dayjs()
+        .add(Number(subscribeLongs), 'month')
+        .format('YYYY-MM-DD');
     }
     if (!subscription) {
       return null;
     }
     // 如果是续费，应该是在用户原先产品的到期时间+用户续费的时间
-    return dayjs(subscription.deadline).add(Number(subscribeLongs), 'month').format('YYYY-MM-DD');
+    return dayjs(subscription.deadline)
+      .add(Number(subscribeLongs), 'month')
+      .format('YYYY-MM-DD');
   };
 
   if (!levelInfo) {
     Message.error({
-      content: t(Strings.subscription_expire_error)
+      content: t(Strings.subscription_expire_error),
     });
     setTimeout(() => {
       window.location.href = '/workbench';
@@ -202,41 +204,36 @@ export const SubScribeSystem = () => {
     return <></>;
   }
 
-  return <div className={styles.container}>
-    <SubscribeBar />
-    <main className={styles.main}>
-      <SubscribeHeader
-        levelTab={levelTab}
-        setLevelTab={setLevelTab}
-        levelInfo={levelInfo}
-        pageType={getPageType()}
-      />
-      {
-        showDiscountDeadline && <SubscribeOffer levelTab={levelTab} />
-      }
+  return (
+    <div className={styles.container}>
+      <SubscribeBar />
+      <main className={styles.main}>
+        <SubscribeHeader levelTab={levelTab} setLevelTab={setLevelTab} levelInfo={levelInfo} pageType={getPageType()} />
+        <SubscribeOffer levelTab={levelTab} />
 
-      {
-        levelTab === 'ENTERPRISE' ? <>
-          <div className={styles.enterprise}>
-            <Typography variant={'h5'} className={styles.enterpriseDesc1}>
-              {t(Strings.contact_model_title)}
-            </Typography>
-            <Typography variant={'body1'} className={styles.enterpriseDesc2}>
-              {t(Strings.custom_enterprise)}
-            </Typography>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Image alt={''} style={{ borderRadius: '8px' }} src={integrateCdnHost(Settings.enterprise_qr_code.value)} width={232} height={232} />
+        {levelTab === 'ENTERPRISE' ? (
+          <>
+            <div className={styles.enterprise}>
+              <Typography variant={'h5'} className={styles.enterpriseDesc1}>
+                {t(Strings.contact_model_title)}
+              </Typography>
+              <Typography variant={'body1'} className={styles.enterpriseDesc2}>
+                {t(Strings.custom_enterprise)}
+              </Typography>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <Image alt={''} style={{ borderRadius: '8px' }} src={integrateCdnHost(Settings.enterprise_qr_code.value)} width={232} height={232} />
+              </div>
             </div>
-          </div>
-          <div style={{ height: 46 }} />
-        </> :
+            <div style={{ height: 46 }} />
+          </>
+        ) : (
           <>
             <div className={styles.productArea}>
               <div className={styles.leftCheckInfo}>
                 <div
                   className={classnames({
                     [styles.align]: true,
-                    [styles.marginBottom]: getPageType() === SubscribePageType.Renewal
+                    [styles.marginBottom]: getPageType() === SubscribePageType.Renewal,
                   })}
                 >
                   <Typography
@@ -246,16 +243,16 @@ export const SubScribeSystem = () => {
                   >
                     {t(Strings.plan_model_choose_members)}:
                   </Typography>
-                  {
-                    getPageType() === SubscribePageType.Renewal ?
-                      <Typography variant={'body2'} style={{ display: 'flex' }} color={colors.thirdLevelText}>
-                        <TComponent
-                          tkey={t(Strings.renewal_seat_warning)}
-                          params={{
-                            link: <LinkButton
+                  {getPageType() === SubscribePageType.Renewal ? (
+                    <Typography variant={'body2'} style={{ display: 'flex' }} color={colors.thirdLevelText}>
+                      <TComponent
+                        tkey={t(Strings.renewal_seat_warning)}
+                        params={{
+                          link: (
+                            <LinkButton
                               style={{
                                 color: levelInfo.activeColor,
-                                borderBottom: 0
+                                borderBottom: 0,
                               }}
                               onClick={() => {
                                 window.location.href = window.location.origin + window.location.pathname + `?pageType=${SubscribePageType.Upgrade}`;
@@ -263,43 +260,44 @@ export const SubScribeSystem = () => {
                             >
                               {t(Strings.click_here)}
                             </LinkButton>
-                          }}
-                        />
-                      </Typography> :
-                      <SubscribeSeat
-                        seatList={seatList}
-                        seat={seat}
-                        setSeat={setSeat}
-                        levelInfo={levelInfo}
-                        loading={loading}
-                        pageType={getPageType()}
+                          ),
+                        }}
                       />
-                  }
-
+                    </Typography>
+                  ) : (
+                    <SubscribeSeat
+                      seatList={seatList}
+                      seat={seat}
+                      setSeat={setSeat}
+                      levelInfo={levelInfo}
+                      loading={loading}
+                      pageType={getPageType()}
+                    />
+                  )}
                 </div>
-                {
-                  getPageType() === SubscribePageType.Subscribe && <Typography variant={'body3'} className={styles.seatNumNote}>
+                {getPageType() === SubscribePageType.Subscribe && (
+                  <Typography variant={'body3'} className={styles.seatNumNote}>
                     <TComponent
                       tkey={t(Strings.plan_model_members_tips)}
                       params={{
-                        space_leve: <LinkButton
-                          color={levelInfo.activeColor}
-                          style={{ marginLeft: 4 }}
-                          onClick={() => setLevelTab(levelTab === SubscribeLevelTab.SILVER ? SubscribeLevelTab.GOLD : SubscribeLevelTab.ENTERPRISE)}
-                        >
-                          {
-                            levelTab === SubscribeLevelTab.SILVER ? t(Strings.gold) : t(Strings.enterprise)
-                          }
-                        </LinkButton>
+                        space_leve: (
+                          <LinkButton
+                            color={levelInfo.activeColor}
+                            style={{ marginLeft: 4 }}
+                            onClick={() => setLevelTab(levelTab === SubscribeLevelTab.SILVER ? SubscribeLevelTab.GOLD : SubscribeLevelTab.ENTERPRISE)}
+                          >
+                            {levelTab === SubscribeLevelTab.SILVER ? t(Strings.gold) : t(Strings.enterprise)}
+                          </LinkButton>
+                        ),
                       }}
                     />
                   </Typography>
-                }
+                )}
 
                 <div
                   className={classnames({
                     [styles.align]: true,
-                    [styles.marginTop50]: getPageType() === SubscribePageType.Upgrade
+                    [styles.marginTop50]: getPageType() === SubscribePageType.Upgrade,
                   })}
                 >
                   <Typography
@@ -344,7 +342,8 @@ export const SubScribeSystem = () => {
               pageType={getPageType()}
             />
           </>
-      }
-    </main>
-  </div>;
+        )}
+      </main>
+    </div>
+  );
 };

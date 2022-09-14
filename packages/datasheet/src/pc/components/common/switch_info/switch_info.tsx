@@ -42,12 +42,12 @@ export const SwitchInfo: FC<ISwitchInfoProps> = props => {
       {/* Radio 权限组 */}
       {
         Boolean(permissionList.length) &&
-        <div className={classNames(styles.radioGroup, checked && styles.radioGroupDisabled)}>
+        <div className={classNames(styles.radioGroup, !checked && styles.radioGroupDisabled)}>
           <Radio.Group
             name="inline"
             onChange={(e) => props.onClick?.(e.target.value)}
             value={String(permissionType)}
-            disabled={checked}
+            disabled={!checked}
           >
             {
               permissionList.map(item => {
