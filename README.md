@@ -148,20 +148,20 @@ curl https://apitable.github.io/install.sh | bash -c
 
 ##### Basic
 
-1. Create an issue and describe your idea: [APITable issues](https://github.com/apitable/apitable/issues)
-2. Fork this project: [Fork APITable project](https://github.com/apitable/apitable/fork)
+1. Create an issue and describe your idea -> [APITable issues](https://github.com/apitable/apitable/issues)
+2. Fork this project -> [Fork APITable project](https://github.com/apitable/apitable/fork)
 3. Create your feature branch (`git checkout -b my-new-feature`)
 4. Commit your changes (`git commit -am 'Add some feature'`)
 5. Publish the branch (`git push origin my-new-feature`)
-6. Create a new Pull Request: [Create pull request across forks](https://github.com/apitable/apitable/compare)
+6. Create a new Pull Request -> [Create pull request across forks](https://github.com/apitable/apitable/compare)
 
 ##### Conventions
 APITable use common accepted conventions:
 
-- What's our Git branching model?: [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
-- How to collaborate on your fork projects?[Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
-- How to write good commit message?: [Conventional Commits](https://www.conventionalcommits.org/)
-- How to versioning and tagging?: [Semantic Versioning](https://semver.org/)
+- What's our Git branching model? -> [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
+- How to collaborate on your fork projects? -> [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
+- How to write good commit message? -> [Conventional Commits](https://www.conventionalcommits.org/)
+- How to versioning and tagging? -> [Semantic Versioning](https://semver.org/)
 
 ## 🛣 Roadmap
 
