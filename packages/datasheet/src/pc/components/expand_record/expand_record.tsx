@@ -217,7 +217,8 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
   );
   const hasRecordIdsData = () => snapshot && recordIds.every(recordId => snapshot.recordMap && snapshot.recordMap?.[recordId]);
   const [independentDataLoading, setIndependentDataLoading] = useState<boolean>(isIndependent && isPartOfData !== false && !hasRecordIdsData());
-
+  const { recordMap } = snapshot;
+  
   useEffect(() => {
     if (independentDataLoading) {
       resourceService
@@ -291,13 +292,13 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
     },
     [modalClose, snapshot],
   );
-
+  
   useEffect(() => {
     if (!independentDataLoading && datasheetErrorCode && datasheetId) {
       errorHandle(datasheetErrorCode);
       return;
     }
-    if (independentDataLoading || !snapshot) {
+    if (independentDataLoading || !recordMap) {
       return;
     }
     let curRecordIds: string[];
@@ -305,7 +306,7 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
     switch (recordType) {
       case RecordType.Independent:
         {
-          const { recordMap } = snapshot;
+          
           // 传入的和现有的交集，因为可能有被删除的，所以这里求交集
           curRecordIds = recordIds.filter(id => recordMap[id]);
           // 默认使用 activeRecord，如果 activeRecord 被过滤掉了，就用第一个，realActiveRecordId 作为切换后
@@ -324,7 +325,7 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
     setRealActiveRecordId(curActiveRecordId);
     errorHandle(datasheetErrorCode, curRecordIds, curActiveRecordId || 'not recordId');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [snapshot, datasheetErrorCode, independentDataLoading, pageParamsRecordId]);
+  }, [recordMap, datasheetErrorCode, independentDataLoading, pageParamsRecordId]);
 
   const switchRecord = useCallback(
     (index: number) => {
@@ -356,7 +357,7 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
       </div>
     );
   }
-
+  
   const commonProps = {
     ...props,
     // 跟随 url 模式下，realActiveRecordId 跟随 url 中的 recordId
