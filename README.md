@@ -144,6 +144,20 @@ If you computer has installed Docker Machine, run this:
 curl https://apitable.github.io/install.sh | bash -c
 ```
 
+## Running for development
+
+Make sure you have `docker` & `make` installed locally.
+
+APITable uses Docker to run everything, so relax that Java and NodeJS is no need for your local machine.
+
+Then you run development environment by one command:
+
+```bash
+make devenv-up
+```
+
+More details, input `make` command for help.
+
 ### Contributing
 
 ##### Basic
@@ -162,6 +176,7 @@ APITable use common use conventions:
 - How to collaborate on your fork projects? -> [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
 - How to write good commit message? -> [Conventional Commits](https://www.conventionalcommits.org/)
 - How to versioning and tagging? -> [Semantic Versioning](https://semver.org/)
+- What is the Java Coding Guideline? -> [Java Coding Guideline](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines)
 
 ## 🛣 Roadmap
 
