@@ -25,7 +25,6 @@ import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock
 import { HiddenKanbanGroup } from '../hidden_kanban_group';
 import { closeAllExpandRecord } from 'pc/components/expand_record';
 import { store } from 'pc/store';
-import { Share } from 'pc/components/catalog/share';
 
 interface IDisplay extends Partial<TriggerProps> {
   style?: React.CSSProperties;
@@ -45,10 +44,6 @@ export const Display: React.FC<IDisplay> = props => {
     const permissions = Selectors.getPermissions(state);
     return permissions.visualizationEditable || permissions.editable;
   });
-  const canOpenShare = useSelector(state => {
-    const permissions = Selectors.getPermissions(state);
-    return permissions.editable || permissions.manageable;
-  });
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state)!);
   const activeView = useSelector(state => Selectors.getCurrentView(state))!;
   const mirrorId = useSelector(state => state.pageParams.mirrorId);
@@ -59,7 +54,6 @@ export const Display: React.FC<IDisplay> = props => {
   const disabledToolBarWithMirror = useDisabledOperateWithMirror();
   const showViewLockModal = useShowViewLockModal();
   const [triggerInfo, setTriggerInfo] = useState<IUseListenTriggerInfo>();
-  const activeNodeId = useSelector(state => Selectors.getNodeId(state));
 
   useEffect(() => {
     if (!editable && type !== ToolHandleType.ViewSwitcher) {
@@ -91,15 +85,9 @@ export const Display: React.FC<IDisplay> = props => {
       return;
     }
 
-    if (disabledToolBarWithMirror && type !== ToolHandleType.Share) {
+    if (disabledToolBarWithMirror) {
       return;
     }
-
-    // 分享只有具有可编辑可管理权限的人才能打开
-    if (type === ToolHandleType.Share && !canOpenShare) {
-      return;
-    }
-
     setToolbarMenuCardOpen(popupVisible);
     onVisibleChange && onVisibleChange(popupVisible);
     dispatch(batchActions([StoreActions.clearSelection(datasheetId), StoreActions.clearActiveFieldState(datasheetId)]));
@@ -164,9 +152,6 @@ export const Display: React.FC<IDisplay> = props => {
       case ToolHandleType.CalendarSetting:
         renderNode = <SetCalendarLayout />;
         break;
-      case ToolHandleType.Share:
-        renderNode = <Share nodeId={activeNodeId} isTriggerRender />;
-        break;
       default:
         renderNode = <></>;
     }
@@ -184,13 +169,8 @@ export const Display: React.FC<IDisplay> = props => {
         return t(Strings.set_grouping);
       }
 
-      if (type === ToolHandleType.Share) {
-        return t(Strings.share);
-      }
-
       return t(Strings.filter);
     };
-
     return (
       <>
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>{renderNode}</ComponentDisplay>
@@ -200,7 +180,7 @@ export const Display: React.FC<IDisplay> = props => {
             className={styles.popupWrapper}
             visible={open}
             onClose={() => onMenuVisibleChange(false)}
-            height={type !== ToolHandleType.Share ? '90%' : 'auto'}
+            height="90%"
             destroyOnClose
           >
             {renderNode}
@@ -226,9 +206,6 @@ export const Display: React.FC<IDisplay> = props => {
     }
     if (type === ToolHandleType.ViewSort || type === ToolHandleType.ViewGroup) {
       return 470;
-    }
-    if (type === ToolHandleType.Share) {
-      return 528;
     }
     return 200;
   };

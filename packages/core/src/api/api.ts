@@ -1447,7 +1447,6 @@ export function loadOrSearch({
   keyword,
   names,
   unitIds,
-  searchEmail,
   linkId,
   all,
 }: ILoadOrSearchArg): Promise<IAxiosResponse<any>> {
@@ -1457,7 +1456,6 @@ export function loadOrSearch({
       keyword,
       names,
       unitIds,
-      searchEmail,
       linkId,
       all,
     },
