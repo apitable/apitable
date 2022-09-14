@@ -46,6 +46,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
       canEditInvite: permissions.manageable,
     };
   });
+  const invitable = useSelector(state => state.space.spaceFeatures?.invitable);
   // const { checkEmailReq } = useSpaceRequest();
   const { getNodeRoleListReq } = useCatalogTreeRequest();
   const { generateLinkReq, linkListReq } = useInviteRequest();
@@ -100,9 +101,11 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   }, [socketData, getNodeRoleList]);
 
   useEffect(() => {
-    fetchInviteLinkList();
+    if (invitable || userInfo?.isAdmin) {
+      fetchInviteLinkList();
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [invitable, userInfo?.isAdmin]);
 
   const optionData = permissionMenuData(data.type);
 

@@ -15,6 +15,7 @@ import { ShareLink } from '../share/share_link';
 import { DownloadQrCode } from './download_qr_code';
 
 import styles from './style.module.less';
+import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
 
 export interface IPublicShareLinkProps {
   nodeId: string;
@@ -25,9 +26,8 @@ export interface IPublicShareLinkProps {
 
 export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMobile, inviteLink, canEditInvite }) => {
   const dispatch = useDispatch();
-  const { getShareSettingsReq/*, disableShareReq*/ } = useCatalogTreeRequest();
-  // const { run: disableShare, loading: disableShareLoading } = useRequest(() => disableShareReq(nodeId), { manual: true });
-  const { run: getShareSettings, data: shareSettings, loading/*, mutate: setShareSettings*/ } =
+  const { getShareSettingsReq } = useCatalogTreeRequest();
+  const { run: getShareSettings, data: shareSettings, loading } =
     useRequest<IShareSettings, any>(() => getShareSettingsReq(nodeId));
   const { userInfo, treeNodesMap, spaceFeatures } = useSelector((state: IReduxState) => ({
     treeNodesMap: state.catalogTree.treeNodesMap,
@@ -199,49 +199,55 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
   return (
     <>
       <div className={styles.shareToggle}>
-        <Switch disabled={!spaceFeatures?.invitable} checked={shareSettings?.shareOpened} onChange={handleToggle} />
+        <Switch disabled={!spaceFeatures?.invitable || !spaceFeatures?.fileSharable} checked={shareSettings?.shareOpened} onChange={handleToggle} />
         <Typography variant='h7' className={styles.shareToggleContent}>{t(Strings.publish_share_link_with_anyone)}</Typography>
         <InformationSmallOutlined />
       </div>
-      {!loading && shareSettings && shareSettings.shareOpened && (
+      {spaceFeatures?.fileSharable ? (
         <>
-          <div className={styles.sharePerson}>
-            <Typography className={styles.sharePersonContent} variant='body2'>{t(Strings.get_link_person_on_internet)}</Typography>
-            <DoubleSelect
-              value={value}
-              disabled={false}
-              onSelected={(op, index) => handleShareAuthClick(op)}
-              triggerCls={styles.doubleSelect}
-              options={Permission}
-            />
-          </div>
-          <ShareLink
-            shareName={treeNodesMap[shareSettings.nodeId]?.nodeName}
-            shareSettings={shareSettings}
-            userInfo={userInfo}
-          />
+          {!loading && shareSettings && shareSettings.shareOpened && (
+            <>
+              <div className={styles.sharePerson}>
+                <Typography className={styles.sharePersonContent} variant='body2'>{t(Strings.get_link_person_on_internet)}</Typography>
+                <DoubleSelect
+                  value={value}
+                  disabled={false}
+                  onSelected={(op, index) => handleShareAuthClick(op)}
+                  triggerCls={styles.doubleSelect}
+                  options={Permission}
+                />
+              </div>
+              <ShareLink
+                shareName={treeNodesMap[shareSettings.nodeId]?.nodeName}
+                shareSettings={shareSettings}
+                userInfo={userInfo}
+              />
+            </>
+          )}
+          {canEditInvite && (
+            <div className={styles.inviteMore}>
+              <Typography className={styles.inviteMoreTitle} variant='body3'>{t(Strings.more_invite_ways)}：</Typography>
+              <Tooltip title={t(Strings.default_link_join_tip)} placement="top" overlayStyle={{ width: 190 }}>
+                <Typography className={styles.inviteMoreMethod} variant='body3' onClick={handleCopyInviteLink}>
+                  <ColumnUrlOutlined />
+                  <span>{t(Strings.invite_via_link)}</span>
+                </Typography>
+              </Tooltip>
+              {!isMobile && (
+                <Popover
+                  overlayClassName={styles.qrCodePopover}
+                  placement="rightBottom"
+                  title={null}
+                  content={renderPopover()}
+                  trigger="click"
+                >
+                  {renderInviteByQrCode()}
+                </Popover>
+              )}
+            </div>
+          )}
         </>
-      )}
-      {canEditInvite && (
-        <div className={styles.inviteMore}>
-          <Typography className={styles.inviteMoreTitle} variant='body3'>{t(Strings.more_invite_ways)}：</Typography>
-          <Tooltip title={t(Strings.default_link_join_tip)} placement="top" overlayStyle={{ width: 190 }}>
-            <Typography className={styles.inviteMoreMethod} variant='body3' onClick={handleCopyInviteLink}>
-              <ColumnUrlOutlined />
-              <span>{t(Strings.invite_via_link)}</span>
-            </Typography>
-          </Tooltip>
-          <Popover
-            overlayClassName={styles.qrCodePopover}
-            placement={isMobile ? 'topRight' : 'rightBottom'}
-            title={null}
-            content={renderPopover()}
-            trigger="click"
-          >
-            {renderInviteByQrCode()}
-          </Popover>
-        </div>
-      )}
+      ) : <DisabledShareFile />}
     </>
   );
 };
