@@ -212,4 +212,18 @@ public class BillingPlanFeature {
      * 审计日志最大可查询天数(单位: 天)
      */
     private Long maxAuditQueryDays;
+
+    /**
+     * 安全设置-通讯录隐藏
+     *
+     * @since 0.13.7
+     */
+    private Boolean securitySettingAddresslistIsolation;
+
+    /**
+     * 安全设置-禁止成员在根目录增删文件
+     *
+     * @since 0.13.7
+     */
+    private Boolean securitySettingCatalogManagement;
 }
