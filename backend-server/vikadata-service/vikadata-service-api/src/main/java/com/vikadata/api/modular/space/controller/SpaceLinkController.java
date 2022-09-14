@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
+import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -22,6 +23,7 @@ import com.vikadata.api.model.vo.space.SpaceLinkInfoVo;
 import com.vikadata.api.model.vo.space.SpaceLinkVo;
 import com.vikadata.api.modular.organization.mapper.TeamMapper;
 import com.vikadata.api.modular.space.mapper.SpaceInviteLinkMapper;
+import com.vikadata.api.modular.space.service.IInvitationService;
 import com.vikadata.api.modular.space.service.ISpaceInviteLinkService;
 import com.vikadata.core.support.ResponseData;
 
@@ -51,6 +53,9 @@ public class SpaceLinkController {
     @Resource
     private TeamMapper teamMapper;
 
+    @Resource
+    private IInvitationService iInvitationService;
+
     @GetResource(path = "/list", tags = "INVITE_MEMBER")
     @ApiOperation(value = "获取链接列表")
     @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
@@ -66,6 +71,9 @@ public class SpaceLinkController {
     public ResponseData<String> generate(@RequestBody @Valid SpaceLinkOpRo opRo) {
         String spaceId = LoginContext.me().getSpaceId();
         Long memberId = LoginContext.me().getMemberId();
+        if (StrUtil.isNotBlank(opRo.getNodeId())) {
+            return ResponseData.success(iInvitationService.getMemberInvitationTokenByNodeId(memberId, spaceId, opRo.getNodeId()));
+        }
         Long teamId = opRo.getTeamId();
         if (teamId == 0) {
             teamId = teamMapper.selectRootIdBySpaceId(spaceId);
@@ -99,7 +107,7 @@ public class SpaceLinkController {
     @ApiOperation(value = "公开链接加入空间站", notes = "状态码返回201未授权跳转至登陆页面")
     public ResponseData<Void> join(@RequestBody @Valid InviteValidRo data) {
         Long userId = SessionContext.getUserId();
-        iSpaceInviteLinkService.join(userId, data.getToken());
+        iSpaceInviteLinkService.join(userId, data.getToken(), data.getNodeId());
         return ResponseData.success();
     }
 }

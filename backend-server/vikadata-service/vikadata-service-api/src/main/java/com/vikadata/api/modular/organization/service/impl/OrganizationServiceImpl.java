@@ -13,7 +13,6 @@ import cn.hutool.core.lang.Editor;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.json.JSONUtil;
-import com.vikadata.api.modular.organization.model.TeamCteInfo;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.cp.bean.WxCpTpAuthInfo.Agent;
@@ -32,6 +31,8 @@ import com.vikadata.api.modular.organization.mapper.MemberMapper;
 import com.vikadata.api.modular.organization.mapper.TeamMapper;
 import com.vikadata.api.modular.organization.mapper.TeamMemberRelMapper;
 import com.vikadata.api.modular.organization.mapper.UnitMapper;
+import com.vikadata.api.modular.organization.model.LoadSearchDTO;
+import com.vikadata.api.modular.organization.model.TeamCteInfo;
 import com.vikadata.api.modular.organization.service.IOrganizationService;
 import com.vikadata.api.modular.organization.service.ITeamService;
 import com.vikadata.api.modular.organization.service.IUnitService;
@@ -239,15 +240,16 @@ public class OrganizationServiceImpl implements IOrganizationService {
     }
 
     @Override
-    public List<UnitInfoVo> loadOrSearchInfo(Long userId, String spaceId, String likeWord, List<Long> unitIds, List<Long> filterIds, boolean all, Long sharer) {
+    public List<UnitInfoVo> loadOrSearchInfo(Long userId, String spaceId, LoadSearchDTO params, Long sharer) {
         log.info("加载/搜索 组织单元信息视图");
-        if (CollUtil.isEmpty(unitIds)) {
-            if (BooleanUtil.isTrue(all)) {
+        List<Long> unitIds = new ArrayList<>();
+        if (CollUtil.isEmpty(params.getUnitIds())) {
+            if (BooleanUtil.isTrue(params.getAll())) {
                 unitIds = unitMapper.selectIdBySpaceId(spaceId);
             }
             else {
-                unitIds = new ArrayList<>();
                 List<Long> refIds = new ArrayList<>();
+                String likeWord = CharSequenceUtil.trim(params.getKeyword());
                 if (CharSequenceUtil.isNotBlank(likeWord)) {
                     // 模糊搜索部门
                     List<Long> teamIds = teamMapper.selectTeamIdsLikeName(spaceId, likeWord);
@@ -255,7 +257,10 @@ public class OrganizationServiceImpl implements IOrganizationService {
                     // 模糊搜索成员
                     List<Long> memberIds = memberMapper.selectMemberIdsLikeName(spaceId, likeWord);
                     refIds.addAll(memberIds);
-
+                    // 模糊搜索邮件
+                    if (BooleanUtil.isTrue(params.getSearchEmail())) {
+                        refIds.addAll(memberMapper.selectIdsBySpaceIdAndEmailKeyword(spaceId, likeWord));
+                    }
                     SocialTenantEntity socialTenantEntity = Optional.ofNullable(socialTenantBindService.getBySpaceId(spaceId))
                             .map(bind -> socialTenantService.getByAppIdAndTenantId(bind.getAppId(), bind.getTenantId()))
                             .orElse(null);
@@ -307,8 +312,8 @@ public class OrganizationServiceImpl implements IOrganizationService {
             }
         }
         // 指定过滤的组织单元ID
-        if (CollUtil.isNotEmpty(filterIds)) {
-            unitIds.removeAll(filterIds);
+        if (CollUtil.isNotEmpty(params.getFilterIds())) {
+            unitIds.removeAll(params.getFilterIds());
         }
         if (CollUtil.isNotEmpty(unitIds)) {
             return iUnitService.getUnitInfoList(spaceId, unitIds);

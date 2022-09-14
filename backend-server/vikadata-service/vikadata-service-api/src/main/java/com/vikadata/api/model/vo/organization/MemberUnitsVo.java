@@ -1,7 +1,8 @@
 package com.vikadata.api.model.vo.organization;
 
+import java.util.List;
+
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.vikadata.core.support.serializer.NumberListToStringListSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -9,7 +10,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import com.vikadata.api.support.serializer.NullArraySerializer;
+import com.vikadata.core.support.serializer.NumberListToStringListSerializer;
 
 /**
  * <p>
@@ -27,6 +29,6 @@ import java.util.List;
 public class MemberUnitsVo {
 
     @ApiModelProperty(value = "组织单元ID列表", dataType = "List", example = "[\"10101\",\"10102\",\"10103\",\"10104\"]", position = 1)
-    @JsonSerialize(using = NumberListToStringListSerializer.class)
+    @JsonSerialize(using = NumberListToStringListSerializer.class, nullsUsing = NullArraySerializer.class)
     private List<Long> unitIds;
 }

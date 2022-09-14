@@ -25,6 +25,7 @@ import com.vikadata.api.modular.organization.mapper.UnitMapper;
 import com.vikadata.api.modular.organization.model.MemberBaseInfoDTO;
 import com.vikadata.api.modular.organization.model.TeamBaseInfoDTO;
 import com.vikadata.api.modular.organization.model.UnitInfoDTO;
+import com.vikadata.api.modular.organization.service.ITeamService;
 import com.vikadata.api.modular.organization.service.IUnitService;
 import com.vikadata.api.modular.service.ExpandServiceImpl;
 import com.vikadata.core.util.ExceptionUtil;
@@ -63,6 +64,9 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
 
     @Resource
     private IControlRoleService iControlRoleService;
+
+    @Resource
+    private ITeamService iTeamService;
 
     @Override
     public Long getUnitIdByRefId(Long refId) {
@@ -166,6 +170,7 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
         List<UnitInfoVo> unitInfoList = new ArrayList<>();
         Map<Long, MemberBaseInfoDTO> memberInfoMap = MapUtil.newHashMap();
         Map<Long, TeamBaseInfoDTO> teamBaseInfoMap = MapUtil.newHashMap();
+        Map<Long, String> memberTeamMap = MapUtil.newHashMap();
         groupUnitMap.forEach((unitType, units) -> {
             UnitType typeEnum = UnitType.toEnum(unitType);
             List<Long> refIds = units.stream().map(UnitEntity::getUnitRefId).collect(Collectors.toList());
@@ -173,6 +178,7 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
                 // 加载成员必要信息
                 List<MemberBaseInfoDTO> memberBaseInfoDTOList = memberMapper.selectBaseInfoDTOByIds(refIds);
                 memberBaseInfoDTOList.forEach(info -> memberInfoMap.put(info.getId(), info));
+                memberTeamMap.putAll(iTeamService.getMembersTeamTreeString(spaceId, refIds));
             }
 
             if (typeEnum == UnitType.TEAM) {
@@ -203,6 +209,8 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
                     unitInfoVo.setIsActive(baseInfo.getIsActive());
                     unitInfoVo.setIsNickNameModified(baseInfo.getIsNickNameModified());
                     unitInfoVo.setIsMemberNameModified(baseInfo.getIsMemberNameModified());
+                    unitInfoVo.setTeam(memberTeamMap.get(unitEntity.getUnitRefId()));
+                    unitInfoVo.setEmail(baseInfo.getEmail());
                 }
                 // 冷静期/已注销用户
                 if (baseInfo == null || !baseInfo.getIsPaused()) {

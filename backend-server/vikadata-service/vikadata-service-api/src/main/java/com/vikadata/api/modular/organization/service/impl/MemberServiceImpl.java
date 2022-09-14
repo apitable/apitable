@@ -406,7 +406,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void inviteMember(String spaceId, Long teamId, List<String> emails) {
+    public List<Long> inviteMember(String spaceId, Long teamId, List<String> emails) {
         log.info("批量发送邮件邀请成员");
         if (teamId != null) {
             String teamSpaceId = teamMapper.selectSpaceIdById(teamId);
@@ -487,6 +487,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         }
         // 部门绑定
         iTeamMemberRelService.addMemberTeams(memberIds, Collections.singletonList(teamId));
+        return iUnitService.getUnitIdsByRefIds(memberIds);
     }
 
     @Override

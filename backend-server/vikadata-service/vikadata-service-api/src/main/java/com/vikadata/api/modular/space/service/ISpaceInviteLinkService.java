@@ -6,6 +6,7 @@ import java.util.List;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.vikadata.api.model.vo.space.SpaceLinkInfoVo;
+import com.vikadata.api.modular.space.model.InvitationUserDTO;
 import com.vikadata.entity.SpaceInviteLinkEntity;
 
 /**
@@ -48,7 +49,17 @@ public interface ISpaceInviteLinkService extends IService<SpaceInviteLinkEntity>
      * @author Chambers
      * @date 2020/3/24
      */
-    void join(Long userId, String token);
+    void join(Long userId, String token, String nodeId);
+
+    /**
+     * user invites to join space station and assigns updater privileges
+     * @param token invitation token
+     * @param userId userID that should be added to the space station
+     * @return InvitationUserDTO
+     * @author zoe zheng
+     * @date 2022/8/31 18:17
+     */
+    InvitationUserDTO invitedUserJoinSpaceByToken(Long userId, String token);
 
     /**
      * 删除没有成员管理权限的成员生成的链接

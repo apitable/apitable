@@ -838,6 +838,7 @@
                vum.member_name,
                vu.avatar,
                vu.uuid,
+               vu.email,
                vum.is_active,
                vum.is_deleted,
                vu.is_paused,
@@ -1039,5 +1040,34 @@
             #{item}
         </foreach>
         AND is_deleted = 0
+    </select>
+
+    <select id="selectIdsBySpaceIdAndEmailKeyword" resultType="java.lang.Long">
+        SELECT id
+        FROM vika_unit_member
+        WHERE space_id = #{spaceId}
+        AND email like CONCAT('%', #{keyword}, '%')
+        AND is_deleted = 0
+    </select>
+
+    <resultMap id="memberTeamRelDTO" type="com.vikadata.api.modular.organization.model.MemberTeamRelDTO">
+        <result column="member_id" property="memberId"/>
+        <collection property="teams" ofType="com.vikadata.api.model.dto.organization.MemberTeamDto">
+            <result column="team_id" property="teamId"/>
+            <result column="team_name" property="teamName"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectMemberTeamsBySpaceIdAndMemberIds" resultMap="memberTeamRelDTO">
+        SELECT vutm.member_id, vut.id as team_id, vut.team_name
+        FROM vika_unit_team_member_rel vutm
+        LEFT JOIN vika_unit_team vut on vutm.team_id = vut.id
+        where vut.space_id = #{spaceId}
+        AND vutm.member_id IN
+        <foreach item="item" index="index" collection="memberIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and vut.is_deleted = 0
+        order by vut.created_at
     </select>
 </mapper>
