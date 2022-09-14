@@ -79,28 +79,15 @@ export const useInviteRequest = () => {
    */
   const sendInviteReq = (invite: IInviteMemberList[], nodeId?: string, nvcVal?: string) => {
     return Api.sendInvite(invite, nodeId, nvcVal).then(res => {
-      const { success, message, code, data } = res.data;
-      if (!success) {
-        Message.error({ content: message });
-        secondStepVerify(code);
-      }
-      return { success, data };
-    });
-  };
-
-  /**
-   * 搜索成员和小组
-   * @param keyword 关键词
-   */
-  const fetchTeamAndMember = (keyword: string, searchEmail: boolean) => {
-    return Api.loadOrSearch({ keyword, searchEmail }).then(res => {
-      const { success, data, message } = res.data;
+      const { success, message, code } = res.data;
       if (success) {
-        return data;
+        return true;
       }
       Message.error({ content: message });
+      secondStepVerify(code);
+      return false;
     });
   };
 
-  return { linkListReq, readTeamReq, getSubTeamsReq, generateLinkReq, deleteLinkReq, sendInviteReq, fetchTeamAndMember };
+  return { linkListReq, readTeamReq, getSubTeamsReq, generateLinkReq, deleteLinkReq, sendInviteReq };
 };
