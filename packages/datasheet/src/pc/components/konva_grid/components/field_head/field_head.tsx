@@ -3,9 +3,15 @@ import { EditGanttDescribeFilled, IIconProps, MoreStandOutlined, WarningTriangle
 import dynamic from 'next/dynamic';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { autoSizerCanvas, Icon, Rect, Text } from 'pc/components/konva_components';
-import { GRID_CELL_VALUE_PADDING, GRID_ICON_COMMON_SIZE, KonvaGridContext } from 'pc/components/konva_grid';
+import { GRID_CELL_VALUE_PADDING, KonvaGridContext, FieldHeadIconType } from 'pc/components/konva_grid';
 import { FC, memo, useContext, useMemo, useRef } from 'react';
-import { GRID_FIELD_HEAD_HEIGHT } from '../../constant';
+import { 
+  GRID_FIELD_HEAD_HEIGHT, 
+  GRID_ICON_COMMON_SIZE, 
+  GRID_ICON_SMALL_SIZE, 
+  FIELD_HEAD_ICON_GAP_SIZE, 
+  FIELD_HEAD_ICON_SIZE_MAP 
+} from '../../constant';
 import { FieldIcon } from './field_icon';
 
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
@@ -27,8 +33,6 @@ interface IFieldHeadProps {
   isFrozen?: boolean;
 }
 
-const SMALL_ICON_SIZE = 12;
-
 // IconPath
 const MoreStandOutlinedPath = MoreStandOutlined.toString();
 const EditDescribeFilledPath = EditGanttDescribeFilled.toString();
@@ -42,69 +46,110 @@ export const FieldHead: FC<IFieldHeadProps> = memo((props) => {
   const { theme, setTooltipInfo, clearTooltipInfo } = useContext(KonvaGridContext);
   const textSizer = useRef(autoSizerCanvas);
   const colors = theme.color;
-  const { id: fieldId, name: _fieldName } = field;
-  const textOffset = GRID_CELL_VALUE_PADDING + GRID_ICON_COMMON_SIZE + 4;
-  const textWidth = width - textOffset - GRID_CELL_VALUE_PADDING;
+  const { 
+    id: fieldId, 
+    name: _fieldName, 
+    desc 
+  } = field;
+  const moreVisible = editable && iconVisible;
+  const descVisible = Boolean(desc);
+  const permissionVisible = Boolean(permissionInfo);
+  const hasError = Field.bindModel(field).isComputed && Field.bindModel(field).hasError;
+  const textOffset = GRID_CELL_VALUE_PADDING + GRID_ICON_COMMON_SIZE + FIELD_HEAD_ICON_GAP_SIZE;
   const autoHeadHeight = _autoHeadHeight && headHeight !== GRID_FIELD_HEAD_HEIGHT;
+  let textWidth = width - (
+    (autoHeadHeight || moreVisible) ? 
+      2 * (GRID_CELL_VALUE_PADDING + GRID_ICON_COMMON_SIZE + FIELD_HEAD_ICON_GAP_SIZE) : 
+      2 * GRID_CELL_VALUE_PADDING + GRID_ICON_COMMON_SIZE + FIELD_HEAD_ICON_GAP_SIZE
+  );
   // 「默认列头高度」模式下，换行符转成空格完整显示
   const fieldName = _autoHeadHeight ? _fieldName : _fieldName.replace(/\r|\n/g, ' ');
+  const isGanttNoWrap = viewType === ViewType.Gantt && !autoHeadHeight;
 
-  let iconTotalWidth = 8;
-  let moreIconOffset = 0;
-  let descIconOffset = 0;
-  let errorIconOffset = 0;
-  let permissionIconOffset = 0;
-  let iconBgOffsetX = 0;
+  const iconInfoList = useMemo(() => ([
+    {
+      type: FieldHeadIconType.Error,
+      visible: hasError,
+    },
+    {
+      type: FieldHeadIconType.Description,
+      visible: descVisible,
+    },
+    {
+      type: FieldHeadIconType.Permission,
+      visible: permissionVisible,
+    },
+  ]), [descVisible, hasError, permissionVisible]);
 
-  const moreVisible = editable && iconVisible;
-  if (moreVisible) {
-    moreIconOffset = width - iconTotalWidth - GRID_ICON_COMMON_SIZE;
-    iconTotalWidth = iconTotalWidth + GRID_ICON_COMMON_SIZE;
-    iconBgOffsetX = 4;
+  if (!autoHeadHeight) {
+    iconInfoList.forEach(item => {
+      const { type, visible } = item;
+      if (!visible) return;
+      textWidth = textWidth - FIELD_HEAD_ICON_SIZE_MAP[type] - FIELD_HEAD_ICON_GAP_SIZE;
+    });
   }
 
-  const permissionVisible = permissionInfo && iconVisible;
-  if (permissionVisible) {
-    permissionIconOffset = width - iconTotalWidth - 20;
-    iconTotalWidth = iconTotalWidth + 20;
-    iconBgOffsetX = 8;
-  }
-
-  const descVisible = iconVisible && Boolean(field.desc);
-  if (descVisible) {
-    descIconOffset = width - iconTotalWidth - SMALL_ICON_SIZE;
-    iconTotalWidth = iconTotalWidth + SMALL_ICON_SIZE;
-    iconBgOffsetX = 8;
-  }
-
-  const hasError = Field.bindModel(field).isComputed && Field.bindModel(field).hasError;
-  if (hasError) {
-    errorIconOffset = width - iconTotalWidth - GRID_ICON_COMMON_SIZE;
-    iconTotalWidth = iconTotalWidth + GRID_ICON_COMMON_SIZE;
-    iconBgOffsetX = 8;
-  }
-
-  const isOverflow = useMemo(() => {
-    if (autoHeadHeight) return false;
+  const textData = useMemo(() => {
     textSizer.current.setFont({ fontWeight: 'bold', fontSize: 13 });
-    const { isOverflow } = textSizer.current.measureText(fieldName, textWidth, 1);
-    return isOverflow;
+    if (autoHeadHeight) {
+      const { height, lastLineWidth } = textSizer.current.measureText(fieldName, textWidth);
+      return {
+        width: Math.ceil(lastLineWidth),
+        height,
+        isOverflow: false,
+      };
+    }
+    const { 
+      width,
+      height,
+      isOverflow 
+    } = textSizer.current.measureText(fieldName, textWidth, 1);
+    return {
+      width: Math.min(width, textWidth),
+      height,
+      isOverflow
+    };
   }, [fieldName, textWidth, autoHeadHeight]);
 
-  const onTooltipShown = (title: string, iconSize: number, offsetX: number) => {
+  const iconOffsetMap = useMemo(() => {
+    const iconOffsetMap = {};
+    const { width, height } = textData;
+    let prevIconSize = 0;
+    let curIconOffsetX = textOffset + width;
+    let curIconOffsetY = autoHeadHeight ? height - 24 : 0;
+
+    iconInfoList.forEach(item => {
+      const { type, visible } = item;
+      if (!visible) return;
+      curIconOffsetX = curIconOffsetX + prevIconSize + FIELD_HEAD_ICON_GAP_SIZE;
+      if (autoHeadHeight && curIconOffsetX > textWidth) {
+        curIconOffsetX = GRID_CELL_VALUE_PADDING;
+        curIconOffsetY += 24;
+      }
+      iconOffsetMap[type] = {
+        x: curIconOffsetX,
+        y: curIconOffsetY
+      };
+      prevIconSize = FIELD_HEAD_ICON_SIZE_MAP[type];
+    });
+    return iconOffsetMap;
+  }, [autoHeadHeight, iconInfoList, textData, textOffset, textWidth]);
+
+  const onTooltipShown = (title: string, iconSize: number, offsetX: number, offsetY?: number) => {
     return setTooltipInfo({
       title,
       visible: true,
       width: iconSize,
       height: iconSize,
       x: x + offsetX,
-      y: (headHeight - iconSize) / 2,
+      y: offsetY ?? 10,
       coordXEnable: !isFrozen,
       coordYEnable: false,
     });
   };
 
-  const isGanttNoWrap = viewType === ViewType.Gantt && !autoHeadHeight;
+  const commonIconOffsetY = autoHeadHeight ? 8 : (headHeight - GRID_ICON_COMMON_SIZE) / 2;
+  const smallIconOffsetY = autoHeadHeight ? 10 : (headHeight - GRID_ICON_SMALL_SIZE) / 2;
 
   return (
     <Group
@@ -124,8 +169,8 @@ export const FieldHead: FC<IFieldHeadProps> = memo((props) => {
         stroke={stroke || colors.sheetLineColor}
         strokeWidth={1}
         onMouseEnter={() => {
-          if (!isOverflow) return;
-          onTooltipShown(fieldName, SMALL_ICON_SIZE, (width - SMALL_ICON_SIZE) / 2);
+          if (!textData.isOverflow) return;
+          onTooltipShown(fieldName, GRID_ICON_SMALL_SIZE, (width - GRID_ICON_SMALL_SIZE) / 2);
         }}
         onMouseOut={clearTooltipInfo}
       />
@@ -140,26 +185,16 @@ export const FieldHead: FC<IFieldHeadProps> = memo((props) => {
       <Text
         x={textOffset}
         y={autoHeadHeight ? 5 : (isGanttNoWrap ? (headHeight - GRID_FIELD_HEAD_HEIGHT) / 2 : undefined)}
-        width={width - GRID_CELL_VALUE_PADDING * 2 - GRID_ICON_COMMON_SIZE}
+        width={autoHeadHeight ? textWidth : textData.width}
         height={isGanttNoWrap ? GRID_FIELD_HEAD_HEIGHT : headHeight + 2}
         text={fieldName}
-        wrap={'char'}
+        wrap={autoHeadHeight ? 'char' : 'none'}
         fontStyle={'bold'}
         lineHeight={1.84}
         verticalAlign={autoHeadHeight ? 'top' : 'middle'}
         fill={isHighlight ? colors.primaryColor : colors.firstLevelText}
+        ellipsis={!autoHeadHeight}
       />
-      {
-        iconTotalWidth > 8 &&
-        <Rect
-          x={width - iconTotalWidth - iconBgOffsetX}
-          y={1}
-          width={iconTotalWidth + iconBgOffsetX}
-          height={headHeight - 1}
-          fill={isSelected ? colors.cellSelectedColorSolid : colors.defaultBg}
-          listening={false}
-        />
-      }
       {
         hasError &&
         <Icon
@@ -168,15 +203,18 @@ export const FieldHead: FC<IFieldHeadProps> = memo((props) => {
             fieldId,
             mouseStyle: 'pointer'
           })}
-          x={errorIconOffset}
-          y={autoHeadHeight ? 8 : (headHeight - GRID_ICON_COMMON_SIZE) / 2}
+          x={iconOffsetMap[FieldHeadIconType.Error].x}
+          y={iconOffsetMap[FieldHeadIconType.Error].y + commonIconOffsetY}
           size={GRID_ICON_COMMON_SIZE}
           data={WarningTriangleNonzeroFilledPath}
           fill={colors.warningColor}
           background={isSelected ? colors.cellSelectedColorSolid : colors.defaultBg}
-          backgroundWidth={24}
-          backgroundHeight={GRID_ICON_COMMON_SIZE}
-          onMouseEnter={() => onTooltipShown(t(Strings.field_configuration_err), GRID_ICON_COMMON_SIZE, errorIconOffset)}
+          onMouseEnter={() => onTooltipShown(
+            t(Strings.field_configuration_err), 
+            GRID_ICON_COMMON_SIZE, 
+            iconOffsetMap[FieldHeadIconType.Error].x, 
+            iconOffsetMap[FieldHeadIconType.Error].y + commonIconOffsetY
+          )}
           onMouseOut={clearTooltipInfo}
         />
       }
@@ -187,17 +225,22 @@ export const FieldHead: FC<IFieldHeadProps> = memo((props) => {
             targetName: KONVA_DATASHEET_ID.GRID_FIELD_HEAD_DESC,
             fieldId,
           })}
-          x={descIconOffset}
-          y={autoHeadHeight ? 10 : (headHeight - SMALL_ICON_SIZE) / 2}
+          x={iconOffsetMap[FieldHeadIconType.Description].x}
+          y={iconOffsetMap[FieldHeadIconType.Description].y + smallIconOffsetY}
           size={GRID_ICON_COMMON_SIZE}
           shape={'circle'}
           data={EditDescribeFilledPath}
           fill={colors.primaryColor}
           background={colors.rc01}
-          backgroundWidth={SMALL_ICON_SIZE}
-          backgroundHeight={SMALL_ICON_SIZE}
+          backgroundWidth={GRID_ICON_SMALL_SIZE}
+          backgroundHeight={GRID_ICON_SMALL_SIZE}
           opacity={0.2}
-          onMouseEnter={() => onTooltipShown(field.desc || '', SMALL_ICON_SIZE, descIconOffset)}
+          onMouseEnter={() => onTooltipShown(
+            desc || '', 
+            GRID_ICON_SMALL_SIZE, 
+            iconOffsetMap[FieldHeadIconType.Description].x, 
+            iconOffsetMap[FieldHeadIconType.Description].y + smallIconOffsetY
+          )}
           onMouseOut={clearTooltipInfo}
         />
       }
@@ -209,15 +252,20 @@ export const FieldHead: FC<IFieldHeadProps> = memo((props) => {
             fieldId,
             mouseStyle: 'pointer'
           })}
-          x={permissionIconOffset}
-          y={autoHeadHeight ? 8 : (headHeight - GRID_ICON_COMMON_SIZE) / 2}
+          x={iconOffsetMap[FieldHeadIconType.Permission].x}
+          y={iconOffsetMap[FieldHeadIconType.Permission].y + commonIconOffsetY}
           size={GRID_ICON_COMMON_SIZE}
-          data={permissionInfo[0].toString()}
+          data={permissionInfo?.[0].toString()}
           fill={isSelected ? colors.primaryColor : colors.thirdLevelText}
           background={isSelected ? colors.cellSelectedColorSolid : colors.defaultBg}
-          backgroundWidth={24}
+          backgroundWidth={GRID_ICON_COMMON_SIZE}
           backgroundHeight={GRID_ICON_COMMON_SIZE}
-          onMouseEnter={() => onTooltipShown((permissionInfo?.[1] as string) || '', GRID_ICON_COMMON_SIZE, permissionIconOffset)}
+          onMouseEnter={() => onTooltipShown(
+            permissionInfo?.[1] as string || '', 
+            GRID_ICON_COMMON_SIZE, 
+            iconOffsetMap[FieldHeadIconType.Permission].x,
+            iconOffsetMap[FieldHeadIconType.Permission].y + commonIconOffsetY
+          )}
           onMouseOut={clearTooltipInfo}
         />
       }
@@ -228,8 +276,8 @@ export const FieldHead: FC<IFieldHeadProps> = memo((props) => {
             targetName: KONVA_DATASHEET_ID.GRID_FIELD_HEAD_MORE,
             fieldId,
           })}
-          x={moreIconOffset}
-          y={autoHeadHeight ? 8 : (headHeight - GRID_ICON_COMMON_SIZE) / 2}
+          x={width - GRID_CELL_VALUE_PADDING - GRID_ICON_COMMON_SIZE}
+          y={commonIconOffsetY}
           data={MoreStandOutlinedPath}
           fill={(isSelected || isHighlight) ? colors.primaryColor : colors.fourthLevelText}
           background={isSelected ? colors.cellSelectedColorSolid : colors.defaultBg}

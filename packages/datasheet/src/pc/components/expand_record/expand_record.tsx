@@ -650,6 +650,12 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
     }
   };
 
+  useEffect(() => {
+    const onUnload = () => setFocusFieldId('');
+    window.addEventListener('beforeunload', onUnload);
+    return () => window.removeEventListener('beforeunload', onUnload);
+  }, [setFocusFieldId]);
+
   return (
     <EditorTitleContext.Provider value={EditorTitleContextVal}>
       <div

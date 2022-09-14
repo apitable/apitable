@@ -64,7 +64,7 @@ export const AutoSizerCanvas = (defaults: IAutoSizer = {}) => {
     let height = 0;
     let lineCount = 0;
     if (text == null) {
-      return { width, height };
+      return { width, height, lastLineWidth: 0 };
     }
     const lines = text.split('\n');
     for (let i = 0; i < lines.length; i++) {
@@ -74,12 +74,17 @@ export const AutoSizerCanvas = (defaults: IAutoSizer = {}) => {
       lineCount = maxWidth != null ? (Math.ceil(lineWidth / maxWidth) || 1) : 1;
       height += o.lineHeight * lineCount;
     }
-    if (maxLineCount == null || (maxLineCount && lineCount <= maxLineCount)) {
+    if (
+      maxWidth == null || 
+      maxLineCount === 1 || 
+      (maxLineCount && lineCount <= maxLineCount)
+    ) {
       return {
         width: Math.ceil(width),
         height: Math.ceil(height),
         text,
-        isOverflow: false,
+        isOverflow: Boolean(maxLineCount && lineCount > maxLineCount),
+        lastLineWidth: Math.ceil(width)
       };
     }
 
@@ -100,7 +105,7 @@ export const AutoSizerCanvas = (defaults: IAutoSizer = {}) => {
       totalText += singleText;
       const textWidth = context?.measureText(measureText).width ?? 0;
       const isLineBreak = ['\n', '\r'].includes(singleText);
-      if (((maxWidth && textWidth > maxWidth) || isLineBreak) && rowCount < maxLineCount) {
+      if (((maxWidth && textWidth > maxWidth) || isLineBreak) && (maxLineCount == null || rowCount < maxLineCount)) {
         showText = isLineBreak ? '' : singleText;
         textHeight += lineHeight;
         rowCount++;
@@ -116,9 +121,10 @@ export const AutoSizerCanvas = (defaults: IAutoSizer = {}) => {
     }
     return {
       width: Math.ceil(width),
-      height: Math.ceil(rowCount < maxLineCount ? (textHeight + lineHeight) : textHeight),
+      height: Math.ceil((maxLineCount == null || rowCount < maxLineCount) ? (textHeight + lineHeight) : textHeight),
       text: totalText,
       isOverflow: isLimitRow,
+      lastLineWidth: context?.measureText(showText).width ?? 0
     };
   };
 

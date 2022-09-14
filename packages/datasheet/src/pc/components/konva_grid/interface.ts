@@ -67,3 +67,9 @@ export interface ICellHeightProps {
   realField?: IField | null;
   isActive?: boolean;
 }
+
+export enum FieldHeadIconType {
+  Permission = 'Permission',
+  Description = 'Description',
+  Error = 'Error'
+}

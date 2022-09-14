@@ -1,3 +1,5 @@
+import { FieldHeadIconType } from './interface';
+
 export const GRID_FIELD_HEAD_HEIGHT = 40; // 列头的高度
 export const GRID_ROW_HEAD_WIDTH = 70; // 行头宽度
 
@@ -23,6 +25,7 @@ export const GRID_GROUP_ADD_FIELD_BUTTON_WIDTH = 40; // 分组时，添加列按
  * CellValue 相关
  */
 export const GRID_ICON_COMMON_SIZE = 16; // 图标的大小
+export const GRID_ICON_SMALL_SIZE = 12; // 图标的大小
 export const GRID_CELL_VALUE_PADDING = 10; // cell value 内部的边距
 export const GRID_CELL_MULTI_PADDING_TOP = 6; // Member/Option/Link 等字段的纵向内边距
 export const GRID_CELL_MULTI_ITEM_MARGIN_TOP = 5; // Option/Link 等字段 item 间的纵向距离
@@ -50,3 +53,11 @@ export const GRID_CELL_ATTACHMENT_ITEM_MARGIN_LEFT = 5; // 附件字段 item 横
 // Link
 export const GRID_CELL_LINK_ITEM_PADDING = 10; // 神奇关联字段 item 左右内边距
 export const GRID_CELL_LINK_ITEM_HEIGHT = 20; // 神奇关联字段 item 高度
+
+// field head icon
+export const FIELD_HEAD_ICON_GAP_SIZE = 4;
+export const FIELD_HEAD_ICON_SIZE_MAP = {
+  [FieldHeadIconType.Permission]: GRID_ICON_COMMON_SIZE,
+  [FieldHeadIconType.Description]: GRID_ICON_SMALL_SIZE,
+  [FieldHeadIconType.Error]: GRID_ICON_COMMON_SIZE,
+};

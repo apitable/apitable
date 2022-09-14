@@ -3,7 +3,7 @@ import { shallowEqual, useSelector } from 'react-redux';
 import { useCreation, useUpdate } from 'ahooks';
 import { useSetState } from 'pc/hooks';
 import { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { CellType, ICell, IGridViewProperty, KONVA_DATASHEET_ID, RowHeightLevel, Selectors } from '@vikadata/core';
+import { CellType, ConfigConstant, Field, ICell, IGridViewProperty, KONVA_DATASHEET_ID, RowHeightLevel, Selectors } from '@vikadata/core';
 import { useAllowDownloadAttachment } from 'pc/components/upload_modal/preview_item';
 import { useDispatch } from 'pc/hooks';
 import { useCacheScroll } from 'pc/context';
@@ -41,10 +41,14 @@ import {
   GRID_FIELD_HEAD_HEIGHT,
   GRID_SCROLL_BAR_OFFSET_X,
   GRID_ROW_HEAD_WIDTH,
+  FIELD_HEAD_ICON_SIZE_MAP,
   GridExport,
+  FieldHeadIconType,
+  FIELD_HEAD_ICON_GAP_SIZE
 } from 'pc/components/konva_grid';
 import { useTheme } from '@vikadata/components';
 import { autoSizerCanvas } from '../konva_components';
+import { getFieldLock } from '../field_permission';
 
 interface IGridViewProps {
   height: number;
@@ -246,15 +250,34 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
     textSizer.current.setFont({ fontWeight: 'bold', fontSize: 13 });
     const fieldHeight = visibleColumns.reduce((prev, cur, index) => {
       const { fieldId } = cur;
-      const { name } = fieldMap[fieldId];
+      const field = fieldMap[fieldId];
+      const { name, desc } = field;
       const columnWidth = columnIndicesMap[index];
-      const textWidth = columnWidth - GRID_CELL_VALUE_PADDING * 2 - GRID_ICON_COMMON_SIZE - 4;
-      const { height } = textSizer.current.measureText(name, textWidth, undefined);
-      const finalHeight = height + 8;
+      const textWidth = columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_ICON_COMMON_SIZE + FIELD_HEAD_ICON_GAP_SIZE);
+      const { lastLineWidth, height } = textSizer.current.measureText(name, textWidth);
+      let realLastLineWidth = lastLineWidth;
+
+      if (desc) {
+        realLastLineWidth += (FIELD_HEAD_ICON_SIZE_MAP[FieldHeadIconType.Description] + FIELD_HEAD_ICON_GAP_SIZE);
+      }
+
+      if (Field.bindModel(field).isComputed && Field.bindModel(field).hasError) {
+        realLastLineWidth += (FIELD_HEAD_ICON_SIZE_MAP[FieldHeadIconType.Error] + FIELD_HEAD_ICON_GAP_SIZE);
+      }
+
+      const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId);
+      if (
+        fieldPermissionMap && fieldRole && 
+        getFieldLock(fieldPermissionMap[fieldId].manageable ? ConfigConstant.Role.Manager : fieldRole)
+      ) {
+        realLastLineWidth += (FIELD_HEAD_ICON_SIZE_MAP[FieldHeadIconType.Permission] + FIELD_HEAD_ICON_GAP_SIZE);
+      }
+
+      const finalHeight = realLastLineWidth > textWidth ? height + 32 : height + 8;
       return finalHeight > prev ? finalHeight : prev;
     }, GRID_FIELD_HEAD_HEIGHT);
     return fieldHeight;
-  }, [autoHeadHeight, columnIndicesMap, fieldMap, visibleColumns]);
+  }, [autoHeadHeight, columnIndicesMap, fieldMap, fieldPermissionMap, visibleColumns]);
 
   const firstColumnWidth = columnIndicesMap[0];
   const originFrozenColumnCount = (view as IGridViewProperty).frozenColumnCount;

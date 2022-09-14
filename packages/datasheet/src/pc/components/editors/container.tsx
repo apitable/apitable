@@ -243,7 +243,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     }
   };
 
-  const endEdit = (cancel = false) => {
+  const endEdit = useCallback((cancel = false) => {
     if (!editing) {
       return;
     }
@@ -251,7 +251,8 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     editorRefCurrent.onEndEdit && editorRefCurrent.onEndEdit(cancel);
     setEditing(false);
     dispatch(StoreActions.setEditStatus(datasheetId, null));
-  };
+  }, [datasheetId, dispatch, editing]);
+
   // 将 endEdit 暴露出去
   setEndEditCell(endEdit);
   useUnmount(() => {
@@ -741,6 +742,12 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     }, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cellValue, record]);
+
+  useEffect(() => {
+    const onUnload = () => endEdit();
+    window.addEventListener('beforeunload', onUnload);
+    return () => window.removeEventListener('beforeunload', onUnload);
+  }, [endEdit]);
 
   const { x, y, width, height } = editPositionInfo;
   const editorRect = useCellEditorVisibleStyle({ editing, width, height });
