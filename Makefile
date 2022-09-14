@@ -141,14 +141,9 @@ test-ut-core:
 ###### 【core unit test】 ######
 
 ###### 【room server unit test】 ######
-
 sikp-initdb=false
-_test_docker_network = $(shell docker network ls | grep -w "unit-test" | awk '{ print $$2 }')
 
 _test_init_db:
-ifeq ($(_test_docker_network),)
-	docker network create unit-test
-endif
 	@echo "${YELLOW}pull [init-db:latest] the latest image...${RESET}"
 	docker-compose -f docker-compose-unit-test.yml pull test-initdb
 	docker-compose -f docker-compose-unit-test.yml run --rm -e DB_HOST=test-mysql-$${CI_GROUP_TAG:-0} test-initdb

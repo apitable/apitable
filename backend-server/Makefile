@@ -20,8 +20,6 @@ docker_build_space_job_executor:
 
 ###### 【backend server unit test】 ######
 
-_test_docker_network = $(shell docker network ls | grep -w "unit-test" | awk '{ print $$2 }')
-
 _test_clean: ## clean the docker in test step
 	docker rm -fv $$(docker ps -a --filter "name=test-.*-"$${CI_GROUP_TAG:-0} --format "{{.ID}}") || true
 
@@ -32,9 +30,6 @@ _test_dockers: ## run depends container in test step
 	docker-compose -f ../docker-compose-unit-test.yml run -d --name test-rabbitmq-$${CI_GROUP_TAG:-0} test-rabbitmq
 
 _test_init_db: ## Initialize the database in test step
-ifeq ($(_test_docker_network),)
-	docker network create unit-test
-endif
 	docker-compose -f ../docker-compose-unit-test.yml pull test-initdb
 	docker-compose -f ../docker-compose-unit-test.yml run --rm -e DB_HOST=test-mysql-$${CI_GROUP_TAG:-0} test-initdb
 

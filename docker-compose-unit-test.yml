@@ -154,4 +154,4 @@ services:
 
 networks:
   unit-test:
-    external: true
+    driver: bridge
