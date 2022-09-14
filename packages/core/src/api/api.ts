@@ -1123,9 +1123,10 @@ export function unBindAccount(type: BindAccount) {
  * 生成/刷新链接
  * @param  teamId 部门ID
  */
-export function createLink(teamId: string) {
+export function createLink(teamId: string, nodeId?: string) {
   return axios.post(Url.CREATE_LINK, {
     teamId,
+    nodeId,
   });
 }
 

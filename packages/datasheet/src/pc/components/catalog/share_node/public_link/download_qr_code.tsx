@@ -1,9 +1,9 @@
-import { FC } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import domtoimage from 'dom-to-image';
 
 import { IReduxState, Strings, t } from '@vikadata/core';
-import { useThemeColors, rgba2hex, Typography, Button } from '@vikadata/components';
+import { useThemeColors, rgba2hex, Typography, Button, Loading } from '@vikadata/components';
 import { DownloadOutlined, LogoPurpleFilled } from '@vikadata/icons';
 
 import { Avatar, AvatarType, Message } from 'pc/components/common';
@@ -11,28 +11,51 @@ import { Avatar, AvatarType, Message } from 'pc/components/common';
 import { GenerateQrCode } from './generate_qr_code';
 
 import styles from './style.module.less';
+import { generateInviteLink, ROOT_TEAM_ID } from '../utils';
+import { useInviteRequest } from 'pc/hooks/use_invite_request';
 
 const DOWNLOAD_QR_CODE_AREA = 'downloadQrCodeArea';
 
 export interface IDownloadQrCodeProps {
-    url: string;
-    width: number;
-    isMobile: boolean;
+  nodeId: string;
+  width: number;
+  isMobile: boolean;
 }
 
 export const DownloadQrCode: FC<IDownloadQrCodeProps> = ({
-  url,
+  nodeId,
   width,
   isMobile,
 }) => {
   const colors = useThemeColors();
-  const { spaceInfo, spaceId } = useSelector((state: IReduxState) => ({
+  const { generateLinkReq } = useInviteRequest();
+  const { userInfo, spaceInfo, spaceId } = useSelector((state: IReduxState) => ({
+    userInfo: state.user.info,
     spaceInfo: state.space.curSpaceInfo,
     spaceId: state.space.activeId,
   }));
+  const [loading, setLoading] = useState(true);
+  const [link, setLink] = useState<string>();
+
+  const fetchLink = useCallback(async() => {
+    const token = await generateLinkReq(ROOT_TEAM_ID, nodeId);
+    if (token) {
+      const _link = generateInviteLink(userInfo, token);
+      setLink(_link);
+    }
+    setLoading(false);
+  }, [generateLinkReq, nodeId, userInfo]);
+
+  useEffect(() => {
+    fetchLink();
+  }, [fetchLink]);
 
   if (!spaceInfo || !spaceId) {
     return null;
+  }
+
+  if (loading) {
+    return <Loading />;
   }
 
   const downloadImage = () => {
@@ -79,7 +102,7 @@ export const DownloadQrCode: FC<IDownloadQrCodeProps> = ({
           <div className={styles.downloadQrCodeLogo}>
             <LogoPurpleFilled size={32} />
           </div>
-          <GenerateQrCode url={url} color={rgba2hex(colors.staticDark1)} id="download_invite_code" width={width} />
+          <GenerateQrCode url={link} color={rgba2hex(colors.staticDark1)} id="download_invite_code" width={width} />
         </div>
         <Typography variant="body3" className={styles.downloadQrCodeFooter}>{t(Strings.scan_code_to_join_team)}</Typography>
       </div>

@@ -49,8 +49,8 @@ export const useInviteRequest = () => {
    * 生成-刷新链接
    * @param teamId 部门ID
    */
-  const generateLinkReq = (teamId: string) => {
-    return Api.createLink(teamId).then(res => {
+  const generateLinkReq = (teamId: string, nodeId?: string) => {
+    return Api.createLink(teamId, nodeId).then(res => {
       const { success, data, message } = res.data;
       if (success) {
         return data;

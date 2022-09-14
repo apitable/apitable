@@ -16,17 +16,19 @@ import { DownloadQrCode } from './download_qr_code';
 
 import styles from './style.module.less';
 import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
+import { useInviteRequest } from 'pc/hooks/use_invite_request';
+import { generateInviteLink, ROOT_TEAM_ID } from '../utils';
 
 export interface IPublicShareLinkProps {
   nodeId: string;
   isMobile: boolean;
-  inviteLink: string;
   canEditInvite: boolean;
 }
 
-export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMobile, inviteLink, canEditInvite }) => {
+export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMobile, canEditInvite }) => {
   const dispatch = useDispatch();
   const { getShareSettingsReq } = useCatalogTreeRequest();
+  const { generateLinkReq } = useInviteRequest();
   const { run: getShareSettings, data: shareSettings, loading } =
     useRequest<IShareSettings, any>(() => getShareSettingsReq(nodeId));
   const { userInfo, treeNodesMap, spaceFeatures } = useSelector((state: IReduxState) => ({
@@ -141,8 +143,12 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
   /**
    * 复制邀请链接
    */
-  const handleCopyInviteLink = () => {
-    copy2clipBoard(inviteLink);
+  const handleCopyInviteLink = async() => {
+    const token = await generateLinkReq(ROOT_TEAM_ID, nodeId);
+    if (token) {
+      const link = generateInviteLink(userInfo, token);
+      copy2clipBoard(link);
+    }
   };
 
   /**
@@ -182,7 +188,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
   const renderPopover = () => {
     return (
       <div className={styles.qrCodePopoverContent} id="downloadInviteContainer">
-        <DownloadQrCode isMobile={isMobile} url={inviteLink} width={188} />
+        <DownloadQrCode isMobile={isMobile} nodeId={nodeId} width={188} />
       </div>
     );
   };
