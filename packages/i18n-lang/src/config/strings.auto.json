@@ -188,8 +188,8 @@
             "zh_HK": "可查看該表格內容或進行評論"
         },
         "add_datasheet_updater": {
-            "zh_CN": "在「只可阅读」基础上，还可以更新单元格内容",
-            "en_US": "Can read, can also update the cell content",
+            "zh_CN": "在「只可阅读」基础上，还可以新增和编辑记录",
+            "en_US": "Can read, can also add or edit records",
             "zh_HK": "在「只可閱讀」基礎上，還可以更新單元格內容"
         },
         "add_editor": {
@@ -233,8 +233,8 @@
             "zh_HK": "只可查看該文件夾下的內容"
         },
         "add_folder_updater": {
-            "zh_CN": "在「只可阅读」基础上，还可以更新表格的单元格",
-            "en_US": "Can read, can also update the cell content",
+            "zh_CN": "在「只可阅读」基础上，还可以新增和编辑记录",
+            "en_US": "Can read, can also add or edit records",
             "zh_HK": "在「只可閱讀」基礎上，還可以更新表格的單元格"
         },
         "add_form": {
@@ -3472,7 +3472,9 @@
             "zh_HK": "請選擇要關聯的維格表"
         },
         "check_more_privileges": {
-            "zh_CN": "查看更多特权"
+            "zh_CN": "查看更多特权",
+            "en_US": "See more privileges",
+            "zh_HK": "查看更多特權"
         },
         "check_network_status": {
             "zh_CN": "请检查网络连接",
@@ -4256,7 +4258,9 @@
             "zh_HK": "使用過程中遇到問題，可以隨時獲得服務和解答"
         },
         "contact_us_to_join_company_support": {
-            "zh_CN": "扫码添加我们的客服，申请创业公司扶持计划"
+            "zh_CN": "扫码添加我们的客服，申请创业公司扶持计划",
+            "en_US": "Scan the code to add our customer service and apply for the startup support program.",
+            "zh_HK": "掃碼添加我們的客服，申請創業公司扶持計劃"
         },
         "contacts": {
             "zh_CN": "通讯录",
@@ -5025,9 +5029,9 @@
             "zh_HK": "各獲得 1000 V 幣"
         },
         "default_link_join_tip": {
-            "zh_CN": "通过此邀请方式加入空间站将会默认获得该表的「可编辑」权限",
+            "zh_CN": "通过此邀请方式加入空间站将会默认获得该表的「只可更新」权限",
             "en_US": "Members who join the space through the invite link will be granted \"update-only\" access to the node",
-            "zh_HK": "通過此邀請方式加入空間站將會默認獲得該表的「可編輯」權限"
+            "zh_HK": "通過此邀請方式加入空間站將會默認獲得該表的「只可更新」權限"
         },
         "default_picture": {
             "zh_CN": "默认图片",
@@ -6133,7 +6137,7 @@
         },
         "enterprise_edition": {
             "zh_CN": "企业版",
-            "en_US": "Enterprise Edition",
+            "en_US": "Enterprise",
             "zh_HK": "企業版"
         },
         "enterprise_third_app": {
@@ -7967,7 +7971,7 @@
         },
         "form_submit_once": {
             "zh_CN": "只允许提交一次",
-            "en_US": "Summit once only",
+            "en_US": "Submit once only",
             "zh_HK": "只允許提交一次"
         },
         "form_submit_success": {
@@ -13336,8 +13340,8 @@
             "zh_HK": "生成該鏡像的視圖已被刪除，無法訪問鏡像"
         },
         "mirror_uploader_label": {
-            "zh_CN": "在「只可阅读」基础上，还可以更新单元格内容",
-            "en_US": "Can read, can also update the cell content",
+            "zh_CN": "在「只可阅读」基础上，还可以新增和编辑记录",
+            "en_US": "Can read, can also add or edit records",
             "zh_HK": "在「只可閱讀」基礎上，還可以更新單元格內容"
         },
         "missing_instruction_op_error": {
@@ -15436,8 +15440,8 @@
             "zh_HK": "權限更改成功"
         },
         "permission_config_in_workbench_page": {
-            "zh_CN": "[{\"key\":0,\"title\":\"对表格的操作权限\",\"detail\":[{\"title\":\"编辑视图列表\",\"permissions\":[0,1,2]},{\"title\":\"编辑视图工具栏\",\"permissions\":[0,1,2]},{\"title\":\"导出视图数据\",\"permissions\":[0,1]},{\"title\":\"增删和编辑字段（列）\",\"permissions\":[0,1]},{\"title\":\"编辑维格列样式（列宽/统计栏/顺序）\",\"permissions\":[0,1,2]},{\"title\":\"编辑记录（增删/拖动）\",\"permissions\":[0,1,2]},{\"title\":\"编辑单元格（增删改数据）\",\"permissions\":[0,1,2,3]},{\"title\":\"发布评论\",\"permissions\":[0,1,2,3,4]},{\"title\":\" 撤销，重做\",\"permissions\":[0,1,2,3]}]},{\"key\":1,\"title\":\"对文件（夹）的操作权限\",\"detail\":[{\"title\":\"设置文件（夹）权限\",\"permissions\":[0,1]},{\"title\":\"新建文件（夹）\",\"permissions\":[0,1]},{\"title\":\"导入文件\",\"permissions\":[0,1]},{\"title\":\"导出文件\",\"permissions\":[0,1]},{\"title\":\"复制文件（当前文件&上级文件夹权限）\",\"permissions\":[0,1]},{\"title\":\"移动文件（当前文件&目标文件夹权限）\",\"permissions\":[0,1]},{\"title\":\"重命名文件（夹）\",\"permissions\":[0,1]},{\"title\":\"删除文件（夹）\",\"permissions\":[0,1]},{\"title\":\"分享文件（夹）\",\"permissions\":[0,1,2]},{\"title\":\"设置文件（夹）描述\",\"permissions\":[0,1]},{\"title\":\"保存为模板\",\"permissions\":[0,1]}]}]",
-            "en_US": "[{\"key\":0,\"title\":\"About Datasheets\",\"detail\":[{\"title\":\"Edit view settings\",\"permissions\":[0,1,2]},{\"title\":\"Edit view list\",\"permissions\":[0,1,2]},{\"title\":\"Export view data\",\"permissions\":[0,1]},{\"title\":\"Add/Delete/Configured fields\",\"permissions\":[0,1]},{\"title\":\"Edit field layout (width/statistics/order)\",\"permissions\":[0,1,2]},{\"title\":\"Edit records (add/delete/drag)\",\"permissions\":[0,1,2]},{\"title\":\"Edit cells (add/delete/update)\",\"permissions\":[0,1,2,3]},{\"title\":\"Undo/Redo actions\",\"permissions\":[0,1,2,3]},{\"title\":\"Post a comment\",\"permissions\":[0,1,2,3,4]}]},{\"key\":1,\"title\":\"About Files\",\"detail\":[{\"title\":\"Edit file permissions\",\"permissions\":[0,1]},{\"title\":\"Create files\",\"permissions\":[0,1]},{\"title\":\"Import files\",\"permissions\":[0,1]},{\"title\":\"Export files\",\"permissions\":[0,1]},{\"title\":\"Duplicate files (Need full access to the file and its folder)\",\"permissions\":[0,1]},{\"title\":\"Move files (Need full access to the file and its folder)\",\"permissions\":[0,1]},{\"title\":\"Rename files\",\"permissions\":[0,1]},{\"title\":\"Delete files\",\"permissions\":[0,1]},{\"title\":\"Share files\",\"permissions\":[0,1,2]},{\"title\":\"Add files description\",\"permissions\":[0,1]},{\"title\":\"Save as template\",\"permissions\":[0,1]}]}]",
+            "zh_CN": "[{\"key\":0,\"title\":\"对表格的操作权限\",\"detail\":[{\"title\":\"编辑视图列表\",\"permissions\":[0,1,2]},{\"title\":\"编辑视图工具栏\",\"permissions\":[0,1,2]},{\"title\":\"导出视图数据\",\"permissions\":[0,1]},{\"title\":\"增删和编辑字段（列）\",\"permissions\":[0,1]},{\"title\":\"编辑维格列样式（列宽/统计栏/顺序）\",\"permissions\":[0,1,2]},{\"title\":\"编辑记录（新增和修改）\",\"permissions\":[0,1,2,3]},{\"title\":\"删除记录\",\"permissions\":[0,1,2]},{\"title\":\"发布评论\",\"permissions\":[0,1,2,3,4]},{\"title\":\" 撤销，重做\",\"permissions\":[0,1,2,3]}]},{\"key\":1,\"title\":\"对文件（夹）的操作权限\",\"detail\":[{\"title\":\"设置文件（夹）权限\",\"permissions\":[0,1]},{\"title\":\"新建文件（夹）\",\"permissions\":[0,1]},{\"title\":\"导入文件\",\"permissions\":[0,1]},{\"title\":\"导出文件\",\"permissions\":[0,1]},{\"title\":\"复制文件（当前文件&上级文件夹权限）\",\"permissions\":[0,1]},{\"title\":\"移动文件（当前文件&目标文件夹权限）\",\"permissions\":[0,1]},{\"title\":\"重命名文件（夹）\",\"permissions\":[0,1]},{\"title\":\"删除文件（夹）\",\"permissions\":[0,1]},{\"title\":\"分享文件（夹）\",\"permissions\":[0,1,2]},{\"title\":\"设置文件（夹）描述\",\"permissions\":[0,1]},{\"title\":\"保存为模板\",\"permissions\":[0,1]}]}]",
+            "en_US": "[{\"key\":0,\"title\":\"About Datasheets\",\"detail\":[{\"title\":\"Edit view settings\",\"permissions\":[0,1,2]},{\"title\":\"Edit view list\",\"permissions\":[0,1,2]},{\"title\":\"Export view data\",\"permissions\":[0,1]},{\"title\":\"Add/Delete/Configured fields\",\"permissions\":[0,1]},{\"title\":\"Edit field layout (width/statistics/order)\",\"permissions\":[0,1,2]},{\"title\":\"Edit records (add/edit records)\",\"permissions\":[0,1,2,3]},{\"title\":\"Delet records\",\"permissions\":[0,1,2]},{\"title\":\"Undo/Redo actions\",\"permissions\":[0,1,2,3]},{\"title\":\"Post a comment\",\"permissions\":[0,1,2,3,4]}]},{\"key\":1,\"title\":\"About Files\",\"detail\":[{\"title\":\"Edit file permissions\",\"permissions\":[0,1]},{\"title\":\"Create files\",\"permissions\":[0,1]},{\"title\":\"Import files\",\"permissions\":[0,1]},{\"title\":\"Export files\",\"permissions\":[0,1]},{\"title\":\"Duplicate files (Need full access to the file and its folder)\",\"permissions\":[0,1]},{\"title\":\"Move files (Need full access to the file and its folder)\",\"permissions\":[0,1]},{\"title\":\"Rename files\",\"permissions\":[0,1]},{\"title\":\"Delete files\",\"permissions\":[0,1]},{\"title\":\"Share files\",\"permissions\":[0,1,2]},{\"title\":\"Add files description\",\"permissions\":[0,1]},{\"title\":\"Save as template\",\"permissions\":[0,1]}]}]",
             "zh_HK": "[{\"key\":0,\"title\":\"對錶格的操作權限\",\"detail\":[{\"title\":\"編輯視圖列表\",\"permissions\":[0,1,2]},{\"title\":\"編輯視圖工具欄\",\"permissions\":[0,1,2]},{\"title\":\"導出視圖數據\",\"permissions\":[0,1]},{\"title\":\"增刪和編輯字段（列）\",\"permissions\":[0,1]},{\"title\":\"編輯維格列樣式（列寬/統計欄/順序）\",\"permissions\":[0,1,2]},{\"title\":\"編輯記錄（增刪/拖動）\",\"permissions\":[0,1,2]},{\"title\":\"編輯單元格（增刪改數據）\",\"permissions\":[0,1,2,3]},{\"title\":\"發布評論\",\"permissions\":[0,1,2,3,4]},{\"title\":\" 撤銷，重做\",\"permissions\":[0,1,2,3]}]},{\"key\":1,\"title\":\"對文件（夾）的操作權限\",\"detail\":[{\"title\":\"設置文件（夾）權限\",\"permissions\":[0,1]},{\"title\":\"新建文件（夾）\",\"permissions\":[0,1]},{\"title\":\"導入文件\",\"permissions\":[0,1]},{\"title\":\"導出文件\",\"permissions\":[0,1]},{\"title\":\"複製文件（當前文件&上級文件夾權限）\",\"permissions\":[0,1]},{\"title\":\"移動文件（當前文件&目標文件夾權限）\",\"permissions\":[0,1]},{\"title\":\"重命名文件（夾）\",\"permissions\":[0,1]},{\"title\":\"刪除文件（夾）\",\"permissions\":[0,1]},{\"title\":\"分享文件（夾）\",\"permissions\":[0,1,2]},{\"title\":\"設置文件（夾）描述\",\"permissions\":[0,1]},{\"title\":\"保存為模板\",\"permissions\":[0,1]}]}]"
         },
         "permission_delete_failed": {
@@ -19588,12 +19592,12 @@
         },
         "security_setting_catalog_management_description": {
             "zh_CN": "禁止普通成员可以在“工作目录”的根目录新增、删除、移动文件节点。开启后，仅空间站管理员可进行此操作",
-            "en_US": "Members can create new nodes to the root of the Working catalog. After the function is disabled, only Space admin can operate",
+            "en_US": "Members can`t create new nodes to the root of the working catalog. After the function is disabled, only space admin can operate",
             "zh_HK": "普通成員可以在“工作目錄”的根目錄新增、刪除文件節點。關閉後，僅空間站管理員可進行此操作"
         },
         "security_setting_catalog_management_title": {
             "zh_CN": "禁止成员在根目录增删文件",
-            "en_US": "Members can create new nodes to the root of the Working catalog",
+            "en_US": "Prevent members from creating new nodes to the root of the working catalog",
             "zh_HK": "成員可在根目錄增刪文件"
         },
         "security_setting_copy_cell_data": {
@@ -19627,9 +19631,9 @@
             "zh_HK": "在站內和站外，擁有「只可閱讀」權限的用戶也可以下載單元格內的附件。關閉該功能後，下載入口將屏蔽"
         },
         "security_setting_download_file_description": {
-            "zh_CN": "在站内和站外，拥有「只可阅读」权限的用户也可以下载单元格内的附件。关闭该功能后，下载入口将屏蔽",
-            "en_US": "After the function is disabled,users with \"read-Only\" permission cannot download attachments in cells, both on and off the Space",
-            "zh_HK": "在站內和站外，擁有「只可閱讀」權限的用戶也可以下載單元格內的附件。關閉該功能後，下載入口將屏蔽"
+            "zh_CN": "在站内和站外，拥有「只可阅读」权限的用户无法下载单元格内的附件",
+            "en_US": "Users with \"Read-only\" permission cannot download attachments in cells",
+            "zh_HK": "在站内和站外，拥有「只可阅读」权限的用户无法下载单元格内的附件"
         },
         "security_setting_download_file_title": {
             "zh_CN": "禁止「只可阅读」用户可下载附件",
@@ -19642,12 +19646,12 @@
             "zh_HK": "你正在體驗${grade}空間站專屬功能，升級後可以解鎖該功能"
         },
         "security_setting_export_data_describle": {
-            "zh_CN": "指定对应权限的成员可以导出维格表和视图数据到本地。未开启时，仅空间站管理员可导出数据。",
+            "zh_CN": "指定对应权限的成员可以导出维格表和视图数据到本地。未开启时，仅空间站管理员可导出数据",
             "en_US": "Specify members to export data.If the function is disabled,only space andmin can export data.",
             "zh_HK": "對應角色的成員可以將工作目錄中的維格表或者視圖數據導出到本地。關閉該功能後，導出入口將屏蔽。"
         },
         "security_setting_export_data_description": {
-            "zh_CN": "指定对应权限的成员可以导出维格表和视图数据到本地。未开启时，仅空间站管理员可导出数据。",
+            "zh_CN": "指定对应权限的成员可以导出维格表和视图数据到本地。未开启时，仅空间站管理员可导出数据",
             "en_US": "Specify members to export data.If the function is disabled,only space andmin can export data.",
             "zh_HK": "對應角色的成員可以將工作目錄中的維格表或者視圖數據導出到本地。關閉該功能後，導出入口將屏蔽。"
         },
@@ -19723,7 +19727,7 @@
         },
         "security_setting_share_title": {
             "zh_CN": "禁止成员创建文件节点的公开链接",
-            "en_US": "Disable Creating public link",
+            "en_US": "Disable creating public link",
             "zh_HK": "成員可創建文件節點的公開鏈接"
         },
         "security_show_mobile": {
@@ -21590,7 +21594,9 @@
             "zh_HK": "創業"
         },
         "startup_company_support_program": {
-            "zh_CN": "创业公司扶持计划"
+            "zh_CN": "创业公司扶持计划",
+            "en_US": "Startup support Program",
+            "zh_HK": "創業公司扶持計劃"
         },
         "stat_average": {
             "zh_CN": "平均值",
@@ -23595,7 +23601,9 @@
             "zh_HK": "烏拉圭"
         },
         "usage_overlimit_alert_title": {
-            "zh_CN": "功能超限提示"
+            "zh_CN": "功能超限提示",
+            "en_US": "Over limits",
+            "zh_HK": "功能超限提示"
         },
         "use_the_template": {
             "zh_CN": "使用该模板",

@@ -49,8 +49,8 @@ export const QRCodeModalContent: React.FC<IModalContentProps> = (props) => {
 };
 
 export const getModalConfig = (props) => {
-  const { isShowQRCode = false, title, content, onOk, okText, modalButtonType } = props;
-  if(isShowQRCode && !isHiddenQRCode()) {
+  const { isShowQrcode = true, title, content, onOk, okText, modalButtonType } = props;
+  if(isShowQrcode && !isHiddenQRCode()) {
     return {
       title,
       content: QRCodeModalContent({

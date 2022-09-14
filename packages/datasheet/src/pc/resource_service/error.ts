@@ -8,22 +8,23 @@ import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content
 import { Method, navigatePath } from 'pc/components/route_manager/use_navigation';
 
 export const onError: IServiceError = (error, type) => {
-  
+  const { isShowQrcode, title, code, message: errorMessage } = error;
+  const errorCode = code as number;
   if (type === 'modal') {
-    Sentry.captureMessage(error.message, {
+    Sentry.captureMessage(errorMessage, {
       extra: error as any,
     });
 
     let modalType = error.modalType || 'error';
-    let contentMessage = error.message + `(${error.code})`;
+    let contentMessage = errorMessage + `(${errorCode})`;
     // TODO: 临时方案，表单及数表无权限插入或编辑需要报不同的错误以及不同错误码报错需要不同文案
-    if(error.code as string | number === StatusCode.NOT_PERMISSION || error.code as string | number === StatusCode.NODE_NOT_EXIST) {
+    if(errorCode == StatusCode.NOT_PERMISSION || errorCode == StatusCode.NODE_NOT_EXIST) {
       modalType = 'warning';
       contentMessage = /fom\w+/.test(window.location.href) ?
         t(Strings.no_datasheet_editing_right) :
-        t(Strings.no_file_permission_message) + `(${error.code})`;
+        t(Strings.no_file_permission_message) + `(${errorCode})`;
     }
-    if(error.code as string | number === OtErrorCode.REVISION_OVER_LIMIT) {
+    if(errorCode == OtErrorCode.REVISION_OVER_LIMIT) {
       modalType = 'info';
     }
     const modalOnOk = () => {
@@ -39,10 +40,9 @@ export const onError: IServiceError = (error, type) => {
         window.location.reload();
       }
     };
-    const isShowQrcode = error.isShowQrcode || error.isShowQrcode === undefined ? true : error.isShowQrcode;
-
+  
     const modalConfig = getModalConfig({
-      title: error.title ? error.title : t(Strings.kindly_reminder),
+      title: title || t(Strings.kindly_reminder),
       content: contentMessage,
       okText: error.okText || t(Strings.refresh),
       onOk: modalOnOk,
@@ -55,12 +55,12 @@ export const onError: IServiceError = (error, type) => {
   }
 
   if (type === 'message') {
-    Message.warning({ content: error.message });
+    Message.warning({ content: errorMessage });
     return;
   }
 
   if (type === 'subscribeUsage') {
-    triggerUsageAlert(error.message as keyof ISubscription, (error as any).extra);
+    triggerUsageAlert(errorMessage as keyof ISubscription, (error as any).extra);
     return;
   }
 };
