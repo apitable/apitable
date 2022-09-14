@@ -218,7 +218,7 @@ public class BillingPlanFeature {
      *
      * @since 0.13.7
      */
-    private Boolean securitySettingAddresslistIsolation;
+    private Boolean securitySettingAddressListIsolation;
 
     /**
      * 安全设置-禁止成员在根目录增删文件

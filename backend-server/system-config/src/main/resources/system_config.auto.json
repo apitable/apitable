@@ -3073,7 +3073,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management",
                     "seats_10",
                     "storage_capacity_100",
@@ -3567,7 +3567,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management",
                     "storage_capacity_2000",
                     "seats_200",
@@ -3790,7 +3790,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management",
                     "storage_capacity_2000",
                     "seats_200",
@@ -3852,7 +3852,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "name": [
@@ -4089,7 +4089,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management",
                     "storage_capacity_5000",
                     "seats_500",
@@ -4214,7 +4214,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "钉钉旗舰版",
@@ -4260,7 +4260,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "钉钉旗舰版",
@@ -4321,7 +4321,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "钉钉旗舰版",
@@ -4382,7 +4382,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "钉钉旗舰版",
@@ -4443,7 +4443,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "钉钉旗舰版",
@@ -4504,7 +4504,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "钉钉旗舰版",
@@ -4550,7 +4550,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "钉钉旗舰版",
@@ -4600,7 +4600,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "钉钉旗舰版",
@@ -4650,7 +4650,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "钉钉旗舰版",
@@ -4700,7 +4700,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "钉钉旗舰版",
@@ -4750,7 +4750,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "钉钉旗舰版",
@@ -4811,7 +4811,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "钉钉旗舰版",
@@ -4861,7 +4861,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "钉钉旗舰版",
@@ -4922,7 +4922,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "钉钉旗舰版",
@@ -5733,7 +5733,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -5780,7 +5780,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -5827,7 +5827,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -5874,7 +5874,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -5921,7 +5921,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -5968,7 +5968,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -6015,7 +6015,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -6062,7 +6062,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -6109,7 +6109,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -6156,7 +6156,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -6203,7 +6203,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -6250,7 +6250,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -6297,7 +6297,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -6344,7 +6344,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -6391,7 +6391,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -6438,7 +6438,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -6485,7 +6485,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -6532,7 +6532,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -6579,7 +6579,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -6626,7 +6626,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -6673,7 +6673,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -6720,7 +6720,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -6767,7 +6767,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -6814,7 +6814,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -6861,7 +6861,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -6907,7 +6907,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -6954,7 +6954,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -7001,7 +7001,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -7048,7 +7048,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -7095,7 +7095,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -7142,7 +7142,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -7189,7 +7189,7 @@
                     "security_mobile",
                     "audit_query_730",
                     "storage_capacity_4500",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -7235,7 +7235,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -7282,7 +7282,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -7328,7 +7328,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -7373,7 +7373,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -7419,7 +7419,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业级",
@@ -7497,7 +7497,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "飞书旗舰版",
@@ -7545,7 +7545,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "飞书旗舰版",
@@ -7594,7 +7594,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "飞书旗舰版",
@@ -7643,7 +7643,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "飞书旗舰版",
@@ -7692,7 +7692,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "飞书旗舰版",
@@ -7741,7 +7741,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "飞书旗舰版",
@@ -7790,7 +7790,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "飞书旗舰版",
@@ -7838,7 +7838,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "飞书旗舰版",
@@ -7887,7 +7887,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "飞书旗舰版",
@@ -7936,7 +7936,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "飞书旗舰版",
@@ -7985,7 +7985,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "飞书旗舰版",
@@ -8034,7 +8034,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "飞书旗舰版",
@@ -8083,7 +8083,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "飞书旗舰版",
@@ -8132,7 +8132,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "飞书旗舰版",
@@ -8894,7 +8894,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "专有云旗舰版",
@@ -9341,7 +9341,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业微信旗舰版",
@@ -9386,7 +9386,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业微信旗舰版",
@@ -9431,7 +9431,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业微信旗舰版",
@@ -9476,7 +9476,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业微信旗舰版",
@@ -9521,7 +9521,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业微信旗舰版",
@@ -9566,7 +9566,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业微信旗舰版",
@@ -9611,7 +9611,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业微信旗舰版",
@@ -9656,7 +9656,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业微信旗舰版",
@@ -9701,7 +9701,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业微信旗舰版",
@@ -9746,7 +9746,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业微信旗舰版",
@@ -9791,7 +9791,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业微信旗舰版",
@@ -9836,7 +9836,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业微信旗舰版",
@@ -9879,7 +9879,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业微信旗舰版",
@@ -9922,7 +9922,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业微信旗舰版",
@@ -9967,7 +9967,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业微信旗舰版",
@@ -10018,7 +10018,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业微信旗舰版",
@@ -10069,7 +10069,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业微信旗舰版",
@@ -10120,7 +10120,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业微信旗舰版",
@@ -10171,7 +10171,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业微信旗舰版",
@@ -10222,7 +10222,7 @@
                     "security_copy_cell_data",
                     "security_mobile",
                     "audit_query_730",
-                    "security_addresslist_isolation",
+                    "security_address_list_isolation",
                     "security_catalog_management"
                 ],
                 "product_ch_name": "企业微信旗舰版",
@@ -12153,7 +12153,7 @@
                 "functionName": "彩虹标签",
                 "functionType": "subscribe"
             },
-            "security_addresslist_isolation": {
+            "security_address_list_isolation": {
                 "plans": [
                     "enterprise_20",
                     "enterprise_30",
@@ -12242,8 +12242,8 @@
                     "wecom_enterprise_1000_v1",
                     "wecom_enterprise_120_v1"
                 ],
-                "id": "security_addresslist_isolation",
-                "function": "security_setting_addresslist_isolation",
+                "id": "security_address_list_isolation",
+                "function": "security_setting_address_list_isolation",
                 "specification": 0,
                 "functionName": "安全设置-通讯录隐藏",
                 "functionType": "subscribe"
@@ -17610,11 +17610,11 @@
                     "security_catalog_management"
                 ]
             },
-            "security_setting_addresslist_isolation": {
+            "security_setting_address_list_isolation": {
                 "type": "subscribe",
-                "id": "security_setting_addresslist_isolation",
+                "id": "security_setting_address_list_isolation",
                 "features": [
-                    "security_addresslist_isolation"
+                    "security_address_list_isolation"
                 ]
             },
             "watermark": {

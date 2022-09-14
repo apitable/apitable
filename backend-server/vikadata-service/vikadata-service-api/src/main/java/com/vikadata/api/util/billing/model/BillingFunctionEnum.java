@@ -173,7 +173,7 @@ public enum BillingFunctionEnum {
     /**
      * 安全设置-通讯录隐藏
      */
-    SECURITY_SETTING_ADDRESSLIST_ISOLATION("security_setting_addresslist_isolation"),
+    SECURITY_SETTING_ADDRESS_LIST_ISOLATION("security_setting_address_list_isolation"),
 
     /**
      * 安全设置-禁止成员在根目录增删文件
