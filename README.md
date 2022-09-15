@@ -113,21 +113,21 @@ Why you must know APITable for your next software?
 
 ## 💞 API-oriented
 
-##### API UI Panel
+#### API UI Panel
 
 Click the `API` button at the right corner will show the API Panel
 
-##### SQL-like query
+#### SQL-like query
 
 APITable provides a Datasheet Query Language(DQL) to query your database-spreadsheet contents.
 
 ## 💝 Embed-friendly
 
-##### Share and Embed
+#### Share and Embed
 Share your datasheet table or folder.
 Embed them by HTML script copy & paste.
 
-##### Enterprise-ready Embedding
+#### Enterprise-ready Embedding
 
 [APITable.com](https://apitable.com) provides more Enterprise-ready Embedding features for securities.
 
@@ -144,15 +144,40 @@ If you computer has installed Docker Machine, run this:
 curl https://apitable.github.io/install.sh | bash -c
 ```
 
+## Running for development
+
+Make sure you have `docker` & `make` installed locally.
+
+APITable uses Docker to run everything, so relax that Java and NodeJS is no need for your local machine.
+
+Then you run development environment by one command:
+
+```bash
+make devenv-up
+```
+
+More details, input `make` command for help.
+
 ### Contributing
 
+#### Basic
 
-APITable use common accepted conventions:
+1. Create an issue and describe your idea -> [APITable issues](https://github.com/apitable/apitable/issues)
+2. Fork this project -> [Fork APITable project](https://github.com/apitable/apitable/fork)
+3. Create your feature branch (`git checkout -b my-new-feature`)
+4. Commit your changes (`git commit -am 'Add some feature'`)
+5. Publish the branch (`git push origin my-new-feature`)
+6. Create a new Pull Request -> [Create pull request across forks](https://github.com/apitable/apitable/compare)
 
-- What's our Git branching model?: [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
-- How to collaborate on your fork projects?[Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
-- How to write good commit message?: [Conventional Commits](https://www.conventionalcommits.org/)
-- How to versioning and tagging?: [Semantic Versioning](https://semver.org/)
+#### Conventions
+APITable use common use conventions:
+
+- What's our Git branching model? -> [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
+- How to collaborate on your fork projects? -> [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
+- How to write good commit message? -> [Conventional Commits](https://www.conventionalcommits.org/)
+- How to versioning and tagging? -> [Semantic Versioning](https://semver.org/)
+- What is the Java Coding Guideline? -> [Java Coding Guideline](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij Plugin](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
+- What is the TypeScript Coding Guideline? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 
 ## 🛣 Roadmap
 
