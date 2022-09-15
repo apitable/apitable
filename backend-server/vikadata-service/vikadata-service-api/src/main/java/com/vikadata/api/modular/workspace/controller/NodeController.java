@@ -619,11 +619,11 @@ public class NodeController {
         else {
             // 获取空间ID，方法包含判断节点是否存在
             spaceId = iNodeService.getSpaceIdByNodeId(opRo.getNodeId());
-            // 校验是否跨空间
-            LoginContext.me().checkAcrossSpace(userId, spaceId);
             OpenedSheet openedSheet = OpenedSheet.builder().nodeId(opRo.getNodeId()).viewId(opRo.getViewId()).position(opRo.getPosition()).build();
             userSpaceOpenedSheetService.refresh(userId, spaceId, openedSheet);
         }
+        // check if space is spanned
+        LoginContext.me().checkAcrossSpace(userId, spaceId);
         // 缓存用户最后操作激活的空间
         userActiveSpaceService.save(userId, spaceId);
         return ResponseData.success();
