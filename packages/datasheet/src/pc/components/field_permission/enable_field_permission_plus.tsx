@@ -278,7 +278,7 @@ export const EnableFieldPermissionPlus: React.FC<IEnablePermissionPlus> = (props
         classNames={styles.permissionSelect}
         permissionList={permissionList}
         onSubmit={submitAddRole}
-        adminAndOwnerUnitIds={roleList.map(v => v.unitId)}
+        adminAndOwnerUnitIds={roleList.filter(v => v.isAdmin || v.isOwner).map(v => v.unitId)}
       />
     }
     <PermissionInfoSetting
