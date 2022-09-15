@@ -5,9 +5,9 @@ import {
   Api, ConfigConstant, INodeRoleMap, IReduxState,
   IUnitValue, Selectors, StoreActions, Strings, t
 } from '@vikadata/core';
-import { IOption, Typography } from '@vikadata/components';
+import { IOption, Skeleton, Typography } from '@vikadata/components';
 import { InformationSmallOutlined, ChevronRightOutlined } from '@vikadata/icons';
-import { NodeChangeInfoType, useCatalogTreeRequest, useRequest, useResponsive/* , useSpaceRequest */ } from 'pc/hooks';
+import { NodeChangeInfoType, useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
 import { permissionMenuData } from 'pc/utils';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Avatar, Message } from 'pc/components/common';
@@ -43,7 +43,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   const invitable = useSelector(state => state.space.spaceFeatures?.invitable);
   // const { checkEmailReq } = useSpaceRequest();
   const { getNodeRoleListReq } = useCatalogTreeRequest();
-  const { run: getNodeRoleList, data: roleList } = useRequest<INodeRoleMap>(() => getNodeRoleListReq(data.nodeId));
+  const { run: getNodeRoleList, data: roleList, loading } = useRequest<INodeRoleMap>(() => getNodeRoleListReq(data.nodeId));
   // const { run: checkEmail } = useRequest(checkEmailReq, { manual: true });
 
   useEffect(() => {
@@ -51,6 +51,17 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
       getNodeRoleList();
     }
   }, [socketData, getNodeRoleList]);
+
+  if (loading) {
+    return (
+      <div className={cls(styles.shareContent, { [styles.shareContentMobile]: isMobile })}>
+        <Skeleton count={1} width="38%" height="24px" />
+        <Skeleton count={2} style={{ marginTop: '16px' }} height="24px"/>
+        <Skeleton count={1} style={{ marginTop: '40px' }} width="38%" height="24px" />
+        <Skeleton count={1} style={{ marginTop: '16px' }} height="24px" />
+      </div>
+    );
+  }
 
   const optionData = permissionMenuData(data.type);
 

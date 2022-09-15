@@ -50,7 +50,7 @@ export const DownloadQrCode: FC<IDownloadQrCodeProps> = ({
     fetchLink();
   }, [fetchLink]);
 
-  if (!spaceInfo || !spaceId) {
+  if (!spaceInfo || !spaceId || !link) {
     return null;
   }
 
