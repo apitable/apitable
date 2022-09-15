@@ -1,8 +1,9 @@
 import { Api, Url } from '@vikadata/core';
 import axios from 'axios';
 import { getEnvVars } from 'get_env';
-import { getPageParams, getRegResult, spaceIdReg } from 'pc/hooks';
 import { NextPageContext } from 'next';
+import { getPageParams, getRegResult, spaceIdReg } from 'pc/hooks';
+import { setClientCookie } from '../utils/utils';
 
 export interface IUserInfoError {
   code: number;
@@ -40,6 +41,8 @@ export const getInitialProps = async(context: { ctx: NextPageContext }) => {
   const spaceId = context.ctx.query?.spaceId || '';
 
   const res = await axios.get('/client/info', { params: { spaceId }, headers: headers });
+
+  Array.isArray(res.headers['set-cookie']) && setClientCookie(res.headers['set-cookie'], context.ctx);
 
   const pathUrl = context.ctx.req?.url;
   let userInfo = res.data.userInfo;
@@ -83,3 +86,4 @@ export const getInitialProps = async(context: { ctx: NextPageContext }) => {
     pathUrl
   };
 };
+

@@ -1,4 +1,4 @@
-import { IUserInfoError } from './getInitialProps';
+import { IUserInfoError } from './get_initial_props';
 
 export interface IClientInfo {
   locale: string,

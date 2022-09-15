@@ -2,7 +2,7 @@ import getConfig from 'next/config';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 import React from 'react';
-import { getInitialProps } from '../utils/getInitialProps';
+import { getInitialProps } from '../utils/get_initial_props';
 import '../utils/init_private';
 import { IClientInfo } from '../utils/interface';
 

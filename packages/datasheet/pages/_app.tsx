@@ -57,7 +57,7 @@ import '../src/index.less';
 import '../src/main.less';
 import '../src/widget-stage/index.less';
 import '../src/widget-stage/main/main.less';
-import { getInitialProps } from '../utils/getInitialProps';
+import { getInitialProps } from '../utils/get_initial_props';
 import { IClientInfo } from '../utils/interface';
 
 const RouterProvider = dynamic(() => import('pc/components/route_manager/router_provider'), { ssr: true });

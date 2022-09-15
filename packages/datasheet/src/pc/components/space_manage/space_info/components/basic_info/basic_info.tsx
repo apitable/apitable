@@ -1,13 +1,14 @@
-import { useMemo } from 'react';
-import styles from './style.module.less';
-import { Typography, Skeleton } from '@vikadata/components';
+import { Skeleton, Typography } from '@vikadata/components';
+import { IReduxState, Strings, t } from '@vikadata/core';
 import { CopyOutlined } from '@vikadata/icons';
-import { Strings, t, IReduxState } from '@vikadata/core';
-import { Tooltip, Message } from 'pc/components/common';
-import { copy2clipBoard } from 'pc/utils';
-import { shallowEqual, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
+import { Message } from 'pc/components/common';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
+import { copy2clipBoard } from 'pc/utils';
+import { useMemo } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
+import styles from './style.module.less';
+
 export const BasicInfo = () => {
   const { spaceInfo, spaceId } = useSelector(
     (state: IReduxState) => {
@@ -41,13 +42,9 @@ export const BasicInfo = () => {
       {
         label: t(Strings.creator),
         value: (
-          <Tooltip
-            title={displayCreatorName}
-            placement="bottomLeft"
-            textEllipsis
-          >
-            <span className={styles.textEllipsis}>{displayCreatorName}</span>
-          </Tooltip>
+          <Typography variant='body3' className={styles.textEllipsis} ellipsis>
+            {displayCreatorName}
+          </Typography>
         ),
       },
       {
@@ -64,13 +61,9 @@ export const BasicInfo = () => {
       {
         label: t(Strings.primary_admin),
         value: (
-          <Tooltip
-            title={displayOwnerName}
-            placement="bottomLeft"
-            textEllipsis
-          >
-            <span className={styles.textEllipsis}>{displayOwnerName}</span>
-          </Tooltip>
+          <Typography variant='body3' className={styles.textEllipsis} ellipsis>
+            {displayOwnerName}
+          </Typography>
         ),
       },
       {
@@ -91,7 +84,7 @@ export const BasicInfo = () => {
     return (
       <>
         <Skeleton count={2} />
-        <Skeleton width="61%"/>
+        <Skeleton width='61%' />
       </>
     );
   }
@@ -100,7 +93,7 @@ export const BasicInfo = () => {
     <div className={styles.basicInfo}>
       <div>
         {info.map((item) => (
-          <Typography variant="body3" className={styles.item} key={item.label}>
+          <Typography variant='body3' className={styles.item} key={item.label}>
             <span className={styles.label}>{item.label}：</span>
             {item.value}
           </Typography>
