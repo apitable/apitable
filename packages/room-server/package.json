@@ -1,6 +1,6 @@
 {
   "name": "@vikadata/room-server",
-  "version": "0.13.5",
+  "version": "0.13.7",
   "description": "nodejs room server",
   "author": "Bieber",
   "private": true,
