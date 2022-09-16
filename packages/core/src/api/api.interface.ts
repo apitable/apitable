@@ -46,6 +46,7 @@ export interface ILoadOrSearchArg {
   keyword?: string;
   names?: string;
   unitIds?: string;
+  searchEmail?: boolean;
   // linkId 用来标注站外的操作，目前支持 templateId 和 shareId，
   linkId?: string | undefined;
   all?: boolean;

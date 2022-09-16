@@ -1,5 +1,6 @@
 @import "~pc/styles/lib_var.less";
 @import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
 
 // pc端
 .publicLink {
@@ -82,7 +83,6 @@
   justify-content: center;
   height: 100%;
   position: relative;
-  padding-bottom: 32px;
 
   img {
     width: 320px;
@@ -183,5 +183,170 @@
       // .ellipsis();
       cursor: default;
     }
+  }
+}
+
+.displayAlignCenter {
+  display: flex;
+  align-items: center;
+}
+
+// 分享链接的开关
+.shareToggle {
+  padding-bottom: 24px;
+  .displayAlignCenter();
+
+  .shareToggleContent {
+    margin: 0 4px 0 8px;
+  }
+}
+
+// 被分享人
+.sharePerson {
+  margin-bottom: 8px;
+  .displayAlignCenter();
+
+  .sharePersonContent {
+    margin-right: 4px;
+    color: var(--textCommonSecondary);
+  }
+
+  .sharePersonAuth {
+    color: var(--textBrandDefault);
+    cursor: pointer;
+    .displayAlignCenter();
+
+    svg {
+      fill: var(--textBrandDefault);
+    }
+  }
+}
+
+// 更多邀请方式
+.inviteMore {
+  padding: 14px 0;
+  border-top: 1px solid var(--borderCommon);
+  .displayAlignCenter();
+
+  .inviteMoreTitle {
+    margin-right: 16px;
+    color: var(--textCommonSecondary);
+  }
+
+  .inviteMoreMethod {
+    margin-right: 24px;
+    color: var(--textCommonSecondary);
+    cursor: pointer;
+    .displayAlignCenter();
+
+    svg {
+      margin-right: 4px;
+      fill: var(--textCommonPrimary);
+    }
+  }
+}
+
+// 邀请二维码的 popover
+.qrCodePopover {
+  :global {
+    .ant-popover-inner-content {
+      padding: 0;
+    }
+  }
+}
+
+.qrCodePopoverContent {
+  padding: 24px;
+  width: 256px;
+}
+
+// 邀请二维码手机端 modal
+.qrCodeMobile {
+  position: relative;
+
+  .qrCodeCloseIcon {
+    width: 40px;
+    height: 40px;
+    bottom: -64px;
+    left: 50%;
+    border-radius: 50%;
+    background-color: var(--deepMaskColor);
+    transform: translateX(-50%);
+    position: absolute;
+    justify-content: center;
+    .displayAlignCenter();
+  }
+}
+
+// 邀请的二维码
+.downloadQrCodeHeader {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: flex-start;
+
+  .downloadQrCodeTitle {
+    margin-left: 8px;
+    line-height: 24px;
+    color: var(--textCommonPrimary) !important;
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+}
+
+.downloadQrCodeImage {
+  border: 1px solid var(--borderCommon);
+  border-radius: 4px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+  justify-content: center;
+  position: relative;
+  .displayAlignCenter();
+}
+
+.downloadQrCodeLogo {
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--bgCommonDefault);
+  border-radius: 4px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  .displayAlignCenter();
+}
+
+// 下载二维码尾部
+.downloadQrCodeFooter {
+  color: var(--textCommonTertiary) !important;
+  text-align: center !important;
+  margin-bottom: 16px !important;
+}
+
+.doubleSelect {
+  border: none !important;
+  height: 20px;
+  padding-right: 32px;
+  background: transparent !important;
+  :global {
+    .optionLabel {
+      color: var(--textBrandDefault) !important;
+      font-size: 14px !important;
+    }
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .sharePersonAuthMobile {
+    :global {
+      .ant-drawer-wrapper-body, .ant-drawer-header, .ant-drawer-body {
+        background-color: var(--bgCommonLower);
+      }
+    }
+  }
+  .inviteMore {
+    padding-bottom: 0;
   }
 }

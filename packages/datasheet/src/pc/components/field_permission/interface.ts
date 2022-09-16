@@ -22,6 +22,9 @@ export interface IUnitPermissionSelectProps {
 
   // 管理员和创建人unitId数组
   adminAndOwnerUnitIds?: string[];
+  showTeams?: boolean;
+
+  searchEmail?: boolean;
 }
 
 export interface IDisabledPermission extends IFieldPermissionProps {

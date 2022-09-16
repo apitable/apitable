@@ -636,15 +636,23 @@ const ToolbarBase = () => {
           </Display>
         )}
         {!shareId && !templateId && activeNodeId && treeNodesMap[activeNodeId] && (
-          <ToolItem
-            showLabel={showIconBarLabel}
-            icon={<ShareIcon width={16} height={16} fill={nodeShared ? colors.primaryColor : colors.secondLevelText} className={styles.toolIcon} />}
-            text={t(Strings.share)}
-            disabled={!permissions.sharable}
-            isActive={nodeShared}
-            className={styles.toolbarItem}
-            onClick={() => permissions.sharable && setShareNodeId(activeNodeId)}
-          />
+          <Display type={ToolHandleType.Share}>
+            <ToolItem
+              showLabel={showIconBarLabel}
+              icon={
+                <ShareIcon
+                  width={16}
+                  height={16}
+                  fill={nodeShared ? colors.primaryColor : colors.secondLevelText}
+                  className={styles.toolIcon}
+                />
+              }
+              text={t(Strings.share)}
+              disabled={!permissions.sharable}
+              isActive={nodeShared}
+              className={styles.toolbarItem}
+            />
+          </Display>
         )}
       </div>
       <Share nodeId={shareNodeId} onClose={() => setShareNodeId('')} />
