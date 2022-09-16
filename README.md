@@ -134,15 +134,19 @@ Embed them by HTML script copy & paste.
 
 
 
-## Development & Contributing
 
-### Installation
+## Installation
 
-If you computer has installed Docker Machine, run this:
+Make sure you have `docker` & `curl` installed locally.
+
+If you computer has installed Docker Machine, open your terminal and run this:
 
 ```
 curl https://apitable.github.io/install.sh | bash -c
 ```
+
+Then open [https://localhost:80](https://localhost:80) in your browser to visit it.
+
 
 ## 🧑‍💻 Contributing
 
@@ -156,9 +160,9 @@ Here help you quick start the process of contributing to APITable.
 
 ### Run for development
 
-Make sure you have `docker` & `make` installed locally.
+APITable uses Docker to run everything, so relax that Java and NodeJS are unnecessary installed for your local machine.
 
-APITable uses Docker to run everything, so relax that Java and NodeJS is no need for your local machine.
+Make sure you have `docker` & `make` installed locally.
 
 Then you run development environment by one command:
 
@@ -173,7 +177,6 @@ Input `make` command to see the help.
 # help
 make
 ```
-
 
 ### Git workflow basic
 
