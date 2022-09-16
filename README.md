@@ -167,7 +167,7 @@ Then you run development environment by one command:
 make devenv-up
 ```
 
-Input `make` command for see the help.
+Input `make` command to see the help.
 
 ```bash
 # help
