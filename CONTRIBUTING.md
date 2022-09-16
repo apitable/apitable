@@ -1,6 +1,6 @@
 # Contributing to APITable
 
-Welcome, and thank you for your interest in contributing to APITable.
+Welcome, and thank you for your interest in contributing to APITable!
 
 There are many ways in which you can contribute, beyond writing code. 
 

@@ -144,7 +144,17 @@ If you computer has installed Docker Machine, run this:
 curl https://apitable.github.io/install.sh | bash -c
 ```
 
-## Running for development
+## 🧑‍💻 Contributing
+
+Welcome, and thank you for your interest in contributing to APITable!
+
+There are many ways in which you can contribute, beyond writing code. 
+
+You can read this repository’s [contributing guidelines](./CONTRIBUTING.md) to learn how to contribute.
+
+Here help you quick start the process of contributing to APITable.
+
+### Run for development
 
 Make sure you have `docker` & `make` installed locally.
 
@@ -153,14 +163,21 @@ APITable uses Docker to run everything, so relax that Java and NodeJS is no need
 Then you run development environment by one command:
 
 ```bash
+# docker compose up the development environment with local code
 make devenv-up
 ```
 
-More details, input `make` command for help.
+Input `make` command for see the help.
 
-### Contributing
+```bash
+# help
+make
+```
 
-#### Basic
+
+### Git workflow basic
+
+Here's a general APITable git workflow:
 
 1. Create an issue and describe your idea -> [APITable issues](https://github.com/apitable/apitable/issues)
 2. Fork this project -> [Fork APITable project](https://github.com/apitable/apitable/fork)
@@ -169,7 +186,9 @@ More details, input `make` command for help.
 5. Publish the branch (`git push origin my-new-feature`)
 6. Create a new Pull Request -> [Create pull request across forks](https://github.com/apitable/apitable/compare)
 
-#### Conventions
+
+### Conventions
+
 APITable use common use conventions:
 
 - What's our Git branching model? -> [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
