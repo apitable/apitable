@@ -14,6 +14,12 @@ The goal of this document is to provide a high-level overview of how you can get
 
 ## Reporting Issues
 
+Have you identified any bugs in APITable?
+Have a feature request?
+
+Thank you for report it!
+Here's how you can report your issue as effectively as possible.
+
 
 ### Security issues
 If you believe you've found a security vulnerability, please read our [security policy](./SECURITY.md) for more details.
@@ -21,7 +27,7 @@ If you believe you've found a security vulnerability, please read our [security 
 
 ## Answering questions
 
-- [Stack Overflow](https://stackoverflow.com/questions/tagged/apitable)
+- [Stack Overflow #apitable](https://stackoverflow.com/questions/tagged/apitable)
 
 ## Write Documentation
 
