@@ -7,10 +7,11 @@
       // http://dev.vika.ltd
       // http://ec2-161-189-41-224.cn-northwest-1.compute.amazonaws.com.cn:23002/
       // http://ec2-161-189-41-224.cn-northwest-1.compute.amazonaws.com.cn
-      const socket = io("http://localhost:3002",
+      const socket = io("https://test.vika.ltd",
         {
           path: "/notification",
-          query: 'userId=aaaabbbbb',
+          // query: 'userId=bc5f7765fcc84af9bda992971e2e2806',
+          query: 'userId=6117483ce3e341cfa5c8fe6d0e02cd46',
           transports: ['websocket'],
           secure:true
         });
@@ -19,13 +20,22 @@
 
       socket.on("connect", function() {
         // 提交信息，表示需要关注空间站消息，服务端收到消息，将客户端加入房间「spaceId」
-        socket.emit('WATCH_SPACE', {spaceId: "spcYKiWLt6lD6"}, function(result) {
-          console.log('WATCH_SPACE:result', result);
+        // socket.emit('NODE_BROWSED', { nodeId: "fod3AjGsE2ncJ" }, function(result) {
+        //   console.log('NODE_BROWSED:result', result);
+        //   // result 为boolean值
+        //   if (result) {
+        //     // todo
+        //   }
+        // });
+
+        socket.emit('NODE_BROWSED', { nodeId: "fodYjPVGhEvwo" }, function(result) {
+          console.log('NODE_BROWSED:result', result);
           // result 为boolean值
           if (result) {
             // todo
           }
         });
+
 
         socket.emit('LEAVE_SPACE', {}, function(result) {
           console.log('LEAVE_SPACE:result', result);

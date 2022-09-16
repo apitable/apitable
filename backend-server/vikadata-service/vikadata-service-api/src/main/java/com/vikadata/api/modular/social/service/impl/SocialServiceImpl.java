@@ -322,7 +322,10 @@ public class SocialServiceImpl implements ISocialService {
                     SocialAppType.ISV.getType() == entity.getAppType();
             boolean isLarkIsv = SocialPlatformType.FEISHU.getValue().equals(entity.getPlatform()) &&
                     SocialAppType.ISV.getType() == entity.getAppType();
-            if (isDingTalkIsv || isWeComIsv || isLarkIsv) {
+            if (isDingTalkIsv || isWeComIsv) {
+                return new ArrayList<>();
+            }
+            if (isLarkIsv) {
                 return Arrays.asList("MANAGE_NORMAL_MEMBER", "MANAGE_TEAM");
             }
         }
