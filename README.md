@@ -147,6 +147,8 @@ curl https://apitable.github.io/install.sh | bash -c
 
 Then open [https://localhost:80](https://localhost:80) in your browser to visit it.
 
+If you want to set up your local development environment, read our [developer guide](./docs/contribute/developer-guide.md)
+
 
 ## 🧑‍💻 Contributing
 
