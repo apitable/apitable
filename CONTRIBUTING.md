@@ -33,6 +33,7 @@ If you believe you've found a security vulnerability, please read our [security 
 
 ## Contributing Code
 
+See [Developer Guide](./docs/contribute/developer-guide.md) to set up your development environment.
 
 
 ## Thank You!
