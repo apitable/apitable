@@ -65,6 +65,15 @@ const plugins = [[withLess, {
 })]
 ];
 
+// use local public folder for editions, e.g. apitable
+const getStaticFolder = () => {
+  if (/vika/gi.test(process.env.ENV)) {
+    return isProd ? process.env.NEXT_PUBLIC_ASSET_PREFIX : '';
+  }
+
+  return '';
+};
+
 module.exports = withPlugins(plugins, {
   // Use the CDN in production and localhost for development.
   assetPrefix: isProd ? process.env.NEXT_ASSET_PREFIX : '',
@@ -72,7 +81,7 @@ module.exports = withPlugins(plugins, {
     domains: ['s4.vika.cn', 's1.vika.cn', 'mp.weixin.qq.com'],
   },
   publicRuntimeConfig: {
-    staticFolder: isProd ? process.env.NEXT_PUBLIC_ASSET_PREFIX : ''
+    staticFolder: getStaticFolder(),
   },
   webpack(config, options) {
     const originalEntry = config.entry;
