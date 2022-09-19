@@ -35,7 +35,7 @@ export class DashboardOtService {
     operations.map(item => {
       item.actions.forEach(action => {
         if ('oi' in action || 'li' in action) {
-          if (action.p[0] === 'widgetInstallations' && action.p[1] === 'installWidgetIds') {
+          if (action.p[0] === 'widgetInstallations') {
             if (!permission.manageable) {
               throw new ServerException(PermissionException.OPERATION_DENIED);
             }
@@ -50,7 +50,7 @@ export class DashboardOtService {
         }
 
         if ('ld' in action || 'od' in action) {
-          if (action.p[0] === 'widgetInstallations' && action.p[1] === 'installWidgetIds') {
+          if (action.p[0] === 'widgetInstallations') {
             if (!permission.manageable) {
               throw new ServerException(PermissionException.OPERATION_DENIED);
             }
