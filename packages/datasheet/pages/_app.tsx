@@ -103,8 +103,6 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
   });
   const navigationTo = useNavigation();
 
-  const isVika = window['__initialization_data__']?.env ? /vika/gi.test(window['__initialization_data__'].env) : true;
-
   useEffect(() => {
     // 初始化用户系统
     initPlayer();
@@ -331,10 +329,10 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
       {
         loading !== LoadingStatus.Complete && <div className='main-img-wrap' style={{ height: 'auto' }}>
           <span className='script-loading-logo-img'>
-            <Image src={`${isVika ? publicRuntimeConfig.staticFolder : ''}/logo.svg`} alt='logo' layout={'fill'} />
+            <Image src={`${publicRuntimeConfig.staticFolder}/logo.svg`} alt='logo' layout={'fill'} />
           </span>
           <span className='script-loading-vika-img'>
-            <Image src={`${isVika ? publicRuntimeConfig.staticFolder : ''}/vika.svg`} alt='vika' layout={'fill'} object-fit={'contain'} />
+            <Image src={`${publicRuntimeConfig.staticFolder}/vika.svg`} alt='vika' layout={'fill'} object-fit={'contain'} />
           </span>
         </div>
       }
