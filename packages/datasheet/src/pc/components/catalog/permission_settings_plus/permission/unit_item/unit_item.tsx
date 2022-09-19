@@ -100,7 +100,7 @@ export const UnitItem: FC<IUnitItemProps> = props => {
     <div className={classnames(styles.unitItem, className, !disabled && styles.unitItemOperation, (isDetail || isMobile) && styles.unitItemMobile)}>
       <div className={styles.unitInfo}>
         <InfoCard
-          title={title}
+          title={unit.isTeam ? unit.name : title}
           token={
             <Space align="center" size={4}>
               <Tag />
