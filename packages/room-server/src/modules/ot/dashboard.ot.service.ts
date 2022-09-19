@@ -41,10 +41,10 @@ export class DashboardOtService {
             }
             this.logger.info(`dashboard operations log =====> :${JSON.stringify(operations)}`);
             if ('oi' in action) {
-              resultSet.addWidgetIds.push(action['oi'][0]);
+              resultSet.addWidgetIds.push(action['oi'][0].id);
             }
             if ('li' in action) {
-              resultSet.addWidgetIds.push(action['li']);
+              resultSet.addWidgetIds.push(action['li'].id);
             }
           }
         }
@@ -55,10 +55,10 @@ export class DashboardOtService {
               throw new ServerException(PermissionException.OPERATION_DENIED);
             }
             if ('ld' in action) {
-              resultSet.deleteWidgetIds.push(action['ld']);
+              resultSet.deleteWidgetIds.push(action['ld'].id);
             }
             if ('od' in action) {
-              resultSet.deleteWidgetIds.push(action['od'][0]);
+              resultSet.deleteWidgetIds.push(action['od'][0].id);
             }
           }
         }
