@@ -80,6 +80,7 @@ module.exports = withPlugins(plugins, {
   images: {
     domains: ['s4.vika.cn', 's1.vika.cn', 'mp.weixin.qq.com'],
   },
+  poweredByHeader: false,
   publicRuntimeConfig: {
     staticFolder: getStaticFolder(),
   },
