@@ -100,11 +100,13 @@ export class FusionApiService implements IFusionApiInterface {
   }
 
   public async getFieldList(dstId: string, query: FieldQueryRo) {
+    const profiler = this.logger.startTimer();
     const datasheetPack: IServerDatasheetPack = await this.datasheetService.fetchDataPack(
       dstId,
       { token: this.request.headers.authorization },
       { recordIds: [] },
     );
+    profiler.done({ message: `getFieldListBuildDataPack ${dstId} done` });
     const store = this.commandService.fullFillStore(datasheetPack.datasheet.spaceId, datasheetPack);
     const state = store.getState();
     return this.filter.getVisibleFieldList(dstId, state, query);
