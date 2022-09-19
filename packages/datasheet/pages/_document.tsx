@@ -17,16 +17,13 @@ class MyDocument extends Document<{ clientInfo: IClientInfo }> {
       clientInfo: initData.clientInfo,
     };
   }
-
   render() {
     const clientInfo = this.props.clientInfo;
-    const isVika = window['__initialization_data__']?.env ? /vika/gi.test(window['__initialization_data__'].env) : true;
-
     return (
       <Html>
         <Head>
           <link rel='apple-touch-icon' href='/logo.png' />
-          <link rel='shortcut icon' href={`${isVika ? publicRuntimeConfig.staticFolder : ''}/favicon.ico`} />
+          <link rel='shortcut icon' href={`${publicRuntimeConfig.staticFolder}/favicon.ico`} />
           <link rel='manifest' href={`${publicRuntimeConfig.staticFolder}/manifest.json`} />
           <script src={`${publicRuntimeConfig.staticFolder}/file/js/browser_check.2.js`} async/>
         </Head>
