@@ -87,7 +87,10 @@ public enum NodeType {
         throw new RuntimeException("未知的节点类型");
     }
 
-    public boolean isNode() {
-        return nodeType != 0;
+    /**
+     * exclude root and folder type
+     */
+    public boolean isFileNode() {
+        return nodeType > 1;
     }
 }

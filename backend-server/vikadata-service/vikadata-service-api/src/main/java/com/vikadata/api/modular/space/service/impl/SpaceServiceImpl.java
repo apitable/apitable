@@ -498,7 +498,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         // 节点统计
         List<NodeTypeStatics> nodeTypeStatics = iStaticsService.getNodeTypeStaticsBySpaceId(spaceId);
         long sheetNums = nodeTypeStatics.stream()
-                .filter(condition -> NodeType.toEnum(condition.getType()).isNode())
+                .filter(condition -> NodeType.toEnum(condition.getType()).isFileNode())
                 .mapToLong(NodeTypeStatics::getTotal).sum();
         Map<Integer, Integer> typeStaticsMap = nodeTypeStatics.stream().collect(Collectors.toMap(NodeTypeStatics::getType, NodeTypeStatics::getTotal));
         long formViewNums = typeStaticsMap.containsKey(NodeType.FORM.getNodeType()) ? typeStaticsMap.get(NodeType.FORM.getNodeType()) : 0L;
