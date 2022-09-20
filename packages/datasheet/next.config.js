@@ -171,7 +171,6 @@ module.exports = withPlugins(plugins, {
             throw new Error(`Not found ${mod}`);
         }
       }));
-
     config.module.rules.push({
       test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
       use: [

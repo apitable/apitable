@@ -3,7 +3,7 @@ import * as React from 'react';
 import style from 'pc/components/editors/date_time_editor/mobile/style.module.less';
 import zh_CN from 'antd-mobile/lib/date-picker/locale/zh_CN';
 import { DateRange, Strings, t } from '@vikadata/core';
-import { DatePicker } from 'antd-mobile';
+import DatePicker from 'antd-mobile/lib/date-picker';
 import { CustomChildren } from 'pc/components/editors/date_time_editor/mobile/picker_content';
 import dayjs, { Dayjs } from 'dayjs';
 import styles from '../style.module.less';

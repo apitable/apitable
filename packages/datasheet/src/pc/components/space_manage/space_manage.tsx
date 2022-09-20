@@ -7,7 +7,7 @@ import { CommonSide } from '../common_side';
 import { MobileBar } from '../mobile_bar';
 import styles from './style.module.less';
 
-export const SpaceManage: React.FC = ({ children }) => {
+const SpaceManage: React.FC = ({ children }) => {
   const router = useRouter();
   const { clientWidth } = useResponsive();
   const isMobile = clientWidth <= 800;
@@ -33,4 +33,6 @@ export const SpaceManage: React.FC = ({ children }) => {
     </div>
   );
 };
+
+export default SpaceManage;
 

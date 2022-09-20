@@ -43,4 +43,6 @@ const RobotBase = () => {
   );
 };
 
-export const RobotPanel = memo(RobotBase);
+const RobotPanel = memo(RobotBase);
+
+export default RobotPanel;

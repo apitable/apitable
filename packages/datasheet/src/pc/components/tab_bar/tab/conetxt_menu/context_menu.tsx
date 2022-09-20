@@ -19,7 +19,7 @@ import { exportDatasheet, flatContextData } from 'pc/utils';
 import { useMemo, useState } from 'react';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { LoadingOutlined } from '@ant-design/icons';
+import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
 import { isMobileApp } from 'pc/utils/env';
 interface IContextMenuProps {
   activeViewId: string | undefined;
