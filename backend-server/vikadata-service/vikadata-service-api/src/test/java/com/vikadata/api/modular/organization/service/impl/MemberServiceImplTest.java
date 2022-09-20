@@ -70,6 +70,11 @@ public class MemberServiceImplTest extends AbstractIntegrationTest {
         assertThat(member.getIsActive()).isFalse();
         assertThat(member.getIsPoint()).isFalse();
         assertThat(member.getStatus()).isEqualTo(UserSpaceStatus.INACTIVE.getStatus());
+
+        // check member should join in root team
+        List<Long> teamIds = iTeamMemberRelService.getTeamByMemberId(toDeletedMemberId);
+        Long rootTeamId = iTeamService.getRootTeamId(mockUserSpace.getSpaceId());
+        assertThat(teamIds).isNotEmpty().containsOnly(rootTeamId);
     }
 
     @Test

@@ -570,6 +570,9 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         // restore member
         if (!restoreMembers.isEmpty()) {
             restoreMembers.forEach(this::restoreMember);
+            List<Long> restoreMemberIds = restoreMembers.stream().map(MemberEntity::getId).collect(Collectors.toList());
+            iUnitService.restoreMemberUnit(spaceId, restoreMemberIds);
+            iTeamMemberRelService.addMemberTeams(restoreMemberIds, Collections.singletonList(rootTeamId));
         }
 
         // send email

@@ -43,6 +43,7 @@ import com.vikadata.api.modular.finance.util.OrderChecker.ExpectedOrderCheck;
 import com.vikadata.api.modular.integral.service.IIntegralService;
 import com.vikadata.api.modular.internal.service.IFieldService;
 import com.vikadata.api.modular.organization.service.IMemberService;
+import com.vikadata.api.modular.organization.service.ITeamMemberRelService;
 import com.vikadata.api.modular.organization.service.ITeamService;
 import com.vikadata.api.modular.social.enums.SocialAppType;
 import com.vikadata.api.modular.social.enums.SocialTenantAuthMode;
@@ -123,6 +124,9 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     @Autowired
     protected IMemberService iMemberService;
+
+    @Autowired
+    protected ITeamMemberRelService iTeamMemberRelService;
 
     @Autowired
     protected IVCodeService ivCodeService;

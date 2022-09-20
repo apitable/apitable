@@ -41,8 +41,8 @@ public class Auth0Template {
 
     public Auth0Template(String domain, String clientId, String clientSecret, String redirectUri, String dbConnectionId, String dbConnectionName, IdTokenVerifier tokenVerifier) {
         authAPI = new AuthAPI(domain, clientId, clientSecret);
-        refreshManagementAPIToken();
         this.domain = domain;
+        refreshManagementAPIToken();
         this.clientId = clientId;
         this.redirectUri = redirectUri;
         this.dbConnectionId = dbConnectionId;
