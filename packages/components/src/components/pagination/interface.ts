@@ -89,7 +89,7 @@ export interface IPaginationProps {
   lang?: 'zh' | 'en';
 
   /**
-   * 页码改变后的回调
+   * 页码或pageSize改变后的回调
    */
   onChange?: (page: number, pageSize: number) => void;
 
