@@ -3,7 +3,7 @@ import { useMount } from 'ahooks';
 import * as dd from 'dingtalk-jsapi';
 import { IRuntimePermissionRequestAuthCodeParams } from 'dingtalk-jsapi/api/runtime/permission/requestAuthCode';
 import { Loading, Message, Modal } from 'pc/components/common';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest } from 'pc/hooks';
 import * as React from 'react';
 import { useRef, useState } from 'react';
@@ -18,7 +18,6 @@ const getDefaultValueRule = (info: IFormatSelectOptionData, memberCount: number)
 const DingTalkH5Login = () => {
   const query = useQuery();
   const bindSpaceRef = useRef<IBindSpaceRef>();
-  const navigationTo = useNavigation();
   const agentId = query.get('agentId') || '';
   const corpId = query.get('corpId') || '';
   const reference = query.get('reference') || '';
@@ -32,8 +31,7 @@ const DingTalkH5Login = () => {
       if (!success) {
         if (code === StatusCode.DINGTALK_NOT_BIND_SPACE) {
           // 非管理员登录，并且企业还未绑定空间
-          navigationTo({
-            path: Navigation.DINGTALK,
+          Router.push(Navigation.DINGTALK, {
             params: { dingtalkPath: 'unbound_err' },
           });
           return;
@@ -43,8 +41,7 @@ const DingTalkH5Login = () => {
       }
       if (data.bindSpaceId) {
         // 应用已经绑定了空间
-        navigationTo({
-          path: Navigation.WORKBENCH,
+        Router.push(Navigation.WORKBENCH, {
           params: { spaceId: data.bindSpaceId },
           query: { reference },
         });
@@ -71,8 +68,7 @@ const DingTalkH5Login = () => {
         Message.error({ content: message });
         return;
       }
-      navigationTo({
-        path: Navigation.WORKBENCH,
+      Router.push(Navigation.WORKBENCH, {
         params: { spaceId: params[0] },
         query: { reference },
       });

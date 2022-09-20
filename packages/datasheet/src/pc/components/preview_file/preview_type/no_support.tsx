@@ -1,14 +1,14 @@
-import styles from './style.module.less';
-import { FC } from 'react';
-import * as React from 'react';
-import { stopPropagation, Typography, Button, LinkButton } from '@vikadata/components';
+import { Button, LinkButton, stopPropagation, Typography } from '@vikadata/components';
 import { Navigation, SpacePathType, Strings, t } from '@vikadata/core';
-import IconDownload from 'static/icon/datasheet/datasheet_icon_download.svg';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
 import { ScreenSize } from 'pc/components/common/component_display';
+import { Router } from 'pc/components/route_manager/router';
 import { useResponsive } from 'pc/hooks';
 import { FileType } from 'pc/utils';
+import * as React from 'react';
+import { FC } from 'react';
+import IconDownload from 'static/icon/datasheet/datasheet_icon_download.svg';
 import { directDownload } from '../tool_bar';
+import styles from './style.module.less';
 
 interface INoSupportProps {
   icon?: React.ReactNode;
@@ -29,8 +29,6 @@ const getExt = fileName => {
 
 export const NoSupport: FC<INoSupportProps> = props => {
   const { icon, downloadUrl, isMainAdmin, footer, spaceId, onClose, fileName, type, disabledDownload } = props;
-  const navigationTo = useNavigation();
-
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
@@ -57,12 +55,12 @@ export const NoSupport: FC<INoSupportProps> = props => {
     <div className={styles.noSupport} onMouseDown={stopPropagation}>
       <main>
         <div className={styles.iconWrapper}>{icon}</div>
-        <Typography variant="h5" className={styles.error}>
+        <Typography variant='h5' className={styles.error}>
           {Notice[type].error}
         </Typography>
 
         {Notice[type].tip && (
-          <Typography variant="body4" className={styles.tip}>
+          <Typography variant='body4' className={styles.tip}>
             {Notice[type].tip}
           </Typography>
         )}
@@ -70,11 +68,10 @@ export const NoSupport: FC<INoSupportProps> = props => {
           <div className={styles.btnGroup}>
             {!isMobile && (
               <Button
-                color="primary"
+                color='primary'
                 block
                 onClick={() => {
-                  navigationTo({
-                    path: Navigation.SPACE_MANAGE,
+                  Router.push(Navigation.SPACE_MANAGE, {
                     params: {
                       spaceId,
                       pathInSpace: SpacePathType.MARKETING,
@@ -89,9 +86,9 @@ export const NoSupport: FC<INoSupportProps> = props => {
             {!disabledDownload && (
               <div className={styles.download} onClick={handleDownload}>
                 {isMobile ? (
-                  <Button color="primary">{t(Strings.download)}</Button>
+                  <Button color='primary'>{t(Strings.download)}</Button>
                 ) : (
-                  <LinkButton underline={false} component="button" style={{ width: '100%' }}>
+                  <LinkButton underline={false} component='button' style={{ width: '100%' }}>
                     {t(Strings.download)}
                   </LinkButton>
                 )}
@@ -102,8 +99,8 @@ export const NoSupport: FC<INoSupportProps> = props => {
         {!isMainAdmin &&
           !disabledDownload && (
           <div className={styles.download} onClick={handleDownload}>
-            <Button color="primary" block>
-              <IconDownload fill="currentColor" />
+            <Button color='primary' block>
+              <IconDownload fill='currentColor' />
               <span style={{ marginLeft: 4 }}>{t(Strings.download)}</span>
             </Button>
           </div>

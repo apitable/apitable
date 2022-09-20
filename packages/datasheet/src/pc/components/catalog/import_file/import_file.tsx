@@ -1,16 +1,16 @@
-import { FC, useState } from 'react';
-import { Upload, Progress } from 'antd';
-import styles from './style.module.less';
-import UploadIcon from 'static/icon/workbench/workbench_tip_upload.svg';
-import SuccessIcon from 'static/icon/common/common_tip_success_small.svg';
-import FailIcon from 'static/icon/common/common_tip_default_small.svg';
-import { Api, ConfigConstant, StoreActions, Navigation, IReduxState, t, Strings } from '@vikadata/core';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
 import { TextButton, useThemeColors } from '@vikadata/components';
+import { Api, ConfigConstant, IReduxState, Navigation, StoreActions, Strings, t } from '@vikadata/core';
+import { Progress, Upload } from 'antd';
 import { Message, Modal } from 'pc/components/common';
-import { byte2Mb } from 'pc/utils';
+import { Router } from 'pc/components/route_manager/router';
 import { usePercent } from 'pc/hooks/use_percent';
+import { byte2Mb } from 'pc/utils';
+import { FC, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import FailIcon from 'static/icon/common/common_tip_default_small.svg';
+import SuccessIcon from 'static/icon/common/common_tip_success_small.svg';
+import UploadIcon from 'static/icon/workbench/workbench_tip_upload.svg';
+import styles from './style.module.less';
 
 const { Dragger } = Upload;
 
@@ -36,7 +36,6 @@ export const ImportFile: FC<IImportFileProps> = ({
   const [isUploading, setIsUploading] = useState(false);
   const [isProcess, setProcessing] = useState(false);
   const dispatch = useDispatch();
-  const navigationTo = useNavigation();
   const { percent, stop: stopPercent, start: startPercent } = usePercent(60, 99, 1500);
 
   const [isFail, setIsFail] = useState<ProgressType>(ConfigConstant.PROGRESS_NORMAL);
@@ -82,8 +81,7 @@ export const ImportFile: FC<IImportFileProps> = ({
       if (success) {
         dispatch(StoreActions.setExpandedKeys([...expandedKeys, parentId]));
         dispatch(StoreActions.addNode(data));
-        navigationTo({
-          path: Navigation.WORKBENCH,
+        Router.push(Navigation.WORKBENCH, {
           params: {
             spaceId,
             nodeId: data.nodeId,
@@ -162,15 +160,15 @@ export const ImportFile: FC<IImportFileProps> = ({
   const processPage = () => {
     return (
       <div className={styles.process}>
-        <Progress type="circle" percent={uploadPercent < 60 ? uploadPercent : percent} strokeColor={colors.primaryColor} width={80} />
+        <Progress type='circle' percent={uploadPercent < 60 ? uploadPercent : percent} strokeColor={colors.primaryColor} width={80} />
         <div className={styles.fileName}>{file!.name}</div>
         {uploadPercent < 60 &&
-        < div
-          className={styles.cancelBtn}
-          onClick={handleCancel}
-        >
-          {t(Strings.import_canceled)}
-        </div>
+          < div
+            className={styles.cancelBtn}
+            onClick={handleCancel}
+          >
+            {t(Strings.import_canceled)}
+          </div>
         }
       </div>
     );
@@ -212,7 +210,7 @@ export const ImportFile: FC<IImportFileProps> = ({
           <Dragger
             customRequest={customRequest}
             showUploadList={false}
-            accept=".xlsx,.xls,.csv"
+            accept='.xlsx,.xls,.csv'
           >
             <div>
               <UploadIcon width={50} height={50} fill={colors.fourthLevelText} />

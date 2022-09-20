@@ -1,7 +1,7 @@
 import { Api, ConfigConstant, Navigation, Strings, t } from '@vikadata/core';
 import { Spin } from 'antd';
 import { Message } from 'pc/components/common';
-import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useLinkInvite, useQuery } from 'pc/hooks';
 import { isLocalSite } from 'pc/utils';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';
@@ -19,7 +19,6 @@ const DingdingCallback: FC = props => {
   const shareReference = localStorage.getItem('share_login_reference');
   const reference = localStorage.getItem('reference') || '';
   localStorage.removeItem('vika_account_manager_operation_type');
-  const navigationTo = useNavigation();
   const inviteLinkData = localStorage.getItem('invite_link_data');
   const inviteCode = localStorage.getItem('invite_code') || undefined;
 
@@ -32,8 +31,7 @@ const DingdingCallback: FC = props => {
           // 链接邀请
           if (inviteLinkData && data) {
             const { inviteLinkInfo, linkToken } = JSON.parse(inviteLinkData);
-            navigationTo({
-              path: Navigation.IMPROVING_INFO,
+            Router.push(Navigation.IMPROVING_INFO, {
               query: {
                 token: data,
                 inviteLinkToken: linkToken,
@@ -48,7 +46,7 @@ const DingdingCallback: FC = props => {
           }
           // 是否需要去完善信息
           if (data) {
-            navigationTo({ path: Navigation.IMPROVING_INFO, query: { token: data, inviteCode, reference }});
+            Router.push(Navigation.IMPROVING_INFO, { query: { token: data, inviteCode, reference }});
             return;
           }
           // ! 待删除
@@ -63,7 +61,7 @@ const DingdingCallback: FC = props => {
             window.location.href = reference;
             return;
           }
-          navigationTo({ path: Navigation.HOME, method: Method.Redirect });
+          Router.redirect(Navigation.HOME);
         } else {
           // 账号绑定
           localStorage.setItem('binding_dingding_status', code);
@@ -78,7 +76,7 @@ const DingdingCallback: FC = props => {
             return;
           }
           Message.error({ content: t(Strings.login_failed) });
-          navigationTo({ path: Navigation.LOGIN });
+          Router.push(Navigation.LOGIN);
         } else {
           localStorage.setItem('binding_dingding_status', code);
           window.close();

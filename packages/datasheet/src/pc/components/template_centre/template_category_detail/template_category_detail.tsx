@@ -7,8 +7,9 @@ import { TemplateListContext } from 'context/template_list';
 import parser from 'html-react-parser';
 import Image from 'next/image';
 import { isWecomFunc } from 'pc/components/home/social_platform';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+import { Router } from 'pc/components/route_manager/router';
 // import { Modal } from 'pc/components/common';
-import { navigationToUrl, useNavigation } from 'pc/components/route_manager/use_navigation';
 import { useRequest } from 'pc/hooks';
 import { useTemplateRequest } from 'pc/hooks/use_template_request';
 import { isMobileApp } from 'pc/utils/env';
@@ -36,7 +37,6 @@ export const TemplateCategoryDetail: FC<ITemplateCategoryDetailProps> = props =>
     return templateListData || null;
   });
   const [isOfficial, setIsOfficial] = useState(true);
-  const navigationTo = useNavigation();
   const dispatch = useDispatch();
   const user = useSelector((state: IReduxState) => state.user.info);
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
@@ -90,8 +90,7 @@ export const TemplateCategoryDetail: FC<ITemplateCategoryDetailProps> = props =>
   };
 
   const openTemplateDetail = ({ templateId }) => {
-    navigationTo({
-      path: Navigation.TEMPLATE,
+    Router.push(Navigation.TEMPLATE, {
       params: {
         spaceId,
         categoryId: categoryId || ConfigConstant.TEMPLATE_CHOICE_CATEGORY_ID,
@@ -125,7 +124,7 @@ export const TemplateCategoryDetail: FC<ITemplateCategoryDetailProps> = props =>
                       {!isOfficial ? t(Strings.all) : currentCategory && currentCategory.categoryName}
                     </div>
                     {!isPrivateDeployment() && !isMobileApp() && !isWecomFunc() &&
-                      <Typography className={styles.notFoundTip} variant="body2" align="center">
+                      <Typography className={styles.notFoundTip} variant='body2' align='center'>
                         <span
                           className={styles.text}
                           onClick={() => navigationToUrl(`${Settings['template_customization'].value}`)}
@@ -141,7 +140,7 @@ export const TemplateCategoryDetail: FC<ITemplateCategoryDetailProps> = props =>
                     templateList.map(template => (
                       <div className={styles.templateItemWrapper} key={template.templateId}>
                         <TemplateItem
-                          type="card"
+                          type='card'
                           nodeType={template.nodeType}
                           templateId={template.templateId}
                           img={imgUrl(template.cover || defaultBanner, 160)}

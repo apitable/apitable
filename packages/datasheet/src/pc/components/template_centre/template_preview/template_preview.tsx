@@ -4,7 +4,7 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { CommonSide } from 'pc/components/common_side';
 import { LoginModal } from 'pc/components/home/login_modal';
 import { MobileBar } from 'pc/components/mobile_bar';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useUserRequest } from 'pc/hooks';
 import { isRenderServer } from 'pc/utils';
 import * as React from 'react';
@@ -20,7 +20,6 @@ export const TemplatePreview: FC = () => {
   const [usingTemplate, setUsingTemplate] = useState('');
   // 打开登录模态框
   const [openLoginModal, setOpenLoginModal] = useState(false);
-  const navigationTo = useNavigation();
   const userInfo = useSelector((state: IReduxState) => state.user.info);
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const categoryId = useSelector((state: IReduxState) => state.pageParams.categoryId);
@@ -38,7 +37,7 @@ export const TemplatePreview: FC = () => {
     }
     // 当前用户已登录时
     if (userInfo && userInfo.spaceId && usingTemplate && !spaceId) {
-      navigationTo({ path: Navigation.TEMPLATE, params: { categoryId, templateId: usingTemplate, spaceId: userInfo!.spaceId }});
+      Router.push(Navigation.TEMPLATE, { params: { categoryId, templateId: usingTemplate, spaceId: userInfo!.spaceId }});
       return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -47,16 +46,16 @@ export const TemplatePreview: FC = () => {
   const afterLogin = async(data: string, loginMode: ConfigConstant.LoginMode) => {
     if (data) {
       if (loginMode === ConfigConstant.LoginMode.PHONE) {
-        navigationTo({ path: Navigation.INVITATION_VALIDATION, query: { token: data, reference: window.location.href }});
+        Router.push(Navigation.INVITATION_VALIDATION, { query: { token: data, reference: window.location.href }});
       } else if (loginMode === ConfigConstant.LoginMode.MAIL) {
-        navigationTo({ path: Navigation.IMPROVING_INFO, query: { token: data, reference: window.location.href }});
+        Router.push(Navigation.IMPROVING_INFO, { query: { token: data, reference: window.location.href }});
       }
     } else {
       const userInfo = ((await getLoginStatus()) as any) as IUserInfo;
       if (!userInfo) {
         return;
       }
-      navigationTo({ path: Navigation.TEMPLATE, params: { categoryId, templateId: usingTemplate, spaceId: userInfo!.spaceId }});
+      Router.push(Navigation.TEMPLATE, { params: { categoryId, templateId: usingTemplate, spaceId: userInfo!.spaceId }});
     }
   };
 

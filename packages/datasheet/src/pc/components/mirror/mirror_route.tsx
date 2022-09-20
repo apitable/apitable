@@ -1,10 +1,10 @@
-import { Navigation, Selectors, StatusCode, Strings, t } from '@vikadata/core';
 import { Skeleton } from '@vikadata/components';
+import { Navigation, Selectors, StatusCode, Strings, t } from '@vikadata/core';
 import { ServerError } from 'pc/components/invalid_page/server_error';
 import { Mirror } from 'pc/components/mirror/mirror';
 import styles from 'pc/components/mirror/style.module.less';
 import { NoPermission } from 'pc/components/no_permission';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
@@ -17,7 +17,6 @@ export const MirrorRoute = () => {
   const recordId = useSelector(state => {
     return state.pageParams.recordId;
   });
-  const navigationTo = useNavigation();
   const mirror = useSelector(state => {
     return Selectors.getMirror(state, mirrorId!);
   });
@@ -34,24 +33,21 @@ export const MirrorRoute = () => {
     }
     // mirror 的路由和其他节点相比比较特殊，为了保持映射关系，会在路由上多显示一个 datasheetId ，所以这里对于 mirror 的跳转会做特殊处理
     if (shareId) {
-      navigationTo({
-        path: Navigation.SHARE_SPACE,
+      Router.push(Navigation.SHARE_SPACE,{
         params: { shareId, nodeId: mirrorId, datasheetId: mirrorSourceInfo?.datasheetId, viewId: mirrorSourceInfo?.viewId, recordId },
       });
       return;
     }
     if (templateId) {
-      navigationTo({
-        path: Navigation.TEMPLATE,
+      Router.push(Navigation.TEMPLATE,{
         params: { categoryId, templateId, nodeId: mirrorId, datasheetId: mirrorSourceInfo?.datasheetId, viewId: mirrorSourceInfo?.viewId, recordId },
       });
       return;
     }
-    navigationTo({
-      path: Navigation.WORKBENCH,
+    Router.push(Navigation.WORKBENCH,{
       params: { nodeId: mirrorId, datasheetId: mirrorSourceInfo?.datasheetId, viewId: mirrorSourceInfo?.viewId, recordId },
     });
-  }, [mirrorSourceInfo, mirrorId, categoryId, shareId, templateId, navigationTo, recordId, datasheetId]);
+  }, [mirrorSourceInfo, mirrorId, categoryId, shareId, templateId, recordId, datasheetId]);
 
   const errorCode = useSelector(state => {
     return Selectors.getMirrorErrorCode(state, mirrorId!) ||

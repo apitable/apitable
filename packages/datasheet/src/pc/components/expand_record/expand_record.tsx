@@ -1,19 +1,8 @@
 import { ErrorBoundary } from '@sentry/react';
 import { IconButton, Skeleton, ThemeProvider, useThemeColors } from '@vikadata/components';
 import {
-  Api,
-  DatasheetApi,
-  FieldOperateType,
-  Navigation,
-  RecordVision,
-  ResourceIdPrefix,
-  ResourceType,
-  Selectors,
-  SetFieldFrom,
-  StatusCode,
-  StoreActions,
-  Strings,
-  t,
+  Api, DatasheetApi, FieldOperateType, Navigation, RecordVision, ResourceIdPrefix, ResourceType, Selectors, SetFieldFrom, StatusCode, StoreActions,
+  Strings, t,
 } from '@vikadata/core';
 import { AttentionOutlined, CommentOutlined } from '@vikadata/icons';
 import { useLocalStorageState, useMount, useToggle, useUpdateEffect } from 'ahooks';
@@ -25,16 +14,14 @@ import { Message, Modal as CustomModal, Tooltip } from 'pc/components/common';
 import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
 import { EXPAND_RECORD, RecordType } from 'pc/components/expand_record/expand_record.enum';
 import {
-  IExpandRecordComponentProp,
-  IExpandRecordInnerProp,
-  IExpandRecordWrapperProp,
-  IPaneIconProps,
+  IExpandRecordComponentProp, IExpandRecordInnerProp, IExpandRecordWrapperProp, IPaneIconProps,
 } from 'pc/components/expand_record/expand_record.interface';
 import { ExpandRecordMoreOption } from 'pc/components/expand_record/expand_record_more_option';
 import { RecordPageTurn } from 'pc/components/expand_record/record_page_turn';
 import { clearExpandModal, expandRecordIdNavigate, getRecordName, recordModalCloseFns } from 'pc/components/expand_record/utils';
 import { FieldDesc } from 'pc/components/multi_grid/field_desc';
 import { FieldSetting } from 'pc/components/multi_grid/field_setting';
+import { Router } from 'pc/components/route_manager/router';
 import { useGetViewByIdWithDefault, useQuery, useRequest, useResponsive } from 'pc/hooks';
 // import { FieldSetting } from 'pc/components/multi_grid/field_setting';
 import { resourceService } from 'pc/resource_service';
@@ -48,7 +35,6 @@ import ReactDOM from 'react-dom';
 import { Provider, shallowEqual, useDispatch, useSelector } from 'react-redux';
 import IconNarrow from 'static/icon/datasheet/datasheet_icon_narrow_record16.svg';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
-import { Method, navigatePath } from '../route_manager/use_navigation';
 import { ActivityPane } from './activity_pane';
 import { ICacheType } from './activity_pane/interface';
 import { EditorContainer } from './editor_container';
@@ -65,8 +51,8 @@ const CommentButton = ({ active, onClick }: IPaneIconProps): JSX.Element => {
   return (
     <Tooltip title={active ? t(Strings.put_away_record_comments) : t(Strings.view_record_comments)}>
       <IconButton
-        component="button"
-        shape="square"
+        component='button'
+        shape='square'
         className={active ? styles.activeIcon : styles.icon}
         icon={() => <CommentOutlined size={16} color={active ? colors.fc0 : colors.fc3} />}
         onClick={() => onClick()}
@@ -90,8 +76,8 @@ const SubscribeButton = ({ active, onSubOrUnsub }): JSX.Element => {
   return (
     <Tooltip title={active ? t(Strings.cancel_watch_record_button_tooltips) : t(Strings.watch_record_button_tooltips)}>
       <IconButton
-        component="button"
-        shape="square"
+        component='button'
+        shape='square'
         disabled={updating}
         className={active ? styles.activeIcon : styles.icon}
         icon={() => <AttentionOutlined size={16} color={active ? colors.fc0 : colors.fc3} />}
@@ -217,7 +203,7 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
   );
   const hasRecordIdsData = () => snapshot && recordIds.every(recordId => snapshot.recordMap && snapshot.recordMap?.[recordId]);
   const [independentDataLoading, setIndependentDataLoading] = useState<boolean>(isIndependent && isPartOfData !== false && !hasRecordIdsData());
-  
+
   useEffect(() => {
     if (independentDataLoading) {
       resourceService
@@ -291,7 +277,7 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
     },
     [modalClose, snapshot],
   );
-  
+
   useEffect(() => {
     if (!independentDataLoading && datasheetErrorCode && datasheetId) {
       errorHandle(datasheetErrorCode);
@@ -305,7 +291,7 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
     switch (recordType) {
       case RecordType.Independent:
         {
-          
+
           // 传入的和现有的交集，因为可能有被删除的，所以这里求交集
           curRecordIds = recordIds.filter(id => snapshot?.recordMap[id]);
           // 默认使用 activeRecord，如果 activeRecord 被过滤掉了，就用第一个，realActiveRecordId 作为切换后
@@ -314,11 +300,10 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
             || (activeRecordId && snapshot?.recordMap?.[activeRecordId]?.id) || curRecordIds[0];
         }
         break;
-      case RecordType.Datasheet:
-        {
-          curRecordIds = visibleRows.map(row => row.recordId);
-          curActiveRecordId = pageParamsRecordId!;
-        }
+      case RecordType.Datasheet: {
+        curRecordIds = visibleRows.map(row => row.recordId);
+        curActiveRecordId = pageParamsRecordId!;
+      }
         break;
     }
     setRealRecordIds(curRecordIds);
@@ -351,13 +336,13 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
   if (!realActiveRecordId) {
     return (
       <div className={styles.wrapper}>
-        <Skeleton width="38%" />
+        <Skeleton width='38%' />
         <Skeleton count={2} />
-        <Skeleton width="61%" />
+        <Skeleton width='61%' />
       </div>
     );
   }
-  
+
   const commonProps = {
     ...props,
     // 跟随 url 模式下，realActiveRecordId 跟随 url 中的 recordId
@@ -565,24 +550,18 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
     const { shareId, templateId, categoryId } = store.getState().pageParams;
     const query = { activeRecordId };
     if (shareId) {
-      navigatePath({
-        path: Navigation.SHARE_SPACE,
+      Router.redirect(Navigation.SHARE_SPACE, {
         params: { nodeId: mirrorId || datasheetId, viewId, shareId, datasheetId },
-        method: Method.Redirect,
         query,
       });
     } else if (templateId) {
-      navigatePath({
-        path: Navigation.TEMPLATE,
+      Router.redirect(Navigation.TEMPLATE, {
         params: { nodeId: mirrorId || datasheetId, viewId, categoryId, templateId, datasheetId },
-        method: Method.Redirect,
         query,
       });
     } else {
-      navigatePath({
-        path: Navigation.WORKBENCH,
+      Router.redirect(Navigation.WORKBENCH, {
         params: { nodeId: mirrorId || datasheetId, viewId, datasheetId },
-        method: Method.Redirect,
         query,
       });
     }
@@ -778,7 +757,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
             <div className={styles.toCommentBtnWrapper}>
               {allowShowCommentPane && (
                 <IconButton
-                  shape="square"
+                  shape='square'
                   icon={() => <CommentOutlined size={16} color={colors.black[50]} />}
                   className={styles.mobileCommentButton}
                   onClick={() => toggleCommentPane()}

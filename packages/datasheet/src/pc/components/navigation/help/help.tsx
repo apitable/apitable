@@ -1,40 +1,25 @@
 /* eslint-disable no-script-url */
-import { FC, useState } from 'react';
-import { t, Strings, StoreActions, Navigation, NAV_ID, ConfigConstant, Settings, isPrivateDeployment } from '@vikadata/core';
-import { useDispatch, useSelector } from 'react-redux';
-import { navigationToUrl, useNavigation } from 'pc/components/route_manager/use_navigation';
-import { ContextmenuItem, MobileContextMenu } from 'pc/components/common';
-import { useResponsive } from 'pc/hooks';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import RcTrigger from 'rc-trigger';
-import styles from './style.module.less';
+import { Tooltip, Typography, useThemeColors } from '@vikadata/components';
+import { ConfigConstant, isPrivateDeployment, NAV_ID, Navigation, Settings, StoreActions, Strings, t } from '@vikadata/core';
+import {
+  AdviseOutlined, BookOutlined, ClassroomOutlined, CodeFilled, CommunityOutlined, CourseOutlined, DemoOutlined, DownloadOutlined,
+  EditDescribeOutlined, GuideOutlined, InformationLargeOutlined, InformationSmallOutlined, JoinOutlined, KeyboardShortcutsOutlined, RoadmapOutlined,
+  SolutionOutlined, ViewContactOutlined, VikabyOutlined, WebsiteOutlined,
+} from '@vikadata/icons';
+import classnames from 'classnames';
 import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
 import { openVikaby, VIKABY_POSITION_SESSION_KEY } from 'pc/common/guide/vikaby';
-import classnames from 'classnames';
-import {
-  CourseOutlined,
-  VikabyOutlined,
-  RoadmapOutlined,
-  ClassroomOutlined,
-  JoinOutlined,
-  InformationLargeOutlined,
-  AdviseOutlined,
-  BookOutlined,
-  InformationSmallOutlined,
-  WebsiteOutlined,
-  DownloadOutlined,
-  CommunityOutlined,
-  KeyboardShortcutsOutlined,
-  GuideOutlined,
-  EditDescribeOutlined,
-  SolutionOutlined,
-  DemoOutlined,
-  CodeFilled,
-  ViewContactOutlined,
-} from '@vikadata/icons';
+import { ContextmenuItem, MobileContextMenu } from 'pc/components/common';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { inSocialApp } from 'pc/components/home/social_platform';
-import { Tooltip, Typography, useThemeColors } from '@vikadata/components';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+import { Router } from 'pc/components/route_manager/router';
+import { useResponsive } from 'pc/hooks';
 import { isMobileApp } from 'pc/utils/env';
+import RcTrigger from 'rc-trigger';
+import { FC, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styles from './style.module.less';
 import { isHiddenQRCode } from 'pc/utils/env';
 import { useIntercom } from 'react-use-intercom';
 
@@ -47,7 +32,6 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
   const colors = useThemeColors();
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
-  const navigationTo = useNavigation();
   const spaceId = useSelector(state => state.space.activeId);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -65,7 +49,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
       openVikaby({ visible: true, defaultExpandMenu: true });
     } else {
       localStorage.removeItem('vikaby_closed');
-      navigationTo({ path: Navigation.WORKBENCH, params: { spaceId }});
+      Router.push(Navigation.WORKBENCH, { params: { spaceId }});
     }
   };
 
@@ -245,7 +229,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
   const HelpMenu = () => {
     return (
       <div className={styles.helpMenu}>
-        <Typography className={styles.title} variant="h8" color={colors.fc1}>
+        <Typography className={styles.title} variant='h8' color={colors.fc1}>
           {t(Strings.help)}
         </Typography>
         <div className={styles.wrapper}>
@@ -266,7 +250,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
     <>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <RcTrigger
-          action="click"
+          action='click'
           popup={<HelpMenu />}
           destroyPopupOnHide
           popupAlign={{
@@ -288,7 +272,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <HelpBtn />
-        <MobileContextMenu title={t(Strings.help)} data={getMobileMenuData()} height="auto" visible={visible} onClose={() => setVisible(false)} />
+        <MobileContextMenu title={t(Strings.help)} data={getMobileMenuData()} height='auto' visible={visible} onClose={() => setVisible(false)} />
       </ComponentDisplay>
     </>
   );

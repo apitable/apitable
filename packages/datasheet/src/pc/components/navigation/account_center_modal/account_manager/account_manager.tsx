@@ -4,7 +4,7 @@ import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
 import { QrCode } from 'pc/components/home/qr_code/qr_code';
-import { navigationToUrl } from 'pc/components/route_manager/use_navigation';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import { getDingdingConfig, getQQConfig } from 'pc/utils/get_config';
 import { isDesktop } from 'pc/utils/os';

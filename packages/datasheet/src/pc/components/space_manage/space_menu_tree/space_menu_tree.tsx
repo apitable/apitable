@@ -5,7 +5,7 @@ import { Tree } from 'antd';
 import { useRouter } from 'next/router';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { OrganizationHead } from 'pc/components/organization_head';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useResponsive } from 'pc/hooks';
 import { isMobileApp } from 'pc/utils/env';
 import * as React from 'react';
@@ -123,15 +123,13 @@ export const SpaceMenuTree: React.FC = () => {
     }),
     shallowEqual,
   );
-  const navigationTo = useNavigation();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { marketplaceDisable } = getCustomConfig();
   const [menuTree, setMenuTree] = useState<ISpaceNavInfo[]>([]);
 
   const onSelect = (key: ReactText[]) => {
-    navigationTo({
-      path: NavigationConst.SPACE_MANAGE,
+    Router.push(NavigationConst.SPACE_MANAGE, {
       params: {
         spaceId,
         pathInSpace: key[0] as string,
@@ -179,7 +177,7 @@ export const SpaceMenuTree: React.FC = () => {
   return (
     <div className={styles.spaceMenuTree}>
       <OrganizationHead />
-      <Typography variant="h8" className={styles.spaceSubTitle}>
+      <Typography variant='h8' className={styles.spaceSubTitle}>
         {t(Strings.space_setting)}
       </Typography>
       {spaceResource && menuTree.length > 0 && (

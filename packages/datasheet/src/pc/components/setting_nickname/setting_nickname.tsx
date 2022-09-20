@@ -3,7 +3,7 @@ import { Api, IReduxState, IUnitValue, Navigation, StoreActions, Strings, t } fr
 import { useMount } from 'ahooks';
 import { Form, Input } from 'antd';
 import { Avatar, AvatarSize, ButtonBase, Emoji, ImageCropUpload, ISelectInfo, Wrapper } from 'pc/components/common';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import { isLocalSite } from 'pc/utils';
 import * as React from 'react';
@@ -23,7 +23,6 @@ const SettingNickname: FC = () => {
   const colors = useThemeColors();
   const [avatarSelectModalVisible, setAvatarSelectModalVisible] = useState(false);
   const dispatch = useDispatch();
-  const navigationTo = useNavigation();
   const error = useSelector((state: IReduxState) => state.user.err);
   const user = useSelector((state: IReduxState) => state.user.info);
   const { getLoginStatusReq, customOrOfficialAvatarUpload } = useUserRequest();
@@ -57,7 +56,7 @@ const SettingNickname: FC = () => {
 
   useEffect(() => {
     if (!loading && !user) {
-      navigationTo({ path: Navigation.HOME });
+      Router.push(Navigation.HOME);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
@@ -87,9 +86,9 @@ const SettingNickname: FC = () => {
     updateAvatar({ file: customFile as File });
   };
 
-  async function redirect(){
+  async function redirect() {
     const reference = query.get('reference') || localStorage.getItem('reference');
-    if(reference) {
+    if (reference) {
       localStorage.removeItem('reference');
       if (isLocalSite(window.location.href, reference)) {
         window.location.href = reference;
@@ -104,7 +103,7 @@ const SettingNickname: FC = () => {
       if (success && info) {
         const bindResult = await Api.linkInviteEmail(info?.spaceId, info?.inviteEmail);
         if (bindResult.data.success) {
-          navigationTo({ path: Navigation.WORKBENCH, params: { spaceId: info?.spaceId }, clearQuery: true });
+          Router.push(Navigation.WORKBENCH, { params: { spaceId: info?.spaceId }, clearQuery: true });
           return;
         }
       }
@@ -116,12 +115,12 @@ const SettingNickname: FC = () => {
       if (success && info) {
         const bindResult = await Api.joinViaSpace(inviteLinkToken!);
         if (bindResult.data.success) {
-          navigationTo({ path: Navigation.WORKBENCH, params: { spaceId: info?.spaceId }, clearQuery: true });
+          Router.push(Navigation.WORKBENCH, { params: { spaceId: info?.spaceId }, clearQuery: true });
           return;
         }
       }
     }
-    navigationTo({ path: Navigation.HOME });
+    Router.push(Navigation.HOME);
   }
 
   const handleSubmit = async() => {
@@ -178,9 +177,9 @@ const SettingNickname: FC = () => {
               />
               <ButtonBase
                 className={styles.editAvatarBtn}
-                size="x-small"
+                size='x-small'
                 shadow
-                shape="circle"
+                shape='circle'
                 icon={<EditIcon fill={colors.secondLevelText} />}
                 onClick={() => setAvatarSelectModalVisible(true)}
               />
@@ -212,12 +211,12 @@ const SettingNickname: FC = () => {
           <Button
             className={styles.submit}
             onClick={handleSubmit}
-            color="primary"
-            size="large"
+            color='primary'
+            size='large'
             block
           >
             <div className={styles.button}>
-              <Emoji emoji="airplane" size={18} set="apple" />
+              <Emoji emoji='airplane' size={18} set='apple' />
               {t(Strings.button_come_on)}
             </div>
           </Button>

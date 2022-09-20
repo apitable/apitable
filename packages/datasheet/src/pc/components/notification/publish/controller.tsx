@@ -3,7 +3,10 @@ import { Api, INoticeDetail, Navigation, StoreActions } from '@vikadata/core';
 import { showVikaby } from 'pc/common/guide/vikaby/vikaby';
 import { IDingTalkModalType, showTipInDingTalk } from 'pc/components/economy/upgrade_modal';
 import { isSocialDingTalk } from 'pc/components/home/social_platform';
-import { IQuery, Method, navigatePath as navigationTo, navigationToUrl } from 'pc/components/route_manager/use_navigation';
+import { Method } from 'pc/components/route_manager/const';
+import { IQuery } from 'pc/components/route_manager/interface';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+import { Router } from 'pc/components/route_manager/router';
 import { showOrderModalAfterPay } from 'pc/components/subscribe_system/order_modal/pay_order_success';
 import { store } from 'pc/store';
 import { getPlatformType } from 'pc/utils/os';
@@ -106,7 +109,7 @@ export const PublishController = (props: INoticeDetail) => {
               options: { body: toast.content },
               onClick: () => {
                 if (!toast.url) {
-                  navigationTo({ path: Navigation.HOME });
+                  Router.push(Navigation.HOME);
                 } else {
                   navigationToConfigUrl(toast.url);
                 }

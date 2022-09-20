@@ -1,16 +1,15 @@
-import { IReduxState, Navigation, Player, Events, t, Strings, ConfigConstant, AutoTestID } from '@vikadata/core';
-import { Modal } from 'pc/components/common';
 import { Button } from '@vikadata/components';
+import { AutoTestID, ConfigConstant, Events, IReduxState, Navigation, Player, Strings, t } from '@vikadata/core';
+import { Modal } from 'pc/components/common';
 import { LoginModal } from 'pc/components/home/login_modal';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
-import { useUserRequest } from 'pc/hooks';
-import { useEffect, useState } from 'react';
+import { Router } from 'pc/components/route_manager/router';
+import { useRequest, useUserRequest } from 'pc/hooks';
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import IconArrowRight from 'static/icon/datasheet/rightclick/datasheet_icon_insert_right.svg';
 import { UsingTemplateModal } from '../using_template_modal';
 import styles from './style.module.less';
-import { useRequest } from 'pc/hooks';
 
 interface ITemplateUseButtonProps {
   style?: React.CSSProperties;
@@ -28,7 +27,6 @@ export const TemplateUseButton: React.FC<ITemplateUseButtonProps> = props => {
   const [openTemplateModal, setOpenTemplateModal] = useState('');
   // 打开登录模态框
   const [openLoginModal, setOpenLoginModal] = useState(false);
-  const navigationTo = useNavigation();
   const { getLoginStatusReq } = useUserRequest();
   const { run: getLoginStatus } = useRequest(getLoginStatusReq, { manual: true });
 
@@ -47,7 +45,7 @@ export const TemplateUseButton: React.FC<ITemplateUseButtonProps> = props => {
         content: t(Strings.require_login_tip),
         okText: t(Strings.go_login),
         onOk: () => {
-          navigationTo({ path: Navigation.LOGIN, query: { reference: window.location.href }});
+          Router.push(Navigation.LOGIN, { query: { reference: window.location.href }});
         },
         okButtonProps: { id: AutoTestID.GO_LOGIN_BTN },
         type: 'warning'
@@ -56,7 +54,7 @@ export const TemplateUseButton: React.FC<ITemplateUseButtonProps> = props => {
     }
     // 当前用户已登录时
     if (!spaceId && templateId) {
-      navigationTo({ path: Navigation.TEMPLATE, params: { categoryId, templateId, spaceId: userInfo!.spaceId }});
+      Router.push(Navigation.TEMPLATE, { params: { categoryId, templateId, spaceId: userInfo!.spaceId }});
       return;
     }
     setOpenTemplateModal(templateId!);
@@ -65,16 +63,16 @@ export const TemplateUseButton: React.FC<ITemplateUseButtonProps> = props => {
   const afterLogin = async(data: string, loginMode: ConfigConstant.LoginMode) => {
     if (data) {
       if (loginMode === ConfigConstant.LoginMode.PHONE) {
-        navigationTo({ path: Navigation.INVITATION_VALIDATION, query: { token: data, reference: window.location.href }});
+        Router.push(Navigation.INVITATION_VALIDATION, { query: { token: data, reference: window.location.href }});
       } else if (loginMode === ConfigConstant.LoginMode.MAIL) {
-        navigationTo({ path: Navigation.IMPROVING_INFO, query: { token: data, reference: window.location.href }});
+        Router.push(Navigation.IMPROVING_INFO, { query: { token: data, reference: window.location.href }});
       }
     } else {
       const userInfo = await getLoginStatus();
       if (!userInfo) {
         return;
       }
-      navigationTo({ path: Navigation.TEMPLATE, params: { categoryId, templateId, spaceId: userInfo!.spaceId }});
+      Router.push(Navigation.TEMPLATE, { params: { categoryId, templateId, spaceId: userInfo!.spaceId }});
     }
   };
 
@@ -90,10 +88,10 @@ export const TemplateUseButton: React.FC<ITemplateUseButtonProps> = props => {
           <Button
             style={{ ...style }}
             block={block}
-            color="warning"
+            color='warning'
           >
             {t(Strings.apply_template)}
-            {showIcon && <IconArrowRight fill="white" />}
+            {showIcon && <IconArrowRight fill='white' />}
           </Button>
         }
 

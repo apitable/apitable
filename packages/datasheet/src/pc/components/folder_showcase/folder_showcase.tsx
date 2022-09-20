@@ -1,20 +1,7 @@
 import { Button, ContextMenu, Skeleton, useContextMenu } from '@vikadata/components';
 import {
-  AutoTestID,
-  ConfigConstant,
-  CutMethod,
-  Events,
-  FOLDER_SHOWCASE_ID,
-  getImageThumbSrc,
-  INodePermissions,
-  integrateCdnHost,
-  IReduxState,
-  Navigation,
-  Player,
-  Settings,
-  StoreActions,
-  Strings,
-  t,
+  AutoTestID, ConfigConstant, CutMethod, Events, FOLDER_SHOWCASE_ID, getImageThumbSrc, INodePermissions, integrateCdnHost, IReduxState, Navigation,
+  Player, Settings, StoreActions, Strings, t,
 } from '@vikadata/core';
 import { uploadAttachToS3 } from '@vikadata/widget-sdk';
 import { useToggle, useUnmount } from 'ahooks';
@@ -26,7 +13,7 @@ import { Share } from 'pc/components/catalog/share';
 import { ButtonPlus } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { IPreviewShape, ISelectInfo } from 'pc/components/common/image_crop_upload';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { Deserializer, SlateEditor } from 'pc/components/slate_editor';
 import { sanitized } from 'pc/components/tab_bar/description_modal';
 import { useCatalogTreeRequest, usePrevious, useRequest, useWeixinShare } from 'pc/hooks';
@@ -94,7 +81,6 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
   const [shareNodeId, setShareNodeId] = useState('');
   const moreRef = useRef<any>();
   const dispatch = useDispatch();
-  const navigationTo = useNavigation();
   const { folderId: _folderId, templateId, shareId, categoryId } = useSelector((state: IReduxState) => state.pageParams);
   const spaceId = useSelector(state => state.space.activeId);
   const { treeNodesMap, socketData } = useSelector((state: IReduxState) => state.catalogTree);
@@ -244,28 +230,24 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
 
   const jumpNode = (nodeId: string) => {
     if (spaceId && templateId) {
-      navigationTo({
-        path: Navigation.TEMPLATE,
+      Router.push(Navigation.TEMPLATE, {
         params: { spaceId, categoryId, templateId, nodeId },
       });
       return;
     }
     if (!spaceId && templateId) {
-      navigationTo({
-        path: Navigation.TEMPLATE,
+      Router.push(Navigation.TEMPLATE, {
         params: { categoryId, templateId, nodeId },
       });
       return;
     }
     if (shareId) {
-      navigationTo({
-        path: Navigation.SHARE_SPACE,
+      Router.push(Navigation.SHARE_SPACE, {
         params: { shareId, nodeId },
       });
       return;
     }
-    navigationTo({
-      path: Navigation.WORKBENCH,
+    Router.push(Navigation.WORKBENCH, {
       params: { spaceId, nodeId },
     });
   };
@@ -355,15 +337,15 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
             <Skeleton image style={{ width: 240, height: 240 }} />
           </div>
           <div style={{ flexGrow: 1, marginLeft: 8 }}>
-            <Skeleton width="38%" />
+            <Skeleton width='38%' />
             <Skeleton count={2} />
-            <Skeleton width="61%" />
+            <Skeleton width='61%' />
           </div>
         </div>
         <div style={{ marginTop: 80 }}>
-          <Skeleton width="38%" />
+          <Skeleton width='38%' />
           <Skeleton count={2} />
-          <Skeleton width="61%" />
+          <Skeleton width='61%' />
         </div>
       </div>
     );
@@ -390,10 +372,10 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
             <Spin spinning={bannerLoading}>
               <div className={styles.folderShowcaseBanner}>
                 <div className={styles.banner}>
-                  <Image src={bannerImgUrl} alt="banner" layout={'fill'} />
+                  <Image src={bannerImgUrl} alt='banner' layout={'fill'} />
                   {permissions.descriptionEditable && (
                     <div className={styles.editBtn}>
-                      <ButtonPlus.Icon size="small" onClick={() => toggleIsBannerModal()} icon={<BannerEditIcon />} />
+                      <ButtonPlus.Icon size='small' onClick={() => toggleIsBannerModal()} icon={<BannerEditIcon />} />
                     </div>
                   )}
                 </div>
@@ -425,7 +407,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
               >
                 <div className={styles.desc}>
                   {memoDesc ? (
-                    <SlateEditor className={styles.onlyReadEditor} sectionSpacing="small" value={memoDesc} readOnly />
+                    <SlateEditor className={styles.onlyReadEditor} sectionSpacing='small' value={memoDesc} readOnly />
                   ) : (
                     <span className={styles.defaultText}>{t(Strings.edit_node_desc)}</span>
                   )}
@@ -436,10 +418,10 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
                 {permissions.sharable && (
                   <Button
                     className={styles.shareBtn}
-                    shape="round"
-                    size="small"
+                    shape='round'
+                    size='small'
                     onClick={() => setShareNodeId(nodeInfo.id)}
-                    prefixIcon={<ShareIcon fill="currentColor" />}
+                    prefixIcon={<ShareIcon fill='currentColor' />}
                   >
                     {t(Strings.share)}
                   </Button>
@@ -448,22 +430,22 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
                   <DingTalkDa suiteKey={socialInfo.dingTalkSuiteKey} corpId={socialInfo.dingTalkCorpId} bizAppId={folderId} />
                 )}
                 {(permissions.nodeAssignable || permissions.templateCreatable) && (
-                  <ContextMenuTrigger id="folder_showcase_moreBtn" ref={moreRef}>
+                  <ContextMenuTrigger id='folder_showcase_moreBtn' ref={moreRef}>
                     <ComponentDisplay minWidthCompatible={ScreenSize.md}>
                       <Button
                         id={FOLDER_SHOWCASE_ID.BTN_MORE}
                         className={styles.settingBtn}
-                        size="small"
+                        size='small'
                         onClick={openMoreContextMenu}
-                        shape="round"
-                        prefixIcon={<MoreIcon fill="currentColor" />}
+                        shape='round'
+                        prefixIcon={<MoreIcon fill='currentColor' />}
                       />
                     </ComponentDisplay>
                     {/* <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-                       <div className={styles.disabledBtn}>
-                       <MoreIcon />
-                       </div>
-                       </ComponentDisplay> */}
+                     <div className={styles.disabledBtn}>
+                     <MoreIcon />
+                     </div>
+                     </ComponentDisplay> */}
                   </ContextMenuTrigger>
                 )}
               </div>
@@ -472,7 +454,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
           <div className={styles.mobileDescWrapper}>
             <div className={styles.desc} onClick={openDescModal}>
               {memoDesc ? (
-                <SlateEditor sectionSpacing="small" value={memoDesc} readOnly />
+                <SlateEditor sectionSpacing='small' value={memoDesc} readOnly />
               ) : (
                 <span className={styles.defaultText}>{t(Strings.edit_node_desc)}</span>
               )}
@@ -498,7 +480,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
         confirm={data => uploadConfirm(data)}
         initPreview={
           <span style={{ width: '100%', height: '100%', objectFit: 'cover' }} className={styles.imgWrapper}>
-            <Image src={bannerImgUrl} alt="banner" layout={'fill'} />
+            <Image src={bannerImgUrl} alt='banner' layout={'fill'} />
           </span>
         }
         customTips={customTips}

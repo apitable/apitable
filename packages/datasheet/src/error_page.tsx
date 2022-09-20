@@ -3,7 +3,7 @@
  */
 import { Button, colorVars, LinkButton, Typography } from '@vikadata/components';
 import { Strings, t } from '@vikadata/core';
-import { navigationToUrl } from 'pc/components/route_manager/use_navigation';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import * as React from 'react';
 
 const ErrorPage: React.FC = () => {

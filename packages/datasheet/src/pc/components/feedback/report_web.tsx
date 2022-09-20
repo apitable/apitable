@@ -1,3 +1,4 @@
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { FC, useState } from 'react';
 import { ReportReason } from './report_reason';
 import FeedbackIcon from 'static/icon/common/common_icon_feedback.svg';
@@ -10,7 +11,6 @@ import RcTrigger from 'rc-trigger';
 import { t, Strings, Settings } from '@vikadata/core';
 import { ContextmenuItem } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
-import { navigationToUrl } from '../route_manager/use_navigation';
 import { InformationSmallOutlined } from '@vikadata/icons';
 
 interface IReportWeb {

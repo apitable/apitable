@@ -3,7 +3,9 @@ import { Api, IReduxState, Navigation, StoreActions, Strings, t } from '@vikadat
 import { Form, Input } from 'antd';
 import Image from 'next/image';
 import { Logo } from 'pc/components/common';
-import { Method, navigationToUrl, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Method } from 'pc/components/route_manager/const';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+import { Router } from 'pc/components/route_manager/router';
 import { useRequest } from 'pc/hooks';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
@@ -21,7 +23,6 @@ const CreateSpace: FC<ICreateSpace> = props => {
   const [disabled, setDisabled] = useState(true);
   const [spaceName, setSpaceName] = useState('');
   const dispatch = useDispatch();
-  const navigationTo = useNavigation();
   const { isCreateSpace, err, user } = useSelector((state: IReduxState) => ({
     isCreateSpace: state.user.isCreateSpace,
     err: state.space.err,
@@ -42,7 +43,7 @@ const CreateSpace: FC<ICreateSpace> = props => {
         return;
       }
       dispatch(StoreActions.updateUserInfo({ needCreate: false }));
-      navigationTo({ path: Navigation.WORKBENCH, params: { spaceId: data.spaceId }});
+      Router.push(Navigation.WORKBENCH, { params: { spaceId: data.spaceId }});
     } else {
       dispatch(StoreActions.setSpaceErr({
         code,
@@ -61,9 +62,9 @@ const CreateSpace: FC<ICreateSpace> = props => {
 
   useEffect(() => {
     if (isCreateSpace && user) {
-      navigationTo({ path: Navigation.HOME });
+      Router.push(Navigation.HOME);
     }
-  }, [isCreateSpace, dispatch, navigationTo, user]);
+  }, [isCreateSpace, dispatch, user]);
 
   const handleSubmit = () => {
     setDisabled(true);
@@ -84,7 +85,7 @@ const CreateSpace: FC<ICreateSpace> = props => {
       {
         !props.isShare &&
         <div className={styles.logo}>
-          <Logo size="large" />
+          <Logo size='large' />
         </div>
       }
 
@@ -99,17 +100,17 @@ const CreateSpace: FC<ICreateSpace> = props => {
             className={err ? 'error' : ''}
             onChange={handleChange}
             placeholder={t(Strings.enter_workspace_name)}
-            type="primary"
+            type='primary'
           />
           <div className={styles.errorMsg}>
             {err ? err.msg : ''}
           </div>
           <Button
             className={styles.createSpaceBtn}
-            color="primary"
+            color='primary'
             disabled={disabled}
             block
-            type="submit"
+            type='submit'
             onClick={handleSubmit}
           >
             {props.isShare ? t(Strings.create_and_save) : t(Strings.create)}

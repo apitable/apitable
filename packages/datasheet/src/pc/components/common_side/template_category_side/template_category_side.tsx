@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { Logo } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { SearchInput } from 'pc/components/common/search_input';
-import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest, useResponsive, useSideBarVisible, useTemplateRequest } from 'pc/hooks';
 import { KeyCode } from 'pc/utils/keycode';
 import { tracker } from 'pc/utils/tracker';
@@ -26,7 +26,6 @@ export const TemplateCategorySide: FC = () => {
   const query = useQuery();
   /** 搜索关键字 */
   const [keywords, setKeywords] = useState(query.get('searchKey') || '');
-  const navigationTo = useNavigation();
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const categoryId = useSelector((state: IReduxState) => state.pageParams.categoryId);
   const { getTemplateCategoryReq, searchTemplateReq } = useTemplateRequest();
@@ -62,12 +61,12 @@ export const TemplateCategorySide: FC = () => {
   const isMobile = screenIsAtMost(ScreenSize.md);
 
   const handleClick = (categoryId: string) => {
-    navigationTo({ path: Navigation.TEMPLATE, params: { spaceId, categoryId }});
+    Router.push(Navigation.TEMPLATE, { params: { spaceId, categoryId }});
     isMobile && setSideBarVisible(false);
   };
 
   const jumpOfficialWebsite = () => {
-    navigationTo({ path: Navigation.HOME, method: Method.NewTab, query: { home: 1 }});
+    Router.newTab(Navigation.HOME, { query: { home: 1 }});
   };
 
   /**
@@ -92,7 +91,7 @@ export const TemplateCategorySide: FC = () => {
 
   const jumpTemplate = (categoryCode: string, templateId: string) => {
     triggerTrack(keywords);
-    navigationTo({ path: Navigation.TEMPLATE, params: { spaceId, categoryId: categoryCode, templateId }});
+    Router.push(Navigation.TEMPLATE, { params: { spaceId, categoryId: categoryCode, templateId }});
   };
 
   const clearKeyword = () => {
@@ -135,7 +134,7 @@ export const TemplateCategorySide: FC = () => {
           {!spaceId && (
             <Tooltip title={t(Strings.jump_official_website)}>
               <div className={styles.logo} onClick={jumpOfficialWebsite}>
-                <Logo theme={ThemeName.Light} size="large" text={false} />
+                <Logo theme={ThemeName.Light} size='large' text={false} />
               </div>
             </Tooltip>
           )}
@@ -146,7 +145,7 @@ export const TemplateCategorySide: FC = () => {
             className={styles.templateSearch}
             keyword={keywords}
             change={setKeywords}
-            size="small"
+            size='small'
             onBlur={() => bindSearchQuery(keywords)}
             onKeyDown={onSearchInputKeyDown}
             suffix={keywords && <CloseIcon className={styles.closeBtn} onClick={clearKeyword} />}
@@ -154,7 +153,7 @@ export const TemplateCategorySide: FC = () => {
         </div>
         <div className={styles.listContainer}>
           <div className={styles.officialTemplate}>
-            <Typography className={classNames(styles.subTitle, styles.officialSubTitle)} variant="h6">
+            <Typography className={classNames(styles.subTitle, styles.officialSubTitle)} variant='h6'>
               {t(Strings.official_template)}
             </Typography>
             <div className={styles.officialTemplateList}>
@@ -174,7 +173,7 @@ export const TemplateCategorySide: FC = () => {
           </div>
           {spaceId && (
             <div className={styles.spaceTemplate}>
-              <Typography variant="h6" className={styles.subTitle}>
+              <Typography variant='h6' className={styles.subTitle}>
                 {t(Strings.space_template)}
               </Typography>
               <div
@@ -195,11 +194,11 @@ export const TemplateCategorySide: FC = () => {
                 <>
                   {searchTemplateResult.map(item => (
                     <div className={styles.item} key={item.templateId} onClick={() => jumpTemplate(item.categoryCode, item.templateId)}>
-                      <Typography className={styles.nameContainer} variant="body2">
+                      <Typography className={styles.nameContainer} variant='body2'>
                         <TemplateIcon width={16} height={16} fill={colors.staticWhite0} />
                         <span className={styles.name} dangerouslySetInnerHTML={{ __html: item.templateName }} />
                       </Typography>
-                      <Typography className={styles.tags} variant="body3">
+                      <Typography className={styles.tags} variant='body3'>
                         {item.tags.map(tag => (
                           <span className={styles.tag} dangerouslySetInnerHTML={{ __html: tag }} />
                         ))}
@@ -209,7 +208,7 @@ export const TemplateCategorySide: FC = () => {
                 </>
               ) : (
                 <div className={styles.emptyList}>
-                  <Image src={SearchDefaultPng} alt="empty" />
+                  <Image src={SearchDefaultPng} alt='empty' />
                   <div className={styles.tip}>{t(Strings.no_search_result)}</div>
                 </div>
               )}

@@ -5,7 +5,7 @@ import { triggerUsageAlert } from 'pc/common/billing';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
-import { Method, navigatePath } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 
 export const onError: IServiceError = (error, type) => {
   const { isShowQrcode, title, code, message: errorMessage } = error;
@@ -28,19 +28,16 @@ export const onError: IServiceError = (error, type) => {
       modalType = 'info';
     }
     const modalOnOk = () => {
-      if(modal.destroy()) {
+      if (modal.destroy()) {
         modal.destroy();
       }
-      if(error.onOkType && error.onOkType === OnOkType.BackWorkBench) {
-        navigatePath({
-          path: Navigation.WORKBENCH,
-          method: Method.Redirect,
-        });
+      if (error.onOkType && error.onOkType === OnOkType.BackWorkBench) {
+        Router.redirect(Navigation.WORKBENCH);
       } else {
         window.location.reload();
       }
     };
-  
+
     const modalConfig = getModalConfig({
       title: title || t(Strings.kindly_reminder),
       content: contentMessage,

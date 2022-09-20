@@ -2,7 +2,7 @@ import { Api, INoticeDetail, Navigation, StoreActions, Strings, SubscribeKye, t 
 import { triggerUsageAlert } from 'pc/common/billing';
 import { Message } from 'pc/components/common';
 import { PublishControllers } from 'pc/components/notification/publish';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 
@@ -113,7 +113,6 @@ export const useNotificationRequest = () => {
 
 export const useNotificationCreate = ({ spaceId }: { fromUserId: string, spaceId: string }) => {
   const dispatch = useDispatch();
-  const navigationTo = useNavigation();
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
 
   // 空间权限变为普通成员，即删除子管理员操作
@@ -180,7 +179,7 @@ export const useNotificationCreate = ({ spaceId }: { fromUserId: string, spaceId
         Message.success({ content: t(Strings.message_exit_space_successfully) });
         dispatch(StoreActions.setQuitSpaceId(''));
         if (spaceId === quitSpaceId) {
-          navigationTo({ path: Navigation.HOME });
+          Router.push(Navigation.HOME);
         } else {
           successFn && successFn();
         }

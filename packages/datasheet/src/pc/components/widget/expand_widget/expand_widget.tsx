@@ -1,5 +1,5 @@
 import { Navigation } from '@vikadata/core';
-import { Method, navigatePath } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { store } from 'pc/store';
 
 export const EXPAND_WIDGET = 'EXPAND_WIDGET';
@@ -10,7 +10,7 @@ export enum IWidgetFullScreenType {
 }
 
 export const closeWidgetRoute = (widgetId: string, widgetFullScreen?: IWidgetFullScreenType) => {
-  expandWidgetRoute(widgetFullScreen === IWidgetFullScreenType.Normal ? widgetId : '' , true);
+  expandWidgetRoute(widgetFullScreen === IWidgetFullScreenType.Normal ? widgetId : '', true);
 };
 
 /**
@@ -26,25 +26,13 @@ export const expandWidgetRoute = (widgetId: string, isReplace?: boolean, widgetF
   const nodeId = dashboardId || mirrorId || datasheetId;
   const query = { widgetFullScreen };
   if (shareId) {
-    navigatePath({
-      path: Navigation.SHARE_SPACE,
-      params: { nodeId: nodeId, viewId, widgetId, shareId },
-      method: isReplace ? Method.Replace : Method.Push,
-      query
-    });
+    const params = { nodeId: nodeId, viewId, widgetId, shareId };
+    isReplace ? Router.replace(Navigation.SHARE_SPACE, { params, query }) : Router.push(Navigation.SHARE_SPACE, { params, query });
   } else if (templateId) {
-    navigatePath({
-      path: Navigation.TEMPLATE,
-      params: { nodeId: nodeId, viewId, spaceId, widgetId, categoryId, templateId },
-      method: isReplace ? Method.Replace : Method.Push,
-      query
-    });
+    const params = { nodeId: nodeId, viewId, spaceId, widgetId, categoryId, templateId };
+    isReplace ? Router.replace(Navigation.TEMPLATE, { params, query }) : Router.push(Navigation.TEMPLATE, { params, query });
   } else {
-    navigatePath({
-      path: Navigation.WORKBENCH,
-      params: { nodeId: nodeId, datasheetId, viewId, spaceId, widgetId },
-      method: isReplace ? Method.Replace : Method.Push,
-      query
-    });
+    const params = { nodeId: nodeId, datasheetId, viewId, spaceId, widgetId };
+    isReplace ? Router.replace(Navigation.WORKBENCH, { params, query }) : Router.push(Navigation.WORKBENCH, { params, query });
   }
 };

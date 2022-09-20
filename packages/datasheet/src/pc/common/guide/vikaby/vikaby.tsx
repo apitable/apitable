@@ -1,4 +1,5 @@
 import { Popover } from 'antd';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { store } from 'pc/store';
 import ReactDOM from 'react-dom';
 import { useToggle } from 'ahooks';
@@ -10,7 +11,6 @@ import styles from './style.module.less';
 import { useThemeColors, ThemeProvider } from '@vikadata/components';
 import { Dialog, IDialog } from './dialog';
 import { useMemo, FC, useEffect, useState } from 'react';
-import { navigationToUrl } from 'pc/components/route_manager/use_navigation';
 import {
   ConfigConstant, DATASHEET_ID, Events, isPrivateDeployment,
   Player, ScreenWidth, Selectors, Settings, StoreActions, Strings, t, VIKABY_ID

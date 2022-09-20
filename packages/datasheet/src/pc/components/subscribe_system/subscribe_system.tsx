@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
 import { Message } from 'pc/components/common';
 import { TComponent } from 'pc/components/common/t_component';
-import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { paySystemConfig, SubscribePageType } from 'pc/components/subscribe_system/config';
 import { SubscribeBar } from 'pc/components/subscribe_system/subscribe_bar/subscribe_bar';
 import { SubscribeFeatureCard } from 'pc/components/subscribe_system/subscribe_feature_card/subscribe_feature_card';
@@ -42,7 +42,6 @@ export const SubScribeSystem = () => {
   const router = useRouter();
   const { space_id: spaceId } = router.query as { space_id: string };
   const space = useSelector(state => state.space);
-  const navigateTo = useNavigation();
   const { signOutReq } = useUserRequest();
   const dispatch = useDispatch();
   const priceInfoCache = useRef<Map<number, Map<number, ApiInterface.IQueryOrderPriceResponse>>>();
@@ -108,12 +107,10 @@ export const SubScribeSystem = () => {
         Message.warning({ content: message });
         setTimeout(async() => {
           await signOutReq();
-          navigateTo({
-            path: Navigation.LOGIN,
+          Router.redirect(Navigation.LOGIN, {
             query: {
               reference: location.href,
             },
-            method: Method.Redirect,
           });
         }, 1000);
         return;

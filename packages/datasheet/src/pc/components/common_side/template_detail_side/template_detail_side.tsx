@@ -1,20 +1,20 @@
-import { ConfigConstant, integrateCdnHost, Navigation, Settings, Strings, t, TEMPLATE_CENTER_ID, isIdassPrivateDeployment } from '@vikadata/core';
+import { LinkButton, Skeleton, useThemeColors } from '@vikadata/components';
+import { ConfigConstant, integrateCdnHost, isIdassPrivateDeployment, Navigation, Settings, Strings, t, TEMPLATE_CENTER_ID } from '@vikadata/core';
 import classNames from 'classnames';
 import { Avatar, AvatarSize, AvatarType, Message, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
+import { Router } from 'pc/components/route_manager/router';
 import { useSideBarVisible, useSpaceInfo } from 'pc/hooks';
 import { copy2clipBoard } from 'pc/utils';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import PackupIcon from 'static/icon/workbench/packup.svg';
-import OpenupIcon from 'static/icon/workbench/openup.svg';
 import BackIcon from 'static/icon/common/common_icon_left_line.svg';
+import OpenupIcon from 'static/icon/workbench/openup.svg';
+import PackupIcon from 'static/icon/workbench/packup.svg';
+import { NodeTree } from '../../template_centre/template_detail';
 import { TemplateUseButton } from '../../template_centre/template_use_button';
 import styles from './style.module.less';
-import { useThemeColors, Skeleton, LinkButton } from '@vikadata/components';
-import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
-import { NodeTree } from '../../template_centre/template_detail';
 
 export const TemplateDetailSide: React.FC = () => {
   const colors = useThemeColors();
@@ -25,9 +25,8 @@ export const TemplateDetailSide: React.FC = () => {
   const templateId = useSelector(state => state.pageParams.templateId);
   const { spaceInfo } = useSpaceInfo(spaceId);
 
-  const navigationTo = useNavigation();
   const goBack = () => {
-    navigationTo({ path: Navigation.TEMPLATE, params: { spaceId, categoryId }});
+    Router.push(Navigation.TEMPLATE, { params: { spaceId, categoryId }});
   };
 
   const { sideBarVisible, setSideBarVisible } = useSideBarVisible();
@@ -74,18 +73,18 @@ export const TemplateDetailSide: React.FC = () => {
           <Skeleton className={styles.categoryName} />
           <div className={styles.creator}>
             <Skeleton image circle style={{ width: '80px', height: '80px' }} />
-            <Skeleton count={2} width="100%" />
+            <Skeleton count={2} width='100%' />
           </div>
-          <Skeleton count={1} width="38%" />
+          <Skeleton count={1} width='38%' />
           <Skeleton count={2} />
-          <Skeleton count={1} width="61%" />
+          <Skeleton count={1} width='61%' />
         </div>
       )}
       {templateDirectory && (
         <>
           <div className={styles.categoryName}>
             <div className={styles.goBackWrapper} onClick={goBack}>
-              <BackIcon fill="currentColor" />
+              <BackIcon fill='currentColor' />
               <span>
                 {t(Strings.template_go_back, {
                   category:

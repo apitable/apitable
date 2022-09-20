@@ -4,7 +4,7 @@ import { Space } from 'antd';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { dingdingLogin, feishuLogin, qqLogin, wechatLogin, wecomLogin, wecomQuickLogin } from 'pc/components/home/other_login';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useQuery } from 'pc/hooks';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
@@ -15,7 +15,6 @@ import { isDingtalkFunc, isLarkFunc, isQQFunc, isWechatFunc, isWecomFunc } from 
 import styles from './style.module.less';
 
 export const QuickLogin: FC = () => {
-  const navigationTo = useNavigation();
   const query = useQuery();
   const isWecomDomain = useSelector(state => state.space.envs?.weComEnv?.enabled);
   const changeMobileMode = () => {
@@ -26,7 +25,7 @@ export const QuickLogin: FC = () => {
     for (const pair of searchParams.entries()) {
       queryObj[pair[0]] = pair[1];
     }
-    navigationTo({ path: Navigation.LOGIN, query: queryObj });
+    Router.push(Navigation.LOGIN, { query: queryObj });
   };
 
   const renderQuickLoginBtn = () => {
@@ -105,16 +104,16 @@ export const QuickLogin: FC = () => {
         <div className={styles.slogan}>{slogan || t(Strings.login_slogan)}</div>
         <div className={styles.subSlogan}>{t(Strings.login_sub_slogan)}</div>
         <div className={styles.welcomePng}>
-          <Image src={WelcomePng} alt="Welcome" />
+          <Image src={WelcomePng} alt='Welcome' />
         </div>
-        <Space className={styles.btnGroup} direction="vertical" size={16}>
+        <Space className={styles.btnGroup} direction='vertical' size={16}>
           {renderQuickLoginBtn()}
           <div className={classnames(styles.btn, styles.mobileAndAccount)} onClick={changeMobileMode}>
             <MobileIcon /><span className={styles.text}>{t(Strings.more_login_mode)}</span>
           </div>
         </Space>
       </div>
-      <span className={styles.templateBtn} onClick={() => navigationTo({ path: Navigation.TEMPLATE })}>
+      <span className={styles.templateBtn} onClick={() => Router.push(Navigation.TEMPLATE)}>
         <TemplateIcon />{t(Strings.massive_template)}
       </span>
     </div>

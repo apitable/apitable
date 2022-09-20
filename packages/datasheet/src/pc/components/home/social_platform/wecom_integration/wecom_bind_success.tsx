@@ -3,14 +3,13 @@ import { integrateCdnHost, Navigation, Settings, Strings, t } from '@vikadata/co
 import { CopyOutlined, InformationSmallOutlined, NewtabOutlined } from '@vikadata/icons';
 import Image from 'next/image';
 import { ButtonPlus, Tooltip } from 'pc/components/common';
-import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useQuery } from 'pc/hooks';
 import { copy2clipBoard } from 'pc/utils';
 import * as React from 'react';
 import styles from './styles.module.less';
 
 const WecomBindSuccess: React.FC = () => {
-  const navigationTo = useNavigation();
   const query = useQuery();
   const domainName = query.get('domainName') || '';
   const colors = useThemeColors();
@@ -19,7 +18,7 @@ const WecomBindSuccess: React.FC = () => {
       <span className={styles.successImg}>
         <Image
           src={integrateCdnHost(Settings.wecom_bind_success_icon.value)}
-          alt="success-icon"
+          alt='success-icon'
         />
       </span>
 
@@ -29,15 +28,15 @@ const WecomBindSuccess: React.FC = () => {
           <span>{t(Strings.integration_app_wecom_config_item1_title)}</span>
           <Tooltip title={t(Strings.click_to_view_instructions)}>
             <a
-              href={ Settings.help_intro_custom_subdomain.value}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={Settings.help_intro_custom_subdomain.value}
+              target='_blank'
+              rel='noopener noreferrer'
               style={{
                 display: 'flex',
                 alignItems: 'center'
               }}
             >
-              <InformationSmallOutlined color={colors.thirdLevelText} size={16}/>
+              <InformationSmallOutlined color={colors.thirdLevelText} size={16} />
             </a>
           </Tooltip>
         </div>
@@ -50,18 +49,18 @@ const WecomBindSuccess: React.FC = () => {
             readOnly
           />
           <ButtonPlus.Group style={{ display: 'flex' }}>
-            <Tooltip title={t(Strings.copy_link)} placement="top">
+            <Tooltip title={t(Strings.copy_link)} placement='top'>
               <Button
                 onClick={() => copy2clipBoard(domainName)}
                 prefixIcon={<CopyOutlined color={colors.secondLevelText} />}
               />
             </Tooltip>
-            <Tooltip title={t(Strings.wecom_new_tab_tooltip)} placement="top">
+            <Tooltip title={t(Strings.wecom_new_tab_tooltip)} placement='top'>
               <Button
                 onClick={() => {
-                  navigationTo({ path: Navigation.SPACE, method: Method.NewTab, clearQuery: true });
+                  Router.newTab(Navigation.SPACE, { clearQuery: true });
                 }}
-                prefixIcon={<NewtabOutlined color={colors.secondLevelText}/>}
+                prefixIcon={<NewtabOutlined color={colors.secondLevelText} />}
               />
             </Tooltip>
           </ButtonPlus.Group>

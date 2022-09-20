@@ -1,5 +1,6 @@
 import { ConfigConstant, Settings, StatusCode, Strings, t } from '@vikadata/core';
-import { Method, navigationToUrl } from 'pc/components/route_manager/use_navigation';
+import { Method } from 'pc/components/route_manager/const';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useQuery } from 'pc/hooks';
 import * as React from 'react';
 import FailureImage from 'static/icon/common/common_img_share_linkfailure.png';

@@ -19,6 +19,7 @@ import {
 } from 'pc/components/economy/upgrade_modal';
 import { inSocialApp, isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'pc/components/home/social_platform';
 import { Notification } from 'pc/components/notification';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useNotificationRequest, useRequest, useResponsive } from 'pc/hooks';
 import { isMobileApp, isHiddenQRCode } from 'pc/utils/env';
 import * as React from 'react';
@@ -33,7 +34,6 @@ import AnimationJson from 'static/json/notification_new.json';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { Popup } from '../common/mobile/popup';
 import { openEruda } from '../development/dev_tools_panel';
-import { navigationToUrl } from '../route_manager/use_navigation';
 import { CreateSpaceModal } from './create_space_modal';
 import { Help } from './help';
 import { NavigationContext } from './navigation_context';

@@ -1,18 +1,17 @@
 import { ConfigConstant, IReduxState, Navigation, NodeErrorType, Selectors, StoreActions, Strings, t } from '@vikadata/core';
-import { useRequest } from 'pc/hooks';
 import classnames from 'classnames';
 import { ScreenSize } from 'pc/components/common/component_display';
+import { Modal } from 'pc/components/common/modal/modal/modal';
+import { TComponent } from 'pc/components/common/t_component';
 import { ITreeViewRef, TreeItem, TreeView } from 'pc/components/common/tree_view';
-import { useNavigation, Method } from 'pc/components/route_manager/use_navigation';
-import { useCatalogTreeRequest, useResponsive } from 'pc/hooks';
-import { FC, useRef } from 'react';
+import { Router } from 'pc/components/route_manager/router';
+import { useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
+import { isTouchDevice, shouldOpenInNewTab } from 'pc/utils';
 import * as React from 'react';
+import { FC, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NodeItem } from './node_item';
 import styles from './style.module.less';
-import { isTouchDevice, shouldOpenInNewTab } from 'pc/utils';
-import { Modal } from 'pc/components/common/modal/modal/modal';
-import { TComponent } from 'pc/components/common/t_component';
 
 export const EMOJI_SIZE = 20;
 
@@ -28,7 +27,6 @@ const TreeBase: FC<ITreeProps> = ({ rightClick }) => {
   const lastOverNodeIdRef = useRef<any>(null);
   const treeViewRef = useRef<ITreeViewRef>(null);
   const { editNodeId, delNodeId, expandedKeys, rootId } = catalogTree;
-  const navigationTo = useNavigation();
   const dispatch = useDispatch();
   const { nodeMoveReq } = useCatalogTreeRequest();
   const { run: nodeMove, loading: moveLoading } = useRequest(nodeMoveReq, { manual: true });
@@ -141,13 +139,20 @@ const TreeBase: FC<ITreeProps> = ({ rightClick }) => {
       // 不管点击文件或文件夹都关闭
       isMobile && dispatch(StoreActions.setSideBarVisible(false));
 
-      navigationTo({
-        path: Navigation.WORKBENCH,
-        params: {
-          nodeId: selectedKeys,
-        },
-        method: isOpenNewTab ? Method.NewTab : Method.Push,
-      });
+      if (isOpenNewTab) {
+        Router.newTab(Navigation.WORKBENCH, {
+          params: {
+            nodeId: selectedKeys,
+          },
+        });
+      } else {
+        Router.push(Navigation.WORKBENCH, {
+          params: {
+            nodeId: selectedKeys,
+          },
+        });
+      }
+
     }
   };
 

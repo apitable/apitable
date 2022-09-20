@@ -1,7 +1,7 @@
 import { Api, Navigation, Settings, Strings, t } from '@vikadata/core';
 import { useMount } from 'ahooks';
 import { Loading, Message } from 'pc/components/common';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest } from 'pc/hooks';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
 import { useState } from 'react';
@@ -17,7 +17,6 @@ const DingTalkAdmin = () => {
   const query = useQuery();
   const code = query.get('code') || '';
   const suiteId = query.get('suiteId') || '';
-  const navigationTo = useNavigation();
   const [data, setData] = useState<IAdminData | null>(null);
   const [corpId, setCorpId] = useState<string>(() => getStorage(StorageName.SocialPlatformMap)?.socialDingTalk?.[code] || '');
 
@@ -43,7 +42,7 @@ const DingTalkAdmin = () => {
       const { data, success } = res.data;
 
       if (!success) {
-        return navigationTo({ path: Navigation.LOGIN });
+        return Router.push(Navigation.LOGIN);
       }
       return setData(data);
     },

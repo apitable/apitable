@@ -1,5 +1,5 @@
 import { Api, IInviteMemberList, IReduxState, Navigation, StoreActions } from '@vikadata/core';
-import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { secondStepVerify } from 'pc/hooks/utils';
 import { getSearchParams } from 'pc/utils';
 import { execNoTraceVerification } from 'pc/utils/no_trace_verification';
@@ -13,7 +13,6 @@ interface IJoinFuncProps {
 export const useLinkInvite = () => {
   const urlParams = getSearchParams();
   const dispatch = useDispatch();
-  const navigationTo = useNavigation();
   const inviteLinkTokenInUrl = urlParams.get('inviteLinkToken');
   const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
   const inviteLinkTokenInStore = useSelector((state: IReduxState) => state.invite.linkToken);
@@ -27,13 +26,12 @@ export const useLinkInvite = () => {
       if (success) {
         Api.joinViaSpace(linkToken).then(res => {
           if (res.data.success) {
-            navigationTo({ path: Navigation.WORKBENCH, params: { spaceId: info.spaceId }, method: Method.Redirect, clearQuery: true });
+            Router.redirect(Navigation.WORKBENCH, { params: { spaceId: info.spaceId }, clearQuery: true });
             return;
           }
         });
       } else {
-        navigationTo({
-          path: Navigation.INVITE,
+        Router.push(Navigation.INVITE, {
           params: { invitePath: 'link/invalid' },
           query: { inviteLinkToken: linkToken },
         });
@@ -55,9 +53,9 @@ export const useLinkInvite = () => {
     if (inviteLinkTokenInStore && inviteLinkInfo) {
       Api.joinViaSpace(inviteLinkTokenInStore).then(res => {
         if (res.data.success) {
-          navigationTo({ path: Navigation.WORKBENCH, params: { spaceId: inviteLinkInfo.data.spaceId }, method: Method.Redirect, clearQuery: true });
+          Router.redirect(Navigation.WORKBENCH, { params: { spaceId: inviteLinkInfo.data.spaceId }, clearQuery: true });
         } else {
-          navigationTo({ path: Navigation.WORKBENCH, method: Method.Redirect });
+          Router.redirect(Navigation.WORKBENCH,);
         }
         return;
       });
@@ -83,7 +81,6 @@ export const useInvitePageRefreshed = (data: IInvitePageRefreshedProps) => {
   const urlParams = new URLSearchParams(window.location.search);
   const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
   const inviteEmailInfo = useSelector((state: IReduxState) => state.invite.inviteEmailInfo);
-  const navigationTo = useNavigation();
   let inviteTokenInUrl;
   let inviteInfo;
   let invitePath;
@@ -101,8 +98,7 @@ export const useInvitePageRefreshed = (data: IInvitePageRefreshedProps) => {
 
   const whenPageRefreshed = () => {
     if (inviteTokenInUrl && !inviteInfo) {
-      navigationTo({
-        path: Navigation.INVITE,
+      Router.push(Navigation.INVITE, {
         params: { invitePath },
         query: {
           inviteMailToken: type === 'mailInvite' ? inviteTokenInUrl : undefined,

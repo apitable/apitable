@@ -4,10 +4,10 @@ import { Modal, Radio } from 'antd';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { Avatar, AvatarSize, AvatarType } from 'pc/components/common/avatar';
-import { Modal as CustomModal } from 'pc/components/common/modal/modal/modal';
 import { Message } from 'pc/components/common/message';
+import { Modal as CustomModal } from 'pc/components/common/modal/modal/modal';
 import CreateSpace from 'pc/components/create_space/create_space';
-import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,7 +33,6 @@ export const ShareSave: React.FC<IShareSave> = props => {
   const { visible, setVisible, shareSpace } = props;
   const { shareId } = useSelector(state => state.pageParams);
   const dispatch = useDispatch();
-  const navigationTo = useNavigation();
   const [radio, setRadio] = useState('');
   const [spaceList, setSpaceList] = useState<{ spaceId: string; name: string; logo: string }[]>([]);
   const [modalType, setModalType] = useState<ModalType | null>(null);
@@ -50,7 +49,7 @@ export const ShareSave: React.FC<IShareSave> = props => {
         content: t(Strings.require_login_tip),
         okText: t(Strings.go_login),
         onOk: () => {
-          navigationTo({ path: Navigation.LOGIN, query: { reference: window.location.href }});
+          Router.push(Navigation.LOGIN, { query: { reference: window.location.href }});
         },
         onCancel: () => setVisible(false),
         okButtonProps: { id: AutoTestID.GO_LOGIN_BTN },
@@ -101,13 +100,11 @@ export const ShareSave: React.FC<IShareSave> = props => {
     const res = await Api.storeShareData(shareId, spaceId ? spaceId : radio);
     const { success, message, data } = res.data;
     const toSpace = () => {
-      navigationTo({
-        path: Navigation.WORKBENCH,
+      Router.redirect(Navigation.WORKBENCH, {
         params: {
           spaceId: radio,
           nodeId: shareSpace.isFolder ? '' : data.nodeId,
         },
-        method: Method.Redirect,
       });
     };
     if (success) {
@@ -156,13 +153,13 @@ export const ShareSave: React.FC<IShareSave> = props => {
               setVisible(false);
             }}
             style={{ marginRight: '8px' }}
-            size="small"
+            size='small'
           >
             {t(Strings.cancel)}
           </TextButton>
           <Button
-            color="primary"
-            size="small"
+            color='primary'
+            size='small'
             onClick={() => {
               saveToSpace();
             }}
@@ -184,9 +181,9 @@ export const ShareSave: React.FC<IShareSave> = props => {
           {t(Strings.check_save_space)}
           <span>{t(Strings.choose_your_own_space)}</span>
         </p>
-        <Image src={IconNoSpace} alt="" style={{ margin: '0 auto', display: 'block' }} />
+        <Image src={IconNoSpace} alt='' style={{ margin: '0 auto', display: 'block' }} />
         <p className={styles.tip}>{t(Strings.no_sapce_save)}</p>
-        <Button color="primary" size="large" onClick={onClick} className={styles.button}>
+        <Button color='primary' size='large' onClick={onClick} className={styles.button}>
           {t(Strings.quickly_create_space)}
         </Button>
       </div>

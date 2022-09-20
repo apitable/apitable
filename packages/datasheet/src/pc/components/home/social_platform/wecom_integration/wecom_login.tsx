@@ -1,7 +1,7 @@
 import { Api, Navigation, StatusCode, Strings, t } from '@vikadata/core';
 import { useMount } from 'ahooks';
 import { Loading, Message, Modal } from 'pc/components/common';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest } from 'pc/hooks';
 import * as React from 'react';
 import { wecomLogin } from '../../other_login';
@@ -9,7 +9,6 @@ import { isWecomFunc } from '../utils';
 
 const WecomLogin: React.FC = () => {
   const query = useQuery();
-  const navigationTo = useNavigation();
   const agentId = query.get('agentId') || '';
   const corpId = query.get('corpId') || '';
   const reference = query.get('reference') || undefined;
@@ -19,22 +18,25 @@ const WecomLogin: React.FC = () => {
       const { data, success, code } = res.data;
       if (!success) {
         // 需要登录
-        switch(code) {
-          case StatusCode.WECOM_NOT_BIND_SPACE: navigationTo({ path: Navigation.LOGIN }); break;
+        switch (code) {
+          case StatusCode.WECOM_NOT_BIND_SPACE:
+            Router.push(Navigation.LOGIN);
+            break;
           case StatusCode.WECOM_NOT_BIND_DOMAIN: {
             Modal.warning({
               title: t(Strings.wecom_not_complete_bind_title),
               content: t(Strings.wecom_not_complete_bind_content),
               onOk: () => {
-                navigationTo({ path: Navigation.LOGIN });
+                Router.push(Navigation.LOGIN);
               },
             });
-          } break;
+          }
+            break;
           default: {
             if (isWecomFunc()) {
               wecomLogin(reference);
             } else {
-              navigationTo({ path: Navigation.LOGIN });
+              Router.push(Navigation.LOGIN);
             }
           }
         }
@@ -50,8 +52,7 @@ const WecomLogin: React.FC = () => {
         window.location.href = reference;
         return;
       }
-      navigationTo({
-        path: Navigation.WORKBENCH,
+      Router.push(Navigation.WORKBENCH, {
         params: { spaceId: data.bindSpaceId },
       });
     },

@@ -1,20 +1,19 @@
 import { ContextMenu, IContextMenuClickState } from '@vikadata/components';
 import { ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@vikadata/core';
-import { useRequest, useRootManageable } from 'pc/hooks';
 import { MobileContextMenu } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { IDatasheetPanelInfo } from 'pc/components/common_side/workbench_side';
 import { WorkbenchSideContext } from 'pc/components/common_side/workbench_side/workbench_side_context';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
-import { useCatalogTreeRequest, useResponsive, useSideBarVisible } from 'pc/hooks';
+import { Router } from 'pc/components/route_manager/router';
+import { useCatalogTreeRequest, useRequest, useResponsive, useRootManageable, useSideBarVisible } from 'pc/hooks';
 import { useCatalog } from 'pc/hooks/use_catalog';
 import { copy2clipBoard, exportDatasheet, exportMirror, flatContextData } from 'pc/utils';
+import { isMobileApp } from 'pc/utils/env';
 import { FC, memo, useContext, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { expandNodeInfo } from '../node_info';
 import { ContextItemKey, contextItemMap } from './context_menu_data';
 import { MobileNodeContextMenuTitle } from './mobile_context_menu_title';
-import { isMobileApp } from 'pc/utils/env';
 
 export interface INodeContextMenuProps {
   onHidden: () => void;
@@ -33,7 +32,6 @@ export interface INodeContextMenuProps {
 export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, openDatasheetPanel, openCatalog, contextMenu }) => {
   const { addTreeNode } = useCatalog();
   const dispatch = useDispatch();
-  const navigationTo = useNavigation();
   const { rightClickInfo, openFavorite } = useContext(WorkbenchSideContext);
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
   const rootId = useSelector((state: IReduxState) => state.catalogTree.rootId);
@@ -270,7 +268,7 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
               openImportModal(targetId);
             }),
           ],
-          [contextItemMap.get(ContextItemKey.CreateFromTemplate)(() => navigationTo({ path: Navigation.TEMPLATE, params: { spaceId }}))],
+          [contextItemMap.get(ContextItemKey.CreateFromTemplate)(() => Router.push(Navigation.TEMPLATE, { params: { spaceId }}))],
         ];
         // 往菜单注入新功能
         Player.applyFilters(Events.get_context_menu_root_add, data);
@@ -297,7 +295,7 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
       return <></>;
     }
 
-    return <MobileContextMenu title={getTitle()} visible={Boolean(rightClickInfo)} data={contextData} height="auto" onClose={onHidden} />;
+    return <MobileContextMenu title={getTitle()} visible={Boolean(rightClickInfo)} data={contextData} height='auto' onClose={onHidden} />;
   };
 
   const contextMenuData = flatContextData(contextData);

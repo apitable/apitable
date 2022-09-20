@@ -1,12 +1,11 @@
 import { Api, Navigation, Strings, t } from '@vikadata/core';
 import { useMount } from 'ahooks';
 import { Loading, Message } from 'pc/components/common';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest } from 'pc/hooks';
 
 const DingTalkH5 = () => {
   const query = useQuery();
-  const navigationTo = useNavigation();
   const agentId = query.get('agentId');
   const reference = query.get('reference') || '';
 
@@ -16,8 +15,7 @@ const DingTalkH5 = () => {
       const { data, success } = res.data;
       if (!success) {
         // 需要登录
-        navigationTo({
-          path: Navigation.DINGTALK,
+        Router.push(Navigation.DINGTALK, {
           params: { dingtalkPath: 'login' },
           query: { reference }
         });
@@ -30,8 +28,7 @@ const DingTalkH5 = () => {
       }
       // 应用已经绑定了空间
       // window.location.href = `/workbench?reference=${reference}&spaceId=${data.bindSpaceId}`;
-      navigationTo({
-        path: Navigation.WORKBENCH,
+      Router.push(Navigation.WORKBENCH, {
         params: { spaceId: data.bindSpaceId },
         query: { reference, spaceId: data.bindSpaceId }
       });

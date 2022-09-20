@@ -5,7 +5,9 @@ import cls from 'classnames';
 import Image from 'next/image';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { isSocialDomain } from 'pc/components/home/social_platform';
-import { Method, navigationToUrl, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Method } from 'pc/components/route_manager/const';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+import { Router } from 'pc/components/route_manager/router';
 import { useRequest } from 'pc/hooks';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
@@ -24,7 +26,6 @@ export const CreateSpaceModal: FC<ICreateSpaceModalProps> = props => {
   const [spaceName, setSpaceName] = useState('');
   const dispatch = useDispatch();
   const err = useSelector((state: IReduxState) => state.space.err);
-  const navigationTo = useNavigation();
   const colors = useThemeColors();
 
   const { run: toGetUser } = useRequest((spaceId) => Api.getUserMe({ spaceId }).then(res => {
@@ -43,7 +44,7 @@ export const CreateSpaceModal: FC<ICreateSpaceModalProps> = props => {
           return;
         }
         dispatch(StoreActions.updateUserInfo({ needCreate: false }));
-        navigationTo({ path: Navigation.SPACE, params: { spaceId: data.spaceId }, method: Method.Redirect });
+        Router.redirect(Navigation.SPACE, { params: { spaceId: data.spaceId }});
       } else {
         dispatch(StoreActions.setSpaceErr({
           code,
@@ -81,7 +82,7 @@ export const CreateSpaceModal: FC<ICreateSpaceModalProps> = props => {
     return (
       <div>
         <div className={styles.spaceNameImg}>
-          <Image src={spaceNameImg} alt="createSpace Logo" width={366} height={275} />
+          <Image src={spaceNameImg} alt='createSpace Logo' width={366} height={275} />
         </div>
         {!isMobile && <div className={styles.title}>{t(Strings.new_space)}</div>}
         <div className={styles.subTitle}>{t(Strings.new_space_tips)}</div>
@@ -99,11 +100,11 @@ export const CreateSpaceModal: FC<ICreateSpaceModalProps> = props => {
             {err && err.code !== StatusCode.STATUS_OK ? err.msg : ''}
           </div>
           <Button
-            color="primary"
+            color='primary'
             className={styles.submit}
             disabled={!spaceName || loading}
             loading={loading}
-            size="large"
+            size='large'
             block
             onClick={handleSubmit}
           >
@@ -119,7 +120,7 @@ export const CreateSpaceModal: FC<ICreateSpaceModalProps> = props => {
     return (
       <Drawer
         title={t(Strings.new_space)}
-        placement="bottom"
+        placement='bottom'
         visible
         onClose={() => !loading && props.setShowCreateModal(false)}
         height={566}

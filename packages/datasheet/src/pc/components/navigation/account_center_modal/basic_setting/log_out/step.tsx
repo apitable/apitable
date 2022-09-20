@@ -1,18 +1,18 @@
-import { useContext, useMemo, useState } from 'react';
+import { Button, LinkButton, useThemeColors } from '@vikadata/components';
+import { Api, ConfigConstant, Navigation, Strings, t } from '@vikadata/core';
+import { Message, NormalModal } from 'pc/components/common';
+import { Router } from 'pc/components/route_manager/router';
+import { useSetState } from 'pc/hooks';
+import { usePlatform } from 'pc/hooks/use_platform';
 import * as React from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { ChooseAccountType } from '../choose_account_type/choose_account_type';
 import { ConfirmAgainModal } from '../confirm_again_modal';
-import { Reading } from '../reading';
-import { StepContext } from './step_context';
-import { Message, NormalModal } from 'pc/components/common';
-import { Button, LinkButton, useThemeColors } from '@vikadata/components';
-import { useSetState } from 'pc/hooks';
-import styles from './styles.module.less';
-import { Api, ConfigConstant, Navigation, Strings, t } from '@vikadata/core';
 import { Verify } from '../modify_mobile_modal/verify';
-import { Method, navigatePath } from 'pc/components/route_manager/use_navigation';
-import { usePlatform } from 'pc/hooks/use_platform';
+import { Reading } from '../reading';
 import { AccountType, StepStatus } from './enum';
+import { StepContext } from './step_context';
+import styles from './styles.module.less';
 
 export interface IErrorMsg {
   accountErrMsg: string;
@@ -115,10 +115,7 @@ export const Step: React.FC = () => {
               const { success, message } = res.data;
               if (success) {
                 Message.success({ content: t(Strings.log_out_succeed) });
-                navigatePath({
-                  path: Navigation.APPLY_LOGOUT,
-                  method: Method.Push,
-                });
+                Router.push(Navigation.APPLY_LOGOUT,);
               } else {
                 Message.error({ content: message });
               }
@@ -147,7 +144,7 @@ export const Step: React.FC = () => {
         };
         return (
           <Button
-            color="primary"
+            color='primary'
             onClick={() => {
               setStep(getNextStep());
               if (!userData.email) {
@@ -175,7 +172,7 @@ export const Step: React.FC = () => {
             <LinkButton color={colors.fc3} onClick={() => setStep(lastStep)} underline={false}>
               {t(Strings.last_step)}
             </LinkButton>
-            <Button color="primary" loading={loading} type="submit" {...btnPropsMap[step]}>
+            <Button color='primary' loading={loading} type='submit' {...btnPropsMap[step]}>
               {btnPropsMap[step].okBtnText}
             </Button>
           </div>

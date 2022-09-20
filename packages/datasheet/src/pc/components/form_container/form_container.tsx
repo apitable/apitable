@@ -1,32 +1,8 @@
 import * as Sentry from '@sentry/react';
 import { Button, ContextMenu, TextButton, useThemeColors } from '@vikadata/components';
 import {
-  Api,
-  AutoTestID,
-  CacheManager,
-  ConfigConstant,
-  Events,
-  ExpCache,
-  Field,
-  FieldOperateType,
-  FieldType,
-  FormApi,
-  getNewId,
-  IDPrefix,
-  IField,
-  IFieldMap,
-  IFormState,
-  IRecord,
-  ISegment,
-  isPrivateDeployment,
-  Navigation,
-  Player,
-  Selectors,
-  StatusCode,
-  StoreActions,
-  string2Segment,
-  Strings,
-  t,
+  Api, AutoTestID, CacheManager, ConfigConstant, Events, ExpCache, Field, FieldOperateType, FieldType, FormApi, getNewId, IDPrefix, IField, IFieldMap,
+  IFormState, IRecord, ISegment, isPrivateDeployment, Navigation, Player, Selectors, StatusCode, StoreActions, string2Segment, Strings, t,
 } from '@vikadata/core';
 import { ArrowDownOutlined, ArrowUpOutlined, EditDescribeOutlined, EditOutlined } from '@vikadata/icons';
 import { useDebounceFn, useMount, useUnmount } from 'ahooks';
@@ -41,6 +17,7 @@ import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal';
 import { FieldDesc } from 'pc/components/multi_grid/field_desc';
 import { FieldSetting } from 'pc/components/multi_grid/field_setting';
+import { Router } from 'pc/components/route_manager/router';
 import { useDispatch, useQuery, useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
 import { flatContextData } from 'pc/utils';
@@ -53,7 +30,6 @@ import CompleteAnimationJson from 'static/json/complete_form.json';
 import { ScreenSize } from '../common/component_display';
 import { TComponent } from '../common/t_component';
 import { getRecordName } from '../expand_record';
-import { Method, useNavigation } from '../route_manager/use_navigation';
 import { ShareContext } from '../share';
 import { FormContext } from './form_context';
 import { FormFieldContainer } from './form_field_container';
@@ -132,7 +108,6 @@ export const FormContainer: React.FC = () => {
   const lottieAnimate = useRef<AnimationItem>();
   const [contentType, setContentType] = useState<IFormContentType>(IFormContentType.Form);
   const { datasheetId, viewId } = sourceInfo;
-  const navigationTo = useNavigation();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { shareInfo } = useContext(ShareContext);
@@ -396,7 +371,7 @@ export const FormContainer: React.FC = () => {
 
   // 跳转官网
   const onJump = () => {
-    navigationTo({ path: Navigation.HOME, method: Method.NewTab, query: { home: 1 }});
+    Router.newTab(Navigation.HOME, { query: { home: 1 }});
   };
 
   // 再次填写
@@ -412,7 +387,7 @@ export const FormContainer: React.FC = () => {
         className={styles.loginBtn}
         onClick={() => {
           localStorage.setItem('reference', window.location.href);
-          navigationTo({ path: Navigation.LOGIN, query: { reference: window.location.href, spaceId: shareInfo.spaceId }});
+          Router.push(Navigation.LOGIN, { query: { reference: window.location.href, spaceId: shareInfo.spaceId }});
         }}
       >
         {t(Strings.login)}
@@ -706,7 +681,7 @@ export const FormContainer: React.FC = () => {
                 style={{
                   height: '100%',
                 }}
-                color="primary"
+                color='primary'
                 onClick={onSubmit}
                 disabled={loading || !editable}
               >
@@ -729,11 +704,11 @@ export const FormContainer: React.FC = () => {
             <div className={styles.welcome}>
               <div className={styles.welcomeInner}>
                 <span className={styles.iconSuccess}>
-                  <Image src={IconSuccess} alt="submit_success" width={100} height={80} />
+                  <Image src={IconSuccess} alt='submit_success' width={100} height={80} />
                 </span>
                 <span className={styles.thankText}>{t(Strings.form_thank_text)}</span>
                 {submitLimit === 0 && (
-                  <TextButton color="primary" className={styles.linkBtn} onClick={onFillAgain}>
+                  <TextButton color='primary' className={styles.linkBtn} onClick={onFillAgain}>
                     {t(Strings.form_fill_again)}
                   </TextButton>
                 )}
@@ -756,7 +731,7 @@ export const FormContainer: React.FC = () => {
                 params={{
                   logo: (
                     <span className={styles.logoWrap} onClick={onJump}>
-                      <Logo size="mini" />
+                      <Logo size='mini' />
                     </span>
                   ),
                 }}
