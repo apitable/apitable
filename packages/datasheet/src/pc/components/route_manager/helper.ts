@@ -95,8 +95,18 @@ export const toggleSpace = async(spaceId?: string | null) => {
 
   store.dispatch(StoreActions.setActiveSpaceId(spaceId));
 
+  /**
+   * 原本是希望在 _app 中通过 getInitPoops 来获取 userInfo 的信息进行数据更新，但是经过测试，在当前版本的 next（12.3） 中，除了第一次加载页面 _app 的 props 会接收到 userInfo 的信息，
+   * 通过 router.push 的方式进行路由的切换，_app 中获取到的 props 为 undefined，导致无法及时更新 userInfo 的信息，使用 router.redirect 则能正常更新信息，但是这样的体验很差，页面会有刷新的效果。
+   *
+   * 因此决定使用 router.push 时，如果存在 spaceId 的参数，则手动刷新
+   */
   try {
-    await Api.getUserMe({ spaceId });
+    const res = await Api.getUserMe({ spaceId });
+    const { data, success } = res.data;
+    if (success) {
+      store.dispatch(StoreActions.setUserMe(data));
+    }
   } catch (e) {
     console.warn('getUserMe Error', e);
   }
