@@ -17,7 +17,12 @@ const ThemeStyle = styled.div`
   }
 `;
 
-export const ThemeToggle: React.FC = props => {
+interface IThemeToggle {
+  lang?: 'en' | 'zh'
+}
+
+export const ThemeToggle: React.FC<IThemeToggle> = props => {
+  const isEn = props.lang === 'en';
   const [theme, setTheme] = useState('light');
   return (
     <ThemeStyle theme={theme}>
@@ -31,7 +36,7 @@ export const ThemeToggle: React.FC = props => {
           underline={false}
           onClick={() => setTheme('light')}
         >
-        默认主题
+          {isEn ? 'Default Theme' : '默认主题'}
         </LinkButton>
         <LinkButton
           color={theme === 'dark' ? undefined : '#949494'}
@@ -42,7 +47,7 @@ export const ThemeToggle: React.FC = props => {
           underline={false}
           onClick={() => setTheme('dark')}
         >
-        暗黑主题
+          {isEn ? 'Dark Theme' : '暗黑主题'}
         </LinkButton>
       </Box>
       <Divider style={{ marginBottom: '8px' }}/>
