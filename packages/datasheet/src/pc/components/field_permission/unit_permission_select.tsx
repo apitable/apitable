@@ -90,7 +90,7 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
     });
 
     // 检查选择的人中是否有管理员
-    if (unitInfos.some(({ unitId }) => adminAndOwnerUnitIds.includes(unitId))) {
+    if (!showTeams && unitInfos.some(({ unitId }) => adminAndOwnerUnitIds.includes(unitId))) {
       Message.error({ content: t(Strings.no_permission_setting_admin) });
       return;
     }
