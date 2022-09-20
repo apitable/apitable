@@ -37,12 +37,14 @@ public class CollectionUtil {
         return !isEmpty(collection);
     }
 
+    /**
+     * distinct collection ignore case
+     * @param collection string collection
+     * @return new string list
+     */
     public static ArrayList<String> distinctIgnoreCase(Collection<String> collection) {
         if (collection == null || collection.isEmpty()) {
             return new ArrayList<>();
-        }
-        else if (collection instanceof Set) {
-            return new ArrayList<>(collection);
         }
         else {
             Set<String> sets = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);

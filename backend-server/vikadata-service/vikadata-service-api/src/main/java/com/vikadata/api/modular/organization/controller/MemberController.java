@@ -4,10 +4,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -69,9 +67,7 @@ import com.vikadata.api.modular.space.model.SpaceUpdateOperate;
 import com.vikadata.api.modular.space.service.ISpaceService;
 import com.vikadata.api.modular.user.mapper.UserMapper;
 import com.vikadata.api.modular.user.model.UserLangDTO;
-import com.vikadata.api.modular.user.service.IUserService;
 import com.vikadata.api.security.afs.AfsCheckService;
-import com.vikadata.api.util.CollectionUtil;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;
@@ -105,7 +101,6 @@ import static com.vikadata.define.constants.RedisConstants.GENERAL_LOCKED;
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/11/4 17:00
  */
 @RestController
 @Api(tags = "通讯录管理_成员管理接口")
@@ -133,9 +128,6 @@ public class MemberController {
 
     @Resource
     private ISpaceService iSpaceService;
-
-    @Resource
-    private IUserService userService;
 
     @Resource
     private AfsCheckService afsCheckService;
@@ -263,66 +255,25 @@ public class MemberController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<Void> inviteMember(@RequestBody @Valid InviteRo data) {
-        // 人机验证
+        // human verification
         afsCheckService.noTraceCheck(data.getData());
-        //邀请的空间ID
+        // space id be invited
         String spaceId = LoginContext.me().getSpaceId();
-        // 恶意空间校验
+        // whether in black list
         iBlackListService.checkBlackSpace(spaceId);
         Long userId = SessionContext.getUserId();
-        Long invitor = LoginContext.me().getMemberId();
+        // check whether space can invite user
         iSpaceService.checkCanOperateSpaceUpdate(spaceId);
-        //判断成员数量上限，白名单空间跳过
-        // iSubscriptionService.checkSeat(spaceId);
         List<InviteMemberRo> inviteMembers = data.getInvite();
+        // get invited emails
         List<String> inviteEmails = inviteMembers.stream()
                 .map(InviteMemberRo::getEmail)
                 .filter(StrUtil::isNotBlank).collect(Collectors.toList());
         if (CollUtil.isEmpty(inviteEmails)) {
+            // without email, response success directly
             return ResponseData.success();
         }
-        // 空间的所有成员
-        List<String> allInviteEmails = new ArrayList<>();
-        List<String> newMemberEmails = new ArrayList<>();
-        List<MemberEntity> spaceMembers = memberMapper.selectBySpaceId(spaceId, false);
-        Map<String, List<MemberEntity>> memberEmailMap = spaceMembers.stream()
-                .filter(m -> StrUtil.isNotBlank(m.getEmail()))
-                .collect(Collectors.groupingBy(MemberEntity::getEmail));
-        inviteEmails.forEach(e -> {
-            if (memberEmailMap.containsKey(e)) {
-                boolean isActive = memberEmailMap.get(e).stream().anyMatch(MemberEntity::getIsActive);
-                if (!isActive) {
-                    allInviteEmails.add(e);
-                }
-            }
-            else {
-                // 不存在的邮箱
-                newMemberEmails.add(e);
-            }
-        });
-        if (CollUtil.isNotEmpty(newMemberEmails)) {
-            Long teamId = inviteMembers.stream().filter(bean -> bean.getTeamId() != null && bean.getTeamId() != 0L)
-                    .findFirst().map(InviteMemberRo::getTeamId).orElse(null);
-            // 忽略大小写，去重
-            List<String> distinctEmails = CollectionUtil.distinctIgnoreCase(newMemberEmails);
-            allInviteEmails.addAll(distinctEmails);
-            // 邀请新成员
-            iMemberService.inviteMember(spaceId, teamId, distinctEmails);
-        }
-        final String defaultLang = LocaleContextHolder.getLocale().toLanguageTag();
-        //发送邀请通知，异步操作
-        if (CollUtil.isNotEmpty(allInviteEmails)) {
-            final List<UserLangDTO> emailsWithLang = userService.getLangByEmails(defaultLang, allInviteEmails);
-            TaskManager.me().execute(() -> {
-                for (UserLangDTO emailWithLang : emailsWithLang) {
-                    iMemberService.sendInviteEmail(emailWithLang.getLocale(), spaceId, invitor, emailWithLang.getEmail(), data.getNodeId());
-                }
-            });
-            TaskManager.me().execute(() -> {
-                List<Long> memberIds = memberMapper.selectIdsByEmailsAndSpaceId(allInviteEmails, spaceId);
-                iMemberService.sendInviteNotification(userId, memberIds, spaceId, false);
-            });
-        }
+        iMemberService.emailInvitation(userId, spaceId, inviteEmails);
         return ResponseData.success();
     }
 
@@ -349,7 +300,7 @@ public class MemberController {
         if (ObjectUtil.isNotNull(userLangDTO) && StrUtil.isNotBlank(userLangDTO.getLocale())) {
             lang = userLangDTO.getLocale();
         }
-        iMemberService.sendInviteEmail(lang, spaceId, memberId, data.getEmail(), null);
+        iMemberService.sendInviteEmail(lang, spaceId, memberId, data.getEmail());
         return ResponseData.success();
     }
 
@@ -371,7 +322,7 @@ public class MemberController {
         Long memberId = LoginContext.me().getMemberId();
         String spaceId = LoginContext.me().getSpaceId();
         iSpaceService.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
-        iMemberService.update(memberId, opRo);
+        iMemberService.updateMember(memberId, opRo);
         return ResponseData.success();
     }
 

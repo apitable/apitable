@@ -30,7 +30,4 @@ public class InviteMemberRo {
     @ApiModelProperty(value = "分配部门ID,可选,如果不传递，则默认加入空间的根部门下面", dataType = "java.lang.String", example = "16272126", position = 2)
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long teamId;
-
-    @ApiModelProperty(value = "分配部门名称，可选，同teamId对应，teamId不传递，teamName也可以为空", example = "技术部", position = 3)
-    private String teamName;
 }

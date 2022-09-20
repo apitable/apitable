@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 /**
  * 应用市场配置初始化数据，过滤环境
  * @author Shawn Deng
- * @date 2021-11-12 10:28:00
  */
 @Component
 public class MarketPlaceInitEnvironment implements EnvironmentAware, OnReadyListener {
@@ -25,7 +24,7 @@ public class MarketPlaceInitEnvironment implements EnvironmentAware, OnReadyList
     private Environment environment;
 
     @Override
-    public void init() throws Exception {
+    public void init() {
         MarketPlaceConfig marketPlaceConfig = SystemConfigManager.getConfig().getMarketplace();
         String[] profiles = environment.getActiveProfiles();
         String[] defaultProfiles = new String[] { "integration", "staging", "production" };

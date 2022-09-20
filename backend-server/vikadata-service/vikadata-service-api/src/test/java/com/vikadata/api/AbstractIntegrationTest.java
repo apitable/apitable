@@ -5,6 +5,7 @@ import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.List;
 
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,11 +43,11 @@ import com.vikadata.api.modular.finance.util.OrderChecker.ExpectedOrderCheck;
 import com.vikadata.api.modular.integral.service.IIntegralService;
 import com.vikadata.api.modular.internal.service.IFieldService;
 import com.vikadata.api.modular.organization.service.IMemberService;
+import com.vikadata.api.modular.organization.service.ITeamService;
 import com.vikadata.api.modular.social.enums.SocialAppType;
 import com.vikadata.api.modular.social.enums.SocialTenantAuthMode;
 import com.vikadata.api.modular.social.service.ISocialTenantBindService;
 import com.vikadata.api.modular.social.service.ISocialTenantService;
-import com.vikadata.api.modular.space.service.ISpaceRoleService;
 import com.vikadata.api.modular.space.service.ISpaceService;
 import com.vikadata.api.modular.user.service.IUserService;
 import com.vikadata.api.modular.vcode.service.IVCodeService;
@@ -116,6 +117,9 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     @Autowired
     protected ISpaceService iSpaceService;
+
+    @Autowired
+    protected ITeamService iTeamService;
 
     @Autowired
     protected IMemberService iMemberService;
@@ -212,7 +216,7 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     }
 
     protected UserEntity createUserWithEmail(String email) {
-        return iUserService.createUserByCli(email, "123456", "13012341234");
+        return iUserService.createUserByCli(email, "123456", RandomUtil.randomNumbers(11));
     }
 
     protected String createSpaceWithoutName(UserEntity user) {
@@ -221,6 +225,15 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     protected String createSpaceWithName(UserEntity user, String name) {
         return iSpaceService.createSpace(user, name);
+    }
+
+    protected Long createMember(Long userId, String spaceId) {
+        Long rootTeamId = iTeamService.getRootTeamId(spaceId);
+        return createMember(userId, spaceId, rootTeamId);
+    }
+
+    protected Long createMember(Long userId, String spaceId, Long teamId) {
+        return iMemberService.createMember(userId, spaceId, teamId);
     }
 
     protected MockUserSpace createSingleUserAndSpace() {
