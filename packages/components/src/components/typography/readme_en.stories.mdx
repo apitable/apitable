@@ -1,10 +1,9 @@
 import { Typography } from './index'
-import { Canvas, ArgsTable } from '@storybook/addon-docs';
-import { StoryType } from '../../stories/constants';
+import { Canvas, Meta } from '@storybook/addon-docs';
 import { ThemeToggle } from '../../stories/theme-toggle';
 import { colors } from '../../helper'
 
-<Meta title={`en/components/Typography`} />
+<Meta title={`en/components/Typography`} component={Typography} />
 
 # Typography
 
@@ -18,21 +17,21 @@ import { Typography } from '@vikadata/components';
 
 ## Typography API
 
-| Name(variant)| Font Size(px)| Line Height(px)  | Example |
-|----------|--------|-----------|------|
-| H1       | 32     | 48        | <Typography variant='h1'>H1 title</Typography> |
-| H2       | 28     | 42        | <Typography variant='h2'>H2 title</Typography> |
-| H3       | 24     | 36        |	<Typography variant='h3'>H3 title</Typography> |
-| H4    	 | 20     | 30        | <Typography variant='h4'>H4 title</Typography> |
-| H5       | 18     | 28        | <Typography variant='h5'>H5 title</Typography> |
-| H6    	 | 16	    | 24        | <Typography variant='h6'>H6 title</Typography> |
-| H7       | 14     | 22        | <Typography variant='h7'>H7 title</Typography> |
-| H8       | 13     | 20        | <Typography variant='h8'>H8 title</Typography> |
-| H9       | 12     | 18        | <Typography variant='h9'>H9 title</Typography> |
-| Body1    | 16     | 24        | <Typography variant='body1'>Body1 text</Typography> |
-| Body2    | 14     | 22        | <Typography variant='body2'>Body2 text</Typography> |
-| Body3    | 13     | 20        | <Typography variant='body3'>Body3 text</Typography> |
-| Body4    | 12     | 18        | <Typography variant='body4'>Body4 text</Typography> |
+| Name(variant) | Font Size(px) | Line Height(px) | Example                                             |
+|---------------|---------------|-----------------|-----------------------------------------------------|
+| H1            | 32            | 48              | <Typography variant='h1'>H1 title</Typography>      |
+| H2            | 28            | 42              | <Typography variant='h2'>H2 title</Typography>      |
+| H3            | 24            | 36              | <Typography variant='h3'>H3 title</Typography>      |
+| H4            | 20            | 30              | <Typography variant='h4'>H4 title</Typography>      |
+| H5            | 18            | 28              | <Typography variant='h5'>H5 title</Typography>      |
+| H6            | 16            | 24              | <Typography variant='h6'>H6 title</Typography>      |
+| H7            | 14            | 22              | <Typography variant='h7'>H7 title</Typography>      |
+| H8            | 13            | 20              | <Typography variant='h8'>H8 title</Typography>      |
+| H9            | 12            | 18              | <Typography variant='h9'>H9 title</Typography>      |
+| Body1         | 16            | 24              | <Typography variant='body1'>Body1 text</Typography> |
+| Body2         | 14            | 22              | <Typography variant='body2'>Body2 text</Typography> |
+| Body3         | 13            | 20              | <Typography variant='body3'>Body3 text</Typography> |
+| Body4         | 12            | 18              | <Typography variant='body4'>Body4 text</Typography> |
 
 
 ## Color
@@ -105,14 +104,25 @@ Support multiple alignment methods, such as right alignment:
 
 ## API
 
-<ArgsTable of={Typography} />
+| Name           | Type                                                                       | Description                                            | Default |
+|----------------|----------------------------------------------------------------------------|--------------------------------------------------------|---------|
+| className      | string                                                                     | class name                                             | -       |
+| style          | CSSProperties                                                              | inline style                                           | -       |
+| component      | ElementType<any\>                                                          | renders the component using the specified HTML element | -       |
+| color          | string                                                                     | text color                                             | -       |
+| align          | inherit / left / center / right                                            | alignment                                              | -       |
+| variant        | h1 / h2 / h3 / h4 / h5 / h6 / h7 / h8 / h9 / body1 / body2 / body3 / body4 | variant style                                          | -       |
+| ellipsis       | boolean / IEllipsis                                                        | overflow omitted                                       | -       |
+| tooltipsZIndex | number                                                                     | tooltips z-index level property                        | -       |
+| tooltipsZIndex | ((e: MouseEvent<Element, MouseEvent>) => void)                             | click action                                           | -       |
+
 
 ### IEllipsis interface
 
-| Name      | Type | Description |
-|----------|--------|--------|
-| rows     | number |specify the number of displayed text lines, and omit if it exceeds|
-| tooltip  | string  |set tooltip text |
-| visible  | boolean | tooltip show |
+| Name    | Type    | Description                                                        |
+|---------|---------|--------------------------------------------------------------------|
+| rows    | number  | specify the number of displayed text lines, and omit if it exceeds |
+| tooltip | string  | set tooltip text                                                   |
+| visible | boolean | tooltip show                                                       |
 
 
