@@ -48,10 +48,14 @@ export const DownloadQrCode: FC<IDownloadQrCodeProps> = ({
 
   useEffect(() => {
     fetchLink();
-  }, [fetchLink]);
+  }, []);
 
   if (!spaceInfo || !spaceId || !link) {
-    return null;
+    return (
+      <div className={styles.error}>
+        {t(Strings.resource_load_failed)}
+      </div>
+    );
   }
 
   if (loading) {
