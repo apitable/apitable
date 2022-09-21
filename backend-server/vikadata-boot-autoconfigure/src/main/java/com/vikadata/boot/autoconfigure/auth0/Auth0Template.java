@@ -113,6 +113,7 @@ public class Auth0Template {
         PasswordChangeTicket request = new PasswordChangeTicket(userId);
         request.setResultUrl(returnUrl);
         request.setIncludeEmailInRedirect(true);
+        request.setMarkEmailAsVerified(true);
         PasswordChangeTicket ticket = managementAPI.tickets().requestPasswordChange(request)
                 .execute();
         return ticket.getTicket();
