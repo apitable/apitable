@@ -109,14 +109,11 @@ public class Auth0Template {
         return user.getId();
     }
 
-    public String createPasswordResetTicket(String userId) throws Auth0Exception {
-        PasswordChangeTicket ticket = managementAPI.tickets().requestPasswordChange(new PasswordChangeTicket(userId))
-                .execute();
-        return ticket.getTicket();
-    }
-
-    public String createPasswordResetTicket(String email, String connectionId) throws Auth0Exception {
-        PasswordChangeTicket ticket = managementAPI.tickets().requestPasswordChange(new PasswordChangeTicket(email, connectionId))
+    public String createPasswordResetTicket(String userId, String returnUrl) throws Auth0Exception {
+        PasswordChangeTicket request = new PasswordChangeTicket(userId);
+        request.setResultUrl(returnUrl);
+        request.setIncludeEmailInRedirect(true);
+        PasswordChangeTicket ticket = managementAPI.tickets().requestPasswordChange(request)
                 .execute();
         return ticket.getTicket();
     }

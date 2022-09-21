@@ -21,7 +21,7 @@ public class Auth0Service {
         return auth0Template != null;
     }
 
-    public String createUserInvitationLink(String email) {
+    public String createUserInvitationLink(String email, String returnUrl) {
         try {
             String userId;
             User user = auth0Template.usersByEmail(email);
@@ -31,7 +31,7 @@ public class Auth0Service {
             else {
                 userId = user.getId();
             }
-            String ticket = auth0Template.createPasswordResetTicket(userId);
+            String ticket = auth0Template.createPasswordResetTicket(userId, returnUrl);
             return ticket + "type=invite";
         }
         catch (Auth0Exception e) {

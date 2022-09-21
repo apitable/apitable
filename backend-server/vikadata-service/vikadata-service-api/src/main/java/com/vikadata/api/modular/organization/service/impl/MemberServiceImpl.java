@@ -588,8 +588,9 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                 sendUserInvitationEmail(locale, spaceId, memberId, link, email);
             });
             // create invitation link for sign up
+            String returnUrl = StringUtil.trimSlash(constProperties.getServerDomain()) + "/api/v1/invitation/callback";
             shouldSendInvitationForSignupEmail.forEach(email -> {
-                String link = auth0Service.createUserInvitationLink(email);
+                String link = auth0Service.createUserInvitationLink(email, returnUrl);
                 if (log.isDebugEnabled()) {
                     log.debug("link to send: {}", link);
                 }
