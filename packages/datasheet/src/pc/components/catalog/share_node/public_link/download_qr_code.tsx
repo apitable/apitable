@@ -40,7 +40,7 @@ export const DownloadQrCode: FC<IDownloadQrCodeProps> = ({
   const fetchLink = useCallback(async() => {
     const token = await generateLinkReq(ROOT_TEAM_ID, nodeId);
     if (token) {
-      const _link = generateInviteLink(userInfo, token);
+      const _link = generateInviteLink(userInfo, token, nodeId);
       setLink(_link);
     }
     setLoading(false);

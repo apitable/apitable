@@ -14,17 +14,19 @@ export const useLinkInvite = () => {
   const urlParams = getSearchParams();
   const dispatch = useDispatch();
   const inviteLinkTokenInUrl = urlParams.get('inviteLinkToken');
+  const inviteNodeIdInUrl = urlParams.get('nodeId');
   const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
   const inviteLinkTokenInStore = useSelector((state: IReduxState) => state.invite.linkToken);
+  const nodeId = useSelector((state: IReduxState) => state.invite.nodeId);
 
   // 重新获取信息
-  const reGetLinkInfo = (linkToken: string) => {
+  const reGetLinkInfo = (linkToken: string, nodeId: string) => {
     Api.linkValid(linkToken).then(res => {
       const { success, data: info } = res.data;
       dispatch(StoreActions.updateInviteLinkInfo(res.data));
       dispatch(StoreActions.updateMailToken(linkToken));
       if (success) {
-        Api.joinViaSpace(linkToken).then(res => {
+        Api.joinViaSpace(linkToken, nodeId).then(res => {
           if (res.data.success) {
             Router.redirect(Navigation.WORKBENCH, { params: { spaceId: info.spaceId }, clearQuery: true });
             return;
@@ -45,13 +47,13 @@ export const useLinkInvite = () => {
     const inviteLinkData = localStorage.getItem('invite_link_data');
     // 对于钉钉或qq扫码之后，页面会刷新并且会丢失store数据，需要获取localStorage里的数据，并重新api请求
     if (fromLocalStorage && inviteLinkData) {
-      const { linkToken } = JSON.parse(inviteLinkData);
-      reGetLinkInfo(linkToken);
+      const { linkToken, nodeId } = JSON.parse(inviteLinkData);
+      reGetLinkInfo(linkToken, nodeId);
       return;
     }
     // 从store里获取数据
-    if (inviteLinkTokenInStore && inviteLinkInfo) {
-      Api.joinViaSpace(inviteLinkTokenInStore).then(res => {
+    if (inviteLinkTokenInStore && inviteLinkInfo && nodeId) {
+      Api.joinViaSpace(inviteLinkTokenInStore, nodeId).then(res => {
         if (res.data.success) {
           Router.redirect(Navigation.WORKBENCH, { params: { spaceId: inviteLinkInfo.data.spaceId }, clearQuery: true });
         } else {
@@ -61,8 +63,8 @@ export const useLinkInvite = () => {
       });
     }
     // 用户刷新了页面，重新获取数据
-    if (inviteLinkTokenInUrl) {
-      reGetLinkInfo(inviteLinkTokenInUrl);
+    if (inviteLinkTokenInUrl && inviteNodeIdInUrl) {
+      reGetLinkInfo(inviteLinkTokenInUrl, inviteNodeIdInUrl);
       return;
     }
   };

@@ -1162,8 +1162,8 @@ export function linkValid(token: string) {
 }
 
 // 通过公开链接加入空间
-export function joinViaSpace(token: string) {
-  return axios.post(Url.JOIN_VIA_LINK, { token });
+export function joinViaSpace(token: string, nodeId: string) {
+  return axios.post(Url.JOIN_VIA_LINK, { token, nodeId });
 }
 
 export function changeNodeDesc(nodeId: string, desc: string) {

@@ -1,4 +1,4 @@
-import { IUnitValue, IUserValue, MemberType } from '@vikadata/core';
+import { IUnitValue, IUserValue, MemberType, t, Strings } from '@vikadata/core';
 import classNames from 'classnames';
 import { Avatar, AvatarSize, AvatarType } from 'pc/components/common';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
@@ -45,7 +45,7 @@ export const MemberItem: React.FC<IMemberItemProps> = props => {
         <div className={styles.memberWithTeamsDesc}>
           <div className={classNames('unitName', styles.unitName)}>
             {title}
-            {!isActive && <div className={styles.unInvited}>待邀请</div>}
+            {!isActive && <div className={styles.unInvited}>{t(Strings.pending_invite)}</div>}
           </div>
           {team && <div className={styles.teams}>{team}</div>}
           {email && <div className={styles.teams}>{email}</div>}

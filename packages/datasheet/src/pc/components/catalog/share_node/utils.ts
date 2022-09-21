@@ -3,7 +3,7 @@ import { IUserInfo } from '@vikadata/core';
 /**
  * 邀请链接生成
  */
-export const generateInviteLink = (userInfo: IUserInfo | null, token: string) => {
+export const generateInviteLink = (userInfo: IUserInfo | null, token: string, nodeId: string) => {
   const url = new URL(window.location.origin);
   url.pathname = '/invite/link';
 
@@ -11,6 +11,7 @@ export const generateInviteLink = (userInfo: IUserInfo | null, token: string) =>
 
   searchParams.append('token', token);
   userInfo?.inviteCode && searchParams.append('inviteCode', userInfo.inviteCode);
+  searchParams.append('nodeId', nodeId);
   url.search = searchParams.toString();
   return url.href;
 };

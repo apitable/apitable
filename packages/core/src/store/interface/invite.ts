@@ -8,6 +8,7 @@ export interface IInvite {
   linkToken: string;
   mailToken: string;
   errCode: number | null;
+  nodeId?: string;
 }
 
 // action

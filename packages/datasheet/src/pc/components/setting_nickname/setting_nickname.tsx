@@ -30,6 +30,7 @@ const SettingNickname: FC = () => {
   const { run: updateAvatar } = useRequest(customOrOfficialAvatarUpload, { manual: true });
   const inviteMailToken = query.get('inviteMailToken');
   const inviteLinkToken = query.get('inviteLinkToken');
+  const nodeId = query.get('nodeId');
   const suiteId = query.get('suiteId');
   const defaultName = query.get('defaultName') || '';
   const sourceType = query.get('sourceType') || '';
@@ -109,11 +110,11 @@ const SettingNickname: FC = () => {
       }
     }
     // 是从链接邀请过来的
-    if (inviteLinkToken) {
-      const result = await Api.linkValid(inviteLinkToken!);
+    if (inviteLinkToken && nodeId) {
+      const result = await Api.linkValid(inviteLinkToken);
       const { success, data: info } = result.data;
       if (success && info) {
-        const bindResult = await Api.joinViaSpace(inviteLinkToken!);
+        const bindResult = await Api.joinViaSpace(inviteLinkToken, nodeId);
         if (bindResult.data.success) {
           Router.push(Navigation.WORKBENCH, { params: { spaceId: info?.spaceId }, clearQuery: true });
           return;

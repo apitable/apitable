@@ -146,7 +146,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
   const handleCopyInviteLink = async() => {
     const token = await generateLinkReq(ROOT_TEAM_ID, nodeId);
     if (token) {
-      const link = generateInviteLink(userInfo, token);
+      const link = generateInviteLink(userInfo, token, nodeId);
       copy2clipBoard(link);
     }
   };
