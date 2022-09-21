@@ -36,7 +36,7 @@ But if you want to do so, we recommend following these SDK manager installed.
 Then install programming langauge environment locally:
 
 ```bash
-sdk install java 8.0.342-amzn
+sdk install java 8.0.342-amzn && sdk use java 8.0.342-amzn
 nvm install 16.15.0 && nvm use 16.15.0
 ```
 
