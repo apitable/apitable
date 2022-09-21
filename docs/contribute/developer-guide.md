@@ -9,13 +9,6 @@ Make sure you have the following dependencies installed before setting up your d
 - `docker`
 - `make`
 
-APITable use `docker` to run everything. It is unnecessary to set up programming language environment. But if you want to do so, following these dependencies installed.
-
-- `node`: NodeJS v16.15.0
-- `java`: Java SDK 8
-- `python`: Python 3
-
-
 ## macOS
 
 We recommend using [Homebrew](https://brew.sh/) for installing any missing dependencies:
@@ -25,17 +18,28 @@ We recommend using [Homebrew](https://brew.sh/) for installing any missing depen
 brew install git
 brew install --cask docker
 brew install make
-
-## optional
-brew install bash
-brew install node@16
-brew tap adoptopenjdk/openjdk
-brew install --cask adoptopenjdk8
 ```
+
 
 ## Windows
 If you are running APITable on Windows 10, we recommend installing the Windows Subsystem for Linux (WSL). 
 For installation instructions, refer to our [APITable setup guide for Windows environment](./windows-guide.md).
+
+## Local Programming Language Environment
+
+APITable use `docker` to run everything. It is unnecessary to set up programming language environment. 
+But if you want to do so, we recommend following these SDK manager installed.
+
+- [sdkman](https://sdkman.io/): for install `java`, Java SDK 8
+- [nvm](https://github.com/nvm-sh/nvm): for install `node`, NodeJS v16.15.0
+
+Then install programming langauge environment locally:
+
+```bash
+sdk install java 8.0.342-amzn
+nvm install 16.15.0 && nvm use 16.15.0
+```
+
 
 ## Build Tool
 
@@ -48,6 +52,7 @@ make
 ```
 
 ![make command screenshot](../static/make.png)
+
 
 
 ## IDE
