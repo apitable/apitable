@@ -179,7 +179,7 @@ export const useNotificationCreate = ({ spaceId }: { fromUserId: string, spaceId
         Message.success({ content: t(Strings.message_exit_space_successfully) });
         dispatch(StoreActions.setQuitSpaceId(''));
         if (spaceId === quitSpaceId) {
-          Router.push(Navigation.HOME);
+          Router.redirect(Navigation.HOME);
         } else {
           successFn && successFn();
         }

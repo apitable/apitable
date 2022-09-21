@@ -199,9 +199,14 @@ module.exports = withPlugins(plugins, {
       ],
     });
 
-    if(!isProd) {
+    if (!isProd) {
       const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-      config.plugins.push(new ForkTsCheckerWebpackPlugin());
+      config.plugins.push(new ForkTsCheckerWebpackPlugin({
+        typescript: {
+          memoryLimit: 5000,
+          mode: 'write-references'
+        }
+      }));
     }
 
     return config;
