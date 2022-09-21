@@ -98,7 +98,7 @@ export const PopStructure: React.FC<IPopStructureProps> = props => {
       </ComponentDisplay>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <Popup title={t(Strings.please_choose)} height="80%" visible={editing} onClose={onClose}>
+        <Popup title={t(Strings.please_choose)} height="80%" visible={editing} getContainer={false} onClose={onClose}>
           {children}
         </Popup>
       </ComponentDisplay>
