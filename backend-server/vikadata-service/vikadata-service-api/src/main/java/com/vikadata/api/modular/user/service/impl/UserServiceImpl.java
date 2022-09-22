@@ -412,6 +412,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             iUserBindService.create(userEntity.getId(), userProfile.getSub());
             // init one space for user
             initialDefaultSpaceForUser(userEntity);
+            userId = userEntity.getId();
         }
         List<MemberDto> inactiveMembers = iMemberService.getInactiveMemberDtoByEmail(userProfile.getEmail());
         List<Long> memberIds = inactiveMembers.stream().map(MemberDto::getId).collect(Collectors.toList());
@@ -435,6 +436,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             iUserBindService.create(userEntity.getId(), user.getId());
             // init one space for user
             initialDefaultSpaceForUser(userEntity);
+            userId = userEntity.getId();
         }
         List<MemberDto> inactiveMembers = iMemberService.getInactiveMemberDtoByEmail(user.getEmail());
         List<Long> memberIds = inactiveMembers.stream().map(MemberDto::getId).collect(Collectors.toList());
