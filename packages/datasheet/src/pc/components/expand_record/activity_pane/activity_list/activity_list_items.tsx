@@ -26,6 +26,7 @@ import axios, { CancelTokenSource } from 'axios';
 import { clone, find, get, has, isEmpty, keyBy, set, toPairs, uniq, values } from 'lodash';
 import Image from 'next/image';
 import { triggerUsageAlert } from 'pc/common/billing';
+import { SubscribeUsageTipType } from 'pc/common/billing/subscribe_usage_check';
 import { Message } from 'pc/components/common';
 import { SpaceLevelInfo } from 'pc/components/space_manage/space_info/utils';
 import { resourceService } from 'pc/resource_service';
@@ -111,9 +112,12 @@ export const ActivityListItems: FC<IActivityListProps & {
   const [end, setEnd] = useState(false);
 
   const loadOverLimitData = () => {
+    const result = triggerUsageAlert('maxRemainRecordActivityDays', { usage: MAX_LIMIT_DAY, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+    if (result) {
+      return;
+    }
     setEnd(false);
     setMaxRemainRecordActivityDays(MAX_LIMIT_DAY);
-    triggerUsageAlert('maxRemainRecordActivityDays', { usage: MAX_LIMIT_DAY });
   };
 
   const loadMore = () => {
@@ -395,11 +399,11 @@ export const ActivityListItems: FC<IActivityListProps & {
   if (isEmpty(recordList)) {
     return (
       <div className={styles.blankTip}>
-        <Image src={IconNoList} alt="" width={160} height={120} />
+        <Image src={IconNoList} alt='' width={160} height={120} />
         <div>{t(Strings.no_comment_tip)}</div>
         <div>
           {selectType !== ActivitySelectType.Comment && t(Strings.history_view_tip, { day: maxRemainRecordActivityDays })}
-          <LinkButton href={Settings.recorded_comments.value} color={colors.thirdLevelText} className={styles.more} target="_blank">
+          <LinkButton href={Settings.recorded_comments.value} color={colors.thirdLevelText} className={styles.more} target='_blank'>
             {t(Strings.know_more)}
           </LinkButton>
         </div>
@@ -460,7 +464,7 @@ export const ActivityListItems: FC<IActivityListProps & {
             {maxRemainRecordActivityDays !== MAX_LIMIT_DAY ? (
               <div>
                 「{product}」{t(Strings.history_view_tip, { day: maxRemainRecordActivityDays })}
-                <LinkButton href={t(Strings.record_history_help_url)} color={colors.thirdLevelText} className={styles.more} target="_blank">
+                <LinkButton href={t(Strings.record_history_help_url)} color={colors.thirdLevelText} className={styles.more} target='_blank'>
                   {t(Strings.know_more)}
                 </LinkButton>
               </div>

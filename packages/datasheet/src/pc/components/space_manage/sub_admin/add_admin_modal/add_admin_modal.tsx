@@ -1,3 +1,5 @@
+import { triggerUsageAlert } from 'pc/common/billing';
+import { SubscribeUsageTipType } from 'pc/common/billing/subscribe_usage_check';
 import { FC, useEffect, useState } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import { t, Strings, Api, IReduxState, UnitItem, IMember, ISubAdminList } from '@vikadata/core';
@@ -11,24 +13,27 @@ import { SelectUnitModal, SelectUnitSource } from 'pc/components/catalog/permiss
 import { UnitTag } from 'pc/components/catalog/permission_settings/permission/select_unit_modal/unit_tag';
 import AddIcon from 'static/icon/common/common_icon_add_content.svg';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
+
 const modalTitle = {
   read: t(Strings.sub_admin_view),
   edit: t(Strings.sub_admin_edit),
   add: t(Strings.sub_admin_add),
 };
+
 interface IModalProps {
+  source: string;
+  existSubAdminNum: number;
   cancelModal: () => void;
   editOrReadSubMainInfo?: ISubAdminList | null;
-  source: string;
-  optionalCount?: number;
 }
+
 export enum ModalType {
   Read = 'read',
   Edit = 'edit',
   Add = 'add',
 }
 
-export const AddAdminModal: FC<IModalProps> = ({ cancelModal, editOrReadSubMainInfo, source }) => {
+export const AddAdminModal: FC<IModalProps> = ({ cancelModal, editOrReadSubMainInfo, existSubAdminNum, source }) => {
   const { subAdminList, userInfo } = useSelector(
     (state: IReduxState) => ({
       subAdminList: state.spacePermissionManage.subAdminListData ? state.spacePermissionManage.subAdminListData.records : [],
@@ -60,10 +65,17 @@ export const AddAdminModal: FC<IModalProps> = ({ cancelModal, editOrReadSubMainI
       });
     }
   }, [editOrReadSubMainInfo, source]);
+
   const modalConfirm = () => {
     if (source === ModalType.Add) {
-      setSubmitBtnLoading(true);
       const memberIds = selectedMembers.map(item => (item as IMember).memberId);
+      const result = triggerUsageAlert(
+        'maxAdminNums',
+        { usage: memberIds.length + existSubAdminNum, alwaysAlert: true },
+        SubscribeUsageTipType.Alert,
+      );
+      if (result) return;
+      setSubmitBtnLoading(true);
       addSubAdminAndNotice(memberIds, resourceCodes, handCancel);
       return;
     }
@@ -74,6 +86,7 @@ export const AddAdminModal: FC<IModalProps> = ({ cancelModal, editOrReadSubMainI
     }
     handCancel();
   };
+
   const permissionChange = (value: string, checked: boolean) => {
     let tempSelects = [...resourceCodes];
     if (checked && !tempSelects.includes(value)) {
@@ -137,7 +150,7 @@ export const AddAdminModal: FC<IModalProps> = ({ cancelModal, editOrReadSubMainI
           />
         ) : (
           <>
-            <Button size="small" onClick={() => setSelectMemberModal(true)} prefixIcon={<AddIcon fill="currentColor" />}>
+            <Button size='small' onClick={() => setSelectMemberModal(true)} prefixIcon={<AddIcon fill='currentColor' />}>
               {t(Strings.add_member)}
             </Button>
             <div className={styles.selectedWrapper}>
@@ -169,15 +182,15 @@ export const AddAdminModal: FC<IModalProps> = ({ cancelModal, editOrReadSubMainI
         <PermissionCard onChange={permissionChange} defaultChecked={resourceCodes} checked={resourceCodes} inRead={source === ModalType.Read} />
         {source !== ModalType.Read && (
           <div className={styles.btnWrapper}>
-            <TextButton onClick={handCancel} size="small">
+            <TextButton onClick={handCancel} size='small'>
               {t(Strings.cancel)}
             </TextButton>
             <Button
               onClick={modalConfirm}
-              color="primary"
+              color='primary'
               className={styles.confirmBtn}
               disabled={resourceCodes.length === 0 || (selectedMembers.length === 0 && source === ModalType.Add) || submitBtnLoading}
-              size="small"
+              size='small'
               loading={submitBtnLoading}
             >
               {t(Strings.submit)}

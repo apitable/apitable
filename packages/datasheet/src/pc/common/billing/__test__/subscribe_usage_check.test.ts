@@ -47,6 +47,7 @@ const defaultSubscribe: ISubscription = {
   securitySettingAddressListIsolation: true,
   subscriptionCapacity: 0,
   unExpireGiftCapacity: 0,
+  maxAuditQueryDays: 0
 };
 
 describe('test subscribeUsageChecker', () => {

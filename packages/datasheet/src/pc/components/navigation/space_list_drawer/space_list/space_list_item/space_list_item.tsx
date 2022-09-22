@@ -36,11 +36,14 @@ export const SpaceListItem: FC<ISpaceListItemProps> = ({ spaceInfo, actived = fa
   const { memberQuitSpaceAndNotice } = useNotificationCreate({ fromUserId: user.uuid, spaceId: user.spaceId });
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const { spaceId, name, logo, point } = spaceInfo;
+  const { spaceId, spaceDomain, name, logo, point } = spaceInfo;
+  const domain =
+    process.env.NODE_ENV === 'production' && spaceDomain && document.domain !== spaceDomain ? `${window.location.protocol}//${spaceDomain}` : '';
 
   useUpdateEffect(() => {
     if (user) {
       closeSpaceListDrawer();
+      Router.push(Navigation.SPACE_MANAGE, { params: { spaceId: user.spaceId }});
     }
   }, [user.spaceId]);
 
@@ -50,7 +53,11 @@ export const SpaceListItem: FC<ISpaceListItemProps> = ({ spaceInfo, actived = fa
 
   const jumpSpaceManagement = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.stopPropagation();
-    Router.push(Navigation.SPACE_MANAGE, { params: { spaceId }});
+    if (user.spaceId === spaceId) {
+      Router.push(Navigation.SPACE_MANAGE, { params: { spaceId }});
+    } else {
+      window.location.href = `${domain}/management?spaceId=${spaceId}`;
+    }
   };
 
   const quitSpace = () => {
@@ -90,7 +97,7 @@ export const SpaceListItem: FC<ISpaceListItemProps> = ({ spaceInfo, actived = fa
           closeSpaceListDrawer();
           return;
         }
-        Router.push(Navigation.WORKBENCH, { params: { spaceId }});
+        window.location.href = `${domain}/workbench?spaceId=${spaceId}`;
       }}
     >
       <div className={styles.logo}>

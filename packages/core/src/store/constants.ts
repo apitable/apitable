@@ -1,5 +1,4 @@
 import { Strings, t } from 'i18n';
-import { ISubscription } from 'store/interface';
 import { FieldType, IField } from 'types';
 
 export const DEFAULT_PERMISSION = {
@@ -338,7 +337,7 @@ export enum GanttStyleKeyType {
   WorkDays = 'workDays',
   OnlyCalcWorkDay = 'onlyCalcWorkDay',
   LinkFieldId = 'linkFieldId',
-  AutoTaskLayout= 'autoTaskLayout',
+  AutoTaskLayout = 'autoTaskLayout',
 }
 
 export enum CalendarStyleKeyType {
@@ -412,50 +411,3 @@ export enum DispatchToStore {
   Remote = 'remote',
   All = 'all'
 }
-
-export const defaultSubscribe: ISubscription = {
-  addonPlans: [],
-  maxRowsPerSheet: 1000,
-  maxRowsInSpace: 11,
-  maxSheetNums: 2,
-  maxCapacitySizeInBytes: 1000000000,
-  subscriptionCapacity: 1000000000,
-  unExpireGiftCapacity: 0,
-  maxSeats: 10,
-  maxGalleryViewsInSpace: 2,
-  maxKanbanViewsInSpace: 100,
-  maxFormViewsInSpace: 100,
-  deadline: '2019-01-01T00:00:00.000+00:00',
-  maxAdminNums: 10,
-  maxRemainTrashDays: 10,
-  plan: 'bronze_no_billing_period',
-  product: 'Bronze',
-  version: 'V1',
-  maxGanttViewsInSpace: 100,
-  maxCalendarViewsInSpace: 100,
-  maxApiCall: 120000, // 原键值对："maxApiUsages": 10,
-  fieldPermissionNums: 1,
-  maxRemainTimeMachineDays: 90,
-  rainbowLabel: false,
-  integrationDingtalk: false,
-  integrationFeishu: false,
-  integrationWeCom: false,
-  watermark: false,
-  integrationOfficePreview: false,
-  nodePermissionNums: 100,
-  productName: '-',
-  billingPeriod: '-',
-  productColor: '-',
-  subscriptionType: '-',
-  maxRemainRecordActivityDays: 14,
-  blackSpace: false,
-  securitySettingInviteMember: false,
-  securitySettingApplyJoinSpace: false,
-  securitySettingShare: false,
-  securitySettingExport: false,
-  securitySettingCatalogManagement: true,
-  securitySettingDownloadFile: false,
-  securitySettingCopyCellData: false,
-  securitySettingMobile: false,
-  securitySettingAddressListIsolation: false,
-};

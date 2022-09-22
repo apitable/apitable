@@ -1,16 +1,18 @@
 import { Button, TextButton, Typography, useThemeColors } from '@vikadata/components';
-import { FC, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { InfoCard, Modal } from 'pc/components/common';
-import { AddAdminModal, ModalType } from './add_admin_modal';
 import { ConfigConstant, Events, IReduxState, ISubAdminList, Player, StoreActions, Strings, t } from '@vikadata/core';
 import { useMount } from 'ahooks';
 import { Pagination, Table } from 'antd';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { ColumnProps } from 'antd/es/table';
-import { useNotificationCreate } from 'pc/hooks';
-import styles from './style.module.less';
+import { triggerUsageAlert } from 'pc/common/billing';
+import { SubscribeUsageTipType } from 'pc/common/billing/subscribe_usage_check';
+import { InfoCard, Modal } from 'pc/components/common';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
+import { useNotificationCreate } from 'pc/hooks';
+import { FC, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { AddAdminModal, ModalType } from './add_admin_modal';
+import styles from './style.module.less';
 
 // 一些已经不使用的权限，但是因为旧空间还是会返回相应的数据，前端对这些权限做过滤
 const UNUSED_PERMISSION = ['MANAGE_NORMAL_MEMBER'];
@@ -66,11 +68,12 @@ export const SubAdmin: FC = () => {
     return i18nStrings.join(' & ');
   };
   const addAdminBtnClick = () => {
-    // if (subAdminMax > subAdminList.length){
-    //   setModalType(ModalType.Add);
-    //   return;
-    // }
-    // BillingModal();
+    const result = triggerUsageAlert(
+      'maxAdminNums',
+      { usage: subAdminList.length, alwaysAlert: true },
+      SubscribeUsageTipType.Alert,
+    );
+    if (result) return;
     setModalType(ModalType.Add);
   };
   const editBtnClick = (record: ISubAdminList) => {
@@ -151,17 +154,17 @@ export const SubAdmin: FC = () => {
         return (
           <div className={styles.operateBtn}>
             <TextButton
-              color="primary"
+              color='primary'
               onClick={() => editBtnClick(record)}
-              size="small"
+              size='small'
             >
               {t(Strings.edit)}
             </TextButton>
             <span>|</span>
             <TextButton
-              color="danger"
+              color='danger'
               onClick={() => delBtnClick(record)}
-              size="small"
+              size='small'
             >
               {t(Strings.delete)}
             </TextButton>
@@ -182,7 +185,7 @@ export const SubAdmin: FC = () => {
       <div>
         <Button
           onClick={addAdminBtnClick}
-          variant="jelly"
+          variant='jelly'
         >
           {t(Strings.add_sub_admin)}
         </Button>
@@ -205,7 +208,7 @@ export const SubAdmin: FC = () => {
             total={subAdminListData ? subAdminListData.total : 0}
             onChange={(pageNo: number) => setPageNo(pageNo)}
             defaultPageSize={ConfigConstant.SUB_ADMIN_LIST_PAGE_SIZE}
-            className="pagination"
+            className='pagination'
             showSizeChanger={false}
           />
         </div>
@@ -214,7 +217,7 @@ export const SubAdmin: FC = () => {
         cancelModal={cancelModal}
         source={modalType}
         editOrReadSubMainInfo={editOrReadSubMainInfo}
-        // optionalCount={subAdminMax - subAdminList.length}
+        existSubAdminNum={subAdminList.length}
       />}
       {}
     </div>
