@@ -46,7 +46,13 @@ export const getInitialProps = async(context: { ctx: NextPageContext }) => {
 
   const pathUrl = context.ctx.req?.url;
   let userInfo = res.data.userInfo;
+
   let userInfoError: IUserInfoError | undefined;
+  const { nodeId } = getPageParams(pathUrl || '');
+
+  /**
+   * 如果 pathUrl 里不存在 nodeId 或者 spaceId 时，user/me 和 client/info 返回的 userInfo 其实是一样的，没必要重复请求
+   */
   if (
     pathUrl &&
     (
@@ -57,9 +63,9 @@ export const getInitialProps = async(context: { ctx: NextPageContext }) => {
       pathUrl.includes('/tpl') ||
       pathUrl.includes('/space') ||
       pathUrl.includes('/login')
-    )
+    ) &&
+    (nodeId || spaceId)
   ) {
-    const { nodeId } = getPageParams(pathUrl);
     const spaceId = getRegResult(pathUrl, spaceIdReg);
     const res = await Api.getUserMe({ nodeId, spaceId }, false, headers);
     const { data, success, message, code } = res.data;

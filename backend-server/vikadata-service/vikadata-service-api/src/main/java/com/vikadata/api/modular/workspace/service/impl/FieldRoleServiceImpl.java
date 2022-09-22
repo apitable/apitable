@@ -47,6 +47,7 @@ import com.vikadata.api.model.vo.datasheet.FieldRoleSetting;
 import com.vikadata.api.model.vo.node.FieldPermission;
 import com.vikadata.api.model.vo.node.FieldPermissionInfo;
 import com.vikadata.api.model.vo.node.FieldPermissionView;
+import com.vikadata.api.model.vo.organization.RoleInfoVo;
 import com.vikadata.api.model.vo.organization.UnitMemberVo;
 import com.vikadata.api.model.vo.organization.UnitTeamVo;
 import com.vikadata.api.modular.control.model.FieldControlProp;
@@ -57,6 +58,8 @@ import com.vikadata.api.modular.organization.mapper.MemberMapper;
 import com.vikadata.api.modular.organization.mapper.UnitMapper;
 import com.vikadata.api.modular.organization.service.IMemberService;
 import com.vikadata.api.modular.organization.service.IOrganizationService;
+import com.vikadata.api.modular.organization.service.IRoleMemberService;
+import com.vikadata.api.modular.organization.service.IRoleService;
 import com.vikadata.api.modular.organization.service.ITeamService;
 import com.vikadata.api.modular.space.service.ISpaceRoleService;
 import com.vikadata.api.modular.workspace.model.ControlRoleInfo;
@@ -136,12 +139,18 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
 
     @Resource
     private ISpaceRoleService iSpaceRoleService;
-    
+
     @Resource
     private INodeRoleService iNodeRoleService;
-    
+
     @Resource
     private UnitMapper unitMapper;
+
+    @Resource
+    private IRoleService iRoleService;
+
+    @Resource
+    private IRoleMemberService iRoleMemberService;
 
     @Override
     public void checkFieldPermissionBeforeEnable(String dstId, String fieldId) {
@@ -195,7 +204,10 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         // 字段权限是否打开
         iControlService.checkControlStatus(controlId.toString(), fieldCollaboratorVO::setEnabled);
         if (BooleanUtil.isFalse(fieldCollaboratorVO.getEnabled())) {
-            List<FieldRole> roles = getDefaultFieldRoles(spaceId, datasheetId);
+            Map<Long, String> memberRoleMap = new LinkedHashMap<>(16);
+            List<FieldRole> roles = getDefaultFieldRoles(spaceId, datasheetId, memberRoleMap);
+            List<FieldRoleMemberVo> members = getMembers(spaceId, memberRoleMap);
+            fieldCollaboratorVO.setMembers(members);
             fieldCollaboratorVO.setRoles(roles);
             return fieldCollaboratorVO;
         }
@@ -233,6 +245,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         for (Entry<String, List<ControlRoleUnitDTO>> entry : fieldRoleControlMap.entrySet()) {
             List<Long> teamIds = new ArrayList<>();
             List<Long> memberIds = new ArrayList<>();
+            List<Long> roleIds = new ArrayList<>();
             String roleCode = entry.getKey();
             for (ControlRoleUnitDTO control : entry.getValue()) {
                 if (unitIdToFieldRoleMap.containsKey(control.getUnitId())) {
@@ -249,6 +262,9 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
                 }
                 else if (unitType == UnitType.MEMBER) {
                     memberIds.add(control.getUnitRefId());
+                }
+                else if (unitType == UnitType.ROLE) {
+                    roleIds.add(control.getUnitRefId());
                 }
                 role.setCanRead(true);
                 role.setCanEdit(true);
@@ -276,6 +292,18 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
                 List<Long> teamMemberIds = iTeamService.getMemberIdsByTeamIds(teamIds);
                 for (Long teamMemberId : teamMemberIds) {
                     memberRoleMap.putIfAbsent(teamMemberId, roleCode);
+                }
+            }
+            if (!roleIds.isEmpty()) {
+                List<RoleInfoVo> roleVos = iRoleService.getRoleVos(spaceId, roleIds);
+                for(RoleInfoVo roleVo: roleVos) {
+                    FieldRole role = unitIdToFieldRoleMap.get(roleVo.getUnitId());
+                    role.setUnitName(roleVo.getRoleName());
+                    role.setMemberCount(roleVo.getMemberCount());
+                }
+                List<Long> roleMemberIds = iRoleMemberService.getMemberIdsByRoleIds(roleIds);
+                for (Long roleMemberId : roleMemberIds) {
+                    memberRoleMap.putIfAbsent(roleMemberId, roleCode);
                 }
             }
         }
@@ -539,7 +567,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         return fieldRoleToUnitIds;
     }
 
-    private List<FieldRole> getDefaultFieldRoles(String spcId, String dstId) {
+    private List<FieldRole> getDefaultFieldRoles(String spcId, String dstId, Map<Long, String> memberRoleMap) {
         List<Long> admins = iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(spcId);
         // 记载所有成员对应角色
         List<FieldRole> fieldRoles = new ArrayList<>(16);
@@ -550,55 +578,83 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
             FieldRole role = getFieldRole(isAdmin, member, false);
             adminIds.add(member.getUnitId());
             fieldRoles.add(role);
+            memberRoleMap.put(member.getMemberId(), Field.EDITOR);
         }
         // 获取字段所在数表而来的继承角色
-        fieldRoles.addAll(getDefaultExtendRole(spcId, dstId, adminIds));
+        fieldRoles.addAll(getDefaultExtendRole(spcId, dstId, adminIds, memberRoleMap));
         return fieldRoles;
     }
 
-    private List<FieldRole> getDefaultExtendRole(String spcId, String dstId, Set<Long> adminIds) {
+    private List<FieldRole> getDefaultExtendRole(String spcId, String dstId, Set<Long> adminIds, Map<Long, String> memberRoleMap) {
         Map<String, List<Long>> filedRoleToUnitIds = getDefaultFiledRoleToUnitIdsMap(spcId, dstId);
+        // editor from node's owner. the member may be admin.
+        filedRoleToUnitIds.values().forEach(unitIds -> unitIds.removeAll(adminIds));
         List<FieldRole> fieldRoles = new ArrayList<>(16);
         Map<Long, FieldRole> unitIdToFieldRoleMap = new HashMap<>(16);
-        List<Long> teamIds = new ArrayList<>();
-        List<Long> memberIds = new ArrayList<>();
+        Map<UnitType, List<Long>> unitTypeToUnitRefIds = new HashMap<>(16);
+        // gets field control permissions
         filedRoleToUnitIds.forEach((role, unitIds) -> {
-            // node的owner转化而来字段的editor，它可能是管理员。
-            unitIds.removeAll(adminIds);
             if (unitIds.isEmpty()) {
                 return;
             }
             List<UnitEntity> units = unitMapper.selectByUnitIds(unitIds);
-            units.forEach(unit -> {
-                FieldRole fieldRole = new FieldRole();
-                fieldRole.setRole(role);
-                fieldRole.setUnitId(unit.getId());
-                fieldRole.setUnitType(unit.getUnitType());
-                List<Long> unitRefIds =
-                        UnitType.TEAM.getType().equals(unit.getUnitType()) ? teamIds : memberIds;
-                unitRefIds.add(unit.getUnitRefId());
-                unitIdToFieldRoleMap.putIfAbsent(unit.getId(), fieldRole);
-                fieldRoles.add(fieldRole);
+            List<FieldRole> fieldRoleList = getFieldRoles(units, role, unitTypeToUnitRefIds);
+            fieldRoleList.forEach(fieldRole -> {
+                Long unitId = fieldRole.getUnitId();
+                if (!unitIdToFieldRoleMap.containsKey(unitId)) {
+                    unitIdToFieldRoleMap.put(unitId, fieldRole);
+                    fieldRoles.add(fieldRole);
+                }
             });
+            countMemberRole(memberRoleMap, units, role);
         });
-        // 批量查询补充组织单元信息
-        if (!teamIds.isEmpty()) {
-            List<UnitTeamVo> teamVos = iOrganizationService.findUnitTeamVo(spcId, teamIds);
-            for (UnitTeamVo team : teamVos) {
-                FieldRole unit = unitIdToFieldRoleMap.get(team.getUnitId());
-                unit.setUnitName(team.getTeamName());
-                unit.setMemberCount(team.getMemberCount());
+        // batch populate field roles' other info
+        populateFieldRoles(unitIdToFieldRoleMap, unitTypeToUnitRefIds, spcId);
+        return fieldRoles;
+    }
+
+    private void populateFieldRoles(Map<Long, FieldRole> unitIdToFieldRoleMap, Map<UnitType, List<Long>> unitTypeToUnitRefIds, String spcId) {
+        unitTypeToUnitRefIds.forEach((key, unitRefIds) -> {
+            if (key == UnitType.MEMBER) {
+                List<UnitMemberVo> memberVos = iOrganizationService.findUnitMemberVo(unitRefIds);
+                memberVos.forEach(member -> {
+                    FieldRole fieldRole = unitIdToFieldRoleMap.get(member.getUnitId());
+                    fieldRole.setUnitName(member.getMemberName());
+                    fieldRole.setAvatar(member.getAvatar());
+                    fieldRole.setTeams(member.getTeams());
+                });
             }
-        }
-        if (!memberIds.isEmpty()) {
-            List<UnitMemberVo> memberVos = iOrganizationService.findUnitMemberVo(memberIds);
-            for (UnitMemberVo member : memberVos) {
-                FieldRole unit = unitIdToFieldRoleMap.get(member.getUnitId());
-                unit.setUnitName(member.getMemberName());
-                unit.setAvatar(member.getAvatar());
-                unit.setTeams(member.getTeams());
+            else if (key == UnitType.TEAM) {
+                List<UnitTeamVo> teamVos = iOrganizationService.findUnitTeamVo(spcId, unitRefIds);
+                teamVos.forEach(team -> {
+                    FieldRole fieldRole = unitIdToFieldRoleMap.get(team.getUnitId());
+                    fieldRole.setUnitName(team.getTeamName());
+                    fieldRole.setMemberCount(team.getMemberCount());
+                });
             }
-        }
+            else if (key == UnitType.ROLE) {
+                List<RoleInfoVo> roleVos = iRoleService.getRoleVos(spcId, unitRefIds);
+                roleVos.forEach(role -> {
+                    FieldRole fieldRole = unitIdToFieldRoleMap.get(role.getUnitId());
+                    fieldRole.setUnitName(role.getRoleName());
+                    fieldRole.setMemberCount(role.getMemberCount());
+                });
+            }
+        });
+    }
+
+    private List<FieldRole> getFieldRoles(List<UnitEntity> units, String role, Map<UnitType, List<Long>> unitTypeToUnitRefIds) {
+        List<FieldRole> fieldRoles = new ArrayList<>();
+        units.forEach(unit -> {
+            FieldRole fieldRole = new FieldRole();
+            fieldRole.setRole(role);
+            fieldRole.setUnitId(unit.getId());
+            fieldRole.setUnitType(unit.getUnitType());
+            UnitType unitType = UnitType.toEnum(unit.getUnitType());
+            fieldRoles.add(fieldRole);
+            List<Long> unitRefIds = unitTypeToUnitRefIds.computeIfAbsent(unitType, key -> new ArrayList<>());
+            unitRefIds.add(unit.getUnitRefId());
+        });
         return fieldRoles;
     }
 
@@ -617,5 +673,39 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         role.setNodeManageable(true);
         role.setPermissionExtend(true);
         return role;
+    }
+
+    private void countMemberRole(Map<Long, String> memberRoleMap, List<UnitEntity> units, String role) {
+        Map<Integer, List<Long>> unitTypeToUnitRefIds = units.stream()
+                .collect(groupingBy(UnitEntity::getUnitType, mapping(UnitEntity::getUnitRefId, toList())));
+        unitTypeToUnitRefIds.forEach((unitType, unitRefIds) -> {
+            if (UnitType.MEMBER.getType().equals(unitType)) {
+                for (Long memberId : unitRefIds) {
+                    memberRoleMap.putIfAbsent(memberId, role);
+                }
+            }
+            else if (UnitType.TEAM.getType().equals(unitType)) {
+                List<Long> teamMemberIds = iTeamService.getMemberIdsByTeamIds(unitRefIds);
+                for (Long teamMemberId : teamMemberIds) {
+                    memberRoleMap.putIfAbsent(teamMemberId, role);
+                }
+            }
+            else if (UnitType.ROLE.getType().equals(unitType)) {
+                List<Long> roleMemberIds = iRoleMemberService.getMemberIdsByRoleIds(unitRefIds);
+                for (Long roleMemberId : roleMemberIds) {
+                    memberRoleMap.putIfAbsent(roleMemberId, role);
+                }
+            }
+        });
+    }
+
+    private List<FieldRoleMemberVo> getMembers(String spaceId, Map<Long, String> memberRoleMap) {
+        List<FieldRoleMemberVo> members = getFieldRoleMembers(memberRoleMap.keySet());
+        List<Long> admins = iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(spaceId);
+        members.forEach(member -> {
+            member.setRole(memberRoleMap.get(member.getMemberId()));
+            member.setIsAdmin(admins.contains(member.getMemberId()));
+        });
+        return members;
     }
 }

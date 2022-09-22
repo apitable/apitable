@@ -1,10 +1,10 @@
 import { Api, getCustomConfig, IReduxState, Navigation, StoreActions, Strings, t } from '@vikadata/core';
 import { configResponsive, useResponsive } from 'ahooks';
 import { Message } from 'pc/components/common';
+import { Router } from 'pc/components/route_manager/router';
 import { getSearchParams } from 'pc/utils';
 import { FC, useEffect } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { Method, useNavigation } from '../route_manager/use_navigation';
 import MobileHome from './mobile_home';
 import PcHome from './pc_home';
 import { isSocialDomain } from './social_platform';
@@ -15,7 +15,6 @@ configResponsive({
 });
 
 export const Home: FC = () => {
-  const navigationTo = useNavigation();
   configResponsive({
     large: 1023.98,
   });
@@ -64,18 +63,13 @@ export const Home: FC = () => {
 
   if (isLogin) {
     if (reference) {
-      navigationTo({
-        path: Navigation.HOME,
-        method: Method.Redirect,
+      Router.redirect(Navigation.HOME, {
         query: {
           reference,
         }
       });
     } else {
-      navigationTo({
-        path: Navigation.WORKBENCH,
-        method: Method.Redirect,
-      });
+      Router.redirect(Navigation.WORKBENCH);
     }
   }
 

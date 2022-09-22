@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { last } from 'lodash';
 import Image from 'next/image';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
+import { Router } from 'pc/components/route_manager/router';
 import { useRequest } from 'pc/hooks';
 import { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,7 +16,6 @@ import { UnitTag } from '../catalog/permission_settings/permission/select_unit_m
 import { ButtonPlus, Message, Tooltip } from '../common';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { TComponent } from '../common/t_component';
-import { useNavigation } from '../route_manager/use_navigation';
 import styles from './style.module.less';
 import { TrashContextMenu } from './trash_context_menu';
 
@@ -41,7 +41,6 @@ const Trash: FC = () => {
   const maxRemainTrashDays = useSelector((state: IReduxState) => state.billing.subscription?.maxRemainTrashDays || 0);
   const [trashList, setTrashList] = useState<ITrashItem[]>([]);
   const dispatch = useDispatch();
-  const navigationTo = useNavigation();
   const { loading: recoverLoading, run: trashRecover } = useRequest(nodeId => Api.trashRecover(nodeId), { manual: true });
 
   const [lastNodeId, setLastNodeId] = useState<string | undefined>(undefined);
@@ -91,7 +90,7 @@ const Trash: FC = () => {
       dispatch(StoreActions.addNodeToMap([data]));
       dispatch(StoreActions.datasheetErrorCode(nodeId, null));
       deleteTrashItem(nodeId);
-      navigationTo({ path: Navigation.WORKBENCH, params: { spaceId, nodeId }});
+      Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId }});
       Message.success({ content: t(Strings.recover_node_success) });
       return;
     }
@@ -111,8 +110,8 @@ const Trash: FC = () => {
       <div className={styles.container}>
         <div className={styles.title}>
           {t(Strings.trash)}
-          <Tooltip title={t(Strings.form_tour_desc)} trigger="hover" placement="right">
-            <a href={Settings.trash_url.value} rel="noopener noreferrer" target="_blank">
+          <Tooltip title={t(Strings.form_tour_desc)} trigger='hover' placement='right'>
+            <a href={Settings.trash_url.value} rel='noopener noreferrer' target='_blank'>
               <HelpIcon
                 style={{
                   cursor: 'pointer',
@@ -184,11 +183,11 @@ const Trash: FC = () => {
                 {noMore ? (
                   <span className={styles.end}>{t(Strings.end)}</span>
                 ) : moreLoading ? (
-                  <Button loading variant="jelly">
+                  <Button loading variant='jelly'>
                     {t(Strings.loading)}
                   </Button>
                 ) : (
-                  <TextButton onClick={loadMore} color="primary">
+                  <TextButton onClick={loadMore} color='primary'>
                     {t(Strings.click_load_more)}
                   </TextButton>
                 )}
@@ -196,13 +195,13 @@ const Trash: FC = () => {
             </div>
           ) : loading || moreLoading ? (
             <>
-              <Skeleton width="38%" />
+              <Skeleton width='38%' />
               <Skeleton />
-              <Skeleton width="61%" />
+              <Skeleton width='61%' />
             </>
           ) : (
             <div className={styles.empty}>
-              <Image src={EmptyPng} alt="empty" width={320} height={240} />
+              <Image src={EmptyPng} alt='empty' width={320} height={240} />
               <div className={styles.tip}>{t(Strings.empty_trash, { day: maxRemainTrashDays })}</div>
             </div>
           )}

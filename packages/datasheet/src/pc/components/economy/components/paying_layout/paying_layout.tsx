@@ -2,7 +2,7 @@ import { FC, useRef } from 'react';
 import * as React from 'react';
 import styles from './style.module.less';
 import { Row, Col, Spin } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
+import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
 import { useMount, useEventListener } from 'ahooks';
 import { WarnFilled } from '@vikadata/icons';
 import { Typography, Button } from '@vikadata/components';

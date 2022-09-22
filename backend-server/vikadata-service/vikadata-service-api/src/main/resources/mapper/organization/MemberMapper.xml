@@ -367,6 +367,24 @@
         LIMIT 0,1
     </select>
 
+    <select id="selectBySpaceIdAndEmailIgnoreDeleted"
+            resultType="com.vikadata.entity.MemberEntity">
+        select *
+        from vika_unit_member
+        where email = #{email} and space_id = #{spaceId}
+        LIMIT 0,1
+    </select>
+
+    <select id="selectBySpaceIdAndEmailsIgnoreDeleted"
+            resultType="com.vikadata.entity.MemberEntity">
+        select *
+        from vika_unit_member
+        where space_id = #{spaceId} AND email IN
+        <foreach item="item" index="index" collection="emails" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
     <select id="selectAdminBySpaceId" resultType="com.vikadata.entity.MemberEntity">
         SELECT *
         FROM `vika_unit_member`

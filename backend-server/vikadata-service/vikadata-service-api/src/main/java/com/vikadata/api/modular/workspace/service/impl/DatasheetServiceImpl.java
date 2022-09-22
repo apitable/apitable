@@ -12,6 +12,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
@@ -70,6 +71,7 @@ import com.vikadata.api.model.vo.datasheet.DatasheetRecordVo;
 import com.vikadata.api.modular.organization.mapper.MemberMapper;
 import com.vikadata.api.modular.organization.mapper.TeamMemberRelMapper;
 import com.vikadata.api.modular.organization.mapper.UnitMapper;
+import com.vikadata.api.modular.organization.service.IRoleService;
 import com.vikadata.api.modular.player.service.IPlayerNotificationService;
 import com.vikadata.api.modular.social.model.TenantBindDTO;
 import com.vikadata.api.modular.social.service.ISocialTenantBindService;
@@ -107,6 +109,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.vikadata.api.constants.NotificationConstants.BODY_EXTRAS;
 import static com.vikadata.api.enums.exception.ParameterException.INCORRECT_ARG;
+import static java.util.stream.Collectors.toList;
 
 /**
  * <p>
@@ -176,6 +179,10 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
 
     @Resource
     private Map<String, DatasheetRemindObserver> datasheetRemindObservers;
+
+    @Resource
+    private IRoleService iRoleService;
+
 
     @Override
     public void batchSave(List<DatasheetEntity> entities) {
@@ -779,6 +786,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         // 刷新提及的成员记录缓存
         userSpaceRemindRecordService.refresh(userId, spaceId, CollUtil.newArrayList(unitIds));
         if (notify) {
+            // split roles into members and teams
+            Map<Long, List<Long>> roleUnitIdToRoleMemberUnitIds = getRoleMemberUnits(units);
             // 自己无须发送通知，过滤
             Long memberId = userId == null ? -2L : memberMapper.selectIdByUserIdAndSpaceId(userId, spaceId);
             // 获取成员类型的组织单元，对应的成员
@@ -812,6 +821,11 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                         });
                 unitIdToMemberIdsMap.values().forEach(memberIds::addAll);
             }
+
+            if (CollUtil.isNotEmpty(roleUnitIdToRoleMemberUnitIds)) {
+                getRoleMemberIds(roleUnitIdToRoleMemberUnitIds, unitIdToMemberIdMap, unitIdToMemberIdsMap);
+            }
+
             if (CollUtil.isEmpty(memberIds)) {
                 return;
             }
@@ -924,6 +938,35 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 }
             });
         }
+    }
+
+    private void getRoleMemberIds(Map<Long, List<Long>> roleUnitIdToRoleMemberUnitIds, Map<Long, Long> unitIdToMemberIdMap, Map<Long, List<Long>> unitIdToMemberIdsMap) {
+        roleUnitIdToRoleMemberUnitIds.forEach((key, value) -> {
+            HashSet<Long> readyAddMemberIds = CollUtil.newHashSet();
+            value.forEach((unitId) -> {
+                if (unitIdToMemberIdMap.get(unitId) != null) {
+                    readyAddMemberIds.add(unitIdToMemberIdMap.get(unitId));
+                }
+                else if (unitIdToMemberIdsMap.get(unitId) != null) {
+                    readyAddMemberIds.addAll(unitIdToMemberIdsMap.get(unitId));
+                }
+            });
+            unitIdToMemberIdsMap.put(key, CollUtil.newArrayList(readyAddMemberIds));
+        });
+    }
+
+    private Map<Long, List<Long>> getRoleMemberUnits(List<UnitEntity> units) {
+        Predicate<UnitEntity> roleEntityMatcher = unit -> UnitType.ROLE.getType().equals(unit.getUnitType());
+        List<Long> roleIds = units.stream().filter(roleEntityMatcher).map(UnitEntity::getUnitRefId).collect(toList());
+        units.removeIf(roleEntityMatcher);
+        Map<Long, List<Long>> unitIdToUnitIds = iRoleService.flatMapToRoleMemberUnitIds(roleIds);
+        List<Long> roleMemberUnitIds = unitIdToUnitIds.values().stream().flatMap(List::stream).distinct().collect(toList());
+        if (CollUtil.isEmpty(roleMemberUnitIds)) {
+            return new HashMap<>(0);
+        }
+        List<UnitEntity> roleMemberUnit = unitMapper.selectByUnitIds(roleMemberUnitIds);
+        units.addAll(roleMemberUnit);
+        return unitIdToUnitIds;
     }
 
     @Override

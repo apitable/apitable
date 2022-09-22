@@ -3,7 +3,7 @@ import { IReduxState, Navigation, Strings, t } from '@vikadata/core';
 import { Steps } from 'antd';
 import classNames from 'classnames';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import SuccessIcon from 'static/icon/common/common_icon_success.svg';
@@ -19,7 +19,6 @@ interface IModalProps {
 
 export const MainAdminModal: FC<IModalProps> = ({ cancelModal }) => {
   const [current, setCurrent] = useState(0);
-  const navigationTo = useNavigation();
   const userInfo = useSelector((state: IReduxState) => state.user.info);
   const progressDot = (dot, { status, index }) => {
     return (
@@ -41,12 +40,12 @@ export const MainAdminModal: FC<IModalProps> = ({ cancelModal }) => {
       return;
     }
     if (!userInfo.isAdmin) {
-      navigationTo({ path: Navigation.HOME });
+      Router.push(Navigation.HOME);
     }
-  }, [userInfo, navigationTo]);
+  }, [userInfo]);
   const cancelModalAndInit = () => {
     if (current === 2) {
-      navigationTo({ path: Navigation.HOME, method: Method.Redirect });
+      Router.redirect(Navigation.HOME);
     } else {
       cancelModal();
     }

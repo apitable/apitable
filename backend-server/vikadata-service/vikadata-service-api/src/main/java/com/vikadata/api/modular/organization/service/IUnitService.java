@@ -171,4 +171,19 @@ public interface IUnitService extends IService<UnitEntity> {
      * @date 2022/6/24
      */
     List<Long> getRelUserIdsByUnitIds(List<Long> unitIds);
+
+    /**
+     *  Delete the unit by team id / role id / member id
+     *
+     * @param refId     team id / role id / member id
+     */
+    void removeByRefId(Long refId);
+
+    /**
+     * get unit entity by refs' id
+     *
+     * @param refIds the refs' id
+     * @return the unit entities
+     */
+    List<UnitEntity> getUnitEntitiesByUnitRefIds(List<Long> refIds);
 }

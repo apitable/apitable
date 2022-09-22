@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.vikadata.api.model.vo.organization.TeamInfoVo;
 import com.vikadata.api.model.vo.organization.TeamTreeVo;
+import com.vikadata.api.model.vo.organization.UnitTeamVo;
 import com.vikadata.api.modular.organization.model.MemberIsolatedInfo;
 import com.vikadata.entity.TeamEntity;
 
@@ -327,4 +328,15 @@ public interface ITeamService extends IService<TeamEntity> {
      * @date 2022/5/17
      */
     List<TeamTreeVo> loadMemberTeamTree(String spaceId, Long memberId);
+
+
+    /**
+     * batch query team's unitId、teamId、teamName by team's ids.
+     *
+     * @param spaceId   space id
+     * @param teamIds   team ids
+     * @return UnitTeamVo
+     */
+    List<UnitTeamVo> getUnitTeamVo(String spaceId, List<Long> teamIds);
+
 }

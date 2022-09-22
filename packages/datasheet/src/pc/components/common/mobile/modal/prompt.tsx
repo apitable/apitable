@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@vikadata/components';
-import { Modal } from 'antd-mobile';
+import Modal from 'antd-mobile/lib/modal';
 import { Action } from 'antd-mobile/lib/modal/PropsType';
 import closest from 'antd-mobile/lib/_util/closest';
 import { useState } from 'react';

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { NodeItem } from 'pc/components/catalog/tree/node_item';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { ITreeViewRef, TreeItem, TreeView } from 'pc/components/common/tree_view';
-import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
 import { getContextTypeByNodeType, shouldOpenInNewTab } from 'pc/utils';
 import * as React from 'react';
@@ -17,7 +17,6 @@ import styles from './style.module.less';
 
 const FavoriteBase: FC = () => {
   const dispatch = useDispatch();
-  const navigationTo = useNavigation();
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const activeNodeId = useSelector((state: IReduxState) => Selectors.getNodeId(state));
   const {
@@ -169,14 +168,11 @@ const FavoriteBase: FC = () => {
     const isOpenNewTab = shouldOpenInNewTab(e);
     if (typeof selectedKeys === 'string' && (selectedKeys !== activeNodeId || isOpenNewTab)) {
       isMobile && dispatch(StoreActions.setSideBarVisible(false));
-      navigationTo({
-        path: Navigation.WORKBENCH,
-        params: {
-          spaceId,
-          nodeId: selectedKeys,
-        },
-        method: isOpenNewTab ? Method.NewTab : Method.Push,
-      });
+      const params = {
+        spaceId,
+        nodeId: selectedKeys,
+      };
+      isOpenNewTab ? Router.newTab(Navigation.WORKBENCH, { params }) : Router.push(Navigation.WORKBENCH, { params });
     }
   };
 
@@ -201,9 +197,9 @@ const FavoriteBase: FC = () => {
   if (favoriteLoading) {
     return (
       <div style={{ margin: '0 8px', width: '100%' }}>
-        <Skeleton width="38%" />
+        <Skeleton width='38%' />
         <Skeleton />
-        <Skeleton width="61%" />
+        <Skeleton width='61%' />
       </div>
     );
   }
@@ -227,7 +223,7 @@ const FavoriteBase: FC = () => {
       ) : (
         <div className={styles.empty}>
           <span className={styles.emptyFavoritePng}>
-            <Image src={EmptyFavoritePng} alt="empty favorite" width={60} height={44} />
+            <Image src={EmptyFavoritePng} alt='empty favorite' width={60} height={44} />
           </span>
           <div className={styles.tip}>{t(Strings.favorite_empty_tip1)}</div>
           <div className={styles.tip}>{t(Strings.favorite_empty_tip2)}~</div>

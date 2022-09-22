@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
 import { ApiPanel } from 'pc/components/api_panel';
 import { VikaSplitPanel } from 'pc/components/common';
-import { RobotPanel } from 'pc/components/robot';
 import { TimeMachine } from 'pc/components/time_machine';
 import { useMountWidgetPanelShortKeys } from 'pc/components/widget/hooks';
 import { useResponsive, useWeixinShare } from 'pc/hooks';
@@ -27,6 +26,19 @@ import { ViewContainer } from '../view_container';
 import { WidgetPanel } from '../widget';
 import styles from './style.module.less';
 import { useSideBar, SideBarType, SideBarClickType } from 'pc/context';
+import dynamic from 'next/dynamic';
+import { Skeleton } from '@vikadata/components';
+
+const RobotPanel = dynamic(() => import('pc/components/robot/robot_panel/robot_panel'), {
+  ssr: false,
+  loading: () => (
+    <div className={styles.loading}>
+      <Skeleton count={1} width="38%" />
+      <Skeleton count={2} />
+      <Skeleton count={1} width="61%"/>
+    </div>
+  ),
+});
 
 const DatasheetMain = ({ loading, datasheetErrorCode, isNoPermission, shareId, datasheetId, preview, testFunctions, handleExitTest, mirrorId }) => {
   return (

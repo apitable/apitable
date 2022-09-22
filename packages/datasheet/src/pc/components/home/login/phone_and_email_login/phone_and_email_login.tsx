@@ -1,22 +1,22 @@
-import * as React from 'react';
-import { useSelector } from 'react-redux';
-import Trigger from 'rc-trigger';
-import { useToggle } from 'ahooks';
+import { lightColors, LinkButton } from '@vikadata/components';
 import { ApiInterface, AutoTestID, ConfigConstant, getCustomConfig, Navigation, Strings, t } from '@vikadata/core';
-import { LinkButton, lightColors } from '@vikadata/components';
-import { WechatFilled, QqFilled, DingdingFilled, FeishuFilled } from '@vikadata/icons';
-
-import { IdentifyingCodeLogin, ISubmitRequestParam } from 'pc/components/home/login/identifying_code_login';
-import { PasswordLogin } from 'pc/components/home/login/password_login';
-import { dingdingLogin, feishuLogin, qqLogin, wechatLogin } from 'pc/components/home/other_login';
-
-import { useUserRequest } from 'pc/hooks';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
-import { SSOLogin } from 'pc/components/home/login/sso_login';
+import { DingdingFilled, FeishuFilled, QqFilled, WechatFilled } from '@vikadata/icons';
+import { useToggle } from 'ahooks';
 
 import { polyfillMode } from 'pc/components/home/login';
 
+import { IdentifyingCodeLogin, ISubmitRequestParam } from 'pc/components/home/login/identifying_code_login';
+import { PasswordLogin } from 'pc/components/home/login/password_login';
+import { SSOLogin } from 'pc/components/home/login/sso_login';
+
 import commonLoginStyles from 'pc/components/home/login/style.module.less';
+import { dingdingLogin, feishuLogin, qqLogin, wechatLogin } from 'pc/components/home/other_login';
+import { Router } from 'pc/components/route_manager/router';
+
+import { useUserRequest } from 'pc/hooks';
+import Trigger from 'rc-trigger';
+import * as React from 'react';
+import { useSelector } from 'react-redux';
 
 export const PhoneAndEmailLogin = (): JSX.Element => {
   const {
@@ -27,14 +27,9 @@ export const PhoneAndEmailLogin = (): JSX.Element => {
   } = getCustomConfig();
 
   const toggleLoginModBtnVisible = !supportAccountType;
-
   const isWecom = useSelector(state => state.space.envs?.weComEnv?.enabled);
-
   const { loginOrRegisterReq } = useUserRequest();
-  const navigationTo = useNavigation();
-
   const [isPopupVisible, { toggle: popupVisibleToggle }] = useToggle(false);
-
   const commonDefaultMod = polyfillMode(localStorage.getItem('vika_login_mod')) || loginMode;
   const defaultMod = ssoLogin ? ConfigConstant.SSO_LOGIN : commonDefaultMod;
   // commonPrev 只是保存了密码或验证码登录两种方式
@@ -65,7 +60,7 @@ export const PhoneAndEmailLogin = (): JSX.Element => {
   }, [loginOrRegisterReq]);
 
   const goResetPwd = () => {
-    navigationTo({ path: Navigation.RESET_PWD });
+    Router.push(Navigation.RESET_PWD);
   };
 
   const modConfig = React.useMemo(() => {
@@ -123,9 +118,9 @@ export const PhoneAndEmailLogin = (): JSX.Element => {
             {toggleLoginModBtnVisible &&
               <LinkButton
                 underline={false}
-                component="button"
+                component='button'
                 id={AutoTestID.CHANGE_MODE_BTN}
-                className="toggleLoginModeBtn"
+                className='toggleLoginModeBtn'
                 onClick={changeLoginMod}
               >
                 {changeModText}
@@ -143,7 +138,7 @@ export const PhoneAndEmailLogin = (): JSX.Element => {
             >
               <LinkButton
                 underline={false}
-                component="button"
+                component='button'
               >
                 {t(Strings.other_login)}
               </LinkButton>
@@ -151,7 +146,7 @@ export const PhoneAndEmailLogin = (): JSX.Element => {
             {!resetPasswordDisable &&
               <LinkButton
                 underline={false}
-                component="button"
+                component='button'
                 onClick={goResetPwd}
               >
                 {t(Strings.retrieve_password)}
@@ -164,9 +159,9 @@ export const PhoneAndEmailLogin = (): JSX.Element => {
               {toggleLoginModBtnVisible &&
                 <LinkButton
                   underline={false}
-                  component="button"
+                  component='button'
                   id={AutoTestID.CHANGE_MODE_BTN}
-                  className="toggleLoginModeBtn"
+                  className='toggleLoginModeBtn'
                   onClick={changeLoginMod}
                   style={{ paddingLeft: 0 }}
                 >
@@ -177,7 +172,7 @@ export const PhoneAndEmailLogin = (): JSX.Element => {
             {!resetPasswordDisable &&
               <LinkButton
                 underline={false}
-                component="button"
+                component='button'
                 onClick={goResetPwd}
                 style={{ paddingRight: 0 }}
               >

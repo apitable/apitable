@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import javax.annotation.Resource;
 
@@ -378,4 +379,5 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
             ExceptionUtil.isEmpty(CollUtil.intersection(operateResourceCodes, disableRoleGroupCodes), SpaceException.NO_ALLOW_OPERATE);
         }
     }
+
 }

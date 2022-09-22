@@ -1,42 +1,28 @@
-import { useEffect, useState } from 'react';
-import * as React from 'react';
-import styles from './style.module.less';
+import { Button } from '@vikadata/components';
 import {
-  Strings,
-  t,
-  ConfigConstant,
-  StoreActions,
-  Api,
-  IApi,
-  IReduxState,
-  Navigation,
-  ADDRESS_ID,
-  Player,
-  Events,
-  getCustomConfig,
-  IMember,
-  ITeam,
-  isIdassPrivateDeployment,
+  ADDRESS_ID, Api, ConfigConstant, Events, getCustomConfig, IApi, IMember, IReduxState, isIdassPrivateDeployment, ITeam, Navigation, Player,
+  StoreActions, Strings, t,
 } from '@vikadata/core';
+import { AddOutlined, AddressOutlined } from '@vikadata/icons';
 import { Input } from 'antd';
-import { expandInviteModal } from 'pc/components/invite';
-import { AddressTreeMenu } from '../../address_list/address_tree_menu';
-import { SearchTeamAndMember } from 'pc/components/common';
-import SearchIcon from 'static/icon/common/common_icon_search_normal.svg';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { useRequest } from 'pc/hooks';
-import { useUserRequest, useSideBarVisible, useResponsive } from 'pc/hooks';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
-import { OrganizationHead } from 'pc/components/organization_head';
-import { ScreenSize, ComponentDisplay } from 'pc/components/common/component_display';
 import classNames from 'classnames';
 import { expandMemberInfo } from 'pc/components/address_list/expand_member_info';
-import { Button } from '@vikadata/components';
-import { AddOutlined, AddressOutlined } from '@vikadata/icons';
 import { expandUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
+import { SearchTeamAndMember } from 'pc/components/common';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Message } from 'pc/components/common/message';
 import { isSocialPlatformEnabled } from 'pc/components/home/social_platform';
+import { expandInviteModal } from 'pc/components/invite';
+import { OrganizationHead } from 'pc/components/organization_head';
+import { Router } from 'pc/components/route_manager/router';
+import { useRequest, useResponsive, useSideBarVisible, useUserRequest } from 'pc/hooks';
 import { stopPropagation } from 'pc/utils';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import SearchIcon from 'static/icon/common/common_icon_search_normal.svg';
+import { AddressTreeMenu } from '../../address_list/address_tree_menu';
+import styles from './style.module.less';
 
 export const AddressSide: React.FC = () => {
   const { teamList, spaceId, userInfo } = useSelector(
@@ -88,11 +74,10 @@ export const AddressSide: React.FC = () => {
     },
     [isMobile, setSideBarVisible, dispatch],
   );
-  const navigationTo = useNavigation();
 
   // 操作-选择成员
   const memberClick = (memberId: string) => {
-    navigationTo({ path: Navigation.MEMBER_DETAIL, params: { spaceId, memberId }});
+    Router.push(Navigation.MEMBER_DETAIL, { params: { spaceId, memberId }});
     isMobile && expandMemberInfo();
     teamClick(ConfigConstant.ROOT_TEAM_ID);
     dispatch(StoreActions.getMemberInfoData(memberId));
@@ -114,7 +99,7 @@ export const AddressSide: React.FC = () => {
         <>
           {isSyncingMembers && (
             <Button
-              color="primary"
+              color='primary'
               prefixIcon={<AddOutlined />}
               id={ADDRESS_ID.INVITE_BTN}
               className={classNames({ [styles.inviteBtnMobile]: isMobile })}
@@ -201,7 +186,7 @@ export const AddressSide: React.FC = () => {
             <Input
               className={styles.searchInput}
               prefix={<SearchIcon />}
-              size="small"
+              size='small'
               placeholder={t(Strings.search)}
               onClick={() => setInSearch(true)}
             />

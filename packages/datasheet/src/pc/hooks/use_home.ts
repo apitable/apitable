@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { IQuery } from 'pc/components/route_manager/use_navigation';
+import { IQuery } from 'pc/components/route_manager/interface';
 import { useEffect, useState } from 'react';
 
 export function useQuery() {

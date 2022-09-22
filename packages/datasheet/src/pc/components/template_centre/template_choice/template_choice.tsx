@@ -4,7 +4,8 @@ import {
 } from '@vikadata/core';
 import { Col, Row } from 'antd';
 import { TemplateRecommendContext } from 'context/template_recommend';
-import { navigationToUrl, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+import { Router } from 'pc/components/route_manager/router';
 import { isMobileApp } from 'pc/utils/env';
 import React, { FC, useContext } from 'react';
 import { useSelector } from 'react-redux';
@@ -23,14 +24,12 @@ export const imgUrl = (token: string, imageHeight: number) => {
 
 export const TemplateChoice: FC<ITemplateChoiceProps> = props => {
   const { setUsingTemplate } = props;
-  const navigationTo = useNavigation();
   const categoryId = useSelector((state: IReduxState) => state.pageParams.categoryId);
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const { recommendData: templateRecommendData } = useContext(TemplateRecommendContext);
 
   const openTemplateDetail = ({ templateId }) => {
-    navigationTo({
-      path: Navigation.TEMPLATE,
+    Router.push( Navigation.TEMPLATE,{
       params: {
         spaceId,
         templateId,

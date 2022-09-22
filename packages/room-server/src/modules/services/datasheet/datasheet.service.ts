@@ -79,17 +79,25 @@ export class DatasheetService {
     this.logger.info(`主表数据开始加载[${dstId}]`);
     // 查询datasheet
     const origin = { internal: true, main: true };
+    const getNodeInfoProfiler = this.logger.startTimer();
     const { node, fieldPermissionMap } = await this.nodeService.getNodeDetailInfo(dstId, auth, origin);
+    getNodeInfoProfiler.done({ message: `getNodeDetailInfo ${dstId} done` });
     // 查询snapshot
+    const getMetaProfiler = this.logger.startTimer();
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId);
+    getMetaProfiler.done({ message: `getMetaProfiler ${dstId} done` });
+    const getRecordsProfiler = this.logger.startTimer();
     const recordMap =
       options && options.recordIds
         ? await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, options.recordIds)
         : await this.datasheetRecordService.getRecordsByDstId(dstId);
+    getRecordsProfiler.done({ message: `getRecordsProfiler ${dstId} done` });
     const endTime = +new Date();
     this.logger.info(`主表数据完成加载,总耗时[${dstId}]: ${endTime - beginTime}ms`);
     // 查询foreignDatasheetMap和unitMap
+    const getProcessFieldProfiler = this.logger.startTimer();
     const combine = await this.processField(dstId, auth, meta, recordMap, origin, options?.linkedRecordMap);
+    getProcessFieldProfiler.done({ message: `getProcessFieldProfiler ${dstId} done` });
     return {
       snapshot: { meta, recordMap, datasheetId: node.id },
       datasheet: node,

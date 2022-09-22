@@ -355,6 +355,22 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
     MemberEntity selectBySpaceIdAndEmail(@Param("spaceId") String spaceId, @Param("email") String email);
 
     /**
+     * select by space id and email with ignore deleted
+     * @param spaceId space id
+     * @param email email address
+     * @return entity
+     */
+    MemberEntity selectBySpaceIdAndEmailIgnoreDeleted(@Param("spaceId") String spaceId, @Param("email") String email);
+
+    /**
+     * select by space id and email list with ignore deleted
+     * @param spaceId space id
+     * @param emails email address list
+     * @return entity
+     */
+    List<MemberEntity> selectBySpaceIdAndEmailsIgnoreDeleted(@Param("spaceId") String spaceId, @Param("emails") List<String> email);
+
+    /**
      * 获取空间站的主管理员
      *
      * @param spaceId 空间站 ID
@@ -1021,5 +1037,5 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      * @param spaceIds 空间站id
      * @return SpaceMemberIdDto
      */
-    List<SpaceMemberIdDto> selectMemberIdsByUserIdAndSpaceIds(@Param("userId")Long userId, @Param("spaceIds") List<String> spaceIds);
+    List<SpaceMemberIdDto> selectMemberIdsByUserIdAndSpaceIds(@Param("userId") Long userId, @Param("spaceIds") List<String> spaceIds);
 }

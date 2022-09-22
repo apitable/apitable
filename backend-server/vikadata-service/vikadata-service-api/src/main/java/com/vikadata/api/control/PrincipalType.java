@@ -10,7 +10,7 @@ public enum PrincipalType {
     UNIT_ID(0),
     MEMBER_ID(1),
     TEAM_ID(2),
-    TAG_ID(3);
+    ROLE_ID(3);
 
     private int val;
 

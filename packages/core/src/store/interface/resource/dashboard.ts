@@ -29,7 +29,6 @@ export interface IDashboardClient {
 export interface IDashboardSnapshot {
   widgetInstallations: {
     layout?: IDashboardLayout[];
-    installWidgetIds?: string[];
   };
 }
 
@@ -43,6 +42,6 @@ export interface IDashboardLayout {
 
 export interface IUpdateDashboardInfo {
   type: typeof ActionConstants.UPDATE_DASHBOARD_INFO;
-  dashboardId: string,
-  payload: Partial<IDashboard>,
+  dashboardId: string;
+  payload: Partial<IDashboard>;
 }

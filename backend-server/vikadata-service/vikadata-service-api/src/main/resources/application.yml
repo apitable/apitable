@@ -389,6 +389,8 @@ vikadata-starter:
     client-secret: ${AUTH0_CLIENT_SECRET:e3D6B-ZHn5VHqhVAO0QPV6P34qERfeBksIXaxqeBkWDa1fcsVHAi_QRmiOyECTB5}
     issuer-uri: ${AUTH0_CLIENT_ISSUER_URI:https://apitable.us.auth0.com/}
     redirect-uri: ${AUTH0_REDIRECT_URI:http://127.0.0.1:8081/api/v1/auth0/callback}
+    db-connection-id: ${AUTH0_DB_CONNECTION_ID:con_7R0apN7yVNGiVNez}
+    db-connection-name: ${AUTH0_DB_CONNECTION_NAME:DB-APITable-Integration}
 
 # Sentry 配置
 sentry:

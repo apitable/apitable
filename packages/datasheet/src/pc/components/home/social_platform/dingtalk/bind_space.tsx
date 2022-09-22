@@ -1,12 +1,11 @@
 import { Api, Navigation, Strings, t } from '@vikadata/core';
 import { useMount } from 'ahooks';
 import { Loading, Message } from 'pc/components/common';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest } from 'pc/hooks';
 
 const DingTalkBindSpace = () => {
   const query = useQuery();
-  const navigationTo = useNavigation();
   const suiteId = query.get('suiteId') || '';
   const corpId = query.get('corpId') || '';
   const bizAppId = query.get('bizAppId') || '';
@@ -16,8 +15,7 @@ const DingTalkBindSpace = () => {
       const { data, success } = res.data;
 
       if (!success || !data?.bindSpaceId) {
-        return navigationTo({
-          path: Navigation.DINGTALK,
+        return Router.push(Navigation.DINGTALK, {
           params: { dingtalkPath: 'social_login' },
           query: { suiteId, corpId, bizAppId },
           clearQuery: true
@@ -25,8 +23,7 @@ const DingTalkBindSpace = () => {
       }
       // 应用已经绑定了空间
       // return window.location.href = `/workbench/${bizAppId}?spaceId=${data.bindSpaceId}`;
-      return navigationTo({
-        path: Navigation.WORKBENCH,
+      return Router.push(Navigation.WORKBENCH, {
         params: { spaceId: data.bindSpaceId, nodeId: bizAppId },
         query: { spaceId: data.bindSpaceId },
         clearQuery: true

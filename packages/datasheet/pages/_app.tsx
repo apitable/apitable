@@ -32,7 +32,7 @@ import 'pc/components/editors/date_time_editor/date_picker/date_picker.less';
 import 'pc/components/editors/date_time_editor/time_picker_only/time_picker.less';
 import 'pc/components/home/social_platform/components/common.less';
 import 'pc/components/invite/invite.common.less';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { initEventListen } from 'pc/events';
 import { getRegResult, LOGIN_SUCCESS, shareIdReg } from 'pc/hooks';
 import { init as initPlayer } from 'pc/player/init';
@@ -101,7 +101,6 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
     }
     return LoadingStatus.None;
   });
-  const navigationTo = useNavigation();
 
   useEffect(() => {
     // 初始化用户系统
@@ -173,7 +172,7 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
           content: t(Strings.enter_unactive_space_err_message),
           okText: t(Strings.submit),
           onOk: () => {
-            navigationTo({ path: Navigation.HOME });
+            Router.push(Navigation.HOME);
           }
         });
         return;
@@ -205,7 +204,7 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
         LOGIN_SUCCESS
       )
     );
-  }, [clientInfo, clientInfo?.userInfo, pathUrl, navigationTo]);
+  }, [clientInfo, clientInfo?.userInfo, pathUrl]);
 
   useEffect(() => {
     import('../src/preIndex');
@@ -237,7 +236,7 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
   return <>
     <Head>
       <title>{t(Strings.vikadata)}</title>
-      <meta name="description" content="维格表, 积木式多媒体数据表格, 维格表技术首创者, 数据整理神器, 让人人都是数据设计师" />
+      <meta name='description' content='维格表, 积木式多媒体数据表格, 维格表技术首创者, 数据整理神器, 让人人都是数据设计师' />
       <meta
         name='keywords'
         content='维格表,vika,vikadata,维格智数,大数据,数字化,数字化转型,数据中台,业务中台,数据资产,

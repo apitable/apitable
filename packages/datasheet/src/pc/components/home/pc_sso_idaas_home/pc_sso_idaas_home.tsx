@@ -1,16 +1,15 @@
-import React, { FC, useState } from 'react';
-import styles from './style.module.less';
-import { Space } from 'antd';
-import { Strings, t, Settings, Api, Navigation, getCustomConfig, ApiInterface } from '@vikadata/core';
-import { LinkButton, ButtonGroup, colors } from '@vikadata/components';
-import { Button } from '@vikadata/components';
-import { useQuery, useUserRequest } from 'pc/hooks';
+import { Button, ButtonGroup, colors, LinkButton } from '@vikadata/components';
+import { Api, ApiInterface, getCustomConfig, Navigation, Settings, Strings, t } from '@vikadata/core';
 import { useMount } from 'ahooks';
-import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
-import { Message } from 'pc/components/common';
-import { PasswordLogin } from '../login/password_login';
-import { ISubmitRequestParam } from '../login/identifying_code_login';
+import { Space } from 'antd';
 import Image from 'next/image';
+import { Message } from 'pc/components/common';
+import { Router } from 'pc/components/route_manager/router';
+import { useQuery, useUserRequest } from 'pc/hooks';
+import React, { FC, useState } from 'react';
+import { ISubmitRequestParam } from '../login/identifying_code_login';
+import { PasswordLogin } from '../login/password_login';
+import styles from './style.module.less';
 
 export const PcSsoIdaasHome: FC = () => {
 
@@ -22,15 +21,15 @@ export const PcSsoIdaasHome: FC = () => {
           className={styles.leftBg}
         />
         <div className={styles.bottom}>
-          <Space size={55} align="start" className={styles.qrCodeGroup}>
+          <Space size={55} align='start' className={styles.qrCodeGroup}>
             <div className={styles.qrCode}>
               <Image
-                src={`${process.env.PUBLIC_URL}/signin_img_communicationgroup_qrcode.png`} alt="CommunicationGroup Code" layout={'fill'}
+                src={`${process.env.PUBLIC_URL}/signin_img_communicationgroup_qrcode.png`} alt='CommunicationGroup Code' layout={'fill'}
               />
               <div className={styles.caption}>{t(Strings.communication_group_qrcode)}</div>
             </div>
             <div className={styles.qrCode}>
-              <Image src={`${process.env.PUBLIC_URL}/signin_img_officialaccounts_qrcode.png`} alt="OfficialAccount Code" layout={'fill'} />
+              <Image src={`${process.env.PUBLIC_URL}/signin_img_officialaccounts_qrcode.png`} alt='OfficialAccount Code' layout={'fill'} />
               <div className={styles.caption}>{t(Strings.vika_star)}</div>
             </div>
           </Space>
@@ -46,42 +45,41 @@ export const PcSsoIdaasHome: FC = () => {
 };
 
 export const SsoNav: FC = () => {
-  const navigationTo = useNavigation();
   const { siteUrl } = getCustomConfig();
   const jumpOfficialWebsite = () => {
     if (siteUrl) {
       window.open(siteUrl, '__blank');
       return;
     }
-    navigationTo({ path: Navigation.HOME, method: Method.NewTab, query: { home: 1 }});
+    Router.newTab(Navigation.HOME, { query: { home: 1 }});
   };
   return (
     <div className={styles.nav}>
       <ButtonGroup withSeparate>
         <LinkButton
-          component="button"
+          component='button'
           underline={false}
           style={{ color: colors.thirdLevelText }}
-          onClick={() => navigationTo({ path: Navigation.TEMPLATE })}
+          onClick={() => Router.push(Navigation.TEMPLATE)}
         >
           模板中心
         </LinkButton>
         <LinkButton
-          component="button"
+          component='button'
           underline={false}
           style={{ color: colors.thirdLevelText }}
         >
-          <a href={`${window.location.origin}/chatgroup/`} target="_blank" style={{ color: 'inherit' }} rel="noreferrer">{t(Strings.feedback)}</a>
+          <a href={`${window.location.origin}/chatgroup/`} target='_blank' style={{ color: 'inherit' }} rel='noreferrer'>{t(Strings.feedback)}</a>
         </LinkButton>
         <LinkButton
-          component="button"
+          component='button'
           underline={false}
           style={{ color: colors.thirdLevelText }}
         >
-          <a href="/help/" target="_blank" style={{ color: 'inherit' }}>{t(Strings.support)}</a>
+          <a href='/help/' target='_blank' style={{ color: 'inherit' }}>{t(Strings.support)}</a>
         </LinkButton>
         <LinkButton
-          component="button"
+          component='button'
           underline={false}
           onClick={jumpOfficialWebsite}
           style={{ color: colors.thirdLevelText }}
@@ -116,7 +114,7 @@ export const LoginContent: FC = () => {
           <div className={styles.passwordLogin}>
             <div className={styles.topBlock} />
             <div className={styles.header}>
-              <Image src={`${process.env.PUBLIC_URL}/logo.png`} alt="vika_logo" layout={'fill'}/>
+              <Image src={`${process.env.PUBLIC_URL}/logo.png`} alt='vika_logo' layout={'fill'} />
               <p>维格专有云版</p>
             </div>
             <p className={styles.username}>账号</p>
@@ -126,7 +124,7 @@ export const LoginContent: FC = () => {
           </div> :
           <div className={styles.loginContent}>
             <div className={styles.topBlock} />
-            <Image src={`${process.env.PUBLIC_URL}/logo.png`} alt="vika_logo" layout={'fill'}/>
+            <Image src={`${process.env.PUBLIC_URL}/logo.png`} alt='vika_logo' layout={'fill'} />
             <p>维格专有云版</p>
             <div className={styles.loginButton}>
               <LoginButton />
@@ -136,11 +134,11 @@ export const LoginContent: FC = () => {
         <p className={styles.swtichLogin} onClick={() => setIsPasswordLogin(!isPasswordLogin)}>{isPasswordLogin ? '切换快速登录' : '切换账号登录'}</p>
       </div>
       <div className={styles.icp}>
-        <LinkButton className={styles.icpBtn} href={Settings['icp1'].value} underline={false} color={colors.fc3} target="_blank">
+        <LinkButton className={styles.icpBtn} href={Settings['icp1'].value} underline={false} color={colors.fc3} target='_blank'>
           {t(Strings.icp1)}
         </LinkButton>
         <div className={styles.line} />
-        <LinkButton className={styles.icpBtn} href={Settings['icp2'].value} underline={false} color={colors.fc3} target="_blank">
+        <LinkButton className={styles.icpBtn} href={Settings['icp2'].value} underline={false} color={colors.fc3} target='_blank'>
           {t(Strings.icp2)}
         </LinkButton>
       </div>
@@ -190,6 +188,6 @@ export const LoginButton: FC = () => {
     window.location.href = idaasLoginUrl;
   };
   return (
-    <Button color="primary" block onClick={gotoIdaasLogin} disabled={!idaasLoginUrl}>{idaasLoginUrl !== '' ? 'SSO 登录' : '当前网址不合法'}</Button>
+    <Button color='primary' block onClick={gotoIdaasLogin} disabled={!idaasLoginUrl}>{idaasLoginUrl !== '' ? 'SSO 登录' : '当前网址不合法'}</Button>
   );
 };

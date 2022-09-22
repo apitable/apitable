@@ -1,7 +1,7 @@
 import { Api, Navigation, Strings, t } from '@vikadata/core';
 import { useMount } from 'ahooks';
 import { Loading, Message } from 'pc/components/common';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest } from 'pc/hooks';
 import { useEffect, useState } from 'react';
 import { FeishuErrType } from './feishu_err';
@@ -11,13 +11,11 @@ const FeiShuConfigure = () => {
   const [err, setErr] = useState('');
   const appId = query.get('app_id') || query.get('appId') || undefined;
   const accessToken = query.get('access_token') || query.get('accessToken') || undefined;
-  const NavigationTo = useNavigation();
   const { run: check } = useRequest(token => Api.socialFeiShuUserAuth(token), {
     onSuccess: async(res) => {
       const { success, data } = res.data;
       if (!success) {
-        NavigationTo({
-          path: Navigation.FEISHU,
+        Router.push(Navigation.FEISHU, {
           params: { feiShuPath: 'err' },
           query: {
             key: FeishuErrType.SELECT_VALID,
@@ -34,8 +32,7 @@ const FeiShuConfigure = () => {
       }
       // 非管理员
       if (!checkAdminInfo.isAdmin) {
-        NavigationTo({
-          path: Navigation.FEISHU,
+        Router.push(Navigation.FEISHU, {
           params: { feiShuPath: 'err' },
           query: {
             key: FeishuErrType.IDENTITY,
@@ -47,9 +44,8 @@ const FeiShuConfigure = () => {
       const tenantBindRes = await Api.socialFeiShuCheckTenantBind(tenantKey);
       const { success: tenantBindSuccess, data: tenantBindData, message: tenantBindMsg } = tenantBindRes.data;
       if (tenantBindSuccess && tenantBindData.hasBind) {
-        NavigationTo({
+        Router.push(Navigation.FEISHU, {
           clearQuery: true,
-          path: Navigation.FEISHU,
           params: { feiShuPath: 'err' },
           query: {
             key: FeishuErrType.BOUND,
@@ -59,8 +55,7 @@ const FeiShuConfigure = () => {
         return;
       }
       if (tenantBindSuccess && !tenantBindData.hasBind) {
-        NavigationTo({
-          path: Navigation.FEISHU,
+        Router.push(Navigation.FEISHU, {
           params: { feiShuPath: 'admin_login' },
           query: { openId, tenantKey },
         });
@@ -83,15 +78,14 @@ const FeiShuConfigure = () => {
 
   useEffect(() => {
     if (err) {
-      NavigationTo({
-        path: Navigation.FEISHU,
+      Router.push(Navigation.FEISHU, {
         params: { feiShuPath: 'err' },
         query: {
           msg: err,
         },
       });
     }
-  }, [err, NavigationTo]);
+  }, [err]);
 
   return <Loading />;
 };

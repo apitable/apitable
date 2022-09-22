@@ -5,21 +5,19 @@ import {
 import { useMount } from 'ahooks';
 import { Space } from 'antd';
 import Image from 'next/image';
+import { StatusIconFunc } from 'pc/components/common/icon';
 import { Loading } from 'pc/components/common/loading';
 import { Logo } from 'pc/components/common/logo';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-import { StatusIconFunc } from 'pc/components/common/icon';
 import { TComponent } from 'pc/components/common/t_component';
-import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useDispatch, useUserRequest } from 'pc/hooks';
 import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './style.module.less';
 
 const ApplyLogout: FC = () => {
-  const navigationTo = useNavigation();
-
   const user = useSelector((state: IReduxState) => state.user);
   const userInfo = user.info || window.__initialization_data__.userInfo;
   const dispatch = useDispatch();
@@ -35,19 +33,13 @@ const ApplyLogout: FC = () => {
         dispatch(StoreActions.setUserMe(data));
         const { isPaused } = data;
         if (!isPaused) {
-          navigationTo({
-            method: Method.Push,
-            path: Navigation.HOME
-          });
+          Router.push(Navigation.HOME);
         }
       } else {
         Message.error({
           content: message
         });
-        navigationTo({
-          method: Method.Push,
-          path: Navigation.LOGIN
-        });
+        Router.push(Navigation.LOGIN);
       }
     }).finally(() => {
       setLoading(false);
@@ -59,10 +51,7 @@ const ApplyLogout: FC = () => {
       const { message, success } = res.data;
       if (success) {
         Message.success({ content: t(Strings.cancelled_log_out_succeed) });
-        navigationTo({
-          method: Method.Push,
-          path: Navigation.HOME
-        });
+        Router.push(Navigation.HOME);
       } else {
         Message.error({ content: message });
       }
@@ -76,7 +65,7 @@ const ApplyLogout: FC = () => {
       window.open(siteUrl, '__blank');
       return;
     }
-    navigationTo({ path: Navigation.HOME, method: Method.NewTab, query: { home: 1 }});
+    Router.newTab(Navigation.HOME, { query: { home: 1 }});
   };
 
   if (loading) {

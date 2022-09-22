@@ -7,41 +7,31 @@ export class DashboardAction {
   static addWidget2Action(
     snapshot: IDashboardSnapshot,
     options: {
-      layout: IDashboardLayout[]
-    }
+      layout: IDashboardLayout[];
+    },
   ): IJOTAction[] | null {
     const widgetInstallations = snapshot.widgetInstallations;
-    const widgetCount = widgetInstallations.installWidgetIds?.length;
+    const widgetCount = widgetInstallations.layout?.length;
     const { layout } = options;
     if (!widgetCount) {
-      const newInstallWidgetIds = layout.map(widget => widget.id);
       // 第一次加入
-      return [{
-        n: OTActionName.ObjectInsert,
-        p: ['widgetInstallations', 'layout'],
-        oi: layout,
-      }, {
-        n: OTActionName.ObjectInsert,
-        p: ['widgetInstallations', 'installWidgetIds'],
-        oi: newInstallWidgetIds,
-      }];
+      return [
+        {
+          n: OTActionName.ObjectInsert,
+          p: ['widgetInstallations', 'layout'],
+          oi: layout,
+        },
+      ];
     }
 
     const action: IJOTAction[] = [];
 
     layout.forEach((widget, index) => {
-      action.push(
-        {
-          n: OTActionName.ListInsert,
-          p: ['widgetInstallations', 'layout', widgetCount + index],
-          li: widget,
-        },
-        {
-          n: OTActionName.ListInsert,
-          p: ['widgetInstallations', 'installWidgetIds', widgetCount + index],
-          li: widget.id,
-        }
-      );
+      action.push({
+        n: OTActionName.ListInsert,
+        p: ['widgetInstallations', 'layout', widgetCount + index],
+        li: widget,
+      });
     });
 
     return action;
@@ -49,18 +39,10 @@ export class DashboardAction {
 
   // 删除小组件
   static deleteWidget2Action(snapshot: IDashboardSnapshot, widgetId: string): IJOTAction[] | null {
-    const installedWidgetIds = snapshot.widgetInstallations.installWidgetIds!;
     const layout = snapshot.widgetInstallations.layout!;
-
     const layoutIndex = layout.findIndex(item => item.id === widgetId);
-    const installedIndex = installedWidgetIds.findIndex(item => item === widgetId);
 
     return [
-      {
-        n: OTActionName.ListDelete,
-        p: ['widgetInstallations', 'installWidgetIds', installedIndex],
-        ld: widgetId,
-      },
       {
         n: OTActionName.ListDelete,
         p: ['widgetInstallations', 'layout', layoutIndex],
@@ -93,5 +75,4 @@ export class DashboardAction {
     });
     return actions;
   }
-
 }

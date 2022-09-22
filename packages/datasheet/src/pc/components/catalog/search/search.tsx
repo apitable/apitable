@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { ShortcutActionName } from 'pc/common/shortcut_key';
 import { getShortcutKeyString } from 'pc/common/shortcut_key/keybinding_config';
 import { ScreenSize } from 'pc/components/common/component_display';
-import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useResponsive, useSelectIndex } from 'pc/hooks';
 import { getElementDataset, KeyCode, nodeConfigData } from 'pc/utils';
 import * as React from 'react';
@@ -42,7 +42,6 @@ export const Search: FC<ISearchProps> = ({ className, closeSearch }) => {
   const listContainerRef = useRef<any>(null);
   const totalSearchResultItemsCount = groupData.reduce((total, item) => total + item.data.length, 0);
   const spaceId = useSelector(state => state.space.activeId);
-  const navigationTo = useNavigation();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const ref = useRef<HTMLDivElement>(null);
@@ -76,7 +75,7 @@ export const Search: FC<ISearchProps> = ({ className, closeSearch }) => {
       }
       closeSearch();
       setKeyword('');
-      navigationTo({ path: Navigation.WORKBENCH, params: { spaceId, nodeId: node.nodeId }});
+      Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: node.nodeId }});
     },
   });
 
@@ -141,8 +140,9 @@ export const Search: FC<ISearchProps> = ({ className, closeSearch }) => {
   const handleNodeClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const nodeId = getElementDataset(e.currentTarget, 'nodeId');
     if (nodeId) {
-      const method = shouldOpenInNewTab(e) ? Method.NewTab : Method.Push;
-      navigationTo({ path: Navigation.WORKBENCH, params: { spaceId, nodeId }, method });
+      const params = { spaceId, nodeId };
+      shouldOpenInNewTab(e) ? Router.newTab(Navigation.WORKBENCH, { params }) :
+        Router.push(Navigation.WORKBENCH, { params });
     }
     setKeyword('');
     closeSearch();
@@ -154,7 +154,7 @@ export const Search: FC<ISearchProps> = ({ className, closeSearch }) => {
         <Input
           ref={inputRef}
           className={styles.searchInput}
-          size="small"
+          size='small'
           placeholder={
             isMobile ? t(Strings.search) : t(Strings.search_node_pleaseholder, { shortcutKey: getShortcutKeyString(ShortcutActionName.SearchNode) })
           }

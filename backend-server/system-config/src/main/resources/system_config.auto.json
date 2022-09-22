@@ -1488,6 +1488,21 @@
                 "url": "/management",
                 "is_component": true
             },
+            "assigned_to_role": {
+                "can_jump": true,
+                "to_tag": "members",
+                "notifications_type": "member",
+                "formatString": [
+                    "space_assigned_to_role"
+                ],
+                "is_notification": true,
+                "is_mobile": true,
+                "is_browser": true,
+                "format_string": "space_assigned_to_role",
+                "id": "assigned_to_role",
+                "url": "/management",
+                "is_component": true
+            },
             "changed_ordinary_user": {
                 "can_jump": true,
                 "to_tag": "members",
@@ -1585,6 +1600,21 @@
                 "is_browser": true,
                 "format_string": "remove_from_group",
                 "id": "remove_from_group",
+                "url": "/management",
+                "is_component": true
+            },
+            "remove_from_role": {
+                "can_jump": true,
+                "to_tag": "members",
+                "notifications_type": "member",
+                "formatString": [
+                    "remove_from_role"
+                ],
+                "is_notification": true,
+                "is_mobile": true,
+                "is_browser": true,
+                "format_string": "remove_from_role",
+                "id": "remove_from_role",
                 "url": "/management",
                 "is_component": true
             },
@@ -2835,8 +2865,7 @@
                     "gallery_view_unlimited",
                     "kanban_view_unlimited",
                     "advance_integration_office_preview",
-                    "record_activity_14",
-                    "audit_query_14"
+                    "record_activity_14"
                 ],
                 "name": [
                     "bronze_grade"
@@ -2904,7 +2933,6 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "record_activity_90",
-                    "audit_query_14",
                     "seats_30",
                     "storage_capacity_150",
                     "seats_20",
@@ -2980,7 +3008,6 @@
                     "record_activity_180",
                     "security_export",
                     "security_mobile",
-                    "audit_query_14",
                     "seats_120",
                     "storage_capacity_840",
                     "seats_150",
@@ -3241,8 +3268,7 @@
                     "time_machine_14",
                     "trash_14",
                     "advance_integration_office_preview",
-                    "record_activity_14",
-                    "audit_query_14"
+                    "record_activity_14"
                 ],
                 "name": [
                     "dingtalk_base"
@@ -3401,7 +3427,6 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "record_activity_90",
-                    "audit_query_14",
                     "seats_20",
                     "storage_capacity_100",
                     "seats_30",
@@ -3616,8 +3641,7 @@
                     "trash_14",
                     "advance_integration_office_preview",
                     "social_integration_feishu",
-                    "record_activity_14",
-                    "audit_query_14"
+                    "record_activity_14"
                 ],
                 "name": [
                     "feishu_base"
@@ -3690,7 +3714,6 @@
                     "advance_integration_office_preview",
                     "social_integration_feishu",
                     "record_activity_90",
-                    "audit_query_14",
                     "seats_20",
                     "storage_capacity_100",
                     "seats_30",
@@ -3889,8 +3912,7 @@
                     "trash_14",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_14",
-                    "audit_query_14"
+                    "record_activity_14"
                 ],
                 "name": [
                     "wecom_base"
@@ -3979,7 +4001,6 @@
                     "advance_integration_office_preview",
                     "social_integration_wecom",
                     "record_activity_90",
-                    "audit_query_14",
                     "seats_50",
                     "storage_capacity_250",
                     "seats_30",
@@ -4134,8 +4155,7 @@
                     "gallery_view_unlimited",
                     "kanban_view_unlimited",
                     "advance_integration_office_preview",
-                    "record_activity_14",
-                    "audit_query_14"
+                    "record_activity_14"
                 ],
                 "product_ch_name": "青铜级",
                 "seats": -1,
@@ -4168,8 +4188,7 @@
                     "time_machine_14",
                     "trash_14",
                     "advance_integration_office_preview",
-                    "record_activity_14",
-                    "audit_query_14"
+                    "record_activity_14"
                 ],
                 "product_ch_name": "钉钉基础版",
                 "seats": -1,
@@ -4960,8 +4979,7 @@
                     "social_integration_dingtalk",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "钉钉标准版",
                 "seats": 10,
@@ -5009,8 +5027,7 @@
                     "social_integration_dingtalk",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "钉钉标准版",
                 "seats": 20,
@@ -5058,8 +5075,7 @@
                     "social_integration_dingtalk",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "钉钉标准版",
                 "seats": 30,
@@ -5107,8 +5123,7 @@
                     "social_integration_dingtalk",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "钉钉标准版",
                 "seats": 50,
@@ -5155,8 +5170,7 @@
                     "social_integration_dingtalk",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "钉钉标准版",
                 "seats": 100,
@@ -5203,8 +5217,7 @@
                     "social_integration_dingtalk",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "钉钉标准版",
                 "seats": 200,
@@ -5251,8 +5264,7 @@
                     "social_integration_dingtalk",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "钉钉标准版",
                 "seats": 10,
@@ -5289,8 +5301,7 @@
                     "social_integration_dingtalk",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "钉钉标准版",
                 "seats": 200,
@@ -5326,8 +5337,7 @@
                     "social_integration_dingtalk",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "钉钉标准版",
                 "seats": 100,
@@ -5363,8 +5373,7 @@
                     "social_integration_dingtalk",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "钉钉标准版",
                 "seats": 50,
@@ -5401,8 +5410,7 @@
                     "social_integration_dingtalk",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "钉钉标准版",
                 "seats": 30,
@@ -5439,8 +5447,7 @@
                     "social_integration_dingtalk",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "钉钉标准版",
                 "seats": 20,
@@ -5477,8 +5484,7 @@
                     "seats_80",
                     "storage_capacity_400",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "钉钉标准版",
                 "seats": 80,
@@ -5526,8 +5532,7 @@
                     "seats_80",
                     "storage_capacity_400",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "钉钉标准版",
                 "seats": 80,
@@ -5564,8 +5569,7 @@
                     "advance_integration_office_preview",
                     "seats_120",
                     "storage_capacity_600",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "钉钉标准版",
                 "seats": 120,
@@ -5613,8 +5617,7 @@
                     "advance_integration_office_preview",
                     "seats_120",
                     "storage_capacity_600",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "钉钉标准版",
                 "seats": 120,
@@ -5651,8 +5654,7 @@
                     "social_integration_dingtalk",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "钉钉标准版",
                 "seats": 100,
@@ -5686,8 +5688,7 @@
                     "social_integration_dingtalk",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "钉钉标准版",
                 "seats": 100,
@@ -7451,8 +7452,7 @@
                     "trash_14",
                     "advance_integration_office_preview",
                     "social_integration_feishu",
-                    "record_activity_14",
-                    "audit_query_14"
+                    "record_activity_14"
                 ],
                 "product_ch_name": "飞书基础版",
                 "seats": -1,
@@ -8165,8 +8165,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_feishu",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "飞书标准版",
                 "seats": 10,
@@ -8203,8 +8202,7 @@
                     "storage_capacity_400",
                     "advance_integration_office_preview",
                     "social_integration_feishu",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "飞书标准版",
                 "seats": 80,
@@ -8241,8 +8239,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_feishu",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "飞书标准版",
                 "seats": 50,
@@ -8279,8 +8276,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_feishu",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "飞书标准版",
                 "seats": 30,
@@ -8317,8 +8313,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_feishu",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "飞书标准版",
                 "seats": 20,
@@ -8355,8 +8350,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_feishu",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "飞书标准版",
                 "seats": 10,
@@ -8392,8 +8386,7 @@
                     "storage_capacity_400",
                     "advance_integration_office_preview",
                     "social_integration_feishu",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "飞书标准版",
                 "seats": 80,
@@ -8429,8 +8422,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_feishu",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "飞书标准版",
                 "seats": 50,
@@ -8466,8 +8458,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_feishu",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "飞书标准版",
                 "seats": 30,
@@ -8503,8 +8494,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_feishu",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "飞书标准版",
                 "seats": 20,
@@ -8540,8 +8530,7 @@
                     "seats_120",
                     "storage_capacity_600",
                     "social_integration_feishu",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "飞书标准版",
                 "seats": 120,
@@ -8578,8 +8567,7 @@
                     "seats_120",
                     "storage_capacity_600",
                     "social_integration_feishu",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "飞书标准版",
                 "seats": 120,
@@ -8611,8 +8599,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_feishu",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "飞书标准版",
                 "seats": 100,
@@ -8649,8 +8636,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_feishu",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "飞书标准版",
                 "seats": 100,
@@ -8683,8 +8669,7 @@
                     "space_admin_10",
                     "record_activity_180",
                     "security_export",
-                    "security_mobile",
-                    "audit_query_14"
+                    "security_mobile"
                 ],
                 "product_ch_name": "黄金级",
                 "seats": 100,
@@ -8723,8 +8708,7 @@
                     "storage_capacity_840",
                     "record_activity_180",
                     "security_export",
-                    "security_mobile",
-                    "audit_query_14"
+                    "security_mobile"
                 ],
                 "product_ch_name": "黄金级",
                 "seats": 120,
@@ -8763,8 +8747,7 @@
                     "storage_capacity_1050",
                     "record_activity_180",
                     "security_export",
-                    "security_mobile",
-                    "audit_query_14"
+                    "security_mobile"
                 ],
                 "product_ch_name": "黄金级",
                 "seats": 150,
@@ -8803,8 +8786,7 @@
                     "storage_capacity_1260",
                     "record_activity_180",
                     "security_export",
-                    "security_mobile",
-                    "audit_query_14"
+                    "security_mobile"
                 ],
                 "product_ch_name": "黄金级",
                 "seats": 180,
@@ -8843,8 +8825,7 @@
                     "storage_capacity_1400",
                     "record_activity_180",
                     "security_export",
-                    "security_mobile",
-                    "audit_query_14"
+                    "security_mobile"
                 ],
                 "product_ch_name": "黄金级",
                 "seats": 200,
@@ -8926,8 +8907,7 @@
                     "kanban_view_unlimited",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "白银级",
                 "seats": 2,
@@ -8965,8 +8945,7 @@
                     "kanban_view_unlimited",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "白银级",
                 "seats": 5,
@@ -9004,8 +8983,7 @@
                     "kanban_view_unlimited",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "白银级",
                 "seats": 10,
@@ -9043,8 +9021,7 @@
                     "kanban_view_unlimited",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "白银级",
                 "seats": 20,
@@ -9082,8 +9059,7 @@
                     "kanban_view_unlimited",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "白银级",
                 "seats": 25,
@@ -9114,8 +9090,7 @@
                     "kanban_view_unlimited",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "白银级",
                 "seats": 30,
@@ -9153,8 +9128,7 @@
                     "kanban_view_unlimited",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "白银级",
                 "seats": 40,
@@ -9185,8 +9159,7 @@
                     "kanban_view_unlimited",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "白银级",
                 "seats": 50,
@@ -9224,8 +9197,7 @@
                     "kanban_view_unlimited",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "白银级",
                 "seats": 80,
@@ -9263,8 +9235,7 @@
                     "kanban_view_unlimited",
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "白银级",
                 "seats": 200,
@@ -9295,8 +9266,7 @@
                     "trash_14",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_14",
-                    "audit_query_14"
+                    "record_activity_14"
                 ],
                 "product_ch_name": "企业微信基础版",
                 "seats": -1,
@@ -10261,8 +10231,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 10,
@@ -10294,8 +10263,7 @@
                     "storage_capacity_400",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 80,
@@ -10327,8 +10295,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 50,
@@ -10360,8 +10327,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 30,
@@ -10393,8 +10359,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 20,
@@ -10426,8 +10391,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 10,
@@ -10459,8 +10423,7 @@
                     "storage_capacity_400",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 80,
@@ -10498,8 +10461,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 50,
@@ -10531,8 +10493,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 30,
@@ -10564,8 +10525,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 20,
@@ -10597,8 +10557,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 10,
@@ -10630,8 +10589,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 20,
@@ -10663,8 +10621,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 30,
@@ -10696,8 +10653,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 50,
@@ -10729,8 +10685,7 @@
                     "storage_capacity_400",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 80,
@@ -10762,8 +10717,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "record_activity_90",
-                    "social_integration_wecom",
-                    "audit_query_14"
+                    "social_integration_wecom"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 100,
@@ -10795,8 +10749,7 @@
                     "seats_120",
                     "storage_capacity_600",
                     "record_activity_90",
-                    "social_integration_wecom",
-                    "audit_query_14"
+                    "social_integration_wecom"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 120,
@@ -10828,8 +10781,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "record_activity_90",
-                    "social_integration_wecom",
-                    "audit_query_14"
+                    "social_integration_wecom"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 100,
@@ -10861,8 +10813,7 @@
                     "seats_120",
                     "storage_capacity_600",
                     "record_activity_90",
-                    "social_integration_wecom",
-                    "audit_query_14"
+                    "social_integration_wecom"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 120,
@@ -10894,8 +10845,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 10,
@@ -10933,8 +10883,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 20,
@@ -10972,8 +10921,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 30,
@@ -11011,8 +10959,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 50,
@@ -11050,8 +10997,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "record_activity_90",
-                    "social_integration_wecom",
-                    "audit_query_14"
+                    "social_integration_wecom"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 100,
@@ -11089,8 +11035,7 @@
                     "seats_120",
                     "storage_capacity_600",
                     "record_activity_90",
-                    "social_integration_wecom",
-                    "audit_query_14"
+                    "social_integration_wecom"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "can_trial": true,
@@ -11129,8 +11074,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 10,
@@ -11162,8 +11106,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 20,
@@ -11195,8 +11138,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 30,
@@ -11228,8 +11170,7 @@
                     "advance_rainbow_label",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 50,
@@ -11261,8 +11202,7 @@
                     "storage_capacity_400",
                     "advance_integration_office_preview",
                     "social_integration_wecom",
-                    "record_activity_90",
-                    "audit_query_14"
+                    "record_activity_90"
                 ],
                 "product_ch_name": "企业微信标准版",
                 "seats": 80,
@@ -16818,96 +16758,6 @@
                 "functionName": "空间站操作日志",
                 "functionType": "solid"
             },
-            "audit_query_14": {
-                "plans": [
-                    "bronze_no_billing_period",
-                    "dingtalk_base_no_billing_period",
-                    "wecom_base_no_billing_period",
-                    "feishu_base_no_billing_period",
-                    "dingtalk_standard_10_annual_v1",
-                    "dingtalk_standard_20_annual_v1",
-                    "dingtalk_standard_30_annual_v1",
-                    "dingtalk_standard_50_annual_v1",
-                    "dingtalk_standard_100_annual_v1",
-                    "dingtalk_standard_200_annual_v1",
-                    "dingtalk_standard_10_biennial_v1",
-                    "dingtalk_standard_200_biennial_v1",
-                    "dingtalk_standard_100_biennial_v1",
-                    "dingtalk_standard_50_biennial_v1",
-                    "dingtalk_standard_30_biennial_v1",
-                    "dingtalk_standard_20_biennial_v1",
-                    "dingtalk_standard_80_annual_v1",
-                    "dingtalk_standard_80_biennial_v1",
-                    "feishu_standard_10_annual_v1",
-                    "feishu_standard_80_annual_v1",
-                    "feishu_standard_50_annual_v1",
-                    "feishu_standard_30_annual_v1",
-                    "feishu_standard_20_annual_v1",
-                    "feishu_standard_10_biennial_v1",
-                    "feishu_standard_80_biennial_v1",
-                    "feishu_standard_50_biennial_v1",
-                    "feishu_standard_30_biennial_v1",
-                    "feishu_standard_20_biennial_v1",
-                    "wecom_standard_10_annual_v1",
-                    "wecom_standard_80_annual_v1",
-                    "wecom_standard_50_annual_v1",
-                    "wecom_standard_30_annual_v1",
-                    "wecom_standard_20_annual_v1",
-                    "wecom_standard_10_biennial_v1",
-                    "wecom_standard_80_v1",
-                    "wecom_standard_50_biennial_v1",
-                    "wecom_standard_30_biennial_v1",
-                    "wecom_standard_20_biennial_v1",
-                    "dingtalk_standard_120_annual_v1",
-                    "dingtalk_standard_100_annual_v2",
-                    "dingtalk_standard_120_biennial_v1",
-                    "dingtalk_standard_100_biennial_v2",
-                    "feishu_standard_120_annual_v1",
-                    "feishu_standard_120_biennial_v1",
-                    "feishu_standard_100_annual_v1",
-                    "feishu_standard_100_biennial_v1",
-                    "wecom_standard_10_monthly_v1",
-                    "wecom_standard_20_monthly_v1",
-                    "wecom_standard_30_monthly_v1",
-                    "wecom_standard_50_monthly_v1",
-                    "wecom_standard_80_monthly_v1",
-                    "wecom_standard_100_annual_v1",
-                    "wecom_standard_120_annual_v1",
-                    "wecom_standard_100_biennial_v1",
-                    "wecom_standard_120_biennial_v1",
-                    "wecom_standard_10_v1",
-                    "wecom_standard_20_v1",
-                    "wecom_standard_30_v1",
-                    "wecom_standard_50_v1",
-                    "wecom_standard_100_v1",
-                    "wecom_standard_120_v1",
-                    "wecom_standard_10_monthly",
-                    "wecom_standard_20_monthly",
-                    "wecom_standard_30_monthly",
-                    "wecom_standard_50_monthly",
-                    "wecom_standard_80_monthly",
-                    "silver_2",
-                    "silver_5",
-                    "silver_10",
-                    "silver_20",
-                    "silver_30",
-                    "silver_50",
-                    "gold_100",
-                    "gold_120",
-                    "gold_150",
-                    "gold_180",
-                    "gold_200",
-                    "silver_200",
-                    "silver_25",
-                    "silver_40",
-                    "silver_80"
-                ],
-                "id": "audit_query_14",
-                "function": "audit_query",
-                "specification": 14,
-                "functionName": "空间站操作日志",
-                "functionType": "solid"
-            },
             "record_activity_14": {
                 "plans": [
                     "bronze_no_billing_period",
@@ -17898,8 +17748,7 @@
                 "type": "solid",
                 "id": "audit_query",
                 "features": [
-                    "audit_query_730",
-                    "audit_query_14"
+                    "audit_query_730"
                 ]
             }
         },

@@ -18,11 +18,15 @@ export const deleteDashboardWidget: ICollaCommandDef<IDeleteDashboardWidget> = {
     const { dashboardId, widgetId } = options;
     const snapshot = Selectors.getDashboardSnapshot(state);
 
-    if (!snapshot) { return null; }
+    if (!snapshot) {
+      return null;
+    }
 
-    const installedIds = snapshot.widgetInstallations.installWidgetIds;
+    const installedIds = Selectors.getInstalledWidgetInDashboard(state);
 
-    if (!installedIds) { return null; }
+    if (!installedIds) {
+      return null;
+    }
 
     if (!installedIds.includes(widgetId)) {
       return null;
@@ -30,7 +34,9 @@ export const deleteDashboardWidget: ICollaCommandDef<IDeleteDashboardWidget> = {
 
     const deleteDashboardWidgetAction = DashboardAction.deleteWidget2Action(snapshot, widgetId);
 
-    if (!deleteDashboardWidgetAction) { return null; }
+    if (!deleteDashboardWidgetAction) {
+      return null;
+    }
 
     return {
       result: ExecuteResult.Success,

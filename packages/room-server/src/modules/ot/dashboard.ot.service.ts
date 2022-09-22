@@ -35,30 +35,30 @@ export class DashboardOtService {
     operations.map(item => {
       item.actions.forEach(action => {
         if ('oi' in action || 'li' in action) {
-          if (action.p[0] === 'widgetInstallations' && action.p[1] === 'installWidgetIds') {
+          if (action.p[0] === 'widgetInstallations') {
             if (!permission.manageable) {
               throw new ServerException(PermissionException.OPERATION_DENIED);
             }
             this.logger.info(`dashboard operations log =====> :${JSON.stringify(operations)}`);
             if ('oi' in action) {
-              resultSet.addWidgetIds.push(action['oi'][0]);
+              resultSet.addWidgetIds.push(action['oi'][0].id);
             }
             if ('li' in action) {
-              resultSet.addWidgetIds.push(action['li']);
+              resultSet.addWidgetIds.push(action['li'].id);
             }
           }
         }
 
         if ('ld' in action || 'od' in action) {
-          if (action.p[0] === 'widgetInstallations' && action.p[1] === 'installWidgetIds') {
+          if (action.p[0] === 'widgetInstallations') {
             if (!permission.manageable) {
               throw new ServerException(PermissionException.OPERATION_DENIED);
             }
             if ('ld' in action) {
-              resultSet.deleteWidgetIds.push(action['ld']);
+              resultSet.deleteWidgetIds.push(action['ld'].id);
             }
             if ('od' in action) {
-              resultSet.deleteWidgetIds.push(action['od'][0]);
+              resultSet.deleteWidgetIds.push(action['od'][0].id);
             }
           }
         }

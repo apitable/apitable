@@ -29,6 +29,7 @@ import com.vikadata.api.modular.appstore.service.IAppInstanceService;
 import com.vikadata.api.modular.appstore.service.ILarkAppInstanceConfigService;
 import com.vikadata.api.modular.organization.factory.OrganizationFactory;
 import com.vikadata.api.modular.organization.service.IMemberService;
+import com.vikadata.api.modular.organization.service.IRoleMemberService;
 import com.vikadata.api.modular.organization.service.ITeamMemberRelService;
 import com.vikadata.api.modular.organization.service.ITeamService;
 import com.vikadata.api.modular.organization.service.IUnitService;
@@ -146,6 +147,10 @@ public class FeishuInternalEventServiceImpl implements IFeishuInternalEventServi
 
     @Resource
     private ISpaceInviteLinkService iSpaceInviteLinkService;
+
+    @Resource
+    private IRoleMemberService iRoleMemberService;
+
 
     @Override
     public void urlCheck(String appInstanceId) {
@@ -631,6 +636,8 @@ public class FeishuInternalEventServiceImpl implements IFeishuInternalEventServi
         List<Long> memberIds = Collections.singletonList(memberId);
         // 删除成员关联部门
         iTeamMemberRelService.removeByMemberIds(memberIds);
+        // delete the associated role
+        iRoleMemberService.removeByRoleMemberIds(memberIds);
         // 删除成员
         iMemberService.removeByMemberIds(memberIds);
     }

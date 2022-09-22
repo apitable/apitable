@@ -6,7 +6,9 @@ import { showModal } from 'pc/common/guide/ui';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { isSocialPlatformEnabled, isSocialWecom } from 'pc/components/home/social_platform';
 import { MobileBar } from 'pc/components/mobile_bar';
-import { Method, navigationToUrl, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Method } from 'pc/components/route_manager/const';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+import { Router } from 'pc/components/route_manager/router';
 import { useResponsive } from 'pc/hooks';
 import { FC, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -38,7 +40,6 @@ export const Welcome: FC = () => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const [downModuleId, setDownModuleId] = useState('');
-  const navigationTo = useNavigation();
 
   const spaceInfo = useSelector((state: IReduxState) => state.space.curSpaceInfo);
   // 区分平台使用不同的二维码
@@ -55,7 +56,7 @@ export const Welcome: FC = () => {
       title: t(Strings.welcome_sub_title1),
       rightBtn: isWecomSpace ? null : (
         <TextButton className={styles.moreTemplateBtn} onClick={() => navigationToUrl(Settings.education_url.value, { method: Method.NewTab })}>
-          <Typography variant="body4" color={colors.fc3}>
+          <Typography variant='body4' color={colors.fc3}>
             {t(Strings.more_education)}
           </Typography>
           <ChevronRightOutlined size={16} color={colors.fc3} />
@@ -97,8 +98,8 @@ export const Welcome: FC = () => {
     {
       title: t(Strings.welcome_sub_title2),
       rightBtn: (
-        <TextButton className={styles.moreTemplateBtn} onClick={() => navigationTo({ path: Navigation.TEMPLATE })}>
-          <Typography variant="body4" color={colors.fc3}>
+        <TextButton className={styles.moreTemplateBtn} onClick={() => Router.push(Navigation.TEMPLATE)}>
+          <Typography variant='body4' color={colors.fc3}>
             {t(Strings.more_template)}
           </Typography>
           <ChevronRightOutlined size={16} color={colors.fc3} />
@@ -141,7 +142,7 @@ export const Welcome: FC = () => {
           className={styles.moreTemplateBtn}
           onClick={() => navigationToUrl(`${window.location.origin}${Settings.wecom_bind_help_center.value}${plm}`)}
         >
-          <Typography variant="body4" color={colors.fc3}>
+          <Typography variant='body4' color={colors.fc3}>
             {t(Strings.welcome_more_help)}
           </Typography>
           <ChevronRightOutlined size={16} color={colors.fc3} />
@@ -194,7 +195,7 @@ export const Welcome: FC = () => {
         <>
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
             <div className={styles.guide}>
-              <Typography variant="h1" color={colors.fc1}>
+              <Typography variant='h1' color={colors.fc1}>
                 {t(Strings.welcome_title)}
               </Typography>
               <div className={styles.scrollWrapper}>
@@ -204,7 +205,7 @@ export const Welcome: FC = () => {
                       <div className={styles.guideItem} key={index}>
                         {!isMobile && (
                           <div className={styles.titleWrapper}>
-                            <Typography className={styles.title} variant="body1" color={colors.fc2}>
+                            <Typography className={styles.title} variant='body1' color={colors.fc2}>
                               {item.title}
                             </Typography>
                             {item.rightBtn && <div className={styles.rightBtn}>{item.rightBtn}</div>}
@@ -230,7 +231,7 @@ export const Welcome: FC = () => {
                               <span className={styles.moduleImg}>
                                 <Image src={module.img} alt={module.name} />
                               </span>
-                              <Typography variant="body3" className={styles.moduleName} color={module.color}>
+                              <Typography variant='body3' className={styles.moduleName} color={module.color}>
                                 {module.name}
                               </Typography>
                             </div>
@@ -246,7 +247,7 @@ export const Welcome: FC = () => {
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
             <div className={styles.mobileGuide}>
               <div>
-                <Typography variant="h2" color={colors.fc1}>
+                <Typography variant='h2' color={colors.fc1}>
                   {t(Strings.welcome_title)}
                 </Typography>
                 <div className={styles.container}>
@@ -270,7 +271,7 @@ export const Welcome: FC = () => {
                         <div className={styles.moduleImg}>
                           <Image src={module.img} alt={module.name} width={34} height={34} />
                         </div>
-                        <Typography variant="body3" className={styles.moduleName} color={module.color}>
+                        <Typography variant='body3' className={styles.moduleName} color={module.color}>
                           {module.name}
                         </Typography>
                       </div>
@@ -288,7 +289,7 @@ export const Welcome: FC = () => {
             {treeNodesMap[rootId].permissions.childCreatable ? (
               <>
                 <div className={styles.tip}>{t(Strings.welcome_workspace_tip1)}</div>
-                <Button style={{ width: 200 }} color="primary" size="large" onClick={() => setShow(true)}>
+                <Button style={{ width: 200 }} color='primary' size='large' onClick={() => setShow(true)}>
                   {t(Strings.create)}
                 </Button>
               </>

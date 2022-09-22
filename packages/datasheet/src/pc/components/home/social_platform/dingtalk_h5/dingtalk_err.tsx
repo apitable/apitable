@@ -1,5 +1,5 @@
 import { ConfigConstant, Settings, Strings, t } from '@vikadata/core';
-import { navigationToUrl } from 'pc/components/route_manager/use_navigation';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { ErrPromptBase } from '../components/err_prompt_base';
 import { SocialPlatformMap } from '../config';
 

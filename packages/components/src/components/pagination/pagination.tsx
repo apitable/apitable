@@ -150,6 +150,7 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
     const { current, total } = pagination;
     const pageSize = Number(option.value);
     if (onPageSizeChange) {
+      onChange && onChange(current, pageSize);
       onPageSizeChange(current, pageSize);
       return;
     }

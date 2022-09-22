@@ -13,6 +13,7 @@ import cn.hutool.core.lang.Editor;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.json.JSONUtil;
+
 import com.vikadata.api.modular.organization.model.TeamCteInfo;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -33,6 +34,7 @@ import com.vikadata.api.modular.organization.mapper.TeamMapper;
 import com.vikadata.api.modular.organization.mapper.TeamMemberRelMapper;
 import com.vikadata.api.modular.organization.mapper.UnitMapper;
 import com.vikadata.api.modular.organization.service.IOrganizationService;
+import com.vikadata.api.modular.organization.service.IRoleService;
 import com.vikadata.api.modular.organization.service.ITeamService;
 import com.vikadata.api.modular.organization.service.IUnitService;
 import com.vikadata.api.modular.social.enums.SocialAppType;
@@ -92,6 +94,10 @@ public class OrganizationServiceImpl implements IOrganizationService {
 
     @Resource
     private IUnitService iUnitService;
+
+    @Resource
+    private IRoleService iRoleService;
+
 
     @Override
     public UnitSearchResultVo findLikeUnitName(String spaceId, String likeWord, String highlightClassName) {
@@ -255,6 +261,9 @@ public class OrganizationServiceImpl implements IOrganizationService {
                     // 模糊搜索成员
                     List<Long> memberIds = memberMapper.selectMemberIdsLikeName(spaceId, likeWord);
                     refIds.addAll(memberIds);
+                    // 模糊搜索角色
+                    List<Long> roleIds = iRoleService.getRoleIdsByKeyWord(spaceId, likeWord);
+                    refIds.addAll(roleIds);
 
                     SocialTenantEntity socialTenantEntity = Optional.ofNullable(socialTenantBindService.getBySpaceId(spaceId))
                             .map(bind -> socialTenantService.getByAppIdAndTenantId(bind.getAppId(), bind.getTenantId()))

@@ -1,5 +1,5 @@
 import { ISwitchProps, Switch } from '@vikadata/components';
-import { PermissionType, IPermissionInfo } from 'pc/components/space_manage';
+import { PermissionType, IPermissionInfo } from 'pc/components/space_manage/security';
 import { SubscribeGrade, SubscribeLabel } from 'pc/components/subscribe_system/subscribe_label/subscribe_label';
 import { FC } from 'react';
 import styles from './style.module.less';

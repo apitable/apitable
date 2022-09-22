@@ -20,6 +20,7 @@ export interface IAddRecordsOptions {
 }
 
 export type IAddRecordsResult = string[];
+const MAX_RECORD_NUM = 50000;
 
 export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult> = {
   undoable: true,
@@ -30,27 +31,38 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
     const datasheetId = options.datasheetId || Selectors.getActiveDatasheetId(state)!;
     const snapshot = Selectors.getSnapshot(state, datasheetId);
     const fieldPermissionMap = Selectors.getFieldPermissionMap(state, datasheetId);
+
     if (!snapshot) {
       return null;
     }
+
     if (count <= 0 || isNaN(count)) {
       return null;
     }
+
     if (cellValues && cellValues.length !== count) {
       throw new Error(t(Strings.error_add_row_failed_wrong_length_of_value));
     }
+
     const recordIds = Object.keys(snapshot.recordMap);
+
     if (!state.pageParams.shareId) {
       subscribeUsageCheck('maxRowsPerSheet', recordIds.length);
       subscribeUsageCheck('maxRowsInSpace', state.space.curSpaceInfo?.recordNums);
     }
 
     const newRecordIds = getNewIds(IDPrefix.Record, count, recordIds.length ? recordIds : snapshot.meta.views[0].rows.map(item => item.recordId));
-    const linkFieldIds: IField[] = [];
 
+    if ((recordIds.length + newRecordIds.length) > MAX_RECORD_NUM) {
+      throw new Error(t(Strings.max_record_num_per_dst));
+    }
+
+    const linkFieldIds: IField[] = [];
     const specialActions: IJOTAction[] = [];
-    for (const fieldId in snapshot.meta.fieldMap) {
-      const field = snapshot.meta.fieldMap[fieldId];
+    const fieldMap = snapshot.meta.fieldMap;
+
+    for (const fieldId in fieldMap) {
+      const field = fieldMap[fieldId];
       if (field.type === FieldType.Link && field.property.brotherFieldId) {
         linkFieldIds.push(field);
       }
@@ -71,7 +83,6 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
       }
     }
     const memberFieldMap: { [key: string]: string[] } = {};
-    const fieldMap = snapshot.meta.fieldMap;
 
     /**
      * 新增一条记录，该记录可能是一条空白记录，也可能存在一些初始化的数据，

@@ -137,11 +137,18 @@ public interface IUserService extends IService<UserEntity> {
     Long createUser(SocialUser user);
 
     /**
-     * create user by auth0 platform
+     * create user by auth0 user profile
      * @param userProfile auth0 user profile
      * @return user id
      */
     Long createUserByAuth0IfNotExist(Auth0UserProfile userProfile);
+
+    /**
+     * create user by auth0 user model
+     * @param user user info from auth0 model
+     * @return user id
+     */
+    Long createUserByAuth0IfNotExist(com.auth0.json.mgmt.users.User user);
 
     /**
      * 创建企业微信第三方关联用户

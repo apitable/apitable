@@ -3,7 +3,7 @@ import { Api, integrateCdnHost, IReduxState, Navigation, StoreActions, Strings, 
 import { useUnmount, useUpdateEffect } from 'ahooks';
 import Image from 'next/image';
 import { ServiceQrCode } from 'pc/common/guide/ui/qr_code';
-import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useSideBarVisible } from 'pc/hooks';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,10 +25,9 @@ export const NoPermission: FC<{ desc?: string }> = ({ desc }) => {
   useUnmount(() => {
     dispatch(StoreActions.updateIsPermission(true));
   });
-  const navigationTo = useNavigation();
   const returnHome = () => {
     Api.keepTabbar({});
-    navigationTo({ path: Navigation.HOME, method: Method.Redirect });
+    Router.redirect(Navigation.HOME);
   };
 
   return (
@@ -54,7 +53,7 @@ export const NoPermission: FC<{ desc?: string }> = ({ desc }) => {
             <div className={styles.tidiv}>{desc || t(Strings.no_file_permission_content)}</div>
             <div className={styles.helpText}>{t(Strings.qrcode_help)}</div>
             <div className={styles.backButton}>
-              <Button color="primary" size="middle" block onClick={returnHome}>
+              <Button color='primary' size='middle' block onClick={returnHome}>
                 {t(Strings.back_workbench)}
               </Button>
             </div>
@@ -76,7 +75,7 @@ export const NoPermission: FC<{ desc?: string }> = ({ desc }) => {
             <div className={styles.tidiv}>{t(Strings.not_found_this_file)}</div>
             <div className={styles.tidiv}>{t(Strings.please_contact_admin_if_you_have_any_problem)}</div>
             <div className={styles.btnWrap}>
-              <Button color="primary" onClick={() => setSideBarVisible(true)}>
+              <Button color='primary' onClick={() => setSideBarVisible(true)}>
                 {t(Strings.open_workbench)}
               </Button>
             </div>

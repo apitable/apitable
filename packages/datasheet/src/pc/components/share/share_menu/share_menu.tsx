@@ -4,9 +4,9 @@ import { Tree } from 'antd';
 import classNames from 'classnames';
 import { getNodeIcon } from 'pc/components/catalog/tree/node_icon';
 import { Avatar, AvatarSize, Logo, Modal } from 'pc/components/common';
-import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
-import { ReactText } from 'react';
+import { Router } from 'pc/components/route_manager/router';
 import * as React from 'react';
+import { ReactText } from 'react';
 import { useSelector } from 'react-redux';
 import PullDownIcon from 'static/icon/common/common_icon_pulldown.svg';
 import EditPng from 'static/icon/datasheet/share/datasheet_img_share_edit.png';
@@ -30,15 +30,14 @@ const NodeTree = (nodeTree: INodeTree | undefined) => {
   const colors = useThemeColors();
   const activedNodeId = useSelector(state => Selectors.getNodeId(state))!;
   const shareId = useSelector(state => state.pageParams.shareId);
-  const navigationTo = useNavigation();
+
   if (!nodeTree) {
     return <></>;
   }
 
   function onSelect(selectedKeys: ReactText[]) {
     const [dsId] = selectedKeys;
-    navigationTo({
-      path: Navigation.SHARE_SPACE,
+    Router.push(Navigation.SHARE_SPACE, {
       params: {
         shareId,
         nodeId: dsId as string,
@@ -100,14 +99,13 @@ export const ShareMenu: React.FC<IShareMenu> = ({ shareSpace, shareNode, visible
   const userInfo = useSelector(state => state.user.info);
   const { formId, viewId } = useSelector(state => state.pageParams);
   const activedNodeId = useSelector(state => Selectors.getNodeId(state));
-  const navigationTo = useNavigation();
 
   const saveToMySpace = () => {
     setVisible(true);
   };
 
   const enterSpace = () => {
-    navigationTo({ path: Navigation.HOME, method: Method.Redirect });
+    Router.redirect(Navigation.HOME);
   };
 
   const handleLogin = () => {
@@ -116,7 +114,7 @@ export const ShareMenu: React.FC<IShareMenu> = ({ shareSpace, shareNode, visible
       content: t(Strings.require_login_tip),
       okText: t(Strings.go_login),
       onOk: () => {
-        navigationTo({ path: Navigation.LOGIN, query: { reference: window.location.href, spaceId: shareSpace.spaceId }});
+        Router.push(Navigation.LOGIN, { query: { reference: window.location.href, spaceId: shareSpace.spaceId }});
       },
       okButtonProps: { id: AutoTestID.GO_LOGIN_BTN },
       type: 'warning',
@@ -128,7 +126,7 @@ export const ShareMenu: React.FC<IShareMenu> = ({ shareSpace, shareNode, visible
   return (
     <div className={styles.shareMenu}>
       <div className={styles.logo} onClick={enterSpace}>
-        <Logo theme={ThemeName.Light} size="large" />
+        <Logo theme={ThemeName.Light} size='large' />
       </div>
       <div className={styles.shareInfo}>
         <div className={styles.avatar}>
@@ -156,10 +154,8 @@ export const ShareMenu: React.FC<IShareMenu> = ({ shareSpace, shareNode, visible
               tipText={t(Strings.support_access_to_editors)}
               btnText={t(Strings.access_to_space_station_editors)}
               onClick={() =>
-                navigationTo({
-                  path: Navigation.WORKBENCH,
+                Router.redirect(Navigation.WORKBENCH, {
                   params: { spaceId: userInfo.spaceId, nodeId: activedNodeId, viewId },
-                  method: Method.Redirect,
                 })
               }
             />

@@ -1,17 +1,6 @@
 import { ContextMenu, Message, useThemeColors } from '@vikadata/components';
 import {
-  CollaCommandName,
-  Events,
-  IWidget,
-  Navigation,
-  Player,
-  Selectors,
-  StoreActions,
-  Strings,
-  SystemConfig,
-  t,
-  WidgetApi,
-  WidgetPackageStatus,
+  CollaCommandName, Events, IWidget, Navigation, Player, Selectors, StoreActions, Strings, SystemConfig, t, WidgetApi, WidgetPackageStatus,
   WidgetReleaseType,
 } from '@vikadata/core';
 import { AddOutlined, CodeFilled, DeleteOutlined, EditOutlined, GotoLargeOutlined, SettingOutlined } from '@vikadata/icons';
@@ -24,7 +13,7 @@ import { Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { simpleEmitter as panelSimpleEmitter } from 'pc/components/common/vika_split_panel';
 import { isDingtalkSkuPage } from 'pc/components/home/social_platform';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { simpleEmitter, WIDGET_MENU, WidgetItem } from 'pc/components/widget';
 import { expandWidgetRoute } from 'pc/components/widget/expand_widget';
 import { expandWidgetCenter, InstallPosition } from 'pc/components/widget/widget_center';
@@ -34,8 +23,9 @@ import { useExpandWidget } from 'pc/hooks/use_expand_widget';
 import { useResponsive } from 'pc/hooks/use_responsive';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-import { useEffect, useRef, useState } from 'react';
+import { flatContextData } from 'pc/utils';
 import * as React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import { useSelector } from 'react-redux';
@@ -43,7 +33,6 @@ import { useTrackMissWidgetAndDep } from '../hooks';
 import { RecommendWidgetPanel } from '../recommend_widget_panel';
 import { TabBar } from '../tab_bar';
 import styles from './style.module.less';
-import { flatContextData } from 'pc/utils';
 
 export const DASHBOARD_PANEL_ID = 'DASHBOARD_PANEL_ID';
 
@@ -63,8 +52,6 @@ export const Dashboard = () => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const readonly = isMobile || !editable;
-  const navigateTo = useNavigation();
-
   const connect = dashboardPack?.connected;
   const hasOpenRecommend = useRef(false);
   const [allowChangeLayout, setAllowChangeLayout] = useState(false);
@@ -166,18 +153,15 @@ export const Dashboard = () => {
     // 兼容 sourceId 没有的情况
     const nodeId = widgetSnapshot.sourceId || widgetSnapshot.datasheetId;
     if (shareId) {
-      navigateTo({
-        path: Navigation.SHARE_SPACE,
+      Router.push(Navigation.SHARE_SPACE, {
         params: { nodeId: nodeId, shareId, datasheetId: widgetSnapshot.datasheetId },
       });
     } else if (templateId) {
-      navigateTo({
-        path: Navigation.TEMPLATE,
+      Router.push(Navigation.TEMPLATE, {
         params: { nodeId: nodeId, spaceId, categoryId, templateId, datasheetId: widgetSnapshot.datasheetId },
       });
     } else {
-      navigateTo({
-        path: Navigation.WORKBENCH,
+      Router.push(Navigation.WORKBENCH, {
         params: { nodeId: nodeId, spaceId, datasheetId: widgetSnapshot.datasheetId, viewId: pickerViewId },
       });
     }

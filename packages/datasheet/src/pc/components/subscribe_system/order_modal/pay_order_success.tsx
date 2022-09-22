@@ -3,7 +3,7 @@ import { integrateCdnHost, Navigation, Selectors, Settings, Strings, t } from '@
 import { Modal } from 'antd';
 import Image from 'next/image';
 import { TComponent } from 'pc/components/common/t_component';
-import { navigatePath } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { store } from 'pc/store';
 import * as React from 'react';
 import { isMobile } from 'react-device-detect';
@@ -40,8 +40,8 @@ export const OrderModal: React.FC<IOrderModalProps> = ({ onModalClose, modalTitl
       </Typography> : (isFunctionSubTitle ? (modalSubTitle as Function)(onModalClose) : modalSubTitle)
     }
     <div className={styles.qrCode}>
-      <Image src={QrCodePng} alt="qrcode background" width={240} height={240} layout={'fill'}/>
-      <Image src={qrCodeUrl} alt="" width={224} height={224} />
+      <Image src={QrCodePng} alt='qrcode background' width={240} height={240} layout={'fill'} />
+      <Image src={qrCodeUrl} alt='' width={224} height={224} />
     </div>
     <Button color={colors.fc0} onClick={() => {onModalClose();}} style={{ width: 240, height: 40 }}>
       {t(Strings.player_contact_us_confirm_btn)}
@@ -74,7 +74,7 @@ export const showOrderModal = (config: Omit<IOrderModalProps, 'onModalClose'>) =
         closeIcon={<CloseIcon />}
         onCancel={onModalClose}
         destroyOnClose
-        width="520px"
+        width='520px'
         footer={null}
         centered
       >
@@ -124,7 +124,7 @@ export const showOrderModalAfterPay = (descColor: string, orderType: IOrderType)
                     if (isMobile) {
                       return;
                     }
-                    navigatePath({ path: Navigation.SPACE_MANAGE, params: { pathInSpace: 'overview' }});
+                    Router.push(Navigation.SPACE_MANAGE, { params: { pathInSpace: 'overview' }});
                   }}
                 >
                   {t(Strings.space_overview)}

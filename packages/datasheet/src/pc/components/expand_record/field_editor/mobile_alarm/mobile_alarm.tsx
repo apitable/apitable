@@ -4,7 +4,7 @@ import {
   Strings, t, WithOptional
 } from '@vikadata/core';
 import { ChevronLeftOutlined, ChevronRightOutlined } from '@vikadata/icons';
-import { DatePicker } from 'antd-mobile';
+import DatePicker from 'antd-mobile/lib/date-picker';
 import cls from 'classnames';
 import dayjs from 'dayjs';
 import { compact, isEqual, keyBy, pick } from 'lodash';

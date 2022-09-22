@@ -15,11 +15,12 @@ import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import parser from 'html-react-parser';
 import Image from 'next/image';
+import { triggerUsageAlert } from 'pc/common/billing';
+import { SubscribeUsageTipType } from 'pc/common/billing/subscribe_usage_check';
 
 import { expandUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
 import { getSocialWecomUnitName, isSocialWecom } from 'pc/components/home/social_platform';
 import { MemberItem } from 'pc/components/multi_grid/cell/cell_member/member_item';
-import { LevelType } from 'pc/components/space_manage/space_info/interface';
 import { LocalFormat } from 'pc/components/tool_bar/view_filter/filter_value/filter_date/local_format';
 
 import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs';
@@ -182,7 +183,7 @@ const isMember = (object: any): object is IMember => 'memberId' in object;
 const Log = (): JSX.Element => {
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
-  const isEnterprise = useSelector(state => state.billing.subscription, shallowEqual)?.product?.toLocaleLowerCase() === LevelType.Enterprise;
+  const subscription = useSelector(state => state.billing.subscription, shallowEqual);
 
   const [state, setState] = useState<ILogSearchState>({
     dates: null,
@@ -196,7 +197,7 @@ const Log = (): JSX.Element => {
   const [total, setTotal] = useState<number>(0);
   const [tableData, setTableData] = useState<any[]>([]);
   const [selectedMembers, setSelectedMembers] = useState<IMember[]>([]);
-  const [showTrialModal, setShowTrialModal] = useState<boolean>(!isEnterprise);
+  const [showTrialModal, setShowTrialModal] = useState<boolean>(!subscription?.maxAuditQueryDays);
 
   const { run: getSpaceAudit, loading } = useRequest(async() => {
     if (!spaceId) return;
@@ -254,7 +255,17 @@ const Log = (): JSX.Element => {
     event.stopPropagation();
   };
 
-  const onTrial = () => setShowTrialModal(false);
+  const onTrial = () => {
+    const result = triggerUsageAlert(
+      'maxAuditQueryDays',
+      { usage: subscription?.maxAuditQueryDays, alwaysAlert: true },
+      SubscribeUsageTipType.Alert,
+    );
+
+    if (result) return;
+
+    setShowTrialModal(false);
+  };
 
   const onReset = () => {
     setState({
@@ -264,7 +275,7 @@ const Log = (): JSX.Element => {
     });
     setSelectedMembers([]);
   };
-  
+
   const resetPaginationAndSearch = () => {
     if (pagination.pageNum === 1) {
       onSearch();
@@ -309,7 +320,7 @@ const Log = (): JSX.Element => {
     return (
       <div className={classnames([styles.logContainer, styles.logContainerUnauthorized])}>
         <div className={styles.unauthorizedBg}>
-          <Image alt="" src={UnauthorizedPng} />
+          <Image alt='' src={UnauthorizedPng} />
         </div>
         <h1 className={classnames([styles.unauthorizedTitle, styles.title])}>
           {t(Strings.space_log_title)}
@@ -322,7 +333,7 @@ const Log = (): JSX.Element => {
         </h2>
         <Button
           className={styles.trialButton}
-          color="primary"
+          color='primary'
           onClick={onTrial}
         >
           {t(Strings.space_log_trial_button)}
@@ -340,16 +351,16 @@ const Log = (): JSX.Element => {
         <span className={styles.spaceLevel}>{t(Strings.enterprise)}</span>
       </div>
       <h2 className={styles.desc}>
-        {t(Strings.space_log_trial_desc1, { days: isEnterprise ? '720' : '14' })}
+        {t(Strings.space_log_trial_desc1, { days: subscription?.maxAuditQueryDays })}
       </h2>
       <div className={styles.logSearchPanelContainer}>
         <div className={styles.item}>
           <span className={styles.label}>{t(Strings.space_log_date_range)}</span>
           <DatePicker.RangePicker
             className={classnames([styles.itemInput, styles.rangePicker])}
-            disabledDate={current => isEnterprise
-              ? current && current > dayjs().endOf('day') || current < dayjs().subtract(720, 'day').startOf('day')
-              : current && (current > dayjs().endOf('day') || current < dayjs().subtract(14, 'day').startOf('day')) // 非企业级用户只能查询14天内日志
+            disabledDate={current => current && current > dayjs().endOf('day') || current < dayjs()
+              .subtract(subscription?.maxAuditQueryDays || 0, 'day')
+              .startOf('day')
             }
             locale={lang === 'en' ? undefined : LocalFormat.getDefinedChineseLocal()}
             onCalendarChange={(dates: [Dayjs | null, Dayjs | null] | null) => setState({ ...state, dates })}
@@ -375,8 +386,8 @@ const Log = (): JSX.Element => {
             open={false}
             showArrow
             showSearch={false}
-            size="middle"
-            value=""
+            size='middle'
+            value=''
             virtual={false}
           />
         </div>
@@ -386,13 +397,13 @@ const Log = (): JSX.Element => {
             className={classnames([styles.itemSelect])}
             dropdownClassName={styles.selectDropdown}
             maxTagPlaceholder={(value) => `... +${value.length} 条选项`}
-            mode="multiple"
+            mode='multiple'
             onBlur={resetPaginationAndSearch}
             onChange={(value) => setState({ ...state, actions: value })}
             options={auditTypeOptions}
             showArrow
             showSearch={false}
-            size="middle"
+            size='middle'
             tagRender={({ label, closable, onClose }) => (
               <Tag
                 onMouseDown={onPreventMouseDown}
@@ -421,15 +432,15 @@ const Log = (): JSX.Element => {
             className={styles.reloadButton}
             icon={ReloadOutlined}
             onClick={onReset}
-            shape="square"
-            variant="background"
+            shape='square'
+            variant='background'
           />
           <Button
-            color="primary"
+            color='primary'
             disabled={loading}
             onClick={resetPaginationAndSearch}
             prefixIcon={<SearchOutlined />}
-            size="middle"
+            size='middle'
           >
             {t(Strings.search)}
           </Button>

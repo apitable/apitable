@@ -1,4 +1,5 @@
 import { DatasheetApi, IAttachmentValue, isImage, isPdf, isPrivateDeployment, Strings, t } from '@vikadata/core';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
 import styles from './style.module.less';
@@ -19,7 +20,6 @@ import IconZoomOut from 'static/icon/datasheet/datasheet_icon_zoom_out.svg';
 import { IPreviewToolItem, PreviewToolItem } from './tool_item';
 import { Message } from 'pc/components/common';
 import { Loading, useThemeColors } from '@vikadata/components';
-import { navigationToUrl } from 'pc/components/route_manager/use_navigation';
 import { getFile } from '../preview_main/util';
 import FileSaver from 'file-saver';
 import { useSelector } from 'react-redux';

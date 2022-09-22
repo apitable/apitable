@@ -65,14 +65,24 @@ const plugins = [[withLess, {
 })]
 ];
 
+// use local public folder for editions, e.g. apitable
+const getStaticFolder = () => {
+  if (/vika/gi.test(process.env.ENV)) {
+    return isProd ? process.env.NEXT_PUBLIC_ASSET_PREFIX : '';
+  }
+
+  return '';
+};
+
 module.exports = withPlugins(plugins, {
   // Use the CDN in production and localhost for development.
   assetPrefix: isProd ? process.env.NEXT_ASSET_PREFIX : '',
   images: {
     domains: ['s4.vika.cn', 's1.vika.cn', 'mp.weixin.qq.com'],
   },
+  poweredByHeader: false,
   publicRuntimeConfig: {
-    staticFolder: isProd ? process.env.NEXT_PUBLIC_ASSET_PREFIX : ''
+    staticFolder: getStaticFolder(),
   },
   webpack(config, options) {
     const originalEntry = config.entry;
@@ -161,7 +171,6 @@ module.exports = withPlugins(plugins, {
             throw new Error(`Not found ${mod}`);
         }
       }));
-
     config.module.rules.push({
       test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
       use: [
@@ -190,9 +199,14 @@ module.exports = withPlugins(plugins, {
       ],
     });
 
-    if(!isProd) {
+    if (!isProd) {
       const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-      config.plugins.push(new ForkTsCheckerWebpackPlugin());
+      config.plugins.push(new ForkTsCheckerWebpackPlugin({
+        typescript: {
+          memoryLimit: 5000,
+          mode: 'write-references'
+        }
+      }));
     }
 
     return config;

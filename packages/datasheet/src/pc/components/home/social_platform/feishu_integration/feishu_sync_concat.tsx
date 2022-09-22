@@ -3,7 +3,7 @@ import { Api, Navigation, Strings, t } from '@vikadata/core';
 import { SelectOutlined } from '@vikadata/icons';
 import cls from 'classnames';
 import { useRouter } from 'next/router';
-import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useRequest } from 'pc/hooks';
 import * as React from 'react';
 import { useCallback, useEffect, useState } from 'react';
@@ -24,7 +24,6 @@ const FeishuSyncConcat: React.FC<IFeishuSyncConcat> = (props) => {
   const { appInstanceId } = router.query as { appInstanceId: string };
   const { spaceId } = props;
   const [complete, setComplete] = useState(false);
-  const navigationTo = useNavigation();
 
   const { data: result, cancel } = useRequest(() => Api.getAppInstanceById(appInstanceId!), {
     pollingInterval: 1000,
@@ -43,12 +42,10 @@ const FeishuSyncConcat: React.FC<IFeishuSyncConcat> = (props) => {
   }, [result, cancel]);
 
   const handleClick = useCallback(() => {
-    navigationTo({
-      path: Navigation.WORKBENCH,
+    Router.redirect(Navigation.WORKBENCH, {
       params: { spaceId },
-      method: Method.Redirect,
     });
-  }, [spaceId, navigationTo]);
+  }, [spaceId]);
 
   return (
     <div className={styles.completeWrap}>
@@ -59,7 +56,7 @@ const FeishuSyncConcat: React.FC<IFeishuSyncConcat> = (props) => {
               <div className={styles.completeCircle1} />
               <div className={styles.completeCircle2} />
               <div className={styles.completeCircle3}>
-                <SelectOutlined size="36px" color={theme.color.fc8} />
+                <SelectOutlined size='36px' color={theme.color.fc8} />
               </div>
               {
                 [1, 2, 3].map((v) => (
@@ -71,7 +68,7 @@ const FeishuSyncConcat: React.FC<IFeishuSyncConcat> = (props) => {
               }
             </div>
             <div className={styles.completeContent}>{t(Strings.lark_integration_sync_success)}</div>
-            <Button onClick={handleClick} color="primary">{t(Strings.lark_integration_sync_btn)}</Button>
+            <Button onClick={handleClick} color='primary'>{t(Strings.lark_integration_sync_btn)}</Button>
           </>
         ) : <Loading style={{ background: theme.color.fc8 }} tip={t(Strings.lark_integration_sync_tip)} />
       }

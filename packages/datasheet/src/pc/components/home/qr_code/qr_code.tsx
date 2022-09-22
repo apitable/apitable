@@ -4,7 +4,7 @@ import { Spin } from 'antd';
 import Image from 'next/image';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useLinkInvite, useRequest, useUserRequest } from 'pc/hooks';
 import { getSearchParams, isLocalSite } from 'pc/utils';
 import * as React from 'react';
@@ -28,7 +28,6 @@ export const QrCode: React.FC<IQrCode> = ({ visible, type = BindAccount.WECHAT, 
   const { join } = useLinkInvite();
   const [isTimeOut, setIsTimeOut] = useState(false); // 是否超时 ，10min
   const [qrCode, setQrCode] = useState('');
-  const navigationTo = useNavigation();
   const urlParams = new URLSearchParams(window.location.search);
   const reference = urlParams.get('reference') || undefined;
   const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
@@ -84,14 +83,12 @@ export const QrCode: React.FC<IQrCode> = ({ visible, type = BindAccount.WECHAT, 
         const isFromLinkInvite = urlParams.has('inviteLinkToken');
         // 链接邀请
         if (isFromLinkInvite && data) {
-          navigationTo({
-            path: Navigation.IMPROVING_INFO,
+          Router.redirect(Navigation.IMPROVING_INFO, {
             query: {
               token: data,
               inviteLinkToken: urlParams.get('inviteLinkToken') || undefined,
               inviteCode: inviteLinkInfo?.data.inviteCode,
             },
-            method: Method.Redirect,
           });
           return;
         }
@@ -101,10 +98,8 @@ export const QrCode: React.FC<IQrCode> = ({ visible, type = BindAccount.WECHAT, 
         }
         // 正常登录注册流程
         if (data) {
-          navigationTo({
-            path: Navigation.IMPROVING_INFO,
+          Router.redirect(Navigation.IMPROVING_INFO, {
             query: { token: data, inviteCode: urlParams.get('inviteCode') || undefined, reference },
-            method: Method.Redirect,
           });
         } else {
           // 如果有源URL地址，就跳转到源地址
@@ -112,13 +107,13 @@ export const QrCode: React.FC<IQrCode> = ({ visible, type = BindAccount.WECHAT, 
             window.location.href = reference;
             return;
           }
-          navigationTo({ path: Navigation.HOME, method: Method.Redirect });
+          Router.redirect(Navigation.HOME,);
         }
       } else {
         if (action === QrAction.BIND && type === BindAccount.WECHAT) {
           // 微信绑定
           StatusCode.BINDING_ACCOUNT_ERR.includes(Number(code)) &&
-            Message.error({ content: t(Strings.binding_account_failure_tip, { mode: t(Strings.wechat) }) });
+          Message.error({ content: t(Strings.binding_account_failure_tip, { mode: t(Strings.wechat) }) });
           return;
         }
       }
@@ -190,7 +185,7 @@ export const QrCode: React.FC<IQrCode> = ({ visible, type = BindAccount.WECHAT, 
       centered
       destroyOnClose
       // closeIcon={<CommonBtn.CloseBtn />}
-      width="320px"
+      width='320px'
       maskClosable
       onCancel={onClose}
     >
@@ -204,7 +199,7 @@ export const QrCode: React.FC<IQrCode> = ({ visible, type = BindAccount.WECHAT, 
           ) : <div />
         }
         <div className={styles.codeImageContainer}>
-          {qrCode ? <span className={styles.codeImage}><Image src={qrCode} alt="" width={210} height={210}/> </span>: <Spin indicator={loading} />}
+          {qrCode ? <span className={styles.codeImage}><Image src={qrCode} alt='' width={210} height={210} /> </span> : <Spin indicator={loading} />}
         </div>
         <div className={styles.tip}>{renderFooter()}</div>
       </div>
@@ -229,7 +224,6 @@ export const QRCodeBase = ({
   const { join } = useLinkInvite();
   const [isTimeOut, setIsTimeOut] = useState(false); // 是否超时 ，10min
   const [qrCode, setQrCode] = useState('');
-  const navigationTo = useNavigation();
   const urlParams = getSearchParams();
   const reference = urlParams.get('reference') || undefined;
   const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
@@ -278,14 +272,12 @@ export const QRCodeBase = ({
         const isFromLinkInvite = urlParams.has('inviteLinkToken');
         // 链接邀请
         if (isFromLinkInvite && data) {
-          navigationTo({
-            path: Navigation.IMPROVING_INFO,
+          Router.redirect(Navigation.IMPROVING_INFO, {
             query: {
               token: data,
               inviteLinkToken: urlParams.get('inviteLinkToken') || undefined,
               inviteCode: inviteLinkInfo?.data.inviteCode,
             },
-            method: Method.Redirect,
           });
           return;
         }
@@ -295,10 +287,8 @@ export const QRCodeBase = ({
         }
         // 正常登录注册流程
         if (data) {
-          navigationTo({
-            path: Navigation.IMPROVING_INFO,
+          Router.redirect(Navigation.IMPROVING_INFO, {
             query: { token: data, inviteCode: urlParams.get('inviteCode') || undefined, reference },
-            method: Method.Redirect,
           });
         } else {
           // 如果有源URL地址，就跳转到源地址
@@ -306,13 +296,13 @@ export const QRCodeBase = ({
             window.location.href = reference;
             return;
           }
-          navigationTo({ path: Navigation.HOME, method: Method.Redirect });
+          Router.redirect(Navigation.HOME,);
         }
       } else {
         if (action === QrAction.BIND && type === BindAccount.WECHAT) {
           // 微信绑定
           StatusCode.BINDING_ACCOUNT_ERR.includes(Number(code)) &&
-            Message.error({ content: t(Strings.binding_account_failure_tip, { mode: t(Strings.wechat) }) });
+          Message.error({ content: t(Strings.binding_account_failure_tip, { mode: t(Strings.wechat) }) });
           return;
         }
       }
@@ -361,7 +351,7 @@ export const QRCodeBase = ({
         ) : <></>
       }
       <div className={styles.codeImageContainer} style={{ border: 'none' }}>
-        {qrCode ? <span className={styles.codeImage}><Image src={qrCode} alt="" width={210} height={210}/></span> : <Spin indicator={loading} />}
+        {qrCode ? <span className={styles.codeImage}><Image src={qrCode} alt='' width={210} height={210} /></span> : <Spin indicator={loading} />}
       </div>
     </div>
   );
