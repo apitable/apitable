@@ -11,6 +11,7 @@ import produce from 'immer';
 import { isArray } from 'lodash';
 import _map from 'lodash/map';
 import { AnimationItem } from 'lottie-web';
+import Head from 'next/head';
 import Image from 'next/image';
 import { Logo } from 'pc/components/common/logo';
 import { Message } from 'pc/components/common/message';
@@ -35,11 +36,16 @@ import { FormContext } from './form_context';
 import { FormFieldContainer } from './form_field_container';
 import { FormPropContainer } from './form_prop_container';
 import styles from './style.module.less';
+import { Node } from 'slate';
 
 enum IFormContentType {
   Form = 'Form',
   Welcome = 'Welcome',
 }
+
+const serialize = nodes => {
+  return nodes.map(n => Node.string(n)).join('\n');
+};
 
 const isEmptyValue = value => {
   if (value == null) {
@@ -633,6 +639,9 @@ export const FormContainer: React.FC = () => {
         },
       }}
     >
+      <Head>
+        <meta property='og:description' content={serialize(formProps.description) || '维格表, 积木式多媒体数据表格, 维格表技术首创者, 数据整理神器, 让人人都是数据设计师'} />
+      </Head>
       <div className={classnames(styles.formContainer, 'vikaFormContainer')} id={AutoTestID.FORM_CONTAINER}>
         {/* 表单填写页 */}
         {realContentType === IFormContentType.Form && (
