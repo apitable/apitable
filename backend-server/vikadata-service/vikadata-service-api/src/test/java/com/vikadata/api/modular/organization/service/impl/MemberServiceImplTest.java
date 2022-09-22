@@ -47,7 +47,7 @@ public class MemberServiceImplTest extends AbstractIntegrationTest {
         // check this member should join this space again
         MemberEntity member = iMemberService.getByUserIdAndSpaceId(user.getId(), mockUserSpace.getSpaceId());
         assertThat(member).isNotNull();
-        assertThat(member.getIsActive()).isFalse();
+        assertThat(member.getIsActive()).isTrue();
         assertThat(member.getIsPoint()).isTrue();
         assertThat(member.getStatus()).isEqualTo(UserSpaceStatus.INACTIVE.getStatus());
     }

@@ -73,7 +73,6 @@ import com.vikadata.api.modular.organization.mapper.TeamMapper;
 import com.vikadata.api.modular.organization.mapper.TeamMemberRelMapper;
 import com.vikadata.api.modular.organization.service.IMemberService;
 import com.vikadata.api.modular.organization.service.IRoleMemberService;
-import com.vikadata.api.modular.organization.service.IRoleService;
 import com.vikadata.api.modular.organization.service.ITeamMemberRelService;
 import com.vikadata.api.modular.organization.service.ITeamService;
 import com.vikadata.api.modular.organization.service.IUnitService;
@@ -95,7 +94,6 @@ import com.vikadata.api.modular.user.service.IUserService;
 import com.vikadata.api.modular.workspace.mapper.NodeShareSettingMapper;
 import com.vikadata.api.util.CollectionUtil;
 import com.vikadata.api.util.InformationUtil;
-import com.vikadata.api.util.StringUtil;
 import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
@@ -110,6 +108,7 @@ import com.vikadata.entity.TeamMemberRelEntity;
 import com.vikadata.entity.UnitEntity;
 import com.vikadata.entity.UserEntity;
 
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -149,6 +148,9 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Resource
     private ConstProperties constProperties;
+
+    @Resource
+    private ServerProperties serverProperties;
 
     @Resource
     private SpaceInviteRecordMapper spaceInviteRecordMapper;
@@ -541,15 +543,6 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         List<MemberEntity> restoreMembers = new ArrayList<>();
         distinctEmails.forEach(inviteEmail -> {
             MemberEntity member = new MemberEntity();
-            // check email user if existed
-            if (emailUserMap.containsKey(inviteEmail)) {
-                member.setUserId(emailUserMap.get(inviteEmail));
-                // remember email should send invitation email
-                shouldSendInvitationEmails.add(inviteEmail);
-            }
-            else {
-                shouldSendInvitationForSignupEmail.add(inviteEmail);
-            }
             // check member if existed
             if (emailMemberMap.containsKey(inviteEmail)) {
                 // email member exist in space
@@ -565,6 +558,17 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                 member.setId(IdWorker.getId());
                 createInactiveMember(member, spaceId, inviteEmail);
                 members.add(member);
+            }
+
+            // check email user if existed
+            if (emailUserMap.containsKey(inviteEmail)) {
+                member.setUserId(emailUserMap.get(inviteEmail));
+                member.setIsActive(true);
+                // remember email should send invitation email
+                shouldSendInvitationEmails.add(inviteEmail);
+            }
+            else {
+                shouldSendInvitationForSignupEmail.add(inviteEmail);
             }
         });
         // inviter member id in space
@@ -589,7 +593,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         if (auth0Service.isOpen()) {
             // create space workbench link
             shouldSendInvitationEmails.forEach(email -> {
-                String link = String.format("%s/workbench?spaceId=%s", StringUtil.trimSlash(constProperties.getServerDomain()), spaceId);
+                String link = String.format("%s/workbench?spaceId=%s", constProperties.getServerDomain(), spaceId);
                 if (log.isDebugEnabled()) {
                     log.debug("link to send: {}", link);
                 }
@@ -597,7 +601,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                 sendUserInvitationEmail(locale, spaceId, memberId, link, email);
             });
             // create invitation link for sign up
-            String returnUrl = StringUtil.trimSlash(constProperties.getServerDomain()) + "/api/v1/invitation/callback";
+            String returnUrl = constProperties.getServerDomain() + serverProperties.getServlet().getContextPath() + "/invitation/callback";
             shouldSendInvitationForSignupEmail.forEach(email -> {
                 String link = auth0Service.createUserInvitationLink(email, returnUrl);
                 if (log.isDebugEnabled()) {
@@ -675,15 +679,8 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         }
     }
 
-    /**
-     * send user invitation email
-     *
-     * @param spaceId space id
-     * @param inviter inviter is member id
-     * @param inviteUrl invite link
-     * @param emailAddress to email address
-     */
-    private void sendUserInvitationEmail(String lang, String spaceId, Long inviter, String inviteUrl, String emailAddress) {
+    @Override
+    public void sendUserInvitationEmail(String lang, String spaceId, Long inviter, String inviteUrl, String emailAddress) {
         String inviterName = getMemberNameById(inviter);
         String spaceName = iSpaceService.getNameBySpaceId(spaceId);
         Dict dict = Dict.create();

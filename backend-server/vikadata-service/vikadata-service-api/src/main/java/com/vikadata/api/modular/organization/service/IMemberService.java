@@ -352,6 +352,16 @@ public interface IMemberService extends IService<MemberEntity> {
     void sendUserInvitationNotifyEmail(String lang, String spaceId, Long fromMemberId, String email);
 
     /**
+     * send user invitation email
+     *
+     * @param spaceId space id
+     * @param inviter inviter is member id
+     * @param inviteUrl invite link
+     * @param emailAddress to email address
+     */
+    void sendUserInvitationEmail(String lang, String spaceId, Long inviter, String inviteUrl, String emailAddress);
+
+    /**
      * 部门关联成员
      *
      * @param spaceId 空间ID

@@ -32,9 +32,11 @@ import com.vikadata.api.annotation.GetResource;
 import com.vikadata.api.annotation.Notification;
 import com.vikadata.api.annotation.PageObjectParam;
 import com.vikadata.api.annotation.PostResource;
+import com.vikadata.api.component.Auth0Service;
 import com.vikadata.api.component.TaskManager;
 import com.vikadata.api.component.notification.NotificationManager;
 import com.vikadata.api.component.notification.NotificationTemplateId;
+import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.constants.ParamsConstants;
 import com.vikadata.api.context.LoginContext;
 import com.vikadata.api.context.SessionContext;
@@ -69,12 +71,15 @@ import com.vikadata.api.modular.space.model.SpaceUpdateOperate;
 import com.vikadata.api.modular.space.service.ISpaceService;
 import com.vikadata.api.modular.user.mapper.UserMapper;
 import com.vikadata.api.modular.user.model.UserLangDTO;
+import com.vikadata.api.modular.user.service.IUserService;
 import com.vikadata.api.security.afs.AfsCheckService;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.entity.MemberEntity;
+import com.vikadata.entity.UserEntity;
 
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -140,6 +145,17 @@ public class MemberController {
     @Resource
     private IRoleService iRoleService;
 
+    @Resource
+    private Auth0Service auth0Service;
+
+    @Resource
+    private IUserService iUserService;
+
+    @Resource
+    private ConstProperties constProperties;
+
+    @Resource
+    private ServerProperties serverProperties;
 
     @GetResource(path = "/search")
     @ApiImplicitParams({
@@ -308,7 +324,19 @@ public class MemberController {
         if (ObjectUtil.isNotNull(userLangDTO) && StrUtil.isNotBlank(userLangDTO.getLocale())) {
             lang = userLangDTO.getLocale();
         }
-        iMemberService.sendInviteEmail(lang, spaceId, memberId, data.getEmail());
+        if (auth0Service.isOpen()) {
+            UserEntity user = iUserService.getByEmail(data.getEmail());
+            if (user == null) {
+                String returnUrl = constProperties.getServerDomain() + serverProperties.getServlet().getContextPath() + "/invitation/callback";
+                String link = auth0Service.createUserInvitationLink(data.getEmail(), returnUrl);
+                iMemberService.sendUserInvitationEmail(lang, spaceId, memberId, link, data.getEmail());
+            } else {
+                String link = String.format("%s/workbench?spaceId=%s", constProperties.getServerDomain(), spaceId);
+                iMemberService.sendUserInvitationEmail(lang, spaceId, memberId, link, data.getEmail());
+            }
+        } else {
+            iMemberService.sendInviteEmail(lang, spaceId, memberId, data.getEmail());
+        }
         return ResponseData.success();
     }
 
