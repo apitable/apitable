@@ -23,8 +23,11 @@ import com.vikadata.api.modular.organization.mapper.TeamMapper;
 import com.vikadata.api.modular.organization.mapper.TeamMemberRelMapper;
 import com.vikadata.api.modular.organization.mapper.UnitMapper;
 import com.vikadata.api.modular.organization.model.MemberBaseInfoDTO;
+import com.vikadata.api.modular.organization.model.RoleBaseInfoDto;
 import com.vikadata.api.modular.organization.model.TeamBaseInfoDTO;
 import com.vikadata.api.modular.organization.model.UnitInfoDTO;
+import com.vikadata.api.modular.organization.service.IRoleMemberService;
+import com.vikadata.api.modular.organization.service.IRoleService;
 import com.vikadata.api.modular.organization.service.IUnitService;
 import com.vikadata.api.modular.service.ExpandServiceImpl;
 import com.vikadata.core.util.ExceptionUtil;
@@ -63,6 +66,12 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
 
     @Resource
     private IControlRoleService iControlRoleService;
+
+    @Resource
+    private IRoleMemberService iRoleMemberService;
+
+    @Resource
+    private IRoleService iRoleService;
 
     @Override
     public Long getUnitIdByRefId(Long refId) {
@@ -124,7 +133,13 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
     @Transactional(rollbackFor = Exception.class)
     public void removeByTeamId(Long teamId) {
         log.info("删除组织单元(部门)，部门ID：{}", teamId);
-        Long unitId = baseMapper.selectUnitIdByRefId(teamId);
+        removeByRefId(teamId);
+    }
+
+    @Override
+    @Transactional(rollbackFor =  Exception.class)
+    public void removeByRefId(Long refId) {
+        Long unitId = baseMapper.selectUnitIdByRefId(refId);
         boolean flag = removeById(unitId);
         ExceptionUtil.isTrue(flag, DELETE_ERROR);
         // 删除节点权限、字段权限（若有）
@@ -166,6 +181,7 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
         List<UnitInfoVo> unitInfoList = new ArrayList<>();
         Map<Long, MemberBaseInfoDTO> memberInfoMap = MapUtil.newHashMap();
         Map<Long, TeamBaseInfoDTO> teamBaseInfoMap = MapUtil.newHashMap();
+        Map<Long, RoleBaseInfoDto> roleBaseInfoMap = MapUtil.newHashMap();
         groupUnitMap.forEach((unitType, units) -> {
             UnitType typeEnum = UnitType.toEnum(unitType);
             List<Long> refIds = units.stream().map(UnitEntity::getUnitRefId).collect(Collectors.toList());
@@ -174,11 +190,15 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
                 List<MemberBaseInfoDTO> memberBaseInfoDTOList = memberMapper.selectBaseInfoDTOByIds(refIds);
                 memberBaseInfoDTOList.forEach(info -> memberInfoMap.put(info.getId(), info));
             }
-
-            if (typeEnum == UnitType.TEAM) {
+            else if (typeEnum == UnitType.TEAM) {
                 // 加载部门必要信息
                 List<TeamBaseInfoDTO> teamBaseInfoDTOList = teamMapper.selectBaseInfoDTOByIds(refIds);
                 teamBaseInfoDTOList.forEach(info -> teamBaseInfoMap.put(info.getId(), info));
+            }
+            else if (typeEnum == UnitType.ROLE) {
+                // 加载角色必要信息
+                List<RoleBaseInfoDto> roleBaseInfoDtoList = iRoleService.getBaseInfoDtoByRoleIds(refIds);
+                roleBaseInfoDtoList.forEach(info -> roleBaseInfoMap.put(info.getId(), info));
             }
         });
         // 按序插入数据
@@ -208,20 +228,28 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
                 if (baseInfo == null || !baseInfo.getIsPaused()) {
                     unitInfoList.add(unitInfoVo);
                 }
+                continue;
             }
 
+            UnitInfoVo unitInfoVo = new UnitInfoVo();
+            unitInfoVo.setUnitId(unitId);
+            unitInfoVo.setUnitRefId(unitEntity.getUnitRefId());
+            unitInfoVo.setType(unitEntity.getUnitType());
+            unitInfoVo.setIsDeleted(unitEntity.getIsDeleted());
             if (unitType == UnitType.TEAM) {
-                UnitInfoVo unitInfoVo = new UnitInfoVo();
-                unitInfoVo.setUnitId(unitId);
-                unitInfoVo.setUnitRefId(unitEntity.getUnitRefId());
-                unitInfoVo.setType(unitEntity.getUnitType());
-                unitInfoVo.setIsDeleted(unitEntity.getIsDeleted());
                 TeamBaseInfoDTO baseInfo = teamBaseInfoMap.get(unitEntity.getUnitRefId());
                 if (baseInfo != null) {
                     unitInfoVo.setName(baseInfo.getTeamName());
                 }
-                unitInfoList.add(unitInfoVo);
             }
+            else if (unitType == UnitType.ROLE) {
+                RoleBaseInfoDto baseInfo = roleBaseInfoMap.get(unitEntity.getUnitRefId());
+                if (baseInfo != null) {
+                    unitInfoVo.setName(baseInfo.getRoleName());
+                }
+            }
+            unitInfoList.add(unitInfoVo);
+
         }
         return unitInfoList;
     }
@@ -252,6 +280,9 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
                 case MEMBER:
                     memberIds.addAll(entry.getValue());
                     break;
+                case ROLE:
+                    List<Long> roleMemberIds = iRoleMemberService.getMemberIdsByRoleIds(entry.getValue());
+                    memberIds.addAll(roleMemberIds);
                 default:
                     break;
             }
@@ -299,5 +330,10 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
             return new ArrayList<>();
         }
         return memberMapper.selectUserIdsByMemberIds(membersIds);
+    }
+
+    @Override
+    public List<UnitEntity> getUnitEntitiesByUnitRefIds(List<Long> refIds) {
+        return baseMapper.selectByRefIds(refIds);
     }
 }

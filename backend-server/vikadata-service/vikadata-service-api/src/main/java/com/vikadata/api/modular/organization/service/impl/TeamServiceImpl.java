@@ -19,9 +19,11 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.vikadata.api.lang.SpaceGlobalFeature;
+import com.vikadata.api.model.vo.organization.UnitTeamVo;
 import com.vikadata.api.model.vo.space.SpaceRoleDetailVo;
 import com.vikadata.api.modular.organization.model.MemberIsolatedInfo;
 import com.vikadata.api.modular.organization.model.TeamCteInfo;
+import com.vikadata.api.modular.organization.service.IRoleMemberService;
 import com.vikadata.api.modular.space.service.ISpaceRoleService;
 import com.vikadata.api.modular.space.service.ISpaceService;
 import com.vikadata.core.support.tree.DefaultTreeBuildFactory;
@@ -95,6 +97,9 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Resource
     private ISpaceRoleService iSpaceRoleService;
+
+    @Resource
+    private IRoleMemberService iRoleMemberService;
 
     @Override
     public Set<Long> getTeamIdsByMemberId(String spaceId, Long memberId) {
@@ -200,7 +205,8 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     public List<Long> getUnitsByTeam(Long teamId) {
         log.info("获取部门及所有父级部门的组织单元");
         List<Long> teamIds = baseMapper.selectAllParentTeamIds(teamId, true);
-        return iUnitService.getUnitIdsByRefIds(teamIds);
+        List<Long> roleIds = iRoleMemberService.getRoleIdsByRoleMemberId(teamId);
+        return iUnitService.getUnitIdsByRefIds(CollUtil.addAll(teamIds, roleIds));
     }
 
     @Override
@@ -423,6 +429,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     @Transactional(rollbackFor = Exception.class)
     public void deleteTeam(Long teamId) {
         log.info("删除部门");
+        iRoleMemberService.removeByRoleMemberIds(CollUtil.newArrayList(teamId));
         boolean flag = removeById(teamId);
         ExceptionUtil.isTrue(flag, DELETE_TEAM_ERROR);
         iUnitService.removeByTeamId(teamId);
@@ -437,6 +444,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         if (CollUtil.isEmpty(teamIds)) {
             return;
         }
+        iRoleMemberService.removeByRoleMemberIds(teamIds);
         boolean flag = removeByIds(teamIds);
         ExceptionUtil.isTrue(flag, DELETE_TEAM_ERROR);
         // 删除部门关联
@@ -453,6 +461,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         if (CollUtil.isEmpty(subTeamIds)) {
             return;
         }
+        iRoleMemberService.removeByRoleMemberIds(subTeamIds);
         boolean flag = removeByIds(subTeamIds);
         ExceptionUtil.isTrue(flag, DELETE_TEAM_ERROR);
         // 删除组织部门
@@ -566,6 +575,12 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
            }
        }
         return teamTreeVoList;
+    }
+
+
+    @Override
+    public List<UnitTeamVo> getUnitTeamVo(String spaceId, List<Long> teamIds) {
+        return baseMapper.selectUnitTeamVoByTeamIds(spaceId, teamIds);
     }
 
     /**

@@ -55,6 +55,7 @@ import com.vikadata.api.model.ro.organization.UploadMemberTemplateRo;
 import com.vikadata.api.model.vo.organization.MemberInfoVo;
 import com.vikadata.api.model.vo.organization.MemberPageVo;
 import com.vikadata.api.model.vo.organization.MemberUnitsVo;
+import com.vikadata.api.model.vo.organization.RoleVo;
 import com.vikadata.api.model.vo.organization.SearchMemberVo;
 import com.vikadata.api.model.vo.organization.UploadParseResultVO;
 import com.vikadata.api.modular.finance.service.IBlackListService;
@@ -62,6 +63,7 @@ import com.vikadata.api.modular.organization.enums.DeleteMemberType;
 import com.vikadata.api.modular.organization.mapper.MemberMapper;
 import com.vikadata.api.modular.organization.mapper.TeamMapper;
 import com.vikadata.api.modular.organization.service.IMemberService;
+import com.vikadata.api.modular.organization.service.IRoleService;
 import com.vikadata.api.modular.space.mapper.SpaceMapper;
 import com.vikadata.api.modular.space.model.SpaceUpdateOperate;
 import com.vikadata.api.modular.space.service.ISpaceService;
@@ -134,6 +136,10 @@ public class MemberController {
 
     @Resource
     private IBlackListService iBlackListService;
+
+    @Resource
+    private IRoleService iRoleService;
+
 
     @GetResource(path = "/search")
     @ApiImplicitParams({
@@ -234,6 +240,8 @@ public class MemberController {
             ExceptionUtil.isNotNull(memberId, NOT_EXIST_MEMBER);
         }
         MemberInfoVo memberInfoVo = memberMapper.selectInfoById(memberId);
+        List<RoleVo> roleVos = iRoleService.getRoleVosByMemberId(memberId);
+        memberInfoVo.setRoles(roleVos);
         ExceptionUtil.isNotNull(memberInfoVo, NOT_EXIST_MEMBER);
         return ResponseData.success(memberInfoVo);
     }

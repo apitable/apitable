@@ -72,6 +72,8 @@ import com.vikadata.api.modular.organization.mapper.MemberMapper;
 import com.vikadata.api.modular.organization.mapper.TeamMapper;
 import com.vikadata.api.modular.organization.mapper.TeamMemberRelMapper;
 import com.vikadata.api.modular.organization.service.IMemberService;
+import com.vikadata.api.modular.organization.service.IRoleMemberService;
+import com.vikadata.api.modular.organization.service.IRoleService;
 import com.vikadata.api.modular.organization.service.ITeamMemberRelService;
 import com.vikadata.api.modular.organization.service.ITeamService;
 import com.vikadata.api.modular.organization.service.IUnitService;
@@ -204,6 +206,10 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         return baseMapper.selectMemberNameById(memberId);
     }
 
+    @Resource
+    private IRoleMemberService iRoleMemberService;
+
+
     @Override
     public Long getMemberIdByUserIdAndSpaceId(Long userId, String spaceId) {
         return baseMapper.selectIdByUserIdAndSpaceId(userId, spaceId);
@@ -247,9 +253,12 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     public List<Long> getUnitsByMember(Long memberId) {
         log.info("获取成员归属的所有组织单元ID");
-        List<Long> memberTeamIds = teamMemberRelMapper.selectAllTeamIdByMemberId(memberId);
-        memberTeamIds.add(memberId);
-        return iUnitService.getUnitIdsByRefIds(memberTeamIds);
+        List<Long> unitRefIds = CollUtil.newArrayList(memberId);
+        List<Long> teamIds = teamMemberRelMapper.selectAllTeamIdByMemberId(memberId);
+        unitRefIds.addAll(teamIds);
+        List<Long> roleIds = iRoleMemberService.getRoleIdsByRoleMemberId(memberId);
+        unitRefIds.addAll(roleIds);
+        return iUnitService.getUnitIdsByRefIds(unitRefIds);
     }
 
     @Override
@@ -904,6 +913,8 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         spaceInviteLinkMapper.updateByCreators(memberIds);
         // 删除成员关联部门
         iTeamMemberRelService.removeByMemberIds(memberIds);
+        // delete the associated role
+        iRoleMemberService.removeByRoleMemberIds(memberIds);
         // 删除成员
         removeByMemberIds(memberIds);
         // 从空间管理角色里删除

@@ -22,9 +22,9 @@ public enum UnitType {
     TEAM(1),
 
     /**
-     * 标签
+     * Role
      */
-    TAG(2),
+    ROLE(2),
 
 	/**
 	 * 成员

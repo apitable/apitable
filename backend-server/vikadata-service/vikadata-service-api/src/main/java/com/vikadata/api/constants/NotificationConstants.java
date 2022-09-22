@@ -173,4 +173,10 @@ public class NotificationConstants {
      * 通知-邮件-创建时间，兼容之前的模版
      */
     public static final String EMAIL_CREATED_AT = "CREATED_AT";
+
+    /**
+     * the keyword about role in notifications body  {extras:roleName}
+     */
+    public static final String ROLE_NAME = "roleName";
+
 }

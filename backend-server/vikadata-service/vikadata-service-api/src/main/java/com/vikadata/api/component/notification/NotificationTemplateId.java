@@ -306,6 +306,15 @@ public enum NotificationTemplateId {
      */
     ACTIVITY_INTEGRAL_INCOME_NOTIFY("activity_integral_income_notify"),
 
+    /**
+     *  adding role members---->to the added user
+     */
+    ASSIGNED_TO_ROLE("assigned_to_role"),
+
+    /**
+     * removing role members---->to the removed user
+     */
+    REMOVED_FROM_ROLE("remove_from_role"),
     ;
 
     private final String value;

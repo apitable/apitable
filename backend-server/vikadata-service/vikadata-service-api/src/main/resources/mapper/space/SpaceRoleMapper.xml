@@ -46,4 +46,12 @@
             #{iteam}
         </foreach>
     </delete>
+
+    <select id="selectResourceCodesBySpaceIdAndMemberId" resultType="java.lang.String">
+        SELECT vsrrr.resource_code
+        FROM vika_space_member_role_rel vsmrr
+                 JOIN vika_space_role_resource_rel vsrrr on vsmrr.role_code = vsrrr.role_code
+        WHERE vsmrr.space_id = #{spaceId}
+          AND vsmrr.member_id = #{memberId}
+    </select>
 </mapper>

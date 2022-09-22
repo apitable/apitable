@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 
 import javax.annotation.Resource;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,6 +26,8 @@ import com.vikadata.api.control.role.FieldEditorRole;
 import com.vikadata.api.control.role.NodeManagerRole;
 import com.vikadata.api.enums.organization.UnitType;
 import com.vikadata.api.modular.organization.service.IMemberService;
+import com.vikadata.api.modular.organization.service.IRoleMemberService;
+import com.vikadata.api.modular.organization.service.IRoleService;
 import com.vikadata.api.modular.organization.service.ITeamService;
 import com.vikadata.api.modular.organization.service.IUnitService;
 import com.vikadata.api.modular.space.service.ISpaceRoleService;
@@ -56,6 +59,9 @@ public class ControlTemplate {
 
     @Resource
     private ISpaceRoleService iSpaceRoleService;
+
+    @Resource
+    private IRoleMemberService iRoleMemberService;
 
     private final List<ControlRequestFactory> factories = new ArrayList<>();
 
@@ -181,7 +187,10 @@ public class ControlTemplate {
             if (unitEntity.getUnitType().equals(UnitType.MEMBER.getType())) {
                 return this.doExecute(PrincipalBuilder.memberId(unitEntity.getUnitRefId()), controlId, requestWrapper);
             }
-            return this.doExecute(PrincipalBuilder.teamId(unitEntity.getUnitRefId()), controlId, requestWrapper);
+            else if (unitEntity.getUnitType().equals(UnitType.TEAM.getType())) {
+                return this.doExecute(PrincipalBuilder.teamId(unitEntity.getUnitRefId()), controlId, requestWrapper);
+            }
+            return this.doExecute(PrincipalBuilder.roleId(unitEntity.getUnitRefId()), controlId, requestWrapper);
         }
         else if (principal.getPrincipalType() == PrincipalType.MEMBER_ID) {
             // 只有凭证是成员ID时才检查是否空间站管理员
@@ -191,14 +200,18 @@ public class ControlTemplate {
                 controlId.toRealIdList().forEach(cId -> controlRoleDict.put(cId, topRole));
                 return controlRoleDict;
             }
-            // 查询成员及所属的部门对应的组织单元
+            // 查询成员及所属的部门、角色对应的组织单元
             List<Long> fromUnitIds = iMemberService.getUnitsByMember(principal.getPrincipal());
             return doExecute(fromUnitIds, controlId, requestWrapper);
         }
         else if (principal.getPrincipalType() == PrincipalType.TEAM_ID) {
-            // 查询部门及所有父级部门的组织单元
+            // 查询部门及所有父级部门和角色的组织单元
             List<Long> fromUnitIds = iTeamService.getUnitsByTeam(principal.getPrincipal());
             return doExecute(fromUnitIds, controlId, requestWrapper);
+        }
+        else if(principal.getPrincipalType() == PrincipalType.ROLE_ID) {
+            List<Long> unitIds = iUnitService.getUnitIdsByRefIds(CollUtil.newArrayList(principal.getPrincipal()));
+            return doExecute(unitIds, controlId, requestWrapper);
         }
         else {
             throw new UnknownPrincipalTypeException(principal.getPrincipalType());

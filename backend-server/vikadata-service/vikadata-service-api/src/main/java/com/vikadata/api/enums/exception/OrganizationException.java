@@ -185,7 +185,42 @@ public enum OrganizationException implements BaseException {
     /**
      * 组织单元不存在
      */
-    UNIT_NOT_EXIST(522, "组织单元不存在");
+    UNIT_NOT_EXIST(522, "组织单元不存在"),
+
+    /**
+     * role name exist
+     */
+    DUPLICATION_ROLE_NAME(523, "该角色名称已存在"),
+
+    /**
+     * create role failure
+     */
+    CREATE_ROLE_ERROR(524, "创建角色失败"),
+
+    /**
+     * update role failure
+     */
+    UPDATE_ROLE_NAME_ERROR(525, "修改角色名称失败"),
+
+    /**
+     * role no exist
+     */
+    NOT_EXIST_ROLE(526, "该角色不存在"),
+
+    /**
+     * add role failure
+     */
+    ADD_ROLE_MEMBER_ERROR(527, "添加成员失败"),
+
+    /**
+     * role has members
+     */
+    ROLE_EXIST_ROLE_MEMBER(528, "该角色下存在成员"),
+
+    /**
+     * space has roles
+     */
+    SPACE_EXIST_ROLES(529, "空间站已存在该角色");
 
     private final Integer code;
 

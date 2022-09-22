@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
@@ -957,4 +958,12 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         int count = SqlTool.retCount(baseMapper.getAdminSpaceCount(userId));
         return count >= limitProperties.getSpaceMaxCount();
     }
+
+    @Override
+    public void checkUserInSpace(Long userId, String spaceId, Consumer<Boolean> consumer) {
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
+        boolean exist = ObjectUtil.isNotNull(memberId);
+        consumer.accept(exist);
+    }
+
 }

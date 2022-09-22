@@ -17,6 +17,7 @@ import com.vikadata.api.modular.space.model.vo.SpaceSubscribeVo;
 import com.vikadata.core.exception.BusinessException;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
+import com.vikadata.entity.UserEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -455,6 +456,21 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
         iSocialTenantService.updateTenantStatus("app01", "ding01", false);
         assertDoesNotThrow(() -> iSpaceService.checkCanOperateSpaceUpdate(userSpace.getSpaceId(),
                 SpaceUpdateOperate.DELETE_SPACE));
+    }
+
+    @Test
+    void givenExitMemberWhenCheckUserInSpaceWhenSuccess() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        iSpaceService.checkUserInSpace(userSpace.getUserId(), userSpace.getSpaceId(),
+                status -> assertThat(status).isTrue());
+    }
+
+    @Test
+    void givenNoExitMemberWhenCheckUserInSpaceWhenSuccess() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        UserEntity user = iUserService.createUserByCli("vikaboy@vikadata.com", "123456789", "12345678910");
+        iSpaceService.checkUserInSpace(user.getId(), userSpace.getSpaceId(),
+                status -> assertThat(status).isFalse());
     }
 
     @Test

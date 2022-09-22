@@ -60,4 +60,14 @@ public interface SpaceRoleMapper extends BaseMapper<SpaceRoleEntity> {
      * @date 2020/2/16 15:28
      */
     int batchDeleteByRoleCode(@Param("roleCodes") List<String> roleCodes);
+
+    /**
+     * query member's resource codes in space
+     *
+     * @param spaceId   space id
+     * @param memberId  member id
+     * @return resource codes
+     */
+    List<String> selectResourceCodesBySpaceIdAndMemberId(@Param("spaceId") String spaceId, @Param("memberId") Long memberId);
+
 }

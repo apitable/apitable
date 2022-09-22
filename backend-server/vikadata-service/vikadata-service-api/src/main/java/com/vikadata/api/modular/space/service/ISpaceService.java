@@ -1,6 +1,7 @@
 package com.vikadata.api.modular.space.service;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.vikadata.api.modular.space.model.SpaceCapacityUsedInfo;
@@ -396,4 +397,13 @@ public interface ISpaceService extends IService<SpaceEntity> {
      * @date 2022/4/21 14:19:12
      */
     void switchSpace(Long userId, String spaceId);
+
+    /**
+     *  Check whether the user is in space
+     * @param userId    user id
+     * @param spaceId   space id
+     * @param consumer  callback
+     */
+    void checkUserInSpace(Long userId, String spaceId, Consumer<Boolean> consumer);
+
 }

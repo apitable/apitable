@@ -36,6 +36,7 @@ import com.vikadata.api.modular.finance.service.ISpaceSubscriptionService;
 import com.vikadata.api.modular.finance.strategy.SocialOrderStrategyFactory;
 import com.vikadata.api.modular.organization.factory.OrganizationFactory;
 import com.vikadata.api.modular.organization.service.IMemberService;
+import com.vikadata.api.modular.organization.service.IRoleMemberService;
 import com.vikadata.api.modular.organization.service.ITeamMemberRelService;
 import com.vikadata.api.modular.organization.service.ITeamService;
 import com.vikadata.api.modular.organization.service.IUnitService;
@@ -180,6 +181,10 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
 
     @Resource
     private ISocialFeishuOrderService iSocialFeishuOrderService;
+
+    @Resource
+    private IRoleMemberService iRoleMemberService;
+
 
     @Override
     @Async(DEFAULT_EXECUTOR_BEAN_NAME)
@@ -1250,6 +1255,8 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
         List<Long> memberIds = Collections.singletonList(member.getId());
         // 删除成员关联部门
         iTeamMemberRelService.removeByMemberIds(memberIds);
+        // delete the associated role
+        iRoleMemberService.removeByRoleMemberIds(memberIds);
         // 删除成员
         iMemberService.removeByMemberIds(memberIds);
     }

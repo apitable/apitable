@@ -19,8 +19,8 @@ public class PrincipalBuilder {
         return new TeamId(teamId);
     }
 
-    public static Principal tagId(Long tagId) {
-        return new TagId(tagId);
+    public static Principal roleId(Long roleId) {
+        return new RoleId(roleId);
     }
 
     public interface Principal {
@@ -80,15 +80,15 @@ public class PrincipalBuilder {
         }
     }
 
-    public static class TagId extends AbstractPrincipal {
+    public static class RoleId extends AbstractPrincipal {
 
-        public TagId(Long tagId) {
-            super(tagId);
+        public RoleId(Long roleId) {
+            super(roleId);
         }
 
         @Override
         public PrincipalType getPrincipalType() {
-            return PrincipalType.TAG_ID;
+            return PrincipalType.ROLE_ID;
         }
     }
 }

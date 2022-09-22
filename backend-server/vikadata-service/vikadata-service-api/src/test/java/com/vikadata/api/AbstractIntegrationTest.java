@@ -5,6 +5,7 @@ import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.List;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,8 @@ import com.vikadata.api.enums.finance.PayChannel;
 import com.vikadata.api.enums.social.SocialPlatformType;
 import com.vikadata.api.holder.UserHolder;
 import com.vikadata.api.mock.bean.MockUserSpace;
+import com.vikadata.api.model.ro.organization.OrgUnitRo;
+import com.vikadata.api.model.ro.organization.RoleMemberUnitRo;
 import com.vikadata.api.modular.appstore.enums.AppType;
 import com.vikadata.api.modular.appstore.service.IAppInstanceService;
 import com.vikadata.api.modular.base.service.IAuthService;
@@ -43,6 +46,8 @@ import com.vikadata.api.modular.finance.util.OrderChecker.ExpectedOrderCheck;
 import com.vikadata.api.modular.integral.service.IIntegralService;
 import com.vikadata.api.modular.internal.service.IFieldService;
 import com.vikadata.api.modular.organization.service.IMemberService;
+import com.vikadata.api.modular.organization.service.IRoleMemberService;
+import com.vikadata.api.modular.organization.service.IRoleService;
 import com.vikadata.api.modular.organization.service.ITeamMemberRelService;
 import com.vikadata.api.modular.organization.service.ITeamService;
 import com.vikadata.api.modular.social.enums.SocialAppType;
@@ -184,6 +189,12 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     @Autowired
     protected OrderChecker orderChecker;
+
+    @Autowired
+    protected IRoleService iRoleService;
+
+    @Autowired
+    protected IRoleMemberService iRoleMemberService;
 
     @BeforeEach
     public void beforeMethod() {
@@ -382,6 +393,25 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
         iOrderService.createOrderWithMetadata(orderEntity, orderMetadata);
         // 返回绑定的空间站 ID
         return spaceId;
+    }
+
+    protected Long addRoleMembers(MockUserSpace userSpace) {
+        UserEntity user = iUserService.createUserByCli("vikaboy@vikadata.com", "123456789", "12345678910");
+        Long rootTeamId = iTeamService.getRootTeamId(userSpace.getSpaceId());
+        Long memberId = iMemberService.createMember(user.getId(), userSpace.getSpaceId(), rootTeamId);
+        RoleMemberUnitRo rootTeamUnit = new RoleMemberUnitRo();
+        RoleMemberUnitRo adminUnit = new RoleMemberUnitRo();
+        RoleMemberUnitRo memberUnit = new RoleMemberUnitRo();
+        rootTeamUnit.setId(rootTeamId);
+        rootTeamUnit.setType(1);
+        Long adminMemberId = iMemberService.getMemberIdByUserIdAndSpaceId(userSpace.getUserId(), userSpace.getSpaceId());
+        adminUnit.setId(adminMemberId);
+        adminUnit.setType(3);
+        memberUnit.setId(memberId);
+        memberUnit.setType(3);
+        Long allPart = iRoleService.createRole(userSpace.getUserId(), userSpace.getSpaceId(), "vika boys");
+        iRoleMemberService.addRoleMembers(allPart, CollUtil.newArrayList(rootTeamUnit, adminUnit, memberUnit));
+        return allPart;
     }
 
 }

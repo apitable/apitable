@@ -36,6 +36,7 @@ import com.vikadata.api.event.AuditSpaceEvent;
 import com.vikadata.api.event.AuditSpaceEvent.AuditSpaceArg;
 import com.vikadata.api.model.vo.node.NodeRoleMemberVo;
 import com.vikadata.api.model.vo.node.NodeRoleUnit;
+import com.vikadata.api.model.vo.organization.RoleInfoVo;
 import com.vikadata.api.model.vo.organization.UnitMemberVo;
 import com.vikadata.api.model.vo.organization.UnitTeamVo;
 import com.vikadata.api.modular.control.service.IControlRoleService;
@@ -44,6 +45,8 @@ import com.vikadata.api.modular.organization.mapper.MemberMapper;
 import com.vikadata.api.modular.organization.mapper.UnitMapper;
 import com.vikadata.api.modular.organization.service.IMemberService;
 import com.vikadata.api.modular.organization.service.IOrganizationService;
+import com.vikadata.api.modular.organization.service.IRoleMemberService;
+import com.vikadata.api.modular.organization.service.IRoleService;
 import com.vikadata.api.modular.organization.service.ITeamService;
 import com.vikadata.api.modular.organization.service.IUnitService;
 import com.vikadata.api.modular.space.service.ISpaceRoleService;
@@ -107,6 +110,12 @@ public class NodeRoleServiceImpl implements INodeRoleService {
 
     @Resource
     private IUnitService iUnitService;
+
+    @Resource
+    private IRoleMemberService iRoleMemberService;
+
+    @Resource
+    private IRoleService iRoleService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -317,6 +326,7 @@ public class NodeRoleServiceImpl implements INodeRoleService {
         for (Map.Entry<String, List<ControlRoleUnitDTO>> entry : roleUnitMap.entrySet()) {
             List<Long> teamIds = new ArrayList<>();
             List<Long> memberIds = new ArrayList<>();
+            List<Long> roleIds = new ArrayList<>();
             for (ControlRoleUnitDTO nodeRoleDto : entry.getValue()) {
                 NodeRoleUnit unit = new NodeRoleUnit();
                 unit.setRole(nodeRoleDto.getRole());
@@ -330,6 +340,9 @@ public class NodeRoleServiceImpl implements INodeRoleService {
                 }
                 else if (unitType == UnitType.MEMBER) {
                     memberIds.add(nodeRoleDto.getUnitRefId());
+                }
+                else if (unitType == UnitType.ROLE) {
+                    roleIds.add(nodeRoleDto.getUnitRefId());
                 }
             }
             // 批量查询补充组织单元信息
@@ -349,6 +362,15 @@ public class NodeRoleServiceImpl implements INodeRoleService {
                     unit.setUnitName(member.getMemberName());
                     unit.setAvatar(member.getAvatar());
                     unit.setTeams(member.getTeams());
+                    roleUnits.add(unit);
+                }
+            }
+            if (!roleIds.isEmpty()) {
+                List<RoleInfoVo> roles = iRoleService.getRoleVos(spaceId, roleIds);
+                for (RoleInfoVo role: roles) {
+                    NodeRoleUnit unit = unitIdToFieldRoleMap.get(role.getUnitId());
+                    unit.setUnitName(role.getRoleName());
+                    unit.setMemberCount(role.getMemberCount());
                     roleUnits.add(unit);
                 }
             }
@@ -385,6 +407,7 @@ public class NodeRoleServiceImpl implements INodeRoleService {
         for (Map.Entry<String, List<ControlRoleUnitDTO>> entry : roleUnitMap.entrySet()) {
             List<Long> memberIds = new ArrayList<>();
             List<Long> teamIds = new ArrayList<>();
+            List<Long> roleIds = new ArrayList<>();
             for (ControlRoleUnitDTO nodeRoleDto : entry.getValue()) {
                 UnitType unitType = UnitType.toEnum(nodeRoleDto.getUnitType());
                 if (unitType == UnitType.TEAM) {
@@ -393,12 +416,19 @@ public class NodeRoleServiceImpl implements INodeRoleService {
                 else if (unitType == UnitType.MEMBER) {
                     memberIds.add(nodeRoleDto.getUnitRefId());
                 }
+                else if (unitType == UnitType.ROLE) {
+                    roleIds.add(nodeRoleDto.getUnitRefId());
+                }
             }
             if (CollUtil.isNotEmpty(teamIds)) {
                 List<Long> teamMemberIds = iTeamService.getMemberIdsByTeamIds(teamIds);
                 if (CollUtil.isNotEmpty(teamMemberIds)) {
                     memberIds.addAll(teamMemberIds);
                 }
+            }
+            if (CollUtil.isNotEmpty(roleIds)) {
+                List<Long> roleMemberIds = iRoleMemberService.getMemberIdsByRoleIds(roleIds);
+                memberIds.addAll(roleMemberIds);
             }
             if (entry.getKey().equals(Node.MANAGER)) {
                 List<Long> values = roleMemberMap.get(entry.getKey());

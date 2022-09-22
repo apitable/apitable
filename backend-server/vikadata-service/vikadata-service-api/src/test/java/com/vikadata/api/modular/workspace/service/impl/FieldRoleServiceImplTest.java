@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import cn.hutool.core.collection.CollUtil;
 import org.junit.jupiter.api.Test;
 
@@ -73,6 +75,7 @@ public class FieldRoleServiceImplTest extends AbstractIntegrationTest {
         FieldCollaboratorVO fieldCollaboratorVO = iFieldRoleService.getFieldRoles(nodeId, fieldId);
         assertThat(fieldCollaboratorVO.getEnabled()).isFalse();
         assertThat(fieldCollaboratorVO.getRoles().size()).isEqualTo(2);
+        assertThat(fieldCollaboratorVO.getMembers().size()).isEqualTo(1);
     }
 
     @Test
@@ -88,6 +91,7 @@ public class FieldRoleServiceImplTest extends AbstractIntegrationTest {
         FieldCollaboratorVO fieldCollaboratorVO = iFieldRoleService.getFieldRoles(nodeId, fieldId);
         assertThat(fieldCollaboratorVO.getEnabled()).isFalse();
         assertThat(fieldCollaboratorVO.getRoles().size()).isEqualTo(3);
+        assertThat(fieldCollaboratorVO.getMembers().size()).isEqualTo(2);
     }
 
     @Test
@@ -103,6 +107,7 @@ public class FieldRoleServiceImplTest extends AbstractIntegrationTest {
         FieldCollaboratorVO fieldCollaboratorVO = iFieldRoleService.getFieldRoles(nodeId, fieldId);
         assertThat(fieldCollaboratorVO.getEnabled()).isFalse();
         assertThat(fieldCollaboratorVO.getRoles().size()).isEqualTo(3);
+        assertThat(fieldCollaboratorVO.getMembers().size()).isEqualTo(2);
     }
 
     @Test
@@ -118,6 +123,8 @@ public class FieldRoleServiceImplTest extends AbstractIntegrationTest {
         FieldCollaboratorVO fieldCollaboratorVO = iFieldRoleService.getFieldRoles(nodeId, fieldId);
         assertThat(fieldCollaboratorVO.getEnabled()).isTrue();
         assertThat(fieldCollaboratorVO.getRoles().size()).isEqualTo(2);
+        assertThat(fieldCollaboratorVO.getMembers().size()).isEqualTo(1);
+
     }
 
     @Test
@@ -133,6 +140,8 @@ public class FieldRoleServiceImplTest extends AbstractIntegrationTest {
         FieldCollaboratorVO fieldCollaboratorVO = iFieldRoleService.getFieldRoles(nodeId, fieldId);
         assertThat(fieldCollaboratorVO.getEnabled()).isTrue();
         assertThat(fieldCollaboratorVO.getRoles().size()).isEqualTo(3);
+        assertThat(fieldCollaboratorVO.getMembers().size()).isEqualTo(2);
+
     }
 
     @Test
@@ -148,6 +157,7 @@ public class FieldRoleServiceImplTest extends AbstractIntegrationTest {
         FieldCollaboratorVO fieldCollaboratorVO = iFieldRoleService.getFieldRoles(nodeId, fieldId);
         assertThat(fieldCollaboratorVO.getEnabled()).isTrue();
         assertThat(fieldCollaboratorVO.getRoles().size()).isEqualTo(3);
+        assertThat(fieldCollaboratorVO.getMembers().size()).isEqualTo(2);
     }
 
     @Test

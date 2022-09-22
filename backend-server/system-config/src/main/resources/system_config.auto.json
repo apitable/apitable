@@ -1488,6 +1488,21 @@
                 "url": "/management",
                 "is_component": true
             },
+            "assigned_to_role": {
+                "can_jump": true,
+                "to_tag": "members",
+                "notifications_type": "member",
+                "formatString": [
+                    "space_assigned_to_role"
+                ],
+                "is_notification": true,
+                "is_mobile": true,
+                "is_browser": true,
+                "format_string": "space_assigned_to_role",
+                "id": "assigned_to_role",
+                "url": "/management",
+                "is_component": true
+            },
             "changed_ordinary_user": {
                 "can_jump": true,
                 "to_tag": "members",
@@ -1585,6 +1600,21 @@
                 "is_browser": true,
                 "format_string": "remove_from_group",
                 "id": "remove_from_group",
+                "url": "/management",
+                "is_component": true
+            },
+            "remove_from_role": {
+                "can_jump": true,
+                "to_tag": "members",
+                "notifications_type": "member",
+                "formatString": [
+                    "remove_from_role"
+                ],
+                "is_notification": true,
+                "is_mobile": true,
+                "is_browser": true,
+                "format_string": "remove_from_role",
+                "id": "remove_from_role",
                 "url": "/management",
                 "is_component": true
             },

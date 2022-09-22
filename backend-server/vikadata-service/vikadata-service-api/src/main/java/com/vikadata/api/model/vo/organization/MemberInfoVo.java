@@ -59,6 +59,9 @@ public class MemberInfoVo {
     @ApiModelProperty(value = "所属标签", position = 8)
     private List<TagVo> tags;
 
+    @ApiModelProperty(value = "role", position = 8)
+    private List<RoleVo> roles;
+
     @ApiModelProperty(value = "是否管理员", example = "true", position = 5)
     private Boolean isAdmin;
 

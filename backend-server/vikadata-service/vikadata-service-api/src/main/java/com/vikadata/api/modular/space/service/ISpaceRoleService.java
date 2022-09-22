@@ -1,6 +1,7 @@
 package com.vikadata.api.modular.space.service;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -153,4 +154,5 @@ public interface ISpaceRoleService extends IService<SpaceRoleEntity> {
      * @date 2020/12/18 12:27
      */
     void checkAdminResourceChangeAllow(String spaceId, List<String> operateResourceCodes);
+
 }
