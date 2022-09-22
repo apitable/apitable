@@ -1,20 +1,20 @@
+import { LinkButton, useThemeColors } from '@vikadata/components';
+import { ConfigConstant, IReduxState, Navigation, ResourceType, Selectors, Strings, t, ViewType, WORKBENCH_SIDE_ID } from '@vikadata/core';
+import { useSize } from 'ahooks';
+import classNames from 'classnames';
+import { Tooltip } from 'pc/components/common';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { InlineNodeName } from 'pc/components/common/inline_node_name';
+import { NodeInfoBar } from 'pc/components/common/node_info_bar';
+import { Router } from 'pc/components/route_manager/router';
+import { CollaboratorStatus } from 'pc/components/tab_bar/collaboration_status';
+import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
+import { useResponsive, useSideBarVisible } from 'pc/hooks';
 import { memo, useRef } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import { ConfigConstant, IReduxState, Selectors, Navigation, t, Strings, WORKBENCH_SIDE_ID, ResourceType, ViewType } from '@vikadata/core';
-import classNames from 'classnames';
-import styles from './style.module.less';
-import { Tooltip } from 'pc/components/common';
-import { InlineNodeName } from 'pc/components/common/inline_node_name';
-import { useSideBarVisible, useResponsive } from 'pc/hooks';
-import { CollaboratorStatus } from 'pc/components/tab_bar/collaboration_status';
-import { ToolBar } from './tool_bar';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
-import { ScreenSize } from 'pc/components/common/component_display';
-import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import IconSide from 'static/icon/miniprogram/nav/nav_icon_drawer.svg';
-import { NodeInfoBar } from 'pc/components/common/node_info_bar';
-import { useSize } from 'ahooks';
-import { LinkButton, useThemeColors } from '@vikadata/components';
+import styles from './style.module.less';
+import { ToolBar } from './tool_bar';
 
 const HIDDEN_TOOLBAR_RIGHT_LABEL_WIDTH = 816;
 
@@ -22,7 +22,6 @@ const FormTabBase = props => {
   const { sideBarVisible } = useSideBarVisible();
   const colors = useThemeColors();
   const tabRef = useRef<HTMLDivElement>(null);
-  const navigationTo = useNavigation();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { setSideBarVisible } = useSideBarVisible();
@@ -79,7 +78,7 @@ const FormTabBase = props => {
   const showLabel = tabSize?.width! > HIDDEN_TOOLBAR_RIGHT_LABEL_WIDTH;
 
   const jumpHandler = () => {
-    navigationTo({ path: Navigation.WORKBENCH, params: { spaceId, nodeId: datasheetId, viewId }});
+    Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: datasheetId, viewId }});
   };
   return (
     <div
@@ -148,8 +147,8 @@ const FormTabBase = props => {
           })}
         >
           {!isMobile && <CollaboratorStatus resourceId={formId!} resourceType={ResourceType.Form} />}
-          <a href={t(Strings.form_tour_link)} target="_blank" rel="noreferrer">
-            <LinkButton component="button" className={styles.tourDesc} underline={false} id={WORKBENCH_SIDE_ID.FORM_USE_GUIDE_BTN}>
+          <a href={t(Strings.form_tour_link)} target='_blank' rel='noreferrer'>
+            <LinkButton component='button' className={styles.tourDesc} underline={false} id={WORKBENCH_SIDE_ID.FORM_USE_GUIDE_BTN}>
               {t(Strings.form_tour_desc)}
             </LinkButton>
           </a>

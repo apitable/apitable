@@ -10,7 +10,7 @@ export interface IAddWidgetToDashboard {
   cmd: CollaCommandName.AddWidgetToDashboard;
   dashboardId: string;
   widgetIds: string[];
-  cols?: number
+  cols?: number;
 }
 
 const WIDTH = 3;
@@ -27,9 +27,9 @@ export const addWidgetToDashboard: ICollaCommandDef<IAddWidgetToDashboard> = {
       return null;
     }
 
-    const installWidgetIds = dashboardSnapshot.widgetInstallations.installWidgetIds || [];
+    const layout = dashboardSnapshot.widgetInstallations.layout || [];
 
-    if ((installWidgetIds.length + widgetIds.length) > DASHBOARD_MAX_WIDGET_COUNT) {
+    if (layout.length + widgetIds.length > DASHBOARD_MAX_WIDGET_COUNT) {
       throw new Error(t(Strings.reach_dashboard_installed_limit, { count: DASHBOARD_MAX_WIDGET_COUNT }));
     }
 
@@ -41,7 +41,7 @@ export const addWidgetToDashboard: ICollaCommandDef<IAddWidgetToDashboard> = {
         // 计算公式
         // https://github.com/STRML/react-grid-layout/blob/master/test/examples/6-dynamic-add-remove.jsx
         row: Number.MAX_SAFE_INTEGER,
-        column: ((installWidgetIds.length + index) * WIDTH) % (cols || 12),
+        column: ((layout.length + index) * WIDTH) % (cols || 12),
       };
     });
 

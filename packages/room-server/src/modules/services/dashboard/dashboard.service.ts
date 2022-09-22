@@ -90,7 +90,8 @@ export class DashboardService {
     if (!Object.keys(meta).length) {
       return {};
     }
-    const installWidgetIds = meta['installWidgetIds'] || [];
+    const layout = meta['layout'] || [];
+    const installWidgetIds = layout.map(v => v.id);
     if (!installWidgetIds.length) { return {}; }
     try {
       return await this.restService.fetchWidget(auth, installWidgetIds.join(','), linkId);

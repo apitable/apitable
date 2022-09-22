@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import Image from 'next/image';
 import { Emoji, Message, Modal } from 'pc/components/common';
 import { TComponent } from 'pc/components/common/t_component';
-import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import * as React from 'react';
@@ -28,7 +28,6 @@ const SentToDashboard: React.FC<ISentToDashboardProps> = (props) => {
   const [selectedId, setSelectedId] = useState('');
   const dispatch = useDispatch();
   const [buttonLoading, setButtonLoading] = useState(false);
-  const navigationTo = useNavigation();
   const colors = useThemeColors();
 
   useEffect(() => {
@@ -61,13 +60,11 @@ const SentToDashboard: React.FC<ISentToDashboardProps> = (props) => {
       if (result.result === ExecuteResult.Success) {
         const openDashboard = () => {
           const spaceId = store.getState().space.activeId;
-          navigationTo({
-            path: Navigation.WORKBENCH,
+          Router.redirect(Navigation.WORKBENCH, {
             params: {
               spaceId,
               nodeId: dashboardId,
             },
-            method: Method.Redirect,
           });
         };
         Message.success({
@@ -138,7 +135,7 @@ const SentToDashboard: React.FC<ISentToDashboardProps> = (props) => {
                   key={item.nodeId}
                 >
                   {
-                    item.icon ? <Emoji emoji={item.icon} size={16} set="apple" /> :
+                    item.icon ? <Emoji emoji={item.icon} size={16} set='apple' /> :
                       <DashboardOutlined color={isActive ? colors.primaryColor : colors.fourthLevelText} />
                   }
                   <span>
@@ -148,13 +145,13 @@ const SentToDashboard: React.FC<ISentToDashboardProps> = (props) => {
               }) :
                 <div className={styles.empty}>
                   <span className={styles.emptyImg}>
-                    <Image src={templateEmptyPng} alt="" width={224} height={168} />
+                    <Image src={templateEmptyPng} alt='' width={224} height={168} />
                   </span>
                   <p>
                     <TComponent
                       tkey={t(Strings.empty_dashboard_list)}
                       params={{
-                        action: <a href={t(Strings.intro_dashboard)} target="_blank" className={styles.shareDoc} rel="noreferrer">
+                        action: <a href={t(Strings.intro_dashboard)} target='_blank' className={styles.shareDoc} rel='noreferrer'>
                           {t(Strings.way_to_create_dashboard)}
                         </a>,
                       }}

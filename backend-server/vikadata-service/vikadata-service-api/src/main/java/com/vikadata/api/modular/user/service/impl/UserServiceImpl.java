@@ -402,13 +402,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         Long userId = iUserBindService.getUserIdByExternalKey(userProfile.getSub());
         if (userId == null) {
             // create user bind
-            String avatar = iAssetService.downloadAndUploadUrl(userProfile.getPicture());
-            UserEntity userEntity = UserEntity.builder()
-                    .uuid(IdUtil.fastSimpleUUID())
-                    .nickName(userProfile.getNickname())
-                    .avatar(avatar)
-                    .email(userProfile.getEmail())
-                    .build();
+            UserEntity userEntity = buildUserEntity(userProfile.getPicture(), userProfile.getNickname(), userProfile.getEmail());
             save(userEntity);
             // 创建用户活动记录
             iPlayerActivityService.createUserActivityRecord(userEntity.getId());
@@ -418,9 +412,46 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             iUserBindService.create(userEntity.getId(), userProfile.getSub());
             // init one space for user
             initialDefaultSpaceForUser(userEntity);
-            return userEntity.getId();
+            userId = userEntity.getId();
         }
+        List<MemberDto> inactiveMembers = iMemberService.getInactiveMemberDtoByEmail(userProfile.getEmail());
+        List<Long> memberIds = inactiveMembers.stream().map(MemberDto::getId).collect(Collectors.toList());
+        activeInvitationSpace(userId, memberIds);
         return userId;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Long createUserByAuth0IfNotExist(com.auth0.json.mgmt.users.User user) {
+        Long userId = iUserBindService.getUserIdByExternalKey(user.getId());
+        if (userId == null) {
+            // create user bind
+            UserEntity userEntity = buildUserEntity(user.getPicture(), user.getNickname(), user.getEmail());
+            save(userEntity);
+            // 创建用户活动记录
+            iPlayerActivityService.createUserActivityRecord(userEntity.getId());
+            // 创建个人邀请码
+            ivCodeService.createPersonalInviteCode(userEntity.getId());
+            // create user bind
+            iUserBindService.create(userEntity.getId(), user.getId());
+            // init one space for user
+            initialDefaultSpaceForUser(userEntity);
+            userId = userEntity.getId();
+        }
+        List<MemberDto> inactiveMembers = iMemberService.getInactiveMemberDtoByEmail(user.getEmail());
+        List<Long> memberIds = inactiveMembers.stream().map(MemberDto::getId).collect(Collectors.toList());
+        activeInvitationSpace(userId, memberIds);
+        return userId;
+    }
+
+    private UserEntity buildUserEntity(String picture, String nickname, String email) {
+        String avatar = iAssetService.downloadAndUploadUrl(picture);
+        return UserEntity.builder()
+                .uuid(IdUtil.fastSimpleUUID())
+                .nickName(nickname)
+                .avatar(avatar)
+                .email(email)
+                .build();
     }
 
     @Override

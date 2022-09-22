@@ -1,19 +1,18 @@
-import { FC, useState } from 'react';
-import ShareStarIcon from 'static/icon/datasheet/share/datasheet_icon_share_star.svg';
-import CloseIcon from 'static/icon/common/common_icon_close_small.svg';
-import { ButtonPlus, Modal } from 'pc/components/common';
 import { Button, useThemeColors } from '@vikadata/components';
-import styles from './style.module.less';
-import { useRequest } from 'pc/hooks';
-import { useResponsive, useSpaceRequest } from 'pc/hooks';
 import { AutoTestID, DATASHEET_ID, IReduxState, Navigation, Strings, t } from '@vikadata/core';
-import { TComponent } from 'pc/components/common/t_component';
-import { ScreenSize } from 'pc/components/common/component_display';
-import JoinIcon from 'static/icon/datasheet/share/datasheet_icon_share_join.svg';
 import classnames from 'classnames';
-import { useSelector } from 'react-redux';
+import { ButtonPlus, Modal } from 'pc/components/common';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { TComponent } from 'pc/components/common/t_component';
+import { Router } from 'pc/components/route_manager/router';
+import { useRequest, useResponsive, useSpaceRequest } from 'pc/hooks';
+import { FC, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { useSelector } from 'react-redux';
+import CloseIcon from 'static/icon/common/common_icon_close_small.svg';
+import JoinIcon from 'static/icon/datasheet/share/datasheet_icon_share_join.svg';
+import ShareStarIcon from 'static/icon/datasheet/share/datasheet_icon_share_star.svg';
+import styles from './style.module.less';
 
 export interface IApplicationJoinSpaceAlertProps {
   spaceId: string;
@@ -30,7 +29,6 @@ export const ApplicationJoinSpaceAlert: FC<IApplicationJoinSpaceAlertProps> = ({
   const { applyJoinSpaceReq } = useSpaceRequest();
   const { run: applyJoinSpace } = useRequest(applyJoinSpaceReq, { manual: true });
   const userInfo = useSelector((state: IReduxState) => state.user.info);
-  const navigationTo = useNavigation();
 
   const renderMinimized = () => {
     const container = document.getElementById(DATASHEET_ID.APPLICATION_JOIN_SPACE_BTN);
@@ -40,7 +38,7 @@ export const ApplicationJoinSpaceAlert: FC<IApplicationJoinSpaceAlertProps> = ({
           className={classnames(styles.joinBtn, minimized && !isMobile && styles.fadeIn)}
           onClick={() => applicationJoinHandler()}
           icon={<JoinIcon width={24} height={24} fill={colors.secondLevelText} />}
-          size="small"
+          size='small'
           shadow
         />,
         container,
@@ -62,7 +60,7 @@ export const ApplicationJoinSpaceAlert: FC<IApplicationJoinSpaceAlertProps> = ({
         content: t(Strings.require_login_tip),
         okText: t(Strings.go_login),
         onOk: () => {
-          navigationTo({ path: Navigation.LOGIN, query: { reference: window.location.href }});
+          Router.push(Navigation.LOGIN, { query: { reference: window.location.href }});
         },
         okButtonProps: { id: AutoTestID.GO_LOGIN_BTN },
         type: 'warning',
@@ -85,9 +83,9 @@ export const ApplicationJoinSpaceAlert: FC<IApplicationJoinSpaceAlertProps> = ({
         <div className={styles.container}>
           <span className={styles.text}>{t(Strings.apply_join_space_alert_text)}</span>
           <Button
-            color="warning"
+            color='warning'
             size={isMobile ? 'small' : 'middle'}
-            prefixIcon={!isMobile && <ShareStarIcon fill="#FFEB3A" />}
+            prefixIcon={!isMobile && <ShareStarIcon fill='#FFEB3A' />}
             className={styles.applicationBtn}
             onClick={applicationJoinHandler}
             shape={isMobile ? 'round' : undefined}

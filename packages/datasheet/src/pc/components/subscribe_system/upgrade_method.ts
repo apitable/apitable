@@ -1,6 +1,6 @@
 import { Settings } from '@vikadata/core';
 import { IDingTalkModalType, showModalInDingTalk, showModalInFeiShu, showModalInWecom } from 'pc/components/economy/upgrade_modal';
-import { navigationToUrl } from 'pc/components/route_manager/use_navigation';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { showOrderContactUs } from 'pc/components/subscribe_system/order_modal/pay_order_success';
 import { store } from 'pc/store';
 

@@ -3,7 +3,8 @@ import { ConfigProvider, message } from 'antd';
 import axios from 'axios';
 import { releaseProxy } from 'comlink';
 import Image from 'next/image';
-import { Method, navigationToUrl } from 'pc/components/route_manager/use_navigation';
+import { Method } from 'pc/components/route_manager/const';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import VersionUpdater from 'pc/components/version_updater';
 import { IScrollOffset, ScrollContext } from 'pc/context';
 import { useNavigatorName } from 'pc/hooks';
@@ -27,9 +28,9 @@ message.config({
 });
 
 const customizeRenderEmpty = () => (
-  <div className="emptyPlaceholder">
-    <Image alt="no data" src={NoDataImg} className="img" width={160} height={120} />
-    <div className="title">{t(Strings.no_data)}</div>
+  <div className='emptyPlaceholder'>
+    <Image alt='no data' src={NoDataImg} className='img' width={160} height={120} />
+    <div className='title'>{t(Strings.no_data)}</div>
   </div>
 );
 

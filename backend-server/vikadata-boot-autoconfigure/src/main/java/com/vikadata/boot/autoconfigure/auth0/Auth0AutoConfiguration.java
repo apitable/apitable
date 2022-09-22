@@ -37,6 +37,8 @@ public class Auth0AutoConfiguration {
         String clientId = properties.getClientId();
         String clientSecret = properties.getClientSecret();
         String redirectUri = properties.getRedirectUri();
+        String dbConnectionId = properties.getDbConnectionId();
+        String dbConnectionName = properties.getDbConnectionName();
         JwkProvider provider = new JwkProviderBuilder(domain).build();
         SignatureVerifier signatureVerifier = SignatureVerifier.forRS256(keyId -> {
             try {
@@ -47,6 +49,6 @@ public class Auth0AutoConfiguration {
             }
         });
         IdTokenVerifier idTokenVerifier = IdTokenVerifier.init(domain, clientId, signatureVerifier).build();
-        return new Auth0Template(domain, clientId, clientSecret, redirectUri, idTokenVerifier);
+        return new Auth0Template(domain, clientId, clientSecret, redirectUri, dbConnectionId, dbConnectionName, idTokenVerifier);
     }
 }

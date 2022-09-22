@@ -4,7 +4,10 @@ import { Modal } from 'pc/components/common';
 import { canJumpWhenClickCard, getNoticeUrlParams, NotifyType, renderNoticeBody } from 'pc/components/notification/card/utils';
 import { navigationToConfigUrl, PublishController } from 'pc/components/notification/publish/controller';
 import { NoticeTemplatesConstant, requestWebNotification } from 'pc/components/notification/utils';
-import { joinPath, Method, navigatePath, navigationToUrl } from 'pc/components/route_manager/use_navigation';
+import { Method } from 'pc/components/route_manager/const';
+import { joinPath } from 'pc/components/route_manager/helper';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+import { Router } from 'pc/components/route_manager/router';
 import { store } from 'pc/store';
 import SocketIO from 'socket.io-client';
 import { getInitializationData } from './utils/env';
@@ -151,7 +154,7 @@ export const renderNoticeUi = (data: INoticeDetail) => {
         content: t(Strings.permission_removed_in_curspace_tip),
         okText: t(Strings.refresh),
         onOk: () => {
-          navigatePath({ path: Navigation.HOME });
+          Router.push(Navigation.HOME);
         },
       });
       break;
@@ -163,7 +166,7 @@ export const renderNoticeUi = (data: INoticeDetail) => {
         content: t(Strings.deleted_in_curspace_tip),
         okText: t(Strings.refresh),
         onOk: () => {
-          navigatePath({ path: Navigation.SPACE, method: Method.Redirect });
+          Router.redirect(Navigation.SPACE);
         },
       });
       break;

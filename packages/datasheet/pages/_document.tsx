@@ -34,7 +34,7 @@ class MyDocument extends Document<{ clientInfo: IClientInfo }> {
           {
             clientInfo && <Script id='__initialization_data__' strategy={'beforeInteractive'}>
               {`
-          window.__initialization_data__ = {
+          window.__initialization_data__ = {  
               env:'${clientInfo.env}',
               version:'${clientInfo.version}',
               envVars: ${clientInfo.envVars},
@@ -45,6 +45,8 @@ class MyDocument extends Document<{ clientInfo: IClientInfo }> {
           `}
             </Script>
           }
+          {/* injection of custom configs of editions, e.g. APITable */}
+          <script src="/custom/custom_config.js" defer />
         </body>
       </Html>
     );

@@ -4,7 +4,7 @@ import { Form, Input } from 'antd';
 import Image from 'next/image';
 import { Modal, Wrapper } from 'pc/components/common';
 import { TComponent } from 'pc/components/common/t_component';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest, useUserRequest } from 'pc/hooks';
 import * as React from 'react';
 import { FC, useState } from 'react';
@@ -21,7 +21,6 @@ const InvitationValidation: FC = () => {
   const loginTypeInUrl = query.get('loginType') || undefined;
   const [inviteCode, setInviteCode] = useState(inviteCodeInUrl);
   const [err, setErr] = useState('');
-  const navigationTo = useNavigation();
   const { signUpReq } = useUserRequest();
   const { run: signUp, loading } = useRequest(signUpReq, {
     manual: true,
@@ -37,7 +36,7 @@ const InvitationValidation: FC = () => {
               window.location.href = query.get('reference')!;
               return;
             }
-            navigationTo({ path: Navigation.LOGIN });
+            Router.push(Navigation.LOGIN);
           },
         });
         return;
@@ -63,10 +62,10 @@ const InvitationValidation: FC = () => {
     <Wrapper>
       <div className={styles.invitationValidation}>
         <span className={styles.welcomePng}>
-          <Image src={WelcomePng} alt="welcome vika" />
+          <Image src={WelcomePng} alt='welcome vika' />
         </span>
         <div className={styles.title}>{t(Strings.register_invitation_code_title)}</div>
-        <Typography className={styles.tip} variant="body2" color={colors.secondLevelText}>
+        <Typography className={styles.tip} variant='body2' color={colors.secondLevelText}>
           {!inviteCodeInUrl && !isEmailCodeType ?
             <TComponent
               tkey={t(Strings.invitation_code_tip)}
@@ -81,7 +80,7 @@ const InvitationValidation: FC = () => {
           }
         </Typography>
         <Form className={styles.form}>
-          <Typography className={styles.label} variant="body2" color={colors.firstLevelText}>
+          <Typography className={styles.label} variant='body2' color={colors.firstLevelText}>
             {t(Strings.invite_code)}
           </Typography>
           <Input
@@ -95,9 +94,9 @@ const InvitationValidation: FC = () => {
           <div className={styles.errMsg}>{err}</div>
           <Button
             className={styles.submitBtn}
-            color="primary"
-            size="large"
-            htmlType="submit"
+            color='primary'
+            size='large'
+            htmlType='submit'
             block
             disabled={loading || !inviteCode}
             onClick={() => {

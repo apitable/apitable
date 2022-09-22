@@ -8,11 +8,13 @@ import { destroyVikaby, showVikaby } from 'pc/common/guide/vikaby';
 import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
 import { getShortcutKeyString } from 'pc/common/shortcut_key/keybinding_config';
 import { Navigation as SiderNavigation } from 'pc/components/navigation';
-import { Method, navigatePath } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import WorkspaceRoute from 'pc/components/route_manager/workspace_route';
 import Trash from 'pc/components/trash/trash';
+import { ISideBarContextProps, SideBarClickType, SideBarContext, SideBarType } from 'pc/context';
 import { getPageParams, useCatalogTreeRequest, useQuery, useRequest, useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
+import { isHiddenQRCode } from 'pc/utils/env';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
@@ -21,8 +23,6 @@ import { Tooltip, VikaSplitPanel } from '../common';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { CommonSide } from '../common_side';
 import styles from './style.module.less';
-import { ISideBarContextProps, SideBarClickType, SideBarContext, SideBarType } from 'pc/context';
-import { isHiddenQRCode } from 'pc/utils/env';
 
 // 恢复用户上次打开的数表
 const resumeUserHistory = (path: string) => {
@@ -33,8 +33,7 @@ const resumeUserHistory = (path: string) => {
   const nodeId = datasheetId || folderId || formId || mirrorId || dashboardId;
   if (spaceId === user.spaceId) {
     if (mirrorId) {
-      navigatePath({
-        path: Navigation.WORKBENCH,
+      Router.replace(Navigation.WORKBENCH, {
         params: {
           spaceId: spaceId || user.spaceId,
           nodeId: mirrorId,
@@ -43,12 +42,10 @@ const resumeUserHistory = (path: string) => {
           recordId,
           widgetId,
         },
-        method: Method.Replace,
       });
       return;
     }
-    navigatePath({
-      path: Navigation.WORKBENCH,
+    Router.replace(Navigation.WORKBENCH, {
       params: {
         spaceId: spaceId || user.spaceId,
         nodeId: nodeId || user.activeNodeId,
@@ -56,18 +53,15 @@ const resumeUserHistory = (path: string) => {
         recordId,
         widgetId,
       },
-      method: Method.Replace,
     });
   } else {
-    navigatePath({
-      path: Navigation.WORKBENCH,
+    Router.replace(Navigation.WORKBENCH, {
       params: {
         spaceId,
         nodeId,
         viewId,
         recordId,
       },
-      method: Method.Replace,
     });
   }
 };
@@ -89,7 +83,7 @@ export const Workspace: React.FC = () => {
   const isMobile = screenIsAtMost(ScreenSize.md);
   const query = useQuery();
   const router = useRouter();
- 
+
   // 目录树切换来源态，目录树点击态，侧边栏开关
   const [toggleType, setToggleType] = useState<SideBarType>(SideBarType.None);
   const [clickType, setClickType] = useState<SideBarClickType>(SideBarClickType.None);
@@ -142,7 +136,7 @@ export const Workspace: React.FC = () => {
       destroyVikaby();
       return;
     }
-   
+
     const isVikabyClosed = Boolean(localStorage.getItem('vikaby_closed'));
     !isVikabyClosed && showVikaby();
     return () => {
@@ -239,7 +233,7 @@ export const Workspace: React.FC = () => {
           {/* TODO：SplitPane 上直接设置 pane1Style 加动画会导致无法拖动的问题， 下个版本解决。0.4 暂时不加动画 */}
           <VikaSplitPanel
             panelLeft={
-              <div style={{ width: sideBarVisible ? '100%' : 0 }} className={styles.splitLeft} data-test-id="workspace-sidebar">
+              <div style={{ width: sideBarVisible ? '100%' : 0 }} className={styles.splitLeft} data-test-id='workspace-sidebar'>
                 <div
                   style={{
                     width: sideBarVisible ? '100%' : templeVisible ? defaultSidePanelSize : 0,
@@ -271,7 +265,7 @@ export const Workspace: React.FC = () => {
                         setTempleVisible(true);
                       }
                     }}
-                    data-test-id="sidebar-toggle-btn"
+                    data-test-id='sidebar-toggle-btn'
                   >
                     {!sideBarVisible ? <ExpandOutlined /> : <CollapseOutlined />}
                   </div>
@@ -279,7 +273,7 @@ export const Workspace: React.FC = () => {
               </div>
             }
             panelRight={<div className={styles.splitRight}>{children}</div>}
-            split="vertical"
+            split='vertical'
             minSize={335}
             defaultSize={defaultSidePanelSize}
             maxSize={640}

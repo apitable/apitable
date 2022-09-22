@@ -1,13 +1,13 @@
 import { Button, ThemeName, ThemeProvider, Typography } from '@vikadata/components';
 import { ConfigConstant, getCustomConfig, Navigation, StatusCode, Strings, t } from '@vikadata/core';
 import { Form } from 'antd';
+import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useSetState, useUserRequest } from 'pc/hooks';
 import { execNoTraceVerification } from 'pc/utils';
 import * as React from 'react';
 import { FC } from 'react';
 import { PasswordInput, WithTipWrapper, Wrapper } from '../common';
 import { IdentifyingCodeModes, IIdentifyingCodeData } from '../home/login/identifying_code_login/identifying_code_modes';
-import { useNavigation } from '../route_manager/use_navigation';
 import styles from './style.module.less';
 
 interface IState {
@@ -41,7 +41,6 @@ const ResetPassword: FC = () => {
   const [errMsg, setErrMsg] = useSetState<{ accountErrMsg: string, identifyingCodeErrMsg: string, passwordErrMsg: string }>(defaultErrMsg);
   const { retrievePwdReq, loginOrRegisterReq } = useUserRequest();
   const { run: retrievePwd, loading } = useRequest(retrievePwdReq, { manual: true });
-  const navigationTo = useNavigation();
 
   const resetErrMsg = () => {
     const { accountErrMsg, identifyingCodeErrMsg, passwordErrMsg } = errMsg;
@@ -103,7 +102,7 @@ const ResetPassword: FC = () => {
   };
 
   const handleBackLogin = () => {
-    navigationTo({ path: Navigation.LOGIN });
+    Router.push(Navigation.LOGIN);
   };
 
   const onModeChange = mode => {
@@ -116,7 +115,7 @@ const ResetPassword: FC = () => {
       <Wrapper>
         <div className={styles.resetPwdWrapper}>
           <div className={styles.resetPwdBox}>
-            <Typography variant="h5" className={styles.title}>{t(Strings.reset_password)}</Typography>
+            <Typography variant='h5' className={styles.title}>{t(Strings.reset_password)}</Typography>
             <Form onFinish={handleSubmit}>
               <IdentifyingCodeModes
                 smsType={ConfigConstant.SmsTypes.MODIFY_PASSWORD}
@@ -127,30 +126,30 @@ const ResetPassword: FC = () => {
                 onChange={handleIdentifyingCodeChange}
                 mode={supportAccountType as IdentifyingCodeModes}
               />
-              <Typography variant="body2" className={styles.gap}>{t(Strings.input_new_password)}</Typography>
+              <Typography variant='body2' className={styles.gap}>{t(Strings.input_new_password)}</Typography>
               <WithTipWrapper tip={errMsg.passwordErrMsg}>
                 <PasswordInput
                   placeholder={t(Strings.password_rules)}
                   onChange={e => handlePasswordChange(e, 'password')}
-                  autoComplete="new-password"
+                  autoComplete='new-password'
                   block
                 />
               </WithTipWrapper>
-              <Typography variant="body2" className={styles.gap}>{t(Strings.input_confirmation_password)}</Typography>
-              <WithTipWrapper tip="">
+              <Typography variant='body2' className={styles.gap}>{t(Strings.input_confirmation_password)}</Typography>
+              <WithTipWrapper tip=''>
                 <PasswordInput
                   error={Boolean(errMsg.passwordErrMsg)}
                   placeholder={t(Strings.placeholder_input_new_password_again)}
                   onChange={e => handlePasswordChange(e, 'secondPassword')}
-                  autoComplete="new-password"
+                  autoComplete='new-password'
                   block
                 />
               </WithTipWrapper>
               <Button
                 className={styles.confirmBtn}
-                type="submit"
-                color="primary"
-                size="large"
+                type='submit'
+                color='primary'
+                size='large'
                 disabled={btnDisable}
                 loading={loading}
                 block

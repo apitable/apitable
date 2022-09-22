@@ -1,12 +1,12 @@
 import { Api, ConfigConstant, Navigation, Settings, StatusCode, Strings, t } from '@vikadata/core';
 import { Message, Modal } from 'pc/components/common';
-import { navigationToUrl, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+import { Router } from 'pc/components/route_manager/router';
 import { useQuery } from 'pc/hooks';
 import { ISubmitRequestParam } from '../login';
 import { FeiShuLogin } from './feishu_login';
 
 const FeiShuAdminLogin = () => {
-  const navigationTo = useNavigation();
   const query = useQuery();
   const openId = query.get('openId') || query.get('open_id');
   const tenantKey = query.get('tenantKey') || query.get('tenant_key');
@@ -38,8 +38,7 @@ const FeiShuAdminLogin = () => {
         Message.error({ content: message });
         return;
       }
-      navigationTo({
-        path: Navigation.FEISHU,
+      Router.push(Navigation.FEISHU, {
         params: { feiShuPath: 'bind_space' },
         query: { openId, tenantKey },
       });
@@ -49,8 +48,7 @@ const FeiShuAdminLogin = () => {
   };
 
   if (!tenantKey) {
-    navigationTo({
-      path: Navigation.FEISHU,
+    Router.push(Navigation.FEISHU, {
       params: { feiShuPath: 'err' },
       query: {
         msg: t(Strings.wrong_url),

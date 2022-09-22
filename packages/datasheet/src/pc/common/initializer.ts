@@ -8,7 +8,7 @@ import { Api, getLanguage, injectStore, Navigation, Selectors, StatusCode, Store
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { BillingModal, Modal } from 'pc/components/common/modal/modal/modal';
-import { Method, navigatePath } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { store } from 'pc/store';
 import { getEnvVariables, getInitializationData, getReleaseVersion, getSpaceIdFormTemplate } from 'pc/utils/env';
 import './apphook/hook_bindings';
@@ -128,7 +128,7 @@ function initAxios(store) {
               const reference = (new URLSearchParams(window.location.search)).get('reference')?.toString();
               store.dispatch(StoreActions.setUserMe(null));
               store.dispatch(StoreActions.setIsLogin(false));
-              navigatePath({ path: Navigation.LOGIN, query: { reference }, method: Method.Redirect });
+              Router.redirect(Navigation.LOGIN, { query: { reference }});
             },
           });
         }
@@ -148,7 +148,7 @@ function initAxios(store) {
           content: t(Strings.login_frequent_operation_reminder_content),
           okText: t(Strings.login_frequent_operation_reminder_button),
           onOk: () => {
-            navigatePath({ path: Navigation.LOGIN, method: Method.Redirect });
+            Router.redirect(Navigation.LOGIN);
           },
         });
         return Promise.reject();
@@ -158,7 +158,7 @@ function initAxios(store) {
           title: t(Strings.node_not_exist_title),
           content: t(Strings.node_number_err_content),
           onOk: () => {
-            navigatePath({ path: Navigation.HOME, method: Method.Redirect });
+            Router.redirect(Navigation.HOME);
           },
         });
         return Promise.reject();
@@ -183,7 +183,7 @@ function initAxios(store) {
             content: t(Strings.no_access_space_descirption),
             okText: t(Strings.refresh),
             onOk: () => {
-              navigatePath({ path: Navigation.HOME });
+              Router.push(Navigation.HOME);
             },
           });
         }
@@ -259,7 +259,7 @@ export function redirectIfUserApplyLogout() {
   const initData = getInitializationData();
   const userInfo = state.user.info || initData.userInfo;
   if (userInfo && userInfo.isPaused) {
-    navigatePath({ path: Navigation.APPLY_LOGOUT, method: Method.Push });
+    Router.push(Navigation.APPLY_LOGOUT);
   }
 }
 

@@ -1,7 +1,7 @@
 import { Field, ICellValue, IField, Navigation, StoreActions, Strings, t } from '@vikadata/core';
 import { debounce } from 'lodash';
 import { EXPAND_RECORD } from 'pc/components/expand_record/expand_record.enum';
-import { Method, navigatePath } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { store } from 'pc/store';
 import ReactDOM from 'react-dom';
 
@@ -52,29 +52,18 @@ export const expandRecordIdNavigate = debounce((recordId?: string, isReplace?: b
   }, {});
 
   if (shareId) {
-    navigatePath({
-      path: Navigation.SHARE_SPACE,
-      params: { nodeId: mirrorId || datasheetId, viewId, recordId, shareId, datasheetId },
-      method: isReplace ? Method.Replace : Method.Push,
-      clearQuery: true,
-      query,
-    });
+    const params = { nodeId: mirrorId || datasheetId, viewId, recordId, shareId, datasheetId };
+    isReplace ? Router.replace(Navigation.SHARE_SPACE, { params, clearQuery: true, query }) :
+      Router.push(Navigation.SHARE_SPACE, { params, clearQuery: true, query });
+
   } else if (templateId) {
-    navigatePath({
-      path: Navigation.TEMPLATE,
-      params: { nodeId: mirrorId || datasheetId, viewId, spaceId, recordId, categoryId, templateId, datasheetId },
-      method: isReplace ? Method.Replace : Method.Push,
-      clearQuery: true,
-      query,
-    });
+    const params = { nodeId: mirrorId || datasheetId, viewId, spaceId, recordId, categoryId, templateId, datasheetId };
+    isReplace ? Router.replace(Navigation.TEMPLATE, { params, clearQuery: true, query }) :
+      Router.push(Navigation.TEMPLATE, { params, clearQuery: true, query });
   } else {
-    navigatePath({
-      path: Navigation.WORKBENCH,
-      params: { nodeId: mirrorId || datasheetId, viewId, spaceId, recordId, datasheetId },
-      method: isReplace ? Method.Replace : Method.Push,
-      clearQuery: true,
-      query,
-    });
+    const params = { nodeId: mirrorId || datasheetId, viewId, spaceId, recordId, datasheetId };
+    isReplace ? Router.replace(Navigation.WORKBENCH, { params, clearQuery: true, query }) :
+      Router.push(Navigation.WORKBENCH, { params, clearQuery: true, query });
   }
 }, 300);
 export const recordModalCloseFns: Array<() => void> = [];

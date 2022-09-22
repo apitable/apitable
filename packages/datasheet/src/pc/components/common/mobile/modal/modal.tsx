@@ -1,5 +1,5 @@
 import { Strings, t } from '@vikadata/core';
-import { Modal as AntdMobileModal } from 'antd-mobile';
+import AntdMobileModal from 'antd-mobile/lib/modal';
 import { colorVars } from '@vikadata/components';
 import * as React from 'react';
 import promptFunc from './prompt';

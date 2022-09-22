@@ -3,7 +3,7 @@ import { BindAccount, ConfigConstant, IReduxState, QrAction, Strings, t } from '
 import { useMount } from 'ahooks';
 import Image from 'next/image';
 import { Modal } from 'pc/components/common';
-import { navigationToUrl } from 'pc/components/route_manager/use_navigation';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useQuery } from 'pc/hooks';
 import { store } from 'pc/store';
 import { getDingdingConfig, getFeishuConfig, getQQConfig, getWechatConfig, getWecomConfig, getWecomShopConfig } from 'pc/utils/get_config';

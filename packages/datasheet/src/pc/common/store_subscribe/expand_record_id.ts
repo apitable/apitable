@@ -8,10 +8,12 @@ store.subscribe(function routeRecordChange() {
   const state = store.getState();
   const isLogin = state.user.isLogin;
   const { viewId, recordId, shareId } = state.pageParams;
+
   // 分享页未登录也可以展开卡片
   if (!isLogin && !shareId) {
     return;
   }
+
   const isSideRecordOpen = state.space.isSideRecordOpen;
 
   if (!recordId) {
@@ -23,15 +25,17 @@ store.subscribe(function routeRecordChange() {
 
     return;
   }
+
   // 兼容没有 viewId 但是有 recordId 的情况
-  if ((preRecordId && recordId) || !viewId) {
-    preRecordId = recordId;
+  if (!viewId || preRecordId === recordId) {
     return;
   }
+
   preRecordId = recordId;
 
   if (!isSideRecordOpen && state.recordVision === RecordVision.Side) {
     store.dispatch((StoreActions.toggleSideRecord(true)));
   }
+
   expandRecordRoute();
 });

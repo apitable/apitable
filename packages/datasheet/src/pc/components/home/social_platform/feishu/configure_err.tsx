@@ -1,5 +1,5 @@
 import { ConfigConstant, Settings, Strings, t } from '@vikadata/core';
-import { navigationToUrl } from 'pc/components/route_manager/use_navigation';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useQuery } from 'pc/hooks';
 import { useMemo } from 'react';
 import BoundImage from 'static/icon/common/common_img_feishu_binding.png';

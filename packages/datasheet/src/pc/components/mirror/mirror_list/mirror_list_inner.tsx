@@ -3,13 +3,13 @@ import { ConfigConstant, integrateCdnHost, Navigation, Selectors, Settings, Stri
 import { AddOutlined } from '@vikadata/icons';
 import Image from 'next/image';
 import { PopUpTitle } from 'pc/components/common';
-import { IMirrorItem } from './interface';
-import { gstMirrorIconByViewType } from './utils';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useCatalog } from 'pc/hooks/use_catalog';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
+import { IMirrorItem } from './interface';
 import styles from './style.module.less';
+import { gstMirrorIconByViewType } from './utils';
 
 interface IMirrorListInner {
   mirrorList: IMirrorItem[];
@@ -51,8 +51,6 @@ export const MirrorListInner: React.FC<IMirrorListInner> = props => {
 
   const { addTreeNode } = useCatalog();
 
-  const navigationTo = useNavigation();
-
   const createMirrorNode = () => {
     addTreeNode(
       folderId,
@@ -66,8 +64,7 @@ export const MirrorListInner: React.FC<IMirrorListInner> = props => {
   };
 
   const linkTo = (id: string) => {
-    navigationTo({
-      path: Navigation.WORKBENCH,
+    Router.push(Navigation.WORKBENCH,{
       params: {
         nodeId: id,
       },

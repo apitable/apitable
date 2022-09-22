@@ -3,7 +3,7 @@ import { Api, getCustomConfig, IReduxState, Navigation, StatusCode, StoreActions
 import { useMount } from 'ahooks';
 import Image from 'next/image';
 import { Wrapper } from 'pc/components/common';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest } from 'pc/hooks';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,7 +13,6 @@ import { useInvitePageRefreshed } from '../use_invite';
 
 const LinkConfirm: FC = () => {
   const dispatch = useDispatch();
-  const navigationTo = useNavigation();
   const { whenPageRefreshed } = useInvitePageRefreshed({ type: 'linkInvite' });
   const query = useQuery();
   const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
@@ -25,7 +24,7 @@ const LinkConfirm: FC = () => {
     onSuccess: res => {
       const { success, code } = res.data;
       if (success) {
-        navigationTo({ path: Navigation.WORKBENCH, params: { spaceId: inviteLinkInfo!.data.spaceId, nodeId: shareId }, clearQuery: true });
+        Router.push(Navigation.WORKBENCH, { params: { spaceId: inviteLinkInfo!.data.spaceId, nodeId: shareId }, clearQuery: true });
         dispatch(StoreActions.updateInviteLinkInfo(null));
         dispatch(StoreActions.updateErrCode(null));
       } else if (code === StatusCode.UN_AUTHORIZED) {
@@ -35,8 +34,7 @@ const LinkConfirm: FC = () => {
           location.href = `${redirectUrlOnUnAuthorization}${redirectUri}`;
           return;
         }
-        navigationTo({
-          path: Navigation.INVITE,
+        Router.push(Navigation.INVITE, {
           params: { invitePath: 'link/login' },
           query: { inviteLinkToken: inviteLinkToken!, inviteCode }
         });

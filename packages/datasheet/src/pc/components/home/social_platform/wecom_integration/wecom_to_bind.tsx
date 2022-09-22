@@ -1,13 +1,12 @@
 import { Loading, Message } from '@vikadata/components';
 import { Api, Navigation, Strings, t } from '@vikadata/core';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useQuery } from 'pc/hooks';
 import * as React from 'react';
 import { useEffect } from 'react';
 import styles from './styles.module.less';
 
 const WecomToBind: React.FC = () => {
-  const navigationTo = useNavigation();
   const query = useQuery();
   const code = query.get('code') || '';
   const domainName = query.get('domainName') || '';
@@ -15,9 +14,11 @@ const WecomToBind: React.FC = () => {
   const spaceId = query.get('spaceId') || '';
 
   const toErrorPage = (errorCode?: string) => {
-    navigationTo({ path: Navigation.WECOM, params: {
-      wecomPath: 'error'
-    }, clearQuery: true, query: { errorCode }});
+    Router.push(Navigation.WECOM, {
+      params: {
+        wecomPath: 'error'
+      }, clearQuery: true, query: { errorCode }
+    });
   };
 
   useEffect(() => {
@@ -29,9 +30,11 @@ const WecomToBind: React.FC = () => {
       const { success, code } = res.data;
       if (success) {
         Message.success({ content: t(Strings.binding_success) });
-        navigationTo({ path: Navigation.WECOM, params: { wecomPath: 'integration/bind_success' }, query: {
-          domainName
-        }, clearQuery: true });
+        Router.push(Navigation.WECOM, {
+          params: { wecomPath: 'integration/bind_success' }, query: {
+            domainName
+          }, clearQuery: true
+        });
         return;
       }
       toErrorPage(code);

@@ -1,14 +1,13 @@
 import { Api, Navigation, StatusCode, Strings, t } from '@vikadata/core';
 import { useMount } from 'ahooks';
 import { Loading, Message } from 'pc/components/common';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest } from 'pc/hooks';
 import { useEffect, useState } from 'react';
 import { FeishuErrType } from './feishu_err';
 
 const FeiShuUserAuth = () => {
   const query = useQuery();
-  const NavigationTo = useNavigation();
   const [err, setErr] = useState('');
   const accessToken =
     query.get('access_token') || query.get('accessToken') || undefined;
@@ -26,8 +25,7 @@ const FeiShuUserAuth = () => {
         const bindDataRes = await Api.socialFeiShuCheckTenantBind(tenantKey);
         const { success: bindDataSuccess, data: bindData } = bindDataRes.data;
         if (!bindDataSuccess) {
-          NavigationTo({
-            path: Navigation.FEISHU,
+          Router.push(Navigation.FEISHU, {
             params: { feiShuPath: 'err' },
             query: {
               msg: FeishuErrType.IDENTITY,
@@ -39,15 +37,13 @@ const FeiShuUserAuth = () => {
           const adminRes = await Api.socialFeiShuCheckAdmin(openId, tenantKey);
           const { success, data: adminInfo } = adminRes.data;
           if (success && adminInfo.isAdmin) {
-            NavigationTo({
-              path: Navigation.FEISHU,
+            Router.push(Navigation.FEISHU, {
               params: { feiShuPath: 'admin_login' },
               query: { openId, tenantKey },
             });
             return;
           } else if (success && !adminInfo.isAdmin) {
-            NavigationTo({
-              path: Navigation.FEISHU,
+            Router.push(Navigation.FEISHU, {
               params: { feiShuPath: 'err' },
               query: {
                 key: FeishuErrType.CONFIGURING,
@@ -70,12 +66,11 @@ const FeiShuUserAuth = () => {
             if (success) {
               const list = data.bindInfoList;
               if (list && typeof list === 'object') {
-                NavigationTo({
-                  path: Navigation.WORKBENCH,
+                Router.push(Navigation.WORKBENCH, {
                   params: { spaceId: list[0].spaceId },
                 });
               } else {
-                NavigationTo({ path: Navigation.HOME });
+                Router.push(Navigation.HOME);
               }
               return;
             }
@@ -83,8 +78,7 @@ const FeiShuUserAuth = () => {
           }
           // 飞书未绑
           if (code === StatusCode.FEISHU_ACCOUNT_NOT_BOUND) {
-            NavigationTo({
-              path: Navigation.FEISHU,
+            Router.push(Navigation.FEISHU, {
               params: { feiShuPath: 'bind_user' },
               query: {
                 openId,
@@ -109,15 +103,14 @@ const FeiShuUserAuth = () => {
   });
   useEffect(() => {
     if (err) {
-      NavigationTo({
-        path: Navigation.FEISHU,
+      Router.push(Navigation.FEISHU, {
         params: { feiShuPath: 'err' },
         query: {
           msg: err,
         },
       });
     }
-  }, [err, NavigationTo]);
+  }, [err]);
   return <Loading />;
 };
 

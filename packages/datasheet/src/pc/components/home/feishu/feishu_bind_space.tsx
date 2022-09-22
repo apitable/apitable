@@ -6,7 +6,7 @@ import parser from 'html-react-parser';
 import Image from 'next/image';
 import { Loading, LoginCard, Message, MobileSelect, Modal, Wrapper } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest, useResponsive } from 'pc/hooks';
 import { useEffect, useState } from 'react';
 import BothImg from 'static/icon/signin/signin_img_vika_feishu.png';
@@ -21,7 +21,6 @@ interface IEnhancedSpaceInfo extends ISpaceInfo {
 const FeiShuBindSpace = () => {
   const { screenIsAtMost } = useResponsive();
   const query = useQuery();
-  const navigationTo = useNavigation();
   // const openId = query.get('openId');
   const tenantKey = query.get('tenantKey') || query.get('tenant_key');
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -80,8 +79,7 @@ const FeiShuBindSpace = () => {
       const { success, message, code } = res.data;
       if (success) {
         setErr('');
-        navigationTo({
-          path: Navigation.WORKBENCH,
+        Router.push(Navigation.WORKBENCH, {
           params: { spaceId: curSpace!.spaceId },
         });
       } else if (code === StatusCode.PAYMENT_PLAN) {
@@ -157,7 +155,7 @@ const FeiShuBindSpace = () => {
             {listLoading || numberLoading ? (
               <div style={{ width: '100%' }}>
                 <Skeleton count={2} />
-                <Skeleton width="61%" />
+                <Skeleton width='61%' />
               </div>
             ) : isMobile ? (
               <MobileSelect
@@ -183,13 +181,13 @@ const FeiShuBindSpace = () => {
             {numberLoading ? (
               <div style={{ width: '100%' }}>
                 <Skeleton count={2} />
-                <Skeleton width="61%" />
+                <Skeleton width='61%' />
               </div>
             ) : (
               <div className={styles.desc}>{t(Strings.feishu_bind_space_config_detail, { maxCount })}</div>
             )}
           </div>
-          <Button color="primary" block size="large" onClick={bindSpaceBtnClick} loading={btnLoading} disabled={btnLoading}>
+          <Button color='primary' block size='large' onClick={bindSpaceBtnClick} loading={btnLoading} disabled={btnLoading}>
             {t(Strings.feishu_bind_space_btn)}
           </Button>
         </LoginCard>

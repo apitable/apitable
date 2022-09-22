@@ -1,10 +1,11 @@
 import { useThemeColors } from '@vikadata/components';
 import { findNode, IShareInfo, Navigation, Selectors, StoreActions, Strings, t } from '@vikadata/core';
 import classNames from 'classnames';
+import Head from 'next/head';
 import { Message } from 'pc/components/common/message';
 import { Tooltip } from 'pc/components/common/tooltip';
 import { MirrorRoute } from 'pc/components/mirror/mirror_route';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { usePageParams, useRequest, useSideBarVisible, useUserRequest } from 'pc/hooks';
 import { deleteStorageByKey, getStorage, StorageName } from 'pc/utils/storage/storage';
 import React, { useEffect, useState } from 'react';
@@ -19,11 +20,10 @@ import { FolderShowcase } from '../folder_showcase';
 import { FormPanel } from '../form_panel';
 import { ShareMenu } from '../share/share_menu';
 import { ApplicationJoinSpaceAlert } from './application_join_space_alert';
+import { INodeTree, IShareSpaceInfo } from './interface';
 import { ShareFail } from './share_fail';
 import { ShareMobile } from './share_mobile/share_mobile';
 import styles from './style.module.less';
-import Head from 'next/head';
-import { INodeTree, IShareSpaceInfo } from './interface';
 
 export const ShareContext = React.createContext({} as { shareInfo: IShareSpaceInfo });
 
@@ -39,7 +39,6 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
   const { shareId, datasheetId, folderId, formId, dashboardId, mirrorId } = useSelector(state => state.pageParams);
   const treeNodesMap = useSelector(state => state.catalogTree.treeNodesMap);
   const userInfo = useSelector(state => state.user.info);
-  const navigationTo = useNavigation();
   const [nodeTree, setNodeTree] = useState<INodeTree>();
   const [visible, setVisible] = useState(false);
   const [shareSpace, setShareSpace] = useState<IShareSpaceInfo | undefined>();
@@ -115,8 +114,7 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
     }
     setTimeout(() => {
       console.log('share navigationTo');
-      navigationTo({
-        path: Navigation.SHARE_SPACE,
+      Router.push(Navigation.SHARE_SPACE,{
         params: { shareId: shareSpaceInfo.shareId, nodeId: shareNodeId },
       });
     }, 0);
@@ -139,7 +137,7 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
           {t(Strings.share_edit_tip)}
           <i
             onClick={() => {
-              navigationTo({ path: Navigation.LOGIN, query: { reference: window.location.href, spaceId: shareSpace ? shareSpace.spaceId : '' }});
+              Router.push(Navigation.LOGIN, { query: { reference: window.location.href, spaceId: shareSpace ? shareSpace.spaceId : '' }});
             }}
           >
             {t(Strings.login)}
@@ -211,12 +209,12 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
   return (
     <ShareContext.Provider value={{ shareInfo: shareSpace }}>
       <Head>
-        <meta property="og:title" content={shareInfo?.shareNodeName || '维格表'} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={window.location.href} />
-        <meta property="og:image" content="https://s1.vika.cn/space/2021/12/01/992611616a744743a75c4b916e982dd6" />
-        <meta property="og:site_name" content="维格表" />
-        <meta property="og:description" content="维格表, 积木式多媒体数据表格, 维格表技术首创者, 数据整理神器, 让人人都是数据设计师" />
+        <meta property='og:title' content={shareInfo?.shareNodeName || '维格表'} />
+        <meta property='og:type' content='website' />
+        <meta property='og:url' content={window.location.href} />
+        <meta property='og:image' content='https://s1.vika.cn/space/2021/12/01/992611616a744743a75c4b916e982dd6' />
+        <meta property='og:site_name' content='维格表' />
+        <meta property='og:description' content='维格表, 积木式多媒体数据表格, 维格表技术首创者, 数据整理神器, 让人人都是数据设计师' />
       </Head>
       <div
         className={classNames(styles.share, {
@@ -229,7 +227,7 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
             <FormPanel loading={loading} />
           ) : (
             <SplitPane
-              split="vertical"
+              split='vertical'
               minSize={320}
               defaultSize={defaultSize}
               maxSize={640}

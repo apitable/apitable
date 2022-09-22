@@ -1,13 +1,15 @@
+import { useThemeColors } from '@vikadata/components';
 import { Navigation, StoreActions, Strings, t } from '@vikadata/core';
 import { Tooltip } from 'antd';
+import path from 'path-browserify';
+import { Method } from 'pc/components/route_manager/const';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+import { Router } from 'pc/components/route_manager/router';
 import { FC } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import DescIcon from 'static/icon/datasheet/datasheet_icon_skip.svg';
-import { stopPropagation } from '../../../utils/dom';
+import { stopPropagation } from 'pc/utils';
 import styles from './style.module.less';
-import { useThemeColors } from '@vikadata/components';
-import { useNavigation, navigationToUrl, Method } from 'pc/components/route_manager/use_navigation';
-import path from 'path-browserify';
 
 export enum JumpIconMode {
   Badge,
@@ -30,7 +32,6 @@ export const LinkJump: FC<ILinkJumpProps> = (props) => {
     hasShareId: Boolean(state.pageParams.shareId),
     hasTemplateId: Boolean(state.pageParams.templateId),
   }), shallowEqual);
-  const navigationTo = useNavigation();
   const dispatch = useDispatch();
 
   if (hasShareId || hasTemplateId) {
@@ -47,7 +48,7 @@ export const LinkJump: FC<ILinkJumpProps> = (props) => {
     }
     foreignFieldId && dispatch(StoreActions.setHighlightFieldId(foreignFieldId, foreignDatasheetId));
     hideOperateBox && hideOperateBox();
-    navigationTo({ path: Navigation.WORKBENCH, params: { nodeId: foreignDatasheetId, viewId }});
+    Router.push(Navigation.WORKBENCH, { params: { nodeId: foreignDatasheetId, viewId }});
   };
 
   return (

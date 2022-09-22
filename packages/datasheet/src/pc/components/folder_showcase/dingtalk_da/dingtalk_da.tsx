@@ -1,9 +1,10 @@
+import { Method } from 'pc/components/route_manager/const';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { FC } from 'react';
 import { Settings, Strings, t } from '@vikadata/core';
 import { GotoLargeOutlined } from '@vikadata/icons';
 import { Button, black, ContextMenu, useContextMenu } from '@vikadata/components';
 import styles from './style.module.less';
-import { Method, navigationToUrl } from 'pc/components/route_manager/use_navigation';
 import { flatContextData } from 'pc/utils';
 
 const DINGTALK_DA = 'DINGTALK_DA';
@@ -37,11 +38,11 @@ export const DingTalkDa: FC<IDingTalkDaProps> = (props) => {
   //     navigationToUrl(url.href, { hash, method: Method.NewTab });
   //   }
   // };
-  
+
   // 发布到钉钉工作台
   const linkToPublish = () => {
     const url = new URL(Settings.link_to_dingtalk_da.value);
-    
+
     url.searchParams.append('bizAppId', bizAppId);
     url.searchParams.append('suiteKey', suiteKey);
     url.searchParams.append('corpId', corpId);
@@ -55,7 +56,7 @@ export const DingTalkDa: FC<IDingTalkDaProps> = (props) => {
   // 前往钉钉搭低代码管理后台
   const linkToAdmin = () => {
     const url = new URL(Settings.link_to_dingtalk_da.value);
-    
+
     url.searchParams.append('corpId', corpId);
     url.searchParams.append('ddtab', 'true');
     // url.hash = '/app-manager/1';
@@ -81,16 +82,16 @@ export const DingTalkDa: FC<IDingTalkDaProps> = (props) => {
   return (
     <>
       <Button
-        className={styles.dingTalkDaBtn} 
-        shape="round" 
-        size="small" 
+        className={styles.dingTalkDaBtn}
+        shape="round"
+        size="small"
         prefixIcon={<GotoLargeOutlined size={16} color={black[1000]} />}
         onClick={(e) => show(e)}
       >
         {t(Strings.dingtalk_da)}
       </Button>
 
-      <ContextMenu 
+      <ContextMenu
         menuId={DINGTALK_DA}
         overlay={data}
         // style={{

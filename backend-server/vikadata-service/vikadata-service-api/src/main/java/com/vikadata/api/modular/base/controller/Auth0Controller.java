@@ -11,6 +11,7 @@ import cn.hutool.json.JSONUtil;
 import com.auth0.Tokens;
 import com.auth0.exception.APIException;
 import com.auth0.exception.Auth0Exception;
+import com.auth0.json.mgmt.users.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.annotation.ApiResource;
@@ -38,7 +40,7 @@ import org.springframework.web.servlet.view.RedirectView;
  * @author Shawn Deng
  */
 @RestController
-@ApiResource(path = "/auth0")
+@ApiResource(path = "/")
 @Api(tags = "Auth0 API")
 @Slf4j
 public class Auth0Controller {
@@ -54,7 +56,8 @@ public class Auth0Controller {
 
     private static final String UnAuthorizedError = "unauthorized";
 
-    @GetResource(path = "/login", requiredLogin = false)
+    @GetResource(path = "/auth0/login", requiredLogin = false)
+    @ApiOperation(value = "auth0 login router", hidden = true)
     public RedirectView login() {
         if (auth0Template == null) {
             return new RedirectView("/error/404", true);
@@ -66,7 +69,8 @@ public class Auth0Controller {
         return new RedirectView(authorizeUrl);
     }
 
-    @GetResource(path = "/callback", requiredLogin = false)
+    @GetResource(path = "/auth0/callback", requiredLogin = false)
+    @ApiOperation(value = "auth0 user login callback", hidden = true)
     public RedirectView callback(
             @RequestParam(name = "code", required = false) String code,
             @RequestParam(name = "error", required = false) String error,
@@ -85,12 +89,12 @@ public class Auth0Controller {
         try {
             Tokens tokens = auth0Template.getVerifiedTokens(code, auth0Template.getRedirectUri());
             DecodedJWT idToken = JWT.decode(tokens.getIdToken());
-            Auth0UserProfile profile = claimsAsJson(idToken);
+            Auth0UserProfile user = claimsAsJson(idToken);
             if (log.isDebugEnabled()) {
-                log.debug("user info: {}", JSONUtil.toJsonPrettyStr(profile));
+                log.debug("user info: {}", JSONUtil.toJsonPrettyStr(user));
             }
             // save user if user is not exist
-            Long userId = iUserService.createUserByAuth0IfNotExist(profile);
+            Long userId = iUserService.createUserByAuth0IfNotExist(user);
             // save session
             SessionContext.setUserId(userId);
             return new RedirectView(constProperties.getServerDomain() + constProperties.getWorkbenchUrl());
@@ -122,6 +126,31 @@ public class Auth0Controller {
             log.error("Error parsing claims to JSON", jpe);
             throw new RuntimeException("error parse profile");
         }
+    }
+
+    @GetResource(path = "/invitation/callback", requiredLogin = false)
+    @ApiOperation(value = "apitable user accept invitation callback", hidden = true)
+    public RedirectView invitationCallback(@RequestParam(name = "email") String email,
+            @RequestParam(name = "success") boolean success) {
+        if (!success) {
+            return new RedirectView("/error/404", true);
+        }
+        User user;
+        try {
+            user = auth0Template.usersByEmail(email);
+        }
+        catch (Auth0Exception e) {
+            log.error("can't find user with this email", e);
+            return new RedirectView("/error/404", true);
+        }
+        if (user == null) {
+            // return error page
+            return new RedirectView("/error/404", true);
+        }
+        Long userId = iUserService.createUserByAuth0IfNotExist(user);
+        // save session
+        SessionContext.setUserId(userId);
+        return new RedirectView(constProperties.getServerDomain() + constProperties.getWorkbenchUrl());
     }
 
 }

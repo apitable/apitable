@@ -3,7 +3,8 @@ import { Navigation, Settings, Strings, t } from '@vikadata/core';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { Wrapper } from 'pc/components/common';
-import { navigationToUrl, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+import { Router } from 'pc/components/route_manager/router';
 import { useQuery } from 'pc/hooks';
 import * as React from 'react';
 import { FC, useMemo } from 'react';
@@ -45,7 +46,7 @@ const FeishuDefaultErr = (data: IFeishuDefaultErrProps) => {
           <Image src={img as string} />
         </span>
         <div className={styles.desc}>{desc}</div>
-        <Button color="primary" onClick={onClick}>
+        <Button color='primary' onClick={onClick}>
           {btnText}
         </Button>
       </div>
@@ -60,7 +61,6 @@ const FeishuErr: FC<{
   const key = query.get('key');
   const msg = query.get('msg');
   const appId = query.get('appId') || query.get('app_id');
-  const navigationTo = useNavigation();
   const info: { [key: string]: IFeishuDefaultErrProps } = React.useMemo(() => {
     return {
       bound: {
@@ -69,7 +69,7 @@ const FeishuErr: FC<{
         btnText: t(Strings.entry_space),
         onClick: () => {
           if (!appId) {
-            navigationTo({ path: Navigation.LOGIN });
+            Router.push(Navigation.LOGIN);
             return;
           }
 
@@ -107,7 +107,7 @@ const FeishuErr: FC<{
         },
       },
     };
-  }, [navigationTo, appId]);
+  }, [appId]);
 
   const data = useMemo(() => {
     if (key && info[key]) {

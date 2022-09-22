@@ -1,23 +1,22 @@
-import { FC, useState } from 'react';
-import * as React from 'react';
-import { dingdingLogin, feishuLogin, OtherLogin, qqLogin, wechatLogin } from '../other_login';
-import styles from './style.module.less';
+import { LinkButton, useThemeColors } from '@vikadata/components';
 import { ApiInterface, AutoTestID, ConfigConstant, getCustomConfig, isPrivateDeployment, Navigation, Strings, t } from '@vikadata/core';
+import { DingdingFilled, FeishuFilled, QqFilled, WechatFilled } from '@vikadata/icons';
+import { configResponsive, useResponsive, useToggle } from 'ahooks';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { Router } from 'pc/components/route_manager/router';
 import { useResponsive as useCustomResponsive, useUserRequest } from 'pc/hooks';
+import { isMobileApp } from 'pc/utils/env';
+import Trigger from 'rc-trigger';
+import * as React from 'react';
+import { FC, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { dingdingLogin, feishuLogin, OtherLogin, qqLogin, wechatLogin } from '../other_login';
+import { isWecomFunc } from '../social_platform';
 import { IdentifyingCodeLogin, ISubmitRequestParam } from './identifying_code_login';
 import { PasswordLogin } from './password_login';
 import { SSOLogin } from './sso_login';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
-import { ScreenSize } from 'pc/components/common/component_display';
-import { useResponsive } from 'ahooks';
-import { configResponsive, useToggle } from 'ahooks';
-import { WechatFilled, QqFilled, DingdingFilled, FeishuFilled } from '@vikadata/icons';
-import { LinkButton, useThemeColors } from '@vikadata/components';
+import styles from './style.module.less';
 import { WecomLoginBtn } from './wecom_login_btn';
-import Trigger from 'rc-trigger';
-import { useSelector } from 'react-redux';
-import { isWecomFunc } from '../social_platform';
-import { isMobileApp } from 'pc/utils/env';
 
 export interface ILoginProps {
   afterLogin?(data: string, loginMode: ConfigConstant.LoginMode): void;
@@ -43,7 +42,6 @@ export const Login: FC<ILoginProps> = ({ afterLogin }) => {
   const [mod, setMod] = useState(defaultMod);
 
   const { loginOrRegisterReq } = useUserRequest();
-  const navigationTo = useNavigation();
   configResponsive({
     large: 1023.98,
   });
@@ -78,7 +76,7 @@ export const Login: FC<ILoginProps> = ({ afterLogin }) => {
   );
 
   const goResetPwd = () => {
-    navigationTo({ path: Navigation.RESET_PWD });
+    Router.push(Navigation.RESET_PWD);
   };
 
   const modConfig = React.useMemo(() => {
@@ -166,9 +164,9 @@ export const Login: FC<ILoginProps> = ({ afterLogin }) => {
                 {toggleLoginModBtnVisible && (
                   <LinkButton
                     underline={false}
-                    component="button"
+                    component='button'
                     id={AutoTestID.CHANGE_MODE_BTN}
-                    className="toggleLoginModeBtn"
+                    className='toggleLoginModeBtn'
                     onClick={changeLoginMod}
                     style={{ paddingLeft: 0 }}
                   >
@@ -177,7 +175,7 @@ export const Login: FC<ILoginProps> = ({ afterLogin }) => {
                 )}
               </div>
               {!resetPasswordDisable && (
-                <LinkButton underline={false} component="button" onClick={goResetPwd} style={{ paddingRight: 0 }}>
+                <LinkButton underline={false} component='button' onClick={goResetPwd} style={{ paddingRight: 0 }}>
                   {t(Strings.retrieve_password)}
                 </LinkButton>
               )}
@@ -187,9 +185,9 @@ export const Login: FC<ILoginProps> = ({ afterLogin }) => {
               {toggleLoginModBtnVisible && (
                 <LinkButton
                   underline={false}
-                  component="button"
+                  component='button'
                   id={AutoTestID.CHANGE_MODE_BTN}
-                  className="toggleLoginModeBtn"
+                  className='toggleLoginModeBtn'
                   onClick={changeLoginMod}
                 >
                   {changeModText}
@@ -205,12 +203,12 @@ export const Login: FC<ILoginProps> = ({ afterLogin }) => {
                 onPopupVisibleChange={() => popupVisibleToggle()}
                 zIndex={10000}
               >
-                <LinkButton underline={false} component="button">
+                <LinkButton underline={false} component='button'>
                   {t(Strings.other_login)}
                 </LinkButton>
               </Trigger>
               {!resetPasswordDisable && (
-                <LinkButton underline={false} component="button" onClick={goResetPwd}>
+                <LinkButton underline={false} component='button' onClick={goResetPwd}>
                   {t(Strings.retrieve_password)}
                 </LinkButton>
               )}

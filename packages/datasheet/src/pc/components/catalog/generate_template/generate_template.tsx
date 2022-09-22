@@ -1,15 +1,14 @@
-import { FC, useState } from 'react';
-import * as React from 'react';
-import { BaseModal, Message, Modal } from 'pc/components/common';
-import { t, Strings, Navigation, IReduxState, ConfigConstant, Selectors } from '@vikadata/core';
-import { Input, Form } from 'antd';
-import styles from './style.module.less';
-import { useTemplateRequest } from 'pc/hooks';
+import { ConfigConstant, IReduxState, Navigation, Selectors, Strings, t } from '@vikadata/core';
 import { useUpdateEffect } from 'ahooks';
-import { useRequest } from 'pc/hooks';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
-import { useSelector } from 'react-redux';
+import { Form, Input } from 'antd';
+import { BaseModal, Message, Modal } from 'pc/components/common';
 import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
+import { Router } from 'pc/components/route_manager/router';
+import { useRequest, useTemplateRequest } from 'pc/hooks';
+import * as React from 'react';
+import { FC, useState } from 'react';
+import { useSelector } from 'react-redux';
+import styles from './style.module.less';
 
 export interface IGenerateTemplateProps {
   nodeId?: string;
@@ -25,7 +24,6 @@ export const GenerateTemplate: FC<IGenerateTemplateProps> = ({
   nodeId = nodeId || activeNodeId;
   const [name, setName] = useState(treeNodesMap[nodeId!].nodeName);
   const [errorMsg, setErrorMsg] = useState('');
-  const navigationTo = useNavigation();
   const spaceId = useSelector(state => state.space.activeId);
   const { createTemplateReq, templateNameValidateReq } = useTemplateRequest();
   const { run: createTemplate, data: createTemplateData, loading } = useRequest(createTemplateReq, { manual: true });
@@ -41,8 +39,7 @@ export const GenerateTemplate: FC<IGenerateTemplateProps> = ({
           <>
             {t(Strings.template_created_successfully)}
             <i
-              onClick={() => navigationTo({
-                path: Navigation.TEMPLATE,
+              onClick={() => Router.push(Navigation.TEMPLATE, {
                 params: {
                   spaceId,
                   categoryId: 'tpcprivate',

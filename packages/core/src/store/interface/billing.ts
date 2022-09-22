@@ -41,6 +41,7 @@ export interface ISubscription extends ISubscribeResponseData {
   billingPeriod: string; // 订阅周期
   productColor: string; // 订阅等级对应主题色
   subscriptionType: string; // 订阅类型
+  maxAuditQueryDays: number;
 }
 
 export interface IBillingCatalog {

@@ -1,6 +1,5 @@
-
-import { IntercomProvider } from 'react-use-intercom';
 import { getEnvVariables, isHiddenQRCode } from 'pc/utils/env';
+import { IntercomProvider } from 'react-use-intercom';
 
 export const IntercomWrapper: React.FC = (props) => {
   const env = getEnvVariables();

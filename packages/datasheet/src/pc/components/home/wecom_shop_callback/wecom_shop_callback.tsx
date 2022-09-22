@@ -3,7 +3,7 @@ import { useMount } from 'ahooks';
 import { Spin } from 'antd';
 import { Message } from 'pc/components/common';
 import ContactSyncing from 'pc/components/home/social_platform/dingtalk/contact_syncing/contact_syncing';
-import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useQuery } from 'pc/hooks';
 import { getWecomShopConfig } from 'pc/utils/get_config';
 import { FC, useEffect, useState } from 'react';
@@ -24,7 +24,6 @@ const WecomShopCallback: FC = () => {
   const authCode = query.get('auth_code') || query.get('code') || '';
   const suiteId = isCamera ? config.suiteId : (query.get('suiteid') || query.get('state'))!;
   const [isSyncing, setSyncing] = useState(false);
-  const navigationTo = useNavigation();
 
   useEffect(() => {
     // 区分跳转来源
@@ -60,10 +59,8 @@ const WecomShopCallback: FC = () => {
         }
 
         if (shouldRename) {
-          navigationTo({
-            path: Navigation.SETTING_NICKNAME,
+          Router.replace(Navigation.SETTING_NICKNAME, {
             query: { defaultName, sourceType: 'wecomShop' },
-            method: Method.Replace,
             clearQuery: true
           });
           return;
@@ -82,18 +79,16 @@ const WecomShopCallback: FC = () => {
 
         window.location.href = `${location.origin}?spaceId=${spaceId}`;
       } else {
-        navigationTo({
-          path: Navigation.WECOM,
+        Router.replace(Navigation.WECOM, {
           params: {
             wecomPath: 'error'
           },
-          method: Method.Replace,
           clearQuery: true,
           query: { errorCode: code }
         });
       }
     });
-  }, [authCode, loginType, navigationTo, suiteId, reference, isCamera]);
+  }, [authCode, loginType, suiteId, reference, isCamera]);
 
   useMount(() => {
     localStorage.removeItem('wecomShopLoginToReference');

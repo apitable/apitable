@@ -12,7 +12,7 @@ import { FolderShowcase } from 'pc/components/folder_showcase';
 import { FormPanel } from 'pc/components/form_panel';
 import { isDingtalkSkuPage } from 'pc/components/home/social_platform';
 import { MirrorRoute } from 'pc/components/mirror/mirror_route';
-import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useResponsive, useSideBarVisible, useTemplateRequest } from 'pc/hooks';
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,7 +25,6 @@ export const TemplateDetail: FC = () => {
   const { datasheetId, folderId, templateId, categoryId, formId, dashboardId, mirrorId } = useSelector((state: IReduxState) => state.pageParams);
   const spaceId = useSelector(state => state.space.activeId);
   const activeNodeId = useSelector((state: IReduxState) => Selectors.getNodeId(state));
-  const navigationTo = useNavigation();
   const { getTemplateDirectoryReq } = useTemplateRequest();
   const { run: getTemplateDirectory } = useRequest<ITemplateDirectory, any[]>(getTemplateDirectoryReq, { manual: true });
   const templateDirectory = useSelector(state => state.templateCentre.directory);
@@ -65,17 +64,15 @@ export const TemplateDetail: FC = () => {
     if (mirrorId || activeNodeId) {
       return;
     }
-    navigationTo({
-      path: Navigation.TEMPLATE,
+    Router.replace(Navigation.TEMPLATE, {
       params: {
         spaceId,
         categoryId,
         templateId,
         nodeId: datasheetId || activeNodeId || templateDirectory?.nodeTree.nodeId || '',
       },
-      method: Method.Replace,
     });
-  }, [mirrorId, categoryId, datasheetId, navigationTo, spaceId, templateDirectory, templateId, activeNodeId]);
+  }, [mirrorId, categoryId, datasheetId, spaceId, templateDirectory, templateId, activeNodeId]);
 
   const getComponent = () => {
     if (!templateDirectory || !templateId) {
@@ -159,7 +156,7 @@ export const TemplateDetail: FC = () => {
     <div id={AutoTestID.TEMPLATE_DETAIL_CONTAINER} className={styles.templateDetailWrapper}>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <SplitPane
-          split="vertical"
+          split='vertical'
           minSize={templateId ? 320 : 280}
           defaultSize={defaultSize}
           maxSize={800}

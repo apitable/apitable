@@ -1,4 +1,4 @@
-import { Button, TextButton, useThemeColors, Skeleton } from '@vikadata/components';
+import { Button, Skeleton, TextButton, useThemeColors } from '@vikadata/components';
 import { ConfigConstant, DATASHEET_ID, Navigation, Strings, SubscribeKye, t } from '@vikadata/core';
 import { InformationLargeOutlined } from '@vikadata/icons';
 import classnames from 'classnames';
@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import Image from 'next/image';
 import { triggerUsageAlert } from 'pc/common/billing';
 import { Tooltip } from 'pc/components/common';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useCatalog } from 'pc/hooks/use_catalog';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
@@ -45,7 +45,6 @@ export const FormListPanel: FC<IFormListPanelProps> = (props) => {
   } = props;
   const colors = useThemeColors();
   const { addTreeNode } = useCatalog();
-  const navigationTo = useNavigation();
   const isEmpty = !formList?.length;
   const spaceInfo = useSelector(state => {
     return state.space.curSpaceInfo;
@@ -75,7 +74,7 @@ export const FormListPanel: FC<IFormListPanelProps> = (props) => {
   };
 
   const onJump = (formId) => {
-    navigationTo({ path: Navigation.WORKBENCH, params: { spaceId, formId }});
+    Router.push(Navigation.WORKBENCH, { params: { spaceId, formId }});
   };
 
   const renderFormList = () => {
@@ -120,7 +119,7 @@ export const FormListPanel: FC<IFormListPanelProps> = (props) => {
       <h4 className={styles.header}>
         {t(Strings.vika_form)}
         <Tooltip title={t(Strings.form_tour_desc)}>
-          <a href={t(Strings.form_tour_link)} className={styles.helpBtn} target="_blank" rel="noreferrer">
+          <a href={t(Strings.form_tour_link)} className={styles.helpBtn} target='_blank' rel='noreferrer'>
             <InformationLargeOutlined color={colors.fc3} />
           </a>
         </Tooltip>
@@ -140,8 +139,8 @@ export const FormListPanel: FC<IFormListPanelProps> = (props) => {
             <Button
               className={styles.addBtn}
               block={!isEmpty}
-              color="primary"
-              size="middle"
+              color='primary'
+              size='middle'
               onClick={addForm}
             >
               {!isEmpty && <IconAdd width={16} height={16} fill={colors.secondLevelText} className={styles.addIcon} />}

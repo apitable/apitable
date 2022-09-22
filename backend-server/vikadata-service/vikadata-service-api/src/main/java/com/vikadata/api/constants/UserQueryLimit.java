@@ -1,9 +1,7 @@
 package com.vikadata.api.constants;
 
 /**
- *
  * @author wuyitao
- * @date 2022/01/21
  */
 public class UserQueryLimit {
 

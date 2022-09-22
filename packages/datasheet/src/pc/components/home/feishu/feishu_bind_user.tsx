@@ -1,20 +1,19 @@
 import { Api, ConfigConstant, Navigation, Settings, StatusCode, Strings, t } from '@vikadata/core';
 import { Message, Modal } from 'pc/components/common';
-import { navigationToUrl, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+import { Router } from 'pc/components/route_manager/router';
 import { useQuery } from 'pc/hooks';
 import { ISubmitRequestParam } from '../login';
 import { FeiShuLogin } from './feishu_login';
 
 const FeiShuBindUser = () => {
-  const navigationTo = useNavigation();
   const query = useQuery();
   const openId = query.get('openId');
   const tenantKey = query.get('tenantKey');
 
   const mobileModSubmit = async(data: ISubmitRequestParam) => {
     if (!openId || !tenantKey) {
-      navigationTo({
-        path: Navigation.FEISHU,
+      Router.push(Navigation.FEISHU, {
         params: { feiShuPath: 'err' },
         query: {
           msg: t(Strings.wrong_url),
@@ -56,12 +55,11 @@ const FeiShuBindUser = () => {
       if (data.success) {
         const list = data.data.bindInfoList;
         if (Array.isArray(list) && list.length) {
-          navigationTo({
-            path: Navigation.WORKBENCH,
+          Router.push(Navigation.WORKBENCH, {
             params: { spaceId: list[0].spaceId },
           });
         } else {
-          navigationTo({ path: Navigation.HOME });
+          Router.push(Navigation.HOME);
         }
       } else {
         Message.error({ content: data.message });

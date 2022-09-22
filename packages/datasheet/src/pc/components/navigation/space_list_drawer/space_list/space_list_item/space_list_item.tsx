@@ -11,7 +11,7 @@ import { TComponent } from 'pc/components/common/t_component';
 import { SocialPlatformMap } from 'pc/components/home/social_platform/config';
 import { isSocialPlatformEnabled } from 'pc/components/home/social_platform/utils';
 import { NavigationContext } from 'pc/components/navigation/navigation_context';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useNotificationCreate, useResponsive } from 'pc/hooks';
 import * as React from 'react';
 import { FC, useContext, useState } from 'react';
@@ -31,7 +31,6 @@ export interface ISpaceListItemProps {
 export const SpaceListItem: FC<ISpaceListItemProps> = ({ spaceInfo, actived = false, managable = false, refreshList }) => {
   const colors = useThemeColors();
   const [visible, setVisible] = useState(false);
-  const navigationTo = useNavigation();
   const { closeSpaceListDrawer } = useContext(NavigationContext);
   const user = useSelector((state: IReduxState) => state.user.info) as IUserInfo;
   const { memberQuitSpaceAndNotice } = useNotificationCreate({ fromUserId: user.uuid, spaceId: user.spaceId });
@@ -44,7 +43,7 @@ export const SpaceListItem: FC<ISpaceListItemProps> = ({ spaceInfo, actived = fa
   useUpdateEffect(() => {
     if (user) {
       closeSpaceListDrawer();
-      navigationTo({ path: Navigation.SPACE_MANAGE, params: { spaceId: user.spaceId }});
+      Router.push(Navigation.SPACE_MANAGE, { params: { spaceId: user.spaceId }});
     }
   }, [user.spaceId]);
 
@@ -55,7 +54,7 @@ export const SpaceListItem: FC<ISpaceListItemProps> = ({ spaceInfo, actived = fa
   const jumpSpaceManagement = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.stopPropagation();
     if (user.spaceId === spaceId) {
-      navigationTo({ path: Navigation.SPACE_MANAGE, params: { spaceId }});
+      Router.push(Navigation.SPACE_MANAGE, { params: { spaceId }});
     } else {
       window.location.href = `${domain}/management?spaceId=${spaceId}`;
     }
@@ -108,7 +107,7 @@ export const SpaceListItem: FC<ISpaceListItemProps> = ({ spaceInfo, actived = fa
       <div className={styles.leftItem}>
         <div className={styles.name}>{name}</div>
         {isSocialPlatformEnabled(spaceInfo) && (
-          <Tooltip title={SocialPlatformMap[spaceInfo.social.platform].toolTipInSpaceListItem} placement="top">
+          <Tooltip title={SocialPlatformMap[spaceInfo.social.platform].toolTipInSpaceListItem} placement='top'>
             <span className={styles.platformTag}>
               <Image src={SocialPlatformMap[spaceInfo.social.platform].logo} alt={''} />
             </span>
@@ -125,8 +124,8 @@ export const SpaceListItem: FC<ISpaceListItemProps> = ({ spaceInfo, actived = fa
         !isSocialPlatformEnabled(spaceInfo) && (
           <Popover
             overlayClassName={styles.menu}
-            trigger="click"
-            placement="right"
+            trigger='click'
+            placement='right'
             align={{ offset: [25] }}
             visible={visible}
             mouseLeaveDelay={0}

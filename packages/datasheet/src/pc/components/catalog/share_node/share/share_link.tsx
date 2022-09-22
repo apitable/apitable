@@ -2,10 +2,10 @@ import { Button, ButtonGroup, useThemeColors } from '@vikadata/components';
 import { IUserInfo, Navigation, Strings, t } from '@vikadata/core';
 import { NewtabOutlined } from '@vikadata/icons';
 import classnames from 'classnames';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { Tooltip } from 'pc/components/common/tooltip';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { copy2clipBoard } from 'pc/utils';
 import * as React from 'react';
 import { useState } from 'react';
@@ -24,13 +24,12 @@ export const ShareLink: React.FC<IShareLinkProps> = props => {
   const shareHost = `${window.location.protocol}//${window.location.host}/share/`;
   const colors = useThemeColors();
   const { shareSettings, userInfo, shareName } = props;
-  const navigationTo = useNavigation();
   // 控制分享二维码的模态框显示
   const [shareCodeVisible, setShareCodeVisible] = useState(false);
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const previewHandler = () => {
-    navigationTo({ path: Navigation.SHARE_SPACE, params: { shareId: shareSettings.shareId }, method: Method.NewTab });
+    Router.newTab(Navigation.SHARE_SPACE, { params: { shareId: shareSettings.shareId }});
   };
 
   const copyLinkHandler = () => {
@@ -51,7 +50,7 @@ export const ShareLink: React.FC<IShareLinkProps> = props => {
       <div className={styles.shareLink}>
         <div className={styles.inputContainer}>
           <input
-            type="text"
+            type='text'
             className={classnames(styles.link, { [styles.highBorder]: isCopied })}
             value={shareHost + shareSettings.shareId}
             id={shareSettings.shareId}
@@ -59,18 +58,18 @@ export const ShareLink: React.FC<IShareLinkProps> = props => {
           />
         </div>
         <ButtonGroup style={{ display: 'flex' }}>
-          <Tooltip title={t(Strings.copy_link)} placement="top">
+          <Tooltip title={t(Strings.copy_link)} placement='top'>
             <Button onClick={copyLinkHandler}>
               <CopyIcon fill={colors.secondLevelText} />
             </Button>
           </Tooltip>
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-            <Tooltip title={t(Strings.preview)} placement="top">
+            <Tooltip title={t(Strings.preview)} placement='top'>
               <Button onClick={previewHandler}>
                 <NewtabOutlined color={colors.secondLevelText} />
               </Button>
             </Tooltip>
-            <Tooltip title={t(Strings.share_qr_code_tips)} placement="top">
+            <Tooltip title={t(Strings.share_qr_code_tips)} placement='top'>
               <Button onClick={() => setShareCodeVisible(true)}>
                 <ShareQrCodeIcon fill={colors.secondLevelText} />
               </Button>

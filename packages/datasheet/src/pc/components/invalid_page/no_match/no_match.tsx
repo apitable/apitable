@@ -2,16 +2,15 @@ import { Button, useThemeColors } from '@vikadata/components';
 import { Navigation, Strings, t } from '@vikadata/core';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { Router } from 'pc/components/route_manager/router';
 import { FC } from 'react';
 import TipIcon from 'static/icon/common/common_img_404.png';
 import PrevIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_undo.svg';
 import WorkbenchIcon from 'static/icon/workbench/workbench_tab_icon_workingtable_normal.svg';
-import { useNavigation } from '../../route_manager/use_navigation';
 import styles from './style.module.less';
 
 const NoMatch: FC = () => {
   const router = useRouter();
-  const navigationTo = useNavigation();
   const colors = useThemeColors();
 
   const handlePrev = () => {
@@ -19,20 +18,20 @@ const NoMatch: FC = () => {
   };
 
   const goWorkbench = () => {
-    navigationTo({ path: Navigation.HOME });
+    Router.push(Navigation.HOME);
   };
 
   return (
     <div className={styles.noMatch}>
       <div className={styles.wrapper}>
-        <Image src={TipIcon} alt="page not found" width={560} height={420}/>
+        <Image src={TipIcon} alt='page not found' width={560} height={420} />
         <div className={styles.tip}>
           {t(Strings.no_match_tip)}
         </div>
         <div style={{ width: 140 }}>
           <Button
-            variant="fill"
-            color="primary"
+            variant='fill'
+            color='primary'
             prefixIcon={<WorkbenchIcon width={15} height={15} fill={colors.black[50]} />}
             onClick={goWorkbench}
             block

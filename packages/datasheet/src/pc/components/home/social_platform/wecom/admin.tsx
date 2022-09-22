@@ -1,7 +1,7 @@
 import { Api, Navigation, Settings, StatusCode, Strings, t } from '@vikadata/core';
 import { useMount } from 'ahooks';
 import { Loading, Message } from 'pc/components/common';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest } from 'pc/hooks';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
 import { useState } from 'react';
@@ -20,7 +20,6 @@ const WecomAdmin = () => {
   const [data, setData] = useState<IAdminData | null>(null);
   const [corpId, setCorpId] = useState<string>(() => getStorage(StorageName.SocialPlatformMap)?.socialWecom?.corpId || '');
   const [cpUserId, setCpUserId] = useState<string>(() => getStorage(StorageName.SocialPlatformMap)?.socialWecom?.cpUserId || '');
-  const navigationTo = useNavigation();
   // 变更管理员
   const { run: changeAdmin } = useRequest((spaceId, memberId) => Api.postWecomChangeAdmin(
     corpId,
@@ -36,8 +35,7 @@ const WecomAdmin = () => {
       const { success, code } = res.data;
       if (!success) {
         if (code === StatusCode.WECOM_NOT_ADMIN) {
-          navigationTo({
-            path: Navigation.WECOM,
+          Router.push(Navigation.WECOM, {
             params: { wecomPath: 'error' },
             clearQuery: true,
             query: { errorCode: String(code) }
@@ -58,8 +56,7 @@ const WecomAdmin = () => {
 
       if (!success) {
         if (code === StatusCode.WECOM_NOT_ADMIN) {
-          navigationTo({
-            path: Navigation.WECOM,
+          Router.push(Navigation.WECOM, {
             params: { wecomPath: 'error' },
             clearQuery: true,
             query: { errorCode: String(code) }
@@ -82,8 +79,7 @@ const WecomAdmin = () => {
 
       if (!success || !data.spaceId) {
         if (code === StatusCode.WECOM_NOT_ADMIN) {
-          navigationTo({
-            path: Navigation.WECOM,
+          Router.push(Navigation.WECOM, {
             params: { wecomPath: 'error' },
             clearQuery: true,
             query: { errorCode: String(code) }

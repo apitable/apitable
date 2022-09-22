@@ -1,3 +1,5 @@
+import { Method } from 'pc/components/route_manager/const';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { FC, useRef, useState } from 'react';
 import * as React from 'react';
 import styles from './style.module.less';
@@ -16,7 +18,6 @@ import { timeFormatter } from 'pc/utils';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { NoticeTypesConstant } from '../utils';
 import { navigationToConfigUrl } from '../publish';
-import { Method, navigationToUrl } from 'pc/components/route_manager/use_navigation';
 import { expandRecord } from 'pc/components/expand_record';
 import classnames from 'classnames';
 import { BottomMsgAvatar, OfficialAvatar } from './card_avatar';

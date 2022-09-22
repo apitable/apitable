@@ -1,7 +1,7 @@
 import { Api, getCustomConfig, Navigation, Selectors, StatusCode, StoreActions } from '@vikadata/core';
 import { useRouter } from 'next/router';
 import { NoAccess } from 'pc/components/invalid_page/no_access';
-import { Method, navigatePath, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { usePageParams, useRequest } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { FC, useEffect } from 'react';
@@ -11,7 +11,6 @@ export const PrivateRoute: FC = ({ children, ...rest }) => {
   const user = useSelector(state => Selectors.userStateSelector(state), shallowEqual);
   const dispatch = useDispatch();
   const spaceId = useSelector(state => state.space.activeId);
-  const navigationTo = useNavigation();
   const { run: getLabsFeature } = useRequest(Api.getLabsFeature, { manual: true });
   const router = useRouter();
   usePageParams();
@@ -28,15 +27,14 @@ export const PrivateRoute: FC = ({ children, ...rest }) => {
     }
     const userInfo = user.info;
     if (userInfo.isPaused) {
-      navigatePath({ path: Navigation.APPLY_LOGOUT, method: Method.Push });
+      Router.push(Navigation.APPLY_LOGOUT);
     }
     if (userInfo.needCreate) {
-      navigationTo({ path: Navigation.CREATE_SPACE });
+      Router.push(Navigation.CREATE_SPACE);
       return;
     }
     if (userInfo.isDelSpace && !router.asPath.includes('/management')) {
-      navigationTo({
-        path: Navigation.SPACE_MANAGE,
+      Router.push(Navigation.SPACE_MANAGE, {
         params: { spaceId: user.info.spaceId },
       });
       return;
@@ -56,14 +54,12 @@ export const PrivateRoute: FC = ({ children, ...rest }) => {
       return null;
     }
     const { href } = process.env.SSR ? { href: '' } : location;
-    
+
     if (!process.env.SSR && !router.asPath.includes('login')) {
-      navigationTo({
-        path: Navigation.LOGIN,
+      Router.redirect( Navigation.LOGIN,{
         query: {
           reference: href
         },
-        method: Method.Redirect
       });
     }
 

@@ -4,7 +4,7 @@ import { Settings, Strings, t } from '@vikadata/core';
 import parser from 'html-react-parser';
 import Image from 'next/image';
 import { Popup } from 'pc/components/common/mobile/popup';
-import { navigationToUrl } from 'pc/components/route_manager/use_navigation';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { getScreen } from 'pc/hooks/use_responsive';
 import * as React from 'react';
 import ReactDOM from 'react-dom';

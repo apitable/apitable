@@ -3,7 +3,9 @@ import { IDashboard, IDashboardPack, IReduxState } from 'store/interface';
 
 export const getDashboardPack = (state: IReduxState, id?: string): null | undefined | IDashboardPack => {
   const dashboardId = state.pageParams.dashboardId || id;
-  if (!dashboardId) { return; }
+  if (!dashboardId) {
+    return;
+  }
   const dashboardPack = state.dashboardMap[dashboardId];
   if (!dashboardPack) {
     return;
@@ -28,7 +30,8 @@ export const getDashboardLayout = (state: IReduxState) => {
 
 export const getInstalledWidgetInDashboard = (state: IReduxState) => {
   const snapshot = getDashboardSnapshot(state);
-  return snapshot?.widgetInstallations.installWidgetIds;
+  const layout = snapshot?.widgetInstallations.layout || [];
+  return layout.map(v => v.id);
 };
 
 export const getDashboardClient = (state: IReduxState) => {

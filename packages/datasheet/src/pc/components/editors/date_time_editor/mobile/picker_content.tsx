@@ -2,7 +2,7 @@ import { FC, useMemo } from 'react';
 import * as React from 'react';
 import { DateRange, getLanguage, IRecordAlarmClient, Strings, t, WithOptional } from '@vikadata/core';
 import { NotificationSmallOutlined } from '@vikadata/icons';
-import { DatePicker } from 'antd-mobile';
+import DatePicker from 'antd-mobile/lib/date-picker';
 import zh_CN from 'antd-mobile/lib/date-picker/locale/zh_CN';
 import en_US from 'antd-mobile/lib/date-picker/locale/en_US';
 import style from './style.module.less';

@@ -3,7 +3,7 @@ import { ConfigConstant, IReduxState, ITemplateTree, Navigation, Selectors } fro
 import { Tree } from 'antd';
 import { getNodeIcon } from 'pc/components/catalog/tree/node_icon';
 import { ScreenSize } from 'pc/components/common/component_display';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { INodeTree } from 'pc/components/share/interface';
 import { useResponsive, useSideBarVisible } from 'pc/hooks';
 import { FC, ReactText } from 'react';
@@ -22,7 +22,6 @@ export const NodeTree: FC<INodeTreeProps> = props => {
   const nodeId = useSelector(state => Selectors.getNodeId(state))!;
   const { templateId, categoryId } = useSelector((state: IReduxState) => state.pageParams);
   const spaceId = useSelector(state => state.space.activeId);
-  const navigationTo = useNavigation();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
@@ -34,8 +33,7 @@ export const NodeTree: FC<INodeTreeProps> = props => {
 
   function onSelect(selectedKeys: ReactText[]) {
     const [dsId] = selectedKeys;
-    navigationTo({
-      path: Navigation.TEMPLATE,
+    Router.push(Navigation.TEMPLATE, {
       params: {
         spaceId,
         templateId,

@@ -18,7 +18,7 @@ public class UrlRequestUtilTest {
 
     @Test
     void testGetTitle() throws ExecutionException, InterruptedException {
-        CompletableFuture<String> title = UrlRequestUtil.getTitle("http://www.baidu.com", new ArrayList<>());
+        CompletableFuture<String> title = UrlRequestUtil.getTitle("https://www.baidu.com", new ArrayList<>());
         String titleString = title.get();
         assertThat(titleString).isNotNull();
     }

@@ -1,15 +1,14 @@
-import { FC, useState, useEffect } from 'react';
-import * as React from 'react';
-import { BaseModal } from 'pc/components/common';
-import styles from './style.module.less';
+import { Api, ConfigConstant, INode, IReduxState, Navigation, Strings, t, TEMPLATE_CENTER_ID } from '@vikadata/core';
 import { Checkbox, TreeSelect } from 'antd';
-import { useRequest, useRootManageable } from 'pc/hooks';
-import { useCatalogTreeRequest, useTemplateRequest } from 'pc/hooks';
-import { ConfigConstant, Api, INode, Navigation, IReduxState, t, Strings, TEMPLATE_CENTER_ID } from '@vikadata/core';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { BaseModal } from 'pc/components/common';
+import { Router } from 'pc/components/route_manager/router';
+import { useCatalogTreeRequest, useRequest, useRootManageable, useTemplateRequest } from 'pc/hooks';
+import * as React from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import PulldownIcon from 'static/icon/common/common_icon_pulldown_line.svg';
+import styles from './style.module.less';
 
 export interface IUsingTemplateModalProps {
   onCancel: React.Dispatch<React.SetStateAction<string>>;
@@ -33,7 +32,6 @@ export const UsingTemplateModal: FC<IUsingTemplateModalProps> = props => {
   const [nodeId, setNodeId] = useState('');
   // 是否使用模板中的数据
   const [isContainData, setIsContainData] = useState(true);
-  const navigationTo = useNavigation();
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const { getNodeTreeReq } = useCatalogTreeRequest();
   const { usingTemplateReq } = useTemplateRequest();
@@ -83,7 +81,7 @@ export const UsingTemplateModal: FC<IUsingTemplateModalProps> = props => {
     }
     const result = await usingTemplate(templateId, nodeId, isContainData);
     if (result) {
-      navigationTo({ path: Navigation.WORKBENCH, params: { spaceId, nodeId: result.nodeId }});
+      Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: result.nodeId }});
     }
   };
 

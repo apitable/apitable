@@ -1,13 +1,13 @@
-import { FC, useState } from 'react';
-import { PasswordLogin } from './password_login';
-import { IdentifyingCodeLogin, ISubmitRequestParam } from './identifying_code_login';
-import { ConfigConstant, Navigation, t, Strings, ApiInterface, AutoTestID } from '@vikadata/core';
 import { LinkButton } from '@vikadata/components';
-import styles from './style.module.less';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
-import { useResponsive, useUserRequest } from 'pc/hooks';
+import { ApiInterface, AutoTestID, ConfigConstant, Navigation, Strings, t } from '@vikadata/core';
 import { ScreenSize } from 'pc/components/common/component_display';
+import { Router } from 'pc/components/route_manager/router';
+import { useResponsive, useUserRequest } from 'pc/hooks';
+import { FC, useState } from 'react';
+import { IdentifyingCodeLogin, ISubmitRequestParam } from './identifying_code_login';
 import { polyfillMode } from './login';
+import { PasswordLogin } from './password_login';
+import styles from './style.module.less';
 
 export interface ILoginWithoutOtherProps {
   defaultEmail?: string;
@@ -18,7 +18,6 @@ export interface ILoginWithoutOtherProps {
 export const LoginWithoutOther: FC<ILoginWithoutOtherProps> = ({ defaultEmail, submitText, showTitle = true }) => {
   const defaultMod = polyfillMode(localStorage.getItem('vika_login_mod')) || ConfigConstant.IDENTIFY_CODE_LOGIN;
   const [mod, setMod] = useState(defaultMod);
-  const navigationTo = useNavigation();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { loginOrRegisterReq } = useUserRequest();
@@ -30,7 +29,7 @@ export const LoginWithoutOther: FC<ILoginWithoutOtherProps> = ({ defaultEmail, s
   };
 
   const goResetPwd = () => {
-    navigationTo({ path: Navigation.RESET_PWD });
+    Router.push(Navigation.RESET_PWD);
   };
 
   const submitRequest = (data: ISubmitRequestParam) => {
@@ -65,10 +64,10 @@ export const LoginWithoutOther: FC<ILoginWithoutOtherProps> = ({ defaultEmail, s
         <PasswordLogin submitRequest={submitRequest} config={{ mail: { defaultValue: defaultEmail, disabled: true }}} />
       )}
       <div className={styles.buttonGroup}>
-        <LinkButton underline={false} component="button" id={AutoTestID.CHANGE_MODE_BTN} onClick={changeLoginMod} style={{ paddingLeft: 0 }}>
+        <LinkButton underline={false} component='button' id={AutoTestID.CHANGE_MODE_BTN} onClick={changeLoginMod} style={{ paddingLeft: 0 }}>
           {changeModText}
         </LinkButton>
-        <LinkButton underline={false} component="button" onClick={goResetPwd} style={{ paddingRight: 0 }}>
+        <LinkButton underline={false} component='button' onClick={goResetPwd} style={{ paddingRight: 0 }}>
           {t(Strings.retrieve_password)}
         </LinkButton>
       </div>

@@ -4,7 +4,7 @@ import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { openSliderVerificationModal } from 'pc/components/common/slider_verification';
 import { useLinkInvite } from 'pc/components/invite/use_invite';
-import { Method, useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useDispatch } from 'pc/hooks/use_dispatch';
 import { secondStepVerify } from 'pc/hooks/utils';
 import { NotificationStore } from 'pc/notification_store';
@@ -21,7 +21,6 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
  */
 export const useUserRequest = () => {
   const dispatch = useDispatch();
-  const navigationTo = useNavigation();
   const urlParams = getSearchParams();
   const reference = urlParams.get('reference') || undefined;
   const activeSpaceId = useSelector(state => state.space.activeId);
@@ -66,7 +65,7 @@ export const useUserRequest = () => {
             content: t(Strings.enter_unactive_space_err_message),
             okText: t(Strings.submit),
             onOk: () => {
-              navigationTo({ path: Navigation.HOME });
+              Router.push(Navigation.HOME);
             },
           });
           return;
@@ -109,10 +108,8 @@ export const useUserRequest = () => {
           }
           // 邮箱邀请
           if (urlParams.has('inviteMailToken') && inviteEmailInfo) {
-            navigationTo({
-              path: Navigation.WORKBENCH,
+            Router.redirect(Navigation.WORKBENCH, {
               params: { spaceId: inviteEmailInfo.data.spaceId },
-              method: Method.Redirect,
               clearQuery: true,
             });
             return res.data;
@@ -129,7 +126,7 @@ export const useUserRequest = () => {
 
         // 正常流程
         if (data) {
-          navigationTo({ path: Navigation.WORKBENCH, method: Method.Redirect });
+          Router.redirect(Navigation.WORKBENCH,);
           return res.data;
         }
         // ! 是否是从分享页面登录的（保存的是分享页面的地址）
@@ -144,7 +141,7 @@ export const useUserRequest = () => {
           window.location.href = reference;
           return res.data;
         }
-        navigationTo({ path: Navigation.WORKBENCH, method: Method.Redirect });
+        Router.redirect(Navigation.WORKBENCH,);
         return res.data;
       }
 
@@ -179,8 +176,7 @@ export const useUserRequest = () => {
         }
         // 邮箱邀请
         if (urlParams.has('inviteMailToken') && !data && inviteEmailInfo) {
-          navigationTo({
-            path: Navigation.WORKBENCH,
+          Router.push(Navigation.WORKBENCH, {
             params: { spaceId: inviteEmailInfo.data.spaceId },
             clearQuery: true,
           });
@@ -189,8 +185,7 @@ export const useUserRequest = () => {
 
         // 正常流程
         if (data) {
-          navigationTo({
-            path: Navigation.INVITATION_VALIDATION,
+          Router.push(Navigation.INVITATION_VALIDATION, {
             query: {
               token: data,
               inviteCode: urlParams.get('inviteCode') || undefined,
@@ -214,7 +209,7 @@ export const useUserRequest = () => {
           window.location.href = reference;
           return res.data;
         }
-        navigationTo({ path: Navigation.HOME });
+        Router.push(Navigation.HOME);
       }
 
       // 进行二次验证（滑块验证）
@@ -256,17 +251,13 @@ export const useUserRequest = () => {
           searchParams.forEach((value, key) => {
             paramsObj[key] = value;
           });
-          navigationTo({
-            path: Navigation.SETTING_NICKNAME,
+          Router.redirect(Navigation.SETTING_NICKNAME, {
             query: { ...paramsObj, reference },
-            method: Method.Redirect,
           });
           return res;
         }
-        navigationTo({
-          path: Navigation.SETTING_NICKNAME,
+        Router.redirect(Navigation.SETTING_NICKNAME, {
           query: { reference },
-          method: Method.Redirect,
         });
         return res;
       }

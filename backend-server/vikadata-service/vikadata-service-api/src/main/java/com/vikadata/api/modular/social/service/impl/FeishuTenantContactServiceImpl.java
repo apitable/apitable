@@ -45,7 +45,7 @@ public class FeishuTenantContactServiceImpl implements IFeishuTenantContactServi
             return fetchTenantContact(tenantKey, contact.getDeptObjects(), contact.getUserObjects());
         }
         catch (Exception exception) {
-            log.error("没有飞书企业租户[{}]的任何通讯录权限, 灰度测试中", tenantKey);
+            log.error("没有飞书企业租户[{}]的任何通讯录权限, 灰度测试中", tenantKey, exception);
             throw new ContactAccessDeniesException();
         }
     }

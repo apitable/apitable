@@ -1,19 +1,9 @@
 import { IconButton, Typography, useContextMenu, useThemeColors } from '@vikadata/components';
 import {
-  ConfigConstant,
-  IReduxState,
-  IRightClickInfo,
-  Navigation,
-  Selectors,
-  shallowEqual,
-  StoreActions,
-  Strings,
-  t,
+  ConfigConstant, IReduxState, IRightClickInfo, isIdassPrivateDeployment, Navigation, Selectors, shallowEqual, StoreActions, Strings, t,
   WORKBENCH_SIDE_ID,
-  isIdassPrivateDeployment,
 } from '@vikadata/core';
 import { AddOutlined, FavoriteFilled, SearchOutlined, TitleWorkFilled } from '@vikadata/icons';
-import { useRequest } from 'pc/hooks';
 import { Collapse } from 'antd';
 import classnames from 'classnames';
 import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
@@ -29,11 +19,12 @@ import { Tooltip } from 'pc/components/common/tooltip';
 import { SearchPanel, SubColumnType } from 'pc/components/datasheet_search_panel';
 import { ShareModal as FormShare } from 'pc/components/form_panel/form_tab/tool_bar/share_modal';
 import { expandInviteModal } from 'pc/components/invite/invite_outsider';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { sendRemind } from 'pc/events/notification_verification';
-import { useCatalogTreeRequest, useResponsive, useSearchPanel, useUserRequest } from 'pc/hooks';
-import { FC, useEffect, useMemo, useState } from 'react';
+import { useCatalogTreeRequest, useRequest, useResponsive, useSearchPanel, useUserRequest } from 'pc/hooks';
+import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import InviteIcon from 'static/icon/common/common_icon_invite.svg';
 import ArrowIcon from 'static/icon/common/common_icon_up_line.svg';
@@ -44,9 +35,9 @@ import { Favorite } from './favorite';
 import { SpaceInfo } from './space-info';
 import styles from './style.module.less';
 import { WorkbenchSideContext } from './workbench_side_context';
-import { stopPropagation } from 'pc/utils';
 
 const { Panel } = Collapse;
+
 export interface IDatasheetPanelInfo {
   folderId: string;
   datasheetId?: string;
@@ -62,7 +53,6 @@ export const WorkbenchSide: FC = () => {
   const [isSearch, setIsSearch] = useState(false);
   // 打开数表选择弹框，用以选择神奇表单单关联的数表视图
   const { panelVisible, panelInfo, onChange, setPanelInfo, setPanelVisible } = useSearchPanel();
-  const navigationTo = useNavigation();
   const {
     spaceId,
     treeNodesMap,
@@ -203,12 +193,11 @@ export const WorkbenchSide: FC = () => {
   };
 
   const jumpTrash = () => {
-    navigationTo({ path: Navigation.TRASH, params: { spaceId }});
+    Router.push(Navigation.TRASH, { params: { spaceId }});
   };
 
   const jumpSpaceTemplate = () => {
-    navigationTo({
-      path: Navigation.TEMPLATE,
+    Router.push(Navigation.TEMPLATE, {
       params: {
         spaceId,
         categoryId: 'tpcprivate',
@@ -280,7 +269,7 @@ export const WorkbenchSide: FC = () => {
               <Search closeSearch={() => setIsSearch(false)} />
             ) : (
               <IconButton
-                shape="square"
+                shape='square'
                 className={styles.searchBtn}
                 icon={SearchOutlined}
                 onClick={e => {
@@ -306,7 +295,7 @@ export const WorkbenchSide: FC = () => {
                 header={
                   <div className={styles.groupName}>
                     <FavoriteFilled color={colors.warningColor} />
-                    <Typography className={styles.text} variant="h9" color={colors.secondLevelText}>
+                    <Typography className={styles.text} variant='h9' color={colors.secondLevelText}>
                       {t(Strings.favorite)}
                     </Typography>
                     <ArrowIcon
@@ -328,7 +317,7 @@ export const WorkbenchSide: FC = () => {
                 header={
                   <div className={styles.groupName}>
                     <TitleWorkFilled color={colors.primaryColor} />
-                    <Typography className={styles.text} variant="h9" color={colors.secondLevelText}>
+                    <Typography className={styles.text} variant='h9' color={colors.secondLevelText}>
                       {t(Strings.catalog)}
                     </Typography>
                     <ArrowIcon

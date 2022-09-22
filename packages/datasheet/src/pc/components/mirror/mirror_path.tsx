@@ -4,7 +4,7 @@ import { Tooltip } from 'antd';
 import throttle from 'lodash/throttle';
 import { InlineNodeName } from 'pc/components/common/inline_node_name';
 import { NodeInfoBar } from 'pc/components/common/node_info_bar';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useSideBarVisible } from 'pc/hooks';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
@@ -36,7 +36,6 @@ export const MirrorPath: React.FC<IMirrorPath> = props => {
     return Boolean(Selectors.getDatasheet(state, breadInfo.datasheetId)?.permissions.readable);
   });
 
-  const navigationTo = useNavigation();
   // 跳转到源表的入口暂时关闭;
   const jumpHandler = throttle(() => {
     // 原表是幽灵节点，不应该跳转
@@ -50,7 +49,7 @@ export const MirrorPath: React.FC<IMirrorPath> = props => {
       });
     }
 
-    navigationTo({ path: Navigation.WORKBENCH, params: { nodeId: breadInfo.datasheetId, viewId: breadInfo.viewId }});
+    Router.push(Navigation.WORKBENCH, { params: { nodeId: breadInfo.datasheetId, viewId: breadInfo.viewId }});
   }, 5000);
 
   if (!view) {

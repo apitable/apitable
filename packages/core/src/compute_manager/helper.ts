@@ -19,6 +19,7 @@ export const getComputeRefManager = (state: IReduxState) => {
     const currSnapshot = Selectors.getSnapshot(state, datasheetId);
     const fieldMap = currSnapshot?.meta.fieldMap;
     if (fieldMap) {
+
       computeRefManager.computeRefMap(fieldMap, datasheetId, state);
     }
   });

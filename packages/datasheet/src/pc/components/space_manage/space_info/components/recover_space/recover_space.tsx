@@ -1,6 +1,6 @@
 import { Button, TextButton, useThemeColors } from '@vikadata/components';
 import { Api, IReduxState, Strings, t } from '@vikadata/core';
-import { Modal as ModalMobile } from 'antd-mobile';
+import ModalMobile from 'antd-mobile/lib/modal';
 import cls from 'classnames';
 import dayjs from 'dayjs';
 import Image from 'next/image';

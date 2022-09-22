@@ -4,13 +4,12 @@ import {
 } from '@vikadata/core';
 import { triggerUsageAlert } from 'pc/common/billing';
 import { Message } from 'pc/components/common';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { resourceService } from 'pc/resource_service';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 export const useCatalogTreeRequest = () => {
   const dispatch = useDispatch();
-  const navigationTo = useNavigation();
   const {
     spaceId,
     formId,
@@ -46,7 +45,7 @@ export const useCatalogTreeRequest = () => {
       if (success) {
         const node: INodesMapItem = { ...data, children: [] };
         dispatch(StoreActions.addNode(node));
-        navigationTo({ path: Navigation.WORKBENCH, params: { spaceId, nodeId: data.nodeId }});
+        Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: data.nodeId }});
         triggerUsageAlert(SubscribeKye.MaxSheetNums, { usage: spaceInfo!.sheetNums + 1 });
       } else {
         if (code === StatusCode.NODE_NOT_EXIST) {
@@ -83,14 +82,14 @@ export const useCatalogTreeRequest = () => {
         if (hasChildren) {
           dispatch(StoreActions.updateUserInfo({ activeNodeId: '', activeViewId: '' }));
           Api.keepTabbar({});
-          navigationTo({ path: Navigation.WORKBENCH, params: { spaceId }});
+          Router.push(Navigation.WORKBENCH, { params: { spaceId }});
         }
         if (treeNodesMap[nodeId].type === ConfigConstant.NodeType.DATASHEET) {
           dispatch(StoreActions.datasheetErrorCode(nodeId!, StatusCode.NODE_DELETED));
           if (activedNodeId === nodeId) {
             Api.keepTabbar({}).then(res => {
               if (res.data.success) {
-                navigationTo({ path: Navigation.SPACE, params: { spaceId }});
+                Router.push(Navigation.SPACE, { params: { spaceId }});
               }
             });
             return;
@@ -112,7 +111,7 @@ export const useCatalogTreeRequest = () => {
       const { data, success, message } = res.data;
       if (success) {
         dispatch(StoreActions.addNodeToMap([data]));
-        navigationTo({ path: Navigation.WORKBENCH, params: { spaceId, nodeId: data.nodeId }});
+        Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: data.nodeId }});
         return;
       }
       Message.error({ content: message });

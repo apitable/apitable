@@ -1,7 +1,7 @@
 import { Api, ConfigConstant, Navigation } from '@vikadata/core';
 import { Spin } from 'antd';
 import { ScreenSize } from 'pc/components/common/component_display';
-import { useNavigation } from 'pc/components/route_manager/use_navigation';
+import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useResponsive } from 'pc/hooks';
 import { isLocalSite } from 'pc/utils';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';
@@ -23,7 +23,6 @@ const QqCallback: FC = props => {
   const inviteCode = localStorage.getItem('invite_code');
   localStorage.removeItem('vika_account_manager_operation_type');
   const { screenIsAtMost } = useResponsive();
-  const navigationTo = useNavigation();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const bindOrSignup = (token: string) => {
     const parsedUrl = new URL('/user/improving_info', window.location.origin);
@@ -61,7 +60,7 @@ const QqCallback: FC = props => {
     }
     if (isMobile) {
       window.opener && window.opener.close();
-      navigationTo({ path: Navigation.HOME });
+      Router.push(Navigation.HOME);
       return;
     }
     // 是否从分享页面登录的

@@ -40,8 +40,10 @@ public class TeamMemberRelServiceImpl extends ExpandServiceImpl<TeamMemberRelMap
     @Override
     public void addMemberTeams(List<Long> memberIds, List<Long> teamIds) {
         log.info("成员批量添加归属部门");
+        if (CollUtil.isEmpty(memberIds) || CollUtil.isEmpty(teamIds)) {
+            return;
+        }
         List<TeamMemberRelEntity> entities = new ArrayList<>();
-
         memberIds.forEach(memberId -> teamIds.forEach(teamId -> {
             TeamMemberRelEntity dmr = new TeamMemberRelEntity();
             dmr.setId(IdWorker.getId());
