@@ -21,7 +21,7 @@ export const useLinkInvite = () => {
 
   // 重新获取信息
   const reGetLinkInfo = (linkToken: string, nodeId: string) => {
-    Api.linkValid(linkToken).then(res => {
+    Api.linkValid(linkToken, nodeId).then(res => {
       const { success, data: info } = res.data;
       dispatch(StoreActions.updateInviteLinkInfo(res.data));
       dispatch(StoreActions.updateMailToken(linkToken));

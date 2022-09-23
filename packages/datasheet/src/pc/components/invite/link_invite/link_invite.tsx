@@ -20,7 +20,7 @@ const LinkInvite: FC = () => {
   const nodeId = query.get('nodeId') as string;
 
   const [inviteLinkToken, setInviteLinkToken] = useState('');
-  const { run: verifyLinkUrl } = useRequest(token => Api.linkValid(token), {
+  const { run: verifyLinkUrl } = useRequest((token, nodeId) => Api.linkValid(token, nodeId), {
     onSuccess: res => {
       const { success, code, data } = res.data;
       dispatch(StoreActions.updateInviteLinkInfo(res.data));
@@ -54,7 +54,7 @@ const LinkInvite: FC = () => {
     const token = removeChinese(finalTokenParams, INVITE_TOKEN_LENGTH);
     if (token) {
       setInviteLinkToken(token);
-      verifyLinkUrl(token);
+      verifyLinkUrl(token, nodeId);
     }
   });
 

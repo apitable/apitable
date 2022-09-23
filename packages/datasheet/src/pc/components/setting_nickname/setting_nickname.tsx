@@ -111,7 +111,7 @@ const SettingNickname: FC = () => {
     }
     // 是从链接邀请过来的
     if (inviteLinkToken && nodeId) {
-      const result = await Api.linkValid(inviteLinkToken);
+      const result = await Api.linkValid(inviteLinkToken, nodeId);
       const { success, data: info } = result.data;
       if (success && info) {
         const bindResult = await Api.joinViaSpace(inviteLinkToken, nodeId);

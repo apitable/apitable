@@ -1157,8 +1157,8 @@ export function deleteLink(teamId: string) {
 }
 
 // 公开链接校验
-export function linkValid(token: string) {
-  return axios.post(Url.LINK_VALID, { token });
+export function linkValid(token: string, nodeId?: string) {
+  return axios.post(Url.LINK_VALID, { token, nodeId });
 }
 
 // 通过公开链接加入空间
