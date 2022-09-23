@@ -6,7 +6,7 @@ export interface ISelectProps {
   /**
    * 已经选中的值，对应 IOptions 中的 value，类型为 string | number
    */
-  value: ISelectValue;
+  value?: ISelectValue;
 
   /**
    * 选中某个选项的回调
