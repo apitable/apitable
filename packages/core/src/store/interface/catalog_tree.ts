@@ -33,11 +33,11 @@ export interface ICatalogTree {
   saveAsTemplateModalNodeId: string;
   importModalNodeId: string;
   /** 权限设置弹窗是否来自通知调用 **/
-  permissionCommitRemindStatus: boolean,
+  permissionCommitRemindStatus: boolean;
   /** 成员消息发送所需参数 **/
-  permissionCommitRemindParameter: ICommitRemind | null,
+  permissionCommitRemindParameter: ICommitRemind | null;
   /**  无权限人员unitIds **/
-  noPermissionMembers: string[],
+  noPermissionMembers: string[];
 }
 
 export interface IRightClickInfo {
@@ -124,7 +124,7 @@ export interface IDatasheetPermission {
   viewColorOptionEditable: boolean;
   viewManualSaveManageable: boolean;
   viewOptionSaveEditable: boolean;
-  visualizationEditable?: boolean
+  visualizationEditable?: boolean;
 }
 
 export type IPermissions = INodePermissions & IDatasheetPermission;
@@ -138,7 +138,7 @@ export interface IShareSettings {
     onlyRead: boolean;
     canBeEdited: boolean;
     canBeStored: boolean;
-  }
+  };
   shareId: string;
   linkNodes: string[];
   containMemberFld: boolean;
@@ -325,7 +325,17 @@ export interface IBreadCrumbData {
 }
 
 export type UnitType = 'teams' | 'tags' | 'members';
-export type UnitItem = ITeam | ITag | IMember;
+export type UnitItem =
+  | ITeam
+  | ITag
+  | IMember
+  | {
+      unitId: string;
+      roleId: string;
+      roleName: string;
+      memberCount: number;
+      position: number;
+    };
 
 export interface IRefreshTreeAction {
   type: typeof actions.REFRESH_TREE;
@@ -466,8 +476,8 @@ export interface IUpdateIsPermissionAction {
 
 export interface IUpdateRoleData {
   roles: {
-    unitId: string,
-    role: string,
+    unitId: string;
+    role: string;
   }[];
   nodeId: string;
   extend: boolean;
@@ -476,8 +486,8 @@ export interface IUpdateRoleData {
 export interface IAddNodeToFavoriteTreeAction {
   type: typeof actions.ADD_NODE_TO_FAVORITE_LIST;
   payload: {
-    nodeIds: string[],
-    parentId: string,
+    nodeIds: string[];
+    parentId: string;
   };
 }
 
@@ -539,16 +549,16 @@ export interface ISetLoadedKeysAction {
 }
 
 export interface ISetPermissionModalMessageStatusAction {
-  type: typeof actions.SET_PERMISSION_COMMIT_REMIND_STATUS
+  type: typeof actions.SET_PERMISSION_COMMIT_REMIND_STATUS;
   payload: boolean;
 }
 
 export interface ISetPermissionCommitRemindParameterAction {
-  type: typeof actions.SET_PERMISSION_COMMIT_REMIND_PARAMETER
+  type: typeof actions.SET_PERMISSION_COMMIT_REMIND_PARAMETER;
   payload: ICommitRemind;
 }
 
 export interface ISetNoPermissionMembersAction {
-  type: typeof actions.SET_NO_PERMISSION_MEMBERS
-  payload: string[]
+  type: typeof actions.SET_NO_PERMISSION_MEMBERS;
+  payload: string[];
 }

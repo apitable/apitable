@@ -74,13 +74,23 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
     title: t(Strings.organization_and_role),
     key: 'addressManage',
     icon: <AddressIcon />,
-    valid: isMainAdmin || permissions.includes(ConfigConstant.PermissionCode.TEAM) || permissions.includes(ConfigConstant.PermissionCode.MEMBER),
+    valid:
+      isMainAdmin ||
+      permissions.includes(ConfigConstant.PermissionCode.TEAM) ||
+      permissions.includes(ConfigConstant.PermissionCode.MEMBER) ||
+      permissions.includes(ConfigConstant.PermissionCode.MANAGE_ROLE),
     children: [
       {
         routeAddress: '/managemember',
         title: t(Strings.members_setting),
         key: 'managemember',
-        valid: true,
+        valid: permissions.includes(ConfigConstant.PermissionCode.MEMBER),
+      },
+      {
+        routeAddress: '/role',
+        title: t(Strings.tab_role),
+        key: 'role',
+        valid: permissions.includes(ConfigConstant.PermissionCode.MANAGE_ROLE),
       },
       {
         title: t(Strings.share_permisson_model_space_admin),

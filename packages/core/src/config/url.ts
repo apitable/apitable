@@ -581,3 +581,14 @@ export const GET_URL_META_BATCH = '/internal/field/url/awareContents';
 // 附件直传
 export const UPLOAD_PRESIGNED_URL = '/asset/upload/preSignedUrl';
 export const UPLOAD_CALLBACK = 'asset/upload/callback';
+
+// ============= 角色相关 start ====================//
+export const GET_ROLE_LIST = '/org/roles';
+export const CREATE_NEW_ROLE = '/org/roles';
+export const DELETE_ORG_ROLE = '/org/roles/:roleId';
+export const UPDATE_ORG_ROLE = '/org/roles/:roleId';
+export const GET_MEMBER_LIST_BY_ROLE = '/org/roles/:roleId/members';
+export const ADD_ROLE_MEMBER = '/org/roles/:roleId/members';
+export const DELETE_ROLE_MEMBER = '/org/roles/:roleId/members';
+export const INIT_ROLE = '/org/roles/init';
+// ============= 角色相关 end ====================//

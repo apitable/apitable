@@ -1,6 +1,17 @@
 import {
-  Api, IMember, ITeam, IUnitIds, IUnitMap, IUnitValue, IUserValue, IUuids, MemberType, OtherTypeUnitId, StoreActions, Strings, t,
-  UnitItem
+  Api,
+  IMember,
+  IUnitIds,
+  IUnitMap,
+  IUnitValue,
+  IUserValue,
+  IUuids,
+  MemberType,
+  OtherTypeUnitId,
+  StoreActions,
+  Strings,
+  t,
+  UnitItem,
 } from '@vikadata/core';
 import { useUpdateEffect } from 'ahooks';
 import { useRequest } from 'pc/hooks';
@@ -19,7 +30,7 @@ import { Check } from '../common_list/check';
 import { IMemberOptionListProps } from './member_option_list.interface';
 import styles from './styles.module.less';
 
-export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: React.RefObject<HTMLInputElement> }> = (props) => {
+export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: React.RefObject<HTMLInputElement> }> = props => {
   const {
     linkId, unitMap, listData, onClickItem, showSearchInput,
     showMoreTipButton, multiMode, existValues, uniqId, activeIndex, showInviteTip = true,
@@ -35,17 +46,14 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
   const { formId } = useSelector(state => state.pageParams);
   const shareId = useSelector(state => state.pageParams.shareId);
 
-  const refreshMemberList = useCallback(
-    () => {
-      // listData 未传入，直接使用 stash
-      if (!listData) {
-        setMemberList(memberStash.getMemberStash());
-        return;
-      }
-      setMemberList(listData);
-    },
-    [listData],
-  );
+  const refreshMemberList = useCallback(() => {
+    // listData 未传入，直接使用 stash
+    if (!listData) {
+      setMemberList(memberStash.getMemberStash());
+      return;
+    }
+    setMemberList(listData);
+  }, [listData]);
 
   useEffect(() => {
     refreshMemberList();
@@ -95,11 +103,7 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
 
     const _unitMap = unitMap || {};
     const currentUnitId = (uniqId === 'unitId' ? unitId : userId)!;
-    if (
-      _unitMap[currentUnitId] &&
-      _unitMap[currentUnitId].name === name &&
-      _unitMap[currentUnitId].avatar === avatar
-    ) {
+    if (_unitMap[currentUnitId] && _unitMap[currentUnitId].name === name && _unitMap[currentUnitId].avatar === avatar) {
       return;
     }
     if (uniqId === 'unitId') {
@@ -110,26 +114,37 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
   }
 
   function handleSubmit(values: UnitItem[]) {
-    const isTeam = (unit: UnitItem) => unit.hasOwnProperty('teamId');
     const newValues = values.map(value => {
-      if (isTeam(value)) {
+      if ('roleId' in value) {
         const result = {
           type: MemberType.Team,
           unitId: value.unitId,
-          name: value['name'] || value.originName || (value as ITeam).teamName,
-          avatar: (value as IMember).avatar,
+          name: value.roleName,
+          avatar: '',
           isDelete: false,
         };
         updateMemberInfo(result);
         return result;
       }
+      if ('teamId' in value) {
+        const result = {
+          type: MemberType.Team,
+          unitId: value.unitId,
+          name: value['name'] || value.originName || value.teamName,
+          avatar: '',
+          isDelete: false,
+        };
+        updateMemberInfo(result);
+        return result;
+      }
+      const item = value as IMember;
       const result = {
         type: MemberType.Member,
-        unitId: value.unitId,
-        userId: (value as IMember).uuid,
-        name: value['name'] || value.originName || (value as IMember).memberName,
-        avatar: (value as IMember).avatar,
-        isActive: (value as IMember).isActive,
+        unitId: item.unitId,
+        userId: item.uuid,
+        name: item['name'] || item.originName || item.memberName,
+        avatar: item.avatar,
+        isActive: item.isActive,
         isDelete: false,
       };
       updateMemberInfo(result);
@@ -142,22 +157,24 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
     if (!unitMap || !cv) {
       return [];
     }
-    return cv.filter(item => {
-      return unitMap[item];
-    }).map(item => {
-      const info = unitMap[item];
-      return {
-        avatar: info.avatar,
-        name: info.name,
-        isTeam: info.type === MemberType.Team,
-        type: info.type,
-        unitId: item,
-        userId: info.userId,
-        isActive: info.isActive,
-        isDeleted: info.isDeleted,
-        isMemberNameModified: info.isMemberNameModified,
-      } as any;
-    });
+    return cv
+      .filter(item => {
+        return unitMap[item];
+      })
+      .map(item => {
+        const info = unitMap[item];
+        return {
+          avatar: info.avatar,
+          name: info.name,
+          isTeam: info.type === MemberType.Team,
+          type: info.type,
+          unitId: item,
+          userId: info.userId,
+          isActive: info.isActive,
+          isDeleted: info.isDeleted,
+          isMemberNameModified: info.isMemberNameModified,
+        } as any;
+      });
   }
 
   function clickItem(e: React.MouseEvent | null, index: number) {
@@ -216,7 +233,8 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
                 onSubmit: values => handleSubmit(values),
                 isSingleSelect: !multiMode,
                 checkedList: standardStructure(existValues),
-                onClose: () => refreshMemberList()
+                onClose: () => refreshMemberList(),
+                showTab: true,
               });
             }}
             onMouseDown={e => {

@@ -38,19 +38,24 @@ export const nodeNameMap = new Map<NodeType, string>([
   [NodeType.DASHBOARD, t(Strings.dashboard)],
 ]);
 
-export const orderedNode = [{
-  type: NodeType.FOLDER,
-  name: t(Strings.folder),
-}, {
-  type: NodeType.DATASHEET,
-  name: t(Strings.file),
-}, {
-  type: NodeType.FORM,
-  name: t(Strings.vika_form),
-}, {
-  type: NodeType.DASHBOARD,
-  name: t(Strings.dashboard),
-}];
+export const orderedNode = [
+  {
+    type: NodeType.FOLDER,
+    name: t(Strings.folder),
+  },
+  {
+    type: NodeType.DATASHEET,
+    name: t(Strings.file),
+  },
+  {
+    type: NodeType.FORM,
+    name: t(Strings.vika_form),
+  },
+  {
+    type: NodeType.DASHBOARD,
+    name: t(Strings.dashboard),
+  },
+];
 
 export enum NodeTypeReg {
   FOLDER = 'fod',
@@ -58,7 +63,7 @@ export enum NodeTypeReg {
   FORM = 'fom',
   DASHBOARD = 'dsb',
   MIRROR = 'mir',
-  WIDGET = 'wdt'
+  WIDGET = 'wdt',
 }
 
 export enum SocialType {
@@ -106,36 +111,51 @@ export const permission = {
 };
 
 export const nodePermissionMap = new Map<NodeType, { [key: string]: string }>([
-  [NodeType.DATASHEET, {
-    [permission.manager]: t(Strings.add_datasheet_manager),
-    [permission.editor]: t(Strings.add_datasheet_editor),
-    [permission.reader]: t(Strings.add_datasheet_reader),
-    [permission.updater]: t(Strings.add_datasheet_updater),
-  }],
-  [NodeType.FOLDER, {
-    [permission.manager]: t(Strings.add_folder_manager),
-    [permission.editor]: t(Strings.add_folder_editor),
-    [permission.reader]: t(Strings.add_folder_reader),
-    [permission.updater]: t(Strings.add_folder_updater),
-  }],
-  [NodeType.FORM, {
-    [permission.manager]: t(Strings.form_manager_label),
-    [permission.editor]: t(Strings.form_editor_label),
-    [permission.reader]: t(Strings.form_reader_label),
-    [permission.updater]: t(Strings.form_updater_label),
-  }],
-  [NodeType.DASHBOARD, {
-    [permission.manager]: t(Strings.dashboard_manager_label),
-    [permission.editor]: t(Strings.dashboard_editor_label),
-    [permission.reader]: t(Strings.dashboard_reader_label),
-    [permission.updater]: t(Strings.dashboard_updater_label),
-  }],
-  [NodeType.MIRROR, {
-    [permission.manager]: t(Strings.mirror_manager_label),
-    [permission.editor]: t(Strings.mirror_editor_label),
-    [permission.reader]: t(Strings.mirror_reader_label),
-    [permission.updater]: t(Strings.mirror_uploader_label),
-  }],
+  [
+    NodeType.DATASHEET,
+    {
+      [permission.manager]: t(Strings.add_datasheet_manager),
+      [permission.editor]: t(Strings.add_datasheet_editor),
+      [permission.reader]: t(Strings.add_datasheet_reader),
+      [permission.updater]: t(Strings.add_datasheet_updater),
+    },
+  ],
+  [
+    NodeType.FOLDER,
+    {
+      [permission.manager]: t(Strings.add_folder_manager),
+      [permission.editor]: t(Strings.add_folder_editor),
+      [permission.reader]: t(Strings.add_folder_reader),
+      [permission.updater]: t(Strings.add_folder_updater),
+    },
+  ],
+  [
+    NodeType.FORM,
+    {
+      [permission.manager]: t(Strings.form_manager_label),
+      [permission.editor]: t(Strings.form_editor_label),
+      [permission.reader]: t(Strings.form_reader_label),
+      [permission.updater]: t(Strings.form_updater_label),
+    },
+  ],
+  [
+    NodeType.DASHBOARD,
+    {
+      [permission.manager]: t(Strings.dashboard_manager_label),
+      [permission.editor]: t(Strings.dashboard_editor_label),
+      [permission.reader]: t(Strings.dashboard_reader_label),
+      [permission.updater]: t(Strings.dashboard_updater_label),
+    },
+  ],
+  [
+    NodeType.MIRROR,
+    {
+      [permission.manager]: t(Strings.mirror_manager_label),
+      [permission.editor]: t(Strings.mirror_editor_label),
+      [permission.reader]: t(Strings.mirror_reader_label),
+      [permission.updater]: t(Strings.mirror_uploader_label),
+    },
+  ],
 ]);
 
 export const permissionText = {
@@ -193,7 +213,7 @@ export enum RolePriority {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   reader = 2,
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  updater = 3
+  updater = 3,
 }
 
 export enum UnitTypes {
@@ -221,7 +241,7 @@ export enum ContextMenuType {
   VIEW_TABBAR = 'VIEW_TABBAR', // 视图标签栏的操作菜单
   MIRROR = 'MIRROR', // 视图标签栏的操作菜单
   FORM_FIELD_OP = 'FORM_FIELD_OP', // 神奇表单field操作菜单
-  EXPAND_RECORD_FIELD = 'EXPAND_RECORD_FIELD' // 展开卡片中操作字段配置
+  EXPAND_RECORD_FIELD = 'EXPAND_RECORD_FIELD', // 展开卡片中操作字段配置
 }
 
 export const NODE_DESCRIPTION_EDITOR_ID = 'folderDescribeEditor';
@@ -268,12 +288,12 @@ export enum CodeTypes {
 export enum EmailCodeType {
   BIND = 1,
   REGISTER = 2,
-  COMMON = 3
+  COMMON = 3,
 }
 
 export enum CaptchaIds {
   LOGIN = 'login',
-  DEFAULT = 'nc'
+  DEFAULT = 'nc',
 }
 
 export enum LoginMode {
@@ -363,7 +383,8 @@ export enum PermissionCode {
   NORMAL_MEMBER = 'MANAGE_NORMAL_MEMBER',
   TEMPLATE = 'MANAGE_TEMPLATE',
   MANAGE_WIDGET = 'MANAGE_WIDGET',
-  SECURITY = 'MANAGE_SECURITY'
+  SECURITY = 'MANAGE_SECURITY',
+  MANAGE_ROLE = 'MANAGE_ROLE',
 }
 
 // notification通知中心

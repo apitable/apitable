@@ -19,7 +19,7 @@ import {
   IUserInfo,
   QrAction,
 } from 'store';
-import { IAxiosResponse } from 'types';
+import { IAxiosResponse, MemberType } from 'types';
 import urlcat from 'urlcat';
 import { NodeType, ShowRecordHistory } from '../config/constant';
 import {
@@ -44,6 +44,8 @@ import {
   ITemplateRecommendResponse,
   IUpdateSecuritySetting,
   IWecomAgentBindSpaceResponse,
+  IGetRoleListResponse,
+  IGetRoleMemberListResponse,
 } from './api.interface';
 
 axios.defaults.baseURL = Url.BASE_URL;
@@ -2011,4 +2013,47 @@ export const getS3Callback = (params: { resourceKeys: string[]; type: number }) 
 
 export const getSubscribeActiveEvents = () => {
   return axios.get<IApiWrapper & { data: ISubscribeActiveEventResponse }>(Url.SUBSCRIBE_ACTIVE_EVENT);
+};
+
+// 获取角色列表
+export const getRoleList = () => {
+  return axios.get<IApiWrapper & { data: IGetRoleListResponse }>(Url.GET_ROLE_LIST);
+};
+
+// 创建角色
+export const createRole = (roleName: string) => {
+  return axios.post<IApiWrapper>(Url.CREATE_NEW_ROLE, { roleName });
+};
+
+// 删除角色
+export const deleteOrgRole = (roleId: string) => {
+  return axios.delete<IApiWrapper>(urlcat(Url.DELETE_ORG_ROLE, { roleId }));
+};
+
+// 更新角色
+export const updateOrgRole = (roleId: string, roleName: string) => {
+  return axios.patch<IApiWrapper>(urlcat(Url.UPDATE_ORG_ROLE, { roleId }), { roleName });
+};
+
+// 获取角色中成员列表
+export const getRoleMemberList = (roleId: string, page: { pageSize: number; pageNo: number }) => {
+  const pageObjectParams = JSON.stringify(page);
+  return axios.get<IApiWrapper & { data: IGetRoleMemberListResponse }>(urlcat(Url.GET_MEMBER_LIST_BY_ROLE, { roleId }), {
+    params: { pageObjectParams },
+  });
+};
+
+// 角色中新增成员
+export const addRoleMember = (roleId: string, unitList: { id: string; type: MemberType }[]) => {
+  return axios.post<IApiWrapper>(urlcat(Url.ADD_ROLE_MEMBER, { roleId }), { unitList });
+};
+
+// 角色中删除成员
+export const deleteRoleMember = (roleId: string, unitIds: string[]) => {
+  return axios.delete<IApiWrapper>(urlcat(Url.DELETE_ROLE_MEMBER, { roleId }), { data: { unitIds }});
+};
+
+// 初始化角色
+export const initRoles = () => {
+  return axios.post<IApiWrapper>(Url.INIT_ROLE);
 };

@@ -6,12 +6,12 @@ import {
   Selectors,
   Strings,
   t,
-  UnitItem,
   getCustomConfig,
   ISpaceInfo,
   ISpaceBasicInfo,
+  UnitItem,
 } from '@vikadata/core';
-import { Breadcrumb, Radio, Checkbox } from 'antd';
+import { Breadcrumb, Radio, Checkbox, Tabs } from 'antd';
 import { AvatarType, ButtonPlus, HorizontalScroll, InfoCard, SearchInput } from 'pc/components/common';
 import { ReactChild, useCallback, useEffect, useState } from 'react';
 import * as React from 'react';
@@ -20,7 +20,7 @@ import LevelRightIcon from 'static/icon/common/common_icon_right_line.svg';
 import { SearchResult } from '../search_result';
 import { SelectUnitSource } from '.';
 import { RadioChangeEvent } from 'antd/lib/radio';
-import { useDebounceFn } from 'ahooks';
+import { useDebounceFn, useMount } from 'ahooks';
 import { useCatalogTreeRequest, useResponsive, useRequest } from 'pc/hooks';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { useSelector } from 'react-redux';
@@ -28,6 +28,7 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import classnames from 'classnames';
 import { Loading, stopPropagation, useThemeColors } from '@vikadata/components';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
+import { IRoleItem, useRoleRequest } from 'pc/hooks/use_role';
 
 export interface ISelectUnitLeftProps {
   isSingleSelect?: boolean;
@@ -39,13 +40,31 @@ export interface ISelectUnitLeftProps {
   units: IUnit | null;
   setUnits: React.Dispatch<React.SetStateAction<IUnit | null>>;
   spaceInfo?: ISpaceInfo | ISpaceBasicInfo | null;
+  showTab?: boolean;
+}
+
+enum TabKey {
+  Org = 'org',
+  Role = 'role',
 }
 
 const BreadcrumbItem = Breadcrumb.Item;
+const { TabPane } = Tabs;
 
 export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
   const colors = useThemeColors();
-  const { isSingleSelect, source, disableList, disableIdList, units, setUnits, checkedList, setCheckedList, spaceInfo: wecomSpaceInfo } = props;
+  const {
+    isSingleSelect,
+    source,
+    disableList,
+    disableIdList,
+    units,
+    setUnits,
+    checkedList,
+    setCheckedList,
+    spaceInfo: defaultSpaceInfo,
+    showTab,
+  } = props;
   const { getSubUnitListReq, searchUnitReq } = useCatalogTreeRequest();
   const { run: getSubUnitList, data: unitsData, loading: unitListloading } = useRequest(getSubUnitListReq, { manual: true });
   const { run: searchUnit, data: searchUnitData } = useRequest(searchUnitReq, { manual: true });
@@ -59,8 +78,15 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
 
   const [clickedTeamId, setClickedTeamId] = useState<string>();
 
+  const [tabActiveKey, setTabActiveKey] = useState<TabKey>(TabKey.Org);
+
+  // role
+  const isRole = tabActiveKey === TabKey.Role;
+  const { run: getRoleList, data } = useRoleRequest();
+  const { isOpen: roleIsOpen, roles: roleList } = data;
+
   let linkId = useSelector(Selectors.getLinkId);
-  const spaceInfo = useSelector(state => state.space.curSpaceInfo) || wecomSpaceInfo;
+  const spaceInfo = useSelector(state => state.space.curSpaceInfo) || defaultSpaceInfo;
 
   const { syncTeamsAndMembersLinkId } = getCustomConfig();
 
@@ -71,14 +97,24 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
-  useEffect(() => {
-    !keyword && getSubUnitList(breadCrumbData[breadCrumbData.length - 1].teamId, linkId);
-  }, [keyword, getSubUnitList, breadCrumbData, linkId]);
+  useMount(() => {
+    showTab && getRoleList();
+  });
 
   useEffect(() => {
-    keyword && search(keyword, linkId);
+    if (isRole || keyword) {
+      return;
+    }
+    getSubUnitList(breadCrumbData[breadCrumbData.length - 1].teamId, linkId);
+  }, [keyword, getSubUnitList, breadCrumbData, linkId, isRole]);
+
+  useEffect(() => {
+    if (isRole || !keyword) {
+      return;
+    }
+    search(keyword, linkId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [keyword, linkId]);
+  }, [keyword, linkId, isRole]);
 
   useEffect(() => {
     if (source === SelectUnitSource.ChangeMemberTeam && unitsData && 'members' in unitsData) {
@@ -281,10 +317,38 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
     </div>
   );
 
-  function RadioList(units: IUnit, inSearch = false) {
-    if (!units) return;
+  const RoleItem = (item: IRoleItem) => (
+    <div className={styles.item} key={item.unitId}>
+      <div className={styles.checkWrapper}>
+        <Checkbox value={item.unitId} disabled={disableList && disableList.includes(item.unitId)} onChange={e => onChangeChecked(e, item)}>
+          <div className={styles.itemContent}>
+            <InfoCard
+              title={item.roleName}
+              originTitle={item.roleName}
+              description={t(Strings.display_member_by_count, {
+                memberCount: item.memberCount,
+              })}
+              style={{ backgroundColor: 'transparent' }}
+              avatarProps={{
+                id: item.unitId,
+                src: '',
+                title: item.roleName,
+                type: AvatarType.Team,
+              }}
+            />
+          </div>
+        </Checkbox>
+      </div>
+    </div>
+  );
 
-    function handleRadioChecked(e: RadioChangeEvent) {
+  function RadioList(data: IUnit | IRoleItem[], inSearch = false) {
+    if (!data) return;
+
+    const units = isRole ? null : (data as IUnit);
+    const roleList = isRole ? (data as IRoleItem[]) : [];
+
+    function handleUnitRadioChecked(e: RadioChangeEvent) {
       const unitId = e.target.value;
       const selectUnit = units
         ? Object.values(units)
@@ -294,20 +358,44 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
       setCheckedList(selectUnit);
     }
 
+    function handleRoleRadioChecked(e: RadioChangeEvent) {
+      const unitId = e.target.value;
+      setCheckedList([unitId]);
+    }
+
+    function handleRadioChecked(e: RadioChangeEvent) {
+      isRole ? handleRoleRadioChecked(e) : handleUnitRadioChecked(e);
+    }
+
+    const members = units?.members || [];
+    const teams = units?.teams || [];
+
     return (
       <div className={styles.dataListWrapper}>
         <Radio.Group value={checkedList.length && checkedList[0].unitId} onChange={handleRadioChecked}>
-          {inSearch && units.teams.length !== 0 && <div className={styles.unitType}>{t(Strings.team)}</div>}
-          {units.teams.map(TeamItem(inSearch))}
-          {inSearch && units.members.length !== 0 && <div className={styles.unitType}>{t(Strings.member)}</div>}
-          {units.members.map(MemberItem(inSearch))}
+          {isRole ? (
+            <>{roleList.map(RoleItem)}</>
+          ) : (
+            <>
+              {inSearch && teams.length !== 0 && <div className={styles.unitType}>{t(Strings.team)}</div>}
+              {teams.map(TeamItem(inSearch))}
+              {inSearch && members.length !== 0 && <div className={styles.unitType}>{t(Strings.member)}</div>}
+              {members.map(MemberItem(inSearch))}
+            </>
+          )}
         </Radio.Group>
       </div>
     );
   }
 
-  function CheckboxList(units: IUnit, inSearch = false) {
-    if (!units) return;
+  function CheckboxList(data: IUnit | IRoleItem[], inSearch = false) {
+    if (!data) return;
+
+    const units = isRole ? ({} as IUnit) : (data as IUnit);
+    const roleList = isRole ? (data as IRoleItem[]) : [];
+    const members = units?.members || [];
+    const teams = units?.teams || [];
+
     // 勾选全选
     const onCheckAllChange = () => {
       if (isSingleSelect) return;
@@ -349,26 +437,44 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
       }
       setCheckedAll(!checkedAll);
     };
+
     return (
       <>
-        <div className={styles.allCheck}>
-          <Checkbox onChange={onCheckAllChange} checked={checkedAll}>
-            {t(Strings.select_all)}
-          </Checkbox>
-        </div>
+        {!isRole && (
+          <div className={styles.allCheck}>
+            <Checkbox onChange={onCheckAllChange} checked={checkedAll}>
+              {t(Strings.select_all)}
+            </Checkbox>
+          </div>
+        )}
         <div className={styles.dataListWrapper}>
           <Checkbox.Group value={checkedList.map(item => item.unitId)}>
-            {inSearch && units.teams.length !== 0 && <div className={styles.unitType}>{t(Strings.team)}</div>}
-            {units.teams.map(TeamItem(inSearch))}
-            {inSearch && units.members.length !== 0 && <div className={styles.unitType}>{t(Strings.member)}</div>}
-            {units.members.map(MemberItem(inSearch))}
+            {isRole ? (
+              <>{roleList.map(RoleItem)}</>
+            ) : (
+              <>
+                {inSearch && teams.length !== 0 && <div className={styles.unitType}>{t(Strings.team)}</div>}
+                {teams.map(TeamItem(inSearch))}
+                {inSearch && members.length !== 0 && <div className={styles.unitType}>{t(Strings.member)}</div>}
+                {members.map(MemberItem(inSearch))}
+              </>
+            )}
           </Checkbox.Group>
         </div>
       </>
     );
   }
 
-  const searchData = source === SelectUnitSource.ChangeMemberTeam ? searchUnitData && { ...searchUnitData, tags: [], members: [] } : searchUnitData;
+  const orgSearchData =
+    source === SelectUnitSource.ChangeMemberTeam ? searchUnitData && { ...searchUnitData, tags: [], members: [] } : searchUnitData;
+
+  const listData = isRole ? roleList : units;
+  const searchData = isRole ? roleList.filter(v => !keyword || v.roleName.includes(keyword)) : orgSearchData;
+
+  // search result is empty
+  const isEmptySearch = isRole
+    ? !roleList.length
+    : !orgSearchData || (!orgSearchData.teams?.length && !orgSearchData.members?.length && !orgSearchData.tags?.length);
 
   return (
     <div className={styles.left}>
@@ -380,23 +486,33 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
           change={setKeyword}
         />
       </div>
-      <div className={styles.breadcrumb}>
-        <HorizontalScroll>
-          <Breadcrumb separator="/">
-            {breadCrumbData.map(breadItem => (
-              <BreadcrumbItem key={breadItem.teamId || breadItem.name} onClick={() => skipUnit(breadItem.teamId)}>
-                {breadItem.name}
-              </BreadcrumbItem>
-            ))}
-          </Breadcrumb>
-        </HorizontalScroll>
-      </div>
-      {isSingleSelect ? RadioList(units) : CheckboxList(units)}
+      {roleIsOpen && (
+        <Tabs
+          className={classnames(styles.tabWrap, isRole && styles.tabWrapRole)}
+          activeKey={tabActiveKey}
+          onChange={value => setTabActiveKey(value as TabKey)}
+        >
+          <TabPane key={TabKey.Org} tab="组织架构" />
+          <TabPane key={TabKey.Role} tab="角色" />
+        </Tabs>
+      )}
+      {!isRole && (
+        <div className={styles.breadcrumb}>
+          <HorizontalScroll>
+            <Breadcrumb separator="/">
+              {breadCrumbData.map(breadItem => (
+                <BreadcrumbItem key={breadItem.teamId || breadItem.name} onClick={() => skipUnit(breadItem.teamId)}>
+                  {breadItem.name}
+                </BreadcrumbItem>
+              ))}
+            </Breadcrumb>
+          </HorizontalScroll>
+        </div>
+      )}
+      {isSingleSelect ? RadioList(listData) : CheckboxList(listData)}
       {keyword && (
-        <div className={styles.searchListWrapper}>
-          <SearchResult data={searchData} checkedList={checkedList} onChangeChecked={onChangeChecked}>
-            {isSingleSelect ? RadioList(searchData, true) : CheckboxList(searchData, true)}
-          </SearchResult>
+        <div className={classnames(styles.searchListWrapper, roleIsOpen && styles.searchListWrapperRoleIsOpen)}>
+          <SearchResult isEmpty={isEmptySearch}>{isSingleSelect ? RadioList(searchData, true) : CheckboxList(searchData, true)}</SearchResult>
         </div>
       )}
     </div>

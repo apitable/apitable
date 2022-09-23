@@ -1,9 +1,18 @@
 import { FC } from 'react';
 import * as React from 'react';
 import parser, { HTMLReactParserOptions } from 'html-react-parser';
-import { 
-  ERROR_STR, IFromUserInfo, INoticeDetail, integrateCdnHost,
-  ISpaceBasicInfo, ISpaceInfo, NOTIFICATION_ID, Settings, Strings, SystemConfig, t
+import {
+  ERROR_STR,
+  IFromUserInfo,
+  INoticeDetail,
+  integrateCdnHost,
+  ISpaceBasicInfo,
+  ISpaceInfo,
+  NOTIFICATION_ID,
+  Settings,
+  Strings,
+  SystemConfig,
+  t,
 } from '@vikadata/core';
 import { NoticeTemplatesConstant, NotificationTemplates } from 'pc/components/notification/utils';
 import { UnitTag } from 'pc/components/catalog/permission_settings/permission/select_unit_modal/unit_tag';
@@ -48,6 +57,7 @@ export enum TemplateKeyword {
   NewDisplayValue = 'newDisplayValue',
   Content = 'content',
   Number = 'number',
+  RoleName = 'roleName',
 }
 
 export enum NotifyType {
@@ -62,7 +72,7 @@ enum MemberTypeInNotice {
   IsDeleted = 2,
   IsVisitor = 3,
 }
-// 消息状态——key值对应消息体里的extras/applyStatus里的值 
+// 消息状态——key值对应消息体里的extras/applyStatus里的值
 // 0-待审核，1- 同意， 2-拒绝， 3-失效,（失效原因：0——邮箱邀请，1——通讯录导入，2——邀请链接）
 enum NotifyStatusType {
   CheckPending = 0,
@@ -71,15 +81,15 @@ enum NotifyStatusType {
   Invalid = 3,
 }
 
-export const JoinMsgApplyStatus: FC<{status: number}> = ({ status }): React.ReactElement => {
-  switch(status){
-    case NotifyStatusType.Agree:{
+export const JoinMsgApplyStatus: FC<{ status: number }> = ({ status }): React.ReactElement => {
+  switch (status) {
+    case NotifyStatusType.Agree: {
       return <div className={classNames(styles.processRes, styles.info)}>{t(Strings.agreed)}</div>;
     }
-    case NotifyStatusType.Reject:{
+    case NotifyStatusType.Reject: {
       return <div className={classNames(styles.processRes, styles.red)}>{t(Strings.rejected)}</div>;
     }
-    case NotifyStatusType.Invalid:{
+    case NotifyStatusType.Invalid: {
       return <div className={styles.processRes}>{t(Strings.processed)}</div>;
     }
     default: {
@@ -109,9 +119,11 @@ const unitTagBase = {
   isTeam: false,
 };
 const triggerWrapBase = {
-  onClick: e => { e.stopPropagation(); },
+  onClick: e => {
+    e.stopPropagation();
+  },
   style: { display: 'inline-block' },
-  className: styles.triggerWrapBase
+  className: styles.triggerWrapBase,
 };
 const keyWordAddClass = (keyword: string) => {
   return `<a class="${keyword}"></a>`;
@@ -128,12 +140,7 @@ const renderUser = (info: IFromUserInfo, spaceName: string) => {
         permissionVisible={false}
       >
         <div className={styles.unitTagWrap}>
-          <UnitTag
-            {...unitTagBase}
-            unitId={info.uuid}
-            avatar={info.avatar}
-            name={info.userName || t(Strings.guests_per_space)}
-          />
+          <UnitTag {...unitTagBase} unitId={info.uuid} avatar={info.avatar} name={info.userName || t(Strings.guests_per_space)} />
         </div>
       </UserCardTrigger>
     </div>
@@ -145,20 +152,17 @@ export const renderMember = (info: IFromUserInfo, spaceName: string, spaceInfo?:
   if (isDeleted) {
     return (
       <div className={unitTagWrapClasses}>
-        <UnitTag
-          {...unitTagBase}
-          unitId={info.memberId}
-          avatar={info.avatar}
-          name={info.memberName || info.userName || t(Strings.unnamed)}
-        />
+        <UnitTag {...unitTagBase} unitId={info.memberId} avatar={info.avatar} name={info.memberName || info.userName || t(Strings.unnamed)} />
       </div>
     );
   }
-  const title = spaceInfo ? getSocialWecomUnitName({
-    name: info?.memberName,
-    isModified: info?.isMemberNameModified,
-    spaceInfo
-  }) : undefined;
+  const title = spaceInfo
+    ? getSocialWecomUnitName({
+        name: info?.memberName,
+        isModified: info?.isMemberNameModified,
+        spaceInfo,
+      })
+    : undefined;
   return (
     <div {...triggerWrapBase}>
       <UserCardTrigger
@@ -190,11 +194,12 @@ export const getNoticeUrlParams = (data: INoticeDetail) => {
   const viewId = data.notifyBody?.extras?.viewId;
   const dataRecordId = data.notifyBody?.extras?.recordId;
   const recordIds = data.notifyBody?.extras?.recordIds || (dataRecordId ? [dataRecordId] : undefined);
-  const recordId = (recordIds && isArray(recordIds)) ? recordIds[0] : '';
+  const recordId = recordIds && isArray(recordIds) ? recordIds[0] : '';
   const toastUrl = data.notifyBody.extras?.toast?.url;
   const notifyId = data.id;
+  const roleName = data.notifyBody.extras.roleName;
 
-  return { spaceId, nodeId, viewId, recordId, configPathname, toastUrl, notifyType: data.notifyType, recordIds, notifyId };
+  return { spaceId, nodeId, viewId, recordId, configPathname, toastUrl, notifyType: data.notifyType, recordIds, notifyId, roleName };
 };
 
 // 获取消息体——消息展示的文字是否来自于config配置，如果不是，则是ws消息体中获取
@@ -243,13 +248,14 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
   const payFee = data.notifyBody.extras?.payFee;
   const expireAt = data.notifyBody.extras?.expireAt;
   const taskExpireAt = data.notifyBody.extras?.taskExpireAt;
-  const featureName = data.notifyBody.extras?.featureKey &&
-    t(Strings[SystemConfig.test_function?.[data.notifyBody.extras?.featureKey]?.feature_name]);
+  const featureName =
+    data.notifyBody.extras?.featureKey && t(Strings[SystemConfig.test_function?.[data.notifyBody.extras?.featureKey]?.feature_name]);
   const nickName = data.notifyBody.extras?.nickName;
   const oldDisplayValue = data.notifyBody.extras?.oldDisplayValue;
   const newDisplayValue = data.notifyBody.extras?.newDisplayValue;
   const content = data.notifyBody.extras?.content;
   const number = data.notifyBody.extras?.number || 0;
+  const roleName = data.notifyBody.extras.roleName;
 
   const parseOptions: HTMLReactParserOptions = {
     replace: ({ attribs }) => {
@@ -286,9 +292,13 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
           return <b>{newSpaceName}</b>;
         }
         case TemplateKeyword.Times: {
-          return <>{t(Strings.records_of_count, {
-            count: times,
-          })}</>;
+          return (
+            <>
+              {t(Strings.records_of_count, {
+                count: times,
+              })}
+            </>
+          );
         }
         case TemplateKeyword.NodeName: {
           return <b>{nodeName}</b>;
@@ -350,6 +360,9 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
         case TemplateKeyword.Number: {
           return <b>{number}</b>;
         }
+        case TemplateKeyword.RoleName: {
+          return <b>{roleName}</b>;
+        }
         default:
           return;
       }
@@ -357,7 +370,8 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
   };
   if (pureString) {
     const userList = involveMemberArr.map(item => item.memberName || t(Strings.unnamed));
-    return template.replace(keyWordAddClass(TemplateKeyword.MemberName), data?.fromUser?.memberName)
+    return template
+      .replace(keyWordAddClass(TemplateKeyword.MemberName), data?.fromUser?.memberName)
       .replace(keyWordAddClass(TemplateKeyword.UserName), data?.fromUser?.userName)
       .replace(keyWordAddClass(TemplateKeyword.InvolveMemberArr), userList.join('、'))
       .replace(keyWordAddClass(TemplateKeyword.SpaceName), `${data.notifyBody.space.spaceName}`)
@@ -383,7 +397,8 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
       .replace(keyWordAddClass(TemplateKeyword.OldDisplayValue), oldDisplayValue)
       .replace(keyWordAddClass(TemplateKeyword.NewDisplayValue), newDisplayValue)
       .replace(keyWordAddClass(TemplateKeyword.Content), content)
-      .replace(keyWordAddClass(TemplateKeyword.Number), number);
+      .replace(keyWordAddClass(TemplateKeyword.Number), number)
+      .replace(keyWordAddClass(TemplateKeyword.RoleName), roleName);
   }
   return parser(template, parseOptions);
 };
@@ -414,7 +429,7 @@ export const commentContentFormat = (commentContent: string, spaceInfo?: ISpaceI
       const title = getSocialWecomUnitName({
         name,
         isModified: false,
-        spaceInfo
+        spaceInfo,
       });
       // 将匹配 @$userName=wpOhr1DQAAwS6hkj_EMauEI4ljF-nAgQ$ 格式转用企微的组件
       content = content.replace(matchString, `${typeof title === 'string' ? title : '@' + ReactDOMServer.renderToStaticMarkup(title)}`);
@@ -423,4 +438,3 @@ export const commentContentFormat = (commentContent: string, spaceInfo?: ISpaceI
   }
   return content;
 };
-

@@ -1,9 +1,41 @@
 import { colors, ThemeName } from '@vikadata/components';
 import {
-  Api, ArrayValueField, BasicValueType, ConfigConstant, DatasheetApi, EmojisConfig, Field, FieldType, FormulaBaseError, handleNullArray,
-  IAttachmentValue, ICellValue, IField, ILookUpField, IMemberField, IMultiSelectedIds, ISegment, isGif, IUnitIds, LinkField, LOOKUP_VALUE_FUNC_SET,
-  LookUpField, MemberField, MemberType, ORIGIN_VALUES_FUNC_SET, OtherTypeUnitId, RollUpFuncType, RowHeightLevel, Selectors, Settings, StoreActions,
-  string2Segment, Strings, SymbolAlign, t, ViewType,
+  Api,
+  ArrayValueField,
+  BasicValueType,
+  ConfigConstant,
+  DatasheetApi,
+  EmojisConfig,
+  Field,
+  FieldType,
+  FormulaBaseError,
+  handleNullArray,
+  IAttachmentValue,
+  ICellValue,
+  IField,
+  ILookUpField,
+  IMemberField,
+  IMultiSelectedIds,
+  ISegment,
+  isGif,
+  IUnitIds,
+  LinkField,
+  LOOKUP_VALUE_FUNC_SET,
+  LookUpField,
+  MemberField,
+  MemberType,
+  ORIGIN_VALUES_FUNC_SET,
+  OtherTypeUnitId,
+  RollUpFuncType,
+  RowHeightLevel,
+  Selectors,
+  Settings,
+  StoreActions,
+  string2Segment,
+  Strings,
+  SymbolAlign,
+  t,
+  ViewType,
 } from '@vikadata/core';
 import { keyBy, sortBy } from 'lodash';
 import LRU from 'lru-cache';
@@ -17,11 +49,24 @@ import { getDatasheetOrLoad } from 'pc/utils/get_datasheet_or_load';
 import { loadRecords } from 'pc/utils/load_records';
 import { getOptionNameColor, inquiryValueByKey } from '../components/cell';
 import {
-  GRID_CELL_ADD_ITEM_BUTTON_SIZE, GRID_CELL_ATTACHMENT_ITEM_MARGIN_LEFT, GRID_CELL_ATTACHMENT_PADDING, GRID_CELL_DELETE_ITEM_BUTTON_SIZE,
-  GRID_CELL_LINK_ITEM_HEIGHT, GRID_CELL_LINK_ITEM_PADDING, GRID_CELL_MEMBER_ITEM_HEIGHT, GRID_CELL_MEMBER_ITEM_MARGIN_TOP,
-  GRID_CELL_MEMBER_ITEM_PADDING_LEFT, GRID_CELL_MULTI_ITEM_MARGIN_LEFT, GRID_CELL_MULTI_ITEM_MARGIN_TOP, GRID_CELL_MULTI_ITEM_MIN_WIDTH,
-  GRID_CELL_MULTI_PADDING_TOP, GRID_CELL_VALUE_PADDING, GRID_MEMBER_ITEM_AVATAR_MARGIN_RIGHT, GRID_MEMBER_ITEM_PADDING_RIGHT, GRID_OPTION_ITEM_HEIGHT,
-  GRID_OPTION_ITEM_PADDING
+  GRID_CELL_ADD_ITEM_BUTTON_SIZE,
+  GRID_CELL_ATTACHMENT_ITEM_MARGIN_LEFT,
+  GRID_CELL_ATTACHMENT_PADDING,
+  GRID_CELL_DELETE_ITEM_BUTTON_SIZE,
+  GRID_CELL_LINK_ITEM_HEIGHT,
+  GRID_CELL_LINK_ITEM_PADDING,
+  GRID_CELL_MEMBER_ITEM_HEIGHT,
+  GRID_CELL_MEMBER_ITEM_MARGIN_TOP,
+  GRID_CELL_MEMBER_ITEM_PADDING_LEFT,
+  GRID_CELL_MULTI_ITEM_MARGIN_LEFT,
+  GRID_CELL_MULTI_ITEM_MARGIN_TOP,
+  GRID_CELL_MULTI_ITEM_MIN_WIDTH,
+  GRID_CELL_MULTI_PADDING_TOP,
+  GRID_CELL_VALUE_PADDING,
+  GRID_MEMBER_ITEM_AVATAR_MARGIN_RIGHT,
+  GRID_MEMBER_ITEM_PADDING_RIGHT,
+  GRID_OPTION_ITEM_HEIGHT,
+  GRID_OPTION_ITEM_PADDING,
 } from '../constant';
 import { IRenderProps } from '../interface';
 import { KonvaDrawer } from './drawer';
@@ -64,7 +109,7 @@ const DEFAULT_RENDER_DATA = {
   width: 0,
   height: 0,
   isOverflow: false,
-  renderContent: null
+  renderContent: null,
 };
 
 export class CellHelper extends KonvaDrawer {
@@ -98,7 +143,7 @@ export class CellHelper extends KonvaDrawer {
         return this.setStyle({ fontSize: 13, fontWeight });
       }
       case FieldType.LookUp: {
-        const realField = (Field.bindModel(field) as any as LookUpField).getLookUpEntityField();
+        const realField = ((Field.bindModel(field) as any) as LookUpField).getLookUpEntityField();
         const rollUpType = (field as ILookUpField).property.rollUpType || RollUpFuncType.VALUES;
         if (realField && ORIGIN_VALUES_FUNC_SET.has(rollUpType)) {
           return this.initStyle(realField, styleProps);
@@ -173,17 +218,18 @@ export class CellHelper extends KonvaDrawer {
     const background = inquiryValueByKey('color', cellValue as string, field, cacheTheme);
     const itemName = inquiryValueByKey('name', cellValue as string, field, cacheTheme);
     const initPadding = GRID_CELL_VALUE_PADDING;
-    const maxTextWidth = isOperating ?
-      columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_OPTION_ITEM_PADDING) - GRID_CELL_DELETE_ITEM_BUTTON_SIZE - 12 :
-      columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_OPTION_ITEM_PADDING);
+    const maxTextWidth = isOperating
+      ? columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_OPTION_ITEM_PADDING) - GRID_CELL_DELETE_ITEM_BUTTON_SIZE - 12
+      : columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_OPTION_ITEM_PADDING);
     const { text, textWidth } = this.textEllipsis({
       text: itemName,
       maxWidth: columnWidth && maxTextWidth,
       fontSize: 12,
     });
-    const width = Math.max((isOperating ?
-      textWidth + 2 * GRID_OPTION_ITEM_PADDING + GRID_CELL_DELETE_ITEM_BUTTON_SIZE + 12 :
-      textWidth + 2 * GRID_OPTION_ITEM_PADDING), GRID_CELL_MULTI_ITEM_MIN_WIDTH);
+    const width = Math.max(
+      isOperating ? textWidth + 2 * GRID_OPTION_ITEM_PADDING + GRID_CELL_DELETE_ITEM_BUTTON_SIZE + 12 : textWidth + 2 * GRID_OPTION_ITEM_PADDING,
+      GRID_CELL_MULTI_ITEM_MIN_WIDTH,
+    );
     if (ctx) {
       const stroke = style?.bgColor === background ? colors.defaultBg : '';
       // 绘制 option label
@@ -199,7 +245,7 @@ export class CellHelper extends KonvaDrawer {
         padding: GRID_OPTION_ITEM_PADDING,
         fontSize: 12,
         stroke,
-        textAlign: 'center'
+        textAlign: 'center',
       });
       callback?.({ width: width + initPadding });
     }
@@ -220,7 +266,7 @@ export class CellHelper extends KonvaDrawer {
       width: columnWidth,
       height: GRID_OPTION_ITEM_HEIGHT,
       isOverflow: false,
-      renderContent
+      renderContent,
     };
   }
 
@@ -233,9 +279,9 @@ export class CellHelper extends KonvaDrawer {
     let currentY = GRID_CELL_MULTI_PADDING_TOP;
     const isShortHeight = rowHeightLevel === RowHeightLevel.Short;
     const maxHeight = isActive ? 130 - GRID_CELL_MULTI_PADDING_TOP : rowHeight - GRID_CELL_MULTI_PADDING_TOP;
-    const maxTextWidth = isOperating ?
-      columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_OPTION_ITEM_PADDING) - GRID_CELL_DELETE_ITEM_BUTTON_SIZE - 12 :
-      columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_OPTION_ITEM_PADDING);
+    const maxTextWidth = isOperating
+      ? columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_OPTION_ITEM_PADDING) - GRID_CELL_DELETE_ITEM_BUTTON_SIZE - 12
+      : columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_OPTION_ITEM_PADDING);
     const renderDataList: any[] = [];
     const listCount = cellValue.length;
     let isOverflow = false;
@@ -261,16 +307,18 @@ export class CellHelper extends KonvaDrawer {
         maxWidth: columnWidth && realMaxTextWidth,
         fontSize: 12,
       });
-      const itemWidth = Math.max((isOperating ?
-        textWidth + 2 * GRID_OPTION_ITEM_PADDING + GRID_CELL_DELETE_ITEM_BUTTON_SIZE + 12 :
-        textWidth + 2 * GRID_OPTION_ITEM_PADDING), GRID_CELL_MULTI_ITEM_MIN_WIDTH);
+      const itemWidth = Math.max(
+        isOperating ? textWidth + 2 * GRID_OPTION_ITEM_PADDING + GRID_CELL_DELETE_ITEM_BUTTON_SIZE + 12 : textWidth + 2 * GRID_OPTION_ITEM_PADDING,
+        GRID_CELL_MULTI_ITEM_MIN_WIDTH,
+      );
 
       if (columnWidth != null) {
         // 非激活态下，当超过行宽时，后续 item 不进行渲染
         if (!isActive && currentX >= columnWidth) break;
         // 非激活态下，如果不是最后一行，对溢出 item 进行换行处理
         if (
-          !isActive && !isShortHeight &&
+          !isActive &&
+          !isShortHeight &&
           currentY + GRID_OPTION_ITEM_HEIGHT < maxHeight &&
           currentX + itemWidth > columnWidth - GRID_CELL_VALUE_PADDING
         ) {
@@ -298,7 +346,7 @@ export class CellHelper extends KonvaDrawer {
           padding: GRID_OPTION_ITEM_PADDING,
           text: renderText,
           fontSize: 12,
-          textAlign: 'center'
+          textAlign: 'center',
         });
       }
 
@@ -311,7 +359,7 @@ export class CellHelper extends KonvaDrawer {
         style: {
           background,
           color,
-        }
+        },
       });
       currentX += itemWidth + GRID_CELL_MULTI_ITEM_MARGIN_LEFT;
     }
@@ -329,7 +377,7 @@ export class CellHelper extends KonvaDrawer {
     const { x, y, cellValue, field, columnWidth, rowHeightLevel, isActive, style, callback, viewType = ViewType.Grid, realField } = renderProps;
 
     const generateRenderText = (): string | null => {
-      if (cellValue != null && cellValue instanceof FormulaBaseError ) return cellValue?.message;
+      if (cellValue != null && cellValue instanceof FormulaBaseError) return cellValue?.message;
 
       if (field.type === FieldType.URL && field.property?.isRecogURLFlag) {
         return Field.bindModel(field).cellValueToURLTitle(cellValue);
@@ -342,8 +390,9 @@ export class CellHelper extends KonvaDrawer {
 
     if (renderText == null) return DEFAULT_RENDER_DATA;
 
-    const isNumberField = Field.bindModel(field).basicValueType === BasicValueType.Number ||
-      (Field.bindModel(field) as any as ArrayValueField).innerBasicValueType === BasicValueType.Number;
+    const isNumberField =
+      Field.bindModel(field).basicValueType === BasicValueType.Number ||
+      ((Field.bindModel(field) as any) as ArrayValueField).innerBasicValueType === BasicValueType.Number;
     const isComputedField = Field.bindModel(field).isComputed;
     const isFromGantt = !columnWidth && !isActive;
     const isSingleLine = (rowHeightLevel === RowHeightLevel.Short || !columnWidth) && !isActive;
@@ -380,7 +429,7 @@ export class CellHelper extends KonvaDrawer {
     }
 
     const color = style?.color || colors.firstLevelText;
-    const textAlign = style?.textAlign || ((isNumberField && columnWidth) ? 'right' : 'left');
+    const textAlign = style?.textAlign || (isNumberField && columnWidth ? 'right' : 'left');
     const fontWeight = style?.fontWeight;
     const textMaxWidth = columnWidth - 2 * GRID_CELL_VALUE_PADDING;
     const renderX = textAlign === 'right' ? x + columnWidth - GRID_CELL_VALUE_PADDING : x + GRID_CELL_VALUE_PADDING;
@@ -447,7 +496,7 @@ export class CellHelper extends KonvaDrawer {
         originValue,
         isLinkSplit,
         fieldType,
-        needDraw: !isActive
+        needDraw: !isActive,
       });
       textHeight = result.height;
       textData = result.data;
@@ -463,14 +512,14 @@ export class CellHelper extends KonvaDrawer {
       style: {
         ...style,
         textAlign,
-        textDecoration
-      }
+        textDecoration,
+      },
     };
     return {
       width: columnWidth,
       height: textHeight + GRID_CELL_VALUE_PADDING,
       isOverflow: textHeight > 130,
-      renderContent
+      renderContent,
     };
   }
 
@@ -499,7 +548,7 @@ export class CellHelper extends KonvaDrawer {
         y: y + GRID_CELL_VALUE_PADDING,
         text,
         fillStyle: color,
-        fontWeight: style?.fontWeight
+        fontWeight: style?.fontWeight,
       });
       callback?.({ width: textWidth + GRID_CELL_VALUE_PADDING });
     }
@@ -517,7 +566,7 @@ export class CellHelper extends KonvaDrawer {
       width: columnWidth,
       height: 24,
       isOverflow: false,
-      renderContent
+      renderContent,
     };
   }
 
@@ -539,7 +588,7 @@ export class CellHelper extends KonvaDrawer {
         y: y + 7,
         width: ConfigConstant.CELL_EMOJI_SIZE,
         height: ConfigConstant.CELL_EMOJI_SIZE,
-        opacity: isChecked ? 1 : 0.2
+        opacity: isChecked ? 1 : 0.2,
       });
       callback?.({ width: ConfigConstant.CELL_EMOJI_SIZE + GRID_CELL_VALUE_PADDING });
     }
@@ -555,17 +604,19 @@ export class CellHelper extends KonvaDrawer {
       const iconUrl = EmojisConfig[iconId]?.url;
       let offsetX = GRID_CELL_VALUE_PADDING;
 
-      (cellValue as boolean[]).filter(i => i).map((_, index) => {
-        if (index > 0) offsetX += ConfigConstant.CELL_EMOJI_SIZE + 4;
-        if (columnWidth && offsetX >= columnWidth) return;
-        this.image({
-          url: iconUrl,
-          x: x + offsetX,
-          y: y + 7,
-          width: ConfigConstant.CELL_EMOJI_SIZE,
-          height: ConfigConstant.CELL_EMOJI_SIZE
+      (cellValue as boolean[])
+        .filter(i => i)
+        .map((_, index) => {
+          if (index > 0) offsetX += ConfigConstant.CELL_EMOJI_SIZE + 4;
+          if (columnWidth && offsetX >= columnWidth) return;
+          this.image({
+            url: iconUrl,
+            x: x + offsetX,
+            y: y + 7,
+            width: ConfigConstant.CELL_EMOJI_SIZE,
+            height: ConfigConstant.CELL_EMOJI_SIZE,
+          });
         });
-      });
       callback?.({ width: offsetX + ConfigConstant.CELL_EMOJI_SIZE });
     }
   }
@@ -573,7 +624,7 @@ export class CellHelper extends KonvaDrawer {
   private renderCellRating(renderProps: IRenderProps, ctx?) {
     const { x, y, field, cellValue: _cellValue, callback } = renderProps;
     const { icon, max } = field.property;
-    const cellValue = _cellValue as number || 0;
+    const cellValue = (_cellValue as number) || 0;
     const getTransValue = (): number => {
       const hasValue = Boolean(cellValue);
       if (hasValue) {
@@ -602,7 +653,7 @@ export class CellHelper extends KonvaDrawer {
           x: x + iconX,
           y: y + iconY,
           width: size,
-          height: size
+          height: size,
         });
       }
 
@@ -618,7 +669,7 @@ export class CellHelper extends KonvaDrawer {
 
   private renderCellAttachment(renderProps: IRenderProps, ctx?) {
     const { x, y, cellValue, rowHeight, columnWidth, isActive, editable, callback, recordId, field } = renderProps;
-    const loadedList: IAttachmentValue[] = cellValue as IAttachmentValue[] || [];
+    const loadedList: IAttachmentValue[] = (cellValue as IAttachmentValue[]) || [];
     const cellId = UploadManager.getCellId(recordId, field.id);
     const uploadManager = resourceService.instance?.uploadManager;
     const loadingList = uploadManager ? uploadManager.get(cellId) : [];
@@ -638,15 +689,13 @@ export class CellHelper extends KonvaDrawer {
       // 正在上传的附件使用对应类型的占位图作为 loading
       if (file.fileId) {
         const { name, type } = file.file;
-        imgUrl = renderFileIconUrl({ name, type }) as any as string;
+        imgUrl = (renderFileIconUrl({ name, type }) as any) as string;
       } else {
         // 单元格内的图标是按比例显示的
-        imgUrl = getCellValueThumbSrc(file,
-          {
-            h: height * (window.devicePixelRatio || 1),
-            formatToJPG: isGif({ name: file.name, type: file.mimeType }),
-          },
-        );
+        imgUrl = getCellValueThumbSrc(file, {
+          h: height * (window.devicePixelRatio || 1),
+          formatToJPG: isGif({ name: file.name, type: file.mimeType }),
+        });
       }
       const name = imgUrl;
       const img = imageCache.getImage(name);
@@ -660,13 +709,7 @@ export class CellHelper extends KonvaDrawer {
       const finalWidth = Math.ceil(aspectRatio * imageWidth);
       const finalHeight = Math.ceil(aspectRatio * imageHeight);
       if (ctx) {
-        ctx.drawImage(
-          img,
-          x + currentX,
-          y + currentY,
-          finalWidth,
-          finalHeight
-        );
+        ctx.drawImage(img, x + currentX, y + currentY, finalWidth, finalHeight);
         this.line({
           x: x + currentX - 1,
           y: y + currentY - 1,
@@ -682,7 +725,7 @@ export class CellHelper extends KonvaDrawer {
         width: finalWidth,
         height: finalHeight,
         url: imgUrl,
-        text: file.name
+        text: file.name,
       });
       currentX += finalWidth + GRID_CELL_ATTACHMENT_ITEM_MARGIN_LEFT;
       if (columnWidth != null && currentX >= columnWidth) break;
@@ -699,8 +742,18 @@ export class CellHelper extends KonvaDrawer {
 
   private renderCellMember(renderProps: IRenderProps, ctx?) {
     const {
-      x, y, field, cellValue: _cellValue, rowHeight, columnWidth, rowHeightLevel,
-      isActive, editable, callback, unitTitleMap, cacheTheme
+      x,
+      y,
+      field,
+      cellValue: _cellValue,
+      rowHeight,
+      columnWidth,
+      rowHeightLevel,
+      isActive,
+      editable,
+      callback,
+      unitTitleMap,
+      cacheTheme,
     } = renderProps;
     const isMemberField = field.type === FieldType.Member;
     const cellValue = isMemberField ? MemberField.polyfillOldData((_cellValue as IUnitIds)?.flat()) : [_cellValue as IUnitIds].flat().filter(v => v);
@@ -713,16 +766,18 @@ export class CellHelper extends KonvaDrawer {
     const itemHeight = isFromGanttShortHeight ? GANTT_SHORT_TASK_MEMBER_ITEM_HEIGHT : GRID_CELL_MEMBER_ITEM_HEIGHT;
     const isOperating = editable && isActive;
     const isMulti = isMemberField && (field as IMemberField).property.isMulti;
-    const initPadding = isOperating ?
-      (isMulti ? GRID_CELL_VALUE_PADDING + GRID_CELL_ADD_ITEM_BUTTON_SIZE + 4 : GRID_CELL_VALUE_PADDING) :
-      GRID_CELL_VALUE_PADDING;
+    const initPadding = isOperating
+      ? isMulti
+        ? GRID_CELL_VALUE_PADDING + GRID_CELL_ADD_ITEM_BUTTON_SIZE + 4
+        : GRID_CELL_VALUE_PADDING
+      : GRID_CELL_VALUE_PADDING;
     let currentX = initPadding;
     let currentY = isFromGanttShortHeight ? GRID_CELL_MULTI_ITEM_MARGIN_TOP + 2 : GRID_CELL_MULTI_ITEM_MARGIN_TOP;
     const itemOtherWidth = avatarSize + GRID_CELL_MEMBER_ITEM_PADDING_LEFT + GRID_MEMBER_ITEM_PADDING_RIGHT + GRID_MEMBER_ITEM_AVATAR_MARGIN_RIGHT;
     const maxHeight = isActive ? 130 - GRID_CELL_MULTI_PADDING_TOP : rowHeight - GRID_CELL_MULTI_PADDING_TOP;
-    const maxTextWidth = isOperating ?
-      columnWidth - 2 * GRID_CELL_VALUE_PADDING - itemOtherWidth - GRID_CELL_DELETE_ITEM_BUTTON_SIZE - 12 :
-      columnWidth - 2 * GRID_CELL_VALUE_PADDING - itemOtherWidth;
+    const maxTextWidth = isOperating
+      ? columnWidth - 2 * GRID_CELL_VALUE_PADDING - itemOtherWidth - GRID_CELL_DELETE_ITEM_BUTTON_SIZE - 12
+      : columnWidth - 2 * GRID_CELL_VALUE_PADDING - itemOtherWidth;
 
     const state = store.getState();
     const unitMap = isMemberField ? Selectors.getUnitMap(state) : Selectors.getUserMap(state);
@@ -732,26 +787,31 @@ export class CellHelper extends KonvaDrawer {
     const cacheKey = missInfoUnitIds.length ? sortBy(missInfoUnitIds).join(',') : null;
 
     // 处理 Unit 信息缺失的情况
-    if (
-      cacheKey &&
-      !httpCache.has(cacheKey)
-    ) {
+    if (cacheKey && !httpCache.has(cacheKey)) {
       const { shareId, templateId, datasheetId } = state.pageParams;
 
       httpCache.set(cacheKey, true);
       if (isMemberField) {
         const linkId = shareId || templateId;
-        Api.loadOrSearch({ unitIds: cacheKey, linkId }).then(res => {
-          const { data: { data: resData, success }} = res;
-          if (!resData.length || !success) return;
-          store.dispatch(StoreActions.updateUnitMap(keyBy(resData, 'unitId')));
-        }).finally(() => httpCache.del(cacheKey));
+        Api.loadOrSearch({ unitIds: cacheKey, linkId })
+          .then(res => {
+            const {
+              data: { data: resData, success },
+            } = res;
+            if (!resData.length || !success) return;
+            store.dispatch(StoreActions.updateUnitMap(keyBy(resData, 'unitId')));
+          })
+          .finally(() => httpCache.del(cacheKey));
       } else {
-        DatasheetApi.fetchUserList(datasheetId!, cellValue as string[]).then(res => {
-          const { data: { data: resData, success }} = res as any;
-          if (!resData?.length || !success) return;
-          store.dispatch(StoreActions.updateUserMap(keyBy(resData, 'userId')));
-        }).finally(() => httpCache.del(cacheKey));
+        DatasheetApi.fetchUserList(datasheetId!, cellValue as string[])
+          .then(res => {
+            const {
+              data: { data: resData, success },
+            } = res as any;
+            if (!resData?.length || !success) return;
+            store.dispatch(StoreActions.updateUserMap(keyBy(resData, 'userId')));
+          })
+          .finally(() => httpCache.del(cacheKey));
       }
     }
 
@@ -794,29 +854,23 @@ export class CellHelper extends KonvaDrawer {
 
       const { text: titleText, textWidth: titleWidth } = this.textEllipsis({
         text: title,
-        maxWidth: columnWidth && realMaxTextWidth
+        maxWidth: columnWidth && realMaxTextWidth,
       });
 
       const { text, textWidth: primaryWidth } = this.textEllipsis({
         text: name,
-        maxWidth: columnWidth && realMaxTextWidth
+        maxWidth: columnWidth && realMaxTextWidth,
       });
 
       const itemNameWidth = title ? titleWidth : primaryWidth;
 
-      const itemWidth = isOperating ?
-        itemNameWidth + itemOtherWidth + GRID_CELL_DELETE_ITEM_BUTTON_SIZE + 12 :
-        itemNameWidth + itemOtherWidth;
+      const itemWidth = isOperating ? itemNameWidth + itemOtherWidth + GRID_CELL_DELETE_ITEM_BUTTON_SIZE + 12 : itemNameWidth + itemOtherWidth;
 
       if (columnWidth != null) {
         // 非激活态下，当超过行宽时，后续 item 不进行渲染
         if (!isActive && currentX >= columnWidth) break;
         // 非激活态下，如果不是最后一行，对溢出 item 进行换行处理
-        if (
-          !isActive && !isShortHeight &&
-          currentY + itemHeight < maxHeight &&
-          currentX + itemWidth > columnWidth - GRID_CELL_VALUE_PADDING
-        ) {
+        if (!isActive && !isShortHeight && currentY + itemHeight < maxHeight && currentX + itemWidth > columnWidth - GRID_CELL_VALUE_PADDING) {
           currentX = GRID_CELL_VALUE_PADDING;
           currentY += itemHeight + GRID_CELL_MEMBER_ITEM_MARGIN_TOP;
         }
@@ -837,7 +891,7 @@ export class CellHelper extends KonvaDrawer {
           y: y + currentY,
           width: itemWidth,
           height: itemHeight,
-          radius: type === MemberType.Team ? 4 : (isFromGanttShortHeight ? 10 : 16),
+          radius: type === MemberType.Team ? 4 : isFromGanttShortHeight ? 10 : 16,
           fill: colors.fc11,
         });
 
@@ -849,7 +903,7 @@ export class CellHelper extends KonvaDrawer {
           id: unitOrUserId,
           title: text,
           size: avatarSize,
-          type: type === MemberType.Team ? AvatarType.Team : AvatarType.Member,
+          type: type === MemberType.Member ? AvatarType.Member : AvatarType.Team,
           opacity,
           cacheTheme,
         });
@@ -904,7 +958,7 @@ export class CellHelper extends KonvaDrawer {
       if (!snapshot) {
         return {
           recordId,
-          text: ERROR_DATA
+          text: ERROR_DATA,
         };
       }
 
@@ -912,18 +966,18 @@ export class CellHelper extends KonvaDrawer {
         if (!isLoading && datasheetClient!.loadingRecord[recordId] === 'error') {
           return {
             recordId,
-            text: ERROR_DATA
+            text: ERROR_DATA,
           };
         }
         emptyRecords.push(recordId);
         return {
           recordId,
-          text: NO_DATA
+          text: NO_DATA,
         };
       }
       return {
         recordId,
-        text: (Field.bindModel(field) as LinkField).getLinkedRecordCellString(recordId)
+        text: (Field.bindModel(field) as LinkField).getLinkedRecordCellString(recordId),
       };
     });
 
@@ -933,11 +987,7 @@ export class CellHelper extends KonvaDrawer {
      * 此时需要将这条新增关联记录的 record 数据加载到关联表 snapshot 中。
      */
     const cacheKey = emptyRecords.length ? sortBy(emptyRecords).join(',') : null;
-    if (
-      cacheKey &&
-      datasheet &&
-      !httpCache.has(cacheKey)
-    ) {
+    if (cacheKey && datasheet && !httpCache.has(cacheKey)) {
       httpCache.set(cacheKey, true);
       loadRecords(datasheet.id, emptyRecords);
     }
@@ -946,7 +996,7 @@ export class CellHelper extends KonvaDrawer {
     const maxHeight = isActive ? 130 - GRID_CELL_MULTI_PADDING_TOP : rowHeight - GRID_CELL_MULTI_PADDING_TOP;
     const addBtnVisible = !field.property.limitSingleRecord;
     const isOperating = editable && isActive;
-    const initPadding = (addBtnVisible && isOperating) ? GRID_CELL_VALUE_PADDING + GRID_CELL_ADD_ITEM_BUTTON_SIZE + 4 : GRID_CELL_VALUE_PADDING;
+    const initPadding = addBtnVisible && isOperating ? GRID_CELL_VALUE_PADDING + GRID_CELL_ADD_ITEM_BUTTON_SIZE + 4 : GRID_CELL_VALUE_PADDING;
     let currentX = initPadding;
     let currentY = GRID_CELL_MULTI_PADDING_TOP;
     const displayText = (text): string => {
@@ -961,9 +1011,9 @@ export class CellHelper extends KonvaDrawer {
       }
     };
 
-    const maxTextWidth = isOperating ?
-      columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_CELL_LINK_ITEM_PADDING) - GRID_CELL_DELETE_ITEM_BUTTON_SIZE - 12 :
-      columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_CELL_LINK_ITEM_PADDING);
+    const maxTextWidth = isOperating
+      ? columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_CELL_LINK_ITEM_PADDING) - GRID_CELL_DELETE_ITEM_BUTTON_SIZE - 12
+      : columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_CELL_LINK_ITEM_PADDING);
     const renderDataList: any[] = [];
     const listCount = linkInfoList.length;
     let isOverflow = false;
@@ -988,16 +1038,20 @@ export class CellHelper extends KonvaDrawer {
         maxWidth: columnWidth && realMaxTextWidth,
         fontSize: 12,
       });
-      const itemWidth = Math.max((isOperating ?
-        textWidth + 2 * GRID_CELL_LINK_ITEM_PADDING + GRID_CELL_DELETE_ITEM_BUTTON_SIZE + 12 :
-        textWidth + 2 * GRID_CELL_LINK_ITEM_PADDING), GRID_CELL_MULTI_ITEM_MIN_WIDTH);
+      const itemWidth = Math.max(
+        isOperating
+          ? textWidth + 2 * GRID_CELL_LINK_ITEM_PADDING + GRID_CELL_DELETE_ITEM_BUTTON_SIZE + 12
+          : textWidth + 2 * GRID_CELL_LINK_ITEM_PADDING,
+        GRID_CELL_MULTI_ITEM_MIN_WIDTH,
+      );
 
       if (columnWidth != null) {
         // 非激活态下，当超过行宽时，后续 item 不进行渲染
         if (!isActive && currentX >= columnWidth) break;
         // 非激活态下，如果不是最后一行，对溢出 item 进行换行处理
         if (
-          !isActive && !isShortHeight &&
+          !isActive &&
+          !isShortHeight &&
           currentY + GRID_CELL_LINK_ITEM_HEIGHT < maxHeight &&
           currentX + itemWidth > columnWidth - GRID_CELL_VALUE_PADDING
         ) {
@@ -1023,7 +1077,7 @@ export class CellHelper extends KonvaDrawer {
           text: renderText,
           fontSize: 12,
           padding: GRID_CELL_LINK_ITEM_PADDING,
-          textAlign: 'center'
+          textAlign: 'center',
         });
       }
 
@@ -1053,8 +1107,8 @@ export class CellHelper extends KonvaDrawer {
   private renderCellLookUp(renderProps: IRenderProps, ctx?) {
     renderProps = { ...renderProps, cellValue: handleNullArray(renderProps.cellValue) };
     const { field, cellValue } = renderProps;
-    const realField = (Field.bindModel(field) as any as LookUpField).getLookUpEntityField();
-    const valueType = (Field.bindModel(field) as any as LookUpField).basicValueType;
+    const realField = ((Field.bindModel(field) as any) as LookUpField).getLookUpEntityField();
+    const valueType = ((Field.bindModel(field) as any) as LookUpField).basicValueType;
     if (cellValue != null && realField != null) {
       const rollUpType = (field as ILookUpField).property.rollUpType || RollUpFuncType.VALUES;
       if (!ORIGIN_VALUES_FUNC_SET.has(rollUpType)) {
@@ -1078,8 +1132,8 @@ export class CellHelper extends KonvaDrawer {
           height: 0,
           isOverflow: false,
           renderContent: {
-            text: String(cellValue)
-          }
+            text: String(cellValue),
+          },
         };
       }
 

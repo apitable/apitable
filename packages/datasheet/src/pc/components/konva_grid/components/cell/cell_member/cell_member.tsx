@@ -6,8 +6,13 @@ import { AvatarSize, AvatarType } from 'pc/components/common';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { Icon, Rect, Text } from 'pc/components/konva_components';
 import {
-  GRID_CELL_DELETE_ITEM_BUTTON_SIZE, GRID_CELL_DELETE_ITEM_BUTTON_SIZE_OFFSET, GRID_CELL_MEMBER_ITEM_PADDING_LEFT, GRID_CELL_VALUE_PADDING,
-  GRID_MEMBER_ITEM_AVATAR_MARGIN_RIGHT, GRID_OPTION_ITEM_PADDING, KonvaGridContext
+  GRID_CELL_DELETE_ITEM_BUTTON_SIZE,
+  GRID_CELL_DELETE_ITEM_BUTTON_SIZE_OFFSET,
+  GRID_CELL_MEMBER_ITEM_PADDING_LEFT,
+  GRID_CELL_VALUE_PADDING,
+  GRID_MEMBER_ITEM_AVATAR_MARGIN_RIGHT,
+  GRID_OPTION_ITEM_PADDING,
+  KonvaGridContext,
 } from 'pc/components/konva_grid';
 import { KonvaGridViewContext } from 'pc/components/konva_grid/context';
 import { FC, useContext, useState } from 'react';
@@ -19,21 +24,8 @@ import { Avatar } from './avatar';
 const AddOutlinedPath = AddOutlined.toString();
 const CloseSmallOutlinedPath = CloseSmallOutlined.toString();
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
-export const CellMember: FC<ICellProps> = (props) => {
-  const {
-    x,
-    y,
-    recordId,
-    cellValue,
-    field,
-    rowHeight,
-    columnWidth,
-    renderData,
-    isActive,
-    editable,
-    onChange,
-    toggleEdit,
-  } = props;
+export const CellMember: FC<ICellProps> = props => {
+  const { x, y, recordId, cellValue, field, rowHeight, columnWidth, renderData, isActive, editable, onChange, toggleEdit } = props;
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
   const { setCellDown } = useContext(KonvaGridContext);
@@ -48,7 +40,7 @@ export const CellMember: FC<ICellProps> = (props) => {
     targetName: KONVA_DATASHEET_ID.GRID_CELL,
     fieldId,
     recordId,
-    mouseStyle: 'pointer'
+    mouseStyle: 'pointer',
   });
   const { renderContent } = renderData;
   const operatingEnable = isActive && editable;
@@ -65,18 +57,8 @@ export const CellMember: FC<ICellProps> = (props) => {
   }
 
   return (
-    <CellScrollContainer
-      x={x}
-      y={y}
-      columnWidth={columnWidth}
-      rowHeight={rowHeight}
-      fieldId={fieldId}
-      recordId={recordId}
-      renderData={renderData}
-    >
-      {
-        operatingEnable &&
-        (isMulti || !(renderContent as IRenderContentBase[])?.length) &&
+    <CellScrollContainer x={x} y={y} columnWidth={columnWidth} rowHeight={rowHeight} fieldId={fieldId} recordId={recordId} renderData={renderData}>
+      {operatingEnable && (isMulti || !(renderContent as IRenderContentBase[])?.length) && (
         <Icon
           name={name}
           x={GRID_CELL_VALUE_PADDING}
@@ -91,9 +73,8 @@ export const CellMember: FC<ICellProps> = (props) => {
           onClick={toggleEdit}
           onTap={toggleEdit}
         />
-      }
-      {
-        isActive &&
+      )}
+      {isActive &&
         renderContent != null &&
         (renderContent as IRenderContentBase[]).map((item, index) => {
           const { x, y, width, height, text, id, unitInfo } = item;
@@ -111,19 +92,8 @@ export const CellMember: FC<ICellProps> = (props) => {
             iconBg = getNextShadeColor(colors.defaultTag, 2);
           }
           return (
-            <Group
-              x={x}
-              y={y}
-              listening={isActive}
-              key={index}
-            >
-              <Rect
-                width={width}
-                height={height}
-                fill={itemBg}
-                cornerRadius={radius}
-                listening={false}
-              />
+            <Group x={x} y={y} listening={isActive} key={index}>
+              <Rect width={width} height={height} fill={itemBg} cornerRadius={radius} listening={false} />
               <Avatar
                 x={GRID_CELL_MEMBER_ITEM_PADDING_LEFT}
                 y={(height - avatarSize) / 2}
@@ -131,7 +101,7 @@ export const CellMember: FC<ICellProps> = (props) => {
                 title={text}
                 size={avatarSize}
                 src={avatar}
-                type={type === MemberType.Team ? AvatarType.Team : AvatarType.Member}
+                type={type === MemberType.Member ? AvatarType.Member : AvatarType.Team}
                 isDefaultIcon={false}
               />
               <Text
@@ -141,17 +111,9 @@ export const CellMember: FC<ICellProps> = (props) => {
                 text={unitTitleMap?.[unitId] || text}
                 fontSize={13}
               />
-              {
-                operatingEnable &&
+              {operatingEnable && (
                 <>
-                  <Rect
-                    x={iconX}
-                    width={24}
-                    height={height}
-                    fill={itemBg}
-                    cornerRadius={[0, radius, radius, 0]}
-                    listening={false}
-                  />
+                  <Rect x={iconX} width={24} height={height} fill={itemBg} cornerRadius={[0, radius, radius, 0]} listening={false} />
                   <Icon
                     name={name}
                     x={iconX}
@@ -167,7 +129,7 @@ export const CellMember: FC<ICellProps> = (props) => {
                     onMouseDown={e => {
                       setCloseIconDownId(id);
                     }}
-                    onMouseUp={(e) => {
+                    onMouseUp={e => {
                       if (closeIconDownId) {
                         deleteItem(index);
                       }
@@ -181,11 +143,10 @@ export const CellMember: FC<ICellProps> = (props) => {
                     }}
                   />
                 </>
-              }
+              )}
             </Group>
           );
-        })
-      }
+        })}
     </CellScrollContainer>
   );
 };

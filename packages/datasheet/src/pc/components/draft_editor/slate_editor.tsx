@@ -7,7 +7,9 @@ import { MemberOptionList } from 'pc/components/list';
 import { usePlatform } from 'pc/hooks/use_platform';
 import { useSelector } from 'react-redux';
 import styles from './styles/style.module.less';
+
 import { useMemo, useCallback, useRef, useEffect, useState, useContext, useImperativeHandle, forwardRef } from 'react';
+
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { Editor, Transforms, Range, createEditor, Descendant, Text, Node } from 'slate';
@@ -24,13 +26,14 @@ import { getValidSelection } from 'pc/components/slate_editor/helpers/utils';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 import { fixImeInputBug } from 'pc/components/slate_editor/slate_editor';
 
-const withLastSelection = editor => { // 失焦记录位置
+const withLastSelection = editor => {
+  // 失焦记录位置
   const { onChange } = editor;
   editor.onChange = (...params) => {
     // 记录最后一次selection值，确保编辑器失焦后能将新节点插入正确的位置，比如新加一个链接元素
     if (editor.selection) {
       // ref.current = editor.selection as unknown as Selection;
-      editor.lastSelection = editor.selection as unknown as Selection;
+      editor.lastSelection = (editor.selection as unknown) as Selection;
     }
     onChange(...params);
   };
@@ -38,33 +41,30 @@ const withLastSelection = editor => { // 失焦记录位置
 };
 
 const Portal = ({ children }) => {
-  return typeof document === 'object'
-    ? ReactDOM.createPortal(children, document.body)
-    : null;
+  return typeof document === 'object' ? ReactDOM.createPortal(children, document.body) : null;
 };
 
 export type IText = {
-  text: string
+  text: string;
 };
 
 export type IMentionElement = {
-  type: 'mention'
-  data: object
-  children: IText[]
+  type: 'mention';
+  data: object;
+  children: IText[];
 };
 
 export type ILinkElement = {
-  type: 'link'
+  type: 'link';
   data: {
-    href: string
-    text: string
-  }
-  children: IText[]
+    href: string;
+    text: string;
+  };
+  children: IText[];
 };
 
 const LINE_HEIGHT = 22;
-
-function calcContainerStyle(maxRow: number): React.CSSProperties {
+function calcContainerStyle(maxRow: number): React.CSSProperties{
   return {
     maxHeight: maxRow * LINE_HEIGHT + 'px',
     overflowY: 'auto',
@@ -72,10 +72,8 @@ function calcContainerStyle(maxRow: number): React.CSSProperties {
 }
 
 const SlateEditor = (props, ref) => {
-  const {
-    readOnly, placeHolder, submit, syncContent, noMention, maxRow,
-    initialValue, emojis, handleEmoji, onBlur, className
-  } = props;
+  const { readOnly, placeHolder, submit, syncContent, noMention, maxRow,
+    initialValue, emojis, handleEmoji, onBlur, className } = props;
   // blocks
   const membersListRef = useRef<HTMLDivElement | null>(null);
   const [value, setValue] = useState<Descendant[]>(() => {
@@ -85,7 +83,8 @@ const SlateEditor = (props, ref) => {
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   const { mobile } = usePlatform();
   const {
-    unitMap, datasheetId,
+    unitMap,
+    datasheetId,
     // focus: focusStatus, setFocus,
     replyUnitId,
   } = useContext(ActivityContext);
@@ -95,7 +94,7 @@ const SlateEditor = (props, ref) => {
     if (imeInputText.current && IS_FIREFOX) {
       const imeText = imeInputText.current;
       imeInputText.current = '';
-      const [match] = Editor.nodes(editor, { match: (n) => Text.isText(n) });
+      const [match] = Editor.nodes(editor, { match: n => Text.isText(n) });
       if (match) {
         const [node, path] = match;
         const lastLevel = path.pop();
@@ -125,7 +124,9 @@ const SlateEditor = (props, ref) => {
           const unit = find(values(unitMap), { userId });
           if (!unit) {
             DatasheetApi.fetchUserList(datasheetId, [userId]).then(res => {
-              const { data: { data: resData, success }} = res as any;
+              const {
+                data: { data: resData, success },
+              } = res as any;
               if (!resData?.length || !success) {
                 console.log(`用户 ${userId} 获取失败`);
               } else {
@@ -144,7 +145,7 @@ const SlateEditor = (props, ref) => {
   const [members, setMembers] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
-  const renderElement = useCallback(props => <Element {...props} />, []);
+  const renderElement = useCallback(props => <Element {...props}/>, []);
   const editor = useMemo(
     () => withLink(withMentions(withReact(withHistory(withLastSelection(createEditor() as ReactEditor))))),
     []
@@ -218,7 +219,7 @@ const SlateEditor = (props, ref) => {
     setMembers([]);
     setLoading(true);
     Api.loadOrSearch({ keyword })
-      .then((res) => {
+      .then(res => {
         setMembers(res.data?.data ?? []);
       })
       .finally(() => {
@@ -266,7 +267,7 @@ const SlateEditor = (props, ref) => {
         }
       }
     },
-    [visible, index, members, insertMention, editor, mobile, submit, clearContent]
+    [visible, index, members, insertMention, editor, mobile, submit, clearContent],
   );
 
   useEffect(() => {
@@ -338,20 +339,15 @@ const SlateEditor = (props, ref) => {
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   return (
-    <div className={styles.slateEditor}
-      style={{ ...calcContainerStyle(maxRow) }}>
-      <Slate
-        editor={editor}
-        value={value}
-        onChange={changeHandler}
-      >
+    <div className={styles.slateEditor} style={{ ...calcContainerStyle(maxRow) }}>
+      <Slate editor={editor} value={value} onChange={changeHandler}>
         <Editable
           readOnly={readOnly}
           renderElement={renderElement}
           onKeyDown={onKeyDown}
           onBlur={onBlur}
           className={classnames(styles.edit, className)}
-          placeholder={readOnly ? '' : (placeHolder || t(Strings.comment_editor_default_tip))}
+          placeholder={readOnly ? '' : placeHolder || t(Strings.comment_editor_default_tip)}
           onCompositionEnd={(e: React.CompositionEvent) => {
             const data = e.data;
             IS_FIREFOX && (imeInputText.current = data);
@@ -363,19 +359,19 @@ const SlateEditor = (props, ref) => {
             <div
               ref={membersListRef}
               className={styles.members}
-              data-cy='mentions-portal'
+              data-cy="mentions-portal"
             >
               {loading ? <div className={styles.loading}>
-                <Spin size='small' indicator={<LoadingOutlined />} />
+                <Spin size="small" indicator={<LoadingOutlined />} />
               </div> :
                 <>
                   <MemberOptionList
                     listData={members}
                     existValues={[]}
                     multiMode={false}
-                    onClickItem={(data) => {
+                    onClickItem={(data)=>{
                       const memberId = data && data[0];
-                      const member = members.find((item) => item.unitId === memberId);
+                      const member = members.find(item => item.unitId === memberId);
                       if (member) {
                         insertMention(editor, member);
                       }
@@ -397,6 +393,15 @@ const SlateEditor = (props, ref) => {
                           source: SelectUnitSource.Member,
                           onSubmit: values => {
                             const _member = values[0];
+                            if ('roleId' in _member) {
+                              insertMention(editor, {
+                                ..._member,
+                                isDeleted: false,
+                                type: 1,
+                                name: _member.roleName,
+                              });
+                              return;
+                            }
                             if (get(_member, 'teamId')) {
                               if ('teamName' in _member) {
                                 insertMention(editor, {
@@ -406,19 +411,20 @@ const SlateEditor = (props, ref) => {
                                   name: _member.teamName,
                                 });
                               }
-                            } else {
-                              if ('memberName' in _member) {
-                                insertMention(editor, {
-                                  ..._member,
-                                  isDeleted: false,
-                                  type: 3,
-                                  name: _member.originName || _member.memberName,
-                                });
-                              }
+                              return;
+                            }
+                            if ('memberName' in _member) {
+                              insertMention(editor, {
+                                ..._member,
+                                isDeleted: false,
+                                type: 3,
+                                name: _member.originName || _member.memberName,
+                              });
                             }
                           },
                           isSingleSelect: true,
-                          onClose: () => {}
+                          onClose: () => {},
+                          showTab: true,
                         });
                       }}
                       onMouseDown={e => {
@@ -430,7 +436,8 @@ const SlateEditor = (props, ref) => {
                   )}
                 </>
               }
-            </div>)}
+            </div>
+          )}
         </Portal>
       </Slate>
       {Boolean(emojis) && (
@@ -445,13 +452,14 @@ const SlateEditor = (props, ref) => {
               const title = getSocialWecomUnitName({
                 name: unit?.name,
                 isModified: unit?.isMemberNameModified,
-                spaceInfo
+                spaceInfo,
               });
               return title;
             });
             const namesShow = names.map((name, idx) => (
               <span key={idx}>
-                {name}{names.length - 1 !== idx && t(Strings.comma)}
+                {name}
+                {names.length - 1 !== idx && t(Strings.comma)}
               </span>
             ));
             return (
@@ -460,14 +468,12 @@ const SlateEditor = (props, ref) => {
                   <Emoji emoji={k === 'good' ? '+1' : 'ok_hand'} size={16} />
                 </span>
                 {names.length > 2 ? (
-                  <Tooltip
-                    title={namesShow}
-                  >
-                    <span className={styles.emojiCount}>
-                      +{names.length}
-                    </span>
+                  <Tooltip title={namesShow}>
+                    <span className={styles.emojiCount}>+{names.length}</span>
                   </Tooltip>
-                ) : namesShow}
+                ) : (
+                  namesShow
+                )}
               </div>
             );
           })}
@@ -532,7 +538,7 @@ const MentionElement = ({ attributes, children, element }) => {
         <MemberItem
           selected={selected && focused}
           unitInfo={element.data}
-          style={{ margin: 0 }} />
+          style={{ margin: 0 }}/>
       </span>
       {children}
     </span>
@@ -545,9 +551,10 @@ const LinkElement = ({ attributes, children, element }) => {
       {...attributes}
       className={styles.link}
     >
-      <a href={element.data.href} target='_blank' rel='noreferrer'>{element.data.raw}</a>
+      <a href={element.data.href} target='_blank' rel="noreferrer">{element.data.raw}</a>
       {children}
-    </span>);
+    </span>
+  );
 };
 
 export default forwardRef(SlateEditor);

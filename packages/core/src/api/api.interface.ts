@@ -1,5 +1,7 @@
 import { ConfigConstant } from 'config';
 import { TestFunction } from 'config/system_config.interface';
+import { IPageDataBase } from 'store/interface/common';
+import { MemberType } from 'types';
 
 // 创建通知
 export interface ICreateNotification {
@@ -238,3 +240,28 @@ export interface ISubscribeActiveEventResponse {
   endDate: string;
   startDate: string;
 }
+export type IGetRoleListResponse = IGetRoleListResponseItem[];
+
+export interface IGetRoleListResponseItem {
+  unitId: string;
+  roleId: string;
+  roleName: string;
+  memberCount: number;
+  position: number;
+}
+
+export interface IGetRoleMemberListResponseItem {
+  unitId: string;
+  unitName: string;
+  unitRefId: string;
+  unitType: MemberType;
+  memberCount?: number;
+  teams?: string;
+  avatar?: string;
+  isAdmin?: boolean;
+  isMainAdmin?: boolean;
+}
+
+export type IGetRoleMemberListResponse = IPageDataBase & {
+  records: IGetRoleMemberListResponseItem[];
+};

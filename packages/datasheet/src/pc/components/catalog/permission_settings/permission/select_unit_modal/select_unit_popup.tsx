@@ -12,57 +12,38 @@ interface ISelectPopupProps extends ISelectUnitLeftProps {
   onCancel(): void;
   onOk(): void;
   linkId?: string;
+  showTab?: boolean;
 }
 
 export const SelectUnitPopup: FC<ISelectPopupProps> = props => {
-
-  const {
-    isSingleSelect,
-    source,
-    disableList,
-    disableIdList,
-    units,
-    setUnits,
-    checkedList,
-    setCheckedList,
-    onCancel,
-    onOk,
-    linkId,
-  } = props;
+  const { isSingleSelect, source, disableList, disableIdList, units, setUnits, checkedList, setCheckedList, onCancel, onOk, linkId, showTab } = props;
 
   const formId = useSelector(state => state.pageParams.formId);
 
   const Footer = (
     <div className={styles.popupFooter}>
-      <Button
-        color="primary"
-        size="large"
-        onClick={onOk}
-        disabled={checkedList.length === 0}
-        block
-      >
+      <Button color="primary" size="large" onClick={onOk} disabled={checkedList.length === 0} block>
         {t(Strings.submit)}
       </Button>
 
       <div className={styles.inviteBtnWrapper}>
-        {
-          !formId && !linkId && <span className={styles.invite} onClick={() => { expandInviteModal(); }}>
-            <InviteIcon />{t(Strings.invite_member)}
+        {!formId && !linkId && (
+          <span
+            className={styles.invite}
+            onClick={() => {
+              expandInviteModal();
+            }}
+          >
+            <InviteIcon />
+            {t(Strings.invite_member)}
           </span>
-        }
+        )}
       </div>
     </div>
   );
 
   return (
-    <Popup
-      title={t(Strings.choose_a_member)}
-      className={styles.unitPopupWrapper}
-      visible
-      onClose={onCancel}
-      height={'90%'}
-      footer={Footer}
-    >
+    <Popup title={t(Strings.choose_a_member)} className={styles.unitPopupWrapper} visible onClose={onCancel} height={'90%'} footer={Footer}>
       <SelectUnitLeft
         isSingleSelect={isSingleSelect}
         source={source}
@@ -72,6 +53,7 @@ export const SelectUnitPopup: FC<ISelectPopupProps> = props => {
         disableIdList={disableIdList}
         units={units}
         setUnits={setUnits}
+        showTab={showTab}
       />
     </Popup>
   );

@@ -121,6 +121,18 @@ export const generateUserInfo = (
       isTeam: false,
     };
   }
+
+  if ('roleId' in item) {
+    return {
+      id: item.unitId,
+      avatar: '',
+      name: item.roleName,
+      info: t(Strings.display_person_count, {
+        count: item.memberCount,
+      }),
+      isTeam: true,
+    };
+  }
   return { id: '', avatar: '', name: '', info: '', isTeam: false };
 };
 

@@ -1,0 +1,125 @@
+@import "~pc/styles/lib_mixins.less";
+
+.leftWrap {
+  height: 100%;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  .addButton {
+    margin-top: 24px; 
+  }
+  .leftList {
+    margin-top: 24px; 
+    flex: 1;
+  }
+  .roleItem {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 10px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    .roleItemIcon {
+      fill: var(--textCommonTertiary);
+    }
+    .roleItemContent {
+      padding: 0 4px;
+      flex: 1;
+    }
+    &:hover {
+      background-color: var(--bgSelectedPrimaryHoverSolid);
+    }
+    &:active {
+      background-color: var(--bgSelectedPrimaryActiveSolid);
+    }
+  }
+  .roleItemSelected {
+    background-color: var(--bgSelectedPrimaryDefault);
+    .roleItemIcon {
+      fill: var(--textSelectedPrimary);
+    }
+    .roleItemContent {
+      color: var(--textSelectedPrimary);
+    }
+  }
+  .roleListSearchWrap {
+    flex: 1;
+    padding-top: 16px;
+  }
+}
+
+.roleItemMenu {
+  width: 240px;
+  background: var(--bgCommonHighest);
+  border-radius: 8px;
+  box-shadow: var(--shadowCommonHighest);
+}
+
+.rightWrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 24px;
+  .roleTableWrap {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 0;
+    padding-top: 24px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    :global {
+      .ant-table-wrapper {
+        flex: 1;
+        border: 1px solid var(--borderCommon);
+        overflow: hidden;
+        .ant-table {
+          .antdTable();
+          .ant-table-body {
+            overflow-y: hidden !important;
+            .light-scroll-bar();
+            &:hover {
+              overflow-y: auto !important; // 兼容火狐，chrome 中第二个 overflow 可以覆盖第一个 overflow
+              overflow-y: overlay !important;
+            }
+          }
+        }
+        .ant-spin-nested-loading,
+        .ant-spin-container,
+        .ant-table,
+        .ant-table-container,
+        .ant-table-content,
+        table {
+          height: 100%;
+        }
+        .ant-table-row td {
+          height: 48px !important;
+        }
+      }
+    }
+  }
+}
+
+.unitItem {
+  display: flex;
+  align-items: center;
+  background: var(--black_200);
+  border-radius: 16px;
+  padding: 2px;
+  overflow: hidden;
+  .unitName {
+    padding: 0 6px 0 4px;
+  }
+}
+
+.unitItemTeam {
+  border-radius: 4px;
+}
+
+.unitTag {
+  min-width: fit-content;
+  margin-left: 4px;
+  padding: 0 8px;
+  border: 1px solid var(--borderOnbrandDefault);
+  border-radius: 4px;
+}

@@ -1,8 +1,9 @@
+// TODO 重构通讯录
 import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
 import { FC, useState } from 'react';
 import * as React from 'react';
 import { BaseModal } from 'pc/components/common';
-import { IUnit, UnitItem, Strings, t, Selectors } from '@vikadata/core';
+import { IUnit, Strings, t, Selectors, UnitItem } from '@vikadata/core';
 import { Button, ThemeProvider, TextButton } from '@vikadata/components';
 import styles from './style.module.less';
 import { stopPropagation } from 'pc/utils';
@@ -40,6 +41,7 @@ export interface ISelectUnitModalProps extends Omit<IModalProps, 'onCancel'> {
   // 企微管理面板不在空间内，需要单独传 spaceId
   spaceId?: string;
   allowEmtpyCheckedList?: boolean; // 部分影响允许清空选择项
+  showTab?: boolean; // show role and org tab
 }
 
 export const SelectUnitModal: FC<ISelectUnitModalProps> = props => {
@@ -54,6 +56,7 @@ export const SelectUnitModal: FC<ISelectUnitModalProps> = props => {
     hiddenInviteBtn,
     spaceId,
     allowEmtpyCheckedList,
+    showTab,
     ...rest
   } = props;
 
@@ -141,6 +144,7 @@ export const SelectUnitModal: FC<ISelectUnitModalProps> = props => {
                 units={units}
                 setUnits={setUnits}
                 spaceInfo={spaceInfo}
+                showTab={showTab}
               />
               <SelectUnitRight source={source} checkedList={checkedList} cancelCheck={cancelCheck} spaceInfo={spaceInfo} />
             </div>

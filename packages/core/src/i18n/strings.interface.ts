@@ -2588,6 +2588,7 @@ export interface StringsInterface {
     mauritius: String;
     max_admin_nums: String;
     max_api_call: String;
+    max_audit_query_days: String;
     max_calendar_views_in_space: String;
     max_capacity_size_in_bytes: String;
     max_consumption: String;
@@ -2595,6 +2596,7 @@ export interface StringsInterface {
     max_gallery_views_in_space: String;
     max_gantt_views_in_space: String;
     max_kanban_views_in_space: String;
+    max_record_num_per_dst: String;
     max_records: String;
     max_remain_record_activity_days: String;
     max_remain_timemachine_days: String;
@@ -2734,7 +2736,9 @@ export interface StringsInterface {
     move_favorite_node_fail: String;
     move_node_modal_content: String;
     move_to: String;
+    move_to_error_equal_parent: String;
     move_to_modal_title: String;
+    move_to_success: String;
     mozambique: String;
     multilingual_mail: String;
     must_one_date: String;
@@ -3243,6 +3247,7 @@ export interface StringsInterface {
     player_step_ui_config_16: String;
     player_step_ui_config_160: String;
     player_step_ui_config_161: String;
+    player_step_ui_config_162: String;
     player_step_ui_config_17: String;
     player_step_ui_config_18: String;
     player_step_ui_config_19: String;
@@ -3794,6 +3799,7 @@ export interface StringsInterface {
     role_member_table_empty: String;
     role_member_table_header_name: String;
     role_member_table_header_team: String;
+    role_name_input_placeholder: String;
     role_permission_manage_integration: String;
     role_permission_manage_main_admin: String;
     role_permission_manage_member: String;
@@ -3912,6 +3918,7 @@ export interface StringsInterface {
     section6_title: String;
     security_address_list_isolation: String;
     security_address_list_isolation_describe: String;
+    security_address_list_isolation_description: String;
     security_advanced_tip: String;
     security_disabled_apply_join_space: String;
     security_disabled_apply_join_space_describle: String;
@@ -3946,18 +3953,23 @@ export interface StringsInterface {
     security_setting_address_list_isolation: String;
     security_setting_apply_join_space: String;
     security_setting_apply_join_space_describle: String;
+    security_setting_apply_join_space_description: String;
     security_setting_apply_join_space_title: String;
     security_setting_catalog_management: String;
     security_setting_catalog_management_describle: String;
+    security_setting_catalog_management_description: String;
     security_setting_catalog_management_title: String;
     security_setting_copy_cell_data: String;
     security_setting_copy_cell_data_describle: String;
+    security_setting_copy_cell_data_description: String;
     security_setting_copy_cell_data_title: String;
     security_setting_download_file: String;
     security_setting_download_file_describle: String;
+    security_setting_download_file_description: String;
     security_setting_download_file_title: String;
     security_setting_export: String;
     security_setting_export_data_describle: String;
+    security_setting_export_data_description: String;
     security_setting_export_data_editable: String;
     security_setting_export_data_manageable: String;
     security_setting_export_data_read_only: String;
@@ -3966,17 +3978,21 @@ export interface StringsInterface {
     security_setting_export_data_updatable: String;
     security_setting_invite_member: String;
     security_setting_invite_member_describle: String;
+    security_setting_invite_member_description: String;
     security_setting_invite_member_title: String;
     security_setting_mobile: String;
     security_setting_share: String;
     security_setting_share_describle: String;
+    security_setting_share_description: String;
     security_setting_share_title: String;
     security_show_mobile: String;
     security_show_mobile_describle: String;
+    security_show_mobile_description: String;
     security_show_mobile_modal_describle: String;
     security_show_mobile_modal_title: String;
     security_show_watermark: String;
     security_show_watermark_describle: String;
+    security_show_watermark_description: String;
     security_show_watermark_modal_describle: String;
     security_show_watermark_modal_title: String;
     see_more: String;
@@ -5149,18 +5165,18 @@ export interface StringsInterface {
 
 export interface String {
 
-    zh_CN?: string;
-    en_US?: string;
-    zh_HK?: string;
-    终端?: 终端;
+    zh_CN?:         string;
+    en_US?:         string;
+    zh_HK?:         string;
+    终端?:            终端;
     notifications?: Notifications;
-    废弃时间?: number;
+    废弃时间?:          number;
 }
 
 export interface Notifications {
-    'social_templates copy': string[];
+    "social_templates copy": string[];
 }
 
 export enum 终端 {
-    App = 'APP',
+    App = "APP",
 }

@@ -50,6 +50,11 @@ export const PermissionCard: FC<IPermissionCardProps> = ({ defaultChecked, check
           value: 'MANAGE_MEMBER',
           disabled: !spaceInfo || (isSocialPlatformEnabled(spaceInfo) && !isSocialDingTalk(spaceInfo) && !isSocialWecom(spaceInfo)),
         },
+        {
+          name: t(Strings.role_permission_manage_role),
+          value: 'MANAGE_ROLE',
+          disabled: !spaceInfo || (isSocialPlatformEnabled(spaceInfo) && !isSocialDingTalk(spaceInfo) && !isSocialWecom(spaceInfo)),
+        },
       ],
     },
     {
@@ -85,42 +90,33 @@ export const PermissionCard: FC<IPermissionCardProps> = ({ defaultChecked, check
 
   return (
     <div className={styles.cardWrap}>
-      {
-        checkData.map(item => (
-          <div className={styles.permissionCard} key={item.key}>
-            <div className={styles.title}>
-              <span>{item.title}</span>
-              <Tooltip
-                title={item.desc}
-                placement="top"
-                trigger="click"
-                showTipAnyway
-              >
-                <span>
-                  <InfoIcon />
-                </span>
-              </Tooltip>
-            </div>
-            <div className={styles.checkboxWrap}>
-              {
-                item.checkList.map(item => (
-                  <div className={styles.checkboxItem} key={item.value}>
-                    <Checkbox
-                      onChange={e => onCheckChange(e.target.value, e.target.checked)}
-                      value={item.value}
-                      defaultChecked={defaultChecked ? defaultChecked.includes(item.value) : undefined}
-                      checked={checked ? checked.includes(item.value) : undefined}
-                      disabled={Boolean(inRead || item.disabled)}
-                    >
-                      {item.name.toString()}
-                    </Checkbox>
-                  </div>
-                ))
-              }
-            </div>
+      {checkData.map(item => (
+        <div className={styles.permissionCard} key={item.key}>
+          <div className={styles.title}>
+            <span>{item.title}</span>
+            <Tooltip title={item.desc} placement="top" trigger="click" showTipAnyway>
+              <span>
+                <InfoIcon />
+              </span>
+            </Tooltip>
           </div>
-        ))
-      }
+          <div className={styles.checkboxWrap}>
+            {item.checkList.map(item => (
+              <div className={styles.checkboxItem} key={item.value}>
+                <Checkbox
+                  onChange={e => onCheckChange(e.target.value, e.target.checked)}
+                  value={item.value}
+                  defaultChecked={defaultChecked ? defaultChecked.includes(item.value) : undefined}
+                  checked={checked ? checked.includes(item.value) : undefined}
+                  disabled={Boolean(inRead || item.disabled)}
+                >
+                  {item.name.toString()}
+                </Checkbox>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

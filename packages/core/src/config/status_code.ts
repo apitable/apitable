@@ -52,7 +52,7 @@ export const FEISHU_ACCOUNT_NOT_BOUND = 1110;
 
 export const WECOM_NOT_BIND_SPACE = 1106;
 
-export const DINGTALK_NOT_BIND_SPACE = 1106; // 企业未绑定空间 
+export const DINGTALK_NOT_BIND_SPACE = 1106; // 企业未绑定空间
 export const DINGTALK_TENANT_NOT_EXIST = 1107; // 租户不存在
 export const DINGTALK_USER_NOT_EXIST = 1109; // 租户用户未授权
 export const DINGTALK_USER_CONTACT_SYNCING = 1131; // 通讯录正在同步中
@@ -71,6 +71,8 @@ export const WECOM_NOT_ADMIN = 1113; // 不是管理员
 export const SPACE_CAPACITY_OVER_LIMIT = 4008; // 空间容量超过限制
 
 export const FRONT_VERSION_ERROR = 3005; //前端版本不匹配
+
+export const DELETE_ROLE_EXIST_MEMBER = 528; // Delete the role, but there are members in the role
 
 export enum SmsErrCode {
   GetErr = 230,

@@ -51,7 +51,7 @@ export type IComputedFieldFormattingProperty = IDateTimeFieldPropertyFormat | IN
 
 export enum RollUpFuncType {
   VALUES = 'VALUES', // 原样展示，汇总数组
-  
+
   // 走 formula 计算，存在 expression
   AVERAGE = 'AVERAGE',
   COUNT = 'COUNT',
@@ -68,7 +68,7 @@ export enum RollUpFuncType {
   // // 会转换成 string
   CONCATENATE = 'CONCATENATE',
   ARRAYJOIN = 'ARRAYJOIN',
-  // // 还是 array 
+  // // 还是 array
   ARRAYUNIQUE = 'ARRAYUNIQUE',
   ARRAYCOMPACT = 'ARRAYCOMPACT',
 }
@@ -107,6 +107,7 @@ export interface IMemberProperty {
 export enum MemberType {
   Team = 1,
   Member = 3,
+  Role = 4,
 }
 
 export type IUnitIds = string[];
@@ -202,11 +203,7 @@ export interface IMentionSegment extends IBaseSegment {
   mentionNotify: boolean;
 }
 
-export type ISegment =
-  | ITextSegment
-  | IMentionSegment
-  | IHyperlinkSegment
-  | IEmailSegment;
+export type ISegment = ITextSegment | IMentionSegment | IHyperlinkSegment | IEmailSegment;
 
 export interface IStandardValue {
   sourceType: FieldType;
@@ -474,7 +471,7 @@ export interface ILinkField extends IBaseField {
 }
 
 export enum LinkFieldSet {
-  Add = 'add'
+  Add = 'add',
 }
 
 export interface IAttachmentValue {
@@ -531,31 +528,31 @@ export interface ISingleTextField extends IBaseField {
 }
 
 export type IField =
-  INotSupportField |
-  IDeniedField |
-  IAttacheField |
-  IDateTimeField |
-  ITextField |
-  INumberField |
-  IMultiSelectField |
-  ISingleSelectField |
-  ILinkField |
-  IURLField |
-  IEmailField |
-  IPhoneField |
-  ICheckboxField |
-  IRatingField |
-  IMemberField |
-  ILookUpField |
-  IFormulaField |
-  ICurrencyField |
-  IPercentField |
-  ISingleTextField |
-  IAutoNumberField |
-  ICreatedTimeField |
-  ILastModifiedTimeField |
-  ICreatedByField |
-  ILastModifiedByField;
+  | INotSupportField
+  | IDeniedField
+  | IAttacheField
+  | IDateTimeField
+  | ITextField
+  | INumberField
+  | IMultiSelectField
+  | ISingleSelectField
+  | ILinkField
+  | IURLField
+  | IEmailField
+  | IPhoneField
+  | ICheckboxField
+  | IRatingField
+  | IMemberField
+  | ILookUpField
+  | IFormulaField
+  | ICurrencyField
+  | IPercentField
+  | ISingleTextField
+  | IAutoNumberField
+  | ICreatedTimeField
+  | ILastModifiedTimeField
+  | ICreatedByField
+  | ILastModifiedByField;
 
 export enum FieldType {
   NotSupport = 0,

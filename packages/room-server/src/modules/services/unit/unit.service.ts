@@ -115,6 +115,7 @@ export class UnitService {
   private getMemberRefIdMapFromUnities(unitEntities: UnitEntity[]): IUnitMemberRefIdMap {
     const memberIds = [];
     const teamIds = [];
+    const roleIds = [];
     unitEntities.forEach(unit => {
       if (unit.unitType === MemberType.Member) {
         memberIds.push(unit.unitRefId);
@@ -122,8 +123,11 @@ export class UnitService {
       if (unit.unitType === MemberType.Team) {
         teamIds.push(unit.unitRefId);
       }
+      if (unit.unitType === MemberType.Role) {
+        roleIds.push(unit.unitRefId);
+      }
     });
-    return { [MemberType.Member]: memberIds, [MemberType.Team]: teamIds };
+    return { [MemberType.Member]: memberIds, [MemberType.Team]: teamIds, [MemberType.Role]: roleIds };
   }
 
   async getCountBySpaceIdAndId(unitId: string, spaceId: string): Promise<number> {
@@ -194,7 +198,7 @@ export class UnitService {
         // 这里是uuid
         userId: user.uuid,
         unitId: member?.unitId,
-        uuid: user.uuid
+        uuid: user.uuid,
       });
     });
     return userMap;
