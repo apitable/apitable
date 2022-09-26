@@ -13387,6 +13387,9 @@
             "en_US": "For more \"Space Management\" settings, please access the web app on a computer",
             "zh_HK": "更多「空間站管理」的功能請前往電腦網頁端操作"
         },
+        "mobile_usage_over_limit_tip": {
+            "zh_CN": "您正在使用高级功能"
+        },
         "modal_content_confirm_revoke_logout": {
             "zh_CN": "确认要恢复账号吗？",
             "en_US": "Confirm you want to recovery your account?",

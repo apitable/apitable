@@ -2685,6 +2685,7 @@ window.vika_i18n =
   "mobile_show_allow": "Show phone numbers",
   "mobile_show_configuration_desc": "When on, the phone book will show the phone numbers of all members",
   "mobile_space_list_tip": "For more \"Space Management\" settings, please access the web app on a computer",
+  "mobile_usage_over_limit_tip": "您正在使用高级功能",
   "modal_content_confirm_revoke_logout": "Confirm you want to recovery your account?",
   "modal_content_policy": "Thank you for using vikadata's services. The following terms will help you understand vikadata's user and privacy policies and the rights you have with respect to them.\nYou can access the full content via ${content}.",
   "modal_normal_err_text": "Message error, the transmission failed.",

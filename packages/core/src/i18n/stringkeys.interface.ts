@@ -2692,6 +2692,7 @@ export type StringKeysMapType = {
   'mobile_show_allow': 'mobile_show_allow',
   'mobile_show_configuration_desc': 'mobile_show_configuration_desc',
   'mobile_space_list_tip': 'mobile_space_list_tip',
+  'mobile_usage_over_limit_tip': 'mobile_usage_over_limit_tip',
   'modal_content_confirm_revoke_logout': 'modal_content_confirm_revoke_logout',
   'modal_content_policy': 'modal_content_policy',
   'modal_normal_err_text': 'modal_normal_err_text',

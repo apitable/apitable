@@ -1315,6 +1315,7 @@ export interface StringsInterface {
     exchange: String;
     exchange_code_times_tip: String;
     exclusive_consultant: String;
+    exist_experience: String;
     exits_space: String;
     expand: String;
     expand_activity: String;
@@ -1332,6 +1333,7 @@ export interface StringsInterface {
     expand_record_vision_setting_side: String;
     expand_rest_records_by_count: String;
     expand_subgroup: String;
+    experience_test_function: String;
     expiration: String;
     EXPIRATION_NO_BILLING_PERIOD: String;
     expiration_time: String;
@@ -2691,6 +2693,7 @@ export interface StringsInterface {
     mobile_show_allow: String;
     mobile_show_configuration_desc: String;
     mobile_space_list_tip: String;
+    mobile_usage_over_limit_tip: String;
     modal_content_confirm_revoke_logout: String;
     modal_content_policy: String;
     modal_normal_err_text: String;
@@ -3374,6 +3377,7 @@ export interface StringsInterface {
     preview_revision: String;
     preview_see_more: String;
     preview_the_image_not_support_yet: String;
+    preview_time_machine: String;
     preview_tip_contact_main_admin: String;
     preview_widget: String;
     previous_month: String;
