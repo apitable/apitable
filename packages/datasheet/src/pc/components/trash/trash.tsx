@@ -3,8 +3,11 @@ import { Api, IReduxState, Navigation, Settings, StoreActions, Strings, t } from
 import classnames from 'classnames';
 import { last } from 'lodash';
 import Image from 'next/image';
+import { triggerUsageAlert } from 'pc/common/billing';
+import { SubscribeUsageTipType } from 'pc/common/billing/subscribe_usage_check';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 import { Router } from 'pc/components/route_manager/router';
+import { SubscribeGrade } from 'pc/components/subscribe_system/subscribe_label';
 import { useRequest } from 'pc/hooks';
 import { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -38,6 +41,7 @@ const Trash: FC = () => {
   const spaceName = useSelector((state: IReduxState) => state.user.info?.spaceName);
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
+  const product = useSelector((state: IReduxState) => state.billing.subscription?.product);
   const maxRemainTrashDays = useSelector((state: IReduxState) => state.billing.subscription?.maxRemainTrashDays || 0);
   const [trashList, setTrashList] = useState<ITrashItem[]>([]);
   const dispatch = useDispatch();
@@ -104,6 +108,19 @@ const Trash: FC = () => {
       onClick: recoverHandler,
     },
   ];
+
+  const _loadMore = () => {
+    if (!noMore) {
+      loadMore();
+      return;
+    }
+    triggerUsageAlert(
+      'maxRemainTrashDays',
+      // 这里 maxRemainTrashDays 取得为 billing 里的值，其实就是允许的最大值，所以为了触发弹窗，需要 +1
+      { usage: maxRemainTrashDays + 1, alwaysAlert: true },
+      SubscribeUsageTipType.Alert,
+    );
+  };
 
   return (
     <div className={styles.trashWrapper}>
@@ -180,17 +197,23 @@ const Trash: FC = () => {
                 );
               })}
               <div className={styles.bottom}>
-                {noMore ? (
-                  <span className={styles.end}>{t(Strings.end)}</span>
-                ) : moreLoading ? (
-                  <Button loading variant='jelly'>
-                    {t(Strings.loading)}
-                  </Button>
-                ) : (
-                  <TextButton onClick={loadMore} color='primary'>
-                    {t(Strings.click_load_more)}
-                  </TextButton>
-                )}
+                {
+                  noMore && <span className={styles.end}>{t(Strings.end)}</span>
+                }
+                {
+                  (product !== SubscribeGrade.Enterprise || (product === SubscribeGrade.Enterprise && !noMore)) && <div style={{ marginTop: 8 }}>
+                    {
+                      moreLoading ?
+                        <Button loading variant='jelly'>
+                          {t(Strings.loading)}
+                        </Button>
+                        : <TextButton onClick={_loadMore} color='primary'>
+                          {t(Strings.click_load_more)}
+                        </TextButton>
+
+                    }
+                  </div>
+                }
               </div>
             </div>
           ) : loading || moreLoading ? (
@@ -203,6 +226,9 @@ const Trash: FC = () => {
             <div className={styles.empty}>
               <Image src={EmptyPng} alt='empty' width={320} height={240} />
               <div className={styles.tip}>{t(Strings.empty_trash, { day: maxRemainTrashDays })}</div>
+              <TextButton onClick={_loadMore} color='primary' style={{ marginTop: 8 }}>
+                {t(Strings.click_load_more)}
+              </TextButton>
             </div>
           )}
         </div>

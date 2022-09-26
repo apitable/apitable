@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Emoji } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { goToUpgrade } from 'pc/components/subscribe_system';
+import { isSaaSApp } from 'pc/components/subscribe_system/usage_warn_modal/utils';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import styles from './styles.module.less';
@@ -56,14 +57,16 @@ const UsageWarnModalInner: React.FC<IUsageWarnModalParams> = ({
           </span>
           <span style={{ position: 'relative', left: 3 }}>{t(Strings.upgrade_now)}</span>
         </Button>
-        <TextButton
-          color='default'
-          className={styles.checkMorePrivileges}
-          onClick={() => window.open('/pricing', '_blank', 'noopener,noreferrer')}
-          block
-        >
-          {t(Strings.check_more_privileges)}
-        </TextButton>
+        {
+          isSaaSApp() && <TextButton
+            color='default'
+            className={styles.checkMorePrivileges}
+            onClick={() => window.open('/pricing', '_blank', 'noopener,noreferrer')}
+            block
+          >
+            {t(Strings.check_more_privileges)}
+          </TextButton>
+        }
       </div>
       <div className={styles.pageRight}>
         <div className={styles.qrCodeImageContentBorder}>
@@ -104,3 +107,4 @@ export const usageWarnModal = (params: IUsageWarnModalParams) => {
     container,
   );
 };
+
