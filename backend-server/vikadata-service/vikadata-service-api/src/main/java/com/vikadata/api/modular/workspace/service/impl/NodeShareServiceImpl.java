@@ -133,6 +133,11 @@ public class NodeShareServiceImpl implements INodeShareService {
             // 开启分享者
             String spaceId = nodeMapper.selectSpaceIdByNodeIdIncludeDeleted(nodeId);
             MemberDto dto = memberMapper.selectDtoByUserIdAndSpaceId(setting.getUpdatedBy(), spaceId);
+            // compatible member no longer in space station
+            if (dto == null) {
+                settingInfoVO.setOperatorHasPermission(false);
+                return settingInfoVO;
+            }
             settingInfoVO.setShareOpenOperator(dto.getMemberName());
             // 获取分享者的节点权限
             ControlRoleDict roleDict = controlTemplate.fetchNodeRole(dto.getId(), Collections.singletonList(nodeId));
@@ -385,6 +390,5 @@ public class NodeShareServiceImpl implements INodeShareService {
         String nodeName = nodeMapper.selectNodeNameByNodeId(nodeId);
         return Optional.ofNullable(nodeName);
     }
-
 
 }
