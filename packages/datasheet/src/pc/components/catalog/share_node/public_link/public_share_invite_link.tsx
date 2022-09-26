@@ -234,7 +234,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
             <div className={styles.inviteMore}>
               <Typography className={styles.inviteMoreTitle} variant='body3'>{t(Strings.more_invite_ways)}：</Typography>
               <Tooltip title={t(Strings.default_link_join_tip)} placement="top" overlayStyle={{ width: 190 }}>
-                <Typography className={styles.inviteMoreMethod} variant='body3' onClick={handleCopyInviteLink}>
+                <Typography className={styles.inviteMoreMethod} variant='body3' onMouseDown={handleCopyInviteLink}>
                   <ColumnUrlOutlined />
                   <span>{t(Strings.invite_via_link)}</span>
                 </Typography>

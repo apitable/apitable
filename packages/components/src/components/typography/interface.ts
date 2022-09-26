@@ -36,6 +36,7 @@ export interface ITypographyProps {
   tooltipsZIndex?: number;
 
   onClick?: (e: React.MouseEvent) => void;
+  onMouseDown?: (e: React.MouseEvent) => void;
 }
 
 export interface IEllipsis {
