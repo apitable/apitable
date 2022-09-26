@@ -1,23 +1,23 @@
+import { useThemeColors } from '@vikadata/components';
 import { Field, ILinkField, LinkField, RowHeightLevel, Selectors, StatusCode, Strings, t } from '@vikadata/core';
+import { AddOutlined } from '@vikadata/icons';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { ButtonPlus, Message, Tooltip } from 'pc/components/common';
 import { expandRecord } from 'pc/components/expand_record';
-import { useThemeColors } from '@vikadata/components';
+import { useGetViewByIdWithDefault } from 'pc/hooks';
+import { store } from 'pc/store';
 import { stopPropagation } from 'pc/utils';
 import { getDatasheetOrLoad } from 'pc/utils/get_datasheet_or_load';
-import { useState } from 'react';
+import { loadRecords } from 'pc/utils/load_records';
 import * as React from 'react';
+import { useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import IconClose from 'static/icon/datasheet/datasheet_icon_exit.svg';
 import styles from '../cell_options/style.module.less';
-import optionalStyle from '../optional_cell_container/style.module.less';
 import { ICellComponentProps } from '../cell_value/interface';
 import { OptionalCellContainer } from '../optional_cell_container/optional_cell_container';
-import { store } from 'pc/store';
-import { loadRecords } from 'pc/utils/load_records';
-import { AddOutlined } from '@vikadata/icons';
-import { useGetViewByIdWithDefault } from 'pc/hooks';
+import optionalStyle from '../optional_cell_container/style.module.less';
 
 const NO_DATA = Symbol('NO_DATA');
 const ERROR_DATA = Symbol('ERROR_DATA');
@@ -36,7 +36,7 @@ interface ICellLink extends ICellComponentProps {
 
 export const CellLink: React.FC<ICellLink> = props => {
   const {
-    onChange, isActive, cellValue, field: propsField, toggleEdit, className, readonly, keyPrefix, rowHeightLevel, datasheetId,
+    onChange, isActive, cellValue, field: propsField, toggleEdit, className, readonly, keyPrefix, rowHeightLevel,
   } = props;
   const colors = useThemeColors();
   // 编辑关联字段，需要两张表都有编辑权限。
@@ -57,7 +57,7 @@ export const CellLink: React.FC<ICellLink> = props => {
 
     const emptyRecords: string[] = [];
     if (linkRecordIds && field) {
-      const datasheet = getDatasheetOrLoad(state, field.property.foreignDatasheetId, datasheetId, true);
+      const datasheet = getDatasheetOrLoad(state, field.property.foreignDatasheetId);
       const isLoading = Selectors.getDatasheetLoading(state, field.property.foreignDatasheetId);
       const datasheetClient = Selectors.getDatasheetClient(state, field.property.foreignDatasheetId);
       const snapshot = datasheet && datasheet.snapshot;
@@ -155,6 +155,7 @@ export const CellLink: React.FC<ICellLink> = props => {
         {
           linkRecordIds!.map((id, index) => {
             const text = cellStringList[index];
+            console.log({ text });
             return (
               <div
                 className={classNames(styles.tabItem, styles.link, 'link')}
@@ -210,12 +211,12 @@ export const CellLink: React.FC<ICellLink> = props => {
         viewRowHeight={rowHeightLevel}
       >
         {(isActive && canAddLinkRecord) && !readonly &&
-        <ButtonPlus.Icon
-          className={optionalStyle.iconAdd}
-          onClick={toggleEdit}
-          size={'x-small'}
-          icon={<AddOutlined color={colors.fourthLevelText} />}
-        />
+          <ButtonPlus.Icon
+            className={optionalStyle.iconAdd}
+            onClick={toggleEdit}
+            size={'x-small'}
+            icon={<AddOutlined color={colors.fourthLevelText} />}
+          />
         }
         {renderText(linkRecordIds)}
 

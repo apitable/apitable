@@ -23,7 +23,12 @@ export class SubscribeUsageCheck {
       if (subscription[functionName] === -1) {
         return true;
       }
-      return usage < subscription[functionName];
+
+      if (subscription[functionName] === 0) {
+        return false;
+      }
+
+      return usage <= subscription[functionName];
     }
 
     return Boolean(subscription[functionName]);

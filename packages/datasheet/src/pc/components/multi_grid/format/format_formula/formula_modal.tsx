@@ -38,6 +38,7 @@ const FORMULA_COLORANT_ELEMENT = 'FORMULA_COLORANT_ELEMENT';
 interface IFormulaModal {
   field: IField;
   expression: string;
+  datasheetId: string;
   onClose?: () => void;
   onSave?: (exp: string) => void;
 }
@@ -65,12 +66,13 @@ const FunctionsArray = Array.from(Functions)
   .filter(item => item.name !== 'ISERROR');
 export const FormulaModal: React.FC<IFormulaModal> = props => {
   const colors = useThemeColors();
-  const { field, expression: initExpression, onClose, onSave } = props;
-  const fieldMap = useSelector(state => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
+  const { field, expression: initExpression, onClose, onSave, datasheetId } = props;
+  const fieldMap = useSelector(state => Selectors.getFieldMap(state, datasheetId))!;
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
   const formulaInputEleRef = useRef<HTMLElement>();
   const formulaColorantEleRef = useRef<HTMLElement>();
-  const columns = (useSelector(state => Selectors.getCurrentView(state)!.columns)! as IViewColumn[]).filter(column => column.fieldId !== field.id); // 公式字段不允许选择自己。
+  const _columns = useSelector(state => Selectors.getCurrentView(state, datasheetId)!.columns)! as IViewColumn[];
+  const columns = _columns.filter(column => column.fieldId !== field.id); // 公式字段不允许选择自己。
   const [expError, setExpError] = useState<string>('');
   const [tokens, setTokens] = useState<Token[]>();
   const [activeToken, setActiveToken] = useState<Token>();
@@ -92,7 +94,7 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
         convertedFieldMap[fieldMap[key].name] = fieldMap[key];
       }
       lexer.matches.length &&
-        new FormulaExprParser(lexer, { field: { ...field, id: field.name }, fieldMap: convertedFieldMap, state: store.getState() }).parse();
+      new FormulaExprParser(lexer, { field: { ...field, id: field.name }, fieldMap: convertedFieldMap, state: store.getState() }).parse();
       setExpError('');
     } catch (e) {
       setExpError((e as any).message);
@@ -341,8 +343,8 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
       <div
         id={FORMULA_TEXTAREA_ELEMENT}
         spellCheck={false}
-        autoCorrect="off"
-        autoCapitalize="off"
+        autoCorrect='off'
+        autoCapitalize='off'
         className={'code ' + styles.formulaInput}
         placeholder={t(Strings.input_formula)}
         contentEditable
@@ -423,14 +425,14 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
       </div>
       <div className={styles.btnGroup}>
         <div className={styles.tips}>
-          <a href={t(Strings.formula_learn_more_url)} target="_blank" rel="noreferrer">
+          <a href={t(Strings.formula_learn_more_url)} target='_blank' rel='noreferrer'>
             {t(Strings.formula_learn_more)}
           </a>
         </div>
-        <TextButton style={{ color: colors.thirdLevelText }} onClick={onClose} size="small">
+        <TextButton style={{ color: colors.thirdLevelText }} onClick={onClose} size='small'>
           {t(Strings.cancel)}
         </TextButton>
-        <Button onClick={onConfirm} size="small" disabled={Boolean(expError)} color="primary">
+        <Button onClick={onConfirm} size='small' disabled={Boolean(expError)} color='primary'>
           {t(Strings.confirm)}
         </Button>
       </div>

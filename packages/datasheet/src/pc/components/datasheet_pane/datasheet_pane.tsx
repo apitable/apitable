@@ -1,11 +1,14 @@
-import { Events, Player, PREVIEW_DATASHEET_ID, ResourceType, Selectors, StatusCode, StoreActions, SystemConfig } from '@vikadata/core';
+import { Skeleton } from '@vikadata/components';
+import { Events, Player, PREVIEW_DATASHEET_ID, ResourceType, Selectors, StatusCode, StoreActions, Strings, SystemConfig, t } from '@vikadata/core';
 import { useToggle } from 'ahooks';
 import classNames from 'classnames';
+import dynamic from 'next/dynamic';
 import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
 import { ApiPanel } from 'pc/components/api_panel';
 import { VikaSplitPanel } from 'pc/components/common';
 import { TimeMachine } from 'pc/components/time_machine';
 import { useMountWidgetPanelShortKeys } from 'pc/components/widget/hooks';
+import { SideBarClickType, SideBarType, useSideBar } from 'pc/context';
 import { useResponsive, useWeixinShare } from 'pc/hooks';
 import { store } from 'pc/store';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
@@ -25,17 +28,14 @@ import { TabBar } from '../tab_bar';
 import { ViewContainer } from '../view_container';
 import { WidgetPanel } from '../widget';
 import styles from './style.module.less';
-import { useSideBar, SideBarType, SideBarClickType } from 'pc/context';
-import dynamic from 'next/dynamic';
-import { Skeleton } from '@vikadata/components';
 
 const RobotPanel = dynamic(() => import('pc/components/robot/robot_panel/robot_panel'), {
   ssr: false,
   loading: () => (
     <div className={styles.loading}>
-      <Skeleton count={1} width="38%" />
+      <Skeleton count={1} width='38%' />
       <Skeleton count={2} />
-      <Skeleton count={1} width="61%"/>
+      <Skeleton count={1} width='61%' />
     </div>
   ),
 });
@@ -69,8 +69,8 @@ const DatasheetMain = ({ loading, datasheetErrorCode, isNoPermission, shareId, d
       {(preview || testFunctions) && (
         <div className={styles.previewing}>
           <div className={styles.previewTip}>
-            {preview ? `正在预览，版本${preview}` : `正在体验 ${testFunctions}`}
-            {testFunctions && <a onClick={handleExitTest}>退出体验</a>}
+            {preview ? t(Strings.preview_time_machine, { version: preview }) : t(Strings.experience_test_function, { testFunctions })}
+            {testFunctions && <a onClick={handleExitTest}>{t(Strings.exist_experience)}</a>}
           </div>
         </div>
       )}
@@ -364,8 +364,8 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
                 {isTimeMachinePanelOpen && <TimeMachine onClose={toggleTimeMachineOpen} />}
               </div>
             }
-            primary="second"
-            split="vertical"
+            primary='second'
+            split='vertical'
             minSize={isSideRecordOpen ? 450 : 320}
             maxSize={width / 2}
             onChange={paneSizeChange}
@@ -373,7 +373,7 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
             style={isShareMode ? shareStyle : {}}
             allowResize={isApiPanelOpen ? false : Boolean(panelSize)}
             pane1Style={{ overflow: 'hidden' }}
-            className="contentSplitPanel"
+            className='contentSplitPanel'
           />
         ) : (
           datasheetMain

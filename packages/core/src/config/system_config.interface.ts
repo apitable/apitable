@@ -476,6 +476,7 @@ export interface Templates {
     common_system_notify_web:                    ActivityIntegralIncomeNotify;
     integral_income_notify:                      ActivityIntegralIncomeNotify;
     new_space_widget_notify:                     ActivityIntegralIncomeNotify;
+    new_user_welcome_notify:                     ActivityIntegralIncomeNotify;
     server_pre_publish:                          ActivityIntegralIncomeNotify;
     web_publish:                                 ActivityIntegralIncomeNotify;
 }
@@ -490,13 +491,8 @@ export interface ActivityIntegralIncomeNotify {
     is_mail?:           boolean;
     is_browser?:        boolean;
     can_jump?:          boolean;
-    url?:               URL;
+    url?:               string;
     is_mobile?:         boolean;
-}
-
-export enum URL {
-    Management = "/management",
-    Workbench = "/workbench",
 }
 
 export interface AddRecordOutOfLimit {
@@ -508,7 +504,7 @@ export interface AddRecordOutOfLimit {
     is_mail:               boolean;
     mail_template_subject: string;
     format_string:         string;
-    url:                   URL;
+    url:                   string;
     frequency?:            number;
     is_component:          boolean;
     is_mobile?:            boolean;
@@ -530,7 +526,7 @@ export interface CommentMentioned {
     is_mail:                boolean;
     is_browser:             boolean;
     format_string:          string;
-    url:                    URL;
+    url:                    string;
     is_component?:          boolean;
     mail_template_subject?: string;
     notifications?:         AddRecordOutOfLimitNotifications;

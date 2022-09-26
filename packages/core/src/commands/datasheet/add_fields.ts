@@ -20,7 +20,7 @@ export interface IAddFieldOptions {
   // 相对 fieldId 位置的偏移
   offset?: number;
   // 是否隐藏这个新创建的字段
-  hiddenColumn?:boolean
+  hiddenColumn?: boolean;
 }
 
 export interface IAddFieldsOptions {
@@ -98,7 +98,7 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
 
       if (field.type === FieldType.Link) {
         field.property = { ...field.property, brotherFieldId: undefined };
-        const linkedAction = createNewBrotherField(state, field);
+        const linkedAction = createNewBrotherField(state, field, datasheetId);
         linkedAction && linkedActions.push(linkedAction);
       }
 
@@ -199,10 +199,10 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
 
 /*
 
-declare module 'command_manager/command_manager' {
-  interface CollaCommandManager {
-    execute(options: IAddFieldsOptions & { cmd: 'AddFields' });
-  }
-}
+ declare module 'command_manager/command_manager' {
+ interface CollaCommandManager {
+ execute(options: IAddFieldsOptions & { cmd: 'AddFields' });
+ }
+ }
 
-*/
+ */

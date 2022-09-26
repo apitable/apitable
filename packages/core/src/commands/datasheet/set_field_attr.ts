@@ -42,7 +42,7 @@ function generateLinkedFieldActions(
   }
 
   if (newField.type === FieldType.Link) {
-    const createdActions = createNewBrotherField(state, newField);
+    const createdActions = createNewBrotherField(state, newField, datasheetId);
     createdActions && linkedActions.push(createdActions);
   }
 

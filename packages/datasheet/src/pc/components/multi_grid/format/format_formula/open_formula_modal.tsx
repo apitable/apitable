@@ -9,8 +9,8 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { Popup } from 'pc/components/common/mobile/popup';
 import styles from './styles.module.less';
 
-export function openFormulaModal(props: { field: IField; expression: string; onSave?: (exp: string) => void; onClose?: () => void }) {
-  const { field, expression, onSave, onClose } = props;
+export function openFormulaModal(props: { field: IField; expression: string; datasheetId: string, onSave?: (exp: string) => void; onClose?: () => void }) {
+  const { field, expression, onSave, onClose, datasheetId } = props;
 
   const container = document.createElement('div');
   document.body.appendChild(container);
@@ -30,7 +30,13 @@ export function openFormulaModal(props: { field: IField; expression: string; onS
     onSave && onSave(v);
   };
 
-  const Content: React.ReactElement = <FormulaModal field={field} expression={expression} onSave={onModalSave} onClose={onModalClose} />;
+  const Content: React.ReactElement = <FormulaModal
+    field={field}
+    expression={expression}
+    onSave={onModalSave}
+    onClose={onModalClose}
+    datasheetId={datasheetId}
+  />;
 
   ReactDOM.render(
     <Provider store={store}>
@@ -51,7 +57,7 @@ export function openFormulaModal(props: { field: IField; expression: string; onS
       </ComponentDisplay>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <Popup visible onClose={onModalClose} height="90%" title={t(Strings.input_formula)}>
+        <Popup visible onClose={onModalClose} height='90%' title={t(Strings.input_formula)}>
           {Content}
         </Popup>
       </ComponentDisplay>

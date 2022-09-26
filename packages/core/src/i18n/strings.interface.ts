@@ -2687,6 +2687,7 @@ export interface StringsInterface {
     mirror_uploader_label: String;
     missing_instruction_op_error: String;
     mobile_and_account_login: String;
+    mobile_function_over_limit_tip: String;
     mobile_show_allow: String;
     mobile_show_configuration_desc: String;
     mobile_space_list_tip: String;
@@ -2776,6 +2777,7 @@ export interface StringsInterface {
     new_space_tips: String;
     new_space_widget_notify: String;
     new_user_turn_to_home: String;
+    new_user_welcom_notify: String;
     new_view: String;
     new_zealand: String;
     next_page: String;

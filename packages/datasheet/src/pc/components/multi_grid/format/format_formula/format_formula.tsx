@@ -63,7 +63,7 @@ export const FormatFormula: React.FC<IFormatFormulaProps> = (props: IFormatFormu
   useEffect(() => {
     if (from === 'cell') {
       openFormulaModal({
-        field: currentField, expression: currentField.property.expression, onSave: handleChange,
+        field: currentField, expression: currentField.property.expression, onSave: handleChange, datasheetId
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -75,11 +75,11 @@ export const FormatFormula: React.FC<IFormatFormulaProps> = (props: IFormatFormu
         <div className={formatStyles.sectionTitle}>{t(Strings.field_name_formula)}</div>
         <Input
           ref={inputRef}
-          className="code"
+          className='code'
           placeholder={t(Strings.input_formula)}
           value={transformedExp}
           onClick={() => openFormulaModal({
-            field: currentField, expression: currentField.property.expression, onSave: handleChange,
+            field: currentField, expression: currentField.property.expression, onSave: handleChange, datasheetId
           })}
         />
       </div>

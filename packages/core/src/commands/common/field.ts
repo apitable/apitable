@@ -353,7 +353,7 @@ export function createNewField(
     index: options && options.index,
     fieldId: options && options.fieldId,
     offset: options && options.offset,
-    hiddenColumn:options && options.hiddenColumn,
+    hiddenColumn: options && options.hiddenColumn,
     field,
   });
 
@@ -364,8 +364,8 @@ export function createNewField(
   return action;
 }
 
-export function createNewBrotherField(state: IReduxState, newField: ILinkField): ILinkedActions | null {
-  const currentDatasheet = getDatasheet(state)!;
+export function createNewBrotherField(state: IReduxState, newField: ILinkField, datasheetId: string): ILinkedActions | null {
+  const currentDatasheet = getDatasheet(state, datasheetId)!;
   // 如果新 field 是关联的本表，则不需要进行任何操作
   if (newField.property.foreignDatasheetId === currentDatasheet.id) {
     return {

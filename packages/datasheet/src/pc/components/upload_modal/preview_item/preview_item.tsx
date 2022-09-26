@@ -1,15 +1,14 @@
+import { Tooltip, useThemeColors } from '@vikadata/components';
 import { ConfigConstant, IAttachmentValue, IField, Selectors } from '@vikadata/core';
+import classnames from 'classnames';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { DisplayFile } from 'pc/components/display_file';
-import { useThemeColors } from '@vikadata/components';
+import { download } from 'pc/components/preview_file/tool_bar';
 import * as React from 'react';
+import { useSelector } from 'react-redux';
 import IconDelete from 'static/icon/common/common_icon_delete.svg';
 import IconDownload from 'static/icon/datasheet/datasheet_icon_download.svg';
 import styles from './styles.module.less';
-import classnames from 'classnames';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { download } from 'pc/components/preview_file/tool_bar';
-import { useSelector } from 'react-redux';
-import { Tooltip } from '@vikadata/components';
 
 interface IPreviewItemProps {
   datasheetId: string;
