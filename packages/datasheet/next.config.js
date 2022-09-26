@@ -67,11 +67,9 @@ const plugins = [[withLess, {
 
 // use local public folder for editions, e.g. apitable
 const getStaticFolder = () => {
-  if (/vika/gi.test(process.env.ENV)) {
-    return isProd ? process.env.NEXT_PUBLIC_ASSET_PREFIX : '';
-  }
+  if (process.env.USE_CUSTOM_PUBLIC_FILES === 'true') return '';
 
-  return '';
+  return isProd ? process.env.NEXT_PUBLIC_ASSET_PREFIX : '';
 };
 
 module.exports = withPlugins(plugins, {

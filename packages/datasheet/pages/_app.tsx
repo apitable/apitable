@@ -331,7 +331,12 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
             <Image src={`${publicRuntimeConfig.staticFolder}/logo.svg`} alt='logo' layout={'fill'} />
           </span>
           <span className='script-loading-vika-img'>
-            <Image src={`${publicRuntimeConfig.staticFolder}/vika.svg`} alt='vika' layout={'fill'} object-fit={'contain'} />
+            <Image
+              alt='vika'
+              layout={'fill'}
+              object-fit={'contain'}
+              src={`${publicRuntimeConfig.staticFolder}/logo_text_dark.svg`}
+            />
           </span>
         </div>
       }

@@ -22,6 +22,7 @@ export const getEnvVars = () => {
     HIDDEN_BIND_PHONE: process.env.HIDDEN_BIND_PHONE === 'true',
     HIDDEN_BIND_MAIL: process.env.HIDDEN_BIND_MAIL === 'true',
     HIDDEN_BATCH_IMPORT_USER: process.env.HIDDEN_BATCH_IMPORT_USER === 'true',
-    HIDDEN_QRCODE: process.env.HIDDEN_QRCODE === 'true'
+    HIDDEN_QRCODE: process.env.HIDDEN_QRCODE === 'true',
+    USE_CUSTOM_PUBLIC_FILES: process.env.USE_CUSTOM_PUBLIC_FILES === 'true',
   };
 };
