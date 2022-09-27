@@ -1060,6 +1060,14 @@
         AND is_deleted = 0
     </select>
 
+    <select id="selectIdsBySpaceIdAndEmailKeyword" resultType="java.lang.Long">
+        SELECT id
+        FROM vika_unit_member
+        WHERE space_id = #{spaceId}
+        AND email like CONCAT('%', #{keyword}, '%')
+        AND is_deleted = 0
+    </select>
+
     <select id="selectTeamIdsByMemberIds" resultType="com.vikadata.api.modular.organization.model.MemberTeamInfoDTO">
         SELECT member_id, team_id
         FROM vika_unit_team_member_rel

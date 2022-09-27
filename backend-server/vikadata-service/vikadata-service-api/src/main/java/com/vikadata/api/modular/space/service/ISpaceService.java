@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.vikadata.api.modular.space.model.SpaceCapacityUsedInfo;
 import org.apache.ibatis.annotations.Param;
 
 import com.vikadata.api.lang.SpaceGlobalFeature;
@@ -15,6 +14,7 @@ import com.vikadata.api.model.vo.space.UserSpaceVo;
 import com.vikadata.api.modular.internal.model.InternalSpaceCapacityVo;
 import com.vikadata.api.modular.internal.model.InternalSpaceUsageVo;
 import com.vikadata.api.modular.space.model.GetSpaceListFilterCondition;
+import com.vikadata.api.modular.space.model.SpaceCapacityUsedInfo;
 import com.vikadata.api.modular.space.model.SpaceUpdateOperate;
 import com.vikadata.entity.SpaceEntity;
 import com.vikadata.entity.UserEntity;
@@ -399,11 +399,16 @@ public interface ISpaceService extends IService<SpaceEntity> {
     void switchSpace(Long userId, String spaceId);
 
     /**
+     * check space available
+     * @param spaceId
+     */
+    void isSpaceAvailable(String spaceId);
+
+    /**
      *  Check whether the user is in space
      * @param userId    user id
      * @param spaceId   space id
      * @param consumer  callback
      */
     void checkUserInSpace(Long userId, String spaceId, Consumer<Boolean> consumer);
-
 }

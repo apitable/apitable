@@ -8,6 +8,7 @@ import java.util.List;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -20,8 +21,8 @@ import com.vikadata.api.enums.finance.OrderType;
 import com.vikadata.api.enums.finance.PayChannel;
 import com.vikadata.api.enums.social.SocialPlatformType;
 import com.vikadata.api.holder.UserHolder;
+import com.vikadata.api.mock.bean.MockInvitation;
 import com.vikadata.api.mock.bean.MockUserSpace;
-import com.vikadata.api.model.ro.organization.OrgUnitRo;
 import com.vikadata.api.model.ro.organization.RoleMemberUnitRo;
 import com.vikadata.api.modular.appstore.enums.AppType;
 import com.vikadata.api.modular.appstore.service.IAppInstanceService;
@@ -54,6 +55,7 @@ import com.vikadata.api.modular.social.enums.SocialAppType;
 import com.vikadata.api.modular.social.enums.SocialTenantAuthMode;
 import com.vikadata.api.modular.social.service.ISocialTenantBindService;
 import com.vikadata.api.modular.social.service.ISocialTenantService;
+import com.vikadata.api.modular.space.service.IInvitationService;
 import com.vikadata.api.modular.space.service.ISpaceService;
 import com.vikadata.api.modular.user.service.IUserService;
 import com.vikadata.api.modular.vcode.service.IVCodeService;
@@ -155,7 +157,7 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     protected IShopService isShopService;
 
     @Autowired
-    private INodeService iNodeService;
+    protected INodeService iNodeService;
 
     @Autowired
     protected IOrderV2Service iOrderV2Service;
@@ -189,6 +191,9 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     @Autowired
     protected OrderChecker orderChecker;
+
+    @Autowired
+    protected IInvitationService invitationService;
 
     @Autowired
     protected IRoleService iRoleService;
@@ -395,6 +400,25 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
         return spaceId;
     }
 
+    protected MockInvitation prepareInvitationToken() {
+        UserEntity user = createUserWithEmail(IdWorker.getIdStr() + "@test.com");
+        String spaceId = createSpaceWithoutName(user);
+        Long userId = user.getId();
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
+        String nodeId = iNodeService.createChildNode(userId, CreateNodeDto.builder()
+                .spaceId(spaceId)
+                .newNodeId(IdUtil.createDstId())
+                .type(NodeType.DATASHEET.getNodeType())
+                .build());
+        String token = invitationService.createMemberInvitationTokenByNodeId(memberId, spaceId, nodeId);
+        return MockInvitation.builder()
+                .token(token)
+                .nodeId(nodeId)
+                .userId(userId)
+                .spaceId(spaceId)
+                .memberId(iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId)).build();
+    }
+
     protected Long addRoleMembers(MockUserSpace userSpace) {
         UserEntity user = iUserService.createUserByCli("vikaboy@vikadata.com", "123456789", "12345678910");
         Long rootTeamId = iTeamService.getRootTeamId(userSpace.getSpaceId());
@@ -413,5 +437,4 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
         iRoleMemberService.addRoleMembers(allPart, CollUtil.newArrayList(rootTeamUnit, adminUnit, memberUnit));
         return allPart;
     }
-
 }

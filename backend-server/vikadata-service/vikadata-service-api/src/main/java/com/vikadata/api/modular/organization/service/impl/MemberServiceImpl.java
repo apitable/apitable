@@ -440,7 +440,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void userInvitation(String spaceId, Long teamId, List<String> emails) {
+    public List<Long> userInvitation(String spaceId, Long teamId, List<String> emails) {
         if (teamId != null) {
             String teamSpaceId = teamMapper.selectSpaceIdById(teamId);
             // check whether team in space
@@ -514,6 +514,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         }
         // 部门绑定
         iTeamMemberRelService.addMemberTeams(memberIds, Collections.singletonList(teamId));
+        return iUnitService.getUnitIdsByRefIds(memberIds);
     }
 
     @Override
@@ -523,11 +524,11 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void emailInvitation(Long inviteUserId, String spaceId, List<String> emails) {
+    public List<Long> emailInvitation(Long inviteUserId, String spaceId, List<String> emails) {
         // remove empty string or null element in collection, then make it distinct
         final List<String> distinctEmails = CollectionUtil.distinctIgnoreCase(CollUtil.removeBlank(emails));
         if (distinctEmails.isEmpty()) {
-            return;
+            return new ArrayList<>();
         }
         // find email in users
         List<UserEntity> userEntities = iUserService.getByEmails(distinctEmails);
@@ -623,6 +624,11 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         }
 
         TaskManager.me().execute(() -> sendInviteNotification(inviteUserId, shouldSendInvitationNotify, spaceId, false));
+        List<Long> memberIds = members.stream().map(MemberEntity::getId).collect(Collectors.toList());
+        if (!memberIds.isEmpty()) {
+            return iUnitService.getUnitIdsByRefIds(memberIds);
+        }
+        return new ArrayList<>();
     }
 
     private void createInactiveMember(MemberEntity member, String spaceId, String inviteEmail) {

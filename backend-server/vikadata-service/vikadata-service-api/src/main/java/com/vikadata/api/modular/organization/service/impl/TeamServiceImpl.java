@@ -20,36 +20,36 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
+
+import com.vikadata.api.enums.organization.UnitType;
 import com.vikadata.api.lang.SpaceGlobalFeature;
+import com.vikadata.api.model.dto.organization.TeamMemberDto;
 import com.vikadata.api.model.vo.organization.MemberInfoVo;
 import com.vikadata.api.model.vo.organization.MemberPageVo;
+import com.vikadata.api.model.vo.organization.TeamInfoVo;
+import com.vikadata.api.model.vo.organization.TeamTreeVo;
 import com.vikadata.api.model.vo.organization.TeamVo;
 import com.vikadata.api.model.vo.organization.UnitTeamVo;
 import com.vikadata.api.model.vo.space.SpaceRoleDetailVo;
+import com.vikadata.api.modular.organization.mapper.MemberMapper;
+import com.vikadata.api.modular.organization.mapper.TeamMapper;
+import com.vikadata.api.modular.organization.mapper.TeamMemberRelMapper;
+import com.vikadata.api.modular.organization.mapper.UnitMapper;
 import com.vikadata.api.modular.organization.model.MemberIsolatedInfo;
 import com.vikadata.api.modular.organization.model.MemberTeamInfoDTO;
 import com.vikadata.api.modular.organization.model.MemberTeamPathInfo;
 import com.vikadata.api.modular.organization.model.TeamCteInfo;
 import com.vikadata.api.modular.organization.model.TeamPathInfo;
 import com.vikadata.api.modular.organization.service.IRoleMemberService;
-import com.vikadata.api.modular.space.service.ISpaceRoleService;
-import com.vikadata.api.modular.space.service.ISpaceService;
-import com.vikadata.core.support.tree.DefaultTreeBuildFactory;
-import lombok.extern.slf4j.Slf4j;
-
-import com.vikadata.api.enums.organization.UnitType;
-import com.vikadata.api.model.dto.organization.TeamMemberDto;
-import com.vikadata.api.model.vo.organization.TeamInfoVo;
-import com.vikadata.api.model.vo.organization.TeamTreeVo;
-import com.vikadata.api.modular.organization.mapper.MemberMapper;
-import com.vikadata.api.modular.organization.mapper.TeamMapper;
-import com.vikadata.api.modular.organization.mapper.TeamMemberRelMapper;
-import com.vikadata.api.modular.organization.mapper.UnitMapper;
 import com.vikadata.api.modular.organization.service.ITeamMemberRelService;
 import com.vikadata.api.modular.organization.service.ITeamService;
 import com.vikadata.api.modular.organization.service.IUnitService;
 import com.vikadata.api.modular.space.mapper.SpaceMapper;
 import com.vikadata.api.modular.space.service.ISpaceInviteLinkService;
+import com.vikadata.api.modular.space.service.ISpaceRoleService;
+import com.vikadata.api.modular.space.service.ISpaceService;
+import com.vikadata.core.support.tree.DefaultTreeBuildFactory;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.SqlTool;
 import com.vikadata.entity.SpaceEntity;
@@ -584,7 +584,6 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         }
         return teamTreeVoList;
     }
-
 
     @Override
     public List<UnitTeamVo> getUnitTeamVo(String spaceId, List<Long> teamIds) {

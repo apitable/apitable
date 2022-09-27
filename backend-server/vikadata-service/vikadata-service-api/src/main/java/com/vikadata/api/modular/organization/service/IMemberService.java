@@ -317,7 +317,7 @@ public interface IMemberService extends IService<MemberEntity> {
      * @param emails 邀请邮箱列表
      */
     @Deprecated
-    void userInvitation(String spaceId, Long teamId, List<String> emails);
+    List<Long> userInvitation(String spaceId, Long teamId, List<String> emails);
 
     /**
      * 恢复成员
@@ -331,8 +331,9 @@ public interface IMemberService extends IService<MemberEntity> {
      * @param inviteUserId invite user id
      * @param spaceId space id
      * @param emails email list
+     * @return unit ids
      */
-    void emailInvitation(Long inviteUserId, String spaceId, List<String> emails);
+    List<Long> emailInvitation(Long inviteUserId, String spaceId, List<String> emails);
 
     /**
      * 发送单个邀请邮件到邮箱地址
@@ -631,9 +632,11 @@ public interface IMemberService extends IService<MemberEntity> {
      *
      * @param spaceId 空间ID
      * @param keyword 关键词
-     * @param filter 是否过滤未加入成员
+     * @param filter  是否过滤未加入成员
      * @param highlightClassName 高亮的样式名称
      * @return SearchMemberVo 集合
+     * @author 刘斌华
+     * @date 2022-04-12 11:56:17
      */
     List<SearchMemberVo> getLikeMemberName(String spaceId, String keyword, Boolean filter, String highlightClassName);
 

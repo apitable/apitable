@@ -304,7 +304,7 @@ public class MemberController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
-    public ResponseData<Void> inviteMember(@RequestBody @Valid InviteRo data) {
+    public ResponseData<MemberUnitsVo> inviteMember(@RequestBody @Valid InviteRo data) {
         // human verification
         afsCheckService.noTraceCheck(data.getData());
         // space id be invited
@@ -315,16 +315,19 @@ public class MemberController {
         // check whether space can invite user
         iSpaceService.checkCanOperateSpaceUpdate(spaceId);
         List<InviteMemberRo> inviteMembers = data.getInvite();
+        MemberUnitsVo unitsVo = MemberUnitsVo.builder().build();
         // get invited emails
         List<String> inviteEmails = inviteMembers.stream()
                 .map(InviteMemberRo::getEmail)
                 .filter(StrUtil::isNotBlank).collect(Collectors.toList());
         if (CollUtil.isEmpty(inviteEmails)) {
             // without email, response success directly
-            return ResponseData.success();
+            return ResponseData.success(unitsVo);
         }
-        iMemberService.emailInvitation(userId, spaceId, inviteEmails);
-        return ResponseData.success();
+        // 邀请新成员
+        List<Long> unitIds = iMemberService.emailInvitation(userId, spaceId, inviteEmails);
+        unitsVo.setUnitIds(unitIds);
+        return ResponseData.success(unitsVo);
     }
 
     @PostResource(path = "/sendInviteSingle", tags = "INVITE_MEMBER")

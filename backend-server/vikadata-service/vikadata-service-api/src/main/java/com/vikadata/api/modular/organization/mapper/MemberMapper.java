@@ -590,8 +590,7 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      * @author Shawn Deng
      * @date 2020/12/28 12:25
      */
-    List<MemberEntity> selectBindSocialListBySpaceIdWithOffset(@Param("spaceId") String spaceId,
-            @Param("offset") long offset, @Param("limit") int limit);
+    List<MemberEntity> selectBindSocialListBySpaceIdWithOffset(@Param("spaceId") String spaceId, @Param("offset") long offset, @Param("limit") int limit);
 
     /**
      * 获取成员所属空间
@@ -1039,6 +1038,15 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      * @return SpaceMemberIdDto
      */
     List<SpaceMemberIdDto> selectMemberIdsByUserIdAndSpaceIds(@Param("userId") Long userId, @Param("spaceIds") List<String> spaceIds);
+
+    /**
+     * 根据邮箱和spaceId查找ID
+     *
+     * @param keyword  邮箱关键字
+     * @param spaceId 空间ID
+     * @return ids
+     */
+    List<Long> selectIdsBySpaceIdAndEmailKeyword(@Param("spaceId") String spaceId, @Param("keyword") String keyword);
 
     /**
      * batch query team's id by member's id
