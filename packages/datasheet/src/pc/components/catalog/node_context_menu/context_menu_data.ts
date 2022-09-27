@@ -22,7 +22,8 @@ export enum ContextItemKey {
   AddForm,
   CreateFromTemplate,
   AddDashboard,
-  NodeInfo
+  NodeInfo,
+  MoveTo
 }
 
 const getCopyUrlText = (nodeType: ConfigConstant.NodeType) => {
@@ -95,6 +96,17 @@ export const contextItemMap = new Map<ContextItemKey, any>([
     shortcutKey: getShortcutKeyString(ShortcutActionName.SaveAsTemplate),
     'data-sensors-click': true,
     id: WORKBENCH_SIDE_ID.OPERATE_ITEM_SAVE_AS_TEMPLATE,
+    onClick,
+    hidden,
+  })],
+  /**
+   * 移动至
+   */
+  [ContextItemKey.MoveTo, (onClick: () => void, hidden: boolean) => ({
+    icon: makeNodeIconComponent(NodeIcon.AddFolder),
+    text: t(Strings.move_to),
+    'data-sensors-click': true,
+    id: WORKBENCH_SIDE_ID.OPERATE_ITEM_MOVE_TO,
     onClick,
     hidden,
   })],

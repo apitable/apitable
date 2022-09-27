@@ -507,3 +507,14 @@ export function setNoPermissionMembers(Param: string[]) {
     payload: Param
   };
 }
+
+/**
+ * 更新需要移动的节点ID
+ * @param nodeIds 节点ID
+ */
+export function updateMoveToNodeIds(nodeIds: string[]) {
+  return {
+    type: actions.UPDATE_MOVE_TO_NODE_IDS,
+    payload: nodeIds,
+  };
+}

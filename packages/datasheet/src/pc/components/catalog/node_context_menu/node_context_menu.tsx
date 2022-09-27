@@ -56,7 +56,9 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
 
   const addForm = (folderId: string, datasheetId?: string) => {
     Player.doTrigger(Events.workbench_create_form_bth_clicked);
-    const params = datasheetId ? { folderId, datasheetId } : { folderId };
+    const params = datasheetId ?
+      { folderId, datasheetId } :
+      { folderId };
     openDatasheetPanel(true, params);
   };
 
@@ -103,8 +105,12 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
     expandNodeInfo({ nodeId });
   };
 
-  const { rootManageable, isRootNodeId } = useRootManageable();
+  const openMoveTo = (nodeId: string) => {
+    dispatch(StoreActions.updateMoveToNodeIds([nodeId]));
+  };
 
+  const { rootManageable, isRootNodeId } = useRootManageable();
+  
   const contextData = useMemo(() => {
     if (!rightClickInfo) {
       return [];
@@ -116,126 +122,113 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
     const { exportable, nodeAssignable, templateCreatable, sharable, editable } = permissions;
     const renamable = permissions.renamable && targetManageable;
     const removable = permissions.removable && targetManageable;
+    const movable = permissions.movable && targetManageable;
     const parentPermissions = treeNodesMap[parentId]?.permissions;
-    const copyable =
-      parentPermissions && parentPermissions.manageable && permissions.manageable && module === ConfigConstant.Modules.CATALOG && targetManageable;
+    const copyable = parentPermissions && parentPermissions.manageable && permissions.manageable &&
+      module === ConfigConstant.Modules.CATALOG && targetManageable;
     const nodeUrl = `${window.location.protocol}//${window.location.host}/workbench/${nodeId}`;
     let data: any = [];
     switch (contextMenuType) {
       /** 数表节点 */
       case ConfigConstant.ContextMenuType.DATASHEET: {
-        data = [
-          [
-            contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
-            contextItemMap.get(ContextItemKey.Favorite)(() => {
-              updateNodeFavoriteStatus(nodeId);
-              if (!treeNodesMap[nodeId].nodeFavorite) {
-                openFavorite();
-              }
-            }, nodeFavorite),
-            contextItemMap.get(ContextItemKey.Copy)(() => copyNode(nodeId), !copyable),
-            contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
-          ],
-          [
-            contextItemMap.get(ContextItemKey.Export)(
-              () => exportAsCsv(nodeId),
-              () => exportExcel(nodeId),
-              !exportable || isMobileApp(),
-            ),
-          ],
-          [
-            contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
-            contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
-            contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
-            contextItemMap.get(ContextItemKey.SaveAsTemplate)(() => openSaveAsTemplateModal(nodeId), !templateCreatable),
-          ],
-          [contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable)],
-        ];
+        data = [[
+          contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
+          contextItemMap.get(ContextItemKey.Favorite)(() => {
+            updateNodeFavoriteStatus(nodeId);
+            if (!treeNodesMap[nodeId].nodeFavorite) {
+              openFavorite();
+            }
+          }, nodeFavorite),
+          contextItemMap.get(ContextItemKey.Copy)(() => copyNode(nodeId), !copyable),
+          contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
+        ], [
+          contextItemMap.get(ContextItemKey.Export)(() => exportAsCsv(nodeId), () => exportExcel(nodeId), !exportable || isMobileApp()),
+        ], [
+          contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+          contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
+          contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
+          contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
+          contextItemMap.get(ContextItemKey.SaveAsTemplate)(() => openSaveAsTemplateModal(nodeId), !templateCreatable),
+        ], [
+          contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable),
+        ]];
         // 往菜单注入新功能
         Player.applyFilters(Events.get_context_menu_file_more, data);
         break;
       }
       /** 文件夹节点 */
       case ConfigConstant.ContextMenuType.FOLDER: {
-        data = [
-          [contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable)],
-          [
-            contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId), nodeFavorite),
-            contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
-            contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
-            contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
-            contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
-            contextItemMap.get(ContextItemKey.SaveAsTemplate)(() => openSaveAsTemplateModal(nodeId), !templateCreatable),
-          ],
-          [contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable)],
-        ];
+        data = [[
+          contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
+        ], [
+          contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId), nodeFavorite),
+          contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
+          contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+          contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
+          contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
+          contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
+          contextItemMap.get(ContextItemKey.SaveAsTemplate)(() => openSaveAsTemplateModal(nodeId), !templateCreatable),
+        ], [
+          contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable),
+        ]];
         // 往菜单注入新功能
         Player.applyFilters(Events.get_context_menu_folder_more, data);
         break;
       }
       /** 神奇表单节点 */
       case ConfigConstant.ContextMenuType.FORM: {
-        data = [
-          [
-            contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
-            contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId), nodeFavorite),
-            contextItemMap.get(ContextItemKey.Copy)(() => copyNode(nodeId), !copyable),
-            contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
-          ],
-          [
-            contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
-            contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
-            contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
-          ],
-          [contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable)],
-        ];
+        data = [[
+          contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
+          contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId), nodeFavorite),
+          contextItemMap.get(ContextItemKey.Copy)(() => copyNode(nodeId), !copyable),
+          contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
+        ], [
+          contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+          contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
+          contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
+          contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
+        ], [
+          contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable),
+        ]];
         // 往菜单注入新功能
         Player.applyFilters(Events.get_context_menu_file_more, data);
         break;
       }
       /** 仪表盘的节点 */
       case ConfigConstant.ContextMenuType.DASHBOARD: {
-        data = [
-          [
-            contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
-            contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId), nodeFavorite),
-            contextItemMap.get(ContextItemKey.Copy)(() => copyNode(nodeId), !copyable),
-            contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
-          ],
-          [
-            contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
-            contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
-            // contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
-          ],
-          [contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable)],
-        ];
+        data = [[
+          contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
+          contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId), nodeFavorite),
+          contextItemMap.get(ContextItemKey.Copy)(() => copyNode(nodeId), !copyable),
+          contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
+        ], [
+          contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+          contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
+          contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
+        ], [
+          contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable),
+        ]];
         // 往菜单注入新功能
         Player.applyFilters(Events.get_context_menu_file_more, data);
         break;
       }
       /** 镜像的节点 */
       case ConfigConstant.ContextMenuType.MIRROR: {
-        data = [
-          [
-            contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
-            contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId), nodeFavorite),
-            contextItemMap.get(ContextItemKey.Copy)(() => copyNode(nodeId), !copyable),
-            contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
-          ],
-          [
-            contextItemMap.get(ContextItemKey.Export)(
-              () => exportAsCsv(nodeId),
-              () => exportExcel(nodeId),
-              !exportable || isMobileApp(),
-            ),
-          ],
-          [
-            contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
-            contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
-            contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
-          ],
-          [contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable)],
-        ];
+        data = [[
+          contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
+          contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId), nodeFavorite),
+          contextItemMap.get(ContextItemKey.Copy)(() => copyNode(nodeId), !copyable),
+          contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
+        ], [
+          contextItemMap.get(ContextItemKey.Export)(() => exportAsCsv(nodeId), () => exportExcel(nodeId), !exportable || isMobileApp()),
+        ], [
+          contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+          contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
+          contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
+          contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
+        ], [
+          contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable),
+        ]];
         // 往菜单注入新功能
         Player.applyFilters(Events.get_context_menu_file_more, data);
         break;
@@ -300,9 +293,10 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
 
   const contextMenuData = flatContextData(contextData);
 
-  return isMobile ? (
-    renderMobileContextMenu()
-  ) : (
-    <ContextMenu id={ConfigConstant.NODE_CONTEXT_MENU_ID} contextMenu={contextMenu} overlay={contextMenuData} />
+  return (
+    (
+      isMobile ? renderMobileContextMenu() :
+        <ContextMenu id={ConfigConstant.NODE_CONTEXT_MENU_ID} contextMenu={contextMenu} overlay={contextMenuData} />
+    )
   );
 });

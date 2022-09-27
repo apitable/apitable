@@ -592,3 +592,6 @@ export const ADD_ROLE_MEMBER = '/org/roles/:roleId/members';
 export const DELETE_ROLE_MEMBER = '/org/roles/:roleId/members';
 export const INIT_ROLE = '/org/roles/init';
 // ============= 角色相关 end ====================//
+
+// recently browsed folder
+export const NODE_RECENTLY_BROWSED = '/node/recentList';

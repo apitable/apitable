@@ -1,0 +1,110 @@
+.moveTo {
+  :global {
+    .ant-modal-content {
+      display: flex;
+      flex-direction: column;
+      width: 480px;
+      height: 376px;
+    }
+    .ant-modal-body {
+      display: flex;
+      width: 100%;
+      flex: 1;
+      overflow: hidden;
+      padding: 0 8px !important;
+    }
+  }
+  .title {
+    display: flex;
+    align-items: center;
+    .titleIcon {
+      min-width: 16px;
+      margin-left: 8px;
+      vertical-align: middle;
+      cursor: pointer;
+    }
+  }
+
+  .selectFolder {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    .wholeTips {
+      padding: 2px 8px;
+    }
+    .noWholeTips {
+      padding: 0 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .switchWholeBtn {
+        color: var(--textCommonSecondary)
+      }
+    }
+    .folderList {
+      flex: 1;
+      overflow-y: auto;
+      .folderItem {
+        padding: 6px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        &:hover {
+          background: var(--bgBglessHover);
+        }
+        &:active {
+          background: var(--bgBglessActive);
+        }
+        .folderItemContent {
+          display: flex;
+          align-items: center;
+        }
+        .folderItemIcon {
+          margin-right: 8px;
+        }
+      }
+    }
+    .folderListNoTips {
+      margin-top: 8px;
+    }
+  }
+}
+
+.moveToMobile {
+  :global {
+    .ant-drawer-title {
+      padding: 0 24px;
+      text-align: center;
+    }
+  }
+  .mobileFooter {
+    display: flex;
+    button {
+      flex: 1;
+      &+button {
+        margin-left: 16px;
+      }
+    }
+  }
+  .selectFolder {
+    height: 100%;
+    .folderList {
+      margin: 8px 0;
+      .folderItem {
+        padding: 6px 0;
+        &:hover {
+          background: transparent;
+        }
+        &:active {
+          background: transparent;
+        }
+      }
+    }
+  }
+}
+
+.mobileTitleBack {
+  position: absolute;
+  transform: translateX(-24px);
+}

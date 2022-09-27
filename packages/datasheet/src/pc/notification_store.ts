@@ -134,6 +134,15 @@ export class NotificationStore {
     });
   }
 
+  // recently browsed node
+  static recentlyBrowsedNode(nodeId: string) {
+    this.socket.emit('NODE_BROWSED', { nodeId }, (result) => {
+      if (!result) {
+        console.log('NODE_BROWSED fail');
+      }
+    });
+  }
+
   static destroy() {
     this.socket?.removeAllListeners();
     this.socket?.close();

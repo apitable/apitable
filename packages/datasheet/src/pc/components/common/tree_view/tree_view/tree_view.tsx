@@ -1,5 +1,6 @@
 import { ConfigConstant } from '@vikadata/core';
 import { isEqual, xor } from 'lodash';
+import { NotificationStore } from 'pc/notification_store';
 import * as React from 'react';
 import { forwardRef, memo, ReactNode, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
@@ -182,6 +183,8 @@ export const TreeViewBase: React.ForwardRefRenderFunction<ITreeViewRef, ITreeVie
       if (multiple) {
         // TODO:多选操作
       } else {
+        // send recently browsed node message
+        NotificationStore.recentlyBrowsedNode(nodeId);
         singleSelectHandler(e, nodeId);
       }
       return true;

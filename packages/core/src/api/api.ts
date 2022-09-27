@@ -46,6 +46,7 @@ import {
   IWecomAgentBindSpaceResponse,
   IGetRoleListResponse,
   IGetRoleMemberListResponse,
+  IRecentlyBrowsedFolder,
 } from './api.interface';
 
 axios.defaults.baseURL = Url.BASE_URL;
@@ -224,10 +225,11 @@ export function getRootNode() {
 }
 
 // 查询子节点列表
-export function getChildNodeList(nodeId: string) {
+export function getChildNodeList(nodeId: string, nodeType?: NodeType) {
   return axios.get<IApiWrapper & { data: Omit<INodesMapItem, 'children'>[] }>(Url.GET_NODE_LIST, {
     params: {
       nodeId,
+      nodeType
     },
   });
 }
@@ -2056,4 +2058,9 @@ export const deleteRoleMember = (roleId: string, unitIds: string[]) => {
 // 初始化角色
 export const initRoles = () => {
   return axios.post<IApiWrapper>(Url.INIT_ROLE);
+};
+
+// recently browsed folder
+export const getRecentlyBrowsedFolder = () => {
+  return axios.get<IApiWrapper & { data: IRecentlyBrowsedFolder[] }>(Url.NODE_RECENTLY_BROWSED);
 };

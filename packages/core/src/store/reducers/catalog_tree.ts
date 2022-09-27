@@ -8,7 +8,8 @@ import {
   IRemoveFavoriteNodeAction, IDeleteNodeFromFavoriteTreeAction, IMoveFavoriteNodeAction, IInitFavoriteTreeNodesAction,
   ISetActiveNodeErrorAction, IUpdatePermissionModalNodeIdAction, IUpdateShareModalNodeIdAction, IUpdateSaveAsTemplateModalNodeIdAction,
   IUpdateImportModalNodeIdAction, ISetTreeRootIdAction, INodesMapItem, ISetLoadedKeysAction, ISetNodeErrorTypeAction,
-  ISetPermissionModalMessageStatusAction , ISetPermissionCommitRemindParameterAction, ISetNoPermissionMembersAction
+  ISetPermissionModalMessageStatusAction , ISetPermissionCommitRemindParameterAction, ISetNoPermissionMembersAction,
+  IUpdateMoveToNodeIdsAction,
 } from '../interface';
 import { findNode, getUniqName, collectProperty } from 'utils';
 import * as actions from '../action_constants';
@@ -79,7 +80,7 @@ type CatalogTreeActions = ISetNodeNameAction | ISetRootIdAction | ISetDelNodeIdA
   IAddNodeToFavoriteTreeAction | IRemoveFavoriteNodeAction | IDeleteNodeFromFavoriteTreeAction | IMoveFavoriteNodeAction |
   IInitFavoriteTreeNodesAction | ISetActiveNodeErrorAction | IUpdatePermissionModalNodeIdAction | IUpdateShareModalNodeIdAction |
   IUpdateSaveAsTemplateModalNodeIdAction | IUpdateImportModalNodeIdAction | ISetTreeRootIdAction | ISetLoadedKeysAction | ISetNodeErrorTypeAction |
-  ISetPermissionModalMessageStatusAction | ISetPermissionCommitRemindParameterAction | ISetNoPermissionMembersAction;
+  ISetPermissionModalMessageStatusAction | ISetPermissionCommitRemindParameterAction | ISetNoPermissionMembersAction | IUpdateMoveToNodeIdsAction;
 
 export const catalogTree = produce((draftCatalogTree: ICatalogTree = defaultState, action: CatalogTreeActions) => {
   switch (action.type) {
@@ -283,6 +284,10 @@ export const catalogTree = produce((draftCatalogTree: ICatalogTree = defaultStat
     }
     case actions.SET_NO_PERMISSION_MEMBERS: {
       draftCatalogTree.noPermissionMembers = action.payload;
+      return draftCatalogTree;
+    }
+    case actions.UPDATE_MOVE_TO_NODE_IDS: {
+      draftCatalogTree.moveToNodeIds = action.payload;
       return draftCatalogTree;
     }
     default:

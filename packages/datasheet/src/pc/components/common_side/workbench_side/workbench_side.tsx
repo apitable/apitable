@@ -35,6 +35,7 @@ import { Favorite } from './favorite';
 import { SpaceInfo } from './space-info';
 import styles from './style.module.less';
 import { WorkbenchSideContext } from './workbench_side_context';
+import { MoveTo } from 'pc/components/catalog/move_to';
 
 const { Panel } = Collapse;
 
@@ -64,6 +65,7 @@ export const WorkbenchSide: FC = () => {
     importModalNodeId,
     loading,
     err,
+    moveToNodeIds
   } = useSelector((state: IReduxState) => {
     return {
       spaceId: state.space.activeId,
@@ -76,6 +78,7 @@ export const WorkbenchSide: FC = () => {
       importModalNodeId: state.catalogTree.importModalNodeId,
       loading: state.catalogTree.loading,
       err: state.catalogTree.err,
+      moveToNodeIds: state.catalogTree.moveToNodeIds
     };
   }, shallowEqual);
 
@@ -402,6 +405,14 @@ export const WorkbenchSide: FC = () => {
           visible={Boolean(permissionModalNodeId)}
           onClose={onClosePermissionSettingModal}
         />
+        {
+          moveToNodeIds && moveToNodeIds.length > 0 && (
+            <MoveTo
+              nodeIds={moveToNodeIds}
+              onClose={() => dispatch(StoreActions.updateMoveToNodeIds([]))}
+            />
+          )
+        }
       </div>
     </WorkbenchSideContext.Provider>
   );

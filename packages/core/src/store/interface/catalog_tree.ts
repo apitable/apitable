@@ -38,6 +38,8 @@ export interface ICatalogTree {
   permissionCommitRemindParameter: ICommitRemind | null;
   /**  无权限人员unitIds **/
   noPermissionMembers: string[];
+  /** 移动至（移动文件）弹窗 */
+  moveToNodeIds?: string[];
 }
 
 export interface IRightClickInfo {
@@ -560,5 +562,10 @@ export interface ISetPermissionCommitRemindParameterAction {
 
 export interface ISetNoPermissionMembersAction {
   type: typeof actions.SET_NO_PERMISSION_MEMBERS;
+  payload: string[]
+}
+
+export interface IUpdateMoveToNodeIdsAction {
+  type: typeof actions.UPDATE_MOVE_TO_NODE_IDS;
   payload: string[];
 }

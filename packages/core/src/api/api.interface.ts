@@ -265,3 +265,10 @@ export interface IGetRoleMemberListResponseItem {
 export type IGetRoleMemberListResponse = IPageDataBase & {
   records: IGetRoleMemberListResponseItem[];
 };
+
+export interface IRecentlyBrowsedFolder {
+  nodeName: string;
+  icon: string;
+  nodeId: string;
+  superiorPath: string;
+}
