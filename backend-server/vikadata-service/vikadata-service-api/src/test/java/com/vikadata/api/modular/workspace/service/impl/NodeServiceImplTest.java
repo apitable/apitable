@@ -1,11 +1,15 @@
 package com.vikadata.api.modular.workspace.service.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.lang.SpaceGlobalFeature;
 import com.vikadata.api.mock.bean.MockUserSpace;
 import com.vikadata.api.model.ro.node.NodeOpRo;
+import com.vikadata.api.model.vo.node.NodeInfoVo;
 import com.vikadata.api.modular.organization.service.ITeamService;
 import com.vikadata.api.modular.workspace.service.INodeService;
 import com.vikadata.core.exception.BusinessException;
@@ -123,6 +127,54 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
         String nodeId = nodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), op);
         boolean nodeInRootFolder = nodeService.isNodeBelongRootFolder(userSpace.getSpaceId(), nodeId);
         assertThat(nodeInRootFolder).isTrue();
+    }
+
+    @Test
+    void testGetChildNodesByNodeIdWithNullType() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String rootNodeId = nodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeOpRo op = new NodeOpRo().toBuilder()
+                .parentId(rootNodeId)
+                .type(NodeType.DATASHEET.getNodeType())
+                .nodeName("folder")
+                .build();
+        String nodeId = nodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), op);
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userSpace.getUserId(), userSpace.getSpaceId());
+        List<NodeInfoVo> nodes = nodeService.getChildNodesByNodeId(userSpace.getSpaceId(), memberId, rootNodeId, null);
+        List<String> childNodeIds = nodes.stream().map(NodeInfoVo::getNodeId).collect(Collectors.toList());
+        assertThat(childNodeIds.contains(nodeId)).isTrue();
+    }
+
+    @Test
+    void testGetChildNodesByNodeIdWithFolderType() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String rootNodeId = nodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeOpRo op = new NodeOpRo().toBuilder()
+                .parentId(rootNodeId)
+                .type(NodeType.DATASHEET.getNodeType())
+                .nodeName("folder")
+                .build();
+        String nodeId = nodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), op);
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userSpace.getUserId(), userSpace.getSpaceId());
+        List<NodeInfoVo> nodes = nodeService.getChildNodesByNodeId(userSpace.getSpaceId(), memberId, rootNodeId, NodeType.FOLDER);
+        List<String> childNodeIds = nodes.stream().map(NodeInfoVo::getNodeId).collect(Collectors.toList());
+        assertThat(childNodeIds.contains(nodeId)).isFalse();
+    }
+
+    @Test
+    void testGetChildNodesByNodeIdWithFolderTypeMatch() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String rootNodeId = nodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeOpRo op = new NodeOpRo().toBuilder()
+                .parentId(rootNodeId)
+                .type(NodeType.FOLDER.getNodeType())
+                .nodeName("folder")
+                .build();
+        String nodeId = nodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), op);
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userSpace.getUserId(), userSpace.getSpaceId());
+        List<NodeInfoVo> nodes = nodeService.getChildNodesByNodeId(userSpace.getSpaceId(), memberId, rootNodeId, NodeType.FOLDER);
+        List<String> childNodeIds = nodes.stream().map(NodeInfoVo::getNodeId).collect(Collectors.toList());
+        assertThat(childNodeIds.contains(nodeId)).isTrue();
     }
 
 }

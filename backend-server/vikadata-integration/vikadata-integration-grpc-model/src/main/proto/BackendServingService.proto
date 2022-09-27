@@ -1,0 +1,21 @@
+syntax = 'proto3';
+
+package grpc.serving;
+
+import "message.proto";
+
+option java_multiple_files = true;
+option java_package = "com.vikadata.integration.grpc";
+option java_outer_classname = "GrpcBackendServingService";
+
+// backend-server provided service
+// socket->backend
+service ApiServingService {
+  // socket->java
+  rpc RecordNodeBrowsing (NodeBrowsingRo) returns (BasicResult);
+}
+
+message NodeBrowsingRo {
+  string node_id = 1;
+  string uuid = 2;
+}

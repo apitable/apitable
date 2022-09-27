@@ -10,9 +10,12 @@ import { AuthenticatedSocket } from 'src/interface/socket/authenticated-socket.i
 import { NodeChangeRo } from 'src/model/ro/notification/node-change.ro';
 import { NotificationTypes } from 'src/enum/request-types.enum';
 import { GatewayConstants } from 'src/constants/gateway.constants';
+import { GrpcClient } from 'src/grpc/client/grpc.client';
 
 @Injectable()
 export class NotificationService implements INotificationService {
+  constructor(private readonly grpcClient: GrpcClient) {
+  }
   public broadcastNotify(message: NotificationRo, client: Socket): any {
     // return message;
     if (isNil(message.toUserId)) {
@@ -79,6 +82,17 @@ export class NotificationService implements INotificationService {
       }
       resolve(true);
     });
+  }
+
+  async nodeBrowsed(nodeId: string, uuid: string): Promise<boolean> {
+    try {
+      const result = await this.grpcClient.recordNodeBrowsing({nodeId, uuid});
+      return result.success;
+    } catch (err) {
+      logger('NotificationService').error('nodeBrowsed', err.stack);
+      return false;
+    }
+
   }
 
   private getSpaceRoom(spaceId: string): string {

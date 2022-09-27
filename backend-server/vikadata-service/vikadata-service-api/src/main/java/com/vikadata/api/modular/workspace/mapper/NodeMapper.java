@@ -18,6 +18,7 @@ import com.vikadata.api.model.vo.node.NodeShareTree;
 import com.vikadata.api.model.vo.node.RubbishNodeVo;
 import com.vikadata.api.model.vo.node.SimpleSortableNodeInfo;
 import com.vikadata.api.modular.workspace.model.SimpleNodeInfo;
+import com.vikadata.define.enums.NodeType;
 import com.vikadata.entity.NodeEntity;
 
 /**
@@ -203,7 +204,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @param nodeId 节点ID
      * @return 子节点ID集合
      */
-    List<String> selectOrderSubNodeIds(@Param("nodeId") String nodeId);
+    List<String> selectOrderSubNodeIds(@Param("nodeId") String nodeId, @Param("nodeType") NodeType nodeType);
 
     /**
      * 获取节点分享树

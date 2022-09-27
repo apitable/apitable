@@ -39,6 +39,7 @@ _test_unit_test: ## unittest and codecov upload
 		-e REDIS_HOST=test-redis-$${CI_GROUP_TAG:-0} \
 		-e RABBITMQ_HOST=test-rabbitmq-$${CI_GROUP_TAG:-0} \
 		-e MONGO_HOST=test-mongo-$${CI_GROUP_TAG:-0} \
+		-e BACKEND_GRPC_PORT=0 \
 		unit-test-backend
 
 _test_codecov:

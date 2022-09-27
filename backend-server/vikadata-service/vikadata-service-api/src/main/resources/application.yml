@@ -437,6 +437,8 @@ client:
 
 # grpc-client 配置
 grpc:
+  server:
+    port: ${BACKEND_GRPC_PORT:8083}
   client:
     nest-grpc-server:
       address: ${NEST_GRPC_ADDRESS:static://localhost:3334}

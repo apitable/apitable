@@ -127,6 +127,7 @@ import com.vikadata.api.modular.workspace.service.IDatasheetRecordService;
 import com.vikadata.api.modular.workspace.service.IDatasheetService;
 import com.vikadata.api.modular.workspace.service.IFieldRoleService;
 import com.vikadata.api.modular.workspace.service.INodeDescService;
+import com.vikadata.api.modular.workspace.service.INodeRecentlyBrowsedService;
 import com.vikadata.api.modular.workspace.service.INodeRelService;
 import com.vikadata.api.modular.workspace.service.INodeRoleService;
 import com.vikadata.api.modular.workspace.service.INodeService;
@@ -152,6 +153,7 @@ import com.vikadata.entity.NodeEntity;
 import com.vikadata.integration.grpc.BasicResult;
 import com.vikadata.integration.grpc.NodeCopyRo;
 import com.vikadata.integration.grpc.NodeDeleteRo;
+import com.vikadata.schema.NodeRecentlyBrowsedSchema;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -262,6 +264,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Resource
     private UserSpaceService userSpaceService;
+
+    @Resource
+    private INodeRecentlyBrowsedService iNodeRecentlyBrowsedService;
 
     @Override
     public String getRootNodeIdBySpaceId(String spaceId) {
@@ -407,22 +412,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         //模糊搜索结果
         List<String> nodeIds = nodeMapper.selectLikeNodeName(spaceId, StrUtil.trim(keyword));
         List<NodeInfoVo> nodeInfos = this.getNodeInfoByNodeIds(spaceId, memberId, nodeIds);
-        if (CollUtil.isEmpty(nodeInfos)) {
-            return new ArrayList<>();
-        }
-        // 写入上级路径
-        List<NodeSearchResult> results = new ArrayList<>(nodeInfos.size());
-        List<String> parentIds = nodeInfos.stream().map(NodeInfoVo::getParentId).collect(Collectors.toList());
-        Map<String, String> parentIdToPathMap = this.getSuperiorPathByParentIds(spaceId, parentIds);
-        nodeInfos.forEach(info -> {
-            NodeSearchResult result = new NodeSearchResult();
-            BeanUtil.copyProperties(info, result);
-            if (MapUtil.isNotEmpty(parentIdToPathMap)) {
-                result.setSuperiorPath(parentIdToPathMap.get(info.getParentId()));
-            }
-            results.add(result);
-        });
-        return results;
+        return formatNodeSearchResults(spaceId, nodeInfos);
     }
 
     @Override
@@ -433,10 +423,10 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     @Override
-    public List<NodeInfoVo> getChildNodesByNodeId(String spaceId, Long memberId, String nodeId) {
+    public List<NodeInfoVo> getChildNodesByNodeId(String spaceId, Long memberId, String nodeId, NodeType nodeType) {
         log.info("查询子节点列表");
         // 获取直属子节点
-        List<String> subNodeIds = nodeMapper.selectOrderSubNodeIds(nodeId);
+        List<String> subNodeIds = nodeMapper.selectOrderSubNodeIds(nodeId, nodeType);
         return this.getNodeInfoByNodeIds(spaceId, memberId, subNodeIds);
     }
 
@@ -1882,6 +1872,35 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         String rootNodeId = nodeMapper.selectRootNodeIdBySpaceId(spaceId);
         String parentNodeId = nodeMapper.selectParentIdByNodeId(nodeId);
         return ObjectUtil.isNotNull(rootNodeId) && rootNodeId.equals(parentNodeId);
+    }
+
+    @Override
+    public List<NodeSearchResult> recentList(String spaceId, Long memberId) {
+        NodeRecentlyBrowsedSchema document = iNodeRecentlyBrowsedService.getByMemberIdAndNodeType(memberId, NodeType.FOLDER);
+        if (null == document || document.getNodeIds().isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<NodeInfoVo> nodeInfos = this.getNodeInfoByNodeIds(spaceId, memberId, document.getNodeIds());
+        return formatNodeSearchResults(spaceId, nodeInfos);
+    }
+
+    private List<NodeSearchResult> formatNodeSearchResults(String spaceId, List<NodeInfoVo> nodeInfoList) {
+        if (CollUtil.isEmpty(nodeInfoList)) {
+            return new ArrayList<>();
+        }
+        // format the tree
+        List<NodeSearchResult> results = new ArrayList<>(nodeInfoList.size());
+        List<String> parentIds = nodeInfoList.stream().map(NodeInfoVo::getParentId).collect(Collectors.toList());
+        Map<String, String> parentIdToPathMap = this.getSuperiorPathByParentIds(spaceId, parentIds);
+        nodeInfoList.forEach(info -> {
+            NodeSearchResult result = new NodeSearchResult();
+            BeanUtil.copyProperties(info, result);
+            if (MapUtil.isNotEmpty(parentIdToPathMap)) {
+                result.setSuperiorPath(parentIdToPathMap.get(info.getParentId()));
+            }
+            results.add(result);
+        });
+        return results;
     }
 
 }

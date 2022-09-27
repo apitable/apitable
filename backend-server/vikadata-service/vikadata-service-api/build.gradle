@@ -74,6 +74,7 @@ dependencies {
   implementation rootProject.ext.dependencies['swagger2']
   implementation rootProject.ext.dependencies['java-semver']
   implementation rootProject.ext.dependencies['grpc-spring-boot']
+  implementation rootProject.ext.dependencies['grpc-server-spring-boot']
   implementation rootProject.ext.dependencies['pdf']
   implementation rootProject.ext.dependencies['sentry']
   implementation rootProject.ext.dependencies['spring-cloud-starter-sleuth']

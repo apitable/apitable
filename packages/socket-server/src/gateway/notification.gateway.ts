@@ -1,5 +1,6 @@
 import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { UseFilters } from '@nestjs/common';
+import { NodeBrowsedRo } from 'src/model/ro/notification/node.browsed.ro';
 import { NotificationTypes } from '../enum/request-types.enum';
 import { NotificationRo } from '../model/ro/notification/notification.ro';
 import { NotificationService } from '../service/notification/notification.service';
@@ -69,5 +70,10 @@ export class NotificationGateway {
   @SubscribeMessage(NotificationTypes.LEAVE_SPACE)
   async leaveSpace(@MessageBody() message: WatchSpaceRo, @ConnectedSocket() client: AuthenticatedSocket): Promise<boolean> {
     return this.notificationService.leaveSpace(message, client);
+  }
+
+  @SubscribeMessage(NotificationTypes.NODE_BROWSED)
+  async nodeBrowsed(@MessageBody() message: NodeBrowsedRo, @ConnectedSocket() client: AuthenticatedSocket): Promise<boolean> {
+    return this.notificationService.nodeBrowsed(message.nodeId, client.auth.userId)
   }
 }

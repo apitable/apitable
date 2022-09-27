@@ -18,6 +18,7 @@ import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 /**
  * <p>
@@ -29,6 +30,7 @@ import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(MongoClient.class)
+@EnableMongoRepositories("com.vikadata.api.modular.*.repository")
 public class MongodbConfig extends AbstractMongoClientConfiguration {
 
     @Resource

@@ -220,9 +220,10 @@ public interface INodeService extends IService<NodeEntity> {
      * @param spaceId 空间ID
      * @param memberId 成员ID
      * @param nodeId 节点ID
+     * @param nodeType node type 1:folder,2:datasheet
      * @return NodeInfoVo 列表
      */
-    List<NodeInfoVo> getChildNodesByNodeId(String spaceId, Long memberId, String nodeId);
+    List<NodeInfoVo> getChildNodesByNodeId(String spaceId, Long memberId, String nodeId, NodeType nodeType);
 
     /**
      * 获取节点父级路径
@@ -553,4 +554,12 @@ public interface INodeService extends IService<NodeEntity> {
      * @return 节点是否在根目录中
      */
     boolean isNodeBelongRootFolder(String spaceId, String nodeId);
+
+    /**
+     *  get member recently browsing folder
+     * @param spaceId space id
+     * @param memberId member id
+     * @return NodeSearchResult
+     */
+    List<NodeSearchResult> recentList(String spaceId, Long memberId);
 }

@@ -67,4 +67,9 @@ export enum NotificationTypes {
    *  离开空间
    */
   LEAVE_SPACE = 'LEAVE_SPACE',
+
+  /**
+   * node browsing event
+   */
+  NODE_BROWSED = 'NODE_BROWSED',
 }

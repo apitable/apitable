@@ -328,13 +328,21 @@ public class NodeController {
 
     @GetResource(path = "/children", requiredPermission = false)
     @ApiOperation(value = "查询子节点", notes = "获取指定节点的子节点列表，节点分类型区分文件夹或数表" + ROLE_DESC)
-    @ApiImplicitParam(name = "nodeId", value = "节点ID", required = true, dataTypeClass = String.class, paramType = "query", example = "nodRTGSy43DJ9")
-    public ResponseData<List<NodeInfoVo>> getNodeChildrenList(@RequestParam(name = "nodeId") String nodeId) {
-        // 获取空间ID，方法包含判断节点是否存在
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "query", example = "nodRTGSy43DJ9"),
+            @ApiImplicitParam(name = "nodeType", value = "node type 1:folder,2:datasheet", dataTypeClass = Integer.class, paramType = "query", example = "1")
+    })
+    public ResponseData<List<NodeInfoVo>> getNodeChildrenList(@RequestParam(name = "nodeId") String nodeId,
+            @RequestParam(name = "nodeType", required = false) Integer nodeType) {
+        // get the space ID, the method includes judging whether the node exists
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
+        NodeType nodeTypeEnum = null;
+        if (null != nodeType) {
+            nodeTypeEnum = NodeType.toEnum(nodeType);
+        }
         // 获取成员ID，方法包含判断用户是否在此空间
         Long memberId = LoginContext.me().getUserSpaceDto(spaceId).getMemberId();
-        List<NodeInfoVo> nodeInfos = iNodeService.getChildNodesByNodeId(spaceId, memberId, nodeId);
+        List<NodeInfoVo> nodeInfos = iNodeService.getChildNodesByNodeId(spaceId, memberId, nodeId, nodeTypeEnum);
         return ResponseData.success(nodeInfos);
     }
 
@@ -697,6 +705,16 @@ public class NodeController {
         controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.READ_NODE,
                 status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
         return ResponseData.success(iNodeRelService.getRelationNodeInfoByNodeId(nodeId, viewId, memberId, type));
+    }
+
+    @GetResource(path = "/recentList", requiredPermission = false)
+    @ApiOperation(value = "member recent open node list", notes = "member recent open node list")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    public ResponseData<List<NodeSearchResult>> recentList() {
+        String spaceId = LoginContext.me().getSpaceId();
+        Long memberId = LoginContext.me().getMemberId();
+        List<NodeSearchResult> nodeInfos = iNodeService.recentList(spaceId, memberId);
+        return ResponseData.success(nodeInfos);
     }
 
 }

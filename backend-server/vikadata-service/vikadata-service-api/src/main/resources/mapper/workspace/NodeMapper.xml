@@ -124,22 +124,27 @@
     </select>
 
     <select id="selectOrderSubNodeIds" resultType="java.lang.String">
-        WITH RECURSIVE pre (node_id, pre_node_id) AS (
+        WITH RECURSIVE pre (node_id, pre_node_id, type) AS (
         SELECT vn.node_id,
-        vn.pre_node_id
+        vn.pre_node_id,
+        vn.type
         FROM vika_node vn
         WHERE vn.parent_id = #{nodeId}
         AND vn.pre_node_id IS NULL
         AND vn.is_rubbish = 0
         UNION ALL
         SELECT vn.node_id,
-        vn.pre_node_id
+        vn.pre_node_id,
+        vn.type
         FROM pre p
         JOIN vika_node vn ON p.node_id = vn.pre_node_id
         AND vn.is_rubbish = 0
         )
         SELECT node_id
         FROM pre
+        <if test="nodeType != null">
+            WHERE pre.type = #{nodeType.nodeType}
+        </if>
     </select>
 
     <select id="selectAllSubNodeIds" resultType="java.lang.String">

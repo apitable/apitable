@@ -19,11 +19,15 @@ export class GatewayConstants {
 
   public static readonly NEST_SERVICE = 'NEST_SERVICE';
 
+  public static readonly BACKEND_SERVICE = 'BACKEND_SERVICE';
+
   public static readonly GRPC_PACKAGE = 'vika.grpc';
 
   public static readonly NEST_GRPC_PORT = 3334;
 
   public static readonly NEST_GRPC_URL = process.env.NEST_GRPC_URL || '0.0.0.0:3334';
+
+  public static readonly BACKEND_GRPC_URL = process.env.BACKEND_GRPC_URL || '0.0.0.0:8083';
 
   public static readonly GRPC_TIMEOUT_MAX_TIMES = parseInt(process.env.GRPC_TIMEOUT_MAX_TIMES, 10) || 3;
 }

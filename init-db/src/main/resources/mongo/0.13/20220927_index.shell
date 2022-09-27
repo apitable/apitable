@@ -1,0 +1,2 @@
+db.vika_node_recently_browsed.createIndex({memberId: 1}, {name:'idx_member_id', background: true});
+db.vika_node_recently_browsed.createIndex({spaceId: 1}, {name:'idx_space_id', background: true});

@@ -98,7 +98,7 @@
         <encoder>
             <!--小知识：日志颜色支持：-->
             <!--blue cyan green magenta red yellow-->
-            <pattern>「Log」>>> %d{yyyy-MM-dd HH:mm:ss.SSS} - T[%X{traceId}] - S[%X{spanId}] - Thread[%thread] %-5level %logger{35} Line:%L - %msg%n</pattern>
+            <pattern>「Log」>>> ${CONSOLE_LOG_PATTERN}</pattern>
             <charset>utf-8</charset>
         </encoder>
     </appender>

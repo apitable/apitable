@@ -41,4 +41,12 @@ export interface INotificationService {
    * @date 2020/7/13 11:08 上午
    */
   leaveSpace(message: WatchSpaceRo, client: AuthenticatedSocket): Promise<boolean>;
+
+  /**
+   * node browsed event
+   * @param nodeId node id
+   * @param uuid user uuid
+   * @return boolean
+   */
+   nodeBrowsed(nodeId: string, uuid: string): Promise<boolean>;
 }
