@@ -1,8 +1,10 @@
-import { TextInput, Typography, useThemeColors } from '@vikadata/components';
+import { Box, TextInput, Typography, useThemeColors } from '@vikadata/components';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { Strings, t } from '@vikadata/core';
 import { useState } from 'react';
 import ReactDOM from 'react-dom';
+
+import styles from './style.module.less';
 
 const MAX_NAME_LENGTH = 50;
 
@@ -36,7 +38,7 @@ const EditRoleModal: React.FC<IEditRoleModalProps> = props => {
     onCancel && onCancel();
   };
   return (
-    <Modal width={400} title={title} visible onOk={onOk} onCancel={onCancel} centered>
+    <Modal className={styles.editRoleModal} width={400} title={title} visible onOk={onOk} onCancel={onCancel} centered>
       <TextInput
         placeholder={t(Strings.role_name_input_placeholder)}
         onChange={e => {
@@ -47,11 +49,13 @@ const EditRoleModal: React.FC<IEditRoleModalProps> = props => {
         error={Boolean(error)}
         block
       />
-      {error && (
-        <Typography variant="body4" color={colors.textDangerDefault}>
-          {error}
-        </Typography>
-      )}
+      <Box position={'absolute'}>
+        {error && (
+          <Typography variant="body4" color={colors.textDangerDefault}>
+            {error}
+          </Typography>
+        )}
+      </Box>
     </Modal>
   );
 };

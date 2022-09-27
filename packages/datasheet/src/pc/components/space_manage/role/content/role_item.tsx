@@ -1,8 +1,6 @@
 import { DeleteOutlined, EditOutlined, MoreStandOutlined, MultiplemembersFilled } from '@vikadata/icons';
-import { stopPropagation, Typography } from '@vikadata/components';
+import { ContextMenu, Typography, useContextMenu } from '@vikadata/components';
 import { Strings, t } from '@vikadata/core';
-import { ContextmenuItem } from 'pc/components/common';
-import { Dropdown } from 'antd';
 import { useContext } from 'react';
 import classNames from 'classnames';
 
@@ -10,6 +8,9 @@ import { RoleContext } from '../context';
 import { IRoleItem } from '../interface';
 import styles from './style.module.less';
 import { expandEditRoleModal } from './edit_role_modal';
+import { flatContextData } from 'pc/utils';
+
+const ROLE_MENU_EDIT_ID = 'ROLE_MENU_EDIT';
 
 export const RoleItem: React.FC<{
   selected?: boolean;
@@ -24,6 +25,32 @@ export const RoleItem: React.FC<{
   const { roleName, roleId } = role;
   const { manageable } = useContext(RoleContext);
   const showMore = manageable && (onEdit || onDelete);
+  const { show } = useContextMenu({ id: ROLE_MENU_EDIT_ID });
+  const menuData = [
+    [
+      {
+        icon: <EditOutlined/>,
+        text: t(Strings.role_context_item_rename),
+        onClick: () => {
+          expandEditRoleModal({
+            value: roleName,
+            title: t(Strings.rename_role_title),
+            onChange: value => onEdit?.(role, value),
+            existed: roleNameArray,
+          });
+        },
+        hidden: !onEdit,
+      },
+      {
+        icon: <DeleteOutlined/>,
+        text: t(Strings.role_context_item_delete),
+        onClick: () => {
+          onDelete?.(role);
+        },
+        hidden: !onDelete,
+      }
+    ]
+  ];
   return (
     <div className={classNames(styles.roleItem, selected && styles.roleItemSelected)} onClick={() => onClick && onClick(roleId)}>
       {icon ? icon : <MultiplemembersFilled className={styles.roleItemIcon} size={16} />}
@@ -31,38 +58,11 @@ export const RoleItem: React.FC<{
         {roleName}
       </Typography>
       {showMore && (
-        <div onClick={stopPropagation}>
-          <Dropdown
-            overlayStyle={{
-              minWidth: 'auto',
-              right: 0,
-            }}
-            placement={'bottomLeft'}
-            trigger={['click']}
-            overlay={
-              <div className={styles.roleItemMenu}>
-                {onEdit && (
-                  <ContextmenuItem
-                    icon={<EditOutlined />}
-                    name={t(Strings.role_context_item_rename)}
-                    onClick={() =>
-                      expandEditRoleModal({
-                        value: roleName,
-                        title: t(Strings.rename_role_title),
-                        onChange: value => onEdit(role, value),
-                        existed: roleNameArray,
-                      })
-                    }
-                  />
-                )}
-                {onDelete && <ContextmenuItem icon={<DeleteOutlined />} name={t(Strings.role_context_item_delete)} onClick={() => onDelete(role)} />}
-              </div>
-            }
-          >
-            <MoreStandOutlined className={styles.roleItemIcon} size={16} />
-          </Dropdown>
+        <div onClick={show}>
+          <MoreStandOutlined className={styles.roleItemIcon} size={16} />
         </div>
       )}
+      <ContextMenu overlay={flatContextData(menuData, true)} menuId={ROLE_MENU_EDIT_ID} />
     </div>
   );
 };

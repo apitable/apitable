@@ -6,11 +6,12 @@ import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 
-import styles from './style.module.less';
 import { RoleContext } from '../context';
 import { IRoleItem } from '../interface';
 import { expandEditRoleModal } from './edit_role_modal';
 import { RoleItem } from './role_item';
+
+import styles from './style.module.less';
 
 export const addRole = (roleName: string, cb: () => void) => {
   if (!roleName) {

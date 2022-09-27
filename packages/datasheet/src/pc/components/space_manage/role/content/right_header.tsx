@@ -2,6 +2,7 @@ import { Box, Button, Space, Typography, useThemeColors } from '@vikadata/compon
 import { Strings, t } from '@vikadata/core';
 import { useContext } from 'react';
 import { RoleContext } from '../context';
+import styles from './style.module.less';
 
 export const RightHeader: React.FC<{
   count?: number;
@@ -30,7 +31,14 @@ export const RightHeader: React.FC<{
           <Button size="small" onClick={openAddMemberModal}>
             {t(Strings.add_member)}
           </Button>
-          <Button size="small" variant="jelly" disabled={buttonOpts?.disabledRemoveBtn} color={'danger'} onClick={onRemove}>
+          <Button
+            className={styles.batchRemoveRoleButton}
+            size="small"
+            variant="jelly"
+            disabled={buttonOpts?.disabledRemoveBtn}
+            color={'danger'}
+            onClick={onRemove}
+          >
             {t(Strings.delete_role_member_title)}
           </Button>
         </Space>

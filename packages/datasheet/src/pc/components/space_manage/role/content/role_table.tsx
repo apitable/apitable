@@ -72,7 +72,7 @@ export const RoleTable: React.FC<{
       title: t(Strings.role_member_table_header_team),
       align: 'left',
       width: 296,
-      render: (_, record) => record.teams || record.unitName,
+      render: (_, record) => <Typography variant='body3'>{record.teams || record.unitName}</Typography>,
     },
   ];
 
@@ -84,7 +84,7 @@ export const RoleTable: React.FC<{
       align: 'left',
       width: 180,
       render: (_, record) => (
-        <LinkButton component={'span'} color={colors.textDangerDefault} onClick={() => onRemove && onRemove([record.unitRefId])}>
+        <LinkButton component={'span'} underline={false} color={colors.textDangerDefault} onClick={() => onRemove && onRemove([record.unitRefId])}>
           {t(Strings.delete_role_member_title)}
         </LinkButton>
       ),
@@ -99,7 +99,7 @@ export const RoleTable: React.FC<{
     }
     : undefined;
 
-  const showPage = total > pageSize;
+  const showPage = total > 0;
 
   return (
     <div className={styles.roleTableWrap}>
