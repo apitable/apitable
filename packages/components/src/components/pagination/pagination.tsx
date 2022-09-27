@@ -81,6 +81,11 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
       resPage = current;
     }
 
+    if (onChange) {
+      onChange(resPage, pageSize);
+      return;
+    }
+
     setPagination((val) => ({ ...val, current: resPage }));
   };
 
@@ -149,9 +154,9 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
   const handleChangePageSize = (option: IOption) => {
     const { current, total } = pagination;
     const pageSize = Number(option.value);
-    if (onPageSizeChange) {
+    if (onPageSizeChange || onChange) {
       onChange && onChange(current, pageSize);
-      onPageSizeChange(current, pageSize);
+      onPageSizeChange && onPageSizeChange(current, pageSize);
       return;
     }
     const pages = Math.ceil(total / pageSize);
