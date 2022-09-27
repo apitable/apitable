@@ -338,3 +338,14 @@ export enum CollectType {
   /** 指定字段 */
   SpecifiedFields,
 }
+
+// 使用hook操作数表内容的权限
+export enum DatasheetOperationPermission {
+  AddRecord,
+  EditRecord,
+  DeleteRecord,
+  AddField,
+  EditFieldName,
+  EditFieldProperty,
+  DeleteField
+}

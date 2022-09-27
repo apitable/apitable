@@ -1,4 +1,4 @@
-import { FieldType, IInsertPosition, IPermissionResult, IWidgetContext, IWidgetDatasheetState } from 'interface';
+import { DatasheetOperationPermission, FieldType, IInsertPosition, IPermissionResult, IWidgetContext, IWidgetDatasheetState } from 'interface';
 import {
   CollaCommandName, ConfigConstant, ExecuteResult, Field as CoreField, ICollaCommandExecuteResult, ISetRecordOptions, Selectors,
   FieldType as CoreFieldType, IDPrefix, getNewId, getFieldClass, IField, Conversion,
@@ -144,20 +144,43 @@ export class Datasheet {
     return { acceptable: true };
   }
 
-  private checkBasicPermissions(): IPermissionResult {
+  private checkBasicPermissions(operation: DatasheetOperationPermission): IPermissionResult {
     const state = this.wCtx.widgetStore.getState();
     const datasheetId = this.datasheetId;
     const datasheet = getWidgetDatasheet(state, datasheetId);
     const sourceId = state.widget?.snapshot.sourceId;
     const globalState = this.wCtx.globalStore.getState();
     const permissions = Selectors.getPermissions(globalState, datasheetId, undefined, sourceId?.startsWith('mir') ? sourceId : '');
-
     if (!datasheet || !permissions) {
       return { acceptable: false, message: '维格表数据加载失败' };
     }
 
-    if (!permissions.editable) {
-      return { acceptable: false, message: '维格表权限为只读，无法进行写入操作' };
+    switch(operation) {
+      case DatasheetOperationPermission.AddRecord: {
+        if (!permissions.rowCreatable) {
+          return { acceptable: false, message: '维格表权限为只读，无法进行新增记录操作' };
+        }
+      } break;
+      case DatasheetOperationPermission.EditRecord: {
+        if (!permissions.cellEditable) {
+          return { acceptable: false, message: '维格表权限为只读，无法进行单元格写入操作' };
+        }
+      } break;
+      case DatasheetOperationPermission.DeleteRecord: {
+        if (!permissions.rowRemovable) {
+          return { acceptable: false, message: '维格表权限不足，无法进行删除记录操作' };
+        }
+      } break;
+      case DatasheetOperationPermission.AddField: {
+        if (!permissions.fieldCreatable) {
+          return { acceptable: false, message: '维格表权限不足，无法进行新增字段操作' };
+        }
+      } break;
+      case DatasheetOperationPermission.DeleteField: {
+        if (!permissions.fieldRemovable) {
+          return { acceptable: false, message: '维格表权限不足，无法进行删除字段操作' };
+        }
+      } break;
     }
 
     return { acceptable: true };
@@ -166,10 +189,6 @@ export class Datasheet {
   private checkPermissionsForRecordsValues(records: ({ [key: string]: any } | undefined)[]): IPermissionResult {
     const state = this.wCtx.globalStore.getState();
     const datasheetId = this.datasheetId;
-    const basicPermissionsCheckResult = this.checkBasicPermissions();
-    if (!basicPermissionsCheckResult.acceptable) {
-      return basicPermissionsCheckResult;
-    }
 
     for (const valuesMap of records) {
       // 不传 valuesMap 则不进行值校验
@@ -674,6 +693,10 @@ export class Datasheet {
    * ```
    */
   checkPermissionsForAddRecord(valuesMap?: { [key: string]: any }): IPermissionResult {
+    const basicPermissionsCheckResult = this.checkBasicPermissions(DatasheetOperationPermission.AddRecord);
+    if (!basicPermissionsCheckResult.acceptable) {
+      return basicPermissionsCheckResult;
+    }
     return this.checkPermissionsForRecordsValues(valuesMap ? [valuesMap] : []);
   }
 
@@ -724,6 +747,10 @@ export class Datasheet {
     const recordsValues: ({ [key: string]: any } | undefined)[] = [];
     for (const record of (records || [])) {
       recordsValues.push(record.valuesMap);
+    }
+    const basicPermissionsCheckResult = this.checkBasicPermissions(DatasheetOperationPermission.AddRecord);
+    if (!basicPermissionsCheckResult.acceptable) {
+      return basicPermissionsCheckResult;
     }
     return this.checkPermissionsForRecordsValues(recordsValues || []);
   }
@@ -857,6 +884,12 @@ export class Datasheet {
     if (!recordIdsExist.acceptable) {
       return recordIdsExist;
     }
+
+    const basicPermissionsCheckResult = this.checkBasicPermissions(DatasheetOperationPermission.EditRecord);
+    if (!basicPermissionsCheckResult.acceptable) {
+      return basicPermissionsCheckResult;
+    }
+
     return this.checkPermissionsForRecordsValues(recordsValues);
   }
 
@@ -889,7 +922,7 @@ export class Datasheet {
    * ```
    */
   checkPermissionsForDeleteRecord(recordId?: string): IPermissionResult {
-    const basicPermissionsCheckResult = this.checkBasicPermissions();
+    const basicPermissionsCheckResult = this.checkBasicPermissions(DatasheetOperationPermission.DeleteRecord);
     if (!basicPermissionsCheckResult.acceptable) {
       return basicPermissionsCheckResult;
     }
@@ -931,7 +964,7 @@ export class Datasheet {
    * ```
    */
   checkPermissionsForDeleteRecords(recordIds?: string[]): IPermissionResult {
-    const basicPermissionsCheckResult = this.checkBasicPermissions();
+    const basicPermissionsCheckResult = this.checkBasicPermissions(DatasheetOperationPermission.DeleteRecord);
     if (!basicPermissionsCheckResult.acceptable) {
       return basicPermissionsCheckResult;
     }
@@ -975,7 +1008,7 @@ export class Datasheet {
    * ```
    */
   checkPermissionsForAddField(name?: string | undefined, type?: FieldType, property?: any): IPermissionResult {
-    const basicPermissionsCheckResult = this.checkBasicPermissions();
+    const basicPermissionsCheckResult = this.checkBasicPermissions(DatasheetOperationPermission.AddField);
     if (!basicPermissionsCheckResult.acceptable) {
       return basicPermissionsCheckResult;
     }
@@ -1038,7 +1071,7 @@ export class Datasheet {
    * ```
    */
   checkPermissionsForDeleteField(fieldId?: string | undefined) {
-    const basicPermissionsCheckResult = this.checkBasicPermissions();
+    const basicPermissionsCheckResult = this.checkBasicPermissions(DatasheetOperationPermission.DeleteField);
     if (!basicPermissionsCheckResult.acceptable) {
       return basicPermissionsCheckResult;
     }
