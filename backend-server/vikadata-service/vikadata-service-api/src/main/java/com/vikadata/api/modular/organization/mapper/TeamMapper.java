@@ -15,6 +15,7 @@ import com.vikadata.api.model.vo.organization.TeamInfoVo;
 import com.vikadata.api.model.vo.organization.UnitTeamVo;
 import com.vikadata.api.modular.organization.model.TeamBaseInfoDTO;
 import com.vikadata.api.modular.organization.model.TeamCteInfo;
+import com.vikadata.api.modular.organization.model.TeamPathInfo;
 import com.vikadata.entity.TeamEntity;
 
 /**
@@ -383,4 +384,12 @@ public interface TeamMapper extends BaseMapper<TeamEntity> {
      */
     List<TeamCteInfo> selectChildTreeByTeamIds(@Param("spaceId") String spaceId, @Param("teamIds") List<Long> teamIds);
 
+    /**
+     * query team's all parent teams by team's id
+     *
+     * @param spaceId space's id
+     * @param teamIds team's id
+     * @return team path information
+     */
+    List<TeamPathInfo> selectParentTreeByTeamIds(@Param("spaceId") String spaceId, @Param("teamIds") List<Long> teamIds);
 }

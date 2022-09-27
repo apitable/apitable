@@ -19,6 +19,8 @@ public class MemberBaseInfoDTO {
 
     private String avatar;
 
+    private String email;
+
     private Boolean isActive;
 
     private Boolean isDeleted;

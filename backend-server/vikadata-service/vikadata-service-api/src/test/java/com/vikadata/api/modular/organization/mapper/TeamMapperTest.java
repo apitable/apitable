@@ -16,6 +16,7 @@ import com.vikadata.api.model.vo.organization.SearchTeamResultVo;
 import com.vikadata.api.model.vo.organization.TeamInfoVo;
 import com.vikadata.api.model.vo.organization.UnitTeamVo;
 import com.vikadata.api.modular.organization.model.TeamBaseInfoDTO;
+import com.vikadata.api.modular.organization.model.TeamPathInfo;
 import com.vikadata.entity.TeamEntity;
 
 import org.springframework.test.context.jdbc.Sql;
@@ -265,5 +266,13 @@ public class TeamMapperTest extends AbstractMyBatisMapperTest {
     void testSelectMemberTeamsBySpaceIdAndTeamIds(){
         List<TeamMemberDto> entities = teamMapper.selectMemberTeamsBySpaceIdAndTeamIds("spc41", CollUtil.newArrayList(41L));
         assertThat(entities).isNotEmpty();
+    }
+
+    @Test
+    @Sql("/testdata/unit-team-data.sql")
+    void testSelectParentTreeByTeamIds(){
+        List<Long> teamIds = CollUtil.newArrayList(41L);
+        List<TeamPathInfo> teamPathInfos = teamMapper.selectParentTreeByTeamIds("spc41", teamIds);
+        assertThat(teamPathInfos.get(0).getTeamName()).isEqualTo("维格");
     }
 }

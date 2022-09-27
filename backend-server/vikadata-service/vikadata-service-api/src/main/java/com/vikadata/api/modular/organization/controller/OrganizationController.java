@@ -2,6 +2,10 @@ package com.vikadata.api.modular.organization.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -11,6 +15,7 @@ import cn.hutool.core.lang.Editor;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import com.vikadata.api.modular.organization.model.MemberIsolatedInfo;
+import com.vikadata.api.modular.organization.model.MemberTeamPathInfo;
 import com.vikadata.api.modular.organization.service.ITeamService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

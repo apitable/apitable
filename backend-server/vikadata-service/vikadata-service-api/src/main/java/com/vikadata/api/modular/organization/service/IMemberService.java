@@ -10,6 +10,7 @@ import com.vikadata.api.model.ro.organization.TeamAddMemberRo;
 import com.vikadata.api.model.ro.organization.UpdateMemberOpRo;
 import com.vikadata.api.model.ro.organization.UpdateMemberRo;
 import com.vikadata.api.model.vo.organization.MemberBriefInfoVo;
+import com.vikadata.api.model.vo.organization.MemberInfoVo;
 import com.vikadata.api.model.vo.organization.SearchMemberResultVo;
 import com.vikadata.api.model.vo.organization.SearchMemberVo;
 import com.vikadata.api.model.vo.organization.UploadParseResultVO;
@@ -636,4 +637,11 @@ public interface IMemberService extends IService<MemberEntity> {
      */
     List<SearchMemberVo> getLikeMemberName(String spaceId, String keyword, Boolean filter, String highlightClassName);
 
+    /**
+     * handle memberInfo's team path name
+     *
+     * @param memberInfoVo member info view
+     * @param spaceId space's id
+     */
+    void handleMemberTeamInfo(MemberInfoVo memberInfoVo, String spaceId);
 }

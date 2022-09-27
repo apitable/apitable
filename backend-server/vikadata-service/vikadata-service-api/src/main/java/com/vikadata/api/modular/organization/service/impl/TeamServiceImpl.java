@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -16,13 +17,20 @@ import javax.annotation.Resource;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.vikadata.api.lang.SpaceGlobalFeature;
+import com.vikadata.api.model.vo.organization.MemberInfoVo;
+import com.vikadata.api.model.vo.organization.MemberPageVo;
+import com.vikadata.api.model.vo.organization.TeamVo;
 import com.vikadata.api.model.vo.organization.UnitTeamVo;
 import com.vikadata.api.model.vo.space.SpaceRoleDetailVo;
 import com.vikadata.api.modular.organization.model.MemberIsolatedInfo;
+import com.vikadata.api.modular.organization.model.MemberTeamInfoDTO;
+import com.vikadata.api.modular.organization.model.MemberTeamPathInfo;
 import com.vikadata.api.modular.organization.model.TeamCteInfo;
+import com.vikadata.api.modular.organization.model.TeamPathInfo;
 import com.vikadata.api.modular.organization.service.IRoleMemberService;
 import com.vikadata.api.modular.space.service.ISpaceRoleService;
 import com.vikadata.api.modular.space.service.ISpaceService;
@@ -142,17 +150,17 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         // 获取空间站主管理员Id
         Long spaceMainAdminId = iSpaceService.getSpaceMainAdminMemberId(spaceId);
         // 判断是否开启通讯录隔离
-        if(Boolean.TRUE.equals(features.getOrgIsolated()) && Boolean.FALSE.equals(spaceMainAdminId.equals(memberId))){
+        if (Boolean.TRUE.equals(features.getOrgIsolated()) && Boolean.FALSE.equals(spaceMainAdminId.equals(memberId))) {
             // 获取管理员信息
             SpaceRoleDetailVo spaceRoleDetailVo = iSpaceRoleService.getRoleDetail(spaceId, memberId);
             // 判断是否拥有通讯录管理权限
-            if(Boolean.FALSE.equals(spaceRoleDetailVo.getResources().contains("MANAGE_MEMBER")) && Boolean.FALSE.equals(spaceRoleDetailVo.getResources().contains("MANAGE_TEAM"))){
+            if (Boolean.FALSE.equals(spaceRoleDetailVo.getResources().contains("MANAGE_MEMBER")) && Boolean.FALSE.equals(spaceRoleDetailVo.getResources().contains("MANAGE_TEAM"))) {
                 // 获取空间站的根部门ID
                 Long rootTeamId = teamMapper.selectRootIdBySpaceId(spaceId);
                 // 获取成员所属部门ID
                 List<Long> teamIds = memberMapper.selectTeamIdsByMemberId(memberId);
                 // 判断成员是否直属根部门
-                if(Boolean.FALSE.equals(teamIds.contains(rootTeamId))){
+                if (Boolean.FALSE.equals(teamIds.contains(rootTeamId))) {
                     memberIsolatedInfo.setIsolated(true);
                     memberIsolatedInfo.setTeamIds(teamIds);
                     return memberIsolatedInfo;
@@ -569,11 +577,11 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         // 构建默认加载的组织树
         List<TeamTreeVo> teamTreeVoList = new DefaultTreeBuildFactory<TeamTreeVo>().doTreeBuild(treeList);
         // 将根部门ID处理为0
-       for(TeamTreeVo teamTreeVo : teamTreeVoList){
-           if(teamTreeVo.getParentId() == 0){
-               teamTreeVo.setTeamId(0L);
-           }
-       }
+        for (TeamTreeVo teamTreeVo : teamTreeVoList) {
+            if (teamTreeVo.getParentId() == 0) {
+                teamTreeVo.setTeamId(0L);
+            }
+        }
         return teamTreeVoList;
     }
 
@@ -581,6 +589,126 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     @Override
     public List<UnitTeamVo> getUnitTeamVo(String spaceId, List<Long> teamIds) {
         return baseMapper.selectUnitTeamVoByTeamIds(spaceId, teamIds);
+    }
+
+    @Override
+    public void handlePageMemberTeams(IPage<MemberPageVo> page, String spaceId) {
+        // get all member's id
+        List<Long> memberIds = page.getRecords().stream().map(MemberPageVo::getMemberId).collect(Collectors.toList());
+        // handle member's team name. get full hierarchy team name
+        Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap = this.batchGetFullHierarchyTeamNames(memberIds, spaceId);
+        for (MemberPageVo memberPageVo : page.getRecords()) {
+            if (memberToTeamPathInfoMap.containsKey(memberPageVo.getMemberId())) {
+                memberPageVo.setTeamData(memberToTeamPathInfoMap.get(memberPageVo.getMemberId()));
+            }
+        }
+    }
+
+    @Override
+    public void handleListMemberTeams(List<MemberInfoVo> memberInfoVos, String spaceId) {
+        // get all member's id
+        List<Long> memberIds = memberInfoVos.stream().map(MemberInfoVo::getMemberId).collect(Collectors.toList());
+        // handle member's team name. get full hierarchy team name
+        Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap = this.batchGetFullHierarchyTeamNames(memberIds, spaceId);
+        for (MemberInfoVo memberInfoVo : memberInfoVos) {
+            if (memberToTeamPathInfoMap.containsKey(memberInfoVo.getMemberId())) {
+                memberInfoVo.setTeamData(memberToTeamPathInfoMap.get(memberInfoVo.getMemberId()));
+            }
+        }
+    }
+
+    @Override
+    public Map<Long, List<MemberTeamPathInfo>> batchGetFullHierarchyTeamNames(List<Long> memberIds, String spaceId) {
+        if (CollUtil.isEmpty(memberIds)) {
+            return new HashMap<>();
+        }
+        // batch get memberId and teamId
+        List<MemberTeamInfoDTO> memberTeamInfoDTOS = memberMapper.selectTeamIdsByMemberIds(memberIds);
+        // group by memberId
+        Map<Long, List<Long>> memberTeamMap = memberTeamInfoDTOS.stream()
+                .collect(Collectors.groupingBy(MemberTeamInfoDTO::getMemberId, Collectors.mapping(MemberTeamInfoDTO::getTeamId, Collectors.toList())));
+        // get member's each full hierarchy team name
+        Map<Long, List<String>> teamIdToPathMap = this.getMemberEachTeamPathName(memberTeamMap, spaceId);
+        // build return object, each team's id and team's full hierarchy path name
+        Map<Long, List<MemberTeamPathInfo>> memberToAllTeamPathNameMap = new HashMap<>();
+        for (Entry<Long, List<Long>> entry : memberTeamMap.entrySet()) {
+            List<MemberTeamPathInfo> memberTeamPathInfos = new ArrayList<>();
+            for (Long teamId : entry.getValue()) {
+                if (teamIdToPathMap.containsKey(teamId)) {
+                    // build return team info and format team name
+                    MemberTeamPathInfo memberTeamPathInfo = new MemberTeamPathInfo();
+                    memberTeamPathInfo.setTeamId(teamId);
+                    memberTeamPathInfo.setFullHierarchyTeamName(StrUtil.join("/", teamIdToPathMap.get(teamId)));
+                    memberTeamPathInfos.add(memberTeamPathInfo);
+                }
+            }
+            memberToAllTeamPathNameMap.put(entry.getKey(), memberTeamPathInfos);
+        }
+        return memberToAllTeamPathNameMap;
+    }
+
+    @Override
+    public Map<Long, List<String>> getMemberEachTeamPathName(Map<Long, List<Long>> memberTeamMap, String spaceId) {
+        // get all teamIds
+        Set<Long> allTeamIds = new HashSet<>();
+        for (Entry<Long, List<Long>> entry : memberTeamMap.entrySet()) {
+            allTeamIds.addAll(entry.getValue());
+        }
+        // get member's team's all parent team, include itself
+        List<TeamPathInfo> teamPathInfos = teamMapper.selectParentTreeByTeamIds(spaceId, new ArrayList<>(allTeamIds));
+        List<TeamTreeVo> teamTreeVos = this.buildTree(spaceId, teamPathInfos.stream().map(TeamCteInfo::getId).collect(Collectors.toList()));
+        // build team tree
+        List<TeamTreeVo> treeVos = new DefaultTreeBuildFactory<TeamTreeVo>().doTreeBuild(teamTreeVos);
+        Map<Long, List<String>> teamIdToPathMap = new HashMap<>();
+        // TODO:optimize just recurse first level nodeId
+        for (TeamTreeVo treeVo : treeVos) {
+            // current team full hierarchy team name
+            List<String> teamNames = new ArrayList<>();
+            List<TeamVo> teamVos = new ArrayList<>();
+            // build team info object, include teamId and teamName
+            TeamVo teamVo = new TeamVo();
+            teamVo.setTeamId(treeVo.getTeamId());
+            teamVo.setTeamName(treeVo.getTeamName());
+            teamVos.add(teamVo);
+            teamNames.add(treeVo.getTeamName());
+            if (allTeamIds.contains(treeVo.getTeamId())) {
+                teamIdToPathMap.put(treeVo.getTeamId(), teamNames);
+            }
+            if (CollUtil.isNotEmpty(treeVo.getChildren())) {
+                // recurse get this branch's all teamIds and teamNames
+                this.recurseGetBranchAllTeamIdsAndTeamNames(treeVo.getChildren(), teamVos, allTeamIds, teamNames, teamIdToPathMap);
+            }
+        }
+        return teamIdToPathMap;
+    }
+
+    /**
+     * recurse get member's teamId and teamName
+     *
+     * @param treeVo team tree view
+     * @param teamVos team's view
+     * @param allTeamIds member's all teamIds
+     * @param teamNames member's team path name
+     * @param teamIdToPathMap memberId with member's team name map
+     */
+    private void recurseGetBranchAllTeamIdsAndTeamNames(List<TeamTreeVo> treeVo, List<TeamVo> teamVos, Set<Long> allTeamIds, List<String> teamNames, Map<Long, List<String>> teamIdToPathMap) {
+        for (TeamTreeVo team : treeVo) {
+            if (allTeamIds.contains(team.getTeamId())) {
+                List<String> branchNames = new ArrayList<>(teamNames);
+                branchNames.add(team.getTeamName());
+                teamIdToPathMap.put(team.getTeamId(), branchNames);
+                continue;
+            }
+            TeamVo teamVo = new TeamVo();
+            teamVo.setTeamId(team.getTeamId());
+            teamVo.setTeamName(team.getTeamName());
+            teamVos.add(teamVo);
+            List<String> branchNames = new ArrayList<>(teamNames);
+            branchNames.add(team.getTeamName());
+            if (CollUtil.isNotEmpty(team.getChildren())) {
+                recurseGetBranchAllTeamIdsAndTeamNames(team.getChildren(), teamVos, allTeamIds, branchNames, teamIdToPathMap);
+            }
+        }
     }
 
     /**

@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import com.vikadata.api.modular.organization.model.MemberTeamPathInfo;
 import com.vikadata.api.support.serializer.ChinaLocalDateTimeToUtcSerializer;
 import com.vikadata.api.support.serializer.ImageSerializer;
 import com.vikadata.api.support.serializer.MobilePhoneHideSerializer;
@@ -93,4 +94,6 @@ public class MemberInfoVo {
     @ApiModelProperty(value = "成员（member）是否修改过昵称", position = 12)
     private Boolean isMemberNameModified;
 
+    @ApiModelProperty(value = "team id and full hierarchy team path name", position = 13)
+    private List<MemberTeamPathInfo> teamData;
 }

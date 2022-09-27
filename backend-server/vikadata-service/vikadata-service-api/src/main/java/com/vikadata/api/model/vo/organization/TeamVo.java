@@ -24,4 +24,11 @@ public class TeamVo {
 
     @ApiModelProperty(value = "部门名称", example = "研发部", position = 2)
     private String teamName;
+
+    public TeamVo() {}
+
+    public TeamVo(Long teamId, String teamName) {
+        this.teamId = teamId;
+        this.teamName = teamName;
+    }
 }

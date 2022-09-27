@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -42,7 +44,9 @@ import com.vikadata.api.model.vo.organization.UnitTeamVo;
 import com.vikadata.api.modular.control.service.IControlRoleService;
 import com.vikadata.api.modular.control.service.IControlService;
 import com.vikadata.api.modular.organization.mapper.MemberMapper;
+import com.vikadata.api.modular.organization.mapper.TeamMapper;
 import com.vikadata.api.modular.organization.mapper.UnitMapper;
+import com.vikadata.api.modular.organization.model.MemberTeamPathInfo;
 import com.vikadata.api.modular.organization.service.IMemberService;
 import com.vikadata.api.modular.organization.service.IOrganizationService;
 import com.vikadata.api.modular.organization.service.IRoleMemberService;
@@ -116,6 +120,9 @@ public class NodeRoleServiceImpl implements INodeRoleService {
 
     @Resource
     private IRoleService iRoleService;
+
+    @Resource
+    private TeamMapper teamMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -243,10 +250,24 @@ public class NodeRoleServiceImpl implements INodeRoleService {
         log.info("查询节点的负责人");
         Long ownerId = getNodeOwnerId(nodeId);
         if (ownerId != null) {
+            String spaceId = nodeMapper.selectSpaceIdByNodeId(nodeId);
             List<UnitMemberVo> unitMemberVos = iOrganizationService.findUnitMemberVo(Collections.singletonList(ownerId));
+            this.handleNodeMemberTeamName(unitMemberVos, spaceId);
             return CollUtil.isNotEmpty(unitMemberVos) ? CollUtil.getFirst(unitMemberVos) : null;
         }
         return null;
+    }
+
+    @Override
+    public void handleNodeMemberTeamName(List<UnitMemberVo> unitMemberVos, String spaceId) {
+        List<Long> memberIds = unitMemberVos.stream().map(UnitMemberVo::getMemberId).collect(toList());
+        // handle member's team name, get full hierarchy team name
+        Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap = iTeamService.batchGetFullHierarchyTeamNames(memberIds, spaceId);
+        for (UnitMemberVo unitMemberVo : unitMemberVos) {
+            if (memberToTeamPathInfoMap.containsKey(unitMemberVo.getMemberId())) {
+                unitMemberVo.setTeamData(memberToTeamPathInfoMap.get(unitMemberVo.getMemberId()));
+            }
+        }
     }
 
     @Override
@@ -357,17 +378,22 @@ public class NodeRoleServiceImpl implements INodeRoleService {
             }
             if (!memberIds.isEmpty()) {
                 List<UnitMemberVo> memberVos = iOrganizationService.findUnitMemberVo(memberIds);
+                // handle member's team name, get full hierarchy team name
+                Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap = iTeamService.batchGetFullHierarchyTeamNames(memberIds, spaceId);
                 for (UnitMemberVo member : memberVos) {
                     NodeRoleUnit unit = unitIdToFieldRoleMap.get(member.getUnitId());
                     unit.setUnitName(member.getMemberName());
                     unit.setAvatar(member.getAvatar());
                     unit.setTeams(member.getTeams());
+                    if (memberToTeamPathInfoMap.containsKey(member.getMemberId())) {
+                        unit.setTeamData(memberToTeamPathInfoMap.get(member.getMemberId()));
+                    }
                     roleUnits.add(unit);
                 }
             }
             if (!roleIds.isEmpty()) {
                 List<RoleInfoVo> roles = iRoleService.getRoleVos(spaceId, roleIds);
-                for (RoleInfoVo role: roles) {
+                for (RoleInfoVo role : roles) {
                     NodeRoleUnit unit = unitIdToFieldRoleMap.get(role.getUnitId());
                     unit.setUnitName(role.getRoleName());
                     unit.setMemberCount(role.getMemberCount());
@@ -522,6 +548,20 @@ public class NodeRoleServiceImpl implements INodeRoleService {
         return controlRoleUnits.stream()
                 .collect(groupingBy(ControlRoleUnitDTO::getRole, Collectors.mapping(ControlRoleUnitDTO::getUnitId, toSet())));
     }
+
+    @Override
+    public void handleNodeRoleUnitsTeamPathName(List<NodeRoleUnit> nodeRoleMemberVos, String spaceId) {
+        // get all member's ids
+        List<Long> memberIds = nodeRoleMemberVos.stream().map(NodeRoleUnit::getUnitId).collect(toList());
+        // handle member's team name. get full hierarchy team name
+        Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap = iTeamService.batchGetFullHierarchyTeamNames(memberIds, spaceId);
+        for (NodeRoleUnit member : nodeRoleMemberVos) {
+            if (memberToTeamPathInfoMap.containsKey(member.getUnitId())) {
+                member.setTeamData(memberToTeamPathInfoMap.get(member.getUnitId()));
+            }
+        }
+    }
+
 
     private void addExtendNodeRole(Long userId, String spaceId, String nodeId) {
         // 添加默认继承的角色

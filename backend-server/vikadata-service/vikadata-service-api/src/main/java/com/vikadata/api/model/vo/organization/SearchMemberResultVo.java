@@ -1,7 +1,11 @@
 package com.vikadata.api.model.vo.organization;
 
+import java.util.List;
+
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
+import com.vikadata.api.modular.organization.model.MemberTeamPathInfo;
 import com.vikadata.api.support.serializer.ImageSerializer;
 import com.vikadata.api.support.serializer.NullStringSerializer;
 import io.swagger.annotations.ApiModel;
@@ -48,5 +52,8 @@ public class SearchMemberResultVo {
 
     @ApiModelProperty(value = "成员（member）是否修改过昵称", position = 6)
     private Boolean isMemberNameModified;
+
+    @ApiModelProperty(value = "team id and full hierarchy team path name", position = 7)
+    private List<MemberTeamPathInfo> teamData;
 
 }

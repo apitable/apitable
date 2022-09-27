@@ -5,12 +5,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import com.vikadata.api.model.vo.organization.MemberInfoVo;
+import com.vikadata.api.model.vo.organization.MemberPageVo;
 import com.vikadata.api.model.vo.organization.TeamInfoVo;
 import com.vikadata.api.model.vo.organization.TeamTreeVo;
 import com.vikadata.api.model.vo.organization.UnitTeamVo;
 import com.vikadata.api.modular.organization.model.MemberIsolatedInfo;
+import com.vikadata.api.modular.organization.model.MemberTeamPathInfo;
 import com.vikadata.entity.TeamEntity;
 
 /**
@@ -339,4 +343,37 @@ public interface ITeamService extends IService<TeamEntity> {
      */
     List<UnitTeamVo> getUnitTeamVo(String spaceId, List<Long> teamIds);
 
+    /**
+     * handle page query member's team info
+     *
+     * @param page page query result
+     * @param spaceId space's id
+     */
+    void handlePageMemberTeams(IPage<MemberPageVo> page, String spaceId);
+
+    /**
+     * handle list member team info
+     *
+     * @param memberInfoVos member info view
+     * @param spaceId space's id
+     */
+    void handleListMemberTeams(List<MemberInfoVo> memberInfoVos, String spaceId);
+
+    /**
+     * get member's each team's full hierarchy team name
+     *
+     * @paarm memberTeamMap member and team rel map
+     * @param spaceId space's id
+     * @return map
+     */
+    Map<Long, List<String>> getMemberEachTeamPathName(Map<Long, List<Long>> memberTeamMap, String spaceId);
+
+    /**
+     * batch handle team name, get full hierarchy team names and teamId
+     *
+     * @param memberIds member's id
+     * @param spaceId space's id
+     * @return map member's team path names
+     */
+    Map<Long, List<MemberTeamPathInfo>> batchGetFullHierarchyTeamNames(List<Long> memberIds, String spaceId);
 }

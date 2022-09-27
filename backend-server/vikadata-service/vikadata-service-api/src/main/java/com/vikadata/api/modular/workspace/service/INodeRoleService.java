@@ -91,14 +91,20 @@ public interface INodeRoleService {
     List<ControlRoleInfo> deleteNodeRoles(String nodeId, List<Long> unitIds);
 
     /**
-     * 查询节点负责人
+     * query node's owner
      *
-     * @param nodeId 节点ID
+     * @param nodeId node's id
      * @return NodeAdminVo
-     * @author Shawn Deng
-     * @date 2020/2/28 15:18
      */
     UnitMemberVo getNodeOwner(String nodeId);
+
+    /**
+     * handle node member's team name
+     *
+     * @param unitMemberVos unit member view
+     * @param spaceId space's id
+     */
+    void handleNodeMemberTeamName(List<UnitMemberVo> unitMemberVos, String spaceId);
 
     /**
      * 获取根部门并构造节点角色视图
@@ -201,5 +207,13 @@ public interface INodeRoleService {
      * @return roleToUnitIds
      */
     Map<String, Set<Long>> getRoleToUnitIds(boolean isParent, String spaceId, String nodeId);
+
+    /**
+     * handle node role member's team path name, show full hierarchy team name
+     *
+     * @param nodeRoleUnits node role units
+     * @param spaceId space's id
+     */
+    void handleNodeRoleUnitsTeamPathName(List<NodeRoleUnit> nodeRoleUnits, String spaceId);
 
 }

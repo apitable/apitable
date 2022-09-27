@@ -6,6 +6,9 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -64,8 +67,10 @@ import com.vikadata.api.modular.finance.service.IBlackListService;
 import com.vikadata.api.modular.organization.enums.DeleteMemberType;
 import com.vikadata.api.modular.organization.mapper.MemberMapper;
 import com.vikadata.api.modular.organization.mapper.TeamMapper;
+import com.vikadata.api.modular.organization.model.MemberTeamPathInfo;
 import com.vikadata.api.modular.organization.service.IMemberService;
 import com.vikadata.api.modular.organization.service.IRoleService;
+import com.vikadata.api.modular.organization.service.ITeamService;
 import com.vikadata.api.modular.space.mapper.SpaceMapper;
 import com.vikadata.api.modular.space.model.SpaceUpdateOperate;
 import com.vikadata.api.modular.space.service.ISpaceService;
@@ -146,6 +151,9 @@ public class MemberController {
     private IRoleService iRoleService;
 
     @Resource
+    private ITeamService iTeamService;
+
+    @Resource
     private Auth0Service auth0Service;
 
     @Resource
@@ -193,11 +201,19 @@ public class MemberController {
         if (teamId == 0) {
             //查询根部门的成员
             List<MemberInfoVo> resultList = memberMapper.selectMembersByRootTeamId(spaceId);
+            if (CollUtil.isNotEmpty(resultList)) {
+                // handle member's team name, get full hierarchy team names
+                iTeamService.handleListMemberTeams(resultList, spaceId);
+            }
             return ResponseData.success(resultList);
         }
         //查询所有子部门ID的成员数
         List<Long> teamIds = teamMapper.selectAllSubTeamIdsByParentId(teamId, true);
         List<MemberInfoVo> resultList = memberMapper.selectMembersByTeamId(teamIds);
+        if (CollUtil.isNotEmpty(resultList)) {
+            // handle member's team name, get full hierarchy team names
+            iTeamService.handleListMemberTeams(resultList, spaceId);
+        }
         return ResponseData.success(resultList);
     }
 
@@ -218,10 +234,18 @@ public class MemberController {
         if (teamId == 0) {
             //查询根部门的成员
             IPage<MemberPageVo> pageResult = teamMapper.selectMembersByRootTeamId(page, spaceId, isActive);
+            if (ObjectUtil.isNotNull(pageResult)) {
+                // handle member's team name, get full hierarchy team names
+                iTeamService.handlePageMemberTeams(pageResult, spaceId);
+            }
             return ResponseData.success(PageHelper.build(pageResult));
         }
         List<Long> teamIds = teamMapper.selectAllSubTeamIdsByParentId(teamId, true);
         IPage<MemberPageVo> resultList = teamMapper.selectMemberPageByTeamId(page, teamIds, isActive);
+        if (ObjectUtil.isNotNull(resultList)) {
+            // handle member's team name, get full hierarchy team names
+            iTeamService.handlePageMemberTeams(resultList, spaceId);
+        }
         return ResponseData.success(PageHelper.build(resultList));
     }
 
@@ -247,18 +271,20 @@ public class MemberController {
     })
     public ResponseData<MemberInfoVo> read(@RequestParam(value = "memberId", required = false) Long memberId,
             @RequestParam(value = "uuid", required = false) String uuid) {
+        String spaceId = LoginContext.me().getSpaceId();
         ExceptionUtil.isTrue(ObjectUtil.isNotNull(memberId) || StrUtil.isNotBlank(uuid), NO_ARG);
         if (StrUtil.isNotBlank(uuid)) {
-            String spaceId = LoginContext.me().getSpaceId();
             List<Long> userIds = userMapper.selectIdByUuidList(Collections.singletonList(uuid));
             ExceptionUtil.isNotEmpty(userIds, NOT_EXIST_MEMBER);
             memberId = memberMapper.selectIdByUserIdAndSpaceId(userIds.get(0), spaceId);
             ExceptionUtil.isNotNull(memberId, NOT_EXIST_MEMBER);
         }
         MemberInfoVo memberInfoVo = memberMapper.selectInfoById(memberId);
+        ExceptionUtil.isNotNull(memberInfoVo, NOT_EXIST_MEMBER);
+        // handle member's team name, get full hierarchy team path name
+        iMemberService.handleMemberTeamInfo(memberInfoVo, spaceId);
         List<RoleVo> roleVos = iRoleService.getRoleVosByMemberId(memberId);
         memberInfoVo.setRoles(roleVos);
-        ExceptionUtil.isNotNull(memberInfoVo, NOT_EXIST_MEMBER);
         return ResponseData.success(memberInfoVo);
     }
 

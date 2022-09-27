@@ -18,6 +18,7 @@ import com.vikadata.api.model.vo.organization.UnitMemberVo;
 import com.vikadata.api.model.vo.space.MainAdminInfoVo;
 import com.vikadata.api.modular.mapper.ExpandBaseMapper;
 import com.vikadata.api.modular.organization.model.MemberBaseInfoDTO;
+import com.vikadata.api.modular.organization.model.MemberTeamInfoDTO;
 import com.vikadata.api.modular.social.model.TenantMemberDto;
 import com.vikadata.entity.MemberEntity;
 
@@ -1038,4 +1039,12 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      * @return SpaceMemberIdDto
      */
     List<SpaceMemberIdDto> selectMemberIdsByUserIdAndSpaceIds(@Param("userId") Long userId, @Param("spaceIds") List<String> spaceIds);
+
+    /**
+     * batch query team's id by member's id
+     *
+     * @param memberIds member's id
+     * @return member'id and member's teamId
+     */
+    List<MemberTeamInfoDTO> selectTeamIdsByMemberIds(@Param("memberIds") List<Long> memberIds);
 }

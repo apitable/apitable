@@ -497,4 +497,21 @@
         )
         SELECT DISTINCT * FROM tree_view
     </select>
+
+    <select id="selectParentTreeByTeamIds" resultType="com.vikadata.api.modular.organization.model.TeamPathInfo">
+        WITH RECURSIVE tree_view ( id, team_name, parent_id ) AS (
+        SELECT id, team_name, parent_id
+        FROM vika_unit_team
+        WHERE space_id = #{spaceId}
+        AND id IN
+        <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0 UNION ALL
+        SELECT c.id, c.team_name, c.parent_id
+        FROM tree_view AS cp
+        JOIN vika_unit_team AS c ON c.space_id = #{spaceId} AND cp.parent_id = c.id AND c.is_deleted = 0
+        )
+        SELECT DISTINCT * FROM tree_view
+    </select>
 </mapper>

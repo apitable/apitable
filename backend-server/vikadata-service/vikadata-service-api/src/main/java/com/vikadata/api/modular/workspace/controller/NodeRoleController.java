@@ -127,7 +127,7 @@ public class NodeRoleController {
         if (includeAdmin) {
             //查询节点管理员视图
             List<Long> admins = iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(spaceId);
-            collaboratorsVo.setAdmins(iOrganizationService.findUnitMemberVo(admins));
+            collaboratorsVo.setAdmins(iOrganizationService.findAdminsVo(admins, spaceId));
         }
         if (includeSelf) {
             // 查询自己

@@ -76,6 +76,15 @@ public interface IOrganizationService {
     List<UnitMemberVo> findUnitMemberVo(List<Long> memberIds);
 
     /**
+     * query admins information
+     *
+     * @param memberIds member's id
+     * @param spaceId space's id
+     * @return admins information
+     */
+    List<UnitMemberVo> findAdminsVo(List<Long> memberIds, String spaceId);
+
+    /**
      * 加载/搜索 组织单元信息视图
      *
      * @param userId    用户ID

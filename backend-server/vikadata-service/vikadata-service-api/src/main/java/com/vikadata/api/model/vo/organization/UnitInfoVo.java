@@ -1,5 +1,7 @@
 package com.vikadata.api.model.vo.organization;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -10,6 +12,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import com.vikadata.api.modular.organization.model.MemberTeamPathInfo;
 import com.vikadata.api.support.serializer.ImageSerializer;
 import com.vikadata.api.support.serializer.NullStringSerializer;
 
@@ -66,5 +69,11 @@ public class UnitInfoVo {
 
     @ApiModelProperty(value = "成员（member）是否修改过昵称", position = 9)
     private Boolean isMemberNameModified;
+
+    @ApiModelProperty(value = "email", example = "test@vikadata.com", position = 10)
+    private String email;
+
+    @ApiModelProperty(value = "team id and full hierarchy team path name", position = 11)
+    private List<MemberTeamPathInfo> teamData;
 
 }

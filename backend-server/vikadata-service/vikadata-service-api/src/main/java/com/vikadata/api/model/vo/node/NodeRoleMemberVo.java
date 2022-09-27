@@ -1,5 +1,7 @@
 package com.vikadata.api.model.vo.node;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -7,6 +9,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import com.vikadata.api.modular.organization.model.MemberTeamPathInfo;
 import com.vikadata.api.support.serializer.ImageSerializer;
 import com.vikadata.api.support.serializer.NullStringSerializer;
 

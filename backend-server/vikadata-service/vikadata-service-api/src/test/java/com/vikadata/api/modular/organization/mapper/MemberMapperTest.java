@@ -20,6 +20,7 @@ import com.vikadata.api.model.vo.organization.SearchMemberVo;
 import com.vikadata.api.model.vo.organization.UnitMemberVo;
 import com.vikadata.api.model.vo.space.MainAdminInfoVo;
 import com.vikadata.api.modular.organization.model.MemberBaseInfoDTO;
+import com.vikadata.api.modular.organization.model.MemberTeamInfoDTO;
 import com.vikadata.api.modular.social.model.TenantMemberDto;
 import com.vikadata.entity.MemberEntity;
 
@@ -493,5 +494,15 @@ public class MemberMapperTest extends AbstractMyBatisMapperTest {
         assertThat(dtos.size()).isEqualTo(1);
     }
 
+    @Test
+    @Sql("/testdata/unit-team-member-rel-data.sql")
+    void testSelectTeamIdsByMemberIds(){
+        List<Long> memberIds = CollUtil.newArrayList(41L, 45L);
+        List<MemberTeamInfoDTO> memberTeamInfoDTOS = memberMapper.selectTeamIdsByMemberIds(memberIds);
+        assertThat(memberTeamInfoDTOS.get(0).getMemberId()).isEqualTo(41);
+        assertThat(memberTeamInfoDTOS.get(0).getTeamId()).isEqualTo(41);
+        assertThat(memberTeamInfoDTOS.get(1).getMemberId()).isEqualTo(45);
+        assertThat(memberTeamInfoDTOS.get(1).getTeamId()).isEqualTo(45);
+    }
 }
 

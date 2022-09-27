@@ -41,6 +41,7 @@ import com.vikadata.api.modular.social.enums.SocialAppType;
 import com.vikadata.api.modular.social.service.ISocialCpIsvService;
 import com.vikadata.api.modular.social.service.ISocialTenantBindService;
 import com.vikadata.api.modular.social.service.ISocialTenantService;
+import com.vikadata.api.modular.workspace.service.impl.NodeRoleServiceImpl;
 import com.vikadata.api.util.InformationUtil;
 import com.vikadata.entity.SocialTenantBindEntity;
 import com.vikadata.entity.SocialTenantEntity;
@@ -98,6 +99,8 @@ public class OrganizationServiceImpl implements IOrganizationService {
     @Resource
     private IRoleService iRoleService;
 
+    @Resource
+    private NodeRoleServiceImpl nodeRoleService;
 
     @Override
     public UnitSearchResultVo findLikeUnitName(String spaceId, String likeWord, String highlightClassName) {
@@ -242,6 +245,17 @@ public class OrganizationServiceImpl implements IOrganizationService {
             return new ArrayList<>();
         }
         return memberMapper.selectUnitMemberByMemberIds(memberIds);
+    }
+
+    @Override
+    public List<UnitMemberVo> findAdminsVo(List<Long> memberIds, String spaceId) {
+        if (CollUtil.isEmpty(memberIds)) {
+            return new ArrayList<>();
+        }
+        List<UnitMemberVo> unitMemberVos =  memberMapper.selectUnitMemberByMemberIds(memberIds);
+        // handle member's team name, get full hierarchy team name
+        nodeRoleService.handleNodeMemberTeamName(unitMemberVos, spaceId);
+        return unitMemberVos;
     }
 
     @Override

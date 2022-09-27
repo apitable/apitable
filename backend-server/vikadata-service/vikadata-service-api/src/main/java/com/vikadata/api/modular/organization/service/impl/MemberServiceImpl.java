@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -63,6 +64,7 @@ import com.vikadata.api.model.ro.organization.TeamAddMemberRo;
 import com.vikadata.api.model.ro.organization.UpdateMemberOpRo;
 import com.vikadata.api.model.ro.organization.UpdateMemberRo;
 import com.vikadata.api.model.vo.organization.MemberBriefInfoVo;
+import com.vikadata.api.model.vo.organization.MemberInfoVo;
 import com.vikadata.api.model.vo.organization.SearchMemberResultVo;
 import com.vikadata.api.model.vo.organization.SearchMemberVo;
 import com.vikadata.api.model.vo.organization.UploadParseResultVO;
@@ -71,6 +73,7 @@ import com.vikadata.api.modular.organization.excel.handler.UploadDataListener;
 import com.vikadata.api.modular.organization.mapper.MemberMapper;
 import com.vikadata.api.modular.organization.mapper.TeamMapper;
 import com.vikadata.api.modular.organization.mapper.TeamMemberRelMapper;
+import com.vikadata.api.modular.organization.model.MemberTeamPathInfo;
 import com.vikadata.api.modular.organization.service.IMemberService;
 import com.vikadata.api.modular.organization.service.IRoleMemberService;
 import com.vikadata.api.modular.organization.service.ITeamMemberRelService;
@@ -1370,6 +1373,16 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             }
         }
 
+        // get all member's ids
+        List<Long> memberIds = results.stream().map(SearchMemberResultVo::getMemberId).collect(Collectors.toList());
+        // handle member's team name，get full hierarchy team name
+        Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap = iTeamService.batchGetFullHierarchyTeamNames(memberIds, spaceId);
+        for (SearchMemberResultVo member : results) {
+            if (memberToTeamPathInfoMap.containsKey(member.getMemberId())) {
+                member.setTeamData(memberToTeamPathInfoMap.get(member.getMemberId()));
+            }
+        }
+
         return results;
 
     }
@@ -1449,5 +1462,16 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
         return searchMembers;
 
+    }
+
+    @Override
+    public void handleMemberTeamInfo(MemberInfoVo memberInfoVo, String spaceId) {
+        // get member's id
+        List<Long> memberIds = CollUtil.newArrayList(memberInfoVo.getMemberId());
+        // handle member's team name, get full hierarchy team path name
+        Map<Long, List<MemberTeamPathInfo>> memberTeamPathInfosMap = iTeamService.batchGetFullHierarchyTeamNames(memberIds, spaceId);
+        if (memberTeamPathInfosMap.containsKey(memberInfoVo.getMemberId())) {
+            memberInfoVo.setTeamData(memberTeamPathInfosMap.get(memberInfoVo.getMemberId()));
+        }
     }
 }

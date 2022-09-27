@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,11 +25,13 @@ import com.vikadata.api.modular.organization.mapper.TeamMapper;
 import com.vikadata.api.modular.organization.mapper.TeamMemberRelMapper;
 import com.vikadata.api.modular.organization.mapper.UnitMapper;
 import com.vikadata.api.modular.organization.model.MemberBaseInfoDTO;
+import com.vikadata.api.modular.organization.model.MemberTeamPathInfo;
 import com.vikadata.api.modular.organization.model.RoleBaseInfoDto;
 import com.vikadata.api.modular.organization.model.TeamBaseInfoDTO;
 import com.vikadata.api.modular.organization.model.UnitInfoDTO;
 import com.vikadata.api.modular.organization.service.IRoleMemberService;
 import com.vikadata.api.modular.organization.service.IRoleService;
+import com.vikadata.api.modular.organization.service.ITeamService;
 import com.vikadata.api.modular.organization.service.IUnitService;
 import com.vikadata.api.modular.service.ExpandServiceImpl;
 import com.vikadata.core.util.ExceptionUtil;
@@ -72,6 +76,9 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
 
     @Resource
     private IRoleService iRoleService;
+
+    @Resource
+    private ITeamService iTeamService;
 
     @Override
     public Long getUnitIdByRefId(Long refId) {
@@ -201,6 +208,8 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
                 roleBaseInfoDtoList.forEach(info -> roleBaseInfoMap.put(info.getId(), info));
             }
         });
+        // handle member's team name, get full hierarchy team name
+        Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap = iTeamService.batchGetFullHierarchyTeamNames(new ArrayList<>(memberInfoMap.keySet()), spaceId);
         // 按序插入数据
         for (Long unitId : unitIds) {
             UnitEntity unitEntity = unitEntityMap.get(unitId);
@@ -220,9 +229,13 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
                     unitInfoVo.setUserId(baseInfo.getUuid());
                     unitInfoVo.setUuid(baseInfo.getUuid());
                     unitInfoVo.setAvatar(baseInfo.getAvatar());
+                    unitInfoVo.setEmail(baseInfo.getEmail());
                     unitInfoVo.setIsActive(baseInfo.getIsActive());
                     unitInfoVo.setIsNickNameModified(baseInfo.getIsNickNameModified());
                     unitInfoVo.setIsMemberNameModified(baseInfo.getIsMemberNameModified());
+                    if (memberToTeamPathInfoMap.containsKey(unitEntity.getUnitRefId())) {
+                        unitInfoVo.setTeamData(memberToTeamPathInfoMap.get(unitEntity.getUnitRefId()));
+                    }
                 }
                 // 冷静期/已注销用户
                 if (baseInfo == null || !baseInfo.getIsPaused()) {

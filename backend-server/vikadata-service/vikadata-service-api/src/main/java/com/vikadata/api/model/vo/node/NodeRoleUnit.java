@@ -1,7 +1,10 @@
 package com.vikadata.api.model.vo.node;
 
+import java.util.List;
+
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.vikadata.api.modular.organization.model.MemberTeamPathInfo;
 import com.vikadata.api.support.serializer.ImageSerializer;
 import com.vikadata.api.support.serializer.NullNumberSerializer;
 import com.vikadata.api.support.serializer.NullStringSerializer;
@@ -44,4 +47,7 @@ public class NodeRoleUnit {
 
     @ApiModelProperty(value = "角色", example = "manager", position = 7)
     private String role;
+
+    @ApiModelProperty(value = "team id and full hierarchy team path name", position = 8)
+    private List<MemberTeamPathInfo> teamData;
 }
