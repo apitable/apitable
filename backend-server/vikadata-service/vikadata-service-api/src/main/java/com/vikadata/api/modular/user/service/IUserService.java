@@ -137,6 +137,13 @@ public interface IUserService extends IService<UserEntity> {
     Long createUser(SocialUser user);
 
     /**
+     * create user
+     * @param user user entity
+     * @return user id
+     */
+    boolean saveUser(UserEntity user);
+
+    /**
      * create user by auth0 user profile
      * @param userProfile auth0 user profile
      * @return user id

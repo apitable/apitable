@@ -307,6 +307,11 @@ public enum NotificationTemplateId {
     ACTIVITY_INTEGRAL_INCOME_NOTIFY("activity_integral_income_notify"),
 
     /**
+     * new user welcome notify---->to users
+     */
+    NEW_USER_WELCOME_NOTIFY("new_user_welcome_notify"),
+
+    /**
      *  adding role members---->to the added user
      */
     ASSIGNED_TO_ROLE("assigned_to_role"),

@@ -2441,6 +2441,19 @@
                 "id": "new_space_widget_notify",
                 "is_component": true
             },
+            "new_user_welcome_notify": {
+                "can_jump": true,
+                "to_tag": "users",
+                "notifications_type": "system",
+                "formatString": [
+                    "new_user_welcome_notify"
+                ],
+                "is_notification": true,
+                "format_string": "new_user_welcome_notify",
+                "id": "new_user_welcome_notify",
+                "url": "https://u.vika.cn/vhw8y",
+                "is_component": true
+            },
             "server_pre_publish": {
                 "to_tag": "all_users",
                 "notifications_type": "system",

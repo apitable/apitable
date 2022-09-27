@@ -159,6 +159,7 @@ public class NotificationConstants {
      * 通知-邮件-数表记录跳转连接
      */
     public static final String EMAIL_RECORD_URL = "RECORD_URL";
+
     /**
      * 通知-邮件-发送邮件的人
      */
@@ -173,6 +174,16 @@ public class NotificationConstants {
      * 通知-邮件-创建时间，兼容之前的模版
      */
     public static final String EMAIL_CREATED_AT = "CREATED_AT";
+
+    /**
+     * notification toast
+     */
+    public static final String EXTRA_TOAST = "toast";
+
+    /**
+     * notification toast url
+     */
+    public static final String EXTRA_TOAST_URL = "url";
 
     /**
      * the keyword about role in notifications body  {extras:roleName}

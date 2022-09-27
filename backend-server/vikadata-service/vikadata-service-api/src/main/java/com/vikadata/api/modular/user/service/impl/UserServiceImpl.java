@@ -41,6 +41,8 @@ import com.vikadata.api.cache.service.UserSpaceOpenedSheetService;
 import com.vikadata.api.cache.service.UserSpaceService;
 import com.vikadata.api.component.LanguageManager;
 import com.vikadata.api.component.TaskManager;
+import com.vikadata.api.component.notification.NotificationFactory;
+import com.vikadata.api.component.notification.NotificationManager;
 import com.vikadata.api.component.notification.NotificationTemplateId;
 import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.config.security.Auth0UserProfile;
@@ -110,6 +112,7 @@ import com.vikadata.entity.MemberEntity;
 import com.vikadata.entity.SpaceEntity;
 import com.vikadata.entity.UserEntity;
 import com.vikadata.entity.UserHistoryEntity;
+import com.vikadata.system.config.notification.NotificationTemplate;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -120,6 +123,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.vikadata.api.constants.AssetsPublicConstants.PUBLIC_PREFIX;
+import static com.vikadata.api.constants.NotificationConstants.EXTRA_TOAST;
+import static com.vikadata.api.constants.NotificationConstants.EXTRA_TOAST_URL;
 import static com.vikadata.api.constants.SpaceConstants.SPACE_NAME_DEFAULT_SUFFIX;
 import static com.vikadata.api.enums.exception.OrganizationException.INVITE_EMAIL_HAS_LINK;
 import static com.vikadata.api.enums.exception.OrganizationException.INVITE_EMAIL_NOT_EXIT;
@@ -249,6 +254,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Resource
     private IUserBindService iUserBindService;
 
+    @Resource
+    private NotificationFactory notificationFactory;
+
     @Override
     public Long getUserIdByMobile(String mobile) {
         return baseMapper.selectIdByMobile(mobile);
@@ -337,7 +345,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         user.setEmail(email);
         user.setLastLoginTime(LocalDateTime.now());
         user.setRemark(remark);
-        boolean flag = save(user);
+        boolean flag = saveUser(user);
         if (!flag) {
             throw new BusinessException(SIGN_IN_ERROR);
         }
@@ -381,7 +389,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 .avatar(avatar)
                 .lastLoginTime(LocalDateTime.now())
                 .build();
-        save(entity);
+        saveUser(entity);
         // 创建用户活动记录
         iPlayerActivityService.createUserActivityRecord(entity.getId());
         // 创建个人邀请码
@@ -397,13 +405,32 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     }
 
     @Override
+    public boolean saveUser(UserEntity user) {
+        boolean flag = save(user);
+        TaskManager.me().execute(() -> {
+            // jump to third site
+            NotificationTemplate template =
+                    notificationFactory.getTemplateById(NotificationTemplateId.NEW_USER_WELCOME_NOTIFY.getValue());
+            Dict extras = Dict.create();
+            if (StrUtil.isNotBlank(template.getUrl()) && template.getUrl().startsWith("http")) {
+                Dict toast = Dict.create();
+                toast.put(EXTRA_TOAST_URL, template.getUrl());
+                extras.put(EXTRA_TOAST, toast);
+            }
+            NotificationManager.me().playerNotify(NotificationTemplateId.NEW_USER_WELCOME_NOTIFY,
+                    Collections.singletonList(user.getId()), 0L, null, extras);
+        });
+        return flag;
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public Long createUserByAuth0IfNotExist(Auth0UserProfile userProfile) {
         Long userId = iUserBindService.getUserIdByExternalKey(userProfile.getSub());
         if (userId == null) {
             // create user bind
             UserEntity userEntity = buildUserEntity(userProfile.getPicture(), userProfile.getNickname(), userProfile.getEmail());
-            save(userEntity);
+            saveUser(userEntity);
             // 创建用户活动记录
             iPlayerActivityService.createUserActivityRecord(userEntity.getId());
             // 创建个人邀请码
@@ -427,7 +454,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         if (userId == null) {
             // create user bind
             UserEntity userEntity = buildUserEntity(user.getPicture(), user.getNickname(), user.getEmail());
-            save(userEntity);
+            saveUser(userEntity);
             // 创建用户活动记录
             iPlayerActivityService.createUserActivityRecord(userEntity.getId());
             // 创建个人邀请码
@@ -469,7 +496,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 .isSocialNameModified(user.getSocialAppType() == SocialAppType.ISV ?
                         SocialNameModified.NO.getValue() : SocialNameModified.NO_SOCIAL.getValue())
                 .build();
-        save(entity);
+        saveUser(entity);
         // 创建用户活动记录
         iPlayerActivityService.createUserActivityRecord(entity.getId());
         // 创建个人邀请码
@@ -512,7 +539,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 .email(email)
                 .lastLoginTime(LocalDateTime.now())
                 .build();
-        boolean flag = this.save(entity);
+        boolean flag = saveUser(entity);
         ExceptionUtil.isTrue(flag, REGISTER_FAIL);
         boolean hasSpace = false;
         if (email != null) {
@@ -557,7 +584,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 .avatar(nullToDefaultAvatar(avatar))
                 .lastLoginTime(LocalDateTime.now())
                 .build();
-        boolean flag = this.save(entity);
+        boolean flag = saveUser(entity);
         ExceptionUtil.isTrue(flag, REGISTER_FAIL);
         // 创建用户活动记录
         iPlayerActivityService.createUserActivityRecord(entity.getId());
@@ -576,7 +603,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 .avatar(nullToDefaultAvatar(null))
                 .lastLoginTime(LocalDateTime.now())
                 .build();
-        boolean flag = this.save(entity);
+        boolean flag = saveUser(entity);
         ExceptionUtil.isTrue(flag, REGISTER_FAIL);
         // 创建用户活动记录
         iPlayerActivityService.createUserActivityRecord(entity.getId());
@@ -616,7 +643,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         newUser.setPassword(passwordEncoder.encode(password));
         newUser.setCode("+86");
         newUser.setMobilePhone(phone);
-        boolean saveFlag = this.save(newUser);
+        boolean saveFlag = saveUser(newUser);
         ExceptionUtil.isTrue(saveFlag, REGISTER_FAIL);
         String spaceName = newUser.getNickName();
         if (LocaleContextHolder.getLocale().equals(LanguageManager.me().getDefaultLanguage())) {
