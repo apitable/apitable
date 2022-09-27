@@ -12876,7 +12876,8 @@
         },
         "max_audit_query_days": {
             "zh_CN": "你正在使用${grade}空间站专属功能，升级后可以解锁该功能",
-            "en_US": "你正在使用${grade}空间站专属功能，升级后可以解锁该功能"
+            "en_US": "You are experiencing the ${grade} space exclusive feature, which will be unlocked when you upgrade",
+            "zh_HK": "你正在體驗${grade}空間站專屬功能，升級後可以解鎖該功能"
         },
         "max_calendar_views_in_space": {
             "zh_CN": "空间站的日历视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
@@ -12923,7 +12924,7 @@
         },
         "max_remain_record_activity_days": {
             "zh_CN": "空间站仅显示 ${specification}  天内的修改历史，升级后可查看更久的历史数据。",
-            "en_US": "空间站仅显示 ${specification}  天内的修改历史，升级后可查看更久的历史数据。",
+            "en_US": "This space supports viewing record activity within ${specification} days, upgrade to view more ",
             "zh_HK": "空間站僅顯示 ${specification}  天內的修改歷史，升級後可查看更久的歷史數據。"
         },
         "max_remain_timemachine_days": {

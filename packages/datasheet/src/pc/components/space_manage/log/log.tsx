@@ -21,6 +21,7 @@ import { SubscribeUsageTipType } from 'pc/common/billing/subscribe_usage_check';
 import { expandUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
 import { getSocialWecomUnitName, isSocialWecom } from 'pc/components/home/social_platform';
 import { MemberItem } from 'pc/components/multi_grid/cell/cell_member/member_item';
+import { labelMap, SubscribeGrade } from 'pc/components/subscribe_system/subscribe_label';
 import { LocalFormat } from 'pc/components/tool_bar/view_filter/filter_value/filter_date/local_format';
 
 import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs';
@@ -184,6 +185,7 @@ const Log = (): JSX.Element => {
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   const subscription = useSelector(state => state.billing.subscription, shallowEqual);
+  const social = spaceInfo?.social;
 
   const [state, setState] = useState<ILogSearchState>({
     dates: null,
@@ -258,7 +260,7 @@ const Log = (): JSX.Element => {
   const onTrial = () => {
     const result = triggerUsageAlert(
       'maxAuditQueryDays',
-      { usage: subscription?.maxAuditQueryDays, alwaysAlert: true },
+      { usage: subscription?.maxAuditQueryDays, grade: labelMap[SubscribeGrade.Enterprise](social?.appType), alwaysAlert: true },
       SubscribeUsageTipType.Alert,
     );
 
