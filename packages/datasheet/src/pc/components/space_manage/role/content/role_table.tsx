@@ -38,12 +38,14 @@ export const RoleTable: React.FC<{
   const [pageInfo, setPageInfo] = useState<IPageInfo>(defaultPage);
   const { page, pageSize } = pageInfo;
   const tableWrapRef = useRef<HTMLDivElement>(null);
+  const pageWrapRef = useRef<HTMLDivElement>(null);
   const [scrollHeight, setScrollHeight] = useState(0);
   const updateScroll = useCallback(() => {
-    const headerHeight = 45;
+    const headerHeight = 47;
+    const pageWrapHeight = pageWrapRef?.current?.clientHeight || 0;
     const clientHeight = tableWrapRef.current?.clientHeight || 0;
     if (clientHeight > headerHeight) {
-      const height = clientHeight - headerHeight;
+      const height = clientHeight - headerHeight - pageWrapHeight;
       setScrollHeight(height);
     }
   }, []);
@@ -115,7 +117,7 @@ export const RoleTable: React.FC<{
           />
         </ConfigProvider>
         {showPage && (
-          <Box display={'flex'} justifyContent={'flex-end'} paddingTop={16}>
+          <Box ref={pageWrapRef} display={'flex'} justifyContent={'flex-end'} paddingTop={16}>
             <Pagination
               current={page}
               total={total}
