@@ -1,0 +1,339 @@
+import { Select } from './index';
+import { Canvas } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../stories/theme-toggle';
+import { FavoriteOutlined, WarningTriangleNonzeroFilled } from '@vikadata/icons';
+import { Tooltip } from '../tooltip';
+
+<Meta title="en/components/Select" />
+
+# Select
+
+## Usage
+
+```jsx
+import { Select } from '@vikadata/components';
+```
+
+## Scenes
+
+A drop-down menu pops up for the user to choose.
+
+## Examples
+
+<Canvas>
+<ThemeToggle lang="en">
+    <Select
+        options={[
+            { label: 'option 1', value: 'val1' },
+            { label: 'option 2', value: 'val2' },
+            { label: 'option 3', value: 'val3' },
+        ]}
+        value="val2"
+    />
+</ThemeToggle>
+</Canvas>
+
+### Select action callback
+
+<Canvas>
+    <ThemeToggle lang="en">
+        <Select
+            options={[
+                { label: 'option 1', value: 'val1' },
+                { label: 'option 2', value: 'val2' },
+                { label: 'option 3', value: 'val3' },
+            ]}
+            value="val2"
+            onSelected={(option) => {
+                alert(option);
+            }}
+        />
+    </ThemeToggle>
+</Canvas>
+
+### Placeholder
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Select
+      placeholder="choose option"
+      options={[
+          { label: 'option 1', value: 'val1' },
+          { label: 'option 2', value: 'val2' },
+          { label: 'option 3', value: 'val3' },
+      ]}
+  />
+</ThemeToggle>
+</Canvas>
+
+### Custom width
+
+In some cases, dropdown list needs to be customized according to the length of the content. If so, you can set the `dropdownMatchSelectWidth` property to `false` (with a maximum width limit):
+<Canvas>
+<ThemeToggle lang="en">
+    <Select
+        options={[
+            { label: 'option 1 long long long long long', value: 'val1' },
+            { label: 'option 2', value: 'val2' },
+            { label: 'option 3', value: 'val3' },
+        ]}
+        value="val1"
+        dropdownMatchSelectWidth={false}
+        triggerStyle={{ width: 100 }}
+    />
+</ThemeToggle>
+</Canvas>
+
+<Canvas>
+<ThemeToggle lang="en">
+    <Select
+        options={[
+            { label: 'option 1 long long long long long', value: 'val1' },
+            { label: 'option 2', value: 'val2' },
+            { label: 'option 3', value: 'val3' },
+        ]}
+        value="val1"
+        dropdownMatchSelectWidth
+        triggerStyle={{ width: 100 }}
+    />
+</ThemeToggle>
+</Canvas>
+
+
+### Option with icon
+
+Each option can set its own pre-icon and suffix-icon, the Icon is imported from the `@vikadata/icons` library.
+
+When the selected option has an icon, the icon will be displayed by default.
+
+<Canvas>
+<ThemeToggle lang="en">
+    <Select
+        options={[
+            { label: 'test label 1', value: 'opt1', prefixIcon: <FavoriteOutlined />, suffixIcon: <FavoriteOutlined /> },
+            { label: 'test label 2', value: 'opt2', prefixIcon: <FavoriteOutlined />, suffixIcon: <FavoriteOutlined /> },
+        ]}
+        value="opt1"
+        dropdownMatchSelectWidth={false}
+        triggerStyle={{ width: 100 }}
+    />
+</ThemeToggle>
+</Canvas>
+
+Note that the trigger itself can also specify the pre-Icon and suffix-Icon. When the selected result also has the corresponding Icon passed in, the Icon specified by the trigger will be higher than the Icon weight of the option.
+
+### Option dosabled
+
+When an option cannot be selected, the disabled state can be set for the option, and a reason for not being selected can be provided. When the mouse hovers over the content area, the reason will be displayed.
+
+When an option is too long and the content is not displayed completely, an ellipsis will appear. At this time, hovering over the option will display the complete content of the current option. If the option is disabled at this moment, the weight of disabledTip will be higher than the content.
+
+<Canvas>
+<ThemeToggle lang="en">
+    <Select
+        options={[
+            {
+                label: 'option disable',
+                value: 'val1',
+                disabled: true,
+            },
+            { label: 'option 1', value: 'val2' },
+            { label: 'option 2', value: 'val3' },
+        ]}
+        value={'val2'}
+        dropdownMatchSelectWidth={false}
+        triggerStyle={{ width: 100 }}
+    />
+</ThemeToggle>
+</Canvas>
+
+Set disabled tips:
+
+<Canvas>
+<ThemeToggle lang="en">
+    <Select
+        options={[
+            {
+                label: 'option disable',
+                value: 'val1',
+                disabled: true,
+                disabledTip: 'show disbale tips'
+            },
+            { label: 'option 1', value: 'val2' },
+            { label: 'option 2', value: 'val3' },
+        ]}
+        value={'val2'}
+        dropdownMatchSelectWidth={false}
+        triggerStyle={{ width: 100 }}
+    />
+</ThemeToggle>
+</Canvas>
+
+
+The suffix-icon of an option is special. When an option is in the `disabled` state, the pre-icon and the text part will turn gray, but the post-icon will keep the original color. And the rear Icon can also have its own hover.
+
+Status prompt, just pass the content in `suffixIconTip`.
+
+<Canvas>
+<ThemeToggle lang="en">
+    <Select
+        options={[
+            {
+                label: 'option disable',
+                value: 'val1',
+                disabled: true,
+                suffixIcon: (
+                    <Tooltip content={'disabled description'}>
+                      <span style={{ display: 'flex', alignItems: 'center' }}>
+                        <WarningTriangleNonzeroFilled color="#FFAB00" />
+                      </span>
+                    </Tooltip>
+                ),
+            },
+            { label: 'option 2', value: 'val2' },
+            { label: 'option 3', value: 'val3' },
+        ]}
+        value={'val2'}
+        dropdownMatchSelectWidth={false}
+        triggerStyle={{ width: 100 }}
+    />
+</ThemeToggle>
+</Canvas>
+
+## Select disbaled
+
+<Canvas>
+<ThemeToggle lang="en">
+    <Select
+        options={[
+            {
+                label: 'label 1',
+                value: 'opt',
+                prefixIcon: <FavoriteOutlined />,
+                suffixIcon: (
+                    <Tooltip content={'disabled description'}>
+                        <span style={{ display: 'flex', alignItems: 'center' }}>
+                          <WarningTriangleNonzeroFilled color="#FFAB00" />
+                        </span>
+                    </Tooltip>
+                ),
+            },
+        ]}
+        value="opt"
+        triggerStyle={{ width: 100 }}
+        disabled
+    />
+</ThemeToggle>
+</Canvas>
+
+### Search option and hightligh keyword
+
+> The search is case insensitive in English.
+
+<Canvas>
+<ThemeToggle lang="en">
+    <Select
+        options={[
+            { label: 'abcdefg', value: 'opt1' },
+            { label: 'ABCDEFG', value: 'opt2' },
+        ]}
+        value={'opt1'}
+        dropdownMatchSelectWidth
+        triggerStyle={{ width: 100 }}
+        searchPlaceholder="search options"
+        openSearch
+    />
+</ThemeToggle>
+</Canvas>
+
+### Update hightligh keyword style
+
+<Canvas>
+<ThemeToggle lang="en">
+    <Select
+        options={[
+            { label: 'abcdefg', value: 'opt1' },
+            { label: 'ABCDEFG', value: 'opt2' },
+        ]}
+        value={'opt1'}
+        dropdownMatchSelectWidth
+        triggerStyle={{ width: 100 }}
+        highlightStyle={{
+            backgroundColor: '#7B67EE',
+            color: '#fff'
+        }}
+        searchPlaceholder="search options"
+        openSearch
+    />
+</ThemeToggle>
+</Canvas>
+
+### Format Selected option
+
+Get option user name by `renderValue` function:
+
+<Canvas>
+<ThemeToggle lang="en">
+    <Select
+        options={[
+            { label: '张三-男', value: 'opt1' },
+            { label: '李四-男', value: 'opt2' },
+            { label: '翠花-女', value: 'opt3' },
+        ]}
+        value={'opt1'}
+        dropdownMatchSelectWidth
+        triggerStyle={{ width: 100 }}
+        renderValue={(option) => {
+            return option.label.split('-')[0];
+        }}
+    />
+</ThemeToggle>
+</Canvas>
+
+### Select.Option
+
+Instead of using the `options` props, you can add options through sub-elements, as follows:
+
+<Canvas>
+<ThemeToggle lang="en">
+    <Select
+        value="opt1"
+        dropdownMatchSelectWidth
+        triggerStyle={{ width: 100 }}
+    >
+        <Select.Option value="opt1">label 1</Select.Option>
+        <Select.Option value="opt2">label 2</Select.Option>
+        <Select.Option value="opt3" disabled>label 3</Select.Option>
+    </Select>
+    
+</ThemeToggle>
+</Canvas>
+
+## API
+
+| Name                     | Type                                     | Description                                                   | Default               |
+|--------------------------|------------------------------------------|---------------------------------------------------------------|-----------------------|
+| value                    | string / number                          | selected value, corresponding to the value in option          | -                     |
+| onSelected               | (option: IOption, index: number) => void | select action callback                                        | -                     |
+| options                  | IOption[]                                | dropdown list data                                            | -                     |
+| placeholder              | string                                   | -                                                             | -                     |
+| prefixIcon               | ReactNode                                | prefix icon                                                   | -                     |
+| suffixIcon               | ReactNode                                | suffix icon                                                   | -                     |
+| dropdownMatchSelectWidth | boolean                                  | whether the drop-down box and the trigger keep the same width | -                     |
+| triggerStyle             | CSSProperties                            | trigger inline style                                          | -                     |
+| triggerCls               | string                                   | trigger classname                                             | -                     |
+| listCls                  | string                                   | list classname                                                | -                     |
+| listStyle                | CSSProperties                            | list inline style                                             | -                     |
+| openSearch               | boolean                                  | whether to show search                                        | -                     |
+| searchPlaceholder        | string                                   | search placeholder                                            | -                     |
+| highlightStyle           | CSSProperties                            | custom highlight inline style                                 | -                     |
+| noDataTip                | string                                   | (() => ReactNode)                                             | empty data text or UI |  |
+| hideSelectedOption       | boolean                                  | whether hide selected options                                 | -                     |
+| dropdownRender           | ReactNode                                | custom dropdown                                               | -                     |
+| disabled                 | boolean                                  | disabled action                                               | -                     |
+| renderValue              | (option: IOption) => string              | format select option value                                    | -                     |
+| maxListWidth             | number                                   | limit max list width                                          | -                     |
+| defaultVisible           | boolean                                  | -                                                             | -                     |
+| hiddenArrow              | boolean                                  | hide arrow                                                    | -                     |
+| triggerLabel             | boolean                                  | -                                                             | -                     |
+

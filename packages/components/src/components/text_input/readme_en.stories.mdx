@@ -1,0 +1,141 @@
+import { TextInput } from './index';
+import { Canvas } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../stories/theme-toggle';
+import { PhonenumberFilled } from '@vikadata/icons';
+
+<Meta title="en/components/TextInput" />
+
+# TextInput
+
+The text input box is the most basic component of the input component. For more types see: https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input
+
+HTML input is divided into many types. Advanced types such as date, color, etc. are separate input components, this component only implements text type input. Covers the following types of native input:
+
+- text
+- email
+- url
+- tel
+- password
+- number
+- search
+
+## Usage
+
+```jsx
+import { TextInput } from '@vikadata/components';
+```
+
+## Example
+
+### Basic
+
+<Canvas>
+<ThemeToggle lang="en">
+  <TextInput placeholder="please input content" />
+  <TextInput
+    lineStyle
+    placeholder="please input content"
+  />
+</ThemeToggle>
+</Canvas>
+
+### Occupy the entire line
+
+<Canvas>
+<ThemeToggle lang="en">
+  <TextInput
+    block
+    placeholder="please input content"
+  />
+</ThemeToggle>
+</Canvas>
+
+### Size
+
+<Canvas>
+<ThemeToggle lang="en">
+  <TextInput
+    placeholder="please input content"
+    size="small"
+  />
+  <TextInput placeholder="please input content" />
+  <TextInput
+    placeholder="please input content"
+    size="large"
+  />
+</ThemeToggle>
+</Canvas>
+
+### Prefix、suffix icon
+
+<Canvas>
+<ThemeToggle lang="en">
+  <TextInput
+    placeholder="please input content"
+    prefix={<PhonenumberFilled />}
+  />
+  <TextInput
+    placeholder="please input content"
+    suffix={<PhonenumberFilled />}
+  />
+</ThemeToggle>
+</Canvas>
+
+### Error status
+
+<Canvas>
+<ThemeToggle lang="en">
+  <TextInput
+    error
+    placeholder="please input content"
+    prefix={<PhonenumberFilled />}
+  />
+</ThemeToggle>
+</Canvas>
+
+### Disable mode
+
+<Canvas>
+<ThemeToggle lang="en">
+  <TextInput
+    disabled
+    placeholder="please input content"
+    prefix={<PhonenumberFilled />}
+  />
+</ThemeToggle>
+</Canvas>
+
+### Prefix, suffix UI
+
+<Canvas>
+<ThemeToggle lang="en">
+  <TextInput
+    addonBefore={<div>http://</div>}
+    placeholder="please input content"
+    prefix={<PhonenumberFilled />}
+  />
+  <TextInput
+    addonAfter={<div>.com</div>}
+    placeholder="please input content"
+    prefix={<PhonenumberFilled />}
+  />
+</ThemeToggle>
+</Canvas>
+
+## API
+
+
+| Name        | Type                       | Description                              | Default |
+|-------------|----------------------------|------------------------------------------|--------:|
+| className   | string                     | class name                               |       - |
+| size        | small / middle / large     | input size                               |       - |
+| error       | boolean                    | check error                              |   false |
+| disabled    | boolean                    | disable action                           |       - |
+| lineStyle   | boolean                    | whether to use underline style input box |       - |
+| prefix      | ReactNode                  | prefix icon                              |       - |
+| suffix      | ReactNode                  | suffix icon                              |       - |
+| block       | boolean                    | whether to fill the parent container     |       - |
+| addonAfter  | ReactNode                  | suffix ui                                |       - |
+| addonBefore | ReactNode                  | prefix ui                                |       - |
+| wrapperRef  | RefObject<HTMLDivElement\> | ref of TextInput                         |       - |
+

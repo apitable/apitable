@@ -57,7 +57,7 @@ export const Resizable = () => {
       title: '睡觉 😴',
       startDate: new Date('2021/07/07'),
       endDate: new Date('2021/07/10'),
-    }, 
+    },
     {
       id: 5,
       title: '学习 🙇',
@@ -92,6 +92,74 @@ export const Resizable = () => {
   return (
     <Calendar
       tasks={tasks}
+      update={update}
+      resizable
+      defaultDate={new Date('2021/07/01')}
+    />
+  );
+};
+
+export const ResizableWithEn = () => {
+  const [tasks, setTasks] = React.useState([
+    {
+      id: 1,
+      title: 'Have a meal 🍚',
+      startDate: new Date('2021/07/08'),
+      endDate: new Date('2021/07/15'),
+    },
+    {
+      id: 2,
+      title: 'Haha 🙂',
+      startDate: new Date('2021/07/05'),
+      endDate: new Date('2021/07/06'),
+    },
+    {
+      id: 3,
+      title: 'Drink water 🍧',
+      startDate: new Date('2021/06/28'),
+      endDate: new Date('2021/07/04'),
+    },
+    {
+      id: 4,
+      title: 'Sleep 😴',
+      startDate: new Date('2021/07/07'),
+      endDate: new Date('2021/07/10'),
+    }, 
+    {
+      id: 5,
+      title: 'Study 🙇',
+      startDate: new Date('2021/07/05'),
+      endDate: new Date('2021/07/13'),
+    },
+    {
+      id: 6,
+      title: 'Eat skewers 🍡',
+      startDate: new Date('2021/07/08'),
+      endDate: new Date('2021/08/25'),
+    },
+    {
+      id: 7,
+      title: 'Watch video~~',
+      startDate: new Date('2021/08/08'),
+      endDate: new Date('2021/09/20'),
+    },
+  ]);
+  const update = (id, startDate, endDate) => {
+    setTasks(tasks.map(t => {
+      if (t.id === id) {
+        return {
+          ...t,
+          startDate,
+          endDate,
+        };
+      }
+      return t;
+    }));
+  };
+  return (
+    <Calendar
+      tasks={tasks}
+      lang="en"
       update={update}
       resizable
       defaultDate={new Date('2021/07/01')}
