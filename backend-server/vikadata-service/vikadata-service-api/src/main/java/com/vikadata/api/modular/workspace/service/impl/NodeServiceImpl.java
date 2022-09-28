@@ -332,6 +332,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     public Boolean getIsTemplateByNodeIds(List<String> nodeIds) {
         log.info("查询节点「{}」是否都属于模板", nodeIds);
         List<Boolean> result = nodeMapper.selectIsTemplateByNodeId(nodeIds);
+        ExceptionUtil.isTrue(result.size() > 0, PermissionException.NODE_NOT_EXIST);
         ExceptionUtil.isTrue(result.size() == 1, ParameterException.INCORRECT_ARG);
         return result.get(0);
     }
@@ -1841,7 +1842,6 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             return Optional.empty();
         }
     }
-
 
 
     @Override
