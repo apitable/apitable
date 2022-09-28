@@ -24,8 +24,8 @@ public class ShopServiceImplTest extends AbstractIntegrationTest {
     @Test
     public void testGetPricesByProductOnSilver() {
         List<ProductPriceVo> productPriceVos = isShopService.getPricesByProduct(ProductEnum.SILVER.name());
-        // 白银级有21个付费方案
-        assertThat(productPriceVos).isNotEmpty().hasSize(21);
+        // 24 plan in silver product
+        assertThat(productPriceVos).isNotEmpty().hasSize(24);
     }
 
     @Test

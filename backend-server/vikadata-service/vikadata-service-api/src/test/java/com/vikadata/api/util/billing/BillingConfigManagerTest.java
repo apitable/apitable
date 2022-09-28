@@ -255,7 +255,7 @@ public class BillingConfigManagerTest {
         List<Price> priceList = BillingConfigManager.getPriceList(ProductEnum.SILVER);
         // 白银套餐必须具备哪些计划
         Integer[] months = array(1, 6, 12);
-        Integer[] seats = array(2, 5, 10, 20, 30, 50, 80);
+        Integer[] seats = array(2, 5, 10, 20, 30, 50, 80, 100);
         assertEquals(priceList.size(), months.length * seats.length);
     }
 
@@ -264,7 +264,7 @@ public class BillingConfigManagerTest {
         List<Price> priceList = BillingConfigManager.getPriceList(ProductEnum.GOLD);
         // 白银套餐必须具备哪些计划
         Integer[] months = array(1, 6, 12);
-        Integer[] seats = array(100, 120, 150, 180, 20);
+        Integer[] seats = array(100, 120, 150, 180, 200);
         assertEquals(priceList.size(), months.length * seats.length);
     }
 

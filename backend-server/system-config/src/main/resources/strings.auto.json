@@ -1892,6 +1892,11 @@
             "zh_CN": "当前套餐容量",
             "en_US": "Subscription Capacity"
         },
+        "atlas": {
+            "zh_CN": "云版本",
+            "en_US": "Atlas",
+            "zh_HK": "雲版本"
+        },
         "attachment_data": {
             "zh_CN": "附件数据",
             "en_US": "Attachments",
@@ -13761,6 +13766,9 @@
             "zh_CN": "若还不是维格表用户，点击<a href=\"https://u.vika.cn/qmdp3\" target=\"_blank\">注册帐号</a>完成注册再进行绑定",
             "en_US": "If you have not signed up yet, click <a href=\"https://u.vika.cn/qmdp3\" target=\"_blank\"> \"sign up\" </a> and bind the account",
             "zh_HK": "若還不是維格表用戶，點擊<a href=\"https://u.vika.cn/qmdp3\" target=\"_blank\">註冊帳號</a>完成註冊再進行綁定"
+        },
+        "new_user_welcome_notify": {
+            "zh_CN": "欢迎加入维格表，我们为你准备了一份免费学习维格表的见面礼，点击这条消息即可跳转了解详情。"
         },
         "new_user_welcome_notify": {
             "zh_CN": "欢迎加入维格表，我们为你准备了一份免费学习维格表的见面礼，点击这条消息即可跳转了解详情。"
