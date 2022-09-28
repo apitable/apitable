@@ -6,9 +6,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -271,9 +268,9 @@ public class MemberController {
     })
     public ResponseData<MemberInfoVo> read(@RequestParam(value = "memberId", required = false) Long memberId,
             @RequestParam(value = "uuid", required = false) String uuid) {
-        String spaceId = LoginContext.me().getSpaceId();
         ExceptionUtil.isTrue(ObjectUtil.isNotNull(memberId) || StrUtil.isNotBlank(uuid), NO_ARG);
         if (StrUtil.isNotBlank(uuid)) {
+            String spaceId = LoginContext.me().getSpaceId();
             List<Long> userIds = userMapper.selectIdByUuidList(Collections.singletonList(uuid));
             ExceptionUtil.isNotEmpty(userIds, NOT_EXIST_MEMBER);
             memberId = memberMapper.selectIdByUserIdAndSpaceId(userIds.get(0), spaceId);
@@ -282,7 +279,7 @@ public class MemberController {
         MemberInfoVo memberInfoVo = memberMapper.selectInfoById(memberId);
         ExceptionUtil.isNotNull(memberInfoVo, NOT_EXIST_MEMBER);
         // handle member's team name, get full hierarchy team path name
-        iMemberService.handleMemberTeamInfo(memberInfoVo, spaceId);
+        iMemberService.handleMemberTeamInfo(memberInfoVo);
         List<RoleVo> roleVos = iRoleService.getRoleVosByMemberId(memberId);
         memberInfoVo.setRoles(roleVos);
         return ResponseData.success(memberInfoVo);

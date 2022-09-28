@@ -8,7 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -205,6 +204,9 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Resource
     private Auth0Service auth0Service;
+
+    @Resource
+    private MemberMapper memberMapper;
 
     @Override
     public String getMemberNameById(Long memberId) {
@@ -1471,8 +1473,8 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     }
 
     @Override
-    public void handleMemberTeamInfo(MemberInfoVo memberInfoVo, String spaceId) {
-        // get member's id
+    public void handleMemberTeamInfo(MemberInfoVo memberInfoVo) {
+        String spaceId = memberMapper.selectSpaceIdByMemberId(memberInfoVo.getMemberId());
         List<Long> memberIds = CollUtil.newArrayList(memberInfoVo.getMemberId());
         // handle member's team name, get full hierarchy team path name
         Map<Long, List<MemberTeamPathInfo>> memberTeamPathInfosMap = iTeamService.batchGetFullHierarchyTeamNames(memberIds, spaceId);

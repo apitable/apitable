@@ -644,7 +644,6 @@ public interface IMemberService extends IService<MemberEntity> {
      * handle memberInfo's team path name
      *
      * @param memberInfoVo member info view
-     * @param spaceId space's id
      */
-    void handleMemberTeamInfo(MemberInfoVo memberInfoVo, String spaceId);
+    void handleMemberTeamInfo(MemberInfoVo memberInfoVo);
 }

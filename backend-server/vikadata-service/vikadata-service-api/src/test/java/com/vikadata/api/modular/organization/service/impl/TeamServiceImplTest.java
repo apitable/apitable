@@ -147,8 +147,8 @@ public class TeamServiceImplTest extends AbstractIntegrationTest {
 
         List<Long> memberIds = CollUtil.newArrayList(101L, 102L);
         Map<Long, List<MemberTeamPathInfo>> memberToTeamMap = iTeamService.batchGetFullHierarchyTeamNames(memberIds, "spc1");
-        assertThat(memberToTeamMap.get(101L).get(0).getTeamId()).isEqualTo(1);
         assertThat(memberToTeamMap.get(101L).get(0).getFullHierarchyTeamName()).isEqualTo("root team");
+        assertThat(memberToTeamMap.get(101L).get(0).getTeamId()).isEqualTo(1);
         assertThat(memberToTeamMap.get(102L).get(0).getFullHierarchyTeamName()).isEqualTo("NO.1 first-level team");
         assertThat(memberToTeamMap.get(102L).get(0).getTeamId()).isEqualTo(11);
         assertThat(memberToTeamMap.get(102L).get(1).getFullHierarchyTeamName()).isEqualTo("NO.1 first-level team/NO.1 second-level team/NO.1 third-level team");
@@ -174,6 +174,29 @@ public class TeamServiceImplTest extends AbstractIntegrationTest {
         assertThat(memberToTeamMap.get(101L).get(0).getFullHierarchyTeamName()).isEqualTo("NO.1 first-level team/NO.1 second-level team");
         assertThat(memberToTeamMap.get(101L).get(1).getTeamId()).isEqualTo(221);
         assertThat(memberToTeamMap.get(101L).get(1).getFullHierarchyTeamName()).isEqualTo("NO.1 first-level team/NO.1 second-level 2 team");
+    }
+
+    @Test
+    public void testBatchGetFullHierarchyTeamNamesThatMemberInDifferentTeamsWithSameBranch(){
+        // prepare member and team info
+        this.prepareMemberAndTeamInfo();
+
+        // prepare member and team rel
+        TeamMemberRelEntity rel = TeamMemberRelEntity.builder().id(111L).memberId(101L).teamId(11L).build();
+        teamMemberRelService.save(rel);
+        TeamMemberRelEntity rel2 = TeamMemberRelEntity.builder().id(222L).memberId(101L).teamId(21L).build();
+        teamMemberRelService.save(rel2);
+        TeamMemberRelEntity rel3 = TeamMemberRelEntity.builder().id(333L).memberId(101L).teamId(31L).build();
+        teamMemberRelService.save(rel3);
+
+        List<Long> memberIds = CollUtil.newArrayList(101L);
+        Map<Long, List<MemberTeamPathInfo>> memberToTeamMap = iTeamService.batchGetFullHierarchyTeamNames(memberIds, "spc1");
+        assertThat(memberToTeamMap.get(101L).get(0).getFullHierarchyTeamName()).isEqualTo("NO.1 first-level team");
+        assertThat(memberToTeamMap.get(101L).get(0).getTeamId()).isEqualTo(11);
+        assertThat(memberToTeamMap.get(101L).get(1).getFullHierarchyTeamName()).isEqualTo("NO.1 first-level team/NO.1 second-level team");
+        assertThat(memberToTeamMap.get(101L).get(1).getTeamId()).isEqualTo(21);
+        assertThat(memberToTeamMap.get(101L).get(2).getFullHierarchyTeamName()).isEqualTo("NO.1 first-level team/NO.1 second-level team/NO.1 third-level team");
+        assertThat(memberToTeamMap.get(101L).get(2).getTeamId()).isEqualTo(31);
     }
 
     private void prepareMemberAndTeamInfo() {

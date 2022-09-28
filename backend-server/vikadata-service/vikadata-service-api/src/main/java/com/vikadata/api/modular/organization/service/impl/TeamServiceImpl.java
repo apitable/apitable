@@ -699,7 +699,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
                 List<String> branchNames = new ArrayList<>(teamNames);
                 branchNames.add(team.getTeamName());
                 teamIdToPathMap.put(team.getTeamId(), branchNames);
-                continue;
+                allTeamIds.remove(team.getTeamId());
             }
             TeamVo teamVo = new TeamVo();
             teamVo.setTeamId(team.getTeamId());
