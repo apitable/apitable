@@ -29,14 +29,13 @@ import { Check } from '../common_list/check';
 import { IMemberOptionListProps } from './member_option_list.interface';
 import styles from './styles.module.less';
 import { InfoCard } from 'pc/components/common/info_card';
-import { isUnitLeave } from 'pc/components/multi_grid/cell/cell_member/member_item';
 
 const triggerBase = {
   action: ['hover'],
 
   popupAlign: {
     points: ['cr', 'cl'],
-    offset: [-16, 0],
+    offset: [-24, 0],
     overflow: { adjustX: true, adjustY: true },
   }
 };
@@ -259,6 +258,7 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
         {
           memberList.map((item, index) => {
             const unitId = uniqId === 'unitId' ? item.unitId : item.userId;
+            console.log('成员信息', item);
             return (
               <CommonList.Option
                 key={item[uniqId] || index}
@@ -271,17 +271,18 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
               > 
                 <InfoCard 
                   title={item.name}
-                  description={item.teamData ? item.teamData[0].fullHierarchyTeamName : ''}
+                  description={item.teamData ? item.teamData[0]?.fullHierarchyTeamName : ''}
                   avatarProps={{
                     id: unitId || '',
                     title: item.name,
                     src: item.avatar,
                   }}
-                  userId={item.uuid}
+                  userId={item.userId}
                   triggerBase={triggerBase}
                   className={styles.memberInfoCard}
-                  isLeave={isUnitLeave(item)}
+                  isDeleted={item.isDeleted}
                   memberType={item.type}
+                  isActive={item.isActive}
                 />
                 <Check isChecked={Boolean(existValues && existValues.includes(unitId!))} />
               </CommonList.Option>

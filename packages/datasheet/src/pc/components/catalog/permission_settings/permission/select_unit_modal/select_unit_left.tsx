@@ -275,7 +275,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
               <InfoCard
                 title={title || t(Strings.unnamed)}
                 originTitle={_item.memberName || t(Strings.unnamed)}
-                description={_item.teamData ? _item.teamData[0].fullHierarchyTeamName : ''}
+                description={_item.teamData ? _item.teamData[0]?.fullHierarchyTeamName : ''}
                 style={{ backgroundColor: 'transparent' }}
                 inSearch={inSearch}
                 userId={_item.uuid}

@@ -4,13 +4,17 @@ import { UserCard, IUserCard } from './user_card';
 import { useSelector } from 'react-redux';
 import { IReduxState } from '@vikadata/core';
 import styles from './style.module.less';
+import { IAvatarProps } from 'pc/components/common';
 interface IUserCardTrigger extends IUserCard, Partial<TriggerProps> {
   scrollTarget?: string; // 如果传入此参数，则会给该元素绑定scroll事件，scroll时名片会消失
+  isDeleted?: boolean;
+  isActive?: boolean;
+  avatarProps?: IAvatarProps;
 }
 
 export const UserCardTrigger: FC<IUserCardTrigger> = props => {
   const { userId, memberId, spareName, spareSrc, spaceName, children, action = ['click'], isAlien,
-    destroyPopupOnHide = true, scrollTarget, permissionVisible, ...rest } = props;
+    destroyPopupOnHide = true, scrollTarget, permissionVisible, isDeleted, isActive, avatarProps, ...rest } = props;
   const shareId = useSelector((state: IReduxState) => state.pageParams.shareId);
   const [cardVisible, setCardVisible] = useState(false);
   const ref = useRef<any>();
@@ -55,7 +59,10 @@ export const UserCardTrigger: FC<IUserCardTrigger> = props => {
                 spaceName={spaceName}
                 isAlien={isAlien}
                 permissionVisible={permissionVisible}
+                isDeleted={isDeleted}
+                isActive={isActive}
                 onClose={() => setCardVisible(false)}
+                avatarProps={avatarProps}
               />
             }
             popupStyle={{ ...props.popupStyle, width: '240px' }}

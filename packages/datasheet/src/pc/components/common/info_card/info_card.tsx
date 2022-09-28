@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import * as React from 'react';
 import styles from './style.module.less';
 import { Tooltip, Avatar, IAvatarProps } from 'pc/components/common';
@@ -28,8 +28,9 @@ interface IInfoCardProps {
   triggerBase?: ITriggerBase;
   userId?: string;
   memberId?: string;
-  isLeave?: boolean;
+  isDeleted?: boolean;
   memberType?: number;
+  isActive?: boolean;
 }
 // const searchTag = '<span class="highLight">';
 
@@ -37,9 +38,13 @@ export const InfoCard: FC<IInfoCardProps> = props => {
   const { 
     title, originTitle = '', description, onClick, extra, triggerBase,
     inSearch = false, className, avatarProps, token, userId, memberId,
-    isLeave = false, memberType = 3, ...rest 
+    isDeleted = false, memberType = 3, isActive = true,...rest 
   } = props;
- 
+
+  const isMember = useMemo(() => {
+    return memberType === MemberType.Member;
+  }, [memberType]);
+
   return (
    
     <div
@@ -49,12 +54,16 @@ export const InfoCard: FC<IInfoCardProps> = props => {
       {...rest}
     >
       
-      <div className={classNames(styles.defaultContent, { [styles.isLeave] : isLeave })}>
-        { (triggerBase && !isLeave && memberType !== MemberType.Team )? <UserCardTrigger
+      <div className={classNames(styles.defaultContent, { [styles.isLeave] : (isDeleted || !isActive) && isMember })}>
+        { (triggerBase && userId !== 'Self' && isMember )? <UserCardTrigger
           {...triggerBase}
           userId={userId}
           memberId={memberId}
           permissionVisible={false}
+          isDeleted={isDeleted}
+          isActive={isActive}
+          avatarProps={avatarProps}
+          spareName={avatarProps.title}
         >
           <div style={{ cursor:  'pointer' }}>
             <Avatar

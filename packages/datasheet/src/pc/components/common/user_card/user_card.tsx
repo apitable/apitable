@@ -4,11 +4,12 @@ import { SettingOutlined } from '@vikadata/icons';
 import { Avatar, Loading, Tag } from 'pc/components/common';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 import { useCatalogTreeRequest, useRequest } from 'pc/hooks';
-import { FC, useState } from 'react';
+import { FC, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TagColors } from '../tag';
 import styles from './style.module.less';
-
+import { IAvatarProps } from 'pc/components/common';
+import classNames from 'classnames';
 export interface IUserCard {
   // 通知中心使用
   memberId?: string;
@@ -20,8 +21,11 @@ export interface IUserCard {
   spareSrc?: string; // 接口查询不到信息时备用接口
   spaceName?: string; // 不传则默认取userinfo里的空间名称
   isAlien?: boolean;
+  isDeleted?: boolean;
+  isActive?: boolean;
   // 关闭悬浮卡片
   onClose?: () => void;
+  avatarProps?: IAvatarProps;
 }
 enum TAGTYPE {
   Visitor = 'Visitor',
@@ -36,11 +40,13 @@ export const UserCard: FC<IUserCard> = ({
   spareSrc,
   isAlien,
   permissionVisible = true,
+  isDeleted = false,
+  isActive = true,
+  avatarProps,
   onClose
 }) => {
   const colors = useThemeColors();
   const [tagType, setTagType] = useState('');
- 
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   const activeNodeId = useSelector(state => Selectors.getNodeId(state));
   const { getNodeRoleListReq, shareSettingsReq } = useCatalogTreeRequest();
@@ -87,6 +93,25 @@ export const UserCard: FC<IUserCard> = ({
     return ConfigConstant.Role.Reader;
   }
 
+  const tagText = useMemo(() => {
+    if(isDeleted) {
+      return t(Strings.member_status_removed);
+    }
+  
+    if(!isActive) {
+      return t(Strings.added_not_yet);
+    }
+  
+    // 外星人
+    if (isAlien) {
+      return t(Strings.anonymous);
+    } else if (!memberInfo) { // 外部访问者
+      return t(Strings.guests_per_space);
+    }
+
+    return '';
+  }, [isDeleted, isActive, isAlien, memberInfo]);
+
   const tooltipZIndex = 10001;
 
   const openPermissionModal = () => {
@@ -107,7 +132,7 @@ export const UserCard: FC<IUserCard> = ({
         {loading || (!memberRole && permissionVisible) ? <Loading /> :
           (
             <div>
-              {permissionVisible && 
+              {permissionVisible && memberRole && memberInfo &&
                 <div className={styles.cardTool} onClick={openPermissionModal}>
                   <div className={styles.settingPermissionBtn} >
                     <SettingOutlined />
@@ -120,42 +145,41 @@ export const UserCard: FC<IUserCard> = ({
                   id={memberInfo?.memberId || userId || '0'}
                   src={memberInfo?.avatar || spareSrc}
                   title={memberInfo?.memberName || spareName || ''}
+                  {...avatarProps}
                   size={40}
                 />
                 <div className={styles.nameWrapper}>
                   <Typography className={styles.name} variant="h7" color={colors.firstLevelText} ellipsis tooltipsZIndex={tooltipZIndex}>
-                    {title || spareName}
+                    {spareName || title }
                   </Typography>
                   {permissionVisible && memberRole &&
                     <div className={styles.permissionWrapper}>
                       <Tag className={styles.permission} color={TagColors[memberRole]}>{ConfigConstant.permissionText[memberRole]}</Tag>
                     </div>
                   }
+                  <TeamTag tagText={tagText} isActive={isActive} />
                 </div>
               </div>
-              <div className={styles.dividing} />
+              <div className={styles.infoWrapper}>
+                <div className={styles.email}>
+                  {
+                    memberInfo?.email &&
+                      <Typography variant="body4" color={colors.primaryColor} ellipsis tooltipsZIndex={tooltipZIndex}>
+                        {tagType === TAGTYPE.Alien ? t(Strings.alien_tip_in_user_card) : memberInfo?.email}
+                      </Typography>
+                  }
+                </div>
+              </div>
               <div className={styles.infoContent}>
                 <div className={styles.infoWrapper}>
-                  {/* {renderTags()} */}
-                  <p>{t(Strings.role_member_table_header_team)}:</p>
+                  <p>{t(Strings.role_member_table_header_team)}</p>
                   <div className={styles.teamList}>
                     { memberInfo ?
                       memberInfo?.teamData?.map(item => {
                         return(
-                          <div className={styles.teamItem}>{item.fullHierarchyTeamName}</div>
+                          <div className={styles.teamItem}>- {item.fullHierarchyTeamName}</div>
                         );
-                      }) : '-'
-                    }
-                  </div>
-                </div>
-                <div className={styles.infoWrapper}>
-                  <p>{t(Strings.mail)}:</p>
-                  <div className={styles.teamList}>
-                    {
-                      memberInfo?.email ? 
-                        <Typography variant="body4" color={colors.textCommonPrimary} ellipsis tooltipsZIndex={tooltipZIndex}>
-                          {tagType === TAGTYPE.Alien ? t(Strings.alien_tip_in_user_card) : memberInfo?.email}
-                        </Typography> : '-'
+                      }) : t(Strings.alien_tip_in_user_card)
                     }
                   </div>
                 </div>
@@ -165,5 +189,29 @@ export const UserCard: FC<IUserCard> = ({
         }
       </div>
     </>
+  );
+};
+
+interface ITeamTag {
+  tagText: string;
+  isActive?: boolean | undefined;
+}
+
+const TeamTag: FC<ITeamTag> = (props) => {
+  const { tagText, isActive } = props;
+  
+  const colors = useThemeColors();
+  
+  if(tagText === '') {
+    return null;
+  }
+
+  return (
+    <div className={classNames({
+      [styles.tag]: isActive,
+      [styles.dangerTag]: !isActive
+    })} >
+      <Typography variant="body4" color={isActive ? colors.secondLevelText : colors.borderDanger} ellipsis >{tagText}</Typography>
+    </div>
   );
 };

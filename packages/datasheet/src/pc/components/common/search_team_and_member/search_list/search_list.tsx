@@ -57,7 +57,7 @@ export const SearchList: FC<ISearchListProps> = props => {
                     <InfoCard
                       title={title}
                       originTitle={item.memberName}
-                      description={item.teamData[0].fullHierarchyTeamName || ''}
+                      description={item.teamData[0]?.fullHierarchyTeamName || ''}
                       style={cardStyle}
                       inSearch
                       triggerBase={triggerBase}

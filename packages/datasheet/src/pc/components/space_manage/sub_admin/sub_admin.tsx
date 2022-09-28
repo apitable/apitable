@@ -17,6 +17,15 @@ import styles from './style.module.less';
 // 一些已经不使用的权限，但是因为旧空间还是会返回相应的数据，前端对这些权限做过滤
 const UNUSED_PERMISSION = ['MANAGE_NORMAL_MEMBER'];
 
+const triggerBase = {
+  action: ['hover'],
+  popupAlign: {
+    points: ['tl', 'bl'],
+    offset: [0, 18],
+    overflow: { adjustX: true, adjustY: true },
+  }
+};
+
 export const SubAdmin: FC = () => {
   const colors = useThemeColors();
   const dispatch = useDispatch();
@@ -126,7 +135,9 @@ export const SubAdmin: FC = () => {
           <InfoCard
             title={title || record.memberName || t(Strings.unnamed)}
             description={record.team}
+            triggerBase={triggerBase}
             key={record.id}
+            memberId={record.memberId}
             avatarProps={{
               id: record.memberId,
               title: record.memberName || t(Strings.unnamed),
