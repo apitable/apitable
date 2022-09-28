@@ -1,5 +1,8 @@
 .moveTo {
   :global {
+    .ant-modal-header {
+      padding-bottom: 16px;
+    }
     .ant-modal-content {
       display: flex;
       flex-direction: column;
@@ -11,7 +14,7 @@
       width: 100%;
       flex: 1;
       overflow: hidden;
-      padding: 0 8px !important;
+      padding: 0 !important;
     }
   }
   .title {
@@ -26,16 +29,27 @@
   }
 
   .selectFolder {
+    position: relative;
     flex: 1;
     width: 100%;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    :global {
+      .focused {
+        border-bottom-color: var(--borderBrand) !important;
+      }
+    }
+    .searchInput {
+      width: initial;
+      margin: 0 16px;
+      border-bottom: 1px solid var(--borderCommon);
+    }
     .wholeTips {
-      padding: 2px 8px;
+      padding: 2px 16px;
     }
     .noWholeTips {
-      padding: 7px 0;
+      padding: 7px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -49,6 +63,7 @@
       flex: 1;
       overflow-y: auto;
       .folderItem {
+        margin: 0 8px;
         padding: 6px 8px;
         border-radius: 4px;
         cursor: pointer;
@@ -65,6 +80,15 @@
         .folderItemIcon {
           margin-right: 8px;
         }
+      }
+      .scrollShadow {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 20px;
+        background: var(--bgGradientVertical);
+        pointer-events: none;
       }
     }
     .folderListNoTips {
@@ -94,7 +118,7 @@
     .folderList {
       margin: 8px 0;
       .folderItem {
-        padding: 6px 0;
+        padding: 12px 0;
         &:hover {
           background: transparent;
         }
@@ -109,4 +133,9 @@
 .mobileTitleBack {
   position: absolute;
   transform: translateX(-24px);
+}
+
+.permissionSetBtn {
+  cursor: pointer;
+  text-decoration: underline;
 }

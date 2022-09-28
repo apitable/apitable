@@ -13623,8 +13623,9 @@
             "en_US": "The file is under the current folder. Please select another folder"
         },
         "move_to_modal_title": {
-            "zh_CN": "将【${name}】移动到",
-            "en_US": "Move [${name}] to"
+            "zh_CN": "将【${name}】移动至",
+            "en_US": "Move [${name}] to",
+            "zh_HK": "將【${name}】移動至"
         },
         "move_to_success": {
             "zh_CN": "移动成功",
@@ -17160,8 +17161,8 @@
             "zh_HK": "最近添加的小程序（${count} 個）"
         },
         "recently_used_files": {
-            "zh_CN": "最近使用的文件",
-            "en_US": "Recently used files"
+            "zh_CN": "最近使用的文件夹",
+            "en_US": "Recently used folders"
         },
         "recommend": {
             "zh_CN": "推荐",

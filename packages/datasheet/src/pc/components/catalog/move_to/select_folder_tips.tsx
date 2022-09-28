@@ -20,8 +20,8 @@ export const SelectFolderTips: React.FC<{
       <LinkButton
         color={colors.textCommonSecondary}
         className={styles.switchWholeBtn}
-        suffixIcon={<ChevronRightOutlined />}
         underline={false}
+        suffixIcon={<ChevronRightOutlined color={colors.textCommonTertiary}/>}
         onClick={() => setIsWhole(true)}
       >{t(Strings.view_full_catalog)}</LinkButton>
     </div>

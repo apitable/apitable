@@ -3454,7 +3454,7 @@ window.vika_i18n =
   "receive_new_folder": "Received a new folder",
   "received_a_new_doc": "Received a new document",
   "recent_installed_widget": "Recently installed widgets (${count})",
-  "recently_used_files": "Recently used files",
+  "recently_used_files": "Recently used folders",
   "recommend": "Hot",
   "reconciled_data": "Data is being reconciled",
   "record": "Record",

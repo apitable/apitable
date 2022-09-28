@@ -1,13 +1,12 @@
-import { LinkButton, Message, TextInput } from '@vikadata/components';
+import { Box, LinkButton, Loading, Message, TextInput, useThemeColors } from '@vikadata/components';
 import { Api, ApiInterface, ConfigConstant, INode, INodesMapItem, IParent, Strings, t } from '@vikadata/core';
 import { ChevronRightOutlined, SearchOutlined } from '@vikadata/icons';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
 import throttle from 'lodash/throttle';
-import { ScrollBar } from 'pc/common/guide/scroll_bar';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { FolderItem } from './folder_item';
 import { SelectFolderTips } from './select_folder_tips';
@@ -31,12 +30,16 @@ export const SelectFolder: React.FC<{
   const [wholeList, setWholeList] = useState<Omit<INodesMapItem, 'children'>[]>([]);
   const [keyword, setKeyword] = useState<string>();
   const [searchList, setSearchList] = useState<INode[]>([]);
+  const [firstLoading, setFirstLoading] = useState(true);
+  const scrollShadowRef = useRef<HTMLDivElement>(null);
+  const folderListRef = useRef<HTMLDivElement>(null);
 
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
+  const colors = useThemeColors();
 
-  useMount(() => {
-    Api.getRecentlyBrowsedFolder().then(res => {
+  useMount(async() => {
+    await Api.getRecentlyBrowsedFolder().then(res => {
       const { data, success, message } = res.data;
       if (!success) {
         Message.error({ content: message });
@@ -44,6 +47,11 @@ export const SelectFolder: React.FC<{
       }
       setRecentlyBrowsedList(data);
     });
+    setFirstLoading(false);
+    if (folderListRef.current) {
+      const { clientHeight, scrollHeight, scrollTop } = folderListRef.current;
+      onScroll({ height: clientHeight, scrollHeight, scrollTop });
+    }
   });
 
   useEffect(() => {
@@ -94,6 +102,27 @@ export const SelectFolder: React.FC<{
     onClickItem(rootId);
   };
 
+  const onScroll = ({ scrollTop, height, scrollHeight }) => {
+    const shadowEle = scrollShadowRef.current;
+    if (!shadowEle) return;
+    if (scrollTop + height > scrollHeight - 10) {
+      // 屏蔽可滚动样式
+      shadowEle.style.display = 'none';
+      return;
+    }
+    // 展示可滚动样式
+    if (shadowEle.style.display === 'block') {
+      return;
+    }
+    shadowEle.style.display = 'block';
+  };
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const ele = e.target as HTMLDivElement;
+    const { clientHeight, scrollHeight, scrollTop } = ele;
+    onScroll({ height: clientHeight, scrollHeight, scrollTop });
+  };
+
   const isShowSearchInput = !isMobile || isWhole;
   const isShowTips = !isMobile && !keyword;
   const showLevel = !isWhole || keyword;
@@ -104,6 +133,7 @@ export const SelectFolder: React.FC<{
     <div className={styles.selectFolder}>
       {/** 如果在web端或者移动端完整数据的时候显示搜索 */}
       {isShowSearchInput && <TextInput
+        className={styles.searchInput}
         value={keyword}
         prefix={<SearchOutlined />}
         placeholder={t(Strings.search)}
@@ -112,27 +142,27 @@ export const SelectFolder: React.FC<{
         onChange={e => setKeyword(e.target.value)}
       />}
       {isShowTips && <SelectFolderTips isWhole={isWhole} setIsWhole={enterWhole} data={selectedFolderParentList} onClick={onClickItem}/>}
-      <div className={classNames(styles.folderList, !isShowTips && styles.folderListNoTips)}>
-        <ScrollBar>
-          {
-            list.map(item => {
-              const { nodeId, nodeName, icon } = item;
-              return <FolderItem
-                key={nodeId}
-                folderId={nodeId}
-                folderName={nodeName}
-                icon={icon}
-                onClick={onClickItem}
-                level={showLevel ? `${spaceName} ${item.superiorPath}` : ''}
-              />;
-            })
-          }
-        </ScrollBar>
+      <div ref={folderListRef} className={classNames(styles.folderList, !isShowTips && styles.folderListNoTips)} onScroll={handleScroll}>
+        { firstLoading ? <Box height={'100%'} display={'flex'} alignItems={'center'} justifyContent={'center'}><Loading /></Box> : 
+          list.map(item => {
+            const { nodeId, nodeName, icon } = item;
+            return <FolderItem
+              key={nodeId}
+              folderId={nodeId}
+              folderName={nodeName}
+              icon={icon}
+              onClick={onClickItem}
+              level={showLevel ? `${spaceName} ${item.superiorPath}` : ''}
+            />;
+          })
+        }
+        <div ref={scrollShadowRef} className={styles.scrollShadow} />
       </div>
       {isShowWholeButton && <div>
         <LinkButton
           className={styles.switchWholeBtn}
-          suffixIcon={<ChevronRightOutlined />}
+          color={colors.textCommonPrimary}
+          suffixIcon={<ChevronRightOutlined color={colors.textCommonPrimary}/>}
           onClick={enterWhole}
           block
         >{t(Strings.view_full_catalog)}</LinkButton>

@@ -31,14 +31,15 @@ export const MobileTitle: React.FC<{
 };
 
 export const MobileFooter: React.FC<{
+  confirmLoading?: boolean;
   onConfirm?: () => void;
   onCancel?: () => void;
 }> = (props) => {
-  const { onCancel, onConfirm } = props;
+  const { confirmLoading, onCancel, onConfirm } = props;
   return (
     <div className={styles.mobileFooter}>
       <Button variant="fill" size='large' onClick={onCancel}>{t(Strings.cancel)}</Button>
-      <Button color='primary' size='large' onClick={onConfirm}>{t(Strings.move_to)}</Button>
+      <Button loading={confirmLoading} color='primary' size='large' onClick={onConfirm}>{t(Strings.move_to)}</Button>
     </div>
   );
 };

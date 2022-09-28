@@ -20,6 +20,7 @@ export const MoveTo: React.FC<{
   const { nodeIds, onClose } = props;
   const [selectedNodeId, setSelectedNodeId] = useState<string>();
   const [parentList, setParentList] = useState<IParent[]>([]);
+  const [confirmLoading, setConfirmLoading] = useState(false);
   const { nodeName, parentId, nodePermitSet } = useSelector(state => {
     const { nodeName, parentId, nodePermitSet } = state.catalogTree.treeNodesMap[nodeIds[0]];    
     return { nodeName, parentId, nodePermitSet };
@@ -64,7 +65,9 @@ export const MoveTo: React.FC<{
       Message.error({ content: t(Strings.move_to_error_equal_parent) });
       return;
     }
+    setConfirmLoading(true);
     const move = () => Api.nodeMove(nodeId, selectedNodeId).then(res => {
+      setConfirmLoading(false);
       const { data, success, message } = res.data;
       if (!success) {
         Message.error({ content: message });
@@ -133,6 +136,7 @@ export const MoveTo: React.FC<{
           centered
           onCancel={onClose}
           okText={t(Strings.move)}
+          confirmLoading={confirmLoading}
           onOk={moveTo}
         >
           {main}
@@ -149,7 +153,7 @@ export const MoveTo: React.FC<{
             nodeName={selectedNodeId ? selectedNodeName : t(Strings.move_to)}
             onClick={backPreSelected}
           />}
-          footer={selectedNodeId && <MobileFooter onCancel={onClose} onConfirm={moveTo}/>}
+          footer={selectedNodeId && <MobileFooter confirmLoading={confirmLoading} onCancel={onClose} onConfirm={moveTo}/>}
         >
           {main}
         </Popup>
