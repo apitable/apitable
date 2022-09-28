@@ -165,12 +165,12 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
                 renderList={({ setVisible }) => {
                   return (
                     <div style={{ borderRadius: 8, padding: '0 16px' }}>
-                      {permissionList.map((item, index) => (
+                      {permissionList.map((item) => (
                         <div
                           className={styles.mobileOption}
                           key={item.value}
                           onClick={() => {
-                            changePermission(item, index);
+                            changePermission(item);
                             setVisible(false);
                           }}
                         >
