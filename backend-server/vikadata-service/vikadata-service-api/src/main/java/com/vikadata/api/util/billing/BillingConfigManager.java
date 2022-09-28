@@ -205,7 +205,9 @@ public class BillingConfigManager {
                     // 附件容量增值
                     if (feature.getFunction().equals(BillingFunctionEnum.CAPACITY.getCode())) {
                         // 增值方案叠加包
-                        long totalCapacity = billingPlanFeature.getMaxCapacitySizeInBytes() != null ? billingPlanFeature.getMaxCapacitySizeInBytes() + feature.getSpecification() * 1024 * 1024 * 1024L : feature.getSpecification();
+                        long totalCapacity = billingPlanFeature.getMaxCapacitySizeInBytes() != null ?
+                                billingPlanFeature.getMaxCapacitySizeInBytes() + getTrueSpecificationByUnit(feature.getSpecification(), feature.getUnit())
+                                : feature.getSpecification();
                         billingPlanFeature.setMaxCapacitySizeInBytes(totalCapacity);
                         break;
                     }
@@ -218,6 +220,18 @@ public class BillingConfigManager {
             });
         }
         return billingPlanFeature;
+    }
+
+    private static Long getTrueSpecificationByUnit(Long specification, String unit) {
+        if (unit.equalsIgnoreCase("g")) {
+            return specification * 1024 * 1024 * 1024L;
+        }
+        else if (unit.equalsIgnoreCase("mb")) {
+            return specification * 1024 * 1024L;
+        }
+        else {
+            throw new IllegalArgumentException("lost specification unit");
+        }
     }
 
     /**

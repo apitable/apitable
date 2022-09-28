@@ -106,6 +106,35 @@ public class BillingConfigManagerTest {
         Assertions.assertThat(planFeature.getWatermark()).isFalse();
     }
 
+    @Test
+    public void testSilverProductPlanFeture() {
+        Plan silverPlan = BillingConfigManager.getPlan(ProductEnum.SILVER, 10);
+        Plan addOnPlan = BillingConfigManager.getBillingConfig().getPlans().get("capacity_300_MB");
+        BillingPlanFeature planFeature = BillingConfigManager.buildPlanFeature(silverPlan, Collections.singletonList(addOnPlan));
+        Assertions.assertThat(planFeature.getMaxSeats()).isEqualTo(10);
+        Assertions.assertThat(planFeature.getMaxSheetNums()).isEqualTo(300);
+        Assertions.assertThat(planFeature.getMaxApiCall()).isEqualTo(100000);
+        Assertions.assertThat(planFeature.getMaxGanttViewsInSpace()).isEqualTo(50);
+        Assertions.assertThat(planFeature.getMaxCalendarViewsInSpace()).isEqualTo(50);
+        Assertions.assertThat(planFeature.getMaxFormViewsInSpace()).isEqualTo(100);
+        Assertions.assertThat(planFeature.getMaxCapacitySizeInBytes()).isEqualTo((50 * 1024 * 1024 * 1024L) + (300 * 1024 * 1024L));
+        Assertions.assertThat(planFeature.getMaxAdminNums()).isEqualTo(5);
+        Assertions.assertThat(planFeature.getMaxGalleryViewsInSpace()).isEqualTo(-1);
+        Assertions.assertThat(planFeature.getNodePermissionNums()).isEqualTo(50);
+        Assertions.assertThat(planFeature.getFieldPermissionNums()).isEqualTo(50);
+        Assertions.assertThat(planFeature.getMaxKanbanViewsInSpace()).isEqualTo(-1);
+        Assertions.assertThat(planFeature.getMaxRemainTimeMachineDays()).isEqualTo(90);
+        Assertions.assertThat(planFeature.getMaxRemainTrashDays()).isEqualTo(90);
+        Assertions.assertThat(planFeature.getMaxRowsInSpace()).isEqualTo(3000000);
+        Assertions.assertThat(planFeature.getMaxRowsPerSheet()).isEqualTo(10000);
+        Assertions.assertThat(planFeature.getIntegrationDingtalk()).isFalse();
+        Assertions.assertThat(planFeature.getIntegrationFeishu()).isFalse();
+        Assertions.assertThat(planFeature.getIntegrationWeCom()).isFalse();
+        Assertions.assertThat(planFeature.getIntegrationOfficePreview()).isTrue();
+        Assertions.assertThat(planFeature.getRainbowLabel()).isTrue();
+        Assertions.assertThat(planFeature.getWatermark()).isFalse();
+    }
+
     /**
      * 产品渠道-钉钉计费: 钉钉基础版产品
      */

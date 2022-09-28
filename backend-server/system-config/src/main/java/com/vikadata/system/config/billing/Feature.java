@@ -26,4 +26,6 @@ public class Feature {
     private String functionType;
 
     private Long specification;
+
+    private String unit;
 }

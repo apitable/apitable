@@ -16192,6 +16192,7 @@
                     "private_cloud_unlimited_annual",
                     "atlas_unlimited"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_unlimited",
                 "function": "storage_capacity",
                 "specification": -1,
@@ -16202,6 +16203,7 @@
                 "plans": [
                     "capacity_300_MB"
                 ],
+                "unit": "mb",
                 "id": "storage_capacity_300_mb",
                 "function": "storage_capacity",
                 "specification": 300,
@@ -16215,6 +16217,7 @@
                     "feishu_base_no_billing_period",
                     "wecom_base_no_billing_period"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_1",
                 "function": "storage_capacity",
                 "specification": 1,
@@ -16225,6 +16228,7 @@
                 "plans": [
                     "capacity_5G"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_5",
                 "function": "storage_capacity",
                 "specification": 5,
@@ -16236,6 +16240,7 @@
                     "silver_2",
                     "capacity_10G"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_10",
                 "function": "storage_capacity",
                 "specification": 10,
@@ -16247,6 +16252,7 @@
                     "enterprise_2",
                     "capacity_20G"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_20",
                 "function": "storage_capacity",
                 "specification": 20,
@@ -16257,6 +16263,7 @@
                 "plans": [
                     "silver_5"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_25",
                 "function": "storage_capacity",
                 "specification": 25,
@@ -16267,6 +16274,7 @@
                 "plans": [
                     "capacity_30G"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_30",
                 "function": "storage_capacity",
                 "specification": 30,
@@ -16287,6 +16295,7 @@
                     "wecom_standard_10_monthly",
                     "capacity_50G"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_50",
                 "function": "storage_capacity",
                 "specification": 50,
@@ -16294,6 +16303,7 @@
                 "functionType": "consume"
             },
             "storage_capacity_75": {
+                "unit": "g",
                 "id": "storage_capacity_75",
                 "function": "storage_capacity",
                 "specification": 75,
@@ -16316,6 +16326,7 @@
                     "wecom_standard_20_v1",
                     "wecom_standard_20_monthly"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_100",
                 "function": "storage_capacity",
                 "specification": 100,
@@ -16326,6 +16337,7 @@
                 "plans": [
                     "silver_25"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_125",
                 "function": "storage_capacity",
                 "specification": 125,
@@ -16346,6 +16358,7 @@
                     "wecom_standard_30_v1",
                     "wecom_standard_30_monthly"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_150",
                 "function": "storage_capacity",
                 "specification": 150,
@@ -16359,6 +16372,7 @@
                     "wecom_enterprise_20_monthly",
                     "silver_40"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_200",
                 "function": "storage_capacity",
                 "specification": 200,
@@ -16378,6 +16392,7 @@
                     "wecom_standard_50_v1",
                     "wecom_standard_50_monthly"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_250",
                 "function": "storage_capacity",
                 "specification": 250,
@@ -16389,6 +16404,7 @@
                     "enterprise_30",
                     "wecom_enterprise_30_monthly"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_300",
                 "function": "storage_capacity",
                 "specification": 300,
@@ -16408,6 +16424,7 @@
                     "wecom_standard_80_monthly",
                     "silver_80"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_400",
                 "function": "storage_capacity",
                 "specification": 400,
@@ -16428,6 +16445,7 @@
                     "wecom_standard_100_v1",
                     "silver_100"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_500",
                 "function": "storage_capacity",
                 "specification": 500,
@@ -16445,6 +16463,7 @@
                     "wecom_standard_120_biennial_v1",
                     "wecom_standard_120_v1"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_600",
                 "function": "storage_capacity",
                 "specification": 600,
@@ -16456,6 +16475,7 @@
                     "enterprise_70",
                     "gold_100"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_700",
                 "function": "storage_capacity",
                 "specification": 700,
@@ -16466,6 +16486,7 @@
                 "plans": [
                     "enterprise_80"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_800",
                 "function": "storage_capacity",
                 "specification": 800,
@@ -16476,6 +16497,7 @@
                 "plans": [
                     "gold_120"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_840",
                 "function": "storage_capacity",
                 "specification": 840,
@@ -16486,6 +16508,7 @@
                 "plans": [
                     "enterprise_90"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_900",
                 "function": "storage_capacity",
                 "specification": 900,
@@ -16506,6 +16529,7 @@
                     "wecom_enterprise_100_biennial_v1",
                     "silver_200"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_1000",
                 "function": "storage_capacity",
                 "specification": 1000,
@@ -16516,6 +16540,7 @@
                 "plans": [
                     "gold_150"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_1050",
                 "function": "storage_capacity",
                 "specification": 1050,
@@ -16526,6 +16551,7 @@
                 "plans": [
                     "enterprise_110"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_1100",
                 "function": "storage_capacity",
                 "specification": 1100,
@@ -16541,6 +16567,7 @@
                     "feishu_enterprise_120_biennial_v1",
                     "wecom_enterprise_120_v1"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_1200",
                 "function": "storage_capacity",
                 "specification": 1200,
@@ -16551,6 +16578,7 @@
                 "plans": [
                     "gold_180"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_1260",
                 "function": "storage_capacity",
                 "specification": 1260,
@@ -16561,6 +16589,7 @@
                 "plans": [
                     "enterprise_130"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_1300",
                 "function": "storage_capacity",
                 "specification": 1300,
@@ -16572,6 +16601,7 @@
                     "enterprise_140",
                     "gold_200"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_1400",
                 "function": "storage_capacity",
                 "specification": 1400,
@@ -16582,6 +16612,7 @@
                 "plans": [
                     "enterprise_150"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_1500",
                 "function": "storage_capacity",
                 "specification": 1500,
@@ -16592,6 +16623,7 @@
                 "plans": [
                     "enterprise_160"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_1600",
                 "function": "storage_capacity",
                 "specification": 1600,
@@ -16602,6 +16634,7 @@
                 "plans": [
                     "enterprise_170"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_1700",
                 "function": "storage_capacity",
                 "specification": 1700,
@@ -16612,6 +16645,7 @@
                 "plans": [
                     "enterprise_180"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_1800",
                 "function": "storage_capacity",
                 "specification": 1800,
@@ -16622,6 +16656,7 @@
                 "plans": [
                     "enterprise_190"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_1900",
                 "function": "storage_capacity",
                 "specification": 1900,
@@ -16639,6 +16674,7 @@
                     "wecom_enterprise_200_biennial_v1",
                     "wecom_enterprise_200_v1"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_2000",
                 "function": "storage_capacity",
                 "specification": 2000,
@@ -16649,6 +16685,7 @@
                 "plans": [
                     "enterprise_210"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_2100",
                 "function": "storage_capacity",
                 "specification": 2100,
@@ -16659,6 +16696,7 @@
                 "plans": [
                     "enterprise_220"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_2200",
                 "function": "storage_capacity",
                 "specification": 2200,
@@ -16669,6 +16707,7 @@
                 "plans": [
                     "enterprise_230"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_2300",
                 "function": "storage_capacity",
                 "specification": 2300,
@@ -16679,6 +16718,7 @@
                 "plans": [
                     "enterprise_240"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_2400",
                 "function": "storage_capacity",
                 "specification": 2400,
@@ -16689,6 +16729,7 @@
                 "plans": [
                     "enterprise_250"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_2500",
                 "function": "storage_capacity",
                 "specification": 2500,
@@ -16699,6 +16740,7 @@
                 "plans": [
                     "enterprise_260"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_2600",
                 "function": "storage_capacity",
                 "specification": 2600,
@@ -16709,6 +16751,7 @@
                 "plans": [
                     "enterprise_270"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_2700",
                 "function": "storage_capacity",
                 "specification": 2700,
@@ -16719,6 +16762,7 @@
                 "plans": [
                     "enterprise_280"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_2800",
                 "function": "storage_capacity",
                 "specification": 2800,
@@ -16729,6 +16773,7 @@
                 "plans": [
                     "enterprise_290"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_2900",
                 "function": "storage_capacity",
                 "specification": 2900,
@@ -16746,6 +16791,7 @@
                     "wecom_enterprise_300_biennial_v1",
                     "wecom_enterprise_300_v1"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_3000",
                 "function": "storage_capacity",
                 "specification": 3000,
@@ -16756,6 +16802,7 @@
                 "plans": [
                     "enterprise_350"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_3500",
                 "function": "storage_capacity",
                 "specification": 3500,
@@ -16766,6 +16813,7 @@
                 "plans": [
                     "enterprise_450"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_4500",
                 "function": "storage_capacity",
                 "specification": 4500,
@@ -16783,6 +16831,7 @@
                     "wecom_enterprise_500_biennial_v1",
                     "wecom_enterprise_500_v1"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_5000",
                 "function": "storage_capacity",
                 "specification": 5000,
@@ -16799,6 +16848,7 @@
                     "wecom_enterprise_800_biennial_v1",
                     "wecom_enterprise_800_v1"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_8000",
                 "function": "storage_capacity",
                 "specification": 8000,
@@ -16816,6 +16866,7 @@
                     "wecom_enterprise_1000_biennial_v1",
                     "wecom_enterprise_1000_v1"
                 ],
+                "unit": "g",
                 "id": "storage_capacity_10000",
                 "function": "storage_capacity",
                 "specification": 10000,
