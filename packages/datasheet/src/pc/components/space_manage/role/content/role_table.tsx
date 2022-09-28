@@ -3,7 +3,7 @@ import { Table, ConfigProvider } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import styles from './style.module.less';
-import { Strings, t } from '@vikadata/core';
+import { getLanguage, Strings, t } from '@vikadata/core';
 import { RoleContext } from '../context';
 import { IMemberItem } from '../interface';
 import { UnitItem } from './unit_item';
@@ -103,6 +103,8 @@ export const RoleTable: React.FC<{
 
   const showPage = total > 0;
 
+  const paginationLang = getLanguage().split('-')?.[0]?.toLowerCase();
+
   return (
     <div className={styles.roleTableWrap}>
       <Box ref={tableWrapRef} display={'flex'} height={'100%'} flexDirection={'column'} minWidth={480}>
@@ -119,6 +121,7 @@ export const RoleTable: React.FC<{
         {showPage && (
           <Box ref={pageWrapRef} display={'flex'} justifyContent={'flex-end'} paddingTop={16}>
             <Pagination
+              lang={paginationLang}
               current={page}
               total={total}
               pageSize={pageSize}

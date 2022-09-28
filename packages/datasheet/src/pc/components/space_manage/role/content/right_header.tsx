@@ -23,13 +23,13 @@ export const RightHeader: React.FC<{
           {roleName || ''}
         </Typography>
         <Typography color={colors.textCommonTertiary} variant={'h6'}>
-          （{t(Strings.display_person_count, { count: count || 0 })}）
+          （{t(Strings.role_item, { count: count || 0 })}）
         </Typography>
       </Box>
       {manageable && (
         <Space size={16}>
           <Button size="small" onClick={openAddMemberModal}>
-            {t(Strings.add_member)}
+            {t(Strings.add_member_or_group)}
           </Button>
           <Button
             className={styles.batchRemoveRoleButton}

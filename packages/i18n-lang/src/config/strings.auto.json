@@ -309,7 +309,7 @@
         },
         "add_member_or_group": {
             "zh_CN": "添加成员/小组",
-            "en_US": "Add member/team",
+            "en_US": "Add member / team",
             "zh_HK": "添加成員/小組"
         },
         "add_member_or_unit": {
@@ -5198,7 +5198,7 @@
         },
         "delete_role_member_title": {
             "zh_CN": "移出该角色",
-            "en_US": "remove"
+            "en_US": "Remove"
         },
         "delete_role_success_message": {
             "zh_CN": "角色删除成功",
@@ -12616,7 +12616,7 @@
         },
         "manage_role_empty_desc1": {
             "zh_CN": "你可以自由创建角色，并将任意部门/成员添加到一个或多个角色内，可以实现更灵活地权限控制，详情请查看<a target=\"_blank\" href=\"${url}\">帮助说明</a>",
-            "en_US": "You can freely create roles and add any department / member to one or more roles to achieve more flexible permission control. For details, please see the <a target=\"_blank\" href=\"${url}\">help</a>"
+            "en_US": "You can freely create roles and add any teams / members to one or more roles to achieve more flexible permission control. For details, please see the <a target=\"_blank\" href=\"${url}\"> Learn more</a>"
         },
         "manage_role_empty_desc2": {
             "zh_CN": "例如：你可以创建一个“项目经理”的角色，把组织架构中项目经理岗位的成员都添加进去，这样就可以实现在成员列或者在记录的评论中直接选择“项目经理”这个角色并通知到他们了",
@@ -12628,7 +12628,7 @@
         },
         "manage_role_header_desc": {
             "zh_CN": "你可以自由创建角色，并将任意部门/成员添加到一个或多个角色内，可以实现更灵活地权限控制。<a target=\"_blank\" href=\"${url}\">帮助文档</a>",
-            "en_US": "You can freely create roles and add any department / member to one or more roles to achieve more flexible permission control<a target=\"_blank\" href=\"${url}\"> help document</a>"
+            "en_US": "You can freely create roles and add any teams / members to one or more roles to achieve more flexible permission control<a target=\"_blank\" href=\"${url}\"> Learn more</a>"
         },
         "manage_team": {
             "zh_CN": "小组设置",
@@ -18849,11 +18849,15 @@
         },
         "role_context_item_delete": {
             "zh_CN": "删除",
-            "en_US": "delete"
+            "en_US": "Delete"
         },
         "role_context_item_rename": {
             "zh_CN": "重命名",
-            "en_US": "rename"
+            "en_US": "Rename"
+        },
+        "role_item": {
+            "zh_CN": "${count} 人 / 组",
+            "en_US": "${count} item(s)"
         },
         "role_member_table_empty": {
             "zh_CN": "该角色暂无成员，你可以",
@@ -19675,7 +19679,7 @@
             "zh_HK": "在站内和站外，拥有「只可阅读」权限的用户无法下载单元格内的附件"
         },
         "security_setting_download_file_title": {
-            "zh_CN": "禁止「只可阅读」用户可下载附件",
+            "zh_CN": "禁止「只可阅读」用户下载附件",
             "en_US": "Prevent \"Read-only\" users from downloading attachments",
             "zh_HK": "「只可閱讀」用戶可下載附件"
         },
@@ -19760,7 +19764,7 @@
             "zh_HK": "成員可以將工作目錄的文件節點創建公開鏈接分享給外部用戶。關閉該功能後，已生成的公開分享鏈接將暫時失效，包括管理員在內所有人無法創建公開鏈接。"
         },
         "security_setting_share_description": {
-            "zh_CN": "工作目录内所有已生成的公开分享链接将暂时失效，包括管理员在内所有人无法创建空开链接",
+            "zh_CN": "工作目录内所有已生成的公开分享链接将暂时失效，包括管理员在内所有人无法创建公开链接",
             "en_US": "All members cannot creat the public link of the file, and the generated public link becomes invalid",
             "zh_HK": "成員可以將工作目錄的文件節點創建公開鏈接分享給外部用戶。關閉該功能後，已生成的公開分享鏈接將暫時失效，包括管理員在內所有人無法創建公開鏈接。"
         },

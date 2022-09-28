@@ -3801,6 +3801,7 @@ export type StringKeysMapType = {
   'robot_variables_user_name': 'robot_variables_user_name',
   'role_context_item_delete': 'role_context_item_delete',
   'role_context_item_rename': 'role_context_item_rename',
+  'role_item': 'role_item',
   'role_member_table_empty': 'role_member_table_empty',
   'role_member_table_header_name': 'role_member_table_header_name',
   'role_member_table_header_team': 'role_member_table_header_team',

@@ -3802,6 +3802,7 @@ export interface StringsInterface {
     robot_variables_user_name: String;
     role_context_item_delete: String;
     role_context_item_rename: String;
+    role_item: String;
     role_member_table_empty: String;
     role_member_table_header_name: String;
     role_member_table_header_team: String;
