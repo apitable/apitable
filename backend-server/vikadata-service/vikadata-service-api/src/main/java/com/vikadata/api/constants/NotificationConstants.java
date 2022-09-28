@@ -190,4 +190,9 @@ public class NotificationConstants {
      */
     public static final String ROLE_NAME = "roleName";
 
+    /**
+     * toast close event name
+     */
+    public  static  final String EXTRA_TOAST_CLOSE = "onClose";
+
 }

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.BooleanUtil;
@@ -124,6 +125,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.vikadata.api.constants.AssetsPublicConstants.PUBLIC_PREFIX;
 import static com.vikadata.api.constants.NotificationConstants.EXTRA_TOAST;
+import static com.vikadata.api.constants.NotificationConstants.EXTRA_TOAST_CLOSE;
 import static com.vikadata.api.constants.NotificationConstants.EXTRA_TOAST_URL;
 import static com.vikadata.api.constants.SpaceConstants.SPACE_NAME_DEFAULT_SUFFIX;
 import static com.vikadata.api.enums.exception.OrganizationException.INVITE_EMAIL_HAS_LINK;
@@ -415,6 +417,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             if (StrUtil.isNotBlank(template.getUrl()) && template.getUrl().startsWith("http")) {
                 Dict toast = Dict.create();
                 toast.put(EXTRA_TOAST_URL, template.getUrl());
+                toast.put(EXTRA_TOAST_CLOSE, ListUtil.toList("mark_cur_notice_to_read()"));
                 extras.put(EXTRA_TOAST, toast);
             }
             NotificationManager.me().playerNotify(NotificationTemplateId.NEW_USER_WELCOME_NOTIFY,
