@@ -65,7 +65,7 @@ export const RoleTable: React.FC<{
       key: 'unitName',
       title: t(Strings.role_member_table_header_name),
       align: 'left',
-      width: 276,
+      width: 27.6,
       render: (_, record) => <UnitItem {...record} />,
     },
     {
@@ -73,7 +73,7 @@ export const RoleTable: React.FC<{
       key: 'teams',
       title: t(Strings.role_member_table_header_team),
       align: 'left',
-      width: 296,
+      width: 29.6,
       render: (_, record) => <Typography variant='body3'>{record.teams || record.unitName}</Typography>,
     },
   ];
@@ -84,7 +84,7 @@ export const RoleTable: React.FC<{
       key: 'operate',
       title: t(Strings.operation),
       align: 'left',
-      width: 180,
+      width: 18,
       render: (_, record) => (
         <LinkButton component={'span'} underline={false} color={colors.textDangerDefault} onClick={() => onRemove && onRemove([record.unitRefId])}>
           {t(Strings.delete_role_member_title)}
@@ -94,7 +94,7 @@ export const RoleTable: React.FC<{
 
   const rowSelection = manageable
     ? {
-      columnWidth: 48,
+      columnWidth: 4.8,
       onChange: (selectedRowKeys: React.Key[], selectedRow: IMemberItem[]) => {
         onBatchSelectMember && onBatchSelectMember(selectedRow.map(v => v.unitRefId));
       },
@@ -105,7 +105,7 @@ export const RoleTable: React.FC<{
 
   return (
     <div className={styles.roleTableWrap}>
-      <Box ref={tableWrapRef} display={'flex'} height={'100%'} flexDirection={'column'} minWidth={815}>
+      <Box ref={tableWrapRef} display={'flex'} height={'100%'} flexDirection={'column'} minWidth={480}>
         <ConfigProvider renderEmpty={() => <Empty wrapperHeight={scrollHeight} addRole={openAddMemberModal} />}>
           <Table
             dataSource={list}

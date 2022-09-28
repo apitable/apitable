@@ -38,7 +38,7 @@ export const MemberItem: React.FC<IMemberItemProps> = props => {
           title={name}
           size={AvatarSize.Size24}
           src={avatar}
-          type={type === MemberType.Team ? AvatarType.Team : AvatarType.Member}
+          type={type === MemberType.Member ? AvatarType.Member : AvatarType.Team}
           style={{ minWidth: 20 }}
           isDefaultIcon={isSelf}
         />
@@ -60,6 +60,7 @@ export const MemberItem: React.FC<IMemberItemProps> = props => {
         [styles.unitItemWrapper]: true,
         [styles.unitTeam]: unitInfo.type === MemberType.Team,
         [styles.unitMember]: unitInfo.type === MemberType.Member,
+        [styles.unitTeam]: unitInfo.type === MemberType.Role,
         [styles.isLeave]: isUnitLeave(unitInfo),
         [styles.selected]: selected,
       })}
@@ -70,7 +71,7 @@ export const MemberItem: React.FC<IMemberItemProps> = props => {
         title={name}
         size={AvatarSize.Size20}
         src={avatar}
-        type={type === MemberType.Team ? AvatarType.Team : AvatarType.Member}
+        type={type === MemberType.Member ? AvatarType.Member : AvatarType.Team}
         style={{ minWidth: 20 }}
         isDefaultIcon={isSelf}
       />
