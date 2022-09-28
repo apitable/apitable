@@ -48,7 +48,12 @@ export const DownloadQrCode: FC<IDownloadQrCodeProps> = ({
 
   useEffect(() => {
     fetchLink();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   if (!spaceInfo || !spaceId || !link) {
     return (
@@ -56,10 +61,6 @@ export const DownloadQrCode: FC<IDownloadQrCodeProps> = ({
         {t(Strings.resource_load_failed)}
       </div>
     );
-  }
-
-  if (loading) {
-    return <Loading />;
   }
 
   const downloadImage = () => {
@@ -74,10 +75,7 @@ export const DownloadQrCode: FC<IDownloadQrCodeProps> = ({
       },
       filter: node => {
         /** 过滤不必要的元素 */
-        if (node instanceof Element && node.id === 'downloadInviteBtn') {
-          return false;
-        }
-        return true;
+        return !(node instanceof Element && node.id === 'downloadInviteBtn');
       },
     }).then(dataUrl => {
       const link = document.createElement('a');
