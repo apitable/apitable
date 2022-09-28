@@ -14,6 +14,12 @@ export const getInitialProps = async(context: { ctx: NextPageContext }) => {
   const envVars = getEnvVars();
   const cookie = context.ctx.req?.headers.cookie;
 
+  context.ctx.res?.setHeader(
+    'Cache-Control',
+    // 代理服务器缓存（s-maxage）一天，新鲜度检查（stale-while-revalidate）同样是一天
+    'private, max-age=86400, stale-while-revalidate=86400'
+  );
+
   const baseResponse = {
     env: process.env.ENV,
     version: process.env.WEB_CLIENT_VERSION,

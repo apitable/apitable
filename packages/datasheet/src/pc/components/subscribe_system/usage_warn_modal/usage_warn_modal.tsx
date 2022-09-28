@@ -7,6 +7,7 @@ import { Emoji } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { goToUpgrade } from 'pc/components/subscribe_system';
 import { isSaaSApp } from 'pc/components/subscribe_system/usage_warn_modal/utils';
+import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import styles from './styles.module.less';
@@ -92,18 +93,21 @@ export const usageWarnModal = (params: IUsageWarnModalParams) => {
   };
 
   ReactDOM.render(
-    <Modal
-      visible
-      wrapClassName={styles.modalWrapper}
-      closeIcon={<CloseMiddleOutlined color={colorVars.fc3} size={8} />}
-      onCancel={onModalClose}
-      destroyOnClose
-      width='720px'
-      footer={null}
-      centered
-    >
-      <UsageWarnModalInner {...params} />
-    </Modal>,
+    <div onMouseDown={stopPropagation}>
+      <Modal
+        visible
+        wrapClassName={styles.modalWrapper}
+        closeIcon={<CloseMiddleOutlined color={colorVars.fc3} size={8} />}
+        onCancel={onModalClose}
+        destroyOnClose
+        width='720px'
+        footer={null}
+        centered
+        zIndex={1100}
+      >
+        <UsageWarnModalInner {...params} />
+      </Modal>
+    </div>,
     container,
   );
 };

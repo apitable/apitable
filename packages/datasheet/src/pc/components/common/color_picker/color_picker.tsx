@@ -19,10 +19,22 @@ export interface IColorPickerRef {
   close(): void;
 }
 
+const PICKER_PANE_WIDTH = 292;
+
+const MARGIN_BOTTOM = 40;
+const MARGIN_TOP = 8;
+
 const ColorPickerBase: React.ForwardRefRenderFunction<IColorPickerRef, IColorPicker> = (props, ref) => {
   const { showRenameInput, onChange, option, mask, triggerComponent } = props;
+  // 判断当前是否将要在 X 轴方向溢出，以此控制选色板 小箭头/三角 展示在左边还是右边
+  const [adjustX, setAdjustX] = useState(false);
+  // 小箭头 Y 轴方向上的大致偏移量
+  const [arrowOffsetY, setArrowOffsetY] = useState(0);
+  const [visible, setVisible] = useState(false);
 
   const cacheTheme = useSelector(Selectors.getTheme);
+  const fieldEditable = useSelector(state => Selectors.getPermissions(state).manageable);
+  const optionColor = setColor(option.color, cacheTheme);
 
   useImperativeHandle(
     ref,
@@ -32,21 +44,9 @@ const ColorPickerBase: React.ForwardRefRenderFunction<IColorPickerRef, IColorPic
     }),
   );
 
-  const PICKER_PANE_WIDTH = 292;
   const PICKER_PANE_HEIGHT = showRenameInput ? 357 : 292;
-  const MARGIN_BOTTOM = 40;
-  const MARGIN_TOP = 8;
 
-  // 判断当前是否将要在 X 轴方向溢出，以此控制选色板 小箭头/三角 展示在左边还是右边
-  const [adjustX, setAdjustX] = useState(false);
-
-  // 小箭头 Y 轴方向上的大致偏移量
-  const [arrowOffsetY, setArrowOffsetY] = useState(0);
-
-  const manageable = useSelector(state => Selectors.getPermissions(state).manageable);
-  const fieldEditable = manageable;
-
-  const onClick = (e: React.MouseEvent) => {
+  const expandColorPickerPanel = (e: React.MouseEvent) => {
     stopPropagation(e);
     if (!fieldEditable) {
       return;
@@ -70,15 +70,12 @@ const ColorPickerBase: React.ForwardRefRenderFunction<IColorPickerRef, IColorPic
 
   const computedPaneHeight = PICKER_PANE_HEIGHT + (arrowOffsetY > 0 ? MARGIN_BOTTOM : 0);
 
-  const optionColor = setColor(option.color, cacheTheme);
-
-  const [visible, setVisible] = useState(false);
-
   const onClose = () => {
     setVisible(false);
   };
 
-  const TriggerComponent = triggerComponent || <div className={styles.trigger} style={{ background: optionColor }} onClick={onClick} />;
+  const TriggerComponent = triggerComponent ||
+    <div className={styles.trigger} style={{ background: optionColor }} onClick={expandColorPickerPanel} />;
 
   const offsetY = arrowOffsetY && (arrowOffsetY > 0 ? arrowOffsetY + 25 : arrowOffsetY + 5 - MARGIN_TOP);
 
@@ -107,8 +104,8 @@ const ColorPickerBase: React.ForwardRefRenderFunction<IColorPickerRef, IColorPic
   return (
     <>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-        {visible &&
-          mask &&
+        {
+          visible && mask &&
           ReactDOM.createPortal(
             <div
               className={styles.mask}
@@ -119,7 +116,8 @@ const ColorPickerBase: React.ForwardRefRenderFunction<IColorPickerRef, IColorPic
               }}
             />,
             document.body,
-          )}
+          )
+        }
         <RcTrigger
           popup={PopupComponent}
           destroyPopupOnHide
@@ -137,7 +135,7 @@ const ColorPickerBase: React.ForwardRefRenderFunction<IColorPickerRef, IColorPic
           }}
           popupVisible={visible}
           onPopupVisibleChange={visible => setVisible(visible)}
-          zIndex={1000}
+          zIndex={1100}
         >
           {TriggerComponent}
         </RcTrigger>

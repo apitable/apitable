@@ -25,7 +25,7 @@ export interface IColorPickerPane {
   onClose: () => void;
 }
 
-const ColorPickerPaneBase: React.FC<IColorPickerPane> = props => {
+export const ColorPickerPane: React.FC<IColorPickerPane> = props => {
   const { option, showRenameInput = false, onChange, onClose } = props;
   const [newName, setNewName] = useState(option.name);
   const colors = useThemeColors();
@@ -56,6 +56,7 @@ const ColorPickerPaneBase: React.FC<IColorPickerPane> = props => {
             if (result) return;
           }
           onChange?.(type, id, value);
+          onClose();
         }}
       />
     </div>
@@ -135,5 +136,3 @@ const ColorPickerPaneBase: React.FC<IColorPickerPane> = props => {
     </div>
   );
 };
-
-export const ColorPickerPane = React.memo(ColorPickerPaneBase);
