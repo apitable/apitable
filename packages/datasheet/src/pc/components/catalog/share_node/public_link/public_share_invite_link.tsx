@@ -125,7 +125,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
       title: t(Strings.close_share_link),
       content: t(Strings.link_failed_after_close_share_link),
       onOk,
-      type: 'danger'
+      type: 'warning'
     });
   };
 
@@ -196,7 +196,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
   const renderInviteByQrCode = () => {
     return (
       <Typography className={styles.inviteMoreMethod} variant='body3'>
-        <ShareQrcodeOutlined />
+        <ShareQrcodeOutlined currentColor />
         <span>{t(Strings.invite_by_qr_code)}</span>
       </Typography>
     );
@@ -235,7 +235,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
               <Typography className={styles.inviteMoreTitle} variant='body3'>{t(Strings.more_invite_ways)}：</Typography>
               <Tooltip title={t(Strings.default_link_join_tip)} placement="top" overlayStyle={{ width: 190 }}>
                 <Typography className={styles.inviteMoreMethod} variant='body3' onMouseDown={handleCopyInviteLink}>
-                  <ColumnUrlOutlined />
+                  <ColumnUrlOutlined currentColor />
                   <span>{t(Strings.invite_via_link)}</span>
                 </Typography>
               </Tooltip>

@@ -162,16 +162,19 @@
 
 .shareContent {
   border-radius: 8px;
-  padding: 12px 24px;
+  padding: 18px 24px 8px;
   box-shadow: var(--shadowCommonHigh);
   background-color: var(--bgCommonHigh);
 
   .shareFloor {
     .displayAlignCenter();
+    svg {
+      fill: var(--fc3);
+    }
   }
 
   .shareTitle {
-    padding-bottom: 17px;
+    padding-bottom: 16px;
     span {
       font-size: 14px;
       margin-right: 4px;
@@ -179,7 +182,7 @@
   }
 
   .shareInvite {
-    padding-bottom: 20px;
+    padding-bottom: 16px;
     .shareInviteWrap {
       flex: 1;
       margin-right: 16px;

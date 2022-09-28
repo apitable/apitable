@@ -36,7 +36,7 @@ export const MemberItem: React.FC<IMemberItemProps> = props => {
         <Avatar
           id={unitId || userId!}
           title={name}
-          size={AvatarSize.Size32}
+          size={AvatarSize.Size24}
           src={avatar}
           type={type === MemberType.Team ? AvatarType.Team : AvatarType.Member}
           style={{ minWidth: 20 }}

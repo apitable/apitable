@@ -114,7 +114,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
       <div className={cls(styles.shareContent, { [styles.shareContentMobile]: isMobile })}>
         <Typography variant='h7' className={cls(styles.shareFloor, styles.shareTitle)}>
           <span>{t(Strings.collaborate_and_share)}</span>
-          <InformationSmallOutlined />
+          <InformationSmallOutlined currentColor />
         </Typography>
         <div className={styles.shareInvite}>
           <UnitPermissionSelect

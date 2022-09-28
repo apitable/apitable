@@ -241,7 +241,7 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
         [`${spaceId},${resourceId}`]: {
           width: newSize,
           opening: true,
-          activePanelId: status.activePanelId,
+          activePanelId: status?.activePanelId,
         },
       });
     }
