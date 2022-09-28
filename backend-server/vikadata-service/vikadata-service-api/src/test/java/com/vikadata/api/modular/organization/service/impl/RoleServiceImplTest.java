@@ -196,6 +196,16 @@ public class RoleServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
+    void givenWhenFlatMapToEmptyRoleMemberUnitIdsThen() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        Long roleId = iRoleService.createRole(userSpace.getUserId(), userSpace.getSpaceId(), "role");
+        Map<Long, List<Long>> unitIdToUnitIds = iRoleService.flatMapToRoleMemberUnitIds(CollUtil.newArrayList(roleId));
+        assertThat(unitIdToUnitIds.size()).isEqualTo(1);
+        List<Long> roleMemberUnitIds = unitIdToUnitIds.values().stream().flatMap(List::stream).distinct().collect(toList());
+        assertThat(roleMemberUnitIds.size()).isEqualTo(0);
+    }
+
+    @Test
     void givenWhenInitRoleListThen() {
         MockUserSpace userSpace = createSingleUserAndSpace();
         iRoleService.initRoleList(userSpace.getUserId(), userSpace.getSpaceId());

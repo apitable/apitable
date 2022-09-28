@@ -177,7 +177,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
         List<RoleMemberInfoDTO> roleMembers = iRoleMemberService.getRoleMembersByRoleIds(roleIds);
         List<UnitEntity> roleUnits = iUnitService.getUnitEntitiesByUnitRefIds(roleIds);
         Map<Long, List<Long>> roleIdToUnitIds = roleMembers.stream().collect(groupingBy(RoleMemberInfoDTO::getRoleId, mapping(RoleMemberInfoDTO::getUnitId, toList())));
-        return roleUnits.stream().collect(toMap(UnitEntity::getId, unit -> roleIdToUnitIds.get(unit.getUnitRefId())));
+        return roleUnits.stream().collect(toMap(UnitEntity::getId, unit -> roleIdToUnitIds.getOrDefault(unit.getUnitRefId(), CollUtil.newArrayList())));
     }
 
     @Override
