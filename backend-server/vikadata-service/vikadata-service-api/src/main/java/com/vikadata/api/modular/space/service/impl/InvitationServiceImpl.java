@@ -17,7 +17,6 @@ import com.vikadata.api.component.TaskManager;
 import com.vikadata.api.context.SessionContext;
 import com.vikadata.api.control.role.RoleConstants.Node;
 import com.vikadata.api.enums.audit.InviteType;
-import com.vikadata.api.enums.datasheet.IdRulePrefixEnum;
 import com.vikadata.api.enums.vcode.VCodeType;
 import com.vikadata.api.lang.SpaceGlobalFeature;
 import com.vikadata.api.model.vo.space.SpaceLinkInfoVo;
@@ -127,7 +126,7 @@ public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, Invitat
         });
         // To invalidate the application to actively join the space
         TaskManager.me().execute(() -> spaceApplyMapper.invalidateTheApply(ListUtil.toList(dto.getUserId()), dto.getSpaceId(), InviteType.LINK_INVITE.getType()));
-        if (!StrUtil.isEmpty(dto.getNodeId()) && dto.getNodeId().startsWith(IdRulePrefixEnum.DST.getIdRulePrefixEnum())) {
+        if (!StrUtil.isEmpty(dto.getNodeId())) {
             Long creatorUserId = memberMapper.selectUserIdByMemberId(dto.getCreator());
             iNodeRoleService.enableNodeRole(creatorUserId, dto.getSpaceId(), dto.getNodeId(), true);
             // 添加角色

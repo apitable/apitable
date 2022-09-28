@@ -499,6 +499,9 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Override
     public List<TeamTreeVo> buildTree(String spaceId, List<Long> teamIds) {
+        if (teamIds.isEmpty()) {
+            return new ArrayList<>();
+        }
         Long rootTeamId = baseMapper.selectRootIdBySpaceId(spaceId);
         List<TeamMemberDto> resultList = baseMapper.selectMemberTeamsBySpaceIdAndTeamIds(spaceId, teamIds);
         List<TeamTreeVo> res = new ArrayList<>();
