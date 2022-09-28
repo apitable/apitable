@@ -30,7 +30,7 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
   const [height, setHeight] = useState(0);
   const [editing, setEditing] = useState(false);
   const [unitValue, setUnitValue] = useState<string[]>([]);
-  const [permissionValue, setPermissionValue] = useState(permissionList[2]);
+  const [permissionValue, setPermissionValue] = useState(permissionList[2] || permissionList[0]);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const unitListRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -43,7 +43,7 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
     }
   }, [permissionCommitRemindStatus, noPermissionMembers]);
 
-  const changePermission = (option, index) => {
+  const changePermission = (option) => {
     setPermissionValue(option);
   };
 
@@ -117,7 +117,7 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
               {unitValue.length ? t(Strings.add) : t(Strings.add_member_or_unit)}
             </Typography>
           </div>
-          {unitValue.map((unitId, index) => {
+          {unitValue.map((unitId) => {
             const unitInfo = unitMap[unitId];
             return (
               <MemberItem unitInfo={unitInfo} key={unitId}>

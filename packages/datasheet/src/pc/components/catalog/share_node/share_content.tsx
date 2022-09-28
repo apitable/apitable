@@ -1,9 +1,9 @@
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cls from 'classnames';
-import { 
+import {
   Api, ConfigConstant, INodeRoleMap, IReduxState,
-  IUnitValue, Selectors, StoreActions, Strings, t
+  IUnitValue, Selectors, Settings, StoreActions, Strings, t
 } from '@vikadata/core';
 import { IOption, Skeleton, Typography } from '@vikadata/components';
 import { InformationSmallOutlined, ChevronRightOutlined } from '@vikadata/icons';
@@ -114,7 +114,11 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
       <div className={cls(styles.shareContent, { [styles.shareContentMobile]: isMobile })}>
         <Typography variant='h7' className={cls(styles.shareFloor, styles.shareTitle)}>
           <span>{t(Strings.collaborate_and_share)}</span>
-          <InformationSmallOutlined currentColor />
+          <Tooltip title={t(Strings.support)} trigger={'hover'}>
+            <a href={Settings.share_url.value} rel="noopener noreferrer" target="_blank">
+              <InformationSmallOutlined currentColor />
+            </a>
+          </Tooltip>
         </Typography>
         <div className={styles.shareInvite}>
           <UnitPermissionSelect

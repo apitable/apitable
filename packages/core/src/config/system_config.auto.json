@@ -409,6 +409,9 @@
         "server_error_page_bg": {
             "value": "/space/2022/09/07/cbaf2ee93be24f6bbe361a85db0efba7?attname=theserverisundermaintenance.%402x.png"
         },
+        "share_url": {
+            "value": "/help/manual-share/"
+        },
         "solution": {
             "value": "https://vika.cn/solutions/"
         },

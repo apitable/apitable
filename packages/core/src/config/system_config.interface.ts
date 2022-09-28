@@ -801,6 +801,7 @@ export interface Settings {
     role_empty:                             CustomerServiceQrCode;
     role_help_url:                          CustomerServiceQrCode;
     server_error_page_bg:                   CustomerServiceQrCode;
+    share_url:                              CustomerServiceQrCode;
     solution:                               CustomerServiceQrCode;
     space_corp_cert_url:                    CustomerServiceQrCode;
     subscribe_demonstrate:                  CustomerServiceQrCode;

@@ -3,7 +3,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useRequest } from 'ahooks';
 import { Popover, Tooltip } from 'antd';
 
-import { Api, IReduxState, IShareSettings, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, IReduxState, IShareSettings, Settings, StoreActions, Strings, t } from '@vikadata/core';
 import { DoubleSelect, IDoubleOptions, Switch, Typography } from '@vikadata/components';
 import { InformationSmallOutlined, ShareQrcodeOutlined, ColumnUrlOutlined } from '@vikadata/icons';
 
@@ -205,9 +205,13 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
   return (
     <>
       <div className={styles.shareToggle}>
-        <Switch disabled={!spaceFeatures?.invitable || !spaceFeatures?.fileSharable} checked={shareSettings?.shareOpened} onChange={handleToggle} />
+        <Switch disabled={!spaceFeatures?.fileSharable} checked={shareSettings?.shareOpened} onChange={handleToggle} />
         <Typography variant='h7' className={styles.shareToggleContent}>{t(Strings.publish_share_link_with_anyone)}</Typography>
-        <InformationSmallOutlined />
+        <Tooltip title={t(Strings.support)} trigger={'hover'}>
+          <a href={Settings.share_url.value} rel="noopener noreferrer" target="_blank">
+            <InformationSmallOutlined currentColor />
+          </a>
+        </Tooltip>
       </div>
       {spaceFeatures?.fileSharable ? (
         <>

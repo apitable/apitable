@@ -10882,7 +10882,7 @@
         },
         "invite_by_qr_code": {
             "zh_CN": "二维码邀请",
-            "en_US": "Invite via QR Code",
+            "en_US": "Invite QR Code",
             "zh_HK": "二維碼邀請"
         },
         "invite_code": {
@@ -11091,7 +11091,7 @@
         },
         "invite_via_link": {
             "zh_CN": "链接邀请",
-            "en_US": "Invite via link",
+            "en_US": "Invite link",
             "zh_HK": "鏈接邀請"
         },
         "invite_your_join": {
