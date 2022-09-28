@@ -71,6 +71,7 @@ public abstract class AbstractSocialOrderService<T, R> implements ISocialOrderSe
         }
         orderEntity.setDiscountAmount(order.getDiscountAmount().intValue());
         orderEntity.setState(OrderStatus.FINISHED.getName());
+        orderEntity.setIsPaid(true);
         orderEntity.setPaidTime(order.getPaidTime());
         orderEntity.setCreatedTime(order.getCreatedTime());
         orderEntity.setCreatedBy(-1L);

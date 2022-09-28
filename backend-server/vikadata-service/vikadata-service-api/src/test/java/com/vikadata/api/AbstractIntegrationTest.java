@@ -66,7 +66,6 @@ import com.vikadata.api.util.billing.OrderUtil;
 import com.vikadata.api.util.billing.model.BillingPlanPrice;
 import com.vikadata.clock.Clock;
 import com.vikadata.clock.MockClock;
-import com.vikadata.core.util.DateTimeUtil;
 import com.vikadata.define.enums.NodeType;
 import com.vikadata.entity.EconomicOrderEntity;
 import com.vikadata.entity.EconomicOrderMetadataEntity;
@@ -115,9 +114,6 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     private List<String> excludeTables;
 
     @Autowired
-    private IAppInstanceService iAppInstanceService;
-
-    @Autowired
     protected IAuthService iAuthService;
 
     @Autowired
@@ -145,13 +141,7 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     protected IClientReleaseVersionService iClientReleaseVersionService;
 
     @Autowired
-    private ISocialTenantService iSocialTenantService;
-
-    @Autowired
     protected ISocialTenantBindService iSocialTenantBindService;
-
-    @Autowired
-    private IOrderService iOrderService;
 
     @Autowired
     protected IShopService isShopService;
@@ -200,6 +190,15 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     @Autowired
     protected IRoleMemberService iRoleMemberService;
+
+    @Autowired
+    protected ISocialTenantService iSocialTenantService;
+
+    @Autowired
+    protected IAppInstanceService iAppInstanceService;
+
+    @Autowired
+    protected IOrderService iOrderService;
 
     @BeforeEach
     public void beforeMethod() {
@@ -358,10 +357,10 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
                 .price(10000)
                 .userCount(10L)
                 .orderPeriod(365)
-                .orderTime(DateTimeUtil.localDateTimeNow(8))
-                .paidTime(DateTimeUtil.localDateTimeNow(8))
-                .beginTime(DateTimeUtil.localDateTimeNow(8))
-                .endTime(DateTimeUtil.localDateTimeFromNow(8, 365, 0, 0, 0))
+                .orderTime(getClock().getNow(testTimeZone).toLocalDateTime())
+                .paidTime(getClock().getNow(testTimeZone).toLocalDateTime())
+                .beginTime(getClock().getNow(testTimeZone).toLocalDateTime())
+                .endTime(getClock().getNow(testTimeZone).toLocalDateTime().plusDays(365))
                 .orderFrom(0)
                 .serviceShareAmount(9000)
                 .platformShareAmount(1000)

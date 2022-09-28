@@ -274,7 +274,7 @@ public class WeComTemplate extends AbstractWeComTemplate implements ApplicationC
             if (null == response) {
                 throw new WeComApiException(WeComExceptionConstants.CHECK_ENP_DOMAIN_ERR_CODE, "校验企业域名响应错误");
             }
-            CheckEnpApiResponse.Data data = response.getData();
+            Data data = response.getData();
             if (!response.getSuccess()) {
                 LOGGER.error("校验企业域名错误：{}", response.getError());
                 throw new WeComApiException(WeComExceptionConstants.CHECK_ENP_DOMAIN_ERR_CODE, "校验企业域名失败");

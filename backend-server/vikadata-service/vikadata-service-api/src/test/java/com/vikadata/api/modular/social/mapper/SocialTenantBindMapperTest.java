@@ -2,6 +2,8 @@ package com.vikadata.api.modular.social.mapper;
 
 import java.util.List;
 
+import cn.hutool.core.collection.CollUtil;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -121,4 +123,12 @@ public class SocialTenantBindMapperTest extends AbstractMyBatisMapperTest {
         SocialTenantBindEntity entity = socialTenantBindMapper.selectBySpaceId("spc41");
         assertThat(entity).isNotNull();
     }
+
+    @Test
+    @Sql("/testdata/social-tenant-bind-data.sql")
+    void selectAllSpaceIdsByAppIdTest() {
+        List<String> spaceIds = socialTenantBindMapper.selectAllSpaceIdsByAppId("ai41");
+        Assertions.assertTrue(CollUtil.isNotEmpty(spaceIds));
+    }
+
 }

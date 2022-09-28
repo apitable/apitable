@@ -315,6 +315,7 @@ vikadata-starter:
           template-id: ${WECOM_TEMPLATE_ID:xxx}
           invite-template-id: ${WECOM_INVITE_TEMPLATE_ID:ttOhr1DQAA4K2IrL60vlkKvu8aYPs5mQ}
           manual-auth-datetime: ${WECOM_AUTH_DATETIME:'2022-03-15T17:46:03+0800'}
+          subscription-trial-edition-id: ${WECOM_SUBSCRIPTION_TRIAL_EDITION_ID}
           permit-trial-days: ${WECOM_PERMIT_TRIAL_DAYS:90}
           permit-trial-expired-template-id: ${WECOM_PERMIT_TRIAL_EXPIRED_TEMPLATE_ID:space_wecom_api_trial_end}
           permit-buy-notify-before-days: ${WECOM_PERMIT_BUY_NOTIFY_BEFORE_DAYS:'1,3,7,15,30'}

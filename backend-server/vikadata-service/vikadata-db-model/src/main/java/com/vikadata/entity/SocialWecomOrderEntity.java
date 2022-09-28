@@ -35,7 +35,7 @@ public class SocialWecomOrderEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 主键
+     * 主键 ID
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
@@ -48,12 +48,12 @@ public class SocialWecomOrderEntity implements Serializable {
     /**
      * 订单状态。0：待支付；1：已支付；2：已取消；3：支付过期；4：申请退款中；5：退款成功；6：退款被拒绝
      */
-    private Boolean orderStatus;
+    private Integer orderStatus;
 
     /**
      * 订单类型。0：新购应用；1：扩容应用人数；2：续期应用时间；3：变更版本
      */
-    private Boolean orderType;
+    private Integer orderType;
 
     /**
      * 下单的企业 ID
@@ -113,7 +113,7 @@ public class SocialWecomOrderEntity implements Serializable {
     /**
      * 下单来源。0：企业下单；1：服务商代下单；2：代理商代下单
      */
-    private Boolean orderFrom;
+    private Integer orderFrom;
 
     /**
      * 下单方的企业 ID
@@ -146,10 +146,10 @@ public class SocialWecomOrderEntity implements Serializable {
     private String orderInfo;
 
     /**
-     * 删除标记(0:否,1:是)
+     * 删除标记。0：否；1：是
      */
     @TableLogic
-    private Integer isDeleted;
+    private Boolean isDeleted;
 
     /**
      * 创建者

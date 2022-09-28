@@ -1,7 +1,6 @@
 package com.vikadata.api.modular.social.service.impl;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -16,6 +15,7 @@ import java.util.stream.Stream;
 import javax.annotation.Resource;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.lang.UUID;
@@ -66,11 +66,10 @@ import com.vikadata.api.enums.social.SocialPlatformType;
 import com.vikadata.api.enums.space.UserSpaceStatus;
 import com.vikadata.api.modular.appstore.enums.AppType;
 import com.vikadata.api.modular.appstore.service.IAppInstanceService;
-import com.vikadata.api.enums.finance.OrderStatus;
-import com.vikadata.api.enums.finance.OrderType;
 import com.vikadata.api.modular.eco.service.IEconomicOrderMetadataService;
 import com.vikadata.api.modular.eco.service.IEconomicOrderService;
-import com.vikadata.api.modular.finance.service.IOrderService;
+import com.vikadata.api.modular.finance.service.ISocialWecomOrderService;
+import com.vikadata.api.modular.finance.strategy.SocialOrderStrategyFactory;
 import com.vikadata.api.modular.organization.service.IMemberService;
 import com.vikadata.api.modular.organization.service.ITeamMemberRelService;
 import com.vikadata.api.modular.organization.service.ITeamService;
@@ -89,7 +88,6 @@ import com.vikadata.api.modular.social.service.ISocialCpIsvService;
 import com.vikadata.api.modular.social.service.ISocialCpTenantUserService;
 import com.vikadata.api.modular.social.service.ISocialCpUserBindService;
 import com.vikadata.api.modular.social.service.ISocialEditionChangelogWeComService;
-import com.vikadata.api.modular.social.service.ISocialOrderWeComService;
 import com.vikadata.api.modular.social.service.ISocialTenantBindService;
 import com.vikadata.api.modular.social.service.ISocialTenantService;
 import com.vikadata.api.modular.social.service.ISocialWecomPermitDelayService;
@@ -100,9 +98,7 @@ import com.vikadata.api.modular.workspace.model.CreateNodeDto;
 import com.vikadata.api.modular.workspace.model.NodeCopyOptions;
 import com.vikadata.api.modular.workspace.service.INodeService;
 import com.vikadata.api.util.IdUtil;
-import com.vikadata.api.util.billing.BillingConfigManager;
 import com.vikadata.api.util.billing.WeComPlanConfigManager;
-import com.vikadata.api.util.billing.model.ProductEnum;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.DateTimeUtil;
 import com.vikadata.core.util.ExceptionUtil;
@@ -112,9 +108,9 @@ import com.vikadata.entity.EconomicOrderEntity;
 import com.vikadata.entity.EconomicOrderMetadataEntity;
 import com.vikadata.entity.MemberEntity;
 import com.vikadata.entity.SocialEditionChangelogWecomEntity;
-import com.vikadata.entity.SocialOrderWecomEntity;
 import com.vikadata.entity.SocialTenantBindEntity;
 import com.vikadata.entity.SocialTenantEntity;
+import com.vikadata.entity.SocialWecomOrderEntity;
 import com.vikadata.entity.SpaceEntity;
 import com.vikadata.entity.UserEntity;
 import com.vikadata.social.wecom.WeComTemplate;
@@ -122,6 +118,8 @@ import com.vikadata.social.wecom.WxCpIsvServiceImpl;
 import com.vikadata.social.wecom.WxCpIsvTagServiceImpl;
 import com.vikadata.social.wecom.WxCpIsvUserServiceImpl;
 import com.vikadata.social.wecom.constants.WeComUserStatus;
+import com.vikadata.social.wecom.event.order.WeComOrderPaidEvent;
+import com.vikadata.social.wecom.model.WxCpIsvGetOrder;
 import com.vikadata.social.wecom.model.WxCpIsvPermanentCodeInfo;
 import com.vikadata.system.config.billing.Plan;
 import com.vikadata.system.config.billing.Price;
@@ -143,6 +141,7 @@ import static com.vikadata.api.enums.exception.OrganizationException.CREATE_MEMB
  * <p>
  * 第三方平台集成 - 企业微信第三方服务商
  * </p>
+ *
  * @author 刘斌华
  * @date 2022-01-12 11:40:25
  */
@@ -194,9 +193,6 @@ public class SocialCpIsvServiceImpl implements ISocialCpIsvService {
     private INodeService nodeService;
 
     @Resource
-    private IOrderService orderService;
-
-    @Resource
     private ISocialCpIsvPermitService socialCpIsvPermitService;
 
     @Resource
@@ -212,13 +208,13 @@ public class SocialCpIsvServiceImpl implements ISocialCpIsvService {
     private ISocialEditionChangelogWeComService socialEditionChangelogWeComService;
 
     @Resource
-    private ISocialOrderWeComService socialOrderWeComService;
-
-    @Resource
     private ISocialTenantService socialTenantService;
 
     @Resource
     private ISocialTenantBindService socialTenantBindService;
+
+    @Resource
+    private ISocialWecomOrderService socialWecomOrderService;
 
     @Resource
     private ISpaceService spaceService;
@@ -406,7 +402,8 @@ public class SocialCpIsvServiceImpl implements ISocialCpIsvService {
         if (CollUtil.isEmpty(adminMembers)) {
             // 之前不存在管理员，则设置管理员
             bindSpaceAdmin(authCorpInfo, authUserInfo, agent, spaceId, suiteId);
-        } else if (adminMembers.size() > 1) {
+        }
+        else if (adminMembers.size() > 1) {
             // 该方法用于修复之前设置管理员的 BUG，正常只有一个主管理员
             Long ownerMemberId = Optional.ofNullable(spaceService.getBySpaceId(spaceId))
                     .map(SpaceEntity::getOwner)
@@ -446,26 +443,19 @@ public class SocialCpIsvServiceImpl implements ISocialCpIsvService {
             // 存在订阅版本信息，则处理订阅信息
             // 服务商开启付费订阅后，免费试用也会存在订阅版本信息
             // 不存在版本信息，则说明是开通支付之前的业务逻辑
+            String editionId = editionInfoAgent.getEditionId();
             if (isNewSpace) {
                 // 处理订单信息，非新租户在【订单支付成功】事件中处理
-                SocialOrderWecomEntity orderWeComEntity = socialOrderWeComService.getFirstPaidOrder(suiteId, authCorpId);
-                if (Objects.nonNull(orderWeComEntity)) {
+                SocialWecomOrderEntity firstPaidOrder = socialWecomOrderService.getFirstPaidOrder(suiteId, authCorpId);
+                if (Objects.nonNull(firstPaidOrder)) {
                     // 付费订阅
-                    handleTenantPaidSubscribe(orderWeComEntity, spaceId);
-                    // 接口许可处理
-                    try {
-                        socialCpIsvPermitService.autoProcessPermitOrder(suiteId, authCorpId, spaceId);
-                    } catch (Exception ex) {
-                        log.error("企微接口许可自动化处理失败", ex);
-                    }
-                } else if (WeComPlanConfigManager.isWeComTrialEdition(editionInfoAgent.getEditionId())) {
+                    handleTenantPaidSubscribe(spaceId, firstPaidOrder);
+                }
+                else if (WeComPlanConfigManager.isWeComTrialEdition(editionId)) {
                     // 免费试用
-                    LocalDateTime expiredTime = null;
-                    if (editionInfoAgent.getAppStatus() != 5) {
-                        // 不限时试用时忽略试用过期时间
-                        expiredTime = DateTimeUtil.localDateTimeFromSeconds(editionInfoAgent.getExpiredTime(), 8);
-                    }
-                    handleTenantTrialSubscribe(spaceId, OrderType.BUY, DateTimeUtil.localDateTimeNow(8), expiredTime);
+                    // 不限时试用时忽略试用过期时间
+                    Long expiredTime = editionInfoAgent.getAppStatus() == 5 ? null : editionInfoAgent.getExpiredTime();
+                    handleTenantTrialSubscribe(suiteId, authCorpId, editionId, 0, expiredTime);
                     // 保存接口许可免费试用延时通知
                     socialWecomPermitDelayService.addAuthCorp(suiteId, authCorpId, DateTimeUtil.localDateTimeNow(8),
                             SocialCpIsvPermitDelayType.NOTIFY_BEFORE_TRIAL_EXPIRED.getValue(),
@@ -473,19 +463,16 @@ public class SocialCpIsvServiceImpl implements ISocialCpIsvService {
                 }
                 // 同时保存订阅版本信息，非新租户在【应用版本变更】事件中处理
                 socialEditionChangelogWeComService.createChangelog(suiteId, authCorpId, editionInfoAgent);
-            } else if (WeComPlanConfigManager.isWeComTrialEdition(editionInfoAgent.getEditionId())) {
+            }
+            else if (WeComPlanConfigManager.isWeComTrialEdition(editionId)) {
                 // 如果不是新的空间站，则说明是删除后重装
                 // 并且提供了试用版本信息
                 SocialEditionChangelogWecomEntity lastChangelog = socialEditionChangelogWeComService.getLastChangeLog(suiteId, authCorpId);
                 if (Objects.isNull(lastChangelog)) {
-                    // 不存在已有的应用版本信息，说明是开通支付之前的旧租户重装后试用
-                    // 需要手动补充订单信息
-                    LocalDateTime expiredTime = null;
-                    if (editionInfoAgent.getAppStatus() != 5) {
-                        // 不限时试用时忽略试用过期时间
-                        expiredTime = DateTimeUtil.localDateTimeFromSeconds(editionInfoAgent.getExpiredTime(), 8);
-                    }
-                    handleTenantTrialSubscribe(spaceId, OrderType.BUY, DateTimeUtil.localDateTimeNow(8), expiredTime);
+                    // 不存在已有的应用版本信息，说明是开通支付之前的旧租户重装后试用，此时需要手动补充订单信息
+                    // 不限时试用时忽略试用过期时间
+                    Long expiredTime = editionInfoAgent.getAppStatus() == 5 ? null : editionInfoAgent.getExpiredTime();
+                    handleTenantTrialSubscribe(suiteId, authCorpId, editionId, 0, expiredTime);
                     // 同时保存订阅版本信息
                     socialEditionChangelogWeComService.createChangelog(suiteId, authCorpId, editionInfoAgent);
                 }
@@ -952,7 +939,7 @@ public class SocialCpIsvServiceImpl implements ISocialCpIsvService {
     }
 
     @Override
-    public WxCpTpContactSearchResp.QueryResult search(String suiteId, String authCorpId, Integer agentId, String keyword, Integer type) throws WxErrorException {
+    public QueryResult search(String suiteId, String authCorpId, Integer agentId, String keyword, Integer type) throws WxErrorException {
         WxCpTpContactService wxCpTpContactService = weComTemplate.isvService(suiteId)
                 .getWxCpTpContactService();
 
@@ -963,25 +950,25 @@ public class SocialCpIsvServiceImpl implements ISocialCpIsvService {
         wxCpTpContactSearch.setAgentId(agentId);
         wxCpTpContactSearch.setOffset(0);
         wxCpTpContactSearch.setLimit(200);
-        WxCpTpContactSearchResp.QueryResult result = new QueryResult();
-        WxCpTpContactSearchResp.QueryResult.User resultUser = new WxCpTpContactSearchResp.QueryResult.User();
+        QueryResult result = new QueryResult();
+        QueryResult.User resultUser = new QueryResult.User();
         resultUser.setUserid(Lists.newArrayListWithCapacity(16));
         resultUser.setOpenUserId(Lists.newArrayListWithCapacity(16));
         result.setUser(resultUser);
-        WxCpTpContactSearchResp.QueryResult.Party resultParty = new WxCpTpContactSearchResp.QueryResult.Party();
+        QueryResult.Party resultParty = new QueryResult.Party();
         resultParty.setDepartmentId(Lists.newArrayListWithCapacity(2));
         result.setParty(resultParty);
         boolean hasMore = true;
         while (hasMore) {
             WxCpTpContactSearchResp searchResp = wxCpTpContactService.contactSearch(wxCpTpContactSearch);
-            WxCpTpContactSearchResp.QueryResult queryResult = searchResp.getQueryResult();
+            QueryResult queryResult = searchResp.getQueryResult();
             if (Objects.nonNull(queryResult)) {
-                WxCpTpContactSearchResp.QueryResult.User queryResultUser = queryResult.getUser();
+                QueryResult.User queryResultUser = queryResult.getUser();
                 if (Objects.nonNull(queryResultUser)) {
                     result.getUser().getUserid().addAll(queryResultUser.getUserid());
                     result.getUser().getOpenUserId().addAll(queryResultUser.getOpenUserId());
                 }
-                WxCpTpContactSearchResp.QueryResult.Party queryResultParty = queryResult.getParty();
+                QueryResult.Party queryResultParty = queryResult.getParty();
                 if (Objects.nonNull(queryResultParty)) {
                     result.getParty().getDepartmentId().addAll(queryResultParty.getDepartmentId());
                 }
@@ -995,48 +982,78 @@ public class SocialCpIsvServiceImpl implements ISocialCpIsvService {
     }
 
     @Override
-    public void handleTenantPaidSubscribe(SocialOrderWecomEntity orderWeComEntity, String spaceId) {
-        Plan plan = WeComPlanConfigManager.getPlanByWeComEditionId(orderWeComEntity.getEditionId(), orderWeComEntity.getUserCount());
-        if (Objects.isNull(plan)) {
-            throw new BusinessException("没有找到对应的订阅计划，企微订单数据为：" + JSONUtil.toJsonStr(orderWeComEntity));
+    public void handleTenantPaidSubscribe(String spaceId, SocialWecomOrderEntity orderEntity) {
+        String suiteId = orderEntity.getSuiteId();
+        String authCorpId = orderEntity.getPaidCorpId();
+        // 1 get paid event info from saved info
+        WeComOrderPaidEvent paidEvent = JSONUtil.toBean(orderEntity.getOrderInfo(), WeComOrderPaidEvent.class);
+        // 2 handle wecom paid subscription
+        SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM)
+                .retrieveOrderPaidEvent(paidEvent);
+        // 3 handle wecom api permit
+        try {
+            socialCpIsvPermitService.autoProcessPermitOrder(suiteId, authCorpId, spaceId);
         }
-        // 找出之前生效的订单
-        EconomicOrderEntity lastOrder = economicOrderService.getActiveOrderBySpaceId(spaceId);
-        EconomicOrderEntity orderEntity = SocialFactory.createWeComTenantOrder(orderWeComEntity, plan, spaceId);
-        if (Objects.nonNull(lastOrder)) {
-            // 飞书只有当前为升级订单或者上一个为试用订单，才会标记上一个订单失效，是因为飞书会列出每一个订单并标记当前生效的订单
-            // 而企微会自动合并处理订单信息，并计算出最终生效的订单信息
-            // 因此企微需要总是标记上一个订单失效
-            lastOrder.setStatus(OrderStatus.CANCELED.getName());
-            economicOrderService.updateById(lastOrder);
+        catch (Exception ex) {
+            log.error("Failed to handle wecom api permit automatically.", ex);
         }
-        EconomicOrderMetadataEntity orderMetadataEntity = SocialFactory.createWeComOrderMetadata(orderWeComEntity, orderEntity.getOrderNo());
-        orderService.createOrderWithMetadata(orderEntity, orderMetadataEntity);
+        // 4 send subscription notification
         TaskManager.me().execute(() -> {
-            Price price = BillingConfigManager.getPriceBySeatAndMonths(ProductEnum.of(plan.getProduct()), orderEntity.getSeat(), orderEntity.getMonth());
+            Price price = WeComPlanConfigManager.getPriceByWeComEditionIdAndMonth(orderEntity.getEditionId(),
+                    orderEntity.getUserCount(), SocialFactory.getWeComOrderMonth(orderEntity.getOrderPeriod()));
             if (Objects.nonNull(price)) {
-                sendSubscribeNotify(spaceId, LocalDateTimeUtil.toEpochMilli(orderEntity.getExpireTime()),
-                        price.getGoodChTitle(), orderWeComEntity.getPrice().longValue());
+                sendSubscribeNotify(spaceId, LocalDateTimeUtil.toEpochMilli(orderEntity.getEndTime()),
+                        price.getGoodChTitle(), orderEntity.getPrice().longValue());
             }
         });
     }
 
     @Override
-    public void handleTenantTrialSubscribe(String spaceId, OrderType orderType, LocalDateTime createdTime, LocalDateTime expiredTime) {
-        Plan trialPlan = WeComPlanConfigManager.getPaidPlanFromWeComTrial();
-        if (Objects.isNull(trialPlan)) {
-            throw new BusinessException("没有找到对应的试用订阅计划");
+    public void handleTenantPaidSubscribe(String suiteId, String authCorpId, String spaceId, String orderId) throws WxErrorException {
+        // 1 fetch paid event info from wecom
+        WeComOrderPaidEvent paidEvent = fetchPaidEvent(suiteId, orderId);
+        // 2 save wecom order
+        SocialWecomOrderEntity orderEntity = socialWecomOrderService.createOrder(paidEvent);
+        if (CharSequenceUtil.isNotBlank(spaceId)) {
+            // 3 handle wecom paid subscription
+            SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM)
+                    .retrieveOrderPaidEvent(paidEvent);
+            // 4 handle wecom api permit
+            try {
+                socialCpIsvPermitService.autoProcessPermitOrder(suiteId, authCorpId, spaceId);
+            }
+            catch (Exception ex) {
+                log.error("Failed to handle wecom api permit automatically.", ex);
+            }
+            // 5 send subscription notification
+            TaskManager.me().execute(() -> {
+                Price price = WeComPlanConfigManager.getPriceByWeComEditionIdAndMonth(orderEntity.getEditionId(),
+                        orderEntity.getUserCount(), SocialFactory.getWeComOrderMonth(orderEntity.getOrderPeriod()));
+                if (Objects.nonNull(price)) {
+                    sendSubscribeNotify(spaceId, LocalDateTimeUtil.toEpochMilli(orderEntity.getEndTime()),
+                            price.getGoodChTitle(), orderEntity.getPrice().longValue());
+                }
+            });
         }
-        // 找出之前生效的订单
-        EconomicOrderEntity lastOrder = economicOrderService.getActiveOrderBySpaceId(spaceId);
-        EconomicOrderEntity orderEntity = SocialFactory.createWeComTenantTrialOrder(spaceId, trialPlan, orderType, createdTime, expiredTime);
-        if (Objects.nonNull(lastOrder)) {
-            // 延长试用期时标记上一个订单失效
-            lastOrder.setStatus(OrderStatus.CANCELED.getName());
-            economicOrderService.updateById(lastOrder);
-        }
-        EconomicOrderMetadataEntity orderMetadataEntity = SocialFactory.createWeComOrderMetadata(null, orderEntity.getOrderNo());
-        orderService.createOrderWithMetadata(orderEntity, orderMetadataEntity);
+    }
+
+    @Override
+    public void handleTenantTrialSubscribe(String suiteId, String authCorpId, String editionId,
+            Integer orderType, Long expiredTime) {
+        // 构建试用信息并保存
+        long currentSeconds = DateUtil.currentSeconds();
+        WeComOrderPaidEvent paidEvent = new WeComOrderPaidEvent();
+        paidEvent.setSuiteId(suiteId);
+        paidEvent.setPaidCorpId(authCorpId);
+        paidEvent.setOrderType(orderType);
+        paidEvent.setEditionId(editionId);
+        paidEvent.setPrice(0);
+        paidEvent.setOrderTime(currentSeconds);
+        paidEvent.setPaidTime(currentSeconds);
+        paidEvent.setBeginTime(currentSeconds);
+        paidEvent.setEndTime(expiredTime);
+        SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM)
+                .retrieveOrderPaidEvent(paidEvent);
     }
 
     /**
@@ -1056,7 +1073,7 @@ public class SocialCpIsvServiceImpl implements ISocialCpIsvService {
      * @author 刘斌华
      * @date 2022-04-13 17:36:12
      */
-    private  void fetchAndBindAllViewableUsers(String suiteId, String authCorpId, String spaceId,
+    private void fetchAndBindAllViewableUsers(String suiteId, String authCorpId, String spaceId,
             List<String> allowUsers, List<Integer> allowParties, List<Integer> allowTags) throws WxErrorException {
         // 1 先获取可见范围下的所有成员
         List<String> allCpUserIds = Lists.newArrayList();
@@ -1350,6 +1367,7 @@ public class SocialCpIsvServiceImpl implements ISocialCpIsvService {
 
     /**
      * 发送订阅/支付成功通知
+     *
      * @param spaceId 空间ID
      * @param expireAt 过期时间，毫秒
      * @param productName 产品名称
@@ -1372,6 +1390,51 @@ public class SocialCpIsvServiceImpl implements ISocialCpIsvService {
                 .set(EXPIRE_AT, expireAt.toString());
         NotificationManager.me().playerNotify(NotificationTemplateId.SPACE_SUBSCRIPTION_NOTIFY,
                 null, 0L, spaceId, subscriptionExtra);
+    }
+
+    /**
+     * Get order info from wecom
+     *
+     * @param suiteId Wecom isv suite ID
+     * @param orderId The order ID of wecom isv paid subscription
+     * @return Paid event info
+     * @author Codeman
+     * @date 2022-08-29 16:24:24
+     */
+    private WeComOrderPaidEvent fetchPaidEvent(String suiteId, String orderId) throws WxErrorException {
+        // 获取企业微信的原始订单信息
+        WxCpIsvServiceImpl wxCpIsvService = (WxCpIsvServiceImpl) weComTemplate.isvService(suiteId);
+        WxCpIsvGetOrder wxCpIsvGetOrder = wxCpIsvService.getOrder(orderId);
+        // 复制数据
+        WeComOrderPaidEvent paidEvent = new WeComOrderPaidEvent();
+        paidEvent.setSuiteId(wxCpIsvGetOrder.getSuiteId());
+        paidEvent.setPaidCorpId(wxCpIsvGetOrder.getPaidCorpId());
+        paidEvent.setOrderId(wxCpIsvGetOrder.getOrderId());
+        paidEvent.setOrderStatus(wxCpIsvGetOrder.getOrderStatus());
+        paidEvent.setOrderType(wxCpIsvGetOrder.getOrderType());
+        paidEvent.setOperatorId(wxCpIsvGetOrder.getOperatorId());
+        paidEvent.setEditionId(wxCpIsvGetOrder.getEditionId());
+        paidEvent.setEditionName(wxCpIsvGetOrder.getEditionName());
+        paidEvent.setPrice(wxCpIsvGetOrder.getPrice());
+        paidEvent.setUserCount(wxCpIsvGetOrder.getUserCount());
+        paidEvent.setOrderPeriod(wxCpIsvGetOrder.getOrderPeriod());
+        paidEvent.setOrderTime(wxCpIsvGetOrder.getOrderTime());
+        paidEvent.setPaidTime(wxCpIsvGetOrder.getPaidTime());
+        paidEvent.setBeginTime(wxCpIsvGetOrder.getBeginTime());
+        paidEvent.setEndTime(wxCpIsvGetOrder.getEndTime());
+        paidEvent.setOrderFrom(wxCpIsvGetOrder.getOrderFrom());
+        paidEvent.setOperatorCorpId(wxCpIsvGetOrder.getOperatorCorpId());
+        paidEvent.setServiceShareAmount(wxCpIsvGetOrder.getServiceShareAmount());
+        paidEvent.setPlatformShareAmount(wxCpIsvGetOrder.getPlatformShareAmount());
+        paidEvent.setDealerShareAmount(wxCpIsvGetOrder.getDealerShareAmount());
+        paidEvent.setDealerCorpInfo(Optional.ofNullable(wxCpIsvGetOrder.getDealerCorpInfo())
+                .map(dealer -> {
+                    WeComOrderPaidEvent.DealerCorpInfo dealerCorpInfo = new WeComOrderPaidEvent.DealerCorpInfo();
+                    dealerCorpInfo.setCorpId(dealer.getCorpId());
+                    dealerCorpInfo.setCorpName(dealer.getCorpName());
+                    return dealerCorpInfo;
+                }).orElse(null));
+        return paidEvent;
     }
 
 }

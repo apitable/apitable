@@ -32,12 +32,10 @@ import com.vikadata.api.modular.social.model.TenantBaseInfoDto;
 import com.vikadata.api.modular.social.model.WeComDepartTree;
 import com.vikadata.api.util.RandomExtendUtil;
 import com.vikadata.api.util.billing.OrderUtil;
-import com.vikadata.api.util.billing.WeComPlanConfigManager;
 import com.vikadata.entity.EconomicOrderEntity;
 import com.vikadata.entity.EconomicOrderMetadataEntity;
 import com.vikadata.entity.MemberEntity;
 import com.vikadata.entity.SocialCpTenantUserEntity;
-import com.vikadata.entity.SocialOrderWecomEntity;
 import com.vikadata.entity.SocialTenantDepartmentBindEntity;
 import com.vikadata.entity.SocialTenantDepartmentEntity;
 import com.vikadata.entity.SocialTenantUserEntity;
@@ -54,7 +52,6 @@ import com.vikadata.social.feishu.model.FeishuDepartmentInfo;
 import com.vikadata.social.feishu.model.v3.FeishuDeptObject;
 import com.vikadata.social.feishu.model.v3.FeishuUserObject;
 import com.vikadata.social.feishu.model.v3.UserStatus;
-import com.vikadata.system.config.billing.Plan;
 import com.vikadata.system.config.billing.Price;
 
 import static com.vikadata.social.feishu.constants.FeishuConstants.FEISHU_ROOT_DEPT_ID;
@@ -66,11 +63,6 @@ import static com.vikadata.social.feishu.constants.FeishuConstants.FEISHU_ROOT_D
  * @date 2020-12-18 22:38:36
  */
 public class SocialFactory {
-
-    /**
-     * 人民币缩写
-     */
-    private static final String CURRENCY_CNY = "CNY";
 
     public static <T extends FeishuDepartmentInfo> SocialTenantDepartmentEntity createTenantDepartment(String spaceId, String tenantKey, T departmentInfo) {
         SocialTenantDepartmentEntity tenantDepartment = new SocialTenantDepartmentEntity();
@@ -426,86 +418,6 @@ public class SocialFactory {
     }
 
     /**
-     * 创建企微订阅对应的经济系统订单实体
-     *
-     * @param orderWeComEntity 企微订单信息
-     * @param plan 订阅计划
-     * @param spaceId 租户的空间站 ID
-     * @return 经济系统订单实体
-     * @author 刘斌华
-     * @date 2022-05-05 17:27:23
-     */
-    public static EconomicOrderEntity createWeComTenantOrder(SocialOrderWecomEntity orderWeComEntity, Plan plan, String spaceId) {
-        // 保存信息
-        EconomicOrderEntity orderEntity = new EconomicOrderEntity();
-        orderEntity.setSpaceId(spaceId);
-        orderEntity.setOrderNo(OrderUtil.createOrderId());
-        orderEntity.setOrderChannel(OrderChannel.WECOM.getName());
-        orderEntity.setChannelOrderId(orderWeComEntity.getOrderId());
-        orderEntity.setProduct(plan.getProduct());
-        orderEntity.setSeat(plan.getSeats());
-        orderEntity.setType(getOrderTypeFromWeCom(orderWeComEntity.getOrderType()).getType());
-        orderEntity.setMonth(getWeComOrderMonth(orderWeComEntity.getOrderPeriod()));
-        orderEntity.setCurrency(CURRENCY_CNY);
-        orderEntity.setAmount(orderWeComEntity.getPrice());
-        orderEntity.setActualAmount(orderWeComEntity.getPrice());
-        orderEntity.setStatus(OrderStatus.FINISHED.getName());
-        orderEntity.setIsPaid(true);
-        orderEntity.setPaidTime(orderWeComEntity.getPaidTime());
-        orderEntity.setExpireTime(orderWeComEntity.getEndTime());
-        orderEntity.setCreatedTime(orderWeComEntity.getOrderTime());
-        if (WeComPlanConfigManager.isWeComTrialEdition(orderWeComEntity.getEditionId())) {
-            orderEntity.setOrderPhase(OrderPhase.TRIAL.getName());
-        }
-        else {
-            orderEntity.setOrderPhase(OrderPhase.FIXEDTERM.getName());
-        }
-        // 不记录createdBy 因为app开通之后，用户可能还没有绑定，无法获取用户的userId
-        return orderEntity;
-    }
-
-    public static EconomicOrderEntity createWeComTenantTrialOrder(String spaceId, Plan plan, OrderType orderType, LocalDateTime createdTime, LocalDateTime expiredTime) {
-        // 保存信息
-        EconomicOrderEntity orderEntity = new EconomicOrderEntity();
-        orderEntity.setSpaceId(spaceId);
-        orderEntity.setOrderNo(OrderUtil.createOrderId());
-        orderEntity.setOrderChannel(OrderChannel.WECOM.getName());
-        orderEntity.setChannelOrderId(null);
-        orderEntity.setProduct(plan.getProduct());
-        orderEntity.setSeat(plan.getSeats());
-        orderEntity.setType(orderType.getType());
-        orderEntity.setMonth(0);
-        orderEntity.setCurrency(CURRENCY_CNY);
-        orderEntity.setAmount(0);
-        orderEntity.setActualAmount(0);
-        orderEntity.setStatus(OrderStatus.FINISHED.getName());
-        orderEntity.setIsPaid(true);
-        orderEntity.setPaidTime(createdTime);
-        orderEntity.setExpireTime(expiredTime);
-        orderEntity.setCreatedTime(createdTime);
-        orderEntity.setOrderPhase(OrderPhase.TRIAL.getName());
-        // 不记录createdBy 因为app开通之后，用户可能还没有绑定，无法获取用户的userId
-        return orderEntity;
-    }
-
-    /**
-     * 创建企微订阅对应的经济系统订单元数据实体
-     *
-     * @param orderWeComEntity 企微订单信息
-     * @param orderNo 经济系统订单号
-     * @return 经济系统订单元数据实体
-     * @author 刘斌华
-     * @date 2022-05-05 17:28:43
-     */
-    public static EconomicOrderMetadataEntity createWeComOrderMetadata(SocialOrderWecomEntity orderWeComEntity, String orderNo) {
-        EconomicOrderMetadataEntity orderMetadata = new EconomicOrderMetadataEntity();
-        orderMetadata.setOrderNo(orderNo);
-        orderMetadata.setMetadata(JSONUtil.toJsonStr(orderWeComEntity));
-        orderMetadata.setOrderChannel(OrderChannel.WECOM.getName());
-        return orderMetadata;
-    }
-
-    /**
      * 获取企微订单生效的月数
      *
      * @param orderPeriod 购买的时长
@@ -515,22 +427,22 @@ public class SocialFactory {
      */
     public static Integer getWeComOrderMonth(Integer orderPeriod) {
         if (Objects.isNull(orderPeriod)) {
-            return 0;
+            return null;
         }
-
-        // 企微返回的购买时长以天为单位，365 天为 1 年
-        return orderPeriod / 365 * 12;
+        // 企微返回的购买时长以天为单位，365 天为 1 年，不足一年的按一年算
+        int rest = orderPeriod % 365;
+        return (orderPeriod / 365 + (rest == 0 ? 0 : 1)) * 12;
     }
 
     /**
-     * 将企业微信的订单类型，转换为对应的维格订单类型
+     * Convert wecom order type to vika order type
      *
-     * @param weComOrderType 订单类型。0：新购应用；1：扩容应用人数；2：续期应用时间；3：变更版本
-     * @return 对应的维格订单类型
-     * @author 刘斌华
+     * @param weComOrderType Wecom order type。0: new order; 1: expand volume; 2: renew period; 3: change edition
+     * @return Vika order type
+     * @author Codeman
      * @date 2022-05-05 17:04:17
      */
-    private static OrderType getOrderTypeFromWeCom(Integer weComOrderType) {
+    public static OrderType getOrderTypeFromWeCom(Integer weComOrderType) {
         switch (weComOrderType) {
             case 0:
             case 3:
@@ -540,7 +452,7 @@ public class SocialFactory {
             case 2:
                 return OrderType.RENEW;
             default:
-                throw new IllegalArgumentException("Unsupported weCom orderType: " + weComOrderType);
+                throw new IllegalArgumentException("Unsupported wecom orderType: " + weComOrderType);
         }
     }
 

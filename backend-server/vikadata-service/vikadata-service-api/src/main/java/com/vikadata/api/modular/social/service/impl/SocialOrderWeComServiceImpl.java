@@ -1,5 +1,6 @@
 package com.vikadata.api.modular.social.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import cn.hutool.json.JSONUtil;
@@ -49,6 +50,11 @@ public class SocialOrderWeComServiceImpl extends ServiceImpl<SocialOrderWeComMap
         updateById(socialOrderWeComEntity);
 
         return socialOrderWeComEntity;
+    }
+
+    @Override
+    public List<SocialOrderWecomEntity> getAllOrders(String suiteId, String paidCorpId, List<Integer> orderStatuses) {
+        return getBaseMapper().selectAllOrders(suiteId, paidCorpId, orderStatuses);
     }
 
     @Override

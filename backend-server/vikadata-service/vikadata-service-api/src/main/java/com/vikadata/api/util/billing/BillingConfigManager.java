@@ -49,6 +49,18 @@ public class BillingConfigManager {
     }
 
     /**
+     * 根据名称获取产品
+     *
+     * @param productName 产品名称
+     * @return 产品
+     * @author 刘斌华
+     * @date 2022-08-26 14:52:51
+     */
+    public static Product getProductByName(String productName) {
+        return BILLING_CONFIG.getProducts().get(productName);
+    }
+
+    /**
      * 获取免费产品
      *
      * @return Product 产品
@@ -151,7 +163,7 @@ public class BillingConfigManager {
         // 获取基础订阅方案拥有的功能点
         Map<String, Feature> basePlanFeatureMap = BILLING_CONFIG.getFeatures().entrySet().stream()
                 .filter(entry -> basePlan.getFeatures().contains(entry.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
         // 增值包没有以下属性
         billingPlanFeature.setMaxSeats(getPlanFeatureValue(basePlanFeatureMap, BillingFunctionEnum.SEATS, Long.class));
         billingPlanFeature.setMaxSheetNums(getPlanFeatureValue(basePlanFeatureMap, BillingFunctionEnum.NODES, Long.class));
@@ -200,7 +212,7 @@ public class BillingConfigManager {
                 List<Feature> features = BILLING_CONFIG.getFeatures().entrySet()
                         .stream()
                         .filter(entry -> addOnPlan.getFeatures().contains(entry.getKey()))
-                        .map(Map.Entry::getValue).collect(Collectors.toList());
+                        .map(Entry::getValue).collect(Collectors.toList());
                 for (Feature feature : features) {
                     // 附件容量增值
                     if (feature.getFunction().equals(BillingFunctionEnum.CAPACITY.getCode())) {

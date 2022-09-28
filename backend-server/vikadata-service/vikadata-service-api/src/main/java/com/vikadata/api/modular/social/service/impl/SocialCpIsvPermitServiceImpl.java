@@ -21,7 +21,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.crypto.digest.HmacAlgorithm;
-import cn.hutool.json.JSONUtil;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -34,8 +33,9 @@ import com.vikadata.api.component.TaskManager;
 import com.vikadata.api.component.rabbitmq.WeComRabbitConsumer;
 import com.vikadata.api.config.rabbitmq.TopicRabbitMqConfig;
 import com.vikadata.api.enums.exception.SocialException;
-import com.vikadata.api.enums.finance.OrderPhase;
-import com.vikadata.api.modular.eco.service.IEconomicOrderService;
+import com.vikadata.api.enums.finance.SubscriptionPhase;
+import com.vikadata.api.modular.finance.core.Bundle;
+import com.vikadata.api.modular.finance.service.IBundleService;
 import com.vikadata.api.modular.social.enums.SocialCpIsvPermitActivateStatus;
 import com.vikadata.api.modular.social.enums.SocialCpIsvPermitDelayProcessStatus;
 import com.vikadata.api.modular.social.enums.SocialCpIsvPermitDelayType;
@@ -50,7 +50,6 @@ import com.vikadata.boot.autoconfigure.social.wecom.WeComProperties;
 import com.vikadata.boot.autoconfigure.social.wecom.WeComProperties.IsvApp;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.DateTimeUtil;
-import com.vikadata.entity.EconomicOrderEntity;
 import com.vikadata.entity.SocialTenantBindEntity;
 import com.vikadata.entity.SocialTenantEntity;
 import com.vikadata.entity.SocialWecomPermitDelayEntity;
@@ -118,7 +117,7 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
     private RabbitSenderService rabbitSenderService;
 
     @Resource
-    private IEconomicOrderService economicOrderService;
+    private IBundleService bundleService;
 
     @Resource
     private ISocialWecomPermitDelayService socialWecomPermitDelayService;
@@ -365,9 +364,8 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
     @Override
     public void autoProcessPermitOrder(String suiteId, String authCorpId, String spaceId) {
         // 已付费用户才需要处理接口许可
-        EconomicOrderEntity orderEntity = economicOrderService.getActiveOrderBySpaceId(spaceId);
-        log.info("授权企业空间站当前有效的经济订单信息：" + JSONUtil.toJsonStr(orderEntity));
-        if (Objects.isNull(orderEntity) || !OrderPhase.FIXEDTERM.getName().equals(orderEntity.getOrderPhase())) {
+        Bundle activeBundle = bundleService.getActivatedBundleBySpaceId(spaceId);
+        if (Objects.isNull(activeBundle) || activeBundle.getBaseSubscription().getPhase() != SubscriptionPhase.FIXEDTERM) {
             return;
         }
         // 获取租户信息
@@ -375,7 +373,7 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
         int permitCompatibleDays = weComProperties.getIsvAppList().stream()
                 .filter(isvApp -> suiteId.equals(isvApp.getSuiteId()))
                 .findFirst()
-                .map(WeComProperties.IsvApp::getPermitCompatibleDays)
+                .map(IsvApp::getPermitCompatibleDays)
                 .orElse(0);
         // 判断距离首次安装授权是否已过指定天数
         // 大于指定天数需要立即下单购买或者续期接口许可账号，否则由延时队列处理
@@ -397,7 +395,7 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
                         SocialCpIsvPermitDelayProcessStatus.PENDING.getValue());
             }
             else {
-                boolean result = createPermitOrder(suiteId, authCorpId, spaceId, orderEntity.getExpireTime());
+                boolean result = createPermitOrder(suiteId, authCorpId, spaceId, activeBundle.getBaseSubscription().getExpireDate());
                 if (result) {
                     // 保存已下单的任务，并提交到延时队列
                     SocialWecomPermitDelayEntity delayEntity = socialWecomPermitDelayService.addAuthCorp(suiteId, authCorpId, tenantEntity.getCreatedAt(),

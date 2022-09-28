@@ -1,5 +1,7 @@
 package com.vikadata.api.modular.social.service;
 
+import java.util.List;
+
 import com.baomidou.mybatisplus.extension.service.IService;
 import me.chanjar.weixin.common.error.WxErrorException;
 
@@ -12,6 +14,7 @@ import com.vikadata.entity.SocialOrderWecomEntity;
  * @author 刘斌华
  * @date 2022-04-26 15:09:51
  */
+@Deprecated
 public interface ISocialOrderWeComService extends IService<SocialOrderWecomEntity> {
 
     /**
@@ -37,6 +40,18 @@ public interface ISocialOrderWeComService extends IService<SocialOrderWecomEntit
      * @date 2022-05-06 11:04:24
      */
     SocialOrderWecomEntity refreshOrder(String suiteId, String orderId) throws WxErrorException;
+
+    /**
+     * 查询所有的订单
+     *
+     * @param suiteId 应用套件 ID
+     * @param paidCorpId 授权的企业 ID
+     * @param orderStatuses 查询的订单状态。可以为空
+     * @return 符合条件的所有订单
+     * @author 刘斌华
+     * @date 2022-08-18 17:52:27
+     */
+    List<SocialOrderWecomEntity> getAllOrders(String suiteId, String paidCorpId, List<Integer> orderStatuses);
 
     /**
      * 获取租户第一个支付成功的订单

@@ -1,5 +1,7 @@
 package com.vikadata.api.modular.social.mapper;
 
+import java.util.List;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -25,6 +27,19 @@ public interface SocialOrderWeComMapper extends BaseMapper<SocialOrderWecomEntit
      * @date 2022-05-06 11:44:01
      */
     SocialOrderWecomEntity selectByOrderId(@Param("orderId") String orderId);
+
+    /**
+     * 查询所有的订单
+     *
+     * @param suiteId 应用套件 ID
+     * @param paidCorpId 授权的企业 ID
+     * @param orderStatuses 查询的订单状态。可以为空
+     * @return 符合条件的所有订单
+     * @author 刘斌华
+     * @date 2022-08-18 17:52:27
+     */
+    List<SocialOrderWecomEntity> selectAllOrders(@Param("suiteId") String suiteId, @Param("paidCorpId") String paidCorpId,
+            @Param("orderStatuses") List<Integer> orderStatuses);
 
     /**
      * 获取租户第一个支付成功的订单

@@ -1,5 +1,6 @@
 package com.vikadata.api.util.billing;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -7,9 +8,11 @@ import java.util.Optional;
 
 import cn.hutool.core.collection.CollUtil;
 
+import com.vikadata.api.enums.finance.SubscriptionPhase;
 import com.vikadata.api.util.billing.model.ProductChannel;
 import com.vikadata.system.config.SystemConfigManager;
 import com.vikadata.system.config.billing.Plan;
+import com.vikadata.system.config.billing.Price;
 import com.vikadata.system.config.wecom.WeComPlan;
 
 /**
@@ -24,11 +27,6 @@ public class WeComPlanConfigManager {
     private static final Map<String, WeComPlan> WECOM_PLAN = SystemConfigManager.getConfig().getWecom().getPlans();
 
     /**
-     * 标准版默认试用的天数
-     */
-    public static final int STANDARD_TRIAL_DAYS = 15;
-
-    /**
      * 判断企微商品版本 ID 是否为免费试用版本
      *
      * @param editionId 企微订阅版本 ID
@@ -38,6 +36,23 @@ public class WeComPlanConfigManager {
      */
     public static boolean isWeComTrialEdition(String editionId) {
         return WECOM_PLAN.get(editionId).isTrial();
+    }
+
+    /**
+     * 获取企微订阅版本对应的订阅阶段
+     *
+     * @param editionId 企微订阅版本 ID
+     * @return 订阅阶段
+     * @author 刘斌华
+     * @date 2022-08-16 15:18:16
+     */
+    public static SubscriptionPhase getSubscriptionPhase(String editionId) {
+        if (isWeComTrialEdition(editionId)) {
+            return SubscriptionPhase.TRIAL;
+        }
+        else {
+            return SubscriptionPhase.FIXEDTERM;
+        }
     }
 
     /**
@@ -74,12 +89,10 @@ public class WeComPlanConfigManager {
         if (CollUtil.isEmpty(billingPlanIds)) {
             return null;
         }
-
         // 如果只有一个订阅方案，则直接返回
         if (billingPlanIds.size() == 1) {
             return BillingConfigManager.getBillingConfig().getPlans().get(billingPlanIds.get(0));
         }
-
         // 根据使用人数匹配对应的订阅方案
         Map<String, Plan> planMap = BillingConfigManager.getBillingConfig().getPlans();
         Plan plan = null;
@@ -92,13 +105,47 @@ public class WeComPlanConfigManager {
                 // 如果人数相同直接返回
                 plan = billingPlan;
                 break;
-            } else if (billingPlanSeats > seatsInt && (Objects.isNull(plan) || billingPlanSeats < plan.getSeats())) {
+            }
+            else if (billingPlanSeats > seatsInt && (Objects.isNull(plan) || billingPlanSeats < plan.getSeats())) {
                 // 遍历取人数大于且最接近当前试用人数的订阅规格
                 plan = billingPlan;
             }
         }
-
         return plan;
+    }
+
+    /**
+     * Get paid price
+     *
+     * @param editionId Wecom paid edition ID
+     * @param seats Number of user
+     * @param month Number of subscribe months, null while trial
+     * @return Related paid price
+     * @author Codeman
+     * @date 2022-08-16 15:14:25
+     */
+    public static Price getPriceByWeComEditionIdAndMonth(String editionId, Long seats, Integer month) {
+        // 1 get related plan
+        Plan plan = getPlanByWeComEditionId(editionId, seats);
+        if (Objects.isNull(plan)) {
+            return null;
+        }
+        // 2 if month is null and plan is trial, then return the price with the lowest month
+        if (Objects.isNull(month)) {
+            if (plan.isCanTrial()) {
+                return BillingConfigManager.getBillingConfig().getPrices().values().stream()
+                        .filter(price -> plan.getId().equals(price.getPlanId()))
+                        .min(Comparator.comparing(Price::getMonth))
+                        .orElse(null);
+            } else {
+                return null;
+            }
+        }
+        // 3 get price with actual month
+        return BillingConfigManager.getBillingConfig().getPrices().values().stream()
+                .filter(price -> plan.getId().equals(price.getPlanId()) && month.equals(price.getMonth()))
+                .findFirst()
+                .orElse(null);
     }
 
 }

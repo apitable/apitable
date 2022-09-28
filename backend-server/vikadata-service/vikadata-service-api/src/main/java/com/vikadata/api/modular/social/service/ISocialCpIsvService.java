@@ -1,18 +1,16 @@
 package com.vikadata.api.modular.social.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import com.vikadata.api.modular.social.model.WeComIsvJsSdkAgentConfigVo;
+import com.vikadata.api.modular.social.model.WeComIsvJsSdkConfigVo;
+import com.vikadata.entity.SocialTenantEntity;
+import com.vikadata.entity.SocialWecomOrderEntity;
+import com.vikadata.social.wecom.model.WxCpIsvPermanentCodeInfo;
 
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.cp.bean.WxCpTpContactSearchResp;
 import me.chanjar.weixin.cp.bean.message.WxCpMessage;
 
-import com.vikadata.api.enums.finance.OrderType;
-import com.vikadata.api.modular.social.model.WeComIsvJsSdkAgentConfigVo;
-import com.vikadata.api.modular.social.model.WeComIsvJsSdkConfigVo;
-import com.vikadata.entity.SocialOrderWecomEntity;
-import com.vikadata.entity.SocialTenantEntity;
-import com.vikadata.social.wecom.model.WxCpIsvPermanentCodeInfo;
+import java.util.List;
 
 /**
  * <p>
@@ -252,15 +250,39 @@ public interface ISocialCpIsvService {
     WxCpTpContactSearchResp.QueryResult search(String suiteId, String authCorpId, Integer agentId, String keyword, Integer type) throws WxErrorException;
 
     /**
-     * 处理企微付费订阅
+     * handle wecom paid subscription for existed order
      *
-     * @param orderWeComEntity 企微订单信息
-     * @param spaceId 租户的空间站
-     * @author 刘斌华
+     * @param spaceId Vika space ID
+     * @param orderEntity Existed order info
+     * @author Codeman
+     * @date 2022-08-29 16:53:52
+     */
+    void handleTenantPaidSubscribe(String spaceId, SocialWecomOrderEntity orderEntity);
+
+    /**
+     * handle wecom paid subscription
+     *
+     * @param suiteId Wecom isv suite ID
+     * @param authCorpId Paid corporation ID
+     * @param spaceId Optionally, vika space ID
+     * @param orderId The order ID of wecom isv paid subscription
+     * @throws WxErrorException Exception occurred while fetching wecom order info
+     * @author Codeman
      * @date 2022-05-05 17:52:23
      */
-    void handleTenantPaidSubscribe(SocialOrderWecomEntity orderWeComEntity, String spaceId);
+    void handleTenantPaidSubscribe(String suiteId, String authCorpId, String spaceId, String orderId) throws WxErrorException;
 
-    void handleTenantTrialSubscribe(String spaceId, OrderType orderType, LocalDateTime createdTime, LocalDateTime expiredTime);
+    /**
+     * handle wecom trial subscription
+     *
+     * @param suiteId Wecom isv suite ID
+     * @param authCorpId Paid corporation ID
+     * @param editionId Wecom paid edition ID
+     * @param orderType Wecom order type. 0: new order; 1：expand volume; 2: renew period; 3: change edition
+     * @param expiredTime Optionally, expired time for trial. ms
+     * @author Codeman
+     * @date 2022-08-26 18:52:23
+     */
+    void handleTenantTrialSubscribe(String suiteId, String authCorpId, String editionId, Integer orderType, Long expiredTime);
 
 }
