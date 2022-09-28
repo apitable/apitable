@@ -35,12 +35,13 @@ export class UnitService {
     const unitInfo = await queryRunner.query(
       `
           SELECT vu.id unitId, vu.unit_type type, vu.is_deleted isDeleted,
-          IFNULL(vut.team_name, vum.member_name) name, u.avatar avatar,
+          COALESCE(vut.team_name, vum.member_name, vur.role_name) name, u.avatar avatar,
           IFNULL(vum.is_social_name_modified, 2) > 0 AS isMemberNameModified,
           vum.is_active isActive, u.uuid userId, u.uuid uuid
           FROM vika_unit vu
           LEFT JOIN vika_unit_team vut ON vu.unit_ref_id = vut.id
           LEFT JOIN vika_unit_member vum ON vu.unit_ref_id = vum.id
+          LEFT JOIN vika_unit_role vur ON vu.unit_ref_id = vur.id
           LEFT JOIN vika_user u ON vum.user_id = u.id
           WHERE vu.space_id = ? AND vu.id IN (?)
         `,
