@@ -293,11 +293,6 @@ public class WeComProperties {
         private String manualAuthDatetime;
 
         /**
-         * Trial edition ID for subscription
-         */
-        private String subscriptionTrialEditionId;
-
-        /**
          * 接口许可免费试用天数
          */
         private Integer permitTrialDays;
@@ -420,14 +415,6 @@ public class WeComProperties {
 
         public void setManualAuthDatetime(String manualAuthDatetime) {
             this.manualAuthDatetime = manualAuthDatetime;
-        }
-
-        public String getSubscriptionTrialEditionId() {
-            return subscriptionTrialEditionId;
-        }
-
-        public void setSubscriptionTrialEditionId(String subscriptionTrialEditionId) {
-            this.subscriptionTrialEditionId = subscriptionTrialEditionId;
         }
 
         public Integer getPermitTrialDays() {

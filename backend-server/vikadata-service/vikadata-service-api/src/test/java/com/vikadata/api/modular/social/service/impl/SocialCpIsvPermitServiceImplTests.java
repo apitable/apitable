@@ -5,7 +5,6 @@ import java.time.ZoneOffset;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import javax.annotation.Resource;
 
@@ -18,9 +17,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import com.vikadata.api.AbstractWecomIsvTest;
-import com.vikadata.api.modular.finance.core.Bundle;
-import com.vikadata.api.modular.finance.service.IBundleService;
+import com.vikadata.api.AbstractIntegrationTest;
+import com.vikadata.api.modular.eco.service.IEconomicOrderService;
 import com.vikadata.api.modular.social.service.ISocialCpIsvPermitService;
 import com.vikadata.api.modular.social.service.ISocialTenantBindService;
 import com.vikadata.api.modular.social.service.ISocialTenantService;
@@ -56,10 +54,10 @@ import static org.mockito.Mockito.lenient;
  * @author 刘斌华
  * @date 2022-07-06 11:29:49
  */
-class SocialCpIsvPermitServiceImplTests extends AbstractWecomIsvTest {
+class SocialCpIsvPermitServiceImplTests extends AbstractIntegrationTest {
 
     @Resource
-    private IBundleService realBundleService;
+    private IEconomicOrderService realEconomicOrderService;
 
     @Resource
     private ISocialCpIsvPermitService realSocialCpIsvPermitService;
@@ -83,7 +81,7 @@ class SocialCpIsvPermitServiceImplTests extends AbstractWecomIsvTest {
     private WeComTemplate weComTemplate;
 
     @Mock
-    private IBundleService bundleService;
+    private IEconomicOrderService economicOrderService;
 
     @Mock
     private ISocialWecomPermitDelayService socialWecomPermitDelayService;
@@ -258,14 +256,14 @@ class SocialCpIsvPermitServiceImplTests extends AbstractWecomIsvTest {
     void autoProcessPermitOrderTest() {
         String suiteId = "testSuiteId";
         String authCorpId = "testAuthCorpId";
-        String spaceId = createWecomIsvTenant(suiteId, authCorpId);
+        String spaceId = createWecomIsvTenant(suiteId, authCorpId, true);
         String permitBuyerUserId = "testPermitBuyerUserId";
-        Bundle bundle = realGetActivatedBundleBySpaceId(spaceId);
-        if (Objects.nonNull(bundle)) {
-            realGetByAppIdAndTenantId(suiteId, authCorpId);
-            mockGetIsvAppList(suiteId, permitBuyerUserId);
-            mockAddAuthCorp();
-        }
+
+        realGetActiveOrderBySpaceId(spaceId);
+        realGetByAppIdAndTenantId(suiteId, authCorpId);
+        mockGetIsvAppList(suiteId, permitBuyerUserId);
+        mockAddAuthCorp();
+
         socialCpIsvPermitService.autoProcessPermitOrder(suiteId, authCorpId, spaceId);
         List<String> activeCodes = realSocialWecomPermitOrderAccountService.getActiveCodes(suiteId, authCorpId, null);
         Assertions.assertEquals(0, activeCodes.size());
@@ -742,20 +740,20 @@ class SocialCpIsvPermitServiceImplTests extends AbstractWecomIsvTest {
     }
 
     /**
-     * 调用 {@link IBundleService#getActivatedBundleBySpaceId(String)}
+     * 调用 {@link IEconomicOrderService#getActiveOrderBySpaceId(String)}
      *
      * @param spaceId 空间站 ID
      * @author 刘斌华
      * @date 2022-08-04 14:04:51
      */
-    private Bundle realGetActivatedBundleBySpaceId(String spaceId) {
-        return Mockito.doAnswer(invocation -> realBundleService.getActivatedBundleBySpaceId(spaceId))
-                .when(bundleService)
-                .getActivatedBundleBySpaceId(spaceId);
+    private void realGetActiveOrderBySpaceId(String spaceId) {
+        Mockito.doAnswer(invocation -> realEconomicOrderService.getActiveOrderBySpaceId(spaceId))
+                .when(economicOrderService)
+                .getActiveOrderBySpaceId(spaceId);
     }
 
     /**
-     * 调用 {@link ISocialTenantService#getByAppIdAndTenantId(String, String)}
+     * 调用 {@link IEconomicOrderService#getActiveOrderBySpaceId(String)}
      *
      * @param suiteId 预应用套件 ID
      * @param authCorpId 授权的企业 ID

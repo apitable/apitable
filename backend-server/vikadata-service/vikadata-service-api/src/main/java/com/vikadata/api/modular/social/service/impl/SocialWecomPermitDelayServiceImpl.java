@@ -21,16 +21,16 @@ import com.vikadata.api.component.notification.NotificationManager;
 import com.vikadata.api.component.rabbitmq.WeComRabbitConsumer;
 import com.vikadata.api.config.rabbitmq.TopicRabbitMqConfig;
 import com.vikadata.api.model.ro.player.NotificationCreateRo;
-import com.vikadata.api.modular.finance.service.ISocialWecomOrderService;
 import com.vikadata.api.modular.social.enums.SocialCpIsvPermitDelayProcessStatus;
 import com.vikadata.api.modular.social.enums.SocialCpIsvPermitDelayType;
 import com.vikadata.api.modular.social.mapper.SocialWecomPermitDelayMapper;
+import com.vikadata.api.modular.social.service.ISocialOrderWeComService;
 import com.vikadata.api.modular.social.service.ISocialTenantBindService;
 import com.vikadata.api.modular.social.service.ISocialWecomPermitDelayService;
 import com.vikadata.boot.autoconfigure.social.wecom.WeComProperties;
 import com.vikadata.boot.autoconfigure.social.wecom.WeComProperties.IsvApp;
 import com.vikadata.core.util.DateTimeUtil;
-import com.vikadata.entity.SocialWecomOrderEntity;
+import com.vikadata.entity.SocialOrderWecomEntity;
 import com.vikadata.entity.SocialWecomPermitDelayEntity;
 import com.vikadata.integration.rabbitmq.RabbitSenderService;
 
@@ -41,7 +41,6 @@ import org.springframework.stereotype.Service;
  * <p>
  * 企微服务商接口许可延时任务处理信息
  * </p>
- *
  * @author 刘斌华
  * @date 2022-07-19 09:51:38
  */
@@ -56,10 +55,10 @@ public class SocialWecomPermitDelayServiceImpl extends ServiceImpl<SocialWecomPe
     private RabbitSenderService rabbitSenderService;
 
     @Resource
-    private ISocialTenantBindService socialTenantBindService;
+    private ISocialOrderWeComService socialOrderWeComService;
 
     @Resource
-    private ISocialWecomOrderService socialWecomOrderService;
+    private ISocialTenantBindService socialTenantBindService;
 
     @Override
     public SocialWecomPermitDelayEntity addAuthCorp(String suiteId, String authCorpId,
@@ -191,8 +190,8 @@ public class SocialWecomPermitDelayServiceImpl extends ServiceImpl<SocialWecomPe
             // 如果属于需要发送通知的距离天数，并且还未付费，则发送通知
             String suiteId = delayEntity.getSuiteId();
             String authCorpId = delayEntity.getAuthCorpId();
-            SocialWecomOrderEntity lastPaidOrder = socialWecomOrderService.getLastPaidOrder(suiteId, authCorpId);
-            if (Objects.isNull(lastPaidOrder)) {
+            SocialOrderWecomEntity activeOrderWeComEntity = socialOrderWeComService.getLastPaidOrder(suiteId, authCorpId);
+            if (Objects.isNull(activeOrderWeComEntity)) {
                 String spaceId = socialTenantBindService.getTenantBindSpaceId(authCorpId, suiteId);
                 NotificationCreateRo notificationCreateRo = new NotificationCreateRo();
                 notificationCreateRo.setSpaceId(spaceId);
@@ -204,8 +203,7 @@ public class SocialWecomPermitDelayServiceImpl extends ServiceImpl<SocialWecomPe
                 notificationCreateRo.setBody(body);
                 try {
                     NotificationManager.me().centerNotify(notificationCreateRo);
-                }
-                catch (Exception ex) {
+                } catch (Exception ex) {
                     log.warn("发送通知异常，通知数据：" + JSONUtil.toJsonStr(notificationCreateRo), ex);
                 }
             }

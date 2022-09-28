@@ -291,9 +291,4 @@ public class SocialTenantBindServiceImpl extends ServiceImpl<SocialTenantBindMap
         }
         return ListUtil.empty();
     }
-
-    @Override
-    public List<String> getAllSpaceIdsByAppId(String appId) {
-        return getBaseMapper().selectAllSpaceIdsByAppId(appId);
-    }
 }

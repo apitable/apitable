@@ -21,7 +21,6 @@ import lombok.experimental.Accessors;
  *
  * @author Mybatis Generator Tool
  */
-@Deprecated
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor

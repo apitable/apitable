@@ -243,15 +243,4 @@ public interface ISocialTenantBindService extends IService<SocialTenantBindEntit
      * @date 2022/6/7 17:36
      */
     List<String> getSpaceIdsByTenantIdsAndAppIds(List<String> tenantIds, List<String> appIds);
-
-    /**
-     * Get all space ID by app ID
-     *
-     * @param appId App ID
-     * @return Space ID
-     * @author Codeman
-     * @date 2022-09-02 18:25:28
-     */
-    List<String> getAllSpaceIdsByAppId(String appId);
-
 }

@@ -67,7 +67,9 @@ public class SocialEditionChangelogWeComServiceImpl extends ServiceImpl<SocialEd
                     .orElse(null);
             entity.setEditionInfo(JSONUtil.toJsonStr(agent));
         }
+
         save(entity);
+
         return entity;
     }
 
@@ -78,7 +80,9 @@ public class SocialEditionChangelogWeComServiceImpl extends ServiceImpl<SocialEd
                 .paidCorpId(paidCorpId)
                 .editionInfo(JSONUtil.toJsonStr(editionInfoAgent))
                 .build();
+
         save(entity);
+
         return entity;
     }
 
@@ -86,5 +90,4 @@ public class SocialEditionChangelogWeComServiceImpl extends ServiceImpl<SocialEd
     public SocialEditionChangelogWecomEntity getLastChangeLog(String suiteId, String paidCorpId) {
         return getBaseMapper().selectLastChangeLog(suiteId, paidCorpId);
     }
-
 }

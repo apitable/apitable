@@ -1,38 +1,5 @@
 package com.vikadata.api.component.rabbitmq;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.json.JSONUtil;
-import com.rabbitmq.client.Channel;
-
-import com.vikadata.api.config.rabbitmq.TopicRabbitMqConfig;
-import com.vikadata.api.enums.finance.SubscriptionPhase;
-import com.vikadata.api.modular.finance.core.Bundle;
-import com.vikadata.api.modular.finance.service.IBundleService;
-import com.vikadata.api.modular.social.enums.SocialCpIsvMessageProcessStatus;
-import com.vikadata.api.modular.social.enums.SocialCpIsvPermitDelayProcessStatus;
-import com.vikadata.api.modular.social.service.ISocialCpIsvMessageService;
-import com.vikadata.api.modular.social.service.ISocialCpIsvPermitService;
-import com.vikadata.api.modular.social.service.ISocialTenantBindService;
-import com.vikadata.api.modular.social.service.ISocialWecomPermitDelayService;
-import com.vikadata.api.modular.social.service.ISocialWecomPermitOrderService;
-import com.vikadata.boot.autoconfigure.social.wecom.WeComProperties;
-import com.vikadata.boot.autoconfigure.social.wecom.WeComProperties.IsvApp;
-import com.vikadata.core.util.DateTimeUtil;
-import com.vikadata.entity.SocialCpIsvMessageEntity;
-import com.vikadata.entity.SocialWecomPermitDelayEntity;
-import com.vikadata.entity.SocialWecomPermitOrderEntity;
-import com.vikadata.integration.rabbitmq.RabbitSenderService;
-
-import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.integration.redis.util.RedisLockRegistry;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -43,11 +10,42 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 
+import javax.annotation.Resource;
+
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.json.JSONUtil;
+import com.rabbitmq.client.Channel;
+import lombok.extern.slf4j.Slf4j;
+
+import com.vikadata.api.config.rabbitmq.TopicRabbitMqConfig;
+import com.vikadata.api.enums.finance.OrderPhase;
+import com.vikadata.api.modular.eco.service.IEconomicOrderService;
+import com.vikadata.api.modular.social.enums.SocialCpIsvMessageProcessStatus;
+import com.vikadata.api.modular.social.enums.SocialCpIsvPermitDelayProcessStatus;
+import com.vikadata.api.modular.social.service.ISocialCpIsvMessageService;
+import com.vikadata.api.modular.social.service.ISocialCpIsvPermitService;
+import com.vikadata.api.modular.social.service.ISocialTenantBindService;
+import com.vikadata.api.modular.social.service.ISocialWecomPermitDelayService;
+import com.vikadata.api.modular.social.service.ISocialWecomPermitOrderService;
+import com.vikadata.boot.autoconfigure.social.wecom.WeComProperties;
+import com.vikadata.boot.autoconfigure.social.wecom.WeComProperties.IsvApp;
+import com.vikadata.core.util.DateTimeUtil;
+import com.vikadata.entity.EconomicOrderEntity;
+import com.vikadata.entity.SocialCpIsvMessageEntity;
+import com.vikadata.entity.SocialWecomPermitDelayEntity;
+import com.vikadata.entity.SocialWecomPermitOrderEntity;
+import com.vikadata.integration.rabbitmq.RabbitSenderService;
+
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.integration.redis.util.RedisLockRegistry;
+import org.springframework.stereotype.Component;
+
 /**
  * <p>
  * 企业微信 MQ 消费者
  * </p>
- *
  * @author 刘斌华
  * @date 2022-02-24 10:45:15
  */
@@ -81,7 +79,7 @@ public class WeComRabbitConsumer {
     private RabbitSenderService rabbitSenderService;
 
     @Resource
-    private IBundleService bundleService;
+    private IEconomicOrderService economicOrderService;
 
     @Resource
     private ISocialTenantBindService socialTenantBindService;
@@ -221,7 +219,7 @@ public class WeComRabbitConsumer {
         int permitCompatibleDays = weComProperties.getIsvAppList().stream()
                 .filter(isvApp -> suiteId.equals(isvApp.getSuiteId()))
                 .findFirst()
-                .map(IsvApp::getPermitCompatibleDays)
+                .map(WeComProperties.IsvApp::getPermitCompatibleDays)
                 .orElse(0);
         LocalDateTime currentDateTime = DateTimeUtil.localDateTimeNow(8);
         if (DateTimeUtil.between(delayEntity.getFirstAuthTime(), currentDateTime, ChronoField.EPOCH_DAY) <= permitCompatibleDays) {
@@ -237,8 +235,8 @@ public class WeComRabbitConsumer {
         else {
             // 下单购买接口许可
             String spaceId = socialTenantBindService.getTenantBindSpaceId(authCorpId, suiteId);
-            Bundle activeBundle = bundleService.getActivatedBundleBySpaceId(spaceId);
-            if (Objects.isNull(activeBundle) || activeBundle.getBaseSubscription().getPhase() != SubscriptionPhase.FIXEDTERM) {
+            EconomicOrderEntity orderEntity = economicOrderService.getActiveOrderBySpaceId(spaceId);
+            if (Objects.isNull(orderEntity) || !OrderPhase.FIXEDTERM.getName().equals(orderEntity.getOrderPhase())) {
                 // 非付费订阅，延时任务结束
                 socialWecomPermitDelayService.updateById(SocialWecomPermitDelayEntity.builder()
                         .id(delayEntity.getId())
@@ -259,8 +257,7 @@ public class WeComRabbitConsumer {
                             DLX_MILLIS_ISV_PERMIT_DELAY);
                 }
                 else {
-                    boolean isNeedNewOrRenewal = socialCpIsvPermitService.createPermitOrder(suiteId, authCorpId, spaceId,
-                            activeBundle.getBaseSubscription().getExpireDate());
+                    boolean isNeedNewOrRenewal = socialCpIsvPermitService.createPermitOrder(suiteId, authCorpId, spaceId, orderEntity.getExpireTime());
                     if (isNeedNewOrRenewal) {
                         // 更改状态为已下单，并返回延时队列
                         socialWecomPermitDelayService.updateById(SocialWecomPermitDelayEntity.builder()

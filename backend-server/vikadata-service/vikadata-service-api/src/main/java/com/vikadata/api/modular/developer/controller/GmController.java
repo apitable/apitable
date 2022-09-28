@@ -12,7 +12,6 @@ import javax.validation.Valid;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.lang.Validator;
-import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
@@ -61,7 +60,6 @@ import com.vikadata.api.modular.developer.model.UserActivityAssignRo;
 import com.vikadata.api.modular.developer.model.UserActivityRo;
 import com.vikadata.api.modular.developer.model.WeComIsvEventRo;
 import com.vikadata.api.modular.developer.model.WeComIsvNewSpaceRo;
-import com.vikadata.api.modular.developer.model.WeComIsvOrderMigrateRo;
 import com.vikadata.api.modular.developer.model.WeComIsvPermitActivateRo;
 import com.vikadata.api.modular.developer.model.WeComIsvPermitEnsureAllRo;
 import com.vikadata.api.modular.developer.model.WeComIsvPermitNewOrderRo;
@@ -69,7 +67,6 @@ import com.vikadata.api.modular.developer.model.WeComIsvPermitNewOrderVo;
 import com.vikadata.api.modular.developer.model.WeComIsvPermitRenewalRo;
 import com.vikadata.api.modular.developer.model.WeComIsvPermitRenewalVo;
 import com.vikadata.api.modular.developer.service.IGmService;
-import com.vikadata.api.modular.finance.strategy.SocialOrderStrategyFactory;
 import com.vikadata.api.modular.idaas.model.IdaasAppBindRo;
 import com.vikadata.api.modular.idaas.model.IdaasAppBindVo;
 import com.vikadata.api.modular.idaas.model.IdaasTenantCreateRo;
@@ -83,7 +80,6 @@ import com.vikadata.api.modular.player.service.IPlayerNotificationService;
 import com.vikadata.api.modular.social.service.ISocialCpIsvMessageService;
 import com.vikadata.api.modular.social.service.ISocialCpIsvPermitService;
 import com.vikadata.api.modular.social.service.ISocialCpIsvService;
-import com.vikadata.api.modular.social.service.ISocialTenantBindService;
 import com.vikadata.api.modular.space.mapper.SpaceMapper;
 import com.vikadata.api.modular.space.service.ISpaceService;
 import com.vikadata.api.modular.user.mapper.UserMapper;
@@ -206,9 +202,6 @@ public class GmController {
 
     @Resource
     private ISocialCpIsvMessageService socialCpIsvMessageService;
-
-    @Resource
-    private ISocialTenantBindService socialTenantBindService;
 
     @PostResource(path = "/permission/update", requiredPermission = false)
     @ApiOperation(value = "更新GM权限配置")
@@ -681,29 +674,6 @@ public class GmController {
         newOrderVo.setOrderId(orderWecomEntity.getOrderId());
 
         return ResponseData.success(newOrderVo);
-    }
-
-    /**
-     * Migrate wecom isv orders to billing
-     *
-     * @param request Request body
-     * @return Response body
-     * @author Codeman
-     * @date 2022-09-02 11:32:33
-     */
-    @PostResource(path = "/wecom/isv/order/migrate", requiredPermission = false)
-    @ApiOperation(value = "Migrate wecom isv orders to billing", hidden = true)
-    public ResponseData<Void> postWecomIsvOrderMigrate(@RequestBody @Validated WeComIsvOrderMigrateRo request) {
-        String spaceId = request.getSpaceId();
-        log.info("Operator「{}」migrate wecom orders for space「{}」", SessionContext.getUserId(), spaceId);
-        iGmService.validPermission(SessionContext.getUserId(), GmAction.WECOM_ISV_ORDER_MIGRATE);
-        if (CharSequenceUtil.isNotBlank(spaceId)) {
-            SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM).migrateEvent(spaceId);
-        } else {
-            List<String> spaceIds = socialTenantBindService.getAllSpaceIdsByAppId(request.getSuiteId());
-            spaceIds.forEach(id -> SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM).migrateEvent(id));
-        }
-        return ResponseData.success();
     }
 
     @PostResource(path = "/wecom/isv/permit/activate", requiredPermission = false)

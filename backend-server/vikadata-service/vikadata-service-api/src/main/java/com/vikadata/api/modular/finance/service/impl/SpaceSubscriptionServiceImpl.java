@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -41,6 +42,8 @@ import com.vikadata.api.enums.exception.BillingException;
 import com.vikadata.api.enums.exception.SubscribeFunctionException;
 import com.vikadata.api.enums.finance.BundleState;
 import com.vikadata.api.enums.finance.CapacityType;
+import com.vikadata.api.enums.finance.OrderChannel;
+import com.vikadata.api.enums.finance.OrderPhase;
 import com.vikadata.api.enums.finance.SubscriptionPhase;
 import com.vikadata.api.enums.finance.SubscriptionState;
 import com.vikadata.api.enums.social.SocialPlatformType;
@@ -48,6 +51,7 @@ import com.vikadata.api.enums.space.SpaceCertification;
 import com.vikadata.api.factory.NotifyMailFactory;
 import com.vikadata.api.factory.NotifyMailFactory.MailWithLang;
 import com.vikadata.api.lang.SpaceGlobalFeature;
+import com.vikadata.api.modular.eco.service.IEconomicOrderService;
 import com.vikadata.api.modular.finance.core.Bundle;
 import com.vikadata.api.modular.finance.core.Subscription;
 import com.vikadata.api.modular.finance.mapper.SubscriptionMapper;
@@ -72,20 +76,24 @@ import com.vikadata.api.modular.user.mapper.UserMapper;
 import com.vikadata.api.modular.user.model.UserLangDTO;
 import com.vikadata.api.modular.user.service.IUserService;
 import com.vikadata.api.util.billing.BillingConfigManager;
+import com.vikadata.api.util.billing.WeComPlanConfigManager;
 import com.vikadata.api.util.billing.model.BillingPlanFeature;
 import com.vikadata.api.util.billing.model.ProductCategory;
 import com.vikadata.api.util.billing.model.ProductChannel;
+import com.vikadata.api.util.billing.model.ProductEnum;
 import com.vikadata.api.util.billing.model.SubscribePlanInfo;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.SqlTool;
 import com.vikadata.entity.BundleEntity;
+import com.vikadata.entity.EconomicOrderEntity;
 import com.vikadata.entity.SubscriptionEntity;
 import com.vikadata.system.config.BillingWhiteListConfig;
 import com.vikadata.system.config.BillingWhiteListConfigManager;
 import com.vikadata.system.config.FeatureSetting;
 import com.vikadata.system.config.billing.Feature;
 import com.vikadata.system.config.billing.Plan;
+import com.vikadata.system.config.billing.Price;
 import com.vikadata.system.config.billing.Product;
 
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -97,6 +105,8 @@ import static com.vikadata.api.enums.exception.SubscribeFunctionException.NODE_L
 import static com.vikadata.api.util.billing.BillingConfigManager.buildPlanFeature;
 import static com.vikadata.api.util.billing.BillingConfigManager.getBillingConfig;
 import static com.vikadata.api.util.billing.BillingConfigManager.getFreePlan;
+import static com.vikadata.api.util.billing.BillingConfigManager.getPriceBySeatAndMonths;
+import static com.vikadata.api.util.billing.BillingConfigManager.getPriceList;
 import static com.vikadata.api.util.billing.BillingUtil.channelDefaultSubscription;
 import static com.vikadata.api.util.billing.BillingUtil.legacyPlanId;
 import static com.vikadata.api.util.billing.model.BillingConstants.CATALOG_VERSION;
@@ -156,6 +166,9 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
     private ISubscriptionService iSubscriptionService;
 
     @Resource
+    private IEconomicOrderService iEconomicOrderService;
+
+    @Resource
     private SubscriptionMapper subscriptionMapper;
 
     @Resource
@@ -183,6 +196,52 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
         return planFeatureMap;
     }
 
+    private SubscribePlanInfo getBillingIfWecom(String spaceId) {
+        EconomicOrderEntity orderEntity = iEconomicOrderService.getActiveOrderBySpaceId(spaceId);
+        if (orderEntity == null) {
+            return null;
+        }
+        if (!orderEntity.getOrderChannel().equals(OrderChannel.WECOM.getName())) {
+            // 非wecom不处理
+            return null;
+        }
+        return buildFromOrder(orderEntity);
+    }
+
+    public SubscribePlanInfo buildFromOrder(EconomicOrderEntity order) {
+        if (order == null) {
+            return null;
+        }
+
+        boolean onTrial = BooleanUtil.isTrue(OrderPhase.TRIAL.getName().equals(order.getOrderPhase()));
+        ProductEnum product = ProductEnum.valueOf(order.getProduct().toUpperCase(Locale.ROOT));
+        Price price = null;
+        if (onTrial) {
+            // 如果是企微标准版试用，则不能根据使用月数提取价目表，因为使用月数为 0
+            Plan trialPlan = WeComPlanConfigManager.getPaidPlanFromWeComTrial();
+            if (Objects.nonNull(trialPlan)) {
+                price = getPriceList(product).stream()
+                        .filter(p -> trialPlan.getId().equals(p.getPlanId()))
+                        .findFirst()
+                        .orElse(null);
+            }
+        }
+
+        if (Objects.isNull(price)) {
+            price = getPriceBySeatAndMonths(product, order.getSeat(), order.getMonth());
+        }
+        if (Objects.isNull(price)) {
+            return null;
+        }
+        Plan plan = getBillingConfig().getPlans().get(price.getPlanId());
+        return SubscribePlanInfo.builder()
+                .version(CATALOG_VERSION).product(price.getProduct()).free(false)
+                .startDate(Objects.isNull(order.getPaidTime()) ? null : order.getPaidTime().toLocalDate())
+                .deadline(Objects.isNull(order.getExpireTime()) ? null : order.getExpireTime().toLocalDate())
+                .onTrial(onTrial)
+                .basePlan(plan).addOnPlans(Collections.emptyList()).build();
+    }
+
     @Override
     public SubscribePlanInfo getPlanInfoBySpaceId(String spaceId) {
         log.info("获取空间的订阅计划");
@@ -198,7 +257,11 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
             return planInfo;
         }
         Bundle bundle = filterBundle(iBundleService.getBundlesBySpaceId(spaceId));
-        if (bundle == null) {
+        if (bundle == null) {// 没有订阅，查找旧表是否是wecom类型，还没迁移wecom渠道订单，需要在这个版本兼容
+            SubscribePlanInfo orderPlanInfo = getBillingIfWecom(spaceId);
+            if (orderPlanInfo != null) {
+                return orderPlanInfo;
+            }
             // 返回默认的免费订阅方案
             return defaultPlanInfo(spaceId);
         }

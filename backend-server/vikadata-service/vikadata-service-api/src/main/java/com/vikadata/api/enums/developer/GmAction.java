@@ -216,11 +216,6 @@ public enum GmAction {
     WECOM_ISV_NEW_SPACE,
 
     /**
-     * Migrate wecom isv orders to billing
-     */
-    WECOM_ISV_ORDER_MIGRATE,
-
-    /**
      * 企微服务商下单购买接口许可
      */
     WECOM_ISV_PERMIT_NEW_ORDER,

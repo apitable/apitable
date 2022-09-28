@@ -8,20 +8,6 @@
         WHERE order_id = #{orderId}
         AND is_deleted = 0
     </select>
-    <select id="selectAllOrders" resultType="com.vikadata.entity.SocialOrderWecomEntity">
-        SELECT *
-        FROM vika_social_order_wecom
-        WHERE paid_corp_id = #{paidCorpId}
-        AND suite_id = #{suiteId}
-        <if test="orderStatuses != null and orderStatuses.size() != 0">
-            AND order_status IN
-            <foreach collection="orderStatuses" item="orderStatus" open="(" separator="," close=")">
-                #{orderStatus}
-            </foreach>
-        </if>
-        AND is_deleted = 0
-        ORDER BY paid_time ASC
-    </select>
     <select id="selectFirstPaidOrder" resultType="com.vikadata.entity.SocialOrderWecomEntity">
         SELECT *
         FROM vika_social_order_wecom
