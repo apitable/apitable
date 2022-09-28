@@ -158,10 +158,10 @@ export const renderMember = (info: IFromUserInfo, spaceName: string, spaceInfo?:
   }
   const title = spaceInfo
     ? getSocialWecomUnitName({
-        name: info?.memberName,
-        isModified: info?.isMemberNameModified,
-        spaceInfo,
-      })
+      name: info?.memberName,
+      isModified: info?.isMemberNameModified,
+      spaceInfo,
+    })
     : undefined;
   return (
     <div {...triggerWrapBase}>
@@ -197,7 +197,7 @@ export const getNoticeUrlParams = (data: INoticeDetail) => {
   const recordId = recordIds && isArray(recordIds) ? recordIds[0] : '';
   const toastUrl = data.notifyBody.extras?.toast?.url;
   const notifyId = data.id;
-  const roleName = data.notifyBody.extras.roleName;
+  const roleName = data.notifyBody.extras?.roleName;
 
   return { spaceId, nodeId, viewId, recordId, configPathname, toastUrl, notifyType: data.notifyType, recordIds, notifyId, roleName };
 };
@@ -255,7 +255,7 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
   const newDisplayValue = data.notifyBody.extras?.newDisplayValue;
   const content = data.notifyBody.extras?.content;
   const number = data.notifyBody.extras?.number || 0;
-  const roleName = data.notifyBody.extras.roleName;
+  const roleName = data.notifyBody.extras?.roleName;
 
   const parseOptions: HTMLReactParserOptions = {
     replace: ({ attribs }) => {

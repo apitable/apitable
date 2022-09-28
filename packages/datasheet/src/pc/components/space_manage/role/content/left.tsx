@@ -1,6 +1,6 @@
 import { Api, StatusCode, Strings, t } from '@vikadata/core';
-import { Button, Message } from '@vikadata/components';
-import { AddOutlined } from '@vikadata/icons';
+import { Button, ContextMenu, Message } from '@vikadata/components';
+import { AddOutlined, DeleteOutlined, EditOutlined } from '@vikadata/icons';
 import { Avatar, AvatarSize, AvatarType, SearchEmpty, SearchInput } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useContext, useEffect, useMemo, useState } from 'react';
@@ -9,9 +9,10 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { RoleContext } from '../context';
 import { IRoleItem } from '../interface';
 import { expandEditRoleModal } from './edit_role_modal';
-import { RoleItem } from './role_item';
+import { RoleItem, ROLE_MENU_EDIT_ID } from './role_item';
 
 import styles from './style.module.less';
+import { flatContextData } from 'pc/utils';
 
 export const addRole = (roleName: string, cb: () => void) => {
   if (!roleName) {
@@ -96,6 +97,30 @@ export const Left: React.FC<{
 
   const roleNameArray = roleList.map(v => v.roleName);
 
+  const menuData = [
+    [
+      {
+        icon: <EditOutlined/>,
+        text: t(Strings.role_context_item_rename),
+        onClick: ({ onEdit, roleName, role }) => {
+          expandEditRoleModal({
+            value: roleName,
+            title: t(Strings.rename_role_title),
+            onChange: value => onEdit?.(role, value),
+            existed: roleNameArray,
+          });
+        },
+      },
+      {
+        icon: <DeleteOutlined/>,
+        text: t(Strings.role_context_item_delete),
+        onClick: ({ onDelete, role }) => {
+          onDelete?.(role);
+        },
+      }
+    ]
+  ];
+
   return (
     <div className={styles.leftWrap}>
       <SearchInput size='small' keyword={search} change={setSearch}/>
@@ -132,11 +157,11 @@ export const Left: React.FC<{
                   onDelete={deleteRole}
                   onClick={setActiveRoleId}
                   selected={activeRoleId === roleItem.roleId}
-                  roleNameArray={roleNameArray}
                 />
               ))}
             </Scrollbars>
           </div>
+          <ContextMenu overlay={flatContextData(menuData, true)} menuId={ROLE_MENU_EDIT_ID} />
         </>
       )}
     </div>
