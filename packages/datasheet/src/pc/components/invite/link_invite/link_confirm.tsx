@@ -11,7 +11,7 @@ import {
 } from '@vikadata/core';
 import { useMount } from 'ahooks';
 import Image from 'next/image';
-import { Wrapper } from 'pc/components/common';
+import { Message, Wrapper } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest } from 'pc/hooks';
 import { FC } from 'react';
@@ -53,6 +53,9 @@ const LinkConfirm: FC = () => {
         window.location.reload();
       }
       return;
+    },
+    onError: () => {
+      Message.error({ content: t(Strings.error) });
     },
     manual: true
   });
