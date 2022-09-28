@@ -51,7 +51,7 @@ export const EditMemberModal: FC<IModalProps> = ({ cancelModalVisible, pageNo, r
     mobile: '',
     email: '',
   });
-  const { memberName, email, memberId, avatar, teams, nickName, mobile, isMemberNameModified, isNickNameModified } = memberInfoInSpace!;
+  const { memberName, email, memberId, avatar, teamData, nickName, mobile, isMemberNameModified, isNickNameModified } = memberInfoInSpace!;
   const [formData, setFormData] = useState<IUpdateMemberInfo>();
   const [teamList, setTeamList] = useState<ITeamsInSpace[]>([]);
   const [changeMemberTeamModalVisible, setChangeMemberTeamModalVisible] = useState(false);
@@ -65,12 +65,15 @@ export const EditMemberModal: FC<IModalProps> = ({ cancelModalVisible, pageNo, r
     });
   }, [memberName, nickName, mobile, email]);
   useEffect(() => {
-    if (teams && teams.length) {
+    if (teamData && teamData.length) {
+      const teams: ITeamsInSpace[] = teamData.map(item => {
+        return { teamId: item.teamId, teamName: item.fullHierarchyTeamName || '' };
+      });
       setTeamList(teams);
     } else {
       setTeamList([]);
     }
-  }, [teams]);
+  }, [teamData]);
   const toChangeTeamModal = () => {
     setChangeMemberTeamModalVisible(true);
   };

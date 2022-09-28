@@ -20,7 +20,6 @@ import Fuse from 'fuse.js';
 import { memberStash } from 'pc/common/member_stash/member_stash';
 import { expandInviteModal } from 'pc/components/invite';
 import { CommonList } from 'pc/components/list/common_list';
-import { MemberItem } from 'pc/components/multi_grid/cell/cell_member/member_item';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,12 +28,24 @@ import { expandUnitModal, SelectUnitSource } from '../../catalog/permission_sett
 import { Check } from '../common_list/check';
 import { IMemberOptionListProps } from './member_option_list.interface';
 import styles from './styles.module.less';
+import { InfoCard } from 'pc/components/common/info_card';
+import { isUnitLeave } from 'pc/components/multi_grid/cell/cell_member/member_item';
+
+const triggerBase = {
+  action: ['hover'],
+
+  popupAlign: {
+    points: ['cr', 'cl'],
+    offset: [-16, 0],
+    overflow: { adjustX: true, adjustY: true },
+  }
+};
 
 export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: React.RefObject<HTMLInputElement> }> = props => {
   const {
     linkId, unitMap, listData, onClickItem, showSearchInput,
     showMoreTipButton, multiMode, existValues, uniqId, activeIndex, showInviteTip = true,
-    inputRef, monitorId, className, showTeams, searchEmail
+    inputRef, monitorId, className, searchEmail
   } = props;
   const initList = Array.isArray(listData) ? listData : memberStash.getMemberStash();
   const [memberList, setMemberList] = useState<(IUnitValue | IUserValue)[]>(() => {
@@ -256,17 +267,22 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
                 onMouseDown={(e: React.MouseEvent) => {
                   e.preventDefault();
                 }}
-                className={classNames(
-                  styles.memberOptionItemWrapper, showTeams && styles.showTeams
-                )}
-              >
-                {showTeams ? (
-                  <MemberItem unitInfo={item} showTeams />
-                ): (
-                  <span style={{ flex: 1, width: 0 }}>
-                    <MemberItem unitInfo={item} />
-                  </span>
-                )}
+                className={styles.memberOptionItemWrapper}
+              > 
+                <InfoCard 
+                  title={item.name}
+                  description={item.teamData ? item.teamData[0].fullHierarchyTeamName : ''}
+                  avatarProps={{
+                    id: unitId || '',
+                    title: item.name,
+                    src: item.avatar,
+                  }}
+                  userId={item.uuid}
+                  triggerBase={triggerBase}
+                  className={styles.memberInfoCard}
+                  isLeave={isUnitLeave(item)}
+                  memberType={item.type}
+                />
                 <Check isChecked={Boolean(existValues && existValues.includes(unitId!))} />
               </CommonList.Option>
             );

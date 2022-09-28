@@ -33,6 +33,15 @@ export const DEFAULT_ROLE: IRoleOption[] = [
   },
 ];
 
+const triggerBase = {
+  action: ['hover'],
+  popupAlign: {
+    points: ['tl', 'bl'],
+    offset: [0, 18],
+    overflow: { adjustX: true, adjustY: true },
+  }
+};
+
 export const UnitItem: FC<IUnitItemProps> = props => {
   const colors = useThemeColors();
   const { unit, role, identity, className, roleOptions = DEFAULT_ROLE, isAppointMode, disabled, onChange, onRemove, isDetail } = props;
@@ -41,6 +50,7 @@ export const UnitItem: FC<IUnitItemProps> = props => {
 
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   const curUnitId = useSelector(state => state.user.info?.unitId);
+  const userId = useSelector(state => state.user.info?.userId);
 
   const title = getSocialWecomUnitName({
     name: unit.name,
@@ -106,6 +116,8 @@ export const UnitItem: FC<IUnitItemProps> = props => {
               <Tag />
             </Space>
           }
+          triggerBase={unit.isTeam ? undefined : triggerBase}
+          userId={userId}
           description={unit.info || ''}
           extra={!isAppointMode ? t(Strings.node_permission_extend_desc) : ''}
           style={{ backgroundColor: 'transparent', height: 'auto' }}

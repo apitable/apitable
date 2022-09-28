@@ -36,7 +36,6 @@ export const UserCardTrigger: FC<IUserCardTrigger> = props => {
   if (shareId) {
     return children;
   }
-
   return (
     <>
       {children &&

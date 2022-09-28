@@ -25,6 +25,16 @@ interface IListDepts extends ISearchListBase {
 
 type ISearchListProps = IListMermber | IListDepts;
 const cardStyle = { padding: '0 13px 0 20px' };
+
+const triggerBase = {
+  action: ['hover'],
+  popupAlign: {
+    points: ['tl', 'bl'],
+    offset: [0, 18],
+    overflow: { adjustX: true, adjustY: true },
+  }
+};
+
 export const SearchList: FC<ISearchListProps> = props => {
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   return (
@@ -47,9 +57,11 @@ export const SearchList: FC<ISearchListProps> = props => {
                     <InfoCard
                       title={title}
                       originTitle={item.memberName}
-                      description={item.team}
+                      description={item.teamData[0].fullHierarchyTeamName || ''}
                       style={cardStyle}
                       inSearch
+                      triggerBase={triggerBase}
+                      memberId={item.memberId}
                       avatarProps={{
                         id: item.memberId,
                         title: item.originName,

@@ -1,4 +1,5 @@
 import { MemberType } from 'types';
+import { ITeamData } from './address_list';
 
 export interface IUnitInfo {
   unitMap: IUnitMap | null,
@@ -19,6 +20,7 @@ interface IUnitBase {
   isDeleted?: boolean;
   // 企微
   isMemberNameModified?: boolean;
+  teamData?: ITeamData[];
 }
 
 export interface IUnitMap {

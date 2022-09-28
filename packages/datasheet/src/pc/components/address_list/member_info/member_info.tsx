@@ -1,7 +1,7 @@
 import { getEnvVariables } from 'pc/utils/env';
 import { FC, useState, useEffect } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
-import { IReduxState, ITeams, Strings, t, ConfigConstant, IMemberInfoInAddressList, isIdassPrivateDeployment } from '@vikadata/core';
+import { IReduxState, Strings, t, ConfigConstant, IMemberInfoInAddressList, isIdassPrivateDeployment } from '@vikadata/core';
 import styles from './style.module.less';
 import classNames from 'classnames';
 import { Avatar, Tooltip, AvatarSize, ButtonPlus } from 'pc/components/common';
@@ -9,7 +9,6 @@ import EditIcon from 'static/icon/datasheet/rightclick/datasheet_icon_rename.svg
 import { useAddressRequest } from 'pc/hooks';
 import { Input } from 'antd';
 import { useToggle } from 'ahooks';
-import parser from 'html-react-parser';
 import { Identity } from 'pc/components/space_manage/identity';
 import { getSocialWecomUnitName, isSocialFeiShu, isSocialPlatformEnabled } from 'pc/components/home/social_platform';
 
@@ -59,22 +58,7 @@ export const MemberInfo: FC = () => {
       nameLengthErr && setNameLengthErr(false);
     }
   };
-  const renderTeams = (teams: ITeams[] | undefined | string) => {
-    if (!teams) {
-      return '';
-    }
-    if (typeof teams === 'string') {
-      return teams;
-    }
-    if (Array.isArray(teams) && teams.length > 0) {
-      const tempTeams = teams.map(item => item.teamName);
-      return tempTeams.join('<span></span>');
-    }
-    if (Array.isArray(teams) && teams.length === 0) {
-      return user?.spaceName || '';
-    }
-    return '';
-  };
+
   useEffect(() => {
     if (!user) {
       return;
@@ -91,13 +75,13 @@ export const MemberInfo: FC = () => {
   }, [memberInfo, editIcon, user, spaceResource, setEditIcon, spaceInfo]);
 
   const identity = getIdentity(memberInfo);
-  const { avatar, memberId, memberName, teams, mobile, email, isMemberNameModified } = memberInfo;
+  const { avatar, memberId, memberName, mobile, email, isMemberNameModified, teamData } = memberInfo;
   const displayMemberName = getSocialWecomUnitName({
     name: memberName,
     isModified: isMemberNameModified,
     spaceInfo
   });
-
+  
   return (
     <div className={styles.memberInfoWrapper}>
       <div className={styles.portrait}>
@@ -146,9 +130,16 @@ export const MemberInfo: FC = () => {
       </div>
       <div className={styles.infoItem}>
         <span className={styles.infoTitle}>{t(Strings.team)}</span>
-        <span className={classNames(styles.infoDetail, styles.teamInfo)}>
-          {parser(renderTeams(teams)) || selectedMemberInfo.teamTitle}
-        </span>
+        <div className={styles.infoDetail}>
+          {
+            teamData?.map(team => {
+              return(<span className={classNames(styles.teamInfo)} key={team.teamId}>
+                {team.fullHierarchyTeamName || selectedMemberInfo.teamTitle}
+              </span>);
+            })
+          
+          }
+        </div>
       </div>
       {
         !env.HIDDEN_BIND_PHONE && <div className={styles.infoItem}>

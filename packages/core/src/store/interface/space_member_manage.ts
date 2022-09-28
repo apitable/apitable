@@ -1,4 +1,5 @@
 import * as actions from '../action_constants';
+import { ITeamData } from './address_list';
 
 // 页面总接口
 export interface ISpaceMemberManage {
@@ -82,6 +83,7 @@ export interface IMemberInfoInSpace {
   isSubAdmin?: boolean;
   nickName?: string;
   isNickNameModified?: boolean;
+  teamData?: ITeamData[];
 }
 // 编辑成员信息
 export interface IUpdateMemberInfo {

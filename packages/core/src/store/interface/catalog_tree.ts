@@ -2,6 +2,7 @@ import * as actions from '../action_constants';
 import { Role } from 'config/constant';
 import { ConfigConstant } from 'config';
 import { ICommitRemind } from 'api/api.interface';
+import { ITeamData } from './address_list';
 
 export { Role };
 
@@ -280,6 +281,7 @@ export interface IMember {
   isActive: boolean;
   isDeleted: boolean;
   teams: string;
+  teamData: ITeamData[];
   // 企微
   isMemberNameModified?: boolean;
   isNickNameModified?: boolean;

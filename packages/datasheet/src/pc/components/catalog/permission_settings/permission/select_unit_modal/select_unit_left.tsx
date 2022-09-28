@@ -51,6 +51,15 @@ enum TabKey {
 const BreadcrumbItem = Breadcrumb.Item;
 const { TabPane } = Tabs;
 
+const triggerBase = {
+  action: ['hover'],
+  popupAlign: {
+    points: ['tl', 'bl'],
+    offset: [0, 18],
+    overflow: { adjustX: true, adjustY: true },
+  }
+};
+
 export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
   const colors = useThemeColors();
   const {
@@ -266,9 +275,11 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
               <InfoCard
                 title={title || t(Strings.unnamed)}
                 originTitle={_item.memberName || t(Strings.unnamed)}
-                description={_item.teams}
+                description={_item.teamData ? _item.teamData[0].fullHierarchyTeamName : ''}
                 style={{ backgroundColor: 'transparent' }}
                 inSearch={inSearch}
+                userId={_item.uuid}
+                triggerBase={triggerBase}
                 avatarProps={{
                   id: _item.unitId,
                   src: _item.avatar,

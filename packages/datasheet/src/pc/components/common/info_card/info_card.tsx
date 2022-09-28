@@ -3,6 +3,16 @@ import * as React from 'react';
 import styles from './style.module.less';
 import { Tooltip, Avatar, IAvatarProps } from 'pc/components/common';
 import classNames from 'classnames';
+import { OmittedMiddleText } from './omitted_middle_text';
+import { UserCardTrigger } from 'pc/components/common/user_card/user_card_trigger';
+import { TriggerProps } from 'rc-trigger';
+import { MemberType } from '@vikadata/core';
+
+interface ITriggerBase {
+  action: TriggerProps['action'];
+  popupAlign: TriggerProps['popupAlign'];
+}
+
 interface IInfoCardProps {
   title: string | JSX.Element;
   token?: React.ReactNode; // 用户标志（比如管理员）
@@ -15,25 +25,47 @@ interface IInfoCardProps {
   avatarProps: IAvatarProps;
   // 一些其他信息，展示在描述下面
   extra?: string;
+  triggerBase?: ITriggerBase;
+  userId?: string;
+  memberId?: string;
+  isLeave?: boolean;
+  memberType?: number;
 }
 // const searchTag = '<span class="highLight">';
+
 export const InfoCard: FC<IInfoCardProps> = props => {
   const { 
-    title, originTitle = '', description, onClick, extra,
-    inSearch = false, className, avatarProps, token, ...rest 
+    title, originTitle = '', description, onClick, extra, triggerBase,
+    inSearch = false, className, avatarProps, token, userId, memberId,
+    isLeave = false, memberType = 3, ...rest 
   } = props;
-
+ 
   return (
+   
     <div
       className={classNames(styles.infoCard, className)}
       onClick={onClick}
       style={{ cursor: onClick ? 'pointer' : 'default' }}
       {...rest}
     >
-      <div className={styles.defaultContent}>
-        <Avatar
-          {...avatarProps}
-        />
+      
+      <div className={classNames(styles.defaultContent, { [styles.isLeave] : isLeave })}>
+        { (triggerBase && !isLeave && memberType !== MemberType.Team )? <UserCardTrigger
+          {...triggerBase}
+          userId={userId}
+          memberId={memberId}
+          permissionVisible={false}
+        >
+          <div style={{ cursor:  'pointer' }}>
+            <Avatar
+              {...avatarProps}
+            />
+          </div>
+        </UserCardTrigger> :
+          <Avatar
+            {...avatarProps}
+          />
+        }
         <div className={styles.text}>
           {
             inSearch && typeof title === 'string' ?
@@ -49,14 +81,8 @@ export const InfoCard: FC<IInfoCardProps> = props => {
                 </div>
               </div>
           }
-          {description && inSearch &&
-            <div className={styles.description} dangerouslySetInnerHTML={{ __html: description }} />
-          }
-          {
-            description && !inSearch &&
-            <Tooltip title={description} textEllipsis>
-              <div className={styles.description}>{description}</div>
-            </Tooltip>
+          {description &&
+           <OmittedMiddleText text={description} />
           }
           {
             extra && <div className={styles.description}>{extra || ''}</div>
@@ -64,6 +90,7 @@ export const InfoCard: FC<IInfoCardProps> = props => {
         </div>
       </div>
       {props.children}
+      
     </div>
   );
 };

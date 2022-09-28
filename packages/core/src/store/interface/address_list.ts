@@ -32,6 +32,11 @@ export interface ITeamList {
   children?: ITeamList[];
 }
 
+export interface ITeamData {
+  teamId: string;
+  fullHierarchyTeamName?: string;
+}
+
 // 成员信息
 export interface IMemberInfoInAddressList {
   memberId: string;
@@ -50,6 +55,7 @@ export interface IMemberInfoInAddressList {
   avatar?: string;
   isActive?: string;
   tags?: ITags[];
+  teamData?: ITeamData[];
 }
 
 export interface ITeams {
@@ -87,5 +93,6 @@ export interface IMembersInSearch {
   avatar: string;
   team: string;
   originName: string;
+  teamData: ITeamData[];
   isMemberNameModified?: boolean;
 }

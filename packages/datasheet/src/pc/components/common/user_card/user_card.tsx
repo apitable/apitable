@@ -14,7 +14,7 @@ export interface IUserCard {
   memberId?: string;
   // 协同头像使用
   userId?: string;
-  // 是否显示仅限模块
+  // 是否显示权限模块
   permissionVisible?: boolean;
   spareName?: string; // 接口查询不到信息时备用接口
   spareSrc?: string; // 接口查询不到信息时备用接口
@@ -34,14 +34,13 @@ export const UserCard: FC<IUserCard> = ({
   userId,
   spareName,
   spareSrc,
-  spaceName,
   isAlien,
   permissionVisible = true,
   onClose
 }) => {
   const colors = useThemeColors();
   const [tagType, setTagType] = useState('');
-  const user = useSelector(state => Selectors.userStateSelector(state));
+ 
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   const activeNodeId = useSelector(state => Selectors.getNodeId(state));
   const { getNodeRoleListReq, shareSettingsReq } = useCatalogTreeRequest();
@@ -90,24 +89,6 @@ export const UserCard: FC<IUserCard> = ({
 
   const tooltipZIndex = 10001;
 
-  const renderTags = () => {
-    const teamTag = (team: string) => (<div className={styles.tag} key={team}>
-      <Typography variant="body4" color={colors.secondLevelText} ellipsis tooltipsZIndex={tooltipZIndex}>{team}</Typography>
-    </div>);
-
-    // 外星人
-    if (isAlien) {
-      return teamTag(t(Strings.anonymous));
-    } else if (!memberInfo) { // 外部访问者
-      return teamTag(t(Strings.guests_per_space));
-    }
-
-    // 如果请求到的team为空的话，就显示空间站名称
-    const teams = memberInfo.teams?.length ?
-      memberInfo.teams : [{ teamId: ConfigConstant.ROOT_TEAM_ID, teamName: spaceName || user.info!.spaceName }];
-    return teams.map(item => teamTag(item.teamName));
-  };
-
   const openPermissionModal = () => {
     if (!activeNodeId) { return; }
     dispatch(StoreActions.updatePermissionModalNodeId(activeNodeId));
@@ -119,13 +100,21 @@ export const UserCard: FC<IUserCard> = ({
     isModified: memberInfo?.isMemberNameModified,
     spaceInfo
   });
-
+ 
   return (
     <>
-      <div className={styles.userCard}>
+      <div className={styles.userCard} onClick={e => e.stopPropagation()}>
         {loading || (!memberRole && permissionVisible) ? <Loading /> :
           (
             <div>
+              {permissionVisible && 
+                <div className={styles.cardTool} onClick={openPermissionModal}>
+                  <div className={styles.settingPermissionBtn} >
+                    <SettingOutlined />
+                  </div>
+                  <span>{t(Strings.permission)}</span>
+                </div>
+              }
               <div className={styles.avatarWrapper}>
                 <Avatar
                   id={memberInfo?.memberId || userId || '0'}
@@ -133,24 +122,43 @@ export const UserCard: FC<IUserCard> = ({
                   title={memberInfo?.memberName || spareName || ''}
                   size={40}
                 />
-                {permissionVisible && memberRole &&
-                  <div className={styles.permissionWrapper}>
-                    <Tag className={styles.permission} color={TagColors[memberRole]}>{ConfigConstant.permissionText[memberRole]}</Tag>
-                    {memberInfo && <div className={styles.settingPermissionBtn} onClick={openPermissionModal}>
-                      <SettingOutlined />
+                <div className={styles.nameWrapper}>
+                  <Typography className={styles.name} variant="h7" color={colors.firstLevelText} ellipsis tooltipsZIndex={tooltipZIndex}>
+                    {title || spareName}
+                  </Typography>
+                  {permissionVisible && memberRole &&
+                    <div className={styles.permissionWrapper}>
+                      <Tag className={styles.permission} color={TagColors[memberRole]}>{ConfigConstant.permissionText[memberRole]}</Tag>
                     </div>
+                  }
+                </div>
+              </div>
+              <div className={styles.dividing} />
+              <div className={styles.infoContent}>
+                <div className={styles.infoWrapper}>
+                  {/* {renderTags()} */}
+                  <p>{t(Strings.role_member_table_header_team)}:</p>
+                  <div className={styles.teamList}>
+                    { memberInfo ?
+                      memberInfo?.teamData?.map(item => {
+                        return(
+                          <div className={styles.teamItem}>{item.fullHierarchyTeamName}</div>
+                        );
+                      }) : '-'
                     }
                   </div>
-                }
-              </div>
-              <Typography className={styles.name} variant="h7" color={colors.firstLevelText} ellipsis tooltipsZIndex={tooltipZIndex}>
-                {title || spareName}
-              </Typography>
-              <Typography variant="body4" color={colors.thirdLevelText} ellipsis tooltipsZIndex={tooltipZIndex}>
-                {tagType === TAGTYPE.Alien ? t(Strings.alien_tip_in_user_card) : memberInfo?.email}
-              </Typography>
-              <div className={styles.tagWrapper}>
-                {renderTags()}
+                </div>
+                <div className={styles.infoWrapper}>
+                  <p>{t(Strings.mail)}:</p>
+                  <div className={styles.teamList}>
+                    {
+                      memberInfo?.email ? 
+                        <Typography variant="body4" color={colors.textCommonPrimary} ellipsis tooltipsZIndex={tooltipZIndex}>
+                          {tagType === TAGTYPE.Alien ? t(Strings.alien_tip_in_user_card) : memberInfo?.email}
+                        </Typography> : '-'
+                    }
+                  </div>
+                </div>
               </div>
             </div>
           )
