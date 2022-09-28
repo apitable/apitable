@@ -214,7 +214,7 @@ const TreeBase: FC<ITreeProps> = ({ rightClick }) => {
      * 权限变更确认
      * 仅移动顺序或者节点开启权限设置
      */
-    if (treeNodesMap[dragNodeId].parentId === treeNodesMap[dropNodeId].parentId || treeNodesMap[dragNodeId].nodePermitSet) {
+    if (dropPosition !== 0 && treeNodesMap[dragNodeId].parentId === treeNodesMap[dropNodeId].parentId || treeNodesMap[dragNodeId].nodePermitSet) {
       nodeMove(dragNodeId, dropNodeId, dropPosition);
       return;
     }

@@ -1,4 +1,4 @@
-import { TextButton, Typography } from '@vikadata/components';
+import { LinkButton, Typography, useThemeColors } from '@vikadata/components';
 import { IParent, Strings, t } from '@vikadata/core';
 import { ChevronRightOutlined } from '@vikadata/icons';
 import { HorizontalScroll } from 'pc/components/common/horizontal_scroll';
@@ -13,15 +13,17 @@ export const SelectFolderTips: React.FC<{
   onClick: (nodeId) => void;
 }> = (props) => {
   const { isWhole, data, setIsWhole, onClick } = props;
+  const colors = useThemeColors();
   const NoWholeTips = (
     <div className={styles.noWholeTips}>
       <Typography variant='body4'>{t(Strings.recently_used_files)}</Typography>
-      <TextButton
+      <LinkButton
+        color={colors.textCommonSecondary}
         className={styles.switchWholeBtn}
         suffixIcon={<ChevronRightOutlined />}
-        size='small'
+        underline={false}
         onClick={() => setIsWhole(true)}
-      >{t(Strings.view_full_catalog)}</TextButton>
+      >{t(Strings.view_full_catalog)}</LinkButton>
     </div>
   );
   const WholeTips = (

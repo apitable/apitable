@@ -1,16 +1,14 @@
-import { ChevronLeftOutlined, InformationSmallOutlined } from '@vikadata/icons';
+import { ChevronLeftOutlined } from '@vikadata/icons';
 import { Button, Typography, useThemeColors } from '@vikadata/components';
 import { Strings, t } from '@vikadata/core';
 import styles from './style.module.less';
 
 export const Title: React.FC<{nodeName: string}> = (props) => {
-  const colors = useThemeColors();
   return (
     <div className={styles.title}>
       <Typography className={styles.titleFont} ellipsis variant='h6'>
         {t(Strings.move_to_modal_title, { name: props.nodeName })}
       </Typography>
-      <InformationSmallOutlined className={styles.titleIcon} color={colors.textCommonTertiary} size={16}/>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { Api, IParent, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, IParent, Navigation, StoreActions, Strings, t } from '@vikadata/core';
 import classNames from 'classnames';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
@@ -7,8 +7,11 @@ import { Message } from 'pc/components/common/message/message';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SelectFolder } from './select_folder';
-import styles from './style.module.less';
 import { MobileFooter, MobileTitle, Title } from './title';
+import { Router } from 'pc/components/route_manager/router';
+
+import styles from './style.module.less';
+import { TComponent } from 'pc/components/common/t_component';
 
 export const MoveTo: React.FC<{
   nodeIds: string[]
@@ -17,10 +20,11 @@ export const MoveTo: React.FC<{
   const { nodeIds, onClose } = props;
   const [selectedNodeId, setSelectedNodeId] = useState<string>();
   const [parentList, setParentList] = useState<IParent[]>([]);
-  const { nodeName, parentId } = useSelector(state => {
-    const { nodeName, parentId } = state.catalogTree.treeNodesMap[nodeIds[0]];    
-    return { nodeName, parentId };
+  const { nodeName, parentId, nodePermitSet } = useSelector(state => {
+    const { nodeName, parentId, nodePermitSet } = state.catalogTree.treeNodesMap[nodeIds[0]];    
+    return { nodeName, parentId, nodePermitSet };
   });
+  const currentNodeId = useSelector(state => state.pageParams.nodeId);
   
   const dispatch = useDispatch();
 
@@ -60,7 +64,7 @@ export const MoveTo: React.FC<{
       Message.error({ content: t(Strings.move_to_error_equal_parent) });
       return;
     }
-    Api.nodeMove(nodeId, selectedNodeId).then(res => {
+    const move = () => Api.nodeMove(nodeId, selectedNodeId).then(res => {
       const { data, success, message } = res.data;
       if (!success) {
         Message.error({ content: message });
@@ -70,7 +74,52 @@ export const MoveTo: React.FC<{
       dispatch(StoreActions.moveTo(nodeId, selectedNodeId, 0));
       dispatch(StoreActions.addNodeToMap(data));
       onClose && onClose();
-      Message.success({ content: t(Strings.move_to_success) });
+      moveSuccess(nodeId);
+    });
+    if (!nodePermitSet) {
+      const modal = Modal.confirm({
+        type: 'warning',
+        title: t(Strings.set_permission_include_oneself_tips_title),
+        content: (
+          <TComponent
+            tkey={t(Strings.move_node_modal_content)}
+            params={{
+              nodeSet: (
+                <span
+                  className={styles.permissionSetBtn}
+                  onClick={() => {
+                    dispatch(StoreActions.updatePermissionModalNodeId(nodeId));
+                    modal.destroy();
+                  }}
+                >
+                  {t(Strings.permission_setting)}
+                </span>
+              ),
+            }}
+          />
+        ),
+        onOk: () => {
+          move();
+        },
+      });
+      return;
+    }
+    move();
+  };
+
+  const moveSuccess = (nodeId: string) => {
+    const isDifferent = currentNodeId !== nodeId;
+    Message.success({
+      content: <>
+        {t(Strings.move_to_success)}
+        {isDifferent && <i onClick={() => Router.redirect(Navigation.WORKBENCH, {
+          params: {
+            nodeId: nodeId,
+          }})
+        }>
+          {t(Strings.to_view_dashboard)}
+        </i>}
+      </>,
     });
   };
 
