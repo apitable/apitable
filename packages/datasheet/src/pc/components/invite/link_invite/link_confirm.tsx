@@ -1,5 +1,14 @@
 import { Button } from '@vikadata/components';
-import { Api, getCustomConfig, IReduxState, Navigation, StatusCode, StoreActions, Strings, t } from '@vikadata/core';
+import {
+  Api,
+  getCustomConfig,
+  IReduxState,
+  Navigation,
+  StatusCode,
+  StoreActions,
+  Strings,
+  t
+} from '@vikadata/core';
 import { useMount } from 'ahooks';
 import Image from 'next/image';
 import { Wrapper } from 'pc/components/common';
@@ -18,9 +27,10 @@ const LinkConfirm: FC = () => {
   const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
   const inviteLinkToken = query.get('inviteLinkToken');
   const inviteCode = query.get('inviteCode') || undefined;
+  const nodeId = query.get('nodeId');
   const shareId = query.get('shareId') || '';
 
-  const { loading, run: join } = useRequest(linkToken => Api.joinViaSpace(linkToken), {
+  const { loading, run: join } = useRequest((linkToken, nodeId) => Api.joinViaSpace(linkToken, nodeId), {
     onSuccess: res => {
       const { success, code } = res.data;
       if (success) {
@@ -30,13 +40,13 @@ const LinkConfirm: FC = () => {
       } else if (code === StatusCode.UN_AUTHORIZED) {
         const { redirectUrlOnUnAuthorization } = getCustomConfig();
         if (redirectUrlOnUnAuthorization) {
-          const redirectUri = `${location.pathname}?inviteLinkToken=${inviteLinkToken}&inviteCode=${inviteCode}`;
+          const redirectUri = `${location.pathname}?inviteLinkToken=${inviteLinkToken}&inviteCode=${inviteCode}&nodeId=${nodeId}`;
           location.href = `${redirectUrlOnUnAuthorization}${redirectUri}`;
           return;
         }
         Router.push(Navigation.INVITE, {
           params: { invitePath: 'link/login' },
-          query: { inviteLinkToken: inviteLinkToken!, inviteCode }
+          query: { inviteLinkToken: inviteLinkToken!, inviteCode, nodeId }
         });
       } else {
         // 链接失效，更新数据
@@ -52,7 +62,7 @@ const LinkConfirm: FC = () => {
   });
 
   const confirmBtn = () => {
-    join(inviteLinkToken);
+    join(inviteLinkToken, nodeId);
   };
   if (!inviteLinkInfo) {
     return null;

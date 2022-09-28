@@ -21,7 +21,7 @@ import { Message } from 'pc/components/common/message/message';
 
 export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props => {
   const colors = useThemeColors();
-  const { permissionList, onSubmit, classNames, adminAndOwnerUnitIds = [] } = props;
+  const { permissionList, onSubmit, classNames, adminAndOwnerUnitIds = [], showTeams, searchEmail } = props;
   const unitMap =
     useSelector(state => {
       return Selectors.getUnitMap(state);
@@ -30,7 +30,7 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
   const [height, setHeight] = useState(0);
   const [editing, setEditing] = useState(false);
   const [unitValue, setUnitValue] = useState<string[]>([]);
-  const [permissionValue, setPermissionValue] = useState(permissionList[0]);
+  const [permissionValue, setPermissionValue] = useState(permissionList[2]);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const unitListRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -90,7 +90,7 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
     });
 
     // 检查选择的人中是否有管理员
-    if (unitInfos.some(({ unitId }) => adminAndOwnerUnitIds.includes(unitId))) {
+    if (!showTeams && unitInfos.some(({ unitId }) => adminAndOwnerUnitIds.includes(unitId))) {
       Message.error({ content: t(Strings.no_permission_setting_admin) });
       return;
     }
@@ -189,7 +189,7 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
           </ComponentDisplay>
         </div>
         {editing && (
-          <div ref={unitListRef}>
+          <div ref={unitListRef} className={styles.memberListWrapper}>
             <PopStructure style={{}} width={280} height={height} editing className={styles.memberList} onClose={() => setEditing(false)}>
               <MemberOptionList
                 showSearchInput
@@ -201,6 +201,8 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
                 sourceId={datasheetId}
                 unitMap={unitMap}
                 inputRef={inputRef}
+                searchEmail={searchEmail}
+                showTeams={showTeams}
               />
             </PopStructure>
           </div>

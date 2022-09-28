@@ -219,6 +219,7 @@ export enum ToolBarMenuCardOpenState {
   OrgChartSetting = 'OrgChartSetting',
   ViewSwitcher = 'ViewSwitcher', // 这个不是 toolbar 内的组件，为了 display 组件统一，还是放在这里控制
   KanbanFieldHidden = 'KanbanFieldHidden',
+  Share = 'Share',
 }
 
 export const ScreenWidth = {

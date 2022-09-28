@@ -1,4 +1,4 @@
-import { IUnitValue, IUserValue, MemberType } from '@vikadata/core';
+import { IUnitValue, IUserValue, MemberType, t, Strings } from '@vikadata/core';
 import classNames from 'classnames';
 import { Avatar, AvatarSize, AvatarType } from 'pc/components/common';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
@@ -10,6 +10,7 @@ interface IMemberItemProps {
   unitInfo: IUnitValue | IUserValue;
   style?: React.CSSProperties;
   selected?: boolean;
+  showTeams?: boolean;
 }
 
 export function isUnitLeave(unit: IUnitValue | IUserValue) {
@@ -19,8 +20,8 @@ export function isUnitLeave(unit: IUnitValue | IUserValue) {
 }
 
 export const MemberItem: React.FC<IMemberItemProps> = props => {
-  const { unitInfo, children, style, selected } = props;
-  const { unitId, avatar, name, type, userId, isSelf, desc, isMemberNameModified } = unitInfo as any;
+  const { unitInfo, children, style, selected, showTeams } = props;
+  const { unitId, avatar, name, type, userId, isSelf, desc, isMemberNameModified, team, email, isActive } = unitInfo as any;
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
 
   const title = getSocialWecomUnitName({
@@ -28,6 +29,30 @@ export const MemberItem: React.FC<IMemberItemProps> = props => {
     isModified: isMemberNameModified,
     spaceInfo
   });
+
+  if (showTeams) {
+    return (
+      <div className={styles.memberWithTeams}>
+        <Avatar
+          id={unitId || userId!}
+          title={name}
+          size={AvatarSize.Size32}
+          src={avatar}
+          type={type === MemberType.Team ? AvatarType.Team : AvatarType.Member}
+          style={{ minWidth: 20 }}
+          isDefaultIcon={isSelf}
+        />
+        <div className={styles.memberWithTeamsDesc}>
+          <div className={classNames('unitName', styles.unitName)}>
+            {title}
+            {!isActive && <div className={styles.unInvited}>{t(Strings.pending_invite)}</div>}
+          </div>
+          {team && <div className={styles.teams}>{team}</div>}
+          {email && <div className={styles.teams}>{email}</div>}
+        </div>
+      </div>
+    );
+  }
   
   return (
     <span

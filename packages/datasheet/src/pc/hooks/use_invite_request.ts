@@ -49,8 +49,8 @@ export const useInviteRequest = () => {
    * 生成-刷新链接
    * @param teamId 部门ID
    */
-  const generateLinkReq = (teamId: string) => {
-    return Api.createLink(teamId).then(res => {
+  const generateLinkReq = (teamId: string, nodeId?: string) => {
+    return Api.createLink(teamId, nodeId).then(res => {
       const { success, data, message } = res.data;
       if (success) {
         return data;
@@ -79,15 +79,28 @@ export const useInviteRequest = () => {
    */
   const sendInviteReq = (invite: IInviteMemberList[], nodeId?: string, nvcVal?: string) => {
     return Api.sendInvite(invite, nodeId, nvcVal).then(res => {
-      const { success, message, code } = res.data;
-      if (success) {
-        return true;
+      const { success, message, code, data } = res.data;
+      if (!success) {
+        Message.error({ content: message });
+        secondStepVerify(code);
       }
-      Message.error({ content: message });
-      secondStepVerify(code);
-      return false;
+      return { success, data };
     });
   };
 
-  return { linkListReq, readTeamReq, getSubTeamsReq, generateLinkReq, deleteLinkReq, sendInviteReq };
+  /**
+   * 搜索成员和小组
+   * @param keyword 关键词
+   */
+  const fetchTeamAndMember = (keyword: string, searchEmail: boolean) => {
+    return Api.loadOrSearch({ keyword, searchEmail }).then(res => {
+      const { success, data, message } = res.data;
+      if (success) {
+        return data;
+      }
+      Message.error({ content: message });
+    });
+  };
+
+  return { linkListReq, readTeamReq, getSubTeamsReq, generateLinkReq, deleteLinkReq, sendInviteReq, fetchTeamAndMember };
 };

@@ -1127,9 +1127,10 @@ export function unBindAccount(type: BindAccount) {
  * 生成/刷新链接
  * @param  teamId 部门ID
  */
-export function createLink(teamId: string) {
+export function createLink(teamId: string, nodeId?: string) {
   return axios.post(Url.CREATE_LINK, {
     teamId,
+    nodeId,
   });
 }
 
@@ -1160,13 +1161,13 @@ export function deleteLink(teamId: string) {
 }
 
 // 公开链接校验
-export function linkValid(token: string) {
-  return axios.post(Url.LINK_VALID, { token });
+export function linkValid(token: string, nodeId?: string) {
+  return axios.post(Url.LINK_VALID, { token, nodeId });
 }
 
 // 通过公开链接加入空间
-export function joinViaSpace(token: string) {
-  return axios.post(Url.JOIN_VIA_LINK, { token });
+export function joinViaSpace(token: string, nodeId: string) {
+  return axios.post(Url.JOIN_VIA_LINK, { token, nodeId });
 }
 
 export function changeNodeDesc(nodeId: string, desc: string) {
@@ -1399,7 +1400,7 @@ export const templateRecommend = (headers?: Record<string, string>) => {
 };
 
 // 加载或者搜索成员，显示最近选择过的最多 10 条记录。用于成员字段下拉选择
-export function loadOrSearch({ filterIds, keyword, names, unitIds, linkId, all }: ILoadOrSearchArg): Promise<IAxiosResponse<any>> {
+export function loadOrSearch({ filterIds, keyword, names, unitIds, linkId, all, searchEmail }: ILoadOrSearchArg): Promise<IAxiosResponse<any>> {
   return axios.get(Url.LOAD_OR_SEARCH, {
     params: {
       filterIds,
@@ -1408,6 +1409,7 @@ export function loadOrSearch({ filterIds, keyword, names, unitIds, linkId, all }
       unitIds,
       linkId,
       all,
+      searchEmail
     },
   });
 }

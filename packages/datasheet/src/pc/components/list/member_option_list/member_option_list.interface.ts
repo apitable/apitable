@@ -55,4 +55,7 @@ export interface IMemberOptionListProps extends IListBase<IUnitIds | null, (IUni
 
   // 是否只展示member (否则可以选择member和group)
   memberOnly?: boolean;
+
+  showTeams?: boolean;
+  searchEmail?: boolean;
 }

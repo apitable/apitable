@@ -17,9 +17,10 @@ const LinkInvite: FC = () => {
   const tokenParams = query.get('token');
   const linkTokenParams = query.get('inviteLinkToken');
   const inviteCode = removeChinese(query.get('inviteCode'), INVITE_CODE_LENGTH);
+  const nodeId = query.get('nodeId') as string;
 
   const [inviteLinkToken, setInviteLinkToken] = useState('');
-  const { run: verifyLinkUrl } = useRequest(token => Api.linkValid(token), {
+  const { run: verifyLinkUrl } = useRequest((token, nodeId) => Api.linkValid(token, nodeId), {
     onSuccess: res => {
       const { success, code, data } = res.data;
       dispatch(StoreActions.updateInviteLinkInfo(res.data));
@@ -38,7 +39,7 @@ const LinkInvite: FC = () => {
       if (!data.isExist) {
         Router.push(Navigation.INVITE, {
           params: { invitePath: 'link/confirm' },
-          query: { inviteLinkToken, inviteCode },
+          query: { inviteLinkToken, inviteCode, nodeId },
         });
       }
     },
@@ -53,7 +54,7 @@ const LinkInvite: FC = () => {
     const token = removeChinese(finalTokenParams, INVITE_TOKEN_LENGTH);
     if (token) {
       setInviteLinkToken(token);
-      verifyLinkUrl(token);
+      verifyLinkUrl(token, nodeId);
     }
   });
 

@@ -65,4 +65,5 @@ export interface IQuery {
   home?: number; // 跳转官网的参数
   spaceId?: string;
   client_id?: string; // 玉符私有化绑定的空间参数
+  nodeId?: string;
 }

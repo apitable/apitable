@@ -13,6 +13,7 @@ export const ToolbarMap = {
   [ToolHandleType.OrgChartSetting]: ToolBarMenuCardOpenState.OrgChartSetting,
   [ToolBarMenuCardOpenState.ViewSwitcher]: ToolHandleType.ViewSwitcher,
   [ToolBarMenuCardOpenState.KanbanFieldHidden]: ToolHandleType.HiddenKanbanGroup,
+  [ToolBarMenuCardOpenState.Share]: ToolHandleType.Share,
   [ToolBarMenuCardOpenState.None]: null,
 };
 
@@ -27,6 +28,7 @@ export const ToolbarReMap = {
   [ToolHandleType.OrgChartSetting]: ToolBarMenuCardOpenState.OrgChartSetting,
   [ToolHandleType.ViewSwitcher]: ToolBarMenuCardOpenState.ViewSwitcher,
   [ToolHandleType.HiddenKanbanGroup]: ToolBarMenuCardOpenState.KanbanFieldHidden,
+  [ToolHandleType.Share]: ToolBarMenuCardOpenState.Share,
 };
 
 export function useToolbarMenuCardOpen(type: ToolHandleType) {
