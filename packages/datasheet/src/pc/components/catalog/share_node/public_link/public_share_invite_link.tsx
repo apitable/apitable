@@ -4,7 +4,7 @@ import { useRequest } from 'ahooks';
 import { Popover, Tooltip } from 'antd';
 
 import { Api, IReduxState, IShareSettings, Settings, StoreActions, Strings, t } from '@vikadata/core';
-import { DoubleSelect, IDoubleOptions, Switch, Typography } from '@vikadata/components';
+import { DoubleSelect, IDoubleOptions, LinkButton, Switch, Typography } from '@vikadata/components';
 import { InformationSmallOutlined, ShareQrcodeOutlined, ColumnUrlOutlined } from '@vikadata/icons';
 
 import { useCatalogTreeRequest } from 'pc/hooks';
@@ -214,50 +214,52 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
         </Tooltip>
       </div>
       {spaceFeatures?.fileSharable ? (
-        <>
-          {!loading && shareSettings && shareSettings.shareOpened && (
-            <>
-              <div className={styles.sharePerson}>
-                <Typography className={styles.sharePersonContent} variant='body2'>{t(Strings.get_link_person_on_internet)}</Typography>
-                <DoubleSelect
-                  value={value}
-                  disabled={false}
-                  onSelected={(op, index) => handleShareAuthClick(op)}
-                  triggerCls={styles.doubleSelect}
-                  options={Permission}
-                />
-              </div>
-              <ShareLink
-                shareName={treeNodesMap[shareSettings.nodeId]?.nodeName}
-                shareSettings={shareSettings}
-                userInfo={userInfo}
+        !loading && shareSettings && shareSettings.shareOpened && (
+          <>
+            <div className={styles.sharePerson}>
+              <Typography className={styles.sharePersonContent} variant='body2'>{t(Strings.get_link_person_on_internet)}</Typography>
+              <DoubleSelect
+                value={value}
+                disabled={false}
+                onSelected={(op, index) => handleShareAuthClick(op)}
+                triggerCls={styles.doubleSelect}
+                options={Permission}
               />
-            </>
-          )}
-          {canEditInvite && (
-            <div className={styles.inviteMore}>
-              <Typography className={styles.inviteMoreTitle} variant='body3'>{t(Strings.more_invite_ways)}：</Typography>
-              <Tooltip title={t(Strings.default_link_join_tip)} placement="top" overlayStyle={{ width: 190 }}>
-                <Typography className={styles.inviteMoreMethod} variant='body3' onMouseDown={handleCopyInviteLink}>
-                  <ColumnUrlOutlined currentColor />
-                  <span>{t(Strings.invite_via_link)}</span>
-                </Typography>
-              </Tooltip>
-              {!isMobile && (
-                <Popover
-                  overlayClassName={styles.qrCodePopover}
-                  placement="rightBottom"
-                  title={null}
-                  content={renderPopover()}
-                  trigger="click"
-                >
-                  {renderInviteByQrCode()}
-                </Popover>
-              )}
             </div>
-          )}
-        </>
+            <ShareLink
+              shareName={treeNodesMap[shareSettings.nodeId]?.nodeName}
+              shareSettings={shareSettings}
+              userInfo={userInfo}
+            />
+          </>
+        )
       ) : <DisabledShareFile />}
+      {canEditInvite && (
+        <div className={styles.inviteMore}>
+          <Typography className={styles.inviteMoreTitle} variant='body3'>{t(Strings.more_invite_ways)}：</Typography>
+          <Tooltip title={t(Strings.default_link_join_tip)} placement="top" overlayStyle={{ width: 190 }}>
+            <LinkButton
+              className={styles.inviteMoreMethod}
+              underline={false}
+              onClick={handleCopyInviteLink}
+              prefixIcon={<ColumnUrlOutlined currentColor />}
+            >
+              {t(Strings.invite_via_link)}
+            </LinkButton>
+          </Tooltip>
+          {!isMobile && (
+            <Popover
+              overlayClassName={styles.qrCodePopover}
+              placement="rightBottom"
+              title={null}
+              content={renderPopover()}
+              trigger="click"
+            >
+              {renderInviteByQrCode()}
+            </Popover>
+          )}
+        </div>
+      )}
     </>
   );
 };
