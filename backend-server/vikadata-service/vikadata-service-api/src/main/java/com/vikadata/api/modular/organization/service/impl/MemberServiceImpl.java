@@ -1330,6 +1330,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                     result.setOriginName(searchMember.getMemberName());
                     result.setMemberName(InformationUtil.keywordHighlight(searchMember.getMemberName(), keyword, highlightClassName));
                     result.setAvatar(searchMember.getAvatar());
+                    result.setIsActive(searchMember.getIsActive());
                     if (CollUtil.isNotEmpty(searchMember.getTeam())) {
                         List<String> teamNames = CollUtil.getFieldValues(searchMember.getTeam(), "teamName", String.class);
                         result.setTeam(CollUtil.join(teamNames, "｜"));

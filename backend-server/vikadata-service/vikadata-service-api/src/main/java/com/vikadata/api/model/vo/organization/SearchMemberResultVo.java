@@ -53,7 +53,10 @@ public class SearchMemberResultVo {
     @ApiModelProperty(value = "成员（member）是否修改过昵称", position = 6)
     private Boolean isMemberNameModified;
 
-    @ApiModelProperty(value = "team id and full hierarchy team path name", position = 7)
+    @ApiModelProperty(value = "member is active", position = 7)
+    private Boolean isActive;
+
+    @ApiModelProperty(value = "team id and full hierarchy team path name", position = 8)
     private List<MemberTeamPathInfo> teamData;
 
 }
