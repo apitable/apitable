@@ -337,17 +337,6 @@ export const useUserRequest = () => {
     });
   };
 
-  // 查看是否有成员管理权限
-  const spaceResourceApi = () => {
-    return Api.getSpaceResource().then((res): boolean => {
-      const { success, data } = res.data;
-      return (
-        success &&
-        data.permissions?.includes(ConfigConstant.PermissionCode.MEMBER)
-      );
-    });
-  };
-
   // 是否开启全员可邀请
   const inviteStatusApi = () => {
     return Api.getSpaceFeatures().then((res) => {
@@ -360,18 +349,6 @@ export const useUserRequest = () => {
   const getInviteStatus = async() => {
     if (!userInfo) {
       return;
-    }
-
-    if (userInfo.isMainAdmin) {
-      return true;
-    }
-
-    if (userInfo.isAdmin) {
-      // 判断是否有成员管理权限
-      const membePermssion = await spaceResourceApi();
-      if (membePermssion) {
-        return true;
-      }
     }
     return await inviteStatusApi();
   };

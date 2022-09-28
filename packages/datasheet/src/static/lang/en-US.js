@@ -3976,7 +3976,7 @@ window.vika_i18n =
   "security_setting_export_data_updatable": "above \"Update-only\"",
   "security_setting_invite_member": "You are experiencing the ${grade} space exclusive feature, which will be unlocked when you upgrade",
   "security_setting_invite_member_describle": "After the function is disabled,no one can invite users to join the Space except Space admin,and the generated invitation link will be invalid",
-  "security_setting_invite_member_description": "No one can invite users to join the Space except Space admin,and the generated invitation link will be invalid",
+  "security_setting_invite_member_description": "The generated invitation link will be invalid",
   "security_setting_invite_member_title": "Prevent members from inviting user",
   "security_setting_mobile": "You are experiencing the ${grade} space exclusive feature, which will be unlocked when you upgrade",
   "security_setting_share": "You are experiencing the ${grade} space exclusive feature, which will be unlocked when you upgrade",

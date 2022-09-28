@@ -18,24 +18,26 @@ import styles from './style.module.less';
 import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
 import { useInviteRequest } from 'pc/hooks/use_invite_request';
 import { generateInviteLink, ROOT_TEAM_ID } from '../utils';
+import { isSocialPlatformEnabled } from 'pc/components/home/social_platform';
 
 export interface IPublicShareLinkProps {
   nodeId: string;
   isMobile: boolean;
-  canEditInvite: boolean;
 }
 
-export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMobile, canEditInvite }) => {
+export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMobile }) => {
   const dispatch = useDispatch();
   const { getShareSettingsReq } = useCatalogTreeRequest();
   const { generateLinkReq } = useInviteRequest();
   const { run: getShareSettings, data: shareSettings, loading } =
     useRequest<IShareSettings, any>(() => getShareSettingsReq(nodeId));
-  const { userInfo, treeNodesMap, spaceFeatures } = useSelector((state: IReduxState) => ({
+  const { userInfo, treeNodesMap, spaceFeatures, spaceInfo } = useSelector((state: IReduxState) => ({
     treeNodesMap: state.catalogTree.treeNodesMap,
     userInfo: state.user.info,
     spaceFeatures: state.space.spaceFeatures,
+    spaceInfo: state.space.curSpaceInfo!,
   }), shallowEqual);
+
   const isShareMirror = nodeId.startsWith('mir');
 
   const handleUpdateShareStatus = (status: boolean) => {
@@ -234,11 +236,12 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
           </>
         )
       ) : <DisabledShareFile />}
-      {canEditInvite && (
+      {spaceFeatures?.invitable && !isSocialPlatformEnabled(spaceInfo) && (
         <div className={styles.inviteMore}>
           <Typography className={styles.inviteMoreTitle} variant='body3'>{t(Strings.more_invite_ways)}：</Typography>
           <Tooltip title={t(Strings.default_link_join_tip)} placement="top" overlayStyle={{ width: 190 }}>
             <LinkButton
+              component="button"
               className={styles.inviteMoreMethod}
               underline={false}
               onClick={handleCopyInviteLink}

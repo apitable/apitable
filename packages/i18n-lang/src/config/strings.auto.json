@@ -19740,8 +19740,8 @@
             "zh_HK": "普通成員可以邀請用戶加入空間站。關閉功能後僅空間站管理員可邀請成員加入空間站，普通成員創建的邀請鏈接會失效"
         },
         "security_setting_invite_member_description": {
-            "zh_CN": "仅空间站管理员可邀请成员加入空间站，普通成员创建的邀请链接会失效",
-            "en_US": "No one can invite users to join the Space except Space admin,and the generated invitation link will be invalid",
+            "zh_CN": "邀请链接将会失效",
+            "en_US": "The generated invitation link will be invalid",
             "zh_HK": "普通成員可以邀請用戶加入空間站。關閉功能後僅空間站管理員可邀請成員加入空間站，普通成員創建的邀請鏈接會失效"
         },
         "security_setting_invite_member_title": {

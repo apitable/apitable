@@ -2,8 +2,8 @@ import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cls from 'classnames';
 import {
-  Api, ConfigConstant, INodeRoleMap, IReduxState,
-  IUnitValue, Selectors, Settings, StoreActions, Strings, t
+  Api, ConfigConstant, INodeRoleMap,
+  IUnitValue, Settings, StoreActions, Strings, t
 } from '@vikadata/core';
 import { IOption, Skeleton, Typography } from '@vikadata/components';
 import { InformationSmallOutlined, ChevronRightOutlined } from '@vikadata/icons';
@@ -33,14 +33,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   const dispatch = useDispatch();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const { socketData, canEditInvite } = useSelector((state: IReduxState) => {
-    const permissions = Selectors.getPermissions(state);
-    return {
-      socketData :state.catalogTree.socketData,
-      canEditInvite: permissions.manageable,
-    };
-  });
-  const invitable = useSelector(state => state.space.spaceFeatures?.invitable);
+  const socketData = useSelector(state => state.catalogTree.socketData);
   // const { checkEmailReq } = useSpaceRequest();
   const { getNodeRoleListReq } = useCatalogTreeRequest();
   const { run: getNodeRoleList, data: roleList, loading } = useRequest<INodeRoleMap>(() => getNodeRoleListReq(data.nodeId));
@@ -161,7 +154,6 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
         <PublicShareInviteLink
           nodeId={data.nodeId}
           isMobile={isMobile}
-          canEditInvite={canEditInvite || Boolean(invitable)}
         />
       </div>
       {detailModalVisible && roleList && <MembersDetail data={roleList} onCancel={() => setDetailModalVisible(false)} />}

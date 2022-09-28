@@ -3976,7 +3976,7 @@ window.vika_i18n =
   "security_setting_export_data_updatable": "只可更新及以上",
   "security_setting_invite_member": "你正在使用${grade}空间站专属功能，升级后可以解锁该功能",
   "security_setting_invite_member_describle": "普通成员可以邀请用户加入空间站。关闭功能后仅空间站管理员可邀请成员加入空间站，普通成员创建的邀请链接会失效",
-  "security_setting_invite_member_description": "仅空间站管理员可邀请成员加入空间站，普通成员创建的邀请链接会失效",
+  "security_setting_invite_member_description": "邀请链接将会失效",
   "security_setting_invite_member_title": "禁止成员邀请站外用户加入空间站",
   "security_setting_mobile": "你正在使用${grade}空间站专属功能，升级后可以解锁该功能",
   "security_setting_share": "你正在使用${grade}空间站专属功能，升级后可以解锁该功能",
