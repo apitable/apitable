@@ -9,6 +9,7 @@ import {
   Field,
   ICell,
   IGanttViewProperty,
+  IGanttViewStatus,
   ILinearRowRecord,
   ISetRecordOptions,
   KONVA_DATASHEET_ID,
@@ -83,7 +84,7 @@ import {
   ITargetTaskInfo,
 } from './interface';
 import styles from './style.module.less';
-import { getAllTaskLine, getAllCycleDAG, autoTaskScheduling, getCollapsedLinearRows } from './utils';
+import { getAllTaskLine, getAllCycleDAG, autoTaskScheduling, getCollapsedLinearRows, getGanttViewStatusWithDefault } from './utils';
 import { Message } from 'pc/components/common';
 import { useDisabledOperateWithMirror } from '../tool_bar/hooks';
 interface IGanttViewProps {
@@ -132,7 +133,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     isSearching,
     groupCollapseIds,
     snapshot,
-    ganttViewStatus,
+    cacheGanttViewStatus,
     currentSearchCell,
     fieldPermissionMap,
     selectRecordIds,
@@ -182,7 +183,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
       isSearching: Boolean(Selectors.getSearchKeyword(state)),
       groupCollapseIds: Selectors.getGroupingCollapseIds(state),
       snapshot: Selectors.getSnapshot(state)!,
-      ganttViewStatus: Selectors.getGanttViewStatus(state)!,
+      cacheGanttViewStatus: Selectors.getGanttViewStatus(state),
       fieldIndexMap: Selectors.getVisibleColumnsMap(state),
       currentSearchCell: Selectors.getCurrentSearchItem(state),
       fieldPermissionMap: Selectors.getFieldPermissionMap(state),
@@ -205,7 +206,20 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { startFieldId, endFieldId, workDays = DEFAULT_WORK_DAYS, onlyCalcWorkDay, autoTaskLayout, linkFieldId } = ganttStyle;
   const rowCount = linearRows.length; // 总行数
+  const { autoHeadHeight, id: viewId } = view as IGanttViewProperty;
   const dispatch = useDispatch();
+  const ganttViewStatus: IGanttViewStatus = useMemo(() => {
+    return {
+      ...cacheGanttViewStatus,
+      ...getGanttViewStatusWithDefault({
+        spaceId,
+        datasheetId,
+        viewId,
+        mirrorId,
+        isViewLock
+      })
+    };
+  }, [datasheetId, cacheGanttViewStatus, isViewLock, mirrorId, spaceId, viewId]);
   const {
     gridVisible: _gridVisible,
     settingPanelVisible: _settingPanelVisible,
@@ -218,7 +232,6 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
   const containerWidth = _containerWidth; // 考虑 2px border
   const ganttViewWidth = settingPanelVisible ? containerWidth - settingPanelWidth : containerWidth;
   const gridVisible = !isMobile && _gridVisible; // 移动端不展示左侧任务栏
-  const { autoHeadHeight } = view as IGanttViewProperty;
 
   // 左侧任务栏总宽度
   const gridTotalWidth = useMemo(() => {
@@ -419,7 +432,10 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
   );
 
   const { totalWidth: ganttTotalWidth, todayIndex, columnThreshold, unitType, rowInitSize } = ganttInstance;
-  const totalHeight = Math.max(ganttInstance.totalHeight + GRID_SCROLL_REMAIN_SPACING, containerHeight - rowInitSize - GRID_BOTTOM_STAT_HEIGHT); // 甘特图总高
+  const totalHeight = Math.max(
+    ganttInstance.totalHeight + GRID_SCROLL_REMAIN_SPACING, 
+    containerHeight - rowInitSize - GRID_BOTTOM_STAT_HEIGHT
+  );
   const { realTargetName, areaType } = pointPosition;
   const { isOverflow } = cellScrollState;
 
@@ -663,10 +679,10 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
 
   const onPanelSizeChange = (newSize: number) => {
     const GanttStatusMap = getStorage(StorageName.GanttStatusMap)!;
-    const status = GanttStatusMap[`${spaceId}_${datasheetId}_${view.id}`] || {};
+    const status = GanttStatusMap[`${spaceId}_${datasheetId}_${viewId}`] || {};
     dispatch(StoreActions.setGanttSettingPanelWidth(newSize, datasheetId));
     setStorage(StorageName.GanttStatusMap, {
-      [`${spaceId}_${datasheetId}_${view.id}`]: {
+      [`${spaceId}_${datasheetId}_${viewId}`]: {
         ...status,
         settingPanelWidth: newSize,
       },
@@ -754,16 +770,13 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
      * 若有本地缓存，则从缓存中读取
      * 若无本地缓存，则将 Redux 中的初始数据存入本地缓存
      */
-    const ganttStatusMap = getStorage(StorageName.GanttStatusMap);
-    const ganttStatus = ganttStatusMap?.[`${spaceId}_${datasheetId}_${view.id}`] || {};
-    const defaultGanttViewStatus = {
-      gridWidth: 256,
-      gridVisible: true,
-      settingPanelWidth: 320,
-      settingPanelVisible: !(mirrorId || isViewLock),
-      dateUnitType: DateUnitType.Month,
-      ...ganttStatus,
-    };
+    const defaultGanttViewStatus = getGanttViewStatusWithDefault({
+      spaceId,
+      datasheetId,
+      viewId,
+      mirrorId,
+      isViewLock
+    });
 
     dispatch(
       batchActions([
@@ -800,7 +813,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     if (startFieldId == null || endFieldId == null) {
       dispatch(StoreActions.toggleGanttSettingPanel(true, datasheetId));
       setStorage(StorageName.GanttStatusMap, {
-        [`${spaceId}_${datasheetId}_${view.id}`]: {
+        [`${spaceId}_${datasheetId}_${viewId}`]: {
           ...ganttViewStatus,
           settingPanelVisible: true,
         },
@@ -1034,7 +1047,13 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
                       setPointPosition={setPointPosition}
                       scrollIntoView={scrollIntoView}
                     />
-                    {exportViewId != null && exportViewId === view.id && <GanttExport />}
+                    {
+                      exportViewId != null && 
+                      exportViewId === viewId && 
+                      <GanttExport 
+                        dateUnitType={dateUnitType}
+                      />
+                    }
                   </KonvaGanttViewContext.Provider>
                 </KonvaGridViewContext.Provider>
               </div>
@@ -1101,7 +1120,15 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
               </div>
             </div>
           }
-          panelRight={<div style={{ width: '100%', height: '100%' }}>{!isMobile && settingPanelVisible && <SettingPanel />}</div>}
+          panelRight={
+            <div style={{ width: '100%', height: '100%' }}>
+              {
+                !isMobile && settingPanelVisible && 
+                <SettingPanel
+                  ganttViewStatus={ganttViewStatus}
+                />
+              }
+            </div>}
           primary="second"
           split="vertical"
           onChange={onPanelSizeChange}
@@ -1123,7 +1150,13 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
         />
 
         {/* 甘特图 DOM 坐标系 */}
-        <DomGantt containerWidth={ganttViewWidth} containerHeight={containerHeight} gridWidth={gridWidth} gridVisible={gridVisible} />
+        <DomGantt 
+          containerWidth={ganttViewWidth} 
+          containerHeight={containerHeight} 
+          gridWidth={gridWidth} 
+          gridVisible={gridVisible} 
+          dateUnitType={dateUnitType}
+        />
 
         {/* 创建列模态框 */}
         {!dateTimeTypeFields.length && <CreateFieldModal />}

@@ -10,7 +10,8 @@ import {
   GRID_ICON_COMMON_SIZE, 
   GRID_ICON_SMALL_SIZE, 
   FIELD_HEAD_ICON_GAP_SIZE, 
-  FIELD_HEAD_ICON_SIZE_MAP 
+  FIELD_HEAD_ICON_SIZE_MAP,
+  FIELD_HEAD_TEXT_MIN_WIDTH
 } from '../../constant';
 import { FieldIcon } from './field_icon';
 
@@ -185,7 +186,7 @@ export const FieldHead: FC<IFieldHeadProps> = memo((props) => {
       <Text
         x={textOffset}
         y={autoHeadHeight ? 5 : (isGanttNoWrap ? (headHeight - GRID_FIELD_HEAD_HEIGHT) / 2 : undefined)}
-        width={autoHeadHeight ? textWidth : textData.width}
+        width={Math.max(autoHeadHeight ? textWidth : textData.width, FIELD_HEAD_TEXT_MIN_WIDTH)}
         height={isGanttNoWrap ? GRID_FIELD_HEAD_HEIGHT : headHeight + 2}
         text={fieldName}
         wrap={autoHeadHeight ? 'char' : 'none'}

@@ -55,6 +55,7 @@ export const GRID_CELL_LINK_ITEM_PADDING = 10; // 神奇关联字段 item 左右
 export const GRID_CELL_LINK_ITEM_HEIGHT = 20; // 神奇关联字段 item 高度
 
 // field head icon
+export const FIELD_HEAD_TEXT_MIN_WIDTH = 30;
 export const FIELD_HEAD_ICON_GAP_SIZE = 4;
 export const FIELD_HEAD_ICON_SIZE_MAP = {
   [FieldHeadIconType.Permission]: GRID_ICON_COMMON_SIZE,

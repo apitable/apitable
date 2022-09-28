@@ -1,7 +1,7 @@
 import { FC, useContext } from 'react';
 import { Select } from '@vikadata/components';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { DateUnitType, IGanttViewStatus, Selectors, StoreActions, Strings, t } from '@vikadata/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { DateUnitType, IGanttViewStatus, StoreActions, Strings, t } from '@vikadata/core';
 import { GanttOpenupOutlined, GanttPackupOutlined } from '@vikadata/icons';
 import { ButtonPlus } from 'pc/components/common';
 import { useResponsive } from 'pc/hooks';
@@ -17,6 +17,7 @@ interface IDomGanttBaseProps {
   containerHeight: number;
   gridWidth: number;
   gridVisible: boolean;
+  dateUnitType: DateUnitType;
 }
 
 const unitOptions = [
@@ -41,15 +42,9 @@ const unitOptions = [
 export const DomGantt: FC<IDomGanttBaseProps> = props => {
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
-  const { containerWidth, gridWidth, gridVisible } = props;
+  const { containerWidth, gridWidth, gridVisible, dateUnitType } = props;
   const { datasheetId, viewId } = useSelector(state => state.pageParams);
   const spaceId = useSelector(state => state.space.activeId);
-  const { ganttViewStatus } = useSelector(state => {
-    return {
-      ganttViewStatus: Selectors.getGanttViewStatus(state)!,
-    };
-  }, shallowEqual);
-  const { dateUnitType } = ganttViewStatus;
   const dispatch = useDispatch();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);

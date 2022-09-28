@@ -21,12 +21,15 @@ const getUnitType = (dateUnitType: DateUnitType) => {
   }
 };
 
-export const GanttExport: FC = () => {
+interface IGanttExportProps {
+  dateUnitType: DateUnitType;
+}
+
+export const GanttExport: FC<IGanttExportProps> = ({ dateUnitType }) => {
   const {
     view,
     rowHeight,
     rowHeightLevel,
-    ganttViewStatus,
     ganttLinearRows,
     ganttStyle,
   } = useSelector((state) => {
@@ -37,7 +40,6 @@ export const GanttExport: FC = () => {
       rowHeightLevel,
       ganttLinearRows: Selectors.getGanttLinearRows(state),
       rowHeight: Selectors.getGanttRowHeightFromLevel(rowHeightLevel),
-      ganttViewStatus: Selectors.getGanttViewStatus(state)!,
       ganttStyle: Selectors.getGanttStyle(state)!,
     };
   }, shallowEqual);
@@ -49,7 +51,6 @@ export const GanttExport: FC = () => {
   const { ganttVisibleColumns } = useContext(KonvaGanttViewContext);
   const rowCount = linearRows.length;
   const { autoHeadHeight } = view;
-  const { dateUnitType } = ganttViewStatus;
   const { startFieldId, endFieldId, workDays, onlyCalcWorkDay } = ganttStyle;
 
   const ganttInstance = useCreation<GanttCoordinate>(() => {

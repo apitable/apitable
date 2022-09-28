@@ -6,7 +6,7 @@ import { Message } from 'pc/components/common/message';
 import { Tooltip } from 'pc/components/common/tooltip';
 import { MirrorRoute } from 'pc/components/mirror/mirror_route';
 import { Router } from 'pc/components/route_manager/router';
-import { usePageParams, useRequest, useSideBarVisible, useUserRequest } from 'pc/hooks';
+import { usePageParams, useRequest, useSideBarVisible, useSpaceRequest, useUserRequest } from 'pc/hooks';
 import { deleteStorageByKey, getStorage, StorageName } from 'pc/utils/storage/storage';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -41,11 +41,17 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
   const userInfo = useSelector(state => state.user.info);
   const [nodeTree, setNodeTree] = useState<INodeTree>();
   const [visible, setVisible] = useState(false);
+  const [shareClose, setShareClose] = useState(false);
   const [shareSpace, setShareSpace] = useState<IShareSpaceInfo | undefined>();
   const { getLoginStatusReq } = useUserRequest();
   const { run: getLoginStatus, loading } = useRequest(getLoginStatusReq, { manual: true });
+  const { getSpaceListReq } = useSpaceRequest();
+  const { 
+    data: spaceList = [], 
+    loading: spaceListLoading, 
+    run: getSpaceList
+  } = useRequest(getSpaceListReq, { manual: true });
   const dispatch = useDispatch();
-  const [shareClose, setShareClose] = useState(false);
 
   usePageParams();
 
@@ -77,6 +83,12 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
     getLoginStatus({ spaceId: shareSpace.spaceId }, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shareSpace]);
+
+  useEffect(() => {
+    if (shareSpace?.hasLogin) {
+      getSpaceList();
+    }
+  }, [shareSpace?.hasLogin, getSpaceList]);
 
   useEffect(() => {
     if (!shareInfo) {
@@ -201,8 +213,20 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
     }
   }
 
+  const { 
+    spaceId: shareSpaceId, 
+    spaceName: shareSpaceName, 
+    allowApply 
+  } = shareSpace;
+  const realSpaceId = userInfo?.spaceId;
+
   // 控制申请加入空间站功能的显示
-  const applicationJoinAlertVisible = shareSpace.allowApply && !loading && (!userInfo || (userInfo && !userInfo.spaceId));
+  const applicationJoinAlertVisible = (
+    allowApply && 
+    !loading && 
+    !spaceListLoading && 
+    (!realSpaceId || (spaceList.every(({ spaceId }) => spaceId !== shareSpaceId)))
+  );
 
   /** 表示该分享只有一个表单节点 */
   const singleFormShare = formId && nodeTree?.nodeId === formId;
@@ -267,7 +291,7 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
                   {getComponent()}
                 </div>
                 {applicationJoinAlertVisible && (
-                  <ApplicationJoinSpaceAlert spaceId={shareSpace.spaceId} spaceName={shareSpace.spaceName} defaultVisible={shareSpace.allowApply} />
+                  <ApplicationJoinSpaceAlert spaceId={shareSpaceId} spaceName={shareSpaceName} defaultVisible={shareSpace.allowApply} />
                 )}
               </div>
             </SplitPane>

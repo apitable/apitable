@@ -1,8 +1,9 @@
-import { CellType, ViewType } from '@vikadata/core';
+import { CellType, defaultGanttViewStatus, IGanttViewStatus, ViewType } from '@vikadata/core';
 import { ITargetNameDetail, TimeoutID, AreaType } from '../interface';
 import { GANTT_HEADER_HEIGHT, 
-  GANTT_HORIZONTAL_DEFAULT_SPACING, GANTT_VERTICAL_DEFAULT_SPACING, IScrollOptions,
+  GANTT_HORIZONTAL_DEFAULT_SPACING, GANTT_VERTICAL_DEFAULT_SPACING, IScrollOptions
 } from 'pc/components/gantt_view';
+import { getStorage, StorageName } from 'pc/utils/storage';
 
 export const cancelTimeout = (timeoutID: TimeoutID) => {
   cancelAnimationFrame(timeoutID.id);
@@ -142,4 +143,20 @@ export const onDragScrollSpacing = (
     scrollOptions.scrollCb = allScrollCb;
   }
   return scrollHandler.scrollByValue(scrollOptions, AreaType.Gantt);
+};
+
+export const getGanttViewStatusWithDefault = ({
+  spaceId,
+  datasheetId,
+  viewId,
+  mirrorId,
+  isViewLock
+}): IGanttViewStatus => {
+  const ganttStatusMap = getStorage(StorageName.GanttStatusMap);
+  const ganttStatus = ganttStatusMap?.[`${spaceId}_${datasheetId}_${viewId}`] || {};
+  return {
+    ...defaultGanttViewStatus,
+    settingPanelVisible: !(mirrorId || isViewLock),
+    ...ganttStatus,
+  };
 };

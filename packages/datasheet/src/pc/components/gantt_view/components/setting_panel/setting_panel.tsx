@@ -24,6 +24,7 @@ import {
   ILinkField,
   ISetRecordOptions,
   LinkFieldSet,
+  IGanttViewStatus,
 } from '@vikadata/core';
 import {
   CloseMiddleOutlined,
@@ -34,7 +35,7 @@ import {
   ColumnLinktableFilled,
 } from '@vikadata/icons';
 import { resourceService } from 'pc/resource_service';
-import { memo, useContext, useMemo } from 'react';
+import { FC, memo, useContext, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import styles from './style.module.less';
 import { StorageName, setStorage } from 'pc/utils/storage/storage';
@@ -105,16 +106,19 @@ const weekOptions = [
   },
 ];
 
-export const SettingPanel = memo(() => {
+interface ISettingPanelProps {
+  ganttViewStatus: IGanttViewStatus;
+}
+
+export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) => {
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
-  const { view, fieldMap, ganttStyle, ganttViewStatus, fieldPermissionMap, permissions, exitFieldNames } = useSelector(state => {
+  const { view, fieldMap, ganttStyle, fieldPermissionMap, permissions, exitFieldNames } = useSelector(state => {
     const fieldMap = Selectors.getFieldMap(state, state.pageParams.datasheetId!)!;
     return {
       fieldMap,
       view: Selectors.getCurrentView(state)!,
       ganttStyle: Selectors.getGanttStyle(state)!,
-      ganttViewStatus: Selectors.getGanttViewStatus(state)!,
       fieldPermissionMap: Selectors.getFieldPermissionMap(state),
       permissions: Selectors.getPermissions(state),
       exitFieldNames: Object.values(fieldMap).map(field => field.name),
