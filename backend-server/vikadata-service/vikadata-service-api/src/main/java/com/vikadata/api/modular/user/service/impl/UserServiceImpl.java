@@ -125,7 +125,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.vikadata.api.constants.AssetsPublicConstants.PUBLIC_PREFIX;
 import static com.vikadata.api.constants.NotificationConstants.EXTRA_TOAST;
-import static com.vikadata.api.constants.NotificationConstants.EXTRA_TOAST_CLOSE;
 import static com.vikadata.api.constants.NotificationConstants.EXTRA_TOAST_URL;
 import static com.vikadata.api.constants.SpaceConstants.SPACE_NAME_DEFAULT_SUFFIX;
 import static com.vikadata.api.enums.exception.OrganizationException.INVITE_EMAIL_HAS_LINK;
@@ -417,7 +416,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             if (StrUtil.isNotBlank(template.getUrl()) && template.getUrl().startsWith("http")) {
                 Dict toast = Dict.create();
                 toast.put(EXTRA_TOAST_URL, template.getUrl());
-                toast.put(EXTRA_TOAST_CLOSE, ListUtil.toList("mark_cur_notice_to_read()"));
+                toast.put("onClose", ListUtil.toList("mark_cur_notice_to_read()"));
+                toast.put("onBtnClick", ListUtil.toList("window_open_url()"));
+                toast.put("duration", 0);
+                toast.put("closable", true);
                 extras.put(EXTRA_TOAST, toast);
             }
             NotificationManager.me().playerNotify(NotificationTemplateId.NEW_USER_WELCOME_NOTIFY,
