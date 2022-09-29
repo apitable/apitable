@@ -62,6 +62,8 @@ vikadata:
   selfhost:
     enabled: ${SELFHOST_ENABLED:false}
     expired-At: ${SELFHOST_EXPIRED_AT:}
+  billing:
+    channel: ${BILLING_CHANNEL:vika}
   cookie:
     domain-name: ${DOMAIN_NAME:}
   cors:

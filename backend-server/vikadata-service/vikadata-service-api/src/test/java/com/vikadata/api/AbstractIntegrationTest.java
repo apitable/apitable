@@ -41,6 +41,7 @@ import com.vikadata.api.modular.finance.service.IOrderService;
 import com.vikadata.api.modular.finance.service.IOrderV2Service;
 import com.vikadata.api.modular.finance.service.IShopService;
 import com.vikadata.api.modular.finance.service.ISpaceSubscriptionService;
+import com.vikadata.api.modular.finance.service.ISubscriptionService;
 import com.vikadata.api.modular.finance.util.EntitlementChecker;
 import com.vikadata.api.modular.finance.util.OrderChecker;
 import com.vikadata.api.modular.finance.util.OrderChecker.ExpectedOrderCheck;
@@ -200,6 +201,9 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     @Autowired
     protected IRoleMemberService iRoleMemberService;
+
+    @Autowired
+    protected ISubscriptionService iSubscriptionService;
 
     @BeforeEach
     public void beforeMethod() {

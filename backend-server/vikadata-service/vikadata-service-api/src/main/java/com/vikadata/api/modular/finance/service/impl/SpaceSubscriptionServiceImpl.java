@@ -33,6 +33,7 @@ import com.vikadata.api.cache.service.SpaceCapacityCacheService;
 import com.vikadata.api.component.TaskManager;
 import com.vikadata.api.component.notification.NotificationManager;
 import com.vikadata.api.component.notification.NotificationTemplateId;
+import com.vikadata.api.config.properties.BillingProperties;
 import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.config.properties.SelfHostProperties;
 import com.vikadata.api.constants.DateFormatConstants;
@@ -174,6 +175,9 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
     @Resource
     private UserMapper userMapper;
 
+    @Resource
+    private BillingProperties billingProperties;
+
     @Override
     public Map<String, BillingPlanFeature> getSubscriptionFeatureBySpaceIds(List<String> spaceIds) {
         List<Bundle> bundles = iBundleService.getActivatedBundlesBySpaceId(spaceIds);
@@ -270,7 +274,7 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
         LocalDate baseExpireDate = baseSubscription.getExpireDate().toLocalDate();
         boolean isBaseEntitlementExpire = bundle.isBaseForFree() || ClockManager.me().getLocalDateNow().compareTo(baseExpireDate) > 0;
         // 增值计划暂不支持第三方集成空间
-        Plan basePlan = isBaseEntitlementExpire ? getFreePlan(ProductChannel.VIKA) : getBillingConfig().getPlans().get(legacyPlanId(baseSubscription.getPlanId()));
+        Plan basePlan = isBaseEntitlementExpire ? getFreePlan(billingProperties.getChannel()) : getBillingConfig().getPlans().get(legacyPlanId(baseSubscription.getPlanId()));
         Product baseProduct = getBillingConfig().getProducts().get(basePlan.getProduct());
         LocalDate deadline = isBaseEntitlementExpire ? null : baseExpireDate;
         // 附加订阅
@@ -330,9 +334,9 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
                             return channelDefaultSubscription(ProductChannel.LARK);
                         }
                     }
-                    return channelDefaultSubscription(ProductChannel.VIKA);
+                    return channelDefaultSubscription(billingProperties.getChannel());
                 })
-                .orElse(channelDefaultSubscription(ProductChannel.VIKA));
+                .orElse(channelDefaultSubscription(billingProperties.getChannel()));
     }
 
     @Override

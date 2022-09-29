@@ -16,7 +16,6 @@ import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.enums.finance.BundleState;
 import com.vikadata.api.enums.finance.SubscriptionState;
 import com.vikadata.api.mock.bean.MockUserSpace;
-import com.vikadata.api.modular.finance.service.ISubscriptionService;
 import com.vikadata.api.modular.space.mapper.SpaceMapper;
 import com.vikadata.api.modular.space.model.SpaceSubscriptionDto;
 import com.vikadata.api.modular.space.model.vo.SpaceCapacityPageVO;
@@ -43,24 +42,12 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Shawn Deng
  */
 public class SpaceSubscriptionServiceImplTest extends AbstractIntegrationTest {
-    @Autowired
-    private ISubscriptionService iSubscriptionService;
 
     @Autowired
     private SpaceMapper spaceMapper;
 
     @Autowired
     private UserMapper userMapper;
-
-
-    /**
-     * 获取订阅，非第三方平台绑定的空间
-     */
-    @Test
-    public void testGetPlanInfoBySpaceIdWithoutSocialBind() {
-        // 准备好空间站数据
-
-    }
 
     @Test
     public void testHandleExpiredSubscription() {
