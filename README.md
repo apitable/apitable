@@ -134,33 +134,55 @@ Embed them by HTML script copy & paste.
 
 
 
-## Development & Contributing
 
-### Installation
+## Installation
 
-If you computer has installed Docker Machine, run this:
+Make sure you have `docker` & `curl` installed locally.
+
+If you computer has installed Docker Machine, open your terminal and run this:
 
 ```
 curl https://apitable.github.io/install.sh | bash -c
 ```
 
-## Running for development
+Then open [https://localhost:80](https://localhost:80) in your browser to visit it.
+
+If you want to set up your local development environment, read our [developer guide](./docs/contribute/developer-guide.md)
+
+
+## 🧑‍💻 Contributing
+
+Welcome, and thank you for your interest in contributing to APITable!
+
+There are many ways in which you can contribute, beyond writing code. 
+
+You can read this repository’s [contributing guidelines](./CONTRIBUTING.md) to learn how to contribute.
+
+Here help you quick start the process of contributing to APITable.
+
+### Run for development
+
+APITable uses Docker to run everything, so relax that Java and NodeJS are unnecessary installed for your local machine.
 
 Make sure you have `docker` & `make` installed locally.
-
-APITable uses Docker to run everything, so relax that Java and NodeJS is no need for your local machine.
 
 Then you run development environment by one command:
 
 ```bash
+# docker compose up the development environment with local code
 make devenv-up
 ```
 
-More details, input `make` command for help.
+Input `make` command to see the help.
 
-### Contributing
+```bash
+# help
+make
+```
 
-#### Basic
+### Git workflow basic
+
+Here's a general APITable git workflow:
 
 1. Create an issue and describe your idea -> [APITable issues](https://github.com/apitable/apitable/issues)
 2. Fork this project -> [Fork APITable project](https://github.com/apitable/apitable/fork)
@@ -169,7 +191,9 @@ More details, input `make` command for help.
 5. Publish the branch (`git push origin my-new-feature`)
 6. Create a new Pull Request -> [Create pull request across forks](https://github.com/apitable/apitable/compare)
 
-#### Conventions
+
+### Conventions
+
 APITable use common use conventions:
 
 - What's our Git branching model? -> [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
