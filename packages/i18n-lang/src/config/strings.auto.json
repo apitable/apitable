@@ -13623,7 +13623,7 @@
             "en_US": "The file is under the current folder. Please select another folder"
         },
         "move_to_modal_title": {
-            "zh_CN": "将【${name}】移动至",
+            "zh_CN": "将「${name}」移动至当前文件夹下",
             "en_US": "Move [${name}] to",
             "zh_HK": "將【${name}】移動至"
         },
@@ -15133,9 +15133,9 @@
             "zh_HK": "更方便地搭建組織和業務架構，快速調整更方便"
         },
         "organization_and_role": {
-            "zh_CN": "组织架构与角色",
-            "en_US": "Organization & Role",
-            "zh_HK": "組織架構與角色"
+            "zh_CN": "组织架构",
+            "en_US": "Organization",
+            "zh_HK": "組織架構"
         },
         "orgin_plan_discount": {
             "zh_CN": "原方案抵扣",
@@ -17161,8 +17161,8 @@
             "zh_HK": "最近添加的小程序（${count} 個）"
         },
         "recently_used_files": {
-            "zh_CN": "最近使用的文件夹",
-            "en_US": "Recently used folders"
+            "zh_CN": "最近访问的文件夹",
+            "en_US": "Recently visited folders"
         },
         "recommend": {
             "zh_CN": "推荐",
@@ -17180,7 +17180,7 @@
             "zh_HK": "記錄"
         },
         "record_activity_experience_tips": {
-            "zh_CN": "高级空间站特权体验中，可查看  ${day}  天的修改历史",
+            "zh_CN": "可查看  ${day}  天的修改历史",
             "en_US": "You are experiencing advanced space privileges, you can view record activity of  ${day}  days",
             "zh_HK": "高級空間站特權體驗中，可查看  ${day}  天的修改歷史"
         },
@@ -18865,11 +18865,11 @@
             "en_US": "There are no members in this role. You can"
         },
         "role_member_table_header_name": {
-            "zh_CN": "成员/团队",
+            "zh_CN": "成员/小组",
             "en_US": "Member / Team"
         },
         "role_member_table_header_team": {
-            "zh_CN": "团队",
+            "zh_CN": "小组",
             "en_US": "Team"
         },
         "role_name_input_placeholder": {
@@ -22390,7 +22390,7 @@
             "zh_HK": "成員字段不存在"
         },
         "team": {
-            "zh_CN": "团队",
+            "zh_CN": "小组",
             "en_US": "Team",
             "zh_HK": "團隊"
         },

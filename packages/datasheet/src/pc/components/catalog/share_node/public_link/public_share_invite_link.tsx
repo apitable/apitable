@@ -150,12 +150,16 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
     }
   };
 
+  const invitable = spaceFeatures?.invitable && !isSocialPlatformEnabled(spaceInfo);
+
   const [link, setLink] = useState<string>();
 
   useEffect(() => {
-    getLink();
+    if (invitable) {
+      getLink();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [invitable]);
   
   /**
    * 复制邀请链接
@@ -249,7 +253,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
           </>
         )
       ) : <DisabledShareFile />}
-      {spaceFeatures?.invitable && !isSocialPlatformEnabled(spaceInfo) && (
+      {invitable && (
         <div className={styles.inviteMore}>
           <Typography className={styles.inviteMoreTitle} variant='body3'>{t(Strings.more_invite_ways)}：</Typography>
           <Tooltip title={t(Strings.default_link_join_tip)} placement="top" overlayStyle={{ width: 190 }}>

@@ -1063,12 +1063,10 @@ export const getSortRowsByGroup = (state: IReduxState, view: IViewProperty, snap
       if (prev !== 0) {
         return prev;
       }
-      const res = Field.bindContext(field, state).compare(
-        getCellValue(state, snapshot, row1.recordId, field.id),
-        getCellValue(state, snapshot, row2.recordId, field.id),
-      );
+      const cv1 = getCellValue(state, snapshot, row1.recordId, field.id);
+      const cv2 = getCellValue(state, snapshot, row2.recordId, field.id);
+      const res = Field.bindContext(field, state).compare(cv1, cv2);
       const sign = descOrders[index] ? -1 : 1;
-
       return res * sign;
     }, 0) || 1;
   });
