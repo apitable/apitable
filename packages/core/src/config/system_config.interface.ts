@@ -191,22 +191,22 @@ export interface SystemConfigInterfaceGuide {
 }
 
 export interface Step {
-    uiConfigId: string;
-    uiType:     UIType;
-    prev?:      string;
-    backdrop?:  Backdrop;
-    onPlay?:    string[];
-    onNext?:    On[];
-    next?:      Next;
-    onPrev?:    On[];
-    nextId?:    NextID;
-    onSkip?:    On[];
-    uiConfig:   string;
-    onClose?:   string[];
-    onTarget?:  On[];
-    byEvent?:   string[];
-    skipId?:    string;
-    skip?:      string;
+    uiConfigId?: string;
+    uiType:      UIType;
+    prev?:       string;
+    backdrop?:   Backdrop;
+    onPlay?:     string[];
+    onNext?:     On[];
+    next?:       Next;
+    onPrev?:     On[];
+    nextId?:     NextID;
+    onSkip?:     On[];
+    uiConfig?:   string;
+    onClose?:    string[];
+    onTarget?:   On[];
+    byEvent?:    string[];
+    skipId?:     string;
+    skip?:       string;
 }
 
 export enum Backdrop {

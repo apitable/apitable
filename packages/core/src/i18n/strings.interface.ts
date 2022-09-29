@@ -3253,6 +3253,7 @@ export interface StringsInterface {
     player_step_ui_config_160: String;
     player_step_ui_config_161: String;
     player_step_ui_config_162: String;
+    player_step_ui_config_163: String;
     player_step_ui_config_17: String;
     player_step_ui_config_18: String;
     player_step_ui_config_19: String;

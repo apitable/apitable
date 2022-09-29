@@ -3614,7 +3614,7 @@
             },
             {
                 "actions": [
-                    "open_guide_wizards([29, 76, 100])"
+                    "open_guide_wizards([29, 76, 101])"
                 ],
                 "rules": [
                     "device_IS_pc",
@@ -3629,7 +3629,7 @@
             },
             {
                 "actions": [
-                    "open_guide_wizards([76, 100])"
+                    "open_guide_wizards([76, 101])"
                 ],
                 "rules": [
                     "sign_up_time_IS_BEFORE_2022-09-15 21:30",
@@ -4240,9 +4240,9 @@
                 "commandArgs": "[21]"
             },
             {
-                "id": "open_guide_wizards([29, 76, 100])",
+                "id": "open_guide_wizards([29, 76, 101])",
                 "command": "open_guide_wizards",
-                "commandArgs": "[29, 76, 100]"
+                "commandArgs": "[29, 76, 101]"
             },
             {
                 "id": "open_guide_wizards([31])",
@@ -4255,9 +4255,9 @@
                 "commandArgs": "[4]"
             },
             {
-                "id": "open_guide_wizards([76, 100])",
+                "id": "open_guide_wizards([76, 101])",
                 "command": "open_guide_wizards",
-                "commandArgs": "[76, 100]"
+                "commandArgs": "[76, 101]"
             },
             {
                 "id": "open_guide_wizards([76, 87])",
@@ -4900,7 +4900,11 @@
             },
             "100": {
                 "completeIndex": -1,
-                "steps": "[[162]]",
+                "steps": "[[162]]"
+            },
+            "101": {
+                "completeIndex": -1,
+                "steps": "[[163]]",
                 "player": {
                     "action": [
                         "recBtbbzXDolQ",
@@ -6401,6 +6405,9 @@
                     "set_wizard_completed({\"curWizard\": true})",
                     "open_guide_next_step({\"clearAllPrevUi\":true})"
                 ]
+            },
+            "163": {
+                "uiType": "notice"
             }
         }
     },
