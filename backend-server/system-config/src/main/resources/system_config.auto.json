@@ -4153,6 +4153,7 @@
                 ]
             },
             "Atlas": {
+                "free": true,
                 "ch_name": "云版本",
                 "plans": [
                     "atlas_unlimited"
@@ -4161,6 +4162,7 @@
                 "category": "BASE",
                 "en_name": "Atlas",
                 "i18nName": "atlas",
+                "channel": "aliyun",
                 "related_features": [
                     "gallery_view_unlimited",
                     "kanban_view_unlimited",
@@ -4219,6 +4221,7 @@
                 "seats": -1,
                 "id": "atlas_unlimited",
                 "product": "Atlas",
+                "channel": "aliyun",
                 "description": "云版本人数不限",
                 "product_en_name": "Atlas",
                 "online": true

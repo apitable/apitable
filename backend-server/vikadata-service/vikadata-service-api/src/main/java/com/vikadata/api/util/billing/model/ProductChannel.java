@@ -16,7 +16,8 @@ public enum ProductChannel {
      VIKA("vika"),
      DINGTALK("dingtalk"),
      LARK("lark"),
-     WECOM("wecom");
+     WECOM("wecom"),
+     ALIYUN("aliyun");
 
     private final String name;
 

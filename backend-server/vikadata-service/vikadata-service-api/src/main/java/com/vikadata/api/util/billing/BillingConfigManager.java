@@ -223,10 +223,10 @@ public class BillingConfigManager {
     }
 
     private static Long getTrueSpecificationByUnit(Long specification, String unit) {
-        if (unit.equalsIgnoreCase("g")) {
+        if ("g".equalsIgnoreCase(unit)) {
             return specification * 1024 * 1024 * 1024L;
         }
-        else if (unit.equalsIgnoreCase("mb")) {
+        else if ("mb".equalsIgnoreCase(unit)) {
             return specification * 1024 * 1024L;
         }
         else {

@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import static com.vikadata.api.util.billing.model.ProductCategory.ADD_ON;
 import static com.vikadata.api.util.billing.model.ProductCategory.BASE;
+import static com.vikadata.api.util.billing.model.ProductChannel.ALIYUN;
 import static com.vikadata.api.util.billing.model.ProductChannel.DINGTALK;
 import static com.vikadata.api.util.billing.model.ProductChannel.LARK;
 import static com.vikadata.api.util.billing.model.ProductChannel.VIKA;
@@ -32,7 +33,9 @@ public enum ProductEnum {
     WECOM_BASE("Wecom_Base", BASE, WECOM, 1),
     WECOM_STANDARD("Wecom_Standard", BASE, WECOM, 2),
     WECOM_ENTERPRISE("Wecom_Enterprise", BASE, WECOM, 3),
-    PRIVATE_CLOUD("Private_Cloud", BASE, WECOM, 0);
+    PRIVATE_CLOUD("Private_Cloud", BASE, WECOM, 0),
+
+    ATLAS("Atlas", BASE, ALIYUN, 0, true);
 
     private final String name;
 

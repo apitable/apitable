@@ -71,6 +71,42 @@ public class BillingConfigManagerTest {
     }
 
     /**
+     * 产品渠道-阿里云计算巢计费：免费产品
+     */
+    @Test
+    public void testGetFreeProductByAliyunChannel() {
+        Product privateFreeProduct = BillingConfigManager.getCurrentFreeProduct(ProductChannel.ALIYUN);
+        assertNotNull(privateFreeProduct);
+        assertEquals(privateFreeProduct.getId(), ProductEnum.ATLAS.getName());
+        Map<String, Plan> planMap = MapUtil.getAny(BillingConfigManager.getBillingConfig().getPlans(), ArrayUtil.toArray(privateFreeProduct.getPlans(), String.class));
+        Assertions.assertThat(planMap).isNotEmpty().hasSize(1);
+        Plan freePlan = planMap.get(planMap.keySet().stream().findFirst().get());
+        BillingPlanFeature planFeature = BillingConfigManager.buildPlanFeature(freePlan, Collections.emptyList());
+        Assertions.assertThat(planFeature.getMaxSeats()).isEqualTo(-1);
+        Assertions.assertThat(planFeature.getMaxSheetNums()).isEqualTo(-1);
+        Assertions.assertThat(planFeature.getMaxApiCall()).isEqualTo(500000);
+        Assertions.assertThat(planFeature.getMaxGanttViewsInSpace()).isEqualTo(-1);
+        Assertions.assertThat(planFeature.getMaxCalendarViewsInSpace()).isEqualTo(-1);
+        Assertions.assertThat(planFeature.getMaxFormViewsInSpace()).isEqualTo(-1);
+        Assertions.assertThat(planFeature.getMaxCapacitySizeInBytes()).isEqualTo(-1);
+        Assertions.assertThat(planFeature.getMaxAdminNums()).isEqualTo(-1);
+        Assertions.assertThat(planFeature.getMaxGalleryViewsInSpace()).isEqualTo(-1);
+        Assertions.assertThat(planFeature.getNodePermissionNums()).isEqualTo(-1);
+        Assertions.assertThat(planFeature.getFieldPermissionNums()).isEqualTo(-1);
+        Assertions.assertThat(planFeature.getMaxKanbanViewsInSpace()).isEqualTo(-1);
+        Assertions.assertThat(planFeature.getMaxRemainTimeMachineDays()).isEqualTo(730);
+        Assertions.assertThat(planFeature.getMaxRemainTrashDays()).isEqualTo(730);
+        Assertions.assertThat(planFeature.getMaxRowsInSpace()).isEqualTo(20000000);
+        Assertions.assertThat(planFeature.getMaxRowsPerSheet()).isEqualTo(50000);
+        Assertions.assertThat(planFeature.getIntegrationDingtalk()).isFalse();
+        Assertions.assertThat(planFeature.getIntegrationFeishu()).isFalse();
+        Assertions.assertThat(planFeature.getIntegrationWeCom()).isFalse();
+        Assertions.assertThat(planFeature.getIntegrationOfficePreview()).isTrue();
+        Assertions.assertThat(planFeature.getRainbowLabel()).isTrue();
+        Assertions.assertThat(planFeature.getWatermark()).isFalse();
+    }
+
+    /**
      * 产品渠道-自营计费：青铜级产品
      */
     @Test
