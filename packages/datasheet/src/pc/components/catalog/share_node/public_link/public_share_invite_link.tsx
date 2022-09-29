@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useRequest } from 'ahooks';
 import { Popover, Tooltip } from 'antd';
@@ -141,14 +141,27 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
     }
     handleCloseShare();
   };
+
+  const getLink = async() => {
+    const token = await generateLinkReq(ROOT_TEAM_ID, nodeId);
+    if (token) {
+      const _link = generateInviteLink(userInfo, token, nodeId);
+      setLink(_link);
+    }
+  };
+
+  const [link, setLink] = useState<string>();
+
+  useEffect(() => {
+    getLink();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   
   /**
    * 复制邀请链接
    */
-  const handleCopyInviteLink = async() => {
-    const token = await generateLinkReq(ROOT_TEAM_ID, nodeId);
-    if (token) {
-      const link = generateInviteLink(userInfo, token, nodeId);
+  const handleCopyInviteLink = () => {
+    if (link) {
       copy2clipBoard(link);
     }
   };
@@ -241,7 +254,6 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
           <Typography className={styles.inviteMoreTitle} variant='body3'>{t(Strings.more_invite_ways)}：</Typography>
           <Tooltip title={t(Strings.default_link_join_tip)} placement="top" overlayStyle={{ width: 190 }}>
             <LinkButton
-              component="button"
               className={styles.inviteMoreMethod}
               underline={false}
               onClick={handleCopyInviteLink}

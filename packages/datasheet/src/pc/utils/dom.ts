@@ -189,6 +189,7 @@ export function copy2clipBoard(content: string, successFn: () => void = copySucc
   input.setAttribute('value', content);
   input.setAttribute('readonly', 'readonly');
   input.select();
+  // Asynchronous operations in safari browser return false
   if (document.execCommand('copy')) {
     successFn();
   }
