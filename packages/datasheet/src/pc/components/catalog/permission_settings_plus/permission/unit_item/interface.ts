@@ -64,6 +64,10 @@ export interface IUnitItemProps {
    * 是否来自详情的列表
    */
   isDetail?: boolean;
+  /**
+   * 是否列权限(临时参数后面修改)
+   */
+  isFieldPermission?: boolean;
 }
 
 export interface IRoleOption {

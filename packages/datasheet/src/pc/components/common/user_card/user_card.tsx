@@ -164,7 +164,7 @@ export const UserCard: FC<IUserCard> = ({
                 <div className={styles.email}>
                   {
                     memberInfo?.email &&
-                      <Typography variant="body4" color={colors.primaryColor} ellipsis tooltipsZIndex={tooltipZIndex}>
+                      <Typography variant="body4" color={colors.textCommonSecondary} ellipsis tooltipsZIndex={tooltipZIndex}>
                         {tagType === TAGTYPE.Alien ? t(Strings.alien_tip_in_user_card) : memberInfo?.email}
                       </Typography>
                   }
@@ -177,7 +177,7 @@ export const UserCard: FC<IUserCard> = ({
                     { memberInfo ?
                       memberInfo?.teamData?.map(item => {
                         return(
-                          <div className={styles.teamItem}><p>-</p><p>{item.fullHierarchyTeamName}</p></div>
+                          <div className={styles.teamItem}><p>-</p><p className={styles.teamText}>{item.fullHierarchyTeamName}</p></div>
                         );
                       }) : isAlien ? t(Strings.alien_tip_in_user_card) : '-' 
                     }

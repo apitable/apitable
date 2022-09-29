@@ -22,6 +22,7 @@ interface IUnitBase {
   isMemberNameModified?: boolean;
   teamData?: ITeamData[];
   desc?: string;
+  unitRefId?: string;
 }
 
 export interface IUnitMap {

@@ -319,6 +319,7 @@ export const EnableFieldPermissionPlus: React.FC<IEnablePermissionPlus> = (props
             isAppointMode
             disabled={item.nodeManageable || readonly}
             disabledTip={readonly ? '' : t(Strings.field_permission_uneditable_tooltips)}
+            isFieldPermission
           />;
         })
       }

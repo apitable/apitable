@@ -277,6 +277,7 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
                     src: item.avatar,
                   }}
                   userId={item.userId || item.uuid}
+                  memberId={item.unitRefId}
                   triggerBase={triggerBase}
                   className={styles.memberInfoCard}
                   isDeleted={item.isDeleted}
