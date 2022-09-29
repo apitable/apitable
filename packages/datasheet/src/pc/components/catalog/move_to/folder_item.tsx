@@ -28,7 +28,7 @@ export const FolderItem: React.FC<{
     >
       <div className={styles.folderItemContent}>
         {Icon}
-        <Typography variant={fontVariant} ellipsis>
+        <Typography className={styles.folderName} variant={fontVariant} ellipsis>
           <span dangerouslySetInnerHTML={{ __html: folderName }} />
         </Typography>
       </div>

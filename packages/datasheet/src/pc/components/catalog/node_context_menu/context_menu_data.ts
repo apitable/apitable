@@ -103,7 +103,7 @@ export const contextItemMap = new Map<ContextItemKey, any>([
    * 移动至
    */
   [ContextItemKey.MoveTo, (onClick: () => void, hidden: boolean) => ({
-    icon: makeNodeIconComponent(NodeIcon.AddFolder),
+    icon: makeNodeIconComponent(NodeIcon.MoveTo),
     text: t(Strings.move_to),
     'data-sensors-click': true,
     id: WORKBENCH_SIDE_ID.OPERATE_ITEM_MOVE_TO,
