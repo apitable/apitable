@@ -50,8 +50,7 @@ export const UnitItem: FC<IUnitItemProps> = props => {
 
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   const curUnitId = useSelector(state => state.user.info?.unitId);
-  const userId = useSelector(state => state.user.info?.userId);
-
+ 
   const title = getSocialWecomUnitName({
     name: unit.name,
     isModified: unit.isMemberNameModified,
@@ -117,7 +116,7 @@ export const UnitItem: FC<IUnitItemProps> = props => {
             </Space>
           }
           triggerBase={unit.isTeam ? undefined : triggerBase}
-          userId={userId}
+          memberId={unit.memberId}
           description={unit.info || ''}
           extra={!isAppointMode ? t(Strings.node_permission_extend_desc) : ''}
           style={{ backgroundColor: 'transparent', height: 'auto' }}

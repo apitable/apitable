@@ -182,7 +182,9 @@ export const MemberTable: FC<IMemberTable> = (props) => {
       align: 'center',
       render: value => {
         const text = value ? value.map(team => team.fullHierarchyTeamName).join(' & ') : [];
-        const tipsTitle = value ? (value.map((team, index) => <div>{index + 1}.{team.fullHierarchyTeamName}</div>)) : ''; 
+        const tipsTitle = value ? (value.map(team => <div className={styles.teamItem}>
+          <p>-</p><p>{team.fullHierarchyTeamName}</p>
+        </div>)) : ''; 
         return (
           <Tooltip title={tipsTitle} rowsNumber={2} textEllipsis overflowWidth={200} showTipAnyway>
             <span className={styles.tipText}>{text || selectedTeamInfoInSpace!.teamTitle}</span>

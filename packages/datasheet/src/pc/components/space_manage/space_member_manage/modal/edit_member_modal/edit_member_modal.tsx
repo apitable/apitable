@@ -15,6 +15,7 @@ import { useMemberManage } from 'pc/hooks';
 import { isPrimaryOrOwnFunc } from '../../utils';
 import { isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'pc/components/home/social_platform';
 import { WecomOpenData } from 'pc/components/address_list';
+import { Tooltip } from 'pc/components/common';
 
 interface IModalProps {
   cancelModalVisible: () => void;
@@ -142,7 +143,9 @@ export const EditMemberModal: FC<IModalProps> = ({ cancelModalVisible, pageNo, r
     return tempList.map(item => {
       return (
         <span className={styles.teamWrapper} key={item.teamId}>
-          <span className={styles.teamText}>{item.teamName}</span>
+          <Tooltip title={item.teamName} textEllipsis showTipAnyway>
+            <span className={styles.teamText}>{item.teamName}</span>
+          </Tooltip>
           {teamList.length > 0 && !isSocialFeiShu(spaceInfo) && (
             <span className={styles.teamRemoveIcon} onClick={() => removeTeam(item.teamId)}>
               <CloseIcon />

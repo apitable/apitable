@@ -98,7 +98,7 @@ export const UserCard: FC<IUserCard> = ({
       return t(Strings.member_status_removed);
     }
   
-    if(!isActive) {
+    if(!isActive || (memberInfo && !memberInfo.isActive)) {
       return t(Strings.added_not_yet);
     }
   
@@ -157,7 +157,7 @@ export const UserCard: FC<IUserCard> = ({
                       <Tag className={styles.permission} color={TagColors[memberRole]}>{ConfigConstant.permissionText[memberRole]}</Tag>
                     </div>
                   }
-                  <TeamTag tagText={tagText} isActive={isActive} />
+                  <TeamTag tagText={tagText} isActive={memberInfo ? memberInfo.isActive as boolean | undefined : isActive } />
                 </div>
               </div>
               <div className={styles.infoWrapper}>
@@ -177,9 +177,9 @@ export const UserCard: FC<IUserCard> = ({
                     { memberInfo ?
                       memberInfo?.teamData?.map(item => {
                         return(
-                          <div className={styles.teamItem}>- {item.fullHierarchyTeamName}</div>
+                          <div className={styles.teamItem}><p>-</p><p>{item.fullHierarchyTeamName}</p></div>
                         );
-                      }) : t(Strings.alien_tip_in_user_card)
+                      }) : isAlien ? t(Strings.alien_tip_in_user_card) : '-' 
                     }
                   </div>
                 </div>

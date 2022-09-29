@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC } from 'react';
 import * as React from 'react';
 import styles from './style.module.less';
 import { Tooltip, Avatar, IAvatarProps } from 'pc/components/common';
@@ -31,6 +31,7 @@ interface IInfoCardProps {
   isDeleted?: boolean;
   memberType?: number;
   isActive?: boolean;
+  desc?: string;
 }
 // const searchTag = '<span class="highLight">';
 
@@ -38,13 +39,11 @@ export const InfoCard: FC<IInfoCardProps> = props => {
   const { 
     title, originTitle = '', description, onClick, extra, triggerBase,
     inSearch = false, className, avatarProps, token, userId, memberId,
-    isDeleted = false, memberType = 3, isActive = true,...rest 
+    isDeleted = false, memberType = 3, isActive = true, desc, ...rest 
   } = props;
 
-  const isMember = useMemo(() => {
-    return memberType === MemberType.Member;
-  }, [memberType]);
-
+  const isMember = memberType === MemberType.Member;
+  const isSelf = userId === 'Self';
   return (
    
     <div
@@ -55,7 +54,7 @@ export const InfoCard: FC<IInfoCardProps> = props => {
     >
       
       <div className={classNames(styles.defaultContent, { [styles.isLeave] : (isDeleted || !isActive) && isMember })}>
-        { (triggerBase && userId !== 'Self' && isMember )? <UserCardTrigger
+        { (triggerBase && !isSelf && isMember )? <UserCardTrigger
           {...triggerBase}
           userId={userId}
           memberId={memberId}
@@ -67,11 +66,13 @@ export const InfoCard: FC<IInfoCardProps> = props => {
         >
           <div style={{ cursor:  'pointer' }}>
             <Avatar
+              
               {...avatarProps}
             />
           </div>
         </UserCardTrigger> :
           <Avatar
+            isDefaultIcon={isSelf}
             {...avatarProps}
           />
         }
@@ -83,6 +84,7 @@ export const InfoCard: FC<IInfoCardProps> = props => {
                 <Tooltip title={title} textEllipsis>
                   <div className={classNames(styles.title, 'title')}>
                     {title}
+                    {desc && <span className={styles.unitDesc}>{`（${desc}）`}</span>}
                   </div>
                 </Tooltip>
                 <div className={styles.token}>
@@ -91,7 +93,7 @@ export const InfoCard: FC<IInfoCardProps> = props => {
               </div>
           }
           {description &&
-           <OmittedMiddleText text={description} />
+           <OmittedMiddleText suffixCount={5}>{description}</OmittedMiddleText>
           }
           {
             extra && <div className={styles.description}>{extra || ''}</div>

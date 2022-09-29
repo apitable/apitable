@@ -83,6 +83,7 @@ export interface IUnitInfo {
   name: string;
   info: string;
   isTeam: boolean;
+  memberId?: string;
   // 企微
   isMemberNameModified?: boolean;
 }
