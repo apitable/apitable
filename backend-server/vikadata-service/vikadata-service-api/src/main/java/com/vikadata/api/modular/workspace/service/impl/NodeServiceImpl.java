@@ -499,13 +499,11 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         }
         // 批量查询节点信息
         List<NodeInfoVo> infos = nodeMapper.selectNodeInfoByNodeIds(roleDict.keySet(), memberId);
-        Map<String, NodeInfoVo> nodeIdToInfoMap = infos.stream().collect(Collectors.toMap(NodeInfoVo::getNodeId, vo -> vo));
-        // 构建有序集合
-        List<NodeInfoVo> nodeInfos = new ArrayList<>();
-        roleDict.keySet().stream().filter(nodeIdToInfoMap::containsKey).forEach(nodeId -> nodeInfos.add(nodeIdToInfoMap.get(nodeId)));
+        // Node switches to memory custom sorting
+        CollectionUtil.customSequenceSort(infos, NodeInfoVo::getNodeId, new ArrayList<>(roleDict.keySet()));
         SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
-        setRole(nodeInfos, roleDict, feature);
-        return nodeInfos;
+        setRole(infos, roleDict, feature);
+        return infos;
     }
 
     @Override
@@ -1880,7 +1878,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (null == document || document.getNodeIds().isEmpty()) {
             return new ArrayList<>();
         }
-        List<NodeInfoVo> nodeInfos = this.getNodeInfoByNodeIds(spaceId, memberId, document.getNodeIds());
+        List<NodeInfoVo> nodeInfos = this.getNodeInfoByNodeIds(spaceId, memberId,
+                CollUtil.reverse(document.getNodeIds()));
         return formatNodeSearchResults(spaceId, nodeInfos);
     }
 
