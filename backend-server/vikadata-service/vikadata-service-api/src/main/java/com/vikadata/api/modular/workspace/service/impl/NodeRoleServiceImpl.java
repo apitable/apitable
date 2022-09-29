@@ -331,6 +331,7 @@ public class NodeRoleServiceImpl implements INodeRoleService {
         unit.setUnitId(rootTeamUnitId);
         unit.setUnitType(UnitType.TEAM.getType());
         UnitTeamVo team = iOrganizationService.findUnitTeamVo(spaceId, rootTeamId);
+        unit.setUnitRefId(team.getTeamId());
         unit.setUnitName(team.getTeamName());
         unit.setMemberCount(team.getMemberCount());
         return unit;
@@ -382,6 +383,7 @@ public class NodeRoleServiceImpl implements INodeRoleService {
                 Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap = iTeamService.batchGetFullHierarchyTeamNames(memberIds, spaceId);
                 for (UnitMemberVo member : memberVos) {
                     NodeRoleUnit unit = unitIdToFieldRoleMap.get(member.getUnitId());
+                    unit.setUnitRefId(member.getMemberId());
                     unit.setUnitName(member.getMemberName());
                     unit.setAvatar(member.getAvatar());
                     unit.setTeams(member.getTeams());
