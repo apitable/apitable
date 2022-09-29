@@ -65,20 +65,23 @@ export const MoveTo: React.FC<{
       Message.error({ content: t(Strings.move_to_error_equal_parent) });
       return;
     }
-    setConfirmLoading(true);
-    const move = () => Api.nodeMove(nodeId, selectedNodeId).then(res => {
-      setConfirmLoading(false);
-      const { data, success, message } = res.data;
-      if (!success) {
-        Message.error({ content: message });
-        dispatch(StoreActions.setErr(message));
-        return;
-      }
-      dispatch(StoreActions.moveTo(nodeId, selectedNodeId, 0));
-      dispatch(StoreActions.addNodeToMap(data));
-      onClose && onClose();
-      moveSuccess(nodeId);
-    });
+    
+    const move = () => {
+      setConfirmLoading(true);
+      Api.nodeMove(nodeId, selectedNodeId).then(res => {
+        setConfirmLoading(false);
+        const { data, success, message } = res.data;
+        if (!success) {
+          Message.error({ content: message });
+          dispatch(StoreActions.setErr(message));
+          return;
+        }
+        dispatch(StoreActions.moveTo(nodeId, selectedNodeId, 0));
+        dispatch(StoreActions.addNodeToMap(data));
+        onClose && onClose();
+        moveSuccess(nodeId);
+      });
+    };
     if (!nodePermitSet) {
       const modal = Modal.confirm({
         type: 'warning',
