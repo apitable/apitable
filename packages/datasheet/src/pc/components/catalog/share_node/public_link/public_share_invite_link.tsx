@@ -29,7 +29,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
   const dispatch = useDispatch();
   const { getShareSettingsReq } = useCatalogTreeRequest();
   const { generateLinkReq } = useInviteRequest();
-  const { run: getShareSettings, data: shareSettings, loading } =
+  const { run: getShareSettings, data: shareSettings } =
     useRequest<IShareSettings, any>(() => getShareSettingsReq(nodeId));
   const { userInfo, treeNodesMap, spaceFeatures, spaceInfo } = useSelector((state: IReduxState) => ({
     treeNodesMap: state.catalogTree.treeNodesMap,
@@ -214,10 +214,13 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
 
   const renderInviteByQrCode = () => {
     return (
-      <Typography className={styles.inviteMoreMethod} variant='body3'>
-        <ShareQrcodeOutlined currentColor />
-        <span>{t(Strings.invite_by_qr_code)}</span>
-      </Typography>
+      <LinkButton
+        className={styles.inviteMoreMethod}
+        underline={false}
+        prefixIcon={<ShareQrcodeOutlined currentColor />}
+      >
+        {t(Strings.invite_by_qr_code)}
+      </LinkButton>
     );
   };
 
@@ -233,7 +236,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
         </Tooltip>
       </div>
       {spaceFeatures?.fileSharable ? (
-        !loading && shareSettings && shareSettings.shareOpened && (
+        shareSettings && shareSettings.shareOpened && (
           <>
             <div className={styles.sharePerson}>
               <Typography className={styles.sharePersonContent} variant='body2'>{t(Strings.get_link_person_on_internet)}</Typography>
