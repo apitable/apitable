@@ -1,5 +1,5 @@
 import { ISpaceBasicInfo, LINK_REG } from '@vikadata/core';
-import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
+import { getSocialWecomUnitName, isSocialWecom } from 'pc/components/home/social_platform';
 
 export interface ITextNode {
   type: string;
@@ -152,7 +152,7 @@ export function serialize(nodes: ITextNode | ITextNode[], spaceInfo?: ISpaceBasi
         }) : nodes?.data?.name;
         let memberName: string | JSX.Element = '';
         // /node/remind 接口特定成员数据结构
-        if (isRemind && spaceInfo && !isMemberNameModified) {
+        if (isRemind && spaceInfo && isSocialWecom(spaceInfo) && !isMemberNameModified) {
           memberName = ' @$userName=' + (nodes?.data?.name || '') + '$ ';
         } else if (typeof title === 'string') {
           memberName = ' @' + (title || '') + ' ';
