@@ -8,10 +8,10 @@ import { useDebounce, useUpdateEffect } from 'ahooks';
 import classNames from 'classnames';
 import Fuse from 'fuse.js';
 import { isEqual } from 'lodash';
-import Image from 'next/image';
 import { Loading, Tooltip } from 'pc/components/common';
 import { TComponent } from 'pc/components/common/t_component';
 import { expandRecordInCenter } from 'pc/components/expand_record';
+import { expandPreviewModalClose } from 'pc/components/preview_file';
 import { useDispatch, useGetViewByIdWithDefault } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import * as React from 'react';
@@ -21,7 +21,6 @@ import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import ImageNoRecord from 'static/icon/datasheet/datasheet_img_modal_norecord.png';
 import { RecordList } from './record_list';
 import style from './style.module.less';
-import { expandPreviewModalClose } from 'pc/components/preview_file';
 
 interface ISearchContentProps {
   field: ILinkField;
@@ -336,7 +335,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
             <div className={style.empty}>
               {onlyShowSelected ?
                 <>
-                  <Image height={151} src={ImageNoRecord} alt="no record" />
+                  <img height={151} src={ImageNoRecord.src} alt="no record" />
                   <div className={style.text}>{t(Strings.no_selected_record)}</div>
                 </> :
                 <>
