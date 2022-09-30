@@ -30,7 +30,7 @@ export class EnvConfigService implements OnApplicationBootstrap, OnApplicationSh
     // oss常量配置
     const oss: IOssConfig = {
       host: process.env.OSS_HOST || this.configService.get<string>('oss.host'),
-      type: process.env.OSS_TYPE || this.configService.get<string>('oss.type'),
+      bucket: process.env.OSS_BUCKET || this.configService.get<string>('oss.bucket'),
     };
     this.configStore.set(EnvConfigKey.OSS, oss);
 

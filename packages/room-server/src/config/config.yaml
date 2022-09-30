@@ -30,7 +30,7 @@ server:
 # 对象存储配置
 oss:
   host: https://s1.vika.cn
-  type: QNY1
+  bucket: QNY1
   # cacheType:
   minio:
     endPoint: ''

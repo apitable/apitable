@@ -233,7 +233,7 @@ describe('AttachmentField', () => {
       expect(data![0].width).toBe(undefined);
       expect(data![0].name).toBe('互联网传媒行业：2020微博动漫白皮书.pdf');
       expect(data![0].mimeType).toBe('application/pdf');
-      expect(data![0].bucket).toBe(oss.type);
+      expect(data![0].bucket).toBe(oss.bucket);
     });
 
     it('pdf--should return without height/with but preview without host', async () => {
@@ -275,7 +275,7 @@ describe('AttachmentField', () => {
       expect(data![0].width).toBe(undefined);
       expect(data![0].name).toBe('阿里巴巴Java开发手册（华山版）.pdf');
       expect(data![0].mimeType).toBe('application/pdf');
-      expect(data![0].bucket).toBe(oss.type);
+      expect(data![0].bucket).toBe(oss.bucket);
     });
   });
 
@@ -289,7 +289,7 @@ describe('AttachmentField', () => {
             token: 'space/2020/06/20/38f89e81bb83496da5d8af6a0ba637ec',
             preview: 'space/2020/06/20/38f89e81bb83496da5d8af6a0ba637ec',
             size: 5008519,
-            bucket: oss.type,
+            bucket: oss.bucket,
             height: 0,
             width: 0,
             name: '互联网传媒行业：2020微博动漫白皮书.pdf',
@@ -319,7 +319,7 @@ describe('AttachmentField', () => {
               token: 'space/2020/06/20/38f89e81bb83496da5d8af6a0ba637ec',
               preview: 'space/2020/06/20/166113199f5848e7884207c4b54d521f',
               size: 5008519,
-              bucket: oss.type,
+              bucket: oss.bucket,
               height: 0,
               width: 0,
               name: '互联网传媒行业：2020微博动漫白皮书.pdf',
@@ -343,7 +343,7 @@ describe('AttachmentField', () => {
             name: '9d4911932181f254433a86b05797f9a6 (1).jpeg',
             height: 478,
             width: 479,
-            bucket: oss.type,
+            bucket: oss.bucket,
           },
         ] as ICellValue,
         field,

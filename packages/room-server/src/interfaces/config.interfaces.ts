@@ -31,7 +31,7 @@ export interface IServerConfig {
 
 export interface IOssConfig {
   host: string;
-  type: string;
+  bucket: string;
 }
 
 export interface IActuatorConfig {
