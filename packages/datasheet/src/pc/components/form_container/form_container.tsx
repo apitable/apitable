@@ -44,7 +44,10 @@ enum IFormContentType {
 }
 
 const serialize = nodes => {
-  return nodes?.map(n => Node.string(n)).join('\n');
+  if (Array.isArray(nodes)) {
+    return nodes.map(n => Node.string(n)).join('\n');
+  }
+  return '';
 };
 
 const isEmptyValue = value => {
