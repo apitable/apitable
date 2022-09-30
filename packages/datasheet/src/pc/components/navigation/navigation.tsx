@@ -322,7 +322,7 @@ export const Navigation: FC = () => {
             if (typeof item.icon === 'string') {
               NavIcon = WorkplaceIcon;
             }
-            const isActive = router.pathname.includes(item.key);
+            const isActive = router.pathname.split('/')[1] === item.key;
             const NavItem = (): React.ReactElement => (
               <Link href={item.routeAddress}>
                 <a
