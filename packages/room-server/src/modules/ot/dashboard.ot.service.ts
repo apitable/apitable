@@ -41,7 +41,7 @@ export class DashboardOtService {
             }
             this.logger.info(`dashboard operations log =====> :${JSON.stringify(operations)}`);
             if ('oi' in action) {
-              resultSet.addWidgetIds.push(action['oi'][0].id);
+              resultSet.addWidgetIds.push(action['oi'].id);
             }
             if ('li' in action) {
               resultSet.addWidgetIds.push(action['li'].id);
@@ -58,7 +58,7 @@ export class DashboardOtService {
               resultSet.deleteWidgetIds.push(action['ld'].id);
             }
             if ('od' in action) {
-              resultSet.deleteWidgetIds.push(action['od'][0].id);
+              resultSet.deleteWidgetIds.push(action['od'].id);
             }
           }
         }
@@ -99,7 +99,7 @@ export class DashboardOtService {
     if (!deleteWidgetIds.length) { return; }
     this.logger.info('[ ======> 批量新增 widget 开始]');
     for (const widgetId of resultSet.addWidgetIds) {
-      if (deleteWidgetIds.includes(widgetId)) {
+      if (widgetId && deleteWidgetIds.includes(widgetId)) {
         await manager.createQueryBuilder()
           .update(WidgetEntity)
           .set({ isDeleted: false })
