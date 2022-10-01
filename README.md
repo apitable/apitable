@@ -184,7 +184,7 @@ make
 
 Here's a general APITable git workflow:
 
-1. Create an issue and describe your idea -> [APITable issues](https://github.com/apitable/apitable/issues)
+1. Create an issue and describe features you want -> [APITable issues](https://github.com/apitable/apitable/issues)
 2. Fork this project -> [Fork APITable project](https://github.com/apitable/apitable/fork)
 3. Create your feature branch (`git checkout -b my-new-feature`)
 4. Commit your changes (`git commit -am 'Add some feature'`)
