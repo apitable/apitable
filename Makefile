@@ -12,8 +12,23 @@ GID := $(shell id -g)
 export GID
 endif
 
-_DATAENV := docker compose -p apitable-devenv -f docker-compose.yaml
-_DEVENV := docker compose -p apitable-devenv -f docker-compose.devenv.yaml 
+ifndef ENV_FILE
+ENV_FILE := .env
+export ENV_FILE
+endif
+
+ifndef DATA_PATH
+DATA_PATH := ./
+export DATA_PATH
+endif
+
+ifndef DEVENV_PROJECT_NAME
+DEVENV_PROJECT_NAME := apitable-devenv
+export DEVENV_PROJECT_NAME
+endif
+
+_DATAENV := docker compose --env-file $$ENV_FILE -p $$DEVENV_PROJECT_NAME -f docker-compose.yaml
+_DEVENV := docker compose --env-file $$ENV_FILE -p $$DEVENV_PROJECT_NAME -f docker-compose.devenv.yaml 
 
 OS_NAME := $(shell uname -s | tr A-Z a-z)
 ifeq ($(OS_NAME), darwin)
@@ -297,8 +312,10 @@ _install-socket-server:
 devenv-socket-server:
 	$(RUNNER) socket-server sh -c "cd packages/socket-server/ && yarn run start:dev"
 
+
+
 .PHONY: install
-install: _install-web-server _install-backend-server _install-socket-server _install-room-server ## install all dependencies
+install: _install-web-server _install-backend-server _install-socket-server _install-room-server ## install all dependencies with docker devenv
 	echo 'Install Finished'
 
 .PHONY:
@@ -343,11 +360,21 @@ patch: # bump version number patch
 dataenv:
 	make dataenv-up
 
-DATAENV_SERVICES := mysql minio redis rabbitmq mongodb init-schema init-data-mysql init-data-minio
+DATAENV_SERVICES := mysql minio redis rabbitmq mongo1 mongo2 mongo3 init-schema init-data-mysql init-data-minio init-mongo
 
 .PHONY: dataenv-up
-dataenv-up:
+dataenv-up: _dataenv-volumes
 	$(_DATAENV) up -d $(DATAENV_SERVICES)
+
+_dataenv-volumes: ## create data folder with current user permissions
+	mkdir -p $$DATA_PATH/.data/mysql \
+		$$DATA_PATH/.data/minio/data \
+		$$DATA_PATH/.data/minio/config \
+		$$DATA_PATH/.data/redis \
+		$$DATA_PATH/.data/rabbitmq \
+		$$DATA_PATH/.data/mongo1 \
+		$$DATA_PATH/.data/mongo2 \
+		$$DATA_PATH/.data/mongo3
 
 dataenv-down:
 	$(_DATAENV) down

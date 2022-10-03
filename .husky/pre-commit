@@ -1,7 +1,0 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-cd apitable
-
-npx lint-staged
-# npx pretty-quick --pattern "**/*.*(ts|tsx)" --staged
