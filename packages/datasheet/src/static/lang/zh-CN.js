@@ -369,6 +369,8 @@ window.vika_i18n =
   "async_compute": "异步计算",
   "at_least_select_one": "至少要选择一个人",
   "at_least_select_one_field": "至少要选择一个成员字段",
+  "atlas": "云版本",
+  "atlas_grade_desc": "云版本内的各空间站权益一致，空间站成员享有所处版本的相关权益。",
   "attachment_capacity_details_entry": "查看明细",
   "attachment_capacity_details_model_capacity_size": "容量大小",
   "attachment_capacity_details_model_expiry_time": "到期时间",

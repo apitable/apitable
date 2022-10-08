@@ -1848,6 +1848,16 @@
             "en_US": "Select at least one member field",
             "zh_HK": "至少要選擇一個成員字段"
         },
+        "atlas": {
+            "zh_CN": "云版本",
+            "en_US": "Atlas",
+            "zh_HK": "雲版本"
+        },
+        "atlas_grade_desc": {
+            "zh_CN": "云版本内的各空间站权益一致，空间站成员享有所处版本的相关权益。",
+            "en_US": "Consistent benefits across spaces within Atlas,Members in the Spaces of different Atlas enjoy different benefits.",
+            "zh_HK": "雲版本內的各空間站權益一致，空間站成員享有所處版本的相關權益。"
+        },
         "attachment_capacity_details_entry": {
             "zh_CN": "查看明细",
             "en_US": "Details"
