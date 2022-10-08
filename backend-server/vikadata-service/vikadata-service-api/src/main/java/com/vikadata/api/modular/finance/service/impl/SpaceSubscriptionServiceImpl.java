@@ -518,8 +518,8 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
     @Override
     public long getPlanAuditQueryDays(String spaceId) {
         BillingPlanFeature planFeature = getPlanFeature(spaceId);
-        long value = planFeature.getMaxAuditQueryDays();
-        ExceptionUtil.isFalse(value == 0L, BillingException.ACCOUNT_BUNDLE_ERROR);
+        Long value = planFeature.getMaxAuditQueryDays();
+        ExceptionUtil.isTrue(value != null && value > 0L, BillingException.PLAN_FEATURE_NOT_SUPPORT);
         return value;
     }
 

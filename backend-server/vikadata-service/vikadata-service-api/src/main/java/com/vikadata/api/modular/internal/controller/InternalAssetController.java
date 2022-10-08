@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @ApiResource(path = "/internal/asset")
-@Api(tags = "内部服务-附件资源相关接口")
+@Api(tags = "Internal Server - Asset API")
 public class InternalAssetController {
 
     @Resource
@@ -43,19 +43,19 @@ public class InternalAssetController {
     private IAssetCallbackService iAssetCallbackService;
 
     @GetResource(path = "/upload/preSignedUrl", requiredPermission = false)
-    @ApiOperation(value = "获取上传预签名URL")
+    @ApiOperation(value = "Get Upload PreSigned URL")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "nodeId", value = "节点ID", required = true, dataTypeClass = String.class, paramType = "query", example = "dst123"),
-            @ApiImplicitParam(name = "count", value = "创建的数量（默认为1，最大为20）", dataTypeClass = String.class, paramType = "query", example = "2")
+            @ApiImplicitParam(name = "nodeId", value = "node custom id", required = true, dataTypeClass = String.class, paramType = "query", example = "dst123"),
+            @ApiImplicitParam(name = "count", value = "number to create (default 1, max 20)", dataTypeClass = String.class, paramType = "query", example = "2")
     })
     public ResponseData<List<AssetUploadCertificateVO>> getSpaceCapacity(@RequestParam("nodeId") String nodeId, @RequestParam(name = "count", defaultValue = "1") Integer count) {
         Long userId = SessionContext.getUserId();
         return ResponseData.success(iAssetUploadTokenService.createSpaceAssetPreSignedUrl(userId, nodeId, AssetType.DATASHEET.getValue(), count));
     }
 
-    @GetResource(name = "获取资源信息", path = "/get", requiredLogin = false)
-    @ApiOperation(value = "获取资源信息", notes = "场景：Fusion附件字段数据写入查询")
-    @ApiImplicitParam(name = "resourceKey", value = "资源名", required = true, dataTypeClass = String.class, paramType = "query", example = "2019/12/10/159")
+    @GetResource(name = "Get Asset Info", path = "/get", requiredLogin = false)
+    @ApiOperation(value = "Get Asset Info", notes = "scene：Fusion server query the attachment field data before writing")
+    @ApiImplicitParam(name = "token", value = "resource key", required = true, dataTypeClass = String.class, paramType = "query", example = "space/2019/12/10/159")
     public ResponseData<AssetUploadResult> get(@RequestParam("token") String token) {
         // load asset upload result
         List<AssetUploadResult> results = iAssetCallbackService.loadAssetUploadResult(AssetType.DATASHEET, Collections.singletonList(token));
