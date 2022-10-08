@@ -83,7 +83,7 @@ async function bootstrap() {
     // 开发模式下不上报异常
     enabled: Boolean(!isDevMode && sentryDsn),
     dsn: sentryDsn,
-    environment: process.env.NODE_ENV,
+    environment: process.env.ENV,
     integrations: [
       new Sentry.Integrations.Http({ tracing: true }),
       new Tracing.Integrations.Mysql(),
