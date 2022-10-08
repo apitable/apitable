@@ -198,14 +198,6 @@ export const EnableFieldPermissionPlus: React.FC<IEnablePermissionPlus> = (props
     };
   };
 
-  const roleOptions = [{
-    value: permission.editor,
-    label: t(Strings.can_edit),
-  }, {
-    value: permission.reader,
-    label: t(Strings.can_read),
-  }];
-
   const resetPermission = async() => {
     const res = await DatasheetApi.setFieldPermissionStatus(datasheetId, field.id, false);
     const { success, message } = res.data;
@@ -288,7 +280,7 @@ export const EnableFieldPermissionPlus: React.FC<IEnablePermissionPlus> = (props
       resetPermission={resetPermission}
       toggleIsMemberDetail={toggleIsMemberDetail}
       batchEditRole={batchEditRole}
-      defaultRole={roleOptions}
+      defaultRole={permissionList}
       batchDeleteRole={batchDeleteRole}
       readonly={readonly}
       tipOptions={{
@@ -306,7 +298,7 @@ export const EnableFieldPermissionPlus: React.FC<IEnablePermissionPlus> = (props
             key={item.unitId}
             unit={createStandardUnit(item)}
             role={item.role}
-            roleOptions={roleOptions}
+            roleOptions={permissionList}
             allowRemove={item.canRemove}
             onChange={editRole}
             onRemove={onRemove}

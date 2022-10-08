@@ -13,7 +13,6 @@ import { permissionMenuData } from 'pc/utils';
 import { Skeleton, IOption, Box } from '@vikadata/components';
 import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
 import { PermissionInfoSetting } from './permission_info_setting';
-import { DEFAULT_ROLE } from './unit_item';
 import { dispatch } from 'pc/worker/store';
 import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
 
@@ -237,7 +236,7 @@ export const Permission: FC<IPermissionSettingProps> = ({ data }) => {
           isExtend={!isAppointMode}
           resetPermission={resetPermission}
           toggleIsMemberDetail={toggleIsMemberDetail}
-          defaultRole={DEFAULT_ROLE}
+          defaultRole={optionData}
           batchEditRole={batchChangeUnitRole}
           batchDeleteRole={batchDeleteRole}
           readonly={!nodeAssignable}
@@ -256,6 +255,7 @@ export const Permission: FC<IPermissionSettingProps> = ({ data }) => {
           roleUnits={roleMap.roleUnits}
           onDelete={deleteUnit}
           onChange={changeUnitRole}
+          roleOptions={optionData}
           isAppointMode={isAppointMode || isRootNode}
           readonly={!nodeAssignable}
         />

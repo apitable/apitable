@@ -137,10 +137,15 @@ const BatchSetting = (props: { defaultRole: IRoleOption[]; onClick?: (role: stri
       overlay={
         <Menu onClick={() => setBatchSelectVisible(false)}>
           {defaultRole.map(v => (
-            <MenuItem key={v.value} {...v} onClick={onClick} />
+            <MenuItem key={v.value} item={v} onClick={onClick} />
           ))}
           {onRemove && (
-            <MenuItem className={styles.batchDeleteItem} label={t(Strings.remove_role)} value={'remove'} onClick={onRemove}>
+            <MenuItem
+              className={styles.batchDeleteItem}
+              item={{ label: t(Strings.remove_role), value: 'remove' }}
+              option={{ labelColor: colors.textDangerDefault }}
+              onClick={onRemove}
+            >
               {t(Strings.remove_role)}
             </MenuItem>
           )}

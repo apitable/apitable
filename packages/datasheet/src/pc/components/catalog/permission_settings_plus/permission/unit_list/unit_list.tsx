@@ -3,6 +3,7 @@ import { IRoleUnit, IMember } from '@vikadata/core';
 import { UnitItem } from '../unit_item';
 import styles from './style.module.less';
 import classNames from 'classnames';
+import { IRoleOption } from '../unit_item/interface';
 
 export interface IUnitListProps {
   admins: IMember[];
@@ -10,6 +11,7 @@ export interface IUnitListProps {
   roleUnits: IRoleUnit[];
   readonly?: boolean;
   isAppointMode: boolean;
+  roleOptions?: IRoleOption[];
   // setChangingRoleUnitId: React.Dispatch<React.SetStateAction<string>>;
   onDelete?: (unitId: string) => void;
   onChange?: (unitId: string, role: string) => void;
@@ -19,6 +21,7 @@ export const UnitList: FC<IUnitListProps> = ({
   roleUnits,
   admins,
   owner,
+  roleOptions,
   readonly,
   isAppointMode,
   onDelete,
@@ -45,6 +48,7 @@ export const UnitList: FC<IUnitListProps> = ({
             admin: true,
             permissionOpener: isPermissionOpener,
           }}
+          roleOptions={roleOptions}
           disabled
           allowRemove={false}
           isAppointMode={isAppointMode}
@@ -69,6 +73,7 @@ export const UnitList: FC<IUnitListProps> = ({
             identity={{
               permissionOpener: true,
             }}
+            roleOptions={roleOptions}
             disabled
             allowRemove={false}
             isAppointMode={isAppointMode}
@@ -94,6 +99,7 @@ export const UnitList: FC<IUnitListProps> = ({
             disabled={readonly}
             onChange={onChange}
             onRemove={onDelete}
+            roleOptions={roleOptions}
             isAppointMode={isAppointMode}
           />
         )

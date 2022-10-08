@@ -177,9 +177,14 @@ export const UnitItem: FC<IUnitItemProps> = props => {
           overlay={
             <Menu>
               {roleOptions.map(v => (
-                <MenuItem key={v.value} onClick={() => clickRole(unit.id, v.value)} active={role === v.value} {...v} />
+                <MenuItem key={v.value} onClick={() => clickRole(unit.id, v.value)} active={role === v.value} item={v} />
               ))}
-              <MenuItem className={styles.delete} label={t(Strings.remove_role)} value={'remove'} onClick={() => removeRole(unit.id)}>
+              <MenuItem
+                className={styles.delete}
+                item={{ label: t(Strings.remove_role), value: 'remove' }}
+                option={{ labelColor: colors.textDangerDefault }}
+                onClick={() => removeRole(unit.id)}
+              >
                 {t(Strings.remove_role)}
               </MenuItem>
             </Menu>
