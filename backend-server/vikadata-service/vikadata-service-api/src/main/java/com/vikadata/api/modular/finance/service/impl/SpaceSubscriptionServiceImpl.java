@@ -368,8 +368,8 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
         // 赠送的附件容量
         Long unExpireGiftCapacity = this.getSpaceUnExpireGiftCapacity(spaceId);
         result.setUnExpireGiftCapacity(unExpireGiftCapacity);
-        if(unExpireGiftCapacity != 0){
-            result.setMaxCapacitySizeInBytes(result.getMaxCapacitySizeInBytes() - unExpireGiftCapacity * 1024 + unExpireGiftCapacity);
+        if (unExpireGiftCapacity != 0) {
+            result.setMaxCapacitySizeInBytes(result.getMaxCapacitySizeInBytes() + unExpireGiftCapacity);
         }
         // 订阅套餐容量
         Long subscriptionCapacity = result.getMaxCapacitySizeInBytes() - unExpireGiftCapacity;
