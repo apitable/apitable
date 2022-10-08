@@ -295,6 +295,8 @@ export interface IRoleUnit {
   avatar: string;
   teams: string;
   role: string;
+  unitRefId?: string;
+  teamData: ITeamData[];
 }
 
 export interface IRoleMember {

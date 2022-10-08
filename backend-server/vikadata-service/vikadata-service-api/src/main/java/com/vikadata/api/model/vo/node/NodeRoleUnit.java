@@ -50,4 +50,8 @@ public class NodeRoleUnit {
 
     @ApiModelProperty(value = "team id and full hierarchy team path name", position = 8)
     private List<MemberTeamPathInfo> teamData;
+
+    @ApiModelProperty(value = "memberId / teamId", example = "1", position = 9)
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long unitRefId;
 }

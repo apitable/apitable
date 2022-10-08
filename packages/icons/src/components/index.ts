@@ -285,3 +285,5 @@ export { UnfullscreenOutlined } from './unfullscreen_outlined';
 export { ClearOutlined } from './clear_outlined';
 export { PauseFilled } from './Pause_filled';
 export { ConnectOutlined } from './connect_outlined';
+export { RestoreOutlined } from './restore_outlined';
+export { MovefileOutlined } from './movefile_outlined';

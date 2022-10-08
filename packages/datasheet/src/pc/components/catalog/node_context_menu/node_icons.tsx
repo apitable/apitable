@@ -29,6 +29,7 @@ import {
   DatasheetOutlined,
   IIconProps, MirrorOutlined, EditDescribeOutlined,
   CalenderRightOutlined,
+  MovefileOutlined
 } from '@vikadata/icons';
 import { colorVars } from '@vikadata/components';
 
@@ -73,7 +74,8 @@ export enum NodeIcon {
   Datasheet = 'datasheet',
   Form = 'form',
   Dashboard = 'dashboard',
-  Mirror = 'Mirror'
+  Mirror = 'Mirror',
+  MoveTo = 'MoveTo',
 }
 
 // 枚举与资源位置匹配表
@@ -113,6 +115,7 @@ export const nodeIconImportMap: {
   [NodeIcon.Mirror]: MirrorOutlined,
   [NodeIcon.NodeInfo]: EditDescribeOutlined,
   [NodeIcon.Arrow]: CalenderRightOutlined,
+  [NodeIcon.MoveTo]: MovefileOutlined
 };
 
 /**

@@ -21,6 +21,8 @@ interface IUnitBase {
   // 企微
   isMemberNameModified?: boolean;
   teamData?: ITeamData[];
+  desc?: string;
+  unitRefId?: string;
 }
 
 export interface IUnitMap {

@@ -98,7 +98,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
 
   const adminAndOwnerUnitIds = roleList ? [
     ...roleList.admins.map(v => v.unitId),
-    ...roleList.roleUnits.map(v => v.unitId),
+    ...roleList.roleUnits.filter(v => v.role === 'manager').map(v => v.unitId),
     roleList.owner?.unitId || ''
   ] : [];
 

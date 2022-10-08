@@ -29,3 +29,4 @@ export * from './widget_data';
 export * from './visible_rows_base';
 export * from './theme_name';
 export * from './is_side_record_open';
+export * from './node_id';

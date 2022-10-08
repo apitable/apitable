@@ -258,7 +258,6 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
         {
           memberList.map((item, index) => {
             const unitId = uniqId === 'unitId' ? item.unitId : item.userId;
-            console.log('成员信息', item);
             return (
               <CommonList.Option
                 key={item[uniqId] || index}
@@ -277,12 +276,14 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
                     title: item.name,
                     src: item.avatar,
                   }}
-                  userId={item.userId}
+                  userId={item.userId || item.uuid}
+                  memberId={item.unitRefId}
                   triggerBase={triggerBase}
                   className={styles.memberInfoCard}
                   isDeleted={item.isDeleted}
                   memberType={item.type}
                   isActive={item.isActive}
+                  desc={item.desc}
                 />
                 <Check isChecked={Boolean(existValues && existValues.includes(unitId!))} />
               </CommonList.Option>

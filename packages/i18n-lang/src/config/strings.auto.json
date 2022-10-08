@@ -13612,7 +13612,7 @@
         },
         "move_node_modal_content": {
             "zh_CN": "移动后，文件的可见性可能会受到上级文件夹的影响，你可以查看 ${nodeSet} 状态了解详情",
-            "en_US": "After moving, the visibility of the file may be affected by the parent folder. You can check the ${nodeset} status for details"
+            "en_US": "After moving, the visibility of the file may be affected by the parent folder. You can check the ${nodeSet} status for details"
         },
         "move_to": {
             "zh_CN": "移动至",
@@ -13623,7 +13623,7 @@
             "en_US": "The file is under the current folder. Please select another folder"
         },
         "move_to_modal_title": {
-            "zh_CN": "将【${name}】移动至",
+            "zh_CN": "将「${name}」移动至当前文件夹下",
             "en_US": "Move [${name}] to",
             "zh_HK": "將【${name}】移動至"
         },
@@ -15133,9 +15133,9 @@
             "zh_HK": "更方便地搭建組織和業務架構，快速調整更方便"
         },
         "organization_and_role": {
-            "zh_CN": "组织架构与角色",
-            "en_US": "Organization & Role",
-            "zh_HK": "組織架構與角色"
+            "zh_CN": "组织架构",
+            "en_US": "Organization",
+            "zh_HK": "組織架構"
         },
         "orgin_plan_discount": {
             "zh_CN": "原方案抵扣",
@@ -16157,6 +16157,9 @@
         "player_step_ui_config_162": {
             "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/09/15/6eab2470b79a4ab1a6ced0fd555342a3?attname=Update_cover%402x.png\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/244\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul><li>「只可更新」权限范围调整，协作者也能新增记录</li><li>空间站「安全设置」结束免费体验，正式按空间站等级提供服务</li><li>5 个模板上新，覆盖财务预算、翻译项目、汽车零部件管理等场景</li></ul>\"\n}"
         },
+        "player_step_ui_config_163": {
+            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/09/29/91f12b7bbbec4c8f87810b7e9ee06afc?attname=Update_cover%402x.png\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/244\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul><li>新增「角色」分组，成员管理更加灵活细腻</li><li>简化「分享」路径，兼顾数据安全与操作便利</li><li>「成员」选择框增加悬浮卡片，显示所在小组</li><li>右键菜单新增「移动」选项，文件管理一步到位</li><li>模板中心新增假期旅游攻略、自卷指南和复盘规划三大专题</li></ul>\"\n}"
+        },
         "player_step_ui_config_17": {
             "zh_CN": "{\n \"element\": \"#TEMPLATE_CENTER_USE_TEMPLATE_BTN>button\", \n\"placement\": \"rightBottom\",\n\"offsetY\": 20,\n \"title\": \"使用模板教程\", \n\"description\": \"点击左侧按钮使用模板\", \"children\":\"\" \n}",
             "en_US": "{\n \"element\": \"#TEMPLATE_CENTER_USE_TEMPLATE_BTN>button\", \n\"placement\": \"rightBottom\",\n\"offsetY\": 20,\n \"title\": \"How to use a template\", \n\"description\": \"Click the button on the left to use the template\", \"children\":\"\" \n}",
@@ -17161,8 +17164,8 @@
             "zh_HK": "最近添加的小程序（${count} 個）"
         },
         "recently_used_files": {
-            "zh_CN": "最近使用的文件夹",
-            "en_US": "Recently used folders"
+            "zh_CN": "最近访问的文件夹",
+            "en_US": "Recently visited folders"
         },
         "recommend": {
             "zh_CN": "推荐",
@@ -17180,7 +17183,7 @@
             "zh_HK": "記錄"
         },
         "record_activity_experience_tips": {
-            "zh_CN": "高级空间站特权体验中，可查看  ${day}  天的修改历史",
+            "zh_CN": "可查看  ${day}  天的修改历史",
             "en_US": "You are experiencing advanced space privileges, you can view record activity of  ${day}  days",
             "zh_HK": "高級空間站特權體驗中，可查看  ${day}  天的修改歷史"
         },
@@ -18865,11 +18868,11 @@
             "en_US": "There are no members in this role. You can"
         },
         "role_member_table_header_name": {
-            "zh_CN": "成员/团队",
+            "zh_CN": "成员/小组",
             "en_US": "Member / Team"
         },
         "role_member_table_header_team": {
-            "zh_CN": "团队",
+            "zh_CN": "小组",
             "en_US": "Team"
         },
         "role_name_input_placeholder": {
@@ -22390,7 +22393,7 @@
             "zh_HK": "成員字段不存在"
         },
         "team": {
-            "zh_CN": "团队",
+            "zh_CN": "小组",
             "en_US": "Team",
             "zh_HK": "團隊"
         },

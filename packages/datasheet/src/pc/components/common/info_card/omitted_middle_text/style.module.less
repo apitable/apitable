@@ -2,35 +2,26 @@
 @import "~pc/styles/lib_mixins.less";
 
 .desc {
-  position: relative;
-  overflow: hidden;
-  height: 18px;
   line-height: 18px;
-  font-size: 11px;
-  color: var(--thirdLevelText);
-  width: 100%;
-  background-color: inherit;
-}
-
-.descriptionChild1 {
-  display: block;
-  max-height: 36px;
-}
-
-.descriptionChild2 {
-  position: relative;
-  display: block;
-  height: 18px;
-  top: -36px;
-  text-align: justify;  
-  overflow: hidden;
-  background-color: inherit;
-  &:before{
-    content: attr(title);
-    width: 50%;
-    float: right;
-    .ellipsis();
-    direction: rtl;
-    padding-right: 7px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: normal;
+  color: var(--textCommonTertiary);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0;
+  p {
+    margin: 0;
   }
+
+}
+
+
+.start {
+  flex-shrink: 1;
+  .ellipsis();
+}
+.suffix {
+  flex-shrink: 0;
 }

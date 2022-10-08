@@ -3310,7 +3310,7 @@
                 "rules": [
                     "identity_ALL_OF_TRUE_['main_admin']",
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2022-09-15 21:30"
+                    "sign_up_time_IS_AFTER_2022-09-29 22:00"
                 ],
                 "id": "address_shown,[identity_ALL_OF_TRUE_['main_admin'], device_IS_pc, sign_up_time_IS_AFTER_2022-06-24 00:46],[open_guide_wizards([4])]",
                 "event": [
@@ -3408,7 +3408,7 @@
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2022-09-15 21:30",
+                    "sign_up_time_IS_AFTER_2022-09-29 22:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
                 ],
@@ -3482,7 +3482,7 @@
                 "rules": [
                     "device_IS_pc",
                     "identity_ALL_OF_TRUE_['main_admin']",
-                    "sign_up_time_IS_AFTER_2022-09-15 21:30",
+                    "sign_up_time_IS_AFTER_2022-09-29 22:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
                 ],
@@ -3603,7 +3603,7 @@
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2022-09-15 21:30",
+                    "sign_up_time_IS_AFTER_2022-09-29 22:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
                 ],
@@ -3614,11 +3614,11 @@
             },
             {
                 "actions": [
-                    "open_guide_wizards([29, 76, 100])"
+                    "open_guide_wizards([29, 76, 101])"
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_BEFORE_2022-09-15 21:30",
+                    "sign_up_time_IS_BEFORE_2022-09-29 22:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
                 ],
@@ -3629,10 +3629,10 @@
             },
             {
                 "actions": [
-                    "open_guide_wizards([76, 100])"
+                    "open_guide_wizards([76, 101])"
                 ],
                 "rules": [
-                    "sign_up_time_IS_BEFORE_2022-09-15 21:30",
+                    "sign_up_time_IS_BEFORE_2022-09-29 22:00",
                     "device_IS_mobile",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
@@ -3647,7 +3647,7 @@
                     "open_guide_wizards([76, 87])"
                 ],
                 "rules": [
-                    "sign_up_time_IS_BEFORE_2022-09-15 21:30",
+                    "sign_up_time_IS_BEFORE_2022-09-29 22:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId",
                     "device_IS_app"
@@ -3970,14 +3970,14 @@
             {
                 "operator": "IS_AFTER",
                 "condition": "sign_up_time",
-                "id": "sign_up_time_IS_AFTER_2022-09-15 21:30",
-                "conditionArgs": "2022-09-15 21:30"
+                "id": "sign_up_time_IS_AFTER_2022-09-29 22:00",
+                "conditionArgs": "2022-09-29 22:00"
             },
             {
                 "operator": "IS_BEFORE",
                 "condition": "sign_up_time",
-                "id": "sign_up_time_IS_BEFORE_2022-09-15 21:30",
-                "conditionArgs": "2022-09-15 21:30"
+                "id": "sign_up_time_IS_BEFORE_2022-09-29 22:00",
+                "conditionArgs": "2022-09-29 22:00"
             },
             {
                 "operator": "EXCLUDES",
@@ -4240,9 +4240,9 @@
                 "commandArgs": "[21]"
             },
             {
-                "id": "open_guide_wizards([29, 76, 100])",
+                "id": "open_guide_wizards([29, 76, 101])",
                 "command": "open_guide_wizards",
-                "commandArgs": "[29, 76, 100]"
+                "commandArgs": "[29, 76, 101]"
             },
             {
                 "id": "open_guide_wizards([31])",
@@ -4255,9 +4255,9 @@
                 "commandArgs": "[4]"
             },
             {
-                "id": "open_guide_wizards([76, 100])",
+                "id": "open_guide_wizards([76, 101])",
                 "command": "open_guide_wizards",
-                "commandArgs": "[76, 100]"
+                "commandArgs": "[76, 101]"
             },
             {
                 "id": "open_guide_wizards([76, 87])",
@@ -4900,11 +4900,15 @@
             },
             "100": {
                 "completeIndex": -1,
-                "steps": "[[162]]",
+                "steps": "[[162]]"
+            },
+            "101": {
+                "completeIndex": -1,
+                "steps": "[[163]]",
                 "player": {
                     "action": [
-                        "recBtbbzXDolQ",
-                        "recEIcl9v4jzr"
+                        "recEIcl9v4jzr",
+                        "recBtbbzXDolQ"
                     ]
                 }
             }
@@ -6397,6 +6401,20 @@
                 "next": "查看详情",
                 "nextId": "check_detail",
                 "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/09/15/6eab2470b79a4ab1a6ced0fd555342a3?attname=Update_cover%402x.png\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/244\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul><li>「只可更新」权限范围调整，协作者也能新增记录</li><li>空间站「安全设置」结束免费体验，正式按空间站等级提供服务</li><li>5 个模板上新，覆盖财务预算、翻译项目、汽车零部件管理等场景</li></ul>\"\n}",
+                "onClose": [
+                    "set_wizard_completed({\"curWizard\": true})",
+                    "open_guide_next_step({\"clearAllPrevUi\":true})"
+                ]
+            },
+            "163": {
+                "uiConfigId": "player_step_ui_config_163",
+                "uiType": "notice",
+                "onNext": [
+                    "open_guide_next_step({\"clearAllPrevUi\":true})"
+                ],
+                "next": "查看详情",
+                "nextId": "check_detail",
+                "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/09/29/91f12b7bbbec4c8f87810b7e9ee06afc?attname=Update_cover%402x.png\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/244\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul><li>新增「角色」分组，成员管理更加灵活细腻</li><li>简化「分享」路径，兼顾数据安全与操作便利</li><li>「成员」选择框增加悬浮卡片，显示所在小组</li><li>右键菜单新增「移动」选项，文件管理一步到位</li><li>模板中心新增假期旅游攻略、自卷指南和复盘规划三大专题</li></ul>\"\n}",
                 "onClose": [
                     "set_wizard_completed({\"curWizard\": true})",
                     "open_guide_next_step({\"clearAllPrevUi\":true})"

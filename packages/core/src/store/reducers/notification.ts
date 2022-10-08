@@ -72,6 +72,7 @@ export const notification = produce((data: INotification = defaultState, action:
         return data;
       }
       data.unReadNoticeList = action.payload.list;
+      data.newNoticeListFromWs = [];
       return data;
     }
 

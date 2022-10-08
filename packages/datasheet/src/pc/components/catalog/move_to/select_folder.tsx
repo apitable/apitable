@@ -139,6 +139,7 @@ export const SelectFolder: React.FC<{
         placeholder={t(Strings.search)}
         lineStyle={!isMobile}
         block
+        size='small'
         onChange={e => setKeyword(e.target.value)}
       />}
       {isShowTips && <SelectFolderTips isWhole={isWhole} setIsWhole={enterWhole} data={selectedFolderParentList} onClick={onClickItem}/>}

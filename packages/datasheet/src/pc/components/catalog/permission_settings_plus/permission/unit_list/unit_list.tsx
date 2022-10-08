@@ -33,9 +33,10 @@ export const UnitList: FC<IUnitListProps> = ({
           key={admin.unitId}
           unit={{
             id: admin.unitId,
+            memberId: admin.memberId,
             avatar: admin.avatar,
             name: admin.memberName,
-            info: admin.teams,
+            info: (admin.teamData && admin.teamData.length > 0 ) ? admin.teamData[0].fullHierarchyTeamName || '' : '',
             isMemberNameModified: admin.isMemberNameModified,
             isTeam: false,
           }}
@@ -57,9 +58,10 @@ export const UnitList: FC<IUnitListProps> = ({
             key={owner.unitId}
             unit={{
               id: owner.unitId,
+              memberId: owner.memberId,
               avatar: owner.avatar,
               name: owner.memberName,
-              info: owner.teams,
+              info: (owner.teamData && owner.teamData.length > 0 ) ? owner.teamData[0].fullHierarchyTeamName || '' : '',
               isMemberNameModified: owner.isMemberNameModified,
               isTeam: false,
             }}
@@ -73,16 +75,19 @@ export const UnitList: FC<IUnitListProps> = ({
           />
         )
       }
-      {roleUnits.map(unit => (
-        admins.findIndex(admins => admins.unitId === unit.unitId) === -1 &&
+      {roleUnits.map(unit => {
+        const teamInfo = (unit.teamData && unit.teamData.length > 0 ) ? unit.teamData[0].fullHierarchyTeamName || '' : '';
+        return (
+          admins.findIndex(admins => admins.unitId === unit.unitId) === -1 &&
         (
           <UnitItem
             key={unit.unitId}
             unit={{
               id: unit.unitId,
+              memberId: unit.unitRefId || '',
               avatar: unit.avatar,
               name: unit.unitName,
-              info: unit.teams,
+              info: teamInfo,
               isTeam: unit.unitType !== 3,
             }}
             role={unit.role}
@@ -92,7 +97,7 @@ export const UnitList: FC<IUnitListProps> = ({
             isAppointMode={isAppointMode}
           />
         )
-      ))}
+        );})}
     </div>
   );
 };
