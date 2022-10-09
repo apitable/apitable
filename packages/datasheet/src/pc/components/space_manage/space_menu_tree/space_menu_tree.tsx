@@ -84,7 +84,7 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
         routeAddress: '/managemember',
         title: t(Strings.members_setting),
         key: 'managemember',
-        valid: permissions.includes(ConfigConstant.PermissionCode.MEMBER),
+        valid: true,
       },
       {
         routeAddress: '/role',

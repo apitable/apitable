@@ -7604,11 +7604,6 @@
                     "space_capacity"
                 ]
             },
-            "Standalone_Capacity": {
-                "id": "Standalone_Capacity",
-                "category": "Standalone",
-                "channel": "vika"
-            },
             "Dingtalk_Base": {
                 "free": true,
                 "ch_name": "钉钉基础版",
@@ -7754,6 +7749,21 @@
                 "channel": "wecom",
                 "name": [
                     "wecom_enterprise"
+                ]
+            },
+            "Atlas": {
+                "free": true,
+                "ch_name": "云版本",
+                "plans": [
+                    "atlas_unlimited"
+                ],
+                "id": "Atlas",
+                "category": "BASE",
+                "en_name": "Atlas",
+                "i18nName": "atlas",
+                "channel": "aliyun",
+                "name": [
+                    "atlas"
                 ]
             }
         }

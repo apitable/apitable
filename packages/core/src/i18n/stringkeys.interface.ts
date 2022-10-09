@@ -371,6 +371,8 @@ export type StringKeysMapType = {
   'async_compute': 'async_compute',
   'at_least_select_one': 'at_least_select_one',
   'at_least_select_one_field': 'at_least_select_one_field',
+  'atlas': 'atlas',
+  'atlas_grade_desc': 'atlas_grade_desc',
   'attachment_capacity_details_entry': 'attachment_capacity_details_entry',
   'attachment_capacity_details_model_capacity_size': 'attachment_capacity_details_model_capacity_size',
   'attachment_capacity_details_model_expiry_time': 'attachment_capacity_details_model_expiry_time',

@@ -369,6 +369,8 @@ window.vika_i18n =
   "async_compute": "Async computing",
   "at_least_select_one": "Select at least one member",
   "at_least_select_one_field": "Select at least one member field",
+  "atlas": "Atlas",
+  "atlas_grade_desc": "Consistent benefits across spaces within Atlas,Members in the Spaces of different Atlas enjoy different benefits.",
   "attachment_capacity_details_entry": "Details",
   "attachment_capacity_details_model_capacity_size": "Capacity",
   "attachment_capacity_details_model_expiry_time": "Expiry time",

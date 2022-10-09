@@ -263,6 +263,12 @@ export const SpaceLevelInfo: ISpaceLevelInfo = {
     buttonText: t(Strings.renew),
     tagText: t(Strings.paid_edition),
   }),
+  atlas: getSpaceConfig('golden', {
+    title: t(Strings.atlas),
+    titleTip: t(Strings.atlas_grade_desc),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
+  }),
 };
 
 export const useLevelInfo = (level: ISpaceLevelType, expiration?: string | null) => {

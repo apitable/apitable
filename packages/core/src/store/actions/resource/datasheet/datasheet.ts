@@ -22,7 +22,7 @@ import {
   SET_SEARCH_RESULT_CURSOR_INDEX, SWITCH_ACTIVE_PANEL, TOGGLE_CALENDAR_GRID, TOGGLE_CALENDAR_GUIDE_STATUS, TOGGLE_CALENDAR_SETTING_PANEL,
   TOGGLE_GANTT_GRID, TOGGLE_GANTT_SETTING_PANEL, TOGGLE_KANBAN_GROUP_SETTING_VISIBLE, TOGGLE_ORG_CHART_GRID as TOGGLE_ORG_CHART_RIGHT_PANEL,
   TOGGLE_ORG_CHART_GUIDE_STATUS, TOGGLE_ORG_CHART_SETTING_PANEL, TOGGLE_TIME_MACHINE_PANEL, TOGGLE_WIDGET_PANEL, UPDATE_DATASHEET,
-  UPDATE_DATASHEET_COMPUTED, UPDATE_DATASHEET_NAME, UPDATE_SNAPSHOT
+  UPDATE_DATASHEET_COMPUTED, UPDATE_DATASHEET_NAME, UPDATE_SNAPSHOT,
 } from 'store/action_constants';
 import { deleteNode, loadFieldPermissionMap, updateUnitMap, updateUserMap } from 'store/actions';
 import { getDatasheet, getDatasheetLoading, getMirror } from 'store/selector';
@@ -44,7 +44,7 @@ export function requestDatasheetPack(datasheetId: string) {
   };
 }
 
-function consistencyCheckHandle(payload: IServerDatasheetPack, isPartOfData: boolean, getState?: () => IReduxState,) {
+function consistencyCheckHandle(payload: IServerDatasheetPack, isPartOfData: boolean, getState?: () => IReduxState) {
   if (isPartOfData) {
     return;
   }
@@ -89,8 +89,19 @@ function consistencyCheckHandle(payload: IServerDatasheetPack, isPartOfData: boo
       },
     });
   }
-
 }
+
+const getActiveViewFromData = (datasheet: INodeMeta, snapshot: ISnapshot, getState?: () => IReduxState) => {
+  if (datasheet.activeView) return datasheet.activeView;
+  /**
+   * 这里需要注意下，如果单纯的根据 params 里的 viewId 作为 activeView 的依据，
+   * 在处理 foreignDatasheet 时，activeView 的数据会出现错误，它会指向当前打开的表，而不是实际的关联表的数据
+   */
+  if (getState && getState().pageParams.datasheetId === datasheet.id) {
+    return getState().pageParams.viewId;
+  }
+  return snapshot.meta.views[0].id;
+};
 
 export function receiveDataPack<T extends IServerDatasheetPack = IServerDatasheetPack>(
   payload: T,
@@ -103,8 +114,6 @@ export function receiveDataPack<T extends IServerDatasheetPack = IServerDatashee
   // 数据完整，并且在可编辑条件下才去检查数据一致性
   consistencyCheckHandle(payload, isPartOfData, getState);
 
-  const activeView = datasheet.activeView ? datasheet.activeView : getState ? getState().pageParams.viewId : snapshot.meta.views[0].id;
-
   return {
     type: DATAPACK_LOADED,
     datasheetId: datasheet.id,
@@ -112,7 +121,7 @@ export function receiveDataPack<T extends IServerDatasheetPack = IServerDatashee
       ...datasheet,
       snapshot,
       isPartOfData,
-      activeView: activeView!,
+      activeView: getActiveViewFromData(datasheet, snapshot, getState)!,
     },
   };
 }
@@ -136,7 +145,7 @@ export const recordNodeDesc = (datasheetId: string, desc: string) => {
 interface IFetchDatasheetSuccess {
   responseBody: IApiWrapper & { data: IServerDatasheetPack };
   datasheetId: string;
-  dispatch: Dispatch
+  dispatch: Dispatch;
   getState: () => IReduxState;
 }
 
@@ -659,17 +668,17 @@ export const toggleTimeMachinePanel = (datasheetId: string, visible?: boolean) =
 };
 
 export interface IToggleWidgetPanel {
-  type: typeof TOGGLE_WIDGET_PANEL
+  type: typeof TOGGLE_WIDGET_PANEL;
 }
 
 export interface IChangeWidgetPanelWidth {
-  type: typeof CHANGE_WIDGET_PANEL_WIDTH
-  payload: number
+  type: typeof CHANGE_WIDGET_PANEL_WIDTH;
+  payload: number;
 }
 
 export interface ISwitchActivePanel {
-  type: typeof SWITCH_ACTIVE_PANEL
-  payload: string
+  type: typeof SWITCH_ACTIVE_PANEL;
+  payload: string;
 }
 
 export interface ISetGridViewHoverFieldIdAction {

@@ -64,7 +64,7 @@ export const LevelCard: FC<ILevelCard> = ({ type, minHeight, deadline, className
   const isLeftTag = cardTagPosition === Position.L;
 
   const operateButton = useMemo(() => {
-    if (type === LevelType.PrivateCloud || appType === 2 || isMobileApp() || isMobile) {
+    if (type === LevelType.PrivateCloud || type === LevelType.Atlas || appType === 2 || isMobileApp() || isMobile) {
       return null;
     }
     if (appType === 1) {

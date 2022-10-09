@@ -1,7 +1,7 @@
 package com.vikadata.api.listener;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,6 +11,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 
+import com.vikadata.api.constants.AuditConstants;
 import com.vikadata.api.enums.audit.AuditSpaceAction;
 import com.vikadata.api.enums.audit.AuditSpaceCategory;
 import com.vikadata.api.event.AuditSpaceEvent;
@@ -50,11 +51,9 @@ import static com.vikadata.api.constants.AuditConstants.SOURCE_NODE_ID;
 import static com.vikadata.api.constants.AuditConstants.SOURCE_NODE_NAME;
 import static com.vikadata.api.constants.AuditConstants.TEMPLATE_ID;
 import static com.vikadata.api.constants.AuditConstants.TEMPLATE_NAME;
-import static com.vikadata.api.constants.AuditConstants.UNIT_ID;
 import static com.vikadata.api.constants.AuditConstants.UNIT_IDS;
 import static com.vikadata.api.constants.AuditConstants.UNIT_NAME;
 import static com.vikadata.api.constants.AuditConstants.UNIT_NAMES;
-import static com.vikadata.api.enums.audit.AuditSpaceAction.ADD_NODE_ROLE;
 import static com.vikadata.api.enums.audit.AuditSpaceAction.CREATE_TEMPLATE;
 import static com.vikadata.api.enums.audit.AuditSpaceAction.DISABLE_NODE_ROLE;
 import static com.vikadata.api.enums.audit.AuditSpaceAction.ENABLE_NODE_ROLE;
@@ -114,7 +113,7 @@ public class AuditSpaceListener {
                     break;
                 }
                 // 拼接组织单元信息
-                this.appendUnitInfo(action, info);
+                this.appendUnitInfo(info);
                 break;
             case SPACE_TEMPLATE_EVENT:
                 // 拼接模板相关的信息
@@ -179,10 +178,19 @@ public class AuditSpaceListener {
         return node.getSpaceId();
     }
 
-    private void appendUnitInfo(AuditSpaceAction action, JSONObject info) {
-        // 以事件区分，参数包含多个unitId
-        boolean multiple = ADD_NODE_ROLE.equals(action);
-        List<Long> unitIds = multiple ? info.getJSONArray(UNIT_IDS).toList(Long.class) : Collections.singletonList(info.getLong(UNIT_ID));
+    private void appendUnitInfo(JSONObject info) {
+        boolean multiple = false;
+        List<Long> unitIds = new ArrayList<>();
+        if (info.containsKey(AuditConstants.UNIT_IDS)) {
+            multiple = true;
+            unitIds.addAll(info.getJSONArray(UNIT_IDS).toList(Long.class));
+        }
+        else if (info.containsKey(AuditConstants.UNIT_ID)) {
+            unitIds.add(info.getLong(AuditConstants.UNIT_ID));
+        }
+        else {
+            return;
+        }
 
         // 查询组织单元视图
         List<UnitInfoDTO> unitInfos = iUnitService.getUnitInfoDTOByUnitIds(unitIds);

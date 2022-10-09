@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 
 import com.vikadata.api.holder.UserHolder;
+import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.spring.task.VisibleThreadPoolTaskExecutor;
 import com.vikadata.social.feishu.FeishuConfigStorageHolder;
 
@@ -82,9 +83,11 @@ public class AsyncTaskExecutorConfig extends AsyncConfigurerSupport {
                     // 执行异步任务
                     runnable.run();
                 }
-                catch (Exception e) {
-                    log.error("手动执行异步任务异常", e);
-                    throw e;
+                catch (Exception ex) {
+                    if (!(ex instanceof BusinessException)) {
+                        log.error("Manual execution of asynchronous task exception.", ex);
+                    }
+                    throw ex;
                 }
                 finally {
                     // 执行完成后重置
@@ -105,7 +108,9 @@ public class AsyncTaskExecutorConfig extends AsyncConfigurerSupport {
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
         return (ex, method, params) -> {
-            log.error("注解异步任务异常，并清理异步线程变量", ex);
+            if (!(ex instanceof BusinessException)) {
+                log.error("Annotate asynchronous task exceptions and clean up asynchronous thread variables.", ex);
+            }
             FeishuConfigStorageHolder.remove();
             UserHolder.remove();
         };
