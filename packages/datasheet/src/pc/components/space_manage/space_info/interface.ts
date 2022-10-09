@@ -10,6 +10,7 @@ export enum LevelType {
   DingtalkStandard = 'dingtalk_standard',
   DingtalkEnterprise = 'dingtalk_enterprise',
   PrivateCloud = 'private_cloud',
+  Atlas = 'atlas',
   WecomeBase = 'wecom_base',
   FeishuBase = 'feishu_base'
 }

@@ -266,8 +266,8 @@ export const SpaceLevelInfo: ISpaceLevelInfo = {
   atlas: getSpaceConfig('golden', {
     title: t(Strings.atlas),
     titleTip: t(Strings.atlas_grade_desc),
-    buttonText: t(Strings.upgrade),
-    tagText: t(Strings.free_edition),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
   }),
 };
 
