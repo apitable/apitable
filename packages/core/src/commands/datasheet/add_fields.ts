@@ -104,7 +104,7 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
 
       // AutoNumber 需要记录当前的视图索引
       if (field.type === FieldType.AutoNumber) {
-        const datasheet = getDatasheet(state);
+        const datasheet = getDatasheet(state, datasheetId);
         const viewIdx = snapshot.meta.views.findIndex(item => item.id === datasheet?.activeView) || 0;
         field.property = { ...field.property, viewIdx };
       }
@@ -152,7 +152,7 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
       if (internalFix?.changeOneWayLinkDstId && linkedActions.length) {
         const fixOneWayLinkData = {
           oldBrotherFieldId: snapshot.meta.fieldMap[fieldId!].property.brotherFieldId,
-          newBrotherFieldId: linkedActions[0].actions[0]['li']['fieldId']
+          newBrotherFieldId: linkedActions[0].actions[0]['li']['fieldId'],
         };
         linkedActions[0].actions[linkedActions[0].actions.length - 1]['oi'].property.brotherFieldId = fieldId;
         // 修复单向关联列DstId
