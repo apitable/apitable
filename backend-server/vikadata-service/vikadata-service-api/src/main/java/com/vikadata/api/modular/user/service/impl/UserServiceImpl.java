@@ -1034,6 +1034,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         nodeShareService.disableNodeSharesByUserId(user.getId());
         // 删除userLoginDto缓存
         loginUserService.delete(user.getId());
+        userActiveSpaceService.delete(user.getId());
         // 逻辑删除space invite link.
         List<MemberEntity> members = iMemberService.getByUserId(user.getId());
         if (members.size() == 0) {
@@ -1102,6 +1103,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         iMemberService.cancelPreDelByUserId(user.getId());
         // 删除userLoginDto缓存
         loginUserService.delete(user.getId());
+        userActiveSpaceService.delete(user.getId());
         // 新增用户操作记录
         UserHistoryEntity userHistory = UserHistoryEntity.builder().userId(user.getId())
                 .userStatus(UserOperationType.CANCEL_CLOSING.getStatusCode())
