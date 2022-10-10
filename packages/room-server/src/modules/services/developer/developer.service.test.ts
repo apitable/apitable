@@ -27,15 +27,16 @@ describe('developer service', () => {
 
   let developerService: DeveloperService;
   let developerRepo: DeveloperRepository;
-  let userRepo: UserRepository;
+  // let userRepo: UserRepository;
 
-  beforeEach(async() => {
+  beforeEach(() => {
     developerService = module.get(DeveloperService);
     developerRepo = module.get(DeveloperRepository);
-    userRepo = module.get(UserRepository);
+    // userRepo = module.get(UserRepository);
 
-    await developerRepo.clear();
-    await userRepo.clear();
+    // TODO: mock a database service instead of connecting to a live database. added by troy
+    // await developerRepo.clear();
+    // await userRepo.clear();
   });
 
   describe('developerRepo', () => {

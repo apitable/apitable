@@ -45,10 +45,11 @@ describe('datasheet record subscription service', () => {
     datasheetRepo = module.get(DatasheetRepository);
     userRepo = module.get(UserRepository);
 
-    await datasheetRecordSubscriptionRepo.clear();
-    await datasheetRecordRepo.clear();
-    await datasheetRepo.clear();
-    await userRepo.clear();
+    // TODO: mock a database service instead of connecting to a live database. added by troy
+    // await datasheetRecordSubscriptionRepo.clear();
+    // await datasheetRecordRepo.clear();
+    // await datasheetRepo.clear();
+    // await userRepo.clear();
 
     testUser = userRepo.create({ nikeName: 'foo' });
     await userRepo.insert(testUser);
