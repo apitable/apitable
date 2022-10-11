@@ -27,16 +27,12 @@ describe('developer service', () => {
 
   let developerService: DeveloperService;
   let developerRepo: DeveloperRepository;
-  // let userRepo: UserRepository;
 
   beforeEach(() => {
     developerService = module.get(DeveloperService);
     developerRepo = module.get(DeveloperRepository);
-    // userRepo = module.get(UserRepository);
 
     // TODO: mock a database service instead of connecting to a live database. added by troy
-    // await developerRepo.clear();
-    // await userRepo.clear();
   });
 
   describe('developerRepo', () => {
@@ -54,11 +50,12 @@ describe('developer service', () => {
       expect(entities.length).toEqual(1);
       expect(entities[0].apiKey).toEqual(apiKey);
       expect(entities[0].userId).toEqual(userId.toString());
+      await developerRepo.delete(entity.id);
     });
   });
 
   describe('getUserInfoByApiKey', () => {
-    const apiKey = 'key';
+    const apiKey = 'key1';
 
     it('returns null when no entities', async() => {
       const result = await developerService.getUserInfoByApiKey(apiKey);
@@ -76,6 +73,8 @@ describe('developer service', () => {
 
       const result = await developerService.getUserInfoByApiKey(apiKey);
       expect(result.nikeName).toEqual(nikeName);
+      await userRepo.delete(userEntity.id);
+      await developerRepo.delete(developerEntity.id);
     });
   });
 

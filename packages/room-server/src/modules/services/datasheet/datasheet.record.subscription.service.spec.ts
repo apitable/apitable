@@ -45,12 +45,6 @@ describe('datasheet record subscription service', () => {
     datasheetRepo = module.get(DatasheetRepository);
     userRepo = module.get(UserRepository);
 
-    // TODO: mock a database service instead of connecting to a live database. added by troy
-    // await datasheetRecordSubscriptionRepo.clear();
-    // await datasheetRecordRepo.clear();
-    // await datasheetRepo.clear();
-    // await userRepo.clear();
-
     testUser = userRepo.create({ nikeName: 'foo' });
     await userRepo.insert(testUser);
 
@@ -65,6 +59,21 @@ describe('datasheet record subscription service', () => {
     await datasheetRecordRepo.insert(testRecord1);
     await datasheetRecordRepo.insert(testRecord2);
     await datasheetRecordRepo.insert(testRecord3);
+  });
+
+  afterEach(async() => {
+    // TODO: mock a database service instead of connecting to a live database. added by troy
+    if (testUser) {
+      await userRepo.delete(testUser.id);
+    }
+    if (testDst) {
+      await datasheetRepo.delete(testDst.id);
+    }
+    if (testRecord1) {
+      await datasheetRecordRepo.delete(testRecord1.id);
+      await datasheetRecordRepo.delete(testRecord2.id);
+      await datasheetRecordRepo.delete(testRecord3.id); 
+    }
   });
 
   describe('get subscribed records from datasheet', () => {
@@ -88,6 +97,9 @@ describe('datasheet record subscription service', () => {
       expect(result.includes(testRecord1.recordId)).toEqual(true);
       expect(result.includes(testRecord2.recordId)).toEqual(true);
       expect(result.includes(testRecord3.recordId)).toEqual(false);
+
+      await datasheetRecordSubscriptionRepo.delete(recordSub1.id);
+      await datasheetRecordSubscriptionRepo.delete(recordSub2.id);
     });
   });
 
