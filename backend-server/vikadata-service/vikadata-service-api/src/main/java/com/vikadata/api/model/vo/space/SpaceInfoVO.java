@@ -132,4 +132,8 @@ public class SpaceInfoVO {
     @ApiModelProperty(value = "已用赠送附件容量(单位：字节)", example = "1024", position = 24)
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long giftCapacityUsedSizes;
+
+    @ApiModelProperty(value = "表（镜像）数量", example = "5", position = 25)
+    @JsonSerialize(nullsUsing = NullNumberSerializer.class)
+    private Long mirrorNums;
 }

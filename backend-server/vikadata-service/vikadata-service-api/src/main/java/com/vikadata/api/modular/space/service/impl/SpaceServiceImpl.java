@@ -505,6 +505,10 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         long sheetNums = nodeTypeStatics.stream()
                 .filter(condition -> NodeType.toEnum(condition.getType()).isFileNode())
                 .mapToLong(NodeTypeStatics::getTotal).sum();
+        long mirrorNums = nodeTypeStatics.stream()
+                .filter(condition -> NodeType.MIRROR == NodeType.toEnum(condition.getType()))
+                .mapToLong(NodeTypeStatics::getTotal).sum();
+
         Map<Integer, Integer> typeStaticsMap = nodeTypeStatics.stream().collect(Collectors.toMap(NodeTypeStatics::getType, NodeTypeStatics::getTotal));
         long formViewNums = typeStaticsMap.containsKey(NodeType.FORM.getNodeType()) ? typeStaticsMap.get(NodeType.FORM.getNodeType()) : 0L;
         // 表格视图统计
@@ -527,6 +531,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
                 .calendarViewNums(viewVO.getCalendarViews())
                 .galleryViewNums(viewVO.getGalleryViews())
                 .ganttViewNums(viewVO.getGanttViews())
+                .mirrorNums(mirrorNums)
                 .build();
         // 空间附件容量用量信息
         SpaceCapacityUsedInfo spaceCapacityUsedInfo = this.getSpaceCapacityUsedInfo(spaceId, capacityUsedSize);
