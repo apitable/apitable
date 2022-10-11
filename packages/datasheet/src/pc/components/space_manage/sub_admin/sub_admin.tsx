@@ -1,7 +1,7 @@
-import { Button, TextButton, Typography, useThemeColors } from '@vikadata/components';
+import { Button, TextButton, Typography, useThemeColors, Pagination } from '@vikadata/components';
 import { ConfigConstant, Events, IReduxState, ISubAdminList, Player, StoreActions, Strings, t } from '@vikadata/core';
 import { useMount } from 'ahooks';
-import { Pagination, Table } from 'antd';
+import { Table } from 'antd';
 import { ColumnProps } from 'antd/es/table';
 import { triggerUsageAlert } from 'pc/common/billing';
 import { SubscribeUsageTipType } from 'pc/common/billing/subscribe_usage_check';
@@ -218,9 +218,7 @@ export const SubAdmin: FC = () => {
             current={pageNo}
             total={subAdminListData ? subAdminListData.total : 0}
             onChange={(pageNo: number) => setPageNo(pageNo)}
-            defaultPageSize={ConfigConstant.SUB_ADMIN_LIST_PAGE_SIZE}
-            className='pagination'
-            showSizeChanger={false}
+            pageSize={ConfigConstant.SUB_ADMIN_LIST_PAGE_SIZE}
           />
         </div>
       }

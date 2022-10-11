@@ -10,7 +10,7 @@ export const PaginationContainer = styled.div.attrs(applyDefaultTheme)`
 `;
 
 export const PaginationItem = styled.button.attrs(applyDefaultTheme)<IPaginationStatus>`
-  width: 24px;
+  min-width: 24px;
   height: 24px;
   font-size: 14px;
   display: flex;
@@ -21,7 +21,7 @@ export const PaginationItem = styled.button.attrs(applyDefaultTheme)<IPagination
   box-sizing: border-box;
   flex-shrink: 0;
   outline: none;
-  padding: 0;
+  padding: 0 2px;
   border: none;
   background: none;
   ${(props) => {

@@ -1,7 +1,7 @@
-import { Button, Skeleton, useThemeColors } from '@vikadata/components';
+import { Button, Skeleton, useThemeColors, Pagination } from '@vikadata/components';
 import { Api, ConfigConstant, DEFAULT_TIMEZONE, IPageDataBase, isVCode, Settings, Strings, t } from '@vikadata/core';
 import { useMount, useToggle } from 'ahooks';
-import { Pagination, Table } from 'antd';
+import { Table } from 'antd';
 import { ColumnProps } from 'antd/es/table';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
@@ -15,7 +15,6 @@ import { useBilling, useRequest } from 'pc/hooks';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import InfoIcon from 'static/icon/common/common_icon_information.svg';
-// import NoDataImg from 'static/icon/workbench/workbench_account_nodata.png';
 import RightIcon from 'static/icon/common/common_icon_level_right.svg';
 import GoldImg from 'static/icon/workbench/workbench_account_gold_icon.png';
 import LeftCardBg from 'static/icon/workbench/workbench_account_left_bj.png';
@@ -226,11 +225,10 @@ export const AccountWallet: FC = () => {
               pageData.total !== 0 &&
               <div className={styles.pagination}>
                 <Pagination
-                  defaultCurrent={pageNo}
+                  current={pageNo}
                   total={pageData!.total}
-                  defaultPageSize={ConfigConstant.USER_INTEGRAL_RECORDS_PAGE_SIZE}
+                  pageSize={ConfigConstant.USER_INTEGRAL_RECORDS_PAGE_SIZE}
                   onChange={pageNo => setPageNo(pageNo)}
-                  showSizeChanger={false}
                 />
               </div>
             }

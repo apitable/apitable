@@ -1,10 +1,9 @@
 import { useState, FC } from 'react';
 import { Strings, t } from '@vikadata/core';
 import { Modal } from 'pc/components/common';
-import { Button, TextButton } from '@vikadata/components';
-import { Row, Col, Pagination } from 'antd';
+import { Button, TextButton, Pagination } from '@vikadata/components';
+import { Row, Col } from 'antd';
 import { IErrorInfo } from '../interface';
-// import classNames from 'classnames';
 import styles from './style.module.less';
 import { useEffect } from 'react';
 import classNames from 'classnames';
@@ -91,11 +90,10 @@ export const Records: FC<IRecordsProps> = ({ records, title, subTitle, showDetai
       </div>
       <div className={styles.pagination}>
         <Pagination
-          defaultCurrent={pageNo}
+          current={pageNo}
           total={records.length}
-          defaultPageSize={PAGE_SIZE}
+          pageSize={PAGE_SIZE}
           onChange={pageNo => setPageNo(pageNo)}
-          showSizeChanger={false}
         />
       </div>
       {

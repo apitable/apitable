@@ -1,7 +1,7 @@
 import { getEnvVariables } from 'pc/utils/env';
 import { useRef, FC, useState, ReactText, useLayoutEffect, useEffect } from 'react';
 import * as React from 'react';
-import { Table, Pagination } from 'antd';
+import { Table } from 'antd';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { IReduxState, ConfigConstant, IMemberInfoInSpace, Strings, t, StoreActions, isIdassPrivateDeployment } from '@vikadata/core';
 import { Tooltip, Modal } from 'pc/components/common';
@@ -12,7 +12,7 @@ import { useUpdateMemberListInSpace, useMemberManage } from 'pc/hooks';
 import { isSocialDingTalk, isSocialFeiShu, isSocialPlatformEnabled, isSocialWecom } from 'pc/components/home/social_platform';
 import { EditMemberModal } from '../modal';
 import IconCheck from 'static/icon/common/common_icon_select.svg';
-import { List, lightColors } from '@vikadata/components';
+import { List, lightColors, Pagination } from '@vikadata/components';
 import styles from './style.module.less';
 
 interface IMemberTable {
@@ -263,10 +263,9 @@ export const MemberTable: FC<IMemberTable> = (props) => {
       {showPagination &&
         <Pagination
           current={pageNo}
-          total={selectedTeamInfoInSpace?.memberCount}
-          defaultPageSize={ConfigConstant.MEMBER_LIST_PAGE_SIZE}
+          total={selectedTeamInfoInSpace?.memberCount || 0}
+          pageSize={ConfigConstant.MEMBER_LIST_PAGE_SIZE}
           onChange={changePageNo}
-          showSizeChanger={false}
           className={styles.pagination}
         />
       }

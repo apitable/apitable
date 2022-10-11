@@ -49,6 +49,10 @@ export interface IPaginationState {
  */
 export interface IPaginationProps {
   /**
+   * 样式类名
+   */
+  className?: string;
+  /**
    * 当前页码
    */
   current?: number;

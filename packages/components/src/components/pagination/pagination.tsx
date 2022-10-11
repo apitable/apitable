@@ -22,19 +22,20 @@ const SHOW_START_ELLIPSE = 4;
 const SHOW_END_ELLIPSE = 4;
 
 enum PageEllipse {
-  START = 'START',
-  CENTER = 'CENTER',
-  END = 'END',
-  NONE = 'NONE',
+  START,
+  CENTER,
+  END,
+  NONE,
 }
 
 enum PageArrow {
-  PREV = 'PREV',
-  NEXT = 'NEXT',
+  PREV,
+  NEXT,
 }
 
 const PaginationBase: FC<IPaginationProps> = (props) => {
   const {
+    className,
     current = 1,
     pageSize = 10,
     total,
@@ -237,15 +238,15 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
       <Select
         value={pagination.current}
         options={options}
-        listStyle={{ width: 50 }}
+        listStyle={{ width: 54 }}
         hiddenArrow
         disabled={disabled}
         key={key}
         triggerStyle={{
           background: 'none',
-          width: 24,
+          minWidth: 24,
           height: 24,
-          padding: 0,
+          padding: '0 2px',
           border: 'none',
           display: 'flex',
           alignItems: 'center',
@@ -377,7 +378,7 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
   };
 
   return (
-    <PaginationContainer>
+    <PaginationContainer className={className}>
       {renderTotal()}
       {renderPage()}
       {renderChangeSize()}

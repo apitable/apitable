@@ -1,5 +1,6 @@
 import { Pagination } from './index';
-import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+import { Canvas, ArgsTable, Meta } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../stories/theme-toggle';
 
 <Meta title="基础组件/Pagination 翻页/文档" />
 
@@ -14,7 +15,9 @@ import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
 默认展示页数
 
 <Canvas>
-  <Story id="基础组件-pagination-翻页--default" />
+    <ThemeToggle>
+        <Pagination total={50} />
+    </ThemeToggle>
 </Canvas>
 
 
@@ -23,7 +26,9 @@ import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
 展示数据当前的范围和总记录条数
 
 <Canvas>
-  <Story id="基础组件-pagination-翻页--total" />
+    <ThemeToggle>
+        <Pagination showTotal total={50} />
+    </ThemeToggle>
 </Canvas>
 
 ## 快速跳转
@@ -31,7 +36,9 @@ import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
 输入页码直接跳到指定页码数
 
 <Canvas>
-  <Story id="基础组件-pagination-翻页--quickjump" />
+    <ThemeToggle>
+        <Pagination showQuickJump total={50} />
+    </ThemeToggle>
 </Canvas>
 
 ## 更多
@@ -39,7 +46,13 @@ import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
 超出 7 页显示省略号
 
 <Canvas>
-  <Story id="基础组件-pagination-翻页--more" />
+    <ThemeToggle>
+        <div>
+            <Pagination total={71} />
+            <br />
+            <Pagination total={1171} />
+        </div>
+    </ThemeToggle>
 </Canvas>
 
 ## 改变每页数据量
@@ -47,7 +60,14 @@ import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
 使用下拉框改变分页的数据量
 
 <Canvas>
-  <Story id="基础组件-pagination-翻页--changesize" />
+  <ThemeToggle>
+      <Pagination
+          showChangeSize
+          pageSize={10}
+          total={71}
+          onPageSizeChange={(page, pageSize) => { window.alert(`pageSize: ${pageSize}`) }}
+      />
+  </ThemeToggle>
 </Canvas>
 
 ## 禁用
@@ -55,7 +75,16 @@ import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
 禁用翻页
 
 <Canvas>
-  <Story id="基础组件-pagination-翻页--disabled" />
+    <ThemeToggle>
+        <Pagination
+            showChangeSize
+            showQuickJump
+            showTotal
+            pageSize={10}
+            total={171}
+            disabled
+        />
+    </ThemeToggle>
 </Canvas>
 
 ## 全部属性展示
@@ -63,7 +92,16 @@ import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
 展示所有可展示属性
 
 <Canvas>
-  <Story id="基础组件-pagination-翻页--complete" />
+    <ThemeToggle>
+        <Pagination
+            showChangeSize
+            showQuickJump
+            showTotal
+            pageSize={10}
+            total={171}
+            onPageSizeChange={(page, pageSize) => { window.alert(`pageSize: ${pageSize}`) }}
+        />
+    </ThemeToggle>
 </Canvas>
 
 ## 国际化
@@ -71,7 +109,17 @@ import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
 翻页组件国际化展示
 
 <Canvas>
-  <Story id="基础组件-pagination-翻页--i18n" />
+    <ThemeToggle>
+        <Pagination
+            showChangeSize
+            showQuickJump
+            showTotal
+            pageSize={10}
+            total={171}
+            lang="en"
+            onPageSizeChange={(page, pageSize) => { window.alert(`pageSize: ${pageSize}`) }}
+        />
+    </ThemeToggle>
 </Canvas>
 
 
