@@ -20,6 +20,9 @@ import com.vikadata.api.model.ro.asset.AssetUploadTokenRo;
 import com.vikadata.api.model.vo.asset.AssetUploadTokenVo;
 import com.vikadata.api.modular.base.model.AssetUploadCertificateRO;
 import com.vikadata.api.modular.base.model.AssetUploadCertificateVO;
+import com.vikadata.api.modular.base.model.WidgetAssetUploadCertificateRO;
+import com.vikadata.api.modular.base.model.WidgetUploadMetaVo;
+import com.vikadata.api.modular.base.model.WidgetUploadTokenVo;
 import com.vikadata.api.modular.base.service.IAssetService;
 import com.vikadata.api.modular.base.service.IAssetUploadTokenService;
 import com.vikadata.core.support.ResponseData;
@@ -74,6 +77,20 @@ public class AttachUploadTokenController {
         }
         // Batch Creation of Space Resource Upload Credentials
         return ResponseData.success(iAssetUploadTokenService.createSpaceAssetPreSignedUrl(userId, data.getNodeId(), data.getType(), data.getCount()));
+    }
+
+    @PostResource(name = "get widget upload meta", path = "/widget/uploadMeta", requiredPermission = false)
+    @ApiOperation(value = "get widget upload meta", notes = "get widget upload meta")
+    public ResponseData<WidgetUploadMetaVo> getWidgetUploadMeta() {
+        return ResponseData.success(iAssetUploadTokenService.getWidgetUploadMetaVo());
+    }
+
+    @PostResource(name = "Get widget file upload pre signed url", path = "/widget/{packageId}/uploadPreSignedUrl", requiredPermission = false)
+    @ApiOperation(value = "Get widget file upload pre signed url")
+    public ResponseData<List<WidgetUploadTokenVo>> generateWidgetPreSignedUrl(@PathVariable("packageId") String packageId, @RequestBody @Valid WidgetAssetUploadCertificateRO data) {
+        Long userId = SessionContext.getUserId();
+        List<WidgetUploadTokenVo> certificates = iAssetUploadTokenService.createWidgetAssetPreSignedUrl(userId, packageId, data);
+        return ResponseData.success(certificates);
     }
 
 }

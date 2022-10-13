@@ -21,8 +21,10 @@ import com.vikadata.api.model.ro.widget.WidgetPackageAuthRo;
 import com.vikadata.api.model.ro.widget.WidgetPackageBanRo;
 import com.vikadata.api.model.ro.widget.WidgetPackageCreateRo;
 import com.vikadata.api.model.ro.widget.WidgetPackageReleaseRo;
+import com.vikadata.api.model.ro.widget.WidgetPackageReleaseV2Ro;
 import com.vikadata.api.model.ro.widget.WidgetPackageRollbackRo;
 import com.vikadata.api.model.ro.widget.WidgetPackageSubmitRo;
+import com.vikadata.api.model.ro.widget.WidgetPackageSubmitV2Ro;
 import com.vikadata.api.model.ro.widget.WidgetPackageUnpublishRo;
 import com.vikadata.api.model.ro.widget.WidgetTransferOwnerRo;
 import com.vikadata.api.model.vo.widget.WidgetPackageInfoVo;
@@ -178,6 +180,29 @@ public class WidgetPackageController {
             @ApiImplicitParam(name = HttpHeaders.ACCEPT_LANGUAGE, value = "接受语言", dataTypeClass = String.class, paramType = "header", example = "「en-US/zh-CN」")
     })
     public ResponseData<Void> submitWidget(@Valid WidgetPackageSubmitRo widget) {
+        Long userId = SessionContext.getUserId();
+        iWidgetPackageService.submitWidget(userId, widget);
+        return ResponseData.success();
+    }
+
+    @PostResource(path = "/v2/release", requiredPermission = false)
+    @ApiOperation(value = "release widget v2", notes = "widget-cli release widget")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "developer's token", dataTypeClass = String.class, paramType = "header", example = "AABBCC")
+    })
+    public ResponseData<Void> releaseWidgetV2(@RequestBody @Valid WidgetPackageReleaseV2Ro widget) {
+        Long userId = SessionContext.getUserId();
+        iWidgetPackageService.releaseWidget(userId, widget);
+        return ResponseData.success();
+    }
+
+    @PostResource(path = "/v2/submit", requiredPermission = false)
+    @ApiOperation(value = "submit widget v2", notes = "widget-cli submit widget")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "developer's token", dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+            @ApiImplicitParam(name = HttpHeaders.ACCEPT_LANGUAGE, value = "developer's language", dataTypeClass = String.class, paramType = "header", example = "「en-US/zh-CN」")
+    })
+    public ResponseData<Void> submitWidgetV2(@RequestBody @Valid WidgetPackageSubmitV2Ro widget) {
         Long userId = SessionContext.getUserId();
         iWidgetPackageService.submitWidget(userId, widget);
         return ResponseData.success();

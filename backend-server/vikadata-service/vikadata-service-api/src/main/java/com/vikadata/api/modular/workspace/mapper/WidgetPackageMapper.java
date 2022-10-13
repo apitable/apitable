@@ -239,4 +239,12 @@ public interface WidgetPackageMapper extends BaseMapper<WidgetPackageEntity> {
      */
     WidgetPackageEntity selectByFatherWidgetIdAndVersion(@Param("fatherWidgetId") String fatherWidgetId, @Param("version") String version);
 
+    /**
+     * update extend info
+     *
+     * @param id            the widget's id
+     * @param widgetBody    the widget's extend info
+     * @return  updated rows' number
+     */
+    int updateWidgetBodyById(@Param("id") Long id, @Param("widgetBody")String widgetBody);
 }

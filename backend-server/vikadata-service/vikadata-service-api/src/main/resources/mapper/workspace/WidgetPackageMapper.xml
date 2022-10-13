@@ -367,4 +367,9 @@
           AND vwp.release_type = 10
     </select>
 
+    <update id="updateWidgetBodyById">
+        UPDATE vika_widget_package
+        SET widget_body = #{widgetBody}
+        WHERE id = #{id}
+    </update>
 </mapper>

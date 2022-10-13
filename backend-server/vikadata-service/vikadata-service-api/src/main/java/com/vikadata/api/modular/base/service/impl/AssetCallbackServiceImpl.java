@@ -55,7 +55,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.vikadata.api.constants.AssetsPublicConstants.IMAGE_PREFIX;
 import static com.vikadata.api.constants.AssetsPublicConstants.SPACE_PREFIX;
+import static com.vikadata.api.constants.WidgetAssetConstans.TOKEN_MAX;
 import static com.vikadata.api.enums.exception.DatabaseException.EDIT_ERROR;
+import static com.vikadata.api.enums.exception.ParameterException.INCORRECT_ARG;
 
 /**
  * <p>
@@ -159,6 +161,27 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
             results.add(result);
         }
         return results;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void widgetCallback(List<String> resourceKeys) {
+        log.info("widget callback.");
+        ExceptionUtil.isFalse(resourceKeys.size() > TOKEN_MAX, INCORRECT_ARG);
+        // Get attachments that already exist at file_url in db
+        List<AssetEntity> assetEntities = assetMapper.selectByFileUrl(resourceKeys);
+        for (AssetEntity asset : assetEntities) {
+            // Get file attributes. there may be throw exceptions, such as no exist file in bucket.
+            OssStatObject statObject = ossTemplate.getStatObject(asset.getBucketName(), asset.getFileUrl());
+            int fileSize = new Long(statObject.getFileSize()).intValue();
+            AssetEntity updatedAssetEntity = AssetEntity.builder()
+                    .id(asset.getId())
+                    .fileSize(fileSize)
+                    .mimeType(statObject.getMimeType())
+                    .build();
+            // update asset info
+            assetMapper.updateFileSizeMimeTypeById(updatedAssetEntity);
+        }
     }
 
     private void checkFileType(String mimeType, Long id, String bucketName, String key) {

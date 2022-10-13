@@ -16,6 +16,7 @@ import com.vikadata.api.enums.attach.AssetType;
 import com.vikadata.api.model.ro.asset.AssetQiniuUploadCallbackBody;
 import com.vikadata.api.model.vo.asset.AssetUploadResult;
 import com.vikadata.api.modular.base.model.AssetUploadNotifyRO;
+import com.vikadata.api.modular.base.model.WidgetUploadNotifyRO;
 import com.vikadata.api.modular.base.service.IAssetCallbackService;
 import com.vikadata.boot.autoconfigure.oss.OssProperties;
 import com.vikadata.boot.autoconfigure.oss.OssProperties.Callback;
@@ -75,4 +76,10 @@ public class AttachCallbackController {
         return ResponseData.success(iAssetCallbackService.loadAssetUploadResult(AssetType.of(body.getType()), body.getResourceKeys()));
     }
 
+    @PostResource(name = "widget upload callback", path = "/widget/uploadCallback", requiredLogin = false)
+    @ApiOperation(value = "widget upload callback")
+    public ResponseData<Void> widgetCallback(@RequestBody WidgetUploadNotifyRO body) {
+        iAssetCallbackService.widgetCallback(body.getResourceKeys());
+        return ResponseData.success();
+    }
 }

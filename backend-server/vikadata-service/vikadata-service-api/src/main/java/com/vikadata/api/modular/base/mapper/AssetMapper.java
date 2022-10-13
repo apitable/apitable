@@ -59,4 +59,10 @@ public interface AssetMapper extends BaseMapper<AssetEntity> {
      */
     int updateFileSizeById(@Param("id") Long id, @Param("incrFileSize") Long incrFileSize);
 
+    /**
+     * update asset, file size, mime type
+     * @param asset     updated info
+     * @return updated rows
+     */
+    Integer updateFileSizeMimeTypeById(@Param("entity") AssetEntity asset);
 }

@@ -29,4 +29,11 @@
         SET file_size = file_size + #{incrFileSize}
         WHERE id = #{id} AND is_deleted = 0
     </update>
+
+
+    <update id="updateFileSizeMimeTypeById">
+        UPDATE vika_asset
+        SET file_size = #{entity.fileSize}, mime_type = #{entity.mimeType}
+        WHERE id = #{entity.id} AND is_deleted = 0
+    </update>
 </mapper>

@@ -72,9 +72,23 @@ public class OssClientTemplate {
         request.refreshCdn(bucketName, url);
     }
 
+    /**
+     *  this is the method that will be deleted
+     *
+     * @param bucket        bucket's name
+     * @param key           file position
+     * @param expires       expires time
+     * @param uploadPolicy  upload policy
+     * @return  token
+     */
+    @Deprecated
     public OssUploadAuth uploadToken(String bucket, String key, long expires, OssUploadPolicy uploadPolicy) {
         OssClientRequest request = getOssClientRequestFactory().createClient();
         return request.uploadToken(bucket, key, expires, uploadPolicy);
+    }
+
+    public OssUploadAuth uploadToken(String bucket, String key, long expires) {
+        return uploadToken(bucket, key, expires, new OssUploadPolicy());
     }
 
     public boolean isValidCallback(String originAuthorization, String url, byte[] body, String contentType) {

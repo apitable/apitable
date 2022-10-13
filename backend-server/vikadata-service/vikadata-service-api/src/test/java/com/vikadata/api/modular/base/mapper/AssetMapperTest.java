@@ -67,4 +67,16 @@ public class AssetMapperTest extends AbstractMyBatisMapperTest {
         List<String> expectFileUrls = assetEntities.stream().map(AssetEntity::getFileUrl).collect(Collectors.toList());
         assertThat(expectFileUrls).containsAll(fileUrls);
     }
+
+    @Test
+    @Sql("/testdata/asset-data.sql")
+    void givenUpdatedInfoWhenUpdateAssetThen() {
+        AssetEntity assetEntity = AssetEntity.builder()
+                .id(41L)
+                .fileSize(1)
+                .mimeType("1")
+                .build();
+        Integer count = assetMapper.updateFileSizeMimeTypeById(assetEntity);
+        assertThat(count).isEqualTo(1);
+    }
 }

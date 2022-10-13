@@ -8,8 +8,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.vikadata.api.model.ro.widget.WidgetPackageBanRo;
 import com.vikadata.api.model.ro.widget.WidgetPackageCreateRo;
 import com.vikadata.api.model.ro.widget.WidgetPackageReleaseRo;
+import com.vikadata.api.model.ro.widget.WidgetPackageReleaseV2Ro;
 import com.vikadata.api.model.ro.widget.WidgetPackageRollbackRo;
 import com.vikadata.api.model.ro.widget.WidgetPackageSubmitRo;
+import com.vikadata.api.model.ro.widget.WidgetPackageSubmitV2Ro;
 import com.vikadata.api.model.ro.widget.WidgetPackageUnpublishRo;
 import com.vikadata.api.model.ro.widget.WidgetTransferOwnerRo;
 import com.vikadata.api.model.vo.widget.WidgetPackageInfoVo;
@@ -200,4 +202,25 @@ public interface IWidgetPackageService extends IService<WidgetPackageEntity> {
         return getByPackageId(packageId, false);
     }
 
+    /**
+     * 发布小组件
+     *
+     * @param opUserId  操作用户
+     * @param widget    发布小组件请求参数
+     * @return 发布操作状态
+     * @author Pengap
+     * @date 2021/7/8
+     */
+    boolean releaseWidget(Long opUserId, WidgetPackageReleaseV2Ro widget);
+
+    /**
+     * 提交全局小组件审核
+     *
+     * @param opUserId  操作用户
+     * @param widget    发布小组件请求参数
+     * @return 提交操作状态
+     * @author Pengap
+     * @date 2022/3/7 22:43:51
+     */
+    boolean submitWidget(Long opUserId, WidgetPackageSubmitV2Ro widget);
 }

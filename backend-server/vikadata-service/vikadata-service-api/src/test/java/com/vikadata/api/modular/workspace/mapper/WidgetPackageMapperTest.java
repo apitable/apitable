@@ -1,8 +1,13 @@
 package com.vikadata.api.modular.workspace.mapper;
 
+import org.junit.jupiter.api.Test;
+
 import com.vikadata.api.AbstractMyBatisMapperTest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.jdbc.Sql;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author wuyitao
@@ -12,6 +17,15 @@ public class WidgetPackageMapperTest extends AbstractMyBatisMapperTest {
 
     @Autowired
     WidgetPackageMapper widgetPackageMapper;
+
+
+    @Test
+    @Sql("/testdata/widget-package-data.sql")
+    void givenWidgetBodyWhenUpdateWidgetPackageThen() {
+        int count = widgetPackageMapper.updateWidgetBodyById(41L, "{}");
+        assertThat(count).isEqualTo(1);
+    }
+
     //
     // @Test
     // @Sql("")

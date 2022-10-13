@@ -38,4 +38,10 @@ public interface IAssetCallbackService {
      */
     List<AssetUploadResult> loadAssetUploadResult(AssetType assetType, List<String> resourceKeys);
 
+    /**
+     * widget upload callback
+     *
+     * @param resourceKeys   file urls
+     */
+    void widgetCallback(List<String> resourceKeys);
 }
