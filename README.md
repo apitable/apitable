@@ -1,14 +1,6 @@
 
-<p align="center">
-    <img width="200" src="docs/static/logo.svg" alt="APITable Logo Image" />
-</p>
 
-<p align="center">
-    <em>
-        APITable is an <b>API-oriented & Embed-friendly Visual Database</b> for everyone
-        <br />
-        and the best <b>Airtable open-source alternative</b>.
-    </em>
+
 </p>
 <p align="center">
     <img src="docs/static/cover.png" alt="APITable Cover Image" />
@@ -54,6 +46,7 @@ APITable provides incredible powerful features, from the personal to the Enterpr
 - Advanced technology stack and open-source
     - `Realtime collaboration` allow multiple users to edit together in real time, or simultaneously with Operational-Transformation(OT) Algorithm.
     - Extremely smoothly / user-friendly / superfast database-spreadsheet in  `<canvas>` Rendering Engine.
+    - Database native architecture: Changeset / Operation / Action / Snapshot and so on.
     - **100k+** Data Rows real-time collaboration available.
     - Full-stack API access, from Data to `Metadata`.
     - One-direction / Bi-direction Table Link and `Infinite Cross Links` 
@@ -100,9 +93,6 @@ and more and more with extensible widgets and plugins.
 
 Why you must know APITable for your next software?
 
-> APITable puts 1000 softwares in your own.
->
-> Embed APITable into your 1000 softwares.
 
 - As a Management Software
     - Flexible Project Management & Task/Issues Managements.
@@ -112,14 +102,14 @@ Why you must know APITable for your next software?
     - People-Friendly Forms and Surveys
     - Flexible ERP.
     - Low-code and no-code platform.
-    - ......and more.
+    - ......and more, APITable puts 1000 softwares in your own.
 - As a Visual Database infrastructure
     - **Embed** APITable into your own software UIs.
     - Visual Database with REST API.
     - Admin dashboard.
     - Central configuration management.
     - All-in-one enterprise database that **connect all** your software.
-    - ......and more.
+    - ......and more, APITable connects everything.
 
 ## 💞 API-oriented
 
@@ -143,6 +133,27 @@ Embed them by HTML script copy & paste.
 
 
 
+
+## Development & Contributing
+
+### Installation
+
+If you computer has installed Docker Machine, run this:
+
+```
+curl https://apitable.github.io/install.sh | bash -c
+```
+
+### Contributing
+
+
+APITable use common accepted conventions:
+
+- What's our Git branching model?: [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
+- How to collaborate on your fork projects?[Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
+- How to write good commit message?: [Conventional Commits](https://www.conventionalcommits.org/)
+- How to versioning and tagging?: [Semantic Versioning](https://semver.org/)
+
 ## 🛣 Roadmap
 
 - Heavy-code Interface Builder
@@ -151,14 +162,11 @@ Embed them by HTML script copy & paste.
 - As an IdP;
 - ...
 
-## 🌏 Why we create APITable and open-source?
 
-- We believe that `Database is the cornerstone` of all the software.
-- We believe that making a `Visual Database with rich and easy user interface for everyone` can reduce the difficulty of software industry and increase the world's digitalization adoption.
-- We believe that open-sourcing `APITable` work can `Push Human Beings Forward`.
+## Deployment & Production
 
 
-## 1 Click deploy
+### 1 Click deploy
 
 - Heroku
 - Digital Ocean
@@ -168,14 +176,8 @@ Embed them by HTML script copy & paste.
 - AWS
 
 
-## 📺 Screenshot
 
-- Invite
-
-(.....)
-
-
-## Hosted and Enterprise versions offer advanced features
+### Hosted and Enterprise versions offer advanced features
 
 - As an IdP;
 - SAML
@@ -184,26 +186,20 @@ Embed them by HTML script copy & paste.
 - Database Backup
 - Watermark
 
+## 🌏 Why we create APITable and open-source?
+
+- We believe that `Database is the cornerstone` of all the software.
+- We believe that making a `Visual Database with rich and easy user interface for everyone` can reduce the difficulty of software industry and increase the world's digitalization adoption.
+- We believe that open-sourcing `APITable` work can `Push Human Beings Forward`.
 
 
-## Installation
 
 
-If you computer has installed Docker Machine, run this:
+## 📺 Screenshot
 
-```
-curl https://apitable.github.io/install.sh | bash -c
-```
+- Invite
 
-## Cloud Deployment:
-
-- Heroku
-- Oceandigital
-- Microsoft Azure
-- Google Cloud
-- AWS
-
-
+(.....)
 ## 🥰 License
 
 > This repository contains the source code for the Open Source edition of APITable, released under the AGPL.
