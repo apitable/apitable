@@ -487,7 +487,6 @@ public class BillingOfflineServiceImpl implements IBillingOfflineService {
         CreateEntitlementWithAddOn createEntitlementWithAddOn = new CreateEntitlementWithAddOn();
         createEntitlementWithAddOn.setSpaceId(spaceId);
         createEntitlementWithAddOn.setPlanId("capacity_300_MB");
-        createEntitlementWithAddOn.setStartDate(LocalDate.now().toString());
         createEntitlementWithAddOn.setMonths(12);
         // 构建请求体中remark备注信息，包括userId、userName、capacityType
         Map<String, Object> remarkMap = new HashMap<>();

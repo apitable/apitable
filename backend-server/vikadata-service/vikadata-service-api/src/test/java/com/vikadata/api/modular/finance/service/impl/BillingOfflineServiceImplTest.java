@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -22,6 +24,7 @@ import com.vikadata.api.modular.finance.core.OrderArguments;
 import com.vikadata.api.modular.finance.util.EntitlementChecker.ExpectedBundleCheck;
 import com.vikadata.api.modular.finance.util.EntitlementChecker.ExpectedSpaceEntitlementCheck;
 import com.vikadata.api.modular.finance.util.EntitlementChecker.ExpectedSubscriptionCheck;
+import com.vikadata.api.modular.space.model.vo.SpaceCapacityPageVO;
 import com.vikadata.api.util.billing.BillingConfigManager;
 import com.vikadata.api.util.billing.model.ProductChannel;
 import com.vikadata.api.util.billing.model.ProductEnum;
@@ -617,5 +620,7 @@ public class BillingOfflineServiceImplTest extends AbstractIntegrationTest {
         // 查询空间赠送附件容量大小
         Long number = iSpaceSubscriptionService.getSpaceUnExpireGiftCapacity(mockUserSpace.getSpaceId());
         assertThat(number).isEqualTo(314572800L);
+        IPage<SpaceCapacityPageVO> spaceCapacityPageVOIPage = iSpaceSubscriptionService.getSpaceCapacityDetail(mockUserSpace.getSpaceId(), false, new Page<>());
+        assertThat(spaceCapacityPageVOIPage.getRecords().get(0).getExpireDate().length()).isEqualTo(19);
     }
 }
