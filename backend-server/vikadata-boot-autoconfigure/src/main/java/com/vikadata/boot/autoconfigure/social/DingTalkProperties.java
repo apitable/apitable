@@ -80,6 +80,17 @@ public class DingTalkProperties {
      */
     private String cardEventPath = "card";
 
+    /**
+     * 检查配置是否填写
+     *
+     * @param properties 配置信息
+     */
+    public static void checkAppProperties(DingTalkProperties properties) {
+        if (properties == null) {
+            throw new IllegalArgumentException("Dingtalk properties should not be null, must be set");
+        }
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
@@ -499,21 +510,6 @@ public class DingTalkProperties {
             this.template = template;
         }
 
-    }
-
-    /**
-     * 检查配置是否填写
-     *
-     * @param properties 配置信息
-     */
-    public static void checkAppProperties(DingTalkProperties properties) {
-        if (properties == null) {
-            throw new IllegalArgumentException("Dingtalk properties should not be null, must be set");
-        }
-
-        if (properties.getMobileApp() == null || properties.getCorpH5App() == null) {
-            throw new IllegalArgumentException("illegal App info: " + properties);
-        }
     }
 
 }

@@ -1,5 +1,3 @@
-import org.apache.tools.ant.filters.ReplaceTokens
-
 import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -8,20 +6,6 @@ plugins {
   id 'java'
   id 'org.springframework.boot'
 }
-
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
-configurations {
-  compileOnly {
-    extendsFrom annotationProcessor
-  }
-}
-
-// 打包环境
-def profile = System.getProperty("profile") ?: "local"
-
-System.out.println("Build Profile:" + profile)
 
 dependencies {
   implementation project(':vikadata-core')
@@ -61,16 +45,14 @@ dependencies {
   testImplementation rootProject.ext.dependencies['spring-test-starter']
 }
 
+jar {
+  enabled = false
+}
 // 动态设置变量到resource目录下文件
 // profile和revision在application.yml里面
 processResources {
   filesMatching("**/*.yml") {
-    it.filter(ReplaceTokens, tokens: [
-      profile : profile,
-      revision: revision
-    ])
-    
-    if (it.name != "application-${profile}.yml" && it.name != 'application.yml') {
+    if (it.name != 'application.yml') {
       it.exclude()
     }
   }
@@ -110,7 +92,6 @@ springBoot {
       version = rootProject.version
       group = rootProject.group
       name = 'Socail Api Server'
-      version = '0.13.3-' + profile + '.' + (System.getenv().containsKey('CI_PIPELINE_ID') ? System.getenv('CI_PIPELINE_ID') : 'NoPipeline')
     }
   }
 }

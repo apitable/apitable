@@ -280,15 +280,19 @@ public class DingTalkAutoConfiguration implements ApplicationContextAware, BeanD
         config.setSuiteSecret(properties.getSuiteSecret());
         config.setCorpSecret(properties.getCorpSecret());
 
-        DingtalkConfig.Mobile mobileAppConfig = new DingtalkConfig.Mobile();
-        mobileAppConfig.setAppId(properties.getMobileApp().getAppId());
-        mobileAppConfig.setAppSecret(properties.getMobileApp().getAppSecret());
-        config.setMobile(mobileAppConfig);
+        if (null != properties.getMobileApp()) {
+            DingtalkConfig.Mobile mobileAppConfig = new DingtalkConfig.Mobile();
+            mobileAppConfig.setAppId(properties.getMobileApp().getAppId());
+            mobileAppConfig.setAppSecret(properties.getMobileApp().getAppSecret());
+            config.setMobile(mobileAppConfig);
+        }
 
-        DingtalkConfig.H5app h5appConfig = new DingtalkConfig.H5app();
-        h5appConfig.setAppKey(properties.getCorpH5App().getAppKey());
-        h5appConfig.setAppSecret(properties.getCorpH5App().getAppSecret());
-        config.setH5app(h5appConfig);
+        if (null != properties.getCorpH5App()) {
+            DingtalkConfig.H5app h5appConfig = new DingtalkConfig.H5app();
+            h5appConfig.setAppKey(properties.getCorpH5App().getAppKey());
+            h5appConfig.setAppSecret(properties.getCorpH5App().getAppSecret());
+            config.setH5app(h5appConfig);
+        }
 
         if (!properties.getIsvAppList().isEmpty()) {
             HashMap<String, IsvApp> isvAppMap = new HashMap<>(properties.getIsvAppList().size());

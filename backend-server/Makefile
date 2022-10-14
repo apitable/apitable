@@ -11,6 +11,12 @@ docker_build_app:
 	export DOCKERFILE=Dockerfile; \
 	build_docker backend-server
 
+docker_build_dingtalk_server:
+	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)"; \
+	export BUILD_ARG="--build-arg JAR_PATH=vikadata-project/social-service-dingtalk/build/libs/*.jar --build-arg PORT=9091 --build-arg PORT=9092"; \
+	export DOCKERFILE=Dockerfile; \
+	build_docker dingtalk-server
+
 docker_build_space_job_executor:
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)"; \
 	export BUILD_ARG="--build-arg JAR_PATH=vikadata-scheduler/scheduler-space/build/libs/*.jar --build-arg PORT=9111"; \
