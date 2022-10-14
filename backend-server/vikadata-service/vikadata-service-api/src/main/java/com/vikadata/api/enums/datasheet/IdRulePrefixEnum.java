@@ -110,10 +110,17 @@ public enum IdRulePrefixEnum {
      */
     AUTOMATION_SERVICE("asv"),
 
-    /*
-     * 模板tag
+    /**
+     * template tag
      */
-    TPT("tpt");
+    TPT("tpt"),
+
+    /**
+     * template album
+     */
+    ALB("alb"),
+
+    ;
 
     private final String idRulePrefixEnum;
 

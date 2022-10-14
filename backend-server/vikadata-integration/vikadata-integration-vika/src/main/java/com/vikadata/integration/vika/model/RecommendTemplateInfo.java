@@ -7,15 +7,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * <p>
- * 热门推荐模板配置信息
+ * Recommend Config Info
  * </p>
  *
  * @author Chambers
  * @date 2021/3/25
  */
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RecommendTemplateInfo {
 
+    @JsonProperty("SUBJECT")
+    private List<String> subject;
+
+    @JsonProperty("LAYOUT")
+    private String layout;
+
+    @JsonProperty("CUSTOM_GROUP")
+    private String customGroup;
+
+    @Deprecated
     @JsonProperty("TEMPLATE_NAME")
     private String templateName;
 
@@ -28,6 +38,7 @@ public class RecommendTemplateInfo {
     @JsonProperty("BANNER")
     private List<AttachmentField> banners;
 
+    @Deprecated
     @JsonProperty("CUSTOM_CATEGORY")
     private String customCategory;
 
@@ -36,6 +47,30 @@ public class RecommendTemplateInfo {
 
     @JsonProperty("i18n")
     private String i18n;
+
+    public String getSubjectValue() {
+        return subject == null || subject.isEmpty() ? null : subject.get(0);
+    }
+
+    public void setSubject(List<String> subject) {
+        this.subject = subject;
+    }
+
+    public String getLayout() {
+        return layout;
+    }
+
+    public void setLayout(String layout) {
+        this.layout = layout;
+    }
+
+    public String getCustomGroup() {
+        return customGroup;
+    }
+
+    public void setCustomGroup(String customGroup) {
+        this.customGroup = customGroup;
+    }
 
     public String getTemplateName() {
         return templateName;

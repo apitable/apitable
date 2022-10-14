@@ -1,8 +1,11 @@
 package com.vikadata.api.modular.base.mapper;
 
+import java.util.List;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.vikadata.api.modular.base.model.SystemConfigDTO;
 import com.vikadata.entity.SystemConfigEntity;
 
 /**
@@ -29,4 +32,36 @@ public interface SystemConfigMapper extends BaseMapper<SystemConfigEntity> {
      * @return 配置信息
      */
     String selectConfigMapByType(@Param("type") Integer type, @Param("lang") String lang);
+
+    /**
+     * query i18n name by type
+     *
+     * @param type  config type
+     * @return SystemConfigDTO list
+     * @author Chambers
+     * @date 2022/9/23
+     */
+    List<SystemConfigDTO> selectConfigDtoByType(@Param("type") Integer type);
+
+    /**
+     * batch insert
+     *
+     * @param entities System Config Entities
+     * @return affected rows count
+     * @author Chambers
+     * @date 2022/9/26
+     */
+    int insertBatch(@Param("entities") List<SystemConfigEntity> entities);
+
+    /**
+     * remove by table ids
+     *
+     * @param ids       System Config Table ID List
+     * @param updatedBy Updater User ID
+     * @return affected rows count
+     * @author Chambers
+     * @date 2022/9/26
+     */
+    int removeByIds(@Param("ids") List<Long> ids, @Param("updatedBy") Long updatedBy);
+
 }

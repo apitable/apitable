@@ -35,4 +35,9 @@ public class CategoryDto {
      * 分类下的模板
      */
     private List<String> templateIds;
+
+    public CategoryDto(String categoryName, List<String> templateIds) {
+        this.categoryName = categoryName;
+        this.templateIds = templateIds;
+    }
 }

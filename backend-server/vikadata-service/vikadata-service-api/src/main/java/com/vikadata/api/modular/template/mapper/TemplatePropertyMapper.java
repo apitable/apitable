@@ -20,6 +20,16 @@ import com.vikadata.entity.TemplatePropertyEntity;
 public interface TemplatePropertyMapper extends BaseMapper<TemplatePropertyEntity> {
 
     /**
+     * query property names by property codes
+     *
+     * @param propertyCodes property codes
+     * @return PropertyName List
+     * @author Chambers
+     * @date 2022/10/9
+     */
+    List<String> selectPropertyNameByPropertyCodeIn(@Param("propertyCodes") List<String> propertyCodes);
+
+    /**
      * 获取指定语言在线模版基本信息
      *
      * @param lang 特定语言
@@ -40,6 +50,37 @@ public interface TemplatePropertyMapper extends BaseMapper<TemplatePropertyEntit
     List<TemplatePropertyDto> selectTemplatePropertiesWithLangAndOrder(@Param("type") Integer type, @Param("lang") String lang);
 
     /**
+     * query all template property
+     *
+     * @return TemplatePropertyDto List
+     * @author Chambers
+     * @date 2022/9/23
+     */
+    List<TemplatePropertyDto> selectAllTemplatePropertyDto();
+
+    /**
+     * update updatedBy by ids
+     *
+     * @param propertyCodes Template Property Codes
+     * @param updatedBy     Updater User ID
+     * @return affected rows count
+     * @author Chambers
+     * @date 2022/9/26
+     */
+    int updateUpdatedByByPropertyCodes(@Param("propertyCodes") List<String> propertyCodes, @Param("updatedBy") Long updatedBy);
+
+    /**
+     * remove by property codes
+     *
+     * @param propertyCodes Template Property Codes
+     * @param updatedBy     Updater User ID
+     * @return affected rows count
+     * @author Chambers
+     * @date 2022/9/26
+     */
+    int removeByPropertyCodes(@Param("propertyCodes") List<String> propertyCodes, @Param("updatedBy") Long updatedBy);
+
+    /**
      * 批量写入
      *
      * @param entities 实体数据
@@ -58,7 +99,7 @@ public interface TemplatePropertyMapper extends BaseMapper<TemplatePropertyEntit
      * @author zoe zheng
      * @date 2021/8/3 11:50 上午
      */
-    int deleteBatchByIds(@Param("ids") List<Long> ids, @Param("updatedBy")Long updatedBy);
+    int deleteBatchByIds(@Param("ids") List<Long> ids, @Param("updatedBy") Long updatedBy);
 
     /**
      * 根据code查询属性ID
@@ -92,7 +133,7 @@ public interface TemplatePropertyMapper extends BaseMapper<TemplatePropertyEntit
      * @author zoe zheng
      * @date 2021/8/4 10:34 上午
      */
-    List<TemplateKeyWordSearchDto> selectTemplateByPropertyNameAndLang(@Param("keyWord") String keyWord, @Param("lang")String lang);
+    List<TemplateKeyWordSearchDto> selectTemplateByPropertyNameAndLang(@Param("keyWord") String keyWord, @Param("lang") String lang);
 
     /**
      * 批量删除

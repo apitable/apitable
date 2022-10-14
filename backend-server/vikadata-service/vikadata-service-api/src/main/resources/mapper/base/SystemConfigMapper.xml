@@ -22,4 +22,35 @@
         </if>
           and is_deleted = 0
     </select>
+
+    <select id="selectConfigDtoByType"
+            resultType="com.vikadata.api.modular.base.model.SystemConfigDTO">
+        SELECT id, i18n_name
+        FROM vika_system_config
+        WHERE `type` = #{type}
+          AND is_deleted = 0
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO vika_system_config(id, type, i18n_name, config_map, created_by,
+                                       updated_by)
+                VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id}, #{item.type}, #{item.i18nName}, #{item.configMap},
+                #{item.createdBy}, #{item.updatedBy}
+            </trim>
+        </foreach>
+    </insert>
+
+    <update id="removeByIds">
+        UPDATE vika_system_config
+        SET is_deleted = 1,
+            updated_by = #{updatedBy}
+                WHERE id IN
+        <foreach item="item" index="index" collection="ids" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </update>
 </mapper>

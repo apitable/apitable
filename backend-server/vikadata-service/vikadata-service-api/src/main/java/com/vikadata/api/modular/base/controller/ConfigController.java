@@ -66,6 +66,7 @@ public class ConfigController {
         return ResponseData.success();
     }
 
+    @Deprecated
     @PostResource(path = "/template", requiredPermission = false)
     @ApiOperation(value = "模板配置", notes = "热门推荐、上架模板")
     public ResponseData<Void> template(@RequestBody @Valid TemplateConfigRo ro) {

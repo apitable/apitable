@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 在线模版基础信息
+ * Online Template Property
  *
  * @author Zoe Zheng
  * @date 2021-08-02 17:19:35
@@ -25,5 +25,5 @@ public class TemplatePropertyDto {
 
     private Integer propertyType;
 
-    private String i18n;
+    private String i18nName;
 }

@@ -147,10 +147,17 @@ public class IdUtil {
         return IdRulePrefixEnum.AUTOMATION_ACTION.getIdRulePrefixEnum() + RandomExtendUtil.randomString(AUTOMATION_ID_FIXED_LENGTH);
     }
 
-    /*
-     * 模板标签 code
+    /**
+     * template tag code
      */
     public static String createTempTagCode() {
         return IdRulePrefixEnum.TPT.getIdRulePrefixEnum() + RandomExtendUtil.randomString(ID_FIXED_LENGTH);
+    }
+
+    /**
+     * template album custom id
+     */
+    public static String createTemplateAlbumId() {
+        return IdRulePrefixEnum.ALB.getIdRulePrefixEnum() + RandomExtendUtil.randomString(ID_FIXED_LENGTH);
     }
 }

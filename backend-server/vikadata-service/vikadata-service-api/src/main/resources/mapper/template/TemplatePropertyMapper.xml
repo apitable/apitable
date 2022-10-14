@@ -2,6 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vikadata.api.modular.template.mapper.TemplatePropertyMapper">
+    <select id="selectPropertyNameByPropertyCodeIn" resultType="java.lang.String">
+        SELECT property_name
+        FROM vika_template_property
+                WHERE property_code IN
+        <foreach item="item" index="index" collection="propertyCodes" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
     <select id="selectTemplatePropertiesWithI18n"
             resultType="com.vikadata.api.modular.template.model.TemplatePropertyDto">
         SELECT id as property_id, property_name, property_code, property_type, i18n_name
@@ -15,7 +26,7 @@
         SELECT vtp.id as property_id, vtp.property_name, vtp.property_code,
         vtp.property_type
         FROM vika_template_property vtp
-        LEFT JOIN vika_template_property_rel vtpr on vtp.id = vtpr.property_id
+        LEFT JOIN vika_template_property_rel vtpr ON vtp.property_code = vtpr.property_code
         WHERE vtp.is_deleted = 0
         AND vtp.i18n_name = #{lang}
         <if test="type != null">
@@ -24,6 +35,34 @@
         GROUP BY vtp.property_code, vtpr.property_order
         ORDER BY vtpr.property_order ASC
     </select>
+
+    <select id="selectAllTemplatePropertyDto"
+            resultType="com.vikadata.api.modular.template.model.TemplatePropertyDto">
+        SELECT id AS property_id, property_type, property_code, property_name, i18n_name
+        FROM vika_template_property
+        WHERE is_deleted = 0
+    </select>
+
+    <update id="updateUpdatedByByPropertyCodes">
+        UPDATE vika_template_property
+        SET updated_by = #{updatedBy}
+                WHERE property_code IN
+        <foreach item="item" index="index" collection="propertyCodes" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="removeByPropertyCodes">
+        UPDATE vika_template_property
+        SET is_deleted = 1,
+            updated_by = #{updatedBy}
+                WHERE property_code IN
+        <foreach item="item" index="index" collection="propertyCodes" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
 
     <insert id="insertBatch">
         INSERT INTO vika_template_property(id, property_name, property_code,
@@ -59,7 +98,7 @@
         SELECT vtp.id as property_id, vtp.property_name, vtp.property_code,
         vtp.property_type, vtpr.template_id
         FROM vika_template_property vtp
-        LEFT JOIN vika_template_property_rel vtpr on vtp.id = vtpr.property_id
+        LEFT JOIN vika_template_property_rel vtpr ON vtp.property_code = vtpr.property_code
         WHERE vtpr.template_id IN
         <foreach item="item" index="index" collection="templateIds" open="(" separator=","
                  close=")">
@@ -80,7 +119,7 @@
                locate(#{keyWord}, vt.name)           as name_index,
                locate(#{keyWord}, vtp.property_name) as property_name_index
         FROM vika_template_property_rel vtpr
-                 LEFT JOIN vika_template_property vtp on vtpr.property_id = vtp.id
+                 LEFT JOIN vika_template_property vtp ON vtpr.property_code = vtp.property_code
                  LEFT JOIN vika_template vt on vtpr.template_id = vt.template_id
         WHERE vtp.is_deleted = 0
           AND vtp.i18n_name = #{lang}

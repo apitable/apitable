@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.vikadata.api.constants.IntegralActionCodeConstants.OFFICIAL_ADJUSTMENT;
 
 @RestController
-@Api(tags = "用户积分服务接口")
+@Api(tags = "User Integral API")
 @ApiResource(path = "/integral")
 public class IntegralController {
 
@@ -43,38 +43,38 @@ public class IntegralController {
     private IIntegralService iIntegralService;
 
     @PostResource(path = "/activity/reward", requiredPermission = false)
-    @ApiOperation(value = "活动积分奖励")
+    @ApiOperation(value = "Activity Integral Reward")
     public ResponseData<Void> activityReward() {
-        // 校验权限
+        // valid permission
         iGmService.validPermission(SessionContext.getUserId(), GmAction.INTEGRAL_REWARD);
         iIntegralService.activityReward(LoginContext.me().getLoginUser().getNickName());
         return ResponseData.success();
     }
 
     @GetResource(path = "/get", requiredPermission = false)
-    @ApiOperation(value = "查询用户积分")
+    @ApiOperation(value = "Query User Integral")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value = "用户ID", dataTypeClass = Long.class, paramType = "query", example = "12511"),
-            @ApiImplicitParam(name = "areaCode", value = "区号", dataTypeClass = Integer.class, paramType = "query", example = "+1"),
-            @ApiImplicitParam(name = "credential", value = "帐号凭证（手机或邮箱）", dataTypeClass = String.class, paramType = "query", example = "xx@gmail.com")
+            @ApiImplicitParam(name = "userId", value = "User ID", dataTypeClass = Long.class, paramType = "query", example = "12511"),
+            @ApiImplicitParam(name = "areaCode", value = "Area Code", dataTypeClass = Integer.class, paramType = "query", example = "+1"),
+            @ApiImplicitParam(name = "credential", value = "Account Credential（mobile or email）", dataTypeClass = String.class, paramType = "query", example = "xx@gmail.com")
     })
     public ResponseData<Integer> get(@RequestParam(value = "userId", required = false) Long userId,
             @RequestParam(value = "areaCode", required = false) String areaCode,
             @RequestParam(value = "credential", required = false) String credential) {
-        // 校验权限
-        iGmService.validPermission(SessionContext.getUserId(), GmAction.INTEGRAL_REWARD);
+        // valid permission
+        iGmService.validPermission(SessionContext.getUserId(), GmAction.INTEGRAL_QUERY);
         Long id = userId != null ? userId : (iUserService.getByUsername(areaCode, credential)).getId();
         return ResponseData.success(iIntegralService.getTotalIntegralValueByUserId(id));
     }
 
     @PostResource(path = "/deduct", requiredPermission = false)
-    @ApiOperation(value = "扣除用户积分")
+    @ApiOperation(value = "Deduct User Integral")
     public ResponseData<Void> deduct(@RequestBody IntegralDeductRo ro) {
-        // 校验权限
+        // valid permission
         iGmService.validPermission(SessionContext.getUserId(), GmAction.INTEGRAL_SUBTRACT);
-        // 获取用户ID
+        // get user id
         Long userId = ro.getUserId() != null ? ro.getUserId() : (iUserService.getByUsername(ro.getAreaCode(), ro.getCredential())).getId();
-        // 扣除用户积分
+        // deduct user integral
         iIntegralService.alterIntegral(OFFICIAL_ADJUSTMENT, IntegralAlterType.EXPENSES, ro.getCredit(), userId, JSONUtil.createObj());
         return ResponseData.success();
     }

@@ -143,8 +143,8 @@
     <select id="selectByTemplateIds" resultType="com.vikadata.api.modular.template.model.OnlineTemplateDto">
         SELECT vt.template_id, vt.name AS template_name, vtp.property_name, vtp.property_code, vtp.property_type
         FROM vika_template vt
-        LEFT JOIN vika_template_property_rel vtpr on vt.template_id = vtpr.template_id
-        LEFT JOIN vika_template_property vtp on vtpr.property_id = vtp.id
+        LEFT JOIN vika_template_property_rel vtpr ON vt.template_id = vtpr.template_id
+        LEFT JOIN vika_template_property vtp ON vtpr.property_code = vtp.property_code
         WHERE vt.template_id IN
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}

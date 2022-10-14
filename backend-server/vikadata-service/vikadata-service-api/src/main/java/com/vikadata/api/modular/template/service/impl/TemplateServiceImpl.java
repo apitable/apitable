@@ -3,11 +3,13 @@ package com.vikadata.api.modular.template.service.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
@@ -25,6 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 import com.vikadata.api.cache.bean.Banner;
 import com.vikadata.api.cache.bean.CategoryDto;
 import com.vikadata.api.cache.bean.RecommendConfig;
+import com.vikadata.api.cache.bean.RecommendConfig.AlbumGroup;
+import com.vikadata.api.cache.bean.RecommendConfig.TemplateGroup;
 import com.vikadata.api.cache.service.ITemplateConfigService;
 import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.config.properties.LimitProperties;
@@ -42,16 +46,21 @@ import com.vikadata.api.model.ro.template.CreateTemplateRo;
 import com.vikadata.api.model.vo.node.BaseNodeInfo;
 import com.vikadata.api.model.vo.node.FieldPermissionInfo;
 import com.vikadata.api.model.vo.node.NodeShareTree;
-import com.vikadata.api.model.vo.template.CustomCategoryVo;
+import com.vikadata.api.model.vo.template.AlbumGroupVo;
+import com.vikadata.api.model.vo.template.AlbumVo;
 import com.vikadata.api.model.vo.template.RecommendVo;
-import com.vikadata.api.model.vo.template.TemplateCategoryVo;
+import com.vikadata.api.model.vo.template.TemplateCategoryContentVo;
+import com.vikadata.api.model.vo.template.TemplateCategoryMenuVo;
 import com.vikadata.api.model.vo.template.TemplateDirectoryVo;
+import com.vikadata.api.model.vo.template.TemplateGroupVo;
 import com.vikadata.api.model.vo.template.TemplateSearchResult;
 import com.vikadata.api.model.vo.template.TemplateVo;
 import com.vikadata.api.modular.base.service.ISystemConfigService;
 import com.vikadata.api.modular.template.mapper.TemplateMapper;
 import com.vikadata.api.modular.template.model.OnlineTemplateDto;
 import com.vikadata.api.modular.template.model.TemplatePropertyDto;
+import com.vikadata.api.modular.template.model.TemplateSearchDTO;
+import com.vikadata.api.modular.template.service.ITemplateAlbumService;
 import com.vikadata.api.modular.template.service.ITemplatePropertyService;
 import com.vikadata.api.modular.template.service.ITemplateService;
 import com.vikadata.api.modular.workspace.mapper.NodeMapper;
@@ -65,6 +74,7 @@ import com.vikadata.api.modular.workspace.service.INodeRelService;
 import com.vikadata.api.modular.workspace.service.INodeService;
 import com.vikadata.api.util.CollectionUtil;
 import com.vikadata.api.util.IdUtil;
+import com.vikadata.api.util.InformationUtil;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.support.tree.DefaultTreeBuildFactory;
 import com.vikadata.core.util.ExceptionUtil;
@@ -133,6 +143,9 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
     @Resource
     private ITemplatePropertyService templatePropertyService;
 
+    @Resource
+    private ITemplateAlbumService iTemplateAlbumService;
+
     @Autowired(required = false)
     private VikaOperations vikaOperations;
 
@@ -168,7 +181,7 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
                 this.checkFolderTemplate(subNodeIds, memberId);
                 break;
             case DATASHEET:
-                this.checkDatasheetTemplate(Collections.singletonList(nodeId),false, NODE_LINK_FOREIGN_NODE);
+                this.checkDatasheetTemplate(Collections.singletonList(nodeId), false, NODE_LINK_FOREIGN_NODE);
                 // 检验字段权限
                 this.checkFieldPermission(memberId, nodeId);
                 break;
@@ -191,7 +204,7 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
                 .collect(Collectors.groupingBy(BaseNodeInfo::getType, Collectors.mapping(BaseNodeInfo::getNodeId, Collectors.toList())));
         // 若存在数表，校验是否关联了外部的数表
         if (nodeTypeToNodeIdsMap.containsKey(NodeType.DATASHEET.getNodeType())) {
-            this.checkDatasheetTemplate(nodeTypeToNodeIdsMap.get(NodeType.DATASHEET.getNodeType()),true, FOLDER_NODE_LINK_FOREIGN_NODE);
+            this.checkDatasheetTemplate(nodeTypeToNodeIdsMap.get(NodeType.DATASHEET.getNodeType()), true, FOLDER_NODE_LINK_FOREIGN_NODE);
             // 检验字段权限
             for (String subNodeId : nodeTypeToNodeIdsMap.get(NodeType.DATASHEET.getNodeType())) {
                 this.checkFieldPermission(memberId, subNodeId);
@@ -331,54 +344,109 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
 
     @Override
     public RecommendVo getRecommend(String lang) {
-        log.info("获取热门推荐");
-        RecommendVo vo = new RecommendVo();
+        RecommendVo recommend = new RecommendVo();
         String recommendConfigValue = templateConfigService.getRecommendConfigCacheByLang(lang);
-        if (recommendConfigValue != null) {
-            RecommendConfig config = JSONUtil.parseObj(recommendConfigValue).toBean(RecommendConfig.class);
-            vo.setTop(config.getTop());
-            // 集中各个分组下的模板ID，统一获取模板信息
-            List<String> templateIds = new ArrayList<>();
-            List<CategoryDto> categoryDtoList = config.getCategories();
-            categoryDtoList.forEach(category -> templateIds.addAll(category.getTemplateIds()));
-            if (CollUtil.isNotEmpty(templateIds)) {
-                List<TemplateVo> templateVoList = this.getTemplateVoList(constProperties.getTemplateSpace(), null, templateIds, false);
-                Map<String, TemplateVo> map = templateVoList.stream().collect(Collectors.toMap(TemplateVo::getTemplateId, templateVo -> templateVo));
-                // 按分组处理返回信息
-                List<CustomCategoryVo> categories = new ArrayList<>(categoryDtoList.size());
-                for (CategoryDto dto : categoryDtoList) {
-                    List<TemplateVo> templateVos = new ArrayList<>(dto.getTemplateIds().size());
-                    for (String tplId : dto.getTemplateIds()) {
-                        TemplateVo templateVo = map.get(tplId);
-                        if (templateVo != null) {
-                            templateVos.add(templateVo);
-                        }
-                    }
-                    // 分组下的模板若都不存在了，过滤不返回
-                    if (CollUtil.isNotEmpty(templateVos)) {
-                        CustomCategoryVo customCategoryVo = new CustomCategoryVo(dto.getCategoryName(), templateVos);
-                        categories.add(customCategoryVo);
-                    }
+        if (recommendConfigValue == null) {
+            return recommend;
+        }
+        RecommendConfig config = JSONUtil.parseObj(recommendConfigValue).toBean(RecommendConfig.class);
+        if (config == null) {
+            return recommend;
+        }
+        recommend.setTop(config.getTop());
+        // build album group
+        List<AlbumGroupVo> albumGroups = this.buildAlbumGroups(config.getAlbumGroups());
+        recommend.setAlbumGroups(albumGroups);
+        // build template group
+        List<TemplateGroupVo> templateGroupVos = this.buildTemplateGroups(config.getTemplateGroups());
+        recommend.setCategories(templateGroupVos);
+        recommend.setTemplateGroups(templateGroupVos);
+        return recommend;
+    }
+
+    private List<AlbumGroupVo> buildAlbumGroups(List<AlbumGroup> albumGroups) {
+        // summarize albums IDs under each group
+        List<String> albumIds = new ArrayList<>();
+        List<AlbumGroupVo> albumGroupVos = new ArrayList<>(albumGroups.size());
+        albumGroups.forEach(group -> albumIds.addAll(group.getAlbumIds()));
+        if (CollUtil.isEmpty(albumIds)) {
+            return albumGroupVos;
+        }
+
+        // query album information uniformly
+        List<AlbumVo> templateVoList = iTemplateAlbumService.getAlbumVosByAlbumIds(albumIds);
+        Map<String, AlbumVo> albumIdToAlbumVoMap = templateVoList.stream().collect(Collectors.toMap(AlbumVo::getAlbumId, i -> i));
+        // build group vo
+        for (AlbumGroup group : albumGroups) {
+            List<AlbumVo> albumVos = new ArrayList<>(group.getAlbumIds().size());
+            for (String albumId : group.getAlbumIds()) {
+                if (albumIdToAlbumVoMap.containsKey(albumId)) {
+                    albumVos.add(albumIdToAlbumVoMap.get(albumId));
                 }
-                vo.setCategories(categories);
+            }
+            // if the album under the group does not exist, it will not return
+            if (CollUtil.isNotEmpty(albumVos)) {
+                AlbumGroupVo albumGroupVo = new AlbumGroupVo(group.getName(), albumVos);
+                albumGroupVos.add(albumGroupVo);
             }
         }
-        return vo;
+        return albumGroupVos;
+    }
+
+    private List<TemplateGroupVo> buildTemplateGroups(List<TemplateGroup> templateGroups) {
+        // summarize template IDs under each group
+        List<String> templateIds = new ArrayList<>();
+        List<TemplateGroupVo> templateGroupVos = new ArrayList<>(templateGroups.size());
+        templateGroups.forEach(group -> templateIds.addAll(group.getTemplateIds()));
+        if (CollUtil.isEmpty(templateIds)) {
+            return templateGroupVos;
+        }
+
+        // query template information uniformly
+        List<TemplateVo> templateVoList = this.getTemplateVoList(constProperties.getTemplateSpace(), null, templateIds, false);
+        Map<String, TemplateVo> templateIdToTemplateVoMap = templateVoList.stream().collect(Collectors.toMap(TemplateVo::getTemplateId, i -> i));
+        // build group vo
+        for (TemplateGroup group : templateGroups) {
+            List<TemplateVo> templateVos = new ArrayList<>(group.getTemplateIds().size());
+            for (String templateId : group.getTemplateIds()) {
+                if (templateIdToTemplateVoMap.containsKey(templateId)) {
+                    templateVos.add(templateIdToTemplateVoMap.get(templateId));
+                }
+            }
+            // if the template under the group does not exist, it will not return
+            if (CollUtil.isNotEmpty(templateVos)) {
+                TemplateGroupVo templateGroupVo = new TemplateGroupVo(group.getName(), templateVos);
+                templateGroupVos.add(templateGroupVo);
+            }
+        }
+        return templateGroupVos;
     }
 
     @Override
-    public List<TemplateCategoryVo> getTemplateCategoryList(String lang) {
+    public List<TemplateCategoryMenuVo> getTemplateCategoryList(String lang) {
         log.info("获取官方模版分类列表");
         List<TemplatePropertyDto> properties =
                 templatePropertyService.getTemplatePropertiesWithLangAndOrder(TemplatePropertyType.CATEGORY, lang);
-        List<TemplateCategoryVo> categoryVos = new ArrayList<>();
+        List<TemplateCategoryMenuVo> categoryVos = new ArrayList<>();
         for (TemplatePropertyDto property : properties) {
-            TemplateCategoryVo vo = new TemplateCategoryVo();
+            TemplateCategoryMenuVo vo = new TemplateCategoryMenuVo();
             vo.setCategoryCode(property.getPropertyCode());
             vo.setCategoryName(property.getPropertyName());
             categoryVos.add(vo);
         }
         return categoryVos;
+    }
+
+    @Override
+    public TemplateCategoryContentVo getTemplateCategoryContentVo(String categoryCode) {
+        TemplateCategoryContentVo contentVo = new TemplateCategoryContentVo();
+        // get album views
+        List<AlbumVo> albumVos = iTemplateAlbumService.getAlbumVosByCategoryCode(categoryCode);
+        contentVo.setAlbums(albumVos);
+        // get template views
+        List<TemplateVo> templateVos = this.getTemplateVoList(constProperties.getTemplateSpace(), null, null, Boolean.FALSE);
+        contentVo.setTemplates(templateVos);
+        return contentVo;
     }
 
     @Override
@@ -626,6 +694,45 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
             templates.put(templateId, searchResult);
         }
         return new ArrayList<>(templates.values());
+    }
+
+    @Override
+    public TemplateSearchDTO globalSearchTemplate(String lang, String keyword, String className) {
+        TemplateSearchDTO result = new TemplateSearchDTO();
+        // search template
+        List<TemplateSearchResult> templates = this.searchTemplate(keyword, lang);
+        List<String> originTemplateNames = new ArrayList<>(templates.size());
+        Set<String> originTagNames = new HashSet<>();
+        // replace style of keyword
+        templates.forEach(template -> {
+            originTemplateNames.add(template.getTemplateName());
+            template.setTemplateName(InformationUtil.keywordHighlight(template.getTemplateName(), keyword, className));
+            if (template.getTags() != null) {
+                List<String> tags = new ArrayList<>(template.getTags().size());
+                for (String tag : template.getTags()) {
+                    originTagNames.add(tag);
+                    tags.add(InformationUtil.keywordHighlight(tag, keyword, className));
+                }
+                template.setTags(tags);
+            }
+        });
+        result.setTemplates(templates);
+        result.setTemplateNames(originTemplateNames);
+        result.setTagNames(originTagNames);
+
+        // search template album
+        List<AlbumVo> albumVos = iTemplateAlbumService.searchAlbums(lang, keyword);
+        if (albumVos.isEmpty()) {
+            return result;
+        }
+        List<String> albumNames = new ArrayList<>(albumVos.size());
+        albumVos.forEach(album -> {
+            albumNames.add(album.getName());
+            album.setName(InformationUtil.keywordHighlight(album.getName(), keyword, className));
+        });
+        result.setAlbums(albumVos);
+        result.setAlbumNames(albumNames);
+        return result;
     }
 
     @Override

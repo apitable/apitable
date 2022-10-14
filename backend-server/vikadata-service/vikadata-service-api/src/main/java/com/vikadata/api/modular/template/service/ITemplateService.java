@@ -9,10 +9,12 @@ import com.vikadata.api.enums.exception.TemplateException;
 import com.vikadata.api.model.ro.config.TemplateConfigRo;
 import com.vikadata.api.model.ro.template.CreateTemplateRo;
 import com.vikadata.api.model.vo.template.RecommendVo;
-import com.vikadata.api.model.vo.template.TemplateCategoryVo;
+import com.vikadata.api.model.vo.template.TemplateCategoryContentVo;
+import com.vikadata.api.model.vo.template.TemplateCategoryMenuVo;
 import com.vikadata.api.model.vo.template.TemplateDirectoryVo;
 import com.vikadata.api.model.vo.template.TemplateSearchResult;
 import com.vikadata.api.model.vo.template.TemplateVo;
+import com.vikadata.api.modular.template.model.TemplateSearchDTO;
 import com.vikadata.entity.TemplateEntity;
 
 /**
@@ -128,7 +130,17 @@ public interface ITemplateService extends IService<TemplateEntity> {
      * @author Chambers
      * @date 2020/7/8
      */
-    List<TemplateCategoryVo> getTemplateCategoryList(String lang);
+    List<TemplateCategoryMenuVo> getTemplateCategoryList(String lang);
+
+    /**
+     * get template category content view
+     *
+     * @param categoryCode template category property code
+     * @return TemplateCategoryContentVo
+     * @author Chambers
+     * @date 2022/9/27
+     */
+    TemplateCategoryContentVo getTemplateCategoryContentVo(String categoryCode);
 
     /**
      * 获取模板视图列表
@@ -177,6 +189,7 @@ public interface ITemplateService extends IService<TemplateEntity> {
      * @author Chambers
      * @date 2020/7/6
      */
+    @Deprecated
     void config(Long userId, TemplateConfigRo ro);
 
     /**
@@ -198,6 +211,18 @@ public interface ITemplateService extends IService<TemplateEntity> {
      * @date 2020/11/2
      */
     List<TemplateSearchResult> searchTemplate(String keyword, String lang);
+
+    /**
+     * fuzzy search template related content
+     *
+     * @param lang      i18n
+     * @param keyword   search keyword
+     * @param lang      keyword highlight style class name
+     * @return TemplateSearchDTO
+     * @author Chambers
+     * @date 2022/9/28
+     */
+    TemplateSearchDTO globalSearchTemplate(String lang, String keyword, String className);
 
     /**
      * 获取模板内的所有节点ID

@@ -22,6 +22,8 @@ import com.vikadata.integration.vika.model.OriginalWhite;
 import com.vikadata.integration.vika.model.RecommendTemplateInfo;
 import com.vikadata.integration.vika.model.UserContactInfo;
 import com.vikadata.integration.vika.model.UserOrder;
+import com.vikadata.integration.vika.model.template.TemplateCenterConfigInfo;
+import com.vikadata.integration.vika.model.template.TemplateConfigDatasheetParam;
 
 /**
  * <p>
@@ -41,6 +43,18 @@ public interface VikaOperations {
     List<GmPermissionInfo> getGmPermissionConfiguration(String dstId);
 
     /**
+     * Get Template Center Config Infos
+     *
+     * @param host  request host
+     * @param token request bearer token
+     * @param param config datasheet object
+     * @return TemplateCenterConfigInfos
+     * @author Chambers
+     * @date 2022/9/22
+     */
+    List<TemplateCenterConfigInfo> getTemplateCenterConfigInfos(String host, String token, TemplateConfigDatasheetParam param);
+
+    /**
      * 获取热门推荐模板配置信息
      *
      * @param dstId 数表ID
@@ -48,6 +62,7 @@ public interface VikaOperations {
      * @param lang 语言
      * @return 配置信息
      */
+    @Deprecated
     List<RecommendTemplateInfo> getRecommendTemplateConfiguration(String dstId, String viewId, String lang);
 
     /**
@@ -57,6 +72,7 @@ public interface VikaOperations {
      * @param lang 语言
      * @return 配置信息
      */
+    @Deprecated
     List<OnlineTemplateInfo> getOnlineTemplateConfiguration(String dstId, String lang);
 
     /**
@@ -67,6 +83,7 @@ public interface VikaOperations {
      * @param lang 语言
      * @return 模板类别
      */
+    @Deprecated
     List<String> getTemplateCategoryName(String dstId, String viewId, String lang);
 
     /**
