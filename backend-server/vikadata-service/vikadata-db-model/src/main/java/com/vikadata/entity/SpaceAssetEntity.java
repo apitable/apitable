@@ -79,6 +79,11 @@ public class SpaceAssetEntity implements Serializable {
     private Integer fileSize;
 
     /**
+     * [Redundant] Whether it is a template attachment (0: No, 1: Yes)
+     */
+    private Boolean isTemplate;
+
+    /**
      * 图片高度
      */
     private Integer height;

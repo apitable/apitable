@@ -119,6 +119,7 @@ public class SpaceAssetServiceImpl extends ServiceImpl<SpaceAssetMapper, SpaceAs
                         .sourceName(asset.getSourceName())
                         .cite(asset.getCite())
                         .fileSize(asset.getFileSize())
+                        .isTemplate(asset.getIsTemplate())
                         .build();
                 entities.add(entity);
             });
@@ -172,7 +173,8 @@ public class SpaceAssetServiceImpl extends ServiceImpl<SpaceAssetMapper, SpaceAs
                 addEntities.add(SpaceAssetEntity.builder().id(IdWorker.getId()).spaceId(spaceId).nodeId(nodeId)
                         .assetId(item.getId()).cite(tokenCountMap.get(item.getFileUrl()).getCite())
                         .assetChecksum(item.getChecksum()).type(AssetType.DATASHEET.getValue())
-                        .sourceName(tokenCountMap.get(item.getFileUrl()).getName()).fileSize(item.getFileSize()).build());
+                        .sourceName(tokenCountMap.get(item.getFileUrl()).getName()).fileSize(item.getFileSize())
+                        .isTemplate(item.getIsTemplate()).build());
             }
         });
         boolean updateFlag = updateBatchById(updateEntities);

@@ -120,12 +120,13 @@ public interface IAssetService extends IService<AssetEntity> {
     String downloadAndUploadUrl(String avatarUrl);
 
     /**
-     * 修改资源的模板状态
+     * modify the template state of resource
      *
-     * @param assetIds      资源ID数组
-     * @param isTemplate    是否是模版附件
+     * @param assetIds      asset table ids
+     * @param isTemplate    whether it is a template attachment status
+     * @return real updated asset ids
      * @author Chambers
      * @date 2022/8/15
      */
-    void updateAssetTemplateByIds(List<Long> assetIds, Boolean isTemplate);
+    List<Long> updateAssetTemplateByIds(List<Long> assetIds, Boolean isTemplate);
 }

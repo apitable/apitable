@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- * 产品运营系统 接口实现类
+ * Product Operation System Service Implement Class
  * </p>
  *
  * @author Chambers
@@ -37,17 +37,21 @@ public class OpsServiceImpl implements IOpsService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void markTemplateAsset(String templateId, Boolean isReversed) {
-        // 获取模板内的所有节点ID
+        // get all node IDs inside the template
         List<String> nodeIds = iTemplateService.getNodeIdsByTemplateId(templateId);
         if (CollUtil.isEmpty(nodeIds)) {
             return;
         }
-        // 查询节点引用的所有资源ID
+        // query all resource IDs referenced by a node
         List<Long> assetIds = spaceAssetMapper.selectDistinctAssetIdByNodeIdIn(nodeIds);
         if (CollUtil.isEmpty(assetIds)) {
             return;
         }
-        // 修改资源的模板状态
-        iAssetService.updateAssetTemplateByIds(assetIds, !isReversed);
+        // modify the template state of resource
+        List<Long> updatedAssetIds = iAssetService.updateAssetTemplateByIds(assetIds, !isReversed);
+        if (CollUtil.isEmpty(updatedAssetIds)) {
+            return;
+        }
+        spaceAssetMapper.updateIsTemplateByAssetIdIn(!isReversed, updatedAssetIds);
     }
 }

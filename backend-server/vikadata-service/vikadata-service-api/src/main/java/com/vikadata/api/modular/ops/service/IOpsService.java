@@ -2,7 +2,7 @@ package com.vikadata.api.modular.ops.service;
 
 /**
  * <p>
- * 产品运营系统 服务接口
+ * Product Operation System Service
  * </p>
  *
  * @author Chambers
@@ -11,10 +11,10 @@ package com.vikadata.api.modular.ops.service;
 public interface IOpsService {
 
     /**
-     * 标志模板资源
+     * mark template asset
      *
-     * @param templateId    模板ID
-     * @param isReversed    是否反向操作，即取消标志
+     * @param templateId    template custom ID
+     * @param isReversed    whether it is a reverse operation, that is, cancel the flag
      * @author Chambers
      * @date 2022/8/15
      */

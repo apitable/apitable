@@ -558,16 +558,17 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateAssetTemplateByIds(List<Long> assetIds, Boolean isTemplate) {
-        // 查询资源信息，判断模板状态，过滤不需要再修改的记录
+    public List<Long> updateAssetTemplateByIds(List<Long> assetIds, Boolean isTemplate) {
+        // query resource information, judge template status, and filter records that do not need to be modified
         List<AssetEntity> assetEntities = this.listByIds(assetIds);
         List<AssetEntity> updateEntities = assetEntities.stream().filter(asset -> !asset.getIsTemplate().equals(isTemplate))
                 .map(asset -> AssetEntity.builder().id(asset.getId()).isTemplate(isTemplate).build())
                 .collect(Collectors.toList());
-        // 分批更新资源的模板状态
+        // update template status of resources in batches
         List<List<AssetEntity>> split = CollUtil.split(updateEntities, 500);
         for (List<AssetEntity> entities : split) {
             this.updateBatchById(entities);
         }
+        return updateEntities.stream().map(AssetEntity::getId).collect(Collectors.toList());
     }
 }

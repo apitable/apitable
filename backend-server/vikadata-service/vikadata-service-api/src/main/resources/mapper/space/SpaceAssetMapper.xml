@@ -41,11 +41,20 @@
         FOR UPDATE
     </select>
 
-    <select id="selectNodeAssetDto" resultType="com.vikadata.api.model.dto.space.NodeAssetDto">
-        SELECT node_id, asset_id, asset_checksum AS checksum, cite, file_size, `type`, source_name
+    <select id="selectNodeAssetDto"
+            resultType="com.vikadata.api.model.dto.space.NodeAssetDto">
+        SELECT node_id,
+               asset_id,
+               asset_checksum AS checksum,
+               cite,
+               file_size,
+               `type`,
+               source_name,
+               is_template
         FROM vika_space_asset
-        WHERE node_id IN
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                WHERE node_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator=","
+                 close=")">
             #{item}
         </foreach>
         AND is_deleted = 0
@@ -93,4 +102,14 @@
             #{item}
         </foreach>
     </delete>
+
+    <update id="updateIsTemplateByAssetIdIn">
+        UPDATE vika_space_asset
+        SET is_template = #{isTemplate}
+        WHERE asset_id IN
+        <foreach item="item" index="index" collection="assetIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </update>
 </mapper>

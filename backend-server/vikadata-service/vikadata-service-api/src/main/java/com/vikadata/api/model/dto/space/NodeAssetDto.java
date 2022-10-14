@@ -47,4 +47,9 @@ public class NodeAssetDto {
      * 源文件名
      */
     private String sourceName;
+
+    /**
+     * whether it is a template attachment
+     */
+    private Boolean isTemplate;
 }

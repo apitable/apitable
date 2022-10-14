@@ -131,4 +131,16 @@ public interface SpaceAssetMapper extends BaseMapper<SpaceAssetEntity> {
      * @date 2021/10/28
      */
     int deleteBatchByIds(@Param("ids") Collection<Long> ids);
+
+    /**
+     * update template status by asset ids
+     *
+     * @param isTemplate    updated template status
+     * @param assetIds      asset table ids
+     * @return affected rows count
+     * @author Chambers
+     * @date 2022/10/13
+     */
+    int updateIsTemplateByAssetIdIn(@Param("isTemplate") Boolean isTemplate, @Param("assetIds") Collection<Long> assetIds);
+
 }

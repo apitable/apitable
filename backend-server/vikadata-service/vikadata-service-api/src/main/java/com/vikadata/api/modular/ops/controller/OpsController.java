@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 产品运营系统相关接口
+ * Product Operation System API
  * </p>
  *
  * @author Chambers
@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @ApiResource(path = "/ops")
-@Api(tags = "产品运营系统相关接口", hidden = true)
+@Api(tags = "Product Operation System API", hidden = true)
 public class OpsController {
 
     @Resource
@@ -42,17 +42,17 @@ public class OpsController {
     private IOpsService iOpsService;
 
     @PostResource(path = "/templates/{templateId}/asset/mark", requiredPermission = false)
-    @ApiOperation(value = "模板资源标志", notes = "标志指定模板的附件资源，用户引用这部分资源不占用空间站容量", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Template Asset Remark", notes = "Indicates the attachment resource of the specified template. Users refer to this part of the resource without occupying the space station capacity", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "templateId", value = "模板ID", required = true, dataTypeClass = String.class, paramType = "path", example = "tpcE7fyADP99W"),
-            @ApiImplicitParam(name = "isReversed", value = "是否是反向操作，即取消标志（默认false）", dataTypeClass = Boolean.class, paramType = "query")
+            @ApiImplicitParam(name = "templateId", value = "Template Custom ID", required = true, dataTypeClass = String.class, paramType = "path", example = "tpcE7fyADP99W"),
+            @ApiImplicitParam(name = "isReversed", value = "Whether it is a reverse operation, that is, cancel the flag (default false)", dataTypeClass = Boolean.class, paramType = "query")
     })
     public ResponseData<Void> markTemplateAsset(@PathVariable("templateId") String templateId,
             @RequestParam(name = "isReversed", required = false, defaultValue = "false") Boolean isReversed) {
-        log.info("操作者「{}」对模板「{}」的资源进行{}标志", SessionContext.getUserId(), templateId, isReversed ? "反向" : null);
-        // 校验权限
+        log.info("Operator 「{}」 {} marks the asset of template「{}」", SessionContext.getUserId(), isReversed ? "reverse" : null, templateId);
+        // check permission
         iGmService.validPermission(SessionContext.getUserId(), GmAction.TEMPLATE_ASSET_MARK);
-        // 标志模板资源
+        // mark template asset
         iOpsService.markTemplateAsset(templateId, isReversed);
         return ResponseData.success();
     }
