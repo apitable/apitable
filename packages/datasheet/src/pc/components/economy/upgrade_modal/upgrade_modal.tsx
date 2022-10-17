@@ -108,12 +108,12 @@ export const generateConfig = (modalType: IDingTalkModalType, onClick: () => voi
     case IDingTalkModalType.Upgrade:
       return {
         title: t(Strings.upgrade_guide),
-        content: <UpgradeInDDContent onClick={onClick} />
+        content: <UpgradeInDDContent onClick={onClick} />,
       };
     case IDingTalkModalType.Subscribe: {
       return {
         title: t(Strings.subscribe_success_title),
-        content: <SubscribeInDDContent onClick={onClick} />
+        content: <SubscribeInDDContent onClick={onClick} />,
       };
     }
   }
@@ -126,7 +126,8 @@ export const showModalInWecom = () => {
     closable: true,
     className: styles.upgradeInDDModal,
     title: t(Strings.upgrade_guide),
-    content: <UpgradeInWecomContent onClick={() => modal.close()} />
+    content: <UpgradeInWecomContent onClick={() => modal.close()} />,
+    zIndex: 1100,
   });
   return modal;
 };
@@ -139,7 +140,7 @@ export const showModalInDingTalk = (modalType: IDingTalkModalType, props?: any) 
     closable: true,
     className: styles.upgradeInDDModal,
     ...props,
-    ...config
+    ...config,
   });
   return modal;
 };
@@ -155,7 +156,8 @@ export const showModalInFeiShu = (props?: any) => {
     className: styles.upgradeInDDModal,
     ...props,
     title,
-    content
+    content,
+    zIndex: 1100,
   });
   return modal;
 };
@@ -185,7 +187,7 @@ export const showPopupInDingTalk = (modalType: IDingTalkModalType) => {
         >
           {config.content}
         </Popup>,
-        div
+        div,
       );
     });
   }

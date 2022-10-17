@@ -110,7 +110,7 @@ export interface IModalProps {
   destroyOnClose?: boolean;
 
   okButtonProps?: IButtonProps;
-  
+
   cancelButtonProps?: ITextButtonProps;
 }
 
@@ -130,6 +130,7 @@ export interface IModalFuncProps {
   type?: 'confirm' | 'warning' | 'danger' | 'info' | 'error' | 'success';
   footer?: React.ReactNode;
   maskClosable?: boolean;
+  zIndex?: number;
 }
 
 export interface IModalRef {
@@ -138,6 +139,7 @@ export interface IModalRef {
 }
 
 export type IModalFunc = (props: IModalFuncProps) => IModalRef;
+
 export interface IModalFuncs {
   confirm: IModalFunc;
   warning: IModalFunc;

@@ -66,11 +66,11 @@ const FeiShuUserAuth = () => {
             if (success) {
               const list = data.bindInfoList;
               if (list && typeof list === 'object') {
-                Router.push(Navigation.WORKBENCH, {
+                Router.redirect(Navigation.WORKBENCH, {
                   params: { spaceId: list[0].spaceId },
                 });
               } else {
-                Router.push(Navigation.HOME);
+                Router.redirect(Navigation.HOME);
               }
               return;
             }
