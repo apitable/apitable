@@ -1,12 +1,12 @@
 import { Button, LinkButton, TextButton, Typography, useThemeColors } from '@vikadata/components';
-import { Api, IReduxState, Settings, Strings, SubscribeKye, t } from '@vikadata/core';
+import { Api, IReduxState, Settings, Strings, t } from '@vikadata/core';
 import { SettingOutlined } from '@vikadata/icons';
 import Image from 'next/image';
 import { triggerUsageAlert } from 'pc/common/billing';
 import { Message } from 'pc/components/common/message';
-import { Tooltip } from 'pc/components/common/tooltip';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { ModalOutsideOperate } from 'pc/components/common/modal_outside_operate';
+import { Tooltip } from 'pc/components/common/tooltip';
 import { Method } from 'pc/components/route_manager/const';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { DINGTALK_APP_ID, OFFICE_APP_ID, WEWORK_APP_ID } from 'pc/components/space_manage/marketing/marketing';
@@ -92,15 +92,15 @@ export const AppModal: FC<IModalProps> = props => {
   const billingAlert = (id: string) => {
     switch (id) {
       case OFFICE_APP_ID: {
-        triggerUsageAlert(SubscribeKye.IntegrationOfficePreview);
+        triggerUsageAlert('integrationOfficePreview');
         return;
       }
       case DINGTALK_APP_ID: {
-        triggerUsageAlert(SubscribeKye.IntegrationDingtalk);
+        triggerUsageAlert('integrationDingtalk');
         return;
       }
       case WEWORK_APP_ID: {
-        triggerUsageAlert(SubscribeKye.IntegrationWeCom);
+        triggerUsageAlert('integrationWeCom');
         return;
       }
       // case FEISHU_APP_ID: {

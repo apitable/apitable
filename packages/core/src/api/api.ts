@@ -3,50 +3,17 @@ import axios from 'axios';
 import { ConfigConstant, Url } from 'config';
 import { ILocalChangeset } from 'engine';
 import {
-  BindAccount,
-  IAddIsActivedMemberInfo,
-  IApiWrapper,
-  IInviteMemberList,
-  ILocateIdMap,
-  ILogoutResult,
-  IMemberInfoInAddressList,
-  INode,
-  INodesMapItem,
-  IParent,
-  IRubbishListParams,
-  IUpdateMemberInfo,
-  IUpdateRoleData,
-  IUserInfo,
-  QrAction,
+  BindAccount, IAddIsActivedMemberInfo, IApiWrapper, IInviteMemberList, ILocateIdMap, ILogoutResult, IMemberInfoInAddressList, INode, INodesMapItem,
+  IParent, IRubbishListParams, IUpdateMemberInfo, IUpdateRoleData, IUserInfo, QrAction,
 } from 'store';
 import { IAxiosResponse, MemberType } from 'types';
 import urlcat from 'urlcat';
 import { NodeType, ShowRecordHistory } from '../config/constant';
 import {
-  IAdData,
-  ICommitRemind,
-  ICreateNotification,
-  ICreateOrderResponse,
-  IGetSpaceAuditReq,
-  IGetUploadCertificateResponse,
-  ILabsFeatureListResponse,
-  ILoadOrSearchArg,
-  INodeInfoWindowResponse,
-  INoPermissionMemberResponse,
-  IPayOrderResponse,
-  IQueryOrderDiscountResponse,
-  IQueryOrderPriceResponse,
-  IQueryOrderStatusResponse,
-  ISignIn,
-  ISocialWecomGetConfigResponse,
-  ISubscribeActiveEventResponse,
-  ISyncMemberRequest,
-  ITemplateRecommendResponse,
-  IUpdateSecuritySetting,
-  IWecomAgentBindSpaceResponse,
-  IGetRoleListResponse,
-  IGetRoleMemberListResponse,
-  IRecentlyBrowsedFolder,
+  IAdData, ICommitRemind, ICreateNotification, ICreateOrderResponse, IGetRoleListResponse, IGetRoleMemberListResponse, IGetSpaceAuditReq,
+  IGetUploadCertificateResponse, ILabsFeatureListResponse, ILoadOrSearchArg, INodeInfoWindowResponse, INoPermissionMemberResponse, IPayOrderResponse,
+  IQueryOrderDiscountResponse, IQueryOrderPriceResponse, IQueryOrderStatusResponse, IRecentlyBrowsedFolder, ISignIn, ISocialWecomGetConfigResponse,
+  ISubscribeActiveEventResponse, ISyncMemberRequest, ITemplateRecommendResponse, IUpdateSecuritySetting, IWecomAgentBindSpaceResponse,
 } from './api.interface';
 
 axios.defaults.baseURL = Url.BASE_URL;
@@ -868,7 +835,8 @@ export function updateSpace(name?: string, logo?: string) {
 
 // 空间信息
 export function spaceInfo(spaceId: string) {
-  return axios.get(Url.SPACE_INFO + spaceId);
+  return axios.get(Url.
+    SPACE_INFO + spaceId);
 }
 
 // 恢复空间

@@ -1,18 +1,17 @@
-import { triggerUsageAlert } from 'pc/common/billing';
-import { SubscribeUsageTipType } from 'pc/common/billing/subscribe_usage_check';
-import { FC, useEffect, useState } from 'react';
-import { useSelector, shallowEqual } from 'react-redux';
-import { t, Strings, Api, IReduxState, UnitItem, IMember, ISubAdminList } from '@vikadata/core';
-import { Modal } from 'pc/components/common/modal/modal/modal';
 import { Button, TextButton } from '@vikadata/components';
-import styles from './style.module.less';
-import { useNotificationCreate, useEditSubAdmin } from 'pc/hooks';
-import { PermissionCard } from '../permission_card';
-import { generateUserInfo } from 'pc/utils';
+import { Api, IMember, IReduxState, ISubAdminList, Strings, t, UnitItem } from '@vikadata/core';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
 import { SelectUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
 import { UnitTag } from 'pc/components/catalog/permission_settings/permission/select_unit_modal/unit_tag';
-import AddIcon from 'static/icon/common/common_icon_add_content.svg';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
+import { useEditSubAdmin, useNotificationCreate } from 'pc/hooks';
+import { generateUserInfo } from 'pc/utils';
+import { FC, useEffect, useState } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
+import AddIcon from 'static/icon/common/common_icon_add_content.svg';
+import { PermissionCard } from '../permission_card';
+import styles from './style.module.less';
 
 const modalTitle = {
   read: t(Strings.sub_admin_view),

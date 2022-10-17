@@ -1,4 +1,4 @@
-import { Api, INoticeDetail, Navigation, StoreActions, Strings, SubscribeKye, t } from '@vikadata/core';
+import { Api, INoticeDetail, Navigation, StoreActions, Strings, t } from '@vikadata/core';
 import { triggerUsageAlert } from 'pc/common/billing';
 import { Message } from 'pc/components/common';
 import { PublishControllers } from 'pc/components/notification/publish';
@@ -138,7 +138,7 @@ export const useNotificationCreate = ({ spaceId }: { fromUserId: string, spaceId
       if (success) {
         dispatch(StoreActions.getSubAdminList(1));
         Message.success({ content: t(Strings.add_sub_admin_success) });
-        triggerUsageAlert(SubscribeKye.MaxAdminNums, { usage: spaceInfo!.adminNums + memberIds.length });
+        triggerUsageAlert('maxAdminNums', { usage: spaceInfo!.adminNums + memberIds.length });
       } else {
         Message.error({ content: message });
       }

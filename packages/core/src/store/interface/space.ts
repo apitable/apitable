@@ -104,6 +104,7 @@ export interface ISpaceBasicInfo {
   ganttViewNums: number;
   kanbanViewNums: number;
   calendarViewNums: number;
+  mirrorNums: number;
   nodeRoleNums: number;
   social: {
     enabled: boolean;

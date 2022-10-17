@@ -1,23 +1,23 @@
-import { useState } from 'react';
+import { Box, IOption, Skeleton } from '@vikadata/components';
+import {
+  ConfigConstant, DatasheetApi, IFieldPermissionMember, IFieldPermissionRole, IMember, IUnitValue, MemberType, Selectors, StoreActions, Strings, t
+} from '@vikadata/core';
+import { permission } from '@vikadata/core/dist/config/constant';
+import { useMount, useToggle } from 'ahooks';
+import { Switch } from 'antd';
+import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing/trigger_usage_alert';
+import { MembersDetail } from 'pc/components/catalog/permission_settings/permission/members_detail';
+import { UnitItem } from 'pc/components/catalog/permission_settings_plus/permission/unit_item';
+import { Message } from 'pc/components/common/message/message';
 import { IEnablePermissionPlus } from 'pc/components/field_permission/interface';
 import styles from 'pc/components/field_permission/styles.module.less';
-import { Message } from 'pc/components/common/message/message';
-import { Switch } from 'antd';
 import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
-import { useMount, useToggle } from 'ahooks';
 import { useRequest } from 'pc/hooks';
-import {
-  ConfigConstant,
-  DatasheetApi, IFieldPermissionMember, IFieldPermissionRole, IMember, IUnitValue, MemberType, Selectors, Strings, SubscribeKye, t
-} from '@vikadata/core';
-import { UnitItem } from 'pc/components/catalog/permission_settings_plus/permission/unit_item';
-import { Box, IOption, Skeleton } from '@vikadata/components';
+import { dispatch } from 'pc/worker/store';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { permission } from '@vikadata/core/dist/config/constant';
-import { MembersDetail } from 'pc/components/catalog/permission_settings/permission/members_detail';
 import { PermissionInfoSetting } from '../catalog/permission_settings_plus/permission/permission_info_setting';
-import { triggerUsageAlert } from 'pc/common/billing/trigger_usage_alert';
-import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
 
 const defaultSetting = { formSheetAccessible: false };
 
@@ -25,13 +25,14 @@ export const EnableFieldPermissionPlus: React.FC<IEnablePermissionPlus> = (props
   const { field } = props;
   const [roleList, setRoleList] = useState<IFieldPermissionRole[]>([]);
   const [memberList, setMemberList] = useState<IFieldPermissionMember[]>([]);
-  const [setting, setSetting] = useState<{formSheetAccessible: boolean;}>();
+  const [setting, setSetting] = useState<{ formSheetAccessible: boolean; }>();
   const datasheetId = useSelector(state => state.pageParams.datasheetId)!;
   const [isMemberDetail, { toggle: toggleIsMemberDetail }] = useToggle(false);
   const fieldPermission = useSelector(Selectors.getFieldPermissionMap)!;
   const readonly = fieldPermission[field.id] && !fieldPermission[field.id].manageable;
   const [enabledFieldPermission, setEnabledFieldPermission] = useState<boolean>();
   const spaceInfo = useSelector(state => state.space.curSpaceInfo)!;
+  const spaceId = useSelector(state => state.space.activeId)!;
 
   const { run } = useRequest(DatasheetApi.fetchFieldPermissionRoleList, {
     manual: true,
@@ -66,12 +67,17 @@ export const EnableFieldPermissionPlus: React.FC<IEnablePermissionPlus> = (props
    * 2. 编辑角色
    * 3. 删除角色
    * 4. 批量更新角色
-   * @returns 
+   * @returns
    */
   const openFieldPermission = async() => {
     if (enabledFieldPermission) {
       return true;
     }
+    const result = triggerUsageAlert('fieldPermissionNums', { usage: spaceInfo.fieldRoleNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+    if (result) {
+      return false;
+    }
+
     const res = await DatasheetApi.setFieldPermissionStatus(datasheetId, field.id, true, true);
     const { success, message } = res.data;
 
@@ -81,7 +87,7 @@ export const EnableFieldPermissionPlus: React.FC<IEnablePermissionPlus> = (props
       });
       return false;
     }
-    triggerUsageAlert(SubscribeKye.FieldPermissionNums, { usage: spaceInfo.fieldRoleNums + 1 });
+    dispatch(StoreActions.getSpaceInfo(spaceId, true));
     return true;
   };
 
@@ -205,6 +211,7 @@ export const EnableFieldPermissionPlus: React.FC<IEnablePermissionPlus> = (props
       handleErrMsg(message);
       return;
     }
+    dispatch(StoreActions.getSpaceInfo(spaceId, true));
     fetchRoleList();
   };
 
@@ -259,7 +266,7 @@ export const EnableFieldPermissionPlus: React.FC<IEnablePermissionPlus> = (props
     return (
       <Box padding={'0 16px'}>
         <Skeleton style={{ marginTop: 0 }} height={'16px'} />
-        <Skeleton count={2} height={'48px'}/>
+        <Skeleton count={2} height={'48px'} />
       </Box>
     );
   }
@@ -286,14 +293,14 @@ export const EnableFieldPermissionPlus: React.FC<IEnablePermissionPlus> = (props
       tipOptions={{
         extendTips: t(Strings.inherit_field_permission_tip),
         resetPopConfirmTitle: t(Strings.field_permission_close),
-        resetPopConfirmContent:  t(Strings.field_permisson_close_tip),
+        resetPopConfirmContent: t(Strings.field_permisson_close_tip),
         resetPermissionDesc: t(Strings.reset_permission_desc_root)
       }}
     />
     <div className={styles.unitPermissionList}>
       {
         roleList.map(item => {
-          
+
           return <UnitItem
             key={item.unitId}
             unit={createStandardUnit(item)}

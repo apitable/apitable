@@ -1,22 +1,20 @@
-import { ISelectFieldOption, Strings, SubscribeKye, t } from '@vikadata/core';
+import { colorVars, useThemeColors } from '@vikadata/components';
+import { ISelectFieldOption, Strings, t } from '@vikadata/core';
 import { useUnmount } from 'ahooks';
 import { Input } from 'antd';
-import { triggerUsageAlert } from 'pc/common/billing';
-import { SubscribeUsageTipType } from 'pc/common/billing/subscribe_usage_check';
+import cls from 'classnames';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
 import { SubscribeGrade, SubscribeLabel } from 'pc/components/subscribe_system/subscribe_label';
 import { useResponsive } from 'pc/hooks';
-import { useThemeColors } from '@vikadata/components';
 import { stopPropagation } from 'pc/utils';
-import { useState } from 'react';
 import * as React from 'react';
+import { useState } from 'react';
 import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
 import { ScreenSize } from '../component_display/enum';
 import { Modal } from '../mobile/modal';
 import { ColorGroup } from './color_group';
 import { OptionSetting } from './enum';
 import styles from './style.module.less';
-import cls from 'classnames';
-import { colorVars } from '@vikadata/components';
 
 export interface IColorPickerPane {
   option: ISelectFieldOption;
@@ -52,7 +50,7 @@ export const ColorPickerPane: React.FC<IColorPickerPane> = props => {
         option={option}
         onChange={(type: OptionSetting, id: string, value: string | number) => {
           if (title === t(Strings.option_configuration_advance_palette)) {
-            const result = triggerUsageAlert(SubscribeKye.RainbowLabel, { alwaysAlert: true }, SubscribeUsageTipType.Alert);
+            const result = triggerUsageAlert('rainbowLabel', { alwaysAlert: true }, SubscribeUsageTipType.Alert);
             if (result) return;
           }
           onChange?.(type, id, value);

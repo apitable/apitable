@@ -1,6 +1,4 @@
-import {
-  Api, CollaCommandManager, CollaCommandName, getNewId, IAttachmentValue, IDPrefix, Selectors, StatusCode, Strings, SubscribeKye, t
-} from '@vikadata/core';
+import { Api, CollaCommandManager, CollaCommandName, getNewId, IAttachmentValue, IDPrefix, Selectors, StatusCode, Strings, t } from '@vikadata/core';
 import { uploadAttachToS3, UploadType } from '@vikadata/widget-sdk';
 import { uniqBy } from 'lodash';
 import mime from 'mime-types';
@@ -197,13 +195,13 @@ export class UploadManager {
 
   private checkCapacitySizeBilling() {
     // 如果已经发送过提示，当天就没有必要再检查用量
-    if (!subscribeUsageCheck.shouldAlertToUser(SubscribeKye.MaxCapacitySizeInBytes, undefined, true)) {
+    if (!subscribeUsageCheck.shouldAlertToUser('maxCapacitySizeInBytes', undefined, true)) {
       return;
     }
     Api.searchSpaceSize().then(res => {
       const { usedCapacity, subscriptionCapacity } = res.data.data;
       if (usedCapacity > subscriptionCapacity) {
-        triggerUsageAlert(SubscribeKye.MaxCapacitySizeInBytes, { usage: usedCapacity });
+        triggerUsageAlert('maxCapacitySizeInBytes', { usage: usedCapacity });
       }
     });
   }

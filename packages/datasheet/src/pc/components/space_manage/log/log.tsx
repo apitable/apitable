@@ -15,8 +15,7 @@ import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import parser from 'html-react-parser';
 import Image from 'next/image';
-import { triggerUsageAlert } from 'pc/common/billing';
-import { SubscribeUsageTipType } from 'pc/common/billing/subscribe_usage_check';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
 
 import { expandUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
 import { getSocialWecomUnitName, isSocialWecom } from 'pc/components/home/social_platform';

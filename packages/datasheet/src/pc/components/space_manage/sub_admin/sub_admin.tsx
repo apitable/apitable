@@ -3,8 +3,7 @@ import { ConfigConstant, Events, IReduxState, ISubAdminList, Player, StoreAction
 import { useMount } from 'ahooks';
 import { Table } from 'antd';
 import { ColumnProps } from 'antd/es/table';
-import { triggerUsageAlert } from 'pc/common/billing';
-import { SubscribeUsageTipType } from 'pc/common/billing/subscribe_usage_check';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
 import { InfoCard, Modal } from 'pc/components/common';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 import { useNotificationCreate } from 'pc/hooks';

@@ -1,12 +1,12 @@
-import { isEmpty } from 'lodash';
-import { IJOTAction, jot } from 'engine/ot';
-import { DatasheetActions } from 'model';
-import { IViewProperty, SubscribeKye } from 'store/interface';
-import { Selectors, ViewType } from 'store';
-import { Strings, t } from 'i18n';
-import { ResourceType } from 'types';
-import { CollaCommandName } from 'commands';
 import { ExecuteResult, ICollaCommandDef } from 'command_manager';
+import { CollaCommandName } from 'commands';
+import { IJOTAction, jot } from 'engine/ot';
+import { Strings, t } from 'i18n';
+import { isEmpty } from 'lodash';
+import { DatasheetActions } from 'model';
+import { Selectors, ViewType } from 'store';
+import { IViewProperty } from 'store/interface';
+import { ResourceType } from 'types';
 
 export interface IAddView {
   startIndex: number;
@@ -40,24 +40,24 @@ export const addViews: ICollaCommandDef<IAddViewsOptions> = {
       const spaceInfo = state.space.curSpaceInfo!;
 
       if(state.pageParams.shareId){
-        return; 
+        return;
       }
-      
+
       switch (viewType) {
         case ViewType.Calendar: {
-          subscribeUsageCheck(SubscribeKye.MaxCalendarViewsInSpace, spaceInfo['calendarViewNums'] + 1);
+          subscribeUsageCheck('maxCalendarViewsInSpace', spaceInfo['calendarViewNums'] + 1);
           return;
         }
         case ViewType.Gantt: {
-          subscribeUsageCheck(SubscribeKye.MaxGanttViewsInSpace, spaceInfo['ganttViewNums'] + 1);
+          subscribeUsageCheck('maxGanttViewsInSpace', spaceInfo['ganttViewNums'] + 1);
           return;
         }
         case ViewType.Kanban: {
-          subscribeUsageCheck(SubscribeKye.MaxKanbanViewsInSpace, spaceInfo['kanbanViewNums'] + 1);
+          subscribeUsageCheck('maxKanbanViewsInSpace', spaceInfo['kanbanViewNums'] + 1);
           return;
         }
         case ViewType.Gallery: {
-          subscribeUsageCheck(SubscribeKye.MaxGalleryViewsInSpace, spaceInfo['galleryViewNums'] + 1);
+          subscribeUsageCheck('maxGalleryViewsInSpace', spaceInfo['galleryViewNums'] + 1);
           return;
         }
       }

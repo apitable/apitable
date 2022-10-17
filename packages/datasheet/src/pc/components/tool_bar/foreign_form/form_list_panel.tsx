@@ -1,5 +1,5 @@
 import { Button, Skeleton, TextButton, useThemeColors } from '@vikadata/components';
-import { ConfigConstant, DATASHEET_ID, Navigation, Strings, SubscribeKye, t } from '@vikadata/core';
+import { ConfigConstant, DATASHEET_ID, Navigation, Strings, t } from '@vikadata/core';
 import { InformationLargeOutlined } from '@vikadata/icons';
 import classnames from 'classnames';
 
@@ -51,7 +51,7 @@ export const FormListPanel: FC<IFormListPanelProps> = (props) => {
   });
 
   const addForm = () => {
-    triggerUsageAlert(SubscribeKye.MaxFormViewsInSpace, { usage: spaceInfo!.formViewNums + 1 });
+    triggerUsageAlert('maxFormViewsInSpace', { usage: spaceInfo!.formViewNums + 1 });
     addTreeNode(
       folderId,
       ConfigConstant.NodeType.FORM,

@@ -1,9 +1,10 @@
-import { Api, ConfigConstant, INode, IReduxState, Navigation, Strings, t, TEMPLATE_CENTER_ID } from '@vikadata/core';
+import { Api, ConfigConstant, INode, IReduxState, Navigation, StoreActions, Strings, t, TEMPLATE_CENTER_ID } from '@vikadata/core';
 import { Checkbox, TreeSelect } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { BaseModal } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useCatalogTreeRequest, useRequest, useRootManageable, useTemplateRequest } from 'pc/hooks';
+import { dispatch } from 'pc/worker/store';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -80,7 +81,8 @@ export const UsingTemplateModal: FC<IUsingTemplateModalProps> = props => {
       return;
     }
     const result = await usingTemplate(templateId, nodeId, isContainData);
-    if (result) {
+    if (result && spaceId) {
+      dispatch(StoreActions.getSpaceInfo(spaceId!, true));
       Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: result.nodeId }});
     }
   };

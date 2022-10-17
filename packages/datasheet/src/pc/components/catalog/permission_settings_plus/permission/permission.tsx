@@ -1,20 +1,20 @@
-import { FC, useEffect, useRef, useState } from 'react';
-import { useRequest } from 'pc/hooks';
-import { useToggle } from 'ahooks';
+import { Box, IOption, Skeleton } from '@vikadata/components';
 import { Api, ConfigConstant, INodePermissionData, INodeRoleMap, IReduxState, IUnitValue, StoreActions, Strings, t } from '@vikadata/core';
-import { Modal } from 'pc/components/common/modal/modal/modal';
+import { useToggle } from 'ahooks';
+import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
 import { Message } from 'pc/components/common/message/message';
-import { useCatalogTreeRequest } from 'pc/hooks';
-import styles from './style.module.less';
+import { Modal } from 'pc/components/common/modal/modal/modal';
+import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
+import { useCatalogTreeRequest, useRequest } from 'pc/hooks';
+import { permissionMenuData } from 'pc/utils';
+import { dispatch } from 'pc/worker/store';
+import { FC, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { MembersDetail } from './members_detail';
-import { UnitList } from './unit_list';
-import { permissionMenuData } from 'pc/utils';
-import { Skeleton, IOption, Box } from '@vikadata/components';
-import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
 import { PermissionInfoSetting } from './permission_info_setting';
-import { dispatch } from 'pc/worker/store';
-import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
+import styles from './style.module.less';
+import { UnitList } from './unit_list';
 
 export interface IPermissionSettingProps {
   data: INodePermissionData;
@@ -33,6 +33,8 @@ export const Permission: FC<IPermissionSettingProps> = ({ data }) => {
   const treeNodesMap = useSelector(state => state.catalogTree.treeNodesMap);
   const nodeAssignable = treeNodesMap[data.nodeId]?.permissions.nodeAssignable;
   const unitListScroll = useRef<HTMLDivElement>(null);
+  const spaceId = useSelector(state => state.space.activeId)!;
+  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
 
   useEffect(() => {
     if (!roleMap) {
@@ -61,11 +63,19 @@ export const Permission: FC<IPermissionSettingProps> = ({ data }) => {
    * 2. 编辑角色
    * 3. 删除角色
    * 4. 批量更新角色
-   * @returns 
+   * @returns
    */
   const disableRoleExtend = async() => {
     if (!roleMap?.extend) {
       return true;
+    }
+
+    const result = triggerUsageAlert(
+      'nodePermissionNums',
+      { usage: spaceInfo!.nodeRoleNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert,
+    );
+    if (result) {
+      return false;
     }
     const res = await Api.disableRoleExtend(data.nodeId, true);
     const { success, message } = res.data;
@@ -75,6 +85,7 @@ export const Permission: FC<IPermissionSettingProps> = ({ data }) => {
     }
     setIsAppointMode(true);
     dispatch(StoreActions.updateTreeNodesMap(data.nodeId, { nodePermitSet: true }));
+    dispatch(StoreActions.getSpaceInfo(spaceId, true));
     return success;
   };
 
@@ -85,12 +96,10 @@ export const Permission: FC<IPermissionSettingProps> = ({ data }) => {
     }
 
     const unitIds = unitInfos.map(item => item.unitId);
-
     const res = await disableRoleExtend();
     if (!res) {
       return;
     }
-  
     Api.addRole(data.nodeId, unitIds, permission.value + '').then(async(res) => {
       const { success, message } = res.data;
       if (success) {
@@ -171,6 +180,7 @@ export const Permission: FC<IPermissionSettingProps> = ({ data }) => {
         Message.success({ content: t(Strings.permission_switch_succeed) });
         setIsAppointMode(false);
         dispatch(StoreActions.updateTreeNodesMap(data.nodeId, { nodePermitSet: false }));
+        dispatch(StoreActions.getSpaceInfo(spaceId, true));
         getNodeRoleMap();
         return;
       }
@@ -203,7 +213,7 @@ export const Permission: FC<IPermissionSettingProps> = ({ data }) => {
     return (
       <Box padding={'0 16px 24px'}>
         <Skeleton style={{ marginTop: 0 }} height={'16px'} />
-        <Skeleton count={2} height={'48px'}/>
+        <Skeleton count={2} height={'48px'} />
       </Box>
     );
   }
@@ -243,8 +253,8 @@ export const Permission: FC<IPermissionSettingProps> = ({ data }) => {
           tipOptions={{
             extendTips: isRootNode ? t(Strings.inherit_permission_tip_root) : t(Strings.inherit_permission_tip),
             resetPopConfirmTitle: isRootNode ? t(Strings.close_permission) : t(Strings.reset_permission),
-            resetPopConfirmContent:  isRootNode ? t(Strings.close_permission_warning_content) : t(Strings.reset_permission_content),
-            resetPermissionDesc: isRootNode ? t(Strings.reset_permission_desc_root) : t(Strings.reset_permission_desc)
+            resetPopConfirmContent: isRootNode ? t(Strings.close_permission_warning_content) : t(Strings.reset_permission_content),
+            resetPermissionDesc: isRootNode ? t(Strings.reset_permission_desc_root) : t(Strings.reset_permission_desc),
           }}
         />
       </div>

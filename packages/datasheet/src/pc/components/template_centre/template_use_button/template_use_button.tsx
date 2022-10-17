@@ -1,11 +1,12 @@
 import { Button } from '@vikadata/components';
-import { AutoTestID, ConfigConstant, Events, IReduxState, Navigation, Player, Strings, t } from '@vikadata/core';
+import { AutoTestID, ConfigConstant, Events, IReduxState, ITemplateTree, Navigation, Player, Strings, t } from '@vikadata/core';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
 import { Modal } from 'pc/components/common';
 import { LoginModal } from 'pc/components/home/login_modal';
 import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import IconArrowRight from 'static/icon/datasheet/rightclick/datasheet_icon_insert_right.svg';
 import { UsingTemplateModal } from '../using_template_modal';
@@ -18,6 +19,15 @@ interface ITemplateUseButtonProps {
   block?: boolean;
 }
 
+const calcNodeNum = (directory: ITemplateTree[]) => {
+  return directory.reduce<number>((total, cur) => {
+    if (!cur.children.length) {
+      return total + 1;
+    }
+    return total + calcNodeNum(cur.children);
+  }, 0);
+};
+
 export const TemplateUseButton: React.FC<ITemplateUseButtonProps> = props => {
   const { style, showIcon, children, id, block } = props;
   const userInfo = useSelector((state: IReduxState) => state.user.info);
@@ -27,8 +37,14 @@ export const TemplateUseButton: React.FC<ITemplateUseButtonProps> = props => {
   const [openTemplateModal, setOpenTemplateModal] = useState('');
   // 打开登录模态框
   const [openLoginModal, setOpenLoginModal] = useState(false);
+  const templateDirectory = useSelector(state => state.templateCentre.directory);
+  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   const { getLoginStatusReq } = useUserRequest();
   const { run: getLoginStatus } = useRequest(getLoginStatusReq, { manual: true });
+
+  const nodeNumber = useMemo(() => {
+    return calcNodeNum(templateDirectory!.nodeTree.children);
+  }, [templateDirectory]);
 
   useEffect(() => {
     if (!openTemplateModal) {
@@ -55,6 +71,10 @@ export const TemplateUseButton: React.FC<ITemplateUseButtonProps> = props => {
     // 当前用户已登录时
     if (!spaceId && templateId) {
       Router.push(Navigation.TEMPLATE, { params: { categoryId, templateId, spaceId: userInfo!.spaceId }});
+      return;
+    }
+    const result = triggerUsageAlert('maxSheetNums', { usage: spaceInfo!.sheetNums + nodeNumber, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+    if (result) {
       return;
     }
     setOpenTemplateModal(templateId!);

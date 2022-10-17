@@ -1,13 +1,14 @@
+import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
 import { black, ContextMenu as ContextMenuList, deepPurple, IContextMenuClickState, Switch } from '@vikadata/components';
 import {
-  Api, CollaCommandName, ConfigConstant, DatasheetActions, DATASHEET_ID, ExecuteResult, getMaxViewCountPerSheet, getUniqName, IPermissions,
-  IViewProperty, Selectors, StoreActions, Strings, SubscribeKye, t, ViewType
+  Api, CollaCommandName, ConfigConstant, DATASHEET_ID, DatasheetActions, ExecuteResult, getMaxViewCountPerSheet, getUniqName, IPermissions,
+  IViewProperty, Selectors, StoreActions, Strings, t, ViewType
 } from '@vikadata/core';
 import { AutosaveOutlined, CalenderRightOutlined, LockNonzeroOutlined } from '@vikadata/icons';
+import { Modal as ModalComponent, Spin } from 'antd';
 import { triggerUsageAlert } from 'pc/common/billing';
 import { makeNodeIconComponent, NodeIcon } from 'pc/components/catalog/node_context_menu';
 import { Modal } from 'pc/components/common';
-import { Modal as ModalComponent, Spin } from 'antd';
 import { confirmViewAutoSave } from 'pc/components/tab_bar/view_sync_switch/popup_content';
 import { useViewAction } from 'pc/components/tool_bar/view_switcher/action';
 import { expandViewLock } from 'pc/components/view_lock/expand_view_lock';
@@ -16,11 +17,11 @@ import { useCatalog } from 'pc/hooks/use_catalog';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { exportDatasheet, flatContextData } from 'pc/utils';
-import { useMemo, useState } from 'react';
-import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
 import { isMobileApp } from 'pc/utils/env';
+import * as React from 'react';
+import { useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 interface IContextMenuProps {
   activeViewId: string | undefined;
   activeNodeId: string | undefined;
@@ -195,7 +196,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
   };
 
   const addForm = () => {
-    triggerUsageAlert(SubscribeKye.MaxFormViewsInSpace, { usage: spaceInfo!.formViewNums + 1 });
+    triggerUsageAlert('maxFormViewsInSpace', { usage: spaceInfo!.formViewNums + 1 });
     const activeViewName = viewList.find(item => item.id === activeViewId)?.name;
     const nodeName = activeViewName ?
       `${activeViewName}${t(Strings.key_of_adjective)}${t(Strings.vika_form)}` :

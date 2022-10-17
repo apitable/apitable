@@ -121,6 +121,9 @@ export class NotificationStore {
       store.dispatch(
         StoreActions.updateSocketData({ ...data, receiptTime: Date.now() })
       );
+      store.dispatch(
+        StoreActions.getSpaceInfo(spaceId || '')
+      );
     });
     return ws;
   }

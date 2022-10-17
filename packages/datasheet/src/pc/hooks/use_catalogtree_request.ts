@@ -1,8 +1,8 @@
 import {
   Api, ConfigConstant, INodesMapItem, IOptNode, IReduxState, IUpdateRoleData, Navigation, ResourceIdPrefix, ResourceType, Selectors, StatusCode,
-  StoreActions, Strings, SubscribeKye, t
+  StoreActions, Strings, t,
 } from '@vikadata/core';
-import { triggerUsageAlert } from 'pc/common/billing';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
 import { Message } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { resourceService } from 'pc/resource_service';
@@ -32,6 +32,35 @@ export const useCatalogTreeRequest = () => {
   const expandedKeys = useSelector((state: IReduxState) => state.catalogTree.expandedKeys);
   const spaceInfo = useSelector(state => state.space.curSpaceInfo)!;
 
+  const checkNodeNumberLimit = (nodeType: ConfigConstant.NodeType) => {
+    // 首先检查总的节点数量是否符合要求
+    // 文件夹不属于需要被统计的节点类型
+    if (nodeType !== ConfigConstant.NodeType.FOLDER) {
+      const result1 = triggerUsageAlert('maxSheetNums', { usage: spaceInfo!.sheetNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+      if (result1) {
+        return true;
+      }
+    }
+    if (nodeType === ConfigConstant.NodeType.FORM) {
+      // 其次根据节点类型检查 form 或者 mirror 的数量是否符合要求
+      const result1 = triggerUsageAlert('maxFormViewsInSpace',
+        { usage: spaceInfo!.formViewNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+      if (result1) {
+        return true;
+      }
+    }
+    // TODO: 后续还需要检查镜像的数量
+    // if (nodeType === ConfigConstant.NodeType.MIRROR) {
+    //   // 其次根据节点类型检查 form 或者 mirror 的数量是否符合要求
+    //   const result1 = triggerUsageAlert('maxFormViewsInSpace',
+    //     { usage: spaceInfo!.mirrorNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+    //   if (result1) {
+    //     return true;
+    //   }
+    // }
+    return false;
+  };
+
   /**
    * 新增节点
    * @param parentId 父节点ID
@@ -40,13 +69,17 @@ export const useCatalogTreeRequest = () => {
    * @param preNodeId 要插入的位置（可选）
    */
   const addNodeReq = (parentId: string, type: number, nodeName?: string, preNodeId?: string, extra?: { [key: string]: any }) => {
+    const result = checkNodeNumberLimit(type);
+    if (result) {
+      return Promise.resolve();
+    }
     return Api.addNode({ parentId, type, nodeName, preNodeId, extra }).then(res => {
       const { data, code, success } = res.data;
       if (success) {
         const node: INodesMapItem = { ...data, children: [] };
         dispatch(StoreActions.addNode(node));
+        dispatch(StoreActions.getSpaceInfo(spaceId || '', true));
         Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: data.nodeId }});
-        triggerUsageAlert(SubscribeKye.MaxSheetNums, { usage: spaceInfo!.sheetNums + 1 });
       } else {
         if (code === StatusCode.NODE_NOT_EXIST) {
           return;
@@ -71,6 +104,7 @@ export const useCatalogTreeRequest = () => {
           dispatch(StoreActions.resetDatasheet(nodeId));
           resourceService.instance?.reset(nodeId);
         }
+        dispatch(StoreActions.getSpaceInfo(spaceId || '', true));
         updateNextNode(nodeId);
         const tree = treeNodesMap[nodeId];
         if (!tree) {
@@ -107,11 +141,16 @@ export const useCatalogTreeRequest = () => {
    * @param copyAll 是否要复制数表中的数据
    */
   const copyNodeReq = (nodeId: string, copyAll = true) => {
+    const result = checkNodeNumberLimit(treeNodesMap[nodeId].type);
+    if (result) {
+      return Promise.resolve();
+    }
     return Api.copyNode(nodeId, copyAll).then(res => {
       const { data, success, message } = res.data;
       if (success) {
         dispatch(StoreActions.addNodeToMap([data]));
         Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: data.nodeId }});
+        dispatch(StoreActions.getSpaceInfo(spaceId || '', true));
         return;
       }
       Message.error({ content: message });

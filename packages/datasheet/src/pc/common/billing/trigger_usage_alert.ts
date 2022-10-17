@@ -1,11 +1,17 @@
 import { ISubscription, Strings, t } from '@vikadata/core';
+import { IExtra } from 'pc/common/billing/interface';
 import { showVikaby } from 'pc/common/guide/vikaby';
 import { Message } from 'pc/components/common';
 import { usageWarnModal } from 'pc/components/subscribe_system/usage_warn_modal/usage_warn_modal';
-import { subscribeUsageCheck, SubscribeUsageTipType } from './subscribe_usage_check';
 import { isMobile } from 'react-device-detect';
+import { subscribeUsageCheck } from './subscribe_usage_check';
 
-export const triggerUsageAlert = (functionName: keyof ISubscription, extra?: Record<string, any>, tipType?: SubscribeUsageTipType): boolean => {
+export enum SubscribeUsageTipType {
+  Vikaby,
+  Alert,
+}
+
+export const triggerUsageAlert = (functionName: keyof ISubscription, extra?: IExtra, tipType?: SubscribeUsageTipType): boolean => {
   const result = subscribeUsageCheck.triggerVikabyAlert(functionName, extra);
 
   if (!result) {
@@ -17,7 +23,7 @@ export const triggerUsageAlert = (functionName: keyof ISubscription, extra?: Rec
   if (tipType === SubscribeUsageTipType.Alert) {
     if (isMobile) {
       Message.warning({
-        content:t(Strings.mobile_usage_over_limit_tip)
+        content: t(Strings.mobile_usage_over_limit_tip)
       });
       return true;
     }

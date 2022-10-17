@@ -226,21 +226,3 @@ export interface ISubscribeResponseData {
    */
   maxRemainRecordActivityDays: number;
 }
-
-export enum SubscribeKye {
-  MaxCalendarViewsInSpace = 'maxCalendarViewsInSpace',
-  MaxGanttViewsInSpace = 'maxGanttViewsInSpace',
-  MaxKanbanViewsInSpace = 'maxKanbanViewsInSpace',
-  MaxGalleryViewsInSpace = 'maxGalleryViewsInSpace',
-  RainbowLabel = 'rainbowLabel',
-  MaxRemainTrashDays = 'maxRemainTrashDays',
-  FieldPermissionNums = 'fieldPermissionNums',
-  IntegrationOfficePreview = 'integrationOfficePreview',
-  IntegrationDingtalk = 'integrationDingtalk',
-  IntegrationWeCom = 'integrationWeCom',
-  IntegrationFeishu = 'integrationFeishu',
-  MaxFormViewsInSpace = 'maxFormViewsInSpace',
-  MaxSheetNums = 'maxSheetNums',
-  MaxAdminNums = 'maxAdminNums',
-  MaxCapacitySizeInBytes = 'maxCapacitySizeInBytes',
-}

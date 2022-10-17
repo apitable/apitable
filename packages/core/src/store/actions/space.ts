@@ -179,12 +179,12 @@ export const toggleRecordFullScreen = (status?: boolean) => {
 };
 
 // 获取空间信息
-export const getSpaceInfo = (spaceId: string) => {
+export const getSpaceInfo = (spaceId: string, ignoreTimeLimit: boolean = false) => {
   return (dispatch, getState) => {
     const curSpace = getState().space;
     const lastUpdateTime = curSpace?.curSpaceInfo?.lastUpdateTime || 0;
     // 距离上一次获取超过一分钟才重新获取
-    if ((Date.now() - lastUpdateTime < 1000 * 60)) {
+    if (!ignoreTimeLimit && (Date.now() - lastUpdateTime < 1000 * 60)) {
       return;
     }
 
@@ -238,14 +238,14 @@ export const setActiveSpaceId = (spaceId: string) => {
   }
   return {
     type: ActionConstants.SET_ACTIVE_SPACE_ID,
-    payload: spaceId
+    payload: spaceId,
   };
 };
 
 export const setEnvs = (envs: IEnvs) => {
   return {
     type: ActionConstants.SET_ENVS,
-    payload: envs
+    payload: envs,
   };
 };
 

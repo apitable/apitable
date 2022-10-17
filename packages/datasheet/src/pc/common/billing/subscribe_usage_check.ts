@@ -1,15 +1,11 @@
 import { byteMG, isPrivateDeployment, ISubscription, Strings, SubscribeUsageCheck, t } from '@vikadata/core';
 import { underscore } from 'naming-style';
+import { IExtra } from 'pc/common/billing/interface';
 import { store as storeState } from 'pc/store';
 import { isMobileApp } from 'pc/utils/env';
 import store, { StoreAPI } from 'store2';
 
 const SUBSCRIBE_USAGE = 'SUBSCRIBE_USAGE';
-
-export enum SubscribeUsageTipType {
-  Vikaby,
-  Alert,
-}
 
 class SubscribeUsageCheckEnhance extends SubscribeUsageCheck {
   private storage: StoreAPI;
@@ -21,7 +17,7 @@ class SubscribeUsageCheckEnhance extends SubscribeUsageCheck {
 
   // 在 localstorage 记录数据，设置过期时间
   // 从 localstorage 中读取数据
-  triggerVikabyAlert(functionName: keyof ISubscription, extra?: Record<string, any>) {
+  triggerVikabyAlert(functionName: keyof ISubscription, extra?: IExtra) {
     if (document.querySelector('.VIKABY_SUB_POPOVER_CONTENT')) {
       return;
     }
@@ -37,7 +33,7 @@ class SubscribeUsageCheckEnhance extends SubscribeUsageCheck {
     const content =
       extra?.message ||
       t(Strings[underscore(functionName)], {
-        usage: functionName === 'maxCapacitySizeInBytes' ? byteMG(extra?.usage) : extra?.usage,
+        usage: functionName === 'maxCapacitySizeInBytes' ? byteMG(Number(extra?.usage)) : extra?.usage,
         specification: functionName === 'maxCapacitySizeInBytes' ? byteMG(subscription[functionName]) : subscription[functionName],
         grade: extra?.grade || '',
       });
@@ -83,22 +79,20 @@ class SubscribeUsageCheckEnhance extends SubscribeUsageCheck {
     const spaceId = state.space.activeId;
     const result = this.storage.get(spaceId);
 
+    if (readonly) {
+      return true;
+    }
+
     if (!result || result.expireDate < Date.now()) {
-      if (readonly) {
-        return true;
-      }
       this.storage.set(spaceId, {
         // 提醒的过期时间调整为 2 天
-        expireDate: new Date().setHours(24, 0, 0, 0) + 86400000 * 1,
+        expireDate: new Date().setHours(24, 0, 0, 0) + 86400000,
         alertFunctionName: [functionName],
       });
       return true;
     }
 
     if (!result.alertFunctionName.includes(functionName)) {
-      if (readonly) {
-        return true;
-      }
       result.alertFunctionName.push(functionName);
       this.storage.set(spaceId, result);
       return true;

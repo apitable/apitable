@@ -1,5 +1,5 @@
 import { Button, Message } from '@vikadata/components';
-import { DatasheetApi, Selectors, Strings, SubscribeKye, t } from '@vikadata/core';
+import { DatasheetApi, Selectors, Strings, t } from '@vikadata/core';
 import Image from 'next/image';
 import { triggerUsageAlert } from 'pc/common/billing';
 import { Modal } from 'pc/components/common';
@@ -25,7 +25,7 @@ export const DisabledFieldPermission: React.FC<IDisabledPermission> = (props) =>
       });
       return;
     }
-    triggerUsageAlert(SubscribeKye.FieldPermissionNums, { usage: spaceInfo.fieldRoleNums + 1 });
+    triggerUsageAlert('fieldPermissionNums', { usage: spaceInfo.fieldRoleNums + 1 });
     setPermissionStatus(true);
   };
 

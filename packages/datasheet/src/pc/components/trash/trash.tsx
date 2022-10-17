@@ -3,8 +3,7 @@ import { Api, IReduxState, Navigation, Settings, StoreActions, Strings, t } from
 import classnames from 'classnames';
 import { last } from 'lodash';
 import Image from 'next/image';
-import { triggerUsageAlert } from 'pc/common/billing';
-import { SubscribeUsageTipType } from 'pc/common/billing/subscribe_usage_check';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 import { Router } from 'pc/components/route_manager/router';
 import { SubscribeGrade } from 'pc/components/subscribe_system/subscribe_label';
@@ -88,11 +87,16 @@ const Trash: FC = () => {
     if (recoverLoading) {
       return;
     }
+    const result = triggerUsageAlert('maxSheetNums', { usage: spaceInfo!.sheetNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+    if (result) {
+      return;
+    }
     const res = await trashRecover(nodeId);
     const { success, data } = res.data;
     if (success) {
       dispatch(StoreActions.addNodeToMap([data]));
       dispatch(StoreActions.datasheetErrorCode(nodeId, null));
+      dispatch(StoreActions.getSpaceInfo(spaceId!, true));
       deleteTrashItem(nodeId);
       Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId }});
       Message.success({ content: t(Strings.recover_node_success) });
