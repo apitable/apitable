@@ -100,7 +100,7 @@ export class RouterStrategy implements IRouterStrategy {
     const commonParams = [
       '/template',
       params?.categoryId,
-      params?.templateId,
+      params?.templateId || params?.albumId,
       params?.nodeId,
     ];
     if (dashboardReg.test(`/${params?.nodeId}`)) {

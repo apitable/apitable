@@ -1343,8 +1343,8 @@ export function getTemplateCategory(categoryCodes?: string) {
 }
 
 // 获取模版列表
-export function getTemplateList(categoryCode?: string, isPrivate?: boolean, headers?: Record<string, string>) {
-  return axios.get(Url.TEMPLATE_LIST, {
+export function getTemplateList(spaceId: string, categoryCode?: string, isPrivate?: boolean, headers?: Record<string, string>) {
+  return axios.get(urlcat(Url.SPACE_TEMPLATES, { spaceId }), {
     params: {
       categoryCode,
       isPrivate,
@@ -1353,10 +1353,31 @@ export function getTemplateList(categoryCode?: string, isPrivate?: boolean, head
   });
 }
 
+// 获取官方模板分类内容
+export function getTemplateCategories(categoryCode: string, headers?: Record<string, string>) {
+  return axios.get(urlcat(Url.TEMPLATE_CATEGORIES, { categoryCode }), {
+    headers,
+  });
+}
+
 // 删除模版
 export const deleteTemplate = (tempalte: string) => {
   return axios.delete(`${Url.DELETE_TEMPLATE}${tempalte}`);
 };
+
+// 获取模板专题内容
+export function getTemplateAlbum(albumId: string, headers?: Record<string, string>) {
+  return axios.get(urlcat(Url.TEMPLATE_ALBUMS, { albumId }), {
+    headers,
+  });
+}
+
+// 获取模板专题推荐内容
+export function getTemplateAlbumsRecommend(headers?: Record<string, string>) {
+  return axios.get(Url.TEMPLATE_ALBUMS_RECOMMEND, {
+    headers,
+  });
+}
 
 // 获取模板目录信息
 export const templateDirectory = (templateId: string, isPrivate: boolean, categoryCode?: string) => {

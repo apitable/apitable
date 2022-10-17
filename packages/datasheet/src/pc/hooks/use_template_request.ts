@@ -20,6 +20,22 @@ export const useTemplateRequest = () => {
   }
 
   /**
+   * 获取官方模板分类内容
+   * @param categoryCode 模版分类 ID
+   */
+  function getTemplateCategoriesReq(categoryCode: string) {
+    return Api.getTemplateCategories(categoryCode).then(res => {
+      const { success, data, message } = res.data;
+      if (success) {
+        return data;
+      }
+      Message.error({
+        content: message,
+      });
+    });
+  }
+
+  /**
    * 获取官方模版分类列表
    * @param categoryCodes 需要排序的分类id列表
    */
@@ -38,11 +54,12 @@ export const useTemplateRequest = () => {
 
   /**
    * 获取模版列表
+   * @param spaceId 空间站 ID
    * @param categoryName 模版分类名称
    * @param templateIds 模版ID列表
    */
-  function getTemplateListReq(categoryCode?: string, isPrivate?: boolean) {
-    return Api.getTemplateList(categoryCode, isPrivate).then(res => {
+  function getTemplateListReq(spaceId: string, categoryCode?: string, isPrivate?: boolean) {
+    return Api.getTemplateList(spaceId, categoryCode, isPrivate).then(res => {
       const { success, data, message } = res.data;
       if (success) {
         return data;
@@ -164,7 +181,8 @@ export const useTemplateRequest = () => {
   }
 
   return {
-    createTemplateReq, getTemplateCategoryReq, getTemplateListReq, deleteTemplateReq, getTemplateDirectoryReq,
+    createTemplateReq, getTemplateCategoriesReq,
+    getTemplateCategoryReq, getTemplateListReq, deleteTemplateReq, getTemplateDirectoryReq,
     usingTemplateReq, templateNameValidateReq, templateRecommendReq, searchTemplateReq,
   };
 };

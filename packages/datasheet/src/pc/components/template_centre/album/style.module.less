@@ -1,0 +1,205 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+@import "~pc/styles/lib_mixins.less";
+
+
+.albumDetail {
+  position: relative;
+  overflow: overlay;
+  color: var(--blackBlue_50);
+  background: var(--blackBlue_1000);
+  h1, h2, h3, h4 {
+    color: inherit;
+  }
+  width: 100%;
+  .albumHeader {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 16px 16px 0;
+    .shareBtn {
+      cursor: pointer;
+      max-width: 216px;
+      height: 32px;
+      line-height: 32px;
+      text-align: center;
+      font-size: 13px;
+      padding: 0 16px;
+      color: var(--blackBlue_50);
+      background-color: var(--blackBlue_800);
+      border-radius: 16px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      svg {
+        margin-right: 4px;
+        vertical-align: sub;
+      }
+      &:hover {
+        color: var(--blackBlue_500);
+      }
+    }
+  }
+  .albumCover {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .goBack {
+    color: var(--blackBlue_50);
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    align-items: center;
+    padding: 0 16px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 200px;
+    height: 36px;
+    background: var(--blackBlue_800);
+    border-radius: 0 18px 18px 0;
+    .albumName {
+      font-size: 18px;
+      font-weight: bolder;
+      .ellipsis();
+    }
+
+    &:hover {
+      color: var(--blackBlue_200);
+    }
+  }
+
+  .albumContent {
+    padding: 64px 64px 0 64px;
+    display: flex;
+    width: 100%;
+    .albumContentLeft {
+      width: 260px;
+      .albumAuthor {
+        background: var(--blackBlue_900);
+        padding: 16px;
+        border-radius: 8px;
+        margin-bottom: 24px;
+        .albumAuthorImg {
+          width: 40px;
+          height: 40px;
+          position: relative;
+        }
+        .albumAuthorContent {
+          margin-left: 16px;
+          .albumAuthorTitle {
+            color: var(--blackBlue_500);
+          }
+          h4 {
+            font-weight: 600;
+          }
+        }
+        header {
+          display: flex;
+          margin-bottom: 16px;
+        }
+        .authorDesc {
+          border-top: 1px solid var(--blackBlue_800);
+          padding-top: 16px;
+          display: flex;
+          color: var(--blackBlue_500);
+          .authorDescContent {
+            margin-left: 8px;
+            font-size: 12px;
+          }
+        }
+      }
+      .albumTags {
+        margin-bottom: 24px;
+        .albumTagItem {
+          padding: 2px 4px;
+          display: inline-block;
+          font-size: 12px;
+          border-radius: 2px;
+          line-height: 16px;
+          background-color: var(--blackBlue_800);
+          color: var(--blackBlue_400);
+        }
+      }
+      .albumRecommends {
+        background: var(--blackBlue_900);
+        padding: 16px;
+        border-radius: 8px;
+        h3 {
+          margin-bottom: 16px;
+        }
+        .albumRecommendItem {
+          display: flex;
+          padding: 8px;
+          border-radius: 4px;
+          cursor: pointer;
+          &:hover {
+            background: var(--blackBlue_800);
+          }
+          .albumRecommendImg {
+            position: relative;
+            width: 80px;
+            height: 60px;
+            border-radius: 2px;
+            overflow: hidden;
+          }
+          .albumRecommendContent {
+            width: 150px;
+            margin-left: 16px;
+            h4 {
+              margin-bottom: 4px;
+            }
+            .albumRecommendDesc {
+              font-size: 12px;
+              color: var(--blackBlue_500);
+            }
+          }
+        }
+      }
+    }
+    .albumContentRight {
+      width: calc(100% - 260px);
+      margin: 0 32px;
+      overflow-x: hidden;
+      p {
+        color: var(--blackBlue_400);
+        margin-bottom: 4px;
+      }
+    }
+  }
+  .albumForm {
+    width: 100%;
+    height: 1000px;
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+  }
+  .bottomShare {
+    margin: 48px auto;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media screen and(max-width: 768px) {
+  .albumDetail {
+    .albumCover {
+      height: 200px;
+    }
+    .albumContent {
+      padding: 16px 16px 0 16px;
+      display: block;
+      .albumContentLeft {
+        width: 100%;
+        margin-bottom: 16px;
+      }
+      .albumContentRight {
+        width: 100%;
+        margin: 0;
+      }
+    }
+  }
+}

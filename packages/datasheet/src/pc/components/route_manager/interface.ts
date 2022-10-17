@@ -8,6 +8,7 @@ export interface IParams {
   recordId?: string;
   shareId?: string;
   categoryId?: string; // 模板分类
+  albumId?: string; // 模板专题
   templateId?: string;
   memberId?: string;
   formId?: string;

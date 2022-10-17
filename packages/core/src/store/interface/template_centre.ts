@@ -55,6 +55,11 @@ export interface ITemplateCategory {
   categoryName: string;
 }
 
+export interface ISearchAblum {
+  name: string;
+  albumId: string;
+}
+
 export interface ISearchTemplate {
   categoryCode: string;
   categoryName: string;

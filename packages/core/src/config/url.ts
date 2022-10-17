@@ -365,12 +365,28 @@ export const PROCESS_SPACE_JOIN = '/space/apply/process';
 export const CREATE_TEMPLATE = '/template/create';
 export const OFFICIAL_TEMPLATE_CATEGORY = '/template/categoryList';
 export const TEMPLATE_LIST = '/template/list';
+/*
+* 获取官方模板分类内容
+ */
+export const TEMPLATE_CATEGORIES = '/template/categories/:categoryCode';
+/*
+* 加载空间站全部模板
+ */
+export const SPACE_TEMPLATES = '/spaces/:spaceId/templates';
 export const DELETE_TEMPLATE = '/template/delete/';
 export const TEMPLATE_DIRECTORY = '/template/directory';
+/*
+ * 模板专题内容
+ */
+export const TEMPLATE_ALBUMS = '/template/albums/:albumId';
+/*
+ * 模板专题推荐
+ */
+export const TEMPLATE_ALBUMS_RECOMMEND = '/template/albums/recommend';
 export const USE_TEMPLATE = '/template/quote';
 export const TEMPLATE_NAME_VALIDATE = '/template/validate';
 export const TEMPLATE_RECOMMEND = '/template/recommend';
-export const TEMPLATE_SEARCH = '/template/search';
+export const TEMPLATE_SEARCH = '/template/global/search';
 // 新手引导
 export const TRIGGER_WIZARD = '/player/activity/triggerWizard';
 // 消息中心

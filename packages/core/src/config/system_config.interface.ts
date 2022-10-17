@@ -27,23 +27,23 @@ export interface Audit {
     actual_delete_space:       ActualDeleteSpace;
     add_field_role:            ActualDeleteSpace;
     add_node_role:             AddNodeRole;
-    add_sub_admin:             AddSubAdmin;
-    add_team_to_member:        AddSubAdmin;
-    agree_user_apply:          AddSubAdmin;
+    add_sub_admin:             AddTeamToMemberClass;
+    add_team_to_member:        AddTeamToMemberClass;
+    agree_user_apply:          AddTeamToMemberClass;
     cancel_delete_space:       ActualDeleteSpace;
-    change_main_admin:         AddSubAdmin;
+    change_main_admin:         AddTeamToMemberClass;
     copy_node:                 AddNodeRole;
     create_node:               AddNodeRole;
     create_space:              ActualDeleteSpace;
-    create_team:               AddSubAdmin;
+    create_team:               AddTeamToMemberClass;
     create_template:           ActualDeleteSpace;
     delete_field_role:         ActualDeleteSpace;
     delete_node:               AddNodeRole;
     delete_node_role:          AddNodeRole;
     delete_rubbish_node:       ActualDeleteSpace;
     delete_space:              ActualDeleteSpace;
-    delete_sub_admin:          AddSubAdmin;
-    delete_team:               AddSubAdmin;
+    delete_sub_admin:          AddTeamToMemberClass;
+    delete_team:               AddTeamToMemberClass;
     delete_template:           ActualDeleteSpace;
     disable_field_role:        ActualDeleteSpace;
     disable_node_role:         AddNodeRole;
@@ -57,24 +57,24 @@ export interface Audit {
     move_node:                 AddNodeRole;
     quote_template:            ActualDeleteSpace;
     recover_rubbish_node:      AddNodeRole;
-    remove_member_from_team:   AddSubAdmin;
-    remove_user:               AddSubAdmin;
+    remove_member_from_team:   AddTeamToMemberClass;
+    remove_user:               AddTeamToMemberClass;
     rename_node:               AddNodeRole;
     rename_space:              ActualDeleteSpace;
     sort_node:                 ActualDeleteSpace;
     store_share_node:          AddNodeRole;
     update_field_role:         ActualDeleteSpace;
-    update_field_role_setting: AddSubAdmin;
-    update_member_property:    AddSubAdmin;
-    update_member_team:        AddSubAdmin;
+    update_field_role_setting: AddTeamToMemberClass;
+    update_member_property:    AddTeamToMemberClass;
+    update_member_team:        AddTeamToMemberClass;
     update_node_cover:         ActualDeleteSpace;
     update_node_desc:          ActualDeleteSpace;
     update_node_icon:          ActualDeleteSpace;
     update_node_role:          AddNodeRole;
     update_node_share_setting: AddNodeRole;
     update_space_logo:         ActualDeleteSpace;
-    update_sub_admin_role:     AddSubAdmin;
-    update_team_property:      AddSubAdmin;
+    update_sub_admin_role:     AddTeamToMemberClass;
+    update_team_property:      AddTeamToMemberClass;
     user_leave_space:          ActualDeleteSpace;
     user_login:                ActualDeleteSpace;
     user_logout:               ActualDeleteSpace;
@@ -110,7 +110,7 @@ export enum AddNodeRoleCategory {
     WorkCatalogShareEvent = "work_catalog_share_event",
 }
 
-export interface AddSubAdmin {
+export interface AddTeamToMemberClass {
     type:     NotificationsTypeEnum;
     category: AddSubAdminCategory;
 }
@@ -122,36 +122,13 @@ export enum AddSubAdminCategory {
 }
 
 export interface Billing {
-    products: Products;
+    products: { [key: string]: Product };
 }
 
-export interface Products {
-    Bronze:              APIUsage;
-    Silver:              APIUsage;
-    Gold:                APIUsage;
-    Enterprise:          APIUsage;
-    ApiUsage:            APIUsage;
-    Capacity:            APIUsage;
-    Standalone_Capacity: StandaloneCapacity;
-    Dingtalk_Base:       APIUsage;
-    Dingtalk_Standard:   APIUsage;
-    Dingtalk_Profession: APIUsage;
-    Dingtalk_Enterprise: APIUsage;
-    Feishu_Base:         APIUsage;
-    Feishu_Standard:     APIUsage;
-    Feishu_Profession:   APIUsage;
-    Feishu_Enterprise:   APIUsage;
-    Private_Cloud:       APIUsage;
-    Wecom_Base:          APIUsage;
-    Wecom_Standard:      APIUsage;
-    Wecom_Profession:    APIUsage;
-    Wecom_Enterprise:    APIUsage;
-}
-
-export interface APIUsage {
+export interface Product {
     ch_name:  string;
     id:       string;
-    category: APIUsageCategory;
+    category: ProductCategory;
     en_name:  string;
     online?:  boolean;
     i18nName: string;
@@ -160,15 +137,9 @@ export interface APIUsage {
     free?:    boolean;
 }
 
-export enum APIUsageCategory {
+export enum ProductCategory {
     AddOn = "Add-on",
     Base = "BASE",
-}
-
-export interface StandaloneCapacity {
-    id:       string;
-    category: string;
-    channel:  string;
 }
 
 export interface CountryCodeAndPhoneCode {
@@ -408,24 +379,24 @@ export interface SystemConfigInterfaceNotifications {
 }
 
 export interface Templates {
-    add_sub_admin:                               ActivityIntegralIncomeNotify;
-    assigned_to_group:                           ActivityIntegralIncomeNotify;
-    assigned_to_role:                            ActivityIntegralIncomeNotify;
-    changed_ordinary_user:                       ActivityIntegralIncomeNotify;
-    invite_member_toadmin:                       ActivityIntegralIncomeNotify;
-    invite_member_tomyself:                      ActivityIntegralIncomeNotify;
-    invite_member_touser:                        ActivityIntegralIncomeNotify;
-    member_applied_to_close_account:             ActivityIntegralIncomeNotify;
-    quit_space:                                  ActivityIntegralIncomeNotify;
-    remove_from_group:                           ActivityIntegralIncomeNotify;
-    remove_from_role:                            ActivityIntegralIncomeNotify;
-    removed_from_space_toadmin:                  ActivityIntegralIncomeNotify;
-    removed_from_space_touser:                   ActivityIntegralIncomeNotify;
-    removed_member_tomyself:                     ActivityIntegralIncomeNotify;
-    space_add_primary_admin:                     ActivityIntegralIncomeNotify;
-    space_join_apply:                            ActivityIntegralIncomeNotify;
-    space_join_apply_approved:                   ActivityIntegralIncomeNotify;
-    space_join_apply_refused:                    ActivityIntegralIncomeNotify;
+    add_sub_admin:                               AssignedToGroupClass;
+    assigned_to_group:                           AssignedToGroupClass;
+    assigned_to_role:                            AssignedToGroupClass;
+    changed_ordinary_user:                       AssignedToGroupClass;
+    invite_member_toadmin:                       AddRecordOutOfLimit;
+    invite_member_tomyself:                      AddRecordOutOfLimit;
+    invite_member_touser:                        AddRecordOutOfLimit;
+    member_applied_to_close_account:             AddRecordOutOfLimit;
+    quit_space:                                  AddRecordOutOfLimit;
+    remove_from_group:                           AddRecordOutOfLimit;
+    remove_from_role:                            AddRecordOutOfLimit;
+    removed_from_space_toadmin:                  AddRecordOutOfLimit;
+    removed_from_space_touser:                   AddRecordOutOfLimit;
+    removed_member_tomyself:                     AddRecordOutOfLimit;
+    space_add_primary_admin:                     AddRecordOutOfLimit;
+    space_join_apply:                            AddRecordOutOfLimit;
+    space_join_apply_approved:                   AddRecordOutOfLimit;
+    space_join_apply_refused:                    AddRecordOutOfLimit;
     comment_mentioned:                           CommentMentioned;
     single_record_comment_mentioned:             CommentMentioned;
     single_record_member_mention:                CommentMentioned;
@@ -434,38 +405,38 @@ export interface Templates {
     user_field:                                  CommentMentioned;
     apply_space_beta_feature_success_notify_all: ActivityIntegralIncomeNotify;
     apply_space_beta_feature_success_notify_me:  ActivityIntegralIncomeNotify;
-    capacity_limit:                              ActivityIntegralIncomeNotify;
-    datasheet_limit:                             ActivityIntegralIncomeNotify;
-    datasheet_record_limit:                      ActivityIntegralIncomeNotify;
-    space_admin_limit:                           ActivityIntegralIncomeNotify;
-    space_api_limit:                             ActivityIntegralIncomeNotify;
-    space_calendar_limit:                        ActivityIntegralIncomeNotify;
-    space_certification_fail_notify:             ActivityIntegralIncomeNotify;
-    space_certification_notify:                  ActivityIntegralIncomeNotify;
-    space_deleted:                               ActivityIntegralIncomeNotify;
-    space_dingtalk_notify:                       ActivityIntegralIncomeNotify;
-    space_field_permission_limit:                ActivityIntegralIncomeNotify;
-    space_form_limit:                            ActivityIntegralIncomeNotify;
-    space_gantt_limit:                           ActivityIntegralIncomeNotify;
-    space_lark_notify:                           ActivityIntegralIncomeNotify;
-    space_members_limit:                         ActivityIntegralIncomeNotify;
-    space_name_change:                           ActivityIntegralIncomeNotify;
-    space_paid_notify:                           ActivityIntegralIncomeNotify;
-    space_rainbow_label_limit:                   ActivityIntegralIncomeNotify;
-    space_record_limit:                          ActivityIntegralIncomeNotify;
-    space_recover:                               ActivityIntegralIncomeNotify;
-    space_seats_limit:                           ActivityIntegralIncomeNotify;
-    space_subscription_end_notify:               ActivityIntegralIncomeNotify;
-    space_subscription_notify:                   ActivityIntegralIncomeNotify;
-    space_time_machine_limit:                    ActivityIntegralIncomeNotify;
-    space_trash_limit:                           ActivityIntegralIncomeNotify;
-    space_trial:                                 ActivityIntegralIncomeNotify;
-    space_vika_paid_notify:                      ActivityIntegralIncomeNotify;
-    space_watermark_notify:                      ActivityIntegralIncomeNotify;
-    space_wecom_api_trial_end:                   ActivityIntegralIncomeNotify;
-    space_wecom_notify:                          ActivityIntegralIncomeNotify;
-    space_yozooffice_notify:                     ActivityIntegralIncomeNotify;
-    task_reminder:                               AddRecordOutOfLimit;
+    capacity_limit:                              AssignedToGroupClass;
+    datasheet_limit:                             AddRecordOutOfLimit;
+    datasheet_record_limit:                      AddRecordOutOfLimit;
+    space_admin_limit:                           AddRecordOutOfLimit;
+    space_api_limit:                             AddRecordOutOfLimit;
+    space_calendar_limit:                        AddRecordOutOfLimit;
+    space_certification_fail_notify:             AddRecordOutOfLimit;
+    space_certification_notify:                  AddRecordOutOfLimit;
+    space_deleted:                               AddRecordOutOfLimit;
+    space_dingtalk_notify:                       AddRecordOutOfLimit;
+    space_field_permission_limit:                AddRecordOutOfLimit;
+    space_form_limit:                            AddRecordOutOfLimit;
+    space_gantt_limit:                           AddRecordOutOfLimit;
+    space_lark_notify:                           AddRecordOutOfLimit;
+    space_members_limit:                         AddRecordOutOfLimit;
+    space_name_change:                           AddRecordOutOfLimit;
+    space_paid_notify:                           AddRecordOutOfLimit;
+    space_rainbow_label_limit:                   AddRecordOutOfLimit;
+    space_record_limit:                          AddRecordOutOfLimit;
+    space_recover:                               AddRecordOutOfLimit;
+    space_seats_limit:                           AddRecordOutOfLimit;
+    space_subscription_end_notify:               AddRecordOutOfLimit;
+    space_subscription_notify:                   AddRecordOutOfLimit;
+    space_time_machine_limit:                    AddRecordOutOfLimit;
+    space_trash_limit:                           AddRecordOutOfLimit;
+    space_trial:                                 AddRecordOutOfLimit;
+    space_vika_paid_notify:                      AddRecordOutOfLimit;
+    space_watermark_notify:                      AddRecordOutOfLimit;
+    space_wecom_api_trial_end:                   AddRecordOutOfLimit;
+    space_wecom_notify:                          AddRecordOutOfLimit;
+    space_yozooffice_notify:                     AddRecordOutOfLimit;
+    task_reminder:                               AssignedToGroupClass;
     activity_integral_income_notify:             ActivityIntegralIncomeNotify;
     activity_integral_income_toadmin:            ActivityIntegralIncomeNotify;
     add_record_out_of_limit:                     AddRecordOutOfLimit;
@@ -475,44 +446,60 @@ export interface Templates {
     common_system_notify:                        ActivityIntegralIncomeNotify;
     common_system_notify_web:                    ActivityIntegralIncomeNotify;
     integral_income_notify:                      ActivityIntegralIncomeNotify;
-    new_space_widget_notify:                     ActivityIntegralIncomeNotify;
-    new_user_welcome_notify:                     ActivityIntegralIncomeNotify;
-    server_pre_publish:                          ActivityIntegralIncomeNotify;
+    new_space_widget_notify:                     AddRecordOutOfLimit;
+    new_user_welcome_notify:                     AddRecordOutOfLimit;
+    server_pre_publish:                          AddRecordOutOfLimit;
     web_publish:                                 ActivityIntegralIncomeNotify;
 }
 
 export interface ActivityIntegralIncomeNotify {
     to_tag:             string;
     notifications_type: NotificationsTypeEnum;
-    formatString?:      string[];
+    formatString:       string[];
     is_notification?:   boolean;
-    format_string?:     string;
+    format_string:      string;
     is_component?:      boolean;
     is_mail?:           boolean;
     is_browser?:        boolean;
     can_jump?:          boolean;
-    url?:               string;
     is_mobile?:         boolean;
 }
 
 export interface AddRecordOutOfLimit {
-    can_jump:              boolean;
-    to_tag:                string;
-    notifications_type:    NotificationsTypeEnum;
-    formatString:          string[];
-    is_notification:       boolean;
-    is_mail:               boolean;
-    mail_template_subject: string;
-    format_string:         string;
-    url:                   string;
-    frequency?:            number;
-    is_component:          boolean;
-    is_mobile?:            boolean;
-    is_browser?:           boolean;
-    notifications?:        AddRecordOutOfLimitNotifications;
+    can_jump?:              boolean;
+    to_tag:                 string;
+    notifications_type:     NotificationsTypeEnum;
+    formatString?:          string[];
+    is_notification:        boolean;
+    is_mail?:               boolean;
+    mail_template_subject?: string;
+    format_string?:         string;
+    url?:                   string;
+    frequency?:             number;
+    is_component?:          boolean;
+    is_browser?:            boolean;
+    billing_notify?:        any[];
+    is_mobile?:             boolean;
 }
 
-export interface AddRecordOutOfLimitNotifications {
+export interface AssignedToGroupClass {
+    can_jump:               boolean;
+    to_tag:                 string;
+    notifications_type:     NotificationsTypeEnum;
+    formatString:           string[];
+    is_notification:        boolean;
+    is_mobile?:             boolean;
+    is_browser:             boolean;
+    format_string:          string;
+    url?:                   string;
+    is_component:           boolean;
+    is_mail?:               boolean;
+    billing_notify?:        any[];
+    mail_template_subject?: string;
+    notifications?:         AddSubAdminNotifications;
+}
+
+export interface AddSubAdminNotifications {
     "social_templates copy": string[];
 }
 
@@ -529,7 +516,7 @@ export interface CommentMentioned {
     url:                    string;
     is_component?:          boolean;
     mail_template_subject?: string;
-    notifications?:         AddRecordOutOfLimitNotifications;
+    notifications?:         AddSubAdminNotifications;
 }
 
 export interface Types {

@@ -18,7 +18,7 @@ interface ISearchInput extends InputProps {
 
 export const SearchInput: FC<ISearchInput> = props => {
   const inputRef = useRef<any>(null);
-  const { change, onClose, className, ...rest } = props;
+  const { change, onClose, className, keyword, ...rest } = props;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;

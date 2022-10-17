@@ -212,9 +212,9 @@ export interface ITemplateRecommendResponse {
     desc: string;
     color: string;
   }[];
-  categories: {
-    categoryName: string;
-    templateVos: {
+  templateGroups: {
+    name: string;
+    templates: {
       templateId: string;
       templateName: string;
       nodeId: string;
@@ -227,6 +227,15 @@ export interface ITemplateRecommendResponse {
       nickName: string;
       isNickNameModified: null | boolean;
       tags: string[];
+    }[];
+  }[];
+  albumGroups: {
+    name: string;
+    albums: {
+      albumId: string;
+      name: string;
+      cover: string;
+      description: string;
     }[];
   }[];
 }

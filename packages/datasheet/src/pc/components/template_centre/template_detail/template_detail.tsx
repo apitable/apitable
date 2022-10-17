@@ -22,7 +22,9 @@ import styles from './style.module.less';
 export const TemplateDetail: FC = () => {
   const colors = useThemeColors();
   const { sideBarVisible: _sideBarVisible } = useSideBarVisible();
-  const { datasheetId, folderId, templateId, categoryId, formId, dashboardId, mirrorId } = useSelector((state: IReduxState) => state.pageParams);
+  const pageParams = useSelector((state: IReduxState) => state.pageParams);
+  const { datasheetId, folderId, templateId, categoryId, formId, dashboardId, mirrorId } = pageParams;
+
   const spaceId = useSelector(state => state.space.activeId);
   const activeNodeId = useSelector((state: IReduxState) => Selectors.getNodeId(state));
   const { getTemplateDirectoryReq } = useTemplateRequest();

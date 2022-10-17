@@ -626,6 +626,14 @@
             "en_US": "Albania",
             "zh_HK": "阿爾巴尼亞"
         },
+        "album": {
+            "zh_CN": "专题",
+            "en_US": "album"
+        },
+        "album_publisher": {
+            "zh_CN": "发布者",
+            "en_US": "album publisher"
+        },
         "algeria": {
             "zh_CN": "阿尔及利亚",
             "en_US": "Algeria",
@@ -7301,6 +7309,7 @@
         },
         "field_permission_nums": {
             "zh_CN": "空间站的列权限使用数上限为 ${specification} 个，目前已开启 ${usage} 个，升级可获得更高用量。",
+            "billing_notify": [],
             "en_US": "The maximum number of field permissions to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站的列權限使用數上限為 ${specification} 個，目前已開啟 ${usage} 個，升級可獲得更高用量。"
         },
@@ -9901,12 +9910,12 @@
             "zh_HK": "{\"bronze\":\"\",\"silver\":\"\",\"gold\":\"\",\"enterprise\":\"\"}"
         },
         "grade_price_by_year": {
-            "zh_CN": "{\n  \"bronze\": \"免费\",\n  \"silver\": \"约 228元 人/年\",\n  \"gold\": \"约 388.8元 人/年\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}",
+            "zh_CN": "{\n  \"bronze\": \"免费\",\n  \"silver\": \"约 368元 人/年\",\n  \"gold\": \"约 538.8元 人/年\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}",
             "en_US": "{\"bronze\":\"免费\",\"silver\":\"368 元 人/年\",\"gold\":\"538.8 元 人/年\",\"enterprise\":\"按需定制\"}",
             "zh_HK": "{\"bronze\":\"免費\",\"silver\":\"約 368 元 人/年\",\"gold\":\"約 538.8 元 人/年\",\"enterprise\":\"按需定制\"}"
         },
         "grade_price_by_year_origin": {
-            "zh_CN": "{\n  \"bronze\": \"\",\n  \"silver\": \"约 368 元 人/年\",\n  \"gold\": \"约 538.8 元 人/年\",\n  \"enterprise\": \"\",\n  \"community\": \"\",\n  \"custom\": \"\"\n}",
+            "zh_CN": "{\n  \"bronze\": \"\",\n  \"silver\": \"\",\n  \"gold\": \"\",\n  \"enterprise\": \"\",\n  \"community\": \"\",\n  \"custom\": \"\"\n}",
             "en_US": "{\n  \"bronze\": \"\",\n  \"silver\": \"约 368 元 人/年\",\n  \"gold\": \"约 538.8 元 人/年\",\n  \"enterprise\": \"\",\n  \"community\": \"\",\n  \"custom\": \"\"\n}",
             "zh_HK": "{\n  \"bronze\": \"\",\n  \"silver\": \"约 368 元 人/年\",\n  \"gold\": \"约 538.8 元 人/年\",\n  \"enterprise\": \"\",\n  \"community\": \"\",\n  \"custom\": \"\"\n}"
         },
@@ -10757,16 +10766,19 @@
         },
         "integration_dingtalk": {
             "zh_CN": "你正在体验高级功能：钉钉集成，升级可解锁该功能。",
+            "billing_notify": [],
             "en_US": "DingTalk Integration",
             "zh_HK": "你正在體驗高級功能：釘釘集成，升級可解鎖該功能。"
         },
         "integration_feishu": {
             "zh_CN": "你正在体验高级功能：飞书集成，升级可解锁该功能。",
+            "billing_notify": [],
             "en_US": "feishu integration",
             "zh_HK": "你正在體驗高級功能：飛書集成，升級可解鎖該功能。"
         },
         "integration_we_com": {
             "zh_CN": "你正在体验高级功能：企业微信集成，升级可解锁该功能。",
+            "billing_notify": [],
             "en_US": "wecom integration",
             "zh_HK": "你正在體驗高級功能：企業微信集成，升級可解鎖該功能。"
         },
@@ -10792,6 +10804,7 @@
         },
         "integration_yozo_office": {
             "zh_CN": "你正在体验高级功能：office 文件预览，升级可解锁该功能。",
+            "billing_notify": [],
             "en_US": "YOZO Office integration",
             "zh_HK": "你正在體驗高級功能：office 文件預覽，升級可解鎖該功能。"
         },
@@ -12876,11 +12889,13 @@
         },
         "max_admin_nums": {
             "zh_CN": "空间站的子管理数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+            "billing_notify": [],
             "en_US": "The maximum number of sub-admin in space is ${specification}. So far, there are ${usage} admins, and you can upgrade to get higher usage.",
             "zh_HK": "空間站的子管理數上限為 ${specification} 個，當前已創建 ${usage} 個，升級可獲得更高用量。"
         },
         "max_api_call": {
             "zh_CN": "空间站的API用量已超出上限（ ${usage}/${specification} ），升级可获得更高用量。",
+            "billing_notify": [],
             "en_US": "The API usage of this space has reached the limit（ ${usage}/${specification} ）， and you can upgrade to get higher usage.",
             "zh_HK": "空間站的API用量已超出上限（ ${usage}/${specification} ），升級可獲得更高用量。"
         },
@@ -12891,11 +12906,13 @@
         },
         "max_calendar_views_in_space": {
             "zh_CN": "空间站的日历视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+            "billing_notify": [],
             "en_US": "The maximum number of calendar views to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站的日曆視圖數上限為 ${specification} 個，當前已創建 ${usage} 個，升級可獲得更高用量。"
         },
         "max_capacity_size_in_bytes": {
             "zh_CN": "空间站的附件容量上限为 ${specification} ，当前已上传 ${usage} ，升级可获得更高用量。",
+            "billing_notify": [],
             "en_US": "The maximum attachment capacity to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站的附件容量上限為 ${specification} ，當前已上傳 ${usage} ，升級可獲得更高用量。"
         },
@@ -12906,21 +12923,25 @@
         },
         "max_form_views_in_space": {
             "zh_CN": "空间站的神奇表单数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+            "billing_notify": [],
             "en_US": "The maximum number of forms to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站的神奇表單數上限為 ${specification} 個，當前已創建 ${usage} 個，升級可獲得更高用量。"
         },
         "max_gallery_views_in_space": {
             "zh_CN": "空间站的相册视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+            "billing_notify": [],
             "en_US": "The maximum number of Gallery views to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站的相冊視圖數上限為 ${specification} 個，當前已創建 ${usage} 個，升級可獲得更高用量。"
         },
         "max_gantt_views_in_space": {
             "zh_CN": "空间站的甘特视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+            "billing_notify": [],
             "en_US": "The maximum number of Gantt views to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站的甘特視圖數上限為 ${specification} 個，當前已創建 ${usage} 個，升級可獲得更高用量。"
         },
         "max_kanban_views_in_space": {
             "zh_CN": "空间站的看板视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+            "billing_notify": [],
             "en_US": "The maximum number of Kanban views to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站的看板視圖數上限為 ${specification} 個，當前已創建 ${usage} 個，升級可獲得更高用量。"
         },
@@ -12939,31 +12960,37 @@
         },
         "max_remain_timemachine_days": {
             "zh_CN": "空间站仅显示 ${specification}  天内的记录动态，升级后可查看更久的动态。",
+            "billing_notify": [],
             "en_US": "The space only shows the record activity within ${specification} days, upgrade to view more record activity.",
             "zh_HK": "空間站僅顯示 ${specification}  天內的記錄動態，升級後可查看更久的動態。"
         },
         "max_remain_trash_days": {
             "zh_CN": "本空间站支持查看 ${specification}  天内的历史文件，升级后可查看更久的历史文件。",
+            "billing_notify": [],
             "en_US": "This space supports viewing historical files within ${specification} days, upgrade to view more historical files ",
             "zh_HK": "本空間站支持查看 ${specification}  天內的歷史文件，升級後可查看更久的歷史文件。"
         },
         "max_rows_in_space": {
             "zh_CN": "空间站记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。",
+            "billing_notify": [],
             "en_US": "The maximum number of records in space is ${specification}. So far, ${usage} records have been created, and you can upgrade to get higher usage.",
             "zh_HK": "空間站記錄數上限為 ${specification} 行，當前已創建 ${usage} 行，升級可獲得更高用量。"
         },
         "max_rows_per_sheet": {
             "zh_CN": "单张维格表记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。",
+            "billing_notify": [],
             "en_US": "The maximum number of records in one datasheet is ${specification}. So far, ${usage} records have been created, and you can upgrade to get higher usage.",
             "zh_HK": "單張維格表記錄數上限為 ${specification} 行，當前已創建 ${usage} 行，升級可獲得更高用量。"
         },
         "max_seats": {
             "zh_CN": "空间站的席位数上限为 ${specification} 个，当前已邀请 ${usage} 个，升级可获得更高用量。",
+            "billing_notify": [],
             "en_US": "The maximum number of seats in the space is ${specification}, and ${usage} are currently invited, and you can upgrade to get higher usage.",
             "zh_HK": "空間站的席位數上限為 ${specification} 個，當前已邀請 ${usage} 個，升級可獲得更高用量。"
         },
         "max_sheet_nums": {
             "zh_CN": "文件节点数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+            "billing_notify": [],
             "en_US": "The maximum number of file nodes to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
             "zh_HK": "文件節點數上限為 ${specification} 個，當前已創建 ${usage} 個，升級可獲得更高用量。"
         },
@@ -16168,7 +16195,7 @@
             "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/09/15/6eab2470b79a4ab1a6ced0fd555342a3?attname=Update_cover%402x.png\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/244\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul><li>「只可更新」权限范围调整，协作者也能新增记录</li><li>空间站「安全设置」结束免费体验，正式按空间站等级提供服务</li><li>5 个模板上新，覆盖财务预算、翻译项目、汽车零部件管理等场景</li></ul>\"\n}"
         },
         "player_step_ui_config_163": {
-            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/09/29/91f12b7bbbec4c8f87810b7e9ee06afc?attname=Update_cover%402x.png\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/244\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul><li>新增「角色」分组，成员管理更加灵活细腻</li><li>简化「分享」路径，兼顾数据安全与操作便利</li><li>「成员」选择框增加悬浮卡片，显示所在小组</li><li>右键菜单新增「移动」选项，文件管理一步到位</li><li>模板中心新增假期旅游攻略、自卷指南和复盘规划三大专题</li></ul>\"\n}"
+            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/09/30/74b29d31dbc44eb48949acd6dff3bd65?attname=Update_cover%402x%203.png\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/246\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul><li>新增「角色」功能，权限分配与任务指派更灵活</li><li>「成员」选择框增加悬浮式信息卡片</li><li>右键菜单新增「移动至」选项，文件分类归纳更快捷</li><li>模板中心新增假期旅游攻略、自卷指南和复盘规划三大专题</li></ul>\"\n}"
         },
         "player_step_ui_config_17": {
             "zh_CN": "{\n \"element\": \"#TEMPLATE_CENTER_USE_TEMPLATE_BTN>button\", \n\"placement\": \"rightBottom\",\n\"offsetY\": 20,\n \"title\": \"使用模板教程\", \n\"description\": \"点击左侧按钮使用模板\", \"children\":\"\" \n}",
@@ -17110,6 +17137,7 @@
         },
         "rainbow_label": {
             "zh_CN": "你正在体验高级功能：彩虹标签，升级可解锁该功能。",
+            "billing_notify": [],
             "en_US": "Rainbow tags and more themes",
             "zh_HK": "你正在體驗高級功能：彩虹標籤，升級可解鎖該功能。"
         },
@@ -17181,6 +17209,10 @@
             "zh_CN": "推荐",
             "en_US": "Hot",
             "zh_HK": "推薦"
+        },
+        "recommend_album": {
+            "zh_CN": "推荐专题",
+            "en_US": "recommend album"
         },
         "reconciled_data": {
             "zh_CN": "正在核对数据……",
@@ -19753,8 +19785,8 @@
             "zh_HK": "普通成員可以邀請用戶加入空間站。關閉功能後僅空間站管理員可邀請成員加入空間站，普通成員創建的邀請鏈接會失效"
         },
         "security_setting_invite_member_description": {
-            "zh_CN": "邀请链接将会失效",
-            "en_US": "The generated invitation link will be invalid",
+            "zh_CN": "仅空间站管理员可邀请成员加入空间站，普通成员创建的邀请链接以及分享下的快速邀请方式都会失效。",
+            "en_US": "No one can invite users to join the Space except Space admin,and the generated invitation link will be invalid",
             "zh_HK": "普通成員可以邀請用戶加入空間站。關閉功能後僅空間站管理員可邀請成員加入空間站，普通成員創建的邀請鏈接會失效"
         },
         "security_setting_invite_member_title": {
@@ -22201,7 +22233,7 @@
         },
         "tab_org": {
             "zh_CN": "组织架构",
-            "en_US": "Organizational structure"
+            "en_US": "Organization"
         },
         "tab_role": {
             "zh_CN": "角色",
@@ -22438,9 +22470,8 @@
             "zh_HK": "正在與 ${number} 人協作中 "
         },
         "template": {
-            "zh_CN": "空间站模板",
-            "en_US": "Templates",
-            "zh_HK": "空間站模板"
+            "zh_CN": "模板",
+            "en_US": "template"
         },
         "template_centre": {
             "zh_CN": "维格模板中心",
@@ -24319,6 +24350,7 @@
         },
         "watermark": {
             "zh_CN": "你正在体验${grade}空间站专属功能，升级后可以解锁该功能",
+            "billing_notify": [],
             "en_US": "You are experiencing the ${grade} space exclusive feature, which will be unlocked when you upgrade",
             "zh_HK": "你正在體驗${grade}空間站專屬功能，升級後可以解鎖該功能"
         },

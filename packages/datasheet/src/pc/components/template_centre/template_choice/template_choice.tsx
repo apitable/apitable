@@ -11,6 +11,9 @@ import React, { FC, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { TemplateItem } from '../template_item';
 import styles from './style.module.less';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { Carousel } from 'react-responsive-carousel';
+import { take, takeRight } from 'lodash';
 
 const defaultBanner = integrateCdnHost(Settings.folder_showcase_banners.value.split(',')[0]);
 
@@ -37,9 +40,21 @@ export const TemplateChoice: FC<ITemplateChoiceProps> = props => {
       },
     });
   };
+  const openTemplateAlbumDetail = ({ templateId }) => {
+    Router.push( Navigation.TEMPLATE,{
+      params: {
+        spaceId,
+        albumId: templateId,
+        categoryId: 'album'
+      },
+    });
+  };
   if (!templateRecommendData) {
     return null;
   }
+
+  const carouselItems = take(templateRecommendData.top, templateRecommendData.top?.length - 2);
+  const firstTop = carouselItems[0];
 
   return (
     <div className={styles.templateChoiceWrapper}>
@@ -48,22 +63,49 @@ export const TemplateChoice: FC<ITemplateChoiceProps> = props => {
           {templateRecommendData.top &&
             <>
               <div className={styles.topBannerWrapper} id={TEMPLATE_CENTER_ID.TOP_HOT_BANNER}>
-                <TemplateItem
-                  templateId={templateRecommendData.top[0].templateId}
-                  height={280}
-                  img={imgUrl(templateRecommendData.top[0].image, 280)}
-                  onClick={openTemplateDetail}
-                  bannerDesc={{
-                    title: templateRecommendData.top[0].title,
-                    color: templateRecommendData.top[0]?.color,
-                    desc: templateRecommendData.top[0].desc,
-                  }}
-                  usingTemplate={setUsingTemplate}
-                />
+                {carouselItems.length === 1 ? (
+                  <TemplateItem
+                    templateId={firstTop.templateId}
+                    height={280}
+                    img={imgUrl(firstTop.image, 280)}
+                    onClick={openTemplateDetail}
+                    bannerDesc={{
+                      title: firstTop.title,
+                      color: firstTop?.color,
+                      desc: firstTop.desc,
+                    }}
+                    usingTemplate={setUsingTemplate}
+                  />
+                ) : (
+                  <Carousel
+                    showThumbs={false}
+                    showArrows={false}
+                    showStatus={false}
+                    autoPlay
+                    infiniteLoop
+                    swipeable
+                  >
+                    {carouselItems.map(topItem => (
+                      <TemplateItem
+                        templateId={topItem.templateId}
+                        key={topItem.templateId}
+                        height={280}
+                        img={imgUrl(topItem.image, 280)}
+                        onClick={openTemplateDetail}
+                        bannerDesc={{
+                          title: topItem.title,
+                          color: topItem?.color,
+                          desc: topItem.desc,
+                        }}
+                        usingTemplate={setUsingTemplate}
+                      />
+                    ))}
+                  </Carousel>
+                )}
               </div>
               <div className={styles.recommendWrapper}>
                 {
-                  templateRecommendData.top.slice(1).map(template => (
+                  takeRight(templateRecommendData.top, 2).map(template => (
                     <div className={styles.recommendItem} key={template.image}>
                       <TemplateItem
                         height={160}
@@ -84,14 +126,14 @@ export const TemplateChoice: FC<ITemplateChoiceProps> = props => {
             </>
           }
           {
-            templateRecommendData.categories && templateRecommendData.categories.map(category => (
-              <Row key={category.categoryName}>
+            templateRecommendData.templateGroups && templateRecommendData.templateGroups.map(category => (
+              <Row key={category.name}>
                 <Col span={24} className={styles.category}>
                   <Row className={styles.categoryName}>
-                    <Col span={24}>{category.categoryName}</Col>
+                    <Col span={24}>{category.name}</Col>
                   </Row>
                   <div className={styles.templateList}>
-                    {category.templateVos.map(template => {
+                    {category.templates.map(template => {
                       return (
                         <div className={styles.templateItemWrapper} key={template.templateId}>
                           <TemplateItem
@@ -114,6 +156,33 @@ export const TemplateChoice: FC<ITemplateChoiceProps> = props => {
               </Row>
             ))
           }
+          {templateRecommendData.albumGroups?.map(albumGroup => (
+            <Row key={albumGroup.name}>
+              <Col span={24} className={styles.category}>
+                <Row className={styles.categoryName}>
+                  <Col span={24}>{albumGroup.name}</Col>
+                </Row>
+                <div className={styles.templateList}>
+                  {albumGroup.albums.map(album => {
+                    return (
+                      <div className={styles.templateItemWrapper} key={album.albumId}>
+                        <TemplateItem
+                          templateId={album.albumId}
+                          type="card"
+                          img={imgUrl(album.cover || defaultBanner, 160)}
+                          name={album.name}
+                          description={album.description}
+                          onClick={openTemplateAlbumDetail}
+                          usingTemplate={setUsingTemplate}
+                          isOfficial
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </Col>
+            </Row>
+          ))}
         </Col>
       </Row>
       {

@@ -130,6 +130,8 @@ export interface StringsInterface {
     alarm_specifical_member: String;
     alarm_target_type: String;
     albania: String;
+    album: String;
+    album_publisher: String;
     algeria: String;
     alien: String;
     alien_tip_in_user_card: String;
@@ -372,6 +374,8 @@ export interface StringsInterface {
     async_compute: String;
     at_least_select_one: String;
     at_least_select_one_field: String;
+    atlas: String;
+    atlas_grade_desc: String;
     attachment_capacity_details_entry: String;
     attachment_capacity_details_model_capacity_size: String;
     attachment_capacity_details_model_expiry_time: String;
@@ -3465,6 +3469,7 @@ export interface StringsInterface {
     recent_installed_widget: String;
     recently_used_files: String;
     recommend: String;
+    recommend_album: String;
     reconciled_data: String;
     record: String;
     record_activity_experience_tips: String;
@@ -5173,12 +5178,13 @@ export interface StringsInterface {
 
 export interface String {
 
-    zh_CN?:         string;
-    en_US?:         string;
-    zh_HK?:         string;
-    终端?:            终端;
-    notifications?: Notifications;
-    废弃时间?:          number;
+    zh_CN?:          string;
+    en_US?:          string;
+    zh_HK?:          string;
+    终端?:             终端;
+    notifications?:  Notifications;
+    billing_notify?: any[];
+    废弃时间?:           number;
 }
 
 export interface Notifications {

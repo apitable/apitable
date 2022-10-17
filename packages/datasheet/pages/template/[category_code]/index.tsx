@@ -26,6 +26,10 @@ export const getServerSideProps = async(context: NextPageContext) => {
   const { category_code: categoryCode } = context['params'];
   const host = process.env.API_PROXY;
 
+  if (categoryCode === 'album') {
+    return { props: {}};
+  }
+
   if (categoryCode === 'tpcprivate') {
     return { props: {}};
   }
@@ -45,7 +49,7 @@ export const getServerSideProps = async(context: NextPageContext) => {
       };
     }
   } else {
-    const res = await Api.getTemplateList(categoryCode, false, headers);
+    const res = await Api.getTemplateCategories(categoryCode, headers);
     const { success, data } = res.data;
     if (success) {
       return {

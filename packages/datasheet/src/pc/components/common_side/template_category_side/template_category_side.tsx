@@ -1,5 +1,15 @@
 import { ThemeName, Typography, useThemeColors } from '@vikadata/components';
-import { ConfigConstant, IReduxState, ISearchTemplate, ITemplateCategory, Navigation, Strings, t, TrackEvents } from '@vikadata/core';
+import {
+  ConfigConstant,
+  IReduxState,
+  ISearchAblum,
+  ISearchTemplate,
+  ITemplateCategory,
+  Navigation,
+  Strings,
+  t,
+  TrackEvents
+} from '@vikadata/core';
 import { useDebounceFn, useUnmount } from 'ahooks';
 import { Tooltip } from 'antd';
 import classNames from 'classnames';
@@ -30,8 +40,16 @@ export const TemplateCategorySide: FC = () => {
   const categoryId = useSelector((state: IReduxState) => state.pageParams.categoryId);
   const { getTemplateCategoryReq, searchTemplateReq } = useTemplateRequest();
   const { data: templateCategory } = useRequest<ITemplateCategory[]>(getTemplateCategoryReq);
-  const { run: searchTemplate, data: searchTemplateResult, mutate } = useRequest<ISearchTemplate[]>(searchTemplateReq, { manual: true });
-  const { run: debouncedSearchTemplate } = useDebounceFn(searchTemplate, { wait: 100 });
+  const {
+    run: searchTemplate,
+    data: searchTemplateResult,
+    mutate
+  } = useRequest<{
+    albums: ISearchAblum[];
+    templates: ISearchTemplate[];
+  }>(searchTemplateReq, { manual: true });
+  const { templates, albums } = searchTemplateResult || {};
+  const { run: debouncedSearchTemplate } = useDebounceFn(searchTemplate, { wait: 300 });
   // 记录一下已经上报过的keywords，避免重复埋点上报
   const hasTrackSearchKeyWords = useRef('');
   const router = useRouter();
@@ -51,7 +69,7 @@ export const TemplateCategorySide: FC = () => {
     if (newKeywords) {
       debouncedSearchTemplate(newKeywords);
     } else {
-      mutate([]);
+      mutate({ templates: [], albums: [] });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keywords]);
@@ -127,6 +145,16 @@ export const TemplateCategorySide: FC = () => {
     debounceTriggerTrack(keywords);
   }, [debounceTriggerTrack, keywords]);
 
+  const openTemplateAlbumDetail = (albumId: string) => {
+    Router.push( Navigation.TEMPLATE,{
+      params: {
+        spaceId,
+        albumId,
+        categoryId: 'album'
+      },
+    });
+  };
+
   return (
     <div className={styles.templateClass}>
       <div className={classNames(styles.templateCategory, !spaceId && styles.templateCategoryBg)}>
@@ -190,21 +218,36 @@ export const TemplateCategorySide: FC = () => {
           )}
           {keywords && (
             <div className={styles.searchResult}>
-              {searchTemplateResult?.length ? (
+              {((templates && templates.length > 0) || (albums && albums.length > 0)) ? (
                 <>
-                  {searchTemplateResult.map(item => (
-                    <div className={styles.item} key={item.templateId} onClick={() => jumpTemplate(item.categoryCode, item.templateId)}>
-                      <Typography className={styles.nameContainer} variant='body2'>
-                        <TemplateIcon width={16} height={16} fill={colors.staticWhite0} />
-                        <span className={styles.name} dangerouslySetInnerHTML={{ __html: item.templateName }} />
-                      </Typography>
-                      <Typography className={styles.tags} variant='body3'>
-                        {item.tags.map(tag => (
-                          <span className={styles.tag} dangerouslySetInnerHTML={{ __html: tag }} />
-                        ))}
-                      </Typography>
-                    </div>
-                  ))}
+                  {templates && templates.length > 0 && (
+                    <>
+                      <h3>{t(Strings.template)}</h3>
+                      {templates.map(item => (
+                        <div className={styles.item} key={item.templateId} onClick={() => jumpTemplate(item.categoryCode, item.templateId)}>
+                          <Typography className={styles.nameContainer} variant='body2'>
+                            <TemplateIcon width={16} height={16} fill={colors.staticWhite0} />
+                            <span className={styles.name} dangerouslySetInnerHTML={{ __html: item.templateName }} />
+                          </Typography>
+                          <Typography className={styles.tags} variant='body3'>
+                            {item.tags.map(tag => (
+                              <span className={styles.tag} dangerouslySetInnerHTML={{ __html: tag }} />
+                            ))}
+                          </Typography>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                  {albums && albums.length > 0 && (
+                    <>
+                      <h3>{t(Strings.album)}</h3>
+                      {albums?.map((item, index) => (
+                        <div className={styles.albumName} onClick={() => openTemplateAlbumDetail(item.albumId)} key={index}>
+                          <span dangerouslySetInnerHTML={{ __html: item.name }} />
+                        </div>
+                      ))}
+                    </>
+                  )}
                 </>
               ) : (
                 <div className={styles.emptyList}>

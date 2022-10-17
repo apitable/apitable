@@ -101,14 +101,14 @@ export const TemplateItem: React.FC<ITemplateItemProps> = props => {
     props.usingTemplate(templateId);
   };
 
-  const convertDescription = (nodeType: number, description: string): string => {
+  const convertDescription = (description: string, nodeType?: number): string => {
     if (nodeType === ConfigConstant.NodeType.DATASHEET) {
       return convertDatasheetDesc(description);
     }
     if (nodeType === ConfigConstant.NodeType.FOLDER) {
       return convertFolderDesc(description);
     }
-    return '';
+    return description;
   };
 
   const convertFolderDesc = (description: string): string => {
@@ -249,7 +249,7 @@ export const TemplateItem: React.FC<ITemplateItemProps> = props => {
             {name}
           </Typography>
           <Typography className={styles.desc} ellipsis={{ rows: 2 }} variant="body3">
-            {nodeType && description && convertDescription(nodeType, description)}
+            {description && convertDescription(description, nodeType)}
           </Typography>
           {tags && tags.length !== 0 && (
             <div className={styles.tags}>

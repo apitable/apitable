@@ -600,6 +600,7 @@ export interface IPageParams {
   folderId?: string;
   formId?: string;
   templateId?: string;
+  ablumId?: string;
   categoryId?: string;
   memberId?: string;
   widgetId?: string;
