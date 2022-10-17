@@ -54,6 +54,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.vikadata.api.enums.exception.NodeException.SHARE_EXPIRE;
 import static com.vikadata.api.enums.exception.SpaceException.NOT_IN_SPACE;
+import static java.util.stream.Collectors.toList;
 
 /**
  * <p>
@@ -253,7 +254,8 @@ public class OrganizationController {
             spaceId = templateSpaceId;
         }
         List<UnitInfoVo> vos = iOrganizationService.loadOrSearchInfo(userId, spaceId, params, sharer);
-        return ResponseData.success(vos);
+        List<UnitInfoVo> existUnitInfo = vos.stream().filter(unitInfoVo -> !unitInfoVo.getIsDeleted()).collect(toList());
+        return ResponseData.success(existUnitInfo);
     }
 
     @PostResource(path = "/searchUnitInfoVo", requiredLogin = false)
