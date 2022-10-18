@@ -77,6 +77,7 @@ export const showOrderModal = (config: Omit<IOrderModalProps, 'onModalClose'>) =
         width='520px'
         footer={null}
         centered
+        zIndex={1100}
       >
         <OrderModalWithTheme onModalClose={onModalClose} {...config} />
       </Modal>

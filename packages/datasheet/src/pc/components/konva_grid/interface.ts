@@ -51,6 +51,7 @@ export interface IRenderProps {
   realField?: IField;
   unitTitleMap?: object;
   cacheTheme: ThemeName;
+  currentResourceId?: string
 }
 
 export interface IRenderStyleProps {

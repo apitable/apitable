@@ -940,13 +940,20 @@ export class CellHelper extends KonvaDrawer {
   }
 
   private renderCellLink(renderProps: IRenderProps, ctx?) {
-    const { x, y, field, cellValue, rowHeight, columnWidth, rowHeightLevel, isActive, editable, callback } = renderProps;
+    /**
+     * currentResourceId 是什么？
+     * https://github.com/vikadata/vikadata/issues/1229#issuecomment-1275546897  看这里理解前情提要
+     * 当存在 currentResourceId 时，说明当前的 link 字段不是被直接渲染的，而是通过 lookup 的方式间接的渲染出来，所以当出现中间途径，就得弄清楚在谁（哪张表）的基础上请求关联表的数据，
+     * currentDatasheetId 就是此时充当跳板的表（或者镜像） id
+     * 那如果是直接渲染的关联字段，则 pageParams.nodeId === currentResourceId
+     */
+    const { x, y, field, cellValue, rowHeight, columnWidth, rowHeightLevel, isActive, editable, callback, currentResourceId } = renderProps;
     const linkRecordIds = cellValue ? (cellValue as string[]).slice(0, MAX_SHOW_LINK_IDS_COUNT) : null;
     const state = store.getState();
     const NO_DATA = Symbol('NO_DATA');
     const ERROR_DATA = Symbol('ERROR_DATA');
     const foreignDatasheetId = field.property.foreignDatasheetId;
-    const datasheet = getDatasheetOrLoad(state, foreignDatasheetId);
+    const datasheet = getDatasheetOrLoad(state, foreignDatasheetId, currentResourceId, true);
     const isLoading = Selectors.getDatasheetLoading(state, foreignDatasheetId);
     const datasheetClient = Selectors.getDatasheetClient(state, foreignDatasheetId);
     const snapshot = datasheet && datasheet.snapshot;
@@ -1108,6 +1115,7 @@ export class CellHelper extends KonvaDrawer {
     renderProps = { ...renderProps, cellValue: handleNullArray(renderProps.cellValue) };
     const { field, cellValue } = renderProps;
     const realField = ((Field.bindModel(field) as any) as LookUpField).getLookUpEntityField();
+    const entityFieldInfo = ((Field.bindModel(field) as any) as LookUpField).getLookUpEntityFieldInfo();
     const valueType = ((Field.bindModel(field) as any) as LookUpField).basicValueType;
     if (cellValue != null && realField != null) {
       const rollUpType = (field as ILookUpField).property.rollUpType || RollUpFuncType.VALUES;
@@ -1144,7 +1152,8 @@ export class CellHelper extends KonvaDrawer {
       // cellValue 神奇引用 尝试去拍平二维数组
       const realCellValue = cellValue?.flat(1) as ICellValue;
       const realRenderProps = { ...renderProps, cellValue: realCellValue, editable: false };
-      const realFieldRenderProps = { ...realRenderProps, cellValue: realCellValue, field: realField };
+      const realFieldRenderProps =
+        { ...realRenderProps, cellValue: realCellValue, field: realField, currentResourceId: entityFieldInfo?.datasheetId };
 
       // 非纯文本的字段原样展示
       switch (realField.type) {
