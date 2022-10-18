@@ -1,4 +1,5 @@
-// import { Role } from '@vikadata/core';
+
+import { ITeamData } from '@vikadata/core';
 
 export interface IUnitItemProps {
   className?: string;
@@ -65,9 +66,13 @@ export interface IUnitItemProps {
    */
   isDetail?: boolean;
   /**
-   * 是否列权限(临时参数后面修改)
+   * 小组信息
    */
-  isFieldPermission?: boolean;
+  teamData?: ITeamData[];
+  /**
+  * 成员ID
+  */
+  memberId?: string;
 }
 
 export interface IRoleOption {

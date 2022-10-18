@@ -7,6 +7,8 @@ import { OmittedMiddleText } from './omitted_middle_text';
 import { UserCardTrigger } from 'pc/components/common/user_card/user_card_trigger';
 import { TriggerProps } from 'rc-trigger';
 import { MemberType } from '@vikadata/core';
+import MemberIcon from 'static/icon/space/space_icon_account.svg';
+import { getThemeColors } from '@vikadata/components';
 
 interface ITriggerBase {
   action: TriggerProps['action'];
@@ -32,6 +34,7 @@ interface IInfoCardProps {
   memberType?: number;
   isActive?: boolean;
   desc?: string;
+  isMemberOptionList?: boolean;
 }
 // const searchTag = '<span class="highLight">';
 
@@ -39,17 +42,18 @@ export const InfoCard: FC<IInfoCardProps> = props => {
   const { 
     title, originTitle = '', description, onClick, extra, triggerBase,
     inSearch = false, className, avatarProps, token, userId, memberId,
-    isDeleted = false, memberType = 3, isActive = true, desc, ...rest 
+    isDeleted = false, memberType = 3, isActive = true, desc, isMemberOptionList = false, ...rest 
   } = props;
 
   const isMember = memberType === MemberType.Member;
   const isSelf = userId === 'Self';
+  const colors = getThemeColors();
   return (
    
     <div
       className={classNames(styles.infoCard, className)}
       onClick={onClick}
-      style={{ cursor: onClick ? 'pointer' : 'default' }}
+      style={{ cursor: onClick || isMemberOptionList ? 'pointer' : 'default' }}
       {...rest}
     >
       
@@ -72,7 +76,7 @@ export const InfoCard: FC<IInfoCardProps> = props => {
           </div>
         </UserCardTrigger> :
           <Avatar
-            isDefaultIcon={isSelf}
+            defaultIcon={isSelf ? <MemberIcon width={16} height={16} fill={colors.defaultBg} /> : undefined}
             {...avatarProps}
           />
         }

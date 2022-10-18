@@ -164,6 +164,7 @@ export const SelectUnitModal: FC<ISelectUnitModalProps> = props => {
             onCancel={onCancel}
             onOk={onOk}
             linkId={linkId}
+            showTab={showTab}
           />
         </ComponentDisplay>
       </div>

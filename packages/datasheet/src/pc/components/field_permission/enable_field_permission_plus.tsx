@@ -300,7 +300,6 @@ export const EnableFieldPermissionPlus: React.FC<IEnablePermissionPlus> = (props
     <div className={styles.unitPermissionList}>
       {
         roleList.map(item => {
-
           return <UnitItem
             key={item.unitId}
             unit={createStandardUnit(item)}
@@ -318,7 +317,8 @@ export const EnableFieldPermissionPlus: React.FC<IEnablePermissionPlus> = (props
             isAppointMode
             disabled={item.nodeManageable || readonly}
             disabledTip={readonly ? '' : t(Strings.field_permission_uneditable_tooltips)}
-            isFieldPermission
+            teamData={item.teamData}
+            memberId={item.unitRefId}
           />;
         })
       }

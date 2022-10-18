@@ -43,17 +43,7 @@ export enum FetchForeignTimes {
 
 const ExpandLinkBase: React.ForwardRefRenderFunction<IExpandFieldEditRef, IExpandLinkProps> = (props, ref) => {
   const {
-    field,
-    recordId,
-    onClick,
-    editable,
-    keyPrefix,
-    addBtnText,
-    rightLayout = true,
-    onSave,
-    datasheetId,
-    manualFetchForeignDatasheet,
-    mirrorId,
+    field, recordId, onClick, editable, keyPrefix, addBtnText, rightLayout = true, onSave, datasheetId, manualFetchForeignDatasheet, mirrorId,
   } = props;
   const colors = useThemeColors();
   const focusRef = useRef<HTMLDivElement>(null);
@@ -202,12 +192,13 @@ const ExpandLinkBase: React.ForwardRefRenderFunction<IExpandFieldEditRef, IExpan
       return <></>;
     }
     return (
-      <Button className={style.addLinkRecordBtn} size="small" onClick={onAddRecord} disabled={!editable}>
+      <Button className={style.addLinkRecordBtn} size='small' onClick={onAddRecord} disabled={!editable}>
         <span className={style.inner}>
           {editable && <AddOutlined className={style.addIcon} color={colors.secondLevelText} />}
           {!editable
             ? t(Strings.add_link_record_button_disable)
-            : addBtnText || (
+            : addBtnText ||
+            (
               <TComponent
                 tkey={t(Strings.add_link_record_button)}
                 params={{

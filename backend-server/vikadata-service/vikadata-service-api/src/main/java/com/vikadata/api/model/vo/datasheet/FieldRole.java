@@ -1,11 +1,14 @@
 package com.vikadata.api.model.vo.datasheet;
 
+import java.util.List;
+
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import com.vikadata.api.modular.organization.model.MemberTeamPathInfo;
 import com.vikadata.api.support.serializer.ImageSerializer;
 import com.vikadata.api.support.serializer.NullBooleanSerializer;
 import com.vikadata.api.support.serializer.NullNumberSerializer;
@@ -82,4 +85,11 @@ public class FieldRole {
     @ApiModelProperty(value = "权限继承标志", example = "true", position = 13)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean permissionExtend;
+
+    @ApiModelProperty(value = "memberId / teamId", dataType = "java.lang.String", example = "1", position = 14)
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long unitRefId;
+
+    @ApiModelProperty(value = "team id and full hierarchy team path name", position = 15)
+    private List<MemberTeamPathInfo> teamData;
 }

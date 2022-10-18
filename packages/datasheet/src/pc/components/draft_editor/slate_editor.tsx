@@ -228,7 +228,7 @@ const SlateEditor = (props, ref) => {
   };
 
   const onKeyDown = useCallback(
-    event => {
+    (event) => {
       if (visible) {
         switch (event.key) {
           case 'ArrowDown':

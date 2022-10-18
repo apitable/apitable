@@ -27,7 +27,7 @@ export const Empty: React.FC<{ onClick: () => void }> = props => {
             <span dangerouslySetInnerHTML={{ __html: t(Strings.manage_role_empty_desc1, { url: Settings.role_help_url.value }) }} />
           </Typography>
         </Box>
-        <Box backgroundColor={colors.bgCommonLower} padding={'8px'} marginTop={'8px'}>
+        <Box borderRadius={'4px'} backgroundColor={colors.bgCommonLower} padding={'8px'} marginTop={'8px'}>
           <Typography variant="body4" color={colors.textCommonTertiary}>
             {t(Strings.manage_role_empty_desc2)}
           </Typography>

@@ -5,6 +5,8 @@ import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import styles from './styles.module.less';
+import MemberIcon from 'static/icon/space/space_icon_account.svg';
+import { getThemeColors } from '@vikadata/components';
 
 interface IMemberItemProps {
   unitInfo: IUnitValue | IUserValue;
@@ -23,6 +25,7 @@ export const MemberItem: React.FC<IMemberItemProps> = props => {
   const { unitInfo, children, style, selected, showTeams } = props;
   const { unitId, avatar, name, type, userId, isSelf, desc, isMemberNameModified, team, email, isActive } = unitInfo as any;
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
+  const colors = getThemeColors();
 
   const title = getSocialWecomUnitName({
     name,
@@ -40,7 +43,7 @@ export const MemberItem: React.FC<IMemberItemProps> = props => {
           src={avatar}
           type={type === MemberType.Member ? AvatarType.Member : AvatarType.Team}
           style={{ minWidth: 20 }}
-          isDefaultIcon={isSelf}
+          defaultIcon={isSelf ? <MemberIcon width={12} height={12} fill={colors.defaultBg} /> : undefined}
         />
         <div className={styles.memberWithTeamsDesc}>
           <div className={classNames('unitName', styles.unitName)}>
@@ -73,7 +76,7 @@ export const MemberItem: React.FC<IMemberItemProps> = props => {
         src={avatar}
         type={type === MemberType.Member ? AvatarType.Member : AvatarType.Team}
         style={{ minWidth: 20 }}
-        isDefaultIcon={isSelf}
+        defaultIcon={isSelf ? <MemberIcon width={12} height={12} fill={colors.defaultBg} /> : undefined}
       />
       <span className={classNames('unitName', styles.unitName)}>{title}</span>
       {desc && <span className={styles.unitDesc}>{`（${desc}）`}</span>}

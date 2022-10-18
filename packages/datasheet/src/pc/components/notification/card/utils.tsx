@@ -169,8 +169,13 @@ export const renderMember = (info: IFromUserInfo, spaceName: string, spaceInfo?:
         {...triggerBase}
         memberId={info.memberId}
         spaceName={spaceName}
-        spareName={info.userName || info.memberName || t(Strings.guests_per_space)}
+        spareName={info.memberName || info.userName || t(Strings.guests_per_space)}
         permissionVisible={false}
+        avatarProps={{
+          id: info.memberId || '',
+          title: info.memberName,
+          src: info.avatar,
+        }}
       >
         <div className={unitTagWrapClasses}>
           <UnitTag

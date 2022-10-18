@@ -1,5 +1,6 @@
 import { IFieldPermissionMap, IRoleMember, IViewProperty } from '../store';
 import { MemberType } from 'types';
+import { ITeamData } from '../store';
 
 export interface IFieldPermissionRoleListData {
   enabled: boolean;
@@ -30,6 +31,8 @@ export interface IFieldPermissionRole {
   unitName: string;
   isAdmin: boolean;
   isOwner: boolean;
+  teamData?: ITeamData[];
+  unitRefId?: string;
 }
 
 export interface IFieldPermissionResponse {

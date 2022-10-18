@@ -19,9 +19,9 @@ export const getMoveColumnsResult = (props: IMoveColumnsProps) => {
   const { datasheetId, viewId, data } = props;
   const state = store.getState();
   const snapshot = Selectors.getSnapshot(state, datasheetId)!;
-  const mirror = Selectors.getMirror(state, datasheetId);
+  const mirror = Selectors.getMirror(state);
   const view = Selectors.getCurrentViewBase(snapshot, viewId, datasheetId, undefined, mirror);
-  const temporaryView = Selectors.getTemporaryView(snapshot, viewId, datasheetId);
+  const temporaryView = Selectors.getTemporaryView(snapshot, viewId, datasheetId, mirror);
 
   if (!view) {
     return;

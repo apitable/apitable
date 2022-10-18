@@ -102,7 +102,6 @@ export const CellMember: FC<ICellProps> = props => {
                 size={avatarSize}
                 src={avatar}
                 type={type === MemberType.Member ? AvatarType.Member : AvatarType.Team}
-                isDefaultIcon={false}
               />
               <Text
                 x={avatarSize + GRID_MEMBER_ITEM_AVATAR_MARGIN_RIGHT}

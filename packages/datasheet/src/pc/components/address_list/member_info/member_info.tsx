@@ -133,9 +133,9 @@ export const MemberInfo: FC = () => {
         <div className={styles.infoDetail}>
           {
             teamData?.map(team => {
-              return(<span className={classNames(styles.teamInfo)} key={team.teamId}>
+              return(<p className={classNames(styles.teamInfo)} key={team.teamId}>
                 {team.fullHierarchyTeamName || selectedMemberInfo.teamTitle}
-              </span>);
+              </p>);
             })
           
           }

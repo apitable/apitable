@@ -20,7 +20,7 @@ export const useLinkInvite = () => {
   const nodeId = useSelector((state: IReduxState) => state.invite.nodeId);
 
   // 重新获取信息
-  const reGetLinkInfo = (linkToken: string, nodeId: string) => {
+  const reGetLinkInfo = (linkToken: string, nodeId?: string) => {
     Api.linkValid(linkToken, nodeId).then(res => {
       const { success, data: info } = res.data;
       dispatch(StoreActions.updateInviteLinkInfo(res.data));
@@ -63,7 +63,7 @@ export const useLinkInvite = () => {
       });
     }
     // 用户刷新了页面，重新获取数据
-    if (inviteLinkTokenInUrl && inviteNodeIdInUrl) {
+    if (inviteLinkTokenInUrl) {
       reGetLinkInfo(inviteLinkTokenInUrl, inviteNodeIdInUrl);
       return;
     }

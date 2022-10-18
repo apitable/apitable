@@ -27,7 +27,6 @@ interface IExpandLookUp extends IBaseEditorProps {
 export function ExpandLookUpBase(props: IExpandLookUp) {
   const { field, recordId } = props;
   const entityField = Field.bindModel(field).getLookUpEntityField();
-
   const originalCellValue = useComputeCellValue({
     recordId,
     field: field,
@@ -37,6 +36,19 @@ export function ExpandLookUpBase(props: IExpandLookUp) {
   if (!recordId || cellValue == null || !entityField) return null;
 
   const rollUpType = field.property.rollUpType || RollUpFuncType.VALUES;
+
+  // https://github.com/vikadata/vikadata/issues/1229#issuecomment-1275546897
+  // 根据 issue 里的描述，这里就是在寻找正确的跳板（datasheet）的 id
+  const getCurrentDatasheetIdFromLinkDatasheetId = () => {
+    if (entityField.type !== FieldType.Link) return props.datasheetId;
+
+    const entityFieldInfo = Field.bindModel(field).getLookUpEntityFieldInfo();
+
+    if (!entityFieldInfo) return props.datasheetId;
+
+    return entityFieldInfo.datasheetId;
+  };
+
   if (!ORIGIN_VALUES_FUNC_SET.has(rollUpType)) {
     switch (valueType) {
       case BasicValueType.String:
@@ -154,6 +166,7 @@ export function ExpandLookUpBase(props: IExpandLookUp) {
           style={{}}
           cellValue={cellValue as ILinkIds}
           keyPrefix={`${recordId}-${field.id}`}
+          datasheetId={getCurrentDatasheetIdFromLinkDatasheetId()}
         />
       );
     // 文本逗号分割

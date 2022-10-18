@@ -6,6 +6,7 @@ import { StorageName, getStorage, setStorage } from 'pc/utils/storage/storage';
 
 let viewId: string | undefined;
 let datasheetActiveViewId: string | undefined;
+let mirrorId: string | undefined;
 
 const restoreGroupExpanding = () => {
   // 恢复 localStorage 中分组展开的信息
@@ -21,10 +22,11 @@ const restoreGroupExpanding = () => {
 store.subscribe(() => {
   const state = store.getState();
   const snapshot = Selectors.getSnapshot(state);
-  const mirrorId = state.pageParams.mirrorId;
   const previousViewId = viewId;
+  const previousMirrorId = mirrorId;
   const previousDatasheetActiveViewId = datasheetActiveViewId;
   viewId = state.pageParams.viewId;
+  mirrorId = state.pageParams.mirrorId;
   datasheetActiveViewId = Selectors.getActiveView(state);
 
   // 等到数表加载完毕的时候，才开始后面的检查
@@ -53,8 +55,16 @@ store.subscribe(() => {
     compensator.clearAll();
   }
 
-  // 没有 viewId，则跳转到当前激活 view, 也就是第一个 view
-  if (!viewId && datasheetActiveViewId && previousDatasheetActiveViewId !== datasheetActiveViewId) {
+  /**
+   * 目的：没有 viewId，则跳转到当前激活 view, 也就是第一个 view
+   * 1. 当 viewId == null，虽然本意是希望跳转到某一个视图，但是在跳转的过程，redux 会被频繁触发，导致 changeView 多次调用，
+   * 在上面的背景下，增加了 previousDatasheetActiveViewId !== datasheetActiveViewId 的判断，用来减少 changeView 的调用
+   * 2. 上述情况存在漏洞，当出现从镜像跳转到原表时，路由上的 viewId 会不存在，原因在于镜像和原表共享一份数据，从镜像跳转回原表，previousDatasheetActiveViewId 一定等于
+   * datasheetActiveViewId。因此新增 previousMirrorId && !mirrorId 的判断，也就是当前一个条件为 false 时，判断当前的路由是否是从镜像离开
+   * （PS：除了上述的思路，还有另一种是立即更新 pageParams 里的数据，这个问题之所以出现就是在于路由的变化并没有立即更新 pageParams，所以只要 pageParams 更新及时，这个问题也可以避免，
+   * 但是现在的项目中，对 pageParams 的修改都是通过 usePageParams 这个 hooks，为了不破坏这个逻辑，就没采用这个方案）
+   */
+  if (!viewId && (previousDatasheetActiveViewId !== datasheetActiveViewId || (previousMirrorId && !mirrorId))) {
     const nextViewId = getStorage(StorageName.DatasheetView)?.[uniqueId] || datasheetActiveViewId;
     changeView(nextViewId);
     return;

@@ -7,7 +7,9 @@ import styles from './style.module.less';
 export const NoData: FC = () => {
   return (
     <div className={styles.invalidMsg}>
-      <Image src={Empty} alt="empty" width={320} height={240}/>
+      <div className={styles.img}>
+        <Image src={Empty} alt="empty" />
+      </div>
       <div className={styles.text}>{t(Strings.no_notification)}</div>
     </div>
   );

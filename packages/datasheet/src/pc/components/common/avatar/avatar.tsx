@@ -1,7 +1,7 @@
 import { getThemeColors, lightColors } from '@vikadata/components';
 import { CutMethod, getImageThumbSrc } from '@vikadata/core';
 import * as React from 'react';
-import MemberIcon from 'static/icon/space/space_icon_account.svg';
+
 import TeamIcon from 'static/icon/space/space_icon_department.svg';
 import { AvatarBase, IAvatarBaseProps } from './avatar_base';
 import styles from './style.module.less';
@@ -51,14 +51,14 @@ export interface IAvatarProps extends Omit<IAvatarBaseProps, 'shape'> {
   children?: JSX.Element;
   type?: AvatarType;
   style?: React.CSSProperties;
-  isDefaultIcon?: boolean;
+  defaultIcon?: JSX.Element;
 }
 
 const AvatarHoc = Component => {
   const ratio = process.env.SSR ? 2 : Math.max(window.devicePixelRatio, 2);
   const colors = getThemeColors();
   return (props: IAvatarProps) => {
-    const { src, title, isGzip = true, id, size = AvatarSize.Size32, type = AvatarType.Member, style, isDefaultIcon } = props;
+    const { src, title, isGzip = true, id, size = AvatarSize.Size32, type = AvatarType.Member, style, defaultIcon } = props;
     if (!title || !id) return null;
     // 部门
     if (type === AvatarType.Team) {
@@ -111,14 +111,13 @@ const AvatarHoc = Component => {
         shape="circle"
         src={avatarSrc}
         style={{
-          backgroundColor: isDefaultIcon ? colors.rc01 : avatarBg,
+          backgroundColor: defaultIcon ? colors.rc01 : avatarBg,
           color: colors.defaultBg,
           border: !src && '0px',
           ...style,
         }}
       >
-        {!avatarSrc && isDefaultIcon && <MemberIcon width={12} height={12} fill={colors.defaultBg} />}
-        {!avatarSrc && !isDefaultIcon && firstWord.toUpperCase()}
+        {!avatarSrc && (defaultIcon || firstWord.toUpperCase())}
       </Component>
     );
   };

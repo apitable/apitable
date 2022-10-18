@@ -45,7 +45,7 @@ const triggerBase = {
 export const UnitItem: FC<IUnitItemProps> = props => {
   const colors = useThemeColors();
   const { unit, role, identity, className, roleOptions = DEFAULT_ROLE, isAppointMode, 
-    disabled, onChange, onRemove, isDetail, isFieldPermission = false } = props;
+    disabled, onChange, onRemove, isDetail, teamData, memberId } = props;
   const isAdmin = identity?.admin;
   const isOwner = identity?.permissionOpener;
 
@@ -116,9 +116,9 @@ export const UnitItem: FC<IUnitItemProps> = props => {
               <Tag />
             </Space>
           }
-          triggerBase={(unit.isTeam || isFieldPermission) ? undefined : triggerBase}
-          memberId={unit.memberId}
-          description={unit.info || ''}
+          triggerBase={unit.isTeam ? undefined : triggerBase}
+          memberId={unit.memberId || memberId}
+          description={teamData ? teamData[0].fullHierarchyTeamName : ''}
           extra={!isAppointMode ? t(Strings.node_permission_extend_desc) : ''}
           style={{ backgroundColor: 'transparent', height: 'auto' }}
           avatarProps={{

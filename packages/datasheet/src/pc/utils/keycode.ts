@@ -74,6 +74,7 @@ export enum KeyCode {
   Quot = 222,
   Asterisk = 106,
   Slash = 111,
+  FirefoxMinus = 173,
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '/' = 191,
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -121,6 +122,7 @@ export function isNumeralKey(event: KeyboardEvent) {
     (keyCode === KeyCode.E) ||
     (keyCode === KeyCode.Plus) ||
     (keyCode === KeyCode.Minus) ||
+    (keyCode === KeyCode.FirefoxMinus) ||
     (keyCode === KeyCode.Ime)
   );
 }

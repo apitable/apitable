@@ -284,6 +284,7 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
                   memberType={item.type}
                   isActive={item.isActive}
                   desc={item.desc}
+                  isMemberOptionList
                 />
                 <Check isChecked={Boolean(existValues && existValues.includes(unitId!))} />
               </CommonList.Option>
