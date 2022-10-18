@@ -2,6 +2,7 @@ import styles from './style.module.less';
 import BackIcon from 'static/icon/common/common_icon_left_line.svg';
 import { t, Strings, Navigation } from '@vikadata/core';
 import { ShareOutlined, DescriptionOutlined } from '@vikadata/icons';
+import { Typography, Button, colorVars } from '@vikadata/components';
 import Image from 'next/image';
 import { Router } from 'pc/components/route_manager/router';
 import { useSelector } from 'react-redux';
@@ -9,7 +10,7 @@ import { FC } from 'react';
 import { copy2clipBoard } from 'pc/utils';
 import * as React from 'react';
 import MarkdownIt from 'markdown-it';
-import { Button } from '@vikadata/components';
+import albumTemplatePng from 'static/icon/template/album_template.png';
 
 const md = new MarkdownIt();
 
@@ -91,8 +92,8 @@ const AlbumDetail: FC<IAlbumDetail> = props => {
             </div>
           </div>
           <div className={styles.albumTags}>
-            {album.tags.map(tag => (
-              <span className={styles.albumTagItem}>
+            {album.tags.map((tag, index) => (
+              <span key={index} className={styles.albumTagItem}>
                 {tag}
               </span>
             ))}
@@ -100,7 +101,7 @@ const AlbumDetail: FC<IAlbumDetail> = props => {
           <div className={styles.albumRecommends}>
             <h3>{t(Strings.recommend_album)}</h3>
             {recommends.map(recommend => (
-              <div className={styles.albumRecommendItem} onClick={() => jump2RecommendAlbum(recommend.albumId)}>
+              <div key={recommend.albumId} className={styles.albumRecommendItem} onClick={() => jump2RecommendAlbum(recommend.albumId)}>
                 <div className={styles.albumRecommendImg}>
                   <Image src={recommend.cover} alt="recommend cover" layout="fill" objectFit="cover" />
                 </div>
@@ -125,10 +126,25 @@ const AlbumDetail: FC<IAlbumDetail> = props => {
               {t(Strings.share)}
             </Button>
           </div>
+          <div className={styles.albumAdvise} onClick={() => {
+            location.href='https://vika.cn/share/shrxyD2zGCExgb3tTUG30/fomdcAEpdKETLUGsMY';
+          }}>
+            <Typography variant="h5" className={styles.albumAdviseTip}>
+              {t(Strings.template_advise_tip)}
+            </Typography>
+            <Button
+              shape="round"
+              color={colorVars.staticWhite0}
+            >
+              {t(Strings.template_feedback)}
+            </Button>
+            <div className={styles.albumAdviseBg}>
+              <Image layout="fill" src={albumTemplatePng} alt=""/>
+            </div>
+          </div>
         </div>
       </div>
-      <div className={styles.albumForm}>
-        <iframe src="https://vika.cn/share/shrxyD2zGCExgb3tTUG30/fomdcAEpdKETLUGsMY" />
+      <div>
       </div>
     </div>
   );

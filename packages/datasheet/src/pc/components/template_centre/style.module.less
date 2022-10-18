@@ -5,6 +5,9 @@
   height: 100%;
   display: flex;
   flex-direction: row;
+  &.wrapper {
+    width: calc(100% - 56px);
+  }
 }
 
 @keyframes bgDevelopment {
@@ -26,4 +29,12 @@
   background-color: var(--blackBlue_900);
   animation: bgDevelopment 0.7s;
   animation-timing-function: linear;
+}
+
+@media screen and(max-width: 768px) {
+  .templateCentre {
+    &.wrapper {
+      width: 100%;
+    }
+  }
 }

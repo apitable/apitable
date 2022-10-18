@@ -9,6 +9,7 @@ import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { isDingtalkSkuPage } from '../home/social_platform';
 import { MobileSideBar } from '../mobile_side_bar';
 import styles from './style.module.less';
+import cls from 'classnames';
 
 const TemplateCentre: FC = props => {
   const { getLoginStatusReq } = useUserRequest();
@@ -34,7 +35,7 @@ const TemplateCentre: FC = props => {
   return spaceId ? (
     <SideWrapper>
       <div className={styles.bg} data-height="20px" />
-      <div className={styles.templateCentre}>{props.children}</div>
+      <div className={cls(styles.templateCentre, styles.wrapper)}>{props.children}</div>
     </SideWrapper>
   ) : (
     <>

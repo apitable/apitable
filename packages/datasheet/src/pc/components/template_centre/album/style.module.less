@@ -11,7 +11,6 @@
   h1, h2, h3, h4 {
     color: inherit;
   }
-  width: 100%;
   .albumHeader {
     display: flex;
     justify-content: space-between;
@@ -168,13 +167,29 @@
       }
     }
   }
-  .albumForm {
+  .albumAdvise {
+    position: relative;
     width: 100%;
-    height: 1000px;
-    iframe {
+    height: 200px;
+    margin-bottom: 60px;
+    z-index: 1;
+    padding-left: 64px;
+    cursor: pointer;
+    button {
+      color: var(--primaryColor);
+    }
+    .albumAdviseBg {
+      position: absolute;
       width: 100%;
       height: 100%;
-      border: 0;
+      z-index: -1;
+      top: 0;
+      left: 0;
+    }
+    .albumAdviseTip {
+      padding-top: 80px;
+      margin-bottom: 16px;
+      color: var(--staticWhite0);
     }
   }
   .bottomShare {
@@ -199,6 +214,17 @@
       .albumContentRight {
         width: 100%;
         margin: 0;
+      }
+    }
+    .albumAdvise {
+      margin-bottom: 24px;
+      padding-left: 16px;
+      .albumAdviseTip {
+        font-size: 16px;
+        width: 65%;
+      }
+      .albumAdviseTip {
+        padding-top: 56px;
       }
     }
   }

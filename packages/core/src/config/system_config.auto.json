@@ -6414,7 +6414,7 @@
                 ],
                 "next": "查看详情",
                 "nextId": "check_detail",
-                "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/09/29/91f12b7bbbec4c8f87810b7e9ee06afc?attname=Update_cover%402x.png\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/244\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul><li>新增「角色」分组，成员管理更加灵活细腻</li><li>简化「分享」路径，兼顾数据安全与操作便利</li><li>「成员」选择框增加悬浮卡片，显示所在小组</li><li>右键菜单新增「移动」选项，文件管理一步到位</li><li>模板中心新增假期旅游攻略、自卷指南和复盘规划三大专题</li></ul>\"\n}",
+                "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/09/30/74b29d31dbc44eb48949acd6dff3bd65?attname=Update_cover%402x%203.png\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/246\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul><li>新增「角色」功能，权限分配与任务指派更灵活</li><li>「成员」选择框增加悬浮式信息卡片</li><li>右键菜单新增「移动至」选项，文件分类归纳更快捷</li><li>模板中心新增假期旅游攻略、自卷指南和复盘规划三大专题</li></ul>\"\n}",
                 "onClose": [
                     "set_wizard_completed({\"curWizard\": true})",
                     "open_guide_next_step({\"clearAllPrevUi\":true})"
@@ -6830,6 +6830,7 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "billing_notify": [],
                 "format_string": "capacity_limit",
                 "url": "/management",
                 "is_component": true
@@ -6844,8 +6845,10 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "billing_notify": [],
                 "format_string": "datasheet_limit",
                 "url": "/management",
+                "frequency": 1,
                 "is_component": true
             },
             "datasheet_record_limit": {
@@ -6858,6 +6861,7 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "billing_notify": [],
                 "format_string": "datasheet_record_limit",
                 "url": "/management",
                 "is_component": true
@@ -6872,6 +6876,7 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "billing_notify": [],
                 "format_string": "space_admin_limit",
                 "url": "/management",
                 "is_component": true
@@ -6886,6 +6891,7 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "billing_notify": [],
                 "format_string": "space_api_limit",
                 "url": "/management",
                 "is_component": true
@@ -6900,6 +6906,7 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "billing_notify": [],
                 "format_string": "space_calendar_limit",
                 "url": "/management",
                 "is_component": true
@@ -6951,6 +6958,7 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "billing_notify": [],
                 "format_string": "space_dingtalk_notify",
                 "url": "/management",
                 "is_component": true
@@ -6965,6 +6973,7 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "billing_notify": [],
                 "format_string": "space_field_permission_limit",
                 "url": "/management",
                 "is_component": true
@@ -6979,6 +6988,7 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "billing_notify": [],
                 "format_string": "space_form_limit",
                 "url": "/management",
                 "is_component": true
@@ -6993,6 +7003,7 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "billing_notify": [],
                 "format_string": "space_gantt_limit",
                 "url": "/management",
                 "is_component": true
@@ -7007,6 +7018,7 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "billing_notify": [],
                 "format_string": "space_lark_notify",
                 "url": "/management",
                 "is_component": true
@@ -7058,6 +7070,7 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "billing_notify": [],
                 "format_string": "space_rainbow_label_limit",
                 "url": "/management",
                 "is_component": true
@@ -7072,6 +7085,7 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "billing_notify": [],
                 "format_string": "space_record_limit",
                 "url": "/management",
                 "is_component": true
@@ -7098,6 +7112,7 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "billing_notify": [],
                 "format_string": "space_seats_limit",
                 "url": "/management",
                 "is_component": true
@@ -7135,6 +7150,7 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "billing_notify": [],
                 "format_string": "space_time_machine_limit",
                 "url": "/management",
                 "is_component": true
@@ -7149,6 +7165,7 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "billing_notify": [],
                 "format_string": "space_trash_limit",
                 "url": "/management",
                 "is_component": true
@@ -7189,6 +7206,7 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "billing_notify": [],
                 "format_string": "space_watermark_notify",
                 "url": "/management",
                 "is_component": true
@@ -7213,6 +7231,7 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "billing_notify": [],
                 "format_string": "space_wecom_notify",
                 "url": "/management",
                 "is_component": true
@@ -7227,6 +7246,7 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "billing_notify": [],
                 "format_string": "space_yozooffice_notify",
                 "url": "/management",
                 "is_component": true
@@ -7754,9 +7774,6 @@
             "Atlas": {
                 "free": true,
                 "ch_name": "云版本",
-                "plans": [
-                    "atlas_unlimited"
-                ],
                 "id": "Atlas",
                 "category": "BASE",
                 "en_name": "Atlas",

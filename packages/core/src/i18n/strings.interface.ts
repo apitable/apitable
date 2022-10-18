@@ -2874,6 +2874,7 @@ export interface StringsInterface {
     node_permission_item_tips_other_he_edit: String;
     node_permission_item_tips_other_you: String;
     node_permission_label_space_and_file: String;
+    node_permission_nums: String;
     node_with_link_share_reminder: String;
     node_with_link_share_view_reminder: String;
     nodes_per_space: String;
@@ -4531,6 +4532,7 @@ export interface StringsInterface {
     teamwork_desc: String;
     teamwork_number_tip: String;
     template: String;
+    template_advise_tip: String;
     template_centre: String;
     template_centre_create_vika_used_by_template: String;
     template_centre_using_template_data: String;
@@ -4540,6 +4542,7 @@ export interface StringsInterface {
     template_creation_failed: String;
     template_detail_tip: String;
     template_experience: String;
+    template_feedback: String;
     template_go_back: String;
     template_has_been_deleted: String;
     template_has_been_deleted_title: String;
