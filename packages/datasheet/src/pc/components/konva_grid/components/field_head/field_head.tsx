@@ -58,7 +58,7 @@ export const FieldHead: FC<IFieldHeadProps> = memo((props) => {
   const hasError = Field.bindModel(field).isComputed && Field.bindModel(field).hasError;
   const textOffset = GRID_CELL_VALUE_PADDING + GRID_ICON_COMMON_SIZE + FIELD_HEAD_ICON_GAP_SIZE;
   const autoHeadHeight = _autoHeadHeight && headHeight !== GRID_FIELD_HEAD_HEIGHT;
-  let textWidth = width - (
+  let availableTextWidth = width - (
     (autoHeadHeight || moreVisible) ? 
       2 * (GRID_CELL_VALUE_PADDING + GRID_ICON_COMMON_SIZE + FIELD_HEAD_ICON_GAP_SIZE) : 
       2 * GRID_CELL_VALUE_PADDING + GRID_ICON_COMMON_SIZE + FIELD_HEAD_ICON_GAP_SIZE
@@ -86,14 +86,14 @@ export const FieldHead: FC<IFieldHeadProps> = memo((props) => {
     iconInfoList.forEach(item => {
       const { type, visible } = item;
       if (!visible) return;
-      textWidth = textWidth - FIELD_HEAD_ICON_SIZE_MAP[type] - FIELD_HEAD_ICON_GAP_SIZE;
+      availableTextWidth = availableTextWidth - FIELD_HEAD_ICON_SIZE_MAP[type] - FIELD_HEAD_ICON_GAP_SIZE;
     });
   }
 
   const textData = useMemo(() => {
     textSizer.current.setFont({ fontWeight: 'bold', fontSize: 13 });
     if (autoHeadHeight) {
-      const { height, lastLineWidth } = textSizer.current.measureText(fieldName, textWidth);
+      const { height, lastLineWidth } = textSizer.current.measureText(fieldName, Math.max(availableTextWidth, FIELD_HEAD_TEXT_MIN_WIDTH));
       return {
         width: Math.ceil(lastLineWidth),
         height,
@@ -104,13 +104,13 @@ export const FieldHead: FC<IFieldHeadProps> = memo((props) => {
       width,
       height,
       isOverflow 
-    } = textSizer.current.measureText(fieldName, textWidth, 1);
+    } = textSizer.current.measureText(fieldName, availableTextWidth, 1);
     return {
-      width: Math.min(width, textWidth),
+      width: Math.min(width, availableTextWidth),
       height,
       isOverflow
     };
-  }, [fieldName, textWidth, autoHeadHeight]);
+  }, [fieldName, availableTextWidth, autoHeadHeight]);
 
   const iconOffsetMap = useMemo(() => {
     const iconOffsetMap = {};
@@ -122,19 +122,22 @@ export const FieldHead: FC<IFieldHeadProps> = memo((props) => {
     iconInfoList.forEach(item => {
       const { type, visible } = item;
       if (!visible) return;
-      curIconOffsetX = curIconOffsetX + prevIconSize + FIELD_HEAD_ICON_GAP_SIZE;
-      if (autoHeadHeight && curIconOffsetX > textWidth) {
-        curIconOffsetX = GRID_CELL_VALUE_PADDING;
+      const curIconWidth = FIELD_HEAD_ICON_SIZE_MAP[type];
+      const estimateOffsetX = curIconOffsetX + curIconWidth + FIELD_HEAD_ICON_GAP_SIZE;
+      if (autoHeadHeight && estimateOffsetX > textOffset + availableTextWidth) {
+        curIconOffsetX = textOffset;
         curIconOffsetY += 24;
+      } else {
+        curIconOffsetX = curIconOffsetX + prevIconSize + FIELD_HEAD_ICON_GAP_SIZE;
       }
       iconOffsetMap[type] = {
         x: curIconOffsetX,
         y: curIconOffsetY
       };
-      prevIconSize = FIELD_HEAD_ICON_SIZE_MAP[type];
+      prevIconSize = curIconWidth;
     });
     return iconOffsetMap;
-  }, [autoHeadHeight, iconInfoList, textData, textOffset, textWidth]);
+  }, [autoHeadHeight, iconInfoList, textData, textOffset, availableTextWidth]);
 
   const onTooltipShown = (title: string, iconSize: number, offsetX: number, offsetY?: number) => {
     return setTooltipInfo({
@@ -186,7 +189,7 @@ export const FieldHead: FC<IFieldHeadProps> = memo((props) => {
       <Text
         x={textOffset}
         y={autoHeadHeight ? 5 : (isGanttNoWrap ? (headHeight - GRID_FIELD_HEAD_HEIGHT) / 2 : undefined)}
-        width={Math.max(autoHeadHeight ? textWidth : textData.width, FIELD_HEAD_TEXT_MIN_WIDTH)}
+        width={Math.max(autoHeadHeight ? availableTextWidth : textData.width, FIELD_HEAD_TEXT_MIN_WIDTH)}
         height={isGanttNoWrap ? GRID_FIELD_HEAD_HEIGHT : headHeight + 2}
         text={fieldName}
         wrap={autoHeadHeight ? 'char' : 'none'}

@@ -44,7 +44,8 @@ import {
   FIELD_HEAD_ICON_SIZE_MAP,
   GridExport,
   FieldHeadIconType,
-  FIELD_HEAD_ICON_GAP_SIZE
+  FIELD_HEAD_ICON_GAP_SIZE,
+  FIELD_HEAD_TEXT_MIN_WIDTH
 } from 'pc/components/konva_grid';
 import { useTheme } from '@vikadata/components';
 import { autoSizerCanvas } from '../konva_components';
@@ -253,9 +254,12 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
       const field = fieldMap[fieldId];
       const { name, desc } = field;
       const columnWidth = columnIndicesMap[index];
-      const textWidth = columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_ICON_COMMON_SIZE + FIELD_HEAD_ICON_GAP_SIZE);
+      const textWidth = Math.max(
+        columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_ICON_COMMON_SIZE + FIELD_HEAD_ICON_GAP_SIZE), 
+        FIELD_HEAD_TEXT_MIN_WIDTH
+      );
       const { lastLineWidth, height } = textSizer.current.measureText(name, textWidth);
-      let realLastLineWidth = lastLineWidth;
+      let realLastLineWidth = Math.ceil(lastLineWidth);
 
       if (desc) {
         realLastLineWidth += (FIELD_HEAD_ICON_SIZE_MAP[FieldHeadIconType.Description] + FIELD_HEAD_ICON_GAP_SIZE);
