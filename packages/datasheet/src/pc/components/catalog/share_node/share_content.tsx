@@ -1,9 +1,10 @@
+import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cls from 'classnames';
 import {
   Api, ConfigConstant, INodeRoleMap,
-  IUnitValue, Settings, StoreActions, Strings, t
+  IUnitValue, Settings, StoreActions, Strings, t,
 } from '@vikadata/core';
 import { IOption, Skeleton, Typography } from '@vikadata/components';
 import { InformationSmallOutlined, ChevronRightOutlined } from '@vikadata/icons';
@@ -34,7 +35,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const socketData = useSelector(state => state.catalogTree.socketData);
-  // const { checkEmailReq } = useSpaceRequest();
+  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   const { getNodeRoleListReq } = useCatalogTreeRequest();
   const { run: getNodeRoleList, data: roleList, loading } = useRequest<INodeRoleMap>(() => getNodeRoleListReq(data.nodeId));
   // const { run: checkEmail } = useRequest(checkEmailReq, { manual: true });
@@ -48,10 +49,10 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   if (loading) {
     return (
       <div className={cls(styles.shareContent, { [styles.shareContentMobile]: isMobile })}>
-        <Skeleton count={1} width="38%" height="24px" />
-        <Skeleton count={2} style={{ marginTop: '16px' }} height="24px"/>
-        <Skeleton count={1} style={{ marginTop: '40px' }} width="38%" height="24px" />
-        <Skeleton count={1} style={{ marginTop: '16px' }} height="24px" />
+        <Skeleton count={1} width='38%' height='24px' />
+        <Skeleton count={2} style={{ marginTop: '16px' }} height='24px' />
+        <Skeleton count={1} style={{ marginTop: '40px' }} width='38%' height='24px' />
+        <Skeleton count={1} style={{ marginTop: '16px' }} height='24px' />
       </div>
     );
   }
@@ -78,8 +79,16 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
       return;
     }
 
+    const result = triggerUsageAlert(
+      'nodePermissionNums',
+      { usage: spaceInfo!.nodeRoleNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert,
+    );
+    if (result) {
+      return;
+    }
+
     const unitIds = unitInfos.map(item => item.unitId);
-    
+
     const res = await disableRoleExtend();
     if (!res) {
       return;
@@ -99,7 +108,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   const adminAndOwnerUnitIds = roleList ? [
     ...roleList.admins.map(v => v.unitId),
     ...roleList.roleUnits.filter(v => v.role === 'manager').map(v => v.unitId),
-    roleList.owner?.unitId || ''
+    roleList.owner?.unitId || '',
   ] : [];
 
   return (
@@ -108,7 +117,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
         <Typography variant='h7' className={cls(styles.shareFloor, styles.shareTitle)}>
           <span>{t(Strings.collaborate_and_share)}</span>
           <Tooltip title={t(Strings.support)} trigger={'hover'}>
-            <a href={Settings.share_url.value} rel="noopener noreferrer" target="_blank">
+            <a href={Settings.share_url.value} rel='noopener noreferrer' target='_blank'>
               <InformationSmallOutlined currentColor />
             </a>
           </Tooltip>
