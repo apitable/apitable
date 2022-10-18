@@ -81,6 +81,7 @@ export const ImportFile: FC<IImportFileProps> = ({
       if (success) {
         dispatch(StoreActions.setExpandedKeys([...expandedKeys, parentId]));
         dispatch(StoreActions.addNode(data));
+        dispatch(StoreActions.getSpaceInfo(spaceId));
         Router.push(Navigation.WORKBENCH, {
           params: {
             spaceId,

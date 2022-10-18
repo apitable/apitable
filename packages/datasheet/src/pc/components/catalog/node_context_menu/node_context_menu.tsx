@@ -1,5 +1,6 @@
 import { ContextMenu, IContextMenuClickState } from '@vikadata/components';
 import { ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@vikadata/core';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing/trigger_usage_alert';
 import { MobileContextMenu } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { IDatasheetPanelInfo } from 'pc/components/common_side/workbench_side';
@@ -36,6 +37,7 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
   const rootId = useSelector((state: IReduxState) => state.catalogTree.rootId);
   const spaceId = useSelector(state => state.space.activeId);
+  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   const { updateNodeFavoriteStatusReq, copyNodeReq } = useCatalogTreeRequest();
   const { run: updateNodeFavoriteStatus } = useRequest(updateNodeFavoriteStatusReq, { manual: true });
   const { run: copyNode } = useRequest(copyNodeReq, { manual: true });
@@ -110,7 +112,7 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
   };
 
   const { rootManageable, isRootNodeId } = useRootManageable();
-  
+
   const contextData = useMemo(() => {
     if (!rightClickInfo) {
       return [];
@@ -241,6 +243,11 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
               addTreeNode(targetId);
             }),
             contextItemMap.get(ContextItemKey.AddForm)(() => {
+              const result = triggerUsageAlert('maxFormViewsInSpace',
+                { usage: spaceInfo!.formViewNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+              if (result) {
+                return;
+              }
               openCatalog();
               addForm(targetId);
             }, !editable),
@@ -257,6 +264,10 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
           ],
           [
             contextItemMap.get(ContextItemKey.Import)(() => {
+              const result1 = triggerUsageAlert('maxSheetNums', { usage: spaceInfo!.sheetNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+              if (result1) {
+                return;
+              }
               openCatalog();
               openImportModal(targetId);
             }),

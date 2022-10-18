@@ -7,7 +7,7 @@ import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 import { Router } from 'pc/components/route_manager/router';
 import { SubscribeGrade } from 'pc/components/subscribe_system/subscribe_label';
-import { useRequest } from 'pc/hooks';
+import { formIdReg, useRequest } from 'pc/hooks';
 import { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import HelpIcon from 'static/icon/common/common_icon_information.svg';
@@ -91,6 +91,16 @@ const Trash: FC = () => {
     if (result) {
       return;
     }
+
+    if (formIdReg.test(nodeId)) {
+      // 其次根据节点类型检查 form 或者 mirror 的数量是否符合要求
+      const result = triggerUsageAlert('maxFormViewsInSpace',
+        { usage: spaceInfo!.formViewNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+      if (result) {
+        return;
+      }
+    }
+    
     const res = await trashRecover(nodeId);
     const { success, data } = res.data;
     if (success) {
