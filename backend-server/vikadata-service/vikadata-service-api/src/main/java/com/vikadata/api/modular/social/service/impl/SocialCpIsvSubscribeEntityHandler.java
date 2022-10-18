@@ -11,7 +11,6 @@ import me.chanjar.weixin.cp.bean.WxCpTpAuthInfo.Agent;
 import me.chanjar.weixin.cp.bean.message.WxCpMessage;
 import me.chanjar.weixin.cp.bean.message.WxCpTpXmlMessage;
 
-import com.vikadata.api.modular.social.enums.SocialCpIsvMessageProcessStatus;
 import com.vikadata.api.modular.social.event.wecom.WeComIsvCardFactory;
 import com.vikadata.api.modular.social.service.ISocialCpIsvEntityHandler;
 import com.vikadata.api.modular.social.service.ISocialCpIsvMessageService;
@@ -83,9 +82,6 @@ public class SocialCpIsvSubscribeEntityHandler implements ISocialCpIsvEntityHand
         WxCpMessage wxCpMessage = WeComIsvCardFactory.createWelcomeMsg(agent.getAgentId());
         socialCpIsvService.sendWelcomeMessage(socialTenantEntity, spaceId, wxCpMessage,
                 Collections.singletonList(wxMessage.getFromUserName()), null, null);
-        // 5 将消息改成处理成功状态
-        unprocessed.setProcessStatus(SocialCpIsvMessageProcessStatus.SUCCESS.getValue());
-        socialCpIsvMessageService.updateById(unprocessed);
         // 6 清空临时缓存
         socialCpIsvService.clearCache(authCorpId);
 

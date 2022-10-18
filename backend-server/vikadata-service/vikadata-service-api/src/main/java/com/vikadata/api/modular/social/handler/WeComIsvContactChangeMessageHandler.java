@@ -43,7 +43,7 @@ public class WeComIsvContactChangeMessageHandler implements WeComIsvMessageHandl
     @Override
     public WxCpXmlOutMessage handle(WxCpTpXmlMessage wxMessage, Map<String, Object> context,
             WxCpTpService wxCpService, WxSessionManager sessionManager) {
-        
+
         SocialCpIsvMessageEntity entity = SocialCpIsvMessageEntity.builder()
                 .type(WeComIsvMessageType.CONTACT_CHANGE.getType())
                 .suiteId(wxMessage.getSuiteId())
@@ -55,7 +55,7 @@ public class WeComIsvContactChangeMessageHandler implements WeComIsvMessageHandl
                 .build();
         socialCpIsvMessageService.save(entity);
 
-        socialCpIsvMessageService.sendToMq(entity.getId(), entity.getInfoType(), entity.getAuthCorpId());
+        socialCpIsvMessageService.sendToMq(entity.getId(), entity.getInfoType(), entity.getAuthCorpId(), entity.getSuiteId());
 
         return null;
 

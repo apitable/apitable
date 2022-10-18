@@ -11,9 +11,9 @@ import me.chanjar.weixin.cp.bean.message.WxCpXmlOutMessage;
 import me.chanjar.weixin.cp.tp.service.WxCpTpService;
 
 import com.vikadata.api.modular.social.enums.SocialCpIsvMessageProcessStatus;
-import com.vikadata.social.wecom.constants.WeComIsvMessageType;
 import com.vikadata.api.modular.social.service.ISocialCpIsvMessageService;
 import com.vikadata.entity.SocialCpIsvMessageEntity;
+import com.vikadata.social.wecom.constants.WeComIsvMessageType;
 import com.vikadata.social.wecom.handler.WeComIsvMessageHandler;
 
 import org.springframework.stereotype.Component;
@@ -54,7 +54,7 @@ public class WeComIsvAuthChangeMessageHandler implements WeComIsvMessageHandler 
                 .build();
         socialCpIsvMessageService.save(entity);
 
-        socialCpIsvMessageService.sendToMq(entity.getId(), entity.getInfoType(), entity.getAuthCorpId());
+        socialCpIsvMessageService.sendToMq(entity.getId(), entity.getInfoType(), entity.getAuthCorpId(), entity.getSuiteId());
 
         return null;
 

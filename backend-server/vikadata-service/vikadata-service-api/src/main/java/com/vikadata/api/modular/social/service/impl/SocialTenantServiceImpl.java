@@ -300,4 +300,14 @@ public class SocialTenantServiceImpl extends ServiceImpl<SocialTenantMapper, Soc
         });
         return iSocialTenantBindService.getSpaceIdsByTenantIdsAndAppIds(new ArrayList<>(tenantIds), new ArrayList<>(appIds));
     }
+
+    @Override
+    public String getPermanentCodeByAppIdAndTenantId(String appId, String tenantId) {
+        return socialTenantMapper.selectPermanentCodeByAppIdAndTenantId(appId, tenantId);
+    }
+
+    @Override
+    public LocalDateTime getCreatedAtByAppIdAndTenantId(String appId, String tenantId) {
+        return socialTenantMapper.selectCreatedAtByAppIdAndTenantId(appId, tenantId);
+    }
 }

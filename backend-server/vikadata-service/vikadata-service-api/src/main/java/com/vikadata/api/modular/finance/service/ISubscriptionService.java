@@ -79,4 +79,18 @@ public interface ISubscriptionService extends IService<SubscriptionEntity> {
      * @date 2022/6/7 10:25
      */
     void removeBatchBySubscriptionIds(List<String> subscriptionIds);
+
+    /**
+     * restore subscription
+     * @param subscriptionId Subscription id
+     */
+    void restoreBySubscriptionId(String subscriptionId);
+
+    /**
+     * Get last subscription id for subscription bundles in bulk
+     * @param bundleId Subscription bundle ID
+     * @param currentId current id
+     * @return subscription entities
+     */
+    String getLastSubscriptionIdByBundleIdWithDeleted(String bundleId, Long currentId);
 }

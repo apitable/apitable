@@ -1,5 +1,6 @@
 package com.vikadata.api.modular.social.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -179,4 +180,21 @@ public interface ISocialTenantService extends IService<SocialTenantEntity> {
      * @date 2022/6/7 17:27
      */
     List<String> getSpaceIdsByPlatformTypeAndAppType(SocialPlatformType platformType, SocialAppType appType);
+
+    /**
+     * get a permanent authorization code
+     * @param tenantId auth corp id
+     * @param appId app id
+     * @return permanentCode
+     */
+    String getPermanentCodeByAppIdAndTenantId(String appId, String tenantId);
+
+    /**
+     * get created at time
+     * @param tenantId auth corp id
+     * @param appId app ido
+     * @return LocalDateTime
+     */
+    LocalDateTime getCreatedAtByAppIdAndTenantId(String appId, String tenantId);
+
 }

@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration(proxyBeanMethods = false)
 public class TopicRabbitMqConfig {
-
     /**
      * message失效后进入的队列，也就是实际的消费队列
      */
@@ -77,16 +76,6 @@ public class TopicRabbitMqConfig {
      */
     public static final String WECOM_ISV_PERMIT_TOPIC_QUEUE_DEAD = "vikadata.api.wecom.isv.permit.dead";
 
-    private static final String RABBIT_ARGUMENT_DLX = "x-dead-letter-exchange";
-
-    private static final String RABBIT_ARGUMENT_DLK = "x-dead-letter-routing-key";
-
-    /**
-     *
-     * 通知 exchange
-     */
-    private static final String NOTIFICATION_EXCHANGE = "vikadata.api.notification.exchange";
-
     /**
      * 通知队列
      */
@@ -96,6 +85,43 @@ public class TopicRabbitMqConfig {
      * 通知 routing key
      */
     public final static String NOTIFICATION_ROUTING_KEY = "notification.#";
+
+    /**
+     * social isv event exchange
+     */
+    public static final String SOCIAL_ISV_EVENT_EXCHANGE = "vikadata.api.social.isv.event.exchange";
+
+    /**
+     * wecom isv event queue
+     */
+    public static final String WECOM_ISV_EVENT_QUEUE = "vikadata.api.wecom.isv.event";
+
+    /**
+     * digntalk isv event queue
+     */
+    public static final String DINGTALK_ISV_EVENT_QUEUE = "vikadata.api.dingtalk.isv.event";
+
+
+    /**
+     * dingtalk isv event routing key
+     */
+    public static final String SOCIAL_ISV_DINGTALK_ROUTING_KEY = "isv.dingtalk.#";
+
+
+    /**
+     * dingtalk isv event routing key
+     */
+    public static final String SOCIAL_ISV_WECOM_ROUTING_KEY = "isv.wecom.#";
+
+    private static final String RABBIT_ARGUMENT_DLX = "x-dead-letter-exchange";
+
+    private static final String RABBIT_ARGUMENT_DLK = "x-dead-letter-routing-key";
+
+    /**
+     *
+     * 通知 exchange
+     */
+    private static final String NOTIFICATION_EXCHANGE = "vikadata.api.notification.exchange";
 
     /**
      * 创建 ding talk DLX exchange
@@ -267,6 +293,43 @@ public class TopicRabbitMqConfig {
         return BindingBuilder.bind(notificationQueue)
                 .to(notificationExchange)
                 .with(NOTIFICATION_ROUTING_KEY);
+
+    }
+
+    @Bean
+    TopicExchange socialIsvEventExchange() {
+        return new TopicExchange(SOCIAL_ISV_EVENT_EXCHANGE);
+    }
+
+    /**
+     * init wecome isv event queue
+     */
+    @Bean
+    public Queue wecomIsvEventQueue() {
+        return new Queue(WECOM_ISV_EVENT_QUEUE);
+    }
+
+    @Bean
+    public Binding bindWecomIsvEventExchange(Queue wecomIsvEventQueue, TopicExchange socialIsvEventExchange) {
+        return BindingBuilder.bind(wecomIsvEventQueue)
+                .to(socialIsvEventExchange)
+                .with(SOCIAL_ISV_WECOM_ROUTING_KEY);
+
+    }
+
+    /**
+     * dingtalk isv event queue
+     */
+    @Bean
+    public Queue dingtalkIsvEventQueue() {
+        return new Queue(DINGTALK_ISV_EVENT_QUEUE);
+    }
+
+    @Bean
+    public Binding bindDingtalkIsvEventExchange(Queue dingtalkIsvEventQueue, TopicExchange socialIsvEventExchange) {
+        return BindingBuilder.bind(dingtalkIsvEventQueue)
+                .to(socialIsvEventExchange)
+                .with(SOCIAL_ISV_DINGTALK_ROUTING_KEY);
 
     }
 }

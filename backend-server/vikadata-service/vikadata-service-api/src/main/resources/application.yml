@@ -310,13 +310,14 @@ vikadata-starter:
         - name: ${WECOM_ISV_NAME:datasheet}
           corp-id: ${WECOM_CORP_ID:ww11761d11177ae10b}
           provider-secret: ${WECOM_PROVIDER_SECRET:xxU3s7QBBBO6D8NTJ4BweUDFLLM2FgxQ2VQTZpnVOCP1YbtnwIUAppZEWYRKJsHL}
-          suite-id: ${WECOM_SUITE_ID:ww3dd616a360b3ce97}
-          suite-secret: ${WECOM_SUITE_SECRET:K3IoyEC3tN4ogGSk1xvh7dOKpriBH4x35dp7fxgA70Q}
-          token: ${WECOM_TOKEN:EfUMbpLAgVtkJmDvTSXMhFJ}
-          aes-key: ${WECOM_AES_KEY:x4vbUAxSKgh8V8NJXtAP8EUEVfTl75wHtOiXFCKCApl}
-          template-id: ${WECOM_TEMPLATE_ID:xxx}
+          suite-id: ${WECOM_SUITE_ID:wwc98ec5fc01dfdaeb}
+          suite-secret: ${WECOM_SUITE_SECRET:YxSXxEAGHSV0kD-JCe6wtq1EWhZANscbx5PtLFjhBs4}
+          token: ${WECOM_TOKEN:pN3lrzosJ5rF6ZpAXPC}
+          aes-key: ${WECOM_AES_KEY:fNSi7zaeG3wwnpW4LN1f4FTChMqcGK8MTwGCCEuMm7m}
+          template-id: ${WECOM_TEMPLATE_ID:ttOhr1DQAAGJnvV6ypPO9nI_f7T_ad7w}
           invite-template-id: ${WECOM_INVITE_TEMPLATE_ID:ttOhr1DQAA4K2IrL60vlkKvu8aYPs5mQ}
           manual-auth-datetime: ${WECOM_AUTH_DATETIME:'2022-03-15T17:46:03+0800'}
+          subscription-trial-edition-id: ${WECOM_SUBSCRIPTION_TRIAL_EDITION_ID}
           permit-trial-days: ${WECOM_PERMIT_TRIAL_DAYS:90}
           permit-trial-expired-template-id: ${WECOM_PERMIT_TRIAL_EXPIRED_TEMPLATE_ID:space_wecom_api_trial_end}
           permit-buy-notify-before-days: ${WECOM_PERMIT_BUY_NOTIFY_BEFORE_DAYS:'1,3,7,15,30'}

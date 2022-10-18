@@ -212,4 +212,15 @@ public interface SocialTenantBindMapper extends BaseMapper<SocialTenantBindEntit
      */
     List<String> selectSpaceIdsByTenantIdsAndAppIds(@Param("tenantIds") List<String> tenantIds,
             @Param("appIds") List<String> appIds);
+
+    /**
+     * Get all space ID by app ID
+     *
+     * @param appId App ID
+     * @return Space ID
+     * @author Codeman
+     * @date 2022-09-02 18:25:28
+     */
+    List<String> selectAllSpaceIdsByAppId(String appId);
+
 }

@@ -2,6 +2,7 @@ package com.vikadata.api.modular.social.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.vikadata.entity.SocialCpIsvMessageEntity;
 
@@ -14,4 +15,10 @@ import com.vikadata.entity.SocialCpIsvMessageEntity;
  */
 @Mapper
 public interface SocialCpIsvMessageMapper extends BaseMapper<SocialCpIsvMessageEntity> {
+    /**
+     * update status by id
+     * @param id primary key
+     * @param status status
+     */
+    int updateStatusById(@Param("id") Long id, @Param("status") int status);
 }

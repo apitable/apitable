@@ -149,4 +149,10 @@
             #{appId}
         </foreach>
     </select>
+
+    <select id="selectAllSpaceIdsByAppId" resultType="java.lang.String">
+        SELECT space_id
+        FROM vika_social_tenant_bind
+        WHERE app_id = #{appId}
+    </select>
 </mapper>

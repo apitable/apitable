@@ -61,7 +61,8 @@ public class WeComIsvSubscribeMessageHandler implements WeComIsvMessageHandler {
                 .build();
         socialCpIsvMessageService.save(entity);
 
-        socialCpIsvMessageService.sendToMq(entity.getId(), entity.getInfoType(), entity.getAuthCorpId());
+        socialCpIsvMessageService.sendToMq(entity.getId(), entity.getInfoType(), entity.getAuthCorpId(),
+                entity.getSuiteId());
 
         return null;
 

@@ -1,5 +1,6 @@
 package com.vikadata.api.modular.social.mapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -174,4 +175,20 @@ public interface SocialTenantMapper extends BaseMapper<SocialTenantEntity> {
      */
     List<SocialTenantEntity> selectByPlatformTypeAndAppType(@Param("platformType") SocialPlatformType platformType,
             @Param("appType") SocialAppType appType);
+
+    /**
+     * get a permanent authorization code
+     * @param tenantId auth corp id
+     * @param appId app id
+     * @return permanentCode
+     */
+    String selectPermanentCodeByAppIdAndTenantId(@Param("appId") String appId, @Param("tenantId") String tenantId);
+
+    /**
+     * get created at time
+     * @param tenantId auth corp id
+     * @param appId app ido
+     * @return LocalDateTime
+     */
+    LocalDateTime selectCreatedAtByAppIdAndTenantId(@Param("appId") String appId, @Param("tenantId") String tenantId);
 }

@@ -30,4 +30,13 @@ public interface RabbitSenderService {
      * @date 2021/12/6 5:06 PM
      */
     void topicSend(String exchangeName, String topic, Object object, String expiration);
+
+    /**
+     * send message to queue
+     * @param exchangeName exchange name
+     * @param routingKey route key
+     * @param messageId message id
+     * @param object message content
+     */
+    void topicSend(String exchangeName, String routingKey, String messageId, Object object);
 }

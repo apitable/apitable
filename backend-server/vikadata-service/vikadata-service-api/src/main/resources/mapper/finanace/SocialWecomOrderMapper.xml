@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.modular.finance.mapper.SocialWecomOrderMapper">
+    <select id="selectAllOrders" resultType="com.vikadata.entity.SocialWecomOrderEntity">
+        SELECT *
+        FROM vika_billing_social_wecom_order
+        WHERE paid_corp_id = #{paidCorpId}
+        AND suite_id = #{suiteId}
+        <if test="orderStatuses != null and orderStatuses.size() != 0">
+            AND order_status IN
+            <foreach collection="orderStatuses" item="orderStatus" open="(" separator="," close=")">
+                #{orderStatus}
+            </foreach>
+        </if>
+        AND is_deleted = 0
+        ORDER BY paid_time ASC
+    </select>
+
+    <select id="selectByOrderId" resultType="com.vikadata.entity.SocialWecomOrderEntity">
+        SELECT *
+        FROM vika_billing_social_wecom_order
+        WHERE order_id = #{orderId}
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectFirstPaidOrder" resultType="com.vikadata.entity.SocialWecomOrderEntity">
+        SELECT *
+        FROM vika_billing_social_wecom_order
+        WHERE paid_corp_id = #{paidCorpId}
+        AND suite_id = #{suiteId}
+        AND order_status = 1
+        AND is_deleted = 0
+        ORDER BY paid_time ASC
+        LIMIT 1
+    </select>
+
+    <select id="selectLastPaidOrder" resultType="com.vikadata.entity.SocialWecomOrderEntity">
+        SELECT *
+        FROM vika_billing_social_wecom_order
+        WHERE paid_corp_id = #{paidCorpId}
+        AND suite_id = #{suiteId}
+        AND order_status = 1
+        AND is_deleted = 0
+        ORDER BY paid_time DESC
+        LIMIT 1
+    </select>
+</mapper>

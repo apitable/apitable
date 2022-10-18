@@ -20,7 +20,7 @@ import me.chanjar.weixin.cp.bean.message.WxCpMessage;
 import me.chanjar.weixin.cp.bean.message.WxCpTpXmlMessage;
 
 import com.vikadata.api.modular.organization.service.IMemberService;
-import com.vikadata.api.modular.social.enums.SocialCpIsvMessageProcessStatus;
+import com.vikadata.api.modular.social.enums.SocialTenantAuthMode;
 import com.vikadata.api.modular.social.event.wecom.WeComIsvCardFactory;
 import com.vikadata.api.modular.social.service.ISocialCpIsvEntityHandler;
 import com.vikadata.api.modular.social.service.ISocialCpIsvMessageService;
@@ -96,7 +96,6 @@ public class SocialCpIsvContactChangeEntityHandler implements ISocialCpIsvEntity
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean process(SocialCpIsvMessageEntity unprocessed) throws WxErrorException {
-
         WxCpTpXmlMessage xmlMessage = JSONUtil.toBean(unprocessed.getMessage(), WxCpTpXmlMessage.class);
         String authCorpId = xmlMessage.getAuthCorpId();
         String suiteId = xmlMessage.getSuiteId();
@@ -106,7 +105,6 @@ public class SocialCpIsvContactChangeEntityHandler implements ISocialCpIsvEntity
         Assert.notEmpty(existedSpaceIds, () -> new IllegalStateException(String.
                 format("没有找到对应的空间站信息，tenantId：%s，appId：%s", authCorpId, suiteId)));
         String spaceId = existedSpaceIds.get(0);
-
         SocialTenantEntity socialTenantEntity = socialTenantService.getByAppIdAndTenantId(suiteId, authCorpId);
         Assert.notNull(socialTenantEntity, () -> new IllegalStateException(String
                 .format("没有找到可用的租户信息，tenantId：%s，appId：%s", authCorpId, suiteId)));
@@ -117,44 +115,44 @@ public class SocialCpIsvContactChangeEntityHandler implements ISocialCpIsvEntity
         switch (changeType) {
             case "create_user":
                 // 1.1 新增成员
-                createUser(authCorpId, suiteId, cpUserId, spaceId);
-
+                if (SocialTenantAuthMode.ADMIN.getValue() == socialTenantEntity.getAuthMode()) {
+                    // 管理员授权才需要通过可见范围处理
+                    createUser(authCorpId, suiteId, cpUserId, spaceId);
+                }
                 break;
             case "update_user":
                 // 1.2 更新成员
-                updateUser(authCorpId, suiteId, cpUserId, spaceId, xmlMessage.getDepartment());
-
+                if (SocialTenantAuthMode.ADMIN.getValue() == socialTenantEntity.getAuthMode()) {
+                    // 管理员授权才需要通过可见范围处理
+                    updateUser(authCorpId, suiteId, cpUserId, spaceId, xmlMessage.getDepartment());
+                }
                 break;
             case "delete_user":
                 // 1.3 移除成员
                 deleteUser(cpUserId, spaceId);
-
                 break;
             case "update_tag":
                 // 1.4 更新标签
-                updateTag(authCorpId, suiteId, spaceId,
-                        xmlMessage.getAddUserItems(), xmlMessage.getDelUserItems(),
-                        xmlMessage.getAddPartyItems(), xmlMessage.getDelPartyItems());
-
+                if (SocialTenantAuthMode.ADMIN.getValue() == socialTenantEntity.getAuthMode()) {
+                    // 管理员授权才需要通过可见范围处理
+                    updateTag(authCorpId, suiteId, spaceId,
+                            xmlMessage.getAddUserItems(), xmlMessage.getDelUserItems(),
+                            xmlMessage.getAddPartyItems(), xmlMessage.getDelPartyItems());
+                }
                 break;
             default:
                 // nothing to do
         }
-
-        // 2 将消息改成处理成功状态
-        unprocessed.setProcessStatus(SocialCpIsvMessageProcessStatus.SUCCESS.getValue());
-        socialCpIsvMessageService.updateById(unprocessed);
         // 3 清空临时缓存
         socialCpIsvService.clearCache(authCorpId);
         // 4 接口许可处理
         try {
             socialCpIsvPermitService.autoProcessPermitOrder(suiteId, authCorpId, spaceId);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             log.error("企微接口许可自动化处理失败", ex);
         }
-
         return true;
-
     }
 
     private void createUser(String tenantId, String appId, String cpUserId, String spaceId) throws WxErrorException {

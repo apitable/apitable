@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import me.chanjar.weixin.common.error.WxErrorException;
 
 import com.vikadata.entity.SocialEditionChangelogWecomEntity;
-import com.vikadata.social.wecom.model.WxCpIsvPermanentCodeInfo;
+import com.vikadata.social.wecom.model.WxCpIsvAuthInfo.EditionInfo;
 
 /**
  * <p>
@@ -50,7 +50,7 @@ public interface ISocialEditionChangelogWeComService extends IService<SocialEdit
      * @author 刘斌华
      * @date 2022-05-06 18:49:29
      */
-    SocialEditionChangelogWecomEntity createChangelog(String suiteId, String paidCorpId, WxCpIsvPermanentCodeInfo.EditionInfo.Agent editionInfoAgent);
+    SocialEditionChangelogWecomEntity createChangelog(String suiteId, String paidCorpId, EditionInfo.Agent editionInfoAgent);
 
     /**
      * 获取最近一条的企微版本信息

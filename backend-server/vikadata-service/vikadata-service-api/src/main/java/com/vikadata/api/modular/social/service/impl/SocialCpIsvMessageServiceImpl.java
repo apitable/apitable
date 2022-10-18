@@ -11,8 +11,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Maps;
 import me.chanjar.weixin.common.error.WxErrorException;
 
-import com.vikadata.api.component.rabbitmq.WeComRabbitConsumer;
-import com.vikadata.api.config.rabbitmq.TopicRabbitMqConfig;
 import com.vikadata.api.modular.social.enums.SocialCpIsvMessageProcessStatus;
 import com.vikadata.api.modular.social.mapper.SocialCpIsvMessageMapper;
 import com.vikadata.api.modular.social.service.ISocialCpIsvEntityHandler;
@@ -25,6 +23,9 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+
+import static com.vikadata.api.config.rabbitmq.TopicRabbitMqConfig.SOCIAL_ISV_EVENT_EXCHANGE;
+import static com.vikadata.api.config.rabbitmq.TopicRabbitMqConfig.SOCIAL_ISV_WECOM_ROUTING_KEY;
 
 /**
  * <p>
@@ -64,16 +65,19 @@ public class SocialCpIsvMessageServiceImpl extends ServiceImpl<SocialCpIsvMessag
     }
 
     @Override
-    public void sendToMq(Long unprocessedId, String infoType, String authCorpId) {
-        // 放入缓冲队列等待执行
-        rabbitSenderService.topicSend(TopicRabbitMqConfig.WECOM_TOPIC_EXCHANGE_BUFFER,
-                TopicRabbitMqConfig.WECOM_ISV_EVENT_TOPIC_ROUTING_KEY,
-                SocialCpIsvMessageEntity.builder()
+    public void sendToMq(Long unprocessedId, String infoType, String authCorpId, String suiteId) {
+        rabbitSenderService.topicSend(SOCIAL_ISV_EVENT_EXCHANGE, SOCIAL_ISV_WECOM_ROUTING_KEY,
+                unprocessedId.toString(), SocialCpIsvMessageEntity.builder()
                         .id(unprocessedId)
+                        .suiteId(suiteId)
                         .infoType(infoType)
                         .authCorpId(authCorpId)
-                        .build(),
-                WeComRabbitConsumer.DLX_MILLIS_ISV_MESSAGE);
+                        .build());
+    }
+
+    @Override
+    public void updateStatusById(Long id, SocialCpIsvMessageProcessStatus status) {
+        baseMapper.updateStatusById(id, status.getValue());
     }
 
     @Override

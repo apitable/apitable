@@ -5,6 +5,7 @@ import java.util.List;
 import com.baomidou.mybatisplus.extension.service.IService;
 import me.chanjar.weixin.common.error.WxErrorException;
 
+import com.vikadata.api.modular.social.enums.SocialCpIsvMessageProcessStatus;
 import com.vikadata.entity.SocialCpIsvMessageEntity;
 
 /**
@@ -45,6 +46,13 @@ public interface ISocialCpIsvMessageService extends IService<SocialCpIsvMessageE
      * @author 刘斌华
      * @date 2022-02-24 15:13:43
      */
-    void sendToMq(Long unprocessedId, String infoType, String authCorpId);
+    void sendToMq(Long unprocessedId, String infoType, String authCorpId, String suiteId);
+
+    /**
+     * update status by id
+     * @param id primary key
+     * @param status status
+     */
+    void updateStatusById(Long id, SocialCpIsvMessageProcessStatus status);
 
 }

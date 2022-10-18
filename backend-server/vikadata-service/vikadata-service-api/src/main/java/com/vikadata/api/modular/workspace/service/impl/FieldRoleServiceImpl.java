@@ -310,7 +310,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
             }
             if (!roleIds.isEmpty()) {
                 List<RoleInfoVo> roleVos = iRoleService.getRoleVos(spaceId, roleIds);
-                for(RoleInfoVo roleVo: roleVos) {
+                for (RoleInfoVo roleVo : roleVos) {
                     FieldRole role = unitIdToFieldRoleMap.get(roleVo.getUnitId());
                     role.setUnitName(roleVo.getRoleName());
                     role.setMemberCount(roleVo.getMemberCount());

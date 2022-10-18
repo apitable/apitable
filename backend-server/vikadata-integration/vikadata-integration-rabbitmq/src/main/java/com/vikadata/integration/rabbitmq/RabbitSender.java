@@ -28,4 +28,12 @@ public class RabbitSender implements RabbitSenderService {
             return m;
         });
     }
+
+    @Override
+    public void topicSend(String exchangeName, String routingKey, String messageId, Object object) {
+        this.rabbitTemplate.convertAndSend(exchangeName, routingKey, object, processor -> {
+            processor.getMessageProperties().setMessageId(messageId);
+            return processor;
+        });
+    }
 }

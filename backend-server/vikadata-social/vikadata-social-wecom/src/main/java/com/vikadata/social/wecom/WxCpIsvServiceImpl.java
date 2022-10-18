@@ -9,6 +9,7 @@ import me.chanjar.weixin.cp.tp.service.impl.WxCpTpServiceImpl;
 import com.vikadata.social.wecom.model.WxCpIsvAdmin;
 import com.vikadata.social.wecom.model.WxCpIsvAuthInfo;
 import com.vikadata.social.wecom.model.WxCpIsvGetOrder;
+import com.vikadata.social.wecom.model.WxCpIsvGetOrderList;
 import com.vikadata.social.wecom.model.WxCpIsvGetRegisterCode;
 import com.vikadata.social.wecom.model.WxCpIsvPermanentCodeInfo;
 
@@ -27,13 +28,15 @@ import static me.chanjar.weixin.cp.constant.WxCpApiPathConsts.Tp.GET_PERMANENT_C
 public class WxCpIsvServiceImpl extends WxCpTpServiceImpl {
 
     private static final String URI_GET_REGISTER_CODE = "/cgi-bin/service/get_register_code";
+
     private static final String URI_GET_ORDER = "/cgi-bin/service/get_order";
 
     private final WxCpIsvUserServiceImpl wxCpTpUserService = new WxCpIsvUserServiceImpl(this);
+
     private final WxCpIsvPermitServiceImpl wxCpIsvPermitService = new WxCpIsvPermitServiceImpl(this);
 
     @Override
-    public WxCpIsvUserServiceImpl getWxCpTpUserService(){
+    public WxCpIsvUserServiceImpl getWxCpTpUserService() {
         return wxCpTpUserService;
     }
 
@@ -156,6 +159,24 @@ public class WxCpIsvServiceImpl extends WxCpTpServiceImpl {
 
         return WxCpIsvGetOrder.fromJson(result);
 
+    }
+
+    /**
+     * get order list
+     * @param startTimeSecond start time/ unit: second
+     * @param endTimeSecond end time/ unit: second
+     * @param testMode specifies the order to pull the official or test authorization. The default value is 0, where
+     * 0 - official authorization, 1 - test authorization.
+     * @return order list
+     */
+    public WxCpIsvGetOrderList getOrderList(Long startTimeSecond, Long endTimeSecond, int testMode) throws WxErrorException {
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("start_time",startTimeSecond);
+        jsonObject.addProperty("end_time", endTimeSecond);
+        jsonObject.addProperty("test_mode", testMode);
+        String result = post(configStorage.getApiUrl(URI_GET_ORDER), jsonObject.toString());
+        return WxCpIsvGetOrderList.fromJson(result);
     }
 
 }

@@ -37,7 +37,6 @@ import com.vikadata.api.modular.finance.model.PingChargeSuccess;
 import com.vikadata.api.modular.finance.service.IBillingOfflineService;
 import com.vikadata.api.modular.finance.service.IBundleService;
 import com.vikadata.api.modular.finance.service.IOrderPaymentService;
-import com.vikadata.api.modular.finance.service.IOrderService;
 import com.vikadata.api.modular.finance.service.IOrderV2Service;
 import com.vikadata.api.modular.finance.service.IShopService;
 import com.vikadata.api.modular.finance.service.ISpaceSubscriptionService;
@@ -67,13 +66,12 @@ import com.vikadata.api.util.billing.OrderUtil;
 import com.vikadata.api.util.billing.model.BillingPlanPrice;
 import com.vikadata.clock.Clock;
 import com.vikadata.clock.MockClock;
-import com.vikadata.core.util.DateTimeUtil;
 import com.vikadata.define.enums.NodeType;
 import com.vikadata.entity.EconomicOrderEntity;
 import com.vikadata.entity.EconomicOrderMetadataEntity;
 import com.vikadata.entity.OrderPaymentEntity;
-import com.vikadata.entity.SocialOrderWecomEntity;
 import com.vikadata.entity.SocialTenantEntity;
+import com.vikadata.entity.SocialWecomOrderEntity;
 import com.vikadata.entity.SpaceEntity;
 import com.vikadata.entity.UserEntity;
 import com.vikadata.system.config.billing.Price;
@@ -112,12 +110,6 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     @Autowired
     protected RedisTemplate<String, Object> redisTemplate;
 
-    @Value("#{'${exclude}'.split(',')}")
-    private List<String> excludeTables;
-
-    @Autowired
-    private IAppInstanceService iAppInstanceService;
-
     @Autowired
     protected IAuthService iAuthService;
 
@@ -146,13 +138,7 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     protected IClientReleaseVersionService iClientReleaseVersionService;
 
     @Autowired
-    private ISocialTenantService iSocialTenantService;
-
-    @Autowired
     protected ISocialTenantBindService iSocialTenantBindService;
-
-    @Autowired
-    private IOrderService iOrderService;
 
     @Autowired
     protected IShopService isShopService;
@@ -185,9 +171,6 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     protected IFieldService fieldService;
 
     @Autowired
-    private Clock clock;
-
-    @Autowired
     protected EntitlementChecker entitlementChecker;
 
     @Autowired
@@ -203,7 +186,19 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     protected IRoleMemberService iRoleMemberService;
 
     @Autowired
+    protected ISocialTenantService iSocialTenantService;
+
+    @Autowired
+    protected IAppInstanceService iAppInstanceService;
+
+    @Autowired
     protected ISubscriptionService iSubscriptionService;
+
+    @Value("#{'${exclude}'.split(',')}")
+    private List<String> excludeTables;
+
+    @Autowired
+    private Clock clock;
 
     @BeforeEach
     public void beforeMethod() {
@@ -236,7 +231,7 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     }
 
     protected UserEntity createUserRandom() {
-        return createUserWithEmail("test@vikadata.com");
+        return createUserWithEmail(IdWorker.getIdStr() + "@vikadata.com");
     }
 
     protected UserEntity createUserWithEmail(String email) {
@@ -351,7 +346,7 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
         // 3 设置应用市场绑定状态
         iAppInstanceService.createInstanceByAppType(spaceId, AppType.WECOM_STORE.name());
         // 4 配置订阅信息
-        SocialOrderWecomEntity orderWeComEntity = SocialOrderWecomEntity.builder()
+        SocialWecomOrderEntity orderWeComEntity = SocialWecomOrderEntity.builder()
                 .orderId("junitTestWecomOrderId")
                 .orderStatus(1)
                 .orderType(0)
@@ -362,10 +357,10 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
                 .price(10000)
                 .userCount(10L)
                 .orderPeriod(365)
-                .orderTime(DateTimeUtil.localDateTimeNow(8))
-                .paidTime(DateTimeUtil.localDateTimeNow(8))
-                .beginTime(DateTimeUtil.localDateTimeNow(8))
-                .endTime(DateTimeUtil.localDateTimeFromNow(8, 365, 0, 0, 0))
+                .orderTime(getClock().getNow(testTimeZone).toLocalDateTime())
+                .paidTime(getClock().getNow(testTimeZone).toLocalDateTime())
+                .beginTime(getClock().getNow(testTimeZone).toLocalDateTime())
+                .endTime(getClock().getNow(testTimeZone).toLocalDateTime().plusDays(365))
                 .orderFrom(0)
                 .serviceShareAmount(9000)
                 .platformShareAmount(1000)
@@ -399,7 +394,6 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
         orderMetadata.setOrderNo(orderEntity.getOrderNo());
         orderMetadata.setMetadata(isPaid ? JSONUtil.toJsonStr(orderWeComEntity) : null);
         orderMetadata.setOrderChannel(OrderChannel.WECOM.getName());
-        iOrderService.createOrderWithMetadata(orderEntity, orderMetadata);
         // 返回绑定的空间站 ID
         return spaceId;
     }

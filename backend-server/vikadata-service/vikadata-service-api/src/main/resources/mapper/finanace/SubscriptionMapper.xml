@@ -7,7 +7,7 @@
         SELECT *
         FROM vika_billing_subscription
         WHERE subscription_id = #{subscriptionId}
-          AND is_deleted = 0
+        AND is_deleted = 0
     </select>
 
     <select id="selectBySubscriptionIds"
@@ -28,7 +28,7 @@
         SELECT *
         FROM vika_billing_subscription
         WHERE bundle_id = #{bundleId}
-          AND is_deleted = 0
+        AND is_deleted = 0
     </select>
 
     <select id="selectByBundleIds"
@@ -48,8 +48,8 @@
         SELECT *
         FROM vika_billing_subscription
         WHERE bundle_id = #{bundleId}
-          AND state = #{state.name}
-          AND is_deleted = 0
+        AND state = #{state.name}
+        AND is_deleted = 0
     </select>
 
     <update id="updateIsDeletedBySubscriptionIds">
@@ -73,37 +73,46 @@
         SELECT product_category, plan_id, metadata, expire_date
         FROM vika_billing_subscription
         WHERE space_id = #{spaceId}
-          AND state = #{state.name}
-          AND TIMESTAMPDIFF(SECOND,NOW(), expire_date) >= 0
-          AND is_deleted = 0
+        AND state = #{state.name}
+        AND TIMESTAMPDIFF(SECOND,NOW(), expire_date) >= 0
+        AND is_deleted = 0
     </select>
 
     <select id="selectExpireCapacityBySpaceId" resultMap="spaceSubscriptionDto">
         SELECT product_category, plan_id, metadata, expire_date
         FROM vika_billing_subscription
         WHERE space_id = #{spaceId}
-          AND TIMESTAMPDIFF(SECOND,NOW(), expire_date) &lt; 0
-          AND is_deleted = 0
+        AND TIMESTAMPDIFF(SECOND,NOW(), expire_date) &lt; 0
+        AND is_deleted = 0
     </select>
 
     <select id="selectUnExpireGiftCapacityBySpaceId" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM vika_billing_subscription
         WHERE space_id = #{spaceId}
-          AND plan_id = #{planId}
-          AND state = #{state.name}
-          AND TIMESTAMPDIFF(SECOND,NOW(), expire_date) >= 0
-          AND is_deleted = 0
-          AND metadata IS NOT NULL
+        AND plan_id = #{planId}
+        AND state = #{state.name}
+        AND TIMESTAMPDIFF(SECOND,NOW(), expire_date) >= 0
+        AND is_deleted = 0
+        AND metadata IS NOT NULL
     </select>
 
     <select id="selectUnExpireBaseProductBySpaceId" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM vika_billing_subscription
         WHERE space_id = #{spaceId}
-          AND product_category = #{category.name}
-          AND state = #{state.name}
-          AND TIMESTAMPDIFF(SECOND,NOW(), expire_date) >= 0
-          AND is_deleted = 0
+        AND product_category = #{category.name}
+        AND state = #{state.name}
+        AND TIMESTAMPDIFF(SECOND,NOW(), expire_date) >= 0
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectSubscriptionIdsByBundleIdAndWithDeleted" resultType="java.lang.String">
+        SELECT subscription_id
+        FROM vika_billing_subscription
+        WHERE bundle_id = #{bundleId}
+        AND id &lt; #{maxId}
+        AND is_deleted = 1
+        ORDER BY created_at DESC LIMIT 1
     </select>
 </mapper>

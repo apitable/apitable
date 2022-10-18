@@ -18,7 +18,7 @@ import com.vikadata.entity.SocialTenantEntity;
 import com.vikadata.social.wecom.WeComTemplate;
 import com.vikadata.social.wecom.WxCpIsvServiceImpl;
 import com.vikadata.social.wecom.model.WxCpIsvAuthInfo;
-import com.vikadata.social.wecom.model.WxCpIsvPermanentCodeInfo;
+import com.vikadata.social.wecom.model.WxCpIsvAuthInfo.EditionInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,22 +67,18 @@ public class SocialEditionChangelogWeComServiceImpl extends ServiceImpl<SocialEd
                     .orElse(null);
             entity.setEditionInfo(JSONUtil.toJsonStr(agent));
         }
-
         save(entity);
-
         return entity;
     }
 
     @Override
-    public SocialEditionChangelogWecomEntity createChangelog(String suiteId, String paidCorpId, WxCpIsvPermanentCodeInfo.EditionInfo.Agent editionInfoAgent) {
+    public SocialEditionChangelogWecomEntity createChangelog(String suiteId, String paidCorpId, EditionInfo.Agent editionInfoAgent) {
         SocialEditionChangelogWecomEntity entity = SocialEditionChangelogWecomEntity.builder()
                 .suiteId(suiteId)
                 .paidCorpId(paidCorpId)
                 .editionInfo(JSONUtil.toJsonStr(editionInfoAgent))
                 .build();
-
         save(entity);
-
         return entity;
     }
 
@@ -90,4 +86,5 @@ public class SocialEditionChangelogWeComServiceImpl extends ServiceImpl<SocialEd
     public SocialEditionChangelogWecomEntity getLastChangeLog(String suiteId, String paidCorpId) {
         return getBaseMapper().selectLastChangeLog(suiteId, paidCorpId);
     }
+
 }

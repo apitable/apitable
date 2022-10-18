@@ -18,8 +18,9 @@ import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.config.rabbitmq.TopicRabbitMqConfig;
-import com.vikadata.api.enums.finance.OrderPhase;
-import com.vikadata.api.modular.eco.service.IEconomicOrderService;
+import com.vikadata.api.enums.finance.SubscriptionPhase;
+import com.vikadata.api.modular.finance.core.Bundle;
+import com.vikadata.api.modular.finance.service.IBundleService;
 import com.vikadata.api.modular.social.enums.SocialCpIsvMessageProcessStatus;
 import com.vikadata.api.modular.social.enums.SocialCpIsvPermitDelayProcessStatus;
 import com.vikadata.api.modular.social.service.ISocialCpIsvMessageService;
@@ -30,7 +31,6 @@ import com.vikadata.api.modular.social.service.ISocialWecomPermitOrderService;
 import com.vikadata.boot.autoconfigure.social.wecom.WeComProperties;
 import com.vikadata.boot.autoconfigure.social.wecom.WeComProperties.IsvApp;
 import com.vikadata.core.util.DateTimeUtil;
-import com.vikadata.entity.EconomicOrderEntity;
 import com.vikadata.entity.SocialCpIsvMessageEntity;
 import com.vikadata.entity.SocialWecomPermitDelayEntity;
 import com.vikadata.entity.SocialWecomPermitOrderEntity;
@@ -46,12 +46,13 @@ import org.springframework.stereotype.Component;
  * <p>
  * 企业微信 MQ 消费者
  * </p>
+ *
  * @author 刘斌华
  * @date 2022-02-24 10:45:15
  */
 @Component
 @Slf4j
-public class WeComRabbitConsumer {
+public class WeComRabbitConsumer extends AbstractSocialRabbitConsumer {
 
     /**
      * 企微服务商事件延时消费时间，1s
@@ -67,8 +68,6 @@ public class WeComRabbitConsumer {
 
     private static final String LOCK_PREFIX_ISV_PERMIT_DELAY = "isv_permit_delay_";
 
-    private static final long WAIT_LOCK_MILLIS = 5000L;
-
     @Autowired(required = false)
     private WeComProperties weComProperties;
 
@@ -79,7 +78,7 @@ public class WeComRabbitConsumer {
     private RabbitSenderService rabbitSenderService;
 
     @Resource
-    private IEconomicOrderService economicOrderService;
+    private IBundleService bundleService;
 
     @Resource
     private ISocialTenantBindService socialTenantBindService;
@@ -96,7 +95,11 @@ public class WeComRabbitConsumer {
     @Resource
     private ISocialWecomPermitOrderService socialWecomPermitOrderService;
 
+    @Resource
+    private ISocialCpIsvMessageService iSocialCpIsvMessageService;
+
     @RabbitListener(queues = TopicRabbitMqConfig.WECOM_ISV_EVENT_TOPIC_QUEUE_DEAD)
+    @Deprecated
     public void isvMessageProcess(SocialCpIsvMessageEntity mqMessage, Message message, Channel channel)
             throws IOException {
         Long id = mqMessage.getId();
@@ -104,7 +107,6 @@ public class WeComRabbitConsumer {
         long deliveryTag = message.getMessageProperties().getDeliveryTag();
         log.info("{} received message: {}, and delivery tag: {}",
                 TopicRabbitMqConfig.WECOM_ISV_EVENT_TOPIC_QUEUE_DEAD, JSONUtil.toJsonStr(mqMessage), deliveryTag);
-
         try {
             Lock lock = redisLockRegistry.obtain(LOCK_PREFIX_ISV_MESSAGE + authCorpId);
             if (lock.tryLock(WAIT_LOCK_MILLIS, TimeUnit.MILLISECONDS)) {
@@ -144,7 +146,60 @@ public class WeComRabbitConsumer {
         }
     }
 
+    @RabbitListener(queues = TopicRabbitMqConfig.WECOM_ISV_EVENT_QUEUE)
+    public void handleIsvMessage(SocialCpIsvMessageEntity mqMessage, Message message, Channel channel) throws IOException {
+        Long id = mqMessage.getId();
+        String authCorpId = mqMessage.getAuthCorpId();
+        String appId = mqMessage.getSuiteId();
+        long deliveryTag = message.getMessageProperties().getDeliveryTag();
+        log.info("wecom isv received message:{}:{}", authCorpId, message.getMessageProperties().getMessageId());
+        // ack first in order not to block the queue
+        channel.basicAck(deliveryTag, false);
+        Lock lock = getTenantEventLock(authCorpId, mqMessage.getSuiteId());
+        boolean locked = false;
+        try {
+            // prevent execution time from exceeding the lock's execution time
+            if (!tenantEventOnProcessing(authCorpId, appId) && (locked = lock.tryLock(WAIT_LOCK_MILLIS,
+                    TimeUnit.MILLISECONDS))) {
+                setTenantEventOnProcessing(authCorpId, appId, id.toString());
+                // handing
+                SocialCpIsvMessageEntity unprocessedInfo = socialCpIsvMessageService.getById(id);
+                socialCpIsvMessageService.doUnprocessedInfo(unprocessedInfo);
+                // handle success
+                socialCpIsvMessageService.updateStatusById(id, SocialCpIsvMessageProcessStatus.SUCCESS);
+                setTenantEventOnProcessed(authCorpId, appId);
+                log.info("wecom isv event handle done:{}:{}", authCorpId, id);
+            }
+            else {
+                // tenant event is handing
+                String preMessageId = getTenantEventOnProcessingId(authCorpId, appId);
+                log.warn("wecom isv event handle busy:{}:{}:{}", authCorpId, preMessageId, id);
+                iSocialCpIsvMessageService.sendToMq(id, mqMessage.getInfoType(), mqMessage.getAuthCorpId(),
+                        mqMessage.getSuiteId());
+                socialCpIsvMessageService.updateStatusById(id, SocialCpIsvMessageProcessStatus.REJECT_TEMPORARILY);
+            }
+        }
+        catch (Exception ex) {
+            log.error("wecom isv event handle error:{}:{}", authCorpId, id, ex);
+            // handle error
+            socialCpIsvMessageService.updateStatusById(id, SocialCpIsvMessageProcessStatus.REJECT_PERMANENTLY);
+            setTenantEventOnProcessed(authCorpId, appId);
+        }
+        finally {
+            // must be the last line because it may be throw exception
+            if (locked) {
+                try {
+                    lock.unlock();
+                }
+                catch (Exception e) {
+                    log.warn("wecom isv unlock error:{}:{}", authCorpId, id, e);
+                }
+            }
+        }
+    }
+
     @RabbitListener(queues = TopicRabbitMqConfig.WECOM_ISV_PERMIT_TOPIC_QUEUE_DEAD)
+    @Deprecated
     public void isvPermitDelayProcess(SocialWecomPermitDelayEntity mqMessage, Message message, Channel channel)
             throws IOException {
         Long id = mqMessage.getId();
@@ -219,7 +274,7 @@ public class WeComRabbitConsumer {
         int permitCompatibleDays = weComProperties.getIsvAppList().stream()
                 .filter(isvApp -> suiteId.equals(isvApp.getSuiteId()))
                 .findFirst()
-                .map(WeComProperties.IsvApp::getPermitCompatibleDays)
+                .map(IsvApp::getPermitCompatibleDays)
                 .orElse(0);
         LocalDateTime currentDateTime = DateTimeUtil.localDateTimeNow(8);
         if (DateTimeUtil.between(delayEntity.getFirstAuthTime(), currentDateTime, ChronoField.EPOCH_DAY) <= permitCompatibleDays) {
@@ -235,8 +290,8 @@ public class WeComRabbitConsumer {
         else {
             // 下单购买接口许可
             String spaceId = socialTenantBindService.getTenantBindSpaceId(authCorpId, suiteId);
-            EconomicOrderEntity orderEntity = economicOrderService.getActiveOrderBySpaceId(spaceId);
-            if (Objects.isNull(orderEntity) || !OrderPhase.FIXEDTERM.getName().equals(orderEntity.getOrderPhase())) {
+            Bundle activeBundle = bundleService.getActivatedBundleBySpaceId(spaceId);
+            if (Objects.isNull(activeBundle) || activeBundle.getBaseSubscription().getPhase() != SubscriptionPhase.FIXEDTERM) {
                 // 非付费订阅，延时任务结束
                 socialWecomPermitDelayService.updateById(SocialWecomPermitDelayEntity.builder()
                         .id(delayEntity.getId())
@@ -257,7 +312,8 @@ public class WeComRabbitConsumer {
                             DLX_MILLIS_ISV_PERMIT_DELAY);
                 }
                 else {
-                    boolean isNeedNewOrRenewal = socialCpIsvPermitService.createPermitOrder(suiteId, authCorpId, spaceId, orderEntity.getExpireTime());
+                    boolean isNeedNewOrRenewal = socialCpIsvPermitService.createPermitOrder(suiteId, authCorpId, spaceId,
+                            activeBundle.getBaseSubscription().getExpireDate());
                     if (isNeedNewOrRenewal) {
                         // 更改状态为已下单，并返回延时队列
                         socialWecomPermitDelayService.updateById(SocialWecomPermitDelayEntity.builder()

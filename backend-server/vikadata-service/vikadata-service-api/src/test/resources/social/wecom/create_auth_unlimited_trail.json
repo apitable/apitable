@@ -1,0 +1,59 @@
+{
+    "authInfo": {
+        "agents": [
+            {
+                "name": "staging应用",
+                "agentId": 1000039,
+                "authMode": 0,
+                "privilege": {
+                    "level": 1,
+                    "allowTags": [],
+                    "extraTags": [],
+                    "allowUsers": [
+                        "woOhr1DQAAwa6Bg1xGx940e7GMIkqqQQ"
+                    ],
+                    "extraUsers": [],
+                    "allowParties": [],
+                    "extraParties": []
+                },
+                "squareLogoUrl": "https://wework.qpic.cn/bizmail/iatcfwmCicFSmOv9KeujVQsFn1pvEbme0jHYYGYYBuMpqv55qbrPuPMg/0",
+                "isCustomizedApp": false
+            }
+        ]
+    },
+    "expiresIn": 7200,
+    "accessToken": "PsaabBjR3KZYgNzF2t8N5eSj083XlpkX7-ep21Su2oJoxU_yvt8VIz0xBN9t6mpqt7Y2UAfXiKvn85QitDYGLb-aTbnbdyGMkcW5fHgmZxuj0ei9PjdEz6OPZkGwlqLmEoAzT1x_2qw54IPGVgZ874BPA3fPZ1ONk8iMFmA37opRSvEoELvxLJUcjX4vgGgWfUhU9WqpJXXPFEUOT54HFg",
+    "editionInfo": {
+        "agents": [
+            {
+                "agentId": 1000039,
+                "appStatus": 5,
+                "editionId": "sp6a9d2ddb66136a04",
+                "userLimit": 6,
+                "editionName": "标准版试用",
+                "expiredTime": 4294967295,
+                "isVirtualVersion": false
+            }
+        ]
+    },
+    "authCorpInfo": {
+        "corpId": "wpOhr1DQAAwanrL1YfepPhNqs2Eu17HQ",
+        "corpName": "深圳体育健康有限公司",
+        "corpType": "unverified",
+        "location": "",
+        "corpScale": "1-50人",
+        "corpUserMax": "200",
+        "subjectType": 1,
+        "corpIndustry": "IT服务",
+        "corpWxQrcode": "https://wework.qpic.cn/wwpic/490815_XhBM4psQSO6ij1v_1653545938/0",
+        "corpSubIndustry": "计算机软件/硬件/信息服务",
+        "corpRoundLogoUrl": "http://p.qpic.cn/pic_wework/1415612393/74723564f7cc73a584ad90fdffe98eb1639e6b1e9557edae/0",
+        "corpSquareLogoUrl": "https://p.qlogo.cn/bizmail/YpRLxhOiaNcGsHicgsomF5ibJldneGGTqKD5wYQxWXRwYqJZ5iabFwHvJA/0"
+    },
+    "authUserInfo": {
+        "name": "woOhr1DQAAwa6Bg1xGx940e7GMIkqqQQ",
+        "avatar": "https://rescdn.qqmail.com/node/wwmng/wwmng/style/images/independent/DefaultAvatar$73ba92b5.png",
+        "userId": "woOhr1DQAAwa6Bg1xGx940e7GMIkqqQQ"
+    },
+    "permanentCode": "6utEhPrjSFgtmzXbFEtCeBbBUXdXeBsUMrwfjF_WA1A"
+}

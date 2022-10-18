@@ -8,7 +8,6 @@ import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 
-import com.vikadata.api.modular.social.enums.SocialCpIsvMessageProcessStatus;
 import com.vikadata.api.modular.social.service.ISocialCpIsvEntityHandler;
 import com.vikadata.api.modular.social.service.ISocialCpIsvMessageService;
 import com.vikadata.api.modular.social.service.ISocialCpIsvPermitService;
@@ -63,9 +62,6 @@ public class SocialCpIsvLicenseRefundEntityHandler implements ISocialCpIsvEntity
                 socialCpIsvPermitService.ensureAllActiveCodes(unprocessed.getSuiteId(), unprocessed.getAuthCorpId());
             }
         }
-        // 将消息改成处理成功状态
-        unprocessed.setProcessStatus(SocialCpIsvMessageProcessStatus.SUCCESS.getValue());
-        socialCpIsvMessageService.updateById(unprocessed);
         return true;
     }
 

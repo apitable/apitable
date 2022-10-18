@@ -12,7 +12,6 @@ import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.cp.bean.message.WxCpTpXmlMessage;
 
 import com.vikadata.api.modular.organization.service.IMemberService;
-import com.vikadata.api.modular.social.enums.SocialCpIsvMessageProcessStatus;
 import com.vikadata.api.modular.social.service.ISocialCpIsvEntityHandler;
 import com.vikadata.api.modular.social.service.ISocialCpIsvMessageService;
 import com.vikadata.api.modular.social.service.ISocialCpUserBindService;
@@ -84,15 +83,11 @@ public class SocialCpIsvUnsubscribeEntityHandler implements ISocialCpIsvEntityHa
         // 3 获取成员信息
         WxCpTpXmlMessage wxMessage = JSONUtil.toBean(unprocessed.getMessage(), WxCpTpXmlMessage.class);
         MemberEntity memberEntity = Optional.ofNullable(socialCpUserBindService
-                .getUserIdByTenantIdAndAppIdAndCpUserId(authCorpId, suiteId, wxMessage.getFromUserName()))
+                        .getUserIdByTenantIdAndAppIdAndCpUserId(authCorpId, suiteId, wxMessage.getFromUserName()))
                 .map(userId -> memberService.getByUserIdAndSpaceId(userId, spaceId))
                 .orElse(null);
         if (Objects.isNull(memberEntity)) {
             // 3.1 成员信息不存在，直接忽略
-            // 将消息改成处理成功状态
-            unprocessed.setProcessStatus(SocialCpIsvMessageProcessStatus.SUCCESS.getValue());
-            socialCpIsvMessageService.updateById(unprocessed);
-
             return true;
         }
         // 4 移除成员
@@ -101,10 +96,6 @@ public class SocialCpIsvUnsubscribeEntityHandler implements ISocialCpIsvEntityHa
         if (Boolean.TRUE.equals(memberEntity.getIsAdmin())) {
             spaceService.removeMainAdmin(spaceId);
         }
-        // 6 将消息改成处理成功状态
-        unprocessed.setProcessStatus(SocialCpIsvMessageProcessStatus.SUCCESS.getValue());
-        socialCpIsvMessageService.updateById(unprocessed);
-
         return true;
 
     }

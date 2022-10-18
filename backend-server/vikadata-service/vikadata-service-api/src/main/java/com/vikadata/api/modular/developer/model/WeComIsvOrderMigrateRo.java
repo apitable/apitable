@@ -1,0 +1,27 @@
+package com.vikadata.api.modular.developer.model;
+
+import javax.validation.constraints.NotBlank;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+/**
+ * <p>
+ * Migrate wecom isv orders to billing
+ * </p>
+ * @author Codeman
+ * @date 2022-09-02 11:30:24
+ */
+@Data
+@ApiModel("Migrate wecom isv orders to billing")
+public class WeComIsvOrderMigrateRo {
+
+    @ApiModelProperty("The wecom isv suite ID")
+    @NotBlank
+    private String suiteId;
+
+    @ApiModelProperty("The space ID that to be migrated, handle all wecom isv spaces if null")
+    private String spaceId;
+
+}

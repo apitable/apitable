@@ -17,7 +17,6 @@ import me.chanjar.weixin.cp.bean.WxCpTpAuthInfo.Privilege;
 import me.chanjar.weixin.cp.bean.message.WxCpMessage;
 
 import com.vikadata.api.cache.service.UserSpaceService;
-import com.vikadata.api.modular.social.enums.SocialCpIsvMessageProcessStatus;
 import com.vikadata.api.modular.social.enums.SocialTenantAuthMode;
 import com.vikadata.api.modular.social.event.wecom.WeComIsvCardFactory;
 import com.vikadata.api.modular.social.service.ISocialCpIsvEntityHandler;
@@ -117,9 +116,6 @@ public class SocialCpIsvAuthChangeEntityHandler implements ISocialCpIsvEntityHan
         // 5 对新增成员发送开始使用消息
         WxCpMessage wxCpMessage = WeComIsvCardFactory.createWelcomeMsg(agent.getAgentId());
         socialCpIsvService.sendWelcomeMessage(socialTenantEntity, spaceId, wxCpMessage);
-        // 6 将消息改成处理成功状态
-        unprocessed.setProcessStatus(SocialCpIsvMessageProcessStatus.SUCCESS.getValue());
-        socialCpIsvMessageService.updateById(unprocessed);
         // 7 清空临时缓存
         socialCpIsvService.clearCache(authCorpInfo.getCorpId());
         // 8 清空空间站缓存
@@ -127,7 +123,8 @@ public class SocialCpIsvAuthChangeEntityHandler implements ISocialCpIsvEntityHan
         // 9 接口许可处理
         try {
             socialCpIsvPermitService.autoProcessPermitOrder(suiteId, authCorpId, spaceId);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             log.error("企微接口许可自动化处理失败", ex);
         }
 

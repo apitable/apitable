@@ -4,13 +4,13 @@ import java.util.Collection;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.vikadata.api.modular.space.model.SpaceSubscriptionDto;
-import com.vikadata.api.util.billing.model.ProductCategory;
-import org.apache.ibatis.annotations.Param;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.ibatis.annotations.Param;
 
 import com.vikadata.api.enums.finance.SubscriptionState;
+import com.vikadata.api.modular.space.model.SpaceSubscriptionDto;
+import com.vikadata.api.util.billing.model.ProductCategory;
 import com.vikadata.entity.SubscriptionEntity;
 
 /**
@@ -116,4 +116,13 @@ public interface SubscriptionMapper extends BaseMapper<SubscriptionEntity> {
      * @date 2022/8/25
      */
     Integer selectUnExpireBaseProductBySpaceId(@Param("spaceId") String spaceId, @Param("state") SubscriptionState state, @Param("category") ProductCategory category);
+
+
+    /**
+     * Find the last subscription with a smaller ID than the current one
+     * @param bundleIds Subscribe to a list of collection IDs
+     * @param maxId current ID
+     * @return subscription entities
+     */
+    String selectSubscriptionIdsByBundleIdAndWithDeleted(@Param("bundleId") String bundleIds, @Param("maxId") Long maxId);
 }

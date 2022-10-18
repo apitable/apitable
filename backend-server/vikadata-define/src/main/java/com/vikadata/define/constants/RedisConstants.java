@@ -229,6 +229,16 @@ public class RedisConstants {
     public static final String KONG_GATEWAY_GRAY_SPACE = "vikadata:kong_gateway:gray_space";
 
     /**
+     * social isv event lock
+     */
+    public static final String SOCIAL_ISV_EVENT_LOCK = "vikadata:social:isv:event:lock:{}:{}";
+
+    /**
+     * social isv event lock
+     */
+    public static final String SOCIAL_ISV_EVENT_PROCESSING = "vikadata:social:isv:event:processing:{}:{}";
+
+    /**
      * 获取登录用户存储的键
      *
      * @param userId 用户ID
@@ -319,7 +329,7 @@ public class RedisConstants {
      * @author liuzijing
      * @date 2022/8/11
      */
-    public static String getUserInvitedJoinSpaceKey(Long userId, String spaceId){
+    public static String getUserInvitedJoinSpaceKey(Long userId, String spaceId) {
         Assert.notNull(userId, "用户不存在");
         Assert.notBlank(spaceId, "空间不存在");
         return StrUtil.format(NEW_USER_INVITED_JOIN_SPACE_KEY, userId, spaceId);
@@ -679,5 +689,18 @@ public class RedisConstants {
         Assert.notNull(userId, "用户不存在");
         Assert.notBlank(templateId, "通知模版不存在");
         return StrUtil.format(NOTIFY_FREQUENCY_LIMIT, templateId, userId, nonce);
+    }
+
+
+    public static String getSocialIsvEventLockKey(String tenantId, String appId) {
+        Assert.notNull(tenantId, "tenant not null");
+        Assert.notBlank(appId, "tenant app not null");
+        return StrUtil.format(SOCIAL_ISV_EVENT_LOCK, tenantId, appId);
+    }
+
+    public static String getSocialIsvEventProcessingKey(String tenantId, String appId) {
+        Assert.notNull(tenantId, "tenant not null");
+        Assert.notBlank(appId, "tenant app not null");
+        return StrUtil.format(SOCIAL_ISV_EVENT_PROCESSING, tenantId, appId);
     }
 }

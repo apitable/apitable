@@ -1,13 +1,12 @@
 package com.vikadata.api.modular.social.factory;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.TimeZone;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import cn.hutool.core.bean.BeanUtil;
@@ -16,10 +15,6 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import me.chanjar.weixin.cp.bean.WxCpUser;
 
-import com.vikadata.api.enums.finance.Currency;
-import com.vikadata.api.enums.finance.OrderChannel;
-import com.vikadata.api.enums.finance.OrderPhase;
-import com.vikadata.api.enums.finance.OrderStatus;
 import com.vikadata.api.enums.finance.OrderType;
 import com.vikadata.api.enums.social.SocialPlatformType;
 import com.vikadata.api.enums.space.UserSpaceStatus;
@@ -31,13 +26,8 @@ import com.vikadata.api.modular.social.model.DingTalkContactDTO.DingTalkUserDTO;
 import com.vikadata.api.modular.social.model.TenantBaseInfoDto;
 import com.vikadata.api.modular.social.model.WeComDepartTree;
 import com.vikadata.api.util.RandomExtendUtil;
-import com.vikadata.api.util.billing.OrderUtil;
-import com.vikadata.api.util.billing.WeComPlanConfigManager;
-import com.vikadata.entity.EconomicOrderEntity;
-import com.vikadata.entity.EconomicOrderMetadataEntity;
 import com.vikadata.entity.MemberEntity;
 import com.vikadata.entity.SocialCpTenantUserEntity;
-import com.vikadata.entity.SocialOrderWecomEntity;
 import com.vikadata.entity.SocialTenantDepartmentBindEntity;
 import com.vikadata.entity.SocialTenantDepartmentEntity;
 import com.vikadata.entity.SocialTenantUserEntity;
@@ -46,17 +36,16 @@ import com.vikadata.entity.TeamMemberRelEntity;
 import com.vikadata.social.dingtalk.event.sync.http.OrgSuiteAuthEvent;
 import com.vikadata.social.dingtalk.model.DingTalkServerAuthInfoResponse;
 import com.vikadata.social.dingtalk.model.DingTalkServerAuthInfoResponse.DingTalkAgentApp;
-import com.vikadata.social.feishu.enums.LarkOrderBuyType;
-import com.vikadata.social.feishu.enums.PricePlanType;
 import com.vikadata.social.feishu.event.UserInfo;
-import com.vikadata.social.feishu.event.app.OrderPaidEvent;
-import com.vikadata.social.feishu.model.FeishuDepartmentInfo;
 import com.vikadata.social.feishu.model.v3.FeishuDeptObject;
 import com.vikadata.social.feishu.model.v3.FeishuUserObject;
 import com.vikadata.social.feishu.model.v3.UserStatus;
-import com.vikadata.system.config.billing.Plan;
-import com.vikadata.system.config.billing.Price;
+import com.vikadata.social.wecom.event.order.WeComOrderPaidEvent;
+import com.vikadata.social.wecom.model.WxCpIsvAuthInfo.EditionInfo;
+import com.vikadata.social.wecom.model.WxCpIsvAuthInfo.EditionInfo.Agent;
+import com.vikadata.social.wecom.model.WxCpIsvGetOrder;
 
+import static com.vikadata.api.constants.TimeZoneConstants.DEFAULT_TIME_ZONE;
 import static com.vikadata.social.feishu.constants.FeishuConstants.FEISHU_ROOT_DEPT_ID;
 
 /**
@@ -66,24 +55,6 @@ import static com.vikadata.social.feishu.constants.FeishuConstants.FEISHU_ROOT_D
  * @date 2020-12-18 22:38:36
  */
 public class SocialFactory {
-
-    /**
-     * 人民币缩写
-     */
-    private static final String CURRENCY_CNY = "CNY";
-
-    public static <T extends FeishuDepartmentInfo> SocialTenantDepartmentEntity createTenantDepartment(String spaceId, String tenantKey, T departmentInfo) {
-        SocialTenantDepartmentEntity tenantDepartment = new SocialTenantDepartmentEntity();
-        tenantDepartment.setId(IdWorker.getId());
-        tenantDepartment.setTenantId(tenantKey);
-        tenantDepartment.setSpaceId(spaceId);
-        tenantDepartment.setDepartmentId(departmentInfo.getId());
-        tenantDepartment.setOpenDepartmentId(departmentInfo.getOpenDepartmentId());
-        tenantDepartment.setParentId(departmentInfo.getParentId());
-        tenantDepartment.setParentOpenDepartmentId(departmentInfo.getParentOpenDepartmentId());
-        tenantDepartment.setDepartmentName(departmentInfo.getName());
-        return tenantDepartment;
-    }
 
     public static <T extends DingTalkDepartmentDTO> SocialTenantDepartmentEntity createDingTalkDepartment(String spaceId,
             String tenantKey, T departmentInfo) {
@@ -311,87 +282,6 @@ public class SocialFactory {
         return tenantUser;
     }
 
-    public static EconomicOrderEntity createLarkTenantOrder(OrderPaidEvent event, Price price, String spaceId,
-            LocalDateTime startedAt) {
-        int month = getLarkOrderMonth(PricePlanType.of(event.getPricePlanType()), event.getBuyCount());
-        LocalDateTime timeExpired;
-        // 飞书试用期 15天
-        if (PricePlanType.TRIAL.getType().equals(event.getPricePlanType())) {
-            timeExpired = startedAt.plusDays(15);
-        }
-        else {
-            timeExpired = startedAt.plusMonths(month);
-        }
-        EconomicOrderEntity orderEntity = new EconomicOrderEntity();
-        orderEntity.setSpaceId(spaceId);
-        orderEntity.setOrderNo(OrderUtil.createOrderId());
-        orderEntity.setOrderChannel(OrderChannel.LARK.getName());
-        orderEntity.setChannelOrderId(event.getOrderId());
-        orderEntity.setProduct(price.getProduct());
-        orderEntity.setSeat(price.getSeat());
-        orderEntity.setType(getLarkOrderType(event.getBuyType()).getType());
-        orderEntity.setType(Objects.requireNonNull(OrderType.ofName(event.getBuyType())).getType());
-        // 计算之后的 month
-        orderEntity.setMonth(month);
-        orderEntity.setCurrency(Currency.CNY.name());
-        orderEntity.setAmount(event.getOrderPayPrice().intValue());
-        orderEntity.setActualAmount(event.getOrderPayPrice().intValue());
-        orderEntity.setStatus(OrderStatus.FINISHED.getName());
-        orderEntity.setIsPaid(true);
-        orderEntity.setPaidTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(event.getPayTime()) * 1000),
-                TimeZone.getDefault().toZoneId()));
-        orderEntity.setExpireTime(timeExpired);
-        orderEntity.setCreatedTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(event.getCreateTime()) * 1000),
-                TimeZone.getDefault().toZoneId()));
-        if (event.getPricePlanType().equals(OrderPhase.TRIAL.getName())) {
-            orderEntity.setOrderPhase(OrderPhase.TRIAL.getName());
-        }
-        else {
-            orderEntity.setOrderPhase(OrderPhase.FIXEDTERM.getName());
-        }
-        // 不记录createdBy 因为app开通之后，用户可能还没有绑定，无法获取用户的userId
-        return orderEntity;
-    }
-
-    public static EconomicOrderMetadataEntity createLarkOrderMetadata(OrderPaidEvent event, String orderNo) {
-        EconomicOrderMetadataEntity orderMetadata = new EconomicOrderMetadataEntity();
-        orderMetadata.setOrderNo(orderNo);
-        orderMetadata.setMetadata(JSONUtil.toJsonStr(event));
-        orderMetadata.setOrderChannel(OrderChannel.LARK.getName());
-        return orderMetadata;
-    }
-
-    public static OrderType getLarkOrderType(String buyType) {
-        switch (LarkOrderBuyType.of(buyType)) {
-            case UPGRADE:
-                return OrderType.UPGRADE;
-            case RENEW:
-                return OrderType.RENEW;
-            default:
-                return OrderType.BUY;
-        }
-    }
-
-    /**
-     * 获取订单生效月数
-     * @param planType 飞书付费方案类型
-     * @param count 付费个数
-     * @return 生效月数
-     */
-    public static Integer getLarkOrderMonth(PricePlanType planType, Integer count) {
-        switch (planType) {
-            case PER_MONTH:
-                return count;
-            case PER_YEAR:
-                return count * 12;
-            case TRIAL:
-                return 0;
-            default:
-                // 无限期
-                return -1;
-        }
-    }
-
     /**
      * 创建飞书灰度测试兼容成员信息
      *
@@ -426,86 +316,6 @@ public class SocialFactory {
     }
 
     /**
-     * 创建企微订阅对应的经济系统订单实体
-     *
-     * @param orderWeComEntity 企微订单信息
-     * @param plan 订阅计划
-     * @param spaceId 租户的空间站 ID
-     * @return 经济系统订单实体
-     * @author 刘斌华
-     * @date 2022-05-05 17:27:23
-     */
-    public static EconomicOrderEntity createWeComTenantOrder(SocialOrderWecomEntity orderWeComEntity, Plan plan, String spaceId) {
-        // 保存信息
-        EconomicOrderEntity orderEntity = new EconomicOrderEntity();
-        orderEntity.setSpaceId(spaceId);
-        orderEntity.setOrderNo(OrderUtil.createOrderId());
-        orderEntity.setOrderChannel(OrderChannel.WECOM.getName());
-        orderEntity.setChannelOrderId(orderWeComEntity.getOrderId());
-        orderEntity.setProduct(plan.getProduct());
-        orderEntity.setSeat(plan.getSeats());
-        orderEntity.setType(getOrderTypeFromWeCom(orderWeComEntity.getOrderType()).getType());
-        orderEntity.setMonth(getWeComOrderMonth(orderWeComEntity.getOrderPeriod()));
-        orderEntity.setCurrency(CURRENCY_CNY);
-        orderEntity.setAmount(orderWeComEntity.getPrice());
-        orderEntity.setActualAmount(orderWeComEntity.getPrice());
-        orderEntity.setStatus(OrderStatus.FINISHED.getName());
-        orderEntity.setIsPaid(true);
-        orderEntity.setPaidTime(orderWeComEntity.getPaidTime());
-        orderEntity.setExpireTime(orderWeComEntity.getEndTime());
-        orderEntity.setCreatedTime(orderWeComEntity.getOrderTime());
-        if (WeComPlanConfigManager.isWeComTrialEdition(orderWeComEntity.getEditionId())) {
-            orderEntity.setOrderPhase(OrderPhase.TRIAL.getName());
-        }
-        else {
-            orderEntity.setOrderPhase(OrderPhase.FIXEDTERM.getName());
-        }
-        // 不记录createdBy 因为app开通之后，用户可能还没有绑定，无法获取用户的userId
-        return orderEntity;
-    }
-
-    public static EconomicOrderEntity createWeComTenantTrialOrder(String spaceId, Plan plan, OrderType orderType, LocalDateTime createdTime, LocalDateTime expiredTime) {
-        // 保存信息
-        EconomicOrderEntity orderEntity = new EconomicOrderEntity();
-        orderEntity.setSpaceId(spaceId);
-        orderEntity.setOrderNo(OrderUtil.createOrderId());
-        orderEntity.setOrderChannel(OrderChannel.WECOM.getName());
-        orderEntity.setChannelOrderId(null);
-        orderEntity.setProduct(plan.getProduct());
-        orderEntity.setSeat(plan.getSeats());
-        orderEntity.setType(orderType.getType());
-        orderEntity.setMonth(0);
-        orderEntity.setCurrency(CURRENCY_CNY);
-        orderEntity.setAmount(0);
-        orderEntity.setActualAmount(0);
-        orderEntity.setStatus(OrderStatus.FINISHED.getName());
-        orderEntity.setIsPaid(true);
-        orderEntity.setPaidTime(createdTime);
-        orderEntity.setExpireTime(expiredTime);
-        orderEntity.setCreatedTime(createdTime);
-        orderEntity.setOrderPhase(OrderPhase.TRIAL.getName());
-        // 不记录createdBy 因为app开通之后，用户可能还没有绑定，无法获取用户的userId
-        return orderEntity;
-    }
-
-    /**
-     * 创建企微订阅对应的经济系统订单元数据实体
-     *
-     * @param orderWeComEntity 企微订单信息
-     * @param orderNo 经济系统订单号
-     * @return 经济系统订单元数据实体
-     * @author 刘斌华
-     * @date 2022-05-05 17:28:43
-     */
-    public static EconomicOrderMetadataEntity createWeComOrderMetadata(SocialOrderWecomEntity orderWeComEntity, String orderNo) {
-        EconomicOrderMetadataEntity orderMetadata = new EconomicOrderMetadataEntity();
-        orderMetadata.setOrderNo(orderNo);
-        orderMetadata.setMetadata(JSONUtil.toJsonStr(orderWeComEntity));
-        orderMetadata.setOrderChannel(OrderChannel.WECOM.getName());
-        return orderMetadata;
-    }
-
-    /**
      * 获取企微订单生效的月数
      *
      * @param orderPeriod 购买的时长
@@ -515,33 +325,106 @@ public class SocialFactory {
      */
     public static Integer getWeComOrderMonth(Integer orderPeriod) {
         if (Objects.isNull(orderPeriod)) {
-            return 0;
+            return null;
         }
-
-        // 企微返回的购买时长以天为单位，365 天为 1 年
-        return orderPeriod / 365 * 12;
+        // 企微返回的购买时长以天为单位，365 天为 1 年，不足一年的按一年算
+        int rest = orderPeriod % 365;
+        return (orderPeriod / 365 + (rest == 0 ? 0 : 1)) * 12;
     }
 
     /**
-     * 将企业微信的订单类型，转换为对应的维格订单类型
+     * Convert wecom order type to vika order type
      *
-     * @param weComOrderType 订单类型。0：新购应用；1：扩容应用人数；2：续期应用时间；3：变更版本
-     * @return 对应的维格订单类型
-     * @author 刘斌华
+     * @param weComOrderType Wecom order type。0: new order; 1: expand volume; 2: renew period; 3: change edition
+     * @return Vika order type
+     * @author Codeman
      * @date 2022-05-05 17:04:17
      */
-    private static OrderType getOrderTypeFromWeCom(Integer weComOrderType) {
+    public static OrderType getOrderTypeFromWeCom(Integer weComOrderType) {
         switch (weComOrderType) {
             case 0:
-            case 3:
                 return OrderType.BUY;
             case 1:
+            case 3:
                 return OrderType.UPGRADE;
             case 2:
                 return OrderType.RENEW;
             default:
-                throw new IllegalArgumentException("Unsupported weCom orderType: " + weComOrderType);
+                throw new IllegalArgumentException("Unsupported wecom orderType: " + weComOrderType);
         }
     }
 
+    public static WeComOrderPaidEvent formatOrderPaidEventFromWecomOrder(WxCpIsvGetOrder order) {
+        // 复制数据
+        WeComOrderPaidEvent paidEvent = new WeComOrderPaidEvent();
+        paidEvent.setSuiteId(order.getSuiteId());
+        paidEvent.setPaidCorpId(order.getPaidCorpId());
+        paidEvent.setOrderId(order.getOrderId());
+        paidEvent.setOrderStatus(order.getOrderStatus());
+        paidEvent.setOrderType(order.getOrderType());
+        paidEvent.setOperatorId(order.getOperatorId());
+        paidEvent.setEditionId(order.getEditionId());
+        paidEvent.setEditionName(order.getEditionName());
+        paidEvent.setPrice(order.getPrice());
+        paidEvent.setUserCount(order.getUserCount());
+        paidEvent.setOrderPeriod(order.getOrderPeriod());
+        paidEvent.setOrderTime(order.getOrderTime());
+        paidEvent.setPaidTime(order.getPaidTime());
+        paidEvent.setBeginTime(order.getBeginTime());
+        paidEvent.setEndTime(order.getEndTime());
+        paidEvent.setOrderFrom(order.getOrderFrom());
+        paidEvent.setOperatorCorpId(order.getOperatorCorpId());
+        paidEvent.setServiceShareAmount(order.getServiceShareAmount());
+        paidEvent.setPlatformShareAmount(order.getPlatformShareAmount());
+        paidEvent.setDealerShareAmount(order.getDealerShareAmount());
+        paidEvent.setDealerCorpInfo(Optional.ofNullable(order.getDealerCorpInfo())
+                .map(dealer -> {
+                    WeComOrderPaidEvent.DealerCorpInfo dealerCorpInfo = new WeComOrderPaidEvent.DealerCorpInfo();
+                    dealerCorpInfo.setCorpId(dealer.getCorpId());
+                    dealerCorpInfo.setCorpName(dealer.getCorpName());
+                    return dealerCorpInfo;
+                }).orElse(null));
+        return paidEvent;
+    }
+
+    /**
+     * construct trial order event from version information
+     *
+     * @param suiteId suite id
+     * @param authCorpId auth corp id
+     * @param createdTime create auth time
+     * @param agentInfo edition info
+     * @return WeComOrderPaidEvent
+     */
+    public static WeComOrderPaidEvent formatWecomTailEditionOrderPaidEvent(String suiteId, String authCorpId,
+            LocalDateTime createdTime, Agent agentInfo) {
+        // Build trial information and save, Enterprise WeChat has no test order, so order information is not saved
+        long createdSecond = createdTime.toEpochSecond(DEFAULT_TIME_ZONE);
+        WeComOrderPaidEvent paidEvent = new WeComOrderPaidEvent();
+        paidEvent.setSuiteId(suiteId);
+        paidEvent.setPaidCorpId(authCorpId);
+        paidEvent.setEditionId(agentInfo.getEditionId());
+        paidEvent.setPrice(0);
+        paidEvent.setOrderType(0);
+        paidEvent.setOrderTime(createdSecond);
+        paidEvent.setPaidTime(createdSecond);
+        paidEvent.setBeginTime(createdSecond);
+        paidEvent.setUserCount(agentInfo.getUserLimit());
+        // 5: unlimited trial
+        Long endTime = agentInfo.getAppStatus() == 5 ?
+                createdTime.plusYears(100).toEpochSecond(DEFAULT_TIME_ZONE) : agentInfo.getExpiredTime();
+        paidEvent.setEndTime(endTime);
+        return paidEvent;
+    }
+
+    public static Agent filterWecomEditionAgent(EditionInfo editionInfo) {
+        if (null != editionInfo.getAgents()) {
+            // 2-trial expired;4-purchase expired; do not handle
+            return editionInfo.getAgents().stream()
+                    .filter(i -> i.getAppStatus() != 2 && i.getAppStatus() != 4)
+                    .findFirst()
+                    .orElse(null);
+        }
+        return null;
+    }
 }

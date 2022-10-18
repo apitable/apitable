@@ -856,7 +856,8 @@ public class SocialWeComIsvController {
             socialCpIsvMessageService.save(entity);
 
             // 仅记录下相关信息，后续再处理业务
-            socialCpIsvMessageService.sendToMq(entity.getId(), entity.getInfoType(), entity.getAuthCorpId());
+            socialCpIsvMessageService.sendToMq(entity.getId(), entity.getInfoType(), entity.getAuthCorpId(),
+                    entity.getSuiteId());
         }
         catch (WxErrorException ex) {
             log.warn("Exception occurred while getting permanent code.", ex);

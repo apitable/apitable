@@ -51,7 +51,7 @@ public class AttachUploadTokenController {
     @Resource
     private IAssetUploadTokenService iAssetUploadTokenService;
 
-    @PostResource(name = "获取上传资源令牌", path = "/widgets/{nodeId}/uploadToken", requiredPermission = false)
+    @PostResource(name = "获取上传资源令牌", path = "/widget/{nodeId}/uploadToken", requiredPermission = false)
     @ApiOperation(value = "获取上传资源令牌 assets", notes = "获取上传令牌，用于前端直传")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "nodeId", value = "节点ID", required = true, dataTypeClass = String.class, paramType = "path", example = "wpk123456")

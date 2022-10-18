@@ -17,7 +17,6 @@ import me.chanjar.weixin.cp.bean.message.WxCpTpXmlMessage;
 
 import com.vikadata.api.cache.service.UserSpaceService;
 import com.vikadata.api.modular.organization.service.IMemberService;
-import com.vikadata.api.modular.social.enums.SocialCpIsvMessageProcessStatus;
 import com.vikadata.api.modular.social.enums.SocialTenantAuthMode;
 import com.vikadata.api.modular.social.service.ISocialCpIsvEntityHandler;
 import com.vikadata.api.modular.social.service.ISocialCpIsvMessageService;
@@ -159,9 +158,6 @@ public class SocialCpIsvChangeAppAdminEntityHandler implements ISocialCpIsvEntit
                 spaceService.removeMainAdmin(spaceId);
             }
         }
-        // 4 将消息改成处理成功状态
-        unprocessed.setProcessStatus(SocialCpIsvMessageProcessStatus.SUCCESS.getValue());
-        socialCpIsvMessageService.updateById(unprocessed);
         // 5 清空临时缓存
         socialCpIsvService.clearCache(authCorpId);
         // 6 清空空间站缓存

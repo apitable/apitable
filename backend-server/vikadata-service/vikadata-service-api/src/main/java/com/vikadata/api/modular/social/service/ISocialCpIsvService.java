@@ -1,17 +1,17 @@
 package com.vikadata.api.modular.social.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.cp.bean.WxCpTpContactSearchResp;
 import me.chanjar.weixin.cp.bean.message.WxCpMessage;
 
-import com.vikadata.api.enums.finance.OrderType;
 import com.vikadata.api.modular.social.model.WeComIsvJsSdkAgentConfigVo;
 import com.vikadata.api.modular.social.model.WeComIsvJsSdkConfigVo;
-import com.vikadata.entity.SocialOrderWecomEntity;
 import com.vikadata.entity.SocialTenantEntity;
+import com.vikadata.social.wecom.event.order.WeComOrderPaidEvent;
+import com.vikadata.social.wecom.model.WxCpIsvAuthInfo.EditionInfo;
+import com.vikadata.social.wecom.model.WxCpIsvGetOrder;
 import com.vikadata.social.wecom.model.WxCpIsvPermanentCodeInfo;
 
 /**
@@ -252,15 +252,39 @@ public interface ISocialCpIsvService {
     WxCpTpContactSearchResp.QueryResult search(String suiteId, String authCorpId, Integer agentId, String keyword, Integer type) throws WxErrorException;
 
     /**
-     * 处理企微付费订阅
+     * handle wecom paid subscription for existed order
      *
-     * @param orderWeComEntity 企微订单信息
-     * @param spaceId 租户的空间站
-     * @author 刘斌华
-     * @date 2022-05-05 17:52:23
+     * @param suiteId Wecom isv suite ID
+     * @param authCorpId Paid corporation ID
+     * @param spaceId Optionally, vika space ID
+     * @param orderEntity Existed order info
+     * @author Codeman
+     * @date 2022-08-29 16:53:52
      */
-    void handleTenantPaidSubscribe(SocialOrderWecomEntity orderWeComEntity, String spaceId);
+    void handleTenantPaidSubscribe(String suiteId, String authCorpId, String spaceId, WeComOrderPaidEvent orderEntity);
 
-    void handleTenantTrialSubscribe(String spaceId, OrderType orderType, LocalDateTime createdTime, LocalDateTime expiredTime);
+    /**
+     * get isv corp auth info
+     * @param authCorpId authorized corp ID
+     * @param suiteId suite id
+     * @return WxCpIsvAuthInfo
+     */
+    EditionInfo.Agent getCorpEditionInfo(String authCorpId, String suiteId);
 
+    /**
+     * get corp order list
+     * @param authCorpId authorized corp ID
+     * @param suiteId suite id
+     * @return List<WxCpIsvGetOrder>
+     */
+    List<WxCpIsvGetOrder> getOrderList(String authCorpId, String suiteId);
+
+
+    /**
+     * get order paid event
+     * @param suiteId suite id
+     * @param orderId order id
+     * @return WeComOrderPaidEvent
+     */
+    WeComOrderPaidEvent fetchPaidEvent(String suiteId, String orderId) throws WxErrorException;
 }

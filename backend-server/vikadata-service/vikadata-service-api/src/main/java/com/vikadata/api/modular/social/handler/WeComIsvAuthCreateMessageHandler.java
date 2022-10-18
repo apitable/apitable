@@ -8,7 +8,6 @@ import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
-import me.chanjar.weixin.cp.bean.WxCpTpPermanentCodeInfo;
 import me.chanjar.weixin.cp.bean.WxCpTpPermanentCodeInfo.AuthCorpInfo;
 import me.chanjar.weixin.cp.bean.message.WxCpTpXmlMessage;
 import me.chanjar.weixin.cp.bean.message.WxCpXmlOutMessage;
@@ -74,8 +73,10 @@ public class WeComIsvAuthCreateMessageHandler implements WeComIsvMessageHandler 
             socialCpIsvMessageService.save(entity);
 
             // 响应必须在 1000ms 内完成，因此在当前事件中仅记录下相关信息，后续再处理业务
-            socialCpIsvMessageService.sendToMq(entity.getId(), entity.getInfoType(), entity.getAuthCorpId());
-        } catch (WxErrorException ex) {
+            socialCpIsvMessageService.sendToMq(entity.getId(), entity.getInfoType(), entity.getAuthCorpId(),
+                    entity.getSuiteId());
+        }
+        catch (WxErrorException ex) {
             log.warn("Exception occurred while getting permanent code.", ex);
 
             entity.setMessage(JSONUtil.toJsonStr(wxMessage));
@@ -84,7 +85,8 @@ public class WeComIsvAuthCreateMessageHandler implements WeComIsvMessageHandler 
             socialCpIsvMessageService.save(entity);
 
             return new WxCpXmlOutTextMessage();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             entity.setMessage(JSONUtil.toJsonStr(wxMessage));
             entity.setProcessStatus(SocialCpIsvMessageProcessStatus.REJECT_PERMANENTLY.getValue());
             // 保存通知信息

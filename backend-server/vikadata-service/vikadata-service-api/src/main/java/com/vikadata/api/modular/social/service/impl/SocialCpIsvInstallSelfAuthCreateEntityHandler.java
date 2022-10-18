@@ -5,7 +5,6 @@ import javax.annotation.Resource;
 import cn.hutool.json.JSONUtil;
 import me.chanjar.weixin.common.error.WxErrorException;
 
-import com.vikadata.api.modular.social.enums.SocialCpIsvMessageProcessStatus;
 import com.vikadata.api.modular.social.service.ISocialCpIsvEntityHandler;
 import com.vikadata.api.modular.social.service.ISocialCpIsvMessageService;
 import com.vikadata.api.modular.social.service.ISocialCpIsvService;
@@ -49,11 +48,6 @@ public class SocialCpIsvInstallSelfAuthCreateEntityHandler implements ISocialCpI
 
         WxCpIsvPermanentCodeInfo permanentCodeInfo = JSONUtil.toBean(unprocessed.getMessage(), WxCpIsvPermanentCodeInfo.class);
         socialCpIsvService.createAuthFromPermanentInfo(unprocessed.getSuiteId(), unprocessed.getAuthCorpId(), permanentCodeInfo);
-
-        // 将消息改成处理成功状态
-        unprocessed.setProcessStatus(SocialCpIsvMessageProcessStatus.SUCCESS.getValue());
-        socialCpIsvMessageService.updateById(unprocessed);
-
         return true;
 
     }

@@ -112,4 +112,20 @@
         WHERE platform = #{platformType.value}
         AND app_type = #{appType.type}
     </select>
+
+    <select id="selectPermanentCodeByAppIdAndTenantId" resultType="java.lang.String">
+        SELECT permanent_code
+        FROM vika_social_tenant
+        WHERE app_id = #{appId}
+        AND tenant_id = #{tenantId}
+        AND status = 1
+    </select>
+
+    <select id="selectCreatedAtByAppIdAndTenantId" resultType="java.time.LocalDateTime">
+        SELECT created_at
+        FROM vika_social_tenant
+        WHERE app_id = #{appId}
+        AND tenant_id = #{tenantId}
+        AND status = 1
+    </select>
 </mapper>

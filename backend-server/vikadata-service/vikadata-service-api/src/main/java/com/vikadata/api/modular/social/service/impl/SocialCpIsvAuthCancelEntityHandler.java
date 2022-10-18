@@ -10,7 +10,6 @@ import me.chanjar.weixin.common.error.WxErrorException;
 import com.vikadata.api.cache.service.UserSpaceService;
 import com.vikadata.api.modular.appstore.enums.AppType;
 import com.vikadata.api.modular.appstore.service.IAppInstanceService;
-import com.vikadata.api.modular.social.enums.SocialCpIsvMessageProcessStatus;
 import com.vikadata.api.modular.social.service.ISocialCpIsvEntityHandler;
 import com.vikadata.api.modular.social.service.ISocialCpIsvMessageService;
 import com.vikadata.api.modular.social.service.ISocialTenantBindService;
@@ -79,10 +78,6 @@ public class SocialCpIsvAuthCancelEntityHandler implements ISocialCpIsvEntityHan
         socialTenantService.updateById(socialTenantEntity);
         // 4 清空空间站缓存
         userSpaceService.delete(spaceId);
-        // 5 将消息改成处理成功状态
-        unprocessed.setProcessStatus(SocialCpIsvMessageProcessStatus.SUCCESS.getValue());
-        socialCpIsvMessageService.updateById(unprocessed);
-
         return true;
 
     }
