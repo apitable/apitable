@@ -148,7 +148,7 @@ public class AssetUploadTokenServiceImpl implements IAssetUploadTokenService {
         AssetUploadTokenVo assetUploadTokenVo = new AssetUploadTokenVo();
         assetUploadTokenVo.setUploadToken(ossUploadAuth.getUploadToken());
         assetUploadTokenVo.setResourceKey(key);
-        assetUploadTokenVo.setUploadType(ossProperties.getType().name());
+        assetUploadTokenVo.setUploadType("QINIU");
         assetUploadTokenVo.setEndpoint(publicAsset.getResourceUrl());
         return assetUploadTokenVo;
     }
