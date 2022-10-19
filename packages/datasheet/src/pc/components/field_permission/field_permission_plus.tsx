@@ -29,7 +29,7 @@ export const FieldPermissionPlus: React.FC<IFieldPermissionProps> = props => {
         targetIcon={getFieldTypeIcon(field.type, black['500'])}
         docIcon={
           <Tooltip content={t(Strings.field_permission_help_desc)}>
-            <a href={t(Strings.field_permission_help_url)} className={styles.helpIcon}>
+            <a href={t(Strings.field_permission_help_url)} target='_blank' className={styles.helpIcon}>
               <InformationSmallOutlined color={colors.thirdLevelText} className={styles.infoIcon} />
             </a>
           </Tooltip>

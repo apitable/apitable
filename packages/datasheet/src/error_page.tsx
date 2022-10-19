@@ -12,11 +12,11 @@ const ErrorPage: React.FC = () => {
   };
 
   const handleContactUs = () => {
-    navigationToUrl(window.location.origin + t(Strings.how_contact_service));
+    navigationToUrl(t(Strings.how_contact_service));
   };
 
   const handleFeedback = () => {
-    navigationToUrl(window.location.origin + t(Strings.how_to_report_issues));
+    navigationToUrl(t(Strings.how_to_report_issues));
   };
 
   return (

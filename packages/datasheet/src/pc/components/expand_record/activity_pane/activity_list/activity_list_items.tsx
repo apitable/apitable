@@ -385,7 +385,7 @@ export const ActivityListItems: FC<IActivityListProps & {
         <div>{t(Strings.no_comment_tip)}</div>
         <div>
           {selectType !== ActivitySelectType.Comment && t(Strings.history_view_tip, { day: maxRemainRecordActivityDays })}
-          <LinkButton href={Settings.recorded_comments.value} color={colors.thirdLevelText} className={styles.more} target='_blank'>
+          <LinkButton href={t(Strings.record_history_help_url)} color={colors.thirdLevelText} className={styles.more} target='_blank'>
             {t(Strings.know_more)}
           </LinkButton>
         </div>

@@ -103,8 +103,7 @@ export const FieldTypeSelect: React.FC<IFieldTypeSelectProps> = props => {
   );
 
   const getFieldHelpLink = () => {
-    const helpURL = new URL(window.location.href);
-    helpURL.pathname = FieldTypeDescriptionMap[currentField.type].help;
+    const helpURL = new URL(FieldTypeDescriptionMap[currentField.type].help);
     return helpURL.toString();
   };
 

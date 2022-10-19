@@ -74,7 +74,7 @@
       "$robot_action_send_wework_config_3": "消息内容",
       "$robot_action_send_wework_config_3_desc": "输入要发送到企业微信群聊的消息内容（输入英文斜杠「/」可插入变量）",
       "$robot_action_send_wework_config_1": "企业微信机器人 webhook 地址",
-      "$robot_action_send_wework_config_1_desc": "指定一个企业微信机器人，向它所在的群聊发送消息 [如何获取 webhook](https://vika.cn/help/manual-vika-robot/#10-toc-title)"
+      "$robot_action_send_wework_config_1_desc": "指定一个企业微信机器人，向它所在的群聊发送消息 [如何获取 webhook](https://help.vika.cn/docs/guide/manual-automation-robot#send-to-wecom-groups)"
     },
     "en": {
       "$robot_action_send_wework_title": "Send message to WeWork",
@@ -85,7 +85,7 @@
       "$robot_action_send_wework_config_3": "Message content",
       "$robot_action_send_wework_config_3_desc": "Enter the message to be sent to the WeWork chat group (Input \"/\" to start inserting variables)",
       "$robot_action_send_wework_config_1": "WeWork robot webhook URL",
-      "$robot_action_send_wework_config_1_desc": "Specify a WeWork robot to send a message to the chat group it's in [How to get webhook](https://vika.cn/help/manual-vika-robot/#10-toc-title)"
+      "$robot_action_send_wework_config_1_desc": "Specify a WeWork robot to send a message to the chat group it's in [How to get webhook](https://help.vika.cn/docs/guide/manual-automation-robot#send-to-wecom-groups)"
     }
   },
   "is_deleted": 0,
@@ -444,7 +444,7 @@
       "$robot_action_send_lark_config_3": "消息内容",
       "$robot_action_send_lark_config_3_desc": "输入要发送到飞书群聊的消息内容（输入英文斜杠「/」可插入变量）",
       "$robot_action_send_lark_config_1": "飞书机器人 webhook 地址",
-      "$robot_action_send_lark_config_1_desc": "指定一个飞书机器人，向它所在的群聊发送消息 [如何获取 webhook](https://vika.cn/help/manual-vika-robot/#8-toc-title)"
+      "$robot_action_send_lark_config_1_desc": "指定一个飞书机器人，向它所在的群聊发送消息 [如何获取 webhook](https://help.vika.cn/docs/guide/manual-automation-robot#send-to-lark-groups)"
     },
     "en": {
       "$robot_action_send_lark_title": "Send message to Lark",
@@ -454,7 +454,7 @@
       "$robot_action_send_lark_config_3": "Message content",
       "$robot_action_send_lark_config_3_desc": "Enter the message to be sent to the Lark chat group (Input \"/\" to start inserting variables)",
       "$robot_action_send_lark_config_1": "Lark robot webhook URL",
-      "$robot_action_send_lark_config_1_desc": "Specify a Lark robot to send a message to the chat group it's in [How to get webhook](https://vika.cn/help/manual-vika-robot/#9-toc-title)"
+      "$robot_action_send_lark_config_1_desc": "Specify a Lark robot to send a message to the chat group it's in [How to get webhook](https://help.vika.cn/docs/guide/manual-automation-robot#send-to-lark-groups)"
     }
   },
   "is_deleted": 0,
@@ -562,7 +562,7 @@
       "$robot_action_send_dingtalk_config_3": "消息内容",
       "$robot_action_send_dingtalk_config_3_desc": "输入要发送到钉钉群聊的消息内容（输入英文斜杠「/」可插入变量）",
       "$robot_action_send_dingtalk_config_1": "钉钉机器人 webhook 地址",
-      "$robot_action_send_dingtalk_config_1_desc": "指定一个钉钉机器人，向它所在的群聊发送消息 [如何获取 webhook](https://vika.cn/help/manual-vika-robot/#9-toc-title)",
+      "$robot_action_send_dingtalk_config_1_desc": "指定一个钉钉机器人，向它所在的群聊发送消息 [如何获取 webhook](https://help.vika.cn/docs/guide/manual-automation-robot#send-to-dingtalk-groups)",
       "$robot_action_send_dingtalk_config_4": "消息标题",
       "$robot_action_send_dingtalk_config_4_desc": "输入要发送的消息标题，该标题会显示在钉钉左侧消息列表中的摘要中"
     },
@@ -575,7 +575,7 @@
       "$robot_action_send_dingtalk_config_3": "Message content",
       "$robot_action_send_dingtalk_config_3_desc": "Enter the message to be sent to the DingTalk chat group (Input \"/\" to start inserting variables)",
       "$robot_action_send_dingtalk_config_1": "DingTalk robot webhook URL",
-      "$robot_action_send_dingtalk_config_1_desc": "Specify a DingTalk robot to send a message to the chat group it's in [How to get webhook](https://vika.cn/help/manual-vika-robot/#10-toc-title)",
+      "$robot_action_send_dingtalk_config_1_desc": "Specify a DingTalk robot to send a message to the chat group it's in [How to get webhook](https://help.vika.cn/docs/guide/manual-automation-robot#send-to-dingtalk-groups)",
       "$robot_action_send_dingtalk_config_4": "Message title",
       "$robot_action_send_dingtalk_config_4_desc": "The message title will appear as a summary on the left-side message list"
     }
