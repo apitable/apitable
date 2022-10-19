@@ -53,11 +53,10 @@
     align-items: center;
     padding: 0 16px;
     cursor: pointer;
-    width: 100%;
-    max-width: 200px;
     height: 36px;
-    background: var(--blackBlue_800);
-    border-radius: 0 18px 18px 0;
+    &:hover {
+      color: var(--blackBlue_100);
+    }
     .albumName {
       font-size: 18px;
       font-weight: bolder;
@@ -113,6 +112,7 @@
         margin-bottom: 24px;
         .albumTagItem {
           padding: 2px 4px;
+          margin: 4px;
           display: inline-block;
           font-size: 12px;
           border-radius: 2px;

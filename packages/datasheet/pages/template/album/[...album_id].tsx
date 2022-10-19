@@ -19,7 +19,7 @@ export const getServerSideProps = async(context: NextPageContext) => {
   const { album_id: albumId } = context['params'];
   const headers = getRequestHeaders(context);
   const res = await Api.getTemplateAlbum(albumId[0], headers);
-  const recommendRes = await Api.getTemplateAlbumsRecommend(headers);
+  const recommendRes = await Api.getTemplateAlbumsRecommend(albumId[0], 5, headers);
   const { success, data } = res.data;
   const { success: recommendSuccess, data: recommendData } = recommendRes.data;
   if (success && recommendSuccess) {

@@ -1579,12 +1579,18 @@ export function getTemplateAlbum(albumId: string, headers?: Record<string, strin
 
 /**
  * Get template album content
- * 
- * @param headers 
- * @returns 
+ *
+ * @param albumId
+ * @param maxCount
+ * @param headers
+ * @returns
  */
-export function getTemplateAlbumsRecommend(headers?: Record<string, string>) {
+export function getTemplateAlbumsRecommend(albumId: string, maxCount: number, headers?: Record<string, string>) {
   return axios.get(Url.TEMPLATE_ALBUMS_RECOMMEND, {
+    params: {
+      excludeAlbumId: albumId,
+      maxCount,
+    },
     headers,
   });
 }
