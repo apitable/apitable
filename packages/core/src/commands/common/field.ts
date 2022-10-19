@@ -1,14 +1,23 @@
-import { ICollaCommandExecuteContext, ILinkedActions } from 'command_manager';
-import { IJOTAction } from 'engine';
-import { Strings, t } from 'i18n';
-import { isEqual, keyBy } from 'lodash';
-import { CreatedByField, DatasheetActions, Field, getFieldClass, handleEmptyCellValue, ICellValue, StatType, TextField } from 'model';
-import { IReduxState, ISnapshot, Selectors, ViewType } from 'store';
-import { KanbanStyleKey } from 'store/constants';
-import { getDatasheet, getSnapshot } from 'store/selector';
-import { FieldType, IField, ILinkField, ISelectField, readonlyFields } from 'types';
-import { getNewId, getUniqName, IDPrefix, isSelectField } from 'utils';
-import { KanbanView } from '../../model/views/kanban_view';
+import {ICollaCommandExecuteContext, ILinkedActions} from 'command_manager';
+import {IJOTAction} from 'engine';
+import {Strings, t} from 'i18n';
+import {isEqual, keyBy} from 'lodash';
+import {
+  CreatedByField,
+  DatasheetActions,
+  Field,
+  getFieldClass,
+  handleEmptyCellValue,
+  ICellValue,
+  StatType,
+  TextField
+} from 'model';
+import {IReduxState, ISnapshot, Selectors, ViewType} from 'store';
+import {KanbanStyleKey} from 'store/constants';
+import {getDatasheet, getSnapshot} from 'store/selector';
+import {FieldType, IField, ILinkField, ISelectField, readonlyFields} from 'types';
+import {getNewId, getUniqName, IDPrefix, isSelectField} from 'utils';
+import {KanbanView} from '../../model/views/kanban_view';
 
 // 这里不能调 store！！
 
@@ -61,6 +70,23 @@ function changeFieldSetting(
               recordId,
               fieldId: newField.id,
               value: null,
+            });
+            action && actions.push(action);
+          }
+        }
+      }
+      return actions;
+    }
+    // 评分类型行评分不能大于最大值
+    case FieldType.Rating: {
+      if (newField.property.max < oldField.property.max) {
+        for (const recordId in snapshot.recordMap) {
+          const cellValue = snapshot.recordMap[recordId].data[newField.id];
+          if (cellValue && cellValue > newField.property.max) {
+            const action = DatasheetActions.setRecord2Action(snapshot, {
+              recordId,
+              fieldId: newField.id,
+              value: newField.property.max,
             });
             action && actions.push(action);
           }
