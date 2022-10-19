@@ -12,44 +12,67 @@ import { NodeType, ShowRecordHistory } from '../config/constant';
 import {
   IAdData, ICommitRemind, ICreateNotification, ICreateOrderResponse, IGetRoleListResponse, IGetRoleMemberListResponse, IGetSpaceAuditReq,
   IGetUploadCertificateResponse, ILabsFeatureListResponse, ILoadOrSearchArg, INodeInfoWindowResponse, INoPermissionMemberResponse, IPayOrderResponse,
-  IQueryOrderDiscountResponse, IQueryOrderPriceResponse, IQueryOrderStatusResponse, IRecentlyBrowsedFolder, ISignIn, ISocialWecomGetConfigResponse,
-  ISubscribeActiveEventResponse, ISyncMemberRequest, ITemplateRecommendResponse, IUpdateSecuritySetting, IWecomAgentBindSpaceResponse,
+  IQueryOrderDiscountResponse, IQueryOrderPriceResponse, IQueryOrderStatusResponse, IRecentlyBrowsedFolder, ISignIn, 
+  ISubscribeActiveEventResponse, ISyncMemberRequest, ITemplateRecommendResponse, IUpdateSecuritySetting, 
 } from './api.interface';
+
+export * from './api.enterprise';
 
 axios.defaults.baseURL = Url.BASE_URL;
 const CancelToken = axios.CancelToken;
 const nestBaseURL = process.env.NEXT_PUBLIC_NEXT_API;
 
-// 登录/注册（直接拿到身份 token）
+/**
+ * Login / Register (get identity token directly)
+ * @param data 
+ * @returns 
+ */
 export function signInOrSignUp(data: ISignIn) {
   return axios.post(Url.SIGN_IN_OR_SIGN_UP, { ...data });
 }
 
-// 登录
+/**
+ * Sign In
+ * @param data 
+ * @returns 
+ */
 export function signIn(data: ISignIn) {
   return axios.post(Url.SIGN_IN, { ...data });
 }
 
-// 登出
+/**
+ * Sign Out
+ * 
+ * @returns 
+ */
 export function signOut() {
   return axios.post<IApiWrapper & { data: ILogoutResult }>(Url.SIGN_OUT);
 }
 
-// 注销
+/**
+ * Close the user, delete the account
+ * 
+ * @returns 
+ */
 export function logout() {
-  return axios.post(Url.LOGOUT);
-}
-
-// 撤销注销
-export function revokeLogout() {
-  return axios.post(Url.UNLOGOUT);
+  return axios.post(Url.CLOSE_USER);
 }
 
 /**
- * 注册
- * @param phone 手机号码
- * @param password 密码
- * @param code 手机验证码
+ * Cancel close the user, cancel delete the account
+ * @returns 
+ */
+export function revokeLogout() {
+  return axios.post(Url.CANCEL_CLOSE_USER);
+}
+
+/**
+ * 
+ * Register 
+ * 
+ * @param phone phone number
+ * @param password password
+ * @param code verify code
  */
 export function signUp(token?: string, inviteCode?: string) {
   return axios.post(Url.SIGN_UP, {
@@ -92,7 +115,12 @@ export function wecomLoginCallback(code: string, agentId: string, corpId: string
   return axios.post(Url.WECOM_LOGIN_CALLBACK, { code, agentId, corpId });
 }
 
-// 获取/刷新公众号二维码
+/**
+ * Generate or Refresh wechat public account QR code
+ * 
+ * @param type 
+ * @returns 
+ */
 export function getOfficialAccountsQrCode(type: number) {
   return axios.get(Url.OFFICIAL_ACCOUNTS_QRCODE, {
     params: {
@@ -101,7 +129,13 @@ export function getOfficialAccountsQrCode(type: number) {
   });
 }
 
-// 公众号轮询
+/**
+ * Poll wechat public account (media platform)
+ * 
+ * @param mark 
+ * @param type 
+ * @returns 
+ */
 export function officialAccountsPoll(mark: string, type: number) {
   return axios.get(Url.OFFICIAL_ACCOUNTS_POLL, {
     params: {
@@ -112,10 +146,12 @@ export function officialAccountsPoll(mark: string, type: number) {
 }
 
 /**
- * 获取手机验证码
- * @param phone 手机号码
- * @param type 使用场景类型，如1：注册、  3：修改密码
- * @param data 无痕验证的风控参数
+ * 
+ * Get phone verification code
+ * 
+ * @param phone Phone Number
+ * @param type 1:Register, 3:Edit password
+ * @param data CAPTCHA arguments
  */
 export function getSmsCode(areaCode: string, phone: string, type: number, data?: string) {
   return axios.post(Url.SEND_SMS_CODE, {
@@ -126,7 +162,15 @@ export function getSmsCode(areaCode: string, phone: string, type: number, data?:
   });
 }
 
-// 获取个人信息
+/**
+ * 
+ * Get My Info
+ * 
+ * @param locateIdMap 
+ * @param filter 
+ * @param headers 
+ * @returns 
+ */
 export function getUserMe(locateIdMap: ILocateIdMap = { spaceId: '', nodeId: '' }, filter = false, headers?: Record<string, string>) {
   return axios.get<IApiWrapper & { data: IUserInfo }>(Url.USER_ME, {
     params: {
@@ -137,47 +181,73 @@ export function getUserMe(locateIdMap: ILocateIdMap = { spaceId: '', nodeId: '' 
   });
 }
 
-// 获取个人信息
+/**
+ * Check user can delete or close
+ * @returns 
+ */
 export function getUserCanLogout() {
   return axios.get<IApiWrapper & { data: boolean }>(Url.USER_CAN_LOGOUT);
 }
 
-// 查询用户是否与指定邮箱一致
+/**
+ * 
+ * Space - check if the user's email is the same as the specified email
+ * @param email 
+ * @returns 
+ */
 export function validateEmail(email: string) {
   return axios.post(Url.EMAIL_VALIDATE, { email });
 }
 
-// 关联受邀邮箱
+/**
+ * 
+ * Space - binding the invited email
+ * 
+ * @param spaceId 
+ * @param email 
+ * @returns 
+ */
 export function linkInviteEmail(spaceId: string, email: string) {
   return axios.post(Url.LINK_INVITE_EMAIL, { spaceId, email });
 }
 
+/**
+ * invite code reward
+ */
 export function submitInviteCode(inviteCode: string) {
-  return axios.post(Url.SUBMIT_INVITE_CODE, { inviteCode });
+  return axios.post(Url.INVITE_CODE_REWARD, { inviteCode });
 }
 
-// 查询用户是否绑定邮箱
+/**
+ * Space - check if the user has bound the email
+ */
 export function emailBind() {
   return axios.get(Url.EMAIL_BIND);
 }
 
 /**
- * 编辑用户信息
- * @param info 要设置的信息
+ * Update (Edit) the user info
+ * @param info 
  */
 export function updateUser(info: { avatar?: string; nickName?: string | null; locale?: string; init?: boolean }) {
   return axios.post(Url.UPDATE_USER, info);
 }
 
 /**
- * 编辑用户信息
- * @param info 要设置的信息
+ * Edit Member Info and nickname
+ * @param memberName nickname
  */
 export function updateOwnerMemberInfo(memberName: string) {
   return axios.post(Url.MEMBER_UPDATE, { memberName });
 }
 
-// 查询工作台的节点树，限制查询两层
+/**
+ * 
+ * Query the node tree of the workbench, limit the query to two layers
+ * 
+ * @param depth 
+ * @returns 
+ */
 export function getNodeTree(depth?: number) {
   return axios.get(Url.GET_NODE_TREE, {
     params: {
@@ -186,12 +256,24 @@ export function getNodeTree(depth?: number) {
   });
 }
 
-// 获取根节点
+/**
+ * 
+ * Get and query the root node
+ * 
+ * @returns 
+ */
 export function getRootNode() {
   return axios.get(Url.GET_ROOT_NODE);
 }
 
-// 查询子节点列表
+/**
+ * 
+ * Query the child node list
+ * 
+ * @param nodeId 
+ * @param nodeType 
+ * @returns 
+ */
 export function getChildNodeList(nodeId: string, nodeType?: NodeType) {
   return axios.get<IApiWrapper & { data: Omit<INodesMapItem, 'children'>[] }>(Url.GET_NODE_LIST, {
     params: {
@@ -201,6 +283,12 @@ export function getChildNodeList(nodeId: string, nodeType?: NodeType) {
   });
 }
 
+/**
+ * Get Node's Parent Node List
+ * 
+ * @param nodeId 
+ * @returns 
+ */
 export function getParents(nodeId: string) {
   return axios.get<IApiWrapper & { data: IParent[] }>(Url.GET_PARENTS, {
     params: {
@@ -209,7 +297,13 @@ export function getParents(nodeId: string) {
   });
 }
 
-// 查询节点信息
+/**
+ * 
+ * Get Node Info
+ * 
+ * @param nodeIds 
+ * @returns 
+ */
 export function getNodeInfo(nodeIds: string) {
   return axios.get(Url.GET_NODE_INFO, {
     params: {
@@ -219,18 +313,21 @@ export function getNodeInfo(nodeIds: string) {
 }
 
 /**
- * 根据父节点id查询所属的子节点
- * @param parentId 父节点的ID
+ * query the child nodes with the parent node id, 
+ * 
+ * @param parentId parent node id
  */
 export function getNodeListByParentId(parentId: string) {
   return axios.get(Url.SELECTBYPARENTID + parentId);
 }
 
 /**
- * 查询数表节点关联的神奇表单/镜像
- * @param dstId 数表的ID
- * @param viewId 视图的ID。未指定时查询所有视图的关联节点
- * @param type   关联节点类型。未指定时查询所有关联类型
+ * 
+ * Get relevant nodes(form/mirror) of the node
+ * 
+ * @param dstId datasheet id
+ * @param viewId view id. if empty, query all views' relevant nodes.
+ * @param type   relevant nodes type. if empty, query all types.
  */
 export function getRelateNodeByDstId(dstId: string, viewId?: string, type?: number) {
   return axios.get(Url.DATASHEET_FOREIGN_FORM, {
@@ -243,9 +340,9 @@ export function getRelateNodeByDstId(dstId: string, viewId?: string, type?: numb
 }
 
 /**
- * 创建空间
- * @param name 空间名称
- * @param isFirst 是否是初创空间
+ * Create Space
+ * 
+ * @param name Space Name
  */
 export function createSpace(name: string) {
   return axios.post(Url.CREATE_SPACE, {
@@ -254,10 +351,11 @@ export function createSpace(name: string) {
 }
 
 /**
- * 移动节点
- * @param nodeId 被移动的节点ID
- * @param parentId 拖放位置的父节点ID
- * @param index 索引
+ * Move Nodes
+ * 
+ * @param nodeId the node id that will be moved.
+ * @param parentId the parent node id that will be placed here.
+ * @param preNodeId 
  */
 export function nodeMove(nodeId: string, parentId: string, preNodeId?: string) {
   return axios.post(Url.MOVE_NODE, {
@@ -268,20 +366,15 @@ export function nodeMove(nodeId: string, parentId: string, preNodeId?: string) {
 }
 
 /**
- * 添加节点
- * @param nodeName 节点名称
- * @param type 节点类型
- * @param index 添加位置
- * @param parentId 父节点ID
- * @param spaceId 空间ID
+ * Add Node
  */
 export function addNode(nodeInfo: { parentId: string; type: number; nodeName?: string; preNodeId?: string; extra?: { [key: string]: any } }) {
   return axios.post(Url.ADD_NODE, nodeInfo);
 }
 
 /**
- * 删除节点
- * @param nodeId 节点ID
+ * Delete Node
+ * @param nodeId Node Id
  */
 export function delNode(nodeId: string) {
   return axios.delete(Url.DELETE_NODE + nodeId);
@@ -296,18 +389,18 @@ export function getSpecifyNodeList(nodeType: NodeType) {
 }
 
 /**
- * 编辑节点
- * @param nodeId 节点ID
- * @param nodeName 节点名称
+ * Edit Node
+ * 
+ * @param nodeId Node ID
+ * @param data 
  */
 export function editNode(nodeId: string, data: { nodeName?: string; icon?: string; cover?: string; showRecordHistory?: ShowRecordHistory }) {
   return axios.post(Url.EDIT_NODE + nodeId, data);
 }
 
 /**
- * 复制数表
- * @param {string} nodeId 节点ID
- * @param {number} index 节点插入的位置
+ * duplicate the node
+ * 
  */
 export function copyNode(nodeId: string, copyAll: boolean) {
   return axios.post(Url.COPY_NODE, {
@@ -317,48 +410,49 @@ export function copyNode(nodeId: string, copyAll: boolean) {
 }
 
 /**
- * 获取数表ID
- * @param nodeId 节点ID
+ * Get Datasheet ID by Node ID
+ * 
+ * @param nodeId Node ID
  */
 export function getDstId(nodeId: string) {
   return axios.get(Url.GET_DST_ID + nodeId);
 }
 
 /**
- * 记录活动的数表标签页
- * @param activeNodeId 当前活动item ID
- * @param activeNodes 标签栏数组
+ * Save the active datasheet tab
  */
 export function keepTabbar(data: { nodeId?: string; viewId?: string }) {
   return axios.post(Url.KEEP_TAB_BAR, data);
 }
 
 /**
- * 定位节点
- * @param nodeId 节点ID
+ * Positioning the node, where it is.
  */
 export function positionNode(nodeId: string) {
   return axios.get(Url.POSITION_NODE + nodeId);
 }
 
-// 查询在空间内所属组织单元列表
+/**
+ * Query the list of units(member/group) in the space's organization
+ * @returns 
+ */
 export function getUnitsByMember() {
   return axios.get(Url.MEMBER_UNITS);
 }
 
 /**
- * 通讯录-部门列表
- * 空间站-通讯录管理-成员管理
- * 查询指定空间的部门列表
+ * Contact List, get teams
+ * 
+ * @returns 
  */
 export function getTeamList() {
   return axios.get(Url.TEAM_LIST);
 }
 
 /**
- * 通讯录-成员列表
- * 查询指定部门的成员列表
- * @param teamId 部门ID，根部门可不填，默认为0
+ * Contact list, get members
+ * 
+ * @param teamId team ID, if empty, return root team, default 0
  */
 export function getMemberList(teamId?: string): Promise<IAxiosResponse<IMemberInfoInAddressList[]>> {
   return axios.get(Url.MEMBER_LIST, {
@@ -369,10 +463,10 @@ export function getMemberList(teamId?: string): Promise<IAxiosResponse<IMemberIn
 }
 
 /**
- * 通讯录-成员信息
- * 获取成员详情
- * @param memberId  成员ID
- * @param userId    用户ID
+ * Get member info
+ * 
+ * @param memberId  Contact member id
+ * @param userId   user id
  */
 export function getMemberInfo({ memberId, uuid }: { memberId?: string; uuid?: string }) {
   return axios.get<IApiWrapper & { data: IMemberInfoInAddressList }>(Url.MEMBER_INFO, {
@@ -384,23 +478,24 @@ export function getMemberInfo({ memberId, uuid }: { memberId?: string; uuid?: st
 }
 
 /**
- * 获取空间列表
+ * Get space list
  */
 export function spaceList(onlyManageable?: boolean) {
   return axios.get(Url.SPACE_LIST, { params: { onlyManageable }});
 }
 
 /**
- * 退出空间
- * @param spaceId 空间ID
+ * Quit the Space
+ * @param spaceId 
  */
 export function quitSpace(spaceId: string) {
   return axios.post(`${Url.QUIT_SPACE}${spaceId}`);
 }
 
 /**
- * 上传附件
- * @param formData 附件
+ * Upload Attachment
+ * 
+ * @param formData attachment data
  */
 export function uploadAttach(file: any) {
   return axios.post(Url.UPLOAD_ATTACH, file, {
@@ -409,8 +504,9 @@ export function uploadAttach(file: any) {
 }
 
 /**
- * 获取附件预览地址
- * @param token 云端文件名/key
+ * Get attachment's preview url
+ * 
+ * @param token cloud file token
  */
 export function getAttachPreviewUrl(spaceId: string, token: string, attname: string) {
   return axios.post(urlcat(Url.OFFICE_PREVIEW, { spaceId }), {
@@ -420,11 +516,11 @@ export function getAttachPreviewUrl(spaceId: string, token: string, attname: str
 }
 
 /**
- * 空间站-通讯录管理-成员管理
- * 分页查询指定部门的成员列表
- * @param pageObjectParams 分页参数
- * @param teamId 部门ID，根部门可不填，默认为0
- * @param isActive 成员是否加入空间站
+ * Get member list by pagination
+ * 
+ * @param pageObjectParams pagination params
+ * @param teamId if empty return root team, default 0
+ * @param isActive whether the member has joined space 
  */
 export function getMemberListInSpace(pageObjectParams: string, teamId?: string, isActive?: string) {
   return axios.get(Url.MEMBER_LIST_IN_SPACE, {
@@ -437,11 +533,12 @@ export function getMemberListInSpace(pageObjectParams: string, teamId?: string, 
 }
 
 /**
- * 空间站-通讯录管理-成员管理
- * 修改部门信息
- * @param teamId 部门ID
- * @param superId 父级ID,如果父级是根,则为0
- * @param teamName 部门名称
+ * Update Team Info
+ * edit the team 
+ * 
+ * @param teamId 
+ * @param superId parent team ID,if empty return root team, default 0
+ * @param teamName team name
  */
 export function updateTeamInfo(teamId: string, superId: string, teamName?: string) {
   return axios.post(Url.UPDATE_TEAM, {
@@ -452,10 +549,10 @@ export function updateTeamInfo(teamId: string, superId: string, teamName?: strin
 }
 
 /**
- * 空间站-通讯录管理-成员管理
- * 新增子部门
- * @param name 部门名称
- * @param superId 父级ID,如果父级是根,则为0
+ * Create Team
+ * 
+ * @param name 
+ * @param superId parent team id, if empty return root team, default 0
  */
 export function createTeam(name: string, superId: string) {
   return axios.post(Url.CREATE_TEAM, {
@@ -465,9 +562,9 @@ export function createTeam(name: string, superId: string) {
 }
 
 /**
- * 空间站-通讯录管理-成员管理
- * 查询部门信息
- * @param teamId 部门ID
+ * Get Team Info
+ * 
+ * @param teamId 
  */
 export function readTeam(teamId: string) {
   return axios.get(Url.READ_TEAM, {
@@ -478,29 +575,28 @@ export function readTeam(teamId: string) {
 }
 
 /**
- * 空间站-通讯录管理-成员管理
- * 删除部门
- * @param teamId 部门ID
+ * Delete the team
+ * @param teamId team ID
  */
 export function deleteTeam(teamId: string) {
   return axios.delete(`${Url.DELETE_TEAM}${teamId}`);
 }
 
 /**
- * 空间站-通讯录管理-成员管理
- * 编辑成员信息
- * @param data 成员信息，提交什么字段就修改什么字段
+ * Update Member Info
+ * 
+ * @param data member info
  */
 export function updateMember(data: IUpdateMemberInfo) {
   return axios.post(Url.UPDATE_MEMBER, data);
 }
 
 /**
- * 空间站-通讯录管理-成员管理
- * 单个删除成员
- * @param teamId 部门ID
- * @param memberId 成员ID
- * @param action 删除动作（0：本部门删除，1：彻底从组织架构删除）
+ * Delete single member
+ * 
+ * @param teamId Team ID
+ * @param memberId Member ID
+ * @param action Delete Action(0:delete from inner team, 1:delete from organization)
  */
 export function singleDeleteMember(teamId: string, memberId: string, isDeepDel: boolean) {
   return axios.delete(Url.SINGLE_DELETE_MEMBER, {
@@ -513,11 +609,11 @@ export function singleDeleteMember(teamId: string, memberId: string, isDeepDel: 
 }
 
 /**
- * 空间站-通讯录管理-成员管理
- * 批量删除成员
- * @param memberId 成员ID
- * @param teamId 部门ID
- * @param action 删除动作（0：本部门删除，1：彻底从组织架构删除）
+ * Batch Delete Members
+ * 
+ * @param memberId Member ID
+ * @param teamId Team ID
+ * @param action Delete Action(0:delete from inner team, 1:delete from organization)
  */
 export function BatchDeleteMember(teamId: string, memberId: string[], isDeepDel: boolean) {
   return axios.delete(Url.BATCH_DELETE_MEMBER, {
@@ -530,9 +626,9 @@ export function BatchDeleteMember(teamId: string, memberId: string[], isDeepDel:
 }
 
 /**
- * 空间站-通讯录管理-成员管理
- * 查询直属子部门列表
- * @param teamId 部门ID
+ * Get Sub Teams
+ * 
+ * @param teamId Team ID
  */
 export function getSubTeams(teamId: string) {
   return axios.get(Url.READ_SUB_TEAMS, {
@@ -543,10 +639,10 @@ export function getSubTeams(teamId: string) {
 }
 
 /**
- * 空间站-通讯录管理-成员管理
- * 部门添加成员
- * @param unitList 部门或成员列表
- * @param teamId 部门ID
+ * Add active units(members,teams) to team
+ * 
+ * @param unitList 
+ * @param teamId 
  */
 export function addIsActivedMembersInSpace(unitList: IAddIsActivedMemberInfo[], teamId: string) {
   return axios.post(Url.TEAM_ADD_MEMBER, {
@@ -556,8 +652,7 @@ export function addIsActivedMembersInSpace(unitList: IAddIsActivedMemberInfo[], 
 }
 
 /**
- * 空间站-通讯录管理-成员管理
- * 根据部门查询部门下所有成员，不包括子部门的成员
+ * Get members by team(include members in the sub team)
  */
 export function getTeamAndMemberWithoutSub(teamId?: string) {
   return axios.get(Url.TEAM_MEMBERS, {
@@ -568,10 +663,12 @@ export function getTeamAndMemberWithoutSub(teamId?: string) {
 }
 
 /**
- * 空间站-通讯录管理-成员管理
- * 搜索组织资源/添加部门成员modal中的搜索
- * @param keyword 搜索关键词
- * @param className 高亮样式
+ * 
+ * Search organization resources
+ * search in the add department member UI modal
+ * 
+ * @param keyword the keyword to search
+ * @param className class style
  */
 export function addMemberSearchRes(keyword: string, className: string) {
   return axios.get(Url.GET_ADD_MEMBERS, {
@@ -583,9 +680,9 @@ export function addMemberSearchRes(keyword: string, className: string) {
 }
 
 /**
- * 空间站-通讯录管理-成员管理
- * 搜索部门或成员
- * @param keyword 搜索词
+ * Search Teams or Members
+ * 
+ * @param keyword the keyword to search
  */
 export function searchTeamAndMember(keyword: string) {
   return axios.get(Url.SEARCH_TEAM_MEMBER, {
@@ -597,11 +694,10 @@ export function searchTeamAndMember(keyword: string) {
 }
 
 /**
- * 空间站-通讯录管理-成员管理
- * 调整成员所属部门
- * @param memberIds 成员ID
- * @param preTeamId 原部门ID,必填
- * @param newTeamIds 调整后的部门ID列表
+ * Update Member's Team
+ * @param memberIds 
+ * @param preTeamId Original Team ID, required
+ * @param newTeamIds New Team IDs list
  */
 export function updateMemberTeam(memberIds: string[], newTeamIds: string[], preTeamId?: string) {
   return axios.post(Url.UPDATE_MEMBER_TEAM, {
@@ -612,8 +708,9 @@ export function updateMemberTeam(memberIds: string[], newTeamIds: string[], preT
 }
 
 /**
- * 获取邮验证码
- * @param email 邮箱
+ * Get Email Verify Code
+ * 
+ * @param email mail
  */
 export function getEmailCode(email: string, type: number) {
   return axios.post(Url.SEND_EMAIL_CODE, {
@@ -623,9 +720,9 @@ export function getEmailCode(email: string, type: number) {
 }
 
 /**
- * 绑定邮箱
- * @param email 邮箱地址
- * @param code 验证码
+ * Bind the email
+ * @param email 
+ * @param code 
  */
 export function bindEmail(email: string, code: string) {
   return axios.post(Url.BIND_EMAIL, {
@@ -635,9 +732,10 @@ export function bindEmail(email: string, code: string) {
 }
 
 /**
- * 绑定新手机
- * @param phone 手机号
- * @param code 验证码
+ * Bind the mobile phone 
+ * 
+ * @param phone 
+ * @param code 
  */
 export function bindMobile(areaCode: string, phone: string, code: string) {
   return axios.post(Url.BIND_MOBILE, {
@@ -648,9 +746,9 @@ export function bindMobile(areaCode: string, phone: string, code: string) {
 }
 
 /**
- * 手机验证码校验
- * @param phone 手机号
- * @param code 验证码
+ * Verify the mobile phone code
+ * @param phone 
+ * @param code 
  */
 export function smsVerify(areaCode: string, phone: string, code: string) {
   return axios.post(Url.VALIDATE_SMS_CODE, {
@@ -661,7 +759,9 @@ export function smsVerify(areaCode: string, phone: string, code: string) {
 }
 
 /**
- * 邮箱验证码校验，使用场景：无手机时更换邮箱前验证身份、更换主管理员
+ * Verify the email code
+ * When you don't have a mobile phone
+ * you can verify your identity before changing your mailbox or changing the main administrator
  */
 export function emailCodeVerify(email: string, code: string) {
   return axios.post(Url.VALIDATE_EMAIL_CODE, {
@@ -671,9 +771,8 @@ export function emailCodeVerify(email: string, code: string) {
 }
 
 /**
- * 空间站-通讯录管理
- * 判断空间内成员邮箱是否存在
- * @param email 邮箱地址
+ * Check whether the email exists in the space
+ * @param email
  */
 export function isExistEmail(email: string) {
   return axios.get(Url.EXIST_EMAIL, {
@@ -684,8 +783,7 @@ export function isExistEmail(email: string) {
 }
 
 /**
- * 空间站-通讯录管理
- * 邮件首次（批量）邀请成员
+ * Invite members(batch available)
  */
 export function sendInvite(invite: IInviteMemberList[], nodeId?: string, nvcVal?: string) {
   return axios.post(Url.SEND_INVITE, {
@@ -696,9 +794,9 @@ export function sendInvite(invite: IInviteMemberList[], nodeId?: string, nvcVal?
 }
 
 /**
- * 空间站-通讯录管理
- * 邮件再次（单次）邀请成员
- * @param email 邮箱地址,严格校验
+ * ReSend email to invite members
+ * 
+ * @param email strict email format
  */
 export function reSendInvite(email: string) {
   return axios.post(Url.RESEND_INVITE, {
@@ -707,10 +805,9 @@ export function reSendInvite(email: string) {
 }
 
 /**
- * 空间站-邮件邀请中转页，邮件校验
- * 邀请临时码校验
- * @param token 邀请链接一次性令牌
- * @param from 邀请者标识
+ * Invite Email Verify
+ * @param token one-time invite token 
+ * @param from inviter
  */
 export function inviteEmailVerify(token: string) {
   return axios.post(Url.INVITE_EMAIL_VERIFY, {
@@ -719,7 +816,7 @@ export function inviteEmailVerify(token: string) {
 }
 
 /**
- * 空间站-上传通讯录文件
+ * Upload the contact file
  */
 export function uploadMemberFile(formData: any, onUploadProgress: any, ctx: any) {
   return axios.post(Url.UPLOAD_MEMBER_FILE, formData, {
@@ -730,10 +827,10 @@ export function uploadMemberFile(formData: any, onUploadProgress: any, ctx: any)
 }
 
 /**
- * 修改密码
- * @param phone 手机号
- * @param code 验证码
- * @param password 密码
+ * Edit password 
+ * @param phone 
+ * @param code verify code
+ * @param password password
  */
 export function updatePwd(password: string, code?: string, type?: string) {
   return axios.post(Url.UPDATE_PWD, {
@@ -744,9 +841,10 @@ export function updatePwd(password: string, code?: string, type?: string) {
 }
 
 /**
- * 找回密码
- * @param phone 手机号
- * @param password 密码
+ * Forgot password
+ * 
+ * @param phone 
+ * @param password 
  */
 export function retrievePwd(areaCode: string, username: string, code: string, password: string, type: string) {
   return axios.post(Url.RETRIEVE_PWD, {
@@ -759,8 +857,9 @@ export function retrievePwd(areaCode: string, username: string, code: string, pa
 }
 
 /**
- *  检索节点
- * @param keyword 关键字
+ * Find nodes
+ * 
+ * @param keyword the keyword to search
  */
 export function findNode(keyword: string, ctx: any) {
   return axios.get(Url.SEARCH_NODE, {
@@ -771,6 +870,13 @@ export function findNode(keyword: string, ctx: any) {
   });
 }
 
+/**
+ * Search nodes
+ * 
+ * @param spaceId 
+ * @param keyword 
+ * @returns 
+ */
 export function searchNode(spaceId: string, keyword: string) {
   return axios.get<IApiWrapper & { data: INode[] }>(Url.SEARCH_NODE, {
     params: {
@@ -781,8 +887,8 @@ export function searchNode(spaceId: string, keyword: string) {
 }
 
 /**
- * 获取是否可以管理全员可见状态
- * @param nodeId 当前节点ID
+ * Get the setting of "whether the space is visible to all members"
+ * @param nodeId current node id
  */
 export function allowVisiableSetting(nodeId: string) {
   return axios.get(Url.ALLOW_VISIBLE_SETTING, {
@@ -792,7 +898,15 @@ export function allowVisiableSetting(nodeId: string) {
   });
 }
 
-// 导入数表
+/**
+ * 
+ * import datasheet by file
+ * 
+ * @param formData 
+ * @param onUploadProgress 
+ * @param ctx 
+ * @returns 
+ */
 export function importFile(formData: any, onUploadProgress: any, ctx: any) {
   return axios.post(Url.IMPORT_FILE, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
@@ -801,12 +915,23 @@ export function importFile(formData: any, onUploadProgress: any, ctx: any) {
   });
 }
 
-// 切换空间站
+/**
+ * Switch Space
+ * @param spaceId 
+ * @returns 
+ */
 export function switchSpace(spaceId: string) {
   return axios.post(urlcat(Url.SWITCH_SPACE, { spaceId }));
 }
 
-// 删除空间
+/**
+ * Delete Space
+ * 
+ * @param spaceId 
+ * @param code 
+ * @param type 
+ * @returns 
+ */
 export function deleteSpace(spaceId: string, code?: string, type?: string) {
   return axios.delete(urlcat(Url.DELETE_SPACE, { spaceId }), {
     data: {
@@ -816,15 +941,21 @@ export function deleteSpace(spaceId: string, code?: string, type?: string) {
   });
 }
 
-// 立即删除空间
+/**
+ * 
+ * Delete the space immediately
+ * 
+ * @returns 
+ */
 export function deleteSpaceNow() {
   return axios.delete(Url.DELETE_SPACE_NOW);
 }
 
 /**
- *  编辑空间
- * @param name 空间名称
- * @param logo 空间头像
+ * Update/Edit the space
+ * 
+ * @param name 
+ * @param logo 
  */
 export function updateSpace(name?: string, logo?: string) {
   return axios.post(Url.UPDATE_SPACE, {
@@ -833,63 +964,77 @@ export function updateSpace(name?: string, logo?: string) {
   });
 }
 
-// 空间信息
+/**
+ * Get space info
+ * 
+ * @param spaceId 
+ * @returns 
+ */
 export function spaceInfo(spaceId: string) {
   return axios.get(Url.
     SPACE_INFO + spaceId);
 }
 
-// 恢复空间
+/**
+ * Recover space
+ * 
+ * @param spaceId 
+ * @returns 
+ */
 export function recoverSpace(spaceId: string) {
   return axios.post(Url.RECOVER_SPACE + spaceId);
 }
 
+/**
+ * Search space size 
+ * @returns 
+ */
 export function searchSpaceSize() {
   return axios.get(Url.SPACE_MEMORY);
 }
 
 /**
- *  获取指定空间的文件夹和文件的数量
- * @param spaceId 空间ID
+ * Get the number of nodes(folders and files) in the specified space
+ * @param spaceId 
  */
 export function getSpaceNodeNumber() {
   return axios.get(Url.NODE_NUMBER);
 }
 
 /**
- *  获取指定空间的权限资源
- * @param spaceId 空间ID
+ * Get the permissions resources of the specified space
+ * @param spaceId 
  */
 export function getSpaceResource() {
   return axios.get(Url.SPACE_RESOURCE);
 }
 
 /**
- * 消除空间列表的小红点
- * @param spaceId 空间ID
+ * clean the red dot of space 
+ * @param spaceId 
  */
 export function removeSpaceRedPoint(spaceId: string) {
   return axios.post(`${Url.REMOVE_RED_POINT}${spaceId}`);
 }
 
 /**
- * 空间站-主管理员-获取主管理员信息
+ * get main admin info
  */
-export function mianAdminInfo() {
+export function getMainAdminInfo() {
   return axios.get(Url.MAIN_ADMIN_INFO);
 }
 
 /**
- * 空间站-主管理员-更换主管理员
+ * change main admin
  */
 export function changeMainAdmin(memberId: string) {
   return axios.post(Url.CHANGE_MAIN_ADMIN, { memberId });
 }
 
 /**
- * 空间站-子管理员
- * 查询管理员列表
- * @param pageObjectParams 分页参数
+ * query the list of admins
+ * 
+ * @param pageObjectParams pagination params
  */
 export function getlistRole(pageObjectParams: string) {
   return axios.get(Url.LIST_ROLE, {
@@ -900,8 +1045,7 @@ export function getlistRole(pageObjectParams: string) {
 }
 
 /**
- * 空间站-子管理员
- * 获取管理员信息
+ * get sub-admin's permission
  */
 export function subAdminPermission(memberId: string) {
   return axios.get(Url.SUB_ADMIN_PERMISSION, {
@@ -912,9 +1056,9 @@ export function subAdminPermission(memberId: string) {
 }
 
 /**
- * 空间站-子管理员
- * 模糊搜索成员
- * @param keyword 搜索关键字
+ * fuzzy search members
+ * 
+ * @param keyword the keyword to search
  */
 export function searchMember(keyword: string, filter: boolean) {
   return axios.get(Url.MEMBER_SEARCH, {
@@ -926,10 +1070,10 @@ export function searchMember(keyword: string, filter: boolean) {
 }
 
 /**
- * 空间站-子管理员
- * 添加管理员
- * @param memberId 成员ID
- * @param resourceCodes 操作资源集合，不分排序，自动校验
+ * add sub-admin
+ * 
+ * @param memberId member id
+ * @param resourceCodes operation resources set, no orders, auto verify
  */
 export function addSubMember(memberIds: string[], resourceCodes: string[]) {
   return axios.post(Url.ADD_SUB_ADMIN, {
@@ -939,10 +1083,10 @@ export function addSubMember(memberIds: string[], resourceCodes: string[]) {
 }
 
 /**
- * 空间站-子管理员
- * 编辑管理员
- * @param memberId 成员ID
- * @param resourceCodes 操作资源集合，不分排序，自动校验
+ * edit sub-admin
+ * 
+ * @param memberId member id
+ * @param resourceCodes operation resources set, no orders, auto verify
  */
 export function editSubMember(id: string, memberId: string, resourceCodes: string[]) {
   return axios.post(Url.EDIT_SUB_ADMIN, {
@@ -953,8 +1097,9 @@ export function editSubMember(id: string, memberId: string, resourceCodes: strin
 }
 
 /**
- * 搜索组织资源
- * @param keyword 关键字（标签/部门）
+ * search organization resource
+ * 
+ * @param keyword keywords(tag/team)
  */
 export function searchUnit(keyword: string, linkId?: string) {
   return axios.get(Url.SEARCH_UNIT, {
@@ -966,22 +1111,22 @@ export function searchUnit(keyword: string, linkId?: string) {
 }
 
 /**
- * 切换工作目录全员可见状态
+ * update the all visibility of the current space
  */
 export function updateAllVisible() {
   return axios.post(Url.UPDATE_ALL_VISIBLE);
 }
 
 /**
- * 查询工作目录的全员可见状态
+ * get all visible status of the current space
  */
 export function getAllVisibleStatus() {
   return axios.get(Url.GET_ALL_VISIBLE);
 }
 
 /**
- * 查询部门下的子部门和成员
- * @param teamId 组织ID
+ * get child teams and members
+ * @param teamId Team ID
  */
 export function getSubUnitList(teamId?: string, linkId?: string) {
   return axios.get(Url.GET_SUB_UNIT_LIST, {
@@ -993,22 +1138,23 @@ export function getSubUnitList(teamId?: string, linkId?: string) {
 }
 
 /**
- * 修改角色
- * @param data 要更新的角色的信息
+ * Update(edit) role
+ * 
+ * @param data data info
  */
 export function updateRole(data: IUpdateRoleData) {
   return axios.post(Url.UPDATE_ROLE, data);
 }
 
 /**
- * 空间站-子管理员-删除管理员
+ * delete sub-admin
  */
 export function deleteSubAdmin(memberId: string) {
   return axios.delete(Url.DELETE_SUB_ADMIN + memberId);
 }
 
 /**
- * 空间站-更改成员设置
+ * update member setting
  */
 export function updateMemberSetting(data: { invitable?: boolean; joinable?: boolean; mobileShowable?: boolean }) {
   return axios.post(Url.UPDATE_MEMBER_SETTING, {
@@ -1017,40 +1163,40 @@ export function updateMemberSetting(data: { invitable?: boolean; joinable?: bool
 }
 
 /**
- * 空间站-获取禁止全员导出维格表状态
+ * get the status of the forbidden on exporting the entire space to excel
  */
 export function getForbidStatus() {
   return axios.get(Url.FORBID_STATUS);
 }
 
 /**
- * 空间站-更改工作台设置
+ * update workbench setting
  */
 export function updateWorkbenchSetting(data: { nodeExportable?: boolean }) {
   return axios.post(Url.UPDATE_WORKBENCH_SETTING, { ...data });
 }
 
 /**
- * 空间站-获取空间的特性
+ * get space features
  */
 export function getSpaceFeatures() {
   return axios.get(Url.GET_SPACE_FEATURES);
 }
 
 /**
- * 空间站-普通成员-切换节点角色全员可分配状态
+ * switch the status of the node role assignment
  */
 export function switchNodeAssignableStatus() {
   return axios.post(Url.SWITCH_NODEROLE_ASSIGNALE);
 }
 
 /**
- * @description 小程序扫码轮询接口
+ * wechat miniapp poll check 
  * @param {(0 | 1 | 2)} type
- * 0：web扫码登录
- * 1：web帐号绑定
- * 2：小程序等待进入工作台
- * @param {string} mark  二维码识别ID
+ * 0：web qr code login
+ * 1：web account binding
+ * 2：miniapp is waiting get into workbench
+ * @param {string} mark  QR Code ID
  * @returns
  */
 export function poll(type: QrAction, mark: string) {
@@ -1063,10 +1209,10 @@ export function poll(type: QrAction, mark: string) {
 }
 
 /**
- * @description 获取二维码
+ * @description Get QR Code
  * @param {number} type
- * 0：登录
- * 1：绑定
+ * 0：login
+ * 1：binding
  * @returns
  */
 export function getQrCode(type: number, page?: string, width?: number) {
@@ -1080,7 +1226,7 @@ export function getQrCode(type: number, page?: string, width?: number) {
 }
 
 /**
- * @description 解除账户绑定
+ * @description unbind account
  * @export
  * @param {BindAccount} type
  * @returns
@@ -1092,8 +1238,8 @@ export function unBindAccount(type: BindAccount) {
 }
 
 /**
- * 生成/刷新链接
- * @param  teamId 部门ID
+ * generate/refresh the link
+ * @param  teamId team ID
  */
 export function createLink(teamId: string, nodeId?: string) {
   return axios.post(Url.CREATE_LINK, {
@@ -1102,7 +1248,13 @@ export function createLink(teamId: string, nodeId?: string) {
   });
 }
 
-// 空间赠送信息
+/**
+ * Get Space Reward infos
+ * 
+ * @param isExpire 
+ * @param pageNo 
+ * @returns 
+ */
 export function getCapacityRewardList(isExpire: boolean, pageNo: number) {
   const pageObjectParams = JSON.stringify({
     pageSize: ConfigConstant.CAPACITY_REWARD_LIST_PAGE_SIZE,
@@ -1118,26 +1270,52 @@ export function getCapacityRewardList(isExpire: boolean, pageNo: number) {
   });
 }
 
-// 获取链接列表
+/**
+ * Get links list
+ * @returns 
+ */
 export function getLinkList() {
   return axios.get(Url.LINK_LIST);
 }
 
-// 删除链接
+/**
+ * Delete team invite link
+ * 
+ * @param teamId 
+ * @returns 
+ */
 export function deleteLink(teamId: string) {
   return axios.delete(Url.DELETE_LINK, { data: { teamId }});
 }
 
-// 公开链接校验
+/**
+ * public link validation
+ * @param token 
+ * @param nodeId 
+ * @returns 
+ */
 export function linkValid(token: string, nodeId?: string) {
   return axios.post(Url.LINK_VALID, { token, nodeId });
 }
 
-// 通过公开链接加入空间
+/**
+ * join space by public link
+ * 
+ * @param token 
+ * @param nodeId 
+ * @returns 
+ */
 export function joinViaSpace(token: string, nodeId?: string) {
   return axios.post(Url.JOIN_VIA_LINK, { token, nodeId });
 }
 
+/**
+ * change node's description
+ * 
+ * @param nodeId 
+ * @param desc 
+ * @returns 
+ */
 export function changeNodeDesc(nodeId: string, desc: string) {
   return axios.post(Url.CHANGE_NODE_DESC, {
     nodeId,
@@ -1159,9 +1337,10 @@ export function storeShareData(shareId: string, spaceId: string) {
 }
 
 /**
- * 关闭节点分享
+ * disable the node's share link
+ * 
  * @export
- * @param {string} nodeId 要操作的节点ID
+ * @param {string} nodeId 
  * @returns
  */
 export function disableShare(nodeId: string) {
@@ -1169,9 +1348,10 @@ export function disableShare(nodeId: string) {
 }
 
 /**
- * 刷新节点分享链接
+ * refresh node's share link
+ * 
  * @export
- * @param {string} nodeId 要操作的节点ID
+ * @param {string} nodeId 
  * @returns
  */
 export function regenerateShareLink(nodeId: string) {
@@ -1179,9 +1359,10 @@ export function regenerateShareLink(nodeId: string) {
 }
 
 /**
- * 获取节点分享设置
+ * get node's share setting
+ * 
  * @export
- * @param {string} nodeId 要操作的节点ID
+ * @param {string} nodeId 
  * @returns
  */
 export function getShareSettings(nodeId: string) {
@@ -1202,8 +1383,9 @@ export function updateShare(
 }
 
 /**
- * 文件夹预览
- * @param nodeId 节点ID
+ * folder node preview
+ * 
+ * @param nodeId 
  */
 export function nodeShowcase(nodeId: string, shareId?: string) {
   return axios.get(Url.NODE_SHOWCASE, {
@@ -1215,16 +1397,16 @@ export function nodeShowcase(nodeId: string, shareId?: string) {
 }
 
 /**
- * 消息统计
+ * get notifications statistics
  */
 export function getNotificationStatistics() {
   return axios.get(Url.NOTIFICATION_STATISTICS);
 }
 
 /**
- * 用户分页通知列表
- * @param pageObjectParams 分页参数,详情查看,接口描述
- * @param isRead 是否已读1已读,0未读,不传代表查询全部
+ * notification list with pagination
+ * @param pageObjectParams pagination params
+ * @param isRead 1:read 2:unread, if empty, get all
  */
 export function getNotificationPage(isRead?: boolean, rowNo?: number) {
   return axios.get(Url.NOTIFICATION_PAGE, {
@@ -1236,7 +1418,13 @@ export function getNotificationPage(isRead?: boolean, rowNo?: number) {
   });
 }
 
-// 用户通知列表
+/**
+ * get notification list
+ * 
+ * @param isRead 
+ * @param notifyType 
+ * @returns 
+ */
 export function getNotificationList(isRead?: boolean, notifyType?: string) {
   return axios.get(Url.NOTIFICATION_LIST, {
     params: {
@@ -1246,15 +1434,20 @@ export function getNotificationList(isRead?: boolean, notifyType?: string) {
   });
 }
 
-// 创建通知
+/**
+ * create notification
+ * @param data 
+ * @returns 
+ */
 export function createNotification(data: ICreateNotification[]) {
   return axios.post(Url.CREATE_NOTIFICATION, data);
 }
 
 /**
- * 提交举报信息
- * @param nodeId 被举报的维格表
- * @param reportReason  举报原因
+ * create tip-off report
+ * 
+ * @param nodeId 
+ * @param reportReason  
  */
 export function createReport(nodeId: string, reportReason: string) {
   return axios.post(Url.CREATE_REPORTS, {
@@ -1263,7 +1456,11 @@ export function createReport(nodeId: string, reportReason: string) {
   });
 }
 
-// 获取微信分享的签名
+/**
+ * get wechat share signature
+ * @param url 
+ * @returns 
+ */
 export function getWechatSignature(url: string) {
   return axios.post(Url.WECHAT_MP_SIGNATURE, {
     url,
@@ -1271,9 +1468,9 @@ export function getWechatSignature(url: string) {
 }
 
 /**
- * 标记通知已读
- * @param id 通知ID,支持批量
- * @param isAll  是否全量:1全量,0非全量
+ * mark notification as read
+ * @param id notification id, batch edit support
+ * @param isAll  total or not 
  */
 export function transferNoticeToRead(id: string[], isAll?: boolean) {
   return axios.post(Url.TRANSFER_NOTICE_TO_READ, {
@@ -1282,17 +1479,31 @@ export function transferNoticeToRead(id: string[], isAll?: boolean) {
   });
 }
 
-// 创建开发者访问令牌
+/**
+ * create developer access token
+ * @returns 
+ */
 export function createApiKey() {
   return axios.post(Url.CREATE_API_KEY);
 }
 
-// 刷新开发者访问令牌
+/**
+ * refresh developer access token
+ * @param code 
+ * @param type 
+ * @returns 
+ */
 export function refreshApiKey(code?: string, type?: string) {
   return axios.post(Url.REFRESH_API_KEY, { code, type });
 }
 
-// 创建模板
+/**
+ * create template
+ * @param nodeId 
+ * @param name 
+ * @param data 
+ * @returns 
+ */
 export function createTemplate(nodeId: string, name: string, data = true) {
   return axios.post(Url.CREATE_TEMPLATE, {
     nodeId,
@@ -1301,7 +1512,11 @@ export function createTemplate(nodeId: string, name: string, data = true) {
   });
 }
 
-// 获取官方模版分类列表
+/**
+ * get official template category list
+ * @param categoryCodes 
+ * @returns 
+ */
 export function getTemplateCategory(categoryCodes?: string) {
   return axios.get(Url.OFFICIAL_TEMPLATE_CATEGORY, {
     params: {
@@ -1310,7 +1525,14 @@ export function getTemplateCategory(categoryCodes?: string) {
   });
 }
 
-// 获取模版列表
+/**
+ * get official template list
+ * @param spaceId 
+ * @param categoryCode 
+ * @param isPrivate 
+ * @param headers 
+ * @returns 
+ */
 export function getTemplateList(spaceId: string, categoryCode?: string, isPrivate?: boolean, headers?: Record<string, string>) {
   return axios.get(urlcat(Url.SPACE_TEMPLATES, { spaceId }), {
     params: {
@@ -1321,33 +1543,59 @@ export function getTemplateList(spaceId: string, categoryCode?: string, isPrivat
   });
 }
 
-// 获取官方模板分类内容
+/**
+ * get official template category content
+ * @param categoryCode 
+ * @param headers 
+ * @returns 
+ */
 export function getTemplateCategories(categoryCode: string, headers?: Record<string, string>) {
   return axios.get(urlcat(Url.TEMPLATE_CATEGORIES, { categoryCode }), {
     headers,
   });
 }
 
-// 删除模版
+/**
+ * Delete templates
+ * 
+ * @param tempalte 
+ * @returns 
+ */
 export const deleteTemplate = (tempalte: string) => {
   return axios.delete(`${Url.DELETE_TEMPLATE}${tempalte}`);
 };
 
-// 获取模板专题内容
+/**
+ * Get template album content
+ * @param albumId 
+ * @param headers 
+ * @returns 
+ */
 export function getTemplateAlbum(albumId: string, headers?: Record<string, string>) {
   return axios.get(urlcat(Url.TEMPLATE_ALBUMS, { albumId }), {
     headers,
   });
 }
 
-// 获取模板专题推荐内容
+/**
+ * Get template album content
+ * 
+ * @param headers 
+ * @returns 
+ */
 export function getTemplateAlbumsRecommend(headers?: Record<string, string>) {
   return axios.get(Url.TEMPLATE_ALBUMS_RECOMMEND, {
     headers,
   });
 }
 
-// 获取模板目录信息
+/**
+ * get template directory information
+ * @param templateId 
+ * @param isPrivate 
+ * @param categoryCode 
+ * @returns 
+ */
 export const templateDirectory = (templateId: string, isPrivate: boolean, categoryCode?: string) => {
   return axios.get(Url.TEMPLATE_DIRECTORY, {
     params: {
@@ -1358,7 +1606,14 @@ export const templateDirectory = (templateId: string, isPrivate: boolean, catego
   });
 };
 
-// 引用模板
+/**
+ * use template
+ * 
+ * @param templateId 
+ * @param parentId 
+ * @param data 
+ * @returns 
+ */
 export const useTemplate = (templateId: string, parentId: string, data?: boolean) => {
   return axios.post(Url.USE_TEMPLATE, {
     templateId,
@@ -1372,7 +1627,12 @@ export const triggerWizard = (wizardId: number) => {
     wizardId,
   });
 };
-// 校验模版名称是否已存在
+
+/**
+ * validate the template's existence
+ * @param name 
+ * @returns 
+ */
 export const templateNameValidate = (name: string) => {
   return axios.get(Url.TEMPLATE_NAME_VALIDATE, {
     params: {
@@ -1381,14 +1641,23 @@ export const templateNameValidate = (name: string) => {
   });
 };
 
-// 获取热门推荐内容
+/**
+ * get hot recommend content
+ * @param headers 
+ * @returns 
+ */
 export const templateRecommend = (headers?: Record<string, string>) => {
   return axios.get<IApiWrapper & { data: ITemplateRecommendResponse }>(Url.TEMPLATE_RECOMMEND, {
     headers,
   });
 };
 
-// 加载或者搜索成员，显示最近选择过的最多 10 条记录。用于成员字段下拉选择
+/**
+ * load or search members.
+ * display the most selected recent 10 records for Member Field choices
+ * @param param0 
+ * @returns 
+ */
 export function loadOrSearch({ filterIds, keyword, names, unitIds, linkId, all, searchEmail }: ILoadOrSearchArg): Promise<IAxiosResponse<any>> {
   return axios.get(Url.LOAD_OR_SEARCH, {
     params: {
@@ -1403,6 +1672,13 @@ export function loadOrSearch({ filterIds, keyword, names, unitIds, linkId, all, 
   });
 }
 
+/**
+ * Search unit(folder/file) info
+ * 
+ * @param names 
+ * @param linkId 
+ * @returns 
+ */
 export function searchUnitInfoVo(names: string, linkId?: string) {
   return axios.post(Url.SEARCH_UNIT_INFO_VO, {
     names,
@@ -1410,23 +1686,43 @@ export function searchUnitInfoVo(names: string, linkId?: string) {
   });
 }
 
-// 成员字段变更时，提交增量。后端聚合发提醒。
+/**
+ * when member field change, submit increment. 
+ * backend will aggregate them to send notice.
+ * @param data 
+ * @returns 
+ */
 export function commitRemind(data: ICommitRemind) {
   return axios.post(Url.COMMIT_REMIND, data);
 }
 
-// 开启节点继承模式
+/**
+ * Enable node permission (inheritance parent)
+ * 
+ * @param nodeId 
+ * @returns 
+ */
 export function enableRoleExtend(nodeId: string) {
   return axios.post(Url.ENABLE_ROLE_EXTEND + `?nodeId=${nodeId}`);
 }
 
-// 关闭节点继承模式
+/**
+ * Disable node permission (inheritance parent)
+ * @param nodeId 
+ * @param includeExtend 
+ * @returns 
+ */
 export function disableRoleExtend(nodeId: string, includeExtend?: boolean) {
   const params = includeExtend ? { includeExtend } : {};
   return axios.post(Url.DISABLE_ROLE_EXTEND + `?nodeId=${nodeId}`, params);
 }
 
-// 删除节点角色
+/**
+ * Delete node role
+ * @param nodeId 
+ * @param unitId 
+ * @returns 
+ */
 export function deleteRole(nodeId: string, unitId: string) {
   return axios.delete(Url.DELETE_ROLE, {
     data: {
@@ -1436,7 +1732,15 @@ export function deleteRole(nodeId: string, unitId: string) {
   });
 }
 
-// 查询节点角色列表
+/**
+ * Query the node role list
+ * 
+ * @param nodeId 
+ * @param includeAdmin 
+ * @param includeExtend 
+ * @param includeSelf 
+ * @returns 
+ */
 export function listRole(nodeId: string, includeAdmin?: boolean, includeExtend?: boolean, includeSelf?: string) {
   return axios.get(Url.NODE_LIST_ROLE, {
     params: {
@@ -1448,7 +1752,14 @@ export function listRole(nodeId: string, includeAdmin?: boolean, includeExtend?:
   });
 }
 
-// 修改节点的组织单元所属角色
+/**
+ * Edit the role of the node's organization unit
+ * 
+ * @param nodeId 
+ * @param unitId 
+ * @param role 
+ * @returns 
+ */
 export function editRole(nodeId: string, unitId: string, role: string) {
   return axios.post(Url.EDIT_ROLE, {
     nodeId,
@@ -1457,7 +1768,13 @@ export function editRole(nodeId: string, unitId: string, role: string) {
   });
 }
 
-// 批量修改节点组织单元所属角色
+/**
+ * Batch edit the role of the node's organization unit
+ * @param nodeId 
+ * @param unitIds 
+ * @param role 
+ * @returns 
+ */
 export function batchEditRole(nodeId: string, unitIds: string[], role: string) {
   return axios.post(Url.BATCH_EDIT_ROLE, {
     nodeId,
@@ -1466,14 +1783,25 @@ export function batchEditRole(nodeId: string, unitIds: string[], role: string) {
   });
 }
 
-// 批量删除节点权限
+/**
+ * Batch delete node roles
+ * @param nodeId 
+ * @param unitIds 
+ * @returns 
+ */
 export function batchDeleteRole(nodeId: string, unitIds: string[]) {
   return axios.delete(Url.BATCH_DELETE_ROLE, {
     data: { unitIds, nodeId },
   });
 }
 
-// 添加节点指定角色的组织单元
+/**
+ * Add role to specified organization unit
+ * @param nodeId 
+ * @param unitIds 
+ * @param role 
+ * @returns 
+ */
 export function addRole(nodeId: string, unitIds: string[], role: string) {
   return axios.post(Url.ADD_ROLE, {
     nodeId,
@@ -1482,7 +1810,14 @@ export function addRole(nodeId: string, unitIds: string[], role: string) {
   });
 }
 
-// 提交问卷调查
+/**
+ * Submit questionnaire
+ * 
+ * TODO: remove this hard code api
+ * 
+ * @param data 
+ * @returns 
+ */
 export function submitQuestionnaire(data: any) {
   return axios({
     method: 'post',
@@ -1492,17 +1827,31 @@ export function submitQuestionnaire(data: any) {
   });
 }
 
-// 获取空间的订阅信息
+/**
+ * get space subscription info
+ * 
+ * @param spaceId 
+ * @returns 
+ */
 export function subscribeInfo(spaceId: string) {
   return axios.get(Url.SUBSCRIBE_INFO + spaceId);
 }
 
-// 查询回收站的节点列表
+/**
+ * Query trash's node list
+ * @param params 
+ * @returns 
+ */
 export function getTrashList(params?: IRubbishListParams) {
   return axios.get(Url.TRASH_LIST, { params });
 }
 
-// 恢复节点
+/**
+ * Recover trash node
+ * @param nodeId 
+ * @param parentId 
+ * @returns 
+ */
 export function trashRecover(nodeId: string, parentId?: string) {
   return axios.post(Url.TRASH_RECOVER, {
     nodeId,
@@ -1510,17 +1859,32 @@ export function trashRecover(nodeId: string, parentId?: string) {
   });
 }
 
-// 删除回收站的节点
+/**
+ * Delete trash's node
+ * @param nodeId 
+ * @returns 
+ */
 export function trashDelete(nodeId: string) {
   return axios.delete(`${Url.TRASH_DELETE}${nodeId}`);
 }
 
-// 更改节点收藏状态
+/**
+ * update node's favorite status
+ * 
+ * @param nodeId 
+ * @returns 
+ */
 export function updateNodeFavoriteStatus(nodeId: string) {
   return axios.post(`${Url.UPDATE_NODE_FAVORITE_STATUS}${nodeId}`);
 }
 
-// 移动收藏节点位置
+/**
+ * Move favorite node position
+ * 
+ * @param nodeId 
+ * @param preNodeId 
+ * @returns 
+ */
 export function moveFavoriteNode(nodeId: string, preNodeId?: string) {
   return axios.post(Url.MOVE_FAVORITE_NODE, {
     nodeId,
@@ -1528,17 +1892,28 @@ export function moveFavoriteNode(nodeId: string, preNodeId?: string) {
   });
 }
 
-// 查询收藏的节点列表
+/**
+ * Query favorite node list
+ * @returns 
+ */
 export function getFavoriteNodeList() {
   return axios.get(Url.FAVORITE_NODE_LIST);
 }
 
-// 查询账户积分信息
+/**
+ * get user's point(credit) info
+ * @returns 
+ */
 export function getUserIntegral() {
-  return axios.get(Url.USER_INTEGRAL);
+  return axios.get(Url.USER_CREDIT);
 }
 
-// 分页查询积分收支明细
+/**
+ * get user's point(credit) transaction list
+ * 
+ * @param pageNo 
+ * @returns 
+ */
 export function getUserIntegralRecords(pageNo: number) {
   const pageObjectParams = JSON.stringify({
     pageSize: ConfigConstant.USER_INTEGRAL_RECORDS_PAGE_SIZE,
@@ -1551,7 +1926,12 @@ export function getUserIntegralRecords(pageNo: number) {
   });
 }
 
-// 分页查询空间审计日志
+/**
+ * query audit log list with pagination
+ * 
+ * @param param0 
+ * @returns 
+ */
 export const getSpaceAudit = ({ spaceId, ...params }: IGetSpaceAuditReq) =>
   axios.get(urlcat(Url.SPACE_AUDIT, { spaceId }), {
     params: {
@@ -1559,12 +1939,22 @@ export const getSpaceAudit = ({ spaceId, ...params }: IGetSpaceAuditReq) =>
     },
   });
 
-// 兑换v码
+/**
+ * Reedem the code award
+ * @param code 
+ * @returns 
+ */
 export function vCodeExchange(code: string) {
   return axios.post(Url.CODE_EXCHANGE + code);
 }
 
-// 模糊搜索模板
+/**
+ * fuzzy search template
+ * 
+ * @param keyword 
+ * @param className 
+ * @returns 
+ */
 export function searchTemplate(keyword: string, className?: string) {
   return axios.get(Url.TEMPLATE_SEARCH, {
     params: {
@@ -1574,12 +1964,23 @@ export function searchTemplate(keyword: string, className?: string) {
   });
 }
 
-// 申请加入空间
+/**
+ * apply to join space
+ * 
+ * @param spaceId 
+ * @returns 
+ */
 export function applyJoinSpace(spaceId: string) {
   return axios.post(Url.APPLY_JOIN_SPACE, { spaceId });
 }
 
-// 处理“某人加入空间站”的消息
+/**
+ * process the message of "someone join space"
+ * 
+ * @param notifyId 
+ * @param agree 
+ * @returns 
+ */
 export function processSpaceJoin(notifyId: string, agree: boolean) {
   return axios.post(Url.PROCESS_SPACE_JOIN, {
     notifyId,
@@ -1587,240 +1988,112 @@ export function processSpaceJoin(notifyId: string, agree: boolean) {
   });
 }
 
-//获取飞书登录用户身份
-export function socialFeiShuUserAuth(token: string) {
-  return axios.get(Url.SOCIAL_FEISHU_USER_AUTH, {
-    params: { access_token: token },
-  });
-}
-
-//校验是否当前飞书登录用户是否为应用管理员
-export function socialFeiShuCheckAdmin(openId: string, tenantKey: string) {
-  return axios.get(Url.SOCIAL_FEISHU_CHECK_ADMIN, {
-    params: { openId, tenantKey },
-  });
-}
-
-//校验飞书企业是否已绑定空间站
-export function socialFeiShuCheckTenantBind(tenantKey: string) {
-  return axios.get(Url.SOCIAL_FEISHU_CHECK_TENANT_BIND, {
-    params: { tenantKey },
-  });
-}
-
-//飞书账号绑定维格账号
-export function socialFeiShuBindUser(areaCode: string, mobile: string, code: string, openId: string, tenantKey: string) {
-  return axios.post(Url.SOCIAL_FEISHU_BIND_USER, {
-    areaCode,
-    openId,
-    tenantKey,
-    mobile,
-    code,
-  });
-}
-
-//飞书应用绑定空间站
-export function socialFeiShuBindSpace(tenantKey: string, spaceList: any[]) {
-  return axios.post(urlcat(Url.SOCIAL_FEISHU_BIND_SPACE, { tenantKey }), spaceList);
-}
-
-//获取飞书企业的信息
-export function getFeiShuTenantInfo(tenantKey: string) {
-  return axios.get(urlcat(Url.SOCIAL_FEISHU_TENANT_INFO, { tenantKey }));
-}
-
-//飞书用户授权登录
-export function feishuUserLogin(openId: string, tenantKey: string) {
-  return axios.post(Url.SOCIAL_FEISHU_USER_LOGIN, { openId, tenantKey });
-}
-
-//获取飞书企业绑定详情
-export function feishuTenantBindDetail(tenantKey: string) {
-  return axios.get(urlcat(Url.SOCIAL_FEISHU_TENANT_BIND_DETAIL, { tenantKey }));
-}
-
-//飞书-获取租户绑定的信息
-export function getFeiShuTenant(tenantKey: string) {
-  return axios.get(urlcat(Url.SOCIAL_FEISHU_TENANT, { tenantKey }));
-}
-
-//飞书-变更主管理员
-export function feishuChangeMainAdmin(tenantKey, spaceId, memberId) {
-  return axios.post(Url.SOCIAL_CHANGE_ADMIN, { memberId, spaceId, tenantKey });
-}
-
-// 钉钉（第三方）- 登陆接口
-export function dingTalkUserLogin(suiteId: string, corpId: string, code: string, bizAppId?: string) {
-  const data: Record<string, string> = {
-    corpId,
-    code,
-  };
-
-  if (bizAppId) {
-    data.bizAppId = bizAppId;
-  }
-
-  return axios.post(urlcat(Url.SOCIAL_DINGTALK_USER_LOGIN, { suiteId }), data);
-}
-
-// 钉钉（第三方）- 免登接口
-export function dingTalkBindSpace(suiteId: string, corpId: string) {
-  return axios.get(urlcat(Url.SOCIAL_DINGTALK_BIND_SPACE, { suiteId }), {
-    params: {
-      corpId,
-    },
-  });
-}
-
-// 钉钉（第三方）- 获取租户绑定的信息
-export function dingTalkAdminDetail(suiteId: string, corpId: string) {
-  return axios.get(urlcat(Url.SOCIAL_DINGTALK_ADMIN_DETAIL, { suiteId }), {
-    params: {
-      corpId,
-    },
-  });
-}
-
-// 钉钉（第三方）- 后台管理员登录
-export function dingTalkAdminLogin(suiteId: string, code: string, corpId: string) {
-  const data: Record<string, string> = { code };
-
-  if (corpId) {
-    data.corpId = corpId;
-  }
-
-  return axios.post(urlcat(Url.SOCIAL_DINGTALK_ADMIN_LOGIN, { suiteId }), data);
-}
-
-// 钉钉（第三方）- 后台管理员变更
-export function dingTalkChangeAdmin(suiteId: string, corpId: string, spaceId: string, memberId: string) {
-  return axios.post(urlcat(Url.SOCIAL_DINGTALK_CHANGE_ADMIN, { suiteId }), { corpId, spaceId, memberId });
-}
-
-//钉钉扫码登陆回调
-export function dingtalkH5UserLogin(agentId: string, code: string) {
-  return axios.post(urlcat(Url.DINGTALK_H5_USER_LOGIN, { agentId }), { code });
-}
-
-//钉钉绑定空间
-export function dingtalkH5BindSpace(agentId: string, spaceId: string) {
-  return axios.post(urlcat(Url.DINGTALK_H5_BIND_SPACE, { agentId }), { spaceId });
-}
-
-export function getDingtalkH5BindSpaceId(agentId: string) {
-  return axios.get(urlcat(Url.DINGTALK_H5_BIND_SPACE, { agentId }));
-}
-
-export function freshDingtalkOrg() {
-  return axios.get(Url.DINGTALK_REFRESH_ORG);
-}
-
-export function freshWecomOrg() {
-  return axios.get(Url.WECOM_REFRESH_ORG);
-}
-
-export function getDingtalkSKU(spaceId: string, callbackPage: string) {
-  return axios.post(Url.SOCIAL_DINGTALK_SKU, { spaceId, callbackPage });
-}
-
-export function getDingtalkConfig(spaceId: string, url: string) {
-  return axios.post(Url.SOCIAL_DINGTALK_CONFIG, { spaceId, url });
-}
-
-// 获取集成租户环境配置
+/**
+ * get the social tenant env config
+ * @returns 
+ */
 export function socialTenantEnv() {
   return axios.get(Url.SOCIAL_TENANT_ENV);
 }
 
-// 获取三方应用列表
+/**
+ * get 3rd apps list (marketplace)
+ * 
+ * @param spaceId 
+ * @returns 
+ */
 export function getMarketplaceApps(spaceId: string) {
   return axios.get(urlcat(Url.GET_MARKETPLACE_APPS, { spaceId }));
 }
 
 /**
- * 第三方应用集成改版
+ * get 3rd apps list (marketplace)
+ * @returns 
  */
-// 获取应用列表
 export function getAppstoreApps() {
   return axios.get(Url.GET_APPSTORES_APPS);
 }
 
-// 获取应用实例列表 - 已开启的应用
+/**
+ * get app instances (enabled)
+ * @param spaceId 
+ * @returns 
+ */
 export function getAppInstances(spaceId: string) {
   return axios.get(urlcat(Url.APP_INSTANCE, { spaceId }));
 }
 
-// 创建应用实例 - 开通使用时需要先创建再跳转（企微，飞书）
+/**
+ * 
+ * create app instances (before use it, you need to create it(wecom/lark) first)
+ * 
+ * @param spaceId 
+ * @param appId 
+ * @returns 
+ */
 export function createAppInstance(spaceId: string, appId: string) {
   return axios.post(Url.APP_INSTANCE, { spaceId, appId });
 }
 
-// 删除应用实例
+/**
+ * 
+ * delete app instance
+ * 
+ * @param appInstanceId 
+ * @returns 
+ */
 export function deleteAppInstance(appInstanceId: string) {
   return axios.delete(urlcat(Url.SINGLE_APP_INSTANCE, { appInstanceId }));
 }
 
-// 获取单个应用实例配置
+/**
+ * 
+ * get app instance by id
+ * 
+ * @param appInstanceId 
+ * @returns 
+ */
 export function getAppInstanceById(appInstanceId: string) {
   return axios.get(urlcat(Url.SINGLE_APP_INSTANCE, { appInstanceId }));
 }
 
-// 更新飞书基础配置
-export function updateLarkBaseConfig(appInstanceId: string, appKey: string, appSecret: string) {
-  return axios.put(urlcat(Url.UPDATE_LARK_BASE_CONFIG, { appInstanceId }), { appKey, appSecret });
-}
-
-// 更新飞书事件配置
-export function updateLarkEventConfig(appInstanceId: string, eventEncryptKey: string, eventVerificationToken: string) {
-  return axios.put(urlcat(Url.UPDATE_LARK_EVENT_CONFIG, { appInstanceId }), { eventEncryptKey, eventVerificationToken });
-}
-
-/* ----- 我是分割线 ----- */
-
-// 开启应用
+/**
+ * enable app
+ * @param spaceId 
+ * @param appId 
+ * @returns 
+ */
 export function enableApp(spaceId: string, appId: string) {
   return axios.post(urlcat(Url.APP_ENABLE, { spaceId, appId }));
 }
 
-// 关闭应用
+/**
+ * disable app
+ * @param spaceId 
+ * @param appId 
+ * @returns 
+ */
 export function disableApp(spaceId: string, appId: string) {
   return axios.post(urlcat(Url.APP_DISABLE, { spaceId, appId }));
 }
 
-// 获取音视频的元信息
+/**
+ * get audio and video metadata
+ * 
+ * @param url 
+ * @returns 
+ */
 // https://developer.qiniu.com/dora/1247/audio-and-video-metadata-information-avinfo
 export function getAvInfo(url: string) {
   return axios.get(url);
 }
 
-// 企业微信验证授权应用配置
-export function socialWecomCheckConfig({ agentId, agentSecret, appHomepageUrl, authCallbackDomain, corpId, trustedDomain }) {
-  return axios.post(Url.SOCIAL_WECOM_CHECK_CONFIG, { agentId, agentSecret, appHomepageUrl, authCallbackDomain, corpId, trustedDomain });
-}
-
-// 企业微信绑定
-export function socialWecomBindConfig(configSha: string, code: string, spaceId: string) {
-  return axios.post(urlcat(Url.SOCIAL_WECOM_BIND_CONFIG, { configSha }), { code, spaceId });
-}
-
-// 企业微信校验-域名转换IP
-export function socialWecomDomainCheck(domain: string) {
-  return axios.post(Url.SOCIAL_WECOM_DOMAIN_CHECK, { domain });
-}
-
-// 企业微信获取配置
-export function socialWecomGetConfig() {
-  return axios.get<IApiWrapper & ISocialWecomGetConfigResponse>(Url.SOCIAL_WECOM_GET_CONFIG);
-}
-
-// 获取企业微信自建应用绑定的空间站ID
-export function wecomAgentBindSpace(corpId: string, agentId: string) {
-  return axios.get<IApiWrapper & IWecomAgentBindSpaceResponse>(urlcat(Url.WECOM_AGENT_BINDSPACE, { corpId, agentId }));
-}
-
-// 获取驾驶舱的广告信息
-// 数据维护在 https://vika.cn/workbench/dst9vf4SSYhEAme66b/viwRvDFWeP11B
-// 使用腾讯云的云函数实现获取数据的API，每个10分钟同源表同步一次数据
+/**
+ * get space admin ad list
+ * the config data stored in the space's config: https://vika.cn/workbench/dst9vf4SSYhEAme66b/viwRvDFWeP11B
+ * if use cloud function to get API, every 10 minutes will sync once
+ * @returns 
+ */
 export function getSpaceAdList() {
   return axios.get<IAdData>('https://service-p4w3x0tq-1254196833.gz.apigw.tencentcs.com/release/ads');
 }
@@ -1833,22 +2106,39 @@ export function unBindEmail(code: string) {
   return axios.post<IApiWrapper>(Url.USER_UNBIND_EMAIL, { code });
 }
 
-// 经济系统用量提示
+/**
+ * billing system usage tips
+ * @param params 
+ * @returns 
+ */
 export function subscribeRemind(params: { nodeId?: string; spaceId: string; specification?: string; templateId: string; usage: string }) {
   return axios.post(Url.SUBSCRIBE_REMIND, params);
 }
 
-// 获取已开启的实验性功能
+/**
+ * get labs features
+ * @param spaceId 
+ * @returns 
+ */
 export function getLabsFeature(spaceId) {
   return axios.get(urlcat(Url.GET_LABS_FEATURE, { spaceId }));
 }
 
-// 获取实验性功能列表
+/**
+ * get labs features list
+ * @returns 
+ */
 export function getLabsFeatureList() {
   return axios.get<IApiWrapper & ILabsFeatureListResponse>(Url.GET_LABS_FEATURE_LIST);
 }
 
-// 更新实验性功能
+/**
+ * update labs features list
+ * @param key 
+ * @param isEnabled 
+ * @param spaceId 
+ * @returns 
+ */
 export function updateLabsFeatureList(key: string, isEnabled: boolean, spaceId: string) {
   return axios.post<IApiWrapper>(Url.GET_LABS_FEATURE, {
     key,
@@ -1878,13 +2168,17 @@ export function applyResourceChangesets(changesets: ILocalChangeset[], roomId: s
   );
 }
 
-// 获取节点信息 - 文件信息窗
+/**
+ * get node info - (file info UI modal)
+ * @param nodeId 
+ * @returns 
+ */
 export function getNodeInfoWindow(nodeId: string) {
   return axios.get<IApiWrapper & { data: INodeInfoWindowResponse }>(urlcat(Url.GET_NODE_INFO_WINDOW, { nodeId }));
 }
 
 // eslint-disable-next-line max-len
-// 查询产品所有计划价目表 https://integration.vika.ltd/api/v1/doc.html#/default/%E8%AE%A2%E5%8D%95%E6%A8%A1%E5%9D%97%E7%9B%B8%E5%85%B3%E6%8E%A5%E5%8F%A3/getPriceListByProductUsingGET
+// query all pricing plans https://integration.vika.ltd/api/v1/doc.html#/default/%E8%AE%A2%E5%8D%95%E6%A8%A1%E5%9D%97%E7%9B%B8%E5%85%B3%E6%8E%A5%E5%8F%A3/getPriceListByProductUsingGET
 export function queryOrderPriceList(product: 'GOLD' | 'SILVER') {
   return axios.get<IApiWrapper & { data: IQueryOrderPriceResponse[] }>(Url.ORDER_PRICE, {
     params: {
@@ -1913,87 +2207,23 @@ export function paidCheck(orderId: string) {
   return axios.get<IApiWrapper & { data: IQueryOrderStatusResponse }>(urlcat(Url.PAID_CHECK, { orderId }));
 }
 
-/*---------- 企微应用商店 ----------*/
-
-// 企业微信内点击应用跳转自动登录
-export function postWecomAutoLogin(code: string, suiteId: string) {
-  return axios.post(Url.POST_WECOM_AUTO_LOGIN, { code, suiteId });
-}
-
-// 扫码登录
-export function postWecomScanLogin(authCode: string, suiteId: string) {
-  return axios.post(Url.POST_WECOM_SCAN_LOGIN, { authCode, suiteId });
-}
-
-// 获取用户在登录空间站时信息
-export function getWecomLoginInfo(authCorpId: string, suiteId: string) {
-  return axios.get(urlcat(Url.GET_WECOM_SPACE_INFO, { authCorpId, suiteId }));
-}
-
-// 管理员跳转第三方管理页面自动登录
-export function postWecomLoginAdmin(authCode: string, suiteId: string) {
-  return axios.post(Url.POST_WECOM_LOGIN_ADMIN, { authCode, suiteId });
-}
-
-// 获取应用绑定的空间站信息
-export function getWecomBindSpacesInfo(authCorpId: string, suiteId: string, cpUserId: string) {
-  return axios.get(urlcat(Url.GET_WECOM_TENANT_INFO, { authCorpId, suiteId, cpUserId }));
-}
-
-// 变更管理员
-export function postWecomChangeAdmin(authCorpId: string, memberId: number, spaceId: string, suiteId: string, cpUserId: string) {
-  return axios.post(Url.POST_WECOM_CHANGE_ADMIN, { authCorpId, memberId, spaceId, suiteId, cpUserId });
-}
-
-// 授权模式邀请成员
-export function postWecomUnauthMemberInvite(spaceId: string, selectedTickets: string[]) {
-  return axios.post(Url.POST_WECOM_UNAUTHMEMBER_INVITE, { spaceId, selectedTickets });
-}
-
-// 获取企业微信 config 参数
-export function getWecomCommonConfig(spaceId: string, url: string) {
-  return axios.get(Url.GET_WECOM_CONFIG, {
-    params: { spaceId, url },
-  });
-}
-
-// 获取企业微信 agentConfig 参数
-export function getWecomAgentConfig(spaceId: string, url: string) {
-  return axios.get(Url.GET_WECOM_AGENT_CONFIG, {
-    params: { spaceId, url },
-  });
-}
-
-// 获取无权限成员列表
+/**
+ * get members that have no permissions
+ * 
+ * @param nodeId 
+ * @param unitIds 
+ * @returns 
+ */
 export function getNoPermissionMember(nodeId: string, unitIds: string[]) {
   return axios.post<IApiWrapper & INoPermissionMemberResponse>(Url.NO_PERMISSION_MEMBER, { nodeId, unitIds });
 }
 
-/*---------- 腾讯云IDASS ----------*/
-
-// 获取玉符Idass登录url
-export function getIDassLoginUrl(clientId: string) {
-  return axios.get(`${Url.GET_IDASS_LOGIN_URL}/${clientId}`);
-}
-
-// 腾讯云玉符
-export function idaasLoginCallback(clientId: string, code: string, state: string) {
-  return axios.post(`${Url.IDAAS_LOGIN_CALLBACK}/${clientId}`, { code, state });
-}
-
-// 同步通讯录
-export function idaasContactSync() {
-  return axios.post(Url.IDAAS_CONTACT_SYNC);
-}
-
-// 获取空间站绑定的玉符信息
-export function spaceBindIdaasInfo(spaceId: string) {
-  return axios.get(urlcat(Url.IDAAS_GET_SPACE_BIND_INFO, { spaceId }));
-}
-
-/*---------- 腾讯云IDASS ----------*/
-
-// 批量获取URL相关信息, URL列识别用
+/**
+ * batch get url info,  for URL field recognition
+ * 
+ * @param urls 
+ * @returns 
+ */
 export const getURLMetaBatch = (urls: string[]) => axios.post(Url.GET_URL_META_BATCH, { urls });
 
 export const getUploadCertificate = (params: { count: number; data: string; nodeId?: string; type: number }) => {
@@ -2008,27 +2238,48 @@ export const getSubscribeActiveEvents = () => {
   return axios.get<IApiWrapper & { data: ISubscribeActiveEventResponse }>(Url.SUBSCRIBE_ACTIVE_EVENT);
 };
 
-// 获取角色列表
+/**
+ * get role list
+ * @returns 
+ */
 export const getRoleList = () => {
   return axios.get<IApiWrapper & { data: IGetRoleListResponse }>(Url.GET_ROLE_LIST);
 };
 
-// 创建角色
+/**
+ * create organization role
+ * @param roleName 
+ * @returns 
+ */
 export const createRole = (roleName: string) => {
   return axios.post<IApiWrapper>(Url.CREATE_NEW_ROLE, { roleName });
 };
 
-// 删除角色
+/**
+ * delete organization role
+ * @param roleId 
+ * @returns 
+ */
 export const deleteOrgRole = (roleId: string) => {
   return axios.delete<IApiWrapper>(urlcat(Url.DELETE_ORG_ROLE, { roleId }));
 };
 
-// 更新角色
+/**
+ * update organization role
+ * @param roleId 
+ * @param roleName 
+ * @returns 
+ */
 export const updateOrgRole = (roleId: string, roleName: string) => {
   return axios.patch<IApiWrapper>(urlcat(Url.UPDATE_ORG_ROLE, { roleId }), { roleName });
 };
 
-// 获取角色中成员列表
+/**
+ * get role's members list
+ * @param roleId 
+ * @param page 
+ * @returns 
+ */
 export const getRoleMemberList = (roleId: string, page: { pageSize: number; pageNo: number }) => {
   const pageObjectParams = JSON.stringify(page);
   return axios.get<IApiWrapper & { data: IGetRoleMemberListResponse }>(urlcat(Url.GET_MEMBER_LIST_BY_ROLE, { roleId }), {
@@ -2036,17 +2287,30 @@ export const getRoleMemberList = (roleId: string, page: { pageSize: number; page
   });
 };
 
-// 角色中新增成员
+/**
+ * add member to role
+ * @param roleId 
+ * @param unitList 
+ * @returns 
+ */
 export const addRoleMember = (roleId: string, unitList: { id: string; type: MemberType }[]) => {
   return axios.post<IApiWrapper>(urlcat(Url.ADD_ROLE_MEMBER, { roleId }), { unitList });
 };
 
-// 角色中删除成员
+/**
+ * delete member from role
+ * @param roleId 
+ * @param unitIds 
+ * @returns 
+ */
 export const deleteRoleMember = (roleId: string, unitIds: string[]) => {
   return axios.delete<IApiWrapper>(urlcat(Url.DELETE_ROLE_MEMBER, { roleId }), { data: { unitIds }});
 };
 
-// 初始化角色
+/**
+ * init roles
+ * @returns 
+ */
 export const initRoles = () => {
   return axios.post<IApiWrapper>(Url.INIT_ROLE);
 };

@@ -3,18 +3,18 @@ import { TestFunction } from 'config/system_config.interface';
 import { IPageDataBase } from 'store/interface/common';
 import { MemberType } from 'types';
 
-// 创建通知
+// the interface of Create Notification
 export interface ICreateNotification {
-  templateId: string; // 模版ID
-  spaceId?: string; // 空间id
-  nodeId?: string; // 节点ID
-  fromUserId?: string; // 发送通知用户ID,系统通知用户为0
-  toUserId?: string[]; // 被通知用户ID
+  templateId: string; // Template ID
+  spaceId?: string; // Space id
+  nodeId?: string; // Node ID
+  fromUserId?: string; // the user ID who send the notification. System Notification user id is 0.
+  toUserId?: string[]; // the user that get notification. 
   toMemberId?: string[];
   body?: {
     extras: {
-      viewId?: string; // 视图ID
-      recordIds?: string; // 涉及到的表格的记录行ID
+      viewId?: string; // Datasheet View ID
+      recordIds?: string; // the Records Rows ID
     };
   };
 }
@@ -35,7 +35,7 @@ export interface ICommitRemind {
     recordTitle?: string;
     fieldName?: string;
   }[];
-  // 默认为 MindType.Member
+  // Default: MindType.Member
   type?: MindType;
   extra?: {
     content?: string;
@@ -49,7 +49,7 @@ export interface ILoadOrSearchArg {
   names?: string;
   unitIds?: string;
   searchEmail?: boolean;
-  // linkId 用来标注站外的操作，目前支持 templateId 和 shareId，
+  // `linkId` use to mark the operations that off-site. Now support templateId and shareId.
   linkId?: string | undefined;
   all?: boolean;
 }
@@ -63,22 +63,6 @@ export interface ISignIn {
   token?: string;
   mode?: ConfigConstant.LoginMode;
   spaceId?: string;
-}
-
-export interface ISocialWecomGetConfigResponse {
-  data: {
-    agentId: number;
-    agentSecret: string;
-    agentStatu: 0 | 1;
-    corpId: string;
-    domainName: string;
-  };
-}
-
-export interface IWecomAgentBindSpaceResponse {
-  data: {
-    bindSpaceId: string;
-  };
 }
 
 export interface ILabsFeatureListResponse {
@@ -98,23 +82,23 @@ export interface ILabsFeature {
 }
 
 export interface IUpdateSecuritySetting {
-  // 允许成员复制数据至站外,示例值(true)
+  // whether allow space member copy datasheet's data to outside,  example value(true)
   allowCopyDataToExternal?: boolean;
-  // 允许只读成员下载附件,示例值(true)
+  // whether allow read-only member download attachment, example value(true)
   allowDownloadAttachment?: boolean;
-  // 允许分享文件,示例值(true)
+  // whether allow share file, example value(true)
   fileSharable?: boolean;
-  // 全员可邀请状态
+  // whether allow all member invite other member, example value(true)
   invitable?: boolean;
-  // 允许他人申请加入空间状态,示例值(true)
+  // whether allow other member apply to join space, example value(true)
   joinable?: boolean;
-  // 显示成员手机号
+  // whether show member's phone number, example value(true)
   mobileShowable?: boolean;
-  // 节点全员可导出状态,示例值(true)「已废弃」
+  // whether allow all member export datasheet, example value(true)  (this feature is deprecated)
   nodeExportable?: boolean;
-  // 节点导出根据权限细粒度划分（0 - 禁止导出，1 - 只读以上可导出，2 - 可编辑以上可导出，3 - 可管理以上可导出）
+  // what level of member can export datasheet, (0 - disable, 1 - readonly+ can export, 2 - editable+ can export, 3 - manageable+ can export)
   exportLevel?: number;
-  // 全局水印开启状态
+  // whether the feature watermark is enabled.
   watermarkEnable?: boolean;
 }
 

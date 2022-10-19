@@ -1,21 +1,35 @@
-// 主地址
+/**
+ * Main API URL Address
+ */
 export const BASE_URL = '/api/v1';
 
-// ================ 授权相关 ======================
-// 登录或注册
+// ================ User Authentication ====================
+
+// login signin, register
 export const SIGN_IN_OR_SIGN_UP = '/signIn';
-// 登录(废弃)
+
+/**
+ * login, sign in, deprecated
+ * 
+ * @deprecate
+ */
 export const SIGN_IN = '/auth/signIn';
-// 注册(废弃)
+
+/**
+ * register, sign up, deprecated
+ * 
+ * @deprecate
+ */
 export const SIGN_UP = '/auth/signUp';
-// 退出登录
+
+// logout, sign out
 export const SIGN_OUT = '/signOut';
 
-// 注销
-export const LOGOUT = '/user/applyForClosing';
+// Close user, delete user
+export const CLOSE_USER = '/user/applyForClosing';
 
-// 撤销注销
-export const UNLOGOUT = '/user/cancelClosing';
+// cancel delete user
+export const CANCEL_CLOSE_USER = '/user/cancelClosing';
 
 export const DINGTALK_LOGIN_CALLBACK = '/dingtalk/login/callback';
 export const QQ_LOGIN_CALLBACK = '/tencent/web/callback';
@@ -23,86 +37,189 @@ export const WECHAT_LOGIN_CALLBACK = '/wechat/mp/web/callback';
 export const WECOM_LOGIN_CALLBACK = '/social/wecom/user/login';
 
 export const FEISHU_LOGIN_CALLBACK = '/social/feishu/auth/callback';
-// ================ 授权相关 ======================
 
-// ================ 公共相关 ======================
-// 发送短信验证码
+// ================ Authorization======================
+
+// ================ Public stuffs ======================
+
+/**
+ * Send SMS verify code
+ */
 export const SEND_SMS_CODE = '/base/action/sms/code';
-// 获取邮箱验证码
+
+/**
+ * Send email verify code
+ */
 export const SEND_EMAIL_CODE = '/base/action/mail/code';
-// 手机验证码校验
+
+/**
+ * Validate SMS verify code
+ */
 export const VALIDATE_SMS_CODE = '/base/action/sms/code/validate';
-// 邮箱验证码校验，使用场景：无手机时更换邮箱前验证身份、更换主管理员
+
+/**
+ * 
+ * Validate email verify code.
+ * 
+ * When to use: 
+ *   change email or space main admin when no phone number.
+ * 
+ */
 export const VALIDATE_EMAIL_CODE = '/base/action/email/code/validate';
-// 空间站-邀请临时码校验
+
+/**
+ * Space - invite verify code validate
+ */
 export const INVITE_EMAIL_VERIFY = '/base/action/invite/valid';
-// 上传文件
+
+/**
+ * Upload attachments
+ */
 export const UPLOAD_ATTACH = '/base/attach/upload';
 
-// 获取附件预览地址
+/**
+ * The url to get attachment preview
+ */
 export const OFFICE_PREVIEW = '/base/attach/officePreview/:spaceId';
+
 export const GET_CONTENT_DISPOSITION = '/attach/getContentDisposition';
 
-// ================ 公共相关 ======================
+// ================ Account ======================
 
-// ================ 账户相关 ======================
-// 获取个人信息
+/**
+ * Get My Info (me)
+ */
 export const USER_ME = '/user/me';
-// 获取是否能注销
-export const USER_CAN_LOGOUT = '/user/checkForClosing';
-// 验证手机号并校验是否已注册
-export const USER_VALIDATE = '/user/validate';
-// 空间站-查询用户是否与指定邮箱一致
-export const EMAIL_VALIDATE = '/user/validate/email';
-// 空间站-关联受邀邮箱
-export const LINK_INVITE_EMAIL = '/user/link/inviteEmail';
-// 空间站-查询用户是否绑定邮箱
-export const EMAIL_BIND = '/user/email/bind';
-// 编辑用户信息
-export const UPDATE_USER = '/user/update';
-// 修改密码
-export const UPDATE_PWD = '/user/updatePwd';
-// 找回密码
-export const RETRIEVE_PWD = '/user/retrievePwd';
-// 创建开发者访问令牌
-export const CREATE_API_KEY = '/user/createApiKey';
-// 刷新开发者访问令牌
-export const REFRESH_API_KEY = '/user/refreshApiKey';
-// 绑定邮箱
-export const BIND_EMAIL = '/user/bindEmail';
-// 绑定新手机
-export const BIND_MOBILE = '/user/bindPhone';
-// 解除账户绑定
-export const UN_BIND = '/user/unbind';
-// 查询账户积分信息
-export const USER_INTEGRAL = '/user/integral';
-// 分页查询积分收支明细
-export const USER_INTEGRAL_RECORDS = '/user/integral/records';
-// 解绑手机号
-export const USER_UNBIND_MOBILE = '/user/unbindPhone';
-// 解绑邮箱
-export const USER_UNBIND_EMAIL = '/user/unbindEmail';
-// 发送邀请码
-export const SUBMIT_INVITE_CODE = '/user/invite/reward';
-// ================ 账户相关 ======================
 
-// ================ 审计相关 ======================
-// 分页查询空间审计日志
+/**
+ * Check if the user can close or delete
+ */
+export const USER_CAN_LOGOUT = '/user/checkForClosing';
+
+/**
+ * Validate phone number and check if it has been registered
+ */
+export const USER_VALIDATE = '/user/validate';
+
+/**
+ * Space - check if the user's email is the same as the specified email
+ */
+export const EMAIL_VALIDATE = '/user/validate/email';
+
+/**
+ * Space - binding the invited email
+ */
+export const LINK_INVITE_EMAIL = '/user/link/inviteEmail';
+
+/**
+ * Space - check if the user has bound the email
+ */
+export const EMAIL_BIND = '/user/email/bind';
+
+/**
+ * Update (Edit) the user info
+ */
+export const UPDATE_USER = '/user/update';
+
+/**
+ * Change password
+ */
+export const UPDATE_PWD = '/user/updatePwd';
+
+/**
+ * Getting back the password
+ */
+export const RETRIEVE_PWD = '/user/retrievePwd';
+
+/**
+ * Create developer access token
+ */
+export const CREATE_API_KEY = '/user/createApiKey';
+
+/**
+ * Refresh developer access token
+ */
+export const REFRESH_API_KEY = '/user/refreshApiKey';
+
+/**
+ * Bind Email
+ */
+export const BIND_EMAIL = '/user/bindEmail';
+
+/**
+ * Bind phone number
+ */
+export const BIND_MOBILE = '/user/bindPhone';
+
+/**
+ * UnBind 3rd social account
+ */
+export const UN_BIND = '/user/unbind';
+
+/**
+ * Get user's points/credit
+ */
+export const USER_CREDIT = '/user/integral';
+
+/**
+ * query user's points/credit with with pagination
+ */
+export const USER_INTEGRAL_RECORDS = '/user/integral/records';
+
+/**
+ * Unbind phone number
+ */
+export const USER_UNBIND_MOBILE = '/user/unbindPhone';
+
+/**
+ * Unbind email
+ */
+export const USER_UNBIND_EMAIL = '/user/unbindEmail';
+
+/**
+ * invite code reward
+ */
+export const INVITE_CODE_REWARD = '/user/invite/reward';
+
+// ================ Audit ======================
+
+/**
+ * Query space audit logs with pagination
+ */
 export const SPACE_AUDIT = '/space/:spaceId/audit';
 
-// ================ 微信相关 ======================
-// 获取微信公众号二维码
+// ================ Wechat ======================
+
+/**
+ * Get wechat public account QR code
+ */
 export const OFFICIAL_ACCOUNTS_QRCODE = '/wechat/mp/qrcode';
-// 轮询
+
+/**
+ * Poll check wechat public account QR code
+ */
 export const OFFICIAL_ACCOUNTS_POLL = '/wechat/mp/poll';
-// 小程序扫码轮询接口
+
+/**
+ * Poll check wechat mini program QR code
+ */
 export const POLL = 'wechat/miniapp/poll';
-// 获取小程序二维码
+
+/**
+ * Get wechat mini program QR code
+ */
 export const WECHAT_QR_CODE = 'wechat/miniapp/macode';
-// 微信账号和维格账号之间的操作
+
+/**
+ * Wechat miniapp operation page
+ */
 export const WECHAT_OPERATE = 'wechat/miniapp/operate';
-// 微信sdk分享
+
+/**
+ * Get Wechat Signature
+ */
 export const WECHAT_MP_SIGNATURE = '/wechat/mp/signature';
+
 // ================ 微信相关 ======================
 
 // ================ 空间相关 ======================
@@ -351,7 +468,10 @@ export const SEARCH_UNIT = '/org/searchUnit';
 export const GET_SUB_UNIT_LIST = '/org/getSubUnitList';
 // 查询在空间内所属组织单元列表
 export const MEMBER_UNITS = '/org/member/units';
-// 编辑自己成员信息
+
+/**
+ * Edit Member Info
+ */
 export const MEMBER_UPDATE = '/org/member/update';
 // 加载或者搜索成员
 export const LOAD_OR_SEARCH = '/org/loadOrSearch';

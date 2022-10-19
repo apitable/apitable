@@ -38,7 +38,7 @@ export function getSubAdminList(pageNo: number) {
 
 export function getMainAdminInfo() {
   return dispatch => {
-    Api.mianAdminInfo().then(res => {
+    Api.getMainAdminInfo().then(res => {
       const { success, data } = res.data;
       success && dispatch(updateMainAdminInfo(data));
     });
