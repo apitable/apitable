@@ -35,6 +35,7 @@ import com.vikadata.api.enums.organization.UnitType;
 import com.vikadata.api.enums.social.SocialPlatformType;
 import com.vikadata.api.enums.space.UserSpaceStatus;
 import com.vikadata.api.enums.user.LinkType;
+import com.vikadata.api.event.SyncOrderEvent;
 import com.vikadata.api.factory.VikaFactory;
 import com.vikadata.api.lang.SpaceGlobalFeature;
 import com.vikadata.api.modular.appstore.enums.AppType;
@@ -73,6 +74,7 @@ import com.vikadata.api.util.billing.BillingConfigManager;
 import com.vikadata.api.util.billing.DingTalkPlanConfigManager;
 import com.vikadata.api.util.billing.model.ProductChannel;
 import com.vikadata.boot.autoconfigure.social.DingTalkProperties.IsvAppProperty;
+import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
 import com.vikadata.define.enums.NodeType;
 import com.vikadata.entity.MemberEntity;
 import com.vikadata.entity.SocialTenantEntity;
@@ -414,7 +416,9 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
             return;
         }
         try {
-            SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
+            String orderId = SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
+            // 同步订单事件
+            SpringContextHolder.getApplicationContext().publishEvent(new SyncOrderEvent(this, orderId));
         }
         catch (Exception e) {
             log.error("处理租户订单失败，请火速解决:{}:{}", spaceId, event.getOrderId(), e);

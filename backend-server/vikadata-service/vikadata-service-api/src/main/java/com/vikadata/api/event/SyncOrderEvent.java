@@ -2,9 +2,6 @@ package com.vikadata.api.event;
 
 import org.springframework.context.ApplicationEvent;
 
-/**
- * @author Shawn Deng
- */
 public class SyncOrderEvent extends ApplicationEvent {
 
     private final String orderId;

@@ -80,10 +80,10 @@ public class WeComOrderServiceImpl extends AbstractSocialOrderService<WeComOrder
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void retrieveOrderPaidEvent(WeComOrderPaidEvent event) {
+    public String retrieveOrderPaidEvent(WeComOrderPaidEvent event) {
         SocialOrderContext context = buildSocialOrderContext(event);
         if (Objects.isNull(context)) {
-            return;
+            return null;
         }
         // Handle subscription
         String subscriptionId;
@@ -114,7 +114,9 @@ public class WeComOrderServiceImpl extends AbstractSocialOrderService<WeComOrder
             createOrderMetaData(orderId, OrderChannel.WECOM, event);
             // 4 Save order item
             createOrderItem(orderId, subscriptionId, context);
+            return orderId;
         }
+        return null;
     }
 
     @Override

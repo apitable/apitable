@@ -18,10 +18,11 @@ public interface ISocialOrderService<T, R> extends InitializingBean {
     /**
      * retrieve order paid event
      * @param event order event data
+     * @return Order ID
      * @author zoe zheng
      * @date 2022/5/18 17:44
      */
-    void retrieveOrderPaidEvent(T event);
+    String retrieveOrderPaidEvent(T event);
 
     /**
      * retrieve order paid event

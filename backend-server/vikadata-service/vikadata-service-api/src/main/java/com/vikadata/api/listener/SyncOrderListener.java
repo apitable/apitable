@@ -63,6 +63,7 @@ public class SyncOrderListener implements ApplicationListener<SyncOrderEvent> {
         order.setOrderId(entity.getOrderId());
         order.setSpaceId(entity.getSpaceId());
         order.setOrderChannel(entity.getOrderChannel());
+        order.setChannelOrderId(entity.getChannelOrderId());
         order.setOrderType(entity.getOrderType());
         order.setOriginalAmount(centsToYuan(entity.getOriginalAmount()));
         order.setDiscountAmount(centsToYuan(entity.getDiscountAmount()));

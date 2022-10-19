@@ -66,6 +66,7 @@ import com.vikadata.api.enums.finance.SubscriptionPhase;
 import com.vikadata.api.enums.organization.UnitType;
 import com.vikadata.api.enums.social.SocialPlatformType;
 import com.vikadata.api.enums.space.UserSpaceStatus;
+import com.vikadata.api.event.SyncOrderEvent;
 import com.vikadata.api.modular.appstore.enums.AppType;
 import com.vikadata.api.modular.appstore.service.IAppInstanceService;
 import com.vikadata.api.modular.finance.strategy.SocialOrderStrategyFactory;
@@ -99,6 +100,7 @@ import com.vikadata.api.modular.workspace.service.INodeService;
 import com.vikadata.api.util.IdUtil;
 import com.vikadata.api.util.billing.BillingConfigManager;
 import com.vikadata.api.util.billing.WeComPlanConfigManager;
+import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
 import com.vikadata.clock.ClockUtil;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
@@ -928,7 +930,10 @@ public class SocialCpIsvServiceImpl implements ISocialCpIsvService {
     @Override
     public void handleTenantPaidSubscribe(String suiteId, String authCorpId, String spaceId, WeComOrderPaidEvent paidEvent) {
         // handle wecom paid subscription
-        SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM).retrieveOrderPaidEvent(paidEvent);
+        String orderId = SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM).retrieveOrderPaidEvent(paidEvent);
+        if (orderId != null) {
+            SpringContextHolder.getApplicationContext().publishEvent(new SyncOrderEvent(this, orderId));
+        }
         // handle wecom api permit
         // trail order: save api permit trail delay notification
         if (SubscriptionPhase.TRIAL.equals(WeComPlanConfigManager.getSubscriptionPhase(paidEvent.getEditionId()))) {

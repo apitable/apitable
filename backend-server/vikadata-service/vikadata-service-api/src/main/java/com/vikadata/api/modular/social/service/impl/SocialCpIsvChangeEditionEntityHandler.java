@@ -10,6 +10,7 @@ import me.chanjar.weixin.common.error.WxErrorException;
 
 import com.vikadata.api.context.ClockManager;
 import com.vikadata.api.enums.social.SocialPlatformType;
+import com.vikadata.api.event.SyncOrderEvent;
 import com.vikadata.api.modular.finance.strategy.SocialOrderStrategyFactory;
 import com.vikadata.api.modular.social.factory.SocialFactory;
 import com.vikadata.api.modular.social.service.ISocialCpIsvEntityHandler;
@@ -17,6 +18,7 @@ import com.vikadata.api.modular.social.service.ISocialCpIsvMessageService;
 import com.vikadata.api.modular.social.service.ISocialEditionChangelogWeComService;
 import com.vikadata.api.modular.social.service.ISocialTenantBindService;
 import com.vikadata.api.util.billing.WeComPlanConfigManager;
+import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
 import com.vikadata.entity.SocialCpIsvMessageEntity;
 import com.vikadata.entity.SocialEditionChangelogWecomEntity;
 import com.vikadata.social.wecom.constants.WeComIsvMessageType;
@@ -74,7 +76,11 @@ public class SocialCpIsvChangeEditionEntityHandler implements ISocialCpIsvEntity
             if (WeComPlanConfigManager.isWeComTrialEdition(editionId)) {
                 WeComOrderPaidEvent event = SocialFactory.formatWecomTailEditionOrderPaidEvent(suiteId, authCorpId,
                         ClockManager.me().getLocalDateTimeNow(), agent);
-                SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM).retrieveOrderPaidEvent(event);
+                String orderId = SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM).retrieveOrderPaidEvent(event);
+                // 同步订单事件
+                if (orderId != null) {
+                    SpringContextHolder.getApplicationContext().publishEvent(new SyncOrderEvent(this, orderId));
+                }
             }
         }
         return true;

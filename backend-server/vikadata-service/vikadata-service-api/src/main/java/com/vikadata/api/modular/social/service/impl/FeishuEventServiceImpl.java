@@ -27,6 +27,7 @@ import com.vikadata.api.enums.exception.BillingException;
 import com.vikadata.api.enums.organization.UnitType;
 import com.vikadata.api.enums.social.SocialPlatformType;
 import com.vikadata.api.enums.space.UserSpaceStatus;
+import com.vikadata.api.event.SyncOrderEvent;
 import com.vikadata.api.lang.SpaceGlobalFeature;
 import com.vikadata.api.modular.appstore.enums.AppType;
 import com.vikadata.api.modular.appstore.service.IAppInstanceService;
@@ -62,6 +63,7 @@ import com.vikadata.api.modular.workspace.service.INodeService;
 import com.vikadata.api.util.IdUtil;
 import com.vikadata.api.util.billing.LarkPlanConfigManager;
 import com.vikadata.api.util.billing.model.SubscribePlanInfo;
+import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.define.enums.NodeType;
 import com.vikadata.entity.MemberEntity;
@@ -1007,9 +1009,11 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
             return;
         }
         try {
-            SocialOrderStrategyFactory.getService(SocialPlatformType.FEISHU).retrieveOrderPaidEvent(event);
+            String orderId = SocialOrderStrategyFactory.getService(SocialPlatformType.FEISHU).retrieveOrderPaidEvent(event);
             // 事件处理完成
             iSocialFeishuEventLogService.doneEvent(event.getMeta().getUuid());
+            // 同步订单事件
+            SpringContextHolder.getApplicationContext().publishEvent(new SyncOrderEvent(this, orderId));
         }
         catch (Exception e) {
             log.error("处理租户订单失败，请火速解决:{}:{}", spaceId, event.getOrderId(), e);
@@ -1024,6 +1028,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
                         price.getGoodChTitle(), event.getOrderPayPrice());
             }
         });
+        // 发送
     }
 
     private Long createTeamIfNotExist(String tenantKey, String spaceId, String parentDepartmentId, String newTeamName, String order) {
@@ -1311,7 +1316,6 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
     @Override
     public void handleTenantOrders(String tenantKey, String appId) {
         List<String> orderData = iSocialFeishuOrderService.getOrdersByTenantIdAndAppId(tenantKey, appId);
-        log.warn("没有待处理的飞书订单:{}:{}", tenantKey, appId);
         orderData.forEach(data -> {
             OrderPaidEvent event = JSONUtil.toBean(data, OrderPaidEvent.class);
             try {

@@ -25,6 +25,9 @@ public class BillingOrder {
     @JsonSerialize(using = OrderChannelSerializer.class)
     private String orderChannel;
 
+    @JsonProperty("渠道订单ID")
+    private String channelOrderId;
+
     @JsonProperty("订单类型")
     @JsonSerialize(using = OrderTypeSerializer.class)
     private String orderType;
@@ -71,6 +74,14 @@ public class BillingOrder {
 
     public void setOrderChannel(String orderChannel) {
         this.orderChannel = orderChannel;
+    }
+
+    public String getChannelOrderId() {
+        return channelOrderId;
+    }
+
+    public void setChannelOrderId(String channelOrderId) {
+        this.channelOrderId = channelOrderId;
     }
 
     public String getOrderType() {

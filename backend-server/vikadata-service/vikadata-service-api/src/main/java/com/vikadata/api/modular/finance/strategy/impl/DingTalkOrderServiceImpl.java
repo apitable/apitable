@@ -17,6 +17,7 @@ import com.vikadata.api.enums.finance.OrderChannel;
 import com.vikadata.api.enums.finance.OrderType;
 import com.vikadata.api.enums.finance.SubscriptionPhase;
 import com.vikadata.api.enums.social.SocialPlatformType;
+import com.vikadata.api.event.SyncOrderEvent;
 import com.vikadata.api.modular.finance.model.SocialOrderContext;
 import com.vikadata.api.modular.finance.service.IBundleService;
 import com.vikadata.api.modular.finance.service.IOrderItemService;
@@ -32,6 +33,7 @@ import com.vikadata.api.modular.social.service.ISocialTenantBindService;
 import com.vikadata.api.util.billing.BillingConfigManager;
 import com.vikadata.api.util.billing.DingTalkPlanConfigManager;
 import com.vikadata.api.util.billing.model.ProductChannel;
+import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
 import com.vikadata.clock.ClockUtil;
 import com.vikadata.entity.SubscriptionEntity;
 import com.vikadata.integration.grpc.CorpBizDataDto;
@@ -84,10 +86,10 @@ public class DingTalkOrderServiceImpl extends AbstractSocialOrderService<SyncHtt
     private IDingTalkInternalIsvService iDingTalkInternalIsvService;
 
     @Override
-    public void retrieveOrderPaidEvent(SyncHttpMarketOrderEvent event) {
+    public String retrieveOrderPaidEvent(SyncHttpMarketOrderEvent event) {
         SocialOrderContext context = buildSocialOrderContext(event);
         if (null == context) {
-            return;
+            return null;
         }
         // 创建订单
         String orderId = createOrder(context);
@@ -111,6 +113,9 @@ public class DingTalkOrderServiceImpl extends AbstractSocialOrderService<SyncHtt
         // 标记钉订单已经处理完成
         iSocialDingTalkOrderService.updateTenantOrderStatusByOrderId(event.getCorpId(), event.getSuiteId(),
                 event.getOrderId(), 1);
+        // 同步订单事件
+        SpringContextHolder.getApplicationContext().publishEvent(new SyncOrderEvent(this, orderId));
+        return orderId;
     }
 
     @Override

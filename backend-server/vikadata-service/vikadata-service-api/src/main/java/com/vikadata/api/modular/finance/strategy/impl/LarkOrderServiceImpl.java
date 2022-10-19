@@ -62,10 +62,10 @@ public class LarkOrderServiceImpl extends AbstractSocialOrderService<OrderPaidEv
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void retrieveOrderPaidEvent(OrderPaidEvent event) {
+    public String retrieveOrderPaidEvent(OrderPaidEvent event) {
         SocialOrderContext context = buildSocialOrderContext(event);
         if (null == context) {
-            return;
+            return null;
         }
         // 创建订单
         String orderId = createOrder(context);
@@ -87,6 +87,7 @@ public class LarkOrderServiceImpl extends AbstractSocialOrderService<OrderPaidEv
         createOrderItem(orderId, subscriptionId, context);
         // 标记飞书订单已经处理完成
         iSocialFeishuOrderService.updateTenantOrderStatusByOrderId(event.getTenantKey(), event.getAppId(), event.getOrderId(), 1);
+        return orderId;
     }
 
     @Override
