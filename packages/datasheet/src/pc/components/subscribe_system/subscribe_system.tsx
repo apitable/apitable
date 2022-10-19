@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
-import { Message } from 'pc/components/common';
+import { Message, Modal } from 'pc/components/common';
 import { TComponent } from 'pc/components/common/t_component';
 import { Router } from 'pc/components/route_manager/router';
 import { paySystemConfig, SubscribePageType } from 'pc/components/subscribe_system/config';
@@ -131,6 +131,25 @@ export const SubScribeSystem = () => {
       const seatList: number[] = [];
       // const monthPrice: IQueryOrderPriceResponse[] = [];
       for (const v of data) {
+        if (getPageType() === SubscribePageType.Renewal && subscription?.maxSeats !== v.seat) {
+          /**
+           * 产品规格做了变动，每种产品只对应一种席位，因此这里的逻辑是，如果当前用户的空间站席位和产品给定的席位数不同，且用户是处于续费阶段，则提示用户续费方案不存在
+           */
+          Modal.warning({
+            title: t(Strings.renewal_prompt),
+            content: t(Strings.renewal_prompt_description),
+            okText: t(Strings.upgrade),
+            cancelText: t(Strings.cancel),
+            hiddenCancelBtn: false,
+            onOk: () => {
+              location.href = `/space/${space.activeId}/upgrade?pageType=${SubscribePageType.Upgrade}`;
+            },
+            onCancel: () => {
+              Router.push(Navigation.SPACE_MANAGE, { params: { pathInSpace: 'overview' }});
+            },
+          });
+          return;
+        }
         if (!priceInfoCache.current.has(v.seat)) {
           priceInfoCache.current.set(v.seat, new Map());
           seatList.push(v.seat);
@@ -262,34 +281,37 @@ export const SubScribeSystem = () => {
                       />
                     </Typography>
                   ) : (
-                    <SubscribeSeat
-                      seatList={seatList}
-                      seat={seat}
-                      setSeat={setSeat}
-                      levelInfo={levelInfo}
-                      loading={loading}
-                      pageType={getPageType()}
-                    />
+                    <div className={styles.horizontalDisplaySeat} style={{ marginBottom: getPageType() === SubscribePageType.Subscribe ? 40 : 0 }}>
+                      <SubscribeSeat
+                        seatList={seatList}
+                        seat={seat}
+                        setSeat={setSeat}
+                        levelInfo={levelInfo}
+                        loading={loading}
+                        pageType={getPageType()}
+                      />
+                      {getPageType() === SubscribePageType.Subscribe && (
+                        <Typography variant={'body3'} className={styles.seatNumNote}>
+                          <TComponent
+                            tkey={t(Strings.plan_model_members_tips)}
+                            params={{
+                              space_leve: (
+                                <LinkButton
+                                  color={levelInfo.activeColor}
+                                  style={{ marginLeft: 4 }}
+                                  onClick={() => setLevelTab(levelTab === SubscribeLevelTab.SILVER ? SubscribeLevelTab.GOLD :
+                                    SubscribeLevelTab.ENTERPRISE)}
+                                >
+                                  {levelTab === SubscribeLevelTab.SILVER ? t(Strings.gold) : t(Strings.enterprise)}
+                                </LinkButton>
+                              ),
+                            }}
+                          />
+                        </Typography>
+                      )}
+                    </div>
                   )}
                 </div>
-                {getPageType() === SubscribePageType.Subscribe && (
-                  <Typography variant={'body3'} className={styles.seatNumNote}>
-                    <TComponent
-                      tkey={t(Strings.plan_model_members_tips)}
-                      params={{
-                        space_leve: (
-                          <LinkButton
-                            color={levelInfo.activeColor}
-                            style={{ marginLeft: 4 }}
-                            onClick={() => setLevelTab(levelTab === SubscribeLevelTab.SILVER ? SubscribeLevelTab.GOLD : SubscribeLevelTab.ENTERPRISE)}
-                          >
-                            {levelTab === SubscribeLevelTab.SILVER ? t(Strings.gold) : t(Strings.enterprise)}
-                          </LinkButton>
-                        ),
-                      }}
-                    />
-                  </Typography>
-                )}
 
                 <div
                   className={classnames({

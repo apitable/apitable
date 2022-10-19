@@ -3552,6 +3552,8 @@ export interface StringsInterface {
     render_prompt: String;
     renew: String;
     renewal: String;
+    renewal_prompt: String;
+    renewal_prompt_description: String;
     renewal_seat_warning: String;
     reopen: String;
     report_reason_1: String;
@@ -4435,8 +4437,12 @@ export interface StringsInterface {
     subscribe_demonstrate: String;
     subscribe_disabled_seat: String;
     subscribe_label_tooltip: String;
+    subscribe_new_choose_member: String;
+    subscribe_new_choose_member_tips: String;
     subscribe_success_desc: String;
     subscribe_success_title: String;
+    subscribe_upgrade_choose_member: String;
+    subscribe_upgrade_choose_member_tips: String;
     subscribe_welcome_tip: String;
     subscribed_record_cell_updated: String;
     subscribed_record_commented: String;

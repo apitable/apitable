@@ -17621,6 +17621,16 @@
             "en_US": "renewal",
             "zh_HK": "續費"
         },
+        "renewal_prompt": {
+            "zh_CN": "续费提示",
+            "en_US": "Renewal prompt",
+            "zh_HK": "續費提示"
+        },
+        "renewal_prompt_description": {
+            "zh_CN": "你的原方案已经下架，不支持续费。你可以先升级到其他方案后再续费。",
+            "en_US": "Your original plan has been removed from the shelves and does not support renewal. You can upgrade to another solution before you renew it.",
+            "zh_HK": "你的原方案已經下架，不支持續費。你可以先升級到其他方案後再續費。"
+        },
         "renewal_seat_warning": {
             "zh_CN": "续费不支持等级和人数的变更，如需提高等级或人数，${link}",
             "en_US": "If you need to upgrade or increase the number of members, ${link}",
@@ -22001,6 +22011,16 @@
             "en_US": "Advanced space features",
             "zh_HK": "${grade}以上空間站專享功能"
         },
+        "subscribe_new_choose_member": {
+            "zh_CN": "最高支持 ${member_num} 人",
+            "en_US": "Supports up to ${member_num} members",
+            "zh_HK": "最高支持 {member_num} 人"
+        },
+        "subscribe_new_choose_member_tips": {
+            "zh_CN": "本方案支持 1~100 名成员进入空间站使用",
+            "en_US": "This plan supports 1~100 members to enter the space",
+            "zh_HK": "本方案支持 1~100 名成員進入空間站使用"
+        },
         "subscribe_success_desc": {
             "zh_CN": "恭喜！你已成功订阅，可前往空间站驾驶舱查看相关权益",
             "en_US": "Congrats! Your subscription is activated and starts from today. Go to Overview to check your benefits.",
@@ -22010,6 +22030,16 @@
             "zh_CN": "支付成功",
             "en_US": "Payment successful",
             "zh_HK": "支付成功"
+        },
+        "subscribe_upgrade_choose_member": {
+            "zh_CN": " ${old_member_num} 人升级为  ${new_member_num} 人",
+            "en_US": "${old_member_num} members are upgraded to ${new_member_num} members",
+            "zh_HK": "{old_member_num} 人升級為 {new_member_num} 人"
+        },
+        "subscribe_upgrade_choose_member_tips": {
+            "zh_CN": "你的原方案最高支持 ${old_member_num} 名成员，本次升级将扩容到 ${new_member_num} 名成员",
+            "en_US": "Your original plan supports a maximum of ${old_member_num} members, but this upgrade will be expanded to ${new_member_num} members.",
+            "zh_HK": "你的原方案最高支持{old_member_num} 名成員，本次升級將擴容到 {new_member_num} 名成員"
         },
         "subscribe_welcome_tip": {
             "zh_CN": "特别提示：公测阶段，你可以超量邀请成员（最多100人）和创建维格表（最多1000个）。",
