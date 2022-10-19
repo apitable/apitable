@@ -31,6 +31,8 @@ public class WxCpIsvServiceImpl extends WxCpTpServiceImpl {
 
     private static final String URI_GET_ORDER = "/cgi-bin/service/get_order";
 
+    private static final String URI_GET_ORDER_LIST = "/cgi-bin/service/get_order_list";
+
     private final WxCpIsvUserServiceImpl wxCpTpUserService = new WxCpIsvUserServiceImpl(this);
 
     private final WxCpIsvPermitServiceImpl wxCpIsvPermitService = new WxCpIsvPermitServiceImpl(this);
@@ -172,10 +174,10 @@ public class WxCpIsvServiceImpl extends WxCpTpServiceImpl {
     public WxCpIsvGetOrderList getOrderList(Long startTimeSecond, Long endTimeSecond, int testMode) throws WxErrorException {
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("start_time",startTimeSecond);
+        jsonObject.addProperty("start_time", startTimeSecond);
         jsonObject.addProperty("end_time", endTimeSecond);
         jsonObject.addProperty("test_mode", testMode);
-        String result = post(configStorage.getApiUrl(URI_GET_ORDER), jsonObject.toString());
+        String result = post(configStorage.getApiUrl(URI_GET_ORDER_LIST), jsonObject.toString());
         return WxCpIsvGetOrderList.fromJson(result);
     }
 

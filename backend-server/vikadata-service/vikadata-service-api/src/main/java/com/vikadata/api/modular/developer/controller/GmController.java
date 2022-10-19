@@ -2,14 +2,21 @@ package com.vikadata.api.modular.developer.controller;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.text.CharSequenceUtil;
@@ -69,6 +76,8 @@ import com.vikadata.api.modular.developer.model.WeComIsvPermitNewOrderVo;
 import com.vikadata.api.modular.developer.model.WeComIsvPermitRenewalRo;
 import com.vikadata.api.modular.developer.model.WeComIsvPermitRenewalVo;
 import com.vikadata.api.modular.developer.service.IGmService;
+import com.vikadata.api.modular.finance.core.Bundle;
+import com.vikadata.api.modular.finance.service.IBundleService;
 import com.vikadata.api.modular.finance.strategy.SocialOrderStrategyFactory;
 import com.vikadata.api.modular.idaas.model.IdaasAppBindRo;
 import com.vikadata.api.modular.idaas.model.IdaasAppBindVo;
@@ -94,6 +103,7 @@ import com.vikadata.api.security.ValidateCode;
 import com.vikadata.api.security.ValidateCodeRepository;
 import com.vikadata.api.security.ValidateCodeType;
 import com.vikadata.api.security.ValidateTarget;
+import com.vikadata.clock.ClockUtil;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;
@@ -101,9 +111,11 @@ import com.vikadata.define.constants.RedisConstants;
 import com.vikadata.entity.LabsApplicantEntity;
 import com.vikadata.entity.LabsFeaturesEntity;
 import com.vikadata.entity.SocialCpIsvMessageEntity;
+import com.vikadata.entity.SocialTenantBindEntity;
 import com.vikadata.entity.SocialWecomPermitOrderEntity;
 import com.vikadata.entity.SpaceEntity;
 import com.vikadata.entity.UserEntity;
+import com.vikadata.social.wecom.model.WxCpIsvGetOrder;
 import com.vikadata.system.config.notification.NotificationTemplate;
 
 import org.springframework.data.redis.core.RedisTemplate;
@@ -117,6 +129,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.vikadata.api.constants.NotificationConstants.BODY_EXTRAS;
 import static com.vikadata.api.constants.NotificationConstants.EXPIRE_AT;
 import static com.vikadata.api.constants.NotificationConstants.VERSION;
+import static com.vikadata.api.constants.TimeZoneConstants.DEFAULT_TIME_ZONE;
 import static com.vikadata.api.enums.exception.DatabaseException.EDIT_ERROR;
 import static com.vikadata.api.enums.exception.DatabaseException.INSERT_ERROR;
 import static com.vikadata.api.enums.exception.LabsFeatureException.FEATURE_KEY_IS_NOT_EXIST;
@@ -210,6 +223,12 @@ public class GmController {
 
     @Resource
     private ISocialTenantBindService socialTenantBindService;
+
+    @Resource
+    private ISocialCpIsvService iSocialCpIsvService;
+
+    @Resource
+    private IBundleService iBundleService;
 
     @PostResource(path = "/permission/update", requiredPermission = false)
     @ApiOperation(value = "更新GM权限配置")
@@ -699,12 +718,63 @@ public class GmController {
         String spaceId = request.getSpaceId();
         log.info("Operator「{}」migrate wecom orders for space「{}」", SessionContext.getUserId(), spaceId);
         iGmService.validPermission(SessionContext.getUserId(), GmAction.WECOM_ISV_ORDER_MIGRATE);
+        String appId = request.getSuiteId();
+        // cp order start at 2022-01-01
+        LocalDateTime startTime = ClockUtil.milliToLocalDateTime(1640966400000L, DEFAULT_TIME_ZONE);
+        // get tenant order list
+        Map<String, List<WxCpIsvGetOrder>> allOrderMap =
+                iSocialCpIsvService.getOrderList(appId, startTime).stream().collect(Collectors.groupingBy(WxCpIsvGetOrder::getPaidCorpId));
+        Map<String, List<WxCpIsvGetOrder>> orderMap = new HashMap<>();
+        Set<String> trailSpaceIds = new HashSet<>();
+        // cp isv don't have any orders, just in trail for all spaces
         if (CharSequenceUtil.isNotBlank(spaceId)) {
-            SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM).migrateEvent(spaceId);
+            Bundle bundle = iBundleService.getActivatedBundleBySpaceId(spaceId);
+            if (bundle != null) {
+                log.warn("space has already been subscribed:{}", spaceId);
+                return ResponseData.success();
+            }
+            allOrderMap.keySet().forEach(i -> {
+                SocialTenantBindEntity bindInfo = socialTenantBindService.getByTenantIdAndAppId(i, appId);
+                if (null != bindInfo && spaceId.equals(bindInfo.getSpaceId())) {
+                    orderMap.put(i, allOrderMap.get(i));
+                }
+            });
+            if (orderMap.isEmpty()) {
+                trailSpaceIds.add(spaceId);
+            }
         }
         else {
             List<String> spaceIds = socialTenantBindService.getAllSpaceIdsByAppId(request.getSuiteId());
-            spaceIds.forEach(id -> SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM).migrateEvent(id));
+            for (String corpId : allOrderMap.keySet()) {
+                SocialTenantBindEntity bindInfo = socialTenantBindService.getByTenantIdAndAppId(corpId, appId);
+                if (null == bindInfo) {
+                    log.warn("wecom isv not bind space:{}", corpId);
+                    continue;
+                }
+                Bundle bundle = iBundleService.getActivatedBundleBySpaceId(bindInfo.getSpaceId());
+                if (bundle != null) {
+                    log.warn("space has already been subscribed:{}", bindInfo.getSpaceId());
+                    continue;
+                }
+                if (spaceIds.contains(bindInfo.getSpaceId())) {
+                    orderMap.put(corpId, allOrderMap.get(corpId));
+                }
+                else {
+                    trailSpaceIds.add(bindInfo.getSpaceId());
+                }
+            }
+        }
+        if (!trailSpaceIds.isEmpty()) {
+            trailSpaceIds.forEach(id -> SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM).migrateEvent(id));
+        }
+        for (String corpId : orderMap.keySet()) {
+            try {
+                iSocialCpIsvService.migrateOrderEvent(CollectionUtil.sort(orderMap.get(corpId),
+                        Comparator.comparing(WxCpIsvGetOrder::getOrderStatus).thenComparing(WxCpIsvGetOrder::getPaidTime)));
+            }
+            catch (Exception e) {
+                log.error("wecom migrate order error:{}", corpId, e);
+            }
         }
         return ResponseData.success();
     }

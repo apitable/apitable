@@ -38,7 +38,6 @@ import com.vikadata.entity.SubscriptionEntity;
 import com.vikadata.social.wecom.event.order.WeComOrderPaidEvent;
 import com.vikadata.social.wecom.event.order.WeComOrderRefundEvent;
 import com.vikadata.social.wecom.model.WxCpIsvAuthInfo.EditionInfo.Agent;
-import com.vikadata.social.wecom.model.WxCpIsvGetOrder;
 import com.vikadata.system.config.billing.Price;
 import com.vikadata.system.config.billing.Product;
 
@@ -89,7 +88,7 @@ public class WeComOrderServiceImpl extends AbstractSocialOrderService<WeComOrder
         // Handle subscription
         String subscriptionId;
         Bundle activeBundle = context.getActivatedBundle();
-        if (Objects.isNull(activeBundle) && context.getOrderType() == OrderType.BUY) {
+        if (Objects.isNull(activeBundle) && (context.getOrderType() == OrderType.BUY || context.getOrderType() == OrderType.RENEW)) {
             // 3.1 Crate bundle as first subscription
             String bundleId = createBundle(context);
             subscriptionId = createSubscription(bundleId, context);
@@ -157,35 +156,17 @@ public class WeComOrderServiceImpl extends AbstractSocialOrderService<WeComOrder
             log.warn("wecom space not bind");
             return;
         }
-        // get tenant order list
-        List<WxCpIsvGetOrder> orderList = iSocialCpIsvService.getOrderList(bindInfo.getTenantId(), bindInfo.getAppId());
         // just in trail
-        if (orderList.isEmpty()) {
-            Agent agent = iSocialCpIsvService.getCorpEditionInfo(bindInfo.getTenantId(), bindInfo.getAppId());
-            // app stopped
-            if (null == agent) {
-                return;
-            }
-            if (WeComPlanConfigManager.isWeComTrialEdition(agent.getEditionId())) {
-                WeComOrderPaidEvent event = SocialFactory.formatWecomTailEditionOrderPaidEvent(bindInfo.getAppId(),
-                        bindInfo.getTenantId(), bindInfo.getCreatedAt(), agent);
-                retrieveOrderPaidEvent(event);
-            }
+        Agent agent = iSocialCpIsvService.getCorpEditionInfo(bindInfo.getTenantId(), bindInfo.getAppId());
+        // app stopped
+        if (null == agent) {
+            return;
         }
-        orderList.forEach(i -> {
-            if (i.getOrderStatus() == 5) {
-                // refund
-                WeComOrderRefundEvent refundEvent = new WeComOrderRefundEvent();
-                refundEvent.setSuiteId(i.getSuiteId());
-                refundEvent.setPaidCorpId(i.getPaidCorpId());
-                refundEvent.setOrderId(i.getOrderId());
-                retrieveOrderRefundEvent(refundEvent);
-            }
-            else {
-                WeComOrderPaidEvent paidEvent = SocialFactory.formatOrderPaidEventFromWecomOrder(i);
-                retrieveOrderPaidEvent(paidEvent);
-            }
-        });
+        if (WeComPlanConfigManager.isWeComTrialEdition(agent.getEditionId())) {
+            WeComOrderPaidEvent event = SocialFactory.formatWecomTailEditionOrderPaidEvent(bindInfo.getAppId(),
+                    bindInfo.getTenantId(), bindInfo.getCreatedAt(), agent);
+            retrieveOrderPaidEvent(event);
+        }
     }
 
     @Override

@@ -115,6 +115,7 @@ import com.vikadata.social.wecom.WxCpIsvTagServiceImpl;
 import com.vikadata.social.wecom.WxCpIsvUserServiceImpl;
 import com.vikadata.social.wecom.constants.WeComUserStatus;
 import com.vikadata.social.wecom.event.order.WeComOrderPaidEvent;
+import com.vikadata.social.wecom.event.order.WeComOrderRefundEvent;
 import com.vikadata.social.wecom.model.WxCpIsvAuthInfo;
 import com.vikadata.social.wecom.model.WxCpIsvAuthInfo.EditionInfo;
 import com.vikadata.social.wecom.model.WxCpIsvGetOrder;
@@ -983,16 +984,12 @@ public class SocialCpIsvServiceImpl implements ISocialCpIsvService {
     }
 
     @Override
-    public List<WxCpIsvGetOrder> getOrderList(String authCorpId, String suiteId) {
-        LocalDateTime createdAt = iSocialTenantService.getCreatedAtByAppIdAndTenantId(suiteId, authCorpId);
-        if (null == createdAt) {
-            return new ArrayList<>();
-        }
+    public List<WxCpIsvGetOrder> getOrderList(String suiteId, LocalDateTime startTime) {
         WxCpIsvServiceImpl wxCpIsvService = (WxCpIsvServiceImpl) weComTemplate.isvService(suiteId);
         try {
-            WxCpIsvGetOrderList result = wxCpIsvService.getOrderList(createdAt.toEpochSecond(DEFAULT_TIME_ZONE),
+            WxCpIsvGetOrderList result = wxCpIsvService.getOrderList(startTime.toEpochSecond(DEFAULT_TIME_ZONE),
                     LocalDateTime.now().toEpochSecond(DEFAULT_TIME_ZONE), 0);
-            return result.getOrderList();
+            return result.getOrderList().stream().filter(i -> 1 == i.getOrderStatus() || 5 == i.getOrderStatus()).collect(Collectors.toList());
         }
         catch (WxErrorException e) {
             log.warn("get wx order error", e);
@@ -1007,6 +1004,26 @@ public class SocialCpIsvServiceImpl implements ISocialCpIsvService {
         WxCpIsvGetOrder wxCpIsvGetOrder = wxCpIsvService.getOrder(orderId);
         // 复制数据
         return SocialFactory.formatOrderPaidEventFromWecomOrder(wxCpIsvGetOrder);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void migrateOrderEvent(List<WxCpIsvGetOrder> orders) {
+        orders.forEach(i -> {
+            if (i.getOrderStatus() == 5) {
+                // refund
+                WeComOrderRefundEvent refundEvent = new WeComOrderRefundEvent();
+                refundEvent.setSuiteId(i.getSuiteId());
+                refundEvent.setPaidCorpId(i.getPaidCorpId());
+                refundEvent.setOrderId(i.getOrderId());
+                SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM).retrieveOrderRefundEvent(refundEvent);
+            }
+            // paid
+            else if (i.getOrderStatus() == 1) {
+                WeComOrderPaidEvent paidEvent = SocialFactory.formatOrderPaidEventFromWecomOrder(i);
+                SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM).retrieveOrderPaidEvent(paidEvent);
+            }
+        });
     }
 
     /**

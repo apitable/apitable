@@ -1,5 +1,6 @@
 package com.vikadata.api.modular.social.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -273,11 +274,12 @@ public interface ISocialCpIsvService {
 
     /**
      * get corp order list
-     * @param authCorpId authorized corp ID
+     * @param startTime  start time
+     * @param startTime  end time
      * @param suiteId suite id
      * @return List<WxCpIsvGetOrder>
      */
-    List<WxCpIsvGetOrder> getOrderList(String authCorpId, String suiteId);
+    List<WxCpIsvGetOrder> getOrderList(String suiteId, LocalDateTime startTime);
 
 
     /**
@@ -287,4 +289,10 @@ public interface ISocialCpIsvService {
      * @return WeComOrderPaidEvent
      */
     WeComOrderPaidEvent fetchPaidEvent(String suiteId, String orderId) throws WxErrorException;
+
+    /**
+     * migrate order event
+     * @param orders one corp orders
+     */
+    void migrateOrderEvent(List<WxCpIsvGetOrder> orders);
 }
