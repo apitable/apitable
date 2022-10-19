@@ -131,7 +131,9 @@ public class BillingConfigManager {
             return null;
         }
         return BILLING_CONFIG.getPrices().values().stream()
-                .filter(price -> price.getProduct().equals(product.getName()) && price.getSeat() == seat && price.getMonth() == month)
+                .filter(price -> price.getProduct().equals(product.getName())
+                        && price.getSeat() == seat && price.getMonth() == month
+                        && price.isOnline())
                 .findFirst()
                 .orElse(null);
     }
@@ -196,6 +198,7 @@ public class BillingConfigManager {
         billingPlanFeature.setMaxAuditQueryDays(getPlanFeatureValue(basePlanFeatureMap, BillingFunctionEnum.AUDIT_QUERY, Long.class));
         billingPlanFeature.setSecuritySettingAddressListIsolation(getPlanFeatureValue(basePlanFeatureMap, BillingFunctionEnum.SECURITY_SETTING_ADDRESS_LIST_ISOLATION, Boolean.class));
         billingPlanFeature.setSecuritySettingCatalogManagement(getPlanFeatureValue(basePlanFeatureMap, BillingFunctionEnum.SECURITY_SETTING_CATALOG_MANAGEMENT, Boolean.class));
+        billingPlanFeature.setMaxMirrorNums(getPlanFeatureValue(basePlanFeatureMap, BillingFunctionEnum.MIRRORS, Long.class));
         // 可叠加订阅方案限制值
         Long baseCapacitySize = getPlanFeatureValue(basePlanFeatureMap, BillingFunctionEnum.CAPACITY, Long.class);
         if (baseCapacitySize != null) {

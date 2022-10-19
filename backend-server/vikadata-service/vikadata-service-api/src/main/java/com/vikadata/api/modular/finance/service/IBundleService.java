@@ -57,6 +57,13 @@ public interface IBundleService extends IService<BundleEntity> {
     Bundle getActivatedBundleBySpaceId(String spaceId);
 
     /**
+     * get possible active bundle by space id
+     * @param spaceId space id
+     * @return active bundle
+     */
+    Bundle getPossibleBundleBySpaceId(String spaceId);
+
+    /**
      * 获取空间站的所有订阅捆绑包
      * 包含所有状态的订阅捆绑包
      * @param spaceId 空间ID

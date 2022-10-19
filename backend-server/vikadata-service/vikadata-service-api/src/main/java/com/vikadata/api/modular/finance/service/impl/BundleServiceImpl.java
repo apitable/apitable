@@ -94,6 +94,27 @@ public class BundleServiceImpl extends ServiceImpl<BundleMapper, BundleEntity> i
     }
 
     @Override
+    public Bundle getPossibleBundleBySpaceId(String spaceId) {
+        List<Bundle> bundles = getBundlesBySpaceId(spaceId);
+        return bundles.stream().filter(bundle -> {
+                    if (bundle.getState() != BundleState.ACTIVATED) {
+                        return false;
+                    }
+                    LocalDate today = ClockManager.me().getLocalDateNow();
+                    Subscription base = bundle.getBaseSubscription();
+                    boolean found = today.compareTo(base.getStartDate().toLocalDate()) >= 0
+                            && today.compareTo(base.getExpireDate().toLocalDate()) <= 0;
+                    if (!found) {
+                        // 基础订阅过期，但附加订阅未过期，继续查找
+                        found = bundle.getAddOnSubscription().stream().anyMatch(subscription ->
+                                today.compareTo(subscription.getExpireDate().toLocalDate()) <= 0);
+                    }
+                    return found;
+                })
+                .findFirst().orElse(null);
+    }
+
+    @Override
     public List<Bundle> getBundlesBySpaceId(String spaceId) {
         List<BundleEntity> bundleEntities = getBySpaceId(spaceId);
         return fromBundleEntities(bundleEntities);

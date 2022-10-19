@@ -153,7 +153,7 @@ public class OrderPaymentServiceImpl extends ServiceImpl<OrderPaymentMapper, Ord
             subscriptionEntities.add(base);
 
             // 新购之前也许已经有(免费订阅+附加订阅)
-            Bundle activatedBundle = iBundleService.getActivatedBundleBySpaceId(orderEntity.getSpaceId());
+            Bundle activatedBundle = iBundleService.getPossibleBundleBySpaceId(orderEntity.getSpaceId());
             if (activatedBundle != null) {
                 activatedBundle.getAddOnSubscription()
                         .stream()

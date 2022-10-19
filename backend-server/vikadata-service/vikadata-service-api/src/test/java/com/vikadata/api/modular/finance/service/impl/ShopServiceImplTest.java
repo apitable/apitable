@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
@@ -24,14 +23,20 @@ public class ShopServiceImplTest extends AbstractIntegrationTest {
     @Test
     public void testGetPricesByProductOnSilver() {
         List<ProductPriceVo> productPriceVos = isShopService.getPricesByProduct(ProductEnum.SILVER.name());
-        // 24 plan in silver product
-        assertThat(productPriceVos).isNotEmpty().hasSize(24);
+        // assert plan in silver product
+        assertThat(productPriceVos).isNotEmpty();
     }
 
     @Test
-    @Disabled("Clock is not sync")
+    public void testGetPricesByProductOnGold() {
+        List<ProductPriceVo> productPriceVos = isShopService.getPricesByProduct(ProductEnum.GOLD.name());
+        // assert plan in gold product
+        assertThat(productPriceVos).isNotEmpty();
+    }
+
+    @Test
     public void testGetBeforeEventDiscountPriceOnSilver() {
-        final OffsetDateTime nowTime = OffsetDateTime.of(2022, 8, 31, 17, 0, 0, 0, testTimeZone);
+        final OffsetDateTime nowTime = OffsetDateTime.of(2022, 10, 23, 17, 0, 0, 0, testTimeZone);
         getClock().setTime(nowTime);
         // 活动开始之前，优惠价格不存在
         List<ProductPriceVo> productPriceVos = isShopService.getPricesByProduct(ProductEnum.SILVER.name());
@@ -39,9 +44,8 @@ public class ShopServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Disabled("Clock is not sync")
     public void testGetExpireEventDiscountPriceOnSilver() {
-        final OffsetDateTime nowTime = OffsetDateTime.of(2022, 10, 1, 0, 0, 0, 0, testTimeZone);
+        final OffsetDateTime nowTime = OffsetDateTime.of(2022, 11, 12, 0, 0, 0, 0, testTimeZone);
         getClock().setTime(nowTime);
         // 活动过期，优惠价格不存在
         List<ProductPriceVo> productPriceVos = isShopService.getPricesByProduct(ProductEnum.SILVER.name());
@@ -49,9 +53,8 @@ public class ShopServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Disabled("Clock is not sync")
     public void testGetLastEventDateDiscountPriceOnSilver() {
-        final OffsetDateTime nowTime = OffsetDateTime.of(2022, 9, 30, 23, 23, 30, 0, testTimeZone);
+        final OffsetDateTime nowTime = OffsetDateTime.of(2022, 11, 11, 23, 23, 30, 0, testTimeZone);
         getClock().setTime(nowTime);
         // 活动过期，优惠价格不存在
         List<ProductPriceVo> productPriceVos = isShopService.getPricesByProduct(ProductEnum.SILVER.name());

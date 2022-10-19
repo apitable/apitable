@@ -64,7 +64,6 @@ import com.vikadata.api.modular.workspace.service.INodeService;
 import com.vikadata.api.util.IdUtil;
 import com.vikadata.api.util.billing.OrderUtil;
 import com.vikadata.api.util.billing.model.BillingPlanPrice;
-import com.vikadata.clock.Clock;
 import com.vikadata.clock.MockClock;
 import com.vikadata.define.enums.NodeType;
 import com.vikadata.entity.EconomicOrderEntity;
@@ -197,9 +196,6 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     @Value("#{'${exclude}'.split(',')}")
     private List<String> excludeTables;
 
-    @Autowired
-    private Clock clock;
-
     @BeforeEach
     public void beforeMethod() {
         // db suite prepare before method
@@ -224,10 +220,7 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     }
 
     protected MockClock getClock() {
-        if (!(clock instanceof MockClock)) {
-            throw new UnsupportedOperationException("System has not been configured to update the time");
-        }
-        return (MockClock) clock;
+        return ClockManager.me().getMockClock();
     }
 
     protected UserEntity createUserRandom() {

@@ -226,4 +226,11 @@ public class BillingPlanFeature {
      * @since 0.13.7
      */
     private Boolean securitySettingCatalogManagement;
+
+    /**
+     * 方案对应最大镜像数量
+     *
+     * @since 0.13.9
+     */
+    private Long maxMirrorNums;
 }

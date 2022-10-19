@@ -8,7 +8,6 @@ import java.util.Map;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.util.billing.model.BillingPlanFeature;
@@ -31,7 +30,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @author Shawn Deng
  */
-@DisplayName("订阅配置工具类单元测试")
 public class BillingConfigManagerTest {
 
     /**
@@ -309,9 +307,9 @@ public class BillingConfigManagerTest {
 
     @Test
     public void testGetPriceBySeatAndMonth() {
-        Price price = BillingConfigManager.getPriceBySeatAndMonths(ProductEnum.SILVER, 10, 1);
+        Price price = BillingConfigManager.getPriceBySeatAndMonths(ProductEnum.SILVER, 100, 1);
         assertNotNull(price);
-        assertEquals(price.getSeat(), 10);
+        assertEquals(price.getSeat(), 100);
         assertEquals(price.getMonth(), 1);
     }
 
@@ -320,7 +318,7 @@ public class BillingConfigManagerTest {
         List<Price> priceList = BillingConfigManager.getPriceList(ProductEnum.SILVER);
         // 白银套餐必须具备哪些计划
         Integer[] months = array(1, 6, 12);
-        Integer[] seats = array(2, 5, 10, 20, 30, 50, 80, 100);
+        Integer[] seats = array(100);
         assertEquals(priceList.size(), months.length * seats.length);
     }
 
@@ -329,7 +327,7 @@ public class BillingConfigManagerTest {
         List<Price> priceList = BillingConfigManager.getPriceList(ProductEnum.GOLD);
         // 白银套餐必须具备哪些计划
         Integer[] months = array(1, 6, 12);
-        Integer[] seats = array(100, 120, 150, 180, 200);
+        Integer[] seats = array(200);
         assertEquals(priceList.size(), months.length * seats.length);
     }
 
@@ -347,9 +345,9 @@ public class BillingConfigManagerTest {
 
     @Test
     public void testGetEventOnEffectiveDate() {
-        assertThat(BillingConfigManager.getEventOnEffectiveDate(LocalDate.of(2022, 8, 31))).isNull();
-        assertThat(BillingConfigManager.getEventOnEffectiveDate(LocalDate.of(2022, 9, 1))).isNotNull();
-        assertThat(BillingConfigManager.getEventOnEffectiveDate(LocalDate.of(2022, 9, 30))).isNotNull();
-        assertThat(BillingConfigManager.getEventOnEffectiveDate(LocalDate.of(2022, 10, 1))).isNull();
+        assertThat(BillingConfigManager.getEventOnEffectiveDate(LocalDate.of(2022, 10, 23))).isNull();
+        assertThat(BillingConfigManager.getEventOnEffectiveDate(LocalDate.of(2022, 10, 24))).isNotNull();
+        assertThat(BillingConfigManager.getEventOnEffectiveDate(LocalDate.of(2022, 11, 11))).isNotNull();
+        assertThat(BillingConfigManager.getEventOnEffectiveDate(LocalDate.of(2022, 11, 12))).isNull();
     }
 }

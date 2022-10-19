@@ -178,8 +178,12 @@ public enum BillingFunctionEnum {
     /**
      * 安全设置-禁止成员在根目录增删文件
      */
-    SECURITY_SETTING_CATALOG_MANAGEMENT("security_setting_catalog_management")
+    SECURITY_SETTING_CATALOG_MANAGEMENT("security_setting_catalog_management"),
 
+    /**
+     * 镜像总数
+     */
+    MIRRORS("mirrors")
     ;
 
     private final String code;

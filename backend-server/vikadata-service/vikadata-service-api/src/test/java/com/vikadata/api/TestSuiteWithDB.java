@@ -2,14 +2,11 @@ package com.vikadata.api;
 
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
-
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 public abstract class TestSuiteWithDB {
 
-    @BeforeEach
     public void beforeMethod() {
         cleanAllTables();
         unsetCache();

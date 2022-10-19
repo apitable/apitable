@@ -201,7 +201,7 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
             planInfo.setDeadline(expiredAt);
             return planInfo;
         }
-        Bundle bundle = filterBundle(iBundleService.getBundlesBySpaceId(spaceId));
+        Bundle bundle = iBundleService.getPossibleBundleBySpaceId(spaceId);
         if (bundle == null) {
             // 返回默认的免费订阅方案
             return defaultPlanInfo(spaceId);
@@ -209,7 +209,8 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
         // 基础订阅
         Subscription baseSubscription = bundle.getBaseSubscription();
         LocalDate baseExpireDate = baseSubscription.getExpireDate().toLocalDate();
-        boolean isBaseEntitlementExpire = bundle.isBaseForFree() || ClockManager.me().getLocalDateNow().compareTo(baseExpireDate) > 0;
+        LocalDate now = ClockManager.me().getLocalDateNow();
+        boolean isBaseEntitlementExpire = bundle.isBaseForFree() || now.compareTo(baseExpireDate) > 0;
         // 增值计划暂不支持第三方集成空间
         Plan basePlan = isBaseEntitlementExpire ? getFreePlan(billingProperties.getChannel()) : getBillingConfig().getPlans().get(legacyPlanId(baseSubscription.getPlanId()));
         Product baseProduct = getBillingConfig().getProducts().get(basePlan.getProduct());
@@ -232,26 +233,6 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
                 .deadline(deadline)
                 .onTrial(SubscriptionPhase.TRIAL.equals(baseSubscription.getPhase()))
                 .basePlan(basePlan).addOnPlans(addOnPlans).build();
-    }
-
-    private Bundle filterBundle(List<Bundle> bundles) {
-        return bundles.stream().filter(bundle -> {
-                    if (bundle.getState() != BundleState.ACTIVATED) {
-                        return false;
-                    }
-                    LocalDate today = ClockManager.me().getLocalDateNow();
-                    Subscription base = bundle.getBaseSubscription();
-                    boolean found = today.compareTo(base.getStartDate().toLocalDate()) >= 0
-                            && today.compareTo(base.getExpireDate().toLocalDate()) <= 0;
-                    if (!found) {
-                        // 基础订阅过期，但附加订阅未过期，继续查找
-                        found = bundle.getAddOnSubscription().stream().anyMatch(subscription ->
-                                today.compareTo(subscription.getStartDate().toLocalDate()) >= 0
-                                        && today.compareTo(subscription.getExpireDate().toLocalDate()) <= 0);
-                    }
-                    return found;
-                })
-                .findFirst().orElse(null);
     }
 
     private SubscribePlanInfo defaultPlanInfo(String spaceId) {

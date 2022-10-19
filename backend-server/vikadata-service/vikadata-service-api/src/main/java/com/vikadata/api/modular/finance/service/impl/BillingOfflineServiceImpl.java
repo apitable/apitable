@@ -12,7 +12,6 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.json.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 
@@ -253,7 +252,7 @@ public class BillingOfflineServiceImpl implements IBillingOfflineService {
         subscriptionEntities.add(baseSubscription);
 
         // 新购之前也许已经有(免费订阅+附加订阅)
-        Bundle activatedBundle = iBundleService.getActivatedBundleBySpaceId(spaceId);
+        Bundle activatedBundle = iBundleService.getPossibleBundleBySpaceId(spaceId);
         if (activatedBundle != null) {
             activatedBundle.getAddOnSubscription()
                     .stream()
@@ -417,6 +416,7 @@ public class BillingOfflineServiceImpl implements IBillingOfflineService {
                 ClockManager.me().getLocalDateTimeNow() :
                 LocalDate.parse(inputDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay();
         LocalDateTime endDate = startDate.plusMonths(data.getMonths());
+        log.info("request start date: {}, end date: {}", startDate, endDate);
         // 查询空间的订阅状态
         Bundle activeBundle = iBundleService.getActivatedBundleBySpaceId(spaceId);
         if (activeBundle == null) {

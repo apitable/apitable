@@ -7,6 +7,7 @@ import java.time.OffsetDateTime;
 import static java.time.ZoneOffset.UTC;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.byLessThan;
 import static org.awaitility.Awaitility.await;
 
 public abstract class TestClockMockBase {
@@ -19,9 +20,12 @@ public abstract class TestClockMockBase {
         clock.setTime(OffsetDateTime.of(2012, 5, 1, 1, 2, 3, 0, UTC));
         assertThat(LocalDate.of(2012, 5, 1)).isEqualTo(clock.getUTCToday());
         final OffsetDateTime utcNowAfterSetTime = clock.getUTCNow();
+        assertThat(utcNowAfterSetTime.getYear()).isEqualTo(2012);
+        assertThat(utcNowAfterSetTime.getMonthValue()).isEqualTo(5);
+        assertThat(utcNowAfterSetTime.getDayOfMonth()).isEqualTo(1);
         assertThat(1).isEqualTo(utcNowAfterSetTime.getHour());
         assertThat(2).isEqualTo(utcNowAfterSetTime.getMinute());
-        assertThat(3).isEqualTo(utcNowAfterSetTime.getSecond());
+        assertThat(3).isCloseTo(utcNowAfterSetTime.getSecond(), byLessThan(2));
 
         clock.addDays(1);
         assertThat(LocalDate.of(2012, 5, 2)).isEqualTo(clock.getUTCToday());

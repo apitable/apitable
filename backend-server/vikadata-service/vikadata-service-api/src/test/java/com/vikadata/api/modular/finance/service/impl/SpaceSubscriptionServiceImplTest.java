@@ -37,10 +37,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static com.vikadata.api.constants.AssetsPublicConstants.CAPACITY_HEX;
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- *
- * @author Shawn Deng
- */
 public class SpaceSubscriptionServiceImplTest extends AbstractIntegrationTest {
 
     @Autowired
@@ -53,7 +49,7 @@ public class SpaceSubscriptionServiceImplTest extends AbstractIntegrationTest {
     public void testHandleExpiredSubscription() {
         String spaceId = IdWorker.get32UUID();
         LocalDateTime endTime = getClock().getNow(testTimeZone).minusMinutes(1).toLocalDateTime();
-        String priceId = "price_gold_180_1";
+        String priceId = "price_gold_200_1";
         // 准备好空间站数据
         prepareSpaceBundleWithSubscription(spaceId, endTime, priceId);
         iSpaceSubscriptionService.handleExpiredSubscription(spaceId);
@@ -66,7 +62,7 @@ public class SpaceSubscriptionServiceImplTest extends AbstractIntegrationTest {
     public void testHandleNotExpiredSubscription() {
         String spaceId = IdWorker.get32UUID();
         LocalDateTime endTime = getClock().getNow(testTimeZone).plusDays(1).toLocalDateTime();
-        String priceId = "price_gold_180_1";
+        String priceId = "price_gold_200_1";
         // 准备好空间站数据
         prepareSpaceBundleWithSubscription(spaceId, endTime, priceId);
         iSpaceSubscriptionService.handleExpiredSubscription(spaceId);

@@ -14,7 +14,6 @@ import com.vikadata.system.config.billing.Plan;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EntitlementChecker {
 
@@ -57,9 +56,14 @@ public class EntitlementChecker {
 
     public void checkSubscription(String spaceId, List<ExpectedSubscriptionCheck> subscriptionChecks) {
         Bundle bundle = iBundleService.getActivatedBundleBySpaceId(spaceId);
+        if (subscriptionChecks == null || subscriptionChecks.isEmpty()) {
+            assertThat(bundle).isNull();
+            return;
+        }
         assertThat(bundle).isNotNull();
         List<Subscription> subscriptions = bundle.getSubscriptions();
-        assertEquals(subscriptions.size(), subscriptionChecks.size(), String.format("Expected items: %s, actual items: %s", subscriptionChecks, subscriptionChecks));
+        assertThat(subscriptions.size()).isEqualTo(subscriptionChecks.size());
+        // assertEquals(subscriptions.size(), subscriptionChecks.size(), String.format("Expected items: %s, actual items: %s", subscriptionChecks, subscriptionChecks));
         for (ExpectedSubscriptionCheck expect : subscriptionChecks) {
             boolean found = subscriptions.stream().anyMatch(subscription -> {
                 if (expect.getProduct() != null && !expect.getProduct().name().equalsIgnoreCase(subscription.getProductName())) {

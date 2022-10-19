@@ -191,4 +191,8 @@ public class SpaceSubscribeVo {
     @ApiModelProperty(value = "安全设置-禁止成员在根目录增删文件", example = "false", position = 26)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean securitySettingCatalogManagement;
+
+    @ApiModelProperty(value = "镜像数量(单位: 个)", example = "5", position = 27)
+    @JsonSerialize(nullsUsing = NullNumberSerializer.class)
+    private Long maxMirrorNums;
 }

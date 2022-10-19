@@ -9,12 +9,12 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.vikadata.api.AbstractIntegrationTest;
+import com.vikadata.api.context.ClockManager;
 import com.vikadata.api.enums.finance.OrderType;
 import com.vikadata.api.mock.bean.MockUserSpace;
 import com.vikadata.api.modular.developer.model.CreateBusinessOrderRo;
@@ -36,7 +36,6 @@ import static com.vikadata.api.util.billing.BillingConfigManager.getPlan;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Lists.list;
 
-@Disabled("no assert")
 public class BillingOfflineServiceImplTest extends AbstractIntegrationTest {
 
     protected static final Logger log = LoggerFactory.getLogger(BillingOfflineServiceImplTest.class);
@@ -107,7 +106,7 @@ public class BillingOfflineServiceImplTest extends AbstractIntegrationTest {
         data.setSpaceId(mockUserSpace.getSpaceId());
         data.setType(OrderType.BUY.name());
         data.setProduct(toBuy.name());
-        data.setSeat(100);
+        data.setSeat(200);
         data.setMonths(4);
 
         // create new buy order
@@ -151,7 +150,7 @@ public class BillingOfflineServiceImplTest extends AbstractIntegrationTest {
         data.setSpaceId(mockUserSpace.getSpaceId());
         data.setType(OrderType.BUY.name());
         data.setProduct(toBuy.name());
-        data.setSeat(100);
+        data.setSeat(200);
         data.setMonths(4);
 
         // create new buy order
@@ -379,7 +378,7 @@ public class BillingOfflineServiceImplTest extends AbstractIntegrationTest {
         expectedSubscriptions.clear();
 
         // buy charge product on current date
-        Price silverPrice = BillingConfigManager.getPriceBySeatAndMonths(ProductEnum.SILVER, 20, 1);
+        Price silverPrice = BillingConfigManager.getPriceBySeatAndMonths(ProductEnum.SILVER, 100, 1);
         assertThat(silverPrice).isNotNull();
         final OrderArguments orderArguments = new DefaultOrderArguments(mockUserSpace.getSpaceId(), silverPrice);
         // paid Time
@@ -459,7 +458,7 @@ public class BillingOfflineServiceImplTest extends AbstractIntegrationTest {
         // buy charge product after a few day, move clock on 2022-02-06
         getClock().addDays(5);
 
-        Price silverPrice = BillingConfigManager.getPriceBySeatAndMonths(ProductEnum.SILVER, 20, 1);
+        Price silverPrice = BillingConfigManager.getPriceBySeatAndMonths(ProductEnum.SILVER, 100, 1);
         assertThat(silverPrice).isNotNull();
         final OrderArguments orderArguments = new DefaultOrderArguments(mockUserSpace.getSpaceId(), silverPrice);
         // paid Time
@@ -490,7 +489,7 @@ public class BillingOfflineServiceImplTest extends AbstractIntegrationTest {
      * test step:
      * 1. create base subscription between 2022-2-1 and 2023-2-1
      * 2. then create add-on subscription between 2022-2-8 and 2022-5-8
-     * 3. move clock to 2022-5-9, add-on subscription should be expire, but base subscription still be active
+     * 3. move clock to 2022-5-9, add-on subscription should be expired, but base subscription still be active
      */
     @Test
     public void testCreateSubscriptionWithAddOnAfterPayChargeSubscription() {
@@ -501,7 +500,7 @@ public class BillingOfflineServiceImplTest extends AbstractIntegrationTest {
         log.info("initial user and space");
         final MockUserSpace mockUserSpace = createSingleUserAndSpace();
         // chose product to buy
-        Price silverPrice = BillingConfigManager.getPriceBySeatAndMonths(ProductEnum.SILVER, 20, 12);
+        Price silverPrice = BillingConfigManager.getPriceBySeatAndMonths(ProductEnum.SILVER, 100, 12);
         assertThat(silverPrice).isNotNull();
         final OrderArguments orderArguments = new DefaultOrderArguments(mockUserSpace.getSpaceId(), silverPrice);
         // paid Time
@@ -572,11 +571,19 @@ public class BillingOfflineServiceImplTest extends AbstractIntegrationTest {
 
         iBillingOfflineService.createSubscriptionWithAddOn(data);
 
+        log.info("mock clock utc now: {}", getClock().getUTCNow());
+        log.info("clock instance utc now: {}", ClockManager.me().getLocalDateNow());
+
         // check space entitlement
         final List<ExpectedSubscriptionCheck> expectedSubscriptions = new ArrayList<>();
-        expectedSubscriptions.add(new ExpectedSubscriptionCheck(ProductEnum.BRONZE, initialCreateDate.toLocalDate(), LocalDate.of(2022, 5, 1)));
-        expectedSubscriptions.add(new ExpectedSubscriptionCheck(ProductEnum.CAPACITY, initialCreateDate.toLocalDate(), LocalDate.of(2022, 5, 1)));
+        expectedSubscriptions.add(new ExpectedSubscriptionCheck(ProductEnum.BRONZE, LocalDate.of(2022, 2, 1), LocalDate.of(2022, 5, 1)));
+        expectedSubscriptions.add(new ExpectedSubscriptionCheck(ProductEnum.CAPACITY, LocalDate.of(2022, 2, 1), LocalDate.of(2022, 5, 1)));
         entitlementChecker.checkSubscription(mockUserSpace.getSpaceId(), expectedSubscriptions);
+        // check entitlement
+        entitlementChecker.checkSpaceEntitlement(mockUserSpace.getSpaceId(),
+                new ExpectedSpaceEntitlementCheck(ProductEnum.BRONZE.getName(), null,
+                        getFreePlan(ProductChannel.VIKA),
+                        Collections.singletonList(getBillingConfig().getPlans().get("capacity_100G"))));
 
         expectedSubscriptions.clear();
         // buy charge product after a few day, move clock on 2022-02-06
@@ -609,6 +616,118 @@ public class BillingOfflineServiceImplTest extends AbstractIntegrationTest {
                 new ExpectedSpaceEntitlementCheck(ProductEnum.BRONZE.getName(), null,
                         getFreePlan(ProductChannel.VIKA),
                         Collections.singletonList(getBillingConfig().getPlans().get("capacity_100G"))));
+    }
+
+    /**
+     * test step:
+     * 1. pay charge base subscription(silver 100 seat) between 2022-2-3 and 2022-8-3 (6 month)
+     * 2. and move clock to 2022-6-1, create add-on subscription between 2022-6-1 and 2023-6-1 (1 year)
+     * 3. and move clock to 2022-8-4, base subscription should be expired, but add-on subscription still be active
+     * 4. then pay charge subscription with 6 month silver(100) product on 2022-8-10, active date between 2022-8-10 and 2023-2-10
+     * 5. and move clock to 2023-2-11, base subscription should expire, but add-on subscription still be active
+     * 6. and move clock to 2023-6-2, all subscription should be expired
+     */
+    @Test
+    public void testCreateSubscriptionWithAddOnThenPayChargeWhenSubscriptionExpired() {
+        // step 1: initial date on 2022-2-3 19:10:30
+        final OffsetDateTime initialCreateDate = OffsetDateTime.of(2022, 2, 3, 19, 10, 30, 0, testTimeZone);
+        getClock().setTime(initialCreateDate);
+
+        log.info("initial user and space");
+        final MockUserSpace mockUserSpace = createSingleUserAndSpace();
+
+        // chose product to buy
+        ProductEnum toBuy = ProductEnum.SILVER;
+        Price silverPrice = BillingConfigManager.getPriceBySeatAndMonths(toBuy, 100, 6);
+        assertThat(silverPrice).isNotNull();
+        final OrderArguments orderArguments = new DefaultOrderArguments(mockUserSpace.getSpaceId(), silverPrice);
+        final OffsetDateTime paidTime = initialCreateDate.plusMinutes(5);
+        autoOrderPayProcessor(mockUserSpace.getUserId(), orderArguments, paidTime);
+
+        // check space entitlement
+        final List<ExpectedSubscriptionCheck> expectedSubscriptions = new ArrayList<>();
+        expectedSubscriptions.add(new ExpectedSubscriptionCheck(ProductEnum.SILVER, LocalDate.of(2022, 2, 3), LocalDate.of(2022, 8, 3)));
+        entitlementChecker.checkSubscription(mockUserSpace.getSpaceId(), expectedSubscriptions);
+        // check entitlement
+        entitlementChecker.checkSpaceEntitlement(
+                mockUserSpace.getSpaceId(),
+                new ExpectedSpaceEntitlementCheck(ProductEnum.SILVER.getName(),
+                        LocalDate.of(2022, 8, 3),
+                        getBillingConfig().getPlans().get(silverPrice.getPlanId()),
+                        Collections.emptyList())
+        );
+
+        expectedSubscriptions.clear();
+        // step 2: move clock on 2022-06-01
+        getClock().setTime(OffsetDateTime.of(2022, 6, 1, 19, 10, 30, 0, testTimeZone));
+        // choose plan to reward
+        CreateEntitlementWithAddOn data = new CreateEntitlementWithAddOn();
+        data.setSpaceId(mockUserSpace.getSpaceId());
+        data.setPlanId("capacity_100G");
+        data.setMonths(12);
+        iBillingOfflineService.createSubscriptionWithAddOn(data);
+
+        // check space entitlement
+        expectedSubscriptions.add(new ExpectedSubscriptionCheck(ProductEnum.SILVER, LocalDate.of(2022, 2, 3), LocalDate.of(2022, 8, 3)));
+        expectedSubscriptions.add(new ExpectedSubscriptionCheck(ProductEnum.CAPACITY, LocalDate.of(2022, 6, 1), LocalDate.of(2023, 6, 1)));
+        entitlementChecker.checkSubscription(mockUserSpace.getSpaceId(), expectedSubscriptions);
+        // check entitlement
+        entitlementChecker.checkSpaceEntitlement(mockUserSpace.getSpaceId(),
+                new ExpectedSpaceEntitlementCheck(ProductEnum.SILVER.getName(),
+                        LocalDate.of(2022, 8, 3),
+                        getBillingConfig().getPlans().get(silverPrice.getPlanId()),
+                        Collections.singletonList(getBillingConfig().getPlans().get("capacity_100G"))
+                )
+        );
+
+        // step 3: mock clock to 2022-8-4, base subscription should be expired, add-on subscription still be active
+        getClock().setTime(OffsetDateTime.of(2022, 8, 4, 0, 0, 0, 0, testTimeZone));
+        entitlementChecker.checkSubscription(null);
+        // check entitlement
+        entitlementChecker.checkSpaceEntitlement(mockUserSpace.getSpaceId(),
+                new ExpectedSpaceEntitlementCheck(ProductEnum.BRONZE.getName(), null,
+                        getFreePlan(ProductChannel.VIKA),
+                        Collections.singletonList(getBillingConfig().getPlans().get("capacity_100G"))));
+
+        // step 4: mock clock to 2022-8-10, pay charge again
+        getClock().setTime(OffsetDateTime.of(2022, 8, 10, 10, 0, 0, 0, testTimeZone));
+        Price silverPriceAgain = BillingConfigManager.getPriceBySeatAndMonths(ProductEnum.SILVER, 100, 6);
+        assertThat(silverPriceAgain).isNotNull();
+        final OffsetDateTime sencondPaidTime = initialCreateDate.plusMinutes(5);
+        autoOrderPayProcessor(mockUserSpace.getUserId(), new DefaultOrderArguments(mockUserSpace.getSpaceId(), silverPriceAgain), sencondPaidTime);
+
+        // check space entitlement
+        expectedSubscriptions.clear();
+        expectedSubscriptions.add(new ExpectedSubscriptionCheck(ProductEnum.SILVER, LocalDate.of(2022, 8, 10), LocalDate.of(2023, 2, 10)));
+        expectedSubscriptions.add(new ExpectedSubscriptionCheck(ProductEnum.CAPACITY, LocalDate.of(2022, 6, 1), LocalDate.of(2023, 6, 1)));
+        entitlementChecker.checkSubscription(mockUserSpace.getSpaceId(), expectedSubscriptions);
+        // check entitlement
+        entitlementChecker.checkSpaceEntitlement(
+                mockUserSpace.getSpaceId(),
+                new ExpectedSpaceEntitlementCheck(ProductEnum.SILVER.getName(),
+                        LocalDate.of(2023, 2, 10),
+                        getBillingConfig().getPlans().get(silverPrice.getPlanId()),
+                        Collections.singletonList(getBillingConfig().getPlans().get("capacity_100G"))
+                )
+        );
+
+        // step 5: mock clock to 2023-2-11, base subscription should be expired
+        getClock().setTime(OffsetDateTime.of(2023, 2, 11, 0, 0, 0, 0, testTimeZone));
+        // check entitlement
+        entitlementChecker.checkSpaceEntitlement(mockUserSpace.getSpaceId(),
+                new ExpectedSpaceEntitlementCheck(ProductEnum.BRONZE.getName(), null,
+                        getFreePlan(ProductChannel.VIKA),
+                        Collections.singletonList(getBillingConfig().getPlans().get("capacity_100G"))));
+
+        // step 6. and move clock to 2023-6-2, all subscription should be expired
+        getClock().setTime(OffsetDateTime.of(2023, 6, 2, 0, 0, 0, 0, testTimeZone));
+        // check entitlement
+        entitlementChecker.checkSpaceEntitlement(mockUserSpace.getSpaceId(),
+                new ExpectedSpaceEntitlementCheck(ProductEnum.BRONZE.getName(), null,
+                        getFreePlan(ProductChannel.VIKA),
+                        Collections.emptyList()
+                )
+        );
     }
 
     @Test

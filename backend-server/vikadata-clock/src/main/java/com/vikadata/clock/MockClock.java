@@ -113,6 +113,6 @@ public class MockClock implements Clock {
     }
 
     protected OffsetDateTime getReferenceDateTimeUTC() {
-        return mockDateTimeUTC;
+        return this.mockDateTimeUTC;
     }
 }

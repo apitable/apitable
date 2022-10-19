@@ -1,7 +1,5 @@
 package com.vikadata.api.modular.base.service.impl;
 
-import java.util.List;
-
 import javax.annotation.Resource;
 
 import org.junit.jupiter.api.Disabled;
@@ -10,16 +8,13 @@ import org.mockito.Mockito;
 
 import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.enums.attach.AssetType;
-import com.vikadata.api.modular.base.model.AssetUploadCertificateVO;
 import com.vikadata.api.modular.base.service.IAssetUploadTokenService;
 import com.vikadata.api.modular.workspace.service.INodeService;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.integration.oss.OssClientTemplate;
-import com.vikadata.integration.oss.OssUploadAuth;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.BDDMockito.given;
 
@@ -52,17 +47,4 @@ public class AssetUploadTokenServiceImplTest extends AbstractIntegrationTest {
         assertThatCode(() -> iAssetUploadTokenService.createSpaceAssetPreSignedUrl(0L, "nodeId001", AssetType.DATASHEET.getValue(), 1))
                 .isInstanceOf(Exception.class);
     }
-
-    @Test
-    @Disabled("no assert")
-    public void testCreateSpaceAssetPreSignedUrl() {
-        given(iNodeService.getSpaceIdByNodeId("nodeId002"))
-                .willReturn("spaceId");
-        given(ossTemplate.uploadToken(Mockito.eq(Mockito.anyString()), Mockito.eq(Mockito.anyString()), 3600, null))
-                .willReturn(new OssUploadAuth());
-
-        List<AssetUploadCertificateVO> vos = iAssetUploadTokenService.createSpaceAssetPreSignedUrl(null, "nodeId002", AssetType.DATASHEET.getValue(), 2);
-        assertThat(vos).isNotEmpty().hasSize(2);
-    }
-
 }

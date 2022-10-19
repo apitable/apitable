@@ -1,12 +1,8 @@
 package com.vikadata.api.modular.test.controller;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-
-import javax.annotation.Resource;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -16,8 +12,8 @@ import io.swagger.annotations.ApiOperation;
 import com.vikadata.api.annotation.ApiResource;
 import com.vikadata.api.annotation.GetResource;
 import com.vikadata.api.annotation.PostResource;
+import com.vikadata.api.context.ClockManager;
 import com.vikadata.api.modular.test.model.ClockVO;
-import com.vikadata.clock.Clock;
 import com.vikadata.clock.ClockUtil;
 import com.vikadata.clock.MockClock;
 import com.vikadata.core.support.ResponseData;
@@ -25,8 +21,6 @@ import com.vikadata.core.support.ResponseData;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import static com.vikadata.api.constants.TimeZoneConstants.DEFAULT_TIME_ZONE;
 
 /**
  * 测试模块
@@ -38,9 +32,6 @@ import static com.vikadata.api.constants.TimeZoneConstants.DEFAULT_TIME_ZONE;
 @ApiResource(path = "/test")
 public class TestController {
 
-    @Resource
-    private Clock clock;
-
     @GetResource(path = "/clock", requiredPermission = false, requiredLogin = false)
     @ApiOperation(value = "Get the current time", response = ClockVO.class)
     @ApiImplicitParams({
@@ -49,11 +40,7 @@ public class TestController {
     public ResponseData<ClockVO> getCurrentTime(@RequestParam(name = "timeZone", required = false) String timeZoneStr) {
         // default china zone
         final ZoneOffset timeZone = timeZoneStr != null ? ZoneOffset.of(timeZoneStr) : ZoneOffset.UTC;
-        final OffsetDateTime now = clock.getUTCNow();
-        System.out.println(LocalDateTime.now());
-        System.out.println(LocalDate.now());
-        System.out.println(clock.getNow(DEFAULT_TIME_ZONE));
-        System.out.println(clock.getToday(DEFAULT_TIME_ZONE));
+        final OffsetDateTime now = ClockManager.me().getUTCNow();
         ClockVO clockVO = new ClockVO(now.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME), ClockUtil.formatTimeZone(timeZone), ClockUtil.toLocalDate(now, timeZone));
         return ResponseData.success(clockVO);
     }
@@ -67,7 +54,7 @@ public class TestController {
     public ResponseData<ClockVO> setTestClockTime(@RequestParam(name = "requestedDate", required = false) String requestedDate,
             @RequestParam(name = "timeZone", required = false) String timeZoneStr,
             @RequestParam(name = "timeoutSec", required = false, defaultValue = "5") Long timeoutSec) {
-        final MockClock testClock = getMockClock();
+        final MockClock testClock = ClockManager.me().getMockClock();
         if (requestedDate == null) {
             testClock.resetDeltaFromReality();
         }
@@ -96,7 +83,7 @@ public class TestController {
             @RequestParam(name = "years", required = false) final Integer addYears,
             @RequestParam(name = "timeZone", required = false) final String timeZoneStr,
             @RequestParam(name = "timeoutSec", required = false, defaultValue = "5") final Long timeoutSec) {
-        final MockClock testClock = getMockClock();
+        final MockClock testClock = ClockManager.me().getMockClock();
         if (addDays != null) {
             testClock.addDays(addDays);
         }
@@ -117,12 +104,5 @@ public class TestController {
 
     private boolean waitForEventToComplete(final Long timeoutSec) {
         return false;
-    }
-
-    private MockClock getMockClock() {
-        if (!(clock instanceof MockClock)) {
-            throw new UnsupportedOperationException("System has not been configured to update the time");
-        }
-        return (MockClock) clock;
     }
 }
