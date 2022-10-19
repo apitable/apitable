@@ -11,6 +11,11 @@ declare namespace NodeJS {
   }
 }
 
+declare module '*.json' {
+  const dataValue: any;
+  export default dataValue;
+}
+
 declare module '*.bmp' {
   const src: string;
   export default src;
