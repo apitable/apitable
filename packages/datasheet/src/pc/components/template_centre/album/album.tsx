@@ -1,8 +1,8 @@
 import styles from './style.module.less';
 import BackIcon from 'static/icon/common/common_icon_left_line.svg';
-import { t, Strings, Navigation } from '@vikadata/core';
+import { t, Strings, Navigation, getLanguage } from '@vikadata/core';
 import { ShareOutlined, DescriptionOutlined } from '@vikadata/icons';
-import { Typography, Button, colorVars } from '@vikadata/components';
+import { Button, Typography } from '@vikadata/components';
 import Image from 'next/image';
 import { Router } from 'pc/components/route_manager/router';
 import { useSelector } from 'react-redux';
@@ -10,7 +10,8 @@ import { FC } from 'react';
 import { copy2clipBoard } from 'pc/utils';
 import * as React from 'react';
 import MarkdownIt from 'markdown-it';
-import albumTemplatePng from 'static/icon/template/album_template.png';
+import albumTemplateEnPng from 'static/icon/template/album_template_en.png';
+import albumTemplateZhPng from 'static/icon/template/album_template_zh.png';
 
 const md = new MarkdownIt();
 
@@ -36,6 +37,7 @@ const AlbumDetail: FC<IAlbumDetail> = props => {
   const { album, recommends } = props;
   const categoryId = useSelector(state => state.pageParams.categoryId);
   const spaceId = useSelector(state => state.space.activeId);
+  const isZh = getLanguage() === 'zh-CN';
   const goBack = () => {
     Router.push(Navigation.TEMPLATE, { params: { spaceId, categoryId }});
   };
@@ -107,14 +109,22 @@ const AlbumDetail: FC<IAlbumDetail> = props => {
                 </div>
                 <div className={styles.albumRecommendContent}>
                   <h4>{recommend.name}</h4>
-                  <div className={styles.albumRecommendDesc}>{recommend.description}</div>
+                  <Typography
+                    variant="body4"
+                    className={styles.albumRecommendDesc}
+                    ellipsis={{
+                      rows: 2
+                    }}
+                  >
+                    {recommend.description}
+                  </Typography>
                 </div>
               </div>
             ))}
           </div>
         </div>
         <div className={styles.albumContentRight} >
-          <div dangerouslySetInnerHTML={{ __html: md.render(album.content) }}/>
+          <div className={styles.albumRightContent} dangerouslySetInnerHTML={{ __html: md.render(album.content) }}/>
           <div className={styles.bottomShare}>
             <Button
               shape="round"
@@ -129,18 +139,7 @@ const AlbumDetail: FC<IAlbumDetail> = props => {
           <div className={styles.albumAdvise} onClick={() => {
             location.href='https://vika.cn/share/shrxyD2zGCExgb3tTUG30/fomdcAEpdKETLUGsMY';
           }}>
-            <Typography variant="h5" className={styles.albumAdviseTip}>
-              {t(Strings.template_advise_tip)}
-            </Typography>
-            <Button
-              shape="round"
-              color={colorVars.staticWhite0}
-            >
-              {t(Strings.template_feedback)}
-            </Button>
-            <div className={styles.albumAdviseBg}>
-              <Image layout="fill" src={albumTemplatePng} alt=""/>
-            </div>
+            <Image layout="fill" objectFit="contain" src={isZh ? albumTemplateZhPng : albumTemplateEnPng} alt=""/>
           </div>
         </div>
       </div>

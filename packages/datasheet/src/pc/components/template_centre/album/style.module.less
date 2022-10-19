@@ -5,7 +5,8 @@
 
 .albumDetail {
   position: relative;
-  overflow: overlay;
+  overflow: auto;
+  width: 100%;
   color: var(--blackBlue_50);
   background: var(--blackBlue_1000);
   h1, h2, h3, h4 {
@@ -14,7 +15,7 @@
   .albumHeader {
     display: flex;
     justify-content: space-between;
-    padding: 16px 16px 16px 0;
+    padding: 16px 32px 16px 8px;
     .shareBtn {
       cursor: pointer;
       max-width: 216px;
@@ -42,7 +43,6 @@
     position: relative;
     width: 100%;
     height: 350px;
-    border-radius: 8px;
     overflow: hidden;
   }
   .goBack {
@@ -71,7 +71,8 @@
   .albumContent {
     padding: 64px 64px 0 64px;
     display: flex;
-    width: 100%;
+    max-width: 1044px;
+    margin: 0 auto;
     .albumContentLeft {
       width: 260px;
       .albumAuthor {
@@ -102,6 +103,9 @@
           padding-top: 16px;
           display: flex;
           color: var(--blackBlue_500);
+          svg {
+            margin-top: 2px;
+          }
           .authorDescContent {
             margin-left: 8px;
             font-size: 12px;
@@ -127,6 +131,7 @@
         border-radius: 8px;
         h3 {
           margin-bottom: 16px;
+          margin-left: 8px;
         }
         .albumRecommendItem {
           display: flex;
@@ -150,7 +155,6 @@
               margin-bottom: 4px;
             }
             .albumRecommendDesc {
-              font-size: 12px;
               color: var(--blackBlue_500);
             }
           }
@@ -161,6 +165,11 @@
       width: calc(100% - 260px);
       margin: 0 32px;
       overflow-x: hidden;
+      .albumRightContent {
+        img {
+          max-width: 100%;
+        }
+      }
       p {
         color: var(--blackBlue_400);
         margin-bottom: 4px;
@@ -173,24 +182,7 @@
     height: 200px;
     margin-bottom: 60px;
     z-index: 1;
-    padding-left: 64px;
     cursor: pointer;
-    button {
-      color: var(--primaryColor);
-    }
-    .albumAdviseBg {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      top: 0;
-      left: 0;
-    }
-    .albumAdviseTip {
-      padding-top: 80px;
-      margin-bottom: 16px;
-      color: var(--staticWhite0);
-    }
   }
   .bottomShare {
     margin: 48px auto;
@@ -218,14 +210,7 @@
     }
     .albumAdvise {
       margin-bottom: 24px;
-      padding-left: 16px;
-      .albumAdviseTip {
-        font-size: 16px;
-        width: 65%;
-      }
-      .albumAdviseTip {
-        padding-top: 56px;
-      }
+      height: 100px;
     }
   }
 }
