@@ -19,12 +19,12 @@ export const needHideUnLimitedSpaceLevel = {
   [LevelType.Bronze]: true,
   [LevelType.DingtalkBase]: true,
   [LevelType.WecomeBase]: true,
-  [LevelType.FeishuBase]: true
+  [LevelType.FeishuBase]: true,
 };
 
 export type ISpaceLevelType = 'bronze' | 'silver' | 'gold' | 'enterprise' | 'dingtalk_base' | 'dingtalk_enterprise' | 'dingtalk_standard'
   | 'wecom_base' | 'wecom_standard' | 'wecom_enterprise' | 'private_cloud'
-  | 'feishu_base' | 'feishu_enterprise' | 'feishu_standard' | 'atlas';
+  | 'feishu_base' | 'feishu_enterprise' | 'feishu_standard' | 'atlas' | 'dingtalk_profession' | 'feishu_profession' | 'wecom_profession';
 
 export interface ISpaceLevelTagInfo {
   label: React.ReactNode,

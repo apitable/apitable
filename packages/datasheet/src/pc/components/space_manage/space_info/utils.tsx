@@ -51,12 +51,12 @@ const LevelConfigMap = {
     upgradeBtnColor: undefined,
     expirationColor: undefined,
     logo: <BronzeFilled size={24} />,
-    getLabel: (text: string ) => <span className={cx(styles.spaceLevelTag, styles.bronzeTag)}>
+    getLabel: (text: string) => <span className={cx(styles.spaceLevelTag, styles.bronzeTag)}>
       <span className={styles.icon}>
         <BronzeFilled size={16} />
       </span>
       <span className={styles.text}>{text}</span>
-    </span>
+    </span>,
   },
   silver: {
     strokeColor: colors.silverFg,
@@ -77,12 +77,12 @@ const LevelConfigMap = {
       height: '82px',
     },
     logo: <SilverFilled size={24} />,
-    getLabel: (text: string ) => <span className={cx(styles.spaceLevelTag, styles.silverTag)}>
+    getLabel: (text: string) => <span className={cx(styles.spaceLevelTag, styles.silverTag)}>
       <span className={styles.icon}>
         <SilverFilled size={16} />
       </span>
       <span className={styles.text}>{text}</span>
-    </span>
+    </span>,
   },
   golden: {
     strokeColor: colors.warningColor,
@@ -103,12 +103,12 @@ const LevelConfigMap = {
       height: '82px',
     },
     logo: <GoldFilled size={24} />,
-    getLabel: (text: string ) => <span className={cx(styles.spaceLevelTag, styles.goldTag)}>
+    getLabel: (text: string) => <span className={cx(styles.spaceLevelTag, styles.goldTag)}>
       <span className={styles.icon}>
         <GoldFilled size={16} />
       </span>
       <span className={styles.text}>{text}</span>
-    </span>
+    </span>,
   },
   enterprise: {
     strokeColor: colors.enterpriseFg,
@@ -127,21 +127,21 @@ const LevelConfigMap = {
       right: 16,
       top: 16,
       height: 80,
-      width: 80
+      width: 80,
     },
     logo: <EnterpriseFilled size={24} />,
-    getLabel: (text: string ) => <span className={cx(styles.spaceLevelTag, styles.enterpriseTag)}>
+    getLabel: (text: string) => <span className={cx(styles.spaceLevelTag, styles.enterpriseTag)}>
       <span className={styles.icon}>
         <EnterpriseFilled size={16} />
       </span>
       <span className={styles.text}>{text}</span>
-    </span>
+    </span>,
   },
 };
 
 const getSpaceConfig = (
   spaceLevel: keyof typeof LevelConfigMap,
-  texts: { title: string, titleTip: string, tagText: string, buttonText: string }
+  texts: { title: string, titleTip: string, tagText: string, buttonText: string },
 ) => {
   const config = LevelConfigMap[spaceLevel];
   const { title, titleTip, tagText, buttonText } = texts;
@@ -154,7 +154,7 @@ const getSpaceConfig = (
       titleTip,
       titleColor: config.cardTitleColor,
       buttonText,
-      onClick: ()=>{},
+      onClick: () => {},
       cardBg: config.cardBg,
       cardSkin: config.cardSkin,
       cardTagPosition: config.cardTagPosition,
@@ -168,8 +168,8 @@ const getSpaceConfig = (
     },
     spaceLevelTag: {
       label: config.getLabel(title),
-      logo: config.logo
-    }
+      logo: config.logo,
+    },
   };
 };
 
@@ -201,6 +201,24 @@ export const SpaceLevelInfo: ISpaceLevelInfo = {
     tagText: t(Strings.paid_edition),
   }),
   gold: getSpaceConfig('golden', {
+    title: t(Strings.golden_grade),
+    titleTip: t(Strings.grade_desc),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
+  }),
+  dingtalk_profession: getSpaceConfig('golden', {
+    title: t(Strings.golden_grade),
+    titleTip: t(Strings.grade_desc),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
+  }),
+  feishu_profession: getSpaceConfig('golden', {
+    title: t(Strings.golden_grade),
+    titleTip: t(Strings.grade_desc),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
+  }),
+  wecom_profession: getSpaceConfig('golden', {
     title: t(Strings.golden_grade),
     titleTip: t(Strings.grade_desc),
     buttonText: t(Strings.renew),
