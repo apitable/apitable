@@ -2,14 +2,17 @@ import { IRule } from './rules';
 import { ITriggerAction, IFilterAction } from './actions';
 
 /**
- * 母Listener接口，一般不对外使用
+ * Listener interface
  *
  * @export
  * @interface IListener
  */
 export interface IListener {
-    type: ListenrType;
+    type: ListenerType;
     priority: number;
+    /**
+     * hook name
+     */
     hook: string;
     rule?: IRule;
     isCatch?: boolean;
@@ -23,7 +26,7 @@ export interface IFilter extends IListener {
     action: IFilterAction;
 }
 
-export enum ListenrType {
+export enum ListenerType {
     Trigger = 'Trigger',
     Filter = 'Filter',
 }

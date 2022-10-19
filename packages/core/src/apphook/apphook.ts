@@ -1,5 +1,5 @@
 /*
- * AppHook Hook引擎
+ * AppHook Hook Engine
  *
  * @Author: Kelly Peilin Chan (kelly@vikadata.com)
  * @Date: 2020-03-07 11:15:05
@@ -9,7 +9,7 @@
 import { FilterCommand, TriggerCommand } from './commands';
 import { IRule } from './rules';
 import { IFilterAction, ITriggerAction } from './actions';
-import { IListener, ITrigger, ListenrType as ListenerType, IFilter } from './listeners';
+import { IListener, ITrigger, ListenerType as ListenerType, IFilter } from './listeners';
 import { AddTriggerEvent, DoTriggerEvent, UseFiltersEvent, AddFilterEvent } from './hook_events';
 
 interface IListenersMap {
@@ -21,7 +21,7 @@ interface IListenersMap {
 export class AppHook {
 
   /**
-   * 存放所有的监听器，包括Trigger、Filter，按其分类存放
+   * the place to store all listeners, including Trigger and Filter, store them by type
    *
    * @type {IListenersMap}
    * @memberof AppHook
@@ -29,7 +29,7 @@ export class AppHook {
   _listeners: IListenersMap = {};
 
   /**
-   * 当AddTrigger时触发的[内部事件]
+   * When AddTrigger triggered, the inner event.
    *
    * @type {AddTriggerEvent}
    * @memberof AppHook
@@ -37,7 +37,7 @@ export class AppHook {
   _onAddTrigger: AddTriggerEvent;
 
   /**
-   * 当DoTrigger时触发的内部事件
+   * When DoTrigger triggered, the inner event.
    *
    * @type {DoTriggerEvent}
    * @memberof AppHook
@@ -45,7 +45,8 @@ export class AppHook {
   _onDoTrigger: DoTriggerEvent;
 
   /**
-   * 用于内部自省，useFilters可绑定的事件行为
+   * Use for inner self-inspection, 
+   * the event action that can be bound to useFilters
    *
    * @type {UseFiltersEvent}
    * @memberof AppHook
@@ -53,7 +54,7 @@ export class AppHook {
   _onUseFilters: UseFiltersEvent;
 
   /**
-   * addFilter时触发的事件
+   * When AddFilter triggered, the inner event. 
    *
    * @type {AddFilterEvent}
    * @memberof AppHook
@@ -62,7 +63,7 @@ export class AppHook {
 
   /**
    *
-   * 添加触发器
+   * Add Trigger
    *
    * @param {string} hook
    * @param {TriggerCommand} command
@@ -103,7 +104,7 @@ export class AppHook {
   }
 
   /**
-   * 绑定AddTriggerEvent，当要添加触发器时激活
+   * Bind AddTriggerEvent, the method will be called when addTrigger
    *
    * @memberof AppHook
    */
@@ -111,7 +112,8 @@ export class AppHook {
     this._onAddTrigger = bind;
   }
   /**
-   * 当AddTrigger时触发的方法
+   * 
+   * bind AddFilterEvent, the method will be called when addFilter
    *
    * @param {AddFilterEvent} bind
    * @memberof AppHook
@@ -121,7 +123,7 @@ export class AppHook {
   }
 
   /**
-   * 当dotrigger时触发的方法
+   * Bind DoTriggerEvent, the method will be called when doTrigger
    *
    * @param {DoTriggerEvent} bind
    * @memberof AppHook
@@ -131,7 +133,7 @@ export class AppHook {
   }
 
   /**
-   * 当ApplyFiters时触发的方法
+   * binding the method will be called when applyFilters
    *
    * @param {UseFiltersEvent} bind
    * @memberof AppHook
@@ -142,7 +144,7 @@ export class AppHook {
 
   /**
    *
-   * 添加过滤器，对事件发生时传入的默认值进行过滤
+   * Add filter, filter the default value when event is fired
    *
    * @param {string} hook
    * @param {FilterCommand} command
@@ -184,16 +186,16 @@ export class AppHook {
   }
 
   /**
-   * 添加监听器到数据集合中
+   * add listener to the listeners map
    *
    * @private
-   * @param {('Trigger' | 'Filter')} type 监听器类型
-   * @param {string} hook名称
-   * @param {IListener} newListener 新创建的监听器
+   * @param {('Trigger' | 'Filter')} type 
+   * @param {string} hook hook name
+   * @param {IListener} newListener 
    * @memberof AppHook
    */
   private addListner(type: ListenerType, hook: string, newListener: IListener) {
-    // 对应listener type的监听器
+    // listeners of the type
     let typeListners = this._listeners[type];
     if (typeListners === undefined) {
       typeListners = this._listeners[type] = {};
@@ -203,7 +205,7 @@ export class AppHook {
     if (listenerList === undefined) {
       listenerList = typeListners[hook] = [newListener];
     } else {
-      // 排序插入, 数字越小越靠前
+      // order insert, the smaller the number, the more small index.
       for (let i = 0; i <= listenerList.length; i++) {
         const loopListener = listenerList[i];
 
@@ -221,7 +223,7 @@ export class AppHook {
   }
 
   /**
-   * 移除监听器
+   * remove listener
    *
    * @private
    * @param {ListenerType} type
@@ -251,11 +253,11 @@ export class AppHook {
   }
 
   /**
-   * 激活事件，逐个执行对应的action行为
-   * 无需考虑排序问题，在addTrigger时已按顺序插入
+   * active the trigger, map the trigger to the command
+   * no need to consider the priority, because the priority is considered when add trigger
    *
    * @param {string} hook
-   * @param {object} [hookState={}] 事件状态，选填参数
+   * @param {object} [hookState={}] hook event state, optional arguments 
    * @memberof AppHook
    */
   doTriggers(hook: string, hookState?: any) {
@@ -286,8 +288,10 @@ export class AppHook {
 
   /**
    *
-   * 移除触发器
-   * 注意，要传入正确的触发器的引用指针(Ref)，这里不做Deep Comparison
+   * remove triggers
+   * 
+   * attention: pass the correct trigger reference(ref func pointer)
+   * no deep comparison here
    *
    * @param {ITrigger} trigger
    * @returns {boolean}
@@ -298,7 +302,7 @@ export class AppHook {
   }
 
   /**
-   * 是否存在指定事件的任意触发器
+   * whether has any specified hook name trigger
    *
    * @param {string} hook
    * @returns {boolean}
@@ -309,7 +313,7 @@ export class AppHook {
   }
 
   /**
-   * 是否存在指定事件的任意过滤器
+   * whether has any specified hook name filter
    *
    * @param {string} hook
    * @returns {boolean}
@@ -320,7 +324,7 @@ export class AppHook {
   }
 
   /**
-   * 通用函数，是否存在监听器
+   * whether has any specified hook name listener(filter or trigger)
    *
    * @private
    * @param {ListenerType} type
@@ -342,9 +346,12 @@ export class AppHook {
     }
     return true;
   }
+
   /**
-   * 移除过滤器
-   * 注意，要传入正确的触发器的引用指针(Ref)，这里不做Deep Comparison
+   * remove filter
+   * 
+   * attention: pass the correct trigger reference(ref func pointer)
+   * no deep comparison here
    *
    * @param {IFilter} filter
    * @returns {boolean}
@@ -355,7 +362,7 @@ export class AppHook {
   }
 
   /**
-   * 应用过滤器，激发事件，并实现对原字符串的多重过滤
+   * apply filters, trigger the event, and implement multiple filters on the original string
    *
    * @param {string} hook
    * @param {*} defaultValue

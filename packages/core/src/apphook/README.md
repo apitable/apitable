@@ -1,89 +1,80 @@
-# apphook - Hook Engine 伊娃事件钩子引擎
-
-计算机软件是一套「秩序」，我们根据业务的需求，制造出对应的软件。
-
-然而，真实世界的用户行为却是「无序而混沌」的，你永远搞不清楚用户会怎么使用你的软件，和想对你的软件做哪些定制和变更。
-
-因此，除了秩序化的系统，我们还需要准备一种「无序而混沌」的系统，取应对变化和各种需求。
-
-我们把真实世界的用户行为，抽象成hook引擎，全部都是基于「Event-Driven 事件驱动」，可以捕捉用户行为，沿着用户的行为，去扩充我们的系统功能。
-
-## 原理
-
-在代码中，我们预设好我们所需要的「AppHook应用钩子」，并在适当的地方埋进，触发事件。
-
-比如，用户点击了某个按钮A，我们就触发一个事件「点击按钮A」。
-
-我们触发事件的方式，有两种：
-
-Trigger，触发器形式。触发器主要用于，当事件发生后，进行额外的一些行为操作，它不会改变原程序代码的执行路径。
-
-Filter，过滤器形式。过滤器主要用于，当事件发生后，执行过滤器方法，对某个变量进行
-
-~~Interceptor，拦截器形式。阻止某些事件发生。~~
+# apphook - Hook Engine 
 
 
-## 应用场景
+Hooks is a way to implant/modify other piece of code.
 
-- 数据埋点：数据埋点都是基于事件的，无需再业务代码中进行hard code，只需订阅事件引擎；
-- 新手入门：Onboarding系统，全部都是围绕事件、条件、命令而展开的；
-- 帮助引导：触发某些事件后，如第10次点击了某个按钮，弹出提示框；
-- 用户任务：用户可以一个一个地完成某些任务，可以是纯客户端、也可以是从服务端做任务；
-- 市场活动：当触发某些特定事件、符合某些条件后，才弹出某种活动；
-- 用户召回：如未登录30天，定时任务生效；
-- 功能付费：当点击某个按钮，发现没有付费，立刻触发付费窗，原状态拦截，支付完成后，继续执行；
-- 第三方插件：第三方定制插件，也可以基于我们的action或filter进行更多的定制内容，如[Wordpress的Hook机制](https://www.wpdaxue.com/wordpress-hook.html)；
+Computer software is a sort of sequence. We build software according to the business.
+
+However, the user's behaviors are out-of-sequence and chaos.
+
+You will never know what users want, how they use your software, what they want to customization.
+
+So, we need to prepare a system to deal with out-of-sequence and chaos, which can make big changes and flexible customization available.
+
+That's why we should know `AppHook`.
+
+`AppHook` is a hooks engine which Event-Driven. It can intercept users' behaviors and extend our functionalities.
+
+## Principle
+
+We place AppHook hooks in code and trigger event.
+
+For example, when user click the button A,  we can trigger a event called "click:button:A"
+
+We have two way to trigger event:
+
+1. Trigger. When event appear, do some actions or behaviors, it would not change code pipeline path.
+2. Filter. When event appear, it will do some actions and behaviors, return a object. It can be an interceptor.
+
+
+## Use Case
+
+- Event Tracking：Don't need to hard code in the code anymore, we can put all event tracking code in the file by bind and unbind.
+- Rookie Onboarding: New register user onboarding
+- Help Guiding: when the 10th click on a button, popup a UI window.
+- Users Tasks: check whether user finished some tasks.
+- Marketing Events: If match some condition, do something like popup a marketing ui windows.
+- Users Recall: If user has not login 30 days, do something.
+- Payment Interception: When click a feature button, users have no payment yet, trigger and open a UI windows until payment finished and go on.
+- Third Party: customize 3rd plugins or more features
 - ......
 
-## 功能
+## Terms
 
-- 自由通过字符串进行事件的创建和订阅 （binding: addTrigger, addFilter)
-- ~~支持性一次性事件（once）~~
-- Hook发生可根据情况传入状态 (hookState)
-- 支持trigger模式(无返回值)和filter模式(有返回值)
-- 支持规则引擎（rule/condition)
-- ~~简单的消息队列(messageQueue)~~
-- ~~拦截器（interceptor)~~
-- ~~有限状态机（FSM）~~
-
-## 名词概念
-
-- hook钩子：
-    - hookState 钩子状态：
-    - hookArgs 钩子发生参数：
-- binding 订阅：
+- hook：
+    - hookState：
+    - hookArgs：
+- binding：
     - add_trigger：
     - remove_trigger：
     - add_filter：
     - remove_filter：
-- trigger 触发器：具体的执行行为；
+- trigger
     - triggerCommand:
-    - triggerCommandArg 执行参数：any
-- filter 过滤器：
+    - triggerCommandArg ：any
+- filter：
     - filterCommand:
     - filterCommandArg:
-- rule 规则
+- rule 
     - condition
     - conditionArgs
 - action:
-    - trigger action: 触发器动作
-        - trigger command: 触发器命令
-        - arg: 参数
-    - filter action: 过滤器动作
-        - filter command: 过滤器命令
-        - arg: 参数
-- listener 监听器：
-    - trigger Listner：触发型
-    - filter Listner：过滤型
-    - ~~job listner：定时任务型~~
-    - ~~interceptor: 拦截器~~
+    - trigger action: 
+        - trigger command: 
+        - arg: 
+    - filter action: 
+        - filter command: 
+        - filter command arg: 
+- listener ：
+    - trigger Listner：
+    - filter Listner：
 
 
 
 
-## 应用举例
+## Example
 
-### 利用Trigger，进行数据埋点
+### Use Trigger to Event Tracking
 
 ```typescript
 // Window.tsx
@@ -97,28 +88,27 @@ onClickLoginButton: () => {
 ```
 
 ```typescript
-//  EventTracking.ts  独立的埋点代码文件
+//  EventTracking.ts, a independent file for event tracking 
 apphook.addTrigger('user:click_login_button', (args) => {
 
-    // 数据埋点代码 Event Tracking Code
+    // Event Tracking Code
     EventTracking.track('user:click_login_button', {...});
 
-    // 如，使用神策埋点
     tracker.track('user:click_login_button', {...});
     tracker.setProfile({email:'xxx@xxx.com'});
 });
 ```
 
 
-### 利用Filter，让通讯录中，企业显示「工号」，普通团队显示「编号」
+### Use Filter, make contact number nickname customizable
 
 ```typescript
 apphook.addFilter('get_form_name', (defaultValue, args) => {
     let user = args[0];
-    if (user.is_vika_cloud) {
-        return "工号";
-    } else if (user.is_vika_data) {
-        return "团队编号";
+    if (user.is_cloud) {
+        return "Member ID";
+    } else if (user.is_self_hosted) {
+        return "Employee ID";
     }
     return defaultValue;
 });
@@ -126,41 +116,36 @@ apphook.addFilter('get_form_name', (defaultValue, args) => {
 
 ```typescript
 // UI.tsx
-<Form name="{apphook.applyFilters('get_form_name', '编号')}" />  // 最终获得字符串  "编号" 或 "工号" 或 "团队编号"
+<Form name="{apphook.applyFilters('get_form_name', 'ID')}" />  
+// Here will get the result "Member ID" or "Employee ID" or "ID"
 ```
 
-## 配合Config配置表，配置各种新手功能
+## Rookie popup guiding
 
-[Airtable Config: Playbook业务配置表](https://airtable.com/tblCM2O5JSueduXoM/viwcENkne3ryzeKrZ?blocks=hide)
+If you want: 
+> When a female user get into your product the 10 times, popup "congratulation, you have used 10 times"
 
+Break it down:
 
-## 新手弹窗引导配置举例
-
-假设有一个这样的功能：
-
-> 当一个女性用户第10次进入维格表时，弹出「恭喜你已经使用了10次维格表」。
-
-分解：
-
-- trigger: 用户第10次进入维格表弹窗提示
-    - hook: 进入维格表(application:start)
-    - hookState: 第10次(10)
-    - rule: 女性
-        - condition: 性别为女 (gender == femail)
+- trigger: user get into the 10th times
+    - hook: get into product(application:start)
+    - hookState: the 10th times
+    - rule: female
+        - condition: gender == femail
     - action: 
-        - command: 弹窗提示
-        - command: “恭喜你已经使用了10次维格表”
+        - command: popup
+        - command: "congratulation, you have used 10 times"
         
 
-涉及的代码包括：
+Relevant code:
 ```typescript
-// 事件触发
-apphook.doTrigger('application:start', [],  10) // 第10次进入维格表
+// trigger event
+apphook.doTrigger('application:start', [],  10) // the 10th times get in
 
-// 添加触发器
+// add trigger
 apphook.addTrigger('application:start', (args, hookState) => {
     if (hookState == 10) {
-        showWindow('恭喜你已经使用了10次维格表');
+        showWindow('congratulation, you have used 10 times');
     }
 }, {
     doCheck: (args) => {

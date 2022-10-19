@@ -1,3 +1,3 @@
 # Databus
 
-The core data processing engine.
+The core data processing and storage engine.

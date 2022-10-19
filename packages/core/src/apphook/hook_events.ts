@@ -1,5 +1,5 @@
 /*
- * appHook自己内部的事件集合
+ * appHook inside events set
  *
  * @Author: Kelly Peilin Chan (kelly@vikadata.com)
  * @Date: 2020-03-11 19:38:00

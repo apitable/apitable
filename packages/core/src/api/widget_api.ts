@@ -13,7 +13,7 @@ export const readInstallationWidgets = (widgetIds: string[], linkId?: string) =>
       widgetIds: widgetIds.join(','),
       linkId,
     },
-    // 序列化参数 revisions: [1,2,3] 变成正常的GET附带数组参数 revisons=1&revisions=2&revisions=3
+    // serialize arguement revisions: [1,2,3] to normal GET params revisions=1&revisions=2&revisions=3
     paramsSerializer: params => {
       return Qs.stringify(params, { arrayFormat: 'repeat' });
     },
@@ -21,7 +21,7 @@ export const readInstallationWidgets = (widgetIds: string[], linkId?: string) =>
 };
 
 /**
- * 获取组件中心的小组件列表
+ * get widget list from widget center
  */
 export const getWidgetCenterList = (type: WidgetReleaseType, filter = true) => {
   return axios.post(Url.WIDGET_CENTER_LIST, { type, filter });
@@ -40,7 +40,8 @@ export const installWidget = (nodeId: string, packageId: string, name?: string) 
 };
 
 /**
- * @desc 在组件面板中发送到 Dashboard 或者在 Dashboard 中引入小组件
+ * in widget panel, send widget to dashboard or import widget in dashboard
+ * 
  * @param dashboardId
  * @param widgetId
  */
@@ -59,7 +60,14 @@ export const getWidgetsInfoByNodeId = (nodeId: string) => {
   return axios.get(urlcat(Url.GET_NODE_WIDGETS_PREVIOUS, { nodeId }));
 };
 
-// 创建小组件
+/**
+ * create widget 
+ * @param name 
+ * @param spaceId 
+ * @param packageType 
+ * @param releaseType 
+ * @returns 
+ */
 export const createWidget = (
   name: string, spaceId: string, packageType: WidgetPackageType = WidgetPackageType.Custom, releaseType: WidgetReleaseType = WidgetReleaseType.Space
 ) => {
@@ -70,12 +78,22 @@ export const getTemplateList = () => {
   return axios.get<IApiWrapper & { data: IWidgetTemplateItem[] }>(Url.GET_TEMPLATE_LIST);
 };
 
-// 下架小组件
+/**
+ * unpublish widget
+ * @param widgetPackageId 
+ * @returns 
+ */
 export const unpublishWidget = (widgetPackageId: string) => {
   return axios.post(Url.UNPUBLISH_WIDGET, { packageId: widgetPackageId });
 };
 
-// 移交小组件
+/**
+ * transfer widget to others
+ * 
+ * @param packageId 
+ * @param transferMemberId 
+ * @returns 
+ */
 export const transferWidget = (packageId: string, transferMemberId: string) => {
   return axios.post(Url.TRANSFER_OWNER, { packageId, transferMemberId });
 };

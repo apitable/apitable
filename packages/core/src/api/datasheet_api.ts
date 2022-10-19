@@ -10,7 +10,12 @@ import urlcat from 'urlcat';
 
 const baseURL = process.env.NEXT_PUBLIC_NEXT_API;
 
-// 获取空间内的数据包
+/**
+ * get space datasheet pack
+ * @param dstId 
+ * @param recordIds 
+ * @returns 
+ */
 export function fetchDatasheetPack(dstId: string, recordIds?: string | string[]) {
   console.log({ baseURL });
   return axios.get<IApiWrapper & { data: IServerDatasheetPack }>(urlcat(Url.DATAPACK, { dstId }), {
@@ -24,28 +29,58 @@ export function fetchDatasheetPack(dstId: string, recordIds?: string | string[])
   });
 }
 
-// 获取分享表的数据包
+/**
+ * get share datasheet pack
+ * 
+ * @param shareId 
+ * @param dstId 
+ * @returns 
+ */
 export function fetchShareDatasheetPack(shareId: string, dstId: string) {
   return axios.get(urlcat(Url.READ_SHARE_DATAPACK, { shareId, dstId }), { baseURL });
 }
 
-// 获取模版数据包
+/**
+ * get template datasheet pack
+ * 
+ * @param dstId 
+ * @returns 
+ */
 export const fetchTemplateDatasheetPack = (dstId: string) => {
   return axios.get(urlcat(Url.READ_TEMPLATE_DATAPACK, { dstId }), { baseURL });
 };
 
-// 获取空间内，关联表的数据。支持资源：datasheet、form、mirror
+/**
+ * get related datasheet pack in the same space. support resource: datasheet, form, mirror
+ * 
+ * @param resourceId 
+ * @param foreignDatasheetId 
+ * @returns 
+ */
 export function fetchForeignDatasheetPack(resourceId: string, foreignDatasheetId: string) {
   return axios.get<IApiWrapper & { data: IServerDatasheetPack }>(urlcat(Url.READ_FOREIGN_DATASHEET_PACK,
     { resourceId, foreignDatasheetId }), { baseURL });
 }
 
-// 在分享页面，获取关联表的数据。支持资源：datasheet、form、mirror
+/**
+ * get related datasheet pack in the share. 
+ * support resource: datasheet, form, mirror
+ * @param shareId 
+ * @param resourceId 
+ * @param foreignDatasheetId 
+ * @returns 
+ */
 export function fetchShareForeignDatasheetPack(shareId: string, resourceId: string, foreignDatasheetId: string) {
   return axios.get(urlcat(Url.READ_SHARE_FOREIGN_DATASHEET_PACK, { shareId, resourceId, foreignDatasheetId }), { baseURL });
 }
 
-// 获取变更集列表
+/**
+ * get changeset list
+ * @param resourceId 
+ * @param resourceType 
+ * @param revisions 
+ * @returns 
+ */
 export function fetchChangesets<T>(resourceId: string, resourceType: ResourceType, revisions: number[]) {
   return axios.get<T>(urlcat(Url.READ_CHANGESET, { resourceId }), {
     baseURL,
@@ -53,14 +88,23 @@ export function fetchChangesets<T>(resourceId: string, resourceType: ResourceTyp
       revisions,
       resourceType,
     },
-    // 序列化参数 revisions: [1,2,3] 变成正常的GET附带数组参数 revisons=1&revisions=2&revisions=3
+    // serialize params revisions: [1,2,3] to normal GET params revisions=1&revisions=2&revisions=3
     paramsSerializer: params => {
       return Qs.stringify(params, { arrayFormat: 'repeat' });
     },
   });
 }
 
-// 获取指定 record 的历史记录和评论。支持资源：datasheet、mirror
+/**
+ * get specified record's history and comments
+ * support: datasheet, mirror
+ * 
+ * @param resourceId 
+ * @param recId 
+ * @param params 
+ * @param cancelSource 
+ * @returns 
+ */
 export function getActivityList(resourceId: string, recId: string, params: IActivityListParams, cancelSource?: CancelTokenSource) {
   const query: AxiosRequestConfig = {
     baseURL,
@@ -72,47 +116,92 @@ export function getActivityList(resourceId: string, recId: string, params: IActi
   return axios.get(urlcat(Url.GET_RECORD_ACTIVITY_LIST, { resourceId, recId }), query);
 }
 
-// 根据 uuids 获取用户信息集合
+/**
+ * get user infos by uuids
+ * 
+ * @param nodeId 
+ * @param uuids 
+ * @returns 
+ */
 export function fetchUserList<T>(nodeId: string, uuids: string[]) {
   return axios.get<T>(urlcat(Url.GET_USER_LIST, { nodeId }), {
     baseURL,
     params: {
       uuids,
     },
-    // 序列化参数 revisions: [1,2,3] 变成正常的GET附带数组参数 revisons=1&revisions=2&revisions=3
+
+    // serialize params revisions: [1,2,3] to normal GET params revisons=1&revisions=2&revisions=3
     paramsSerializer: params => {
       return Qs.stringify(params, { arrayFormat: 'repeat' });
     },
   });
 }
 
-// 获取记录
+/**
+ * get data records
+ * @param dstId 
+ * @param recordIds 
+ * @returns 
+ */
 export function fetchRecords(dstId: string, recordIds: string[]) {
   return axios.post<IApiWrapper & { data: IGetRecords }>(urlcat(Url.READ_RECORDS, { dstId }), recordIds, { baseURL });
 }
 
-// 获取数表的 Meta
+/**
+ * get datasheet meta info
+ * 
+ * @param dstId 
+ * @returns 
+ */
 export function fetchDatasheetMeta(dstId: string) {
   return axios.get<IApiWrapper & { data: IMeta }>(urlcat(Url.READ_DATASHEET_META, { dstId }), { baseURL });
 }
 
-// 开启/关闭列权限
+/**
+ * open or close field permission
+ * 
+ * @param dstId 
+ * @param fieldId 
+ * @param open 
+ * @param includeExtend 
+ * @returns 
+ */
 export function setFieldPermissionStatus(dstId: string, fieldId: string, open: boolean, includeExtend?: boolean) {
   const params = includeExtend ? { includeExtend } : {};
   return axios.post<IApiWrapper>(urlcat(Url.FIELD_PERMISSION_STATUS, { dstId, fieldId, status: open ? 'enable' : 'disable' }), params);
 }
 
-// 新增列权限角色
+/**
+ * add field permission role
+ * 
+ * @param dstId 
+ * @param fieldId 
+ * @param option 
+ * @returns 
+ */
 export function addFieldPermissionRole(dstId: string, fieldId: string, option: { role: string; unitIds: string[] }) {
   return axios.post<IApiWrapper>(urlcat(Url.FIELD_PERMISSION_ADD_ROLE, { dstId, fieldId }), option);
 }
 
-// 修改列权限角色
+/**
+ * edit field permission role
+ * 
+ * @param dstId 
+ * @param fieldId 
+ * @param option 
+ * @returns 
+ */
 export function editFieldPermissionRole(dstId: string, fieldId: string, option: { role: string; unitId: string }) {
   return axios.post<IApiWrapper & { data: IMeta }>(urlcat(Url.FIELD_PERMISSION_EDIT_ROLE, { dstId, fieldId }), option);
 }
 
-// 删除列权限角色
+/**
+ * delete field permission role
+ * @param dstId 
+ * @param fieldId 
+ * @param unitId 
+ * @returns 
+ */
 export function deleteFieldPermissionRole(dstId: string, fieldId: string, unitId: string) {
   return axios.delete<IApiWrapper>(urlcat(Url.FIELD_PERMISSION_DELETE_ROLE, { dstId, fieldId }), {
     data: {
@@ -121,16 +210,35 @@ export function deleteFieldPermissionRole(dstId: string, fieldId: string, unitId
   });
 }
 
-// 设置列权限里的其他配置
+/**
+ * update field permission's other config
+ * @param dstId 
+ * @param fieldId 
+ * @param formSheetAccessible 
+ * @returns 
+ */
 export function updateFieldPermissionSetting(dstId: string, fieldId: string, formSheetAccessible: boolean) {
   return axios.post<IApiWrapper>(urlcat(Url.FIELD_PERMISSION_UPDATE_SETTING, { dstId, fieldId }), { formSheetAccessible });
 }
 
-// 获取列权限中所有的角色信息
+/**
+ * get field(column) permissions' all roles list
+ * 
+ * @param dstId 
+ * @param fieldId 
+ * @returns 
+ */
 export function fetchFieldPermissionRoleList(dstId: string, fieldId: string) {
   return axios.get<IApiWrapper & { data: IFieldPermissionRoleListData }>(urlcat(Url.FIELD_PERMISSION_ROLE_LIST, { dstId, fieldId }));
 }
 
+/**
+ * get field permissions map
+ * 
+ * @param dstIds 
+ * @param shareId 
+ * @returns 
+ */
 export function getFieldPermissionMap(dstIds: string[], shareId?: string) {
   return axios.get<IApiWrapper & { data: IFieldPermissionResponse[] }>(Url.GET_FIELD_PERMISSION_MAP, {
     params: {
@@ -140,16 +248,40 @@ export function getFieldPermissionMap(dstIds: string[], shareId?: string) {
   });
 }
 
+/**
+ * 
+ * batch edit field permissions role
+ * 
+ * @param dstId 
+ * @param fieldId 
+ * @param option 
+ * @returns 
+ */
 export function batchEditFieldPermissionRole(dstId: string, fieldId: string, option: { role: string; unitIds: string[] }) {
   return axios.post<IApiWrapper>(urlcat(Url.BATCH_EDIT_PERMISSION_ROLE, { dstId, fieldId }), option);
 }
 
+/**
+ * get datasheet view datapack
+ * 
+ * @param dstId 
+ * @param viewId 
+ * @returns 
+ */
 export function getDstViewDataPack(dstId, viewId) {
   return axios.get<IApiWrapper & { data: IFieldPermissionResponse[] }>(
     urlcat(Url.GET_DST_VIEW_DATA_PACK, { dstId, viewId }), { baseURL },
   );
 }
 
+/**
+ * get share datasheet view data pack
+ * 
+ * @param dstId 
+ * @param viewId 
+ * @param shareId 
+ * @returns 
+ */
 export function getShareDstViewDataPack(dstId, viewId, shareId) {
   return axios.get<IApiWrapper & { data: IFieldPermissionResponse[] }>(
     urlcat(Url.GET_SHARE_DST_VIEW_DATA_PACK, { dstId, viewId, shareId }), { baseURL },
@@ -172,22 +304,44 @@ export function getCommentsByIds(dstId: string, recordId: string, commentIds: st
   );
 }
 
-// 获取数表/mirror被关注的record IDs
+/**
+ * get datasheet/mirror's being subscription(followed) record ids
+ * 
+ * @param dstId 
+ * @param mirrorId 
+ * @returns 
+ */
 export const getSubscriptions = (dstId: string, mirrorId?: string) => mirrorId
   ? axios.get<IApiWrapper & { data: string[] }>(urlcat(Url.GET_MIRROR_SUBSCRIPTIONS, { mirrorId }), { baseURL })
   : axios.get<IApiWrapper & { data: string[] }>(urlcat(Url.GET_DATASHEET_SUBSCRIPTIONS, { dstId }), { baseURL });
 
-// 关注数表/mirror中的数据
+/**
+ * 
+ * subscribe(follow) datasheet/mirror's record
+ * 
+ * @param param0 
+ * @returns 
+ */
 export const subscribeRecordByIds = ({ datasheetId, mirrorId, recordIds }: ISubOrUnsubByRecordIdsReq) => mirrorId
   ? axios.post<IApiWrapper>(urlcat(Url.SUBSCRIBE_MIRROR_RECORDS, { mirrorNodeId: mirrorId }), { recordIds }, { baseURL })
   : axios.post<IApiWrapper>(urlcat(Url.SUBSCRIBE_DATASHEET_RECORDS, { dstId: datasheetId }), { recordIds }, { baseURL });
 
-// 取消关注数表/mirror中的数据
+/**
+ * unsubscribe(cancel follow) datasheet/mirror's record
+ * @param param0 
+ * @returns 
+ */
 export const unsubscribeRecordByIds = ({ datasheetId, mirrorId, recordIds }: ISubOrUnsubByRecordIdsReq) => mirrorId
   ? axios.delete<IApiWrapper>(urlcat(Url.UNSUBSCRIBE_MIRROR_RECORDS, { mirrorNodeId: mirrorId }), { data: { recordIds }, baseURL })
   : axios.delete<IApiWrapper>(urlcat(Url.UNSUBSCRIBE_DATASHEET_RECORDS, { dstId: datasheetId }), { data: { recordIds }, baseURL });
 
-// 批量删除权限
+/**
+ * batch delete field permissions
+ * @param dstId 
+ * @param fieldId 
+ * @param option 
+ * @returns 
+ */
 export const batchDeletePermissionRole = (dstId: string, fieldId: string, option: { unitIds: string[] }) => {
   return axios.delete<IApiWrapper>(urlcat(Url.BATCH_DELETE_PERMISSION_ROLE, { dstId, fieldId }), { data: option });
 };

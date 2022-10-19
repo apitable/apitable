@@ -1,6 +1,7 @@
 /*
- * Filter有返回值和默认值参数处理
- * Trigger为直接执行的函数
+
+ * Trigger is a function that is directly executed
+ * Filter has a return value and a default value parameter processing
  *
  * @Author: Kelly Peilin Chan (kelly@vikadata.com)
  * @Date: 2020-03-09 19:43:51

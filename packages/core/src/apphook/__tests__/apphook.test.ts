@@ -1,10 +1,10 @@
 /*
- * AppHook模块的单元测试
+ * AppHook Module Unit Tests
  *
- * @Author: Kelly Peilin Chan (kelly@vikadata.com)
+ * @Author: Kelly Peilin Chan (kelly@apitable.com)
  * @Date: 2020-03-09 19:46:02
- * @Last Modified by: Kelly Peilin Chan (kelly@vikadata.com)
- * @Last Modified time: 2020-03-19 14:28:14
+ * @Last Modified by: Kelly Peilin Chan (kelly@apitable.com)
+ * @Last Modified time: 2022-10-19 14:26:00
  */
 import { IFilter, ICondition, IRule, ITrigger, AppHook } from '..';
 
@@ -43,7 +43,7 @@ describe('test appHook', () => {
     expect(triggerResult.toString()).toBe('true');
     expect(trigger.hook).toBe('test_trigger_event');
 
-    // test catch erro 这个测试会打印红色错误，需要时再启动吧
+    // test catch erro (red error)
     // apphook.addTrigger(
     //     'test_error_event', (state, _args) => {
     //         expect(state).toBe(321);
@@ -68,7 +68,7 @@ describe('test appHook', () => {
       args: [],
     };
 
-    // 单层过滤
+    // Single layer filter
     const filter1: IFilter = apphook.addFilter('get_test_name',
       defaultValue => (defaultValue + ' Filtered1'),
       [],
@@ -78,7 +78,7 @@ describe('test appHook', () => {
     const filterd1 = apphook.applyFilters('get_test_name', 'Test Name');
     expect(filterd1).toBe('Test Name Filtered1');
 
-    // 双重过滤
+    // Double layer filter
     const filter2: IFilter = apphook.addFilter('get_test_name',
       defaultValue => (defaultValue + ' Filtered2'),
       [],
@@ -88,7 +88,7 @@ describe('test appHook', () => {
     const filterd2 = apphook.applyFilters('get_test_name', 'Test Name');
     expect(filterd2).toBe('Test Name Filtered2 Filtered1');
 
-    // 第三个过滤器
+    // third layer filter
     const filter3: IFilter = apphook.addFilter('get_test_name',
       defaultValue => (defaultValue + ' Filtered3'),
       [],
@@ -98,7 +98,7 @@ describe('test appHook', () => {
     const filterd3 = apphook.applyFilters('get_test_name', 'Test Name');
     expect(filterd3).toBe('Test Name Filtered2 Filtered1 Filtered3');
 
-    // 删除过滤器
+    // delete filter
     apphook.removeFilter(filter1);
 
     const filterd4 = apphook.applyFilters('get_test_name', 'Test Name');
