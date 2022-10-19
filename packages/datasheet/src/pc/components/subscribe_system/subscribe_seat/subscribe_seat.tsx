@@ -27,7 +27,7 @@ export const SubscribeSeat: React.FC<ISubscribeSeatProps> = (props) => {
   if (pageType === SubscribePageType.Subscribe) {
     return <p className={styles.maxSeat}>
       {t(Strings.subscribe_new_choose_member, { member_num: seatList[0] })}
-      <Tooltip content={t(Strings.subscribe_new_choose_member_tips)}>
+      <Tooltip content={t(Strings.subscribe_new_choose_member_tips, { member_num: seatList[0] })}>
         <span>
           <InformationSmallOutlined />
         </span>
@@ -41,7 +41,7 @@ export const SubscribeSeat: React.FC<ISubscribeSeatProps> = (props) => {
         old_member_num: subscription?.maxSeats,
         new_member_num: seatList[0],
       })}
-      <Tooltip content={t(Strings.subscribe_upgrade_choose_member_tips)}>
+      <Tooltip content={t(Strings.subscribe_upgrade_choose_member_tips, { member_num: seatList[0] })}>
         <span>
           <InformationSmallOutlined />
         </span>

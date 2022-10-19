@@ -6883,9 +6883,9 @@
             "zh_HK": "飛書旗艦版"
         },
         "feishu_grade_desc": {
-            "zh_CN": "空间站等级分为飞书基础版（永久免费）、飞书标准版和飞书旗舰版。不同等级的空间站享有不同的权益，空间站成员享有所处等级空间站的相关权益",
-            "en_US": "Spaces have three kinds of billing plans: Basic Plan with Lark(permanently free), Standard Plan with Lark and Ultimate Plan with Lark. Members in the Spaces of different billing plans enjoy different rights and benefits.",
-            "zh_HK": "空間站等級分為飛書基礎版（永久免費）、飛書標準版和飛書旗艦版。不同等級的空間站享有不同的權益，空間站成員享有所處等級空間站的相關權益"
+            "zh_CN": "空间站等级分为飞书基础版（永久免费）、飞书标准版、飞书专业版和飞书旗舰版。不同等级的空间站享有不同的权益，空间站成员享有所处等级空间站的相关权益",
+            "en_US": "Spaces have three kinds of billing plans: Basic Plan with Lark(permanently free), Standard Plan with Lark ,Profession Plan with Lark and Ultimate Plan with Lark. Members in the Spaces of different billing plans enjoy different rights and benefits.",
+            "zh_HK": "空間站等級分為飛書基礎版（永久免費）、飛書標準版、飛書專業版和飛書旗艦版。不同等級的空間站享有不同的權益，空間站成員享有所處等級空間站的相關權益"
         },
         "feishu_manage_address_reject_msg": {
             "zh_CN": "成员列表会实时跟飞书通讯录的组织架构保持同步，请在飞书侧进行此操作（企业管理 > 添加团队成员）",
@@ -22017,9 +22017,9 @@
             "zh_HK": "最高支持 {member_num} 人"
         },
         "subscribe_new_choose_member_tips": {
-            "zh_CN": "本方案支持 1~100 名成员进入空间站使用",
-            "en_US": "This plan supports 1~100 members to enter the space",
-            "zh_HK": "本方案支持 1~100 名成員進入空間站使用"
+            "zh_CN": "本方案支持 1~${member_num} 名成员进入空间站使用",
+            "en_US": "This plan supports 1~${member_num} members to enter the space",
+            "zh_HK": "本方案支持 1~${member_num} 名成員進入空間站使用"
         },
         "subscribe_success_desc": {
             "zh_CN": "恭喜！你已成功订阅，可前往空间站驾驶舱查看相关权益",
@@ -24509,9 +24509,9 @@
             "zh_HK": "企業微信旗艦版"
         },
         "wecom_grade_desc": {
-            "zh_CN": "空间站等级分为企业微信基础版（永久免费）、企业微信标准版和企业微信企业版。不同等级的空间站享有不同的权益，空间站成员享有所处等级空间站的相关权益",
-            "en_US": "Spaces have three kinds of billing plans: Basic Plan with WeCom(permanently free), Standard Plan with WeCom and Enterprise Plan with WeCom. Members in the Spaces of different billing plans enjoy different rights and benefits.",
-            "zh_HK": "空間站等級分為企業微信基礎版（永久免費）、企業微信標準版和企業微信企業版。不同等級的空間站享有不同的權益，空間站成員享有所處等級空間站的相關權益"
+            "zh_CN": "空间站等级分为企业微信基础版（永久免费）、企业微信标准版、企微标准版和企业微信企业版。不同等级的空间站享有不同的权益，空间站成员享有所处等级空间站的相关权益",
+            "en_US": "Spaces have three kinds of billing plans: Basic Plan with WeCom(permanently free), Standard Plan with WeCom ,Profession Plan with WeCom and Enterprise Plan with WeCom. Members in the Spaces of different billing plans enjoy different rights and benefits.",
+            "zh_HK": "空間站等級分為企業微信基礎版（永久免費）、企業微信標準版、企微標準版和企業微信企業版。不同等級的空間站享有不同的權益，空間站成員享有所處等級空間站的相關權益"
         },
         "wecom_integration_desc_check": {
             "zh_CN": "我已知悉所有成员会被移除空间站，相关权限信息会被清除",
