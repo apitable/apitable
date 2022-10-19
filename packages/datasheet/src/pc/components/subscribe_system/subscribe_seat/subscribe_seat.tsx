@@ -38,10 +38,12 @@ export const SubscribeSeat: React.FC<ISubscribeSeatProps> = (props) => {
   if (isUpgrade) {
     return <p className={styles.maxSeat}>
       {t(Strings.subscribe_upgrade_choose_member, {
-        old_member_num: subscription?.maxSeats,
+        old_member_num: Number(subscription?.maxSeats),
         new_member_num: seatList[0],
       })}
-      <Tooltip content={t(Strings.subscribe_upgrade_choose_member_tips, { member_num: seatList[0] })}>
+      <Tooltip
+        content={t(Strings.subscribe_upgrade_choose_member_tips, { old_member_num: Number(subscription?.maxSeats), new_member_num: seatList[0] })}
+      >
         <span>
           <InformationSmallOutlined />
         </span>

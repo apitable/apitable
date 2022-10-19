@@ -1101,7 +1101,7 @@ window.vika_i18n =
   "dingtalk_da": "DingTalk Apps",
   "dingtalk_da_from": "Vika Official Template Center",
   "dingtalk_enterprise": "Ultimate Plan with DingTalk",
-  "dingtalk_grade_desc": "Spaces have three kinds of billing plans: Basic Plan with DingTalk(permanently free), Standard Plan with DingTalk and Enterprise Plan with DingTalk. Members in the Spaces of different billing plans enjoy different rights and benefits.",
+  "dingtalk_grade_desc": "Spaces have three kinds of billing plans: Basic Plan with DingTalk(permanently free), Standard Plan with DingTalk \n,Profession Plan with DingTalk and Enterprise Plan with DingTalk. Members in the Spaces of different billing plans enjoy different rights and benefits.",
   "dingtalk_isv_integration_single_record_member_mention": "5994e97c8766482bb971e6253ad7f6f1",
   "dingtalk_isv_integration_social_task_reminder": "3587b948d6484319979e00d14353706f",
   "dingtalk_isv_integration_subscribed_record_cell_updated": "f33cf06b321a4348ba5063355b125184",

@@ -23,7 +23,7 @@ interface ISubscribeHeaderProps {
 }
 
 const calcSubscribeLevelTab = (seats: number) => {
-  if (seats <= 80) {
+  if (seats <= 100) {
     return 'SILVER';
   }
   if (seats <= 200) {
@@ -34,7 +34,7 @@ const calcSubscribeLevelTab = (seats: number) => {
 
 const calcUpgradeLevelTab = (product: string | undefined, maxSeats: number, setTabs: React.Dispatch<any>) => {
   if (product === 'SILVER') {
-    if (maxSeats >= 80) {
+    if (maxSeats >= 100) {
       setTabs(pre => {
         return pre.filter(item => {
           return item.level !== 'SILVER';
