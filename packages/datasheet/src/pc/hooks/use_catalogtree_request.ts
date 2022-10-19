@@ -49,15 +49,14 @@ export const useCatalogTreeRequest = () => {
         return true;
       }
     }
-    // TODO: 后续还需要检查镜像的数量
-    // if (nodeType === ConfigConstant.NodeType.MIRROR) {
-    //   // 其次根据节点类型检查 form 或者 mirror 的数量是否符合要求
-    //   const result1 = triggerUsageAlert('maxFormViewsInSpace',
-    //     { usage: spaceInfo!.mirrorNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
-    //   if (result1) {
-    //     return true;
-    //   }
-    // }
+    if (nodeType === ConfigConstant.NodeType.MIRROR) {
+      // 其次根据节点类型检查 form 或者 mirror 的数量是否符合要求
+      const result1 = triggerUsageAlert('maxMirrorNums',
+        { usage: spaceInfo!.mirrorNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+      if (result1) {
+        return true;
+      }
+    }
     return false;
   };
 

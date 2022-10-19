@@ -12,6 +12,7 @@ const defaultSubscribe: ISubscription = {
   maxGalleryViewsInSpace: 2,
   maxKanbanViewsInSpace: 100,
   maxFormViewsInSpace: 100,
+  maxMirrorNums: 10,
   deadline: '2019-01-01T00:00:00.000+00:00',
   maxAdminNums: 10,
   maxRemainTrashDays: 10,
@@ -47,7 +48,7 @@ const defaultSubscribe: ISubscription = {
   securitySettingAddressListIsolation: true,
   subscriptionCapacity: 0,
   unExpireGiftCapacity: 0,
-  maxAuditQueryDays: 0
+  maxAuditQueryDays: 0,
 };
 
 describe('test subscribeUsageChecker', () => {

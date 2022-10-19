@@ -2594,6 +2594,7 @@ window.vika_i18n =
   "max_gallery_views_in_space": "空间站的相册视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
   "max_gantt_views_in_space": "空间站的甘特视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
   "max_kanban_views_in_space": "空间站的看板视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+  "max_mirror_nums": "空间站的镜像数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
   "max_record_num_per_dst": "当前支持的单表上限为 5w 行",
   "max_records": "记录数上限：${count}条",
   "max_remain_record_activity_days": "空间站仅显示 ${specification}  天内的修改历史，升级后可查看更久的历史数据。",

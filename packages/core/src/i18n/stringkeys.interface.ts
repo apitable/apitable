@@ -2601,6 +2601,7 @@ export type StringKeysMapType = {
   'max_gallery_views_in_space': 'max_gallery_views_in_space',
   'max_gantt_views_in_space': 'max_gantt_views_in_space',
   'max_kanban_views_in_space': 'max_kanban_views_in_space',
+  'max_mirror_nums': 'max_mirror_nums',
   'max_record_num_per_dst': 'max_record_num_per_dst',
   'max_records': 'max_records',
   'max_remain_record_activity_days': 'max_remain_record_activity_days',

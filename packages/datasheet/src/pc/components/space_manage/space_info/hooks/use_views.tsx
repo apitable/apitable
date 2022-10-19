@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { ViewGanttGreyOutlined, ViewCalendarFilled, FormOutlined } from '@vikadata/icons';
+import { ViewGanttGreyOutlined, ViewCalendarFilled, FormOutlined, MirrorOutlined } from '@vikadata/icons';
 import { useThemeColors } from '@vikadata/components';
 import { IHooksParams, IMultiLineItemProps } from '../interface';
 import { calcPercent } from './utils';
@@ -34,6 +34,15 @@ export const useView = ({ spaceInfo, subscription }: IHooksParams): IMultiLineIt
         name: t(Strings.vika_form),
         icon: <FormOutlined color={colors.black[500]} />,
         percent: calcPercent(spaceInfo?.formViewNums, subscription?.maxFormViewsInSpace),
+        showProgress: true,
+      },
+      {
+        unit: t(Strings.unit_piece),
+        total: subscription?.maxMirrorNums,
+        used: spaceInfo?.mirrorNums,
+        name: t(Strings.mirror),
+        icon: <MirrorOutlined color={colors.black[500]} />,
+        percent: calcPercent(spaceInfo?.mirrorNums, subscription?.maxMirrorNums),
         showProgress: true,
       },
     ];

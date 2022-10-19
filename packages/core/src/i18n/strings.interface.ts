@@ -2602,6 +2602,7 @@ export interface StringsInterface {
     max_gallery_views_in_space: String;
     max_gantt_views_in_space: String;
     max_kanban_views_in_space: String;
+    max_mirror_nums: String;
     max_record_num_per_dst: String;
     max_records: String;
     max_remain_record_activity_days: String;

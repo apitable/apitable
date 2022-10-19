@@ -22,6 +22,7 @@ export interface ISubscription extends ISubscribeResponseData {
   maxGanttViewsInSpace: number; // 甘特图视图上限
   maxKanbanViewsInSpace: number; // 看板视图上限
   maxRemainTimeMachineDays: number; // 时光机最大回退天数
+  maxMirrorNums:number;
   fieldPermissionNums: number; // 列权限上限
   nodePermissionNums: number; //文件权限上限
   maxRemainRecordActivityDays: number; //当前订阅等级能展示的动态的时间

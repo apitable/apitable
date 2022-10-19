@@ -2594,6 +2594,7 @@ window.vika_i18n =
   "max_gallery_views_in_space": "The maximum number of Gallery views to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
   "max_gantt_views_in_space": "The maximum number of Gantt views to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
   "max_kanban_views_in_space": "The maximum number of Kanban views to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
+  "max_mirror_nums": "The maximum number of mirror to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
   "max_record_num_per_dst": "当前支持的单表上限为 5w 行",
   "max_records": "Maximum: ${count}",
   "max_remain_record_activity_days": "This space supports viewing record activity within ${specification} days, upgrade to view more ",
