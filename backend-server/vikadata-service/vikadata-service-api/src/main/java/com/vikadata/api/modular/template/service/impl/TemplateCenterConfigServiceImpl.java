@@ -209,10 +209,10 @@ public class TemplateCenterConfigServiceImpl implements ITemplateCenterConfigSer
         // custom template group
         if (CollUtil.isNotEmpty(recommend.getTemplateGroups())) {
             List<TemplateGroup> templateGroups = new ArrayList<>();
-            for (RecommendInfo.AlbumGroup group : recommend.getAlbumGroups()) {
+            for (RecommendInfo.TemplateGroup group : recommend.getTemplateGroups()) {
                 TemplateGroup templateGroup = new TemplateGroup();
                 templateGroup.setName(group.getName());
-                List<String> templateIds = group.getAlbumNames().stream().map(item -> existingData.tplNameToTplIdMap.get(item)).collect(Collectors.toList());
+                List<String> templateIds = group.getTemplateNames().stream().map(item -> existingData.tplNameToTplIdMap.get(item)).collect(Collectors.toList());
                 templateGroup.setTemplateIds(templateIds);
                 templateGroups.add(templateGroup);
             }
@@ -322,6 +322,9 @@ public class TemplateCenterConfigServiceImpl implements ITemplateCenterConfigSer
     }
 
     private void createTemplatePropertyRel(String templateId, TemplatePropertyDto propertyDto, int order, TemplateChangeSet changeSet) {
+        if (StrUtil.isBlank(templateId)) {
+            return;
+        }
         TemplatePropertyRelEntity relEntity = new TemplatePropertyRelEntity();
         relEntity.setId(IdWorker.getId());
         relEntity.setTemplateId(templateId);
