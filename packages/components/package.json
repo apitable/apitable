@@ -1,6 +1,6 @@
 {
   "name": "@vikadata/components",
-  "version": "0.13.8",
+  "version": "0.13.9",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "publishConfig": {

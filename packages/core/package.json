@@ -1,6 +1,6 @@
 {
   "name": "@vikadata/core",
-  "version": "0.13.8",
+  "version": "0.13.9",
   "description": "datasheet core",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

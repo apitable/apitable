@@ -1,6 +1,6 @@
 {
   "name": "@vikadata/widget-sdk",
-  "version": "0.13.8",
+  "version": "0.13.9",
   "description": "vika widget sdk",
   "engines": {
     "node": ">=8.x"
