@@ -11,6 +11,7 @@ import React, { FC, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { TemplateItem } from '../template_item';
 import styles from './style.module.less';
+import categoryStyles from '../template_category_detail/style.module.less';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import { take, takeRight } from 'lodash';
@@ -165,15 +166,16 @@ export const TemplateChoice: FC<ITemplateChoiceProps> = props => {
                 <div className={styles.templateList}>
                   {albumGroup.albums.map(album => {
                     return (
-                      <div className={styles.templateItemWrapper} key={album.albumId}>
+                      <div className={categoryStyles.albumItemWrapper} key={album.albumId}>
                         <TemplateItem
+                          bannerDesc={{
+                            title: album.name,
+                            desc: album.description,
+                          }}
                           templateId={album.albumId}
-                          type="card"
-                          img={imgUrl(album.cover || defaultBanner, 160)}
-                          name={album.name}
-                          description={album.description}
+                          height={200}
+                          img={imgUrl(album.cover || defaultBanner, 200)}
                           onClick={openTemplateAlbumDetail}
-                          usingTemplate={setUsingTemplate}
                           isOfficial
                         />
                       </div>
