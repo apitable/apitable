@@ -35,7 +35,7 @@ async function uploadDirectOSS(
 function convertOrigin(url: string) {
   const _url = new URL(url);
   if (/http:\/\/minio/.test(_url.origin)) {
-    return `${location.origin}/${_url.pathname}/${_url.search}`;
+    return `${location.origin}${_url.pathname}${_url.search}`;
   }
   return url;
 }
