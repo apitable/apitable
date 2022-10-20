@@ -96,7 +96,7 @@ export const RobotDetailHead = () => {
             <IconButton
               shape="square"
               icon={InformationSmallOutlined} onClick={() => {
-                window.open('https://vika.cn/help/manual-vika-robot/#5-toc-title');
+                window.open(t(Strings.robot_config_help_url));
               }} />
           </Box>
         </Tooltip>

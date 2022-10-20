@@ -234,7 +234,7 @@ export const TimeMachine: React.FC<{ onClose: (visible: boolean) => void }> = ({
             <IconButton
               shape="square"
               icon={InformationSmallOutlined} onClick={() => {
-                window.open('/help/manual-timemachine/');
+                window.open(t(Strings.timemachine_help_url));
               }} />
           </Box>
         </Tooltip>

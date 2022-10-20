@@ -26,7 +26,7 @@ export const navigationToUrl = (
   const urlObj = new URL(url);
   const urlQuery = new URLSearchParams(urlObj.search);
   // 由于配置表中有写死的url(vika.cn开头)，为了多环境测试，需要开放vika.cn
-  const reg = new RegExp(`^(${window.location.origin}|(http|https)://vika.cn)`);
+  const reg = new RegExp(`^(${window.location.origin}|(http|https)://vika.cn)|(http|https)://help.vika.cn`);
   let newQuery: IQuery = {};
   // 收集url上已有的query
   for (const [key, value] of urlQuery) {

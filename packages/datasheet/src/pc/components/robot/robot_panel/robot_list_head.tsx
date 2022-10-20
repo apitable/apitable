@@ -102,7 +102,7 @@ export const RobotListHead = () => {
             <IconButton
               shape="square"
               icon={InformationSmallOutlined} onClick={() => {
-                window.open('https://vika.cn/help/manual-vika-robot/');
+                window.open(t(Strings.robot_help_url));
               }} />
           </Box>
         </Tooltip>

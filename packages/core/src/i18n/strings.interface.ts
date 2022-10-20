@@ -2047,6 +2047,10 @@ export interface StringsInterface {
     health_and_self_improvement: String;
     help: String;
     help_center: String;
+    help_help_center_url: String;
+    help_product_manual_url: String;
+    help_questions_url: String;
+    help_quick_start_url: String;
     help_resources: String;
     hidden: String;
     hidden_field_calendar_tips: String;
@@ -3260,6 +3264,7 @@ export interface StringsInterface {
     player_step_ui_config_161: String;
     player_step_ui_config_162: String;
     player_step_ui_config_163: String;
+    player_step_ui_config_164: String;
     player_step_ui_config_17: String;
     player_step_ui_config_18: String;
     player_step_ui_config_19: String;
@@ -3350,6 +3355,7 @@ export interface StringsInterface {
     player_step_ui_config_97: String;
     player_step_ui_config_99: String;
     player_step_ui_config_notice_0_10_5: String;
+    player_step_ui_config_null: String;
     please: String;
     please_check: String;
     please_choose: String;
@@ -3661,6 +3667,7 @@ export interface StringsInterface {
     robot_change_trigger_tip_content: String;
     robot_change_trigger_tip_title: String;
     robot_config_empty_warning: String;
+    robot_config_help_url: String;
     robot_config_incomplete_tooltip: String;
     robot_config_panel_help_tooltip: String;
     robot_config_panel_title: String;
@@ -3689,6 +3696,7 @@ export interface StringsInterface {
     robot_enter_value_placeholder: String;
     robot_enter_webhook_placeholder: String;
     robot_feature_entry: String;
+    robot_help_url: String;
     robot_inserted_variable_invalid: String;
     robot_inserted_variable_part_1: String;
     robot_more_operations_tooltip: String;
@@ -4648,6 +4656,7 @@ export interface StringsInterface {
     time_format_yesterday: String;
     time_machine: String;
     time_machine_unlimited: String;
+    timemachine_help_url: String;
     times_per_month_unit: String;
     times_unit: String;
     timor_leste: String;

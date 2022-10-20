@@ -156,7 +156,7 @@ export const Welcome: FC = () => {
           color: colors.green[500],
           backgroundColor: colors.green[50],
           activeBackgroundColor: colors.green[100],
-          onClick: () => navigationToUrl(`${window.location.origin}${Settings.welcome_module8_url.value}${plm}`),
+          onClick: () => navigationToUrl(Settings.welcome_module8_url.value, { method: Method.NewTab }),
         },
         {
           id: 'welcome_module_7',
@@ -165,7 +165,7 @@ export const Welcome: FC = () => {
           color: colors.red[500],
           backgroundColor: colors.red[50],
           activeBackgroundColor: colors.red[100],
-          onClick: () => navigationToUrl(`${window.location.origin}${Settings.welcome_module7_url.value}${plm}`),
+          onClick: () => navigationToUrl(Settings.welcome_module7_url.value, { method: Method.NewTab }),
         },
         {
           id: 'welcome_module_9',

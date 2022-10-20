@@ -96,7 +96,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
       {
         icon: <CourseOutlined />,
         text: t(Strings.quick_tour),
-        onClick: () => navigationToUrl(`${window.location.origin}/help/tutorial-1-quick-start/`),
+        onClick: () => navigationToUrl(t(Strings.help_quick_start_url)),
       },
       {
         icon: <AdviseOutlined />,
@@ -128,17 +128,17 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
       {
         icon: <InformationSmallOutlined />,
         text: t(Strings.help_center),
-        onClick: () => navigationToUrl(`${window.location.origin}/help`),
+        onClick: () => navigationToUrl(t(Strings.help_help_center_url)),
       },
       {
         icon: <BookOutlined />,
         text: t(Strings.handbook),
-        onClick: () => navigationToUrl(`${window.location.origin}/help/manual-1-what-is-vikadata/`),
+        onClick: () => navigationToUrl(t(Strings.help_product_manual_url)),
       },
       {
         icon: <EditDescribeOutlined />,
         text: t(Strings.faq),
-        onClick: () => navigationToUrl(`${window.location.origin}/help/questions/`),
+        onClick: () => navigationToUrl(t(Strings.help_questions_url)),
       },
       {
         icon: <WebsiteOutlined />,

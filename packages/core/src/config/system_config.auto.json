@@ -21,7 +21,7 @@
             "value": "local"
         },
         "account_wallet_help": {
-            "value": "/help/introduction-to-account-wallet/"
+            "value": "https://help.vika.cn/docs/guide/about-wallet"
         },
         "activity_center_end_time": {
             "value": "2021-05-30 19:30"
@@ -395,7 +395,7 @@
             "value": "101907413"
         },
         "recorded_comments": {
-            "value": "/help/records-comments/"
+            "value": "https://help.vika.cn/docs/guide/records-comments"
         },
         "release_log_history_url": {
             "value": "https://bbs.vika.cn/column/details/13"
@@ -404,13 +404,13 @@
             "value": "space/2022/08/03/3fbdff65d66547a8ab796e1b808d45b0"
         },
         "role_help_url": {
-            "value": "/help/manual-role-management/"
+            "value": "https://help.vika.cn/docs/guide/manual/use-space/role/%20readme"
         },
         "server_error_page_bg": {
             "value": "/space/2022/09/07/cbaf2ee93be24f6bbe361a85db0efba7?attname=theserverisundermaintenance.%402x.png"
         },
         "share_url": {
-            "value": "/help/manual-share/"
+            "value": "https://help.vika.cn/docs/guide/manual-share"
         },
         "solution": {
             "value": "https://vika.cn/solutions/"
@@ -428,7 +428,7 @@
             "value": "spcNA5eN3Sj6Q"
         },
         "trash_url": {
-            "value": "/help/manual-trash/"
+            "value": "https://help.vika.cn/docs/guide/manual-trash/"
         },
         "user_feedback_url": {
             "value": "https://vika.cn/share/shrzw0miJVmSkJ7eBBa9k/fomx5qPX0JGPFvfEEP"
@@ -549,10 +549,10 @@
             "value": "/template/tpcMixDKM5f3s/tplaglc40487X"
         },
         "welcome_module7_url": {
-            "value": "/help/questions/"
+            "value": "https://help.vika.cn/docs/category/questions"
         },
         "welcome_module8_url": {
-            "value": "/help/manual-1-what-is-vikadata/"
+            "value": "https://help.vika.cn/docs/guide/manual-1-what-is-vikadata/"
         },
         "welcome_module9_url": {
             "value": "/help/developers/"
@@ -564,7 +564,7 @@
             "value": "{ \"title\":\"什么是维格表\", \"video\":\"space/2022/02/21/94cb82f9ffd84a5499c8931a224ad234\", \"autoPlay\":true }"
         },
         "widget_center_help": {
-            "value": "/help/intro-widget-center/"
+            "value": "https://help.vika.cn/docs/guide/intro-widget-center/"
         },
         "widget_center_help_link": {
             "value": "#"
@@ -3614,7 +3614,7 @@
             },
             {
                 "actions": [
-                    "open_guide_wizards([29, 76, 101])"
+                    "open_guide_wizards([29, 76, 102])"
                 ],
                 "rules": [
                     "device_IS_pc",
@@ -3629,7 +3629,7 @@
             },
             {
                 "actions": [
-                    "open_guide_wizards([76, 101])"
+                    "open_guide_wizards([76, 102])"
                 ],
                 "rules": [
                     "sign_up_time_IS_BEFORE_2022-09-29 22:00",
@@ -4240,9 +4240,9 @@
                 "commandArgs": "[21]"
             },
             {
-                "id": "open_guide_wizards([29, 76, 101])",
+                "id": "open_guide_wizards([29, 76, 102])",
                 "command": "open_guide_wizards",
-                "commandArgs": "[29, 76, 101]"
+                "commandArgs": "[29, 76, 102]"
             },
             {
                 "id": "open_guide_wizards([31])",
@@ -4255,9 +4255,9 @@
                 "commandArgs": "[4]"
             },
             {
-                "id": "open_guide_wizards([76, 101])",
+                "id": "open_guide_wizards([76, 102])",
                 "command": "open_guide_wizards",
-                "commandArgs": "[76, 101]"
+                "commandArgs": "[76, 102]"
             },
             {
                 "id": "open_guide_wizards([76, 87])",
@@ -4904,7 +4904,11 @@
             },
             "101": {
                 "completeIndex": -1,
-                "steps": "[[163]]",
+                "steps": "[[163]]"
+            },
+            "102": {
+                "completeIndex": -1,
+                "steps": "[[164]]",
                 "player": {
                     "action": [
                         "recEIcl9v4jzr",
@@ -6415,6 +6419,20 @@
                 "next": "查看详情",
                 "nextId": "check_detail",
                 "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/09/30/74b29d31dbc44eb48949acd6dff3bd65?attname=Update_cover%402x%203.png\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/246\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul><li>新增「角色」功能，权限分配与任务指派更灵活</li><li>「成员」选择框增加悬浮式信息卡片</li><li>右键菜单新增「移动至」选项，文件分类归纳更快捷</li><li>模板中心新增假期旅游攻略、自卷指南和复盘规划三大专题</li></ul>\"\n}",
+                "onClose": [
+                    "set_wizard_completed({\"curWizard\": true})",
+                    "open_guide_next_step({\"clearAllPrevUi\":true})"
+                ]
+            },
+            "164": {
+                "uiConfigId": "player_step_ui_config_164",
+                "uiType": "notice",
+                "onNext": [
+                    "open_guide_next_step({\"clearAllPrevUi\":true})"
+                ],
+                "next": "查看详情",
+                "nextId": "check_detail",
+                "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/10/20/1dc32d8aa47b4863a97ea84ce11ecc60?attname=Update_cover%402x.png\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/252\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul><li>模板中心新增「专题」板块，更多元化的模板介绍</li><li>全新帮助中心上线，提供更丰富的内容</li><li>部分功能结束免费体验，正式按空间站等级提供服务</li></ul>\"\n}",
                 "onClose": [
                     "set_wizard_completed({\"curWizard\": true})",
                     "open_guide_next_step({\"clearAllPrevUi\":true})"
