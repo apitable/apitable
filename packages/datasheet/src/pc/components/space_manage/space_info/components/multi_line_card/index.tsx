@@ -20,16 +20,17 @@ interface IMultiLineCardProps {
   className?: string;
   hightLight?: string;
   isMobile?: boolean;
+  minHeight?: number | string;
 }
 
 const AniProgress = (props: ProgressProps) => {
 
   const percent = useAnimationNum({ value: props.percent, duration: 1000, easing: 'linear', isFloat: false }) as number;
 
-  return <Progress {...props} percent={percent}/>;
+  return <Progress {...props} percent={percent} />;
 };
 
-export const MultiLineCard:FC<IMultiLineCardProps> = (props) => {
+export const MultiLineCard: FC<IMultiLineCardProps> = (props) => {
   const {
     title,
     titleTip,
@@ -40,19 +41,20 @@ export const MultiLineCard:FC<IMultiLineCardProps> = (props) => {
     contentMargin = 24,
     className,
     isMobile,
+    minHeight,
   } = props;
   const colors = useThemeColors();
   const wrapStyle: React.CSSProperties = useMemo(() => {
     return { marginTop: contentMargin };
   }, [contentMargin]);
   const DefaultProgressConfig: ProgressProps = {
-    type:'line',
-    strokeWidth: 4, 
+    type: 'line',
+    strokeWidth: 4,
     strokeColor: 'red',
     trailColor: colors.lineColor,
     showInfo: false,
   };
-  
+
   const loading = !lines;
   const limitLessColor = hightLight || strokeColor;
   const progressConfig = {
@@ -61,19 +63,26 @@ export const MultiLineCard:FC<IMultiLineCardProps> = (props) => {
     strokeColor,
   };
 
+  const style: React.CSSProperties = useMemo(() => {
+    if (!minHeight) {
+      return {};
+    }
+    return { minHeight };
+  }, [minHeight]);
+
   return (
-    <div className={cx(styles.card, className)}>
+    <div className={cx(styles.card, className)} style={style}>
       {
         loading ? (
           <>
-            <Skeleton width="38%" />
+            <Skeleton width='38%' />
             <Skeleton count={2} />
-            <Skeleton width="61%"/>
+            <Skeleton width='61%' />
           </>
         ) :
           <>
-            <CardTitle isMobile={isMobile} title={title} tipTitle={titleTip}/>
-            <div className={styles.linesWrap } style={wrapStyle}>
+            <CardTitle isMobile={isMobile} title={title} tipTitle={titleTip} />
+            <div className={styles.linesWrap} style={wrapStyle}>
               {
                 lines!.map((item) => {
                   const limitLess = item.total === -1;
@@ -95,10 +104,10 @@ export const MultiLineCard:FC<IMultiLineCardProps> = (props) => {
                           <span className={cx(styles.used, styles.customFont)}>{item.used ?? '-'}</span>
                           <span
                             className={limitLess ? styles.unit : cx(styles.total, styles.customFont)}
-                            style={ limitLess ? { color: limitLessColor } : {} }>
+                            style={limitLess ? { color: limitLessColor } : {}}>
                             / {limitLess ? t(Strings.unlimited) : `${item.total ?? '-'} `}
                           </span>
-                          <span className={cx(styles.unit)} style={ limitLess ? { color: limitLessColor } : {} }>{item.unit}</span>
+                          <span className={cx(styles.unit)} style={limitLess ? { color: limitLessColor } : {}}>{item.unit}</span>
                         </span>
                       }
                     </div>
@@ -113,7 +122,7 @@ export const MultiLineCard:FC<IMultiLineCardProps> = (props) => {
             </div>
           </>
       }
-      
+
     </div>
   );
 };
