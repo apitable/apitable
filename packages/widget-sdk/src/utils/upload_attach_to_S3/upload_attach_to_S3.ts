@@ -22,11 +22,22 @@ async function uploadDirectOSS(
 ): Promise<void> {
   const requestMethod = String(uploadCertificate.uploadRequestMethod).toLowerCase();
   await axios({
-    url: uploadCertificate.uploadUrl,
+    url: convertOrigin(uploadCertificate.uploadUrl),
     method: requestMethod as Method,
     data: file,
     ...axiosConfig,
   });
+}
+
+/**
+ * 私有化部署使用 minio，需要根据当前的环境替换 origin 中的数据
+ */
+function convertOrigin(url: string) {
+  const _url = new URL(url);
+  if (/http:\/\/minio/.test(_url.origin)) {
+    return `${location.origin}/${_url.pathname}/${_url.search}`;
+  }
+  return url;
 }
 
 async function notify(uploadCertificate: IGetUploadCertificateResponse, type: UploadType) {
@@ -47,7 +58,7 @@ export async function uploadAttachToS3(optional: IUploadFileForSaaS): Promise<an
   const { nodeId, fileType, file, axiosConfig, data = '' } = optional;
   const _fileType = file.type;
 
-  if(_fileType==='text/html'){
+  if (_fileType === 'text/html') {
     return;
   }
 
