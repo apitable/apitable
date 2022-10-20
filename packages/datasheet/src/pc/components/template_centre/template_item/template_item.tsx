@@ -57,7 +57,7 @@ export interface ITemplateItemProps {
   // 删除模板
   deleteTemplate?: (templateId: string) => void;
   // 使用模板
-  usingTemplate: React.Dispatch<React.SetStateAction<string>>;
+  usingTemplate?: React.Dispatch<React.SetStateAction<string>>;
   onClick?: ({ event, templateId }: { event: React.MouseEvent; templateId: string }) => void;
 }
 
@@ -70,6 +70,7 @@ export const TemplateItem: React.FC<ITemplateItemProps> = props => {
     templateId,
     creator,
     deleteTemplate,
+    usingTemplate,
     nodeType,
     onClick,
     bannerDesc,
@@ -98,8 +99,10 @@ export const TemplateItem: React.FC<ITemplateItemProps> = props => {
 
   const useTemplate = () => {
     setShowPopup(false);
-    props.usingTemplate(templateId);
+    usingTemplate?.(templateId);
   };
+
+  const isAction = Boolean(usingTemplate || deleteTemplate);
 
   const convertDescription = (description: string, nodeType?: number): string => {
     if (nodeType === ConfigConstant.NodeType.DATASHEET) {
@@ -188,7 +191,7 @@ export const TemplateItem: React.FC<ITemplateItemProps> = props => {
 
   return (
     <div className={classNames(styles.templateItem, { [styles.card]: type == Types.CARD })} onClick={handleClick}>
-      <div onClick={stopPropagation}>
+      {isAction && <div onClick={stopPropagation}>
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
           <MyTrigger
             className={styles.moreBtnWrapper}
@@ -207,10 +210,11 @@ export const TemplateItem: React.FC<ITemplateItemProps> = props => {
                 adjustY: true,
               },
             }}
-            trigger={<ButtonBase size="x-small" shape="circle" shadow icon={<MoreIcon fill={colors.secondLevelText} />} className={styles.moreBtn} />}
+            trigger={<ButtonBase size="x-small" shape="circle" shadow icon={<MoreIcon fill={colors.secondLevelText}/>}
+              className={styles.moreBtn}/>}
           />
         </ComponentDisplay>
-      </div>
+      </div>}
       <div
         className={classNames(styles.wrapper, {
           [styles.banner]: type === Types.BANNER,
@@ -233,11 +237,11 @@ export const TemplateItem: React.FC<ITemplateItemProps> = props => {
           </>
         )}
         {bannerDesc && type === Types.BANNER && (
-          <div className={styles.bannerDesc}>
-            <div className={styles.title} style={bannerDesc.color ? { color: bannerDesc.color } : undefined}>
+          <div className={classNames('bannerDesc', styles.bannerDesc)}>
+            <div className={classNames('title', styles.title)} style={bannerDesc.color ? { color: bannerDesc.color } : undefined}>
               {bannerDesc.title}
             </div>
-            <div className={styles.desc} style={bannerDesc.color ? { color: bannerDesc.color } : undefined}>
+            <div className={classNames('desc', styles.desc)} style={bannerDesc.color ? { color: bannerDesc.color } : undefined}>
               {bannerDesc.desc}
             </div>
           </div>

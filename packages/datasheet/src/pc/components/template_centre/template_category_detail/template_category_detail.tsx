@@ -171,7 +171,7 @@ export const TemplateCategoryDetail: FC<ITemplateCategoryDetailProps> = props =>
                     }
                   </Col>
                 </Row>
-                <div>
+                <>
                   {Array.isArray(templateList) ? (
                     <div className={styles.templateList}>
                       {templateList.map(template => (
@@ -195,6 +195,30 @@ export const TemplateCategoryDetail: FC<ITemplateCategoryDetailProps> = props =>
                     </div>
                   ) : (
                     <>
+                      {!isEmpty(templateList.albums) && (
+                        <>
+                          <h3>{t(Strings.album)}</h3>
+                          <div className={styles.templateList}>
+                            {templateList.albums.map(album => {
+                              return (
+                                <div className={styles.albumItemWrapper} key={album.albumId}>
+                                  <TemplateItem
+                                    bannerDesc={{
+                                      title: album.name,
+                                      desc: album.description,
+                                    }}
+                                    templateId={album.albumId}
+                                    height={200}
+                                    img={imgUrl(album.cover || defaultBanner, 200)}
+                                    onClick={openTemplateAlbumDetail}
+                                    isOfficial={isOfficial}
+                                  />
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </>
+                      )}
                       {!isEmpty(templateList.templates) && (
                         <>
                           <h3>{t(Strings.template)}</h3>
@@ -220,33 +244,10 @@ export const TemplateCategoryDetail: FC<ITemplateCategoryDetailProps> = props =>
                           </div>
                         </>
                       )}
-                      {!isEmpty(templateList.albums) && (
-                        <>
-                          <h3>{t(Strings.album)}</h3>
-                          <div className={styles.templateList}>
-                            {templateList.albums.map(album => {
-                              return (
-                                <div className={styles.templateItemWrapper} key={album.albumId}>
-                                  <TemplateItem
-                                    templateId={album.albumId}
-                                    type="card"
-                                    img={imgUrl(album.cover || defaultBanner, 160)}
-                                    name={album.name}
-                                    description={album.description}
-                                    onClick={openTemplateAlbumDetail}
-                                    usingTemplate={setUsingTemplate}
-                                    isOfficial
-                                  />
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </>
-                      )}
                     </>
                   )
                   }
-                </div>
+                </>
               </Col>
             </Row>
           )

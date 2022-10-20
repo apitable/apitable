@@ -1,6 +1,29 @@
 @import "~pc/styles/lib_var.less";
 @import "~pc/styles/lib_screen.less";
 
+.albumItemWrapper {
+  flex: 0 0 50%;
+  padding: 0 12px 24px;
+  :global {
+    .bannerDesc {
+      bottom: 0;
+      top: unset !important;
+      padding: 16px !important;
+      width: 100%;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%);
+      .title {
+        font-size: 16px !important;
+        line-height: 24px !important;
+      }
+      .desc {
+        font-size: 13px !important;
+        color: var(--blackBlue_50) !important;
+        padding-top: 4px !important;
+      }
+    }
+  }
+}
+
 .templateDetailWrapper {
   position: relative;
   height: 100vh;
@@ -83,6 +106,10 @@
   width: calc(100% + 24px);
   transform: translateX(-12px);
 
+  h3 {
+    font-size: 18px;
+  }
+
   .templateItemWrapper {
     padding: 0 12px 24px;
     flex: 0 0 20%;
@@ -127,6 +154,9 @@
   .templateList {
     .templateItemWrapper {
       flex: 0 0 50%;
+    }
+    .albumItemWrapper {
+      flex: 0 0 100%;
     }
   }
 

@@ -13,7 +13,10 @@ import MarkdownIt from 'markdown-it';
 import albumTemplateEnPng from 'static/icon/template/album_template_en.png';
 import albumTemplateZhPng from 'static/icon/template/album_template_zh.png';
 
-const md = new MarkdownIt();
+const md = new MarkdownIt({
+  html: true,
+  breaks: true,
+});
 
 interface IAlbumDetail {
   album: {
