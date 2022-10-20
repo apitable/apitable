@@ -4,12 +4,10 @@ import { InformationLargeOutlined } from '@vikadata/icons';
 import classnames from 'classnames';
 
 import Image from 'next/image';
-import { triggerUsageAlert } from 'pc/common/billing';
 import { Tooltip } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useCatalog } from 'pc/hooks/use_catalog';
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import EmptyState from 'static/icon/datasheet/form/emptystate.png';
 import FormIcon from 'static/icon/datasheet/toolbar_form.svg';
@@ -46,12 +44,8 @@ export const FormListPanel: FC<IFormListPanelProps> = (props) => {
   const colors = useThemeColors();
   const { addTreeNode } = useCatalog();
   const isEmpty = !formList?.length;
-  const spaceInfo = useSelector(state => {
-    return state.space.curSpaceInfo;
-  });
 
   const addForm = () => {
-    triggerUsageAlert('maxFormViewsInSpace', { usage: spaceInfo!.formViewNums + 1 });
     addTreeNode(
       folderId,
       ConfigConstant.NodeType.FORM,
