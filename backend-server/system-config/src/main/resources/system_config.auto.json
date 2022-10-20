@@ -3488,7 +3488,7 @@
                     "seats_30",
                     "storage_capacity_210",
                     "seats_50",
-                    "storage_capacity_150"
+                    "storage_capacity_350"
                 ]
             },
             "Dingtalk_Enterprise": {
@@ -3818,7 +3818,7 @@
                     "seats_30",
                     "storage_capacity_210",
                     "seats_50",
-                    "storage_capacity_150"
+                    "storage_capacity_350"
                 ]
             },
             "Feishu_Enterprise": {
@@ -4149,7 +4149,7 @@
                     "seats_30",
                     "storage_capacity_210",
                     "seats_50",
-                    "storage_capacity_150"
+                    "storage_capacity_350"
                 ]
             },
             "Wecom_Enterprise": {
@@ -5374,8 +5374,8 @@
                     "security_mobile",
                     "mirrors_100",
                     "seats_50",
-                    "storage_capacity_150",
-                    "social_integration_dingtalk"
+                    "social_integration_dingtalk",
+                    "storage_capacity_350"
                 ],
                 "product_ch_name": "钉钉专业版",
                 "seats": 50,
@@ -8835,7 +8835,7 @@
                     "mirrors_100",
                     "social_integration_feishu",
                     "seats_50",
-                    "storage_capacity_150"
+                    "storage_capacity_350"
                 ],
                 "product_ch_name": "飞书专业版",
                 "seats": 50,
@@ -11221,8 +11221,8 @@
                     "security_mobile",
                     "mirrors_100",
                     "seats_50",
-                    "storage_capacity_150",
-                    "social_integration_wecom"
+                    "social_integration_wecom",
+                    "storage_capacity_350"
                 ],
                 "product_ch_name": "企业微信专业版",
                 "seats": 50,
@@ -17837,10 +17837,7 @@
                     "wecom_standard_30_biennial_v1",
                     "wecom_standard_30_monthly_v1",
                     "wecom_standard_30_v1",
-                    "wecom_standard_30_monthly",
-                    "feishu_profession_50",
-                    "dingtalk_profession_50",
-                    "wecom_profession_50"
+                    "wecom_standard_30_monthly"
                 ],
                 "unit": "g",
                 "id": "storage_capacity_150",
@@ -17908,6 +17905,19 @@
                 "id": "storage_capacity_300",
                 "function": "storage_capacity",
                 "specification": 300,
+                "functionName": "附件容量",
+                "functionType": "consume"
+            },
+            "storage_capacity_350": {
+                "plans": [
+                    "dingtalk_profession_50",
+                    "feishu_profession_50",
+                    "wecom_profession_50"
+                ],
+                "unit": "g",
+                "id": "storage_capacity_350",
+                "function": "storage_capacity",
+                "specification": 350,
                 "functionName": "附件容量",
                 "functionType": "consume"
             },
@@ -19495,7 +19505,8 @@
                     "storage_capacity_300_mb",
                     "storage_capacity_4500",
                     "storage_capacity_5",
-                    "storage_capacity_210"
+                    "storage_capacity_210",
+                    "storage_capacity_350"
                 ]
             },
             "time_machine": {
