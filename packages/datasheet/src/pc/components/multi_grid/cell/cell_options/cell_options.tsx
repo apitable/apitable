@@ -1,4 +1,4 @@
-import { Button, useThemeColors } from '@vikadata/components';
+import { Button, useThemeColors, Typography } from '@vikadata/components';
 import { FieldType, IField, IMultiSelectedIds, RowHeightLevel, Selectors, ThemeName } from '@vikadata/core';
 import { AddOutlined, CloseSmallOutlined } from '@vikadata/icons';
 import classNames from 'classnames';
@@ -63,9 +63,9 @@ export const CellOptions: React.FC<ICellOptionsProps> = props => {
     return (
       <div style={style} className={classNames('tabItem', styles.tabItem, styles.single)}>
         <div className={classNames('optionText', styles.optionText)}>
-          <span className={styles.name}>
+          <Typography variant="body4" className={styles.name} ellipsis>
             {inquiryValueByKey('name', content, field, cacheTheme)}
-          </span>
+          </Typography>
         </div>
         {
           showDeleteIcon(iconColor, inquiryValueByKey('color', content, field, cacheTheme))
