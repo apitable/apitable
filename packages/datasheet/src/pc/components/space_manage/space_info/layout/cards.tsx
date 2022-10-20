@@ -48,7 +48,7 @@ export const useCards = (props: ILayoutProps) => {
 
   return useMemo(() => {
     return {
-      AdCard: props => (
+      AdCard: (props: ICardProps) => (
         <Advert
           {...props}
           desc={isSocial ? undefined : t(Strings.space_setting_social_ad_decs)}
@@ -112,11 +112,11 @@ export const useCards = (props: ILayoutProps) => {
               basicCert || isSocial || isMobileApp() || isMobile || isPrivateDeployment()
                 ? undefined
                 : {
-                    text: t(Strings.attachment_capacity_details_entry),
-                    onClick: () => {
-                      expandCapacityRewardModal();
-                    },
-                  }
+                  text: t(Strings.attachment_capacity_details_entry),
+                  onClick: () => {
+                    expandCapacityRewardModal();
+                  },
+                }
             }
           />
         ) : (
@@ -133,11 +133,11 @@ export const useCards = (props: ILayoutProps) => {
               basicCert || isSocial || isMobileApp() || isMobile || isPrivateDeployment()
                 ? undefined
                 : {
-                    text: t(Strings.attachment_capacity_details_entry),
-                    onClick: () => {
-                      expandCapacityRewardModal();
-                    },
-                  }
+                  text: t(Strings.attachment_capacity_details_entry),
+                  onClick: () => {
+                    expandCapacityRewardModal();
+                  },
+                }
             }
           />
         );
