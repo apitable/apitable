@@ -26252,6 +26252,14 @@
                     "wecom_enterprise_50_v1",
                     "wecom_enterprise_100_v1"
                 ]
+            },
+            "sp7c26a56e9833394f": {
+                "id": "sp7c26a56e9833394f",
+                "billing_plan_id": [
+                    "wecom_profession_30",
+                    "wecom_profession_50",
+                    "wecom_profession_100"
+                ]
             }
         }
     },

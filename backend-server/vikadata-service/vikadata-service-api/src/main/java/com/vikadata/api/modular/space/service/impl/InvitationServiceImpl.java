@@ -20,6 +20,7 @@ import com.vikadata.api.enums.audit.InviteType;
 import com.vikadata.api.enums.vcode.VCodeType;
 import com.vikadata.api.lang.SpaceGlobalFeature;
 import com.vikadata.api.model.vo.space.SpaceLinkInfoVo;
+import com.vikadata.api.modular.control.service.IControlRoleService;
 import com.vikadata.api.modular.organization.mapper.MemberMapper;
 import com.vikadata.api.modular.organization.mapper.TeamMapper;
 import com.vikadata.api.modular.organization.service.IMemberService;
@@ -90,6 +91,10 @@ public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, Invitat
     @Resource
     private VCodeMapper vCodeMapper;
 
+    @Resource
+    private IControlRoleService iControlRoleService;
+
+
     @Override
     public SpaceLinkInfoVo getInvitationInfo(String spaceId, Long creator) {
         SpaceLinkInfoVo infoVo = SpaceLinkInfoVo.builder()
@@ -127,11 +132,15 @@ public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, Invitat
         // To invalidate the application to actively join the space
         TaskManager.me().execute(() -> spaceApplyMapper.invalidateTheApply(ListUtil.toList(dto.getUserId()), dto.getSpaceId(), InviteType.LINK_INVITE.getType()));
         if (!StrUtil.isEmpty(dto.getNodeId())) {
+            Long creatorUnitId = iUnitService.getUnitIdByRefId(dto.getCreator());
+            Long controlOwnerUnitId = iControlRoleService.getUnitIdByControlIdAndRoleCode(dto.getNodeId(), Node.OWNER);
             Long creatorUserId = memberMapper.selectUserIdByMemberId(dto.getCreator());
-            iNodeRoleService.enableNodeRole(creatorUserId, dto.getSpaceId(), dto.getNodeId(), true);
-            // 添加角色
-            Long unitId = iUnitService.getUnitIdByRefId(dto.getMemberId());
-            iNodeRoleService.addNodeRole(creatorUserId, dto.getNodeId(), Node.UPDATER, Collections.singletonList(unitId));
+            if (!ObjectUtil.equals(creatorUnitId, controlOwnerUnitId)) {
+                iNodeRoleService.enableNodeRole(creatorUserId, dto.getSpaceId(), dto.getNodeId(), true);
+            }
+            // add update role
+            Long invitedUnitId = iUnitService.getUnitIdByRefId(dto.getMemberId());
+            iNodeRoleService.addNodeRole(creatorUserId, dto.getNodeId(), Node.UPDATER, Collections.singletonList(invitedUnitId));
         }
     }
 
