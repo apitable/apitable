@@ -12,6 +12,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 
+import com.vikadata.api.enums.finance.BundleState;
 import com.vikadata.api.enums.finance.OrderChannel;
 import com.vikadata.api.enums.finance.OrderType;
 import com.vikadata.api.enums.finance.SubscriptionPhase;
@@ -22,6 +23,7 @@ import com.vikadata.api.modular.finance.service.IBundleService;
 import com.vikadata.api.modular.finance.service.IOrderItemService;
 import com.vikadata.api.modular.finance.service.IOrderV2Service;
 import com.vikadata.api.modular.finance.service.ISocialWecomOrderService;
+import com.vikadata.api.modular.finance.service.ISpaceSubscriptionService;
 import com.vikadata.api.modular.finance.service.ISubscriptionService;
 import com.vikadata.api.modular.finance.strategy.AbstractSocialOrderService;
 import com.vikadata.api.modular.finance.strategy.SocialOrderStrategyFactory;
@@ -33,6 +35,7 @@ import com.vikadata.api.util.billing.WeComPlanConfigManager;
 import com.vikadata.api.util.billing.model.ProductChannel;
 import com.vikadata.clock.ClockUtil;
 import com.vikadata.core.exception.BusinessException;
+import com.vikadata.entity.BundleEntity;
 import com.vikadata.entity.SocialTenantBindEntity;
 import com.vikadata.entity.SubscriptionEntity;
 import com.vikadata.social.wecom.event.order.WeComOrderPaidEvent;
@@ -77,6 +80,9 @@ public class WeComOrderServiceImpl extends AbstractSocialOrderService<WeComOrder
 
     @Resource
     private ISocialCpIsvService iSocialCpIsvService;
+
+    @Resource
+    private ISpaceSubscriptionService iSpaceSubscriptionService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -138,14 +144,26 @@ public class WeComOrderServiceImpl extends AbstractSocialOrderService<WeComOrder
         // restore the lasted subscription
         for (String subscriptionId : subscriptionIds) {
             SubscriptionEntity subscription = subscriptionService.getBySubscriptionId(subscriptionId);
-            String lastSubscriptionId =
-                    subscriptionService.getLastSubscriptionIdByBundleIdWithDeleted(subscription.getBundleId(),
-                            subscription.getId());
-            subscriptionService.restoreBySubscriptionId(lastSubscriptionId);
+            if (null != subscription) {
+                String lastSubscriptionId =
+                        subscriptionService.getLastSubscriptionIdByBundleIdWithDeleted(subscription.getBundleId(),
+                                subscription.getId());
+                if (null != lastSubscriptionId) {
+                    subscriptionService.restoreBySubscriptionId(lastSubscriptionId);
+                }
+            }
         }
         if (!subscriptionIds.isEmpty()) {
             // Remove subscription if needed
             subscriptionService.removeBatchBySubscriptionIds(subscriptionIds);
+        }
+        // remove bundle if space's all subscriptions was deleted
+        if (!iSpaceSubscriptionService.spaceHaveSubscription(spaceId)) {
+            List<String> bundleIds =
+                    bundleService.getBySpaceIdAndState(spaceId, BundleState.ACTIVATED).stream().map(BundleEntity::getBundleId).collect(Collectors.toList());
+            if (!bundleIds.isEmpty()) {
+                bundleService.removeBatchByBundleIds(bundleIds);
+            }
         }
     }
 

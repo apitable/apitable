@@ -127,6 +127,46 @@ public class SpaceSubscriptionServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
+    public void testSpaceHaveSubscriptionWithAllDeleted() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        OffsetDateTime nowTime = getClock().getNow(testTimeZone);
+        BundleEntity bundle = prepareSpaceBundle(userSpace.getSpaceId(),
+                nowTime.minusMonths(1).toLocalDateTime(),
+                nowTime.plusMonths(1).toLocalDateTime());
+        SubscriptionEntity subscription1 = prepareSpaceSubscription(userSpace.getSpaceId(),
+                "price_dingtalk_standard_200_1", bundle,
+                nowTime.minusMonths(1).toLocalDateTime(),
+                nowTime.minusDays(15).toLocalDateTime());
+        SubscriptionEntity subscription2 = prepareSpaceSubscription(userSpace.getSpaceId(),
+                "price_dingtalk_standard_200_1", bundle,
+                nowTime.minusDays(14).toLocalDateTime(),
+                nowTime.minusDays(1).toLocalDateTime());
+        iSubscriptionService.removeBatchBySubscriptionIds(CollUtil.newArrayList(subscription1.getSubscriptionId(),
+                subscription2.getSubscriptionId()));
+        Assertions.assertFalse(iSpaceSubscriptionService.spaceHaveSubscription(userSpace.getSpaceId()));
+    }
+
+    @Test
+    public void testSpaceHaveSubscriptionWithPartDeleted() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        OffsetDateTime nowTime = getClock().getNow(testTimeZone);
+        BundleEntity bundle = prepareSpaceBundle(userSpace.getSpaceId(),
+                nowTime.minusMonths(1).toLocalDateTime(),
+                nowTime.plusMonths(1).toLocalDateTime());
+        SubscriptionEntity subscription1 = prepareSpaceSubscription(userSpace.getSpaceId(),
+                "price_dingtalk_standard_200_1", bundle,
+                nowTime.minusMonths(1).toLocalDateTime(),
+                nowTime.minusDays(15).toLocalDateTime());
+        SubscriptionEntity subscription2 = prepareSpaceSubscription(userSpace.getSpaceId(),
+                "price_dingtalk_standard_200_1", bundle,
+                nowTime.minusDays(14).toLocalDateTime(),
+                nowTime.minusDays(1).toLocalDateTime());
+        iSubscriptionService.removeBatchBySubscriptionIds(CollUtil.newArrayList(subscription1.getSubscriptionId()));
+        Assertions.assertTrue(iSpaceSubscriptionService.spaceHaveSubscription(userSpace.getSpaceId()));
+    }
+
+
+    @Test
     @Disabled("without capacity price id")
     public void testBundleSubscriptionsExpiredButHaveAddon() {
         MockUserSpace userSpace = createSingleUserAndSpace();
@@ -349,7 +389,7 @@ public class SpaceSubscriptionServiceImplTest extends AbstractIntegrationTest {
         return bundle;
     }
 
-    private void prepareSpaceSubscription(String spaceId, String priceId, BundleEntity bundle, LocalDateTime startTime,
+    private SubscriptionEntity prepareSpaceSubscription(String spaceId, String priceId, BundleEntity bundle, LocalDateTime startTime,
             LocalDateTime expiredTime) {
         Price price = BillingConfigManager.getBillingConfig().getPrices().get(priceId);
         Product product = BillingConfigManager.getBillingConfig().getProducts().get(price.getProduct());
@@ -369,6 +409,7 @@ public class SpaceSubscriptionServiceImplTest extends AbstractIntegrationTest {
                 .updatedBy(-1L)
                 .build();
         iSubscriptionService.create(subscription);
+        return subscription;
     }
 
 

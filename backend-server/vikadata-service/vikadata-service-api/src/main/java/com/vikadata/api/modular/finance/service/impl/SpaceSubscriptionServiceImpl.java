@@ -536,13 +536,13 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
         IPage<SpaceSubscriptionDto> unExpirePage = subscriptionMapper.selectUnExpireCapacityBySpaceId(spaceId, page, SubscriptionState.ACTIVATED);
         IPage<SpaceCapacityPageVO> spaceCapacityPageVOIPage = this.handleCapacitySubscription(unExpirePage, page);
         // 处理官方赠送的附件容量记录，空间基础、高级认证分别获赠5GB、10GB附件容量
-        if(this.checkOfficialGiftCapacity(spaceId) != null){
+        if (this.checkOfficialGiftCapacity(spaceId) != null) {
             spaceCapacityPageVOIPage.getRecords().add(this.checkOfficialGiftCapacity(spaceId));
             spaceCapacityPageVOIPage.setTotal(spaceCapacityPageVOIPage.getTotal() + 1);
         }
         // 处理免费订阅计划空间站的附件容量记录,铜级空间站默认1GB附件容量
         Integer number = subscriptionMapper.selectUnExpireBaseProductBySpaceId(spaceId, SubscriptionState.ACTIVATED, ProductCategory.BASE);
-        if ( number == 0) {
+        if (number == 0) {
             SpaceCapacityPageVO freeCapacity = new SpaceCapacityPageVO();
             freeCapacity.setQuota("1GB");
             freeCapacity.setQuotaSource(CapacityType.SUBSCRIPTION_PACKAGE_CAPACITY.getName());
@@ -561,14 +561,14 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
         // 构建附件容量明细对象集合
         List<SpaceCapacityPageVO> spaceCapacityPageVos = new ArrayList<>();
         for (SpaceSubscriptionDto spaceSubscriptionDto : spaceSubscriptionDtoIPage.getRecords()) {
-            if(giftSubscriptionPlanId.equals(spaceSubscriptionDto.getPlanId()) && StrUtil.isEmpty(spaceSubscriptionDto.getMetadata())){
+            if (giftSubscriptionPlanId.equals(spaceSubscriptionDto.getPlanId()) && StrUtil.isEmpty(spaceSubscriptionDto.getMetadata())) {
                 continue;
             }
             // 对planId进行处理，去除_monthly、_biannual、_annual、_v1
-            List<String> removeStrings= CollUtil.newArrayList("_monthly", "_biannual", "_annual", "_v1");
+            List<String> removeStrings = CollUtil.newArrayList("_monthly", "_biannual", "_annual", "_v1");
             String planId = spaceSubscriptionDto.getPlanId();
-            for (String removeString : removeStrings){
-                if (planId.contains(removeString)){
+            for (String removeString : removeStrings) {
+                if (planId.contains(removeString)) {
                     planId = StrUtil.removeAll(planId, removeString);
                 }
             }
@@ -581,18 +581,20 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
             // 附件容量额度
             if (feature.getSpecification() == -1) {
                 spaceCapacityPageVO.setQuota("-1");
-            } else if (Objects.equals(feature.getSpecification(), getBillingConfig().getFeatures().get("storage_capacity_300_mb").getSpecification())) {
+            }
+            else if (Objects.equals(feature.getSpecification(), getBillingConfig().getFeatures().get("storage_capacity_300_mb").getSpecification())) {
                 spaceCapacityPageVO.setQuota(StrUtil.format("{}MB", feature.getSpecification()));
-            } else {
+            }
+            else {
                 spaceCapacityPageVO.setQuota(StrUtil.format("{}GB", feature.getSpecification()));
             }
             // 附件容量额度来源
-            if(StrUtil.isNotEmpty(spaceSubscriptionDto.getMetadata())){
+            if (StrUtil.isNotEmpty(spaceSubscriptionDto.getMetadata())) {
                 // 解析metadata信息,包含新用户ID、新用户名称、附件容量类型
                 JSONObject metadata = JSONUtil.parseObj(spaceSubscriptionDto.getMetadata());
                 String capacityType = metadata.getStr("capacityType");
                 // 判断附件容量是否是邀请新用户加入空间站所获得的奖励
-                if(CapacityType.PARTICIPATION_CAPACITY.getName().equals(capacityType)){
+                if (CapacityType.PARTICIPATION_CAPACITY.getName().equals(capacityType)) {
                     // 通过用户Id获取邀请用户信息，包括用户Id、用户头像
                     Long userId = Long.valueOf(metadata.getStr("userId"));
                     InviteUserInfo inviteUserInfo = userMapper.selectInviteUserInfoByUserId(userId);
@@ -606,7 +608,7 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
                 spaceCapacityPageVO.setQuotaSource(CapacityType.SUBSCRIPTION_PACKAGE_CAPACITY.getName());
             }
             // 商务下单附件容量额度来源
-            if(ProductCategory.ADD_ON.name().equals(spaceSubscriptionDto.getProductCategory()) && StrUtil.isEmpty(spaceSubscriptionDto.getMetadata())){
+            if (ProductCategory.ADD_ON.name().equals(spaceSubscriptionDto.getProductCategory()) && StrUtil.isEmpty(spaceSubscriptionDto.getMetadata())) {
                 spaceCapacityPageVO.setQuotaSource(CapacityType.PURCHASE_CAPACITY.getName());
             }
             // 附件容量过期时间
@@ -626,7 +628,7 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
     public SpaceCapacityPageVO checkOfficialGiftCapacity(String spaceId) {
         log.info("检验空间站是否认证获得官方附件容量奖励");
         SpaceGlobalFeature spaceGlobalFeature = iSpaceService.getSpaceGlobalFeature(spaceId);
-        if(spaceGlobalFeature.getCertification() != null){
+        if (spaceGlobalFeature.getCertification() != null) {
             // 构建官方赠送附件容量信息
             SpaceCapacityPageVO officialGiftCapacity = new SpaceCapacityPageVO();
             // 基础认证5GB容量
@@ -644,5 +646,12 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
             return officialGiftCapacity;
         }
         return null;
+    }
+
+
+    @Override
+    public boolean spaceHaveSubscription(String spaceId) {
+        List<String> subscriptionIds = subscriptionMapper.selectSubscriptionIdsBySpaceId(spaceId);
+        return !subscriptionIds.isEmpty();
     }
 }

@@ -115,4 +115,11 @@
         AND is_deleted = 1
         ORDER BY created_at DESC LIMIT 1
     </select>
+
+    <select id="selectSubscriptionIdsBySpaceId" resultType="java.lang.String">
+        SELECT subscription_id
+        FROM vika_billing_subscription
+        WHERE space_id = #{spaceId}
+        AND is_deleted = 0
+    </select>
 </mapper>

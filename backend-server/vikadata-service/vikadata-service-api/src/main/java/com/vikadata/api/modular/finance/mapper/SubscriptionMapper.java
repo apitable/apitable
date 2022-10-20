@@ -125,4 +125,11 @@ public interface SubscriptionMapper extends BaseMapper<SubscriptionEntity> {
      * @return subscription entities
      */
     String selectSubscriptionIdsByBundleIdAndWithDeleted(@Param("bundleId") String bundleIds, @Param("maxId") Long maxId);
+
+    /**
+     * get space subscription_id list
+     * @param spaceId space id
+     * @return List<String>
+     */
+    List<String> selectSubscriptionIdsBySpaceId(@Param("spaceId") String spaceId);
 }

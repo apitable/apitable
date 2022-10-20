@@ -3,6 +3,7 @@ package com.vikadata.api.modular.finance.service;
 
 import java.util.List;
 import java.util.Map;
+
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
@@ -220,4 +221,11 @@ public interface ISpaceSubscriptionService {
      * @date 2022/8/24
      */
     SpaceCapacityPageVO checkOfficialGiftCapacity(String spaceId);
+
+    /**
+     * does the space station have subscription entries
+     * @param spaceId space id
+     * @return boolean
+     */
+    boolean spaceHaveSubscription(String spaceId);
 }
