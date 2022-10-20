@@ -10,7 +10,7 @@ apply from: 'lib.gradle'
 description = 'Vikadata Framework'
 
 group "com.vikadata"
-version = "0.13.8"
+version = "0.13.9"
 
 defaultTasks 'build'
 

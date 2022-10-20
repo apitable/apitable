@@ -1,5 +1,5 @@
 import { ChevronLeftOutlined, ChevronRightOutlined } from '@vikadata/icons';
-import React, { memo, FC, useState, useEffect, ChangeEvent } from 'react';
+import React, { memo, FC, useState, useEffect, useRef, EventTarget, ChangeEvent, KeyboardEvent } from 'react';
 import { IOption, Select } from 'components/select';
 import {
   PaginationArrow,
@@ -123,11 +123,19 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
     setInputPage(e.target.value);
   };
 
+  const paginationInputRef = useRef<HTMLInputElement>(null);
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.code === 'Enter') {
+      handleBlurPage(e);
+      paginationInputRef.current?.blur();
+    }
+  };
+
   /**
    * 输入改变页码
    */
-  const handleBlurPage = (e: ChangeEvent<HTMLInputElement>) => {
-    const page = Number(e.target.value);
+  const handleBlurPage = (e: EventTarget<HTMLInputElement>) => {
+    const page = Number(e.target.value)
     if (!page || isNaN(page)) {
       setInputPage('');
       return;
@@ -196,7 +204,9 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
           size="small"
           disabled={disabled}
           onChange={handleInputPage}
+          onKeyDown={handleKeyDown}
           onBlur={handleBlurPage}
+          ref={paginationInputRef}
         />
         <span>{t(Strings.page, lang)}</span>
       </PaginationQuickJump>

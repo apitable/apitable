@@ -1,6 +1,6 @@
 {
   "name": "@vikadata/datasheet",
-  "version": "0.13.8",
+  "version": "0.13.9",
   "private": true,
   "scripts": {
     "next:dev": "next dev",

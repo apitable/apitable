@@ -58,6 +58,7 @@ export const PaginationItem = styled.button.attrs(applyDefaultTheme)<IPagination
 `;
 
 export const PaginationArrow = styled.div.attrs(applyDefaultTheme)<IPaginationStatus>`
+  width: 24px;
   height: 24px;
   display: flex;
   align-items: center;
@@ -66,11 +67,11 @@ export const PaginationArrow = styled.div.attrs(applyDefaultTheme)<IPaginationSt
     const { lastRangeChild } = props;
     if (lastRangeChild) {
       return css`
-        margin-left: 14px;
+        margin-left: 4px;
       `;
     }
     return css`
-      margin-right: 14px;
+      margin-right: 4px;
     `;
   }}
   ${(props) => {

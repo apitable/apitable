@@ -365,6 +365,9 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
     }
 
     private List<AlbumGroupVo> buildAlbumGroups(List<AlbumGroup> albumGroups) {
+        if (CollUtil.isEmpty(albumGroups)) {
+            return new ArrayList<>();
+        }
         // summarize albums IDs under each group
         List<String> albumIds = new ArrayList<>();
         List<AlbumGroupVo> albumGroupVos = new ArrayList<>(albumGroups.size());

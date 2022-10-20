@@ -127,10 +127,10 @@
       }
       .albumRecommends {
         background: var(--blackBlue_900);
-        padding: 16px;
+        padding: 8px;
         border-radius: 8px;
         h3 {
-          margin-bottom: 16px;
+          margin-bottom: 8px;
           margin-left: 8px;
         }
         .albumRecommendItem {
@@ -168,6 +168,13 @@
       .albumRightContent {
         img {
           max-width: 100%;
+        }
+        :global {
+          .btn {
+            padding: 9px 16px;
+            background: var(--primaryColor);
+            color: var(--blackBlue_50);
+          }
         }
       }
       p {
