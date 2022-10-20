@@ -238,6 +238,9 @@ public class TemplateCenterConfigServiceImpl implements ITemplateCenterConfigSer
     }
 
     private void handleTemplateCategory(Long userId, TemplateCenterConfigInfo configInfo, TemplateExistingData existingData, TemplateChangeSet changeSet) {
+        if (CollUtil.isEmpty(configInfo.getTemplateCategories())) {
+            return;
+        }
         String i18n = configInfo.getI18n();
         Map<String, TemplatePropertyDto> categoryNameToPropertyMap = existingData.getCategoryNameToPropertyMap(i18n);
 
@@ -270,6 +273,9 @@ public class TemplateCenterConfigServiceImpl implements ITemplateCenterConfigSer
     }
 
     private void handleTemplateTag(Long userId, TemplateCenterConfigInfo configInfo, TemplateExistingData existingData, TemplateChangeSet changeSet) {
+        if (CollUtil.isEmpty(configInfo.getTemplate())) {
+            return;
+        }
         String i18n = configInfo.getI18n();
         Map<String, TemplatePropertyDto> tagNameToPropertyMap = existingData.getTagNameToPropertyMap(i18n);
 
@@ -326,6 +332,9 @@ public class TemplateCenterConfigServiceImpl implements ITemplateCenterConfigSer
     }
 
     private void handleTemplateAlbum(Long userId, TemplateCenterConfigInfo configInfo, TemplateExistingData existingData, TemplateChangeSet changeSet) {
+        if (CollUtil.isEmpty(configInfo.getAlbums())) {
+            return;
+        }
         String i18n = configInfo.getI18n();
         Map<String, TemplateAlbumDto> albumNameToAlbumMap = existingData.getAlbumNameToAlbumMap(i18n);
 

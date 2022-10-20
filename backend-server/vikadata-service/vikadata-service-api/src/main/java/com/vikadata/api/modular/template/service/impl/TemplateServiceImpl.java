@@ -447,7 +447,7 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
         List<AlbumVo> albumVos = iTemplateAlbumService.getAlbumVosByCategoryCode(categoryCode);
         contentVo.setAlbums(albumVos);
         // get template views
-        List<TemplateVo> templateVos = this.getTemplateVoList(constProperties.getTemplateSpace(), null, null, Boolean.FALSE);
+        List<TemplateVo> templateVos = this.getTemplateVoList(constProperties.getTemplateSpace(), categoryCode, null, Boolean.FALSE);
         contentVo.setTemplates(templateVos);
         return contentVo;
     }
