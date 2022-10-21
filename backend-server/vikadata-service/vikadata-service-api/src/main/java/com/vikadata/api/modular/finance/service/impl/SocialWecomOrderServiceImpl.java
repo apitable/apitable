@@ -3,6 +3,7 @@ package com.vikadata.api.modular.finance.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -80,4 +81,17 @@ public class SocialWecomOrderServiceImpl extends ServiceImpl<SocialWecomOrderMap
         return getBaseMapper().selectLastPaidOrder(suiteId, paidCorpId);
     }
 
+    @Override
+    public boolean preOrderAreRefunded(String orderId) {
+        Long id = baseMapper.selectIdByOrderId(orderId);
+        if (null != id) {
+            return ObjectUtil.equal(5, baseMapper.selectPreOrderStatusById(id));
+        }
+        return true;
+    }
+
+    @Override
+    public void updateOrderStatusByOrderId(String orderId, int orderStatus) {
+        baseMapper.updateOrderStatusByOrderId(orderId, orderStatus);
+    }
 }

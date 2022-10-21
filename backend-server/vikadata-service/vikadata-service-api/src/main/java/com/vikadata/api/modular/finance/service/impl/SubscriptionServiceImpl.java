@@ -144,6 +144,6 @@ public class SubscriptionServiceImpl extends ServiceImpl<SubscriptionMapper, Sub
 
     @Override
     public String getLastSubscriptionIdByBundleIdWithDeleted(String bundleId, Long maxId) {
-        return baseMapper.selectSubscriptionIdsByBundleIdAndWithDeleted(bundleId, maxId);
+        return baseMapper.selectSubscriptionIdByBundleIdAndWithDeleted(bundleId, maxId);
     }
 }

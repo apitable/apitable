@@ -45,4 +45,23 @@
         ORDER BY paid_time DESC
         LIMIT 1
     </select>
+
+    <select id="selectIdByOrderId" resultType="java.lang.Long">
+        SELECT id FROM vika_billing_social_wecom_order
+        WHERE order_id = #{orderId}
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectPreOrderStatusById" resultType="java.lang.Integer">
+        SELECT order_status FROM vika_billing_social_wecom_order
+        WHERE id &lt; #{id}
+        AND is_deleted = 0
+        ORDER BY created_at DESC LIMIT 1
+    </select>
+
+    <update id="updateOrderStatusByOrderId">
+        UPDATE vika_billing_social_wecom_order SET order_status = #{orderStatus}
+        WHERE order_id = #{orderId}
+        AND is_deleted = 0
+    </update>
 </mapper>

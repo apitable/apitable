@@ -63,4 +63,25 @@ public interface SocialWecomOrderMapper extends BaseMapper<SocialWecomOrderEntit
      */
     SocialWecomOrderEntity selectLastPaidOrder(@Param("suiteId") String suiteId, @Param("paidCorpId") String paidCorpId);
 
+    /**
+     * query id by order  id
+     * @param orderId order id
+     * @return pre order status
+     */
+    Long selectIdByOrderId(@Param("orderId") String orderId);
+
+    /**
+     * get order status by id
+     * @param id primary key
+     * @return id
+     */
+    Integer selectPreOrderStatusById(@Param("id") Long id);
+
+
+    /**
+     * modify order status by order id
+     * @param orderId social order id
+     * @return number of rows affected
+     */
+    int updateOrderStatusByOrderId(@Param("orderId") String orderId, @Param("orderStatus") int orderStatus);
 }

@@ -70,4 +70,17 @@ public interface ISocialWecomOrderService extends IService<SocialWecomOrderEntit
      */
     SocialWecomOrderEntity getLastPaidOrder(String suiteId, String paidCorpId);
 
+    /**
+     * Check if the previous order is refunded
+     * @param orderId order id
+     * @return boolean
+     */
+    boolean preOrderAreRefunded(String orderId);
+
+    /**
+     * modify order status by order id
+     * @param orderId social order id
+     * @param orderStatus order status
+     */
+    void updateOrderStatusByOrderId(String orderId, int orderStatus);
 }

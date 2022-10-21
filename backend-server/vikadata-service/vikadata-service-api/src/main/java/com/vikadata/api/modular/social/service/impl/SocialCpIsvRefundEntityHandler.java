@@ -95,10 +95,7 @@ public class SocialCpIsvRefundEntityHandler implements ISocialCpIsvEntityHandler
         // 获取企业微信订单的最新信息
         WxCpIsvServiceImpl wxCpIsvService = (WxCpIsvServiceImpl) weComTemplate.isvService(suiteId);
         WxCpIsvGetOrder wxCpIsvGetOrder = wxCpIsvService.getOrder(orderId);
-        // 获取订单
-        SocialWecomOrderEntity orderEntity = socialWecomOrderService.getByOrderId(orderId);
-        orderEntity.setOrderStatus(wxCpIsvGetOrder.getOrderStatus());
-        socialWecomOrderService.updateById(orderEntity);
+        socialWecomOrderService.updateOrderStatusByOrderId(orderId, wxCpIsvGetOrder.getOrderStatus());
     }
 
 }

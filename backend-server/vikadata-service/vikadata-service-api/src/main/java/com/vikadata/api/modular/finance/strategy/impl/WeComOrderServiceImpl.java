@@ -148,7 +148,9 @@ public class WeComOrderServiceImpl extends AbstractSocialOrderService<WeComOrder
                 String lastSubscriptionId =
                         subscriptionService.getLastSubscriptionIdByBundleIdWithDeleted(subscription.getBundleId(),
                                 subscription.getId());
-                if (null != lastSubscriptionId) {
+                boolean preOrderAreRefunded = iSocialWecomOrderService.preOrderAreRefunded(event.getOrderId());
+                // if previous order not refund then recover previous subscription
+                if (null != lastSubscriptionId && !preOrderAreRefunded) {
                     subscriptionService.restoreBySubscriptionId(lastSubscriptionId);
                 }
             }
