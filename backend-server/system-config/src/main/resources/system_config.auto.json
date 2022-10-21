@@ -4205,7 +4205,8 @@
                     "wecom_enterprise_120_v1",
                     "wecom_enterprise_30_v1",
                     "wecom_enterprise_50_v1",
-                    "wecom_enterprise_100_v1"
+                    "wecom_enterprise_100_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "Wecom_Enterprise",
                 "category": "BASE",
@@ -11115,6 +11116,52 @@
                 "product_en_name": "Ultimate Plan with WeCom",
                 "online": true
             },
+            "wecom_enterprise_100_annual_v1": {
+                "product_category": "BASE",
+                "features": [
+                    "nodes_10000",
+                    "rows_limit_50000",
+                    "space_rows_limit_500_million",
+                    "time_machine_730",
+                    "trash_730",
+                    "advance_rainbow_label",
+                    "form_view_unlimited",
+                    "api_call_1000000",
+                    "space_admin_unlimited",
+                    "field_permission_unlimited",
+                    "gantt_view_unlimited",
+                    "node_permissions_unlimited",
+                    "calendar_view_unlimited",
+                    "security_watermark",
+                    "social_integration_dingtalk",
+                    "social_integration_feishu",
+                    "social_integration_wecom",
+                    "gallery_view_unlimited",
+                    "kanban_view_unlimited",
+                    "advance_integration_office_preview",
+                    "record_activity_730",
+                    "security_invite_member",
+                    "security_apply_join_space",
+                    "security_share",
+                    "security_export",
+                    "security_download_file",
+                    "security_copy_cell_data",
+                    "security_mobile",
+                    "audit_query_730",
+                    "security_address_list_isolation",
+                    "security_catalog_management",
+                    "mirrors_unlimited",
+                    "seats_100",
+                    "storage_capacity_1000"
+                ],
+                "product_ch_name": "企业微信旗舰版",
+                "seats": 100,
+                "id": "wecom_enterprise_100_annual_v1",
+                "product": "Wecom_Enterprise",
+                "channel": "wecom",
+                "product_en_name": "Ultimate Plan with WeCom",
+                "online": true
+            },
             "wecom_profession_100": {
                 "product_category": "BASE",
                 "features": [
@@ -12569,7 +12616,8 @@
                     "dingtalk_enterprise_100_annual_v1",
                     "dingtalk_profession_100",
                     "dingtalk_profession_30",
-                    "dingtalk_profession_50"
+                    "dingtalk_profession_50",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "social_integration_dingtalk",
                 "function": "integration_dingtalk",
@@ -12686,7 +12734,8 @@
                     "dingtalk_enterprise_100_annual_v1",
                     "feishu_profession_100",
                     "feishu_profession_30",
-                    "feishu_profession_50"
+                    "feishu_profession_50",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "social_integration_feishu",
                 "function": "integration_feishu",
@@ -12879,7 +12928,8 @@
                     "dingtalk_profession_50",
                     "wecom_profession_100",
                     "wecom_profession_30",
-                    "wecom_profession_50"
+                    "wecom_profession_50",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "advance_integration_office_preview",
                 "function": "integration_office_preview",
@@ -13013,7 +13063,8 @@
                     "dingtalk_enterprise_100_annual_v1",
                     "wecom_profession_100",
                     "wecom_profession_30",
-                    "wecom_profession_50"
+                    "wecom_profession_50",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "social_integration_wecom",
                 "function": "integration_wecom",
@@ -13202,7 +13253,8 @@
                     "dingtalk_profession_50",
                     "wecom_profession_100",
                     "wecom_profession_30",
-                    "wecom_profession_50"
+                    "wecom_profession_50",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "advance_rainbow_label",
                 "function": "rainbow_label",
@@ -13303,7 +13355,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "security_address_list_isolation",
                 "function": "security_setting_address_list_isolation",
@@ -13404,7 +13457,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "security_apply_join_space",
                 "function": "security_setting_apply_join_space",
@@ -13505,7 +13559,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "security_catalog_management",
                 "function": "security_setting_catalog_management",
@@ -13606,7 +13661,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "security_copy_cell_data",
                 "function": "security_setting_copy_cell_data",
@@ -13707,7 +13763,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "security_download_file",
                 "function": "security_setting_download_file",
@@ -13823,7 +13880,8 @@
                     "dingtalk_profession_50",
                     "wecom_profession_100",
                     "wecom_profession_30",
-                    "wecom_profession_50"
+                    "wecom_profession_50",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "security_export",
                 "function": "security_setting_export",
@@ -13924,7 +13982,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "security_invite_member",
                 "function": "security_setting_invite_member",
@@ -14040,7 +14099,8 @@
                     "dingtalk_profession_50",
                     "wecom_profession_100",
                     "wecom_profession_30",
-                    "wecom_profession_50"
+                    "wecom_profession_50",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "security_mobile",
                 "function": "security_setting_mobile",
@@ -14141,7 +14201,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "security_share",
                 "function": "security_setting_share",
@@ -14242,7 +14303,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "security_watermark",
                 "function": "watermark",
@@ -14511,7 +14573,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "api_call_1000000",
                 "function": "api_call",
@@ -14741,7 +14804,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "calendar_view_unlimited",
                 "function": "calendar_view",
@@ -14961,7 +15025,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "field_permission_unlimited",
                 "function": "field_permission",
@@ -15181,7 +15246,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "form_view_unlimited",
                 "function": "form_view",
@@ -15374,7 +15440,8 @@
                     "dingtalk_profession_50",
                     "wecom_profession_100",
                     "wecom_profession_30",
-                    "wecom_profession_50"
+                    "wecom_profession_50",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "gallery_view_unlimited",
                 "function": "gallery_view",
@@ -15594,7 +15661,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "gantt_view_unlimited",
                 "function": "gantt_view",
@@ -15787,7 +15855,8 @@
                     "dingtalk_profession_50",
                     "wecom_profession_100",
                     "wecom_profession_30",
-                    "wecom_profession_50"
+                    "wecom_profession_50",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "kanban_view_unlimited",
                 "function": "kanban_view",
@@ -16007,7 +16076,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "mirrors_unlimited",
                 "function": "mirrors",
@@ -16227,7 +16297,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "node_permissions_unlimited",
                 "function": "node_permissions",
@@ -16445,7 +16516,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "nodes_10000",
                 "function": "nodes",
@@ -16676,7 +16748,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "rows_limit_50000",
                 "function": "rows_limit",
@@ -16917,7 +16990,8 @@
                     "dingtalk_enterprise_100_annual_v1",
                     "feishu_profession_100",
                     "dingtalk_profession_100",
-                    "wecom_profession_100"
+                    "wecom_profession_100",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "seats_100",
                 "function": "seats",
@@ -17440,7 +17514,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "space_admin_unlimited",
                 "function": "space_admin",
@@ -17660,7 +17735,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "space_rows_limit_500_million",
                 "function": "space_rows_limit",
@@ -18043,7 +18119,8 @@
                     "wecom_enterprise_100_biennial_v1",
                     "silver_200",
                     "wecom_enterprise_100_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "unit": "g",
                 "id": "storage_capacity_1000",
@@ -18482,7 +18559,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "audit_query_730",
                 "function": "audit_query",
@@ -18702,7 +18780,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "record_activity_730",
                 "function": "record_activity",
@@ -18922,7 +19001,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "time_machine_730",
                 "function": "time_machine",
@@ -19142,7 +19222,8 @@
                     "wecom_enterprise_100_v1",
                     "dingtalk_enterprise_30_annual_v1",
                     "dingtalk_enterprise_50_annual_v1",
-                    "dingtalk_enterprise_100_annual_v1"
+                    "dingtalk_enterprise_100_annual_v1",
+                    "wecom_enterprise_100_annual_v1"
                 ],
                 "id": "trash_730",
                 "function": "trash",
@@ -19844,53 +19925,47 @@
             },
             "price_silver_100_1": {
                 "plan_id": "silver_100",
-                "price_list_id": "event_20221024_20221111_pl_gold_100_1",
                 "product_ch_name": "白银级",
                 "product_en_name": "Silver",
                 "channel": "vika",
                 "good_en_title": "Silver-100人-1个月",
                 "seat": 100,
                 "month": 1,
-                "paid_price": 2688,
+                "paid_price": 567,
                 "id": "price_silver_100_1",
                 "online": true,
                 "good_ch_title": "白银级-100人-1个月",
-                "origin_price": 3188,
-                "discount_price": 500,
+                "origin_price": 567,
                 "product": "Silver"
             },
             "price_silver_100_6": {
                 "plan_id": "silver_100",
-                "price_list_id": "event_20221024_20221111_pl_gold_100_6",
                 "product_ch_name": "白银级",
                 "product_en_name": "Silver",
                 "channel": "vika",
                 "good_en_title": "Silver-100人-6个月",
                 "seat": 100,
                 "month": 6,
-                "paid_price": 9888,
+                "paid_price": 3400,
                 "id": "price_silver_100_6",
                 "online": true,
                 "good_ch_title": "白银级-100人-6个月",
-                "origin_price": 17888,
-                "discount_price": 8000,
+                "origin_price": 3400,
                 "product": "Silver"
             },
             "price_silver_100_12": {
                 "plan_id": "silver_100",
-                "price_list_id": "event_20221024_20221111_pl_gold_100_12",
                 "product_ch_name": "白银级",
                 "product_en_name": "Silver",
                 "channel": "vika",
                 "good_en_title": "Silver-100人-1年",
                 "seat": 100,
                 "month": 12,
-                "paid_price": 18888,
+                "paid_price": 6800,
                 "id": "price_silver_100_12",
                 "online": true,
                 "good_ch_title": "白银级-100人-1年",
-                "origin_price": 33888,
-                "discount_price": 15000,
+                "origin_price": 6800,
                 "product": "Silver"
             },
             "price_gold_100_1": {
@@ -20063,53 +20138,47 @@
             },
             "price_gold_200_1": {
                 "plan_id": "gold_200",
-                "price_list_id": "event_20221024_20221111_pl_silver_100_1",
                 "product_ch_name": "黄金级",
                 "product_en_name": "Gold",
                 "channel": "vika",
                 "good_en_title": "Gold-200人-1个月",
                 "seat": 200,
                 "month": 1,
-                "paid_price": 8588,
+                "paid_price": 2233,
                 "id": "price_gold_200_1",
                 "online": true,
                 "good_ch_title": "黄金级-200人-1个月",
-                "origin_price": 8888,
-                "discount_price": 300,
+                "origin_price": 2233,
                 "product": "Gold"
             },
             "price_gold_200_6": {
                 "plan_id": "gold_200",
-                "price_list_id": "event_20221024_20221111_pl_silver_100_6",
                 "product_ch_name": "黄金级",
                 "product_en_name": "Gold",
                 "channel": "vika",
                 "good_en_title": "Gold-200人-6个月",
                 "seat": 200,
                 "month": 6,
-                "paid_price": 48888,
+                "paid_price": 13400,
                 "id": "price_gold_200_6",
                 "online": true,
                 "good_ch_title": "黄金级-200人-6个月",
-                "origin_price": 53888,
-                "discount_price": 5000,
+                "origin_price": 13400,
                 "product": "Gold"
             },
             "price_gold_200_12": {
                 "plan_id": "gold_200",
-                "price_list_id": "event_20221024_20221111_pl_silver_100_12",
                 "product_ch_name": "黄金级",
                 "product_en_name": "Gold",
                 "channel": "vika",
                 "good_en_title": "Gold-200人-1年",
                 "seat": 200,
                 "month": 12,
-                "paid_price": 96888,
+                "paid_price": 26800,
                 "id": "price_gold_200_12",
                 "online": true,
                 "good_ch_title": "黄金级-200人-1年",
-                "origin_price": 108888,
-                "discount_price": 12000,
+                "origin_price": 26800,
                 "product": "Gold"
             },
             "price_feishu_standard_10_0": {
