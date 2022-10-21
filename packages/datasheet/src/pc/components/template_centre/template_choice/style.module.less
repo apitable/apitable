@@ -51,6 +51,21 @@
 
 .topBannerWrapper {
   padding-bottom: 24px;
+  :global {
+    .control-dots {
+      margin: 4px 0 !important;
+      li.dot {
+        border:0.5px solid rgba(255,255,255,0.3);
+        box-shadow: none;
+        background:#000;
+        margin: 0 4px;
+        &:hover {
+          box-shadow:0 2px 4px rgb(0 0 0 / 24%);
+          background: #fff;
+        }
+      }
+    }
+  }
 }
 
 .recommendWrapper {
