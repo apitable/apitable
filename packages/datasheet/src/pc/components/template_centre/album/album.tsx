@@ -1,6 +1,6 @@
 import styles from './style.module.less';
 import BackIcon from 'static/icon/common/common_icon_left_line.svg';
-import { t, Strings, Navigation, getLanguage } from '@vikadata/core';
+import { t, Strings, Navigation, getLanguage, Settings } from '@vikadata/core';
 import { ShareOutlined, DescriptionOutlined } from '@vikadata/icons';
 import { Button, Typography } from '@vikadata/components';
 import Image from 'next/image';
@@ -12,6 +12,8 @@ import * as React from 'react';
 import MarkdownIt from 'markdown-it';
 import albumTemplateEnPng from 'static/icon/template/album_template_en.png';
 import albumTemplateZhPng from 'static/icon/template/album_template_zh.png';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+import { Message } from 'pc/components/common/message/message';
 
 const md = new MarkdownIt({
   html: true,
@@ -45,7 +47,9 @@ const AlbumDetail: FC<IAlbumDetail> = props => {
     Router.push(Navigation.TEMPLATE, { params: { spaceId, categoryId }});
   };
   const handleCopyShare = () => {
-    copy2clipBoard(location.href);
+    copy2clipBoard(location.href, () => {
+      Message.success({ content: t(Strings.template_album_share_success) });
+    });
   };
   const jump2RecommendAlbum = (albumId: string) => {
     Router.push( Navigation.TEMPLATE,{
@@ -139,9 +143,10 @@ const AlbumDetail: FC<IAlbumDetail> = props => {
               {t(Strings.share)}
             </Button>
           </div>
-          <div className={styles.albumAdvise} onClick={() => {
-            location.href='https://vika.cn/share/shrxyD2zGCExgb3tTUG30/fomdcAEpdKETLUGsMY';
-          }}>
+          <div
+            className={styles.albumAdvise}
+            onClick={() => navigationToUrl(`${Settings['template_customization'].value}`)}
+          >
             <Image layout="fill" objectFit="contain" src={isZh ? albumTemplateZhPng : albumTemplateEnPng} alt=""/>
           </div>
         </div>

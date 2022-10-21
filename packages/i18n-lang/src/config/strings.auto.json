@@ -9900,7 +9900,7 @@
             "zh_HK": "{\"bronze\":\"免費\",\"silver\":\"1 元\",\"gold\":\"1.5 元\",\"enterprise\":\"按需定制\"}"
         },
         "grade_price_by_month": {
-            "zh_CN": "{\n  \"bronze\": \"免费\",\n  \"silver\": \"3188元 /月\",\n  \"gold\": \"8888元 /月\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}",
+            "zh_CN": "{\n  \"bronze\": \"免费\",\n  \"silver\": \"3188元/月\",\n  \"gold\": \"8888元/月\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}",
             "en_US": "{\"bronze\":\"free\",\"silver\":\"about 36 yuan per person/month\",\"gold\":\"about 43.8 yuan per person/month\",\"enterprise\":\"customized on demand\"}",
             "zh_HK": "{\"bronze\":\"免費\",\"silver\":\"約 36 元 人/月\",\"gold\":\"約 43.8 元 人/月\",\"enterprise\":\"按需定制\"}"
         },
@@ -9910,7 +9910,7 @@
             "zh_HK": "{\"bronze\":\"\",\"silver\":\"\",\"gold\":\"\",\"enterprise\":\"\"}"
         },
         "grade_price_by_year": {
-            "zh_CN": "{\n  \"bronze\": \"免费\",\n  \"silver\": \"33,888 /年\",\n  \"gold\": \"108,888/年\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}",
+            "zh_CN": "{\n  \"bronze\": \"免费\",\n  \"silver\": \"33,888/年\",\n  \"gold\": \"108,888/年\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}",
             "en_US": "{\"bronze\":\"免费\",\"silver\":\"368 元 人/年\",\"gold\":\"538.8 元 人/年\",\"enterprise\":\"按需定制\"}",
             "zh_HK": "{\"bronze\":\"免費\",\"silver\":\"約 368 元 人/年\",\"gold\":\"約 538.8 元 人/年\",\"enterprise\":\"按需定制\"}"
         },
@@ -22552,6 +22552,10 @@
         "template_advise_tip": {
             "zh_CN": "没有想要的模板？欢迎向我们提出建议和吐槽！",
             "en_US": "Don't have the template you want? Feel free to send us suggestions !"
+        },
+        "template_album_share_success": {
+            "zh_CN": "专题分享链接已复制成功",
+            "en_US": "The sharing link has been copied successfully"
         },
         "template_centre": {
             "zh_CN": "维格模板中心",

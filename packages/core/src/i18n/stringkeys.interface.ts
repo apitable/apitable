@@ -4547,6 +4547,7 @@ export type StringKeysMapType = {
   'teamwork_number_tip': 'teamwork_number_tip',
   'template': 'template',
   'template_advise_tip': 'template_advise_tip',
+  'template_album_share_success': 'template_album_share_success',
   'template_centre': 'template_centre',
   'template_centre_create_vika_used_by_template': 'template_centre_create_vika_used_by_template',
   'template_centre_using_template_data': 'template_centre_using_template_data',

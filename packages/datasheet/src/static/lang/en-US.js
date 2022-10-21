@@ -4538,6 +4538,7 @@ window.vika_i18n =
   "teamwork_number_tip": "${number} collaborator(s)",
   "template": "template",
   "template_advise_tip": "Don't have the template you want? Feel free to send us suggestions !",
+  "template_album_share_success": "The sharing link has been copied successfully",
   "template_centre": "Templates",
   "template_centre_create_vika_used_by_template": "Use template to create datasheet",
   "template_centre_using_template_data": "Use data in the template",

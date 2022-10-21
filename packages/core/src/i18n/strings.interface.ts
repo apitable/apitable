@@ -4548,6 +4548,7 @@ export interface StringsInterface {
     teamwork_number_tip: String;
     template: String;
     template_advise_tip: String;
+    template_album_share_success: String;
     template_centre: String;
     template_centre_create_vika_used_by_template: String;
     template_centre_using_template_data: String;
