@@ -1,4 +1,15 @@
 services:
+  init-settings:
+    image: ${IMAGE_SERVICE_REGISTRY}/${IMAGE_INIT_SETTINGS}
+    volumes:
+      - ${DATA_PATH}/.data/settings/vika:/tmp/vika
+    command:
+      - /bin/sh
+      - -c 
+      - |
+        cp -afr /settings/* /tmp/vika
+        echo "init-settings done"
+
   web-server:
     image: ${IMAGE_SERVICE_REGISTRY}/${IMAGE_WEB_SERVER}
     restart: always
@@ -8,21 +19,29 @@ services:
       - .env
     networks:
       - apitable
+    user: 0:0
+    volumes:
+      - ${DATA_PATH}/.data/settings/vika:/tmp/vika
+    security_opt:
+      - label:user:root
+      - label:role:root
+    command:
+      - /bin/sh
+      - -c
+      - |
+        [ -d /tmp/vika ] && cp -arf /tmp/vika/custom/* /app/packages/datasheet/public/custom && cp -arf /tmp/vika/public/* /app/packages/datasheet/public
+        node server.js
     depends_on:
-      - mysql
-      - minio
-      - backend-server
-      - room-server
-      - socket-server
-      - imageproxy-server
+      backend-server:
+        condition: service_healthy
+      init-settings:
+        condition: service_completed_successfully
 
   imageproxy-server:
     image: ${IMAGE_REGISTRY}/${IMAGE_IMAGEPROXY_SERVER}
     restart: always
     expose:
       - "8080"
-
-    command: ["/app/imageproxy"]
     environment:
       - TZ=${TIMEZONE}
       - BASEURL=${MINIO_ENDPOINT}
@@ -382,7 +401,7 @@ services:
       - -c
       - |
         # wait init-schema
-        sleep 180
+        sleep 120
         sh run.sh
 
   init-data-minio:
@@ -399,7 +418,7 @@ services:
 
   init-data-user:
     image: ${IMAGE_INIT_DATA_USER}
-    restart: always
+    #restart: always
     environment:
       - TZ=${TIMEZONE}
     command:
@@ -408,7 +427,6 @@ services:
       - |
         sleep 180
         curl -X POST http://backend-server:8081/api/v1/gm/new/users
-        tail -f /etc/os-release
     networks:
       - apitable
     depends_on:
