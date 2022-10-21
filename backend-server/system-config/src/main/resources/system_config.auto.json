@@ -19931,11 +19931,11 @@
                 "good_en_title": "Silver-100人-1个月",
                 "seat": 100,
                 "month": 1,
-                "paid_price": 567,
+                "paid_price": 680,
                 "id": "price_silver_100_1",
                 "online": true,
                 "good_ch_title": "白银级-100人-1个月",
-                "origin_price": 567,
+                "origin_price": 680,
                 "product": "Silver"
             },
             "price_silver_100_6": {
@@ -19946,11 +19946,11 @@
                 "good_en_title": "Silver-100人-6个月",
                 "seat": 100,
                 "month": 6,
-                "paid_price": 3400,
+                "paid_price": 3800,
                 "id": "price_silver_100_6",
                 "online": true,
                 "good_ch_title": "白银级-100人-6个月",
-                "origin_price": 3400,
+                "origin_price": 3800,
                 "product": "Silver"
             },
             "price_silver_100_12": {
@@ -20144,11 +20144,11 @@
                 "good_en_title": "Gold-200人-1个月",
                 "seat": 200,
                 "month": 1,
-                "paid_price": 2233,
+                "paid_price": 2800,
                 "id": "price_gold_200_1",
                 "online": true,
                 "good_ch_title": "黄金级-200人-1个月",
-                "origin_price": 2233,
+                "origin_price": 2800,
                 "product": "Gold"
             },
             "price_gold_200_6": {
@@ -20159,11 +20159,11 @@
                 "good_en_title": "Gold-200人-6个月",
                 "seat": 200,
                 "month": 6,
-                "paid_price": 13400,
+                "paid_price": 15800,
                 "id": "price_gold_200_6",
                 "online": true,
                 "good_ch_title": "黄金级-200人-6个月",
-                "origin_price": 13400,
+                "origin_price": 15800,
                 "product": "Gold"
             },
             "price_gold_200_12": {
