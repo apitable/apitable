@@ -126,6 +126,34 @@ export const TemplateChoice: FC<ITemplateChoiceProps> = props => {
               </div>
             </>
           }
+          {templateRecommendData.albumGroups?.map(albumGroup => (
+            <Row key={albumGroup.name}>
+              <Col span={24} className={styles.category}>
+                <Row className={styles.categoryName}>
+                  <Col span={24}>{albumGroup.name}</Col>
+                </Row>
+                <div className={styles.templateList}>
+                  {albumGroup.albums.map(album => {
+                    return (
+                      <div className={categoryStyles.albumItemWrapper} key={album.albumId}>
+                        <TemplateItem
+                          bannerDesc={{
+                            title: album.name,
+                            desc: album.description,
+                          }}
+                          templateId={album.albumId}
+                          height={200}
+                          img={imgUrl(album.cover || defaultBanner, 200)}
+                          onClick={openTemplateAlbumDetail}
+                          isOfficial
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </Col>
+            </Row>
+          ))}
           {
             templateRecommendData.templateGroups && templateRecommendData.templateGroups.map(category => (
               <Row key={category.name}>
@@ -157,34 +185,6 @@ export const TemplateChoice: FC<ITemplateChoiceProps> = props => {
               </Row>
             ))
           }
-          {templateRecommendData.albumGroups?.map(albumGroup => (
-            <Row key={albumGroup.name}>
-              <Col span={24} className={styles.category}>
-                <Row className={styles.categoryName}>
-                  <Col span={24}>{albumGroup.name}</Col>
-                </Row>
-                <div className={styles.templateList}>
-                  {albumGroup.albums.map(album => {
-                    return (
-                      <div className={categoryStyles.albumItemWrapper} key={album.albumId}>
-                        <TemplateItem
-                          bannerDesc={{
-                            title: album.name,
-                            desc: album.description,
-                          }}
-                          templateId={album.albumId}
-                          height={200}
-                          img={imgUrl(album.cover || defaultBanner, 200)}
-                          onClick={openTemplateAlbumDetail}
-                          isOfficial
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              </Col>
-            </Row>
-          ))}
         </Col>
       </Row>
       {
