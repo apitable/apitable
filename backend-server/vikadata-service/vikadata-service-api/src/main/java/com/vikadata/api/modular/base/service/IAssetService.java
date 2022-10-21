@@ -124,9 +124,9 @@ public interface IAssetService extends IService<AssetEntity> {
      *
      * @param assetIds      asset table ids
      * @param isTemplate    whether it is a template attachment status
-     * @return real updated asset ids
+     * @return real updated asset checksum list
      * @author Chambers
      * @date 2022/8/15
      */
-    List<Long> updateAssetTemplateByIds(List<Long> assetIds, Boolean isTemplate);
+    List<String> updateAssetTemplateByIds(List<Long> assetIds, Boolean isTemplate);
 }

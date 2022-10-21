@@ -135,12 +135,12 @@ public interface SpaceAssetMapper extends BaseMapper<SpaceAssetEntity> {
     /**
      * update template status by asset ids
      *
-     * @param isTemplate    updated template status
-     * @param assetIds      asset table ids
+     * @param isTemplate        updated template status
+     * @param assetChecksums    asset checksum list
      * @return affected rows count
      * @author Chambers
      * @date 2022/10/13
      */
-    int updateIsTemplateByAssetIdIn(@Param("isTemplate") Boolean isTemplate, @Param("assetIds") Collection<Long> assetIds);
+    int updateIsTemplateByAssetChecksumIn(@Param("isTemplate") Boolean isTemplate, @Param("assetChecksums") Collection<String> assetChecksums);
 
 }

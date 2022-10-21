@@ -48,10 +48,10 @@ public class OpsServiceImpl implements IOpsService {
             return;
         }
         // modify the template state of resource
-        List<Long> updatedAssetIds = iAssetService.updateAssetTemplateByIds(assetIds, !isReversed);
-        if (CollUtil.isEmpty(updatedAssetIds)) {
+        List<String> updatedAssetChecksums = iAssetService.updateAssetTemplateByIds(assetIds, !isReversed);
+        if (CollUtil.isEmpty(updatedAssetChecksums)) {
             return;
         }
-        spaceAssetMapper.updateIsTemplateByAssetIdIn(!isReversed, updatedAssetIds);
+        spaceAssetMapper.updateIsTemplateByAssetChecksumIn(!isReversed, updatedAssetChecksums);
     }
 }

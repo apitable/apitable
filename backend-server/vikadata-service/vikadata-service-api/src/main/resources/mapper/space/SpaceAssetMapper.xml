@@ -103,12 +103,12 @@
         </foreach>
     </delete>
 
-    <update id="updateIsTemplateByAssetIdIn">
+    <update id="updateIsTemplateByAssetChecksumIn">
         UPDATE vika_space_asset
         SET is_template = #{isTemplate}
-        WHERE asset_id IN
-        <foreach item="item" index="index" collection="assetIds" open="(" separator=","
-                 close=")">
+        WHERE asset_checksum IN
+        <foreach item="item" index="index" collection="assetChecksums" open="("
+                 separator="," close=")">
             #{item}
         </foreach>
     </update>

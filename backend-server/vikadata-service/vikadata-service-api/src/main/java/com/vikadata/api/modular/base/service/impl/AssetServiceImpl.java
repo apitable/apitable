@@ -10,6 +10,7 @@ import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.stream.Collectors;
@@ -558,7 +559,7 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<Long> updateAssetTemplateByIds(List<Long> assetIds, Boolean isTemplate) {
+    public List<String> updateAssetTemplateByIds(List<Long> assetIds, Boolean isTemplate) {
         // query resource information, judge template status, and filter records that do not need to be modified
         List<AssetEntity> assetEntities = this.listByIds(assetIds);
         List<AssetEntity> updateEntities = assetEntities.stream().filter(asset -> !asset.getIsTemplate().equals(isTemplate))
@@ -569,6 +570,6 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
         for (List<AssetEntity> entities : split) {
             this.updateBatchById(entities);
         }
-        return updateEntities.stream().map(AssetEntity::getId).collect(Collectors.toList());
+        return assetEntities.stream().map(AssetEntity::getChecksum).filter(Objects::nonNull).collect(Collectors.toList());
     }
 }
