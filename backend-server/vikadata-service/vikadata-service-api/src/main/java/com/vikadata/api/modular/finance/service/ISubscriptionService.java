@@ -84,13 +84,13 @@ public interface ISubscriptionService extends IService<SubscriptionEntity> {
      * restore subscription
      * @param subscriptionId Subscription id
      */
-    void restoreBySubscriptionId(String subscriptionId);
+    void restoreBySubscriptionIds(List<String> subscriptionId);
 
     /**
      * Get last subscription id for subscription bundles in bulk
-     * @param bundleId Subscription bundle ID
-     * @param currentId current id
-     * @return subscription entities
+     * @param spaceId space id
+     * @return subscription id
      */
-    String getLastSubscriptionIdByBundleIdWithDeleted(String bundleId, Long currentId);
+    String getActiveTrailSubscriptionIdBySpaceId(String spaceId);
+
 }

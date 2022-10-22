@@ -1,14 +1,20 @@
 package com.vikadata.api.modular.finance.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import cn.hutool.core.util.ObjectUtil;
+import javax.annotation.Resource;
+
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.vikadata.api.modular.finance.mapper.SocialWecomOrderMapper;
+import com.vikadata.api.modular.finance.service.IOrderItemService;
+import com.vikadata.api.modular.finance.service.IOrderV2Service;
 import com.vikadata.api.modular.finance.service.ISocialWecomOrderService;
+import com.vikadata.api.modular.finance.service.ISubscriptionService;
 import com.vikadata.core.util.DateTimeUtil;
 import com.vikadata.entity.SocialWecomOrderEntity;
 import com.vikadata.social.wecom.event.order.WeComOrderPaidEvent;
@@ -25,6 +31,16 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SocialWecomOrderServiceImpl extends ServiceImpl<SocialWecomOrderMapper, SocialWecomOrderEntity> implements ISocialWecomOrderService {
+
+    @Resource
+    private IOrderItemService iOrderItemService;
+
+    @Resource
+    private IOrderV2Service iOrderV2Service;
+
+    @Resource
+    private ISubscriptionService iSubscriptionService;
+
 
     @Override
     public SocialWecomOrderEntity createOrder(WeComOrderPaidEvent paidEvent) {
@@ -82,16 +98,25 @@ public class SocialWecomOrderServiceImpl extends ServiceImpl<SocialWecomOrderMap
     }
 
     @Override
-    public boolean preOrderAreRefunded(String orderId) {
-        Long id = baseMapper.selectIdByOrderId(orderId);
-        if (null != id) {
-            return ObjectUtil.equal(5, baseMapper.selectPreOrderStatusById(id));
-        }
-        return true;
+    public void updateOrderStatusByOrderId(String orderId, int orderStatus) {
+        baseMapper.updateOrderStatusByOrderId(orderId, orderStatus);
     }
 
     @Override
-    public void updateOrderStatusByOrderId(String orderId, int orderStatus) {
-        baseMapper.updateOrderStatusByOrderId(orderId, orderStatus);
+    public List<String> getUnRefundedLastSubscriptionIds(String spaceId, String suiteId, String paidCorpId) {
+        SocialWecomOrderEntity order = baseMapper.selectLastPaidOrder(suiteId, paidCorpId);
+        if (null == order) {
+            // 判断是否在试用期
+            String subscriptionId = iSubscriptionService.getActiveTrailSubscriptionIdBySpaceId(spaceId);
+            if (null != subscriptionId) {
+                return Collections.singletonList(subscriptionId);
+            }
+            return new ArrayList<>();
+        }
+        String billingOrderId = iOrderV2Service.getOrderIdByChannelOrderId(spaceId, order.getOrderId());
+        if (null == billingOrderId) {
+            return new ArrayList<>();
+        }
+        return iOrderItemService.getSubscriptionIdsByOrderId(billingOrderId);
     }
 }
