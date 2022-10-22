@@ -37,7 +37,12 @@ export const resetUnitInfo = () => {
   };
 };
 
-// 加载缺失的 unit 信息
+/**
+ * load the missing unit information
+ * @param names 
+ * @param linkId 
+ * @returns 
+ */
 export const loadLackUnitMap = (names: string, linkId?: string,) => {
   return async dispatch => {
     if (!names.length) {
@@ -47,7 +52,7 @@ export const loadLackUnitMap = (names: string, linkId?: string,) => {
     if (!resData.length) {
       return;
     }
-    // FIXME: 修改这里的类型
+    // FIXME: edit type
     return dispatch(updateUnitMap(keyBy(resData, 'unitId')));
   };
 };

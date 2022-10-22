@@ -19,9 +19,12 @@ export interface ISnapshot {
 }
 
 /**
- * 以单元格最小上下文作为主维度提供的快照
- * fieldMap 中可以自由选择传入稀疏的数据。1 条或者多条都可，不需要包含全表的 field
- * recordMap 中可以自由选择传入稀疏的数据。1 条或者多条都可，不需要包含全表的 record
+ * 
+ * the minium context snapshot that use the part of table cells.
+ * 
+ * fieldMap, it can pass by less data. 1 or more, no need to contain the full datasheet's fields.
+ * recordMap, it can pass by less data. 1 or more, no need to contains the full of datasheet's records.
+ * 
  */
 export interface IRecordSnapshot {
   meta: { fieldMap: IFieldMap };
@@ -86,23 +89,28 @@ export interface IRecordMeta {
   updatedBy?: string;
 }
 
+/**
+ * IRecord, the base data record
+ */
 export interface IRecord {
   id: string;
 
   /**
-   * record 中的数据
-   * 只有当 record 某一列存在内容时，data 中才会有这一列的fieldId key
+   * 
+   * the data inside the record
+   * only the record's some fields with content, `data` will contains the field's fieldId key
    */
   data: IRecordCellValue;
 
   /**
-   * @description 统计当前 record 中存在的评论数
+   * the number of records' comments
+   * 
    * @type {number}
    */
   commentCount: number;
 
   /**
-   * @description 通过请求返回的当前 record 内的所有评论
+   * optional, return all comments of current record by api request
    * @type {IComments[]}
    */
   comments?: IComments[];
@@ -111,32 +119,49 @@ export interface IRecord {
 
   /**
    * @type: timestamp
-   * @desc: 被删除时间的时间戳
+   * @desc: the timestamp that be deleted
    */
   deleteAt?: number;
 
   /**
-   * @desc: 记录 createdAt/updatedAt/createdBy/updatedBy 以及 fieldUpdatedMap
+   * the meta of record.
+   * infos of createdAt/updatedAt/createdBy/updatedBy and fieldUpdatedMap
    */
   recordMeta?: IRecordMeta;
 
   /**
-   * @desc
-   * 数组中存储的是原 Operation 的revision，数组下标是当前 record 的 revision
-   * 服务端存储和广播的 record 必须带上这个字段
-   * 客户端生成的 record 不需要这个字段
+   * this array saves the original operation's revisions.
+   * the index of array is current record's revision.
+   * 
+   * this field is designed for the feature "change history"
+   * 
+   * every datasheet's modification will produce a new changeset, which maps to on revision(modification version number)
+   * 
+   * for example:
+   * - I modify the row `1`, revision `1`
+   * - I modify the row `2`, revision `2`
+   * - I modify the row `1` again, revision `3`
+   * so, the row `1` record's revisionHistory array is [1, 3]
+   * the row `2` record's revisionHistory array is [2]
+   * 
+   * when user mouse click and expand the row records `1`, system will read revisionHistory array [1, 3], and get the specified changesets.
+   * then show the changeset result on the comments UI panel area.
+   * 
+   * server's storage and broadcast revision must assign the field.
+   * client's record don't need this field.
+   * 
    */
   revisionHistory?: number[];
 
   /**
    * @type: timestamp
-   * @desc: 创建时间的时间戳
+   * the timestamp that created
    */
   createdAt?: number;
 
   /**
    * @type: timestamp
-   * @desc: 最后修改时间
+   * the timestamp that last modified
    */
   updatedAt?: number;
 }
@@ -144,63 +169,64 @@ export interface IRecord {
 export interface IComments {
   revision: number;
   /**
-   * @description 创建时间
+   * the timestamp that created
    * @type {number}
    */
   createdAt: number;
 
   /**
-   * @description 当前评论的 id
+   * current comment's ID
    * @type {string}
    */
   commentId: string;
 
   /**
-   * @description 评论创建者的 userId
+   * the comment creator's userId  (unit is an abstract struct that means team or user)
    * @type {string}
    */
   unitId: string;
 
   /**
-   * @description 评论的详情
+   * comment's detail message
    * @type {ICommentMsg}
    */
   commentMsg: ICommentMsg;
 
   /**
-   * @description 更新时间，给评论编辑预留
+   * update time, preserve for the editable comments
    * @type {number}
    */
   updatedAt?: number;
 }
 
 export interface ICommentMsg {
+
   /**
-   * @description 编辑器类型
+   * editor type
    * @type {string}
    */
   type: string;
 
   /**
-   * @description 对应编辑器的文档结构
+   * documentation format
    * @type {string}
    */
   content: any;
 
   /**
-   * @description rich text editor 通用的 HTML 结构
+   * rich text editor, html language format
    * @type {string}
    */
   html: string;
 
   /**
-   * @description 对应编辑器的回复
+   * replies for the comment 
    * @type {any}
    */
   reply?: any;
 
   /**
-   * @description 对应编辑器的点赞表情
+   * emoji for the comment
    * @type {any}
    */
   emojis?: {
@@ -216,7 +242,9 @@ export interface IStandardValueTable {
   recordIds?: string[];
 }
 
-// 支持储存多个 datasheet 的状态
+/**
+ * a set(or map) that stores multiple datasheets.
+ */
 export interface IDatasheetMap {
   [datasheetId: string]: IDatasheetPack;
 }
@@ -242,26 +270,46 @@ export interface INodeMeta {
 }
 
 export interface IDatasheetState extends INodeMeta {
-  // active 比较特殊，虽然不做协同和持久化，但是是和数表渲染息息相关，所以放进这里
-  activeView: string;
-  // 快照信息，包含了渲染表格所需要的全部数据
-  snapshot: ISnapshot;
   /**
-   * 用于标识当前 datasheet 是否只包含一部分数据。也可以用于判断本表是否是作为被关联表被加载进来的。
-   * 在加载关联字段的数据时，我们只需要加载被关联表的在本表被关联的 records 数据即可。
+   * current active view.
+   * special field, it doesn't do anything about collaboration and persistence.
+   * but it has special relation to the datasheet's rendering, so put it here.
+   */
+  activeView: string;
+
+  /**
+   * snapshot, includes all data that use to render the table
+   */
+  snapshot: ISnapshot;
+
+  /**
+   * 
+   * whether the current datasheet is partial loaded. (includes only part of data)
+   * also can be used to judge whether the current datasheet is loaded by a related datasheet.
+   * 
+   * When we load related-field's data, we can only load the related-datasheet's records(rows) that related to the current datasheet.
    */
   isPartOfData?: boolean;
+
   /**
-   * 用于标识当前数表数据加载于哪个数据源，
-   * 如果单纯打开数表而加载了数据，则不会存在 sourceId，
-   * 这么做主要是为了如 form 加载关联表数据后，不影响后续打开关联表的权限和数据，
-   * 当监测到有 sourceId 后，表示这份数据不是原数表加载的，
-   * 那么打开原数表后，则需要重新加载所有相关数据
+   * the field to indicate the data source of datasheet.
+   * 
+   * if you just open datasheet and load it, it will not have `sourceId`.
+   * 
+   * this field is used for feature "form". when the related data loaded, it will not affect the next open datasheet's permission and data
+   * when this field is not empty (`sourceId` exists), it means this data is not loaded by original datasheet 
+   * so, after open the original datasheet, it will reload all relevant data.
+   * 
    */
   sourceId?: string;
+
   /**
-   * 用于标识当前的数表是否为时光机回滚时预览的数据, 并且指明当前预览的版本号
+   * a flag for whether current datasheet is a preview data that rolling back from time machine.
+   * and show the current preview of version number.
+   * 
+   * OPTIMIZE: the field is a number.
    */
+  
   preview?: string;
 }
 
@@ -294,7 +342,11 @@ export type IActiveRowInfo = IActiveUpdateRowInfo | IActiveNewRowInfo;
 
 export interface IDatasheetClientState {
   collaborators?: ICollaborator[];
-  groupingCollapseIds?: string[]; // 分组的收起状态，使用时时 set
+
+  /**
+   * the states of grouping collapsed.
+   */
+  groupingCollapseIds?: string[]; 
   kanbanGroupCollapse?: string[];
   gridViewDragState: IGridViewDragState;
   gridViewActiveFieldState: IGridViewActiveFieldState;
@@ -321,7 +373,10 @@ export interface IDatasheetClientState {
 }
 
 export interface INetworking {
-  loading: boolean; // 数表数据的加载状态
+  /**
+   * the loading state of datasheet's data.
+   */
+  loading: boolean; 
   connected: boolean;
   syncing: boolean;
   errorCode?: number | null;
@@ -344,18 +399,35 @@ export interface IComputedStatus {
 }
 
 export interface IDatasheetPack {
-  loading: boolean; // 数表数据的加载状态
   /**
-   * datasheet connected 和 space connected 不同的地方在于,
-   * datasheet 要在成功 watch 之后才算 connected，而 space 中只要 socket.io 建立连接了就算 connected
+   * the loading state of datasheet's data
+   */
+  loading: boolean; 
+
+  /**
+   * 
+   * whether datasheet connected?
+   * 
+   * the difference between `datasheet connected` and `space connected` is that,
+   * if datasheet connected, then we can be sure that datasheet is watched successfully.
+   * 
+   * but, `space connected`, only means the `socket.io` is connected.
+   * 
    */
   connected: boolean;
   syncing: boolean;
   datasheet: IDatasheetState | null;
   errorCode?: number | null;
-  // 一些需要在客户端维护的状态，不进行持久化
+
+  /**
+   * some states that need to client-side maintain,
+   * will not persistence
+   */
   client?: IDatasheetClientState;
-  // 本表中设置的列权限的信息
+
+  /**
+   * the information for current datasheet's field(column) permissions and privileges.
+   */
   fieldPermissionMap?: IFieldPermissionMap;
   computedInfo?: IComputedInfo;
   computedStatus?: IComputedStatus;
@@ -383,35 +455,47 @@ export interface IFieldPermissionMap {
   [fieldId: string]: IFieldPermissionInfo;
 }
 
-// 数表基本数据结构包
+/**
+ * the basic data structure of datasheet
+ */
 export interface IBaseDatasheetPack {
   snapshot: ISnapshot;
   datasheet: INodeMeta;
   fieldPermissionMap?: IFieldPermissionMap;
 }
 
-// 关联表数据结构
+/**
+ * the set of related datasheets
+ */
 export interface IForeignDatasheetMap {
   foreignDatasheetMap?: { [foreignDatasheetId: string]: IBaseDatasheetPack };
 }
 
-// 成员数据结构
+/**
+ * member's data structure
+ */
 export interface IDatasheetUnits {
   units?: (IUnitValue | IUserValue)[];
 }
 
-// 单视图数据结构
+/**
+ * single view data structure
+ */
 export interface IViewPack {
   view: IViewProperty;
   revision: number;
 }
 
-// 来组服务端的 datasheetPack 数据结构
+/**
+ * the data structure from server-side datasheet pack.
+ */
 export type IServerDatasheetPack = IBaseDatasheetPack &
   IForeignDatasheetMap &
   IDatasheetUnits;
 
-// 来自服务端的 gerRecords 接口数据
+/**
+ * the data structure comes from the server's getRecords API
+ */
 export interface IGetRecords {
   revision: number;
   recordMap?: IRecordMap;
@@ -438,7 +522,9 @@ export interface INodeDescription {
   data: any;
 }
 
-// 视图锁的数据结构
+/**
+ * the data structure of `view lock`
+ */
 export interface IViewLockInfo {
   description?: string;
   unitId: string;
@@ -450,8 +536,12 @@ export interface IViewPropertyBase {
   type: ViewType;
   rows: IViewRow[];
   columns: IViewColumn[];
-  // 视图配置是否自动协同
+
+  /**
+   * whether the configuration of the view will auto save.
+   */
   autoSave?: boolean;
+
   description?: string;
   hidden?: boolean;
   filterInfo?: IFilterInfo;
@@ -509,7 +599,11 @@ export interface ICalendarViewProperty extends IViewPropertyBase {
 
 export interface IGalleryViewStyle {
   layoutType: LayoutType;
-  isAutoLayout: boolean; // 自动布局情况下，cardCount 失效。
+
+  /**
+   * if true, cardCount will invalid.
+   */
+  isAutoLayout: boolean; 
   cardCount: number;
   coverFieldId?: string;
   isCoverFit: boolean;
@@ -674,7 +768,7 @@ export interface ISelection {
 }
 
 /**
- * Api 相关
+ * Api Response Wrapper
  */
 export interface IApiWrapper {
   code: number;
@@ -687,7 +781,7 @@ export interface IChangesetPack extends IApiWrapper {
 }
 
 /**
- * Action 相关
+ * Action relevant
  */
 export interface ILoadedDataPackAction {
   type: typeof actions.DATAPACK_LOADED;
@@ -772,7 +866,9 @@ export interface ISetFillHandleStatus {
   };
 }
 
-// 刷新 snapshot，引起视图变化。
+/**
+ * refresh snapshot, which will change the view.
+ */
 export interface IRefreshSnapshotAction {
   type: typeof actions.REFRESH_SNAPSHOT;
 }
@@ -1003,13 +1099,17 @@ export interface IRecordAlarm {
 }
 
 /**
- * 提供给客户端使用的数据结构，改数据结构通过 re-selector 生成
- * 数据库的真实结构还是要用 IRecordAlarm
+ * 
+ * a data structure for client-side.
+ * if you want to change, use re-selector.
+ * 
+ * the data structure for server-side use `IRecordAlarm`
  */
 export type IRecordAlarmClient = Omit<IRecordAlarm, 'recordId' | 'fieldId' | 'alarmUsers'> & {
   alarmUsers: string[];
   target: AlarmUsersType
 };
+
 export type IAlarmTypeKeys = keyof IRecordAlarmClient;
 
 export interface IAlarmUser {

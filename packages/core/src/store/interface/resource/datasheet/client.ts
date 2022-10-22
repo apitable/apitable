@@ -80,10 +80,16 @@ export interface ISetHoverGroupPath {
   payload: string | null;
 }
 
-// 对于 grid 视图，表内查找需要精确到单元格
+/**
+ * for Grid View, in-table search need to be accurate to cell
+ */
 export type ISearchCellResult = [string, string][];
-// 对于 相册、看板等视图，表内查找只需要精确到行
+
+/**
+ * for Gallery View,  Kanban View and other views, in-table search need to be accurate to row
+ */
 export type ISearchRecordResult = string[];
+
 export type ISearchResult = ISearchCellResult | ISearchRecordResult;
 
 export interface IWidgetPanelStatus {

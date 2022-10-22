@@ -19,7 +19,6 @@ export const DEFAULT_PERMISSION = {
   sharable: false,
   templateCreatable: false,
   exportable: false,
-  // 0.5之后整理的详细数表权限
   viewCreatable: false,
   viewRenamable: false,
   viewRemovable: false,
@@ -50,7 +49,9 @@ export const DEFAULT_PERMISSION = {
   viewOptionSaveEditable: false
 };
 
-// 可管理权限
+/**
+ * manageable manager's permissions
+ */
 export const DEFAULT_MANAGER_PERMISSION = {
   allowEditConfigurable: true,
   allowSaveConfigurable: true,
@@ -69,7 +70,6 @@ export const DEFAULT_MANAGER_PERMISSION = {
   renamable: true,
   sharable: true,
   templateCreatable: true,
-  // 0.5之后整理的详细数表权限
   viewCreatable: true,
   viewRenamable: true,
   viewRemovable: true,
@@ -100,7 +100,9 @@ export const DEFAULT_MANAGER_PERMISSION = {
   viewOptionSaveEditable: true
 };
 
-// 编辑者权限
+/**
+ * editor's permissions
+ */
 export const DEFAULT_EDITOR_PERMISSION = {
   allowEditConfigurable: false,
   allowSaveConfigurable: false,
@@ -119,7 +121,6 @@ export const DEFAULT_EDITOR_PERMISSION = {
   renamable: false,
   sharable: true,
   templateCreatable: false,
-  // 0.5之后整理的详细数表权限
   viewCreatable: true,
   viewRenamable: true,
   viewRemovable: true,
@@ -150,7 +151,9 @@ export const DEFAULT_EDITOR_PERMISSION = {
   viewOptionSaveEditable: true
 };
 
-// 默认可读权限
+/**
+ * default readonly permissions
+ */
 export const DEFAULT_READ_ONLY_PERMISSION = {
   allowEditConfigurable: false,
   allowSaveConfigurable: false,
@@ -169,7 +172,6 @@ export const DEFAULT_READ_ONLY_PERMISSION = {
   renamable: false,
   sharable: false,
   templateCreatable: false,
-  // 0.5之后整理的详细数表权限
   viewCreatable: false,
   viewRenamable: false,
   viewRemovable: false,
@@ -217,7 +219,9 @@ export enum ToolBarMenuCardOpenState {
   RowHeight = 'RowHeight',
   GallerySetting = 'GallerySetting',
   OrgChartSetting = 'OrgChartSetting',
-  ViewSwitcher = 'ViewSwitcher', // 这个不是 toolbar 内的组件，为了 display 组件统一，还是放在这里控制
+
+  // special: this is a component in the toolbar, just clean for "display" component, so place it here to control.by @mayne
+  ViewSwitcher = 'ViewSwitcher', 
   KanbanFieldHidden = 'KanbanFieldHidden',
   Share = 'Share',
 }

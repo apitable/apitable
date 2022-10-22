@@ -62,7 +62,11 @@ export const UPDATE_SELECTED_TEAM_KEYS = 'UPDATE_SELECTED_TEAM_KEYS';
 export const UPDATE_SELECTED_TEAM_ROWS = 'UPDATE_SELECTED_TEAM_ROWS';
 export const UPDATE_SUB_ADMIN_LIST_DATA = 'UPDATE_SUB_ADMIN_LIST_DATA';
 export const UPDATE_PERMISSION_LIST = 'UPDATE_PERMISSION_LIST';
-export const UPDATE_MAIN_ADMIN_INFO = 'UPDATE_MAIN_ADMIN_INFO'; // 更新主管理员信息
+
+/**
+ * update main admin info
+ */
+export const UPDATE_MAIN_ADMIN_INFO = 'UPDATE_MAIN_ADMIN_INFO'; 
 export const SET_RECONNECTING = 'SET_RECONNECTING';
 export const SET_CONNECTED = 'SET_CONNECTED';
 export const UPDATE_DATASHEET_NAME = 'UPDATE_DATASHEET_NAME';
@@ -81,16 +85,24 @@ export const UPDATE_INVITE_LINK_INFO = 'UPDATE_INVITE_LINK_INFO';
 export const UPDATE_LINK_TOKEN = 'UPDATE_LINK_TOKEN';
 export const UPDATE_MAIL_TOKEN = 'UPDATE_MAIL_TOKEN';
 export const UPDATE_INVITE_ERR_CODE = 'UPDATE_INVITE_ERR_CODE';
-// 权限相关
+
+/**
+ * permission related
+ */
 export const UPDATE_SPACE_RESOURCE = 'UPDATE_SPACE_RESOURCE';
 export const SET_PERMISSION_COMMIT_REMIND_STATUS = 'SET_PERMISSION_COMMIT_REMIND_STATUS';
 export const SET_PERMISSION_COMMIT_REMIND_PARAMETER = 'SET_PERMISSION__COMMIT_REMIND_PARAMETER';
 export const SET_NO_PERMISSION_MEMBERS = 'SET_NO_PERMISSION_MEMBERS';
-// 邀请
+
+/**
+ * invite email
+ */
 export const UPDATE_INVITE_EMAIL_INFO = 'UPDATE_INVITE_EMAIL_INFO';
 export const UPDATE_INVITE_ERR = 'UPDATE_INVITE_ERR';
 
-// 通知中心
+/**
+ * notification center
+ */
 export const UPDATE_UNREAD_MSG_COUNT = 'UPDATE_UNREAD_MSG_COUNT';
 export const UPDATE_READ_MSG_COUNT = 'UPDATE_READ_MSG_COUNT';
 export const UPDATE_READ_NOTICE_LIST = 'ADD_READ_NOTICE_LIST';
@@ -99,11 +111,21 @@ export const DEL_UNREAD_NOTICE_LIST = 'DEL_UNREAD_NOTICE_LIST';
 export const UPDATE_NEW_NOTICE_LIST_FROM_WS = 'UPDATE_NEW_NOTICE_LIST_FROM_WS';
 export const GET_NEW_MSG_FROM_WS_AND_LOOK = 'GET_NEW_MSG_FROM_WS_AND_LOOK';
 
-// 更新滚轮位置
+/**
+ * mouse scrolling position
+ */
 export const SCROLL_OFFSET = 'SCROLL_OFFSET';
 export const SET_NODE_NAME = 'SET_NODE_NAME';
-export const SET_NODE_ERROR_TYPE = 'SET_NODE_ERROR_TYPE'; // 请求子节点失败时，打上标记
-export const CHANGE_VIEW = 'CHANGE_VIEW'; // 更新视图
+
+/**
+ * if the sub-node request failed
+ */
+export const SET_NODE_ERROR_TYPE = 'SET_NODE_ERROR_TYPE'; 
+
+/**
+ * update the view
+ */
+export const CHANGE_VIEW = 'CHANGE_VIEW'; 
 export const SET_DEL_NODE_ID = 'SET_DEL_NODE_ID';
 export const DELETE_NODE = 'DELETE_NODE';
 export const MOVE_NODE_TO_FOLDER = 'MOVE_NODE_TO_FOLDER';
@@ -118,6 +140,7 @@ export const SET_ACTIVE_DST_ID = 'SET_ACTIVE_DST_ID';
 export const SET_IS_COPY_ALL = 'SET_IS_COPY_ALL';
 export const INIT_CATALOG_TREE = 'INIT_CATALOG_TREE';
 export const UPDATE_LINK_LIST = 'UPDATE_LINK_LIST';
+
 // catalog
 export const SET_COPY_NODE_ID = 'SET_COPY_NODE_ID';
 export const SET_ALL_VISIBLE = 'SET_ALL_VISIBLE';
@@ -183,9 +206,20 @@ export const SET_REQ_STATUS = 'SET_REQ_STATUS';
 export const SET_HTTP_ERR_INFO = 'SET_HTTP_ERR_INFO';
 export const SET_ACTIVE_RECORD_ID = 'SET_ACTIVE_RECORD_ID';
 export const SET_PWD = 'SET_PWD';
-export const SET_DRAG_TARGET = 'SET_DRAG_TARGET'; // 记录当前拖动的那一行行
-export const SET_DRAG_MOVE = 'SET_DRAG_MOVE'; // 设置移动装填
-export const SET_HOVER_RECORD_ID = 'SET_HOVER_RECORD_ID'; // 设置当前鼠标滑动悬浮的状态
+/**
+ * current row record that can be drag
+ */
+export const SET_DRAG_TARGET = 'SET_DRAG_TARGET'; 
+
+/**
+ * set drag move target
+ */
+export const SET_DRAG_MOVE = 'SET_DRAG_MOVE'; 
+
+/**
+ * set current mouse hover state
+ */
+export const SET_HOVER_RECORD_ID = 'SET_HOVER_RECORD_ID'; 
 export const UPDATE_SOCIAL_CONFIG = 'UPDATE_SOCIAL_CONFIG';
 // page params
 export const SET_PAGE_PARAMS = 'SET_PAGE_PARAMS';
@@ -193,7 +227,7 @@ export const SET_PAGE_PARAMS = 'SET_PAGE_PARAMS';
 export const SET_ACTIVE_FIELD_STATE = 'SET_ACTIVE_FIELD_STATE';
 export const SET_TEMP_SELECTION = 'SET_TEMP_SELECTION';
 
-// space 相关
+// space 
 export const SET_SPACE_LIST = 'SET_SPACE_LIST';
 export const SET_QUIT_SPACE_ID = 'SET_QUIT_SPACE_ID';
 export const SET_SPACE_ERR = 'SET_SPACE_ERR';
@@ -206,19 +240,48 @@ export const SET_ACTIVE_SPACE_ID = 'SET_ACTIVE_SPACE_ID';
 export const SET_ENVS = 'SET_ENVS';
 
 export const SET_CHANGE_COLUMNS_WIDTH = 'SET_CHANGE_COLUMNS_WIDTH';
-// 控制分组的展开收起
+
+/**
+ * the collapse of grouping
+ */
 export const SET_GROUPING_COLLAPSE = 'SET_GROUPING_COLLAPSE';
-// 控制看板分组的展开收起
+
+/**
+ * the collapse of kanban(board view)
+ */
 export const SET_KANBAN_GROUPING_EXPAND = 'SET_KANBAN_GROUPING_EXPAND';
-// 控制看板分组设置菜单的展开收起
+
+/**
+ * control kanban view setting menu's collapse
+ */
 export const TOGGLE_KANBAN_GROUP_SETTING_VISIBLE = 'TOGGLE_KANBAN_GROUP_SETTING_VISIBLE';
 
 // Gantt View
-export const TOGGLE_GANTT_GRID = 'TOGGLE_GANTT_GRID'; // 甘特图左侧任务栏显示/隐藏
-export const SET_GANTT_GRID_WIDTH = 'SET_GANTT_GRID_WIDTH'; // 甘特图左侧任务栏宽度
-export const TOGGLE_GANTT_SETTING_PANEL = 'TOGGLE_GANTT_SETTING_PANEL'; // 甘特图右侧配置面板显示/隐藏
-export const SET_GANTT_SETTING_PANEL_WIDTH = 'SET_GANTT_SETTING_PANEL_WIDTH'; // 甘特图右侧配置面板宽度
-export const SET_GANTT_DATE_UNIT_TYPE = 'SET_GANTT_DATE_UNIT_TYPE'; // 甘特图配置时间精度
+
+/**
+ * Gantt View left side panel hide/show
+ */
+export const TOGGLE_GANTT_GRID = 'TOGGLE_GANTT_GRID'; 
+
+/**
+ * Gantt View left side task panel width
+ */
+export const SET_GANTT_GRID_WIDTH = 'SET_GANTT_GRID_WIDTH'; 
+
+/**
+ * Gantt View right side setting panel hide/show
+ */
+export const TOGGLE_GANTT_SETTING_PANEL = 'TOGGLE_GANTT_SETTING_PANEL'; 
+
+/**
+ * Gantt View right side setting panel width
+ */
+export const SET_GANTT_SETTING_PANEL_WIDTH = 'SET_GANTT_SETTING_PANEL_WIDTH'; 
+
+/**
+ * Gantt View's time unit type
+ */
+export const SET_GANTT_DATE_UNIT_TYPE = 'SET_GANTT_DATE_UNIT_TYPE'; 
 
 // Calendar View
 export const TOGGLE_CALENDAR_GUIDE_STATUS = 'TOGGLE_CALENDAR_GUIDE_STATUS';
@@ -234,10 +297,14 @@ export const SET_ORG_CHART_GRID_WIDTH = 'SET_ORG_CHART_GRID_WIDTH';
 export const TOGGLE_ORG_CHART_SETTING_PANEL = 'TOGGLE_ORG_CHART_SETTING_PANEL';
 export const SET_ORG_CHART_SETTING_PANEL_WIDTH = 'SET_ORG_CHART_SETTING_PANEL_WIDTH';
 
-// 编辑状态
+/**
+ * the state of edit
+ */
 export const SET_EDIT_STATUS = 'SET_EDIT_STATUS';
 
-// 记录修改的节点描述
+/**
+ * write it down, the modified node description
+ */
 export const RECORD_NODE_DESC = 'RECORD_NODE_DESC';
 
 export const SET_SHARE_MEMBER_ID = 'SET_SHARE_MEMBER_ID';
@@ -248,6 +315,7 @@ export const SET_SCREEN_WIDTH = 'SET_SCREEN_WIDTH';
 export const SET_SIDEBAR_VISIBLE = 'SET_SIDEBAR_VISIBLE';
 export const SET_NODE_ICON = 'SET_NODE_ICON';
 export const CLEAR_FIELD_INFO = 'CLEAR_FIELD_INFO';
+
 // hook
 export const UPDATE_PENDING_GUIDE_WIZARD_IDS = 'UPDATE_PENDING_GUIDE_WIZARD_IDS';
 export const UPDATE_CURRENT_GUIDE_STEP_IDS = 'UPDATE_CURRENT_GUIDE_STEP_IDS';
@@ -375,7 +443,7 @@ export const EXPAND_STATUS = 'EXPAND_STATUS';
 export const UPDATE_TEMPLATE_CATEGORY = 'UPDATE_TEMPLATE_CATEGORY';
 export const UPDATE_TEMPLATE_DIRECTORY = 'UPDATE_TEMPLATE_DIRECTORY';
 
-// share 相关
+// share
 
 export const SET_SHARE_INFO = 'SET_SHARE_INFO';
 
@@ -388,7 +456,7 @@ export const RESET_FIELD_PERMISSION_MAP = 'RESET_FIELD_PERMISSION_MAP';
 export const LOAD_FIELD_PERMISSION_MAP = 'LOAD_FIELD_PERMISSION_MAP';
 export const UPDATE_FIELD_PERMISSION_SETTING = 'UPDATE_FIELD_PERMISSION_SETTING';
 
-// worker 派发出来的计算好的缓存数据
+// browser worker computed datasheet cached data.
 export const UPDATE_DATASHEET_COMPUTED = 'UPDATE_DATASHEET_COMPUTED';
 export const SET_DATASHEET_COMPUTED = 'SET_DATASHEET_COMPUTED';
 export const UPDATE_DATASHEET_COMPUTED_ROWS = 'UPDATE_DATASHEET_COMPUTED_ROWS';
@@ -397,13 +465,19 @@ export const SET_DATASHEET_COMPUTED_STATUS = 'SET_DATASHEET_COMPUTED_STATUS';
 
 export const SET_CLOSE_SYNC_VIEW_ID = 'SET_CLOSE_SYNC_VIEW_ID';
 
-// 已开启实验性功能
+/**
+ * Labs Features
+ */
 export const SET_LABS = 'SET_LABS';
 
-// 数据订阅（关注）功能
+/**
+ * Data subscribe(follow) features
+ */
 export const SET_SUBSCRIPTIONS = 'SET_SUBSCRIPTIONS';
 
-// 预览文件
+/**
+ * Preview file
+ */
 export const SET_PREVIEW_FILE = 'SET_PREVIEW_FILE';
 export const SET_PREVIEW_FILE_CELL_ACTIVE = 'SET_PREVIEW_FILE_CELL_ACTIVE';
 export const SET_PREVIEW_DEFAULT_ACTIVE = 'SET_PREVIEW_DEFAULT_ACTIVE';

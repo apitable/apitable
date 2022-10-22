@@ -1,7 +1,11 @@
 import * as actions from '../action_constants';
 import { INoticeDetail } from '../interface';
 
-// 更新消息数量
+/**
+ * update unread notification count
+ * @param count 
+ * @returns 
+ */
 export const updateUnReadMsgCount = (count: number) => {
   return {
     type: actions.UPDATE_UNREAD_MSG_COUNT,
@@ -16,7 +20,14 @@ export const updateReadMsgCount = (count: number) => {
   };
 };
 
-// 更新消息列表
+/**
+ * update notification that have read
+ * @param list 
+ * @param unshift 
+ * @param push 
+ * @param updateCount 
+ * @returns 
+ */
 export const updateReadNoticeList = (
   list: INoticeDetail[],
   unshift?: boolean,

@@ -8,9 +8,9 @@ import * as actions from '../action_constants';
 import { IHttpErr, ILocateIdMap, IReduxState, IUserInfo } from '../interface';
 
 /**
- * 登录
- * @param username 用户名
- * @param password 密码
+ * login
+ * @param username 
+ * @param password 
  */
 
 export const signIn = (data: ISignIn) => {
@@ -32,8 +32,8 @@ export const signIn = (data: ISignIn) => {
 };
 
 /**
- * 获取注册验证码
- * @param phone 手机号
+ * get verify code in register
+ * @param phone 
  */
 export const getRegisterCode = (areaCode: string, phone: string) => {
   return (dispatch: Dispatch) => {
@@ -48,12 +48,12 @@ export const getRegisterCode = (areaCode: string, phone: string) => {
 };
 
 /**
- * @description 小程序扫码轮询接口
+ * miniapp qr code poll query
  * @param {(0 | 1 | 2)} type
- * 0：web扫码登录
- * 1：web帐号绑定
- * 2：小程序等待进入工作台
- * @param {string} mark  二维码识别ID
+ * 0：web qrcode login
+ * 1：web account binding
+ * 2：miniap is waiting to enter workbench
+ * @param {string} mark  QRCode ID
  * @returns
  */
 export const poll = (type: QrAction, mark: string) => {
@@ -68,8 +68,8 @@ export const poll = (type: QrAction, mark: string) => {
 };
 
 /**
- * 设置当前获取验证码的状态
- * @param status 当前状态
+ * get current state of getting verify code
+ * @param status current state
  */
 export const setIsCode = (status: boolean) => {
   return {
@@ -79,8 +79,8 @@ export const setIsCode = (status: boolean) => {
 };
 
 /**
- * 设置注册状态
- * @param status 当前状态
+ * set current register state
+ * @param status 
  */
 export const setRegisterStatus = (status: boolean) => {
   return {
@@ -90,8 +90,8 @@ export const setRegisterStatus = (status: boolean) => {
 };
 
 /**
- * 设置是否使用过邀请奖励状态
- * @param status 新状态
+ * set state of whether used invite award
+ * @param status new state
  */
 export const setUsedInviteReward = (status: boolean) => {
   return {
@@ -101,8 +101,8 @@ export const setUsedInviteReward = (status: boolean) => {
 };
 
 /**
- * 设置登录时的错误信息
- * @param err 错误信息
+ * set error message on login
+ * @param err 
  */
 export const setHomeErr = (err: IHttpErr | null) => {
   return {
@@ -112,7 +112,7 @@ export const setHomeErr = (err: IHttpErr | null) => {
 };
 
 /**
- * 获取用户信息
+ * get my user info
  */
 export const getUserMe = (locateIdMap: ILocateIdMap = {}) => {
   return (dispatch: Dispatch, getState: () => IReduxState) => {
@@ -147,8 +147,8 @@ export const formatOpenedSheet = (openedSheets, spaceId) => {
 };
 
 /**
- * 设置用户信息
- * @param user 用户信息
+ * set my user info
+ * @param user 
  */
 export const setUserMe = (user: IUserInfo | null) => {
   return {
@@ -158,8 +158,8 @@ export const setUserMe = (user: IUserInfo | null) => {
 };
 
 /**
- * 设置用户信息获取状态
- * @param status 当前状态
+ * set state of getting user info
+ * @param status 
  */
 export const setIsLogin = (status: boolean) => {
 
@@ -170,8 +170,8 @@ export const setIsLogin = (status: boolean) => {
 };
 
 /**
- * 设置加载状态
- * @param status 当前状态
+ * set loading state
+ * @param status 
  */
 export const setLoading = (status: boolean) => {
   return {
@@ -181,8 +181,8 @@ export const setLoading = (status: boolean) => {
 };
 
 /**
- * 设置用户昵称
- * @param nickName 昵称
+ * set nickname
+ * @param nickName 
  */
 export const setNickName = (nickName: string) => {
   return {
@@ -192,7 +192,7 @@ export const setNickName = (nickName: string) => {
 };
 
 /**
- * 登出
+ * logout
  */
 export const signOut = () => {
   return {
@@ -201,8 +201,8 @@ export const signOut = () => {
 };
 
 /**
- * 设置用户头像
- * @param avatar 头像Url
+ * set user avatar
+ * @param avatar avatar url
  */
 export const setUserAvatar = (data: string) => {
   return {
@@ -212,8 +212,8 @@ export const setUserAvatar = (data: string) => {
 };
 
 /**
- * 获取邮箱验证码
- * @param email 邮箱
+ * get verify code by email
+ * @param email 
  */
 export const getEmailCode = (email: string, type = 1) => {
   return (dispatch: Dispatch) => {
@@ -228,8 +228,8 @@ export const getEmailCode = (email: string, type = 1) => {
 };
 
 /**
- * 设置请求的状态
- * @param status 当前状态
+ * set request status
+ * @param status 
  */
 export const setReqStatus = (status: boolean) => {
   return {
@@ -239,8 +239,8 @@ export const setReqStatus = (status: boolean) => {
 };
 
 /**
- *  设置http请求错误信息
- * @param info 错误信息
+ * set http request error message
+ * @param info 
  */
 export const setHttpErrInfo = (info: IHttpErr | null) => {
   return {
@@ -250,7 +250,7 @@ export const setHttpErrInfo = (info: IHttpErr | null) => {
 };
 
 /**
- * 更新密码
+ * update password
  */
 export const updatePwd = password => {
   return dispatch => {
@@ -269,7 +269,7 @@ export const updatePwd = password => {
 };
 
 /**
- * 解除账户绑定
+ * unbind account
  */
 export const unBindAccount = (type: BindAccount) => {
   return dispatch => {
@@ -288,7 +288,7 @@ export const unBindAccount = (type: BindAccount) => {
 };
 
 /**
- * 更新userinfo中的部分值
+ * update user info
  */
 export const updateUserInfo = (info: Partial<IUserInfo>) => {
   return {

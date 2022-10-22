@@ -1,6 +1,6 @@
 import * as actions from '../action_constants';
 import { IWizardsConfig, ITriggeredGuideInfo } from '../interface';
-// 公用
+
 export function updatePendingGuideWizardsIds(guideWizardIds: number[]) {
   return {
     type: actions.UPDATE_PENDING_GUIDE_WIZARD_IDS,

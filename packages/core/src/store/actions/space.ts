@@ -7,7 +7,7 @@ import { initCatalogTree } from './catalog_tree';
 import { getUserMe } from './user';
 
 /**
- * 获取空间列表
+ * Get Space List
  */
 export const spaceList = (): any => {
   return (dispatch) => {
@@ -21,7 +21,7 @@ export const spaceList = (): any => {
 };
 
 /**
- * 设置空间列表
+ * Set Space List
  */
 export const setSpaceList = (data: ISpaceInfo[]) => {
   return {
@@ -31,8 +31,8 @@ export const setSpaceList = (data: ISpaceInfo[]) => {
 };
 
 /**
- * 移除空间的小红点
- * @param spaceId 空间ID
+ * Remove Red dot
+ * @param spaceId Space ID
  */
 export const removeRedPoint = (spaceId: string) => {
   return (dispatch) => {
@@ -46,7 +46,7 @@ export const removeRedPoint = (spaceId: string) => {
 };
 
 /**
- * 设置要退出的空间ID
+ * set the space id will quite
  * @param spaceId
  */
 export const setQuitSpaceId = (spaceId: string) => {
@@ -57,8 +57,8 @@ export const setQuitSpaceId = (spaceId: string) => {
 };
 
 /**
- * 退出空间
- * @param spaceId 空间ID
+ * quit space
+ * @param spaceId space ID
  */
 export const quitSpace = (spaceId: string) => {
   return (dispatch) => {
@@ -74,8 +74,8 @@ export const quitSpace = (spaceId: string) => {
 };
 
 /**
- * 设置错误信息
- * @param err 错误信息
+ * set space error info
+ * @param err error info
  */
 export const setSpaceErr = (err: ISpaceErr | null) => {
   return {
@@ -85,8 +85,9 @@ export const setSpaceErr = (err: ISpaceErr | null) => {
 };
 
 /**
- * 设置当前是否是加载状态
- * @param statu 当前状态
+ * set current loading state
+ * 
+ * @param status current state
  */
 export const setSpaceLoading = (statu: boolean) => {
   return {
@@ -96,8 +97,8 @@ export const setSpaceLoading = (statu: boolean) => {
 };
 
 /**
- *  设置当前空间的基本信息
- * @param spaceInfo 空间信息
+ * set current space info
+ * @param spaceInfo 
  */
 export const setSpaceInfo = (spaceInfo: Partial<ISpaceBasicInfo>) => {
   return {
@@ -106,8 +107,8 @@ export const setSpaceInfo = (spaceInfo: Partial<ISpaceBasicInfo>) => {
   };
 };
 /**
- *  设置当前空间的基本信息
- * @param spaceInfo 空间信息
+ * set space features
+ * @param spaceInfo 
  */
 export const setSpaceFeatures = (data: Partial<ISpaceFeatures>) => {
   return {
@@ -178,12 +179,19 @@ export const toggleRecordFullScreen = (status?: boolean) => {
   };
 };
 
-// 获取空间信息
+/**
+ * get space info
+ * @param spaceId 
+ * @param ignoreTimeLimit 
+ * @returns 
+ */
 export const getSpaceInfo = (spaceId: string, ignoreTimeLimit: boolean = false) => {
   return (dispatch, getState) => {
     const curSpace = getState().space;
     const lastUpdateTime = curSpace?.curSpaceInfo?.lastUpdateTime || 0;
-    // 距离上一次获取超过一分钟才重新获取
+
+    // prevent too many requests.
+    // after last call > 1 min
     if (!ignoreTimeLimit && (Date.now() - lastUpdateTime < 1000 * 60)) {
       return;
     }
@@ -196,7 +204,11 @@ export const getSpaceInfo = (spaceId: string, ignoreTimeLimit: boolean = false) 
     });
   };
 };
-// 获取工作台设置信息
+
+/**
+ * get workbench settings info
+ * @returns 
+ */
 export const getSpaceFeatures = () => {
   return (dispatch) => {
     Api.getSpaceFeatures().then((res) => {
@@ -215,7 +227,11 @@ export const setMarketPlaceApps = (apps: IApp[]) => {
   };
 };
 
-// 获取空间三方应用列表
+/**
+ * get space's 3rd apps list
+ * @param spaceId 
+ * @returns 
+ */
 export const fetchMarketplaceApps = (spaceId: string) => {
   return (dispatch) => {
     if (getCustomConfig().marketplaceDisable) {

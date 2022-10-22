@@ -35,7 +35,7 @@ export function updateSingleMemberInMemberList(memberInfo: Partial<IMemberInfoIn
 }
 
 /**
- * 通讯录-部门列表
+ * Contacts - get Team(Departments) Lists
  */
 export function getTeamListData(user: IUserInfo) {
   let teamList: ITeamList[] = [];
@@ -64,7 +64,7 @@ export function getTeamListData(user: IUserInfo) {
 }
 
 /**
- * 通讯录-查询指定部门的成员列表
+ * Contacts - get specified Team(Departments) members list
  */
 export function getMemberListData(teamId?: string) {
   return dispatch => {
@@ -78,7 +78,7 @@ export function getMemberListData(teamId?: string) {
 }
 
 /**
- * 通讯录-获取成员详情
+ * Contacts - get specified member detail info
  */
 export function getMemberInfoData(memberId: string) {
   return dispatch => {

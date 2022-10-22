@@ -50,9 +50,13 @@ function consistencyCheckHandle(payload: IServerDatasheetPack, isPartOfData: boo
   }
   const { snapshot, datasheet } = payload;
 
-  // 对数据一致性的检查，数表是唯一需要关注的对象，所有如果数表的权限就已经符合，不需要再做其他判断
+  // @su 
+  // the check of data consistency
+  // datasheet is the only object that should be attention
+  // if if all the permission of datasheet is ok, no need to check more
   if (!datasheet.permissions?.editable) {
-    // 当数表的权限不符合要求时，再考虑其他因素
+
+    // when the permission of datasheet is not ok, then check other factors
     const pageParams = getState ? getState().pageParams : {};
 
     if (!pageParams.mirrorId) {
@@ -65,7 +69,7 @@ function consistencyCheckHandle(payload: IServerDatasheetPack, isPartOfData: boo
       return;
     }
 
-    // 可以通过镜像的可编辑权限突破原表的权限
+    // mirror's editable permission can go through the original datasheet's permission
     if (!mirror?.permissions.editable) {
       return;
     }
@@ -94,8 +98,10 @@ function consistencyCheckHandle(payload: IServerDatasheetPack, isPartOfData: boo
 const getActiveViewFromData = (datasheet: INodeMeta, snapshot: ISnapshot, getState?: () => IReduxState) => {
   if (datasheet.activeView) return datasheet.activeView;
   /**
-   * 这里需要注意下，如果单纯的根据 params 里的 viewId 作为 activeView 的依据，
-   * 在处理 foreignDatasheet 时，activeView 的数据会出现错误，它会指向当前打开的表，而不是实际的关联表的数据
+   * by Aria
+   * attention, if params.viewId as activeView, 
+   * will make errors when read foreignDatasheet and activeView, 
+   * it will point to current opened table, rather than real related table
    */
   if (getState && getState().pageParams.datasheetId === datasheet.id) {
     return getState().pageParams.viewId;
@@ -110,8 +116,8 @@ export function receiveDataPack<T extends IServerDatasheetPack = IServerDatashee
 ): ILoadedDataPackAction {
   const { snapshot, datasheet } = payload;
 
-  // TODO: 数据一致性检查放到 node 层，并且要有完整的筛查恢复机制
-  // 数据完整，并且在可编辑条件下才去检查数据一致性
+  // TODO: move data consistency check  to node layer, and ensure full recover mechanism
+  // check data consistency only when data is editable
   consistencyCheckHandle(payload, isPartOfData, getState);
 
   return {

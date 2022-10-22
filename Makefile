@@ -285,7 +285,7 @@ devenv-backend-server:
 
 .PHONY: install-web-server
 _install-web-server: ## install web-server dependencies
-	$(RUNNER) web-server sh -c "yarn install"
+	$(RUNNER) web-server sh -c "yarn install && yarn build:dst:pre"
 
 .PHONY: devenv-web-server
 devenv-web-server:

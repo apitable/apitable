@@ -22,7 +22,7 @@ import { PermissionException } from 'exception/permission.exception';
 
 /**
  * <p>
- * 数表字段处理器
+ * Datasheet Fields Handler & Processor
  * </p>
  * @author Chambers
  * @date 2021/2/18

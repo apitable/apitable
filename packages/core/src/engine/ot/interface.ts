@@ -1,6 +1,6 @@
 import { FieldType, ResourceType } from 'types';
 
-// 尽量节省网络传输字节数，使用首字母缩写作为标识
+// Use words' first letter as the identifier to save network transmission bytes
 export enum OTActionName {
   NumberAdd = 'NA',
   ListInsert = 'LI',
@@ -17,28 +17,37 @@ export enum OTActionName {
 
 export type IJOTPath = (string | number)[];
 
-// {p:[path], na:x} 给 path 指向的数字加上 x（x 可以为负数）
+/**
+ * {p:[path], na:x} at the `path` value number add `x` ( `x` can be a negative number )
+ */
 export interface INumberAddAction {
   n: OTActionName.NumberAdd;
   p: IJOTPath;
   na: number;
 }
 
-// {p:[path,idx], li:obj} 给 path 指向的数组下标为 idx 的元素前面插入对象 obj
+/**
+ * {p:[path,idx], li:obj} before the `path` value array's `idx` index, insert object `obj` 
+ * 
+ */
 export interface IListInsertAction {
   n: OTActionName.ListInsert;
   p: IJOTPath;
   li: any;
 }
 
-// {p:[path,idx], ld:obj} 删除 path 指向的数组下标为 idx 的元素
+/**
+ * {p:[path,idx], ld:obj} Delete `path` of array `idx` index value
+ */
 export interface IListDeleteAction {
   n: OTActionName.ListDelete;
   p: IJOTPath;
   ld: any;
 }
 
-// {p:[path,idx], ld:before, li:after} 使用 after 替换 path 指向的数组中下标为 idx 的 before 元素
+/**
+ * {p:[path,idx], ld:before, li:after} use `after` to replace `path`'s `idx` index value `before` 
+ */
 export interface IListReplaceAction {
   n: OTActionName.ListReplace;
   p: IJOTPath;
@@ -102,8 +111,10 @@ export type IJOTAction = INumberAddAction | IListInsertAction | IListDeleteActio
   IObjectReplaceAction | ISubTypeAction | ITextInsertAction | ITextDeleteAction;
 
 export type IAnyAction = { [key: string]: any };
+
 /**
- * 存上 cmd name 是为了将每次修改和用户操作关联起来，方便历史回溯和追踪
+ * save the `cmd` name to associate each modification with the user operation, 
+ * to facilitate history backtracking and tracking
  */
 export interface IOperation {
   cmd: string;
@@ -117,6 +128,9 @@ export interface IOperation {
 }
 
 export interface IChangeset {
+  /**
+   * random string, 
+   */
   messageId: string; // 随机字符串，用来给当前 id 做唯一性标记，防止重复消费
   resourceType: ResourceType;
   resourceId: string;

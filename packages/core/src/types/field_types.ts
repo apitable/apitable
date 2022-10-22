@@ -608,7 +608,9 @@ export enum FieldGroup {
   Advanced,
 }
 
-// I18N: @胡峰
+/**
+ * Fields description
+ */
 export const FieldTypeDescriptionMap: {
   [key: number]: IFieldTypeCollection;
 } = {

@@ -76,8 +76,8 @@ export function selecteTeamRowsInModal(arr: ISubTeamListInSpaceBase[]) {
   };
 }
 /**
- * 空间站-部门列表
- * 查询指定空间的部门列表
+ * Space - Team List
+ * Query and get specific team list
  */
 export function getTeamListDataInSpace(spaceId: string, user: IUserInfo) {
   let teamListInSpace: ITeamListInSpace[] = [];
@@ -92,8 +92,8 @@ export function getTeamListDataInSpace(spaceId: string, user: IUserInfo) {
   };
 }
 /**
- * 空间站-部门列表
- * 查询部门信息
+ * Contacts - Team List
+ * Get Team Info
  */
 export function getTeamInfo(spaceId: string, teamId: string) {
   return dispatch => {
@@ -108,8 +108,8 @@ export function getTeamInfo(spaceId: string, teamId: string) {
   };
 }
 /**
- * 空间站-邮件邀请外部成员
- * 邮件邀请成员
+ * Space - invite member by email
+ * invite member by email
  */
 export function sendInviteEmail(spaceId: string, invite: IInviteMemberList[]) {
   return dispatch => {
@@ -130,8 +130,8 @@ export function sendInviteEmail(spaceId: string, invite: IInviteMemberList[]) {
   };
 }
 /**
- * 空间站-通讯录管理-成员管理
- * 分页查询指定部门的成员列表
+ * Space-Contact-Members Management
+ * Get members list by specific team with pagination
  */
 export function getMemberListDataInSpace(pageNo: number, teamId?: string) {
   const pageObjectParams = {
@@ -151,8 +151,8 @@ export function getMemberListDataInSpace(pageNo: number, teamId?: string) {
 }
 
 /**
- * 空间站-通讯录管理-成员管理
- * 获取成员详情
+ * Space-Contact-Members Management
+ * Get Member detail
  */
 export function getEditMemberInfo(memberId: string) {
   return dispatch => {
@@ -165,8 +165,8 @@ export function getEditMemberInfo(memberId: string) {
 }
 
 /**
- * 空间站-部门列表
- * 查询直属子部门列表
+ * Space-Team List
+ * Get sub team list by specific team
  */
 export function getSubTeamListDataInSpace(teamId: string) {
   return dispatch => {

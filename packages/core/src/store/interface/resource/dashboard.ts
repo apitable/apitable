@@ -7,9 +7,20 @@ export interface IDashboardMap {
 }
 
 export interface IDashboardPack {
-  syncing: boolean; // 标记数据是否在协同中
-  loading: boolean; // 数据是否在加载中
-  connected: boolean; // 标记协同状态
+  /**
+   * whether the data is under collaboration
+   */
+  syncing: boolean; 
+  /**
+   * whether the data is under loading
+   */
+  loading: boolean; 
+  /**
+   * whether the dashboard is connected
+   * 
+   * see also the IDatasheetPack's comments
+   */
+  connected: boolean; 
   dashboard?: IDashboard | null;
   errorCode?: number | null;
   client: IDashboardClient;

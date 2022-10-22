@@ -13,21 +13,33 @@ export interface IMemberFieldOpenValue {
   id: string;
   name: string;
   type: 'Team' | 'Member';
-  /** 头像 */
+
+  /**
+   * Member avatar / user picture
+   */
   avatar?: string;
 }
 
 export interface ILinkFieldOpenValue {
-  /** 记录ID */
+  /**
+   * record's ID
+   */
   recordId: string,
-  /** 记录标题 */
+
+  /**
+   * record's title
+   */
   title: string
 }
 
 export interface IAttachmentFieldOpenValue extends IAttachmentValue {
-  /** 文件的完整地址 */
+  /**
+   * attachment full url
+   */
   url: string;
-  /** 预览的完整地址 */
+  /**
+   * attachment preview url
+   */
   previewUrl?: string;
 }
 

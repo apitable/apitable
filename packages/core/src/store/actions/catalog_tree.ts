@@ -10,8 +10,9 @@ import { ConfigConstant } from 'config';
 import { Selectors } from 'store';
 
 /**
- * 设置错误信息*
- * @param err 错误信息
+ * Set Error Message
+ * 
+ * @param err 
  */
 export function setErr(err: string) {
   return {
@@ -21,8 +22,9 @@ export function setErr(err: string) {
 }
 
 /**
- * 设置当前处于编辑状态的节点ID
- * @param nodeId 节点ID
+ * set current edit state node ID
+ * 
+ * @param nodeId Node ID
  */
 export function setEditNodeId(nodeId: string, module: ConfigConstant.Modules = ConfigConstant.Modules.CATALOG) {
   return {
@@ -35,8 +37,9 @@ export function setEditNodeId(nodeId: string, module: ConfigConstant.Modules = C
 }
 
 /**
- * 设置要删除节点的ID
- * @param nodeId 节点ID
+ * Set the node ID to delete
+ * 
+ * @param nodeId Node ID
  */
 export function setDelNodeId(nodeId: string, module: ConfigConstant.Modules = ConfigConstant.Modules.CATALOG) {
   return {
@@ -46,8 +49,9 @@ export function setDelNodeId(nodeId: string, module: ConfigConstant.Modules = Co
 }
 
 /**
- * 设置要复制节点的ID
- * @param nodeId 节点ID
+ * set the node ID to copy
+ * 
+ * @param nodeId Node ID
  */
 export function setCopyNodeId(nodeId: string) {
   return {
@@ -56,7 +60,12 @@ export function setCopyNodeId(nodeId: string) {
   };
 }
 
-// 设置树根节点
+/**
+ * Set the root Node ID
+ * 
+ * @param nodeId 
+ * @returns 
+ */
 export const setTreeRootId = (nodeId: string) => {
   return {
     type: actions.SET_TREE_ROOT_ID,
@@ -65,8 +74,8 @@ export const setTreeRootId = (nodeId: string) => {
 };
 
 /**
- * 当前打开权限弹窗的节点ID
- * @param nodeId 节点ID
+ * Current Node that is opening permission UI window
+ * @param nodeId Node ID
  */
 export function updatePermissionModalNodeId(nodeId: string) {
   return {
@@ -76,8 +85,8 @@ export function updatePermissionModalNodeId(nodeId: string) {
 }
 
 /**
- * 当前打开分享弹窗的节点ID
- * @param nodeId 节点ID
+ * Current node that is opening share window.
+ * @param nodeId Node ID
  */
 export function updateShareModalNodeId(nodeId: string) {
   return {
@@ -87,8 +96,9 @@ export function updateShareModalNodeId(nodeId: string) {
 }
 
 /**
- * 当前打开保存为模板弹窗的节点ID
- * @param nodeId 节点ID
+ * Current node that is opening save as template window.
+ * 
+ * @param nodeId 
  */
 export function updateSaveAsTemplateModalNodeId(nodeId: string) {
   return {
@@ -98,8 +108,9 @@ export function updateSaveAsTemplateModalNodeId(nodeId: string) {
 }
 
 /**
- * 当前打开导入弹窗的节点ID
- * @param nodeId 节点ID
+ * Current node that is opening the import UI window.
+ * 
+ * @param nodeId Node ID
  */
 export function updateImportModalNodeId(nodeId: string) {
   return {
@@ -109,8 +120,9 @@ export function updateImportModalNodeId(nodeId: string) {
 }
 
 /**
- * 设置展开结点的数组
- * @param expandedKeys 已展开结点的数组
+ * Set the array of expanded nodes
+ * 
+ * @param expandedKeys the keys array of expanded nodes
  */
 export function setExpandedKeys(expandedKeys: string[], module: ConfigConstant.Modules = ConfigConstant.Modules.CATALOG) {
   return {
@@ -123,8 +135,9 @@ export function setExpandedKeys(expandedKeys: string[], module: ConfigConstant.M
 }
 
 /**
- * 将单个或多个节点添加到treeNodeMap（目录树数据源）中
- * @param Node 单个节点或者节点集合
+ * add single or multiple nodes to treeNodeMap (catalog tree data source)
+ * 
+ * @param Node Single node or collection of nodes
  */
 export const addNodeToMap = (data: (Omit<INodesMapItem, 'children'> & { children?: string[] })[], isCoverChildren = true) => {
   return {
@@ -134,8 +147,9 @@ export const addNodeToMap = (data: (Omit<INodesMapItem, 'children'> & { children
 };
 
 /**
- * 在目录树中新增节点
- * @param node 新增的节点信息
+ * add nodes to files tree(catalog)
+ * 
+ * @param node the node info of new 
  */
 export const addNode = (node: INodesMapItem) => {
   return dispatch => {
@@ -143,7 +157,11 @@ export const addNode = (node: INodesMapItem) => {
   };
 };
 
-// 通过socket传递的数据来实时同步树
+/**
+ * update treeNodeMap (catalog tree data source) by socket data
+ * @param data 
+ * @returns 
+ */
 export const updateSocketData = (data: INodeChangeSocketData) => {
   return {
     type: actions.UPDATE_SOCKET_DATA,
@@ -152,9 +170,10 @@ export const updateSocketData = (data: INodeChangeSocketData) => {
 };
 
 /**
- * 设置指定节点的名称 *
- * @param nodeId 节点ID
- * @param nodeName 节点名称
+ * set the name of node
+ * 
+ * @param nodeId Node ID
+ * @param nodeName Node Name
  */
 export function setNodeName(nodeId: string, nodeName: string) {
   return {
@@ -177,8 +196,10 @@ export function setNodeErrorType(nodeId: string, errType: NodeErrorType | null) 
 }
 
 /**
- * 获取指定节点的子节点，并将获取到的子节点集合挂载到目录树上
- * @param nodeId 节点ID
+ * get specified node's child nodes.
+ * and attach them to files tree.
+ * 
+ * @param nodeId Node ID
  */
 export function getChildNode(nodeId: string): any {
   return async(dispatch: Dispatch, getState) => {
@@ -197,7 +218,8 @@ export function getChildNode(nodeId: string): any {
       dispatch(setNodeErrorType(nodeId, null));
       return;
     }
-    // 更新当前节点是否具有子节点
+
+    // update current node has child nodes
     dispatch(addNodeToMap(Selectors.flatNodeTree(nodeData), false));
     dispatch(updateHasChildren(nodeId));
     dispatch(setNodeErrorType(nodeId, null));
@@ -206,8 +228,9 @@ export function getChildNode(nodeId: string): any {
 }
 
 /**
- * 更新节点的hasChildren的状态
- * @param nodeId 要更新状态的节点ID
+ * update node's hasChildren state
+ * 
+ * @param nodeId the node that want to update
  */
 export function updateHasChildren(nodeId: string) {
   return {
@@ -216,7 +239,11 @@ export function updateHasChildren(nodeId: string) {
   };
 }
 
-// 获取指定节点的子节点
+/**
+ * get specified node's child nodes.
+ * @param nodeId 
+ * @returns 
+ */
 const getChildNodeList = (nodeId: string) => {
   return Api.getChildNodeList(nodeId).then(res => {
     const { success, data } = res.data;
@@ -227,7 +254,13 @@ const getChildNodeList = (nodeId: string) => {
   }).catch(e => NodeErrorType.ChildNodes);
 };
 
-// 设置当前目录树的加载状态
+/**
+ * the loading state of current files tree.
+ * 
+ * @param loading 
+ * @param module 
+ * @returns 
+ */
 export const setTreeLoading = (loading: boolean, module: ConfigConstant.Modules = ConfigConstant.Modules.CATALOG) => {
   return {
     type: actions.TREE_LOADING,
@@ -239,10 +272,11 @@ export const setTreeLoading = (loading: boolean, module: ConfigConstant.Modules 
 };
 
 /**
- * 将节点移入到指定位置
- * @param {string} nodeId 节点ID
- * @param {string} targetNodeId 目标节点ID
- * @param {number} pos -1: 表示目标节点的上方；0：表示移入目标节点内部；1：表示移入目标节点下方
+ * move node to specified position
+ * 
+ * @param {string} nodeId Node ID
+ * @param {string} targetNodeId target node ID
+ * @param {number} pos -1: above the target node | 0：move into target node | 1：below the target node
  * @returns
  */
 export const moveTo = (nodeId: string, targetNodeId: string, pos: number) => {
@@ -257,7 +291,7 @@ export const moveTo = (nodeId: string, targetNodeId: string, pos: number) => {
 };
 
 /**
- * 清空node属性
+ * clear node attribute
  */
 export const clearNode = () => {
   return {
@@ -266,7 +300,7 @@ export const clearNode = () => {
 };
 
 /**
- * 初始化目录树
+ * init files tree(catalog)
  */
 export function initCatalogTree() {
   return {
@@ -275,8 +309,8 @@ export function initCatalogTree() {
 }
 
 /**
- * 将单个或多个节点从treeNodeMap（目录树数据源）中移除
- * @param Node 单个节点或者节点集合
+ * remove single or multi nodes from treeNodeMap(catalog tree data source)
+ * @param Node single node or collection of nodes
  */
 export const removeNodeFromMap = (nodeId: string | string[]) => {
   return {
@@ -286,8 +320,8 @@ export const removeNodeFromMap = (nodeId: string | string[]) => {
 };
 
 /**
- * 将单个或多个节点从树中移除
- * @param data 单个节点或者节点集合
+ * remove single or multi nodes from tree
+ * @param data single node or collection of nodes
  */
 export const removeNodeFromTree = (nodeId: string | string[]) => {
   return {
@@ -297,8 +331,8 @@ export const removeNodeFromTree = (nodeId: string | string[]) => {
 };
 
 /**
- * 删除节点*
- * @param optNode 节点信息
+ * delete node
+ * @param optNode 
  */
 export function deleteNodeAction(optNode: IOptNode) {
   return {
@@ -308,7 +342,7 @@ export function deleteNodeAction(optNode: IOptNode) {
 }
 
 /**
- * 更新isPermission的状态
+ * update the state of `isPermission`
  */
 export function updateIsPermission(status: boolean) {
   return {
@@ -318,9 +352,10 @@ export function updateIsPermission(status: boolean) {
 }
 
 /**
- * 更新treeNodeMap中指定节点的信息
- * @param nodeId 节点ID
- * @param data 新数据
+ * update specify nodes in treeNodeMap
+ * 
+ * @param nodeId Node ID
+ * @param data new data
  */
 export const updateTreeNodesMap = (nodeId: string, data: Partial<INodesMapItem>) => {
   return {
@@ -333,7 +368,8 @@ export const updateTreeNodesMap = (nodeId: string, data: Partial<INodesMapItem>)
 };
 
 /**
- * 刷某一层节点的信息
+ * refresh tree (some layer)
+ * 
  * @param data
  */
 export const refreshTree = (data: INode[]) => {
@@ -344,8 +380,9 @@ export const refreshTree = (data: INode[]) => {
 };
 
 /**
- * 在目录树中删除节点
- * @param optNode 正在进行操作的节点信息
+ * Delete node from the files tree(catalog)
+ * 
+ * @param optNode the node info that is under operation.
  */
 export const deleteNode = (optNode: IOptNode) => {
 
@@ -361,8 +398,9 @@ export const deleteNode = (optNode: IOptNode) => {
 };
 
 /**
- * 根据查找parentId来获取目录树路径，并且展开所有路径上的文件夹
- * @param nodeId 节点id
+ * find the path of the node by parentId, and expand all the folders on them.
+ * 
+ * @param nodeId Node ID 
  */
 export const collectionNodeAndExpand = (nodeId: string) => {
   return (dispatch: Dispatch, getState) => {
@@ -375,7 +413,11 @@ export const collectionNodeAndExpand = (nodeId: string) => {
   };
 };
 
-// 生成星标
+/**
+ * generate favorite (star)
+ * @param node 
+ * @returns 
+ */
 export const generateFavoriteTree = (node: INodesMapItem[]) => {
   return (dispatch: Dispatch) => {
     dispatch(addNodeToMap(node));
@@ -384,7 +426,12 @@ export const generateFavoriteTree = (node: INodesMapItem[]) => {
   };
 };
 
-// 将星标数据添加到星标树的指定节点下
+/**
+ * add favorite(star) into the specified node
+ * @param nodeIds 
+ * @param parentId 
+ * @returns 
+ */
 export const addNodeToFavoriteTree = (nodeIds: string[], parentId = '') => {
   return {
     type: actions.ADD_NODE_TO_FAVORITE_LIST,
@@ -395,7 +442,11 @@ export const addNodeToFavoriteTree = (nodeIds: string[], parentId = '') => {
   };
 };
 
-// 移除星标
+/**
+ * remove favorite (star)
+ * @param nodeId 
+ * @returns 
+ */
 export const removeFavorite = (nodeId: string) => {
   return (dispatch: Dispatch, getState) => {
     const state: IReduxState = getState();
@@ -445,7 +496,11 @@ export function setLoadedKeys(keys: string[]) {
   };
 }
 
-// 获取单个节点信息，并将其放入数据源中
+/**
+ * get single node info, put it in data source
+ * @param nodeId 
+ * @returns 
+ */
 export const getNodeInfo = (nodeId: string) => {
   return (dispatch: Dispatch) => {
     Api.getNodeInfo(nodeId).then(res => {
@@ -457,7 +512,14 @@ export const getNodeInfo = (nodeId: string) => {
   };
 };
 
-// 更新数据源，比如目录树数表、表单的数据源
+/**
+ * update data source
+ * for example, the data source of datasheet / form...
+ * @param nodeId 
+ * @param nodeType 
+ * @param data 
+ * @returns 
+ */
 export const updateNodeInfo = (nodeId: string, nodeType: ConfigConstant.NodeType, data: Partial<INodeMeta>): any => {
   return (dispatch: Dispatch) => {
     switch (nodeType) {
@@ -484,7 +546,12 @@ export const updateNodeInfo = (nodeId: string, nodeType: ConfigConstant.NodeType
   };
 };
 
-// 设置权限设置弹窗关闭是否需要发送通知
+/**
+ * set permissions, whether or not to send a notification when popup window closed.
+ * 
+ * @param status 
+ * @returns 
+ */
 export function setPermissionCommitRemindStatus(status: boolean) {
   return {
     type: actions.SET_PERMISSION_COMMIT_REMIND_STATUS,
@@ -492,7 +559,11 @@ export function setPermissionCommitRemindStatus(status: boolean) {
   };
 }
 
-// 设置评论成员更改通知参数
+/**
+ * set commenter change remind params by yiliu
+ * @param Param 
+ * @returns 
+ */
 export function setPermissionCommitRemindParameter(Param: IApi.ICommitRemind) {
   return {
     type: actions.SET_PERMISSION_COMMIT_REMIND_PARAMETER,
@@ -500,7 +571,11 @@ export function setPermissionCommitRemindParameter(Param: IApi.ICommitRemind) {
   };
 }
 
-// 设置无权限人员
+/**
+ * set members that no permission
+ * @param Param 
+ * @returns 
+ */
 export function setNoPermissionMembers(Param: string[]) {
   return {
     type: actions.SET_NO_PERMISSION_MEMBERS,
@@ -509,8 +584,9 @@ export function setNoPermissionMembers(Param: string[]) {
 }
 
 /**
- * 更新需要移动的节点ID
- * @param nodeIds 节点ID
+ * update the node that will move.
+ * 
+ * @param nodeIds 
  */
 export function updateMoveToNodeIds(nodeIds: string[]) {
   return {

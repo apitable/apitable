@@ -62,7 +62,9 @@ export interface IResourceMeta {
   [key: string]: any;
 }
 
-// 服务端数据结构
+/**
+ * the data structure of server-side form 
+ */
 export interface IServerFormPack {
   sourceInfo: ISourceDatasheetInfo;
   snapshot: IFormSnapshot;

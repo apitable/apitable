@@ -1,7 +1,7 @@
 import { IJOTAction, jot } from 'engine';
 import { IJOTActionPayload } from 'store/interface';
 
-// TODO: 看下删除这里的 any
+// TODO: delete here's any @kailang
 export const JOTApply = <T extends { snapshot: any } = { snapshot: any }> (
   state: T,
   { payload }: IJOTActionPayload,

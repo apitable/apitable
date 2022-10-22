@@ -2,9 +2,10 @@ import { IOperation, jot, OTActionName } from 'engine/ot';
 import { isEqual } from 'lodash';
 
 /**
- * 合并operation
- * 只对连续操作同一路径，并且只做单一操作的 operation 进行 compose
- * @param operations 操作合集
+ * Compose (Merge) operations
+ * Only compose for operations that same path and single action's operation 
+ * 
+ * @param operations Operations Array
  */
 export function composeOperations(operations: IOperation[]): IOperation[] {
   return operations.reduce<IOperation[]>((pre, cur) => {

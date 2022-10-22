@@ -1,14 +1,19 @@
 import { IInviteEmailInfo, ITeamTreeNode, IInviteLink, IInviteLinkInfo } from '../interface';
 import * as actions from '../action_constants';
 import { Api } from 'api';
-// 公用
+
 export function updateErrCode(code: number | null) {
   return {
     type: actions.UPDATE_INVITE_ERR_CODE,
     payload: code,
   };
 }
-// 邮箱邀请
+
+/**
+ * invite by email
+ * @param info 
+ * @returns 
+ */
 export function updateInviteEmailInfo(info: IInviteEmailInfo) {
   return {
     type: actions.UPDATE_INVITE_EMAIL_INFO,
@@ -31,7 +36,11 @@ export const getMailLinkData = (token: string): any => {
   };
 };
 
-// 链接邀请 - 邀请者部分
+/**
+ * invite by link - inviter
+ * @param childrenTree 
+ * @returns 
+ */
 export const updateTeamTreeInvite = (childrenTree: ITeamTreeNode[]) => {
   return {
     type: actions.UPDATE_TEAM_TREE_INVITE,
@@ -57,7 +66,7 @@ export const getSubTeamInvite = (teamId: string): any => {
   };
 };
 
-// TODO: 待删除
+// TODO: to be delete by yudongdong
 export const getLinkInviteList = (): any => {
   return async dispatch => {
     const { data: { success, data }} = await Api.getLinkList();
@@ -67,7 +76,11 @@ export const getLinkInviteList = (): any => {
   };
 };
 
-// 链接邀请 - 被邀请者部分
+/**
+ * invite by link - invitee(be invited)
+ * @param data 
+ * @returns 
+ */
 export const updateInviteLinkInfo = (data: IInviteLinkInfo | null) => {
   return {
     type: actions.UPDATE_INVITE_LINK_INFO,

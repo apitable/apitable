@@ -2,7 +2,7 @@ import { ActionConstants } from 'store';
 import { IShareInfo } from 'store/interface';
 
 /**
- * 获取分享信息
+ * get share info
  */
 export const setShareInfo = (shareInfo: IShareInfo) => {
   return {
