@@ -149,7 +149,7 @@ services:
       - MONGO_USERNAME=vika
       - MONGO_PASSWORD=password
       - MONGO_DATABASE=vika_test
-    entrypoint: ./gradlew testCodeCoverageReport --stacktrace --info
+    entrypoint: ./gradlew testCodeCoverageReport --stacktrace
 
 networks:
   unit-test:

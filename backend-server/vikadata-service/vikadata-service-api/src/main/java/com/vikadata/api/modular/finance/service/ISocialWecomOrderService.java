@@ -71,16 +71,18 @@ public interface ISocialWecomOrderService extends IService<SocialWecomOrderEntit
     SocialWecomOrderEntity getLastPaidOrder(String suiteId, String paidCorpId);
 
     /**
-     * Check if the previous order is refunded
-     * @param orderId order id
-     * @return boolean
-     */
-    boolean preOrderAreRefunded(String orderId);
-
-    /**
      * modify order status by order id
      * @param orderId social order id
      * @param orderStatus order status
      */
     void updateOrderStatusByOrderId(String orderId, int orderStatus);
+
+    /**
+     * Get the latest non-refundable subscription for the current subscription
+     * @param spaceId space id
+     * @param suiteId suite id
+     * @param paidCorpId paid corp id
+     * @return subscriptionId
+     */
+    List<String> getUnRefundedLastSubscriptionIds(String spaceId, String suiteId, String paidCorpId);
 }

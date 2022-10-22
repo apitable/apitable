@@ -107,11 +107,12 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectSubscriptionIdByBundleIdAndWithDeleted" resultType="java.lang.String">
+    <select id="selectSubscriptionIdBySpaceIdAndPhaseIgnoreDeleted" resultType="java.lang.String">
         SELECT subscription_id
         FROM vika_billing_subscription
-        WHERE bundle_id = #{bundleId}
-        AND id &lt; #{maxId}
+        WHERE space_id = #{spaceId}
+        AND phase = #{phase}
+        AND TIMESTAMPDIFF(SECOND, NOW(), expire_date) >= 0
         ORDER BY created_at DESC LIMIT 1
     </select>
 

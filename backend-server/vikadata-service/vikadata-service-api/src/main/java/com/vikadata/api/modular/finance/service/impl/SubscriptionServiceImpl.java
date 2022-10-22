@@ -1,6 +1,5 @@
 package com.vikadata.api.modular.finance.service.impl;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -134,16 +133,16 @@ public class SubscriptionServiceImpl extends ServiceImpl<SubscriptionMapper, Sub
     }
 
     @Override
-    public void restoreBySubscriptionId(String subscriptionId) {
-        baseMapper.updateIsDeletedBySubscriptionIds(Collections.singletonList(subscriptionId), false);
-        List<SubscriptionEntity> subscriptionEntities = baseMapper.selectByBundleIds(Collections.singletonList(subscriptionId));
+    public void restoreBySubscriptionIds(List<String> subscriptionIds) {
+        baseMapper.updateIsDeletedBySubscriptionIds(subscriptionIds, false);
+        List<SubscriptionEntity> subscriptionEntities = baseMapper.selectByBundleIds(subscriptionIds);
         if (!subscriptionEntities.isEmpty()) {
             iSubscriptionHistoryService.saveBatchHistory(subscriptionEntities, ChangeType.UPDATE);
         }
     }
 
     @Override
-    public String getLastSubscriptionIdByBundleIdWithDeleted(String bundleId, Long maxId) {
-        return baseMapper.selectSubscriptionIdByBundleIdAndWithDeleted(bundleId, maxId);
+    public String getActiveTrailSubscriptionIdBySpaceId(String spaceId) {
+        return baseMapper.selectSubscriptionIdBySpaceIdAndPhaseIgnoreDeleted(spaceId, SubscriptionPhase.TRIAL.getName());
     }
 }

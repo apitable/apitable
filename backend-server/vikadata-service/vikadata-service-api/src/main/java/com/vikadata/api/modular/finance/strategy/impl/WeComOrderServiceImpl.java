@@ -37,7 +37,6 @@ import com.vikadata.clock.ClockUtil;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.entity.BundleEntity;
 import com.vikadata.entity.SocialTenantBindEntity;
-import com.vikadata.entity.SubscriptionEntity;
 import com.vikadata.social.wecom.event.order.WeComOrderPaidEvent;
 import com.vikadata.social.wecom.event.order.WeComOrderRefundEvent;
 import com.vikadata.social.wecom.model.WxCpIsvAuthInfo.EditionInfo.Agent;
@@ -134,27 +133,18 @@ public class WeComOrderServiceImpl extends AbstractSocialOrderService<WeComOrder
             log.error("Failed to handle, as this tenant haven't bind a space: {}", event.getPaidCorpId());
             return;
         }
-        // 2 Retrieve vika order ID related to the wecom order
+        // restore the lasted subscription with un refunded
+        List<String> lastUnRefundSubscriptionIds = iSocialWecomOrderService.getUnRefundedLastSubscriptionIds(spaceId,
+                event.getSuiteId(), event.getPaidCorpId());
+        if (!lastUnRefundSubscriptionIds.isEmpty()) {
+            subscriptionService.restoreBySubscriptionIds(lastUnRefundSubscriptionIds);
+        }
+        // Retrieve vika order ID related to the wecom order
         String orderId = orderV2Service.getOrderIdByChannelOrderId(spaceId, event.getOrderId());
         List<String> subscriptionIds = orderItemService.getSubscriptionIdsByOrderId(orderId)
                 .stream()
                 .filter(CharSequenceUtil::isNotBlank)
                 .collect(Collectors.toList());
-        // There is no need to delete the bundle, as the bundle will only be rebuilt after it expires
-        // restore the lasted subscription
-        for (String subscriptionId : subscriptionIds) {
-            SubscriptionEntity subscription = subscriptionService.getBySubscriptionId(subscriptionId);
-            if (null != subscription) {
-                String lastSubscriptionId =
-                        subscriptionService.getLastSubscriptionIdByBundleIdWithDeleted(subscription.getBundleId(),
-                                subscription.getId());
-                boolean preOrderAreRefunded = iSocialWecomOrderService.preOrderAreRefunded(event.getOrderId());
-                // if previous order not refund then recover previous subscription
-                if (null != lastSubscriptionId && !preOrderAreRefunded) {
-                    subscriptionService.restoreBySubscriptionId(lastSubscriptionId);
-                }
-            }
-        }
         if (!subscriptionIds.isEmpty()) {
             // Remove subscription if needed
             subscriptionService.removeBatchBySubscriptionIds(subscriptionIds);

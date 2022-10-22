@@ -120,11 +120,11 @@ public interface SubscriptionMapper extends BaseMapper<SubscriptionEntity> {
 
     /**
      * Find the last subscription with a smaller ID than the current one
-     * @param bundleIds Subscribe to a list of collection IDs
-     * @param maxId current ID
-     * @return subscription entities
+     * @param spaceId space id
+     * @param phase trial,fixedterm
+     * @return subscription id
      */
-    String selectSubscriptionIdByBundleIdAndWithDeleted(@Param("bundleId") String bundleIds, @Param("maxId") Long maxId);
+    String selectSubscriptionIdBySpaceIdAndPhaseIgnoreDeleted(@Param("spaceId") String spaceId, @Param("phase") String phase);
 
     /**
      * get space subscription_id list

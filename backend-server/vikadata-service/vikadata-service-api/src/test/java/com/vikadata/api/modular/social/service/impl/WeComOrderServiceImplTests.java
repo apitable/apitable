@@ -389,7 +389,7 @@ class WeComOrderServiceImplTests extends AbstractIsvTest {
     void testStandardTenPeopleAndOneYearRefund() throws InterruptedException {
         WxCpIsvPermanentCodeInfo permanentCodeInfo1 = getWxCpPermanentCodeInfo("social/wecom/create_auth_for_15_days_trail.json");
         Agent agent1 = SocialFactory.filterWecomEditionAgent(permanentCodeInfo1.getEditionInfo());
-        agent1.setExpiredTime(getClock().getNow(testTimeZone).toEpochSecond());
+        agent1.setExpiredTime(getClock().getNow(testTimeZone).plusDays(15).toEpochSecond());
         MockUserSpace userSpace = prepareSocialBindInfo(permanentCodeInfo1.getAuthCorpInfo().getCorpId(), APP_ID, PLATFORM, ISV);
         SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM).retrieveOrderPaidEvent(SocialFactory.formatWecomTailEditionOrderPaidEvent(APP_ID,
                 permanentCodeInfo1.getAuthCorpInfo().getCorpId(),
@@ -416,7 +416,7 @@ class WeComOrderServiceImplTests extends AbstractIsvTest {
     void testStandardTenPeopleAndOneYearUpgradeAndRenewRefund() throws InterruptedException {
         WxCpIsvPermanentCodeInfo permanentCodeInfo1 = getWxCpPermanentCodeInfo("social/wecom/create_auth_for_15_days_trail.json");
         Agent agent1 = SocialFactory.filterWecomEditionAgent(permanentCodeInfo1.getEditionInfo());
-        agent1.setExpiredTime(getClock().getNow(testTimeZone).toEpochSecond());
+        agent1.setExpiredTime(getClock().getNow(testTimeZone).plusDays(1).toEpochSecond());
         MockUserSpace userSpace = prepareSocialBindInfo(permanentCodeInfo1.getAuthCorpInfo().getCorpId(), APP_ID, PLATFORM, ISV);
         SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM).retrieveOrderPaidEvent(SocialFactory.formatWecomTailEditionOrderPaidEvent(APP_ID,
                 permanentCodeInfo1.getAuthCorpInfo().getCorpId(),
@@ -685,7 +685,7 @@ class WeComOrderServiceImplTests extends AbstractIsvTest {
      * @date 2022-08-31 16:45:15
      */
     @Test
-    void testStandardTenPeopleAndOneYearChangeRefundTwice() throws Exception {
+    void testStandardTenPeopleAndOneYearChangeRefundThree() throws Exception {
         // pay for ten people
         WeComOrderPaidEvent paidEvent1 = getOrderPaidEvent("social/wecom/order/standard_10_1_per_year_new.json");
         MockUserSpace userSpace = prepareSocialBindInfo(paidEvent1.getPaidCorpId(), APP_ID, PLATFORM, ISV);
@@ -717,10 +717,46 @@ class WeComOrderServiceImplTests extends AbstractIsvTest {
         WeComOrderRefundEvent refundEvent = getOrderRefundEvent("social/wecom/order/standard_10_1_per_year_new_refund.json");
         iSocialWecomOrderService.updateOrderStatusByOrderId(refundEvent.getOrderId(), 5);
         SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM).retrieveOrderRefundEvent(refundEvent);
-        // 6 assert subscription
+        // assert subscription
         SpaceSubscribeVo subscribeVo = iSpaceSubscriptionService.getSpaceSubscription(userSpace.getSpaceId());
         Plan plan = getFreePlan(ProductChannel.WECOM);
         Assertions.assertEquals(plan.getId(), subscribeVo.getPlan());
+    }
+
+    @Test
+    void testStandardTenPeopleAndOneYearChangeRefundTwice() throws Exception {
+        // pay for ten people
+        WeComOrderPaidEvent paidEvent1 = getOrderPaidEvent("social/wecom/order/standard_10_1_per_year_new.json");
+        MockUserSpace userSpace = prepareSocialBindInfo(paidEvent1.getPaidCorpId(), APP_ID, PLATFORM, ISV);
+        paidEvent1.setBeginTime(getClock().getNow(testTimeZone).toEpochSecond());
+        paidEvent1.setEndTime(getClock().getNow(testTimeZone).plusYears(1).toEpochSecond());
+        SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM).retrieveOrderPaidEvent(paidEvent1);
+        // handle 10 upgrade to 20 paid event
+        sleep(1000);
+        WeComOrderPaidEvent paidEvent2 = getOrderPaidEvent("social/wecom/order/standard_10_1_per_year_upgrade.json");
+        paidEvent2.setBeginTime(getClock().getNow(testTimeZone).toEpochSecond());
+        paidEvent2.setEndTime(getClock().getNow(testTimeZone).plusYears(1).toEpochSecond());
+        SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM).retrieveOrderPaidEvent(paidEvent2);
+        // 5 handle upgrade refund event
+        sleep(1000);
+        WeComOrderRefundEvent refundEvent1 = getOrderRefundEvent("social/wecom/order/standard_10_1_per_year_upgrade_refund.json");
+        iSocialWecomOrderService.updateOrderStatusByOrderId(refundEvent1.getOrderId(), 5);
+        SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM).retrieveOrderRefundEvent(refundEvent1);
+        // pay for 120 people
+        sleep(1000);
+        WeComOrderPaidEvent paidEvent3 = getOrderPaidEvent("social/wecom/order/enterprise_120_1_per_year_change.json");
+        paidEvent3.setBeginTime(getClock().getNow(testTimeZone).toEpochSecond());
+        paidEvent3.setEndTime(getClock().getNow(testTimeZone).plusYears(1).toEpochSecond());
+        SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM).retrieveOrderPaidEvent(paidEvent3);
+        // handle refund event
+        WeComOrderRefundEvent refundEvent2 = getOrderRefundEvent("social/wecom/order/enterprise_120_1_per_year_change_refund.json");
+        iSocialWecomOrderService.updateOrderStatusByOrderId(refundEvent2.getOrderId(), 5);
+        SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM).retrieveOrderRefundEvent(refundEvent2);
+        // assert subscription
+        SpaceSubscribeVo subscribeVo = iSpaceSubscriptionService.getSpaceSubscription(userSpace.getSpaceId());
+        Price price = WeComPlanConfigManager.getPriceByWeComEditionIdAndMonth(paidEvent1.getEditionId(),
+                paidEvent1.getUserCount(), SocialFactory.getWeComOrderMonth(paidEvent1.getOrderPeriod()));
+        Assertions.assertEquals(price.getPlanId(), subscribeVo.getPlan());
     }
 
     /**
