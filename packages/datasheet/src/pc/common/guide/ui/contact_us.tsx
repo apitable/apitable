@@ -8,7 +8,7 @@ import { useMount } from 'ahooks';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { Modal as ModalBase } from 'pc/components/common/modal/modal/modal';
-import { isSocialPlatformEnabled } from 'pc/components/home/social_platform';
+import { isSocialPlatformEnabled, isDingtalkFunc, isWecomFunc, isLarkFunc } from 'pc/components/home/social_platform';
 import { store } from 'pc/store';
 import { tracker } from 'pc/utils/tracker';
 import QRCode from 'qrcode';
@@ -81,10 +81,9 @@ const Modal: FC<IGuideContactUsOptions> = props => {
 
   const isVikaby = true;
   // 二维码先区分是新手引导跳转还是点击客服，再区分平台，平台 -> saas, 钉钉，企微，飞书
-  // 第三方平台不区分扫码和客户端，只看空间站归属
-  const isBindDingTalk = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.DINGTALK);
-  const isBindWecom = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.WECOM);
-  const isBindFeishu = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.FEISHU);
+  const isBindDingTalk = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.DINGTALK) || isDingtalkFunc();
+  const isBindWecom = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.WECOM) || isWecomFunc();
+  const isBindFeishu = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.FEISHU) || isLarkFunc();
 
   const platformImg = isBindDingTalk ? dingtalk : isBindWecom ? wecom : website;
 
