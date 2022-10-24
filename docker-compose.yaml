@@ -175,7 +175,7 @@ services:
     restart: always
     command: server /data
     ports:
-      - "9033:9000"
+      - "9000:9000"
     expose:
       - "9000"
     volumes:
@@ -364,8 +364,8 @@ services:
 
 
   # #### init data
-  init-schema:
-    image: ${IMAGE_REGISTRY}/${IMAGE_INIT_SCHEMA}
+  init-db:
+    image: ${IMAGE_REGISTRY}/${IMAGE_INIT_DB}
     environment:
       - TZ=${TIMEZONE}
       - DB_HOST=${MYSQL_HOST}
@@ -396,11 +396,13 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+      init-db:
+        condition: service_completed_successfully
     command:
       - /bin/bash
       - -c
       - |
-        # wait init-schema
+        # wait init-db
         sleep 120
         sh run.sh
 

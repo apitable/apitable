@@ -360,7 +360,7 @@ patch: # bump version number patch
 dataenv:
 	make dataenv-up
 
-DATAENV_SERVICES := mysql minio redis rabbitmq mongo1 mongo2 mongo3 init-schema init-data-mysql init-data-minio init-mongo
+DATAENV_SERVICES := mysql minio redis rabbitmq mongo1 mongo2 mongo3 init-db init-data-mysql init-data-minio init-mongo
 
 .PHONY: dataenv-up
 dataenv-up: _dataenv-volumes
