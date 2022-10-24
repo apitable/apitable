@@ -1,5 +1,5 @@
 import { Typography } from '@vikadata/components';
-import { ConfigConstant, getCustomConfig, IReduxState, isPrivateDeployment, Navigation as NavigationConst, Strings, t } from '@vikadata/core';
+import { ConfigConstant, getCustomConfig, IReduxState, isPrivateDeployment, Navigation as NavigationConst, Strings, t } from '@apitable/core';
 import { AuditOutlined, ManagePowerOutlined, RocketOutlined, TestOutlined } from '@vikadata/icons';
 import { Tree } from 'antd';
 import { useRouter } from 'next/router';

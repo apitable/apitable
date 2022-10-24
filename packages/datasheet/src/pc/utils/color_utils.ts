@@ -1,5 +1,5 @@
 import { rgba2hex, colors, convertHexToRGB } from '@vikadata/components';
-import { ThemeName } from '@vikadata/core';
+import { ThemeName } from '@apitable/core';
 import Color from 'color';
 
 export function hexToRGB(hex: string, alpha = 1) {

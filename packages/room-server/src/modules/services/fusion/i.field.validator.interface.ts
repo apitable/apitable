@@ -1,4 +1,4 @@
-import { IField } from '@vikadata/core';
+import { IField } from '@apitable/core';
 import { ApiTipId } from 'exception';
 import { IFieldValue } from 'interfaces';
 

@@ -2,7 +2,7 @@ import { FC } from 'react';
 import styles from './style.module.less';
 import { UpgradeColorfulFilled } from '@vikadata/icons';
 import classNames from 'classnames';
-import { getLanguage, Strings, t } from '@vikadata/core';
+import { getLanguage, Strings, t } from '@apitable/core';
 
 interface IUpgradeBtnProps {
   onClick: () => void

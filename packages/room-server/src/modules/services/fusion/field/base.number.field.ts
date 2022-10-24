@@ -1,4 +1,4 @@
-import { IField } from '@vikadata/core';
+import { IField } from '@apitable/core';
 import { IFieldValue } from 'interfaces';
 import { isNumber } from 'lodash';
 import { BaseField } from 'modules/services/fusion/field/base.field';

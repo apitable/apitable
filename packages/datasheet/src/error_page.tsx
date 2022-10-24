@@ -2,7 +2,7 @@
  * React 全局 crash 时显示的 fallback 页面
  */
 import { Button, colorVars, LinkButton, Typography } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import * as React from 'react';
 

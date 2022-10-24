@@ -1,5 +1,5 @@
 import { Button, LinkButton, ThemeProvider, Typography, useThemeColors } from '@vikadata/components';
-import { integrateCdnHost, Navigation, Selectors, Settings, Strings, t } from '@vikadata/core';
+import { integrateCdnHost, Navigation, Selectors, Settings, Strings, t } from '@apitable/core';
 import { Modal } from 'antd';
 import Image from 'next/image';
 import { TComponent } from 'pc/components/common/t_component';

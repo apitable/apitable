@@ -1,4 +1,4 @@
-import { Field, IViewColumn, Selectors, Strings, t } from '@vikadata/core';
+import { Field, IViewColumn, Selectors, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { renderComputeFieldError } from 'pc/components/multi_grid/header';

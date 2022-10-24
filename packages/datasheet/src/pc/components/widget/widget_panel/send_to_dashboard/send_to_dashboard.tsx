@@ -1,5 +1,5 @@
 import { Button, Skeleton, useThemeColors } from '@vikadata/components';
-import { Api, CollaCommandName, ConfigConstant, ExecuteResult, Navigation, Selectors, StoreActions, Strings, t, WidgetApi } from '@vikadata/core';
+import { Api, CollaCommandName, ConfigConstant, ExecuteResult, Navigation, Selectors, StoreActions, Strings, t, WidgetApi } from '@apitable/core';
 import { DashboardOutlined } from '@vikadata/icons';
 import classNames from 'classnames';
 import Image from 'next/image';

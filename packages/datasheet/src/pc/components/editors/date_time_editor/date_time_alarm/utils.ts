@@ -1,4 +1,4 @@
-import { IRecordAlarm, IRecordAlarmClient } from '@vikadata/core';
+import { IRecordAlarm, IRecordAlarmClient } from '@apitable/core';
 import { omit } from 'lodash';
 
 export const convertAlarmStructure = (alarm?: IRecordAlarmClient | undefined): IRecordAlarm | undefined => {

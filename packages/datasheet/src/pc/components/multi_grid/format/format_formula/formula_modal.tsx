@@ -15,7 +15,7 @@ import {
   t,
   Token,
   TokenType,
-} from '@vikadata/core';
+} from '@apitable/core';
 import classNames from 'classnames';
 import Fuse from 'fuse.js';
 import { Message } from 'pc/components/common';

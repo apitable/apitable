@@ -1,5 +1,5 @@
 import { stopPropagation, showAlert } from '@vikadata/components';
-import { cellValueToImageSrc, t, Strings, Api, isPrivateDeployment } from '@vikadata/core';
+import { cellValueToImageSrc, t, Strings, Api, isPrivateDeployment } from '@apitable/core';
 import { useMount, useUnmount } from 'ahooks';
 import { getAvInfoRequestUrl } from 'pc/utils';
 import { useRef } from 'react';

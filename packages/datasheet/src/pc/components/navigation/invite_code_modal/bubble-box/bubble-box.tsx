@@ -1,4 +1,4 @@
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import Image from 'next/image';
 import { FC } from 'react';
 import GoldImg from 'static/icon/workbench/workbench_account_gold_icon.png';

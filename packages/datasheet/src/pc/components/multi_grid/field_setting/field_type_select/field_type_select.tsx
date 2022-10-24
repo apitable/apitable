@@ -9,7 +9,7 @@ import {
   Strings,
   t,
   DatasheetActions,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { Tooltip } from 'pc/components/common';
 import { useThemeColors } from '@vikadata/components';
 import { useCallback, useEffect, useState, useRef } from 'react';
@@ -21,7 +21,7 @@ import settingStyles from '../../field_setting/styles.module.less';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { AutoLayout } from '../auto_layout';
 import { TypeSelect } from '../../type_select';
-import { IField, ISnapshot, Selectors } from '@vikadata/core';
+import { IField, ISnapshot, Selectors } from '@apitable/core';
 import { useSelector } from 'react-redux';
 import { store } from 'pc/store';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';

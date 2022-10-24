@@ -3,7 +3,7 @@ import { Select, Typography } from '@vikadata/components';
 import { Message } from 'pc/components/common';
 import { useRequest } from 'pc/hooks';
 import styles from './style.module.less';
-import { getLanguage, Strings, t, TrackEvents } from '@vikadata/core';
+import { getLanguage, Strings, t, TrackEvents } from '@apitable/core';
 import { useUserRequest } from 'pc/hooks';
 import { tracker } from 'pc/utils/tracker';
 

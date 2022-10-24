@@ -1,5 +1,5 @@
 import { Skeleton } from '@vikadata/components';
-import { ConfigConstant, IReduxState, Navigation, NodeErrorType, Selectors, StoreActions, Strings, t } from '@vikadata/core';
+import { ConfigConstant, IReduxState, Navigation, NodeErrorType, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { NodeItem } from 'pc/components/catalog/tree/node_item';

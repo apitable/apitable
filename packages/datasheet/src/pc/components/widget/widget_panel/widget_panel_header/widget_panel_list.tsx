@@ -1,4 +1,4 @@
-import { CollaCommandName, ExecuteResult, ResourceType, Selectors, StoreActions, Strings, t } from '@vikadata/core';
+import { CollaCommandName, ExecuteResult, ResourceType, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import { Modal, Tooltip } from 'pc/components/common';
 import { OperateItem } from 'pc/components/tool_bar/view_switcher/view_item/operate_item';

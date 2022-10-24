@@ -1,7 +1,7 @@
 import {
   FieldOperateType, ICell, IFieldRanges, IFillHandleStatus, IGridViewColumn, IGridViewDragState, IGridViewProperty, ILinearRow, IPermissions, IRange,
   ISnapshot, IViewRow, RecordMoveType
-} from '@vikadata/core';
+} from '@apitable/core';
 import * as React from 'react';
 
 export interface IMultiGridStateProps {

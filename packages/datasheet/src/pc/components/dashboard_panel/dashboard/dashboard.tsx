@@ -2,7 +2,7 @@ import { ContextMenu, Message, useThemeColors } from '@vikadata/components';
 import {
   CollaCommandName, Events, IWidget, Navigation, Player, Selectors, StoreActions, Strings, SystemConfig, t, WidgetApi, WidgetPackageStatus,
   WidgetReleaseType,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { AddOutlined, CodeFilled, DeleteOutlined, EditOutlined, GotoLargeOutlined, SettingOutlined } from '@vikadata/icons';
 import { useLocalStorageState, useMount, useUpdateEffect } from 'ahooks';
 import { Drawer } from 'antd';

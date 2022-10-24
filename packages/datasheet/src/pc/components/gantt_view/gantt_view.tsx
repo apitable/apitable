@@ -20,7 +20,7 @@ import {
   Strings,
   t,
   ViewType,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { useCreation, useMount, useUpdate, useUpdateEffect } from 'ahooks';
 import classNames from 'classnames';
 import { isEqual } from 'lodash';

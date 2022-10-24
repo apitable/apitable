@@ -1,4 +1,4 @@
-import { BroadcastTypes, IReduxState, Selectors } from '@vikadata/core';
+import { BroadcastTypes, IReduxState, Selectors } from '@apitable/core';
 import { IServiceError, ResourceService } from '@vikadata/widget-sdk';
 import { SimpleEmitter } from 'pc/common/simple_emitter';
 import { Store } from 'redux';

@@ -1,5 +1,5 @@
 import { IconButton } from '@vikadata/components';
-import { ResourceType, Selectors } from '@vikadata/core';
+import { ResourceType, Selectors } from '@apitable/core';
 import { WidgetOutlined } from '@vikadata/icons';
 import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
 import { WidgetPanel } from 'pc/components/widget';

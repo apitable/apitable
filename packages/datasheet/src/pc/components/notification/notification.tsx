@@ -1,5 +1,5 @@
 import { Button, TextButton } from '@vikadata/components';
-import { Api, IReduxState, NOTIFICATION_ID, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, IReduxState, NOTIFICATION_ID, StoreActions, Strings, t } from '@apitable/core';
 import { useMount, useSize } from 'ahooks';
 import { Tabs } from 'antd';
 import { Loading } from 'pc/components/common';

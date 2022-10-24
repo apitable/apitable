@@ -1,6 +1,6 @@
 import { memo, FC, useContext } from 'react';
 import { useSelector } from 'react-redux';
-import { Selectors, StatusCode, Strings, t } from '@vikadata/core';
+import { Selectors, StatusCode, Strings, t } from '@apitable/core';
 import { NoPermission } from '../no_permission';
 import { ViewContainer } from './view_container';
 import classNames from 'classnames';

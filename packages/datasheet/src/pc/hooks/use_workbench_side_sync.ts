@@ -3,7 +3,7 @@ import {
   INodeChangeSocketData, StoreActions, ConfigConstant, IReduxState,
   t, Strings, Selectors, Api, collectProperty, INode, IPermissions, INodeMeta, ResourceType, DEFAULT_PERMISSION,
   StatusCode
-} from '@vikadata/core';
+} from '@apitable/core';
 import { store } from 'pc/store';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';

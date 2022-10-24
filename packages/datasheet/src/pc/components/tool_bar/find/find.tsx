@@ -1,4 +1,4 @@
-import { Selectors, StoreActions, Strings, t, ViewType } from '@vikadata/core';
+import { Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
 import { useKeyPress } from 'ahooks';
 import classNames from 'classnames';
 import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';

@@ -1,4 +1,4 @@
-import { IGroupInfo, IPermissions, ILinearRowAdd, RowHeight, Selectors, ILinearRowRecord } from '@vikadata/core';
+import { IGroupInfo, IPermissions, ILinearRowAdd, RowHeight, Selectors, ILinearRowRecord } from '@apitable/core';
 import classNames from 'classnames';
 import { GROUP_OFFSET } from 'pc/components/multi_grid/grid_views';
 import { useThemeColors } from '@vikadata/components';

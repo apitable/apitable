@@ -1,5 +1,5 @@
 import { Button, LinkButton } from '@vikadata/components';
-import { CollaCommandName, ExecuteResult, IApi, Selectors, Strings, t } from '@vikadata/core';
+import { CollaCommandName, ExecuteResult, IApi, Selectors, Strings, t } from '@apitable/core';
 import { useClickAway, useUpdateEffect } from 'ahooks';
 import cls from 'classnames';
 import dayjs from 'dayjs';

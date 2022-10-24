@@ -1,4 +1,4 @@
-import { IViewProperty, ViewType } from '@vikadata/core';
+import { IViewProperty, ViewType } from '@apitable/core';
 import classNames from 'classnames';
 import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import { FC, useEffect, useRef } from 'react';

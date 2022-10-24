@@ -1,5 +1,5 @@
 import { Button, Typography, useThemeColors } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { CheckOutlined, ShareStarFilled } from '@vikadata/icons';
 import { ILevelInfo } from 'pc/components/subscribe_system/config';
 import styles from 'pc/components/subscribe_system/styles.module.less';

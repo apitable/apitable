@@ -1,5 +1,5 @@
 import { store } from 'pc/store';
-import { Events, isPrivateDeployment, ITemporaryView, IViewProperty, Player, Selectors, StoreActions, ViewPropertyFilter } from '@vikadata/core';
+import { Events, isPrivateDeployment, ITemporaryView, IViewProperty, Player, Selectors, StoreActions, ViewPropertyFilter } from '@apitable/core';
 import { showViewManualSaveInMobile } from 'pc/components/tab_bar/view_sync_switch/show_view_manual_save_in_mobile';
 import { browser } from 'pc/common/browser';
 import { ShowViewManualSaveAlert } from 'pc/components/tab_bar/view_sync_switch/show_view_manual_save_alert';

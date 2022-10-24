@@ -1,4 +1,4 @@
-import { IKanbanViewProperty, IRecord, Selectors } from '@vikadata/core';
+import { IKanbanViewProperty, IRecord, Selectors } from '@apitable/core';
 import classNames from 'classnames';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { GRID_RECORD_MENU } from 'pc/components/multi_grid/context_menu/record_menu';

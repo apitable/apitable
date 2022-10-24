@@ -3,7 +3,7 @@ import styles from './style.module.less';
 import { FavoriteOutlined, FavoriteFilled } from '@vikadata/icons';
 import { useCatalogTreeRequest } from 'pc/hooks';
 import { useRequest } from 'pc/hooks';
-import { t, Strings, IReduxState } from '@vikadata/core';
+import { t, Strings, IReduxState } from '@apitable/core';
 import { Tooltip } from '../tooltip';
 import { WorkbenchSideContext } from 'pc/components/common_side/workbench_side/workbench_side_context';
 import { useSelector } from 'react-redux';

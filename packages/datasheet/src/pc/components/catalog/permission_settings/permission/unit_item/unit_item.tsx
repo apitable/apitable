@@ -1,5 +1,5 @@
 import { useThemeColors, WrapperTooltip } from '@vikadata/components';
-import { ConfigConstant, Strings, t } from '@vikadata/core';
+import { ConfigConstant, Strings, t } from '@apitable/core';
 import { Space } from 'antd';
 import classnames from 'classnames';
 import { PermissionSelect } from 'pc/components/catalog/permission_settings/permission/unit_item/permission_select';

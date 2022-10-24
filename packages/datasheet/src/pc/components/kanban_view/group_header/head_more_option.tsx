@@ -1,4 +1,4 @@
-import { Selectors, Strings, t, UN_GROUP } from '@vikadata/core';
+import { Selectors, Strings, t, UN_GROUP } from '@apitable/core';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { ContextMenu, useThemeColors } from '@vikadata/components';

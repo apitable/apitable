@@ -1,4 +1,4 @@
-import { Api, IParent, Navigation, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, IParent, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';

@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 import * as React from 'react';
-import { Field, getDay, getToday, ICellValue } from '@vikadata/core';
+import { Field, getDay, getToday, ICellValue } from '@apitable/core';
 import { IDateTimeEditorProps } from '..';
 import { useState } from 'react';
 import { forwardRef } from 'react';

@@ -1,4 +1,4 @@
-# 当前 package 会发布到 npm，npm 中只保留 d.ts 不包含源码，将非必要的敏感信息均排出在
+# if package publish to npm, only d.ts will be published, and sensitive information will be removed
 .yarn
 src
 dist/**/*.js

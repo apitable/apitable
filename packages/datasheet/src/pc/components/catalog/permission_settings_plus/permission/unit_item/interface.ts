@@ -1,5 +1,5 @@
 
-import { ITeamData } from '@vikadata/core';
+import { ITeamData } from '@apitable/core';
 
 export interface IUnitItemProps {
   className?: string;

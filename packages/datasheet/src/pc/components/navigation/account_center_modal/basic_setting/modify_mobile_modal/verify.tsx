@@ -6,7 +6,7 @@ import {
   ConfigConstant,
   Strings,
   t,
-} from '@vikadata/core';
+} from '@apitable/core';
 
 import {
   WithTipWrapper,

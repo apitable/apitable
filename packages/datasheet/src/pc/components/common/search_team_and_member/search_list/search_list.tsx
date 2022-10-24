@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { List } from 'antd';
 import styles from './style.module.less';
-import { ITeamsInSearch, IMembersInSearch, t, Strings } from '@vikadata/core';
+import { ITeamsInSearch, IMembersInSearch, t, Strings } from '@apitable/core';
 import { InfoCard } from 'pc/components/common';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 import { AvatarType } from '../../avatar';

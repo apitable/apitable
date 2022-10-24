@@ -1,4 +1,4 @@
-import { CollaCommandName, CutMethod, IAttachmentValue, IField, isGif } from '@vikadata/core';
+import { CollaCommandName, CutMethod, IAttachmentValue, IField, isGif } from '@apitable/core';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { usePlatform } from 'pc/hooks/use_platform';

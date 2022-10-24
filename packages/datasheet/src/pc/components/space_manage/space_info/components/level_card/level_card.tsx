@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, Typography, useThemeColors } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { InformationSmallOutlined } from '@vikadata/icons';
 import classnames from 'classnames';
 import dayjs from 'dayjs';

@@ -1,5 +1,5 @@
 import { ContextMenu, IContextMenuClickState } from '@vikadata/components';
-import { ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@vikadata/core';
+import { ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@apitable/core';
 import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing/trigger_usage_alert';
 import { MobileContextMenu } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';

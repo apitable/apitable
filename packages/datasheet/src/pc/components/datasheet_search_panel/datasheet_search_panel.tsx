@@ -12,7 +12,7 @@ import {
   Strings,
   t,
   ViewType,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { useMount, usePrevious } from 'ahooks';
 import throttle from 'lodash/throttle';
 import { ButtonPlus, Loading, Tooltip } from 'pc/components/common';

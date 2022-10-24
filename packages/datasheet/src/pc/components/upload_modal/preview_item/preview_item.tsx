@@ -1,5 +1,5 @@
 import { Tooltip, useThemeColors } from '@vikadata/components';
-import { ConfigConstant, IAttachmentValue, IField, Selectors } from '@vikadata/core';
+import { ConfigConstant, IAttachmentValue, IField, Selectors } from '@apitable/core';
 import classnames from 'classnames';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { DisplayFile } from 'pc/components/display_file';

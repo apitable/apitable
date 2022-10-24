@@ -1,5 +1,5 @@
 import { black, ILightOrDarkThemeColors, indigo } from '@vikadata/components';
-import { ILinearRow, KONVA_DATASHEET_ID, StoreActions, Strings, t } from '@vikadata/core';
+import { ILinearRow, KONVA_DATASHEET_ID, StoreActions, Strings, t } from '@apitable/core';
 import { TriangleDown16Filled, TriangleRight16Filled } from '@vikadata/icons';
 import dynamic from 'next/dynamic';
 import { DateTimeType, GanttCoordinate, getDayjs, IGanttGroupInfo, PointPosition } from 'pc/components/gantt_view';

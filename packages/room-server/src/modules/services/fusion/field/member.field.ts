@@ -1,5 +1,5 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
-import { APIMetaMemberType, ICellValue, IField, MemberType } from '@vikadata/core';
+import { APIMetaMemberType, ICellValue, IField, MemberType } from '@apitable/core';
 import { isString } from 'class-validator';
 import { IFieldRoTransformOptions, IFieldValue } from 'interfaces';
 import { BaseField } from 'modules/services/fusion/field/base.field';

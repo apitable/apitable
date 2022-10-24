@@ -1,4 +1,4 @@
-import { ConfigConstant, ISocialAppType, ISocialPlatformType, ISpaceBasicInfo, ISpaceInfo, Strings, t } from '@vikadata/core';
+import { ConfigConstant, ISocialAppType, ISocialPlatformType, ISpaceBasicInfo, ISpaceInfo, Strings, t } from '@apitable/core';
 import dd from 'dingtalk-jsapi';
 import Image from 'next/image';
 import { WecomOpenData, WecomOpenDataType } from 'pc/components/address_list';

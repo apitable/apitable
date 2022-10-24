@@ -1,6 +1,6 @@
 import { FC, useState, Dispatch, SetStateAction } from 'react';
 import * as React from 'react';
-import { t, Strings, StoreActions, IReduxState, MAX_NAME_STRING_LENGTH, Api, ConfigConstant } from '@vikadata/core';
+import { t, Strings, StoreActions, IReduxState, MAX_NAME_STRING_LENGTH, Api, ConfigConstant } from '@apitable/core';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { NormalModal, Message, WithTipTextInput } from 'pc/components/common';
 import { verifyTeamName } from '../../utils';

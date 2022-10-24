@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { KONVA_DATASHEET_ID } from '@vikadata/core';
+import { KONVA_DATASHEET_ID } from '@apitable/core';
 import { ICellProps } from '../cell_value';
 import { Rect } from 'pc/components/konva_components';
 import { stopPropagation, KeyCode } from 'pc/utils';

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { composeOperation, composeOperations, ExecuteResult, FieldType, IFieldMap, ILocalChangeset, IOperation, IReduxState, ResourceType, Selectors, StoreActions } from '@vikadata/core';
+import { composeOperation, composeOperations, ExecuteResult, FieldType, IFieldMap, ILocalChangeset, IOperation, IReduxState, ResourceType, Selectors, StoreActions } from '@apitable/core';
 import { INodeCopyRo, INodeDeleteRo } from 'controllers/internal/grpc/grpc.interface';
 import { DatasheetChangesetEntity } from 'entities/datasheet.changeset.entity';
 import { CommonException, OtException, ServerException } from 'exception';

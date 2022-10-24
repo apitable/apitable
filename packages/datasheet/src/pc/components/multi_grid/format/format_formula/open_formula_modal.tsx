@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Provider } from 'react-redux';
 import { Modal } from 'antd';
-import { IField, Strings, t } from '@vikadata/core';
+import { IField, Strings, t } from '@apitable/core';
 import { store } from 'pc/store';
 import { FormulaModal } from './formula_modal';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';

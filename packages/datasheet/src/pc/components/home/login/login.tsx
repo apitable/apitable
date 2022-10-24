@@ -1,5 +1,5 @@
 import { LinkButton, useThemeColors } from '@vikadata/components';
-import { ApiInterface, AutoTestID, ConfigConstant, getCustomConfig, isPrivateDeployment, Navigation, Strings, t } from '@vikadata/core';
+import { ApiInterface, AutoTestID, ConfigConstant, getCustomConfig, isPrivateDeployment, Navigation, Strings, t } from '@apitable/core';
 import { DingdingFilled, FeishuFilled, QqFilled, WechatFilled } from '@vikadata/icons';
 import { configResponsive, useResponsive, useToggle } from 'ahooks';
 import { ScreenSize } from 'pc/components/common/component_display';

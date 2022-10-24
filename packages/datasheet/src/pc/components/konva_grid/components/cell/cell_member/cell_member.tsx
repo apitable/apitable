@@ -1,5 +1,5 @@
 import { getNextShadeColor } from '@vikadata/components';
-import { KONVA_DATASHEET_ID, MemberType } from '@vikadata/core';
+import { KONVA_DATASHEET_ID, MemberType } from '@apitable/core';
 import { AddOutlined, CloseSmallOutlined } from '@vikadata/icons';
 import dynamic from 'next/dynamic';
 import { AvatarSize, AvatarType } from 'pc/components/common';

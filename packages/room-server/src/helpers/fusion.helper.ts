@@ -1,4 +1,4 @@
-import { ConfigConstant, IDPrefix } from '@vikadata/core';
+import { ConfigConstant, IDPrefix } from '@apitable/core';
 import { isJSON } from 'class-validator';
 import { NodeTypeEnum } from 'enums/node.enum';
 

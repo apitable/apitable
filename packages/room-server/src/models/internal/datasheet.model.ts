@@ -4,7 +4,7 @@ import {
   IBaseDatasheetPack, ISnapshot, 
   IUserValue, IUnitValue, IFieldPermissionMap,
   IGetRecords, ResourceType, IViewPack, IViewProperty,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { NodeInfo } from './node.model';
 
 export class ChangesetView implements IRemoteChangeset {

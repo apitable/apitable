@@ -1,7 +1,7 @@
 import { Box, useTheme, ThemeProvider } from '@vikadata/components';
 import { memo } from 'react';
 import { SWRConfig } from 'swr';
-import { Selectors } from '@vikadata/core';
+import { Selectors } from '@apitable/core';
 import { useSelector } from 'react-redux';
 import { RobotContextProvider } from '../robot_context';
 import { RobotList } from '../robot_list';

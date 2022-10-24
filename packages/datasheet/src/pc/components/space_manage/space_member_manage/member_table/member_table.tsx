@@ -3,7 +3,7 @@ import { useRef, FC, useState, ReactText, useLayoutEffect, useEffect } from 'rea
 import * as React from 'react';
 import { Table } from 'antd';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import { IReduxState, ConfigConstant, IMemberInfoInSpace, Strings, t, StoreActions, isIdassPrivateDeployment } from '@vikadata/core';
+import { IReduxState, ConfigConstant, IMemberInfoInSpace, Strings, t, StoreActions, isIdassPrivateDeployment } from '@apitable/core';
 import { Tooltip, Modal } from 'pc/components/common';
 import { ColumnProps } from 'antd/es/table';
 import { isPrimaryOrOwnFunc } from '../utils';

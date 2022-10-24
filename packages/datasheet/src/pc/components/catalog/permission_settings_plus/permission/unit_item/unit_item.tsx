@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { AvatarType, InfoCard } from 'pc/components/common';
 import styles from './style.module.less';
 import { Dropdown } from 'antd';
-import { ConfigConstant, Strings, t } from '@vikadata/core';
+import { ConfigConstant, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
 import { IRoleOption, IUnitItemProps } from './interface';
 import { useThemeColors, Box, Tooltip, Typography, Space } from '@vikadata/components';

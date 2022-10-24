@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { ApiTipConstant, FieldKeyEnum } from '@vikadata/core';
+import { ApiTipConstant, FieldKeyEnum } from '@apitable/core';
 import { Type } from 'class-transformer';
 import { ArrayMaxSize, ArrayNotEmpty, IsEnum, ValidateNested } from 'class-validator';
 import { API_MAX_MODIFY_RECORD_COUNTS } from 'common';

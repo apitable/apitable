@@ -1,5 +1,5 @@
 import { Button, Skeleton } from '@vikadata/components';
-import { Api, ISpaceInfo, Navigation, Settings, StatusCode, Strings, t } from '@vikadata/core';
+import { Api, ISpaceInfo, Navigation, Settings, StatusCode, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
 import parser from 'html-react-parser';

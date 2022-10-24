@@ -1,5 +1,5 @@
 import { useState, FC, useRef, useEffect, useContext, memo } from 'react';
-import { Field, IMeta, IViewColumn, FieldType } from '@vikadata/core';
+import { Field, IMeta, IViewColumn, FieldType } from '@apitable/core';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import { FormField } from './form_field';

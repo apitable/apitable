@@ -1,4 +1,4 @@
-import { Api, ConfigConstant, Navigation, Strings, t } from '@vikadata/core';
+import { Api, ConfigConstant, Navigation, Strings, t } from '@apitable/core';
 import { Spin } from 'antd';
 import { Message } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';

@@ -1,5 +1,5 @@
 import { Button, useThemeColors } from '@vikadata/components';
-import { AutoTestID, DATASHEET_ID, IReduxState, Navigation, Strings, t } from '@vikadata/core';
+import { AutoTestID, DATASHEET_ID, IReduxState, Navigation, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
 import { ButtonPlus, Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';

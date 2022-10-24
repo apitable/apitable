@@ -8,7 +8,7 @@ import {
 import { useThemeColors } from '@vikadata/components';
 import { IHooksParams, IMultiLineItemProps } from '../interface';
 import { calcPercent } from './utils';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 
 export const useOthers = ({ spaceInfo, subscription }: IHooksParams): IMultiLineItemProps[] => {
   const colors = useThemeColors();

@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ApiTipConstant, Field, FieldType, getFieldClass
-  , getFieldTypeByString, getNewId, IAddOpenFieldProperty, IDPrefix, IField, IReduxState } from '@vikadata/core';
+  , getFieldTypeByString, getNewId, IAddOpenFieldProperty, IDPrefix, IField, IReduxState } from '@apitable/core';
 import { IsDefined } from 'class-validator';
 
 export class FieldCreateRo {

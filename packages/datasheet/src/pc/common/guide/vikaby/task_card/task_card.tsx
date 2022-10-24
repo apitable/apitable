@@ -1,5 +1,5 @@
 import { useThemeColors } from '@vikadata/components';
-import { ConfigConstant, IReduxState, StoreActions, Strings, t } from '@vikadata/core';
+import { ConfigConstant, IReduxState, StoreActions, Strings, t } from '@apitable/core';
 import { useToggle } from 'ahooks';
 import classNames from 'classnames';
 import Image from 'next/image';

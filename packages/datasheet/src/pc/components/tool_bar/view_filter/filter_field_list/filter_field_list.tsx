@@ -10,7 +10,7 @@ import {
   Selectors,
   Strings,
   t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import produce from 'immer';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';

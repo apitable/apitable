@@ -1,4 +1,4 @@
-import { ICollaborator, integrateCdnHost, ResourceType, Selectors, Settings } from '@vikadata/core';
+import { ICollaborator, integrateCdnHost, ResourceType, Selectors, Settings } from '@apitable/core';
 import { Popover } from 'antd';
 import uniqBy from 'lodash/uniqBy';
 import { Avatar, AvatarSize, Tooltip, UserCardTrigger } from 'pc/components/common';

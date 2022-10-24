@@ -1,4 +1,4 @@
-import { IWizardsConfig, Api, StoreActions, t, Strings, IUser } from '@vikadata/core';
+import { IWizardsConfig, Api, StoreActions, t, Strings, IUser } from '@apitable/core';
 import { store } from 'pc/store';
 import { difference } from 'lodash';
 import { Message } from 'pc/components/common';

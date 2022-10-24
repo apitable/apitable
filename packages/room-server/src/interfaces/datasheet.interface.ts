@@ -1,4 +1,4 @@
-import { CellFormatEnum, ICellValue, IFieldMap, IRecord, IRecordMap, IViewColumn, IViewRow } from '@vikadata/core';
+import { CellFormatEnum, ICellValue, IFieldMap, IRecord, IRecordMap, IViewColumn, IViewRow } from '@apitable/core';
 
 export interface IApiRecord {
   recordId: string;

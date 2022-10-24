@@ -1,5 +1,5 @@
 import { Box, Button, Space, Typography, useThemeColors } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { useContext } from 'react';
 import { RoleContext } from '../context';
 import styles from './style.module.less';

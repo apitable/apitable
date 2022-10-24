@@ -1,4 +1,4 @@
-import { Api, PREVIEW_DATASHEET_ID, StoreActions } from '@vikadata/core';
+import { Api, PREVIEW_DATASHEET_ID, StoreActions } from '@apitable/core';
 import Router from 'next/router';
 import { Method } from 'pc/components/route_manager/const';
 import { IQuery } from 'pc/components/route_manager/interface';

@@ -1,5 +1,5 @@
 import { ThemeName, ThemeProvider } from '@vikadata/components';
-import { Selectors, StoreActions } from '@vikadata/core';
+import { Selectors, StoreActions } from '@apitable/core';
 import { useKeyPress, useLocalStorageState } from 'ahooks';
 import { SystemTheme } from 'pc/common/theme';
 import { getEnvVariables } from 'pc/utils/env';

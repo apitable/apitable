@@ -4,7 +4,7 @@ import { ConfigConstant, IFieldMap, IFieldPermissionMap, Selectors } from 'core'
 import createCachedSelector from 're-reselect';
 import { createSelector } from 'reselect';
 import { widgetMessage } from 'iframe_message';
-import { IDashboardPack } from '@vikadata/core';
+import { IDashboardPack } from '@apitable/core';
 import { widgetStore } from '../root';
 import { expireCalcCache, refreshCalcCache } from '../calc_cache/action';
 

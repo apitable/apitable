@@ -1,6 +1,6 @@
 import { RecordCommentEntity } from 'entities/record.comment.entity';
 import { EntityRepository, Repository } from 'typeorm';
-import { ICommentMsg } from '@vikadata/core';
+import { ICommentMsg } from '@apitable/core';
 
 @EntityRepository(RecordCommentEntity)
 export class RecordCommentRepository extends Repository<RecordCommentEntity> {

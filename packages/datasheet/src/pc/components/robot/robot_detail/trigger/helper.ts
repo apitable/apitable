@@ -1,4 +1,4 @@
-import { Field, FOperator, IExpressionOperand, IField, IFieldMap, IViewColumn, OperandTypeEnums, OperatorEnums, t, Strings } from '@vikadata/core';
+import { Field, FOperator, IExpressionOperand, IField, IFieldMap, IViewColumn, OperandTypeEnums, OperatorEnums, t, Strings } from '@apitable/core';
 import produce from 'immer';
 
 export const getFields = (columns: IViewColumn[], fieldMap: IFieldMap) => {

@@ -1,4 +1,4 @@
-import { IFieldRanges, StoreActions, ICell, Selectors, DATASHEET_ID, IRange, IViewRow, IViewColumn } from '@vikadata/core';
+import { IFieldRanges, StoreActions, ICell, Selectors, DATASHEET_ID, IRange, IViewRow, IViewColumn } from '@apitable/core';
 import { store } from 'pc/store';
 import { MouseDownType } from 'pc/components/selection_wrapper';
 import _ from 'lodash';

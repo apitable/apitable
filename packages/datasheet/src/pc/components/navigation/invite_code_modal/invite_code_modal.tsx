@@ -3,7 +3,7 @@ import { Modal } from 'pc/components/common/modal/modal/modal';
 import { FC } from 'react';
 import * as React from 'react';
 import styles from './style.module.less';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import { useSelector } from 'react-redux';
 import { MyInviteCode } from './my-invite-code';
 import { SubmitInviteCode } from './submit-invite-code';

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import * as React from 'react';
-import { IGridViewColumn, Selectors } from '@vikadata/core';
+import { IGridViewColumn, Selectors } from '@apitable/core';
 import styles from './styles.module.less';
 import { OPERATE_COLUMN_WIDTH } from '../cell';
 

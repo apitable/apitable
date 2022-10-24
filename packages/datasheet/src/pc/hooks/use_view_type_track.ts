@@ -1,5 +1,5 @@
 import { tracker } from 'pc/utils/tracker';
-import { TrackEvents, Selectors, ViewType } from '@vikadata/core';
+import { TrackEvents, Selectors, ViewType } from '@apitable/core';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 

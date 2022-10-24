@@ -1,4 +1,4 @@
-import { ConfigConstant, Selectors } from '@vikadata/core';
+import { ConfigConstant, Selectors } from '@apitable/core';
 import classNames from 'classnames';
 import { Emoji } from 'pc/components/common/emoji';
 import * as React from 'react';

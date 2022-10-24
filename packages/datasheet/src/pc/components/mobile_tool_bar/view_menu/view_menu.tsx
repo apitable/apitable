@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import styles from './style.module.less';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { ViewSwitcher } from 'pc/components/tool_bar/mobile/view_switcher';

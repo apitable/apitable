@@ -1,4 +1,4 @@
-import { Selectors } from '@vikadata/core';
+import { Selectors } from '@apitable/core';
 import { WecomOpenDataType } from 'pc/components/address_list';
 import { useState, useEffect } from 'react';
 import { isObject } from 'lodash';

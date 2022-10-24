@@ -1,4 +1,4 @@
-import { IOperation, ResourceType } from '@vikadata/core';
+import { IOperation, ResourceType } from '@apitable/core';
 import { IdWorker } from 'helpers/snowflake';
 import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
 

@@ -1,4 +1,4 @@
-import { Field, IField, ISelectField, isSelectField, moveArrayElement, SelectField, Selectors, Strings, t } from '@vikadata/core';
+import { Field, IField, ISelectField, isSelectField, moveArrayElement, SelectField, Selectors, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import produce from 'immer';
 import { Message } from 'pc/components/common';

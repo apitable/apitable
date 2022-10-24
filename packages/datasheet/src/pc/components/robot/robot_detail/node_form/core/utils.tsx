@@ -1,4 +1,4 @@
-import { data2Operand, EmptyNullOperand, getObjectOperandProperty, isArrayOperand, isObjectOperand, mergeOperand } from '@vikadata/core';
+import { data2Operand, EmptyNullOperand, getObjectOperandProperty, isArrayOperand, isObjectOperand, mergeOperand } from '@apitable/core';
 import { JSONSchema7 } from 'json-schema';
 import mergeAllOf from 'json-schema-merge-allof';
 import jsonpointer from 'jsonpointer';

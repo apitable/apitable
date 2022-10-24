@@ -1,5 +1,5 @@
 import { Typography, useThemeColors } from '@vikadata/components';
-import { FieldGroup, FieldType, FieldTypeDescriptionMap, Strings, t } from '@vikadata/core';
+import { FieldGroup, FieldType, FieldTypeDescriptionMap, Strings, t } from '@apitable/core';
 import { useMount, useSize, useUnmount } from 'ahooks';
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';

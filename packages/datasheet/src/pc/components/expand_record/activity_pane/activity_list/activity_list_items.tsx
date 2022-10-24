@@ -3,7 +3,7 @@ import { LinkButton, Typography, useThemeColors } from '@vikadata/components';
 import {
   Api, CollaCommandName, ConfigConstant, DatasheetApi, IActivityListParams, ICommentMsg, IJOTAction, integrateCdnHost, IRemoteChangeset, MemberType,
   OPEventNameEnums, OtherTypeUnitId, ResourceType, Selectors, Settings, StoreActions, Strings, t, WithOptional,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { Spin } from 'antd';
 import axios, { CancelTokenSource } from 'axios';
 import { clone, find, get, has, isEmpty, keyBy, set, toPairs, uniq, values } from 'lodash';

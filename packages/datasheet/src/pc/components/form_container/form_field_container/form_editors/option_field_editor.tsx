@@ -6,7 +6,7 @@ import { Radio, Checkbox } from 'antd';
 import { OptionTag } from 'pc/components/list';
 import { IBaseEditorProps, IEditor } from 'pc/components/editors/interface';
 import { useState } from 'react';
-import { FieldType, t, Strings, ICellValue } from '@vikadata/core';
+import { FieldType, t, Strings, ICellValue } from '@apitable/core';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
 

@@ -7,7 +7,7 @@ import { KonvaGridViewContext } from 'pc/components/konva_grid/context';
 import { Icon, ToolTip } from 'pc/components/konva_components';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-import { Selectors, CollaCommandName, t, Strings, KONVA_DATASHEET_ID, ConfigConstant } from '@vikadata/core';
+import { Selectors, CollaCommandName, t, Strings, KONVA_DATASHEET_ID, ConfigConstant } from '@apitable/core';
 import { getRecordName } from 'pc/components/expand_record';
 import { lightColors, Message } from '@vikadata/components';
 import { Text, autoSizerCanvas } from 'pc/components/konva_components';

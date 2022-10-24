@@ -1,4 +1,4 @@
-import { Api, ConfigConstant, INode, IReduxState, Navigation, StoreActions, Strings, t, TEMPLATE_CENTER_ID } from '@vikadata/core';
+import { Api, ConfigConstant, INode, IReduxState, Navigation, StoreActions, Strings, t, TEMPLATE_CENTER_ID } from '@apitable/core';
 import { Checkbox, TreeSelect } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { BaseModal } from 'pc/components/common';

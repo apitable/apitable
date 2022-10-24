@@ -1,4 +1,4 @@
-import { Api, Url } from '@vikadata/core';
+import { Api, Url } from '@apitable/core';
 import axios from 'axios';
 import { TemplateRecommendContext } from 'context/template_recommend';
 import { NextPageContext } from 'next';

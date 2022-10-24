@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import * as React from 'react';
-import { Field, Strings, t, Selectors, ICreatedTimeField, ILastModifiedTimeField } from '@vikadata/core';
+import { Field, Strings, t, Selectors, ICreatedTimeField, ILastModifiedTimeField } from '@apitable/core';
 import { store } from 'pc/store';
 import styles from './styles.module.less';
 import classNames from 'classnames';

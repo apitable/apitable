@@ -1,4 +1,4 @@
-import { IAttachmentValue } from '@vikadata/core';
+import { IAttachmentValue } from '@apitable/core';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { FC, useEffect, useRef } from 'react';

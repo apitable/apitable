@@ -1,7 +1,7 @@
 import { memo, useRef } from 'react';
 import styles from './styles.module.less';
 import RcTrigger from 'rc-trigger';
-import { IViewProperty, t, Strings } from '@vikadata/core';
+import { IViewProperty, t, Strings } from '@apitable/core';
 import classNames from 'classnames';
 import settingStyles from '../../field_setting/styles.module.less';
 import { Switch } from 'antd';

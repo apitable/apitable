@@ -1,6 +1,6 @@
 import {
   DatasheetApi, integrateCdnHost, IUuids, MemberType, OtherTypeUnitId, RowHeightLevel, Selectors, Settings, StoreActions, Strings, t
-} from '@vikadata/core';
+} from '@apitable/core';
 import { store } from 'pc/store';
 import classNames from 'classnames';
 import keyBy from 'lodash/keyBy';

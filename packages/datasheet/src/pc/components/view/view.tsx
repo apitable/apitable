@@ -1,5 +1,5 @@
 import { ContextMenu, Message, useThemeColors } from '@vikadata/components';
-import { ConfigConstant, IReduxState, Selectors, StoreActions, Strings, SystemConfig, t, ViewType } from '@vikadata/core';
+import { ConfigConstant, IReduxState, Selectors, StoreActions, Strings, SystemConfig, t, ViewType } from '@apitable/core';
 import { ArrowDownOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, EditDescribeOutlined, EditOutlined, HideFilled } from '@vikadata/icons';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';

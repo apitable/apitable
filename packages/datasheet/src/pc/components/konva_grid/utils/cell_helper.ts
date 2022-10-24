@@ -36,7 +36,7 @@ import {
   SymbolAlign,
   t,
   ViewType,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { keyBy, sortBy } from 'lodash';
 import LRU from 'lru-cache';
 import { AvatarSize, AvatarType } from 'pc/components/common';

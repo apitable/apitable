@@ -6,7 +6,7 @@
  * @Last Modified by:   Kelly Peilin Chan (kelly@vikadata.com)
  * @Last Modified time: 2020-03-11 21:05:29
  */
-import { StoreActions, IWizardsConfig, Api, ConfigConstant } from '@vikadata/core';
+import { StoreActions, IWizardsConfig, Api, ConfigConstant } from '@apitable/core';
 import { store } from 'pc/store';
 import { batchActions } from 'redux-batched-actions';
 import {

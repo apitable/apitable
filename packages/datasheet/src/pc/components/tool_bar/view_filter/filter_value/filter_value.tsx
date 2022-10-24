@@ -2,7 +2,7 @@ import {
   assertNever,
   Field, FieldType, FOperator,
   IField
-} from '@vikadata/core';
+} from '@apitable/core';
 import { useDebounceFn } from 'ahooks';
 import { Input } from 'antd';
 import produce from 'immer';

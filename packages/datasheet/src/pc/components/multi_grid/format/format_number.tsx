@@ -15,7 +15,7 @@ import {
   SymbolAlign,
   INumberFieldProperty,
   DefaultCommaStyle,
-} from '@vikadata/core';
+} from '@apitable/core';
 import styles from './styles.module.less';
 import { Select, Switch } from '@vikadata/components';
 import { SelectValue } from 'antd/lib/select';

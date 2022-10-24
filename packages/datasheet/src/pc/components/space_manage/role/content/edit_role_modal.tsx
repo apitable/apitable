@@ -1,6 +1,6 @@
 import { Box, TextInput, Typography, useThemeColors } from '@vikadata/components';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { useState } from 'react';
 import ReactDOM from 'react-dom';
 

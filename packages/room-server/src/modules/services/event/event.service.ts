@@ -9,7 +9,7 @@ import {
   IEventInstance,
   IOPEvent,
   clearComputeCache,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { InjectLogger } from 'common';
 import { getRecordUrl } from 'helpers/env';
 import { AutomationTriggerRepository } from 'modules/repository/automation.trigger.repository';

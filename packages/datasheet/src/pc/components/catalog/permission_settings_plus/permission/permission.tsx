@@ -1,5 +1,5 @@
 import { Box, IOption, Skeleton } from '@vikadata/components';
-import { Api, ConfigConstant, INodePermissionData, INodeRoleMap, IReduxState, IUnitValue, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, ConfigConstant, INodePermissionData, INodeRoleMap, IReduxState, IUnitValue, StoreActions, Strings, t } from '@apitable/core';
 import { useToggle } from 'ahooks';
 import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
 import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';

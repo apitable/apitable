@@ -1,5 +1,5 @@
 import { Button } from '@vikadata/components';
-import { ConfigConstant, Strings, t } from '@vikadata/core';
+import { ConfigConstant, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import parser from 'html-react-parser';
 import { ButtonPlus, Emoji } from 'pc/components/common';

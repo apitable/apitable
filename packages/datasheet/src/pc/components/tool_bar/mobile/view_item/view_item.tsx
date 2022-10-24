@@ -1,5 +1,5 @@
 import { useThemeColors } from '@vikadata/components';
-import { IViewProperty, Selectors, StoreActions, Strings, t } from '@vikadata/core';
+import { IViewProperty, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { DragOutlined } from '@vikadata/icons';
 import { Message } from 'pc/components/common';
 import { Modal } from 'pc/components/common/mobile/modal';

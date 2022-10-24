@@ -1,4 +1,4 @@
-import { Field, IAttachmentValue, IField, Selectors, ViewType } from '@vikadata/core';
+import { Field, IAttachmentValue, IField, Selectors, ViewType } from '@apitable/core';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { DisplayFile } from 'pc/components/display_file';

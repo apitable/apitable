@@ -13,7 +13,7 @@ import {
   Strings,
   SystemConfig,
   t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { NoticeTemplatesConstant, NotificationTemplates } from 'pc/components/notification/utils';
 import { UnitTag } from 'pc/components/catalog/permission_settings/permission/select_unit_modal/unit_tag';
 import { UserCardTrigger } from 'pc/components/common';

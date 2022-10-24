@@ -1,4 +1,4 @@
-import { IUnitValue, IUserValue, MemberType } from '@vikadata/core';
+import { IUnitValue, IUserValue, MemberType } from '@apitable/core';
 import dynamic from 'next/dynamic';
 import { AvatarSize, AvatarType } from 'pc/components/common';
 import { Rect, Text } from 'pc/components/konva_components';

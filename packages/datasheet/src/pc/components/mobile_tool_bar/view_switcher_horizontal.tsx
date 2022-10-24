@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { Selectors } from '@vikadata/core';
+import { Selectors } from '@apitable/core';
 import classNames from 'classnames';
 import { changeView } from 'pc/hooks';
 import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';

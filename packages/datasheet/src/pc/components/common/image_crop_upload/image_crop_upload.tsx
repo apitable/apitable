@@ -1,5 +1,5 @@
 import { Button, TextButton, useThemeColors } from '@vikadata/components';
-import { ConfigConstant, CutMethod, getImageThumbSrc, integrateCdnHost, Strings, t } from '@vikadata/core';
+import { ConfigConstant, CutMethod, getImageThumbSrc, integrateCdnHost, Strings, t } from '@apitable/core';
 import { Col, Row, Tabs, Upload } from 'antd';
 import { RowProps } from 'antd/lib/row';
 import classNames from 'classnames';

@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Typography } from '@vikadata/components';
 import styles from './style.module.less';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { LanguageSetting } from './language_setting';
 import { ThemeSetting } from './theme_setting';
 import { RecordVisionSetting } from './record_vision_setting';

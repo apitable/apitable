@@ -1,7 +1,7 @@
 import { Remote } from 'comlink';
 import { Store, AnyAction, Dispatch } from 'redux';
 import { store as localStore } from '../../store';
-import { DispatchToStore } from '@vikadata/core';
+import { DispatchToStore } from '@apitable/core';
 
 export * from './store_worker';
 

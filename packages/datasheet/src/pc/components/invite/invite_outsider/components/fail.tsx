@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import WarnIcon from 'static/icon/common/common_tip_default_small.svg';
 import styles from './style.module.less';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 
 interface IErrorContentProps {
   err?: string;

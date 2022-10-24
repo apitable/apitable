@@ -1,5 +1,5 @@
 import { Loading, Message } from '@vikadata/components';
-import { Api, Strings, t } from '@vikadata/core';
+import { Api, Strings, t } from '@apitable/core';
 import { DefaultFilled } from '@vikadata/icons';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import * as React from 'react';

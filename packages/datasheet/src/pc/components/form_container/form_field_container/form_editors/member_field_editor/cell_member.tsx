@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import * as React from 'react';
-import { IUnitIds, MemberField, IUnitMap, IUserMap, Selectors, Api, StoreActions } from '@vikadata/core';
+import { IUnitIds, MemberField, IUnitMap, IUserMap, Selectors, Api, StoreActions } from '@apitable/core';
 import styles from './style.module.less';
 import optionalStyle from 'pc/components/multi_grid/cell/optional_cell_container/style.module.less';
 import { useThemeColors } from '@vikadata/components';

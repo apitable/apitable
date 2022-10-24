@@ -1,5 +1,5 @@
 import { lightColors } from '@vikadata/components';
-import { DATASHEET_ID, ICollaborator, ICollaboratorCursor, stringHash2Number, Strings, t } from '@vikadata/core';
+import { DATASHEET_ID, ICollaborator, ICollaboratorCursor, stringHash2Number, Strings, t } from '@apitable/core';
 import { Tooltip } from 'antd';
 import { Avatar, AvatarSize } from 'pc/components/common';
 import { store } from 'pc/store';

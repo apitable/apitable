@@ -1,4 +1,4 @@
-import { cellValueToImageSrc, IAttachmentValue, IImageSrcOption, isImage, isPdf, isWebp, Settings } from '@vikadata/core';
+import { cellValueToImageSrc, IAttachmentValue, IImageSrcOption, isImage, isPdf, isWebp, Settings } from '@apitable/core';
 import accept from 'attr-accept';
 import Bowser from 'bowser';
 import mime from 'mime-types';

@@ -1,4 +1,4 @@
-import { Api, Navigation, StoreActions } from '@vikadata/core';
+import { Api, Navigation, StoreActions } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { Loading } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';

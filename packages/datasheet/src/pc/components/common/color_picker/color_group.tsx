@@ -1,5 +1,5 @@
 import { useThemeColors } from '@vikadata/components';
-import { ISelectFieldOption, Selectors } from '@vikadata/core';
+import { ISelectFieldOption, Selectors } from '@apitable/core';
 import classNames from 'classnames';
 import { setColor } from 'pc/components/multi_grid/format';
 import { rgbaToHex, stopPropagation } from 'pc/utils';

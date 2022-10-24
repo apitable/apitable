@@ -1,4 +1,4 @@
-import { Api, StoreActions } from '@vikadata/core';
+import { Api, StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
 
 let folderId: string | undefined;

@@ -1,4 +1,4 @@
-import { Selectors, FieldType, CollaCommandName, t, Strings, ExecuteResult } from '@vikadata/core';
+import { Selectors, FieldType, CollaCommandName, t, Strings, ExecuteResult } from '@apitable/core';
 import { store } from 'pc/store';
 import { deleteLinkFieldConfirm } from './delete_link_field_confirm';
 import { Modal } from 'pc/components/common';

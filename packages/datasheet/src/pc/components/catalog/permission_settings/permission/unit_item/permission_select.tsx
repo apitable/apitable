@@ -5,7 +5,7 @@ import styles from './style.module.less';
 import classNames from 'classnames';
 import classnames from 'classnames';
 import { CheckOutlined, WarnFilled } from '@vikadata/icons';
-import { ConfigConstant, Strings, t } from '@vikadata/core';
+import { ConfigConstant, Strings, t } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
 import PulldownIcon from 'static/icon/common/common_icon_pulldown_line.svg';

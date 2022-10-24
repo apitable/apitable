@@ -21,7 +21,7 @@ import {
   ResourceType,
   Selectors,
   StoreActions
-} from '@vikadata/core';
+} from '@apitable/core';
 import { InjectLogger } from 'common';
 import { applyMiddleware, createStore, Store } from 'redux';
 import { batchDispatchMiddleware } from 'redux-batched-actions';

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Field, FieldType, IEventInstance, IOPEvent, IReduxState, IRemoteChangeset, IRoleMember
-  , ISnapshot, IViewProperty, IViewRow, OP2Event, OPEventManager, OPEventNameEnums, OTActionName, Selectors, truncateText } from '@vikadata/core';
+  , ISnapshot, IViewProperty, IViewRow, OP2Event, OPEventManager, OPEventNameEnums, OTActionName, Selectors, truncateText } from '@apitable/core';
 import { InjectLogger } from 'common';
 import { DatasheetRecordSubscriptionEntity } from 'entities/datasheet.record.subscription.entity';
 import { IdWorker } from 'helpers/snowflake';

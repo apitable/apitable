@@ -1,4 +1,4 @@
-import { CellType, DATASHEET_ID, RecordMoveType, Selectors, Strings, t } from '@vikadata/core';
+import { CellType, DATASHEET_ID, RecordMoveType, Selectors, Strings, t } from '@apitable/core';
 import { Tooltip } from 'antd';
 import { useThemeColors } from '@vikadata/components';
 import { useEffect, useRef, useState } from 'react';

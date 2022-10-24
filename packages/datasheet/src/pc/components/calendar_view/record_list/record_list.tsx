@@ -6,7 +6,7 @@ import { DropList } from './drop_list';
 import styles from './styles.module.less';
 import { CalendarContext } from '../calendar_context';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
-import { CollaCommandName, ExecuteResult, t, Strings } from '@vikadata/core';
+import { CollaCommandName, ExecuteResult, t, Strings } from '@apitable/core';
 import { resourceService } from 'pc/resource_service';
 import { RecordMenu } from 'pc/components/multi_grid/context_menu/record_menu';
 import { useUnmount } from 'ahooks';

@@ -1,6 +1,6 @@
 import { getDiffOriginalCount } from 'pc/components/gantt_view';
 import { originalChange } from './date';
-import { ISetRecordOptions, Selectors, fastCloneDeep } from '@vikadata/core';
+import { ISetRecordOptions, Selectors, fastCloneDeep } from '@apitable/core';
 import { getAllTaskLine, getAllCycleDAG } from './task_line';
 
 interface ISourceRecordData {

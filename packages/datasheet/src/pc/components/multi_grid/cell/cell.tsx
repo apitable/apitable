@@ -3,7 +3,7 @@ import {
   ILinearRowRecord,
   ILinearRow,
   RecordMoveType, Selectors, Strings, t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { GridChildComponentProps } from '@vikadata/react-window';
 import classNames from 'classnames';
 import { PropsWithChildren } from 'react';

@@ -1,4 +1,4 @@
-import { FieldKeyEnum, IFieldMap, IReduxState, ISnapshot, IViewProperty, IViewRow } from '@vikadata/core';
+import { FieldKeyEnum, IFieldMap, IReduxState, ISnapshot, IViewProperty, IViewRow } from '@apitable/core';
 import { RecordQueryRo } from 'model/ro/fusion/record.query.ro';
 import { Store } from 'redux';
 

@@ -1,4 +1,4 @@
-import { ApiInterface, ConfigConstant, Strings, t } from '@vikadata/core';
+import { ApiInterface, ConfigConstant, Strings, t } from '@apitable/core';
 import parser from 'html-react-parser';
 import { Wrapper } from 'pc/components/common';
 import { useQuery, useUserRequest } from 'pc/hooks';

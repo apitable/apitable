@@ -1,4 +1,4 @@
-import { IAttachmentValue } from '@vikadata/core';
+import { IAttachmentValue } from '@apitable/core';
 
 export type ITranslatePosition = { x: number; y: number };
 

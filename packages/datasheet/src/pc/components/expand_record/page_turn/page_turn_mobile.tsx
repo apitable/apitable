@@ -1,4 +1,4 @@
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { LinkButton, colorVars } from '@vikadata/components';
 
 import IconNext from 'static/icon/datasheet/activity/datasheet_icon_activity_under.svg';

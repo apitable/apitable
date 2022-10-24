@@ -1,4 +1,4 @@
-import { FieldType, getTextFieldType, KONVA_DATASHEET_ID, SegmentType, Field, ISegment } from '@vikadata/core';
+import { FieldType, getTextFieldType, KONVA_DATASHEET_ID, SegmentType, Field, ISegment } from '@apitable/core';
 import { ColumnEmailNonzeroFilled, ColumnPhoneFilled, ColumnUrlOutlined } from '@vikadata/icons';
 import { Icon, Text } from 'pc/components/konva_components';
 import { ICellProps, KonvaGridContext } from 'pc/components/konva_grid';

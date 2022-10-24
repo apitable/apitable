@@ -1,6 +1,6 @@
 
 import { useTheme } from '@vikadata/components';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import { useMemo } from 'react';
 import { ITriggerType } from '../../interface';
 import { mutate } from 'swr';

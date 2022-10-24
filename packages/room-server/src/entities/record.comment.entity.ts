@@ -1,6 +1,6 @@
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from 'entities/base.entity';
-import { ICommentMsg } from '@vikadata/core';
+import { ICommentMsg } from '@apitable/core';
 
 /**
  * 工作台-数据表格表

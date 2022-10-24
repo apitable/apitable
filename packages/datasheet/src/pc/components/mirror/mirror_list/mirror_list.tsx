@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import { Api, ConfigConstant, DATASHEET_ID, Selectors, Strings, t } from '@vikadata/core';
+import { Api, ConfigConstant, DATASHEET_ID, Selectors, Strings, t } from '@apitable/core';
 import styles from './style.module.less';
 import classnames from 'classnames';
 import { useThemeColors } from '@vikadata/components';

@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import InfoIcon from 'static/icon/common/common_icon_information.svg';
 import { Checkbox } from 'antd';
-import { Strings, t, IReduxState } from '@vikadata/core';
+import { Strings, t, IReduxState } from '@apitable/core';
 import styles from './style.module.less';
 import { Tooltip } from 'pc/components/common';
 import { useSelector } from 'react-redux';

@@ -13,7 +13,7 @@ import {
   t,
   Strings,
   isIdassPrivateDeployment
-} from '@vikadata/core';
+} from '@apitable/core';
 import { ContextMenuTrigger, ContextMenu, MenuItem } from 'react-contextmenu';
 import { expandInviteModal } from 'pc/components/invite';
 import styles from './style.module.less';

@@ -1,7 +1,7 @@
 import { ITableData } from './table_data';
 import { CsvDelimiter, parseCsv } from './csv_parser';
 import { parseHtml } from './html_parser';
-import { FieldType, IField, IStandardValue, IStandardValueTable, escapeHtml } from '@vikadata/core';
+import { FieldType, IField, IStandardValue, IStandardValueTable, escapeHtml } from '@apitable/core';
 
 const DATASHEET_CLASS = 'vika-datasheet';
 

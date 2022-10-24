@@ -10,7 +10,7 @@ import { MoreTool } from './more_tool';
 import { ViewSwitcherHorizontal } from './view_switcher_horizontal';
 import { ViewMenu } from './view_menu/view_menu';
 import { useNetwork } from 'pc/hooks/use_network';
-import { ResourceType, Selectors, ViewType } from '@vikadata/core';
+import { ResourceType, Selectors, ViewType } from '@apitable/core';
 import { useSelector } from 'react-redux';
 import { Find } from './find';
 import { ScreenSize } from '../common/component_display';

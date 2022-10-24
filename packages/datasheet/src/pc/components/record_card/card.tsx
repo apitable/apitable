@@ -1,4 +1,4 @@
-import { IViewColumn, Selectors } from '@vikadata/core';
+import { IViewColumn, Selectors } from '@apitable/core';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { CardBody } from './card_body';

@@ -2,7 +2,7 @@ import { FC, useMemo } from 'react';
 import * as React from 'react';
 import styles from './style.module.less';
 import classNames from 'classnames';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import { Progress } from 'antd';
 import { PercentOutlined } from '@vikadata/icons';
 import { CardTitle } from '../../ui';

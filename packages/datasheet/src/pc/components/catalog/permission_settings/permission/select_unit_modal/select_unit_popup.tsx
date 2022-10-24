@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { ISelectUnitLeftProps, SelectUnitLeft } from './select_unit_left';
 import styles from './style.module.less';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import InviteIcon from 'static/icon/space/space_icon_invite.svg';
 import { expandInviteModal } from 'pc/components/invite';
 import { Button } from '@vikadata/components';

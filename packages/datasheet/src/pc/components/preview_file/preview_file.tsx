@@ -1,5 +1,5 @@
 import { stopPropagation, ThemeProvider } from '@vikadata/components';
-import { FieldType, handleNullArray, IAttachmentValue, IReduxState, Selectors, Settings, StoreActions } from '@vikadata/core';
+import { FieldType, handleNullArray, IAttachmentValue, IReduxState, Selectors, Settings, StoreActions } from '@apitable/core';
 import { useKeyPress, useMount, useToggle, useUnmount } from 'ahooks';
 import classNames from 'classnames';
 import { ContextName, ShortcutContext } from 'pc/common/shortcut_key';

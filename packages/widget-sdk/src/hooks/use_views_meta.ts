@@ -6,7 +6,7 @@ import { getWidgetDatasheet } from 'store';
 import { useContext } from 'react';
 import { WidgetContext } from 'context';
 import { useMeta } from 'hooks/use_meta';
-import { Selectors } from '@vikadata/core';
+import { Selectors } from '@apitable/core';
 
 /** @internal */
 export const viewSelector = (state: IWidgetState, datasheetId?: string) => {

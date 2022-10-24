@@ -1,5 +1,5 @@
 import { Button } from '@vikadata/components';
-import { IReduxState, Navigation, Strings, t } from '@vikadata/core';
+import { IReduxState, Navigation, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
 import parser from 'html-react-parser';

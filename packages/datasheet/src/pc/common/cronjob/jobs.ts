@@ -1,4 +1,4 @@
-import { dataSelfHelper } from '@vikadata/core';
+import { dataSelfHelper } from '@apitable/core';
 import { loadRecords } from 'pc/utils/load_records';
 import { getDstNetworkData } from './helper';
 

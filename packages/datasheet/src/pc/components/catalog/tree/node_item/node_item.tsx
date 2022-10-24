@@ -1,7 +1,7 @@
 import { FC, useContext, useEffect } from 'react';
 import * as React from 'react';
 import styles from './style.module.less';
-import { ConfigConstant, INodesMapItem, StoreActions, Strings, t } from '@vikadata/core';
+import { ConfigConstant, INodesMapItem, StoreActions, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
 import { useDispatch } from 'react-redux';
 import { useCatalogTreeRequest, useResponsive } from 'pc/hooks';

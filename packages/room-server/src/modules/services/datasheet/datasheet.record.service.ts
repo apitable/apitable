@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Field, FieldType, IMeta, IRecord, IRecordMap, IReduxState } from '@vikadata/core';
+import { Field, FieldType, IMeta, IRecord, IRecordMap, IReduxState } from '@apitable/core';
 import { DatasheetRecordEntity } from 'entities/datasheet.record.entity';
 import { RecordHistoryTypeEnum } from 'enums/record.history.enum';
 import { get, isEmpty, keyBy, orderBy } from 'lodash';

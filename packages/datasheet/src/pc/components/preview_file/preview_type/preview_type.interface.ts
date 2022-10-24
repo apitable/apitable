@@ -1,4 +1,4 @@
-import { IAttachmentValue, IUserInfo } from '@vikadata/core';
+import { IAttachmentValue, IUserInfo } from '@apitable/core';
 import { ITransFormInfo } from '../preview_file.interface';
 
 export interface IPreviewTypeBase {

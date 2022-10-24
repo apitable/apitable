@@ -11,7 +11,7 @@ import {
   StoreActions,
   Strings,
   t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { Col, Row } from 'antd';
 import { TemplateListContext } from 'context/template_list';
 import parser from 'html-react-parser';

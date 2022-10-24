@@ -1,5 +1,5 @@
 import { TextButton, useThemeColors } from '@vikadata/components';
-import { ConfigConstant, ResourceType, Selectors, Strings, t } from '@vikadata/core';
+import { ConfigConstant, ResourceType, Selectors, Strings, t } from '@apitable/core';
 import { NetworkStatus } from 'pc/components/network_status';
 import { CollaboratorStatus } from 'pc/components/tab_bar/collaboration_status';
 import { expandWidgetCenter, InstallPosition } from 'pc/components/widget/widget_center';

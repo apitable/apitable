@@ -5,7 +5,7 @@ import styles from './style.module.less';
 import { Avatar, Tooltip } from 'pc/components/common';
 import { AvatarSize, AvatarType } from 'pc/components/common/avatar';
 import { shallowEqual, useSelector } from 'react-redux';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import { Typography } from '@vikadata/components';
 import { Message } from 'pc/components/common';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';

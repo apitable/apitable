@@ -13,7 +13,7 @@ import {
   Strings,
   t,
   ViewType,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { DragOutlined, EditDescribeOutlined, InformationSmallOutlined } from '@vikadata/icons';
 import { Switch, Tooltip } from 'antd';
 import classNames from 'classnames';

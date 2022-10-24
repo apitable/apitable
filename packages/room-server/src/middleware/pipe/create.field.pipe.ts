@@ -1,6 +1,6 @@
 import { Injectable, PipeTransform } from '@nestjs/common';
 import { getFieldTypeByString, getNewId, IDPrefix
-  , getFieldClass, IField, Field, IReduxState } from '@vikadata/core';
+  , getFieldClass, IField, Field, IReduxState } from '@apitable/core';
 import { ApiTipIdEnum } from 'enums/string.enum';
 import { ApiException } from 'exception';
 import { FieldCreateRo } from 'model/ro/fusion/field.create.ro';

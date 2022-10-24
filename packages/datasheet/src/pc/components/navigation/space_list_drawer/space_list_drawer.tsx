@@ -7,7 +7,7 @@ import { useThemeColors } from '@vikadata/components';
 import { useResponsive } from 'pc/hooks';
 import classnames from 'classnames';
 import { ScreenSize } from 'pc/components/common/component_display';
-import { t, Strings, Player, Events } from '@vikadata/core';
+import { t, Strings, Player, Events } from '@apitable/core';
 import { useEffect } from 'react';
 
 export interface ISpaceListDrawerProps {

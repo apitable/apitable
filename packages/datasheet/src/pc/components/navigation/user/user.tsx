@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { ScreenSize, ComponentDisplay } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { useSelector, shallowEqual } from 'react-redux';
-import { IReduxState } from '@vikadata/core';
+import { IReduxState } from '@apitable/core';
 import { Avatar, AvatarSize } from 'pc/components/common';
 import { AccountCenterModal } from '../account_center_modal';
 import styles from './style.module.less';

@@ -1,4 +1,4 @@
-import { validateMagicForm } from '@vikadata/core';
+import { validateMagicForm } from '@apitable/core';
 import Ajv from 'ajv';
 import { JSONSchema7 } from 'json-schema';
 import toPath from 'lodash/toPath';

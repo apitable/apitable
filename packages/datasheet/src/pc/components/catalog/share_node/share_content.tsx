@@ -5,7 +5,7 @@ import cls from 'classnames';
 import {
   Api, ConfigConstant, INodeRoleMap,
   IUnitValue, Settings, StoreActions, Strings, t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { IOption, Skeleton, Typography } from '@vikadata/components';
 import { InformationSmallOutlined, ChevronRightOutlined } from '@vikadata/icons';
 import { NodeChangeInfoType, useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';

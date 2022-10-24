@@ -1,4 +1,4 @@
-import { CellType } from '@vikadata/core';
+import { CellType } from '@apitable/core';
 import { Rect } from 'pc/components/konva_components';
 import {
   GRID_BOTTOM_STAT_HEIGHT, GRID_GROUP_OFFSET, GRID_GROUP_STAT_HEIGHT, GRID_ROW_HEAD_WIDTH, GridCoordinate, KonvaGridContext, KonvaGridViewContext

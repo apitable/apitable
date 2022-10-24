@@ -1,5 +1,5 @@
 import { Alert } from '@vikadata/components';
-import { IReduxState, StoreActions, Strings, t } from '@vikadata/core';
+import { IReduxState, StoreActions, Strings, t } from '@apitable/core';
 import Image from 'next/image';
 import { Tooltip } from 'pc/components/common';
 import * as React from 'react';

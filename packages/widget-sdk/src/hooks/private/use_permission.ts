@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { IWidgetContext } from 'interface';
 import { WidgetContext } from '../../context';
 import { useMeta } from 'hooks/use_meta';
-import { Selectors } from '@vikadata/core';
+import { Selectors } from '@apitable/core';
 
 /**
  * 小程序的创建、删除、重命名、位置变更等权限都是依附于小程序所在的数表或者仪表盘。这些操作的权限判断在顶层已经处理过。

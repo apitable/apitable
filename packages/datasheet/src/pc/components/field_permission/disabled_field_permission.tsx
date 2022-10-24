@@ -1,5 +1,5 @@
 import { Button, Message } from '@vikadata/components';
-import { DatasheetApi, Selectors, Strings, t } from '@vikadata/core';
+import { DatasheetApi, Selectors, Strings, t } from '@apitable/core';
 import Image from 'next/image';
 import { triggerUsageAlert } from 'pc/common/billing';
 import { Modal } from 'pc/components/common';

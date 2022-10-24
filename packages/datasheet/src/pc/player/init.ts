@@ -1,5 +1,5 @@
 
-import { Player, Selectors, StoreActions, SystemConfig } from '@vikadata/core';
+import { Player, Selectors, StoreActions, SystemConfig } from '@apitable/core';
 import { store } from 'pc/store';
 import { startActions, TriggerCommands } from '../common/apphook/trigger_commands';
 import { isEventStateMatch, isRulesPassed, isTimeRulePassed } from './rules';

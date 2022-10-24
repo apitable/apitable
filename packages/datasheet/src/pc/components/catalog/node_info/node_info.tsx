@@ -6,7 +6,7 @@ import styles from './styles.module.less';
 import { Avatar, AvatarSize } from 'pc/components/common/avatar';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useRequest } from 'pc/hooks';
-import { Api, Strings, t } from '@vikadata/core';
+import { Api, Strings, t } from '@apitable/core';
 import { Skeleton } from '@vikadata/components';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display/enum';

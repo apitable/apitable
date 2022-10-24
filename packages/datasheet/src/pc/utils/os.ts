@@ -1,4 +1,4 @@
-import { ConfigConstant } from '@vikadata/core';
+import { ConfigConstant } from '@apitable/core';
 import { isMobileApp } from './env';
 
 export const isWindowsOS = () => {

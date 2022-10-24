@@ -1,4 +1,4 @@
-import { IServerFormPack, IFormSnapshot, ISourceDatasheetInfo, IPermissions } from '@vikadata/core';
+import { IServerFormPack, IFormSnapshot, ISourceDatasheetInfo, IPermissions } from '@apitable/core';
 import { FieldPermissionMap } from './datasheet.model';
 import { NodeInfo } from './node.model';
 

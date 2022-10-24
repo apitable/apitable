@@ -1,4 +1,4 @@
-import { ConfigConstant } from '@vikadata/core';
+import { ConfigConstant } from '@apitable/core';
 import { BaseModal, Logo } from 'pc/components/common';
 import { Login } from 'pc/components/home/login';
 import { FC } from 'react';

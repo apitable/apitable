@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, useThemeColors } from '@vikadata/components';
-import { IUserInfo, Navigation, Strings, t } from '@vikadata/core';
+import { IUserInfo, Navigation, Strings, t } from '@apitable/core';
 import { NewtabOutlined } from '@vikadata/icons';
 import classnames from 'classnames';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';

@@ -1,4 +1,4 @@
-import { IParent } from '@vikadata/core';
+import { IParent } from '@apitable/core';
 import { Breadcrumb } from 'antd';
 import { HorizontalScroll } from 'pc/components/common';
 import styles from 'pc/components/datasheet_search_panel/style.module.less';

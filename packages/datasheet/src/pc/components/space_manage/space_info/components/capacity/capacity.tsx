@@ -1,7 +1,7 @@
 import { FC, useMemo } from 'react';
 import styles from './style.module.less';
 import { Progress } from 'antd';
-import { byteMGArr, byteMG, normalByteMGArr, Strings, t } from '@vikadata/core';
+import { byteMGArr, byteMG, normalByteMGArr, Strings, t } from '@apitable/core';
 import { CardTitle, InfoHighlightTitle } from '../../ui';
 import { Typography, TextButton, useThemeColors, Skeleton } from '@vikadata/components';
 import { getPercent } from '../../utils';

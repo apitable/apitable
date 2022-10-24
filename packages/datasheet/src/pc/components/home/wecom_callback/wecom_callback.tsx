@@ -1,5 +1,5 @@
 import { Message } from '@vikadata/components';
-import { Api, Navigation, Strings, t } from '@vikadata/core';
+import { Api, Navigation, Strings, t } from '@apitable/core';
 import { Spin } from 'antd';
 import { Router } from 'pc/components/route_manager/router';
 import { useQuery } from 'pc/hooks';

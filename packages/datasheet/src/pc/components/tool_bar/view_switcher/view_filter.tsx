@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { IViewProperty, t, Strings } from '@vikadata/core';
+import { IViewProperty, t, Strings } from '@apitable/core';
 import { ViewItem } from './view_item';
 import styles from './style.module.less';
 

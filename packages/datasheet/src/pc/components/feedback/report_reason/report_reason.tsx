@@ -1,5 +1,5 @@
 import { Button } from '@vikadata/components';
-import { Api, Strings, t } from '@vikadata/core';
+import { Api, Strings, t } from '@apitable/core';
 import { useClickAway } from 'ahooks';
 import { Radio } from 'antd';
 import Image from 'next/image';

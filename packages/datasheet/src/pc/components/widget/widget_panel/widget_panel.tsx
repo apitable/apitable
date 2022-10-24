@@ -1,5 +1,5 @@
 import { Button, IconButton, Skeleton } from '@vikadata/components';
-import { Events, integrateCdnHost, IWidgetPanelStatus, Player, ResourceType, Selectors, Settings, Strings, t } from '@vikadata/core';
+import { Events, integrateCdnHost, IWidgetPanelStatus, Player, ResourceType, Selectors, Settings, Strings, t } from '@apitable/core';
 import { CloseLargeOutlined } from '@vikadata/icons';
 import { useMount } from 'ahooks';
 import Image from 'next/image';

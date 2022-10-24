@@ -1,5 +1,5 @@
 import { useThemeColors } from '@vikadata/components';
-import { Navigation, StoreActions, Strings, t } from '@vikadata/core';
+import { Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { Tooltip } from 'antd';
 import path from 'path-browserify';
 import { Method } from 'pc/components/route_manager/const';

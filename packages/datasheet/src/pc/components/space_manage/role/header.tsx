@@ -1,5 +1,5 @@
 import { Box, Typography, useThemeColors } from '@vikadata/components';
-import { Settings, Strings, t } from '@vikadata/core';
+import { Settings, Strings, t } from '@apitable/core';
 import { InformationSmallOutlined } from '@vikadata/icons';
 
 export const Header = () => {

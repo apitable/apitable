@@ -3,7 +3,7 @@ import styles from './style.module.less';
 import { useThemeColors } from '@vikadata/components';
 import classnames from 'classnames';
 import { Tooltip } from 'pc/components/common';
-import { ISelectFieldOption, Selectors, ThemeName } from '@vikadata/core';
+import { ISelectFieldOption, Selectors, ThemeName } from '@apitable/core';
 import { setColor } from 'pc/components/multi_grid/format';
 import { COLOR_INDEX_THRESHOLD } from 'pc/utils';
 import { useSelector } from 'react-redux';

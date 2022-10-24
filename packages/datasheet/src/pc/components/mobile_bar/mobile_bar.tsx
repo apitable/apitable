@@ -1,5 +1,5 @@
 import { useThemeColors } from '@vikadata/components';
-import { Selectors, Strings, t } from '@vikadata/core';
+import { Selectors, Strings, t } from '@apitable/core';
 import { useRouter } from 'next/router';
 import { useSideBarVisible } from 'pc/hooks';
 import * as React from 'react';

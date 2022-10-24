@@ -18,7 +18,7 @@ import {
   StoreActions,
   Strings,
   t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { useKeyPress } from 'ahooks';
 import { Input } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';

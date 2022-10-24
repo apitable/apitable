@@ -1,4 +1,4 @@
-import { Field, ICellValue, IField, Navigation, StoreActions, Strings, t } from '@vikadata/core';
+import { Field, ICellValue, IField, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { debounce } from 'lodash';
 import { EXPAND_RECORD } from 'pc/components/expand_record/expand_record.enum';
 import { Router } from 'pc/components/route_manager/router';

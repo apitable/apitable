@@ -2,7 +2,7 @@ import {
   ActionConstants, CacheManager, EventAtomTypeEnums, EventRealTypeEnums, EventSourceTypeEnums, ExpCache, Field, FieldType,
   JOTApply, OPEventNameEnums, ResourceType, Selectors,
   StoreActions, WhyRecordMoveType
-} from '@vikadata/core';
+} from '@apitable/core';
 import { mainWidgetMessage, ResourceService } from '@vikadata/widget-sdk';
 import produce, { current } from 'immer';
 import { debounce, difference } from 'lodash';

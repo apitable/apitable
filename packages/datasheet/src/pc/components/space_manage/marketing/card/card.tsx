@@ -1,5 +1,5 @@
 import { Button, Typography } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import * as React from 'react';
 import { useContext, useState } from 'react';
 import { MarketingContext } from '../context';

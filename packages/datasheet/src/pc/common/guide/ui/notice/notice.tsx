@@ -1,5 +1,5 @@
 import { Button, ThemeProvider } from '@vikadata/components';
-import { Selectors, TrackEvents } from '@vikadata/core';
+import { Selectors, TrackEvents } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { ComponentDisplay } from 'pc/components/common/component_display';
 import { ScreenSize } from 'pc/components/common/component_display/enum';

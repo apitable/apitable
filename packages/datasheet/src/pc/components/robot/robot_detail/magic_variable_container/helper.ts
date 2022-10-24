@@ -2,7 +2,7 @@ import {
   IExpression, IExpressionOperand, IField, InputParser, IOperand,
   MagicVariableParser, OperandTypeEnums, OperatorEnums,
   ACTION_INPUT_PARSER_BASE_FUNCTIONS, EmptyNullOperand, IFieldPermissionMap, Strings, t
-} from '@vikadata/core';
+} from '@apitable/core';
 import produce from 'immer';
 import { Transforms, Selection } from 'slate';
 import { ReactEditor } from 'slate-react';

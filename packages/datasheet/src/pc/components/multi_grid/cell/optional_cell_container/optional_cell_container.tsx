@@ -1,4 +1,4 @@
-import { RowHeightLevel } from '@vikadata/core';
+import { RowHeightLevel } from '@apitable/core';
 import classNames from 'classnames';
 import * as React from 'react';
 import styles from './style.module.less';

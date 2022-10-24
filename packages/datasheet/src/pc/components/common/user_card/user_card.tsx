@@ -1,5 +1,5 @@
 import { Typography, useThemeColors } from '@vikadata/components';
-import { Api, ConfigConstant, IRoleMember, IShareSettings, Selectors, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, ConfigConstant, IRoleMember, IShareSettings, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { SettingOutlined } from '@vikadata/icons';
 import { Avatar, Loading, Tag } from 'pc/components/common';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';

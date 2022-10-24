@@ -8,7 +8,7 @@ import JoinCommunityIcon from 'static/icon/common/group.svg';
 import { ButtonPlus, MobileContextMenu, Modal } from 'pc/components/common';
 import styles from './style.module.less';
 import RcTrigger from 'rc-trigger';
-import { t, Strings, Settings } from '@vikadata/core';
+import { t, Strings, Settings } from '@apitable/core';
 import { ContextmenuItem } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { InformationSmallOutlined } from '@vikadata/icons';

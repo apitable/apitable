@@ -1,4 +1,4 @@
-import { getNewId, IDPrefix } from '@vikadata/core';
+import { getNewId, IDPrefix } from '@apitable/core';
 
 export class DatasheetDescriptionDto {
   type: string;

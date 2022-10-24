@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 import styles from './styles.module.less';
 import cls from 'classnames';
 import { useUnmount } from 'ahooks';
-import { Selectors, Strings, t } from '@vikadata/core';
+import { Selectors, Strings, t } from '@apitable/core';
 import { store } from 'pc/store';
 import { Message } from 'pc/components/common';
 interface IDrag {

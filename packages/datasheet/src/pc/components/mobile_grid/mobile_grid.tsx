@@ -1,7 +1,7 @@
 import { useCallback, useRef, useEffect, useState } from 'react';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import { DATASHEET_ID, Field, FieldOperateType, IReduxState, Selectors, StoreActions } from '@vikadata/core';
+import { DATASHEET_ID, Field, FieldOperateType, IReduxState, Selectors, StoreActions } from '@apitable/core';
 import styles from './styles.module.less';
 import {
   VariableSizeList as List,

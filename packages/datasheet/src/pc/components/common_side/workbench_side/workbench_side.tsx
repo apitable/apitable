@@ -2,7 +2,7 @@ import { IconButton, Typography, useContextMenu, useThemeColors } from '@vikadat
 import {
   ConfigConstant, IReduxState, IRightClickInfo, isIdassPrivateDeployment, Navigation, Selectors, shallowEqual, StoreActions, Strings, t,
   WORKBENCH_SIDE_ID,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { AddOutlined, FavoriteFilled, SearchOutlined, TitleWorkFilled } from '@vikadata/icons';
 import { Collapse } from 'antd';
 import classnames from 'classnames';

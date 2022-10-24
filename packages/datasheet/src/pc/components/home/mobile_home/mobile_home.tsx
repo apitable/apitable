@@ -1,5 +1,5 @@
 import { LinkButton, useThemeColors } from '@vikadata/components';
-import { integrateCdnHost, Settings, Strings, t } from '@vikadata/core';
+import { integrateCdnHost, Settings, Strings, t } from '@apitable/core';
 import { Space } from 'antd';
 import Image from 'next/image';
 import { useQuery } from 'pc/hooks';

@@ -1,7 +1,7 @@
 /**
  * https://www.notion.so/vikadata/9ac1f271807f4d99a30c1b5cae32437a
  */
-import { CollaCommandName, ExecuteResult, Field, ICellValue, IReduxState, Selectors, StoreActions, ViewType } from '@vikadata/core';
+import { CollaCommandName, ExecuteResult, Field, ICellValue, IReduxState, Selectors, StoreActions, ViewType } from '@apitable/core';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';

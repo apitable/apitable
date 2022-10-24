@@ -6,7 +6,7 @@ import {
   DEFAULT_POINT_POSITION, GRID_BOTTOM_STAT_HEIGHT, GRID_ROW_HEAD_WIDTH, GRID_GROUP_ADD_FIELD_BUTTON_WIDTH
 } from 'pc/components/konva_grid';
 import { DEFAULT_SCROLL_STATE, getLinearRowHeight } from 'pc/components/gantt_view';
-import { CellType, IGridViewProperty, ILinearRow, IViewColumn, RowHeightLevel, Selectors, ViewType } from '@vikadata/core';
+import { CellType, IGridViewProperty, ILinearRow, IViewColumn, RowHeightLevel, Selectors, ViewType } from '@apitable/core';
 
 export const getRowIndicesMap = (linearRows: ILinearRow[], rowHeight: number, viewType: ViewType = ViewType.Grid) => {
   const rowIndicesMap: IndicesMap = {};

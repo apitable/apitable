@@ -1,4 +1,4 @@
-import { ConfigConstant, t, Strings } from '@vikadata/core';
+import { ConfigConstant, t, Strings } from '@apitable/core';
 import { Rate } from 'pc/components/common/rate';
 import { forwardRef, memo, useCallback, useImperativeHandle, useRef, useState } from 'react';
 import * as React from 'react';

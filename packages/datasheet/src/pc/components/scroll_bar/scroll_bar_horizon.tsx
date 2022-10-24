@@ -5,7 +5,7 @@ import styles from './style.module.less';
 import { IScrollBarProps, ScrollBarDirection, IScrollBarHorizon } from './scroll_bar.interface';
 import { isMobile } from 'react-device-detect';
 import { Tooltip } from 'antd';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { usePrevious } from 'ahooks';
 
 export const ScrollBarHorizon: React.FC<IScrollBarProps & IScrollBarHorizon> = props => {

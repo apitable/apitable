@@ -1,5 +1,5 @@
 import { useContextMenu } from '@vikadata/components';
-import { Api, Events, getLanguage, IApi, IReduxState, Player, ScreenWidth, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, Events, getLanguage, IApi, IReduxState, Player, ScreenWidth, StoreActions, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
 import { subscribeUsageCheck } from 'pc/common/billing/subscribe_usage_check';

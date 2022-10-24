@@ -1,4 +1,4 @@
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { ArgsProps } from 'antd/lib/notification';
 import { ButtonPlus } from 'pc/components/common/button_plus/button_plus';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';

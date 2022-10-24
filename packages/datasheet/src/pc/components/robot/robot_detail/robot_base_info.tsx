@@ -1,4 +1,4 @@
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import { Avatar, Box, Switch, TextInput, Typography, useTheme } from '@vikadata/components';
 import Image from 'next/image';
 import * as React from 'react';

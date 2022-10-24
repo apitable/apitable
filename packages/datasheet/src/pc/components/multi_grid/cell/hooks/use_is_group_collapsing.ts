@@ -1,4 +1,4 @@
-import { CellType, ILinearRow, Selectors } from '@vikadata/core';
+import { CellType, ILinearRow, Selectors } from '@apitable/core';
 import { useSelector } from 'react-redux';
 
 export const useIsGroupCollapsing = (row: ILinearRow) => {

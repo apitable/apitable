@@ -1,4 +1,4 @@
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import { Message } from 'pc/components/common/message/message';
 import React from 'react';

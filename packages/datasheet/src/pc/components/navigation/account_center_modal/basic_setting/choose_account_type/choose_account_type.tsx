@@ -1,5 +1,5 @@
 import { Typography, useThemeColors } from '@vikadata/components';
-import { hiddenMobile, integrateCdnHost, Settings, Strings, t } from '@vikadata/core';
+import { hiddenMobile, integrateCdnHost, Settings, Strings, t } from '@apitable/core';
 import { Radio, Space } from 'antd';
 import classNames from 'classnames';
 import Image from 'next/image';

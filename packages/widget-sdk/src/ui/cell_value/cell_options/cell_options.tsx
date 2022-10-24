@@ -1,5 +1,5 @@
 import React from 'react';
-import { ISelectFieldBaseOpenValue } from '@vikadata/core';
+import { ISelectFieldBaseOpenValue } from '@apitable/core';
 import { black } from '@vikadata/components';
 import { compact, find } from 'lodash';
 import { OptionItemStyled, OptionsWrapperStyled } from './styled';

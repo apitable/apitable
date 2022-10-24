@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IPermissions } from '@vikadata/core';
+import { IPermissions } from '@apitable/core';
 import { InjectLogger } from 'common';
 import { DatasheetException } from 'exception';
 import { IFetchDataOriginOptions, IAuthHeader } from 'interfaces';

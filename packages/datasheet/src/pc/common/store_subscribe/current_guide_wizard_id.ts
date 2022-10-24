@@ -1,4 +1,4 @@
-import { StoreActions } from '@vikadata/core';
+import { StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
 import { getWizardInfo } from 'pc/common/guide/utils';
 import { startActions } from 'pc/common/apphook/trigger_commands';

@@ -1,4 +1,4 @@
-import { Api, INoticeDetail, Navigation, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, INoticeDetail, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { triggerUsageAlert } from 'pc/common/billing';
 import { Message } from 'pc/components/common';
 import { PublishControllers } from 'pc/components/notification/publish';

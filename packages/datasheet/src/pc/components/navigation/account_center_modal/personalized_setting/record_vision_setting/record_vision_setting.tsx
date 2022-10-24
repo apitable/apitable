@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Select, Typography } from '@vikadata/components';
 import styles from './style.module.less';
-import { RecordVision, StoreActions, Strings, t, TrackEvents } from '@vikadata/core';
+import { RecordVision, StoreActions, Strings, t, TrackEvents } from '@apitable/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { setStorage, StorageMethod, StorageName } from 'pc/utils/storage';
 import { tracker } from 'pc/utils/tracker';

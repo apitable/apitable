@@ -1,4 +1,4 @@
-import { Selectors, IReduxState, StoreActions } from '@vikadata/core';
+import { Selectors, IReduxState, StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
 
 export const getDatasheetOrLoad = (

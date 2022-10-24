@@ -1,4 +1,4 @@
-import { Selectors, ScreenWidth } from '@vikadata/core';
+import { Selectors, ScreenWidth } from '@apitable/core';
 import { store } from 'pc/store';
 import dayjs from 'dayjs';
 import * as dot from 'dot-object';

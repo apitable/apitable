@@ -25,7 +25,7 @@ import {
   ISetRecordOptions,
   LinkFieldSet,
   IGanttViewStatus,
-} from '@vikadata/core';
+} from '@apitable/core';
 import {
   CloseMiddleOutlined,
   InformationSmallOutlined,

@@ -1,4 +1,4 @@
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { PopStructureContext } from 'pc/components/editors/pop_structure/context';

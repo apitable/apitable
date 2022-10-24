@@ -3,7 +3,7 @@ import { black, ContextMenu as ContextMenuList, deepPurple, IContextMenuClickSta
 import {
   Api, CollaCommandName, ConfigConstant, DATASHEET_ID, DatasheetActions, ExecuteResult, getMaxViewCountPerSheet, getUniqName, IPermissions,
   IViewProperty, Selectors, StoreActions, Strings, t, ViewType
-} from '@vikadata/core';
+} from '@apitable/core';
 import { AutosaveOutlined, CalenderRightOutlined, LockNonzeroOutlined } from '@vikadata/icons';
 import { Modal as ModalComponent, Spin } from 'antd';
 import { triggerUsageAlert } from 'pc/common/billing';

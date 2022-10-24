@@ -1,5 +1,5 @@
 import { Box, Typography, useTheme, IconButton } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { ErrorFilled, RunFilled, SuccessFilled } from '@vikadata/icons';
 import { timeFormatter } from 'pc/utils';
 import { useState } from 'react';

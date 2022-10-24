@@ -1,4 +1,4 @@
-import { FieldType, RowHeight, Selectors, Strings, t, ViewType } from '@vikadata/core';
+import { FieldType, RowHeight, Selectors, Strings, t, ViewType } from '@apitable/core';
 import dynamic from 'next/dynamic';
 import { getRecordName } from 'pc/components/expand_record';
 import { GanttCoordinate } from 'pc/components/gantt_view';

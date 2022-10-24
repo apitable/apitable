@@ -1,4 +1,4 @@
-import { getCustomConfig, HomeId, Navigation, Strings, t } from '@vikadata/core';
+import { getCustomConfig, HomeId, Navigation, Strings, t } from '@apitable/core';
 import { MobileDingdingFilled, MobileFeishuFilled, MobileQqFilled, MobileWechatFilled, MobileWecomFilled } from '@vikadata/icons';
 import { Space } from 'antd';
 import classnames from 'classnames';

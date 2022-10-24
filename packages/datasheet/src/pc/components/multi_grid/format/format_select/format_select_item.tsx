@@ -1,4 +1,4 @@
-import { IField, ISelectField, ISelectFieldOption } from '@vikadata/core';
+import { IField, ISelectField, ISelectFieldOption } from '@apitable/core';
 import { Input } from 'antd';
 import classNames from 'classnames';
 import produce from 'immer';

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import * as React from 'react';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import styles from './style.module.less';
 

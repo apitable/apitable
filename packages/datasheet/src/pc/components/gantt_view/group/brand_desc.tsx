@@ -1,4 +1,4 @@
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { LogoPurpleFilled, LogoTextEnFilled, LogoTextFilled } from '@vikadata/icons';
 import dynamic from 'next/dynamic';
 import { EXPORT_IMAGE_PADDING } from 'pc/components/gantt_view/constant';

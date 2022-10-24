@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { OmittedMiddleText } from './omitted_middle_text';
 import { UserCardTrigger } from 'pc/components/common/user_card/user_card_trigger';
 import { TriggerProps } from 'rc-trigger';
-import { MemberType } from '@vikadata/core';
+import { MemberType } from '@apitable/core';
 import MemberIcon from 'static/icon/space/space_icon_account.svg';
 import { getThemeColors } from '@vikadata/components';
 

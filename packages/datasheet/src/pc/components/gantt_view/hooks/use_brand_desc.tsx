@@ -1,5 +1,5 @@
 import { getThemeName, ThemeName } from '@vikadata/components';
-import { getLanguage } from '@vikadata/core';
+import { getLanguage } from '@apitable/core';
 import dynamic from 'next/dynamic';
 import { KonvaGridContext } from 'pc/components/konva_grid';
 import { useContext, useMemo } from 'react';

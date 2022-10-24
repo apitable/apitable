@@ -1,6 +1,6 @@
 import { Button, Message, TextInput, Typography } from '@vikadata/components';
-import { ConfigConstant, Strings, t } from '@vikadata/core';
-import { setUsedInviteReward } from '@vikadata/core/dist/store/actions';
+import { ConfigConstant, Strings, t } from '@apitable/core';
+import { setUsedInviteReward } from '@apitable/core/dist/store/actions';
 import Image from 'next/image';
 import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
 import { WithTipWrapper } from 'pc/components/common';

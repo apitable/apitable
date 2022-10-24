@@ -1,4 +1,4 @@
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import Image from 'next/image';
 import { FC } from 'react';
 import SearchImage from 'static/icon/common/common_img_search_default.png';

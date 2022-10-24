@@ -1,5 +1,5 @@
 import { Button, LinkButton, TextButton, Typography, useThemeColors } from '@vikadata/components';
-import { Api, IReduxState, Settings, Strings, t } from '@vikadata/core';
+import { Api, IReduxState, Settings, Strings, t } from '@apitable/core';
 import { SettingOutlined } from '@vikadata/icons';
 import Image from 'next/image';
 import { triggerUsageAlert } from 'pc/common/billing';

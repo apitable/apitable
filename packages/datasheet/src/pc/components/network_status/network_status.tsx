@@ -5,7 +5,7 @@ import SyncAnimationJson from 'static/json/datasheet_icon_sync.json';
 import OfflineAnimationJson from 'static/json/datasheet_icon_offline.json';
 import OnlineAnimationJson from 'static/json/datasheet_icon_online.json';
 import { useMount } from 'ahooks';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import { Tooltip } from '../common';
 
 export enum Network {

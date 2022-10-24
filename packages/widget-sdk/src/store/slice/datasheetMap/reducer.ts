@@ -1,4 +1,4 @@
-import { REFRESH_SNAPSHOT } from '@vikadata/core/dist/store/action_constants';
+import { REFRESH_SNAPSHOT } from '@apitable/core/dist/store/action_constants';
 import { datasheet } from 'core';
 import { IDatasheetMap } from 'interface';
 import { AnyAction } from 'redux';

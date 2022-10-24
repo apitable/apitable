@@ -1,4 +1,4 @@
-import { IUnitMap } from '@vikadata/core';
+import { IUnitMap } from '@apitable/core';
 import { createContext } from 'react';
 
 interface ICommentEmoji {

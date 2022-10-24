@@ -1,5 +1,5 @@
 import { useClickAway } from 'ahooks';
-import { Selectors, t, Strings } from '@vikadata/core';
+import { Selectors, t, Strings } from '@apitable/core';
 import RcTrigger from 'rc-trigger';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';

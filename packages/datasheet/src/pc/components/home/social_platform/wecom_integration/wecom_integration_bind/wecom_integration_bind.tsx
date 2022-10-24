@@ -1,5 +1,5 @@
 import { Button, Checkbox, LinkButton, Loading, useThemeColors } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { ChevronLeftOutlined } from '@vikadata/icons';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import * as React from 'react';

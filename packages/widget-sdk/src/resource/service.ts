@@ -1,4 +1,4 @@
-import { Url } from '@vikadata/core';
+import { Url } from '@apitable/core';
 import {
   CollaCommandManager, ComputeRefManager, Engine, Events, IError, IJOTAction, IOperation, IReduxState, IResourceOpsCollect, OP2Event, OPEventManager,
   OPEventNameEnums, Player, ResourceStashManager, ResourceType, RoomService, Selectors, StoreActions, Strings, t, TrackEvents, UndoManager

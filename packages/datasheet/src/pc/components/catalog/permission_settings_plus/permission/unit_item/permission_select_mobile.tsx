@@ -5,7 +5,7 @@ import styles from './style.module.less';
 import classNames from 'classnames';
 import classnames from 'classnames';
 import { CheckOutlined } from '@vikadata/icons';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { MobileSelect } from 'pc/components/common';
 
 interface IPermissionSelectProps {

@@ -1,4 +1,4 @@
-import { Api, Navigation, StatusCode, Strings, t } from '@vikadata/core';
+import { Api, Navigation, StatusCode, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { Loading, Message, Modal } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';

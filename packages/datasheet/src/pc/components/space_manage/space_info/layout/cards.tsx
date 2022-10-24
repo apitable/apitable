@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { t, Strings, isPrivateDeployment } from '@vikadata/core';
+import { t, Strings, isPrivateDeployment } from '@apitable/core';
 import { ILayoutProps } from '../interface';
 import { Info, LevelCard, Card, MultiLineCard, CapacityWithRewardCard } from '../components';
 import { Advert } from '../ui';

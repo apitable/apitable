@@ -1,6 +1,6 @@
 import {
   BasicValueType, CellType, Field, FieldType, IField, KONVA_DATASHEET_ID, LOOKUP_VALUE_FUNC_SET, Range, RollUpFuncType, Selectors, Strings, t
-} from '@vikadata/core';
+} from '@apitable/core';
 import { KonvaEventObject } from 'konva/lib/Node';
 import { isEqual } from 'lodash';
 import dynamic from 'next/dynamic';

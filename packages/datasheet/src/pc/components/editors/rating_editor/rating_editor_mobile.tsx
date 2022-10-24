@@ -1,4 +1,4 @@
-import { ConfigConstant } from '@vikadata/core';
+import { ConfigConstant } from '@apitable/core';
 import { Rate } from 'pc/components/common/rate';
 import { memo } from 'react';
 import * as React from 'react';
@@ -8,8 +8,8 @@ import IconArrow from 'static/icon/common/common_icon_pulldown_line.svg';
 import { useThemeColors } from '@vikadata/components';
 import { useState } from 'react';
 import { RateItem } from './rate_item';
-import { t } from '@vikadata/core';
-import { Strings } from '@vikadata/core';
+import { t } from '@apitable/core';
+import { Strings } from '@apitable/core';
 import { Popup } from 'pc/components/common/mobile/popup';
 import classNames from 'classnames';
 

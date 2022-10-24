@@ -1,5 +1,5 @@
 import { Typography, useThemeColors } from '@vikadata/components';
-import { ConfigConstant, integrateCdnHost, IReduxState, Settings, Strings, t } from '@vikadata/core';
+import { ConfigConstant, integrateCdnHost, IReduxState, Settings, Strings, t } from '@apitable/core';
 import { EyeNormalOutlined } from '@vikadata/icons';
 import Image from 'next/image';
 import Link from 'next/link';

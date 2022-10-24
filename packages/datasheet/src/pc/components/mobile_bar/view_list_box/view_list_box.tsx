@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { Selectors, t, Strings } from '@vikadata/core';
+import { Selectors, t, Strings } from '@apitable/core';
 import styles from './style.module.less';
 import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import classNames from 'classnames';

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import styles from './style.module.less';
-import { Selectors } from '@vikadata/core';
+import { Selectors } from '@apitable/core';
 import { store } from 'pc/store';
 import { Provider, useSelector } from 'react-redux';
 import { PopupContent } from 'pc/components/tab_bar/view_sync_switch/popup_content';

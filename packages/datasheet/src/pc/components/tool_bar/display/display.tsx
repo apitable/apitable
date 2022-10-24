@@ -4,7 +4,7 @@ import RcTrigger, { TriggerProps } from 'rc-trigger';
 import { ToolHandleType, HideFieldType } from '../interface';
 import { ChangeRowHeight } from '../change_row_height';
 import { useSelector, useDispatch } from 'react-redux';
-import { Selectors, StoreActions, Strings, t, ViewType } from '@vikadata/core';
+import { Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
 import { IUseListenTriggerInfo } from '@vikadata/components';
 import { ViewFilter } from '../view_filter';
 import { ViewSort, ViewGroup } from '../view_sort_and_group';

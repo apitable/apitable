@@ -8,7 +8,7 @@ import {
   t,
   Strings,
   isIdassPrivateDeployment
-} from '@vikadata/core';
+} from '@apitable/core';
 import { Button, Alert } from '@vikadata/components';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { Tooltip, Modal } from 'pc/components/common';

@@ -1,4 +1,4 @@
-import { Settings } from '@vikadata/core';
+import { Settings } from '@apitable/core';
 
 export const buildSpaceCertSheetUrl = (spaceId: string) => {
   const formUrlTemplate = Settings.space_corp_cert_url.value;

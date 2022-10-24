@@ -1,4 +1,4 @@
-import { Field, FieldType, IField, IMemberField, ISelectField, Selectors, SingleSelectField, Strings, t } from '@vikadata/core';
+import { Field, FieldType, IField, IMemberField, ISelectField, Selectors, SingleSelectField, Strings, t } from '@apitable/core';
 import produce from 'immer';
 import { size } from 'lodash';
 import { useState } from 'react';

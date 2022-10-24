@@ -9,7 +9,7 @@ import {
   ILookUpValue,
   isImage,
   Selectors,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { compact } from 'lodash';
 import Image from 'next/image';
 import { ScreenSize } from 'pc/components/common/component_display';

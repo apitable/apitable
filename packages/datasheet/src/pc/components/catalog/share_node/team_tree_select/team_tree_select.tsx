@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from 'react';
 import * as React from 'react';
-import { ConfigConstant, ITeamTreeNode, Strings, t } from '@vikadata/core';
+import { ConfigConstant, ITeamTreeNode, Strings, t } from '@apitable/core';
 import PulldownIcon from 'static/icon/common/common_icon_pulldown_line.svg';
 import { useRequest } from 'pc/hooks';
 import produce from 'immer';

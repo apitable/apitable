@@ -4,7 +4,7 @@ import {
   IMultiSelectedIds, ISegment, IUnitIds,
   RollUpFuncType, Strings, t, Selectors, RowHeightLevel, ICellValue, handleNullArray,
   IDateTimeField,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { store } from 'pc/store';
 import { Tooltip } from 'antd';
 import { CellAttachment } from 'pc/components/multi_grid/cell/cell_attachment';

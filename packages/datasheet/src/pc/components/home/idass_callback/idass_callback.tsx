@@ -1,4 +1,4 @@
-import { Api, Navigation, Strings, t } from '@vikadata/core';
+import { Api, Navigation, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { Spin } from 'antd';
 import { Message } from 'pc/components/common';

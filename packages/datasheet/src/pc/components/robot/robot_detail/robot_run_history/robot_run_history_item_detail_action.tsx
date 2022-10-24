@@ -1,5 +1,5 @@
 import { Box } from '@vikadata/components';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import produce from 'immer';
 import { INodeType, IRobotRunHistoryDetail } from '../../interface';
 // import webhookOutputJsonSchema from '../node_form/data/webhook_output.json';

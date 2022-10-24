@@ -1,4 +1,4 @@
-import { DATASHEET_ID } from '@vikadata/core';
+import { DATASHEET_ID } from '@apitable/core';
 import { FC } from 'react';
 import style from './style.module.less';
 

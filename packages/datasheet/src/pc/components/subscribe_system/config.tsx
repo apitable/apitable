@@ -1,5 +1,5 @@
 import { colorVars } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { EnterpriseFilled, GoldFilled, SilverFilled } from '@vikadata/icons';
 import { ReactNode } from 'react';
 import EnterPrise from 'static/icon/enterprise_bj@2x.png';

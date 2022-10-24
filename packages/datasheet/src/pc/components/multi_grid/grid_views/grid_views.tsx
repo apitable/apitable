@@ -1,6 +1,6 @@
 import {
   CellType, Events, IGridViewColumn, IGridViewProperty, ILinearRow, Player, RowHeight, Selectors, StoreActions, ViewType
-} from '@vikadata/core';
+} from '@apitable/core';
 import { GridOnScrollProps, VariableSizeGrid as Grid } from '@vikadata/react-window';
 import { useMount, useUpdateEffect } from 'ahooks';
 import { browser } from 'pc/common/browser';

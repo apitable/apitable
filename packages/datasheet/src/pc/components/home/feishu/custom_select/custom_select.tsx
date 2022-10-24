@@ -6,7 +6,7 @@ import { useCallback } from 'react';
 import * as React from 'react';
 import IconArrow from 'static/icon/common/common_icon_pulldown_line.svg';
 import styles from './style.module.less';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 const { Option } = Select;
 
 interface ICustomSelect extends SelectProps<any> {

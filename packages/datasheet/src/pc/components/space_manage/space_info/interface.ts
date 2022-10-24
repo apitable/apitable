@@ -1,4 +1,4 @@
-import { ISpaceBasicInfo, ISpaceFeatures, ISubscription } from '@vikadata/core';
+import { ISpaceBasicInfo, ISpaceFeatures, ISubscription } from '@apitable/core';
 import { CSSProperties } from 'styled-components';
 
 export enum LevelType {

@@ -1,5 +1,5 @@
 import { store } from 'pc/store';
-import { Selectors, visibleRowsBaseCacheManage } from '@vikadata/core';
+import { Selectors, visibleRowsBaseCacheManage } from '@apitable/core';
 import { mainWidgetMessage } from '@vikadata/widget-sdk';
 import { getDependenceDstIds } from 'pc/common/billing';
 

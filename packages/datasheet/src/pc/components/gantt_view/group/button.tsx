@@ -1,4 +1,4 @@
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import dynamic from 'next/dynamic';
 import { GANTT_TAB_BAR_HEIGHT } from 'pc/components/gantt_view/constant';
 import { Rect, Text } from 'pc/components/konva_components';

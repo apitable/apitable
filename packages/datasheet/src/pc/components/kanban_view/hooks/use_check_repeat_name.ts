@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { Selectors, Strings, t } from '@vikadata/core';
+import { Selectors, Strings, t } from '@apitable/core';
 import { useState } from 'react';
 
 export const useCheckRepeatName = () => {

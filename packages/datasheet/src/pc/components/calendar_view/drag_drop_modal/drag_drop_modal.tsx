@@ -1,5 +1,5 @@
 import { memo, useContext, useRef, useState } from 'react';
-import { Selectors, t, Strings } from '@vikadata/core';
+import { Selectors, t, Strings } from '@apitable/core';
 import { ExpandRecordOutlined } from '@vikadata/icons';
 import { Typography, IconButton } from '@vikadata/components';
 import { useSelector } from 'react-redux';

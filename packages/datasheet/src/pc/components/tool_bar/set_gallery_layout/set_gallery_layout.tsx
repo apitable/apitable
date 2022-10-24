@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import {
   CollaCommandName, ViewType, Selectors,
   GalleryStyleKeyType, IGalleryViewProperty, LayoutType, Strings, t, ISetGalleryStyle,
-} from '@vikadata/core';
+} from '@apitable/core';
 import styles from './style.module.less';
 import { stopPropagation } from 'pc/utils';
 import { Slider, Switch } from 'antd';

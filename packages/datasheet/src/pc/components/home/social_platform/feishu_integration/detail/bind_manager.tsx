@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { Loading, Message } from '@vikadata/components';
 import classNames from 'classnames';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { IScriptRef, Script } from '../../wecom_integration/components/srcipt';
 
 import styles from './styles.module.less';

@@ -8,7 +8,7 @@ import {
   StoreActions,
   Strings,
   t
-} from '@vikadata/core';
+} from '@apitable/core';
 import { useMount } from 'ahooks';
 import Image from 'next/image';
 import { Message, Wrapper } from 'pc/components/common';

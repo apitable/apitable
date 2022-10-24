@@ -1,7 +1,7 @@
 import { Method } from 'pc/components/route_manager/const';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { FC } from 'react';
-import { Settings, Strings, t } from '@vikadata/core';
+import { Settings, Strings, t } from '@apitable/core';
 import { GotoLargeOutlined } from '@vikadata/icons';
 import { Button, black, ContextMenu, useContextMenu } from '@vikadata/components';
 import styles from './style.module.less';

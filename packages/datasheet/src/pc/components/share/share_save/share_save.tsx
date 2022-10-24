@@ -1,5 +1,5 @@
 import { Button, IconButton, TextButton } from '@vikadata/components';
-import { Api, AutoTestID, Navigation, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, AutoTestID, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { Modal, Radio } from 'antd';
 import classnames from 'classnames';
 import Image from 'next/image';

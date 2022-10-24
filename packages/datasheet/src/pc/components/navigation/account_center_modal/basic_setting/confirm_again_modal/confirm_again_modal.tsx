@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import * as React from 'react';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import { WithTipTextInput } from 'pc/components/common';
 import styles from './style.module.less';
 import { TComponent } from 'pc/components/common/t_component';

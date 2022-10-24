@@ -1,5 +1,5 @@
 import { ContextMenu, useThemeColors } from '@vikadata/components';
-import { CollaCommandName, ExecuteResult, Strings, t } from '@vikadata/core';
+import { CollaCommandName, ExecuteResult, Strings, t } from '@apitable/core';
 import {
   ArrowDownOutlined, ArrowUpOutlined,
 

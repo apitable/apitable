@@ -1,4 +1,4 @@
-import { IMemberInfoInAddressList, Navigation, StoreActions, Strings, t } from '@vikadata/core';
+import { IMemberInfoInAddressList, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { List } from 'antd';
 import { InfoCard } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display/enum';

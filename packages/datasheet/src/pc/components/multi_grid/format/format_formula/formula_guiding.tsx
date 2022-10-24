@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IFunction, IField, t, Strings } from '@vikadata/core';
+import { IFunction, IField, t, Strings } from '@apitable/core';
 import styles from './styles.module.less';
 import { ExpressionColorant } from './token_colorant';
 

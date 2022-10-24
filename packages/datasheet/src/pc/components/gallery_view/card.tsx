@@ -1,5 +1,5 @@
 import { useContextMenu, TextButton, useThemeColors } from '@vikadata/components';
-import { DropDirectionType, Selectors, Strings, t, StoreActions } from '@vikadata/core';
+import { DropDirectionType, Selectors, Strings, t, StoreActions } from '@apitable/core';
 import { areEqual } from '@vikadata/react-window';
 import classNames from 'classnames';
 import { XYCoord } from 'dnd-core';

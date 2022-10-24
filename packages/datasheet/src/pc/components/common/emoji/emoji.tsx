@@ -1,5 +1,5 @@
 import { colorVars, Loading, Skeleton, TextButton } from '@vikadata/components';
-import { integrateCdnHost, Strings, t } from '@vikadata/core';
+import { integrateCdnHost, Strings, t } from '@apitable/core';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';

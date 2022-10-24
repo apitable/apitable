@@ -1,4 +1,4 @@
-import { StatusCode, Strings, t } from '@vikadata/core';
+import { StatusCode, Strings, t } from '@apitable/core';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { openSliderVerificationModal } from 'pc/components/common/slider_verification';
 

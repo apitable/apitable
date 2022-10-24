@@ -1,4 +1,4 @@
-import { IAttachmentValue, isGif } from '@vikadata/core';
+import { IAttachmentValue, isGif } from '@apitable/core';
 import React, { CSSProperties } from 'react';
 import { AttachmentDiv, AttachmentWrapperStyled } from './styled';
 import { getCellValueThumbSrc, showOriginImageThumbnail } from './utils/file_type';

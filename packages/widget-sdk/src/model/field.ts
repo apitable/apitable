@@ -15,7 +15,7 @@ import { cmdExecute } from 'iframe_message/utils';
 import { IWidgetContext, IFormatType, FieldType, IPermissionResult, IPropertyInView } from 'interface';
 import { errMsg } from 'utils/private';
 import { Record } from './record';
-import { getNewId, IDPrefix } from '@vikadata/core';
+import { getNewId, IDPrefix } from '@apitable/core';
 
 /**
  * @hidden

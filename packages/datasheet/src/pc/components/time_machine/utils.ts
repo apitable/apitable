@@ -1,4 +1,4 @@
-import { IOperation, IJOTAction, IObjectDeleteAction, IObjectReplaceAction, IObjectInsertAction } from '@vikadata/core';
+import { IOperation, IJOTAction, IObjectDeleteAction, IObjectReplaceAction, IObjectInsertAction } from '@apitable/core';
 
 export const getForeignDatasheetIdsByOp = (opList: IOperation[]) => {
   const actions = opList.reduce((acc, op) => {

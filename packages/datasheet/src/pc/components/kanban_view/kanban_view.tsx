@@ -14,7 +14,7 @@ import {
   Strings,
   t,
   UN_GROUP,
-} from '@vikadata/core';
+} from '@apitable/core';
 import classNames from 'classnames';
 import { resourceService } from 'pc/resource_service';
 import { useResponsive } from 'pc/hooks';

@@ -1,7 +1,7 @@
 import {
   ACTION_INPUT_PARSER_BASE_FUNCTIONS, ACTION_INPUT_PARSER_PASS_THROUGH_FUNCTIONS, ConfigConstant, Field, IField, IFieldPermissionMap, InputParser,
   integrateCdnHost, MagicVariableParser, Selectors, Strings, t
-} from '@vikadata/core';
+} from '@apitable/core';
 import { createElement } from 'react';
 import { isWecomFunc } from '../home/social_platform';
 import {

@@ -1,5 +1,5 @@
 import { ContextMenu, IContextMenuItemProps, useThemeColors } from '@vikadata/components';
-import { CollaCommandName, DatasheetApi, ExecuteResult, Selectors, StoreActions, Strings, t, View, ViewType } from '@vikadata/core';
+import { CollaCommandName, DatasheetApi, ExecuteResult, Selectors, StoreActions, Strings, t, View, ViewType } from '@apitable/core';
 import {
   ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, AttentionOutlined, ColumnUrlOutlined, CopyOutlined, DeleteOutlined,
   DuplicateOutlined, ExpandRecordOutlined,

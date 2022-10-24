@@ -1,4 +1,4 @@
-import { ConfigConstant } from '@vikadata/core';
+import { ConfigConstant } from '@apitable/core';
 import { isEqual, xor } from 'lodash';
 import * as React from 'react';
 import { forwardRef, memo, ReactNode, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';

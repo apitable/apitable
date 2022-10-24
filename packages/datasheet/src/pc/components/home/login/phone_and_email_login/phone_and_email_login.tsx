@@ -1,5 +1,5 @@
 import { lightColors, LinkButton } from '@vikadata/components';
-import { ApiInterface, AutoTestID, ConfigConstant, getCustomConfig, Navigation, Strings, t } from '@vikadata/core';
+import { ApiInterface, AutoTestID, ConfigConstant, getCustomConfig, Navigation, Strings, t } from '@apitable/core';
 import { DingdingFilled, FeishuFilled, QqFilled, WechatFilled } from '@vikadata/icons';
 import { useToggle } from 'ahooks';
 

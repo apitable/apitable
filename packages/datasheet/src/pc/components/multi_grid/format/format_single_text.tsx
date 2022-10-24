@@ -1,4 +1,4 @@
-import { IField, ISingleTextField, t, Strings } from '@vikadata/core';
+import { IField, ISingleTextField, t, Strings } from '@apitable/core';
 import { Dispatch, SetStateAction } from 'react';
 import * as React from 'react';
 import styles from './styles.module.less';

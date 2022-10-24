@@ -1,5 +1,5 @@
 import { range } from 'lodash';
-import { DateUnitType, Strings, t } from '@vikadata/core';
+import { DateUnitType, Strings, t } from '@apitable/core';
 import { GanttCoordinate } from './gantt_coordinate';
 import { getEndDate, getStartDate, isLastDayOfMonth, isLastMonthOfYear } from '../utils';
 

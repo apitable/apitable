@@ -1,4 +1,4 @@
-import { Selectors, StoreActions, ToolBarMenuCardOpenState } from '@vikadata/core';
+import { Selectors, StoreActions, ToolBarMenuCardOpenState } from '@apitable/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToolHandleType } from './interface';
 

@@ -4,7 +4,7 @@ import { CellOptions } from 'pc/components/multi_grid/cell/cell_options';
 import { OptionsEditor } from 'pc/components/editors/options_editor';
 import { IExpandFieldEditRef } from '../field_editor';
 import { IBaseEditorProps, IEditor } from 'pc/components/editors/interface';
-import { CollaCommandName, ICellValue, IMemberField, IUnitMap } from '@vikadata/core';
+import { CollaCommandName, ICellValue, IMemberField, IUnitMap } from '@apitable/core';
 import { resourceService } from 'pc/resource_service';
 import { KeyCode, printableKey, stopPropagation } from 'pc/utils';
 import { CellMember } from 'pc/components/multi_grid/cell/cell_member';

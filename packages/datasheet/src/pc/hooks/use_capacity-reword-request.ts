@@ -1,5 +1,5 @@
 import { Message } from 'pc/components/common';
-import { Api } from '@vikadata/core';
+import { Api } from '@apitable/core';
 
 export const useCapacityRequest = () => {
   const getCapacityListReq = (isExpire: boolean, pageNo: number) => {

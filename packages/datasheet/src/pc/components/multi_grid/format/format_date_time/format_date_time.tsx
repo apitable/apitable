@@ -9,7 +9,7 @@ import {
   CollectType,
   ILastModifiedTimeFieldProperty,
   ILastModifiedTimeField,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import * as React from 'react';
 import styles from '../styles.module.less';

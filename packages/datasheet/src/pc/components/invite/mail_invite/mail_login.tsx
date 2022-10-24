@@ -1,4 +1,4 @@
-import { IReduxState, Strings, t } from '@vikadata/core';
+import { IReduxState, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
 import { Wrapper } from 'pc/components/common';

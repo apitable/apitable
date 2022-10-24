@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import styles from './style.module.less';
-import { Strings, t, Api } from '@vikadata/core';
+import { Strings, t, Api } from '@apitable/core';
 import { Card } from './card';
 import { Typography } from '@vikadata/components';
 import { ApplicantType } from './interface';

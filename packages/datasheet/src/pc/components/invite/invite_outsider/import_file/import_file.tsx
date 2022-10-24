@@ -1,4 +1,4 @@
-import { Api, StatusCode, Strings, t } from '@vikadata/core';
+import { Api, StatusCode, Strings, t } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { secondStepVerify } from 'pc/hooks/utils';
 import * as React from 'react';

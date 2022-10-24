@@ -1,4 +1,4 @@
-import { IAttachmentValue, IField, RowHeightLevel, Strings, t } from '@vikadata/core';
+import { IAttachmentValue, IField, RowHeightLevel, Strings, t } from '@apitable/core';
 import { Modal } from 'antd';
 import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
 import { useThemeColors } from '@vikadata/components';

@@ -1,4 +1,4 @@
-import { IWidget, Strings, t, WidgetInstallEnv, WidgetRuntimeEnv } from '@vikadata/core';
+import { IWidget, Strings, t, WidgetInstallEnv, WidgetRuntimeEnv } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { FC, useCallback, useMemo } from 'react';

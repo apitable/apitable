@@ -18,7 +18,7 @@ import {
   OrgChartStyleKeyType,
   getUniqName,
   ISetRecordOptions,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { ReactFlowProvider } from '@vikadata/react-flow-renderer';
 import { useSize } from 'ahooks';
 import { useLocalStorageState } from 'ahooks';

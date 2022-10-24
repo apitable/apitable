@@ -1,4 +1,4 @@
-import { IUnitValue, IUserValue, MemberType, t, Strings } from '@vikadata/core';
+import { IUnitValue, IUserValue, MemberType, t, Strings } from '@apitable/core';
 import classNames from 'classnames';
 import { Avatar, AvatarSize, AvatarType } from 'pc/components/common';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';

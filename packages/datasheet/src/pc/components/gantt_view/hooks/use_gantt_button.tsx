@@ -1,4 +1,4 @@
-import { DateUnitType, KONVA_DATASHEET_ID } from '@vikadata/core';
+import { DateUnitType, KONVA_DATASHEET_ID } from '@apitable/core';
 import { ChevronLeftOutlined, ChevronRightOutlined } from '@vikadata/icons';
 import dynamic from 'next/dynamic';
 import { getStyleConfig } from 'pc/common/style_config';

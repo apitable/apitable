@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { IRecordAlarm } from '@vikadata/core';
+import { IRecordAlarm } from '@apitable/core';
 import { InjectLogger } from 'common';
 import dayjs, { OpUnitType } from 'dayjs';
 import { DatasheetRecordAlarmEntity } from 'entities/datasheet.record.alarm.entity';

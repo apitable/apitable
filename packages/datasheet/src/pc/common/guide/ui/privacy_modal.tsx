@@ -1,6 +1,6 @@
 import { Button, lightColors, Typography } from '@vikadata/components';
 
-import { Settings, Strings, t } from '@vikadata/core';
+import { Settings, Strings, t } from '@apitable/core';
 import { Modal as AntdModal } from 'antd';
 import classNames from 'classnames';
 import { ScrollBar } from 'pc/common/guide/scroll_bar';

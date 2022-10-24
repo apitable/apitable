@@ -3,7 +3,7 @@ import { FC } from 'react';
 import * as React from 'react';
 import { BaseModal, Message } from 'pc/components/common';
 import { ModalViewFilter } from 'pc/components/tool_bar/view_filter';
-import { t, Strings, IFilterInfo, IFilterCondition, FilterConjunction, ILookUpField } from '@vikadata/core';
+import { t, Strings, IFilterInfo, IFilterCondition, FilterConjunction, ILookUpField } from '@apitable/core';
 import styles from './style.module.less';
 
 interface IFilterModalProps extends IModalProps {

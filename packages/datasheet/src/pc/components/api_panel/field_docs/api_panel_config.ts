@@ -1,4 +1,4 @@
-import { SystemConfig, FieldType } from '@vikadata/core';
+import { SystemConfig, FieldType } from '@apitable/core';
 
 export const getFieldDocs = (fieldType: FieldType): {
   valueType?: string;

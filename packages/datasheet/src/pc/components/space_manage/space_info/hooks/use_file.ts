@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { decimalCeil } from '@vikadata/core';
+import { decimalCeil } from '@apitable/core';
 import { getPercent } from '../utils';
 import { IHooksParams, IHooksResult } from '../interface';
 

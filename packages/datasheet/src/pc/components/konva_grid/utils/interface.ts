@@ -1,4 +1,4 @@
-import { CellType, FieldType, ISegment } from '@vikadata/core';
+import { CellType, FieldType, ISegment } from '@apitable/core';
 
 export type IFontWeight = 'normal' | 'bold' | 'bolder' | 'lighter';
 

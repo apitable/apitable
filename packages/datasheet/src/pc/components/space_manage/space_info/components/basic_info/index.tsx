@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import * as React from 'react';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import { Typography, IconButton, ContextMenu, Button } from '@vikadata/components';
 import { SettingOutlined, InfoFilled, DeleteOutlined } from '@vikadata/icons';
 import { Drawer } from 'antd';

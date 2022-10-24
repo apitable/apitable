@@ -1,5 +1,5 @@
 import { store } from 'pc/store';
-import { DatasheetApi, StoreActions, Selectors, IJOTAction, OTActionName, ResourceType } from '@vikadata/core';
+import { DatasheetApi, StoreActions, Selectors, IJOTAction, OTActionName, ResourceType } from '@apitable/core';
 import { resourceService } from 'pc/resource_service';
 import { remoteActions2Operation } from '@vikadata/widget-sdk';
 

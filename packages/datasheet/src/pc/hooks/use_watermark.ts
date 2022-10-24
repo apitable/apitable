@@ -1,5 +1,5 @@
 import { colors } from '@vikadata/components';
-import { IReduxState, IUserInfo } from '@vikadata/core';
+import { IReduxState, IUserInfo } from '@apitable/core';
 import Konva from 'konva';
 import { debounce } from 'lodash';
 import { ScreenSize } from 'pc/components/common/component_display';

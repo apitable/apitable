@@ -1,9 +1,9 @@
 import { Button, IconButton } from '@vikadata/components';
 import {
   Api, ConfigConstant, DEFAULT_TIMEZONE, getLanguage, IMember, IReduxState, MemberType, Strings, SystemConfig, t, UnitItem,
-} from '@vikadata/core';
+} from '@apitable/core';
 // import { DownloadOutlined } from '@vikadata/icons';
-import { Audit } from '@vikadata/core/src/config/system_config.interface';
+import { Audit } from '@apitable/core/src/config/system_config.interface';
 import { ReloadOutlined, SearchOutlined } from '@vikadata/icons';
 import { useRequest } from 'ahooks';
 import { Input, Select as AntSelect, Table, Tag } from 'antd';

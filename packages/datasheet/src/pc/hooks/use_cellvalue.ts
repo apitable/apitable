@@ -1,4 +1,4 @@
-import { FormulaBaseError, IFormulaField, ILookUpField, Selectors } from '@vikadata/core';
+import { FormulaBaseError, IFormulaField, ILookUpField, Selectors } from '@apitable/core';
 import { useSelector } from 'react-redux';
 
 export interface IComputeCVProps {

@@ -2,7 +2,7 @@ import { Button } from '@vikadata/components';
 import {
   ADDRESS_ID, Api, ConfigConstant, Events, getCustomConfig, IApi, IMember, IReduxState, isIdassPrivateDeployment, ITeam, Navigation, Player,
   StoreActions, Strings, t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { AddOutlined, AddressOutlined } from '@vikadata/icons';
 import { Input } from 'antd';
 import classNames from 'classnames';

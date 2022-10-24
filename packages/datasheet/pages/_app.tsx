@@ -1,5 +1,5 @@
 // import App from 'next/app'
-import { Navigation, StatusCode, StoreActions, Strings, t } from '@vikadata/core';
+import { Navigation, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import 'antd/es/date-picker/style/index';
 import classNames from 'classnames';
 import elementClosest from 'element-closest';

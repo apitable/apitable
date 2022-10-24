@@ -1,4 +1,4 @@
-import { Api, CollaCommandManager, CollaCommandName, getNewId, IAttachmentValue, IDPrefix, Selectors, StatusCode, Strings, t } from '@vikadata/core';
+import { Api, CollaCommandManager, CollaCommandName, getNewId, IAttachmentValue, IDPrefix, Selectors, StatusCode, Strings, t } from '@apitable/core';
 import { uploadAttachToS3, UploadType } from '@vikadata/widget-sdk';
 import { uniqBy } from 'lodash';
 import mime from 'mime-types';

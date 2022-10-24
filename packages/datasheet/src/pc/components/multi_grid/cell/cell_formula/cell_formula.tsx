@@ -2,7 +2,7 @@ import {
   BasicValueType, Field,
   FormulaBaseError, IFormulaField,
   RowHeightLevel, Strings, t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { Tooltip } from 'pc/components/common';
 import { useEffect, useState } from 'react';
 import * as React from 'react';

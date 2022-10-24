@@ -3,7 +3,7 @@ import { Button, ContextMenu, TextButton, useThemeColors } from '@vikadata/compo
 import {
   Api, AutoTestID, CacheManager, ConfigConstant, Events, ExpCache, Field, FieldOperateType, FieldType, FormApi, getNewId, IDPrefix, IField, IFieldMap,
   IFormState, IRecord, ISegment, isPrivateDeployment, Navigation, Player, Selectors, StatusCode, StoreActions, string2Segment, Strings, t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { ArrowDownOutlined, ArrowUpOutlined, EditDescribeOutlined, EditOutlined } from '@vikadata/icons';
 import { useDebounceFn, useMount, useUnmount } from 'ahooks';
 import classnames from 'classnames';

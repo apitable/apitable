@@ -1,4 +1,4 @@
-import { ConfigConstant, Strings, t } from '@vikadata/core';
+import { ConfigConstant, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import parser from 'html-react-parser';
 import Image from 'next/image';

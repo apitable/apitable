@@ -1,7 +1,7 @@
 import { Button, useThemeColors } from '@vikadata/components';
 import {
   Api, IMemberField, IReduxState, IUnitIds, MemberField, MemberType, OtherTypeUnitId, RowHeightLevel, Selectors, StoreActions, Strings, t
-} from '@vikadata/core';
+} from '@apitable/core';
 import { AddOutlined, CloseSmallOutlined } from '@vikadata/icons';
 import { difference } from 'lodash';
 import keyBy from 'lodash/keyBy';

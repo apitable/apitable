@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import * as React from 'react';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import styles from './style.module.less';
 import { Checkbox } from 'antd';
 import { IToolBarBase } from './interface';

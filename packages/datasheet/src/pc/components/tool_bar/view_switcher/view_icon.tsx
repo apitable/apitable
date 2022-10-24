@@ -1,4 +1,4 @@
-import { ViewType } from '@vikadata/core';
+import { ViewType } from '@apitable/core';
 import { useThemeColors } from '@vikadata/components';
 import * as React from 'react';
 import GalleryIcon from 'static/icon/datasheet/view/datasheet_icon_gallery.svg';

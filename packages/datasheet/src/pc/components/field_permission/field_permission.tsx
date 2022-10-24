@@ -4,7 +4,7 @@ import { IFieldPermissionProps } from 'pc/components/field_permission/interface'
 import { DisabledFieldPermission } from 'pc/components/field_permission/disabled_field_permission';
 import { EnableFieldPermission } from 'pc/components/field_permission/enable_field_permission';
 import { useSelector } from 'react-redux';
-import { Selectors, Strings, t } from '@vikadata/core';
+import { Selectors, Strings, t } from '@apitable/core';
 import { Modal } from 'antd';
 import styles from 'pc/components/field_permission/styles.module.less';
 import { black, Tooltip, useThemeColors, ThemeProvider } from '@vikadata/components';

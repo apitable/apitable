@@ -1,5 +1,5 @@
 import { TextInput, Typography } from '@vikadata/components';
-import { AutoTestID, ConfigConstant, Strings, t } from '@vikadata/core';
+import { AutoTestID, ConfigConstant, Strings, t } from '@apitable/core';
 import { EmailSigninFilled } from '@vikadata/icons';
 import { useSetState, useUpdateEffect } from 'ahooks';
 import { Tabs } from 'antd';

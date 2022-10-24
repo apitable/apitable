@@ -1,4 +1,4 @@
-import { DATASHEET_ID, Selectors, StoreActions, Strings, t, ICell } from '@vikadata/core';
+import { DATASHEET_ID, Selectors, StoreActions, Strings, t, ICell } from '@apitable/core';
 import { useUpdateEffect } from 'ahooks';
 import { Message } from 'pc/components/common/message';
 import { useMemorizePreviousValue } from 'pc/hooks';

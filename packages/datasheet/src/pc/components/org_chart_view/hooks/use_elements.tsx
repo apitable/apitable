@@ -1,4 +1,4 @@
-import { IFieldMap, ISnapshot, IViewRow, Selectors } from '@vikadata/core';
+import { IFieldMap, ISnapshot, IViewRow, Selectors } from '@apitable/core';
 import { store } from 'pc/store';
 import {
   getRenderData, IRenderData,

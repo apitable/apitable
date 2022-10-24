@@ -1,5 +1,5 @@
 import { IconButton, useContextMenu, useThemeColors } from '@vikadata/components';
-import { CollaCommandName, ResourceType, Selectors, Strings, t, WidgetReleaseType } from '@vikadata/core';
+import { CollaCommandName, ResourceType, Selectors, Strings, t, WidgetReleaseType } from '@apitable/core';
 import { DragOutlined, MoreOutlined, NarrowRecordOutlined } from '@vikadata/icons';
 import { Input } from 'antd';
 import classNames from 'classnames';

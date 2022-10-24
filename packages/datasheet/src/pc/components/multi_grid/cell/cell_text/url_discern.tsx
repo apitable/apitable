@@ -1,4 +1,4 @@
-import { FieldType, ISegment, string2Segment, SegmentType } from '@vikadata/core';
+import { FieldType, ISegment, string2Segment, SegmentType } from '@apitable/core';
 import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';
 import styles from './style.module.less';
 import classNames from 'classnames';

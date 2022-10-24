@@ -1,5 +1,5 @@
 import { Button } from '@vikadata/components';
-import { Api, IReduxState, Navigation, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, IReduxState, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { Form, Input } from 'antd';
 import Image from 'next/image';
 import { Logo } from 'pc/components/common';

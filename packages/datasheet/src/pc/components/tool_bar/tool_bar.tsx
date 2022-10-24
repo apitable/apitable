@@ -20,7 +20,7 @@ import {
   t,
   UN_GROUP,
   ViewType,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { ApiOutlined, ChevronDownOutlined, RecoverOutlined, RobotOutlined, SettingFilled, WidgetOutlined } from '@vikadata/icons';
 import { useMount, useSize, useThrottleFn } from 'ahooks';
 import classNames from 'classnames';

@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { AutomationRobotRunner, generateRandomString, IActionType, validateMagicForm } from '@vikadata/core';
+import { AutomationRobotRunner, generateRandomString, IActionType, validateMagicForm } from '@apitable/core';
 import { InjectLogger } from 'common';
 import { RunHistoryStatusEnum } from 'enums/automation.enum';
 import { AutomationRobotRepository } from 'modules/repository/automation.robot.repository';
@@ -20,7 +20,7 @@ import { TriggerTypeUpdateRo } from 'model/ro/automation/trigger.type.update.ro'
 import { AutomationServiceUpdateRo } from 'model/ro/automation/service.update.ro';
 import * as services from './services';
 import { IActionResponse } from './services/interface';
-import { ConfigConstant } from '@vikadata/core';
+import { ConfigConstant } from '@apitable/core';
 
 /**
  * 处理 robot 的执行调度

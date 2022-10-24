@@ -1,4 +1,4 @@
-import { ICollaborator, IResourceRevision } from '@vikadata/core';
+import { ICollaborator, IResourceRevision } from '@apitable/core';
 
 export interface INodeCopyRo {
   /**

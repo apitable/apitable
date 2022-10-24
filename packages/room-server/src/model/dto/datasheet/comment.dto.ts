@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { ICommentMsg } from '@vikadata/core';
+import { ICommentMsg } from '@apitable/core';
 
 export class CommentDto {
   @ApiProperty({

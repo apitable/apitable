@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useRobotContext } from '../hooks';
 import { Steps } from 'pc/components/common';
 import { RobotCreateGuideStep1, RobotCreateGuideStep2, RobotCreateGuideStep3, RobotCreateGuideStep4 } from './robot_create_steps';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 
 const RobotCreateGuide = () => {
   const [currentIndex, setCurrentIndex] = useState(0);

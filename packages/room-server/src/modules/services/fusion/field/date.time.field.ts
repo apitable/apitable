@@ -1,5 +1,5 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
-import { DEFAULT_TIMEZONE, ICellValue, IField } from '@vikadata/core';
+import { DEFAULT_TIMEZONE, ICellValue, IField } from '@apitable/core';
 import { IFieldValue } from 'interfaces';
 import { isNumber } from 'lodash';
 import { BaseField } from 'modules/services/fusion/field/base.field';

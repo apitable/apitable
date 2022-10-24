@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import {
   generateRandomString, getNewIds, IDPrefix,
   IListDeleteAction, IListInsertAction, ILocalChangeset, IObjectDeleteAction, IObjectInsertAction, ResourceType
-} from '@vikadata/core';
+} from '@apitable/core';
 import { AppModule } from 'app.module';
 import { OtService } from 'modules/ot/ot.service';
 import { IRoomChannelMessage } from './ot.interface';

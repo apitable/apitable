@@ -1,5 +1,5 @@
 import { Button, LinkButton, Typography, useThemeColors } from '@vikadata/components';
-import { ConfigConstant, Navigation, StatusCode, Strings, t } from '@vikadata/core';
+import { ConfigConstant, Navigation, StatusCode, Strings, t } from '@apitable/core';
 import { Form, Input } from 'antd';
 import Image from 'next/image';
 import { Modal, Wrapper } from 'pc/components/common';

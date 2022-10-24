@@ -1,5 +1,5 @@
 import { Skeleton, Typography } from '@vikadata/components';
-import { ISocialAppType, StoreActions, Strings, t } from '@vikadata/core';
+import { ISocialAppType, StoreActions, Strings, t } from '@apitable/core';
 import { isBoolean } from 'lodash';
 import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
 import { SwitchInfo } from 'pc/components/common';

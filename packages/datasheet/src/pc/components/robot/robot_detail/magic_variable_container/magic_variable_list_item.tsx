@@ -1,5 +1,5 @@
 import { Box, Button, ListDeprecate, stopPropagation, useTheme } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { ChevronRightOutlined } from '@vikadata/icons';
 import { useHover } from 'ahooks';
 import { useRef } from 'react';

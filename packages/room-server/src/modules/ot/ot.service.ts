@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import {
   clearComputeCache, ConfigConstant, DEFAULT_EDITOR_PERMISSION, IJOTAction, ILocalChangeset, IRemoteChangeset, jot, ResourceIdPrefix, ResourceType
   , clearCachedSelectors
-} from '@vikadata/core';
-import { NodeTypeReg } from '@vikadata/core/dist/config/constant';
+} from '@apitable/core';
+import { NodeTypeReg } from '@apitable/core/dist/config/constant';
 import { RedisService } from '@vikadata/nestjs-redis';
 import { EnvConfigKey } from 'common';
 import { InjectLogger } from 'common/decorators';

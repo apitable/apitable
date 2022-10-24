@@ -1,4 +1,4 @@
-import { FieldType, Selectors, IField } from '@vikadata/core';
+import { FieldType, Selectors, IField } from '@apitable/core';
 import debounce from 'lodash/debounce';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { IEditor } from 'pc/components/editors/interface';

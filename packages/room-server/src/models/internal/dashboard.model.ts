@@ -1,4 +1,4 @@
-import { IDashboardSnapshot, IWidgetMap } from '@vikadata/core';
+import { IDashboardSnapshot, IWidgetMap } from '@apitable/core';
 import { NodeInfo } from './node.model';
 
 export class DashboardSnapshot {

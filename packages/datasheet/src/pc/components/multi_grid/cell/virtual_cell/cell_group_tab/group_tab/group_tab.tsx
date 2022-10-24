@@ -15,7 +15,7 @@ import {
   StoreActions,
   Strings,
   t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
 import { GROUP_OFFSET } from 'pc/components/multi_grid/grid_views';
 import { store } from 'pc/store';

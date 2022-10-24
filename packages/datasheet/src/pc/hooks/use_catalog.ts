@@ -3,7 +3,7 @@ import { useRequest } from 'pc/hooks';
 import {
   IReduxState, StoreActions, Selectors,
   ConfigConstant, t, Strings, ResourceIdPrefix
-} from '@vikadata/core';
+} from '@apitable/core';
 import { useSelector, useDispatch } from 'react-redux';
 import { useCatalogTreeRequest } from './use_catalogtree_request';
 import { getPropertyByTree } from 'pc/utils';

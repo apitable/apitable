@@ -1,5 +1,5 @@
 import { Typography } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { useSpaceInfo } from 'pc/hooks';
 import { getSocialWecomUnitName } from '../..';
 import styles from './style.module.less';

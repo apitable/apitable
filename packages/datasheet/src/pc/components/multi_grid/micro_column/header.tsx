@@ -1,4 +1,4 @@
-import { IField } from '@vikadata/core';
+import { IField } from '@apitable/core';
 import { useThemeColors } from '@vikadata/components';
 import { FC } from 'react';
 import { getFieldTypeIcon } from '../field_setting';

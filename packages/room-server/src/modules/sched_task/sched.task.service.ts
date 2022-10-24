@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
-import { FieldType, IAlarmUser, truncateText } from '@vikadata/core';
+import { FieldType, IAlarmUser, truncateText } from '@apitable/core';
 import { InjectLogger } from 'common';
 import { DatasheetRecordAlarmEntity } from 'entities/datasheet.record.alarm.entity';
 import { RecordAlarmStatus } from 'enums/record.alarm.enum';

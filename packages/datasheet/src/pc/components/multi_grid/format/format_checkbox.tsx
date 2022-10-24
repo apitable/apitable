@@ -1,4 +1,4 @@
-import { ICheckboxField, IField, t, Strings } from '@vikadata/core';
+import { ICheckboxField, IField, t, Strings } from '@apitable/core';
 import IconArrow from 'static/icon/common/common_icon_pulldown_line.svg';
 import { Emoji } from 'pc/components/common';
 import { Button, useThemeColors } from '@vikadata/components';

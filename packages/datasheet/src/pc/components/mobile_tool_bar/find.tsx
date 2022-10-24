@@ -1,5 +1,5 @@
 
-import { StoreActions, Strings, t } from '@vikadata/core';
+import { StoreActions, Strings, t } from '@apitable/core';
 import { Input } from 'antd';
 import { useEffect, useState } from 'react';
 import * as React from 'react';

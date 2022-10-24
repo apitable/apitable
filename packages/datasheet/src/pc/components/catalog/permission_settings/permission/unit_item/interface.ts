@@ -1,4 +1,4 @@
-// import { Role } from '@vikadata/core';
+// import { Role } from '@apitable/core';
 
 export interface IUnitItemProps {
   className?: string;

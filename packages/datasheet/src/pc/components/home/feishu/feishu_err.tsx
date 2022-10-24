@@ -1,5 +1,5 @@
 import { Button } from '@vikadata/components';
-import { Navigation, Settings, Strings, t } from '@vikadata/core';
+import { Navigation, Settings, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { Wrapper } from 'pc/components/common';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Selectors, FieldType, IJOTAction, IDPrefix, IField, SegmentType, LINK_REG, string2Segment } from '@vikadata/core';
+import { Selectors, FieldType, IJOTAction, IDPrefix, IField, SegmentType, LINK_REG, string2Segment } from '@apitable/core';
 import styles from './style.module.less';
 import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
 import { FieldTitle } from 'pc/components/expand_record/field_editor';

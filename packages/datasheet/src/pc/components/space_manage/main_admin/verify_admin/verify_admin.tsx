@@ -11,7 +11,7 @@ import {
   IReduxState,
   t,
   Strings,
-} from '@vikadata/core';
+} from '@apitable/core';
 import styles from './style.module.less';
 import { TextInput, Button } from '@vikadata/components';
 import classNames from 'classnames';

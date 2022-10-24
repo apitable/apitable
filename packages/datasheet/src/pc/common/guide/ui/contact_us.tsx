@@ -1,5 +1,5 @@
 import { Button, Message, Typography, useThemeColors } from '@vikadata/components';
-import { ConfigConstant, Settings } from '@vikadata/core';
+import { ConfigConstant, Settings } from '@apitable/core';
 import {
   AdviseSmallOutlined, BugOutlined, CloseMiddleOutlined, InformationLargeOutlined, ServeOutlined, SolutionSmallOutlined, TitleFavoriteFilled,
   ZanOutlined

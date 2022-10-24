@@ -24,7 +24,7 @@ import {
   Strings,
   t,
   getLanguage,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { CalendarSettingPanel } from './calendar_setting_panel';
 import { CreateFieldModal } from './create_field_modal';
 import { VikaSplitPanel } from '../common';

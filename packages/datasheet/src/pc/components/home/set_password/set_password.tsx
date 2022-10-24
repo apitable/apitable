@@ -3,7 +3,7 @@ import * as React from 'react';
 import styles from './style.module.less';
 import CheckBoxSelect from 'static/icon/account/account_icon_checkbox_select.svg';
 import CheckBoxNormal from 'static/icon/account/account_icon_checkbox_normal.svg';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import { PasswordInput } from 'pc/components/common';
 import { Form } from 'antd';
 import { Button } from '@vikadata/components';

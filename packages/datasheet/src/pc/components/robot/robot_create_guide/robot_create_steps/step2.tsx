@@ -6,7 +6,7 @@ import { getNodeTypeOptions } from '../../helper';
 import { useDefaultTriggerFormData, useRobot, useTriggerTypes } from '../../hooks';
 import { IStepProps } from '../interface';
 import robotGuideAvatar from 'static/icon/robot/robot_guide_avatar.png';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 
 import Image from 'next/image';
 // 创建 trigger

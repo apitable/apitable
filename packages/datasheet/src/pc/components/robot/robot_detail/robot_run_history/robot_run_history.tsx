@@ -1,5 +1,5 @@
 import { Box, Loading, Skeleton, Typography, useTheme } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import useSWRInfinite from 'swr/infinite';
 import { getRobotRunHistoryList } from '../../api';

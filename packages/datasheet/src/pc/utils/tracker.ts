@@ -1,4 +1,4 @@
-import { TrackEvents, isPrivateDeployment } from '@vikadata/core';
+import { TrackEvents, isPrivateDeployment } from '@apitable/core';
 
 declare const sensors: {
   login(userId: string, cb?: () => void);

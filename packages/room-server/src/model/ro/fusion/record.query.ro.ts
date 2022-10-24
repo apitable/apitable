@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { ApiTipConstant, CellFormatEnum, FieldKeyEnum } from '@vikadata/core';
+import { ApiTipConstant, CellFormatEnum, FieldKeyEnum } from '@apitable/core';
 import { Transform } from 'class-transformer';
 import { IsEnum } from 'class-validator';
 import { stringToArray } from 'helpers/fusion.helper';

@@ -1,7 +1,7 @@
 import { Typography } from '@vikadata/components';
 import {
   ConfigConstant, getImageThumbSrc, integrateCdnHost, IReduxState, isPrivateDeployment, Navigation, Settings, Strings, t, TEMPLATE_CENTER_ID
-} from '@vikadata/core';
+} from '@apitable/core';
 import { Col, Row } from 'antd';
 import { TemplateRecommendContext } from 'context/template_recommend';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';

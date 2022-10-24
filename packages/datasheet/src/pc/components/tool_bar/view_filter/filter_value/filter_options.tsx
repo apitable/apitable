@@ -1,4 +1,4 @@
-import { FieldType, FOperator } from '@vikadata/core';
+import { FieldType, FOperator } from '@apitable/core';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
 import { IFilterOptionProps } from '../interface';

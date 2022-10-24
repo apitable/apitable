@@ -6,8 +6,8 @@
  * @Last Modified by: Kelly Peilin Chan (kelly@vikadata.com)
  * @Last Modified time: 2020-03-19 14:07:59
  */
-import { Api, ConfigConstant, ScreenWidth, Strings, t } from '@vikadata/core';
-import { Step as IStep } from '@vikadata/core/src/config/system_config.interface';
+import { Api, ConfigConstant, ScreenWidth, Strings, t } from '@apitable/core';
+import { Step as IStep } from '@apitable/core/src/config/system_config.interface';
 import parser from 'html-react-parser';
 // import { Message } from 'pc/components/common';
 import { startActions, TriggerCommands } from 'pc/common/apphook/trigger_commands';

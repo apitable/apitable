@@ -1,5 +1,5 @@
 import { CommentBjEntireFilled } from '@vikadata/icons';
-import { ILinearRowRecord, RowHeight } from '@vikadata/core';
+import { ILinearRowRecord, RowHeight } from '@apitable/core';
 import { GridLayout } from './layout';
 import { GRID_GROUP_OFFSET, GRID_ICON_COMMON_SIZE, GRID_ROW_HEAD_WIDTH } from '../../constant';
 

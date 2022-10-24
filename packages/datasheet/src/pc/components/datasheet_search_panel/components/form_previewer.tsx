@@ -1,5 +1,5 @@
 import { Button } from '@vikadata/components';
-import { Events, Field, FieldType, IMeta, Player, Selectors, Strings, t, ViewType } from '@vikadata/core';
+import { Events, Field, FieldType, IMeta, Player, Selectors, Strings, t, ViewType } from '@apitable/core';
 import { useMount } from 'ahooks';
 import classnames from 'classnames';
 import Image from 'next/image';

@@ -13,7 +13,7 @@ import {
   StoreActions,
   ISnapshot,
   IFieldPermissionMap,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { useBoolean } from 'ahooks';
 import { resourceService } from 'pc/resource_service';
 import { CELL_CLASS, FIELD_HEAD_CLASS, getElementDataset, getParentNodeByClass, OPACITY_LINE_CLASS, OPERATE_HEAD_CLASS } from 'pc/utils';

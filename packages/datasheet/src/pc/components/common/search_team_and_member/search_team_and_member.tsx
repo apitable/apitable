@@ -2,7 +2,7 @@ import { FC, useState, useRef, useEffect } from 'react';
 import { SearchInput, SearchEmpty } from '../index';
 import styles from './style.module.less';
 import { useSelector } from 'react-redux';
-import { IReduxState, Api, ITeamsInSearch, IMembersInSearch } from '@vikadata/core';
+import { IReduxState, Api, ITeamsInSearch, IMembersInSearch } from '@apitable/core';
 import { SearchList, ListType } from './search_list';
 import { useClickAway } from 'ahooks';
 import { ScreenSize } from '../component_display';

@@ -1,4 +1,4 @@
-import { IFieldMap } from '@vikadata/core';
+import { IFieldMap } from '@apitable/core';
 import { DatasheetMetaEntity } from 'entities/datasheet.meta.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
 

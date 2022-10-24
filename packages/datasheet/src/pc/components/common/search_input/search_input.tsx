@@ -1,5 +1,5 @@
 import { TextInput } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { InputProps } from 'antd/lib/input';
 import classnames from 'classnames';
 import { KeyCode } from 'pc/utils';

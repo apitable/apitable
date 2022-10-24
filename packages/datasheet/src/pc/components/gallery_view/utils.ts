@@ -1,7 +1,7 @@
 import {
   BasicValueType, Field, FieldType, IField, IFieldMap,
   IGalleryViewStyle, ILookUpField, ISnapshot, IViewRow, Selectors
-} from '@vikadata/core';
+} from '@apitable/core';
 import { store } from 'pc/store';
 import { EACH_TEXT_LINE_HEIGHT } from '../record_card/card_text';
 import {

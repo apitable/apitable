@@ -1,4 +1,4 @@
-import { ISelectFieldOption } from '@vikadata/core';
+import { ISelectFieldOption } from '@apitable/core';
 import { Input } from 'antd';
 import classNames from 'classnames';
 import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { HttpStatus } from '@nestjs/common';
 import { IHttpSuccessResponse } from 'interfaces';
-import { ConfigConstant } from '@vikadata/core';
+import { ConfigConstant } from '@apitable/core';
 
 export class ApiResponse<T> implements IHttpSuccessResponse<T> {
   @ApiProperty({

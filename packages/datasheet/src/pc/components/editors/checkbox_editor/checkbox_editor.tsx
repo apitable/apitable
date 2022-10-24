@@ -1,4 +1,4 @@
-import { ConfigConstant, Field } from '@vikadata/core';
+import { ConfigConstant, Field } from '@apitable/core';
 import classNames from 'classnames';
 import { Emoji } from 'pc/components/common';
 import { DEFAULT_CHECK_ICON } from 'pc/utils/constant';

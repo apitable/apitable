@@ -1,4 +1,4 @@
-import { Role, Selectors } from '@vikadata/core';
+import { Role, Selectors } from '@apitable/core';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 

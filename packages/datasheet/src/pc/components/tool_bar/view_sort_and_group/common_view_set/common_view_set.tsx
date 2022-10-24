@@ -1,4 +1,4 @@
-import { ConfigConstant, Selectors, Strings, t } from '@vikadata/core';
+import { ConfigConstant, Selectors, Strings, t } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { useThemeColors } from '@vikadata/components';
 import { useState } from 'react';

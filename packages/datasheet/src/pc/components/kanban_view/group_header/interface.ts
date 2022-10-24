@@ -1,4 +1,4 @@
-import { IRecord, IField, IMemberField, ISelectField } from '@vikadata/core';
+import { IRecord, IField, IMemberField, ISelectField } from '@apitable/core';
 import { DraggableProvided } from 'react-beautiful-dnd';
 
 export interface IGroupHeaderProps {

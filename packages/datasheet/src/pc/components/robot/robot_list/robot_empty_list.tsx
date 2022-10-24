@@ -1,5 +1,5 @@
 import { Box, Button, Typography, useTheme } from '@vikadata/components';
-import { Api, Strings, SystemConfig, t } from '@vikadata/core';
+import { Api, Strings, SystemConfig, t } from '@apitable/core';
 import Image from 'next/image';
 import { isWecomFunc } from 'pc/components/home/social_platform';
 import { useApplyOpenFunction } from 'pc/components/navigation/account_center_modal/test_function/hooks';

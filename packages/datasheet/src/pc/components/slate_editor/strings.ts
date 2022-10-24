@@ -1,4 +1,4 @@
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 
 export default {
   // 块级元素

@@ -1,4 +1,4 @@
-import { KONVA_DATASHEET_ID, Selectors } from '@vikadata/core';
+import { KONVA_DATASHEET_ID, Selectors } from '@apitable/core';
 import { NotificationSmallOutlined } from '@vikadata/icons';
 import { AlarmTipText } from 'pc/components/alarm_tip_text';
 import { generateTargetName, getDayjs } from 'pc/components/gantt_view';

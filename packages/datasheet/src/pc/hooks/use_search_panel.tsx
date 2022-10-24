@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useCatalog } from './use_catalog';
-import { ConfigConstant } from '@vikadata/core';
+import { ConfigConstant } from '@apitable/core';
 
 interface IPanelInfo {
   folderId: string;

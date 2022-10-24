@@ -7,7 +7,7 @@ import { FormDataPack } from '../../../models';
 import { ServerException } from 'exception/server.exception';
 import { PermissionException } from 'exception/permission.exception';
 import { NodeShareSettingService } from 'modules/services/node/node.share.setting.service';
-import { IFormProps, IRecordCellValue } from '@vikadata/core';
+import { IFormProps, IRecordCellValue } from '@apitable/core';
 
 /**
  * 神奇表单接口

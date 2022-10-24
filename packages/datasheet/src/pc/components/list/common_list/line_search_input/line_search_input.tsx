@@ -2,7 +2,7 @@ import * as React from 'react';
 import SearchIcon from 'static/icon/common/common_icon_search_normal.svg';
 import styles from './style.module.less';
 import classNames from 'classnames';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import ClearIcon from 'static/icon/datasheet/datasheet_icon_attachment_cancel.svg';
 import { stopPropagation, useThemeColors } from '@vikadata/components';
 

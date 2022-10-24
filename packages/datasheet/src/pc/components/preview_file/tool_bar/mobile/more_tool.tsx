@@ -5,7 +5,7 @@ import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
 import IconDownload from 'static/icon/datasheet/datasheet_icon_download.svg';
 import style from './style.module.less';
 import { Popover } from 'pc/components/common/mobile/popover';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { LinkButton, useThemeColors } from '@vikadata/components';
 import { copy2clipBoard } from 'pc/utils';

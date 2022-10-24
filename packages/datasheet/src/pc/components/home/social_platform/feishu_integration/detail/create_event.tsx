@@ -2,7 +2,7 @@ import { Button, Message } from '@vikadata/components';
 import { useCallback, useEffect, useState } from 'react';
 import * as React from 'react';
 import styles from './styles.module.less';
-import { Strings, t, Api } from '@vikadata/core';
+import { Strings, t, Api } from '@apitable/core';
 import { FormItem, IFormItem } from '../../wecom_integration/components/form_item';
 import classNames from 'classnames';
 import { IFeishuConfigParams } from '../interface';

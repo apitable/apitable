@@ -1,4 +1,4 @@
-import { ConfigConstant, IAttachmentValue, Strings, t } from '@vikadata/core';
+import { ConfigConstant, IAttachmentValue, Strings, t } from '@apitable/core';
 import { Tooltip } from 'antd';
 import classNames from 'classnames';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';

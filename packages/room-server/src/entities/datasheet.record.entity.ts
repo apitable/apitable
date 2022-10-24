@@ -1,6 +1,6 @@
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from './base.entity';
-import { IRecordCellValue, IRecordMeta } from '@vikadata/core';
+import { IRecordCellValue, IRecordMeta } from '@apitable/core';
 
 /**
  * 工作台-数表记录表

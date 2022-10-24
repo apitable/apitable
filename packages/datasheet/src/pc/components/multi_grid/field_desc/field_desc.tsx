@@ -1,5 +1,5 @@
 import { useClickOutside } from '@huse/click-outside';
-import { CollaCommandName, Selectors, StoreActions, Strings, t } from '@vikadata/core';
+import { CollaCommandName, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { Input } from 'antd';
 import classNames from 'classnames';
 import { store } from 'pc/store';

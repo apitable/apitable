@@ -1,7 +1,7 @@
 import {
   CollaCommandName, DATASHEET_ID, ExecuteResult, Field, FieldType, FillDirection, handleEmptyCellValue, ICell, IRange, Range, Selectors, StoreActions,
   Strings, t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { zip } from 'lodash';
 import { notify } from 'pc/components/common/notify';
 import { IMultiGridProps } from 'pc/components/multi_grid/interface';

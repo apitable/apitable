@@ -8,7 +8,7 @@ import {
   MirrorKanbanFilled,
   MirrorOutlined,
 } from '@vikadata/icons';
-import { ViewType } from '@vikadata/core';
+import { ViewType } from '@apitable/core';
 
 export const gstMirrorIconByViewType = (viewType: ViewType, color: string = colorVars.thirdLevelText) => {
   switch (viewType) {

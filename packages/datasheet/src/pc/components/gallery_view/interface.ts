@@ -1,4 +1,4 @@
-import { DropDirectionType } from '@vikadata/core';
+import { DropDirectionType } from '@apitable/core';
 import { GalleryGroupItemType } from './constant';
 
 export interface ICommitDragDropState {

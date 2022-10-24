@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef } from 'react';
-import { Strings, t, isPrivateDeployment, getCustomConfig } from '@vikadata/core';
+import { Strings, t, isPrivateDeployment, getCustomConfig } from '@apitable/core';
 import { Login } from '../../../login';
 import { OtherLogin } from '../../../other_login';
 import styles from './style.module.less';

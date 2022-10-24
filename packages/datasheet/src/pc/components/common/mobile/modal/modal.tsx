@@ -1,4 +1,4 @@
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import AntdMobileModal from 'antd-mobile/lib/modal';
 import { colorVars } from '@vikadata/components';
 import * as React from 'react';

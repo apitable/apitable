@@ -1,6 +1,6 @@
 import { SetStateAction } from 'react';
 import * as React from 'react';
-import { FieldType, IField } from '@vikadata/core';
+import { FieldType, IField } from '@apitable/core';
 import { FormatSelect } from './format_select/format_select';
 import { Dispatch } from 'react';
 import { FormateNumber } from './format_number';

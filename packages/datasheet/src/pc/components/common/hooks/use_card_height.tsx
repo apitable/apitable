@@ -1,4 +1,4 @@
-import { IViewColumn, Selectors } from '@vikadata/core';
+import { IViewColumn, Selectors } from '@apitable/core';
 import { sum } from 'lodash';
 import { getFieldHeight, getVietualFieldHeight, hasCover } from 'pc/components/gallery_view/utils';
 import { store } from 'pc/store';

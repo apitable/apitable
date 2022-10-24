@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IOperation, IRemoteChangeset, ResourceType } from '@vikadata/core';
+import { IOperation, IRemoteChangeset, ResourceType } from '@apitable/core';
 
 export class ChangesetBaseDto implements IRemoteChangeset {
   @ApiProperty({

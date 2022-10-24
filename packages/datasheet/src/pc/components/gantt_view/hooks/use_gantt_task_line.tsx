@@ -6,7 +6,7 @@ import { PointPosition, TaskPositionYType } from '../interface';
 import { KonvaGridContext } from 'pc/components/konva_grid';
 import { useTooltip } from './use_gantt_tooltip';
 import { getTaskLineName } from 'pc/components/gantt_view/utils';
-import { fastCloneDeep } from '@vikadata/core';
+import { fastCloneDeep } from '@apitable/core';
 
 interface IAssociaLinePorps {
   instance: GanttCoordinate;

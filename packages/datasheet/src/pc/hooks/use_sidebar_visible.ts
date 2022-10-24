@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useCallback, useEffect } from 'react';
-import { StoreActions } from '@vikadata/core';
+import { StoreActions } from '@apitable/core';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';

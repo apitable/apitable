@@ -1,6 +1,6 @@
 import { Injectable, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
 import * as Sentry from '@sentry/node';
-import { ICollaborator, OtErrorCode } from '@vikadata/core';
+import { ICollaborator, OtErrorCode } from '@apitable/core';
 import { RedisService } from '@vikadata/nestjs-redis';
 import { APPLICATION_NAME, CommonStatusMsg, InjectLogger, VIKA_NEST_CHANNEL } from 'common';
 import { PermissionException, ServerException } from 'exception';

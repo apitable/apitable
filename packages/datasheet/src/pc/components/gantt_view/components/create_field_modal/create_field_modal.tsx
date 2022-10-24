@@ -1,7 +1,7 @@
 import { Button, Typography } from '@vikadata/components';
 import {
   CollaCommandName, DateTimeField, ExecuteResult, FieldType, GanttStyleKeyType, getNewIds, getUniqName, IDPrefix, Selectors, Strings, t
-} from '@vikadata/core';
+} from '@apitable/core';
 import { Modal } from 'antd';
 import Image from 'next/image';
 import { notify } from 'pc/components/common/notify';

@@ -10,7 +10,7 @@ import {
   UN_GROUP,
   IKanbanViewProperty,
   KanbanStyleKey,
-} from '@vikadata/core';
+} from '@apitable/core';
 import classNames from 'classnames';
 import produce from 'immer';
 // import numeral from 'numeral';

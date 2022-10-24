@@ -1,4 +1,4 @@
-import { ConfigConstant, Field, FieldType, ILookUpField, Selectors, Strings, t } from '@vikadata/core';
+import { ConfigConstant, Field, FieldType, ILookUpField, Selectors, Strings, t } from '@apitable/core';
 import { useUpdateEffect } from 'ahooks';
 import classNames from 'classnames';
 import { Tooltip } from 'pc/components/common';

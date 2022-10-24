@@ -8,7 +8,7 @@ import { GENERATOR } from '../../elements';
 
 import { MemberOptionList } from 'pc/components/list/member_option_list';
 import { store } from 'pc/store';
-import { Api, Selectors } from '@vikadata/core';
+import { Api, Selectors } from '@apitable/core';
 import { Z_INDEX } from '../../constant';
 import { Portal } from 'pc/components/portal';
 import { IVikaEditor } from '../../interface/editor';

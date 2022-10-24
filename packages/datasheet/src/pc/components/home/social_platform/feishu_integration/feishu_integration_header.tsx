@@ -1,4 +1,4 @@
-import { IUserInfo, Settings, Strings, t } from '@vikadata/core';
+import { IUserInfo, Settings, Strings, t } from '@apitable/core';
 import { AvatarSize, Avatar, Logo } from 'pc/components/common';
 import * as React from 'react';
 import styles from './styles.module.less';

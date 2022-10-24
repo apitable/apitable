@@ -1,11 +1,11 @@
-import { FieldType } from '@vikadata/core';
+import { FieldType } from '@apitable/core';
 import Enum from './enum';
 
 export {
   APIMetaViewType as ViewTypeTextEnum,
   APIMetaFieldPermissionLevel as FieldPermissionEnum,
   APIMetaFieldType as FieldTypeTextEnum
-} from '@vikadata/core';
+} from '@apitable/core';
 
 export const FieldTypeEnum = new Enum([
   { key: 'NotSupport', name: 'NotSupportField', value: FieldType.NotSupport },

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { stopPropagation } from 'pc/utils/dom';
-import { DEFAULT_COLUMN_WIDTH as MIN_POP_STRUCTURE_WIDTH, t, Strings } from '@vikadata/core';
+import { DEFAULT_COLUMN_WIDTH as MIN_POP_STRUCTURE_WIDTH, t, Strings } from '@apitable/core';
 import { useLayoutEffect } from 'react';
 import { useDebounceFn } from 'ahooks';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';

@@ -1,6 +1,6 @@
 // import { Message } from '@vikadata/components';
 import { Message } from 'pc/components/common';
-import { EmptyNullOperand, IExpression, OperatorEnums, Selectors, Strings, t, integrateCdnHost } from '@vikadata/core';
+import { EmptyNullOperand, IExpression, OperatorEnums, Selectors, Strings, t, integrateCdnHost } from '@apitable/core';
 import produce from 'immer';
 import { isEqual } from 'lodash';
 import { Modal } from 'pc/components/common';

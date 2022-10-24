@@ -12,7 +12,7 @@ import {
   Strings,
   t,
   UnitItem,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { useUpdateEffect } from 'ahooks';
 import { useRequest } from 'pc/hooks';
 import classNames from 'classnames';

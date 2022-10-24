@@ -1,6 +1,6 @@
 import { IFieldPermissionProps } from 'pc/components/field_permission/interface';
 import { EnableFieldPermissionPlus } from 'pc/components/field_permission/enable_field_permission_plus';
-import { Selectors, Strings, t } from '@vikadata/core';
+import { Selectors, Strings, t } from '@apitable/core';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import styles from 'pc/components/field_permission/styles.module.less';
 import { black, Tooltip, useThemeColors, ThemeProvider } from '@vikadata/components';

@@ -11,7 +11,7 @@ import {
   Strings,
   t,
   ThemeName,
-} from '@vikadata/core';
+} from '@apitable/core';
 import produce from 'immer';
 import { OptionSetting } from 'pc/components/common/color_picker';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';

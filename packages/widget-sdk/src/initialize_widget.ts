@@ -1,7 +1,7 @@
 import React from 'react';
 import $loadjs from 'loadjs';
 import axios from 'axios';
-import { SystemConfig } from '@vikadata/core';
+import { SystemConfig } from '@apitable/core';
 
 const componentMap = new Map<string, React.FC>();
 

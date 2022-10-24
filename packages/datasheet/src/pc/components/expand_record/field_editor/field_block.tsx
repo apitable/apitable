@@ -15,7 +15,7 @@ import {
   Selectors,
   StoreActions,
   ViewType
-} from '@vikadata/core';
+} from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { CheckboxEditor } from 'pc/components/editors/checkbox_editor';
 import { convertAlarmStructure } from 'pc/components/editors/date_time_editor/date_time_alarm/utils';

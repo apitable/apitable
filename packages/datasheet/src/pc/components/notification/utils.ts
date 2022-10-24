@@ -1,5 +1,5 @@
-import { SystemConfig, t, Strings, integrateCdnHost, Settings } from '@vikadata/core';
-import { SystemConfigInterfaceNotifications, Templates, Types } from '@vikadata/core/src/config/system_config.interface';
+import { SystemConfig, t, Strings, integrateCdnHost, Settings } from '@apitable/core';
+import { SystemConfigInterfaceNotifications, Templates, Types } from '@apitable/core/src/config/system_config.interface';
 import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
 import { getInitializationData } from 'pc/utils/env';
 import semver from 'semver';

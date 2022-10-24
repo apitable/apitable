@@ -1,4 +1,4 @@
-import { IGridViewColumn, Selectors, Strings, t, StoreActions } from '@vikadata/core';
+import { IGridViewColumn, Selectors, Strings, t, StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
 import { Modal } from 'antd';
 import * as React from 'react';

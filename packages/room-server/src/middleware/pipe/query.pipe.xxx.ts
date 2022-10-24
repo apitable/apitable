@@ -2,7 +2,7 @@
 import { REQUEST } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
-import { FieldType, IMeta, ViewType } from '@vikadata/core';
+import { FieldType, IMeta, ViewType } from '@apitable/core';
 import { AppModule } from 'app.module';
 import { OrderEnum } from 'enums';
 import { ApiException } from 'exception/api.exception';

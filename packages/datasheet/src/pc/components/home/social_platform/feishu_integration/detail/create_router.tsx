@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import * as React from 'react';
 import styles from './styles.module.less';
 import { CopyOutlined } from '@vikadata/icons';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { copy2clipBoard } from 'pc/utils';
 import { FormItem } from '../../wecom_integration/components/form_item';
 import classNames from 'classnames';

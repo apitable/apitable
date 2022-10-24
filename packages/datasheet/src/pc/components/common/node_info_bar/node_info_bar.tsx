@@ -1,6 +1,6 @@
 import { FC, useContext, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
-import { ConfigConstant, FOLDER_SHOWCASE_ID, Strings, t } from '@vikadata/core';
+import { ConfigConstant, FOLDER_SHOWCASE_ID, Strings, t } from '@apitable/core';
 import styles from './style.module.less';
 import { Tag, TagColors } from '../tag';
 import { getPermission, KeyCode } from 'pc/utils';

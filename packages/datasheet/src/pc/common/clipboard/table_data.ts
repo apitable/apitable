@@ -1,4 +1,4 @@
-import { ISegment } from '@vikadata/core';
+import { ISegment } from '@apitable/core';
 
 export interface ITableCellData {
   value: ISegment[];

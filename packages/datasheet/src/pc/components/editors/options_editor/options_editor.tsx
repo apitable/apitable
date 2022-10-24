@@ -11,7 +11,7 @@ import {
   moveArrayElement,
   SelectField,
   Selectors,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { produce } from 'immer';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { OptionList } from 'pc/components/list';

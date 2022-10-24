@@ -1,5 +1,5 @@
 import { store } from 'pc/store';
-import { IFieldMap, IViewColumn, Selectors, StoreActions } from '@vikadata/core';
+import { IFieldMap, IViewColumn, Selectors, StoreActions } from '@apitable/core';
 import { difference, isEqual } from 'lodash';
 
 let mirrorId: string | undefined;

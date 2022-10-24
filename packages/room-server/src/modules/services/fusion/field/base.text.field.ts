@@ -1,4 +1,4 @@
-import { ICellValue, IField, SegmentType } from '@vikadata/core';
+import { ICellValue, IField, SegmentType } from '@apitable/core';
 import { isString } from 'class-validator';
 import { IFieldValue } from 'interfaces';
 import { BaseField } from 'modules/services/fusion/field/base.field';

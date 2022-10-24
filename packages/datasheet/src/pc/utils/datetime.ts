@@ -1,4 +1,4 @@
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import dayjs from 'dayjs';
 
 // time格式为xxxx-mm-dd hh:ss，如2020-05-25 13:30

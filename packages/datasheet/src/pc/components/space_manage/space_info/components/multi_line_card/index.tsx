@@ -7,7 +7,7 @@ import { CardTitle } from '../../ui';
 import { useThemeColors, Skeleton } from '@vikadata/components';
 import { ProgressProps } from 'antd/lib/progress';
 import { IMultiLineItemProps } from '../../interface';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import { useAnimationNum } from '../../hooks/use_animation_num';
 
 interface IMultiLineCardProps {

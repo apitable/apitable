@@ -1,5 +1,5 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
-import { ICellValue, IField } from '@vikadata/core';
+import { ICellValue, IField } from '@apitable/core';
 import { IFieldValue } from 'interfaces';
 import { FieldManager } from 'modules/services/fusion/field.manager';
 import { BaseField } from 'modules/services/fusion/field/base.field';

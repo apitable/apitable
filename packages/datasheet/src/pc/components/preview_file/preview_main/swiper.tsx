@@ -1,4 +1,4 @@
-import { IAttachmentValue, IUserInfo } from '@vikadata/core';
+import { IAttachmentValue, IUserInfo } from '@apitable/core';
 import { FC, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { ITransFormInfo } from '../preview_file.interface';

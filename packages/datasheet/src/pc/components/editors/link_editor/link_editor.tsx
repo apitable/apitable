@@ -1,4 +1,4 @@
-import { ConfigConstant, ILinkField, ILinkIds, Selectors, Strings, t } from '@vikadata/core';
+import { ConfigConstant, ILinkField, ILinkIds, Selectors, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import { JumpIconMode, LinkJump } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';

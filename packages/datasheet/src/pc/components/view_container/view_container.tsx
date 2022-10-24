@@ -1,6 +1,6 @@
 import { View } from '../view';
 import { Skeleton } from '@vikadata/components';
-import { IReduxState, Selectors } from '@vikadata/core';
+import { IReduxState, Selectors } from '@apitable/core';
 import { connect } from 'react-redux';
 import styles from './style.module.less';
 export interface ITableViewProps {

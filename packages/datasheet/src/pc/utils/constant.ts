@@ -1,4 +1,4 @@
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 
 // Grid 第一列的操作区域的类型
 export const OPERATE_HEAD_CLASS = 'operateHeadClass';

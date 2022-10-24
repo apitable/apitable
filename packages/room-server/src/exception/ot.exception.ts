@@ -1,4 +1,4 @@
-import { OtErrorCode } from '@vikadata/core';
+import { OtErrorCode } from '@apitable/core';
 import { IBaseException } from './base.exception';
 
 /**

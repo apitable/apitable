@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { IRoleUnit, IMember } from '@vikadata/core';
+import { IRoleUnit, IMember } from '@apitable/core';
 import { UnitItem } from '../unit_item';
 import styles from './style.module.less';
 import classNames from 'classnames';

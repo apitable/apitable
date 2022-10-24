@@ -10,7 +10,7 @@ import MoreIcon from 'static/icon/common/common_icon_more_stand.svg';
 import { EditingNode } from './editing_node';
 import { Tooltip } from 'pc/components/common';
 import { isTouchDevice } from 'pc/utils';
-import { INodesMapItem } from '@vikadata/core';
+import { INodesMapItem } from '@apitable/core';
 
 export interface IItemRender {
   id: string;

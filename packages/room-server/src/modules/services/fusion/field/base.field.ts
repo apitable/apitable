@@ -1,4 +1,4 @@
-import { CellFormatEnum, Field, ICellValue, IField } from '@vikadata/core';
+import { CellFormatEnum, Field, ICellValue, IField } from '@apitable/core';
 import { ApiException, ApiTipId } from 'exception/api.exception';
 import { IFieldRoTransformOptions, IFieldValue, IFieldVoTransformOptions } from 'interfaces';
 import { IFieldValidatorInterface } from 'modules/services/fusion/i.field.validator.interface';

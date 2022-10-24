@@ -1,4 +1,4 @@
-import { CollaCommandName, ExecuteResult, getUniqName, IField, IFieldMap, Strings, t } from '@vikadata/core';
+import { CollaCommandName, ExecuteResult, getUniqName, IField, IFieldMap, Strings, t } from '@apitable/core';
 import { notifyWithUndo } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { resourceService } from 'pc/resource_service';

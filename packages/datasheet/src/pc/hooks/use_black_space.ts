@@ -1,4 +1,4 @@
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { showBannerAlert } from 'pc/components/notification/banner_alert';
 import { goToUpgrade } from 'pc/components/subscribe_system';
 import { useEffect } from 'react';

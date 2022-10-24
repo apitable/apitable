@@ -1,5 +1,5 @@
 import { useThemeColors } from '@vikadata/components';
-import { Events, IReduxState, NAV_ID, Player, Settings, StoreActions, Strings, t } from '@vikadata/core';
+import { Events, IReduxState, NAV_ID, Player, Settings, StoreActions, Strings, t } from '@apitable/core';
 import { ManageOutlined } from '@vikadata/icons';
 import { useToggle } from 'ahooks';
 import { Badge } from 'antd';

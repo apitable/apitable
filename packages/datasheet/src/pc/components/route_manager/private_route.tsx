@@ -1,4 +1,4 @@
-import { Api, getCustomConfig, Navigation, Selectors, StatusCode, StoreActions } from '@vikadata/core';
+import { Api, getCustomConfig, Navigation, Selectors, StatusCode, StoreActions } from '@apitable/core';
 import { useRouter } from 'next/router';
 import { NoAccess } from 'pc/components/invalid_page/no_access';
 import { Router } from 'pc/components/route_manager/router';

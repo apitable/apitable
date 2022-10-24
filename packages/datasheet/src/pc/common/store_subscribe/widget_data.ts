@@ -1,4 +1,4 @@
-import { ILabs, IMirrorMap, IPageParams, IShareInfo, IUnitInfo, IUserInfo, Selectors } from '@vikadata/core';
+import { ILabs, IMirrorMap, IPageParams, IShareInfo, IUnitInfo, IUserInfo, Selectors } from '@apitable/core';
 import { store } from 'pc/store';
 import {
   IDatasheetClient, IDatasheetMainSimple, mainWidgetMessage, IWidgetDashboardState, iframeWidgetDashboardSelector

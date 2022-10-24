@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { KONVA_DATASHEET_ID, t, Strings } from '@vikadata/core';
+import { KONVA_DATASHEET_ID, t, Strings } from '@apitable/core';
 import { ContextMenu, useContextMenu, useThemeColors } from '@vikadata/components';
 import { CopyOutlined } from '@vikadata/icons';
 

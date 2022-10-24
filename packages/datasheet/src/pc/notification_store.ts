@@ -1,4 +1,4 @@
-import { INodeChangeSocketData, INoticeDetail, Navigation, StoreActions, Strings, t, Url } from '@vikadata/core';
+import { INodeChangeSocketData, INoticeDetail, Navigation, StoreActions, Strings, t, Url } from '@apitable/core';
 import axios from 'axios';
 import { Modal } from 'pc/components/common';
 import { canJumpWhenClickCard, getNoticeUrlParams, NotifyType, renderNoticeBody } from 'pc/components/notification/card/utils';

@@ -13,7 +13,7 @@ import {
   Strings,
   IAttachmentValue,
   Api,
-} from '@vikadata/core';
+} from '@apitable/core';
 import styles from './style.module.less';
 import { Button } from '@vikadata/components';
 import { ExpandLink, FetchForeignTimes } from 'pc/components/expand_record/expand_link';

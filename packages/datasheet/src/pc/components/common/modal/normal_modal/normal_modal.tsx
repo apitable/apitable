@@ -3,7 +3,7 @@ import { FC } from 'react';
 import * as React from 'react';
 import { Modal } from '../modal/modal';
 import classNames from 'classnames';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import styles from './style.module.less';
 // import { NativeButtonProps } from 'antd/lib/button/button';
 import { Tooltip } from 'pc/components/common';

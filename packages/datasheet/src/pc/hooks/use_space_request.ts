@@ -1,4 +1,4 @@
-import { Api, ApiInterface, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, ApiInterface, StoreActions, Strings, t } from '@apitable/core';
 import { message } from 'antd';
 import { Message } from 'pc/components/common';
 import { useDispatch } from 'react-redux';

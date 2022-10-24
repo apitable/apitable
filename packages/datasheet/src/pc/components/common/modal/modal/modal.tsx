@@ -1,4 +1,4 @@
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import parser from 'html-react-parser';
 import { getBillingInfo } from 'pc/common/billing/get_billing_info';

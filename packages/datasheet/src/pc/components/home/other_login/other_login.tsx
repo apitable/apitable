@@ -1,5 +1,5 @@
 import { IconButton } from '@vikadata/components';
-import { BindAccount, ConfigConstant, IReduxState, QrAction, Strings, t } from '@vikadata/core';
+import { BindAccount, ConfigConstant, IReduxState, QrAction, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import Image from 'next/image';
 import { Modal } from 'pc/components/common';

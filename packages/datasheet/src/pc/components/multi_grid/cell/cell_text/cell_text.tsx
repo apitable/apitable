@@ -12,7 +12,7 @@ import {
   RowHeightLevel,
   SegmentType,
   SymbolAlign,
-} from '@vikadata/core';
+} from '@apitable/core';
 import classNames from 'classnames';
 import { useThemeColors } from '@vikadata/components';
 import * as React from 'react';

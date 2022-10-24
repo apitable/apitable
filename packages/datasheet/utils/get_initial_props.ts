@@ -1,4 +1,4 @@
-import { Api, Url } from '@vikadata/core';
+import { Api, Url } from '@apitable/core';
 import axios from 'axios';
 import { getEnvVars } from 'get_env';
 import { NextPageContext } from 'next';

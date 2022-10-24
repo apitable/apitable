@@ -1,5 +1,5 @@
 import { Message, ThemeProvider } from '@vikadata/components';
-import { Api, ConfigConstant, Events, getCustomConfig, Player, Strings, t } from '@vikadata/core';
+import { Api, ConfigConstant, Events, getCustomConfig, Player, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { Tabs } from 'antd';
 import classNames from 'classnames';

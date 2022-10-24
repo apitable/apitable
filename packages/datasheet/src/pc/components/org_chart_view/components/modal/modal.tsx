@@ -1,6 +1,6 @@
 import { useContext, useRef, useState } from 'react';
 import * as React from 'react';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import { ExpandRecordOutlined } from '@vikadata/icons';
 import { Typography, IconButton } from '@vikadata/components';
 import { FieldEditor } from 'pc/components/expand_record/field_editor';

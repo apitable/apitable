@@ -1,4 +1,4 @@
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { useEffect, useState } from 'react';
 import { Modal } from './common/modal';
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ResourceIdPrefix } from '@vikadata/core';
+import { ResourceIdPrefix } from '@apitable/core';
 import { IAuthHeader } from 'interfaces';
 import { AutomationService } from '../automation/automation.service';
 import { DatasheetService } from '../datasheet/datasheet.service';

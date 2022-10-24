@@ -1,5 +1,5 @@
 import { Button } from '@vikadata/components';
-import { Navigation, Strings, t } from '@vikadata/core';
+import { Navigation, Strings, t } from '@apitable/core';
 import Head from 'next/head';
 import Image from 'next/image';
 import { Logo } from 'pc/components/common';

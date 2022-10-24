@@ -1,5 +1,5 @@
 import { FC, memo } from 'react';
-import { FieldType } from '@vikadata/core';
+import { FieldType } from '@apitable/core';
 import { 
   ColumnAttachmentFilled, ColumnAutonumberFilled, ColumnCheckboxFilled, ColumnCreatedbyFilled, ColumnCreatedtimeFilled,
   ColumnCurrencyFilled, ColumnFormulaFilled, ColumnLastmodifiedbyFilled, ColumnLastmodifiedtimeFilled,

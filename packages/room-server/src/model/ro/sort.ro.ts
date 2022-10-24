@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ApiTipConstant } from '@vikadata/core';
+import { ApiTipConstant } from '@apitable/core';
 import { IsDefined, IsEnum } from 'class-validator';
 import { OrderEnum } from 'enums';
 import { ISortRo } from 'interfaces';

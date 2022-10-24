@@ -1,4 +1,4 @@
-import { ISubscription, StoreActions } from '@vikadata/core';
+import { ISubscription, StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
 import { subscribeUsageCheck } from '../subscribe_usage_check';
 

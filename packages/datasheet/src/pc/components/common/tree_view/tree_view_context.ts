@@ -1,4 +1,4 @@
-import { ConfigConstant } from '@vikadata/core';
+import { ConfigConstant } from '@apitable/core';
 import * as React from 'react';
 import { ExpandAction } from './tree_view';
 

@@ -1,5 +1,5 @@
 import { Button, Typography, useThemeColors } from '@vikadata/components';
-import { Events, IReduxState, Player, StoreActions, Strings, t } from '@vikadata/core';
+import { Events, IReduxState, Player, StoreActions, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { getEnvVariables } from 'pc/utils/env';
 import { FC, useEffect, useMemo, useState } from 'react';

@@ -1,5 +1,5 @@
 import { OpUnitType } from 'dayjs';
-import { DateUnitType, DEFAULT_WORK_DAYS } from '@vikadata/core';
+import { DateUnitType, DEFAULT_WORK_DAYS } from '@apitable/core';
 import { IGanttCoordinate } from '../interface';
 import { Coordinate } from 'pc/components/konva_grid';
 import { getDiffCount, change, DateTimeType, getDayjs } from '../utils/date';

@@ -5,7 +5,7 @@ import ExpandIcon from 'static/icon/datasheet/datasheet_icon_expand_record.svg';
 import CheckIcon from 'static/icon/common/common_icon_multiple_normal.svg';
 import CheckedIcon from 'static/icon/common/common_icon_multiple_select.svg';
 import CommentIcon from 'static/icon/datasheet/activity/datasheet_icon_comment_bj.svg';
-import { Selectors, StoreActions, Strings, t } from '@vikadata/core';
+import { Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { store } from 'pc/store';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';

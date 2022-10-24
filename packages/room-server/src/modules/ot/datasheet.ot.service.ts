@@ -4,7 +4,7 @@ import {
   CollaCommandName, Field, FieldType, IAttachmentValue, IComments, IField, IFieldMap, IFieldUpdatedMap, IJOTAction, IMeta, IObjectDeleteAction,
   IObjectInsertAction, IObjectReplaceAction, IOperation, IRecord, IRecordAlarm, IRecordCellValue, IRecordMeta, IReduxState, IRemoteChangeset,
   isSameSet, IViewProperty, jot, OTActionName
-} from '@vikadata/core';
+} from '@apitable/core';
 import { InjectLogger } from 'common';
 import { EnvConfigService } from 'config/env.config.service';
 import dayjs from 'dayjs';

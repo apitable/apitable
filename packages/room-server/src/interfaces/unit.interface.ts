@@ -1,4 +1,4 @@
-import { MemberType } from '@vikadata/core';
+import { MemberType } from '@apitable/core';
 
 /**
  * <p>

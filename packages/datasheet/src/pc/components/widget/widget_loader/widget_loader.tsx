@@ -1,7 +1,7 @@
 import * as components from '@vikadata/components';
 import { LinkButton, Loading, useThemeColors } from '@vikadata/components';
-import * as core from '@vikadata/core';
-import { Settings, Strings, t, WidgetPackageStatus } from '@vikadata/core';
+import * as core from '@apitable/core';
+import { Settings, Strings, t, WidgetPackageStatus } from '@apitable/core';
 import * as icons from '@vikadata/icons';
 import { ErrorFilled, InformationSmallOutlined } from '@vikadata/icons';
 import * as widgetSdk from '@vikadata/widget-sdk';
@@ -21,7 +21,7 @@ import styles from './styles.module.less';
     window['_ReactDom'] = ReactDom;
     window['_@vikadata/components'] = components;
     window['_@vikadata/widget-sdk'] = widgetSdk;
-    window['_@vikadata/core'] = core;
+    window['_@apitable/core'] = core;
     window['_@vikadata/icons'] = icons;
   }
 })();

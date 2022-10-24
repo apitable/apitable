@@ -1,4 +1,4 @@
-import { ResourceType, Selectors, StoreActions, IWidgetPanelStatus } from '@vikadata/core';
+import { ResourceType, Selectors, StoreActions, IWidgetPanelStatus } from '@apitable/core';
 import { store } from 'pc/store';
 import { useCallback, useEffect } from 'react';
 import ReactDOM from 'react-dom';

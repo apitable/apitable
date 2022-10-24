@@ -1,6 +1,6 @@
 import { memo, useState, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { CollectType, Selectors, Strings, t, ILastModifiedByField, ILastModifiedTimeField } from '@vikadata/core';
+import { CollectType, Selectors, Strings, t, ILastModifiedByField, ILastModifiedTimeField } from '@apitable/core';
 import settingStyles from '../../field_setting/styles.module.less';
 import styles from './styles.module.less';
 import { AutoLayout } from '../../field_setting/auto_layout';

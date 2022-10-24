@@ -1,5 +1,5 @@
 
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import * as React from 'react';
 import { useDrop } from 'react-dnd';
 import { RECORD } from '../../constants';

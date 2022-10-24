@@ -3,7 +3,7 @@ import * as React from 'react';
 import styles from './style.module.less';
 import classNames from 'classnames';
 import { IModeEnum, IBasePropEditorProps } from '../interface';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { useMemo } from 'react';
 import { get } from 'lodash';
 import SlateEditor from 'pc/components/draft_editor/slate_editor';

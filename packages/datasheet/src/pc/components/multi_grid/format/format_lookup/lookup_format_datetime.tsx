@@ -1,4 +1,4 @@
-import { DateFormat, IDateTimeFieldProperty, IField, Strings, t, TimeFormat } from '@vikadata/core';
+import { DateFormat, IDateTimeFieldProperty, IField, Strings, t, TimeFormat } from '@apitable/core';
 import classNames from 'classnames';
 import { Dispatch, SetStateAction } from 'react';
 import * as React from 'react';

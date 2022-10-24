@@ -1,5 +1,5 @@
 import { Button, TextButton, useThemeColors } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import Image from 'next/image';
 import { ButtonPlus } from 'pc/components/common';
 import { execNoTraceVerification } from 'pc/utils';

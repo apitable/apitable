@@ -1,4 +1,4 @@
-import { Api, IAttachmentValue, isImage, IUserInfo } from '@vikadata/core';
+import { Api, IAttachmentValue, isImage, IUserInfo } from '@apitable/core';
 import NextFilled from 'static/icon/common/next_filled.svg';
 import PreviousFilled from 'static/icon/common/previous_filled.svg';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';

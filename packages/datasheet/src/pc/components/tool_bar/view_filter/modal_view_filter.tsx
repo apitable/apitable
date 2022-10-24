@@ -1,7 +1,7 @@
 import {
   BasicValueType, Field, FilterConjunction as CoreFilterConjunction,
   FilterDuration, getNewId, IDPrefix, IFilterInfo, IGridViewProperty, ILookUpField, Selectors, Strings, t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { useRef } from 'react';
 import * as React from 'react';
 import { useEffect } from 'react';

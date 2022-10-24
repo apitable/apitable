@@ -2,7 +2,7 @@ import {
   Box, ContextMenu, IconButton, TextButton, Tooltip, Typography, useContextMenu
 } from '@vikadata/components';
 import { Message } from 'pc/components/common';
-import { Selectors, Strings, t } from '@vikadata/core';
+import { Selectors, Strings, t } from '@apitable/core';
 import {
   ChevronLeftOutlined,
   DeleteOutlined, EditDescribeOutlined, EditOutlined, HistoryOutlined, InformationSmallOutlined, MoreStandOutlined

@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, useThemeColors } from '@vikadata/components';
-import { ConfigConstant, IReduxState, StoreActions, Strings, t } from '@vikadata/core';
+import { ConfigConstant, IReduxState, StoreActions, Strings, t } from '@apitable/core';
 import { Input } from 'antd';
 import { IdentifyingCodeInput, WithTipWrapper } from 'pc/components/common/input';
 import { Message } from 'pc/components/common/message';

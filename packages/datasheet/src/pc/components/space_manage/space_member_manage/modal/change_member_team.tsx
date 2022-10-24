@@ -2,7 +2,7 @@ import { FC } from 'react';
 import * as React from 'react';
 import { SelectUnitModal, SelectUnitSource }
   from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
-import { IReduxState, UnitItem, ITeam, ITeamsInSpace } from '@vikadata/core';
+import { IReduxState, UnitItem, ITeam, ITeamsInSpace } from '@apitable/core';
 import { useSelector, shallowEqual } from 'react-redux';
 import { useMemberManage } from 'pc/hooks';
 

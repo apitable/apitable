@@ -1,5 +1,5 @@
 import { Button, Typography } from '@vikadata/components';
-import { IReduxState, Navigation, Strings, t } from '@vikadata/core';
+import { IReduxState, Navigation, Strings, t } from '@apitable/core';
 import { Steps } from 'antd';
 import classNames from 'classnames';
 import { Modal } from 'pc/components/common/modal/modal/modal';

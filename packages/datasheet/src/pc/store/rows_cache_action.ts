@@ -1,4 +1,4 @@
-import { ActionConstants, ICacheTemporaryView, IJOTActionPayload, Selectors, StoreActions, visibleRowsBaseCacheManage } from '@vikadata/core';
+import { ActionConstants, ICacheTemporaryView, IJOTActionPayload, Selectors, StoreActions, visibleRowsBaseCacheManage } from '@apitable/core';
 
 type IUpdateCacheAction = StoreActions.IUpdateFieldPermissionMapAction | ICacheTemporaryView | IJOTActionPayload;
 export function rowsCacheAction({ getState }) {

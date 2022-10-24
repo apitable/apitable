@@ -1,5 +1,5 @@
 import { useThemeColors } from '@vikadata/components';
-import { isGif, Strings, t } from '@vikadata/core';
+import { isGif, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { ICropShape } from 'pc/components/common';

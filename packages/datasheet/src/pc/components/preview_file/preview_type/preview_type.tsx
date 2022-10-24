@@ -1,4 +1,4 @@
-import { getCustomConfig } from '@vikadata/core';
+import { getCustomConfig } from '@apitable/core';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { FileType, getDownloadSrc, isWhatFileType, renderFileIconUrl } from 'pc/utils/file_type';

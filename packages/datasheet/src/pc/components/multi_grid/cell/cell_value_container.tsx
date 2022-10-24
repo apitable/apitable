@@ -1,4 +1,4 @@
-import { Field, IField, IGridViewColumn, IGroupInfo, ILinearRowRecord, Range, RecordMoveType, RowHeightLevel, Selectors } from '@vikadata/core';
+import { Field, IField, IGridViewColumn, IGroupInfo, ILinearRowRecord, Range, RecordMoveType, RowHeightLevel, Selectors } from '@apitable/core';
 import classNames from 'classnames';
 import { useThemeColors } from '@vikadata/components';
 import { CELL_CLASS } from 'pc/utils';

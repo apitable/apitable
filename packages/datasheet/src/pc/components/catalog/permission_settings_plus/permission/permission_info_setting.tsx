@@ -1,5 +1,5 @@
 import { Box, LinkButton, TextButton, Typography, useThemeColors } from '@vikadata/components';
-import { IRoleMember, Strings, t } from '@vikadata/core';
+import { IRoleMember, Strings, t } from '@apitable/core';
 import { ChevronDownOutlined, ChevronUpOutlined, LockOutlined, MultiplemembersFilled } from '@vikadata/icons';
 import { Dropdown } from 'antd';
 import classNames from 'classnames';

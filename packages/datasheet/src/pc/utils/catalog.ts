@@ -12,7 +12,7 @@ import {
   Strings,
   t,
   UnitItem,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { Workbook } from 'exceljs';
 import { browser } from 'pc/common/browser';
 import { NodeIcon } from 'pc/components/catalog/node_context_menu/node_icons';

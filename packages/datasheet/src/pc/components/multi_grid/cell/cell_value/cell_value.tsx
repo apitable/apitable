@@ -1,4 +1,4 @@
-import { CollaCommandName, FieldType, ICellValue, IField, Selectors } from '@vikadata/core';
+import { CollaCommandName, FieldType, ICellValue, IField, Selectors } from '@apitable/core';
 import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
 import { CellAttachment } from 'pc/components/multi_grid/cell/cell_attachment';
 import { CellDateTime } from 'pc/components/multi_grid/cell/cell_date_time';

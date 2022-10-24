@@ -1,5 +1,5 @@
 import { ApiExtraModels, ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { BasicValueType, RollUpFuncType } from '@vikadata/core';
+import { BasicValueType, RollUpFuncType } from '@apitable/core';
 import { ExtraModel } from 'common';
 import { UnitTypeTextEnum } from 'enums';
 import { DatasheetFieldDto } from 'model/dto/fusion/datasheet.field.dto';

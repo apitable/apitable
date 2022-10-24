@@ -10,7 +10,7 @@ import Clamp from 'react-multiline-clamp';
 import { webkitLineClamp } from 'webkit-line-clamp';
 
 import { LinkButton, Typography, lightColors } from '@vikadata/components';
-import { IField, Strings, t } from '@vikadata/core';
+import { IField, Strings, t } from '@apitable/core';
 
 import { useLongPress } from 'use-long-press';
 

@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { generateRandomString } from '@vikadata/core';
+import { generateRandomString } from '@apitable/core';
 import { isProdMode } from 'app.environment';
 import {
   AUTHORIZATION_PREFIX, DATASHEET_ENRICH_SELECT_FIELD, DATASHEET_HTTP_DECORATE, DATASHEET_LINKED, DATASHEET_MEMBER_FIELD,

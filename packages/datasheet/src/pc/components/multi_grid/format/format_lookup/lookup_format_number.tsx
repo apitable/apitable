@@ -1,4 +1,4 @@
-import { DefaultCommaStyle, FieldType, IField, INumberFormatFieldProperty, Strings, t } from '@vikadata/core';
+import { DefaultCommaStyle, FieldType, IField, INumberFormatFieldProperty, Strings, t } from '@apitable/core';
 import { Dispatch, SetStateAction } from 'react';
 import * as React from 'react';
 import classNames from 'classnames';

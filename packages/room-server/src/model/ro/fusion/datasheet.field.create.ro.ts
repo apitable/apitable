@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { ApiTipConstant, IAddOpenFieldProperty } from '@vikadata/core';
+import { ApiTipConstant, IAddOpenFieldProperty } from '@apitable/core';
 import { IsDefined } from 'class-validator';
 
 export class DatasheetFieldCreateRo {

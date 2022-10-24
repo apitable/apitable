@@ -1,4 +1,4 @@
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { runInContext } from 'lodash';
 import { CodeLanguage } from '../enum';
 import { markdown as md } from './markdown_render';

@@ -1,7 +1,7 @@
 import {
   CollaCommandManager, CollaCommandName, ConfigConstant, ExecuteResult, FieldType, IAttachmentValue, ICollaCommandExecuteResult, IGridViewColumn,
   IGridViewProperty, IRange, IReduxState, isImage, IStandardValueTable, IViewColumn, IViewRow, Range, Selectors, StoreActions, Strings, t, ViewType,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { Modal } from 'antd';
 import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';

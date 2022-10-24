@@ -1,4 +1,4 @@
-import { StoreActions, Selectors, compensator } from '@vikadata/core';
+import { StoreActions, Selectors, compensator } from '@apitable/core';
 import { store } from 'pc/store';
 import { dispatch } from 'pc/worker/store';
 import { changeView } from 'pc/hooks';

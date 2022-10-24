@@ -1,5 +1,5 @@
 import { LinkButton, Typography, useThemeColors } from '@vikadata/components';
-import { Settings, Strings, t, ThemeName } from '@vikadata/core';
+import { Settings, Strings, t, ThemeName } from '@apitable/core';
 import { Logo } from 'pc/components/common';
 import styles from './style.module.less';
 

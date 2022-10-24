@@ -5,7 +5,7 @@ import * as React from 'react';
 import ArrowIcon from 'static/icon/common/common_icon_pulldown_line.svg';
 import IconChecked from 'static/icon/common/common_icon_select.svg';
 import styles from './style.module.less';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import { Popup } from '../mobile/popup';
 import { IMobileSelectProps } from './interface';

@@ -25,7 +25,7 @@ import {
   isUrl,
   SegmentType,
   ViewType
-} from '@vikadata/core';
+} from '@apitable/core';
 
 import { isEqual, noop } from 'lodash';
 import { ContextName, ShortcutActionManager, ShortcutActionName, ShortcutContext } from 'pc/common/shortcut_key';

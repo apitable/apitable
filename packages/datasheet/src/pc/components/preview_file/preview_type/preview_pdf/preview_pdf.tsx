@@ -1,4 +1,4 @@
-import { cellValueToImageSrc, Strings, t } from '@vikadata/core';
+import { cellValueToImageSrc, Strings, t } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import * as React from 'react';

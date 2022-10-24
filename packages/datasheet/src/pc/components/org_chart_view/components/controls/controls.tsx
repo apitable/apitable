@@ -1,5 +1,5 @@
 import { IconButton, Button, useThemeColors } from '@vikadata/components';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import {
   AddOutlined,
   ListOutlined,

@@ -1,5 +1,5 @@
 import { lightColors } from '@vikadata/components';
-import { CollaCommandName, DropDirectionType, FieldType, GanttColorType, GanttRowHeight, KONVA_DATASHEET_ID, Strings, t } from '@vikadata/core';
+import { CollaCommandName, DropDirectionType, FieldType, GanttColorType, GanttRowHeight, KONVA_DATASHEET_ID, Strings, t } from '@apitable/core';
 import { useUpdateEffect } from 'ahooks';
 import { Context } from 'konva/lib/Context';
 import { KonvaEventObject } from 'konva/lib/Node';

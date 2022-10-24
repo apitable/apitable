@@ -1,4 +1,4 @@
-import { StoreActions } from '@vikadata/core';
+import { StoreActions } from '@apitable/core';
 import { useRouter } from 'next/router';
 import { PrivateRoute } from 'pc/components/route_manager/private_route';
 import { SubScribeSystem } from 'pc/components/subscribe_system';

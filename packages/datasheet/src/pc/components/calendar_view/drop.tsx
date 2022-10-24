@@ -7,7 +7,7 @@ import { PRE_RECORD, RECORD } from './constants';
 import dayjs from 'dayjs';
 import classNames from 'classnames';
 import styles from './styles.module.less';
-import { CollaCommandName, ExecuteResult, Selectors, StoreActions, WhyRecordMoveType } from '@vikadata/core';
+import { CollaCommandName, ExecuteResult, Selectors, StoreActions, WhyRecordMoveType } from '@apitable/core';
 import { resourceService } from 'pc/resource_service';
 import { CalendarContext } from './calendar_context';
 import { getPosition } from './utils';

@@ -1,5 +1,5 @@
 import { colorVars, useThemeColors } from '@vikadata/components';
-import { ISelectFieldOption, Strings, t } from '@vikadata/core';
+import { ISelectFieldOption, Strings, t } from '@apitable/core';
 import { useUnmount } from 'ahooks';
 import { Input } from 'antd';
 import cls from 'classnames';

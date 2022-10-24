@@ -1,6 +1,6 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, LoggerService } from '@nestjs/common';
 import * as Sentry from '@sentry/node';
-import { ApiTipConfig, ApiTipConstant, Strings, t, ConfigConstant } from '@vikadata/core';
+import { ApiTipConfig, ApiTipConstant, Strings, t, ConfigConstant } from '@apitable/core';
 import { USER_HTTP_DECORATE } from 'common';
 import { ApiException } from 'exception';
 import { ServerException } from 'exception/server.exception';

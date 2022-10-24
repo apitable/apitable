@@ -4,7 +4,7 @@ import styles from './styles.module.less';
 import { PopStructure } from 'pc/components/editors/pop_structure';
 import { MemberOptionList } from 'pc/components/list';
 import { useSelector } from 'react-redux';
-import { ConfigConstant, Selectors, Strings, t } from '@vikadata/core';
+import { ConfigConstant, Selectors, Strings, t } from '@apitable/core';
 import { Divider } from 'antd';
 import { MemberItem } from 'pc/components/multi_grid/cell/cell_member/member_item';
 import { stopPropagation } from 'pc/utils';

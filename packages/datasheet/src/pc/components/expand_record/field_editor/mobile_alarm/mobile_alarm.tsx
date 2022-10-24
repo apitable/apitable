@@ -2,7 +2,7 @@ import { IconButton, List, Switch, TextButton, Typography, useThemeColors } from
 import {
   AlarmUsersType, Api, CollaCommandName, FieldType, IAlarmTypeKeys, ICellValue, IDPrefix, IMemberField, IRecordAlarmClient, Selectors, StoreActions,
   Strings, t, WithOptional
-} from '@vikadata/core';
+} from '@apitable/core';
 import { ChevronLeftOutlined, ChevronRightOutlined } from '@vikadata/icons';
 import DatePicker from 'antd-mobile/lib/date-picker';
 import cls from 'classnames';

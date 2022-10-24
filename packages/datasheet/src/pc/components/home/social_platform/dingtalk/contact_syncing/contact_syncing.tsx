@@ -1,4 +1,4 @@
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import parser from 'html-react-parser';
 import Image from 'next/image';
 import { Wrapper } from 'pc/components/common';

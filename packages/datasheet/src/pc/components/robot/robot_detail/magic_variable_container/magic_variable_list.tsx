@@ -1,5 +1,5 @@
 import { Typography, useTheme } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { IUISchemaLayoutGroup } from '../../interface';
 import { ISchemaPropertyListItem, ISchemaPropertyListItemClickFunc } from './helper';
 import { SchemaPropertyListItem } from './magic_variable_list_item';

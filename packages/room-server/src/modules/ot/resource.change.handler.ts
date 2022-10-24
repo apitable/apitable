@@ -1,4 +1,4 @@
-import { ResourceIdPrefix, ResourceType } from '@vikadata/core';
+import { ResourceIdPrefix, ResourceType } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { InjectLogger } from 'common';
 import { DatasheetWidgetRepository } from 'modules/repository/datasheet.widget.repository';

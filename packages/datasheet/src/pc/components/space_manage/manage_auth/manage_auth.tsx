@@ -1,4 +1,4 @@
-import { getCustomConfig } from '@vikadata/core';
+import { getCustomConfig } from '@apitable/core';
 import { useRouter } from 'next/router';
 import { getSpaceNavList } from 'pc/components/space_manage/space_menu_tree';
 import { useSelector } from 'react-redux';

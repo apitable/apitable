@@ -1,4 +1,4 @@
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import { useMount, useUpdateEffect, useUnmount } from 'ahooks';
 import { useRef, useEffect } from 'react';
 import * as React from 'react';

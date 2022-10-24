@@ -1,5 +1,5 @@
 import { Loading, Message } from '@vikadata/components';
-import { ConfigConstant, Api } from '@vikadata/core';
+import { ConfigConstant, Api } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { useRoleRequest } from 'pc/hooks/use_role';
 import { useEffect, useRef, useState } from 'react';

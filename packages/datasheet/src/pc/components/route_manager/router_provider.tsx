@@ -1,4 +1,4 @@
-import { RecordVision, StoreActions, Strings, t } from '@vikadata/core';
+import { RecordVision, StoreActions, Strings, t } from '@apitable/core';
 import { ConfigProvider, message } from 'antd';
 import axios from 'axios';
 import { releaseProxy } from 'comlink';

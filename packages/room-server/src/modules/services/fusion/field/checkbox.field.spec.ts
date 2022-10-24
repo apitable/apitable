@@ -1,4 +1,4 @@
-import { FieldType, ICheckboxField } from '@vikadata/core';
+import { FieldType, ICheckboxField } from '@apitable/core';
 import { CheckboxField } from 'modules/services/fusion/field/checkbox.field';
 
 describe('CheckBoxField', () => {

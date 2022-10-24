@@ -1,7 +1,7 @@
 import { Button, colorVars, Typography } from '@vikadata/components';
 import {
   Api, getCustomConfig, integrateCdnHost, IReduxState, isPrivateDeployment, Navigation, Settings, StoreActions, Strings, t
-} from '@vikadata/core';
+} from '@apitable/core';
 import { useMount } from 'ahooks';
 import { Space } from 'antd';
 import Image from 'next/image';

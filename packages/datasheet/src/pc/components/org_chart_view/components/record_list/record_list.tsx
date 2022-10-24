@@ -5,7 +5,7 @@ import { DragItem } from './drag_item';
 import { DropWrapper } from '../drop_wrapper';
 import styles from './styles.module.less';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
-import { CollaCommandName, ExecuteResult, t, Strings, ISetRecordOptions, DATASHEET_ID } from '@vikadata/core';
+import { CollaCommandName, ExecuteResult, t, Strings, ISetRecordOptions, DATASHEET_ID } from '@apitable/core';
 import { resourceService } from 'pc/resource_service';
 import { FlowContext } from '../../context/flow_context';
 import { DragNodeType } from '../../constants';

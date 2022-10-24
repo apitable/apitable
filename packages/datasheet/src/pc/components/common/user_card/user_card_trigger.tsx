@@ -2,7 +2,7 @@ import { FC, isValidElement, useRef, useEffect, useState } from 'react';
 import Trigger, { TriggerProps } from 'rc-trigger';
 import { UserCard, IUserCard } from './user_card';
 import { useSelector } from 'react-redux';
-import { IReduxState } from '@vikadata/core';
+import { IReduxState } from '@apitable/core';
 import styles from './style.module.less';
 import { IAvatarProps } from 'pc/components/common';
 interface IUserCardTrigger extends IUserCard, Partial<TriggerProps> {

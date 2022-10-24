@@ -1,4 +1,4 @@
-import { getCustomConfig, Navigation } from '@vikadata/core';
+import { getCustomConfig, Navigation } from '@apitable/core';
 import { Method } from 'pc/components/route_manager/const';
 import { getNodeId, joinPath } from 'pc/components/route_manager/helper';
 import { IParams, IQuery } from 'pc/components/route_manager/interface';

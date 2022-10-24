@@ -1,4 +1,4 @@
-import { ConfigConstant, Settings, StatusCode, Strings, t } from '@vikadata/core';
+import { ConfigConstant, Settings, StatusCode, Strings, t } from '@apitable/core';
 import { Method } from 'pc/components/route_manager/const';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useQuery } from 'pc/hooks';

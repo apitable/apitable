@@ -1,4 +1,4 @@
-import { generateRandomString, IRobot } from '@vikadata/core';
+import { generateRandomString, IRobot } from '@apitable/core';
 import { AutomationRobotEntity } from 'entities/automation.robot.entity';
 import { groupBy } from 'lodash';
 import { RobotCreateRo } from 'model/ro/automation/robot.create.ro';

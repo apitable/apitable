@@ -1,7 +1,7 @@
 import { FC, ReactText } from 'react';
 import { Tree } from 'antd';
 import { useSelector } from 'react-redux';
-import { ITeamList, IReduxState } from '@vikadata/core';
+import { ITeamList, IReduxState } from '@apitable/core';
 import styles from './style.module.less';
 import PullDownIcon from 'static/icon/datasheet/rightclick/rightclick_icon_retract.svg';
 import { AntTreeNodeSelectedEvent } from 'antd/lib/tree';

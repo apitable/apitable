@@ -1,4 +1,4 @@
-import { ConfigConstant, IReduxState, IUserInfo, Navigation } from '@vikadata/core';
+import { ConfigConstant, IReduxState, IUserInfo, Navigation } from '@apitable/core';
 import { useRequest } from 'ahooks';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { CommonSide } from 'pc/components/common_side';

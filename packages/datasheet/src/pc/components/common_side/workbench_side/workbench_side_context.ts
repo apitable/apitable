@@ -1,4 +1,4 @@
-import { IRightClickInfo } from '@vikadata/core';
+import { IRightClickInfo } from '@apitable/core';
 import * as React from 'react';
 
 export interface IWorkbenchSideContext {

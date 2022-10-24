@@ -1,6 +1,6 @@
 import {
   Api, IAddIsActivedMemberInfo, ISpaceBasicInfo, ISpaceInfo, IUpdateMemberInfo, IUserInfo, StatusCode, StoreActions, Strings, t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { AxiosResponse } from 'axios';
 import { Message } from 'pc/components/common';
 import { useEffect, useState } from 'react';

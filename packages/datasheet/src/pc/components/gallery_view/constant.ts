@@ -1,4 +1,4 @@
-import { FieldType } from '@vikadata/core';
+import { FieldType } from '@apitable/core';
 
 // 字段渲染组件如果不是 text 类，在这里声明字段在卡片中的展示高度。
 export const FIELD_HEIGHT_MAP = {

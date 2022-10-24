@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IRemoteChangeset } from '@vikadata/core';
+import { IRemoteChangeset } from '@apitable/core';
 import { DatasheetChangesetSourceEntity } from 'entities/datasheet.changeset.source.entity';
 import { SourceTypeEnum } from 'enums/changeset.source.type.enum';
 import { IdWorker } from 'helpers';

@@ -1,7 +1,7 @@
 import { ITask } from '@vikadata/components';
 import { 
   IFieldMap, ICalendarViewColumn, ISnapshot, ICalendarViewStyle, 
-  IViewProperty, ICalendarViewStatus, IPermissions, ICell } from '@vikadata/core';
+  IViewProperty, ICalendarViewStatus, IPermissions, ICell } from '@apitable/core';
 import { createContext } from 'react';
 
 export type IPosition = {

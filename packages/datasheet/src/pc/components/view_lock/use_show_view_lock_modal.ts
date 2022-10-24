@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { IViewProperty, Selectors } from '@vikadata/core';
+import { IViewProperty, Selectors } from '@apitable/core';
 
 export const useShowViewLockModal = () => {
   const spaceManualSaveViewIsOpen = useSelector(state => {

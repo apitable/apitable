@@ -1,4 +1,4 @@
-import { ICellValue, IField } from '@vikadata/core';
+import { ICellValue, IField } from '@apitable/core';
 
 export interface ICellComponentProps {
   // 当前的列属性

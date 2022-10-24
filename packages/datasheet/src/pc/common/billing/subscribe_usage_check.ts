@@ -1,4 +1,4 @@
-import { byteMG, isPrivateDeployment, ISubscription, Strings, SubscribeUsageCheck, t } from '@vikadata/core';
+import { byteMG, isPrivateDeployment, ISubscription, Strings, SubscribeUsageCheck, t } from '@apitable/core';
 import { underscore } from 'naming-style';
 import { IExtra } from 'pc/common/billing/interface';
 import { store as storeState } from 'pc/store';

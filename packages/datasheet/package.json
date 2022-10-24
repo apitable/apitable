@@ -21,6 +21,7 @@
     "node": "16.15.0"
   },
   "dependencies": {
+    "@apitable/core": "*",
     "@babel/polyfill": "^7.11.5",
     "@babel/preset-typescript": "^7.10.4",
     "@babel/runtime": "^7.11.2",
@@ -49,7 +50,6 @@
     "@types/react-window": "1.8.1",
     "@types/socket.io-client": "^1.4.36",
     "@vikadata/components": "*",
-    "@vikadata/core": "*",
     "@vikadata/eslint-config-vika": "^1.0.0",
     "@vikadata/i18n-lang": "*",
     "@vikadata/icons": "*",

@@ -1,4 +1,4 @@
-import { FieldType, ITextField } from '@vikadata/core';
+import { FieldType, ITextField } from '@apitable/core';
 import { TextField } from 'modules/services/fusion/field/text.field';
 
 describe('BaseTextField', () => {

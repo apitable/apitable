@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {
   ConfigConstant, EventAtomTypeEnums, EventRealTypeEnums, EventSourceTypeEnums, ExecuteResult, FieldType, ICollaCommandOptions, IFormProps,
   ILocalChangeset, IMeta, IServerDatasheetPack, OPEventNameEnums, ResourceType, Selectors, StoreActions, transformOpFields
-} from '@vikadata/core';
+} from '@apitable/core';
 import { InjectLogger } from 'common';
 import { SourceTypeEnum } from 'enums/changeset.source.type.enum';
 import { ApiException } from 'exception/api.exception';

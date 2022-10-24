@@ -1,4 +1,4 @@
-import { IReduxState } from '@vikadata/core';
+import { IReduxState } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';

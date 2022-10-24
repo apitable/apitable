@@ -1,5 +1,5 @@
 import { Button, useThemeColors, Typography } from '@vikadata/components';
-import { FieldType, IField, IMultiSelectedIds, RowHeightLevel, Selectors, ThemeName } from '@vikadata/core';
+import { FieldType, IField, IMultiSelectedIds, RowHeightLevel, Selectors, ThemeName } from '@apitable/core';
 import { AddOutlined, CloseSmallOutlined } from '@vikadata/icons';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';

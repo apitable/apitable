@@ -1,4 +1,4 @@
-import { ConfigConstant, Strings, t } from '@vikadata/core';
+import { ConfigConstant, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { FC } from 'react';
 import styles from './style.module.less';

@@ -2,7 +2,7 @@
  * 用途：用来提前计算在主线程UI渲染的过程中需要根据基础元数据加工才能得到的信息，将其缓存到主线程
  */
 
-import { ActionConstants, CacheManager, DispatchToStore, IReduxState, Selectors, ViewType } from '@vikadata/core';
+import { ActionConstants, CacheManager, DispatchToStore, IReduxState, Selectors, ViewType } from '@apitable/core';
 import { AnyAction, Store } from 'redux';
 import { BATCH, batchActions } from 'redux-batched-actions';
 

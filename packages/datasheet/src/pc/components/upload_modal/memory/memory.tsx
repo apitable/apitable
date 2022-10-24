@@ -1,4 +1,4 @@
-import { Api, byteMG, IAttachmentValue, Strings, t } from '@vikadata/core';
+import { Api, byteMG, IAttachmentValue, Strings, t } from '@apitable/core';
 import { Progress } from 'antd';
 import { useThemeColors } from '@vikadata/components';
 import { stopPropagation } from 'pc/utils';

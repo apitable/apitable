@@ -1,5 +1,5 @@
 import { Loading } from '@vikadata/components';
-import { integrateCdnHost, Settings, t, Strings } from '@vikadata/core';
+import { integrateCdnHost, Settings, t, Strings } from '@apitable/core';
 import { useQuery } from 'pc/hooks';
 import { getWecomConfig } from 'pc/utils/get_config';
 import { useEffect, useState } from 'react';

@@ -1,4 +1,4 @@
-import { ConfigConstant, EmojisConfig, KONVA_DATASHEET_ID } from '@vikadata/core';
+import { ConfigConstant, EmojisConfig, KONVA_DATASHEET_ID } from '@apitable/core';
 import { Rect, Image } from 'pc/components/konva_components';
 import { GRID_CELL_VALUE_PADDING } from '../../../constant';
 import { KonvaGridContext } from 'pc/components/konva_grid';

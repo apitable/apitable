@@ -1,4 +1,4 @@
-import { IAttachmentValue, Strings, t } from '@vikadata/core';
+import { IAttachmentValue, Strings, t } from '@apitable/core';
 import { DownloadOutlined } from '@vikadata/icons';
 import { message } from 'antd';
 import classNames from 'classnames';

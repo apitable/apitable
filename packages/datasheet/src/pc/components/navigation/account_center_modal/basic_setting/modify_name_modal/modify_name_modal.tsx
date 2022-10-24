@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Form } from 'antd';
 import styles from './style.module.less';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import { IReduxState, StoreActions, Api, t, Strings, ConfigConstant } from '@vikadata/core';
+import { IReduxState, StoreActions, Api, t, Strings, ConfigConstant } from '@apitable/core';
 import { Message, NormalModal, WithTipTextInput } from 'pc/components/common';
 import { useRequest } from 'pc/hooks';
 import { useUserRequest } from 'pc/hooks';

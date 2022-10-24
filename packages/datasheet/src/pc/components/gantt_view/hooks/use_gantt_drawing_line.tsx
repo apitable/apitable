@@ -7,7 +7,7 @@ import { KonvaGridViewContext } from 'pc/components/konva_grid/context';
 import { PointPosition, KonvaGanttViewContext, GanttCoordinate, IScrollState, generateTargetName } from 'pc/components/gantt_view';
 import { CollaCommandName, Selectors, KONVA_DATASHEET_ID, ConfigConstant, 
   t, Strings, fastCloneDeep, ExecuteResult, ISetRecordOptions 
-} from '@vikadata/core';
+} from '@apitable/core';
 import { Message } from '@vikadata/components';
 import { getAllCycleDAG, getTaskLineName } from 'pc/components/gantt_view/utils/task_line';
 import { onDragScrollSpacing } from 'pc/components/gantt_view/utils';

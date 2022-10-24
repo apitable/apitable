@@ -1,4 +1,4 @@
-import { Api, IUnitValue } from '@vikadata/core';
+import { Api, IUnitValue } from '@apitable/core';
 import produce from 'immer';
 import uniqBy from 'lodash/uniqBy';
 

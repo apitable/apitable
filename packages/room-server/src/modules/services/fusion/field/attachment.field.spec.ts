@@ -1,6 +1,6 @@
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
-import { CellFormatEnum, FieldType, getNewId, IAttacheField, ICellValue, IDPrefix, IReduxState, Reducers } from '@vikadata/core';
+import { CellFormatEnum, FieldType, getNewId, IAttacheField, ICellValue, IDPrefix, IReduxState, Reducers } from '@apitable/core';
 import { AppModule } from 'app.module';
 import { EnvConfigKey } from 'common';
 import { EnvConfigService } from 'config/env.config.service';

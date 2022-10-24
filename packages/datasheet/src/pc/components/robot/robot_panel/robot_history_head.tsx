@@ -1,5 +1,5 @@
 import { Box, TextButton, Typography } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { ChevronLeftOutlined } from '@vikadata/icons';
 import { useRobot } from '../hooks';
 

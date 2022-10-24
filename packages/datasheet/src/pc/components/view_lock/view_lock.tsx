@@ -1,5 +1,5 @@
 import { Typography, useThemeColors } from '@vikadata/components';
-import { Selectors, Strings, t } from '@vikadata/core';
+import { Selectors, Strings, t } from '@apitable/core';
 import { Modal } from 'antd';
 import { DisabledViewLock } from 'pc/components/view_lock/disabled_view_lock';
 import { EnabledViewLock } from 'pc/components/view_lock/enabled_view_lock';

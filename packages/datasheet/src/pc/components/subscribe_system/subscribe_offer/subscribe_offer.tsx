@@ -1,5 +1,5 @@
 import { Typography } from '@vikadata/components';
-import { Api, Strings, t } from '@vikadata/core';
+import { Api, Strings, t } from '@apitable/core';
 import { ClockFilled } from '@vikadata/icons';
 import { useRequest } from 'ahooks';
 import styles from 'pc/components/subscribe_system/styles.module.less';

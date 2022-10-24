@@ -2,7 +2,7 @@ import { useKeyPress } from 'ahooks';
 import { useState, useEffect } from 'react';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { getArrayLoopIndex } from '@vikadata/core';
+import { getArrayLoopIndex } from '@apitable/core';
 import { Input } from 'antd';
 
 export interface IUseSelectProps {

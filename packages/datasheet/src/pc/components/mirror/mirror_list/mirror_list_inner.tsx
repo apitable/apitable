@@ -1,5 +1,5 @@
 import { Button, Skeleton, Typography, useThemeColors } from '@vikadata/components';
-import { ConfigConstant, integrateCdnHost, Navigation, Selectors, Settings, Strings, t } from '@vikadata/core';
+import { ConfigConstant, integrateCdnHost, Navigation, Selectors, Settings, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@vikadata/icons';
 import Image from 'next/image';
 import { PopUpTitle } from 'pc/components/common';

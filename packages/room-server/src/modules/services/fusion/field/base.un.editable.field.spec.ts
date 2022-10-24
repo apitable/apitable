@@ -1,7 +1,7 @@
 import {
   CollectType, DateFormat, FieldType, IAutoNumberField, ICreatedByField, ICreatedTimeField, IFormulaField, ILastModifiedByField,
   ILastModifiedTimeField, ILookUpField, TimeFormat
-} from '@vikadata/core';
+} from '@apitable/core';
 import { AutoNumberField } from 'modules/services/fusion/field/auto.number.field';
 import { CreatedByField } from 'modules/services/fusion/field/created.by.field';
 import { CreatedTimeField } from 'modules/services/fusion/field/created.time.field';

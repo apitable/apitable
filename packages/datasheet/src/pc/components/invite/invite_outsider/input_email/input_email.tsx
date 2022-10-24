@@ -1,5 +1,5 @@
 import { Button, TextButton, TextInput } from '@vikadata/components';
-import { ConfigConstant, IInviteMemberList, IReduxState, isEmail, Strings, t } from '@vikadata/core';
+import { ConfigConstant, IInviteMemberList, IReduxState, isEmail, Strings, t } from '@apitable/core';
 import { Tooltip } from 'pc/components/common';
 import { useEmailInviteInModal } from 'pc/hooks';
 import { forwardRef, useEffect, useState } from 'react';

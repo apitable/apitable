@@ -1,4 +1,4 @@
-import { MemberType, Strings, t, IMember, ISpaceInfo, ISpaceBasicInfo, UnitItem } from '@vikadata/core';
+import { MemberType, Strings, t, IMember, ISpaceInfo, ISpaceBasicInfo, UnitItem } from '@apitable/core';
 import { generateUserInfo } from 'pc/utils';
 import * as React from 'react';
 import { useSelector } from 'react-redux';

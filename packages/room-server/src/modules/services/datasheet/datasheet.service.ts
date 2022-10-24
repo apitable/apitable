@@ -1,7 +1,7 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import {
   FieldType, IBaseDatasheetPack, IDatasheetUnits, IEventResourceMap, IFieldMap, IForeignDatasheetMap, IMeta, IRecordMap, IReduxState
-} from '@vikadata/core';
+} from '@apitable/core';
 import { InjectLogger } from 'common';
 import { DatasheetEntity } from 'entities/datasheet.entity';
 import { DatasheetException } from 'exception/datasheet.exception';

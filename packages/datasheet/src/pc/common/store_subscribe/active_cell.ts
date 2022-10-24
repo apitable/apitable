@@ -1,4 +1,4 @@
-import { Field, ICell, ICellValue, Selectors, StoreActions, WhyRecordMoveType } from '@vikadata/core';
+import { Field, ICell, ICellValue, Selectors, StoreActions, WhyRecordMoveType } from '@apitable/core';
 import { cloneDeep } from 'lodash';
 import { store } from 'pc/store';
 import { dispatch } from 'pc/worker/store';

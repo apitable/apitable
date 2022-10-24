@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styles from './style.module.less';
-import { t, Strings, RowHeightLevel, Selectors, ViewType, CollaCommandName, IGridViewProperty } from '@vikadata/core';
+import { t, Strings, RowHeightLevel, Selectors, ViewType, CollaCommandName, IGridViewProperty } from '@apitable/core';
 import IconShort from 'static/icon/datasheet/viewtoolbar/datasheet_icon_rowhight_short_normal.svg';
 import IconMedium from 'static/icon/datasheet/viewtoolbar/datasheet_icon_rowhight_medium_normal.svg';
 import IconTail from 'static/icon/datasheet/viewtoolbar/datasheet_icon_rowhight_high_normal.svg';

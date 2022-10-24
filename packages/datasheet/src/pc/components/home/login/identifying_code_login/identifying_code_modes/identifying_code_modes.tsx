@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { Tabs } from 'antd';
-import { AutoTestID, ConfigConstant, Strings, t } from '@vikadata/core';
+import { AutoTestID, ConfigConstant, Strings, t } from '@apitable/core';
 import { TextInput, Typography } from '@vikadata/components';
 import { EmailSigninFilled } from '@vikadata/icons';
 import {

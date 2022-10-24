@@ -1,5 +1,5 @@
 import { Button, ThemeName, ThemeProvider, Typography } from '@vikadata/components';
-import { ConfigConstant, getCustomConfig, Navigation, StatusCode, Strings, t } from '@vikadata/core';
+import { ConfigConstant, getCustomConfig, Navigation, StatusCode, Strings, t } from '@apitable/core';
 import { Form } from 'antd';
 import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useSetState, useUserRequest } from 'pc/hooks';

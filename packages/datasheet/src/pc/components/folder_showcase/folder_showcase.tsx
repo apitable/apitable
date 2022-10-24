@@ -2,7 +2,7 @@ import { Button, ContextMenu, Skeleton, useContextMenu } from '@vikadata/compone
 import {
   AutoTestID, ConfigConstant, CutMethod, Events, FOLDER_SHOWCASE_ID, getImageThumbSrc, INodePermissions, integrateCdnHost, IReduxState, Navigation,
   Player, Settings, StoreActions, Strings, t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { uploadAttachToS3 } from '@vikadata/widget-sdk';
 import { useToggle, useUnmount } from 'ahooks';
 import { Spin } from 'antd';

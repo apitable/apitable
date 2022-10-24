@@ -1,6 +1,6 @@
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
-import { FieldType, ILinkField } from '@vikadata/core';
+import { FieldType, ILinkField } from '@apitable/core';
 import { AppModule } from 'app.module';
 import { DatasheetRecordService } from 'modules/services/datasheet/datasheet.record.service';
 import { LinkField } from 'modules/services/fusion/field/link.field';

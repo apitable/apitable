@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Provider } from 'react-redux';
 import { store } from 'pc/store';
-import { IWidgetPackage } from '@vikadata/core';
+import { IWidgetPackage } from '@apitable/core';
 import { Typography, Modal, Box, Space, Divider, Avatar, LinkButton } from '@vikadata/components';
 
 type IReviewInfo = IWidgetPackage & {

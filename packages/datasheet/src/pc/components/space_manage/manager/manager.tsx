@@ -3,7 +3,7 @@ import { SubAdmin } from 'pc/components/space_manage/sub_admin';
 import { MainAdmin } from 'pc/components/space_manage/main_admin';
 import { Typography } from '@vikadata/components';
 import styles from './style.module.less';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 
 export const Manager: React.FC = () => {
   return <div className={styles.managerContainer}>

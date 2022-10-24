@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ResourceType } from '@vikadata/core';
+import { ResourceType } from '@apitable/core';
 import { NodeService } from 'modules/services/node/node.service';
 import { WidgetService } from '../widget/widget.service';
 import { IResourceInfo } from './resource.interface';

@@ -1,4 +1,4 @@
-import { ICellValue } from '@vikadata/core';
+import { ICellValue } from '@apitable/core';
 import { DateTimeEditor, IDateTimeEditorProps } from 'pc/components/editors/date_time_editor';
 import { CellDateTime } from 'pc/components/multi_grid/cell/cell_date_time';
 import { forwardRef } from 'react';

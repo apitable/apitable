@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Message, Modal } from 'pc/components/common';
 import { dispatch } from 'pc/worker/store';
 import { store } from 'pc/store';
-import { Selectors, StoreActions, t, Strings, fastCloneDeep, IApi, Api } from '@vikadata/core';
+import { Selectors, StoreActions, t, Strings, fastCloneDeep, IApi, Api } from '@apitable/core';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ScreenSize } from 'pc/components/common/component_display';

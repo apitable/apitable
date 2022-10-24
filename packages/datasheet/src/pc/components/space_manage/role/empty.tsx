@@ -1,5 +1,5 @@
 import { Box, Button, Typography, useThemeColors } from '@vikadata/components';
-import { integrateCdnHost, Settings, Strings, t } from '@vikadata/core';
+import { integrateCdnHost, Settings, Strings, t } from '@apitable/core';
 import { useContext } from 'react';
 import { RoleContext } from './context';
 

@@ -1,4 +1,4 @@
-import { Api, AutoTestID, ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, AutoTestID, ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@apitable/core';
 import { CollapseOutlined, ExpandOutlined } from '@vikadata/icons';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';

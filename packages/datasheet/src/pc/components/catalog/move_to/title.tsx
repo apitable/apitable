@@ -1,6 +1,6 @@
 import { ChevronLeftOutlined } from '@vikadata/icons';
 import { Button, Typography, useThemeColors } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import styles from './style.module.less';
 
 export const Title: React.FC<{nodeName: string}> = (props) => {

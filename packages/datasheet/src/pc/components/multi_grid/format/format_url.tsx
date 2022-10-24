@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Switch } from 'antd';
 import classNames from 'classnames';
-import { IURLField, IField, Strings, t } from '@vikadata/core';
+import { IURLField, IField, Strings, t } from '@apitable/core';
 
 import styles from './styles.module.less';
 import settingStyles from '../field_setting/styles.module.less';

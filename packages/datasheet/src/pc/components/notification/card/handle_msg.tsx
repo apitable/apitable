@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import * as React from 'react';
 import { Button, IconButton, useThemeColors } from '@vikadata/components';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { INoticeDetail, Strings, t } from '@vikadata/core';
+import { INoticeDetail, Strings, t } from '@apitable/core';
 import styles from './style.module.less';
 import AnimationJson from 'static/json/notification_motion_white(1).json';
 import { useHover, useMount } from 'ahooks';

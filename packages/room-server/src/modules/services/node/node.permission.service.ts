@@ -5,7 +5,7 @@ import { Logger } from 'winston';
 import { IAuthHeader, NodePermission } from 'interfaces/axios.interfaces';
 import { PermissionException } from 'exception/permission.exception';
 import { ConfigConstant, DEFAULT_READ_ONLY_PERMISSION, DEFAULT_EDITOR_PERMISSION, 
-  DEFAULT_PERMISSION, DEFAULT_MANAGER_PERMISSION } from '@vikadata/core';
+  DEFAULT_PERMISSION, DEFAULT_MANAGER_PERMISSION } from '@apitable/core';
 import { getConnection } from 'typeorm';
 import { NodeShareSettingService } from './node.share.setting.service';
 import { UserService } from '../user/user.service';

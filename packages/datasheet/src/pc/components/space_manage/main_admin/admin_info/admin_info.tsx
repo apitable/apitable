@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import styles from './style.module.less';
 import { useSelector } from 'react-redux';
-import { IReduxState } from '@vikadata/core';
+import { IReduxState } from '@apitable/core';
 import { Avatar, AvatarSize } from 'pc/components/common';
 import { useThemeColors } from '@vikadata/components';
 import { Typography } from '@vikadata/components';

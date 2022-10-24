@@ -1,7 +1,7 @@
 import {
   FieldType, IField, IFilterCondition,
   IFilterInfo,
-} from '@vikadata/core';
+} from '@apitable/core';
 
 export interface IFilterValueProps {
   field: IField;

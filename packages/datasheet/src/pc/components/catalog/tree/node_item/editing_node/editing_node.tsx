@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import * as React from 'react';
 import { RenameInput } from 'pc/components/common';
-import { t, Strings, StoreActions, INodesMapItem, ConfigConstant } from '@vikadata/core';
+import { t, Strings, StoreActions, INodesMapItem, ConfigConstant } from '@apitable/core';
 import { useDispatch } from 'react-redux';
 import { KeyCode } from 'pc/utils';
 import { useCatalog } from 'pc/hooks/use_catalog';

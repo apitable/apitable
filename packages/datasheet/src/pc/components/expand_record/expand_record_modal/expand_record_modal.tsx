@@ -1,4 +1,4 @@
-import { DATASHEET_ID, RecordVision, Selectors } from '@vikadata/core';
+import { DATASHEET_ID, RecordVision, Selectors } from '@apitable/core';
 import { useEventListener } from 'ahooks';
 import { Modal } from 'antd';
 import classNames from 'classnames';

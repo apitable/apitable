@@ -1,5 +1,5 @@
 import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
-import { Api, BindAccount, ConfigConstant, IReduxState, Navigation, QrAction, StatusCode, Strings, t } from '@vikadata/core';
+import { Api, BindAccount, ConfigConstant, IReduxState, Navigation, QrAction, StatusCode, Strings, t } from '@apitable/core';
 import { Spin } from 'antd';
 import Image from 'next/image';
 import { Message } from 'pc/components/common/message';

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
-import { CellFormatEnum, CollaCommandName, getEmojiIconNativeString, ICellValue, ICollaCommandOptions, IField, IFieldMap, IMeta, INode, IRecordMap, IReduxState, ISnapshot, ISortInfo, ISpaceInfo, IViewColumn, IViewProperty, IViewRow, Selectors } from '@vikadata/core';
+import { CellFormatEnum, CollaCommandName, getEmojiIconNativeString, ICellValue, ICollaCommandOptions, IField, IFieldMap, IMeta, INode, IRecordMap, IReduxState, ISnapshot, ISortInfo, ISpaceInfo, IViewColumn, IViewProperty, IViewRow, Selectors } from '@apitable/core';
 import { InjectLogger } from 'common';
 import { OrderEnum } from 'enums';
 import { FieldTypeEnum } from 'enums/field.type.enum';

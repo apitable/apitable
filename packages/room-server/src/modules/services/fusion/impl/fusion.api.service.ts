@@ -3,7 +3,7 @@ import { REQUEST } from '@nestjs/core';
 import {
   CacheManager, CollaCommandName, Conversion, ExecuteResult, FieldKeyEnum, getViewTypeString, ICollaCommandOptions, IDeleteRecordData, IField,
   ILocalChangeset, IMeta, IOperation, IServerDatasheetPack, IViewRow, NoticeTemplatesConstant,
-} from '@vikadata/core';
+} from '@apitable/core';
 import {
   CommonStatusCode, DATASHEET_ENRICH_SELECT_FIELD, DATASHEET_LINKED, DATASHEET_META_HTTP_DECORATE, EnvConfigKey, InjectLogger, REQUEST_AT, REQUEST_ID,
   SPACE_ID_HTTP_DECORATE, USER_HTTP_DECORATE,

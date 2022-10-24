@@ -1,4 +1,4 @@
-import { ResourceType, Selectors, StoreActions, IWidgetPanelStatus } from '@vikadata/core';
+import { ResourceType, Selectors, StoreActions, IWidgetPanelStatus } from '@apitable/core';
 import { usePrevious } from 'ahooks';
 import { difference } from 'lodash';
 import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';

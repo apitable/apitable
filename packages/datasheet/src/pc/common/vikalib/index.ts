@@ -1,4 +1,4 @@
-import { t, Player } from '@vikadata/core';
+import { t, Player } from '@apitable/core';
 import * as nav from './nav';
 
 const vika = {

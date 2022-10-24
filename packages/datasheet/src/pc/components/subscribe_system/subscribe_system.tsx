@@ -1,5 +1,5 @@
 import { LinkButton, Typography, useThemeColors } from '@vikadata/components';
-import { Api, ApiInterface, ConfigConstant, integrateCdnHost, Navigation, Settings, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, ApiInterface, ConfigConstant, integrateCdnHost, Navigation, Settings, StoreActions, Strings, t } from '@apitable/core';
 import { useUpdateEffect } from 'ahooks';
 import classnames from 'classnames';
 import dayjs from 'dayjs';

@@ -1,4 +1,4 @@
-import { IAttacheField, IAttachmentValue, RowHeightLevel } from '@vikadata/core';
+import { IAttacheField, IAttachmentValue, RowHeightLevel } from '@apitable/core';
 import { UploadStatus } from '../../../utils/upload_manager';
 
 export interface IUploadFileItemProps {

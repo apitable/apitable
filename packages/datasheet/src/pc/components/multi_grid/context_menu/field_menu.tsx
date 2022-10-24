@@ -2,7 +2,7 @@ import { ContextMenu, useThemeColors } from '@vikadata/components';
 import {
   BasicValueType, CollaCommandName, DATASHEET_ID, Events, ExecuteResult, Field, FieldOperateType, FieldType, FieldTypeDescriptionMap,
   getMaxFieldCountPerSheet, getUniqName, isSelectField, Player, Selectors, SetFieldFrom, StoreActions, Strings, t, ToolBarMenuCardOpenState, ViewType
-} from '@vikadata/core';
+} from '@apitable/core';
 import {
   ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, EditDescribeOutlined, EditOutlined,
   FilterOutlined, FreezeOutlined, GroupOutlined, HideFilled, LockOutlined

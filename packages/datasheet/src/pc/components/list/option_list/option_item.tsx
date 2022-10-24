@@ -1,4 +1,4 @@
-import { ExecuteResult, ICollaCommandExecuteResult, IFieldProperty, ISelectFieldOption, Strings, t } from '@vikadata/core';
+import { ExecuteResult, ICollaCommandExecuteResult, IFieldProperty, ISelectFieldOption, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import { produce } from 'immer';
 import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';

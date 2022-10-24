@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Headers, Param, Post, Query, UseInterceptors } from '@nestjs/common';
-import { IMeta } from '@vikadata/core';
+import { IMeta } from '@apitable/core';
 import { DatasheetException } from 'exception/datasheet.exception';
 import { PermissionException } from 'exception/permission.exception';
 import { ServerException } from 'exception/server.exception';

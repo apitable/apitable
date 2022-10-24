@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { MemberType } from '@vikadata/core';
+import { MemberType } from '@apitable/core';
 import { UnitEntity } from 'entities/unit.entity';
 import { UnitTypeEnum } from 'enums';
 import { IOssConfig, IUnitMemberRefIdMap } from 'interfaces';

@@ -1,4 +1,4 @@
-import { Field, FieldType, Selectors, Strings, t } from '@vikadata/core';
+import { Field, FieldType, Selectors, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import * as React from 'react';
 import { useSelector } from 'react-redux';

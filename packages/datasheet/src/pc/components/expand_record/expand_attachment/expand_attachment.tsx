@@ -1,4 +1,4 @@
-import { IField, IAttachmentValue, RowHeightLevel } from '@vikadata/core';
+import { IField, IAttachmentValue, RowHeightLevel } from '@apitable/core';
 import { FocusHolder } from 'pc/components/editors/focus_holder';
 import { UploadCore, UploadCoreSize } from 'pc/components/upload_modal/upload_core';
 import { forwardRef, memo, useImperativeHandle, useRef } from 'react';

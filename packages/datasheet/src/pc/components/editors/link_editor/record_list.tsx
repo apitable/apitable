@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { FixedSizeList as List, Align } from '@vikadata/react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { Selectors, IViewProperty } from '@vikadata/core';
+import { Selectors, IViewProperty } from '@apitable/core';
 import style from './style.module.less';
 import { forwardRef } from 'react';
 import { Row } from './row';

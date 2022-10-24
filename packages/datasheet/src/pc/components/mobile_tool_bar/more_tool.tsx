@@ -8,7 +8,7 @@ import styles from './style.module.less';
 import { LinkButton, IconButton, useThemeColors } from '@vikadata/components';
 import { shallowEqual, useSelector } from 'react-redux';
 import { resourceService } from 'pc/resource_service';
-import { Selectors, Strings, t } from '@vikadata/core';
+import { Selectors, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import { expandNodeDescription, elementHasChild } from '../tab_bar/description_modal';
 import { notify } from '../common/notify';

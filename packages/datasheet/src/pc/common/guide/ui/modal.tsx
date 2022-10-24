@@ -1,4 +1,4 @@
-import { integrateCdnHost, TrackEvents } from '@vikadata/core';
+import { integrateCdnHost, TrackEvents } from '@apitable/core';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
 import { Modal as ModalBase } from 'pc/components/common/modal/modal/modal';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StoreActions, Strings, t, TrackEvents } from '@vikadata/core';
+import { StoreActions, Strings, t, TrackEvents } from '@apitable/core';
 import { GotoLargeOutlined, CloseMiddleOutlined, FullscreenOutlined, UnfullscreenOutlined } from '@vikadata/icons';
 import { IconButton, LinkButton } from '@vikadata/components';
 

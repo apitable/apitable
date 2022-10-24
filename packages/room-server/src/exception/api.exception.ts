@@ -1,5 +1,5 @@
 import { HttpException } from '@nestjs/common';
-import { ApiTipConfig, ApiTipConstant, Strings, t } from '@vikadata/core';
+import { ApiTipConfig, ApiTipConstant, Strings, t } from '@apitable/core';
 import { ServerException } from 'exception/server.exception';
 import { IApiErrorTip } from 'interfaces';
 import { CommonException } from './common.exception';

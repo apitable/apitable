@@ -1,4 +1,4 @@
-import { ConfigConstant, IReduxState, Strings, t } from '@vikadata/core';
+import { ConfigConstant, IReduxState, Strings, t } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { Modal } from 'pc/components/common/modal/modal/modal';

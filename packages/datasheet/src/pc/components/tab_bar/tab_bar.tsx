@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Tab } from './tab';
 import styles from './style.module.less';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { DATASHEET_ID/* , Selectors, ViewType */ } from '@vikadata/core';
+import { DATASHEET_ID/* , Selectors, ViewType */ } from '@apitable/core';
 import { Space } from 'antd';
 import { Skeleton } from '@vikadata/components';
 // import { useSelector } from 'react-redux';

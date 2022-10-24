@@ -1,4 +1,4 @@
-import { StoreActions, CacheManager } from '@vikadata/core';
+import { StoreActions, CacheManager } from '@apitable/core';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { memberStash } from '../member_stash/member_stash';

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ApiTipConstant, Conversion } from '@vikadata/core';
+import { ApiTipConstant, Conversion } from '@apitable/core';
 import { IsEnum, IsOptional } from 'class-validator';
 
 export class FieldDeleteRo {

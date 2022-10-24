@@ -5,7 +5,7 @@ import { CycleNode } from '../custom/cycle_node';
 import { CustomEdge } from '../custom';
 import { Typography, useThemeColors } from '@vikadata/components';
 import styles from './styles.module.less';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { NodeType } from '../../constants';
 
 interface ICycle {

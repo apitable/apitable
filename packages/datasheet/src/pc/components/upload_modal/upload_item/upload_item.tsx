@@ -1,5 +1,5 @@
 import { useThemeColors } from '@vikadata/components';
-import { isImage, RowHeightLevel, Strings, t } from '@vikadata/core';
+import { isImage, RowHeightLevel, Strings, t } from '@apitable/core';
 import { Progress } from 'antd';
 import Image from 'next/image';
 import { usePlatform } from 'pc/hooks/use_platform';

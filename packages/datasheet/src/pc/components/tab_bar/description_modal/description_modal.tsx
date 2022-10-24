@@ -1,4 +1,4 @@
-import { Api, Selectors, StoreActions, Strings, t, IReduxState } from '@vikadata/core';
+import { Api, Selectors, StoreActions, Strings, t, IReduxState } from '@apitable/core';
 import classNames from 'classnames';
 import { Modal } from 'antd';
 import { getStorage, setStorage, StorageName, StorageMethod } from 'pc/utils/storage/storage';

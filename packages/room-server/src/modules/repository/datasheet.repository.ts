@@ -1,4 +1,4 @@
-import { IResourceRevision } from '@vikadata/core';
+import { IResourceRevision } from '@apitable/core';
 import { DatasheetEntity } from 'entities/datasheet.entity';
 import { EntityRepository, Repository } from 'typeorm';
 

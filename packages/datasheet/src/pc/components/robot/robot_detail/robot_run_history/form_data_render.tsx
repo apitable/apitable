@@ -1,4 +1,4 @@
-import { t, Strings, data2Operand } from '@vikadata/core';
+import { t, Strings, data2Operand } from '@apitable/core';
 import { Box, useTheme, Typography } from '@vikadata/components';
 import { INodeSchema } from '../../interface';
 import { retrieveSchema } from '../node_form/core/utils';

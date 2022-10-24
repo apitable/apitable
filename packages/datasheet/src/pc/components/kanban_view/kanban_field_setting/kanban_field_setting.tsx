@@ -1,4 +1,4 @@
-import { CollaCommandName, ConfigConstant, ExecuteResult, FieldType, IField, KanbanStyleKey, Selectors, Strings, t } from '@vikadata/core';
+import { CollaCommandName, ConfigConstant, ExecuteResult, FieldType, IField, KanbanStyleKey, Selectors, Strings, t } from '@apitable/core';
 import { store } from 'pc/store';
 import { useClickAway } from 'ahooks';
 import { Modal, Radio } from 'antd';

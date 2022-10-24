@@ -1,5 +1,5 @@
 import { Box, Skeleton, useTheme } from '@vikadata/components';
-import { Api, ConfigConstant, Selectors } from '@vikadata/core';
+import { Api, ConfigConstant, Selectors } from '@apitable/core';
 import { IFormNodeItem } from 'pc/components/tool_bar/foreign_form/form_list_panel';
 import { stopPropagation } from 'pc/utils';
 import { useEffect, useMemo, useState } from 'react';

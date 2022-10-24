@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import * as React from 'react';
-import { SystemConfig, t, Strings, StoreActions } from '@vikadata/core';
+import { SystemConfig, t, Strings, StoreActions } from '@apitable/core';
 import { getShortcutKeyString } from 'pc/common/shortcut_key/keybinding_config';
 import styles from './style.module.less';
 import { BaseModal } from '../common';

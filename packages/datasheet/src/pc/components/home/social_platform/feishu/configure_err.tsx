@@ -1,4 +1,4 @@
-import { ConfigConstant, Settings, Strings, t } from '@vikadata/core';
+import { ConfigConstant, Settings, Strings, t } from '@apitable/core';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useQuery } from 'pc/hooks';
 import { useMemo } from 'react';

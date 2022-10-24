@@ -14,7 +14,7 @@ import { IBaseEditorProps, IEditor } from '../interface';
 import {
   FieldType, t, Strings, number2str, str2NumericStr, numberToShow,
   str2Currency, str2number, times, divide, digitLength, numberThresholdValue,
-} from '@vikadata/core';
+} from '@apitable/core';
 import style from './style.module.less';
 import classnames from 'classnames';
 import { printableKey, isNumeralKey, stopPropagation } from 'pc/utils';

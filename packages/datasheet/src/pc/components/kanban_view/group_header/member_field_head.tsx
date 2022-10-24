@@ -1,4 +1,4 @@
-import { Strings, t, Selectors } from '@vikadata/core';
+import { Strings, t, Selectors } from '@apitable/core';
 import classNames from 'classnames';
 import { Message } from 'pc/components/common';
 import { MemberOptionList } from 'pc/components/list';

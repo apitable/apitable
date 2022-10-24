@@ -1,5 +1,5 @@
 import { teal } from '@vikadata/components';
-import { KONVA_DATASHEET_ID, RowHeight, Strings, t } from '@vikadata/core';
+import { KONVA_DATASHEET_ID, RowHeight, Strings, t } from '@apitable/core';
 import { CommentBjEntireFilled, DragOutlined, ExpandRecordOutlined } from '@vikadata/icons';
 import dynamic from 'next/dynamic';
 import { generateTargetName } from 'pc/components/gantt_view';

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import * as React from 'react';
-import { IGroupInfo, Selectors, ILinearRowRecord } from '@vikadata/core';
+import { IGroupInfo, Selectors, ILinearRowRecord } from '@apitable/core';
 import styles from '../../styles.module.less';
 import { useSelector, shallowEqual } from 'react-redux';
 import { CommentCount, OperateColumn } from 'pc/components/multi_grid/operate_column';

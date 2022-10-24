@@ -1,7 +1,7 @@
 import {
   CollaCommandName, ConfigConstant, DATASHEET_ID, DatasheetActions, Events, ExecuteResult, getViewClass, IReduxState, IViewProperty, Player,
   Selectors, Strings, t, ViewType,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { AddOutlined } from '@vikadata/icons';
 import { IUseListenTriggerInfo } from '@vikadata/components';
 import classNames from 'classnames';

@@ -1,5 +1,5 @@
 import { Box, LinkButton, Loading, Message, TextInput, useThemeColors } from '@vikadata/components';
-import { Api, ApiInterface, ConfigConstant, INode, INodesMapItem, IParent, Strings, t } from '@vikadata/core';
+import { Api, ApiInterface, ConfigConstant, INode, INodesMapItem, IParent, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, SearchOutlined } from '@vikadata/icons';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';

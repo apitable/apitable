@@ -7,7 +7,7 @@ import {
   IGridViewProperty,
   ILinearRowGroupTab, IRange, IReduxState, Selectors, StatType,
   Strings, t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import classNames from 'classnames';
 import { intersection } from 'lodash';
 import { resourceService } from 'pc/resource_service';

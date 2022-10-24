@@ -2,7 +2,7 @@ import { Box, Button, IconButton, Skeleton, ThemeProvider, Tooltip, Typography, 
 import {
   Api, CollaCommandName, ConfigConstant, Events, ExecuteResult, IMember, integrateCdnHost, IWidget, IWidgetPackage, Player, ResourceType, Selectors,
   Settings, StoreActions, Strings, SystemConfig, t, UnitItem, WidgetApi, WidgetInstallEnv, WidgetPackageStatus, WidgetReleaseType
-} from '@vikadata/core';
+} from '@apitable/core';
 import {
   AddOutlined, ColumnUrlOutlined, DefaultFilled, HandoverOutlined, InformationLargeOutlined, MoreOutlined, UnpublishOutlined, WarnFilled
 } from '@vikadata/icons';

@@ -1,5 +1,5 @@
 import { Button, Message, Typography } from '@vikadata/components';
-import { CollaCommandName, ExecuteResult, Strings, t } from '@vikadata/core';
+import { CollaCommandName, ExecuteResult, Strings, t } from '@apitable/core';
 import { Input } from 'antd';
 import styles from 'pc/components/view_lock/style.module.less';
 import { IViewLockProps } from 'pc/components/view_lock/interface';

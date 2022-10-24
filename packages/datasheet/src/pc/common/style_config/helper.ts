@@ -1,4 +1,4 @@
-import { getLanguage } from '@vikadata/core';
+import { getLanguage } from '@apitable/core';
 import { StyleConfig } from './config';
 
 export const getStyleConfig = (model: keyof typeof StyleConfig) => {

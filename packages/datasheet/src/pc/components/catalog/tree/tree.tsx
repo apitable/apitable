@@ -1,4 +1,4 @@
-import { ConfigConstant, IReduxState, Navigation, NodeErrorType, Selectors, StoreActions, Strings, t } from '@vikadata/core';
+import { ConfigConstant, IReduxState, Navigation, NodeErrorType, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/modal/modal/modal';

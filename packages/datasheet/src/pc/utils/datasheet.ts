@@ -1,4 +1,4 @@
-import { DropDirectionType, IJOTAction, IListMoveAction, IMoveColumn, jot, OTActionName, Selectors } from '@vikadata/core';
+import { DropDirectionType, IJOTAction, IListMoveAction, IMoveColumn, jot, OTActionName, Selectors } from '@apitable/core';
 import produce from 'immer';
 import { store } from 'pc/store';
 

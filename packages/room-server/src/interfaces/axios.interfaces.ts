@@ -1,4 +1,4 @@
-import { IPermissions, IFieldPermissionMap } from '@vikadata/core';
+import { IPermissions, IFieldPermissionMap } from '@apitable/core';
 
 /**
  * @deprecated 服务端响应结果

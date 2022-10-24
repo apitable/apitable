@@ -1,4 +1,4 @@
-import { BasicValueType, Field, FormulaBaseError } from '@vikadata/core';
+import { BasicValueType, Field, FormulaBaseError } from '@apitable/core';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { CellCheckbox } from '../cell_checkbox';

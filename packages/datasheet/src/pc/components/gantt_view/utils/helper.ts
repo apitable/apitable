@@ -1,4 +1,4 @@
-import { CellType, defaultGanttViewStatus, IGanttViewStatus, ViewType } from '@vikadata/core';
+import { CellType, defaultGanttViewStatus, IGanttViewStatus, ViewType } from '@apitable/core';
 import { ITargetNameDetail, TimeoutID, AreaType } from '../interface';
 import { GANTT_HEADER_HEIGHT, 
   GANTT_HORIZONTAL_DEFAULT_SPACING, GANTT_VERTICAL_DEFAULT_SPACING, IScrollOptions

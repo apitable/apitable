@@ -1,4 +1,4 @@
-import { BasicValueType, Field, IField, isSelectField, Selectors, Strings, t } from '@vikadata/core';
+import { BasicValueType, Field, IField, isSelectField, Selectors, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import { useThemeColors } from '@vikadata/components';
 import * as React from 'react';

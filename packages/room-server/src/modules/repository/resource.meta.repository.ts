@@ -1,6 +1,6 @@
 import { EntityRepository, getConnection, Repository } from 'typeorm';
 import { ResourceMetaEntity } from 'entities/resource.meta.entity';
-import { IResourceMeta, IResourceRevision } from '@vikadata/core';
+import { IResourceMeta, IResourceRevision } from '@apitable/core';
 
 @EntityRepository(ResourceMetaEntity)
 export class ResourceMetaRepository extends Repository<ResourceMetaEntity> {

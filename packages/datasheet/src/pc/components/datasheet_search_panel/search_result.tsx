@@ -1,4 +1,4 @@
-import { INode, Strings, t } from '@vikadata/core';
+import { INode, Strings, t } from '@apitable/core';
 import Image from 'next/image';
 import { TComponent } from 'pc/components/common/t_component';
 import { File, Folder } from 'pc/components/datasheet_search_panel/components';

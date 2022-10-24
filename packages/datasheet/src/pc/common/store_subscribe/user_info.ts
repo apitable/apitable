@@ -1,4 +1,4 @@
-import { Events, IUserInfo, Player } from '@vikadata/core';
+import { Events, IUserInfo, Player } from '@apitable/core';
 import { store } from 'pc/store';
 import { NotificationStore } from 'pc/notification_store';
 

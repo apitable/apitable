@@ -1,6 +1,6 @@
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from './base.entity';
-import { IMeta } from '@vikadata/core';
+import { IMeta } from '@apitable/core';
 
 /**
  * 工作台-数表元数据表

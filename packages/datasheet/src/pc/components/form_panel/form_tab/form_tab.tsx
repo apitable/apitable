@@ -1,5 +1,5 @@
 import { LinkButton, useThemeColors } from '@vikadata/components';
-import { ConfigConstant, IReduxState, Navigation, ResourceType, Selectors, Strings, t, ViewType, WORKBENCH_SIDE_ID } from '@vikadata/core';
+import { ConfigConstant, IReduxState, Navigation, ResourceType, Selectors, Strings, t, ViewType, WORKBENCH_SIDE_ID } from '@apitable/core';
 import { useSize } from 'ahooks';
 import classNames from 'classnames';
 import { Tooltip } from 'pc/components/common';

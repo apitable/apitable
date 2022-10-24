@@ -1,4 +1,4 @@
-import { DateUnitType, KONVA_DATASHEET_ID } from '@vikadata/core';
+import { DateUnitType, KONVA_DATASHEET_ID } from '@apitable/core';
 import dynamic from 'next/dynamic';
 import { GANTT_MONTH_TIMELINE_HEIGHT, GANTT_TAB_BAR_HEIGHT, GANTT_TIMELINE_HEIGHT, GanttCoordinate } from 'pc/components/gantt_view';
 import { Line, Rect, Text } from 'pc/components/konva_components';

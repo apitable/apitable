@@ -1,4 +1,4 @@
-import { ConfigConstant, IReduxState, QrAction, Strings, t } from '@vikadata/core';
+import { ConfigConstant, IReduxState, QrAction, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import Image from 'next/image';
 import { TComponent } from 'pc/components/common/t_component';

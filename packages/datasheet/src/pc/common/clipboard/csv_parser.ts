@@ -1,4 +1,4 @@
-import { string2Segment } from '@vikadata/core';
+import { string2Segment } from '@apitable/core';
 import endsWith from 'lodash/endsWith';
 import { browser } from '../browser';
 import { ITableCellData, ITableData } from './table_data';

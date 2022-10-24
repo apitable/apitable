@@ -1,5 +1,5 @@
 import { useState, FC } from 'react';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { Modal } from 'pc/components/common';
 import { Button, TextButton, Pagination } from '@vikadata/components';
 import { Row, Col } from 'antd';

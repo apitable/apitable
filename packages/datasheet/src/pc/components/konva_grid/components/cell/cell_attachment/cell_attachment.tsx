@@ -1,4 +1,4 @@
-import { IAttachmentValue, KONVA_DATASHEET_ID } from '@vikadata/core';
+import { IAttachmentValue, KONVA_DATASHEET_ID } from '@apitable/core';
 import { AddOutlined } from '@vikadata/icons';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { Icon, Rect } from 'pc/components/konva_components';

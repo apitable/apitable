@@ -1,4 +1,4 @@
-import { IRecordCellValue } from '@vikadata/core';
+import { IRecordCellValue } from '@apitable/core';
 import { DatasheetRecordEntity } from 'entities/datasheet.record.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
 

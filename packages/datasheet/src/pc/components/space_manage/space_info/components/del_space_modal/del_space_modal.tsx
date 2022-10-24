@@ -4,7 +4,7 @@ import {
   IReduxState,
   Strings,
   t
-} from '@vikadata/core';
+} from '@apitable/core';
 import { useSetState } from 'pc/hooks';
 import { Form } from 'antd';
 import { IdentifyingCodeInput, WithTipWrapper } from 'pc/components/common/input';

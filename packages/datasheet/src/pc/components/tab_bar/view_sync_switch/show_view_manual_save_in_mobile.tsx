@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom';
 import { CloseMiddleOutlined, DefaultFilled } from '@vikadata/icons';
 import { Typography, colorVars } from '@vikadata/components';
 import styles from './style.module.less';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 
 const VIEW_MANUAL_SAVE_TIP = 'VIEW_MANUAL_SAVE_TIP';
 

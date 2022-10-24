@@ -1,4 +1,4 @@
-import { Events, IReduxState, Player } from '@vikadata/core';
+import { Events, IReduxState, Player } from '@apitable/core';
 
 import { useMount } from 'ahooks';
 import { Loading } from 'pc/components/common';

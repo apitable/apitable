@@ -1,4 +1,4 @@
-import { ConfigConstant, IReduxState, Selectors, StoreActions } from '@vikadata/core';
+import { ConfigConstant, IReduxState, Selectors, StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
 import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
 import { useWorkbenchSideSync, useRootManageable } from 'pc/hooks';

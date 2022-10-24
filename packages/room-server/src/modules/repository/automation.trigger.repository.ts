@@ -1,7 +1,7 @@
 import { AutomationTriggerEntity } from 'entities/automation.trigger.entity';
 import { EntityRepository, In, IsNull, Not, Repository } from 'typeorm';
 import { TriggerCreateRo } from 'model/ro/automation/trigger.create.ro';
-import { generateRandomString } from '@vikadata/core';
+import { generateRandomString } from '@apitable/core';
 
 @EntityRepository(AutomationTriggerEntity)
 export class AutomationTriggerRepository extends Repository<AutomationTriggerEntity> {

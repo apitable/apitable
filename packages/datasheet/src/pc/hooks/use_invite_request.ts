@@ -1,4 +1,4 @@
-import { Api, IInviteMemberList } from '@vikadata/core';
+import { Api, IInviteMemberList } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { secondStepVerify } from 'pc/hooks/utils';
 

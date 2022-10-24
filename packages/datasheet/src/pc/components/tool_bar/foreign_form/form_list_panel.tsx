@@ -1,5 +1,5 @@
 import { Button, Skeleton, TextButton, useThemeColors } from '@vikadata/components';
-import { ConfigConstant, DATASHEET_ID, Navigation, Strings, t } from '@vikadata/core';
+import { ConfigConstant, DATASHEET_ID, Navigation, Strings, t } from '@apitable/core';
 import { InformationLargeOutlined } from '@vikadata/icons';
 import classnames from 'classnames';
 

@@ -1,5 +1,5 @@
 import { useThemeColors } from '@vikadata/components';
-import { Api, INode, Navigation, Strings, t } from '@vikadata/core';
+import { Api, INode, Navigation, Strings, t } from '@apitable/core';
 import { useClickAway } from 'ahooks';
 import { Form, Input } from 'antd';
 import classnames from 'classnames';

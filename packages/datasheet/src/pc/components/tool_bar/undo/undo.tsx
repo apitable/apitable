@@ -1,4 +1,4 @@
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { Tooltip } from 'antd';
 import { resourceService } from 'pc/resource_service';
 import * as React from 'react';

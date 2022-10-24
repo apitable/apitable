@@ -1,4 +1,4 @@
-import { Api } from '@vikadata/core';
+import { Api } from '@apitable/core';
 import { isObject } from 'lodash';
 
 declare const WWOpenData;

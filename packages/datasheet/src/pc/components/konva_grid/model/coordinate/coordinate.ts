@@ -1,4 +1,4 @@
-import { RowHeightLevel } from '@vikadata/core';
+import { RowHeightLevel } from '@apitable/core';
 import {
   ItemType,
   IndicesMap,

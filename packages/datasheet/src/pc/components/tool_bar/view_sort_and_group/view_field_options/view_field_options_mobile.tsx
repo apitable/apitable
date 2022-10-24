@@ -1,4 +1,4 @@
-import { Field, IViewColumn, Selectors, Strings, t } from '@vikadata/core';
+import { Field, IViewColumn, Selectors, Strings, t } from '@apitable/core';
 import { useThemeColors } from '@vikadata/components';
 import * as React from 'react';
 import { useSelector } from 'react-redux';

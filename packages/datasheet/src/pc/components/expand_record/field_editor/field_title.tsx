@@ -12,7 +12,7 @@ import {
   Strings,
   t,
   ViewType,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { AddOutlined, EditDescribeFilled, EditDescribeOutlined, MoreOutlined } from '@vikadata/icons';
 import classNames from 'classnames';
 import { Tooltip } from 'pc/components/common';

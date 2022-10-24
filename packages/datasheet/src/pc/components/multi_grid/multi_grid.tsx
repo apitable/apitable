@@ -11,7 +11,7 @@ import {
   RowHeightLevel,
   Selectors,
   StoreActions,
-} from '@vikadata/core';
+} from '@apitable/core';
 import classNames from 'classnames';
 import { clamp, debounce, throttle } from 'lodash';
 import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';

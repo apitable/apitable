@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import WarningIcon from 'static/icon/common/common_icon_warning.svg';
 import { useThemeColors } from '@vikadata/components';
 import styles from './styles.module.less';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 
 export const Reconnecting: React.FC = () => {
   const colors = useThemeColors();

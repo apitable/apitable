@@ -7,7 +7,7 @@ import {
   Api, CollaCommandName, DatasheetApi, IChangesetPack, IMemberInfoInAddressList,
   IRemoteChangeset, numbersBetween, ResourceType, Selectors, StoreActions, fastCloneDeep,
   PREVIEW_DATASHEET_ID, t, Strings, getRollbackActions
-} from '@vikadata/core';
+} from '@apitable/core';
 import { Modal } from 'pc/components/common';
 import { resourceService } from 'pc/resource_service';
 import { Portal } from 'pc/components/portal';

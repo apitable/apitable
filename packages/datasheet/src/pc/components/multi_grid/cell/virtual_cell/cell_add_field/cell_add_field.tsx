@@ -1,4 +1,4 @@
-import { CellType, IGroupInfo, ILinearRow, IPermissions } from '@vikadata/core';
+import { CellType, IGroupInfo, ILinearRow, IPermissions } from '@apitable/core';
 import classNames from 'classnames';
 import * as React from 'react';
 import { GRAY_COLOR_BORDER, groupColor } from '../cell_group_tab/cell_group_tab';

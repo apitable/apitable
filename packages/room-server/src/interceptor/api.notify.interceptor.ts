@@ -1,5 +1,5 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
-import { Strings } from '@vikadata/core';
+import { Strings } from '@apitable/core';
 import { DATASHEET_HTTP_DECORATE, DATASHEET_MEMBER_FIELD, DATASHEET_META_HTTP_DECORATE, InjectLogger, USER_HTTP_DECORATE } from 'common';
 import { map, toString, truncate } from 'lodash';
 import { ApiResponse } from 'model/api.response';

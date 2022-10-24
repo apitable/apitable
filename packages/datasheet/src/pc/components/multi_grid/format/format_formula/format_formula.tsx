@@ -1,6 +1,6 @@
 import { SetStateAction, Dispatch, useMemo, useRef } from 'react';
 import * as React from 'react';
-import { IField, IFormulaField, expressionTransform, Selectors, t, Strings, BasicValueType, parse } from '@vikadata/core';
+import { IField, IFormulaField, expressionTransform, Selectors, t, Strings, BasicValueType, parse } from '@apitable/core';
 import classNames from 'classnames';
 import styles from './styles.module.less';
 import formatStyles from '../styles.module.less';

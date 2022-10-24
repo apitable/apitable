@@ -1,4 +1,4 @@
-import { IReduxState, Reducers } from '@vikadata/core';
+import { IReduxState, Reducers } from '@apitable/core';
 import { expose } from 'comlink';
 import dayjs from 'dayjs';
 import { applyMiddleware, createStore } from 'redux';

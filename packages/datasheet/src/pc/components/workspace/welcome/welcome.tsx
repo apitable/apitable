@@ -1,5 +1,5 @@
 import { Button, TextButton, Typography, useThemeColors } from '@vikadata/components';
-import { ConfigConstant, IReduxState, Navigation, Settings, Strings, t } from '@vikadata/core';
+import { ConfigConstant, IReduxState, Navigation, Settings, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, PlayFilled } from '@vikadata/icons';
 import Image from 'next/image';
 import { showModal } from 'pc/common/guide/ui';

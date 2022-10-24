@@ -1,5 +1,5 @@
 import { Message, useThemeColors } from '@vikadata/components';
-import { ConfigConstant, INodeMeta, IPermissions, ISourceDatasheetInfo, Navigation, Selectors, Strings, t } from '@vikadata/core';
+import { ConfigConstant, INodeMeta, IPermissions, ISourceDatasheetInfo, Navigation, Selectors, Strings, t } from '@apitable/core';
 import { Tooltip } from 'antd';
 import throttle from 'lodash/throttle';
 import { InlineNodeName } from 'pc/components/common/inline_node_name';

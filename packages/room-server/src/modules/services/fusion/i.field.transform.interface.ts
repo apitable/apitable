@@ -1,5 +1,5 @@
 import { IFieldRoTransformOptions, IFieldValue, IFieldVoTransformOptions } from 'interfaces';
-import { ICellValue, IField } from '@vikadata/core';
+import { ICellValue, IField } from '@apitable/core';
 
 /**
  * <p>

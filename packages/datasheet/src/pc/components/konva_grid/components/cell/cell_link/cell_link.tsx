@@ -1,6 +1,6 @@
 import { black, getNextShadeColor, Message } from '@vikadata/components';
-import { KONVA_DATASHEET_ID, Selectors, Strings, t } from '@vikadata/core';
-import { getCurrentViewBase } from '@vikadata/core/dist/store/selector';
+import { KONVA_DATASHEET_ID, Selectors, Strings, t } from '@apitable/core';
+import { getCurrentViewBase } from '@apitable/core/dist/store/selector';
 import { AddOutlined, CloseSmallOutlined } from '@vikadata/icons';
 import { KonvaEventObject } from 'konva/lib/Node';
 import dynamic from 'next/dynamic';

@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import { useRequest } from 'pc/hooks';
 import { useCapacityRequest } from 'pc/hooks/use_capacity-reword-request';
 import styles from './style.module.less';
-import { ConfigConstant, Strings, t } from '@vikadata/core';
+import { ConfigConstant, Strings, t } from '@apitable/core';
 import { ColumnsType } from 'antd/lib/table';
 import { UnitTag } from 'pc/components/catalog/permission_settings/permission/select_unit_modal/unit_tag';
 import { TComponent } from 'pc/components/common/t_component';

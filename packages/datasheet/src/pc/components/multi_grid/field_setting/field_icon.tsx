@@ -1,4 +1,4 @@
-import { FieldType } from '@vikadata/core';
+import { FieldType } from '@apitable/core';
 import { colorVars } from '@vikadata/components';
 import {
   ColumnAttachmentFilled,

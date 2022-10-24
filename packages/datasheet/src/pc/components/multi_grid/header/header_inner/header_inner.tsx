@@ -1,5 +1,5 @@
 import { colorVars, useContextMenu, useThemeColors } from '@vikadata/components';
-import { DATASHEET_ID, Field, FieldOperateType, IField, Selectors, Strings, t } from '@vikadata/core';
+import { DATASHEET_ID, Field, FieldOperateType, IField, Selectors, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import { Tooltip } from 'pc/components/common';
 import { FieldPermissionLockEnhance } from 'pc/components/field_permission';

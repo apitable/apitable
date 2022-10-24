@@ -1,4 +1,4 @@
-import { ConfigConstant, ExecuteResult, FieldType, IKanbanViewProperty, Selectors, Strings, t, UN_GROUP, ViewType } from '@vikadata/core';
+import { ConfigConstant, ExecuteResult, FieldType, IKanbanViewProperty, Selectors, Strings, t, UN_GROUP, ViewType } from '@apitable/core';
 import { VariableSizeList } from '@vikadata/react-window';
 import classNames from 'classnames';
 import { useCardHeight } from 'pc/components/common/hooks/use_card_height';

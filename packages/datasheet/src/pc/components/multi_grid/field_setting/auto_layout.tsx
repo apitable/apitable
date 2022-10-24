@@ -2,7 +2,7 @@ import * as React from 'react';
 import styles from './styles.module.less';
 import { OPERATE_WIDTH } from '../field_setting';
 import { useSelector } from 'react-redux';
-import { Selectors } from '@vikadata/core';
+import { Selectors } from '@apitable/core';
 
 interface IAutoLayoutProps {
   boxWidth: number;

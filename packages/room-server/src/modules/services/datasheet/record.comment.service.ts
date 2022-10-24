@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ICommentContent, ICommentMsg, IListInsertAction } from '@vikadata/core';
+import { ICommentContent, ICommentMsg, IListInsertAction } from '@apitable/core';
 import { JavaApiPath } from 'common';
 import { ApiTipIdEnum } from 'enums/string.enum';
 import { ApiException } from 'exception/api.exception';

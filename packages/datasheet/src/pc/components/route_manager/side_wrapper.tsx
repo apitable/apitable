@@ -1,4 +1,4 @@
-import { IReduxState, StoreActions } from '@vikadata/core';
+import { IReduxState, StoreActions } from '@apitable/core';
 import { useUnmount } from 'ahooks';
 import { values } from 'lodash';
 import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';

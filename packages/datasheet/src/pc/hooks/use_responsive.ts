@@ -1,4 +1,4 @@
-import { ScreenWidth } from '@vikadata/core';
+import { ScreenWidth } from '@apitable/core';
 import { useSize } from 'ahooks';
 import { ScreenSize } from 'pc/components/common/component_display/enum';
 import { isRenderServer } from 'pc/utils';

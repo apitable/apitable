@@ -6,7 +6,7 @@ import {
   IForeignDatasheetMap,
   ILocalChangeset,
   IUserInfo,
-} from '@vikadata/core';
+} from '@apitable/core';
 
 export interface ICommandInterface {
   /**

@@ -1,4 +1,4 @@
-import { DATASHEET_ID, Selectors, StoreActions } from '@vikadata/core';
+import { DATASHEET_ID, Selectors, StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
 import { CELL_CLASS, GHOST_RECORD_ID, FIELD_DOT, FIELD_HEAD_CLASS, getElementDataset, getParentNodeByClass, OPERATE_HEAD_CLASS } from 'pc/utils';
 import { stopPropagation } from 'pc/utils/dom';

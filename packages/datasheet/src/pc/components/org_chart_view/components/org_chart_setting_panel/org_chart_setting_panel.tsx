@@ -11,7 +11,7 @@ import {
   ILinkField,
   ConfigConstant,
   Settings,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { useSelector } from 'react-redux';
 import { Tooltip } from 'antd';
 import { Select, Typography, IOption, IconButton, Switch, useThemeColors } from '@vikadata/components';

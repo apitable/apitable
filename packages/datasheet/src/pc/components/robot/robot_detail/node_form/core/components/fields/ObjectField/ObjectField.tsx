@@ -1,4 +1,4 @@
-import { getObjectOperandProperty, isOperand, objectCombOperand } from '@vikadata/core';
+import { getObjectOperandProperty, isOperand, objectCombOperand } from '@apitable/core';
 import { useState } from 'react';
 import { ADDITIONAL_PROPERTY_FLAG } from '../../../const';
 import { IFieldProps, IRegistry } from '../../../interface';

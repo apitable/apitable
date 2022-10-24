@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import { lightColors } from '@vikadata/components';
 import { PayingLayout, ModalContentLayout } from '../components/paying_layout';
 import {

@@ -2,7 +2,7 @@ import { ServerException } from 'exception/server.exception';
 import {
   IMeta, IRecordMap, FieldType, ILinkFieldProperty, ILookUpProperty, IMemberProperty, ICreatedByProperty,
   IFieldMap, IFormulaField, IViewProperty, IDatasheetUnits, IForeignDatasheetMap, IUnitValue, IUserValue
-} from '@vikadata/core';
+} from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { isEmpty } from 'class-validator';
 import { InjectLogger } from 'common';

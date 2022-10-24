@@ -1,4 +1,4 @@
-import { ConfigConstant, ResourceType, Selectors, Strings, t } from '@vikadata/core';
+import { ConfigConstant, ResourceType, Selectors, Strings, t } from '@apitable/core';
 import { ChevronLeftOutlined, CloseLargeOutlined } from '@vikadata/icons';
 import RcTrigger from 'rc-trigger';
 import { useEffect, useMemo, useRef, useState } from 'react';

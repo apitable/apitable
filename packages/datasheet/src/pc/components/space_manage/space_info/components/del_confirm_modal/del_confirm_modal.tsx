@@ -1,5 +1,5 @@
 import { Button, useThemeColors } from '@vikadata/components';
-import { Api, IReduxState, Strings, t } from '@vikadata/core';
+import { Api, IReduxState, Strings, t } from '@apitable/core';
 import { Drawer } from 'antd';
 import Image from 'next/image';
 import { Message } from 'pc/components/common/message';

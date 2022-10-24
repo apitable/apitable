@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { ApiTipConstant } from '@vikadata/core';
+import { ApiTipConstant } from '@apitable/core';
 import { plainToClass, Transform, Type } from 'class-transformer';
 import { IsOptional, Max, Min, ValidateIf, ValidateNested } from 'class-validator';
 import { API_DEFAULT_PAGE_SIZE, API_MAX_PAGE_SIZE } from 'common';

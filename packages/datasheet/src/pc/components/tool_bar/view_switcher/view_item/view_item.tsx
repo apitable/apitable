@@ -1,4 +1,4 @@
-import { Selectors, Strings, t } from '@vikadata/core';
+import { Selectors, Strings, t } from '@apitable/core';
 import { useThemeColors } from '@vikadata/components';
 import { stopPropagation } from 'pc/utils';
 import * as React from 'react';

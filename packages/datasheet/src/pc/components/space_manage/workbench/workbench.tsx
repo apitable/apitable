@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import styles from './style.module.less';
-import { Events, Player, Strings, t } from '@vikadata/core';
+import { Events, Player, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { PermissionDesc } from './permission_desc';
 import { ScrollBar } from 'pc/common/guide/scroll_bar';

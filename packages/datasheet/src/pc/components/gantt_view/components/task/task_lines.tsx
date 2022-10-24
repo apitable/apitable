@@ -1,6 +1,6 @@
 import { FC, useRef, useContext } from 'react';
 import dynamic from 'next/dynamic';
-import { KONVA_DATASHEET_ID, t, Strings } from '@vikadata/core';
+import { KONVA_DATASHEET_ID, t, Strings } from '@apitable/core';
 import { generateTargetName, PointPosition } from 'pc/components/gantt_view';
 import { KonvaGridContext } from 'pc/components/konva_grid';
 

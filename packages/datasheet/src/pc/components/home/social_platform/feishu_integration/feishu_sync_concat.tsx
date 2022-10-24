@@ -1,5 +1,5 @@
 import { Button, useTheme } from '@vikadata/components';
-import { Api, Navigation, Strings, t } from '@vikadata/core';
+import { Api, Navigation, Strings, t } from '@apitable/core';
 import { SelectOutlined } from '@vikadata/icons';
 import cls from 'classnames';
 import { useRouter } from 'next/router';

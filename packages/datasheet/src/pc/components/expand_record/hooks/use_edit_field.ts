@@ -1,4 +1,4 @@
-import { FieldOperateType, SetFieldFrom, StoreActions } from '@vikadata/core';
+import { FieldOperateType, SetFieldFrom, StoreActions } from '@apitable/core';
 import { useDispatch } from 'react-redux';
 
 export const useEditField = ({ datasheetId, fieldId, colIndex }) => {

@@ -1,5 +1,5 @@
 import { Button, LinkButton, stopPropagation, Typography } from '@vikadata/components';
-import { Navigation, SpacePathType, Strings, t } from '@vikadata/core';
+import { Navigation, SpacePathType, Strings, t } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Router } from 'pc/components/route_manager/router';
 import { useResponsive } from 'pc/hooks';

@@ -1,4 +1,4 @@
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { uploadAttachToS3, UploadType } from '@vikadata/widget-sdk';
 import { Spin } from 'antd';
 import classnames from 'classnames';

@@ -1,5 +1,5 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
-import { ICellValue, IField } from '@vikadata/core';
+import { ICellValue, IField } from '@apitable/core';
 import { isOptionId } from 'helpers/fusion.helper';
 import { IFieldValue } from 'interfaces';
 import { isString } from 'lodash';

@@ -11,7 +11,7 @@ import {
   Selectors,
   IGridViewProperty,
   ViewType,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { VariableSizeGrid as Grid } from '@vikadata/react-window';
 import { useDebounceFn } from 'ahooks';
 import cls from 'classnames';

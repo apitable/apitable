@@ -5,7 +5,7 @@ import urlcat from 'urlcat';
 import { useToggle, useClickAway } from 'ahooks';
 import { useRequest } from 'pc/hooks';
 import { Menu, Dropdown, Switch } from 'antd';
-import { CollaCommandName, ExecuteResult, Selectors, ConfigConstant, Strings, t } from '@vikadata/core';
+import { CollaCommandName, ExecuteResult, Selectors, ConfigConstant, Strings, t } from '@apitable/core';
 import { ColumnUrlOutlined, DeleteOutlined, MoreOutlined, HistoryOutlined, EditDescribeOutlined } from '@vikadata/icons';
 import { IconButton, useThemeColors } from '@vikadata/components';
 

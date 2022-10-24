@@ -1,5 +1,5 @@
 import { TextInput } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import classnames from 'classnames';
 import * as React from 'react';
 import styles from './styles.module.less';

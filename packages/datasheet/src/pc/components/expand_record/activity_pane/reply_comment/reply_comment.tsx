@@ -1,5 +1,5 @@
 import { Tooltip } from 'antd';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import { Typography, IconButton, useThemeColors } from '@vikadata/components';
 import { LabelSmallOutlined } from '@vikadata/icons';
 import { get } from 'lodash';

@@ -1,7 +1,7 @@
 import {
   BasicValueType, CollaCommandName, DATASHEET_ID, ExecuteResult, Field, FieldOperateType, FilterConjunction, FilterDuration, getNewId, IDPrefix,
   IFilterInfo, IGridViewColumn, ISortInfo, IViewProperty, Selectors, SetFieldFrom, StoreActions, Strings, t, ViewType,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { has } from 'lodash';
 import { Message } from 'pc/components/common';
 import { fieldChangeConfirm } from 'pc/components/common/field_change_confirm/field_change_confirm';

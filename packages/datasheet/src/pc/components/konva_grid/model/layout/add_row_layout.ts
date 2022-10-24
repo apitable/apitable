@@ -1,4 +1,4 @@
-import { ILinearRow, Strings, t } from '@vikadata/core';
+import { ILinearRow, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@vikadata/icons';
 import { GridLayout } from './layout';
 import { GRID_GROUP_OFFSET, GRID_ICON_COMMON_SIZE, GRID_ROW_HEAD_WIDTH } from '../../constant';

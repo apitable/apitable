@@ -1,6 +1,6 @@
 import styles from './style.module.less';
 import BackIcon from 'static/icon/common/common_icon_left_line.svg';
-import { t, Strings, Navigation, getLanguage, Settings } from '@vikadata/core';
+import { t, Strings, Navigation, getLanguage, Settings } from '@apitable/core';
 import { ShareOutlined, DescriptionOutlined } from '@vikadata/icons';
 import { Button, Typography } from '@vikadata/components';
 import Image from 'next/image';
@@ -151,8 +151,7 @@ const AlbumDetail: FC<IAlbumDetail> = props => {
           </div>
         </div>
       </div>
-      <div>
-      </div>
+      <div />
     </div>
   );
 };

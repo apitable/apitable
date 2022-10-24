@@ -1,4 +1,4 @@
-import { AlarmUsersType, Api, IRecordAlarmClient, Selectors, StoreActions, Strings, t, WithOptional } from '@vikadata/core';
+import { AlarmUsersType, Api, IRecordAlarmClient, Selectors, StoreActions, Strings, t, WithOptional } from '@apitable/core';
 import dayjs from 'dayjs';
 import { difference, keyBy } from 'lodash';
 import { dispatch } from 'pc/worker/store';

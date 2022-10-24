@@ -1,7 +1,7 @@
 // import React from 'react';
 // import style from './style.module.less';
 // import { List } from './list';
-// import { IReduxState, Strings, t } from '@vikadata/core';
+// import { IReduxState, Strings, t } from '@apitable/core';
 // import { useSelector } from 'react-redux';
 // import { Typography } from '@vikadata/components';
 // import { colorVars } from '@vikadata/components';
@@ -67,7 +67,7 @@
 import * as React from 'react';
 import style from './style.module.less';
 import { List } from './list';
-import { IReduxState, Strings, t } from '@vikadata/core';
+import { IReduxState, Strings, t } from '@apitable/core';
 import { useSelector } from 'react-redux';
 import { Typography, useThemeColors } from '@vikadata/components';
 import { Loading } from 'pc/components/common';

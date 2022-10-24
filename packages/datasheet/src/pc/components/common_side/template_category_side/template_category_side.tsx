@@ -9,7 +9,7 @@ import {
   Strings,
   t,
   TrackEvents
-} from '@vikadata/core';
+} from '@apitable/core';
 import { useDebounceFn, useUnmount } from 'ahooks';
 import { Tooltip } from 'antd';
 import classNames from 'classnames';

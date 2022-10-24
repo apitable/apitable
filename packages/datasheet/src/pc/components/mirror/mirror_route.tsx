@@ -1,5 +1,5 @@
 import { Skeleton } from '@vikadata/components';
-import { Navigation, Selectors, StatusCode, Strings, t } from '@vikadata/core';
+import { Navigation, Selectors, StatusCode, Strings, t } from '@apitable/core';
 import { ServerError } from 'pc/components/invalid_page/server_error';
 import { Mirror } from 'pc/components/mirror/mirror';
 import styles from 'pc/components/mirror/style.module.less';

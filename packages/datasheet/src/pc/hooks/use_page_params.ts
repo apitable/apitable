@@ -1,4 +1,4 @@
-import { StoreActions } from '@vikadata/core';
+import { StoreActions } from '@apitable/core';
 import { useRouter } from 'next/router';
 import { dispatch } from 'pc/worker/store';
 import { useEffect } from 'react';

@@ -1,4 +1,4 @@
-import { IComments } from '@vikadata/core';
+import { IComments } from '@apitable/core';
 import { ActivitySelectType } from 'pc/utils';
 
 export interface ICacheType {

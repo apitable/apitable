@@ -1,5 +1,5 @@
 import { IListBase } from '../list.interface';
-import { ISelectFieldOption, IFieldProperty, ICollaCommandExecuteResult } from '@vikadata/core';
+import { ISelectFieldOption, IFieldProperty, ICollaCommandExecuteResult } from '@apitable/core';
 
 export interface IOptionListProps extends IListBase<string[], ISelectFieldOption[]> {
 

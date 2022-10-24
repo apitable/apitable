@@ -1,4 +1,4 @@
-import { ISelectFieldBaseOpenValue } from '@vikadata/core';
+import { ISelectFieldBaseOpenValue } from '@apitable/core';
 import { CSSProperties } from 'react';
 
 export interface IOptionItem {

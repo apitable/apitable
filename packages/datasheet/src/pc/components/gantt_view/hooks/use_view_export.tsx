@@ -2,7 +2,7 @@ import { Modal } from 'antd';
 import { useEffect } from 'react';
 import FileSaver from 'file-saver';
 import { dispatch } from 'pc/worker/store';
-import { divide, StoreActions } from '@vikadata/core';
+import { divide, StoreActions } from '@apitable/core';
 import { EXPORT_BRAND_DESC_HEIGHT, EXPORT_IMAGE_PADDING, MAX_EXPORT_IMAGE_AREA_SIZE } from 'pc/components/gantt_view';
 
 interface IUseViewExportProps {

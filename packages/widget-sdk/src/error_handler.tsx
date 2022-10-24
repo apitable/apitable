@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Selectors, StatusCode, Strings, t } from 'core';
 import { WidgetEmptyPath } from './ui/widget_empty';
 import { getWidgetDatasheet } from 'store';
-import { IReduxState } from '@vikadata/core';
+import { IReduxState } from '@apitable/core';
 import { useMeta } from 'hooks';
 
 export const ErrorHandler: React.FC = props => {

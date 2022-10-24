@@ -1,4 +1,4 @@
-import { getNewId, IDPrefix } from '@vikadata/core';
+import { getNewId, IDPrefix } from '@apitable/core';
 import cloneDeep from 'lodash/cloneDeep';
 import { NodeType, ElementType, ALIGN } from '../constant';
 import { IElement, TText, IImageElementData } from '../interface/element';

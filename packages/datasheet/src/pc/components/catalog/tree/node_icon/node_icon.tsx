@@ -1,5 +1,5 @@
 import { colorVars } from '@vikadata/components';
-import { ConfigConstant, EmojisConfig } from '@vikadata/core';
+import { ConfigConstant, EmojisConfig } from '@apitable/core';
 import { makeNodeIconComponent } from 'pc/components/catalog/node_context_menu';
 import { Emoji } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';

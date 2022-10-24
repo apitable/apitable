@@ -3,7 +3,7 @@ import { IconButton, Skeleton, ThemeProvider, useThemeColors } from '@vikadata/c
 import {
   Api, DatasheetApi, FieldOperateType, Navigation, RecordVision, ResourceIdPrefix, ResourceType, Selectors, SetFieldFrom, StatusCode, StoreActions,
   Strings, t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { AttentionOutlined, CommentOutlined } from '@vikadata/icons';
 import { useLocalStorageState, useMount, useToggle, useUpdateEffect } from 'ahooks';
 import classNames from 'classnames';

@@ -1,4 +1,4 @@
-import { IFormProps } from '@vikadata/core';
+import { IFormProps } from '@apitable/core';
 import { createContext } from 'react';
 
 export interface IFormContext {

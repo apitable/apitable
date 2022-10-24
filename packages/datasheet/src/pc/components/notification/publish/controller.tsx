@@ -1,5 +1,5 @@
 import { colors } from '@vikadata/components';
-import { Api, INoticeDetail, Navigation, StoreActions } from '@vikadata/core';
+import { Api, INoticeDetail, Navigation, StoreActions } from '@apitable/core';
 import { showVikaby } from 'pc/common/guide/vikaby/vikaby';
 import { IDingTalkModalType, showTipInDingTalk } from 'pc/components/economy/upgrade_modal';
 import { isSocialDingTalk } from 'pc/components/home/social_platform';

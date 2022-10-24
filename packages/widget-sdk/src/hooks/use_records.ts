@@ -7,7 +7,7 @@ import { useMeta } from './use_meta';
 import { Datasheet } from 'model';
 import { getViewById, getVisibleRowsCalcCache, getWidgetDatasheet } from 'store';
 import { isIframe } from 'iframe_message/utils';
-import { Selectors } from '@vikadata/core';
+import { Selectors } from '@apitable/core';
 
 /**
  * 获得表格中一个指定视图下面所有的 Records。

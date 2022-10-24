@@ -1,6 +1,6 @@
 import {
   Field, FieldType, getNewId, getUniqName, IDPrefix, IField, IFieldMap, ISingleSelectField, SingleSelectField, Strings, t
-} from '@vikadata/core';
+} from '@apitable/core';
 import { TextInput, Button } from '@vikadata/components';
 import * as React from 'react';
 import { useCheckRepeatName } from '../../hooks/use_check_repeat_name';

@@ -1,5 +1,5 @@
 import { Box } from '@vikadata/components';
-import { Selectors, t, Strings } from '@vikadata/core';
+import { Selectors, t, Strings } from '@apitable/core';
 import { useSelector } from 'react-redux';
 import { useAllFields } from '../../hooks';
 import { INodeType, IRobotRunHistoryDetail } from '../../interface';

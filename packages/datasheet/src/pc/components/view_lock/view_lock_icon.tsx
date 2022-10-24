@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Tooltip } from 'antd';
 import { LockNonzeroOutlined } from '@vikadata/icons';
 // import { useSelector } from 'react-redux';
-import { IViewProperty, /* Selectors,  */Strings, t } from '@vikadata/core';
+import { IViewProperty, /* Selectors,  */Strings, t } from '@apitable/core';
 import { ViewSyncStatus } from 'pc/components/tab_bar/view_sync_switch';
 import { useThemeColors } from '@vikadata/components';
 

@@ -9,7 +9,7 @@ import {
   CollaCommandName,
   t,
   Strings,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { INode } from '../../interfaces';
 import { resourceService } from 'pc/resource_service';
 import { useStoreState } from '@vikadata/react-flow-renderer';

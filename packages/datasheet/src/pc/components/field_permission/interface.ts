@@ -1,4 +1,4 @@
-import { IField, IUnitValue } from '@vikadata/core';
+import { IField, IUnitValue } from '@apitable/core';
 import { IOption, IDoubleOptions } from '@vikadata/components';
 
 export interface IFieldPermissionProps {

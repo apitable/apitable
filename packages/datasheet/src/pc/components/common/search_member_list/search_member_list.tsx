@@ -1,5 +1,5 @@
 import { TextInput } from '@vikadata/components';
-import { ISearchMemberData, Strings, t } from '@vikadata/core';
+import { ISearchMemberData, Strings, t } from '@apitable/core';
 import cls from 'classnames';
 import Image from 'next/image';
 import { WecomOpenData } from 'pc/components/address_list';

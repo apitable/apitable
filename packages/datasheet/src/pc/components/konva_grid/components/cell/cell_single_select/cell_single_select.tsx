@@ -1,5 +1,5 @@
 import { getNextShadeColor, ThemeName } from '@vikadata/components';
-import { KONVA_DATASHEET_ID } from '@vikadata/core';
+import { KONVA_DATASHEET_ID } from '@apitable/core';
 import { AddOutlined, CloseSmallOutlined } from '@vikadata/icons';
 import dynamic from 'next/dynamic';
 import { generateTargetName } from 'pc/components/gantt_view';

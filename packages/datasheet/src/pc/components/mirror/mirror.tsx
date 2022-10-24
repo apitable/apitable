@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styles from './style.module.less';
-import { IMirror, ResourceType } from '@vikadata/core';
+import { IMirror, ResourceType } from '@apitable/core';
 import { MirrorPath } from 'pc/components/mirror/mirror_path';
 import { useNetwork } from 'pc/hooks/use_network';
 import { CollaboratorStatus } from 'pc/components/tab_bar/collaboration_status';

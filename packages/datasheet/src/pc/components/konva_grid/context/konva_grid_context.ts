@@ -1,5 +1,5 @@
 import { ITheme } from '@vikadata/components';
-import { ICell } from '@vikadata/core';
+import { ICell } from '@apitable/core';
 import { TooltipPlacement } from 'antd/lib/tooltip';
 import { CellBound, ICellScrollState, IScrollHandler } from 'pc/components/gantt_view';
 import * as React from 'react';

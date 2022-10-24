@@ -1,4 +1,4 @@
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import * as React from 'react';
 import { ColorPickerPane, IColorPickerPane } from './color_picker_pane';
 import { stopPropagation } from 'pc/utils';

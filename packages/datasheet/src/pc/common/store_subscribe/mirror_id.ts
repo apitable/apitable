@@ -1,4 +1,4 @@
-import { ResourceType, StoreActions } from '@vikadata/core';
+import { ResourceType, StoreActions } from '@apitable/core';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { getStorage, StorageName } from 'pc/utils/storage';

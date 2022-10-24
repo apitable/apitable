@@ -1,4 +1,4 @@
-import { CollaCommandName, FieldType, ISortInfo, Selectors, Strings, t } from '@vikadata/core';
+import { CollaCommandName, FieldType, ISortInfo, Selectors, Strings, t } from '@apitable/core';
 import { Col, Row, Switch } from 'antd';
 import produce from 'immer';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';

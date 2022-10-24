@@ -1,4 +1,4 @@
-// import { Strings, t } from '@vikadata/core';
+// import { Strings, t } from '@apitable/core';
 // import React from 'react';
 // import { Card } from '../card/card';
 // import { IApp } from '../interface';
@@ -32,7 +32,7 @@
 //   );
 // };
 
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import * as React from 'react';
 import { Card } from '../card/card';
 import { AppStatus, IStoreApp } from '../interface';

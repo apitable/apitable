@@ -1,4 +1,4 @@
-import { CellType, FieldType, Selectors } from '@vikadata/core';
+import { CellType, FieldType, Selectors } from '@apitable/core';
 import { shallowEqual, useSelector } from 'react-redux';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { EditOutlined, EyeNormalOutlined, LockNonzeroOutlined } from '@vikadata/icons';
 import { useSelector } from 'react-redux';
-import { ConfigConstant, Selectors, Strings, t } from '@vikadata/core';
+import { ConfigConstant, Selectors, Strings, t } from '@apitable/core';
 import { Tooltip, useThemeColors } from '@vikadata/components';
 
 export const FieldPermissionLock = (props: {

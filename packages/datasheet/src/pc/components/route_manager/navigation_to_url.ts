@@ -1,5 +1,5 @@
 // 暂时没有实现Method.replace功能
-import { StoreActions } from '@vikadata/core';
+import { StoreActions } from '@apitable/core';
 import { Method } from 'pc/components/route_manager/const';
 import { getHistoryMethod } from 'pc/components/route_manager/helper';
 import { IQuery } from 'pc/components/route_manager/interface';

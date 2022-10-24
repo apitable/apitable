@@ -1,5 +1,5 @@
 import { Button, IconButton, useThemeColors } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import domtoimage from 'dom-to-image';
 import { Logo, Message } from 'pc/components/common';

@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import domtoimage from 'dom-to-image';
 
-import { IReduxState, Strings, t } from '@vikadata/core';
+import { IReduxState, Strings, t } from '@apitable/core';
 import { useThemeColors, rgba2hex, Typography, Button, Loading } from '@vikadata/components';
 import { DownloadOutlined, LogoPurpleFilled } from '@vikadata/icons';
 

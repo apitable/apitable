@@ -4,7 +4,7 @@ import LeftScrollIcon from 'static/icon/workbench/workbench_tab_arrow_left.svg';
 import RightScrollIcon from 'static/icon/workbench/workbench_tab_arrow_right.svg';
 import { useThemeColors } from '@vikadata/components';
 import styles from './style.module.less';
-import { ConfigConstant } from '@vikadata/core';
+import { ConfigConstant } from '@apitable/core';
 
 export const HorizontalScroll: FC = props => {
   const [scrollLeft, setScrollLeft] = useState(0);

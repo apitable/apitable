@@ -1,5 +1,5 @@
 import { Avatar, LinkButton, Typography, useThemeColors } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { Logo } from 'pc/components/common';
 import { showOrderContactUs } from 'pc/components/subscribe_system/order_modal/pay_order_success';
 import styles from 'pc/components/subscribe_system/styles.module.less';

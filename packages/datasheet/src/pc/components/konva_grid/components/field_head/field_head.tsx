@@ -1,4 +1,4 @@
-import { Field, IField, KONVA_DATASHEET_ID, Strings, t, ViewType } from '@vikadata/core';
+import { Field, IField, KONVA_DATASHEET_ID, Strings, t, ViewType } from '@apitable/core';
 import { EditGanttDescribeFilled, IIconProps, MoreStandOutlined, WarningTriangleNonzeroFilled } from '@vikadata/icons';
 import dynamic from 'next/dynamic';
 import { generateTargetName } from 'pc/components/gantt_view';

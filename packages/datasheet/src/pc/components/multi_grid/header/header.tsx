@@ -1,7 +1,7 @@
 import {
   IField, IFieldRanges, IFilterInfo, IGridViewProperty,
   IGroupInfo, IReduxState, ISortInfo, Selectors, DATASHEET_ID, t, Strings,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { areEqual, GridChildComponentProps } from '@vikadata/react-window';
 import { Tooltip } from 'antd';
 import classNames from 'classnames';

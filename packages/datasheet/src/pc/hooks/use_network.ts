@@ -1,4 +1,4 @@
-import { ResourceType, Selectors, Strings, t } from '@vikadata/core';
+import { ResourceType, Selectors, Strings, t } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { Network } from 'pc/components/network_status';
 import { useEffect, useRef, useState } from 'react';

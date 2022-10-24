@@ -1,4 +1,4 @@
-import { ConfigConstant } from '@vikadata/core';
+import { ConfigConstant } from '@apitable/core';
 import { getEnvVars } from 'get_env';
 import { browser } from 'pc/common/browser';
 import { IInitializationData } from 'typings';

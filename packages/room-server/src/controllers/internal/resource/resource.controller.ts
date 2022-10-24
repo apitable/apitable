@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Headers, Param, Post, Query, UseInterceptors } from '@nestjs/common';
-import { ILocalChangeset, OtErrorCode, readonlyFields, ResourceIdPrefix, ResourceType } from '@vikadata/core';
+import { ILocalChangeset, OtErrorCode, readonlyFields, ResourceIdPrefix, ResourceType } from '@apitable/core';
 import { RecordHistoryTypeEnum } from 'enums/record.history.enum';
 import { ResourceDataInterceptor } from 'middleware/resource.data.interceptor';
 import { ApiResponse } from 'model/api.response';

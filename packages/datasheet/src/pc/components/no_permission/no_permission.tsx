@@ -1,5 +1,5 @@
 import { Button } from '@vikadata/components';
-import { Api, integrateCdnHost, IReduxState, Navigation, StoreActions, Strings, t, Settings } from '@vikadata/core';
+import { Api, integrateCdnHost, IReduxState, Navigation, StoreActions, Strings, t, Settings } from '@apitable/core';
 import { useUnmount, useUpdateEffect } from 'ahooks';
 import Image from 'next/image';
 import { ServiceQrCode } from 'pc/common/guide/ui/qr_code';

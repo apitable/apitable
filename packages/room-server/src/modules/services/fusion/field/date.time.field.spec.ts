@@ -1,4 +1,4 @@
-import { CellFormatEnum, DateFormat, FieldType, IDateTimeField, IReduxState, Reducers, TimeFormat } from '@vikadata/core';
+import { CellFormatEnum, DateFormat, FieldType, IDateTimeField, IReduxState, Reducers, TimeFormat } from '@apitable/core';
 import { DateTimeField } from 'modules/services/fusion/field/date.time.field';
 import { applyMiddleware, createStore, Store } from 'redux';
 import { batchDispatchMiddleware } from 'redux-batched-actions';

@@ -11,7 +11,7 @@ import {
   Selectors,
   Strings,
   t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { resourceService } from 'pc/resource_service';
 import { useCallback, useEffect, useRef } from 'react';
 import * as React from 'react';

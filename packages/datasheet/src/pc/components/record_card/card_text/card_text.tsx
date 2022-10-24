@@ -1,4 +1,4 @@
-import { Field, FieldType, IField } from '@vikadata/core';
+import { Field, FieldType, IField } from '@apitable/core';
 import classnames from 'classnames';
 import { getFieldHeight, getShowFieldType, getVietualFieldHeight } from 'pc/components/gallery_view/utils';
 import * as React from 'react';

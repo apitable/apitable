@@ -1,5 +1,5 @@
 import { Typography, useThemeColors } from '@vikadata/components';
-import { IField, ILinkField, Selectors, Strings, t } from '@vikadata/core';
+import { IField, ILinkField, Selectors, Strings, t } from '@apitable/core';
 import { Switch } from 'antd';
 import classNames from 'classnames';
 import { NodeIcon } from 'pc/components/catalog/tree/node_icon';

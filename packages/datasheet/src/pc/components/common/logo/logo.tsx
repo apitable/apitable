@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 import { ThemeName, useThemeColors } from '@vikadata/components';
-import { getLanguage } from '@vikadata/core';
+import { getLanguage } from '@apitable/core';
 import { LogoPurpleFilled, LogoWhiteFilled } from '@vikadata/icons';
 
 import { getEnvVariables } from 'pc/utils/env';

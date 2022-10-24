@@ -1,4 +1,4 @@
-import { IFormProps } from '@vikadata/core';
+import { IFormProps } from '@apitable/core';
 
 export enum IModeEnum {
   Preview = 'Preview',

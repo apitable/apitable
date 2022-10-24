@@ -1,5 +1,5 @@
 import { Message } from '@vikadata/components';
-import { Api, Settings, Strings, t } from '@vikadata/core';
+import { Api, Settings, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { Loading } from 'pc/components/common';
 import { useQuery, useRequest } from 'pc/hooks';

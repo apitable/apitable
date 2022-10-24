@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useRobot, useRobotContext } from '../../hooks';
 import { IStepProps } from '../interface';
 import robotGuideAvatar from 'static/icon/robot/robot_guide_avatar.png';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 
 export const RobotCreateGuideStep4 = (props: IStepProps) => {
   const { setCurrentRobotId } = useRobot();

@@ -1,4 +1,4 @@
-import { ICollaCommandOptions, ILocalChangeset } from '@vikadata/core';
+import { ICollaCommandOptions, ILocalChangeset } from '@apitable/core';
 import { IAuthHeader } from 'interfaces';
 import { IAPINode } from 'interfaces/node.interface';
 import { IAPISpace } from 'interfaces/space.interface';

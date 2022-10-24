@@ -1,4 +1,4 @@
-import { Field, FieldType, IField, IRecord, IReduxState, IViewColumn, Selectors, Strings, t } from '@vikadata/core';
+import { Field, FieldType, IField, IRecord, IReduxState, IViewColumn, Selectors, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { DisplayFile } from 'pc/components/display_file';

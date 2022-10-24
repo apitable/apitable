@@ -1,4 +1,4 @@
-import { RecordVision, StoreActions } from '@vikadata/core';
+import { RecordVision, StoreActions } from '@apitable/core';
 import { expandRecordRoute, clearExpandModal } from 'pc/components/expand_record';
 import { store } from 'pc/store';
 

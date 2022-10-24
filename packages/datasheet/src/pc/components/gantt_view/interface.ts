@@ -1,5 +1,5 @@
 import { Dayjs } from 'dayjs';
-import { DateUnitType, ILinearRow } from '@vikadata/core';
+import { DateUnitType, ILinearRow } from '@apitable/core';
 import { ICoordinate } from 'pc/components/konva_grid';
 import { DateTimeType } from './utils';
 

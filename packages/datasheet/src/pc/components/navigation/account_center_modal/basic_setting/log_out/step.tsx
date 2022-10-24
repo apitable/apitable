@@ -1,5 +1,5 @@
 import { Button, LinkButton, useThemeColors } from '@vikadata/components';
-import { Api, ConfigConstant, Navigation, Strings, t } from '@vikadata/core';
+import { Api, ConfigConstant, Navigation, Strings, t } from '@apitable/core';
 import { Message, NormalModal } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useSetState } from 'pc/hooks';

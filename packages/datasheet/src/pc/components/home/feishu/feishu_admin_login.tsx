@@ -1,4 +1,4 @@
-import { Api, ConfigConstant, Navigation, Settings, StatusCode, Strings, t } from '@vikadata/core';
+import { Api, ConfigConstant, Navigation, Settings, StatusCode, Strings, t } from '@apitable/core';
 import { Message, Modal } from 'pc/components/common';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';

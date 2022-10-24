@@ -3,7 +3,7 @@ import * as React from 'react';
 import IconNarrow from 'static/icon/datasheet/datasheet_icon_narrow_record16.svg';
 import styles from './style.module.less';
 import classNames from 'classnames';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 
 interface IModalOutsideOperateProps {
   onModalClose (): void;

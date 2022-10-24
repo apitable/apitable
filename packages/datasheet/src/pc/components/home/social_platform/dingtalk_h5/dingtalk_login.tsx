@@ -1,4 +1,4 @@
-import { Api, ConfigConstant, Navigation, StatusCode, Strings, t } from '@vikadata/core';
+import { Api, ConfigConstant, Navigation, StatusCode, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import * as dd from 'dingtalk-jsapi';
 import { IRuntimePermissionRequestAuthCodeParams } from 'dingtalk-jsapi/api/runtime/permission/requestAuthCode';

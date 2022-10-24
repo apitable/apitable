@@ -2,7 +2,7 @@ import {
   ICell, IFieldMap, IFieldPermissionMap, IFieldRanges, IFillHandleStatus, IFilterInfo, IGridViewDragState,
   IGroupInfo, ILinearRow, IPermissions, IRange, IRecordMap, IRecordRanges, ISelection, ISnapshot, ISortInfo,
   IViewColumn, IViewProperty, IViewRow, RecordMoveType, ICollaboratorCursorMap, ThemeName,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { createContext, Dispatch } from 'react';
 
 export interface IKonvaGridViewContextProps {

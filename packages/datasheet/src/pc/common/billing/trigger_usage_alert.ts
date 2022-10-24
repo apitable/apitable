@@ -1,4 +1,4 @@
-import { ISubscription, Strings, t } from '@vikadata/core';
+import { ISubscription, Strings, t } from '@apitable/core';
 import { IExtra } from 'pc/common/billing/interface';
 import { showVikaby } from 'pc/common/guide/vikaby';
 import { Message } from 'pc/components/common';

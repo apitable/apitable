@@ -1,4 +1,4 @@
-import { SegmentType, FieldType, t, Strings } from '@vikadata/core';
+import { SegmentType, FieldType, t, Strings } from '@apitable/core';
 import { Message } from 'pc/components/common';
 
 export const useEnhanceTextClick = () => {

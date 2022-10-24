@@ -16,7 +16,7 @@ import {
   Strings,
   t,
   WithOptional,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { NotificationSmallOutlined } from '@vikadata/icons';
 import { usePrevious } from 'ahooks';
 import enUS from 'antd/es/date-picker/locale/en_US';

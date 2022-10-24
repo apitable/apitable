@@ -10,7 +10,7 @@ import {
   ISpaceInfo,
   ISpaceBasicInfo,
   UnitItem,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { Breadcrumb, Radio, Checkbox, Tabs } from 'antd';
 import { AvatarType, ButtonPlus, HorizontalScroll, InfoCard, SearchInput } from 'pc/components/common';
 import { ReactChild, useCallback, useEffect, useState } from 'react';

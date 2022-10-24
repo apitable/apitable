@@ -1,5 +1,5 @@
 import { Injectable, NestInterceptor, Logger, ExecutionContext, CallHandler } from '@nestjs/common';
-import { ResourceType, IWidget, ResourceIdPrefix } from '@vikadata/core';
+import { ResourceType, IWidget, ResourceIdPrefix } from '@apitable/core';
 import { InjectLogger } from 'common';
 import { ApiResponse } from 'model/api.response';
 import { NodeService } from 'modules/services/node/node.service';

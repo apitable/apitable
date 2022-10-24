@@ -1,4 +1,4 @@
-import { getLanguage, Strings, t } from '@vikadata/core';
+import { getLanguage, Strings, t } from '@apitable/core';
 import { SelectMarkFilled } from '@vikadata/icons';
 import { Skeleton, Tooltip } from '@vikadata/components';
 import classnames from 'classnames';

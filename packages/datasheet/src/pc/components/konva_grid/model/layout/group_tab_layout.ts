@@ -1,4 +1,4 @@
-import { ILinearRow, RowHeightLevel, Strings, t } from '@vikadata/core';
+import { ILinearRow, RowHeightLevel, Strings, t } from '@apitable/core';
 import { LockNonzeroOutlined } from '@vikadata/icons';
 import { GridLayout } from './layout';
 import { colors } from '@vikadata/components';

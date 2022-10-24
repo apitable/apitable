@@ -1,6 +1,6 @@
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from './base.entity';
-import { IOperation } from '@vikadata/core';
+import { IOperation } from '@apitable/core';
 
 /**
  * 工作台-数表操作变更合集表

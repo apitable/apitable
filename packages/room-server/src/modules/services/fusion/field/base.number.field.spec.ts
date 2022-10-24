@@ -1,4 +1,4 @@
-import { FieldType, INumberField } from '@vikadata/core';
+import { FieldType, INumberField } from '@apitable/core';
 import { NumberField } from 'modules/services/fusion/field/number.field';
 
 describe('BaseNumberField', () => {

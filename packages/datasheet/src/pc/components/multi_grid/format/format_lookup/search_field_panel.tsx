@@ -1,4 +1,4 @@
-import { FieldType, Field, IField, ILinkField, ILookUpField, Selectors, Strings, t } from '@vikadata/core';
+import { FieldType, Field, IField, ILinkField, ILookUpField, Selectors, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { InlineNodeName } from 'pc/components/common/inline_node_name';

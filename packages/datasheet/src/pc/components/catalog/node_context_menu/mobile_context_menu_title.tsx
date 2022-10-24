@@ -3,7 +3,7 @@ import styles from './style.module.less';
 import { Space } from 'antd';
 import { getNodeIcon } from '../tree/node_icon';
 import { useThemeColors } from '@vikadata/components';
-import { INodesMapItem, Strings, t } from '@vikadata/core';
+import { INodesMapItem, Strings, t } from '@apitable/core';
 import { Tag } from 'pc/components/common';
 
 export interface IContextMenuTitleProps {

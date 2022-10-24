@@ -1,5 +1,5 @@
 import { Button } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { copy2clipBoard } from 'pc/utils';
 import { FC } from 'react';
 import styles from './style.module.less';

@@ -1,4 +1,4 @@
-import { Selectors, Strings, t } from '@vikadata/core';
+import { Selectors, Strings, t } from '@apitable/core';
 import { store } from 'pc/store';
 import { message } from 'antd';
 

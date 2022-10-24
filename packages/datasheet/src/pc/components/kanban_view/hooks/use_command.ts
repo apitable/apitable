@@ -1,7 +1,7 @@
 import { resourceService } from 'pc/resource_service';
 import {
   CollaCommandName, ICellValue, IField, FieldType, ISetKanbanStyleValue, Selectors, IViewColumn, ISegment, IKanbanViewProperty
-} from '@vikadata/core';
+} from '@apitable/core';
 import { useSelector } from 'react-redux';
 import { store } from 'pc/store';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';

@@ -1,5 +1,5 @@
 import { Button, useThemeColors } from '@vikadata/components';
-import { ILinkField, ILinkIds, IReduxState, Selectors, StoreActions, Strings, t } from '@vikadata/core';
+import { ILinkField, ILinkIds, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@vikadata/icons';
 import { Message } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';

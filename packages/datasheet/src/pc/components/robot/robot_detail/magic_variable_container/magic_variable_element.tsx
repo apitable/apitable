@@ -3,7 +3,7 @@ import { getExpressionChainList, IExpressionChainNode } from './helper';
 import { IJsonSchema, INodeOutputSchema } from '../../interface';
 import { Box, useTheme, Typography } from '@vikadata/components';
 import { FormOutlined } from '@vikadata/icons';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 
 export const MagicVariableElement = props => {
   const { element, children } = props;

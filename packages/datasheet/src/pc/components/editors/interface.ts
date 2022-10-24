@@ -1,4 +1,4 @@
-import { ICell, ICellValue, IField, IRecordAlarmClient, WithOptional } from '@vikadata/core';
+import { ICell, ICellValue, IField, IRecordAlarmClient, WithOptional } from '@apitable/core';
 
 export interface IEditor {
   focus(preventScroll?: boolean): void;

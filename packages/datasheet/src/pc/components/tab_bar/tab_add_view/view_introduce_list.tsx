@@ -1,7 +1,7 @@
 import { Alert, Typography, useListenVisualHeight, useThemeColors } from '@vikadata/components';
 import {
   ConfigConstant, DATASHEET_ID, FormView, getMaxViewCountPerSheet, getViewAnalyticsId, getViewClass, Selectors, Strings, t, ViewType
-} from '@vikadata/core';
+} from '@apitable/core';
 import { AddOutlined } from '@vikadata/icons';
 import classNames from 'classnames';
 import Image from 'next/image';

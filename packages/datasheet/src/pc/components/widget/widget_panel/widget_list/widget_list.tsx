@@ -10,7 +10,7 @@ import {
   t,
   WidgetPackageStatus,
   WidgetReleaseType,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { CodeFilled, DashboardOutlined, DeleteOutlined, EditOutlined, InformationSmallOutlined, SettingOutlined } from '@vikadata/icons';
 import { useLocalStorageState } from 'ahooks';
 import classNames from 'classnames';

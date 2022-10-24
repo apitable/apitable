@@ -1,5 +1,5 @@
 import { Button, colorVars, TextButton, Typography, useThemeColors } from '@vikadata/components';
-import { ConfigConstant, integrateCdnHost, Settings, Strings, t } from '@vikadata/core';
+import { ConfigConstant, integrateCdnHost, Settings, Strings, t } from '@apitable/core';
 import { CloseMiddleOutlined, TitleFavoriteFilled } from '@vikadata/icons';
 import classnames from 'classnames';
 import Image from 'next/image';

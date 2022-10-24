@@ -1,4 +1,4 @@
-import { ILinearRowBlank } from '@vikadata/core';
+import { ILinearRowBlank } from '@apitable/core';
 import * as React from 'react';
 import { GRAY_COLOR_BORDER } from '../cell_group_tab/cell_group_tab';
 import { getGroupColor } from '../utils';

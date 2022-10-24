@@ -3,7 +3,7 @@ import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
 import { FC, useState } from 'react';
 import * as React from 'react';
 import { BaseModal } from 'pc/components/common';
-import { IUnit, Strings, t, Selectors, UnitItem } from '@vikadata/core';
+import { IUnit, Strings, t, Selectors, UnitItem } from '@apitable/core';
 import { Button, ThemeProvider, TextButton } from '@vikadata/components';
 import styles from './style.module.less';
 import { stopPropagation } from 'pc/utils';

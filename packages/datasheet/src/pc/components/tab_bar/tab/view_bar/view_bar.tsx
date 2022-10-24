@@ -1,4 +1,4 @@
-import { CollaCommandName, DATASHEET_ID, IReduxState, IViewProperty, moveArrayElement, Selectors, Strings, t, ViewType } from '@vikadata/core';
+import { CollaCommandName, DATASHEET_ID, IReduxState, IViewProperty, moveArrayElement, Selectors, Strings, t, ViewType } from '@apitable/core';
 import { ChevronDownOutlined } from '@vikadata/icons';
 import { TextButton, useContextMenu } from '@vikadata/components';
 import cls from 'classnames';

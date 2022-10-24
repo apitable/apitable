@@ -3,7 +3,7 @@ import { useRequest } from 'pc/hooks';
 import {
   CollaCommandName, ConfigConstant, ExecuteResult, integrateCdnHost, isPrivateDeployment, ResourceType, Selectors, Settings, StoreActions, Strings, t,
   WidgetApi, WidgetApiInterface
-} from '@vikadata/core';
+} from '@apitable/core';
 import { CopyOutlined, ErrorFilled, GuideOutlined, InformationSmallOutlined } from '@vikadata/icons';
 import { loadWidgetCheck, WidgetLoadError } from '@vikadata/widget-sdk/dist/initialize_widget';
 import { useMount } from 'ahooks';

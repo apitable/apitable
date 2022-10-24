@@ -2,7 +2,7 @@ import { Button, LinkButton, useThemeColors } from '@vikadata/components';
 import {
   CollaCommandName, ExecuteResult, Field, FieldType, ILinkField, ILinkIds, IReduxState, ISegment, IViewRow, SegmentType, Selectors, StoreActions,
   Strings, t, TextBaseField,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { Align, FixedSizeList } from '@vikadata/react-window';
 import { useDebounce, useUpdateEffect } from 'ahooks';
 import classNames from 'classnames';

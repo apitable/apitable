@@ -1,4 +1,4 @@
-import { Api, StatusCode, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import Router from 'next/router';
 import { Message } from 'pc/components/common/message/message';
 import { useDispatch } from 'react-redux';

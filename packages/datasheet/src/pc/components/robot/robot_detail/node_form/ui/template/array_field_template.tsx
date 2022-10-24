@@ -1,4 +1,4 @@
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import { Button, IconButton } from '@vikadata/components';
 import { ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined } from '@vikadata/icons';
 import styled from 'styled-components';

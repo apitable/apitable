@@ -1,5 +1,5 @@
 import { lightColors, LinkButton } from '@vikadata/components';
-import { isPrivateDeployment, Strings, t } from '@vikadata/core';
+import { isPrivateDeployment, Strings, t } from '@apitable/core';
 import { ShareQrcodeOutlined, WorkbenchLargeOutlined } from '@vikadata/icons';
 import { useToggle } from 'ahooks';
 import { PhoneAndEmailLogin } from 'pc/components/home/login/phone_and_email_login';

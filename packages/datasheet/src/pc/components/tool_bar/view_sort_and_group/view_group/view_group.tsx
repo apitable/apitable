@@ -1,4 +1,4 @@
-import { CollaCommandName, IGroupInfo, Selectors, Strings, t, ViewType } from '@vikadata/core';
+import { CollaCommandName, IGroupInfo, Selectors, Strings, t, ViewType } from '@apitable/core';
 import produce from 'immer';
 import { useCallback, useRef } from 'react';
 import * as React from 'react';

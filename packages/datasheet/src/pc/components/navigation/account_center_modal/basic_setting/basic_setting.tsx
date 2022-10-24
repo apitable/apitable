@@ -8,7 +8,7 @@ import {
   t,
   isPrivateDeployment,
   isIdassPrivateDeployment,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { useRequest } from 'pc/hooks';
 import { Spin } from 'antd';
 import { Avatar, AvatarSize } from 'pc/components/common/avatar';

@@ -1,6 +1,6 @@
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
-import { FieldType, IMemberField } from '@vikadata/core';
+import { FieldType, IMemberField } from '@apitable/core';
 import '@vikadata/i18n-lang';
 import { AppModule } from 'app.module';
 import { MemberField } from 'modules/services/fusion/field/member.field';

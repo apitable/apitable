@@ -1,5 +1,5 @@
 import { Loading, useThemeMode } from '@vikadata/components';
-import { StoreActions } from '@vikadata/core';
+import { StoreActions } from '@apitable/core';
 import {
   widgetMessage, initWidgetMessage, iframeWidgetDatasheetSelector, iframeWidgetDashboardSelector,
   WidgetProvider, UPDATE_DASHBOARD, refreshUsedDatasheetAction, refreshWidgetAction, updateWidgetConfigAction,

@@ -1,5 +1,5 @@
 import { store } from 'pc/store';
-import { ComputeRefManager, getComputeRefManager, FieldType, Selectors } from '@vikadata/core';
+import { ComputeRefManager, getComputeRefManager, FieldType, Selectors } from '@apitable/core';
 
 type Group = 'Link' | 'Dst' | 'Formula' | 'Lookup' | 'BaseField';
 type Node = {

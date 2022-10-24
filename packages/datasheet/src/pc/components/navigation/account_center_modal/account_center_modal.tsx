@@ -1,5 +1,5 @@
 import { IconButton, useThemeColors } from '@vikadata/components';
-import { getCustomConfig, IReduxState, Strings, t, isPrivateDeployment } from '@vikadata/core';
+import { getCustomConfig, IReduxState, Strings, t, isPrivateDeployment } from '@apitable/core';
 import { CloseLargeOutlined } from '@vikadata/icons';
 import { Drawer } from 'antd';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';

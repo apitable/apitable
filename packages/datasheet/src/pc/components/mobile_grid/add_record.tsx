@@ -3,7 +3,7 @@ import * as React from 'react';
 import styles from './styles.module.less';
 import AddIcon from 'static/icon/common/common_icon_add_content.svg';
 import { useThemeColors } from '@vikadata/components';
-import { ExecuteResult } from '@vikadata/core';
+import { ExecuteResult } from '@apitable/core';
 import { expandRecordIdNavigate } from '../expand_record';
 
 interface IAddRecordProps {

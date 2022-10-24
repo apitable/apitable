@@ -1,7 +1,7 @@
 import { Typography } from '@vikadata/components';
 import * as React from 'react';
 import styles from './style.module.less';
-import { Selectors, Strings, t } from '@vikadata/core';
+import { Selectors, Strings, t } from '@apitable/core';
 import { useSelector } from 'react-redux';
 
 export const SyncViewTip: React.FC<{ style?: React.CSSProperties; content?: string }> = ({ style, content }) => {

@@ -1,5 +1,5 @@
 import { useThemeColors } from '@vikadata/components';
-import { IReduxState, Strings, t } from '@vikadata/core';
+import { IReduxState, Strings, t } from '@apitable/core';
 import { uploadAttachToS3, UploadType } from '@vikadata/widget-sdk';
 import { Spin } from 'antd';
 import { Avatar, AvatarSize, AvatarType, IImageCropUploadRef, ImageCropUpload } from 'pc/components/common';

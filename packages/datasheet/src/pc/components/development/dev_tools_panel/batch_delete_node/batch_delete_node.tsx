@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import * as React from 'react';
-import { Api } from '@vikadata/core';
+import { Api } from '@apitable/core';
 import { useRequest } from 'pc/hooks';
 import { Checkbox } from 'antd';
 import { Button } from '@vikadata/components';

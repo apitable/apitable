@@ -10,4 +10,4 @@ export {
   ICollaCommandOptions, ICollaCommandExecuteResult, ILabs, IPageParams, IShareInfo, IDatasheetState, IViewRow, IMirrorMap, IMirrorPack,
   IOpenFieldProperty, IUpdateOpenFieldProperty, IEffectOption, IUpdateOpenMagicLinkFieldProperty, Conversion, IOpenCreatedByFieldProperty,
   getFieldClass, getFieldTypeByString, IAddOpenFieldProperty, IUser, IActiveRowInfo, WhyRecordMoveType, IDashboardPack, IUserInfo
-} from '@vikadata/core';
+} from '@apitable/core';

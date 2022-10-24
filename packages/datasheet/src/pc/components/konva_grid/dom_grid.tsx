@@ -11,7 +11,7 @@ import {
   StoreActions,
   Strings,
   t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import classNames from 'classnames';
 import { Tooltip } from 'pc/components/common';
 import { getDetailByTargetName, IScrollState, PointPosition } from 'pc/components/gantt_view';

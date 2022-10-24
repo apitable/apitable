@@ -1,4 +1,4 @@
-import { CellType, ILinearRow, ILinearRowBlank } from '@vikadata/core';
+import { CellType, ILinearRow, ILinearRowBlank } from '@apitable/core';
 import { GROUP_OFFSET } from 'pc/components/multi_grid/grid_views';
 import { useThemeColors } from '@vikadata/components';
 import * as React from 'react';

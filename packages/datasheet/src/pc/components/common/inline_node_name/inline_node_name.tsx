@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import * as React from 'react';
 // import { useSelector, shallowEqual } from 'react-redux';
-// import { Selectors } from '@vikadata/core';
+// import { Selectors } from '@apitable/core';
 import { Emoji } from '../emoji';
 import styles from './styles.module.less';
 import classNames from 'classnames';

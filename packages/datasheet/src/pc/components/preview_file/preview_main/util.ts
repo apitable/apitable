@@ -1,7 +1,7 @@
 import axios from 'axios';
 import FileSaver from 'file-saver';
 import { getDownloadSrc } from 'pc/utils';
-import { IAttachmentValue, Strings, t } from '@vikadata/core';
+import { IAttachmentValue, Strings, t } from '@apitable/core';
 
 export function getFile(url: string) {
   return new Promise<Blob>((resolve, reject) => {

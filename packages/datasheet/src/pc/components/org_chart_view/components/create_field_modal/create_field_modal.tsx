@@ -1,5 +1,5 @@
 import { Button, Typography, useThemeColors } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { Modal } from 'antd';
 import Image from 'next/image';
 import { DATASHEET_VIEW_CONTAINER_ID } from 'pc/components/view';

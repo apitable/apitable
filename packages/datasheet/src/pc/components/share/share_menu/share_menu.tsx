@@ -1,5 +1,5 @@
 import { useThemeColors } from '@vikadata/components';
-import { AutoTestID, ConfigConstant, Navigation, Selectors, Strings, t, ThemeName } from '@vikadata/core';
+import { AutoTestID, ConfigConstant, Navigation, Selectors, Strings, t, ThemeName } from '@apitable/core';
 import { Tree } from 'antd';
 import classNames from 'classnames';
 import { getNodeIcon } from 'pc/components/catalog/tree/node_icon';

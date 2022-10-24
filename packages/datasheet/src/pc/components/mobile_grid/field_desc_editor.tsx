@@ -1,5 +1,5 @@
 import { useThemeColors } from '@vikadata/components';
-import { CollaCommandName, Strings, t } from '@vikadata/core';
+import { CollaCommandName, Strings, t } from '@apitable/core';
 import { Input } from 'antd';
 import closest from 'antd-mobile/lib/_util/closest';
 import Modal from 'antd-mobile/lib/modal';

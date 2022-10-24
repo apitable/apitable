@@ -4,7 +4,7 @@ import { Tooltip } from 'pc/components/common';
 import { IIconProps, MiddlescreenOutlined, SidescreenOutlined } from '@vikadata/icons';
 import styles from './style.module.less';
 import { useDispatch, useSelector } from 'react-redux';
-import { RecordVision, StoreActions, Strings, t, TrackEvents } from '@vikadata/core';
+import { RecordVision, StoreActions, Strings, t, TrackEvents } from '@apitable/core';
 import { setStorage, StorageMethod, StorageName } from 'pc/utils/storage';
 import { tracker } from 'pc/utils/tracker';
 

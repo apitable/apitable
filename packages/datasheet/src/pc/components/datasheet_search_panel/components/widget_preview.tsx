@@ -1,5 +1,5 @@
 import { Button, useThemeColors } from '@vikadata/components';
-import { integrateCdnHost, Settings, Strings, t } from '@vikadata/core';
+import { integrateCdnHost, Settings, Strings, t } from '@apitable/core';
 import { CheckOutlined } from '@vikadata/icons';
 import classNames from 'classnames';
 import { difference } from 'lodash';

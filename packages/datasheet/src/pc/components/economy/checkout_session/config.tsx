@@ -1,5 +1,5 @@
 import { lightColors } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import * as React from 'react';
 import PayingModalHeaderCapacityBg from 'static/icon/space/space_img_capacitybj.png';
 import PayingModalHeaderDefaultBg from 'static/icon/space/space_img_silverbj.png';

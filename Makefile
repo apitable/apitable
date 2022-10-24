@@ -148,7 +148,7 @@ test-e2e-open: ## 启动调试集成测试
 ###### 【core unit test】 ######
 
 test-ut-core:
-	yarn workspaces focus @vikadata/core @vikadata/i18n-lang root
+	yarn workspaces focus @apitable/core @vikadata/i18n-lang root
 	yarn build:i18n
 	yarn build:core
 	yarn test:core

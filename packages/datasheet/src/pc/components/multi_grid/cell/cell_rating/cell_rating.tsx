@@ -5,7 +5,7 @@ import * as React from 'react';
 import { ICellComponentProps } from '../cell_value/interface';
 import styles from './style.module.less';
 import { Emoji } from 'pc/components/common/emoji';
-import { ConfigConstant, IRatingField } from '@vikadata/core';
+import { ConfigConstant, IRatingField } from '@apitable/core';
 
 interface ICellRating extends ICellComponentProps {
   field: IRatingField;

@@ -1,7 +1,7 @@
 import { black, ILightOrDarkThemeColors } from '@vikadata/components';
 import {
   Field, getFieldResultByStatType, Group as GroupClass, ILinearRow, KONVA_DATASHEET_ID, Selectors, StatType, Strings, t, ViewType
-} from '@vikadata/core';
+} from '@apitable/core';
 import { TriangleDown16Filled } from '@vikadata/icons';
 import { intersection } from 'lodash';
 import dynamic from 'next/dynamic';

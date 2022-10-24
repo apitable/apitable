@@ -1,5 +1,5 @@
-import { Api, IApiWrapper } from '@vikadata/core';
-import { IGetUploadCertificateResponse } from '@vikadata/core/dist/api/api.interface';
+import { Api, IApiWrapper } from '@apitable/core';
+import { IGetUploadCertificateResponse } from '@apitable/core/dist/api/api.interface';
 import axios, { AxiosRequestConfig, Method } from 'axios';
 
 import { IUploadCertificate, IUploadFileForSaaS, UploadType } from 'utils/upload_attach_to_S3/upload.interface';

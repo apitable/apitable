@@ -1,4 +1,4 @@
-import { ICollaCommandOptions, IField, IFieldMap, IRecordMap } from '@vikadata/core';
+import { ICollaCommandOptions, IField, IFieldMap, IRecordMap } from '@apitable/core';
 
 export interface ICommandOptionsInterface {
   /**

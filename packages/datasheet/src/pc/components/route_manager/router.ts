@@ -1,4 +1,4 @@
-import { Navigation } from '@vikadata/core';
+import { Navigation } from '@apitable/core';
 import { Method } from 'pc/components/route_manager/const';
 import { getHistoryMethod, toggleSpace } from 'pc/components/route_manager/helper';
 import { IParams, IQuery } from 'pc/components/route_manager/interface';

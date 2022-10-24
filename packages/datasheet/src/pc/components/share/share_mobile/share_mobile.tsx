@@ -1,4 +1,4 @@
-import { findNode, Selectors, Strings, t } from '@vikadata/core';
+import { findNode, Selectors, Strings, t } from '@apitable/core';
 import { Drawer } from 'antd';
 import Image from 'next/image';
 import { DashboardPanel } from 'pc/components/dashboard_panel';

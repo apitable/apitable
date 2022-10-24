@@ -1,5 +1,5 @@
 import { Button, Typography } from '@vikadata/components';
-import { ApiInterface, integrateCdnHost, Strings, SystemConfig, t } from '@vikadata/core';
+import { ApiInterface, integrateCdnHost, Strings, SystemConfig, t } from '@apitable/core';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { getStorage, StorageName } from 'pc/utils/storage';

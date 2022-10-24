@@ -1,4 +1,4 @@
-import { CellType, DateUnitType, IGanttViewProperty, RowHeightLevel, Selectors, ViewType } from '@vikadata/core';
+import { CellType, DateUnitType, IGanttViewProperty, RowHeightLevel, Selectors, ViewType } from '@apitable/core';
 import { useCreation } from 'ahooks';
 import { change, DEFAULT_SCROLL_STATE, GanttCoordinate, getDiffCount, getGanttHeaderHeight, KonvaGanttViewContext } from 'pc/components/gantt_view';
 import GanttStage from 'pc/components/gantt_view/gantt_stage/gantt_stage';

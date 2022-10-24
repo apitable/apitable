@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Selectors } from '@vikadata/core';
+import { Selectors } from '@apitable/core';
 
 export const useGetViewByIdWithDefault = (datasheetId: string, viewId?: string) => {
   const snapshot = useSelector(state => {

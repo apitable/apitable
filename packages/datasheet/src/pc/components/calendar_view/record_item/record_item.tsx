@@ -1,4 +1,4 @@
-import { ICalendarViewColumn, t, Strings } from '@vikadata/core';
+import { ICalendarViewColumn, t, Strings } from '@apitable/core';
 import { FieldTitle } from 'pc/components/expand_record/field_editor';
 import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
 import { FC, memo, useContext } from 'react';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ConfigConstant } from '@vikadata/core';
+import { ConfigConstant } from '@apitable/core';
 import { useThemeColors } from '@vikadata/components';
 import FormIcon from 'static/icon/datasheet/toolbar_form.svg';
 

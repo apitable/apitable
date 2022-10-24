@@ -1,5 +1,5 @@
 import { blackBlue } from '@vikadata/components';
-import { CellType, FieldType, ILookUpField, KONVA_DATASHEET_ID, LOOKUP_VALUE_FUNC_SET, RollUpFuncType, Selectors, Strings, t } from '@vikadata/core';
+import { CellType, FieldType, ILookUpField, KONVA_DATASHEET_ID, LOOKUP_VALUE_FUNC_SET, RollUpFuncType, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@vikadata/icons';
 import dynamic from 'next/dynamic';
 import { AreaType, generateTargetName, IScrollState, PointPosition } from 'pc/components/gantt_view';

@@ -1,4 +1,4 @@
-import { isPrivateDeployment } from '@vikadata/core';
+import { isPrivateDeployment } from '@apitable/core';
 
 (() => {
   if (!process.env.SSR) {

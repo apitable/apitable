@@ -1,4 +1,4 @@
-import { IUnitIds, IUnitMap, IUnitValue, IUserValue } from '@vikadata/core';
+import { IUnitIds, IUnitMap, IUnitValue, IUserValue } from '@apitable/core';
 import { IListBase } from '../list.interface';
 
 export enum SourceType {

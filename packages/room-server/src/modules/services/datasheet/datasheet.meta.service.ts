@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IMeta } from '@vikadata/core';
+import { IMeta } from '@apitable/core';
 import { ServerException, PermissionException } from 'exception';
 import { IBaseException } from 'exception/base.exception';
 import { DatasheetMetaRepository } from 'modules/repository/datasheet.meta.repository';

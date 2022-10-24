@@ -1,4 +1,4 @@
-import { Navigation } from '@vikadata/core';
+import { Navigation } from '@apitable/core';
 import { Router } from 'pc/components/route_manager/router';
 import { store } from 'pc/store';
 

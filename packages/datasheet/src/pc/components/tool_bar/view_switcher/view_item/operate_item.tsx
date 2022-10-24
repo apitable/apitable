@@ -1,4 +1,4 @@
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { Tooltip } from 'antd';
 import { RenameInput } from 'pc/components/common/rename_input';
 import * as React from 'react';

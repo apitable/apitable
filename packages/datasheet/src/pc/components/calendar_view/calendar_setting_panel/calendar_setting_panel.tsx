@@ -5,7 +5,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import {
   BasicValueType, CalendarColorType, CalendarStyleKeyType, CollaCommandName, ConfigConstant, DateTimeField, ExecuteResult, Field, FieldType, getNewId,
   getUniqName, ICalendarViewColumn, ICalendarViewProperty, ICalendarViewStyle, IDPrefix, Settings, StoreActions, Strings, t
-} from '@vikadata/core';
+} from '@apitable/core';
 import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
 import { setStorage, StorageName } from 'pc/utils/storage';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';

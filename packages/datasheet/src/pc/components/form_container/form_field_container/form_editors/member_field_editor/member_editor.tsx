@@ -1,7 +1,7 @@
 import { useImperativeHandle, useRef, useState, useMemo, useLayoutEffect, useEffect } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { ICellValue, Selectors } from '@vikadata/core';
+import { ICellValue, Selectors } from '@apitable/core';
 import classNames from 'classnames';
 import styles from './style.module.less';
 import { useClickAway } from 'ahooks';

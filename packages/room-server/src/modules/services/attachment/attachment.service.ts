@@ -1,6 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { cellValueToImageSrc, IAttachmentValue } from '@vikadata/core';
+import { cellValueToImageSrc, IAttachmentValue } from '@apitable/core';
 import { FILE_UPLOAD_TMP_PATH, InjectLogger, JavaApiPath, USER_HTTP_DECORATE } from 'common';
 import { AttachmentTypeEnum } from 'enums/attachment.enum';
 import { ApiException } from 'exception/api.exception';

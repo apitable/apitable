@@ -1,5 +1,5 @@
 import { useThemeColors } from '@vikadata/components';
-import { Selectors } from '@vikadata/core';
+import { Selectors } from '@apitable/core';
 import { useDebounceFn } from 'ahooks';
 import { IEditor } from 'pc/components/editors/interface';
 import { RatingEditor } from 'pc/components/editors/rating_editor';

@@ -1,4 +1,4 @@
-import { Api, StatusCode, Strings, t } from '@vikadata/core';
+import { Api, StatusCode, Strings, t } from '@apitable/core';
 import { Button, ContextMenu, Message } from '@vikadata/components';
 import { AddOutlined, DeleteOutlined, EditOutlined } from '@vikadata/icons';
 import { Avatar, AvatarSize, AvatarType, SearchEmpty, SearchInput } from 'pc/components/common';

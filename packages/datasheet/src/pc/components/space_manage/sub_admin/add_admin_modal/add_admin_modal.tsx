@@ -1,5 +1,5 @@
 import { Button, TextButton } from '@vikadata/components';
-import { Api, IMember, IReduxState, ISubAdminList, Strings, t, UnitItem } from '@vikadata/core';
+import { Api, IMember, IReduxState, ISubAdminList, Strings, t, UnitItem } from '@apitable/core';
 import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
 import { SelectUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
 import { UnitTag } from 'pc/components/catalog/permission_settings/permission/select_unit_modal/unit_tag';

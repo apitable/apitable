@@ -2,7 +2,7 @@ import { usePlatform } from 'pc/hooks/use_platform';
 import { useContext, useMemo } from 'react';
 import * as React from 'react';
 import { IActivityPaneProps, IChooseComment } from '../interface';
-import { CollaCommandName, IDPrefix, IJOTAction, IOperation, IRemoteChangeset, IUnitValue, jot, Strings, t, WithOptional } from '@vikadata/core';
+import { CollaCommandName, IDPrefix, IJOTAction, IOperation, IRemoteChangeset, IUnitValue, jot, Strings, t, WithOptional } from '@apitable/core';
 import { Avatar, AvatarSize, Emoji, Modal } from 'pc/components/common';
 import { useSelector } from 'react-redux';
 import styles from './style.module.less';

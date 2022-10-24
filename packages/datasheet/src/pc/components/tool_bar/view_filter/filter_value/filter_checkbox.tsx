@@ -1,4 +1,4 @@
-import { IDateTimeField, Selectors } from '@vikadata/core';
+import { IDateTimeField, Selectors } from '@apitable/core';
 import debounce from 'lodash/debounce';
 import { CheckboxEditor } from 'pc/components/editors/checkbox_editor';
 import { IEditor } from 'pc/components/editors/interface';

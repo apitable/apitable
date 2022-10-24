@@ -1,7 +1,7 @@
 import {
   FieldType, IField, Field, BasicValueType, INumberFormatFieldProperty,
   INumberFieldProperty, NumberField, IDateTimeFieldProperty, DateTimeField
-} from '@vikadata/core';
+} from '@apitable/core';
 
 export enum EditorType {
   None,

@@ -1,5 +1,5 @@
 import { ThemeProvider, Typography, useThemeColors } from '@vikadata/components';
-import { Api, ApiInterface, IApiWrapper, integrateCdnHost, Settings, str2Currency, Strings, t } from '@vikadata/core';
+import { Api, ApiInterface, IApiWrapper, integrateCdnHost, Settings, str2Currency, Strings, t } from '@apitable/core';
 import { AlipayFilled, BankFilled, WechatpayFilled } from '@vikadata/icons';
 import { Modal } from 'antd';
 import { AxiosResponse } from 'axios';

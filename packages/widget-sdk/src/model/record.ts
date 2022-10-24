@@ -1,4 +1,4 @@
-import { CacheManager, getFieldTypeString } from '@vikadata/core';
+import { CacheManager, getFieldTypeString } from '@apitable/core';
 import { Field, Selectors, t, Strings, ConfigConstant } from 'core';
 import { isIframe } from 'iframe_message/utils';
 import { IWidgetContext } from 'interface';

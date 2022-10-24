@@ -1,5 +1,5 @@
 import { colorVars, IconButton, useContextMenu } from '@vikadata/components';
-import { ConfigConstant, Selectors, Strings, t } from '@vikadata/core';
+import { ConfigConstant, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined, MoreOutlined } from '@vikadata/icons';
 import classnames from 'classnames';
 import isNumber from 'lodash/isNumber';

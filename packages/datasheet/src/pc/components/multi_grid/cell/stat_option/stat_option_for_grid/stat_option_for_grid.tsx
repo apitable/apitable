@@ -2,7 +2,7 @@ import { GridChildComponentProps } from '@vikadata/react-window';
 import { PropsWithChildren } from 'react';
 import * as React from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
-import { IGridViewProperty, Selectors } from '@vikadata/core';
+import { IGridViewProperty, Selectors } from '@apitable/core';
 import { StatOption } from '../stat_option';
 import styles from '../styles.module.less';
 

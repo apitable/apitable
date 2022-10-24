@@ -1,4 +1,4 @@
-import { Url } from '@vikadata/core';
+import { Url } from '@apitable/core';
 import axios from 'axios';
 import { NextPageContext } from 'next';
 

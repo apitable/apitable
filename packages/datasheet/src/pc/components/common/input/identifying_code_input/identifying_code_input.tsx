@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { VerificationCodeFilled } from '@vikadata/icons';
-import { AutoTestID, ConfigConstant, StatusCode, Strings, t } from '@vikadata/core';
+import { AutoTestID, ConfigConstant, StatusCode, Strings, t } from '@apitable/core';
 import { Button, ITextInputProps, TextInput } from '@vikadata/components';
 import { useBoolean, useMount, useInterval } from 'ahooks';
 import { useRequest } from 'pc/hooks';

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import * as React from 'react';
-import { Field, Strings, t, Selectors, RowHeightLevel, IAutoNumberField } from '@vikadata/core';
+import { Field, Strings, t, Selectors, RowHeightLevel, IAutoNumberField } from '@apitable/core';
 import { store } from 'pc/store';
 import { ICellComponentProps } from '../cell_value/interface';
 import style from './style.module.less';

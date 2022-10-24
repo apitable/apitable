@@ -6,7 +6,7 @@ import { useRecords } from './use_records';
 import { useActiveViewId } from './use_active_view_id';
 import { Record } from '../model';
 import { Selectors, WhyRecordMoveType } from 'core';
-import { IReduxState } from '@vikadata/core';
+import { IReduxState } from '@apitable/core';
 
 const getSelectedFieldIds = (state: IWidgetState, currentDatasheetId?: string, viewId?: string, records?: Record[]) => {
   if (!isCurrentDatasheetActive(state, currentDatasheetId)) {

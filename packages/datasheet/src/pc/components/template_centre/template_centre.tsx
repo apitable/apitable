@@ -1,4 +1,4 @@
-import { Events, IReduxState, Player } from '@vikadata/core';
+import { Events, IReduxState, Player } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { SideWrapper } from 'pc/components/route_manager/side_wrapper';
 import { usePageParams, useQuery, useRequest, useUserRequest } from 'pc/hooks';

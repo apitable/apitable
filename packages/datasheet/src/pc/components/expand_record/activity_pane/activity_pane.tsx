@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { useLocalStorageState } from 'ahooks';
-import { Selectors, Strings, t, CollaCommandName, Settings } from '@vikadata/core';
+import { Selectors, Strings, t, CollaCommandName, Settings } from '@apitable/core';
 
 import { CommentEditor } from './comment_editor';
 import { ActivityList } from './activity_list/activity_list';

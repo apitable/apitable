@@ -1,4 +1,4 @@
-import { getArrayLoopIndex, Selectors, StoreActions, Strings, t, ViewType } from '@vikadata/core';
+import { getArrayLoopIndex, Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
 import { useDebounce } from 'ahooks';
 import { ButtonPlus, Tooltip } from 'pc/components/common';
 import { Loading, useThemeColors } from '@vikadata/components';

@@ -10,7 +10,7 @@ import {
   DatasheetApi,
   Strings,
   t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { IconButton, LinkButton, useThemeColors } from '@vikadata/components';
 import { AttentionOutlined, EditDescribeOutlined } from '@vikadata/icons';
 

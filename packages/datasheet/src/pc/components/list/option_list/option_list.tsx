@@ -1,7 +1,7 @@
 import {
   ISelectFieldOption,
   Selectors, Strings, t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import classNames from 'classnames';
 import { CommonList } from 'pc/components/list/common_list';
 import { SortableContainer, SortableItem } from 'pc/components/multi_grid/format';

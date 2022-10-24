@@ -1,5 +1,5 @@
 import store from 'store2';
-import { ICalendarViewStatus, IGanttViewStatus, IOrgChartViewStatus, RecordVision } from '@vikadata/core';
+import { ICalendarViewStatus, IGanttViewStatus, IOrgChartViewStatus, RecordVision } from '@apitable/core';
 import { IViewNodeStateMap } from 'pc/components/org_chart_view/interfaces';
 import { IFieldDescCollapseStatus } from 'pc/components/expand_record/field_editor';
 

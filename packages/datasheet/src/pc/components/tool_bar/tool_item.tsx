@@ -8,7 +8,7 @@ import styles from './style.module.less';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
 import { expandViewLock } from 'pc/components/view_lock/expand_view_lock';
 import { useSelector } from 'react-redux';
-import { Selectors } from '@vikadata/core';
+import { Selectors } from '@apitable/core';
 
 type IToolItemProps = {
   icon: ReactNode;

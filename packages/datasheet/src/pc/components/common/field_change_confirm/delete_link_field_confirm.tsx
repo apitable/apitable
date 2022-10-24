@@ -1,5 +1,5 @@
 import { Button, TextButton, ThemeProvider } from '@vikadata/components';
-import { CollaCommandName, ILinkField, Selectors, Strings, t } from '@vikadata/core';
+import { CollaCommandName, ILinkField, Selectors, Strings, t } from '@apitable/core';
 import { useLocalStorageState } from 'ahooks';
 import { Modal, Radio } from 'antd';
 import Image from 'next/image';

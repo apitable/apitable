@@ -1,6 +1,6 @@
 import { FC, useState, PropsWithChildren } from 'react';
 import * as React from 'react';
-import { ConfigConstant } from '@vikadata/core';
+import { ConfigConstant } from '@apitable/core';
 import { Picker } from 'pc/components/common';
 import { Popover } from 'antd';
 import styles from './style.module.less';

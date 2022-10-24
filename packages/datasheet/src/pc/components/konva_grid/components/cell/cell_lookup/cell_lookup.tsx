@@ -1,7 +1,7 @@
 import {
   BasicValueType, Field, FieldType, handleNullArray, ILookUpField, LookUpField, LOOKUP_VALUE_FUNC_SET,
   ORIGIN_VALUES_FUNC_SET, RollUpFuncType
-} from '@vikadata/core';
+} from '@apitable/core';
 import { useContext, useMemo } from 'react';
 import * as React from 'react';
 import { CellCheckbox } from '../cell_checkbox';

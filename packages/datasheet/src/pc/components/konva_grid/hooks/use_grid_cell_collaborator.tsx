@@ -1,4 +1,4 @@
-import { CellType, ILinearRowRecord, KONVA_DATASHEET_ID, Selectors } from '@vikadata/core';
+import { CellType, ILinearRowRecord, KONVA_DATASHEET_ID, Selectors } from '@apitable/core';
 import dynamic from 'next/dynamic';
 import { AvatarSize } from 'pc/components/common';
 import { generateTargetName, getDetailByTargetName } from 'pc/components/gantt_view';

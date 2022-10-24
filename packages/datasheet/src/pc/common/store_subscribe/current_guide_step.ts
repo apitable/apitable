@@ -1,9 +1,9 @@
 import { TriggerCommands } from './../apphook/trigger_commands';
-import { StoreActions } from '@vikadata/core';
+import { StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
 import { Guide, isEqualArr, addWizardNumberAndApiRun } from 'pc/common/guide';
 import { getWizardInfo } from 'pc/common/guide/utils';
-import { Step } from '@vikadata/core/src/config/system_config.interface';
+import { Step } from '@apitable/core/src/config/system_config.interface';
 let curSteps: number[] = [];
 
 store.subscribe(function currentStepInHook() {

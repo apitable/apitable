@@ -1,4 +1,4 @@
-import { FieldType, IFieldMap, Strings, t } from '@vikadata/core';
+import { FieldType, IFieldMap, Strings, t } from '@apitable/core';
 import { ChevronDownOutlined } from '@vikadata/icons';
 import { useClickAway } from 'ahooks';
 import classNames from 'classnames';

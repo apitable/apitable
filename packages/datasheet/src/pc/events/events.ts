@@ -1,4 +1,4 @@
-import { Field, Selectors } from '@vikadata/core';
+import { Field, Selectors } from '@apitable/core';
 import { store } from 'pc/store';
 import { verificationPermission } from './notification_verification';
 export interface IReqMap {

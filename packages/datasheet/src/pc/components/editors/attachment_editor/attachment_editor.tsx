@@ -4,7 +4,7 @@ import { IEditorProps } from '../options_editor';
 import { IEditor } from '../interface';
 import { FocusHolder } from '../focus_holder';
 import { UploadModal } from 'pc/components/upload_modal';
-import { IAttachmentValue } from '@vikadata/core';
+import { IAttachmentValue } from '@apitable/core';
 
 interface IAttachmentEditorProps {
   cellValue: IAttachmentValue[];

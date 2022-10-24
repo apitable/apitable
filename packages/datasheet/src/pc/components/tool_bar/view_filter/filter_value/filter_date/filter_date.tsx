@@ -1,4 +1,4 @@
-import { FieldType, FilterDuration, FOperator, IDateTimeField, ITimestamp, Selectors, getLanguage } from '@vikadata/core';
+import { FieldType, FilterDuration, FOperator, IDateTimeField, ITimestamp, Selectors, getLanguage } from '@apitable/core';
 import classNames from 'classnames';
 import { DateTimeEditor, DateTimeEditorBase } from 'pc/components/editors/date_time_editor/date_time_editor';
 import { stopPropagation } from 'pc/utils';

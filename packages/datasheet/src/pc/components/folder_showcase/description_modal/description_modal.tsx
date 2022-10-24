@@ -1,7 +1,7 @@
 import { FC, useRef, useState } from 'react';
 import * as React from 'react';
 import { BaseModal } from 'pc/components/common';
-import { IShowCaseData, Selectors } from '@vikadata/core';
+import { IShowCaseData, Selectors } from '@apitable/core';
 import styles from './style.module.less';
 import { useMount, useDebounceFn } from 'ahooks';
 import { useRequest } from 'pc/hooks';

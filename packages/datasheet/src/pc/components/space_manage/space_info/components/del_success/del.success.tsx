@@ -1,4 +1,4 @@
-import { Navigation, Strings, t } from '@vikadata/core';
+import { Navigation, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { Modal } from 'antd';
 import { Router } from 'pc/components/route_manager/router';

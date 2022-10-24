@@ -8,7 +8,7 @@ import {
   Strings,
   t,
   ISelectedTeamInfoInSpace,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { useDispatch } from './use_dispatch';
 import { Message, Modal } from 'pc/components/common';
 

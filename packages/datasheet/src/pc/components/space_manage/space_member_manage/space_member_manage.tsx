@@ -3,7 +3,7 @@ import {
   // IReduxState,
   IMemberInfoInSpace,
   Player, Events,
-} from '@vikadata/core';
+} from '@apitable/core';
 // import { useSelector, shallowEqual } from 'react-redux';
 import { TeamTree } from './team_tree';
 import SplitPane from 'react-split-pane';

@@ -4,7 +4,7 @@ import WarningIcon from 'static/icon/common/common_icon_warning.svg';
 import SuccessIcon from 'static/icon/common/common_icon_success.svg';
 import ErrorIcon from 'static/icon/common/common_icon_error.svg';
 import InfoIcon from 'static/icon/common/common_icon_default.svg';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 
 message.config({
   top: 80,

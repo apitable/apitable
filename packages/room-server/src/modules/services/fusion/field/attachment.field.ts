@@ -1,5 +1,5 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
-import { getNewId, IAttachmentValue, ICellValue, IDPrefix, IField } from '@vikadata/core';
+import { getNewId, IAttachmentValue, ICellValue, IDPrefix, IField } from '@apitable/core';
 import { isString } from 'class-validator';
 import { IFieldValue } from 'interfaces';
 import { IAssetDTO } from 'modules/rest/rest.interface';

@@ -1,5 +1,5 @@
 import { Avatar, Box, Button, Select, Tooltip, useTheme } from '@vikadata/components';
-import { Selectors } from '@vikadata/core';
+import { Selectors } from '@apitable/core';
 import Image from 'next/image';
 import { useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
@@ -9,7 +9,7 @@ import { getFilterActionTypes, getNodeTypeOptions } from '../../helper';
 import { useActionTypes, useRobot } from '../../hooks';
 import { IStepProps } from '../interface';
 import robotGuideAvatar from 'static/icon/robot/robot_guide_avatar.png';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 // 创建 action
 export const RobotCreateGuideStep3 = (props: IStepProps) => {
   const { robotId, isActive } = props;

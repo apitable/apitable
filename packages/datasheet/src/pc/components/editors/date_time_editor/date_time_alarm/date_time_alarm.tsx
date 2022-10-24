@@ -1,5 +1,5 @@
 import { Select, Switch, Tooltip } from '@vikadata/components';
-import { AlarmUsersType, Api, FieldType, IMemberField, IRecordAlarmClient, Selectors, StoreActions, Strings, t, WithOptional } from '@vikadata/core';
+import { AlarmUsersType, Api, FieldType, IMemberField, IRecordAlarmClient, Selectors, StoreActions, Strings, t, WithOptional } from '@apitable/core';
 import { WarningTriangleNonzeroFilled } from '@vikadata/icons';
 import cls from 'classnames';
 import dayjs from 'dayjs';

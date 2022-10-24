@@ -1,5 +1,5 @@
 import { IGroupLinearRow, IAdjacency } from '../interface';
-import { CellType } from '@vikadata/core';
+import { CellType } from '@apitable/core';
 /*
 * nodes: task recordId List
 */

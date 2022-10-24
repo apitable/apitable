@@ -1,4 +1,4 @@
-import { ConfigConstant, Strings, t, WORKBENCH_SIDE_ID } from '@vikadata/core';
+import { ConfigConstant, Strings, t, WORKBENCH_SIDE_ID } from '@apitable/core';
 import { black } from '@vikadata/components';
 import { ShortcutActionName } from 'pc/common/shortcut_key';
 import { getShortcutKeyString } from 'pc/common/shortcut_key/keybinding_config';

@@ -1,4 +1,4 @@
-import { BindAccount, ConfigConstant, QrAction, StatusCode, StoreActions, Strings, t } from '@vikadata/core';
+import { BindAccount, ConfigConstant, QrAction, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';

@@ -5,7 +5,7 @@ import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-python';
 import 'prismjs/components/prism-go';
 import Clipboard from 'clipboard';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { copyOutlinedStr, debugOutlinedStr } from '../icons';
 import { DEBUG_BUTTON_CLASS_NAME } from '../doc_inner_html';
 import { getEnvVariables } from 'pc/utils/env';

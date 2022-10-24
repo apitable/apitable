@@ -1,5 +1,5 @@
 import { Button, IconButton, Skeleton, useThemeColors } from '@vikadata/components';
-import { CollaCommandName, ExecuteResult, integrateCdnHost, IReduxState, Settings, StoreActions, Strings, t, WidgetApi } from '@vikadata/core';
+import { CollaCommandName, ExecuteResult, integrateCdnHost, IReduxState, Settings, StoreActions, Strings, t, WidgetApi } from '@apitable/core';
 import { ChevronRightOutlined, CloseLargeOutlined } from '@vikadata/icons';
 import Image from 'next/image';
 import { Message, Tooltip } from 'pc/components/common';

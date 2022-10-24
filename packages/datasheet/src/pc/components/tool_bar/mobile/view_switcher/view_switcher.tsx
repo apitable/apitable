@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import * as React from 'react';
 import style from '../style.module.less';
-import { IViewProperty, Selectors, Strings, t, DatasheetActions } from '@vikadata/core';
+import { IViewProperty, Selectors, Strings, t, DatasheetActions } from '@apitable/core';
 import { useSelector } from 'react-redux';
 import { ActionType, ViewItem } from '../view_item';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';

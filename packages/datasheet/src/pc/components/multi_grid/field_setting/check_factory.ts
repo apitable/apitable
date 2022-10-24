@@ -1,7 +1,7 @@
 import {
   ComputeRefManager, Field, FieldType, FieldTypeDescriptionMap, getComputeRefManager, getUniqName, IField, IFormulaField, ILinkField, ILookUpField,
   IMultiSelectField, ISingleSelectField, LookUpField, Selectors, Strings, t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import produce from 'immer';
 import keyBy from 'lodash/keyBy';
 import { store } from 'pc/store';

@@ -1,6 +1,6 @@
 // FIXME:THEME
 import { colors } from '@vikadata/components';
-import { ISegment, SegmentType } from '@vikadata/core';
+import { ISegment, SegmentType } from '@apitable/core';
 import { DepartmentNonzeroOutlined } from '@vikadata/icons';
 import GraphemeSplitter from 'grapheme-splitter';
 import { AvatarSize, AvatarType, getAvatarRandomColor } from 'pc/components/common';

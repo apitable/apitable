@@ -4,7 +4,7 @@
 import { RewriteFrames } from '@sentry/integrations';
 import * as Sentry from '@sentry/react';
 import { Integrations } from '@sentry/tracing';
-import { Api, getLanguage, injectStore, Navigation, Selectors, StatusCode, StoreActions, Strings, t, Url } from '@vikadata/core';
+import { Api, getLanguage, injectStore, Navigation, Selectors, StatusCode, StoreActions, Strings, t, Url } from '@apitable/core';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { BillingModal, Modal } from 'pc/components/common/modal/modal/modal';

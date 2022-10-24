@@ -1,4 +1,4 @@
-import { IMeta, WidgetApi } from '@vikadata/core';
+import { IMeta, WidgetApi } from '@apitable/core';
 import { FormPreviewer, WidgetPreview } from 'pc/components/datasheet_search_panel/components';
 import { INodeInstalledWidget } from './interface';
 import { useEffect, useState } from 'react';

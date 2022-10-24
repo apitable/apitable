@@ -1,4 +1,4 @@
-import { CellType, KONVA_DATASHEET_ID } from '@vikadata/core';
+import { CellType, KONVA_DATASHEET_ID } from '@apitable/core';
 import dynamic from 'next/dynamic';
 import { AreaType, GANTT_HEADER_HEIGHT, GanttCoordinate, IScrollState, KonvaGanttViewContext, PointPosition } from 'pc/components/gantt_view';
 import { Line, Rect } from 'pc/components/konva_components';

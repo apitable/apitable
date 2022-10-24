@@ -1,4 +1,4 @@
-import { DispatchToStore, IReduxState, Selectors, StoreActions, SystemConfig } from '@vikadata/core';
+import { DispatchToStore, IReduxState, Selectors, StoreActions, SystemConfig } from '@apitable/core';
 import { Remote, wrap } from 'comlink';
 import { Store } from 'redux';
 import { getTestFunctionAvailable } from '../utils/storage';

@@ -1,4 +1,4 @@
-import { ILinkField, IOrgChartViewStatus, IOrgChartViewStyle, IPermissions, ISetRecordOptions, IViewColumn } from '@vikadata/core';
+import { ILinkField, IOrgChartViewStatus, IOrgChartViewStyle, IPermissions, ISetRecordOptions, IViewColumn } from '@apitable/core';
 import { IFuncUpdater } from 'ahooks/lib/createUseStorageState';
 import * as React from 'react';
 import { INodesMap, INode, INodeStateMap, IPre, IGhostNodesRef, IBounds } from '../interfaces';

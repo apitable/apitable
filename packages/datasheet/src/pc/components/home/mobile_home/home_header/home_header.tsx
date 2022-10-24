@@ -1,4 +1,4 @@
-import { Navigation, Strings, t } from '@vikadata/core';
+import { Navigation, Strings, t } from '@apitable/core';
 import { Logo } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { FC } from 'react';

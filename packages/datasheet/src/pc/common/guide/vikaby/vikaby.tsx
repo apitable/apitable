@@ -14,7 +14,7 @@ import { useMemo, FC, useEffect, useState } from 'react';
 import {
   ConfigConstant, DATASHEET_ID, Events, isPrivateDeployment,
   Player, ScreenWidth, Selectors, Settings, StoreActions, Strings, t, VIKABY_ID
-} from '@vikadata/core';
+} from '@apitable/core';
 import { AccountCenterModal } from 'pc/components/navigation/account_center_modal';
 import VikabyActive from 'static/icon/onboarding/organization_img_vikaby_click.png';
 import VikabyDefault from 'static/icon/onboarding/organization_img_vikaby_default.png';

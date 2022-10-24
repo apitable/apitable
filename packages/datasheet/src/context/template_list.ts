@@ -1,4 +1,4 @@
-import { ITemplate } from '@vikadata/core';
+import { ITemplate } from '@apitable/core';
 import { createContext } from 'react';
 
 interface ITemplateListContext {

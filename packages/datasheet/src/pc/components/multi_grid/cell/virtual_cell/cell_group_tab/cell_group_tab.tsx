@@ -1,4 +1,4 @@
-import { IGroupInfo, ILinearRowGroupTab } from '@vikadata/core';
+import { IGroupInfo, ILinearRowGroupTab } from '@apitable/core';
 import classNames from 'classnames';
 import { GROUP_OFFSET } from 'pc/components/multi_grid/grid_views';
 // FIXME:THEME

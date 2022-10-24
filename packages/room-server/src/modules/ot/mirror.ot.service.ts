@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IJOTAction, IMirrorSnapshot, IOperation, IRemoteChangeset, jot } from '@vikadata/core';
+import { IJOTAction, IMirrorSnapshot, IOperation, IRemoteChangeset, jot } from '@apitable/core';
 import { InjectLogger } from 'common';
 import { ResourceChangesetEntity } from 'entities/resource.changeset.entity';
 import { WidgetEntity } from 'entities/widget.entity';

@@ -1,4 +1,4 @@
-import { BasicValueType, Field, FieldType, getTextFieldType, ICellValue, IField, IViewColumn, Selectors, Strings, t } from '@vikadata/core';
+import { BasicValueType, Field, FieldType, getTextFieldType, ICellValue, IField, IViewColumn, Selectors, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { CellValue } from 'pc/components/multi_grid/cell/cell_value';

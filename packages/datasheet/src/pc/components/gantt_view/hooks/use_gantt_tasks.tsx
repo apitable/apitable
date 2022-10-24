@@ -1,4 +1,4 @@
-import { CellType, ConfigConstant, FieldType, IField, IFieldPermissionMap, KONVA_DATASHEET_ID, Selectors, Strings, t } from '@vikadata/core';
+import { CellType, ConfigConstant, FieldType, IField, IFieldPermissionMap, KONVA_DATASHEET_ID, Selectors, Strings, t } from '@apitable/core';
 import { GanttLeftFilled, GanttRightFilled, WarningTriangleNonzeroFilled } from '@vikadata/icons';
 import dynamic from 'next/dynamic';
 import { getRecordName } from 'pc/components/expand_record';

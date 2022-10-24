@@ -1,4 +1,4 @@
-import { AlarmUsersType, CollaCommandName, Field, IDateTimeField, Selectors, shallowEqual, Strings, t } from '@vikadata/core';
+import { AlarmUsersType, CollaCommandName, Field, IDateTimeField, Selectors, shallowEqual, Strings, t } from '@apitable/core';
 import { NotificationSmallOutlined } from '@vikadata/icons';
 import classNames from 'classnames';
 import dayjs from 'dayjs';

@@ -1,4 +1,4 @@
-import { IRemoteChangeset } from '@vikadata/core';
+import { IRemoteChangeset } from '@apitable/core';
 
 export interface IWatchRoomMessage {
   roomId: string;

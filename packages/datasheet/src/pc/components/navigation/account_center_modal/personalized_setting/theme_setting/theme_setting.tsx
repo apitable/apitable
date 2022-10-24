@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Select, ThemeName, Typography } from '@vikadata/components';
 import { useLocalStorageState } from 'ahooks';
 import styles from './style.module.less';
-import { StoreActions, Strings, t, TrackEvents } from '@vikadata/core';
+import { StoreActions, Strings, t, TrackEvents } from '@apitable/core';
 import { useDispatch } from 'react-redux';
 import { SystemTheme } from 'pc/common/theme';
 import { tracker } from 'pc/utils/tracker';

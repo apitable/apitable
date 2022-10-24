@@ -4,7 +4,7 @@ import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
 import { Spin } from 'antd';
 import classNames from 'classnames';
 import styles from './style.module.less';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import { useSelector } from 'react-redux';
 
 export interface ILoadingProps {

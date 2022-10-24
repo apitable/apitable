@@ -1,4 +1,4 @@
-import { FieldType, getNewId, getUniqName, IDPrefix, MemberField, Strings, t } from '@vikadata/core';
+import { FieldType, getNewId, getUniqName, IDPrefix, MemberField, Strings, t } from '@apitable/core';
 import { Switch } from 'antd';
 import { TextInput, Button } from '@vikadata/components';
 import { useState } from 'react';

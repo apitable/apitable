@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useContext } from 'react';
 import * as React from 'react';
-import { FieldType, IField, ILookUpField, Selectors, Strings, t } from '@vikadata/core';
+import { FieldType, IField, ILookUpField, Selectors, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import styles from './style.module.less';
 import { useUnmount, useMount } from 'ahooks';

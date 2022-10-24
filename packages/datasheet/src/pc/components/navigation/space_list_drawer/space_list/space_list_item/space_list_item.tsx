@@ -1,5 +1,5 @@
 import { useThemeColors } from '@vikadata/components';
-import { IReduxState, ISpaceInfo, IUserInfo, Navigation, Strings, t } from '@vikadata/core';
+import { IReduxState, ISpaceInfo, IUserInfo, Navigation, Strings, t } from '@apitable/core';
 import { useUpdateEffect } from 'ahooks';
 import { Popover } from 'antd';
 import classnames from 'classnames';

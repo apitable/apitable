@@ -1,5 +1,5 @@
 import { Tooltip } from 'antd';
-import { Selectors, Strings, t } from '@vikadata/core';
+import { Selectors, Strings, t } from '@apitable/core';
 import { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './style.module.less';

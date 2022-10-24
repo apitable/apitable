@@ -2,7 +2,7 @@ import { Drawer } from 'antd';
 import ReactDOM from 'react-dom';
 import { MemberInfo } from './member_info';
 import { Provider } from 'react-redux';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { store } from 'pc/store';
 import IconBack from 'static/icon/datasheet/datasheet_icon_calender_left.svg';
 import styles from './style.module.less';

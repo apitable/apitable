@@ -1,5 +1,5 @@
 
-import { StatusCode, t, Strings } from '@vikadata/core';
+import { StatusCode, t, Strings } from '@apitable/core';
 
 const InviteInvalidReasonObj = {
   [StatusCode.SPACE_NOT_EXIST]: t(Strings.status_code_space_not_exist),

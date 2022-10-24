@@ -1,4 +1,4 @@
-import { Selectors } from '@vikadata/core';
+import { Selectors } from '@apitable/core';
 import { ViewLock } from 'pc/components/view_lock/view_lock';
 import { store } from 'pc/store';
 import ReactDOM from 'react-dom';

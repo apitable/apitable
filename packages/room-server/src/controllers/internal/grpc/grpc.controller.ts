@@ -1,6 +1,6 @@
 import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
-import { ResourceIdPrefix } from '@vikadata/core';
+import { ResourceIdPrefix } from '@apitable/core';
 import { InjectLogger } from 'common';
 import { ILeaveRoomRo, INodeCopyRo, INodeDeleteRo } from 'controllers/internal/grpc/grpc.interface';
 import { SourceTypeEnum } from 'enums/changeset.source.type.enum';

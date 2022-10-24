@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, colors, LinkButton } from '@vikadata/components';
-import { Api, ApiInterface, getCustomConfig, Navigation, Settings, Strings, t } from '@vikadata/core';
+import { Api, ApiInterface, getCustomConfig, Navigation, Settings, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { Space } from 'antd';
 import Image from 'next/image';

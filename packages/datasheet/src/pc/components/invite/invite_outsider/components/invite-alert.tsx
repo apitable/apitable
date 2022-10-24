@@ -1,5 +1,5 @@
 import { Alert } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { FC } from 'react';
 import styles from './style.module.less';
 

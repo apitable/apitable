@@ -9,7 +9,7 @@ import {
   t,
   WidgetPackageStatus,
   WidgetReleaseType,
-} from '@vikadata/core';
+} from '@apitable/core';
 import {
   CloseMiddleOutlined,
   DragOutlined,

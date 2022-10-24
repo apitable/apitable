@@ -1,5 +1,5 @@
 import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
-import { Api, DatasheetApi, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, DatasheetApi, StoreActions, Strings, t } from '@apitable/core';
 import { Spin, Tooltip } from 'antd';
 import { find, keyBy, toPairs, values, keys, get } from 'lodash';
 import { expandUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';

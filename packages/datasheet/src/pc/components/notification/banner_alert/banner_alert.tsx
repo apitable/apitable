@@ -1,5 +1,5 @@
 import { Button, LinkButton, Typography, useThemeColors } from '@vikadata/components';
-import { ConfigConstant, Strings, t } from '@vikadata/core';
+import { ConfigConstant, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { Emoji } from 'pc/components/common';

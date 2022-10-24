@@ -1,5 +1,5 @@
 import { Message } from '@vikadata/components';
-import { Api, ApiInterface } from '@vikadata/core';
+import { Api, ApiInterface } from '@apitable/core';
 import { useCallback, useMemo, useState } from 'react';
 
 export type IRoleItem = ApiInterface.IGetRoleListResponseItem;

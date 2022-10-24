@@ -1,5 +1,5 @@
 import { Button, Skeleton } from '@vikadata/components';
-import { Api, IReduxState, IShareSettings, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
 import { useRequest } from 'pc/hooks';
 import { Popover, Radio } from 'antd';
 import classnames from 'classnames';

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { ReportWeb } from '../feedback';
-import { DATASHEET_ID } from '@vikadata/core';
+import { DATASHEET_ID } from '@apitable/core';
 import styles from './style.module.less';
 
 interface IProps {

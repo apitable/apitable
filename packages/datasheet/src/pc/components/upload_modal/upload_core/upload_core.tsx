@@ -1,4 +1,4 @@
-import { IAttachmentValue, IField, RowHeightLevel, moveArrayElement } from '@vikadata/core';
+import { IAttachmentValue, IField, RowHeightLevel, moveArrayElement } from '@apitable/core';
 import classNames from 'classnames';
 import produce from 'immer';
 import { resourceService } from 'pc/resource_service';

@@ -1,5 +1,5 @@
 import { Button } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { FC } from 'react';

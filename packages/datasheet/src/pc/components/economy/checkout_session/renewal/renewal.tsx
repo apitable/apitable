@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PayingModalTitle, OrderDetails, BlockSelector, PrivilegeList, ParamsComparison, PriceTotal, PayingTotal } from '../../stateless_ui';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import { PayingLayout } from '../../components/paying_layout';
 import { CheckWrap } from '../../stateless_ui';
 import styles from './style.module.less';

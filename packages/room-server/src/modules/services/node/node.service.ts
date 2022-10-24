@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IFormProps, IPermissions, Role } from '@vikadata/core';
+import { IFormProps, IPermissions, Role } from '@apitable/core';
 import { NodeExtraConstant } from 'common';
 import { DatasheetException, PermissionException, ServerException } from 'exception';
 import { IBaseException } from 'exception/base.exception';

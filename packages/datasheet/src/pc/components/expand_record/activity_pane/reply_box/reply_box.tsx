@@ -4,7 +4,7 @@ import { ReplyComment } from 'pc/components/expand_record/activity_pane/reply_co
 import { useContext } from 'react';
 import { ActivityContext } from 'pc/components/expand_record/activity_pane/activity_context';
 import { useRequest } from 'pc/hooks';
-import { DatasheetApi } from '@vikadata/core';
+import { DatasheetApi } from '@apitable/core';
 import SlateEditor from 'pc/components/draft_editor/slate_editor';
 
 export const ReplyBox = ({ action, handleEmoji, datasheetId, expandRecordId }) => {

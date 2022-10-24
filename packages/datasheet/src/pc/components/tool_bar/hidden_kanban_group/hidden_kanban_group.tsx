@@ -12,7 +12,7 @@ import {
   Strings,
   t,
   UN_GROUP,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { DragOutlined } from '@vikadata/icons';
 import { Switch } from 'antd';
 import classNames from 'classnames';

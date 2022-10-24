@@ -2,7 +2,7 @@ import { useDebounceEffect } from 'ahooks';
 import { shallowEqual, useSelector } from 'react-redux';
 import { resourceService } from 'pc/resource_service';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
-import { CollaCommandName, Selectors, Strings, t } from '@vikadata/core';
+import { CollaCommandName, Selectors, Strings, t } from '@apitable/core';
 import { CloseSmallOutlined } from '@vikadata/icons';
 import { GRID_ROW_HEAD_WIDTH } from '../constant';
 import { Message } from 'pc/components/common';

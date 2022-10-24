@@ -1,5 +1,5 @@
 import { Loading, Message } from '@vikadata/components';
-import { Api, integrateCdnHost, isPrivateDeployment, Settings, Strings, t } from '@vikadata/core';
+import { Api, integrateCdnHost, isPrivateDeployment, Settings, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';

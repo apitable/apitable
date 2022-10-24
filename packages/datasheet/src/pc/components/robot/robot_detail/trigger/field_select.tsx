@@ -1,5 +1,5 @@
 import { ITheme, Select, useTheme } from '@vikadata/components';
-import { FieldType, IField } from '@vikadata/core';
+import { FieldType, IField } from '@apitable/core';
 import {
   AccountFilled, ColumnAttachmentFilled,
   ColumnAutonumberFilled,

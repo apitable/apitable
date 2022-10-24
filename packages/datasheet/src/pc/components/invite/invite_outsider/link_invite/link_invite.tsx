@@ -1,4 +1,4 @@
-import { Api, IReduxState, ITeamList, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, IReduxState, ITeamList, StoreActions, Strings, t } from '@apitable/core';
 import { TreeSelect, Input } from 'antd';
 import { Button, ButtonGroup, useThemeColors, Skeleton } from '@vikadata/components';
 import { Message, Tooltip, Popconfirm } from 'pc/components/common';

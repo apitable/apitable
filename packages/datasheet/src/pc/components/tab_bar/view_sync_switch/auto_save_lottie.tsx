@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import AutoSaveJson from 'static/json/autosave.json';
 import lottie from 'lottie-web/build/player/lottie_svg';
-import { Events, Player } from '@vikadata/core';
+import { Events, Player } from '@apitable/core';
 
 const AUTO_SAVE_SVG_ID = 'AUTO_SAVE_SVG_ID';
 export const AutoSaveLottie = () => {

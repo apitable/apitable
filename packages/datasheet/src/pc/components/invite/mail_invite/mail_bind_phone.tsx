@@ -1,4 +1,4 @@
-import { ApiInterface, ConfigConstant, IReduxState, Strings, t } from '@vikadata/core';
+import { ApiInterface, ConfigConstant, IReduxState, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
 import parser from 'html-react-parser';
@@ -58,7 +58,7 @@ const MailBindPhone: FC = () => {
             submitText={t(Strings.confirm_join)}
             mode={ConfigConstant.LoginMode.MAIL}
             footer={parser(t(Strings.old_user_turn_to_home))}
-            config={{ mail: { defaultValue: inviteEmailInfo?.data.inviteEmail, disabled: true } }}
+            config={{ mail: { defaultValue: inviteEmailInfo?.data.inviteEmail, disabled: true }}}
           />
         </div>
       </div>

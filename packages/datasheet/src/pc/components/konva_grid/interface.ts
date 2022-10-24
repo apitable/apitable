@@ -1,4 +1,4 @@
-import { ICellValue, IField, RowHeightLevel, ViewType, ThemeName } from '@vikadata/core';
+import { ICellValue, IField, RowHeightLevel, ViewType, ThemeName } from '@apitable/core';
 
 // index - size
 export type IndicesMap = Record<number, number>;

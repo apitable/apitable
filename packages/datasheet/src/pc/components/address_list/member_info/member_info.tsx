@@ -1,7 +1,7 @@
 import { getEnvVariables } from 'pc/utils/env';
 import { FC, useState, useEffect } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
-import { IReduxState, Strings, t, ConfigConstant, IMemberInfoInAddressList, isIdassPrivateDeployment } from '@vikadata/core';
+import { IReduxState, Strings, t, ConfigConstant, IMemberInfoInAddressList, isIdassPrivateDeployment } from '@apitable/core';
 import styles from './style.module.less';
 import classNames from 'classnames';
 import { Avatar, Tooltip, AvatarSize, ButtonPlus } from 'pc/components/common';

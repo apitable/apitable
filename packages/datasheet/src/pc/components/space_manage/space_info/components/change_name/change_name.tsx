@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import * as React from 'react';
 import styles from './style.module.less';
-import { Strings, t, IReduxState, ConfigConstant } from '@vikadata/core';
+import { Strings, t, IReduxState, ConfigConstant } from '@apitable/core';
 import { Tooltip, NormalModal, WithTipTextInput } from 'pc/components/common';
 import { shallowEqual, useSelector } from 'react-redux';
 import { IconButton, Skeleton } from '@vikadata/components';

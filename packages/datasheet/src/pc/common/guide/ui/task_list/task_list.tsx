@@ -1,5 +1,5 @@
 import { deepPurple } from '@vikadata/components';
-import { Strings, t, TrackEvents } from '@vikadata/core';
+import { Strings, t, TrackEvents } from '@apitable/core';
 import { useMount } from 'ahooks';
 import Image from 'next/image';
 import { TriggerCommands } from 'pc/common/apphook/trigger_commands';

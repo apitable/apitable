@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styles from './styles.module.less';
 import { useSelector } from 'react-redux';
-import { Selectors } from '@vikadata/core';
+import { Selectors } from '@apitable/core';
 import { MicroColumn } from '../micro_column/micro_column';
 import { MicroRow } from '../micro_row/micro_row';
 import { IDragOption } from '../drag/interface';

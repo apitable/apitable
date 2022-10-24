@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styles from './styles.module.less';
 import { useSelector } from 'react-redux';
-import { Selectors, FieldTypeDescriptionMap, t, Strings, Field } from '@vikadata/core';
+import { Selectors, FieldTypeDescriptionMap, t, Strings, Field } from '@apitable/core';
 import { getFieldDocs } from './api_panel_config';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { useThemeColors } from '@vikadata/components';

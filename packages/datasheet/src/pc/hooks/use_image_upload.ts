@@ -1,4 +1,4 @@
-import { getImageThumbSrc, Settings, Strings, t } from '@vikadata/core';
+import { getImageThumbSrc, Settings, Strings, t } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { shallowEqual, useSelector } from 'react-redux';
 import { UploadManager } from '../utils/upload_manager';

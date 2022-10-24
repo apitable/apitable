@@ -1,5 +1,5 @@
 import { Button, IconButton } from '@vikadata/components';
-import { AutoTestID } from '@vikadata/core';
+import { AutoTestID } from '@apitable/core';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { FC, useState } from 'react';

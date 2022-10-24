@@ -1,4 +1,4 @@
-import { FieldType, ICellValue, IMemberField, IUnitIds, IUnitMap, IUnitValue, IUserValue, IUuids } from '@vikadata/core';
+import { FieldType, ICellValue, IMemberField, IUnitIds, IUnitMap, IUnitValue, IUserValue, IUuids } from '@apitable/core';
 import classNames from 'classnames';
 import { MemberOptionList } from 'pc/components/list/member_option_list';
 import { forwardRef, useImperativeHandle, useRef } from 'react';

@@ -1,4 +1,4 @@
-import { Events, IReduxState, Player, Selectors } from '@vikadata/core';
+import { Events, IReduxState, Player, Selectors } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { MirrorRoute } from 'pc/components/mirror/mirror_route';
 import * as React from 'react';

@@ -7,7 +7,7 @@ import {
   Strings,
   t,
   DatasheetActions, StoreActions,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { notify } from 'pc/components/common/notify';
 import { resourceService } from 'pc/resource_service';
 import { changeView, useDispatch } from 'pc/hooks';

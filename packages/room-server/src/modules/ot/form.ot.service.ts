@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IFormProps, IOperation, IRemoteChangeset, jot } from '@vikadata/core';
+import { IFormProps, IOperation, IRemoteChangeset, jot } from '@apitable/core';
 import { InjectLogger } from 'common';
 import { ResourceChangesetEntity } from 'entities/resource.changeset.entity';
 import { OtException } from 'exception/ot.exception';

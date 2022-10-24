@@ -2,7 +2,7 @@ import {
   BasicValueType, Field, FieldType, ILinkField, ILookUpField,
   RollUpFuncType, ICellValue, ILinkIds,
   ORIGIN_VALUES_FUNC_SET, LOOKUP_VALUE_FUNC_SET, assertNever, IAttachmentValue, handleNullArray, IDateTimeField,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { IBaseEditorProps } from 'pc/components/editors/interface';
 import { CellMultiCheckbox } from 'pc/components/multi_grid/cell/cell_lookup/cell_multi_checkbox';
 import { CellMember } from 'pc/components/multi_grid/cell/cell_member';

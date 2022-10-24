@@ -1,6 +1,6 @@
 import { isRabbitContext } from '@golevelup/nestjs-rabbitmq';
 import { CallHandler, ExecutionContext, HttpStatus, Injectable, NestInterceptor } from '@nestjs/common';
-import { ConfigConstant } from '@vikadata/core';
+import { ConfigConstant } from '@apitable/core';
 import { FastifyReply } from 'fastify';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';

@@ -13,7 +13,7 @@ import {
   t,
   Strings,
   IHyperlinkSegment,
-} from '@vikadata/core';
+} from '@apitable/core';
 
 import { resourceService } from 'pc/resource_service';
 import { Message } from 'pc/components/common';

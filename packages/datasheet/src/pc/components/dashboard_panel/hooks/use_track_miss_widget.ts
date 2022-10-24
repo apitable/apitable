@@ -1,5 +1,5 @@
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
-import { Selectors, StoreActions, IReduxState } from '@vikadata/core';
+import { Selectors, StoreActions, IReduxState } from '@apitable/core';
 import { usePrevious, useUpdateEffect } from 'ahooks';
 import { difference } from 'lodash';
 import { store } from 'pc/store';

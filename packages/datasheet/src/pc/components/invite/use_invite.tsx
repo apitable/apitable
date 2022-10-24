@@ -1,4 +1,4 @@
-import { Api, IInviteMemberList, IReduxState, Navigation, StoreActions } from '@vikadata/core';
+import { Api, IInviteMemberList, IReduxState, Navigation, StoreActions } from '@apitable/core';
 import { Router } from 'pc/components/route_manager/router';
 import { secondStepVerify } from 'pc/hooks/utils';
 import { getSearchParams } from 'pc/utils';

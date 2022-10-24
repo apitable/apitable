@@ -1,4 +1,4 @@
-import { ISpaceBasicInfo, LINK_REG } from '@vikadata/core';
+import { ISpaceBasicInfo, LINK_REG } from '@apitable/core';
 import { getSocialWecomUnitName, isSocialWecom } from 'pc/components/home/social_platform';
 
 export interface ITextNode {

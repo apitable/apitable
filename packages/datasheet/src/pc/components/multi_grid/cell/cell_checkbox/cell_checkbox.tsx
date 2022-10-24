@@ -3,7 +3,7 @@ import * as React from 'react';
 import { ICellComponentProps } from '../cell_value/interface';
 import styles from './style.module.less';
 import { Emoji } from 'pc/components/common/emoji';
-import { ConfigConstant, Field, FieldType, ICheckboxField, IFormulaField, ILookUpField } from '@vikadata/core';
+import { ConfigConstant, Field, FieldType, ICheckboxField, IFormulaField, ILookUpField } from '@apitable/core';
 import { DEFAULT_CHECK_ICON } from 'pc/utils/constant';
 import { KeyCode, stopPropagation } from 'pc/utils';
 

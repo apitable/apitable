@@ -1,4 +1,4 @@
-import { DatasheetApi, IAttachmentValue, isImage, isPdf, isPrivateDeployment, Strings, t } from '@vikadata/core';
+import { DatasheetApi, IAttachmentValue, isImage, isPdf, isPrivateDeployment, Strings, t } from '@apitable/core';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useEffect, useState } from 'react';
 import * as React from 'react';

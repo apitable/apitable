@@ -1,4 +1,4 @@
-import { ISetRecordOptions, moveArrayElement } from '@vikadata/core';
+import { ISetRecordOptions, moveArrayElement } from '@apitable/core';
 import { Handle, NodeProps, Position } from '@vikadata/react-flow-renderer';
 import classNames from 'classnames';
 import { without } from 'lodash';

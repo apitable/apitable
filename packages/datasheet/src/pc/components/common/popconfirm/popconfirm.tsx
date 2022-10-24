@@ -1,5 +1,5 @@
 import { Button, IButtonProps, IButtonType, ITextButtonProps, TextButton } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { Popover, Space } from 'antd';
 import { PopoverProps } from 'antd/lib/popover';
 import classnames from 'classnames';

@@ -1,4 +1,4 @@
-import { Api, IReduxState } from '@vikadata/core';
+import { Api, IReduxState } from '@apitable/core';
 import { isObject } from 'lodash';
 import { isSocialWecom } from 'pc/components/home/social_platform';
 import { useRequest } from 'pc/hooks';

@@ -6,7 +6,7 @@ import { IRobotRunHistoryDetail } from '../../interface';
 import { RobotRunHistoryNodeWrapper } from './robot_run_history_item_detail_node_wrapper';
 import { RobotRunHistoryTriggerDetail } from './robot_run_history_item_detail_trigger';
 import { RobotRunHistoryActionDetail } from './robot_run_history_item_detail_action';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 
 interface IRobotRunHistoryItemDetailProps {
   taskId: string

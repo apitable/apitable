@@ -1,5 +1,5 @@
 // import { Message } from '@vikadata/components';
-import { ConfigConstant, getLanguage, isPrivateDeployment, Selectors, Strings, SystemConfig, t } from '@vikadata/core';
+import { ConfigConstant, getLanguage, isPrivateDeployment, Selectors, Strings, SystemConfig, t } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { useAllColumns } from 'pc/hooks';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';

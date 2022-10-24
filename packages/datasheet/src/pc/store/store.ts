@@ -1,4 +1,4 @@
-import { IReduxState, Reducers } from '@vikadata/core';
+import { IReduxState, Reducers } from '@apitable/core';
 import { applyMiddleware, createStore as _createStore } from 'redux';
 import { enableBatching } from 'redux-batched-actions';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';

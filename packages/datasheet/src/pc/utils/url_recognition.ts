@@ -2,7 +2,7 @@ import {
   Api,
   Strings,
   t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { Message } from 'pc/components/common';
 
 interface ISetURLRecogProps {

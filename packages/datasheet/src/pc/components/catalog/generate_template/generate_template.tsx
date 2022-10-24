@@ -1,4 +1,4 @@
-import { ConfigConstant, IReduxState, Navigation, Selectors, Strings, t } from '@vikadata/core';
+import { ConfigConstant, IReduxState, Navigation, Selectors, Strings, t } from '@apitable/core';
 import { useUpdateEffect } from 'ahooks';
 import { Form, Input } from 'antd';
 import { BaseModal, Message, Modal } from 'pc/components/common';

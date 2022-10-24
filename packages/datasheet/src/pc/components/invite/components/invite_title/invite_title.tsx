@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import * as React from 'react';
 import styles from './style.module.less';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 
 type ITitleMarginBottom = '104px' | '50px' | '24px' | '40px' | '16px';
 type ISubTitleMarginBottom = '0' | '30px' | '24px';

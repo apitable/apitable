@@ -1,4 +1,4 @@
-import { IServerMirror, ISourceDatasheetInfo, INodeMeta, IMirrorSnapshot } from '@vikadata/core';
+import { IServerMirror, ISourceDatasheetInfo, INodeMeta, IMirrorSnapshot } from '@apitable/core';
 
 export class MirrorInfo implements IServerMirror {
   mirror: INodeMeta;

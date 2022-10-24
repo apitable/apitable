@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import { SelectUnitModal, SelectUnitSource }
   from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
-import { IReduxState, Api, IAddIsActivedMemberInfo, UnitItem, ITeam, IMember } from '@vikadata/core';
+import { IReduxState, Api, IAddIsActivedMemberInfo, UnitItem, ITeam, IMember } from '@apitable/core';
 import { useSelector, shallowEqual } from 'react-redux';
 import { useMemberManage } from 'pc/hooks';
 

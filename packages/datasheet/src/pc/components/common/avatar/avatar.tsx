@@ -1,5 +1,5 @@
 import { getThemeColors, lightColors } from '@vikadata/components';
-import { CutMethod, getImageThumbSrc } from '@vikadata/core';
+import { CutMethod, getImageThumbSrc } from '@apitable/core';
 import * as React from 'react';
 
 import TeamIcon from 'static/icon/space/space_icon_department.svg';

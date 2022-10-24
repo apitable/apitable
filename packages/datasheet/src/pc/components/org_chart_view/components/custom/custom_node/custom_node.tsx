@@ -1,7 +1,7 @@
 import { FC, memo, useCallback, useContext, useRef } from 'react';
 import { NodeProps, Handle, Position } from '@vikadata/react-flow-renderer';
 import { DragLayerMonitor, DropTargetMonitor, useDragLayer, useDrop } from 'react-dnd';
-import { ISetRecordOptions, Strings, t } from '@vikadata/core';
+import { ISetRecordOptions, Strings, t } from '@apitable/core';
 import { notify } from 'pc/components/common/notify';
 import { IDragItem, INodeData } from 'pc/components/org_chart_view/interfaces';
 import { DragNodeType } from 'pc/components/org_chart_view/constants';

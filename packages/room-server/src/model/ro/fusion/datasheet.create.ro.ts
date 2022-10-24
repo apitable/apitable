@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { ApiTipConstant, Field, FieldType, getFieldClass, getFieldTypeByString, getNewId, IDPrefix, IField, IReduxState } from '@vikadata/core';
+import { ApiTipConstant, Field, FieldType, getFieldClass, getFieldTypeByString, getNewId, IDPrefix, IField, IReduxState } from '@apitable/core';
 import { Type } from 'class-transformer';
 import { IsDefined, IsOptional, ValidateNested } from 'class-validator';
 import { DatasheetFieldCreateRo } from './datasheet.field.create.ro';

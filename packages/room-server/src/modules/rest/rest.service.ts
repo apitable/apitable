@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { 
   IFieldPermissionMap, IFieldPermissionRoleListData, INode, INodeRoleMap, ISpaceInfo, ISpacePermissionManage, IUserInfo
-} from '@vikadata/core';
+} from '@apitable/core';
 import { CommonStatusCode, InjectLogger } from 'common';
 import { CommonException, PermissionException, ServerException } from 'exception';
 import { IAuthHeader, IHttpSuccessResponse, INotificationCreateRo, IOpAttachCiteRo, IUserBaseInfo, NodePermission } from 'interfaces';

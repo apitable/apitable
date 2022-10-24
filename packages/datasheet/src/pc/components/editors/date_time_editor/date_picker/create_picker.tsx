@@ -11,7 +11,7 @@ import omit from 'omit.js';
 import getDataOrAriaProps from 'antd/es/_util/getDataOrAriaProps';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
-import { DateFormat, getLanguage } from '@vikadata/core';
+import { DateFormat, getLanguage } from '@apitable/core';
 import { stopPropagation } from 'pc/utils';
 import styles from './style.module.less';
 

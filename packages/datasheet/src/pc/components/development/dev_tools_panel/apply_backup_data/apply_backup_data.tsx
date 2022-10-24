@@ -1,6 +1,6 @@
 import { Button, colorVars, Message, Modal, Typography } from '@vikadata/components';
-import { Events, Player } from '@vikadata/core';
-import { LS_DATASHEET_NAMESPACE } from '@vikadata/core/dist/config/constant';
+import { Events, Player } from '@apitable/core';
+import { LS_DATASHEET_NAMESPACE } from '@apitable/core/dist/config/constant';
 import dayjs from 'dayjs';
 import { resourceService } from 'pc/resource_service';
 import { useEffect, useState } from 'react';

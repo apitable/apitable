@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styles from '../style.module.less';
-import { FieldType, FilterDuration, FOperator, IFilterCondition, Strings, t } from '@vikadata/core';
+import { FieldType, FilterDuration, FOperator, IFilterCondition, Strings, t } from '@apitable/core';
 import { ExecuteFilterFn } from '../../interface';
 import produce from 'immer';
 import { MobileSelect } from 'pc/components/common';

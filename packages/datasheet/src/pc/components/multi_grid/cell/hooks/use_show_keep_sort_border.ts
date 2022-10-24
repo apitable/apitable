@@ -1,4 +1,4 @@
-import { Selectors } from '@vikadata/core';
+import { Selectors } from '@apitable/core';
 import { useSelector, shallowEqual } from 'react-redux';
 
 export const useShowKeepSortBorder = (groupHeadRecordId: string) => {

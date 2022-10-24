@@ -1,5 +1,5 @@
 import { Button, useThemeColors } from '@vikadata/components';
-import { Navigation, Strings, t } from '@vikadata/core';
+import { Navigation, Strings, t } from '@apitable/core';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Router } from 'pc/components/route_manager/router';

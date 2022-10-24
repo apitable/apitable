@@ -1,7 +1,7 @@
 import { Inject, Injectable, PipeTransform } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { getFieldTypeByString, getNewId, IDPrefix
-  , getFieldClass, IField, Field, IReduxState, getMaxFieldCountPerSheet, FieldTypeDescriptionMap } from '@vikadata/core';
+  , getFieldClass, IField, Field, IReduxState, getMaxFieldCountPerSheet, FieldTypeDescriptionMap } from '@apitable/core';
 import { REQUEST_HOOK_FOLDER, REQUEST_HOOK_PRE_NODE, SPACE_ID_HTTP_DECORATE } from 'common';
 import { NodeEntity } from 'entities/node.entity';
 import { ApiTipIdEnum } from 'enums/string.enum';

@@ -1,5 +1,5 @@
 
-import { Strings, t, CollaCommandName } from '@vikadata/core';
+import { Strings, t, CollaCommandName } from '@apitable/core';
 
 export const CollaCommandTran = {
   [CollaCommandName.SetRecords]: t(Strings.command_set_record),

@@ -1,5 +1,5 @@
 import { Loading } from '@vikadata/components';
-import { Api, IUserInfo, Strings, t } from '@vikadata/core';
+import { Api, IUserInfo, Strings, t } from '@apitable/core';
 import { useRouter } from 'next/router';
 import { useRequest } from 'pc/hooks';
 import * as React from 'react';

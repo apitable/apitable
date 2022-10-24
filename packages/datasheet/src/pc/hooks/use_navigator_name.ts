@@ -1,4 +1,4 @@
-import { getCustomConfig, Strings, t } from '@vikadata/core';
+import { getCustomConfig, Strings, t } from '@apitable/core';
 import { useRouter } from 'next/router';
 import { isDingtalkSkuPage } from 'pc/components/home/social_platform';
 import { useEffect } from 'react';

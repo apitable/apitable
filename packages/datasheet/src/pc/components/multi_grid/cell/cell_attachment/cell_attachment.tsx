@@ -1,5 +1,5 @@
 import { Tooltip, useThemeColors } from '@vikadata/components';
-import { Field, IAttacheField, IAttachmentValue, IReduxState, isGif, isImage, RowHeight, Selectors, Strings, t } from '@vikadata/core';
+import { Field, IAttacheField, IAttachmentValue, IReduxState, isGif, isImage, RowHeight, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@vikadata/icons';
 import classNames from 'classnames';
 import { uniqBy } from 'lodash';

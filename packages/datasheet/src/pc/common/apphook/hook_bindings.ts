@@ -1,6 +1,6 @@
 import {
   consistencyCheck, CollaCommandName, Events, IJOTAction, IUserInfo, OTActionName, Player, ResourceType, Selectors, Strings, t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import * as Sentry from '@sentry/react';
 import { Modal } from 'pc/components/common';
 import { resourceService } from 'pc/resource_service';

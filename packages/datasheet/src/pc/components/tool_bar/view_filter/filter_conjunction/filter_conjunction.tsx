@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FilterConjunction as CoreFilterConjunction, FilterConjunctionDescMap, IFilterInfo, Strings, t } from '@vikadata/core';
+import { FilterConjunction as CoreFilterConjunction, FilterConjunctionDescMap, IFilterInfo, Strings, t } from '@apitable/core';
 import styles from './style.module.less';
 import { ExecuteFilterFn } from '../interface';
 import produce from 'immer';

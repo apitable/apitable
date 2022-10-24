@@ -8,7 +8,7 @@ import {
   Settings,
   Strings,
   t
-} from '@vikadata/core';
+} from '@apitable/core';
 import { memberStash } from 'pc/common/member_stash/member_stash';
 import { useEffect, useMemo, useState } from 'react';
 import * as React from 'react';

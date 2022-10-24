@@ -1,4 +1,4 @@
-import { BasicValueType } from '@vikadata/core';
+import { BasicValueType } from '@apitable/core';
 import { useThemeColors } from '@vikadata/components';
 import * as React from 'react';
 import CheckBoxIcon from 'static/icon/datasheet/column/datasheet_icon_checkbox.svg';

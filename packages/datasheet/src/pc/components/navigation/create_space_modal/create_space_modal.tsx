@@ -1,5 +1,5 @@
 import { Button, useThemeColors } from '@vikadata/components';
-import { Api, IReduxState, Navigation, StatusCode, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, IReduxState, Navigation, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import { Drawer, Form, Input } from 'antd';
 import cls from 'classnames';
 import Image from 'next/image';

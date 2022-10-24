@@ -1,4 +1,4 @@
-import { ConfigConstant, INode, IViewColumn, Strings, t, ViewType } from '@vikadata/core';
+import { ConfigConstant, INode, IViewColumn, Strings, t, ViewType } from '@apitable/core';
 import Image from 'next/image';
 import { ScrollBar } from 'pc/common/guide/scroll_bar';
 import { File, Folder, View } from 'pc/components/datasheet_search_panel/components';

@@ -11,7 +11,7 @@ import {
   t,
   isPhoneNumber,
   StatusCode,
-} from '@vikadata/core';
+} from '@apitable/core';
 import {
   Message,
   NormalModal,

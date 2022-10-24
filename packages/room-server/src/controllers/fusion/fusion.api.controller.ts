@@ -2,7 +2,7 @@ import {
   Body, CacheTTL, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Put, Query, Req, Res, UseGuards, UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiInternalServerErrorResponse, ApiOperation, ApiProduces, ApiTags } from '@nestjs/swagger';
-import { ICollaCommandOptions } from '@vikadata/core';
+import { ICollaCommandOptions } from '@apitable/core';
 import { RedisService } from '@vikadata/nestjs-redis';
 import { DATASHEET_HTTP_DECORATE, NodePermissions, SwaggerConstants, USER_HTTP_DECORATE } from 'common';
 import { NodePermissionEnum } from 'enums/node.permission.enum';

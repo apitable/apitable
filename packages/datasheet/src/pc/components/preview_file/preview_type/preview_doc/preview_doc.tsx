@@ -1,4 +1,4 @@
-import { IAttachmentValue, IUserInfo, Settings, Strings, t } from '@vikadata/core';
+import { IAttachmentValue, IUserInfo, Settings, Strings, t } from '@apitable/core';
 import { useThemeColors } from '@vikadata/components';
 import { FileType, getDownloadSrc, stopPropagation } from 'pc/utils';
 import * as React from 'react';

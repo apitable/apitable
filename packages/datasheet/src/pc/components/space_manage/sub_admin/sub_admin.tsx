@@ -1,5 +1,5 @@
 import { Button, TextButton, Typography, useThemeColors, Pagination } from '@vikadata/components';
-import { ConfigConstant, Events, IReduxState, ISubAdminList, Player, StoreActions, Strings, t } from '@vikadata/core';
+import { ConfigConstant, Events, IReduxState, ISubAdminList, Player, StoreActions, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { Table } from 'antd';
 import { ColumnProps } from 'antd/es/table';

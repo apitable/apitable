@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { NodeService } from 'modules/services/node/node.service';
 import { DashboardDataPack, NodeDetailInfo, WidgetMap } from '../../../models';
 import { ServerException } from '../../../exception';
-import { IResourceMeta } from '@vikadata/core';
+import { IResourceMeta } from '@apitable/core';
 import { ResourceException } from '../../../exception/resource.exception';
 import { RestService } from '../../rest/rest.service';
 import { ResourceMetaRepository } from 'modules/repository/resource.meta.repository';

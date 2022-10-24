@@ -1,4 +1,4 @@
-import { ConfigConstant, Strings, t } from '@vikadata/core';
+import { ConfigConstant, Strings, t } from '@apitable/core';
 import parser from 'html-react-parser';
 import { Modal } from 'pc/components/common';
 import * as React from 'react';

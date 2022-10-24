@@ -15,7 +15,7 @@ import {
   StoreActions,
   Strings,
   t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { ChevronRightOutlined, CopyOutlined } from '@vikadata/icons';
 import { useClickAway, useMount } from 'ahooks';
 import { Input, Spin } from 'antd';

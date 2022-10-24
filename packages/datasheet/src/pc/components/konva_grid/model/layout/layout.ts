@@ -1,5 +1,5 @@
 import { range } from 'lodash';
-import { ILinearRow, ViewType } from '@vikadata/core';
+import { ILinearRow, ViewType } from '@apitable/core';
 import { colors } from '@vikadata/components';
 import { KonvaDrawer } from '../../utils/drawer';
 import { GRID_ADD_FIELD_BUTTON_WIDTH, GRID_GROUP_ADD_FIELD_BUTTON_WIDTH, GRID_GROUP_OFFSET } from '../../constant';

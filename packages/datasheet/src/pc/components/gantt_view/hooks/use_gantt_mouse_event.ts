@@ -1,7 +1,7 @@
 import {
   CellType, CollaCommandName, DropDirectionType, FieldType, ICellValue, IGanttViewProperty, IGridViewProperty, ISetRecordOptions, KONVA_DATASHEET_ID,
   Selectors,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { KonvaEventObject } from 'konva/lib/Node';
 import { appendRow, getCellValuesForGroupRecord } from 'pc/common/shortcut_key/shortcut_actions/append_row';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';

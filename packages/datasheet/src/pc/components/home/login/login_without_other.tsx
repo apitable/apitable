@@ -1,5 +1,5 @@
 import { LinkButton } from '@vikadata/components';
-import { ApiInterface, AutoTestID, ConfigConstant, Navigation, Strings, t } from '@vikadata/core';
+import { ApiInterface, AutoTestID, ConfigConstant, Navigation, Strings, t } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Router } from 'pc/components/route_manager/router';
 import { useResponsive, useUserRequest } from 'pc/hooks';

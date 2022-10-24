@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { FieldUpdateRo } from './record.field.update.ro';
 import { Expose, Type } from 'class-transformer';
-import { FieldKeyEnum } from '@vikadata/core';
+import { FieldKeyEnum } from '@apitable/core';
 import { ArrayMaxSize, ArrayNotEmpty, IsEnum, ValidateNested } from 'class-validator';
 import { API_MAX_MODIFY_RECORD_COUNTS } from 'common';
 import { ApiTipIdEnum } from 'enums/string.enum';

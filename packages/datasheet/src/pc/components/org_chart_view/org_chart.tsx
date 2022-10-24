@@ -13,7 +13,7 @@ import {
   DragNodeType,
   NodeType
 } from './constants';
-import { ConfigConstant, Selectors } from '@vikadata/core';
+import { ConfigConstant, Selectors } from '@apitable/core';
 import { FlowContext } from './context/flow_context';
 import { DropWrapper } from './components/drop_wrapper';
 import styles from './styles.module.less';

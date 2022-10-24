@@ -1,5 +1,5 @@
 import { Button, Skeleton, useThemeColors, Pagination } from '@vikadata/components';
-import { Api, ConfigConstant, DEFAULT_TIMEZONE, IPageDataBase, isVCode, Settings, Strings, t } from '@vikadata/core';
+import { Api, ConfigConstant, DEFAULT_TIMEZONE, IPageDataBase, isVCode, Settings, Strings, t } from '@apitable/core';
 import { useMount, useToggle } from 'ahooks';
 import { Table } from 'antd';
 import { ColumnProps } from 'antd/es/table';

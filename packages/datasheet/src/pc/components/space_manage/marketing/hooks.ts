@@ -1,4 +1,4 @@
-import { Api } from '@vikadata/core';
+import { Api } from '@apitable/core';
 import { useRequest } from 'pc/hooks';
 import { useState } from 'react';
 import { isSocialPlatformEnabled } from 'pc/components/home/social_platform';

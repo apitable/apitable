@@ -1,5 +1,5 @@
 import { Skeleton, Typography, useThemeColors } from '@vikadata/components';
-import { str2Currency, Strings, t } from '@vikadata/core';
+import { str2Currency, Strings, t } from '@apitable/core';
 import { SelectMarkFilled } from '@vikadata/icons';
 import classnames from 'classnames';
 import { ILevelInfo, monthMap } from 'pc/components/subscribe_system/config';

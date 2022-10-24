@@ -14,7 +14,7 @@ import cx from 'classnames';
 import { BronzeFilled, SilverFilled, GoldFilled, EnterpriseFilled } from '@vikadata/icons';
 import { ISpaceLevelInfo, ISpaceLevelType, Position } from './interface';
 import styles from './style.module.less';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 
 export const DELETE_SPACE_CONTEXT_MENU_ID = 'DELETE_SPACE_CONTEXT_MENU_ID';
 

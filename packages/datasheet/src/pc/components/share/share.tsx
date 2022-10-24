@@ -1,5 +1,5 @@
 import { useThemeColors } from '@vikadata/components';
-import { findNode, IShareInfo, Navigation, Selectors, StoreActions, Strings, t } from '@vikadata/core';
+import { findNode, IShareInfo, Navigation, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import Head from 'next/head';
 import { Message } from 'pc/components/common/message';

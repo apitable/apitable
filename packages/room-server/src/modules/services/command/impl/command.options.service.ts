@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CollaCommandName, ICollaCommandOptions, IField, IFieldMap, IRecordMap } from '@vikadata/core';
+import { CollaCommandName, ICollaCommandOptions, IField, IFieldMap, IRecordMap } from '@apitable/core';
 import { ICommandOptionsInterface } from 'modules/services/command/i.command.options.interface';
 
 /**

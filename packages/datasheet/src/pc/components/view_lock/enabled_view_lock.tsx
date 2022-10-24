@@ -1,5 +1,5 @@
 import { Avatar, Button, Message, Typography } from '@vikadata/components';
-import { Api, CollaCommandName, ExecuteResult, IViewProperty, Selectors, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, CollaCommandName, ExecuteResult, IViewProperty, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import keyBy from 'lodash/keyBy';
 import styles from 'pc/components/view_lock/style.module.less';

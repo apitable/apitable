@@ -1,4 +1,4 @@
-import { Api, ITagsInSpace, ISubTeamListInSpaceBase, IMemberInfoInSpace } from '@vikadata/core';
+import { Api, ITagsInSpace, ISubTeamListInSpaceBase, IMemberInfoInSpace } from '@apitable/core';
 // 验证小组名称是否重复
 export const verifyTeamName = async(spaceId: string, teamId: string, inputContent: string) => {
   let questRes = false;

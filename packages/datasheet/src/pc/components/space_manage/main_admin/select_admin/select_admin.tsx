@@ -3,7 +3,7 @@ import * as React from 'react';
 import { SearchMemberList, Message } from 'pc/components/common';
 import { Form } from 'antd';
 import { useSelector } from 'react-redux';
-import { t, Strings, Api, ISearchMemberData, IReduxState, hiddenMobile } from '@vikadata/core';
+import { t, Strings, Api, ISearchMemberData, IReduxState, hiddenMobile } from '@apitable/core';
 import styles from './style.module.less';
 import { TextInput, Button, LinkButton } from '@vikadata/components';
 

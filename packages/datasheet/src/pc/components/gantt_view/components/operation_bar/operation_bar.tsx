@@ -1,6 +1,6 @@
 import { Dayjs } from 'dayjs';
 import { FC, useRef, memo, useContext } from 'react';
-import { DateUnitType, Strings, t } from '@vikadata/core';
+import { DateUnitType, Strings, t } from '@apitable/core';
 import { GanttCoordinate } from 'pc/components/gantt_view';
 import { Rect, Text, autoSizerCanvas } from 'pc/components/konva_components';
 import { KonvaGridContext } from 'pc/components/konva_grid';

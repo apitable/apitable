@@ -1,4 +1,4 @@
-import { IMeta, ILocalChangeset, IRecordCellValue, IRecordMeta, ResourceType } from '@vikadata/core';
+import { IMeta, ILocalChangeset, IRecordCellValue, IRecordMeta, ResourceType } from '@apitable/core';
 import { SourceTypeEnum } from 'enums/changeset.source.type.enum';
 import { IAuthHeader, NodePermission } from 'interfaces';
 

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import LocaleReceiver from 'antd/es/locale-provider/LocaleReceiver';
 import enUS from 'antd/es/date-picker/locale/en_US';
 import zhCN from 'antd/es/date-picker/locale/zh_CN';
-import { getLanguage } from '@vikadata/core';
+import { getLanguage } from '@apitable/core';
 
 export default function wrapPicker(Picker: React.ComponentClass<any>, defaultFormat?: string): any {
   return class PickerWrapper extends React.Component<any, any> {

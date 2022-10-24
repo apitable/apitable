@@ -1,5 +1,5 @@
 import { useThemeColors } from '@vikadata/components';
-import { ConfigConstant, IReduxState, ITemplateTree, Navigation, Selectors } from '@vikadata/core';
+import { ConfigConstant, IReduxState, ITemplateTree, Navigation, Selectors } from '@apitable/core';
 import { Tree } from 'antd';
 import { getNodeIcon } from 'pc/components/catalog/tree/node_icon';
 import { ScreenSize } from 'pc/components/common/component_display';

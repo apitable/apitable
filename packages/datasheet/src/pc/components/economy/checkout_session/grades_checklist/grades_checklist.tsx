@@ -1,5 +1,5 @@
 import { Typography } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import { SpaceLevelInfo } from 'pc/components/space_manage/space_info/utils';
 import * as React from 'react';

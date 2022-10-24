@@ -1,7 +1,7 @@
 import { IconButton, LinkButton, Message, Typography, useThemeColors } from '@vikadata/components';
 import {
   CollaCommandName, ExecuteResult, ITemporaryView, ResourceType, Selectors, StoreActions, Strings, t, ViewPropertyFilter
-} from '@vikadata/core';
+} from '@apitable/core';
 import { CloseMiddleOutlined } from '@vikadata/icons';
 import { Modal } from 'pc/components/common';
 import styles from 'pc/components/tab_bar/view_sync_switch/style.module.less';

@@ -1,4 +1,4 @@
-import { INodeMeta, Role, IPermissions } from '@vikadata/core';
+import { INodeMeta, Role, IPermissions } from '@apitable/core';
 import { FieldPermissionMap } from './datasheet.model';
 
 export class NodeInfo implements INodeMeta {

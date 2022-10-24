@@ -1,4 +1,4 @@
-import { IUserInfo } from '@vikadata/core';
+import { IUserInfo } from '@apitable/core';
 
 /**
  * 邀请链接生成

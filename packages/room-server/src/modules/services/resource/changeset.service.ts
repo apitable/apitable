@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ResourceType } from '@vikadata/core';
+import { ResourceType } from '@apitable/core';
 import { InjectLogger } from 'common';
 import { DatasheetChangesetEntity } from 'entities/datasheet.changeset.entity';
 import { ResourceChangesetEntity } from 'entities/resource.changeset.entity';

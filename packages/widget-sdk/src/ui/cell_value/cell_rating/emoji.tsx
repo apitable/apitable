@@ -1,5 +1,5 @@
 import { Loading } from '@vikadata/components';
-import { integrateCdnHost } from '@vikadata/core';
+import { integrateCdnHost } from '@apitable/core';
 import React from 'react';
 import dynamic from 'next/dynamic';
 

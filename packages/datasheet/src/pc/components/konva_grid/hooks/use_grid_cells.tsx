@@ -1,4 +1,4 @@
-import { CellType, compensator, ConfigConstant, Field, IField, KONVA_DATASHEET_ID, Range, RecordMoveType, Selectors, ViewType } from '@vikadata/core';
+import { CellType, compensator, ConfigConstant, Field, IField, KONVA_DATASHEET_ID, Range, RecordMoveType, Selectors, ViewType } from '@apitable/core';
 import dynamic from 'next/dynamic';
 import { AreaType, PointPosition } from 'pc/components/gantt_view';
 import {

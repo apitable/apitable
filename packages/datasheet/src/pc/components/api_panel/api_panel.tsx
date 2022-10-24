@@ -1,5 +1,5 @@
 import { Button, Checkbox, Divider, useThemeColors } from '@vikadata/components';
-import { ResourceType, Selectors, Settings, StoreActions, Strings, t } from '@vikadata/core';
+import { ResourceType, Selectors, Settings, StoreActions, Strings, t } from '@apitable/core';
 import { ApiOutlined, BookOutlined, DebugOutlined } from '@vikadata/icons';
 import { Tabs } from 'antd';
 import { useEffect, useState } from 'react';

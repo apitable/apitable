@@ -3,7 +3,7 @@ import { shallowEqual, useSelector } from 'react-redux';
 import { useCreation, useUpdate } from 'ahooks';
 import { useSetState } from 'pc/hooks';
 import { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { CellType, ConfigConstant, Field, ICell, IGridViewProperty, KONVA_DATASHEET_ID, RowHeightLevel, Selectors } from '@vikadata/core';
+import { CellType, ConfigConstant, Field, ICell, IGridViewProperty, KONVA_DATASHEET_ID, RowHeightLevel, Selectors } from '@apitable/core';
 import { useAllowDownloadAttachment } from 'pc/components/upload_modal/preview_item';
 import { useDispatch } from 'pc/hooks';
 import { useCacheScroll } from 'pc/context';

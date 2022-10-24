@@ -5,7 +5,7 @@ import { Form } from 'antd';
 import { useRequest } from 'pc/hooks';
 import { useSetState } from 'pc/hooks';
 import classNames from 'classnames';
-import { t, Strings, IReduxState, StoreActions, ConfigConstant, StatusCode } from '@vikadata/core';
+import { t, Strings, IReduxState, StoreActions, ConfigConstant, StatusCode } from '@apitable/core';
 import { TextInput, Button } from '@vikadata/components';
 import { Message, PasswordInput, IdentifyingCodeInput, WithTipWrapper } from 'pc/components/common';
 import styles from './style.module.less';

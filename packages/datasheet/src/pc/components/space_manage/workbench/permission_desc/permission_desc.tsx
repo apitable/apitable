@@ -2,7 +2,7 @@ import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
 import { FC } from 'react';
 import * as React from 'react';
 import { Collapse, Row, Col } from 'antd';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 import { hexToRGB } from 'pc/utils';
 import SelectIcon from 'static/icon/space/space_icon_select24.svg';
 import PullDownIcon from 'static/icon/datasheet/rightclick/rightclick_icon_retract.svg';

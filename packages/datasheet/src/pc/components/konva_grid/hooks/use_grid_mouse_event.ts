@@ -1,7 +1,7 @@
 import { Message } from '@vikadata/components';
 import {
   CellType, CollaCommandName, ConfigConstant, ExecuteResult, FieldType, KONVA_DATASHEET_ID, Range, RowHeightLevel, Selectors, StoreActions, Strings, t
-} from '@vikadata/core';
+} from '@apitable/core';
 import { useUpdateEffect } from 'ahooks';
 import { KonvaEventObject } from 'konva/lib/Node';
 import { isEqual } from 'lodash';

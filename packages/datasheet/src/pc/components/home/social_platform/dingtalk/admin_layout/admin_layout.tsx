@@ -1,5 +1,5 @@
 import { LinkButton, Typography, useThemeColors } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { Table } from 'antd';
 import axios from 'axios';
 import dayjs from 'dayjs';

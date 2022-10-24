@@ -1,6 +1,6 @@
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from './base.entity';
-import { IResourceMeta, ResourceType } from '@vikadata/core';
+import { IResourceMeta, ResourceType } from '@apitable/core';
 
 /**
  * 资源对应的元数据表，如 Form/Dashboard

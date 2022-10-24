@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { normalDecimal } from '@vikadata/core';
+import { normalDecimal } from '@apitable/core';
 import { Easing } from './easing';
 
 interface IAnimationNum {

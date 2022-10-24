@@ -1,6 +1,6 @@
 import {
   CollaCommandName, ConfigConstant, DATASHEET_ID, Field, FieldType, ISetRecordOptions, Selectors, StoreActions, Strings, t
-} from '@vikadata/core';
+} from '@apitable/core';
 import { ContextName, ShortcutActionName } from 'pc/common/shortcut_key/enum';
 import { Message } from 'pc/components/common/message/message';
 import { notify } from 'pc/components/common/notify/notify';

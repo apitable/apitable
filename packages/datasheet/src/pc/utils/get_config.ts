@@ -1,4 +1,4 @@
-import { Url } from '@vikadata/core';
+import { Url } from '@apitable/core';
 import { getEnvVariables } from './env';
 
 enum ThirdParty {

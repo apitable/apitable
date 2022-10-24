@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styles from './style.module.less';
 import { Typography } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 
 export const InvalidValue = ({ style, content }: { style?: React.CSSProperties; content?: string }) => {
   return <div className={styles.invalidValue} style={style}>

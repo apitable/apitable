@@ -1,5 +1,5 @@
-import { SystemConfig } from '@vikadata/core';
-import { ShortcutKey } from '@vikadata/core/src/config/system_config.interface';
+import { SystemConfig } from '@apitable/core';
+import { ShortcutKey } from '@apitable/core/src/config/system_config.interface';
 import { ShortcutActionName } from 'pc/common/shortcut_key/enum';
 import { browser } from '../browser';
 

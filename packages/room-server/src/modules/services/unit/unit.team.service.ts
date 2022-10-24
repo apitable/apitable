@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IUserValue, MemberType } from '@vikadata/core';
+import { IUserValue, MemberType } from '@apitable/core';
 import { UnitTeamRepository } from 'modules/repository/unit.team.repository';
 
 /**

@@ -1,5 +1,5 @@
 /** 组成路由pathname所需要的属性 */
-import { ConfigConstant } from '@vikadata/core';
+import { ConfigConstant } from '@apitable/core';
 
 export interface IParams {
   spaceId?: string | null;

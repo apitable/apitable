@@ -1,5 +1,5 @@
 import { lightColors } from '@vikadata/components';
-import { Api, BillingProducts, getComputeRefManager, IReduxState, Selectors, Strings, t } from '@vikadata/core';
+import { Api, BillingProducts, getComputeRefManager, IReduxState, Selectors, Strings, t } from '@apitable/core';
 
 const GradesColor = {
   Bronze: lightColors.rc07,

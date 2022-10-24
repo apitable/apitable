@@ -5,7 +5,7 @@ import { Popover } from 'antd';
 import styles from './style.module.less';
 import { ComponentDisplay, ScreenSize } from '../component_display';
 import { Popup } from '../mobile/popup';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { useClickAway } from 'ahooks';
 import { useResponsive } from 'pc/hooks';
 

@@ -1,5 +1,5 @@
 import { Typography, useThemeColors } from '@vikadata/components';
-import { ConfigConstant, IReduxState, Strings, t } from '@vikadata/core';
+import { ConfigConstant, IReduxState, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import { Avatar, AvatarSize } from 'pc/components/common/avatar';
 import { ButtonBase } from 'pc/components/common/button_base/button_base';

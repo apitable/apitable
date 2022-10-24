@@ -3,7 +3,7 @@ import { useThemeColors } from '@vikadata/components';
 import {
   BasicValueType, CollaCommandName, ExecuteResult, Field, FieldType, FieldTypeDescriptionMap, getMaxFieldCountPerSheet, getUniqName, IReduxState,
   isSelectField, Selectors, SetFieldFrom, StoreActions, Strings, t, ToolBarMenuCardOpenState
-} from '@vikadata/core';
+} from '@apitable/core';
 import {
   ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, EditDescribeOutlined, EditOutlined,
   FilterOutlined, HideFilled, LockOutlined

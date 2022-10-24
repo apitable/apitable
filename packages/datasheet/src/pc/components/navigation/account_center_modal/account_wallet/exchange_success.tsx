@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import ReactDOM from 'react-dom';
 import { Modal } from 'pc/components/common';
 import parser from 'html-react-parser';

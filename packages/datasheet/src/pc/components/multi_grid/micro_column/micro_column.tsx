@@ -5,7 +5,7 @@ import {
   IViewRow,
   Selectors,
   StoreActions,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { store } from 'pc/store';
 import { useThemeColors } from '@vikadata/components';
 import * as React from 'react';

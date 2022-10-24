@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { IFormProps, CollaCommandName } from '@vikadata/core';
+import { IFormProps, CollaCommandName } from '@apitable/core';
 import styles from './style.module.less';
 import classNames from 'classnames';
 import { TitleEditor } from './title_editor';

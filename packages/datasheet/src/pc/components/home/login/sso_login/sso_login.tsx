@@ -1,7 +1,7 @@
 import { FC, useRef } from 'react';
 import * as React from 'react';
 import { useSetState, useUpdateEffect } from 'ahooks';
-import { Strings, t, StatusCode,ConfigConstant } from '@vikadata/core';
+import { Strings, t, StatusCode,ConfigConstant } from '@apitable/core';
 import { Typography, Button, TextInput } from '@vikadata/components';
 import { PasswordInput, WithTipWrapper } from 'pc/components/common';
 import styles from './style.module.less';

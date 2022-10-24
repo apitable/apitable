@@ -1,5 +1,5 @@
 import { Button, LinkButton, Typography, useThemeColors } from '@vikadata/components';
-import { Api, IShareSettings, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
 import { useRequest } from 'pc/hooks';
 import classnames from 'classnames';
 import { pickBy } from 'lodash';

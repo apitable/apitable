@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IUserValue } from '@vikadata/core';
+import { IUserValue } from '@apitable/core';
 
 export class UnitBaseInfoDto implements IUserValue {
   @ApiProperty({

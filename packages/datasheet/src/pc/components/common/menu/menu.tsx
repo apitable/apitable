@@ -2,7 +2,7 @@ import {
   CollaCommandName, ExecuteResult, FieldType, ICellValue,
   ICollaCommandExecuteResult, ISegment,
   IViewColumn, Selectors, Strings, t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import path from 'path-browserify';
 import { ContextmenuItem, Message } from 'pc/components/common';
 import { Divider } from 'pc/components/common/divider';

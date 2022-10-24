@@ -10,7 +10,7 @@ import {
   Selectors,
   Strings,
   t,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { useSelector } from 'react-redux';
 import { Col, Row } from 'antd';
 import { IconButton, colorVars } from '@vikadata/components';

@@ -1,4 +1,4 @@
-import { CellFormatEnum, FieldType, IMultiSelectField, IReduxState, ISingleSelectField, Reducers } from '@vikadata/core';
+import { CellFormatEnum, FieldType, IMultiSelectField, IReduxState, ISingleSelectField, Reducers } from '@apitable/core';
 import { MultiSelectField } from 'modules/services/fusion/field/multi.select.field';
 import { SingleSelectField } from 'modules/services/fusion/field/single.select.field';
 import { applyMiddleware, createStore, Store } from 'redux';

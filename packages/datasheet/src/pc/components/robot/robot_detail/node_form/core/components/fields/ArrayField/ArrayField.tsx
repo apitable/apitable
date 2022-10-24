@@ -1,4 +1,4 @@
-import { isOperandNullValue, removeArrayOperandItemByIndex, isOperand } from '@vikadata/core';
+import { isOperandNullValue, removeArrayOperandItemByIndex, isOperand } from '@apitable/core';
 import { /* useEffect,  */useState } from 'react';
 import { IFieldProps, IRegistry } from '../../../interface';
 import {

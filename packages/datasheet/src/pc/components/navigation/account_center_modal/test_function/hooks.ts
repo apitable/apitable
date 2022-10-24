@@ -1,4 +1,4 @@
-import { Selectors } from '@vikadata/core';
+import { Selectors } from '@apitable/core';
 import { template } from 'lodash';
 import { useCallback } from 'react';
 import { useSelector } from 'react-redux';

@@ -1,4 +1,4 @@
-import { IField, IMemberField, Strings, t } from '@vikadata/core';
+import { IField, IMemberField, Strings, t } from '@apitable/core';
 import { Switch } from 'antd';
 import classNames from 'classnames';
 import { Dispatch, SetStateAction } from 'react';

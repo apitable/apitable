@@ -2,7 +2,7 @@ import { useState } from 'react';
 import * as React from 'react';
 import { Form } from 'antd';
 import styles from 'pc/components/navigation/account_center_modal/basic_setting/modify_email_modal/style.module.less';
-import { Api, ConfigConstant, hiddenMobile, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, ConfigConstant, hiddenMobile, StoreActions, Strings, t } from '@apitable/core';
 import { IdentifyingCodeInput, Message, NormalModal, WithTipWrapper } from 'pc/components/common';
 import { useSetState } from 'pc/hooks';
 import { useDispatch } from 'react-redux';

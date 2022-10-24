@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import { Avatar, Box, Button, TextInput, Typography } from '@vikadata/components';
-import { Selectors } from '@vikadata/core';
+import { Selectors } from '@apitable/core';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRobot } from '../../hooks';
 import { IStepProps } from '../interface';
 import robotGuideAvatar from 'static/icon/robot/robot_guide_avatar.png';
-import { t, Strings } from '@vikadata/core';
+import { t, Strings } from '@apitable/core';
 
 export const RobotCreateGuideStep1 = (props: IStepProps) => {
   const [name, setName] = useState('');

@@ -1,5 +1,5 @@
 
-import { IFormulaField, Field, BasicValueType, FormulaBaseError } from '@vikadata/core';
+import { IFormulaField, Field, BasicValueType, FormulaBaseError } from '@apitable/core';
 import { useComputeCellValue } from 'pc/hooks/use_cellvalue';
 import * as React from 'react';
 import { IBaseEditorProps } from 'pc/components/editors/interface';

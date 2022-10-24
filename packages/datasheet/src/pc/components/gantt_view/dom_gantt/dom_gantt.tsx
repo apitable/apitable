@@ -1,7 +1,7 @@
 import { FC, useContext } from 'react';
 import { Select } from '@vikadata/components';
 import { useDispatch, useSelector } from 'react-redux';
-import { DateUnitType, IGanttViewStatus, StoreActions, Strings, t } from '@vikadata/core';
+import { DateUnitType, IGanttViewStatus, StoreActions, Strings, t } from '@apitable/core';
 import { GanttOpenupOutlined, GanttPackupOutlined } from '@vikadata/icons';
 import { ButtonPlus } from 'pc/components/common';
 import { useResponsive } from 'pc/hooks';

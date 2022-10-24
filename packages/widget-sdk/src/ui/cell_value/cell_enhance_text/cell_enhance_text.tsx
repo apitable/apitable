@@ -1,4 +1,4 @@
-import { string2Segment, SegmentType } from '@vikadata/core';
+import { string2Segment, SegmentType } from '@apitable/core';
 import React, { CSSProperties } from 'react';
 import { CellEmail } from '../cell_email';
 import { CellText } from '../cell_text';

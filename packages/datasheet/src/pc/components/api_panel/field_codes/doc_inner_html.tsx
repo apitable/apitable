@@ -4,7 +4,7 @@ import mdStyles from './markdown.module.less';
 import { CodeLanguage } from './enum';
 import template from 'lodash/template';
 import { Modal } from 'pc/components/common';
-import { ModalType, Strings, t, Settings } from '@vikadata/core';
+import { ModalType, Strings, t, Settings } from '@apitable/core';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
 import { useSelector } from 'react-redux';
 

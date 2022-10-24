@@ -1,5 +1,5 @@
 import { Box, Typography, useThemeColors } from '@vikadata/components';
-import { MemberType, Strings, t } from '@vikadata/core';
+import { MemberType, Strings, t } from '@apitable/core';
 import { Avatar, AvatarSize, AvatarType } from 'pc/components/common';
 
 import classNames from 'classnames';

@@ -1,4 +1,4 @@
-import { ConfigConstant } from '@vikadata/core';
+import { ConfigConstant } from '@apitable/core';
 import { Spin } from 'antd';
 import classnames from 'classnames';
 import * as React from 'react';

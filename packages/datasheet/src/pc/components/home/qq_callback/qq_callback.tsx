@@ -1,4 +1,4 @@
-import { Api, ConfigConstant, Navigation } from '@vikadata/core';
+import { Api, ConfigConstant, Navigation } from '@apitable/core';
 import { Spin } from 'antd';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Router } from 'pc/components/route_manager/router';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FieldSearchPanel, IFieldSearchPanelProps, ShowType } from './search_field_panel';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import SearchIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_search.svg';
 
 type ILinkFieldPanel = Pick<IFieldSearchPanelProps, 'onChange' | 'fields' | 'activeFieldId' | 'setSearchPanelVisible'>;

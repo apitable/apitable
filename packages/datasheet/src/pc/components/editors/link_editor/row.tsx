@@ -3,7 +3,7 @@ import * as React from 'react';
 import { ListChildComponentProps } from '@vikadata/react-window';
 import classNames from 'classnames';
 import style from './style.module.less';
-import { Selectors } from '@vikadata/core';
+import { Selectors } from '@apitable/core';
 import { store } from 'pc/store';
 import { RecordCard } from 'pc/components/common';
 import { shallowEqual } from 'react-redux';

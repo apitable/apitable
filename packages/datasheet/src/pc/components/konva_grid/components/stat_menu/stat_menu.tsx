@@ -4,7 +4,7 @@ import { shallowEqual, useSelector } from 'react-redux';
 import { store } from 'pc/store';
 import { resourceService } from 'pc/resource_service';
 import { ContextMenu, useContextMenu } from '@vikadata/components';
-import { CollaCommandName, Field, getStatTypeList, KONVA_DATASHEET_ID, Selectors, StatType } from '@vikadata/core';
+import { CollaCommandName, Field, getStatTypeList, KONVA_DATASHEET_ID, Selectors, StatType } from '@apitable/core';
 import { getFieldStatType } from 'pc/components/multi_grid/cell/stat_option';
 import { MouseDownType } from 'pc/components/selection_wrapper';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';

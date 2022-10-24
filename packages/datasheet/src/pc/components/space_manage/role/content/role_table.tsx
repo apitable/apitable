@@ -3,7 +3,7 @@ import { Table, ConfigProvider } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import styles from './style.module.less';
-import { getLanguage, Strings, t } from '@vikadata/core';
+import { getLanguage, Strings, t } from '@apitable/core';
 import { RoleContext } from '../context';
 import { IMemberItem } from '../interface';
 import { UnitItem } from './unit_item';

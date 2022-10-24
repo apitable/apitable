@@ -3,7 +3,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useRequest } from 'ahooks';
 import { Popover, Tooltip } from 'antd';
 
-import { Api, IReduxState, IShareSettings, Settings, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, IReduxState, IShareSettings, Settings, StoreActions, Strings, t } from '@apitable/core';
 import { DoubleSelect, IDoubleOptions, LinkButton, Switch, Typography } from '@vikadata/components';
 import { InformationSmallOutlined, ShareQrcodeOutlined, ColumnUrlOutlined } from '@vikadata/icons';
 

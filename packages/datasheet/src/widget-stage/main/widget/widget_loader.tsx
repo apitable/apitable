@@ -4,7 +4,7 @@ import { useWidgetComponent } from '@vikadata/widget-sdk/dist/hooks/private/use_
 import { Loading, LinkButton, colors } from '@vikadata/components';
 import styles from './style.module.less';
 import { ErrorFilled, InformationSmallOutlined } from '@vikadata/icons';
-import { Strings, t, WidgetPackageStatus, Settings } from '@vikadata/core';
+import { Strings, t, WidgetPackageStatus, Settings } from '@apitable/core';
 import { WidgetLoadError } from '@vikadata/widget-sdk/dist/initialize_widget';
 import { useSelector } from 'react-redux';
 

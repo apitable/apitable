@@ -1,4 +1,4 @@
-import { KONVA_DATASHEET_ID, Selectors } from '@vikadata/core';
+import { KONVA_DATASHEET_ID, Selectors } from '@apitable/core';
 import { useMount } from 'ahooks';
 import Konva from 'konva';
 import { KonvaEventObject } from 'konva/lib/Node';

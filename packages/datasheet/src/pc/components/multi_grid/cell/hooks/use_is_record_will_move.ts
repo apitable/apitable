@@ -1,4 +1,4 @@
-import { RecordMoveType, Selectors } from '@vikadata/core';
+import { RecordMoveType, Selectors } from '@apitable/core';
 import { useEffect, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 

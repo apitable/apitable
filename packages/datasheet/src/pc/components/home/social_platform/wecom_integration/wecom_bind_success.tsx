@@ -1,5 +1,5 @@
 import { Button, TextInput, useThemeColors } from '@vikadata/components';
-import { integrateCdnHost, Navigation, Settings, Strings, t } from '@vikadata/core';
+import { integrateCdnHost, Navigation, Settings, Strings, t } from '@apitable/core';
 import { CopyOutlined, InformationSmallOutlined, NewtabOutlined } from '@vikadata/icons';
 import Image from 'next/image';
 import { ButtonPlus, Tooltip } from 'pc/components/common';

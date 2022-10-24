@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Progress } from 'antd';
-import { Strings , t } from '@vikadata/core';
+import { Strings , t } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { useThemeColors } from '@vikadata/components';
 import styles from './style.module.less';

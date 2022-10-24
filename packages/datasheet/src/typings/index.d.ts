@@ -1,5 +1,5 @@
 import { ThemeName } from '@vikadata/components';
-import { IReduxState, IUserInfo, IWizardsConfig } from '@vikadata/core';
+import { IReduxState, IUserInfo, IWizardsConfig } from '@apitable/core';
 import { getEnvVars } from 'get_env';
 import 'react-redux';
 import { Object } from 'ts-toolbelt';

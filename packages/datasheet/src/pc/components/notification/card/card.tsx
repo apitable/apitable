@@ -6,7 +6,7 @@ import styles from './style.module.less';
 import { Modal } from 'pc/components/common';
 import { Button, ButtonGroup } from '@vikadata/components';
 import QueueAnim from 'rc-queue-anim';
-import { Api, INoticeDetail, INotifyBody, Strings, t } from '@vikadata/core';
+import { Api, INoticeDetail, INotifyBody, Strings, t } from '@apitable/core';
 import { useNotificationRequest, useResponsive } from 'pc/hooks';
 import { useRequest } from 'pc/hooks';
 

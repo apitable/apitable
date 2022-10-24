@@ -10,7 +10,7 @@ import {
   Strings,
   t,
   ViewType,
-} from '@vikadata/core';
+} from '@apitable/core';
 import { store } from 'pc/store';
 import { Modal } from 'pc/components/common';
 import { changeView, useResponsive } from 'pc/hooks';

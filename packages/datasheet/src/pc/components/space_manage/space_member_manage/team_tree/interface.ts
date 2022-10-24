@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { IMemberInfoInSpace } from '@vikadata/core';
+import { IMemberInfoInSpace } from '@apitable/core';
 
 export interface IModalProps {
   setSearchMemberRes: Dispatch<SetStateAction<IMemberInfoInSpace[]>>;

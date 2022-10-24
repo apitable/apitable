@@ -1,7 +1,7 @@
 import { Element, Text } from 'slate';
 import { RenderElementProps, RenderLeafProps } from 'slate-react';
 import { ElementType, NodeType, ALIGN } from '../constant';
-import { IUnitValue } from '@vikadata/core';
+import { IUnitValue } from '@apitable/core';
 
 export interface IElementData {
   className?: string;

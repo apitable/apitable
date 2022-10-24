@@ -1,5 +1,5 @@
 import { Skeleton, Typography } from '@vikadata/components';
-import { IReduxState, Strings, t } from '@vikadata/core';
+import { IReduxState, Strings, t } from '@apitable/core';
 import { CopyOutlined } from '@vikadata/icons';
 import dayjs from 'dayjs';
 import { Message } from 'pc/components/common';

@@ -1,5 +1,5 @@
 import { Box, Button, ContextMenu, IconButton, Tooltip, Typography, useContextMenu, useTheme } from '@vikadata/components';
-import { Strings, t, validateMagicForm } from '@vikadata/core';
+import { Strings, t, validateMagicForm } from '@apitable/core';
 import { DeleteOutlined, MoreStandOutlined, WarningTriangleFilled } from '@vikadata/icons';
 import Image from 'next/image';
 import { Modal } from 'pc/components/common';

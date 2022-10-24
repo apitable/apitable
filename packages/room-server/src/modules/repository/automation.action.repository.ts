@@ -1,6 +1,6 @@
 import { AutomationActionEntity } from 'entities/automation.action.entity';
 import { EntityRepository, getManager, Repository } from 'typeorm';
-import { generateRandomString } from '@vikadata/core';
+import { generateRandomString } from '@apitable/core';
 import { ActionCreateRo } from 'model/ro/automation/action.create.ro';
 
 @EntityRepository(AutomationActionEntity)

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { IReduxState } from '@vikadata/core';
+import { IReduxState } from '@apitable/core';
 import { useSelector } from 'react-redux';
 import { ShareNode } from '../share_node';
 

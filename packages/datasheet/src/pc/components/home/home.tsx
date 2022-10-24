@@ -1,4 +1,4 @@
-import { Api, getCustomConfig, IReduxState, Navigation, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, getCustomConfig, IReduxState, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { configResponsive, useResponsive } from 'ahooks';
 import { Message } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';

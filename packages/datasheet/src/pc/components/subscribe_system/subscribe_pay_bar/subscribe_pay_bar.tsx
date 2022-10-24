@@ -1,5 +1,5 @@
 import { Button, Typography, useThemeColors } from '@vikadata/components';
-import { Api, ApiInterface, ISubscription, str2Currency, Strings, t } from '@vikadata/core';
+import { Api, ApiInterface, ISubscription, str2Currency, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
 import { Message, Modal } from 'pc/components/common';
 import { TComponent } from 'pc/components/common/t_component';

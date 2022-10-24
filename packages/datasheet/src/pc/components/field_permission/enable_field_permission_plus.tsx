@@ -1,8 +1,8 @@
 import { Box, IOption, Skeleton } from '@vikadata/components';
 import {
   ConfigConstant, DatasheetApi, IFieldPermissionMember, IFieldPermissionRole, IMember, IUnitValue, MemberType, Selectors, StoreActions, Strings, t
-} from '@vikadata/core';
-import { permission } from '@vikadata/core/dist/config/constant';
+} from '@apitable/core';
+import { permission } from '@apitable/core/dist/config/constant';
 import { useMount, useToggle } from 'ahooks';
 import { Switch } from 'antd';
 import { TriggerCommands } from 'pc/common/apphook/trigger_commands';

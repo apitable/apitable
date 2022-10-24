@@ -1,4 +1,4 @@
-import { IField, IMemberField, IMultiSelectField, ISelectField } from '@vikadata/core';
+import { IField, IMemberField, IMultiSelectField, ISelectField } from '@apitable/core';
 import { find, get, has, values } from 'lodash';
 
 interface ISelectFieldParam {

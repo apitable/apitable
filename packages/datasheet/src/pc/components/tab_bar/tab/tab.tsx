@@ -2,7 +2,7 @@ import {
   ConfigConstant, IReduxState, IViewProperty, ResourceType,
   Selectors, getMaxViewCountPerSheet, PREVIEW_DATASHEET_ID,
   isIdassPrivateDeployment
-} from '@vikadata/core';
+} from '@apitable/core';
 import { NetworkStatus } from 'pc/components/network_status';
 import { CollaboratorStatus } from 'pc/components/tab_bar/collaboration_status';
 import { TemplateUseButton } from 'pc/components/template_centre/template_use_button';

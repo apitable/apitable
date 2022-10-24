@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ISelectFieldOption } from '@vikadata/core';
+import { ISelectFieldOption } from '@apitable/core';
 import { OptionSetting } from './enum';
 
 export interface IColorPicker {

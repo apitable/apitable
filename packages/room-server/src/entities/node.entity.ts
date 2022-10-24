@@ -1,6 +1,6 @@
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from './base.entity';
-import { IFormProps } from '@vikadata/core';
+import { IFormProps } from '@apitable/core';
 
 /**
  * 工作台-节点表

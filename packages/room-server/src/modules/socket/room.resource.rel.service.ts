@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { RedisService } from '@vikadata/nestjs-redis';
-import { FieldType, IRemoteChangeset, IResourceRevision, ResourceIdPrefix } from '@vikadata/core';
+import { FieldType, IRemoteChangeset, IResourceRevision, ResourceIdPrefix } from '@apitable/core';
 import * as util from 'util';
 import { CacheKeys, InjectLogger, REF_STORAGE_EXPIRE_TIME } from 'common';
 import { Logger } from 'winston';

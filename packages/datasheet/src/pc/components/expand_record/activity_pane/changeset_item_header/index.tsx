@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
-import { IField } from '@vikadata/core';
+import { IField } from '@apitable/core';
 import EditorTitleContext from '../../editor_title_context';
 import styles from './style.module.less';
 import cls from 'classnames';

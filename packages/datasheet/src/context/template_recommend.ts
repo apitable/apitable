@@ -1,4 +1,4 @@
-import { ApiInterface } from '@vikadata/core';
+import { ApiInterface } from '@apitable/core';
 import { createContext } from 'react';
 
 interface ITemplateRecommendContext {

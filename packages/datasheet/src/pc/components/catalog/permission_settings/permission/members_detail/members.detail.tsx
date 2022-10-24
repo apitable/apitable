@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { BaseModal } from 'pc/components/common';
 import styles from './style.module.less';
 import { UnitItem } from '../unit_item';
-import { INodeRoleMap, t, Strings } from '@vikadata/core';
+import { INodeRoleMap, t, Strings } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 

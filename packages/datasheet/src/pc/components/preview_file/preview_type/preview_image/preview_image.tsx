@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import * as React from 'react';
 import { IPreviewTypeBase } from '../preview_type.interface';
-import { cellValueToImageSrc, isWebp } from '@vikadata/core';
+import { cellValueToImageSrc, isWebp } from '@apitable/core';
 import styles from './style.module.less';
 import { FileType, getDownloadSrc, isSupportImage, renderFileIconUrl } from 'pc/utils/file_type';
 import { browser } from 'pc/common/browser';

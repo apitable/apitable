@@ -1,5 +1,5 @@
 import { Button, useThemeColors } from '@vikadata/components';
-import { Api, IReduxState, IUnitValue, Navigation, StoreActions, Strings, t } from '@vikadata/core';
+import { Api, IReduxState, IUnitValue, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { Form, Input } from 'antd';
 import { Avatar, AvatarSize, ButtonBase, Emoji, ImageCropUpload, ISelectInfo, Wrapper } from 'pc/components/common';

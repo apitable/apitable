@@ -1,5 +1,5 @@
 import { LinkButton, Skeleton, useThemeColors } from '@vikadata/components';
-import { ConfigConstant, integrateCdnHost, isIdassPrivateDeployment, Navigation, Settings, Strings, t, TEMPLATE_CENTER_ID } from '@vikadata/core';
+import { ConfigConstant, integrateCdnHost, isIdassPrivateDeployment, Navigation, Settings, Strings, t, TEMPLATE_CENTER_ID } from '@apitable/core';
 import classNames from 'classnames';
 import { Avatar, AvatarSize, AvatarType, Message, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';

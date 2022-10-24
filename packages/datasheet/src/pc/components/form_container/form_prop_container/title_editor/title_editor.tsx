@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { t, Strings, Selectors, FormApi, IFormProps, StoreActions } from '@vikadata/core';
+import { t, Strings, Selectors, FormApi, IFormProps, StoreActions } from '@apitable/core';
 import styles from './style.module.less';
 import classnames from 'classnames';
 import { Message } from 'pc/components/common';

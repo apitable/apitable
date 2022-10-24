@@ -1,5 +1,5 @@
 import { Skeleton } from '@vikadata/components';
-import { Events, Player, PREVIEW_DATASHEET_ID, ResourceType, Selectors, StatusCode, StoreActions, Strings, SystemConfig, t } from '@vikadata/core';
+import { Events, Player, PREVIEW_DATASHEET_ID, ResourceType, Selectors, StatusCode, StoreActions, Strings, SystemConfig, t } from '@apitable/core';
 import { useToggle } from 'ahooks';
 import classNames from 'classnames';
 import dynamic from 'next/dynamic';

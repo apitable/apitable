@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { evaluate, expressionTransform, Field, FieldKeyEnum, FieldType, getNewId, IDPrefix, IFieldMap, IFormulaField, IReduxState, ISnapshot, IViewColumn, IViewProperty, IViewRow, parse, Selectors } from '@vikadata/core';
+import { evaluate, expressionTransform, Field, FieldKeyEnum, FieldType, getNewId, IDPrefix, IFieldMap, IFormulaField, IReduxState, ISnapshot, IViewColumn, IViewProperty, IViewRow, parse, Selectors } from '@apitable/core';
 import { ApiException } from 'exception/api.exception';
 import { keyBy } from 'lodash';
 import { FieldQueryRo } from 'model/ro/fusion/field.query.ro';

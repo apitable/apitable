@@ -3,7 +3,7 @@ import QRCode from 'qrcode';
 import { isSocialPlatformEnabled, isDingtalkFunc, isWecomFunc, isLarkFunc } from 'pc/components/home/social_platform';
 import { Message } from '@vikadata/components';
 import { useSelector } from 'react-redux';
-import { IReduxState, Settings, integrateCdnHost, ConfigConstant } from '@vikadata/core';
+import { IReduxState, Settings, integrateCdnHost, ConfigConstant } from '@apitable/core';
 
 export const ServiceQrCode: FC = () => {
  

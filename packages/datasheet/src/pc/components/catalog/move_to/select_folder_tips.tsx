@@ -1,5 +1,5 @@
 import { LinkButton, Typography, useThemeColors } from '@vikadata/components';
-import { IParent, Strings, t } from '@vikadata/core';
+import { IParent, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined } from '@vikadata/icons';
 import { HorizontalScroll } from 'pc/components/common/horizontal_scroll';
 import { Breadcrumb } from 'antd';
