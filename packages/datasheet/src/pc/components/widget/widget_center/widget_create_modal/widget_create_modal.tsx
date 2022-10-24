@@ -1,8 +1,7 @@
 import { Button, colorVars, IconButton, LinkButton, TextInput, ThemeProvider, Typography, useThemeColors } from '@vikadata/components';
-import { useRequest } from 'pc/hooks';
 import {
   CollaCommandName, ConfigConstant, ExecuteResult, integrateCdnHost, isPrivateDeployment, ResourceType, Selectors, Settings, StoreActions, Strings, t,
-  WidgetApi, WidgetApiInterface
+  WidgetApi, WidgetApiInterface,
 } from '@apitable/core';
 import { CopyOutlined, ErrorFilled, GuideOutlined, InformationSmallOutlined } from '@vikadata/icons';
 import { loadWidgetCheck, WidgetLoadError } from '@vikadata/widget-sdk/dist/initialize_widget';
@@ -16,17 +15,18 @@ import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
 import { EmitterEventName } from 'pc/common/simple_emitter';
 import { Loading } from 'pc/components/common/loading';
 import { Message } from 'pc/components/common/message';
-import { Tooltip as CommonTooltip } from 'pc/components/common/tooltip';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { ModalOutsideOperate } from 'pc/components/common/modal_outside_operate';
 import { TComponent } from 'pc/components/common/t_component';
+import { Tooltip as CommonTooltip } from 'pc/components/common/tooltip';
+import { useRequest } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { copy2clipBoard } from 'pc/utils';
 import { dispatch } from 'pc/worker/store';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider, useSelector } from 'react-redux';
 import { simpleEmitter } from '../..';
 import { installedWidgetHandle } from '../../widget_panel/widget_panel_header';
@@ -36,7 +36,7 @@ import styles from './styles.module.less';
 
 const WIDGET_CMD = {
   publish: 'widget-cli release',
-  start: 'widget-cli start'
+  start: 'widget-cli start',
 };
 
 interface IExpandWidgetCreate {
@@ -48,14 +48,14 @@ export const expandWidgetCreate = (props: IExpandWidgetCreate) => {
   const container = document.createElement('div');
   document.body.appendChild(container);
   const { closeModal, installPosition } = props;
-
+  const root = createRoot(container);
   const onModalClose = (closeWidgetCenter?: boolean) => {
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
     container.parentElement!.removeChild(container);
     closeWidgetCenter && closeModal?.();
   };
 
-  ReactDOM.render((
+  root.render((
     <Provider store={store}>
       <ThemeProvider>
         <WidgetCreateModal
@@ -64,9 +64,7 @@ export const expandWidgetCreate = (props: IExpandWidgetCreate) => {
         />
       </ThemeProvider>
     </Provider>
-  ),
-  container
-  );
+  ));
 };
 
 interface IWidgetCreateModalProps {
@@ -102,7 +100,7 @@ const WidgetCreateModal: React.FC<IWidgetCreateModalProps> = (props) => {
     setWidgetCreating(true);
     const res = await WidgetApi.createWidget(JSON.stringify({
       'en-US': widgetName,
-      'zh-CN': widgetName
+      'zh-CN': widgetName,
     }), spaceId!);
     const { data } = res.data;
     toInstallWidget(data.packageId);
@@ -112,14 +110,14 @@ const WidgetCreateModal: React.FC<IWidgetCreateModalProps> = (props) => {
     const nodeId = installPosition === InstallPosition.WidgetPanel ? (mirrorId || datasheetId)! : dashboardId!;
     const widget = await installWidget(widgetPackageId, nodeId, widgetName);
     Message.success({
-      content: `${t(Strings.create_widget)}${t(Strings.success)}`
+      content: `${t(Strings.create_widget)}${t(Strings.success)}`,
     });
     installPosition === InstallPosition.WidgetPanel ? await installToPanel(widget, nodeId, mirrorId ? ResourceType.Mirror : ResourceType.Datasheet) :
       await installToDashboard(widget, nodeId);
     setWidgetCreating(false);
     dispatch(StoreActions.receiveInstallationWidget(widget.id, widget));
     expandWidgetCreateSteps({
-      widgetId: widget.id, widgetName: widgetName!, widgetPackageId, sourceCodeBundle: selectTemplate!.sourceCodeBundle
+      widgetId: widget.id, widgetName: widgetName!, widgetPackageId, sourceCodeBundle: selectTemplate!.sourceCodeBundle,
     });
     closeModal?.(true);
     installedWidgetHandle(widget.id, false);
@@ -172,7 +170,7 @@ const WidgetCreateModal: React.FC<IWidgetCreateModalProps> = (props) => {
           {templateWidgetList.map(item => (
             <div className={classNames(
               styles.templateItem,
-              selectTemplate?.widgetPackageId === item.widgetPackageId && styles.templateItemSelected
+              selectTemplate?.widgetPackageId === item.widgetPackageId && styles.templateItemSelected,
             )} key={item.widgetPackageId} onClick={() => setSelectTemplate(item)}>
               <div className={styles.checkbox} />
               <div className={styles.templateCover}>
@@ -219,15 +217,15 @@ interface IExpandWidgetCreateStepsProps {
 export const expandWidgetCreateSteps = (props: IExpandWidgetCreateStepsProps) => {
   const container = document.createElement('div');
   document.body.appendChild(container);
-
+  const root = createRoot(container);
   const onModalClose = (widgetId?: string) => {
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
     container.parentElement!.removeChild(container);
     widgetId && installedWidgetHandle(widgetId);
     props.sourceCodeBundle && widgetId && setTimeout(() => TriggerCommands.open_guide_wizard(ConfigConstant.WizardIdConstant.CREATE_WIDGET_GUIDE), 0);
   };
 
-  ReactDOM.render((
+  root.render((
     <Provider store={store}>
       <ThemeProvider>
         <WidgetCreateModalStep
@@ -236,9 +234,7 @@ export const expandWidgetCreateSteps = (props: IExpandWidgetCreateStepsProps) =>
         />
       </ThemeProvider>
     </Provider>
-  ),
-  container
-  );
+  ));
 };
 
 const WidgetCretInvalidError = () => (
@@ -275,7 +271,7 @@ const WidgetCreateModalStep: React.FC<IExpandWidgetCreateStepsProps> = (props) =
   }, [getWidgetTemplate, sourceCodeBundle, sourceCodeUrl]);
 
   const widgetCliCmd = (
-    config: { apiToken?: string, spaceId?: string, env: string, widgetName: string, widgetPackageId: string, templateUrl?: string }
+    config: { apiToken?: string, spaceId?: string, env: string, widgetName: string, widgetPackageId: string, templateUrl?: string },
   ) => {
     const { apiToken, spaceId, env, widgetName, widgetPackageId, templateUrl = defaultTemplateUrl } = config;
     // eslint-disable-next-line max-len
@@ -293,9 +289,9 @@ const WidgetCreateModalStep: React.FC<IExpandWidgetCreateStepsProps> = (props) =
       desc: t(Strings.widget_step_install_desc),
       content: [
         { label: t(Strings.widget_step_install_content_label1), type: 'info' },
-        { label: t(Strings.widget_step_install_content_label2), type: 'info', value: 'npm install -g @vikadata/widget-cli' }
+        { label: t(Strings.widget_step_install_content_label2), type: 'info', value: 'npm install -g @vikadata/widget-cli' },
       ],
-      helpLink: Settings.widget_develop_install_help.value
+      helpLink: Settings.widget_develop_install_help.value,
     },
     {
       title: t(Strings.widget_step_init_title),
@@ -305,11 +301,11 @@ const WidgetCreateModalStep: React.FC<IExpandWidgetCreateStepsProps> = (props) =
         value:
           widgetCliCmd({
             apiToken: userInfo?.apiKey, spaceId: userInfo?.spaceId, env: window.location.origin, widgetName, widgetPackageId,
-            templateUrl: isPrivateDeployment() ? `${window.location.origin}${sourceCodeUrl}` : sourceCodeUrl
+            templateUrl: isPrivateDeployment() ? `${window.location.origin}${sourceCodeUrl}` : sourceCodeUrl,
           }),
-        desc: !userInfo?.apiKey && !userInfo?.spaceId && parser(t(Strings.widget_step_init_content_desc))
+        desc: !userInfo?.apiKey && !userInfo?.spaceId && parser(t(Strings.widget_step_init_content_desc)),
       }],
-      helpLink: Settings.widget_develop_init_help.value
+      helpLink: Settings.widget_develop_init_help.value,
     },
     {
       title: t(Strings.widget_step_start_title),
@@ -320,25 +316,25 @@ const WidgetCreateModalStep: React.FC<IExpandWidgetCreateStepsProps> = (props) =
           label: t(Strings.widget_step_start_content_label2),
           type: 'info',
           value: WIDGET_CMD.start,
-          desc: t(Strings.widget_step_start_content_desc2)
-        }
+          desc: t(Strings.widget_step_start_content_desc2),
+        },
       ],
-      helpLink: Settings.widget_develop_start_help.value
+      helpLink: Settings.widget_develop_start_help.value,
     },
     {
       title: t(Strings.widget_step_dev_title),
       desc: t(Strings.widget_step_dev_desc),
       content: [{
-        label: t(Strings.widget_step_dev_content_label), placeholder: t(Strings.widget_dev_url_input_placeholder), type: 'input', value: devUrl
+        label: t(Strings.widget_step_dev_content_label), placeholder: t(Strings.widget_dev_url_input_placeholder), type: 'input', value: devUrl,
       }],
-      helpLink: Settings.widget_develop_preview_help.value
-    }
+      helpLink: Settings.widget_develop_preview_help.value,
+    },
   ];
   const steps = [
     { title: t(Strings.widget_step_install) },
     { title: t(Strings.widget_step_init) },
     { title: t(Strings.widget_step_start) },
-    { title: t(Strings.widget_step_dev) }
+    { title: t(Strings.widget_step_dev) },
   ];
 
   const startDev = () => {
@@ -351,7 +347,7 @@ const WidgetCreateModalStep: React.FC<IExpandWidgetCreateStepsProps> = (props) =
         key: `widget_loader_code_url_${widgetPackageId}`,
         value: devUrl,
         resourceType: ResourceType.Widget,
-        resourceId: widgetId
+        resourceId: widgetId,
       });
       if (result.result === ExecuteResult.Success) {
         closeModal?.(widgetId);
@@ -481,14 +477,14 @@ export const expandWidgetDevConfig = (props: IExpandWidgetDevConfigProps) => {
   const { onClose } = props;
   const container = document.createElement('div');
   document.body.appendChild(container);
-
+  const root = createRoot(container);
   const onModalClose = () => {
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
     container.parentElement!.removeChild(container);
     onClose && onClose();
   };
 
-  ReactDOM.render((
+  root.render((
     <Provider store={store}>
       <ThemeProvider>
         <WidgetDevConfigModal
@@ -497,9 +493,7 @@ export const expandWidgetDevConfig = (props: IExpandWidgetDevConfigProps) => {
         />
       </ThemeProvider>
     </Provider>
-  ),
-  container
-  );
+  ));
 };
 
 const WidgetDevConfigModal: React.FC<IExpandWidgetDevConfigProps> = (props) => {
@@ -555,7 +549,7 @@ const WidgetDevConfigModal: React.FC<IExpandWidgetDevConfigProps> = (props) => {
           <TComponent
             tkey={t(Strings.widget_dev_config_content)}
             params={{
-              startCmd: <span>{WIDGET_CMD.start}</span>
+              startCmd: <span>{WIDGET_CMD.start}</span>,
             }}
           />
         </div>
@@ -582,7 +576,7 @@ const WidgetDevConfigModal: React.FC<IExpandWidgetDevConfigProps> = (props) => {
           <Button color='primary' onClick={startDev} disabled={!devUrl}>{t(Strings.widget_start_dev)}</Button>
           <LinkButton underline={false} color={colors.thirdLevelText} prefixIcon={<GuideOutlined />} onClick={() => {
             expandWidgetCreateSteps({
-              widgetId: widget.id, widgetName: widget.widgetPackageName, widgetPackageId, devCodeUrl: devUrl
+              widgetId: widget.id, widgetName: widget.widgetPackageName, widgetPackageId, devCodeUrl: devUrl,
             });
             onClose && onClose();
           }}>
@@ -597,15 +591,15 @@ const WidgetDevConfigModal: React.FC<IExpandWidgetDevConfigProps> = (props) => {
 export const expandPublishHelp = (props?: { onClose?(): void }) => {
   const container = document.createElement('div');
   document.body.appendChild(container);
-
+  const root = createRoot(container);
   const onModalClose = () => {
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
     container.parentElement!.removeChild(container);
     props?.onClose?.();
     TriggerCommands.open_guide_wizard(ConfigConstant.WizardIdConstant.CREATE_WIDGET_GUIDE);
   };
 
-  ReactDOM.render((
+  root.render((
     <ThemeProvider>
       <ModalOutsideOperate
         modalWidth={528}
@@ -629,7 +623,7 @@ export const expandPublishHelp = (props?: { onClose?(): void }) => {
                     <div>Ctrl</div>
                     <div>C</div>
                   </div>
-                )
+                ),
               }}
             />
           </div>
@@ -660,7 +654,5 @@ export const expandPublishHelp = (props?: { onClose?(): void }) => {
         </div>
       </ModalOutsideOperate>
     </ThemeProvider>
-  ),
-  container
-  );
+  ));
 };

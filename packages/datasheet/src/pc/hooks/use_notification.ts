@@ -3,6 +3,7 @@ import { triggerUsageAlert } from 'pc/common/billing';
 import { Message } from 'pc/components/common';
 import { PublishControllers } from 'pc/components/notification/publish';
 import { Router } from 'pc/components/route_manager/router';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { useDispatch, useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 
@@ -112,7 +113,7 @@ export const useNotificationRequest = () => {
 };
 
 export const useNotificationCreate = ({ spaceId }: { fromUserId: string, spaceId: string }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
 
   // 空间权限变为普通成员，即删除子管理员操作

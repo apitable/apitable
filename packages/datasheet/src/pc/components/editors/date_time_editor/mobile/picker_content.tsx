@@ -1,22 +1,19 @@
-import { FC, useMemo } from 'react';
-import * as React from 'react';
-import { DateRange, getLanguage, IRecordAlarmClient, Strings, t, WithOptional } from '@apitable/core';
-import { NotificationSmallOutlined } from '@vikadata/icons';
-import DatePicker from 'antd-mobile/lib/date-picker';
-import zh_CN from 'antd-mobile/lib/date-picker/locale/zh_CN';
-import en_US from 'antd-mobile/lib/date-picker/locale/en_US';
-import style from './style.module.less';
-import IconArrow from 'static/icon/common/common_icon_pulldown_line.svg';
-import dayjs from 'dayjs';
-import classNames from 'classnames';
 import { useThemeColors } from '@vikadata/components';
+import { DateRange, IRecordAlarmClient, Strings, t, WithOptional } from '@apitable/core';
+import { NotificationSmallOutlined } from '@vikadata/icons';
+import { DatePicker } from 'antd-mobile';
+import classNames from 'classnames';
+import dayjs from 'dayjs';
+import * as React from 'react';
+import { FC, useMemo } from 'react';
+import IconArrow from 'static/icon/common/common_icon_pulldown_line.svg';
+import style from './style.module.less';
 
 interface IPickerContentProps {
   value: Date | undefined;
-  mode: 'datetime' | 'date' | 'month';
+  mode: 'minute' | 'day' | 'month';
   editable: boolean;
   visible: boolean;
-  onVisibleChange: (visible: boolean) => void;
   onChange: (val: Date) => void;
   onBackToNow?: () => void;
   onValueChange?: (val: Date) => void;
@@ -24,6 +21,7 @@ interface IPickerContentProps {
   dateFormat: string;
   dateTimeFormat: string;
   alarm?: WithOptional<IRecordAlarmClient, 'id'>;
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface ICustomChildren {
@@ -37,9 +35,9 @@ interface ICustomChildren {
 export const CustomChildren: React.FC<ICustomChildren> = props => {
   const {
     onClick,
-    extra,
+    children,
     value,
-    arrowIcon
+    arrowIcon,
   } = props;
   const colors = useThemeColors();
 
@@ -47,7 +45,7 @@ export const CustomChildren: React.FC<ICustomChildren> = props => {
     <div
       className={classNames(
         style.pickerChildrenWrapper,
-        'pickerChildrenWrapper'
+        'pickerChildrenWrapper',
       )}
       onClick={onClick}
     >
@@ -56,7 +54,7 @@ export const CustomChildren: React.FC<ICustomChildren> = props => {
           color: !value ? colors.fourthLevelText : 'inherit',
         }}
       >
-        {extra}
+        {children}
       </span>
       {
         arrowIcon !== undefined ? arrowIcon : <IconArrow width={16} height={16} fill={colors.fourthLevelText} />
@@ -72,7 +70,6 @@ const PickerContentBase: FC<IPickerContentProps> = (props) => {
     mode,
     editable,
     visible,
-    onVisibleChange,
     onChange,
     onBackToNow,
     onValueChange,
@@ -80,6 +77,7 @@ const PickerContentBase: FC<IPickerContentProps> = (props) => {
     dateFormat,
     dateTimeFormat,
     alarm,
+    setVisible,
   } = props;
 
   const alarmRealTime = useMemo(() => {
@@ -92,23 +90,28 @@ const PickerContentBase: FC<IPickerContentProps> = (props) => {
     return alarm?.time || alarmDate.format('HH:mm');
   }, [alarm?.subtract, alarm?.time, value]);
 
-  const locale = {
-    'zh-CN': zh_CN,
-    'en-US': en_US
-  }[getLanguage()];
+  const getDefaultValue = ()=>{
+    if(value){
+      return dayjs(value).format(mode == 'day' ? dateFormat : dateTimeFormat);
+    }
+    return mode == 'day' ? dateFormat.toLowerCase() : dateTimeFormat.toLocaleLowerCase();
+  };
 
   return (
     <div className={style.mobileDatePicker}>
+      <CustomChildren value={value} arrowIcon={null} onClick={() => {setVisible(true);}}>
+        {getDefaultValue()}
+      </CustomChildren>
       <DatePicker
         className={style.datePicker}
-        locale={locale}
-        minDate={new Date(DateRange.MinTimeStamp)}
-        maxDate={new Date(DateRange.MaxTimeStamp)}
-        mode={mode}
+        min={new Date(DateRange.MinTimeStamp)}
+        max={new Date(DateRange.MaxTimeStamp)}
+        precision={mode}
         value={value}
         visible={editable && visible}
-        onVisibleChange={onVisibleChange}
-        onValueChange={onValueChange}
+        onClose={() => {
+          setVisible(false);
+        }}
         title={(
           <>
             {onBackToNow && <div
@@ -127,12 +130,10 @@ const PickerContentBase: FC<IPickerContentProps> = (props) => {
             )}
           </>
         )}
-        onChange={onChange}
-        extra={mode == 'date' ? dateFormat.toLowerCase() : dateTimeFormat.toLocaleLowerCase()}
-        format={value => dayjs(value).format(mode == 'date' ? dateFormat : dateTimeFormat)}
-      >
-        <CustomChildren value={value} arrowIcon={null} />
-      </DatePicker>
+        onConfirm={onChange}
+        onSelect={onValueChange}
+        forceRender
+      />
       {Boolean(alarm) && (
         <div className={style.alarm}>
           <NotificationSmallOutlined color={colors.deepPurple[500]} size={14} />

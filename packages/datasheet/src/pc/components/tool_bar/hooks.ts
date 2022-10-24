@@ -1,5 +1,6 @@
 import { Selectors, StoreActions, ToolBarMenuCardOpenState } from '@apitable/core';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useSelector } from 'react-redux';
 import { ToolHandleType } from './interface';
 
 export const ToolbarMap = {
@@ -32,7 +33,7 @@ export const ToolbarReMap = {
 };
 
 export function useToolbarMenuCardOpen(type: ToolHandleType) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const toolbarMenuCardState = useSelector(state => Selectors.getToolbarMenuCardState(state));
   const toolHandleType = ToolbarMap[toolbarMenuCardState];
 

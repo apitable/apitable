@@ -12,7 +12,7 @@ import { useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
 import * as React from 'react';
 import { FC, useEffect, useRef, useState } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider, useSelector } from 'react-redux';
 import HeadImage from 'static/icon/common/common_img_questionnaire.png';
 import { QrCodeArea } from './components/qr-code-area';
@@ -157,9 +157,9 @@ const QuestionnaireContent: FC<IQuestionnaireProps> = props => {
                   const radioMarginTop = screenIsAtLeast(ScreenSize.md) ? '24px' : '8px';
                   const isElseSelected = Boolean(
                     lastAllowInput &&
-                      index === answersConfig.length - 1 &&
-                      answers.hasOwnProperty(key) &&
-                      removeRadioElseAnswer(answers[key]) === item,
+                    index === answersConfig.length - 1 &&
+                    answers.hasOwnProperty(key) &&
+                    removeRadioElseAnswer(answers[key]) === item,
                   );
                   return (
                     <div key={item}>
@@ -170,14 +170,14 @@ const QuestionnaireContent: FC<IQuestionnaireProps> = props => {
                         <div className={`${CLASS_PREFIX}-inputWrap`}>
                           <Input
                             onChange={e => setAnswers({ ...answers, [key]: `${item}-${e.target.value}` })}
-                            size="large"
+                            size='large'
                             autoFocus
                             style={{ marginTop: radioMarginTop }}
                             placeholder={t(Strings.placeholder_input)}
                             value={curElseInputValue}
                             onPressEnter={enterNext}
                           />
-                          <Button color="primary" shape="round" className={`${CLASS_PREFIX}-nextBtn`} onClick={enterNext}>
+                          <Button color='primary' shape='round' className={`${CLASS_PREFIX}-nextBtn`} onClick={enterNext}>
                             {t(Strings.next_page)}
                           </Button>
                         </div>
@@ -213,7 +213,7 @@ const QuestionnaireContent: FC<IQuestionnaireProps> = props => {
                         <div className={`${CLASS_PREFIX}-inputWrap`}>
                           <Input
                             onBlur={e => setAnswers({ ...answers, [key]: changeCheckboxLastValue(answers[key], `${item}-${e.target.value}`) })}
-                            size="large"
+                            size='large'
                             autoFocus
                             style={{ marginTop: checkboxMarginTop }}
                             placeholder={t(Strings.placeholder_input)}
@@ -225,8 +225,8 @@ const QuestionnaireContent: FC<IQuestionnaireProps> = props => {
                 })}
             </Checkbox.Group>
             <Button
-              color="primary"
-              shape="round"
+              color='primary'
+              shape='round'
               className={`${CLASS_PREFIX}-nextBtn`}
               onClick={e => {
                 onCheckboxChange(info, checkboxValues.current || []);
@@ -246,7 +246,7 @@ const QuestionnaireContent: FC<IQuestionnaireProps> = props => {
             <div className={`${CLASS_PREFIX}-inputWrap`}>
               <Input
                 autoFocus
-                size="large"
+                size='large'
                 value={curValue}
                 onPressEnter={submit}
                 onChange={e => onInputChange(info, e)}
@@ -254,8 +254,8 @@ const QuestionnaireContent: FC<IQuestionnaireProps> = props => {
               />
               {_submit || (curIndex === 2 && isWecomFunc()) ? (
                 <Button
-                  color="primary"
-                  shape="round"
+                  color='primary'
+                  shape='round'
                   className={`${CLASS_PREFIX}-nextBtn`}
                   onClick={() => {
                     submit();
@@ -265,7 +265,7 @@ const QuestionnaireContent: FC<IQuestionnaireProps> = props => {
                   {t(Strings.fill_in_completed)}
                 </Button>
               ) : (
-                <Button color="primary" shape="round" className={`${CLASS_PREFIX}-nextBtn`} onClick={enterNext}>
+                <Button color='primary' shape='round' className={`${CLASS_PREFIX}-nextBtn`} onClick={enterNext}>
                   {t(Strings.next_page)}
                 </Button>
               )}
@@ -292,7 +292,7 @@ const QuestionnaireContent: FC<IQuestionnaireProps> = props => {
               <div className={`${CLASS_PREFIX}-qrCodeBoxWrap`}>
                 {isFeiShuSpace ? <QrCodeArea url={feishu}></QrCodeArea> : <QrCodeArea img={platformImg}></QrCodeArea>}
               </div>
-              <Button color="primary" shape="round" className={`${CLASS_PREFIX}-nextBtn`} onClick={onNext}>
+              <Button color='primary' shape='round' className={`${CLASS_PREFIX}-nextBtn`} onClick={onNext}>
                 {t(Strings.player_contact_us_confirm_btn)}
               </Button>
             </div>
@@ -327,7 +327,7 @@ const Questionnaire: FC<IQuestionnaireProps> = props => {
       <ScrollBar>
         <div className={`${CLASS_PREFIX}-imgWrap`}>
           <span className={`${CLASS_PREFIX}-img`}>
-            <Image src={img} alt="questionnaire" />
+            <Image src={img} alt='questionnaire' />
           </span>
         </div>
         <div className={`${CLASS_PREFIX}-content`}>
@@ -346,11 +346,11 @@ export const showQuestionnaire = (props: IQuestionnaireProps) => {
       const div = document.createElement('div');
       div.setAttribute('class', CLASS_PREFIX);
       document.body.appendChild(div);
-      ReactDOM.render(
+      const root = createRoot(div);
+      root.render(
         <Provider store={store}>
           <Questionnaire {...rest}>{children}</Questionnaire>
         </Provider>,
-        div,
       );
     });
   };

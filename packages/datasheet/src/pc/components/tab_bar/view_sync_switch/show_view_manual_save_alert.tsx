@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import * as React from 'react';
-import ReactDOM from 'react-dom';
-import styles from './style.module.less';
+import { ThemeProvider } from '@vikadata/components';
 import { Selectors } from '@apitable/core';
-import { store } from 'pc/store';
-import { Provider, useSelector } from 'react-redux';
-import { PopupContent } from 'pc/components/tab_bar/view_sync_switch/popup_content';
 import { useMount, useUpdateEffect } from 'ahooks';
 import classnames from 'classnames';
-import { ThemeProvider } from '@vikadata/components';
+import { PopupContent } from 'pc/components/tab_bar/view_sync_switch/popup_content';
+import { store } from 'pc/store';
+import * as React from 'react';
+import { useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { Provider, useSelector } from 'react-redux';
+import styles from './style.module.less';
 
 const VIEW_MANUAL_SAVE_ALERT = 'VIEW_MANUAL_SAVE_ALERT';
 
@@ -19,19 +19,17 @@ export const ShowViewManualSaveAlert = () => {
   const container = document.createElement('div');
   container.classList.add(VIEW_MANUAL_SAVE_ALERT);
   document.body.appendChild(container);
-
+  const root = createRoot(container);
   const modalClose = () => {
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
     container.parentElement?.removeChild(container);
   };
 
-  ReactDOM.render((
+  root.render((
     <Provider store={store}>
       <ViewManualSaveAlertContentWithTheme modalClose={modalClose} />
     </Provider>
-  ),
-  container,
-  );
+  ));
 };
 
 interface IShowViewManualSaveInPcContentProps {

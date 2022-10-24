@@ -1,7 +1,7 @@
-import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
 import { useThemeColors } from '@vikadata/components';
 import { DeleteOutlined } from '@vikadata/icons';
 import { message, Spin } from 'antd';
+import dynamic from 'next/dynamic';
 import NextImage from 'next/image';
 import { getElementDataset } from 'pc/utils';
 import * as React from 'react';
@@ -22,6 +22,7 @@ import { BUILT_IN_EVENTS } from '../../plugins/withEventBus';
 // import Decorate from '../element_decorate';
 import styles from './style.module.less';
 
+const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 const Image = React.memo(({ children, element }: IElementRenderProps<IElement<IImageElementData>>) => {
   const colors = useThemeColors();
   const elementData = useMemo(() => element.data || {}, [element.data]);

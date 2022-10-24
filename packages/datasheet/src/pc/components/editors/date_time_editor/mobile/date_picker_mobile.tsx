@@ -26,7 +26,7 @@ const DatePickerMobileBase: React.ForwardRefRenderFunction<IEditor, IDateTimeEdi
 
   const { dateFormat } = Field.bindModel(field);
 
-  const mode = field.property.includeTime ? 'datetime' : 'date';
+  const mode = field.property.includeTime ? 'minute' : 'day';
 
   const [visible, setVisible] = useState(false);
 
@@ -49,10 +49,6 @@ const DatePickerMobileBase: React.ForwardRefRenderFunction<IEditor, IDateTimeEdi
     setValue: setEditorValue,
     saveValue: () => onSave?.(value?.getTime(), curAlarm),
   }));
-
-  const onVisibleChange = useCallback(visible => {
-    setVisible(visible);
-  }, [setVisible]);
 
   useEffect(() => {
     if (!visible && onClose) {
@@ -118,7 +114,6 @@ const DatePickerMobileBase: React.ForwardRefRenderFunction<IEditor, IDateTimeEdi
       mode={mode}
       editable={editable}
       visible={visible}
-      onVisibleChange={onVisibleChange}
       onChange={onChange}
       onBackToNow={onBackToNow}
       onValueChange={onValueChange}
@@ -126,6 +121,7 @@ const DatePickerMobileBase: React.ForwardRefRenderFunction<IEditor, IDateTimeEdi
       dateFormat={dateFormat}
       dateTimeFormat={dateTimeFormat}
       alarm={curAlarm}
+      setVisible={setVisible}
     />
   );
 };

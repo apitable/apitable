@@ -1,16 +1,15 @@
-
 import { StoreActions, Strings, t } from '@apitable/core';
+import { IconButton, LinkButton, useThemeColors } from '@vikadata/components';
+import { CancelFilled } from '@vikadata/icons';
+import { useUnmount } from 'ahooks';
+import type { InputRef } from 'antd';
 import { Input } from 'antd';
-import { useEffect, useState } from 'react';
-import * as React from 'react';
-import { useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { useDispatch } from 'pc/hooks';
+import * as React from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import SearchIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_search.svg';
 import styles from './style.module.less';
-import { useUnmount } from 'ahooks';
-import { CancelFilled } from '@vikadata/icons';
-import { LinkButton, IconButton, useThemeColors } from '@vikadata/components';
 
 interface IFind {
   datasheetId: string;
@@ -32,7 +31,7 @@ const Search: React.FC<ISearch> = ({
 
   const [refreshIndex, setRefreshIndex] = useState(0);
 
-  const inputRef = useRef<Input>(null);
+  const inputRef = useRef<InputRef>(null);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement> | React.CompositionEvent) => {
     if (e.type === 'compositionstart') {

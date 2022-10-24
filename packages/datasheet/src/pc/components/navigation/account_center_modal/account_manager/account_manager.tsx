@@ -1,29 +1,30 @@
 import { BindAccount, ConfigConstant, QrAction, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
+import Image from 'next/image';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
 import { QrCode } from 'pc/components/home/qr_code/qr_code';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useRequest, useUserRequest } from 'pc/hooks';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { getDingdingConfig, getQQConfig } from 'pc/utils/get_config';
 import { isDesktop } from 'pc/utils/os';
 import { FC, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import BindingFeiShuPng from 'static/icon/account/feishu.png';
 import DingDingPng from 'static/icon/signin/signin_img_dingding.png';
 import QQPng from 'static/icon/signin/signin_img_qq.png';
 import WeChatPng from 'static/icon/signin/signin_img_wechat.png';
 import { ModeItem } from './mode_item';
 import styles from './style.module.less';
-import Image from 'next/image';
 
 export const AccountManager: FC = () => {
   // 控制Wechat二维码模态框的显示
   const [wechatVisible, setWechatVisible] = useState(false);
   const userInfo = useSelector(state => state.user.info);
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { getLoginStatusReq } = useUserRequest();
   const { run: getLoginStatus } = useRequest(getLoginStatusReq, { manual: true });
 

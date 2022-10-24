@@ -1,14 +1,17 @@
+import { Button, ThemeProvider } from '@vikadata/components';
 import { CollaCommandName, ConfigConstant, ExecuteResult, FieldType, IField, KanbanStyleKey, Selectors, Strings, t } from '@apitable/core';
-import { store } from 'pc/store';
 import { useClickAway } from 'ahooks';
 import { Modal, Radio } from 'antd';
 import { RadioChangeEvent } from 'antd/lib/radio';
-import { Button, ThemeProvider } from '@vikadata/components';
+import classNames from 'classnames';
+import { FieldPermissionLock } from 'pc/components/field_permission';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { DATASHEET_VIEW_CONTAINER_ID } from 'pc/components/view';
-import { useMemo, useRef, useState } from 'react';
+import { resourceService } from 'pc/resource_service';
+import { store } from 'pc/store';
 import * as React from 'react';
-import ReactDOM from 'react-dom';
+import { useMemo, useRef, useState } from 'react';
+import { createRoot } from 'react-dom/client';
 import { Provider, useSelector } from 'react-redux';
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import IconArrowLeft from 'static/icon/common/common_icon_left_line.svg';
@@ -16,9 +19,6 @@ import { useCommand } from '../hooks/use_command';
 import { KanbanMember } from './kanban_member';
 import { KanbanOption } from './kanban_option/kanban_option';
 import styles from './styles.module.less';
-import classNames from 'classnames';
-import { FieldPermissionLock } from 'pc/components/field_permission';
-import { resourceService } from 'pc/resource_service';
 
 enum KanbanRoute {
   Init,
@@ -83,7 +83,7 @@ export const KanbanFieldSettingModal: React.FC<IKanbanFieldSettingModalProps> = 
         id: groupFieldId,
         type: FieldType.NotSupport,
         name: t(Strings.crypto_field),
-        property: null
+        property: null,
       });
     }
     return ids;
@@ -182,7 +182,7 @@ export const KanbanFieldSettingModal: React.FC<IKanbanFieldSettingModalProps> = 
             </>
           }
           <Button
-            color="primary"
+            color='primary'
             disabled={!onClose}
             className={classNames(styles.submitButton, styles.relativeButton)}
             onClick={() => { onClose && onClose(); }}
@@ -212,10 +212,11 @@ export const KanbanFieldSettingModal: React.FC<IKanbanFieldSettingModalProps> = 
 export function showKanbanSetting() {
   const div = document.createElement('div');
   document.getElementById(DATASHEET_VIEW_CONTAINER_ID)!.appendChild(div);
+  const root = createRoot(div);
 
   function destroy() {
-    const unmountResult = ReactDOM.unmountComponentAtNode(div);
-    if (unmountResult && div.parentNode) {
+    root.unmount();
+    if (div.parentNode) {
       div.parentNode.removeChild(div);
     }
   }
@@ -228,15 +229,14 @@ export function showKanbanSetting() {
 
   function render() {
     setTimeout(() => {
-      ReactDOM.render(
+      root.render(
         (
           <Provider store={store}>
             <ThemeProvider>
               <KanbanFieldSettingModal onClose={close} />
             </ThemeProvider>
           </Provider>
-        ),
-        div,
+        )
       );
     });
   }

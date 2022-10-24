@@ -1,13 +1,12 @@
-import { useCallback, useMemo } from 'react';
+import dynamic from 'next/dynamic';
 import * as React from 'react';
-import DeleteOutlined from '@ant-design/icons/DeleteOutlined';
+import { useCallback, useMemo } from 'react';
 import { Transforms } from 'slate';
-import { useReadOnly, useSlate, ReactEditor } from 'slate-react';
-
+import { ReactEditor, useReadOnly, useSlate } from 'slate-react';
 import { IElement, IElementRenderProps } from '../../interface/element';
-
 import styles from './divider.module.less';
 
+const DeleteOutlined = dynamic(() => import('@ant-design/icons/DeleteOutlined'), { ssr: false });
 const Divider = React.memo(({ children, element }: IElementRenderProps<IElement>) => {
 
   const readOnly = useReadOnly();
@@ -33,7 +32,7 @@ const Divider = React.memo(({ children, element }: IElementRenderProps<IElement>
         DotList
       }
       {
-        !readOnly && <DeleteOutlined className={styles.deleteBtn} onMouseDown={handleDelete}/>
+        !readOnly && <DeleteOutlined className={styles.deleteBtn} onMouseDown={handleDelete} />
       }
     </div>
     {children}

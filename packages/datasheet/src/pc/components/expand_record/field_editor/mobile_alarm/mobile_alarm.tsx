@@ -1,10 +1,10 @@
 import { IconButton, List, Switch, TextButton, Typography, useThemeColors } from '@vikadata/components';
 import {
   AlarmUsersType, Api, CollaCommandName, FieldType, IAlarmTypeKeys, ICellValue, IDPrefix, IMemberField, IRecordAlarmClient, Selectors, StoreActions,
-  Strings, t, WithOptional
+  Strings, t, WithOptional,
 } from '@apitable/core';
 import { ChevronLeftOutlined, ChevronRightOutlined } from '@vikadata/icons';
-import DatePicker from 'antd-mobile/lib/date-picker';
+import { DatePicker } from 'antd-mobile';
 import cls from 'classnames';
 import dayjs from 'dayjs';
 import { compact, isEqual, keyBy, pick } from 'lodash';
@@ -43,7 +43,7 @@ export const MobileAlarm = (props: IMobileAlarmProps) => {
       snapshot: Selectors.getSnapshot(state)!,
       fieldMap: Selectors.getFieldMap(state, dstId)!,
       user: state.user.info,
-      unitMap: Selectors.getUnitMap(state)
+      unitMap: Selectors.getUnitMap(state),
     };
   }, shallowEqual);
 
@@ -52,7 +52,7 @@ export const MobileAlarm = (props: IMobileAlarmProps) => {
       .filter(field => field.type === FieldType.Member)
       .map(field => ({
         label: field.name,
-        value: field.id
+        value: field.id,
       }));
   }, [fieldMap]);
 
@@ -62,18 +62,19 @@ export const MobileAlarm = (props: IMobileAlarmProps) => {
   const [openSelect, setOpenSelect] = useState<IAlarmTypeKeys>();
   const colors = useThemeColors();
   const [curAlarm, setCurAlarm] = useState<WithOptional<IRecordAlarmClient, 'id'> | undefined>(alarm);
+  const [pickerVisible, setPickerVisible] = useState(false);
 
   const stashList = useMemo(() => {
     return memberStash.getMemberStash();
   }, []);
-  
+
   const handleOpen = status => {
     if (recordId) {
       const newAlarm = status ? {
         subtract: '',
         time: includeTime ? dayjs(cellValue as number).format('HH:mm') : '09:00',
         alarmUsers: [user?.unitId || ''],
-        target: AlarmUsersType.Member
+        target: AlarmUsersType.Member,
       } : undefined;
       setCurAlarm(newAlarm);
     }
@@ -82,7 +83,7 @@ export const MobileAlarm = (props: IMobileAlarmProps) => {
   const handleChangeAlarm = useCallback((item: { [key: string]: any }) => {
     setCurAlarm!({
       ...curAlarm!,
-      ...item
+      ...item,
     });
 
   }, [curAlarm]);
@@ -98,7 +99,7 @@ export const MobileAlarm = (props: IMobileAlarmProps) => {
   const handleOk = () => {
     if (curAlarm?.alarmUsers.length === 0) {
       Message.warning({
-        content: t(Strings.alarm_save_fail)
+        content: t(Strings.alarm_save_fail),
       });
       return;
     }
@@ -107,7 +108,7 @@ export const MobileAlarm = (props: IMobileAlarmProps) => {
         cmd: CollaCommandName.SetDateTimeCellAlarm,
         recordId,
         fieldId,
-        alarm: convertAlarmStructure(curAlarm as IRecordAlarmClient) || null
+        alarm: convertAlarmStructure(curAlarm as IRecordAlarmClient) || null,
       });
     }
     setOpenAlarm(false);
@@ -198,7 +199,7 @@ export const MobileAlarm = (props: IMobileAlarmProps) => {
           updateAlarm.time = undefined;
         }
         handleChangeAlarm(updateAlarm);
-      }
+      },
     }));
   }, [curAlarm?.subtract, curAlarm?.time, handleChangeAlarm, includeTime]);
 
@@ -216,7 +217,7 @@ export const MobileAlarm = (props: IMobileAlarmProps) => {
             text: t(Strings.alarm_specifical_member),
             onClick: () => {
               changeAlarmTarget(AlarmUsersType.Member);
-            }
+            },
           },
           {
             value: AlarmUsersType.Field,
@@ -225,9 +226,9 @@ export const MobileAlarm = (props: IMobileAlarmProps) => {
             disabledTip: t(Strings.alarm_no_member_field_tips),
             onClick: () => {
               changeAlarmTarget(AlarmUsersType.Field);
-            }
-          }
-        ]
+            },
+          },
+        ],
       ];
     }
     if (openSelect === 'alarmUsers') {
@@ -235,22 +236,22 @@ export const MobileAlarm = (props: IMobileAlarmProps) => {
         [
           {
             label: alarmSelectedMember,
-            value: user?.unitId || ''
+            value: user?.unitId || '',
           },
-          ...memberFieldOptions
+          ...memberFieldOptions,
         ].map(item => ({
           text: item.label,
           onClick: () => {
             const isField = item.value.startsWith(IDPrefix.Field);
             const val = [{
               type: isField ? AlarmUsersType.Field : AlarmUsersType.Member,
-              data: item.value
+              data: item.value,
             }];
             handleChangeAlarm({
-              alarmUsers: val
+              alarmUsers: val,
             });
-          }
-        }))
+          },
+        })),
       ];
     }
     return [];
@@ -260,12 +261,12 @@ export const MobileAlarm = (props: IMobileAlarmProps) => {
   const changeAlarmField = (fieldIds: string[]) => {
     if (!fieldIds.length) {
       Message.warning({
-        content: t(Strings.at_least_select_one_field)
+        content: t(Strings.at_least_select_one_field),
       });
       return;
     }
     handleChangeAlarm({
-      alarmUsers: fieldIds
+      alarmUsers: fieldIds,
     });
   };
 
@@ -277,15 +278,15 @@ export const MobileAlarm = (props: IMobileAlarmProps) => {
     {
       title: t(Strings.task_reminder_notify_date),
       value: ALL_ALARM_SUBTRACT[curAlarm?.subtract || 'current'],
-      onClick: () => setOpenSelect('subtract')
+      onClick: () => setOpenSelect('subtract'),
     }, showTimePicker && {
       title: t(Strings.task_reminder_notify_time),
-      value: curAlarm?.time || pickTime
+      value: curAlarm?.time || pickTime,
     },
     {
       title: t(Strings.alarm_target_type),
       value: curAlarm?.target === AlarmUsersType.Member ? t(Strings.alarm_specifical_member) : t(Strings.alarm_specifical_field_member),
-      onClick: () => setOpenSelect('target')
+      onClick: () => setOpenSelect('target'),
     },
     {
       title: t(Strings.task_reminder_notify_who),
@@ -296,7 +297,7 @@ export const MobileAlarm = (props: IMobileAlarmProps) => {
           onChange={(unitIds) => {
             if (!Array.isArray(unitIds) || !unitIds.length) {
               Message.warning({
-                content: t(Strings.at_least_select_one)
+                content: t(Strings.at_least_select_one),
               });
               return;
             }
@@ -307,8 +308,8 @@ export const MobileAlarm = (props: IMobileAlarmProps) => {
         />
       </div> : <div className={style.fieldSelect}>
         <FieldSelect selectedFieldIds={curAlarm?.alarmUsers || []} fieldMap={fieldMap} onChange={changeAlarmField} />
-      </div>
-    }
+      </div>,
+    },
   ]);
 
   return (
@@ -316,24 +317,24 @@ export const MobileAlarm = (props: IMobileAlarmProps) => {
       <div className={style.mobileAlarmHeader}>
         <div className={style.mobileAlarmBack}>
           <IconButton
-            component="button" icon={ChevronLeftOutlined}
+            component='button' icon={ChevronLeftOutlined}
             onClick={() => setOpenAlarm(false)}
           />
         </div>
-        <Typography variant="h6">
+        <Typography variant='h6'>
           {t(Strings.task_reminder_entry)}
         </Typography>
-        <TextButton size="middle" color="primary" onClick={handleOk}>{t(Strings.save)}</TextButton>
+        <TextButton size='middle' color='primary' onClick={handleOk}>{t(Strings.save)}</TextButton>
       </div>
       <div className={style.mobileAlarmContent}>
         <div className={cls(style.mobileAlarmItem, style.wrapper)}>
-          <Typography variant="body2">
+          <Typography variant='body2'>
             {t(Strings.task_reminder_app_enable_switch)}
           </Typography>
           <Switch checked={Boolean(curAlarm)} onClick={handleOpen} />
         </div>
         {Boolean(curAlarm) && (
-          <Typography variant="body4" className={style.mobileAlarmTitle}>
+          <Typography variant='body4' className={style.mobileAlarmTitle}>
             <AlarmTipText datasheetId={datasheetId} dateTimeFieldId={fieldId} recordId={recordId} curAlarm={curAlarm} />
           </Typography>
         )}
@@ -343,25 +344,29 @@ export const MobileAlarm = (props: IMobileAlarmProps) => {
             data={alarmConfigList}
             renderItem={(item: any, index) => (
               <div className={cls(style.mobileAlarmItem, style.border)} key={index}>
-                <Typography variant="body2">
+                <Typography variant='body2'>
                   {item.title}
                 </Typography>
                 <div onClick={item.onClick} className={style.listRight}>
                   {showTimePicker && index === 1 ? (
-                    <DatePicker
-                      mode="time"
-                      value={pickValue}
-                      onChange={date => {
-                        handleChangeAlarm({
-                          time: dayjs(date).format('HH:mm')
-                        });
-                      }}
-                    >
-                      <div className={style.dateItem}>
+                    <div>
+                      <div className={style.dateItem} onClick={() => setPickerVisible(true)}>
                         <span className={style.listRightValue}>{item.value}</span>
                         <ChevronRightOutlined color={colors.fc3} size={16} />
                       </div>
-                    </DatePicker>
+                      <DatePicker
+                        visible={pickerVisible}
+                        precision='minute'
+                        value={pickValue}
+                        onConfirm={date => {
+                          handleChangeAlarm({
+                            time: dayjs(date).format('HH:mm'),
+                          });
+                        }}
+                        onClose={() => setPickerVisible(false)}
+                        className={style.timePicker}
+                      />
+                    </div>
                   ) : (
                     <>
                       <span className={style.listRightValue}>{item.value}</span>
@@ -380,7 +385,7 @@ export const MobileAlarm = (props: IMobileAlarmProps) => {
         visible={Boolean(openSelect)}
         onClose={() => { setOpenSelect(undefined); }}
         data={contextMenuData}
-        height="auto"
+        height='auto'
       />
 
     </div>

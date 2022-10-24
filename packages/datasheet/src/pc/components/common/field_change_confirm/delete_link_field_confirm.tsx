@@ -8,7 +8,7 @@ import { LinkJump, Modal as CustomModal } from 'pc/components/common';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import * as React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider, useSelector } from 'react-redux';
 import CloseIcon from 'static/icon/common/common_icon_close_small.svg';
 import UnlinkImg from 'static/icon/datasheet/datasheet_img_disassociate.png';
@@ -82,8 +82,8 @@ const DeleteLinkField: React.FC<{ fieldId: string, datasheetId?: string, onClose
 
       <div className={styles.footer}>
         <div className={styles.buttonGroup}>
-          <TextButton size="small" onClick={() => onClose()}>{t(Strings.cancel)}</TextButton>
-          <Button size="small" color="primary" onClick={onConfirm}>{t(Strings.submit)}</Button>
+          <TextButton size='small' onClick={() => onClose()}>{t(Strings.cancel)}</TextButton>
+          <Button size='small' color='primary' onClick={onConfirm}>{t(Strings.submit)}</Button>
         </div>
       </div>
     </div>
@@ -111,12 +111,12 @@ export const deleteLinkFieldConfirm = (props: {
 
   const container = document.createElement('div');
   document.body.appendChild(container);
-
+  const root = createRoot(container);
   const onClose = (confirm?: boolean) => {
     if (!datasheetId) {
       ShortcutActionManager.trigger(ShortcutActionName.Focus);
     }
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
     container.parentElement!.removeChild(container);
     confirm ? onOk() : onCancel();
   };
@@ -140,11 +140,9 @@ export const deleteLinkFieldConfirm = (props: {
     );
   };
 
-  ReactDOM.render((
+  root.render((
     <Provider store={store}>
       <ConfirmModalWithTheme />
     </Provider>
-  ),
-  container,
-  );
+  ));
 };

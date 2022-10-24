@@ -31,7 +31,7 @@ import { getStorage, StorageName } from 'pc/utils/storage';
 import { dispatch } from 'pc/worker/store';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider, shallowEqual, useDispatch, useSelector } from 'react-redux';
 import IconNarrow from 'static/icon/datasheet/datasheet_icon_narrow_record16.svg';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
@@ -98,11 +98,12 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
   const container = document.createElement('div');
   container.classList.add(EXPAND_RECORD);
   document.body.appendChild(container);
+  const root = createRoot(container);
 
   const modalClose = () => {
     dispatch(StoreActions.clearActiveFieldState(datasheetId)); // 清空激活的 field 状态。
     expandRecordManager.destroyCurrentRef();
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
     container.parentElement?.removeChild(container);
     onClose && onClose();
     const previousFocusHolderRef = expandRecordManager.getPreviousFocusHolderRef();
@@ -155,7 +156,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
     modalClose,
   };
 
-  ReactDOM.render(
+  root.render(
     <Provider store={store}>
       <ExpandRecordModal onCancel={modalClose} wrapClassName={styles.mobileWrapper} forceCenter={props.forceCenter}>
         <ErrorBoundary
@@ -178,7 +179,6 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
         />
       </ExpandRecordModal>
     </Provider>,
-    container,
   );
 };
 
@@ -289,16 +289,15 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
     let curRecordIds: string[];
     let curActiveRecordId: string;
     switch (recordType) {
-      case RecordType.Independent:
-        {
+      case RecordType.Independent: {
 
-          // 传入的和现有的交集，因为可能有被删除的，所以这里求交集
-          curRecordIds = recordIds.filter(id => snapshot?.recordMap[id]);
-          // 默认使用 activeRecord，如果 activeRecord 被过滤掉了，就用第一个，realActiveRecordId 作为切换后
-          curActiveRecordId =
-            (realActiveRecordId && snapshot?.recordMap?.[realActiveRecordId]?.id)
-            || (activeRecordId && snapshot?.recordMap?.[activeRecordId]?.id) || curRecordIds[0];
-        }
+        // 传入的和现有的交集，因为可能有被删除的，所以这里求交集
+        curRecordIds = recordIds.filter(id => snapshot?.recordMap[id]);
+        // 默认使用 activeRecord，如果 activeRecord 被过滤掉了，就用第一个，realActiveRecordId 作为切换后
+        curActiveRecordId =
+          (realActiveRecordId && snapshot?.recordMap?.[realActiveRecordId]?.id)
+          || (activeRecordId && snapshot?.recordMap?.[activeRecordId]?.id) || curRecordIds[0];
+      }
         break;
       case RecordType.Datasheet: {
         curRecordIds = visibleRows.map(row => row.recordId);

@@ -8,7 +8,7 @@ import { applyDefaultTheme } from 'theme';
 
 const GlobalStyle = createGlobalStyle`
   #layers {
-    z-index: 1001; 
+    z-index: 1001;
   }
 `;
 

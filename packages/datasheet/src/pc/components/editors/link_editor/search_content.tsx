@@ -14,9 +14,10 @@ import { expandRecordInCenter } from 'pc/components/expand_record';
 import { expandPreviewModalClose } from 'pc/components/preview_file';
 import { useDispatch, useGetViewByIdWithDefault } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { store } from 'pc/store';
 import * as React from 'react';
 import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { useSelector, useStore } from 'react-redux';
+import { useSelector } from 'react-redux';
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import ImageNoRecord from 'static/icon/datasheet/datasheet_img_modal_norecord.png';
 import { RecordList } from './record_list';
@@ -38,7 +39,6 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
   const { field, searchValue: _searchValue, onlyShowSelected, cellValue, onChange, focusIndex, datasheetId } = props;
   const foreignDatasheetId = field.property.foreignDatasheetId;
   const colors = useThemeColors();
-  const store = useStore();
   const { foreignDatasheet, foreignDatasheetErrorCode } = useSelector((state: IReduxState) => {
     return {
       foreignDatasheet: Selectors.getDatasheet(state, foreignDatasheetId)!,

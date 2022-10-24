@@ -1,40 +1,29 @@
-import { Tree } from 'antd';
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import { FC, useState, Dispatch, SetStateAction, useEffect, useCallback, ReactText } from 'react';
-import * as React from 'react';
+import { Button, Loading } from '@vikadata/components';
 import {
-  IReduxState,
-  StoreActions,
-  Api,
-  ISelectedTeamInfoInSpace,
-  ITeamListInSpace,
-  IMemberInfoInSpace,
-  ConfigConstant,
-  t,
-  Strings,
-  isIdassPrivateDeployment
+  Api, ConfigConstant, IMemberInfoInSpace, IReduxState, ISelectedTeamInfoInSpace, isIdassPrivateDeployment, ITeamListInSpace, StoreActions, Strings, t
 } from '@apitable/core';
-import { ContextMenuTrigger, ContextMenu, MenuItem } from 'react-contextmenu';
+import { AddressOutlined } from '@vikadata/icons';
+import { useMount } from 'ahooks';
+import { Tree } from 'antd';
+import { Message, Modal, SearchTeamAndMember, Tooltip } from 'pc/components/common';
+// import AdjustLevel from 'static/icon/space/space_icon_adjustlevel.svg';
+import { isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom, socialPlatPreOperate } from 'pc/components/home/social_platform';
 import { expandInviteModal } from 'pc/components/invite';
-import styles from './style.module.less';
-import PullDownIcon from 'static/icon/datasheet/rightclick/rightclick_icon_retract.svg';
+import { useAddressRequest, useSelectTeamChange } from 'pc/hooks';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { stopPropagation } from 'pc/utils';
+import * as React from 'react';
+import { Dispatch, FC, ReactText, SetStateAction, useCallback, useEffect, useState } from 'react';
+import { ContextMenu, ContextMenuTrigger, MenuItem } from 'react-contextmenu';
+import { shallowEqual, useSelector } from 'react-redux';
+import AddContentIcon from 'static/icon/common/common_icon_add_content.svg';
+import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
 import MoreIcon from 'static/icon/common/common_icon_more.svg';
 import SearchIcon from 'static/icon/common/common_icon_search_normal.svg';
-import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
-import AddContentIcon from 'static/icon/common/common_icon_add_content.svg';
 import RenameIcon from 'static/icon/datasheet/rightclick/datasheet_icon_rename.svg';
-import { AddressOutlined } from '@vikadata/icons';
-// import AdjustLevel from 'static/icon/space/space_icon_adjustlevel.svg';
-import { socialPlatPreOperate, isSocialPlatformEnabled, isSocialDingTalk, isSocialWecom } from 'pc/components/home/social_platform';
-import {
-  CreateTeamModal,
-  RenameTeamModal,
-} from '../modal';
-import { Button, Loading } from '@vikadata/components';
-import { SearchTeamAndMember, Modal, Message, Tooltip } from 'pc/components/common';
-import { useSelectTeamChange, useAddressRequest } from 'pc/hooks';
-import { useMount } from 'ahooks';
-import { stopPropagation } from 'pc/utils';
+import PullDownIcon from 'static/icon/datasheet/rightclick/rightclick_icon_retract.svg';
+import { CreateTeamModal, RenameTeamModal } from '../modal';
+import styles from './style.module.less';
 
 interface IModalProps {
   setSearchMemberRes: Dispatch<SetStateAction<IMemberInfoInSpace[]>>;
@@ -45,7 +34,7 @@ const { TreeNode, DirectoryTree } = Tree;
 const TEAM_OPERATE = 'TEAM_OPERATE';
 const TEAM_ROOT_OPERATE = 'TEAM_ROOT_OPERATE';
 export const TeamTree: FC<IModalProps> = props => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {
     teamListInSpace,
     spaceId,
@@ -222,7 +211,7 @@ export const TeamTree: FC<IModalProps> = props => {
         });
       }
     });
-    
+
   };
   // 删除小组，存在子小组或成员
   const rejectDeleteTeam = () => {
@@ -314,7 +303,7 @@ export const TeamTree: FC<IModalProps> = props => {
           {t(Strings.fresh_dingtalk_org)}
         </Button>
       );
-    } 
+    }
     if (isBindDingtalk || isBindWecom) {
       const refreshMethods = {
         [ConfigConstant.SocialType.DINGTALK]: freshDingtalkOrg,
@@ -339,8 +328,8 @@ export const TeamTree: FC<IModalProps> = props => {
     }
     if (spaceResource && spaceResource.permissions.includes(ConfigConstant.PermissionCode.MEMBER)) {
       return (
-        <Button 
-          color="primary" 
+        <Button
+          color="primary"
           prefixIcon={<AddressOutlined />}
           className={styles.inviteOutsiderBtn}
           onClick={() => expandInviteModal({ resUpdate: () => {changeSelectTeam(ConfigConstant.ROOT_TEAM_ID);} })}
@@ -350,9 +339,9 @@ export const TeamTree: FC<IModalProps> = props => {
       );
     }
     return null;
-    
+
   }, [isBindDingtalk, refreshBtnLoading, changeSelectTeam, spaceResource, isBindWecom, freshWecomOrg, freshDingtalkOrg, spaceInfo, freshIdaasOrg]);
-  
+
   return (
     <div className={styles.addressTreeMenuWrapper}>
       <div className={styles.searchTitle}>

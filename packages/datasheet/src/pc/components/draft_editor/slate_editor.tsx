@@ -1,31 +1,30 @@
-import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
 import { Api, DatasheetApi, StoreActions, Strings, t } from '@apitable/core';
 import { Spin, Tooltip } from 'antd';
-import { find, keyBy, toPairs, values, keys, get } from 'lodash';
-import { expandUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
-import { MemberOptionList } from 'pc/components/list';
-import { usePlatform } from 'pc/hooks/use_platform';
-import { useSelector } from 'react-redux';
-import styles from './styles/style.module.less';
-
-import { useMemo, useCallback, useRef, useEffect, useState, useContext, useImperativeHandle, forwardRef } from 'react';
-
-import * as React from 'react';
-import ReactDOM from 'react-dom';
-import { Editor, Transforms, Range, createEditor, Descendant, Text, Node } from 'slate';
-import { withHistory } from 'slate-history';
-import { MemberItem } from 'pc/components/multi_grid/cell/cell_member/member_item';
-import { Slate, Editable, ReactEditor, withReact, useSelected, useFocused } from 'slate-react';
-import { IS_FIREFOX } from 'pc/components/slate_editor/helpers/browser';
-import { store } from 'pc/store';
-import { Emoji } from 'pc/components/common';
-import { ActivityContext } from '../expand_record/activity_pane/activity_context';
-import { draft2slate, EMPTY_CONTENT } from './utils/draft_slate';
 import classnames from 'classnames';
-import { getValidSelection } from 'pc/components/slate_editor/helpers/utils';
+import { find, get, keyBy, keys, toPairs, values } from 'lodash';
+import dynamic from 'next/dynamic';
+import { expandUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
+import { Emoji } from 'pc/components/common';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
+import { MemberOptionList } from 'pc/components/list';
+import { MemberItem } from 'pc/components/multi_grid/cell/cell_member/member_item';
+import { IS_FIREFOX } from 'pc/components/slate_editor/helpers/browser';
+import { getValidSelection } from 'pc/components/slate_editor/helpers/utils';
 import { fixImeInputBug } from 'pc/components/slate_editor/slate_editor';
+import { usePlatform } from 'pc/hooks/use_platform';
+import { store } from 'pc/store';
+import * as React from 'react';
+import { forwardRef, useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import ReactDOM from 'react-dom';
+import { useSelector } from 'react-redux';
+import { createEditor, Descendant, Editor, Node, Range, Text, Transforms } from 'slate';
+import { withHistory } from 'slate-history';
+import { Editable, ReactEditor, Slate, useFocused, useSelected, withReact } from 'slate-react';
+import { ActivityContext } from '../expand_record/activity_pane/activity_context';
+import styles from './styles/style.module.less';
+import { draft2slate, EMPTY_CONTENT } from './utils/draft_slate';
 
+const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 const withLastSelection = editor => {
   // 失焦记录位置
   const { onChange } = editor;
@@ -64,7 +63,8 @@ export type ILinkElement = {
 };
 
 const LINE_HEIGHT = 22;
-function calcContainerStyle(maxRow: number): React.CSSProperties{
+
+function calcContainerStyle(maxRow: number): React.CSSProperties {
   return {
     maxHeight: maxRow * LINE_HEIGHT + 'px',
     overflowY: 'auto',
@@ -72,8 +72,10 @@ function calcContainerStyle(maxRow: number): React.CSSProperties{
 }
 
 const SlateEditor = (props, ref) => {
-  const { readOnly, placeHolder, submit, syncContent, noMention, maxRow,
-    initialValue, emojis, handleEmoji, onBlur, className } = props;
+  const {
+    readOnly, placeHolder, submit, syncContent, noMention, maxRow,
+    initialValue, emojis, handleEmoji, onBlur, className
+  } = props;
   // blocks
   const membersListRef = useRef<HTMLDivElement | null>(null);
   const [value, setValue] = useState<Descendant[]>(() => {
@@ -145,7 +147,7 @@ const SlateEditor = (props, ref) => {
   const [members, setMembers] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
-  const renderElement = useCallback(props => <Element {...props}/>, []);
+  const renderElement = useCallback(props => <Element {...props} />, []);
   const editor = useMemo(
     () => withLink(withMentions(withReact(withHistory(withLastSelection(createEditor() as ReactEditor))))),
     []
@@ -359,17 +361,17 @@ const SlateEditor = (props, ref) => {
             <div
               ref={membersListRef}
               className={styles.members}
-              data-cy="mentions-portal"
+              data-cy='mentions-portal'
             >
               {loading ? <div className={styles.loading}>
-                <Spin size="small" indicator={<LoadingOutlined />} />
+                <Spin size='small' indicator={<LoadingOutlined />} />
               </div> :
                 <>
                   <MemberOptionList
                     listData={members}
                     existValues={[]}
                     multiMode={false}
-                    onClickItem={(data)=>{
+                    onClickItem={(data) => {
                       const memberId = data && data[0];
                       const member = members.find(item => item.unitId === memberId);
                       if (member) {
@@ -538,7 +540,7 @@ const MentionElement = ({ attributes, children, element }) => {
         <MemberItem
           selected={selected && focused}
           unitInfo={element.data}
-          style={{ margin: 0 }}/>
+          style={{ margin: 0 }} />
       </span>
       {children}
     </span>
@@ -551,7 +553,7 @@ const LinkElement = ({ attributes, children, element }) => {
       {...attributes}
       className={styles.link}
     >
-      <a href={element.data.href} target='_blank' rel="noreferrer">{element.data.raw}</a>
+      <a href={element.data.href} target='_blank' rel='noreferrer'>{element.data.raw}</a>
       {children}
     </span>
   );

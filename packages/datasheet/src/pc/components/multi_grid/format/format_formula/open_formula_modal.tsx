@@ -1,12 +1,12 @@
-import ReactDOM from 'react-dom';
-import * as React from 'react';
-import { Provider } from 'react-redux';
-import { Modal } from 'antd';
 import { IField, Strings, t } from '@apitable/core';
-import { store } from 'pc/store';
-import { FormulaModal } from './formula_modal';
+import { Modal } from 'antd';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
+import { store } from 'pc/store';
+import * as React from 'react';
+import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { FormulaModal } from './formula_modal';
 import styles from './styles.module.less';
 
 export function openFormulaModal(props: { field: IField; expression: string; datasheetId: string, onSave?: (exp: string) => void; onClose?: () => void }) {
@@ -14,9 +14,10 @@ export function openFormulaModal(props: { field: IField; expression: string; dat
 
   const container = document.createElement('div');
   document.body.appendChild(container);
+  const root = createRoot(container);
 
   const removeNode = () => {
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
     container.parentElement!.removeChild(container);
   };
 
@@ -38,7 +39,7 @@ export function openFormulaModal(props: { field: IField; expression: string; dat
     datasheetId={datasheetId}
   />;
 
-  ReactDOM.render(
+  root.render(
     <Provider store={store}>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <Modal
@@ -62,6 +63,5 @@ export function openFormulaModal(props: { field: IField; expression: string; dat
         </Popup>
       </ComponentDisplay>
     </Provider>,
-    container,
   );
 }

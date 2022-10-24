@@ -1,19 +1,20 @@
 import { Api, IReduxState, ITeamList, StoreActions, Strings, t } from '@apitable/core';
-import { TreeSelect, Input } from 'antd';
-import { Button, ButtonGroup, useThemeColors, Skeleton } from '@vikadata/components';
-import { Message, Tooltip, Popconfirm } from 'pc/components/common';
+import { Button, ButtonGroup, Skeleton, useThemeColors } from '@vikadata/components';
+import { Input, TreeSelect } from 'antd';
+import { Message, Popconfirm, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/mobile/modal';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { copy2clipBoard } from 'pc/utils';
 import { FC, useEffect, useState } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
 import HistoryIcon from 'static/icon/common/common_icon_history.svg';
 import PulldownIcon from 'static/icon/common/common_icon_pulldown_line.svg';
 import CopyIcon from 'static/icon/datasheet/rightclick/datasheet_icon_copy.svg';
 import RetractIcon from 'static/icon/datasheet/rightclick/rightclick_icon_retract.svg';
-import styles from './style.module.less';
 import { InviteAlert } from '../components/invite-alert';
+import styles from './style.module.less';
 
 const { TreeNode } = TreeSelect;
 
@@ -23,7 +24,7 @@ export interface ILinkInviteProps {
 
 export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
   const colors = useThemeColors();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { linkList, userInfo, teamList } = useSelector(
     (state: IReduxState) => ({
       linkList: state.invite.linkList,

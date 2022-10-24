@@ -1,12 +1,12 @@
+import { CollaCommandName, Selectors, Strings, t } from '@apitable/core';
+import { colors } from '@vikadata/components';
+import { CloseSmallOutlined } from '@vikadata/icons';
 import { useDebounceEffect } from 'ahooks';
-import { shallowEqual, useSelector } from 'react-redux';
+import { Message } from 'pc/components/common';
 import { resourceService } from 'pc/resource_service';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
-import { CollaCommandName, Selectors, Strings, t } from '@apitable/core';
-import { CloseSmallOutlined } from '@vikadata/icons';
+import { shallowEqual, useSelector } from 'react-redux';
 import { GRID_ROW_HEAD_WIDTH } from '../constant';
-import { Message } from 'pc/components/common';
-import { colors } from '@vikadata/components';
 import styles from '../style.module.less';
 
 interface IUseGridMessageProps {
@@ -21,7 +21,7 @@ export const useGridMessage = (props: IUseGridMessageProps) => {
     containerWidth,
     firstColumnWidth
   } = props;
-  const { 
+  const {
     view,
     visibleColumns
   } = useSelector(state => {
@@ -67,14 +67,14 @@ export const useGridMessage = (props: IUseGridMessageProps) => {
             >
               {t(Strings.freeze_click_when_windows_too_narrow)}
             </a>
-            <CloseSmallOutlined 
-              color={colors.secondLevelText} 
+            <CloseSmallOutlined
+              color={colors.secondLevelText}
               className={styles.closeBtn}
               onClick={() => Message.destroy()}
             />
           </div>
         ) as any,
-        duration: null,
+        duration: undefined,
       });
     }
   }, [containerWidth, firstColumnWidth, text]);

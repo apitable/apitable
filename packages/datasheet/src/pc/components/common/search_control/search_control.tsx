@@ -1,12 +1,13 @@
-import { forwardRef, useImperativeHandle, useRef, memo } from 'react';
+import type { InputRef } from 'antd';
+import { Switch } from 'antd';
+import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
+import { useResponsive } from 'pc/hooks';
 import * as React from 'react';
-import { Switch, Input } from 'antd';
+import { forwardRef, memo, useImperativeHandle, useRef } from 'react';
+import { stopPropagation } from '../../../utils/dom';
+import { ScreenSize } from '../component_display';
 import style from './style.module.less';
 
-import { stopPropagation } from '../../../utils/dom';
-import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from '../component_display';
-import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
 interface ISearchControlProps {
   onValueChange?: (searchValue: string) => void;
   onSwitcherChange?: (checked: boolean) => void;
@@ -34,7 +35,7 @@ const SearchControlBase: React.ForwardRefRenderFunction<{ focus(): void }, ISear
     onkeyDown,
   } = props;
 
-  const editorRef = useRef<Input>(null);
+  const editorRef = useRef<InputRef>(null);
 
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);

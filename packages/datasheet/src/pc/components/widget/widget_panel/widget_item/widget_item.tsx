@@ -11,46 +11,42 @@ import {
   WidgetReleaseType,
 } from '@apitable/core';
 import {
-  CloseMiddleOutlined,
-  DragOutlined,
-  MoreOutlined,
-  RefreshOutlined,
-  SettingOutlined,
-  WidgetExpandOutlined,
-  WidgetNarrowOutlined,
+  CloseMiddleOutlined, DragOutlined, MoreOutlined, RefreshOutlined, SettingOutlined, WidgetExpandOutlined, WidgetNarrowOutlined,
 } from '@vikadata/icons';
 import { mainWidgetMessage, RuntimeEnv } from '@vikadata/widget-sdk';
 import { WidgetLoadError } from '@vikadata/widget-sdk/dist/initialize_widget';
 import { useToggle } from 'ahooks';
+import type { InputRef } from 'antd';
 import { Input } from 'antd';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { SimpleEmitter } from 'pc/common/simple_emitter';
 import { Tooltip } from 'pc/components/common';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { SearchPanel } from 'pc/components/datasheet_search_panel';
 import { expandRecordInCenter } from 'pc/components/expand_record';
 import { useCheckInput, useResponsive } from 'pc/hooks';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { getTestFunctionAvailable } from 'pc/utils/storage';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PngLinkdatasheet from 'static/icon/datasheet/chart/linkdatasheet.png';
 import IconExpand from 'static/icon/datasheet/datasheet_icon_expand_record.svg';
 import { closeWidgetRoute, expandWidgetRoute } from '../../expand_widget';
 import { useDevLoadCheck, useFullScreen } from '../../hooks';
 import { useCloudStorage } from '../../hooks/use_cloud_storage';
+import { usePreLoadError } from '../../hooks/use_pre_load_error';
 import { expandWidgetDevConfig } from '../../widget_center/widget_create_modal';
 import { ErrorWidget, IWidgetLoaderRefs } from '../../widget_loader';
 import { WIDGET_MENU } from '../widget_list';
+import { IWidgetPropsBase } from './interface';
 import styles from './style.module.less';
 import { WidgetBlock } from './widget_block';
-import { WidgetIframe } from './widget_iframe';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { WidgetHeaderMobile } from './widget_header';
-import { usePreLoadError } from '../../hooks/use_pre_load_error';
-import { IWidgetPropsBase } from './interface';
+import { WidgetIframe } from './widget_iframe';
 
 export const simpleEmitter = new SimpleEmitter();
 
@@ -85,7 +81,7 @@ export const WidgetItem: React.FC<IWidgetItemProps> = props => {
   const isExpandWidget = useSelector(state => Boolean(state.pageParams.widgetId === widgetId));
   const errorCode = useSelector(state => Selectors.getDatasheetErrorCode(state, widgetBindDatasheetId));
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [searchPanelVisible, setSearchPanelVisible] = useState(false);
   const [isSettingOpened, { toggle: toggleSettingOpened }] = useToggle(false);
@@ -316,7 +312,7 @@ export const WidgetHeader: React.FC<IWidgetHeaderProps> = props => {
     toggleFullScreenWidget,
   } = props;
   const colors = useThemeColors();
-  const inputRef = React.useRef<Input>(null);
+  const inputRef = React.useRef<InputRef>(null);
   const [rename, setRename] = React.useState(false);
   const { errTip, setErrTip, onCheck } = useCheckInput({
     checkLength: { max: 30, min: 0, tip: t(Strings.widget_name_length_error), trim: true },

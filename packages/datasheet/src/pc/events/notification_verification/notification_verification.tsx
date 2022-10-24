@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import * as React from 'react';
+import { Api, fastCloneDeep, IApi, Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { difference, keyBy } from 'lodash';
 import { Message, Modal } from 'pc/components/common';
-import { dispatch } from 'pc/worker/store';
-import { store } from 'pc/store';
-import { Selectors, StoreActions, t, Strings, fastCloneDeep, IApi, Api } from '@apitable/core';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
+import { store } from 'pc/store';
+import { dispatch } from 'pc/worker/store';
+import * as React from 'react';
+import { useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
 import styles from './style.module.less';
-import { difference, keyBy } from 'lodash';
 
 //发送通知
 export const sendRemind = () => {
@@ -93,23 +93,22 @@ interface IUnitProps {
 const notificationVerification = (props: IUnitProps) => {
   const container = document.createElement('div');
   document.body.appendChild(container);
-
+  const root = createRoot(container);
   const state = store.getState();
   const permissionCommitRemindStatus = state.catalogTree.permissionCommitRemindStatus;
 
   const onModalClose = () => {
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
     container.parentElement!.removeChild(container);
     if (!permissionCommitRemindStatus) {
       sendRemind();
     }
   };
 
-  ReactDOM.render(
+  root.render(
     <Provider store={store}>
       <NotificationVerificationModal {...props} closeModal={onModalClose} />
     </Provider>,
-    container,
   );
 };
 

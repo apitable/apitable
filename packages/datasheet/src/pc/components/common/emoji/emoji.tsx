@@ -1,23 +1,23 @@
 import { colorVars, Loading, Skeleton, TextButton } from '@vikadata/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
+import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import dynamic from 'next/dynamic';
+import { createRoot } from 'react-dom/client';
 
 const EmojiEmoji = dynamic(() => import('emoji-mart/dist/components/emoji/emoji'), {
   ssr: false,
-  loading: () => <Loading />
+  loading: () => <Loading />,
 });
 const EmojiPicker = dynamic(() => import('emoji-mart/dist/components/picker/picker'), {
   ssr: false,
   loading: () => (
     <div style={{ margin: 16 }}>
-      <Skeleton width="38%" />
+      <Skeleton width='38%' />
       <Skeleton count={2} />
-      <Skeleton width="61%"/>
+      <Skeleton width='61%' />
     </div>
-  )
+  ),
 });
 
 const getEmojiSource = (set = 'apple', size = 32) => {
@@ -82,9 +82,9 @@ export const Picker: React.FC<Record<any, any>> = (props: any) => {
         const buttonWrapper = document.createElement('div');
         searchWrapper.className = searchWrapper.classList + ' searchWithReset';
         buttonWrapper.setAttribute('class', 'resetBtn');
-        ReactDOM.render(<TextButton style={{ color: colorVars.fc1 }} onClick={props.onReset}>{t(Strings.reset)}</TextButton>,
-          searchWrapper.appendChild(buttonWrapper)
-        );
+        const _buttonWrapper = searchWrapper.appendChild(buttonWrapper);
+        const root = createRoot(_buttonWrapper);
+        root.render(<TextButton style={{ color: colorVars.fc1 }} onClick={props.onReset}>{t(Strings.reset)}</TextButton>);
         clearInterval(interval);
       }
     }, 250);
@@ -94,7 +94,7 @@ export const Picker: React.FC<Record<any, any>> = (props: any) => {
   }, [props.onReset]);
 
   return (
-    <div className="emoji-wrapper">
+    <div className='emoji-wrapper'>
       {visible ?
         <EmojiPicker
           perLine={10}
@@ -105,9 +105,9 @@ export const Picker: React.FC<Record<any, any>> = (props: any) => {
           i18n={i18n}
           {...props}
         /> : <div style={{ margin: 16 }}>
-          <Skeleton width="38%" />
+          <Skeleton width='38%' />
           <Skeleton count={2} />
-          <Skeleton width="61%"/>
+          <Skeleton width='61%' />
         </div>}
     </div>
   );

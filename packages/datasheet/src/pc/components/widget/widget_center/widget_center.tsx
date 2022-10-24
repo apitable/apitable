@@ -1,10 +1,10 @@
 import { Box, Button, IconButton, Skeleton, ThemeProvider, Tooltip, Typography, useThemeColors } from '@vikadata/components';
 import {
   Api, CollaCommandName, ConfigConstant, Events, ExecuteResult, IMember, integrateCdnHost, IWidget, IWidgetPackage, Player, ResourceType, Selectors,
-  Settings, StoreActions, Strings, SystemConfig, t, UnitItem, WidgetApi, WidgetInstallEnv, WidgetPackageStatus, WidgetReleaseType
+  Settings, StoreActions, Strings, SystemConfig, t, UnitItem, WidgetApi, WidgetInstallEnv, WidgetPackageStatus, WidgetReleaseType,
 } from '@apitable/core';
 import {
-  AddOutlined, ColumnUrlOutlined, DefaultFilled, HandoverOutlined, InformationLargeOutlined, MoreOutlined, UnpublishOutlined, WarnFilled
+  AddOutlined, ColumnUrlOutlined, DefaultFilled, HandoverOutlined, InformationLargeOutlined, MoreOutlined, UnpublishOutlined, WarnFilled,
 } from '@vikadata/icons';
 import { useMount } from 'ahooks';
 import { Tabs } from 'antd';
@@ -21,7 +21,7 @@ import { store } from 'pc/store';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider, useSelector } from 'react-redux';
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import { useResourceManageable } from '../hooks';
@@ -101,7 +101,7 @@ type IWidgetPackageListProps = IWidgetPackageItemBase & {
 const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
   const {
     cover, name, releaseType, description, widgetPackageId, installPosition, onModalClose, authorIcon, authorName, icon, showMenu, status,
-    ownerUuid, ownerMemberId, extras, version, installEnv
+    ownerUuid, ownerMemberId, extras, version, installEnv,
   } = props;
   const colors = useThemeColors();
   const isOwner = useSelector(state => state.user.info?.uuid === ownerUuid);
@@ -147,7 +147,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
         cancelText: t(Strings.cancel),
         onOk: () => toInstallWidget(widgetPackageId),
         okButtonProps: { className: styles.warningBtn, color: colors.warningColor, size: 'small' },
-        cancelButtonProps: { size: 'small' }
+        cancelButtonProps: { size: 'small' },
       });
       return;
     }
@@ -158,7 +158,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
   const onClickInstall = () => {
     const installPosToEnvMap = {
       [InstallPosition.WidgetPanel]: WidgetInstallEnv.Panel,
-      [InstallPosition.Dashboard]: WidgetInstallEnv.Dashboard
+      [InstallPosition.Dashboard]: WidgetInstallEnv.Dashboard,
     };
     if (installEnv && installEnv.length > 0 && !installEnv.includes(installPosToEnvMap[installPosition])) {
       Modal.confirm({
@@ -181,12 +181,12 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
   const InstallButton = () => (
     <WrapperTooltip style={{ width: '100%' }} wrapper={!manageable} tip={t(Strings.no_permission_add_widget)}>
       <Button
-        color="primary"
+        color='primary'
         prefixIcon={<IconAdd width={16} height={16} fill={'white'} />}
         onClick={onClickInstall}
         loading={installing}
         disabled={!manageable || (installPosition === InstallPosition.Dashboard && status === WidgetPackageStatus.Developing)}
-        size="small"
+        size='small'
         block
       >
         {t(Strings.install_widget)}
@@ -217,9 +217,9 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
           </div>
           <div className={styles.arcBoxRight} />
         </div>
-        {extras?.website && <Tooltip content={t(Strings.widget_homepage_tooltip)} placement="top-center">
-          <a href={extras?.website} target="_blank" className={styles.website} rel="noreferrer">
-            <IconButton className={styles.iconButton} icon={ColumnUrlOutlined} variant="background" />
+        {extras?.website && <Tooltip content={t(Strings.widget_homepage_tooltip)} placement='top-center'>
+          <a href={extras?.website} target='_blank' className={styles.website} rel='noreferrer'>
+            <IconButton className={styles.iconButton} icon={ColumnUrlOutlined} variant='background' />
           </a>
         </Tooltip>}
       </div>
@@ -251,7 +251,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
     <div className={classNames(styles.widgetPackageItem, styles.widgetPackageItemSpace)}>
       <div className={styles.headerBox}>
         <span className={styles.widgetIcon}>
-          <Image layout={'fill'} src={icon} alt="" />
+          <Image layout={'fill'} src={icon} alt='' />
         </span>
         <h3>{name}</h3>
         {(isOwner || spacePermission.includes(ConfigConstant.PermissionCode.MANAGE_WIDGET)) && <IconButton
@@ -261,7 +261,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
             widgetPackageId,
             widgetPackageName: name,
             authorName,
-            ownerMemberId
+            ownerMemberId,
           })} />}
       </div>
       <p className={styles.spaceWidgetDesc}>
@@ -336,7 +336,7 @@ const WidgetPackageList = (props: IWidgetPackageListProps) => {
           <div className={classNames(
             styles.widgetPackageItem,
             styles.createWidgetWrapper,
-            !canCreateWidget && styles.disableCreateWidget
+            !canCreateWidget && styles.disableCreateWidget,
           )} onClick={() => canCreateWidget && createWidget()}>
             <AddOutlined size={16} />
             <span>{t(Strings.create_widget)}</span>
@@ -388,8 +388,8 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
   const Title = () => {
     return <div className={styles.modalHeader}>
       <Typography variant={'h4'} component={'span'} ellipsis style={{ marginRight: '4px' }}>{t(Strings.widget_center)}</Typography>
-      <Tooltip content={t(Strings.widget_center_help_tooltip)} placement="right-center">
-        <a href={Settings.widget_center_help.value} target="_blank" className={styles.helpIcon} rel="noreferrer">
+      <Tooltip content={t(Strings.widget_center_help_tooltip)} placement='right-center'>
+        <a href={Settings.widget_center_help.value} target='_blank' className={styles.helpIcon} rel='noreferrer'>
           <InformationLargeOutlined size={24} color={colors.fc3} />
         </a>
       </Tooltip>
@@ -432,10 +432,10 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
           onOk: () => unpublishWidget(props.widgetPackageId).then(() => {
             fetchPackageList(WidgetReleaseType.Space, true);
             Message.success({ content: `${t(Strings.widget_center_menu_unpublish)}${t(Strings.success)}` });
-          })
+          }),
         });
       },
-    }
+    },
   ];
 
   const showMenu = useCallback((e: React.MouseEvent, props) => {
@@ -451,14 +451,14 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
     // 移交
     Modal.warning({
       title: t(Strings.widget_transfer_modal_title, {
-        widgetPackageName: curOperationProps.current.widgetPackageName
+        widgetPackageName: curOperationProps.current.widgetPackageName,
       }),
       icon: <WarnFilled size={24} />,
       content: (
         <div className={styles.transferWidgetWrap}>
           {parser(t(Strings.widget_transfer_modal_content, {
             oldOwner: curOperationProps.current.authorName,
-            newOwner: selectMember.memberName
+            newOwner: selectMember.memberName,
           }))}
         </div>
       ),
@@ -479,7 +479,7 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
     const thumbStyle = {
       right: 4,
       borderRadius: 'inherit',
-      backgroundColor: 'rgba(0,0,0,0.2)'
+      backgroundColor: 'rgba(0,0,0,0.2)',
     };
     return <div style={{ ...style, ...thumbStyle }} {...props} />;
   };
@@ -533,9 +533,9 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
             <TabItemIntroduction introduction={t(Strings.widget_center_official_introduction)} />
             {
               loading ? <div className={styles.skeletonWrap}>
-                <Skeleton count={1} width="38%" />
+                <Skeleton count={1} width='38%' />
                 <Skeleton count={2} />
-                <Skeleton count={1} width="61%" />
+                <Skeleton count={1} width='61%' />
               </div> : <WidgetPackageList
                 needPlaceholder={needPlaceholder}
                 installPosition={installPosition}
@@ -564,13 +564,13 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
                   showMenu={showMenu}
                 /> :
                 <div className={styles.listEmpty}>
-                  <Image src={integrateCdnHost(Settings.widget_center_space_empty.value)} alt="" width={240} height={180} />
+                  <Image src={integrateCdnHost(Settings.widget_center_space_empty.value)} alt='' width={240} height={180} />
                   <p className={styles.emptyTitle}>{t(Strings.is_empty_widget_center_space)}</p>
                   <p className={styles.emptyDesc}>{t(Strings.widget_center_space_introduction)}</p>
                   <div className={styles.emptyFooter}>
                     <EmptyButtonWrapper>
                       <Button
-                        color="primary"
+                        color='primary'
                         disabled={(isShowWidget && !manageable) || (!isShowWidget && labsListLoading) || (isShowWidget && Boolean(dashboardId))}
                         onClick={isShowWidget ? createWidget : applyOpenTestFunction}
                         block
@@ -641,29 +641,27 @@ export const expandWidgetCenter = (
   option: {
     closeModalCb?(): void;
     installedWidgetHandle?(widgetId: string): void
-  } = {}
+  } = {},
 ) => {
   const container = document.createElement('div');
   document.body.appendChild(container);
   const { closeModalCb, installedWidgetHandle } = option;
-
+  const root = createRoot(container);
   const onModalClose = (installedWidgetId?: string) => {
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
     container.parentElement!.removeChild(container);
     closeModalCb?.();
     installedWidgetId && installedWidgetHandle && installedWidgetHandle(installedWidgetId);
   };
 
-  ReactDOM.render((
+  root.render((
     <Provider store={store}>
       <WidgetCenterModalWithTheme
         onModalClose={onModalClose}
         installPosition={installPosition}
       />
     </Provider>
-  ),
-  container,
-  );
+  ));
 };
 
 const WidgetBeta = (props: { text: string }) => {
@@ -672,14 +670,14 @@ const WidgetBeta = (props: { text: string }) => {
     <div style={{ display: 'flex', alignItems: 'center' }}>
       {props.text}
       <Box
-        display="flex"
+        display='flex'
         background={colors.deepPurple[50]}
-        borderRadius="2px"
-        padding="1px 4px"
-        marginLeft="8px"
-        alignItems="center"
+        borderRadius='2px'
+        padding='1px 4px'
+        marginLeft='8px'
+        alignItems='center'
       >
-        <Typography variant="h9" color={colors.fc0}>
+        <Typography variant='h9' color={colors.fc0}>
           BETA
         </Typography>
       </Box>

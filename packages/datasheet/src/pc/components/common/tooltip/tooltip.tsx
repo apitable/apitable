@@ -47,7 +47,7 @@ export const Tooltip: FC<ITooltipProps & AntdTooltipProps> = ({
   ) {
     return <AntdTooltip
       align={{ offset }}
-      trigger="hover"
+      trigger='hover'
       overlayClassName={rowsNumber ? styles.controlRowsNum : ''}
       ref={myrefs}
       {...props}
@@ -55,5 +55,5 @@ export const Tooltip: FC<ITooltipProps & AntdTooltipProps> = ({
       {props.children}
     </AntdTooltip>;
   }
-  return props.children || null;
+  return <>{props.children}</> || null;
 };

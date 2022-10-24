@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { FC, useCallback, useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { bringInView, DomEventListener, FocusDom, getCalculatedPosition, getFullPageSize, getSize } from '../common/element';
 import { IBackdropType } from '../common/interface';
 import Position from '../common/position';
@@ -69,7 +69,7 @@ let curOnTarget: (() => void) | undefined;
 const Popover: FC<IPopoverOptions> = (options) => {
   const {
     placement = 'bottomLeft', title, description, children,
-    targetNode, offsetX = 0, offsetY = 0, padding = 0, buttonConfig, arrowStyle, posInfo
+    targetNode, offsetX = 0, offsetY = 0, padding = 0, buttonConfig, arrowStyle, posInfo,
   } = options;
   const [positionInfo, setPositionInfo] = useState<IPositionInfo>();
 
@@ -248,7 +248,7 @@ const Popover: FC<IPopoverOptions> = (options) => {
       right: '',
       bottom: `${pageSize.height - elementPosition.top - offsetY}px`,
       tipNodeClasses: ['bottom', 'position-center'],
-      transform: 'translateX(-50%)'
+      transform: 'translateX(-50%)',
     };
     return popoverInfo;
   };
@@ -356,7 +356,7 @@ const Popover: FC<IPopoverOptions> = (options) => {
       {children && <div className={`${CLASS_PREFIX}-children`}>{children}</div>}
       <GuideButton
         {...buttonConfig}
-        size="small"
+        size='small'
         reversal
       />
     </div>
@@ -381,9 +381,9 @@ export const showPopover = (options: IShowPopoverOptions) => {
     setTimeout(() => {
       const div = document.createElement('div');
       document.body.appendChild(div);
-      ReactDOM.render(
+      const root = createRoot(div);
+      root.render(
         (<Popover {...{ targetNode, eleString: element, ...rest }} />),
-        div,
       );
       document.addEventListener('click', documentClick);
     });

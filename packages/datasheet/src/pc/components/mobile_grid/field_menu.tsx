@@ -13,10 +13,11 @@ import { notifyWithUndo } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { expandFieldPermission } from 'pc/components/field_permission';
 import { getShowFieldName } from 'pc/components/multi_grid/context_menu/utils';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
 import * as React from 'react';
 import { useEffect } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 
 import { useActiveFieldSetting, useDeleteField, useFilterField, useHideField, useSortField } from '../multi_grid/hooks';
 import { expandFieldDescEditorMobile } from './field_desc_editor';
@@ -59,7 +60,7 @@ export const FieldMenu: React.FC<IFieldMenu> = (
   }, shallowEqual);
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
   const mirrorId = useSelector(state => state.pageParams.mirrorId);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const handleHideField = useHideField(view);
   const handleSortField = useSortField();
   const handleFilterField = useFilterField();

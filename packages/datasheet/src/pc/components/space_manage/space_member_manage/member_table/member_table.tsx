@@ -1,18 +1,19 @@
-import { getEnvVariables } from 'pc/utils/env';
-import { useRef, FC, useState, ReactText, useLayoutEffect, useEffect } from 'react';
-import * as React from 'react';
+import { ConfigConstant, IMemberInfoInSpace, IReduxState, isIdassPrivateDeployment, StoreActions, Strings, t } from '@apitable/core';
+import { lightColors, List, Pagination } from '@vikadata/components';
 import { Table } from 'antd';
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import { IReduxState, ConfigConstant, IMemberInfoInSpace, Strings, t, StoreActions, isIdassPrivateDeployment } from '@apitable/core';
-import { Tooltip, Modal } from 'pc/components/common';
 import { ColumnProps } from 'antd/es/table';
-import { isPrimaryOrOwnFunc } from '../utils';
-import { nameColRender, OperateCol } from '../ui';
-import { useUpdateMemberListInSpace, useMemberManage } from 'pc/hooks';
+import { Modal, Tooltip } from 'pc/components/common';
 import { isSocialDingTalk, isSocialFeiShu, isSocialPlatformEnabled, isSocialWecom } from 'pc/components/home/social_platform';
-import { EditMemberModal } from '../modal';
+import { useMemberManage, useUpdateMemberListInSpace } from 'pc/hooks';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { getEnvVariables } from 'pc/utils/env';
+import * as React from 'react';
+import { FC, ReactText, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
 import IconCheck from 'static/icon/common/common_icon_select.svg';
-import { List, lightColors, Pagination } from '@vikadata/components';
+import { EditMemberModal } from '../modal';
+import { nameColRender, OperateCol } from '../ui';
+import { isPrimaryOrOwnFunc } from '../utils';
 import styles from './style.module.less';
 
 interface IMemberTable {
@@ -22,7 +23,7 @@ interface IMemberTable {
 
 export const MemberTable: FC<IMemberTable> = (props) => {
   const tableRef = useRef<HTMLDivElement>(null);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [pageNo, setPageNo] = useState(1);
   const [scrollHeight, setScrollHeight] = useState(0);
   const {
@@ -32,7 +33,7 @@ export const MemberTable: FC<IMemberTable> = (props) => {
     selectedRows,
     user,
     spaceResource,
-    spaceInfo
+    spaceInfo,
   } = useSelector((state: IReduxState) => ({
     spaceId: state.space.activeId || '',
     selectedTeamInfoInSpace: state.spaceMemberManage.selectedTeamInfoInSpace,
@@ -184,12 +185,13 @@ export const MemberTable: FC<IMemberTable> = (props) => {
         const text = value ? value.map(team => team.fullHierarchyTeamName).join(' & ') : [];
         const tipsTitle = value ? (value.map(team => <div className={styles.teamItem}>
           <p>-</p><p>{team.fullHierarchyTeamName}</p>
-        </div>)) : ''; 
+        </div>)) : '';
         return (
           <Tooltip title={tipsTitle} rowsNumber={2} textEllipsis overflowWidth={200} showTipAnyway>
             <span className={styles.tipText}>{text || selectedTeamInfoInSpace!.teamTitle}</span>
           </Tooltip>
-        );},
+        );
+      },
     },
     {
       title: t(Strings.email),
@@ -210,7 +212,7 @@ export const MemberTable: FC<IMemberTable> = (props) => {
           hideNextBtn={Boolean(hideDelBtn(record))}
           nextBtnClick={() => singleDelMemberBtn(record)}
           disabledNextBtn={Boolean(isRootTeam)}
-        />
+        />,
     },
   ];
 

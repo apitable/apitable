@@ -1,7 +1,7 @@
-import { ResourceType, Selectors, StoreActions, IWidgetPanelStatus } from '@apitable/core';
+import { IWidgetPanelStatus, ResourceType, Selectors, StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
 import { useCallback, useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnyAction } from 'redux';
 import { batchActions } from 'redux-batched-actions';
@@ -50,7 +50,7 @@ export const useExpandWidget = () => {
       const container = document.querySelectorAll(`.${EXPAND_WIDGET}`);
       if (container.length) {
         container.forEach(item => {
-          ReactDOM.unmountComponentAtNode(item);
+          createRoot(item).unmount();
           item.parentElement!.removeChild(item);
         });
       }

@@ -16,10 +16,11 @@ import { expandInviteModal } from 'pc/components/invite';
 import { OrganizationHead } from 'pc/components/organization_head';
 import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useResponsive, useSideBarVisible, useUserRequest } from 'pc/hooks';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import SearchIcon from 'static/icon/common/common_icon_search_normal.svg';
 import { AddressTreeMenu } from '../../address_list/address_tree_menu';
 import styles from './style.module.less';
@@ -36,7 +37,7 @@ export const AddressSide: React.FC = () => {
 
   const { isAdmin } = userInfo!;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { getInviteStatus } = useUserRequest();
   const { data: inviteRes, loading } = useRequest(getInviteStatus);
 

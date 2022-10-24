@@ -8,8 +8,9 @@ import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 import { Router } from 'pc/components/route_manager/router';
 import { SubscribeGrade } from 'pc/components/subscribe_system/subscribe_label';
 import { formIdReg, mirrorIdReg, useRequest } from 'pc/hooks';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { FC, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import HelpIcon from 'static/icon/common/common_icon_information.svg';
 import MoreIcon from 'static/icon/common/common_icon_more_stand.svg';
 import RecoverIcon from 'static/icon/datasheet/rightclick/recover.svg';
@@ -43,7 +44,7 @@ const Trash: FC = () => {
   const product = useSelector((state: IReduxState) => state.billing.subscription?.product);
   const maxRemainTrashDays = useSelector((state: IReduxState) => state.billing.subscription?.maxRemainTrashDays || 0);
   const [trashList, setTrashList] = useState<ITrashItem[]>([]);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { loading: recoverLoading, run: trashRecover } = useRequest(nodeId => Api.trashRecover(nodeId), { manual: true });
 
   const [lastNodeId, setLastNodeId] = useState<string | undefined>(undefined);

@@ -14,8 +14,9 @@ import { isDingtalkSkuPage } from 'pc/components/home/social_platform';
 import { MirrorRoute } from 'pc/components/mirror/mirror_route';
 import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useResponsive, useSideBarVisible, useTemplateRequest } from 'pc/hooks';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import SplitPane from 'react-split-pane';
 import styles from './style.module.less';
 
@@ -30,7 +31,7 @@ export const TemplateDetail: FC = () => {
   const { getTemplateDirectoryReq } = useTemplateRequest();
   const { run: getTemplateDirectory } = useRequest<ITemplateDirectory, any[]>(getTemplateDirectoryReq, { manual: true });
   const templateDirectory = useSelector(state => state.templateCentre.directory);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const query = useQuery();
   const appId = query.get('appId') || '';
   const corpId = query.get('corpId') || '';

@@ -42,7 +42,7 @@ const createMessage = (message: React.ReactNode, btnText?: string, btnFn?: () =>
         btnText &&
         <ButtonPlus.Translucent
           onClick={() => { btnFn && btnFn(); }}
-          size="small"
+          size='small'
           style={{
             marginLeft: '16px',
             height: '20px',

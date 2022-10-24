@@ -7,7 +7,7 @@ import { Popup } from 'pc/components/common/mobile/popup';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { getScreen } from 'pc/hooks/use_responsive';
 import * as React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import SuccessImg from 'static/icon/space/space_img_success.png';
 import UpgradeImg from 'static/icon/space/space_img_upgrade.png';
 import styles from './style.module.less';
@@ -167,17 +167,18 @@ export const showPopupInDingTalk = (modalType: IDingTalkModalType) => {
   document.body.appendChild(div);
 
   const config = generateConfig(modalType, () => destroy());
+  const root = createRoot(div);
 
   function destroy() {
-    const unmountResult = ReactDOM.unmountComponentAtNode(div);
-    if (unmountResult && div.parentNode) {
+    root.unmount();
+    if (div.parentNode) {
       div.parentNode.removeChild(div);
     }
   }
 
   function render() {
     setTimeout(() => {
-      ReactDOM.render(
+      root.render(
         <Popup
           title={config.title}
           height={500}
@@ -187,7 +188,6 @@ export const showPopupInDingTalk = (modalType: IDingTalkModalType) => {
         >
           {config.content}
         </Popup>,
-        div,
       );
     });
   }

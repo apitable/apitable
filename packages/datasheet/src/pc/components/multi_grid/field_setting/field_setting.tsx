@@ -1,36 +1,20 @@
-import { Button, Checkbox, TextButton, useListenVisualHeight, useThemeColors } from '@vikadata/components';
 import {
-  CollaCommandName,
-  DatasheetActions,
-  Events,
-  ExecuteResult,
-  Field,
-  FieldType,
-  FieldTypeDescriptionMap,
-  getFieldClass,
-  getNewId,
-  IDPrefix,
-  IField,
-  ISegment,
-  IViewColumn,
-  Player,
-  Selectors,
-  StoreActions,
-  Strings,
-  t,
+  CollaCommandName, DatasheetActions, Events, ExecuteResult, Field, FieldType, FieldTypeDescriptionMap, getFieldClass, getNewId, IDPrefix, IField,
+  ISegment, IViewColumn, Player, Selectors, StoreActions, Strings, t,
 } from '@apitable/core';
+import { Button, Checkbox, TextButton, useListenVisualHeight, useThemeColors } from '@vikadata/components';
 import { useKeyPress } from 'ahooks';
+import type { InputRef } from 'antd';
 import { Input } from 'antd';
-import TextArea from 'antd/lib/input/TextArea';
 import { ContextName, ShortcutContext } from 'pc/common/shortcut_key';
-import { Message } from 'pc/components/common/message';
-import { Modal } from 'pc/components/common/modal/modal/modal';
-import { Tooltip } from 'pc/components/common/tooltip';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Divider } from 'pc/components/common/divider';
+import { Message } from 'pc/components/common/message';
 import { Popup } from 'pc/components/common/mobile/popup';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
+import { Tooltip } from 'pc/components/common/tooltip';
 import { EXPAND_RECORD_CLS } from 'pc/components/expand_record/expand_record_modal';
 import { useResponsive } from 'pc/hooks';
 import { usePlatform } from 'pc/hooks/use_platform';
@@ -110,7 +94,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
   const positionStyle = useFieldOperate(OPERATE_WIDTH, propDatasheetId, targetDOM);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const renameRef = useRef<TextArea | null>(null);
+  const renameRef = useRef<InputRef | null>(null);
   const scrollShadowRef = useRef<HTMLDivElement>(null);
 
   const { style, onListenResize } = useListenVisualHeight({
@@ -199,7 +183,8 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
     if (isTouchDevice()) {
       return;
     }
-    const textAreaDOM = renameRef.current?.resizableTextArea.textArea;
+
+    const textAreaDOM = renameRef.current?.['resizableTextArea'].textArea;
     if (textAreaDOM) {
       textAreaDOM.focus();
       textAreaDOM.setSelectionRange(0, textAreaDOM.value.length);
@@ -355,9 +340,9 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
 
       setTimeout(() => {
         scrollToItem &&
-          scrollToItem({
-            columnIndex: visibleColumnsCount,
-          });
+        scrollToItem({
+          columnIndex: visibleColumnsCount,
+        });
       }, 0);
     }
   }
@@ -489,7 +474,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
               }
             >
               <span className={styles.requiredTip}>
-                <HelpIcon fill="currentColor" />
+                <HelpIcon fill='currentColor' />
               </span>
             </Tooltip>
           </div>
@@ -518,15 +503,15 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
           </div>
           <div ref={scrollShadowRef} className={styles.scrollShadow} />
           <section className={styles.buttonWrapper}>
-            <TextButton size="small" onClick={hideOperateBox} style={{ color: colors.thirdLevelText }}>
+            <TextButton size='small' onClick={hideOperateBox} style={{ color: colors.thirdLevelText }}>
               {t(Strings.cancel)}
             </TextButton>
             <Button
-              size="small"
+              size='small'
               onClick={() => {
                 onSubmit();
               }}
-              color="primary"
+              color='primary'
             >
               {t(Strings.submit)}
             </Button>
@@ -538,10 +523,10 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
         <Popup
           visible
           onClose={hideOperateBox}
-          height="90%"
+          height='90%'
           title={t(Strings.choose_type_of_vika_field)}
           footer={
-            <Button color="primary" size="large" block onClick={() => onSubmit()}>
+            <Button color='primary' size='large' block onClick={() => onSubmit()}>
               {t(Strings.confirm)}
             </Button>
           }

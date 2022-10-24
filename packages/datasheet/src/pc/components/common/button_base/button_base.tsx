@@ -1,10 +1,11 @@
-import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
 import classNames from 'classnames';
+import dynamic from 'next/dynamic';
 import { stylizeIcon } from 'pc/utils/dom';
 import * as React from 'react';
 import { IButtonBase } from './button_base.interface';
 import { ButtonPrefixCls } from './constants';
 
+const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 const DEFAULT_ICON_SIZE = 16;
 
 export const ButtonBase: React.FC<IButtonBase> = (props) => {

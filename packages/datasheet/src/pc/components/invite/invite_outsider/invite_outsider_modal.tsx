@@ -13,7 +13,7 @@ import { store } from 'pc/store';
 import { getWecomAgentConfig, initNoTraceVerification, stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { FC, useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider, useSelector } from 'react-redux';
 import { ImportFile } from './import_file';
 import { InputEmail } from './input_email';
@@ -60,13 +60,13 @@ export const InviteOutsiderTabs: FC<IInviteOutsiderTabsProps> = props => {
   const outerLabel = showLabelInInviteModal ? '(' + t(Strings.private_external_person_only) + ')' : '';
 
   return (
-    <Tabs defaultActiveKey="inviteViaLink" className={classNames({ [styles.showLabel]: showLabelInInviteModal })}>
-      <TabPane tab={t(Strings.link_invite) + innerLabel} key="inviteViaLink">
+    <Tabs defaultActiveKey='inviteViaLink' className={classNames({ [styles.showLabel]: showLabelInInviteModal })}>
+      <TabPane tab={t(Strings.link_invite) + innerLabel} key='inviteViaLink'>
         <LinkInvite shareId={shareId} />
       </TabPane>
       {!emailInvitationDisable && (isAdmin || !isOrgIsolated) && (
         <>
-          <TabPane tab={t(Strings.email_invite) + outerLabel} key="emailOfTab">
+          <TabPane tab={t(Strings.email_invite) + outerLabel} key='emailOfTab'>
             <InputEmail
               cancel={cancelModal}
               setMemberInvited={setMemberInvited}
@@ -76,7 +76,7 @@ export const InviteOutsiderTabs: FC<IInviteOutsiderTabsProps> = props => {
             />
           </TabPane>
           {isPC && !shareId && !env.HIDDEN_BATCH_IMPORT_USER && (
-            <TabPane tab={t(Strings.batch_import) + outerLabel} key="fileOfTab">
+            <TabPane tab={t(Strings.batch_import) + outerLabel} key='fileOfTab'>
               <ImportFile
                 closeModal={cancelModal}
                 setMemberInvited={setMemberInvited}
@@ -142,10 +142,11 @@ export const expandInviteModal = (data?: { resUpdate?: () => void; shareId?: str
 
   const div = document.createElement('div');
   document.body.appendChild(div);
+  const root = createRoot(div);
 
   function destroy() {
-    const unmountResult = ReactDOM.unmountComponentAtNode(div);
-    if (unmountResult && div.parentNode) {
+    root.unmount();
+    if (div.parentNode) {
       div.parentNode.removeChild(div);
     }
   }
@@ -158,7 +159,7 @@ export const expandInviteModal = (data?: { resUpdate?: () => void; shareId?: str
 
   function render() {
     setTimeout(() => {
-      ReactDOM.render(
+      root.render(
         <Provider store={store}>
           <ThemeProvider>
             <div onMouseDown={stopPropagation} onClick={stopPropagation}>
@@ -184,7 +185,6 @@ export const expandInviteModal = (data?: { resUpdate?: () => void; shareId?: str
             </div>
           </ThemeProvider>
         </Provider>,
-        div,
       );
     });
   }

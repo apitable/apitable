@@ -1,28 +1,28 @@
-import dayjs from 'dayjs';
-import { message } from 'antd';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { Box, IconButton, Loading, Skeleton, TextButton, Tooltip, Typography } from '@vikadata/components';
 import {
-  Api, CollaCommandName, DatasheetApi, IChangesetPack, IMemberInfoInAddressList,
-  IRemoteChangeset, numbersBetween, ResourceType, Selectors, StoreActions, fastCloneDeep,
-  PREVIEW_DATASHEET_ID, t, Strings, getRollbackActions
+  Api, CollaCommandName, DatasheetApi, fastCloneDeep, getRollbackActions, IChangesetPack, IMemberInfoInAddressList, IRemoteChangeset, numbersBetween,
+  PREVIEW_DATASHEET_ID, ResourceType, Selectors, StoreActions, Strings, t
 } from '@apitable/core';
-import { Modal } from 'pc/components/common';
-import { resourceService } from 'pc/resource_service';
-import { Portal } from 'pc/components/portal';
-import { getForeignDatasheetIdsByOp } from './utils';
-import { difference } from 'lodash';
-import { useScroll } from 'ahooks';
 import { CloseMiddleOutlined, InformationSmallOutlined } from '@vikadata/icons';
-import { Typography, IconButton, TextButton, Loading, Box, Tooltip, Skeleton } from '@vikadata/components';
-import { Beta } from 'pc/components/robot/robot_panel/robot_list_head';
-import { store } from 'pc/store';
+import { useScroll } from 'ahooks';
+import { message } from 'antd';
+import dayjs from 'dayjs';
+import { difference } from 'lodash';
+import { Modal } from 'pc/components/common';
 import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
+import { Portal } from 'pc/components/portal';
+import { Beta } from 'pc/components/robot/robot_panel/robot_list_head';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { resourceService } from 'pc/resource_service';
+import { store } from 'pc/store';
+import * as React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { getSocialWecomUnitName } from '../home/social_platform';
 
 import styles from './style.module.less';
-import { getSocialWecomUnitName } from '../home/social_platform';
+import { getForeignDatasheetIdsByOp } from './utils';
 
 const MAX_COUNT = Number.MAX_SAFE_INTEGER;
 
@@ -49,7 +49,7 @@ export const TimeMachine: React.FC<{ onClose: (visible: boolean) => void }> = ({
 
   const currentDatasheetIds = useSelector(Selectors.getDatasheetIds);
   const [rollbackIng, setRollbackIng] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const fetchChangesets = (lastRevision) => {
     setFetching(true);

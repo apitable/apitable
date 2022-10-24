@@ -7,7 +7,7 @@ import { Router } from 'pc/components/route_manager/router';
 import { store } from 'pc/store';
 import * as React from 'react';
 import { isMobile } from 'react-device-detect';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider, useSelector } from 'react-redux';
 import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import QrCodePng from 'static/icon/datasheet/share/qrcode/datasheet_img_qr_bj.png';
@@ -61,12 +61,13 @@ export const OrderModalWithTheme = (props: IOrderModalProps) => {
 export const showOrderModal = (config: Omit<IOrderModalProps, 'onModalClose'>) => {
   const container = document.createElement('div');
   document.body.appendChild(container);
+  const root = createRoot(container);
   const onModalClose = () => {
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
     container.parentElement!.removeChild(container);
   };
 
-  ReactDOM.render((
+  root.render((
     <Provider store={store}>
       <Modal
         visible
@@ -82,9 +83,7 @@ export const showOrderModal = (config: Omit<IOrderModalProps, 'onModalClose'>) =
         <OrderModalWithTheme onModalClose={onModalClose} {...config} />
       </Modal>
     </Provider>
-  ),
-  container,
-  );
+  ));
 };
 
 type IOrderType = 'BUY' | 'RENEW' | 'UPGRADE';
@@ -118,7 +117,7 @@ export const showOrderModalAfterPay = (descColor: string, orderType: IOrderType)
                 <LinkButton
                   className={styles.linkButton}
                   style={{
-                    display: 'inline-block'
+                    display: 'inline-block',
                   }}
                   onClick={() => {
                     cb();
@@ -129,7 +128,7 @@ export const showOrderModalAfterPay = (descColor: string, orderType: IOrderType)
                   }}
                 >
                   {t(Strings.space_overview)}
-                </LinkButton>
+                </LinkButton>,
 
             }}
           />
@@ -139,7 +138,7 @@ export const showOrderModalAfterPay = (descColor: string, orderType: IOrderType)
         {t(Strings.upgrade_success_2_desc)}
       </Typography>
     </>,
-    qrCodeUrl: integrateCdnHost(Settings.pay_success_qr_code.value)
+    qrCodeUrl: integrateCdnHost(Settings.pay_success_qr_code.value),
   });
 };
 
@@ -147,7 +146,7 @@ export const showOrderContactUs = () => {
   showOrderModal({
     modalTitle: t(Strings.contact_model_title),
     modalSubTitle: t(Strings.contact_model_desc),
-    qrCodeUrl: integrateCdnHost(Settings.pay_contact_us.value)
+    qrCodeUrl: integrateCdnHost(Settings.pay_contact_us.value),
   });
 };
 
@@ -155,6 +154,6 @@ export const showUpgradeContactUs = () => {
   showOrderModal({
     modalTitle: t(Strings.contact_model_title),
     modalSubTitle: t(Strings.space_dashboard_contact_desc),
-    qrCodeUrl: integrateCdnHost(Settings.pay_success_qr_code.value)
+    qrCodeUrl: integrateCdnHost(Settings.pay_success_qr_code.value),
   });
 };

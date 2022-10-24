@@ -12,7 +12,7 @@ import pingpp from 'pingpp-js';
 import qr from 'qr-image';
 import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import QrCodePng from 'static/icon/datasheet/share/qrcode/datasheet_img_qr_bj.png';
@@ -31,7 +31,7 @@ export const payMethodConfig = [
   {
     payName: t(Strings.wechat_payment),
     payId: 'wx_pub_qr',
-    payIcon: <WechatpayFilled color={'#09BB07'} size={24} />
+    payIcon: <WechatpayFilled color={'#09BB07'} size={24} />,
   },
   {
     payName: t(Strings.alipay),
@@ -41,8 +41,8 @@ export const payMethodConfig = [
   {
     payName: t(Strings.transfer_to_public),
     payId: 'bank',
-    payIcon: <BankFilled size={24} />
-  }
+    payIcon: <BankFilled size={24} />,
+  },
 ];
 
 const orderResponseHandle =
@@ -55,7 +55,7 @@ const orderResponseHandle =
       }
       if (data.status === 'canceled') {
         Message.error({
-          content: 'order has been cancel.'
+          content: 'order has been cancel.',
         });
         onCancel?.();
         return;
@@ -63,7 +63,7 @@ const orderResponseHandle =
     } else {
       onCancel?.();
       Message.error({
-        content: message
+        content: message,
       });
     }
   };
@@ -88,7 +88,7 @@ export const OrderInfo: React.FC<IOrderInfo> = (props) => {
       const { success, data, message } = res.data;
       if (!success) {
         Message.error({
-          content: message
+          content: message,
         });
         onCancel?.();
         return;
@@ -138,7 +138,7 @@ export const OrderInfo: React.FC<IOrderInfo> = (props) => {
     }
     if (pay === 2) {
       return <div className={styles.bankPay}>
-        <Image src={QrCodePng} alt="qrcode background" layout={'fill'} />
+        <Image src={QrCodePng} alt='qrcode background' layout={'fill'} />
         <Image src={integrateCdnHost(Settings.enterprise_qr_code.value)} width={224} height={224} />
       </div>;
     }
@@ -157,7 +157,7 @@ export const OrderInfo: React.FC<IOrderInfo> = (props) => {
       return <TComponent
         tkey={t(Strings.check_order_status)}
         params={{
-          action: <span onClick={paidCheck}>{t(Strings.fresh_order_status_action)}</span>
+          action: <span onClick={paidCheck}>{t(Strings.fresh_order_status_action)}</span>,
         }} />;
     }
     if (manualFresh) {
@@ -166,7 +166,7 @@ export const OrderInfo: React.FC<IOrderInfo> = (props) => {
     return <TComponent
       tkey={t(Strings.unpaid_order_status)}
       params={{
-        action: <span onClick={paidCheck}>{t(Strings.fresh_order_status_action)}</span>
+        action: <span onClick={paidCheck}>{t(Strings.fresh_order_status_action)}</span>,
       }} />;
   };
 
@@ -208,7 +208,7 @@ export const OrderInfo: React.FC<IOrderInfo> = (props) => {
           <TComponent
             tkey={t(Strings.pay_model_price_contact)}
             params={{
-              contact_us: <span onClick={showOrderContactUs} style={{ color: colors.deepPurple[500] }}>{t(Strings.contact_us)}</span>
+              contact_us: <span onClick={showOrderContactUs} style={{ color: colors.deepPurple[500] }}>{t(Strings.contact_us)}</span>,
             }} />
         </Typography>
       </footer>
@@ -228,12 +228,13 @@ export interface IShowOrderInfoProps {
 export const showOrderInfo = (info: IShowOrderInfoProps) => {
   const container = document.createElement('div');
   document.body.appendChild(container);
+  const root = createRoot(container);
   const onModalClose = () => {
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
     container.parentElement!.removeChild(container);
   };
 
-  ReactDOM.render((
+  root.render((
     <Provider store={store}>
       <ThemeProvider>
         <Modal
@@ -242,7 +243,7 @@ export const showOrderInfo = (info: IShowOrderInfoProps) => {
           closeIcon={<CloseIcon />}
           onCancel={onModalClose}
           destroyOnClose
-          width="min-content"
+          width='min-content'
           footer={null}
           centered
         >
@@ -250,8 +251,6 @@ export const showOrderInfo = (info: IShowOrderInfoProps) => {
         </Modal>
       </ThemeProvider>
     </Provider>
-  ),
-  container,
-  );
+  ));
 };
 

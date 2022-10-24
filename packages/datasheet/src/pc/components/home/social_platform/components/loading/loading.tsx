@@ -1,8 +1,9 @@
-import { CSSProperties, FC } from 'react';
-import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
 import { Spin } from 'antd';
+import dynamic from 'next/dynamic';
+import { CSSProperties, FC } from 'react';
 import styles from './style.module.less';
 
+const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 export interface ILoadingProps {
   tip?: string;
   style?: CSSProperties;

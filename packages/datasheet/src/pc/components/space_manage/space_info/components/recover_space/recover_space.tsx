@@ -1,6 +1,6 @@
-import { Button, TextButton, useThemeColors } from '@vikadata/components';
 import { Api, IReduxState, Strings, t } from '@apitable/core';
-import ModalMobile from 'antd-mobile/lib/modal';
+import { Button, TextButton, useThemeColors } from '@vikadata/components';
+import { Modal as ModalMobile } from 'antd-mobile';
 import cls from 'classnames';
 import dayjs from 'dayjs';
 import Image from 'next/image';
@@ -34,15 +34,23 @@ export const RecoverSpace = () => {
   };
   const handleClick = () => {
     if (isMobile) {
-      ModalMobile.alert(t(Strings.restore_space), t(Strings.modal_restore_space), [
-        {
-          text: t(Strings.cancel),
-        },
-        {
-          text: t(Strings.confirm),
-          onPress: recoverSpaceConfirm,
-        },
-      ]);
+      ModalMobile.show({
+        title: t(Strings.restore_space),
+        content: t(Strings.modal_restore_space),
+        actions: [
+          {
+            text: t(Strings.cancel),
+            onClick: () => ModalMobile.clear(),
+            key: t(Strings.cancel),
+          },
+          {
+            text: t(Strings.confirm),
+            onClick: recoverSpaceConfirm,
+            key: t(Strings.confirm),
+          },
+        ],
+
+      });
       return;
     }
     Modal.confirm({
@@ -62,16 +70,23 @@ export const RecoverSpace = () => {
   };
   const delNow = () => {
     if (isMobile) {
-      ModalMobile.alert(t(Strings.del_space_now), t(Strings.del_space_now_tip), [
-        {
-          text: t(Strings.cancel),
-        },
-        {
-          text: t(Strings.confirm),
-          onPress: delNowConfirm,
-          style: { color: colors.errorColor },
-        },
-      ]);
+      ModalMobile.show({
+        title: t(Strings.del_space_now),
+        content: t(Strings.del_space_now_tip),
+        actions: [
+          {
+            text: t(Strings.cancel),
+            onClick: () => ModalMobile.clear(),
+            key:t(Strings.cancel),
+          },
+          {
+            text: t(Strings.confirm),
+            onClick: delNowConfirm,
+            style: { color: colors.errorColor },
+            key:t(Strings.confirm),
+          },
+        ],
+      });
       return;
     }
     Modal.confirm({
@@ -96,10 +111,10 @@ export const RecoverSpace = () => {
             {dayjs(delDate).format('YYYY-MM-DD HH:mm')} {t(Strings.restore_space_confirm_delete)}
           </div>
           <div className={styles.subTip}>{t(Strings.tip_del_success)}</div>
-          <Button color="primary" block onClick={handleClick} size="large" prefixIcon={<ReturnIcon fill="currentColor" />}>
+          <Button color='primary' block onClick={handleClick} size='large' prefixIcon={<ReturnIcon fill='currentColor' />}>
             {t(Strings.restore_space)}
           </Button>
-          <TextButton color="danger" block onClick={delNow} size="large">
+          <TextButton color='danger' block onClick={delNow} size='large'>
             {t(Strings.delete_now)}
           </TextButton>
           {delSuccess && <DelSuccess tip={t(Strings.delete_workspace_succeed)} />}
@@ -111,13 +126,13 @@ export const RecoverSpace = () => {
   return (
     <div className={styles.recoverSpace}>
       <div className={styles.wrapper}>
-        <Button color="primary" block onClick={handleClick} size="large" prefixIcon={<ReturnIcon fill="currentColor" />}>
+        <Button color='primary' block onClick={handleClick} size='large' prefixIcon={<ReturnIcon fill='currentColor' />}>
           {t(Strings.restore_space)}
         </Button>
         <div className={styles.tip}>
           {dayjs(delDate).format('YYYY-MM-DD HH:mm')} {t(Strings.restore_space_confirm_delete)}
         </div>
-        <TextButton color="danger" block onClick={delNow} size="large">
+        <TextButton color='danger' block onClick={delNow} size='large'>
           {t(Strings.delete_now)}
         </TextButton>
       </div>

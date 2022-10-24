@@ -3,6 +3,7 @@ import {
 } from '@apitable/core';
 import { AxiosResponse } from 'axios';
 import { Message } from 'pc/components/common';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelectTeamChange } from './use_address';
@@ -36,7 +37,7 @@ export const useChangeLogo = (spaceId: string, cancel?: () => void) => {
 };
 // 增加子部门
 export const useCreateSubTeam = (name: string, spaceId: string, superId: string, user: IUserInfo) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [start, setStart] = useState(false);
   useEffect(() => {
     start && Api.createTeam(name, superId).then(res => {
@@ -64,7 +65,7 @@ export const useEditMember = (
   pageNo: number,
   cancel: () => void,
 ) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [start, setStart] = useState<boolean>(false);
   useEffect(() => {
     start && data && Api.updateMember(data as IUpdateMemberInfo).then(res => {
@@ -89,7 +90,7 @@ export const useEditMember = (
 
 // 编辑子管理员
 export const useEditSubAdmin = (id: string, memberId: string, resourceCodes: string[], cancel: () => void) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [start, setEditStart] = useState(false);
   useEffect(() => {
     start && Api.editSubMember(id, memberId, resourceCodes).then(res => {
@@ -135,7 +136,7 @@ interface IRemoveMemberProps {
   resFunc: () => void,
 }
 export const useMemberManage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { changeSelectTeam } = useSelectTeamChange();
   // 添加成员
   const teamAddMember = (teamId: string, unitList: IAddIsActivedMemberInfo[]) => {

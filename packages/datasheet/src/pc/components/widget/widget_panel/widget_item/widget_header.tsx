@@ -1,19 +1,19 @@
 import { IconButton, useContextMenu, useThemeColors } from '@vikadata/components';
 import { CollaCommandName, ResourceType, Selectors, Strings, t, WidgetReleaseType } from '@apitable/core';
 import { DragOutlined, MoreOutlined, NarrowRecordOutlined } from '@vikadata/icons';
+import type { InputRef } from 'antd';
 import { Input } from 'antd';
 import classNames from 'classnames';
 import { Tooltip } from 'pc/components/common';
+import { useCheckInput } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
+import IconExpand from 'static/icon/datasheet/datasheet_icon_expand_record.svg';
 import { closeWidgetRoute, expandWidgetRoute } from '../../expand_widget';
+import { WIDGET_MENU } from '../widget_list';
 import { IWidgetPropsBase } from './interface';
 import styles from './style.module.less';
-import { useCheckInput } from 'pc/hooks';
-
-import IconExpand from 'static/icon/datasheet/datasheet_icon_expand_record.svg';
-import { useRef, useState } from 'react';
-import { WIDGET_MENU } from '../widget_list';
 
 interface IWidgetHeaderProps extends IWidgetPropsBase {
   widgetId: string;
@@ -26,7 +26,7 @@ interface IWidgetHeaderProps extends IWidgetPropsBase {
 export const WidgetHeaderMobile: React.FC<IWidgetHeaderProps> = props => {
   const { className, widgetId, widgetPanelId, displayMode = 'always', dragging, config = {}} = props;
   const colors = useThemeColors();
-  const inputRef = useRef<Input>(null);
+  const inputRef = useRef<InputRef>(null);
   const [rename, setRename] = useState(false);
   const { errTip, setErrTip, onCheck } = useCheckInput({
     checkLength: { max: 30, min: 0, tip: t(Strings.widget_name_length_error), trim: true },

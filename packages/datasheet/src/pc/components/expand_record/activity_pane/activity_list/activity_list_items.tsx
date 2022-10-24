@@ -1,4 +1,3 @@
-import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
 import { LinkButton, Typography, useThemeColors } from '@vikadata/components';
 import {
   Api, CollaCommandName, ConfigConstant, DatasheetApi, IActivityListParams, ICommentMsg, IJOTAction, integrateCdnHost, IRemoteChangeset, MemberType,
@@ -7,6 +6,7 @@ import {
 import { Spin } from 'antd';
 import axios, { CancelTokenSource } from 'axios';
 import { clone, find, get, has, isEmpty, keyBy, set, toPairs, uniq, values } from 'lodash';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
 import { Message } from 'pc/components/common';
@@ -22,6 +22,8 @@ import { ActivityContext } from '../activity_context';
 import { ChangesetItem } from '../activity_item';
 import { IActivityPaneProps, IChooseComment } from '../interface';
 import styles from './style.module.less';
+
+const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 
 // 默认分页获取 10 条数据
 const PAGE_SIZE = 10;

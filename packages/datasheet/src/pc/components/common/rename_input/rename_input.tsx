@@ -1,3 +1,4 @@
+import type { InputRef } from 'antd';
 import { Input, Tooltip } from 'antd';
 import { InputProps } from 'antd/lib/input';
 import classNames from 'classnames';
@@ -11,7 +12,7 @@ export interface IRenameInputProps extends InputProps {
 }
 
 const RenameInputBase: ForwardRefRenderFunction<any, IRenameInputProps> = (props, ref) => {
-  const inputRef = useRef<Input>(null);
+  const inputRef = useRef<InputRef>(null);
 
   useImperativeHandle(ref, () => ({
     focus: () => { inputRef.current && inputRef.current.focus(); },

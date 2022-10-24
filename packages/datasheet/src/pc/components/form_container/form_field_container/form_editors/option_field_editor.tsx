@@ -1,14 +1,14 @@
-import { memo, forwardRef, useImperativeHandle } from 'react';
-import * as React from 'react';
-import styles from './style.module.less';
+import { FieldType, ICellValue, Strings, t } from '@apitable/core';
+import { Checkbox, Radio } from 'antd';
+import { CheckboxValueType } from 'antd/es/checkbox/Group';
 import classnames from 'classnames';
-import { Radio, Checkbox } from 'antd';
-import { OptionTag } from 'pc/components/list';
-import { IBaseEditorProps, IEditor } from 'pc/components/editors/interface';
-import { useState } from 'react';
-import { FieldType, t, Strings, ICellValue } from '@apitable/core';
-import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
+import { IBaseEditorProps, IEditor } from 'pc/components/editors/interface';
+import { OptionTag } from 'pc/components/list';
+import { useResponsive } from 'pc/hooks';
+import * as React from 'react';
+import { forwardRef, memo, useImperativeHandle, useState } from 'react';
+import styles from './style.module.less';
 
 interface IOptionFieldEditorProps extends IBaseEditorProps {
   style: React.CSSProperties;
@@ -19,7 +19,7 @@ const OptionFieldEditorBase: React.ForwardRefRenderFunction<IEditor, IOptionFiel
   const { field, disabled, onSave, onChange: propsOnChange, cellValue } = props;
   const isSingleSelect = field.type === FieldType.SingleSelect;
   const defaultValue = isSingleSelect ? '' : [];
-  const [value, setValue] = useState(cellValue);
+  const [value, setValue] = useState<CheckboxValueType[] | undefined>(cellValue as CheckboxValueType[]);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const optionList = field.property.options;
@@ -31,7 +31,7 @@ const OptionFieldEditorBase: React.ForwardRefRenderFunction<IEditor, IOptionFiel
       onEndEdit: (cancel: boolean) => {},
       onStartEdit: (value?: string | string[] | null) => {},
       setValue: (value?: string | string[] | null) => {
-        setValue(value || defaultValue);
+        setValue((value || defaultValue) as CheckboxValueType[]);
       },
       saveValue: () => {
         saveValue();
@@ -51,7 +51,7 @@ const OptionFieldEditorBase: React.ForwardRefRenderFunction<IEditor, IOptionFiel
 
   const clearSingleSelect = () => {
     propsOnChange && propsOnChange(null);
-    setValue(null);
+    setValue(undefined);
     onSave && onSave(null);
   };
 
@@ -94,7 +94,7 @@ const OptionFieldEditorBase: React.ForwardRefRenderFunction<IEditor, IOptionFiel
                     }
                   }}
                 >
-                  <OptionTag option={option} style={commonStyle} className="optionFieldTag" ellipsis={!isMobile} />
+                  <OptionTag option={option} style={commonStyle} className='optionFieldTag' ellipsis={!isMobile} />
                 </ChildComponent>
               </div>
             );

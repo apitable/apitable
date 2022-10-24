@@ -1,19 +1,18 @@
-import { store } from 'pc/store';
-import * as React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider, useSelector } from 'react-redux';
-import styles from './styles.module.less';
-import { Avatar, AvatarSize } from 'pc/components/common/avatar';
-import { Modal } from 'pc/components/common/modal/modal/modal';
-import { useRequest } from 'pc/hooks';
-import { Api, Strings, t } from '@apitable/core';
 import { Skeleton } from '@vikadata/components';
-import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display/enum';
-import { getNodeIcon } from '../tree/node_icon';
+import { Api, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
+import { Avatar, AvatarSize } from 'pc/components/common/avatar';
+import { ScreenSize } from 'pc/components/common/component_display/enum';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
+import { useRequest, useResponsive } from 'pc/hooks';
+import { store } from 'pc/store';
+import * as React from 'react';
+import { createRoot } from 'react-dom/client';
+import { Provider, useSelector } from 'react-redux';
+import { getNodeIcon } from '../tree/node_icon';
+import styles from './styles.module.less';
 
 interface INodeInfoProps {
   nodeId: string;
@@ -61,9 +60,9 @@ const NodeInfoModal: React.FC<INodeInfoProps> = props => {
   const content =
     loading || !nodeInfo ? (
       <>
-        <Skeleton width="38%" />
+        <Skeleton width='38%' />
         <Skeleton count={2} />
-        <Skeleton width="61%" />
+        <Skeleton width='61%' />
       </>
     ) : (
       <ul className={styles.contentInfo}>
@@ -112,19 +111,18 @@ const NodeInfoModal: React.FC<INodeInfoProps> = props => {
 export const expandNodeInfo = (props: INodeInfoProps) => {
   const container = document.createElement('div');
   document.body.appendChild(container);
-
+  const root = createRoot(container);
   const { onClose } = props;
 
   const onModalClose = () => {
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
     container.parentElement!.removeChild(container);
     onClose && onClose();
   };
 
-  ReactDOM.render(
+  root.render(
     <Provider store={store}>
       <NodeInfoModal {...props} onClose={onModalClose} />
     </Provider>,
-    container,
   );
 };

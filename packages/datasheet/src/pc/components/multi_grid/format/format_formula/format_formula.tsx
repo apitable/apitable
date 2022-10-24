@@ -1,17 +1,17 @@
-import { SetStateAction, Dispatch, useMemo, useRef } from 'react';
-import * as React from 'react';
-import { IField, IFormulaField, expressionTransform, Selectors, t, Strings, BasicValueType, parse } from '@apitable/core';
-import classNames from 'classnames';
-import styles from './styles.module.less';
-import formatStyles from '../styles.module.less';
+import { BasicValueType, expressionTransform, IField, IFormulaField, parse, Selectors, Strings, t } from '@apitable/core';
+import type { InputRef } from 'antd';
 import { Input } from 'antd';
+import classNames from 'classnames';
+import { store } from 'pc/store';
+import * as React from 'react';
+import { Dispatch, SetStateAction, useEffect, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { openFormulaModal } from './open_formula_modal';
+import { assignDefaultFormatting } from '../format_lookup';
 import { LookUpFormatDateTime } from '../format_lookup/lookup_format_datetime';
 import { LookUpFormatNumber } from '../format_lookup/lookup_format_number';
-import { assignDefaultFormatting } from '../format_lookup';
-import { useEffect } from 'react';
-import { store } from 'pc/store';
+import formatStyles from '../styles.module.less';
+import { openFormulaModal } from './open_formula_modal';
+import styles from './styles.module.less';
 
 interface IFormatFormulaProps {
   from?: string;
@@ -25,7 +25,7 @@ export const FormatFormula: React.FC<IFormatFormulaProps> = (props: IFormatFormu
   const fieldMap = useSelector(state => Selectors.getFieldMap(state, propDatasheetId || state.pageParams.datasheetId!))!;
   const fieldPermissionMap = useSelector(state => Selectors.getFieldPermissionMap(state, propDatasheetId));
   const datasheetId = useSelector(state => propDatasheetId || Selectors.getActiveDatasheetId(state))!;
-  const inputRef = useRef<Input>(null);
+  const inputRef = useRef<InputRef>(null);
   const transformedExp = useMemo(() => {
     try {
       return expressionTransform(currentField.property.expression, { fieldMap, fieldPermissionMap }, 'name');

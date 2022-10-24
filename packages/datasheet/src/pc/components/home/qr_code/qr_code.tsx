@@ -1,6 +1,6 @@
-import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
 import { Api, BindAccount, ConfigConstant, IReduxState, Navigation, QrAction, StatusCode, Strings, t } from '@apitable/core';
 import { Spin } from 'antd';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
@@ -11,6 +11,8 @@ import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './style.module.less';
+
+const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 
 export interface IQrCode {
   visible: boolean;
@@ -215,10 +217,10 @@ interface IQRCodeBase {
 
 // 不需要Modal，直接作为组件渲染的QRCode
 export const QRCodeBase = ({
-  type,
-  action,
-  afterLogin,
-}: IQRCodeBase): JSX.Element => {
+                             type,
+                             action,
+                             afterLogin,
+                           }: IQRCodeBase): JSX.Element => {
   const { getLoginStatusReq } = useUserRequest();
   const { run: getLoginStatus } = useRequest(getLoginStatusReq, { manual: true });
   const { join } = useLinkInvite();

@@ -1,8 +1,9 @@
-import { Strings, t } from '@apitable/core';
-import AntdMobileModal from 'antd-mobile/lib/modal';
 import { colorVars } from '@vikadata/components';
+import { Strings, t } from '@apitable/core';
+import { Modal as AntdMobileModal } from 'antd-mobile';
 import * as React from 'react';
 import promptFunc from './prompt';
+
 export interface IModalFuncProps {
   title: React.ReactNode;
   content?: React.ReactNode;
@@ -29,13 +30,15 @@ export function confirm(props: IModalFuncProps) {
     cancelText,
   } = props;
 
-  return AntdMobileModal.alert(
-    title,
-    content,
-    [
-      { text: cancelText || t(Strings.cancel), onPress: onCancel },
-      { text: okText || t(Strings.confirm), onPress: onOk, style: { color: colorVars.primaryColor }},
-    ]
+  return AntdMobileModal.show(
+    {
+      title,
+      content,
+      actions: [
+        { text: cancelText || t(Strings.cancel), onClick: onCancel, key: cancelText || t(Strings.cancel) },
+        { text: okText || t(Strings.confirm), onClick: onOk, style: { color: colorVars.primaryColor }, key: okText || t(Strings.confirm) },
+      ],
+    },
   );
 }
 
@@ -53,8 +56,8 @@ export function prompt(props: IModalFuncProps & { defaultValue: string }) {
   return promptFunc({
     title,
     callbackOrActions: [
-      { text: okText || cancelText || t(Strings.cancel), onPress: onCancel },
-      { text: t(Strings.confirm), onPress: onOk, style: { color: `${colorVars.primaryColor} !important` }},
+      { text: okText || cancelText || t(Strings.cancel), onClick: onCancel, key: okText || cancelText || t(Strings.cancel) },
+      { text: t(Strings.confirm), onClick: onOk, style: { color: `${colorVars.primaryColor} !important` }, key: t(Strings.confirm) },
     ],
     defaultValue,
     placeholder,
@@ -71,13 +74,15 @@ export function warning(props: IModalFuncProps) {
     cancelText,
   } = props;
 
-  return AntdMobileModal.alert(
-    <span style={{ color: colorVars.errorColor }}>{title}</span>,
-    content,
-    [
-      { text: cancelText || t(Strings.cancel), onPress: onCancel },
-      { text: okText || t(Strings.confirm), onPress: onOk, style: { color: colorVars.errorColor }},
-    ]
+  return AntdMobileModal.show(
+    {
+      title: <span style={{ color: colorVars.errorColor }}>{title}</span>,
+      content,
+      actions: [
+        { text: cancelText || t(Strings.cancel), onClick: onCancel, key: cancelText || t(Strings.cancel) },
+        { text: okText || t(Strings.confirm), onClick: onOk, style: { color: colorVars.errorColor }, key: okText || t(Strings.confirm) },
+      ],
+    },
   );
 }
 
@@ -86,3 +91,4 @@ export const Modal: IModal = {
   warning,
   prompt,
 };
+

@@ -7,9 +7,10 @@ import { Tooltip } from 'pc/components/common/tooltip';
 import { MirrorRoute } from 'pc/components/mirror/mirror_route';
 import { Router } from 'pc/components/route_manager/router';
 import { usePageParams, useRequest, useSideBarVisible, useSpaceRequest, useUserRequest } from 'pc/hooks';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { deleteStorageByKey, getStorage, StorageName } from 'pc/utils/storage/storage';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import SplitPane from 'react-split-pane';
 import Openup from 'static/icon/workbench/openup.svg';
 import Packup from 'static/icon/workbench/packup.svg';
@@ -46,12 +47,12 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
   const { getLoginStatusReq } = useUserRequest();
   const { run: getLoginStatus, loading } = useRequest(getLoginStatusReq, { manual: true });
   const { getSpaceListReq } = useSpaceRequest();
-  const { 
-    data: spaceList = [], 
-    loading: spaceListLoading, 
+  const {
+    data: spaceList = [],
+    loading: spaceListLoading,
     run: getSpaceList
   } = useRequest(getSpaceListReq, { manual: true });
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   usePageParams();
 
@@ -213,18 +214,18 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
     }
   }
 
-  const { 
-    spaceId: shareSpaceId, 
-    spaceName: shareSpaceName, 
-    allowApply 
+  const {
+    spaceId: shareSpaceId,
+    spaceName: shareSpaceName,
+    allowApply
   } = shareSpace;
   const realSpaceId = userInfo?.spaceId;
 
   // 控制申请加入空间站功能的显示
   const applicationJoinAlertVisible = (
-    allowApply && 
-    !loading && 
-    !spaceListLoading && 
+    allowApply &&
+    !loading &&
+    !spaceListLoading &&
     (!realSpaceId || (spaceList.every(({ spaceId }) => spaceId !== shareSpaceId)))
   );
 

@@ -10,7 +10,7 @@ import { getDingdingConfig, getFeishuConfig, getQQConfig, getWechatConfig, getWe
 import { isDesktop } from 'pc/utils/os';
 import { FC } from 'react';
 import { isMobile } from 'react-device-detect';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider, useSelector } from 'react-redux';
 import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import DingdingIcon from 'static/icon/signin/signin_img_dingding.png';
@@ -72,7 +72,7 @@ export const OtherLogin: FC<{ afterLogin?(data: string, loginMode: ConfigConstan
     onClick: () => {
       settingReference();
       wecomLogin();
-    }
+    },
   }, {
     id: 'wecom_shop_login_btn',
     img: WecomIcon,
@@ -81,7 +81,7 @@ export const OtherLogin: FC<{ afterLogin?(data: string, loginMode: ConfigConstan
     onClick: () => {
       settingReference();
       isWecomFunc() ? wecomQuickLogin('snsapi_base', reference) : wecomShopLogin();
-    }
+    },
   }, {
     id: 'wechat_login_btn',
     img: WechatIcon,
@@ -149,7 +149,7 @@ export const OtherLogin: FC<{ afterLogin?(data: string, loginMode: ConfigConstan
 
 // 微信登录
 export const wechatLogin = (
-  option: { afterLogin?: (data: string, loginMode: ConfigConstant.LoginMode) => void, type?: BindAccount } = { type: BindAccount.WECHAT }
+  option: { afterLogin?: (data: string, loginMode: ConfigConstant.LoginMode) => void, type?: BindAccount } = { type: BindAccount.WECHAT },
 ) => {
   const { afterLogin, type } = option;
   // 如果是微信浏览器则进行免密登录（区分企业微信）
@@ -162,12 +162,13 @@ export const wechatLogin = (
 
   const container = document.createElement('div');
   document.body.appendChild(container);
+  const root = createRoot(container);
 
   const close = () => {
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
   };
 
-  ReactDOM.render(
+  root.render(
     <Provider store={store}>
       <QrCode
         visible
@@ -176,8 +177,7 @@ export const wechatLogin = (
         action={QrAction.LOGIN}
         afterLogin={afterLogin}
       />
-    </Provider>
-    , container);
+    </Provider>);
 };
 
 // 钉钉登录
@@ -192,12 +192,13 @@ export const dingdingLogin = () => {
 
   const container = document.createElement('div');
   document.body.appendChild(container);
+  const root = createRoot(container);
 
   const close = () => {
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
   };
 
-  ReactDOM.render(
+  root.render(
     <Provider store={store}>
       <Modal
         title={
@@ -210,15 +211,14 @@ export const dingdingLogin = () => {
         centered
         destroyOnClose
         closeIcon={<IconButton icon={() => <CloseIcon />} />}
-        width="320px"
+        width='320px'
         maskClosable
         onCancel={() => close()}
         className={styles.dingdingCodeModal}
       >
         <DingdingQrCode />
       </Modal>
-    </Provider>
-    , container);
+    </Provider>);
 };
 
 export const feishuLogin = () => {
@@ -262,12 +262,13 @@ export const wecomLogin = (reference?: string) => {
   }
   const container = document.createElement('div');
   document.body.appendChild(container);
+  const root = createRoot(container);
 
   const close = () => {
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
   };
 
-  ReactDOM.render(
+  root.render(
     <Provider store={store}>
       <Modal
         title={
@@ -279,7 +280,7 @@ export const wecomLogin = (reference?: string) => {
         footer={null}
         centered
         destroyOnClose
-        width="320px"
+        width='320px'
         maskClosable
         onCancel={() => close()}
         closeIcon={<IconButton icon={() => <CloseIcon />} />}
@@ -287,8 +288,7 @@ export const wecomLogin = (reference?: string) => {
       >
         <WecomQrCode />
       </Modal>
-    </Provider>
-    , container);
+    </Provider>);
 };
 
 /**

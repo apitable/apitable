@@ -2,9 +2,10 @@ import { Alert } from '@vikadata/components';
 import { IReduxState, StoreActions, Strings, t } from '@apitable/core';
 import Image from 'next/image';
 import { Tooltip } from 'pc/components/common';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import * as React from 'react';
 import { useEffect } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import SplitPane from 'react-split-pane';
 import OrgImage from 'static/icon/organization/organization_img_default.png';
 import { ComponentDisplay } from '../common/component_display';
@@ -17,7 +18,7 @@ import { MemberList } from './member_list';
 import styles from './style.module.less';
 
 export const AddressList: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { selectedTeamInfo, memberList, memberInfo, spaceId, spaceInfo, user } = useSelector(
     (state: IReduxState) => ({
       selectedTeamInfo: state.addressList.selectedTeamInfo,

@@ -9,7 +9,7 @@ import { goToUpgrade } from 'pc/components/subscribe_system';
 import { isSaaSApp } from 'pc/components/subscribe_system/usage_warn_modal/utils';
 import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import styles from './styles.module.less';
 
 interface IUsageWarnModalParams {
@@ -17,7 +17,7 @@ interface IUsageWarnModalParams {
 }
 
 const UsageWarnModalInner: React.FC<IUsageWarnModalParams> = ({
-  alertContent
+  alertContent,
 }) => {
   const colors = useThemeColors();
 
@@ -87,12 +87,13 @@ const UsageWarnModalInner: React.FC<IUsageWarnModalParams> = ({
 export const usageWarnModal = (params: IUsageWarnModalParams) => {
   const container = document.createElement('div');
   document.body.appendChild(container);
+  const root = createRoot(container);
   const onModalClose = () => {
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
     container.parentElement!.removeChild(container);
   };
 
-  ReactDOM.render(
+  root.render(
     <div onMouseDown={stopPropagation}>
       <Modal
         visible
@@ -108,7 +109,6 @@ export const usageWarnModal = (params: IUsageWarnModalParams) => {
         <UsageWarnModalInner {...params} />
       </Modal>
     </div>,
-    container,
   );
 };
 

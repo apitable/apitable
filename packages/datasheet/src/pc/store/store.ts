@@ -1,7 +1,7 @@
+import { composeWithDevTools } from '@redux-devtools/extension';
 import { IReduxState, Reducers } from '@apitable/core';
 import { applyMiddleware, createStore as _createStore } from 'redux';
 import { enableBatching } from 'redux-batched-actions';
-import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import thunkMiddleware from 'redux-thunk';
 import { rowsCacheAction } from './rows_cache_action';
 
@@ -17,6 +17,8 @@ export const createStore = () => {
 };
 
 export const store = createStore();
+
+export type AppDispatch = typeof store.dispatch;
 
 (() => {
   if (!process.env.SSR) {

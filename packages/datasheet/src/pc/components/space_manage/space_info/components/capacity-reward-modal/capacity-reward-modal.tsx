@@ -1,19 +1,19 @@
-import React, { FC, useEffect, useState } from 'react';
-import { Modal } from 'pc/components/common/modal/modal/modal';
-import { ConfigProvider, Table, Tabs } from 'antd';
-import ReactDOM from 'react-dom';
-import { useRequest } from 'pc/hooks';
-import { useCapacityRequest } from 'pc/hooks/use_capacity-reword-request';
-import styles from './style.module.less';
+import { ThemeProvider } from '@vikadata/components';
 import { ConfigConstant, Strings, t } from '@apitable/core';
+import { ConfigProvider, Table, Tabs } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { UnitTag } from 'pc/components/catalog/permission_settings/permission/select_unit_modal/unit_tag';
-import { TComponent } from 'pc/components/common/t_component';
 import { UserCardTrigger } from 'pc/components/common';
-import { ThemeProvider } from '@vikadata/components';
-import { Provider } from 'react-redux';
-import { store } from 'pc/store';
+import { Modal } from 'pc/components/common/modal/modal/modal';
+import { TComponent } from 'pc/components/common/t_component';
 import { antdConfig } from 'pc/components/route_manager/router_provider';
+import { useRequest } from 'pc/hooks';
+import { useCapacityRequest } from 'pc/hooks/use_capacity-reword-request';
+import { store } from 'pc/store';
+import React, { FC, useEffect, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
+import styles from './style.module.less';
 
 const { TabPane } = Tabs;
 
@@ -168,10 +168,11 @@ export const CapacityRewardModal: FC<ICapacityRewardModalProps> = ({ onCancel })
 export const expandCapacityRewardModal = () => {
   const div = document.createElement('div');
   document.body.appendChild(div);
+  const root = createRoot(div);
 
   function destroy() {
-    const unmountResult = ReactDOM.unmountComponentAtNode(div);
-    if (unmountResult && div.parentNode) {
+    root.unmount();
+    if (div.parentNode) {
       div.parentNode.removeChild(div);
     }
   }
@@ -183,7 +184,8 @@ export const expandCapacityRewardModal = () => {
   }
 
   const render = () => {
-    ReactDOM.render(
+
+    root.render(
       <ConfigProvider {...antdConfig}>
         <Provider store={store}>
           <ThemeProvider>
@@ -191,7 +193,6 @@ export const expandCapacityRewardModal = () => {
           </ThemeProvider>
         </Provider>
       </ConfigProvider>,
-      div,
     );
   };
 

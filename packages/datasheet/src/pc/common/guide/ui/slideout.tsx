@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import SuccessImg from 'static/icon/common/common_img_slideout.png';
 import { GUIDE_SLIDEOUT_Z_INDEX } from '../common/constant';
 import { GuideButton, IGuideButton } from './guide_button';
@@ -45,12 +45,12 @@ const CLASS_PREFIX = 'delayshow';
 export const DelayShow: FC<IDelayShowProps> = (options) => {
   const { children, style, className, show: showProps } = options;
   const [show, { set: setShow }] = useToggle(false);
-  useEffect(()=>{
-    if(showProps){
+  useEffect(() => {
+    if (showProps) {
       setTimeout(() => {
         setShow(true);
       }, 300);
-    }else{
+    } else {
       setShow(false);
     }
   });
@@ -95,18 +95,18 @@ export const Slideout: FC<IGuideSlideOutProps> = (options) => {
       show
     >
       <div className={'imgWrap'}>
-        <span className="img">
-          <Image src={img} alt="vika.cn" />
+        <span className='img'>
+          <Image src={img} alt='vika.cn' />
         </span>
       </div>
-      {title && <div className="title">{title}</div>}
+      {title && <div className='title'>{title}</div>}
       {
         description &&
         <div className={classNames('description', { descBold: !title })}>{description}</div>
       }
-      <div className="content">
+      <div className='content'>
         {children}
-        <GuideButton {...buttonConfig} oneBlock direction="column"/>
+        <GuideButton {...buttonConfig} oneBlock direction='column' />
       </div>
     </DelayShow>
   );
@@ -118,9 +118,9 @@ export const showSlideout = (options: IGuideSlideOutProps) => {
   const render = () => {
     const div = document.createElement('div');
     document.body.appendChild(div);
-    ReactDOM.render(
+    const root = createRoot(div);
+    root.render(
       (<Slideout {...options} />),
-      div,
     );
   };
 

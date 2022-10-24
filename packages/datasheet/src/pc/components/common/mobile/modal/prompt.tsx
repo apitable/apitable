@@ -1,18 +1,18 @@
 import { ThemeProvider } from '@vikadata/components';
-import Modal from 'antd-mobile/lib/modal';
-import { Action } from 'antd-mobile/lib/modal/PropsType';
-import closest from 'antd-mobile/lib/_util/closest';
-import { useState } from 'react';
+import { Modal } from 'antd-mobile';
+import type { Action } from 'antd-mobile/es/components/modal';
 import * as React from 'react';
-import ReactDOM from 'react-dom';
+import { useState } from 'react';
+import { createRoot } from 'react-dom/client';
 
 interface IPromptInnerProps {
   title: React.ReactNode;
-  callbackOrActions: Action<React.CSSProperties>[];
+  callbackOrActions: Action[];
   defaultValue: string;
   placeholder?: string;
 }
-const prefixCls = 'am-modal';
+
+const prefixCls = 'adm-modal';
 
 const PromptInner: React.FC<IPromptInnerProps & { close(): void }> = ({
   title,
@@ -34,11 +34,12 @@ const PromptInner: React.FC<IPromptInnerProps & { close(): void }> = ({
       <div className={`${prefixCls}-input`}>
         <label>
           <input
-            type="text"
+            type='text'
             defaultValue={defaultValue}
             ref={input => input?.focus()}
             onChange={onChange}
             placeholder={placeholder}
+            style={{ border: 'none' }}
           />
         </label>
       </div>
@@ -56,15 +57,15 @@ const PromptInner: React.FC<IPromptInnerProps & { close(): void }> = ({
   const actions = callbackOrActions.map(item => {
     return {
       text: item.text,
-      onPress: () => {
-        return handleConfirm(item.onPress);
+      onClick: () => {
+        return handleConfirm(item.onClick);
       },
     };
   });
 
   const footer = actions.map(button => {
-    const originPress = button.onPress || (() => { });
-    button.onPress = () => {
+    const originPress = button.onClick || (() => { });
+    button.onClick = () => {
       const res: any = originPress();
       if (res && res.then) {
         res
@@ -79,33 +80,15 @@ const PromptInner: React.FC<IPromptInnerProps & { close(): void }> = ({
     return button;
   });
 
-  function onWrapTouchStart(e: React.TouchEvent<HTMLDivElement>) {
-    // exclude input element for focus
-    if (!/iPhone|iPod|iPad/i.test(navigator.userAgent)) {
-      return;
-    }
-    const pNode = closest(e.target as Element, `.${prefixCls}-content`);
-    if (!pNode) {
-      e.preventDefault();
-    }
-  }
-
   return (
     <Modal
       visible
-      transparent
-      prefixCls={prefixCls}
       title={title}
-      closable={false}
-      maskClosable={false}
-      transitionName="am-zoom"
-      footer={footer}
-      maskTransitionName="am-fade"
-      platform='ios'
-      wrapProps={{ onTouchStart: onWrapTouchStart }}
-    >
-      <div className={`${prefixCls}-propmt-content`}>{content}</div>
-    </Modal>
+      showCloseButton={false}
+      closeOnMaskClick={false}
+      actions={footer as any}
+      content={<div className={`${prefixCls}-propmt-content`}>{content}</div>}
+    />
   );
 };
 
@@ -115,22 +98,22 @@ export default function promptFunc(
 
   const div = document.createElement('div');
   document.body.appendChild(div);
+  const root = createRoot(div);
 
   function close() {
-    ReactDOM.unmountComponentAtNode(div);
+    root.unmount();
     if (div && div.parentNode) {
       div.parentNode.removeChild(div);
     }
   }
 
-  ReactDOM.render(
+  root.render(
     <ThemeProvider>
       <PromptInner
         {...props}
         close={close}
       />
     </ThemeProvider>,
-    div,
   );
 
   return {

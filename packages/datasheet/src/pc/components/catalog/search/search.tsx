@@ -1,6 +1,7 @@
 import { useThemeColors } from '@vikadata/components';
 import { Api, INode, Navigation, Strings, t } from '@apitable/core';
 import { useClickAway } from 'ahooks';
+import type { InputRef } from 'antd';
 import { Form, Input } from 'antd';
 import classnames from 'classnames';
 import throttle from 'lodash/throttle';
@@ -38,7 +39,7 @@ export const Search: FC<ISearchProps> = ({ className, closeSearch }) => {
   const colors = useThemeColors();
   const [keyword, setKeyword] = useState('');
   const [groupData, setGroupData] = useState<{ name: string; data: ISearchNode[] }[]>([]);
-  const inputRef = useRef<Input>(null);
+  const inputRef = useRef<InputRef>(null);
   const listContainerRef = useRef<any>(null);
   const totalSearchResultItemsCount = groupData.reduce((total, item) => total + item.data.length, 0);
   const spaceId = useSelector(state => state.space.activeId);

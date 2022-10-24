@@ -1,22 +1,22 @@
 // TODO 重构通讯录
-import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
-import { FC, useState } from 'react';
-import * as React from 'react';
+import { Button, TextButton, ThemeProvider } from '@vikadata/components';
+import { IUnit, Selectors, Strings, t, UnitItem } from '@apitable/core';
 import { BaseModal } from 'pc/components/common';
-import { IUnit, Strings, t, Selectors, UnitItem } from '@apitable/core';
-import { Button, ThemeProvider, TextButton } from '@vikadata/components';
-import styles from './style.module.less';
-import { stopPropagation } from 'pc/utils';
-import InviteIcon from 'static/icon/space/space_icon_invite.svg';
-import { expandInviteModal } from 'pc/components/invite';
-import { useSelector, Provider } from 'react-redux';
-import { store } from 'pc/store';
-import ReactDOM from 'react-dom';
-import { SelectUnitLeft } from './select_unit_left';
-import { SelectUnitRight } from './select_unit_right';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { SelectUnitPopup } from './select_unit_popup';
+import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
+import { expandInviteModal } from 'pc/components/invite';
 import { useSpaceInfo } from 'pc/hooks';
+import { store } from 'pc/store';
+import { stopPropagation } from 'pc/utils';
+import * as React from 'react';
+import { FC, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { Provider, useSelector } from 'react-redux';
+import InviteIcon from 'static/icon/space/space_icon_invite.svg';
+import { SelectUnitLeft } from './select_unit_left';
+import { SelectUnitPopup } from './select_unit_popup';
+import { SelectUnitRight } from './select_unit_right';
+import styles from './style.module.less';
 
 export enum SelectUnitSource {
   Perm = 'perm',
@@ -113,7 +113,7 @@ export const SelectUnitModal: FC<ISelectUnitModalProps> = props => {
           <TextButton size={'small'} onClick={onCancel}>
             {t(Strings.cancel)}
           </TextButton>
-          <Button color="primary" size="small" onClick={onOk} disabled={!allowEmtpyCheckedList && checkedList.length === 0}>
+          <Button color='primary' size='small' onClick={onOk} disabled={!allowEmtpyCheckedList && checkedList.length === 0}>
             {t(Strings.submit)}
           </Button>
         </div>
@@ -175,16 +175,16 @@ export const SelectUnitModal: FC<ISelectUnitModalProps> = props => {
 export const expandUnitModal = (options: Omit<ISelectUnitModalProps, 'onCancel'>) => {
   const container = document.createElement('div');
   document.body.appendChild(container);
+  const root = createRoot(container);
   const onModalClose = () => {
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
     container.parentElement!.removeChild(container);
     options.onClose?.();
   };
 
-  ReactDOM.render(
+  root.render(
     <Provider store={store}>
       <SelectUnitModal {...options} onCancel={() => onModalClose()} />
     </Provider>,
-    container,
   );
 };

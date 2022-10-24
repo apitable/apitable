@@ -9,6 +9,7 @@ import classnames from 'classnames';
 import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
 import { GenerateTemplate } from 'pc/components/catalog/generate_template';
 import { ImportFile } from 'pc/components/catalog/import_file';
+import { MoveTo } from 'pc/components/catalog/move_to';
 import { NodeContextMenu } from 'pc/components/catalog/node_context_menu';
 import { PermissionSettingsPlus } from 'pc/components/catalog/permission_settings_plus';
 import { Search } from 'pc/components/catalog/search';
@@ -22,10 +23,11 @@ import { expandInviteModal } from 'pc/components/invite/invite_outsider';
 import { Router } from 'pc/components/route_manager/router';
 import { sendRemind } from 'pc/events/notification_verification';
 import { useCatalogTreeRequest, useRequest, useResponsive, useSearchPanel, useUserRequest } from 'pc/hooks';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
 import { FC, useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import InviteIcon from 'static/icon/common/common_icon_invite.svg';
 import ArrowIcon from 'static/icon/common/common_icon_up_line.svg';
 import TrashIcon from 'static/icon/workbench/catalogue/recycle_closed.svg';
@@ -35,7 +37,6 @@ import { Favorite } from './favorite';
 import { SpaceInfo } from './space-info';
 import styles from './style.module.less';
 import { WorkbenchSideContext } from './workbench_side_context';
-import { MoveTo } from 'pc/components/catalog/move_to';
 
 const { Panel } = Collapse;
 
@@ -94,7 +95,7 @@ export const WorkbenchSide: FC = () => {
   const { data: inviteStatus } = useRequest(getInviteStatus);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const userInfo = useSelector(state => state.user.info);
   const spaceFeatures = useSelector(state => state.space.spaceFeatures);

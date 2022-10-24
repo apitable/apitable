@@ -9,7 +9,7 @@ import { usePlatform } from 'pc/hooks/use_platform';
 import { store } from 'pc/store';
 import { isMobileApp } from 'pc/utils/env';
 import { FC } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 
 export interface IPrivacyModalProps {
@@ -37,7 +37,7 @@ const PrivacyModal: FC<IPrivacyModalProps> = props => {
       }}
       title={(
         <Typography
-          variant="h4"
+          variant='h4'
           style={{
             textAlign: 'center',
           }}
@@ -47,20 +47,20 @@ const PrivacyModal: FC<IPrivacyModalProps> = props => {
       )}
       footer={(
         <div
-          className="privacy-footer"
+          className='privacy-footer'
         >
-          <div className="agreement">
-            <Typography variant="body3" style={{ textAlign: 'justify' }}>
+          <div className='agreement'>
+            <Typography variant='body3' style={{ textAlign: 'justify' }}>
               <TComponent
                 tkey={t(Strings.guide_privacy_modal_content)}
                 params={{
                   content: (
                     <>
-                      <a href={linkToPrivacyPolicy} target="_blank" rel="noreferrer">
+                      <a href={linkToPrivacyPolicy} target='_blank' rel='noreferrer'>
                         {t(Strings.vika_privacy_policy)}
                       </a>
                     </>
-                  )
+                  ),
                 }}
               />
             </Typography>
@@ -83,7 +83,7 @@ const PrivacyModal: FC<IPrivacyModalProps> = props => {
           </div>
         </div>
       )}
-      getContainer=".vika-guide-modal"
+      getContainer='.vika-guide-modal'
     >
       <ScrollBar>
         <div
@@ -115,8 +115,9 @@ export const showPrivacyModal = (props: IPrivacyModalProps) => {
       const div = document.createElement('div');
       div.setAttribute('class', 'vika-guide-modal');
       document.body.appendChild(div);
-      ReactDOM.render(
-        (<Provider store={store}><PrivacyModal {...rest}>{children}</PrivacyModal></Provider>), div);
+      const root = createRoot(div);
+      root.render(
+        (<Provider store={store}><PrivacyModal {...rest}>{children}</PrivacyModal></Provider>));
     });
   };
 

@@ -10,11 +10,12 @@ import { TimeMachine } from 'pc/components/time_machine';
 import { useMountWidgetPanelShortKeys } from 'pc/components/widget/hooks';
 import { SideBarClickType, SideBarType, useSideBar } from 'pc/context';
 import { useResponsive, useWeixinShare } from 'pc/hooks';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { store } from 'pc/store';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
 import * as React from 'react';
 import { FC, useCallback, useEffect, useMemo } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { DevToolsPanel } from '../development/dev_tools_panel';
@@ -107,7 +108,7 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
     return datasheet && datasheet.preview;
   });
   const activeDatasheetId = useSelector(Selectors.getActiveDatasheetId);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const testFunctions = useMemo(() => {
     const funcs = getStorage(StorageName.TestFunctions) || {};
     return Object.keys(funcs)

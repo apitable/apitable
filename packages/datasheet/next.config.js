@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+/*eslint no-undef: 0*/
 const withLess = require('next-with-less');
 const path = require('path');
 const loaderUtils = require('loader-utils');
@@ -59,7 +60,7 @@ const plugins = [[withLess, {
 
     }
   }
-}], [withTM(['@vikadata/components', 'antd', 'rc-pagination', 'rc-picker', 'rc-notification', '@ant-design/css-animation', 'rc-calendar'])],
+}], [withTM(['@vikadata/components', 'antd', 'rc-pagination', 'rc-util', 'rc-picker', 'rc-notification', '@ant-design/icons', 'rc-calendar'])],
 [withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 })]

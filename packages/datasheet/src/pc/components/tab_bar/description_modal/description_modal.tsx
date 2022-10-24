@@ -1,21 +1,21 @@
-import { Api, Selectors, StoreActions, Strings, t, IReduxState } from '@apitable/core';
-import classNames from 'classnames';
+import { Api, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { DescriptionOutlined } from '@vikadata/icons';
 import { Modal } from 'antd';
-import { getStorage, setStorage, StorageName, StorageMethod } from 'pc/utils/storage/storage';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import classNames from 'classnames';
+import { debounce } from 'lodash';
+import { ContextName, ShortcutContext } from 'pc/common/shortcut_key';
+import { Deserializer, IEditorData, Serializer, SlateEditor } from 'pc/components/slate_editor';
+import { useImageUpload } from 'pc/hooks';
+import { store } from 'pc/store';
+import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
 import * as React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { createRoot } from 'react-dom/client';
 import { Provider, shallowEqual, useDispatch, useSelector } from 'react-redux';
 import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
-import { DescriptionOutlined } from '@vikadata/icons';
 import IconClose from 'static/icon/datasheet/datasheet_icon_tagdelete.svg';
 import { stopPropagation } from '../../../utils/dom';
 import styles from './style.module.less';
-import { debounce } from 'lodash';
-import { ContextName, ShortcutContext } from 'pc/common/shortcut_key';
-import { SlateEditor, Serializer, Deserializer, IEditorData } from 'pc/components/slate_editor';
-import { useImageUpload } from 'pc/hooks';
-import { store } from 'pc/store';
-import ReactDOM from 'react-dom';
 
 const SLATE_EDITOR_TYPE = 'slate';
 
@@ -143,8 +143,8 @@ const RenderModalBase: React.FC<IRenderModalBase> = props => {
           onChange={handleChange}
           value={value}
           readOnly={readOnly}
-          sectionSpacing="small"
-          height="calc(70vh - 118px)"
+          sectionSpacing='small'
+          height='calc(70vh - 118px)'
           imageUploadApi={uploadImage}
         />
       }
@@ -235,7 +235,10 @@ export const DescriptionModal: React.FC<IDescriptionModal> = props => {
       className={
         classNames(styles.desc, className)
       }
-      onClick={() => { setVisible(true); props.onClick && props.onClick(); }}
+      onClick={() => {
+        setVisible(true);
+        props.onClick && props.onClick();
+      }}
     >
       {showIcon && <DescriptionOutlined size={16} />}
       {
@@ -254,18 +257,18 @@ export const DescriptionModal: React.FC<IDescriptionModal> = props => {
 };
 
 export const expandNodeDescription = ({ datasheetName, activeNodeId, isMobile }) => {
-
   const div = document.createElement('div');
   document.body.appendChild(div);
+  const root = createRoot(div);
 
   const onClose = () => {
-    ReactDOM.unmountComponentAtNode(div);
+    root.unmount();
     if (div && div.parentNode) {
       div.parentNode.removeChild(div);
     }
   };
 
-  ReactDOM.render(
+  root.render(
     <Provider store={store}>
       <RenderModal
         visible
@@ -275,8 +278,7 @@ export const expandNodeDescription = ({ datasheetName, activeNodeId, isMobile })
         isMobile={isMobile}
         modalStyle={isMobile ? { top: 12 } : undefined}
       />
-    </Provider>
-    ,
-    div,
+    </Provider>,
   );
 };
+

@@ -1,4 +1,5 @@
 import { Tooltip } from 'antd';
+import { PropsWithChildren } from 'react';
 
 interface IWrapperTooltip {
   wrapper: boolean;
@@ -6,7 +7,7 @@ interface IWrapperTooltip {
   style?: React.CSSProperties;
 }
 
-export const WrapperTooltip: React.FC<IWrapperTooltip> = props => {
+export const WrapperTooltip: React.FC<PropsWithChildren<IWrapperTooltip>> = props => {
   const { tip, wrapper, children, style } = props;
 
   if (wrapper) {

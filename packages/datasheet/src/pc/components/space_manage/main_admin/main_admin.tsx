@@ -1,16 +1,17 @@
 import { Button, Typography, useThemeColors } from '@vikadata/components';
 import { Events, IReduxState, Player, StoreActions, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { getEnvVariables } from 'pc/utils/env';
 import { FC, useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { AdminInfo } from './admin_info';
 import { MainAdminModal } from './main_admin_modal';
 import styles from './style.module.less';
 
 export const MainAdmin: FC = () => {
   const colors = useThemeColors();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const spaceResource = useSelector((state: IReduxState) => state.spacePermissionManage.spaceResource);
   const spaceInfo = useSelector((state: IReduxState) => state.space.curSpaceInfo);
   const [modalVisible, setModalVisible] = useState(false);

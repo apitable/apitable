@@ -3,7 +3,7 @@ import { ConfigConstant, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { Emoji } from 'pc/components/common';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import Vikaby from 'static/icon/workbench/vikaby-good.png';
 import styles from './style.module.less';
@@ -31,12 +31,12 @@ export const AlertUi = (props: IAlertProps) => {
     <div className={classNames(styles.alert, { [styles.hasUpgradeBtn]: upgrade })}>
       {showVikaby && <span className={styles.img}><Image src={Vikaby} /></span>}
       <div className={styles.body}>
-        <Typography variant="h7" color={colors.primaryColor}>{content}</Typography>
+        <Typography variant='h7' color={colors.primaryColor}>{content}</Typography>
       </div>
       {btnText && <LinkButton className={styles.reloadBtn} color={colors.primaryColor} onClick={onBtnClick}>{btnText}</LinkButton>}
-      {upgrade && <Button color="primary" size={'middle'} className={styles.upgradeBtn} onClick={onBtnClick}>
+      {upgrade && <Button color='primary' size={'middle'} className={styles.upgradeBtn} onClick={onBtnClick}>
         <span style={{ position: 'relative', top: 3 }}>
-          <Emoji emoji={'star2'} set="apple" size={ConfigConstant.CELL_EMOJI_SIZE} />
+          <Emoji emoji={'star2'} set='apple' size={ConfigConstant.CELL_EMOJI_SIZE} />
         </span>
         <span style={{ position: 'relative', left: 3 }}>{t(Strings.upgrade)}</span>
       </Button>}
@@ -61,17 +61,19 @@ export const showBannerAlert = (config: IShowBannerAlert) => {
   div.setAttribute('class', styles.funcAlert);
   div.setAttribute('id', BANNER_ALERT_ID);
   document.body.appendChild(div);
+  const root = createRoot(div);
 
   function destroy() {
-    const unmountResult = ReactDOM.unmountComponentAtNode(div);
-    if (unmountResult && div.parentNode) {
+    root.unmount();
+    if (div.parentNode) {
       div.parentNode.removeChild(div);
     }
   }
 
   function render() {
+
     setTimeout(() => {
-      ReactDOM.render(
+      root.render(
         <AlertUi
           onClose={() => {
             onClose && onClose();
@@ -79,7 +81,6 @@ export const showBannerAlert = (config: IShowBannerAlert) => {
           }}
           {...rest}
         />,
-        div,
       );
     });
   }

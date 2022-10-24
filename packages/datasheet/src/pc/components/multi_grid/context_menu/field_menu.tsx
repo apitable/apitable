@@ -15,13 +15,14 @@ import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { expandFieldPermission } from 'pc/components/field_permission';
 import { getCopyField, getShowFieldName } from 'pc/components/multi_grid/context_menu/utils';
 import { useCacheScroll } from 'pc/context';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { flatContextData } from 'pc/utils';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import * as React from 'react';
 import { memo, useMemo, useRef } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 
 import { FIELD_HEAD_CLASS } from '../../../utils/constant';
 import { useActiveFieldSetting, useFilterField, useGroupField, useHideField, useSortField } from '../hooks';
@@ -44,7 +45,7 @@ export const FieldMenu: React.FC<IFieldMenuProps> = memo((
   const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
   const fieldMap = useSelector(state => Selectors.getFieldMap(state, datasheetId))!;
   const view = useSelector(Selectors.getCurrentView)!;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const handleHideField = useHideField(view);
   const handleSortField = useSortField();
   const handleFilterField = useFilterField();

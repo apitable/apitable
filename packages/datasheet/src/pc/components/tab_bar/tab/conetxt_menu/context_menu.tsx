@@ -1,11 +1,11 @@
-import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
-import { black, ContextMenu as ContextMenuList, deepPurple, IContextMenuClickState, Switch } from '@vikadata/components';
 import {
   Api, CollaCommandName, ConfigConstant, DATASHEET_ID, DatasheetActions, ExecuteResult, getMaxViewCountPerSheet, getUniqName, IPermissions,
-  IViewProperty, Selectors, StoreActions, Strings, t, ViewType
+  IViewProperty, Selectors, StoreActions, Strings, t, ViewType,
 } from '@apitable/core';
+import { black, ContextMenu as ContextMenuList, deepPurple, IContextMenuClickState, Switch } from '@vikadata/components';
 import { AutosaveOutlined, CalenderRightOutlined, LockNonzeroOutlined } from '@vikadata/icons';
 import { Modal as ModalComponent, Spin } from 'antd';
+import dynamic from 'next/dynamic';
 import { triggerUsageAlert } from 'pc/common/billing';
 import { makeNodeIconComponent, NodeIcon } from 'pc/components/catalog/node_context_menu';
 import { Modal } from 'pc/components/common';
@@ -21,6 +21,8 @@ import { isMobileApp } from 'pc/utils/env';
 import * as React from 'react';
 import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
+const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 
 interface IContextMenuProps {
   activeViewId: string | undefined;
@@ -91,18 +93,18 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
 
   // 快捷菜单方式-重命名
   const handleRenameItem = (args) => {
-    const { props: { tabIndex }} = args;
+    const { props: { tabIndex } } = args;
     setEditIndex(tabIndex);
     return;
   };
 
   // 快捷菜单方式-复制数表
-  const handleForDeleteView = async(args) => {
-    const { props: { tabIndex }} = args;
+  const handleForDeleteView = async (args) => {
+    const { props: { tabIndex } } = args;
     let content = t(Strings.del_view_content, {
       view_name: viewList[tabIndex].name,
     });
-    const [formList, { data: { data: mirrorList }}] = await Promise.all([
+    const [formList, { data: { data: mirrorList } }] = await Promise.all([
       StoreActions.fetchForeignFormList(activeNodeId!, activeViewId!),
       Api.getRelateNodeByDstId(activeNodeId!, activeViewId!, ConfigConstant.NodeType.MIRROR),
     ]);
@@ -130,7 +132,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
   };
 
   const exportTypeCsv = (args) => {
-    const { props: { tabIndex }} = args;
+    const { props: { tabIndex } } = args;
     exportDatasheet(
       activeNodeId!, ConfigConstant.EXPORT_TYPE_CSV,
       { view: Selectors.getViewsList(store.getState())[tabIndex] }
@@ -138,7 +140,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
   };
 
   const exportTypeXlsx = (args) => {
-    const { props: { tabIndex }} = args;
+    const { props: { tabIndex } } = args;
     exportDatasheet(
       activeNodeId!, ConfigConstant.EXPORT_TYPE_XLSX,
       { view: Selectors.getViewsList(store.getState())[tabIndex] }
@@ -146,7 +148,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
   };
 
   const exportTypeImage = (args) => {
-    const { props: { tabIndex }} = args;
+    const { props: { tabIndex } } = args;
     const viewId = Selectors.getViewsList(store.getState())[tabIndex].id;
     if (currentViewId !== viewId) return;
     ModalComponent.success({
@@ -170,7 +172,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
   };
 
   const duplicateView = (args) => {
-    const { props: { tabIndex }} = args;
+    const { props: { tabIndex } } = args;
     const view = viewList[tabIndex] as IViewProperty;
     const snapshot = Selectors.getSnapshot(store.getState());
     const { id: newId } = DatasheetActions.deriveDefaultViewProperty(snapshot!, view.type, view.id);
@@ -219,7 +221,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
   };
 
   const openViewLock = (args) => {
-    const { props: { tabIndex }} = args;
+    const { props: { tabIndex } } = args;
     expandViewLock(viewList[tabIndex].id);
   };
 
@@ -270,7 +272,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
           if (!permissions.manageable) {
             return true;
           }
-          const { props: { tabIndex }} = arg;
+          const { props: { tabIndex } } = arg;
           const view = viewList[tabIndex];
           return Boolean(view.lockInfo);
         },
@@ -286,7 +288,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
           if (!permissions.manageable) {
             return true;
           }
-          const { props: { tabIndex }} = arg;
+          const { props: { tabIndex } } = arg;
           const view = viewList[tabIndex];
           return !view.lockInfo;
         },
@@ -352,7 +354,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
         'data-sensors-click': true,
         id: DATASHEET_ID.VIEW_OPERATION_ITEM_DELETE,
         disabled: (arg) => {
-          const { props: { tabIndex }} = arg;
+          const { props: { tabIndex } } = arg;
           const view = viewList[tabIndex];
           setShowDeleteTip(Boolean(view.lockInfo));
           return Boolean(view.lockInfo);

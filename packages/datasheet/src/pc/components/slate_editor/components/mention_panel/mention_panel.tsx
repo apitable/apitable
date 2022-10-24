@@ -1,23 +1,22 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { Range, Editor, Path, Transforms } from 'slate';
-import { useSlate, ReactEditor } from 'slate-react';
-import { Spin } from 'antd';
-import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
-import { getValidPopupPosition, getValidSelection } from '../../helpers/utils';
-import { GENERATOR } from '../../elements';
-
-import { MemberOptionList } from 'pc/components/list/member_option_list';
-import { store } from 'pc/store';
 import { Api, Selectors } from '@apitable/core';
-import { Z_INDEX } from '../../constant';
-import { Portal } from 'pc/components/portal';
-import { IVikaEditor } from '../../interface/editor';
-
-import styles from './mention.module.less';
 import { useDebounceFn } from 'ahooks';
-import { useResponsive } from 'pc/hooks';
+import { Spin } from 'antd';
+import dynamic from 'next/dynamic';
 import { ScreenSize } from 'pc/components/common/component_display';
+import { MemberOptionList } from 'pc/components/list/member_option_list';
+import { Portal } from 'pc/components/portal';
+import { useResponsive } from 'pc/hooks';
+import { store } from 'pc/store';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Editor, Path, Range, Transforms } from 'slate';
+import { ReactEditor, useSlate } from 'slate-react';
+import { Z_INDEX } from '../../constant';
+import { GENERATOR } from '../../elements';
+import { getValidPopupPosition, getValidSelection } from '../../helpers/utils';
+import { IVikaEditor } from '../../interface/editor';
+import styles from './mention.module.less';
 
+const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 export const MentionPanel = () => {
   const wrapRef = useRef<HTMLDivElement>(null);
   const visibleRef = useRef(false);
@@ -211,13 +210,13 @@ export const MentionPanel = () => {
       <div className={styles.wrap} ref={wrapRef}>
         {loading ? (
           <div className={styles.loading}>
-            <Spin size="small" indicator={<LoadingOutlined />} />
+            <Spin size='small' indicator={<LoadingOutlined />} />
           </div>
         ) : (
           <MemberOptionList
             listData={members}
             showMoreTipButton={false}
-            uniqId="unitId"
+            uniqId='unitId'
             unitMap={unitMap}
             showSearchInput={false}
             sourceId={datasheetId}

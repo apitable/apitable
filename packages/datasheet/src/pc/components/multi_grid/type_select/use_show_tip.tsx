@@ -1,5 +1,5 @@
-import { useState, useRef, useMemo, useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { createRoot } from 'react-dom/client';
 import styles from './styles.module.less';
 
 export const useShowTip = (container: HTMLElement, tipWidth: number) => {
@@ -8,7 +8,7 @@ export const useShowTip = (container: HTMLElement, tipWidth: number) => {
       top: 0,
       title: '',
       desc: '',
-    }
+    },
   );
   const divRef = useRef<HTMLDivElement>();
 
@@ -30,11 +30,13 @@ export const useShowTip = (container: HTMLElement, tipWidth: number) => {
   }, [container]);
 
   useEffect(() => {
+    let root;
+
     function unMountDiv() {
-      if (!divRef.current) return;
-      ReactDOM.unmountComponentAtNode(divRef.current);
+      if (!divRef.current || !root) return;
+      root.unmount();
       divRef.current.parentElement &&
-        divRef.current.parentElement.removeChild(divRef.current);
+      divRef.current.parentElement.removeChild(divRef.current);
     }
 
     unMountDiv();
@@ -42,10 +44,11 @@ export const useShowTip = (container: HTMLElement, tipWidth: number) => {
     if (info.top) {
       divRef.current = document.createElement('div');
       divRef.current.setAttribute('style',
-        `top:${info.top}px;left:${left}px;position:fixed;z-index:1100;`
+        `top:${info.top}px;left:${left}px;position:fixed;z-index:1100;`,
       );
       document.body.appendChild(divRef.current);
-      ReactDOM.render(
+      root = createRoot(divRef.current);
+      root.render(
         (
           <div className={styles.tip}>
             <h3>
@@ -56,7 +59,6 @@ export const useShowTip = (container: HTMLElement, tipWidth: number) => {
             </p>
           </div>
         ),
-        divRef.current
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

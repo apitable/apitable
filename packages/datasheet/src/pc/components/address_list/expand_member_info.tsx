@@ -1,19 +1,20 @@
-import { Drawer } from 'antd';
-import ReactDOM from 'react-dom';
-import { MemberInfo } from './member_info';
-import { Provider } from 'react-redux';
 import { Strings, t } from '@apitable/core';
+import { Drawer } from 'antd';
 import { store } from 'pc/store';
+import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
 import IconBack from 'static/icon/datasheet/datasheet_icon_calender_left.svg';
+import { MemberInfo } from './member_info';
 import styles from './style.module.less';
 
 export const expandMemberInfo = () => {
   const div = document.createElement('div');
   document.body.appendChild(div);
+  const root = createRoot(div);
 
   function destroy() {
-    const unmountResult = ReactDOM.unmountComponentAtNode(div);
-    if (unmountResult && div.parentNode) {
+    root.unmount();
+    if (div.parentNode) {
       div.parentNode.removeChild(div);
     }
   }
@@ -26,19 +27,19 @@ export const expandMemberInfo = () => {
 
   function render() {
     setTimeout(() => {
-      ReactDOM.render(
+      root.render(
         (
           <Provider store={store}>
             <div className={styles.memberInfoDrawer}>
               <Drawer
-                placement="right"
+                placement='right'
                 height={'100%'}
                 width={'100%'}
                 visible
                 closable={false}
               >
                 <div className={styles.mobileBack} onClick={close}>
-                  <IconBack fill="currentColor" />
+                  <IconBack fill='currentColor' />
                   <span>{t(Strings.back)}</span>
                 </div>
                 <MemberInfo />
@@ -46,9 +47,9 @@ export const expandMemberInfo = () => {
             </div>
           </Provider>
         ),
-        div,
       );
     });
   }
+
   render();
 };

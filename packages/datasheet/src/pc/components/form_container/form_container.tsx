@@ -26,6 +26,7 @@ import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/sto
 import * as React from 'react';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
+import { Node } from 'slate';
 import IconSuccess from 'static/icon/datasheet/form/successful.png';
 import CompleteAnimationJson from 'static/json/complete_form.json';
 import { ScreenSize } from '../common/component_display';
@@ -36,7 +37,6 @@ import { FormContext } from './form_context';
 import { FormFieldContainer } from './form_field_container';
 import { FormPropContainer } from './form_prop_container';
 import styles from './style.module.less';
-import { Node } from 'slate';
 
 enum IFormContentType {
   Form = 'Form',
@@ -417,7 +417,7 @@ export const FormContainer: React.FC = () => {
         Message.destroy();
         Message.warning({
           content: msgContent,
-          duration: null,
+          duration: undefined,
         });
       }
     }
@@ -473,7 +473,7 @@ export const FormContainer: React.FC = () => {
     if (fillDisabled) {
       Message.warning({
         content: msgContent,
-        duration: null,
+        duration: undefined,
       });
     }
     if (!editable && hasSubmitPermission && shareId) {

@@ -1,12 +1,12 @@
-import * as React from 'react';
 import { Strings, t } from '@apitable/core';
-import ReactDOM from 'react-dom';
-import { Modal } from 'pc/components/common';
-import parser from 'html-react-parser';
-import classNames from 'classnames';
-import styles from './style.module.less';
-import { AnimationItem } from 'lottie-web/index';
 import { useMount } from 'ahooks';
+import classNames from 'classnames';
+import parser from 'html-react-parser';
+import { AnimationItem } from 'lottie-web/index';
+import { Modal } from 'pc/components/common';
+import * as React from 'react';
+import { createRoot } from 'react-dom/client';
+import styles from './style.module.less';
 
 interface IShowExchangeVSuccessProps {
   amount: number;
@@ -34,7 +34,7 @@ const loadAnimation = async(ele: Element) => {
 
 const ExchangeSuccess: React.FC<IExchangeVSuccessProps> = ({ amount, onClose }) => {
   const lottieAnimate = React.useRef<AnimationItem>();
-  useMount(()=>{
+  useMount(() => {
     setTimeout(() => {
       const ele = document.querySelector(`#${ANIMATE_DOM_ID}`);
       if (ele && !ele.hasChildNodes()) {
@@ -56,7 +56,7 @@ const ExchangeSuccess: React.FC<IExchangeVSuccessProps> = ({ amount, onClose }) 
       width={440}
       onCancel={onClose}
     >
-      <div id={ANIMATE_DOM_ID} className={styles.animateContainer}/>
+      <div id={ANIMATE_DOM_ID} className={styles.animateContainer} />
       <div className={styles.content}>
         <div className={classNames(styles.title, styles.textCenter, styles.orange)}>
           {parser(t(Strings.entered_a_valid_redemption_code, { amount: amount.toLocaleString() }))}
@@ -72,20 +72,22 @@ export const showExchangeSuccess = (props: IShowExchangeVSuccessProps) => {
   const { amount, refreshData } = props;
   const div = document.createElement('div');
   document.body.appendChild(div);
+  const root = createRoot(div);
 
   const destroy = () => {
-    const unmountResult = ReactDOM.unmountComponentAtNode(div);
-    if (unmountResult && div.parentNode) {
+    root.unmount();
+    if (div.parentNode) {
       div.parentNode.removeChild(div);
     }
     refreshData();
   };
 
   function render() {
-    ReactDOM.render(
-      (<ExchangeSuccess amount={amount} onClose={destroy}/>),
-      div,
+    root.render(
+      (<ExchangeSuccess amount={amount} onClose={destroy} />),
     );
   }
+
   render();
 };
+

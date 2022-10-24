@@ -1,8 +1,8 @@
 import { Box, TextInput, Typography, useThemeColors } from '@vikadata/components';
-import { Modal } from 'pc/components/common/modal/modal/modal';
 import { Strings, t } from '@apitable/core';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useState } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import styles from './style.module.less';
 
@@ -51,7 +51,7 @@ const EditRoleModal: React.FC<IEditRoleModalProps> = props => {
       />
       <Box position={'absolute'}>
         {error && (
-          <Typography variant="body4" color={colors.textDangerDefault}>
+          <Typography variant='body4' color={colors.textDangerDefault}>
             {error}
           </Typography>
         )}
@@ -63,11 +63,12 @@ const EditRoleModal: React.FC<IEditRoleModalProps> = props => {
 export const expandEditRoleModal = (params: IEditRoleModalProps) => {
   const container = document.createElement('div');
   document.body.appendChild(container);
+  const root = createRoot(container);
 
   const onModalClose = () => {
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
     container.parentElement!.removeChild(container);
   };
 
-  ReactDOM.render(<EditRoleModal {...params} onCancel={onModalClose} />, container);
+  root.render(<EditRoleModal {...params} onCancel={onModalClose} />);
 };

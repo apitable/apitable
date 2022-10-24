@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import { MessageUI } from './message_ui';
 import { CSSMotionList } from 'rc-motion';
+import React, { useEffect, useState } from 'react';
+import { createRoot } from 'react-dom/client';
 import { IMessageUIProps } from '../interface';
+import { MessageUI } from './message_ui';
 
 export function useRefCallback<T extends(...args: any[]) => any>(callback: T) {
   const callbackRef = React.useRef(callback);
@@ -22,7 +22,7 @@ const getUuid = () => {
 
 const MessageUiContainer = (props: IMessageUIProps) => {
   const [uuids, setUuids] = useState<React.Key[]>([]);
-  const [uiPropsMap, setUiPropsMap] = useState < Record<React.Key,IMessageUIProps>>({});
+  const [uiPropsMap, setUiPropsMap] = useState<Record<React.Key, IMessageUIProps>>({});
   // const remove = useRefCallback((removeKey: React.Key) => {
   //   setUuids(uuids.filter(key => key !== removeKey));
   //   console.log(uiPropsMap)
@@ -35,12 +35,12 @@ const MessageUiContainer = (props: IMessageUIProps) => {
     if (props.messageKey && uiPropsMap.hasOwnProperty(props.messageKey)) {
       if (uuids.includes(props.messageKey)) {
         // 组件正在渲染，更新内容
-        setUiPropsMap({ 
+        setUiPropsMap({
           ...uiPropsMap,
           [props.messageKey]: {
             ...uiPropsMap[props.messageKey],
             ...props,
-          }
+          },
         });
         return;
       }
@@ -56,16 +56,16 @@ const MessageUiContainer = (props: IMessageUIProps) => {
         ...props,
         messageKey: key,
         onDestroy: () => remove(key),
-      }
+      },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props]);
 
   return (
-    <div style={{ position:'fixed', top: '80px', textAlign:'center', width:'100%', pointerEvents:'none' }}>
-      <CSSMotionList keys={uuids} motionName="vika">
-        {({ key, className: motionClassName })=> 
-          <MessageUI 
+    <div style={{ position: 'fixed', top: '80px', textAlign: 'center', width: '100%', pointerEvents: 'none' }}>
+      <CSSMotionList keys={uuids} motionName='vika'>
+        {({ key, className: motionClassName }) =>
+          <MessageUI
             motionClassName={motionClassName}
             {...uiPropsMap[key]}
           />
@@ -78,14 +78,14 @@ const MessageUiContainer = (props: IMessageUIProps) => {
 export const createUseMessage = () => {
   let domWrapper: HTMLDivElement | null = null;
   const useMessage = (props: IMessageUIProps) => {
-    if(!domWrapper){
+    if (!domWrapper) {
       const rootDom = document.createElement('div');
       document.body.appendChild(rootDom);
       domWrapper = rootDom;
     }
-    ReactDOM.render(
-      <MessageUiContainer {...props} messageKey={ props.messageKey}/>
-      , domWrapper);
+    const root = createRoot(domWrapper);
+    root.render(
+      <MessageUiContainer {...props} messageKey={props.messageKey} />);
   };
 
   return useMessage;

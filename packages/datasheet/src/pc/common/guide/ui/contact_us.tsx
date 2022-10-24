@@ -2,7 +2,7 @@ import { Button, Message, Typography, useThemeColors } from '@vikadata/component
 import { ConfigConstant, Settings } from '@apitable/core';
 import {
   AdviseSmallOutlined, BugOutlined, CloseMiddleOutlined, InformationLargeOutlined, ServeOutlined, SolutionSmallOutlined, TitleFavoriteFilled,
-  ZanOutlined
+  ZanOutlined,
 } from '@vikadata/icons';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
@@ -13,7 +13,7 @@ import { store } from 'pc/store';
 import { tracker } from 'pc/utils/tracker';
 import QRCode from 'qrcode';
 import { FC, useState } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 type IconType = 'BugOutlined' | 'AdviseSmallOutlined' | 'ServeOutlined' | 'ZanOutlined'
   | 'SolutionSmallOutlined' | 'InformationLargeOutlined';
@@ -257,8 +257,9 @@ export const showContactUs = (props: IGuideContactUsOptions) => {
       const div = document.createElement('div');
       div.setAttribute('class', 'vika-guide-connect-us');
       document.body.appendChild(div);
-      ReactDOM.render(
-        <Modal onClose={destroy} {...rest}>{children}</Modal>, div);
+      const root = createRoot(div);
+      root.render(
+        <Modal onClose={destroy} {...rest}>{children}</Modal>);
     });
   };
 

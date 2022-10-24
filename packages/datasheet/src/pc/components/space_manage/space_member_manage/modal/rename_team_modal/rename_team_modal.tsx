@@ -1,8 +1,9 @@
-import { FC, useState, Dispatch, SetStateAction } from 'react';
+import { Api, ConfigConstant, IReduxState, MAX_NAME_STRING_LENGTH, StoreActions, Strings, t } from '@apitable/core';
+import { Message, NormalModal, WithTipTextInput } from 'pc/components/common';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import * as React from 'react';
-import { t, Strings, StoreActions, IReduxState, MAX_NAME_STRING_LENGTH, Api, ConfigConstant } from '@apitable/core';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { NormalModal, Message, WithTipTextInput } from 'pc/components/common';
+import { Dispatch, FC, SetStateAction, useState } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
 import { verifyTeamName } from '../../utils';
 
 interface IModalProps {
@@ -10,7 +11,7 @@ interface IModalProps {
 }
 
 export const RenameTeamModal: FC<IModalProps> = props => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [err, setErr] = useState('');
   const {
     spaceId,

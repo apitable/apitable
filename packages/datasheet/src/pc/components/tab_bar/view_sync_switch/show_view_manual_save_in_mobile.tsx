@@ -1,8 +1,8 @@
-import ReactDOM from 'react-dom';
-import { CloseMiddleOutlined, DefaultFilled } from '@vikadata/icons';
-import { Typography, colorVars } from '@vikadata/components';
-import styles from './style.module.less';
+import { colorVars, Typography } from '@vikadata/components';
 import { Strings, t } from '@apitable/core';
+import { CloseMiddleOutlined, DefaultFilled } from '@vikadata/icons';
+import { createRoot } from 'react-dom/client';
+import styles from './style.module.less';
 
 const VIEW_MANUAL_SAVE_TIP = 'VIEW_MANUAL_SAVE_TIP';
 
@@ -13,13 +13,13 @@ export const showViewManualSaveInMobile = () => {
   const container = document.createElement('div');
   container.classList.add(VIEW_MANUAL_SAVE_TIP);
   document.body.appendChild(container);
-
+  const root= createRoot(container);
   const modalClose = () => {
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
     container.parentElement?.removeChild(container);
   };
 
-  ReactDOM.render((
+  root.render((
     <div className={styles.mobileTip}>
       <span className={styles.infoIcon}>
         <DefaultFilled />
@@ -31,7 +31,5 @@ export const showViewManualSaveInMobile = () => {
         <CloseMiddleOutlined color={colorVars.primaryColor} />
       </span>
     </div>
-  ),
-  container,
-  );
+  ));
 };

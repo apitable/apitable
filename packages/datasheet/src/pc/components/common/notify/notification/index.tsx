@@ -1,16 +1,17 @@
-import * as React from 'react';
+import classNames from 'classnames';
+import dynamic from 'next/dynamic';
 import Notification from 'rc-notification';
 import { NotificationInstance as RCNotificationInstance } from 'rc-notification/lib/Notification';
-import CloseOutlined from '@ant-design/icons/CloseOutlined';
-import classNames from 'classnames';
-import CheckCircleOutlined from '@ant-design/icons/CheckCircleOutlined';
-import CloseCircleOutlined from '@ant-design/icons/CloseCircleOutlined';
-import ExclamationCircleOutlined from '@ant-design/icons/ExclamationCircleOutlined';
-import InfoCircleOutlined from '@ant-design/icons/InfoCircleOutlined';
+import * as React from 'react';
 import createUseNotification from './hooks/useNotification';
 
+const CheckCircleOutlined = dynamic(() => import('@ant-design/icons/CheckCircleOutlined'), { ssr: false });
+const CloseCircleOutlined = dynamic(() => import('@ant-design/icons/CloseCircleOutlined'), { ssr: false });
+const CloseOutlined = dynamic(() => import('@ant-design/icons/CloseOutlined'), { ssr: false });
+const ExclamationCircleOutlined = dynamic(() => import('@ant-design/icons/ExclamationCircleOutlined'), { ssr: false });
+const InfoCircleOutlined = dynamic(() => import('@ant-design/icons/InfoCircleOutlined'), { ssr: false });
 export type NotificationPlacement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
-export type CustomNotificationPlacement = NotificationPlacement | 'bottom';
+export type CustomNotificationPlacement = NotificationPlacement | 'bottom' | 'top';
 
 export type IconType = 'success' | 'info' | 'error' | 'warning';
 
@@ -37,6 +38,7 @@ export interface IConfigProps {
 }
 
 let rtl = false;
+
 function setNotificationConfig(options: IConfigProps) {
   const { duration, placement, bottom, top, getContainer, closeIcon, prefixCls } = options;
   if (prefixCls !== undefined) {

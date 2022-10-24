@@ -6,12 +6,13 @@ import Image from 'next/image';
 import { Emoji, Message, Modal } from 'pc/components/common';
 import { TComponent } from 'pc/components/common/t_component';
 import { Router } from 'pc/components/route_manager/router';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import { Provider, useDispatch } from 'react-redux';
+import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
 import templateEmptyPng from 'static/icon/template/template_img_empty.png';
 import styles from './style.module.less';
 
@@ -26,7 +27,7 @@ const SentToDashboard: React.FC<ISentToDashboardProps> = (props) => {
   const [nodeList, setNodeList] = useState<{ nodeName: ''; nodeType: ''; nodeId: ''; icon: '' }[] | null>(null);
   const [loadingOfList, setLoadingOfList] = useState(false);
   const [selectedId, setSelectedId] = useState('');
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [buttonLoading, setButtonLoading] = useState(false);
   const colors = useThemeColors();
 
@@ -188,11 +189,12 @@ const SentToDashboard: React.FC<ISentToDashboardProps> = (props) => {
 export const openSendToDashboard = (widgetId: string) => {
   const container = document.createElement('div');
   document.body.appendChild(container);
+  const root = createRoot(container);
   const onModalClose = () => {
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
     container.parentElement!.removeChild(container);
   };
-  ReactDOM.render((
+  root.render((
     <Provider store={store}>
       <SentToDashboard
         onModuleDestroy={onModalClose}
@@ -200,6 +202,5 @@ export const openSendToDashboard = (widgetId: string) => {
       />
     </Provider>
   ),
-  container,
   );
 };

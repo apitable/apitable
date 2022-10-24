@@ -1,12 +1,12 @@
-import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
-import { FC } from 'react';
-import * as React from 'react';
-import { Modal } from '../modal/modal';
+import { Strings, t } from '@apitable/core';
 import classNames from 'classnames';
-import { t, Strings } from '@apitable/core';
-import styles from './style.module.less';
-// import { NativeButtonProps } from 'antd/lib/button/button';
 import { Tooltip } from 'pc/components/common';
+import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
+import * as React from 'react';
+import { FC, PropsWithChildren } from 'react';
+import { Modal } from '../modal/modal';
+import styles from './style.module.less';
+
 export interface INormalModalProps extends Omit<IModalProps, 'title'> {
   title: string | React.ReactNode;
   subTitle?: string | React.ReactNode;
@@ -21,7 +21,7 @@ const config = {
   style: { minWidth: '400px' },
 };
 
-export const NormalModal: FC<INormalModalProps> = props => {
+export const NormalModal: FC<PropsWithChildren<INormalModalProps>> = props => {
   const { title, className, subTitle, cancelText = t(Strings.cancel),
     okText = t(Strings.submit), ...rest } = props;
   return (

@@ -1,13 +1,14 @@
-import { useSelector, shallowEqual, useDispatch } from 'react-redux';
-import { Selectors, StoreActions, IReduxState } from '@apitable/core';
+import { IReduxState, Selectors, StoreActions } from '@apitable/core';
 import { usePrevious, useUpdateEffect } from 'ahooks';
 import { difference } from 'lodash';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { store } from 'pc/store';
+import { shallowEqual, useSelector } from 'react-redux';
 
 export const useTrackMissWidgetAndDep = () => {
   const installedWidgetIds = useSelector(Selectors.getInstalledWidgetInDashboard)!;
   const dashboardId = useSelector(state => state.pageParams.dashboardId);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const previousInstalledIds = usePrevious(installedWidgetIds)!;
   const previousDashboardId = usePrevious(dashboardId)!;
 

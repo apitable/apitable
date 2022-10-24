@@ -1,12 +1,12 @@
 import { useKeyPress } from 'ahooks';
-import { useState, useEffect } from 'react';
+import type { InputRef } from 'antd';
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { getArrayLoopIndex } from '@apitable/core';
-import { Input } from 'antd';
 
 export interface IUseSelectProps {
-  inputRef?: React.RefObject<Input>;
+  inputRef?: React.RefObject<InputRef>;
   containerRef?: React.RefObject<HTMLDivElement>;
   listLength: number;
   listContainerRef?: React.RefObject<HTMLDivElement>;

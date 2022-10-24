@@ -4,13 +4,14 @@ import { useKeyPress, useMount, useToggle, useUnmount } from 'ahooks';
 import classNames from 'classnames';
 import { ContextName, ShortcutContext } from 'pc/common/shortcut_key';
 import { useResponsive } from 'pc/hooks';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { store } from 'pc/store';
 import { KeyCode } from 'pc/utils';
 import { dispatch } from 'pc/worker/store';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
-import ReactDOM from 'react-dom';
-import { Provider, shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { createRoot } from 'react-dom/client';
+import { Provider, shallowEqual, useSelector } from 'react-redux';
 import { ScreenSize } from '../common/component_display';
 import { OFFICE_APP_ID } from '../space_manage/marketing';
 import { IExpandPreviewModalFuncProps } from './preview_file.interface';
@@ -59,7 +60,7 @@ const PreviewFileModal: React.FC<IPreviewFileModal> = props => {
     },
     shallowEqual,
   );
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
@@ -208,8 +209,9 @@ export const expandPreviewModal = (props: IExpandPreviewModalFuncProps): IExpand
   preCloseModalFn();
   const div = document.createElement('div');
   document.body.appendChild(div);
+  const root= createRoot(div);
   const close = () => {
-    ReactDOM.unmountComponentAtNode(div);
+    root.unmount();
     if (div && div.parentNode) {
       div.parentNode.removeChild(div);
     }
@@ -233,13 +235,12 @@ export const expandPreviewModal = (props: IExpandPreviewModalFuncProps): IExpand
       }),
     );
 
-    ReactDOM.render(
+    root.render(
       <Provider store={store}>
         <ThemeProvider>
           <PreviewFileModal onClose={close} />
         </ThemeProvider>
-      </Provider>,
-      div,
+      </Provider>
     );
   };
 

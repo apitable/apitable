@@ -1,9 +1,11 @@
-import { FC } from 'react';
-import * as React from 'react';
-import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
+import { Strings, t } from '@apitable/core';
 import { Spin } from 'antd';
+import dynamic from 'next/dynamic';
+import * as React from 'react';
+import { FC } from 'react';
 import styles from './style.module.less';
-import { t, Strings } from '@apitable/core';
+
+const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 
 interface ILoading {
   style?: React.CSSProperties;

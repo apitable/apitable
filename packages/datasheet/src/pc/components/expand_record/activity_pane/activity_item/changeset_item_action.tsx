@@ -1,17 +1,17 @@
-import * as React from 'react';
-import { Selectors, FieldType, IJOTAction, IDPrefix, IField, SegmentType, LINK_REG, string2Segment } from '@apitable/core';
-import styles from './style.module.less';
-import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
-import { FieldTitle } from 'pc/components/expand_record/field_editor';
-import ChangesetItemHeader from '../changeset_item_header';
-import cls from 'classnames';
+import { FieldType, IDPrefix, IField, IJOTAction, LINK_REG, SegmentType, Selectors, string2Segment} from '@apitable/core';
 import { useThemeColors } from '@vikadata/components';
-import { useStore } from 'react-redux';
-import { supplyMemberField, supplyMultiSelectField, supplyExtraField, supplySelectField } from './utils';
-import EditorTitleContext from '../../editor_title_context';
 import { ArrowRightOutlined } from '@vikadata/icons';
+import cls from 'classnames';
 import { has, intersectionWith, isEqual, xorBy } from 'lodash';
+import { FieldTitle } from 'pc/components/expand_record/field_editor';
+import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
+import { store } from 'pc/store';
 import { stopPropagation } from 'pc/utils';
+import * as React from 'react';
+import EditorTitleContext from '../../editor_title_context';
+import ChangesetItemHeader from '../changeset_item_header';
+import styles from './style.module.less';
+import { supplyExtraField, supplyMemberField, supplyMultiSelectField, supplySelectField } from './utils';
 
 const TEXT_TYPES = [
   FieldType.Text, FieldType.SingleText, FieldType.Number,
@@ -47,8 +47,6 @@ const FieldSwitchTitle: React.FC<{ od: any; oi: any }> = ({ od, oi }) => {
 const ChangesetItemActionBase: React.FC<IChangesetItemAction> = (props) => {
   const { actions, datasheetId, cacheFieldOptions, revision } = props;
   const { updateFocusFieldId } = React.useContext(EditorTitleContext);
-  const store = useStore();
-
   const state = store.getState();
   const snapshot = Selectors.getSnapshot(state, datasheetId)!;
   const ActionItem: React.FC<IActionItem> = ({ action, index }) => {
@@ -255,3 +253,4 @@ const ChangesetItemActionBase: React.FC<IChangesetItemAction> = (props) => {
 };
 
 export const ChangesetItemAction = React.memo(ChangesetItemActionBase);
+

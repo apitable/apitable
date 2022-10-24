@@ -1,16 +1,15 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import * as React from 'react';
-import RcTrigger from 'rc-trigger';
-import cx from 'classnames';
-import { ChevronDownOutlined } from '@vikadata/icons';
-
-import CheckOutlined from '@ant-design/icons/CheckOutlined';
-import { useClickAway } from 'ahooks';
 import { useThemeColors } from '@vikadata/components';
-
-import styles from './style.module.less';
+import { ChevronDownOutlined } from '@vikadata/icons';
+import { useClickAway } from 'ahooks';
+import cx from 'classnames';
+import dynamic from 'next/dynamic';
 import { getElementDataset } from 'pc/utils';
+import RcTrigger from 'rc-trigger';
+import * as React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import styles from './style.module.less';
 
+const CheckOutlined = dynamic(() => import('@ant-design/icons/CheckOutlined'), { ssr: false });
 type TSelectValue = string;
 
 interface IOption {
@@ -125,7 +124,7 @@ export const Select = ({
       ref={triggerRef}
     >
       {renderedTrigger}
-      { triggerArrowVisible && <ChevronDownOutlined
+      {triggerArrowVisible && <ChevronDownOutlined
         color={colors.thirdLevelText} className={cx(styles.triggerIcon, { [styles.triggerIconOpen]: visible })} />
       }
     </div>

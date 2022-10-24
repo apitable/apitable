@@ -7,7 +7,7 @@ import { store } from 'pc/store';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage/storage';
 import { tracker } from 'pc/utils/tracker';
 import { FC, useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import TopImg from 'static/icon/datasheet/datasheet_img_wizard_tasklist.png';
 import { Model } from '../../common/model/model';
 import { Guide } from '../../guide';
@@ -228,9 +228,9 @@ export const showTaskList = (options: IGuideTaskListProps) => {
   const render = () => {
     const div = document.createElement('div');
     document.body.appendChild(div);
-    ReactDOM.render(
+    const root = createRoot(div);
+    root.render(
       (<TaskList {...options} />),
-      div,
     );
   };
 

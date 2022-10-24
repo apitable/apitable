@@ -3,10 +3,11 @@ import { Api, ConfigConstant, IReduxState, Navigation, StoreActions, Strings, t 
 import { Progress, Upload } from 'antd';
 import { Message, Modal } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { usePercent } from 'pc/hooks/use_percent';
 import { byte2Mb } from 'pc/utils';
 import { FC, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import FailIcon from 'static/icon/common/common_tip_default_small.svg';
 import SuccessIcon from 'static/icon/common/common_tip_success_small.svg';
 import UploadIcon from 'static/icon/workbench/workbench_tip_upload.svg';
@@ -35,7 +36,7 @@ export const ImportFile: FC<IImportFileProps> = ({
   const [errMsg, setErrMsg] = useState<string>('');
   const [isUploading, setIsUploading] = useState(false);
   const [isProcess, setProcessing] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { percent, stop: stopPercent, start: startPercent } = usePercent(60, 99, 1500);
 
   const [isFail, setIsFail] = useState<ProgressType>(ConfigConstant.PROGRESS_NORMAL);

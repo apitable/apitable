@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { Fragment } from 'react';
 import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 interface IPayingModal {
   visible?: boolean,
@@ -56,7 +57,7 @@ const PayingModal: React.FunctionComponent<IPayingModal> = (props) => {
       <div className={classNames(sc('body'))}>
         <div className={classNames(sc('content'))} style={{ width: '888px', maxHeight }}>
           <div className={sc('close')}>
-            <IconButton icon={CloseLargeOutlined} variant="blur" onClick={onClickClose} />
+            <IconButton icon={CloseLargeOutlined} variant='blur' onClick={onClickClose} />
           </div>
           {!isNull(header) && <header className={sc('header')}>{header}</header>}
           <main className={sc('main')}>
@@ -82,13 +83,14 @@ const PayingModal: React.FunctionComponent<IPayingModal> = (props) => {
 
 export const showPayingModalBase = (data: IShowPayingModalBase) => {
   const { visible = true, main, onCancel, ...rest } = data;
+  const div = document.createElement('div');
+  const root = createRoot(div);
   const close = (e?: any) => {
-    ReactDOM.render(React.cloneElement(component, { visible: false }), div);
-    ReactDOM.unmountComponentAtNode(div);
+    root.render(React.cloneElement(component, { visible: false }));
+    root.unmount();
     div.remove();
     onCancel && onCancel(e);
   };
-  const div = document.createElement('div');
   const component =
     <PayingModal
       visible={visible}
@@ -101,7 +103,7 @@ export const showPayingModalBase = (data: IShowPayingModalBase) => {
     </PayingModal>;
 
   document.body.append(div);
-  ReactDOM.render(component, div);
+  root.render(component);
   return close;
 };
 

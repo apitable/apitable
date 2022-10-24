@@ -2,14 +2,14 @@ import { ResourceType, Selectors, StoreActions, IWidgetPanelStatus } from '@apit
 import { usePrevious } from 'ahooks';
 import { difference } from 'lodash';
 import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { store } from 'pc/store';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';
 import { useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 export const useManageWidgetMap = () => {
-  const dispatch = useDispatch();
-
+  const dispatch = useAppDispatch();
   const { datasheetId, mirrorId } = useSelector(state => state.pageParams);
   const resourceId = mirrorId || datasheetId;
   const resourceType = mirrorId ? ResourceType.Mirror : ResourceType.Datasheet;

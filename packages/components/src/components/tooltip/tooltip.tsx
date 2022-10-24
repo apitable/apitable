@@ -42,7 +42,7 @@ export interface ITooltipProps {
    * 浮层渲染父节点，默认渲染到body上
    */
   getPopupContainer?: () => HTMLElement;
-  style?: React.CSSProperties
+  style?: React.CSSProperties;
 }
 
 const GlobalStyle = createGlobalStyle`
@@ -70,19 +70,21 @@ function isReactText(children: React.ReactNode) {
   return ['string', 'number'].includes(typeof children);
 }
 
-export const Tooltip: FC<ITooltipProps> = ({
-  children,
-  content,
-  placement = 'top-center',
-  color,
-  visible,
-  arrow = true,
-  trigger = 'hover',
-  zIndex,
-  onVisibleChange,
-  getPopupContainer = () => document.body,
-  style,
-}) => {
+export const Tooltip: FC<ITooltipProps> = (
+  {
+    children,
+    content,
+    placement = 'top-center',
+    color,
+    visible,
+    arrow = true,
+    trigger = 'hover',
+    zIndex,
+    onVisibleChange,
+    getPopupContainer = () => document.body,
+    style,
+  }
+) => {
   const theme = useProviderTheme();
   const [isOver, hoverProps] = useHover();
   const [clickState, setClickState] = useState(false);
@@ -104,7 +106,7 @@ export const Tooltip: FC<ITooltipProps> = ({
   let triggerEle;
   if (isReactText(children)) {
     triggerEle = (
-      <span className="tooltip-text-wrapper" {...triggerProps} {...hoverProps} onClick={() => setClickState(!clickState)}>
+      <span className='tooltip-text-wrapper' {...triggerProps} {...hoverProps} onClick={() => setClickState(!clickState)}>
         {children}
       </span>
     );
@@ -116,15 +118,15 @@ export const Tooltip: FC<ITooltipProps> = ({
     });
   }
 
-  const tooltipBaseProps = { ...layerProps, style: { ...layerProps.style, zIndex, ...style }};
+  const tooltipBaseProps = { ...layerProps, style: { ...layerProps.style, zIndex, ...style } };
 
   return (
     <>
       {triggerEle}
       {isOpen &&
         renderLayer(
-          <TooltipBase className="tooltip" color={color || theme.color.textReverseDefault} {...tooltipBaseProps}>
-            <Typography variant="body4" color={color || theme.color.textReverseDefault}>{content}</Typography>
+          <TooltipBase className='tooltip' color={color || theme.color.textReverseDefault} {...tooltipBaseProps}>
+            <Typography variant='body4' color={color || theme.color.textReverseDefault}>{content}</Typography>
             {arrow &&
               <Arrow
                 {...arrowProps}

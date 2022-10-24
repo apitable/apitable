@@ -1,9 +1,9 @@
-import ReactDOM from 'react-dom';
-import * as React from 'react';
-import { Provider } from 'react-redux';
-import { store } from 'pc/store';
+import { Avatar, Box, Divider, LinkButton, Modal, Space, Typography } from '@vikadata/components';
 import { IWidgetPackage } from '@apitable/core';
-import { Typography, Modal, Box, Space, Divider, Avatar, LinkButton } from '@vikadata/components';
+import { store } from 'pc/store';
+import * as React from 'react';
+import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
 
 type IReviewInfo = IWidgetPackage & {
   onClose?: () => void
@@ -18,7 +18,7 @@ export const ReviewInfo: React.FC<IReviewInfo> = (props) => {
     authorName,
     extras,
     version,
-    onClose
+    onClose,
   } = props;
   const Title = () => (
     <Typography variant={'h6'} component={'div'}>
@@ -35,9 +35,9 @@ export const ReviewInfo: React.FC<IReviewInfo> = (props) => {
       onCancel={() => onClose?.()}
       footer={null}
     >
-      <Box display="flex">
-        <Box flex="1" >{description}</Box>
-        <Divider orientation="vertical" />
+      <Box display='flex'>
+        <Box flex='1'>{description}</Box>
+        <Divider orientation='vertical' />
         <Box width={'200px'}>
           <Space
             align='start'
@@ -45,9 +45,9 @@ export const ReviewInfo: React.FC<IReviewInfo> = (props) => {
             vertical
           >
             <Space align='start' size={6} vertical>
-              <Box fontWeight="bold">发布者</Box>
+              <Box fontWeight='bold'>发布者</Box>
               <Space size={6}>
-                <Avatar size="xxs" src={authorIcon} alt={authorName} />
+                <Avatar size='xxs' src={authorIcon} alt={authorName} />
                 <Space>{authorName}</Space>
               </Space>
             </Space>
@@ -56,7 +56,7 @@ export const ReviewInfo: React.FC<IReviewInfo> = (props) => {
               <Space>{authorEmail}</Space>
             </Space>
             <Box>
-              <LinkButton href={extras.website} target="_blank">website</LinkButton>
+              <LinkButton href={extras.website} target='_blank'>website</LinkButton>
             </Box>
           </Space>
         </Box>
@@ -68,21 +68,20 @@ export const ReviewInfo: React.FC<IReviewInfo> = (props) => {
 export const expandReviewInfo = (props: IReviewInfo) => {
   const container = document.createElement('div');
   document.body.appendChild(container);
-
+  const root = createRoot(container);
   const onModalClose = () => {
-    ReactDOM.unmountComponentAtNode(container);
+    root.unmount();
     container.parentElement!.removeChild(container);
     props?.onClose && props.onClose();
   };
 
-  ReactDOM.render((
+  root.render((
     <Provider store={store}>
       <ReviewInfo
         {...props}
         onClose={onModalClose}
       />
     </Provider>
-  ),
-  container,
-  );
+  ));
 };
+

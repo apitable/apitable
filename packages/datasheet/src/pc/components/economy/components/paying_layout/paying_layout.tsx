@@ -1,11 +1,14 @@
-import { FC, useRef } from 'react';
-import * as React from 'react';
-import styles from './style.module.less';
-import { Row, Col, Spin } from 'antd';
-import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
-import { useMount, useEventListener } from 'ahooks';
+import { Button, Typography } from '@vikadata/components';
 import { WarnFilled } from '@vikadata/icons';
-import { Typography, Button } from '@vikadata/components';
+import { useEventListener, useMount } from 'ahooks';
+import { Col, Row, Spin } from 'antd';
+import dynamic from 'next/dynamic';
+import * as React from 'react';
+import { FC, useRef } from 'react';
+import styles from './style.module.less';
+
+const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
+
 interface IPayingLayout {
   contentLeft: React.ReactNode,
   contentRight: React.ReactNode,
@@ -18,9 +21,9 @@ interface IPayingLayout {
 }
 
 export const PayingLayout: FC<IPayingLayout> = (
-  { contentLeft, contentRight, footerLeft, footerRight, onSubmit,loading, themeColor }
+  { contentLeft, contentRight, footerLeft, footerRight, onSubmit, loading, themeColor }
 ) => {
-  
+
   const leftRef = useRef<HTMLDivElement | null>(null);
   const rightRef = useRef<HTMLDivElement | null>(null);
   const updateStyle = () => {
@@ -41,19 +44,19 @@ export const PayingLayout: FC<IPayingLayout> = (
     <div className={styles.payingLayout}>
       <div className={styles.content}>
         <Row>
-          <Col span={17} >
-            <div className={styles.contentLeft} ref={ leftRef }>
+          <Col span={17}>
+            <div className={styles.contentLeft} ref={leftRef}>
               {contentLeft}
               <div className={styles.morePayingTypeTip}>
                 <WarnFilled size={24} />
                 <Typography variant='body3'>
-                  当前仅支持使用 V 币支付，了解更多请<a href="#">联系客服</a>
+                  当前仅支持使用 V 币支付，了解更多请<a href='#'>联系客服</a>
                 </Typography>
               </div>
             </div>
           </Col>
           <Col span={7}>
-            <div className={styles.contentRight} ref={ rightRef }>{ contentRight }</div>
+            <div className={styles.contentRight} ref={rightRef}>{contentRight}</div>
           </Col>
         </Row>
       </div>
@@ -69,7 +72,7 @@ export const PayingLayout: FC<IPayingLayout> = (
               footerRight ||
               <div className={styles.footerRight}>
                 <Button
-                  color="primary"
+                  color='primary'
                   className={styles.button}
                   onClick={onSubmit}
                   loading={loading}
@@ -82,7 +85,7 @@ export const PayingLayout: FC<IPayingLayout> = (
       {
         loading &&
         <div className={styles.loading}>
-          <Spin indicator={ <LoadingOutlined style={{ fontSize: 48, color:themeColor }} spin />} />
+          <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: themeColor }} spin />} />
           <Typography variant='body2' className={styles.tip}>支付中</Typography>
         </div>
       }

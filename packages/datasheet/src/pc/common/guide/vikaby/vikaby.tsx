@@ -1,33 +1,31 @@
-import { Popover } from 'antd';
-import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
-import { store } from 'pc/store';
-import ReactDOM from 'react-dom';
-import { useToggle } from 'ahooks';
-import classNames from 'classnames';
-import { Provider, useDispatch, useSelector } from 'react-redux';
-import { TaskCard } from './task_card';
-import { TouchMove } from './touch_move';
-import styles from './style.module.less';
-import { useThemeColors, ThemeProvider } from '@vikadata/components';
-import { Dialog, IDialog } from './dialog';
-import { useMemo, FC, useEffect, useState } from 'react';
+import { ThemeProvider, useThemeColors } from '@vikadata/components';
 import {
-  ConfigConstant, DATASHEET_ID, Events, isPrivateDeployment,
-  Player, ScreenWidth, Selectors, Settings, StoreActions, Strings, t, VIKABY_ID
+  ConfigConstant, DATASHEET_ID, Events, isPrivateDeployment, Player, ScreenWidth, Selectors, Settings, StoreActions, Strings, t, VIKABY_ID,
 } from '@apitable/core';
-import { AccountCenterModal } from 'pc/components/navigation/account_center_modal';
-import VikabyActive from 'static/icon/onboarding/organization_img_vikaby_click.png';
-import VikabyDefault from 'static/icon/onboarding/organization_img_vikaby_default.png';
 import {
-  AdviseOutlined, ClassroomOutlined, FixedOutlined, InviteSmallFilled,
-  RoadmapOutlined, TaskOutlined, ViewContactOutlined
+  AdviseOutlined, ClassroomOutlined, FixedOutlined, InviteSmallFilled, RoadmapOutlined, TaskOutlined, ViewContactOutlined,
 } from '@vikadata/icons';
-import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
-import { isWecomFunc } from 'pc/components/home/social_platform';
+import { useToggle } from 'ahooks';
+import { Popover } from 'antd';
+import classNames from 'classnames';
 import dayjs from 'dayjs';
-import { isMobileApp } from 'pc/utils/env';
 import { compact } from 'lodash';
 import Image from 'next/image';
+import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
+import { isWecomFunc } from 'pc/components/home/social_platform';
+import { AccountCenterModal } from 'pc/components/navigation/account_center_modal';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+import { store } from 'pc/store';
+import { isMobileApp } from 'pc/utils/env';
+import { FC, useEffect, useMemo, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { Provider, useDispatch, useSelector } from 'react-redux';
+import VikabyActive from 'static/icon/onboarding/organization_img_vikaby_click.png';
+import VikabyDefault from 'static/icon/onboarding/organization_img_vikaby_default.png';
+import { Dialog, IDialog } from './dialog';
+import styles from './style.module.less';
+import { TaskCard } from './task_card';
+import { TouchMove } from './touch_move';
 
 interface IVikabyBase {
   defaultExpandMenu?: boolean;
@@ -43,7 +41,7 @@ interface IOperateVikabyProps extends IVikabyBase {
 const VIKABY_ID_REMOVER = 'vika-vikaby';
 const VIKABY_DEFAULT_POSITION = {
   left: 'calc(100% - 88px)',
-  top: 'calc(100% - 88px)'
+  top: 'calc(100% - 88px)',
 };
 export const VIKABY_POSITION_SESSION_KEY = 'vikaby_position';
 export const VIKABY_SUB_POPOVER_CLASS = 'VIKABY_SUB_POPOVER_CONTENT';
@@ -86,7 +84,7 @@ export const Vikaby: FC<IVikabyBase> = ({ defaultExpandMenu, defaultExpandTodo, 
         const url = Settings.activity_train_camp_url.value;
         navigationToUrl(url);
       },
-      invalid: !(dayjs().isAfter(Settings.activity_train_camp_start_time.value) && dayjs().isBefore(Settings.activity_train_camp_end_time.value))
+      invalid: !(dayjs().isAfter(Settings.activity_train_camp_start_time.value) && dayjs().isBefore(Settings.activity_train_camp_end_time.value)),
     },
     !isWecom && {
       icon: <RoadmapOutlined color={colors.thirdLevelText} />,
@@ -96,7 +94,7 @@ export const Vikaby: FC<IVikabyBase> = ({ defaultExpandMenu, defaultExpandTodo, 
         const url = Settings.release_log_history_url.value;
         navigationToUrl(url);
         setMenuVisible(false);
-      }
+      },
     },
     !isWecom && {
       icon: <TaskOutlined color={colors.thirdLevelText} />,
@@ -104,13 +102,13 @@ export const Vikaby: FC<IVikabyBase> = ({ defaultExpandMenu, defaultExpandTodo, 
       onClick: () => {
         setTaskCardVisible(true);
         setMenuVisible(false);
-      }
+      },
     },
     !isWecom && {
       icon: <ClassroomOutlined color={colors.thirdLevelText} />,
       title: t(Strings.vika_small_classroom),
       onClick: () => navigationToUrl(Settings.vika_classroom_url.value),
-      invalid: isMobileApp()
+      invalid: isMobileApp(),
     },
     {
       icon: <ViewContactOutlined color={colors.thirdLevelText} />,
@@ -121,7 +119,7 @@ export const Vikaby: FC<IVikabyBase> = ({ defaultExpandMenu, defaultExpandTodo, 
         TriggerCommands.open_guide_wizard(ConfigConstant.WizardIdConstant.CONTACT_US_GUIDE);
         setMenuVisible(false);
       },
-      invalid: !window.location.pathname.includes('workbench')
+      invalid: !window.location.pathname.includes('workbench'),
     },
     !isWecom && {
       icon: <AdviseOutlined color={colors.thirdLevelText} />,
@@ -129,7 +127,7 @@ export const Vikaby: FC<IVikabyBase> = ({ defaultExpandMenu, defaultExpandTodo, 
       onClick: () => {
         navigationToUrl(Settings['user_feedback_url'].value);
         setMenuVisible(false);
-      }
+      },
     },
     {
       icon: <FixedOutlined color={colors.thirdLevelText} />,
@@ -139,8 +137,8 @@ export const Vikaby: FC<IVikabyBase> = ({ defaultExpandMenu, defaultExpandTodo, 
         Player.doTrigger(Events.workbench_hidden_vikaby_btn_clicked);
         localStorage.setItem('vikaby_closed', 'true');
         destroyVikaby();
-      }
-    }
+      },
+    },
   ]);
   const handleMenuVisibleChange = visible => {
     setMenuVisible(visible);
@@ -170,14 +168,14 @@ export const Vikaby: FC<IVikabyBase> = ({ defaultExpandMenu, defaultExpandTodo, 
         overlayClassName: classNames(VIKABY_SUB_POPOVER_CLASS, styles.vikabyTaskCard),
         content: (
           <TaskCard onClose={() => setTaskCardVisible(false)} setAccountCenterVisible={setAccountCenterVisible} />
-        )
+        ),
       };
     } else if (dialogVisible) {
       return {
         overlayClassName: classNames(
           VIKABY_SUB_POPOVER_CLASS,
           styles.vikabyDialog,
-          dialogConfig?.dialogClx === 'billingNotify' ? styles.billingNotify : dialogConfig?.dialogClx
+          dialogConfig?.dialogClx === 'billingNotify' ? styles.billingNotify : dialogConfig?.dialogClx,
         ),
         content: (
           <Dialog
@@ -187,7 +185,7 @@ export const Vikaby: FC<IVikabyBase> = ({ defaultExpandMenu, defaultExpandTodo, 
               setDialogVisible(false);
             }}
           />
-        )
+        ),
       };
     }
     return {};
@@ -217,7 +215,7 @@ export const Vikaby: FC<IVikabyBase> = ({ defaultExpandMenu, defaultExpandTodo, 
               >
                 {item.icon}{item.title}
               </div>
-            )
+            ),
           )}</>}
           trigger='click'
           overlayClassName={styles.vikabyMenu}
@@ -234,7 +232,7 @@ export const Vikaby: FC<IVikabyBase> = ({ defaultExpandMenu, defaultExpandTodo, 
           >
             <div className={styles.vikabyWrap} id={DATASHEET_ID.VIKABY}>
               <div className={styles.vikaby} style={{ position: 'relative' }}>
-                <Image src={vikaby} layout={'fill'} draggable={false}/>
+                <Image src={vikaby} layout={'fill'} draggable={false} />
               </div>
             </div>
           </TouchMove>
@@ -263,10 +261,11 @@ export const showVikaby = (props?: IVikabyBase) => {
       }
       const div = document.createElement('div');
       document.body.appendChild(div);
-      ReactDOM.render(
+      const root = createRoot(div);
+      root.render(
         (<Provider store={store}>
           <VikabyWithTheme {...props} />
-        </Provider>), div);
+        </Provider>));
     });
   };
 

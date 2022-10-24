@@ -1,11 +1,13 @@
-import { FC } from 'react';
-import * as React from 'react';
-import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
+import { Strings, t } from '@apitable/core';
 import { Spin } from 'antd';
 import classNames from 'classnames';
-import styles from './style.module.less';
-import { t, Strings } from '@apitable/core';
+import dynamic from 'next/dynamic';
+import * as React from 'react';
+import { FC } from 'react';
 import { useSelector } from 'react-redux';
+import styles from './style.module.less';
+
+const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 
 export interface ILoadingProps {
   showText?: boolean;

@@ -7,9 +7,10 @@ import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
 import { InfoCard, Modal } from 'pc/components/common';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 import { useNotificationCreate } from 'pc/hooks';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { FC, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import { AddAdminModal, ModalType } from './add_admin_modal';
 import styles from './style.module.less';
 
@@ -27,7 +28,7 @@ const triggerBase = {
 
 export const SubAdmin: FC = () => {
   const colors = useThemeColors();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const tableRef = useRef<HTMLDivElement>(null);
   const { subAdminList, subAdminListData, user, subscription, spaceInfo } = useSelector((state: IReduxState) => ({
     subAdminList: state.spacePermissionManage.subAdminListData ?

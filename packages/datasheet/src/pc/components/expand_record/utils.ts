@@ -3,7 +3,7 @@ import { debounce } from 'lodash';
 import { EXPAND_RECORD } from 'pc/components/expand_record/expand_record.enum';
 import { Router } from 'pc/components/route_manager/router';
 import { store } from 'pc/store';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 export function getRecordName(title: ICellValue, field: IField) {
   if (!title) {
@@ -21,7 +21,7 @@ export function clearExpandModal() {
   const container = document.querySelectorAll(`.${EXPAND_RECORD}`);
   if (container.length) {
     container.forEach((item) => {
-      ReactDOM.unmountComponentAtNode(item);
+      createRoot(item).unmount();
       item.parentElement!.removeChild(item);
     });
   }

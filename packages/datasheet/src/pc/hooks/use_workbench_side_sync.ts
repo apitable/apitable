@@ -1,21 +1,21 @@
-import { useEffect, useContext } from 'react';
 import {
-  INodeChangeSocketData, StoreActions, ConfigConstant, IReduxState,
-  t, Strings, Selectors, Api, collectProperty, INode, IPermissions, INodeMeta, ResourceType, DEFAULT_PERMISSION,
-  StatusCode
+  Api, collectProperty, ConfigConstant, DEFAULT_PERMISSION, INode, INodeChangeSocketData, INodeMeta, IPermissions, IReduxState, ResourceType,
+  Selectors, StatusCode, StoreActions, Strings, t
 } from '@apitable/core';
+import { ErrorFilled, WarnFilled } from '@vikadata/icons';
+import { has } from 'lodash';
+import { Message } from 'pc/components/common';
+import { Modal } from 'pc/components/common/modal/modal/modal';
+import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
+import { WorkbenchSideContext } from 'pc/components/common_side/workbench_side/workbench_side_context';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { NotificationStore } from 'pc/notification_store';
 import { store } from 'pc/store';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { getNodeTypeByNodeId, getResourceTypeByNodeType } from 'pc/utils';
+import { useContext, useEffect } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { useCatalogTreeRequest } from './use_catalogtree_request';
-import { Message } from 'pc/components/common';
-import { NotificationStore } from 'pc/notification_store';
-import { getNodeTypeByNodeId, getResourceTypeByNodeType } from 'pc/utils';
-import { has } from 'lodash';
-import { WorkbenchSideContext } from 'pc/components/common_side/workbench_side/workbench_side_context';
-import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
-import { Modal } from 'pc/components/common/modal/modal/modal';
-import { WarnFilled, ErrorFilled } from '@vikadata/icons';
 
 export enum NodeChangeInfoType {
   Create = 'nodeCreate',
@@ -33,7 +33,7 @@ enum ErrorType {
 }
 
 export const useWorkbenchSideSync = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { getChildNodeListReq, updateNextNode, getPositionNodeReq } = useCatalogTreeRequest();
   const activeNodeId = useSelector((state: IReduxState) => Selectors.getNodeId(state));
   const { treeNodesMap, socketData, favoriteTreeNodeIds, expandedKeys, spaceId } =
@@ -176,7 +176,7 @@ export const useWorkbenchSideSync = () => {
       modalButtonType,
     });
     const modal = Modal.warning(modalConfig);
-    
+
   };
 
   // 同步非文件夹类型的节点的错误状态

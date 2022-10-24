@@ -1,14 +1,14 @@
 import classNames from 'classnames';
 import { StatusIconFunc } from 'pc/components/common/icon';
 import { FooterBtnInModal } from 'pc/components/common/modal/components/footer_btn';
+import { store } from 'pc/store';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
+import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import { IModalFuncBaseProps } from './modal.interface';
 import { ModalWithTheme } from './modal_with_theme';
 import styles from './style.module.less';
-import { store } from 'pc/store';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import { destroyFns } from './utils';
 
 export const FuncModalBase = (config: IModalFuncBaseProps) => {
@@ -19,10 +19,11 @@ export const FuncModalBase = (config: IModalFuncBaseProps) => {
   } = config;
   const div = document.createElement('div');
   document.body.appendChild(div);
+  const root = createRoot(div);
 
   function destroy() {
-    const unmountResult = ReactDOM.unmountComponentAtNode(div);
-    if (unmountResult && div.parentNode) {
+    root.unmount();
+    if (div.parentNode) {
       div.parentNode.removeChild(div);
     }
     for (let index = 0; index < destroyFns.length; index++) {
@@ -59,7 +60,7 @@ export const FuncModalBase = (config: IModalFuncBaseProps) => {
 
   function render() {
     setTimeout(() => {
-      ReactDOM.render(
+      root.render(
         (<Provider store={store}>
           <ModalWithTheme
             visible
@@ -92,8 +93,7 @@ export const FuncModalBase = (config: IModalFuncBaseProps) => {
               </div>
             </div>
           </ModalWithTheme>
-        </Provider>),
-        div,
+        </Provider>)
       );
     });
   }

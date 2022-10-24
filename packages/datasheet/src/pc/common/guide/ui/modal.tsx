@@ -1,13 +1,13 @@
 import { integrateCdnHost, TrackEvents } from '@apitable/core';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
+import dynamic from 'next/dynamic';
 import { Modal as ModalBase } from 'pc/components/common/modal/modal/modal';
 import { Loading } from 'pc/components/preview_file/preview_type/preview_doc/loading';
 import { tracker } from 'pc/utils/tracker';
 import { FC, useState } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import IconClose from 'static/icon/common/common_icon_close_large.svg';
-import dynamic from 'next/dynamic';
 
 const PreviewMedia = dynamic(() => import('./media'), {
   loading: () => <Loading />,
@@ -57,14 +57,14 @@ const Modal: FC<IGuideModalOptions> = props => {
       onCancel={finalClose}
       getContainer={'.vika-guide-modal'}
     >
-      <div className="vika-guide-modal-title">{title}
-        <div className="vika-guide-modal-close" onClick={finalClose} id={videoId + '_CLOSE'}><IconClose /></div>
+      <div className='vika-guide-modal-title'>{title}
+        <div className='vika-guide-modal-close' onClick={finalClose} id={videoId + '_CLOSE'}><IconClose /></div>
       </div>
-      <div className="vika-guide-modal-body">
-        <div className="vika-guide-modal-description">{description}</div>
-        <div className="vika-guide-modal-children">{children}</div>
+      <div className='vika-guide-modal-body'>
+        <div className='vika-guide-modal-description'>{description}</div>
+        <div className='vika-guide-modal-children'>{children}</div>
       </div>
-      <div className="vika-guide-modal-video-wrap">
+      <div className='vika-guide-modal-video-wrap'>
         {video && <PreviewMedia
           video={`${integrateCdnHost(video)}`}
           autoPlay={autoPlay}
@@ -88,8 +88,9 @@ export const showModal = (props: IGuideModalOptions) => {
       const div = document.createElement('div');
       div.setAttribute('class', video ? 'vika-guide-modal vika-guide-modal-video' : 'vika-guide-modal');
       document.body.appendChild(div);
-      ReactDOM.render(
-        (<Modal video={video} onClose={destroy} {...rest}>{children}</Modal>), div);
+      const root = createRoot(div);
+      root.render(
+        (<Modal video={video} onClose={destroy} {...rest}>{children}</Modal>));
     });
   };
 

@@ -2,9 +2,10 @@ import { Api, ConfigConstant, IReduxState, Navigation, StoreActions, Strings, t 
 import { NormalModal, WithTipTextInput } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useRequest } from 'pc/hooks';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 
 export interface ICreateDataSheetModalProps {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,7 +14,7 @@ export interface ICreateDataSheetModalProps {
 export const CreateDataSheetModal: FC<ICreateDataSheetModalProps> = props => {
   const { setShow } = props;
   const [name, setName] = useState('');
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const spaceId = useSelector(state => state.space.activeId);
   const [error, setError] = useState('');
   const { run: addNode } = useRequest((parentId: string, type: number, nodeName?: string, preNodeId?: string) =>

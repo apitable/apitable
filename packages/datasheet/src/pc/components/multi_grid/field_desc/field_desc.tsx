@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { store } from 'pc/store';
 import * as React from 'react';
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { resourceService } from '../../../resource_service';
 import { useFieldOperate } from '../hooks';
@@ -27,6 +27,7 @@ interface IFieldDescProps {
 export interface IFieldDescRef {
   save(): void;
 }
+
 export const FieldDescBase: React.ForwardRefRenderFunction<IFieldDescRef, IFieldDescProps> = (props, ref) => {
   const { fieldId, readOnly, style, datasheetId, targetDOM } = props;
   const fieldMap = useSelector(state => Selectors.getFieldMap(state, datasheetId))!;
@@ -145,23 +146,22 @@ export const expandFieldDescEditor = (props: IFieldDescProps) => {
   } else {
     document.body.appendChild(div);
   }
+  const root = createRoot(div);
 
   const onClose = () => {
-    ReactDOM.unmountComponentAtNode(div);
+    root.unmount();
     if (div && div.parentNode) {
       div.parentNode.removeChild(div);
     }
   };
 
-  ReactDOM.render(
+  root.render(
     <Provider store={store}>
       <div
         className={styles.mask}
         onClick={onClose}
       />
-      <FieldDesc {...props}/>
-    </Provider>
-    ,
-    div,
+      <FieldDesc {...props} />
+    </Provider>,
   );
 };

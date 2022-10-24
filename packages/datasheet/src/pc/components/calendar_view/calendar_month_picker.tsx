@@ -61,15 +61,13 @@ export const CalendarMonthPicker = (props: ICalendarMonthPicker) => {
           mode="month"
           editable
           visible={open}
-          onVisibleChange={() => {
-            setOpen(!open);
-          }}
           onChange={val => {
             setDate(dayjs(val));
             setOpen(!open);
           }}
           dateFormat={FORMAT_DATE}
           dateTimeFormat={format}
+          setVisible={setOpen}
         />
       </ComponentDisplay>
     </>

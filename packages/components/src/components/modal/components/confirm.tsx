@@ -3,20 +3,21 @@ import { Box } from 'components/box';
 import { Button } from 'components/button';
 import { TextButton } from 'components/text_button';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
+import styled, { css } from 'styled-components';
+import { applyDefaultTheme } from 'theme';
+import { ThemeProvider } from 'theme_provider';
+import { destroyFns } from '..';
 import { IModalFuncProps, IModalRef } from '../interface';
 import { ModalBase, noop } from './modal_base';
-import { destroyFns } from '..';
-import { applyDefaultTheme } from 'theme';
-import styled, { css } from 'styled-components';
-import { ThemeProvider } from 'theme_provider';
 
 export const confirm = (props: IModalFuncProps): IModalRef => {
   const div = document.createElement('div');
   document.body.appendChild(div);
-
+  const root = createRoot(div);
   const close = () => {
-    ReactDOM.unmountComponentAtNode(div);
+    root.unmount();
+
     if (div?.parentNode) {
       div.parentNode.removeChild(div);
     }
@@ -38,7 +39,7 @@ export const confirm = (props: IModalFuncProps): IModalRef => {
       title,
       onOk = noop,
       onCancel = noop,
-      closable=false,
+      closable = false,
       okText,
       cancelText,
       icon,
@@ -70,7 +71,7 @@ export const confirm = (props: IModalFuncProps): IModalRef => {
               onClick={handleCancel}
               style={{
                 height: 40,
-                padding: '9px 16px'
+                padding: '9px 16px',
               }}
             >
               {props.cancelText || '取消'}
@@ -85,10 +86,10 @@ export const confirm = (props: IModalFuncProps): IModalRef => {
         >
           {props.okText || '确定'}
         </Button>
-      </Box >
+      </Box>
     );
 
-    ReactDOM.render(
+    root.render(
       <ThemeProvider>
         <ModalBase
           visible
@@ -114,16 +115,14 @@ export const confirm = (props: IModalFuncProps): IModalRef => {
         >
           {content}
         </ModalBase>
-      </ThemeProvider>
-      ,
-      div,
+      </ThemeProvider>,
     );
   };
 
   const update = (updateProps: IModalFuncProps): IModalRef => {
     const newProps = {
       ...props,
-      ...updateProps
+      ...updateProps,
     };
     render(newProps);
     return {
@@ -165,7 +164,7 @@ const IconDanger = styled(InformationSmallOutlined).attrs(applyDefaultTheme)`
       fill: ${red[500]};
     `;
   }}
-  `;
+`;
 
 export const withDanger = (props: IModalFuncProps): IModalFuncProps => {
   return {

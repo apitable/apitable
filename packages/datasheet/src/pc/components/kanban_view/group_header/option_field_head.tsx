@@ -1,20 +1,21 @@
+import { useThemeColors } from '@vikadata/components';
 import { useClickAway } from 'ahooks';
+import type { InputRef } from 'antd';
 import { Input } from 'antd';
 import produce from 'immer';
 import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
 import { CellOptions } from 'pc/components/multi_grid/cell/cell_options';
-import { useEffect, useRef, useState } from 'react';
 import * as React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IHeadOptionProps } from './interface';
 import styles from './styles.module.less';
-import { useThemeColors } from '@vikadata/components';
 
 export const OptionFieldHead: React.FC<IHeadOptionProps> = props => {
   const colors = useThemeColors();
   const { cellValue, field, editing, setEditing, onCommand, isAdd, readOnly } = props;
   const [fieldClone, setFieldClone] = useState(field);
   const editAreaRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<Input>(null);
+  const inputRef = useRef<InputRef>(null);
   useEffect(() => {
     setFieldClone(field);
   }, [field]);
@@ -48,8 +49,8 @@ export const OptionFieldHead: React.FC<IHeadOptionProps> = props => {
     if (!inputRef.current) {
       return;
     }
-    const value = inputRef.current!.input.value;
-    if (!value.length) {
+    const value = inputRef.current!.input?.value;
+    if (!value?.length) {
       setEditing(false);
       return;
     }

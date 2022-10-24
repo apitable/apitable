@@ -5,11 +5,12 @@ import {
 import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
 import { Message } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 
 export const useCatalogTreeRequest = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {
     spaceId,
     formId,

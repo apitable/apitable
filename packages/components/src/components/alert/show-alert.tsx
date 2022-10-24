@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Alert } from './alert';
 import { IAlertProps } from './interface';
 
@@ -17,21 +17,20 @@ export const showAlert = (config: IAlertFuncBaseProps) => {
   const div = document.createElement('div');
   div.setAttribute('class', 'funcAlert');
   document.body.appendChild(div);
-
+  const root = createRoot(div);
   function destroy() {
-    const unmountResult = ReactDOM.unmountComponentAtNode(div);
-    if (unmountResult && div.parentNode) {
+    root.unmount();
+    if (div.parentNode) {
       div.parentNode.removeChild(div);
     }
   }
 
   function render() {
     setTimeout(() => {
-      ReactDOM.render(
+      root.render(
         (
           <Alert {...rest} />
         ),
-        div,
       );
     });
   }
