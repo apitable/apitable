@@ -115,7 +115,12 @@ const AlbumDetail: FC<IAlbumDetail> = props => {
                   <Image src={recommend.cover} alt="recommend cover" layout="fill" objectFit="cover" />
                 </div>
                 <div className={styles.albumRecommendContent}>
-                  <h4>{recommend.name}</h4>
+                  <Typography
+                    variant="h7"
+                    ellipsis
+                  >
+                    {recommend.name}
+                  </Typography>
                   <Typography
                     variant="body4"
                     className={styles.albumRecommendDesc}
