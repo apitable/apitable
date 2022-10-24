@@ -6,8 +6,11 @@ import {
 } from 'store/action_constants';
 import { IFillHandleStatus } from 'store/interface';
 
-// 设置选区
-
+/**
+ * set the selection area
+ * @param ranges 
+ * @returns 
+ */
 export const setSelection = (ranges: IRange | IRange[]): any => (dispatch, getState: () => IReduxState) => {
   const state = getState();
   const datasheetId = state.pageParams.datasheetId;
@@ -35,20 +38,32 @@ export const setSelection = (ranges: IRange | IRange[]): any => (dispatch, getSt
   });
 };
 
-// 设置活动单元格
+/**
+ * set the active cell
+ * @param datasheetId 
+ * @param cell 
+ * @returns 
+ */
 export const setActiveCell = (datasheetId: string, cell: ICell) => {
   const payload = cell;
   return {
     type: SET_ACTIVE_CELL,
     datasheetId,
     payload: {
-      ranges: [{ start: cell, end: cell }], // 激活单元格时，选区就是激活单元格自己到自己的向量。
+      // when activate cell, selection area equals the the vector of active cell itself
+      ranges: [{ start: cell, end: cell }], 
       activeCell: payload,
     },
   };
 };
 
-// 记录当前选中的 record
+/**
+ * set the records being selected
+ * 
+ * @param datasheetId 
+ * @param recordRange 
+ * @returns 
+ */
 export const setRecordRange = (datasheetId: string, recordRange: IRecordRanges) => {
   return {
     type: SET_RECORD_SELECTION,
@@ -57,7 +72,11 @@ export const setRecordRange = (datasheetId: string, recordRange: IRecordRanges) 
   };
 };
 
-// 保留已经勾选的 record，但是清除激活单元格，连续选区等数据。
+/**
+ * remain checked records, but clear active cell and continuous selection area data.
+ * @param datasheetId 
+ * @returns 
+ */
 export const clearSelectionButKeepCheckedRecord = (datasheetId: string) => {
   return {
     type: CLEAR_SELECTION_BUT_KEEP_CHECKED_RECORD,
@@ -65,7 +84,12 @@ export const clearSelectionButKeepCheckedRecord = (datasheetId: string) => {
   };
 };
 
-// 清除选区数据
+/**
+ * clear the data in selection area
+ * 
+ * @param datasheetId 
+ * @returns 
+ */
 export const clearSelection = (datasheetId: string) => {
   return {
     type: CLEAR_SELECTION,
@@ -73,7 +97,13 @@ export const clearSelection = (datasheetId: string) => {
   };
 };
 
-// 设置当前选中的列
+/**
+ * set current selected columns
+ * 
+ * @param datasheetId 
+ * @param payload 
+ * @returns 
+ */
 export const setFieldRanges = (datasheetId: string, payload: IFieldRanges) => {
   return {
     type: SET_FIELD_RANGES,
@@ -84,7 +114,12 @@ export const setFieldRanges = (datasheetId: string, payload: IFieldRanges) => {
 
 type ISetFillHandleStatus = Omit<IFillHandleStatus, 'fillRange'> & { hoverCell?: ICell };
 
-// 设置填充把手激活状态
+/**
+ * set the Fill Handle active status
+ * 
+ * @param payload 
+ * @returns 
+ */
 export const setFillHandleStatus = (payload: ISetFillHandleStatus): any => (dispatch: any, getState: () => IReduxState) => {
   const state = getState();
   const datasheetId = state.pageParams.datasheetId;
@@ -102,7 +137,9 @@ export const setFillHandleStatus = (payload: ISetFillHandleStatus): any => (disp
       },
     });
   }
-  // 按下填充把手后，鼠标可以任意拖动，hover 在任意 cell 上，需要根据 hoverCell 计算出 填充的方向，然后修正选区。
+
+  // after click the fill handle, mouse can drag anywhere, hover on any cell
+  // calculate the fill direction according to `hoverCell`, and then fix the selection area.
   const direction = Range.bindModel(selectionRange).getDirection(state, payload.hoverCell);
   if (!direction) return;
   const isFillHandleActive = Boolean(fillHandleStatus && fillHandleStatus.isActive);

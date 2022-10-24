@@ -1,7 +1,7 @@
 import { ICollaborator, INodeMeta } from './datasheet';
 import * as ActionConstants from '../../action_constants';
 
-// 支持储存多个 dashboard 的状态
+// support store multi states of dashboard
 export interface IDashboardMap {
   [dashboardId: string]: IDashboardPack;
 }
@@ -26,14 +26,14 @@ export interface IDashboardPack {
   client: IDashboardClient;
 }
 
-// INodeMeta 见下面的 code
+// INodeMeta see code below
 export interface IDashboard extends INodeMeta {
   snapshot: IDashboardSnapshot;
 }
 
 export interface IDashboardClient {
   isFullScreen: boolean;
-  showRecommendPanel: boolean; // 是否展示底部的推荐面板
+  showRecommendPanel: boolean; // whether or not to show the recommended panel below
   collaborators?: ICollaborator[];
 }
 

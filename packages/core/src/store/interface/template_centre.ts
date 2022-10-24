@@ -1,9 +1,14 @@
 import * as actions from '../action_constants';
 
 export interface ITemplateCentre {
-  // 模板分类
+  /**
+   * template category
+   */
   category: ITemplateCategory[];
-  // 某个模板的目录信息
+  
+  /**
+   * some template's template directory
+   */
   directory: ITemplateDirectory | null;
 }
 

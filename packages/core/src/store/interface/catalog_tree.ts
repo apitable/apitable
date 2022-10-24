@@ -37,7 +37,9 @@ export interface ICatalogTree {
   permissionCommitRemindStatus: boolean;
   /** 成员消息发送所需参数 **/
   permissionCommitRemindParameter: ICommitRemind | null;
-  /**  无权限人员unitIds **/
+  /**
+   * unit ids that members have no permissions
+   */
   noPermissionMembers: string[];
   /** 移动至（移动文件）弹窗 */
   moveToNodeIds?: string[];
@@ -50,7 +52,7 @@ export interface IRightClickInfo {
   module: ConfigConstant.Modules;
   // 表示要调用哪个类型的菜单
   contextMenuType: ConfigConstant.ContextMenuType;
-  // 当前节点的层级
+  // current node's level
   level: string;
 }
 
@@ -244,7 +246,9 @@ export interface INodePermissionData {
   type: number;
 }
 
-// 组织
+/**
+ * Unit, (parent of team and member)
+ */
 export interface IUnit {
   teams: ITeam[];
   tags: ITag[];
@@ -282,7 +286,7 @@ export interface IMember {
   isDeleted: boolean;
   teams: string;
   teamData: ITeamData[];
-  // 企微
+  // for weCom(wechat work)
   isMemberNameModified?: boolean;
   isNickNameModified?: boolean;
 }

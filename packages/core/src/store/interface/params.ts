@@ -2,18 +2,26 @@ import { ActivityListParamsType } from 'config/constant';
 
 export interface IActivityListParams {
   type?: ActivityListParamsType;
-  // 版本号
+
   maxRevision?: number;
-  // 每页数量
+  /**
+   * Number of items per page
+   */
   pageSize?: number;
   limitDays?: number;
 }
 
 export interface IRubbishListParams {
-  // 已加载列表中最后一个节点的ID
+  /**
+   * the last node ID in the loaded list
+   */
   lastNodeId?: string;
-  // 每页数量
+  /**
+   * number of items per page
+   */
   size?: number;
-  // 是否请求超限节点（默认FALSE）
+  /**
+   * whether or not request the over-limit nodes (default FALSE)
+   */
   isOverLimit?: boolean;
 }

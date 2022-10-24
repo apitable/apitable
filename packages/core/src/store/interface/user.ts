@@ -38,9 +38,9 @@ export interface IUserInfo {
   nickName: string;
   isNickNameModified: boolean;
   spaceLogo: string;
-  uuid: string; // 用户全局 ID
-  userId: string; // 之前命名有误，保留只是为了兼容
-  memberId: string; // 用户作为当前空间成员的 ID
+  uuid: string; // user global ID
+  userId: string; // this is deprecated but compatible, name mistake before 
+  memberId: string; // member id (user in the space as member)
   memberName: string;
   isMemberNameModified: boolean;
   isNewComer: boolean;

@@ -1,11 +1,10 @@
 import * as actions from '../action_constants';
-// 页面总接口
 export interface INotification {
   unReadCount: number;
   readCount: number;
   unReadNoticeList: INoticeDetail[];
   readNoticeList: INoticeDetail[];
-  newNoticeListFromWs: INoticeDetail[]; // 新推送过的消息
+  newNoticeListFromWs: INoticeDetail[]; // new notifications list from websocket push
 }
 
 // action
@@ -39,7 +38,7 @@ export interface IGetNewMsgFromWsAndLookAction {
   payload: boolean;
 }
 
-// 数据接口
+// date interfaces start
 
 export interface INoticeDetail {
   createdAt: string;

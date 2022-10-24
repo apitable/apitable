@@ -1,6 +1,5 @@
 import * as actions from '../action_constants';
 
-// 页面总接口
 export interface ISpacePermissionManage {
   subAdminListData: ISubAdminListData | null;
   mainAdminInfo: IMainAdminInfo | null;
@@ -23,7 +22,6 @@ export interface IUpdateSpaceResourceAction {
   payload: ISpaceResource;
 }
 
-// 数据接口
 export interface ISubAdminListData {
   firstPage: boolean;
   lastPage: boolean;

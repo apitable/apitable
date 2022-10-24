@@ -1,9 +1,9 @@
 /*
- * 识别复数，并修改转化字符串
+ * Plural handlers, auto transform the string
  *
- * @Author: Kelly Peilin Chan (kelly@vikadata.com)
+ * @Author: Kelly Peilin Chan (kelly@apitable.com)
  * @Date: 2020-03-12 14:17:51
- * @Last Modified by: Kelly Peilin Chan (kelly@vikadata.com)
+ * @Last Modified by: Kelly Peilin Chan (kelly@apitable.com)
  * @Last Modified time: 2020-03-12 14:18:15
  */
 export function plural(str: string, revert: boolean) {

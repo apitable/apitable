@@ -1,6 +1,7 @@
 import * as actions from '../action_constants';
 import { SystemConfigInterfacePlayer, SystemConfigInterfaceGuide } from '../../config/system_config.interface';
-// 页面总接口
+
+// top interfaces
 export interface IHooks {
   pendingGuideWizardIds: number[];
   curGuideWizardId: number;
@@ -36,7 +37,8 @@ export interface IInitHooksDataAction {
 export interface IClearWizardsDataAction {
   type: typeof actions.CLEAR_WIZARDS_DATA;
 }
-// 数据接口
+
+// data interfaces
 
 type IGuideUiType = 'modal' | 'slideout' | 'hotspot' | 'popover' | 'notice' | 'questionnaire' | 'breath';
 

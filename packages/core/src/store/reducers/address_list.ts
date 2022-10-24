@@ -10,16 +10,15 @@ import {
 import * as actions from '../action_constants';
 import { produce } from 'immer';
 const defaultState: IAddressList = {
-  // 部门列表
   teamList: [],
-  // 所选中部门
+  // selected team
   selectedTeamInfo: {
     teamTitle: '',
     teamId: '',
   },
-  // 成员列表
+  // member list
   memberList: [],
-  // 成员详情
+  // member info
   memberInfo: {
     memberId: '',
     email: '',

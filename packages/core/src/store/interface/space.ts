@@ -57,8 +57,12 @@ export interface ISpaceInfo {
 export interface ISpaceFeatures {
   joinable: boolean;
   invitable: boolean;
-  nodeExportable: boolean; // 已废弃
-  exportLevel: number; // 节点导出根据权限细粒度划分
+  nodeExportable: boolean; // deprecated
+
+  /**
+   * node export level based on permission 
+   */
+  exportLevel: number; 
   mobileShowable: boolean;
   watermarkEnable: boolean;
   allowCopyDataToExternal: boolean;
@@ -70,8 +74,8 @@ export interface ISpaceFeatures {
 }
 
 /**
- * 1 - 自建应用
- * 2 - 第三方应用
+ * 1 - self-created app
+ * 2 - 3rd party app 
  */
 export type ISocialAppType = 1 | 2;
 

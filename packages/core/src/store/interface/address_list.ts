@@ -37,7 +37,9 @@ export interface ITeamData {
   fullHierarchyTeamName?: string;
 }
 
-// 成员信息
+/**
+ * member info
+ */
 export interface IMemberInfoInAddressList {
   memberId: string;
   email: string;
@@ -78,7 +80,9 @@ export interface ISelectedTeamInfo {
   memberCount?: number;
   teamId: string;
 }
-// 搜索结果数据-部门
+/**
+ * search result - team
+ */
 export interface ITeamsInSearch {
   teamId: string;
   teamName: string;
@@ -86,7 +90,9 @@ export interface ITeamsInSearch {
   shortName: string;
   originName: string;
 }
-// 搜索结果数据-成员
+/**
+ * search result - member
+ */
 export interface IMembersInSearch {
   memberId: string;
   memberName: string;

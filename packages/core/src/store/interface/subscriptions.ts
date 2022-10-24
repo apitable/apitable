@@ -1,4 +1,4 @@
-// 数据订阅（关注） store interface
+// data subscription (follow) store interface
 import { SET_SUBSCRIPTIONS } from '../action_constants';
 
 export type ISubscriptions = string[];

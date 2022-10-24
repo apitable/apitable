@@ -2,7 +2,9 @@ import { ICollaborator, IDashboard, INodeMeta, ISourceDatasheetInfo, ITemporaryV
 import * as ActionConstants from 'store/action_constants';
 import * as actions from 'store/action_constants';
 
-// 服务端数据结构
+/**
+ * server-side data struct
+ */
 export interface IServerMirror {
   mirror: INodeMeta;
   sourceInfo: ISourceDatasheetInfo;
@@ -13,9 +15,20 @@ export interface IMirrorMap {
 }
 
 export interface IMirrorPack {
-  syncing: boolean; // 标记数据是否在协同中
-  loading: boolean; // 数据是否在加载中
-  connected: boolean; // 标记协同状态
+  /**
+   * whether the data is under collaboration
+   */
+  syncing: boolean; 
+  /**
+   * whether or not the data is loading
+   */
+  loading: boolean; 
+
+  /**
+   * a mark to indicate collaboration status
+   */
+  connected: boolean; 
+
   mirror?: IMirror | null;
   errorCode?: number | null;
   client: IMirrorClient;
@@ -28,7 +41,7 @@ export interface IMirror extends INodeMeta {
 }
 
 export interface IMirrorSnapshot {
-  // 组件面板和小组件
+  // widget panels and widgets
   widgetPanels?: IWidgetPanel[];
 }
 

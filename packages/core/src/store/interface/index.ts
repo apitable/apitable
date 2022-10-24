@@ -44,7 +44,9 @@ export * from './record_vision_mode';
 export * from './preview_file';
 
 export interface IReduxState {
-  isStateRoot: true; // 标记位，用于识别 state 的根结点
+
+  // a mark that indicates `state` is root 
+  isStateRoot: true; 
 
   theme: ThemeName;
   

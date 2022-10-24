@@ -18,7 +18,7 @@ export const getComputedStatus = (state: IReduxState, dsId?: string) => {
   return datasheetPack?.computedStatus;
 };
 
-// 获取查找结果集
+// get the result set from the search
 export const getSearchResultArray = (state: IReduxState, searchKeyword: string): ISearchResult => {
   const computedInfo = getComputedInfo(state);
   if (computedInfo && computedInfo.searchResultArray) return computedInfo.searchResultArray;

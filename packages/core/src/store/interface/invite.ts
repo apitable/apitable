@@ -1,5 +1,4 @@
 import * as actions from '../action_constants';
-// 页面总接口
 export interface IInvite {
   inviteEmailInfo: IInviteEmailInfo | null;
   teamTreeInvite: ITeamTreeNode[];
@@ -45,7 +44,8 @@ export interface IUpdateErrCodeAction {
   type: typeof actions.UPDATE_INVITE_ERR_CODE;
   payload: number | null;
 }
-// 数据接口
+
+// data interfaces start
 export interface IInviteEmailInfo {
   success: boolean;
   data: IInviteEmailInfo;

@@ -1,12 +1,13 @@
 /*
- * 针对 strings.auto.json,  等配置文件的快速配置提取相关的函数
+ * read strings.auto.json,  go translation
  */
 import { template } from 'lodash';
 import { plural } from './plural';
 import { StringKeysMapType, StringKeysType } from './stringkeys.interface';
 
 export const ERROR_STR = '[ERROR STR]';
-// String.key 会返回 key，这里是为了兼容以前的写法
+
+// String.key will return key, for compatibility 
 export const Strings = new Proxy({}, {
   get: function(target, key) {
     return key;
@@ -14,7 +15,7 @@ export const Strings = new Proxy({}, {
 }) as StringKeysMapType;
 
 /**
- * 读取配置Settings中的语言
+ * read Settings in config
  */
 declare const window: any;
 declare const global: any;
@@ -33,19 +34,18 @@ const getLangPkg = () => {
 require('@vikadata/i18n-lang');
 
 /**
- * 多语言获取，传入 key
- * @param stringKey 对应stringkeys.auto.json文件的 key
- * @param options JavaScript Object,  支持字符串格式化（string format），支持lodash _.template
- * @example t(Strings.early_bird) 或 t('early_bird')
+ * multi-language get, pass key as arguments
+ * @param stringKey map the stringkeys.auto.json file
+ * @param options JavaScript Object,  support string format, support lodash _.template
+ * @example t(Strings.early_bird) | t('early_bird')
  */
 export function getText(stringKey: StringKeysType, options: any = null, isPlural = false): string {
   if (!stringKey) {
-    console.error('stringKey 不能为空');
+    console.error('stringKey can not be empty');
     return ERROR_STR;
   }
   const langPkg = getLangPkg();
   if (!langPkg) {
-    // console.error('langPkg 不能为空');
     return ERROR_STR;
   }
 

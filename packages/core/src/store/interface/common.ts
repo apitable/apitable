@@ -1,4 +1,6 @@
-// 分页数据固定字段
+/**
+ * pagination data fixed structure
+ */
 export interface IPageDataBase {
   pageNum: number;
   pageSize: number;

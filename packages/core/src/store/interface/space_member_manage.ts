@@ -1,7 +1,6 @@
 import * as actions from '../action_constants';
 import { ITeamData } from './address_list';
 
-// 页面总接口
 export interface ISpaceMemberManage {
   memberListInSpace: IMemberInfoInSpace[];
   selectedTeamInfoInSpace: ISelectedTeamInfoInSpace | null;
@@ -16,7 +15,8 @@ export interface ISpaceMemberManage {
   selectedTeamRows: ISubTeamListInSpaceBase[];
 }
 
-// action接口
+// action interfaces
+
 export interface IUpdateMemberListInSpaceAction {
   type: typeof actions.UPDATE_MEMBER_LIST_IN_SPACE;
   payload: IMemberInfoInSpace[];
@@ -61,8 +61,9 @@ export interface ISelectedTeamRowsAction {
   type: typeof actions.UPDATE_SELECTED_TEAM_ROWS;
   payload: ISubTeamListInSpaceBase[];
 }
-// 数据接口
-// 成员信息，刚邀请的新成员只有memberId与email
+
+// data interfaces
+// member info, new invited members only has=ve `memberId` and `email`
 export interface IMemberInfoInSpace {
   memberId: string;
   email: string;
@@ -85,7 +86,10 @@ export interface IMemberInfoInSpace {
   isNickNameModified?: boolean;
   teamData?: ITeamData[];
 }
-// 编辑成员信息
+
+/**
+ * edit(update) member info
+ */
 export interface IUpdateMemberInfo {
   memberId: string;
   memberName?: string;
@@ -109,7 +113,8 @@ export interface ISelectedTeamInfoInSpace {
   teamId: string;
   parentId?: string;
 }
-// 数据接口-邮件邀请目标人员信息
+
+// data interface - email invitation's target member info
 export interface IInviteMemberList {
   email: string;
   teamId: string;
@@ -137,7 +142,9 @@ export interface ITagsInSpace {
   tagName: string;
 }
 
-// 添加成员
+/**
+ * add member
+ */
 export interface IAddIsActivedMemberInfo {
   id: string;
   type: number;

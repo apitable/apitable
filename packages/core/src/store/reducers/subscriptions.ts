@@ -1,4 +1,4 @@
-// 数据订阅（关注） reducers
+// reducers for data subscribe(follow)
 import produce from 'immer';
 import { SET_SUBSCRIPTIONS } from '../action_constants';
 import { ISubscriptions, ISetSubscriptionsAction } from '../interface';

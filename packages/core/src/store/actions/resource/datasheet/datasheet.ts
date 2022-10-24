@@ -195,7 +195,7 @@ export function fetchDatasheet(
         dispatch(datasheetErrorCode(datasheetId, StatusCode.COMMON_ERR));
         throw e;
       }).then(props => {
-        // recordIds 存在，证明是只需要加载 recordIds 部分数据
+        // recordIds exits means that only part of recordsIds data is needed @boris
         fetchDatasheetPackSuccess({ ...props, isPartOfData: Boolean(recordIds) });
         props.responseBody.success ? successCb && successCb(props) : failCb && failCb();
       });
@@ -206,7 +206,9 @@ export function fetchDatasheet(
 }
 
 /**
- * @description 在展开选择关联记录的 modal 中，请求该接口，获取关联表的权限；这里不需要考虑模板
+ * in the expanded UI modal that select related records, request this api to get the related table's permission
+ * no need to consider templates
+ * 
  * @param {string} dstId
  * @param {string} foreignDstId
  * @returns {(dispatch: any, getState: () => IReduxState) => (undefined | Promise<void>)}
@@ -245,11 +247,11 @@ export function fetchForeignDatasheet(resourceId: string, foreignDstId: string, 
 }
 
 /**
- * 修改服务端返回的数据
+ * edit the response data that server returns
  * @param data
  */
 export const hackData = (data: IServerDatasheetPack): IServerDatasheetPack | undefined => {
-  // 替换掉旧的 datetime format
+  // replace old datetime format
   if (!data) {
     return;
   }
@@ -313,12 +315,12 @@ export function fetchDatasheetPackSuccess(
     if (data.datasheet) {
       dispatchActions.push(receiveDataPack(data, isPartOfData, getState));
       if (data.units) {
-        // 初始化 UnitMap，供 Member 字段使用
+        // init unityMap, for `member` field use
         const unitMap = {};
         data.units.filter(unit => unit.unitId).forEach(unit => unitMap[unit.unitId!] = unit);
         dispatch(updateUnitMap(unitMap));
 
-        // 初始化 UserMap，供 CreatedBy/LastModifiedBy 字段使用
+        // init UserMap, for `CreatedBy`/`LastModifiedBy` field use
         const userMap = {};
         data.units.filter(unit => unit.userId).forEach(user => userMap[user.userId!] = user);
         dispatch(updateUserMap(userMap));
@@ -343,7 +345,7 @@ export const datasheetErrorCode = (datasheetId: string, code: number | null) => 
   };
 };
 
-// 设置悬浮（未点击）状态
+// set hover(not clicked) state
 export const setHoverRecordId = (datasheetId: string, payload: string | null) => {
   return {
     type: SET_HOVER_RECORD_ID,
@@ -368,9 +370,19 @@ export const setHoverRowOfAddRecord = (datasheetId: string, payload: string | nu
   };
 };
 
-// 设置当前操作的行或者列
-// 对于行来说，这里的操作单指没有checked的行，直接拖拽，如果是多行，操作数据是从recordRanges里获取
-// 对于列来说也一样，这里只保存单独操作的列，多列的数据从fieldRanges里面读取
+/**
+ * 
+ * set current operation's row or column (by sky)
+ * 
+ * for rows, operations here only mean unchecked rows, which can drag it directly, 
+ * if it's multiple rows, the operation data is obtained from recordRanges
+ * 
+ * for columns, similarly, here only save the single column operation, multiple columns data read from fieldRanges
+ * 
+ * @param datasheetId 
+ * @param payload 
+ * @returns 
+ */
 export const setDragTarget = (datasheetId: string, payload: IDragTarget) => {
   return {
     type: SET_DRAG_TARGET,
@@ -587,7 +599,7 @@ export const setGanttDateUnitType = (unitType: DateUnitType, datasheetId: string
   };
 };
 
-// 日历 actions
+// Calendar actions
 export const toggleCalendarGuideStatus = (visible: boolean, datasheetId: string) => {
   return {
     type: TOGGLE_CALENDAR_GUIDE_STATUS,
@@ -626,7 +638,7 @@ export const setCalendarSettingPanelWidth = (width: number, datasheetId: string)
   };
 };
 
-// 架构视图 actions
+// OrgChart view actions
 export const toggleOrgChartGuideStatus = (visible: boolean, datasheetId: string) => {
   return {
     type: TOGGLE_ORG_CHART_GUIDE_STATUS,

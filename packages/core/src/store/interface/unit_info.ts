@@ -12,13 +12,20 @@ interface IUnitBase {
   name: string;
   unitId?: string;
   userId?: string;
-  // 考虑到数据兼容性，这里依然保留 uuid 字段
+
+  /**
+   * consider for compatibility
+   * remain uuid field
+   */
   uuid?: string;
   type?: MemberType;
   avatar?: string;
   isActive?: boolean;
   isDeleted?: boolean;
-  // 企微
+
+  /**
+   * for wecom(wechat work)
+   */
   isMemberNameModified?: boolean;
   teamData?: ITeamData[];
   desc?: string;
@@ -40,9 +47,9 @@ export interface IUnitValue extends IUnitBase {
 
 export interface IUserValue extends IUnitBase {
   userId: string;
-  // 用户（user）是否修改过昵称
+  // whether user has modified nickname
   isNickNameModified?: boolean;
-  // 成员（member）是否修改过昵称
+  // whether member has modified member name
   isMemberNameModified?: boolean;
 }
 

@@ -13,20 +13,21 @@ export interface IUpdateSubscriptionAction {
   payload: ISubscription;
 }
 
-// CONFIG表billing数据结构对应的
-
+/**
+ * map to Config.Billing data structure
+ */
 export interface ISubscription extends ISubscribeResponseData {
-  maxCalendarViewsInSpace: number; //日历视图上限
-  maxFormViewsInSpace: number; // 神奇表单上限
-  maxGalleryViewsInSpace: number; //相册视图上限
-  maxGanttViewsInSpace: number; // 甘特图视图上限
-  maxKanbanViewsInSpace: number; // 看板视图上限
-  maxRemainTimeMachineDays: number; // 时光机最大回退天数
+  maxCalendarViewsInSpace: number; //upper limit of calendar views
+  maxFormViewsInSpace: number; // upper limit of form views
+  maxGalleryViewsInSpace: number; // upper limit of gallery views
+  maxGanttViewsInSpace: number; // upper limit of gantt views
+  maxKanbanViewsInSpace: number; // upper limit of kanban views
+  maxRemainTimeMachineDays: number; // the maximum number of rolling back times of time machine 
   maxMirrorNums:number;
-  fieldPermissionNums: number; // 列权限上限
-  nodePermissionNums: number; //文件权限上限
-  maxRemainRecordActivityDays: number; //当前订阅等级能展示的动态的时间
-  blackSpace: boolean; // 标记当前空间站是否被加入黑名单
+  fieldPermissionNums: number; // the upper limit of column permission
+  nodePermissionNums: number; //the upper limit of node permission
+  maxRemainRecordActivityDays: number; // the max records activities of current subscription level 
+  blackSpace: boolean; // whether current space is in blacklist 
   securitySettingInviteMember: boolean;
   securitySettingApplyJoinSpace: boolean;
   securitySettingShare: boolean;
@@ -35,13 +36,15 @@ export interface ISubscription extends ISubscribeResponseData {
   securitySettingDownloadFile: boolean;
   securitySettingCopyCellData: boolean;
   securitySettingMobile: boolean;
-  securitySettingAddressListIsolation: boolean; // 是否支持通讯录仅显示成员所在小组
+  securitySettingAddressListIsolation: boolean; // whether or not the address list display teams of the member only.
 
-  // 前端补充字段
+  /**
+   * for frontend addon field
+   */
   productName: string;
-  billingPeriod: string; // 订阅周期
-  productColor: string; // 订阅等级对应主题色
-  subscriptionType: string; // 订阅类型
+  billingPeriod: string; // billing period
+  productColor: string; // subscription level theme color
+  subscriptionType: string; // subscription type
   maxAuditQueryDays: number;
 }
 
@@ -79,151 +82,154 @@ export interface IBillingFeature {
   category: string[];
 }
 
-// 订阅接口返回的数据
+/**
+ * the response data that subscription interface return
+ */
 export interface ISubscribeResponseData {
   /**
-   * @description 增值计划
+   * addon(value-added) plan
    */
   addonPlans: string[];
 
   /**
-   * @description 每张表允许的最大记录数
+   * the max records number per datasheet
    */
   maxRowsPerSheet: number;
 
   /**
-   * @description 当前空间站允许的最大记录数
+   * the max record rows number that space permitted
    */
   maxRowsInSpace: number;
 
   /**
-   * @description 空间站支持的最大节点数
+   * the max nodes number of the space
    */
   maxSheetNums: number;
 
   /**
-   * @description 空间站的总容量（包括赠送容量，单位为 byte）
+   * the max capacity(disk size, includes the gift, unit "byte") of the space
    */
   maxCapacitySizeInBytes: number;
 
   /**
-   * @description 套餐容量（不含赠送）
+   * the capacity of subscription plan(does not include the gift)
    */
   subscriptionCapacity: number;
 
   /**
-   * @description 赠送的未过期容量(单位：byte)
+   * the gift capacity of subscription plan that has not expired
    */
   unExpireGiftCapacity: number;
 
   /**
-   * @description 空间站支持的最大席位数
+   * max seats of this space
    */
   maxSeats: number;
 
   /**
-   * @description 空间站内允许的相册视图的最大数量
+   * the max gallery views number of the space
    */
   maxGalleryViewsInSpace: number;
 
   /**
-   * @description 空间站内允许的看板视图的最大数量
+   * the max kanban views number of the space
    */
   maxKanbanViewsInSpace: number;
 
   /**
-   * @description 空间站内允许的表单的最大数量
+   * the max number of forms in the space
    */
   maxFormViewsInSpace: number;
 
   /**
-   * @description 订阅的过期时间
+   * billing expired datetime
    */
   deadline: string;
 
   /**
-   * @description 空间站内支持的管理员的人数
+   * the max number of admins in the space
    */
   maxAdminNums: number;
 
   /**
-   * @description 回收站保存的最长时间
+   * the longest time of recycle bin retention
    */
   maxRemainTrashDays: number;
 
   /**
-   * @description 计划名称
+   * plan name
    */
   plan: string;
 
   /**
-   * @description 产品名称
+   * product name
    */
   product: string;
 
   /**
-   * @description 产品的版本
+   * product version
    */
   version: string;
 
   /**
-   * @description 空间站内允许的甘特视图的最大数量
+   * the max number of gantt views in the space
    */
   maxGanttViewsInSpace: number;
 
   /**
-   * @description 空间站内允许的日历视图的最大数量
+   * the max number of calendar views in the space
    */
   maxCalendarViewsInSpace: number;
 
   /**
-   * @description fusion api 的最大调用量
-   * 原键值对："maxApiUsages": 10;
+   * 
+   * the max number of fusion api call 
+   * previously key-value pair: "maxApiUsages": 10;
    */
   maxApiCall: number;
 
   /**
-   * @description 允许设置的列权限的数量
+   * the max number of column(field) permission
    */
   fieldPermissionNums: number;
 
   /**
-   * @description 时光机支持的最大时间范围
+   * the max time range of time machine
    */
   maxRemainTimeMachineDays: number;
 
   /**
-   * @description 是否支持使用彩虹标签
+   * whether or not support the rainbow label
    */
   rainbowLabel: boolean;
 
   /**
-   * @description 是否支持钉钉集成
+   * whether or not support the dingtalk integration
    */
   integrationDingtalk: boolean;
 
   /**
-   * @description 是否支持飞书集成
+   * whether or not support the lark(feishu) integration
    */
   integrationFeishu: boolean;
 
   /**
-   * @description 是否支持企业微信集成
+   * whether or not support the wecom integration
    */
   integrationWeCom: boolean;
 
   /**
-   * @description 是否支持水印
+   * whether or not support the watermark
    */
   watermark: boolean;
 
   /**
-   * @description 是否支持 永中office 集成
+   * whether or not support the office suite integration
    */
   integrationOfficePreview: boolean;
 
   /**
-   * @description 当前订阅等级能展示的动态的时间
+   * the time that current billing level show support
    */
   maxRemainRecordActivityDays: number;
 }
