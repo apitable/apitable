@@ -8,7 +8,7 @@ import { useMount } from 'ahooks';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { Modal as ModalBase } from 'pc/components/common/modal/modal/modal';
-import { isSocialPlatformEnabled } from 'pc/components/home/social_platform';
+import { isSocialPlatformEnabled, isDingtalkFunc, isWecomFunc, isLarkFunc } from 'pc/components/home/social_platform';
 import { store } from 'pc/store';
 import { tracker } from 'pc/utils/tracker';
 import QRCode from 'qrcode';
@@ -81,13 +81,13 @@ const Modal: FC<IGuideContactUsOptions> = props => {
 
   const isVikaby = true;
   /**
-   * QR code first distinguish whether it is newbie guide jump or click customer service, 
+   * QR code first distinguish whether it is newbie guide jump or click customer service,
    * then distinguish platform, platform -> saas, nail, enterprise micro, fly book
    */
   // Third-party platforms do not distinguish between sweeps and clients, only space station attribution
-  const isBindDingTalk = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.DINGTALK);
-  const isBindWecom = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.WECOM);
-  const isBindFeishu = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.FEISHU);
+  const isBindDingTalk = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.DINGTALK) || isDingtalkFunc();
+  const isBindWecom = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.WECOM) || isWecomFunc();
+  const isBindFeishu = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.FEISHU) || isLarkFunc();
 
   const platformImg = isBindDingTalk ? dingtalk : isBindWecom ? wecom : website;
 
