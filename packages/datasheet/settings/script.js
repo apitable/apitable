@@ -4,7 +4,7 @@ const {
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
-
+const envfile = require('envfile');
 const TEMPLATE = require('./template');
 
 const SPACE_ID = 'spczdmQDfBAn5';
@@ -36,7 +36,7 @@ const getEnvName = () => {
 const getConfigDatasheet = async(envName) => {
   // 获取指定空间站的指定文件夹详情
   const privateEnvFoldersRes = await vika.nodes.get({ spaceId: SPACE_ID, nodeId: CONFIG_PACKAGE_ID });
-  if (privateEnvFoldersRes.success){
+  if (privateEnvFoldersRes.success) {
     // 找到对应部署环境所有配置表
     const folder = privateEnvFoldersRes.data.children?.find(fol => fol.name === envName);
 
@@ -46,7 +46,7 @@ const getConfigDatasheet = async(envName) => {
 
     await sleep(); // 不sleep会报429
     const privateEnvDstRes = await vika.nodes.get({ spaceId: SPACE_ID, nodeId: folder.id });
-    if (privateEnvDstRes.success){
+    if (privateEnvDstRes.success) {
       if (privateEnvDstRes.data.children) return privateEnvDstRes.data.children;
       throw new Error('No configuration datasheets');
     }
@@ -167,13 +167,11 @@ const fetchStrings = async(datasheetOfStrings, template) => {
   return _template;
 };
 
-const fetchSettings = async(datasheetOfStrings, template) => {
-  let _template = template;
-
+const fetchSettings = async(datasheetOfStrings) => {
   if (!datasheetOfStrings) {
     console.log('Settings datasheet not found, skip');
 
-    return _template.replace('{{custom_settings}}', '{}');
+    return {};
   }
 
   console.log(`Execute ${datasheetOfStrings.name} datasheet to generate custom settings`);
@@ -181,7 +179,7 @@ const fetchSettings = async(datasheetOfStrings, template) => {
   const recordsOfSettings = await getDatasheetData(datasheetOfStrings.id);
 
   if (!recordsOfSettings.length) throw new Error('Settings datasheet has no data');
-  
+
   const settingsObject = recordsOfSettings.reduce((acc, cur) => {
     if (cur?.fields) {
       return {
@@ -191,9 +189,18 @@ const fetchSettings = async(datasheetOfStrings, template) => {
     }
   }, {});
 
-  const string = JSON.stringify(settingsObject);
+  return settingsObject;
+};
 
-  return _template.replace('{{custom_settings}}', string);
+const generateENV = async(configDatasheets) => {
+  const ENV_PATH = path.resolve(__dirname, '../', '.env');
+  const settings = await fetchSettings(configDatasheets.find(configDatasheet => configDatasheet.name === 'settings'));
+  let parsedFile = envfile.parse(fs.readFileSync(ENV_PATH));
+
+  for (const k in settings) {
+    parsedFile[k.toUpperCase()] = settings[k];
+  }
+  fs.writeFileSync(ENV_PATH, envfile.stringify(parsedFile));
 };
 
 const main = async() => {
@@ -209,7 +216,8 @@ const main = async() => {
     let template = TEMPLATE;
 
     template = await fetchStrings(configDatasheets.find(configDatasheet => configDatasheet.name === 'strings'), template);
-    template = await fetchSettings(configDatasheets.find(configDatasheet => configDatasheet.name === 'settings'), template);
+
+    await generateENV(configDatasheets);
 
     const _path = path.resolve(`${BUILD_PATH}/custom`);
     if (!fs.existsSync(_path)) {

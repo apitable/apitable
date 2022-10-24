@@ -73,6 +73,7 @@
     "element-closest": "^3.0.2",
     "element-scroll-polyfill": "^1.0.1",
     "emoji-mart": "^3.0.0",
+    "envfile": "^6.18.0",
     "eruda": "^2.4.1",
     "exceljs": "4.1.1",
     "file-saver": "^2.0.5",

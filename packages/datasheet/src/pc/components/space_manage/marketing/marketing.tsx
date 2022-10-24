@@ -64,6 +64,9 @@
 //   );
 // };
 
+import { Trial } from 'pc/components/space_manage/log/trial';
+import { getEnvVariables } from 'pc/utils/env';
+import { useState } from 'react';
 import * as React from 'react';
 import style from './style.module.less';
 import { List } from './list';
@@ -93,16 +96,16 @@ const MarketingBase: React.FC = () => {
   const { loading, apps, appInstances } = useMarketing(spaceId, refresh);
 
   if (loading) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   const data: IStoreAppConfig[] = [
     { type: AppStatus.Open, data: appInstances },
-    { type: AppStatus.Close, data: apps }
+    { type: AppStatus.Close, data: apps },
   ];
 
   if (!spaceInfo || !apps) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   return (
@@ -124,4 +127,13 @@ const MarketingBase: React.FC = () => {
   );
 };
 
-export const Marketing = React.memo(MarketingBase);
+export const Marketing = () => {
+  const vars = getEnvVariables();
+  const [showTrialModal, setShowTrialModal] = useState<boolean>(vars.HIDDEN_UPGRADE_SPACE);
+
+  if (showTrialModal) {
+    return <Trial setShowTrialModal={setShowTrialModal} />;
+  }
+
+  return <MarketingBase />;
+};

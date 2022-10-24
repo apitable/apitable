@@ -13742,6 +13742,7 @@ __metadata:
     element-closest: ^3.0.2
     element-scroll-polyfill: ^1.0.1
     emoji-mart: ^3.0.0
+    envfile: ^6.18.0
     eruda: ^2.4.1
     eslint: ^7.21.0
     eslint-config-next: ^12.2.2
@@ -22170,6 +22171,15 @@ __metadata:
   version: 2.2.0
   resolution: "env-paths@npm:2.2.0"
   checksum: ba2aea38301aafd69086be1f8cb453b92946e4840cb0de9d1c88a67e6f43a6174dcddb60b218ec36db8720b12de46b0d93c2f97ad9bbec6a267b479ab37debb6
+  languageName: node
+  linkType: hard
+
+"envfile@npm:^6.18.0":
+  version: 6.18.0
+  resolution: "envfile@npm:6.18.0"
+  bin:
+    envfile: bin.cjs
+  checksum: 3a3762994d7b84ccf0293c1269cdfa5ea8971bdbbf7e3571fb686a6415eee2029e43d3faf36ed4222a83eaaf38fbc4fa37b3f50b77ea417ca35561e0e54059c1
   languageName: node
   linkType: hard
 

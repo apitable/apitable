@@ -3,6 +3,7 @@ import accept from 'attr-accept';
 import mime from 'mime-types';
 import { browser } from 'pc/common/browser';
 import { byte2Mb } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import IconImg from 'static/icon/datasheet/attachment/attachment_ img_small_placeholder_filled.png'; // img
 import IconTxt from 'static/icon/datasheet/attachment/datasheet_img_attachment_ text_placeholder.png'; // txt
 import IconZip from 'static/icon/datasheet/attachment/datasheet_img_attachment_compressed_placeholder.png'; // zip
@@ -32,7 +33,7 @@ export enum DocType {
 export const NO_SUPPORT_IMG_MIME_TYPE = [
   'image/vnd.adobe.photoshop',
   'image/tiff',
-  'image/vnd.dwg'
+  'image/vnd.dwg',
 ];
 
 const WORD_MIME_TYPE = [
@@ -190,7 +191,7 @@ export const isSupportImage = (mimeType: string) => {
 // 2. 其它文件类型显示对应的 Icon
 export const getCellValueThumbSrc = (
   file: IAttachmentValue,
-  option: IImageSrcOption
+  option: IImageSrcOption,
 ) => {
   let imgSrc = '';
   if (!file) {
@@ -217,11 +218,13 @@ export const getCellValueThumbSrc = (
 };
 
 export function getDownloadSrc(fileInfo: IAttachmentValue) {
-  return `${Settings[fileInfo.bucket].value}${
+  const vars = getEnvVariables();
+  return `${vars[fileInfo.bucket] || Settings[fileInfo.bucket].value}${
     fileInfo.token
   }?attname=${encodeURIComponent(fileInfo.name)}`;
 }
 
 export function getAvInfoRequestUrl(fileInfo: IAttachmentValue) {
-  return `${Settings[fileInfo.bucket].value}${fileInfo.token}?avinfo`;
+  const vars = getEnvVariables();
+  return `${vars[fileInfo.bucket] || Settings[fileInfo.bucket].value}${fileInfo.token}?avinfo`;
 }
