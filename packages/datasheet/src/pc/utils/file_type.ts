@@ -1,9 +1,8 @@
-import { cellValueToImageSrc, IAttachmentValue, IImageSrcOption, isImage, isPdf, isWebp, Settings } from '@apitable/core';
+import { cellValueToImageSrc, getHostOfAttachment, IAttachmentValue, IImageSrcOption, isImage, isPdf, isWebp } from '@apitable/core';
 import accept from 'attr-accept';
 import mime from 'mime-types';
 import { browser } from 'pc/common/browser';
 import { byte2Mb } from 'pc/utils';
-import { getEnvVariables } from 'pc/utils/env';
 import IconImg from 'static/icon/datasheet/attachment/attachment_ img_small_placeholder_filled.png'; // img
 import IconTxt from 'static/icon/datasheet/attachment/datasheet_img_attachment_ text_placeholder.png'; // txt
 import IconZip from 'static/icon/datasheet/attachment/datasheet_img_attachment_compressed_placeholder.png'; // zip
@@ -218,13 +217,11 @@ export const getCellValueThumbSrc = (
 };
 
 export function getDownloadSrc(fileInfo: IAttachmentValue) {
-  const vars = getEnvVariables();
-  return `${vars[`NEXT_PUBLIC_${fileInfo.bucket}`] || Settings[fileInfo.bucket].value}${
-    fileInfo.token
-  }?attname=${encodeURIComponent(fileInfo.name)}`;
+  const host = getHostOfAttachment(fileInfo.bucket);
+  return `${host}${fileInfo.token}?attname=${encodeURIComponent(fileInfo.name)}`;
 }
 
 export function getAvInfoRequestUrl(fileInfo: IAttachmentValue) {
-  const vars = getEnvVariables();
-  return `${vars[`NEXT_PUBLIC_${fileInfo.bucket}`] || Settings[fileInfo.bucket].value}${fileInfo.token}?avinfo`;
+  const host = getHostOfAttachment(fileInfo.bucket);
+  return `${host}${fileInfo.token}?avinfo`;
 }

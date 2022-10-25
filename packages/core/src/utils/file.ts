@@ -99,13 +99,23 @@ export function getImageThumbSrc(src: string, options?: IImageThumbOption) {
   return getImageThumbSrcForQiniu(src, options);
 }
 
+declare const window: any;
+
+export const getHostOfAttachment = (bucket: string) => {
+  const origin = typeof window == 'object' ? window.location.origin : '';
+  if (bucket.toUpperCase() === 'QNY1') {
+    return urlcat(origin, process.env.NEXT_PUBLIC_QNY1 || '') || Settings[bucket].value as string;
+  }
+  return urlcat(origin, process.env.NEXT_PUBLIC_QNY2 || '') || Settings[bucket].value as string;
+};
+
 export function cellValueToImageSrc(
   cellValue: IAttachmentValue | undefined,
   options?: IImageSrcOption,
 ): string {
   if (!cellValue) return '';
   const { bucket, token, preview: previewToken, mimeType, name } = cellValue;
-  const host = process.env[`NEXT_PUBLIC_${bucket}`] || Settings[bucket].value as string;
+  const host = getHostOfAttachment(bucket);
   if (!host) return '';
   const { formatToJPG, isPreview } = options || {};
   const fileArgument = { name, type: mimeType };

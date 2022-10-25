@@ -26,7 +26,5 @@ export const getEnvVars = () => {
     USE_CUSTOM_PUBLIC_FILES: process.env.USE_CUSTOM_PUBLIC_FILES === 'true',
     HIDDEN_UPGRADE_SPACE: process.env.HIDDEN_UPGRADE_SPACE === 'true',
     HIDDEN_THIRD_PARTY_INTEGRATION: process.env.HIDDEN_THIRD_PARTY_INTEGRATION === 'true',
-    // TODO：这里是临时操作，上线前删了
-    ...process.env,
   };
 };
