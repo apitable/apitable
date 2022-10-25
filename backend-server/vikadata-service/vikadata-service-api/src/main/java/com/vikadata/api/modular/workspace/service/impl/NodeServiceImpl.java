@@ -101,6 +101,7 @@ import com.vikadata.api.model.vo.node.ShowcaseVo.NodeExtra;
 import com.vikadata.api.model.vo.node.SimpleSortableNodeInfo;
 import com.vikadata.api.modular.grpc.client.service.IGrpcClientService;
 import com.vikadata.api.modular.organization.mapper.MemberMapper;
+import com.vikadata.api.modular.organization.service.IMemberService;
 import com.vikadata.api.modular.social.model.TenantBindDTO;
 import com.vikadata.api.modular.social.service.IDingTalkInternalIsvService;
 import com.vikadata.api.modular.social.service.ISocialTenantBindService;
@@ -267,6 +268,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Resource
     private INodeRecentlyBrowsedService iNodeRecentlyBrowsedService;
+
+    @Resource
+    private IMemberService iMemberService;
 
     @Override
     public String getRootNodeIdBySpaceId(String spaceId) {
@@ -1881,6 +1885,15 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         List<NodeInfoVo> nodeInfos = this.getNodeInfoByNodeIds(spaceId, memberId,
                 CollUtil.reverse(document.getNodeIds()));
         return formatNodeSearchResults(spaceId, nodeInfos);
+    }
+
+    @Override
+    public Long getCreatedMemberId(String nodeId) {
+        NodeEntity node = baseMapper.selectByNodeId(nodeId);
+        if (null != node && null != node.getCreatedBy()) {
+            return iMemberService.getMemberIdByUserIdAndSpaceId(node.getCreatedBy(), node.getSpaceId());
+        }
+        return null;
     }
 
     private List<NodeSearchResult> formatNodeSearchResults(String spaceId, List<NodeInfoVo> nodeInfoList) {

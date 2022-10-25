@@ -562,4 +562,12 @@ public interface INodeService extends IService<NodeEntity> {
      * @return NodeSearchResult
      */
     List<NodeSearchResult> recentList(String spaceId, Long memberId);
+
+    /**
+     * get node creator
+     * @param nodeId id node id
+     * @return creator
+     */
+    Long getCreatedMemberId(String nodeId);
+
 }
