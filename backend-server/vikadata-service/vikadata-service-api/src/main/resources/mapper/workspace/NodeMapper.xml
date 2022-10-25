@@ -74,7 +74,8 @@
         WHERE node_id IN
         <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
             #{item}
-        </foreach> AND is_rubbish = 0
+        </foreach>
+        AND is_rubbish = 0
     </select>
 
     <select id="selectByNodeIdIncludeDeleted" resultType="com.vikadata.entity.NodeEntity">
@@ -653,7 +654,8 @@
         WHERE node_id IN
         <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
             #{item}
-        </foreach> AND is_rubbish = 0
+        </foreach>
+        AND is_rubbish = 0
     </select>
 
     <select id="selectBaseNodeInfoByNodeIdsIncludeDelete" resultType="com.vikadata.api.model.dto.node.NodeBaseInfoDTO">
@@ -687,7 +689,7 @@
         SELECT vn.node_id, vn.space_id, vn.node_name, vn.type, vn.icon, vn.updated_at AS deletedAt, vn.deleted_path AS
         delPath,
         vu.uuid, vu.avatar, vum.member_name, #{retainDay} AS retainDay,
-        IFNULL(vu.is_social_name_modified, 2) > 0  AS isNickNameModified,
+        IFNULL(vu.is_social_name_modified, 2) > 0 AS isNickNameModified,
         IFNULL(vum.is_social_name_modified, 2) > 0 AS isMemberNameModified
         FROM vika_node vn
         LEFT JOIN vika_user vu ON vn.updated_by = vu.id AND vu.is_deleted = 0
@@ -750,18 +752,26 @@
         SELECT space_id, node_name
         FROM vika_node
         WHERE node_id = #{nodeId}
-          AND is_rubbish = 0
-          AND is_deleted = 0
+        AND is_rubbish = 0
+        AND is_deleted = 0
     </select>
 
     <select id="selectSpaceIdAndNodeNameByNodeIds" resultType="com.vikadata.api.model.dto.node.UrlNodeInfoDTO">
         SELECT space_id, node_name, node_id
         FROM vika_node
         WHERE node_id IN
-            <foreach collection="nodeIds" item="nodeId" index="index" open="(" close=")" separator=",">
-                #{nodeId}
-            </foreach>
-          AND is_rubbish = 0
-          AND is_deleted = 0
+        <foreach collection="nodeIds" item="nodeId" index="index" open="(" close=")" separator=",">
+            #{nodeId}
+        </foreach>
+        AND is_rubbish = 0
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectCreatedByByNodeId" resultType="java.lang.Long">
+        SELECT created_by
+        FROM vika_node
+        WHERE node_id = #{nodeId}
+        AND is_rubbish = 0
+        AND is_deleted = 0
     </select>
 </mapper>

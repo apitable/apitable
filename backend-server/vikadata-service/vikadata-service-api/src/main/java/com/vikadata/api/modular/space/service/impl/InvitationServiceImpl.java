@@ -132,15 +132,20 @@ public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, Invitat
         // To invalidate the application to actively join the space
         TaskManager.me().execute(() -> spaceApplyMapper.invalidateTheApply(ListUtil.toList(dto.getUserId()), dto.getSpaceId(), InviteType.LINK_INVITE.getType()));
         if (!StrUtil.isEmpty(dto.getNodeId())) {
-            Long creatorUnitId = iUnitService.getUnitIdByRefId(dto.getCreator());
             Long controlOwnerUnitId = iControlRoleService.getUnitIdByControlIdAndRoleCode(dto.getNodeId(), Node.OWNER);
-            Long creatorUserId = memberMapper.selectUserIdByMemberId(dto.getCreator());
-            if (!ObjectUtil.equals(creatorUnitId, controlOwnerUnitId)) {
-                iNodeRoleService.enableNodeRole(creatorUserId, dto.getSpaceId(), dto.getNodeId(), true);
+            // set owner role
+            if (null == controlOwnerUnitId) {
+                Long nodeCreator = iNodeService.getCreatedMemberId(dto.getNodeId());
+                if (null == nodeCreator) {
+                    nodeCreator = dto.getCreator();
+                }
+                Long ownerUserId = memberMapper.selectUserIdByMemberId(nodeCreator);
+                iNodeRoleService.enableNodeRole(ownerUserId, dto.getSpaceId(), dto.getNodeId(), true);
             }
             // add update role
+            Long roleAddUserId = memberMapper.selectUserIdByMemberId(dto.getCreator());
             Long invitedUnitId = iUnitService.getUnitIdByRefId(dto.getMemberId());
-            iNodeRoleService.addNodeRole(creatorUserId, dto.getNodeId(), Node.UPDATER, Collections.singletonList(invitedUnitId));
+            iNodeRoleService.addNodeRole(roleAddUserId, dto.getNodeId(), Node.UPDATER, Collections.singletonList(invitedUnitId));
         }
     }
 

@@ -601,4 +601,11 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return URLNodeInfoVo
      */
     List<UrlNodeInfoDTO> selectSpaceIdAndNodeNameByNodeIds(@Param("nodeIds") List<String> nodeIds);
+
+    /**
+     * select node creator by nodeId
+     * @param nodeId node id
+     * @return creator
+     */
+    Long selectCreatedByByNodeId(@Param("nodeId") String nodeId);
 }
