@@ -104,9 +104,9 @@ declare const window: any;
 export const getHostOfAttachment = (bucket: string) => {
   const origin = typeof window == 'object' ? window.location.origin : '';
   if (bucket.toUpperCase() === 'QNY1') {
-    return urlcat(origin, process.env.NEXT_PUBLIC_QNY1 + '') || Settings[bucket].value as string;
+    return urlcat(origin, window.__initialization_data__?.envVars.NEXT_PUBLIC_QNY1 + '') || Settings[bucket].value as string;
   }
-  return urlcat(origin, process.env.NEXT_PUBLIC_QNY2 + '') || Settings[bucket].value as string;
+  return urlcat(origin, window.__initialization_data__?.envVars.NEXT_PUBLIC_QNY2 + '') || Settings[bucket].value as string;
 };
 
 export function cellValueToImageSrc(
