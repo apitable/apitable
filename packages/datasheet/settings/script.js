@@ -194,10 +194,10 @@ const fetchSettings = async(datasheetOfStrings) => {
 
 const generateENV = async(configDatasheets,_path) => {
   const settings = await fetchSettings(configDatasheets.find(configDatasheet => configDatasheet.name === 'settings'));
-  let parsedFile = {}
+  let parsedFile = {};
 
   for (const k in settings) {
-    parsedFile[k.toUpperCase()] = settings[k];
+    parsedFile[`NEXT_PUBLIC_${k.toUpperCase()}`] = settings[k];
   }
   fs.writeFileSync(path.resolve(`${_path}/.env`), envfile.stringify(parsedFile));
 };
@@ -211,7 +211,6 @@ const main = async() => {
     const configDatasheets = await getConfigDatasheet(envName);
 
     await fetchPublic(configDatasheets.find(configDatasheet => configDatasheet.name === 'public'));
-
 
     let template = TEMPLATE;
     const _path = path.resolve(`${BUILD_PATH}/custom`);

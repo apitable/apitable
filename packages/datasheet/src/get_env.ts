@@ -10,7 +10,7 @@ export const getEnvVars = () => {
     WECOM_SHOP_SUITEID: process.env.WECOM_SHOP_SUITEID,
     WECOM_SHOP_CORPID: process.env.WECOM_SHOP_CORPID,
     WECHAT_MP_QR_CODE: process.env.WECHAT_MP_QR_CODE,
-    INTERCOM_APPID:  process.env.INTERCOM_APPID,
+    INTERCOM_APPID: process.env.INTERCOM_APPID,
     FORCE_HTTPS: process.env.FORCE_HTTPS,
     SENTRY_DSN: process.env.SENTRY_DSN,
     SHOW_RECORD_CARD_SETTING: process.env.SHOW_RECORD_CARD_SETTING,
@@ -26,5 +26,7 @@ export const getEnvVars = () => {
     USE_CUSTOM_PUBLIC_FILES: process.env.USE_CUSTOM_PUBLIC_FILES === 'true',
     HIDDEN_UPGRADE_SPACE: process.env.HIDDEN_UPGRADE_SPACE === 'true',
     HIDDEN_THIRD_PARTY_INTEGRATION: process.env.HIDDEN_THIRD_PARTY_INTEGRATION === 'true',
+    // TODO：这里是临时操作，上线前删了
+    ...process.env,
   };
 };

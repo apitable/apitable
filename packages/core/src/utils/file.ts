@@ -105,7 +105,7 @@ export function cellValueToImageSrc(
 ): string {
   if (!cellValue) return '';
   const { bucket, token, preview: previewToken, mimeType, name } = cellValue;
-  const host = process.env[bucket] || Settings[bucket].value as string;
+  const host = process.env[`NEXT_PUBLIC_${bucket}`] || Settings[bucket].value as string;
   if (!host) return '';
   const { formatToJPG, isPreview } = options || {};
   const fileArgument = { name, type: mimeType };
@@ -140,7 +140,7 @@ export function cellValueToImageSrc(
 
 export const integrateCdnHost = (
   pathName: string,
-  host: string = process.env.QNY1 || Settings.QNY1.value,
+  host: string = process.env.NEXT_PUBLIC_QNY1 || Settings.QNY1.value,
 ): string => {
   // TODO:删掉这里。兼容旧版本数据
   if (pathName.startsWith('http')) {

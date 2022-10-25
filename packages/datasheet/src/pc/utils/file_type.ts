@@ -219,12 +219,12 @@ export const getCellValueThumbSrc = (
 
 export function getDownloadSrc(fileInfo: IAttachmentValue) {
   const vars = getEnvVariables();
-  return `${vars[fileInfo.bucket] || Settings[fileInfo.bucket].value}${
+  return `${vars[`NEXT_PUBLIC_${fileInfo.bucket}`] || Settings[fileInfo.bucket].value}${
     fileInfo.token
   }?attname=${encodeURIComponent(fileInfo.name)}`;
 }
 
 export function getAvInfoRequestUrl(fileInfo: IAttachmentValue) {
   const vars = getEnvVariables();
-  return `${vars[fileInfo.bucket] || Settings[fileInfo.bucket].value}${fileInfo.token}?avinfo`;
+  return `${vars[`NEXT_PUBLIC_${fileInfo.bucket}`] || Settings[fileInfo.bucket].value}${fileInfo.token}?avinfo`;
 }
