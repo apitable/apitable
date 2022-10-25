@@ -12,5 +12,4 @@
     <root level="error">
         <appender-ref ref="CONSOLE"/>
     </root>
-    <!--    <logger name="com.baeldung.testloglevel" level="debug"/>-->
 </configuration>

@@ -1,9 +1,9 @@
 package com.vikadata.api.modular.finance.strategy.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -12,7 +12,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.enums.finance.BundleState;
 import com.vikadata.api.enums.finance.OrderChannel;
 import com.vikadata.api.enums.finance.OrderType;
 import com.vikadata.api.enums.finance.SubscriptionPhase;
@@ -23,7 +22,6 @@ import com.vikadata.api.modular.finance.service.IBundleService;
 import com.vikadata.api.modular.finance.service.IOrderItemService;
 import com.vikadata.api.modular.finance.service.IOrderV2Service;
 import com.vikadata.api.modular.finance.service.ISocialWecomOrderService;
-import com.vikadata.api.modular.finance.service.ISpaceSubscriptionService;
 import com.vikadata.api.modular.finance.service.ISubscriptionService;
 import com.vikadata.api.modular.finance.strategy.AbstractSocialOrderService;
 import com.vikadata.api.modular.finance.strategy.SocialOrderStrategyFactory;
@@ -35,7 +33,6 @@ import com.vikadata.api.util.billing.WeComPlanConfigManager;
 import com.vikadata.api.util.billing.model.ProductChannel;
 import com.vikadata.clock.ClockUtil;
 import com.vikadata.core.exception.BusinessException;
-import com.vikadata.entity.BundleEntity;
 import com.vikadata.entity.SocialTenantBindEntity;
 import com.vikadata.social.wecom.event.order.WeComOrderPaidEvent;
 import com.vikadata.social.wecom.event.order.WeComOrderRefundEvent;
@@ -79,9 +76,6 @@ public class WeComOrderServiceImpl extends AbstractSocialOrderService<WeComOrder
 
     @Resource
     private ISocialCpIsvService iSocialCpIsvService;
-
-    @Resource
-    private ISpaceSubscriptionService iSpaceSubscriptionService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -139,23 +133,18 @@ public class WeComOrderServiceImpl extends AbstractSocialOrderService<WeComOrder
         if (!lastUnRefundSubscriptionIds.isEmpty()) {
             subscriptionService.restoreBySubscriptionIds(lastUnRefundSubscriptionIds);
         }
-        // Retrieve vika order ID related to the wecom order
+        // retrieve vika order ID related to the wecom order
         String orderId = orderV2Service.getOrderIdByChannelOrderId(spaceId, event.getOrderId());
-        List<String> subscriptionIds = orderItemService.getSubscriptionIdsByOrderId(orderId)
-                .stream()
-                .filter(CharSequenceUtil::isNotBlank)
-                .collect(Collectors.toList());
+        List<String> subscriptionIds = orderItemService.getSubscriptionIdsByOrderId(orderId);
+        List<String> bundleIds = new ArrayList<>();
         if (!subscriptionIds.isEmpty()) {
+            bundleIds = subscriptionService.getBundleIdsBySubscriptionIds(subscriptionIds);
             // Remove subscription if needed
             subscriptionService.removeBatchBySubscriptionIds(subscriptionIds);
         }
-        // remove bundle if space's all subscriptions was deleted
-        if (!iSpaceSubscriptionService.spaceHaveSubscription(spaceId)) {
-            List<String> bundleIds =
-                    bundleService.getBySpaceIdAndState(spaceId, BundleState.ACTIVATED).stream().map(BundleEntity::getBundleId).collect(Collectors.toList());
-            if (!bundleIds.isEmpty()) {
-                bundleService.removeBatchByBundleIds(bundleIds);
-            }
+        // remove bundle if it's all subscriptions was deleted
+        if (!bundleIds.isEmpty() && !subscriptionService.bundlesHaveSubscriptions(bundleIds)) {
+            bundleService.removeBatchByBundleIds(bundleIds);
         }
     }
 

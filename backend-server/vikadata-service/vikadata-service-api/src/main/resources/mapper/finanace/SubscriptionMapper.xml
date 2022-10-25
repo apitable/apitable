@@ -116,10 +116,24 @@
         ORDER BY created_at DESC LIMIT 1
     </select>
 
-    <select id="selectSubscriptionIdsBySpaceId" resultType="java.lang.String">
-        SELECT subscription_id
+    <select id="selectCountByBundleIds" resultType="java.lang.Integer">
+        SELECT count(*)
         FROM vika_billing_subscription
-        WHERE space_id = #{spaceId}
+        WHERE bundle_id IN
+        <foreach item="item" index="index" collection="bundleIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectBundleIdsBySubscriptionIds" resultType="java.lang.String">
+        SELECT bundle_id
+        FROM vika_billing_subscription
+        WHERE subscription_id IN
+        <foreach item="item" index="index" collection="subscriptionIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
         AND is_deleted = 0
     </select>
 </mapper>

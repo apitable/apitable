@@ -111,4 +111,10 @@ public interface IBundleService extends IService<BundleEntity> {
      * @date 2022/6/7 10:19
      */
     void removeBatchByBundleIds(List<String> bundleId);
+
+    /**
+     * restore by bundle ids
+     * @param bundleIds bundle id
+     */
+    void restoreByBundleIds(List<String> bundleIds);
 }

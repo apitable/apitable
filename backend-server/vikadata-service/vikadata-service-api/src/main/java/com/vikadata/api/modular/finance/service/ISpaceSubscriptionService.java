@@ -221,11 +221,4 @@ public interface ISpaceSubscriptionService {
      * @date 2022/8/24
      */
     SpaceCapacityPageVO checkOfficialGiftCapacity(String spaceId);
-
-    /**
-     * does the space station have subscription entries
-     * @param spaceId space id
-     * @return boolean
-     */
-    boolean spaceHaveSubscription(String spaceId);
 }

@@ -198,4 +198,14 @@ public class BundleServiceImpl extends ServiceImpl<BundleMapper, BundleEntity> i
         }
         iBundleHistoryService.saveBatchHistory(bundleEntities, ChangeType.DELETE);
     }
+
+    @Override
+    public void restoreByBundleIds(List<String> bundleIds) {
+        baseMapper.updateIsDeletedByBundleIds(bundleIds, false);
+        List<BundleEntity> bundleEntities = baseMapper.selectByBundleIds(bundleIds);
+        if (bundleEntities.isEmpty()) {
+            return;
+        }
+        iBundleHistoryService.saveBatchHistory(bundleEntities, ChangeType.UPDATE);
+    }
 }

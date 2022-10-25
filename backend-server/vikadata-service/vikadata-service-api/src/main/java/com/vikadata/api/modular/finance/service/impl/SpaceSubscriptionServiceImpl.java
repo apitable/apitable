@@ -647,11 +647,4 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
         }
         return null;
     }
-
-
-    @Override
-    public boolean spaceHaveSubscription(String spaceId) {
-        List<String> subscriptionIds = subscriptionMapper.selectSubscriptionIdsBySpaceId(spaceId);
-        return !subscriptionIds.isEmpty();
-    }
 }
