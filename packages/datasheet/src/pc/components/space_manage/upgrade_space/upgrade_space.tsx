@@ -13,7 +13,7 @@ const UpgradeSpace = () => {
   const [loading, setLoading] = useState(true);
 
   const vars = getEnvVariables();
-  console.log({ vars });
+
   const [showTrialModal, setShowTrialModal] = useState<boolean>(vars.HIDDEN_UPGRADE_SPACE);
 
   useEffect(() => {
