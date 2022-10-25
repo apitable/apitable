@@ -192,15 +192,14 @@ const fetchSettings = async(datasheetOfStrings) => {
   return settingsObject;
 };
 
-const generateENV = async(configDatasheets) => {
-  const ENV_PATH = path.resolve(__dirname, '../', '.env');
+const generateENV = async(configDatasheets,_path) => {
   const settings = await fetchSettings(configDatasheets.find(configDatasheet => configDatasheet.name === 'settings'));
-  let parsedFile = envfile.parse(fs.readFileSync(ENV_PATH));
+  let parsedFile = {}
 
   for (const k in settings) {
     parsedFile[k.toUpperCase()] = settings[k];
   }
-  fs.writeFileSync(ENV_PATH, envfile.stringify(parsedFile));
+  fs.writeFileSync(path.resolve(`${_path}/.env`), envfile.stringify(parsedFile));
 };
 
 const main = async() => {
@@ -213,17 +212,16 @@ const main = async() => {
 
     await fetchPublic(configDatasheets.find(configDatasheet => configDatasheet.name === 'public'));
 
-    let template = TEMPLATE;
 
+    let template = TEMPLATE;
+    const _path = path.resolve(`${BUILD_PATH}/custom`);
     template = await fetchStrings(configDatasheets.find(configDatasheet => configDatasheet.name === 'strings'), template);
 
-    await generateENV(configDatasheets);
-
-    const _path = path.resolve(`${BUILD_PATH}/custom`);
     if (!fs.existsSync(_path)) {
       fs.mkdirSync(_path);
     }
 
+    await generateENV(configDatasheets,_path);
     fs.writeFileSync(path.resolve(`${_path}/custom_config.js`), template);
   } catch (err) {
     console.error(err);
