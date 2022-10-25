@@ -16,6 +16,8 @@
     <select id="selectSubscriptionIdsByOrderId" resultType="java.lang.String">
         SELECT subscription_id
         FROM vika_billing_order_item
-        WHERE order_id = #{orderId} AND is_deleted = 0
+        WHERE order_id = #{orderId}
+        AND subscription_id IS NOT NULL
+        AND is_deleted = 0
     </select>
 </mapper>

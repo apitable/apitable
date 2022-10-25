@@ -93,4 +93,19 @@ public interface ISubscriptionService extends IService<SubscriptionEntity> {
      */
     String getActiveTrailSubscriptionIdBySpaceId(String spaceId);
 
+
+    /**
+     * does the space station have subscription entries
+     * @param bundleIds bundle id
+     * @return boolean
+     */
+    boolean bundlesHaveSubscriptions(List<String> bundleIds);
+
+    /**
+     * get subscriptions bundle id list
+     * @param subscriptionIds subscription id list
+     * @return list of bundle id
+     */
+    List<String> getBundleIdsBySubscriptionIds(List<String> subscriptionIds);
+
 }

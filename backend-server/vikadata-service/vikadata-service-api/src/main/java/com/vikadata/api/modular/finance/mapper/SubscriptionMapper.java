@@ -127,9 +127,16 @@ public interface SubscriptionMapper extends BaseMapper<SubscriptionEntity> {
     String selectSubscriptionIdBySpaceIdAndPhaseIgnoreDeleted(@Param("spaceId") String spaceId, @Param("phase") String phase);
 
     /**
-     * get space subscription_id list
-     * @param spaceId space id
-     * @return List<String>
+     * get subscription count by bundle id
+     * @param bundleIds bundle id list
+     * @return count
      */
-    List<String> selectSubscriptionIdsBySpaceId(@Param("spaceId") String spaceId);
+    Integer selectCountByBundleIds(@Param("bundleIds") List<String> bundleIds);
+
+    /**
+     * select subscription's bundle id list
+     * @param subscriptionIds subscription id list
+     * @return list of bundle id
+     */
+    List<String> selectBundleIdsBySubscriptionIds(@Param("subscriptionIds") List<String> subscriptionIds);
 }

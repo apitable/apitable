@@ -2,6 +2,7 @@ package com.vikadata.api.modular.finance.service.impl;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
 
 import cn.hutool.core.collection.CollUtil;
@@ -143,7 +144,7 @@ public class SpaceSubscriptionServiceImplTest extends AbstractIntegrationTest {
                 nowTime.minusDays(1).toLocalDateTime());
         iSubscriptionService.removeBatchBySubscriptionIds(CollUtil.newArrayList(subscription1.getSubscriptionId(),
                 subscription2.getSubscriptionId()));
-        Assertions.assertFalse(iSpaceSubscriptionService.spaceHaveSubscription(userSpace.getSpaceId()));
+        Assertions.assertFalse(iSubscriptionService.bundlesHaveSubscriptions(Collections.singletonList(bundle.getBundleId())));
     }
 
     @Test
@@ -162,7 +163,7 @@ public class SpaceSubscriptionServiceImplTest extends AbstractIntegrationTest {
                 nowTime.minusDays(14).toLocalDateTime(),
                 nowTime.minusDays(1).toLocalDateTime());
         iSubscriptionService.removeBatchBySubscriptionIds(CollUtil.newArrayList(subscription1.getSubscriptionId()));
-        Assertions.assertTrue(iSpaceSubscriptionService.spaceHaveSubscription(userSpace.getSpaceId()));
+        Assertions.assertTrue(iSubscriptionService.bundlesHaveSubscriptions(Collections.singletonList(bundle.getBundleId())));
     }
 
 

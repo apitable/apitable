@@ -14,9 +14,11 @@ import com.vikadata.api.enums.finance.SubscriptionPhase;
 import com.vikadata.api.enums.finance.SubscriptionState;
 import com.vikadata.api.modular.finance.core.Subscription;
 import com.vikadata.api.modular.finance.mapper.SubscriptionMapper;
+import com.vikadata.api.modular.finance.service.IBundleService;
 import com.vikadata.api.modular.finance.service.ISubscriptionHistoryService;
 import com.vikadata.api.modular.finance.service.ISubscriptionService;
 import com.vikadata.api.util.billing.model.ProductCategory;
+import com.vikadata.core.util.SqlTool;
 import com.vikadata.entity.SubscriptionEntity;
 
 import org.springframework.stereotype.Service;
@@ -33,6 +35,9 @@ public class SubscriptionServiceImpl extends ServiceImpl<SubscriptionMapper, Sub
 
     @Resource
     private ISubscriptionHistoryService iSubscriptionHistoryService;
+
+    @Resource
+    private IBundleService iBundleService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -136,13 +141,28 @@ public class SubscriptionServiceImpl extends ServiceImpl<SubscriptionMapper, Sub
     public void restoreBySubscriptionIds(List<String> subscriptionIds) {
         baseMapper.updateIsDeletedBySubscriptionIds(subscriptionIds, false);
         List<SubscriptionEntity> subscriptionEntities = baseMapper.selectByBundleIds(subscriptionIds);
+        List<String> bundleIds =
+                subscriptionEntities.stream().map(SubscriptionEntity::getBundleId).collect(Collectors.toList());
         if (!subscriptionEntities.isEmpty()) {
             iSubscriptionHistoryService.saveBatchHistory(subscriptionEntities, ChangeType.UPDATE);
+        }
+        if (!bundleIds.isEmpty()) {
+            iBundleService.restoreByBundleIds(bundleIds);
         }
     }
 
     @Override
     public String getActiveTrailSubscriptionIdBySpaceId(String spaceId) {
         return baseMapper.selectSubscriptionIdBySpaceIdAndPhaseIgnoreDeleted(spaceId, SubscriptionPhase.TRIAL.getName());
+    }
+
+    @Override
+    public List<String> getBundleIdsBySubscriptionIds(List<String> subscriptionIds) {
+        return baseMapper.selectBundleIdsBySubscriptionIds(subscriptionIds);
+    }
+
+    @Override
+    public boolean bundlesHaveSubscriptions(List<String> bundleIds) {
+        return SqlTool.retCount(baseMapper.selectCountByBundleIds(bundleIds)) > 0;
     }
 }
