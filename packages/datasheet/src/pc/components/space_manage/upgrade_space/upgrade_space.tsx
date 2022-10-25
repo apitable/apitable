@@ -1,5 +1,7 @@
 import { Skeleton } from '@vikadata/components';
+import { Trial } from 'pc/components/space_manage/log/trial';
 import { showUpgradeContactUs } from 'pc/components/subscribe_system/order_modal/pay_order_success';
+import { getEnvVariables } from 'pc/utils/env';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './style.module.less';
@@ -10,6 +12,10 @@ const UpgradeSpace = () => {
   const product = useSelector(state => state.billing.subscription?.product);
   const [loading, setLoading] = useState(true);
 
+  const vars = getEnvVariables();
+
+  const [showTrialModal, setShowTrialModal] = useState<boolean>(vars.HIDDEN_UPGRADE_SPACE);
+
   useEffect(() => {
     if (!iframeRef) {
       return;
@@ -19,7 +25,7 @@ const UpgradeSpace = () => {
       iframeRef.current?.contentWindow?.postMessage(
         {
           msg: 'fromVikaUpgrade',
-          product
+          product,
         }, '*');
 
     };
@@ -52,23 +58,27 @@ const UpgradeSpace = () => {
     };
   }, [spaceId, product]);
 
+  if (showTrialModal) {
+    return <Trial setShowTrialModal={setShowTrialModal} />;
+  }
+
   const iframeSrc = location.origin + '/pricing/';
   // const iframeSrc = 'http://localhost:3002' + '/pricing/';
 
   return <div className={styles.container}>
     {
       loading && <div className={styles.loading}>
-        <Skeleton width="38%" />
+        <Skeleton width='38%' />
         <Skeleton count={2} />
-        <Skeleton width="61%" />
+        <Skeleton width='61%' />
 
-        <Skeleton width="38%" />
+        <Skeleton width='38%' />
         <Skeleton count={2} />
-        <Skeleton width="61%" />
+        <Skeleton width='61%' />
 
-        <Skeleton width="38%" />
+        <Skeleton width='38%' />
         <Skeleton count={2} />
-        <Skeleton width="61%" />
+        <Skeleton width='61%' />
       </div>
     }
     <iframe src={iframeSrc} ref={iframeRef} />

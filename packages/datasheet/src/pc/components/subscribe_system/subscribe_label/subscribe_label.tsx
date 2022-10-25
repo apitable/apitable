@@ -10,7 +10,8 @@ import styles from './styles.module.less';
 export enum SubscribeGrade {
   Silver = 'Silver',
   Gold = 'Gold',
-  Enterprise = 'Enterprise'
+  Enterprise = 'Enterprise',
+  Atlas = 'Atlas'
 }
 
 interface ISubscribeLabelProps {
@@ -24,9 +25,12 @@ export const labelMap = {
     }
     return t(Strings.silver);
   },
-  [SubscribeGrade.Gold]: (appType?: ISocialAppType) => {
+  [SubscribeGrade.Gold]: (appType?: ISocialAppType, product?: SubscribeGrade) => {
     if (appType === SocialAppType.ThirdPartyAtt) {
       return t(Strings.profession);
+    }
+    if (product === SubscribeGrade.Atlas) {
+      return t(Strings.atlas);
     }
     return t(Strings.gold);
   },
@@ -35,7 +39,7 @@ export const labelMap = {
       return t(Strings.enterprise_third_app);
     }
     return t(Strings.enterprise);
-  }
+  },
 };
 
 export const SubscribeLabel: React.FC<ISubscribeLabelProps> = (props) => {
@@ -43,13 +47,14 @@ export const SubscribeLabel: React.FC<ISubscribeLabelProps> = (props) => {
   const { grade } = props;
   const { spaceInfo } = useSelector(state => {
     return {
-      spaceInfo: state.space.curSpaceInfo
+      spaceInfo: state.space.curSpaceInfo,
     };
   });
+  const product = useSelector(state => state.billing.subscription?.product);
   const social = spaceInfo?.social;
 
   const innerText = useMemo(() => {
-    const gradeName = labelMap[grade](social?.appType);
+    const gradeName = labelMap[grade](social?.appType, product);
     if (grade === SubscribeGrade.Silver) {
       return <Typography
         variant={'body4'} className={classnames(styles.baseLabel, styles.gradeSilver)} component={'span'} color={colors.rainbowIndigo3}>
