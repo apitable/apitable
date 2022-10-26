@@ -1,20 +1,20 @@
-import { Typography } from '@vikadata/components';
 import {
-  ConfigConstant, getImageThumbSrc, integrateCdnHost, IReduxState, isPrivateDeployment, Navigation, Settings, Strings, t, TEMPLATE_CENTER_ID
+  ConfigConstant, getImageThumbSrc, integrateCdnHost, IReduxState, Navigation, Settings, Strings, t, TEMPLATE_CENTER_ID,
 } from '@apitable/core';
+import { Typography } from '@vikadata/components';
 import { Col, Row } from 'antd';
 import { TemplateRecommendContext } from 'context/template_recommend';
+import { take, takeRight } from 'lodash';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
-import { isMobileApp } from 'pc/utils/env';
+import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import React, { FC, useContext } from 'react';
 import { useSelector } from 'react-redux';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import categoryStyles from '../template_category_detail/style.module.less';
 import { TemplateItem } from '../template_item';
 import styles from './style.module.less';
-import categoryStyles from '../template_category_detail/style.module.less';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { Carousel } from 'react-responsive-carousel';
-import { take, takeRight } from 'lodash';
 
 const defaultBanner = integrateCdnHost(Settings.folder_showcase_banners.value.split(',')[0]);
 
@@ -31,9 +31,10 @@ export const TemplateChoice: FC<ITemplateChoiceProps> = props => {
   const categoryId = useSelector((state: IReduxState) => state.pageParams.categoryId);
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const { recommendData: templateRecommendData } = useContext(TemplateRecommendContext);
+  const env = getEnvVariables();
 
   const openTemplateDetail = ({ templateId }) => {
-    Router.push( Navigation.TEMPLATE,{
+    Router.push(Navigation.TEMPLATE, {
       params: {
         spaceId,
         templateId,
@@ -42,11 +43,11 @@ export const TemplateChoice: FC<ITemplateChoiceProps> = props => {
     });
   };
   const openTemplateAlbumDetail = ({ templateId }) => {
-    Router.push( Navigation.TEMPLATE,{
+    Router.push(Navigation.TEMPLATE, {
       params: {
         spaceId,
         albumId: templateId,
-        categoryId: 'album'
+        categoryId: 'album',
       },
     });
   };
@@ -167,7 +168,7 @@ export const TemplateChoice: FC<ITemplateChoiceProps> = props => {
                         <div className={styles.templateItemWrapper} key={template.templateId}>
                           <TemplateItem
                             templateId={template.templateId}
-                            type="card"
+                            type='card'
                             nodeType={template.nodeType}
                             img={imgUrl(template.cover || defaultBanner, 160)}
                             name={template.templateName}
@@ -188,9 +189,9 @@ export const TemplateChoice: FC<ITemplateChoiceProps> = props => {
         </Col>
       </Row>
       {
-        !isPrivateDeployment() && !isMobileApp() &&
-        <Typography className={styles.notFoundTip} variant="body2" align="center">
-          <span className={styles.text} onClick={() => navigationToUrl(`${Settings['template_customization'].value}`)}>
+        env.TEMPLATE_CUSTOMIZATION && !isMobileApp() &&
+        <Typography className={styles.notFoundTip} variant='body2' align='center'>
+          <span className={styles.text} onClick={() => navigationToUrl(`${env.TEMPLATE_CUSTOMIZATION}`)}>
             {t(Strings.template_not_found)}
           </span>
         </Typography>

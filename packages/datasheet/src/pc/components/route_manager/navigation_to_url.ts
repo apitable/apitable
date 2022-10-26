@@ -6,7 +6,7 @@ import { IQuery } from 'pc/components/route_manager/interface';
 import { store } from 'pc/store';
 
 export const navigationToUrl = (
-  url: string,
+  url: string | undefined,
   option: {
     clearQuery?: boolean;
     method?: Method;
@@ -15,6 +15,7 @@ export const navigationToUrl = (
     hash?: string;
   } = { clearQuery: false, method: Method.NewTab },
 ) => {
+  if (!url) return;
   const { clearQuery, method, spaceId, query, hash = '' } = option;
   if (spaceId) {
     const curSpaceId = store.getState().space.activeId;

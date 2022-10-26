@@ -3,6 +3,7 @@ import { integrateCdnHost, Settings, Strings, t } from '@apitable/core';
 import { Space } from 'antd';
 import Image from 'next/image';
 import { useQuery } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
 import { FC, useRef } from 'react';
 // import OfficialAccount from 'static/icon/signin/signin_img_officialaccounts.png';
 import videoPoster from 'static/icon/signin/signin_img_phone_cover.png';
@@ -14,9 +15,9 @@ import { HomeFooter } from './home_footer';
 import { HomeHeader } from './home_header';
 import styles from './style.module.less';
 
-const videoSrc = integrateCdnHost(Settings.introduction_video.value);
-
 export const MobileHome: FC = () => {
+  const env = getEnvVariables();
+  const videoSrc = integrateCdnHost(env.INTRODUCTION_VIDEO || '');
   const colors = useThemeColors();
   const query = useQuery();
   const quickLogin = query.get('quickLogin') || 'on';
@@ -51,16 +52,18 @@ export const MobileHome: FC = () => {
           </div>
         </div>
         <div className={styles.secondPage} ref={secondPageRef}>
-          <video className={styles.video} controls poster={videoPoster as any as string}>
-            <source src={videoSrc} type="video/mp4" />
-            {t(Strings.nonsupport_video)}
-          </video>
+          {
+            videoSrc && <video className={styles.video} controls poster={videoPoster as any as string}>
+              <source src={videoSrc} type='video/mp4' />
+              {t(Strings.nonsupport_video)}
+            </video>
+          }
           <div className={styles.qrCodeWrapper}>
-            <Space size={48} align="center" className={styles.qrCodeGroup}>
+            <Space size={48} align='center' className={styles.qrCodeGroup}>
               <div className={styles.qrCode}>
                 <Image
                   src={`${process.env.NEXT_PUBLIC_PUBLIC_URL}/signin_img_communicationgroup_qrcode.png`}
-                  alt="CommunicationGroup Code"
+                  alt='CommunicationGroup Code'
                   width={88} height={88}
                 />
                 <div className={styles.caption}>{t(Strings.communication_group_qrcode)}</div>
@@ -68,7 +71,7 @@ export const MobileHome: FC = () => {
               <div className={styles.qrCode}>
                 <Image
                   src={`${process.env.NEXT_PUBLIC_PUBLIC_URL}/signin_img_officialaccounts_qrcode.png`}
-                  alt="OfficialAccount Code"
+                  alt='OfficialAccount Code'
                   width={88} height={88}
                 />
                 <div className={styles.caption}>{t(Strings.official_account_qrcode)}</div>
@@ -76,11 +79,11 @@ export const MobileHome: FC = () => {
             </Space>
           </div>
           <div className={styles.icp}>
-            <LinkButton className={styles.icpBtn} href={Settings['icp1'].value} underline={false} color={colors.fc3} target="_blank">
+            <LinkButton className={styles.icpBtn} href={Settings['icp1'].value} underline={false} color={colors.fc3} target='_blank'>
               {t(Strings.icp1)}
             </LinkButton>
             <div className={styles.line} />
-            <LinkButton className={styles.icpBtn} href={Settings['icp2'].value} underline={false} color={colors.fc3} target="_blank">
+            <LinkButton className={styles.icpBtn} href={Settings['icp2'].value} underline={false} color={colors.fc3} target='_blank'>
               {t(Strings.icp2)}
             </LinkButton>
           </div>

@@ -1,20 +1,11 @@
-import { Typography } from '@vikadata/components';
 import {
-  ConfigConstant,
-  integrateCdnHost,
-  IReduxState,
-  isPrivateDeployment,
-  ITemplate,
-  ITemplateCategory,
-  Navigation,
-  Settings,
-  StoreActions,
-  Strings,
-  t,
+  ConfigConstant, integrateCdnHost, IReduxState, ITemplate, ITemplateCategory, Navigation, Settings, StoreActions, Strings, t,
 } from '@apitable/core';
+import { Typography } from '@vikadata/components';
 import { Col, Row } from 'antd';
 import { TemplateListContext } from 'context/template_list';
 import parser from 'html-react-parser';
+import { isEmpty } from 'lodash';
 import Image from 'next/image';
 import { isWecomFunc } from 'pc/components/home/social_platform';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
@@ -23,14 +14,13 @@ import { Router } from 'pc/components/route_manager/router';
 import { useRequest } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { useTemplateRequest } from 'pc/hooks/use_template_request';
-import { isMobileApp } from 'pc/utils/env';
+import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import templateEmptyPng from 'static/icon/template/template_img_empty.png';
 import { imgUrl } from '../template_choice';
 import { TemplateItem } from '../template_item';
 import styles from './style.module.less';
-import { isEmpty } from 'lodash';
 
 // 默认banner图地址
 const defaultBanner = integrateCdnHost(Settings.folder_showcase_banners.value.split(',')[0]);
@@ -45,8 +35,7 @@ export interface ITemplateCategoryDetailProps {
 export const TemplateCategoryDetail: FC<ITemplateCategoryDetailProps> = props => {
   const { setUsingTemplate, templateCategory } = props;
   const { templateListData } = useContext(TemplateListContext);
-  const [templateList, setTemplateList] = useState<
-    ITemplate[] | {
+  const [templateList, setTemplateList] = useState<ITemplate[] | {
     albums: {
       albumId: string;
       name: string;
@@ -66,9 +55,9 @@ export const TemplateCategoryDetail: FC<ITemplateCategoryDetailProps> = props =>
   const { run: deleteTemplate } = useRequest(deleteTemplateReq, { manual: true });
   const { run: getTemplateList, data: templateData, loading } =
     useRequest<ITemplate[]>(getTemplateListReq, { manual: true });
-
+  const env = getEnvVariables();
   const { run: getTemplateCategories, data: templateCategories, loading: _loading } =
-      useRequest<ITemplate[]>(getTemplateCategoriesReq, { manual: true });
+    useRequest<ITemplate[]>(getTemplateCategoriesReq, { manual: true });
 
   useEffect(() => {
     // 访问空间站模板需要处于登录状态
@@ -133,11 +122,11 @@ export const TemplateCategoryDetail: FC<ITemplateCategoryDetailProps> = props =>
   const currentCategory = templateCategory.find(item => item.categoryCode === categoryId);
 
   const openTemplateAlbumDetail = ({ templateId }) => {
-    Router.push( Navigation.TEMPLATE,{
+    Router.push(Navigation.TEMPLATE, {
       params: {
         spaceId,
         albumId: templateId,
-        categoryId: 'album'
+        categoryId: 'album',
       },
     });
   };
@@ -160,11 +149,11 @@ export const TemplateCategoryDetail: FC<ITemplateCategoryDetailProps> = props =>
                     <div className={styles.categoryName}>
                       {!isOfficial ? t(Strings.all) : currentCategory && currentCategory.categoryName}
                     </div>
-                    {!isPrivateDeployment() && !isMobileApp() && !isWecomFunc() &&
+                    {env.TEMPLATE_CUSTOMIZATION && !isMobileApp() && !isWecomFunc() &&
                       <Typography className={styles.notFoundTip} variant='body2' align='center'>
                         <span
                           className={styles.text}
-                          onClick={() => navigationToUrl(`${Settings['template_customization'].value}`)}
+                          onClick={() => navigationToUrl(`${env.TEMPLATE_CUSTOMIZATION}`)}
                         >
                           {t(Strings.template_not_found)}
                         </span>
@@ -192,7 +181,7 @@ export const TemplateCategoryDetail: FC<ITemplateCategoryDetailProps> = props =>
                             onClick={openTemplateDetail}
                           />
                         </div>
-                      )) }
+                      ))}
                     </div>
                   ) : (
                     <>

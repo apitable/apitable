@@ -7,7 +7,7 @@ import { LoginToggle } from 'pc/components/home/login_toggle';
 import { isDingtalkFunc, isLarkFunc, isQQFunc, isWechatFunc, isWecomFunc } from 'pc/components/home/social_platform';
 import { Router } from 'pc/components/route_manager/router';
 import { isRenderServer } from 'pc/utils';
-import { isMobileApp } from 'pc/utils/env';
+import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import ConsultImg from 'static/icon/signin/signin_img_homepage.png';
@@ -22,6 +22,7 @@ import styles from './style.module.less';
 const PcHome: FC = () => {
   const isWecom = useSelector(state => state.space.envs?.weComEnv?.enabled || isWecomFunc());
   const { siteUrl, introduceVideoDisable } = getCustomConfig();
+  const env = getEnvVariables();
 
   const jumpOfficialWebsite = () => {
     if (siteUrl) {
@@ -46,7 +47,7 @@ const PcHome: FC = () => {
                     className={styles.logoPng}
                     onClick={jumpOfficialWebsite}
                     style={{
-                      height: 36
+                      height: 36,
                     }}
                   >
                     <Image
@@ -108,15 +109,17 @@ const PcHome: FC = () => {
                 !isRenderServer() && <ButtonGroup withSeparate>
                   {!isPrivateDeployment() && (
                     <>
-                      <LinkButton
-                        component='button'
-                        underline={false}
-                        style={{ color: lightColors.black[500] }}
-                      >
-                        <a href={Settings.private_deployment_form.value} target='_blank' style={{ color: 'inherit' }} rel='noreferrer'>
-                          {t(Strings.self_hosting)}
-                        </a>
-                      </LinkButton>
+                      {
+                        env.PRIVATE_DEVELOPMENT_FORM && <LinkButton
+                          component='button'
+                          underline={false}
+                          style={{ color: lightColors.black[500] }}
+                        >
+                          <a href={env.PRIVATE_DEVELOPMENT_FORM} target='_blank' style={{ color: 'inherit' }} rel='noreferrer'>
+                            {t(Strings.self_hosting)}
+                          </a>
+                        </LinkButton>
+                      }
                       <LinkButton
                         component='button'
                         underline={false}

@@ -102,12 +102,22 @@ export function getImageThumbSrc(src: string, options?: IImageThumbOption) {
 declare const window: any;
 
 export const getHostOfAttachment = (bucket: string) => {
-  const origin = typeof window == 'object' ? window.location.origin : '';
+  if (typeof window != 'object') return Settings[bucket].value as string;
+
+  const origin = window.location.origin;
+
   if (bucket.toUpperCase() === 'QNY1') {
-    return typeof window == 'object' ? urlcat(origin, window.__initialization_data__?.envVars.NEXT_PUBLIC_QNY1 + '') :
-      Settings[bucket].value as string;
+    const QNY1 = window.__initialization_data__?.envVars.QNY1;
+    return QNY1.includes('https') ? QNY1 : urlcat(origin, QNY1 + '');
   }
-  return typeof window == 'object' ? urlcat(origin, window.__initialization_data__?.envVars.NEXT_PUBLIC_QNY2 + '') : Settings[bucket].value as string;
+
+  if (bucket.toUpperCase() === 'QNY2') {
+    const QNY2 = window.__initialization_data__?.envVars.QNY2;
+    return QNY2.includes('https') ? QNY2 : urlcat(origin, QNY2 + '');
+  }
+
+  const QNY3 = window.__initialization_data__?.envVars.QNY3;
+  return QNY3.includes('https') ? QNY3 : urlcat(origin, QNY3 + '');
 };
 
 export function cellValueToImageSrc(

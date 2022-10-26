@@ -1,58 +1,33 @@
-import { black, Select, Typography, IOption, Tooltip, Switch } from '@vikadata/components';
-import { Select as MultiSelect } from 'antd';
 import {
-  BasicValueType,
-  CollaCommandName,
-  Field,
-  GanttColorType,
-  GanttStyleKeyType,
-  Selectors,
-  StoreActions,
-  IGanttViewColumn,
-  FieldType,
-  t,
-  Strings,
-  ConfigConstant,
-  getNewId,
-  IDPrefix,
-  DateTimeField,
-  getUniqName,
-  ExecuteResult,
-  Settings,
-  DEFAULT_WORK_DAYS,
-  IGanttViewProperty,
-  ILinkField,
-  ISetRecordOptions,
-  LinkFieldSet,
-  IGanttViewStatus,
+  BasicValueType, CollaCommandName, ConfigConstant, DateTimeField, DEFAULT_WORK_DAYS, ExecuteResult, Field, FieldType, GanttColorType,
+  GanttStyleKeyType, getNewId, getUniqName, IDPrefix, IGanttViewColumn, IGanttViewProperty, IGanttViewStatus, ILinkField, ISetRecordOptions,
+  LinkFieldSet, Selectors, Settings, StoreActions, Strings, t,
 } from '@apitable/core';
+import { black, IOption, Select, Switch, Tooltip, Typography } from '@vikadata/components';
 import {
-  CloseMiddleOutlined,
-  InformationSmallOutlined,
-  ClassroomOutlined,
-  ChevronRightOutlined,
-  AddOutlined,
-  ColumnLinktableFilled,
+  AddOutlined, ChevronRightOutlined, ClassroomOutlined, CloseMiddleOutlined, ColumnLinktableFilled, InformationSmallOutlined,
 } from '@vikadata/icons';
+import { Select as MultiSelect } from 'antd';
+import classNames from 'classnames';
+import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
+import { Message } from 'pc/components/common';
+import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
+import { ColorGroup } from 'pc/components/common/color_picker/color_group';
+import { Modal } from 'pc/components/common/modal/modal/modal';
+import { notify } from 'pc/components/common/notify';
+import { NotifyKey } from 'pc/components/common/notify/notify.interface';
+import { FieldPermissionLock } from 'pc/components/field_permission';
+import { autoTaskScheduling } from 'pc/components/gantt_view/utils';
+import { KonvaGridContext } from 'pc/components/konva_grid';
+import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { resourceService } from 'pc/resource_service';
+import { store } from 'pc/store';
+import { getEnvVariables } from 'pc/utils/env';
+import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
+import { setStorage, StorageName } from 'pc/utils/storage/storage';
 import { FC, memo, useContext, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import styles from './style.module.less';
-import { StorageName, setStorage } from 'pc/utils/storage/storage';
-import { ColorGroup } from 'pc/components/common/color_picker/color_group';
-import { OptionSetting, ColorPicker } from 'pc/components/common/color_picker';
-import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
-import { FieldPermissionLock } from 'pc/components/field_permission';
-import { notify } from 'pc/components/common/notify';
-import { NotifyKey } from 'pc/components/common/notify/notify.interface';
-import classNames from 'classnames';
-import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
-import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
-import { KonvaGridContext } from 'pc/components/konva_grid';
-import { Modal } from 'pc/components/common/modal/modal/modal';
-import { autoTaskScheduling } from 'pc/components/gantt_view/utils';
-import { store } from 'pc/store';
-import { Message } from 'pc/components/common';
 
 const Option = Select.Option;
 const MultiOption = MultiSelect.Option;
@@ -124,7 +99,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
       exitFieldNames: Object.values(fieldMap).map(field => field.name),
     };
   }, shallowEqual);
-
+  const env = getEnvVariables();
   const dispatch = useDispatch();
   const columns = view.columns as IGanttViewColumn[];
   const columnCount = columns.length;
@@ -411,9 +386,9 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
     <div className={styles.settingPanelContainer}>
       <header className={styles.header}>
         <div className={styles.title}>
-          <Typography variant="body1">{t(Strings.gantt_setting)}</Typography>
+          <Typography variant='body1'>{t(Strings.gantt_setting)}</Typography>
           <Tooltip content={t(Strings.gantt_setting_help_tips)}>
-            <a href={t(Strings.gantt_setting_help_url)} target="_blank" rel="noopener noreferrer" className={styles.helpIcon}>
+            <a href={t(Strings.gantt_setting_help_url)} target='_blank' rel='noopener noreferrer' className={styles.helpIcon}>
               <InformationSmallOutlined color={colors.thirdLevelText} />
             </a>
           </Tooltip>
@@ -425,7 +400,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
       <div className={styles.guideWrap} onClick={onPlayGuideVideo}>
         <span className={styles.left}>
           <ClassroomOutlined size={16} color={colors.primaryColor} />
-          <Typography variant="body3" color={colors.secondLevelText}>
+          <Typography variant='body3' color={colors.secondLevelText}>
             {t(Strings.play_guide_video_of_gantt_view)}
           </Typography>
         </span>
@@ -434,7 +409,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
 
       {/* 设置开始和结束日期字段 */}
       <div className={classNames(styles.setting, styles.firstSetting)}>
-        <Typography className={styles.settingTitle} variant="h7">
+        <Typography className={styles.settingTitle} variant='h7'>
           {t(Strings.gantt_date_time_setting)}
         </Typography>
         <div className={styles.settingLayout}>
@@ -482,14 +457,16 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
       {/* 设置任务条颜色 */}
       <div className={styles.setting}>
         <div className={styles.settingHeader}>
-          <Typography className={styles.settingTitle} variant="h7">
+          <Typography className={styles.settingTitle} variant='h7'>
             {t(Strings.gantt_color_setting)}
           </Typography>
-          <Tooltip content={t(Strings.gantt_config_color_help)}>
-            <a href={Settings.gantt_config_color_help_url.value} target="_blank" rel="noopener noreferrer" className={styles.helpIcon}>
-              <InformationSmallOutlined color={colors.thirdLevelText} />
-            </a>
-          </Tooltip>
+          {
+            env.GANTT_CONFIG_COLOR_HELP_URL && <Tooltip content={t(Strings.gantt_config_color_help)}>
+              <a href={env.GANTT_CONFIG_COLOR_HELP_URL} target='_blank' rel='noopener noreferrer' className={styles.helpIcon}>
+                <InformationSmallOutlined color={colors.thirdLevelText} />
+              </a>
+            </Tooltip>
+          }
         </div>
 
         <div className={styles.settingLayout}>
@@ -534,7 +511,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
               }}
               mask
               triggerComponent={
-                <Typography variant="body3" className={styles.more} component={'span'}>
+                <Typography variant='body3' className={styles.more} component={'span'}>
                   {t(Strings.gantt_color_more)}
                 </Typography>
               }
@@ -545,17 +522,17 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
 
       {/* 设置工作日 */}
       <div className={styles.setting}>
-        <Typography className={styles.settingTitle} variant="h7">
+        <Typography className={styles.settingTitle} variant='h7'>
           {t(Strings.gantt_workdays_setting)}
         </Typography>
 
-        <Typography className={styles.settingDesc} variant="body4">
+        <Typography className={styles.settingDesc} variant='body4'>
           {t(Strings.gantt_config_workdays_a_week)}
         </Typography>
 
         <div className={styles.settingLayout}>
           <MultiSelect
-            mode="multiple"
+            mode='multiple'
             showArrow
             showSearch={false}
             className={styles.workDaySelect}
@@ -592,11 +569,11 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
       </div>
       <div className={styles.setting}>
         <div className={styles.settingHeader}>
-          <Typography className={styles.settingTitle} variant="h7">
+          <Typography className={styles.settingTitle} variant='h7'>
             {t(Strings.gantt_dependency_setting)}
           </Typography>
           <Tooltip content={t(Strings.gantt_config_color_help)}>
-            <a href={Settings.gantt_config_task_contact_help_url.value} target="_blank" rel="noopener noreferrer" className={styles.helpIcon}>
+            <a href={Settings.gantt_config_task_contact_help_url.value} target='_blank' rel='noopener noreferrer' className={styles.helpIcon}>
               <InformationSmallOutlined color={colors.thirdLevelText} />
             </a>
           </Tooltip>

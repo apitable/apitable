@@ -15,7 +15,7 @@ import { inSocialApp } from 'pc/components/home/social_platform';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
 import { useResponsive } from 'pc/hooks';
-import { isMobileApp } from 'pc/utils/env';
+import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import RcTrigger from 'rc-trigger';
 import { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -36,6 +36,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const isFeishu = inSocialApp(ConfigConstant.SocialType.FEISHU);
+  const env = getEnvVariables();
 
   const { showMessages } = useIntercom();
   const openShortcutKeyPanel = () => {
@@ -59,7 +60,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
   };
 
   const linkToCommunity = () => {
-    navigationToUrl(Settings.vika_community_url_prod.value);
+    navigationToUrl(env.VIKA_COMMUNITY_URL_PROD!);
   };
   const menuData = [
     [
@@ -72,8 +73,8 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
       {
         icon: <ClassroomOutlined color={colors.thirdLevelText} size={16} />,
         text: t(Strings.vika_small_classroom),
-        onClick: () => navigationToUrl(Settings.vika_classroom_url.value),
-        hidden: isMobile || isPrivateDeployment(),
+        onClick: () => navigationToUrl(env.VIKA_CLASSROOM_URL!),
+        hidden: isMobile || !env.VIKA_CLASSROOM_URL,
       },
       {
         icon: <RoadmapOutlined color={colors.thirdLevelText} size={16} />,
@@ -123,7 +124,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
         icon: <CommunityOutlined />,
         text: t(Strings.vika_community),
         onClick: linkToCommunity,
-        hidden: isPrivateDeployment(),
+        hidden: !env.VIKA_COMMUNITY_URL_PROD
       },
       {
         icon: <InformationSmallOutlined />,
@@ -167,7 +168,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
         icon: <ViewContactOutlined />,
         text: t(Strings.player_contact_us),
         onClick: () => {
-          if(isHiddenQRCode()) {
+          if (isHiddenQRCode()) {
             showMessages();
           } else {
             dispatch(StoreActions.clearWizardsData());

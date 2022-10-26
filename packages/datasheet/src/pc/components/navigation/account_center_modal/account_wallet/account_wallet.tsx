@@ -1,5 +1,5 @@
-import { Button, Skeleton, useThemeColors, Pagination } from '@vikadata/components';
-import { Api, ConfigConstant, DEFAULT_TIMEZONE, IPageDataBase, isVCode, Settings, Strings, t } from '@apitable/core';
+import { Api, ConfigConstant, DEFAULT_TIMEZONE, IPageDataBase, isVCode, Strings, t } from '@apitable/core';
+import { Button, Pagination, Skeleton, useThemeColors } from '@vikadata/components';
 import { useMount, useToggle } from 'ahooks';
 import { Table } from 'antd';
 import { ColumnProps } from 'antd/es/table';
@@ -12,6 +12,7 @@ import { WithTipTextInput } from 'pc/components/common/input/with_tip_input';
 import { NormalModal } from 'pc/components/common/modal/normal_modal';
 import { Tooltip } from 'pc/components/common/tooltip';
 import { useBilling, useRequest } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import InfoIcon from 'static/icon/common/common_icon_information.svg';
@@ -48,13 +49,13 @@ interface IPageData extends IPageDataBase {
 
 const ErrContant = {
   FormatErr: t(Strings.invalid_redemption_code_entered),
-  EmptyErr: t(Strings.no_redemption_code_entered)
+  EmptyErr: t(Strings.no_redemption_code_entered),
 };
 export const AccountWallet: FC = () => {
   const colors = useThemeColors();
   const AlterTypeInfo = {
     0: { color: colors.warningColor, text: '+' },
-    1: { color: colors.errorColor, text: '-' }
+    1: { color: colors.errorColor, text: '-' },
   };
   // 收支记录
   const [pageNo, setPageNo] = useState(1);
@@ -82,6 +83,8 @@ export const AccountWallet: FC = () => {
         setInputErr(message);
       }
     }), { manual: true });
+  const env = getEnvVariables();
+
   useMount(() => {
     getUserIntegralRun();
   });
@@ -120,7 +123,7 @@ export const AccountWallet: FC = () => {
       key: 'action',
       render: (value, record) => t(Strings[value], { name: record.params && record.params.name ? record.params.name : '' }),
       align: 'left',
-      ellipsis: true
+      ellipsis: true,
     },
     {
       title: t(Strings.time),
@@ -128,7 +131,7 @@ export const AccountWallet: FC = () => {
       key: 'createdAt',
       render: value => dayjs(value).tz(DEFAULT_TIMEZONE).format(t(Strings.time_format_year_month_and_day)),
       align: 'left',
-      width: 200
+      width: 200,
     },
     {
       title: t(Strings.remarks),
@@ -144,16 +147,19 @@ export const AccountWallet: FC = () => {
         );
       },
       align: 'left',
-      width: 150
-    }
+      width: 150,
+    },
   ];
   const inLoading = recordsGetting || !pageData;
   const shouldShowRecords = !inLoading;
   return (
     <div className={styles.accountWalletWrapper}>
-      <div className={styles.title}>{t(Strings.account_wallet)}
-        <a href={Settings.account_wallet_help.value} target='_blank' rel='noreferrer'><InfoIcon /></a>
-      </div>
+      {
+        env.ACCOUNT_WALLET_HELP && <div className={styles.title}>
+          {t(Strings.account_wallet)}
+          <a href={env.ACCOUNT_WALLET_HELP} target='_blank' rel='noreferrer'><InfoIcon /></a>
+        </div>
+      }
       <div className={styles.content}>
         <div className={styles.bigCardWrap}>
           <div className={styles.cardWrap}>
@@ -163,7 +169,7 @@ export const AccountWallet: FC = () => {
                 className={classNames(styles.card, styles.curCard)}
                 style={{
                   backgroundColor: cardLoading ? colors.lowestBg : colors.primaryColor,
-                  position: 'relative'
+                  position: 'relative',
                 }}
               >
                 <Image src={LeftCardBg} layout={'fill'} />

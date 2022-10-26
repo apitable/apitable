@@ -1,19 +1,20 @@
-import styles from './style.module.less';
-import BackIcon from 'static/icon/common/common_icon_left_line.svg';
-import { t, Strings, Navigation, getLanguage, Settings } from '@apitable/core';
-import { ShareOutlined, DescriptionOutlined } from '@vikadata/icons';
+import { getLanguage, Navigation, Strings, t } from '@apitable/core';
 import { Button, Typography } from '@vikadata/components';
-import Image from 'next/image';
-import { Router } from 'pc/components/route_manager/router';
-import { useSelector } from 'react-redux';
-import { FC } from 'react';
-import { copy2clipBoard } from 'pc/utils';
-import * as React from 'react';
+import { DescriptionOutlined, ShareOutlined } from '@vikadata/icons';
 import MarkdownIt from 'markdown-it';
+import Image from 'next/image';
+import { Message } from 'pc/components/common/message/message';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+import { Router } from 'pc/components/route_manager/router';
+import { copy2clipBoard } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
+import * as React from 'react';
+import { FC } from 'react';
+import { useSelector } from 'react-redux';
+import BackIcon from 'static/icon/common/common_icon_left_line.svg';
 import albumTemplateEnPng from 'static/icon/template/album_template_en.png';
 import albumTemplateZhPng from 'static/icon/template/album_template_zh.png';
-import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
-import { Message } from 'pc/components/common/message/message';
+import styles from './style.module.less';
 
 const md = new MarkdownIt({
   html: true,
@@ -43,6 +44,7 @@ const AlbumDetail: FC<IAlbumDetail> = props => {
   const categoryId = useSelector(state => state.pageParams.categoryId);
   const spaceId = useSelector(state => state.space.activeId);
   const isZh = getLanguage() === 'zh-CN';
+  const env = getEnvVariables();
   const goBack = () => {
     Router.push(Navigation.TEMPLATE, { params: { spaceId, categoryId }});
   };
@@ -52,11 +54,11 @@ const AlbumDetail: FC<IAlbumDetail> = props => {
     });
   };
   const jump2RecommendAlbum = (albumId: string) => {
-    Router.push( Navigation.TEMPLATE,{
+    Router.push(Navigation.TEMPLATE, {
       params: {
         spaceId,
         albumId,
-        categoryId: 'album'
+        categoryId: 'album',
       },
     });
   };
@@ -64,7 +66,7 @@ const AlbumDetail: FC<IAlbumDetail> = props => {
     <div className={styles.albumDetail}>
       <header className={styles.albumHeader}>
         <div className={styles.goBack} onClick={goBack}>
-          <BackIcon fill="currentColor" />
+          <BackIcon fill='currentColor' />
           <span className={styles.albumName}>
             {album.name}
           </span>
@@ -75,14 +77,14 @@ const AlbumDetail: FC<IAlbumDetail> = props => {
         </div>
       </header>
       <div className={styles.albumCover}>
-        <Image src={album.cover} alt="album cover" layout="fill" objectFit="cover" />
+        <Image src={album.cover} alt='album cover' layout='fill' objectFit='cover' />
       </div>
       <div className={styles.albumContent}>
         <div className={styles.albumContentLeft}>
           <div className={styles.albumAuthor}>
             <header>
               <div className={styles.albumAuthorImg}>
-                <Image src={album.authorLogo} alt="author logo" layout="fill" objectFit="cover" />
+                <Image src={album.authorLogo} alt='author logo' layout='fill' objectFit='cover' />
               </div>
               <div className={styles.albumAuthorContent}>
                 <div className={styles.albumAuthorTitle}>{t(Strings.album_publisher)}</div>
@@ -112,15 +114,15 @@ const AlbumDetail: FC<IAlbumDetail> = props => {
             {recommends.map(recommend => (
               <div key={recommend.albumId} className={styles.albumRecommendItem} onClick={() => jump2RecommendAlbum(recommend.albumId)}>
                 <div className={styles.albumRecommendImg}>
-                  <Image src={recommend.cover} alt="recommend cover" layout="fill" objectFit="cover" />
+                  <Image src={recommend.cover} alt='recommend cover' layout='fill' objectFit='cover' />
                 </div>
                 <div className={styles.albumRecommendContent}>
                   <h4>{recommend.name}</h4>
                   <Typography
-                    variant="body4"
+                    variant='body4'
                     className={styles.albumRecommendDesc}
                     ellipsis={{
-                      rows: 2
+                      rows: 2,
                     }}
                   >
                     {recommend.description}
@@ -130,25 +132,27 @@ const AlbumDetail: FC<IAlbumDetail> = props => {
             ))}
           </div>
         </div>
-        <div className={styles.albumContentRight} >
-          <div className={styles.albumRightContent} dangerouslySetInnerHTML={{ __html: md.render(album.content) }}/>
+        <div className={styles.albumContentRight}>
+          <div className={styles.albumRightContent} dangerouslySetInnerHTML={{ __html: md.render(album.content) }} />
           <div className={styles.bottomShare}>
             <Button
-              shape="round"
-              variant="fill"
-              color="primary"
+              shape='round'
+              variant='fill'
+              color='primary'
               prefixIcon={<ShareOutlined currentColor />}
               onClick={handleCopyShare}
             >
               {t(Strings.share)}
             </Button>
           </div>
-          <div
-            className={styles.albumAdvise}
-            onClick={() => navigationToUrl(`${Settings['template_customization'].value}`)}
-          >
-            <Image layout="fill" objectFit="contain" src={isZh ? albumTemplateZhPng : albumTemplateEnPng} alt=""/>
-          </div>
+          {
+            env.TEMPLATE_CUSTOMIZATION && <div
+              className={styles.albumAdvise}
+              onClick={() => navigationToUrl(`${env.TEMPLATE_CUSTOMIZATION}`)}
+            >
+              <Image layout='fill' objectFit='contain' src={isZh ? albumTemplateZhPng : albumTemplateEnPng} alt='' />
+            </div>
+          }
         </div>
       </div>
       <div />

@@ -10,6 +10,7 @@ import { Method } from 'pc/components/route_manager/const';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
 import { useResponsive } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
 import { FC, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import WelcomeIcon from 'static/icon/datasheet/datasheet_img_welcome@2x.png';
@@ -40,7 +41,7 @@ export const Welcome: FC = () => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const [downModuleId, setDownModuleId] = useState('');
-
+  const env = getEnvVariables();
   const spaceInfo = useSelector((state: IReduxState) => state.space.curSpaceInfo);
   // 区分平台使用不同的二维码
 
@@ -54,8 +55,8 @@ export const Welcome: FC = () => {
   const data = [
     {
       title: t(Strings.welcome_sub_title1),
-      rightBtn: isWecomSpace ? null : (
-        <TextButton className={styles.moreTemplateBtn} onClick={() => navigationToUrl(Settings.education_url.value, { method: Method.NewTab })}>
+      rightBtn: (isWecomSpace || !env.EDUCATION_URL) ? null : (
+        <TextButton className={styles.moreTemplateBtn} onClick={() => navigationToUrl(env.EDUCATION_URL, { method: Method.NewTab })}>
           <Typography variant='body4' color={colors.fc3}>
             {t(Strings.more_education)}
           </Typography>

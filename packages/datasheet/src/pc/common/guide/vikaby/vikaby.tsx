@@ -16,7 +16,7 @@ import { isWecomFunc } from 'pc/components/home/social_platform';
 import { AccountCenterModal } from 'pc/components/navigation/account_center_modal';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { store } from 'pc/store';
-import { isMobileApp } from 'pc/utils/env';
+import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider, useDispatch, useSelector } from 'react-redux';
@@ -56,6 +56,7 @@ export const Vikaby: FC<IVikabyBase> = ({ defaultExpandMenu, defaultExpandTodo, 
   const [dialogVisible, { set: setDialogVisible }] = useToggle(defaultExpandDialog);
   const [accountCenterVisible, setAccountCenterVisible] = useState(false);
   const dispatch = useDispatch();
+  const env = getEnvVariables();
 
   const vikabyClick = e => {
     toggleMenuVisible();
@@ -104,10 +105,10 @@ export const Vikaby: FC<IVikabyBase> = ({ defaultExpandMenu, defaultExpandTodo, 
         setMenuVisible(false);
       },
     },
-    !isWecom && {
+    !isWecom && env.VIKA_CLASSROOM_URL && {
       icon: <ClassroomOutlined color={colors.thirdLevelText} />,
       title: t(Strings.vika_small_classroom),
-      onClick: () => navigationToUrl(Settings.vika_classroom_url.value),
+      onClick: () => navigationToUrl(env.VIKA_CLASSROOM_URL!),
       invalid: isMobileApp(),
     },
     {
