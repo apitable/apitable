@@ -19,8 +19,8 @@ export class SocketGrpcController {
   constructor(private readonly roomGateway: RoomGateway, private readonly roomService: RoomService) {}
 
   @GrpcMethod('ChangesetService', 'ServerRoomChange')
-  async serverRoomChange(message: vika.grpc.ServerRoomChangeRo): Promise<vika.grpc.BasicResult> {
-    await this.roomService.broadcastServerChange(message.roomId, unpack(message.data), this.roomGateway.server);
+  serverRoomChange(message: vika.grpc.ServerRoomChangeRo): vika.grpc.BasicResult {
+    this.roomService.broadcastServerChange(message.roomId, unpack(message.data), this.roomGateway.server);
     return {
       success: true,
       message: 'true',

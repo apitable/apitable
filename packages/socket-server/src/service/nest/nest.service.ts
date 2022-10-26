@@ -1,4 +1,5 @@
-import { HttpService, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
 import { NestInterface as NestInterface } from './nest.interface';
 import { isEmpty, isNil } from '@nestjs/common/utils/shared.utils';
 import { AuthenticatedSocket } from 'src/interface/socket/authenticated-socket.interface';
@@ -57,7 +58,7 @@ export class NestService implements NestInterface {
     return new Promise(resolve => {
       const socketId = this.getSocketId();
       if (!isNil(socketId)) {
-        this.socketMap.get(socketId).emit(event, message, function (answer) {
+        this.socketMap.get(socketId).emit(event, message, function(answer) {
           logger('NestService:notify:answer').debug({ event, answer });
           return resolve(answer);
         });

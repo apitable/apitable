@@ -3,7 +3,7 @@
 */
 
 import { Observable } from 'rxjs';
-import { Metadata } from 'grpc';
+import { Metadata } from '@grpc/grpc-js';
 
 export namespace vika {
     export namespace grpc {

@@ -1,4 +1,5 @@
-import { HttpModule, HttpService, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
+import { HttpModule, HttpService } from '@nestjs/axios';
 import { ClientGrpcProxy, ClientsModule } from '@nestjs/microservices';
 import { GatewayConstants } from 'src/constants/gateway.constants';
 import { join } from 'path';

@@ -11,18 +11,17 @@ export class LocalHealthIndicator extends HealthIndicator {
     super();
   }
 
-  async isRedisHealthy(): Promise<HealthIndicatorResult> {
+  isRedisHealthy(): HealthIndicatorResult {
     const redisStatus = this.redisService.getStatus();
     const isHealthy = redisStatus !== 'end';
     const result = this.getStatus('redis', isHealthy, { redisStatus });
     if (isHealthy) {
       return result;
-    } else {
-      throw new HealthCheckError('redis down', result);
-    }
+    } 
+    throw new HealthCheckError('redis down', result);
   }
 
-  async checkMemory() {
+  checkMemory() {
     // 获取当前Node内存堆栈情况
     const { rss, heapUsed, heapTotal } = process.memoryUsage();
     // 获取系统总内存
@@ -42,9 +41,8 @@ export class LocalHealthIndicator extends HealthIndicator {
     });
     if (isRssHealthy && isHeapHealthy) {
       return result;
-    } else {
-      throw new HealthCheckError('memory', result);
-    }
+    } 
+    throw new HealthCheckError('memory', result);
   }
 
   /**
@@ -54,7 +52,7 @@ export class LocalHealthIndicator extends HealthIndicator {
    * @author Zoe Zheng
    * @date 2020/6/12 2:14 下午
    */
-  async serverInfo() {
+  serverInfo() {
     return this.getStatus('server', true, {
       name: `socket-server/${ipAddress()}`,
     });

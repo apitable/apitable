@@ -1,4 +1,4 @@
-import * as grpc from 'grpc';
+import { Metadata } from '@grpc/grpc-js';
 
 const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
@@ -15,7 +15,7 @@ export function generateRandomString(length= 20): string {
 }
 
 export function getGlobalGrpcMetadata() {
-  const grpcMeta = new grpc.Metadata();
+  const grpcMeta = new Metadata();
   // 暂时添加自定义CTraceId
   grpcMeta.set('X-C-TraceId', generateRandomString());
   return grpcMeta;

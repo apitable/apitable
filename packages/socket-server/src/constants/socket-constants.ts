@@ -1,7 +1,7 @@
 export class SocketConstants {
   public static readonly SOCKET_TYPES = ['CONNECT', 'DISCONNECT', 'EVENT', 'ACK', 'ERROR', 'BINARY_EVENT', 'BINARY_ACK'];
 
-  public static readonly SOCKET_REQUEST_TIMEOUT = process.env.SOCKET_REQUEST_TIMEOUT || 10000;
+  public static readonly SOCKET_REQUEST_TIMEOUT = parseInt(process.env.SOCKET_REQUEST_TIMEOUT || '10000', 10);
 
   public static readonly JAVA_SERVER_PREFIX = 'java';
 
@@ -19,7 +19,6 @@ export class SocketConstants {
    * GrpcClientProxy 健康检测模式（DEFAULT：socket自己定时维护roomIp池，XXL_JOB：java XXL JOB定时任务维护roomIp池）
    */
   public static readonly GRPC_CLIENT_PROXY_HEALTH_MODEL = process.env.HEALTH_MODEL || 'DEFAULT';
-
 
   /**
    * GRPC_OPTIONS gRPC参数选项
@@ -56,5 +55,8 @@ export class SocketConstants {
       maxAttempts: parseInt(process.env.GRPC_RETRY_MAX_ATTEMPTS || '5', 10),
     },
   };
+
+  public static readonly GRPC_DEFAULT_MAX_RECEIVE_MESSAGE_LENGTH = 4 * 1024 * 1024;
+  public static readonly GRPC_DEFAULT_MAX_SEND_MESSAGE_LENGTH = 4 * 1024 * 1024; 
 
 }

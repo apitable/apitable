@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { DNSHealthIndicator, HealthCheck, HealthCheckService, MemoryHealthIndicator } from '@nestjs/terminus';
+import { HttpHealthIndicator, HealthCheck, HealthCheckService } from '@nestjs/terminus';
 import { LocalHealthIndicator } from '../service/indicator/local-health.indicator';
 import { HealthConstants } from 'src/constants/health.constants';
 
@@ -7,20 +7,18 @@ import { HealthConstants } from 'src/constants/health.constants';
 export class HealthController {
   constructor(
     private health: HealthCheckService,
-    private dns: DNSHealthIndicator,
-    private memory: MemoryHealthIndicator,
+    private http: HttpHealthIndicator,
     private healthIndicator: LocalHealthIndicator,
   ) {}
 
   @Get()
   @HealthCheck()
-  // @UseInterceptors(HealthCheckInterceptor)
   async healthCheck() {
-    return this.health.check([
-      async () => this.dns.pingCheck('dns', HealthConstants.HEALTH_CHECK_URL, { timeout: 3000 }),
-      async () => this.healthIndicator.checkMemory(),
-      async () => this.healthIndicator.isRedisHealthy(),
-      async () => this.healthIndicator.serverInfo(),
+    return await this.health.check([
+      () => this.http.pingCheck('dns', HealthConstants.HEALTH_CHECK_URL, { timeout: 3000 }),
+      async() => this.healthIndicator.checkMemory(),
+      async() => this.healthIndicator.isRedisHealthy(),
+      async() => this.healthIndicator.serverInfo(),
     ]);
   }
 }

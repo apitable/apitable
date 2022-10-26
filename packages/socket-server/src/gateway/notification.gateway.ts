@@ -27,16 +27,13 @@ export class NotificationGateway {
 
   @UseFilters(HttpExceptionFilter)
   @SubscribeMessage(NotificationTypes.NOTIFY)
-  async playerNotify(@MessageBody() message: NotificationRo, @ConnectedSocket() client: AuthenticatedSocket): Promise<boolean> {
+  playerNotify(@MessageBody() message: NotificationRo, @ConnectedSocket() client: AuthenticatedSocket): boolean {
+    if (isNil(client.auth.userId)) {
+      return false;
+    }
     message.event = NotificationTypes.NOTIFY;
     message.socketId = client.id;
-    return new Promise(resolve => {
-      if (isNil(client.auth.userId)) {
-        resolve(false);
-      } else {
-        resolve(this.notificationService.broadcastNotify(message, client));
-      }
-    });
+    return this.notificationService.broadcastNotify(message, client);
   }
 
   /**
@@ -49,7 +46,7 @@ export class NotificationGateway {
    * @date 2020/7/6 4:24 下午
    */
   @SubscribeMessage(NotificationTypes.WATCH_SPACE)
-  async watchSpace(@MessageBody() message: WatchSpaceRo, @ConnectedSocket() client: AuthenticatedSocket): Promise<boolean> {
+  watchSpace(@MessageBody() message: WatchSpaceRo, @ConnectedSocket() client: AuthenticatedSocket): boolean {
     return this.notificationService.watchSpace(message, client);
   }
 
@@ -63,17 +60,12 @@ export class NotificationGateway {
    * @date 2020/7/7 10:19 上午
    */
   @SubscribeMessage(NotificationTypes.NODE_CHANGE)
-  async nodeChange(@MessageBody() message: NodeChangeRo, @ConnectedSocket() client: AuthenticatedSocket): Promise<boolean> {
+  nodeChange(@MessageBody() message: NodeChangeRo, @ConnectedSocket() client: AuthenticatedSocket): boolean {
     return this.notificationService.nodeChange(message, client);
-  }
-
-  @SubscribeMessage(NotificationTypes.LEAVE_SPACE)
-  async leaveSpace(@MessageBody() message: WatchSpaceRo, @ConnectedSocket() client: AuthenticatedSocket): Promise<boolean> {
-    return this.notificationService.leaveSpace(message, client);
   }
 
   @SubscribeMessage(NotificationTypes.NODE_BROWSED)
   async nodeBrowsed(@MessageBody() message: NodeBrowsedRo, @ConnectedSocket() client: AuthenticatedSocket): Promise<boolean> {
-    return this.notificationService.nodeBrowsed(message.nodeId, client.auth.userId)
+    return await this.notificationService.nodeBrowsed(message.nodeId, client.auth.userId);
   }
 }

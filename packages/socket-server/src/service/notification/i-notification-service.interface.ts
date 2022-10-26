@@ -8,7 +8,7 @@ export interface INotificationService {
    * 广播消息通知
    * @param message
    */
-  broadcastNotify(message: NotificationRo, client: AuthenticatedSocket): any;
+  broadcastNotify(message: NotificationRo, client: AuthenticatedSocket): boolean;
 
   /**
    * 监听空间站内部消息
@@ -19,7 +19,7 @@ export interface INotificationService {
    * @author Zoe Zheng
    * @date 2020/7/6 4:30 下午
    */
-  watchSpace(message: WatchSpaceRo, client: AuthenticatedSocket): Promise<boolean>;
+  watchSpace(message: WatchSpaceRo, client: AuthenticatedSocket): boolean;
 
   /**
    * 节点发生变化通知
@@ -31,16 +31,6 @@ export interface INotificationService {
    * @date 2020/7/7 10:20 上午
    */
   nodeChange(message: NodeChangeRo, client: AuthenticatedSocket): boolean;
-
-  /**
-   * 离开空间
-   * @param message 参数
-   * @param client socket连接
-   * @return
-   * @author Zoe Zheng
-   * @date 2020/7/13 11:08 上午
-   */
-  leaveSpace(message: WatchSpaceRo, client: AuthenticatedSocket): Promise<boolean>;
 
   /**
    * node browsed event

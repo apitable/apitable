@@ -2,6 +2,7 @@ export enum SocketEventEnum {
   CONNECTION = 'connection',
   DISCONNECTION = 'disconnect',
   DISCONNECTING = 'disconnecting',
+  CLUSTER_SOCKET_ID_EVENT = 'clusterSocketIDEvent',
 }
 export enum ServerErrorCode {
   // node 服务端异常为 5 位数字, java 服务端异常为 3~4 位数字

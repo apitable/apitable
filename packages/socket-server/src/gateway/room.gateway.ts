@@ -1,5 +1,5 @@
 import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
-import { forwardRef, Inject, UseFilters, UseInterceptors } from '@nestjs/common';
+import { UseFilters, UseInterceptors } from '@nestjs/common';
 import { RequestTypes } from '../enum/request-types.enum';
 import { HttpExceptionFilter } from '../filter/http-exception.filter';
 import { GatewayConstants } from '../constants/gateway.constants';
@@ -19,7 +19,7 @@ import { RoomService } from 'src/service/room/room.service';
   path: GatewayConstants.ROOM_PATH,
   namespace: GatewayConstants.ROOM_NAMESPACE,
   pingTimeout: GatewayConstants.PING_TIMEOUT,
-})
+  })
 export class RoomGateway {
   constructor(
     private readonly roomService: RoomService,
@@ -46,8 +46,9 @@ export class RoomGateway {
   }
 
   @SubscribeMessage(RequestTypes.ENGAGEMENT_CURSOR)
-  async moveCursor(@MessageBody() message: any, @ConnectedSocket() client: Socket): Promise<boolean> {
-    return await this.roomService.moveCursor(message, client);
+  moveCursor(@MessageBody() message: any, @ConnectedSocket() client: Socket): boolean {
+    this.roomService.moveCursor(message, client);
+    return true;
   }
 
   /**
@@ -61,8 +62,8 @@ export class RoomGateway {
    * @date 2020/7/4 7:03 下午
    */
   @SubscribeMessage(RequestTypes.NEST_ROOM_CHANGE)
-  async newChange(@MessageBody() message: any, @ConnectedSocket() client: Socket): Promise<boolean> {
-    await this.roomService.broadcastServerChange(message.roomId, message.data, client);
-    return Promise.resolve(true);
+  newChange(@MessageBody() message: any, @ConnectedSocket() client: Socket): boolean {
+    this.roomService.broadcastServerChange(message.roomId, message.data, client);
+    return true;
   }
 }

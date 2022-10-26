@@ -59,7 +59,7 @@ async function bootstrap() {
       },
     },
   });
-  await app.startAllMicroservicesAsync();
+  await app.startAllMicroservices();
   await app.listen(GatewayConstants.API_PORT);
   app.useGlobalFilters(new RuntimeExceptionFilter());
   logger('ApplicationContext').log(`Application is running on: ${await app.getUrl()}`);

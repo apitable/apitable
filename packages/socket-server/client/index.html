@@ -1,6 +1,6 @@
 <html>
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4/dist/socket.io.js"></script>
     <meta charset="utf-8"/>
     <script>
       // http://vbs-integration.vika.ltd
@@ -37,13 +37,6 @@
         });
 
 
-        socket.emit('LEAVE_SPACE', {}, function(result) {
-          console.log('LEAVE_SPACE:result', result);
-          // result 为boolean值
-          if (result) {
-            // todo
-          }
-        });
         // socket.emit("NOTIFY", {
         //   rowNo: 0,
         //   createdAt: "2020-06-10 16:54:05",

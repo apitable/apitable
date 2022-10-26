@@ -16,8 +16,8 @@ import { GrpcClient } from 'src/grpc/client/grpc.client';
 export class NotificationService implements INotificationService {
   constructor(private readonly grpcClient: GrpcClient) {
   }
-  public broadcastNotify(message: NotificationRo, client: Socket): any {
-    // return message;
+
+  broadcastNotify(message: NotificationRo, client: Socket): boolean {
     if (isNil(message.toUserId)) {
       throw new ForbiddenException('Forbidden:403', '用户不匹配');
     }
@@ -31,15 +31,14 @@ export class NotificationService implements INotificationService {
     }
   }
 
-  watchSpace(message: WatchSpaceRo, client: AuthenticatedSocket): Promise<boolean> {
-    return new Promise(resolve => {
-      client.join(this.getSpaceRoom(message.spaceId), function(err) {
-        if (err != null) {
-          resolve(false);
-        }
-        resolve(true);
-      });
-    });
+  watchSpace(message: WatchSpaceRo, client: AuthenticatedSocket): boolean {
+    try {
+      client.join(this.getSpaceRoom(message.spaceId));
+      return true;
+    } catch (e) {
+      logger('NotificationService:WatchSpace').error(e, e.message);
+      return false;
+    }
   }
 
   nodeChange(message: NodeChangeRo, client: AuthenticatedSocket): boolean {
@@ -57,36 +56,9 @@ export class NotificationService implements INotificationService {
     }
   }
 
-  leaveSpace(message: WatchSpaceRo, client: AuthenticatedSocket): Promise<boolean> {
-    const server: any = client.server;
-    return new Promise(resolve => {
-      if (isNil(message.spaceId)) {
-        server.of(GatewayConstants.SOCKET_NAMESPACE).adapter.clientRooms(client.id, (err, rooms) => {
-          rooms.forEach(v => {
-            if (v.includes(SocketConstants.SPACE_ROOM_PREFIX)) {
-              client.leave(v, function(error) {
-                if (error != null) {
-                  logger('NotificationService:leaveSpace').error({ error, room: v });
-                }
-              });
-            }
-          });
-        });
-      } else {
-        client.leave(this.getSpaceRoom(message.spaceId), function(error) {
-          if (error != null) {
-            logger('NotificationService:leaveSpace').error({ error, spaceId: message.spaceId });
-            resolve(false);
-          }
-        });
-      }
-      resolve(true);
-    });
-  }
-
   async nodeBrowsed(nodeId: string, uuid: string): Promise<boolean> {
     try {
-      const result = await this.grpcClient.recordNodeBrowsing({nodeId, uuid});
+      const result = await this.grpcClient.recordNodeBrowsing({ nodeId, uuid });
       return result.success;
     } catch (err) {
       logger('NotificationService').error('nodeBrowsed', err.stack);

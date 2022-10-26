@@ -63,10 +63,6 @@ export enum NotificationTypes {
    * 节点变更
    */
   NODE_CHANGE = 'NODE_CHANGE',
-  /**
-   *  离开空间
-   */
-  LEAVE_SPACE = 'LEAVE_SPACE',
 
   /**
    * node browsing event

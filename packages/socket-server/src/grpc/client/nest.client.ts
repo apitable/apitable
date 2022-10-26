@@ -17,22 +17,26 @@ export class NestClient implements OnModuleInit {
   }
 
   async watchRoom(message: vika.grpc.WatchRoomRo, metadata: any): Promise<any | null> {
-    logger(`C-TraceId[${metadata.get('X-C-TraceId')}] WatchRoom`).log(`socket-id:[${message.clientId}] To room-server:[${await this.client.currentClientUrl}]`);
+    logger(`C-TraceId[${metadata.get('X-C-TraceId')}] WatchRoom`)
+      .log(`socket-id:[${message.clientId}] To room-server:[${await this.client.currentClientUrl}]`);
     return await this.nestService.watchRoom(message, metadata).toPromise();
   }
 
   async getActiveCollaborators(message: vika.grpc.WatchRoomRo, metadata: any): Promise<any | null> {
-    logger(`C-TraceId[${metadata.get('X-C-TraceId')}] GetActiveCollaborators`).log(`socket-id:[${message.clientId}] To room-server:[${await this.client.currentClientUrl}]`);
+    logger(`C-TraceId[${metadata.get('X-C-TraceId')}] GetActiveCollaborators`)
+      .log(`socket-id:[${message.clientId}] To room-server:[${await this.client.currentClientUrl}]`);
     return await this.nestService.getActiveCollaborators(message, metadata).toPromise();
   }
 
   async leaveRoom(message: vika.grpc.LeaveRoomRo, metadata: any): Promise<vika.grpc.BasicResult> {
-    logger(`C-TraceId[${metadata.get('X-C-TraceId')}] LeaveRoom`).log(`socket-id:[${message.clientId}] To room-server:[${await this.client.currentClientUrl}]`);
+    logger(`C-TraceId[${metadata.get('X-C-TraceId')}] LeaveRoom`)
+      .log(`socket-id:[${message.clientId}] To room-server:[${await this.client.currentClientUrl}]`);
     return await this.nestService.leaveRoom(message, metadata).toPromise();
   }
 
   async roomChange(message: vika.grpc.UserRoomChangeRo, metadata: any): Promise<any> {
-    logger(`C-TraceId[${metadata.get('X-C-TraceId')}] RoomChange`).log(`socket-id:[${message.clientId}] To room-server:[${await this.client.currentClientUrl}]`);
+    logger(`C-TraceId[${metadata.get('X-C-TraceId')}] RoomChange`)
+      .log(`socket-id:[${message.clientId}] To room-server:[${await this.client.currentClientUrl}]`);
     message.changesets = pack(message.changesets, 'socket.UserRoomChangeRo.changesets');
     const result = await this.nestService.roomChange(message, metadata).toPromise();
     if (result.data) {

@@ -1,19 +1,17 @@
+import { credentials } from '@grpc/grpc-js';
+import { HttpService } from '@nestjs/axios';
+import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { ClientGrpcProxy } from '@nestjs/microservices';
 import { InvalidGrpcServiceException } from '@nestjs/microservices/errors/invalid-grpc-service.exception';
-import {
-  GRPC_DEFAULT_MAX_RECEIVE_MESSAGE_LENGTH,
-  GRPC_DEFAULT_MAX_SEND_MESSAGE_LENGTH,
-} from '@nestjs/microservices/constants';
-import { HttpService, Injectable, OnApplicationBootstrap } from '@nestjs/common';
-import { RedisService } from 'src/service/redis/redis.service';
-import { isFunction } from '@nestjs/common/utils/shared.utils';
-import { Observable } from 'rxjs';
-import { RedisConstants } from 'src/constants/redis-constants';
-import { isDev, logger, randomNum } from 'src/common/helper';
-import * as grpc from 'grpc';
-import { GatewayConstants } from 'src/constants/gateway.constants';
 import { Cron } from '@nestjs/schedule';
+import { isFunction } from 'lodash';
+import { Observable } from 'rxjs';
+import { logger, isDev, randomNum } from 'src/common/helper';
+import { GatewayConstants } from 'src/constants/gateway.constants';
 import { HealthConstants } from 'src/constants/health.constants';
+import { RedisConstants } from 'src/constants/redis-constants';
+import { SocketConstants } from 'src/constants/socket-constants';
+import { RedisService } from 'src/service/redis/redis.service';
 
 @Injectable()
 export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnApplicationBootstrap {
@@ -27,7 +25,7 @@ export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnAppl
   constructor(props) {
     super(props);
     this.redisService = props.proxyClient;
-    this.clientCredentials = grpc.credentials.createInsecure();
+    this.clientCredentials = credentials.createInsecure();
     this.clientIps = new Set();
     this.httpService = props.httpService;
   }
@@ -36,7 +34,7 @@ export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnAppl
    * 监听redis的通道信息
    */
   async onApplicationBootstrap(): Promise<any> {
-    this.logger.log(`当前健康检查模式：XXL_JOB`);
+    this.logger.log('当前健康检查模式：XXL_JOB');
     /*
      * Client订阅了管道，无法使用管道外的其余命令所以这里需要开启 duplicate()
      * 如果不开启后面的客户端会异常：Connection in subscriber mode, only subscriber commands may be used
@@ -93,8 +91,10 @@ export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnAppl
     const maxSendMessageLengthKey = 'grpc.max_send_message_length';
     const maxReceiveMessageLengthKey = 'grpc.max_receive_message_length';
     const maxMessageLengthOptions = {
-      [maxSendMessageLengthKey]: this.getOptionsProp(this.options, 'maxSendMessageLength', GRPC_DEFAULT_MAX_SEND_MESSAGE_LENGTH),
-      [maxReceiveMessageLengthKey]: this.getOptionsProp(this.options, 'maxReceiveMessageLength', GRPC_DEFAULT_MAX_RECEIVE_MESSAGE_LENGTH),
+      [maxSendMessageLengthKey]: this.getOptionsProp(this.options, 'maxSendMessageLength', 
+        SocketConstants.GRPC_DEFAULT_MAX_SEND_MESSAGE_LENGTH),
+      [maxReceiveMessageLengthKey]: this.getOptionsProp(this.options, 'maxReceiveMessageLength', 
+        SocketConstants.GRPC_DEFAULT_MAX_RECEIVE_MESSAGE_LENGTH),
     };
     const maxMetadataSize = this.getOptionsProp(this.options, 'maxMetadataSize', -1);
     if (maxMetadataSize > 0) {

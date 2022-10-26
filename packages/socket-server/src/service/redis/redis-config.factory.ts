@@ -21,9 +21,8 @@ export const redisConfig = {
           // reconnect after
           logger(`RedisClient:${clientType}:retryStrategy`).log(times);
           return Math.min(times * 1000, 3000);
-        } else {
-          logger(`RedisClient:${clientType}:retryStrategy:RetryTimeExhausted`).error(times);
-        }
+        } 
+        logger(`RedisClient:${clientType}:retryStrategy:RetryTimeExhausted`).error(times);
       },
       reconnectOnError(error: Error): boolean | 1 | 2 {
         logger(`RedisClient:${clientType}:reconnectOnError`).error(error);

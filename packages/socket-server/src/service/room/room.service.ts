@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { Socket } from 'socket.io';
-import { promisify } from 'util';
 import { BroadcastTypes } from 'src/enum/broadcast-types.enum';
 import { NestService } from '../nest/nest.service';
 import { isNil } from '@nestjs/common/utils/shared.utils';
-import { ServerErrorCode } from 'src/enum/socket.enum';
+import { ServerErrorCode, SocketEventEnum } from 'src/enum/socket.enum';
 import { SocketConstants } from 'src/constants/socket-constants';
 import { logger } from 'src/common/helper';
 import { RequestTypes } from 'src/enum/request-types.enum';
@@ -24,72 +23,70 @@ export class RoomService {
   ) {
   }
 
-  public async clientDisconnect(client: Socket) {
-    const rooms = Object.keys(client.adapter.rooms);
-    if (!isNil(rooms)) {
-      rooms.forEach(roomName => {
-        // 避免多节点报错,并且过滤掉 nest-server 的房间
-        if (roomName != SocketConstants.NEST_SERVER_PREFIX && !roomName.startsWith(GatewayConstants.ROOM_PATH)) {
-          const socketsIds = Object.keys(client.adapter.rooms[roomName].sockets);
-          // 通知用户所在房间的用户，这个client离开了
-          if (socketsIds.includes(client.id)) {
-            this.leaveRoom({ roomId: roomName }, client);
-          }
-        }
-      });
-      // 通知 nest-server 操作
-      return await this.nestClient.leaveRoom(this.injectMessage(client, { clientId: client.id }), getGlobalGrpcMetadata());
+  async clientDisconnect(socket: Socket) {
+    const rooms = socket.rooms;
+    if (rooms.size == 0) {
+      return;
     }
-    return null;
+    for (const room of rooms) {
+      // avoid multi-node errors and filter out nest-server rooms
+      if (room == SocketConstants.NEST_SERVER_PREFIX || room.startsWith(GatewayConstants.ROOM_PATH)) {
+        continue;
+      }
+      const socketsIds = socket.nsp.adapter.rooms.get(room);
+      // notify the user's room that the client has left
+      if (socketsIds.has(socket.id)) {
+        this.leaveRoom({ roomId: room }, socket);
+      }
+    }
+    // notify nest server actions
+    await this.nestClient.leaveRoom(this.injectMessage(socket, { clientId: socket.id }), getGlobalGrpcMetadata());
   }
 
   @Retryable({
     maxAttempts: SocketConstants.GRPC_OPTIONS.retryPolicy.maxAttempts,
     sentryScopeContext: {
-      tags: (args) => {
-        return { clientId: args[0]?.clientId };
-      },
-      extra: (args) => {
-        return { roomId: args[0]?.roomId, clientId: args[0]?.clientId, cookie: args[0]?.cookie };
-      },
+    tags: (args) => { return { clientId: args[0]?.clientId }; },
+    extra: (args) => { return { roomId: args[0]?.roomId, clientId: args[0]?.clientId, cookie: args[0]?.cookie }; },
     },
     callback: () => ({ code: ServerErrorCode.NetworkError, success: false, message: 'Network Error' }),
-  })
-  public async watchRoom(message: any, client: Socket, server?: any): Promise<any | null> {
+    })
+  async watchRoom(message: any, socket: Socket, server?: any): Promise<any | null> {
     const room = message.roomId;
     const createTime = Date.now();
-    const isExistRoom = client.rooms[room];
+    const isExistRoom = socket.rooms.has(room);
     const grpcMetadata = getGlobalGrpcMetadata();
     const cTraceId = grpcMetadata.get('X-C-TraceId')[0];
 
     logger(`C-TraceId[${cTraceId}] WatchRoom`).log(`Watch Room: ${message.roomId}`);
 
     if (isExistRoom) {
-      logger(`C-TraceId[${cTraceId}] User are already in room`).log(`client: ${client.id} has already in room: ${JSON.stringify(client.rooms[room])}`);
+      logger(`C-TraceId[${cTraceId}] User are already in room`)
+        .log(`socketId: ${socket.id} has already in room: ${JSON.stringify(socket.rooms[room])}`);
     }
     // 通知 NestServer 处理消息
-    const result = await this.nestClient.watchRoom(this.injectMessage(client, message, true, true), grpcMetadata);
+    const result = await this.nestClient.watchRoom(this.injectMessage(socket, message, true, true), grpcMetadata);
 
     if ('success' in result && result.success) {
       // 当 client 在 room 中不存在的时候，进行 join 和 userEnter 的广播
       if (!isExistRoom) {
-        await promisify(client.join.bind(client))(room);
-        logger(`C-TraceId[${cTraceId}] User are join in room`).log({ room, socketId: client.id });
+        socket.join(room);
+        logger(`C-TraceId[${cTraceId}] User are join in room`).log({ room, socketId: socket.id });
         // 通知客户端所有连接新用户加入房间
-        client.broadcast.to(room).emit(BroadcastTypes.ACTIVATE_COLLABORATORS, {
+        socket.broadcast.to(room).emit(BroadcastTypes.ACTIVATE_COLLABORATORS, {
           collaborators: [{
-            socketId: client.id,
+            socketId: socket.id,
             createTime, ...result.data.collaborator,
           }],
         });
         result.data.collaborator = undefined;
 
         // 调用异步的 customRequest，获取给其他节点的协同者，广播该客户端新用户和加入房间的消息
-        this.complementaryCollaborator(server, message, client, result.data.spaceId);
+        this.complementaryCollaborator(server, message, socket, result.data.spaceId);
       }
     } else if (isExistRoom) {
       // 鉴权失败，且已存在 room 中，断开连接
-      await this.leaveRoom({ roomId: room }, client);
+      await this.leaveRoom({ roomId: room }, socket);
     }
 
     const endTime = +new Date();
@@ -98,14 +95,12 @@ export class RoomService {
     return result;
   }
 
-  private async complementaryCollaborator(server: any, message: any, client: Socket, spaceId: string) {
+  private complementaryCollaborator(server: any, message: any, socket: Socket, spaceId: string) {
     // 获取数表资源的所有房间
     const roomIds = [message.roomId];
-    const cb = async (err, replies) => {
-      if (err) {
-        throw new RuntimeException(err);
-      }
-      logger('WatchRoom:CustomRequest').log({ replies });
+    // custom request to get multiple service node pod sockets
+    server.serverSideEmit(SocketEventEnum.CLUSTER_SOCKET_ID_EVENT, roomIds, async(_err: any, replies: string | any[]) => {
+      logger('WatchRoom:ServerSideEmit').log({ replies });
       // 没有 room 连接，直接结束
       if (!replies.length) {
         return;
@@ -121,25 +116,23 @@ export class RoomService {
         return;
       }
       const grpcMetadata = getGlobalGrpcMetadata();
-      const _message = this.injectMessage(client, message, true, true);
+      const _message = this.injectMessage(socket, message, true, true);
       _message.socketIds = [...new Set([..._message.socketIds, ...socketIds])];
       _message.spaceId = spaceId;
       const result = await this.nestClient.getActiveCollaborators(_message, grpcMetadata);
-      client.broadcast.to(client.id).emit(BroadcastTypes.ACTIVATE_COLLABORATORS, {
+      socket.broadcast.to(socket.id).emit(BroadcastTypes.ACTIVATE_COLLABORATORS, {
         collaborators: result.data?.collaborators || [],
       });
-    };
-    // 自定义请求，获取多个服务节点 pod sockets
-    server.adapter.customRequest(roomIds, cb);
+    });
   }
 
-  public async leaveRoom(message: any, client: Socket): Promise<boolean> {
+  async leaveRoom(message: any, socket: Socket): Promise<boolean> {
     const room = message.roomId;
-    // 防止只有自己一个人的时候，断开连接会报错
-    if (!isNil(client.adapter.rooms[room])) {
-      await promisify(client.leave.bind(client))(room);
-      await client.broadcast.to(room).emit(BroadcastTypes.DEACTIVATE_COLLABORATOR, { socketId: client.id, ...message });
-      logger('User are leave room').log({ room, socketId: client.id });
+    // to prevent when you are the only one, disconnection will report an error
+    if (socket.nsp.adapter.rooms.has(room)) {
+      socket.leave(room);
+      await socket.broadcast.to(room).emit(BroadcastTypes.DEACTIVATE_COLLABORATOR, { socketId: socket.id, ...message });
+      logger('User are leave room').log({ room, socketId: socket.id });
     }
     return Promise.resolve(true);
   }
@@ -147,31 +140,26 @@ export class RoomService {
   @Retryable({
     maxAttempts: SocketConstants.GRPC_OPTIONS.retryPolicy.maxAttempts,
     sentryScopeContext: {
-      tags: (args) => {
-        return { clientId: args[0]?.clientId };
-      },
-      extra: (args) => {
-        return { roomId: args[0]?.roomId, clientId: args[0]?.clientId, cookie: args[0]?.cookie };
-      },
+    tags: (args) => { return { clientId: args[0]?.clientId } },
+    extra: (args) => { return { roomId: args[0]?.roomId, clientId: args[0]?.clientId, cookie: args[0]?.cookie } },
     },
     callback: () => ({ code: ServerErrorCode.ServerError, success: false, message: 'Server Error' }),
-  })
-  async roomChange(message: any, client: Socket): Promise<any> {
+    })
+  async roomChange(message: any, socket: Socket): Promise<any> {
     const room = message.roomId;
     const grpcMetadata = getGlobalGrpcMetadata();
 
-    // 通知 NestServer 处理消息
-    const result = await this.nestClient.roomChange(this.injectMessage(client, message, true), grpcMetadata);
+    // notify nest server to process the message
+    const result = await this.nestClient.roomChange(this.injectMessage(socket, message, true), grpcMetadata);
     if ('success' in result && result.success) {
-      const changesets = await this.broadcastServerChange(room, result.data, client);
+      const changesets = this.broadcastServerChange(room, result.data, socket);
       result.data = { changesets };
     }
-    // 响应结果直接返回
     return result;
   }
 
-  public async broadcastServerChange(roomId: string, results: any, server: any): Promise<any[]> {
-    // 遍历广播到各个 resource 发生变化的room
+  broadcastServerChange(roomId: string, results: any, server: any): any[] {
+    // traverse and broadcast to rooms where each resource has changed
     const roomToCsMap = new Map<string, any[]>();
     for (const result of results) {
       for (const roomId of result.roomIds) {
@@ -191,41 +179,39 @@ export class RoomService {
     return roomToCsMap.get(roomId);
   }
 
-  public async moveCursor(message: any, client: Socket): Promise<boolean> {
+  moveCursor(message: any, socket: Socket) {
     const { datasheetId, ...rest } = message;
     const data = {
       type: RequestTypes.ENGAGEMENT_CURSOR,
-      socketId: client.id,
+      socketId: socket.id,
       cursorInfo: {
         datasheetId,
         ...rest,
       },
     };
-    client.broadcast.to(datasheetId).emit(BroadcastTypes.ENGAGEMENT_CURSOR, data);
-    return Promise.resolve(true);
+    socket.broadcast.to(datasheetId).emit(BroadcastTypes.ENGAGEMENT_CURSOR, data);
   }
 
   /**
    * 绑定client的信息到message
    *
-   * @param client socket连接信息
+   * @param socket socket连接信息
    * @param message 客户端发送的消息
    * @param isNeedCookie 是否需要cookie信息
    * @return
    * @author Zoe Zheng
    * @date 2020/6/30 6:18 下午
    */
-  private injectMessage(client: Socket, message: any, isNeedCookie = false, isNeedSocketIds = false): any {
+  private injectMessage(socket: Socket, message: any, isNeedCookie = false, isNeedSocketIds = false): any {
     if (isNeedCookie) {
-      message.cookie = client.handshake.headers.cookie;
+      message.cookie = socket.handshake.headers.cookie;
     }
-    message.clientId = client.id;
+    message.clientId = socket.id;
     if (!isNil(message.roomId) && isNeedSocketIds) {
-      const room = client.adapter.rooms[message.roomId];
-      if (room) {
-        message.socketIds = [...[client.id], ...Object.keys(room.sockets)];
+      if (socket.nsp.adapter.rooms.has(message.roomId)) {
+        message.socketIds = [...[socket.id], ...Object.keys(socket.nsp.adapter.rooms.get(message.roomId))];
       } else {
-        message.socketIds = [client.id];
+        message.socketIds = [socket.id];
       }
     }
     return message;
@@ -255,11 +241,12 @@ export class RoomService {
       });
       return;
     }
-    const cb = async (err, replies) => {
+    // custom request to get multiple service node pod sockets
+    server.serverSideEmit(SocketEventEnum.CLUSTER_SOCKET_ID_EVENT, roomIds, async(err: string, replies: string | any[]) => {
       if (err) {
         throw new RuntimeException(err);
       }
-      logger('FieldPermission:CustomRequest').log({ replies });
+      logger('FieldPermission:ServerSideEmit').log({ replies });
       // 没有 room 连接，直接结束
       if (!replies.length) {
         return;
@@ -298,9 +285,7 @@ export class RoomService {
         }
         return;
       });
-    };
-    // 自定义请求，获取多个服务节点 pod sockets
-    server.adapter.customRequest(roomIds, cb);
+    });
   }
 
 }
