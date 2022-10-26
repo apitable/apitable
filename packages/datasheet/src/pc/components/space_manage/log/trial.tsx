@@ -11,9 +11,10 @@ import UnauthorizedPng from 'static/icon/audit/audit_unauthorized_img.png';
 
 interface ITrialProps {
   setShowTrialModal: Dispatch<SetStateAction<boolean>>;
+  title: string;
 }
 
-export const Trial: FC<ITrialProps> = ({ setShowTrialModal }) => {
+export const Trial: FC<ITrialProps> = ({ setShowTrialModal, title }) => {
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   const subscription = useSelector(state => state.billing.subscription, shallowEqual);
   const social = spaceInfo?.social;
@@ -35,7 +36,7 @@ export const Trial: FC<ITrialProps> = ({ setShowTrialModal }) => {
       <Image alt='' src={UnauthorizedPng} />
     </div>
     <h1 className={classnames([styles.unauthorizedTitle, styles.title])}>
-      {t(Strings.space_log_title)}
+      {title}
     </h1>
     <h2 className={styles.desc}>
       {t(Strings.space_log_trial_desc3)}

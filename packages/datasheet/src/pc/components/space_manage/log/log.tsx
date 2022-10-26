@@ -301,7 +301,7 @@ const Log = (): JSX.Element => {
   }, [selectedMembers, state.dates]); // eslint-disable-line
 
   if (showTrialModal) {
-    return <Trial setShowTrialModal={setShowTrialModal}/>;
+    return <Trial setShowTrialModal={setShowTrialModal} title={t(Strings.space_log_title)}/>;
   }
 
   return (
