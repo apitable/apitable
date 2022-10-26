@@ -29,7 +29,7 @@ services:
       - /bin/sh
       - -c
       - |
-        [ -d /tmp/vika ] && cp -arf /tmp/vika/custom/* /app/packages/datasheet/public/custom && cp -arf /tmp/vika/public/* /app/packages/datasheet/public
+        [ -d /tmp/vika ] && cp -arf /tmp/vika/custom/* /app/packages/datasheet/public/custom && cat /tmp/vika/custom/.env >> /app/packages/datasheet/.env  && cp -arf /tmp/vika/public/* /app/packages/datasheet/public
         node server.js
     depends_on:
       backend-server:
