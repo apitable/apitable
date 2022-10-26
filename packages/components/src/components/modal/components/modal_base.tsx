@@ -119,7 +119,7 @@ export const ModalBase: React.FC<IModalProps> = (props) => {
           padding: '9px 16px'
         }}
       >
-        {props.cancelText || '取消'}
+        {props.cancelText || 'Cancel'}
       </TextButton>
       <div style={{ marginRight: 8 }} />
       <Button
@@ -127,7 +127,7 @@ export const ModalBase: React.FC<IModalProps> = (props) => {
         color='primary'
         onClick={onOk}
       >
-        {props.okText || '确定'}
+        {props.okText || 'Confirm'}
       </Button>
     </Box>
   );

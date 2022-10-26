@@ -16,8 +16,8 @@ const {
   JellyButton
 } = composeStories(stories);
 
-describe('Button 按钮测试', () => {
-  it('Button 按钮默认支持点击', () => {
+describe('Button test', () => {
+  it('Buttons support clicking by default', () => {
     const onClickSpy = jest.fn();
     render(<DefaultButton onClick={onClickSpy} />);
     const buttonElement = screen.getByRole('button');
@@ -25,7 +25,7 @@ describe('Button 按钮测试', () => {
     expect(onClickSpy).toHaveBeenCalled();
   });
 
-  it('Button 按钮禁用后点击无效且透明度为 0.5', () => {
+  it('Button disabled, clicking is invalid and the transparency is 0.5', () => {
     const onClickSpy = jest.fn();
     render(<DisabledButton onClick={onClickSpy} />);
     const buttonElement = screen.getByRole('button');
@@ -35,27 +35,27 @@ describe('Button 按钮测试', () => {
     expect(styles.opacity).toBe('0.5');
   });
 
-  it('Button 按钮支持图标前缀', () => {
+  it('Button support prefix icon', () => {
     render(<PrefixIconButton />);
     const buttonElement = screen.getByRole('button');
     const svgElement = buttonElement.querySelector('svg');
-    // 按钮有两个子元素
+    // Button has two child elements
     expect(buttonElement.childNodes.length).toBe(2);
-    // 第一个子元素是 svg 图标
+    // Button first child element is svg icon
     expect(buttonElement.firstChild?.contains(svgElement));
   });
 
-  it('Button 按钮支持图标后缀', () => {
+  it('Button support suffix icon', () => {
     render(<SuffixIconButton />);
     const buttonElement = screen.getByRole('button');
     const svgElement = buttonElement.querySelector('svg');
-    // 按钮有两个子元素
+    // Button has two child elements
     expect(buttonElement.childNodes.length).toBe(2);
-    // 最后子元素是 svg 图标
+    // Button last child element is svg icon
     expect(buttonElement.lastChild?.contains(svgElement));
   });
   
-  it('Button 按钮支持加载 loading', () => {
+  it('Button support loading ui', () => {
     render(<LoadingButton />);
     const buttonElement = screen.getByRole('button');
     const svgElement = buttonElement.querySelector('svg');
@@ -63,7 +63,7 @@ describe('Button 按钮测试', () => {
     expect(buttonElement.lastChild?.contains(svgElement));
   });
 
-  it('Button 按钮加载中点击禁用', () => {
+  it('Button loading status disabled', () => {
     const onClickSpy = jest.fn();
     render(<LoadingButton onClick={onClickSpy} />);
     const buttonElement = screen.getByRole('button');
@@ -71,14 +71,14 @@ describe('Button 按钮测试', () => {
     expect(onClickSpy).not.toHaveBeenCalled();
   });
 
-  it('Button 按钮支持占据整行 100%', () => {
+  it('Button occupy 100% width', () => {
     render(<BlockButton />);
     const buttonElement = screen.getByRole('button');
     const styles = getComputedStyle(buttonElement);
     expect(styles.width).toBe('100%');
   });
 
-  it ('Button 按钮默认支持实心按钮', () => {
+  it ('Button default is solid button', () => {
     render(<PrimaryButton/>);
     const buttonElement = screen.getByRole('button');
     const styles = getComputedStyle(buttonElement);
@@ -86,7 +86,7 @@ describe('Button 按钮测试', () => {
     expect(styles.color).toBe(targetColor);
   });
 
-  it ('Button 按钮支持果冻按钮（浅色按钮）', () => {
+  it ('Button support Jelly button(light button)', () => {
     render(<JellyButton/>);
     const buttonElement = screen.getByRole('button');
     const styles = getComputedStyle(buttonElement);

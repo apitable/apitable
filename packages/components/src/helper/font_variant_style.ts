@@ -1,6 +1,5 @@
 import { css } from 'styled-components';
 
-// WARN: window 识别不了 500 ？ 记反了，这里要写字符串。
 const fontWeightBold = 'bold';
 const fontWeightRegular = 'normal';
 

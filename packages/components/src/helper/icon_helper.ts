@@ -9,7 +9,7 @@ export const IconMap: any = {
 };
 
 /**
- * 多色的 icon 不实用 currentColor
+ * Multicolor icons do not use currentColor
  * @param icon
  * @returns
  */

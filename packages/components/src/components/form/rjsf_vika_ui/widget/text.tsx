@@ -15,7 +15,7 @@ const HelperText = styled.div.attrs(applyDefaultTheme) <{ error: boolean }>`
 `;
 
 export const TextWidget = (props: WidgetProps) => {
-  // TODO: useControllableValue 这个 hook 看看能不能改成防抖的
+  // TODO: useControllableValue hook should support debounce
   const [state, setState] = useControllableValue<string>(props, {
     defaultValue: '',
   });

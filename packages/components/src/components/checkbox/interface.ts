@@ -1,21 +1,21 @@
 
 export interface ICheckboxProps {
   /**
-   * 是否勾选
+   * whether the checkbox should be checked
    */
   checked?: boolean;
   /**
-   * 大小 单位像素
+   * checkbox size
    */
   size?: number;
   /**
-   * 颜色
+   * checkbox color
    */
   color?: string;
   onChange?: (value: boolean) => void;
   children?: React.ReactNode;
   /**
-   * 禁用
+   * disabled
    */
   disabled?: boolean;
 }

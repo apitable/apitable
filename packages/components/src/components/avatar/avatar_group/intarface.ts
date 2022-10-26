@@ -1,12 +1,12 @@
 export interface IAvatarGroup {
   /**
-   * 显示的最大头像个数
+   * maximum number of avatars displayed
    */
   max?: number;
-  /** 头像大小 xxs(20px)、xs(24px)、s(32px)、m(40px)、l(64px)、xl(80px) */
+  /** avatar size xxs(20px)、xs(24px)、s(32px)、m(40px)、l(64px)、xl(80px) */
   size?: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
   /**
-   * 多余头像样式
+   * avatar inline style
    */
   maxStyle?: React.CSSProperties;
 }

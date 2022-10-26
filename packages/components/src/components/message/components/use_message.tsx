@@ -34,7 +34,7 @@ const MessageUiContainer = (props: IMessageUIProps) => {
   useEffect(() => {
     if (props.messageKey && uiPropsMap.hasOwnProperty(props.messageKey)) {
       if (uuids.includes(props.messageKey)) {
-        // 组件正在渲染，更新内容
+        // Component is rendering, updating content
         setUiPropsMap({
           ...uiPropsMap,
           [props.messageKey]: {
@@ -45,7 +45,7 @@ const MessageUiContainer = (props: IMessageUIProps) => {
         return;
       }
     }
-    // 组件首次渲染
+    // First render
     const key = props.messageKey || getUuid();
     const newUuids = [...uuids];
     newUuids.push(key);

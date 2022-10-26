@@ -4,27 +4,49 @@ import { Direction } from './constants';
 export type Id = ReactText | number | string;
 
 export interface ICalendar {
-  /** 默认时间，首次打开日历为当前月份 */
+  /**
+   * default date. the first opened calendar is the current month
+  */
   defaultDate?: Date;
-  /** 任务列表，数据结构为：ITask { id: Id; title: string; startDate: Date; endDate: Date; startDisabled?: boolean, endDisabled?: boolean } */
+  /**
+   * task list, data structure is：ITask { id: Id; title: string; startDate: Date; endDate: Date; startDisabled?: boolean, endDisabled?: boolean }
+   */
   tasks?: ITask[];
-  /** 更新任务函数 */
+  /**
+   * update task function
+  */
   update?: (id: Id, startDate: Date, endDate: Date) => void;
-  /** 国际化支持 */
+  /**
+   * i18n
+   */
   lang?: 'zh' | 'en';
-  /** 拖拽组件（beta 版本） */
+  /**
+   * drag and drop components
+  */
   dnd?: any[];
-  /** 任务样式 */
+  /**
+   * list inline styles
+  */
   listStyle?: React.CSSProperties;
-  /** 标记任务开始时间位置样式 */
+  /**
+   * mark task start position inline styles
+   */
   startListStyle?: React.CSSProperties;
-  /** 告警信息 */
+  /**
+   * abnormal task warn message
+   */
   warnText?: React.ReactElement;
-  /** 日历行展示行最小个数 */
+  /**
+   * the minimum decimal number displayed in each calendar line
+   */
   rowMixCount?: number;
-  /** 禁用 */
+  /**
+   * whether disabled actions
+  */
   disabled?: boolean;
-  /** 支持拉伸，允许拉升任务两端调整任务时间 */
+  /**
+   * task support resizable
+  */
   resizable?: boolean;
   moreText?: string;
   moveTaskId?: string;
@@ -85,11 +107,17 @@ export interface ILevelResult {
 
 export interface IDrop {
   children: React.ReactElement[];
-  /** 拖拽到的日期 */
+  /**
+   * drop date
+   */
   date: Date;
-  /** 更新任务 */
+  /**
+   * update task function
+   */
   update?: (id: Id, startDate: Date, endDate: Date) => void;
-  /** 任务列表 */
+  /**
+   * task list
+   */
   tasks: ITask[];
 }
 

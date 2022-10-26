@@ -7,7 +7,7 @@ export interface ISwitchProps extends Omit<React.HTMLAttributes<HTMLButtonElemen
   className?: string;
   prefixCls?: string;
   /**
-   * 禁用状态
+   * Whether disabled or not
    */
   disabled?: boolean;
   checkedChildren?: React.ReactNode;
@@ -17,28 +17,28 @@ export interface ISwitchProps extends Omit<React.HTMLAttributes<HTMLButtonElemen
   onClick?: SwitchClickEventHandler;
   tabIndex?: number;
   /**
-   * 开启状态
+   * Whether checked or not
    */
   checked?: boolean;
   /**
-   * 默认是否开启
+   * Default is Checked or UnChecked
    */
   defaultChecked?: boolean;
   /**
-   * 加载状态
+   * switch loading status
    */
   loading?: boolean;
   /**
-   * 加载图标
+   * loading icon
    */
   loadingIcon?: React.ReactNode;
   /**
-   * 行内样式
+   * inline styles
    */
   style?: React.CSSProperties;
   title?: string;
   /**
-   * 大小
+   * size
    */
   size?: 'small' | 'default' | 'large';
 }

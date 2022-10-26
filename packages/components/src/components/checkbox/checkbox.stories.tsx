@@ -4,7 +4,7 @@ import { StoryType } from '../../stories/constants';
 import { Story } from '@storybook/react';
 import { ICheckboxProps } from './interface';
 
-const COMPONENT_NAME = 'Checkbox 勾选';
+const COMPONENT_NAME = 'Checkbox';
 
 const TITLE = `${StoryType.Form}/${COMPONENT_NAME}`;
 
@@ -23,42 +23,42 @@ const Template: Story<ICheckboxProps> = (args) => <Checkbox {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  children: '默认选项'
+  children: 'default checkbox',
 };
 
 export const DefaultChecked = Template.bind({});
 DefaultChecked.args = {
   checked: true,
-  children: '默认勾选项',
+  children: 'default checkbox',
 };
 
 export const Disabled = Template.bind({});
 Disabled.args = {
   disabled: true,
-  children: '禁用选项',
+  children: 'disabled checkbox',
 };
 
 export const DisabledChecked = Template.bind({});
 DisabledChecked.args = {
   disabled: true,
   checked: true,
-  children: '禁用勾选项',
+  children: 'disabled checkbox',
 };
 
 export const CustomSizeTo40 = Template.bind({});
 CustomSizeTo40.args = {
   size: 40,
-  children: '40px 尺寸选项',
+  children: '40px size checkbox',
 };
 
 export const CustomSizeToRed = Template.bind({});
 CustomSizeToRed.args = {
   color: 'red',
-  children: '红色勾选项',
+  children: 'red checkbox',
 };
 
 export const Callback = Template.bind({});
 Callback.args = {
-  onChange: val => alert(`状态：${val ? '勾选': '取消勾选'}`),
-  children: '监听选项',
+  onChange: val => alert(`status：${val ? 'checked': 'cancel checked'}`),
+  children: 'listen checkbox',
 };

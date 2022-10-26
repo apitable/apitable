@@ -2,23 +2,23 @@ import { IHtmlElementBase } from 'interface';
 
 export interface IAlertProps extends IHtmlElementBase {
   /**
-   * 提示类型，绑定颜色和 icon
+   * Prompt type, associated with color and icon
    */
   type: 'default' | 'error' | 'warning' | 'success'
   /**
-   * 提示标题
+   * title of the alert
    */
   title?: string;
   /**
-   * 提示内容
+   * content of the alert
    */
   content: string;
   /**
-   * 是否可关闭
+   * whether the alert should close
    */
   closable?: boolean;
   /**
-   * 关闭提示时的回掉函数
+   * close action callback function
    */
   onClose?: () => void;
 }

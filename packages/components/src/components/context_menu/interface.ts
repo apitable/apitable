@@ -1,101 +1,98 @@
 import React from 'react';
 
-/**
- * 菜单信息
- */
 export interface IContextMenuClickState {
   /**
-   * 鼠标屏幕坐标
+   * Mouse screen coordinates
    */
   offset: number[] | null;
 
   /**
-   * 额外携带的信息，用于提供 hidden = function 与 click 时的回调参数
+   * extra information
    */
   extraInfo?: any;
 }
 
 /**
- * 点击事件的回调函数
+ * click event interface
  */
 export interface IContextCbProps {
   /**
-   * 自定义数据菜单项
+   * custom menu item props
    */
   item: IContextMenuItemProps;
 
   /**
-   * 当前菜单路径
+   * current menu path
    */
   keyPath: string[];
 
   /**
-   * 鼠标事件
+   * mouse event
    */
   event: React.MouseEvent<HTMLElement>;
 
   /**
-   * 额外携带的信息，用于提供 hidden = function 与 click 时的回调参数
+   * extra information
    */
   extraInfo?: any;
 }
 
 /**
- * 自定义数据菜单项
+ * custom menu item props
  */
 export interface IContextMenuItemProps {
   /**
-   * 键 - 唯一标识
+   * primary key
    */
   key: string;
 
   /**
-   * 显示的文本
+   * item text
    */
   label: string;
 
   /**
-   * 子菜单项
+   * child context menu
    */
   children?: IContextMenuItemProps[];
 
   /**
-   * 是否隐藏
+   * whether should be hidden
    */
   hidden?: boolean | (({ props }: any) => void);
 
   /**
-   * 是否禁用
+   * whether should be disabled
    */
   disabled?: boolean | ((arg?: any) => boolean);
 
   /**
-   * 禁用提示
+   * disabled tips
    */
   disabledTip?: string;
 
   /**
-   * 菜单项前置图标
+   * menu prefix icon
    */
   icon?: JSX.Element;
 
   /**
-   * 菜单项箭头
+   * menu arrow
    */
   arrow?: JSX.Element;
 
   /**
-   * 额外渲染，优先级高于 arrow
+   * extra render UI
    */
   extraElement?: JSX.Element;
 
   /**
-   * 分组聚合标识
+   * Grouping aggregation ID
    */
   groupId?: string;
 
   /**
-   * 点击回调函数
+   * click callback
    */
   // onClick?: (args?: any) => void;
 
@@ -103,93 +100,92 @@ export interface IContextMenuItemProps {
 }
 
 /**
- * 右键菜单参数
+ * right click menu interface
  */
 export interface IContextMenuProps {
   /**
-   * 偏移量
+   * offset position
    */
   menuOffset?: number[];
 
   /**
-   * 菜单宽度
+   * menu width
    */
   width?: number;
 
   /**
-   * 接收的菜单信息
+   * menu state
    */
   contextMenu?: IContextMenuClickState;
 
   /**
-   * 菜单关闭时回调
+   * menu close callback
    */
   onClose?: () => void;
 
   /**
-   * 菜单开启后的回调
+   * menu open callback
    */
   onShown?: (args?: any) => void;
 
   /**
-   * 自定义数据项
+   * custom overlay
    */
   overlay?: IContextMenuItemProps[];
 
   /**
-   * 点击回调
+   * click callback
    */
   onClick?: (args: IContextCbProps) => void;
 
   /**
-   * 指定右键菜单 id（不推荐使用）
+   * set menu id
    */
   menuId?: string;
 
   /**
-   * 剩余空间，通常用于滚动高度下剩余多少不占据空间
+   * Remaining space, usually used for how much space is left under the rolling height
    */
   menuSubSpaceHeight?: number;
 
   id?: string;
 
   /**
-   * 自定义右键菜单元素
+   * custom children
    */
   children?: React.ReactNode;
+
+  data?: IContextMenuItemProps[];
 }
 
 /**
- * data 缓存信息
+ * cache overlay data
  */
 export interface ICacheOverlay {
   /**
-   * 菜单项
+   * menu item
    */
   item: IContextMenuItemProps;
 
   /**
-   * 菜单的层级
+   * menu layer
    */
   level: number;
 
   /**
-   * 菜单的索引
+   * menu index
    */
   index: number;
 }
 
-/**
- * Item 传递信息
- */
 export interface IContextMenuStyleProps {
   /**
-   * 是否禁用
+   * whether should be displayed
    */
   disabled?: boolean;
 
   /**
-   * 是否分组
+   * whether should be grouping
    */
   isGroup?: boolean;
 }

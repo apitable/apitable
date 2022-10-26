@@ -17,7 +17,7 @@ const vikaWidgets = {
   SelectWidget,
   CheckboxesWidget,
   ColorWidget,
-  // 自定义组件的 key 要以小写开头
+  // The key of the custom component should start with lower case
   toggleButtonWidget: ToggleButtonWidget,
 };
 

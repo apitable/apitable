@@ -26,8 +26,6 @@ interface IUseListenVisualHeightProps {
 export interface IConfig {
   configMaxHeight?: number;
   configTriggerInfo?: IUseListenTriggerInfo;
-  // 是否计算过程中传入新的值？
-  // configChildNode?: React.MutableRefObject<HTMLElement | null>;
 }
 
 export function useListenVisualHeight(props: IUseListenVisualHeightProps) {
@@ -42,7 +40,7 @@ export function useListenVisualHeight(props: IUseListenVisualHeightProps) {
     minHeight,
     maxHeight,
     triggerInfo,
-    containerAdjust = false, // 如有 trigger， 以trigger 为准
+    containerAdjust = false, // Trigger, if any, takes preferred
     showScrollColor = true,
     showOnParent = true,
     position = 'absolute',
@@ -73,19 +71,19 @@ export function useListenVisualHeight(props: IUseListenVisualHeightProps) {
 
     const calcHeight = height || clientHeight;
 
-    // 自定义滚动
+    // Custom scroll
     if (onScroll) {
       onScroll({ scrollTop, height: calcHeight, scrollHeight });
       return;
     }
 
     if (scrollTop + calcHeight > scrollHeight - 10) {
-      // 屏蔽可滚动样式
+      // Hidden scrollable styles
       styleNode.classList.remove(scrollCls);
       styleNode.style.position = positionValue;
       return;
     }
-    // 展示可滚动样式
+    // Show scrollable styles
     if (styleNode.classList.contains(scrollCls)) {
       return;
     }
@@ -117,15 +115,11 @@ export function useListenVisualHeight(props: IUseListenVisualHeightProps) {
     const restBottomSpaceHeight = window.innerHeight - actualBottom - triggerHeight;
     let restSpaceHeight = useTopSpace ? Math.max(restTopSpaceHeight, restBottomSpaceHeight) : restTopSpaceHeight;
 
-    // 保留计算过程中传入新值的写法作为备用
-    // const needCalcChild = props?.configChildNode?.current || childNode?.current;
-    // if (needCalcChild) {
-    //   const childEle = needCalcChild;
     if (childNode?.current) {
       const childEle = childNode.current;
 
       /**
-       * 使用 clone 方式计算容器滚动节点的高度
+       * Use clone method to calculate the height of container roll node
        */
       const cloneNode = ele.cloneNode(true) as HTMLElement;
       const childList = Array.from(ele.childNodes);

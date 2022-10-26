@@ -6,7 +6,7 @@ import { IListProps } from './interface';
 import { TextButton } from '../text_button';
 import { Box } from '../box';
 
-const COMPONENT_NAME = 'List 列表';
+const COMPONENT_NAME = 'List';
 
 const TITLE = `${StoryType.BaseComponent}/${COMPONENT_NAME}`;
 
@@ -23,7 +23,7 @@ export default {
 
 const Template: Story<IListProps> = (args) => <List {...args} />;
 
-const DATA = new Array(5).fill(null).map((_, index) => `列表 ${index + 1}`);
+const DATA = new Array(5).fill(null).map((_, index) => `List ${index + 1}`);
 
 export const Default = Template.bind({});
 Default.args = {
@@ -38,19 +38,19 @@ WithBordered.args = {
 
 export const WithFooterHeader = Template.bind({});
 WithFooterHeader.args = {
-  header: <div>头部</div>,
+  header: <div>Header</div>,
   data: DATA,
-  footer: <div>尾部</div>,
+  footer: <div>Footer</div>,
   bordered: true,
 };
 
 export const WithActions = Template.bind({});
 WithActions.args = {
   data: new Array(5).fill(null).map((_, index) => ({
-    children: `列表 ${index + 1}`,
+    children: `List ${index + 1}`,
     actions: [
-      <TextButton size="x-small" color="primary">编辑</TextButton>,
-      <TextButton size="x-small" color="danger">删除</TextButton>
+      <TextButton size="x-small" color="primary">Edit</TextButton>,
+      <TextButton size="x-small" color="danger">Delete</TextButton>
     ],
   })),
   bordered: true,

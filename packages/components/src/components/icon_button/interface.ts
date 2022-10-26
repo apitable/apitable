@@ -3,42 +3,43 @@ import { IIconProps } from '@vikadata/icons';
 
 export interface IIconButtonProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
-   * 行内样式
+   * Custom inline styles
    */
   style?: React.CSSProperties;
   /**
-   * 形状
+   * Button shape
    */
   shape?: 'square';
   /**
-   * 使用指定的HTML元素来渲染组件
+   * Use the specified HTML element to render the component
    */
   component?: ElementType;
   /**
-   * 类名
+   * Custom class name
    */
   className?: string;
   /**
-   * 变体
+   * Variant type
    */
   variant?: 'default' | 'background' | 'blur';
-  /** icon 组件 */
+  /** 
+   * Icon component
+   */
   icon: React.FC<IIconProps>;
   /**
-   * icon 大小 16 24
+   * Icon size
    */
-  /** */
   size?: 'small' | 'large';
   /**
-   * 响应点击事件
+   * Click callback
    */
   onClick?: (e: any) => void;
   /**
-   * 禁用
+   * Whether disabled or not
    */
   disabled?: boolean;
   /**
-   * 是否处于激活状态
+   * Whether active or not
    */
   active?: boolean;
 }

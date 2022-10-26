@@ -5,7 +5,7 @@ import { Switch } from '../switch';
 import { ContextMenu, useContextMenu } from './index';
 import { StoryType } from '../../stories/constants';
 
-const COMPONENT_NAME = 'ContextMenu 右键菜单';
+const COMPONENT_NAME = 'ContextMenu';
 
 const TITLE = `${StoryType.BaseComponent}/${COMPONENT_NAME}`;
 
@@ -31,7 +31,7 @@ export const Default = () => {
           onSetContextMenu(e);
         }}
       >
-        右击我
+        right click to open context menu
       </button>
       <ContextMenu contextMenu={contextMenu}>
         <div style={{ background: '#fff', boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)', padding: 10 }}>I' m a child</div>
@@ -51,19 +51,19 @@ export const OverlayContextMenu = () => {
           onSetContextMenu(e);
         }}
       >
-        右击我
+        right click
       </button>
       <ContextMenu
         contextMenu={contextMenu}
         overlay={[{
           key: '1-1',
-          label: '一级菜单',
+          label: 'first layer menu 1',
         }, {
           key: '1-2',
-          label: '一级菜单',
+          label: 'first layer menu 2',
         }, {
           key: '1-3',
-          label: '一级菜单',
+          label: 'first layer menu 3',
         }]}
       />
     </div>
@@ -81,17 +81,17 @@ export const WidthContextMenu = () => {
           onSetContextMenu(e);
         }}
       >
-        右击我
+        right click
       </button>
       <ContextMenu
         contextMenu={contextMenu}
         width={500}
         overlay={[{
           key: '1-1',
-          label: '一级菜单',
+          label: 'first layer menu',
           children: [{
             key: '1-1-1',
-            label: '二级菜单',
+            label: 'second layer menu',
           }]
         }]}
       />
@@ -111,104 +111,104 @@ export const CascadeContextMenu = () => {
         }}
         style={{ position: 'fixed', left: 0 }}
       >
-        右击我
+        right click
       </button>
       <ContextMenu
         contextMenu={contextMenu}
         overlay={[{
           key: '1-1',
-          label: '一级菜单',
+          label: 'first layer menu',
           children: [{
             key: '1-1-1',
-            label: '二级菜单',
+            label: 'second layer menu 1',
           }, {
             key: '1-1-2',
-            label: '二级菜单',
+            label: 'second layer menu 2',
             children: [{
               key: '1-1-1-3',
-              label: '三级菜单',
+              label: 'third layer menu',
               children: [{
                 key: '1-1-1-1-4',
-                label: '四级菜单',
+                label: 'fourth layer menu',
               }]
             }]
           }]
         }, {
           key: '1-2',
-          label: '一级菜单',
+          label: 'first layer menu 2',
         }, {
           key: '1-3',
-          label: '一级菜单',
+          label: 'first layer menu 3',
           children: [{
             key: '1-3-1',
-            label: '二级菜单',
+            label: 'second layer menu 1',
           }, {
             key: '1-3-2',
-            label: '二级菜单',
+            label: 'second layer menu 2',
           }, {
             key: '1-3-3',
-            label: '二级菜单',
+            label: 'second layer menu 3',
           }, {
             key: '1-3-4',
-            label: '二级菜单',
+            label: 'second layer menu 4',
           }, {
             key: '1-3-5',
-            label: '二级菜单',
+            label: 'second layer menu 5',
           }, {
             key: '1-3-6',
-            label: '二级菜单',
+            label: 'second layer menu 6',
           }, {
             key: '1-3-7',
-            label: '二级菜单',
+            label: 'second layer menu 7',
           }, {
             key: '1-3-8',
-            label: '二级菜单',
+            label: 'second layer menu 8',
           }, {
             key: '1-3-9',
-            label: '二级菜单',
+            label: 'second layer menu 9',
           }, {
             key: '1-3-10',
-            label: '二级菜单',
+            label: 'second layer menu 10',
           }, {
             key: '1-3-11',
-            label: '二级菜单',
+            label: 'second layer menu 11',
           }, {
             key: '1-3-12',
-            label: '二级菜单',
+            label: 'second layer menu 12',
           }]
         }, {
           key: '1-4',
-          label: '一级菜单',
+          label: 'first layer menu 4',
         }, {
           key: '1-5',
-          label: '一级菜单',
+          label: 'first layer menu 5',
         }, {
           key: '1-6',
-          label: '一级菜单',
+          label: 'first layer menu 6',
         }, {
           key: '1-7',
-          label: '一级菜单',
+          label: 'first layer menu 7',
         }, {
           key: '1-8',
-          label: '一级菜单',
+          label: 'first layer menu 8',
         }, {
           key: '1-9',
-          label: '一级菜单',
+          label: 'first layer menu 9',
         }, {
           key: '1-10',
-          label: '一级菜单',
+          label: 'first layer menu 10',
         }, {
           key: '1-11',
-          label: '一级菜单',
+          label: 'first layer menu 11',
         }, {
           key: '1-12',
-          label: '一级菜单',
+          label: 'first layer menu 12',
           children: [{
             key: '1-12-1',
-            label: '二级菜单',
+            label: 'second layer menu 1',
           }, {
             key: '1-12-2',
-            label: '二级菜单',
+            label: 'second layer menu 2',
           }]
         }]}
       />
@@ -228,21 +228,21 @@ export const IconContextMenu = () => {
         }}
         style={{ position: 'fixed', right: 150 }}
       >
-        右击我
+        right click
       </button>
       <ContextMenu
         contextMenu={contextMenu}
         overlay={[{
           key: '1-1',
-          label: '一级菜单',
+          label: 'first layer menu 1',
           icon: <LockNonzeroOutlined />,
         }, {
           key: '1-2',
-          label: '一级菜单',
+          label: 'first layer menu 2',
           icon: <AutosaveOutlined />,
         }, {
           key: '1-3',
-          label: '一级菜单',
+          label: 'first layer menu 3',
           icon: <AutosaveOutlined />,
           arrow: <CalenderRightOutlined color={black[500]} />,
         }]}
@@ -262,27 +262,27 @@ export const DisabledContextMenu = () => {
           onSetContextMenu(e);
         }}
       >
-        右击我
+        right click
       </button>
       <ContextMenu
         contextMenu={contextMenu}
         overlay={[{
           key: '1-1',
-          label: '一级菜单',
+          label: 'first layer menu 1',
           icon: <LockNonzeroOutlined />,
           disabled: true,
-          disabledTip: '禁用我禁用我禁用我禁用我'
+          disabledTip: 'disabled tips'
         }, {
           key: '1-2',
-          label: '一级菜单',
+          label: 'first layer menu 2',
           icon: <AutosaveOutlined />,
         }, {
           key: '1-3',
-          label: '一级菜单',
+          label: 'first layer menu 3',
           icon: <AutosaveOutlined />,
           arrow: <CalenderRightOutlined color={black[500]} />,
           disabled: true,
-          disabledTip: '禁用我禁用我禁用我禁用我'
+          disabledTip: 'disabled tips'
         }]}
       />
     </div>
@@ -300,25 +300,25 @@ export const ExtraElementContextMenu = () => {
           onSetContextMenu(e);
         }}
       >
-        右击我
+        right click
       </button>
       <ContextMenu
         contextMenu={contextMenu}
         overlay={[{
           key: '1-1',
-          label: '一级菜单一级菜单一级菜单一级菜单',
+          label: 'first layer menu 1',
           icon: <LockNonzeroOutlined />,
           disabled: true,
           arrow: <CalenderRightOutlined color={black[500]} />,
           extraElement: <Switch size={'small'} disabled checked />
         }, {
           key: '1-2',
-          label: '线上方插入行',
+          label: 'first layer menu 2',
           icon: <AutosaveOutlined />,
           extraElement: <>Ctrl + Space + Enter</>
         }, {
           key: '1-3',
-          label: '一级菜单',
+          label: 'first layer menu 3',
           icon: <AutosaveOutlined />,
           arrow: <CalenderRightOutlined color={black[500]} />,
           disabled: true,
@@ -339,25 +339,25 @@ export const HiddenContextMenu = () => {
           onSetContextMenu(e, { tabIndex: 1 });
         }}
       >
-        右击我
+        right click
       </button>
       <ContextMenu
         contextMenu={contextMenu}
         overlay={[{
           key: '1-1',
-          label: '一级菜单',
+          label: 'first layer menu 1',
           icon: <LockNonzeroOutlined />,
           disabled: true,
           extraElement: <Switch size={'small'} disabled checked />,
           hidden: true,
         }, {
           key: '1-2',
-          label: '一级菜单',
+          label: 'first layer menu 2',
           icon: <AutosaveOutlined />,
           extraElement: <Switch size={'small'} checked={false} />
         }, {
           key: '1-3',
-          label: '一级菜单',
+          label: 'first layer menu 3',
           icon: <AutosaveOutlined />,
           arrow: <CalenderRightOutlined color={black[500]} />,
           disabled: true,
@@ -381,41 +381,41 @@ export const GroupContextMenu = () => {
           onSetContextMenu(e, { tabIndex: 1 });
         }}
       >
-        右击我
+        right click
       </button>
       <ContextMenu
         contextMenu={contextMenu}
         overlay={[{
           key: '1-1',
-          label: '一级菜单 - 1',
+          label: 'first layer menu 1',
           icon: <LockNonzeroOutlined />,
           disabled: true,
           extraElement: <Switch size={'small'} disabled checked />,
           groupId: '1',
         }, {
           key: '1-2',
-          label: '一级菜单 - 2',
+          label: 'first layer menu 2',
           icon: <AutosaveOutlined />,
           extraElement: <Switch size={'small'} checked={false} />,
           groupId: '1',
           onClick: onCancelContextMenu,
         }, {
           key: '1-3',
-          label: '一级菜单 - 3',
+          label: 'first layer menu 3',
           icon: <AutosaveOutlined />,
           extraElement: <Switch size={'small'} checked={false} />,
           groupId: '1',
           hidden: true,
         }, {
           key: '1-4',
-          label: '一级菜单 - 4',
+          label: 'first layer menu 4',
           icon: <AutosaveOutlined />,
           extraElement: <Switch size={'small'} checked={false} />,
           groupId: '1',
           hidden: true,
         }, {
           key: '1-5',
-          label: '一级菜单 - 5',
+          label: 'first layer menu 5',
           icon: <AutosaveOutlined />,
           arrow: <CalenderRightOutlined color={black[500]} />,
           disabled: true,
@@ -438,31 +438,31 @@ export const EventMangerContextMenu = () => {
       <button
         onContextMenu={(e: React.MouseEvent<HTMLElement>) => {
           e.preventDefault();
-          show(e, { info: '额外信息' });
+          show(e, { info: 'extra message' });
         }}
         style={{ marginTop: 400 }}
       >
-        右击我
+        right click
       </button>
       <ContextMenu
         menuId={menuId}
         overlay={[{
           key: '1-1',
-          label: '一级菜单 - 1',
+          label: 'first layer menu 1',
           icon: <LockNonzeroOutlined />,
           disabled: true,
           extraElement: <Switch size={'small'} disabled checked />,
           groupId: '1',
         }, {
           key: '1-2',
-          label: '一级菜单 - 1',
+          label: 'first layer menu 2',
           icon: <LockNonzeroOutlined />,
           extraElement: <Switch size={'small'} disabled checked />,
           groupId: '2',
           onClick: (args) => console.log(args),
         }, {
           key: '1-3',
-          label: '一级菜单 - 1',
+          label: 'first layer menu 3',
           icon: <LockNonzeroOutlined />,
           extraElement: <Switch size={'small'} disabled checked />,
           groupId: '2',
@@ -470,46 +470,46 @@ export const EventMangerContextMenu = () => {
           arrow: <CalenderRightOutlined color={black[500]} />,
           children: [{
             key: '1-1-1',
-            label: '二级菜单',
+            label: 'second layer menu 1',
           }, {
             key: '1-1-2',
-            label: '二级菜单',
+            label: 'second layer menu 2',
           }, {
             key: '1-1-3',
-            label: '二级菜单',
+            label: 'second layer menu 3',
           }, {
             key: '1-1-4',
-            label: '二级菜单',
+            label: 'second layer menu 4',
           }, {
             key: '1-1-5',
-            label: '二级菜单',
+            label: 'second layer menu 5',
           }, {
             key: '1-1-6',
-            label: '二级菜单',
+            label: 'second layer menu 6',
           }, {
             key: '1-1-7',
-            label: '二级菜单',
+            label: 'second layer menu 7',
           }, {
             key: '1-1-8',
-            label: '二级菜单',
+            label: 'second layer menu 8',
           }],
         }, {
           key: '1-4',
-          label: '一级菜单 - 1',
+          label: 'first layer menu 4',
           icon: <LockNonzeroOutlined />,
           extraElement: <Switch size={'small'} disabled checked />,
           groupId: '2',
           onClick: (args) => console.log(args),
         }, {
           key: '1-5',
-          label: '一级菜单 - 1',
+          label: 'first layer menu 5',
           icon: <LockNonzeroOutlined />,
           extraElement: <Switch size={'small'} disabled checked />,
           groupId: '2',
           onClick: (args) => console.log(args),
         }, {
           key: '1-6',
-          label: '一级菜单 - 1',
+          label: 'first layer menu 6',
           icon: <LockNonzeroOutlined />,
           extraElement: <Switch size={'small'} disabled checked />,
           groupId: '2',

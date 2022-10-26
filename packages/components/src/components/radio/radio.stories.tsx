@@ -3,7 +3,7 @@ import { Radio } from './index';
 import { StoryType } from '../../stories/constants';
 import { Story } from '@storybook/react';
 
-const TITLE = `${StoryType.Form}/Radio 单选`;
+const TITLE = `${StoryType.Form}/Radio`;
 
 export default {
   component: Radio,
@@ -15,7 +15,7 @@ export default {
     },
   },
   args: {
-    children: '单选',
+    children: 'Radio',
     value: '1'
   }
 };
@@ -43,6 +43,6 @@ DisabledChecked.args = {
 export const ChangeCallback = Template.bind({});
 ChangeCallback.args = {
   onChange: () => {
-    alert('选中了😁');
+    alert('Checked 😁');
   }
 };

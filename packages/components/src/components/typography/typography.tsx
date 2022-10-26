@@ -32,7 +32,6 @@ export const Typography: FC<ITypographyProps> = (props) => {
     ...rest
   } = props;
   const typographyRef = useRef<HTMLDivElement>();
-  // 是否显示tooltip（用于一行）
   const [isWithTooltip, setIsWithTooltip] = useState(false);
   const more = { align, variant, color, ...rest };
   const tag = component || defaultVariantMapping[variant] || 'span';

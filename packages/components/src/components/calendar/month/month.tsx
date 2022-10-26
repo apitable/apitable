@@ -95,7 +95,7 @@ const MonthBase:FC<IMonth> = props => {
           const levels = getLevels({ week, year, tasks, resizeMsg });
           const rowLevel = Math.max(Math.min(levels.length, MAX_LEVEL), rowMixCount);
           let rowHeight = rowLevel * (listHeight + space) + defaultListHeight + 4 + 22;
-          // 高度不够时自适应
+          // Adaptive height when height is insufficient
           if (levels.length === 0 || (clientHeight <= scrollHeight && (clientHeight / weeks.length) > rowHeight)) {
             rowHeight = clientHeight / weeks.length;
           }

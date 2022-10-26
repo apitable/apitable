@@ -3,7 +3,7 @@ import React from 'react';
 import { StoryType } from '../../stories/constants';
 import { Box } from './index';
 
-const COMPONENT_NAME = 'Box 盒子';
+const COMPONENT_NAME = 'Box';
 
 const TITLE = `${StoryType.BaseComponent}/${COMPONENT_NAME}`;
 
@@ -20,5 +20,5 @@ export const TmpComponent = () => {
     minHeight: '100px',
     padding: '16px'
   });
-  return <Card>卡片</Card>;
+  return <Card>Card component</Card>;
 };

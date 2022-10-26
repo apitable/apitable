@@ -4,7 +4,7 @@ import { StoryType } from '../../stories/constants';
 import { Story } from '@storybook/react';
 import { ISwitchProps } from './interface';
 
-const COMPONENT_NAME = 'Switch 开关';
+const COMPONENT_NAME = 'Switch';
 
 const TITLE = `${StoryType.Form}/${COMPONENT_NAME}`;
 
@@ -62,7 +62,7 @@ export const ChangeStatus = () => {
       checked={status}
       onClick={(s) => {
         setStatus(s);
-        alert(`状态改为${s ? '开启' : '关闭'}`);
+        alert(`Status ${s ? 'open' : 'close'}`);
       }}
     />
   );

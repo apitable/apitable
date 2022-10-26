@@ -1,22 +1,38 @@
 import React from 'react';
 export interface IListProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** 是否带边框样式 */
+  /**
+   * Whether with border or not
+   */
   bordered?: boolean;
-  /** 子元素 */
+  /**
+   * Child elements
+   */
   children?: React.ReactNode;
-  /** 列表头部 UI */
+  /**
+   * List header UI
+   */
   header?: React.ReactNode;
-  /** 列表尾部 UI */
+  /**
+   * List footer UI
+   */
   footer?: React.ReactNode;
-  /** 列表数据 */
+  /**
+   * List data
+   */
   data?: Array<string | object | IListItemProps>;
-  /** 自定义列表子元素 UI */
+  /**
+   * Custom child item UI
+   */
   renderItem?: (item: string | IListItemProps, index: number) => React.ReactNode;
 }
 
 export interface IListItemProps {
-  /** 子元素 */
+  /**
+   * Child element
+   */
   children?: React.ReactNode;
-  /** 操作集合 */
+  /**
+   * Event actions UI
+   */
   actions?: React.ReactNode[];
 }

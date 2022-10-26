@@ -18,12 +18,18 @@ export const getArrayLoopIndex = (length: number, index: number, plusOrNot: numb
   return newIndex % length;
 };
 
-// 判断是否有滚动条
+/**
+ * Whether there is scroll bar
+ * @returns `boolean`
+ */
 export function hasScrollbar() {
   return document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight);
 }
 
-// 计算滚动条宽度
+/**
+ * Calculate scroll bar width
+ * @returns `number`
+ */
 export function getScrollbarWidth() {
   const scrollDiv = document.createElement('div');
   scrollDiv.style.cssText = 'width: 99px; height: 99px; overflow: scroll; position: absolute; top: -9999px;';

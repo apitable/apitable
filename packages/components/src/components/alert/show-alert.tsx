@@ -4,7 +4,10 @@ import { Alert } from './alert';
 import { IAlertProps } from './interface';
 
 export interface IAlertFuncBaseProps extends IAlertProps {
-  duration?: number; // 自动关闭的延时，单位秒。设为 0 时不自动关闭
+  /*
+   * Delay closing, in seconds. Do not close automatically when set to 0
+   */
+  duration?: number;
   destroyPrev?: boolean;
 }
 

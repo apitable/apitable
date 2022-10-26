@@ -6,9 +6,9 @@ import { IconButton } from './index';
 import { StoryType } from '../../stories/constants';
 import { IIconButtonProps } from './interface';
 
-const COMPONENT_NAME = 'Button 按钮';
+const COMPONENT_NAME = 'Button';
 
-const TITLE = `${StoryType.BaseComponent}/${COMPONENT_NAME}/IconButton 图标按钮`;
+const TITLE = `${StoryType.BaseComponent}/${COMPONENT_NAME}/IconButton`;
 
 export default {
   component: IconButton,

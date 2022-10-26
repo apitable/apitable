@@ -8,7 +8,7 @@ import { AvatarGroup } from './avatar_group';
 
 const LOGO = 'https://s1.vika.cn/space/2021/12/02/645bf8779e814a8c86c6c996ec739f9a';
 
-const COMPONENT_NAME = 'Avatar 头像';
+const COMPONENT_NAME = 'Avatar';
 
 const TITLE = `${StoryType.BaseComponent}/${COMPONENT_NAME}`;
 

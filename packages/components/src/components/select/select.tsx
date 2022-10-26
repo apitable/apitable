@@ -100,7 +100,7 @@ export const Select: FC<ISelectProps> & {
       return false;
     }
     if (keyword && item.label) {
-      // 搜索支持大小写，参考 antd rc-select 库
+      // Search supports case, refer to the antd rc select library
       return item.label.toUpperCase().includes(keyword.toUpperCase());
     }
     return true;
@@ -173,7 +173,7 @@ export const Select: FC<ISelectProps> & {
       popupStyle={{
         width: 'max-content',
         position: 'absolute',
-        zIndex: 1000, // 与 antd modal 同级
+        zIndex: 1000, // Same level as antd modal
       }}
       ref={triggerRef}
       popupVisible={visible}
@@ -206,7 +206,7 @@ export const Select: FC<ISelectProps> & {
               renderValue={renderValue}
             /> :
               <span className={'placeholder ellipsis'}>
-                {placeholder || '请选择一个选项'}
+                {placeholder || 'please select option'}
               </span>
           )
           }

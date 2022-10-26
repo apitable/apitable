@@ -15,7 +15,7 @@ export const Dropdown = React.forwardRef<HTMLDivElement, IDropdownProps>((props:
     id: contextId,
   });
 
-  // 默认支持点击
+  // click event function
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (trigger.includes('click')) {
       show(e);

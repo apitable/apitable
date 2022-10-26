@@ -3,37 +3,38 @@ import React from 'react';
 
 export interface IDividerProps {
   /**
-   * 分割线的方向，水平或者垂直，默认为 horizontal
+   * The direction of the split line, horizontal or vertical, the default is horizontal
    */
   orientation?: 'vertical' | 'horizontal';
 
   /**
-   * 改动横向分割线文本位置
+   * Horizontal split line text position
    */
   textAlign?: 'left' | 'right';
 
   /**
-   * 遵循 Typography 排版
+   * Follow Typography component layout
    */
   typography?: IFontVariants;
 
   /**
-   * 是否显示虚线
+   * whether show the split line
    */
   dashed?: boolean;
 
   /**
-   * 自定义样式
+   * custom inline styles
    */
   style?: React.CSSProperties;
 
   /**
-   * 自定义类名
+   * custom class name
    */
   className?: string;
 
   /**
-   * 渲染的节点标签类型，默认为 div 标签
+   * The rendered node html type, which defaults to div tag
+   * 
    */
    component?: 'li' | 'hr' | 'div'
 }

@@ -66,19 +66,33 @@ export const TreeView: FC<ITreeViewProps> = React.memo(
     onDrop,
     children,
   }) => {
-    /* 已展开节点的集合 */
+    /**
+     * Expanded nodes collection
+    */
     const [expandedIds, setExpandedIds] = useState<string[]>(expandedKeys || defaultExpandedKeys || []);
-    /* 已选中的节点/节点集合 */
+    /**
+     * Selected node collection
+    */
     const [selectedIds, setSelectedIds] = useState<string[]>(selectedKeys || defaultSelectedKeys || []);
-    /* 当前聚焦的节点 */
+    /**
+     * Node currently focused
+     */
     const [focusedNodeId, setFocusedNodeId] = useState('');
-    /* 拖拽节点时，经过的节点ID */
+    /**
+     * The node ID passed by when dragging a node
+     */
     const [dragOverNodeId, setDragOverNodeId] = useState<string>('');
-    /* 被拖拽的节点 */
+    /**
+     * The dragged node
+     */
     const [dragNodeId, setDragNodesId] = useState<string>('');
-    /* 需要高亮的节点 */
+    /**
+     * Nodes to highlight
+    */
     const [highlightNodeId, setHighlightNodeId] = useState<string>('');
-    /* 当前正在加载数据节点 */
+    /**
+     * Currently loading data nodes
+     */
     const [loadingNodeId, setLoadingNodeId] = useState<string>('');
     const [cacheExpandedIds, setCacheExpandedId] = useState<string[]>([]);
 
@@ -121,19 +135,25 @@ export const TreeView: FC<ITreeViewProps> = React.memo(
 
     const toggleExpansion = (nodeId: string = focusedNodeId, isAuto = true): Promise<any> | undefined => {
       let newExpandedIds: string[];
-      /** 判断当前的操作是展开操作还是关闭操作，从而生成新成的已展开节点的集合 */
+      /**
+       * Determine whether the current operation is an expand operation or a close operation to generate a new set of expanded nodes
+      */
       if (expandedIds.includes(nodeId)) {
         newExpandedIds = expandedIds.filter(id => id !== nodeId);
       } else {
         newExpandedIds = expandedIds.concat(nodeId);
       }
-      /** 手动点击展开按钮时 */
+      /**
+       * When manually clicking the expand button
+       */
       if (!isAuto) {
         setExpandedIds(newExpandedIds);
         onExpand && onExpand(newExpandedIds);
       }
 
-      // 异步加载节点数据
+      /**
+       * Asynchronous loading of node data
+       */
       if (!expandedIds.includes(nodeId) && loadData) {
         setLoadingNodeId(nodeId);
         return loadData(nodeId).then(() => {
@@ -187,7 +207,7 @@ export const TreeView: FC<ITreeViewProps> = React.memo(
     const selectNode = (e: React.MouseEvent, nodeId: string, multiple = false) => {
       if (nodeId) {
         if (multiple) {
-          // TODO:多选操作
+          // TODO: Multiple selection operation
         } else {
           singleSelectHandler(e, nodeId);
         }

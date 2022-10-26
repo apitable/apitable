@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 
-// 滑动灵敏度
+// Scroll sensitivity
 const MIN_DISTANCE = 30;
 
 export enum Direction {
@@ -15,7 +15,7 @@ export const useTouch = () => {
     direction: undefined as (Direction | undefined)
   });
 
-  // 重置
+  // Reset touch cache
   const reset = () => {
     touchRef.current = {
       startX: 0,
@@ -24,7 +24,7 @@ export const useTouch = () => {
     };
   };
 
-  // 监听开始滑动
+  // Listening start to scroll
   const start = (e: React.TouchEvent) => {
     const { clientX, clientY } = e.touches[0];
     touchRef.current = {
@@ -34,7 +34,7 @@ export const useTouch = () => {
     };
   };
 
-  // 监听滑动
+  // Listening scroll
   const move = (e: React.TouchEvent) => {
     const { clientX, clientY } = e.touches[0];
     let direction: Direction | undefined;
@@ -43,13 +43,13 @@ export const useTouch = () => {
     const deltaY = clientY - startY;
     const absX = Math.abs(deltaX);
     const absY = Math.abs(deltaY);
-    // 横向滚动
+    // Horizontal scrolling
     if (absX > absY) {
-      // 向左
+      // Left scrolling
       if (deltaX + MIN_DISTANCE < 0) {
         direction = Direction.Left;
       }
-      // 向右
+      // Right scrolling
       if (deltaX > MIN_DISTANCE) {
         direction = Direction.Right;
       }
@@ -58,9 +58,9 @@ export const useTouch = () => {
     return direction;
   };
 
-  // 监听滑动结束计算有效方向
+  //Listening the end of scroll and calculate the effective direction
   const end = () => {
-    // 清理缓存
+    // Reset cache
     reset();
   };
 

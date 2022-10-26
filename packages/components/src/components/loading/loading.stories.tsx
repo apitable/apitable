@@ -3,7 +3,7 @@ import { Loading } from './index';
 import { StoryType } from '../../stories/constants';
 import { Story } from '@storybook/react';
 
-const COMPONENT_NAME = 'Loading 加载';
+const COMPONENT_NAME = 'Loading';
 
 const TITLE = `${StoryType.BaseComponent}/${COMPONENT_NAME}`;
 

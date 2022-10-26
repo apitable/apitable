@@ -19,12 +19,12 @@ export const ThemeExample = () => {
     <ThemeProvider theme={selectedTheme}>
       <Box backgroundColor={selectedTheme.color.defaultBg} padding={16}>
         <Typography variant="h4">
-          选择主题
+          Select theme
         </Typography>
         <Select
           options={[
-            { label: '默认主题', value: ThemeName.Light },
-            { label: '暗黑主题', value: ThemeName.Dark },
+            { label: 'Default theme', value: ThemeName.Light },
+            { label: 'Dark theme', value: ThemeName.Dark },
           ]}
           value={theme}
           onSelected={(option) => {
@@ -33,31 +33,30 @@ export const ThemeExample = () => {
           dropdownMatchSelectWidth={false}
           triggerStyle={{ width: 100 }}
         />
-        <Button>按钮</Button>
-        <Button color="primary"> 默认 fill Button </Button>
-        <Button variant="jelly">果冻 Button </Button>
-        <Button variant="jelly" color="primary">果冻 Primary Button </Button>
+        <Button>Button</Button>
+        <Button color="primary"> Fill Button </Button>
+        <Button variant="jelly">Jelly Button </Button>
+        <Button variant="jelly" color="primary">Jelly Primary Button </Button>
         <TextButton>TextButton</TextButton>
-        <TextInput placeholder="请输入内容" />
+        <TextInput placeholder="please enter" />
         <Switch />
         <br />
         <RadioGroup name="btn-group" isBtn>
-          <Radio value="1">单选 1</Radio>
-          <Radio disabled value="2">单选 2</Radio>
-          <Radio value="3">单选 3</Radio>
+          <Radio value="1">option 1</Radio>
+          <Radio disabled value="2">option 2</Radio>
+          <Radio value="3">option 3</Radio>
         </RadioGroup>
         <br />
         <br />
         <List
           bordered
-          data={['列表 1', '列表 2', '列表 3', '列表 4', '列表 5']}
-          footer={<div>尾部</div>}
-          header={<div>头部</div>}
+          data={['list 1', 'list 2', 'list 3', 'list 4', 'list 5']}
+          footer={<div>Footer</div>}
+          header={<div>Header</div>}
         />
         <br />
         <Skeleton
           count={3}
-          duration={3}
           height="68px"
           type="text"
           circle={false}

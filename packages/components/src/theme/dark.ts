@@ -1,7 +1,7 @@
 import { black, blackBlue, deepPurple, darkColors, orange, red, teal } from '../colors';
 import { ITheme, ThemeName } from './theme.interface';
 
-// 这个套 dark 没配好。
+// TODO
 export const dark: ITheme = {
   color: darkColors,
   palette: {
@@ -11,25 +11,19 @@ export const dark: ITheme = {
       black: '#000',
     },
     primary: deepPurple[300],
-    // 语义化颜色
+    // Semantic color
     success: teal[300],
     danger: red[300],
     warning: orange[300],
     info: deepPurple[300],
     // contrastThreshold: 3,
     text: {
-      // 一级主色
       primary: blackBlue[100],
-      // 二级.
       secondary: blackBlue[200],
-      // 三级
       third: blackBlue[300],
-      // 四级
       fourth: black[300],
-      // 五级（白色）
       fifth: black[50],
       disabled: 'rgba(0, 0, 0, 0.38)',
-      // Text hints.
       hint: 'rgba(0, 0, 0, 0.38)',
     },
     contrastThreshold: 3,

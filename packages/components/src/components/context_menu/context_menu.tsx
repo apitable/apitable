@@ -33,7 +33,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
 
   const { offset, extraInfo } = contextMenuState;
 
-  // 兼容旧的 context-menu 参数回调方式
+  // Compatible with the old context menu parameter callback method
   const getExtraInfo = (info) => {
     return info;
   };
@@ -48,7 +48,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
     return Boolean(hidden);
   }, [extraInfo, offset]);
 
-  // 缓存每个菜单项当前的层级和在当前层级的索引，用于定位当前父元素
+  // Cache the current level and index of the menu item at the current level to locate the current parent element
   const cacheOverlay: { [key: string]: ICacheOverlay } | null = useMemo(() => {
     if (!overlay || overlay.length === 0 || !contextMenuState.offset) {
       return null;
@@ -72,7 +72,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
     return cache;
   }, [overlay, contextMenuState, getHidden]);
 
-  // 关闭 context-menu，将菜单项路径，坐标及submenu样式还原
+  // close context menu reset submenu styles and paths
   const cancelContextMenu = React.useCallback(() => {
     setPaths([]);
     setContextMenuState({ offset: null });
@@ -89,7 +89,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
     }
   }, [setPaths, menuRef, setContextMenuState, children, onClose]);
 
-  // 计算滚动事件
+  // Calculate scroll event
   const calcScroll = (ele: HTMLElement) => {
     const curTop = ele.scrollTop + ele.clientHeight;
     const lastChild = ele.lastElementChild as HTMLElement;
@@ -103,7 +103,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
     lastChild.style.display = 'block';
   };
 
-  // 监听鼠标外侧点击事件
+  // out menu click listen function
   const handleOuterClick = React.useCallback((e) => {
     const menu = menuRef.current;
     if (!menu) return;
@@ -113,7 +113,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
     }
   }, [menuRef, cancelContextMenu]);
 
-  // menu Item 鼠标点击
+  // menu Item click event
   const handleClick = (item: IContextMenuItemProps, keyPath, e: MouseEvent<HTMLElement>) => {
     if (
       (typeof item.disabled === 'function' && item.disabled(getExtraInfo(extraInfo))) ||
@@ -133,7 +133,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
     }
   };
 
-  // 鼠标移入，设置移入的路径
+  // mouse enter event
   const handleMouseEnter = (item, index) => {
     const menu = menuRef.current;
     if (!menu) return;
@@ -148,7 +148,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
     calcScroll(ele);
   };
 
-  // 递🐢
+  // recursion
   const dfs = (source: IContextMenuItemProps[], results, index = 0) => {
     if (!results[index]) {
       results[index] = [];
@@ -156,13 +156,13 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
     const filterHiddenSource = source.filter((v) => !getHidden(v.hidden));
     for (let i = 0; i < filterHiddenSource.length; i++) {
       const item = filterHiddenSource[i];
-      // 过滤 hidden，不让其设置到 dom 上
+      // filter hidden key
       const newItem = omit(item, 'hidden');
       const { key, id, disabled = false, icon, label, arrow, children, groupId, extraElement, disabledTip, ...rest } = newItem;
       const selected = paths[index] === key;
       let isGroup = false;
       const nextItem = filterHiddenSource[i + 1];
-      // 判断是否存在分组
+      // Whether grouping exists
       if (groupId && nextItem && nextItem.groupId !== groupId) {
         isGroup = true;
       }
@@ -207,7 +207,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
     }
   };
 
-  // 兼容 menuId 与 show 的使用方式
+  // Compatible with the usage of menuId and show
   const handler = React.useCallback((configs: { e: React.MouseEvent<HTMLElement>, extraInfo?: any }) => {
     const { e, extraInfo } = configs;
     setContextMenuState({
@@ -238,7 +238,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
     });
   };
 
-  // 监听 contextMenu 转为内部 state
+  // cache contextMenu state
   useEffect(() => {
     if (contextMenu) {
       setContextMenuState(contextMenu);
@@ -256,7 +256,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
     const childList = menu.childNodes;
     const { innerHeight } = window;
 
-    // 计算 top 值，用于超出屏幕高度时进行计算
+    // Calculate the top value when the screen height is exceeded
     const getTop = (top, height) => {
       const total = top + height;
       if (height > innerHeight) {
@@ -273,13 +273,13 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
     };
 
     /**
-     * 计算菜单项的尺寸位置信息
-     * 高度计算原理 => 
-     * 1、element.totalHeight = element.top + element.scrollHeight 得到总高度
-     * 2、element.totalHeight > innerHeight ? result1 : result2; 比较总高度与当前空间高度
+     * Calculate the location of menu 
+     * High computing strategy: => 
+     * 1、element.totalHeight = element.top + element.scrollHeight total height
+     * 2、element.totalHeight > innerHeight ? result1 : result2; compare total hidden and current window height
      * 
-     * 宽度计算原理 =>
-     * 1、element.startX = offset[0] + preMenuWidthSum 得到起点
+     * Width computing strategy: =>
+     * 1、element.startX = offset[0] + preMenuWidthSum  Get starting point
      * 2、element.finalX = startX - preMenuWidthSum - element.width * (i+1)
      */
     for (let i = 0; i < childList.length; i++) {
@@ -295,7 +295,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
         const isOver = total > innerHeight;
         let cssText = isOver ? `height: ${innerHeight - menuSubSpaceHeight}px; overflow: auto;` : '';
 
-        // 计算是否存在剩余空间，不够的话计算差值
+        // Calculate whether there is free space. If not, calculate the difference
         const endX = offset[0] + menuOffset[0] + width;
         const subX = endX > innerWidth ? endX - innerWidth : 0;
 
@@ -315,7 +315,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
         continue;
       }
 
-      // 找到子菜单从属的父菜单子项，根据父菜单子项的 top 得到子菜单的 top
+      // Find the parent menu sub item of the sub menu, and get the top of the sub menu according to the top of the parent menu sub item
       const parentContainer = childList[i - 1] as HTMLElement;
       const parentList = parentContainer.childNodes;
       const { index } = cacheOverlay[parentKey];
@@ -336,7 +336,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
           return pre;
         }, 0);
 
-      // 计算左右偏移量，当剩余空间不够放置时，以父级为参照单位
+      // Calculate the left and right offsets. When the remaining space is not enough for placement, take the parent as a reference
       let childStartX = (childList[0] as HTMLElement).offsetLeft + preParentWidthSum + menuOffset[0];
       if (childStartX + width > innerWidth) {
         childStartX -= (preParentWidthSum + width * i);
@@ -363,7 +363,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
     return () => window.removeEventListener('mousedown', handleOuterClick);
   }, [offset, handleOuterClick]);
 
-  // 兼容 menuId 与 show 的使用方式
+  // Compatible with the usage of menuId and show
   useEffect(() => {
     manager.on(EVENT_TYPE.HIDE_ALL, cancelContextMenu);
     if (menuId) {

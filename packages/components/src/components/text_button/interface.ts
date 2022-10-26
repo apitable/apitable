@@ -4,24 +4,24 @@ type IButtonHTMLAttributes = Omit<React.ButtonHTMLAttributes<any>, 'color'>;
 export interface ITextButtonProps extends IButtonHTMLAttributes {
   children?: React.ReactNode;
   /**
-   * 颜色
+   * Button type
    */
   color?: 'default' | 'danger' | 'primary';
   size?: 'x-small' | 'small' | 'middle' | 'large';
   /**
-   * 前置 icon
+   * Prefix icon
    */
   prefixIcon?: React.ReactElement;
   /**
-   * 后置 icon
+   * Suffix icon
    */
   suffixIcon?: React.ReactElement;
   /**
-   * 禁用
+   * Whether disabled or not
    */
   disabled?: boolean;
   /**
-   * 占满容器的宽度的 100%
+   * Whether full width or not
    */
   block?: boolean;
 }

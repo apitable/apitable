@@ -6,96 +6,91 @@ export interface IModalProps {
   className?: string;
 
   /**
-   * 控制组件显示隐藏
-   * @default true
+   * Whether visible or hidden
    */
   visible?: boolean;
 
   /**
-   * 标题, 可不传, 如果想要完全不渲染标题区域可以传 null
+   * Modal title
    */
   title?: React.ReactNode | string;
 
   /**
-   * @default true
-   * 控制关闭按钮的显示
+   * Whether show close button or not
    */
   closable?: boolean;
 
   /**
-   * 不传默认提供关闭 icon,
+   * Use custom close icon
    */
   closeIcon?: React.ReactNode;
 
   /**
-   * 正文主体
+   * Modal content
    */
   children: React.ReactNode;
 
   /**
-   * 页脚区域, 默认给定 2 个操作按钮, 可自定义页脚, 如果想要完全不展示, 可传 null
+   * Modal footer
    */
   footer?: React.ReactNode;
 
   /**
-   * 正文区域样式
+   * Modal body inline styles
    */
   bodyStyle?: React.CSSProperties;
 
   /**
-   * 确定按钮点击事件回调
-   * @default noop
+   * confirm click callback
    */
   onOk?: () => void;
 
   /**
-   * 取消按钮点击事件回调
-   * @default noop
+   * cancel click callback
    */
   onCancel?: () => void;
 
   /**
-   * 确定按钮文本
-   * @default 确定
+   * confirm button text
    */
   okText?: string;
 
   /**
-   * 取消按钮文本
-   * @default 取消
+   * cancel button text
    */
   cancelText?: string;
 
   /**
-   * 可选择一个挂载节点
+   * Select a mount node
    * @default document.body
    */
   getContainer?: HTMLElement | (() => HTMLElement);
 
-  /** 点击蒙层能否关闭
+  /** Whether modal mask can be closed
    * @default true
    */
   maskClosable?: boolean;
 
   /**
-   * 确定行为的当前状态
+   * Asynchronous submit loading
    * @default false
    */
   confirmLoading?: boolean;
 
   /**
-   * 垂直居中
+   * Center Vertically
    * @default false
    */
   centered?: boolean;
 
   /**
-   * 窗体宽度
-   * @default 520
+   * Modal width in pixels
+   * @default 520px
    */
   width?: number | string;
 
   /**
+   * z-index of modal
    * @default 1000
    */
   zIndex?: number;

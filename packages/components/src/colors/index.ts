@@ -15,7 +15,7 @@ const lightMaskColor = {
 export const lightColors = { ..._lightColors, ...baseColors, ...lightMaskColor };
 export const darkColors = { ..._darkColors, ...baseColors, ...lightMaskColor };
 
-// lightColors、darkColors 的并集
+// Collection of lightColors and darkColors
 const colors = { ...lightColors, ...darkColors };
 
 export type IThemeColors = typeof colors;

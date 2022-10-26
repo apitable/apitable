@@ -8,7 +8,7 @@ import { Radio } from '../radio/radio';
 import { LinkButton } from '../link_button';
 import { ColumnLinktableFilled } from '@vikadata/icons';
 
-const COMPONENT_NAME = 'Space 间距';
+const COMPONENT_NAME = 'Space';
 
 const TITLE = `${StoryType.Design}/${COMPONENT_NAME}`;
 
@@ -35,11 +35,11 @@ export default {
   },
   args: {
     children: [
-      '文本',
-      <Button color="primary">按钮</Button>,
+      'Text',
+      <Button color="primary">Button</Button>,
       <Switch />,
-      <Checkbox>勾选框</Checkbox>,
-      <Radio>单选框</Radio>
+      <Checkbox>Checkbox</Checkbox>,
+      <Radio>Radio</Radio>
     ]
   }
 };
@@ -80,7 +80,7 @@ export const Split = Template.bind({});
 Split.args = {
   split: true,
   children: new Array(5).fill(null).map((_, index) => (
-    <LinkButton underline={false} prefixIcon={<ColumnLinktableFilled currentColor />} key={index}>跳转链接</LinkButton>
+    <LinkButton underline={false} prefixIcon={<ColumnLinktableFilled currentColor />} key={index}>Link href</LinkButton>
   ))
 };
 
@@ -89,9 +89,9 @@ AlignStart.args = {
   align: 'start',
   children: (
     <>
-      <span>文本</span>
-      <Button color="primary">按钮</Button>
-      <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">盒子</Box>
+      <span>Text</span>
+      <Button color="primary">Button</Button>
+      <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">Box</Box>
     </>
   )
 };
@@ -101,9 +101,9 @@ AlignCenter.args = {
   align: 'center',
   children: (
     <>
-      <span>文本</span>
-      <Button color="primary">按钮</Button>
-      <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">盒子</Box>
+      <span>Text</span>
+      <Button color="primary">Button</Button>
+      <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">Box</Box>
     </>
   )
 };
@@ -113,9 +113,9 @@ AlignEnd.args = {
   align: 'end',
   children: (
     <>
-      <span>文本</span>
-      <Button color="primary">按钮</Button>
-      <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">盒子</Box>
+      <span>Text</span>
+      <Button color="primary">Button</Button>
+      <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">Box</Box>
     </>
   )
 };
@@ -125,9 +125,9 @@ AlignBaseline.args = {
   align: 'baseline',
   children: (
     <>
-      <span>文本</span>
-      <Button color="primary">按钮</Button>
-      <Box backgroundColor="#ccc" padding="40px 8px 16px">盒子</Box>
+      <span>Text</span>
+      <Button color="primary">Button</Button>
+      <Box backgroundColor="#ccc" padding="40px 8px 16px">Box</Box>
     </>
   )
 };
@@ -138,9 +138,9 @@ VerticalAlignStart.args = {
   vertical: true,
   children: (
     <>
-      <span>文本</span>
-      <Button color="primary">按钮</Button>
-      <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">盒子</Box>
+      <span>Text</span>
+      <Button color="primary">Button</Button>
+      <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">Box</Box>
     </>
   )
 };
@@ -151,9 +151,9 @@ VerticalAlignCenter.args = {
   vertical: true,
   children: (
     <>
-      <span>文本</span>
-      <Button color="primary">按钮</Button>
-      <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">盒子</Box>
+      <span>Text</span>
+      <Button color="primary">Button</Button>
+      <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">Box</Box>
     </>
   )
 };
@@ -164,9 +164,9 @@ VerticalAlignEnd.args = {
   vertical: true,
   children: (
     <>
-      <span>文本</span>
-      <Button color="primary">按钮</Button>
-      <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">盒子</Box>
+      <span>Text</span>
+      <Button color="primary">Button</Button>
+      <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">Box</Box>
     </>
   )
 };
@@ -177,7 +177,7 @@ SetComponentUlLi.args = {
   vertical: true,
   children: new Array(10).fill(null).map((_, index) => (
     <Space key={index} component="li" style={{ borderBottom: '1px solid #ccc' }}>
-      列表 {index + 1}
+      list {index + 1}
     </Space>
   ))
 };

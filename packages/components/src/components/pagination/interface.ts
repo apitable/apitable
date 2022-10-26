@@ -1,104 +1,104 @@
 /**
- * 翻页组件样式接受的状态
+ * Pagination status interface
  */
 export interface IPaginationStatus {
   /**
-   * 是否选中
+   * Whether selected or not
    */
   selected?: boolean;
 
   /**
-   * 是否禁用
+   * Whether disabled or not
    */
   disabled: boolean;
 
   /**
-   * 是否为最后一个元素
+   * Whether is the last child
    */
   lastRangeChild?: boolean;
 }
 
 /**
- * 翻页组件内部状态
+ * Pagination inner state interface
  */
 export interface IPaginationState {
   /**
-   * 当前页码
+   * Current page number
    */
    current: number;
 
    /**
-    * 每页条数
+    * Per page size
     */
    pageSize: number;
  
    /**
-    * 数据总数
+    * Total number
     */
    total: number;
 
    /**
-    * 总页数
+    * Total pages
     */
    pages: number;
 
 }
 
 /**
- * 翻页组件输入参数
+ * Pagination props interface
  */
 export interface IPaginationProps {
   /**
-   * 样式类名
+   * Custom class name
    */
   className?: string;
   /**
-   * 当前页码
+   * Current page number
    */
   current?: number;
 
    /**
-    * 每页条数
+    * Page Size
     */
   pageSize?: number;
  
    /**
-    * 数据总数
+    * Total number
     */
   total: number;
 
   /**
-   * 禁用
+   * Whether disabled or not
    */
   disabled?: boolean;
 
   /**
-   * 显示总数
+   * Whether show total number or not
    */
   showTotal?: boolean;
 
   /**
-   * 显示每页容量切换
+   * Whether show page change UI or not
    */
   showChangeSize?: boolean;
 
   /**
-   * 显示快速跳转
+   * Whether show quick jump UI or not
    */
   showQuickJump?: boolean;
 
   /**
-   * 国际化
+   * i18n
    */
   lang?: 'zh' | 'en';
 
   /**
-   * 页码或pageSize改变后的回调
+   * Size or page change callback
    */
   onChange?: (page: number, pageSize: number) => void;
 
   /**
-   * pageSize 变化的回调
+   * Size change callback
    */
   onPageSizeChange?: (page: number, pageSize: number) => void;
 }

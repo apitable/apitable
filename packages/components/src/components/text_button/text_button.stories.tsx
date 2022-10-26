@@ -6,10 +6,10 @@ import { TextButton } from './index';
 import { StoryType } from '../../stories/constants';
 import { ITextButtonProps } from './interface';
 
-const COMPONENT_NAME = 'Button 按钮';
-const BUTTON_TEXT = '文本按钮';
+const COMPONENT_NAME = 'Button';
+const BUTTON_TEXT = 'Text Button';
 
-const TITLE = `${StoryType.BaseComponent}/${COMPONENT_NAME}/TextButton 文本按钮`;
+const TITLE = `${StoryType.BaseComponent}/${COMPONENT_NAME}/TextButton`;
 
 export default {
   component: TextButton,

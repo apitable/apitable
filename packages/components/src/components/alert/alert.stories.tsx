@@ -5,7 +5,7 @@ import { StoryType } from '../../stories/constants';
 import { Story } from '@storybook/react';
 import { IAlertProps } from './interface';
 
-const COMPONENT_NAME = 'Alert 告警';
+const COMPONENT_NAME = 'Alert';
 
 const TITLE = `${StoryType.BaseComponent}/${COMPONENT_NAME}`;
 
@@ -19,7 +19,7 @@ export default {
     },
   },
   args: {
-    content: '道路千万条，安全第一条，行车不规范，亲人两行泪',
+    content: 'Scanner for decks of cards with bar codes printed on card edges',
   }
 };
 
@@ -34,7 +34,7 @@ SuccessType.args = {
 
 export const WithTitle = Template.bind({});
 WithTitle.args = {
-  title: '北京第三区交通委，提醒您',
+  title: 'Scanner for decks of cards with bar codes printed on card edges',
 };
 
 export const Closable = Template.bind({});
@@ -45,20 +45,20 @@ Closable.args = {
 export const CloseCallback = Template.bind({});
 CloseCallback.args = {
   closable: true,
-  onClose: () => alert('我刚才关闭了这条提醒⏰')
+  onClose: () => alert('I turned off this reminder ⏰')
 };
 
 export const ShowAlertFunction = () => {
   return (
     <Button color="primary" onClick={() => {
       showAlert({
-        content: '道路千万条，安全第一条，行车不规范，亲人两行泪',
+        content: 'Scanner for decks of cards with bar codes printed on card edges',
         type: 'warning',
         closable: true,
         duration: 0,
       });
     }}>
-      点击触发告警
+      Click to trigger alert
     </Button>
   );
   

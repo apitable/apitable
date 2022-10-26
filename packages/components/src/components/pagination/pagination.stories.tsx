@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Pagination } from './index';
 import { StoryType } from '../../stories/constants';
 
-const COMPONENT_NAME = 'Pagination 翻页';
+const COMPONENT_NAME = 'Pagination';
 
 const TITLE = `${StoryType.BaseComponent}/${COMPONENT_NAME}`;
 

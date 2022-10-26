@@ -6,12 +6,12 @@ export interface IDoubleSelectProps extends IDoubleSelectPropsBase {
   value: ISelectValue;
 
   /**
-   * @description 显示的选项列表
+   * select list options
    */
   options: IDoubleOptions[];
 
   /**
-   * @description 选中选项的事件回调
+   * Selected event callback
    * @param {IDoubleOptions} option
    * @param {number} index
    */
@@ -20,44 +20,44 @@ export interface IDoubleSelectProps extends IDoubleSelectPropsBase {
 
 export interface IDoubleOptions {
   /**
-   * @description 当前选项的值，在列表中保证唯一
+   * current selected option
    */
   value: ISelectValue;
 
   /**
-   * @description 需要展示的主标题
+   * Select list title
    */
   label: string;
 
   /**
-   * @description 需要展示的副标题
+   * Select list subtitle
    */
   subLabel: string
 
   /**
-   * @description 标记当前选项是否可选
+   * Whether selected option can be selected
    */
   disabled?: boolean;
 
   /**
-   * @description 当选项不可选，可以提供一个 tooltip 提示
+   * When the option is not optional, provide a tooltip prompt
    */
   disabledTip?: string;
 }
 
 export interface IDoubleOptionsProps {
   /**
-   * @description 当前需要展示的选项的信息
+   * Select option values
    */
   option: IDoubleOptions;
 
   /**
-   * @description 当前选项在数组中的下标
+   * Select option index
    */
   currentIndex: number;
 
   /**
-   * @description 当前已经选中的值，标记当前的选项是否处于激活状态
+   * Selected option value
    */
   selectedValue: ISelectValue;
 }

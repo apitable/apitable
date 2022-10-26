@@ -1,8 +1,9 @@
 import { Skeleton, ISkeletonProps } from './index';
 import { StoryType } from '../../stories/constants';
 import { Story } from '@storybook/react';
+import React from 'react';
 
-const COMPONENT_NAME = 'Skeleton 骨架屏';
+const COMPONENT_NAME = 'Skeleton';
 
 const TITLE = `${StoryType.BaseComponent}/${COMPONENT_NAME}`;
 

@@ -14,7 +14,7 @@ const date2Day = (date: Date) => {
 };
 
 export const date2Month = (date: Date) => {
-  // 火狐上 new Date('2021/09') => Invalid Date, 默认补充一个天数
+  // Firefox: new Date('2021/09') => Invalid Date
   const formatDate = format(date, FORMAT_MONTH) + '/01';
   return new Date(formatDate);
 };
@@ -26,21 +26,21 @@ export const resizeFormat = (resizeData: IResizeFormat) => {
   const { day, direction } = resizeData;
   const isRight = direction === Direction.Right;
   const isWarning = isAfter(startDate, endDate);
-  // 修改结束时间
+  // update end date
   if (isRight) {
-    // 告警时拉伸实时修正时间
+    // Correction date in case of alarm
     endDate = add(isWarning ? startDate : endDate, { days: day });
-    // 右拉伸不允许小于开始时间
+    // Right stretching is not allowed to be less than the start date
     if (isAfter(startDate, endDate)) {
       endDate = startDate;
     }
-  } else { // 修改开始时间
+  } else { // update start date
     const calcStartDate = subDays(startDate, day);
-    // 正常记录左拉伸不允许大于结束时间
+    // Normal record left stretching is not allowed to be greater than the end date
     if (!isWarning && isAfter(calcStartDate, endDate)) {
       startDate = endDate;
     } else if (
-    // 异常记录左拉伸不允许大于原始的开始时间
+    // The left stretch of abnormal records cannot be greater than the original start date
       !(isWarning && isAfter(calcStartDate, startDate))
     ) {
       startDate = calcStartDate;
@@ -50,7 +50,7 @@ export const resizeFormat = (resizeData: IResizeFormat) => {
 };
 
 /**
- * 获取当前月的天数
+ * Get the number of days in the current month
  * @param year 
  * @param month 
  */
@@ -60,7 +60,7 @@ export const daysInMonth = (year: number, month: number) => {
 };
 
 /**
- * 获取当前月第一天的星期
+ * Get the week of the first day of the current month
  * @param year 
  * @param month 
  */
@@ -75,7 +75,7 @@ export const formatDate = (year: number, month: number, lang: string) => {
 };
 
 /**
- * 获取当前日历面板数据
+ * Get current calendar panel data
  * @param step 
  */
 export const getPanelData = (step: number) => {
@@ -153,7 +153,7 @@ export const getLevels = ({ week, year, tasks, resizeMsg }: ILevel) => {
   
   const rowTasks = updateTasks.filter(task =>
     (!isAfter(date2Day(task.startDate || task.endDate), endDate) && !isAfter(startDate, task.endDate || task.startDate)) ||
-    // 开始时间大于结束时间，异常任务处理
+    // The start date is greater than the end date. Exception task processing
     (isAfter(task.startDate, task.endDate) && !isBefore(task.startDate, startDate) && !isBefore(endDate, task.startDate))
   ).map(task => {
     const isWarning = isAfter(task.startDate, task.endDate);

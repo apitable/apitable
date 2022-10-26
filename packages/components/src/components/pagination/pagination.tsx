@@ -14,11 +14,11 @@ import { IPaginationProps, IPaginationState } from './interface';
 import { t } from './i18n';
 import { Strings } from './strings';
 
-// 最大完整展示页数，超出有省略号
+// Maximum number of display pages with ellipsis
 const MAX_PAGES_NUM = 7;
-// 左侧省略号
+// Left ellipsis
 const SHOW_START_ELLIPSE = 4;
-// 右侧省略号
+// Right ellipsis
 const SHOW_END_ELLIPSE = 4;
 
 enum PageEllipse {
@@ -56,7 +56,7 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
   const [inputPage, setInputPage] = useState<string>('');
 
   /**
-   * 将外部输入转为内部状态
+   * Cache state of pagination
    */
   useEffect(() => {
     if (total < 0 || current < 0 || pageSize < 0) {
@@ -67,7 +67,7 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
   }, [current, pageSize, total]);
 
   /**
-   * 点击箭头翻页
+   * Click the arrow to turn the page
    */
   const handleClickArrowJumpPage = (page: number, type: PageArrow) => {
     if (disabled) {
@@ -91,7 +91,7 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
   };
 
   /**
-   * 点击省略号跳转翻页
+   * Click ellipsis to turn the page
    */
   const handleClickEllipse = (option: IOption) => {
     const { value } = option;
@@ -103,7 +103,7 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
   };
 
   /**
-   * 点击页码
+   * Click the page number
    */
   const handleClickPage = (page: number) => {
     const { current, pageSize } = pagination;
@@ -116,10 +116,10 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
   };
 
   /**
-   * 输入页码
+   * Enter the page number
    */
   const handleInputPage = (e: ChangeEvent<HTMLInputElement>) => {
-    // 合法性交由 blur 判断
+    // Blur judge legitimacy
     setInputPage(e.target.value);
   };
 
@@ -132,7 +132,7 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
   };
 
   /**
-   * 输入改变页码
+   * Enter change page number
    */
   const handleBlurPage = (e: ChangeEvent<HTMLInputElement> | KeyboardEvent<HTMLInputElement>) => {
     const page = Number((e.target as any).value);
@@ -143,7 +143,7 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
     const { pages, current, pageSize } = pagination;
     const validRange = page >= 1 && page <= pages;
     if (page === current) {
-      // 相等时不清空
+      // Do not clear when equal
       return;
     }
     if (disabled || !validRange) {
@@ -158,7 +158,7 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
   };
 
   /**
-   * 分页数改变
+   * Number of pages changed
    */
   const handleChangePageSize = (option: IOption) => {
     const { current, total } = pagination;
@@ -174,7 +174,7 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
   };
 
   /**
-   * 总数渲染
+   * Show total UI
    */
   const renderTotal = () => {
     if (!showTotal) {
@@ -190,7 +190,7 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
   };
 
   /**
-   * 快速跳转
+   * Quick jump UI
    */
   const renderQuickJump = () => {
     if (!showQuickJump) {
@@ -214,7 +214,7 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
   };
 
   /**
-   * 指定每页条数
+   * Number of entries per page selector
    */
   const renderChangeSize = () => {
     if (!showChangeSize) {
@@ -234,10 +234,10 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
   };
 
   /**
-   * 渲染省略号
+   * Render ellipsis
    * @param key id
-   * @param start 页码下拉开始
-   * @param end 页码下拉结束
+   * @param start Page number drop down start position
+   * @param end Page number drop down end position
    */
   const renderEllipse = (key, start, end) => {
     const options: IOption[] = [];
@@ -273,10 +273,10 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
   };
 
   /**
-   * 渲染页码可视区域
-   * @param start 页码开始
-   * @param end 页码结束
-   * @param type 省略号类型
+   * Render page number viewable area
+   * @param start Page number drop down start position
+   * @param end Page number drop down end position
+   * @param type Ellipsis type
    */
   const renderVisualPage = (start: number, end: number, type = PageEllipse.NONE) => {
     const { current, pages } = pagination;
@@ -330,7 +330,7 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
   };
 
   /**
-   * 页码渲染
+   * Page number rendering
    */
   const renderPage = () => {
     const { current = 1, pages } = pagination;
@@ -341,25 +341,25 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
     } else {
       let rangeStart = 0, rangeEnd = 0, type = PageEllipse.CENTER;
       if (current <= SHOW_START_ELLIPSE) {
-        // 后省略号
+        // Back ellipsis
         rangeStart = 1;
         rangeEnd = SHOW_START_ELLIPSE + (current === SHOW_START_ELLIPSE ? 1 : 0);
-        // 始终向右显示一个页码
+        // Always show one page number to the right
         if (current === SHOW_START_ELLIPSE) {
           rangeEnd = SHOW_START_ELLIPSE + 1;
         }
         type = PageEllipse.END;
       } else if (current >= pages - SHOW_END_ELLIPSE + 1) {
-        // 前省略号
+        // Front ellipsis
         rangeStart = pages - SHOW_END_ELLIPSE + 1;
         rangeEnd = pages;
-        // 始终向左显示一个页码
+        // Always show one page number to the left
         if (current === pages - SHOW_END_ELLIPSE + 1) {
           rangeStart = pages - SHOW_END_ELLIPSE;
         }
         type = PageEllipse.START;
       } else {
-        // 两侧省略号
+        // Ellipsis on both sides
         rangeStart = current - 1;
         rangeEnd = current + 1;
       }

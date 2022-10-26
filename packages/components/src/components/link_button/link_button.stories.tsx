@@ -6,10 +6,10 @@ import { LinkButton } from './index';
 import { StoryType } from '../../stories/constants';
 import { ILinkButtonProps } from './interface';
 
-const COMPONENT_NAME = 'Button 按钮';
-const BUTTON_TEXT = '跳转链接';
+const COMPONENT_NAME = 'Button';
+const BUTTON_TEXT = 'Link Text';
 
-const TITLE = `${StoryType.BaseComponent}/${COMPONENT_NAME}/LinkButton 跳转按钮`;
+const TITLE = `${StoryType.BaseComponent}/${COMPONENT_NAME}/LinkButton`;
 
 export default {
   component: LinkButton,
@@ -73,7 +73,7 @@ Block.args = {
 export const Click = Template.bind({});
 Click.args = {
   onClick: () => {
-    alert('已经点击');
+    alert('client event');
   }
 };
 

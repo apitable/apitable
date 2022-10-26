@@ -9,7 +9,7 @@ import { ICalendar } from './interface';
 import { Tooltip } from '../tooltip';
 import { Drag, Drop } from './drag';
 
-const COMPONENT_NAME = 'Calendar 日历';
+const COMPONENT_NAME = 'Calendar';
 
 const TITLE = `${StoryType.BaseComponent}/${COMPONENT_NAME}`;
 
@@ -36,43 +36,43 @@ export const Resizable = () => {
   const [tasks, setTasks] = React.useState([
     {
       id: 1,
-      title: '吃饭 🍚',
+      title: 'eating 🍚',
       startDate: new Date('2021/07/08'),
       endDate: new Date('2021/07/15'),
     },
     {
       id: 2,
-      title: '呵呵 🙂',
+      title: 'Smile 🙂',
       startDate: new Date('2021/07/05'),
       endDate: new Date('2021/07/06'),
     },
     {
       id: 3,
-      title: '喝水 🍧',
+      title: 'Drinking 🍧',
       startDate: new Date('2021/06/28'),
       endDate: new Date('2021/07/04'),
     },
     {
       id: 4,
-      title: '睡觉 😴',
+      title: 'Sleep 😴',
       startDate: new Date('2021/07/07'),
       endDate: new Date('2021/07/10'),
     },
     {
       id: 5,
-      title: '学习 🙇',
+      title: 'Study 🙇',
       startDate: new Date('2021/07/05'),
       endDate: new Date('2021/07/13'),
     },
     {
       id: 6,
-      title: '吃串串 🍡',
+      title: 'Eat kebabs 🍡',
       startDate: new Date('2021/07/08'),
       endDate: new Date('2021/08/25'),
     },
     {
       id: 7,
-      title: '看视频~~',
+      title: 'Watch videos~~',
       startDate: new Date('2021/08/08'),
       endDate: new Date('2021/09/20'),
     },
@@ -171,43 +171,43 @@ export const DraggableAndResizable = () => {
   const [tasks, setTasks] = React.useState([
     {
       id: 1,
-      title: '吃饭 🍚',
+      title: 'Eating 🍚',
       startDate: new Date('2021/07/08'),
       endDate: new Date('2021/07/15'),
     },
     {
       id: 2,
-      title: '呵呵 🙂',
+      title: 'Smile 🙂',
       startDate: new Date('2021/07/05'),
       endDate: new Date('2021/07/06'),
     },
     {
       id: 3,
-      title: '喝水 🍧',
+      title: 'Drinking 🍧',
       startDate: new Date('2021/06/28'),
       endDate: new Date('2021/07/04'),
     },
     {
       id: 4,
-      title: '睡觉 😴',
+      title: 'Sleep 😴',
       startDate: new Date('2021/07/07'),
       endDate: new Date('2021/07/10'),
     }, 
     {
       id: 5,
-      title: '学习 🙇',
+      title: 'Study 🙇',
       startDate: new Date('2021/07/05'),
       endDate: new Date('2021/07/13'),
     },
     {
       id: 6,
-      title: '吃串串 🍡',
+      title: 'Eat kebabs 🍡',
       startDate: new Date('2021/07/08'),
       endDate: new Date('2021/08/25'),
     },
     {
       id: 7,
-      title: '看视频~~',
+      title: 'Watch videos~~',
       startDate: new Date('2021/08/08'),
       endDate: new Date('2021/09/20'),
     },
@@ -242,7 +242,7 @@ export const DisabledTask = Template.bind({});
 DisabledTask.args = {
   tasks: [{
     id: 1,
-    title: '干饭 🍚',
+    title: 'Eating 🍚',
     startDate: new Date('2021/07/14'),
     endDate: new Date('2021/07/20'),
   }],
@@ -255,13 +255,13 @@ export const WarningTask = Template.bind({});
 WarningTask.args = {
   tasks: [{
     id: 1,
-    title: '干饭 🍚',
+    title: 'Eating 🍚',
     startDate: new Date('2021/07/15'),
     endDate: new Date('2021/07/06'),
   }],
   defaultDate: new Date('2021/07/01'),
   warnText: (
-    <Tooltip content="结束日期小于开始日期">
+    <Tooltip content="End date is earlier than start date">
       <span className="warning">
         <WarningTriangleNonzeroFilled size={14} color="#FFAB00"/>
       </span>
@@ -273,12 +273,12 @@ export const SetTaskStyle = Template.bind({});
 SetTaskStyle.args = {
   tasks: [{
     id: 1,
-    title: '干饭 🍚',
+    title: 'Eating 🍚',
     startDate: new Date('2021/07/15'),
     endDate: new Date('2021/07/19'),
   },{
     id: 2,
-    title: '睡觉 😴',
+    title: 'Sleep 😴',
     startDate: new Date('2021/07/17'),
     endDate: new Date('2021/07/17'),
   }],

@@ -11,21 +11,15 @@ export const light: ITheme = {
       black: '#000',
     },
     primary: deepPurple[500],
-    // 语义化颜色
     success: teal[500],
     danger: red[500],
     warning: orange[500],
     info: deepPurple[500],
     text: {
-      // 一级主色
       primary: black[1000],
-      // 二级.
       secondary: black[700],
-      // 三级
       third: black[500],
-      // 四级
       fourth: black[300],
-      // 五级（白色）
       fifth: black[50],
       disabled: 'rgba(0, 0, 0, 0.38)',
       // Text hints.

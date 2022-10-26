@@ -3,35 +3,35 @@ import { ElementType } from 'react';
 
 export interface ITypographyProps {
   /**
-   * 类名
+   * class name
    */
   className?: string;
   /**
-   * 样式
+   * inline style
    */
   style?: React.CSSProperties;
   /**
-   * 使用指定的HTML元素来渲染组件
+   * Specify HTML elements to render components
    */
   component?: ElementType;
   /**
-   * 文字颜色
+   * text color
    */
   color?: string;
   /**
-   * 对齐方式
+   * Alignment
    */
   align?: 'inherit' | 'left' | 'right' | 'center';
   /**
-   * 应用主题字体样式
+   * Apply several font styles
    */
   variant?: IFontVariants;
   /**
-   * 自动溢出省略
+   * Whether overflow is ellipsis
    */
   ellipsis?: IEllipsis | boolean;
   /**
-   * tooltips 层级 z-index属性
+   * Set tooltip z-index
    */
   tooltipsZIndex?: number;
 

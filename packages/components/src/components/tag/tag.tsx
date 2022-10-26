@@ -8,9 +8,9 @@ export interface ITagProps {
   type?: 'fill' | 'stroke';
   shape?: 'square' | 'round';
   icon?: JSX.Element;
-  // 背景颜色
+  // background color
   color?: string;
-  // 文字颜色
+  // text color
   textColor?: string;
   closable?: boolean;
   closeIcon?: React.ReactNode;

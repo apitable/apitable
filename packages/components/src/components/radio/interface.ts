@@ -1,20 +1,37 @@
 import React from 'react';
 
 export interface IRadio {
-  /** 子元素 */
+  /** 
+   * Child elements
+   */
   children?: React.ReactNode;
-  /** radio 名称 */
+  /**
+   * Radio name
+   */
   name?: string;
-  /** 是否选中 */
+  /**
+   * Whether checked or unchecked
+   */
   checked?: boolean,
-  /** 监听 Change */
+  /**
+   * Change Event
+   */
   onChange?: (e: React.ChangeEvent) => void,
+  /**
+   * readonly
+   */
   readOnly?: boolean,
-  /** 值 */
+  /**
+   * Value
+   */
   value?: any,
-  /** 禁用 */
+  /**
+   * Whether disabled or not
+   */
   disabled?: boolean;
-  /** 是否使用 Button 样式 */
+  /**
+   * Whether use button style or not
+   */
   isBtn?: boolean;
 }
 

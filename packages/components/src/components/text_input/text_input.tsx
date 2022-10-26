@@ -62,7 +62,7 @@ const InputWrapper = styled.div.attrs(applyDefaultTheme) <IInputWrapperProps>`
         border-color: ${focusBorderColor};
         background-color: ${background.primary};
       }
-      // 错误状态
+      // Error status
       ${error && css`
         &.error {
           border-color: ${palette.danger};

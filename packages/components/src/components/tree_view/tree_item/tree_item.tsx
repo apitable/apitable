@@ -9,7 +9,7 @@ export interface ITreeItemProps {
   nodeId: string;
   selectable?: boolean;
   isLeaf?: boolean;
-  // 如果想要在相关的事件监听器中获取当前节点的数据，就可以在渲染时将数据传递给该组件
+  // If you want to get the data of the current node in the relevant event listener, you can pass the data to the component during rendering
   data?: any;
   className?: string;
   draggable?: boolean;
@@ -164,8 +164,6 @@ const TreeItemBase: FC<ITreeItemProps> = ({
   } = useContext(TreeViewContext);
   const nodeRef = useRef<any>(null);
 
-  /* 拖拽时是否高亮 */
-  // const [dragNodeHighlight, setDragNodeHighlight] = useState(false);
   const dragRef = useRef<HTMLDivElement>(null);
   const [dropPosition, setDropPosition] = useState<null | number>(null);
   const [hoverNodeId, setHoverNodeId] = useState('');
@@ -173,13 +171,6 @@ const TreeItemBase: FC<ITreeItemProps> = ({
   const [, drag] = useDrag({
     type: module,
     item: { id: nodeId },
-    // item: () => {
-    //   dragStart({ dom: nodeRef.current, id: nodeId });
-    //   // setDragNodeHighlight(true);
-    // },
-    // end: () => {
-    //   // setDragNodeHighlight(false);
-    // },
   });
 
   const [{ isOver }, dndDrop] = useDrop({
@@ -205,21 +196,17 @@ const TreeItemBase: FC<ITreeItemProps> = ({
     const offsetHeight = treeNode.offsetHeight;
     const gapHeight = 12;
     const pageY = clientOffset.y;
-    // 判断鼠标位置是否在元素的下半部分
+    // Determine whether the mouse position is in the lower part of the element
     if (pageY >= (offsetTop + (offsetHeight + 2) - gapHeight) && pageY <= (offsetTop + (offsetHeight + 2))) {
       newDropPosition = 1;
-      // 判断鼠标位置是否在元素的下半部分
     } else if (pageY <= (offsetTop + gapHeight) && pageY >= offsetTop - 4) {
       newDropPosition = -1;
     }
     return newDropPosition;
   };
 
-  // 获取节点偏移信息
+  // Get node offset data
   const getOffset = (ele: HTMLDivElement) => {
-    // let doc;
-    // let win;
-    // let docElem;
 
     if (!ele.getClientRects().length) {
       return { top: 0, left: 0 };
@@ -228,10 +215,6 @@ const TreeItemBase: FC<ITreeItemProps> = ({
     const rect = ele.getBoundingClientRect();
 
     if (rect.width || rect.height) {
-      // doc = ele.ownerDocument;
-      // win = doc.defaultView;
-      // docElem = doc.documentElement;
-
       return {
         top: rect.top,
         left: rect.left
@@ -241,13 +224,21 @@ const TreeItemBase: FC<ITreeItemProps> = ({
     return rect;
   };
 
-  /* 当前节点是否是展开状态  */
+  /**
+   * Whether the current node is expanded
+   */
   const expanded = isExpanded ? isExpanded(nodeId) : false;
-  /* 当前节点是否是选中状态 */
+  /**
+   * Whether the current node is selected
+   */
   const selected = isSelected ? isSelected(nodeId) : false;
-  /* 当前节点是否是聚焦状态 */
+  /**
+   * Whether the current node is in focus
+   */
   const focused = isFocused ? isFocused(nodeId) : false;
-  /* 当前节点是否是加载状态 */
+  /**
+   * Whether the current node is in loading status
+   */
   const loading = loadingNodeId === nodeId;
 
   const clickHandler = (e: React.MouseEvent) => {
@@ -265,7 +256,7 @@ const TreeItemBase: FC<ITreeItemProps> = ({
       return;
     }
     if (isMultiple) {
-      // TODO: 多选操作
+      // TODO: Multiple selection operation
     } else {
       selectNode(e, nodeId);
     }
@@ -287,9 +278,8 @@ const TreeItemBase: FC<ITreeItemProps> = ({
     return React.Children.map(children, (item, index) => renderTreeItem(item, index, pos));
   };
 
-  /* 当前节点的深度 */
+  /* Depth of the current node */
   const depth = pos ? (pos.split('-').length - 1) : 0;
-  console.log('你好: ', isOver, dropPosition);
 
   drag(dndDrop(dragRef));
 

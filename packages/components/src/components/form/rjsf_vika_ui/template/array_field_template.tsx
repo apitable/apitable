@@ -80,7 +80,7 @@ export const ArrayFieldTemplate = (props: ArrayFieldTemplateProps) => {
   //       <SortableItems items={props.items} onSortEnd={onSortEnd} />
   //       {props.canAdd && (
   //         <div>
-  //           <Button onClick={props.onAddClick} size="small" >+ 新增</Button>
+  //           <Button onClick={props.onAddClick} size="small" >+ New</Button>
   //         </div>
   //       )}
   //     </div>
@@ -97,7 +97,7 @@ export const ArrayFieldTemplate = (props: ArrayFieldTemplateProps) => {
       {items.map(element => <ArrayFieldItem {...element} hasRemove={hasRemove} />)}
       {addable && (
         <div>
-          <Button onClick={onAddClick} size="small" >+ 新增</Button>
+          <Button onClick={onAddClick} size="small" >+ New</Button>
         </div>
       )}
     </div >

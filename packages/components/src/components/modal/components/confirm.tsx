@@ -74,7 +74,7 @@ export const confirm = (props: IModalFuncProps): IModalRef => {
                 padding: '9px 16px',
               }}
             >
-              {props.cancelText || '取消'}
+              {props.cancelText || 'Cancel'}
             </TextButton>
             <div style={{ marginRight: 8 }} />
           </>
@@ -84,7 +84,7 @@ export const confirm = (props: IModalFuncProps): IModalRef => {
           {...props.okButtonProps}
           onClick={handleOk}
         >
-          {props.okText || '确定'}
+          {props.okText || 'Confirm'}
         </Button>
       </Box>
     );

@@ -1,7 +1,7 @@
 export type IButtonType = 'default' | 'danger' | 'primary' | 'warning';
 export interface IButtonBaseProps {
   shape?: 'round';
-  variant?: 'jelly' | 'fill'; // type 是 button 自带的属性，避免冲突
+  variant?: 'jelly' | 'fill';
   size?: 'small' | 'middle' | 'large';
   btnColor?: IButtonType | string;
   disabled?: boolean;
@@ -12,40 +12,40 @@ type IButtonHTMLAttributes = Omit<React.ButtonHTMLAttributes<any>, | 'color'>;
 
 export interface IButtonProps extends IButtonHTMLAttributes {
   htmlType?: 'submit' | 'reset' | 'button';
-  /** border 形状 */
+  /** border shape */
   shape?: 'round';
-  /** 子元素 */
+  /** child elements */
   children?: React.ReactNode;
-  /** 覆盖默认样式，应用与最外层组件 */
+  /** class name */
   className?: string;
-  /** 按钮颜色 default | danger | primary | string */
+  /** button color default | danger | primary | string */
   color?: IButtonType | string;
   /**
-   * 前置 icon
+   * prefix icon
    */
   prefixIcon?: React.ReactElement;
   /**
-   * 后置 icon
+   * suffix icon
    */
   suffixIcon?: React.ReactElement;
   /**
-   * 禁用
+   * whether button should be disabled
    */
   disabled?: boolean;
   /**
-   * 占满容器的宽度的 100%
+   * with 100% width
    */
   block?: boolean;
   /**
-   * 类型
+   * variant type
    */
   variant?: 'fill' | 'jelly';
   /**
-   * button 大小
+   * button size
    */
   size?: 'small' | 'middle' | 'large';
   /**
-   * 是否在加载中
+   * whether button is loading
    */
   loading?: boolean;
 }

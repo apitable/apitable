@@ -89,7 +89,7 @@ const styles = ({ color, fontFamily, fontSize, sidebarWidth, mq, space, maxWidth
 };
 
 export function StyleGuideRenderer({ toc, version, hasSidebar, classes, title, homepageUrl, children }) {
-  const [isDarkMode, setIsDarkMode] = useLocalStorageState('isDarkMode', { defaultValue: false});
+  const [isDarkMode, setIsDarkMode] = useLocalStorageState('isDarkMode', { defaultValue: false });
   const theme = isDarkMode ? dark : light;
   const rootStyle = {
     background: theme.palette.background.primary
@@ -112,7 +112,7 @@ export function StyleGuideRenderer({ toc, version, hasSidebar, classes, title, h
             <header className={classes.logo}>
               <Logo>{title}</Logo>
               {version && <Version>{version}</Version>}
-              <Switch checked={isDarkMode} onChange={() => setIsDarkMode(!isDarkMode)} />黑暗模式
+              <Switch checked={isDarkMode} onChange={() => setIsDarkMode(!isDarkMode)} />Dark Mode
             </header>
             {toc}
           </div>

@@ -21,8 +21,10 @@ const colorHandler = {
 };
 
 /**
- * FIXME: 如果是采用 import {colors} from './colors' 主题的切换并不会引起 React 组件重新渲染。暂时先兼容原来的调用方式。
- * 最后 js 中引用颜色变量，应该都是通过 useTheme hook 从主题中获取。
+ * FIXME: If import {colors} from './colors'. theme does not cause the React component to re render.
+ * For the time being, the original calling method should be compatible.
+ * 
+ * Finally, the color variables referenced in js should be obtained from the theme through useTheme hook.
  */
 export const colors = new Proxy(lightColors, colorHandler) as any;
 

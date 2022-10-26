@@ -5,20 +5,20 @@ import * as stories from './pagination.stories';
 
 const { Default, Total, QuickJump, More, ChangeSize, Disabled, I18n } = composeStories(stories);
 
-describe('pagination 翻页测试', () => {
-  it('default 渲染', () => {
+describe('pagination test', () => {
+  it('default render', () => {
     render(<Default />);
     const [page1] = screen.getAllByRole('button');
     expect(page1).toHaveAttribute('data-info', 'page-1');
   });
 
-  it('total 总页数显示', () => {
+  it('Show total number', () => {
     const { container } = render(<Total />);
     
     expect(container).toHaveTextContent('第 1-10 条/总共 50 条');
   });
 
-  it('quickjump 快速跳转', () => {
+  it('Quick jump UI', () => {
     const { container } = render(<QuickJump />);
 
     const input = container.querySelector('input');
@@ -31,17 +31,16 @@ describe('pagination 翻页测试', () => {
     }
   });
 
-  it('more 更多的翻页数据', () => {
+  it('More page click', () => {
     render(<More />);
     const pages = screen.getAllByRole('button');
 
     expect(pages[pages.length - 1]).toHaveTextContent('18');
   });
 
-  it('changeSize 修改每页可显示的记录数量', () => {
+  it('Per page number', () => {
     const { container } = render(<ChangeSize />);
     
-    // 需要 fireEvent 测试，但是 select 中存在 TypeError: listContainerRef.current.scrollTo is not a function
     // const select = container.querySelector('div[data-name]');
     // if (select) {
     //   fireEvent.click(select);
@@ -52,7 +51,7 @@ describe('pagination 翻页测试', () => {
     expect(container).toHaveTextContent('10条/一页');
   });
 
-  it('disabled 禁止使用翻页', () => {
+  it('Disabled page change', () => {
     const { container } = render(<Disabled />);
 
     const pages = screen.getAllByRole('button');
@@ -79,7 +78,7 @@ describe('pagination 翻页测试', () => {
     }
   });
 
-  it('i18n 国际化', () => {
+  it('I18n', () => {
     const { container } = render(<I18n />);
 
     expect(container).toHaveTextContent('of');

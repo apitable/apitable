@@ -4,7 +4,7 @@ import { IRadioGroup } from './interface';
 import { StoryType } from '../../../stories/constants';
 import { Story } from '@storybook/react';
 
-const TITLE = `${StoryType.Form}/RadioGroup 单选组`;
+const TITLE = `${StoryType.Form}/RadioGroup`;
 
 export default {
   component: RadioGroup,
@@ -18,9 +18,9 @@ export default {
   args: {
     children: (
       <>
-        <Radio value="1">单选 1</Radio>
-        <Radio value="2">单选 2</Radio>
-        <Radio value="3">单选 3</Radio>
+        <Radio value="1">Radio 1</Radio>
+        <Radio value="2">Radio 2</Radio>
+        <Radio value="3">Radio 3</Radio>
       </>
     )
   }
@@ -77,9 +77,9 @@ WithOptions.args = {
   children: undefined,
   name: 'with-option',
   options: [
-    { label: '选项 1', value: '1' },
-    { label: '选项 2', value: '2' },
-    { label: '选项 2', value: '3' }
+    { label: 'option 1', value: '1' },
+    { label: 'option 2', value: '2' },
+    { label: 'option 2', value: '3' }
   ]
 };
 
@@ -89,9 +89,9 @@ OptionsWithDisabled.args = {
   name: 'with-disable-option',
   row: true,
   options: [
-    { label: '选项 1', value: '1' },
-    { label: '选项 2', value: '2', disabled: true },
-    { label: '选项 2', value: '3' }
+    { label: 'option 1', value: '1' },
+    { label: 'option 2', value: '2', disabled: true },
+    { label: 'option 2', value: '3' }
   ]
 };
 
@@ -102,9 +102,9 @@ ButtonOptionsWithDisabled.args = {
   row: true,
   isBtn: true,
   options: [
-    { label: '选项 1', value: '1' },
-    { label: '选项 2', value: '2', disabled: true },
-    { label: '选项 2', value: '3' }
+    { label: 'option 1', value: '1' },
+    { label: 'option 2', value: '2', disabled: true },
+    { label: 'option 2', value: '3' }
   ]
 };
 

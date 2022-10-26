@@ -6,10 +6,10 @@ import { Story } from '@storybook/react';
 import { IButtonProps } from './interface';
 import { orange } from '../../colors';
 
-const COMPONENT_NAME = 'Button 按钮';
-const BUTTON_TEXT = '默认按钮';
+const COMPONENT_NAME = 'Button';
+const BUTTON_TEXT = 'Default Button';
 
-const TITLE = `${StoryType.BaseComponent}/${COMPONENT_NAME}/基础按钮`;
+const TITLE = `${StoryType.BaseComponent}/${COMPONENT_NAME}/Base Button`;
 
 export default {
   component: Button,
@@ -96,8 +96,8 @@ PaletteCustomColor.args = {
 
 export const SupportFormSubmit = () => (
   <form onSubmit={() => {
-    alert('触发表单提交');
+    alert('Trigger form submit');
   }}>
-    <Button htmlType="submit">提交</Button>
+    <Button htmlType="submit">Submit</Button>
   </form>
 );

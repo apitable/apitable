@@ -185,7 +185,7 @@ export const ButtonBase = styled.button.attrs(applyDefaultTheme) <IButtonBasePro
         activeBgColor = getColor(btnColor).jellyActive || getActiveColor(bgColor);
         break;
     }
-    // 禁用状态下，都是 hover 和 active 没反应。
+    // Disabled status cancel hover and active status ui changes
     if (props.disabled) {
       hoverBgColor = bgColor;
       activeBgColor = bgColor;

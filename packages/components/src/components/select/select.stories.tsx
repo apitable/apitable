@@ -6,7 +6,7 @@ import { Story } from '@storybook/react';
 import { ISelectProps } from './interface';
 import { FavoriteOutlined, WarningTriangleNonzeroFilled } from '@vikadata/icons';
 
-const COMPONENT_NAME = 'Select 下拉框';
+const COMPONENT_NAME = 'Select';
 
 const TITLE = `${StoryType.Form}/${COMPONENT_NAME}`;
 
@@ -23,9 +23,12 @@ export default {
 
 const Template: Story<ISelectProps> = (args) => <Select {...args} />;
 
-const data = [];
+const data: {
+  label: string;
+  value: string;
+}[] = [];
 for (let i = 0; i < 20; i++) {
-  data.push({ label: '这是测试的数据'+ i, value: 'opt' + i });
+  data.push({ label: 'Test data'+ i, value: 'opt' + i });
 }
 
 export const Default = Template.bind({});
@@ -42,7 +45,7 @@ export const SelectItem = () => {
       options={data}
       value={value}
       onSelected={(option) => {
-        setValue(option.value);
+        setValue(option.value as string);
       }}
     />
   );
@@ -55,7 +58,7 @@ export const MatchWidth = () => {
       options={data}
       value={value}
       onSelected={(option) => {
-        setValue(option.value);
+        setValue(option.value as string);
       }}
       dropdownMatchSelectWidth
       triggerStyle={{ width: 100 }}
@@ -69,14 +72,14 @@ export const NotMatchWidth = () => {
     <Select
       options={[
         {
-          label: '这个测试数据比较长这个测试数据比较长比较长',
+          label: 'Neither snow, nor rain, nor heat, nor gloom of night keeps these hackers from the swift completion of their code.',
           value: 'opt'
         },
         ...data,
       ]}
       value={value}
       onSelected={(option) => {
-        setValue(option.value);
+        setValue(option.value as string);
       }}
       dropdownMatchSelectWidth={false}
       triggerStyle={{ width: 100 }}
@@ -85,16 +88,16 @@ export const NotMatchWidth = () => {
 };
 
 export const SelectItemWithIcon = () => {
-  const [value, setValue] = React.useState();
+  const [value, setValue] = React.useState<string>('');
   return (
     <Select
       options={[
-        { label: '这是测试的数据2', value: 'opt2', prefixIcon: <FavoriteOutlined />, suffixIcon: <FavoriteOutlined /> },
-        { label: '这是测试的数据3', value: 'opt3', prefixIcon: <FavoriteOutlined />, suffixIcon: <FavoriteOutlined /> },
+        { label: 'The quick shall inherit the Earth', value: 'opt2', prefixIcon: <FavoriteOutlined />, suffixIcon: <FavoriteOutlined /> },
+        { label: 'Move fast and break things', value: 'opt3', prefixIcon: <FavoriteOutlined />, suffixIcon: <FavoriteOutlined /> },
       ]}
       value={value}
       onSelected={(option) => {
-        setValue(option.value);
+        setValue(option.value as string);
       }}
       dropdownMatchSelectWidth={false}
       triggerStyle={{ width: 100 }}
@@ -108,7 +111,7 @@ export const DisabledSelectItem = () => {
     <Select
       options={[
         {
-          label: '这个被禁用了',
+          label: 'this option is disabled',
           value: 'opt',
           disabled: true,
         },
@@ -116,7 +119,7 @@ export const DisabledSelectItem = () => {
       ]}
       value={value}
       onSelected={(option) => {
-        setValue(option.value);
+        setValue(option.value as string);
       }}
       dropdownMatchSelectWidth={false}
       triggerStyle={{ width: 100 }}
@@ -130,16 +133,16 @@ export const DisabledSelectItemWithTip = () => {
     <Select
       options={[
         {
-          label: '这个被禁用了',
+          label: 'this option is disabled',
           value: 'opt',
           disabled: true,
-          disabledTip: '禁用原因说明'
+          disabledTip: 'option disabled reason',
         },
         ...data,
       ]}
       value={value}
       onSelected={(option) => {
-        setValue(option.value);
+        setValue(option.value as string);
       }}
       dropdownMatchSelectWidth={false}
       triggerStyle={{ width: 100 }}
@@ -153,11 +156,11 @@ export const DisabledSelectIconWithTip = () => {
     <Select
       options={[
         {
-          label: '这个被禁用了',
+          label: 'this option is disabled',
           value: 'opt',
           disabled: true,
           suffixIcon: (
-            <Tooltip content={'禁用原因说明'}>
+            <Tooltip content={'option disabled reason'}>
               <span style={{ display: 'flex', alignItems: 'center' }}>
                 <WarningTriangleNonzeroFilled color="#FFAB00" />
               </span>
@@ -168,7 +171,7 @@ export const DisabledSelectIconWithTip = () => {
       ]}
       value={value}
       onSelected={(option) => {
-        setValue(option.value);
+        setValue(option.value as string);
       }}
       dropdownMatchSelectWidth={false}
       triggerStyle={{ width: 100 }}
@@ -181,10 +184,11 @@ export const DisabledSelect = () => {
     <Select
       options={[
         {
-          label: '这是一条很长的选项，这是一条很长的选项，这是一条很长的选项',
+          // eslint-disable-next-line max-len
+          label: 'The back still says the name of a different technology company, one that came before us,left as a reminder that if we fail, someday someone might replace us.',
           value: 'opt',
           prefixIcon: <FavoriteOutlined />,
-          suffixIcon: <Tooltip content={'该图标也支持显示额外信息'}>
+          suffixIcon: <Tooltip content={'This icon also supports the display of additional information'}>
             <span style={{ display: 'flex', alignItems: 'center' }}>
               <WarningTriangleNonzeroFilled color="#FFAB00" />
             </span>
@@ -202,14 +206,14 @@ export const Search = () => {
   const [value, setValue] = React.useState<any>('');
 
   const options = [
-    { label: '这是测试的数据1', value: 'opt1' },
-    { label: '这是测试的数据2', value: 'opt2' },
-    { label: '这是测试的数据3', value: 'opt3' },
-    { label: '这是测试的数据4', value: 'opt4' },
-    { label: '这是测试的数据5', value: 'opt5' },
-    { label: '这是测试的数据6', value: 'opt6' },
-    { label: '这是测试的数据7', value: 'opt7' },
-    { label: '这是测试的数据8', value: 'opt8' },
+    { label: 'Test data 1', value: 'opt1' },
+    { label: 'Test data 2', value: 'opt2' },
+    { label: 'Test data 3', value: 'opt3' },
+    { label: 'Test data 4', value: 'opt4' },
+    { label: 'Test data 5', value: 'opt5' },
+    { label: 'Test data 6', value: 'opt6' },
+    { label: 'Test data 7', value: 'opt7' },
+    { label: 'Test data 8', value: 'opt8' },
     { label: 'abcdefg', value: 'opt9' },
     { label: 'ABCDEFG', value: 'opt10' },
   ];
@@ -232,14 +236,14 @@ export const SearchCustomHighlightStyle = () => {
   const [value, setValue] = React.useState('');
 
   const options = [
-    { label: '这是测试的数据1', value: 'opt1' },
-    { label: '这是测试的数据2', value: 'opt2' },
-    { label: '这是测试的数据3', value: 'opt3' },
-    { label: '这是测试的数据4', value: 'opt4' },
-    { label: '这是测试的数据5', value: 'opt5' },
-    { label: '这是测试的数据6', value: 'opt6' },
-    { label: '这是测试的数据7', value: 'opt7' },
-    { label: '这是测试的数据8', value: 'opt8' },
+    { label: 'Test data 1', value: 'opt1' },
+    { label: 'Test data 2', value: 'opt2' },
+    { label: 'Test data 3', value: 'opt3' },
+    { label: 'Test data 4', value: 'opt4' },
+    { label: 'Test data 5', value: 'opt5' },
+    { label: 'Test data 6', value: 'opt6' },
+    { label: 'Test data 7', value: 'opt7' },
+    { label: 'Test data 8', value: 'opt8' },
     { label: 'abcdefg', value: 'opt9' },
     { label: 'ABCDEFG', value: 'opt10' },
   ];
@@ -249,7 +253,7 @@ export const SearchCustomHighlightStyle = () => {
       options={options}
       value={value}
       onSelected={(option) => {
-        setValue(option.value);
+        setValue(option.value as string);
       }}
       highlightStyle={{
         backgroundColor: '#7B67EE',
@@ -270,9 +274,9 @@ export const FormatSelectItem = () => {
   };
 
   const options = [
-    { label: '张三-男', value: 'opt1' },
-    { label: '李四-男', value: 'opt2' },
-    { label: '翠花-女', value: 'opt3' },
+    { label: 'Tom-male', value: 'opt1' },
+    { label: 'Jonson-male', value: 'opt2' },
+    { label: 'Allen-female', value: 'opt3' },
   ];
 
   return (
@@ -280,7 +284,7 @@ export const FormatSelectItem = () => {
       options={options}
       value={value}
       onSelected={(option) => {
-        setValue(option.value);
+        setValue(option.value as string);
       }}
       dropdownMatchSelectWidth
       triggerStyle={{ width: 100 }}
@@ -293,14 +297,14 @@ export const SelectOption = () => {
   const [value, setValue] = React.useState('opt3');
 
   const options = [
-    { label: '这是测试的数据1', value: 'opt1', disabled: true },
-    { label: '这是测试的数据2', value: 'opt2' },
-    { label: '这是测试的数据3', value: 'opt3' },
-    { label: '这是测试的数据4', value: 'opt4' },
-    { label: '这是测试的数据5', value: 'opt5' },
-    { label: '这是测试的数据6', value: 'opt6' },
-    { label: '这是测试的数据7', value: 'opt7' },
-    { label: '这是测试的数据8', value: 'opt8' },
+    { label: 'Test data 1', value: 'opt1', disabled: true },
+    { label: 'Test data 2', value: 'opt2' },
+    { label: 'Test data 3', value: 'opt3' },
+    { label: 'Test data 4', value: 'opt4' },
+    { label: 'Test data 5', value: 'opt5' },
+    { label: 'Test data 6', value: 'opt6' },
+    { label: 'Test data 7', value: 'opt7' },
+    { label: 'Test data 8', value: 'opt8' },
   ];
 
   return (
@@ -308,7 +312,7 @@ export const SelectOption = () => {
       value={value}
       onSelected={(option) => {
         console.log({ option });
-        setValue(option.value);
+        setValue(option.value as string);
       }}
       dropdownMatchSelectWidth
       triggerStyle={{ width: 100 }}
@@ -318,6 +322,7 @@ export const SelectOption = () => {
           <Select.Option
             value={option.value}
             disabled={option.disabled}
+            currentIndex={index}
           >
             {option.label}
           </Select.Option>

@@ -19,7 +19,7 @@ export const FieldTemplate = (props: FieldTemplateProps) => {
   const paddingTop = (() => {
     if (showTitle()) return 16;
     const [, level] = (id || '').split('-');
-    // 2 级标题被隐藏
+    // The secondary title is hidden
     if (parseInt(level, 10) === 1 && !showTitle()) {
       return 0;
     }

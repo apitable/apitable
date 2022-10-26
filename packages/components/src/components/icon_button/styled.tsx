@@ -43,7 +43,6 @@ export const IconButtonStyle = styled.div.attrs(applyDefaultTheme) <IIconButtonW
     return '';
   }}
   ${(props) => {
-    // 处理尺寸
     const size = props.size || 'small';
     const isSquare = props.shape === 'square';
     const _size = sizeMap[size];
@@ -56,7 +55,6 @@ export const IconButtonStyle = styled.div.attrs(applyDefaultTheme) <IIconButtonW
   ${(props) => {
     const { palette } = props.theme;
     const isSquare = props.shape === 'square';
-    // 处理类型
     switch (props.variant) {
       case 'default':
         let defaultVariant = css`

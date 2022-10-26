@@ -11,8 +11,8 @@ const {
   VariantBackground
 } = composeStories(stories);
 
-describe('IconButton 图标按钮测试', () => {
-  it ('默认为圆角无背景且 size 为 small（24 * 24）', () => {
+describe('IconButton test', () => {
+  it ('The default is rounded and no background, size is small（24 * 24）', () => {
     const { container } = render(<Default/>);
     const wrapperElement = container.firstElementChild;
     if (wrapperElement) {
@@ -23,7 +23,7 @@ describe('IconButton 图标按钮测试', () => {
       expect(styles.background).toBe('');
     }
   });
-  it ('size 为 large 时为圆角且宽高为 32 * 32', () => {
+  it ('When the size is large, it is rounded and the width and height are 32 * 32', () => {
     const { container } = render(<LargeSize/>);
     const wrapperElement = container.firstElementChild;
     if (wrapperElement) {
@@ -33,7 +33,7 @@ describe('IconButton 图标按钮测试', () => {
       expect(styles['border-radius']).toBe('50%');
     }
   });
-  it ('shape 为 square 时是方角', () => {
+  it ('Square when shape is square', () => {
     const { container } = render(<Square/>);
     const wrapperElement = container.firstElementChild;
     if (wrapperElement) {
@@ -41,7 +41,7 @@ describe('IconButton 图标按钮测试', () => {
       expect(styles['border-radius']).toBe(`${sizeMap.large.borderRadius}px`);
     }
   });
-  it ('variant 为 background 时背景为灰色', () => {
+  it ('When variant is background, the background is gray', () => {
     const { container } = render(<VariantBackground/>);
     const wrapperElement = container.firstElementChild;
     if (wrapperElement) {
@@ -49,7 +49,4 @@ describe('IconButton 图标按钮测试', () => {
       expect(styles.background).toBe('rgb(232, 234, 237)');
     }
   });
-  // component 为 button
-  // 禁用状态
-  // 激活状态
 });

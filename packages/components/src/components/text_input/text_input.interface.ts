@@ -2,43 +2,43 @@ import React from 'react';
 export interface ITextInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'prefix'> {
   className?: string;
   /**
-   * 大小 默认 middle
+   * Size, default is middle
    */
   size?: 'large' | 'middle' | 'small';
   /**
-   * 是否校验错误
+   * Whether check error ot not
    */
   error?: boolean;
   /**
-   * 是否禁用
+   * Whether disabled or not
    */
   disabled?: boolean;
   /**
-   * 改成下划线风格的输入框
+   * Whether use Underline style input
    */
   lineStyle?: boolean;
   /**
-   * 前缀
+   * Prefix icon
    */
   prefix?: React.ReactNode;
   /**
-   * 后缀
+   * Suffix icon
    */
   suffix?: React.ReactNode;
   /**
-   * 占满父容器
+   * Whether full width or not
    */
   block?: boolean;
   /**
-   * 带标签的 input，设置后置标签
+   * Addon component ui after text input
    */
   addonAfter?: React.ReactNode;
   /**
-   * 带标签的 input，设置前置标签
+   * Addon component ui before text input
    */
   addonBefore?: React.ReactNode;
   /**
-   * TextInput整个容器的ref
+   * The ref ot text input
    */
   wrapperRef?: React.RefObject<HTMLDivElement>;
 }

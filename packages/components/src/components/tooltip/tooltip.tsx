@@ -7,39 +7,39 @@ import { applyDefaultTheme } from 'theme';
 
 export interface ITooltipProps {
   /**
-   * 要显示的内容
+   * Tooltip content
    */
   content: string;
   /**
-   * 位置
+   * Display position
    */
   placement?: Omit<Placement, 'center'>;
   /**
-   * 是否显示小箭头
+   * Whether show arrow or not
    */
   arrow?: boolean;
   /**
-   * 手动控制显示
+   * Whether visible or not
    */
   visible?: boolean;
   /**
-   * 改变气泡颜色
+   * Change tooltip color
    */
   color?: string;
   /**
-   * 层级定义
+   * Set tooltip z-index
    */
   zIndex?: number;
   /**
-   * 触发行为
+   * Trigger type
    */
   trigger?: 'hover' | 'click';
   /**
-   * 显示隐藏的回调
+   * Visible callback
    */
   onVisibleChange?: (visible: boolean) => void;
   /**
-   * 浮层渲染父节点，默认渲染到body上
+   * Render the parent node, the body is default
    */
   getPopupContainer?: () => HTMLElement;
   style?: React.CSSProperties;
@@ -89,12 +89,10 @@ export const Tooltip: FC<ITooltipProps> = (
   const [isOver, hoverProps] = useHover();
   const [clickState, setClickState] = useState(false);
   const isOpen = visible != null ? visible : ((trigger === 'hover' && isOver) || (trigger === 'click' && clickState));
-  // const isHorizontal = placement.includes('top') || placement.includes('bottom');
   const { triggerProps, layerProps, arrowProps, renderLayer } = useLayer({
     isOpen,
     triggerOffset: 12,
     auto: true,
-    // arrowOffset: isHorizontal ? 24 : 13, // FIXME: 这里在 children 宽度和 content 宽度很窄的边界情况下面，会显示错位。先注释掉。
     placement: placement as Placement,
     container: getPopupContainer
   });
@@ -118,7 +116,7 @@ export const Tooltip: FC<ITooltipProps> = (
     });
   }
 
-  const tooltipBaseProps = { ...layerProps, style: { ...layerProps.style, zIndex, ...style } };
+  const tooltipBaseProps = { ...layerProps, style: { ...layerProps.style, zIndex, ...style }};
 
   return (
     <>

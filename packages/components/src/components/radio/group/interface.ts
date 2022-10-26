@@ -6,28 +6,48 @@ export interface IRadioGroupOption extends Omit<IRadio, 'children'> {
 }
 
 type IRadioGroupAll = {
-  /** 是否按照行排列 */
+  /**
+   * Arrange by Line
+   */
   row?: boolean
-  /** 子元素 */
+  /**
+   * Child element
+   */
   children?: React.ReactNode;
-  /** 选项 */
+  /**
+   * Selected item
+   */
   options?: IRadioGroupOption[];
-  /** 选中值 */
+  /**
+   * Selected item value
+   */
   value?: any;
-  /** 监听 Change */
+  /**
+   * Change event listen
+   */
   onChange?: (e: React.ChangeEvent, value: any) => void;
-  /** 禁用 */
+  /**
+   * Whether disabled or not
+   */
   disabled?: boolean;
-  /** radio 名称 */
+  /**
+   * Radio name
+  */
   name?: string;
-  /** 是否使用 Button 样式 */
+  /**
+   * Whether use button style or not
+  */
   isBtn?: boolean;
-  /** 是否占据整行 */
+  /**
+   * Whether full width
+  */
   block?: boolean;
 };
 
 type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
 type XOR<T, U> = (T | U) extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U;
 
-// row、isBtn 互斥
+/**
+ * Row and isBtn are mutually exclusive
+ */
 export type IRadioGroup = XOR<Omit<IRadioGroupAll, 'row'>, Omit<IRadioGroupAll, 'isBtn'>>;

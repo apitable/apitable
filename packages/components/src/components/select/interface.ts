@@ -4,155 +4,156 @@ export type ISelectValue = string | number;
 
 export interface ISelectProps {
   /**
-   * 已经选中的值，对应 IOptions 中的 value，类型为 string | number
+   * Selected item value
    */
   value?: ISelectValue;
 
   /**
-   * 选中某个选项的回调
+   * select action callback
    */
   onSelected?: (option: IOption, index: number) => void;
 
   /**
-   * 需要在下拉框中展现的数据
+   * Select options
    */
   options?: IOption[];
 
   /**
-   * 初始状态的提示展示
+   * Placeholder
    */
   placeholder?: string;
 
   /**
-   * 触发器中，在文字之前的 icon，如果没有指定属性，是否显示 icon 根据  item 中是否存在 prefixIcon 决定，如果 item 和当前属性都传入了 icon，则以当前属性的权重更高
+   * Prefix icon component
    */
   prefixIcon?: React.ReactNode;
 
   /**
-   * 触发器中，文字后面跟随的 icon，和 prefixIcon 一样，不存在该属性时，以 item 的 suffixIcon 显示为准，如果当前属性存在，则当前属性的权重更高
+   * Suffix icon component
    */
   suffixIcon?: React.ReactNode;
 
   /**
-   * 下拉框是否需要和触发器保持相同的宽度，false - 根据下拉框的内容自动撑开下拉框
+   * Whether the select should be the same width as the trigger
    */
   dropdownMatchSelectWidth?: boolean;
 
   /**
-   * 设置触发器的行内样式
+   * Trigger inline styles
    */
   triggerStyle?: React.CSSProperties;
 
   /**
-   * 设置触发器的类名
+   * Trigger class name
    */
   triggerCls?: string;
 
   /**
-   * 自定义下拉列表的类名
+   * Custom select list class name
    */
   listCls?: string;
 
   /**
-   * 自定义下拉列表的行内样式
+   * Custom select list inline styles
    */
   listStyle?: React.CSSProperties;
 
   /**
-   * 是否需要开启搜索
+   * Whether should open search function
    */
   openSearch?: boolean;
 
   /**
-   * 开启搜索后，搜索框的 placeholder
+   * After the search is enabled, the placeholder of select search input
    */
   searchPlaceholder?: string;
 
   /**
-   * 开启搜索后，搜索关键词样式
+   * After the search is enabled, the search keyword inline styles
    */
   highlightStyle?: React.CSSProperties
 
   /**
-   * 没有数据时的提示
+   * Prompt when data is empty
    */
   noDataTip?: string | (() => ReactNode)
 
   /**
-   * 是否需要隐藏已经被选中的项
+   * Whether to hide the selected items
    */
   hideSelectedOption?: boolean;
 
   /**
-   * 自定义下拉组件
+   * Custom drop down components
    */
   dropdownRender?: React.ReactNode;
 
   /**
-   * 针对触发器设置不可用状态，设置该选项后，触发器不会反馈 hover 和 focus 的变化
+   * Whether disabled or not
    */
   disabled?: boolean;
 
   /**
-   * 可以自定义触发器中值的文字部分
+   * Customize the text portion of the value in the trigger
    */
   renderValue?: (option: IOption) => string;
 
   /**
-   * dropdownMatchSelectWidth 为 true 时，列表根据内容的宽度撑开，但是如果内容过长，列表也会变得很宽
-   * 因此提供一个参数用来设置最大宽度
+   * Set maximum width
+   * When dropdownMatchSelectWidth is true, the list will be stretched according to the width of the content.
+   * However, if the content is too long, the list will also become very wide
    */
   maxListWidth?: number;
 
   /**
-   * 默认开关
+   * When visiable or not
    */
   defaultVisible?: boolean;
 
   /**
-   * 隐藏箭头
+   * Whether hidden arrow or not
    */
   hiddenArrow?: boolean;
 
   /**
-   * 固定显示的文字
+   * Show trigger text
    */
   triggerLabel?: string | React.ReactNode;
 }
 
 export interface IOption {
   /**
-   * 选中的值，在一个选项列表中具有唯一性
+   * Selected option value
    * @type {(string | number)}
    */
   value: ISelectValue;
 
   /**
-   * 面向用户的展示内容
+   * Select option show text
    * @type {string}
    */
   label: string;
 
   /**
-   * 选项的前面的 icon
+   * Select option prefix icon
    * @type {JSX.Element}
    */
   prefixIcon?: React.ReactNode;
 
   /**
-   * 选项后面的icon
+   * Select option suffix icon
    * @type {JSX.Element}
    */
   suffixIcon?: React.ReactNode;
 
   /**
-   * 当前选项是否不可选
+   * Whether disabled option or not
    * @type {boolean}
    */
   disabled?: boolean;
 
   /**
-   * 无法操作的提示
+   * Prompt for disabled option
    * @type {string}
    */
   disabledTip?: string;

@@ -4,39 +4,39 @@ import React, { ElementType } from 'react';
 export interface ILinkButtonProps extends React.LinkHTMLAttributes<any> {
   children?: any;
   /**
-   * 是否占据整行
+   * Whether full width
    */
   block?: boolean;
   /**
-   * 禁用
+   * Whether disabled or not
    */
    disabled?: boolean;
   /**
-   * 使用指定的HTML元素来渲染组件
+   * Use the specified HTML element to render the component
    */
    component?: ElementType;
   /**
-   * 前缀 icon 组件。
+   * Prefix icon component
    */
   prefixIcon?: React.ReactNode;
   /**
-   * 后缀 icon 组件。
+   * Suffix icon component
    */
    suffixIcon?: React.ReactNode;
   /**
-   * 跳转链接
+   * link href
    */
   href?: string;
   /**
-   * 是否带下划线
+   * Whether with underline or not
    */
   underline?: boolean;
   /**
-   * 文字颜色，默认是主题色。
+   * Text color, default is primary color
    */
   color?: string;
   /**
-   * 指定在何处打开链接的文档
+   * Specify how to open the link
    */
   target?: string;
 }

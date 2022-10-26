@@ -23,7 +23,7 @@ export const Calendar:FC<ICalendar> = props => {
   const isMobile = !responsive.middle;
   const [step, setStep] = useState(0);
   const defaultDate2Month = defaultDate && format(defaultDate, FORMAT_MONTH);
-  // 只有年、月变化才重新设置 step
+  // Update of annual and monthly changes
   useEffect(() => {
     if (defaultDate2Month) {
       const currStep = differenceInMonths(date2Month(defaultDate), date2Month(new Date()));

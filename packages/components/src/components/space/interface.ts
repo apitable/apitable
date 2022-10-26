@@ -4,13 +4,13 @@ import { FLEX_ALIGN } from './constant';
 type IAlign = keyof typeof FLEX_ALIGN;
 
 export interface ISpaceProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** 间距，px 单位，默认为 8 */
+  /** Spacing, default is 8px */
   size?: number | number[];
-  /** 自定义 HTML 标签，默认为 `div` */
+  /** Custom HTML tag, default is ` div` */
   component?: ElementType;
-  /** 列布局 */
+  /** Vertical layout */
   vertical?: boolean;
-  /** 换行 */
+  /** Whether wrap or not */
   wrap?: boolean;
   align?: IAlign;
   split?: boolean;

@@ -61,7 +61,7 @@ const TaskBase = (props: ITask) => {
           listStyle={{
             ...listStyle,
             ...(isStart ? startListStyle : {}),
-            // isMore 为 true 是，会多出一行展示时间区间，需要添加额外的高度
+            // If isMore is true, an additional line will be displayed to show the time interval, and additional height needs to be added
             height: parseInt(get(listStyle, 'height', '0') as string) + (isMore ? 22 : 0) + 'px',
           }}
           task={task}
