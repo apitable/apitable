@@ -140,7 +140,7 @@ public class SubscriptionServiceImpl extends ServiceImpl<SubscriptionMapper, Sub
     @Override
     public void restoreBySubscriptionIds(List<String> subscriptionIds) {
         baseMapper.updateIsDeletedBySubscriptionIds(subscriptionIds, false);
-        List<SubscriptionEntity> subscriptionEntities = baseMapper.selectByBundleIds(subscriptionIds);
+        List<SubscriptionEntity> subscriptionEntities = baseMapper.selectBySubscriptionIds(subscriptionIds);
         List<String> bundleIds =
                 subscriptionEntities.stream().map(SubscriptionEntity::getBundleId).collect(Collectors.toList());
         if (!subscriptionEntities.isEmpty()) {
