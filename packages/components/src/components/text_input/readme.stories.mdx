@@ -1,15 +1,15 @@
 import { TextInput } from './index';
-import { Canvas, ArgsTable } from '@storybook/addon-docs';
+import { Canvas } from '@storybook/addon-docs';
 import { ThemeToggle } from '../../stories/theme-toggle';
 import { PhonenumberFilled } from '@vikadata/icons';
 
-<Meta title="表单组件/TextInput 文本输入框/文档" />
+<Meta title="en/components/TextInput" />
 
-# TextInput 文本输入框
+# TextInput
 
-文本类输入框。输入组件中，最基础的组件。更多的类型参见：https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input
+The text input box is the most basic component of the input component. For more types see: https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input
 
-html 的 input 分为很多 type。日期，色彩等高级类型是单独的输入组件，这个组件只实现文本类型输入。涵盖原生 input 的如下类型：
+HTML input is divided into many types. Advanced types such as date, color, etc. are separate input components, this component only implements text type input. Covers the following types of native input:
 
 - text
 - email
@@ -19,102 +19,104 @@ html 的 input 分为很多 type。日期，色彩等高级类型是单独的输
 - number
 - search
 
-## 使用方式
+## Usage
 
 ```jsx
 import { TextInput } from '@vikadata/components';
 ```
 
-## 常用
+## Example
+
+### Basic
 
 <Canvas>
-<ThemeToggle>
-  <TextInput placeholder="请输入内容" />
+<ThemeToggle lang="en">
+  <TextInput placeholder="please input content" />
   <TextInput
     lineStyle
-    placeholder="请输入内容"
+    placeholder="please input content"
   />
 </ThemeToggle>
 </Canvas>
 
-## 占据整行
+### Occupy the entire line
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <TextInput
     block
-    placeholder="请输入内容"
+    placeholder="please input content"
   />
 </ThemeToggle>
 </Canvas>
 
-## 大小
+### Size
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <TextInput
-    placeholder="请输入内容"
+    placeholder="please input content"
     size="small"
   />
-  <TextInput placeholder="请输入内容" />
+  <TextInput placeholder="please input content" />
   <TextInput
-    placeholder="请输入内容"
+    placeholder="please input content"
     size="large"
   />
 </ThemeToggle>
 </Canvas>
 
-## 前缀后缀
+### Prefix、suffix icon
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <TextInput
-    placeholder="请输入内容"
+    placeholder="please input content"
     prefix={<PhonenumberFilled />}
   />
   <TextInput
-    placeholder="请输入内容"
+    placeholder="please input content"
     suffix={<PhonenumberFilled />}
   />
 </ThemeToggle>
 </Canvas>
 
-## 错误状态
+### Error status
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <TextInput
     error
-    placeholder="请输入内容"
+    placeholder="please input content"
     prefix={<PhonenumberFilled />}
   />
 </ThemeToggle>
 </Canvas>
 
-## 禁用模式
+### Disable mode
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <TextInput
     disabled
-    placeholder="请输入内容"
+    placeholder="please input content"
     prefix={<PhonenumberFilled />}
   />
 </ThemeToggle>
 </Canvas>
 
-## 前置/后置标签
+### Prefix, suffix UI
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <TextInput
     addonBefore={<div>http://</div>}
-    placeholder="请输入内容"
+    placeholder="please input content"
     prefix={<PhonenumberFilled />}
   />
   <TextInput
     addonAfter={<div>.com</div>}
-    placeholder="请输入内容"
+    placeholder="please input content"
     prefix={<PhonenumberFilled />}
   />
 </ThemeToggle>
@@ -122,5 +124,18 @@ import { TextInput } from '@vikadata/components';
 
 ## API
 
-<ArgsTable of={TextInput} />
+
+| Name        | Type                       | Description                              | Default |
+|-------------|----------------------------|------------------------------------------|--------:|
+| className   | string                     | class name                               |       - |
+| size        | small / middle / large     | input size                               |       - |
+| error       | boolean                    | check error                              |   false |
+| disabled    | boolean                    | disable action                           |       - |
+| lineStyle   | boolean                    | whether to use underline style input box |       - |
+| prefix      | ReactNode                  | prefix icon                              |       - |
+| suffix      | ReactNode                  | suffix icon                              |       - |
+| block       | boolean                    | whether to fill the parent container     |       - |
+| addonAfter  | ReactNode                  | suffix ui                                |       - |
+| addonBefore | ReactNode                  | prefix ui                                |       - |
+| wrapperRef  | RefObject<HTMLDivElement\> | ref of TextInput                         |       - |
 

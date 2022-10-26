@@ -1,97 +1,103 @@
-import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+import { Canvas } from '@storybook/addon-docs';
 import { Checkbox } from './index';
 import { ThemeToggle } from '../../stories/theme-toggle';
 
-<Meta title="表单组件/Checkbox 勾选/文档" />
+<Meta title="en/components/Checkbox" />
 
-# Checkbox 勾选
+# Checkbox
 
-从一组选项中选中一个或多个选项。
+Select one or more options from a set of options.
 
-+ checkbox 单独使用时，和 switch 类似。但是通常用于多选项选择，
-+ radio 是在一组选择中，选一个。
-+ checkbox 是在一组选择中，选多个。
++ Checkbox is similar to Switch when it is used alone. But it is usually used for multiple options.
++ Radio is selected in a group of choices.
++ Checkbox is selected in a group of choices.
 
-## 使用方式
+## Usage
 
 ```jsx
 import { Checkbox } from '@vikadata/components';
 ```
 
 
-## 快捷键支持
+## Shortcut support
 
-| Key   | Function                  |
-|-------|---------------------------|
-| Tab   | 移动焦点到 checkbox       |
-| Space | 切换 checkbox 的 2 种状态 |
+| Key   | Function                     |
+|-------|------------------------------|
+| Tab   | move focus to checkbox       |
+| Space | switch the state of checkbox |
 
 
-## 默认展示
+## Examples
 
-勾选文本或者复选框可改变状态
+Check text or check box can change the state
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <Checkbox>
-    默认选项
+    Default option
   </Checkbox>
 </ThemeToggle>
 </Canvas>
 
-## 默认勾选
+## Default checked
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <Checkbox checked>
-    默认勾选项
+      Default checked option
   </Checkbox>
 </ThemeToggle>
 </Canvas>
 
-## 禁用
+## Disabled
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <Checkbox disabled>
-    禁用选项
+    Disabled option
   </Checkbox>
   <Checkbox checked disabled>
-    禁用勾选项
+      Disabled checked option
   </Checkbox>
 </ThemeToggle>
 </Canvas>
 
-## 不同尺寸的 Checkbox
+## Size
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <Checkbox size={40}>
-    40px 尺寸选项
+    40px size option
   </Checkbox>
 </ThemeToggle>
 </Canvas>
 
-## 不同颜色的 Checkbox
+## Color
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <Checkbox color="red">
-    红色勾选项
+    Red option
   </Checkbox>
 </ThemeToggle>
 </Canvas>
 
-## 回调
+## Callback
 
 <Canvas>
-<ThemeToggle>
-<Checkbox onChange={val => alert(`状态：${val ? '勾选': '取消勾选'}`)}>
-  监听选项
+<ThemeToggle lang="en">
+<Checkbox onChange={val => alert(`status：${val ? 'checked': 'cancel'}`)}>
+  Listen option
 </Checkbox>
 </ThemeToggle>
 </Canvas>
 
 ## API
 
-<ArgsTable of={Checkbox} />
+| Name     | Type                     | Description     | Default |
+|----------|--------------------------|-----------------|---------|
+| checked  | boolean                  | checked status  | -       |
+| size     | number                   | checkbox size   | 16      |
+| color    | boolean                  | border color    | -       |
+| onChange | (value: boolean) => void | callback action | -       |
+| disabled | boolean                  | disabled status | -       |

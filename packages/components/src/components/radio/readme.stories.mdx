@@ -3,53 +3,62 @@ import { Radio } from './index';
 import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
 import { ThemeToggle } from '../../stories/theme-toggle';
 
-<Meta title="表单组件/Radio 单选/文档" />
+<Meta title="en/components/Radio" />
 
-# Radio 单选
+# Radio
 
-一般不单独使用，提供了API 对 Radio 单选进行控制。
+Generally not used alone
 
-## 使用方式
+## Usage
 
 ```jsx
 import { Radio } from '@vikadata/components';
 ```
 
-## 默认
+## Example
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
  <Radio />
 </ThemeToggle>
 </Canvas>
 
-## 默认选中
+## Checked
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
  <Radio checked />
 </ThemeToggle>
 </Canvas>
 
-## 禁用
+## Disabled
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <Radio disabled />
   <Radio disabled checked />
 </ThemeToggle>
 </Canvas>
 
-## 回调
+## Callback
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
  <Radio onChange={() => {
-    alert('选中了😁');
+    alert('choosed😁');
   }} />
 </ThemeToggle>
 </Canvas>
 
 ## API
 
-<ArgsTable of={Radio} />
+| Name              | Type                                     | Description | Default |
+|-------------------|------------------------------------------|-------------|---------|
+| children         | ReactNode  |             |         |
+| name         | string           |             |         |
+| checked         | boolean                                   |             |         |
+| onChange         | (e: ChangeEvent) => void                                   |             |         |
+| readOnly         | boolean                                   |             |         |
+| value         | any                                   |             |         |
+| disabled         | boolean                                   |             |         |
+| isBtn         | boolean                                 |             |         |

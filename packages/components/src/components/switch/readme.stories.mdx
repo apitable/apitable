@@ -1,65 +1,85 @@
 import { Switch } from './index';
-import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+import { Canvas } from '@storybook/addon-docs';
 import { ThemeToggle } from '../../stories/theme-toggle';
 
-<Meta title="表单组件/Switch 开关/文档" />
+<Meta title="en/components/Switch" />
 
-# Switch 开关 
+# Switch
 
-开关是用于切换两种互斥状态的交互形式。
+Switch is used to toggle two mutually exclusive states
 
-## 使用方式
+## Usage
 
 ```jsx
 import { Switch } from '@vikadata/components';
 ```
 
-## 大小
+## Size
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <Switch size="small" />
   <Switch />
   <Switch size="large" />
 </ThemeToggle>
 </Canvas>
 
-## 默认选中
+## Checked
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <Switch defaultChecked />
 </ThemeToggle>
 </Canvas>
 
-## 禁用
+## Disabled
 
-### 不可操作
+### Disable toggle
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <Switch disabled />
   <Switch disabled defaultChecked />
 </ThemeToggle>
 </Canvas>
 
-### 加载时不可操作
+### Not operational while loading
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <Switch loading />
   <Switch loading defaultChecked />
 </ThemeToggle>
 </Canvas>
 
-## 切换开关
+## Switch callback
 
 <Canvas>
-<ThemeToggle>
-  <Story id="表单组件-switch-开关--change-status" />
+<ThemeToggle lang="en">
+    <Switch
+        onClick={(s) => {
+            alert(s);
+        }}
+    />
 </ThemeToggle>
 </Canvas>
 
 ## API
 
-<ArgsTable of={Switch} />
+| Name              | Type                                     | Description | Default |
+|-------------------|------------------------------------------|-------------|---------|
+| className         | string                                   |             |         |
+| prefixCls         | string                                   |             |         |
+| disabled          | boolean                                  |             |         |
+| checkedChildren   | ReactNode                                |             |         |
+| unCheckedChildren | ReactNode                                |             |         |
+| onChange          | SwitchChangeEventHandler                 |             |         |
+| onKeyDown         | KeyboardEventHandler<HTMLButtonElement\> |             |         |
+| onClick           | SwitchChangeEventHandler                 |             |         |
+| checked           | boolean                                  |             |         |
+| defaultChecked    | boolean                                  |             |         |
+| loading           | boolean                                  |             |         |
+| loadingIcon       | ReactNode                                |             |         |
+| style             | CSSProperties                            |             |         |
+| title             | string                                   |             |         |
+| size              | default / small / large                  |             | default |

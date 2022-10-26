@@ -1,68 +1,67 @@
 import { Typography } from './index'
-import { Canvas, ArgsTable } from '@storybook/addon-docs';
-import { StoryType } from '../../stories/constants';
+import { Canvas, Meta } from '@storybook/addon-docs';
 import { ThemeToggle } from '../../stories/theme-toggle';
 import { colors } from '../../helper'
 
-<Meta title={`${StoryType.Design}/Typography 排版/文档`} />
+<Meta title={`en/components/Typography`} component={Typography} />
 
-# Typography 排版
+# Typography
 
-使用文字铸排可以尽可能清晰、高效地展示设计和内容。
+Present design and content clearly and efficiently.
 
-## 使用方式
+## How to use
 
 ```jsx
 import { Typography } from '@vikadata/components';
 ```
 
-## 字体排版
+## Typography API
 
-| 名称(variant)| 字号(px)| 行高(px)  | 实例 |
-|----------|--------|-----------|------|
-| H1       | 32     | 48        | <Typography variant='h1'>H1 一级标题</Typography> |
-| H2       | 28     | 42        | <Typography variant='h2'>H2 二级标题</Typography> |
-| H3       | 24     | 36        |	<Typography variant='h3'>H3 三级标题</Typography> |
-| H4    	 | 20     | 30        | <Typography variant='h4'>H4 四级标题</Typography> |
-| H5       | 18     | 28        | <Typography variant='h5'>H5 五级标题</Typography> |
-| H6    	 | 16	    | 24        | <Typography variant='h6'>H6 六级标题</Typography> |
-| H7       | 14     | 22        | <Typography variant='h7'>H7 七级标题</Typography> |
-| H8       | 13     | 20        | <Typography variant='h8'>H8 八级标题</Typography> |
-| H9       | 12     | 18        | <Typography variant='h9'>H9 九级标题</Typography> |
-| Body1    | 16     | 24        | <Typography variant='body1'>Body1 文本</Typography> |
-| Body2    | 14     | 22        | <Typography variant='body2'>Body2 文本</Typography> |
-| Body3    | 13     | 20        | <Typography variant='body3'>Body3 文本</Typography> |
-| Body4    | 12     | 18        | <Typography variant='body4'>Body4 文本</Typography> |
+| Name(variant) | Font Size(px) | Line Height(px) | Example                                             |
+|---------------|---------------|-----------------|-----------------------------------------------------|
+| H1            | 32            | 48              | <Typography variant='h1'>H1 title</Typography>      |
+| H2            | 28            | 42              | <Typography variant='h2'>H2 title</Typography>      |
+| H3            | 24            | 36              | <Typography variant='h3'>H3 title</Typography>      |
+| H4            | 20            | 30              | <Typography variant='h4'>H4 title</Typography>      |
+| H5            | 18            | 28              | <Typography variant='h5'>H5 title</Typography>      |
+| H6            | 16            | 24              | <Typography variant='h6'>H6 title</Typography>      |
+| H7            | 14            | 22              | <Typography variant='h7'>H7 title</Typography>      |
+| H8            | 13            | 20              | <Typography variant='h8'>H8 title</Typography>      |
+| H9            | 12            | 18              | <Typography variant='h9'>H9 title</Typography>      |
+| Body1         | 16            | 24              | <Typography variant='body1'>Body1 text</Typography> |
+| Body2         | 14            | 22              | <Typography variant='body2'>Body2 text</Typography> |
+| Body3         | 13            | 20              | <Typography variant='body3'>Body3 text</Typography> |
+| Body4         | 12            | 18              | <Typography variant='body4'>Body4 text</Typography> |
 
 
-## 颜色
+## Color
 
-可自定义文字的颜色
+Customize the color of text.
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
 <Typography variant="h1" color={colors.textBrandDefault}>
-  H1 一级标题
+  H1 title
 </Typography>
 </ThemeToggle>
 </Canvas>
 
 
-## 对齐方式
+## Alignment
 
-支持多种对其方式，比如右对齐：
+Support multiple alignment methods, such as right alignment:
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
 <Typography variant="h1" align="right">
-  H1 一级标题
+  H1 title
 </Typography>
 </ThemeToggle>
 </Canvas>
 
-## 省略号
+## Ellipsis
 
-`ellipsis` 支持布尔值和具体的配置：
+`ellipsis` Support Boolean values and specific configurations：
 
 ```javascript
 {
@@ -72,46 +71,58 @@ import { Typography } from '@vikadata/components';
 }
 ```
 
-- `ellipsis` 设置为 true 时，默认超过一行省略，并且出现 tooltip
+- When `ellipsis` set to true, more than one line is omitted by default and tooltip appears.
+
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
 <Typography variant="body1" ellipsis>
-  全能程序员的优势，判断正确的仰角 θ，使得两点之间距离最短；特长程序员的优势是前进速度 r，可以在既定道路上做到快速前进。所以，知识的广度能告诉你什么是正确的方向，知识的深度则可以让你在该方向上快速前进。对于长期而艰巨的项目，走得快固然重要，但更重要的是走对方向。如果仰角 θ 不对，走得再快也没用，因为一开始就走错方向，后期必须停下来校正方向，甚至可能永远到达不了目标，白白浪费了生命
+    Re-render happens when React needs to update the app with some new data. Usually, this happens as a result of a user interacting with the app or some external data coming through via an asynchronous request or some subscription model.
 </Typography>
 </ThemeToggle>
 </Canvas>
 
-- 可指定设置展示行数，超过才出现省略号
+- Set the number of display lines, and ellipsis will appear only when the number exceeds
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
 <Typography variant="body1" ellipsis={{ rows: 3 }}>
-  全能程序员的优势，判断正确的仰角 θ，使得两点之间距离最短；特长程序员的优势是前进速度 r，可以在既定道路上做到快速前进。所以，知识的广度能告诉你什么是正确的方向，知识的深度则可以让你在该方向上快速前进。对于长期而艰巨的项目，走得快固然重要，但更重要的是走对方向。如果仰角 θ 不对，走得再快也没用，因为一开始就走错方向，后期必须停下来校正方向，甚至可能永远到达不了目标，白白浪费了生命
+    Re-render happens when React needs to update the app with some new data. Usually, this happens as a result of a user interacting with the app or some external data coming through via an asynchronous request or some subscription model.
 </Typography>
 </ThemeToggle>
 </Canvas>
 
-- 可指定 tooltip 文本
+- Set tooltip text
 
 <Canvas>
-<ThemeToggle>
-<Typography variant="body1" ellipsis={{ tooltip: '知识广度 vs 知识深度' }}>
-  全能程序员的优势，判断正确的仰角 θ，使得两点之间距离最短；特长程序员的优势是前进速度 r，可以在既定道路上做到快速前进。所以，知识的广度能告诉你什么是正确的方向，知识的深度则可以让你在该方向上快速前进。对于长期而艰巨的项目，走得快固然重要，但更重要的是走对方向。如果仰角 θ 不对，走得再快也没用，因为一开始就走错方向，后期必须停下来校正方向，甚至可能永远到达不了目标，白白浪费了生命
+<ThemeToggle lang="en">
+<Typography variant="body1" ellipsis={{ tooltip: 'React re-renders guide' }}>
+    Re-render happens when React needs to update the app with some new data. Usually, this happens as a result of a user interacting with the app or some external data coming through via an asynchronous request or some subscription model.
 </Typography>
 </ThemeToggle>
 </Canvas>
 
 ## API
 
-<ArgsTable of={Typography} />
+| Name           | Type                                                                       | Description                                            | Default |
+|----------------|----------------------------------------------------------------------------|--------------------------------------------------------|---------|
+| className      | string                                                                     | class name                                             | -       |
+| style          | CSSProperties                                                              | inline style                                           | -       |
+| component      | ElementType<any\>                                                          | renders the component using the specified HTML element | -       |
+| color          | string                                                                     | text color                                             | -       |
+| align          | inherit / left / center / right                                            | alignment                                              | -       |
+| variant        | h1 / h2 / h3 / h4 / h5 / h6 / h7 / h8 / h9 / body1 / body2 / body3 / body4 | variant style                                          | -       |
+| ellipsis       | boolean / IEllipsis                                                        | overflow omitted                                       | -       |
+| tooltipsZIndex | number                                                                     | tooltips z-index level property                        | -       |
+| tooltipsZIndex | ((e: MouseEvent<Element, MouseEvent>) => void)                             | click action                                           | -       |
+
 
 ### IEllipsis interface
 
-| 名称      | 类型 | 说明 |
-|----------|--------|--------|
-| rows     | number |指定展示文本行数，超出省略|
-| tooltip  | string  |指定 tooltip 信息 |
-| visible  | boolean | 控制 tooltip 展示 |
+| Name    | Type    | Description                                                        |
+|---------|---------|--------------------------------------------------------------------|
+| rows    | number  | specify the number of displayed text lines, and omit if it exceeds |
+| tooltip | string  | set tooltip text                                                   |
+| visible | boolean | tooltip show                                                       |
 
 

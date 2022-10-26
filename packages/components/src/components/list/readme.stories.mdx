@@ -6,131 +6,129 @@ import { TextButton } from '../text_button';
 import { Box } from '../box';
 import { ThemeToggle } from '../../stories/theme-toggle';
 
-<Meta title={`${StoryType.BaseComponent}/List 列表/文档`} />
+<Meta title="en/components/List" />
 
-# List 列表
+# List
 
-基础的列表展示，可承载一组连续的文本或者图文集合。
+A basic list display that can carry a continuous set of text or graphics.
 
-## 使用方式
+## Usage
 
 ```jsx
 import { List } from '@vikadata/components';
 ```
 
-## 默认展示
+## Examples
+
+### Basic
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <List
     data={[
-      '列表 1',
-      '列表 2',
-      '列表 3',
-      '列表 4',
-      '列表 5'
+      'list 1',
+      'list 2',
+      'list 3',
+      'list 4',
+      'list 5'
     ]}
   />
 </ThemeToggle>
 </Canvas>
 
-## 带边框
-
-设置 `bordered=true` 设置边框
+### With border
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <List
     bordered
     data={[
-      '列表 1',
-      '列表 2',
-      '列表 3',
-      '列表 4',
-      '列表 5'
+      'list 1',
+      'list 2',
+      'list 3',
+      'list 4',
+      'list 5'
     ]}
   />
 </ThemeToggle>
 </Canvas>
 
-## 带头部、底部样式
-
-设置 `header`、`footer` 添加头部、尾部样式
+### With header and bottom styles
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <List
     bordered
     data={[
-      '列表 1',
-      '列表 2',
-      '列表 3',
-      '列表 4',
-      '列表 5'
+      'list 1',
+      'list 2',
+      'list 3',
+      'list 4',
+      'list 5'
     ]}
-    footer={<div>尾部</div>}
-    header={<div>头部</div>}
+    footer={<div>footer content</div>}
+    header={<div>header content</div>}
   />
 </ThemeToggle>
 </Canvas>
 
-## 添加子元素操作
+### Example of adding child elements
 
-通过 `data` 属性设置 `actions` 字段给列表子元素添加操作
+The `data` property sets `actions` field to add actions to the list child elements.
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <List
     bordered
     data={[
       {
         actions: [
-          <TextButton color="primary" size="x-small">编辑</TextButton>,
-          <TextButton color="danger" size="x-small">删除</TextButton>
+          <TextButton color="primary" size="x-small">Edit</TextButton>,
+          <TextButton color="danger" size="x-small">Delete</TextButton>
         ],
-        children: '列表 1'
+        children: 'list 1'
       },
       {
         actions: [
-          <TextButton color="primary" size="x-small">编辑</TextButton>,
-          <TextButton color="danger" size="x-small">删除</TextButton>
+          <TextButton color="primary" size="x-small">Edit</TextButton>,
+          <TextButton color="danger" size="x-small">Delete</TextButton>
         ],
-        children: '列表 2'
+        children: 'list 2'
       },
       {
         actions: [
-          <TextButton color="primary" size="x-small">编辑</TextButton>,
-          <TextButton color="danger" size="x-small">删除</TextButton>
+          <TextButton color="primary" size="x-small">Edit</TextButton>,
+          <TextButton color="danger" size="x-small">Delete</TextButton>
         ],
-        children: '列表 3'
+        children: 'list 3'
       },
       {
         actions: [
-          <TextButton color="primary" size="x-small">编辑</TextButton>,
-          <TextButton color="danger" size="x-small">删除</TextButton>
+          <TextButton color="primary" size="x-small">Edit</TextButton>,
+          <TextButton color="danger" size="x-small">Delete</TextButton>
         ],
-        children: '列表 4'
+        children: 'list 4'
       },
       {
         actions: [
-          <TextButton color="primary" size="x-small">编辑</TextButton>,
-          <TextButton color="danger" size="x-small">删除</TextButton>
+          <TextButton color="primary" size="x-small">Edit</TextButton>,
+          <TextButton color="danger" size="x-small">Delete</TextButton>
         ],
-        children: '列表 5'
+        children: 'list 5'
       }
     ]}
   />
 </ThemeToggle>
 </Canvas>
 
-## 自定义列表子元素
+### Custom list child elements
 
-通过 `renderItem` 属性修改列表子元素的 UI 样式，比如 `renderItem` 返回 `Box` 组件渲染的 UI：
+Modify the UI style of list child elements through the `renderItem` property, for example, `renderItem` returns the UI rendered by the `Box` component:
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <List
-    data={new Array(5).fill(null).map((_, index) => `列表 ${index + 1}`)}
+    data={new Array(5).fill(null).map((_, index) => `list ${index + 1}`)}
     bordered
     renderItem={(item, index) => (
       <Box
@@ -147,12 +145,23 @@ import { List } from '@vikadata/components';
 </ThemeToggle>
 </Canvas>
 
-## API
+### API
 
-### IListProps
+* IListProps
 
-<ArgsTable of={List} />
+| Name       | Type                                                        | Description                  | Default |
+|------------|-------------------------------------------------------------|------------------------------|---------|
+| bordered   | boolean                                                     | with or without border style | -       |
+| children   | ReactNode                                                   | child element                | -       |
+| header     | ReactNode                                                   | list header UI               | -       |
+| footer     | ReactNode                                                   | list tail UI                 | -       |
+| data       | (string / object / IListItemProps)[]                        | list data                    | -       |
+| renderItem | (item: string / IListItemProps, index: number) => ReactNode | custom list child element UI | -       |
 
-### IListItemProps
 
-<ArgsTable of={ListItem} />
+* IListItemProps
+
+| Name     | Type        | Description       | Default |
+|----------|-------------|-------------------|---------|
+| children | ReactNode   | child element     | -       |
+| actions  | ReactNode[] | action collection | -       |

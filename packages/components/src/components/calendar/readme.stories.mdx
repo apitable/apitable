@@ -1,61 +1,60 @@
 import { Calendar } from './index';
-import { WarningTriangleNonzeroFilled } from '@vikadata/icons';
-import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
-import { Drag, Drop } from './drag';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
 import { ThemeToggle } from '../../stories/theme-toggle';
 
 <style>{`
   
 `}</style>
 
-<Meta title="基础组件/Calendar 日历/文档" />
+<Meta title="en/components/Calendar" />
 
-# Calendar 日历
+# Calendar
 
-## 使用场景
+## Usage
 
-当数据是日期或按照日期划分时，例如日程、课表、事项日历等。
+When data is date or divided by date, such as schedule, class schedule, event calendar, etc.
 
-## 基础用法
+## Basic usage scenarios
 
-- 日历组件支持月切换、返回今天（当前月）；
-- 支持拉伸任务调整时间；
-- 移动端支持滑动切换月；
-- 国际化：支持中英文。
+- The calendar component supports month switching and returns to today (current month);
+- Support stretching task adjustment time;
+- The mobile terminal supports sliding to switch months;
+- Internationalization: Chinese and English are supported.
 
-## 使用说明
+## Instructions for use
 
-- 默认展示当前月的日历视图，如果设置了 `defaultDate` 则展示对应月份的视图；
-- 计算任务长度时，以天为单位，忽略天以下（小时、分钟）的时间；
-- 任务没有开始时间或者结束时间时，长度为 1 天。
-- 开始时间大于结束时间时，任务异常，出现告警图标，任务在界面中展示到开始时间未知，长度为 1 天。
+- The calendar view of the current month is displayed by default. If `defaultDate` is set, the view of the corresponding month is displayed;
+- When calculating the task length, the unit is days, and the time below days (hours, minutes) is ignored;
+- When the task has no start time or end time, the length is 1 day.
+- When the start time is greater than the end time, the task is abnormal, an alarm icon appears, the task is displayed in the interface until the start time is unknown, and the length is 1 day.
 
-## 默认展示
+## Examples
 
-没有任务时，日历展示如下：
+When there are no tasks, the calendar looks like this:
 
 <Canvas>
-<ThemeToggle>
-  <Calendar />
+<ThemeToggle lang="en">
+  <Calendar lang="en" />
 </ThemeToggle>
 </Canvas>
 
-## 有任务且允许拉伸
+## Have tasks and allow for stretching
 
-设置 `resizable` 为 true 允许拉伸任务两端调整时间：
+Setting `resizable` to true allows both ends of the stretch task to adjust the timing:
 
 <Canvas>
-<Story id="基础组件-calendar-日历--resizable" />
+<Story id="基础组件-calendar-日历--resizable-with-en" />
 </Canvas>
 
-## 自定义任务样式
+## Custom task style
 
-可以通过 `listStyle` 定义任务样式，日历会根据 `listStyle` height 属性自适应高度。
+The task style is defined by `listStyle`, and the calendar will adapt to the height according to the `listStyle` height property.
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <Calendar
     defaultDate={new Date('2021/07/01')}
+    lang="en"
     listStyle={{
       border: '1px dashed #AB45FB',
       height: '60px',
@@ -66,40 +65,56 @@ import { ThemeToggle } from '../../stories/theme-toggle';
         endDate: new Date('2021-07-18T16:00:00.000Z'),
         id: 1,
         startDate: new Date('2021-07-14T16:00:00.000Z'),
-        title: '干饭 🍚'
+        title: 'Have a meal 🍚'
       },
       {
         endDate: new Date('2021-07-16T16:00:00.000Z'),
         id: 2,
         startDate: new Date('2021-07-16T16:00:00.000Z'),
-        title: '睡觉 😴'
+        title: 'Sleep 😴'
       }
     ]}
   />
 </ThemeToggle>
 </Canvas>
 
-## 异常任务警告
+## Unusual task warning
 
-开始时间大于结束时间时，任务异常，此时展示告警，任务在界面中展示到开始时间未知，长度为 1 天。
+When the start time is greater than the end time, the task is abnormal, and an alarm is displayed. The task is displayed in the interface until the start time is unknown, and the length is 1 day.
 
 <Canvas>
-  <ThemeToggle>
+  <ThemeToggle lang="en">
   <Calendar
     defaultDate={new Date('2021/07/01')}
+    lang="en"
     tasks={[
       {
         endDate: new Date('2021-07-05T16:00:00.000Z'),
         id: 1,
         startDate: new Date('2021-07-14T16:00:00.000Z'),
-        title: '干饭 🍚'
+        title: 'Have a meal 🍚'
       }
     ]}
-    warnText={<Tooltip content="结束日期小于开始日期"><span className="warning"><IconComponent color="#FFAB00" size={14}/></span></Tooltip>}
+    warnText={<Tooltip content="End date is less than start date"><span className="warning"><IconComponent color="#FFAB00" size={14}/></span></Tooltip>}
   />
 </ThemeToggle>
 </Canvas>
 
 ## API
 
-<ArgsTable of={Calendar} />
+| Name           | Type                                                    | Description                                                                                                                                       | Default |
+|----------------|---------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| defaultDate    | Date                                                    | the default time, the first time the calendar is opened is the current month                                                                      |         |
+| tasks          | ITask[]                                                 | task list, the data structure is: ITask { id: Id; title: string; startDate: Date; endDate: Date; startDisabled?: boolean, endDisabled?: boolean } |         |
+| update         | (id: Id, startDate: Date, endDate: Date) => void        | update task function                                                                                                                              |         |
+| lang           | en / zh                                                 | international configuration                                                                                                                       |         |
+| dnd            | any[]                                                   | Drag and drop component (beta version)                                                                                                            |         |
+| listStyle      | CSSProperties                                           | task style                                                                                                                                        |         |
+| startListStyle | CSSProperties                                           | mark task start time location style                                                                                                               |         |
+| warnText       | ReactElement<any, string / JSXElementConstructor<any\>> | alarm information                                                                                                                                 |         |
+| rowMixCount    | number                                                  | the minimum number of display rows in a calendar row                                                                                              |         |
+| disabled       | boolean                                                 | disable                                                                                                                                           |         |
+| resizable      | boolean                                                 | support stretching, allowing to adjust the task time by pulling both ends of the task                                                             |         |
+| moreText       | string                                                  | -                                                                                                                                                 |         |
+| moveTaskId     | string                                                  | -                                                                                                                                                 |         |
+| monthPicker    | (showValue: string) => Element                          | -                                                                                                                                                 |         |

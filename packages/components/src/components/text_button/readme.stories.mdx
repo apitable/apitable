@@ -1,73 +1,80 @@
-import { ViewKanbanFilled } from '@vikadata/icons';
+import {DownloadOutlined, ViewKanbanFilled} from '@vikadata/icons';
 import { TextButton } from './index';
 import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
 import { ThemeToggle } from '../../stories/theme-toggle';
 
-<Meta title="基础组件/Button 按钮/TextButton 文本按钮/文档" />
+<Meta title="en/components/TextButton" />
 
-# TextButton 文本按钮
+# TextButton
 
-## 使用方式
+## Usage
 
 ```jsx
 import { TextButton } from '@vikadata/components';
 ```
  
-## 默认按钮
+## Default
 
 <Canvas>
-<ThemeToggle>
-  <Story id="基础组件-button-按钮-textbutton-文本按钮--default" />
+<ThemeToggle lang="en">
+ <TextButton>Text Button</TextButton>
 </ThemeToggle>
 </Canvas>
 
-## 前后缀图标
+## Prefix or suffix icon
 
 <Canvas>
-<ThemeToggle>
-  <Story id="基础组件-button-按钮-textbutton-文本按钮--prefix-icon" />
-  <Story id="基础组件-button-按钮-textbutton-文本按钮--suffix-icon" />
+<ThemeToggle lang="en">
+    <TextButton prefixIcon={<DownloadOutlined />}>Text Button</TextButton>
+    <TextButton suffixIcon={<DownloadOutlined />}>Text Button</TextButton>
 </ThemeToggle>
 </Canvas>
 
-## 不同颜色
+## Color
 
 <Canvas>
-<ThemeToggle>
-  <Story id="基础组件-button-按钮-textbutton-文本按钮--default" />
-  <Story id="基础组件-button-按钮-textbutton-文本按钮--primary-color" />
-  <Story id="基础组件-button-按钮-textbutton-文本按钮--danger-color" />
+<ThemeToggle lang="en">
+    <TextButton color="default">Text Button</TextButton>
+    <TextButton color="primary">Text Button</TextButton>
+    <TextButton color="danger">Text Button</TextButton>
 </ThemeToggle>
 </Canvas>
 
-## 不同大小
+## Size
 
 <Canvas>
-<ThemeToggle>
-  <TextButton size="small" color="primary"> 文本按钮 </TextButton>
-  <TextButton size="middle" color="primary"> 文本按钮 </TextButton>
-  <TextButton size="large" color="primary"> 文本按钮 </TextButton>
+<ThemeToggle lang="en">
+  <TextButton size="small" color="primary"> Text Button </TextButton>
+  <TextButton size="middle" color="primary"> Text Button </TextButton>
+  <TextButton size="large" color="primary"> Text Button </TextButton>
 </ThemeToggle>
 </Canvas>
 
-## 禁用
+## Disabled
 
 <Canvas>
-<ThemeToggle>
-  <Story id="基础组件-button-按钮-textbutton-文本按钮--disabled" />
-  <TextButton disabled color="primary"> 文本按钮 </TextButton>
-  <TextButton disabled color="danger"> 文本按钮 </TextButton>
+<ThemeToggle lang="en">
+    <TextButton disabled> Text Button </TextButton>
+    <TextButton disabled color="primary"> Text Button </TextButton>
+    <TextButton disabled color="danger"> Text Button </TextButton>
 </ThemeToggle>
 </Canvas>
 
-## 占满容器宽度
+## Block
 
 <Canvas>
-<ThemeToggle>
-  <Story id="基础组件-button-按钮-textbutton-文本按钮--block" />
+<ThemeToggle lang="en">
+    <TextButton block> Text Button </TextButton>
 </ThemeToggle>
 </Canvas>
 
 ## API
 
-<ArgsTable of={TextButton} />
+| Name       | Type                             | Description      | Default |
+|------------|----------------------------------|------------------|---------|
+| color      | default / danger / primary       | font color       | default |
+| size       | small / middle / large / x-small | font size        | middle  |
+| prefixIcon | ReactElement                     | prefix icon      | -       |
+| suffixIcon | ReactElement                     | suffix icon      | -       |
+| disabled   | boolean                          | disbaled actions | -       |
+| block      | boolean                          | fill width       | -       |

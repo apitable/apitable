@@ -1,41 +1,46 @@
 import { Loading } from './index';
-import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+import { Canvas, Meta } from '@storybook/addon-docs';
 import { ThemeToggle } from '../../stories/theme-toggle';
 
-<Meta title="基础组件/Loading 加载/文档" />
+<Meta title="en/components/Loading" />
 
-# Loading 加载
+# Loading
 
-## 使用方式
+## Usage
 
 ```jsx
 import { Loading } from '@vikadata/components';
 ```
 
-## 默认展示
+## Examples
 
 <Canvas>
-<ThemeToggle>
-  <Story id="基础组件-loading-加载--default" />
+<ThemeToggle lang='en'>
+  <Loading />
 </ThemeToggle>
 </Canvas>
 
-## 继承父元素颜色
+## Inherit parent element color
 
 <Canvas>
-<ThemeToggle>
-  <Story id="基础组件-loading-加载--inherit-color" />
+<ThemeToggle lang='en'>
+    <div style={{ color: 'red' }}>
+        <Loading currentColor/>
+    </div>
 </ThemeToggle>
 </Canvas>
 
-## 设置 strokeWidth
+## Stroke width
 
 <Canvas>
-<ThemeToggle>
-  <Story id="基础组件-loading-加载--set-stroke-width" />
+<ThemeToggle lang='en'>
+  <Loading strokeWidth={1}/>
 </ThemeToggle>
 </Canvas>
 
 ## API
 
-<ArgsTable of={Loading} />
+| Name         | Type    | Description                  | Default |
+|--------------|---------|------------------------------|---------|
+| currentColor | boolean | inherit parent element color | false   |
+| strokeWidth  | number  | stroke width                 | 3       |

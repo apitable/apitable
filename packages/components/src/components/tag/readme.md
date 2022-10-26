@@ -1,4 +1,4 @@
-标签组件
+Tag
 
 ```tsx
 import {EyeNomalOutlined} from '@vikadata/icons';

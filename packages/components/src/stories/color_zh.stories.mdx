@@ -8,7 +8,7 @@ import { Button } from '../components/button';
 import { Meta, Canvas } from '@storybook/addon-docs';
 import { StoryType } from './constants';
 
-<Meta title="en/components/Color" />
+<Meta title={`${StoryType.Design}/Colors 颜色`} />
 
 <style>{`
   .neutral-color {
@@ -83,25 +83,24 @@ import { StoryType } from './constants';
   }
 `}</style>
 
-# Colors
+# 颜色
 
-Colors are organized in the pattern of `hue` + `color weight`
+颜色采用 `色相`+`色重` 的模式组织
 
-+ hue
-+ Shade to add shadows to existing colors to make them darker.
++ 色相 hue
++ 色重 shade，向已有颜色中添加暗影，使颜色变暗。
 
-## Usage
+## 使用
 
 ```jsx
 import { purple, deepPurple, black } from '@vikadata/components';
 ```
 
-Taking `purple` as an example, the color palette divides purple into 11 regions, purple[50], purple[100], purple[200]... purple[1000], from light to dark.
+以 `purple` 举例，色板将紫色分为了 11 个区域，purple[50]、purple[100]、purple[200]... purple[1000]，浅色到深色。
 
-## Color object data structure
+## 颜色对象数据结构
 
-Take the theme color system as an example, where `deepPurple[500]` is the theme color:
-
+以主题色系为例，其中 `deepPurple[500]` 为主题色：
 ```ts static
 export const deepPurple = {
   50: '#EDEAFF',
@@ -119,7 +118,7 @@ export const deepPurple = {
 
 ```
 
-## Theme color
+## 主题色
 
 <div className="normal-color">
   <div className="bg" style={{ backgroundColor: fc0 }} />
@@ -129,7 +128,7 @@ export const deepPurple = {
   </div>
 </div>
 
-## Common color
+## 通用颜色
 
 <div className="neutral-color">
   {[
@@ -137,18 +136,18 @@ export const deepPurple = {
     { fc: fc2, text: 'black[700]' },
     { fc: fc3, text: 'black[500]' },
     { fc: fc4, text: 'black[300]' },
-    { fc: fc5, text: 'blackBlue[200]', desc: 'line color' },
-    { fc: fc6, text: 'black[100]', text: 'background color' },
-    { fc: fc7, text: 'blackBlue[100]', desc: 'row selection color' },
+    { fc: fc5, text: 'blackBlue[200]', desc: '线条颜色' },
+    { fc: fc6, text: 'black[100]', text: '背景色' },
+    { fc: fc7, text: 'blackBlue[100]', desc: '行选中色' },
     { fc: fc8, text: 'black[50]' },
-    { fc: fc9, text: 'deepPurple[100]', desc: 'cell selection color' },
-    { fc: fc10, text: 'red[500]', desc: 'wrong color' },
-    { fc: fc11, text: 'black[200]', desc: 'Projection, table line color' },
-    { fc: convertHexToRGB(black[1000], 0.5), fcPrimary: `${black[1000]} 50%`, text: 'black[1000] 50%', desc: 'mask color' },
-    { fc: fc13, text: 'black[900]', desc: 'bubble color' },
-    { fc: fc14, text: 'orange[500]', desc: 'warning color' },
-    { fc: fc15, text: 'teal[500]', desc: 'success color' },
-    { fc: fc16, text: 'deepPurple[50]', desc: 'directory tree list color' },
+    { fc: fc9, text: 'deepPurple[100]', desc: '单元格选中色' },
+    { fc: fc10, text: 'red[500]', desc: '错误色' },
+    { fc: fc11, text: 'black[200]', desc: '投影、表格线色' },
+    { fc: convertHexToRGB(black[1000], 0.5), fcPrimary: `${black[1000]} 50%`, text: 'black[1000] 50%', desc: '蒙层色' },
+    { fc: fc13, text: 'black[900]', desc: '气泡色' },
+    { fc: fc14, text: 'orange[500]', desc: '警告色' },
+    { fc: fc15, text: 'teal[500]', desc: '成功色' },
+    { fc: fc16, text: 'deepPurple[50]', desc: '目录树列表色' },
   ].map(({ fc, fcPrimary, text, desc }) => (
     <div key={fc} className="normal-color">
       <div className="bg" style={{ backgroundColor: fc }} />
@@ -161,8 +160,7 @@ export const deepPurple = {
   ))}
 </div>
 
-## status color
-
+## 状态色
 <div className="neutral-color">
   {[
     { fc: fc0, text: 'FC0', desc: 'DEFAULT' },
@@ -181,24 +179,24 @@ export const deepPurple = {
   ))}
 </div>
 
-## Swatches
+## 色板
 
 <div>
   {[
-    { colorMap: purple, text: 'purple', word: 'purple' },
-    { colorMap: deepPurple, text: 'deep purple', word: 'deepPurple' },
-    { colorMap: indigo, text: 'indigo', word: 'indigo' },
-    { colorMap: blue, text: 'blue', word: 'blue' },
-    { colorMap: teal, text: 'teal', word: 'teal' },
-    { colorMap: green, text: 'green', word: 'green' },
-    { colorMap: yellow, text: 'yellow', word: 'yellow' },
-    { colorMap: orange, text: 'orange', word: 'orange' },
-    { colorMap: tangerine, text: 'tangerine', word: 'tangerine' },
-    { colorMap: pink, text: 'pink', word: 'pink' },
-    { colorMap: red, text: 'red', word: 'red' },
-    { colorMap: brown, text: 'brown', word: 'brown' },
-    { colorMap: black, text: 'black', word: 'black' },
-    { colorMap: blackBlue, text: 'black blue', word: 'blackBlue' },
+    { colorMap: purple, text: '紫色', word: 'purple' },
+    { colorMap: deepPurple, text: '深紫', word: 'deepPurple' },
+    { colorMap: indigo, text: '靛蓝', word: 'indigo' },
+    { colorMap: blue, text: '蓝色', word: 'blue' },
+    { colorMap: teal, text: '蓝绿', word: 'teal' },
+    { colorMap: green, text: '绿色', word: 'green' },
+    { colorMap: yellow, text: '黄色', word: 'yellow' },
+    { colorMap: orange, text: '橘色', word: 'orange' },
+    { colorMap: tangerine, text: '橘红', word: 'tangerine' },
+    { colorMap: pink, text: '粉色', word: 'pink' },
+    { colorMap: red, text: '红色', word: 'red' },
+    { colorMap: brown, text: '棕色', word: 'brown' },
+    { colorMap: black, text: '黑色', word: 'black' },
+    { colorMap: blackBlue, text: '黑蓝', word: 'blackBlue' },
   ].map(({ colorMap, text, word }, idx) => {
     return (
       <div key={idx} className="color">
@@ -240,7 +238,7 @@ export const deepPurple = {
   })}
 </div>
 
-## Color processing function
+## 颜色处理函数
 
 ### getActionColor
 
@@ -248,18 +246,18 @@ export const deepPurple = {
 import { getActionColor } from '@vikadata/components';
 ```
 
-Parse the colors in the palette to get the colors of the hover and active states. For example: `purple[400]` The result calculated by `getActionColor` is as follows:
+解析调色板中的颜色获取 hover、active 状态的颜色。例如：`purple[400]` 通过 `getActionColor` 计算的结果如下：
 
 <Canvas>
   {JSON.stringify(getActionColor(purple[400]), null, 2)}
 </Canvas>
 
-The effect of using `Button` is as follows:
+在 `Button` 上使用效果如下：
 
 <Canvas>
-  <Button color={purple[400]}> Default color </Button>
-  <Button color={getActionColor(purple[400]).hover}> hover color </Button>
-  <Button color={getActionColor(purple[400]).active}> active color </Button>
+  <Button color={purple[400]}> 默认颜色 </Button>
+  <Button color={getActionColor(purple[400]).hover}> hover 颜色 </Button>
+  <Button color={getActionColor(purple[400]).active}> active 颜色 </Button>
 </Canvas>
 
 ### getContrastText
@@ -268,10 +266,10 @@ The effect of using `Button` is as follows:
 import { getContrastText } from '@vikadata/components';
 ```
 
-Based on the background color, the foreground text color is automatically generated. Make the overall effect visual experience more comfortable and friendly:
+根据背景色，自动生成前景文字颜色。让整体效果视觉体验更加舒适、友好：
 
-- Light background with black font.
-- Dark backgrounds give white fonts.
+- 浅色背景赋予黑色字体；
+- 深色背景赋予白色字体。
 
 <Canvas>
 <div style={{
@@ -279,14 +277,14 @@ Based on the background color, the foreground text color is automatically genera
   color: getContrastText(purple[100], 3),
   padding: '6px 12px'
 }}>
-    purple 100
+  紫色 100
 </div>
 <div style={{
   background: purple[600],
   color: getContrastText(purple[600], 3),
   padding: '6px 12px'
 }}>
-    purple 600
+  紫色 600
 </div>
 </Canvas>
 
@@ -296,7 +294,7 @@ Based on the background color, the foreground text color is automatically genera
 import { convertHexToRGB } from '@vikadata/components';
 ```
 
-Supports converting color palettes and other colors from `HEX` format to `RGB`, and supports transparency configuration, compatible with the following usages:
+支持对调色板和其他颜色从 `HEX` 格式颜色转成 `RGB`，并且支持透明度配置，兼容以下用法：
 
 - `convertHexToRGB(purple[100])` => rgb(228, 197, 251)
 - `convertHexToRGB('#E4C5FB')` => rgb(228, 197, 251)
@@ -317,7 +315,7 @@ Supports converting color palettes and other colors from `HEX` format to `RGB`, 
 </div>
 </Canvas>
 
-## Related
+## 相关
 
 - [Color in Design Systems](https://eightshapes.com/articles/color-in-design-systems)
-- [TinyColor JS Color Manipulation Detection Library](https://github.com/bgrins/TinyColor)
+- [TinyColor JS 颜色操作检测库](https://github.com/bgrins/TinyColor)

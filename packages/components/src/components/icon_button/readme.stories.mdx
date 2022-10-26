@@ -1,36 +1,33 @@
 import { ArrowRightOutlined } from '@vikadata/icons';
 import { IconButton } from './index';
-import { Canvas, ArgsTable } from '@storybook/addon-docs';
+import { Canvas, Meta } from '@storybook/addon-docs';
 import { ThemeToggle } from '../../stories/theme-toggle';
 
-<Meta title="基础组件/Button 按钮/IconButton 图标按钮/文档" />
+<Meta title="en/components/IconButton" />
 
-# IconButton 图标按钮
+# IconButton
 
-## 使用方式
+## Usage
 
 ```jsx
 import { IconButton } from '@vikadata/components';
-
-// 引入 ArrowRightOutlined 作为示例图标
-import { ArrowRightOutlined } from '@vikadata/icons';
 ```
 
-## 大小
+## Size
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <IconButton icon={ArrowRightOutlined} />
   <IconButton icon={ArrowRightOutlined} size="large" />
 </ThemeToggle>
 </Canvas>
 
-## 形状
+## Shape
 
-方型图标按钮
+Square icon button
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <IconButton
     icon={ArrowRightOutlined}
     shape="square"
@@ -39,14 +36,14 @@ import { ArrowRightOutlined } from '@vikadata/icons';
 </ThemeToggle>
 </Canvas>
 
-## 类型
+## Type
 
-+ `default` 默认状态没有背景色。
-+ `background` 默认状态有背景色。
-+ `blur` 默认透明+模糊背景色。常用用于深色背景上。
++ `default` default without background color.
++ `background` default with background color.
++ `blur` Default transparent + blur background color. often used on dark backgrounds.
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <IconButton icon={ArrowRightOutlined} />
   <IconButton
     icon={ArrowRightOutlined}
@@ -59,10 +56,10 @@ import { ArrowRightOutlined } from '@vikadata/icons';
 </ThemeToggle>
 </Canvas>
 
-## 激活状态
+## Active status
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <IconButton
     icon={ArrowRightOutlined}
     active
@@ -70,12 +67,12 @@ import { ArrowRightOutlined } from '@vikadata/icons';
 </ThemeToggle>
 </Canvas>
 
-## 禁用状态
+## Disabled
 
-注意：需要设置 `component="button"` 属性才会支持禁用操作
+Note: The `component="button"` attribute needs to be set to support the disable operation
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <IconButton
     icon={ArrowRightOutlined}
     component="button"
@@ -92,5 +89,16 @@ import { ArrowRightOutlined } from '@vikadata/icons';
 
 ## API
 
-<ArgsTable of={IconButton} />
+| Name           | Type                        | Description                                            | Default |
+|----------------|-----------------------------|--------------------------------------------------------|---------|
+| style          | CSSProperties               | inline style                                           | -       |
+| shape          | square                      | shape                                                  | -       |
+| component      | ElementType                 | Renders the component using the specified HTML element | div     |
+| className      | string                      | class name                                             | -       |
+| variant        | default / background / blur | variant                                                | default |
+| icon(Required) | ReactNode                   | icon component                                         | -       |
+| size           | small / large               | size                                                   | small   |
+| onClick        | ((e: any) => void)          | click action                                           | -       |
+| disabled       | boolean                     | disabled status                                        | false   |
+| active         | boolean                     | active status                                          | false   |
 

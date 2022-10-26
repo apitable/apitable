@@ -1,133 +1,131 @@
 import { Button } from './index';
 import { RobotOutlined } from '@vikadata/icons';
-import { purple, yellow, pink, orange } from '../../colors';
-import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+import { purple, pink, orange } from '../../colors';
+import { Canvas } from '@storybook/addon-docs';
 import { ThemeToggle } from '../../stories/theme-toggle';
 
-<Meta title="基础组件/Button 按钮/基础按钮/文档" />
+<Meta title="en/components/Button" />
 
-# Button 按钮
+# Button
 
-## 使用方式
+## Usage
 
 ```jsx
 import { Button } from '@vikadata/components';
 ```
 
-## 使用场景
+## Scenes
 
-点击按钮即时执行某个动作
+Click a button to perform an action
 
-## 快捷键支持
+## Shortcut support
 
 https://www.w3.org/TR/wai-aria-practices/#keyboard-interaction-3
 
-| Key   | Function    |
-| ----- | ----------- |
-| Enter | 激活 Button |
-| Space | 激活 Button |
+| Key   | Function        |
+|-------|-----------------|
+| Enter | activate button |
+| Space | activate button |
 
 
-### 按钮类型
+### Button type
 
-+ 实心按钮 - Contained Buttons，主要 Button。
-+ 果冻按钮 - 浅色按钮 ，次级 Button。
++ Solid button - Contained buttons，Primary button。
++ Jelly button - Light buttons , Secondary button。
 
 <Canvas>
-<ThemeToggle>
-  <Button color="primary"> 默认 fill Button </Button>
-  <Button variant="jelly" color="primary">果冻 Button </Button>
+<ThemeToggle lang="en">
+  <Button color="primary"> Default fill Button </Button>
+  <Button variant="jelly" color="primary">Jelly Button </Button>
 </ThemeToggle>
 </Canvas>
 
 
-### 各种大小的 Button
+### Button size
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <Button color="primary" variant="fill" size="small"> Small Button </Button>
   <Button color="primary" variant="fill" size="middle"> Medium Button </Button>
   <Button color="primary" variant="fill" size="large"> Large Button </Button>
 </ThemeToggle>
 </Canvas>
 
-### 禁用的 Button
+### Button disabled
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <Button variant="fill" size="middle" disabled> Disabled Button </Button>
   <Button variant="jelly" color="primary" size="middle" disabled> Disabled Text Button </Button>
 </ThemeToggle>
 </Canvas>
 
 
-### 实心按钮颜色
+### Solid button colors
 
 <Canvas>
-<ThemeToggle>
-  <Button> 默认 Button </Button>
-  <Button variant="fill" color="danger"> 危险 Button </Button>
-  <Button variant="fill" color="primary"> 主题 Button</Button>
-  <Button variant="fill" color="warning"> 告警 Button </Button>
+<ThemeToggle lang="en">
+  <Button> Default Button </Button>
+  <Button variant="fill" color="danger"> Danger Button </Button>
+  <Button variant="fill" color="primary"> Primary Button</Button>
+  <Button variant="fill" color="warning"> Warning Button </Button>
 </ThemeToggle>
 </Canvas>
 
-### 果冻按钮颜色
-
-设置 `variant` 属性为 jelly 可以得到果冻按钮
+### Jelly button colors
 
 <Canvas>
-<ThemeToggle>
-  <Button variant="jelly"> 默认 Button </Button>
-  <Button variant="jelly" color="danger"> 危险 Button </Button>
-  <Button variant="jelly" color="primary"> 主题 Button</Button>
-  <Button variant="jelly" color="warning"> 告警 Button </Button>
+<ThemeToggle lang="en">
+  <Button variant="jelly"> Default Button </Button>
+  <Button variant="jelly" color="danger"> Danger Button </Button>
+  <Button variant="jelly" color="primary"> Primary Button</Button>
+  <Button variant="jelly" color="warning"> Warning Button </Button>
 </ThemeToggle>
 </Canvas>
 
-button 内的文字，会根据背景色自动计算（黑色/白色），使其大致满足可访问性。
+The text inside the button will be automatically calculated according to the background color (black/white) to satisfy accessibility.
 
-### 圆角按钮
+### Rounded button
 
 <Canvas>
-<ThemeToggle>
-<Story id="基础组件-button-按钮-基础按钮--round-shape" />
+<ThemeToggle lang="en">
+    <Button shape="round" color="primary"> Rounded Button </Button>
 </ThemeToggle>
 </Canvas>
 
-### 前置后置 Icon
+### Prefix Icon or suffix icon
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <Button variant="fill"  color="primary" prefixIcon={ <RobotOutlined currentColor/>} > RobotOutlined </Button>
   <Button variant="fill"  color="primary" suffixIcon={ <RobotOutlined currentColor/>}> RobotOutlined </Button>
 </ThemeToggle>
 </Canvas>
 
-### 占满容器宽度的 Button
+### Block button
 
 <Canvas>
-<ThemeToggle>
-  <Button variant="fill" color="primary" block> block 属性占据整行 </Button>
+<ThemeToggle lang="en">
+  <Button variant="fill" color="primary" block> The block property occupies the entire line </Button>
 </ThemeToggle>
 </Canvas>
 
-### 处于 loading 的 Button
+### Loading button
 
 <Canvas>
-<ThemeToggle>
-  <Button variant="fill" loading color="primary"> 加载中 </Button>
+<ThemeToggle lang="en">
+  <Button variant="fill" loading color="primary"> Loading </Button>
 </ThemeToggle>
 </Canvas>
 
-### 自定义颜色
+### Custom background color
 
-`Fill Button` 支持修改颜色, 除了默认的三种颜色： default、primary、danger。
+`Fill Button` support custom background color.
 
-+ 如果传入的颜色(6位hex字符串) 存在于调色板中。则 button 的 hover press 的背景色，会自动设置。
++ If the passed in color (6-bit hex string) exists in the palette. Then the background color of the button's hover press will be set automatically.
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
   <Button variant="fill" color={orange[500]}> orange[500] </Button>
   <Button variant="fill" color={purple[200]}> purple[200] </Button>
   <Button variant="fill" color="#D8ACFA"> #D8ACFA（purple[200]） </Button>
@@ -135,14 +133,28 @@ button 内的文字，会根据背景色自动计算（黑色/白色），使其
 </ThemeToggle>
 </Canvas>
 
-+ 如果传入的颜色不存在于调色板中。hover press 背景色不变，这种情况需要用户主动覆盖样式。
++ If the incoming color does not exist in the palette. The background color of the hover press does not change, which requires the user to actively override the style.
 
 <Canvas>
-<ThemeToggle>
-  <Button variant="fill" color="#345"> 自定义颜色 </Button>
+<ThemeToggle lang="en">
+  <Button variant="fill" color="#345"> Custom background color </Button>
 </ThemeToggle>
 </Canvas>
 
 ## API
 
-<ArgsTable of={Button} />
+| Name       | Type                                | Description      | Default |
+|------------|-------------------------------------|------------------|---------|
+| htmlType   | button / submit / reset             | button type      | button  |
+| shape      | round                               | border shape     | -       |
+| children   | ReactNode                           | child element    | -       |
+| className  | string                              | class name       | -       |
+| color      | default / danger / primary / string | background color | default |
+| prefixIcon | ReactElement                        | prefix icon      | -       |
+| suffixIcon | ReactElement                        | suffix icon      | -       |
+| disabled   | boolean                             | disable actions  | -       |
+| block      | boolean                             | fill width       | -       |
+| variant    | fill / jelly                        | variant          | fill    |
+| size       | small / middle / large              | size             | middle  |
+| loading    | boolean                             | border shape     | false   |
+

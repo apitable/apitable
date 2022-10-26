@@ -1,8 +1,14 @@
-import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
-import { StoryType } from '../../stories/constants';
+import { Canvas, Meta } from '@storybook/addon-docs';
 import { Space } from './index';
+import { Button } from "../button";
+import { Switch } from "../switch";
+import { Checkbox } from "../checkbox";
+import { Radio } from "../radio";
+import { ColumnLinktableFilled } from "@vikadata/icons";
+import { LinkButton } from "../link_button";
+import { Box } from "../box";
 
-<Meta title={`${StoryType.Design}/Space 间距/文档`} />
+<Meta title="en/components/Space" />
 
 <style>{`
   .stack {
@@ -12,67 +18,90 @@ import { Space } from './index';
   }
 `}</style>
 
-# Space 间距
+# Space
 
-一致的间距使界面布局一致、显示更清晰且易于浏览。
+Consistent spacing makes the interface layout consistent, clearer, and easier to navigate.
 
-## 使用方式
+## Usage
 
 ```jsx
 import { Space } from '@vikadata/components';
 ```
 
-## 规范
+## Specification recommendation
 
-子元素之间的间隙推荐：
+Recommended gaps between child elements:
 
-| 命名      | 值（px）|使用场景说明 |
-|----------|--------|-----------|
-| xxxs     | 2      ||
-| xxs      | 4      ||	 
-| xs	     | 8      ||
-| s	       | 16     ||
-| l	       | 32	    ||
-| xl       | 40     ||
-| xxl      | 80     ||
-| xxxl     | 120    ||
+| Name | value（px） | scenes to be used |
+|------|-----------|-------------------|
+| xxxs | 2         ||
+| xxs  | 4         ||
+| xs	  | 8         ||
+| s	   | 16        ||
+| l	   | 32	       ||
+| xl   | 40        ||
+| xxl  | 80        ||
+| xxxl | 120       ||
 
 
-## 默认间距
+## Default spacing
 
-默认为行内布局，每个子元素之间的间距是 8px。
-
-<Canvas>
- <Story id="设计指导-space-间距--default-size-8"/>
-</Canvas>
-
-## 自定义间距
-
-可自定义间距，比如 `size=16` 设置间距为 16px。
+The default is inline layout, and the spacing between each child element is 8px.
 
 <Canvas>
- <Story id="设计指导-space-间距--set-size-32"/>
+ <Space>
+     text
+     <Button color="primary">button</Button>
+     <Switch />
+     <Checkbox>checkbox</Checkbox>
+     <Radio>radio</Radio>
+ </Space>
 </Canvas>
 
-## 列间距
+## Custom spacing
 
-`vertical` 属性支持列布局。并设定列间距为 16px。
+The spacing can be customized, such as `size=16` to set the spacing to 16px.
 
 <Canvas>
- <Story id="设计指导-space-间距--vertical-size-16"/>
+    <Space size={16}>
+        text
+        <Button color="primary">button</Button>
+        <Switch />
+        <Checkbox>checkbox</Checkbox>
+        <Radio>radio</Radio>
+    </Space>
 </Canvas>
 
-## 分隔符
+## Column spacing
+
+The `vertical` property supports column layout. And set the column spacing to 16px.
 
 <Canvas>
- <Story id="设计指导-space-间距--split"/>
+    <Space size={16} vertical>
+        text
+        <Button color="primary">button</Button>
+        <Switch />
+        <Checkbox>checkbox</Checkbox>
+        <Radio>radio</Radio>
+    </Space>
 </Canvas>
 
-## 支持换行
+## Delimiter
 
-子元素很多时，设置 `wrap=true` 支持换行
+<Canvas>
+ <Space split>
+     <LinkButton underline={false} prefixIcon={<ColumnLinktableFilled currentColor />}>link url</LinkButton>
+     <LinkButton underline={false} prefixIcon={<ColumnLinktableFilled currentColor />}>link url</LinkButton>
+     <LinkButton underline={false} prefixIcon={<ColumnLinktableFilled currentColor />}>link url</LinkButton>
+     <LinkButton underline={false} prefixIcon={<ColumnLinktableFilled currentColor />}>link url</LinkButton>
+ </Space>
+</Canvas>
 
-定义 Card 组件：
+## Line wrapping
+
+When there are many child elements, set `wrap=true` to support line wrapping
+
+Define the Card component:
 
 ```tsx
 import { Box } from '@vikadata/components';
@@ -91,60 +120,317 @@ const Card = () => (
 ```
 
 <Canvas>
- <Story id="设计指导-space-间距--wrap"/>
+ <Space wrap>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+ </Space>
 </Canvas>
 
-## 设置左右、上下间距
+## Set the left and right, top and bottom spacing
 
-上下、左右可以设定不同的间距，比如设置 `size=[16, 32]` 表示设置左右间距为 16px，上下间距为 32px。
+You can set different spacing for up and down, left and right. For example, setting `size=[16, 32]` means setting the left and right spacing to 16px, and the top and bottom spacing to 32px.
 
 <Canvas>
- <Story id="设计指导-space-间距--set-row-column-space"/>
+    <Space wrap size={[16, 32]}>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+    </Space>
 </Canvas>
 
-## 设置子元素对齐方式
+## Set child element alignment
 
-支持通过 align 设置对齐方式。
+Support setting alignment via align .
 
-横向对齐方式，以下依次为：start、center、end、baseline
+Horizontal alignment, as follows: start, center, end, baseline
 
 <Canvas>
   <div className="stack">
-    <Story id="设计指导-space-间距--align-start"/>
+    <Space align="start">
+        <span>text</span>
+        <Button color="primary">button</Button>
+        <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">box</Box>
+    </Space>
   </div>
   <div className="stack">
-    <Story id="设计指导-space-间距--align-center"/>
+      <Space align="center">
+          <span>text</span>
+          <Button color="primary">button</Button>
+          <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">box</Box>
+      </Space>
   </div>
   <div className="stack">
-    <Story id="设计指导-space-间距--align-end"/>
+      <Space align="end">
+          <span>text</span>
+          <Button color="primary">button</Button>
+          <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">box</Box>
+      </Space>
   </div>
   <div className="stack">
-    <Story id="设计指导-space-间距--align-baseline"/>
+      <Space align="baseline">
+          <span>text</span>
+          <Button color="primary">button</Button>
+          <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">box</Box>
+      </Space>
   </div>
 </Canvas>
 
-纵向对齐方式，以下依次为：start、center、end。纵向布局 baseline 属性无意义。
+Vertical alignment, as follows: start, center, end. The baseline property is meaningless.
 
 <Canvas>
   <div className="stack">
-    <Story id="设计指导-space-间距--vertical-align-start"/>
+      <Space vertical align="start">
+          <span>text</span>
+          <Button color="primary">button</Button>
+          <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">box</Box>
+      </Space>
   </div>
   <div className="stack">
-    <Story id="设计指导-space-间距--vertical-align-center"/>
+      <Space vertical align="center">
+          <span>text</span>
+          <Button color="primary">button</Button>
+          <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">box</Box>
+      </Space>
   </div>
   <div className="stack">
-    <Story id="设计指导-space-间距--vertical-align-end"/>
+      <Space vertical align="end">
+          <span>text</span>
+          <Button color="primary">button</Button>
+          <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">box</Box>
+      </Space>
   </div>
 </Canvas>
 
-## 自定义组件标签
+## custom component label
 
-可自定组件标签，比如设置为 `ul`、`li` HTML 标签
+Customizable component tags, such as `ul`, `li` HTML tags
 
 <Canvas>
- <Story id="设计指导-space-间距--set-component-ul-li"/>
+    <Space component="ul" vertical>
+        <Space component="li" style={{ borderBottom: '1px solid #ccc' }}>list item 1</Space>
+        <Space component="li" style={{ borderBottom: '1px solid #ccc' }}>list item 2</Space>
+        <Space component="li" style={{ borderBottom: '1px solid #ccc' }}>list item 3</Space>
+    </Space>
 </Canvas>
 
 ## API
 
-<ArgsTable of={Space} />
+| Name      | Type                            | Description      | Default |
+|-----------|---------------------------------|------------------|---------|
+| size      | number / number[]               | spacing          | 8px     |
+| component | ElementType<any\>               | custom HTML tags | div     |
+| vertical  | boolean                         | column layout    | -       |
+| wrap      | boolean                         | whether to wrap  | -       |
+| align     | center / baseline / start / end | alignment        | -       |
+| split     | boolean                         | delimiter        | -       |

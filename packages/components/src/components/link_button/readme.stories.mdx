@@ -1,105 +1,122 @@
-import { DownloadOutlined } from '@vikadata/icons';
+import { ColumnLinktableFilled, DownloadOutlined } from '@vikadata/icons';
 import { LinkButton } from './index';
-import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+import { Canvas, ArgsTable } from '@storybook/addon-docs';
 import { ThemeToggle } from '../../stories/theme-toggle';
 import { colors } from '../../helper';
 
-<Meta title="基础组件/Button 按钮/LinkButton 跳转按钮/文档" />
+<Meta title="en/components/LinkButton" />
 
-# LinkButton 跳转按钮 
+# LinkButton
 
-## 使用方式
+## Usage
 
 ```jsx
 import { LinkButton } from '@vikadata/components';
 ```
 
-默认通过 `a` 标签跳转
+By default, the link is jumped through the `a` tag.
 
 <Canvas>
-<ThemeToggle>
-  <Story id="基础组件-button-按钮-linkbutton-跳转按钮--default"/>
+<ThemeToggle lang="en">
+  <LinkButton>Link Url</LinkButton>
 </ThemeToggle>
 </Canvas>
 
-设置 `target` 为 `_blank` 浏览器新窗口打开网站 `https://vika.cn`
+Set `target` to `_blank` to open the website in a new browser window `https://vika.cn`.
 
 <Canvas>
-<ThemeToggle>
-  <Story id="基础组件-button-按钮-linkbutton-跳转按钮--button-href"/>
+<ThemeToggle lang="en">
+    <LinkButton href="https://vika.cn">https://vika.cn</LinkButton>
 </ThemeToggle>
 </Canvas>
 
-## 颜色
+## Color
 
-默认是主题色，可以自定义颜色。
+Default is primary color, you can customize the color.
 
-+ 传入色板中的颜色，会自动处理 hover 、active 的颜色。
-+ 非色板颜色，则需要自己覆盖 hover、active 状态下的颜色。
++ The color passed in the color palette will automatically handle the hover and active colors.
++ For non-palette colors, you need to override the colors in the hover and active states by yourself.
 
 
 <Canvas>
-<ThemeToggle>
-<LinkButton>点我跳转</LinkButton>
-<LinkButton color="#FF7A00">这个颜色 shade 小于 700</LinkButton>
-<LinkButton color={colors.textCommonSecondary}>这个颜色 shade 大于 700</LinkButton>
-<LinkButton className="myLinkButton">自定义 action 颜色</LinkButton>
+<ThemeToggle lang="en">
+<LinkButton>Click Link</LinkButton>
+<LinkButton color="#FF7A00">Click Link</LinkButton>
+<LinkButton color={colors.textCommonSecondary}>Click Link</LinkButton>
+<LinkButton className="myLinkButton">Click Link</LinkButton>
 </ThemeToggle>
 </Canvas>
 
-## 隐藏下划线
+## Hide underline
 
-默认会带下划线，也可以通过设置 `underline` 为 `false` 去掉下划线。
+Underlined by default, remove underline by setting `underline` to `false`.
 
 <Canvas>
-<ThemeToggle>
+<ThemeToggle lang="en">
 <LinkButton
   underline={false}
   href="https://vika.cn"
 >
-  跳转链接
+  Click link
 </LinkButton>
 </ThemeToggle>
 </Canvas>
 
-## 跳转 Button
+## Button element
 
-通过 `component="button"` 指定将 a 标签改为 button。也可根据需求指定为其他 HTML 标签，比如 `div`。
+Change the a tag to button by specifying `component="button"`. Can be specified as other HTML tags, such as `div`, as required.
 
 <Canvas>
-<ThemeToggle>
-<Story id="基础组件-button-按钮-linkbutton-跳转按钮--button-icon"/>
+<ThemeToggle lang="en">
+    <LinkButton>Link Url</LinkButton>
 </ThemeToggle>
 </Canvas>
 
 
-## 设置前、后缀图标
+## Prefix or suffix icons
 
 <Canvas>
-<ThemeToggle>
-<Story id="基础组件-button-按钮-linkbutton-跳转按钮--left-icon"/>
-<Story id="基础组件-button-按钮-linkbutton-跳转按钮--right-icon"/>
+<ThemeToggle lang="en">
+    <LinkButton prefixIcon={<ColumnLinktableFilled currentColor />}>
+        Click Link
+    </LinkButton>
+    <LinkButton suffixIcon={<DownloadOutlined currentColor />}>
+        Click Link
+    </LinkButton>
 </ThemeToggle>
 </Canvas>
 
-## 禁用状态
+## Disabled
 
 <Canvas>
-<ThemeToggle>
-<Story id="基础组件-button-按钮-linkbutton-跳转按钮--disabled"/>
+<ThemeToggle lang="en">
+    <LinkButton disabled>
+        Click Link
+    </LinkButton>
 </ThemeToggle>
 </Canvas>
 
-## 占据整行
+## Block
 
 <Canvas>
-<ThemeToggle>
-<Story id="基础组件-button-按钮-linkbutton-跳转按钮--block"/>
+<ThemeToggle lang="en">
+    <LinkButton block>
+        Click Link
+    </LinkButton>
 </ThemeToggle>
 </Canvas>
 
 ## API
 
-<ArgsTable of={LinkButton} />
-
+| Name       | Type        | Description                                            | Default |
+|------------|-------------|--------------------------------------------------------|---------|
+| block      | boolean     | fill width                                             | -       |
+| disabled   | boolean     | disabled button                                        | -       |
+| component  | ElementType | senders the component using the specified HTML element | a       |
+| prefixIcon | ReactNode   | prefix icon                                            | -       |
+| suffixIcon | ReactNode   | suffix icon                                            | -       |
+| href       | string      | link url                                               | -       |
+| underline  | boolean     | show underline                                         | true    |
+| color      | string      | font color                                             | -       |
+| target     | string      | specify where to open linked documents                 | -       |
 

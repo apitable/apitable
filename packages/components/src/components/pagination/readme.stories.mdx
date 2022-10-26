@@ -1,52 +1,55 @@
 import { Pagination } from './index';
-import { Canvas, ArgsTable, Meta } from '@storybook/addon-docs';
+import { Canvas, Meta } from '@storybook/addon-docs';
 import { ThemeToggle } from '../../stories/theme-toggle';
 
-<Meta title="基础组件/Pagination 翻页/文档" />
+<Meta title="en/components/Pagination" />
 
-# Pagination 翻页
+# Pagination
 
-## 使用场景
+## Usage
 
-展示数据的条数，页数及提供翻页的组件
+```jsx
+import { Pagination } from '@vikadata/components';
+```
 
-## 默认展示
+A long list can be divided into several pages using `Pagination`.  and only a fixed number of entries and pages are displayed.
 
-默认展示页数
+## Examples
+
+### Basic pagination.
 
 <Canvas>
-    <ThemeToggle>
+    <ThemeToggle lang="en">
         <Pagination total={50} />
     </ThemeToggle>
 </Canvas>
 
+### Show total count
 
-## 展示总数
-
-展示数据当前的范围和总记录条数
+Display the current range of data and the total number of records.
 
 <Canvas>
-    <ThemeToggle>
-        <Pagination showTotal total={50} />
+    <ThemeToggle lang="en">
+        <Pagination lang="en" showTotal total={50} />
     </ThemeToggle>
 </Canvas>
 
-## 快速跳转
+## Fast Jump
 
-输入页码直接跳到指定页码数
+Enter a page number to skip to the specified number of pages.
 
 <Canvas>
-    <ThemeToggle>
-        <Pagination showQuickJump total={50} />
+    <ThemeToggle lang="en">
+        <Pagination lang="en" showQuickJump total={50} />
     </ThemeToggle>
 </Canvas>
 
-## 更多
+## More
 
-超出 7 页显示省略号
+Exceeding 7 pages to display ellipsis.
 
 <Canvas>
-    <ThemeToggle>
+    <ThemeToggle lang="en">
         <div>
             <Pagination total={71} />
             <br />
@@ -55,27 +58,28 @@ import { ThemeToggle } from '../../stories/theme-toggle';
     </ThemeToggle>
 </Canvas>
 
-## 改变每页数据量
+### Data per page
 
-使用下拉框改变分页的数据量
+Change the amount of data per page.
 
 <Canvas>
-  <ThemeToggle>
+  <ThemeToggle lang="en">
       <Pagination
           showChangeSize
           pageSize={10}
           total={71}
+          lang="en"
           onPageSizeChange={(page, pageSize) => { window.alert(`pageSize: ${pageSize}`) }}
       />
   </ThemeToggle>
 </Canvas>
 
-## 禁用
+### Disable
 
-禁用翻页
+Disable flipping.
 
 <Canvas>
-    <ThemeToggle>
+    <ThemeToggle lang="en">
         <Pagination
             showChangeSize
             showQuickJump
@@ -83,33 +87,17 @@ import { ThemeToggle } from '../../stories/theme-toggle';
             pageSize={10}
             total={171}
             disabled
+            lang="en"
         />
     </ThemeToggle>
 </Canvas>
 
-## 全部属性展示
+### Show all
 
-展示所有可展示属性
-
-<Canvas>
-    <ThemeToggle>
-        <Pagination
-            showChangeSize
-            showQuickJump
-            showTotal
-            pageSize={10}
-            total={171}
-            onPageSizeChange={(page, pageSize) => { window.alert(`pageSize: ${pageSize}`) }}
-        />
-    </ThemeToggle>
-</Canvas>
-
-## 国际化
-
-翻页组件国际化展示
+Show all displayable interactions.
 
 <Canvas>
-    <ThemeToggle>
+    <ThemeToggle lang="en">
         <Pagination
             showChangeSize
             showQuickJump
@@ -122,9 +110,38 @@ import { ThemeToggle } from '../../stories/theme-toggle';
     </ThemeToggle>
 </Canvas>
 
+### I18n
+
+Component with Chinese.
+
+<Canvas>
+    <ThemeToggle lang="en">
+        <Pagination
+            showChangeSize
+            showQuickJump
+            showTotal
+            pageSize={10}
+            total={171}
+            onPageSizeChange={(page, pageSize) => { window.alert(`pageSize: ${pageSize}`) }}
+        />
+    </ThemeToggle>
+</Canvas>
+
 
 ## API
 
 ### Pagination
 
-<ArgsTable of={Pagination} />
+| Name             | Type                                     | Description                      | Default |
+|------------------|------------------------------------------|----------------------------------|---------|
+| className        | string                                   | class name                       | -       |
+| current          | number                                   | current page number              | -       |
+| pageSize         | number                                   | number of entries per page       | -       |
+| total(Required)  | number                                   | total quantity                   | -       |
+| disabled         | boolean                                  | disable action                   | -       |
+| showTotal        | boolean                                  | show total                       | -       |
+| showChangeSize   | boolean                                  | display quantity per page toggle | -       |
+| showQuickJump    | boolean                                  | show quick jump interaction      | -       |
+| lang             | zh / en                                  | i18n                             | -       |
+| onChange         | (page: number, pageSize: number) => void | change action                    | -       |
+| onPageSizeChange | (page: number, pageSize: number) => void | page size change action          | -       |
