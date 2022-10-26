@@ -9,11 +9,12 @@ services:
       - "8081"
     working_dir: /devenv
     env_file:
-      - .env
+      - "${ENV_FILE:-.env}"
     volumes:
       - ./backend-server:/devenv
     environment:
       - HOME=/tmp
+      - OSS_TYPE=aws
     networks:
       - apitable
     command: sh -c "./gradlew build -x test && java -jar vikadata-service/vikadata-service-api/build/libs/vikadata-service-api.jar"
@@ -27,7 +28,7 @@ services:
       - "3000"
     working_dir: /devenv
     env_file:
-      - .env
+      - "${ENV_FILE:-.env}"
     volumes:
       - ./:/devenv
     environment:
@@ -47,7 +48,7 @@ services:
       - "3334"
     working_dir: /devenv
     env_file:
-      - .env
+      - "${ENV_FILE:-.env}"
     volumes:
       - ./:/devenv
     environment:
@@ -70,7 +71,7 @@ services:
       - "3007"
     working_dir: /devenv
     env_file:
-      - .env
+      - "${ENV_FILE:-.env}"
     volumes:
       - ./:/devenv
     environment:

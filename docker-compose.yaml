@@ -16,7 +16,7 @@ services:
     expose:
       - 8080
     env_file:
-      - .env
+      - "${ENV_FILE:-.env}"
     networks:
       - apitable
     user: 0:0
@@ -53,7 +53,7 @@ services:
     ports:
       - "8081:8081"
     env_file:
-      - .env
+      - "${ENV_FILE:-.env}"
     expose:
       - "8081"
     restart: always
@@ -85,7 +85,7 @@ services:
       - "3333"
       - "3334"
     env_file:
-      - .env
+      - "${ENV_FILE:-.env}"
     environment:
       - NODE_ENV=${ENV}
       - NODE_OPTIONS=--max-old-space-size=2048 --max-http-header-size=80000
@@ -107,7 +107,7 @@ services:
       - "3333"
       - "3334"
     env_file:
-      - .env
+      - "${ENV_FILE:-.env}"
     environment:
       - NODE_ENV=${ENV}
       - NODE_OPTIONS=--max-old-space-size=2048 --max-http-header-size=80000
@@ -141,7 +141,7 @@ services:
       - NODE_MEMORY_RATIO=80
       - NEST_GRPC_URL=room-server:3334
     env_file:
-      - .env
+      - "${ENV_FILE:-.env}"
     networks:
       - apitable
     depends_on:
@@ -390,7 +390,7 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
     env_file:
-      - .env
+      - "${ENV_FILE:-.env}"
     networks:
       - apitable
     depends_on:
@@ -411,7 +411,7 @@ services:
     environment:
       - TZ=${TIMEZONE}
     env_file:
-      - .env
+      - "${ENV_FILE:-.env}"
     networks:
       - apitable
     depends_on:
