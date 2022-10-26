@@ -85,12 +85,12 @@
     </update>
 
     <select id="selectFileSizeBySpaceId" resultType="java.lang.Integer">
-        SELECT vsa.file_size
-        FROM vika_space_asset vsa
-        JOIN vika_asset va ON vsa.asset_checksum = va.checksum AND va.is_template = 0
-        WHERE vsa.space_id = #{spaceId}
-        AND vsa.is_deleted = 0
-        GROUP BY vsa.asset_id
+        SELECT file_size
+        FROM vika_space_asset
+        WHERE space_id = #{spaceId}
+          AND is_deleted = 0
+          AND is_template = 0
+        GROUP BY asset_id
     </select>
 
     <delete id="deleteBatchByIds">
