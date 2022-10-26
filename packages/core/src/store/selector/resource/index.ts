@@ -17,10 +17,11 @@ export * from './form';
 export * from './widget';
 export * from './theme';
 
-// 传入正确的 type 可以自动推导类型，如：
+// pass right `type`, can auto complete type,  for example:
 // const s = getResourcePack(undefined as any, undefined as any, ResourceType.Widget);
-// s 可以推导为 IDatasheetPack
-// TODO: 还没找到怎么解决函数里面的返回值报错，暂时先都 as any，实际是可以推导出正确的返回类型的
+// `s` can be judge as `IDatasheetPack`
+// TODO: still not find out how fix the error of function return. set them `as any`.
+// in the future, we can use judge the right return type.
 export function getResourcePack<K extends keyof IResource>(state: IReduxState, id: string, type: K): IResource[K] | null {
   switch (type) {
     case ResourceType.Widget: {

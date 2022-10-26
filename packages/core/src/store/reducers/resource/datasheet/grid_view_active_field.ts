@@ -29,7 +29,7 @@ export const gridViewActiveFieldState = (
       return gridViewActiveFieldStateDefault;
     }
     // case SET_TEMP_SELECTION:
-    // TODO: 写比对数据的逻辑
+    // TODO: data compare logic 
 
     default:
       return state;

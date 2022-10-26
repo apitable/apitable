@@ -48,7 +48,7 @@ export const widget = (state: IWidget, action) => {
   }
 };
 
-// TODO： 完善这里的逻辑
+// TODO： finish more here
 export const widgetPack = combineReducers({
   loading: (state = false, action) => {
     return state;

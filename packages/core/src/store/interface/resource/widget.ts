@@ -15,22 +15,36 @@ export enum WidgetPackageType {
 }
 
 export enum WidgetReleaseType {
-  /** 空间站自建 */
+  /**
+   * space self-created
+   */
   Space = 0,
-  /** 官方推荐 */
+  /**
+   * official recommend
+   */
   Global = 1,
-  /** 审核预览 */
+  /**
+   * censorship preview
+   */
   Preview = 10
 }
 
 export enum WidgetPackageStatus {
-  /** 开发中 */
+  /**
+   * under development
+   */
   Developing = 0,
-  /** 封禁中 */
+  /**
+   * Banned(forbidden)
+   */
   Ban = 1,
-  /** 已发布 */
+  /**
+   * Published
+   */
   Published = 3,
-  /** 已下架 */
+  /**
+   * Unpublished(down)
+   */
   Unpublished = 4,
 }
 

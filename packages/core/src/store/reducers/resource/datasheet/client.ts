@@ -54,7 +54,7 @@ export const defaultGanttViewStatus: IGanttViewStatus = {
 };
 
 export const defaultCalendarViewStatus: ICalendarViewStatus = {
-  // 是否完成第一次引导
+  // whether the first guide is completed
   guideStatus: false,
   gridWidth: 256,
   gridVisible: false,

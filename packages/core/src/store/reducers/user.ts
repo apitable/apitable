@@ -20,8 +20,8 @@ const initValue: IUser = {
   isRegister: false,
   isCreateSpace: false,
   err: null,
-  loading: false, // userMe的loading状态
-  // http请求状态
+  loading: false, // user me loading state
+  // http request status
   reqStatus: false,
   httpErrInfo: null,
   userInfoErr: null,
@@ -44,8 +44,8 @@ const defaultValue: IUser = {
   isRegister: false,
   isCreateSpace: false,
   err: null,
-  loading: !userInfo, // userMe的loading状态
-  // http请求状态
+  loading: !userInfo, // user me loading state
+  // http request status
   reqStatus: false,
   httpErrInfo: null,
   userInfoErr: null,

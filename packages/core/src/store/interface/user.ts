@@ -48,20 +48,32 @@ export interface IUserInfo {
   userLogoutStatus?: 'apply_logout' | 'cancel_logout';
   userCanLogout?: boolean;
   closeAt?: string;
-  // 账号是否已删除/注销 (冷静期也为 true)
+  /**
+   * whether the account has been deleted or logged out (`true` for the cooling period)
+   */
   isDeleted?: boolean;
   isAdmin: boolean;
   isMainAdmin: boolean;
   isDelSpace: boolean;
   needPwd: boolean;
   thirdPartyInformation: IBindList[];
-  usedInviteReward: boolean; // 是否获得填写朋友邀请码的奖励
+  /**
+   * whether get award from invite code
+   */
+  usedInviteReward: boolean; 
   apiKey: string;
   wizards: { [key: number]: number };
   unitId: string;
   inviteCode: string;
-  spaceDomain: string; // 空间站对应的域名
-  sendSubscriptionNotify: boolean; // 是否允许发送订阅通知信息，属于全局开关
+  /**
+   * the domain for the space
+   */
+  spaceDomain: string; 
+  /**
+   * a global switch.
+   * whether permits to send subscription notification message 
+   */
+  sendSubscriptionNotify: boolean; 
 }
 
 export interface IUser {

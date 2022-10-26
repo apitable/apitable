@@ -14,8 +14,9 @@ export const collaboratorSocketSelector = (state: IReduxState, datasheetId?: str
 };
 
 /**
- * 用于状态栏的协作头像显示，一个用户可以使用多个客户端进入相同的房间（表格）
- * 但是协作头像的展示，还是显示一个人。这里按用户唯一标识过滤，
+ * display avatars on the status bar,
+ * one user can use multiple client to connect to the same datasheet room.
+ * But collaborator avatars are only displayed once.
  */
 export const collaboratorSelector = createDeepEqualSelector(
   collaboratorSocketSelector,
@@ -42,7 +43,7 @@ export const collaboratorCursorSelector = createSelector(
           userId: collaborator.userId,
           userName: collaborator.userName,
           memberName: collaborator.memberName,
-          touchTime: collaborator.activeCell!.time, // 激活游标的时间
+          touchTime: collaborator.activeCell!.time, // the time of active cell
         };
       }).forEach(r => {
         const key = `${r.fieldId}_${r.recordId}`;

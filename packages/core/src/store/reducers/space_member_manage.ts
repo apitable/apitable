@@ -16,12 +16,12 @@ import * as actions from '../action_constants';
 import { produce } from 'immer';
 
 const defaultState: ISpaceMemberManage = {
-  // 所选中部门
+  // selected teams
   selectedTeamInfoInSpace: {
     teamTitle: '',
     teamId: '0',
   },
-  // 成员列表
+  // members list
   memberListInSpace: [],
   memberInfoInSpace: {
     memberId: '',

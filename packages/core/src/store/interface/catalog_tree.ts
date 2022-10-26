@@ -33,24 +33,36 @@ export interface ICatalogTree {
   shareModalNodeId: string;
   saveAsTemplateModalNodeId: string;
   importModalNodeId: string;
-  /** 权限设置弹窗是否来自通知调用 **/
+  /**
+   * whether the permission setting UI window comes from the notification call
+   */
   permissionCommitRemindStatus: boolean;
-  /** 成员消息发送所需参数 **/
+  /**
+   * the arguments that member send messages
+   */
   permissionCommitRemindParameter: ICommitRemind | null;
   /**
    * unit ids that members have no permissions
    */
   noPermissionMembers: string[];
-  /** 移动至（移动文件）弹窗 */
+  /**
+   * move to (move file) UI window
+   */
   moveToNodeIds?: string[];
 }
 
 export interface IRightClickInfo {
-  // 表示右击节点所携带的数据ID（比如节点ID、ViewID）
+  /**
+   * the data ID carried by the right-click node (such as node ID, View ID)
+   */
   id: string;
-  // 表示来自哪个模块（比如工作目录、星标目录）
+  /**
+   * indicates which module it comes from (such as the working directory, the starred directory)
+   */
   module: ConfigConstant.Modules;
-  // 表示要调用哪个类型的菜单
+  /**
+   * indicates which type of menu to call 
+   */
   contextMenuType: ConfigConstant.ContextMenuType;
   // current node's level
   level: string;
@@ -413,7 +425,9 @@ export interface IAddNodeToMapAction {
   type: typeof actions.ADD_NODE_TO_MAP;
   payload: {
     data: (Omit<INodesMapItem, 'children'> & { children?: string[] })[];
-    // 表示是否保留旧children还是用新的children替换旧的children
+    /**
+     * Whether to keep the old children or use the new children to replace the old children
+     */
     isCoverChildren: boolean;
   };
 }

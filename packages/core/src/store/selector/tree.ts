@@ -1,7 +1,8 @@
 import { INode, INodesMapItem } from '../interface';
 /**
- * 扁平化树（将树结构转换成一维数组）
- * @param nodeTree INode类型的树
+ * flat tree(transfer tree structure to one dimension array)
+ * 
+ * @param nodeTree tree type of INode 
  */
 export const flatNodeTree = (nodeTree: INode[]) => {
   return nodeTree.reduce((prev, item) => {

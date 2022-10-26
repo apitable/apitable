@@ -16,15 +16,15 @@ import { client } from './client';
 
 export const filterDatasheetOp = (state, action: IJOTAction[]) => {
   return action.filter(action => {
-    // 过滤评论的 op
+    // OPs that filter comments
     if (action.p[2] === 'comments' && action.p[0] === 'recordMap' && ('li' in action || 'ld' in action)) {
       return false;
     }
 
-    // 当 state 只包含部分数据的时候，要过滤掉对不存在的 record 进行操作的 action
+    // when state only contains part of the data, filter out actions that operate on non-existent records
     if (state.isPartOfData) {
-      // 如果 p[0] 为 recordMap 则 p[1] 为 recordId
-      // 如果 action.p.length > 2 则表示 action 具有 setRecord 的特征
+      // if p[0] is recordMap, then p[1] is recordId
+      // if action.p.length > 2, then action has setRecord feature
       return !(action.p[0] === 'recordMap' && action.p.length > 2 && !state.snapshot.recordMap[action.p[1]]);
     }
     return true;
@@ -50,13 +50,14 @@ export const datasheet = produce((
   action: IDatasheetAction,
 ): IDatasheetState | null => {
   if (action.type === actions.DATAPACK_LOADED) {
-    // 只包含部分数据的 payload 不能覆盖包含全部数据的 state
+    // only include part of the data payload 
+    // can not cover the state that contains all the data
     if (state && action.payload.isPartOfData && !state.isPartOfData) {
       console.log('datasheet with part of data ignored');
       return state;
     }
 
-    // payload 和 state 都包含部分数据，则需要进行合并操作
+    // payload and state include part of the data, then need to merge them
     if (state && action.payload.isPartOfData && state.isPartOfData) {
       if (action.payload.revision === state.revision) {
         state.snapshot.recordMap = Object.assign({}, action.payload.snapshot.recordMap, state.snapshot.recordMap);
@@ -195,7 +196,7 @@ export const datasheetPack = combineReducers<IDatasheetPack>({
     return state;
   },
   syncing: (state = false, action) => {
-    // 兼容旧代码
+    // for compatibility
     if (action.type === actions.SET_DATASHEET_SYNCING) {
       return action.payload;
     }

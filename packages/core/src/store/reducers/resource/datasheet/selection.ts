@@ -8,14 +8,14 @@ type ISelectionActions = ISetSelectionAction | ISetActiveCellAction |
   ISetRecordRange | IClearSelection | ISetFieldRanges | ISetFillHandleStatus | IClearSelectionButKeepCheckedRecord;
 
 function setRecord(state: ISelection | null, { payload }: ISetRecordRange): ISelection | null {
-  // 处理 初次进行勾选和多选
+  // handle first time select and multi select
   if (!state || !state.recordRanges || payload.length > 1) {
     return {
       recordRanges: payload,
     };
   }
-  // 1. 处理对单个record 的toogle处
-  // 2. 处理 全不选的情况
+  // 1. single record toggle
+  // 2. don't select all condition
 
   if ((state.recordRanges.length === 1 && payload[0] === state.recordRanges[0]) || payload.length === 0) {
     return null;
@@ -29,11 +29,18 @@ function setRecord(state: ISelection | null, { payload }: ISetRecordRange): ISel
   };
 }
 
-// 对列的处理不同于record，选择整列，默认会为该列第一个cell设置为激活状态，
-// 因此activeCell 和 fieldRanges 是成对出现的
-// 不再在这里判断是点击一列还是多选列，因为需要依据shift键判断，所以选择在mouseDown的时候判断并且处理数据
-// 比方说：如果按下shift，在已选择的列头点击是保持原样，但是点击新的列会把原来多选的列和新的列连起来
-// 没有按下shift键，点击已选列头不作操作，点击其他列就只是更新数据
+/**
+ * it is different method for column from record , select whole column, will set the first cell of the column as active cell
+ * so activeCell and fieldRanges will appear together
+ * no longer judge whether it is a single column or multi column here, 
+ * because it needs to be judged according to the shift key, so the choice is to handle the data when mouseDown
+ * 
+ * for example: if you press shift, click on the column header that has been selected will keep the original state,
+ * without pressing the shift key, clicking on the selected column header will not operate.
+ * @param state 
+ * @param param1 
+ * @returns 
+ */
 function setFieldRanges(state: ISelection | null, { payload }: ISetFieldRanges): ISelection {
   const init = {
     fieldRanges: payload,

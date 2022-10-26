@@ -17,59 +17,104 @@ import { produce } from 'immer';
 import { ConfigConstant } from 'config';
 
 const defaultState: ICatalogTree = {
-  // 目录树是否正在加载
+  /**
+   * whether catalog tree is loading
+   */
   loading: true,
-  // 新建节点的信息
+  /**
+   * the information of the new node
+   */
   node: null,
-  // 当前正在操作的节点信息
+  /**
+   * current operation node info
+   */
   optNode: null,
-  // 删除节点的ID
+  /**
+   * node to delete ID
+   */
   delNodeId: '',
-  // 当前处理编辑状态的节点
+  /**
+   * the node ID that is being edited
+   */
   editNodeId: '',
-  // 复制节点的ID
+  /**
+   * the node to copy ID
+   */
   copyNodeId: '',
-  // 是否复制数据
+  /**
+   * whether or not to copy data
+   */
   isCopyAll: false,
-  // 处理失败时的错误信息
+  /**
+   * error message when processing fails
+   */
   err: '',
-  // 根节点Id
+  /**
+   * root node ID
+   */
   rootId: '',
-  // 树的map映射  (标签栏与目录共用)
+  /**
+   * the map of the tree nodes (share by tab bar and catalog)
+   */
   treeNodesMap: {},
-  // 展开节点的数组
+  /**
+   * the array of the expanded nodes
+   */
   expandedKeys: [],
-  // 已经加载过子节点的节点集合
+  /**
+   * the array of the loaded nodes
+   */
   loadedKeys: [],
-  // 组织资源
+  /**
+   * units (members, teams)
+   */
   unit: null,
-  // 全员可见
+  /**
+   * all visible
+   */
   allVisible: false,
-  // 没有当前访问的数表的权限
+  // whether or not to have current datasheet permission
   isPermission: true,
-  // socket推送的消息
+  /**
+   * the push data by socket
+   */
   socketData: null,
-  // 星标-树
+  // favorite tree node ids
   favoriteTreeNodeIds: [],
-  // 星标的加载状态
+  // the loading state of favorite star
   favoriteLoading: true,
   favoriteExpandedKeys: [],
   favoriteEditNodeId: '',
   favoriteDelNodeId: '',
   activeNodeError: false,
-  /** 当前正在打开权限窗口的节点ID */
+
+  /**
+   * the node IDs that is opening permission UI window
+   */
   permissionModalNodeId: '',
-  /** 当前正在打开分享窗口的节点ID */
+  /**
+   * the node id that current opening share UI window
+   */
   shareModalNodeId: '',
-  /** 当前正在打开保存为模板窗口的节点ID */
+  /**
+   * the node id that current opening save as template UI window
+   */
   saveAsTemplateModalNodeId: '',
-  /** 当前正在打开导入节点窗口的节点ID */
+  /**
+   * the node id that current opening import UI window
+   */
   importModalNodeId: '',
-  /** 权限设置弹窗是否来自通知调用 **/
+  /**
+   * whether or not the permission UI window comes from notification call
+   */
   permissionCommitRemindStatus: false,
-  /** 成员消息发送所需参数 **/
+  /**
+   * arguments that need to be sent to the member message
+   */
   permissionCommitRemindParameter: null,
-  /** 无权限成员unitIds **/
+  /**
+   * the unit(member) ids that have no permission
+   */
   noPermissionMembers: []
 };
 
@@ -296,16 +341,17 @@ export const catalogTree = produce((draftCatalogTree: ICatalogTree = defaultStat
 });
 
 /**
- * 删除节点
- * 注意其子节点可能是星标的情况，这时需要更新星标树
- * @param tree 目录树
- * @param optNode 要删除节点的信息
+ * delete node
+ * attention, sub nodes may be a favorite(star).
+ * it need to update favorite trees.
+ * @param tree 
+ * @param optNode the nodes info that will deleted
  */
 const deleteNode = (catalogTree: ICatalogTree, optNode: IOptNode) => {
   const { treeNodesMap, favoriteTreeNodeIds, delNodeId, editNodeId, favoriteEditNodeId, favoriteDelNodeId,
     permissionModalNodeId, shareModalNodeId, saveAsTemplateModalNodeId, importModalNodeId, expandedKeys, loadedKeys
   } = catalogTree;
-  // 当前在操作中的nodeId集合
+  // the nodeIDs collection that is operating
   const operationsIdArr = [delNodeId, editNodeId, favoriteEditNodeId, favoriteDelNodeId, permissionModalNodeId,
     shareModalNodeId, saveAsTemplateModalNodeId, importModalNodeId];
   const { nodeId, parentId } = optNode;
@@ -338,7 +384,7 @@ const deleteNode = (catalogTree: ICatalogTree, optNode: IOptNode) => {
     if (favoriteTreeNodeIds.findIndex(id => id === nodeId) !== -1) {
       removeFavoriteNode(catalogTree, nodeId);
     }
-    // 将被删除的节点的从展开状态集合中清除
+    // remove the deleted node from expanded collection
     if (expandedKeys.includes(nodeId)) {
       catalogTree.expandedKeys = expandedKeys.filter(item => item !== nodeId);
     }
@@ -347,20 +393,22 @@ const deleteNode = (catalogTree: ICatalogTree, optNode: IOptNode) => {
 };
 
 /**
- * 将节点添加到treeNodeMap（目录树数据源）中
- * @param treeNodesMap 树的map
- * @param data 树节点的信息
+ * add nodes to treeNodeMap (catalog tree data source)
+ * 
+ * @param treeNodesMap map of tree
+ * @param data tree nodes info
  */
 const addNodeToMap = (catalogTree: ICatalogTree, data: (Omit<INodesMapItem, 'children'> & { children?: string[] })[], isCoverChildren: boolean) => {
   const { treeNodesMap } = catalogTree;
   data.forEach(node => {
     const { nodeId, parentId } = node;
     const parentNode = treeNodesMap[parentId];
-    // 如果节点不存在数据中，并且自身没有children属性，这时需要给它补上children属性
+
+    // if nodes don't exist in data, and have no children property, it need to add children property
     if (!treeNodesMap[nodeId] && !node?.children) {
       node = { ...node, children: [] };
     }
-    // 判断是否将这个节点放入已加载节点的集合中
+    // whether to put this node into the collection of loaded nodes
     if (node.hasChildren && node.type === ConfigConstant.NodeType.FOLDER && node.children?.length && !catalogTree.loadedKeys.includes(nodeId)) {
       catalogTree.loadedKeys = [...catalogTree.loadedKeys, nodeId];
     }
@@ -375,21 +423,22 @@ const addNodeToMap = (catalogTree: ICatalogTree, data: (Omit<INodesMapItem, 'chi
       return;
     }
 
-    // 判断是否将这个节点放入已加载节点的集合中
+    // whether to put this node into the collection of loaded nodes
     if (!catalogTree.loadedKeys.includes(parentId) && parentNode.type === ConfigConstant.NodeType.FOLDER) {
       catalogTree.loadedKeys = [...catalogTree.loadedKeys, parentId];
     }
-    // 更新父节点的hasChildren属性
+    // update parent node's hasChildren property
     if (!parentNode.hasChildren) {
       parentNode.hasChildren = true;
     }
-    // 更新父节点下原先的第一个节点prevNodeId属性
+    // update parent node's first child node's prevNodeId property
     if (parentNode.children.length && !parentNode.children.includes(nodeId)) {
       treeNodesMap[parentNode.children[0]].preNodeId = '';
     }
-    // 表示这个添加是否已经添加到children中了
+    // whether this node has been added to children
     let isAdded = false;
-    // 更新父节点的children属性
+
+    // update parent node's children property
     if (!parentNode.children.includes(nodeId)) {
       if (node.preNodeId) {
         parentNode.children = parentNode.children.reduce((prev, item, index) => {
@@ -413,7 +462,7 @@ const addNodeToMap = (catalogTree: ICatalogTree, data: (Omit<INodesMapItem, 'chi
 };
 
 /**
- * 更新节点是否有子节点的状态
+ * update node's hasChildren state
  * @param treeNodesMap
  * @param tree
  * @param parentId
@@ -434,10 +483,11 @@ const moveTo = (treeNodesMap: ITreeNodesMap, nodeId: string, targetNodeId: strin
   if (pos === 0) {
     crossLevelMove(treeNodesMap, nodeId, targetNodeId, pos);
   }
-  // 被拖拽节点的你节点
+
+  // the parent node id for the dragged node
   const parentNodeId = treeNodesMap[nodeId].parentId;
   const targetParentNodeId = treeNodesMap[targetNodeId].parentId;
-  // 如果两个节点的父节点相同，说明是同级目录下移动
+  // if two nodes' parents are the same, it means that they are moved in the same level
   if (parentNodeId === targetParentNodeId) {
     sameLevelMove(treeNodesMap, nodeId, targetNodeId, pos);
   } else {
@@ -446,12 +496,13 @@ const moveTo = (treeNodesMap: ITreeNodesMap, nodeId: string, targetNodeId: strin
 };
 
 /**
- * 同层级移动
- * @param treeNodes 目录树
- * @param treeNodesMap 目录树节点信息的集合
- * @param nodeId 被移动的节点
- * @param targetNodeId 目标节点
- * @param pos 相对目标节点的位置
+ * move in the same level
+ * 
+ * @param treeNodes tree nodes
+ * @param treeNodesMap the map of tree nodes
+ * @param nodeId be moved nodes
+ * @param targetNodeId target node
+ * @param pos relative target node's position
  */
 const sameLevelMove = (treeNodesMap: ITreeNodesMap, nodeId: string, targetNodeId: string, pos: number) => {
   const parentNodeId = treeNodesMap[nodeId].parentId;
@@ -461,11 +512,11 @@ const sameLevelMove = (treeNodesMap: ITreeNodesMap, nodeId: string, targetNodeId
 
   if (!parentNode || !dragNode) { return; }
   const nextNodeId = parentNode.children[parentNode.children.findIndex(id => id === nodeId) + 1];
-  // 是否会影响被移动节点的下一个节点的preNodeId
+  // whether affect the preNodeId of the next node of the moved node
   if (nextNodeId && treeNodesMap[nextNodeId].preNodeId === nodeId) {
     treeNodesMap[nextNodeId].preNodeId = dragNode.preNodeId;
   }
-  // 更新目标位置受到影响的节点
+  // update the node which is affected by the target position
   if (pos === -1) {
     dragNode.preNodeId = treeNodesMap[targetNodeId].preNodeId;
     treeNodesMap[targetNodeId].preNodeId = nodeId;
@@ -479,12 +530,12 @@ const sameLevelMove = (treeNodesMap: ITreeNodesMap, nodeId: string, targetNodeId
   }
 
   parentNode.children = parentNode.children.reduce((prevNodeIds, id) => {
-    // 将节点从原先位置删除
+    // delete node from original position
     if (id === nodeId) { return prevNodeIds; }
     if (id === targetNodeId) {
-      // 将拖拽节点移动到目标节点的前面
+      // move the dragged node to the front of the target node
       pos === -1 && prevNodeIds.push(nodeId) && prevNodeIds.push(id);
-      // 将拖拽节点移动到目标节点的后面
+      // move the dragged node to the back of the target node
       pos === 1 && prevNodeIds.push(id) && prevNodeIds.push(nodeId);
     } else {
       prevNodeIds.push(id);
@@ -494,11 +545,11 @@ const sameLevelMove = (treeNodesMap: ITreeNodesMap, nodeId: string, targetNodeId
 };
 
 /**
- * 跨层级移动
- * @param treeNodesMap 目录树节点信息的集合
- * @param nodeId 被移动的节点
- * @param targetNodeId 目标节点
- * @param pos 相对目标节点的位置
+ * cross level move
+ * @param treeNodesMap the collection of catalog tree's nodes info
+ * @param nodeId moved node
+ * @param targetNodeId target node ID
+ * @param pos relative target node's position
  */
 const crossLevelMove = (treeNodesMap: ITreeNodesMap, nodeId: string, targetNodeId: string, pos: number) => {
   const parentNodeId = treeNodesMap[nodeId].parentId;
@@ -515,9 +566,9 @@ const crossLevelMove = (treeNodesMap: ITreeNodesMap, nodeId: string, targetNodeI
   } else {
     targetParentNode.children = targetParentNode.children.reduce((preNodeIds, id) => {
       if (id === targetNodeId) {
-        // 将拖拽节点移动到目标节点的前面
+        // move the dragged node to the front of the target node
         pos === -1 && preNodeIds.push(nodeId) && preNodeIds.push(id);
-        // 将拖拽节点移动到目标节点的后面
+        // move the dragged node to the back of the target node
         pos === 1 && preNodeIds.push(id) && preNodeIds.push(nodeId);
       } else {
         preNodeIds.push(id);
@@ -525,19 +576,20 @@ const crossLevelMove = (treeNodesMap: ITreeNodesMap, nodeId: string, targetNodeI
       return preNodeIds;
     }, [] as string[]);
   }
-  // 最后修改被移动节点的父节点
+
+  // last modified the parent node of the moved node
   treeNodesMap[nodeId].parentId = targetParentNodeId;
   const names = getPropertyByTree(treeNodesMap, targetParentNodeId, [nodeId], 'nodeName');
   treeNodesMap[nodeId].nodeName = getUniqName(treeNodesMap[nodeId].nodeName, names);
 };
 
 /**
- *  获取当前节点下所有子节点的指定的属性
- * @param treeNodesMap 树的数据源
- * @param treeNodes 树
- * @param nodeId 要查找的节点ID
- * @param exceptArr 要去除的节点
- * @param property 要获取的节点属性
+ * get current node's children's property
+ * @param treeNodesMap data source tree of nodes
+ * @param treeNodes nodes tree
+ * @param nodeId the node id want to find
+ * @param exceptArr the node id will remove
+ * @param property the node attributes to get
  */
 export const getPropertyByTree = (treeNodesMap: ITreeNodesMap, nodeId: string, exceptArr: string[], property: string) => {
   const node = treeNodesMap[nodeId];
@@ -563,10 +615,16 @@ export const mergeObj = (oldTree: ITreeNode[], newTree: ITreeNode[], treeNodesMa
   });
 };
 
-// 最最新
-// 传入多节点时需要注意，这多个节点必须是同一个父节点下的子节点
+/**
+ * (newest)
+ * attention: when you pass in multiple nodes, 
+ * you need to note that these multiple nodes must be the children of the same parent node
+ * 
+ * @param tree 
+ * @param newNode 
+ */
 export const addNodeToTree = (tree: ITreeNode[], newNode: INode | INode[]) => {
-  // 单个节点
+  // single node
   if (!Array.isArray(newNode)) {
     addSingleNodeToTree(tree, newNode);
   } else {
@@ -574,14 +632,20 @@ export const addNodeToTree = (tree: ITreeNode[], newNode: INode | INode[]) => {
   }
 };
 
-// 新增单个节点
+/**
+ * a single node to tree
+ * 
+ * @param tree 
+ * @param newNode 
+ * @returns 
+ */
 export const addSingleNodeToTree = (tree: ITreeNode[], newNode: INode) => {
   const { nodeId, parentId, preNodeId } = newNode;
   const parentNode = findNode(tree, parentId);
   if (!parentNode) {
     return;
   }
-  // 没有前置节点，默认为父节点下的第一个位置
+  // if no pre nodes, the default position is the first position of the parent node
   if (!preNodeId) {
     parentNode.children.unshift({ nodeId, children: [] });
     return;
@@ -592,7 +656,13 @@ export const addSingleNodeToTree = (tree: ITreeNode[], newNode: INode) => {
   }
 };
 
-// 新增多个节点
+/**
+ * new multi nodes
+ * 
+ * @param tree 
+ * @param newNodes 
+ * @returns 
+ */
 export const addMultiNodeToTree = (tree: ITreeNode[], newNodes: INode[]) => {
   const { parentId } = newNodes[0];
   const parentNode = findNode(tree, parentId);
@@ -621,10 +691,11 @@ export const moveFavoriteNode = (draftCatalogTree: ICatalogTree, data: { nodeId:
 };
 
 /**
- * 取消星标
- * 不仅要将节点从星标树中移除，同时还需要更新该节点的后一个节点的信息（位置）
+ * cancel favorite star
+ * not only remove nodes from favorite trees, but also update node's next node's info(position)
+ * 
  * @param catalogTree
- * @param removeNodeId 要取消星标的节点
+ * @param removeNodeId the node that cancel favorite
  */
 export const removeFavoriteNode = (catalogTree: ICatalogTree, removeNodeId: string) => {
   const { favoriteTreeNodeIds, treeNodesMap } = catalogTree;

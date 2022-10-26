@@ -44,16 +44,22 @@ import {
 import { getLinearRowsFormComputed, getPureVisibleRowsFormComputed, getSearchResultArray } from './computed';
 
 /**
- * 由于 Field 类需要依赖根 state 进行计算，我们需要向 selector 中传入根 state，但是又不想破坏 selector 的缓存。
- * 考虑到绝大部分情况下，对根 state 作为 memorize 的参数进行缓存是没有意义的，所以我们这里做了一个假设，
- * 如果使用者传入根 state 作为参数，那么 memoize 函数永远不去检测它的变化。
+ * 
+ * Field class needs to depend on the root state to calculate, 
+ * we need to pass the root state to the selector, 
+ * but we don't want to break the selector cache.
+ * 
+ * consider most cases, memorize the root state as a parameter is meaningless,
+ * so we make an assumption here,
+ * if the user passes the root state as a parameter,
+ * then the memoize function never checks its change.
  */
 const createSelectorIgnoreState = createSelectorCreator(defaultMemoize, (pre, next) => {
-  // 如果是根 state 作对比，则永远返回 true
+  // if compare to root state, always return true
   if (isObject(pre) && isObject(next) && ('isStateRoot' in pre) && ('isStateRoot' in next)) {
     return true;
   }
-  // 进行普通的引用比较
+  // common reference comparison
   return pre === next;
 });
 
@@ -71,7 +77,13 @@ export const getDatasheetIds = createDeepEqualSelector(
   keys => keys,
 );
 
-// 获取当前活动的视图
+/**
+ * get current active view
+ * 
+ * @param state 
+ * @param id 
+ * @returns 
+ */
 export const getActiveView = (state: IReduxState, id?: string) => {
   const datasheet = getDatasheet(state, id);
   if (!datasheet) {
@@ -84,7 +96,11 @@ export const getActiveView = (state: IReduxState, id?: string) => {
   return viewList[0].id;
 };
 
-// 获取当前查找结果列表的一条内容（一个单元格）
+/**
+ * get current search result's one record(cell)
+ * @param state 
+ * @returns 
+ */
 export const getCurrentSearchItem = (state: IReduxState) => {
   const searchKeyword = getSearchKeyword(state);
   const searchResultCursorIndex = getSearchResultCursorIndex(state);
@@ -99,12 +115,12 @@ export const getCurrentSearchItem = (state: IReduxState) => {
   return currentItem;
 };
 
-// 无缓存的计算获取当前可见的列集合
+// (no cache)calc and get current visible columns
 export const getVisibleColumnsBase = (view?: IViewProperty) => {
   return view ? view.columns.filter((item, i) => !(item.hidden && i !== 0)) : [];
 };
 
-// 计算获取一列的宽度
+// calc and get a width of a column
 export const getColumnWidth = (column: IGridViewColumn) => (!column || column.width == null) ?
   DEFAULT_COLUMN_WIDTH : column.width;
 
@@ -118,7 +134,7 @@ export const getViewIndex = (snapshot: ISnapshot, viewId: string) => {
 
 const filterColumnsByPermission = (columns, fieldPermissionMap) => {
   return columns.filter((column) => {
-    // TODO: 列权限第二期删除这里的处理逻辑
+    // TODO: column permission delete this logic (2nd phase)
     const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, column.fieldId);
     return fieldRole !== Role.None;
   });
@@ -188,7 +204,7 @@ export const getViewByIdWithDefault = (state: IReduxState, datasheetId: string, 
   return defaultView;
 };
 
-// 计算单元格值
+// information of calculated cell
 export const calcCellValue = (
   state: IReduxState,
   snapshot: IRecordSnapshot,
@@ -196,12 +212,12 @@ export const calcCellValue = (
   recordId: string,
   withError?: boolean,
   datasheetId?: string,
-  // TODO： 专门为第一期列权限加的字段，下一期删除
+  // TODO: for first version of column permission, delete this field in next version
   ignoreFieldPermission?: boolean,
 ) => {
   const fieldMap = snapshot.meta.fieldMap;
   const field = fieldMap[fieldId];
-  // TODO: 字段权限第一期的临时代码，后面需要删掉
+  // TODO: temp code for the first version of column permission, delete this logic in next version
   const fieldPermissionMap = getFieldPermissionMap(state, snapshot.datasheetId);
   const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, fieldId);
 
@@ -228,7 +244,18 @@ export const calcCellValue = (
   return getEntityCellValue(state, snapshot, recordId, fieldId, datasheetId);
 };
 
-// 获取单元格值
+/**
+ * get cell value
+ * 
+ * @param state 
+ * @param snapshot 
+ * @param recordId 
+ * @param fieldId 
+ * @param withError 
+ * @param datasheetId 
+ * @param ignoreFieldPermission 
+ * @returns 
+ */
 export const getCellValue = (
   state: IReduxState,
   snapshot: IRecordSnapshot,
@@ -238,7 +265,7 @@ export const getCellValue = (
   datasheetId?: string,
   ignoreFieldPermission?: boolean,
 ) => {
-  // TODO: 字段权限第一期的临时代码，后面需要删掉
+  // TODO: temp code for the first version of column permission, delete this logic in next version
   const fieldPermissionMap = getFieldPermissionMap(state, snapshot.datasheetId);
   const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, fieldId);
 
@@ -284,7 +311,8 @@ export const getTemporaryView = (snapshot: ISnapshot, viewId: string, datasheetI
   if (!temporaryView || mirror?.sourceInfo.datasheetId !== snapshot.datasheetId) {
     return originView;
   }
-  // 在镜像中如果对任意视图配置做了修改，原表的视图配置操作都不会再影响镜像，所以这里直接取用镜像的缓存数据
+  // in mirror, if any view config is modified, 
+  // the original table's view config will not affect the mirror, so here directly use the mirror's cache data
   return {
     id: originView!.id,
     type: originView!.type,
@@ -337,27 +365,29 @@ export const getFilterInfo = createCachedSelector<IReduxState,
 
 const doFilterOperations = (state: IReduxState, condition: IFilterCondition, snapshot: ISnapshot, record: IRecord, repeatRows?: string[]) => {
   /**
-   * 或条件才会有 repeatRows
-   * 或条件在 repeatRows 是否存在
+   * `or` condition has `repeatRows` only
+   * `or` condition exists in repeatRows
    */
   if (repeatRows?.includes(record.id)) {
     return true;
   }
   const { fieldId } = condition;
   const field = snapshot.meta.fieldMap[fieldId];
-  // 目前不再对没有权限的列进行数据过滤，因此获取 cellValue 需要避免对权限的检查
+
+  // currently, we don't filter data by the columns without permission, 
+  // so we need to ignore the permission check when get `cellValue`
   const cellValue = getCellValue(state, snapshot, record.id, fieldId, undefined, undefined, true);
   try {
     return doFilter(state, condition, field, cellValue);
   } catch (error) {
-    // FIXME: 计算字段转换引起筛选匹配报错
+    // FIXME: calc fields transform cause filter match error
     console.error(error);
     return false;
   }
 };
 
 /**
- * 检查一条 record 是否符合 filterCondition 中的条件
+ * check whether a record match the filterCondition
  */
 const checkConditions = (
   state: IReduxState,
@@ -384,27 +414,29 @@ const checkConditions = (
 export function doFilter(state: IReduxState, condition: IFilterCondition, field: IField, cellValue: ICellValue) {
   const fieldMethod = Field.bindContext(field, state);
   /**
-   *  isEmpty, isNotEmpty 调用通用逻辑
+   *  isEmpty, isNotEmpty 
+   *  call the common business logic
    */
   if (condition.operator === FOperator.IsEmpty || condition.operator === FOperator.IsNotEmpty) {
     return fieldMethod.isEmptyOrNot(condition.operator, cellValue);
   }
 
   /**
-   *  在非 isEmpty || isNotEmpty 条件下，如果没有填写 value 则不进行筛选
+   * under the condition of not isEmpty or isNotEmpty,
+   * if the value is not filled, then do not filter
    */
   if (condition.value == null && fieldMethod.basicValueType !== BasicValueType.Number && condition.operator !== FOperator.IsRepeat) {
     return true;
   }
 
   /**
-   * 调用 field 自有的操作符计算函数去计算
+   * call `field`'s own operator calculation function to calculate
    */
   return fieldMethod.isMeetFilter(condition.operator, cellValue, condition.value);
 }
 
 export const getFilterInfoExceptInvalid = (state: IReduxState, filterInfo?: IFilterInfo, datasheetId?: string) => {
-  // filterInfo.conditions 为空会导致无筛选但不返回数据问题, 这里要过滤
+  // filterInfo.conditions is empty will cause no filter but no data returned, so we need to filter it
   if (!filterInfo || !filterInfo.conditions.length) {
     return undefined;
   }
@@ -460,14 +492,22 @@ export const getFilteredRows = (state: IReduxState, snapshot?: ISnapshot, view?:
   const recordMap = snapshot.recordMap;
   const rows = view.rows.filter(row => recordMap[row.recordId]);
 
-  // 传入的 view 因为经过 mirror 的处理，所以获取的 filterInfo 可能是 mirror 操作的临时数据，所以如果直接从 views 里面读取，无法做到对源表的数据隔离
+  // pass in `view`, because it has been processed by mirror, 
+  // so the `filterInfo` we get may be the temporary data of mirror operation, 
+  // so if we read it directly from `views`, 
+  // we can't do data isolation for the source table
   const _filterInfo = state?.pageParams?.mirrorId ? snapshot.meta.views.find(item => item.id === view.id)!.filterInfo : view.filterInfo;
   const filterInfo = getFilterInfoExceptInvalid(state, _filterInfo, snapshot.datasheetId);
   const viewRows = getFilterRowsBase(state, { filterInfo, rows, snapshot, recordMap });
 
   /**
-   * getVisibleRowsBase 有时需要处理关联表的数据，如果单纯只以 mirror 的存在做判断会导致数据源是关联表，筛选条件又是本表的错误情况
-   * 所以这里需要判断当前提供的 snapshot 和镜像绑定的表是不是一样的
+   * 
+   * getVisibleRowsBase sometimes needs to process the data of the associated table,
+   * if we judge the existence of mirror only, 
+   * it will cause an error situation where the data source is the associated table and the filter condition is the local table.
+   * 
+   * so, here we need to judge whether the snapshot provided and the table bound by the mirror are the same
+   * 
    */
   if (state?.pageParams?.mirrorId && state?.pageParams?.datasheetId === snapshot.datasheetId) {
     const mirror = getMirror(state, state.pageParams.mirrorId)!;
@@ -508,7 +548,7 @@ export const getGroupFields = (view: IViewProperty, fieldMap: { [id: string]: IF
 };
 
 /**
- * 筛选出重复的cellValue，返回去重后的rows
+ * filter the duplicate cellValue, return the rows after de-duplication
  */
 const findRepeatRow = (state: IReduxState, snapshot: ISnapshot, rows: IViewRow[], fieldId: string, isAnd?: boolean) => {
   const map = new Map();
@@ -527,11 +567,12 @@ const findRepeatRow = (state: IReduxState, snapshot: ISnapshot, rows: IViewRow[]
         ([FieldType.MultiSelect, FieldType.Member].includes(field.type))
         || field.type === FieldType.Link
       );
-      // 是否需要排序
+
+      // whether or not to sort
       if (isNeedSort) {
         cellValue = sortBy(cellValue as any[], o => typeof o === 'object' ? o.text : o) as ICellValue;
       }
-      // 是否需要调用cellValueToString转换成字符串形式
+      // whether or not call cellValueToString to convert to string
       if (needTranslate.includes(field.type) ||
         (FieldType.LookUp === field.type && lookUpField &&
           ![FieldType.SingleSelect, FieldType.MultiSelect, FieldType.Link].includes(lookUpField.type))
@@ -711,14 +752,25 @@ export const getComputeCellValue = (
   }
 };
 
-// 非计算字段的值，通过 record.data 和 fieldId 获取。
+/**
+ * 
+ * non-calc field value, get by record.data and fieldId
+ * 
+ * @param state 
+ * @param snapshot 
+ * @param recordId 
+ * @param fieldId 
+ * @param datasheetId 
+ * @returns 
+ */
 export const getEntityCellValue = (
   state: IReduxState, snapshot: IRecordSnapshot, recordId: string, fieldId: string, datasheetId?: string,
 ) => {
   const recordMap = snapshot.recordMap;
   const fieldMap = snapshot.meta.fieldMap;
   const field = fieldMap[fieldId];
-  // TODO: 如果获取实体字段值时候在，找不到这个 id。证明服务端漏掉了数据。前端需要加上补救措施，主动加载漏掉的字段。
+  // TODO: if cannot find this id when get entity cell value, 
+  // it means that the server missed the data. The frontend needs to add a remedy to actively load the missing fields.
   if (!recordMap[recordId] && datasheetId) {
     const client = state.datasheetMap[datasheetId]?.client;
     const loadingRecord = client?.loadingRecord;
@@ -756,7 +808,7 @@ export const _getLookUpTreeValue = (
   return getEntityCellValue(state, snapshot, recordId, fieldId, datasheetId);
 };
 
-// TODO: 列权限第二期，存在数据过滤就不需要在这里进行特殊处理
+// TODO: field permissions 2nd version, no need to handle special case if there is data filter
 export const getFieldMapBase = (datasheet: IDatasheetState | null | undefined, fieldPermissionMap?: IFieldPermissionMap | undefined) => {
   const fieldMap = datasheet && datasheet.snapshot.meta.fieldMap;
 
@@ -772,7 +824,8 @@ export const getFieldMapBase = (datasheet: IDatasheetState | null | undefined, f
   for (const k in fieldMap) {
     const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, k);
     if (fieldRole === Role.None) {
-      // 中间层目前没有对无权限的列做数据过滤，所以交给 selector
+      // room-server currently don't do data filter for no permission fields, 
+      // so do it in selector
       continue;
     }
     _fieldMap[k] = fieldMap[k];
@@ -793,7 +846,7 @@ export const getFieldMapIgnorePermission = createCachedSelector<IReduxState,
   )(defaultKeySelector);
 
 /**
- * 神奇引用删选 record ids
+ * magic links filter record ids
  * @param state
  * @param snapshot
  * @param records
@@ -963,12 +1016,13 @@ export function sortRowsBySortInfo(state: IReduxState, rows: IViewRow[], sortRul
   shallowRows.sort((prev, current) => {
     return sortRules.reduce((acc, rule) => {
       const field = snapshot.meta.fieldMap[rule.fieldId];
-      // TODO: 线上临时代码，合并到 integration 需要删除这里
+      // TODO: temp code online, when merge to develop, delete this
       if (!field || acc !== 0) {
         return acc;
       }
       const fieldMethod = Field.bindContext(field, state);
-      // 和筛选同理，排序放开对列权限的检查
+
+      // same as filter, sort remove the check of column permission
       const cv1 = getCellValue(state, snapshot, prev.recordId, field.id, undefined, undefined, true);
       const cv2 = getCellValue(state, snapshot, current.recordId, field.id, undefined, undefined, true);
       const res = fieldMethod.compare(
@@ -992,7 +1046,8 @@ function getKeepSortRows(state: IReduxState, view: IViewProperty, snapshot: ISna
 }
 
 /**
- * @description 处理存在搜索内容时的排序
+ * the sort on search result
+ * 
  * @param {IReduxState} state
  * @param {IViewProperty} view
  * @param {ISnapshot} snapshot
@@ -1015,7 +1070,7 @@ const getSortRowsByKanbanGroup = (state: IReduxState, view: IViewProperty, snaps
   const fieldPermission = getFieldPermissionMap(state, snapshot.datasheetId);
 
   if (getFieldRoleByFieldId(fieldPermission, kanbanFieldId) === Role.None) {
-    // kanbanFieldId 设置过权限，且对当前用户不可见，不需要再处理下面的逻辑
+    // kanbanFieldId, if set permission, and not visible to current user, no need to handle the following logic
     return rows;
   }
   const kanbanGroupMap = getKanbanGroupMapBase(rows, kanbanFieldId, snapshot);
@@ -1057,7 +1112,7 @@ export const getSortRowsByGroup = (state: IReduxState, view: IViewProperty, snap
     return acc;
   }, [] as boolean[]);
 
-  // rows 依次按 group 排序
+  // rows, sort by group
   return rows.sort((row1, row2) => {
     return groups.reduce((prev, field, index) => {
       if (prev !== 0) {
@@ -1073,21 +1128,21 @@ export const getSortRowsByGroup = (state: IReduxState, view: IViewProperty, snap
 };
 
 export const getVisibleRowsBaseComputed = (state: IReduxState, snapshot?: ISnapshot, view?: IViewProperty) => {
-  // where 按字段精确匹配
+  // where,  match by fields
   const filteredRows = getFilteredRows(state, snapshot, view).filter(item => !item.hidden);
   // order by
   const sortedRows = getKeepSortRows(state, view!, snapshot!, filteredRows);
   // group by
   let groupedRows = getSortRowsByGroup(state, view!, snapshot!, sortedRows);
-  // 处理看板视图下的搜索排序
+  // search orders under kanban view
   groupedRows = getSortRowsByKanbanGroup(state, view!, snapshot!, groupedRows);
 
-  // 计算激活记录是否位移
+  // calc active records whether is offset
 
   return groupedRows;
 };
 
-// 数据层的可视 Rows
+// visible rows in data layer
 export const getVisibleRowsBase = (state: IReduxState, snapshot?: ISnapshot, view?: IViewProperty, searchKeyword?: string) => {
   if (!snapshot || !view) {
     return [];
@@ -1104,8 +1159,10 @@ export const getVisibleRowsBase = (state: IReduxState, snapshot?: ISnapshot, vie
     return getSearchRows(state, snapshot!, cache, view, searchKeyword);
   }
   /**
-   * 第一次如果没有读到缓存 则证明是第一次加载产生的计算，这时候加入订阅池
-   * 或者 缓存过期，也去重新计算缓存设置
+   * 
+   * first time, if no cache, it means the first time to load, then add to subscribe pool
+   * otherwise, cache expired, then recalculate cache
+   * 
    */
   const visibleRowsBase = cache || getVisibleRowsBaseComputed(state, snapshot, view);
   if (isMirror) {
@@ -1114,10 +1171,15 @@ export const getVisibleRowsBase = (state: IReduxState, snapshot?: ISnapshot, vie
     visibleRowsBaseCacheManage.set(snapshot.datasheetId, view.id, visibleRowsBase);
   }
   /**
-   * !!! 先过滤再排序，排序性能会好一些。但是为了保证搜索结果的顺序，需要在排序后执行全文搜索。
-   * 搜索过程中，会一次性缓存搜索结果，用于上下切换搜索结果。
+   * 
+   * !!! first, filter and sort, sort performance is better. But to ensure the order of search results,
+   * need to execute full-text search after sorting.
+   * 
+   * during the search process, the search result will be cached at one time, used to switch the search result.
+   * 
    */
-  // 全局 按文本精确匹配
+
+  // global, match by text accurately
   return getSearchRows(state, snapshot!, visibleRowsBase, view, searchKeyword);
 };
 
@@ -1174,7 +1236,7 @@ export const getVisibleColumns = createCachedSelector<IReduxState,
   IViewColumn[]>(
     [getCurrentView, getFieldPermissionMap],
     (view?: IViewProperty, fieldPermissionMap?) => {
-    // 忽略首列为 hidden的 情况
+      // ignore the first column as hidden
       return view ? view.columns.filter((item, i) => {
         const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, item.fieldId);
         if (fieldRole === Role.None) {
@@ -1200,14 +1262,15 @@ export const findColumnIndexById = (state: IReduxState, id: string): number => {
   return index;
 };
 
-// 非冻结列的reselect
+// reselect for non-frozen columns
 export const getExceptFrozenColumns = createSelector(
   [getVisibleColumns, getCurrentView],
   (columns: IGridViewColumn[], view?: IViewProperty) => {
     return (!view || (view.type !== ViewType.Grid && view.type !== ViewType.Gantt)) ? [] : columns.slice(view.frozenColumnCount);
   },
 );
-// 冻结列的reselect
+
+// reselect for frozen columns
 export const getFrozenColumns = createSelector(
   [getVisibleColumns, getCurrentView],
   (columns: IGridViewColumn[], view?: IViewProperty) => {
@@ -1215,7 +1278,7 @@ export const getFrozenColumns = createSelector(
   },
 );
 
-// TODO: memory 特别关注
+// TODO: memory special attention
 const getStdValueMatrixFromIds = (
   state: IReduxState,
   snapshot: ISnapshot,
@@ -1246,7 +1309,7 @@ const getCellMatrix = (
   });
 };
 
-// 获取当前激活视图的筛选信息
+// get current active view's filter info
 export const getActiveViewFilterInfo = createSelector([getCurrentView], (view: IViewProperty) => {
   if (!view?.filterInfo) {
     return null;
@@ -1254,12 +1317,12 @@ export const getActiveViewFilterInfo = createSelector([getCurrentView], (view: I
   return view.filterInfo;
 });
 
-// 获取当前激活视图的排序信息
+// get current active view's sort info
 export const getActiveViewSortInfo = createSelector([getCurrentView], (view: IViewProperty) => {
   return view?.sortInfo;
 });
 
-// 获取当前激活视图的分组信息
+// get current active view's group info
 export const getActiveViewGroupInfo = createSelector([getCurrentView], (view: IViewProperty) => {
   if (!view?.groupInfo) {
     return [];
@@ -1270,7 +1333,7 @@ export const getActiveViewGroupInfo = createSelector([getCurrentView], (view: IV
 export const getRecordMoveType = createSelectorIgnoreState(
   [state => state, getPureVisibleRowsIndexMap, getActiveRecordId],
   (state: IReduxState, visibleRowsIndexMap, recordId) => {
-    // getPureVisibleRows 获取的是最新的 visibleRows;
+    // getPureVisibleRows, get the newest visibleRows;
     const NOT_MOVE = RecordMoveType.NotMove;
     const datasheetId = getActiveDatasheetId(state);
     if (!datasheetId || !recordId) {
@@ -1288,24 +1351,26 @@ export const getRecordMoveType = createSelectorIgnoreState(
     }
     if (type === WhyRecordMoveType.NewRecord) {
       if (!visibleRowsIndexMap.has(recordId)) {
-        // 不存在于当前视图，但是存在 recordMap，表示被过滤
+        // if not exist in current view, but exist in recordMap, means filtered
         if (recordId in snapshot.recordMap) {
           return RecordMoveType.OutOfView;
         }
-        // 不存在当前视图，也不存在 recordMap，表示被删除。
+        // if not exit in current view, and not exist in recordMap, means deleted
         return NOT_MOVE;
       }
       if (nextVisibleRowIndex !== positionInfo.visibleRowIndex) {
         return RecordMoveType.WillMove;
       }
     }
-    // 提前判断减少不必要的计算
+
+    // judge earlier to reduce unnecessary calculation
     if (nextVisibleRowIndex === positionInfo.visibleRowIndex) {
       return NOT_MOVE;
     }
     const { recordSnapshot } = activeRowInfo as IActiveUpdateRowInfo;
     const nextRecordSnapshot = getRecordSnapshot(state, recordId);
-    // 记录被删除
+
+    // records to delete
     if (!nextRecordSnapshot) {
       return RecordMoveType.Deleted;
     }
@@ -1319,7 +1384,8 @@ export const getRecordMoveType = createSelectorIgnoreState(
       const groupField = getGroupFields(view, fieldMap, fieldPermissionMap);
       const filterInfo = getActiveViewFilterInfo(state);
       const sortInfo = getActiveViewSortInfo(state);
-      // 记录是否发生预排序，由 group,filter, 开启了自动排序的 sort fields 决定
+
+      // write down whether happened pre-sort, decided by group, filter, sort fields which auto sort is enabled
       const fieldsWhichMakeRecordMove: string[] = groupField.map(field => field.id);
       if (sortInfo?.keepSort) {
         sortInfo?.rules.forEach(rule => fieldsWhichMakeRecordMove.push(rule.fieldId));
@@ -1331,8 +1397,9 @@ export const getRecordMoveType = createSelectorIgnoreState(
       });
       return _fieldsWhichMakeRecordMove.some(fieldId => {
         /**
-         * getCellValue 传入的 recordSnapshot 不会对 formula 起作用，formula 始终是最新值。
-         * 所以在旧的 recordSnapshot 中存储计算字段的值。用于处理计算字段预排序的情况。
+         * 
+         * getCellValue, the argument recordSnapshot will not take effect on formula, formula always get the newest value.
+         * so, store the value of formula field in the old recordSnapshot, to handle the case of formula field pre-sort.
          */
         const field = fieldMap[fieldId];
         let cv1 = recordSnapshot.recordMap[recordId]?.data[fieldId];
@@ -1342,7 +1409,7 @@ export const getRecordMoveType = createSelectorIgnoreState(
       });
     };
     const isSearching = getIsSearching(state);
-    // 非搜索状态下，且指定字段数据变化才引起预排序。
+    // non-searching state, only when specified fields' value changed, record will pre-order.
     if (!isSearching && !isRecordEffectPositionCellValueChanged(recordSnapshot, nextRecordSnapshot)) {
       return NOT_MOVE;
     }
@@ -1372,7 +1439,7 @@ const getVisibleRowsInner = (
         const nextVisibleRowIndex = draftVisibleRows.findIndex(row => row.recordId === recordId);
         draftVisibleRows.splice(nextVisibleRowIndex, 1);
       }
-      // 记录还存在的时候才插入进去。
+      // only insert when record still exist
       if (snapshot && snapshot?.recordMap[recordId]) {
         draftVisibleRows.splice(visibleRowIndex, 0, { recordId });
       }
@@ -1448,11 +1515,12 @@ export const isCellVisible = (state: IReduxState, cell: ICell) => {
 export const getSelection = (state: IReduxState) => {
   const client = getDatasheetClient(state);
   const selection = client && client.selection;
-  // 判断activeCell被移出的情况
+
+  // whether activeCell move out
   if (selection && selection.activeCell && !(isCellVisible(state, selection.activeCell))) {
     return null;
   }
-  // 选区起点和终点被移除
+  // the start of the selection area and the end of the selection area are removed
   if (selection && selection.ranges) {
     const { start, end } = selection.ranges[0];
     if (!isCellVisible(state, start) || !isCellVisible(state, end)) {
@@ -1474,13 +1542,14 @@ export const getSelectionRecordRanges = createSelector([getSelection], selection
 });
 
 /**
- * 从连续或者非连续选区中，获取选中单元格的二维数组。
+ * from sequential or non-sequential selection area, get selected cells 2d array.
  * @param state
  */
 export const getCellMatrixFromSelection = (state: IReduxState): ICell[][] | null => {
   const selectionRanges = getSelectRanges(state);
   const selectionRecordRanges = getSelectionRecordRanges(state);
-  // 非连续选区
+
+  // non-sequence selection
   if (selectionRecordRanges) {
     const visibleColumns = getVisibleColumns(state);
     return selectionRecordRanges.map(recordId => {
@@ -1492,7 +1561,7 @@ export const getCellMatrixFromSelection = (state: IReduxState): ICell[][] | null
       });
     });
   }
-  // 连续选区
+  // sequence selection
   if (!selectionRanges.length) {
     return null;
   }
@@ -1590,7 +1659,7 @@ export const getRangeRows = (state: IReduxState, start: number, end: number) => 
 };
 
 export const isRowSpaceEnough = (state: IReduxState, length: number, startRowIndex: number) => {
-  // 考虑到分组的情况，需要知道当前分组是否有足够的空间粘贴数据
+  // consider the grouping situation, we need to know whether the current grouping has enough space to paste data
   const rowLength = getVisibleRows(state).length;
   if (rowLength <= 0) {
     return false;
@@ -1604,7 +1673,7 @@ export const isColumnSpaceEnough = (state: IReduxState, length: number, activeCo
 };
 
 /**
- * 获得『已经发挥作用了的』筛选条件数量
+ * get the number of filters that "have been applied"
  */
 export const getEffectConditionCount = (state: IReduxState) => {
   const view = getCurrentView(state);
@@ -1616,7 +1685,7 @@ export const getEffectConditionCount = (state: IReduxState) => {
     return 0;
   }
 
-  // TODO 完善逻辑
+  // TODO improve the logic
   return filterInfo.conditions.length; // filter(isConditionTakeEffect).length;
 };
 
@@ -1630,19 +1699,19 @@ export const getRowHeightFromLevel = (level?: RowHeightLevel): number => {
 };
 
 /**
- * 获取选中的记录集，不管是通过 checkbox 选的，还是选区选的。
+ * get selected records collection, no matter by checkbox or range selection
  * @param state
  */
 export const getSelectRecordIds = createSelectorIgnoreState(
   [state => state, getSelectRanges, getSelectionRecordRanges],
   (state, ranges, checkedRecordIds) => {
     const range = ranges[0];
-    // 存在选区的情况下，返回选区内的选中记录集。
+    // if selection area exists, return the selected records in the area
     if (range) {
       const rangeRecords = getRangeRecords(state, range);
       return rangeRecords ? rangeRecords.map(row => row.recordId) : [];
     }
-    // 否则返回勾选中的记录集。
+    // otherwise return the checked records
     return checkedRecordIds || [];
   });
 
@@ -1727,10 +1796,12 @@ function getLinearRowsBase(state: IReduxState, visibleRows, groupInfo, groupingC
   const lastRow: IViewRow = { recordId: '' };
   const groupingCollapseSet: Map<string, boolean> = new Map(groupingCollapseIds && groupingCollapseIds.map((v) => [v, true]));
   let globalFilterDepth = Infinity;
-  // 显示在记录前方的行号，发生分组时重置。
+
+  // the row number before the record, reset when grouping occurs.
   let displayRowIndex = 0;
   let groupHeadRecordId = '';
-  // 存在分组，啥也没有，添加站位行。
+
+  // group exist, but no data, add a placeholder row.
   if (!visibleRows.length && groupInfo.length) {
     res.push({
       type: CellType.Blank,
@@ -1765,7 +1836,7 @@ function getLinearRowsBase(state: IReduxState, visibleRows, groupInfo, groupingC
       /**
        * rec1_0
        *  rec1_1
-       *  rec2_1 -> current_record 循环到这里时，groupTabIds 是从上到下现有的分组头 Ids ，不是完整的 groupTabIds。
+       *  rec2_1 -> current_record : when the loop run to here, groupTabIds is current grouping Ids, not the whole groupTabIds.
        * rec3_0
        *  rec3_1
        *  rec4_1
@@ -1803,7 +1874,8 @@ function getLinearRowsBase(state: IReduxState, visibleRows, groupInfo, groupingC
 }
 
 /**
- * 指导 react-window 绘制表格的结构化数据， 层级结构由 depth 反映出来。
+ * guide `react-window` to draw table's structured data, the hierarchy is reflected by depth.
+ * 
  * [
  *    Blank 0
  *    GroupTab 0
@@ -1867,7 +1939,7 @@ export const getFillHandleStatus = (state: IReduxState) => {
 };
 
 /**
- * 仅供甘特图图形区使用
+ * use for gantt view
  */
 export const getGanttLinearRows = createSelectorIgnoreState(
   [state => state, getVisibleRows, getActiveViewGroupInfo],
@@ -1925,19 +1997,21 @@ export const getPermissions = (state: IReduxState, datasheetId?: string, fieldId
   const screenWidth = state?.space?.screenWidth;
   const paramsNodeId = mirrorId || getActiveDatasheetId(state);
   const fieldPermissionMap = getFieldPermissionMap(state, datasheetId);
-  // 只有是在镜像中打开的数表才需要对权限做覆盖处理，也就是说 url 上的 datasheetId 和需要查询的 datasheetId 保持一致
+
+  // only in the mirror, the permission should be integrated with field permission
+  // which means the url of datasheetId should be the same as "the datasheetId to query"
   const nodePermission = mirrorId && (datasheet?.id === getActiveDatasheetId(state) || sourceMirrorId) ? getMirror(state, mirrorId)?.permissions :
     datasheet?.permissions;
   const blackSpace = state.billing?.subscription?.blackSpace;
 
   if (blackSpace) {
-    // 黑名单空间站把所有节点的权限都重置为只读
+    // blacklist space will reset all node's permission to readonly
     return DEFAULT_PERMISSION;
   }
 
   if (screenWidth && screenWidth < ScreenWidth.md) {
-    // smallScreen 暂时不允许编辑
-    // TODO: 移动端逐步支持编辑
+    // smallScreen temporary not allow edit
+    // TODO: mobile will support edit in the future
     const permission = datasheet ? getIntegratePermissionWithField(
       state,
       {
@@ -1955,12 +2029,12 @@ export const getPermissions = (state: IReduxState, datasheetId?: string, fieldId
     };
   }
 
-  // 有时光机回滚预览的时候禁用一切权限
+  // forbid all permission when previewing time machine
   if (!datasheet || state.datasheetMap[PREVIEW_DATASHEET_ID]) {
     return DEFAULT_PERMISSION;
   }
 
-  // 分享、模板界面，直接返回权限
+  // share / templates page, return permission directly
   if (state.pageParams.shareId || state.pageParams.templateId) {
     return getIntegratePermissionWithField(
       state,
@@ -1975,9 +2049,13 @@ export const getPermissions = (state: IReduxState, datasheetId?: string, fieldId
   }
 
   /**
-   *  连接还未建立的时候，返回默认禁止编辑的权限。
-   * 但这里需要特殊处理，按照 v0.6.2 的架构改版，整个 tab 只存在一个 room，换句话说，只有一个 datasheet 处于 connect 状态，
-   * 对于关联表涞水，connect 为 false，所以对于 connect 的检查应该局限于创建 room 的主表，对于关联表的状态不予关心
+   * when connection is not ready, return default forbidden edit permission
+   * but, here attention, according to v0.6.2 infra refactor,
+   * the whole `tab` only exist one room.
+   * in the other world, only 1 datasheet under connect state.
+   * for relation datasheets, connect is false,
+   * so, the check of connect, only in the main datasheet of creating room.
+   * no need to care about the relation datasheets.
    *
    */
   if (!nodeConnected && paramsNodeId === datasheet.id) {
@@ -1999,13 +2077,13 @@ export const getPermissions = (state: IReduxState, datasheetId?: string, fieldId
 export const getViewRowHeight = (state: IReduxState) => {
   const view = getCurrentView(state)!;
   if ([ViewType.Grid, ViewType.Gantt].includes(view?.type)) {
-    // 新建的表格没有行高属性，只有添加视图才会在新视图初始。
+    // new table has no rowHeight property, only add view will init new view.
     return (view as IGridViewProperty).rowHeightLevel || RowHeightLevel.Short;
   }
   return;
 };
 
-// 获取 view 实际的行数，不受筛选影响
+// get view's actual row count, not affected by filter
 export const getActualRowCount = (state: IReduxState) => {
   const view = getCurrentView(state);
   return view?.rows.length;
@@ -2218,7 +2296,8 @@ export const getDateTimeCellAlarm = (
   recordId: string,
   fieldId: string,
 ): IRecordAlarm | undefined => {
-  // 通知中心直接打开卡片没有 snapshot
+
+  // notification center open card without snapshot
   const recordMeta = snapshot?.recordMap?.[recordId]?.recordMeta;
   if (!recordMeta) {
     return;
@@ -2231,8 +2310,10 @@ export const getDateTimeCellAlarm = (
 };
 
 /**
- * 专门提供给前端使用的方法
- * 使用需要注意，这里返回的是个新的数据结构，不可以直接用于 useSelector 里
+ * 
+ * a method for front-end use
+ * attention: this method return a new data structure, can not be used in useSelector
+ * 
  */
 export const getDateTimeCellAlarmForClient = (
   snapshot: IRecordSnapshot,

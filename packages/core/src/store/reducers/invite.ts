@@ -7,7 +7,7 @@ import { produce } from 'immer';
 const defaultState: IInvite = {
   inviteEmailInfo: null,
   teamTreeInvite: [],
-  linkList: [], // 已创建的链接邀请
+  linkList: [], // invite links that created
   inviteLinkInfo: null,
   linkToken: '',
   mailToken: '',

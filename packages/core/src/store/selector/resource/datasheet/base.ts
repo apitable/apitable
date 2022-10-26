@@ -10,13 +10,20 @@ export const getDatasheetPrimaryField = (snapshot: ISnapshot) => {
   return fieldMap[firstColumn.fieldId];
 };
 
-// 获取一个数表pack，一个数表pack包含数表的状态信息（loading等）、基本快照数据以及经过计算后的计算信息
+/**
+ * get a datasheet pack, 
+ * a datasheet pack contains the state information of the datasheet (loading, etc.), 
+ * the basic snapshot data, and the calculated information after calculation
+ * @param state 
+ * @param id 
+ * @returns 
+ */
 export const getDatasheetPack = (state: IReduxState, id?: string) => {
   const datasheetId = id || state.pageParams.datasheetId;
   if (!datasheetId) {
     return;
   }
-  // 没有指定数表id 并且有时光机预览数据时先取预览数据用于渲染
+  // if no specify datasheet id, and have snapshot preview data, use preview data for render
   if (!id && state.datasheetMap[PREVIEW_DATASHEET_ID]) {
     return state.datasheetMap[PREVIEW_DATASHEET_ID];
   }
@@ -24,7 +31,12 @@ export const getDatasheetPack = (state: IReduxState, id?: string) => {
   return state.datasheetMap[datasheetId];
 };
 
-// 获取数表的快照信息
+/**
+ * get the snapshot of datasheet
+ * @param state 
+ * @param id 
+ * @returns 
+ */
 export const getDatasheet = (state: IReduxState, id?: string) => {
   const datasheetPack = getDatasheetPack(state, id);
   return datasheetPack && datasheetPack.datasheet;
@@ -92,7 +104,7 @@ export const getHighlightFieldId = (state: IReduxState, id?: string) => {
   return datasheetPack?.client?.highlightFiledId;
 };
 
-// 获取当前数表设置的列权限信息
+// get current datasheet's column permission
 export const getFieldPermissionMap = (state: IReduxState, id?: string) => {
   const datasheetPack = getDatasheetPack(state, id);
   return datasheetPack?.fieldPermissionMap;
@@ -208,7 +220,7 @@ export const getViewsList = (state: IReduxState, dsId?: string) => {
 
 export const getNodeId = (state: IReduxState) => {
   const { datasheetId, folderId, formId, dashboardId, mirrorId } = state.pageParams;
-  // mirror 比较特殊，url 会同时存在 mirrorId 和 datasheetId，因此 mirrorId 需要提前判断
+  // mirror is special,  url will contain mirrorId and datasheetId at the same time, so mirrorId need to be judged first
   if (mirrorId) {
     return mirrorId;
   }
