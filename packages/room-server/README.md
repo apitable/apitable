@@ -1,5 +1,25 @@
 # Room Server
 
+## Structure
+
+all modules based
+
+- shared
+  - utils
+- fusionapi 
+  - controller
+  - service
+  - dto
+  - vo
+  - repository
+  - entity
+- datasheet
+  - ...
+- robot
+  - ...
+- actuator
+  - ...
+
 ## 描述
 
 基于 [Nest](https://github.com/nestjs/nest) 框架的 TypeScript 服务端工程

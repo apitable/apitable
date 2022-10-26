@@ -11,7 +11,7 @@ import { FastifyRequest } from 'fastify';
 import { IFieldRoTransformOptions, IFieldValue, IFieldValueMap } from 'interfaces';
 import { flatten, keyBy } from 'lodash';
 import { DatasheetRecordService } from 'modules/services/datasheet/datasheet.record.service';
-import { FieldManager } from 'modules/services/fusion/field.manager';
+import { FieldManager } from '../../fusion/field.manager';
 import { Logger } from 'winston';
 
 /**

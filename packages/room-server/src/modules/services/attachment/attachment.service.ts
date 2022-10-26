@@ -11,7 +11,7 @@ import { IAuthHeader } from 'interfaces';
 import { IFileInterface } from 'interfaces/file.interface';
 import { ApiResponse } from 'model/api.response';
 import { AttachmentDto } from 'model/dto/attachment/attachment.dto';
-import { FusionApiService } from 'modules/services/fusion/impl/fusion.api.service';
+import { FusionApiService } from 'fusion/impl/fusion.api.service';
 import { JavaService } from 'modules/services/java/java.service';
 import { I18nService } from 'nestjs-i18n';
 import * as path from 'path';

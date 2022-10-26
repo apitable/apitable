@@ -24,7 +24,7 @@ import { DatasheetMetaService } from '../datasheet/datasheet.meta.service';
 import { DatasheetRecordSourceService } from '../datasheet/datasheet.record.source.service';
 import { DatasheetService } from '../datasheet/datasheet.service';
 import { EventService } from '../event/event.service';
-import { FusionApiTransformer } from '../fusion/transformer/fusion.api.transformer';
+import { FusionApiTransformer } from '../../../fusion/transformer/fusion.api.transformer';
 import { NodeService } from '../node/node.service';
 
 @Injectable()

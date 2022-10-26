@@ -6,11 +6,11 @@ import { FormController } from './form.controller';
 
 @Module({
   imports: [
-    UserServiceModule, 
-    NodeServiceModule, 
-    FormServiceModule,
+  UserServiceModule, 
+  NodeServiceModule, 
+  FormServiceModule,
   ],
   controllers: [FormController],
-})
+  })
 // todo 和service层的FormModule重名了，这里的NodeRepository可以迁移到service层去做
 export class FormModule {}

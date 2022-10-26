@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { FusionApiServiceModule } from './fusion/fusion.api.service.module';
+import { FusionApiServiceModule } from '../../fusion/fusion.api.service.module';
 import { DeveloperServiceModule } from './developer/developer.service.module';
 import { DatasheetServiceModule } from './datasheet/datasheet.service.module';
 import { UserServiceModule } from './user/user.service.module';

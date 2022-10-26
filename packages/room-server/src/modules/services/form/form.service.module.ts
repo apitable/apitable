@@ -5,7 +5,7 @@ import { ResourceMetaRepository } from 'modules/repository/resource.meta.reposit
 import { CommandServiceModule } from 'modules/services/command/command.service.module';
 import { DatasheetServiceModule } from '../datasheet/datasheet.service.module';
 import { EventServiceModule } from '../event/event.service.module';
-import { FusionApiServiceModule } from '../fusion/fusion.api.service.module';
+import { FusionApiServiceModule } from '../../../fusion/fusion.api.service.module';
 import { NodeServiceModule } from '../node/node.service.module';
 import { FormService } from './form.service';
 
