@@ -1,4 +1,5 @@
 import { Skeleton } from '@vikadata/components';
+import { Strings, t } from '@vikadata/core';
 import { Trial } from 'pc/components/space_manage/log/trial';
 import { showUpgradeContactUs } from 'pc/components/subscribe_system/order_modal/pay_order_success';
 import { getEnvVariables } from 'pc/utils/env';
@@ -14,7 +15,7 @@ const UpgradeSpace = () => {
 
   const vars = getEnvVariables();
 
-  const [showTrialModal, setShowTrialModal] = useState<boolean>(vars.HIDDEN_UPGRADE_SPACE);
+  const [showTrialModal, setShowTrialModal] = useState<boolean>(vars.CLOUD_DISABLE_BILLING_UPGRADE);
 
   useEffect(() => {
     if (!iframeRef) {
@@ -59,7 +60,7 @@ const UpgradeSpace = () => {
   }, [spaceId, product]);
 
   if (showTrialModal) {
-    return <Trial setShowTrialModal={setShowTrialModal} />;
+    return <Trial setShowTrialModal={setShowTrialModal} title={t(Strings.upgrade_space)}/>;
   }
 
   const iframeSrc = location.origin + '/pricing/';

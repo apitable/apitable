@@ -129,10 +129,10 @@ const MarketingBase: React.FC = () => {
 
 export const Marketing = () => {
   const vars = getEnvVariables();
-  const [showTrialModal, setShowTrialModal] = useState<boolean>(vars.HIDDEN_UPGRADE_SPACE);
+  const [showTrialModal, setShowTrialModal] = useState<boolean>(vars.CLOUD_DISABLE_USE_APP_STORE);
 
   if (showTrialModal) {
-    return <Trial setShowTrialModal={setShowTrialModal} />;
+    return <Trial setShowTrialModal={setShowTrialModal} title={t(Strings.space_info_feishu_label)}/>;
   }
 
   return <MarketingBase />;

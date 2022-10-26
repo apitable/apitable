@@ -6,10 +6,13 @@ import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
 import { QrCode } from 'pc/components/home/qr_code/qr_code';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+import { Trial } from 'pc/components/space_manage/log/trial';
 import { useRequest, useUserRequest } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { getDingdingConfig, getQQConfig } from 'pc/utils/get_config';
 import { isDesktop } from 'pc/utils/os';
+import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import BindingFeiShuPng from 'static/icon/account/feishu.png';
@@ -27,6 +30,8 @@ export const AccountManager: FC = () => {
   const dispatch = useAppDispatch();
   const { getLoginStatusReq } = useUserRequest();
   const { run: getLoginStatus } = useRequest(getLoginStatusReq, { manual: true });
+  const vars = getEnvVariables();
+  const [showTrialModal, setShowTrialModal] = useState<boolean>(vars.CLOUD_DISABLE_ACCOUNT_MANAGEMENT);
 
   useEffect(() => {
     localStorage.removeItem('binding_dingding_status');
@@ -73,6 +78,10 @@ export const AccountManager: FC = () => {
     }
   }, [userInfo?.thirdPartyInformation]);
 
+  if (showTrialModal) {
+    return <Trial setShowTrialModal={setShowTrialModal} title={t(Strings.account_ass_manage)} />;
+  }
+
   // Unbind third-party accounts
   const unbind = (mode: BindAccount) => {
     dispatch(StoreActions.unBindAccount(mode));
@@ -84,7 +93,7 @@ export const AccountManager: FC = () => {
         title: t(Strings.confirm_unbind),
         content: t(Strings.unbind_third_party_accounts_desc, { mode: t(Strings.wechat) }),
         onOk: () => unbind(BindAccount.WECHAT),
-        type: 'warning'
+        type: 'warning',
       });
     } else {
       setWechatVisible(true);
@@ -97,7 +106,7 @@ export const AccountManager: FC = () => {
         title: t(Strings.confirm_unbind),
         content: t(Strings.unbind_third_party_accounts_desc, { mode: t(Strings.dingtalk) }),
         onOk: () => unbind(BindAccount.DINGDING),
-        type: 'warning'
+        type: 'warning',
       });
     } else {
       const { appId, callbackUrl } = getDingdingConfig();
@@ -114,7 +123,7 @@ scope=snsapi_login&state=STATE&redirect_uri=${callbackUrl}`;
         title: t(Strings.confirm_unbind),
         content: t(Strings.unbind_third_party_accounts_desc, { mode: t(Strings.qq) }),
         onOk: () => unbind(BindAccount.QQ),
-        type: 'warning'
+        type: 'warning',
       });
     } else {
       const { appId, callbackUrl } = getQQConfig();
@@ -128,18 +137,18 @@ scope=snsapi_login&state=STATE&redirect_uri=${callbackUrl}`;
     name: t(Strings.dingtalk),
     img: DingDingPng,
     onClick: clickDingDing,
-    hidden: isDesktop()
+    hidden: isDesktop(),
   }, {
     mod: 'WECHAT',
     name: t(Strings.wechat),
     img: WeChatPng,
-    onClick: clickWechat
+    onClick: clickWechat,
   }, {
     mod: 'QQ',
     name: t(Strings.qq),
     img: QQPng,
     onClick: clickQQ,
-    hidden: isDesktop()
+    hidden: isDesktop(),
   }];
 
   return (
