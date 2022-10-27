@@ -79,7 +79,6 @@ export const FieldBlock: React.FC<IFieldBlockProps> = props => {
   const state = store.getState();
   const activeView = useSelector(state => Selectors.getCurrentView(state));
   const visibleRows = useSelector(state => Selectors.getVisibleRows(state));
-  const snapshot = useSelector(state => Selectors.getSnapshot(state)!);
 
   const onSave = (value: ICellValue, curAlarm?: Omit<IRecordAlarmClient, 'id'>) => {
     resourceService.instance!.commandManager.execute({

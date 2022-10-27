@@ -1,6 +1,6 @@
 import { getDiffOriginalCount } from 'pc/components/gantt_view';
 import { originalChange } from './date';
-import { ISetRecordOptions, Selectors, fastCloneDeep } from '@vikadata/core';
+import { ISetRecordOptions, Selectors, fastCloneDeep } from '@apitable/core';
 import { getAllTaskLine, detectCyclesStack } from './task_line';
 import { store } from 'pc/store';
 
@@ -12,7 +12,7 @@ interface ISourceRecordData {
 
 export const autoTaskScheduling = (visibleRows, ganttStyle, sourceRecord?: ISourceRecordData) => {
   const state = store.getState();
-  const snapshot = Selectors.getSnapshot(state);
+  const snapshot = Selectors.getSnapshot(state)!;
   const { linkFieldId, startFieldId, endFieldId } = ganttStyle;
   // target adjacency list
   const targetAdj = {};

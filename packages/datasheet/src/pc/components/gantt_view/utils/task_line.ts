@@ -1,5 +1,5 @@
 import { IGroupLinearRow, IAdjacency } from '../interface';
-import { CellType, fastCloneDeep } from '@vikadata/core';
+import { CellType, fastCloneDeep } from '@apitable/core';
 import { slice } from 'lodash';
 
 /*

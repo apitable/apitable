@@ -130,7 +130,6 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
 
   const activeView = useSelector(state => Selectors.getCurrentView(state));
   const visibleRows = useSelector(state => Selectors.getVisibleRows(state));
-  const state = store.getState();
 
   // FIXME: 这里还是使用组件内部 editing 控制状态，使用 redux 的 isEditing 状态，编辑框会闪烁一下。
   const [editing, setEditing] = useState(false);

@@ -21,7 +21,6 @@ import { autoTaskScheduling } from 'pc/components/gantt_view/utils';
 import { KonvaGridContext } from 'pc/components/konva_grid';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { resourceService } from 'pc/resource_service';
-import { store } from 'pc/store';
 import { getEnvVariables } from 'pc/utils/env';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';
@@ -125,8 +124,6 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
   const isCryptoLinkField = Boolean(linkFieldRole && linkFieldRole === ConfigConstant.Role.None);
   const linkField = fieldMap[linkFieldId];
   const visibleRows = useSelector(state => Selectors.getVisibleRows(state));
-  const snapshot = useSelector(state => Selectors.getSnapshot(state)!);
-  const state = store.getState();
 
   const fieldOptions = columns
     .map(({ fieldId }) => {
@@ -322,7 +319,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
         return;
       }
 
-      const commandDataArr: ISetRecordOptions[] = autoTaskScheduling(visibleRows, state, snapshot, ganttStyle);
+      const commandDataArr: ISetRecordOptions[] = autoTaskScheduling(visibleRows, ganttStyle);
 
       resourceService.instance?.commandManager.execute({
         cmd: CollaCommandName.SetRecords,
