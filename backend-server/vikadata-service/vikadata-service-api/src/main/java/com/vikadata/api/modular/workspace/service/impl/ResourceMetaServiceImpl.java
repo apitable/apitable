@@ -212,24 +212,20 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
     }
 
     private String parseDashboardMeta(String metaData, Map<String, String> newWidgetIdMap) {
-        // 解析 meta，获取组件ID 列表
+        // Parse meta to get a list of component IDs
         DashboardMeta meta = JSONUtil.toBean(metaData, DashboardMeta.class);
-        // 不存在组件，直接创建初始配置
-        if (meta == null || CollUtil.isEmpty(meta.getInstallWidgetIds())) {
+        if (meta == null || meta.getLayout() == null || meta.getLayout().isEmpty()) {
             return JSONUtil.createObj().toString();
         }
-        // 记录旧组件ID 与新组件ID 映射
-        Map<String, String> widgetIdMap = meta.getInstallWidgetIds().stream()
-                .collect(Collectors.toMap(k -> k, v -> IdUtil.createWidgetId()));
-        newWidgetIdMap.putAll(widgetIdMap);
-        JSONArray layout = new JSONArray(widgetIdMap.size());
+        // build new layout object, and record old to new widget id mapping
+        JSONArray layout = new JSONArray(meta.getLayout().size());
         meta.getLayout().jsonIter().forEach(info -> {
-            // 替换组件布局中的旧组件ID
-            info.set("id", widgetIdMap.get(info.getStr("id")));
+            String widgetId = IdUtil.createWidgetId();
+            newWidgetIdMap.put(info.getStr("id"), widgetId);
+            info.set("id", widgetId);
             layout.put(info);
         });
         meta.setLayout(layout);
-        meta.setInstallWidgetIds(widgetIdMap.values());
         return JSONUtil.parseObj(meta).toString();
     }
 

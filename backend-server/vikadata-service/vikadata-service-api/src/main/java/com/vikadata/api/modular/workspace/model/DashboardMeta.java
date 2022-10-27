@@ -1,7 +1,5 @@
 package com.vikadata.api.modular.workspace.model;
 
-import java.util.Collection;
-
 import cn.hutool.json.JSONArray;
 import lombok.Data;
 
@@ -18,5 +16,4 @@ public class DashboardMeta {
 
     private JSONArray layout;
 
-    private Collection<String> installWidgetIds;
 }
