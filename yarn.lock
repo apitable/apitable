@@ -190,6 +190,7 @@ __metadata:
     "@types/node": ^14.14.34
     "@types/qs": ^6.9.4
     "@types/socket.io-client": ^1.4.36
+    apphook: 1.0.6
     attr-accept: ^2.1.0
     axios: 0.19.0
     color: ^3.1.3
@@ -203,6 +204,7 @@ __metadata:
     lru-cache: ^5.1.1
     mockjs: 1.1.0
     ot-fuzzer: ^1.3.0
+    ot-json0: ^1.1.0
     phone: ^3.1.10
     re-reselect: ^4.0.0
     redux: 4.2.0
@@ -15209,6 +15211,13 @@ __metadata:
   dependencies:
     default-require-extensions: ^3.0.0
   checksum: f26f393bf7a428fd1bb18f2758a819830a582243310c5170edb3f98fdc5a535333d02b952f7c2d9b14522bd8ead5b132a0b15000eca18fa9f49172963ebbc231
+  languageName: node
+  linkType: hard
+
+"apphook@npm:1.0.6":
+  version: 1.0.6
+  resolution: "apphook@npm:1.0.6"
+  checksum: 2301685727bd2acdb4536e387a63ffd06a0bbbff51fe9a62a65e7d2b9e4911c7902a8603262a63ab2ef9bef2047eea0f97187f03dd1496b29e21258b3acd11d3
   languageName: node
   linkType: hard
 
@@ -34989,6 +34998,13 @@ fsevents@^1.2.7:
     cli-progress: ^2.1.1
     seedrandom: ^2.4.4
   checksum: 90d1475481af048de42263a6dafea93d13c2b0e419117174a95b5cbef275b3e03085c508bf9d7d2f05f78e235446e1a245fded3747c6024171cbc969df8a93f0
+  languageName: node
+  linkType: hard
+
+"ot-json0@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "ot-json0@npm:1.1.0"
+  checksum: 0825f547ad8d7b48ecf5a19f76f3f9a4ecefda22276b936b0896c09a9a17534bbee8b3aa00e230a9af227b4b21699a808a3444bf05428df978b0c93b5a3a52fb
   languageName: node
   linkType: hard
 

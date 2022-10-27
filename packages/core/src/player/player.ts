@@ -10,7 +10,7 @@
 import {
   AppHook, TriggerCommand, FilterCommand,
   // ITrigger,
-} from '../apphook';
+} from 'apphook';
 // eve引擎在这里声明，并成为全局单例
 const apphook = new AppHook();
 
