@@ -1,13 +1,25 @@
-import { ApiInterface, ConfigConstant, Strings, t } from '@vikadata/core';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { ApiInterface, ConfigConstant, Strings, t, StoreActions } from '@vikadata/core';
 import parser from 'html-react-parser';
 import { Wrapper } from 'pc/components/common';
-import { useQuery, useUserRequest } from 'pc/hooks';
-import { FC } from 'react';
+import { useDispatch, useQuery, useUserRequest } from 'pc/hooks';
+import { FC, useEffect } from 'react';
 import { IdentifyingCodeLogin, ISubmitRequestParam } from '../login';
 import styles from './style.module.less';
 
 const ImprovingInfo: FC = () => {
   const query = useQuery();
+  const dispatch = useDispatch();
+  const inviteLinkToken = query.get('inviteLinkToken') || '';
+
+  useEffect(() => {
+    // When invite link, should valid link and update invite state cache.
+    if (inviteLinkToken) {
+      dispatch(StoreActions.verifyLink(inviteLinkToken));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inviteLinkToken]);
+
   // 微信公众号token
   const mpToken = query.get('token') || '';
   const { loginOrRegisterReq } = useUserRequest();

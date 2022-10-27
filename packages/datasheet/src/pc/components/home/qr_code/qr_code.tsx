@@ -7,7 +7,6 @@ import {
   Navigation,
   QrAction,
   StatusCode,
-  StoreActions,
   Strings,
   t
 } from '@vikadata/core';
@@ -283,12 +282,10 @@ export const QRCodeBase = ({
         const isFromLinkInvite = urlParams.has('inviteLinkToken');
         // 链接邀请
         if (isFromLinkInvite && data) {
-          const inviteLinkToken = urlParams.get('inviteLinkToken') as string;
-          StoreActions.verifyLink(inviteLinkToken);
           Router.redirect(Navigation.IMPROVING_INFO, {
             query: {
               token: data,
-              inviteLinkToken,
+              inviteLinkToken: urlParams.get('inviteLinkToken') || undefined,
               inviteCode: inviteLinkInfo?.data.inviteCode,
             },
           });
