@@ -1,6 +1,6 @@
 import { CellFormatEnum, Field, ICellValue, IField } from '@apitable/core';
-import { ApiException, ApiTipId } from 'exception/api.exception';
-import { IFieldRoTransformOptions, IFieldValue, IFieldVoTransformOptions } from 'interfaces';
+import { ApiException, ApiTipId } from '../../shared/exception/api.exception';
+import { IFieldRoTransformOptions, IFieldValue, IFieldVoTransformOptions } from '../../shared/interfaces';
 import { IFieldValidatorInterface } from 'fusion/i.field.validator.interface';
 import { IFieldTransformInterface } from '../i.field.transform.interface';
 

@@ -6,25 +6,25 @@ import { Client } from '@sentry/types';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { AppModule } from 'app.module';
-import { APPLICATION_NAME, GRPC_MAX_PACKAGE_SIZE } from 'common';
-import { HttpResponseInterceptor } from 'interceptor';
-import { GlobalExceptionFilter } from 'filters';
-import { initHttpHook, initSwagger } from 'adapters/adapters.init';
+import { APPLICATION_NAME, GRPC_MAX_PACKAGE_SIZE } from './shared/common';
+import { HttpResponseInterceptor } from './shared/interceptor';
+import { GlobalExceptionFilter } from './shared/filters';
+import { initHttpHook, initSwagger } from 'shared/adapters/adapters.init';
 import { environment, isDevMode, isProdMode } from 'app.environment';
-import { WINSTON_MODULE_NEST_PROVIDER } from 'modules/logger/winston.constants';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'shared/logger/winston.constants';
 import { LoggerService } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import helmet from 'fastify-helmet';
-import { ValidationPipe } from 'middleware/pipe/validation.pipe';
+import { ValidationPipe } from 'shared/middleware/pipe/validation.pipe';
 import fastifyMultipart from 'fastify-multipart';
-import { FastifyZipkinPlugin } from 'helpers';
+import { FastifyZipkinPlugin } from './shared/helpers';
 import { I18nService } from 'nestjs-i18n';
 import { join } from 'path';
-import { ZipkinService } from './modules/zipkin/zipkin.service';
-import { ZIPKIN_MODULE_OPTIONS, ZIPKIN_MODULE_PROVIDER } from './modules/zipkin/zipkin.constants';
-import { IZipkinModuleOptions } from './modules/zipkin/zipkin.interface';
-import { TracingHandlerInterceptor } from './interceptor/sentry.handlers.interceptor';
-import { SentryTraces } from 'modules/sentry/sentry.traces.sampler';
+import { ZipkinService } from './shared/services/zipkin/zipkin.service';
+import { ZIPKIN_MODULE_OPTIONS, ZIPKIN_MODULE_PROVIDER } from './shared/services/zipkin/zipkin.constants';
+import { IZipkinModuleOptions } from './shared/services/zipkin/zipkin.interface';
+import { TracingHandlerInterceptor } from './shared/interceptor/sentry.handlers.interceptor';
+import { SentryTraces } from 'shared/helpers/sentry/sentry.traces.sampler';
 
 /**
  * 启动入口

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { evaluate, expressionTransform, Field, FieldKeyEnum, FieldType, getNewId, IDPrefix, IFieldMap, IFormulaField, IReduxState, ISnapshot, IViewColumn, IViewProperty, IViewRow, parse, Selectors } from '@apitable/core';
-import { ApiException } from 'exception/api.exception';
+import { ApiException } from '../../shared/exception/api.exception';
 import { keyBy } from 'lodash';
-import { FieldQueryRo } from 'model/ro/fusion/field.query.ro';
-import { RecordQueryRo } from 'model/ro/fusion/record.query.ro';
+import { FieldQueryRo } from '../ros/field.query.ro';
+import { RecordQueryRo } from '../ros/record.query.ro';
 import { Store } from 'redux';
 import { IFusionApiFilterInterface } from '../fusion.api.filter.interface';
 

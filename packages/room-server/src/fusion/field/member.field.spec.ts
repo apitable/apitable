@@ -4,7 +4,7 @@ import { FieldType, IMemberField } from '@apitable/core';
 import '@vikadata/i18n-lang';
 import { AppModule } from 'app.module';
 import { MemberField } from 'fusion/field/member.field';
-import { UnitMemberService } from 'modules/services/unit/unit.member.service';
+import { UnitMemberService } from 'datasheet/services/unit/unit.member.service';
 
 describe('MemberField', () => {
   let app;

@@ -1,5 +1,5 @@
 import { IField } from '@apitable/core';
-import { IFieldValue } from 'interfaces';
+import { IFieldValue } from '../../shared/interfaces';
 import { isNumber } from 'lodash';
 import { BaseField } from 'fusion/field/base.field';
 

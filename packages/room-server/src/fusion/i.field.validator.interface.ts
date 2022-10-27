@@ -1,6 +1,6 @@
 import { IField } from '@apitable/core';
-import { ApiTipId } from 'exception';
-import { IFieldValue } from 'interfaces';
+import { ApiTipId } from '../shared/exception';
+import { IFieldValue } from '../shared/interfaces';
 
 /**
  * <p>

@@ -2,17 +2,17 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { expect } from 'chai';
 import { AppModule } from 'app.module';
-import { initHttpHook } from 'adapters/adapters.init';
-import { GlobalExceptionFilter } from 'filters';
-import { HttpResponseInterceptor } from 'interceptor';
-import { ValidationPipe } from 'middleware/pipe/validation.pipe';
-import { LoggerModule } from 'modules/logger/winston.module';
+import { initHttpHook } from 'shared/adapters/adapters.init';
+import { GlobalExceptionFilter } from '../src/shared/filters';
+import { HttpResponseInterceptor } from '../src/shared/interceptor';
+import { ValidationPipe } from 'shared/middleware/pipe/validation.pipe';
+import { LoggerModule } from 'shared/logger/winston.module';
 import { LoggerService } from '@nestjs/common';
-import { WINSTON_MODULE_NEST_PROVIDER } from 'modules/logger/winston.constants';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'shared/logger/winston.constants';
 import fastifyMultipart from 'fastify-multipart';
-import { EnvConfigKey } from 'common';
-import { IOssConfig } from 'interfaces';
-import { EnvConfigService } from 'config/env.config.service';
+import { EnvConfigKey } from '../src/shared/common';
+import { IOssConfig } from '../src/shared/interfaces';
+import { EnvConfigService } from 'shared/services/config/env.config.service';
 
 export function successExpect(response: any, result: any) {
   expect(response.statusCode).to.be.eql(200);

@@ -1,7 +1,7 @@
 import { Inject, OnModuleInit } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
-import { InjectLogger, SOCKET_GRPC_CLIENT } from 'common';
-import { IClientRoomChangeResult } from 'modules/socket/socket.interface';
+import { InjectLogger, SOCKET_GRPC_CLIENT } from '../../shared/common';
+import { IClientRoomChangeResult } from 'shared/services/socket/socket.interface';
 import { vika } from 'proto/generated/proto/changeset.service';
 import { pack } from 'proto/util/pack.message';
 import { Logger } from 'winston';

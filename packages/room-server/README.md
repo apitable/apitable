@@ -5,20 +5,13 @@
 all modules based
 
 - shared
-  - utils
-- fusionapi 
-  - controller
-  - service
-  - dto
-  - vo
-  - repository
-  - entity
 - datasheet
-  - ...
-- robot
-  - ...
+- fusion 
+- automation
 - actuator
-  - ...
+
+
+`shared` and `datasheet` is the cornerstone module that others depend on.
 
 ## 描述
 

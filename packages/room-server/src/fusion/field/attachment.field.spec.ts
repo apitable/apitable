@@ -2,12 +2,12 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 import { Test, TestingModule } from '@nestjs/testing';
 import { CellFormatEnum, FieldType, getNewId, IAttacheField, ICellValue, IDPrefix, IReduxState, Reducers } from '@apitable/core';
 import { AppModule } from 'app.module';
-import { EnvConfigKey } from 'common';
-import { EnvConfigService } from 'config/env.config.service';
-import { ApiException } from 'exception/api.exception';
-import { IOssConfig } from 'interfaces';
-import { IAssetDTO } from 'modules/rest/rest.interface';
-import { RestService } from 'modules/rest/rest.service';
+import { EnvConfigKey } from '../../shared/common';
+import { EnvConfigService } from 'shared/services/config/env.config.service';
+import { ApiException } from '../../shared/exception/api.exception';
+import { IOssConfig } from '../../shared/interfaces';
+import { IAssetDTO } from 'shared/services/rest/rest.interface';
+import { RestService } from 'shared/services/rest/rest.service';
 import { AttachmentField } from 'fusion/field/attachment.field';
 import { applyMiddleware, createStore, Store } from 'redux';
 import { batchDispatchMiddleware } from 'redux-batched-actions';

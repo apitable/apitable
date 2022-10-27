@@ -1,6 +1,6 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { IField } from '@apitable/core';
-import { IFieldValue } from 'interfaces';
+import { IFieldValue } from '../../shared/interfaces';
 import { isNumber } from 'lodash';
 import { BaseNumberField } from 'fusion/field/base.number.field';
 import { FieldManager } from '../field.manager';

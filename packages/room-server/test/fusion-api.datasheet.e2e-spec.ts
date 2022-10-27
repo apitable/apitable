@@ -1,9 +1,9 @@
 import { INestApplication } from '@nestjs/common';
-import { UserEntity } from 'entities/user.entity';
-import { NodeRepository } from 'modules/repository/node.repository';
-import { UnitMemberRepository } from 'modules/repository/unit.member.repository';
-import { RestService } from 'modules/rest/rest.service';
-import { DeveloperService } from 'modules/services/developer/developer.service';
+import { UserEntity } from '../src/datasheet/entities/user.entity';
+import { NodeRepository } from '../src/datasheet/repositories/node.repository';
+import { UnitMemberRepository } from '../src/datasheet/repositories/unit.member.repository';
+import { RestService } from 'shared/services/rest/rest.service';
+import { DeveloperService } from 'datasheet/services/developer/developer.service';
 import request from 'supertest';
 
 import { getDefaultHeader, initNestTestApp } from './fusion-api.common.e2e-spec';

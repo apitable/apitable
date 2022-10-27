@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import { createSuccessExpect, getDefaultHeader, initNestTestApp, successExpect } from '../test/fusion-api.e2e-spec';
-import { EnvConfigKey } from 'common';
-import { IOssConfig } from 'interfaces';
-import { EnvConfigService } from 'config/env.config.service';
+import { EnvConfigKey } from '../src/shared/common';
+import { IOssConfig } from '../src/shared/interfaces';
+import { EnvConfigService } from 'shared/services/config/env.config.service';
 import * as path from 'path';
 import FormData from 'form-data';
 import * as fs from 'fs';

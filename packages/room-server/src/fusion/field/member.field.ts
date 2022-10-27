@@ -1,9 +1,9 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { APIMetaMemberType, ICellValue, IField, MemberType } from '@apitable/core';
 import { isString } from 'class-validator';
-import { IFieldRoTransformOptions, IFieldValue } from 'interfaces';
+import { IFieldRoTransformOptions, IFieldValue } from '../../shared/interfaces';
 import { BaseField } from 'fusion/field/base.field';
-import { UnitService } from 'modules/services/unit/unit.service';
+import { UnitService } from 'datasheet/services/unit/unit.service';
 import { FieldManager } from '../field.manager';
 
 @Injectable()

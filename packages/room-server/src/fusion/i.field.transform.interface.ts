@@ -1,4 +1,4 @@
-import { IFieldRoTransformOptions, IFieldValue, IFieldVoTransformOptions } from 'interfaces';
+import { IFieldRoTransformOptions, IFieldValue, IFieldVoTransformOptions } from '../shared/interfaces';
 import { ICellValue, IField } from '@apitable/core';
 
 /**

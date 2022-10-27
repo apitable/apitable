@@ -1,6 +1,6 @@
 import { ICellValue, IField, SegmentType } from '@apitable/core';
 import { isString } from 'class-validator';
-import { IFieldValue } from 'interfaces';
+import { IFieldValue } from '../../shared/interfaces';
 import { BaseField } from 'fusion/field/base.field';
 
 export abstract class BaseTextField extends BaseField {

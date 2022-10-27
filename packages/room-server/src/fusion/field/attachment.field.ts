@@ -1,9 +1,9 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { getNewId, IAttachmentValue, ICellValue, IDPrefix, IField } from '@apitable/core';
 import { isString } from 'class-validator';
-import { IFieldValue } from 'interfaces';
-import { IAssetDTO } from 'modules/rest/rest.interface';
-import { RestService } from 'modules/rest/rest.service';
+import { IFieldValue } from '../../shared/interfaces';
+import { IAssetDTO } from 'shared/services/rest/rest.interface';
+import { RestService } from 'shared/services/rest/rest.service';
 import { BaseField } from 'fusion/field/base.field';
 import { FieldManager } from '../field.manager';
 

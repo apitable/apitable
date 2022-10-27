@@ -1,12 +1,12 @@
 import { ICollaCommandOptions, ILocalChangeset } from '@apitable/core';
-import { IAuthHeader } from 'interfaces';
-import { IAPINode } from 'interfaces/node.interface';
-import { IAPISpace } from 'interfaces/space.interface';
-import { DatasheetViewDto } from 'model/dto/fusion/datasheet.view.dto';
-import { FieldQueryRo } from 'model/ro/fusion/field.query.ro';
-import { RecordCreateRo } from 'model/ro/fusion/record.create.ro';
-import { RecordQueryRo } from 'model/ro/fusion/record.query.ro';
-import { ListVo } from 'model/vo/fusion/list.vo';
+import { IAuthHeader } from '../shared/interfaces';
+import { IAPINode } from 'shared/interfaces/node.interface';
+import { IAPISpace } from 'shared/interfaces/space.interface';
+import { DatasheetViewDto } from './dtos/datasheet.view.dto';
+import { FieldQueryRo } from './ros/field.query.ro';
+import { RecordCreateRo } from './ros/record.create.ro';
+import { RecordQueryRo } from './ros/record.query.ro';
+import { ListVo } from './vos/list.vo';
 
 export interface IFusionApiInterface {
   /**

@@ -1,19 +1,19 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { OtModule } from 'modules/ot/ot.module';
-import { ApiUsageRepository } from 'modules/repository/api.usage.repository';
-import { DatasheetRecordRepository } from 'modules/repository/datasheet.record.repository';
-import { CommandServiceModule } from 'modules/services/command/command.service.module';
-import { DatasheetServiceModule } from 'modules/services/datasheet/datasheet.service.module';
+import { OtModule } from '../datasheet/_modules/ot.module';
+import { ApiUsageRepository } from './repositories/api.usage.repository';
+import { DatasheetRecordRepository } from '../datasheet/repositories/datasheet.record.repository';
+import { CommandServiceModule } from '../datasheet/_modules/command.service.module';
+import { DatasheetServiceModule } from '../datasheet/_modules/datasheet.service.module';
 import { FusionApiTransformer } from 'fusion/transformer/fusion.api.transformer';
-import { JavaModule } from 'modules/services/java/java.module';
-import { ResourceServiceModule } from 'modules/services/resource/resource.service.module';
-import { UnitServiceModule } from 'modules/services/unit/unit.service.module';
-import { UserServiceModule } from 'modules/services/user/user.service.module';
+import { JavaModule } from 'shared/services/java/java.module';
+import { ResourceServiceModule } from '../datasheet/_modules/resource.service.module';
+import { UnitServiceModule } from '../datasheet/_modules/unit.service.module';
+import { UserServiceModule } from '../datasheet/_modules/user.service.module';
 import { FieldModule } from './field.module';
 import { FusionApiFilter } from './filter/fusion.api.filter';
-import { FusionApiRecordService } from './impl/fusion.api.record.service';
-import { FusionApiService } from './impl/fusion.api.service';
+import { FusionApiRecordService } from './services/fusion.api.record.service';
+import { FusionApiService } from './services/fusion.api.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([DatasheetRecordRepository])],

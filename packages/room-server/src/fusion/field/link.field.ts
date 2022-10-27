@@ -1,10 +1,10 @@
 import { Injectable, OnApplicationBootstrap, OnModuleInit } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { ICellValue, IField } from '@apitable/core';
-import { IFieldValue } from 'interfaces';
+import { IFieldValue } from '../../shared/interfaces';
 import { FieldManager } from 'fusion/field.manager';
 import { BaseField } from 'fusion/field/base.field';
-import { FusionApiRecordService } from 'fusion/impl/fusion.api.record.service';
+import { FusionApiRecordService } from 'fusion/services/fusion.api.record.service';
 
 @Injectable()
 export class LinkField extends BaseField implements OnModuleInit, OnApplicationBootstrap {

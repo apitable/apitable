@@ -2,23 +2,23 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DEFAULT_LANGUAGE, I18nJsonParser } from 'adapters/I18n.json.parser';
+import { DEFAULT_LANGUAGE, I18nJsonParser } from 'shared/adapters/I18n.json.parser';
 import { enableScheduler } from 'app.environment';
-import { EnvConfigModule } from 'config/env.config.module';
-import { DatabaseConfigService } from 'configs/database.config.service';
-import { LoggerConfigService } from 'configs/logger.config.service';
-import { ZipkinConfigService } from 'configs/zipkin.config.service';
-import { ControllerModule } from 'controllers/controller.module';
-import { MiddlewareModule } from 'middleware/middleware.module';
-import { LoggerModule } from 'modules/logger/winston.module';
-import { QueueWorkerModule } from 'modules/queue/queue.worker.module';
-import { SchedTaskModule } from 'modules/sched_task/sched.task.module';
-import { SocketModule } from 'modules/socket/socket.module';
+import { EnvConfigModule } from 'shared/services/config/env.config.module';
+import { DatabaseConfigService } from './shared/services/config/database.config.service';
+import { LoggerConfigService } from './shared/services/config/logger.config.service';
+import { ZipkinConfigService } from './shared/services/config/zipkin.config.service';
+import { ControllerModule } from './shared/controller.module';
+import { MiddlewareModule } from 'shared/middleware/middleware.module';
+import { LoggerModule } from 'shared/logger/winston.module';
+import { QueueWorkerModule } from 'shared/services/queue/queue.worker.module';
+import { SchedTaskModule } from 'shared/services/sched_task/sched.task.module';
+import { SocketModule } from 'shared/services/socket/socket.module';
 import { I18nModule } from 'nestjs-i18n';
 import { RedisModule, RedisModuleOptions } from '@vikadata/nestjs-redis';
 import path, { resolve } from 'path';
-import environmentConfig from './config/environment.config';
-import { ZipkinModule } from './modules/zipkin/zipkin.module';
+import environmentConfig from './shared/services/config/environment.config';
+import { ZipkinModule } from './shared/services/zipkin/zipkin.module';
 
 // 初始化环境，本地开发为development，部署线上则需要指定NODE_ENV，非开发环境可选值[integration, staging, production]
 // 环境已经使用app.environment设置了

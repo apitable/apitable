@@ -1,5 +1,5 @@
 import { FieldKeyEnum, IFieldMap, IReduxState, ISnapshot, IViewProperty, IViewRow } from '@apitable/core';
-import { RecordQueryRo } from 'model/ro/fusion/record.query.ro';
+import { RecordQueryRo } from './ros/record.query.ro';
 import { Store } from 'redux';
 
 /**

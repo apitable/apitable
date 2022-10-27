@@ -1,6 +1,6 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { IField } from '@apitable/core';
-import { IFieldValue } from 'interfaces';
+import { IFieldValue } from '../../shared/interfaces';
 import { BaseField } from 'fusion/field/base.field';
 import { FieldManager } from '../field.manager';
 import { IFieldValidatorInterface } from '../i.field.validator.interface';
