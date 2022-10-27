@@ -9,7 +9,7 @@ import { IAuthHeader, IHttpSuccessResponse, INotificationCreateRo, IOpAttachCite
 import { keyBy } from 'lodash';
 import { DatasheetCreateRo } from '../../../fusion/ros/datasheet.create.ro';
 import { AssetVo } from '../../../fusion/vos/attachment.vo';
-import { InternalCreateDatasheetVo, InternalSpaceSubscriptionView, InternalSpaceUsageView, WidgetMap } from '../../../datasheet/interfaces';
+import { InternalCreateDatasheetVo, InternalSpaceSubscriptionView, InternalSpaceUsageView, WidgetMap } from '../../../database/interfaces';
 import { lastValueFrom } from 'rxjs';
 import { sprintf } from 'sprintf-js';
 import { Logger } from 'winston';

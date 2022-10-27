@@ -4,7 +4,7 @@ import { FieldKeyEnum, IFieldMap, IMeta } from '@apitable/core';
 import { DATASHEET_META_HTTP_DECORATE } from '../../common';
 import { ApiException } from '../../exception/api.exception';
 import { keyBy } from 'lodash';
-import { SortRo } from '../../../datasheet/ros/sort.ro';
+import { SortRo } from '../../../database/ros/sort.ro';
 
 /**
  * <p>

@@ -1,6 +1,6 @@
 import { ApiResponse } from './api.response';
 import { ApiProperty } from '@nestjs/swagger';
-import { AttachmentDto } from '../../datasheet/dtos/attachment.dto';
+import { AttachmentDto } from '../../database/dtos/attachment.dto';
 
 export class AttachmentVo extends ApiResponse<AttachmentDto> {
   @ApiProperty({ type: AttachmentDto })

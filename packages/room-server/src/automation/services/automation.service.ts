@@ -7,7 +7,7 @@ import { AutomationRunHistoryRepository } from '../repositories/automation.run.h
 import fetch from 'node-fetch';
 import { IdWorker } from 'shared/helpers/snowflake';
 import { CommonException, PermissionException, ServerException } from '../../shared/exception';
-import { NodeRepository } from '../../datasheet/repositories/node.repository';
+import { NodeRepository } from '../../database/repositories/node.repository';
 import { IUserBaseInfo } from '../../shared/interfaces';
 import { AutomationServiceRepository } from '../repositories/automation.service.repository';
 import { AutomationTriggerTypeRepository } from '../repositories/automation.trigger.type.repository';

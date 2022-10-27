@@ -2,7 +2,7 @@ import { Injectable, NestInterceptor, Logger, ExecutionContext, CallHandler } fr
 import { ResourceType, IWidget, ResourceIdPrefix } from '@apitable/core';
 import { InjectLogger } from '../common';
 import { ApiResponse } from '../../fusion/vos/api.response';
-import { NodeService } from 'datasheet/services/node/node.service';
+import { NodeService } from 'database/services/node/node.service';
 import { RoomResourceRelService } from 'shared/services/socket/room.resource.rel.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';

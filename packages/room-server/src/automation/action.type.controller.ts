@@ -4,7 +4,7 @@ import { ActionTypeCreateRo } from './ros/action.type.create.ro';
 import { TriggerTypeUpdateRo } from './ros/trigger.type.update.ro';
 import { AutomationRobotRepository } from './repositories/automation.robot.repository';
 import { AutomationService } from './services/automation.service';
-import { UserService } from 'datasheet/services/user/user.service';
+import { UserService } from 'database/services/user/user.service';
 
 @Controller('nest/v1/robots/action-types')
 export class RobotActionTypeController {

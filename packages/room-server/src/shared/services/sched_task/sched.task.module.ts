@@ -1,7 +1,7 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { QueueWorkerModule } from 'shared/services/queue/queue.worker.module';
-import { CommandServiceModule } from '../../../datasheet/_modules/command.service.module';
-import { DatasheetServiceModule } from '../../../datasheet/_modules/datasheet.service.module';
+import { CommandServiceModule } from '../../../database/_modules/command.service.module';
+import { DatasheetServiceModule } from '../../../database/_modules/datasheet.service.module';
 import { SchedTaskService } from './sched.task.service';
 
 @Module({})

@@ -13,13 +13,13 @@ import {
   CheckboxFieldPropertyDto, CurrencyFieldPropertyDto, DateTimeFieldPropertyDto, FormulaFieldPropertyDto, LinkFieldPropertyDto, LookupFieldPropertyDto,
   MemberFieldPropertyDto, NumberFieldPropertyDto, RatingFieldPropertyDto, SelectFieldPropertyDto, SingleTextPropertyDto, UserPropertyDto,
 } from '../../fusion/dtos/field.property.dto';
-import { NodeRepository } from '../../datasheet/repositories/node.repository';
-import { DatasheetMetaService } from 'datasheet/services/datasheet/datasheet.meta.service';
-import { DatasheetService } from 'datasheet/services/datasheet/datasheet.service';
-import { DatasheetServiceModule } from '../../datasheet/_modules/datasheet.service.module';
-import { DeveloperService } from 'datasheet/services/developer/developer.service';
-import { DeveloperServiceModule } from '../../datasheet/_modules/developer.service.module';
-import { ResourceServiceModule } from '../../datasheet/_modules/resource.service.module';
+import { NodeRepository } from '../../database/repositories/node.repository';
+import { DatasheetMetaService } from 'database/services/datasheet/datasheet.meta.service';
+import { DatasheetService } from 'database/services/datasheet/datasheet.service';
+import { DatasheetServiceModule } from '../../database/_modules/datasheet.service.module';
+import { DeveloperService } from 'database/services/developer/developer.service';
+import { DeveloperServiceModule } from '../../database/_modules/developer.service.module';
+import { ResourceServiceModule } from '../../database/_modules/resource.service.module';
 
 export const initSwagger = (app: INestApplication) => {
   // 生产环境不启用

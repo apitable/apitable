@@ -3,7 +3,7 @@ import { ApiTipConstant, CellFormatEnum, FieldKeyEnum } from '@apitable/core';
 import { Transform } from 'class-transformer';
 import { IsEnum } from 'class-validator';
 import { stringToArray } from 'shared/helpers/fusion.helper';
-import { PageRo } from '../../datasheet/ros/page.ro';
+import { PageRo } from '../../database/ros/page.ro';
 
 export class RecordQueryRo extends PageRo {
   @ApiPropertyOptional({

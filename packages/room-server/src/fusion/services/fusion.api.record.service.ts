@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ApiException, ApiTipId } from '../../shared/exception';
 import { difference } from 'lodash';
-import { DatasheetRecordRepository } from '../../datasheet/repositories/datasheet.record.repository';
+import { DatasheetRecordRepository } from '../../database/repositories/datasheet.record.repository';
 
 @Injectable()
 export class FusionApiRecordService {

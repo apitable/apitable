@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Headers, Param, Patch, Post } from '@nestjs/common';
 import { ActionCreateRo } from './ros/action.create.ro';
 import { AutomationActionRepository } from './repositories/automation.action.repository';
-import { UserService } from 'datasheet/services/user/user.service';
+import { UserService } from 'database/services/user/user.service';
 
 @Controller('nest/v1/robots/actions')
 export class RobotActionController {

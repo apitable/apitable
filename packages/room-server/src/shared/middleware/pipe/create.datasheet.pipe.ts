@@ -3,10 +3,10 @@ import { REQUEST } from '@nestjs/core';
 import { getFieldTypeByString, getNewId, IDPrefix
   , getFieldClass, IField, Field, IReduxState, getMaxFieldCountPerSheet, FieldTypeDescriptionMap } from '@apitable/core';
 import { REQUEST_HOOK_FOLDER, REQUEST_HOOK_PRE_NODE, SPACE_ID_HTTP_DECORATE } from '../../common';
-import { NodeEntity } from '../../../datasheet/entities/node.entity';
+import { NodeEntity } from '../../../database/entities/node.entity';
 import { ApiTipIdEnum } from 'shared/enums/string.enum';
 import { ApiException } from '../../exception';
-import { genDatasheetDescriptionDto } from '../../../datasheet/dtos/datasheet.description.dto';
+import { genDatasheetDescriptionDto } from '../../../database/dtos/datasheet.description.dto';
 import { DatasheetCreateRo } from '../../../fusion/ros/datasheet.create.ro';
 import { DatasheetFieldCreateRo } from '../../../fusion/ros/datasheet.field.create.ro';
 

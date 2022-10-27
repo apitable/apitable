@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { SPACE_ID_HTTP_DECORATE, USER_HTTP_DECORATE } from '../../common';
 import { ApiException } from '../../exception';
-import { UnitMemberRepository } from '../../../datasheet/repositories/unit.member.repository';
+import { UnitMemberRepository } from '../../../database/repositories/unit.member.repository';
 
 /**
  * Guards are executed after each middleware, but before any interceptor or pipe.

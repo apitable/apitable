@@ -5,7 +5,7 @@ import { AutomationRobotRepository } from './repositories/automation.robot.repos
 import { AutomationRunHistoryRepository } from './repositories/automation.run.history.repository';
 import { AutomationTriggerRepository } from './repositories/automation.trigger.repository';
 import { AutomationServiceModule } from './services/automation.service.module';
-import { UserServiceModule } from '../datasheet/_modules/user.service.module';
+import { UserServiceModule } from '../database/_modules/user.service.module';
 import { RobotActionController } from './action.controller';
 import { RobotActionTypeController } from './action.type.controller';
 import { RobotController } from './robot.controller';

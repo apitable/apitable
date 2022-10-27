@@ -10,7 +10,7 @@ import { ApiException } from '../../exception/api.exception';
 import { FastifyRequest } from 'fastify';
 import { IFieldRoTransformOptions, IFieldValue, IFieldValueMap } from '../../interfaces';
 import { flatten, keyBy } from 'lodash';
-import { DatasheetRecordService } from 'datasheet/services/datasheet/datasheet.record.service';
+import { DatasheetRecordService } from 'database/services/datasheet/datasheet.record.service';
 import { FieldManager } from '../../../fusion/field.manager';
 import { Logger } from 'winston';
 

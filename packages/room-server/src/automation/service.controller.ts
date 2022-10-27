@@ -3,7 +3,7 @@ import { isProdMode } from 'app.environment';
 import { AutomationServiceCreateRo } from './ros/service.create.ro';
 import { AutomationServiceUpdateRo } from './ros/service.update.ro';
 import { AutomationService } from './services/automation.service';
-import { UserService } from 'datasheet/services/user/user.service';
+import { UserService } from 'database/services/user/user.service';
 
 @Controller('nest/v1/robots/actions')
 export class RobotServiceController {

@@ -3,7 +3,7 @@ import { Reflector } from '@nestjs/core';
 import { NODE_PERMISSION_REFLECTOR_KEY } from '../../common';
 import { ApiException } from '../../exception/api.exception';
 import { NodePermission } from '../../interfaces';
-import { NodePermissionService } from 'datasheet/services/node/node.permission.service';
+import { NodePermissionService } from 'database/services/node/node.permission.service';
 
 @Injectable()
 export class NodePermissionGuard implements CanActivate {

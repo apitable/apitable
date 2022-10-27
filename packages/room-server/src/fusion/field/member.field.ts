@@ -3,7 +3,7 @@ import { APIMetaMemberType, ICellValue, IField, MemberType } from '@apitable/cor
 import { isString } from 'class-validator';
 import { IFieldRoTransformOptions, IFieldValue } from '../../shared/interfaces';
 import { BaseField } from 'fusion/field/base.field';
-import { UnitService } from 'datasheet/services/unit/unit.service';
+import { UnitService } from 'database/services/unit/unit.service';
 import { FieldManager } from '../field.manager';
 
 @Injectable()

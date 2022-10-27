@@ -5,14 +5,14 @@ import { ApiRequestMiddleware } from 'shared/middleware/api.request.middleware';
 import { NodeRateLimiterMiddleware } from 'shared/middleware/node.rate.limiter.middleware';
 import { QueueWorkerModule } from 'shared/services/queue/queue.worker.module';
 import { ApiUsageRepository } from './repositories/api.usage.repository';
-import { UnitMemberRepository } from '../datasheet/repositories/unit.member.repository';
+import { UnitMemberRepository } from '../database/repositories/unit.member.repository';
 import { RestModule } from 'shared/services/rest/rest.module';
-import { AttachmentModule } from '../datasheet/_modules/attachment.module';
-import { DatasheetServiceModule } from '../datasheet/_modules/datasheet.service.module';
-import { DeveloperServiceModule } from '../datasheet/_modules/developer.service.module';
+import { AttachmentModule } from '../database/_modules/attachment.module';
+import { DatasheetServiceModule } from '../database/_modules/datasheet.service.module';
+import { DeveloperServiceModule } from '../database/_modules/developer.service.module';
 import { FusionApiServiceModule } from './fusion.api.service.module';
-import { NodeServiceModule } from '../datasheet/_modules/node.service.module';
-import { UnitServiceModule } from '../datasheet/_modules/unit.service.module';
+import { NodeServiceModule } from '../database/_modules/node.service.module';
+import { UnitServiceModule } from '../database/_modules/unit.service.module';
 import { FusionApiController } from './fusion.api.controller';
 
 /**

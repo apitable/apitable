@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Headers, Param, Patch, Post, Query } fro
 import { RobotCreateRo } from './ros/robot.create.ro';
 import { AutomationRobotRepository } from './repositories/automation.robot.repository';
 import { AutomationService } from './services/automation.service';
-import { UserService } from 'datasheet/services/user/user.service';
+import { UserService } from 'database/services/user/user.service';
 
 @Controller('nest/v1/robots')
 export class RobotController {

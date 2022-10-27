@@ -6,11 +6,11 @@ import { CacheKeys, InjectLogger, REF_STORAGE_EXPIRE_TIME } from '../../common';
 import { Logger } from 'winston';
 import { difference, intersection, isEmpty } from 'lodash';
 import { IClientRoomChangeResult } from './socket.interface';
-import { DatasheetRepository } from '../../../datasheet/repositories/datasheet.repository';
-import { ResourceMetaRepository } from '../../../datasheet/repositories/resource.meta.repository';
-import { WidgetRepository } from '../../../datasheet/repositories/widget.repository';
-import { DatasheetMetaService } from 'datasheet/services/datasheet/datasheet.meta.service';
-import { ComputeFieldReferenceManager } from 'datasheet/services/datasheet/compute.field.reference.manager';
+import { DatasheetRepository } from '../../../database/repositories/datasheet.repository';
+import { ResourceMetaRepository } from '../../../database/repositories/resource.meta.repository';
+import { WidgetRepository } from '../../../database/repositories/widget.repository';
+import { DatasheetMetaService } from 'database/services/datasheet/datasheet.meta.service';
+import { ComputeFieldReferenceManager } from 'database/services/datasheet/compute.field.reference.manager';
 
 /**
  * Room - Resource 双向映射关系维护
