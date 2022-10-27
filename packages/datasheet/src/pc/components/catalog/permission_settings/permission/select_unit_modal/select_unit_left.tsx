@@ -498,8 +498,8 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
           activeKey={tabActiveKey}
           onChange={value => setTabActiveKey(value as TabKey)}
         >
-          <TabPane key={TabKey.Org} tab="组织架构" />
-          <TabPane key={TabKey.Role} tab="角色" />
+          <TabPane key={TabKey.Org} tab={t(Strings.tab_org)} />
+          <TabPane key={TabKey.Role} tab={t(Strings.tab_role)} />
         </Tabs>
       )}
       {!isRole && (
