@@ -85,7 +85,7 @@
     "sha1": "^1.1.1",
     "typeorm": "^0.2.38",
     "winston": "^3.3.3",
-    "winston-daily-rotate-file": "^4.5.5",
+    "winston-daily-rotate-file": "^4.7.1",
     "zipkin": "^0.22.0",
     "zipkin-context-cls": "^0.22.0",
     "zipkin-transport-http": "^0.22.0"

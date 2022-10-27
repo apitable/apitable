@@ -227,7 +227,7 @@ export class VikaGrpcClientProxy extends ClientGrpcProxy implements OnApplicatio
       await redis.del(this.getLoadUnHealthKey(ip));
       await redis.del(this.getLoadHealthKey(ip));
       this.clientIps.delete(ip);
-      this.logger.error({ ip, available }, 'NestServiceUnAvailable');
+      this.logger.error({ message: 'NestServiceUnAvailable', ip, available });
     }
   }
 

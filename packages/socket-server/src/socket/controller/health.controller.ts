@@ -17,14 +17,6 @@ export class HealthController {
   @Get()
   @HealthCheck()
   healthCheck() {
-
-    new Promise( resolve => {
-      for (let i = 0; i < 500; i++) {
-        this.logger.log(`这是一段文字：${i}`);
-      }
-    });
-
-
     return this.health.check([
       () => this.http.pingCheck('dns', HealthConstants.HEALTH_CHECK_URL, { timeout: 3000 }),
       () => this.healthIndicator.checkMemory(),

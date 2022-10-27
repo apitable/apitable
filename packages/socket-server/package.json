@@ -50,7 +50,8 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.7",
     "socket.io": "^4.5.2",
-    "winston": "^3.8.2"
+    "winston": "^3.8.2",
+    "winston-daily-rotate-file": "^4.7.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.0.0",
