@@ -197,7 +197,7 @@ const generateENV = async(configDatasheets,_path) => {
   let parsedFile = {};
 
   for (const k in settings) {
-    parsedFile[`${k.toUpperCase()}`] = settings[k];
+    parsedFile[`${k.toUpperCase()}`] = settings[k] ?? '';
   }
   fs.writeFileSync(path.resolve(`${_path}/.env`), envfile.stringify(parsedFile));
 };
