@@ -1,9 +1,9 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
-import { GatewayConstants } from 'src/constants/gateway.constants';
+import { GatewayConstants } from 'src/socket/constants/gateway.constants';
 import { pack, unpack } from 'src/grpc/util/pack.message.';
 import { vika } from 'src/grpc/generated/grpc/proto/socket.service';
 import { VikaGrpcClientProxy } from 'src/grpc/client/vika.grpc.client.proxy';
-import { logger } from '../../common/helper';
+import { logger } from '../../socket/common/helper';
 
 @Injectable()
 export class NestClient implements OnModuleInit {

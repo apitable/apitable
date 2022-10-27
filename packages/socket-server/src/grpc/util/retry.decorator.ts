@@ -1,7 +1,7 @@
 /**
  * fork : https://github.com/vcfvct/typescript-retry-decorator
  */
-import { logger } from 'src/common/helper';
+import { logger } from 'src/socket/common/helper';
 import * as Sentry from '@sentry/node';
 import { sleep } from './utils';
 import { get, omit, values } from 'lodash';

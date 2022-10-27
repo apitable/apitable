@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { HttpModule, HttpService } from '@nestjs/axios';
 import { ClientGrpcProxy, ClientsModule } from '@nestjs/microservices';
-import { GatewayConstants } from 'src/constants/gateway.constants';
+import { GatewayConstants } from 'src/socket/constants/gateway.constants';
 import { join } from 'path';
 import { NestClient } from 'src/grpc/client/nest.client';
-import { RedisModule } from 'src/service/redis/redis.module';
-import { RedisService } from 'src/service/redis/redis.service';
+import { RedisModule } from 'src/socket/service/redis/redis.module';
+import { RedisService } from 'src/socket/service/redis/redis.service';
 import { VikaGrpcClientProxy } from 'src/grpc/client/vika.grpc.client.proxy';
-import { SocketConstants } from 'src/constants/socket-constants';
+import { SocketConstants } from 'src/socket/constants/socket-constants';
 import { VikaGrpcClientProxyXxlJob } from 'src/grpc/client/vika.grpc.client.proxy.xxljob';
 import { GrpcClient } from './grpc.client';
 

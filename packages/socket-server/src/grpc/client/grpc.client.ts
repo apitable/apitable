@@ -1,6 +1,6 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientGrpcProxy } from '@nestjs/microservices';
-import { GatewayConstants } from 'src/constants/gateway.constants';
+import { GatewayConstants } from 'src/socket/constants/gateway.constants';
 import { vika } from 'src/grpc/generated/grpc/proto/socket.service';
 import { grpc } from 'src/grpc/generated/grpc/proto/backend.serving.service';
 

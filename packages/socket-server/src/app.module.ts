@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ServiceModule } from './service/service.module';
-import { GatewayModule } from './gateway/gateway.module';
-import { Log4jsModule } from './adapter/log4js/log4js.module';
-import { ControllerModule } from './controller/controller.module';
+import { ServiceModule } from './socket/service/service.module';
+import { GatewayModule } from './socket/gateway/gateway.module';
+import { Log4jsModule } from './socket/adapter/log4js/log4js.module';
+import { ControllerModule } from './socket/controller/controller.module';
 import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({

@@ -2,7 +2,7 @@ import * as protobuf from 'protobufjs';
 import { Properties } from 'protobufjs';
 import { vika } from 'src/grpc/generated/grpc/proto/any';
 import * as Sentry from '@sentry/node';
-import { logger } from '../../common/helper';
+import { logger } from '../../socket/common/helper';
 
 // reflection
 // const root = protobuf.loadSync(path.join(__dirname, '../proto/socket.message.proto')).root;

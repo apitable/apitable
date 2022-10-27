@@ -1,13 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import * as Sentry from '@sentry/node';
 import { AppModule } from './app.module';
-import { initLogger, initRedisIoAdapter } from './adapter/adapters.init';
-import { GatewayConstants } from './constants/gateway.constants';
-import { RuntimeExceptionFilter } from './filter/runtime-exception.filter';
-import { isDev, logger } from './common/helper';
+import { initLogger, initRedisIoAdapter } from './socket/adapter/adapters.init';
+import { GatewayConstants } from './socket/constants/gateway.constants';
+import { RuntimeExceptionFilter } from './socket/filter/runtime-exception.filter';
+import { isDev, logger } from './socket/common/helper';
 import { join } from 'path';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { SocketConstants } from './constants/socket-constants';
+import { SocketConstants } from './socket/constants/socket-constants';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

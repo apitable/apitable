@@ -6,13 +6,13 @@ import { InvalidGrpcServiceException } from '@nestjs/microservices/errors/invali
 import { Cron } from '@nestjs/schedule';
 import { isFunction } from 'lodash';
 import { Observable } from 'rxjs';
-import { logger, isDev, randomNum } from 'src/common/helper';
+import { logger, isDev, randomNum } from 'src/socket/common/helper';
 import * as util from 'util';
-import { GatewayConstants } from 'src/constants/gateway.constants';
-import { HealthConstants } from 'src/constants/health.constants';
-import { RedisConstants } from 'src/constants/redis-constants';
-import { SocketConstants } from 'src/constants/socket-constants';
-import { RedisService } from 'src/service/redis/redis.service';
+import { GatewayConstants } from 'src/socket/constants/gateway.constants';
+import { HealthConstants } from 'src/socket/constants/health.constants';
+import { RedisConstants } from 'src/socket/constants/redis-constants';
+import { SocketConstants } from 'src/socket/constants/socket-constants';
+import { RedisService } from 'src/socket/service/redis/redis.service';
 
 @Injectable()
 export class VikaGrpcClientProxy extends ClientGrpcProxy implements OnApplicationBootstrap {
