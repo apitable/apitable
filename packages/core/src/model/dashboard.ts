@@ -3,7 +3,7 @@ import { IJOTAction } from 'engine';
 import { OTActionName } from '../engine/ot';
 
 export class DashboardAction {
-  // 安装小组件
+  // install widget
   static addWidget2Action(
     snapshot: IDashboardSnapshot,
     options: {
@@ -14,7 +14,7 @@ export class DashboardAction {
     const widgetCount = widgetInstallations.layout?.length;
     const { layout } = options;
     if (!widgetCount) {
-      // 第一次加入
+      // first join
       return [
         {
           n: OTActionName.ObjectInsert,
@@ -37,7 +37,7 @@ export class DashboardAction {
     return action;
   }
 
-  // 删除小组件
+  // delete widget
   static deleteWidget2Action(snapshot: IDashboardSnapshot, widgetId: string): IJOTAction[] | null {
     const layout = snapshot.widgetInstallations.layout!;
     const layoutIndex = layout.findIndex(item => item.id === widgetId);
@@ -51,7 +51,7 @@ export class DashboardAction {
     ];
   }
 
-  // 调整小组件的布局;
+  // change the layout of widgets
   static changeWidgetLayout2Action(snapshot: IDashboardSnapshot, options: { layout: IDashboardLayout[] }): IJOTAction[] | null {
     const oldLayout = snapshot.widgetInstallations.layout;
     const { layout } = options;

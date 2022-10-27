@@ -142,7 +142,7 @@ export class MultiSelectField extends SelectField {
     }
 
     if (condition.operator === FOperator.Contains) {
-      // contains 只有一个值时才自动填充
+      // `contains` only fills in when there is only one value
       if (value && value.length === 1 && value[0] && this.validate([value[0]])) {
         return [value[0]];
       }
@@ -152,7 +152,7 @@ export class MultiSelectField extends SelectField {
   }
 
   compare(cellValue1: string[] | null, cellValue2: string[] | null, orderInCellValueSensitive?: boolean) {
-    // 分组排序
+    // grouping sort
     if (!orderInCellValueSensitive) {
       const sortCellValue1 = this.sortValueByOptionOrder(cellValue1);
       const sortCellValue2 = this.sortValueByOptionOrder(cellValue2);
@@ -211,7 +211,7 @@ export class MultiSelectField extends SelectField {
   }
 
   stdValueToCellValue(stdValue: IStandardValue): string[] | null {
-    // 过滤掉text为空的
+    // filter the empty text
     let data = stdValue.data.filter(d => d.text);
     data = uniqBy(data, 'text');
     const isSelect2multi = isSelectType(stdValue.sourceType);
@@ -250,7 +250,7 @@ export class MultiSelectField extends SelectField {
     return cellValues && cellValues.length ? cellValues.join(', ') : null;
   }
 
-  // 把值按选项顺序排序
+  // sort vales by option ascending order
   sortValueByOptionOrder(value: string[] | null) {
     if (!value) {
       return null;

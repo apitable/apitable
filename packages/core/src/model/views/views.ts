@@ -5,7 +5,7 @@ import { Strings, t } from 'i18n';
 import { IBindViewModal } from '.';
 
 /**
- * 这里的 views 指的是表格视图、相册视图等，跟 view 表格区域区分开来。
+ * here's `views` means table view / gallery view, not `view` in table area.
  */
 export abstract class View {
   static bindModel: IBindViewModal;
@@ -28,7 +28,11 @@ export abstract class View {
     }
     return [];
   }
-  /** 记录在不同视图中的叫法，行、记录、任务等等，每个视图需要定义自己关于记录书面叫法 */
+
+  /** 
+   *  `record` has different name in different view, such as `row`, `record`, `task`, etc.
+   * every view need to define their own name of record.
+   */
   get recordShowName() {
     return t(Strings.record);
   }

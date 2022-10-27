@@ -14,7 +14,7 @@ const COLOR_INDEX_NAME = [
   'red',
 ];
 
-// 五个等级 alpha 透明度
+// five level alpha transparency
 const COLOR_LEVEL_ALPHA = [0.2, 0.4, 0.6, 0.8, 1];
 
 const rgba2hex = (foregroundColor: string, backgroundColor = '#FFFFFF') => {
@@ -35,7 +35,8 @@ const getColorValue = (color: string, alpha: number) => {
 };
 
 /**
- * 将单多选的颜色数字转化为颜色对象
+ * get single or multiple color object, transformed by color number
+ * 
  * 0 => deepPurple_1
  * 10 => deepPurple_2
  * 11 => indigo_2
@@ -53,7 +54,7 @@ export function getFieldOptionColor(index: number) {
 }
 
 /**
- * 获取所有color name的数组，下标对应 color 的number值
+ * get all color name array, index is color number
  */
 export const getColorNames = () => {
   const colorNames: string[] = [];

@@ -1,5 +1,5 @@
 
-// WARN: 这份颜色文件是由脚本生成和同步的，不要手动修改!!!
+// WARN: this color file is generated and synced by script, DO NOT modify it manually!!!
 export const COLOR_MAP = {
   black: '#8C8C8C',
   blackBlue: '#9FA1BB',

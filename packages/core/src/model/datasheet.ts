@@ -17,7 +17,7 @@ import { Field, OtherTypeUnitId, StatType } from './field';
 import { ICellValue } from './record';
 import { getViewClass } from './views';
 
-// todo: 应该结合所有属性进行整体校验，不应该单独判断
+// TODO: all fields should be checked, not only the first one
 function validateFilterInfo(filterInfo?: IFilterInfo) {
   if (filterInfo == null) {
     return true;
@@ -58,14 +58,15 @@ function getDefaultNewRecordDataByFilter(
   const { conditions } = filterInfo;
   const recordData: { [fieldId: string]: ICellValue } = {};
 
-  // Or 组合，存在多个筛选条件，不默认填写数据，仅存在一个筛选条件，则按照 and 的逻辑处理
+  // Or combination, there are multiple filter conditions, no default data fill in, 
+  // and there is only one filter condition, then it is processed according to the `and` logic
   if (filterInfo.conjunction === FilterConjunction.Or && filterInfo.conditions.length !== 1) {
     return recordData;
   }
 
-  // And 组合
+  // And combination
 
-  // 1. 将筛选条件按 fieldId 分组
+  // 1. Group filter conditions by fieldId
   const conditionGroups = conditions.reduce((prev, condition) => {
     const { fieldId } = condition;
     let group = prev[fieldId];
@@ -76,7 +77,7 @@ function getDefaultNewRecordDataByFilter(
     return prev;
   }, {} as { [fieldId: string]: IFilterCondition[] });
 
-  // 2. 确定每个字段的对应筛选条件的最终 And 填充值
+  // 2. Determine the final `And` fill value, for each field corresponding to the filter condition
   for (const fieldId in conditionGroups) {
     const field = fieldMap[fieldId];
     if (!field) {
@@ -85,7 +86,7 @@ function getDefaultNewRecordDataByFilter(
 
     const isComputedField = Field.bindContext(field, state).isComputed;
     if (isComputedField) {
-      // 计算字段的单元格不需要填入默认值
+      // the cell of calc field, no need to fill in default value
       continue;
     }
 
@@ -93,7 +94,7 @@ function getDefaultNewRecordDataByFilter(
     const isMultiValueField = Field.bindContext(field, state).isMultiValueField();
     const candidate = new Set<any>();
 
-    // 2.1. 将所有条件的候选值都收集起来
+    // 2.1. Collect all candidate values of all conditions
     for (let i = 0, ii = conditionGroup.length; i < ii; i++) {
       const condition = conditionGroup[i];
       const currentValue = Field.bindContext(field, state).defaultValueForCondition(condition);
@@ -101,8 +102,9 @@ function getDefaultNewRecordDataByFilter(
         continue;
       }
 
-      // 多值类型的字段，需要将每个值都拆出来 unique。
-      // TODO: 目前多值类型都是基础类型，所以采用 Set。后续有引用类型，需要改动
+      // multi-value type field, need to split the value "unique"
+      // TODO: currently multi-value type field is basic type, so use "Set".
+      // In the future, if reference type, optimize this
       if (isMultiValueField && Array.isArray(currentValue)) {
         currentValue.forEach(v => {
           if (field.type === FieldType.Member && v === OtherTypeUnitId.Self) {
@@ -116,20 +118,20 @@ function getDefaultNewRecordDataByFilter(
       }
     }
 
-    // 没有候选值
+    // no candidate values
     if (candidate.size === 0) {
       continue;
     }
 
     let result: ICellValue;
     if (isMultiValueField) {
-      // 多值字段，可以把候选值都整一起
+      // multi value field, can put all candidate values together
       result = [...candidate];
     } else if (candidate.size === 1) {
-      // 单值字段，只有一个值的情况才能符合 And 条件
+      // single value field, only one value can meet the `And` condition
       result = candidate.values().next().value;
     } else {
-      // 单值字段不止一个值，那肯定不符合 And 条件
+      // single value field, more than one value can meet the `And` condition, which is not allowed
       continue;
     }
 
@@ -139,7 +141,7 @@ function getDefaultNewRecordDataByFilter(
     // 而 1 是无法通过 =1 And < 0 的，默认填充这个值不符合用户期望。
     const pass = conditionGroup.every(condition => doFilter(state, condition, field, result));
     if (pass) {
-      // 不同字段的 And，只需要把有值的都赋值上去。
+      // different fields of `And`, only need to assign the values ​​that have values ​​to them.
       recordData[fieldId] = result;
     }
   }
@@ -148,7 +150,7 @@ function getDefaultNewRecordDataByFilter(
 
 export class DatasheetActions {
   /**
-   * 为 table 添加 view
+   * add `view` to table
    */
   static addView2Action(
     snapshot: ISnapshot,
@@ -169,7 +171,7 @@ export class DatasheetActions {
       startIndex = views.length;
     }
 
-    // 新增维格视图时，同时设置统计栏默认统计值
+    // when add new datasheet view, set default summary value of the analysis bar
     const setDefaultFieldStat = (view: IViewProperty): IViewProperty => {
       if (view.type !== ViewType.Grid) return view;
 
@@ -197,7 +199,7 @@ export class DatasheetActions {
   }
 
   /**
-   * 移动 views
+   * move views
    * @param {string} viewId
    */
   static moveView2Action = (
@@ -226,7 +228,8 @@ export class DatasheetActions {
   };
 
   /**
-   * 基于 viewID 删除 view
+   * delete view based viewID, 
+   * 
    * @param {string} viewId
    */
   static deleteView2Action(
@@ -501,7 +504,7 @@ export class DatasheetActions {
         setFrozenColumnCount();
       }
 
-      // 删除 columns
+      // delete columns
       action.push({
         n: OTActionName.ListDelete,
         p: ['meta', 'views', index, 'columns', columnIndex],
@@ -513,7 +516,7 @@ export class DatasheetActions {
 
     const field = fieldMap[fieldId];
     if (field) {
-      // 删除日期列数据时移除闹钟
+      // when delete date column, remove alarm
       const recordMap = snapshot.recordMap;
       Object.keys(recordMap).forEach(recordId => {
         const alarm = Selectors.getDateTimeCellAlarm(snapshot, recordId, field.id);
@@ -703,7 +706,7 @@ export class DatasheetActions {
   };
 
   /**
-   * 为 table 添加 record
+   * add record to table
    */
   static addRecord2Action(
     snapshot: ISnapshot,
@@ -719,7 +722,7 @@ export class DatasheetActions {
         return pre;
       }
 
-      // 只有在激活的 view 才添加到指定的 index 处
+      // only add to index when view is active
       if (viewId === cur.id) {
         rowIndex = index;
       }
@@ -757,20 +760,21 @@ export class DatasheetActions {
   ): IJOTAction | null {
     const { recordId, fieldId, value } = payload;
 
-    // recordId 在数据中不存在
+    // recordId, not exist in data
     if (!snapshot.recordMap[recordId]) {
       return null;
     }
-    // oldCellValue 不使用 getCellValue 直接拿数据实体，以免得到计算字段计算后的值
+
+    // oldCellValue, don't use `getCellValue`, because it may be a computed field
     const cv = snapshot.recordMap[recordId].data[fieldId];
     const oldCellValue = cv == null ? null : cv;
 
-    // 非计算字段的时候，要检查数据是否未做任何修改
+    // non-computed field, check whether value has changed
     if (isEqual(oldCellValue, value)) {
       return null;
     }
 
-    // 当输入的 value 为空(空数组)的时候，实际上是要把fieldId key 一起干掉，避免冗余
+    // when value is empty(empty array), we should delete the key to avoid redundancy
     if (value == null || (Array.isArray(value) && value.length === 0)) {
       return {
         n: OTActionName.ObjectDelete,
@@ -780,6 +784,7 @@ export class DatasheetActions {
     }
 
     // 当原来的 cellValue 为空的时候，实际上是要 insert 一条 fieldId key。
+    
     if (oldCellValue == null) {
       return {
         n: OTActionName.ObjectInsert,

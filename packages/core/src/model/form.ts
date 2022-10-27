@@ -3,7 +3,7 @@ import { IJOTAction } from 'engine';
 import { OTActionName } from '../engine/ot';
 
 export class FormAction {
-  // 更新自有属性
+  // update own properties
   static updatePropsAction(
     formProps: IFormProps,
     options: {

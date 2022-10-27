@@ -118,7 +118,7 @@ export class SingleSelectField extends SelectField {
   ): string | null {
     const { operator, value } = condition;
     if (operator === FOperator.Is || operator === FOperator.Contains) {
-      // 只有一个值时才自动填充
+      // only one value will auto fill
       if (value && value.length === 1 && value[0] && this.validate(value[0])) {
         return value[0];
       }
@@ -153,7 +153,7 @@ export class SingleSelectField extends SelectField {
   }
 
   stdValueToCellValue(stdValue: IStandardValue) {
-    // 过滤掉text为空的
+    // filter empty text
     const data = stdValue.data.filter(d => d.text);
     if (data.length === 0) {
       return null;
@@ -224,7 +224,7 @@ export class SingleSelectField extends SelectField {
     if (!value) {
       return null;
     }
-    // FIXME: 这里的颜色要再转化一下
+    // FIXME: here's color need to transfer
     return { ...value, color: getFieldOptionColor(value.color) };
   }
 

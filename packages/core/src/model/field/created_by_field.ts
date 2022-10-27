@@ -93,7 +93,7 @@ export class CreatedByField extends MemberBaseField {
     return false;
   }
 
-  // CreatedBy 为只读字段，不需要实现此方法
+  // CreatedBy is read-only field, no need to implement this method
   stdValueToCellValue(): null {
     return null;
   }
@@ -103,7 +103,7 @@ export class CreatedByField extends MemberBaseField {
     return createdBy == null ? OtherTypeUnitId.Alien : createdBy;
   }
 
-  // 获取所有 record 中涉及的 uuid
+  // get all records uuid
   getUuidsByRecordMap(recordMap: IRecordMap): string[] {
     const uuids = Object.values(recordMap)
       .reduce((ids, record) => {

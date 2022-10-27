@@ -79,7 +79,7 @@ export abstract class SelectField extends Field {
     option: ISelectFieldOption,
     isCreated: boolean
   } {
-    // 获取存在的
+    // get exist
     const opt = SelectField._getOption(option, existOptions);
     if (opt) {
       return {
@@ -87,7 +87,7 @@ export abstract class SelectField extends Field {
         isCreated: false,
       };
     }
-    // 创建不存在的
+    // create not exist
     const newOption = SelectField._createNewOption(option, existOptions);
     return {
       option: newOption,
@@ -100,7 +100,8 @@ export abstract class SelectField extends Field {
   }
 
   /**
-   * 为 singleSelect 添加一个新的选项
+   * add new option to singleSelect
+   * 
    * @param {string} name
    * @memberof SingleSelectField
    */
@@ -111,7 +112,7 @@ export abstract class SelectField extends Field {
   }
 
   /**
-   * 通过名称查找 option
+   * find option by name
    * @param {string} name
    * @returns
    * @memberof SingleSelectField

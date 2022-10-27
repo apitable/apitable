@@ -13,14 +13,14 @@ export class GalleryView extends CardView {
 
   static defaultStyle(snapshot: ISnapshot, srcView: IViewProperty) {
 
-    // 第一个附件字段设置为默认的封面字段
+    // the first attachment field set as default cover field
     const initCoverField = srcView.columns.find(col =>
       snapshot.meta.fieldMap[col.fieldId].type === FieldType.Attachment,
     );
 
     return {
       layoutType: LayoutType.Flex,
-      isAutoLayout: false, // 默认是手动布局显示 4 个
+      isAutoLayout: false, //default is manual layout, show 4
       cardCount: 4,
       isCoverFit: true,
       coverFieldId: initCoverField ? initCoverField.fieldId : undefined,
@@ -57,7 +57,7 @@ export class GalleryView extends CardView {
   }
 
   /**
-   * gallery 视图 UI 配置
+   * gallery view UI setting
    */
   static setGalleryStyle2Action = (
     snapshot: ISnapshot,

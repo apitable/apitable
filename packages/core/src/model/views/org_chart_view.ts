@@ -20,7 +20,7 @@ export class OrgChartView extends View {
 
   static defaultStyle(snapshot: ISnapshot, srcView: IViewProperty) {
 
-    // 第一个附件字段设置为默认的封面字段
+    // the first attachment field set as default cover field
     const initCoverField = srcView.columns.find(col =>
       snapshot.meta.fieldMap[col.fieldId].type === FieldType.Attachment,
     );

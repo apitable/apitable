@@ -56,7 +56,7 @@ export function getViewClass(viewType: ViewType) {
   }
 }
 
-// 神策 自定义属性
+// sensor custom attributes 
 export function getViewAnalyticsId(viewType: ViewType) {
   switch (viewType) {
     case ViewType.Kanban:

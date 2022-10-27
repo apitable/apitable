@@ -61,6 +61,10 @@ export class Datasheet extends JsonDataProcessor<IDatasheetPack> {
 
   }
 
+  public calcRefFields() {
+
+  }
+
   public updateRecord() {
 
   }

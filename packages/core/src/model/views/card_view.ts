@@ -4,7 +4,7 @@ import { View } from './views';
 export abstract class CardView extends View {
   static defaultColumns(srcView: IViewProperty, columnCount: number) {
     if (!srcView) {
-      throw Error('未找到源视图');
+      throw Error('cannot find the source of view');
     }
     let count = 0;
     const columns: IViewColumn[] = (srcView.columns as IGridViewColumn[]).reduce((columns, column) => {

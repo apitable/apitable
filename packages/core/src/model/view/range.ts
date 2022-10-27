@@ -3,11 +3,17 @@ import { groupArray } from 'model/utils';
 import { IReduxState, Selectors } from '../../store';
 import { getCellIndex, getVisibleColumns, getVisibleRows, getCellUIIndex } from '../../store/selector';
 
-/** 单元格行、列唯一标识符 uuid */
+/**
+ * cell row / column UUID
+ */
 export interface ICell {
-  /** 单元格行唯一标识符 uuid */
+  /**
+   * cell row UUID
+   */
   recordId: string;
-   /** 单元格列唯一标识符 uuid */
+   /**
+    * cell column UUID
+    */
   fieldId: string;
 }
 
@@ -59,7 +65,7 @@ const isNumberInRange = (n: number, range: number[]) => {
 };
 
 /**
- * 选区相关的范围判断
+ * select are range judgement
  */
 export class Range {
 
@@ -416,7 +422,7 @@ export class Range {
         newIndexRange.record.max = maxRowIndexInAllRange;
         break;
     }
-    // 修正
+    // to fix
     newIndexRange.field.min = Math.max(newIndexRange.field.min, 0);
     newIndexRange.field.max = Math.min(newIndexRange.field.max, maxFieldIndex);
     newIndexRange.record.min = Math.max(newIndexRange.record.min, 0);
@@ -425,7 +431,8 @@ export class Range {
   }
 
   /**
-   * 勾选选中的记录是非连续的选区，将其转化为多个 IRange 格式的连续选区。
+   * selected records is non-sequence area, convert it to sequence area with multi IRange format
+   * 
    * @param state 
    * @param recordIds 
    */

@@ -1,10 +1,9 @@
 import dayjs from 'dayjs';
-// 支持 国际化(i18n) 的列表
 import 'dayjs/locale/zh-cn';
 import 'dayjs/locale/zh-hk';
 import 'dayjs/locale/zh-tw';
 import timezone from 'dayjs/plugin/timezone';
-// 时区
+// timezone
 import utc from 'dayjs/plugin/utc';
 import { getLanguage, Strings, t } from 'i18n';
 import { isEqual, isNumber } from 'lodash';
@@ -22,7 +21,7 @@ import { ICellValue } from '../record';
 import { Field } from './field';
 import { StatTranslate, StatType } from './stat';
 
-// 插件在import之后，防止循环引入
+// plugin before import, prevent circular import
 dayjs.extend(utc);
 dayjs.extend(timezone);
 declare const window: any;

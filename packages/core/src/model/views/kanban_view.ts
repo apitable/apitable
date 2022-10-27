@@ -57,7 +57,8 @@ export class KanbanView extends CardView {
 
   static defaultStyle(snapshot: ISnapshot, activeViewId: string) {
     const srcView = this.getSrcView(snapshot, activeViewId);
-    // 第一个附件字段设置为默认的封面字段
+
+    // the first attachment field will be default cover field
 
     const kanbanFieldId = this.findGroupFieldId(srcView, snapshot.meta.fieldMap)!;
     const field = snapshot.meta.fieldMap[kanbanFieldId];
