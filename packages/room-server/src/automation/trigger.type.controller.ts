@@ -21,10 +21,9 @@ export class RobotTriggerTypeController {
   }
 
   @Post('/')
-  // 创建 triggerType
   async createTriggerType(@Body() triggerType: TriggerTypeCreateRo, @Headers('cookie') cookie: string) {
     if (isProdMode) {
-      throw new Error('生产环境不支持此接口');
+      throw new Error('cant create trigger type in production mode');
     }
     const user = await this.userService.getMe({ cookie });
     return this.automationService.createTriggerType(triggerType, user);
@@ -37,7 +36,7 @@ export class RobotTriggerTypeController {
     @Headers('cookie') cookie: string
   ) {
     if (isProdMode) {
-      throw new Error('生产环境不支持此接口');
+      throw new Error('cant update trigger type in production mode');
     }
     const user = await this.userService.getMe({ cookie });
     return this.automationService.updateTriggerType(triggerTypeId, data, user);

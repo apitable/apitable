@@ -8,7 +8,6 @@ export class TriggerCreateRo {
     type: String,
     required: true,
     example: 'arbxxxxxx',
-    description: '机器人ID',
   })
   @IsNotEmpty({ context: { tipId: ApiTipIdEnum.apiParamsEmptyError }})
     robotId: string;
@@ -17,7 +16,6 @@ export class TriggerCreateRo {
     type: String,
     required: true,
     example: 'attxxxxxxx',
-    description: 'trigger 原型 ID',
   })
   @IsNotEmpty({ context: { tipId: ApiTipIdEnum.apiParamsEmptyError }})
     triggerTypeId: string;
@@ -26,7 +24,7 @@ export class TriggerCreateRo {
     type: object,
     required: false,
     example: '{}',
-    description: 'trigger input 表单输入值',
+    description: 'trigger input',
   })
     input: object;
 }

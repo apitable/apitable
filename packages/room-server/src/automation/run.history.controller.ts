@@ -9,7 +9,7 @@ export class RobotRunHistoryController {
 
   @Get('/')
   getRunHistory(@Query('robotId') robotId: string, @Query('page') page = 1, @Query('size') size = 20) {
-    // pagesize 最大为 200 
+    // max pagesize 20
     const pageSize = Math.min(size, 20);
     const offset = (page - 1) * pageSize;
     return this.automationRunHistoryRepository.getRunHistoryByRobotId(robotId, offset, pageSize);

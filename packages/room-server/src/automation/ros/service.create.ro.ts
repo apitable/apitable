@@ -4,16 +4,16 @@ export class AutomationServiceCreateRo {
   @ApiProperty({
     type: String,
     required: true,
-    example: 'vika',
-    description: '服务 slug',
+    example: 'apitable',
+    description: 'service slug, unique identifier',
   })
     slug: string;
 
   @ApiProperty({
     type: String,
     required: true,
-    example: '维格表',
-    description: '名字',
+    example: 'apitable',
+    description: 'service name',
   })
     name: string;
 
@@ -28,8 +28,8 @@ export class AutomationServiceCreateRo {
   @ApiProperty({
     type: String,
     required: true,
-    example: 'asvxxxxxx',
-    description: '调用基础地址',
+    example: 'https://example.com',
+    description: 'basic callback url',
   })
     baseUrl: string;
 }

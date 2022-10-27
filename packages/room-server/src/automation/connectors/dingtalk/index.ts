@@ -5,7 +5,7 @@ interface IDingTalkMsgRequest {
   type: string;
   content: string;
   webhookUrl: string;
-  title?: string; // markdown 格式带个标题
+  title?: string;
 }
 
 interface IDingTalkMsgResponse {
@@ -14,7 +14,6 @@ interface IDingTalkMsgResponse {
 }
 
 export async function sendDingtalkMsg(request: IDingTalkMsgRequest): Promise<IActionResponse<any>> {
-  console.log('sendDingTalkMsg', request);
   const { type, content, webhookUrl, title } = request;
   let data = {};
   switch (type) {
@@ -64,7 +63,7 @@ export async function sendDingtalkMsg(request: IDingTalkMsgRequest): Promise<IAc
       }
     };
   } catch (error: any) {
-    // 网络层的问题视为服务端有问题。
+    // network error
     const res: IErrorResponse = {
       errors: [{
         message: error.message

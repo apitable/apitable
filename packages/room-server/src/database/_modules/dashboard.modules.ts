@@ -6,10 +6,10 @@ import { NodeServiceModule } from './node.service.module';
 
 @Module({
   imports: [
-    DashboardServiceModule,
-    UserServiceModule,
-    NodeServiceModule,
+  DashboardServiceModule,
+  UserServiceModule,
+  NodeServiceModule,
   ],
   controllers: [DashboardController],
-})
+  })
 export class DashboardModule {}

@@ -21,10 +21,9 @@ export class RobotActionTypeController {
   }
 
   @Post('/')
-  // 创建 actionType
   async createActionType(@Body() actionType: ActionTypeCreateRo, @Headers('cookie') cookie: string) {
     if (isProdMode) {
-      throw new Error('生产环境不支持此接口');
+      throw new Error('cannot create action type in production mode');
     }
     const user = await this.userService.getMe({ cookie });
     return this.automationService.createActionType(actionType, user);
@@ -37,7 +36,7 @@ export class RobotActionTypeController {
     @Headers('cookie') cookie: string
   ) {
     if (isProdMode) {
-      throw new Error('生产环境不支持此接口');
+      throw new Error('cannot update action type in production mode');
     }
     const user = await this.userService.getMe({ cookie });
     return this.automationService.updateActionType(actionTypeId, data, user);

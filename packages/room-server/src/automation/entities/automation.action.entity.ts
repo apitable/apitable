@@ -1,9 +1,6 @@
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../../shared/entities/base.entity';
 
-/**
- * 自动化 action
- */
 @Entity('vika_automation_action')
 export class AutomationActionEntity extends BaseEntity {
   @Column({
@@ -24,7 +21,7 @@ export class AutomationActionEntity extends BaseEntity {
   @Column({
     name: 'action_type_id',
     nullable: true,
-    comment: '名称',
+    comment: 'ID of action-type',
     length: 255,
   })
     actionTypeId: string | null;
@@ -32,7 +29,7 @@ export class AutomationActionEntity extends BaseEntity {
   @Column({
     name: 'prev_action_id',
     nullable: true,
-    comment: '前置 action ID',
+    comment: 'previous action-type id',
     length: 255,
   })
     prevActionId: string | null;

@@ -7,7 +7,6 @@ export class ActionCreateRo {
     type: String,
     required: true,
     example: 'arbxxxxxx',
-    description: '机器人ID',
   })
   @IsNotEmpty({ context: { tipId: ApiTipIdEnum.apiParamsEmptyError }})
     robotId: string;
@@ -16,7 +15,6 @@ export class ActionCreateRo {
     type: String,
     required: true,
     example: 'aatxxxxxxx',
-    description: 'action 原型 ID',
   })
   @IsNotEmpty({ context: { tipId: ApiTipIdEnum.apiParamsEmptyError }})
     actionTypeId: string;
@@ -25,7 +23,6 @@ export class ActionCreateRo {
     type: String,
     required: false,
     example: 'aatxxxxxxx',
-    description: '前一个 action Id',
   })
     prevActionId: string;
 
@@ -33,7 +30,6 @@ export class ActionCreateRo {
     type: Object,
     required: false,
     example: {},
-    description: 'action 输入值',
   })
     input: object;
 }

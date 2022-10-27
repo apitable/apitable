@@ -7,7 +7,6 @@ export class RobotCreateRo {
     type: String,
     required: true,
     example: 'dst0Yj5aNeoHldqvf6',
-    description: '资源ID',
   })
   @IsNotEmpty({ context: { tipId: ApiTipIdEnum.apiParamsEmptyError }})
     resourceId: string;
@@ -15,16 +14,14 @@ export class RobotCreateRo {
   @ApiProperty({
     type: String,
     required: false,
-    example: '机器人001',
-    description: '机器人名称',
+    example: 'robot 001',
+    description: 'name of robot',
   })
     name: string;
 
   @ApiProperty({
     type: String,
     required: false,
-    example: '我是机器人',
-    description: '机器人描述',
   })
     description: string;
 }

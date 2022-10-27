@@ -1,10 +1,10 @@
 export enum ResponseStatusCodeEnums {
-  Success = 200, // 成功正常返回
-  ClientError = 400, // 客户端输入的 input 有错误
-  Unauthorized = 401, // 未登录:header 里面要有 token
-  Forbidden = 403, // 没有权限
-  NotFound = 404, // 没有找到对于的 endpoint
-  ServerError = 500, // 服务端出错误了
+  Success = 200, 
+  ClientError = 400,
+  Unauthorized = 401,
+  Forbidden = 403,
+  NotFound = 404,
+  ServerError = 500,
 }
 
 export interface ISuccessResponse<T> {

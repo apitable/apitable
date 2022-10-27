@@ -4,7 +4,7 @@ import { EntityRepository, Repository } from 'typeorm';
 @EntityRepository(AutomationTriggerTypeEntity)
 export class AutomationTriggerTypeRepository extends Repository<AutomationTriggerTypeEntity> {
   /**
-   * 通过 service slug 和 trigger  endpoint 查询出唯一触发器类型
+   * query unique trigger type by service slug and triggerType slug
    * @param serviceSlugAndEndpoints ([record_updated,record_created], vika)
    */
   getTriggerTypeByServiceSlugAndEndpoints(endpoints: string[], serviceSlug: string): Promise<{

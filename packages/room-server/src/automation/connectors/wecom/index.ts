@@ -62,7 +62,7 @@ export async function sendWecomMsg(reqData: IWecomMsgRequest): Promise<IActionRe
       }
     };
   } catch (error: any) {
-    // 网络层的问题视为服务端有问题。
+    // network error
     const res: IErrorResponse = {
       errors: [{
         message: error.message

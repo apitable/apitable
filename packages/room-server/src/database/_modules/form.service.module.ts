@@ -11,15 +11,15 @@ import { FormService } from '../services/form/form.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ResourceMetaRepository]),
-    NodeServiceModule,
-    DatasheetServiceModule,
-    CommandServiceModule,
-    OtModule,
-    FusionApiServiceModule,
-    EventServiceModule
+  TypeOrmModule.forFeature([ResourceMetaRepository]),
+  NodeServiceModule,
+  DatasheetServiceModule,
+  CommandServiceModule,
+  OtModule,
+  FusionApiServiceModule,
+  EventServiceModule
   ],
   providers: [FormService],
   exports: [FormService],
-})
+  })
 export class FormServiceModule { }

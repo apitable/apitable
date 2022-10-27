@@ -188,7 +188,7 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
 
     Object.entries(groupBy(actionBaseInfoList, 'robotId')).forEach(item => {
       const [robotId, actions] = item;
-      // 如果机器人的引导创建流程没走完，存在只有一个 trigger 没有 actions 的情况。直接跳过
+      // if process of creating robot is not complete, there may be a robot with only one trigger and no actions
       if (actions.length === 0) {
         return;
       }
@@ -305,7 +305,6 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
   createRobot(robot: RobotCreateRo, userId: string) {
     const newRobot = this.create({
       resourceId: robot.resourceId,
-      // arb 开头 15 位[a-zA-Z] 随机字符
       robotId: `arb${generateRandomString(15)}`,
       name: robot.name,
       description: robot.description,

@@ -47,14 +47,14 @@ export async function sendLarkMsg(request: ILarkMsgRequest): Promise<IActionResp
         code: ResponseStatusCodeEnums.Success
       };
     }
-    console.log('lark msg error', resp.status, result);
+    
     const failRes = result as ILarkMsgFailResponse;
     const res: IErrorResponse = {
       errors: [{
         message: `[${failRes.code}] ${failRes.msg}`
       }]
     };
-    // 飞书返回了结果，但是不是成功的，表明客户端输入有误/请求频率过高,具体提示以飞书返回的为准。
+    // lark return result, but not success, means client input error or request too frequently, use lark response as error message.
     return {
       success: false,
       data: res,
@@ -62,7 +62,7 @@ export async function sendLarkMsg(request: ILarkMsgRequest): Promise<IActionResp
     };
 
   } catch (error: any) {
-    // 网络层的问题视为服务端有问题。
+    // network error 
     const res: IErrorResponse = {
       errors: [{
         message: error.message

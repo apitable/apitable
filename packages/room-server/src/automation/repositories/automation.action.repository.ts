@@ -20,7 +20,7 @@ export class AutomationActionRepository extends Repository<AutomationActionEntit
   }
 
   async deleteRobotActionByActionId(actionId: string, userId: string) {
-    // 找到当前节点的上一个节点。和下一个节点。将下一个节点的上一个节点设置为当前节点的上一个节点。
+    // find prev and next node of current, and set next node's prev node to current node's prev node.
     const thisAction = await this.query(
       `
     SELECT
@@ -32,10 +32,9 @@ export class AutomationActionRepository extends Repository<AutomationActionEntit
     `, [actionId]);
     const robotId = thisAction[0].robot_id;
     const prevActionId = thisAction[0].prev_action_id;
-
-    // 要一起更新
+    
+    // transaction to update prev and next node
     await getManager().transaction(async transactionalEntityManager => {
-      // 更新下一个节点的 prev_action_id 为当前节点的 prev_action_id
       await transactionalEntityManager.query(
         `
       UPDATE
@@ -64,7 +63,7 @@ export class AutomationActionRepository extends Repository<AutomationActionEntit
   }
 
   changeActionTypeId(actionId: string, actionTypeId: string, userId: string) {
-    // 切换 action 原型时，input 清空
+    // clean action input when changing action type
     return this.update({ actionId }, { actionTypeId, input: null, updatedBy: userId });
   }
 }

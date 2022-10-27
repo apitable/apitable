@@ -11,17 +11,17 @@ import { AutomationActionTypeRepository } from '../repositories/automation.actio
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      NodeRepository,
-      AutomationTriggerRepository,
-      AutomationRobotRepository,
-      AutomationRunHistoryRepository,
-      AutomationServiceRepository,
-      AutomationTriggerTypeRepository,
-      AutomationActionTypeRepository
+  TypeOrmModule.forFeature([
+    NodeRepository,
+    AutomationTriggerRepository,
+    AutomationRobotRepository,
+    AutomationRunHistoryRepository,
+    AutomationServiceRepository,
+    AutomationTriggerTypeRepository,
+    AutomationActionTypeRepository
     ]),
   ],
   providers: [AutomationService],
   exports: [AutomationService],
-})
+  })
 export class AutomationServiceModule { }

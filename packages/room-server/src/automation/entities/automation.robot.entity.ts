@@ -1,9 +1,6 @@
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../../shared/entities/base.entity';
 
-/**
- * 自动化 robot
- */
 @Entity('vika_automation_robot')
 export class AutomationRobotEntity extends BaseEntity {
   @Column({

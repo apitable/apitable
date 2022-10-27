@@ -16,23 +16,23 @@ import { RobotTriggerTypeController } from './trigger.type.controller';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      AutomationTriggerRepository,
-      AutomationActionRepository,
-      AutomationRobotRepository,
-      AutomationRunHistoryRepository,
+  TypeOrmModule.forFeature([
+    AutomationTriggerRepository,
+    AutomationActionRepository,
+    AutomationRobotRepository,
+    AutomationRunHistoryRepository,
     ]),
-    UserServiceModule,
-    AutomationServiceModule,
+  UserServiceModule,
+  AutomationServiceModule,
   ],
   controllers: [
-    RobotController,
-    RobotRunHistoryController,
-    RobotActionTypeController,
-    RobotTriggerTypeController,
-    RobotActionController,
-    RobotTriggerController,
-    RobotServiceController,
+  RobotController,
+  RobotRunHistoryController,
+  RobotActionTypeController,
+  RobotTriggerTypeController,
+  RobotActionController,
+  RobotTriggerController,
+  RobotServiceController,
   ],
-})
+  })
 export class RobotModule { }

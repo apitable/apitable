@@ -1,9 +1,6 @@
 import { IdWorker } from 'shared/helpers/snowflake';
 import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
 
-/**
- * 自动化-机器人运行历史
- */
 @Entity('vika_automation_run_history')
 export class AutomationRunHistoryEntity {
   @PrimaryColumn('bigint')
@@ -28,7 +25,7 @@ export class AutomationRunHistoryEntity {
     name: 'space_id',
     nullable: false,
     length: 50,
-    comment: '[冗余]当前任务机器人所属的空间站ID',
+    comment: 'spaceID of current robot',
   })
     spaceId: string;
 
@@ -36,7 +33,7 @@ export class AutomationRunHistoryEntity {
     name: 'status',
     nullable: false,
     unsigned: true,
-    comment: '运行状态(0:运行中,1:成功,2:失败)',
+    comment: 'state(0:running,1:succeed,2:failed)',
   })
     status: number;
 
@@ -48,7 +45,6 @@ export class AutomationRunHistoryEntity {
 
   @Column('timestamp', {
     name: 'created_at',
-    comment: '创建时间',
     default: () => 'CURRENT_TIMESTAMP',
   })
     createdAt: Date;

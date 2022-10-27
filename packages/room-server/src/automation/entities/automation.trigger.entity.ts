@@ -1,9 +1,6 @@
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../../shared/entities/base.entity';
 
-/**
- * 自动化 trigger
- */
 @Entity('vika_automation_trigger')
 export class AutomationTriggerEntity extends BaseEntity {
   @Column({
@@ -24,7 +21,6 @@ export class AutomationTriggerEntity extends BaseEntity {
   @Column({
     name: 'trigger_type_id',
     nullable: true,
-    comment: '名称',
     length: 255,
   })
     triggerTypeId: string | null;

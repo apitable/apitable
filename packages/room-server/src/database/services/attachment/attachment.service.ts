@@ -30,16 +30,13 @@ export class AttachmentService {
   }
 
   /**
-   *
-   * @param dstId 表格ID
-   * @param file 文件
-   * @param auth 登录信息
-   * @return
-   * @author Zoe Zheng
-   * @date 2020/8/11 3:27 下午
+   * 
+   * @param dstId 
+   * @param file 
+   * @param auth 
+   * @returns 
    */
   public async uploadAttachment(dstId: string, file: IFileInterface, auth: IAuthHeader): Promise<AttachmentDto> {
-    // 上传的文件为空
     if (!file) throw ApiException.tipError('api_upload_invalid_file');
     const newPath = path.join(file.destination, file.originalName);
     let res;
@@ -63,7 +60,6 @@ export class AttachmentService {
     }
 
     if (!res) throw ApiException.tipError('api_server_error', { value: 1 });
-    // 封装返回数据
     if (res.code && res.code === JavaService.SUCCESS_CODE) {
       return {
         token: res.data.token,
@@ -80,14 +76,13 @@ export class AttachmentService {
   }
 
   /**
-   * 删除文件
-   * @param file 文件相对路径+文件名称
+   * delete file
+   * @param file relative path + file name
    * @return
    * @author Zoe Zheng
-   * @date 2020/8/12 11:50 上午
+   * @date 2020/8/12 11:50 am
    */
   public unlinkFile(file: string) {
-    // 删除文件
     if (fs.existsSync(file)) {
       fs.unlinkSync(file);
     }
@@ -97,11 +92,10 @@ export class AttachmentService {
    * Save files in directory
    * @return
    * @author Zoe Zheng
-   * @date 2020/9/1 4:05 下午
+   * @date 2020/9/1 4:05 pm
    */
   getFileUploadHandler(dstId: string, newFiles: IFileInterface[], req, reply) {
     return async(field, file, filename, encoding, mimetype) => {
-      // 上传文件不能为空
       if (!filename) {
         const err = ApiException.tipError('api_upload_invalid_file_name');
         const errMsg = await this.i18n.translate(err.message, {

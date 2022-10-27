@@ -5,8 +5,8 @@ interface IRuLiuMsgRequest {
   type: string;
   content: string;
   webhookUrl: string;
-  title?: string; // markdown 格式带个标题
-  baseUrl?: string; //隐藏全局配置地址
+  title?: string;
+  baseUrl?: string; 
 }
 
 interface IRuLiuMsgResponse {
@@ -15,7 +15,6 @@ interface IRuLiuMsgResponse {
 }
 
 export async function sendRuLiuMsg(request: IRuLiuMsgRequest): Promise<IActionResponse<any>> {
-  console.log('sendRuLiuMsg', request);
   const { type, baseUrl, content, webhookUrl, title } = request;
   let data = {};
   switch (type) {
@@ -38,7 +37,6 @@ export async function sendRuLiuMsg(request: IRuLiuMsgRequest): Promise<IActionRe
       break;
   }
   try {
-    //拼接如流地址隐式地址，baseUrl+webhookUrl
     const targetUrl = `${baseUrl}${webhookUrl}`;
     const res = await fetch(targetUrl, {
       body: JSON.stringify(data),
@@ -67,7 +65,7 @@ export async function sendRuLiuMsg(request: IRuLiuMsgRequest): Promise<IActionRe
       }
     };
   } catch (error: any) {
-    // 网络层的问题视为服务端有问题。
+    // network error
     const res: IErrorResponse = {
       errors: [{
         message: error.message

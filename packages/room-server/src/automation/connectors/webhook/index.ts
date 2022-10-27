@@ -20,7 +20,7 @@ interface IWebhookRequest {
     }[];
   } | {
     format: 'json' | 'text';
-    type: 'json' | 'raw'; // TODO: 删除 json
+    type: 'json' | 'raw'; // TODO: remove json
     data: any;
   }
 }
@@ -67,7 +67,7 @@ export async function sendRequest(request: IWebhookRequest): Promise<IActionResp
 
   const agentOpts = url.startsWith('https') ? { agent: new https.Agent({ rejectUnauthorized: false }) } : {};
   const newReqData = {
-    // 私有化关闭 https 证书校验。
+    // disable https certificate verification
     ...agentOpts,
     method,
     headers: { 'content-type': contentType, ...parserHeader(headers) },
@@ -75,11 +75,9 @@ export async function sendRequest(request: IWebhookRequest): Promise<IActionResp
   if (['post', 'patch', 'put', 'delete'].includes(method.toLowerCase())) {
     newReqData['body'] = bodyData;
   }
-  console.log('new req data', newReqData);
 
   try {
     const res = await fetch(url, newReqData);
-    // 对于网络请求来说，发送成功即成功。
     let respJson;
     try {
       respJson = await res.json();
@@ -98,7 +96,7 @@ export async function sendRequest(request: IWebhookRequest): Promise<IActionResp
       data: data
     };
   } catch (error: any) {
-    // 网络层的问题视为服务端有问题。
+    // network error
     const res: IErrorResponse = {
       errors: [{
         message: error.message

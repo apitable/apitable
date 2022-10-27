@@ -1,9 +1,6 @@
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../../shared/entities/base.entity';
 
-/**
- * 自动化 action type
- */
 @Entity('vika_automation_action_type')
 export class AutomationActionTypeEntity extends BaseEntity {
   @Column({

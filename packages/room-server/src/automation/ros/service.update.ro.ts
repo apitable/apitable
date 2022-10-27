@@ -4,14 +4,14 @@ export class AutomationServiceUpdateRo {
   @ApiProperty({
     type: String,
     example: 'vika',
-    description: '服务 slug',
+    description: 'service slug',
   })
     slug: string;
 
   @ApiProperty({
     type: String,
-    example: '维格表',
-    description: '名字',
+    example: 'apitable',
+    description: 'service name',
   })
     name: string;
 
@@ -24,8 +24,8 @@ export class AutomationServiceUpdateRo {
 
   @ApiProperty({
     type: String,
-    example: 'asvxxxxxx',
-    description: '调用基础地址',
+    example: 'https://example.com',
+    description: 'basic callback url',
   })
     baseUrl: string;
 

@@ -23,7 +23,10 @@ import { IActionResponse } from '../connectors/interface';
 import { ConfigConstant } from '@apitable/core';
 
 /**
- * 处理 robot 的执行调度
+ * handle robot execution scheduling
+ * TODO: 
+ * for now robot is a beta feature, we need refactor it to support more features.
+ * permission check is important and need to be done first.
  */
 @Injectable()
 export class AutomationService {
@@ -45,14 +48,13 @@ export class AutomationService {
   }
 
   async checkCreateRobotPermission(resourceId: string) {
-    // TODO: 写入权限也需要判断。
+    // TODO: permission check
     const robotCount = await this.automationRobotRepository.getRobotCountByResourceId(resourceId);
     if (robotCount > ConfigConstant.MAX_ROBOT_COUNT_PER_DST) {
       throw new ServerException(CommonException.ROBOT_CREATE_OVER_MAX_COUNT_LIMIT);
     }
   }
   private replaceSchemaByLanguage(language, source) {
-    // 递归替换，判断 schema 类型
     if (Array.isArray(source)) {
       return source.map((item) => {
         return this.replaceSchemaByLanguage(language, item);
@@ -113,7 +115,7 @@ export class AutomationService {
   }
 
   /**
-   * 任务即将运行之前，创建一条运行记录
+   * create an execution record before the task is about to run
    * @param robotId 
    * @param taskId 
    * @param spaceId 
@@ -129,7 +131,7 @@ export class AutomationService {
   }
 
   /**
-   * 任务运行完毕后，更新运行记录
+   * update the execution record after the task is completed
    * @param taskId 
    * @param status 
    * @param output 
@@ -144,9 +146,9 @@ export class AutomationService {
   async getActionOutput(actionRuntimeInput: any, actionType: IActionType) {
     const url = new URL(actionType.baseUrl);
     switch (url.protocol) {
-      // SaaS/第三方外部
+      // SaaS/third-party service
       // https://<serviceBaseURL>/<endpoint>
-      case 'http:': // 私有化自己开发很多没有 https, 现兼容下。
+      case 'http:': // some self-hosted service may use http
       case 'https:': {
         url.pathname = actionType.endpoint;
         const resp = await fetch(
@@ -165,7 +167,7 @@ export class AutomationService {
         };
       }
       case 'automation:': {
-        // 私有化/官方内部
+        // local/official service
         // automation://<serviceSlug>/<endpoint>
         const serviceSlug = url.hostname;
         const endpoint = actionType.endpoint;
@@ -181,7 +183,6 @@ export class AutomationService {
 
   private async getSpaceIdByRobotId(robotId: string) {
     const resourceId = await this.automationRobotRepository.getResourceIdByRobotId(robotId);
-    // 获取节点所在空间ID
     const rawResult = await this.nodeRepository.selectSpaceIdByNodeId(resourceId);
     if (!rawResult?.spaceId) {
       throw new ServerException(PermissionException.NODE_NOT_EXIST);
@@ -189,28 +190,23 @@ export class AutomationService {
     return rawResult.spaceId;
   }
 
-  /**
-   * 获取指定空间站机器人的运行次数
-   * @param spaceId 
-   */
   async getRobotRunTimesBySpaceId(spaceId: string) {
     return await this.automationRunHistoryRepository.getRobotRunTimesBySpaceId(spaceId);
   }
 
   async handleTask(robotId: string, trigger: { input: any; output: any }) {
-    // 0. 判断是否要可以运行，额度限制 。
     const spaceId = await this.getSpaceIdByRobotId(robotId);
-    // FIXME: 没计费方案之前不做限制。私有化也不应该限制调用。
+    // FIXME: there is no billing plan yet, so there is no limit. self-hosted should not limit the call.
     // const spaceRobotRunTimes = await this.getRobotRunTimesBySpaceId(spaceId);
-    // // TODO: 根据套餐限制额度
+    // // TODO: limit by billing plan
     // if (spaceRobotRunTimes >= 100000) {
     //   return;
     // }
-    const taskId = IdWorker.nextId().toString();// TODO: 这里用 uuid。
-    // 1. 创建运行记录
+    const taskId = IdWorker.nextId().toString();// TODO: use uuid
+    // 1. create run history
     await this.createRunHistory(robotId, taskId, spaceId);
     try {
-      // 2. 执行调度任务
+      // 2. execute the robot
       await this.robotRunner.run({
         robotId,
         triggerInput: trigger.input,
@@ -218,8 +214,8 @@ export class AutomationService {
         taskId
       });
     } catch (error) {
-      // 3. 异常状态下，机器人运行状态更新为失败, 并且更新运行记录为空。
-      // 程序运行产生的错误没有必要入库/暴露出来，应该写入日志中。失败且没有运行上下文的情况，应该根据用户反馈，按 taskId 查日志。
+      // 3. update run history when failed
+      // runtime error should not be saved to database, it should be logged. then we can find the error by taskId.
       await this.updateTaskRunHistory(taskId, false, null);
       this.logger.error(`RobotRuntimeError[${taskId}]`, error.message);
     }
@@ -236,7 +232,6 @@ export class AutomationService {
         const triggerInputSchema = triggerType.inputJsonSchema;
         const triggerInput = trigger.input;
         const { hasError, errors, validationError } = validateMagicForm((triggerInputSchema as any).schema, triggerInput);
-        console.error(hasError, errors);
         if (hasError) {
           isTriggerValid = false;
           errorsByNodeId[trigger.triggerId] = validationError ? [...errors, ...validationError] : errors;
@@ -247,7 +242,6 @@ export class AutomationService {
         }
       }
       this.logger.debug(`trigger is valid: ${isTriggerValid}`);
-      // trigger 报错直接提前返回
       const noErrors = actions.length > 0 && actions.every(node => {
         const actionType = robot.actionTypesById[node.typeId];
         // FIXME: type
@@ -266,7 +260,7 @@ export class AutomationService {
         };
       }
     } catch (error) {
-      this.logger.error('激活机器人异常', error);
+      this.logger.error('active robot error', error);
       throw new ServerException(CommonException.ROBOT_FORM_CHECK_ERROR);
     }
     return {

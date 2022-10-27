@@ -12,11 +12,10 @@ export class RobotServiceController {
     private readonly userService: UserService,
   ) { }
 
-  // 创建服务
   @Post('service')
   async createService(@Body() service: AutomationServiceCreateRo, @Headers('cookie') cookie: string) {
     if (isProdMode) {
-      throw new Error('生产环境不支持此接口');
+      throw new Error('cant create service in production mode');
     }
     const user = await this.userService.getMe({ cookie });
     return this.automationService.createService(service, user);
@@ -29,7 +28,7 @@ export class RobotServiceController {
     @Headers('cookie') cookie: string
   ) {
     if (isProdMode) {
-      throw new Error('生产环境不支持此接口');
+      throw new Error('cant update service in production mode');
     }
     const user = await this.userService.getMe({ cookie });
     return this.automationService.updateService(serviceId, data, user);
