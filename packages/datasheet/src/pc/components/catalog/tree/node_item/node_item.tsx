@@ -12,7 +12,6 @@ import { Popconfirm } from 'pc/components/common';
 import { getContextTypeByNodeType } from 'pc/utils';
 import { Modal } from 'pc/components/common/mobile/modal';
 import { WorkbenchSideContext } from 'pc/components/common_side/workbench_side/workbench_side_context';
-import { truncate } from 'lodash';
 import { ItemRender } from './node_item_render';
 
 export interface INodeItemProps {
@@ -79,7 +78,7 @@ const NodeItemBase: FC<INodeItemProps> = ({ node, expanded = false, actived = fa
         <TComponent
           tkey={t(Strings.confirm_delete_node_name_as)}
           params={{
-            nodeNameDiv: <div className={styles.deleteNodeName}>{truncate(node.nodeName, { length: 9 })}</div>,
+            nodeNameDiv: <div className={styles.deleteNodeName}>{node.nodeName}</div>,
           }}
         />
       }
