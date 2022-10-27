@@ -9,7 +9,7 @@ import { CollaCommandName, Selectors, KONVA_DATASHEET_ID, ConfigConstant,
   t, Strings, fastCloneDeep, ExecuteResult, ISetRecordOptions 
 } from '@apitable/core';
 import { Message } from '@vikadata/components';
-import { getAllCycleDAG, getTaskLineName } from 'pc/components/gantt_view/utils/task_line';
+import { detectCyclesStack, getTaskLineName } from 'pc/components/gantt_view/utils/task_line';
 import { onDragScrollSpacing } from 'pc/components/gantt_view/utils';
 import { autoTaskScheduling } from '../utils';
 
@@ -28,6 +28,7 @@ interface IDrawingLineProps {
 export const useGanttDrawingLine = (props: IDrawingLineProps) => {
   const { taskMap, gridWidth, pointPosition, instance, scrollState } = props;
   const { theme, scrollHandler } = useContext(KonvaGridContext);
+ 
   const colors = theme.color;
   const { 
     setTargetTaskInfo, 
@@ -37,7 +38,6 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
     dragTaskId, 
     isLocking, 
     linkCycleEdges,
-    
   } = useContext(KonvaGanttViewContext);
   const { snapshot, fieldPermissionMap, fieldMap, visibleRows } = useContext(KonvaGridViewContext);
   const { linkFieldId, startFieldId, endFieldId } = ganttStyle;
@@ -45,6 +45,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
   const { rowHeight, columnWidth } = instance;
   const arrowRef = useRef<any>();
   const [drawingLinePoints, setDrawingLinePoints] = useState<number[]>([]);
+  const { sourceAdj, nodeIdMap } = linkCycleEdges;
 
   const { x: pointX, y: pointY } = pointPosition;
 
@@ -115,7 +116,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
     if (targetStartValue && sourceEndValue && targetStartValue <= sourceEndValue) {
       return true;
     }
-    const { sourceAdj, nodeIdMap } = linkCycleEdges;
+    
     const sourceAdjCopy = fastCloneDeep(sourceAdj);
     const nodeIdMapCopy = fastCloneDeep(nodeIdMap);
 
@@ -124,7 +125,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
     if (!nodeIdMapCopy.includes(sourceId)) nodeIdMapCopy.push(sourceId);
     if (!nodeIdMapCopy.includes(targetId)) nodeIdMapCopy.push(targetId);
 
-    const cycleEdges = getAllCycleDAG(nodeIdMapCopy, sourceAdjCopy);
+    const cycleEdges = detectCyclesStack(nodeIdMapCopy, sourceAdjCopy);
 
     const taskLineName = getTaskLineName(sourceId, targetId);
     if (cycleEdges.includes(taskLineName)) {
@@ -226,11 +227,13 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
           endTime,
           targetRecordId: targetTaskInfo.recordId
         };
-        const commandData : ISetRecordOptions[] = autoTaskScheduling(visibleRows, state, snapshot, ganttStyle, sourceRecordData);
-        resourceService.instance!.commandManager.execute({
-          cmd: CollaCommandName.SetRecords,
-          data: commandData,
-        });
+      
+        const commandData : ISetRecordOptions[] = autoTaskScheduling(visibleRows, ganttStyle, sourceRecordData);
+          resourceService.instance!.commandManager.execute({
+            cmd: CollaCommandName.SetRecords,
+            data: commandData,
+          });
+       
       }
     }
   };

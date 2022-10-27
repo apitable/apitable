@@ -1,7 +1,8 @@
 import { getDiffOriginalCount } from 'pc/components/gantt_view';
 import { originalChange } from './date';
-import { ISetRecordOptions, Selectors, fastCloneDeep } from '@apitable/core';
-import { getAllTaskLine, getAllCycleDAG } from './task_line';
+import { ISetRecordOptions, Selectors, fastCloneDeep } from '@vikadata/core';
+import { getAllTaskLine, detectCyclesStack } from './task_line';
+import { store } from 'pc/store';
 
 interface ISourceRecordData {
   recordId: string;
@@ -9,12 +10,15 @@ interface ISourceRecordData {
   targetRecordId?: string;
 }
 
-export const autoTaskScheduling = (visibleRows, state, snapshot, ganttStyle, sourceRecord?: ISourceRecordData) => {
+export const autoTaskScheduling = (visibleRows, ganttStyle, sourceRecord?: ISourceRecordData) => {
+  const state = store.getState();
+  const snapshot = Selectors.getSnapshot(state);
   const { linkFieldId, startFieldId, endFieldId } = ganttStyle;
   // target adjacency list
   const targetAdj = {};
   const nodeIdMap: string[] = [];
   const visibleRowsTime = {};
+
   visibleRows.forEach(row => {
     const linkCellValue = Selectors.getCellValue(state, snapshot, row.recordId, linkFieldId) || [];
     if (linkCellValue.length > 0) {
@@ -35,9 +39,9 @@ export const autoTaskScheduling = (visibleRows, state, snapshot, ganttStyle, sou
   });
 
   const { sourceAdj } = getAllTaskLine(targetAdj);
-
-  const cycleEdges = getAllCycleDAG(nodeIdMap, sourceAdj);
-
+  
+  const cycleEdges = detectCyclesStack(nodeIdMap, sourceAdj);
+  
   const rowsTimeList = fastCloneDeep(visibleRowsTime);
 
   const autoDFS = sourceId => {

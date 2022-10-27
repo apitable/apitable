@@ -721,14 +721,14 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
         recordId: record!.id,
         endTime: value as number | null,
       };
-      const commandDataArr = autoTaskScheduling(visibleRows, state, snapshot, activeView.style, sourceRecordData);
+      const commandDataArr = autoTaskScheduling(visibleRows, activeView.style, sourceRecordData);
       resourceService.instance?.commandManager.execute({
         cmd: CollaCommandName.SetRecords,
         data: commandDataArr,
       });
     }
 
-  }, [datasheetId, field, record, cellValue, snapshot, activeView, state, visibleRows]);
+  }, [datasheetId, field, record, cellValue, snapshot, activeView, visibleRows]);
 
   useMemo(
     calcEditorRect,

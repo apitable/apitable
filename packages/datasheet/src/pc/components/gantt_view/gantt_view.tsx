@@ -84,7 +84,7 @@ import {
   ITargetTaskInfo,
 } from './interface';
 import styles from './style.module.less';
-import { getAllTaskLine, getAllCycleDAG, autoTaskScheduling, getCollapsedLinearRows, getGanttViewStatusWithDefault } from './utils';
+import { getAllTaskLine, detectCyclesStack, autoTaskScheduling, getCollapsedLinearRows, getGanttViewStatusWithDefault } from './utils';
 import { Message } from 'pc/components/common';
 import { useDisabledOperateWithMirror } from '../tool_bar/hooks';
 interface IGanttViewProps {
@@ -849,7 +849,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
       nodeIdMap.push(row.recordId);
     });
     const { taskLineList: taskEdges, sourceAdj } = getAllTaskLine(targetAdj);
-    const cycleEdges = getAllCycleDAG(nodeIdMap, sourceAdj);
+    const cycleEdges = detectCyclesStack(nodeIdMap, sourceAdj);
 
     return {
       taskEdges,
@@ -913,7 +913,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
       Message.warning({ content: t(Strings.gantt_cant_connect_when_computed_field) });
       return;
     }
-    const commandData: ISetRecordOptions[] = autoTaskScheduling(visibleRows, state, snapshot, ganttStyle, endData);
+    const commandData: ISetRecordOptions[] = autoTaskScheduling(visibleRows, ganttStyle, endData);
 
     resourceService.instance?.commandManager.execute({
       cmd: CollaCommandName.SetRecords,

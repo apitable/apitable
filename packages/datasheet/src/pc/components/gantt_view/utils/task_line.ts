@@ -1,5 +1,7 @@
 import { IGroupLinearRow, IAdjacency } from '../interface';
-import { CellType } from '@apitable/core';
+import { CellType, fastCloneDeep } from '@vikadata/core';
+import { slice } from 'lodash';
+
 /*
 * nodes: task recordId List
 */
@@ -55,6 +57,76 @@ export const getAllCycleDAG = (nodes: string[], sourceAdj) => {
       cycleEdges.push(taskLineName);
     }
   });
+ 
+  return cycleEdges;
+};
+
+export const detectCyclesStack = (nodes: string[], sourceAdj) => {
+  const color: { [key: string]: number | null } = {}; // 记录是不是被访问过
+  const cycleStack: string[] = []; // 人工访问栈
+  const stackAdj: string[][] = []; // 记录当前栈接下来需要访问的参数
+  const cycles : string[][] = []; // 记录找到的环
+  const findCycle = (node: string) => {
+    cycleStack.push(node);
+    const nodeAdj = sourceAdj[node] ? sourceAdj[node] : [];
+    stackAdj.push(fastCloneDeep(nodeAdj));
+
+    while(cycleStack.length > 0) {
+      const source = cycleStack[cycleStack.length - 1];
+      const targets = stackAdj[stackAdj.length - 1] ? stackAdj[stackAdj.length - 1] : [];
+
+      if(targets && targets.length > 0) {
+        color[source] = 1;
+        const target = targets[0];
+        if(color[target] === 1) {
+    
+          const start = cycleStack.indexOf(target);
+          const cycle = slice(cycleStack, start);
+          cycle.push(target);
+          cycles.push(cycle);
+          const lastAdj = stackAdj[stackAdj.length - 1];
+          const index = lastAdj.indexOf(target);
+          stackAdj[stackAdj.length - 1].splice(index,1);
+
+        } else if(color[target] === undefined) {
+          cycleStack.push(target);
+          const nextAdj = sourceAdj[target] ? sourceAdj[target] : [];
+          stackAdj.push(fastCloneDeep(nextAdj));
+        } else if(color[target] === 2) {
+          const lastAdj = stackAdj[stackAdj.length - 1];
+          const index = lastAdj.indexOf(target);
+          stackAdj[stackAdj.length - 1].splice(index,1);
+        }
+     
+      } else {
+        color[source] = 2;
+        cycleStack.pop();
+        stackAdj.pop();
+        if(stackAdj.length > 0) {
+          const lastAdj = stackAdj[stackAdj.length - 1];
+          const index = lastAdj.indexOf(source);
+          stackAdj[stackAdj.length - 1].splice(index,1);
+        }
+      }
+
+    }
+  };
+
+  nodes.forEach((node: string) => {
+    
+    if(color[node] === undefined) {
+      findCycle(node);
+    }
+  });
+  const cycleEdges : string[] = [];
+ 
+  cycles.forEach(element => {
+    for(let i = 1; i < element.length; i++) {
+      const taskLineName = getTaskLineName(element[i-1], element[i]);
+      cycleEdges.push(taskLineName);
+    }
+  });
+ 
   return cycleEdges;
 };
 
