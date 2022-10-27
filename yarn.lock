@@ -5220,6 +5220,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@colors/colors@npm:1.5.0":
+  version: 1.5.0
+  resolution: "@colors/colors@npm:1.5.0"
+  checksum: d64d5260bed1d5012ae3fc617d38d1afc0329fec05342f4e6b838f46998855ba56e0a73833f4a80fa8378c84810da254f76a8a19c39d038260dc06dc4e007425
+  languageName: node
+  linkType: hard
+
 "@commitlint/cli@npm:8.1.0":
   version: 8.1.0
   resolution: "@commitlint/cli@npm:8.1.0"
@@ -14024,7 +14031,7 @@ __metadata:
     "@types/uid2": ^0.0.0
     ioredis: ^5.2.3
     jest: ^29.1.2
-    log4js: ^6.7.0
+    nest-winston: ^1.8.0
     nestjs-proto-gen-ts: ^1.0.20
     prettier: ^1.19.1
     reflect-metadata: ^0.1.13
@@ -14037,6 +14044,7 @@ __metadata:
     ts-node: ^10.9.1
     tsconfig-paths: ^3.9.0
     typescript: ^4.8.2
+    winston: ^3.8.2
   bin:
     websocket: dist/main.js
   languageName: unknown
@@ -15732,6 +15740,13 @@ __metadata:
   dependencies:
     lodash: ^4.17.14
   checksum: 5e5561ff8fca807e88738533d620488ac03a5c43fce6c937451f7e35f943d33ad06c24af3f681a48cca3d2b0002b3118faff0a128dc89438a9bf0226f712c499
+  languageName: node
+  linkType: hard
+
+"async@npm:^3.2.3":
+  version: 3.2.4
+  resolution: "async@npm:3.2.4"
+  checksum: 43d07459a4e1d09b84a20772414aa684ff4de085cbcaec6eea3c7a8f8150e8c62aa6cd4e699fe8ee93c3a5b324e777d34642531875a0817a35697522c1b02e89
   languageName: node
   linkType: hard
 
@@ -20355,13 +20370,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-format@npm:^4.0.14":
-  version: 4.0.14
-  resolution: "date-format@npm:4.0.14"
-  checksum: dfe5139df6af5759b9dd3c007b899b3f60d45a9240ffeee6314ab74e6ab52e9b519a44ccf285888bdd6b626c66ee9b4c8a523075fa1140617b5beb1cbb9b18d1
-  languageName: node
-  linkType: hard
-
 "dateformat@npm:^3.0.0":
   version: 3.0.3
   resolution: "dateformat@npm:3.0.3"
@@ -23547,7 +23555,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-safe-stringify@npm:2.1.1, fast-safe-stringify@npm:^2.0.8":
+"fast-safe-stringify@npm:2.1.1, fast-safe-stringify@npm:^2.0.8, fast-safe-stringify@npm:^2.1.1":
   version: 2.1.1
   resolution: "fast-safe-stringify@npm:2.1.1"
   checksum: a851cbddc451745662f8f00ddb622d6766f9bd97642dabfd9a405fb0d646d69fc0b9a1243cbf67f5f18a39f40f6fa821737651ff1bceeba06c9992ca2dc5bd3d
@@ -24116,13 +24124,6 @@ __metadata:
   version: 3.1.1
   resolution: "flatted@npm:3.1.1"
   checksum: 508935e3366d95444131f0aaa801a4301f24ea5bcb900d12764e7335b46b910730cc1b5bcfcfb8eccb7c8db261ba0671c6a7ca30d10870ff7a7756dc7e731a7a
-  languageName: node
-  linkType: hard
-
-"flatted@npm:^3.2.7":
-  version: 3.2.7
-  resolution: "flatted@npm:3.2.7"
-  checksum: 427633049d55bdb80201c68f7eb1cbd533e03eac541f97d3aecab8c5526f12a20ccecaeede08b57503e772c769e7f8680b37e8d482d1e5f8d7e2194687f9ea35
   languageName: node
   linkType: hard
 
@@ -31628,19 +31629,6 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"log4js@npm:^6.7.0":
-  version: 6.7.0
-  resolution: "log4js@npm:6.7.0"
-  dependencies:
-    date-format: ^4.0.14
-    debug: ^4.3.4
-    flatted: ^3.2.7
-    rfdc: ^1.3.0
-    streamroller: ^3.1.3
-  checksum: f6321c5ccd343282ee1087a7a46dd6b00bd7104d80cd82b5c62b8cfc912de5e83cacd2abcbf834e4f47bbebede5dbd12eae08670e85bc42d14f6b22447d080eb
-  languageName: node
-  linkType: hard
-
 "logform@npm:^2.2.0":
   version: 2.2.0
   resolution: "logform@npm:2.2.0"
@@ -31651,6 +31639,19 @@ fsevents@^1.2.7:
     ms: ^2.1.1
     triple-beam: ^1.3.0
   checksum: 07319bfd50dacf69a4a3bc81cd6f5fab2f52d247ba5d2d2df99141f6b62f787f7fbb0353046650da90329d4030f265632d5f995706612ed9cb2c70281866007e
+  languageName: node
+  linkType: hard
+
+"logform@npm:^2.3.2, logform@npm:^2.4.0":
+  version: 2.4.2
+  resolution: "logform@npm:2.4.2"
+  dependencies:
+    "@colors/colors": 1.5.0
+    fecha: ^4.2.0
+    ms: ^2.1.1
+    safe-stable-stringify: ^2.3.1
+    triple-beam: ^1.3.0
+  checksum: 3d00f4e1ccaf0a86886aabbf66d1f1d207441d5b408f103457da6d64d055aee76c02af4b40a31ca77a1db4cbcdecb007149f731536c39cbd89b7b6ba3dda6d7b
   languageName: node
   linkType: hard
 
@@ -33311,6 +33312,18 @@ fsevents@^1.2.7:
   version: 2.6.1
   resolution: "neo-async@npm:2.6.1"
   checksum: 8a675256aec19ec2341c445f9b43183af3fd5a461b396ec75b43f3ad4f078a0e146c99433830a25e30d726fd9e4e1688a14babe5021fea5a2aaab4163bd8a653
+  languageName: node
+  linkType: hard
+
+"nest-winston@npm:^1.8.0":
+  version: 1.8.0
+  resolution: "nest-winston@npm:1.8.0"
+  dependencies:
+    fast-safe-stringify: ^2.1.1
+  peerDependencies:
+    "@nestjs/common": ^5.0.0 || ^6.6.0 || ^7.0.0 || ^8.0.0 || ^9.0.0
+    winston: ^3.0.0
+  checksum: 7837eea05d68af3b4b6b6a1771adbf915086f4b6dff03c0131be1b0800b562e6fde7ef580a5e626f5a3ab92996845889230ac037432fe1d0e14a61da93668314
   languageName: node
   linkType: hard
 
@@ -40567,6 +40580,13 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+"safe-stable-stringify@npm:^2.3.1":
+  version: 2.4.1
+  resolution: "safe-stable-stringify@npm:2.4.1"
+  checksum: d8e505c462031301040605a4836ca25b52a1744eff01b0939b4d43136638fb8e88e0cec3d3ab6ab8e26f501086e6ba6bf34b228f57bf2ac56cb8d4061355d723
+  languageName: node
+  linkType: hard
+
 "safer-buffer@npm:>= 2.1.2 < 3, safer-buffer@npm:>= 2.1.2 < 3.0.0, safer-buffer@npm:^2.0.2, safer-buffer@npm:^2.1.0, safer-buffer@npm:~2.1.0":
   version: 2.1.2
   resolution: "safer-buffer@npm:2.1.2"
@@ -42167,17 +42187,6 @@ resolve@^2.0.0-next.3:
   version: 1.1.0
   resolution: "stream-wormhole@npm:1.1.0"
   checksum: cc19e0235c5d031bd530fa83913c807d9525fa4ba33d51691dd822c0726b8b7ef138b34f289d063a3018cddba67d3ba7fd0ecedaa97242a0f1ed2eed3c6a2ab1
-  languageName: node
-  linkType: hard
-
-"streamroller@npm:^3.1.3":
-  version: 3.1.3
-  resolution: "streamroller@npm:3.1.3"
-  dependencies:
-    date-format: ^4.0.14
-    debug: ^4.3.4
-    fs-extra: ^8.1.0
-  checksum: 47a6699740afe7ec88af92b24595b5b09c9866fedda92e3ed9e28d9267e3ebf23792ed00016d819764a3a0a2f1cd504c6cb7a4ff1ffad616b197b09f68a9bcf9
   languageName: node
   linkType: hard
 
@@ -46361,6 +46370,17 @@ typescript@~3.2.1:
   languageName: node
   linkType: hard
 
+"winston-transport@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "winston-transport@npm:4.5.0"
+  dependencies:
+    logform: ^2.3.2
+    readable-stream: ^3.6.0
+    triple-beam: ^1.3.0
+  checksum: a56e5678a80b88a73e77ed998fc6e19d0db19c989a356b137ec236782f2bf58ae4511b11c29163f99391fa4dc12102c7bc5738dcb6543f28877fa2819adc3ee9
+  languageName: node
+  linkType: hard
+
 "winston@npm:*, winston@npm:^3.3.3":
   version: 3.3.3
   resolution: "winston@npm:3.3.3"
@@ -46375,6 +46395,25 @@ typescript@~3.2.1:
     triple-beam: ^1.3.0
     winston-transport: ^4.4.0
   checksum: 89a0a8db4e577d0df2bee8af67a751663fb80aaa782750b5a0a151a6bf97074dd0eb7c81780e196197735b851c12ea9c176952128fc51fae07a8a5ddba82913a
+  languageName: node
+  linkType: hard
+
+"winston@npm:^3.8.2":
+  version: 3.8.2
+  resolution: "winston@npm:3.8.2"
+  dependencies:
+    "@colors/colors": 1.5.0
+    "@dabh/diagnostics": ^2.0.2
+    async: ^3.2.3
+    is-stream: ^2.0.0
+    logform: ^2.4.0
+    one-time: ^1.0.0
+    readable-stream: ^3.4.0
+    safe-stable-stringify: ^2.3.1
+    stack-trace: 0.0.x
+    triple-beam: ^1.3.0
+    winston-transport: ^4.5.0
+  checksum: f7b901798b92ab9e93c850110bf6e98500e9a0e762b62dab410cf928b2a4145533dfa6d3d2b24f7bf0dc94b53808d5bd28aaaeff9a4b43b89ea4c798cce308ea
   languageName: node
   linkType: hard
 

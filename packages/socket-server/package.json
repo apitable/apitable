@@ -44,12 +44,13 @@
     "@sentry/tracing": "^7.15.0",
     "@socket.io/redis-adapter": "^7.2.0",
     "ioredis": "^5.2.3",
-    "log4js": "^6.7.0",
+    "nest-winston": "^1.8.0",
     "nestjs-proto-gen-ts": "^1.0.20",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.7",
-    "socket.io": "^4.5.2"
+    "socket.io": "^4.5.2",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.0.0",

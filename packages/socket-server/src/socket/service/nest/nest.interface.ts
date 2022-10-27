@@ -9,7 +9,7 @@ import { SocketRo } from '../../model/ro/socket.ro';
  * @date 2020/6/29 5:57 下午
  */
 export interface NestInterface {
-  
+
   /**
    *
    * @param socket 保存当前连接的socket

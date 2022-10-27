@@ -6,13 +6,25 @@ import { InvalidGrpcServiceException } from '@nestjs/microservices/errors/invali
 import { Cron } from '@nestjs/schedule';
 import { isFunction } from 'lodash';
 import { Observable } from 'rxjs';
-import { logger, isDev, randomNum } from 'src/socket/common/helper';
+import { isDev, randomNum } from 'src/socket/common/helper';
 import { GatewayConstants } from 'src/socket/constants/gateway.constants';
 import { HealthConstants } from 'src/socket/constants/health.constants';
 import { RedisConstants } from 'src/socket/constants/redis-constants';
 import { SocketConstants } from 'src/socket/constants/socket-constants';
 import { RedisService } from 'src/socket/service/redis/redis.service';
 
+/**
+ * @deprecated
+ * - reasons not recommended：
+ *
+ *  1.Deprecated method, this mode is not used after removing xxl-job
+ *
+ *  2.Using Kubernetes, it is not very useful to check the load balancing externally after elastic scaling
+ *
+ * - remark:
+ *
+ *  can be deleted after completely removing xxl-job
+ */
 @Injectable()
 export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnApplicationBootstrap {
   protected readonly redisService: RedisService;
@@ -30,11 +42,8 @@ export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnAppl
     this.httpService = props.httpService;
   }
 
-  /**
-   * 监听redis的通道信息
-   */
   async onApplicationBootstrap(): Promise<any> {
-    this.logger.log('当前健康检查模式：XXL_JOB');
+    this.logger.log('Current health check mode：XXL_JOB');
     /*
      * Client订阅了管道，无法使用管道外的其余命令所以这里需要开启 duplicate()
      * 如果不开启后面的客户端会异常：Connection in subscriber mode, only subscriber commands may be used
@@ -43,14 +52,14 @@ export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnAppl
     const redis = this.redisService.getClient().duplicate();
     redis.subscribe(RedisConstants.VIKA_NEST_CHANNEL, (err, count) => {
       if (err) {
-        logger('SubscribedError').error({ channel: RedisConstants.VIKA_NEST_CHANNEL }, err.message);
+        this.logger.error('SubscribedError', err?.stack);
       } else {
-        logger('SubscribedSuccessful').log({ channel: RedisConstants.VIKA_NEST_CHANNEL, count });
+        this.logger.log({ message: 'SubscribedSuccessful', channel: RedisConstants.VIKA_NEST_CHANNEL, count });
       }
     });
     // 用于处理nest的启动和停止
     redis.on('message', (channel, message) => {
-      logger('SubscribedMessage').log({ channel, message });
+      this.logger.log({ channel, message });
       const nestMessage: INestMessage = JSON.parse(message);
       this.handleNestMessage(nestMessage);
     });
@@ -91,9 +100,9 @@ export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnAppl
     const maxSendMessageLengthKey = 'grpc.max_send_message_length';
     const maxReceiveMessageLengthKey = 'grpc.max_receive_message_length';
     const maxMessageLengthOptions = {
-      [maxSendMessageLengthKey]: this.getOptionsProp(this.options, 'maxSendMessageLength', 
+      [maxSendMessageLengthKey]: this.getOptionsProp(this.options, 'maxSendMessageLength',
         SocketConstants.GRPC_DEFAULT_MAX_SEND_MESSAGE_LENGTH),
-      [maxReceiveMessageLengthKey]: this.getOptionsProp(this.options, 'maxReceiveMessageLength', 
+      [maxReceiveMessageLengthKey]: this.getOptionsProp(this.options, 'maxReceiveMessageLength',
         SocketConstants.GRPC_DEFAULT_MAX_RECEIVE_MESSAGE_LENGTH),
     };
     const maxMetadataSize = this.getOptionsProp(this.options, 'maxMetadataSize', -1);
@@ -198,14 +207,15 @@ export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnAppl
     }
     // 移除弃用的Ip
     if (deprecatedHealthIps.length) {
-      await redis.zrem(RedisConstants.VIKA_NEST_LOAD_HEALTH_KEY_V2, deprecatedHealthIps).then(r => this.logger.log(`移除已弃用的客户端IP:[${deprecatedHealthIps}]，结果：${r}`));
+      await redis.zrem(RedisConstants.VIKA_NEST_LOAD_HEALTH_KEY_V2, deprecatedHealthIps)
+        .then(r => this.logger.log(`移除已弃用的客户端IP:[${deprecatedHealthIps}]，结果：${r}`));
     }
     // 同步本地可用IP池
     this.clientIps = new Set(validHealthIps);
 
     if (!healthIps.length) {
       // todo 邮件通知？
-      logger('EmptyHealthNestEndpoints').error({ checkIps });
+      this.logger.error('EmptyHealthNestEndpoints');
     }
     return { healthIps: validHealthIps, unHealthIps: unHealthIps };
   }

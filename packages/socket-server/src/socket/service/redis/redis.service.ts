@@ -1,12 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { RedisConstants } from 'src/socket/constants/redis-constants';
-import { RedisClient } from './redis.provider';
-import { IRedisService } from './i-redis-service.interface';
 import { SOCKET_CACHE, USER_ROOM } from 'src/socket/enum/redis-key.enum';
+import { IRedisService } from './i-redis-service.interface';
+import { RedisClient } from './redis.provider';
 
 @Injectable()
 export class RedisService implements IRedisService {
-  constructor(@Inject(RedisConstants.REDIS_CLIENT) public readonly redis: RedisClient) {}
+  constructor(
+    @Inject(RedisConstants.REDIS_CLIENT) public readonly redis: RedisClient
+  ) {}
 
   public async saveUserSocketId(userId: string, socketId: string): Promise<[Error | null, any][]> {
     const key: string = USER_ROOM.PREFIX + userId;

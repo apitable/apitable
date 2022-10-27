@@ -1,22 +1,26 @@
-import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { NestInterface as NestInterface } from './nest.interface';
+import { Injectable, Logger } from '@nestjs/common';
 import { isEmpty, isNil } from '@nestjs/common/utils/shared.utils';
-import { AuthenticatedSocket } from 'src/socket/interface/socket/authenticated-socket.interface';
-import { getSocketServerAddr, ipAddress, logger, randomNum } from 'src/socket/common/helper';
-import { SocketConstants } from 'src/socket/constants/socket-constants';
-import { RedisService } from '../redis/redis.service';
-import { SocketRo } from 'src/socket/model/ro/socket.ro';
+import { getSocketServerAddr, ipAddress, randomNum } from 'src/socket/common/helper';
 import { GatewayConstants } from 'src/socket/constants/gateway.constants';
-import * as util from 'util';
+import { SocketConstants } from 'src/socket/constants/socket-constants';
 import { NestCacheKeys } from 'src/socket/enum/redis-key.enum';
+import { AuthenticatedSocket } from 'src/socket/interface/socket/authenticated-socket.interface';
+import { SocketRo } from 'src/socket/model/ro/socket.ro';
+import * as util from 'util';
+import { RedisService } from '../redis/redis.service';
+import { NestInterface as NestInterface } from './nest.interface';
 
 @Injectable()
 export class NestService implements NestInterface {
-  constructor(private readonly redisService: RedisService, private readonly httpService: HttpService) { }
-  /**
-   * 每个节点保存当前的 nest 的连接
-   */
+  private readonly logger = new Logger(NestService.name);
+
+  constructor(
+    private readonly redisService: RedisService,
+    private readonly httpService: HttpService
+  ) { }
+
+  // each node holds the connection of the current nest
   private socketMap = new Map<string, AuthenticatedSocket>();
 
   public async setSocket(socket: AuthenticatedSocket) {
@@ -28,17 +32,17 @@ export class NestService implements NestInterface {
     return this.redisService
       .getSockets(SocketConstants.NEST_SERVER_PREFIX)
       .then(result => {
-        logger('NestServer:Connection:Redis').debug(result);
+        this.logger.log(`NestServer:Connection:Redis ${JSON.stringify(result)}`);
         const socketServer: string[] = Array.from(Object.values(result)).filter(value => value != getSocketServerAddr(ipAddress()));
         if (!isEmpty(socketServer)) {
           const index = randomNum(0, socketServer.length - 1);
           return socketServer[index] + GatewayConstants.SOCKET_SERVER_NOTIFY_PATH;
         }
-        logger('NestServer:Connection:empty').error(result);
+        this.logger.warn(`NestServer:Connection:empty ${JSON.stringify(result)}`);
         return null;
       })
-      .catch(err => {
-        logger('NestServer:Connection:Redis').error(err);
+      .catch(e => {
+        this.logger.error('NestServer:Connection:Redis', e?.stack);
         return null;
       });
   }
@@ -54,23 +58,23 @@ export class NestService implements NestInterface {
   }
 
   async notify(event: string, message: any): Promise<any | null> {
-    logger('NestService:notify').debug({ event, message });
+    this.logger.debug({ event, message });
     return new Promise(resolve => {
       const socketId = this.getSocketId();
       if (!isNil(socketId)) {
-        this.socketMap.get(socketId).emit(event, message, function(answer) {
-          logger('NestService:notify:answer').debug({ event, answer });
+        this.socketMap.get(socketId).emit(event, message, function (answer) {
+          // this.logger.debug({ event, answer });
           return resolve(answer);
         });
       } else {
-        logger('NestService:notify:error').log(event, 'This pod no connected to NestServer');
+        this.logger.warn(`${event} This pod no connected to NestServer`);
         this.httpNotify(event, message)
           .then(result => {
-            logger('NestService:notify:answer').debug({ event, result });
+            this.logger.debug({ event, result });
             return resolve(result);
           })
-          .catch(error => {
-            logger('NestService:notify:error').error(error);
+          .catch(e => {
+            this.logger.error('NestService:notify:error', e?.stack);
             return resolve(null);
           });
       }
@@ -80,7 +84,7 @@ export class NestService implements NestInterface {
   public async removeSocket(socket: AuthenticatedSocket) {
     this.socketMap.delete(socket.id);
     await this.redisService.removeSocket(SocketConstants.NEST_SERVER_PREFIX, socket.auth.userId);
-    logger('NestService:removeSocket').log(socket.auth);
+    this.logger.log(`NestService:removeSocket ${socket.auth}`);
   }
 
   public async handleHttpNotify(socketRo: SocketRo) {
@@ -97,18 +101,18 @@ export class NestService implements NestInterface {
 
   /**
    * 获取资源映射的所有房间
-   * @param resourceId 
+   * @param resourceId
    */
-  async getResourceRelateRoomIds(resourceId: string) : Promise<string[]> {
+  async getResourceRelateRoomIds(resourceId: string): Promise<string[]> {
     const resourceKey = util.format(NestCacheKeys.RESOURCE_RELATE, resourceId);
     return await this.redisService.getSet(resourceKey);
   }
 
   /**
    * 获取 socket 的信息
-   * @param socketIds 
+   * @param socketIds
    */
-  async getSocketInfos(socketIds: string[]) : Promise<any[]> {
+  async getSocketInfos(socketIds: string[]): Promise<any[]> {
     const ids = socketIds.map(id => util.format(NestCacheKeys.SOCKET, id));
     const raws = await this.redisService.getValues(ids);
     return raws.filter(Boolean).map(raw => JSON.parse(raw));

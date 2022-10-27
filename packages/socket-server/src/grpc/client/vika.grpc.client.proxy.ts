@@ -5,14 +5,14 @@ import { ClientGrpcProxy } from '@nestjs/microservices';
 import { InvalidGrpcServiceException } from '@nestjs/microservices/errors/invalid-grpc-service.exception';
 import { Cron } from '@nestjs/schedule';
 import { isFunction } from 'lodash';
-import { Observable } from 'rxjs';
-import { logger, isDev, randomNum } from 'src/socket/common/helper';
-import * as util from 'util';
+import { lastValueFrom, Observable } from 'rxjs';
+import { isDev, randomNum } from 'src/socket/common/helper';
 import { GatewayConstants } from 'src/socket/constants/gateway.constants';
 import { HealthConstants } from 'src/socket/constants/health.constants';
 import { RedisConstants } from 'src/socket/constants/redis-constants';
 import { SocketConstants } from 'src/socket/constants/socket-constants';
 import { RedisService } from 'src/socket/service/redis/redis.service';
+import * as util from 'util';
 
 @Injectable()
 export class VikaGrpcClientProxy extends ClientGrpcProxy implements OnApplicationBootstrap {
@@ -20,7 +20,6 @@ export class VikaGrpcClientProxy extends ClientGrpcProxy implements OnApplicatio
   protected readonly clientOptions;
   protected readonly clientCredentials;
   private _currentClientUrl;
-  // 保证唯一性
   private readonly clientIps: Set<string>;
   private readonly httpService: HttpService;
 
@@ -32,22 +31,19 @@ export class VikaGrpcClientProxy extends ClientGrpcProxy implements OnApplicatio
     this.httpService = props.httpService;
   }
 
-  /**
-   * 监听redis的通道信息
-   */
   async onApplicationBootstrap(): Promise<any> {
     this.logger.log('Current health check mode: DEFAULT');
     const redis = this.redisService.getClient().duplicate();
     redis.subscribe(RedisConstants.VIKA_NEST_CHANNEL, (err, count) => {
       if (err) {
-        logger('SubscribedError').error({ channel: RedisConstants.VIKA_NEST_CHANNEL }, err.message);
+        this.logger.error('SubscribedError', err?.stack);
       } else {
-        logger('SubscribedSuccessful').log({ channel: RedisConstants.VIKA_NEST_CHANNEL, count });
+        this.logger.log({ message: 'SubscribedSuccessful', channel: RedisConstants.VIKA_NEST_CHANNEL, count });
       }
     });
     // 用于处理nest的启动和停止
     redis.on('message', (channel, message) => {
-      logger('SubscribedMessage').log({ channel, message });
+      this.logger.log({ channel, message });
       const nestMessage: INestMessage = JSON.parse(message);
       this.handleNestMessage(nestMessage);
     });
@@ -56,41 +52,33 @@ export class VikaGrpcClientProxy extends ClientGrpcProxy implements OnApplicatio
   }
 
   /**
-   * 定时任务
-   * @return
-   * @author Zoe Zheng
-   * @date 2021/6/28 4:58 下午
+   * timed task
    */
   @Cron(HealthConstants.NEST_HEALTH_CHECK_CRON_EXPRESSION)
   async handleNestIp() {
     const redis = this.redisService.getClient();
-    // const localIps = Array.from(this.clientIps);
     const remoteIps = await redis.smembers(RedisConstants.VIKA_NEST_LOAD_KEY);
-    // if (localIps.length != remoteIps.length) {
-    //   this.logger.error({ localIps, remoteIps }, '本地IP数据源不匹配', '本地IP数据不匹配');
-    // }
     for (const ip of remoteIps) {
       try {
-        const result: any = await this.httpService
-          .get(`http://${ip}:3333/actuator/health`, {
-            // 1s
-            timeout: HealthConstants.NEST_HEALTH_CHECK_TIMEOUT,
-          })
-          .toPromise();
+        const config = {
+          // 1s
+          timeout: HealthConstants.NEST_HEALTH_CHECK_TIMEOUT,
+        };
+        const result: any = await lastValueFrom(this.httpService.get(`http://${ip}:3333/actuator/health`, config));
         if (result.status === 200) {
           await this.handleHealth(ip);
         } else {
           await this.handleUnHealth(ip);
         }
-        logger('NestHealthCheck').debug({ ip, status: result.status });
+        // logger('NestHealthCheck').debug({ ip, status: result.status });
       } catch (e) {
-        logger('NestHealthCheck').error({ ip, errorMessage: e?.message, code: e?.code });
-        // ETIMEDOUT,ECONNREFUSED 服务已经不可达
+        this.logger.error(`ping grpc client ip:[${ip}] timeout, ping code:[${e.code}]`, e?.stack);
+        // ETIMEDOUT,ECONNREFUSED service is no longer available
         await this.handleUnHealth(ip, this.isServerReachable(e.code));
       }
     }
 
-    this.logger.log(`可用IP池：${this.clientIps?.size ? this.clientIps : '无'}`);
+    this.logger.log(`可用IP池：${this.clientIps?.size ? Array.from(this.clientIps) : '无'}`);
   }
 
   private isServerReachable(code: string) {
@@ -121,9 +109,9 @@ export class VikaGrpcClientProxy extends ClientGrpcProxy implements OnApplicatio
     const maxSendMessageLengthKey = 'grpc.max_send_message_length';
     const maxReceiveMessageLengthKey = 'grpc.max_receive_message_length';
     const maxMessageLengthOptions = {
-      [maxSendMessageLengthKey]: this.getOptionsProp(this.options, 'maxSendMessageLength', 
+      [maxSendMessageLengthKey]: this.getOptionsProp(this.options, 'maxSendMessageLength',
         SocketConstants.GRPC_DEFAULT_MAX_SEND_MESSAGE_LENGTH),
-      [maxReceiveMessageLengthKey]: this.getOptionsProp(this.options, 'maxReceiveMessageLength', 
+      [maxReceiveMessageLengthKey]: this.getOptionsProp(this.options, 'maxReceiveMessageLength',
         SocketConstants.GRPC_DEFAULT_MAX_RECEIVE_MESSAGE_LENGTH),
     };
     const maxMetadataSize = this.getOptionsProp(this.options, 'maxMetadataSize', -1);
@@ -142,8 +130,8 @@ export class VikaGrpcClientProxy extends ClientGrpcProxy implements OnApplicatio
 
   getHealthServerEndpoint(): string {
     if (!this.clientIps.size || isDev()) {
-      // 没有可用的健康ip,直接返回默认的配置 todo?
-      this.logger.error({}, 'Empty nest server', 'EmptyNestServer');
+      // If no healthy ip is available, return to the default configuration directly
+      this.logger.warn(`empty nest server，fallback as default：${GatewayConstants.NEST_GRPC_URL}`);
       return GatewayConstants.NEST_GRPC_URL;
     }
     const ips = Array.from(this.clientIps);
@@ -197,7 +185,7 @@ export class VikaGrpcClientProxy extends ClientGrpcProxy implements OnApplicatio
     const redis = this.redisService.getClient();
     const ips = await redis.smembers(RedisConstants.VIKA_NEST_LOAD_KEY);
     if (!ips.length) {
-      this.logger.error({}, 'NestServer没有注册，请确认NestServer是否启动', 'EmptyNestServer');
+      this.logger.warn('NestServer没有注册，请确认NestServer是否启动?');
       return;
     }
     const healthIps = [];
@@ -210,13 +198,13 @@ export class VikaGrpcClientProxy extends ClientGrpcProxy implements OnApplicatio
     }
     if (!healthIps.length) {
       // todo 邮件通知？
-      logger('EmptyHealthNestEndpoints').error({ ips });
+      this.logger.warn('EmptyHealthNestEndpoints');
     } else {
-      logger('NestHealthEndpoints').log({ healthIps });
+      this.logger.log(`NestHealthEndpoints ${healthIps}`);
     }
   }
 
-  async handleUnHealth(ip: string, available = true) {
+  private async handleUnHealth(ip: string, available = true) {
     const redis = this.redisService.getClient();
     if (this.clientIps.has(ip)) {
       const healthKey = this.getLoadHealthKey(ip);
@@ -233,17 +221,17 @@ export class VikaGrpcClientProxy extends ClientGrpcProxy implements OnApplicatio
         }
       }
     }
-    // 处理服务不可达的情况，room强制重启了，在重启之前没有pub消息
+    // In the case of unreachable service, room is forced to restart, and there is no pub message before restart
     if (!available) {
       await redis.srem(RedisConstants.VIKA_NEST_LOAD_KEY, ip);
       await redis.del(this.getLoadUnHealthKey(ip));
       await redis.del(this.getLoadHealthKey(ip));
       this.clientIps.delete(ip);
-      this.logger.error({ ip, available }, 'NestServiceUnAvailable', 'NestServiceUnAvailable');
+      this.logger.error({ ip, available }, 'NestServiceUnAvailable');
     }
   }
 
-  async handleHealth(ip: string) {
+  private async handleHealth(ip: string) {
     const redis = this.redisService.getClient();
     const unHealthKey = this.getLoadUnHealthKey(ip);
     const exists = await redis.exists(unHealthKey);
@@ -280,9 +268,9 @@ export class VikaGrpcClientProxy extends ClientGrpcProxy implements OnApplicatio
         await redisClient.sadd(RedisConstants.VIKA_NEST_LOAD_KEY, ip);
         await redisClient.setnx(this.getLoadHealthKey(ip), 1);
         this.clientIps.add(ip);
-        this.logger.log({ ips: Array.from(this.clientIps) }, 'nest注册成功');
+        this.logger.log({ message: 'nest注册成功', ips: Array.from(this.clientIps) });
       } catch (e) {
-        this.logger.error({ ips: Array.from(this.clientIps) }, e.message, 'nest注册失败');
+        this.logger.error({ ips: Array.from(this.clientIps) }, e?.stack);
       }
     } else {
       // nest重启，断开,删除ip
@@ -292,9 +280,9 @@ export class VikaGrpcClientProxy extends ClientGrpcProxy implements OnApplicatio
         await redisClient.del(this.getLoadHealthKey(ip));
         // 需要删除本地的
         this.clientIps.delete(ip);
-        this.logger.log({ ips: Array.from(this.clientIps) }, 'nest删除成功');
+        this.logger.log({ message: 'nest删除成功', ips: Array.from(this.clientIps) });
       } catch (e) {
-        this.logger.error({ ips: Array.from(this.clientIps) }, e.message, 'nest删除失败');
+        this.logger.error({ ips: Array.from(this.clientIps) }, e?.stack);
       }
     }
   }

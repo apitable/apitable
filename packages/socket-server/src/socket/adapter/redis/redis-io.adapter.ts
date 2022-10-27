@@ -1,35 +1,45 @@
-import { IoAdapter } from '@nestjs/platform-socket.io';
-import { INestApplicationContext, WebSocketAdapter } from '@nestjs/common';
-import * as SocketIo from 'socket.io';
-import { AuthenticatedSocket } from 'src/socket/interface/socket/authenticated-socket.interface';
-import { SocketEventEnum } from 'src/socket/enum/socket.enum';
+import { INestApplicationContext, Logger, WebSocketAdapter } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
-import { ipAddress, logger } from 'src/socket/common/helper';
-import { GatewayConstants } from 'src/socket/constants/gateway.constants';
-import { SocketIoService } from 'src/socket/service/socket-io/socket-io.service';
+import { IoAdapter } from '@nestjs/platform-socket.io';
 import { createAdapter, RedisAdapter } from '@socket.io/redis-adapter';
 import Redis from 'ioredis';
+import * as SocketIo from 'socket.io';
+import { ipAddress } from 'src/socket/common/helper';
+import { GatewayConstants } from 'src/socket/constants/gateway.constants';
 import { RedisConstants } from 'src/socket/constants/redis-constants';
 import { SocketConstants } from 'src/socket/constants/socket-constants';
+import { SocketEventEnum } from 'src/socket/enum/socket.enum';
+import { AuthenticatedSocket } from 'src/socket/interface/socket/authenticated-socket.interface';
 import { redisConfig } from 'src/socket/service/redis/redis-config.factory';
+import { SocketIoService } from 'src/socket/service/socket-io/socket-io.service';
 
 export class RedisIoAdapter extends IoAdapter implements WebSocketAdapter {
-  constructor(private readonly app: INestApplicationContext, private readonly socketIoService: SocketIoService) {
+  private readonly logger = new Logger(RedisIoAdapter.name);
+
+  constructor(
+    private readonly app: INestApplicationContext,
+    private readonly socketIoService: SocketIoService
+  ) {
     super(app);
   }
 
   createIOServer(port: number, options: SocketIo.ServerOptions): SocketIo.Server {
+    this.logger.log(options);
+
     options.allowEIO3 = true;
     options.maxHttpBufferSize = 1e8;
+    const _nestedLogger = this.logger;
+
     const server = super.createIOServer(port, options);
-    // 改为单实例，因为redis不是集群模式，pub/sub client会有bug
+    // Change to single instance, because redis is not in cluster mode, pub/sub client will have bugs
     server.adapter(this.createRedisAdapter());
-    // 命名空间 /
+
+    // namespaces '/'
     server.of(GatewayConstants.SOCKET_NAMESPACE).use((socket: AuthenticatedSocket, next: any) => {
       socket.auth = { userId: socket.handshake.query?.userId as string, cookie: socket.handshake.headers?.cookie };
       return next();
     });
-    // 命名空间 room
+    // namespaces 'room'
     server.of(GatewayConstants.ROOM_NAMESPACE).use((socket: AuthenticatedSocket, next: any) => {
       socket.auth = { userId: socket.handshake.query?.userId as string, cookie: socket.handshake.headers?.cookie };
       return next();
@@ -46,16 +56,16 @@ export class RedisIoAdapter extends IoAdapter implements WebSocketAdapter {
           socketIds.push(...rooms.get(roomId));
         }
       }
-      logger('CLUSTER_SOCKET_ID_EVENT').log({ ip: ipAddress(), socketIds });
+      _nestedLogger.log({ message: 'CLUSTER_SOCKET_ID_EVENT', ip: ipAddress(), socketIds });
       cb(socketIds);
     });
-    logger('createIOServer').log(options);
-    // 记录日志
-    server.of(GatewayConstants.SOCKET_NAMESPACE).adapter.on('error', function(error: any) {
-      logger('serverError').error(error);
+
+    // record error log
+    server.of(GatewayConstants.SOCKET_NAMESPACE).adapter.on('error', function (error: any) {
+      _nestedLogger.error(error.message, error?.stack);
     });
-    server.of(GatewayConstants.ROOM_NAMESPACE).adapter.on('error', function(error: any) {
-      logger('serverError').error(error);
+    server.of(GatewayConstants.ROOM_NAMESPACE).adapter.on('error', function (error: any) {
+      _nestedLogger.error(error.message, error?.stack);
     });
     return server;
   }
@@ -63,11 +73,11 @@ export class RedisIoAdapter extends IoAdapter implements WebSocketAdapter {
   bindClientConnect(server: SocketIo.Server, callback: (socket: AuthenticatedSocket) => {}): void {
     server.on(SocketEventEnum.CONNECTION, (socket: AuthenticatedSocket) => {
       if (!isNil(socket.auth)) {
-        logger('RedisIoAdapter:clientConnect').debug({ userId: socket.auth.userId, socketId: socket.id, nsp: socket.nsp.name });
+        this.logger.debug({ message: 'RedisIoAdapter:clientConnect', userId: socket.auth.userId, socketId: socket.id, nsp: socket.nsp.name });
         this.socketIoService.saveUserLanguage(socket);
         this.socketIoService.joinRoom(socket);
       } else {
-        logger('RedisIoAdapter:bindClientConnect').error(socket.handshake, 'invalidUserIdForAuth');
+        this.logger.warn({ message: 'RedisIoAdapter:bindClientConnect:invalidUserIdForAuth', handshake: socket.handshake });
         // 关闭连接
         socket.disconnect();
       }
@@ -79,12 +89,12 @@ export class RedisIoAdapter extends IoAdapter implements WebSocketAdapter {
     // 客户端断开连接
     socket.on(SocketEventEnum.DISCONNECTING, args => {
       // 移出房间，判断房间里面的人数是否为空，如果房间空了，删除房间
-      logger('RedisIoAdapter:clientDisconnecting').log({ userId: socket.auth?.userId, socketId: socket.id, args });
+      this.logger.log({ message: 'RedisIoAdapter:clientDisconnecting', userId: socket.auth?.userId, socketId: socket.id, args });
       this.socketIoService.leaveRoom(socket);
     });
     // 客户端断开连接
     socket.on(SocketEventEnum.DISCONNECTION, args => {
-      logger('RedisIoAdapter:clientDisconnect').log({ userId: socket.auth?.userId, socketId: socket.id, args });
+      this.logger.warn({ message: 'RedisIoAdapter:clientDisconnect', userId: socket.auth?.userId, socketId: socket.id, args });
       socket.removeAllListeners('disconnect');
       callback(socket);
     });
@@ -97,7 +107,7 @@ export class RedisIoAdapter extends IoAdapter implements WebSocketAdapter {
       return await Promise.resolve();
     } catch (e) {
       // namespace会传入路由，没有关闭的属性
-      logger('RedisIoAdapter:close').error(e.message, e);
+      this.logger.error('RedisIoAdapter:close', e?.stack);
     }
   }
 

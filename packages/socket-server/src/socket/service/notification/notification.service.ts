@@ -1,20 +1,22 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
-import { NotificationRo } from 'src/socket/model/ro/notification/notification.ro';
-import { INotificationService } from './i-notification-service.interface';
+import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
-import { SocketConstants } from 'src/socket/constants/socket-constants';
 import { Socket } from 'socket.io';
-import { logger } from 'src/socket/common/helper';
-import { WatchSpaceRo } from 'src/socket/model/ro/notification/watch-space.ro';
+import { GrpcClient } from 'src/grpc/client/grpc.client';
+import { SocketConstants } from 'src/socket/constants/socket-constants';
+import { NotificationTypes } from 'src/socket/enum/request-types.enum';
 import { AuthenticatedSocket } from 'src/socket/interface/socket/authenticated-socket.interface';
 import { NodeChangeRo } from 'src/socket/model/ro/notification/node-change.ro';
-import { NotificationTypes } from 'src/socket/enum/request-types.enum';
-import { GatewayConstants } from 'src/socket/constants/gateway.constants';
-import { GrpcClient } from 'src/grpc/client/grpc.client';
+import { NotificationRo } from 'src/socket/model/ro/notification/notification.ro';
+import { WatchSpaceRo } from 'src/socket/model/ro/notification/watch-space.ro';
+import { INotificationService } from './i-notification-service.interface';
 
 @Injectable()
 export class NotificationService implements INotificationService {
-  constructor(private readonly grpcClient: GrpcClient) {
+  private readonly logger = new Logger(NotificationService.name);
+
+  constructor(
+    private readonly grpcClient: GrpcClient
+  ) {
   }
 
   broadcastNotify(message: NotificationRo, client: Socket): boolean {
@@ -23,10 +25,10 @@ export class NotificationService implements INotificationService {
     }
     try {
       client.in(SocketConstants.USER_SOCKET_ROOM + message.toUserId).emit(message.event, message);
-      logger('NotificationService:broadcastNotify').debug(message);
+      this.logger.debug(message);
       return true;
     } catch (e) {
-      logger('Error:broadcastNotify').error(e);
+      this.logger.error('Error:broadcastNotify', e?.stack);
       return false;
     }
   }
@@ -36,7 +38,7 @@ export class NotificationService implements INotificationService {
       client.join(this.getSpaceRoom(message.spaceId));
       return true;
     } catch (e) {
-      logger('NotificationService:WatchSpace').error(e, e.message);
+      this.logger.error('Error:watchSpace', e?.stack);
       return false;
     }
   }
@@ -48,10 +50,10 @@ export class NotificationService implements INotificationService {
         room = this.getUserRoom(message.uuid);
       }
       client.to(room).emit(NotificationTypes.NODE_CHANGE, message);
-      logger('NotificationService:nodeChange').debug(message);
+      this.logger.debug(message);
       return true;
     } catch (e) {
-      logger('Error:nodeChangeNotify').error(e, e.message);
+      this.logger.error('Error:nodeChange', e?.stack);
       return false;
     }
   }
@@ -60,8 +62,8 @@ export class NotificationService implements INotificationService {
     try {
       const result = await this.grpcClient.recordNodeBrowsing({ nodeId, uuid });
       return result.success;
-    } catch (err) {
-      logger('NotificationService').error('nodeBrowsed', err.stack);
+    } catch (e) {
+      this.logger.error('Error:nodeBrowsed', e?.stack);
       return false;
     }
 

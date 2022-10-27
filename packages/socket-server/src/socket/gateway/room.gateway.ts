@@ -7,26 +7,21 @@ import { Socket } from 'socket.io';
 import { ExecuteTimeInterceptor } from '../interceptor/execute-time.interceptor';
 import { RoomService } from 'src/socket/service/room/room.service';
 
-/**
- * <p>
- * ROOM 长连接入口
- * </p>
- * @author Chambers
- * @date 2020/12/10
- */
 @UseFilters(HttpExceptionFilter)
 @WebSocketGateway(GatewayConstants.ROOM_PORT, {
   path: GatewayConstants.ROOM_PATH,
   namespace: GatewayConstants.ROOM_NAMESPACE,
   pingTimeout: GatewayConstants.PING_TIMEOUT,
-  })
+})
 export class RoomGateway {
   constructor(
     private readonly roomService: RoomService,
   ) {
   }
 
-  // 当前命名空间socket.io的Server对象,以后在controller注入访问
+  /*
+   * The Server object of the current namespace socket.io will be injected into the controller later
+   */
   @WebSocketServer() server;
 
   @SubscribeMessage(RequestTypes.WATCH_ROOM)

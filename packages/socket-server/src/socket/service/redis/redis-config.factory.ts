@@ -1,16 +1,20 @@
+import { Logger } from '@nestjs/common';
 import { RedisConstants } from 'src/socket/constants/redis-constants';
-import { logger } from 'src/socket/common/helper';
 import IORedis = require('ioredis');
 
 export const redisConfig = {
   provide: RedisConstants.REDIS_CONFIG,
-  /**
+
+  /*
+   * custom factory
    *
-   * @param db 数据库
-   * @param clientType 连接client类型 sub/pub/client
-   * @param keyPrefix key前缀
+   * @param db database index
+   * @param clientType connection client type[sub/pub/client]
+   * @param keyPrefix
    */
   useFactory: (db: number, clientType: string, keyPrefix: string): IORedis.RedisOptions => {
+    const logger = new Logger('RedisAdapterFactory');
+
     return {
       host: RedisConstants.HOST,
       port: RedisConstants.PORT,
@@ -19,13 +23,13 @@ export const redisConfig = {
       retryStrategy(times: number): number | void {
         if (times <= RedisConstants.RE_CONNECT_MAX_TIMES) {
           // reconnect after
-          logger(`RedisClient:${clientType}:retryStrategy`).log(times);
+          logger.log(`RedisClient:${clientType}:retryStrategy times:${times}`);
           return Math.min(times * 1000, 3000);
-        } 
-        logger(`RedisClient:${clientType}:retryStrategy:RetryTimeExhausted`).error(times);
+        }
+        logger.error(`RedisClient:${clientType}:retryStrategy:RetryTimeExhausted times:${times}`);
       },
-      reconnectOnError(error: Error): boolean | 1 | 2 {
-        logger(`RedisClient:${clientType}:reconnectOnError`).error(error);
+      reconnectOnError(e: Error): boolean | 1 | 2 {
+        logger.error(`RedisClient:${clientType}:reconnectOnError`, e?.stack);
         return false;
       },
       // 作为socket的咩有这个属性

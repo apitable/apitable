@@ -1,19 +1,16 @@
 /**
  * fork : https://github.com/vcfvct/typescript-retry-decorator
  */
-import { logger } from 'src/socket/common/helper';
+import { Logger } from '@nestjs/common';
 import * as Sentry from '@sentry/node';
-import { sleep } from './utils';
 import { get, omit, values } from 'lodash';
+import { sleep } from './utils';
 
 /**
- * 重试装饰器
- *
- *
- * @param options
- * @constructor
+ * retryable decorator
  */
 export function Retryable(options: RetryOptions): Function {
+  const logger = new Logger('RetryableDecorator');
 
   function canRetry(e: Error): boolean {
     if (options.doRetry && !options.doRetry(e)) {
@@ -31,7 +28,7 @@ export function Retryable(options: RetryOptions): Function {
         throw e;
       }
 
-      const _captureContext = { tags: { exceptionType: 'retryException', remainNumber: maxAttempts } };
+      const _captureContext = { tags: { exceptionType: 'retryException', remainNumber: maxAttempts }};
       const outLoggerTag = [];
       // 自定义扩展参数上报
       const sentryScopeContext = options?.sentryScopeContext;
@@ -56,7 +53,7 @@ export function Retryable(options: RetryOptions): Function {
       // 输出（logger）日志自定义标签
       outLoggerTag.push(...values(omit(_captureContext.tags, ['exceptionType', 'remainNumber'])));
 
-      logger(`${fn.name} ${outLoggerTag?.join(' - ') ?? ''}`).error(`执行方法：'${fn.name}' 异常，剩余尝试：${maxAttempts}次。`, e);
+      logger.error(`执行方法：'${fn.name}' 异常，剩余尝试：${maxAttempts}次。`, e?.stack);
       Sentry.captureException(e, _captureContext);
 
       backOff && (await sleep(backOff));
@@ -83,7 +80,7 @@ export function Retryable(options: RetryOptions): Function {
       } catch (e) {
         const msgPrefix = `重试执行方法：'${propertyKey}'，失败：${options.maxAttempts}次。`;
         e.message = e.message ? `${msgPrefix} 原始错误: ${e.message}` : msgPrefix;
-        logger(propertyKey).error({}, e);
+        logger.error(e.message, e?.stack);
         if (!options.hasOwnProperty('callback')) {
           throw e;
         }

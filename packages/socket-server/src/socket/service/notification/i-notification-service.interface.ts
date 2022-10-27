@@ -5,38 +5,32 @@ import { NodeChangeRo } from 'src/socket/model/ro/notification/node-change.ro';
 
 export interface INotificationService {
   /**
-   * 广播消息通知
+   * broadcast message notification
    * @param message
    */
   broadcastNotify(message: NotificationRo, client: AuthenticatedSocket): boolean;
 
   /**
-   * 监听空间站内部消息
+   * incoming space station message
    *
-   * @param message 参数
-   * @param client socket连接
-   * @return
-   * @author Zoe Zheng
-   * @date 2020/7/6 4:30 下午
+   * @param message
+   * @param client
    */
   watchSpace(message: WatchSpaceRo, client: AuthenticatedSocket): boolean;
 
   /**
-   * 节点发生变化通知
+   * node change message
    *
-   * @param message 参数
-   * @param client socket连接
-   * @return
-   * @author Zoe Zheng
-   * @date 2020/7/7 10:20 上午
+   * @param message
+   * @param client
    */
   nodeChange(message: NodeChangeRo, client: AuthenticatedSocket): boolean;
 
   /**
    * node browsed event
+   *
    * @param nodeId node id
    * @param uuid user uuid
-   * @return boolean
    */
-   nodeBrowsed(nodeId: string, uuid: string): Promise<boolean>;
+  nodeBrowsed(nodeId: string, uuid: string): Promise<boolean>;
 }

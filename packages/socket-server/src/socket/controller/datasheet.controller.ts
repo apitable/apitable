@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 import { RoomGateway } from 'src/socket/gateway/room.gateway';
 import { AuthGuard } from 'src/socket/guard/auth.guard';
 import { HttpResponseInterceptor } from 'src/socket/interceptor/http.response.interceptor';

@@ -1,12 +1,13 @@
-import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, Logger } from '@nestjs/common';
 import { RuntimeException } from '@nestjs/core/errors/exceptions/runtime.exception';
-import { logger } from '../common/helper';
 import * as Sentry from '@sentry/node';
 
 @Catch(RuntimeException)
 export class RuntimeExceptionFilter implements ExceptionFilter {
+  private readonly logger = new Logger(RuntimeExceptionFilter.name);
+
   catch(exception: any, host: ArgumentsHost): any {
-    logger('RuntimeExceptionFilter').error(exception);
+    this.logger.error('Runtime Error', exception?.stack);
 
     // 上报 sentry
     const ctx = host.switchToHttp();
@@ -28,7 +29,9 @@ export class RuntimeExceptionFilter implements ExceptionFilter {
 
 @Catch(RangeError)
 export class RangeErrorFilter implements ExceptionFilter {
+  private readonly logger = new Logger(RangeErrorFilter.name);
+
   catch(exception: any): any {
-    logger('RangeErrorFilter').error(exception);
+    this.logger.error('Range Error', exception?.stack);
   }
 }

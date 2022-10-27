@@ -1,29 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
+import { getRequestLanguage, getValueFromCookie, isBackendServer, isNestServer, isRoomConnect } from 'src/socket/common/helper';
 import { SocketConstants } from 'src/socket/constants/socket-constants';
-import { getRequestLanguage, getValueFromCookie, isBackendServer, isRoomConnect, isNestServer, logger } from 'src/socket/common/helper';
 import { USER_LANGUAGE } from 'src/socket/enum/redis-key.enum';
-import { RedisService } from '../redis/redis.service';
 import { AuthenticatedSocket } from 'src/socket/interface/socket/authenticated-socket.interface';
 import { NestService } from '../nest/nest.service';
+import { RedisService } from '../redis/redis.service';
 import { RoomService } from '../room/room.service';
 
 @Injectable()
 export class SocketIoService {
+  private readonly logger = new Logger(SocketIoService.name);
+
   constructor(
     private readonly redisService: RedisService,
     private readonly nestService: NestService,
     private readonly roomService: RoomService,
   ) { }
-  /**
-   * @param userId
-   * @param headers
-   * @return
-   * @author zoe
-   * @date 2020/5/14 2:35 下午
-   */
+
   public saveUserLanguage(socket: AuthenticatedSocket) {
-    // 过滤掉java、nest-server、room 的连接
+    // filtered [java、nest-server、room] connection
     if (!isBackendServer(socket) && !isNestServer(socket) && !isRoomConnect(socket)) {
       const headers = socket.handshake.headers;
       let lang: string;
@@ -32,46 +28,28 @@ export class SocketIoService {
       } else {
         lang = getRequestLanguage(headers);
       }
-      // 在redis里面存入用户客户端语言
+      // store user client language in redis
       this.redisService.saveValue(USER_LANGUAGE.PREFIX + socket.auth.userId, lang, USER_LANGUAGE.EXPIRE);
     }
   }
 
-  /**
-   *
-   * 加入房间
-   *
-   * @param socket
-   * @return
-   * @author Zoe Zheng
-   * @date 2020/6/24 9:06 下午
-   */
   public joinRoom(socket: AuthenticatedSocket) {
-    // nest-server 的房间
+    // nest-server room
     if (isNestServer(socket)) {
       socket.join(SocketConstants.NEST_SERVER_PREFIX);
       this.nestService.setSocket(socket);
     } else if (isBackendServer(socket)) {
-      // java-server的房间
+      // java-server room
       socket.join(SocketConstants.JAVA_SERVER_PREFIX);
     } else {
-      // todo 鉴权
-      // 有userId的连接加入房间用户房间
+      // TODO: authentication
+      // connection with user id joins room user room
       if (!isNil(socket.auth.userId)) {
         socket.join(SocketConstants.USER_SOCKET_ROOM + socket.auth.userId);
       }
     }
   }
 
-  /**
-   *
-   * 离开房间
-   *
-   * @param socket
-   * @return
-   * @author Zoe Zheng
-   * @date 2020/6/24 9:06 下午
-   */
   public async leaveRoom(socket: AuthenticatedSocket) {
     if (isNestServer(socket)) {
       socket.leave(SocketConstants.NEST_SERVER_PREFIX);
@@ -81,9 +59,9 @@ export class SocketIoService {
     } else if (isRoomConnect(socket)) {
       await this.roomService.clientDisconnect(socket);
     } else {
-      // 退出用户的房间
+      // exit the user room
       socket.leave(SocketConstants.USER_SOCKET_ROOM + socket.auth.userId);
-      logger('SocketIoService:UserLeaveRoom').log({ room: SocketConstants.USER_SOCKET_ROOM + socket.auth.userId, socketId: socket.id });
+      this.logger.log({ message: 'SocketIoService:UserLeaveRoom', room: SocketConstants.USER_SOCKET_ROOM + socket.auth.userId, socketId: socket.id });
     }
   }
 }

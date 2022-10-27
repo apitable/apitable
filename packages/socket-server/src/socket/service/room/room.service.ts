@@ -1,22 +1,23 @@
-import { Injectable } from '@nestjs/common';
-import { Socket } from 'socket.io';
-import { BroadcastTypes } from 'src/socket/enum/broadcast-types.enum';
-import { NestService } from '../nest/nest.service';
+import { Injectable, Logger } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
-import { ServerErrorCode, SocketEventEnum } from 'src/socket/enum/socket.enum';
-import { SocketConstants } from 'src/socket/constants/socket-constants';
-import { logger } from 'src/socket/common/helper';
-import { RequestTypes } from 'src/socket/enum/request-types.enum';
-import { GatewayConstants } from 'src/socket/constants/gateway.constants';
-import { NodeShareDisableRo } from 'src/socket/model/ro/node/node.ro';
-import { FieldPermissionChangeRo } from 'src/socket/model/ro/datasheet/datasheet.ro';
 import { RuntimeException } from '@nestjs/core/errors/exceptions/runtime.exception';
+import { Socket } from 'socket.io';
 import { NestClient } from 'src/grpc/client/nest.client';
-import { Retryable } from '../../../grpc/util/retry.decorator';
-import { getGlobalGrpcMetadata } from '../../../grpc/util/utils';
+import { Retryable } from 'src/grpc/util/retry.decorator';
+import { getGlobalGrpcMetadata } from 'src/grpc/util/utils';
+import { GatewayConstants } from 'src/socket/constants/gateway.constants';
+import { SocketConstants } from 'src/socket/constants/socket-constants';
+import { BroadcastTypes } from 'src/socket/enum/broadcast-types.enum';
+import { RequestTypes } from 'src/socket/enum/request-types.enum';
+import { ServerErrorCode, SocketEventEnum } from 'src/socket/enum/socket.enum';
+import { FieldPermissionChangeRo } from 'src/socket/model/ro/datasheet/datasheet.ro';
+import { NodeShareDisableRo } from 'src/socket/model/ro/node/node.ro';
+import { NestService } from '../nest/nest.service';
 
 @Injectable()
 export class RoomService {
+  private readonly logger = new Logger(RoomService.name);
+
   constructor(
     private readonly nestService: NestService,
     private readonly nestClient: NestClient,
@@ -46,23 +47,27 @@ export class RoomService {
   @Retryable({
     maxAttempts: SocketConstants.GRPC_OPTIONS.retryPolicy.maxAttempts,
     sentryScopeContext: {
-    tags: (args) => { return { clientId: args[0]?.clientId }; },
-    extra: (args) => { return { roomId: args[0]?.roomId, clientId: args[0]?.clientId, cookie: args[0]?.cookie }; },
+      tags: (args) => { return { clientId: args[0]?.clientId }; },
+      extra: (args) => { return { roomId: args[0]?.roomId, clientId: args[0]?.clientId, cookie: args[0]?.cookie }; },
     },
     callback: () => ({ code: ServerErrorCode.NetworkError, success: false, message: 'Network Error' }),
-    })
+  })
   async watchRoom(message: any, socket: Socket, server?: any): Promise<any | null> {
     const room = message.roomId;
     const createTime = Date.now();
     const isExistRoom = socket.rooms.has(room);
     const grpcMetadata = getGlobalGrpcMetadata();
-    const cTraceId = grpcMetadata.get('X-C-TraceId')[0];
+    const traceId = grpcMetadata.get('X-C-TraceId')[0];
 
-    logger(`C-TraceId[${cTraceId}] WatchRoom`).log(`Watch Room: ${message.roomId}`);
+    this.logger.log({
+      action: 'WatchRoom',
+      traceId: traceId,
+      message: `WatchRoom Start roomId:[${message.roomId}]`
+    });
 
     if (isExistRoom) {
-      logger(`C-TraceId[${cTraceId}] User are already in room`)
-        .log(`socketId: ${socket.id} has already in room: ${JSON.stringify(socket.rooms[room])}`);
+      this.logger.log(`traceId[${traceId}] User are already in room，
+      socketId: ${socket.id} has already in room: ${JSON.stringify(socket.rooms[room])}`);
     }
     // 通知 NestServer 处理消息
     const result = await this.nestClient.watchRoom(this.injectMessage(socket, message, true, true), grpcMetadata);
@@ -71,7 +76,7 @@ export class RoomService {
       // 当 client 在 room 中不存在的时候，进行 join 和 userEnter 的广播
       if (!isExistRoom) {
         socket.join(room);
-        logger(`C-TraceId[${cTraceId}] User are join in room`).log({ room, socketId: socket.id });
+        this.logger.log({ room, socketId: socket.id, message: `traceId[${traceId}] User are join in room` });
         // 通知客户端所有连接新用户加入房间
         socket.broadcast.to(room).emit(BroadcastTypes.ACTIVATE_COLLABORATORS, {
           collaborators: [{
@@ -90,8 +95,13 @@ export class RoomService {
     }
 
     const endTime = +new Date();
-    logger(`C-TraceId[${cTraceId}] WatchRoom`).log(`Watch Room: ${message.roomId} Success，总耗时: ${endTime - createTime}ms`);
 
+    this.logger.log({
+      action: 'WatchRoom',
+      traceId: traceId,
+      ms: endTime - createTime,
+      message: `WatchRoom End roomId:[${message.roomId}] Success，total time: ${endTime - createTime}ms`
+    });
     return result;
   }
 
@@ -99,8 +109,8 @@ export class RoomService {
     // 获取数表资源的所有房间
     const roomIds = [message.roomId];
     // custom request to get multiple service node pod sockets
-    server.serverSideEmit(SocketEventEnum.CLUSTER_SOCKET_ID_EVENT, roomIds, async(_err: any, replies: string | any[]) => {
-      logger('WatchRoom:ServerSideEmit').log({ replies });
+    server.serverSideEmit(SocketEventEnum.CLUSTER_SOCKET_ID_EVENT, roomIds, async (_err: any, replies: string | any[]) => {
+      this.logger.log({ message: 'WatchRoom:ServerSideEmit', replies });
       // 没有 room 连接，直接结束
       if (!replies.length) {
         return;
@@ -132,7 +142,7 @@ export class RoomService {
     if (socket.nsp.adapter.rooms.has(room)) {
       socket.leave(room);
       await socket.broadcast.to(room).emit(BroadcastTypes.DEACTIVATE_COLLABORATOR, { socketId: socket.id, ...message });
-      logger('User are leave room').log({ room, socketId: socket.id });
+      this.logger.log({ message: 'User are leave room', room, socketId: socket.id });
     }
     return Promise.resolve(true);
   }
@@ -140,14 +150,22 @@ export class RoomService {
   @Retryable({
     maxAttempts: SocketConstants.GRPC_OPTIONS.retryPolicy.maxAttempts,
     sentryScopeContext: {
-    tags: (args) => { return { clientId: args[0]?.clientId } },
-    extra: (args) => { return { roomId: args[0]?.roomId, clientId: args[0]?.clientId, cookie: args[0]?.cookie } },
+      tags: (args) => { return { clientId: args[0]?.clientId }; },
+      extra: (args) => { return { roomId: args[0]?.roomId, clientId: args[0]?.clientId, cookie: args[0]?.cookie }; },
     },
     callback: () => ({ code: ServerErrorCode.ServerError, success: false, message: 'Server Error' }),
-    })
+  })
   async roomChange(message: any, socket: Socket): Promise<any> {
+    const createTime = Date.now();
     const room = message.roomId;
     const grpcMetadata = getGlobalGrpcMetadata();
+    const traceId = grpcMetadata.get('X-C-TraceId')[0];
+
+    this.logger.log({
+      action: 'RoomChange',
+      traceId: traceId,
+      message: `RoomChange Start roomId:[${message.roomId}]`
+    });
 
     // notify nest server to process the message
     const result = await this.nestClient.roomChange(this.injectMessage(socket, message, true), grpcMetadata);
@@ -155,6 +173,15 @@ export class RoomService {
       const changesets = this.broadcastServerChange(room, result.data, socket);
       result.data = { changesets };
     }
+
+    const endTime = +new Date();
+
+    this.logger.log({
+      action: 'RoomChange',
+      traceId: traceId,
+      ms: endTime - createTime,
+      message: `RoomChange End roomId:[${message.roomId}] Success，total time: ${endTime - createTime}ms`
+    });
     return result;
   }
 
@@ -242,11 +269,12 @@ export class RoomService {
       return;
     }
     // custom request to get multiple service node pod sockets
-    server.serverSideEmit(SocketEventEnum.CLUSTER_SOCKET_ID_EVENT, roomIds, async(err: string, replies: string | any[]) => {
+    server.serverSideEmit(SocketEventEnum.CLUSTER_SOCKET_ID_EVENT, roomIds, async (err: string, replies: string | any[]) => {
       if (err) {
         throw new RuntimeException(err);
       }
-      logger('FieldPermission:ServerSideEmit').log({ replies });
+      this.logger.log({ message: 'FieldPermission:ServerSideEmit', replies });
+
       // 没有 room 连接，直接结束
       if (!replies.length) {
         return;
