@@ -18,8 +18,8 @@ import { ActionTypeCreateRo } from '../ros/action.type.create.ro';
 import { ActionTypeUpdateRo } from '../ros/action.type.update.ro';
 import { TriggerTypeUpdateRo } from '../ros/trigger.type.update.ro';
 import { AutomationServiceUpdateRo } from '../ros/service.update.ro';
-import * as services from './services';
-import { IActionResponse } from './services/interface';
+import * as services from '../connectors';
+import { IActionResponse } from '../connectors/interface';
 import { ConfigConstant } from '@apitable/core';
 
 /**

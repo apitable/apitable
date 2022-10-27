@@ -4,7 +4,7 @@ import { ClientGrpcProxy, ClientsModule } from '@nestjs/microservices';
 import { GatewayConstants } from 'src/socket/constants/gateway.constants';
 import { join } from 'path';
 import { NestClient } from 'src/grpc/client/nest.client';
-import { RedisModule } from 'src/socket/service/redis/redis.module';
+import { RedisModule } from 'src/socket/_modules/redis.module';
 import { RedisService } from 'src/socket/service/redis/redis.service';
 import { VikaGrpcClientProxy } from 'src/grpc/client/vika.grpc.client.proxy';
 import { SocketConstants } from 'src/socket/constants/socket-constants';

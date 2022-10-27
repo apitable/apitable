@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { LocalHealthIndicator } from './local-health.indicator';
-import { RedisModule } from '../redis/redis.module';
+import { LocalHealthIndicator } from '../service/indicator/local-health.indicator';
+import { RedisModule } from './redis.module';
 
 @Module({
   imports: [RedisModule],

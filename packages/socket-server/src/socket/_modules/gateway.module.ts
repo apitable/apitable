@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { NotificationGateway } from './notification.gateway';
-import { ServiceModule } from '../service/service.module';
-import { RoomGateway } from './room.gateway';
+import { NotificationGateway } from '../gateway/notification.gateway';
+import { ServiceModule } from './service.module';
+import { RoomGateway } from '../gateway/room.gateway';
 
 @Module({
   imports: [ServiceModule],

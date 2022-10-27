@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
-import { NestService } from './nest.service';
+import { NestService } from '../service/nest/nest.service';
 
 @Module({
   imports: [HttpModule],

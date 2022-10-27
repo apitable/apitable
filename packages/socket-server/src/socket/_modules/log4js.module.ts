@@ -1,7 +1,7 @@
 import { Global, Module, DynamicModule } from '@nestjs/common';
 import { Configuration } from 'log4js';
-import { createOptionProvider } from './log4js.provider';
-import { Log4js } from './log4js';
+import { createOptionProvider } from '../adapter/log4js/log4js.provider';
+import { Log4js } from '../adapter/log4js/log4js';
 
 Global();
 @Module({
