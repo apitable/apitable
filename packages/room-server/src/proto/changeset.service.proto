@@ -4,6 +4,6 @@ package vika.grpc;
 import 'socket.message.proto';
 
 service ChangesetService {
-  // 加入房间
+  // enter into room
   rpc ServerRoomChange (ServerRoomChangeRo) returns (BasicResult);
 }

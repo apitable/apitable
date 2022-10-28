@@ -21,13 +21,13 @@ export class NodePermissionGuard implements CanActivate {
   }
 
   /**
-   * 验证权限，这里直接查找权限，应为目前room层还没有对权限的操作，所以不需要把用户的权限信息也放入requestContext（请求上下文）中
-   * @param permissions 控制器通过反射器传入的需要判断的权限
-   * @param dstId 数表ID
-   * @param req 请求信息
+   * permission verification. room could not verify the permission, so it calls backend server to verify
+   * @param permissions need to be verify permissions while it calls by reflection
+   * @param dstId datasheet id
+   * @param req request
    * @return
    * @author Zoe Zheng
-   * @date 2020/8/14 4:29 下午
+   * @date 2020/8/14 4:29 PM
    */
   private async matchPermissions(permissions: string[], dstId: string, req: any): Promise<boolean> {
     let auth;

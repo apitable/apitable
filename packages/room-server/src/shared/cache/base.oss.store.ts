@@ -13,9 +13,9 @@ export abstract class BaseOssStore {
       region: '',
       path: process.env.NODE_ENV,
       bucket: '',
-      // 是否解析喂json
+      // whether or not to parse json
       parse: true,
-      // 文件后缀
+      // file suffix
       fileSuffix: '.json'
     }, args);
   }

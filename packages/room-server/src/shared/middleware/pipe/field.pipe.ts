@@ -15,11 +15,9 @@ import { FieldManager } from '../../../fusion/field.manager';
 import { Logger } from 'winston';
 
 /**
- * <p>
- * fields参数转换器，fieldName => fieldId 成员字段添加ID，spaceId
- * </p>
+ * Field pipe transformer, get fieldId, memberId and spaceId by fieldName
  * @author Zoe zheng
- * @date 2020/8/7 5:45 下午
+ * @date 2020/8/7 5:45 PM
  */
 @Injectable()
 export class FieldPipe implements PipeTransform {
@@ -30,13 +28,13 @@ export class FieldPipe implements PipeTransform {
   ) { }
 
   /**
-   * field参数转换
+   * field transform
    * @param value
    * @param type
-   * @param metatype 参数类型
+   * @param metatype
    * @return
    * @author Zoe Zheng
-   * @date 2020/8/4 4:05 下午
+   * @date 2020/8/4 4:05 PM
    */
   async transform(value: any, { type, metatype }: ArgumentMetadata): Promise<any> {
     const datasheet = this.request[DATASHEET_HTTP_DECORATE];
@@ -52,11 +50,9 @@ export class FieldPipe implements PipeTransform {
       for (const fieldKey of Object.keys(record.fields)) {
         const field = fieldMap[fieldKey];
         const fieldValue = record.fields[fieldKey];
-        // 过滤参数
         if (field) {
-          // 校验
           this.validate(fieldValue, field, { field: value.fieldKey === FieldKeyEnum.NAME ? field.name : field.id });
-          // 单多选字段选项扩充收集
+          // options field
           if ([FieldType.SingleSelect, FieldType.MultiSelect].includes(field.type)) {
             const { property: { options }} = (field as ISelectField);
             const existOptions: typeof options = this.request[DATASHEET_ENRICH_SELECT_FIELD][field.id]?.property.options || options;
@@ -75,20 +71,20 @@ export class FieldPipe implements PipeTransform {
             });
             fields[field.id] = field.type === FieldType.SingleSelect ? transformedOptionIds[0] : transformedOptionIds;
           } else {
-            // 转换
+            // transform
             fields[field.id] = await this.fieldTransform(fieldValue, field, {
               spaceId: datasheet.spaceId,
               fieldMap: meta.fieldMap,
             });
           }
-          // 如果是关联字段，收集recordIds
+          // collect recordIds if it is link type field
           if (field.type === FieldType.Link) {
             const foreignDatasheetId = field.property.foreignDatasheetId;
             const linkRecordIds: string[] = [];
             if (fields[field.id]) {
               linkRecordIds.push(...fields[field.id] as string[]);
             }
-            // 更新需要补全link数据
+            // complete the information if it is link type field
             if (record.recordId) {
               const result = await this.recordService.getLinkRecordIdsByRecordIdAndFieldId(datasheet.dstId, record.recordId, field.id);
               if (result) {
@@ -103,7 +99,7 @@ export class FieldPipe implements PipeTransform {
               }
             }
           }
-          // 成员发送通知
+          // transform member field 
           if (field.type === FieldType.Member && field.property.shouldSendMsg && fields[field.id]) {
             this.request[DATASHEET_MEMBER_FIELD].add(fieldKey);
           }
@@ -118,13 +114,13 @@ export class FieldPipe implements PipeTransform {
   }
 
   private validate(fieldValue: IFieldValue, field: IField, extra?: { [key: string]: string }) {
-    // 所有字段都只有在不为null 的时候才参与验证，因为update的时候，传入null表示清空
+    // validate fields value while there is no null value, null means clear the value for updating APIs
     const validator = this.getFieldManager(field);
     validator.validate(fieldValue, field, extra);
   }
 
   private fieldTransform(fieldValue: IFieldValue, field: IField, options: IFieldRoTransformOptions): ICellValue | null {
-    // 所有字段都只有在不为null 的时候才参转换
+    // transform the field value while there is no null value
     if (fieldValue != null) {
       const transformer = this.getFieldManager(field);
       return transformer.roTransform(fieldValue, field, options);
@@ -134,9 +130,9 @@ export class FieldPipe implements PipeTransform {
 
   private getFieldManager(field: IField) {
     const validator = FieldManager.findService(FieldTypeEnum.get(field.type).name);
-    // 除非api没有这个field的服务
+    // without validator
     if (!validator) {
-      this.logger.error(JSON.stringify({ validator: FieldTypeEnum.get(field.type).name, trace: '找不到字段验证器' }));
+      this.logger.error(JSON.stringify({ validator: FieldTypeEnum.get(field.type).name, trace: 'field validator not found' }));
       FieldManager.findService(FieldTypeEnum.get(FieldType.NotSupport).name).throwException(field, ApiTipIdEnum.apiParamsInvalidValue);
     }
     return validator;

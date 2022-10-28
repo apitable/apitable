@@ -22,7 +22,7 @@ import { DeveloperServiceModule } from '../../database/_modules/developer.servic
 import { ResourceServiceModule } from '../../database/_modules/resource.service.module';
 
 export const initSwagger = (app: INestApplication) => {
-  // 生产环境不启用
+  // wouldn't be enabled in production
   if (!isProdMode) {
     const options = new DocumentBuilder()
       .setTitle(SwaggerConstants.TITLE)
@@ -30,7 +30,7 @@ export const initSwagger = (app: INestApplication) => {
       .setVersion(FusionApiVersion.V10)
       .addBearerAuth({
         type: 'http',
-        description: '开发者token',
+        description: 'developer token',
       })
       .addCookieAuth('SESSION')
       .build();
@@ -61,8 +61,8 @@ export const initHttpHook = (app: INestApplication) => {
   fastify.decorateRequest(DATASHEET_LINKED, null);
   fastify.decorateRequest(DATASHEET_ENRICH_SELECT_FIELD, null);
   fastify.decorateRequest(DATASHEET_MEMBER_FIELD, null);
-  // todo REQUEST_ID 接入网关之后应该从网关直接返回 保证api经过的服务都能追踪
-  // todo 接入多语言
+  // TODO: REQUEST_ID should be returned by api-gateway, so that we could trace all the services
+  // TODO: support multiple languages
   fastify.decorateRequest(REQUEST_ID, null);
   fastify.decorateRequest(REQUEST_AT, null);
 
@@ -82,12 +82,12 @@ export const initHttpHook = (app: INestApplication) => {
       request[NODE_INFO] = nodeInfo;
       request[SPACE_ID_HTTP_DECORATE] = nodeInfo.spaceId;
     }
-    // datasheetId参数只有在fusion api controller里定义（:datasheetId）
+    // datasheetId param should be defined in the fusion api controller by query parameter(datasheets/:datasheetId)
     if (request.params['datasheetId']) {
       const datasheetService = app.select(DatasheetServiceModule).get(DatasheetService);
       const datasheet = await datasheetService.getDatasheet(request.params['datasheetId']);
       if (datasheet) {
-        // TODO 待优化
+        // TODO: should be optimized
         request[DATASHEET_HTTP_DECORATE] = datasheet;
         request[SPACE_ID_HTTP_DECORATE] = datasheet.spaceId;
         const metaService = app.select(DatasheetServiceModule).get(DatasheetMetaService);
@@ -113,8 +113,8 @@ export const initHttpHook = (app: INestApplication) => {
     return;
   });
   fastify.addHook('onSend', (request, reply, payload, done) => {
-    // 头部加入request-id
-    // todo 接入网关之后应该从网关直接返回 保证api经过的服务都能追踪
+    // add request-id to Headers
+    // TODO: REQUEST_ID should be returned by api-gateway, so that we could trace all the services
     reply.header(REQUEST_ID, request[REQUEST_ID]);
     const serverTime = Date.now() - request[REQUEST_AT];
     reply.header(SERVER_TIME, 'total;dur=' + serverTime);

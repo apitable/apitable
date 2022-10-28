@@ -56,12 +56,10 @@ import { I18nService } from 'nestjs-i18n';
 import { promisify } from 'util';
 
 /**
- * <p>
- *  todo 2. 返回信息缓存 3. 成员change发送消息, 理想状态下，数据应该放在一个服务里面维护，这样方便利用缓存
- * fusionApi数表相关接口的控制器
- * </p>
+ * TODO: cache response data, send notification while member changed, should maintain the data in the same server and cache them
+ * Fusion API, about datasheets APIs
  * @author Zoe zheng
- * @date 2020/8/15 6:58 下午
+ * @date 2020/8/15 6:58 PM
  */
 @ApiTags(SwaggerConstants.TAG)
 @Controller('/fusion/v1')

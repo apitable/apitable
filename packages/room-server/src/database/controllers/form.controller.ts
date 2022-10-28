@@ -10,7 +10,7 @@ import { NodeShareSettingService } from 'database/services/node/node.share.setti
 import { IFormProps, IRecordCellValue } from '@apitable/core';
 
 /**
- * 神奇表单接口
+ * Form APIs
  */
 @Controller('nest/v1')
 export class FormController {
@@ -24,7 +24,7 @@ export class FormController {
   @Get(['forms/:formId/dataPack', 'form/:formId/dataPack'])
   @UseInterceptors(ResourceDataInterceptor)
   async getDataPack(@Headers('cookie') cookie: string, @Param('formId') formId: string): Promise<FormDataPack> {
-    // 检查当前用户是否在当前空间
+    // check if the current user is belonging to this space
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, formId);
     return await this.formService.fetchDataPack(formId, { cookie });
@@ -35,11 +35,10 @@ export class FormController {
   async getShareDataPack(
     @Headers('cookie') cookie: string, @Param('shareId') shareId: string, @Param('formId') formId: string
   ): Promise<FormDataPack> {
-    // 校验节点是否在分享之列
+    // check if the node has been shared
     await this.nodeShareSettingService.checkNodeHasOpenShare(shareId, formId);
-    // 这里只是为了获取 userId，非强制登陆才可见，
-    // 但是 getMe 接口，对于未登录用户会进行报错，
-    // 并且考虑它处都有使用 getMe 接口，故只在此进行 catch，防止异常
+    // Only works for logged-in user 
+    // would throw exception if the user is not logged-in
     const { userId } = await this.userService.getMeNullable(cookie);
     return await this.formService.fetchShareDataPack(formId, shareId, userId, { cookie });
   }
@@ -74,12 +73,12 @@ export class FormController {
   async addShareFormRecord(
     @Headers('cookie') cookie: string, @Param('shareId') shareId: string, @Param('formId') formId: string, @Body() recordData: IRecordCellValue
   ): Promise<any> {
-    // 校验节点是否在分享之列
+    // check if the node has been shared
     await this.nodeShareSettingService.checkNodeHasOpenShare(shareId, formId);
     const formProps = await this.formService.fetchFormProps(formId);
     const { fillAnonymous } = formProps;
     let userId = '';
-    // 默认非匿名填写，如匿名填写则无需检查
+    // real-name by default, no need check anonymous
     if (!fillAnonymous) {
       const user = await this.userService.getMe({ cookie });
       userId = user.userId;

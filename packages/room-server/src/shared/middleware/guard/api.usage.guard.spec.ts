@@ -34,7 +34,7 @@ describe('ApiUsageGuard', () => {
   });
 
   describe('canActivate', () => {
-    it('usage--调用java出错--should return error', () => {
+    it('usage--call backend error--should return error', () => {
       jest.spyOn(restService, 'getApiUsage').mockImplementationOnce(
         (): Promise<string[]> => {
           throw new ServerException(CommonException.SERVER_ERROR);

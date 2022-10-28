@@ -8,7 +8,7 @@ import { NodeShareSettingService } from 'database/services/node/node.share.setti
 import { UserService } from 'database/services/user/user.service';
 
 /**
- * 仪表盘 Controller
+ * Dashboard Controller
  */
 @Controller('nest/v1')
 export class DashboardController {
@@ -38,7 +38,7 @@ export class DashboardController {
     @Param('shareId') shareId: string,
     @Param('dashboardId') dashboardId: string,
   ) {
-    // 校验节点是否在分享之列
+    // check if the node has been shared
     await this.nodeShareSettingService.checkNodeHasOpenShare(shareId, dashboardId);
     return await this.dashboardService.fetchShareDashboardPack(shareId, dashboardId, { token, cookie });
   }

@@ -1,8 +1,8 @@
 import { IAuthHeader } from 'shared/interfaces/axios.interfaces';
 
 /**
- * 请求头设置
- * @param cookie 会话KEY
+ * set auth headers
+ * @param cookie Cookie KEY
  * @param token Authorization Header
  */
 export function createAuthHeaders({ cookie, token }: IAuthHeader): any {

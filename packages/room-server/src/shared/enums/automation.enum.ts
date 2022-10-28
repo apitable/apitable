@@ -1,8 +1,8 @@
 /**
- * 机器人任务运行状态
+ * robot task running history
  */
 export enum RunHistoryStatusEnum {
-  // 创建时默认是运行中
+  // default status is RUNNING
   RUNNING = 0,
   SUCCESS = 1,
   FAILED = 2,

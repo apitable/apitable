@@ -1,7 +1,6 @@
-// 这里放常量定义
+// constant definition only
 
-// Redis 键定义
-
+// Redis keys
 export enum CacheKeys {
   SOCKET = 'vikadata:nest:socket:%s',
   ROOM_RELATE = 'vikadata:nest:room:%s',
@@ -10,32 +9,32 @@ export enum CacheKeys {
   DATASHEET_FIELD_RE_REF = 'vikadata:nest:fieldReRef:%s',
 }
 
-// Redis 存储时间，单位：秒
+// Redis expire time, units are in seconds
 export const STORAGE_EXPIRE_TIME = parseInt(process.env.STORAGE_EXPIRE_TIME) || 5 * 24 * 3600;
 export const REF_STORAGE_EXPIRE_TIME = parseInt(process.env.REF_STORAGE_EXPIRE_TIME) || 90 * 24 * 3600;
 
-// 公用状态码
+// Common status codes
 export enum CommonStatusCode {
   DEFAULT_SUCCESS_CODE = 200,
   DEFAULT_ERROR_CODE = 500,
 }
 
-// 公用状态码信息
+// Common status messages
 export enum CommonStatusMsg {
   DEFAULT_SUCCESS_MESSAGE = 'SUCCESS',
   DEFAULT_ERROR_MESSAGE = 'SERVER_ERROR',
 }
 
-// Swagger 定义
+// Swagger constants
 export class SwaggerConstants {
-  public static readonly DESCRIPTION = '格表融合开放 API 文档，帮助你基于强大的维格表数据库快速构建应用';
+  public static readonly DESCRIPTION = 'API Documentation to help you build applications quickly with the powerful Vikadata service';
   public static readonly TITLE = 'Vikadata fusion-api API';
   public static readonly TAG = 'Fusion Open API';
   public static readonly DATASHEET_TAG = 'Datasheet';
-  public static readonly AUTH_BEAR_DESCRIPTION = '用户token';
+  public static readonly AUTH_BEAR_DESCRIPTION = 'Developer token';
 }
 
-// 鉴权令牌的前缀
+// authorization prefix
 export const AUTHORIZATION_PREFIX = 'Bearer ';
 
 // tslint:disable-next-line:max-classes-per-file
@@ -43,9 +42,9 @@ export class JavaApiPath {
   public static readonly UPLOAD_ATTACHMENT = 'base/attach/upload';
   public static readonly API_USAGES = 'internal/space/{spaceId}/apiUsages';
   public static readonly SPACE_RESOURCE = 'space/resource';
-  // 查询空间容量信息
+  // query space capacity information
   public static readonly SPACE_CAPACITY = 'space/capacity';
-  // 数表op附件引用计算
+  // attachments of datasheet reference calculation
   public static readonly DST_ATTACH_CITE = 'base/attach/cite';
 }
 
@@ -54,7 +53,7 @@ export const NODE_PERMISSION_REFLECTOR_KEY = 'node_permission';
 export const FILE_UPLOAD_TMP_PATH = '_upload';
 
 /**
- * request hook 添加的参数
+ * request hook, parameters that will be added to headers
  */
 export const USER_HTTP_DECORATE = 'user';
 export const DATASHEET_META_HTTP_DECORATE = 'datasheet-meta';
@@ -71,38 +70,38 @@ export const REQUEST_HOOK_FOLDER = 'request-hook-folder';
 export const REQUEST_HOOK_PRE_NODE = 'request-hook-pre-node';
 export const DATASHEET_MEMBER_FIELD = 'datasheet-member-field';
 /**
- * 自定义缓存头
+ * custom cache headers
  */
 export const X_MAX_AGE = 'x-max-age';
 /**
- * 默认api的最大缓存时间,单位s
+ * default value of the `max-age` property of the API cache, units are seconds
  */
 export const DEFAULT_X_MAX_AGE = parseInt(process.env.DEFAULT_X_MAX_AGE, 10) || 24 * 60 * 60 ;
 
 /**
- * api缓存前缀
+ * API Cache prefix
  */
 export const API_CACHE_KEY = 'vikadata:cache:fusion:';
 /**
- * api最大支持的修改的记录条数
+ * the maximum number of records could be changed in the API
  */
 export const API_MAX_MODIFY_RECORD_COUNTS = process.env.API_MAX_MODIFY_RECORD_COUNTS ? parseInt(process.env.API_MAX_MODIFY_RECORD_COUNTS, 10) : 10;
 /**
- * pageSize的最大值
+ * maximum page size
  */
 export const API_MAX_PAGE_SIZE = 1000;
 /**
- * 默认pageSize的大小
+ * default page size
  */
 export const API_DEFAULT_PAGE_SIZE = 100;
 /**
- * 限流的redis的key的前缀
+ * current-limiting redis key prefix
  */
 export const NODE_LIMITER_PREFIX = 'vikadata:nest:limiter';
 
 export class NodeExtraConstant {
   /**
-   * node extra中的showRecordHistory字段
+   * show record history filed name in the extra of a node
    */
   public static readonly SHOW_RECORD_HISTORY = 'showRecordHistory';
 }
@@ -115,10 +114,10 @@ export const GRPC_MAX_PACKAGE_SIZE = 1024 * 1024 * 100;
 export const VIKA_NEST_CHANNEL = 'vikadata:nest:' + process.env.WEB_SOCKET_CHANNEL_ENV;
 
 /*
- * 应用名称，暂时用于拆分服务
- * 目前服务名称对应关系：
- * ROOM_SERVER：拥有全部功能，fusionAPI + 协同能力
- * FUSION_SERVER：只开放fusionAPI
+ * application name, could be one of the following values: ROOM_SERVER, NEST_REST_SERVER, FUSION_SERVER.
+ * ROOM_SERVER: full functionality
+ * FUSION_SERVER: fusion API only
+ * NEST_REST_SERVER: rest API only
  */
 export const APPLICATION_NAME = process.env.APPLICATION_NAME || 'ROOM_SERVER';
 

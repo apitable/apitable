@@ -1,17 +1,16 @@
 syntax='proto3';
 
 package grpc;
-// 内部调用rpc 节点复制message
+// internal gRPC message of duplicating node
 message NodeCopyRo {
-  // 原始数表ID
+  // original node ID
   string node_id = 1;
-  // 复制的数表ID
+  // duplicated node ID
   string copy_node_id = 2;
-  // 用户ID
   string user_id = 3;
-  // 用户uuid
+  // user uuid
   string uuid = 4;
-  // 需要转换的fieldId数组
+  // original fieldIds
   repeated string field_ids = 5;
 }
 

@@ -14,7 +14,7 @@ export class ApiNodeGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const nodeInfo = request[NODE_INFO];
     if (!nodeInfo?.spaceId) {
-      // todo 什么情况下节点会没有空间站？
+      // TODO: why the node is not in any space?
       throw ApiException.tipError('api_datasheet_not_exist');
     }
     return true;

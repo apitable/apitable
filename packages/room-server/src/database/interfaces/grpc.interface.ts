@@ -2,19 +2,19 @@ import { ICollaborator, IResourceRevision } from '@apitable/core';
 
 export interface INodeCopyRo {
   /**
-   * 原始数表ID
+   * original node ID
    */
   nodeId: string;
   /**
-   * 复制的数表ID
+   * copied node ID
    */
   copyNodeId: string;
   /**
-   * 需要转换的关联列ID
+   * reference field IDs that need to be transformed
    */
   fieldIds: string[];
   /**
-   * 用户ID
+   * user ID
    */
   userId: string;
   /**
@@ -25,16 +25,16 @@ export interface INodeCopyRo {
 
 export interface INodeDeleteRo {
   /**
-   * 删除的节点ID
+   * deleted Node ID
    */
   deleteNodeId: string[];
   /**
-   * 删除节点关联节点ID
+   * the deleted node's reference node's ID
    */
   linkNodeId: string[];
 
   /**
-   * 用户ID
+   * user ID
    */
   userId: string;
   /**

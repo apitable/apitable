@@ -19,7 +19,7 @@ export class MinioStore extends BaseOssStore implements CacheStore {
       const { endPoint, useSSL, port, accessKey, secretKey } = this.options;
       this.minioClient = new Client({ endPoint, useSSL, port, accessKey, secretKey });
     }
-    // todo 自动创建桶
+    // TODO: create a bucket automatically
     // this.setLifecycle();
   }
 
@@ -65,7 +65,7 @@ export class MinioStore extends BaseOssStore implements CacheStore {
   }
 
   private setLifecycle() {
-    // 设置bucket中对象的生命周期
+    // set the lifecycle state of the object in the bucket
     const lifecycleConfig = {
       Rule: [
         {

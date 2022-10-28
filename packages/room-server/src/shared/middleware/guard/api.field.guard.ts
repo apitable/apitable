@@ -16,7 +16,7 @@ export class ApiFieldGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    // 将datasheet的验证提前 验证存在性
+    // check if the datasheet exists
     if (!request.params || !request.params.datasheetId) {
       throw ApiException.tipError('api_datasheet_not_exist');
     }
@@ -24,19 +24,18 @@ export class ApiFieldGuard implements CanActivate {
     if(!spaceId) {
       throw ApiException.tipError('api_params_instance_space_id_error');
     }
-    // 数表相关接口
+    // works for datasheet related APIs
     const datasheet = request[DATASHEET_HTTP_DECORATE];
-    // datasheetId不存在
     if (!datasheet) {
       throw ApiException.tipError('api_datasheet_not_exist');
     }
     const user = request[USER_HTTP_DECORATE];
     const spaceIds = await this.memberRepository.selectSpaceIdsByUserId(user.id);
-    // 不在空间无权操作
+    // no permission of the space
     if (!spaceIds.includes(spaceId)) {
       throw ApiException.tipError('api_forbidden_because_of_not_in_space');
     }
-    // 无权限操作 不在空间里面, 提示数表不在可见范围
+    // datasheet is not in the space
     if (datasheet.spaceId !== spaceId) {
       throw ApiException.tipError('api_datasheet_not_visible');
     }

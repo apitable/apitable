@@ -1,5 +1,5 @@
 /**
- * 自定义服务异常工具类
+ * Exception util
  */
 import { IBaseException } from './base.exception';
 import { ServerException } from 'shared/exception/server.exception';

@@ -19,7 +19,7 @@ export class ApiSpaceGuard implements CanActivate {
     const user = request[USER_HTTP_DECORATE];
     const spaceId = request[SPACE_ID_HTTP_DECORATE];
     const spaceIds = await this.memberRepository.selectSpaceIdsByUserId(user.id);
-    // 不在空间无权操作
+    // no permission of the space
     if (!spaceIds.includes(spaceId)) {
       throw ApiException.tipError('api_forbidden_because_of_not_in_space');
     }

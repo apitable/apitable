@@ -7,32 +7,30 @@ import { keyBy } from 'lodash';
 import { SortRo } from '../../../database/ros/sort.ro';
 
 /**
- * <p>
- * 转换page json参数为对象
- * </p>
+ * transform json into object
  * @author Zoe zheng
- * @date 2020/7/27 2:20 下午
+ * @date 2020/7/27 2:20 PM
  */
 @Injectable()
 export class QueryPipe implements PipeTransform {
   constructor(@Inject(REQUEST) private readonly request: any) {}
 
   transform(value: any): any {
-    // 转换/验证 排序参数
+    // transform, validate and sort the parameters
     const meta: IMeta = this.request[DATASHEET_META_HTTP_DECORATE];
     let fieldMap = meta.fieldMap;
     if (value.fieldKey === FieldKeyEnum.NAME) {
       fieldMap = keyBy(Object.values(meta.fieldMap), 'name');
     }
     if (value && value.sort) {
-      // 转换传入sort,全部转换为ID,验证field是否存在
+      // validate and transform it into field id
       value.sort = this.validateSort(value.sort, fieldMap);
     }
-    // 验证viewId
+    // validate view id
     if (value && value.viewId) {
       this.validateViewId(value.viewId, meta);
     }
-    // 验证fields
+    // validate fields
     if (value && value.fields) {
       this.validateFields(value.fields, fieldMap);
     }

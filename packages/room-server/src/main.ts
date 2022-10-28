@@ -27,14 +27,14 @@ import { TracingHandlerInterceptor } from './shared/interceptor/sentry.handlers.
 import { SentryTraces } from 'shared/helpers/sentry/sentry.traces.sampler';
 
 /**
- * 启动入口
+ * entrance method
  */
 async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter({ logger: isDevMode, bodyLimit: GRPC_MAX_PACKAGE_SIZE });
   fastifyAdapter.register(fastifyMultipart);
-  // 将helmet直接在fastify中注册，避免和swagger冲突
+  // registe helmet in fastify to avoid conflict with swagger
   fastifyAdapter.register(helmet, {
-    // 修改了 script-src 兼容swagger
+    // update script-src to be compatible with swagger
     contentSecurityPolicy: {
       directives: {
         'default-src': ["'self'"],
@@ -80,7 +80,7 @@ async function bootstrap() {
 
   Sentry.init({
     debug: isDevMode,
-    // 开发模式下不上报异常
+    // would not report errors in dev mode
     enabled: Boolean(!isDevMode && sentryDsn),
     dsn: sentryDsn,
     environment: process.env.ENV,
@@ -106,34 +106,34 @@ async function bootstrap() {
     ]
   });
 
-  // 如果需要启用「express」性能跟踪，放开注释
+  // express performance traces
   // nestApp.use(Sentry.Handlers.requestHandler());
 
-  // 全局异常处理
+  // global exception filter
   nestApp.useGlobalFilters(new GlobalExceptionFilter(logger, nestApp.get<I18nService>(I18nService)));
 
-  // 为每个传入请求创建性能跟踪
+  // tracing all the requests by sentry
   nestApp.useGlobalInterceptors(new TracingHandlerInterceptor());
 
-  // 全局注册拦截器(成功返回格式)
+  // global intercept with standard format
   nestApp.useGlobalInterceptors(new HttpResponseInterceptor());
 
-  // 全局验证器,自定义参数异常的返回
+  // global pipes for custom validation
   nestApp.useGlobalPipes(
     new ValidationPipe({
-      // 提示参数字段
+      // tip parameters
       enableErrorDetail: !isProdMode,
     }),
   );
 
-  // 监听应用停止关闭事件
+  // enable shutdown hooks
   nestApp.enableShutdownHooks();
 
-  // 打印运行环境
-  logger.log(`应用[${APPLICATION_NAME}]-运行环境[${environment}]`, 'Bootstrap');
+  // print running environment
+  logger.log(`Application[${APPLICATION_NAME}]-Env[${environment}]`, 'Bootstrap');
   // grpc
   const grpcUrl = configService.get<string>('grpc.url');
-  logger.log(`grpc服务url为[${grpcUrl}]`);
+  logger.log(`The grpc url is [${grpcUrl}]`);
   nestApp.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
@@ -152,10 +152,10 @@ async function bootstrap() {
   });
   await nestApp.startAllMicroservicesAsync();
   nestApp.enableShutdownHooks();
-  // 监听端口
+  // listening port
   await nestApp.listen(+PORT, '0.0.0.0');
-  // 打印服务信息
-  logger.log(`服务已经启动,请访问: [ ${await nestApp.getUrl()} ]`, 'Bootstrap');
+  // print server info
+  logger.log(`The service is running, please visit it: [ ${await nestApp.getUrl()} ]`, 'Bootstrap');
 }
 
 bootstrap();

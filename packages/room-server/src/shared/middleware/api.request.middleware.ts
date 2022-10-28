@@ -2,11 +2,9 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { ApiException } from '../exception/api.exception';
 
 /**
- * <p>
- * 请求上下文中间件
- * </p>
+ * request context middleware
  * @author Zoe zheng
- * @date 2020/7/24 2:16 下午
+ * @date 2020/7/24 2:16 PM
  */
 @Injectable()
 export class ApiRequestMiddleware implements NestMiddleware {

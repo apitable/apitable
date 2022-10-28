@@ -43,10 +43,10 @@ export class ResourceController {
   async getFormForeignDatasheetPack(
     @Headers('cookie') cookie: string, @Param('resourceId') resourceId: string, @Param('foreignDatasheetId') foreignDatasheetId: string
   ): Promise<DatasheetPack> {
-    // 检查当前用户是否在当前空间
+    // check if the user belongs to this space
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, resourceId);
-    // 校验节点权限
+    // check the user has the privileges of the node
     await this.nodeService.checkNodePermission(resourceId, { cookie });
     return await this.resourceService.fetchForeignDatasheetPack(resourceId, foreignDatasheetId, { cookie });
   }
@@ -58,20 +58,20 @@ export class ResourceController {
     @Headers('cookie') cookie: string, @Param('resourceId') resourceId: string,
     @Param('foreignDatasheetId') foreignDatasheetId: string, @Param('shareId') shareId: string
   ): Promise<DatasheetPack> {
-    // 检查节点是否为分享可编辑
+    // check if the share link of the node is editable
     await this.nodeShareSettingService.checkNodeShareCanBeEdited(shareId, resourceId);
     return await this.resourceService.fetchForeignDatasheetPack(resourceId, foreignDatasheetId, { cookie }, shareId);
   }
 
   /**
-   * 获取维格表指定记录的修改历史和评论
+   * get comments and history of the record
    */
   @Get('resources/:resourceId/records/:recId/activity')
   public async getActivity(@Headers('cookie') cookie: string, @Param('resourceId') resourceId: string,
                            @Param('recId') recId: string, @Query() query: RecordHistoryQueryRo): Promise<RecordHistoryVo> {
-    // 获取节点的权限
+    // get permissions
     const permission = await this.nodePermissionService.getNodePermission(resourceId, { cookie }, { main: true, internal: true });
-    // 列权限过滤
+    // filter fields by permissions
     const filterFiledIds: string[] = [];
     const fieldPermissionMap = permission.fieldPermissionMap;
     if (fieldPermissionMap) {
@@ -81,7 +81,7 @@ export class ResourceController {
         }
       }
     }
-    // 需要保留的列，排除自增数字字段/没有可读权限的列
+    // eliminate auto-increment and no permissions fields
     const dstId = resourceId.startsWith(ResourceIdPrefix.Datasheet) ? resourceId :
       await this.nodeService.getMainNodeId(resourceId);
     const fieldIds = await this.datasheetMetaService.getFieldIdByDstId(dstId, filterFiledIds, readonlyFields);

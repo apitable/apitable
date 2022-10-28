@@ -11,11 +11,9 @@ import { RateLimiterRedis } from 'rate-limiter-flexible';
 import sha1 from 'sha1';
 
 /**
- * <p>
- * 中间件限流
- * </p>
+ * Rate limiter middleware
  * @author Zoe zheng
- * @date 2020/8/15 3:43 下午
+ * @date 2020/8/15 3:43 PM
  */
 @Injectable()
 export class NodeRateLimiterMiddleware implements NestMiddleware {
@@ -26,15 +24,16 @@ export class NodeRateLimiterMiddleware implements NestMiddleware {
   }
 
   use(req: any, res: any, next: () => void): any {
-    // 这里用redis存储，在分布式环境中同样有用
+    // use redis for distributed system
     const redisClient = this.redisService.getClient();
-    // 在space的限流阀里面统一做了验证，不需要在业务层再做验证,只有成功的请求才进行消费，计数, dstId,spaceId,单用户
+    // use spaceId as the unique key for verification, no need to verify in other places.
+    // only count the successful requests
     const limitKey = FusionHelper.parseDstIdFromUrl(req.originalUrl) || FusionHelper.parseSpaceIdFromUrl(req.originalUrl) || 'user';
     const token = req.headers.authorization.substr(AUTHORIZATION_PREFIX.length);
-    // 单用户 + 单节点
+    // single user plus single node
     const consume = limitKey + ':' + sha1(token);
     const limiter = this.envConfigService.getRoomConfig(EnvConfigKey.API_LIMIT) as IRateLimiter;
-    // 每 「duration」 s 限制 「points」 请求
+    // rate limit per [duration] seconds
     const rateLimiter = new RateLimiterRedis({
       storeClient: redisClient,
       points: limiter.whiteList && limiter.whiteList.has(token) ? limiter.whiteList.get(token).points : limiter.points,

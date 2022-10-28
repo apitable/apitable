@@ -16,16 +16,16 @@ export class ApiUsageGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    // 空间站相关接口
+    // works for space related APIs
     let spaceId = request.params?.spaceId;
     if (!spaceId) {
-      // 数表相关接口
+      // works for datasheet related APIs
       const datasheet = request[DATASHEET_HTTP_DECORATE];
       if (datasheet) {
         spaceId = datasheet.spaceId;
       }
     }
-    // todo spaceList这个接口没办法验证，因为不确定空间站
+    // TODO: /spaceList should be validated
     if (!spaceId) {
       return true;
     }
@@ -33,15 +33,15 @@ export class ApiUsageGuard implements CanActivate {
     try {
       res = await this.restService.getApiUsage({ token: request.headers.authorization }, spaceId);
     } catch (e) {
-      // 这里已经调用下游服务无法调通，为了不造成资源浪费，直接抛出异常失败
-      this.logger.error('获取API用量失败', e?.stack, e?.message);
+      // throw error if it could not get the api usage information
+      this.logger.error('Failed to get API usage', e?.stack, e?.message);
       throw ApiException.tipError('api_server_error', { value: 1 });
     }
     if (!res) {
-      this.logger.error('获取API用量失败，禁止访问');
+      this.logger.error('Forbidden, failed to get API usage');
       throw ApiException.tipError('api_forbidden');
     }
-    // api 用量是允许超限的，只有在这种情况下才会进行校验
+    // only works for those who are allowed to exceed the limit of usage
     if (res.data && !res.data.isAllowOverLimit && res.data.maxApiUsageCount - res.data.apiUsageUsedCount < 0) {
       throw ApiException.tipError('api_forbidden_because_of_usage');
     }

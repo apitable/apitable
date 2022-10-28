@@ -1,42 +1,42 @@
 export enum ApiExceptionEnum {
   /**
-   * 未登录, httpStatus 401 code 401 不收费
+   * unauthorized, httpStatus code is 401
    */
   UNAUTHORIZED_ERROR,
   /**
-   * 各种验证异常 param, field 返回httpStatus 200 code 400
+   * parameters exception, httpStatus is 200, code is 400
    */
   VALIDATION,
   /**
-   * 数表异常(数表被删除，或者数表对应的spaceId不是当前token的spaceID) 返回httpStatus 200 code 301
+   * datasheet not exist, httpStatus is 200, code is 301
    */
   DST_NOT_EXISTS,
   /**
-   * 超出pai限制 httpStatus 403 code 403
+   * exceed API request limit, httpStatus is 403, code is 403
    */
   API_LIMIT_EXCEEDED,
   /**
-   * 调用java服务失败 httpStatus 500 code 500
+   * Failed to connect backend server, httpStatus is 500, code is 500
    */
   CONNECT_BACKEND_SERVER_ERROR,
   /**
-   * 服务异常 httpStatus 200 code 500
+   * server error, http status is 200, code is 500
    */
   SERVER_ERROR,
   /**
-   * 写入数据失败
+   * insert data error
    */
   INSERT_ERROR,
   /**
-   * 修改数据失败
+   * edit data error
    */
   EDIT_ERROR,
   /**
-   * 删除数据失败
+   * delete data error
    */
   DELETE_ERROR,
   /**
-   * 无节点权限操作
+   * no permission of the node
    */
   NODE_OPERATION_DENIED,
 }

@@ -25,7 +25,7 @@ export interface IServerConfig {
   maxViewCount: number;
   maxFieldCount: number;
   maxRecordCount: number;
-  // 记录超限提醒范围 90%
+  // record remind range, default is 90%
   recordRemindRange: number;
 }
 
@@ -42,18 +42,18 @@ export interface IActuatorConfig {
 
 export interface IRateLimiter extends IBaseRateLimiter {
   /**
-   * 白名单 token->限流配置
+   * whiteList, token->rate limit configuration
    */
   whiteList: Map<string, IBaseRateLimiter>
 }
 
 export interface IBaseRateLimiter {
   /**
-   * 次数
+   * count
    */
   points: number;
   /**
-   * 计时时间
+   * duration
    */
   duration: number;
 }
@@ -94,11 +94,11 @@ export interface IRoomConfig {
 
 export interface IBaseBucketConfig {
   /**
-   * 名称
+   * name
    */
   name: string;
   /**
-   * 区域
+   * region
    */
   region: string;
 }

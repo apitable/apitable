@@ -6,12 +6,12 @@ import 'socket.message.proto';
 
 
 service SocketService {
-  // 加入房间
+  // enter into toom
   rpc WatchRoom (WatchRoomRo) returns (WatchRoomVo);
-  // 退出房间
+  // exit room
   rpc LeaveRoom(LeaveRoomRo) returns (BasicResult);
-  // 用户修改
+  // user change room request object
   rpc RoomChange(UserRoomChangeRo) returns (UserRoomChangeVo);
-  // 获取当前房间所有活跃的用户
+  // get all the active collaborators(users)
   rpc GetActiveCollaborators (WatchRoomRo) returns (GetActiveCollaboratorsVo);
 }

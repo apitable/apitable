@@ -1,9 +1,7 @@
 /**
- * <p>
- * 用户基本信息
- * </p>
+ * user base information
  * @author Zoe zheng
- * @date 2020/8/13 5:09 下午
+ * @date 2020/8/13 5:09 PM
  */
 export interface INamedUser {
   id: number;
@@ -14,11 +12,9 @@ export interface INamedUser {
 }
 
 /**
- * <p>
- * 用户基本信息map
- * </p>
+ * user base information
  * @author Zoe zheng
- * @date 2020/8/13 5:09 下午
+ * @date 2020/8/13 5:09 PM
  */
 export interface IUserBaseInfoMap {
   [userId: number]: INamedUser;

@@ -7,7 +7,7 @@ import { Observable, throwError } from 'rxjs';
  * rpc exception filter
  * </p>
  * @author Zoe zheng
- * @date 2021/3/31 4:10 下午
+ * @date 2021/3/31 4:10 PM
  */
 @Catch(RpcException)
 export class GrpcExceptionFilter implements RpcExceptionFilter<RpcException> {

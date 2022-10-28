@@ -15,7 +15,7 @@ import { ResourceDataInterceptor } from './resource.data.interceptor';
  * 中间件模块，包括pipe/middleware/guard
  * </p>
  * @author Zoe zheng
- * @date 2020/7/24 4:39 下午
+ * @date 2020/7/24 4:39 PM
  */
 @Module({
   imports: [DeveloperServiceModule, DatasheetServiceModule, NodeServiceModule],

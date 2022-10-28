@@ -1,8 +1,7 @@
 import { EventEmitter } from 'events';
 
 /**
- * 配置存储器
- * 在内存里
+ * config store in memory
  */
 export class ConfigStoreInMemory extends EventEmitter {
   private static _config: Map<string, any> = new Map();

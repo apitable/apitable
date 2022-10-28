@@ -3,11 +3,11 @@ syntax='proto3';
 package grpc;
 
 import 'message.proto';
-// 内部服务调用生成changeset->apply
+// internal server generate, changeset->apply
 service NodeService {
-  // 空间站内复制副作用ot
+  // ot of duplicating node from a space
   rpc CopyNodeEffectOt (NodeCopyRo) returns (BasicResult);
-  // 空间站内删除接口副作用ot
+  // effect ot of deleting a node from a space
   rpc DeleteNodeEffectOt (NodeDeleteRo) returns (BasicResult);
 }
 

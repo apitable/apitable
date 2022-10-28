@@ -39,7 +39,7 @@ describe('CreateFieldPipe', () => {
     it('name is oversize, should return 400 code', () => {
       const error = ApiException.tipError(ApiTipIdEnum.apiParamsMaxLengthError, { property: 'name', value: 100 });
       expect(() => {
-        const name = '表格fasdfdsfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffabc';
+        const name = 'fasdfdsfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffabc';
         const ro: FieldCreateRo = new FieldCreateRo(name, '');
         pipe.transform(ro);
       }).toThrow(error);

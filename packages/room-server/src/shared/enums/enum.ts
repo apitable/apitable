@@ -13,15 +13,15 @@ export default class Enum {
   }
 
   /**
-   * 根据value获取对象值
-   * @param {string|number} value 状态值
+   * get object from value
+   * @param {string|number} value status
    */
   get(value) {
     return this.props[value];
   }
 
   /**
-   * 获取枚举数组
+   * get array from enum
    */
   getArray() {
     const arr = [];

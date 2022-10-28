@@ -22,28 +22,22 @@ export interface IApiDatasheetView {
 }
 
 /**
- * <p>
- * 字段属性定义
- * </p>
+ * Field Properties
  * @author Zoe zheng
- * @date 2020/7/31 2:53 下午
+ * @date 2020/7/31 2:53 PM
  */
 export type IFieldValueBase = number | string | boolean | { [key: string]: any };
 /**
- * <p>
- * 字段属性定义的数组
- * </p>
+ * Array of field properties
  * @author Zoe zheng
- * @date 2020/7/31 3:00 下午
+ * @date 2020/7/31 3:00 PM
  */
 export type IFieldValue = IFieldValueBase | IFieldValueBase[] | null;
 
 /**
- * <p>
- * 字段值的集合
- * </p>
+ * Map of filed values
  * @author Zoe zheng
- * @date 2020/7/31 2:54 下午
+ * @date 2020/7/31 2:54 PM
  */
 export interface IFieldValueMap {
   [field: string]: IFieldValue;
@@ -51,19 +45,19 @@ export interface IFieldValueMap {
 
 export interface IFieldVoTransformOptions {
   /**
-   * 数表字段属性
+   * datasheet field name properties
    */
   fieldMap?: IFieldMap;
   /**
-   * 单条记录，主要用于公式字段
+   * single record, works for formula fields
    */
   record?: IRecord;
   /**
-   * 关联表的records
+   * related datasheet's records
    */
   foreignSheetMap?: IDatasheetDataMap;
   /**
-   * 格式化方式
+   * formatting type enum
    */
   cellFormat: CellFormatEnum;
 
@@ -75,22 +69,18 @@ export interface ICellValueMap {
 }
 
 /**
- * <p>
- * datasheet中的data map
- * </p>
+ * Datasheet data map
  * @author Zoe zheng
- * @date 2020/8/21 1:48 下午
+ * @date 2020/8/21 1:48 PM
  */
 export interface IDatasheetDataMap {
   [dstId: string]: IRecordMap;
 }
 
 /**
- * <p>
- * record fusionAPI转换需要的条件
- * </p>
+ * Record transform options for Fusion API
  * @author Zoe zheng
- * @date 2020/9/8 5:36 下午
+ * @date 2020/9/8 5:36 PM
  */
 export interface IRecordsTransformOptions {
   rows: IViewRow[];
@@ -111,52 +101,52 @@ export interface INodeShareProps {
 }
 
 /**
- * 关联表记录ID
+ * related datasheet recordIds
  */
 export interface ILinkedRecordMap {
   [dstId: string]: string[];
 }
 
 /**
- * fetchData的参数选项
+ * options of fetching data
  */
 export interface IFetchDataOptions {
   /**
-   * 记录ID数组
+   * array of recordIds
    */
   recordIds?: string[];
   /**
-   * 关联表记录map
+   * related datasheet record map
    */
   linkedRecordMap?: ILinkedRecordMap;
 }
 
 /**
- * fetchDataOrigin的参数选项
+ * origin options of fetching data
  */
 export interface IFetchDataOriginOptions {
   /**
-   * 内部标志
+   * internal flag
    */
   internal: boolean;
   /**
-   * 主表标志
+   * main datasheet flag
    */
   main?: boolean;
   /**
-   * 分享ID
+   * shared ID
    */
   shareId?: string;
   /**
-   * 非数表标记
+   * not a datasheet
    */
   notDst?: boolean;
   /**
-   * 神奇表单标记
+   * form flag
    */
   form?: boolean;
   /**
-   * 记录ID数组
+   * record IDs
    */
   recordIds?: string[];
 }

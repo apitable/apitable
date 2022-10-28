@@ -1,13 +1,13 @@
 import * as os from 'os';
 
 /**
- * 获取本地允许的IP地址
+ * get the IP address
  */
 export const getIPAddress = (): string => {
   if(process.env.NEST_CUSTOMIZE_IP){
     return process.env.NEST_CUSTOMIZE_IP;
   }
-  // 服务器本机地址
+  // server local address
   const interfaces = os.networkInterfaces();
   let address: string;
   for (const devName of Object.keys(interfaces)) {

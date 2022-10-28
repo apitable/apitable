@@ -1,153 +1,153 @@
 /**
  * <p>
- * 节点权限合集, 对应 NodePermission 的字段
+ * Node Permission Enum
  * </p>
  * @author Zoe zheng
- * @date 2020/8/14 5:37 下午
+ * @date 2020/8/14 5:37 PM
  */
 export enum NodePermissionEnum {
   /**
-   * 可管理的
+   * manageable
    */
   MANAGEABLE = 'manageable',
   /**
-   * 可编辑的
+   * editable
    */
   EDITABLE = 'editable',
   /**
-   * 可查看的
+   * readable
    */
   READABLE = 'readable',
   /**
-   * 可以创建子节点
+   * could create children nodes
    */
   CHILD_CREATABLE = 'childCreatable',
   /**
-   * 可重命名的
+   * renamable
    */
   RENAMABLE = 'renamable',
   /**
-   * 可编辑图标的
+   * icon editable
    */
   ICON_EDITABLE = 'iconEditable',
   /**
-   * 可节点描述编辑
+   * description editable
    */
   DESCRIPTION_EDITABLE = 'descriptionEditable',
   /**
-   * 可移动节点
+   * movable
    */
   MOVABLE = 'movable',
   /**
-   * 可复制节点
+   * reproducible
    */
   COPYABLE = 'copyable',
   /**
-   * 可导入的
+   * could be imported
    */
   IMPORTABLE = 'importable',
   /**
-   * 可导出的
+   * could be exported
    */
   EXPORTABLE = 'exportable',
   /**
-   * 可删除节点
+   * removable
    */
   REMOVABLE = 'removable',
   /**
-   * 可允许分享节点
+   * shareable
    */
   SHARABLE = 'sharable',
   /**
-   * 可设置节点允许他人保存
+   * allowed to set node and save it as their own
    */
   ALLOW_SAVE_CONFIGURABLE = 'allowSaveConfigurable',
   /**
-   * 可设置节点允许他人编辑
+   * allowed to set node and edit it
    */
   ALLOW_EDIT_CONFIGURABLE = 'allowEditConfigurable',
   /**
-   * 可创建为模板
+   * allowed to save it as a template
    */
   TEMPLATE_CREATABLE = 'templateCreatable',
   /**
-   * 新增视图
+   * allowed to create a view
    */
   VIEW_CREATABLE = 'viewCreatable',
   /**
-   * 重命名视图
+   * allowed to rename a view
    */
   VIEW_RENAMABLE = 'viewRenamable',
   /**
-   * 删除视图
+   * allowed to delete a view
    */
   VIEW_REMOVABLE = 'viewRemovable',
   /**
-   * 移动视图
+   * allowed to move a view
    */
   VIEW_MOVABLE = 'viewMovable',
   /**
-   * 导出视图
+   * allowed to export a view
    */
   VIEW_EXPORTABLE = 'viewExportable',
   /**
-   * 筛选列
+   * allowed to filter a view
    */
   VIEW_FILTERABLE = 'viewFilterable',
   /**
-   * 排序record/rows
+   * allowed to sort the columns
    */
   COLUMN_SORTABLE = 'columnSortable',
   /**
-   * 隐藏列
+   * allowed to hide the columns
    */
   COLUMN_HIDEABLE = 'columnHideable',
   /**
-   * 编辑列顺序
+   * allowed to sort the fields
    */
   FIELD_SORTABLE = 'fieldSortable',
   /**
-   * 分组
+   * allowed to group the fields
    */
   FIELD_GROUPABLE = 'fieldGroupable',
   /**
-   * 编辑行高
+   * allowed to edit the height of a row
    */
   ROW_HIGH_EDITABLE = 'rowHighEditable',
   /**
-   * 编辑列宽
+   * allowed to edit the width of a column
    */
   COLUMN_WIDTH_EDITABLE = 'columnWidthEditable',
   /**
-   * 编辑列统计
+   * allowed to edit the type of column statistics
    */
   COLUMN_COUNT_EDITABLE = 'columnCountEditable',
   /**
-   * 新增字段
+   * allowed to create a field
    */
   FIELD_CREATABLE = 'fieldCreatable',
   /**
-   * 重命名字段
+   * allowed to rename a field
    */
   FIELD_RENAMABLE = 'fieldRenamable',
   /**
-   * 编辑字段属性
+   * allowed to rename a field
    */
   FIELD_PROPERTY_EDITABLE = 'fieldPropertyEditable',
   /**
-   * 删除字段
+   * allowed to delete a field
    */
   FIELD_REMOVABLE = 'fieldRemovable',
   /**
-   * 新增行
+   * allowed to insert a row
    */
   ROW_CREATABLE = 'rowCreatable',
   /**
-   * 删除行
+   * allowed to remove a row
    */
   ROW_REMOVABLE = 'rowRemovable',
   /**
-   * 编辑单元格
+   * allowed to edit a cell
    */
   CELL_EDITABLE = 'cellEditable',
 }

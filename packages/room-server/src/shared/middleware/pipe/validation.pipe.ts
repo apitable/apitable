@@ -6,11 +6,9 @@ import { IValidationPipeOptions } from '../../interfaces';
 import * as qs from 'qs';
 
 /**
- * <p>
- * 全局参数验证器
- * </p>
+ * Global parameter validation pipe
  * @author Zoe zheng
- * @date 2020/8/7 6:11 下午
+ * @date 2020/8/7 6:11 PM
  */
 @Injectable()
 export class ValidationPipe implements PipeTransform {
@@ -20,13 +18,13 @@ export class ValidationPipe implements PipeTransform {
   }
 
   /**
-   * 参数校验
-   * @param value 参数
-   * @param type 参数类型
-   * @param metatype 参数值类型
+   * validate parameters
+   * @param value parameter value
+   * @param type parameter type
+   * @param metatype parameter metatype
    * @return
    * @author Zoe Zheng
-   * @date 2020/8/4 4:05 下午
+   * @date 2020/8/4 4:05 PM
    */
   async transform(value: any, { type, metatype }: ArgumentMetadata): Promise<any> {
     if (!metatype || !ValidationPipe.toValidate(metatype)) {
@@ -41,7 +39,7 @@ export class ValidationPipe implements PipeTransform {
     } catch (e) {
       throw ApiException.tipError('api_param_default_error');
     }
-    // 只返回第一个错误
+    // return the first error
     const errors = await validate(object);
     if (errors.length) {
       const validationError = this.getSingleError(errors);
@@ -65,11 +63,11 @@ export class ValidationPipe implements PipeTransform {
 
   /**
    *
-   * 获取需要验证的参数
-   * @param metaType 参数类型
+   * get parameters that need to be validated
+   * @param metaType parameters metaType
    * @return
    * @author Zoe Zheng
-   * @date 2020/8/4 4:05 下午
+   * @date 2020/8/4 4:05 PM
    */
   private static toValidate(metaType: any): boolean {
     const types: any[] = [String, Boolean, Number, Array, Object];

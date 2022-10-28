@@ -17,10 +17,10 @@ import { TracingHandlerInterceptor } from 'shared/interceptor/sentry.handlers.in
 
 /**
  * <p>
- * grpc 内部服务 必须定义在controller中
+ * grpc works for internal service
  * </p>
  * @author Zoe zheng
- * @date 2021/3/24 4:34 下午
+ * @date 2021/3/24 4:34 PM
  */
 @UseFilters(new GrpcExceptionFilter())
 @UseInterceptors(new TracingHandlerInterceptor())
@@ -39,7 +39,7 @@ export class GrpcController {
       const result = await this.otService.copyNodeEffectOt(data);
       return ApiResponse.success(result);
     } catch (error) {
-      this.logger.error('复制节点异常', { stack: error?.stack, message: error?.message });
+      this.logger.error('Failed to copy node', { stack: error?.stack, message: error?.message });
       throw new RpcException(error);
     }
   }
@@ -50,7 +50,7 @@ export class GrpcController {
       const result = await this.otService.deleteNodeEffectOt(data);
       return ApiResponse.success(result);
     } catch (error) {
-      this.logger.error('删除节点异常', { stack: error?.stack, message: error?.message });
+      this.logger.error('Failed to delete node', { stack: error?.stack, message: error?.message });
       throw new RpcException(error);
     }
   }

@@ -15,11 +15,11 @@ import { Logger } from 'winston';
 
 /**
  * <p>
- * fusionAPI拦截器 顺序 middleware -> hooks -> interceptor
- * api 用量统计
+ * Fusion API Usage intercept, middleware -> hooks -> interceptor
+ * api usage statistics
  * </p>
  * @author Zoe zheng
- * @date 2020/9/14 6:59 下午
+ * @date 2020/9/14 6:59 PM
  */
 @Injectable()
 export class ApiUsageInterceptor implements NestInterceptor {
@@ -42,7 +42,7 @@ export class ApiUsageInterceptor implements NestInterceptor {
           this.apiUsage(request, null, err);
           return throwError(err);
         }
-        // 数据库异常,过滤掉不需要放回具体的信息
+        // database error
         if (err instanceof QueryFailedError) {
           this.logger.error('FusionApiDBException', err?.stack, err?.message);
           return throwError(ApiException.tipError('api_server_error'));
@@ -53,9 +53,9 @@ export class ApiUsageInterceptor implements NestInterceptor {
   }
 
   /**
-   * 统一删除api用到的缓存
+   * clear API cache all at once
    * @author Zoe Zheng
-   * @date 2020/9/21 3:35 下午
+   * @date 2020/9/21 3:35 PM
    */
   clearApiCache(): void {
     ExpCache.clearAll();

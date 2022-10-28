@@ -43,7 +43,7 @@ export class ActuatorController {
         });
         return heapUsedThresholdResult;
       },
-      // Cpu 健康检查容易被误杀，暂时不开启
+      // CPU health check always be killed incorrectly, disable it temporarily
       // () => this.cpu.healthCheckResult(88.8),
       () => this.redis.isRedisHealthy(this.redisService),
     ]);

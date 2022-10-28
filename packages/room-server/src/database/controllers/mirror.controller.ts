@@ -9,7 +9,7 @@ import { UserService } from 'database/services/user/user.service';
 import { DatasheetPackRo } from '../ros/datasheet.pack.ro';
 
 /**
- * mirror 接口
+ * mirror interface
  */
 @Controller('nest/v1')
 export class MirrorController {
@@ -24,10 +24,9 @@ export class MirrorController {
   @Get(['mirrors/:mirrorId/info', 'mirror/:mirrorId/info'])
   @UseInterceptors(ResourceDataInterceptor)
   async getMirrorInfo(@Headers('cookie') cookie: string, @Param('mirrorId') mirrorId: string): Promise<MirrorInfo> {
-    // 查询节点是否属于模板
     const isTemplate = await this.nodeService.isTemplate(mirrorId);
     if (!isTemplate) {
-      // 非模板。检查当前用户是否在当前空间
+      // if it is not a template, check if it belongs to this space
       const { userId } = await this.userService.getMe({ cookie });
       await this.nodeService.checkUserForNode(userId, mirrorId);
     }
@@ -39,7 +38,7 @@ export class MirrorController {
   async getShareMirrorInfo(
     @Headers('cookie') cookie: string, @Param('shareId') shareId: string, @Param('mirrorId') mirrorId: string
   ): Promise<MirrorInfo> {
-    // 校验节点是否在分享之列
+    // check if the node has been shared
     await this.nodeShareSettingService.checkNodeHasOpenShare(shareId, mirrorId);
     return await this.mirrorService.getMirrorInfo(mirrorId, { cookie }, { internal: false, main: true, shareId });
   }
@@ -48,14 +47,13 @@ export class MirrorController {
   @UseInterceptors(ResourceDataInterceptor)
   async getDataPack(@Headers('cookie') cookie: string, @Param('mirrorId') mirrorId: string,
                     @Query() query: DatasheetPackRo,): Promise<DatasheetPack> {
-    // 查询节点是否属于模板
     const isTemplate = await this.nodeService.isTemplate(mirrorId);
     if (!isTemplate) {
-      // 非模板。检查当前用户是否在当前空间
+      // if it is not a template, check if it belongs to this space
       const { userId } = await this.userService.getMe({ cookie });
       await this.nodeService.checkUserForNode(userId, mirrorId);
     }
-    // 校验节点权限
+    // check the user has the privileges of the node
     await this.nodeService.checkNodePermission(mirrorId, { cookie });
     return await this.mirrorService.fetchDataPack(mirrorId, { cookie }, { internal: !isTemplate, recordIds: query.recordIds });
   }
@@ -65,7 +63,7 @@ export class MirrorController {
   async getShareDataPack(
     @Headers('cookie') cookie: string, @Param('shareId') shareId: string, @Param('mirrorId') mirrorId: string
   ): Promise<DatasheetPack> {
-    // 校验节点是否在分享之列
+    // check if the node has been shared
     await this.nodeShareSettingService.checkNodeHasOpenShare(shareId, mirrorId);
     return await this.mirrorService.fetchDataPack(mirrorId, { cookie }, { internal: false, main: true, shareId });
   }
@@ -76,7 +74,7 @@ export class MirrorController {
     await this.nodeService.checkUserForNode(userId, mirrorId);
     await this.nodeService.checkNodePermission(mirrorId, { cookie });
     const nodeRelInfo = await this.nodeService.getNodeRelInfo(mirrorId);
-    // 是否需要 apply 镜像过滤条件将镜像外的 record ids 剔除? 影响性能
+    // TODO: filter records that are not in the mirror
     return await this.datasheetRecordSubscriptionService.getSubscribedRecordIds(userId, nodeRelInfo.datasheetId);
   }
 
@@ -95,7 +93,7 @@ export class MirrorController {
     await this.nodeService.checkUserForNode(userId, mirrorId);
     await this.nodeService.checkNodePermission(mirrorId, { cookie });
     const nodeRelInfo = await this.nodeService.getNodeRelInfo(mirrorId);
-    // 是否需要 apply 镜像过滤条件将镜像外的 record ids 剔除? 影响性能
+    // TODO: filter records that are not in the mirror
     await this.datasheetRecordSubscriptionService.unsubscribeDatasheetRecords(userId, nodeRelInfo.datasheetId, data.recordIds);
   }
 }

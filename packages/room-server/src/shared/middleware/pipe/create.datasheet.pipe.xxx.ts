@@ -33,7 +33,7 @@ describe('CreateDatasheetPipe', () => {
     it('name is oversize, should return 400 code', () => {
       const error = ApiException.tipError(ApiTipIdEnum.apiParamsMaxLengthError, { property: 'name', value: 100 });
       expect(() => {
-        const name = '表格fasdfdsfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffabc';
+        const name = 'fasdfdsfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffabc';
         const ro: DatasheetCreateRo = new DatasheetCreateRo(name, '');
         pipe.transform(ro);
       }).toThrow(error);
@@ -42,7 +42,7 @@ describe('CreateDatasheetPipe', () => {
     it('description is oversize, should return 400 code', () => {
       const error = ApiException.tipError(ApiTipIdEnum.apiParamsMaxLengthError, { property: 'description', value: 500 });
       expect(() => {
-        const content = '表格fasdfdsfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffabc';
+        const content = 'fasdfdsfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffabc';
         let desc = content;
         for(let i = 1; i < 5; i++){
           desc = `${content}${desc}`;
@@ -134,7 +134,7 @@ describe('CreateDatasheetPipe', () => {
     it('field.name is oversize, should return 400 code', () => {
       const error = ApiException.tipError(ApiTipIdEnum.apiParamsMaxLengthError, { property: 'field.name', value: 100 });
       expect(() => {
-        const fieldName = '表格fasdfdsfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffabc';
+        const fieldName = 'fasdfdsfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffabc';
         const fields: DatasheetFieldCreateRo[] = [{
           name: fieldName,
           type: 'Text'

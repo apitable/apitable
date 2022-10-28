@@ -1,24 +1,28 @@
 /**
  * Twitter_Snowflake
- * 雪花算法
+ * snowflake algorithm
  *
- * SnowFlake的结构如下(共64bits，每部分用-分开):
+ * SnowFlake structure: (64bits, each part use - separate):
  *   0 - 0000000000 0000000000 0000000000 0000000000 0 - 00000 - 00000 - 000000000000
  *   |   ----------------------|----------------------   --|--   --|--   -----|------
- * 1bit不用                41bit 时间戳                  数据标识id 机器id     序列号id
+ * 1bit-useless       41bit timestamp                  10bit-machine id    sequence id
  *
- * - 1位标识，二进制中最高位为1的都是负数，但是我们生成的id一般都使用整数，所以这个最高位固定是0
- * - 41位时间截(毫秒级)，注意，41位时间截不是存储当前时间的时间截，
- * 而是存储时间截的差值（当前时间截 - 开始时间截得到的值），
- * 这里的的开始时间截，一般是我们的id生成器开始使用的时间，由我们程序来指定的（如下下面程序IdWorker类的startTime属性）。41位的时间截，可以使用69年，年T = (1L << 41) / (1000L * 60 * 60 * 24 * 365) = 69
- * - 10位的数据机器位，可以部署在1024个节点，包括5位datacenterId和5位workerId
- * - 12位序列，毫秒内的计数，12位的计数顺序号支持每个节点每毫秒(同一机器，同一时间截)产生4096个ID序号
- * - 加起来刚好64位，为一个Long型。
- * SnowFlake的优点是
- *   - 整体上按照时间自增排序
- *   - 并且整个分布式系统内不会产生ID碰撞(由数据中心ID和机器ID作区分)
- *   - 并且效率较高，经测试，SnowFlake每秒能够产生26万ID左右。
- * 优化开源项目：https://gitee.com/yu120/sequence
+ * -1-bit identifier. 
+ * The highest bit of a 1 in binary is a negative number, but we usually use integers to generate ids, so the highest bit is always 0
+ * -41-bit time cut (in milliseconds), note that the 41-bit time cut is not the time cut to store the current time,
+ * is the difference between the storage time intercept (current time intercept - start time intercept),
+ * The start time cut-off here is usually the time our id generator starts using, 
+ * as specified by our program (the startTime attribute of the program IdWorker class below). 
+ * The 41-bit time cut can be used for 69 years. The year T = (1L << 41)/(1000L * 60 * 60 * 24 * 365) = 69
+ * -10-bit data machine bits that can be deployed on 1024 nodes, including 5-bit data center ID and 5-bit workerId
+ * -12-bit sequence, count within milliseconds, 
+ * 12-bit count sequence number supports each node to generate 4096 ID numbers every millisecond (the same machine, the same time cut)
+ * - Adds up to just 64 bits, a Long.
+ * The good thing about SnowFlake
+ * - Overall sorted by time increment
+ * - and no ID collisions occur throughout the distributed system (distinguished by data center ID and machine ID)
+ * - And it's efficient, with tests showing SnowFlake producing around 260,000 ids per second.
+ * Open Source Project：https://gitee.com/yu120/sequence
  */
 
 import * as childProcess from 'child_process';
@@ -42,8 +46,7 @@ class SnowFlake {
   dataCenterId: bigint;
 
   /**
-   * 构造函数
-   * 运行在内存
+   * constructor, running in memory
    */
   constructor() {
     // 开始时间截 (2018-02-01)，这个可以设置开始使用该系统的时间，可往后使用69年
@@ -196,22 +199,3 @@ class SnowFlake {
 }
 
 export const IdWorker = new SnowFlake();
-
-//  ========== TEST ==========
-
-//  测试，每秒可产生26万个ID
-// function main() {
-//   console.time('id');
-//   const idWorker = new SnowFlake(1n, 1n);
-
-//   const tempIds = [];
-//   for (let i = 0; i < 50000; i++) {
-//     const id = idWorker.nextId();
-//     // console.log(id);
-//     tempIds.push(id);
-//   }
-//   console.log(tempIds.length);
-//   // const end = +new Date();
-//   console.timeEnd('id');
-// }
-// main();

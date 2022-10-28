@@ -1,15 +1,15 @@
 /**
- * 基础异常规范接口
+ * base exception Interface
  */
 export interface IBaseException {
 
   /**
-   * 返回异常状态码
+   * exception code
    */
   getCode(): number;
 
   /**
-   * 返回异常状态信息
+   * exception message
    */
   getMessage(): string;
 }

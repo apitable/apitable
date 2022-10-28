@@ -2,15 +2,15 @@ import { IBaseException } from './base.exception';
 import { HttpStatus } from '@nestjs/common';
 
 /**
- * 自定义服务异常
+ * Server Exception
  */
 export class ServerException extends Error {
   /**
-   * 错误状态码
+   * Error code
    */
   private readonly code: number;
   /**
-   * http status 自定义状态码
+   * http status code
    */
   private readonly statusCode: number;
 

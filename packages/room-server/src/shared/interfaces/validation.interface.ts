@@ -6,7 +6,7 @@ export interface IApiErrorTip {
   tipId: string;
   extra?: any;
   /**
-   * 替换error中的value
+   * used to replace the error message
    */
   value?: any;
 

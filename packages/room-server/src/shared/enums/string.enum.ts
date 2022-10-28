@@ -2,10 +2,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /**
  * <p>
- * fusionApi用到的错误提示ID，对应维格表api.tips的ID字段的值
+ * Fusion API ERROR constants, refer to apit.tips field ID
  * </p>
  * @author Zoe zheng
- * @date 2020/10/16 11:37 上午
+ * @date 2020/10/16 11:37 PM
  */
 export enum ApiTipIdEnum {
   apiParamDefaultError = 'api_param_default_error',
@@ -28,9 +28,9 @@ export enum ApiTipIdEnum {
   apiNodePermissionError = 'api_node_permission_error',
   // datasheet
   apiDatasheetNotExist = 'api_datasheet_not_exist',
-  // 限流
+  // API Frequently error
   apiFrequentlyError = 'api_frequently_error',
-  // 全局
+  // Global Variables
   apiDeleteError = 'api_delete_error',
   apiInsertError = 'api_insert_error',
   apiUpdateError = 'api_update_error',
@@ -40,7 +40,7 @@ export enum ApiTipIdEnum {
   apiNotExists = 'api_not_exists',
   apiGetFieldsError = 'api_get_fields_error',
   apiGetViewsError = 'api_get_views_error',
-  // 附件
+  // Attachment
   apiUploadAttachmentError = 'api_upload_attachment_error',
   apiUploadAttachmentExceedLimit = 'api_upload_attachment_exceed_limit',
   apiSpaceCapacityOverLimit = 'api_space_capacity_over_limit',

@@ -15,14 +15,14 @@ export class CacheConfigService implements CacheOptionsFactory {
     if (s3Options != null) {
       return s3Options;
     }
-    // 兼容私有化minio
+    // compatible with privatization(minio)
     const minioOptions = this.getMinioOptions();
     if (minioOptions != null) {
       return minioOptions;
     }
-    // 以上配置都没,默认内存
+    // use cache as default
     return {
-      // 过期时间,单位s
+      // time to live, units are in seconds
       ttl: 10,
     };
   }
@@ -41,7 +41,7 @@ export class CacheConfigService implements CacheOptionsFactory {
     const bucket = bucketConfig?.name || null;
     if (region && bucket) {
       return {
-        // 这个时间在s3配置,1天
+        // s3 setting, 1 day by default
         ttl: DEFAULT_X_MAX_AGE,
         store: new S3StoreFactory(),
         region,
@@ -66,7 +66,7 @@ export class CacheConfigService implements CacheOptionsFactory {
       const bucket = bucketConfig?.name || null;
       if (bucket) {
         return {
-          // 这个时间在s3配置,1天
+          // s3 setting, 1 day by default
           ttl: DEFAULT_X_MAX_AGE,
           store: new MinioStoreFactory(),
           bucket,

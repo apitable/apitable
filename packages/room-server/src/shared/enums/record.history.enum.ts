@@ -1,14 +1,14 @@
 export enum RecordHistoryTypeEnum {
   /**
-   * 全部
+   * All
    */
   ALL = 0,
   /**
-   * 修改历史
+   * Modified history
    */
   MODIFY_HISTORY = 1,
   /**
-   * 评论
+   * Comment
    */
   COMMENT = 2,
 }

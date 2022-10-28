@@ -9,9 +9,7 @@ import { tap } from 'rxjs/operators';
 import { IResourceDataInfo as IResourceInfo } from './interface';
 
 /**
- * <p>
- * 资源数据拦截器
- * </p>
+ * Resource data interceptor
  * @author Chambers
  * @date 2021/2/1
  */
@@ -31,14 +29,14 @@ export class ResourceDataInterceptor implements NestInterceptor {
     return next.handle().pipe(
       tap(async(data: ApiResponse<any>) => {
         const resourceIds = await this.getResourceIds(info.resourceType, data);
-        // 镜像本身没有数据协同，无需创建资源
+        // no need to create a new resource for mirror
         if (info.resourceType != ResourceType.Mirror) {
           resourceIds.push(info.resourceId);
         }
         if (!resourceIds.length) {
           return;
         }
-        // 创建或更新 Room - Resource 双向关系
+        // create or update relationship between resource and room
         await this.roomResourceRelService.createOrUpdateRel(info.resourceId, resourceIds);
       }),
     );
@@ -48,24 +46,24 @@ export class ResourceDataInterceptor implements NestInterceptor {
     const resourceIds: string[] = [];
     switch (resourceType) {
       case ResourceType.Datasheet:
-        // 关联表
+        // related datasheet
         if (Object.keys(data.foreignDatasheetMap).length > 0) {
           resourceIds.push(...Object.keys(data.foreignDatasheetMap));
         }
-        // 组件面板的组件
+        // widget panels
         if (data.snapshot.meta.widgetPanels) {
           data.snapshot.meta.widgetPanels.filter(panel => panel.widgets.size !== 0)
             .map(panel => panel.widgets.map(widget => resourceIds.push(widget.id)));
         }
         break;
       case ResourceType.Form:
-        // 1. 调用表单的数据加载接口
+        // 1. get form data by calling fetch data API
         if (data.sourceInfo) {
-          // 映射数表
+          // reference datasheet
           resourceIds.push(data.sourceInfo.datasheetId);
           break;
         }
-        // 2. 调用表单源表的关联表数据加载接口
+        // 2. get related datasheets data by calling fetch data API
         resourceIds.push(data.datasheet.id);
         if (Object.keys(data.foreignDatasheetMap).length > 0) {
           resourceIds.push(...Object.keys(data.foreignDatasheetMap));
@@ -74,34 +72,33 @@ export class ResourceDataInterceptor implements NestInterceptor {
       case ResourceType.Dashboard:
         const sourceDatasheetIds: Set<string> = new Set();
         Object.values(data.widgetMap).map(async(widget: IWidget) => {
-          // 组件
           resourceIds.push(widget.id);
-          // 组件引用的数表
+          // reference count of the widget
           if (widget.snapshot.datasheetId && !sourceDatasheetIds.has(widget.snapshot.datasheetId)) {
             sourceDatasheetIds.add(widget.snapshot.datasheetId);
-            // 获取源表房间的所有数表资源ID
+            // get all resources in the original datasheet
             const dstIds = await this.roomResourceRelService.getDatasheetResourceIds(widget.snapshot.datasheetId);
             resourceIds.push(...dstIds);
           }
         });
         break;
       case ResourceType.Mirror:
-        // 1. 调用镜像的信息接口
+        // 1. call mirror information API
         if (data.sourceInfo) {
-          // 判断镜像房间是否已有资源，若有则直接结束
+          // exit if the mirror room has resource
           const hasResource = await this.roomResourceRelService.hasResource(data.mirror.id);
           if (hasResource) {
             break;
           }
-          // 获取源表房间的所有数表资源ID
+          // get all datasheet resources by room ID
           const dstIds = await this.roomResourceRelService.getDatasheetResourceIds(data.sourceInfo.datasheetId);
           resourceIds.push(...dstIds);
           break;
         }
-        // 2. 调用镜像的源表数据加载接口
-        // 源表
+        // 2. get the original datasheet by mirror
+        // original datasheet
         resourceIds.push(data.datasheet.id);
-        // 源表关联表
+        // original datasheet related datasheet
         if (Object.keys(data.foreignDatasheetMap).length > 0) {
           resourceIds.push(...Object.keys(data.foreignDatasheetMap));
         }
@@ -138,7 +135,7 @@ export class ResourceDataInterceptor implements NestInterceptor {
       }
       resourceType = ResourceType.Form;
     } else {
-      this.logger.error('ResourceDataInterceptor: 资源数据加载类型错误');
+      this.logger.error('ResourceDataInterceptor: resource data type error');
       return null;
     }
     return { resourceId, resourceType };

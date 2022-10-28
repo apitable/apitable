@@ -3,8 +3,8 @@ import { isJSON } from 'class-validator';
 import { NodeTypeEnum } from 'shared/enums/node.enum';
 
 /**
- * 从url解析数表id
- * @param url 地址
+ * get datasheetId from url
+ * @param url 
  */
 export const parseDstIdFromUrl = (url: string) => {
   let datasheetId;
@@ -17,7 +17,7 @@ export const parseDstIdFromUrl = (url: string) => {
 };
 
 /**
- * 从url 解析spaceId
+ * get spaceId from url
  * @param url
  */
 export const parseSpaceIdFromUrl = (url: string) => {

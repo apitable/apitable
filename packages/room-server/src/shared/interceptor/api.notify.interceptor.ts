@@ -10,7 +10,7 @@ import { tap } from 'rxjs/operators';
 import { Logger } from 'winston';
 
 /**
- * fusionAPI缓存拦截器 顺序 middleware -> hooks -> interceptor
+ * Fusion API Notify intercept, middleware -> hooks -> interceptor
  */
 @Injectable()
 export class ApiNotifyInterceptor implements NestInterceptor {
@@ -27,7 +27,7 @@ export class ApiNotifyInterceptor implements NestInterceptor {
       tap((data: ApiResponse<any>) => {
         if (request[DATASHEET_MEMBER_FIELD] && data.data && data.data.records) {
           this.createMemberNotification(request, data.data.records).catch(err => {
-            this.logger.error('API修改记录发送成员通知失败', { stack: err?.stack, message: err?.message });
+            this.logger.error('Failed to notice members about the record modification through API', { stack: err?.stack, message: err?.message });
           });
         }
       }),
@@ -50,7 +50,7 @@ export class ApiNotifyInterceptor implements NestInterceptor {
     for (const record of records) {
       for (const memberField of memberFields) {
         if (record.fields && record.fields[memberField]) {
-          // 获取列名
+          // get the field name
           const fieldName = metadata.fieldMap[memberField]?.name || memberField;
           const recordTitle = toString(record.fields[primaryFieldId] || record.fields[primaryFieldName]);
           const unitIds: string[] = map(record.fields[memberField] as string[], 'id');

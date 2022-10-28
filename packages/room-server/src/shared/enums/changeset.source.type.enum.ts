@@ -1,21 +1,21 @@
 /**
- * record/changeset的来源类型
+ * Source Type
  */
 export enum SourceTypeEnum {
   /**
-   * 神奇表单
+   * FORM
    */
   FORM = 0,
   /**
-   * 开放平台api
+   * Open platform API
    */
   OPEN_API = 1,
   /**
-   * 关联关系的影响（节点的复制/删除）
+   * effect of relationship (duplicate or delete node)
    */
   RELATION_EFFECT = 2,
   /**
-   * 镜像
+   * Mirror
    */
   MIRROR = 3,
 }

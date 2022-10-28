@@ -10,10 +10,10 @@ import { IExceptionOption, IHttpErrorResponse } from 'shared/interfaces/http.int
 import { I18nService } from 'nestjs-i18n';
 
 /**
- * 全局异常过滤器
- * 失败处理或者错误请求都会被过滤
- * 捕获各种异常，不局限于HttpException
- * @description 拦截全局抛出的所有异常，同时任何错误将在这里被规范化输出
+ * Global exception filter
+ * would filter custom exception
+ * catch exceptions, not only http exceptions
+ * @description format all errors and exceptions data
  */
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
@@ -25,9 +25,9 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<FastifyRequest>();
     const response = ctx.getResponse<FastifyReply>();
 
-    this.logger.error('请求异常', exception);
+    this.logger.error('request error', exception);
 
-    // 过滤掉自定义异常
+    // filter custom exception
     if (!(exception instanceof ServerException) && !(exception instanceof ApiException)) {
       const headers = request.headers;
       if (headers) {
@@ -51,11 +51,11 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       });
     }
 
-    // 状态码，如果是业务异常，返回业务异常代码，否则返回500异常
+    // http status code, return custom exception code or 500
     let httpStatusCode = exception?.statusCode || HttpStatus.INTERNAL_SERVER_ERROR;
     let statusCode = exception?.statusCode || HttpStatus.INTERNAL_SERVER_ERROR;
     let errMsg: string = exception?.message || ConfigConstant.DefaultStatusMessage.SERVER_ERROR_MSG;
-    // 自定义业务异常，直接抛出
+    // throw custom exception
     if (exception instanceof ServerException) {
       statusCode = exception.getCode();
       errMsg = exception.getMessage();
@@ -66,14 +66,14 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       httpStatusCode = exception.getStatus() || HttpStatus.INTERNAL_SERVER_ERROR;
       statusCode = exception.getStatus() || HttpStatus.INTERNAL_SERVER_ERROR;
       if (httpStatusCode === HttpStatus.NOT_FOUND) {
-        // 404代表接口不存在
+        // 404 means API not found
         errMsg = t(Strings[ApiTipConfig.api.tips[ApiTipConstant.api_not_exists].id]);
       } else {
         const errorOption: IExceptionOption = exception.getResponse() as IExceptionOption;
         errMsg = typeof errorOption === 'string' ? errorOption : errorOption.message;
       }
     }
-    // 处理ApiException，兼容国际化
+    // handle API exceptions with internationalization
     if (exception instanceof ApiException) {
       httpStatusCode = exception.getTip().statusCode;
       statusCode = exception.getTip().code;
@@ -83,14 +83,14 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       });
     }
 
-    // 统一响应结果
+    // standard error response
     const errorResponse: IHttpErrorResponse = {
       success: false,
       code: statusCode,
       message: errMsg,
     };
-    this.logger.error('请求异常', exception?.stack || errMsg, exception?.message);
-    // 设置返回的状态码、请求头、发送错误信息
+    this.logger.error('request error', exception?.stack || errMsg, exception?.message);
+    // set header, status code and error response data
     if (response instanceof ServerResponse) {
       response.setHeader('Content-Type', 'application/json');
       response.statusCode = httpStatusCode;

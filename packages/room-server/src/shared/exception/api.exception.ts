@@ -7,27 +7,27 @@ import { CommonException } from './common.exception';
 export type ApiTipId = keyof typeof ApiTipConstant;
 
 /**
- * api 错误属性接口定义
+ * API Tip constants
  */
 export interface IApiTip {
-  // 错误返回的编码
+  // error code
   code: number;
-  // 错误ID
+  // error ID
   id: string;
-  // 是否记录用量
+  // whether or not record the count of using
   isRecordTimes?: boolean;
-  // 错误信息,对应strings表的ID
+  // error message, refer to the ID of strings
   message?: string;
-  // http status 状态码
+  // http status code
   statusCode: number;
 }
 
 /**
  * <p>
- * fusionAPi异常处理
+ * Fusion API Exception
  * </p>
  * @author Zoe zheng
- * @date 2020/10/13 6:37 下午
+ * @date 2020/10/13 6:37 PM
  */
 export class ApiException extends HttpException {
   private readonly extra: { [key: string]: any };
@@ -45,27 +45,27 @@ export class ApiException extends HttpException {
   }
 
   /**
-   * 返回异常状态信息
+   * error message
    */
   public getMessage(): string {
     return this.message;
   }
 
   /**
-   * 返回额外信息
+   * extra information
    */
   public getExtra() {
     return this.extra;
   }
 
   /**
-   * 返回tip
+   * tips
    */
   public getTip(): IApiTip {
     return this.tip;
   }
 
-  // 保留之前的错误，兼容旧数据
+  // keep the previous error message
   static init(code: number, message: string) {
     return new CommonException(code, message);
   }

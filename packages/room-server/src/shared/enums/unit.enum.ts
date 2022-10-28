@@ -1,25 +1,25 @@
 export enum UnitTypeEnum {
   /**
-   * 小组
+   * Team
    */
   TEAM = 1,
   /**
-   * 标签
+   * Tag
    */
   TAG = 2,
   /**
-   * 成员
+   * Member
    */
   MEMBER = 3,
 }
 
 export enum UnitTypeTextEnum {
   /**
-   * 小组
+   * Team
    */
   Team = 'team',
   /**
-   * 成员
+   * Member
    */
   Member = 'member',
 }

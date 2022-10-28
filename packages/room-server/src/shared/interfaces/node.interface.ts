@@ -4,7 +4,7 @@ export interface IAPINode {
   id: string;
   name: string;
   type: NodeTypeEnum;
-  icon: string; // emoji id ，后续开放自定义这里就是 URL
+  icon: string; // emoji id
   isFav: boolean;
 }
 

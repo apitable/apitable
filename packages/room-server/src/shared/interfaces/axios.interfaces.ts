@@ -1,7 +1,7 @@
 import { IPermissions, IFieldPermissionMap } from '@apitable/core';
 
 /**
- * @deprecated 服务端响应结果
+ * @deprecated server response data
  */
 export interface IAxiosResponseData<T> {
   success: boolean;
@@ -45,63 +45,63 @@ export interface IApiResponseDetail {
 }
 
 /**
- * op中需要提交给java计算附件资源的结构
+ * the structure of attachments that need to be submit to the backend server
  */
 export interface IOpAttach {
   /**
-   * 附件token
+   * attachment token
    */
   token: string;
   /**
-   * 附件名称
+   * attachment name
    */
   name: string;
 }
 
 /**
- * 数表附件计算提交ro
+ * datasheet attachment cite request object
  */
 export interface IOpAttachCiteRo {
   /**
-   * 节点ID
+   * Node ID
    */
   nodeId: string;
   /**
-   * 相同附件需重复传token
+   * tokens would be the same while using the same attachment
    */
   addToken?: IOpAttach[];
   /**
-   * 相同附件需重复传token
+   * tokens would be the same while using the same attachment
    */
   removeToken?: IOpAttach[];
 }
 
 /**
- * 数表附件计算提交ro
+ * Create notification request object
  */
 export interface INotificationCreateRo {
   /**
-   * 空间ID
+   * space ID
    */
   spaceId?: string;
   /**
-   * 用户ID
+   * user ID
    */
   toUserId?: string[];
   /**
-   * 通知消息体,额外字段:body.extra
+   * Notification Body, extra fields are in body.extra
    */
   body?: any;
   /**
-   * 节点ID
+   * node ID
    */
   nodeId?: string;
   /**
-   * 通知模版ID
+   * template ID
    */
   templateId: string;
   /**
-   * 发送通知的用户ID
+   * from user ID
    */
   fromUserId?: string;
 }

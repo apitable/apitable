@@ -35,79 +35,79 @@ describe('QueryPipe', () => {
       const error = ApiException.tipError('api_param_sort_field_not_exists');
       expect(() => {
         pipe.validateSort([{ order: OrderEnum.DESC, field: 'aa' }], {
-          自增数字: { id: 'aa', name: '自增数字', type: FieldType.Number, property: { precision: 0, defaultValue: null }
+          Number: { id: 'aa', name: 'number', type: FieldType.Number, property: { precision: 0, defaultValue: null }
           },
         });
       }).toThrow(error);
     });
-    it('viewId不存在 error--zh-CN', () => {
+    it('viewId not exists error--zh-CN', () => {
       const error = ApiException.tipError('api_query_params_view_id_not_exists');
       const meta: IMeta = {
         fieldMap: {
           fldg3EBXhzE8K: {
             id: 'fldg3EBXhzE8K',
-            name: '状态',
+            name: 'Status',
             type: 3,
             property: {
               options: [
                 {
                   id: 'optOR6LHdzUBK',
-                  name: '已记录',
+                  name: 'Recorded',
                   color: 37,
                 },
                 {
                   id: 'optSgtz1OJbZt',
-                  name: '[钉]已通知研发修复',
+                  name: '[Ding]Noticed the developer to fix it',
                   color: 37,
                 },
                 {
                   id: 'optu8X6R40HSx',
-                  name: '修复中',
+                  name: 'fixing',
                   color: 25,
                 },
                 {
                   id: 'opt6BeeiJSwtz',
-                  name: '已修复,待验收',
+                  name: 'fixed',
                   color: 3,
                 },
                 {
                   id: 'optvyQBhNkSnG',
-                  name: '[钉]已通知产品验收',
+                  name: '[Ding]Noticed the pm for acceptance',
                   color: 4,
                 },
                 {
                   id: 'opt1vtk8Fj7Uv',
-                  name: '验收通过',
+                  name: 'acceptance success',
                   color: 44,
                 },
                 {
                   id: 'optCGYmfqVJAl',
-                  name: '验收不通过',
+                  name: 'acceptance failed',
                   color: 27,
                 },
                 {
                   id: 'optKP3PtCM0Er',
-                  name: '无需修复',
+                  name: 'no need to repair',
                   color: 5,
                 },
                 {
                   id: 'optM5X0bE5g1R',
-                  name: '无法复现',
+                  name: 'can not recurrent it',
                   color: 6,
                 },
                 {
                   id: 'optu8lGuBMgrq',
-                  name: '关闭',
+                  name: 'closed',
                   color: 7,
                 },
                 {
                   id: 'opt4COW4DaMYg',
-                  name: '已确认',
+                  name: 'confirmed',
                   color: 8,
                 },
                 {
                   id: 'optayaCVVRPpa',
-                  name: '暂不修复',
+                  name: 'stopped',
                   color: 2,
                 },
               ],
@@ -115,7 +115,7 @@ describe('QueryPipe', () => {
           },
         },
         views: [{ id: 'bbbb', type: ViewType.Grid, columns: [], name: 'aaa', frozenColumnCount: 0, rows: [] }],
-        widgetPanels: [{ id: 'wplAcHJtZO9f8', name: '组件面板', widgets: [{ id: 'wdtiJjVmNFcFmNtQFA', height: 224, y: 0 }] }],
+        widgetPanels: [{ id: 'wplAcHJtZO9f8', name: 'widget pannel', widgets: [{ id: 'wdtiJjVmNFcFmNtQFA', height: 224, y: 0 }] }],
       };
       expect(() => {
         pipe.validateViewId('aa', meta);

@@ -17,8 +17,7 @@ export class GrpcSocketClient implements OnModuleInit {
   }
 
   /**
-   * 新变更内容
-   * 专门为fusion api提供变更
+   * room change notification, only works for Fusion API
    * @param roomId
    * @param changesets
    */
@@ -26,7 +25,7 @@ export class GrpcSocketClient implements OnModuleInit {
     try {
       await this.socketClient.serverRoomChange({ roomId, data: pack(changesets, 'vika.grpc.ServerRoomChangeRo.data') }).toPromise();
     } catch(e) {
-      this.logger.error('通知房间失败', { e });
+      this.logger.error('Failed to notify room', { e });
     }
   }
 }

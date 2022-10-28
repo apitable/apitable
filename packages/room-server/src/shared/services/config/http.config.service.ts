@@ -2,7 +2,8 @@ import { HttpModuleOptionsFactory, Injectable, HttpModuleOptions } from '@nestjs
 import { ConfigService } from '@nestjs/config';
 
 /**
- * Http 设置服务类
+ * Http configuration service
+ * 
  */
 @Injectable()
 export class HttpConfigService implements HttpModuleOptionsFactory {

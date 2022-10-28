@@ -6,14 +6,14 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 /**
- * HTTP 响应拦截器
- * 成功响应的拦截，异常响应请移步 @code{GlobalExceptionFilter}
- * 包装响应数据，返回统一结构
+ * HTTP Response Intercept
+ * success response only, error response @code{GlobalExceptionFilter}
+ * response standard format data
  */
 @Injectable()
 export class HttpResponseInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    // 避免 queue worker 模式工作时处理消息报错
+    // avoid to handle error mes in queue worker mode
     if (isRabbitContext(context)) {
       return next.handle();
     }

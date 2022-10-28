@@ -1,21 +1,21 @@
 /**
- * 上下命名空间
+ * namespace
  */
 export enum AttachmentTypeEnum {
   /**
-   * 用户头像
+   * user avatar
    */
   USER_AVATAR = 0,
   /**
-   * 空间logo
+   * space logo
    */
   SPACE_LOG = 1,
   /**
-   * 数表附件/节点描述
+   * datasheet attachment / node description
    */
   DATASHEET_ATTACH = 2,
   /**
-   * 封面图
+   * cover picture
    */
   COVER_PIC = 3,
 }

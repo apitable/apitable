@@ -2,11 +2,11 @@ import Enum from 'shared/enums/enum';
 
 export enum FusionApiVersion {
   /**
-   * v1.1版本
+   * v1.1 version
    */
   V11 = '1.1',
   /**
-   * 默认版本v1.0
+   * default version is v1.0
    */
   V10 = '1.0',
 }

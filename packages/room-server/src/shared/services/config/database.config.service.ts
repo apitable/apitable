@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { isDevMode } from 'app.environment';
 
 /**
- * 数据库配置服务
+ * database configuration service
  */
 @Injectable()
 export class DatabaseConfigService implements TypeOrmOptionsFactory {
@@ -28,19 +28,19 @@ export class DatabaseConfigService implements TypeOrmOptionsFactory {
       username,
       password,
       database,
-      // 以下不能更改
+      // don't change the below settings
       // entities: ['dist/**/*.entity{.ts,.js}'],
       autoLoadEntities: true,
-      // 设置字符编码解决emoji表情存储问题
+      // use utf8mb4 to fix emoji storage issue
       charset: 'utf8mb4',
-      // 生产环境关闭sql日志打印
+      // print SQL logs in dev mode only
       logging: isDevMode,
       connectTimeout: 60000,
       supportBigNumbers: true,
       bigNumberStrings: true,
-      // 高危险：请务必不要操作synchronize属性的值变更
+      // don't change synchronize setting
       synchronize: false,
-      // 链接池配置
+      // connection pool settings
       keepConnectionAlive,
       retryDelay,
       verboseRetryLog: true,

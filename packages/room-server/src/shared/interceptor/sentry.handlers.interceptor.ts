@@ -10,8 +10,8 @@ import { status, Metadata } from '@grpc/grpc-js';
 import { Http2ServerCallStream } from '@grpc/grpc-js/build/src/server-call';
 
 /**
- * Sentry Http Tracing 拦截器
- * 用来自定义Tracing信息来跟踪性能
+ * Sentry Http Tracing Interceptor
+ * use it to trace the performance of the request
  */
 @Injectable()
 export class TracingHandlerInterceptor implements NestInterceptor {

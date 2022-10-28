@@ -1,11 +1,11 @@
-// HTTP 错误响应
+// HTTP error response
 export interface IHttpErrorResponse {
   success: boolean;
   code: number;
   message: string;
 }
 
-// HTTP 成功响应
+// HTTP success response
 export interface IHttpSuccessResponse<T> {
   success: boolean;
   code: number;
@@ -13,7 +13,7 @@ export interface IHttpSuccessResponse<T> {
   data: T | IPaginateInfo<T>;
 }
 
-// 数表相关
+// datasheet related
 export interface IPaginateInfo<T> {
   total: number;
   pageNum: number;
@@ -33,11 +33,11 @@ export interface IViewList<T> {
   views: T;
 }
 
-// record请求排序结构
+// sort request structure of records
 export interface ISortRo {
   order: string;
   /**
-   * 需要排序的字段
+   * field that need to be sorted
    */
   field: string;
 }
@@ -47,12 +47,12 @@ export interface IApiPaginateRo {
   pageNum?: number;
   pageSize?: number;
   /**
-   * 排序数组
+   * sorted array
    */
   sort: ISortRo[];
 }
 
-// 空间站相关
+// space related
 export interface ISpaceList<T> {
   spaces: T;
 }
@@ -61,7 +61,7 @@ export interface INodeList<T> {
   nodes: T;
 }
 
-// Http响应结构
+// Http response
 export type IHttpResponse<T> = IHttpSuccessResponse<T> | IHttpErrorResponse;
 
 export type IMessage = string;

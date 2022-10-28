@@ -19,7 +19,7 @@ import { InjectLogger } from '../../shared/common';
 import { Logger } from 'winston';
 
 /**
- * 数表接口
+ * Datasheet APIs
  */
 @Controller('nest/v1')
 export class DatasheetController {
@@ -38,7 +38,7 @@ export class DatasheetController {
   @Get(['datasheets/:dstId/dataPack', 'datasheet/:dstId/dataPack'])
   @UseInterceptors(ResourceDataInterceptor)
   async getDataPack(@Headers('cookie') cookie: string, @Param('dstId') dstId: string, @Query() query: DatasheetPackRo,): Promise<DatasheetPack> {
-    // 检查当前用户是否在当前空间
+    // check if the user belongs to this space
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, dstId);
     return await this.datasheetService.fetchDataPack(dstId, { cookie }, { recordIds: query.recordIds });
@@ -49,7 +49,7 @@ export class DatasheetController {
   async getShareDataPack(
     @Headers('cookie') cookie: string, @Param('shareId') shareId: string, @Param('dstId') dstId: string
   ): Promise<DatasheetPack> {
-    // 校验节点是否在分享之列
+    // check if the node has been shared
     await this.nodeShareSettingService.checkNodeHasOpenShare(shareId, dstId);
     return await this.datasheetService.fetchShareDataPack(shareId, dstId, { cookie });
   }
@@ -70,17 +70,17 @@ export class DatasheetController {
 
   @Get(['datasheets/:dstId/meta', 'datasheet/:dstId/meta'])
   async getDataSheetMeta(@Headers('cookie') cookie: string, @Param('dstId') dstId: string): Promise<IMeta> {
-    // 检查当前用户是否在当前空间
+    // check if the user belongs to this space
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, dstId);
     return await this.datasheetMetaService.getMetaDataByDstId(dstId);
   }
 
+  // TODO: use HTTP Get method instead, the number of recordIds should be limited
   @Post(['datasheets/:dstId/records', 'datasheet/:dstId/records'])
   async getRecords(@Param('dstId') dstId: string, @Body() recordIds: string[]): Promise<RecordsMapView> {
-    // recordIds可能很多，突破get请求的限制，所以用post请求
     const revision = await this.nodeService.getRevisionByDstId(dstId);
-    // 版本找不到的错误
+    // revision not found error
     if (revision == null) {
       throw new ServerException(DatasheetException.VERSION_ERROR);
     }
@@ -91,10 +91,10 @@ export class DatasheetController {
   @Get(['datasheets/:dstId/views/:viewId/dataPack', 'datasheet/:dstId/view/:viewId/dataPack'])
   async getViewPack(@Headers('cookie') cookie: string,
                     @Param('dstId') dstId: string, @Param('viewId') viewId: string): Promise<ViewPack> {
-    // 检查当前用户是否在当前空间
+    // check if the user belongs to this space
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, dstId);
-    // 校验节点权限
+    // check if the user has the privileges of the node
     await this.nodeService.checkNodePermission(dstId, { cookie });
     return await this.datasheetService.fetchViewPack(dstId, viewId);
   }
@@ -102,7 +102,7 @@ export class DatasheetController {
   @Get(['shares/:shareId/datasheets/:dstId/views/:viewId/dataPack', 'share/:shareId/datasheet/:dstId/view/:viewId/dataPack'])
   async getShareViewPack(@Param('shareId') shareId: string,
                          @Param('dstId') dstId: string, @Param('viewId') viewId: string): Promise<ViewPack> {
-    // 校验节点是否在分享之列
+    // check if the node has been shared
     await this.nodeShareSettingService.checkNodeHasOpenShare(shareId, dstId);
     return await this.datasheetService.fetchViewPack(dstId, viewId);
   }

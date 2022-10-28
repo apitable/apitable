@@ -5,8 +5,7 @@ import { IActuatorConfig, IBaseRateLimiter, IOssConfig, IRateLimiter, IServerCon
 import { ConfigStoreInMemory } from './config.store';
 
 /**
- * 环境变量方法
- * 将常用的属性保存到内存储存器中
+ * environment variables, store them in the memory
  */
 @Injectable()
 export class EnvConfigService implements OnApplicationBootstrap, OnApplicationShutdown {
@@ -16,7 +15,7 @@ export class EnvConfigService implements OnApplicationBootstrap, OnApplicationSh
   constructor(private configService: ConfigService) {}
 
   onApplicationBootstrap() {
-    // 服务常量配置
+    // server constants configuration
     const server: IServerConfig = {
       url: process.env.BACKEND_BASE_URL || this.configService.get<string>('server.url'),
       transformLimit: this.configService.get<number>('server.transformLimit', 100000),
@@ -27,14 +26,14 @@ export class EnvConfigService implements OnApplicationBootstrap, OnApplicationSh
     };
     this.configStore.set(EnvConfigKey.CONST, server);
 
-    // oss常量配置
+    // oss constants configuration
     const oss: IOssConfig = {
       host: process.env.OSS_HOST || this.configService.get<string>('oss.host'),
       bucket: process.env.OSS_BUCKET || this.configService.get<string>('oss.bucket'),
     };
     this.configStore.set(EnvConfigKey.OSS, oss);
 
-    // API 限制常量配置
+    // API limit constants configuration
     const limit: IRateLimiter = {
       points: (process.env.LIMIT_POINTS || this.configService.get<number>('limit.points', 5)) as number,
       duration: (process.env.LIMIT_DURATION || this.configService.get<number>('limit.duration', 1)) as number,
@@ -51,7 +50,7 @@ export class EnvConfigService implements OnApplicationBootstrap, OnApplicationSh
     }
     this.configStore.set(EnvConfigKey.API_LIMIT, limit);
 
-    // 健康检查配置
+    // health check configuration
     const actuator: IActuatorConfig = {
       dnsUrl: process.env.ACTUATOR_DNS_URL || this.configService.get<string>('actuator.dnsUrl'),
       rssRatio: (process.env.ACTUATOR_RSS_RATIO || this.configService.get<number>('actuator.rssRatio', 90)) as number,

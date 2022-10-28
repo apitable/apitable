@@ -17,7 +17,7 @@ function acquireLock(client: Redis, lockNames: string[], timeout: number, retryD
   //   if (err || result === null) return retry();
   //   onLockAcquired(lockTimeoutValue);
   // });
-  // 批量设置 lockName 为key
+  // set lockName as key
   // eslint-disable-next-line 
   const script = "local addKey = {} for _, v in ipairs(KEYS) do if (redis.call('SET', v, ARGV[1], 'NX', 'EX', ARGV[2])) then addKey[#addKey + 1] = v else if (#addKey > 0) then redis.call('DEL', unpack(addKey)) end return { 0, addKey } end end return { 1, addKey }";
   const expireSecond = timeout > 1000 ? timeout / 1000 : timeout;

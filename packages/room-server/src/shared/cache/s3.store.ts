@@ -35,7 +35,7 @@ export class S3Store extends BaseOssStore implements CacheStore {
     return new Promise((resolve, reject) => {
       const cb = (err, result) => (err ? reject(err) : resolve(result));
       const stream = JSON.stringify(value);
-      // 计算缓存过期时间
+      // calculate the expireSecond of the cache
       const ttl: any = options.ttl || 0;
       const date = new Date();
       date.setTime(1000 * ttl + date.getTime());
