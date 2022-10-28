@@ -7,7 +7,7 @@ services:
       - /bin/sh
       - -c 
       - |
-        cp -afr /settings/* /tmp/vika
+        rm -rf /tmp/vika/* && cp -afr /settings/* /tmp/vika
         echo "init-settings done"
 
   web-server:
@@ -29,7 +29,7 @@ services:
       - /bin/sh
       - -c
       - |
-        [ -d /tmp/vika ] && cp -arf /tmp/vika/custom/* /app/packages/datasheet/public/custom && cat /tmp/vika/custom/.env >> /app/packages/datasheet/.env  && cp -arf /tmp/vika/public/* /app/packages/datasheet/public
+        [ -f /tmp/vika/run.sh ] &&  sh /tmp/vika/run.sh
         node server.js
     depends_on:
       backend-server:
@@ -234,7 +234,7 @@ services:
       --character-set-server=utf8mb4
       --collation-server=utf8mb4_general_ci
       --sql_mode=IGNORE_SPACE,NO_ENGINE_SUBSTITUTION
-      --lower_case_table_names=1
+      --lower_case_table_names=2
     healthcheck:
       test: "mysql ${MYSQL_DATABASE} -u${MYSQL_USERNAME} -p${MYSQL_PASSWORD} -e 'SELECT 1;'"
       interval: 30s
