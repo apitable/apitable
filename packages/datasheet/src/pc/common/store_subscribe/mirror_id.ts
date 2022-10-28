@@ -40,7 +40,7 @@ store.subscribe(function datasheetIdChange() {
 
   expandRecordManager.destroy();
 
-  resourceService.instance!.switchResource({
+  resourceService.instance?.initialized && resourceService.instance!.switchResource({
     from: previousMirrorId, to: mirrorId, resourceType: ResourceType.Mirror,
   });
 });

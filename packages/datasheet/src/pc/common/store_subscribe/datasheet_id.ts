@@ -52,7 +52,7 @@ store.subscribe(function datasheetIdChange() {
     store.dispatch(StoreActions.resetWidget(widgetMapKey));
   }
 
-  resourceService.instance?.switchResource({
+  resourceService.instance?.initialized && resourceService.instance?.switchResource({
     from: previousDatasheetId, to: datasheetId, resourceType: ResourceType.Datasheet,
   });
 });

@@ -24,7 +24,7 @@ store.subscribe(function formIdChange() {
     return;
   }
 
-  resourceService.instance?.switchResource({
+  resourceService.instance?.initialized && resourceService.instance?.switchResource({
     from: prevFormId, to: formId!, resourceType: ResourceType.Form,
   });
 
