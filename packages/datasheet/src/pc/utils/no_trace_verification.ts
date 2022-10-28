@@ -3,9 +3,9 @@ import { ConfigConstant, isPrivateDeployment } from '@apitable/core';
 import * as React from 'react';
 
 /**
- * 初始化无痕验证
- * @param callback 要执行的回调，该回调接收验证字符串
- * @param renderTo 指定滑块验证渲染在哪里
+ * Initialization without trace verification
+ * @param callback The callback to be executed which receives the validation string
+ * @param renderTo Specify where the slider validation renders
  */
 export const initNoTraceVerification = (successCallback: React.Dispatch<React.SetStateAction<string | null>>,
   renderTo: string = ConfigConstant.CaptchaIds.DEFAULT) => {
@@ -15,8 +15,8 @@ export const initNoTraceVerification = (successCallback: React.Dispatch<React.Se
   if (!window['AWSC']) {
     // return;
     setTimeout(() => {initNoTraceVerification(successCallback);}, 1000);
-    console.error('人机验证代码加载失败');
-    throw new Error('人机验证代码加载失败');
+    console.error('Man-machine verification code load failure');
+    throw new Error('Man-machine verification code load failure');
   }
 
   const successFun = data => {
@@ -27,11 +27,11 @@ export const initNoTraceVerification = (successCallback: React.Dispatch<React.Se
   window['AWSC'].use('nvc', (state, module) => {
     window['nvc'] = module.init({
       appkey: ConfigConstant.nvcAppkey,
-      scene: 'nvc_login', // nvc_login 和 nc_login
-      // test: module.TEST_PASS, // 无痕验证通过
-      // test: module.TEST_BLOCK, // 无痕验证未通过，直接拦截
-      // test: module.TEST_NC_PASS, // 唤醒滑动验证，且滑动验证通过
-      // test: module.TEST_NC_BLOCK, // 唤醒滑动验证，且滑动验证不通过
+      scene: 'nvc_login', // nvc_login and nc_login
+      // test: module.TEST_PASS, // No trace verification passed
+      // test: module.TEST_BLOCK, // No trace verification failed, direct blocking
+      // test: module.TEST_NC_PASS, // Wake-up sliding verification and sliding verification passes
+      // test: module.TEST_NC_BLOCK, // Wake-up sliding verification and sliding verification does not pass
       renderTo,
       success: successFun,
     });
@@ -45,7 +45,7 @@ export const execNoTraceVerification = (callback: (data?: string) => void) => {
   }
 
   if (!window['nvc']) {
-    throw new Error('人机验证代码加载失败');
+    throw new Error('Man-machine verification code load failure');
   }
   window['nvc'].getNVCValAsync(nvcVal => callback(nvcVal));
 };

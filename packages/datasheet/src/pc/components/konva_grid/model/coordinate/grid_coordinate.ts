@@ -2,10 +2,9 @@ import { Coordinate } from './coordinate';
 import { ItemType, IGridCoordinate } from '../../interface';
 
 /**
- * 用于构建 Canvas Grid 基础坐标系
+ * Used to build the Canvas Grid base coordinate system
  */
 export class GridCoordinate extends Coordinate {
-  // 冻结列数
   public frozenColumnCount: number;
   public autoHeadHeight: boolean;
 
@@ -16,14 +15,14 @@ export class GridCoordinate extends Coordinate {
   }
 
   /**
-   * 冻结区域宽度
+   * Width of frozen area
    */
   get frozenColumnWidth() {
     return this.getColumnOffset(this.frozenColumnCount) - this.columnInitSize;
   }
 
   /**
-   * 根据 rowIndex、columnIndex 获取单元格坐标信息
+   * Get cell coordinate information according to rowIndex, columnIndex
    */
   public getCellRect(rowIndex: number, columnIndex: number) {
     const { size: height, offset: y } = this.getCellMetaData(rowIndex, ItemType.Row);

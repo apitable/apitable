@@ -1,16 +1,16 @@
 
 
-// antd-mobile 默认主题变量
+// antd-mobile default theme variables
 @import "~antd-mobile/bundle/css-vars-patch.css";
-// antd 默认主题变量
+// antd default theme variables
 @import "~antd/dist/antd.less";
 @import "../lib_colors.css";
-// 覆盖全局类型的样式，颜色、字体、间距、边框、阴影等
-// 可覆盖变量名参见： https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less
+// Cover global types of styles, colors, fonts, spacing, borders, shadows, etc.
+// Reference: https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less
 @import "./custom_antd_style.less";
 
-// 和组件相关的样式，单独新建 `组件名.less`
-// FIXME:THEME antd 相关的都不能用了！！！
+// For component-related styles, create a separate `ComponentName.less`
+// FIXME: THEME antd related are not working!!!
 @import "./modal.less";
 @import "./input.less";
 @import "./slider.less";

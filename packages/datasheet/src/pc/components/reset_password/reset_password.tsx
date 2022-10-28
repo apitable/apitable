@@ -25,7 +25,6 @@ const defaultErrMsg = {
 };
 
 const ResetPassword: FC = () => {
-  // 主要数据（账号、验证码、密码、二次确认密码）
   const [state, setState] = useSetState<IState>({
     areaCode: '',
     account: '',
@@ -37,7 +36,6 @@ const ResetPassword: FC = () => {
     supportAccountType
   } = getCustomConfig();
   const [mode, setMode] = React.useState(supportAccountType || ConfigConstant.LoginMode.PHONE);
-  // 错误信息
   const [errMsg, setErrMsg] = useSetState<{ accountErrMsg: string, identifyingCodeErrMsg: string, passwordErrMsg: string }>(defaultErrMsg);
   const { retrievePwdReq, loginOrRegisterReq } = useUserRequest();
   const { run: retrievePwd, loading } = useRequest(retrievePwdReq, { manual: true });
@@ -61,7 +59,6 @@ const ResetPassword: FC = () => {
     setState({ [key]: value });
   };
 
-  // 提交密码修改
   const handleSubmit = async() => {
     const { areaCode, account, identifyingCode, password, secondPassword } = state;
     if (password !== secondPassword) {
@@ -87,7 +84,7 @@ const ResetPassword: FC = () => {
       return;
     }
 
-    // 成功后自动登录
+    // Automatic login after success
     setTimeout(() => {
       execNoTraceVerification((data?: string) => {
         loginOrRegisterReq({

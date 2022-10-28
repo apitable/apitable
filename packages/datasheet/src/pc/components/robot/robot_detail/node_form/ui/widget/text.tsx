@@ -13,7 +13,7 @@ const HelperText = styled.div.attrs(applyDefaultTheme) <{ error: boolean }>`
 `;
 
 export const TextWidget = (props: IWidgetProps) => {
-  // TODO: useControllableValue 这个 hook 看看能不能改成防抖的
+  // TODO: useControllableValue This hook to see if it can be changed to anti-shake
   const [state, setState] = useControllableValue<{ type: string, value: string }>(props, {
     defaultValue: {
       type: 'Literal',

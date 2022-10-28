@@ -23,8 +23,8 @@ const NO_DATA = Symbol('NO_DATA');
 const ERROR_DATA = Symbol('ERROR_DATA');
 const NO_PERMISSION = Symbol('NO_PERMISSION');
 
-// 暂定单元格内最多显示20个关联记录的节点
-// TODO: 结合单元格大小和数据动态展示节点数及省略符
+// Tentatively display up to 20 nodes of associated records in a cell
+// TODO: Dynamically display the number of nodes and omitted characters in combination with cell size and data
 const MAX_SHOW_LINK_IDS_COUNT = 20;
 
 interface ICellLink extends ICellComponentProps {
@@ -39,7 +39,7 @@ export const CellLink: React.FC<ICellLink> = props => {
     onChange, isActive, cellValue, field: propsField, toggleEdit, className, readonly, keyPrefix, rowHeightLevel,
   } = props;
   const colors = useThemeColors();
-  // 编辑关联字段，需要两张表都有编辑权限。
+  // To edit an link field, you need to have edit permission on both datasheets.
   const [showTip, setShowTip] = useState(false);
   const field = Selectors.findRealField(store.getState(), propsField);
   const linkRecordIds = field ? (Field.bindModel(field).validate(cellValue) ? (cellValue as string[]).slice(0, MAX_SHOW_LINK_IDS_COUNT) : undefined) :
@@ -51,7 +51,7 @@ export const CellLink: React.FC<ICellLink> = props => {
   const hasLimitToView = Boolean(propsField.property.limitToView && foreignView?.id === propsField.property.limitToView);
 
   /**
-   * 为了单元格能够监听到 foreignDatasheet record 值的变化，更新视图
+   * In order for the cell to listen to changes in the foreignDatasheet record value, update the view
    */
   const cellStringList = useSelector(state => {
 
@@ -81,9 +81,10 @@ export const CellLink: React.FC<ICellLink> = props => {
       });
 
       /**
-       * 因为前端只维护了关联表中一部分已经进行关联的数据，
-       * 当检查到当前表关联的 recordId 不存在于关联表 snapshot 中的时候，说明本条关联记录是一条新增的关联记录。
-       * 此时需要将这条新增关联记录的 record 数据加载到关联表 snapshot 中。
+       * Because the front-end only maintains a portion of the data in the link datasheet that has already been link.
+       * When the recordId of the current datasheet link does not exist in the link datasheet snapshot, 
+       * it means that this link record is a new link record.
+       * In this case, you need to load the record data of this new link record into the link datasheet snapshot.
        */
       if (emptyRecords.length && datasheet) {
         loadRecords(datasheet.id, emptyRecords);
@@ -99,8 +100,8 @@ export const CellLink: React.FC<ICellLink> = props => {
       return;
     }
     /**
-     * linkRecordIds 限制了个数，是不完整的数据
-     * 这里使用完整的 cellValue 来进行数据处理
+     * linkRecordIds are limited in number and are incomplete data.
+     * Here the complete cellValue is used for data processing.
      */
     const value = (cellValue as string[]).filter((_, idx) => {
       return idx !== index;
@@ -126,7 +127,6 @@ export const CellLink: React.FC<ICellLink> = props => {
     }
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
-    // 判断关联表权限
     const state = store.getState();
     const readable = Selectors.getPermissions(state, field.property.foreignDatasheetId).readable;
     if (!readable && field.property.foreignDatasheetId) {
@@ -192,7 +192,7 @@ export const CellLink: React.FC<ICellLink> = props => {
 
   function dbClick() {
     if (allowShowTip) {
-      // 有本表的编辑权限，但是没有关联表的编辑权限
+      // Edit access to this datasheet, but no edit access to related datasheet
       setShowTip(true);
       setTimeout(() => {
         setShowTip(false);
@@ -224,7 +224,6 @@ export const CellLink: React.FC<ICellLink> = props => {
     );
   };
 
-  // Tooltip 只在必要的时候 render 以提升性能
   return showTip ? (
     <Tooltip title={t(Strings.no_link_ds_permission)} visible={showTip} placement={'top'}>
       {MainLayout()}

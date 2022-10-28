@@ -24,12 +24,12 @@ import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 
 interface IStatOption {
   fieldId: string;
-  row?: ILinearRowGroupTab; // 分组上的统计栏会传入此信息
+  row?: ILinearRowGroupTab; // The statistics column on the group will pass in this information
   className?: string;
   style?: React.CSSProperties;
 }
 
-// 超过 1 个格子被选中，就需要显示选区内记录的统计。
+// If more than 1 cell is selected, you need to display the statistics of the records in the selection.
 export function hasLargeSelection(range?: IRange, selectRecordRanges?: string[]) {
   if (range) {
     if (range.start.recordId !== range.end.recordId || range.start.fieldId !== range.end.fieldId) {
@@ -42,7 +42,6 @@ export function hasLargeSelection(range?: IRange, selectRecordRanges?: string[])
   return false;
 }
 
-// 横向显示什么
 export const getFieldStatType = (state: IReduxState, fieldId: string) => {
   const selections = Selectors.getSelectRanges(state);
   const selectRecordRanges = Selectors.getSelectionRecordRanges(state);
@@ -53,11 +52,11 @@ export const getFieldStatType = (state: IReduxState, fieldId: string) => {
   }
   const field = Selectors.getField(state, column.fieldId);
   const fieldStatTypeList = getStatTypeList(field, state);
-  // 不展示错误的 statType
+  // No incorrect statType displayed
   if (column.statType && !fieldStatTypeList.includes(column.statType)) {
     return null;
   }
-  // 超过一个格子被选中时，且 field 在不在选区内则不展示。
+  // When more than one cell is selected and the field is not in the selection, it is not displayed.
   if (hasLargeSelection(range, selectRecordRanges)) {
     if (range) {
       const rangeFields = Selectors.getRangeFields(state, range, state.pageParams.datasheetId!);
@@ -114,18 +113,17 @@ const StatOptionBase: React.FC<IStatOption> = props => {
   }, shallowEqual);
   const fieldStatTypeList = getStatTypeList(field, state);
 
-  // 纵向显示什么
-  // TODO: 优化下性能问题，加缓存和执行条件。
+  // TODO: Optimize the performance issues, add caching and execution conditions.
   const getStatRecordIds = useCallback(() => {
     const isGroupStat = Boolean(row);
     let res = recordIds;
-    // 默认是全部记录
+    // Default is all records
     if (isGroupStat) {
       const groupSketch = new Group(groupInfo, groupBreakpoint);
-      // 分组的统计栏，展示分组下的记录
+      // The statistics column for the grouping, showing the records under the grouping
       res = groupSketch.getRecordsInGroupByDepth(state, row!.recordId, row!.depth).map(row => row.recordId);
     }
-    // 存在选区
+    // Presence of constituency
     if (shouldUseSelectRecordAggregate) {
       if (isGroupStat) {
         return intersection(recordIds, selectRecordIds);

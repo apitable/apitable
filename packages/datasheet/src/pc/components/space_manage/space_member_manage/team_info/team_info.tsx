@@ -54,7 +54,7 @@ export const TeamInfo: FC<ITeamInfo> = (props) => {
   const isPrimaryOrOwn = React.useCallback((info: IMemberInfoInSpace) => user && isPrimaryOrOwnFunc(info, user.memberId), [user]);
   const isPrimaryOrOwnSelected = (memberArr: IMemberInfoInSpace[]) => memberArr.some(item => isPrimaryOrOwn(item));
   const contactSyncing = (isSocialDingTalk(spaceInfo) || isSocialWecom(spaceInfo)) && isContactSyncing(spaceInfo);
-  // 更换所选小组，初始化表格页数
+  // Replace the selected group and initialize the form pages
   useEffect(() => {
     setPageNo(1);
   }, [selectedTeamInfoInSpace]);
@@ -84,7 +84,6 @@ export const TeamInfo: FC<ITeamInfo> = (props) => {
       type: 'warning',
     });
   };
-  // 操作-批量删除成员
   const batchDelMemberBtn = () => {
     socialPlatPreOperate(spaceInfo, () => {
       if (isRootTeam && isPrimaryOrOwnSelected(selectedRows)) {

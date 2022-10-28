@@ -1,7 +1,7 @@
-# Antd 组件重载流程
+# Antd Component Overload Flow
 
 
-less 索引路径
+less Index path
 - index.tsx
     - index.less
     - normalize.css
@@ -15,39 +15,39 @@ less 索引路径
                 - ...
         - main.less
         - Router
-            - 业务组件
+            - Business Components
 
-## 基础流程
+## Basic Flow
 
-0. 优先使用组件暴露的 props，自定义组件
-1. props 无法满足时，优先覆盖主题中相应的变量名
-2. 覆盖变量名无法满足时，覆盖 antd 组件类名
-3. 覆盖 antd 组件样式无法满足时，查看 pc/components/common 下是否存在所需组件
-4. 全都无法满足时，先问设计师能不能砍掉，换成通用组件实现（拿出我们自己维护的 antd 文档网站演示比划）
-5. 不能砍掉就自己写, 在 pc/components/common 下新建组件
-
-
-## 覆盖通用样式
-
-可覆盖变量名参见： https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less
-
-前 150 行都是通用样式相关的变量。
-
-颜色、字体、间距、边框、阴影等，在 [custom_antd_style.less](./custom_antd_style.less) 中修改。
+0. Prefer to use the props exposed by the component, custom components
+1. when props are not satisfied, override the corresponding variable name in the theme first
+2. override the antd component class name if overriding the variable name is not possible
+3. if overriding the antd component style is not sufficient, check whether the required component exists under pc/components/common
+4. If all of them cannot be satisfied, ask the designer if it can be cut and replaced by a common component implementation (show our own antd documentation website demo)
+5. If you can't cut it, write it yourself, and create a new component under pc/components/common
 
 
-## 覆盖通用组件
+## Override generic style
 
-覆盖变量名&覆盖类名统一写在此目录(src/pc/styles/global_components)下的 `组件名.less` 文件中
+See https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less for overridable variable names
 
-### 覆盖变量名
+The first 150 lines are all generic style related variables.
 
-以重载 `Slider` 组件为例。
-1. 先去 [default.less](https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less) 下，找到对应的组件变量名。
-2. 把所有的这个组件相关的变量名，粘贴到新建的 `slider.less` 中，注释掉。
-3. 取消要修改的变量名注释，改为想要的效果。
+Colors, fonts, spacing, borders, shadows, etc. are modified in [custom_antd_style.less](. /custom_antd_style.less).
 
-例如将 slider 默认 track 的背景色和 hover 时的背景色改成我们的品牌色。
+
+## Overriding Global Components
+
+Overriding variable names & overriding class names are written uniformly in the `Component names.less` file under this directory (src/pc/styles/global_components)
+
+### Overriding variable names
+
+Take overloading `Slider` component as an example.
+1. Go to [default.less](https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less) and find the corresponding component variable name. 2.
+2. Paste all the variable names related to this component into the new `slider.less` and comment them out.
+3. Uncomment the variable names you want to change and change them to the desired effect.
+
+For example, change the background color of the slider default track and the background color of the hover to our brand color.
 
 ```less
 // @slider-margin: 10px 6px 10px;
@@ -70,12 +70,12 @@ less 索引路径
 
 ```
 
-### 覆盖类名
+### Overriding class names
 
-当覆盖变量名无法满足时，可以覆盖类名。
+When overriding the variable name is not possible, you can override the class name.
 
-例如设计稿上的 `slider` 组件的高度是 `2px`。slider 组件并没有暴露 `height` 这样的 props 给我们自定义高度。上面的变量名中，也没有暴露相关配置。
-我们可以重载 slider 组件中对应的 css 类名（需要自己使用浏览器 devtools 查找）
+For example, the height of the `slider` component on the design is `2px`. The slider component does not expose props like `height` for us to customize the height. The variable names above also do not expose the relevant configuration.
+We can override the corresponding css class name in the slider component (you need to find it yourself using browser devtools)
 
 ```less
 .ant-slider{

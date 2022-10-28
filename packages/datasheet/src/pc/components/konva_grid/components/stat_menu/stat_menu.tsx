@@ -86,7 +86,7 @@ export const StatMenu: React.FC<IStatMenuProps> = React.memo((props) => {
     };
   });
 
-  // 兼容 iPad 无法触发 click 事件的问题
+  // Compatible with iPad not triggering click event issue
   useEffect(() => {
     if (!isIPad13) return;
     const element = parentRef?.current;

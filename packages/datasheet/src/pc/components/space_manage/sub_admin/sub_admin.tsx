@@ -14,7 +14,8 @@ import { shallowEqual, useSelector } from 'react-redux';
 import { AddAdminModal, ModalType } from './add_admin_modal';
 import styles from './style.module.less';
 
-// 一些已经不使用的权限，但是因为旧空间还是会返回相应的数据，前端对这些权限做过滤
+// Some permissions that are no longer used, but because the old space will still return the corresponding data, 
+// the front-end to do the filtering of these permissions
 const UNUSED_PERMISSION = ['MANAGE_NORMAL_MEMBER'];
 
 const triggerBase = {

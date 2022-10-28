@@ -21,7 +21,7 @@ export const executeCommandWithMirror = (commandFunc: Function, viewProperty: Pa
       showViewManualSaveInMobile();
     } else {
       Player.doTrigger(Events.view_notice_view_auto_false);
-      // 如果没有触发过视图配置不协同的新手引导，则操作完不弹出保存提示
+      // If you have not triggered the newbie guide for view configuration without collaboration, no save prompt will pop up after the operation
       (isPrivateDeployment() || state.user.info?.wizards.hasOwnProperty(51)) && editable && ShowViewManualSaveAlert();
     }
     store.dispatch(StoreActions.activeOperateViewId(viewId!, datasheetId!));
@@ -31,7 +31,8 @@ export const executeCommandWithMirror = (commandFunc: Function, viewProperty: Pa
   const mirror = Selectors.getMirror(state, mirrorId)!;
 
   if (mirror.temporaryView) {
-    // 镜像删选手动修改日期，比如 2022/02/16 改为 2022/02/1 会导致重复 dispatch, 判断如果没有值更新无需 dispatch
+    // Mirror manual date changes, e.g. 2022/02/16 to 2022/02/1 will result in duplicate dispatch, 
+    // determine if there are no values to update without dispatch
     if (has(viewProperty, 'filterInfo') && isEqual(mirror.temporaryView.filterInfo, viewProperty.filterInfo)) {
       return;
     }

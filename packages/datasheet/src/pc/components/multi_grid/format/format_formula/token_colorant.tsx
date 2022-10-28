@@ -6,7 +6,6 @@ interface IExpressionColorant {
   expression: string;
 }
 
-// 表达式着色剂（Colorant）
 export const ExpressionColorantBase: React.FC<IExpressionColorant> = props => {
   const { expression } = props;
   const tokens = new FormulaExprLexer(expression).fullMatches;

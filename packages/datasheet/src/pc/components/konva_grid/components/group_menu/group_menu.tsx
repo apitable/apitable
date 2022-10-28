@@ -52,10 +52,10 @@ export const GroupMenu: React.FC<IStatMenuProps> = (props) => {
   const groupingCollapseIdsMap = new Map<string, boolean>(groupCollapseIds?.map(v => [v, true]));
 
   const changeGroupCollapseState = (newState: string[]) => {
-    // 表内查找时，屏蔽折叠分组操作
+    // Masking collapsing grouping operation when searching within a datasheet
     if (isSearching) return;
     dispatch(StoreActions.setGroupingCollapse(datasheetId, newState));
-    // QuickAppend 组件显示依赖于 hoverRecordId, 分组折叠的情况下应该清空, 避免产生视觉误导
+    // QuickAppend component display depends on hoverRecordId, which should be cleared in case of group collapse to avoid visual misleading
     dispatch(StoreActions.setHoverRecordId(datasheetId, null));
     setStorage(StorageName.GroupCollapse,
       { [`${datasheetId},${viewId}`]: newState },
@@ -63,7 +63,7 @@ export const GroupMenu: React.FC<IStatMenuProps> = (props) => {
   };
 
   function groupCommand(type: ExpandType) {
-    // 正在进行表内查找时，禁用分组相关操作。
+    // Disables grouping-related operations when a table lookup is being performed.
     if (isSearching) return;
     if (type === ExpandType.Pull) {
       for (const tab of childGroupTabKey) {

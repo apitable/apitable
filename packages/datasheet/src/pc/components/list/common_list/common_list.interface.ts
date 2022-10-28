@@ -3,49 +3,48 @@ import { HTMLAttributes, ReactElement, ReactNode } from 'react';
 export interface ICommonListProps {
 
   /**
-   * @description 每个选项包裹的组件，
-   * 也就是绑定在 CommonList 组件上的静态组件
+   * @description Each option wrapped component, which is a static component bound to a CommonList component
    * @type {ReactElement[]}
    */
   children: ReactElement[];
 
   /**
-   * @description 点击每个选项的处理函数
+   * @description Click on the processing function for each option
    * @param {(React.MouseEvent | null)} e
    * @param {number} index
    */
   onClickItem(e: React.MouseEvent | null, index: number): void
 
   /**
-   * @description input 按下 Enter 键的回调函数
-   * @param {() => void} clearKeyword 组件内部传入的处理函数，可以在这里处理一些组件内部的操作
-   * 比如清除输入框内的数据
+   * @description input Callback function for pressing the Enter key
+   * @param {() => void} clearKeyword Handler function passed inside the component, where you can handle some internal component operations
+   * For example, clear the data in the input box
    */
   onInputEnter?(clearKeyword: () => void): void
 
   /**
-   * @description 给 Input 组件绑定的引用，用来 focus
+   * @description A reference bound to the Input component to focus
    * @type {React.RefObject<IInputRef>}
    */
   inputRef?: React.RefObject<HTMLInputElement>;
 
   /**
-   * @description 没有数据时的提示
+   * @description Tips for no data
    */
   noDataTip?: string | (() => ReactNode)
 
   /**
-   * @description 搜索结果为空的提示
+   * @description Tips for empty search results
    */
   noSearchResult?: string | (() => ReactNode);
 
   /**
-   * @description 组件底部区域的选软组件
+   * @description Components in the bottom area of the component
    */
   footerComponent?: () => ReactNode;
 
   /**
-   * @description 已经选中的值
+   * @description Already selected values
    * @type {string}
    */
   value?: (string | number)[] | null,
@@ -54,38 +53,39 @@ export interface ICommonListProps {
   style?: React.CSSProperties
 
   /**
-   * @description input 的提示语
+   * @description Prompt for input
    * @type {string}
    */
   inputPlaceHolder?: string
 
   /**
-   * @description 输入内容后的回调
+   * @description Callback after inputting content
    * @param {React.ChangeEvent} e
    * @param {string} keyword
    */
   onSearchChange?(e: React.ChangeEvent | null, keyword: string): void
 
   /**
-   * @description 是否显示 input 组件
+   * @description Whether to display the input component
    * @type {boolean}
    */
   showInput?: boolean
 
   /**
-   * @description 用于重新渲染的监控源
+   * @description Monitoring sources for re-rendering
    * @type {string}
    */
   monitorId?: string
 
   /**
-   * @description 当前正在聚焦的 item 的位置，原本这个参数由组件内部控制，但是在 draft 中，需要维护编辑器自己的 index，因此需要像组件内部传入
+   * @description Originally, this parameter was controlled internally by the component, but in draft, you need to maintain the editor's own index, 
+   * so you need to pass it in like the component's internal
    * @type {number}
    */
   activeIndex?: number
 
   /**
-   * @description 自定义输入框的样式
+   * @description Customize the style of the input box
    * @type {React.CSSProperties}
    */
   inputStyle?: React.CSSProperties;
@@ -98,26 +98,26 @@ export interface ICommonListProps {
 export interface IOptionItemProps extends HTMLAttributes<HTMLDivElement> {
 
   /**
-   * @description 当前选项的下标
+   * @description Subscript of current option
    * @type {number}
    */
   currentIndex: number;
 
   /**
-   * @description 当前选项的唯一特征，用来判断是否被选中
+   * @description Unique feature of the current option, used to determine if it is selected
    * @type {string}
    */
   id: string
 
   /**
-   * @description 是否被选中，这个会在组件内部判断，外部可以传入，但是会被覆盖
+   * @description Whether it is selected or not, this will be determined inside the component, and can be passed in externally, but will be overridden
    * @type {boolean}
    */
   isChecked?: boolean
 
   /**
-   * @description 在选项排序的时候会需要包裹一层其他的组件，但是对于内部不好处理
-   * 所以可以通过这个属性传入一个包裹的函数
+   * @description In the option sorting will need to wrap a layer of other components, but for internal bad handling, 
+   * so you can pass in a wrapped function through this property
    * @param {*} children
    * @returns {ReactNode}
    */

@@ -77,7 +77,6 @@ export const useToggleRobotActive = (robotId: string) => {
           ...robot,
           isActive: false
         });
-        // TODO: 这里可以定位到表单出错的地方
         Message.error({
           content: t(Strings.robot_enable_config_incomplete_error)
         });
@@ -119,7 +118,7 @@ export const useRobotActionTypes = (robotId: string) => {
 };
 
 /**
- * 默认获取当前机器人，传入 robotId，则获取指定机器人
+ * Get the current robot by default, pass in robotId to get the specified robot
  * @param robotId
  */
 export const useRobot = (_robotId?: string) => {
@@ -290,7 +289,8 @@ export const useRobotDispatch = () => {
   return dispatch;
 };
 
-// 对于当记录创建这种只有一个选项，且存在默认值的 trigger。在创建 trigger 带上默认的表单信息。
+// For triggers where there is only one option and a default value when the record is created, 
+// the trigger is created with the default form information.
 export const useDefaultTriggerFormData = () => {
   const datasheetId = useSelector(Selectors.getActiveDatasheetId);
   const defaultFormData = {
@@ -323,5 +323,5 @@ export const useDefaultRobotDesc = (robotId: string) => {
 
 export const useShowRobot = () => {
   const isRobotFeatureOn = useSelector(state => Selectors.labsFeatureOpen(state, SystemConfig.test_function.robot.feature_key));
-  return isRobotFeatureOn || isPrivateDeployment(); // 私有化无条件开启机器人入口
+  return isRobotFeatureOn || isPrivateDeployment(); // Privatization unconditionally opens the robot portal
 };

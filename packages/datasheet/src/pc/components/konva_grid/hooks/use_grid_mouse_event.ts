@@ -126,8 +126,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
   const routeRecordId = state.pageParams.recordId;
   const { rowInitSize, frozenColumnWidth, containerWidth, containerHeight } = instance;
 
-  // 隐藏列跳转高亮选择列
-  
+  // Hide column jump to highlight selected columns
   useUpdateEffect(() => {
     if(!activeCell) {
       return;
@@ -139,11 +138,11 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
     
   }, [activeCell]);
 
-  // 搜索
+  // Search
   useUpdateEffect(() => {
     const state = store.getState();
     const activeCell = Selectors.getActiveCell(state);
-    // 激活单元格的优先级高于表内查找高亮的单元格。
+    // Activated cells have a higher priority than the cells highlighted in the datasheet lookup
     if (activeCell) return;
     if (currentSearchCell) {
       const [searchRecordId, searchFieldId] = currentSearchCell;
@@ -152,7 +151,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
     }
   }, [currentSearchCell?.toString()]);
 
-  // 展开卡片滚动到对应记录
+  // Expand the record to scroll to the corresponding record
   useEffect(() => {
     if (!routeRecordId) return;
     if (activeCell && activeCell.recordId && activeCell.recordId === routeRecordId) return;
@@ -169,7 +168,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [routeRecordId, datasheetId]);
 
-  // 当前用户正在编辑，但是编辑单元格所在的「列」或「行」被隐藏或者删除
+  // The current user is editing, but the "column" or "row" where the edited cell is located is hidden or deleted
   useMemo(() => {
     const editingCell = Selectors.getEditingCell(store.getState());
     if (!editingCell || !Object.keys(editingCell).length) return;
@@ -188,7 +187,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
     }
   }, [visibleColumns, rowsIndexMap, dispatch, datasheetId, onEditorPosition]);
 
-  // 退出搜索后滚动到最后高亮单元格
+  // Exit the search and scroll to the last highlighted cell
   useUpdateEffect(() => {
     if (isSearching) return;
     if (!activeCell) return;
@@ -201,7 +200,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
   }, [isSearching]);
 
   /**
-   * 激活单元格操作
+   * Activating cell operations
    */
   const activeGridCell = (mouseEvent: MouseEvent, targetName: string, rowIndex: number, columnIndex: number) => {
     if (rowIndex === -1 && columnIndex === -1) return;
@@ -213,14 +212,14 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
     } : null;
     if (currentActiveCell) {
       setCellDown(true);
-      // 防止多次触发激活单元格事件
+      // Prevent multiple activation of cell events
       if (isEqual(currentActiveCell, activeCell)) return;
       handleForCell(mouseEvent, currentActiveCell);
     }
   };
 
   /**
-   * 添加行操作
+   * Add row operation
    */
   const addRow = (recordId: string, areaType: AreaType) => {
     if (areaType === AreaType.None || !permissions.rowCreatable) return;
@@ -230,7 +229,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
   };
 
   /**
-   * 选择行操作
+   * Select row operation
    */
   const selectRow = (mouseEvent: MouseEvent, recordId: string) => {
     if (!recordId) return;
@@ -249,7 +248,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
   };
 
   /**
-   * 全选操作
+   * Select all operation
    */
   const selectAll = () => {
     const recordIds = recordRanges?.length === visibleRows.length ? [] : visibleRows.map(r => r.recordId);
@@ -257,7 +256,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
   };
 
   /**
-   * 拖拽行操作
+   * Drag-and-drop row operation
    */
   const dragRow = (mouseEvent: MouseEvent) => {
     if (mouseEvent.button === MouseDownType.Right) return;
@@ -270,7 +269,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
   };
 
   /**
-   * 表格边界滚动操作
+   * Grid border scrolling operation
    */
   const scrollByPosition = () => {
     const toTopSpacing = pointY - rowInitSize;
@@ -311,21 +310,21 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
         onSetCanAppendRow(false);
         return handleForHeader(mouseEvent, targetFieldId, pointColumnIndex, false);
       }
-      // 填充把手
+      // Fill handler
       case KONVA_DATASHEET_ID.GRID_CELL_FILL_HANDLER: {
         if (mouseEvent.button === MouseDownType.Right) return;
         setFillStart(true);
         onSetCanAppendRow(true);
         return handleForFillBar();
       }
-      // 激活单元格
+      // activated cell
       case KONVA_DATASHEET_ID.GRID_DATE_CELL_CREATE_ALARM:
       case KONVA_DATASHEET_ID.GRID_DATE_CELL_ALARM:
       case KONVA_DATASHEET_ID.GRID_CELL: {
         onSetCanAppendRow(false);
         return activeGridCell(mouseEvent, _targetName, pointRowIndex, pointColumnIndex);
       }
-      // 拖拽行
+      // drag handler
       case KONVA_DATASHEET_ID.GRID_ROW_DRAG_HANDLER: {
         onSetCanAppendRow(true);
         return dragRow(mouseEvent);
@@ -354,7 +353,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
       const { recordId: activeRecordId, fieldId: activeFieldId } = activeCell;
       const { recordId: targetRecordId, fieldId: targetFieldId } = getDetailByTargetName(realTargetName);
       if ((activeRecordId === targetRecordId && activeFieldId === targetFieldId)) return;
-      // 拖拽选区操作
+      // Drag-and-drop selection operation
       if (isCellDown) {
         scrollByPosition();
         return dispatch(StoreActions.setSelection({
@@ -365,7 +364,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
           },
         }));
       }
-      // 拖拽把手操作
+      // Drag-and-drop handle operation
       if (fillHandleStatus?.isActive && isFillStart) {
         scrollByPosition();
         return dispatch(StoreActions.setFillHandleStatus({
@@ -381,14 +380,14 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
 
   const onMouseUp = (e: KonvaEventObject<MouseEvent>) => {
     e.evt.preventDefault();
-    // 重置状态
+    // Reset Status
     setCellDown(false);
     setFillStart(false);
     scrollHandler.stopScroll();
 
-    // 填充
+    // Filling
     if (activeCell && fillHandleStatus && fillHandleStatus.isActive && fillHandleStatus.fillRange) {
-      // TODO: 横向检测
+      // TODO: Cross-sectional detection
       const { result } = resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.FillDataToCells,
         selectionRange: selectRanges,
@@ -433,16 +432,16 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
       case KONVA_DATASHEET_ID.GRID_FIELD_HEAD_SELECT_CHECKBOX: {
         return selectAll();
       }
-      // 分组的头点击触发
+      // Group tab click triggers
       case KONVA_DATASHEET_ID.GRID_GROUP_TAB: {
         if (columnStartIndex !== undefined && columnStopIndex !== undefined && scrollTop !== undefined) {
-          // 获取鼠标在 canvas 中的点击坐标
+          // Get the coordinates of the mouse click in the canvas
           const element = mouseEvent.target as HTMLCanvasElement;
           const { x, y } = element.getBoundingClientRect();
           const tabCanvasX = mouseEvent.clientX - x - offsetX;
           const tabCanvasY = mouseEvent.clientY - y + scrollTop;
 
-          // 计算 canvas 的分组表头的渲染坐标，需要优化（与单元格渲染计算逻辑重复）
+          // Calculates the rendering coordinates of the group tab for the canvas
           const { columnCount, rowCount } = instance;
           for (let columnIndex = columnStartIndex; columnIndex <= columnStopIndex; columnIndex++) {
             if (columnIndex > columnCount - 1) break;
@@ -478,7 +477,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
                 };
                 const data = cellHelper.renderCellValue(renderProps) as Array<any>;
                 if (data) {
-                  // 找到与鼠标位置重合的组头，如果找到了就打开弹窗
+                  // Find the group tab that overlaps with the mouse position and open the pop-up if found
                   if (Array.isArray(data)) {
                     for (let index = 0; index < data.length; index++) {
                       const groupTab = data[index];
@@ -537,7 +536,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
   const handleMouseStyle = (realTargetName: string, areaType: AreaType = AreaType.Grid) => {
     const { fieldId, recordId } = gridViewDragState.dragTarget;
     const isDragging = fieldId || recordId;
-    // 拖拽中，不进行样式设置
+    // In drag and drop, no style setting
     if (isDragging) return;
 
     const { targetName, mouseStyle } = getDetailByTargetName(realTargetName);

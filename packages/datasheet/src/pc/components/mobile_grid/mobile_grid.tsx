@@ -171,7 +171,7 @@ export const MobileGrid: React.FC<IMobileGridProps> = ({
     const scrollTop = target.scrollTop;
     if (
       scrollTop
-      // 垂直方向划到底部时抖动处理
+      // Jitter processing when rowing vertically to the bottom
       && scrollTop <= GRID_INNER_DIV_HEIGHT - GRID_HEIGHT
     ) {
       syncScroll(gridOuterRef.current!.scrollLeft, scrollTop);
@@ -244,7 +244,7 @@ export const MobileGrid: React.FC<IMobileGridProps> = ({
 
   }, [syncScroll, viewId, searchKeyword]);
   
-  // 隐藏列点击显示到视图中间并且高亮
+  // Hidden columns are clicked into the middle of the view and highlighted
   const activeCell = useSelector(state => Selectors.getActiveCell(state));
   useEffect(() => {
     if(!activeCell) {
@@ -310,7 +310,7 @@ export const MobileGrid: React.FC<IMobileGridProps> = ({
           {CellHead as any}
         </List>
       </div>
-      {/* 垂直滚动容器 */}
+      {/* Vertical rolling containers */}
       <div
         className={styles.content}
         style={{ width, height: GRID_HEIGHT }}
@@ -338,7 +338,7 @@ export const MobileGrid: React.FC<IMobileGridProps> = ({
           {CellTitle as any}
         </List>
         {!hasHiddenAll &&
-        // 水平滚动容器
+        // Horizontal rolling containers
         <Grid
           className={classNames(styles.remainingColumnsGrid, GRID_CLASS)}
           columnCount={remainingColumns.length}

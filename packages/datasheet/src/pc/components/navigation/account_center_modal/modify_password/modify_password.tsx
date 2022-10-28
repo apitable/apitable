@@ -23,14 +23,12 @@ const defaultData = {
 
 export const ModifyPassword: FC<IModifyPasswordProps> = props => {
   const { setActiveItem } = props;
-  // 验证码……表单数据
   const [data, setData] = useSetState<{
     identifyingCode: string;
     password: string;
     confirmPassword: string;
   }>(defaultData);
 
-  // 错误信息集合
   const [errMsg, setErrMsg] = useSetState<{
     accountErrMsg: string;
     identifyingCodeErrMsg: string;
@@ -90,7 +88,6 @@ export const ModifyPassword: FC<IModifyPasswordProps> = props => {
     }
   };
 
-  // 验证码改变
   const handleIdentifyingCodeChange = React.useCallback((
     e: React.ChangeEvent<HTMLInputElement>
   ) => {

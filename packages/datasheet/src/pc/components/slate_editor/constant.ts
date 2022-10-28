@@ -22,7 +22,7 @@ export enum ElementType {
   TABLE_CELL = 'tableCell'
 }
 
-// 用于判断是否为列表类型
+// Used to determine if it is a list type
 export const LIST_TYPE_DICT = {
   [ElementType.ORDERED_LIST]: ElementType.LIST_ITEM,
   [ElementType.UNORDERED_LIST]: ElementType.LIST_ITEM,
@@ -38,7 +38,7 @@ export const LIST_ITEM_TYPE_DICT = {
   [ElementType.CODE_BLOCK]: ElementType.CODE_BLOCK_WRAP,
 };
 
-// 用于判断当前元素是否为可以包含其他块级元素的类型
+// Used to determine if the current element is a type that can contain other block-level elements
 export const IS_WRAP = {
   ...LIST_TYPE_DICT,
 };
@@ -53,7 +53,7 @@ export const BASIC_ELEMENT = [
   // ElementType.HEADING_SIX,
 ];
 
-// 用于工具栏选择切换元素的类型
+// Used for toolbar selection to switch the type of elements
 export const SELECT_ELEMENT = [
   ...BASIC_ELEMENT,
   ElementType.UNORDERED_LIST,
@@ -62,7 +62,7 @@ export const SELECT_ELEMENT = [
   ElementType.QUOTE,
 ];
 
-// 用于快捷插入元素的类型
+// Types of elements for quick insertion
 export const INSERT_PANEL_ELEMENT_FORMAT = [
   ElementType.HEADING_ONE,
   ElementType.HEADING_TWO,
@@ -112,7 +112,6 @@ export enum ALIGN {
 
 export const ALIGN_LIST = Object.values(ALIGN);
 
-// 一个缩进的距离
 export const INDENT_SPACE = 32;
 
 export const MAX_INDENT = 10;

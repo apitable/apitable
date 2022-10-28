@@ -4,7 +4,7 @@ import { Typography, useTheme } from '@vikadata/components';
 
 const { getSchemaType } = utils;
 
-// 针对单个字段级别的模版。
+// Templates for individual field levels.
 export const FieldTemplate = (props: IFieldTemplateProps) => {
   const { id, classNames, label, help, required, children, uiSchema, description, errors } = props;
   const schemaType = getSchemaType(props.schema);
@@ -22,7 +22,7 @@ export const FieldTemplate = (props: IFieldTemplateProps) => {
   const paddingTop = (() => {
     if (showTitle()) return 16;
     const [, level] = (id || '').split('-');
-    // 2 级标题被隐藏
+    // Secondary headings are hidden
     if (isKV || (parseInt(level, 10) === 1 && !showTitle())) {
       return 0;
     }

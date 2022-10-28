@@ -32,9 +32,9 @@ export const getDefaultSelection = (firstChild: IElement) => {
 }; 
 
 export const getValidSelection = (editor: Editor & IVikaEditor) => {
-  // 特别注意！！！
-  // 这里缓存的lastSelection在unwrapNodes时可能会造成通过缓存selection查找节点失败的情况，从而造成crash
-  // 在有需要对节点进行unwrap或者wrap的时候，事先应该主动恢复一下之前的选区
+  // Special Note!
+  // Here the cached lastSelection in unwrapNodes may cause a failure to find the node by caching the selection, thus causing a crash
+  // When there is a need to unwrap or wrap the node, you should actively restore the previous selection beforehand
   return editor.selection || editor.lastSelection || getDefaultSelection(editor.children[0] as IElement);
 };
 
@@ -44,7 +44,7 @@ export const getCurrentElement = (editor, location?: Location) => {
     [0, 0] : Range.isRange(selection) ?
       [...selection.focus.path] : Array.isArray(selection) ?
         [...selection, 0] : [...selection.path, 0];
-  // 最后一个路径为叶子文本节点，需移除
+  // The last path is a leaf text node and needs to be removed
   path.pop();
   try {
     let ele = Node.get(editor, path);
@@ -178,7 +178,7 @@ export const getImgData = (file: File, url) => {
 };
 
 export const getValidUrl = (str: string) => {
-  // encode一下url, 防止特殊符号识别错误
+  // encode the url, prevent special symbols from being recognized incorrectly
   if (isUrl(encodeURI(str)) || str.startsWith('/')) {
     return str;
   }

@@ -9,9 +9,9 @@ import { t, Strings } from '@apitable/core';
 import { Tooltip } from '../common';
 
 export enum Network {
-  Online = 'online', // 正常网络情况
+  Online = 'online',
   Offline = 'offline',
-  Sync = 'sync', // 数据协同中
+  Sync = 'sync',
   Loading = 'loading',
 }
 
@@ -23,7 +23,6 @@ export const NetworkTip = {
 };
 
 export interface INetworkStatusProps {
-  // 暂时可选属性
   currentStatus?: Network;
 }
 

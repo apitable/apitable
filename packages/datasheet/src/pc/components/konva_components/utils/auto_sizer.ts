@@ -89,9 +89,9 @@ export const AutoSizerCanvas = (defaults: IAutoSizer = {}) => {
     }
 
     const arrText = text.split('');
-    let rowCount = 0; // 总行数
-    let textHeight = 0; // 文字最终占据的高度
-    let showText = ''; // 每行显示的文字
+    let rowCount = 0; // Total number of rows
+    let textHeight = 0; // The height that the text eventually occupies
+    let showText = ''; // Text displayed per line
     let totalText = '';
     let isLimitRow = false;
     const textLength = arrText.length;
@@ -99,7 +99,7 @@ export const AutoSizerCanvas = (defaults: IAutoSizer = {}) => {
     for (let n = 0; n < textLength; n++) {
       const singleText = arrText[n];
       const composeText = showText + singleText;
-      // 没传最大行数，就一直换行
+      // If you don't pass the maxLineCount, you keep changing lines
       isLimitRow = maxLineCount ? rowCount === (maxLineCount - 1) : false;
       const measureText = isLimitRow ? (composeText + '…') : composeText;
       totalText += singleText;

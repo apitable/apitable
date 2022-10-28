@@ -60,7 +60,6 @@ interface IFunctionItem {
   sortIdx: number;
 }
 
-// TODO：这里先做 ISERROR 的兼容，刷完用户数据后统一删掉
 const FunctionsArray = Array.from(Functions)
   .map(item => item[1])
   .filter(item => item.name !== 'ISERROR');
@@ -72,7 +71,7 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
   const formulaInputEleRef = useRef<HTMLElement>();
   const formulaColorantEleRef = useRef<HTMLElement>();
   const _columns = useSelector(state => Selectors.getCurrentView(state, datasheetId)!.columns)! as IViewColumn[];
-  const columns = _columns.filter(column => column.fieldId !== field.id); // 公式字段不允许选择自己。
+  const columns = _columns.filter(column => column.fieldId !== field.id); // Formula fields are not allowed to select themselves
   const [expError, setExpError] = useState<string>('');
   const [tokens, setTokens] = useState<Token[]>();
   const [activeToken, setActiveToken] = useState<Token>();
@@ -88,7 +87,7 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
       if (lexer.errors.length) {
         throw lexer.errors[0];
       }
-      // 这里 FormulaExprParser 是以 fieldName 作为 fieldId 来进行 context 计算的，所以要对 fieldMap 进行一次转换 id => name。
+      // Here FormulaExprParser uses fieldName as the fieldId for context calculation, so a conversion id => name is performed on the fieldMap.
       const convertedFieldMap = {};
       for (const key in fieldMap) {
         convertedFieldMap[fieldMap[key].name] = fieldMap[key];
@@ -208,9 +207,9 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
     }
 
     let { anchorNode, anchorOffset } = selection;
-    let finalAnchorOffset = anchorOffset; // 光标所在当前节点的位置偏移量
-    let anchorNodeIndex = 0; // 当前节点在所有节点中的索引
-    const originAnchorOffset = anchorOffset; // 光标原始位置偏移量
+    let finalAnchorOffset = anchorOffset; // The position offset of the current node where the cursor is located
+    let anchorNodeIndex = 0; // Index of the current node in all nodes
+    const originAnchorOffset = anchorOffset; // Cursor original position offset
 
     while (anchorNode?.previousSibling && anchorNode?.previousSibling?.nodeName !== 'H2') {
       anchorNodeIndex++;
@@ -266,9 +265,7 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
       [FormulaFuncType.Array]: { title: t(Strings.array_functions), list: [], prevCount: 0, sortIdx: -1 },
       [FormulaFuncType.Record]: { title: t(Strings.record_functions), list: [], prevCount: 0, sortIdx: -1 },
     };
-    // 经过筛选后的 Function List
     const filteredList = searchValue ? fuse.search(searchValue) : FunctionsArray.map((c, i) => ({ item: c, refIndex: i }));
-    // 符合最终顺序的 Function List
     const finalFilteredList: any = [];
     filteredList.forEach((res, index) => {
       const funcType = res.item.func.type;
@@ -277,7 +274,6 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
         FunctionsMap[funcType].sortIdx = index;
       }
     });
-    // 经过格式化过后的 Function List (需要按照原本的排序进行格式化)
     let formatList: IFunctionItem[] = Object.values(FunctionsMap)
       .filter(item => item.list.length)
       .sort((prev, next) => prev.sortIdx - next.sortIdx);
@@ -399,7 +395,7 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
                       return (
                         <div
                           key={name}
-                          // 设置 currentIndex 值为从 维格列名 开始到当前 Function 的索引值
+                          // Set the currentIndex value to the index value of the current Function starting from the column name of the dimension
                           onMouseEnter={() => setCurrentIndex(filteredFields.length + result.prevCount + index)}
                           onClick={() => onItemClick(name, 'func')}
                           className={classNames(styles.listItem, active && styles.active, active && 'active')}

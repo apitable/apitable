@@ -42,7 +42,7 @@ export const useFieldOperate = (modalWidth: number, datasheetId?: string, target
     }
 
     function getMultiGridPosition(id: string, direction: string) {
-      // 有些场景(如神奇表单)拿不到Datasheet DomContainer, 用targetDOM作为container
+      // Some scenarios (such as forms) can not get the Datasheet DomContainer, using targetDOM as container
       const dom = document.getElementById(id);
       if (!dom) {
         return;
@@ -59,10 +59,8 @@ export const useFieldOperate = (modalWidth: number, datasheetId?: string, target
   let left = fieldRectLeft - diffOffsetX;
 
   if (left < multiGridLeft) {
-    // 固定左边的位置
     left = multiGridLeft;
   } else if ((left + modalWidth) > multiGridRight) {
-    // 固定右边的位置
     left = multiGridRight - modalWidth;
   }
 
@@ -81,7 +79,7 @@ export const useHideField = (currentView: IViewProperty | undefined, hiddenProp 
     }
     const isCalendar = currentView.type === ViewType.Calendar;
     const isGantt = currentView.type === ViewType.Gantt;
-    // 开启列显示时，日历视图限制最多显示 10 列字段
+    // When column display is turned on, the calendar view is limited to displaying up to 10 columns of fields
     if (isCalendar && !isHidden) {
       let noHiddenFieldLength = 0;
       currentView.columns.forEach(column => {
@@ -170,7 +168,7 @@ export const useFilterField = () => {
 
 export const useGroupField = () => {
   const currentView = useSelector(state => Selectors.getCurrentView(state));
-  const activeViewGroupInfo = useSelector(state => Selectors.getActiveViewGroupInfo(state)); // store 总存储的数据
+  const activeViewGroupInfo = useSelector(state => Selectors.getActiveViewGroupInfo(state)); // store Total stored data
   const canGroup = activeViewGroupInfo.length < 3;
   const groupField = (fieldId: string) => {
     if (!currentView) {

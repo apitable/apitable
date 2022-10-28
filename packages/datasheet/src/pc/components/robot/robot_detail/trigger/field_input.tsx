@@ -10,7 +10,8 @@ interface IFieldInputProps {
 }
 export const FieldInput = ({ field, fop, onChange, value }: IFieldInputProps) => {
 
-  // 这里将传入的值转换为单一的 filterInfo，这个 filter 只有一个表达式。我们的目的是从 filterValue 中获取 input 的值。
+  // Here the incoming value is converted to a single filterInfo, which has only one expression. 
+  // Our goal is to get the value of the input from filterValue.
   const filterInfo: IFilterInfo = useMemo(() => {
     return {
       conjunction: FilterConjunction.And,

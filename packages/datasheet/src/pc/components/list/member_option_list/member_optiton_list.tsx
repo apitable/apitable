@@ -48,7 +48,7 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
   } = props;
   const initList = Array.isArray(listData) ? listData : memberStash.getMemberStash();
   const [memberList, setMemberList] = useState<(IUnitValue | IUserValue)[]>(() => {
-    // 无论是否要开启远程搜索，都需要对数据做一次备份，尤其是组件传入的 local data
+    // Whether or not you want to enable remote search, you need to make a backup of the data, especially the local data passed in by the component
     return initList;
   });
   const dispatch = useDispatch();
@@ -57,7 +57,7 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
   const shareId = useSelector(state => state.pageParams.shareId);
 
   const refreshMemberList = useCallback(() => {
-    // listData 未传入，直接使用 stash
+    // listData is not passed in, use stash directly
     if (!listData) {
       setMemberList(memberStash.getMemberStash());
       return;
@@ -71,7 +71,8 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
 
   const loadOrSearchMember = async(keyword?: string) => {
     if (!showSearchInput && listData != null) {
-      // 不开启远程搜索的情况下，原始数据需要读取从外部传入的完整数据，不可以用组件内缓存的数据
+      // If remote search is not enabled, the raw data needs to be read from the external incoming complete data, 
+      // not the data cached within the component
       const fuse = new Fuse(listData, { keys: ['name'] });
       if (keyword) {
         return fuse.search(keyword).map(item => (item as any).item); // FIXME:TYPE
@@ -95,16 +96,16 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
   });
 
   useUpdateEffect(() => {
-    // FIXME: API 应该有返回类型
+    // FIXME: The API should have a return type
     if (Array.isArray(data)) {
       setMemberList(data);
     }
   }, [data]);
 
-  // 选择一个新的成员，将该成员的信息更新到 unitMap 中
+  // Select a new member and update the information of that member to the unitMap
   function updateMemberInfo(unit: IUnitValue | IUserValue) {
     const { unitId, userId, name, avatar } = unit;
-    // 若筛选值为 ”当前用户“ 或 ”匿名者“，则不需要将其更新到对应 Map 中
+    // If the filter value is "Current User" or "Anonymous", you do not need to update it to the corresponding Map
     if ([unitId, userId].includes(OtherTypeUnitId.Self) || [unitId, userId].includes(OtherTypeUnitId.Alien)) {
       return;
     }
@@ -233,7 +234,7 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
         onSearchChange={(e, keyword) => {
           run(keyword);
         }}
-        // 分享页面不允许出现查看更多，空间站内的组织结构会泄露
+        // The share page is not allowed to appear View More, the organization in the space station will be leaked
         footerComponent={showMoreTipButton && !shareId ? () => {
           return <div
             className={styles.seeMore}

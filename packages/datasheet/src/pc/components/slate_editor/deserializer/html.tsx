@@ -27,7 +27,6 @@ const ELEMENT_TAGS = {
   OL: () => GENERATOR.orderedList({}, []),
   LI: (el) => GENERATOR.listItem({ data: getNodeDataFromAttr(el) }, []),
   P: (el) => GENERATOR.paragraph({ data: getNodeDataFromAttr(el) }, []),
-  // To do 代码块
   PRE: () => GENERATOR.paragraph({}, []),
 };
 
@@ -46,7 +45,6 @@ const deserializeToJsx = (el: any): any => {
     return el.textContent;
   } else if (el.nodeType !== 1) {
     return null;
-    // 换行暂不处理
   } else if (el.nodeName === 'BR') {
     return '';
   }
@@ -68,7 +66,7 @@ const deserializeToJsx = (el: any): any => {
   validChild = validChild.map(deserializeToJsx).flat();
   imgEleList = imgEleList.map(deserializeToJsx).flat();
   if (!validChild.length) {
-    // 子节点只有图片
+    // Child nodes have only images
     if (imgEleList.length) {
       return imgEleList;
     }
@@ -85,7 +83,7 @@ const deserializeToJsx = (el: any): any => {
     if (!imgEleList.length) {
       return node;
     }
-    // 一个块级元素包含了文字和图片
+    // A block-level element contains text and images
     return [...imgEleList, node];
   }
 

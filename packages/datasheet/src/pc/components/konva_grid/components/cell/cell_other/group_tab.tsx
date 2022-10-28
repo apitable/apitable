@@ -36,10 +36,10 @@ export const GroupTab: FC<IGroupTabProps> = memo((props) => {
   const isCollapse = groupingCollapseIdsSet.has(pathKey);
 
   const changeGroupCollapseState = useCallback((newState: string[]) => {
-    // 表内查找时，屏蔽折叠分组操作
+    // Masking collapsing grouping operation when searching within a datasheet.
     if (isSearching) return;
     dispatch(StoreActions.setGroupingCollapse(datasheetId, newState));
-    // QuickAppend 组件显示依赖于 hoverRecordId, 分组折叠的情况下应该清空, 避免产生视觉误导
+    // QuickAppend component display depends on hoverRecordId, which should be cleared in case of group collapse to avoid visual misleading.
     dispatch(StoreActions.setHoverRecordId(datasheetId, null));
     setStorage(StorageName.GroupCollapse, { [`${datasheetId},${viewId}`]: newState });
   }, [isSearching, dispatch, datasheetId, viewId]);

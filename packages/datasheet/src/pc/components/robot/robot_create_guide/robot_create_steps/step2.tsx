@@ -9,7 +9,7 @@ import robotGuideAvatar from 'static/icon/robot/robot_guide_avatar.png';
 import { t, Strings } from '@apitable/core';
 
 import Image from 'next/image';
-// 创建 trigger
+// Create trigger
 export const RobotCreateGuideStep2 = (props: IStepProps) => {
   const theme = useTheme();
   const { robotId, isActive } = props;
@@ -21,7 +21,7 @@ export const RobotCreateGuideStep2 = (props: IStepProps) => {
 
   const createRobotTrigger = useCallback(async(triggerTypeId: string) => {
     const triggerType = triggerTypes.find((item) => item.triggerTypeId === triggerTypeId);
-    // 当记录创建时候，需要填入默认值。
+    // When the record is created, the default value needs to be filled in.
     const input = triggerType?.endpoint === 'record_created' ? defaultFormData : undefined;
     await createTrigger(robotId!, triggerTypeId, input);
     mutate(`/robots/${robotId}/trigger`);

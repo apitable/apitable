@@ -136,7 +136,7 @@ export const NodeContextMenu: FC = () => {
         [
           {
             icon: <EyeCloseOutlined color={colors.thirdLevelText} />,
-            text: t(Strings.org_chart_collapse_node), // 折叠节点
+            text: t(Strings.org_chart_collapse_node),
             onClick: ({ props: { node }}) => {
               toggleNodeCollapse(node.id);
             },
@@ -146,7 +146,7 @@ export const NodeContextMenu: FC = () => {
           },
           {
             icon: <EyeNormalOutlined color={colors.thirdLevelText} />,
-            text: t(Strings.org_chart_expand_node), // 展开节点
+            text: t(Strings.org_chart_expand_node),
             onClick: ({ props: { node }}) => {
               toggleNodeCollapse(node.id);
             },

@@ -31,7 +31,7 @@ export const QuickAppend: React.FC<IQuickAppendProps> = React.memo(props => {
         left,
       }}
       onClick={addNewRecord}
-      // 这里要防止被 multi_grid 监听到引起状态的不断更改
+      // This is to prevent constant state changes caused by multi_grid listening
       onMouseOver={stopPropagation}
     >
       <div

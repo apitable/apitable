@@ -14,24 +14,15 @@ import { ViewLockIcon } from 'pc/components/view_lock/view_lock_icon';
 export interface ITabbarItemProps {
   currentViewId: string;
   viewList: ICustomViewProps[] | undefined;
-  // 当前item的索引
   idx: number;
-  // 当前item的内容
   data: IViewProperty;
-  // 当前活动activeViewId
   activeViewId: string | undefined;
-  // 是否处于编辑状态
   editing: boolean;
   editable: boolean;
-  // 错误消息
   errMsg: string;
-  // 输入框失焦
   handleInputBlur: (e: React.FocusEvent) => void;
-  // 输入框内容改变
   handleInputChange: (e: React.ChangeEvent) => void;
-  // 输入框提交内容
   handleInputEnter: (e: React.KeyboardEvent) => void;
-  // 鼠标按下
   handleMouseDown?: (e: React.MouseEvent, id: string) => void;
   onClick?: (e: React.MouseEvent, id: string) => void;
   onDoubleClick?: (e: React.MouseEvent) => void;
@@ -42,7 +33,6 @@ export interface ITabbarItemProps {
   activeIndex?: number;
   displayIndex?: number;
   hoverIndex: number;
-  // 是否展示视图的状态图标
   showViewStatusIcon?: boolean;
 }
 
@@ -80,7 +70,7 @@ export const TabItem: FC<ITabbarItemProps> = props => {
     if (!inputRef.current) {
       return;
     }
-    // 当处于编辑状态时，默认选中input中的所有文本
+    // When in edit state, all text in input is selected by default
     if (editing) {
       inputRef.current.focus();
       inputRef.current.select();

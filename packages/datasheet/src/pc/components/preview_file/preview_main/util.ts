@@ -36,7 +36,7 @@ export const bulkDownload = async(files: IAttachmentValue[]) => {
     } else {
       namesToCount[fileName]++;
     }
-    // 对重名文件做处理
+    // Doing something about renamed files
     if (namesToCount[fileName] > 1) {
       const [name, suffixName] = fileName.split('.');
       return `${name} ${namesToCount[fileName]}${suffixName ? '.' : ''}${suffixName || ''}`;
@@ -46,13 +46,13 @@ export const bulkDownload = async(files: IAttachmentValue[]) => {
 
   files.forEach((file, index) => {
     const promise = getFile(getDownloadSrc(file)).then((data) => {
-      // issue:  https://github.com/Stuk/jszip/issues/616
-      // jszip 强行使用 UTC 时间作为 last modified date, 为了解决这个问题, 需求手动处理一下
-      // 参考: https://github.com/Stuk/jszip/issues/369#issuecomment-388324954
+      // issue: https://github.com/Stuk/jszip/issues/616
+      // jszip is forcing UTC time as last modified date, in order to solve this problem, we need to handle it manually
+      // Reference: https://github.com/Stuk/jszip/issues/369#issuecomment-388324954
       const currDate = new Date();
       const dateWithOffset = new Date(currDate.getTime() - currDate.getTimezoneOffset() * 60 * 1000); 
 
-      // 下载文件, 并存成ArrayBuffer对象
+      // Download the file, and save it as an ArrayBuffer object
       const fileName = generateFileName(file, index);
       zip.file(fileName, data, {
         binary: true,
@@ -68,14 +68,15 @@ export const bulkDownload = async(files: IAttachmentValue[]) => {
         type: 'blob',
       })
       .then((content) => {
-        // 生成二进制流
+        // Generate binary streams
+        // Save files with file-saver
         FileSaver.saveAs(
           content,
           t(Strings.file_name_with_bulk_download, {
             fileName: files[0].name,
             count: files.length,
           })
-        ); // 利用file-saver保存文件
+        );
       });
   });
 };

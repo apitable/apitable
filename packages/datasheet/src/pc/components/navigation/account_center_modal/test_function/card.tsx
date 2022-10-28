@@ -45,7 +45,7 @@ export const Card: React.FC<{ feature: ApiInterface.ILabsFeature; isUser?: boole
         </div>
 
         <div className={style.bottom}>
-          {/* 应用卡片按钮 */}
+          {/* Application Card Button */}
           <Button
             style={{
               fontSize: 12

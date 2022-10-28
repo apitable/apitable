@@ -13,7 +13,7 @@ const arrowMap = {
 
 export const hotkeyHandle = (e: KeyboardEvent, editor: Editor & IVikaEditor) => {
   const key = e.key;
-  // 单独处理‘/’为了解决safari浏览器输入中文后再按‘/’失效的问题
+  // Separate handling of '/' in order to solve the problem of the safari browser after entering Chinese and then press '/' does not work
   if (key === '/') {
     hotkeys['/'].action(editor as Editor & IEventBusEditor);
     return;
@@ -25,7 +25,8 @@ export const hotkeyHandle = (e: KeyboardEvent, editor: Editor & IVikaEditor) => 
   }
   for (const hotkey in hotkeys) {
     if (isHotkey(hotkey, e)) {
-      // action 返回值决定是否阻止默认行为，默认都阻止，如不阻止需显示的返回true
+      // action return value determines whether to block the default behavior, 
+      // the default is to block all, if not to block the need to display the return true
       const action = hotkeys[hotkey].action;
       if (!action(editor)) {
         e.preventDefault();

@@ -1,7 +1,6 @@
 import { createContext, useContext } from 'react';
 import { useSelector } from 'react-redux';
 
-// 目录树展开来源态
 export enum SideBarType {
   User,
   UserWithoutPanel,
@@ -9,7 +8,6 @@ export enum SideBarType {
   None,
 }
 
-// 用户点击态
 export enum SideBarClickType {
   User,
   ToolBar,

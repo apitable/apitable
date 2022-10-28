@@ -9,7 +9,6 @@ import { GRID_GROUP_OFFSET, GRID_ICON_COMMON_SIZE, GRID_ROW_HEAD_WIDTH } from '.
 const LockNonzeroOutlinedPath = LockNonzeroOutlined.toString();
 
 export class GroupTabLayout extends GridLayout {
-  // "添加列" 绘制
   protected renderAddFieldBlank(row: ILinearRow) {
     super.renderAddFieldBlank(row);
     const { depth } = row;
@@ -49,7 +48,6 @@ export class GroupTabLayout extends GridLayout {
       stroke: colors.sheetLineColor
     });
 
-    // 加密列
     if (isCryptoField) {
       this.setStyle({ fontSize: 14 });
       this.text({
@@ -68,7 +66,7 @@ export class GroupTabLayout extends GridLayout {
       });
     }
 
-    // 兼容分组条件列数据错误的情况
+    // Compatible with grouping condition column with incorrect data
     if (groupField == null) {
       this.setStyle({ fontSize: 14 });
       return this.text({

@@ -7,11 +7,11 @@ import IconImg from 'static/icon/datasheet/attachment/attachment_ img_small_plac
 import IconTxt from 'static/icon/datasheet/attachment/datasheet_img_attachment_ text_placeholder.png'; // txt
 import IconZip from 'static/icon/datasheet/attachment/datasheet_img_attachment_compressed_placeholder.png'; // zip
 import IconExcel from 'static/icon/datasheet/attachment/datasheet_img_attachment_excel_placeholder.png'; // excel
-import IconOther from 'static/icon/datasheet/attachment/datasheet_img_attachment_other_placeholder.png'; // 其他
+import IconOther from 'static/icon/datasheet/attachment/datasheet_img_attachment_other_placeholder.png';
 import IconPdf from 'static/icon/datasheet/attachment/datasheet_img_attachment_pdf_placeholder.png'; // pdf
 import IconPpt from 'static/icon/datasheet/attachment/datasheet_img_attachment_ppt_placeholder.png'; // ppt
-import IconAudio from 'static/icon/datasheet/attachment/datasheet_img_attachment_video_placeholder.png'; // 多媒体
-import IconWord from 'static/icon/datasheet/attachment/datasheet_img_attachment_word_placeholder.png'; // word 图标
+import IconAudio from 'static/icon/datasheet/attachment/datasheet_img_attachment_video_placeholder.png';
+import IconWord from 'static/icon/datasheet/attachment/datasheet_img_attachment_word_placeholder.png';
 
 export enum FileType {
   Other,
@@ -72,7 +72,7 @@ export const DOC_MIME_TYPE = [
 
 const MEDIA_TYPE = ['audio/*', 'video/*'];
 
-// ts 后缀文件默认识别成了 video/mp2t 视频格式
+// ts suffix files are recognized as video/mp2t video format by default
 const INVALID_MEDIA_TYPE = ['video/mp2t'];
 
 const ZIPPED_TYPE = [
@@ -167,7 +167,7 @@ export const imageSizeExceeded = (size: number) => {
 };
 
 /**
- * 是否要显示原图的缩略图，比如说体积超过 20Mb 后，就不显示
+ * Whether to display thumbnails of the original image, e.g. not after the volume exceeds 20Mb
  */
 export const showOriginImageThumbnail = (file: IAttachmentValue) => {
   const fileArgument = { name: file.name, type: file.mimeType };
@@ -185,9 +185,9 @@ export const isSupportImage = (mimeType: string) => {
   return !NO_SUPPORT_IMG_MIME_TYPE.includes(mimeType);
 };
 
-// 获取文件的预览图
-// 1. 图片、PDF 显示图片
-// 2. 其它文件类型显示对应的 Icon
+// Get a preview of the file
+// 1. Pictures, PDF Show pictures
+// 2. Other file types show the corresponding Icon
 export const getCellValueThumbSrc = (
   file: IAttachmentValue,
   option: IImageSrcOption,

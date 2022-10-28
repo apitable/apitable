@@ -1,14 +1,12 @@
 export interface IScrollBarProps {
-  // 根据AutoSize动态计算的表格的宽或高，取决于方向
+  // The width or height of the table dynamically calculated according to AutoSize, depending on the orientation
   gridVisibleLength: number;
-  // 可滑动数据的总长度，包括没有展示在页面上的部分
-  // 如果是横向滚动，则不包括不可动的列
+  // Total length of slidable data, including the part not displayed on the page
+  // In case of horizontal scrolling, non-movable columns are excluded
   dataTotalLength: number;
-  // 视图可见的，可以滚动的部分，例如，
-  // 横向：gridVisibleLength 去除掉不可滚动的列 和 padding
+  // The visible, scrollable part of the view
+  // Horizontal: gridVisibleLength removes non-scrollable columns and padding
   scrollAreaLength: number;
-  // 滚动条的方向
-  // 表格滚动方法
   onGridScroll: (dist: number) => void;
 }
 

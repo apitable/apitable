@@ -156,7 +156,6 @@ export const CustomNodeBase: FC<ICustomNodeBase> = memo((props) => {
           isColNameVisible={isColNameVisible}
           recordId={id}
           visibleFields={columns}
-          // 样式划分为相册类
           isGallery
         />
       </div>

@@ -20,7 +20,6 @@ export const Sm = (props: ILayoutProps) => {
   } = useCards(props);
 
   return <div className={styles.lg} >
-    {/* 第一列 */}
     <Block isWrap vertical style={{ maxWidth: '50%' }}>
       <Block flex={43}>
         <InfoCard minHeight={476} />
@@ -38,7 +37,6 @@ export const Sm = (props: ILayoutProps) => {
         <AdCard />
       </Block>
     </Block>
-    {/* 第二列 */}
     <Block isWrap vertical>
       <Block flex={16}>
         <LevelCard minHeight={186} />

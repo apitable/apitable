@@ -31,7 +31,8 @@ export const MirrorRoute = () => {
     if (!mirrorSourceInfo) {
       return;
     }
-    // mirror 的路由和其他节点相比比较特殊，为了保持映射关系，会在路由上多显示一个 datasheetId ，所以这里对于 mirror 的跳转会做特殊处理
+    // The mirror route is special compared to other nodes, in order to maintain the mapping relationship, 
+    // an additional datasheetId will be displayed on the route, so here for the mirror jump will do special treatment
     if (shareId) {
       Router.push(Navigation.SHARE_SPACE,{
         params: { shareId, nodeId: mirrorId, datasheetId: mirrorSourceInfo?.datasheetId, viewId: mirrorSourceInfo?.viewId, recordId },
@@ -55,9 +56,9 @@ export const MirrorRoute = () => {
   });
 
   /**
-   * 这里主要针对异常状态做处理
-   * 1. mirror 节点被删除
-   * 2. mirror 依赖的源表被删除
+   * Here we mainly deal with the exception status:
+   * 1. mirror node is deleted
+   * 2. mirror The dependent source datasheet is deleted
    */
   const isNoPermission = errorCode === StatusCode.NODE_NOT_EXIST ||
     errorCode === StatusCode.NOT_PERMISSION || errorCode === StatusCode.NODE_DELETED || errorCode === StatusCode.FORM_FOREIGN_DATASHEET_NOT_EXIST;
@@ -78,7 +79,7 @@ export const MirrorRoute = () => {
     </AutoSizer>;
   }
 
-  // 源表没被删除，mirror 节点没有被删除，但是源表生成 mirror 的视图被删除
+  // The source datasheet is not deleted, the mirror node is not deleted, but the view from which the source datasheet generates the mirror is deleted
   if (sourceDatasheet && !sourceDatasheet.snapshot.meta.views.find(item => item.id === mirrorSourceInfo?.viewId)) {
     return <NoPermission desc={t(Strings.mirror_resource_view_been_deleted)} />;
   }

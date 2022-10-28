@@ -1,24 +1,24 @@
-# Storage 使用手册
+# Storage Usage Manual
 
-目前浏览器的`storage`中，如果是以`_common_datasheet`开头的，都是和数表相关的数据。
+The current browser `storage` that starts with `_common_datasheet` are all data related to the number table.
 
-截止目前有5种记录类型：
+As of now, there are 5 types of records.
 
-1. DatasheetView： 记录用户在同一个datasheet下，最后一次打开的视图。（**目前暂时不使用**）
-2. Description：记录用户打开过的数表，用于用户打开一张数表，若storage中没有记录，且数表存在描述，则自动打开描述。
-3. IsPanelClose：记录数表区域面板的打开或者折叠状态。
-4. SplitPos：记录数表区域面板展开时，左侧状态栏的宽度。
-5. GroupCollapse：记录**当前数表**，**当前视图**的分组收起和展开状态。
+1. DatasheetView: Records the last view opened by the user under the same datasheet. (**not used at the moment**) 2.
+2. Description: Records the number of tables opened by the user, used for the user to open a table, if there is no record in storage, and the description of the table exists, then automatically open the description. 3.
+3. IsPanelClose: record the open or collapsed state of the panel of the number table area. 4.
+4. SplitPos: record the width of the left status bar when the panel is expanded.
+5. GroupCollapse: record the group collapse and expansion status of **current count table**, **current view**.
 
 
-## 数据结构
+## Data structure
 
 ### DatasheetView
-暂时没想好。
+To be supplemented
 
 ### Description
 ```ts
-// 其中的String类型为数表id
+// where the String type is the datasheet id
 type Description = string[]
 ```
 
@@ -35,14 +35,14 @@ type SplitPos = number
 ### GroupCollapse
 ```ts
 type GroupCollapse = {
-    // 这里的key为数表id+视图id
+    // The key here is the number table id + view id
     [key:string]:{
-        // 这里的key为分组id（也就是path）
+        // The key here is the group id (aka path)
         [key:string]: boolean
     }
 }
 ```
 
-## 清除命名空间里保存的数据
+## Clear data saved in namespace
 
-用户在登录后，原来会清除掉和数表相关的所有的storage的数据，保持空间的pure。但每次打开一个带鱼节点描述的数表都会弹出描述框，比较烦。因此对于数据进行区分，在`LogInClearConfig`中配置相应的key是否要在登录后清除数据。
+After logging in, the user clears all the storage data associated with the table to keep the space pure, but every time a table with a fish node description is opened, the description box pops up, which is annoying. Therefore, it is necessary to differentiate the data and configure in `LogInClearConfig` whether the corresponding key should clear the data after logging in.

@@ -37,12 +37,12 @@ export const CellRating: React.FC<ICellProps> = memo((props) => {
     }
     return 0;
   };
-  // 从其它单元格转换的评分数字，可能为浮点数
+  // Rating converted from other cells, possibly as floating point numbers.
   const transValue = getTransValue();
   const [pendingValue, setPendingValue] = useState(transValue);
   const handleClick = (newValue: number) => {
     if (editable && onChange) {
-      // 双击原来的评分，清空评分
+      // Double click on the original rating to clear the rating.
       if (cellValue === newValue) {
         onChange(null);
       } else {

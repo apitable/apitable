@@ -22,41 +22,27 @@ enum Types {
 const DESC_MAX_LEN = 200;
 
 export interface ITemplateItemProps {
-  // 图片url
   img: string;
-  // 模板Id
   templateId: string;
-  // 图片的高度
   height?: number;
-  // 模板名称
   name?: string;
-  // 模板描述
   description?: string;
-  // banner描述
   bannerDesc?: {
     title: string;
     color?: string;
     desc: string;
   };
-  // banner类型
   bannerType?: ConfigConstant.BannerType;
-  // 类型
   type?: 'banner' | 'card';
-  // 节点类型
   nodeType?: number;
-  // 模板标签
   tags?: string[];
-  // 作者信息
   creator?: {
     name: string;
     avatar: string;
     userId: string;
   };
-  // 是否是官方模板
   isOfficial?: boolean;
-  // 删除模板
   deleteTemplate?: (templateId: string) => void;
-  // 使用模板
   usingTemplate?: React.Dispatch<React.SetStateAction<string>>;
   onClick?: ({ event, templateId }: { event: React.MouseEvent; templateId: string }) => void;
 }
@@ -80,7 +66,6 @@ export const TemplateItem: React.FC<ITemplateItemProps> = props => {
     isOfficial = true,
     bannerType = ConfigConstant.BannerType.LARGE,
   } = props;
-  // moreBtn菜单是否显示
   const [showPopup, setShowPopup] = useState(false);
   const { user, spaceResource } = useSelector(
     (state: IReduxState) => ({
@@ -199,7 +184,7 @@ export const TemplateItem: React.FC<ITemplateItemProps> = props => {
             setShowPopup={setShowPopup}
             popup={menu()}
             popupStyle={{
-              width: 240, // 占位
+              width: 240,
               zIndex: 101,
             }}
             popupAlign={{

@@ -7,7 +7,7 @@ import { createContext, Dispatch } from 'react';
 
 export interface IKonvaGridViewContextProps {
   /**
-   * 必传参数
+   * Required parameters
    */
   datasheetId: string;
   visibleColumns: IViewColumn[];
@@ -42,29 +42,29 @@ export interface IKonvaGridViewContextProps {
   collaboratorCursorMap: ICollaboratorCursorMap;
 
   /**
-   * 可选参数
+   * Optional parameters
    */
   mirrorId?: string;
 
-  // 排序信息
+  // Sorting Information
   sortInfo?: ISortInfo;
   
-  // 筛选信息
+  // Filter information
   filterInfo?: IFilterInfo;
 
-  // 折叠的分组 ID 的集合
+  // Collapsed set of group IDs
   groupCollapseIds?: string[];
 
-  // 视图是否需要手动保存
+  // Whether the view needs to be saved manually
   isManualSaveView?: boolean;
 
-  // 是否禁止下载附件
+  // Whether to prohibit the download of attachments
   disabledDownload?: boolean;
 
-  // 是否展示评论相关
+  // Whether to show comments
   allowShowCommentPane?: boolean;
 
-  // 列权限
+  // Field Permissions
   fieldPermissionMap?: IFieldPermissionMap;
 }
 

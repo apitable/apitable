@@ -9,7 +9,7 @@ import { mutate } from 'swr';
 import { useDeleteRobotAction, useRobot } from '../../hooks';
 import { MagicVariableForm } from './ui';
 // FIXME: form type
-// Trigger 和 Action 的 From 表单，在这里包装一层。
+// Trigger and Action's From form, wrapped in a layer here.
 export const NodeForm = (props: any) => {
   const ref = useRef<any>(null);
   const [show, setShow] = useState(false);

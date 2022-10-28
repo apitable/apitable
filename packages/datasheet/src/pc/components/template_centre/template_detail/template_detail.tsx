@@ -54,10 +54,10 @@ export const TemplateDetail: FC = () => {
     if (!templateId) {
       return;
     }
-    // 判断是否是空间站模板
+    // Whether it is a space template
     const isPrivate = categoryId === 'tpcprivate';
     getTemplateDirectory(templateId, isPrivate, categoryId);
-    // vika 官方模板下使用配置表中的官方模板空间的 spaceId 查询
+    // Use the spaceId of the official template space in the configuration table under the official template to query
     if (templateId && categoryId !== 'tpcprivate') {
       dispatch(StoreActions.fetchMarketplaceApps(Settings.template_space_id.value));
     }
@@ -111,7 +111,7 @@ export const TemplateDetail: FC = () => {
   let defaultSize = localSize ? parseInt(localSize, 10) : 280;
   defaultSize = templateId ? 320 : defaultSize;
 
-  // 钉钉中，打开试用弹窗，开通后跳转到首页试用
+  // In the Dingtalk, open the trial pop-up window, open it and jump to the home page to try
   const openSku = () => {
     if (!isSkuPage || !corpId || !purchaseToken) return;
 

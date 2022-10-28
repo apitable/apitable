@@ -3,7 +3,8 @@ import { IAttachmentValue } from '@apitable/core';
 export type ITranslatePosition = { x: number; y: number };
 
 export interface IExpandPreviewModalFuncProps {
-  datasheetId?: string; // 3 个 id 同时存在时，会从 redux 中读取附件列表，实现协同读取
+  // When all three ids exist at the same time, the attachment list will be read from redux, enabling collaborative reading
+  datasheetId?: string;
   recordId?: string;
   fieldId?: string;
   activeIndex: number;

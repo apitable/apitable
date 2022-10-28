@@ -140,7 +140,7 @@ export const GridViewsBase: React.ForwardRefRenderFunction<{}, IGridViewOwnProps
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [highlightFieldId]);
 
-  // 常规模式下的自动跳转
+  // Automatic jumping in regular mode
   const activeCell = useSelector(state => Selectors.getActiveCell(state));
   useUpdateEffect(() => {
     if(!activeCell) {
@@ -254,7 +254,7 @@ export const GridViewsBase: React.ForwardRefRenderFunction<{}, IGridViewOwnProps
     },
   }));
 
-  // rowHeight 变化的时候要刷新缓存
+  // Refresh the cache when the rowHeight changes
   useEffect(() => {
     setTimeout(() => {
       const left = totalRegObj.current.bottomLeftReg;
@@ -268,7 +268,8 @@ export const GridViewsBase: React.ForwardRefRenderFunction<{}, IGridViewOwnProps
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rowHeight, bottomLeftRef, bottomRightRef, rows, groupLevel]);
 
-  // columns 变化（调整列宽等）的时候要刷新缓存, 这里没有 columns 监听 frozenColumns 变化也能达到同等效果
+  // The cache is refreshed when columns change (adjusting column widths, etc.), 
+  // and the same effect can be achieved here without the columns listener frozenColumns change
   useEffect(() => {
     upperRightRef.current && upperRightRef.current!.resetAfterColumnIndex(0, true);
     bottomLeftRef.current && bottomLeftRef.current!.resetAfterColumnIndex(0, true);
@@ -297,7 +298,7 @@ export const GridViewsBase: React.ForwardRefRenderFunction<{}, IGridViewOwnProps
 
   const calcRowHeight = (index: number) => {
     const row = rows[index];
-    // 表格底部的高度，撑起空白
+    // The height of the bottom of the table, propping up the margins
     if (!row) {
       return GRID_VIEW_BLANK_HEIGHT;
     }
@@ -328,7 +329,7 @@ export const GridViewsBase: React.ForwardRefRenderFunction<{}, IGridViewOwnProps
     };
   };
 
-  // 同步几块 grid 的位置状态
+  // Synchronize the position state of several grids
   const syncScroll = useCallback((ref: React.RefObject<Grid>) => {
     return ({ scrollLeft, scrollTop, scrollUpdateWasRequested }: GridOnScrollProps) => {
       if (!isMobile) {

@@ -63,7 +63,7 @@ export interface IHelp {
   url: string
 }
 
-//  TODO: 这里差 tooltips 组件，悬浮在 icon 上应该显示 helpText
+//  TODO: Here the tooltips component is missing, hovering over the icon should show helpText
 export const HelpIconButton = ({ help }: { help: IHelp }) => {
   if (!help) return null;
   return (

@@ -84,7 +84,6 @@ export const SideWrapper = props => {
   const scrollFix = (e: React.UIEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
-  // 是否在工作台页面
   const isWorkbench = window.location.pathname.startsWith('/workbench');
 
   return (

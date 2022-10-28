@@ -45,7 +45,7 @@ export const useStats = (props: IUseStatsProps) => {
   } = instance;
   const viewType = view.type;
 
-  // 渲染统计栏
+  // Rendering statistics column
   const getStats = useCallback(({
     y,
     row,

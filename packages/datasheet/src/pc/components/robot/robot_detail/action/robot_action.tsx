@@ -65,14 +65,14 @@ export const RobotAction = (props: IRobotActionProps) => {
       });
     }
   };
-  // 找到当前 action 在 nodeOutputSchemaList 中的位置，只返回在此之前的 schema
+  // Find the position of the current action in the nodeOutputSchemaList and return only the schema before that
   const currentActionIndex = nodeOutputSchemaList.findIndex(item => item.id === action.id);
   const prevActionSchemaList = nodeOutputSchemaList.slice(0, currentActionIndex);
   const actionTypeOptions = getNodeTypeOptions(getFilterActionTypes(actionTypes, action.typeId));
   const { uiSchema, schema } = actionType.inputJsonSchema;
-  // FIXME: 临时解决方案，简单校验规则应该可以通过 json 配置，而不是在这里写代码。
+  // FIXME: Temporary solution, simple checksum rules should be configurable via json instead of writing code here.
   const validate = (formData, errors) => {
-    // FIXME: 这里不应该出现业务代码
+    // FIXME: No business code should appear here
     if (actionType && actionType.endpoint === 'sendLarkMsg') {
       try {
         const formDataValue = operand2PureValue(formData);

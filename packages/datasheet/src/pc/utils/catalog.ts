@@ -52,7 +52,7 @@ export const nodeConfigData = [
   },
 ];
 
-// 检查该url是否是属于本站点
+// Check if the url belongs to this site
 export const isLocalSite = (url: string, originUrl: string) => {
   url = decodeURIComponent(url);
   originUrl = decodeURIComponent(originUrl);
@@ -62,13 +62,13 @@ export const isLocalSite = (url: string, originUrl: string) => {
 };
 
 /**
- * 生成标准的成员信息
+ * Generate standard membership information
  * {
  *  avatar: string;
  *  name: string;
  *  info: number | string;
  * }
- * @param item 用户信息
+ * @param item User information
  */
 export const generateUserInfo = (
   item: UnitItem,
@@ -137,12 +137,8 @@ export const generateUserInfo = (
 };
 
 /**
- *  获取当前节点下所有子节点的指定的属性
- * @param treeNodesMap 树的数据源
- * @param treeNodes 树
- * @param nodeId 要查找的节点ID
- * @param exceptArr 要去除的节点
- * @param property 要获取的节点属性
+ * Get the specified properties of all children under the current node
+ * @param exceptArr Nodes to be removed
  */
 export const getPropertyByTree = (treeNodesMap: ITreeNodesMap, nodeId: string, exceptArr: string[], property: string) => {
   const node = treeNodesMap[nodeId];
@@ -169,11 +165,9 @@ export const exportMirror = (mirrorId: string, exportType: string) => {
 };
 
 /**
- * 导出数表
- * 不传入view对象默认导出全表
- * @param datasheetId 要导出的数表ID
- * @param exportType 导出的文件类型（csv/xlsx）
- * @param view 要导出数表的视图ID
+ * Export Datasheet
+ * Export the full datasheet by default without passing in the view
+ * @param exportType csv or xlsx
  */
 export const exportDatasheet = (datasheetId: string, exportType: string, option: { view?: IViewProperty; mirrorId?: string } = {}) => {
   const { view, mirrorId } = option;
@@ -199,7 +193,7 @@ export const exportDatasheet = (datasheetId: string, exportType: string, option:
         return;
       }
       const { rows, cols } = getRowsAndCols(datasheet, view);
-      // 过滤掉没有权限的列
+      // Filter out fields without permissions
       const visibleCols = cols.filter(col => Selectors.getFieldRoleByFieldId(fieldPermissionMap, col.fieldId) !== ConfigConstant.Role.None);
 
       const data = rows.map(row => {
@@ -209,15 +203,12 @@ export const exportDatasheet = (datasheetId: string, exportType: string, option:
           return Field.bindModel(propsField).cellValueToString(cellValue) || '';
         });
       });
-      // 新建workbook对象
       const Excel = await import('exceljs');
       const workbook = new Excel.Workbook();
       const nodeName = datasheet.name;
       const viewName = view ? view.name : ConfigConstant.EXPORT_ALL_SHEET_NAME;
-      // 新建sheet
       const tempWorksheet = workbook.addWorksheet(`${viewName}`);
       const columnHeader = getColumnHeader(datasheet, visibleCols);
-      // 定义column标题
       tempWorksheet.columns = columnHeader;
       tempWorksheet.addRows(data);
       const fileName = `${nodeName}-${viewName}`;
@@ -244,11 +235,7 @@ export const exportExcelBase = (workbook: Workbook, fileName: string, extraFunc?
     extraFunc && extraFunc();
   });
 };
-/**
- * 导出excel的文件
- * @param workbook workbook对象
- * @param fileName excel文件的名称
- */
+
 const exportExcel = (workbook: Workbook, fileName: string, isView?: boolean) => {
   exportExcelBase(workbook, fileName, () => {
     Message.success({
@@ -257,11 +244,6 @@ const exportExcel = (workbook: Workbook, fileName: string, isView?: boolean) => 
   });
 };
 
-/**
- * 导出csv的文件
- * @param workbook workbook对象
- * @param fileName csv文件的名称
- */
 const exportCSV = async(workbook: Workbook, fileName: string, isView?: boolean) => {
   await workbook.csv.writeBuffer({ encoding: 'UTF-8' }).then(buffer => {
     const blob = new Blob(['\uFEFF' + buffer], { type: 'text/csv;charset=utf-8;' });
@@ -275,11 +257,6 @@ const exportCSV = async(workbook: Workbook, fileName: string, isView?: boolean) 
   });
 };
 
-/**
- * 获取列标题集合
- * @param datasheetPack 数表数据
- * @param cols column对象的集合
- */
 const getColumnHeader = (datasheet: IDatasheetState, cols: any) => {
   return cols.map(col => ({
     header: datasheet.snapshot.meta.fieldMap[col.fieldId].name,
@@ -287,10 +264,8 @@ const getColumnHeader = (datasheet: IDatasheetState, cols: any) => {
 };
 
 /**
- * 获取要导出的行和列的对象集合
- * *当传入view对象时会根据视图的显示来获取行和列（所见即所得）
- * @param datasheetPack 数表数据
- * @param view 要导出的视图
+ * Get the set of objects to be exported in rows and columns
+ * When the view object is passed in, the rows and columns are retrieved according to the display of the view
  */
 const getRowsAndCols = (datasheet: IDatasheetState, view?: IViewProperty) => {
   let rows;
@@ -305,7 +280,7 @@ const getRowsAndCols = (datasheet: IDatasheetState, view?: IViewProperty) => {
   return { rows, cols };
 };
 
-// 通过提供的参数返回当前的数表权限
+// Return the current number table permissions with the provided parameters
 export const getSharePermission = (info: IShareSpaceInfo) => {
   const { allowEdit, hasLogin, allowSaved } = info;
   if (allowSaved) {
@@ -324,9 +299,8 @@ export const getSharePermission = (info: IShareSpaceInfo) => {
 };
 
 /**
- * 将角色转换成前端要显示权限（如：可管理、可编辑、可查看）
- * @param role 角色
- * @param data 其他影响权限文案的参数列表
+ * Convert roles to front-end to display permissions (e.g., manageable, editable, viewable)
+ * @param data List of other parameters that affect the permission text
  */
 export const getPermission = (role: string, data?: { shareInfo?: IShareSpaceInfo }): string => {
   let permission = ConfigConstant.permission[role];
@@ -338,11 +312,11 @@ export const getPermission = (role: string, data?: { shareInfo?: IShareSpaceInfo
 };
 
 export const shouldOpenInNewTab = (e: React.MouseEvent) => {
-  // mac环境下按住cmd 或者 win环境下按住ctrl键，单击鼠标左键时，在新 tab 打开数表。
+  // Hold down cmd in mac environment or hold down ctrl in win environment and click left mouse button to open the table in new tab.
   return (browser.is('Windows') && e.ctrlKey) || (browser.is('macOS') && e.metaKey);
 };
 
-// 切换权限的菜单数据源
+// Menu data source for switching permissions
 export const permissionMenuData = (nodeType: ConfigConstant.NodeType) => {
   const data = [
     {
@@ -369,7 +343,7 @@ export const permissionMenuData = (nodeType: ConfigConstant.NodeType) => {
   return data;
 };
 
-/** 根据节点类型获取菜单 */
+/** Get menu by node type */
 export const getContextTypeByNodeType = (type: ConfigConstant.NodeType) => {
   switch (type) {
     case ConfigConstant.NodeType.DATASHEET:
@@ -387,7 +361,7 @@ export const getContextTypeByNodeType = (type: ConfigConstant.NodeType) => {
   }
 };
 
-/** 根据节点id获取节点类型 */
+/** Get node type based on node id */
 export const getNodeTypeByNodeId = (nodeId: string): ConfigConstant.NodeType => {
   const nodeTypeReg = ConfigConstant.NodeTypeReg;
   const nodeType = ConfigConstant.NodeType;

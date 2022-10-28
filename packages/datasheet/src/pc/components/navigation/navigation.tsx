@@ -52,9 +52,7 @@ enum NavKey {
 
 export const Navigation: FC = () => {
   const colors = useThemeColors();
-  /* 是否显示空间列表抽屉  */
   const [spaceListDrawerVisible, { toggle: toggleSpaceListDrawerVisible, set: setSpaceListDrawerVisible }] = useToggle(false);
-  /* 是否打开创建空间模态框 */
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showHelpCenter, setShowHelpCenter] = useState(false);
@@ -82,12 +80,11 @@ export const Navigation: FC = () => {
   const isMobile = screenIsAtMost(ScreenSize.md);
   const [clickCount, setClickCount] = useState(0);
   const { update: updateIntercom } = useIntercom();
-  // 请求消息总数
   useRequest(notificationStatistics);
-  // 查看是否有系统横幅通知需要显示
+  // Check if there is a system banner notification to be displayed
   useRequest(getNotificationList);
 
-  // 监听ws推送过来的消息，改变图标上的数量显示
+  // Listen to the message pushed by ws and change the number displayed on the icon
   useEffect(() => {
     if (notice) {
       return;
@@ -166,12 +163,10 @@ export const Navigation: FC = () => {
     showHelpCenter && setShowHelpCenter(false);
   };
 
-  // 打开空间菜单
   const openSpaceMenu = () => {
     hiddenUserMenu();
     toggleSpaceListDrawerVisible();
   };
-  // 点击通知图标
   const noticeIconClick = useCallback(() => {
     isMobile && toggleNotice();
     dispatch(StoreActions.getNewMsgFromWsAndLook(false));
@@ -181,14 +176,14 @@ export const Navigation: FC = () => {
     {
       routeAddress: '/workbench' + search,
       icon: WorkplaceIcon,
-      text: t(Strings.nav_workbench), // '工作台',
+      text: t(Strings.nav_workbench),
       key: NavKey.Workbench,
       domId: NAV_ID.ICON_WORKBENCH,
     },
     {
       routeAddress: '/org' + search,
       icon: AddressIcon,
-      text: t(Strings.nav_team), // '通讯录',
+      text: t(Strings.nav_team),
       key: NavKey.Org,
       domId: NAV_ID.ICON_ADDRESS,
     },
@@ -196,14 +191,14 @@ export const Navigation: FC = () => {
       routeAddress: '/template' + search,
       icon: TemplateIcon,
       // icon: <NavigationItem animationData={TemplateAnimationJSON} style={{ width: '24px', height: '24px' }} />,
-      text: t(Strings.nav_templates), // '模板',
+      text: t(Strings.nav_templates),
       key: NavKey.Template,
       domId: NAV_ID.ICON_TEMPLATE,
     },
     {
       routeAddress: '/management' + search,
       icon: ManageOutlined,
-      text: t(Strings.nav_space_settings), // '空间管理',
+      text: t(Strings.nav_space_settings),
       key: NavKey.SpaceManagement,
       domId: NAV_ID.ICON_SPACE_MANAGE,
     },
@@ -262,15 +257,17 @@ export const Navigation: FC = () => {
   const isWecomSpace = isSocialWecom(space);
 
   const handleClickUpgradeBtn = () => {
-    //  钉钉：点击左侧升级按钮。弹出升级弹窗（移动端和PC端用的弹窗组件不同）。点击弹窗跳转到应用详情页面（让用户去支付）
+    // Dingtalk: Click the upgrade button on the left side. 
+    // Upgrade pop-up window pops up (different pop-up components used for mobile and PC). 
+    // Click on the pop-up to jump to the app details page (let the user go to pay)
     if (isDingTalkSpace) {
       isMobile ? setUpgradePopup(true) : showModalInDingTalk(IDingTalkModalType.Upgrade);
     }
-    //  飞书：
-    //    移动端：点击左侧升级按钮，弹窗提示：”到 PC 端购买“
-    //    PC 端：
-    //      管理员：直接打开应用详情页（让用户支付）
-    //      非管理员：弹窗提示：“去找管理员”
+    // Feishu:
+    //   mobile：Click on the upgrade button on the left, the pop-up prompt: "Go to the PC side to buy"
+    //   PC：
+    //     Administrator: open the application detail page directly (let users pay)
+    //     Non-administrator: pop-up prompt: "Go to administrator"
     else if (isFeiShuSpace) {
       if (isMobile) {
         setUpgradePopup(true);

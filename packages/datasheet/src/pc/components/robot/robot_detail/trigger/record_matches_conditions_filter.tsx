@@ -44,29 +44,31 @@ const WarningTip = (props) => {
   </Box>;
 };
 /**
- * 这是一个递归渲染的组件，最多只能套娃3层。将 S表达式渲染成嵌套的分组条件过滤器。支持添加、删除、修改过滤条件。
- * 表达式分类
- * + 基础表达式
- *   + 第一个操作数始终是指定表的字段
- *   + 操作符为指定的操作符。 bool 相关
- *   + 第三个为用户输入值，可静态可以动态
- * + 分组表达式
- *   + or / and 连接起来的表达式。可以是基础表达式，也可以是分组表达式
+ * This is a recursively rendered component with up to 3 levels of nesting. Renders S-expressions as nested grouped conditional filters. 
+ * Supports adding, removing and modifying filter conditions.
+ * Expression Classification
+ * + Basic expressions
+ *   + The first operand is always a field of the specified table
+ *   + The operator is the specified operator. bool Related
+ *   + The third is the user input value, which can be static or dynamic
+ * + Grouping expressions
+ *   + or / and concatenated expressions. It can be a base expression or a grouping expression
  */
 export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFilterProps) => {
   const { datasheetId, hasParent = false, onChange, depth = 0 } = props;
-  // 空值转化为空的表达式
+  // Null expressions converted to null
   const [filter, setFilter] = useState(transformNullFilter(props.filter));
   const isRoot = !hasParent;
   const updateFilter = useCallback((filter) => {
     setFilter(filter);
-    // 子组件更新后的值传递给父组件。父组件知道子组件的具体 path。只需要传值就行。
+    // The updated value of the child component is passed to the parent component. 
+    // The parent component knows the specific path of the child component and only needs to pass the value.
     if (onChange) {
-      // root 更新，需要将值序列化一下。
+      // root update, you need to serialize the values a bit.
       if (isRoot) {
         onChange({
           type: OperandTypeEnums.Literal,
-          value: filter.operands?.length === 0 ? null : filter, // 空值处理
+          value: filter.operands?.length === 0 ? null : filter,
         });
       } else {
         onChange(filter);
@@ -78,26 +80,21 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
     setFilter(transformNullFilter(props.filter));
   }, [props.filter]);
 
-  // 打印根组件的值
-  if (!hasParent) {
-    // console.log('filterfilterfilter', filter);
-  }
   const isGroup = isEqual(filter, EmptyNullOperand) || filter.operator === 'and' || filter.operator === 'or';
   const isBaseExpression = !isGroup;
 
   /**
-   * 在组件内部修改自己的值，同时要同步给父组件。
-   * @param path: 子组件的 path
-   * @param value: 子组件的值
+   * Modify its own value inside the component, and at the same time to synchronize it to the parent component.
+   * @param path: The path of the subcomponent
+   * @param value: The value of the subcomponent
    */
   const handleChange = (path, value) => {
-    // 这里 immer 和 lodash set 不搭，直接 json 转
+    // Here immer and lodash set do not match, direct json to
     const _filter = JSON.parse(JSON.stringify(filter));
     set(_filter, path, value);
     updateFilter(_filter);
   };
 
-  // 按 path 删除
   const deleteOperandByIndex = (operandIndex: number) => {
     const _filter = produce(filter, (draft) => {
       draft.operands.splice(operandIndex, 1);
@@ -113,7 +110,7 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
     return Selectors.getFieldPermissionMap(state, datasheetId);
   });
 
-  // 这里是所有的字段，不管有没有权限
+  // Here are all the fields, with or without permissions
   const fieldMap = snapshot.meta.fieldMap;
 
   const fields = getFields(columns!, fieldMap);
@@ -164,7 +161,6 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
           value={filter.operator}
           onChange={(value) => handleChange('operator', value)}
         />
-        {/* 展位 div 让 grid 布局正常渲染 */}
         <div>
           {
             showFieldInput && <FieldInput
@@ -223,7 +219,7 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
           }
         </div>
         <div className={styles.addFilterWrapper}>
-          {/* 这里要换个组件 */}
+          {/* Here we need to change a component */}
           {/* <DoubleSelect
            value={''}
            options={addFilterOptions}

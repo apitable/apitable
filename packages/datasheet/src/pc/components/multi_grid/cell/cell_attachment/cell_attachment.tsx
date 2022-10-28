@@ -26,7 +26,7 @@ interface ICellAttachmentProps extends ICellComponentProps {
   field: IAttacheField;
   recordId: string;
   rowHeight?: number;
-  keyPrefix?: string; // 主动传入 keyPrefix 时，使用 keyPrefix + index 作为 map 下的 children key
+  keyPrefix?: string; // When keyPrefix is passed in actively, use keyPrefix + index as the children key under the map
 }
 
 const CELL_PADDING_OFFSET = 10;
@@ -88,7 +88,7 @@ export const CellAttachment: React.FC<ICellAttachmentProps> = props => {
 
   function Preview(file: IAttachmentValue, index: number) {
     const isImageType = isImage({ name: file.name, type: file.mimeType });
-    // 单元格内的图标是按比例显示的
+    // The icons in the cell are scaled
     const imgUrl = getCellValueThumbSrc(file,
       {
         h: height * (window.devicePixelRatio || 1),

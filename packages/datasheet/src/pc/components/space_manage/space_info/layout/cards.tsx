@@ -43,7 +43,7 @@ export const useCards = (props: ILayoutProps) => {
     return !!spaceInfo && isSocialPlatformEnabled(spaceInfo);
   }, [spaceInfo]);
 
-  // 是 第三方空间站 或 通过第三方浏览器打开
+  // Opened by a third-party space station or through a third-party browser
   const isSocial = isSocialEnabled || inSocialApp() || isSocialFeiShu();
 
   return useMemo(() => {
@@ -92,7 +92,8 @@ export const useCards = (props: ILayoutProps) => {
       ),
 
       CapacityCard: (props: ICardProps) => {
-        // 如果是第三方环境，使用 Card（不带赠送空间信息），否则使用 CapacityWithRewardCard（带赠送信息）
+        // If it is a third-party environment, use Card (without complimentary space information), 
+        // otherwise use CapacityWithRewardCard (with complimentary information)
         return isSocial ? (
           <Card
             {...props}

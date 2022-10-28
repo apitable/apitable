@@ -23,7 +23,7 @@ export const OptionList: React.FC<IOptionListProps> = (props) => {
   const [keyword, setKeyword] = useState('');
   const manageable = useSelector(state => Selectors.getPermissions(state, datasheetId).manageable);
   const { formId } = useSelector(state => state.pageParams);
-  const showNotAllowAddTip = Boolean(!manageable && keyword.length); // 是否提示使用者不能添加新的选项
+  const showNotAllowAddTip = Boolean(!manageable && keyword.length); // Does it prompt the user not to add new options
   const optionByFilter = optionList.filter(filterOptions);
   const allowAddNewItem = Boolean(onAddHandle) && manageable;
 
@@ -47,11 +47,11 @@ export const OptionList: React.FC<IOptionListProps> = (props) => {
     return optionList.filter(item => item.name === keyword)[0];
   }
 
-  // 切换当前选项的选择状态
+  // Toggles the selection status of the current option
   function switchOptionsStatus(id: string) {
     let value;
     if (!Array.isArray(existValues) && typeof existValues !== 'string') {
-      // 刚改变field的类型，当前的optionData === {}
+      // Just changed the type of field, the current optionData === {}
       value = multiMode ? [id] : id;
     } else if (multiMode) {
       if (existValues.includes(id)) {
@@ -70,7 +70,7 @@ export const OptionList: React.FC<IOptionListProps> = (props) => {
     onClickItem(value);
   }
 
-  // 在过滤条件下的交换要拿到当前option的在原数组中的真实索引
+  // The swap in the filter condition should get the true index of the current option in the original array
   const getActualIndexOfOptions = useCallback((optionId: string) => {
     return optionList.findIndex(item => item.id === optionId);
   }, [optionList]);
@@ -79,7 +79,7 @@ export const OptionList: React.FC<IOptionListProps> = (props) => {
     dragOption!.setDraggingId(undefined);
     let actualOldIndex = oldIndex;
     let actualNewIndex = newIndex;
-    // 说明有过滤关键字
+    // Description with filter keywords
     if (keyword.length > 0) {
       const filterOptionsArr = optionList.filter(filterOptions);
       actualOldIndex = getActualIndexOfOptions(filterOptionsArr[oldIndex].id);

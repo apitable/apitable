@@ -54,7 +54,6 @@ export const AppModal: FC<IModalProps> = props => {
   const [wecomTipVisible, setWecomTipVisible] = useState(false);
   const spaceId = useSelector((state: IReduxState) => state.space.activeId)!;
 
-  // 应用是否已开启
   const isOpen = openStatus === AppStatus.Open;
   const configPageList = [AppType.Lark, AppType.Wecom];
   const isStore = type.includes('STORE');
@@ -78,7 +77,7 @@ export const AppModal: FC<IModalProps> = props => {
     setLoading(false);
     Message.success({ content: isOpen ? t(Strings.marketplace_app_disable_succeed) : t(Strings.marketplace_app_enable_succeed) });
     onRefresh();
-    // office 不需要跳转
+    // Office does not require jumping
     if (isOpen || type === AppType.OfficePreview) {
       return;
     }
@@ -112,7 +111,7 @@ export const AppModal: FC<IModalProps> = props => {
 
   const onClick = () => {
     billingAlert(type);
-    // 商店应用
+    // Store Application
     if (type.includes('STORE')) {
       if (isWecomStore || isDingStore) {
         const content = t(isWecomStore ? Strings.wecom_social_deactivate_tip : Strings.dingtalk_social_deactivate_tip);
@@ -127,13 +126,14 @@ export const AppModal: FC<IModalProps> = props => {
       return;
     }
 
-    // 自建应用 - 飞书与office可以开启/停用实例
+    // Build your own application - FeiBook and office can be turned on/off for example
     if (![AppType.DingTalk, AppType.Wecom].includes(type)) {
       configApp();
       return;
     }
 
-    // 企微自建应用规则已改，针对已经开通自建应用的企业，停用时需要二次弹窗提示确认，开启直接跳转帮助文档
+    // Enterprise micro self-built application rules have been changed, for enterprises that have opened self-built applications, 
+    // the second pop-up window is needed to confirm when deactivating, and open directly to jump to help documents
     if (type === AppType.Wecom) {
       if (isOpen) {
         setWecomTipVisible(true);
@@ -143,7 +143,7 @@ export const AppModal: FC<IModalProps> = props => {
       return;
     }
 
-    // 钉钉自建应用
+    // Dingtalk self-built apps
     if (!isOpen) {
       navigationToUrl(getUrl(helpUrl) || '#');
     } else {
@@ -194,7 +194,7 @@ export const AppModal: FC<IModalProps> = props => {
             let targetUrl = `/user/${type.toLocaleLowerCase()}/integration/config/${instance.appInstanceId}`;
             if (type === AppType.Lark) {
               const { appKey, eventVerificationToken, configComplete } = instance.config.profile;
-              // 没有配置完则跳转配置步骤继续配
+              // If the configuration is not completed, skip to the configuration step and continue with
               if (!appKey || !eventVerificationToken || !configComplete) {
                 targetUrl = `${configureUrl}/${instance.appInstanceId}`;
               }

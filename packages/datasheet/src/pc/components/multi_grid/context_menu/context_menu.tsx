@@ -18,7 +18,7 @@ type IdMap = {
 
 interface IContextFieldOwnProps {
   parentRef: React.RefObject<HTMLDivElement> | undefined;
-  getIdMapByEvent?: (e: MouseEvent) => IdMap; // 提供允许调用者传入 recordId 和 fieldId 的能力
+  getIdMapByEvent?: (e: MouseEvent) => IdMap; // Provides the ability to allow the caller to pass in recordId and fieldId
   editFieldSetting?: (fieldId: string) => void;
   editFieldDesc?: (fieldId: string) => void;
   onFrozenColumn?: (fieldId: string) => void;
@@ -112,7 +112,7 @@ export const ContextMenuBase: React.FC<IContextFieldOwnProps> = props => {
     };
   });
 
-  // 兼容 iPad 无法触发 click 事件的问题
+  // Compatible with iPad not triggering click event issue
   useEffect(() => {
     if (!isIPad13) return;
     const element = parentRef!.current;

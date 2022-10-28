@@ -63,10 +63,6 @@ export const RobotDetailHead = () => {
           setIsEditingRobotDesc(true);
         }
       },
-      // {
-      //   text: '复制机器人 URL',
-      //   icon: <CopyOutlined />
-      // }
     ],
     [
       {

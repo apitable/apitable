@@ -72,7 +72,7 @@ export async function download(fileInfo: IAttachmentValue) {
     });
     const resp = await DatasheetApi.getContentDisposition(href);
     const contentDisposition = resp.data.data;
-    // 如果图片 contentDisposition 类型是 inline, 强制使用二进制流下载
+    // If the image contentDisposition type is inline, force the download using a binary stream
     if (contentDisposition.includes('inline')) {
       mode = 'stream';
     }
@@ -112,7 +112,7 @@ export const ToolBar: React.FC<IToolBar> = props => {
   const isRecordFullScreen = useSelector(state => state.space.isRecordFullScreen);
 
   useEffect(() => {
-    // initActualScale 变化, 代表切换了图片，此时应该重置 adaptiveMode
+    // initActualScale changes, which means that the image is switched, and the adaptiveMode should be reset.
     setAdaptiveMode(true);
   }, [initActualScale]);
 
@@ -130,7 +130,7 @@ export const ToolBar: React.FC<IToolBar> = props => {
             style: { marginRight: 0 },
           },
           {
-            // 实际缩放比例 = 初始缩放比例 * scale
+            // Actual scale = Initial scale * scale
             component: initActualScale == -1 ? <Loading currentColor /> : Math.floor((areEqualToInitial ? 1 : initActualScale * scale) * 100) + '%',
             tip: adaptiveMode ? t(Strings.initial_size) : t(Strings.adaptive),
             onClick: () => {

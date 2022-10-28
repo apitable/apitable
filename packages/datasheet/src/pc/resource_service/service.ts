@@ -18,7 +18,7 @@ export class ResourceServiceEnhanced extends ResourceService {
 
   init() {
     if (this.initialized) {
-      console.warn('! ' + '请勿重复初始化 resource service');
+      console.warn('! ' + 'Do not repeat the initialize resource service');
       return;
     }
     super.init();
@@ -26,7 +26,7 @@ export class ResourceServiceEnhanced extends ResourceService {
     this.keybindingService = new KeybindingService();
     this.uploadManager = new UploadManager(5, this.commandManager);
     this.clipboard = new Clipboard(this.commandManager, this.uploadManager);
-    console.log('resource service 初始化成功');
+    console.log('resource service initialized successfully');
   }
 
   destroy() {

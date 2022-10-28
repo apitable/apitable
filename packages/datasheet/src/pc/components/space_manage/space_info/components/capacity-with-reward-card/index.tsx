@@ -90,8 +90,8 @@ export const CapacityWithRewardCard: FC<ICardProps> = props => {
   const giftStrokeColor = giftUsedPercent === 100 ? colors.red[500] : colors.rainbowPurple5;
 
   const unLimited = +totalText === -1;
-  // UI反馈当总数无限时，给一个默认的比率进度条会美观些
-  const showFakePercent = unLimited && +usedText; // 无限情况下，展示虚假的百分比 5%
+  // UI feedback when the total number of infinite, give a default rate progress bar will be more beautiful
+  const showFakePercent = unLimited && +usedText; // Show false percentages in infinite cases 5%
   const percent = useAnimationNum({ value: showFakePercent ? 5 : usedPercent, duration: 1000, easing: 'linear', isFloat: true }) as number;
 
   const giftPercent = useAnimationNum({
@@ -110,7 +110,7 @@ export const CapacityWithRewardCard: FC<ICardProps> = props => {
   }, [minHeight]);
 
   /**
-   * 容量信息，带有赠送信息
+   * Capacity information with complimentary information
    */
   const CapacityInfoWithReward = () => {
     return (
@@ -216,7 +216,7 @@ export const CapacityWithRewardCard: FC<ICardProps> = props => {
 };
 
 /**
- * 用量描述
+ * Usage Description
  */
 interface IDescProps {
   color: string;
@@ -247,11 +247,11 @@ const Desc: FC<IDescProps> = ({ color, label, text, unit, showPercent, usedPerce
 };
 
 /**
- * 对 Progress 进行了一层封装
+ * A layer of wrapping around Progress
  */
 interface IProgressInCardProps extends ProgressProps {
   /**
-   * showInfo 为 true 时，文字的颜色
+   * When showInfo is true, the color of the text
    */
   color?: string;
 }

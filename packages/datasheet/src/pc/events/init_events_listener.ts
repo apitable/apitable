@@ -18,7 +18,7 @@ const makeVEvent = (datasheetId, fieldId, recordId) => {
   return {
     eventName: OPEventNameEnums.CellUpdated,
     scope: ResourceType.Datasheet,
-    realType: EventRealTypeEnums.REAL, // 假装是真实的
+    realType: EventRealTypeEnums.REAL,
     atomType: EventAtomTypeEnums.ATOM,
     sourceType: EventSourceTypeEnums.LOCAL,
     context: {
@@ -40,7 +40,7 @@ const removeAndUpdateCacheIfNeed = (datasheetId: string, fieldId?: string, recor
   } else {
     CacheManager.removeCellCache(datasheetId, fieldId, recordId);
   }
-  // TODO: 应该不需要对表单单独处理，先迁移过来，后面删掉
+  // TODO: No need to process the form separately, migrate it over first and delete it later
   if (store) {
     const state = store.getState();
     let nextCache;
@@ -72,13 +72,15 @@ const removeAndUpdateCacheIfNeed = (datasheetId: string, fieldId?: string, recor
 };
 
 /**
- * 初始化事件监听，只能监听一遍。将 op 转为事件流后，在这里统一管理业务回掉。这里的监听是不需要移除的
+ * Initialize the event listener and listen to it only once. After converting the op to an event stream, 
+ * the business is managed here uniformly back off. The listeners here are not to be removed
  */
 export const initEventListen = (resourceService: ResourceService) => {
   console.log('resourceService', resourceService);
   const { opEventManager, computeRefManager } = resourceService;
-  // -------- 字段单元格变化触发引用字段变化 --------
-  // record 删除的事件不需要监听，当 record 删除时，link 字段的 cellValue 变化，触发 cellUpdate。
+  // -------- Field cell changes trigger changes in the referenced field --------
+  // The record deletion event does not need to be listened to. 
+  // When the record is deleted, the cellValue of the link field changes and triggers cellUpdate.
   opEventManager.addEventListener(OPEventNameEnums.CellUpdated, context => {
     const { datasheetId, recordId, fieldId } = context;
     removeAndUpdateCacheIfNeed(datasheetId, fieldId, recordId);
@@ -88,7 +90,8 @@ export const initEventListen = (resourceService: ResourceService) => {
     // beforeApply: true,
   });
 
-  // 字段删除和字段更新都会触发这个事件。二者的 op 特征相同
+  // Both field deletion and field update will trigger this event. 
+  // Both have the same op characteristics.
   opEventManager.addEventListener(OPEventNameEnums.FieldUpdated, context => {
     const { datasheetId, fieldId } = context;
     removeAndUpdateCacheIfNeed(datasheetId, fieldId);
@@ -97,7 +100,9 @@ export const initEventListen = (resourceService: ResourceService) => {
     const fieldMap = currSnapshot?.meta.fieldMap || {};
     computeRefManager.computeRefMap(fieldMap, datasheetId, state);
 
-    // 字段更新，影响范围比较大。现在机器人不太适合将字段更新，转化为单元格更新。目前只在前端的清引用链上的缓存。
+    // field updates, the impact is relatively large.
+    // Now the robot is not very suitable for updating fields and converting them into cell updates.
+    // Currently only the cache on the front end of the clear reference chain.
     const refKey = `${datasheetId}-${fieldId}`;
     const { hasError, effectedKeys } = computeRefManager.getAllEffectKeysByKey(refKey);
     if (!hasError) {
@@ -105,13 +110,13 @@ export const initEventListen = (resourceService: ResourceService) => {
         const [dstId, fieldId] = key.split('-');
         const snapshot = Selectors.getSnapshot(state, dstId);
         if (fieldId && snapshot) {
-          // 列更新
           const field = snapshot.meta.fieldMap[fieldId];
-          // 可能存在残留的引用关系，没有及时清理
+          // There may be residual reference relationships that are not cleaned up in a timely manner
           if (!field) {
             computeRefManager.cleanFieldRef(fieldId, dstId);
           } else if (field.type === FieldType.LookUp) {
-            // lookup 经过了公式计算。这个时候需要清理公式缓存。
+            // lookup after the formula calculation. 
+            // This time you need to clear the formula cache.
             const expr = Field.bindModel(field, state).getExpression();
             if (expr) {
               ExpCache.del(datasheetId, fieldId, expr);
@@ -123,13 +128,11 @@ export const initEventListen = (resourceService: ResourceService) => {
     }
   });
 
-  // 记录删除
   opEventManager.addEventListener(OPEventNameEnums.RecordDeleted, context => {
     const { datasheetId, recordId } = context;
     removeAndUpdateCacheIfNeed(datasheetId, undefined, recordId);
   });
 
-  // --------------- 更新 record.recordMeta ---------------
   opEventManager.addEventListener(OPEventNameEnums.RecordMetaUpdated, ({ datasheetId, recordId, action }) => {
     if (!('oi' in action)) return;
     const state = store.getState();
@@ -137,8 +140,8 @@ export const initEventListen = (resourceService: ResourceService) => {
     const vEvents: any = [];
     // Created
     if (('oi' in action) && !('od' in action)) {
-      // 一般情况是：创建 record；
-      // 特殊情况是：删除 record => 撤销操作，这种情况需要更新 LastModifiedTime 和 LastModifiedBy；
+      // The general case is: create record.
+      // Special case: delete record => undo operation, in which case LastModifiedTime and LastModifiedBy need to be updated.
       const actionFields = new Set(
         [FieldType.CreatedTime, FieldType.CreatedBy, FieldType.LastModifiedTime, FieldType.LastModifiedBy, FieldType.AutoNumber]
       );
@@ -161,7 +164,7 @@ export const initEventListen = (resourceService: ResourceService) => {
           vEvents.push(makeVEvent(datasheetId, field.id, recordId));
         });
     }
-    // 更新包含 CREATED_TIME/LAST_MODIFIED_TIME 的 Formula 字段类型单元格
+    // Update cells containing CREATED_TIME/LAST_MODIFIED_TIME for the Formula field type
     Object.values(fieldMap)
       .filter(field => field.type === FieldType.Formula)
       .forEach(field => {
@@ -180,7 +183,7 @@ export const initEventListen = (resourceService: ResourceService) => {
     opEventManager.handleEvents(virtualAtomEvents, false);
   });
 
-  // -------- 成员单元格内容变更触发的事件 --------
+  // -------- Events triggered by changes in the content of member cells --------
   opEventManager.addEventListener(OPEventNameEnums.CellUpdated, ({ action, fieldId, recordId, datasheetId }) => {
     const state = store.getState();
     const fieldMap = Selectors.getFieldMap(state, datasheetId);
@@ -188,7 +191,7 @@ export const initEventListen = (resourceService: ResourceService) => {
     const field = fieldMap[fieldId];
     if (!field) return;
     const activeView = Selectors.getActiveViewId(state)!;
-    // 只监听成员字段的变更。
+    // Listen only for changes to member fields
     if (field.type !== FieldType.Member) return;
     if (!('oi' in action) || !recordId) return;
     const isNotify = field.property.shouldSendMsg;
@@ -246,7 +249,8 @@ export const initEventListen = (resourceService: ResourceService) => {
       }
 
       if (isRecordNotInView || isRecordIndexMove) {
-        // 新增行后激活新增行的单元格。这个时候会刷一遍 activeRowInfo 的信息。
+        // After adding a new row activates the cell of the new row. 
+        // This time the information of activeRowInfo will be refreshed.
         dispatch(
           StoreActions.setActiveCell(datasheetId, {
             recordId: newRecordId,
@@ -268,9 +272,9 @@ export const initEventListen = (resourceService: ResourceService) => {
       }
     });
   }, {
-    sourceType: EventSourceTypeEnums.LOCAL, // 只监听本地的记录创建。
+    sourceType: EventSourceTypeEnums.LOCAL, // Listen only to local record creation
     realType: EventRealTypeEnums.REAL,
-    beforeApply: true, // 在应用到 store 之前
+    beforeApply: true, // Before applying to store
   });
 
   opEventManager.addEventListener(OPEventNameEnums.RecordCreated, ({ recordId, op, datasheetId }) => {
@@ -282,7 +286,7 @@ export const initEventListen = (resourceService: ResourceService) => {
     if (!newRecordSnapshot) {
       return;
     }
-    // 如果新增有开启通知的成员列发送通知
+    // Send notifications for member columns that have notifications turned on
     const memberCell: Array<ISendMessageType> = [];
     const newRecordData = newRecordSnapshot.recordMap[newRecordId].data;
     Object.keys(newRecordSnapshot.meta.fieldMap).forEach(field => {
@@ -306,7 +310,7 @@ export const initEventListen = (resourceService: ResourceService) => {
 
   },
   {
-    sourceType: EventSourceTypeEnums.LOCAL, // 只监听本地的记录创建。
+    sourceType: EventSourceTypeEnums.LOCAL, // Listens only for local record creation
     realType: EventRealTypeEnums.REAL,
   });
 };

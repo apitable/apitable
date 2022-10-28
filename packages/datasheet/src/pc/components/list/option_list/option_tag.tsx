@@ -19,7 +19,7 @@ export const OptionTag: React.FC<IOptionTagProps> = (props) => {
   const colors = useThemeColors();
   const cacheTheme = useSelector(Selectors.getTheme);
   const { option, style = {}, className, ellipsis = true } = props;
-  // 透明度为 0.8 或 1 的深色要换成白色字体
+  // Dark colors with a transparency of 0.8 or 1 should be replaced with white fonts
   const optionNameColor = cacheTheme === ThemeName.Dark ? colors.staticWhite0 : 
     (option.color >= COLOR_INDEX_THRESHOLD ? colors.defaultBg : 'inherit');
 

@@ -194,7 +194,6 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     gridRef.changeScroll(GridReg.GroupStatRightReg, { ...scrollData, scrollTop: 0 });
   };
 
-  // 鼠标滚动事件
   columnScroll = (e: React.WheelEvent) => {
     const gridRef = this.gridRef.current;
     if (!gridRef) {
@@ -218,7 +217,6 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     });
   };
 
-  // 向上/向下滚动一页
   pageUpOrPageDown = (down: boolean) => {
     const gridRef = this.gridRef.current;
     if (!gridRef) {
@@ -238,7 +236,6 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     this.columnScrollProcess(top - unFixedRowHeight);
   };
 
-  // 向左/向右滚动一页
   pageLeftOrPageRight = (right: boolean) => {
     const gridRef = this.gridRef.current;
     if (!gridRef) {
@@ -259,7 +256,6 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     this.rowScroll(left - unFixedRowHeight);
   };
 
-  // 纵向滚动
   columnScrollProcess = (dist: number) => {
     const gridRef = this.gridRef.current;
     if (!gridRef) {
@@ -273,7 +269,6 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     });
   };
 
-  // 横向滚动
   rowScroll = (dist: number) => {
     const gridRef = this.gridRef.current;
     if (!gridRef) {
@@ -438,7 +433,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     const { frozenColumns } = this.props;
     this.updateScrollOffset(gridRef);
     /**
-     * 不移动列的情况下，不需要特殊判断
+     * No special judgments are needed if you don't move columns
      */
     if (props.columnIndex == null) {
       gridRef.scrollToItem(GridRef.BottomLeftRef, props);
@@ -446,7 +441,9 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
       return;
     }
     /**
-     * 如果需要显示冻结区域的列，非冻结区域则要减去冻结区域的列 index，与让目标列与组件里的列匹配
+     * If you need to display the columns in the frozen area, 
+     * the index of the columns in the non-frozen area should be subtracted from the columns 
+     * in the frozen area to match the target columns with the columns in the component
      */
     if (props.columnIndex >= frozenColumns.length) {
       gridRef.scrollToItem(GridRef.BottomLeftRef, props);
@@ -455,7 +452,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
       return;
     }
     /**
-     * 要移动的列在冻结区域，则忽略列，只移动行
+     * If the column to be moved is in the freeze zone, the column is ignored and only the row is moved
      */
     gridRef.scrollToItem(GridRef.BottomLeftRef, { align: props.align, rowIndex: props.rowIndex });
     gridRef.scrollToItem(GridRef.BottomRightRef, { align: props.align, rowIndex: props.rowIndex });
@@ -522,12 +519,12 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
   }, 50);
 
   /**
-   * @description 监听当前鼠标悬浮的行
-   * 拖拽中会阻止该事件的发生
+   * @description Listening to the current mouse hover row
+   * Dragging in will prevent the event from occurring
    * @memberof MultiGridsBase
    */
   onMouseOver = (e: React.MouseEvent<HTMLElement>) => {
-    // 当拖拽动作进行中，阻止对当前行为的监听
+    // When dragging action is in progress, block listening to the current action
     if (this.state.scrolling) {
       return;
     }
@@ -552,7 +549,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
 
   calcTotalRowHeight = () => {
     const { rows, rowHeight, view, linearRows } = this.props;
-    // 视图底部会有150像素的高度撑起一部分空白区域
+    // The bottom of the view will have 150 pixels of height holding up a portion of the blank area
     if (view.groupInfo && view.groupInfo.length) {
       return (
         linearRows.reduce((height, cur) => {
@@ -614,12 +611,12 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     const showQuickAppendTool = Boolean(
       !scrolling &&
         hoverRecordId &&
-        // 拖动行时不显示
+        // No display when dragging rows
         !dragTarget.recordId &&
         quickAppendBtnTop >= BOTTOM_RIGHT_TOP &&
         editable,
     );
-    // TODO: 分组状态与普通状态 border 保持统一
+    // TODO: Group states are aligned with the normal state border
     const offsetY = BOTTOM_RIGHT_TOP - fixedRowHeight - (groupOffset > 0 ? 1 : 0);
 
     return (

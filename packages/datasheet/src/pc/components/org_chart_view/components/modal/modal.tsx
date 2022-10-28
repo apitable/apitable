@@ -77,7 +77,7 @@ export const Modal: React.FC<IModalProps> = ({
     return 0;
   };
 
-  // 只用考虑下边界
+  // Just consider the lower boundary
   const getOffsetY = () => {
     return top + Math.max(QUICK_ADD_MODAL_HEIGHT, height * scale) + 32 - bodySize.height;
   };

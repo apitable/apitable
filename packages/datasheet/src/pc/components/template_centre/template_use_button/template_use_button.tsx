@@ -33,9 +33,7 @@ export const TemplateUseButton: React.FC<ITemplateUseButtonProps> = props => {
   const userInfo = useSelector((state: IReduxState) => state.user.info);
   const spaceId = useSelector(state => state.space.activeId);
   const { templateId, categoryId } = useSelector((state: IReduxState) => state.pageParams);
-  // 打开使用模板弹窗
   const [openTemplateModal, setOpenTemplateModal] = useState('');
-  // 打开登录模态框
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const templateDirectory = useSelector(state => state.templateCentre.directory);
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
@@ -54,7 +52,7 @@ export const TemplateUseButton: React.FC<ITemplateUseButtonProps> = props => {
   }, [openTemplateModal]);
 
   const openUseTemplateModal = () => {
-    // 当前用户未登录时
+    // Current user is not logged in
     if (!userInfo) {
       Modal.confirm({
         title: t(Strings.kindly_reminder),
@@ -68,7 +66,7 @@ export const TemplateUseButton: React.FC<ITemplateUseButtonProps> = props => {
       });
       return;
     }
-    // 当前用户已登录时
+    // Current user is logged in
     if (!spaceId && templateId) {
       Router.push(Navigation.TEMPLATE, { params: { categoryId, templateId, spaceId: userInfo!.spaceId }});
       return;

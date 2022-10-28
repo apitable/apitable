@@ -1,5 +1,4 @@
 @import "../lib_var.less";
-// *******Modal默认样式
 // @modal-body-padding: 24px;
 // @modal-header-bg: @component-background;
 // @modal-header-border-color-split: @lineColor-split;
@@ -14,8 +13,8 @@
 //  FIXME:THEME
 // @modal-mask-bg: var(--deepMaskColor);
 
-// *******通用全局样式：定义了标题以及关闭图标样式，取消了modal内容边框
-// 使用注意：自动覆盖antd样式。注意modal组件中请使用closeIcon参数自定义关闭图标，不用antd自带的关闭图标
+// General global style: defined title and close icon style, eliminated modal content border
+// Note: override antd style automatically. Please use the closeIcon parameter in the modal component to customize the close icon, instead of using antd's own close icon.
 .ant-modal-close {
   height: 24px;
   width: 24px;
@@ -82,8 +81,8 @@
   border-top: none;
 }
 
-// 设计稿上宽高为1170*768的模态框，自适应样式
-// 注意，宽度的设置需要设置行内样式才能生效，例如<Modal width={'90%'} style={{maxWidth: '1170px', minWidth: '600px'}} />
+// Design on the draft width and height of 1170 * 768 modal box, adaptive style
+// Notes: the width setting requires an in-line style to take effect, e.g. <Modal width={'90%'} style={{maxWidth: '1170px', minWidth: '600px'}} />
 .lgModal(@minHeight: 600px) {
   .ant-modal-content {
     max-height: 768px;

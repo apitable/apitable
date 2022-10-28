@@ -79,7 +79,7 @@ function toErrorSchema(errors: any[]) {
 }
 
 /**
- * 全部字段的错误信息。
+ * Error message for all fields.
  * @param errorSchema
  * @param fieldName
  */
@@ -104,7 +104,7 @@ export function toErrorList(errorSchema: any, fieldName = 'root') {
 }
 
 /**
- * 暂时没起作用
+ * It's not working for now.
  * @param formData
  */
 function createErrorHandler(formData: object) {
@@ -202,7 +202,7 @@ export default function validateFormData(
 ) {
   // Include form data with undefined values, which is required for validation.
   const rootSchema = schema as JSONSchema7;
-  // FIXME: 完善默认值的处理逻辑
+  // FIXME: Improve the processing logic of default values
   // formData = getDefaultFormState(schema, formData, rootSchema, true);
 
   let validationError: any = null;
@@ -251,7 +251,7 @@ export default function validateFormData(
     };
   }
 
-  // customValidate 是附加的验证函数，ajv 的校验错误结果会保留
+  // customValidate is an additional validation function where ajv's checksum error results are retained
   if (typeof customValidate !== 'function') {
     // console.log({ errors, errorSchema });
     return { errors, errorSchema };

@@ -95,7 +95,6 @@ export const ShareMobile: React.FC<IShareMobileProps> = props => {
           {/* <span className={styles.shareButton} onClick={showShareGuide}>
            {t(Strings.share)}
            </span> */}
-          {/* TODO: 举报在 v0.4 不上线 */}
           {/* <span className={styles.shareReport}>
            <IconFeed width={24} height={24} fill={colors.secondLevelText} />
            </span> */}

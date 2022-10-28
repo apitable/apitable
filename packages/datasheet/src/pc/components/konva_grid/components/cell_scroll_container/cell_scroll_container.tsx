@@ -36,7 +36,7 @@ export const CellScrollContainer: FC<ICellScrollContainerProps> = (props) => {
     return Math.max(Math.min(totalHeight, 130), rowHeight);
   }, [renderContent, rowHeight, totalHeight]);
 
-  // 设置激活单元格宽高
+  // Set the activated cell width and height
   useMemo(() => {
     setActiveCellBound({ height });
     setCellScrollState({

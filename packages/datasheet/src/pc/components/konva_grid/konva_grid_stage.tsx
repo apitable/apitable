@@ -55,7 +55,7 @@ export const KonvaGridStage: FC<IKonvaGridStageProps> = memo((props) => {
   } = useContext(KonvaGridViewContext);
   const { scrollTop, scrollLeft, isScrolling } = scrollState;
   const stageRef = useRef<any>(); // Konva Stage
-  const wheelingRef = useRef<number | null>(null); // 存储定时器，保证操作流畅性
+  const wheelingRef = useRef<number | null>(null); // Storage timer to ensure smooth operation
   const {
     rowCount, columnCount, frozenColumnCount,
     frozenColumnWidth, rowHeight, rowInitSize,
@@ -72,7 +72,7 @@ export const KonvaGridStage: FC<IKonvaGridStageProps> = memo((props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [instance, rowCount, rowInitSize, rowHeight]);
 
-  // 获取要渲染的纵向可见区域
+  // Get the vertical visible area to render
   const getVerticalRangeInfo = () => {
     const startIndex = instance.getRowStartIndex(scrollTop);
     const stopIndex = instance.getRowStopIndex(startIndex, scrollTop);
@@ -83,7 +83,7 @@ export const KonvaGridStage: FC<IKonvaGridStageProps> = memo((props) => {
     };
   };
 
-  // 获取要渲染的横向可见区域
+  // Get the horizontal visible area to render
   const getHorizontalRangeInfo = () => {
     const startIndex = instance.getColumnStartIndex(scrollLeft);
     const stopIndex = instance.getColumnStopIndex(startIndex, scrollLeft);
@@ -97,7 +97,7 @@ export const KonvaGridStage: FC<IKonvaGridStageProps> = memo((props) => {
   const { rowStartIndex, rowStopIndex } = getVerticalRangeInfo();
   const { columnStartIndex, columnStopIndex } = getHorizontalRangeInfo();
 
-  // 获取前缀 targetName
+  // Get the prefix targetName
   const getTargetName = (targetName) => {
     if (targetName == null || targetName === '') return KONVA_DATASHEET_ID.GRID_BLANK;
     return targetName.split('-')[0];
@@ -119,8 +119,8 @@ export const KonvaGridStage: FC<IKonvaGridStageProps> = memo((props) => {
     return {
       areaType,
       realAreaType,
-      targetName, // 作为简单操作的标识别，只带前缀名
-      realTargetName: _targetName || KONVA_DATASHEET_ID.GRID_BLANK, // 真实的 name
+      targetName, // As a simple operational identifier, with prefix name only
+      realTargetName: _targetName || KONVA_DATASHEET_ID.GRID_BLANK, // Real name
       rowIndex,
       columnIndex,
       offsetTop,
@@ -150,7 +150,7 @@ export const KonvaGridStage: FC<IKonvaGridStageProps> = memo((props) => {
   });
 
   /**
-   * 处理画布鼠标移动事件
+   * Handling canvas mouse movement events
    */
   const onMouseMove = (e: KonvaEventObject<MouseEvent>) => {
     if (wheelingRef.current) return;
@@ -160,7 +160,7 @@ export const KonvaGridStage: FC<IKonvaGridStageProps> = memo((props) => {
       if (pos == null) return;
       const { x, y } = pos;
       const curMousePosition = getMousePosition(x, y, targetName);
-      // 处理鼠标样式
+      // Handling mouse styles
       handleMouseStyle(curMousePosition.realTargetName, curMousePosition.realAreaType);
       onGridMouseMove(e);
       setPointPosition(curMousePosition);

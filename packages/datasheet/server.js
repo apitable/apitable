@@ -14,7 +14,7 @@ app.prepare().then(() => {
     server.use(
       '/nest',
       createProxyMiddleware({
-        // 直连本地NodeJS环境
+        // Direct connection to local NodeJS environment
         target: process.env.API_PROXY || process.env.API_ROOM_SERVER || 'http://127.0.0.1:3333',
         changeOrigin: true,
         cookieDomainRewrite: '',

@@ -178,7 +178,6 @@ const HeaderFunc: React.FC<GridChildComponentProps & { rightRegion: boolean }> =
   );
 };
 
-// 字段列头
 export const HeaderRight = React.memo((props: GridChildComponentProps) => {
   return HeaderFunc({ ...props, rightRegion: true });
 }, areEqual);

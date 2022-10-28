@@ -82,17 +82,17 @@ export const GhostNode: FC<NodeProps<INodeData>> = memo((props) => {
       };
       
       /**
-       * 分 3 种情况:
-       * 1. 未处理列表节点插入
-       * 2. 跨层级节点插入
-       * 3. 同级节点间插入
+       * There are three cases:
+       * 1. Unprocessed list node insertion
+       * 2. Cross-level node insertion
+       * 3. Inter-node insertion at the same level
        */
       if (!dragItemParent) {
         newData.push(insertData);
       } else if (dragItemParent.id !== parent.id) {
         newData.push(insertData);
-        // 断开旧的连接
-        // FIXME: 多人协同的情况下,这里可能拿不到最新的祖先信息
+        // Disconnecting old connections
+        // FIXME: In the case of multi-player collaboration, the latest ancestral information may not be available here
         newData.push({
           recordId: dragItemParent.id,
           fieldId: linkFieldId,

@@ -25,7 +25,7 @@ export class Router {
 async function navigatePath(path: Navigation, info: { params?: IParams, query?: IQuery, method?: Method, clearQuery?: boolean }) {
   const { params, method } = info;
   const spaceId = params?.spaceId;
-  // 将通过url跳转的方式默认为新标签打开
+  // Will default to new tab open by url jumping
   const go = getHistoryMethod(method);
 
   await toggleSpace(spaceId);

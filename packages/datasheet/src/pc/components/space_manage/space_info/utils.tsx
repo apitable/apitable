@@ -173,7 +173,7 @@ const getSpaceConfig = (
   };
 };
 
-// 空间三种等级不同的样式
+// Space three levels of different styles
 export const SpaceLevelInfo: ISpaceLevelInfo = {
   bronze: getSpaceConfig('bronze', {
     title: t(Strings.bronze_grade),
@@ -254,21 +254,21 @@ export const SpaceLevelInfo: ISpaceLevelInfo = {
     buttonText: t(Strings.renew),
     tagText: t(Strings.paid_edition),
   }),
-  // 飞书免费版
+  // Free version of Feishu
   feishu_base: getSpaceConfig('bronze', {
     title: t(Strings.feishu_base),
     titleTip: t(Strings.feishu_grade_desc),
     buttonText: t(Strings.upgrade),
     tagText: t(Strings.free_edition),
   }),
-  // 飞书标准版
+  // Standard version of Feishu
   feishu_standard: getSpaceConfig('silver', {
     title: t(Strings.feishu_standard),
     titleTip: t(Strings.feishu_grade_desc),
     buttonText: t(Strings.renew),
     tagText: t(Strings.paid_edition),
   }),
-  // 飞书企业版
+  // Enterprise version of Feishu
   feishu_enterprise: getSpaceConfig('enterprise', {
     title: t(Strings.feishu_enterprise),
     titleTip: t(Strings.feishu_grade_desc),

@@ -54,12 +54,11 @@ export const Swiper: FC<ISwiperProps> = props => {
 
   useEffect(() => {
     setTimeout(() => {
-      // 默认第一次预览，不添加过度动画，之后的操作才进行过度
+      // By default, no transition animation is added for the first preview, and transition animation is performed only for subsequent operations
       fileThumbRef.current?.classList.add(styles.transition);
     });
   }, []);
 
-  /****** 双指缩放图片逻辑 ******/
   const [scaling, setScaling] = useState(false);
   const [originScale, setOriginScale] = useState(1);
   const [originDist, setOriginDist] = useState(0);
@@ -67,7 +66,7 @@ export const Swiper: FC<ISwiperProps> = props => {
   const [originPos, setOriginPos] = useState({ x: 0, y: 0 });
   const [originTranslate, setOriginTranslate] = useState({ x: 0, y: 0 });
 
-  // 计算双指距离
+  // Calculate two-finger distance
   function getDist(touches: React.TouchList) {
     const dx = touches[0].clientX - touches[1].clientX;
     const dy = touches[0].clientY - touches[1].clientY;
@@ -170,7 +169,7 @@ export const Swiper: FC<ISwiperProps> = props => {
       {files.map((file, index) => {
         return (
           <div
-            // lookup 中可能会存在同样的附件id
+            // The same attachment id may exist in lookup
             key={file.id + index}
             className={styles.swiperItem}
             draggable={false}

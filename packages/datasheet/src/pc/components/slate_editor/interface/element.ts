@@ -5,7 +5,6 @@ import { IUnitValue } from '@apitable/core';
 
 export interface IElementData {
   className?: string;
-  // 缩进
   indent?: number;
   align?: ALIGN;
   [key : string]: unknown;

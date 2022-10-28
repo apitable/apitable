@@ -5,7 +5,6 @@ import { AnimationItem } from 'lottie-web/index';
 import { isMobile } from 'react-device-detect';
 
 export interface INavigationItemProps {
-  /** 动画的数据源 */
   animationData: any;
   style?: React.CSSProperties;
   id: string;

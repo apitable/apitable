@@ -6,17 +6,18 @@ import { isEventStateMatch, isRulesPassed, isTimeRulePassed } from './rules';
 // const Triggers = SystemConfig.player.trigger;
 
 /**
- * Player 系统初始化，再app初始化的时候执行
+ * Execute at app initialization time
  *
  * @export
  */
 export function init() {
-  // 获取配置文件
+  // Get configuration file
   const HooksConfig = window.__initialization_data__.wizards;
 
   let config;
   /**
-   * 这里还是区分下环境吧，本地调试方便从配置表里直接读取信息，如果不区分环境，对调试的影响会比较大
+   * Here it is better to distinguish the environment, local debugging is convenient to read the information directly from the configuration table, 
+   * if not distinguish the environment, the impact on debugging will be greater
    */
   if (process.env.NODE_ENV === 'development') {
     config = { player: SystemConfig.player, guide: SystemConfig.guide };
@@ -28,12 +29,12 @@ export function init() {
 
   store.dispatch(StoreActions.updateConfig(config));
   const Events = config.player.events;
-  //  绑定trigger表的事件
+  // Binding events to the trigger datasheet
   const triggers = config.player.trigger;
-  // pendingBindEvents = {eventId: triggerId[]} , event与trigger是属于1对多的关系
+  // pendingBindEvents = {eventId: triggerId[]}, event and trigger are in a one-to-many relationship
   const pendingBindEvents: { [key: string]: string[] } = {};
   triggers.forEach(trigger => {
-    // 查看是否废弃
+    // Whether to abandon
     if (trigger.suspended) return;
     const curTriggerId = trigger.id;
     const byEventId = trigger.event[0];
@@ -43,11 +44,11 @@ export function init() {
       pendingBindEvents[byEventId] = [curTriggerId];
     }
   });
-  // 开始绑定
+  // Start binding
   Object.keys(pendingBindEvents).forEach(eventId => {
     const allTriggerIds = pendingBindEvents[eventId];
     Player.bindTrigger(Events[eventId], args => {
-      //  过滤出不符合rule的trigger
+      // Filter out triggers that don't match rule
       const validTriggers = allTriggerIds.filter(triggerId => {
         const curTrigger = triggers.find(item => item.id === triggerId);
         return curTrigger &&
@@ -55,7 +56,7 @@ export function init() {
           isTimeRulePassed(curTrigger.startTime, curTrigger.endTime) &&
           isRulesPassed(config.player.rule, curTrigger.rules);
       });
-      // 遍历多个triggers以及执行对应的actions
+      // Iterate through multiple triggers and execute the corresponding actions
       validTriggers.forEach(triggerId => {
         const trigger = triggers.find(item => item.id === triggerId);
         if (!trigger) return;
@@ -65,7 +66,7 @@ export function init() {
     });
   });
 
-  //  绑定steps里的事件
+  // Bind events in steps
   const Steps = config.guide.step;
   const pendingBindEventsInSteps: string[] = [];
   Steps && Object.keys(Steps).forEach(stepId => {
@@ -80,9 +81,9 @@ export function init() {
       const state = store.getState();
       const hooks = Selectors.hooksSelector(state);
       const { curGuideWizardId, triggeredGuideInfo } = hooks;
-      // 当前是否处于某个wizards，判断用户之前是否触发过
+      // Whether the user is currently in certain wizards, determine whether the user has previously triggered
       if (curGuideWizardId === -1 || (!triggeredGuideInfo.hasOwnProperty(curGuideWizardId))) return;
-      // 当前hooks事件对应的stepId是Number(key),判断本次step之前的step是否已完成
+      // The corresponding stepId of the current hooks event is Number(key), which determines whether the step before this one has been completed.
       const curStepInfo = triggeredGuideInfo[curGuideWizardId];
       if ((typeof curStepInfo.steps !== 'object') || curStepInfo.steps.length === curStepInfo.triggeredSteps.length) return;
       const nextStepIds = curStepInfo.steps[curStepInfo.triggeredSteps.length];

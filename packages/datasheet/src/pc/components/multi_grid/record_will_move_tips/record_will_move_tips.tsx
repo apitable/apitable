@@ -26,8 +26,8 @@ export const RecordWillMoveTips = (props: { rowHeight: number; y?: number }) => 
   const [y, setY] = useState<number | null>(null);
   const getActiveRelativeY = (cell: { fieldId: string, recordId: string }) => {
     const containerDom = document.getElementById(DATASHEET_ID.DOM_CONTAINER);
-    // note: 这里新增对cell的处理， 原因在于处理删除record，redux的更新不会及时卸载该组件，导致数据源缺失，但是该方法
-    // 依旧被触发，导致cell.row 找不到
+    // Note: The reason for the new handling of cell is that if the record is deleted, the redux update will not unload the component in time, 
+    // resulting in a missing data source, but the method will still be triggered, resulting in cell.row not being found
     if (!containerDom || !cell) {
       return null;
     }
@@ -41,14 +41,14 @@ export const RecordWillMoveTips = (props: { rowHeight: number; y?: number }) => 
       const getDelta = (delta: number, selfSize: number, containerSize: number) => {
         const safeBorder = 2;
         if (delta > safeBorder) {
-          // 每超出左边界也没超出右边界
+          // Not beyond the left and not beyond the right border
           if (delta < containerSize - selfSize) {
             return delta;
           }
-          // 停在右边界
+          // Stop at the right border
           return containerSize - selfSize - safeBorder;
         }
-        // 停在左边界
+        // Stop at the left border
         return safeBorder;
       };
       return getDelta(deltaTop, cellRect.height, containerRect.height);

@@ -32,8 +32,8 @@ export const useCapacity: IUseCapacity = ({ subscription, spaceInfo }) => {
     const allUsed = spaceInfo?.capacityUsedSizes || 0;
     const giftUsed = spaceInfo?.giftCapacityUsedSizes || 0;
     return {
-      used: Math.max(allUsed - giftUsed, 0), // 订阅已用
-      total: subscription?.subscriptionCapacity || 0, // 订阅总容量
+      used: Math.max(allUsed - giftUsed, 0),
+      total: subscription?.subscriptionCapacity || 0,
 
       giftUsed,
       giftTotal: subscription?.unExpireGiftCapacity || 0,
@@ -43,7 +43,7 @@ export const useCapacity: IUseCapacity = ({ subscription, spaceInfo }) => {
     };
   }, [subscription, spaceInfo]);
   return useMemo(() => {
-    // 总容量
+    // Total
     const allRemain = allTotal - allUsed;
     const allUsedArr = byteMGArr(allUsed);
     const allUsedText = `${allUsedArr[0]}${allUsedArr[1]}`;
@@ -54,7 +54,7 @@ export const useCapacity: IUseCapacity = ({ subscription, spaceInfo }) => {
     const allRemainText = `${allRemainArr[0]}${allRemainArr[1]}`;
     const allRemainPercent = 100 - allUsedPercent;
 
-    // 订阅容量
+    // Subscription
     const remain = total - used;
     const usedArr = byteMGArr(used);
     const usedText = `${usedArr[0]}${usedArr[1]}`;
@@ -65,7 +65,7 @@ export const useCapacity: IUseCapacity = ({ subscription, spaceInfo }) => {
     const remainText = `${remainArr[0]}${remainArr[1]}`;
     const remainPercent = 100 - usedPercent;
 
-    // 赠送容量
+    // Gift
     const giftRemain = giftTotal - giftUsed;
     const giftUsedArr = byteMGArr(giftUsed);
     const giftUsedText = `${giftUsedArr[0]}${giftUsedArr[1]}`;

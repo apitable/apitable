@@ -29,8 +29,9 @@ const Mention = React.memo(({ children, element, attributes }: IElementRenderPro
       ReactEditor.focus(editor);
       Transforms.select(editor, path);
       /**
-       * 插入的时候默认多插入一个空格,所以光标回退两格
-       * 不用异步马上回退，大多数时候光标回在目标元素的后两格处闪一下，然后又聚焦到点击的元素上，加了preventDefault也未能阻止，待研究...
+       * Insert a space by default when inserting, so the cursor goes back two frames
+       * No asynchronous immediately back, most of the time the cursor back in the target element of the last two frames flash, 
+       * and then focus on the clicked element, add the eventDefault also failed to prevent, to be studied ...
        */
       timer.current = window.setTimeout(() => {
         Transforms.move(editor, { distance: 2, unit: 'offset' });
@@ -42,8 +43,9 @@ const Mention = React.memo(({ children, element, attributes }: IElementRenderPro
   }, [editor, element, readOnly]);
 
   /**
-   * 主要解决：加了异步设置光标位置可能会导致光标位置乱跳
-   * 场景：点击后马上输入，此时光标位置在输入字符后面，当setTimeout到期光标会后移两格，监听到键盘输入取消异步移动光标
+   * The main solution: adding the asynchronous setting of the cursor position may cause the cursor position to jump around
+   * Scenario: input immediately after clicking, at this time the cursor position behind the input character, 
+   * when the setTimeout expires the cursor will move back two frames, listen to the keyboard input to cancel the asynchronous movement of the cursor
    */
   useEffect(() => {
     const clearTimeout = () => {
@@ -65,7 +67,7 @@ const Mention = React.memo(({ children, element, attributes }: IElementRenderPro
   return (
     <span {...attributes} className={styles.wrap} onMouseDownCapture={handleMouseDown}>
       <span contentEditable={false} className={styles.mention} style={adjustStyle}>
-        {/* 样式需要调整: 在不同标题下显示效果较差 */}
+        {/* Style needs to be adjusted: poor display under different headings */}
         <MemberItem unitInfo={elementData} style={{ margin: 0 }}/>
       </span>
       {children}

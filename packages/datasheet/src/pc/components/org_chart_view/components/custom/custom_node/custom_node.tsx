@@ -49,8 +49,8 @@ export const CustomNode: FC<NodeProps<INodeData>> = memo((props) => {
 
       return (
         !(linkField && linkField.property.limitSingleRecord && nodesMap[id].data.linkIds.length > 0)
-        && !dragItem.data.parents?.some((parent) => parent.id === id) // 不能是父节点
-        && !foundInChildren(dragItem) // 不能是子节点
+        && !dragItem.data.parents?.some((parent) => parent.id === id)
+        && !foundInChildren(dragItem)
       );
     },
     [id, nodesMap, linkField]
@@ -66,17 +66,17 @@ export const CustomNode: FC<NodeProps<INodeData>> = memo((props) => {
         isOverCurrent: monitor.isOver({ shallow: true }),
       }),
       /**
-       * 可以分情况讨论
-       * 1. 目标节点是拖拽节点的父节点
-       * 2. 目标节点是拖拽节点的子节点
-       * 3. 目标节点既不是拖拽节点的父节点，也不是拖拽节点的子节点
+       * Discussed here by situation:
+       * 1. The target node is the parent of the dragged node
+       * 2. The target node is a child of the drag and drop node
+       * 3. The target node is neither a parent nor a child of the dragged node
        */
       drop: (dragItem: IDragItem, monitor: DropTargetMonitor) => {
         const didDrop = monitor.didDrop();
 
         if (
           didDrop
-          || dragItem.id === id // 不能是自己
+          || dragItem.id === id
         ) {
           return;
         }
@@ -104,7 +104,7 @@ export const CustomNode: FC<NodeProps<INodeData>> = memo((props) => {
         const data: ISetRecordOptions[] = [{ recordId: id, fieldId: linkFieldId, value }];
 
         if (dragItem.data.degree && dragItem.data.degree.inDegree >= 1) {
-          // 待断开的连接🔗
+          // Connections to be disconnected
           const sourceLinkData = dragItem.data.parents?.reduce((sourceLinkData, parent) => {
             const {
               id: sourceId,

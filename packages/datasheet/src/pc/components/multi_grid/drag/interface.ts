@@ -15,9 +15,9 @@ export interface IDragProps {
 }
 
 export interface INeedChangeColumnsWidthRef {
-  current: Element | null; // 当前点击的 fieldHead
-  pageX: number; // 点击下去时的pageX
-  scrollLeft: number; // 拖动会对页面进行滑动，需要计算划过的距离才是真的宽度
+  current: Element | null; // The currently clicked fieldHead
+  pageX: number; // PageX when clicking down
+  scrollLeft: number; // Dragging will slide on the page, you need to calculate the distance scratched to be the real width
   changeWidthFieldId: string;
 }
 

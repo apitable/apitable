@@ -61,7 +61,7 @@ export const useEvents = (props: IImageEventsProps) => {
     (position: ITranslatePosition) => {
       const { width, height, containerWidth, containerHeight } = getSize();
 
-      // 对边界情况做处理，返回修正后的结果
+      // Do the processing of the boundary case and return the corrected result
       const revisedState = getFixedState(width, height, position.x, position.y, containerWidth, containerHeight);
 
       setTransformInfo({

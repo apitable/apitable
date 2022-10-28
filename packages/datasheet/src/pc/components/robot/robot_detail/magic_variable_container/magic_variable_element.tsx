@@ -13,7 +13,6 @@ export const MagicVariableElement = props => {
   // console.log('MagicVariableElement');
 
   const nodeSchemaIndex = nodeOutputSchemaList.findIndex(item => item.id === chainList[0].value);
-  // 这里可能越界，ts 没提示？
   const nodeSchema = nodeOutputSchemaList[nodeSchemaIndex];
   const nodeList: { type: 'function' | 'property', title: string }[] = [{
     type: 'property',

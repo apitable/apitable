@@ -36,9 +36,9 @@ export const MirrorPath: React.FC<IMirrorPath> = props => {
     return Boolean(Selectors.getDatasheet(state, breadInfo.datasheetId)?.permissions.readable);
   });
 
-  // 跳转到源表的入口暂时关闭;
+  // Jump to source datasheet entry temporarily closed
   const jumpHandler = throttle(() => {
-    // 原表是幽灵节点，不应该跳转
+    // The original datasheet is a ghost node and should not be jumped
     if (isGhostNode) {
       return;
     }
@@ -76,7 +76,7 @@ export const MirrorPath: React.FC<IMirrorPath> = props => {
               style={{ maxWidth: '256px', width: 'auto' }}
             />
           </div>
-          {/* 来源信息 */}
+          {/* Source Information */}
           {!shareId && (
             <div className={styles.sourceInfo}>
               <span style={{ whiteSpace: 'pre-wrap' }}>{t(Strings.mirror_from)}</span>

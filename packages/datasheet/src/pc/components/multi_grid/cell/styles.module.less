@@ -12,9 +12,9 @@
   // transition: top 0.2s ease-in-out 0.2s;
 
   // if (isHovering) {
-  //   customStyle['zIndex'] = 12; // 保证单元格下的头像和用户名称不被遮挡 > editorCell（z-index:11）
+  //   customStyle['zIndex'] = 12; // Ensure that the avatar and user name under the cell are not obscured > editorCell (z-index:11)
   // } else {
-  //   customStyle['zIndex'] = 1; // 保证单元格的 outline 不被遮挡
+  //   customStyle['zIndex'] = 1; // Ensure that the outline of the cell is not obscured
   // }
   .hasCollaborator {
     &:hover {
@@ -165,7 +165,7 @@
 .firstHead {
   display: flex;
 
-  // 补偿第一列右边的 1px 间隙
+  // Compensate for the 1px gap to the right of the first column
   .selected {
     box-shadow: 1px 0px 0px var(--cellSelectedColor);
   }

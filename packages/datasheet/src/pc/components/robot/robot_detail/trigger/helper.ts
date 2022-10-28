@@ -34,7 +34,7 @@ export const op2fop = (op: OperatorEnums) => {
 
 export const getOperatorOptions = (field: IField) => {
   const fOperators: FOperator[] = Field.bindModel(field).acceptFilterOperators;
-  // 不支持「有重复」操作
+  // No support for "IsRepeat" operations
   return fOperators.filter(fop => fop != FOperator.IsRepeat).map(fop => {
     return {
       value: fOperator2Operator(fop),
@@ -90,7 +90,7 @@ export const addNewFilter = (filter, type: FilterTypeEnums, primaryFieldId?: str
       draft.operands.push(newFilter);
     });
   }
-  // 初始化创建 filter 时，始终以 group 返回。
+  // When the filter is created initially, it is always returned as a group.
   return {
     operator: OperatorEnums.And,
     operands: [

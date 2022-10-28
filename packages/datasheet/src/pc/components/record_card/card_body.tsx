@@ -55,7 +55,6 @@ export const CardBody: React.FC<IGalleryCardBodyProps> = props => {
       {visibleFields.map((item, index) => {
         const cellValue = Selectors.getCellValue(store.getState(), recordSnapshot, recordId, item.fieldId);
         const field = fieldMap[item.fieldId];
-        // 标题字段展示文字
         if (index === 0) {
           return (
             <div key={recordId} className={classNames(styles.cellTitle, styles.cellValue, 'ellipsis')}>
@@ -64,14 +63,14 @@ export const CardBody: React.FC<IGalleryCardBodyProps> = props => {
           );
         }
 
-        // 字段值为空时，看板不显示该字段
+        // When the field value is empty, the Kanban does not display the field
         if (cellValue == null && !showEmptyField) return null;
         const fieldType = getShowFieldType(field);
         const { isSingleText, isEnhanceText } = getTextFieldType(fieldType);
-        const isTextField = isSingleText || isEnhanceText || fieldType === FieldType.Text; // 单行/多行/增强
+        const isTextField = isSingleText || isEnhanceText || fieldType === FieldType.Text;
         const isMultiSelectTypeField = Field.bindModel(field).basicValueType === BasicValueType.Array;
-        // 由于信息密度不同，所以属性样式区分看板，相册类，其他
-        // 相册类包括相册，架构视图
+        // Because of the different information density, the attribute style distinguishes between Kanban, Gallery and other
+        // Gallery includes Gallery and Organization Chart
         const fieldValueStyle: React.CSSProperties = isVirtual
           ? {}
           : isGallery

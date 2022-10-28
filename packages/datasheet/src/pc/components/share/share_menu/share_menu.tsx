@@ -121,7 +121,6 @@ export const ShareMenu: React.FC<IShareMenu> = ({ shareSpace, shareNode, visible
     });
   };
 
-  /** 表示该分享只有一个表单节点 */
   const singleFormShare = formId && shareNode?.nodeId === formId;
   return (
     <div className={styles.shareMenu}>

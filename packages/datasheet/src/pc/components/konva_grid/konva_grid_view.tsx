@@ -178,8 +178,8 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
   }, shallowEqual);
   const offsetX = 32;
   const containerWidth = _containerWidth + offsetX;
-  const rowCount = linearRows.length; // 总行数
-  // 调试bug所需，下一期上线前删掉
+  const rowCount = linearRows.length; // Total number of rows
+  // TODO:Required for debugging bugs, can be deleted later
   (window as any).__linearRows__ = linearRows;
   const dispatch = useDispatch();
   const { autoHeadHeight = false } = view as IGridViewProperty;
@@ -187,17 +187,16 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
   // Refs
   const containerRef = useRef<any>();
   const domGridRef = useRef<IContainerEdit | null>(null); // Grid Dom
-  const horizontalBarRef = useRef<any>(); // 横向滚动条
-  const verticalBarRef = useRef<any>(); // 纵向滚动条
-  const cellVerticalBarRef = useRef<any>(); // 单元格纵向滚动条
-  const resetScrollingTimeoutID = useRef<TimeoutID | null>(null); // 滚动定时器，当滚动时，禁止 stage 的事件监听
+  const horizontalBarRef = useRef<any>(); // Horizontal scroll bar
+  const verticalBarRef = useRef<any>(); // Vertical scroll bar
+  const cellVerticalBarRef = useRef<any>(); // Cell vertical scroll bar
+  const resetScrollingTimeoutID = useRef<TimeoutID | null>(null); // Scroll timer to disable event listening on stage when scrolling
 
-  // 计算列权限
   const fieldId = activeCell ? activeCell.fieldId : '';
   const disabledDownload = !useAllowDownloadAttachment(fieldId);
   // Hooks
   const forceRender = useUpdate();
-  // 用来同步原生滚动的滚动状态
+  // Used to synchronize the scroll state of native scrolling
   const { scrollLeft: cacheScrollLeft, scrollTop: cacheScrollTop, changeCacheScroll } = useCacheScroll();
   const [scrollState, setScrollState] = useState<IScrollState>({
     scrollTop: cacheScrollTop,
@@ -212,11 +211,11 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
   const { scrollTop, scrollLeft, isScrolling } = scrollState;
   const { isOverflow } = cellScrollState;
 
-  // 设置新增一行的行为状态
+  // Set the behavior state of a new line
   const [canAppendRow, setCanAppendRow] = useState(true);
   const textSizer = useRef(autoSizerCanvas);
 
-  // 落点
+  // Drop Point
   const [pointPosition, setPointPosition] = useState<PointPosition>(DEFAULT_POINT_POSITION);
   const [tooltipInfo, setTooltipInfo] = useSetState<ITooltipInfo>(DEFAULT_TOOLTIP_PROPS);
   const [isCellDown, setCellDown] = useState<boolean>(false);
@@ -245,7 +244,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
     return columnIndicesMap;
   }, [visibleColumns]);
 
-  // 列头高度
+  // Height of field header
   const fieldHeadHeight = useMemo(() => {
     if (!autoHeadHeight) return GRID_FIELD_HEAD_HEIGHT;
     textSizer.current.setFont({ fontWeight: 'bold', fontSize: 13 });
@@ -285,7 +284,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
 
   const firstColumnWidth = columnIndicesMap[0];
   const originFrozenColumnCount = (view as IGridViewProperty).frozenColumnCount;
-  // 根据当前容器宽度自适应后的冻结列数
+  // Number of frozen columns after adapting to the current container width
   const frozenColumnCount = useMemo(() => {
     let count = view.columns.slice(0, originFrozenColumnCount).filter(column => !column.hidden).length;
     let curWidth = GRID_ROW_HEAD_WIDTH + offsetX;
@@ -303,8 +302,8 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
   }, [originFrozenColumnCount, containerWidth, view.columns, visibleColumns]);
 
   /**
-   * 当前 grid 的数据实例
-   * 提供与时间轴和坐标相关的方法
+   * Example of data from the current grid.
+   * Provide methods related to timeline and coordinates.
    */
   const instance = useCreation<GridCoordinate>(
     () =>
@@ -326,9 +325,9 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
     [],
   );
 
-  // 数表总宽度
+  // Total width of grid view
   const totalWidth = instance.totalWidth + GRID_SCROLL_REMAIN_SPACING;
-  // 数表总高度
+  // Total height of grid view
   const totalHeight = Math.max(instance.totalHeight + GRID_SCROLL_REMAIN_SPACING, containerHeight - fieldHeadHeight - GRID_BOTTOM_STAT_HEIGHT);
 
   const isCellScrolling = useMemo(() => {
@@ -419,7 +418,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
     resetScrollingTimeoutID.current = requestTimeout(resetScrolling, 100);
   }, [resetScrolling]);
 
-  // 设置鼠标样式
+  // Set mouse style
   const setMouseStyle = useCallback((mouseStyle: string) => (containerRef.current.style.cursor = mouseStyle), []);
 
   useEffect(() => {
@@ -439,7 +438,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewId]);
 
-  // 滚动到某个单元格
+  // Scroll to a cell
   const scrollToItem = useCallback(
     ({ rowIndex, columnIndex }: { rowIndex?: number; columnIndex?: number }) => {
       let _scrollTop;
@@ -476,7 +475,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
   const scrollHandler: IScrollHandler = useCreation(() => {
     let isStop = false;
     let _scrollOptions: IScrollOptions = {};
-    // 记录 X/Y 轴滚动的总距离
+    // Record the total distance of X/Y axis scrolling
     let totalScrollX = 0;
     let totalScrollY = 0;
 
@@ -528,7 +527,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
     }
   }, []);
 
-  // 布局切换
+  // Layout switching
   useMemo(() => {
     instance.autoHeadHeight = autoHeadHeight;
     instance.rowInitSize = autoHeadHeight ? fieldHeadHeight : GRID_FIELD_HEAD_HEIGHT;
@@ -541,7 +540,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
     forceRender();
   }, [forceRender, instance, linearRows.length, rowHeight, rowHeightLevel, fieldHeadHeight, rowIndicesMap, autoHeadHeight]);
 
-  // 显示/隐藏列
+  // Show/hide columns
   useMemo(() => {
     instance.lastColumnIndex = -1;
     instance.columnCount = visibleColumns.length;
@@ -670,7 +669,6 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
           </KonvaGridViewContext.Provider>
         </div>
 
-        {/* 横向滚动条 */}
         <div
           ref={horizontalBarRef}
           className={styles.horizontalScrollBarWrapper}
@@ -692,7 +690,6 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
           {scrollbarTooltip}
         </div>
 
-        {/* 纵向滚动条 */}
         <div
           ref={verticalBarRef}
           className={styles.verticalScrollBarWrapper}
@@ -711,7 +708,6 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
           />
         </div>
 
-        {/* 数表 DOM 坐标系 */}
         <DomGrid
           ref={domGridRef}
           instance={instance}

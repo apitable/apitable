@@ -73,7 +73,7 @@ import { KonvaDrawer } from './drawer';
 import { imageCache } from './image_cache';
 import { IWrapTextDataProps } from './interface';
 
-// 采用简单的识别规则处理单行文本增强字段。
+// Simple recognition rules are used to process single line text enhancement fields.
 const isEmail = text => text && /.+@.+/.test(text);
 const isPhoneNumber = text => text && /^[0-9\-()（）#+]+$/.test(text);
 
@@ -232,7 +232,6 @@ export class CellHelper extends KonvaDrawer {
     );
     if (ctx) {
       const stroke = style?.bgColor === background ? colors.defaultBg : '';
-      // 绘制 option label
       this.label({
         x: x + initPadding,
         y: y + GRID_CELL_MULTI_PADDING_TOP,
@@ -294,7 +293,7 @@ export class CellHelper extends KonvaDrawer {
       let realMaxTextWidth = maxTextWidth;
       if (index === 0 && isOperating) {
         const operatingMaxWidth = maxTextWidth - (GRID_CELL_ADD_ITEM_BUTTON_SIZE + 4);
-        // item 没有显示空间，则进行换行
+        // item no space to display, then perform a line feed
         if (operatingMaxWidth <= 10) {
           currentX = GRID_CELL_VALUE_PADDING;
           currentY += GRID_OPTION_ITEM_HEIGHT + GRID_CELL_MULTI_ITEM_MARGIN_TOP;
@@ -313,9 +312,9 @@ export class CellHelper extends KonvaDrawer {
       );
 
       if (columnWidth != null) {
-        // 非激活态下，当超过行宽时，后续 item 不进行渲染
+        // In the inactive state, subsequent items are not rendered when the line width is exceeded
         if (!isActive && currentX >= columnWidth) break;
-        // 非激活态下，如果不是最后一行，对溢出 item 进行换行处理
+        // If it is not the last line in the inactive state, perform a line feed on the overflow item
         if (
           !isActive &&
           !isShortHeight &&
@@ -405,23 +404,23 @@ export class CellHelper extends KonvaDrawer {
     }
 
     let originValue = isTextField ? (cellValue as ISegment[]) : null;
-    // 公式需要进行 segment 转换，以展示 url 功能增强
+    // The formula needs to be segmented to show the url feature enhancement
     if (fieldType === FieldType.Formula) {
       originValue = string2Segment(renderText);
     }
 
     let isLinkSplit = false;
-    // 神奇引用 url 功能增强
+    // Lookup url enhancement
     if (fieldType === FieldType.LookUp) {
       const rollUpType = (field as ILookUpField).property.rollUpType || RollUpFuncType.VALUES;
-      // 针对 字符串/单多行文本原样展示 的情况，需要进行 segment 分割
+      // Segmentation is required for the string/single multi-line text as-is case
       if (
         LOOKUP_VALUE_FUNC_SET.has(rollUpType) ||
         (ORIGIN_VALUES_FUNC_SET.has(rollUpType) && (realFieldType === FieldType.SingleText || realFieldType === FieldType.Text))
       ) {
         originValue = string2Segment(renderText);
       }
-      // 针对原样展示，需要设置标识，以分割多个 URL 字段类型值的引用
+      // For the as-is display, a flag needs to be set to split the reference of multiple URL field type values
       if (ORIGIN_VALUES_FUNC_SET.has(rollUpType) && realFieldType === FieldType.URL) {
         originValue = cellValue as ISegment[];
         isLinkSplit = true;
@@ -437,7 +436,7 @@ export class CellHelper extends KonvaDrawer {
     let linkEnable = Boolean(renderText);
     switch (field.type) {
       case FieldType.URL:
-        linkEnable = true; // 无论是否合规都识别为 URL
+        linkEnable = true; // Recognized as URL regardless of compliance
         break;
       case FieldType.Email:
         linkEnable = Boolean(linkEnable && isEmail(renderText));
@@ -542,7 +541,6 @@ export class CellHelper extends KonvaDrawer {
     const { text, textWidth } = this.textEllipsis({ text: cellText, maxWidth: columnWidth && textMaxWidth });
     if (ctx) {
       const color = style?.color || colors.firstLevelText;
-      // 绘制文字内容
       this.text({
         x: x + GRID_CELL_VALUE_PADDING,
         y: y + GRID_CELL_VALUE_PADDING,
@@ -634,7 +632,7 @@ export class CellHelper extends KonvaDrawer {
       }
       return 0;
     };
-    // 从其它单元格转换的评分数字，可能为浮点数
+    // Scoring numbers converted from other cells, possibly as floating point numbers
     const transValue = getTransValue();
     const transMax = max + 1;
     const iconId = typeof icon === 'string' ? icon : icon.id;
@@ -686,12 +684,12 @@ export class CellHelper extends KonvaDrawer {
     for (let i = 0; i < listCount; i++) {
       const file = fileList[i];
       let imgUrl = '';
-      // 正在上传的附件使用对应类型的占位图作为 loading
+      // The attachment being uploaded uses a placeholder image of the corresponding type as loading
       if (file.fileId) {
         const { name, type } = file.file;
         imgUrl = (renderFileIconUrl({ name, type }) as any) as string;
       } else {
-        // 单元格内的图标是按比例显示的
+        // The icons in the cell are scaled
         imgUrl = getCellValueThumbSrc(file, {
           h: height * (window.devicePixelRatio || 1),
           formatToJPG: isGif({ name: file.name, type: file.mimeType }),
@@ -786,7 +784,7 @@ export class CellHelper extends KonvaDrawer {
     });
     const cacheKey = missInfoUnitIds.length ? sortBy(missInfoUnitIds).join(',') : null;
 
-    // 处理 Unit 信息缺失的情况
+    // Handling missing Unit information
     if (cacheKey && !httpCache.has(cacheKey)) {
       const { shareId, templateId, datasheetId } = state.pageParams;
 
@@ -820,12 +818,12 @@ export class CellHelper extends KonvaDrawer {
     let isOverflow = false;
 
     for (let index = 0; index < listCount; index++) {
-      // 成员是 unitId，修改人、创建人是 userId
+      // The member is unitId, the modifier and creator is userId
       const unitOrUserId = cellValue[index];
       let unitInfo = unitMap?.[unitOrUserId];
       const title = unitTitleMap?.[unitInfo?.unitId];
 
-      // 针对匿名者特殊处理
+      // Special treatment for anonymous people
       if (unitOrUserId === OtherTypeUnitId.Alien) {
         unitInfo = {
           type: MemberType.Member,
@@ -843,7 +841,7 @@ export class CellHelper extends KonvaDrawer {
       let realMaxTextWidth = maxTextWidth < 0 ? 0 : maxTextWidth;
       if (index === 0 && isOperating) {
         const operatingMaxWidth = maxTextWidth - (GRID_CELL_ADD_ITEM_BUTTON_SIZE + 4);
-        // item 没有显示空间，则进行换行
+        // item No space to display, then perform a line feed
         if (operatingMaxWidth <= 20) {
           currentX = GRID_CELL_VALUE_PADDING;
           currentY += GRID_OPTION_ITEM_HEIGHT + GRID_CELL_MULTI_ITEM_MARGIN_TOP;
@@ -867,9 +865,9 @@ export class CellHelper extends KonvaDrawer {
       const itemWidth = isOperating ? itemNameWidth + itemOtherWidth + GRID_CELL_DELETE_ITEM_BUTTON_SIZE + 12 : itemNameWidth + itemOtherWidth;
 
       if (columnWidth != null) {
-        // 非激活态下，当超过行宽时，后续 item 不进行渲染
+        // In the inactive state, subsequent items are not rendered when the line width is exceeded
         if (!isActive && currentX >= columnWidth) break;
-        // 非激活态下，如果不是最后一行，对溢出 item 进行换行处理
+        // If it is not the last line in the inactive state, perform a line feed on the overflow item
         if (!isActive && !isShortHeight && currentY + itemHeight < maxHeight && currentX + itemWidth > columnWidth - GRID_CELL_VALUE_PADDING) {
           currentX = GRID_CELL_VALUE_PADDING;
           currentY += itemHeight + GRID_CELL_MEMBER_ITEM_MARGIN_TOP;
@@ -885,7 +883,6 @@ export class CellHelper extends KonvaDrawer {
         ctx.save();
         const opacity = isUnitLeave(unitInfo) ? 0.5 : 1;
         ctx.globalAlpha = opacity;
-        // 绘制 item 背景
         this.rect({
           x: x + currentX,
           y: y + currentY,
@@ -895,7 +892,6 @@ export class CellHelper extends KonvaDrawer {
           fill: colors.fc11,
         });
 
-        // 绘制头像
         this.avatar({
           x: x + currentX + GRID_CELL_MEMBER_ITEM_PADDING_LEFT,
           y: y + currentY + (itemHeight - avatarSize) / 2,
@@ -908,7 +904,6 @@ export class CellHelper extends KonvaDrawer {
           cacheTheme,
         });
 
-        // 绘制文字内容
         this.text({
           x: x + currentX + avatarSize + GRID_MEMBER_ITEM_AVATAR_MARGIN_RIGHT,
           y: y + currentY + (itemHeight - 13) / 2,
@@ -941,11 +936,13 @@ export class CellHelper extends KonvaDrawer {
 
   private renderCellLink(renderProps: IRenderProps, ctx?) {
     /**
-     * currentResourceId 是什么？
-     * https://github.com/vikadata/vikadata/issues/1229#issuecomment-1275546897  看这里理解前情提要
-     * 当存在 currentResourceId 时，说明当前的 link 字段不是被直接渲染的，而是通过 lookup 的方式间接的渲染出来，所以当出现中间途径，就得弄清楚在谁（哪张表）的基础上请求关联表的数据，
-     * currentDatasheetId 就是此时充当跳板的表（或者镜像） id
-     * 那如果是直接渲染的关联字段，则 pageParams.nodeId === currentResourceId
+     * What is currentResourceId?
+     * See here: issue #1229
+     * When currentResourceId exists, it means that the current link field is not rendered directly, 
+     * but indirectly by way of lookup, so when there is an intermediate route, 
+     * it is necessary to find out on whose (which table) basis the data of the associated table is requested.
+     * currentDatasheetId is the id of the table (or mirror) that is acting as a springboard at this time
+     * Then if it's a directly rendered associated field, pageParams.nodeId === currentResourceId
      */
     const { x, y, field, cellValue, rowHeight, columnWidth, rowHeightLevel, isActive, editable, callback, currentResourceId } = renderProps;
     const linkRecordIds = cellValue ? (cellValue as string[]).slice(0, MAX_SHOW_LINK_IDS_COUNT) : null;
@@ -989,9 +986,10 @@ export class CellHelper extends KonvaDrawer {
     });
 
     /**
-     * 因为前端只维护了关联表中一部分已经进行关联的数据，
-     * 当检查到当前表关联的 recordId 不存在于关联表 snapshot 中的时候，说明本条关联记录是一条新增的关联记录。
-     * 此时需要将这条新增关联记录的 record 数据加载到关联表 snapshot 中。
+     * Because the front-end only maintains a portion of the data in the association table that has already been associated.
+     * When the recordId associated with the current table does not exist in the associated table snapshot, 
+     * it means that this associated record is a new associated record.
+     * In this case, you need to load the record data of this new associated record into the associated table snapshot.
      */
     const cacheKey = emptyRecords.length ? sortBy(emptyRecords).join(',') : null;
     if (cacheKey && datasheet && !httpCache.has(cacheKey)) {
@@ -1032,7 +1030,7 @@ export class CellHelper extends KonvaDrawer {
       let realMaxTextWidth = maxTextWidth < 0 ? 0 : maxTextWidth;
       if (index === 0 && addBtnVisible && isOperating) {
         const operatingMaxWidth = maxTextWidth - (GRID_CELL_ADD_ITEM_BUTTON_SIZE + 4);
-        // item 没有显示空间，则进行换行
+        // item No space to display, then perform a line feed
         if (operatingMaxWidth <= 10) {
           currentX = GRID_CELL_VALUE_PADDING;
           currentY += GRID_CELL_LINK_ITEM_HEIGHT + GRID_CELL_MULTI_ITEM_MARGIN_TOP;
@@ -1053,9 +1051,7 @@ export class CellHelper extends KonvaDrawer {
       );
 
       if (columnWidth != null) {
-        // 非激活态下，当超过行宽时，后续 item 不进行渲染
         if (!isActive && currentX >= columnWidth) break;
-        // 非激活态下，如果不是最后一行，对溢出 item 进行换行处理
         if (
           !isActive &&
           !isShortHeight &&
@@ -1149,13 +1145,12 @@ export class CellHelper extends KonvaDrawer {
         return this.renderCellText(renderProps, ctx);
       }
 
-      // cellValue 神奇引用 尝试去拍平二维数组
       const realCellValue = cellValue?.flat(1) as ICellValue;
       const realRenderProps = { ...renderProps, cellValue: realCellValue, editable: false };
       const realFieldRenderProps =
         { ...realRenderProps, cellValue: realCellValue, field: realField, currentResourceId: entityFieldInfo?.datasheetId };
 
-      // 非纯文本的字段原样展示
+      // Non-plain text fields are displayed as is
       switch (realField.type) {
         case FieldType.Attachment:
           return this.renderCellAttachment(realRenderProps, ctx);
@@ -1170,7 +1165,7 @@ export class CellHelper extends KonvaDrawer {
           return this.renderCellLink(realFieldRenderProps, ctx);
         case FieldType.Checkbox:
           return this.renderCellMultiCheckbox(realRenderProps, ctx);
-        // 文本逗号分割
+        // Text comma segmentation
         case FieldType.DateTime:
         case FieldType.Number:
         case FieldType.Email:

@@ -12,7 +12,6 @@ interface ICellBlank {
   needOffsetBorderBottom?: boolean;
 }
 
-// 处理空白行
 export const CellBlank: React.FC<ICellBlank> = props => {
   const { style, row, actualColumnIndex, groupLength, needOffsetBorderBottom } = props;
   return (

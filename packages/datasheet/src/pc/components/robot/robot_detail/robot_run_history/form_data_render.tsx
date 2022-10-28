@@ -8,7 +8,7 @@ import styles from './style.module.less';
 interface IFormDataRenderProps {
   nodeSchema?: INodeSchema;
   formData: any;
-  disableRetrieveSchema?: boolean; // trigger的schema 是动态计算的。暂时不需要走这个逻辑
+  disableRetrieveSchema?: boolean; // The trigger's schema is calculated dynamically, so there is no need to go through this logic for now
 }
 
 export const FormDataRender = (props: IFormDataRenderProps) => {

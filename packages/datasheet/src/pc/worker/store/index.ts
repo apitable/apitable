@@ -7,17 +7,19 @@ export * from './store_worker';
 
 let _dispatch: Dispatch;
 
-// 用于将一个action同步发送给主线程的store和worker store, 有些数据需要两边store同步，比如pageParams
+// Used to synchronize an action to the main thread's store and worker store, 
+// some data needs to be synchronized between the two stores, such as pageParams
 export const dispatch = (action: any): any => {
   if (!_dispatch) return false;
   _dispatch(action);
   return true;
 };
 
-// worker内store的包装，有点代理的意思，这部分代码是运行在主线程的
-// 可以在下面的dispatch对action做一下分拣，不会引起重新计算的action，可以直接派发到主线程的store
+// The wrapping of the store within the worker, a bit of a proxy, this part of the code is running in the main thread
+// You can do some sorting of the action in the following dispatch, 
+// and the action that will not cause recalculation can be dispatched directly to the store of the main thread
 export function remoteStoreWrap(remoteStore: Remote<Store<any>> | null) {
-  // 浏览器不支持worker的时候没有remoteStore
+  // When the browser does not support worker, there is no remoteStore
   if (!remoteStore) {
     _dispatch = (action: any) => {
       if (action.dispatchToStore !== DispatchToStore.Remote) {

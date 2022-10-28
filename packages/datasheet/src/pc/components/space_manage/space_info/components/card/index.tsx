@@ -65,7 +65,6 @@ export const Card: FC<ICardProps> = (props) => {
   const overflow = usedPercent === 100;
   const _strokeColor = overflow ? colors.red[500] : strokeColor;
   const unLimited = +totalText === -1;
-  // UI反馈当总数无限时，给一个默认的比率进度条会美观些
   const showFakePercent = unLimited && +usedText;
   const percent = useAnimationNum({ value: showFakePercent ? 5 : usedPercent, duration: 1000, easing: 'linear', isFloat: true }) as number;
   const usedTitleText = useAnimationNum({ value: usedText, duration: 1000, easing: 'linear', format: true, isFloat: usedTextIsFloat });
@@ -78,7 +77,6 @@ export const Card: FC<ICardProps> = (props) => {
 
   const detail = (
     <>
-      {/* 已用 */}
       <Desc 
         color={_strokeColor}
         label={t(Strings.used)}
@@ -87,7 +85,6 @@ export const Card: FC<ICardProps> = (props) => {
         showPercent={showPercent}
         usedPercent={usedPercent}
       />
-      {/* 剩余 */}
       {
         !unLimited &&
         <Desc 
@@ -132,7 +129,7 @@ export const Card: FC<ICardProps> = (props) => {
           style={isLine ? { lineHeight: '12px', color: _strokeColor }: undefined}
         />
       </div>
-      {/* 显示 已用xx，剩余 xx */}
+      {/* Show xx used, xx remaining */}
       {
         !isLine && <div className={styles.descWrap}>
           <div> {detail} </div>
@@ -143,7 +140,7 @@ export const Card: FC<ICardProps> = (props) => {
 };
 
 /**
- * 用量描述
+ * Usage Description
  */
 interface IDescProps {
   color: string,
@@ -168,11 +165,11 @@ const Desc: FC<IDescProps> = ({ color, label, text, unit, showPercent, usedPerce
 };
 
 /**
- * 对 Progress 进行了一层封装
+ * A layer of wrapping around Progress
  */
 interface IProgressInCardProps extends ProgressProps {
   /**
-   * 指定 showInfo 为 true 时，文字的颜色
+   * Specify the color of the text when showInfo is true
    */
   color?: string;
 }

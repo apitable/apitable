@@ -4,14 +4,14 @@ import { ISelectFieldOption, IFieldProperty, ICollaCommandExecuteResult } from '
 export interface IOptionListProps extends IListBase<string[], ISelectFieldOption[]> {
 
   /**
-   * @description 下拉列表树妖用的数据，数据结构和列头存储的数据一致
+   * @description The data used for the drop-down list tree is the same data structure as the data stored in the column headers
    * @type {ISelectFieldOption[]}
    */
   listData: ISelectFieldOption[];
 
   /**
-   * @description 和拖动相关的操作，目前之后单元格和展开卡片有该功能，
-   * 基本可以用此判断是否在单元格内
+   * @description The operation related to dragging, currently after the cell and expand the card has the function, 
+   * you can basically use this to determine whether the cell
    * @type {({
    *     draggingId: string | undefined
    *     setDraggingId: any
@@ -25,19 +25,19 @@ export interface IOptionListProps extends IListBase<string[], ISelectFieldOption
   };
 
   /**
-   * @description 设置列头的属性
+   * @description Set the properties of the column headers
    */
   setCurrentField?: (getNewField: (newField: IFieldProperty) => IFieldProperty) => ICollaCommandExecuteResult<{}>
 
   /**
-   * @description 新增一条新的选项
+   * @description Add a new option
    * @param {string} keyword
    * @param {*} cb
    */
   onAddHandle?(keyword: string, cb): void;
 
   /**
-   * @description 捕获组件内部的 Input 实例，方便触发 focus
+   * @description Capture the internal Input instance of the component to facilitate triggering focus
    * @type {React.RefObject<HTMLInputElement>}
    */
   inputRef: React.RefObject<HTMLInputElement>

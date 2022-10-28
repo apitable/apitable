@@ -43,7 +43,7 @@ type IMagicTextFieldProps = IWidgetProps & {
   triggerType: ITriggerType | null;
 };
 
-// 神奇变量编辑器内部维护状态，当失焦点的时候，同步只给上级表单。
+// The magic variable editor maintains state internally, and when out of focus, synchronization is given only to the parent form.
 export const MagicTextField = (props: IMagicTextFieldProps) => {
   const { onChange, schema } = props;
   // console.log(props.rawErrors);
@@ -105,10 +105,10 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
     return Selectors.getFieldPermissionMap(state, datasheetId);
   });
   const fields = useAllFields();
-  // 当表单提交时、当记录创建时两个 trigger 取动态参数屏蔽五个字段
+  // Two triggers take dynamic parameters to mask five fields when the form is submitted and when the record is created
   // const disable5Fields = ['form_submitted', 'record_created'].includes(triggerType?.endpoint!);
   const nodeOutputSchemaList = props.nodeOutputSchemaList.map((nodeOutputSchema, index) => {
-    // 第一个是 trigger，暂时只增强 trigger 的 fields
+    // The first one is the trigger, and for now only the fields of the trigger will be enhanced
     if (index === 0) {
       return enrichDatasheetTriggerOutputSchema(nodeOutputSchema, fields, fieldPermissionMap!);
     }
@@ -138,7 +138,7 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
       onChange={handleEditorChange}
     >
       <div className={styles.magicVariableBox} ref={ref} onKeyDown={e => {
-        // 阻止避免表单提交
+        // Block avoiding form submissions
         if (e.key === 'Enter' && isOpen) {
           e.preventDefault();
         }
@@ -179,7 +179,6 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
           <Editable
             className={styles.editor}
             onBlur={() => {
-              // 在面板没打开的情况下，才同步
               if (!isOpen) {
                 updateFormValue(value);
               }
@@ -188,8 +187,7 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
             onKeyDown={handleKeyDown}
             placeholder={map2Text[placeholderKey]}
             onCompositionEnd={handleCompositionEnd}
-          // placeholder={t(Strings.robot_enter_request_address_placeholder)}
-          // placeholder="输入 / 添加神奇变量..."
+            // placeholder={t(Strings.robot_enter_request_address_placeholder)}
           />
         </RcTrigger>
       </div>

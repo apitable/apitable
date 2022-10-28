@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 /**
- * 健康检查 API
+ * Health Check API
  * @param _req
  * @param res
  */

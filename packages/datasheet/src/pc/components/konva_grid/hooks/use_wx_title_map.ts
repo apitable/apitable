@@ -9,12 +9,12 @@ interface IWxTitleMap {
   userNames?: { name: string, unitId: string }[];
 }
 
-// 企微成员 canvas 名称集合
+// Enterprise Wecom members canvas name collection
 export const useWxTitleMap = (props: IWxTitleMap = {}) => {
   const { userNames } = props;
   const unitMap = useSelector(Selectors.getUnitMap);
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
-  // 企微成员名称集合
+  // Enterprise Wecom member name collection
   const [unitTitleMap, setUnitTitleMap] = useState<object>({});
   const WWOpenData: {
     initCanvas?: () => void;
@@ -23,7 +23,7 @@ export const useWxTitleMap = (props: IWxTitleMap = {}) => {
   useEffect(() => {
     const units = userNames || (unitMap && Object.values(unitMap));
     if (isSocialWecom(spaceInfo) && Array.isArray(units) && isObject(WWOpenData)) {
-      // IOS 系统概率出现 undefined
+      // IOS system probability undefined
       if (WWOpenData.initCanvas) {
         WWOpenData.initCanvas();
         const items = units.map(item => ({ type: WecomOpenDataType.UserName, id: item.name }));

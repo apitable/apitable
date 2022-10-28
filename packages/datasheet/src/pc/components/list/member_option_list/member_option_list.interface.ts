@@ -8,52 +8,47 @@ export enum SourceType {
 
 export interface IMemberOptionListProps extends IListBase<IUnitIds | null, (IUnitValue | IUserValue)[]> {
   /**
-   * @description 是否要显示查看更多的按钮
-   * 在 filter 中就不需要该按钮
+   * @description Whether to display the View More button
+   * The button is not needed in the filter
    * @type {boolean}
    */
   showMoreTipButton: boolean;
 
   /**
-   * @description 是否显示邀请成员的提示
+   * @description Whether to show tips for inviting members
    * @type {boolean}
    */
   showInviteTip?: boolean;
 
   /**
-   * @description 由于该组件通用语 Member 和 CreatMember，这两个地方对于 id 的使用是不一致的，
-   * 需要指定当前组件内使用哪种 id 作为主键。另外也可以根据该属性判断当前组件被谁调用
+   * @description Due to the component's generic language Member and CreateBy, the use of ids in these two places is inconsistent.
+   * It is necessary to specify which id is used as the primary key within the current component. 
+   * You can also determine who is calling the current component based on this property
    * @type {('uuid' | 'unitId')}
    */
   uniqId: 'userId' | 'unitId';
 
   /**
-   * @description 主要给 draft 编辑器使用，用来表示当前那个项目被聚焦
+   * @description Used primarily by the draft editor to indicate which item is currently in focus
    * @type {number}
    */
   activeIndex?: number;
 
   /**
-   * @description 是否显示搜索框，比如 Draft 中就不需要
+   * @description Whether or not to show the search box, for example, in Draft is not required
    * @type {boolean}
    */
   showSearchInput: boolean;
 
-  /**
-   * 来源节点 id
-   */
   sourceId: string;
 
-  /**
-   * 来源节点的类型
-   */
   sourceType?: SourceType;
 
   unitMap: IUnitMap | null;
 
   linkId?: string;
 
-  // 是否只展示member (否则可以选择member和group)
+  // Whether to show only members (otherwise you can choose member and group)
   memberOnly?: boolean;
 
   showTeams?: boolean;

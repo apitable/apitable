@@ -2,7 +2,7 @@ import { Select as SelectBase } from '@vikadata/components';
 import { useControllableValue } from 'ahooks';
 
 /**
- * 对 component select 组件的封装，为了不影响现有组件逻辑，现在这里包一层。支持可控值
+ * Wrapping of component select component, in order not to affect the existing component logic, now wrap a layer here. Support for controllable values
  */
 export const Select = (props: {
   value?: any,

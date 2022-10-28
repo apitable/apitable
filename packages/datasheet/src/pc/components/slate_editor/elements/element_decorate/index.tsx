@@ -75,15 +75,15 @@ const ElementDecorate = React.memo(
         if (imeInputting || readOnly) {
           return false;
         }
-        // 只有一个节点的情况，不管编辑器是否focus都需要显示placeholder
+        // In the case of only one node, the placeholder needs to be displayed regardless of whether the editor is focused or not
         if (topPath === 0 && children.length === 1 && elementEmpty && isBasicElement) {
           return true;
         }
-        // 节点有文本或者不是初始的段落元素，不需要显示
+        // The node has text or is not the initial paragraph element and does not need to be displayed
         if (isVoid || !elementEmpty || elementType !== ElementType.PARAGRAPH || !isFullMode) {
           return false;
         }
-        // 没有焦点，或者焦点没有闭合
+        // No focus, or the focus is not closed
         if (!selection || !Range.isCollapsed(selection)) {
           return false;
         }
@@ -111,14 +111,15 @@ const ElementDecorate = React.memo(
         console.log(error);
         return false;
       }
-      //  确定需要editor.selection这个依赖，editor为一个memo的缓存对象一直不变，只有selection会因为光标变化而改变
+      // determine the need for the editor.selection dependency, editor for a memo cache object has been unchanged, 
+      // only the selection will change because the cursor changes
       // eslint-disable-next-line
     }, [isVoid, elementEmpty, elementType, editor, element, editor.selection, imeInputting, isFullMode, readOnly]);
 
     const placeholderText = useMemo(() => {
       const elementPath = ReactEditor.findPath(editor, element);
       const topPath = elementPath[0];
-      // 第一个节点需要优先显示外部传入的placeholder
+      // The first node needs to display the external incoming placeholder first
       if (topPath === 0) {
         return placeholder || i18nText.placeholder;
       }

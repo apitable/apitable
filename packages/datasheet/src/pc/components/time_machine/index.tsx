@@ -56,9 +56,9 @@ export const TimeMachine: React.FC<{ onClose: (visible: boolean) => void }> = ({
     const revisions = numbersBetween(lastRevision - 100, lastRevision + 1);
     DatasheetApi.fetchChangesets<IChangesetPack>(datasheetId, ResourceType.Datasheet, revisions)
       .then(res => {
-        // 返回的数据是由低到高，展示的的时候，需要先展示高版本
+        // The returned data is from low to high, when displaying, you need to display the high version first
         const csl = res.data.data.reverse();
-        console.log('加载 changesetList: ', csl);
+        console.log('Load changesetList: ', csl);
         const nextCsl = changesetList.concat(csl);
         setChangesetList(nextCsl);
       })
@@ -73,7 +73,7 @@ export const TimeMachine: React.FC<{ onClose: (visible: boolean) => void }> = ({
   const scrollInfo = useScroll(contentRef);
 
   useEffect(() => {
-    // 最多加载最近500个版本
+    // Load up to 500 most recent versions
     if (!contentRef.current || fetching || noMore) {
       return;
     }
@@ -137,11 +137,11 @@ export const TimeMachine: React.FC<{ onClose: (visible: boolean) => void }> = ({
 
     cloneDatasheet.id = PREVIEW_DATASHEET_ID;
     cloneDatasheet.snapshot.datasheetId = PREVIEW_DATASHEET_ID;
-    // 主动设置editable为false可以绕过冲突检测，避免弹出自动恢复模态框
+    // Proactively setting editable to false bypasses conflict detection and avoids pop-ups that automatically restore modal boxes
     cloneDatasheet.permissions = { ...cloneDatasheet.permissions, editable: false };
-    // 用于标识当前数据为预览数据，并指明预览的版本
+    // Identifies the current data as preview data and indicates the version of the preview
     cloneDatasheet.preview = revision;
-    // 主动设置editable为false可以绕过冲突检测，避免弹出自动恢复模态框
+    // Proactively setting editable to false bypasses conflict detection and avoids pop-ups that automatically restore modal boxes
     const previewSnapshot = cloneDatasheet.snapshot;
     try {
       dispatch(StoreActions.receiveDataPack({ snapshot: previewSnapshot, datasheet: cloneDatasheet }, false));
@@ -156,7 +156,7 @@ export const TimeMachine: React.FC<{ onClose: (visible: boolean) => void }> = ({
 
   const execute = useCallback((index: number, preview = false) => {
     const operations = changesetList.slice(0, index+1).map(cs => {
-      // op 在回滚的时候需要反过来执行，所以顺序也要先反过来
+      // op needs to be executed in reverse when rolling back, so the order should also be reversed first
       return cs.operations.filter(op => !op.cmd.startsWith('System')).reverse();
     }).flat(1);
     const msgText = preview ? t(Strings.preview) : t(Strings.rollback);

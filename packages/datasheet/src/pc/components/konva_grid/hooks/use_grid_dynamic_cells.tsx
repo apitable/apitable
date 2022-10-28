@@ -71,7 +71,7 @@ interface IUseDynamicCellsProps {
 }
 
 /**
- * 根据是否首/尾列，来判断单元格所在的位置
+ * Determine where a cell is located based on whether it is the first/last column
  */
 export const getCellHorizontalPosition = (props) => {
   const {
@@ -134,7 +134,7 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
   }, [columnStartIndex, columnStopIndex, rowStartIndex, rowStopIndex, frozenColumnCount]);
 
   /**
-   * Active 状态下的单元格、激活框
+   * Active state cells, active border
    */
   const activeCellMap = useMemo(() => {
     let activedCell: React.ReactNode = null;
@@ -283,7 +283,7 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
     datasheetId, fieldMap, instance, linearRows, rowHeight, rowHeightLevel, snapshot, colors.defaultBg]);
 
   /**
-   * 拖拽把手
+   * Drag handler
    */
   let fillHandler: React.ReactNode = null;
   let frozenFillHandler: React.ReactNode = null;
@@ -298,7 +298,7 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
     ) {
       const { fieldId } = visibleColumns[fieldMaxIndex];
       const maxIndexField = fieldMap[fieldId];
-      // 计算字段不渲染拖拽把手
+      // Computed fields do not render drag handler
       if (getCellEditable(maxIndexField, _editable)) {
         const x = instance.getColumnOffset(fieldMaxIndex);
         const y = instance.getRowOffset(recordMaxIndex);

@@ -39,7 +39,7 @@ const PreviewFileModal: React.FC<IPreviewFileModal> = props => {
       if (field && Selectors.findRealField(state, field)?.type === FieldType.Attachment) {
         _cellValue = Selectors.getCellValue(state, snapshot, recordId, fieldId);
       } else {
-        _cellValue = []; // 触发弹窗的关闭
+        _cellValue = []; // Trigger the closing of pop-up windows
       }
     }
   }
@@ -115,7 +115,7 @@ const PreviewFileModal: React.FC<IPreviewFileModal> = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cellValue, activeIndex]);
 
-  // activeIndex 防止超出范围
+  // activeIndex prevents out-of-range
   useEffect(() => {
     if (cellValue.length === 0) {
       onClose();
@@ -146,13 +146,13 @@ const PreviewFileModal: React.FC<IPreviewFileModal> = props => {
     };
   });
 
-  // 调整 width，处理侧边记录卡片出现时的情况
+  // Adjust width to handle when expand record in side
   const marginRight = (() => {
-    const OFFSET_RIGHT = 3; // 拖拽线的偏移宽度
-    const WRAP_RIGHT = 15; // 分享或模板页面的右侧偏移量
+    const OFFSET_RIGHT = 3; // Offset width of the drag line
+    const WRAP_RIGHT = 15; // Offset to the right of the share or template page
 
     let width = 0;
-    // 如果有居中记录卡片，全屏显示
+    // If there is a centered record card, display it full screen
     if (isFullScreen || !isSideRecordOpen || isMobile || isRecordFullScreen || document.querySelector('.centerExpandRecord')) {
       return width;
     }
@@ -204,7 +204,6 @@ export const expandPreviewModalClose = () => {
   preCloseModalFn = () => {};
 };
 
-// TODO: 优化调用形式
 export const expandPreviewModal = (props: IExpandPreviewModalFuncProps): IExpandPreviewModalRef => {
   preCloseModalFn();
   const div = document.createElement('div');

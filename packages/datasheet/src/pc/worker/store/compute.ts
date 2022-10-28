@@ -10,7 +10,7 @@ export const computeServiceSet: { [key: string]: (state: IReduxState, resourceId
   [ComputeServices.GroupBreakpoint]: (state) => Selectors.getGroupBreakpoint(state),
 };
 
-// 用来描述要计算返回哪些信息
+// Describe what information is to be returned by the calculation
 export declare type TComputeDesc = ComputeServices[];
 
 export const computeService = (state: IReduxState, computeDesc: TComputeDesc, id: number, resourceId?: string) => {

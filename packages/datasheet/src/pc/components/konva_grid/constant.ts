@@ -1,58 +1,58 @@
 import { FieldHeadIconType } from './interface';
 
-export const GRID_FIELD_HEAD_HEIGHT = 40; // 列头的高度
-export const GRID_ROW_HEAD_WIDTH = 70; // 行头宽度
+export const GRID_FIELD_HEAD_HEIGHT = 40; // Height of field header
+export const GRID_ROW_HEAD_WIDTH = 70; // Row head width
 
-export const GRID_SCROLL_BASE_SPEED = 15; // 基础滚动速度
-export const GRID_DEFAULT_VERTICAL_SPACING = 70; // 竖向滚动的触发阈值
-export const GRID_DEFAULT_HORIZONTAL_SPACING = 70; // 横向滚动的触发阈值
+export const GRID_SCROLL_BASE_SPEED = 15; // Base scroll speed
+export const GRID_DEFAULT_VERTICAL_SPACING = 70; // Trigger threshold for vertical scrolling
+export const GRID_DEFAULT_HORIZONTAL_SPACING = 70; // Trigger threshold for horizontal scrolling
 
-export const GRID_SCROLL_BAR_OFFSET_X = 50; // 滚动条的偏移量
+export const GRID_SCROLL_BAR_OFFSET_X = 50; // Offset of scrollbar
 
-export const GRID_SCROLL_REMAIN_SPACING = 200; // 视图拥有 200px 的多余滚动空间
+export const GRID_SCROLL_REMAIN_SPACING = 200; // The view has 200px of extra scrolling space
 
 /**
  * Layout
  */
-export const GRID_GROUP_OFFSET = 16; // 分组缩进
-export const GRID_GROUP_STAT_HEIGHT = 48; // 分组统计栏高度
-export const GRID_BOTTOM_STAT_HEIGHT = 39; // 底部统计栏高度
-export const GRID_FILL_HANDLER_SIZE = 8; // 填充把手的宽高
-export const GRID_ADD_FIELD_BUTTON_WIDTH = 100; // 无分组时，添加列按钮的宽度
-export const GRID_GROUP_ADD_FIELD_BUTTON_WIDTH = 40; // 分组时，添加列按钮的宽度
+export const GRID_GROUP_OFFSET = 16; // Group Indent
+export const GRID_GROUP_STAT_HEIGHT = 48; // Height of Grouping statistics column
+export const GRID_BOTTOM_STAT_HEIGHT = 39; // Height of the bottom statistics column
+export const GRID_FILL_HANDLER_SIZE = 8; // Width and height of the fill handler
+export const GRID_ADD_FIELD_BUTTON_WIDTH = 100; // The width of the column add button when there is no grouping
+export const GRID_GROUP_ADD_FIELD_BUTTON_WIDTH = 40; // The width of the column add button when grouping
 
 /**
- * CellValue 相关
+ * CellValue
  */
-export const GRID_ICON_COMMON_SIZE = 16; // 图标的大小
-export const GRID_ICON_SMALL_SIZE = 12; // 图标的大小
-export const GRID_CELL_VALUE_PADDING = 10; // cell value 内部的边距
-export const GRID_CELL_MULTI_PADDING_TOP = 6; // Member/Option/Link 等字段的纵向内边距
-export const GRID_CELL_MULTI_ITEM_MARGIN_TOP = 5; // Option/Link 等字段 item 间的纵向距离
-export const GRID_CELL_MULTI_ITEM_MARGIN_LEFT = 8; // Member/Option/Link 等字段 item 间的横向距离
-export const GRID_CELL_ADD_ITEM_BUTTON_SIZE = 22; // Member/Option/Link 等字段新增按钮 size
-export const GRID_CELL_DELETE_ITEM_BUTTON_SIZE = 8; // Member/Option/Link 等字段删除按钮 size
-export const GRID_CELL_DELETE_ITEM_BUTTON_SIZE_OFFSET = 8; // Member/Option/Link 等字段删除按钮 size 的偏移值
-export const GRID_CELL_MULTI_ITEM_MIN_WIDTH = 36; // Option/Link 等字段 item 的最小宽度
+export const GRID_ICON_COMMON_SIZE = 16; // Size of common icons
+export const GRID_ICON_SMALL_SIZE = 12; // Size of small icons
+export const GRID_CELL_VALUE_PADDING = 10; // inner padding of cell
+export const GRID_CELL_MULTI_PADDING_TOP = 6; // Vertical inner padding for Member/Option/Link etc. fields
+export const GRID_CELL_MULTI_ITEM_MARGIN_TOP = 5; // Vertical margin between Option/Link and other field items
+export const GRID_CELL_MULTI_ITEM_MARGIN_LEFT = 8; // Horizontal margin between the Member/Option/Link field items
+export const GRID_CELL_ADD_ITEM_BUTTON_SIZE = 22; // New button size for Member/Option/Link fields
+export const GRID_CELL_DELETE_ITEM_BUTTON_SIZE = 8; // Member/Option/Link etc. field delete button size
+export const GRID_CELL_DELETE_ITEM_BUTTON_SIZE_OFFSET = 8; // Member/Option/Link fields remove the offset of the button size
+export const GRID_CELL_MULTI_ITEM_MIN_WIDTH = 36; // Minimum width of Option/Link etc. field item
 
 // Member
-export const GRID_CELL_MEMBER_ITEM_HEIGHT = 24; // 成员字段 item 高度
-export const GRID_CELL_MEMBER_ITEM_PADDING_LEFT = 2; // 成员字段 item 左边距
-export const GRID_MEMBER_ITEM_PADDING_RIGHT = 8; // 成员字段 item 右边距
-export const GRID_MEMBER_ITEM_AVATAR_MARGIN_RIGHT = 8; // 成员字段 item avatar 距成员名的距离
-export const GRID_CELL_MEMBER_ITEM_MARGIN_TOP = 3; // 成员字段 item avatar 距成员名的距离
+export const GRID_CELL_MEMBER_ITEM_HEIGHT = 24; // Member field item height
+export const GRID_CELL_MEMBER_ITEM_PADDING_LEFT = 2; // Member field item left margin
+export const GRID_MEMBER_ITEM_PADDING_RIGHT = 8; // Member field item right margin
+export const GRID_MEMBER_ITEM_AVATAR_MARGIN_RIGHT = 8; // Member field item avatar distance from member name
+export const GRID_CELL_MEMBER_ITEM_MARGIN_TOP = 3; // Member field item avatar distance from member name
 
 // Option
-export const GRID_OPTION_ITEM_PADDING = 10; // 单/多选字段 item 的内边距
-export const GRID_OPTION_ITEM_HEIGHT = 20; // 单/多选字段高度
+export const GRID_OPTION_ITEM_PADDING = 10; // Padding for single/multi-select field item
+export const GRID_OPTION_ITEM_HEIGHT = 20; // Height for Single/multi-select field item
 
 // Attachment
-export const GRID_CELL_ATTACHMENT_PADDING = 10; // 附件字段上下边距
-export const GRID_CELL_ATTACHMENT_ITEM_MARGIN_LEFT = 5; // 附件字段 item 横向间距
+export const GRID_CELL_ATTACHMENT_PADDING = 10; // Top and bottom padding of attachment field
+export const GRID_CELL_ATTACHMENT_ITEM_MARGIN_LEFT = 5; // Horizontal margin of attachment field item
 
 // Link
-export const GRID_CELL_LINK_ITEM_PADDING = 10; // 神奇关联字段 item 左右内边距
-export const GRID_CELL_LINK_ITEM_HEIGHT = 20; // 神奇关联字段 item 高度
+export const GRID_CELL_LINK_ITEM_PADDING = 10; // Left and right padding of link field item
+export const GRID_CELL_LINK_ITEM_HEIGHT = 20; // Height of link field item
 
 // field head icon
 export const FIELD_HEAD_TEXT_MIN_WIDTH = 30;

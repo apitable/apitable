@@ -15,7 +15,8 @@ import { EmptyArrayOperand, generateKeyedFormData, generateRowId, keyedToPlainFo
 const ArrayField = (props: IFieldProps) => {
   // console.log('ArrayField.props.formData', props.formData);
   const [state, setState] = useState({
-    // 这里原来是对 array 的每一项做了生成唯一 key 的操作。应该是为了优化渲染。目前暂时取消。
+    // Here it turns out that the operation of generating a unique key for each item of the array is done. 
+    // It was supposed to optimize the rendering. For now, it is removed.
     keyedFormData: generateKeyedFormData(isOperandNullValue(props.formData, props.schema)
       ? JSON.parse(JSON.stringify(EmptyArrayOperand))
       : props.formData),//generateKeyedFormData(props.formData),
@@ -23,7 +24,6 @@ const ArrayField = (props: IFieldProps) => {
   });
   // React.useEffect(() => {
   //   const _state = {
-  //     // 这里原来是对 array 的每一项做了生成唯一 key 的操作。应该是为了优化渲染。目前暂时取消。
   //     keyedFormData: generateKeyedFormData(isOperandNullValue(props.formData, props.schema)
   //       ? JSON.parse(JSON.stringify(EmptyArrayOperand))
   //       : props.formData),
@@ -112,7 +112,7 @@ const ArrayField = (props: IFieldProps) => {
         operator: 'newArray',
         operands: [...state.keyedFormData.value.operands, {
           key: generateRowId(),
-        }], // 加个空的操作数
+        }],
       }
     };
     setState(
@@ -297,10 +297,9 @@ const ArrayField = (props: IFieldProps) => {
     const { TitleField, DescriptionField } = fields;
     const itemsSchema = retrieveSchema(schema.items as any, rootSchema);
     // const formData = keyedToPlainFormData(state.keyedFormData);
-    // FIXME: 判断
     const formData = state.keyedFormData;
     const arrayProps = {
-      canAdd: true, //canAddItem(formData), FIXME: 判断
+      canAdd: true, //canAddItem(formData),
       items: state.keyedFormData.value.operands.map((keyedItem, index) => {
         // const { key, item } = keyedItem;
         const itemSchema = retrieveSchema(schema.items as any, rootSchema, keyedItem);

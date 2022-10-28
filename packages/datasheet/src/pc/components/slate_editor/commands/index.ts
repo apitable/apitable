@@ -10,7 +10,6 @@ import { IElement, IElementData, IImageElementData } from '../interface/element'
 import { IMetaEditor } from '../interface/editor';
 import { GENERATOR, generateId } from '../elements/generator';
 
-// mark 切换
 export const toggleMark = (editor: Editor, format: string, value: boolean | number | string = true) => {
   const isActive = isMarkActive(editor, format, value);
 
@@ -21,7 +20,6 @@ export const toggleMark = (editor: Editor, format: string, value: boolean | numb
   }
 };
 
-// 元素类型切换
 export const toggleBlock = (editor, block) => {
   ReactEditor.focus(editor);
   const isActive = isBlockActive(editor, block);
@@ -46,7 +44,6 @@ export const toggleBlock = (editor, block) => {
 
 export const removeAllMarks = (editor: Editor) => {
   const marks = editor.marks;
-  // 暂不确定，直接赋值editor.marks = {} 是否会有其他影响 
   if (marks) {
     for (const key in marks) {
       editor.removeMark(key);
@@ -72,7 +69,7 @@ export const updateElementData = (editor, partialData: IElementData, location?: 
 const changeElementIndent = (editor: Editor, isAdd) => {
   const validSection = getValidSelection(editor);
   const step = isAdd ? 1 : -1;
-  // To do 多层嵌套的时候会有多次缩进的问题，待解决
+  // TODO: The problem of multiple indentations when nesting multiple layers is to be solved
   const nodes = Editor.nodes(
     editor,
     { at: validSection, match: (node) => SlateElement.isElement(node) && !LIST_TYPE_DICT[(node as IElement).type] }

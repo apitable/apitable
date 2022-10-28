@@ -67,14 +67,14 @@ export const FieldTypeSelect: React.FC<IFieldTypeSelectProps> = props => {
       setCurrentField(pre => {
         let property = pre.property;
 
-        // 判断是否是在 单选 和 多选 之间相互转换字段，是，则不改变 property 里的值
+        // Determines whether the fields are converted between single and multiple choice, and if so, does not change the value in the property
         const isConvertWithinSelectField = isSelectField({ ...pre, type } as IField) && isSelectField(pre);
 
         if (!isConvertWithinSelectField) {
           property = getFieldClass(type).defaultProperty();
         }
 
-        // 存在单多选类型切换，进行默认值转换
+        // Presence of single multi-select type switching for default value conversion
         if (isConvertWithinSelectField && property.defaultValue != null) {
           property = type === FieldType.MultiSelect ? { ...property, defaultValue: [property.defaultValue] } : omit(property, 'defaultValue');
         }
@@ -82,7 +82,7 @@ export const FieldTypeSelect: React.FC<IFieldTypeSelectProps> = props => {
         const isOtherField2SelectField = field && !isSelectField(field) && isSelectField({ ...field, type } as IField);
 
         if (isOtherField2SelectField) {
-          // 从非 selectField 转换成 selectField ,需要支持预览
+          // Convert from non-selectField to selectField ,need to support preview
           const cellValues = DatasheetActions.getCellValuesByFieldId(store.getState(), snapshot, pre.id);
           const stdVals = cellValues.map(cv => {
             return Field.bindModel(field).cellValueToStdValue(cv as ISegment[]);

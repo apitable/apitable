@@ -10,8 +10,7 @@ export const useListInteractive = (options: IUnionProps) => {
   const { activeItemClass } = options;
   const { index: activeIndex, setIndex: setActiveIndex } = useSelectIndex({ ...options, activeItemClass: `.${activeItemClass}` });
 
-  // TODO: 考虑下怎么结合 Hover 和键盘事件，将两个 class 合成一个
-  // 目前将两者分开处理 20201007
+  // TODO: Consider how to combine Hover and keyboard events, and combine the two classes into one
   // const onHoverListItem = (e: React.MouseEvent) => {
   //   const element = e.currentTarget;
   //   const classList = element.classList;

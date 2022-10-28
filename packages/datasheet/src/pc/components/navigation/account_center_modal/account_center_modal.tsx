@@ -67,9 +67,9 @@ export const AccountCenterModal: FC<IAccountCenterModalProps> = props => {
       key: AccountCenterModules.ModifyPassword,
       name: userInfo!.needPwd ? t(Strings.set_password) : t(Strings.change_password),
       component: <ModifyPassword setActiveItem={setActiveItem} />,
-      // 针对未绑定手机或邮箱的账号，用户中心的“修改密码”这一栏是直接屏蔽掉
+      // For accounts that are not bound to a cell phone or email address, the "Change Password" section of the user center is directly blocked
       hidden: !(userInfo?.email || userInfo?.mobile) || env.HIDDEN_USER_CHANGE_PASSWORD,
-    }, // '修改密码'
+    },
     {
       key: AccountCenterModules.AccountWallet,
       name: t(Strings.account_wallet),

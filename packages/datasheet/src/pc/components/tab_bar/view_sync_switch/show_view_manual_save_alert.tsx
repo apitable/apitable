@@ -59,7 +59,7 @@ const ViewManualSaveAlertContent: React.FC<IShowViewManualSaveInPcContentProps> 
   });
 
   useUpdateEffect(() => {
-    // 切换数表和视图需要销毁该组件
+    // Switching datasheets and views requires destroying the component
     modalClose();
   }, [datasheetId, viewId]);
 

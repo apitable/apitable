@@ -26,7 +26,7 @@ export const CellDateTime: React.FC<ICellDateTime> = props => {
       dstId: Selectors.getActiveDatasheetId(state),
     };
   }, shallowEqual);
-  // snapshot 为 undefined 时不展示闹钟（比如通知中心直接展开卡片）
+  // No alarm is displayed when snapshot is undefined (e.g. the notification center expands the card directly)
   const alarm = showAlarm ? Selectors.getDateTimeCellAlarm(snapshot, recordId!, field.id) : undefined;
   const cellString = Field.bindModel(field).cellValueToString(cellValue);
   const [date, time, timeRule] = cellString ? cellString.split(' ') : [];

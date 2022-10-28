@@ -10,7 +10,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 /*
- * 金丝雀灰度标识
+ * The flag of Canary Testing
  */
 const _canaryTestingUrlFlag = 'spaceId';
 
@@ -29,7 +29,7 @@ const urlCheck = (path: string) => {
  *  @param request next request object
  *  @see https://vikadata.feishu.cn/docx/doxcnD8Syt3UxJUTlRGRhxbLC3f [Gateway grayscale processing flow]
  */
-const canaryTestingByFillUpUrlPathFlag = async (request: NextRequest): Promise<NextResponse> => {
+const canaryTestingByFillUpUrlPathFlag = async(request: NextRequest): Promise<NextResponse> => {
   const url = request.nextUrl.clone();
   const searchParams = url.searchParams;
 

@@ -22,6 +22,5 @@ function withTheme(themeProps: IWithThemeProps) {
 
 export default withTheme;
 
-// // 暂时不处理这个主题覆盖
 // const withTheme = () => null;
 // export default withTheme;

@@ -136,7 +136,7 @@ export const Step: React.FC = () => {
           if (userData.email && userData.mobile) {
             return StepStatus.ChooseAccountType;
           }
-          // 如果同时没有邮箱和手机号，则直接跳转到确认页面
+          // If you don't have both email and mobile number, you will be redirected to the confirmation page
           if (!userData.email && !userData.mobile) {
             return StepStatus.ConfirmAgain;
           }

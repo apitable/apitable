@@ -24,7 +24,7 @@ import { useEnhanceTextClick } from '../hooks/use_enhance_text_click';
 import style from './style.module.less';
 import { UrlDiscern } from './url_discern';
 
-// 采用简单的识别规则处理单行文本增强字段。
+// Simple recognition rules are used to process single line text enhancement fields.
 const isEmail = text => text && /.+@.+/.test(text);
 const isPhoneNumber = text => text && /^[0-9\-()（）#+]+$/.test(text);
 
@@ -42,7 +42,7 @@ export const CellText: React.FC<ICellText> = props => {
   const { isEnhanceText: _isEnhanceText } = getTextFieldType(fieldType);
   const isEnhanceText = _isEnhanceText || fieldType === FieldType.Formula;
   const _handleEnhanceTextClick = useEnhanceTextClick();
-  // 点击链接时校验 URL 合法性
+  // Verify URL legitimacy when clicking on links
   const handleURLClick = (e: React.MouseEvent, type: SegmentType | FieldType, text: string, active?: boolean) => {
     if (!active) return;
     _handleEnhanceTextClick(type, text);
@@ -71,7 +71,7 @@ export const CellText: React.FC<ICellText> = props => {
   const isLookUpField = fieldType === FieldType.LookUp;
   switch (fieldType) {
     case FieldType.URL:
-      showUnderline = true; // 无论是否合规都识别为 URL
+      showUnderline = true; // Identified as a URL regardless of compliance
       break;
     case FieldType.Email:
       showUnderline = Boolean(showUnderline && isEmail(text));
@@ -117,8 +117,8 @@ export const CellText: React.FC<ICellText> = props => {
                   <span
                     className={classNames(style.url, { [style.activeUrl]: isActive })}
                     key={`${segment.link}-${index}`}
-                    // 只有激活状态下，点击链接才跳转。这里使用 onMouseDown 而不是 onClick
-                    // onMouseDown 时单元格还未激活。onClick 时单元格无论如何都是激活状态
+                    // The link will only jump if it is active. Here we use onMouseDown instead of onClick.
+                    // onMouseDown when the cell is not yet active. onClick when the cell is active anyway
                     onMouseDown={e => handleURLClick(e, segment.type, segment.text, isActive)}
                   >
                     {segment?.title || segment.text}
@@ -129,8 +129,6 @@ export const CellText: React.FC<ICellText> = props => {
                   <span
                     className={classNames(style.url, { [style.activeUrl]: isActive })}
                     key={`${segment.link}-${index}`}
-                    // 只有激活状态下，点击链接才跳转。这里使用 onMouseDown 而不是 onClick
-                    // onMouseDown 时单元格还未激活。onClick 时单元格无论如何都是激活状态
                     onMouseDown={e => handleURLClick(e, segment.type, segment.text, isActive)}
                   >
                     {segment.text}

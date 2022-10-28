@@ -68,7 +68,8 @@ export const FieldMenu: React.FC<IFieldMenu> = (
   const deleteField = useDeleteField(field.id, datasheetId);
   const commandManager = resourceService.instance!.commandManager;
   /**
-   * 协同过程中，字段被删除给出警告。提前结束渲染。
+   * Give a warning when a field is deleted during collaboration. 
+   * Ends rendering early.
    */
   useEffect(() => {
     if (!field) {
@@ -94,7 +95,7 @@ export const FieldMenu: React.FC<IFieldMenu> = (
 
   const fieldError = Boolean(Field.bindModel(field).validateProperty().error);
   const showFieldName = getShowFieldName(field.name);
-  // 特殊判断，当关联字段出错的时候，需要允许用户删除当前关联字段
+  // Special judgment, when the link field error, need to allow the user to delete the current link field
   const linkedFieldError = field.type === FieldType.Link && fieldError;
 
   function addField(index: number, fieldId: string, offset: number) {

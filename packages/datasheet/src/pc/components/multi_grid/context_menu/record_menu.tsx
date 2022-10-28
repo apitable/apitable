@@ -39,13 +39,12 @@ export function copyLink(recordId: string) {
 }
 
 interface IRecordMenuProps {
-  insertDirection?: 'horizontal' | 'vertical'; //  插入新记录的方向
+  insertDirection?: 'horizontal' | 'vertical';
   hideInsert?: boolean;
   menuId?: string;
   extraData?: any[];
 }
 
-// 复制记录
 export function copyRecord(recordId: string) {
   return appendRow({
     recordId,
@@ -75,7 +74,8 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
 
   const hasSelection = selection && selection.length;
   const onlyOperateOneRecord = (() => {
-    // 选区和选中记录是互斥的，存在选区，就不会有选中记录，存在选中记录就不会有选区。
+    // Selections and selected records are mutually exclusive; 
+    // if a selection exists, there will be no selected records, and if a selected record exists, there will be no selection.
     if (hasSelection) {
       const selectRecords = Selectors.getRangeRecords(store.getState(), selection[0]);
       return !(selectRecords && selectRecords.length > 1);
@@ -91,21 +91,21 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
   function deleteRecord(recordId: string) {
     const data: string[] = [];
     if (!isCalendar && recordRanges && recordRanges.length) {
-      // 处理勾选行的删除
+      // Handling the deletion of ticked rows
       for (const v of recordRanges) {
         data.push(v);
       }
     } else if (!isCalendar && selection && selection.length) {
-      // 处理选区的删除
+      // Handling the deletion of selections
       for (const v of selection) {
         const selectRecords = Selectors.getRangeRecords(store.getState(), v);
         selectRecords && data.push(...selectRecords.map(r => r.recordId));
       }
     } else {
-      // 处理直接右键的删除
+      // Handling right-click menu deletion
       data.push(recordId);
     }
-    // 这里使用 setTimeout 为了确保在删除大量数据前，能提示用户正在删除
+    // The setTimeout is used here to ensure that the user is alerted that a large amount of data is being deleted before it is deleted
     const { result } = commandManager.execute({
       cmd: CollaCommandName.DeleteRecords,
       data,
@@ -154,7 +154,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
 
       if (selectRecords?.length > 1) {
         const recordIds = selectRecords.map(el => el.recordId);
-        // 判断已选中的record是否全部在subscription中
+        // Determine if the selected record is all in the subscription
         return [...new Set([...subscriptions, ...recordIds])].length === subscriptions.length
           ? t(Strings.cancel_watch_record_multiple, { count: recordIds.length })
           : t(Strings.record_watch_multiple, { count: recordIds.length });
@@ -190,7 +190,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
       if (!selectRecords) return;
 
       const recordIds = selectRecords.map(el => el.recordId);
-      // 判断已选中的record是否全部在subscription中
+      // Determine if the selected record is all in the subscription
       if ([...new Set([...subscriptions, ...recordIds])].length === subscriptions.length) {
         onUnsubscribe(recordIds);
       } else {
@@ -254,12 +254,12 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
   };
 
   /**
-   * resourceService.instance!.clipboard.copy必须接收ClipboardEvent
-   * contextMenu中只有PointerEvent，获取不到ClipboardEvent
-   * 重写Clipboard中的方法过于冗余
-   * 能打开ContextMenu的condition下，EditorContainerBase必然是存在的，故execCommand以最大化复用
+   * resourceService.instance!.clipboard.copy must accept ClipboardEvent
+   * There is only PointerEvent in contextMenu, can't get ClipboardEvent
+   * Rewriting the methods in Clipboard is too redundant
+   * If the ContextMenu can be opened, the EditorContainerBase must exist, so execCommand to maximize the reuse
    *
-   * context-menu 重构后无法触发到编辑器的 onCopy，所以需要手动监听
+   * The context-menu refactoring does not trigger onCopy to the editor, so you need to listen to it manually.
    */
   const onCopy = () => {
     document.addEventListener('copy', handleCopy);
@@ -376,7 +376,8 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
         hidden: isCalendar,
         onClick: onCopy,
       },
-      // TODO: paste因为浏览器安全性限制，需去保存一份copy内容再处理数据，且不支持外部内容copy
+      // TODO: paste because of browser security restrictions, 
+      // need to save a copy of the content before processing data, and does not support external content copy
       // {
       //   icon: <PasteOutlined color={colors.thirdLevelText} />,
       //   text: t(Strings.paste),

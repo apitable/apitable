@@ -27,11 +27,9 @@ interface ISelectTreeNode {
 
 export const UsingTemplateModal: FC<IUsingTemplateModalProps> = props => {
   const { onCancel, templateId } = props;
-  // 树选择框的数据源
   const [treeData, setTreeData] = useState<ISelectTreeNode[]>([]);
-  // 文件夹节点id（使用的模板所放置的地方）
   const [nodeId, setNodeId] = useState('');
-  // 是否使用模板中的数据
+  // Whether to use the data in the template
   const [isContainData, setIsContainData] = useState(true);
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const { getNodeTreeReq } = useCatalogTreeRequest();

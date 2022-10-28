@@ -161,8 +161,8 @@ export const OrgChart: FC = () => {
     const curGuideWizardId = hooks.curGuideWizardId;
     const handledCount = rowsCount - handlingCount - unhandledNodes.length;
 
-    if (initialElements.length === 1) { // 添加第一个节点
-      // 当前 wizard 为 79，且 79 已完成，才能执行 80
+    if (initialElements.length === 1) { // Add the first node
+      // The current wizard is 79 and 79 is complete before 80 can be executed
       if (curGuideWizardId === ConfigConstant.WizardIdConstant.ORG_VIEW_PANEL
         && getWizardRunCount(state.user, ConfigConstant.WizardIdConstant.ORG_VIEW_PANEL)
       ) {
@@ -170,9 +170,9 @@ export const OrgChart: FC = () => {
         TriggerCommands.open_guide_wizard(ConfigConstant.WizardIdConstant.ORG_VIEW_ADD_FIRST_NODE);
       }
     } 
-    // 添加关联节点
+    // Add link nodes
     else if (unhandledNodes.length !== initialElements.length && handledCount === 2) {
-      // 当前 wizard 为 80，才能执行 81
+      // The current wizard is 80 in order to execute 81
       if (curGuideWizardId === ConfigConstant.WizardIdConstant.ORG_VIEW_ADD_FIRST_NODE) {
         TriggerCommands.clear_guide_all_ui();
         TriggerCommands.open_guide_wizard(ConfigConstant.WizardIdConstant.ORG_VIEW_DRAG_TO_UNHANDLED_LIST);

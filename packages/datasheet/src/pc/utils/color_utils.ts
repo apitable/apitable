@@ -25,7 +25,7 @@ export function hexToHSL(hex: string, alpha: number) {
   let g = parseInt(hex.slice(3, 5), 16);
   let b = parseInt(hex.slice(5, 7), 16);
 
-  // 转成[0, 1]的实数
+  // Convert to [0, 1] real numbers
   r /= 255;
   g /= 255;
   b /= 255;
@@ -63,7 +63,7 @@ export function hexToHSL(hex: string, alpha: number) {
   return `hsla(${h}, ${s}%, ${l}%, ${alpha})`;
 }
 
-// 单多选 property.option.color 超过阈值时，字体颜色呈现白色
+// Single-multiple choice property.option.color exceeds the threshold value, the font color is white
 export const COLOR_INDEX_THRESHOLD = 30;
 
 // rgba -> hex
@@ -72,7 +72,7 @@ export const rgbaToHex = (color: string, alpha: number) => {
 };
 
 /**
- * 生成 [0,50) 区间颜色取值。
+ * Generate color values in the range [0,50]
  * [
  *  [deepPurple100,.....,red100],
  *  ...
@@ -93,7 +93,7 @@ export function createRainbowColorsArr(theme: ThemeName) {
 
   const createRainbowColorArrByOpacity = (opacity: number) => {
     return baseHueArr.map((hue, index) =>
-    //  处理黄色背景跟白色字体问题
+      // Deal with yellow background and white font problem
       convertHexToRGB(hue[400], index === yellowIndex && opacity === 1 ? 0.85 : opacity)
     );
   };
@@ -110,6 +110,6 @@ export function createRainbowColorsArr(theme: ThemeName) {
     return prev.concat(createRainbowColorArrByOpacity(cur));
   }, []);
 
-  // 这里主要是考虑基础色和 vip 色以后可能要分开使用
+  // The main consideration here is that the base color and vip color may have to be used separately in the future
   return [baseColor, vipColor];
 }

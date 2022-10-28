@@ -43,12 +43,11 @@ export const PreviewImage: React.FC<IPreviewTypeBase> = props => {
       initActualScale = offsetHeight / height;
     }
 
-    // 初次渲染缩放比例超出下限
+    // Initial rendering scaling exceeds lower limit
     if (initActualScale < MIN_SCALE) {
       if (width > height) {
         scale = MIN_SCALE / initActualScale;
       } else {
-        // 长边是 height, 若小于 520 的宽度，则设为 520，优化预览体验
         if (target.width < 520) {
           scale = Math.min(520, offsetWidth) / target.width;
           const offset = (scale * target.height - target.height) / 2;

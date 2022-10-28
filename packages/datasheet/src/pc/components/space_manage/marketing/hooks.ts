@@ -35,22 +35,21 @@ export const useMarketing = (spaceId: string, refresh: boolean) => {
       const instanceRecords: IStoreAppInstance[] = instancesData.records;
       const finalAppRecords: IStoreApp[] = [];
       appRecords.forEach((v) => {
-        // 查找实例项
+        // Find Example Items
         const instanceItem = instanceRecords.filter((ele) => ele.appId === v.appId)[0];
         if (instanceItem) {
           if (!type && socialApps.includes(instanceItem.type)) {
-            type = instanceItem.type; // 记录已经开启的实例
+            type = instanceItem.type; // Logging of opened instances
           }
           finalInstanceRecords.push({ ...v, instance: instanceItem });
         } else {
           finalAppRecords.push(v);
         }
       });
-      // 企微，飞书，钉钉做互斥操作
       appRecords = finalAppRecords.filter((v) => (
         !type || (type && !socialApps.includes(v.type))
       ));
-      // 未开启商店应用的情况下，过滤
+      // Filtering without the store app turned on
       if (!isSocial) {
         appRecords = appRecords.filter((v) => v.type === 'OFFICE_PREVIEW' || !v.type.includes('STORE'));
       }

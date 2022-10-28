@@ -54,7 +54,7 @@ export const Toolbar: FC<IToolbarProps> = (({ borderLess }) => {
   }, [editor]);
 
   const handleMarkItemMouseDown = useCallback((e: React.MouseEvent) => {
-    // 防止编辑器失焦
+    // Prevent the editor from losing focus
     e.stopPropagation();
     e.preventDefault();
     const target = e.currentTarget;

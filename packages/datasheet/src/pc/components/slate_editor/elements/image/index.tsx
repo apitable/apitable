@@ -81,7 +81,6 @@ const Image = React.memo(({ children, element }: IElementRenderProps<IElement<II
     }
   }, [i18nText]);
 
-  // 开始拖动
   const moveHandleMouseDown = (e: React.MouseEvent) => {
     if (!imgRef.current || readOnly) {
       return;
@@ -94,13 +93,12 @@ const Image = React.memo(({ children, element }: IElementRenderProps<IElement<II
     setMoveable(true);
   };
 
-  // 拖动实时更新宽度
   const handleEditorMouseMove = useCallback((point: IMousePosition) => {
     if (!moveable) {
       return;
     }
     let diffX = point.x - startStatus.current.point.x;
-    // 防止微小的滑动造成抖动
+    // Prevents small slips from causing jitter
     if (Math.abs(diffX) > 5) {
       setMoving(true);
     }
@@ -115,7 +113,6 @@ const Image = React.memo(({ children, element }: IElementRenderProps<IElement<II
     setImgDisplayWidth(nextWidth);
   }, [moveable]);
 
-  // 拖动完成
   const handleEnd = useCallback(() => {
     setMoveable(false);
     if (moving) {
@@ -136,11 +133,10 @@ const Image = React.memo(({ children, element }: IElementRenderProps<IElement<II
     }
   }, [editor, element, readOnly]);
 
-  // 防止拖动图片
+  // Preventing dragging of images
   const handleDragStart = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    // console.log(e);
   }, []);
 
   const handleDeleteImg = useCallback((e: React.MouseEvent) => {
@@ -194,7 +190,7 @@ const Image = React.memo(({ children, element }: IElementRenderProps<IElement<II
         setImgDisplayWidth(imgWrapRef.current.offsetWidth);
       }
     }
-    // 确定只需在渲染首次纠正宽度
+    // Make sure to correct the width only when rendering for the first time
     // eslint-disable-next-line
   }, []);
 
@@ -206,7 +202,7 @@ const Image = React.memo(({ children, element }: IElementRenderProps<IElement<II
           <i className={styles.moveHandle} onMouseDown={moveHandleMouseDown} data-placement="tr" data-is-right="true" />
           <i className={styles.moveHandle} onMouseDown={moveHandleMouseDown} data-placement="bl" data-is-right="false" />
           <i className={styles.moveHandle} onMouseDown={moveHandleMouseDown} data-placement="br" data-is-right="true" />
-          {/* 内嵌工具栏 */}
+          {/* Inline Toolbar */}
           <dl className={styles.embedToolbar}>
             <dd data-active={originAlign === ALIGN.LEFT} data-align={ALIGN.LEFT} onMouseDown={handleChangeImgAlign}><Icons.alignLeft /></dd>
             <dd data-active={originAlign === ALIGN.CENTER} data-align={ALIGN.CENTER} onMouseDown={handleChangeImgAlign}><Icons.alignCenter /></dd>
@@ -256,7 +252,7 @@ const Image = React.memo(({ children, element }: IElementRenderProps<IElement<II
     <div contentEditable={false} className={styles.imageContent}>
       {content}
     </div>
-    {/* 即使是void类型的元素也一定需要children*/}
+    {/* Even elements of type void must require children */}
     {children}
   </div>;
 });

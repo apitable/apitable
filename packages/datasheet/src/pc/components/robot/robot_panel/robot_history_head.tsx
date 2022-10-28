@@ -19,7 +19,6 @@ export const RobotRunHistoryHead = () => {
     <Typography variant="h6">
       {t(Strings.robot_run_history_title)}
     </Typography>
-    {/* 占位 */}
     <Box
       display="flex"
       width="48px"

@@ -14,10 +14,6 @@ const inputParser = new InputParser(parser);
 
 const functionNameMap = {
   length: t(Strings.robot_variables_array_length),
-  // uppercase: '大写',
-  // lowercase: '小写',
-  // capitalize: '首字母大写',
-  // trim: '去首尾空格',
   JSONStringify: t(Strings.robot_variables_stringify_json),
   flatten: t(Strings.robot_variables_array_flatten),
 };
@@ -28,11 +24,13 @@ export interface ISchemaPropertyListItem {
   schema?: IJsonSchema;
   uiSchema?: any;
   expression: IExpression;
-  // 能不能继续选择，和是否可以直接插入是不相关的。二者可以共存。
+  // The ability to continue the selection is irrelevant to the possibility of direct insertion. The two can coexist.
   hasChildren: boolean;
   canInsert: boolean;
-  disabled?: boolean; // 是否禁用
-  isPrototype?: boolean; // 是否是数据结构原型链上的属性和方法，例如字符串、数组的长度、字符串的 trim 等。目前只有数组存在长度。
+  disabled?: boolean;
+  // Are properties and methods on the prototype chain of data structures, 
+  // such as strings, length of arrays, trim of strings, etc. Currently only length exists for arrays.
+  isPrototype?: boolean;
 }
 
 export type ISchemaPropertyListItemClickFunc = (listItem: ISchemaPropertyListItem, goIntoChildren?: boolean) => void;
@@ -44,14 +42,12 @@ const getPropertyItem = (props: {
   isJSONField: boolean
 }) => {
   const { expression, propertySchema, key, isJSONField } = props;
-  // 基础类型可以直接插入
+  // The base type can be inserted directly
   let canInsert = ['string', 'number', 'boolean'].includes(propertySchema.type!.toString());
-  // JSON string 类型
   const _hasChild = isJSONField && propertySchema.type === 'string';
-  // 复合类型需要选下一步
+  // The composite type needs to be selected in the next step
   const hasChildren = _hasChild || ['array', 'object'].includes(propertySchema.type!.toString());
   if (propertySchema.type === 'array') {
-    // array 子元素是 string number boolean 也可以直接结束。
     canInsert = ['string', 'number', 'boolean'].includes((propertySchema.items! as IJsonSchema).type as string);
   }
   const _expression: IExpression = {
@@ -134,13 +130,13 @@ const getArraySchemaPropertyList = (props: {
   const hasChildren = ['array', 'object'].includes(itemSchema.type!.toString());
   if (hasChildren) {
     if (itemSchema.type === 'object') {
-      // TODO: 这里可以优化，数组对象的属性获取可以用单独的表达式表达。
+      // TODO: Here it can be optimized that property fetching for array objects can be expressed in a separate expression.
       res.push(...getObjectSchemaPropertyList({
         expression, schema: itemSchema, isJSONField
       }));
     }
     if (itemSchema.type === 'array') {
-      // 数组套数组先 flatten
+      // Arrays over arrays first flatten
       res.push(...getArraySchemaPropertyList({
         expression, schema: itemSchema, shouldFlatten: true, isJSONField
       }));
@@ -161,7 +157,7 @@ const getSchemaPropertyList = (props: {
 }): ISchemaPropertyListItem[] => {
   const { schema, expression, key, isJSONField = false } = props;
   if (!schema) {
-    // 没有 schema 但是有 expression，表示对基础类型的原型操作。
+    // There is no schema but there is expression, which represents a prototype operation on the base type.
     if (isJSONField && expression) {
       return [{
         key: key!,
@@ -193,7 +189,7 @@ const getSchemaPropertyList = (props: {
           }
         ],
       };
-      // 基础类型直接插入
+      // Base type direct insertion
       return [{
         key: key!,
         label: schema.title,
@@ -220,12 +216,13 @@ export interface ISchemaAndExpressionItem {
 }
 
 /**
- * schemaExpressionList 维护当前查看 schema 的堆栈，根据 schema property 生产对应动态参数的表达式列表
- * - 根据 schemaExpressionList 动态计算，始终取最后一个计算。
- * - 长度为 1 时，输出前置节点的列表。
- * - 后续的列表，根据选中节点的数据类型来动态生成。
- * - - 父节点需要知道子节点的数据类型，才能生成子节点的列表。
- * - - 子节点需要知道父节点的表达式，才能生成自己的表达式。
+ * schemaExpressionList maintains a stack of the currently viewed schema, 
+ * producing a list of expressions corresponding to dynamic parameters based on the schema property
+ * - Calculated dynamically based on schemaExpressionList, always taking the last one.
+ * - When the length is 1, the list of predecessor nodes is output.
+ * - The subsequent list is generated dynamically based on the data type of the selected node.
+ * - - The parent node needs to know the data type of the child nodes in order to generate the list of child nodes.
+ * - - Child nodes need to know the expression of the parent node in order to generate their own expressions.
  */
 export const getCurrentVariableList = (props: {
   schemaExpressionList: ISchemaAndExpressionItem[];
@@ -235,7 +232,7 @@ export const getCurrentVariableList = (props: {
   const { schemaExpressionList, nodeOutputSchemaList, isJSONField = false } = props;
   // node => children => children
   if (schemaExpressionList.length === 0) {
-    // 第一层的选择列表是所有的前置节点输出。
+    // The selection list of the first layer is the output of all the predecessor nodes.
     return nodeOutputSchemaList.map(({ id, title, schema, uiSchema }) => {
       const expression: IExpression = {
         operator: OperatorEnums.GetNodeOutput,
@@ -258,7 +255,7 @@ export const getCurrentVariableList = (props: {
       };
     });
   }
-  // 后续的列表，通过 schemaExpressionList 最后一项 schema 计算出来
+  // The subsequent list, calculated from the last schema of the schemaExpressionList
   const { schema, expression, uiSchema } = schemaExpressionList[schemaExpressionList.length - 1];
   return getSchemaPropertyList({
     schema,
@@ -283,10 +280,9 @@ export const getGroupedVariableList = (props: {
     return variableList;
   }
   const layout: IUISchemaLayoutGroup[] = listUISchema?.layout;
-  // 存在布局时，需要重新排序。且不能影响上下左右快捷键。
-
-  // 因为 useSelectIndex 依赖 list 顺序，必须要在外面处理分组后的顺序
-  // 存在 layout 时候，列表会重新排序
+  // When layout exists, it needs to be reordered. And it cannot affect the up/down/left/right shortcut keys.
+  // Because useSelectIndex depends on the list order, the grouped order must be handled outside
+  // When layout exists, the list is reordered
   return layout.map(eachGroup => eachGroup.items).flat().reduce((resList, item) => {
     const listItem = listItemMap[item];
     if (listItem) {
@@ -303,27 +299,28 @@ export type IExpressionChainNode = {
 };
 
 /*
-  将表达式转化为链式调用的节点列表 tree -> list
-  单目运算符转化为链式调用格式，length(JSONStringify(getNodeOutput("nodeId"))) => "nodeId".JSONStringify().length()
-  多目运算符
-   - getObjectProperty(getNodeOutput("nodeId"),['property1','property2']) => "nodeId".'property1'.'property2'
-   - getArrayItemProperty([{a:1},{a:2}],['a']) => [{a:1},{a:2}].'a'
+  Convert an expression into a list of nodes for a chain call tree -> list
+  monadic operators into chain call format:
+  - length(JSONStringify(getNodeOutput("nodeId"))) => "nodeId".JSONStringify().length()
+  Multi-eye operator:
+  - getObjectProperty(getNodeOutput("nodeId"),['property1','property2']) => "nodeId".'property1'.'property2'
+  - getArrayItemProperty([{a:1},{a:2}],['a']) => [{a:1},{a:2}].'a'
  */
 export const getExpressionChainList = (expression: IExpression): IExpressionChainNode[] => {
   const exprChainList: IExpressionChainNode[] = [];
 
   switch (expression.operator as string) {
-    // 双目运算符
+    // Binocular operators
     case 'getObjectProperty':
       const chainList = expression.operands[1].value.map(item => ({
         type: 'property',
-        name: item, // 根据属性名称 + schema 再获取展示名称
+        name: item, // Get the display name based on the attribute name + schema
         value: item,
       }));
       exprChainList.push(...chainList, ...getExpressionChainList(expression.operands[0].value as IExpression));
       break;
-    // 单目运算符
-    case 'getNodeOutput': // 这个是起点，特殊处理。
+    // monadic operators
+    case 'getNodeOutput': // This is the starting point, special treatment.
       exprChainList.push({
         type: 'function',
         name: expression.operator,
@@ -353,7 +350,7 @@ const isLiteral = (value: any) => {
   return typeof value === 'object' && value.type === 'Literal';
 };
 
-// TODO: 确定 paragraph 不会多级嵌套，添加测试用例
+// TODO: Make sure the paragraph will not be nested in multiple levels, add test cases
 const expression2SlateValue = (operand: IOperand) => {
   const resWrapper: any = [];
   operand.value.operands.forEach((operand: IOperand) => {
@@ -399,7 +396,7 @@ export const formData2SlateValue = (value: any) => {
 };
 
 export const hasMagicVariable = (values: any) => {
-  // 是否存在 magicVariable，存在时输出值为 表达式，不存在时输出值为 字符串
+  // If or not magicVariable exists, the output value is an expression if it exists, or a string if it doesn't.
   const isValueIncludesMagicVariable = (value) => {
     if (value?.type === 'magicVariable') return true;
     if (value?.type === 'paragraph') {
@@ -453,11 +450,11 @@ export const transformSlateValue = (paragraphs: any): {
   paragraphs.forEach((paragraph) => {
     res.value.operands.push(transformParagraphToExpression(paragraph));
   });
-  // 如果不包含动态参数，校验下是不是空值。
+  // If it does not contain dynamic parameters, check if the value is null.
   if (!isMagicVariable) {
     const parserString = inputParser.render(res, {});
     // console.log(parserString, 'parserString');
-    // 空字符串当作空处理
+    // Treat empty strings as null
     if (parserString.length === 0) {
       return {
         isMagicVariable,
@@ -483,7 +480,8 @@ export const withMagicVariable = (editor) => {
   };
 
   editor.onChange = (...params) => {
-    // 记录最后一次selection值，确保编辑器失焦后能将新节点插入正确的位置，比如新加一个链接元素
+    // Record the last selection value to ensure that the new node is inserted in the correct position after the editor loses focus, 
+    // for example, by adding a new link element
     if (editor.selection) {
       // ref.current = editor.selection as unknown as Selection;
       editor.lastSelection = editor.selection as unknown as Selection;
@@ -508,11 +506,11 @@ export const insertMagicVariable = (data, editor) => {
   if (lastSelection) {
     ReactEditor.focus(editor as any);
     Transforms.select(editor, lastSelection);
-    // 删除 / ，插入神奇变量
+    // Delete / , insert magic variable
     Transforms.delete(editor, { distance: 1, unit: 'character', reverse: true });
     // console.log(lastSelection, 'lastSelection');
     Transforms.insertNodes(editor, [mv]);
-    // slate transform 将光标移动到新插入的位置
+    // slate transform moves the cursor to the newly inserted position
     Transforms.move(editor, {
       distance: 1,
       unit: 'offset',
@@ -527,10 +525,10 @@ export const enrichDatasheetTriggerOutputSchema = (
 ) => {
   return produce(nodeOutputSchema, nodeOutputSchema => {
     const enrichedFieldsSchema = fields2Schema(fields, fieldPermissionMap);
-    // trigger 一定有 outputJsonSchema
+    // trigger must have outputJsonSchema
     nodeOutputSchema.schema!.properties = {
-      ...nodeOutputSchema.schema!.properties, // 原本自带的 schema properties
-      ...enrichedFieldsSchema.properties // 动态扩充字段相关的 schema properties
+      ...nodeOutputSchema.schema!.properties, // The original self-contained schema properties
+      ...enrichedFieldsSchema.properties // Dynamically expand field-related schema properties
     };
     nodeOutputSchema.uiSchema = {
       layout: [

@@ -66,7 +66,7 @@ export const ShareSave: React.FC<IShareSave> = props => {
     }
 
     if (!shareSpace.allowSaved) {
-      // 没有转存的权限，登录之后就关闭弹窗
+      // No permission to dump, close the pop-up after login
       setVisible(false);
     }
 

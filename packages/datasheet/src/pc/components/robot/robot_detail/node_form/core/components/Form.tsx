@@ -22,7 +22,7 @@ export const Form = React.forwardRef((_props: IFormProps<any>, ref) => {
   const props = { ...defaultProps, ..._props };
   const formElementRef = useRef<HTMLFormElement>(null);
   const [newErrorSchema, setNewErrorSchema] = useState<any>();
-  // schema 默认值 + 传入的 formData => 初始值
+  // schema default + formData passed in => initial value
   const [state, setState] = useState<any>(getStateFromProps(props, props.formData));
 
   useEffect(() => {

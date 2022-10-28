@@ -14,11 +14,11 @@ const BUILD_PATH = './';
 const sleep = (delay = 1000) => new Promise(res => setTimeout(res, delay));
 
 const vika = new Vika({
-  token: 'uskM7PcEPftF4wh0Ni1', // 建议通过环境变量传入
+  token: 'uskM7PcEPftF4wh0Ni1', // It is recommended to pass in the environment variable
   host: 'https://integration.vika.ltd/fusion/v1',
 });
 
-// 获取cmd参数中私有化环境名称
+// Get the name of the privatized environment in the cmd parameter
 const getEnvName = () => {
   const argv = process.argv?.slice(2);
   if (!Array.isArray(argv) || argv.length < 1) {
@@ -32,19 +32,19 @@ const getEnvName = () => {
   return argv[0];
 };
 
-// 获取对应部署环境所有配置表
+// Get all configuration tables for the corresponding deployment environment
 const getConfigDatasheet = async(envName) => {
-  // 获取指定空间站的指定文件夹详情
+  // Get details of a specified folder on a specified space station
   const privateEnvFoldersRes = await vika.nodes.get({ spaceId: SPACE_ID, nodeId: CONFIG_PACKAGE_ID });
   if (privateEnvFoldersRes.success) {
-    // 找到对应部署环境所有配置表
+    // Find all configuration tables for the corresponding deployment environment
     const folder = privateEnvFoldersRes.data.children?.find(fol => fol.name === envName);
 
     if (!folder) throw new Error(`Cannot find the folder named ${envName}`);
 
     console.log(`Found private env folder ${folder.id}`);
 
-    await sleep(); // 不sleep会报429
+    await sleep(); // No sleep will report 429
     const privateEnvDstRes = await vika.nodes.get({ spaceId: SPACE_ID, nodeId: folder.id });
     if (privateEnvDstRes.success) {
       if (privateEnvDstRes.data.children) return privateEnvDstRes.data.children;
@@ -55,7 +55,6 @@ const getConfigDatasheet = async(envName) => {
   throw new Error(privateEnvFoldersRes.message);
 };
 
-// 获取表数据
 const getDatasheetData = async(datasheetId, setting) => {
   let records = [];
 
@@ -70,7 +69,7 @@ const getDatasheetData = async(datasheetId, setting) => {
   }
 };
 
-// 下载附件build
+// Download attachment build
 const download = (url, fileName) => {
   const _path = path.resolve(`${BUILD_PATH}/public`);
 
@@ -90,7 +89,7 @@ const download = (url, fileName) => {
   });
 };
 
-// 替换build目录下图标等
+// Replace icons in the build directory, etc.
 const fetchPublic = async(datasheetOfPublic) => {
   if (!datasheetOfPublic) {
     console.log('Public datasheet not found, skip');
@@ -125,7 +124,7 @@ const fetchPublic = async(datasheetOfPublic) => {
   });
 };
 
-// 增加lang目录下文件私有化i18n内容
+// Add private i18n content for files in lang directory
 const fetchStrings = async(datasheetOfStrings, template) => {
   let _template = template;
 

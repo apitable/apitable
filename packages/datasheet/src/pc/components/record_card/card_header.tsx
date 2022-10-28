@@ -60,7 +60,7 @@ export const CardHeader: React.FC<ICardHeaderProps> = props => {
   if (!recordSnapshot) return null;
   const fieldMap = recordSnapshot.meta.fieldMap;
   const showCover = hasCover(fieldMap, coverFieldId);
-  // 没附件字段直接不展示封面
+  // No attachment field directly does not show the cover
   if (!showCover) return null;
 
   const coverField: IField = coverFieldId
@@ -104,7 +104,7 @@ export const CardHeader: React.FC<ICardHeaderProps> = props => {
   const hasCoverImage = coverValue && coverValue.length;
   if (!showEmptyCover && !hasCoverImage) return null;
 
-  // 有封面无附件值，展示占位图
+  // With cover without attachment value, showing placeholder image
   return hasCoverImage ? (
     <ImageBox
       showOneImage={showOneImage}

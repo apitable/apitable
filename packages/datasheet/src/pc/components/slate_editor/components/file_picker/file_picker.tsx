@@ -59,11 +59,11 @@ export const FilePicker = forwardRef((props: IFilePickerProps, ref) => {
     if (!limitSize) {
       return true;
     }
-    // size 在限制范围内
+    // size Within the limits
     if (Array.isArray(limitSize)) {
       return file.size > limitSize[0] && file.size < limitSize[1];
     }
-    // 限制size的最大值 
+    // Limit the maximum value of size 
     return file.size < limitSize;
   }, [limitSize]);
 

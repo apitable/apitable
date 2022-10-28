@@ -13,7 +13,7 @@ interface ICellRating extends ICellComponentProps {
 
 export const CellRating: React.FC<ICellRating> = props => {
   const { className, field, cellValue, isActive, onChange, readonly } = props;
-  // 第一次激活评分单元格，不更新值。（防误触）
+  // Activate the scoring cell for the first time, without updating the value. (Anti-touch)
   const [lock, setLock] = useState(true);
   const handleChange = (value: number | null) => {
     !lock && isActive && onChange && onChange(value);

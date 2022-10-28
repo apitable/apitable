@@ -54,13 +54,13 @@ export const checkNetworkEnv = (code: number) => {
 };
 
 export class UploadManager {
-  private uploadMap: IUploadMap = {}; // 记录不同的cell的上传信息
+  private uploadMap: IUploadMap = {}; // Record the upload information of different cells
   private fileStatusMap: Map<string, Map<string, Set<() => void>>> = new Map();
   private updateList: Map<string, () => void> = new Map();
 
   /**
-   * @param {number} limit 限制同时请求的数量
-   * TODO: 考虑下做 全局的数量限制，目前只是对当前的cell做了数量限制
+   * @param {number} limit Limits the number of simultaneous requests
+   * TODO: Consider doing a global limit on the number of cells, which is currently only done for the current cell
    * @memberof UploadManager
    */
   constructor(
@@ -83,7 +83,7 @@ export class UploadManager {
   };
 
   /**
-   * @description 将请求任务添加到等待队列中
+   * @description Adding request tasks to the waiting queue
    * @param {string} cellId
    * @param {() => AxiosPromise} requestFn
    * @param {(res: IUploadResponse) => void} successHandleFn
@@ -132,7 +132,7 @@ export class UploadManager {
   }
 
   /**
-   * @description 判断是否超过请求上限
+   * @description Determine if the request limit is exceeded
    * @private
    * @param {string} cellId
    * @returns
@@ -146,7 +146,7 @@ export class UploadManager {
   }
 
   /**
-   * @description 取出相应queueId中等待队列的任务到请求队列
+   * @description Fetch the tasks in the waiting queue of the corresponding queueId to the request queue
    * @private
    * @param {string} cellId
    * @returns
@@ -169,13 +169,13 @@ export class UploadManager {
         if (checkNetworkEnv(code)) {
           return;
         }
-        // 处理服务器的报错信息，比如说空间容量不足
+        // Handle error messages from the server, such as insufficient space capacity
         this.uploadFailHandle(cellId, uploadItem, options);
         return;
       }
       this.deleteItem(cellId);
       options!.successHandleFn(data);
-      // 剔除掉请求队列中完成的请求
+      // Eliminate completed requests from the request queue
       uploadItem.requestQueue = uploadItem.requestQueue.filter((item) => {
         return item.fileId !== options.fileId;
       });
@@ -183,7 +183,8 @@ export class UploadManager {
         return this.execute(cellId);
       }
     } catch (error) {
-      // 此处用来处理超时等网络错误导致无法继续上传，将请求队列中的数据移动到失败队列
+      // This is used to handle network errors such as timeouts that 
+      // prevent further uploads and move the data in the request queue to the failure queue
       this.uploadFailHandle(cellId, uploadItem, options);
       Message.warning({
         content: t(Strings.attachment_upload_fail, {
@@ -194,7 +195,7 @@ export class UploadManager {
   }
 
   private checkCapacitySizeBilling() {
-    // 如果已经发送过提示，当天就没有必要再检查用量
+    // If a prompt has been sent, there is no need to check the dosage again on the same day
     if (!subscribeUsageCheck.shouldAlertToUser('maxCapacitySizeInBytes', undefined, true)) {
       return;
     }
@@ -279,7 +280,7 @@ export class UploadManager {
   }
 
   /**
-   * @description 提供给请求的api，用来刷新当前打开页面的进度信息
+   * @description The api provided to the request to refresh the progress information of the currently opened page
    * @param {string} cellId
    * @param {string} fileId
    * @param {number} loaded
@@ -352,7 +353,7 @@ export class UploadManager {
   }
 
   /**
-   * @description resourceService.instance!.reset 中用来重置所有数据
+   * @description resourceService.instance!.reset is used to reset all data in
    * @memberof UploadManager
    */
   public destroy() {
@@ -383,7 +384,7 @@ export class UploadManager {
     });
   }
 
-  // 清除错误上传队列的信息
+  // Clear information from the error upload queue
   public clearFailQueue(cellId: string) {
     if (!this.uploadMap[cellId]) {
       return;

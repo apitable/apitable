@@ -24,20 +24,21 @@ export const withVika = <T extends ReactEditor> (inEditor: T) => {
     apply,
   } = editor;
 
-  // 记录当前编辑器是否唤醒插入面
+  // Record whether the current editor wakes up the insertion surface
   editor.hasInsertPanel = false;
 
-  // 记录当前编辑器是否唤醒提及面板
+  // Record whether the current editor wakes up the mention panel
   editor.hasMentionPanel = false;
 
-  // 记录当前编辑器的模式
+  // Record the current editor mode
   editor.mode = 'full';
 
-  // 记录是否处于IME组合输入模式
+  // Record whether or not it is in IME combination input mode
   editor.isComposing = false;
 
   editor.onChange = (...params) => {
-    // 记录最后一次selection值，确保编辑器失焦后能将新节点插入正确的位置，比如新加一个链接元素
+    // Record the last selection value to ensure that the new node is inserted in the correct position after the editor loses focus, 
+    // for example, by adding a new link element
     if (editor.selection) {
       editor.lastSelection = editor.selection as unknown as Selection;
     }
@@ -72,7 +73,7 @@ export const withVika = <T extends ReactEditor> (inEditor: T) => {
         editor.updateMeta('imageSize', node.data.size as number, 'desc');
       }
     }
-    // 确保每一个节点都有唯一的id
+    // Ensure that each node has a unique id
     if (type === 'split_node' && properties && properties._id) {
       properties._id = generateId();
       apply({ type, properties, ...others } as any);
@@ -87,7 +88,7 @@ export const withVika = <T extends ReactEditor> (inEditor: T) => {
     const hasVikaData = !!editorData;
     const slateData = data.getData('application/x-slate-fragment');
     const files = data.files;
-    // 文本为url
+    // Text as url
     if (text && isUrl(text)) {
       // if (isImage(text)) {
       //   insertBlockElement(editor, GENERATOR.image({ data: { url: text }}));
@@ -96,7 +97,7 @@ export const withVika = <T extends ReactEditor> (inEditor: T) => {
       wrapLink(editor, text);
       return;
     }
-    // 有编辑器自定义的数据
+    // With editor-defined data
     if(editorData || slateData) {
       editorData = editorData || slateData;
       let elements: any = [];
@@ -107,10 +108,12 @@ export const withVika = <T extends ReactEditor> (inEditor: T) => {
         console.log(error);
       }
       if (hasVikaData) {
-        // 此行为是另起一个块，将内容复制到新块，主要是用于在编辑器点选复制节点的操作场景（代码块复制等）
+        // This behavior is to start another block and copy the content to the new block, 
+        // mainly for operation scenarios where the editor is tapped to copy the node (code block copy, etc.)
         Transforms.insertNodes(editor, elements);
       } else {
-        // 此行为是将第一个节点提取纯文本粘贴到当前的光标处，其他的节点当作块级元素插入，主要用于在编辑器执行ctrl+c ctrl+v操作。
+        // This behavior is to extract plain text from the first node and paste it to the current cursor, 
+        // the other nodes are inserted as block-level elements, mainly for performing ctrl+c ctrl+v operations in the editor.
         if (Array.isArray(elements)) {
           elements = elements.filter((node) => !node.isVoid);
         }
@@ -118,7 +121,6 @@ export const withVika = <T extends ReactEditor> (inEditor: T) => {
       }
       return;
     }
-    // 有图片文件
     if (files && files.length > 0) {
       const uploader = API.getApi(editor, API.ApiKeys.ImageUpload);
       for (const file of files) {
@@ -164,18 +166,16 @@ export const withVika = <T extends ReactEditor> (inEditor: T) => {
         if (Point.equals(start, blockStartPoint)) {
           const node = _n as unknown as IElement;
           const nodeData = node.data || {};
-          // 有缩进
           if (nodeData.indent) {
             descElementIndent(editor);
             return ;
           }
-          // 有对齐方式
           if (nodeData.align && nodeData.align !== ALIGN.LEFT) {
             const next = ALIGN.RIGHT === nodeData.align ? ALIGN.CENTER : ALIGN.LEFT;
             updateElementData(editor, { align: next }, path, false);
             return;
           }
-          // 上一个元素为void类型
+          // The previous element is of type void
           if (path[path.length - 1] !== 0) {
             const prevPath = Path.previous(path);
             const prevNode = Node.get(editor, prevPath) as IElement;
@@ -184,7 +184,7 @@ export const withVika = <T extends ReactEditor> (inEditor: T) => {
               return;
             }
           }
-          // 不是初始的段落类型并且不是代码块或者是内嵌形式的元素
+          // Elements that are not of the initial paragraph type and are not code blocks or inline forms
           if (
             !node.isVoid &&
             node.type !== ElementType.PARAGRAPH &&
@@ -210,24 +210,25 @@ export const withVika = <T extends ReactEditor> (inEditor: T) => {
     const isWrap = IS_WRAP[node.type];
 
     if (path.length === 0) {
-      // 确保最后一直有一个空白节点便于编辑
+      // Make sure there is always a blank node at the end for easy editing
       const lastIndex = editor.children.length - 1;
       const lastNode = editor.children[lastIndex] as IElement;
       if (lastIndex === -1 || (lastNode && (lastNode.type !== ElementType.PARAGRAPH || Node.string(lastNode) ))) {
         Transforms.insertNodes(editor, GENERATOR.paragraph({}, []), { at: [lastIndex + 1] });
       }
 
-      // 确保第一个元素不为void类型，截至slate-react版本0.6.4第一个元素为void类型，在只读渲染时会crash
+      // Make sure the first element is not of type void, 
+      // as of slate-react version 0.6.4 the first element is of type void and crashes in read-only rendering
       const firstNode = editor.children[0] as IElement;
       if (firstNode && firstNode.isVoid) {
         Transforms.insertNodes(editor, GENERATOR.paragraph({}, []), { at: [0] });
       }
     }
-    // 最外层节点为text节点类型
+    // The outermost node is a text node type
     if ((node as unknown as Text).text != null && !node._id && path.length === 1) {
       Transforms.wrapNodes(editor, GENERATOR.paragraph({}, []), { at: path });
     }
-    // 确保列表的子节点为正确的列表项元素
+    // Ensure that the child nodes of the list are the correct list item elements
     if (listItemType) {
       const children = node.children;
       children.forEach((_child, idx) => {
@@ -243,7 +244,7 @@ export const withVika = <T extends ReactEditor> (inEditor: T) => {
         }
       });
     }
-    // 如果一个列表类型的元素不在列表包裹元素里面，将其转换为普通的文本元素
+    // If a list type element is not inside a list wrapper element, convert it to a normal text element
     if (isListItem) {
       try {
         const parent = Node.parent(editor, path) as IElement | null;
@@ -255,7 +256,7 @@ export const withVika = <T extends ReactEditor> (inEditor: T) => {
       }
     }
 
-    // 确保不能包含块级元素的元素的子节点只能为Text类型的节点
+    // Ensure that the child nodes of elements that cannot contain block-level elements can only be nodes of type Text
     if (!isWrap && !Editor.isEditor(node) && node.object === NodeType.BLOCK) {
       const children = node.children || [];
       children.forEach((_child, idx) => {
@@ -265,7 +266,7 @@ export const withVika = <T extends ReactEditor> (inEditor: T) => {
         }
       });
     }
-    // 确保图片不被其他块级元素包裹
+    // Ensure that images are not wrapped by other block-level elements
     if (node.type === ElementType.IMAGE && path.length > 1) {
       let parentPath = Path.parent(path);
       let parentNode: IElement | null = Node.get(editor, parentPath) as IElement;

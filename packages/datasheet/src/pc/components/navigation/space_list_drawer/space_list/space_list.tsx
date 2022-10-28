@@ -24,11 +24,11 @@ enum TabPaneKeys {
 const { TabPane } = Tabs;
 
 export const SpaceList: FC = () => {
-  /* 我管理的空间站集合 */
+  /* Collection of space stations I manage */
   const [managableList, setManagableList] = useState<ISpaceInfo[]>([]);
-  /* 我加入的空间站集合(不包含我管理的空间站集合) */
+  /* Collection of space stations I have joined (not including the collection of space stations I manage) */
   const [intrantList, setIntrantList] = useState<ISpaceInfo[]>([]);
-  /* 当前激活的tab key */
+  /* The currently active tab key */
   const [activeKey, setActiveKey] = useState<string>('');
   const { openCreateSpaceModal, closeSpaceListDrawer } = useContext(NavigationContext);
   const spaceId = useSelector(state => state.space.activeId);

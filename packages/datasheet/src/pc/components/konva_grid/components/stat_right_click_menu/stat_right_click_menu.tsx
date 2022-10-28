@@ -15,8 +15,8 @@ interface IStatRightClickMenuProps {
 }
 
 /**
- * 统计栏的右键菜单
- * 一种konva生成的canvas不支持划选的替代方案
+ * The right-click menu of the statistics column
+ * An alternative to konva-generated canvas that does not support scratching
  */
 export const StatRightClickMenu = ({
   parentRef,

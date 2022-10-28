@@ -16,10 +16,10 @@ interface ICloneIconFuncProps {
 }
 
 /**
- * 判断指定点是否在给定的容器范围内
- * @param {IPoint} point 是一个包含x,y属性的对象
- * @param {DOMRect} container 是一个DOMRect对象
- * @param {number} [spacing] 与容器边界的距离（默认没有该值）
+ * Determine if the specified point is within the given container range
+ * @param {IPoint} point is an object with x,y attributes
+ * @param {DOMRect} container is a DOMRect object
+ * @param {number} spacing distance from container boundary (no value by default)
  * @returns {object}
  */
 export function checkPointInContainer(point: IPoint, container: DOMRect | ClientRect, spacing = 0): any {
@@ -38,25 +38,25 @@ export function checkPointInContainer(point: IPoint, container: DOMRect | Client
     && innerTopBoundary < point.y && point.y < innerBottomBoundary) {
     return scrollParam;
   }
-  // 向左
+  // To the left
   if (container.left < point.x && point.x < innerLeftBoundary) {
     scrollParam.shouldScroll = true;
     scrollParam.scrollDirection = 'left';
     scrollParam.rowSpeed = Math.ceil(baseSpeed * (point.x - innerLeftBoundary) / spacing);
   }
-  // 向右
+  // To the right
   if (innerRightBoundary < point.x && point.x < container.right) {
     scrollParam.shouldScroll = true;
     scrollParam.scrollDirection = 'right';
     scrollParam.rowSpeed = Math.ceil(baseSpeed * (point.x - innerRightBoundary) / spacing);
   }
-  // 向上
+  // To the top
   if (container.top < point.y && point.y < innerTopBoundary) {
     scrollParam.shouldScroll = true;
     scrollParam.scrollDirection = 'top';
     scrollParam.columnSpeed = Math.ceil(baseSpeed * (point.y - innerTopBoundary) / spacing);
   }
-  // 向下
+  // To the bottom
   if (innerBottomBoundary < point.y && point.y < container.bottom) {
     scrollParam.shouldScroll = true;
     scrollParam.scrollDirection = 'bottom';
@@ -104,7 +104,7 @@ export function getElementDataset(element: HTMLElement | null | undefined, key: 
     return null;
   }
   if (!element.dataset) {
-    // 浏览器不兼容 HTMLElement.dataset 的时候尝试用 getAttribute 获取
+    // If the browser is not compatible with HTMLElement.dataset, try to use getAttribute to get
     const attrKey = 'data-' + key.replace(/([A-Z])/g, '-$1').toLowerCase();
     const dataset = element.getAttribute(attrKey);
     if (dataset) {
@@ -127,7 +127,7 @@ export function byte2Mb(byte: number | undefined) {
   return parseFloat((byte / 1024 / 1024).toFixed(2));
 }
 
-// 根据单击的cell上绑定的recordId和fieldId计算出相应的rowIndex和columnIndex
+// Calculate the corresponding rowIndex and columnIndex based on the recordId and fieldId bound to the clicked cell
 export const getClickCellId = (target: HTMLElement, includeGroupHead = false) => {
   let recordId = getElementDataset(
     getParentNodeByClass(target, [CELL_CLASS, OPERATE_HEAD_CLASS]), 'recordId',
@@ -200,10 +200,8 @@ export function getFieldHeaderByFieldId(fieldId: string) {
 }
 
 /**
- * 获取一段文本的长度
+ * Get the length of a piece of text
  * https://stackoverflow.com/questions/118241/calculate-text-width-with-javascript
- * @param text 文本
- * @param font 字体 eg. 'bold 12pt arial'
  * console.log(getTextWidth("hello there!", "bold 12pt arial"));  // close to 86
  */
 export function getTextWidth(text: string, font: string): number {
@@ -215,10 +213,7 @@ export function getTextWidth(text: string, font: string): number {
 }
 
 /**
- * clone一个svg，使svg具有默认样式的同时可自定义样式
- * @param icon 需要处理的icon
- * @param defaultSize icon默认的宽高
- * @param extraClassName 需要给该icon添加额外的className
+ * clone an svg, so that the svg has the default style and can be customized at the same time
  */
 export const stylizeIcon = (funcProps: ICloneIconFuncProps) => {
   const { icon, defaultSize, extraClassName } = funcProps;
@@ -243,9 +238,9 @@ export const stylizeIcon = (funcProps: ICloneIconFuncProps) => {
 };
 
 /**
- * 查找 dom 容器下的选择器下的子项列表
- * @param container 固定的 dom 容器
- * @param selector dom 容器下需要查找的子项列表的归属选择器名称
+ * Find a list of subitems under the selector of the dom container
+ * @param container Fixed dom container
+ * @param selector The name of the attribution selector for the list of subitems to be found under the dom container
  */
 export const getChildListByContainerSelector = (container: HTMLElement, selector: string) => {
   const element = container.querySelector(selector);

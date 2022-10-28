@@ -261,7 +261,6 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
   };
 
   const addField = () => {
-    // 管理权限才能创建字段
     if (!permissions.manageable) {
       return;
     }
@@ -381,10 +380,10 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
   };
 
   const user = useSelector(state => state.user);
-  /****** 新手引导逻辑 ******/
+  /****** User guidance ******/
   const wizardHandler = () => {
-    // 无关联节点，且创建架构视图 ORG_VIEW_CREATE 执行完，才执行 ORG_VIEW_PANEL
-    const handledCount = activeView.rows.length - unhandledNodes.length - handlingCount; // 关联节点数
+    // There are no link nodes and the architecture view is created ORG_VIEW_CREATE is executed before ORG_VIEW_PANEL is executed
+    const handledCount = activeView.rows.length - unhandledNodes.length - handlingCount; // Number of link nodes
     const hadRunPrevWizard = getWizardRunCount(user, ConfigConstant.WizardIdConstant.ORG_VIEW_CREATE);
     if (hadRunPrevWizard) {
       if (!handledCount) {
@@ -395,7 +394,7 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
       }
     }
   };
-  // 点击 “创建神奇关联列” 出现下一步
+  // Click on "Create Magical Associated Columns" and the next step appears
   useEffect(() => {
     if (!(!linkField && !hasLinkField)) {
       wizardHandler();
@@ -403,7 +402,7 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [linkField, hasLinkField]);
 
-  // 点击右侧面板出现下一步 step
+  // Click on the right panel to bring up the next step
   useEffect(() => {
     const el = document.getElementById('DATASHEET_ORG_CHART_RECORD_LIST');
     const handler = () => {

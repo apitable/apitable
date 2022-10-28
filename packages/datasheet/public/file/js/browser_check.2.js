@@ -1,12 +1,12 @@
 /**
- * 浏览器兼容性方案
- * 参考：https://stackoverflow.com/questions/49686741/detect-unsupported-browser-version-and-show-specific-div-with-message
+ * Browser Compatibility Program
+ * Reference: https://stackoverflow.com/questions/49686741/detect-unsupported-browser-version-and-show-specific-div-with-message
  */
 
 const isClient = typeof window === 'object';
 
 /**
- * 检查是否是 IE 11
+ * Check if it is IE 11
  */
 (function() {
   if (isClient && (!!window['ActiveXObject'] || 'ActiveXObject' in window)) {
@@ -73,7 +73,7 @@ function versionCheck() {
     (browser == 'Opera' && version < 52) ||
     (browser == 'edge' && version < 70)
   ) {
-    // 触屏设备不检查浏览器类型了，不然手机上很多浏览器都用不了
+    // Touch devices do not check browser type
     if (window['REACT_APP_DEPLOYMENT_MODELS']) {
       window.location.pathname = '/404';
     }

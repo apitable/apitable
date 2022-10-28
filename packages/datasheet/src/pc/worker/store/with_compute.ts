@@ -1,5 +1,6 @@
 /**
- * 用途：用来提前计算在主线程UI渲染的过程中需要根据基础元数据加工才能得到的信息，将其缓存到主线程
+ * Purpose: advance calculation of information that needs to be processed based on the underlying metadata to be obtained 
+ * during UI rendering in the main thread, and caching it in the main thread
  */
 
 import { ActionConstants, CacheManager, DispatchToStore, IReduxState, Selectors, ViewType } from '@apitable/core';
@@ -15,7 +16,6 @@ import { ComputeServices } from './constants';
 // }
 // function wrapPromiseWithAbort(p: Promise<any>): IWrappedPromise {
 //   const obj = {} as IWrappedPromise;
-//   //内部定一个新的promise，用来终止执行
 //   const p1 = new Promise(function(resolve, reject){
 //     obj.abort = reject;
 //   });
@@ -29,7 +29,7 @@ let workerSelf: any;
   if (!process.env.SSR) {
     workerSelf = self as unknown as Worker;
 
-    // 监听到错误回退为单独主线程计算
+    // Listen to error fallback as a separate main thread calculation
     if ((workerSelf as any).name === 'store_worker') {
       workerSelf.addEventListener('error', (err: any) => {
         const errInfo = String(err);
@@ -54,7 +54,7 @@ const computeIds = new Map<string, number>();
 const memoStatus = new Set<string>();
 const requestFormLocalMap = new Map<string, number>();
 
-// 暂时不细分每个场景
+// Temporarily do not break down each scene
 enum Business {
   Wide = 'computing',
   Search = 'computing', // 'searching',
@@ -63,7 +63,8 @@ enum Business {
   Sort = 'computing', // 'sorting'
 }
 
-// 现阶段不按场景细分要计算的缓存，只要会触发计算的action进来都会全部计算一次
+// At this stage, the cache to be calculated is not broken down by scenario, 
+// as long as the action that will trigger the calculation comes in will all be calculated once
 const allCompute = [
   ComputeServices.PureVisibleRows,
   // ComputeServices.VisibleColumns,
@@ -73,10 +74,10 @@ const allCompute = [
 ];
 
 interface IExecuteMeta {
-  business: Business; // 表示处理什么业务场景
-  computeDesc: TComputeDesc; // 描述处理当前业务需要用到哪些计算服务
-  preCompute?: () => AnyAction; // 计算前需要做的事，一般发送一个action到localStore,标记开始计算
-  afterCompute?: () => AnyAction; // 计算完成后，需要额外处理的一些事情
+  business: Business; // Indicates what business scenarios are handled
+  computeDesc: TComputeDesc; // Describe which computing services are needed to process the current business
+  preCompute?: () => AnyAction; // What you need to do before the calculation, send an action to the localStore, mark the start of the calculation
+  afterCompute?: () => AnyAction; // Some additional things to handle after the calculation is complete
   useWorker?: boolean;
 }
 
@@ -89,7 +90,8 @@ interface IProcessingMap {
   };
 }
 
-// 用来存储当前正在计算的worker，这里存储的worker实例是根据场景分类的，一个worker一般会计算多个缓存结果
+// It is used to store the worker currently being computed, where the stored worker instances are classified according to the scenario, 
+// and a worker will generally compute multiple cached results
 const processingMap: IProcessingMap = {};
 const DEFAULT_NAMESPACE = 'DEFAULT_NAMESPACE';
 let lastActiveRow: string | null = null;
@@ -125,8 +127,9 @@ const getComputeId = (datasheetId: string) => {
   return res;
 };
 
-/** 需要触发计算的action Map
- * computeDesc 参数表明需要计算哪些缓存结果
+/** 
+ * The action map that needs to trigger the calculation
+ * The computeDesc parameter indicates which cache results need to be computed
  */
 export const TriggerComputeActions: { [key: string]: (action: AnyAction) => IExecuteMeta | null } = {
   [ActionConstants.DATASHEET_JOT_ACTION]: (action) => {
@@ -136,7 +139,7 @@ export const TriggerComputeActions: { [key: string]: (action: AnyAction) => IExe
       preCompute: () => generateStatusAction(action.datasheetId, Business.Wide, true),
       afterCompute: () => generateStatusAction(action.datasheetId, Business.Wide, false),
     };
-    // 仅判断第一个cmd，大部分的分组、排序设置也只有一个cmd
+    // Only the first cmd is judged, and most of the grouping and sorting settings have only one cmd
     // const operations = action.payload?.operations || [];
     // const cmd = operations[0]?.cmd;
     // switch (cmd) {
@@ -242,9 +245,10 @@ const abortProcessing = (namespace: string, business: Business) => {
 };
 
 const addProcessing = (computeMeta: IExecuteMeta, state: IReduxState, datasheetId: string, callback: (params: any) => any) => {
-  // 开启子worker来单独计算在数据量比较小的情况下（传输耗时>计算耗时）得不偿失。
-  // TO DO: 解决子worker不同域时初始化问题。
-  // TO DO: 根据计算耗时结果自动切换是否用子worker进行计算
+  // Turning on a subworker to compute separately is not worth the effort 
+  // when the amount of data is relatively small (transfer time > computation time).
+  // TODO: Solve the initialization problem when subworkers have different domains.
+  // TODO: Automatically switch whether to use sub-workers for computation based on the result of computation time consumption
   const { business, computeDesc } = computeMeta;
   const curComputeId = addComputeId(datasheetId);
   const timer = setTimeout(() => {
@@ -260,7 +264,7 @@ const addProcessing = (computeMeta: IExecuteMeta, state: IReduxState, datasheetI
   processingMap[datasheetId] = { ...processingMap[datasheetId], [business]: timer };
 };
 
-// 检查当前action是否需要触发计算，如果需要计算则重新实例化一个compute_worker开始计算
+// Check if the current action needs to trigger a computation, and if so, re-instantiate a compute_worker to start the computation
 const executeComputeIfNeed = (action: AnyAction, state: IReduxState) => {
   if (action.type === BATCH && Array.isArray(action.payload)) {
     action.payload.forEach((batchAction: AnyAction) => {

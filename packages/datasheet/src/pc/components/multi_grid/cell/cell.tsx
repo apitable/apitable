@@ -19,7 +19,7 @@ import { CellGroupOffset } from './virtual_cell/cell_group_offset/cell_group_off
 import { CellGroupTab } from './virtual_cell/cell_group_tab/cell_group_tab';
 
 interface IData {
-  isGroupEmptyContent: boolean; // TODO:  删除这里
+  isGroupEmptyContent: boolean; // TODO: Remove here
   datasheetId: string;
   rowHeightLevel: number;
   columns: IGridViewColumn[];
@@ -45,7 +45,7 @@ const CellFunc: React.FC<GridChildComponentProps & ICellFuncOwnProps> =
 
     const style = {
       ..._style,
-      // 统一为所有单元格加上动画。
+      // Uniformly add animations to all cells
       transition: 'top 0.2s ease-in-out 0.2s',
     };
     const {
@@ -72,15 +72,15 @@ const CellFunc: React.FC<GridChildComponentProps & ICellFuncOwnProps> =
     gridCellWrapper = classNames(gridCellWrapper, styles.cellLevelTop1);
     const debugging = localStorage.getItem('render_debugging');
 
-    // 横向站位空白处理
+    // Horizontal standing blank processing
     if (!row) {
-      // 表格底部的间距
+      // Spacing at the bottom of the grid
       return (
         <div style={{ ...style, height: GRID_VIEW_BLANK_HEIGHT }} />
       );
     }
 
-    // 纵向站位添加列处理
+    // Add column processing for vertical stations
     if (actualColumnIndex === columnsLength) {
       return (
         <CellAddField
@@ -194,7 +194,6 @@ const areEqual = (
   return shallowEqual(prevStyle, nextStyle) && shallowEqual(prevData, nextData) && shallowEqual(prevRest, nextRest);
 };
 
-// 单元格
 export const CellRight = React.memo(CellFuncRight, areEqual);
 
 export const CellLeft = React.memo(CellFuncLeft, areEqual);

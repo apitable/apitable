@@ -3,36 +3,35 @@ import { ICalendarViewStatus, IGanttViewStatus, IOrgChartViewStatus, RecordVisio
 import { IViewNodeStateMap } from 'pc/components/org_chart_view/interfaces';
 import { IFieldDescCollapseStatus } from 'pc/components/expand_record/field_editor';
 
-// 使用前看下同级目录下的文档
-
+// Read the documentation in the same level directory before use
 export enum StorageName {
   DatasheetView = 'DatasheetView',
-  Description = 'Description', // 存储分享页面已经打开的过的节点，不再显示描述
-  IsPanelClosed = 'IsPanelClosed', // 记录面板打开的状态
-  SplitPos = 'SplitPos', // 记录面板左右两边的位置
-  GroupCollapse = 'GroupCollapse', // 缓存 datasheet 分组的展开/收起情况
-  KanbanCollapse = 'KanbanCollapse', // 记录看板的折叠收起状态
-  WidgetPanelStatusMap = 'WidgetPanelStatusMap', // 记录小组件面板是否打开，以及打开的幅度
-  ShareLoginFailed = 'ShareLoginFailed', // 记录当前分享页面的登录状态是否失败
-  GanttStatusMap = 'GanttStatusMap', // 记录甘特图视图相关状态
-  CalendarStatusMap = 'CalendarStatusMap', // 记录日历视图相关状态
-  OrgChartStatusMap = 'OrgChartStatusMap', // 记录架构视图相关状态
-  OrgChartNodeStateMap = 'OrgChartNodeStateMap', // 记录架构视图节点状态
-  ShowHiddenFieldInExpand = 'ShowHiddenFieldInExpand', // 记录展开卡片中，隐藏字段的折叠收起状态
-  SideRecordWidth = 'SideRecordWidth', // 记录展开卡片，侧边模式下的宽度
-  RecordVision = 'RecordVision', // 展开卡片模式（目前为居中和侧边）
-  TestFunctions = 'TestFunctions', // 测试功能
-  FormFieldContainer = 'FormFieldContainer', // 收集表表单站内缓存
-  SharedFormFieldContainer = 'SharedFormFieldContainer', // 收集表表单站外缓存
+  Description = 'Description', // Store the nodes that have been opened on the share page and no longer display the description
+  IsPanelClosed = 'IsPanelClosed', // The state of the open panel
+  SplitPos = 'SplitPos', // The position of the left and right sides of the panel
+  GroupCollapse = 'GroupCollapse', // Cache datasheet grouping expansion/extension
+  KanbanCollapse = 'KanbanCollapse', // The folded and folded status of the kanban board
+  WidgetPanelStatusMap = 'WidgetPanelStatusMap', // Whether the widget panel is open and how far it is open
+  ShareLoginFailed = 'ShareLoginFailed', // Whether the login status of the current sharing page has failed
+  GanttStatusMap = 'GanttStatusMap', // Gantt view related status
+  CalendarStatusMap = 'CalendarStatusMap', // Calendar view related status
+  OrgChartStatusMap = 'OrgChartStatusMap', // OrgChart view related status
+  OrgChartNodeStateMap = 'OrgChartNodeStateMap', // view related node status
+  ShowHiddenFieldInExpand = 'ShowHiddenFieldInExpand', // Collapsed and collapsed state of the hidden fields in the expanded card
+  SideRecordWidth = 'SideRecordWidth', // Expanded card, width in side-by-side mode
+  RecordVision = 'RecordVision', // Expand card mode (currently centered and side-by-side)
+  TestFunctions = 'TestFunctions', // Experimental Features
+  FormFieldContainer = 'FormFieldContainer', // Form In-Site Cache
+  SharedFormFieldContainer = 'SharedFormFieldContainer', // Form off-site caching
   SocialPlatformMap = 'SocialPlatformMap',
-  PlayerTaskListDoneList = 'PlayerTaskListDoneList', // 新手引导的 taskList 模块
-  DingTalkVisitedFolders ='DingTalkVisitedFolders', // 钉钉记录一个从模板创建的
-  FieldDescCollapseStatus = 'FieldDescCollapseStatus', // 记录字段描述是否折叠
-  ApiDebugWarnConfirm = 'ApiDebugWarnConfirm', // Api面板跳转调试没有开启token的时候警告是否确认阅读
+  PlayerTaskListDoneList = 'PlayerTaskListDoneList', // TaskList Module for User Guide
+  DingTalkVisitedFolders ='DingTalkVisitedFolders', // Folders created from Dingtalk templates
+  FieldDescCollapseStatus = 'FieldDescCollapseStatus', // Whether the field description is collapsed
+  ApiDebugWarnConfirm = 'ApiDebugWarnConfirm', // Api panel jump debugging does not open token when warning whether to confirm reading
   Other = 'Other',
 }
 
-// 配置是否在退出登录后清除相应的 storage
+// Configure whether to clear the corresponding storage after logging out
 const LogInClearConfig = {
   [StorageName.DatasheetView]: true,
   [StorageName.Description]: true,
@@ -129,7 +128,7 @@ export const deleteStorageByKey = (key) => {
   try {
     ds.remove(key);
   } catch (error) {
-    console.warn('! ' + '当前 ${key} 不存在');
+    console.warn('! ' + `Current ${key} does not exist`);
   }
 };
 

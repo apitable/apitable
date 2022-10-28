@@ -34,7 +34,7 @@ const ThemeWrapper: React.FC = (props) => {
   useEffect(() => {
     if (!systemTheme || systemTheme === SystemTheme.Close) return;
     const themeMedia = window.matchMedia('(prefers-color-scheme: light)');
-    // systemTheme 状态变化为 open 时，重置 theme
+    // Reset the theme when the systemTheme state changes to open
     setTheme(themeMedia.matches ? ThemeName.Light : ThemeName.Dark);
     const listener = e => {
       if (e.matches) {

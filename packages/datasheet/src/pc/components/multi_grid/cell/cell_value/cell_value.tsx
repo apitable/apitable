@@ -32,9 +32,10 @@ export interface ICellValueComponent {
 }
 
 /**
- * CellValue 组件编写规范
- * 1. 组件参数只允许 ICellValueComponent 中的参数，不允许有额外的参数，如有需要请发起讨论。
- * 2. 子组件参数只允许接受 ICellComponentProps 为参数，一般不允许有额外的参数，如有需要请发起讨论，具体参数使用细节，请参考其定义中的注释
+ * CellValue Component Writing Specification:
+ * 1. Component parameters are only allowed in ICellValueComponent, no additional parameters are allowed, please initiate a discussion if needed.
+ * 2. Sub-component parameters are only allowed to accept ICellComponentProps as parameters, additional parameters are generally not allowed, 
+ * please initiate a discussion if needed, for details on the use of specific parameters, please refer to the comments in their definitions.
  */
 const CellValueBase: React.FC<ICellValueComponent> = props => {
   const { field, recordId, cellValue, className, isActive, datasheetId, readonly, rowHeightLevel, cellTextClassName, showAlarm } = props;

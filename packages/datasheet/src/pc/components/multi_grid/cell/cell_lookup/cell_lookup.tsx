@@ -74,7 +74,6 @@ export const CellLookUpBase: React.FC<ICellLookUpProps> = props => {
     return <></>;
   }
 
-  // cellValue 神奇引用 尝试去拍平二维数组
   cellValue = cellValue?.flat(1) as ICellValue;
 
   if (LOOKUP_VALUE_FUNC_SET.has(rollUpType)) {
@@ -89,7 +88,7 @@ export const CellLookUpBase: React.FC<ICellLookUpProps> = props => {
   }
 
   switch (realField.type) {
-    // 非存文本的字段原样展示
+    // Non-plain text fields are displayed as is
     case FieldType.Attachment:
       return (
         <CellAttachment
@@ -159,7 +158,7 @@ export const CellLookUpBase: React.FC<ICellLookUpProps> = props => {
           readonly
         />
       );
-    // 文本逗号分割
+    // Text comma segmentation
     case FieldType.DateTime:
     case FieldType.Number:
     case FieldType.Text:

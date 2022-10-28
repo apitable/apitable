@@ -17,7 +17,7 @@ export const ShortcutsPanel: FC = () => {
     dispatch(StoreActions.setShortcutKeyPanelVisible(false));
   };
 
-  /** 获取要显示的快捷键的数据源 */
+  /** Get the data source of the shortcut key to be displayed */
   const generateData = () => {
     const data = new Map<string, any>();
     for (const shortcutKey of SystemConfig.shortcut_keys) {

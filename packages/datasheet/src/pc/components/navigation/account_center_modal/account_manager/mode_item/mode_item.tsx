@@ -7,17 +7,11 @@ import styles from './style.module.less';
 
 export interface IModeItemProps {
   className?: string;
-  /** 绑定方式的图片 */
   img: string;
-  /** 绑定方式的名称 */
   modeName: string;
-  /** 绑定的账号昵称 */
   name: string;
-  /** 绑定状态 */
   state: boolean;
-  /** 绑定时间 */
   bindingTime: string;
-  /** 点击解绑或绑定按钮的事件 */
   onClick: () => void;
 }
 

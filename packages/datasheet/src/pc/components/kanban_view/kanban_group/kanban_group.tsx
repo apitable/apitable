@@ -31,13 +31,13 @@ interface IKanbanGroupProps {
 
 export const BOARD_WIDTH = 240;
 
-const SCROLL_WIDTH = 16; // 滚动条占据的宽度
+const SCROLL_WIDTH = 16; // The width occupied by the scroll bar
 
-const TOTAL_OTHER_PADDING = 148; // 看板区域，除了展示虚拟滚动之外的其他区域的高度, old -> 138
+const TOTAL_OTHER_PADDING = 148; // Kanban area, the height of the area other than the display virtual scroll, old -> 138
 
-const TOTAL_PC_OATHER_PADDING = 154; // pc 端除了展示虚拟滚动之外的其他区域的高度
+const TOTAL_PC_OATHER_PADDING = 154; // The height of the area other than the display virtual scrolling on the pc side
 
-const SMALL_SCREEN_PADDING = TOTAL_OTHER_PADDING + 40; // 手机端屏幕底部会显示一个操作区域
+const SMALL_SCREEN_PADDING = TOTAL_OTHER_PADDING + 40; // An action area is displayed at the bottom of the mobile screen
 
 const ADD_BUTTON_HEIGHT = 54;
 
@@ -172,19 +172,23 @@ export const KanbanGroup: React.FC<IKanbanGroupProps> = props => {
     if (rowIndex === rows.length - 1) {
       return resCardHeight;
     }
-    // pc 端的虚拟列表重新校对后的计算方式
+    // The calculation of the virtual list on the pc side after recalibration
     return resCardHeight + extraHeight;
   };
 
   /**
-   * @description 存在自动排序和列权限的字段被设置为看板的分组字段后，拖动排序的交互效果会有区别，所以需要对虚拟滚动的列表高度做出不同的计算
+   * @description 
+   * After the fields with automatic sorting and column permissions are set as grouped fields of the kanban view, 
+   * the interaction effect of dragging and sorting will be different, 
+   * so a different calculation of the list height for virtual scrolling is needed
+   * 
    * @param {number} baseHeight
    * @param {number} placeholderHeight
    * @param {boolean} isHomeGroup
    * @returns {number}
    */
   const getFixedListHeight = (baseHeight: number, placeholderHeight: number, isHomeGroup: boolean) => {
-    // TODO: 有了列权限后修改这里的逻辑
+    // TODO: Modify the logic here when you have field permissions
     if (!keepSort) {
       return baseHeight + placeholderHeight;
     }
@@ -196,13 +200,14 @@ export const KanbanGroup: React.FC<IKanbanGroupProps> = props => {
 
   return (
     <div {...provided?.draggableProps} ref={provided?.innerRef}>
-      {/* TODO: 这里有个奇怪的 Bug，开启自动排序后。开启 devtool 的情况下，卡片无法拖动，和 tooltip 组件有关。先取消 tooltip */}
+      {/* TODO: Since the cards can't be dragged after turning on auto sort or in the case of devtool, */}
+      {/* it should be related to the tooltip component, so remove tooltip first. */}
       {/* <Tooltip title={t(Strings.kanban_keep_sort_tip)} visible={Boolean(showSortBorder)} align={{ offset: [0, 2] }}> */}
       <div
         style={{
           marginRight: 16,
           marginLeft: groupId === UN_GROUP && isMobile ? 24 : 0,
-          marginTop: isMobile ? 24 : 1, // 1 个像素用来显示自动排序拖动的线条
+          marginTop: isMobile ? 24 : 1, // 1 pixel to display automatically sorted dragged lines
         }}
         className={classNames({
           [styles.board]: true,
@@ -220,11 +225,15 @@ export const KanbanGroup: React.FC<IKanbanGroupProps> = props => {
             }}
           >
             {(provided, snapshot) => {
-              // 对于看板卡片的拖动，需要区分是在当前分组内的拖动，或者从 分组A 拖动到 分组B。
-              // 如果是前者，不需要额外考虑
-              // 但如果是第二种，假设 分组B 原本存在两个卡片，为了给 placeHolderCard（i.e.,为了排序动画而增加的空白的位置，高度等同于正在拖动卡片的高度）留下空间
-              // 分组B 的卡片数量应该是 2+1（i.e.,下面提到的 itemCount）
-              // 分组B 的高度应该是 2 * cardHeight + 1 * placeHolderCardHeight（i.e.,下面提到的 extraHeight ）
+              /**
+               * For the dragging of Kanban cards, no additional consideration is needed if the dragging is within the current group. 
+               * If you are dragging from group A to group B, you need to consider for example that there are two cards in group B. 
+               * In order to leave space for the placeHolderCard (i.e., the blank space added for sorting animation, 
+               * the height is equal to the height of the card being dragged), 
+               * the number of cards in group B should be 2+1 (i.e., the itemCount mentioned below) and 
+               * the height of group B should be 2 * cardHeight + 1 * cardHeight (i.e., the height of the card being dragged). 
+               * The height of group B should be 2 * cardHeight + 1 * placeHolderCardHeight (i.e., the extraHeight mentioned below)
+               */
               const recordIds = rows.map(item => item.id);
               const dragInDiffGroup =
                 snapshot.isUsingPlaceholder && !recordIds.includes((snapshot.draggingFromThisWith || snapshot.draggingOverWith)!);

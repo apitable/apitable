@@ -40,7 +40,7 @@ export const CollaboratorMark: React.FC<
   { displayRowIndex: number, collaboratorCell: ICollaboratorCursor[] }
 > = ({ displayRowIndex, collaboratorCell }) => {
   if (!collaboratorCell) return null;
-  // 1、2 行的协同单元格信息会被表头遮住，显示在单元格下方
+  // 1, 2 rows of synergistic cell information will be obscured by the table header, displayed below the cell
   const cellCollaboratorClassName = [1, 2].includes(displayRowIndex) ?
     styles.cellCollaboratorAvatarsUnder : styles.cellCollaboratorAvatars;
   return (

@@ -133,7 +133,7 @@ export const hotkeys = {
         Transforms.splitNodes(editor);
         setNodeWithNewId(editor, { type: ElementType.PARAGRAPH, data });
       };
-      // 屏蔽快捷插入面板处于唤醒状态
+      // Disable shortcut insertion panel in wake-up state
       if (editor.hasInsertPanel || editor.hasMentionPanel) {
         return false;
       }
@@ -203,7 +203,7 @@ export const hotkeys = {
             return true;
           }
           const [, path] = matchNode;
-          // 光标在一段的开头或者结尾
+          // Cursor at the beginning or end of a paragraph
           if (Range.isCollapsed(selection)) {
             const focusPoint = selection.focus;
             const [startPoint, endPoint] = Editor.edges(editor, path);
@@ -219,7 +219,7 @@ export const hotkeys = {
               return false;
             }
           }
-          // 范围选择或者光标在文本中间
+          // Range selection or cursor in the middle of the text
           try {
             Transforms.splitNodes(editor);
             unwrapNodes();
@@ -236,12 +236,12 @@ export const hotkeys = {
   space: {
     action(editor: Editor & IVikaEditor) {
       const { selection, mode } = editor;
-      // 精简模式不需要支持markdown语法切换文本样式
+      // Lite mode does not need to support markdown syntax to switch text styles
       if (mode === 'lite') {
         return true;
       }
       if (selection && Range.isCollapsed(selection)) {
-        // 屏蔽快捷插入面板处于唤醒状态
+        // Disable shortcut insertion panel in wake-up state
         if (editor.hasInsertPanel || editor.hasMentionPanel) {
           return false;
         }
@@ -252,22 +252,21 @@ export const hotkeys = {
         let elementType = element.type;
         let elementData = {} as IElementData;
         switch (true) {
-          // 各级标题 对应markdown格式定义 https://spec.commonmark.org/0.29/#atx-heading
+          // Level headings Corresponding markdown format definition https://spec.commonmark.org/0.29/#atx-heading
           case /^#{1,6}$/.test(elementText): {
             elementType = HEADING_MAP[elementText.length];
             break;
           }
-          // 无序列表 对应markdown格式定义 https://spec.commonmark.org/0.29/#lists
+          // Unordered list Corresponds to markdown format definition https://spec.commonmark.org/0.29/#lists
           case /^(\*|-|\+)$/.test(elementText): {
             elementType = ElementType.UNORDERED_LIST;
             break;
           }
-          // 有序列表 对应markdown格式定义 https://spec.commonmark.org/0.29/#lists
+          // Ordered list Corresponds to markdown format definition https://spec.commonmark.org/0.29/#lists
           case /^\d\.$/.test(elementText): {
             elementType = ElementType.ORDERED_LIST;
             break;
           }
-          // 代码块
           case /^```(\w*)$/.test(elementText): {
             elementType = ElementType.CODE_BLOCK_WRAP;
             if (RegExp.$1) {
@@ -275,17 +274,15 @@ export const hotkeys = {
             }
             break;
           }
-          // 任务列表
           case /^\[\]$/.test(elementText): {
             elementType = ElementType.TASK_LIST;
             break;
           }
-          // 引用 https://spec.commonmark.org/0.29/#block-quotes
+          // Cite https://spec.commonmark.org/0.29/#block-quotes
           case /^>$/.test(elementText): {
             elementType = ElementType.QUOTE;
             break;
           }
-          // 分割线
           case /^---|\*\*\*$/.test(elementText): {
             elementType = ElementType.DIVIDER;
             break;

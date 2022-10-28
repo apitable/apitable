@@ -21,7 +21,7 @@ interface IFieldDescProps {
   readOnly: boolean;
   datasheetId: string;
   style?: React.CSSProperties;
-  targetDOM?: HTMLElement | null; // 自定义FieldSetting挂载DOM节点，默认为数表
+  targetDOM?: HTMLElement | null; // Custom field setting mount DOM node, default is grid
 }
 
 export interface IFieldDescRef {

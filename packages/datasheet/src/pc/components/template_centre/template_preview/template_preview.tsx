@@ -16,9 +16,8 @@ import { UsingTemplateModal } from '../using_template_modal';
 import styles from './style.module.less';
 
 export const TemplatePreview: FC = () => {
-  // 要使用的模板ID
+  // Template ID to use
   const [usingTemplate, setUsingTemplate] = useState('');
-  // 打开登录模态框
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const userInfo = useSelector((state: IReduxState) => state.user.info);
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
@@ -26,7 +25,7 @@ export const TemplatePreview: FC = () => {
   const { getLoginStatusReq } = useUserRequest();
   const { run: getLoginStatus } = useRequest<IUserInfo | undefined, any[]>(getLoginStatusReq, { manual: true });
 
-  // 当前显示是的官方模板还是空间站模板
+  // Is the current display the official template or the space site template
   const isOfficial = categoryId === 'tpcprivate';
 
   const templateCategory = useSelector((state: IReduxState) => state.templateCentre.category);
@@ -35,7 +34,7 @@ export const TemplatePreview: FC = () => {
       setOpenLoginModal(true);
       return;
     }
-    // 当前用户已登录时
+    // Current user is logged in
     if (userInfo && userInfo.spaceId && usingTemplate && !spaceId) {
       Router.push(Navigation.TEMPLATE, { params: { categoryId, templateId: usingTemplate, spaceId: userInfo!.spaceId }});
       return;
@@ -79,9 +78,10 @@ export const TemplatePreview: FC = () => {
   return (
     <div className={styles.templatePreview}>
       {/**
-       * note: 这里是给 SSR 准备的，也就是方便返回 html 模板数据方便抓取，下面被 ComponentDisplay 包裹的内容，由于需要判断浏览器尺寸，
-       * 在 server 端是不会运行的
-       * 这里渲染的内容在页面上不会渲染出来，所以不用担心
+       * note: Here is prepared for SSR, that is, to facilitate the return of html template data for easy crawling, 
+       * the following content wrapped by ComponentDisplay, due to the need to determine the browser size.
+       * It will not run on the server side.
+       * The content rendered here will not be rendered on the page, so don't worry.
        */
         isRenderServer() && (
           <div style={{ display: 'none' }}>

@@ -39,19 +39,17 @@ export const getVerifyData: ({ key }: { key: VerifyTypes }) => IGetVerifyDataFun
   const sourceInfo = key === VerifyTypes.CHANGE_MAIN_ADMIN ? mainAdminInfo : user;
   const hasMobile = sourceInfo?.mobile;
   const codeMode = hasMobile ? ConfigConstant.LoginMode.PHONE : ConfigConstant.LoginMode.MAIL;
-  // 实际用来验证的账号：手机号或邮箱
+  // The actual account used to verify: cell phone number or email
   const verifyAccount = hasMobile ? sourceInfo?.mobile : sourceInfo?.email;
-  // 邮件类型
   const emailType = hasMobile ? undefined : ConfigConstant.EmailCodeType.COMMON;
   const areaCode = hasMobile ? sourceInfo?.areaCode : undefined;
 
   switch (key) {
     case VerifyTypes.CHANGE_PASSWORD: {
       let accountText = '';
-      // 输入框中显示的账号：带*的手机号或邮箱
+      // The account number shown in the input box: cell phone number or email with *
       let label = t(Strings.phone_number);
       let prefixIcon = <PhonenumberFilled size={16} />;
-      // 短信类型
       let smsType: ConfigConstant.SmsTypes | undefined = ConfigConstant.SmsTypes.MODIFY_PASSWORD;
       if (user?.mobile) {
         accountText = `${user?.areaCode} ${hiddenMobile(user!.mobile)}`;
@@ -73,9 +71,8 @@ export const getVerifyData: ({ key }: { key: VerifyTypes }) => IGetVerifyDataFun
       } as IChangePasswordConfig;
     }
     case VerifyTypes.REFRESH_TOKEN: {
-      // 输入框中显示的账号：带*的手机号或邮箱
+      // The account number shown in the input box: cell phone number or email with *
       let title = '';
-      // 短信类型
       let smsType: ConfigConstant.SmsTypes | undefined = ConfigConstant.SmsTypes.CHANGE_DEVELOPER_CONFIG;
       if (user?.mobile) {
         title = t(Strings.send_verification_code_to, {
@@ -97,9 +94,8 @@ export const getVerifyData: ({ key }: { key: VerifyTypes }) => IGetVerifyDataFun
       } as IRefreshConfigConfig;
     }
     case VerifyTypes.CHANGE_MAIN_ADMIN: {
-      // 输入框中显示的账号：带*的手机号或邮箱
+      // The account number shown in the input box: cell phone number or email with *
       let inputText = '';
-      // 短信类型
       let smsType: ConfigConstant.SmsTypes | undefined = ConfigConstant.SmsTypes.CHANGE_MAIN_ADMIN;
 
       if (mainAdminInfo?.mobile) {
@@ -118,9 +114,8 @@ export const getVerifyData: ({ key }: { key: VerifyTypes }) => IGetVerifyDataFun
       } as IChangeMainAdminConfig;
     }
     case VerifyTypes.DEL_SPACE: {
-      // 输入框中显示的账号：带*的手机号或邮箱
+      // The account number shown in the input box: cell phone number or email with *
       let title = '';
-      // 短信类型
       let smsType: ConfigConstant.SmsTypes | undefined = ConfigConstant.SmsTypes.DEL_SPACE;
       if (user?.mobile) {
         title = t(Strings.send_verification_code_to, {

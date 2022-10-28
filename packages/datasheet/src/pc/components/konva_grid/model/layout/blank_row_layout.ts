@@ -4,7 +4,6 @@ import { colors } from '@vikadata/components';
 import { GRID_GROUP_OFFSET, GRID_ROW_HEAD_WIDTH } from '../../constant';
 
 export class BlankRowLayout extends GridLayout {
-  // "添加列" 绘制
   renderAddFieldBlank(row: ILinearRow) {
     super.renderAddFieldBlank(row);
     const { depth } = row;

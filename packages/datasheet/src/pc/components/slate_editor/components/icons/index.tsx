@@ -61,7 +61,7 @@ export default {
   [ElementType.DIVIDER]: IconFactor(DividingLineFilled),
   [ElementType.CODE_BLOCK_WRAP]: IconFactor(CodeFilled),
   // table: '',
-  // 内联元素
+  // Inline elements
   [ElementType.LINK]: IconFactor(ColumnUrlOutlined),
   [ElementType.MENTION]: IconFactor(() => <i className={styles.iconWrap}>@</i>),
   [MarkType.ITALIC]: IconFactor(ItalicsFilled),
@@ -70,7 +70,7 @@ export default {
   [MarkType.BOLD]: IconFactor(BoldFilled),
   [MarkType.INLINE_CODE]: IconFactor(CodeFilled),
   [MarkType.HIGHLIGHT]: IconFactor(HighlightFilled),
-  // 对齐方式
+  // Alignment method
   [ALIGN.LEFT]: IconFactor(TextLeftFilled),
   [ALIGN.CENTER]: IconFactor(TextMiddleFilled),
   [ALIGN.RIGHT]: IconFactor(TextRightFilled),

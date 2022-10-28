@@ -101,7 +101,7 @@ export const useCells = (props: IUseGridBaseProps) => {
         const height = instance.getRowHeight(rowIndex);
 
         switch (type) {
-          // 添加行按钮
+          // Add Row Button
           case CellType.Add: {
             const isHoverColumn = pointColumnIndex === columnIndex;
             const isHoverRow = !isNoneArea && pointRowIndex === rowIndex && targetName === KONVA_DATASHEET_ID.GRID_ROW_ADD_BUTTON;
@@ -124,7 +124,7 @@ export const useCells = (props: IUseGridBaseProps) => {
             });
             break;
           }
-          // 空白行
+          // Blank row
           case CellType.Blank: {
             blankRowLayout.init({
               x,
@@ -140,7 +140,7 @@ export const useCells = (props: IUseGridBaseProps) => {
             blankRowLayout.render({ row, colors });
             break;
           }
-          // 分组头
+          // GroupTab
           case CellType.GroupTab: {
             const groupFieldId = renderGroupInfo![depth]?.fieldId;
             const groupField = fieldMap[groupFieldId];
@@ -168,7 +168,7 @@ export const useCells = (props: IUseGridBaseProps) => {
             });
             break;
           }
-          // 记录单元格
+          // Record
           case CellType.Record: {
             const hasFoundMark = (() => {
               const searchKeyword = Selectors.getSearchKeyword(state);
@@ -274,7 +274,7 @@ export const useCells = (props: IUseGridBaseProps) => {
             };
 
             cellHelper.initStyle(field, style);
-            // 最后列的内容需要进行 clip，防止溢出
+            // The contents of the last column need to be clip to prevent overflow
             if (isLastColumn && cellValue != null) {
               ctx.save();
               ctx.rect(realX, realY, width, rowHeight);
@@ -290,7 +290,7 @@ export const useCells = (props: IUseGridBaseProps) => {
     }
   };
 
-  // 冻结列单元格
+  // Freeze column cells
   const frozenCells = (
     <Shape
       listening={false}
@@ -299,7 +299,7 @@ export const useCells = (props: IUseGridBaseProps) => {
     />
   );
 
-  // 其它列单元格
+  // Other column cells
   const cells = (
     <Shape
       listening={false}

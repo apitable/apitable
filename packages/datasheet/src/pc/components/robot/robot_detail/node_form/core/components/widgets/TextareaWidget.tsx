@@ -58,4 +58,4 @@ function TextareaWidget(props: any) {
 // }
 
 export default TextareaWidget;
-// 文本输入组件会被动态参数输入组件替换
+// The text input component will be replaced by the dynamic parameter input component

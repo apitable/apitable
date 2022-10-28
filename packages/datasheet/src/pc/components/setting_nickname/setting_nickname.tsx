@@ -76,7 +76,6 @@ const SettingNickname: FC = () => {
 
   const uploadImgConfirm = (data: ISelectInfo) => {
     const { officialToken, customFile } = data;
-    // 选择了官方头像
     if (officialToken) {
       updateAvatar({ token: officialToken });
       return;
@@ -97,7 +96,6 @@ const SettingNickname: FC = () => {
       }
     }
 
-    // 是从邮箱邀请过来的
     if (inviteMailToken) {
       const result = await Api.inviteEmailVerify(inviteMailToken);
       const { success, data: info } = result.data;
@@ -109,7 +107,6 @@ const SettingNickname: FC = () => {
         }
       }
     }
-    // 是从链接邀请过来的
     if (inviteLinkToken && nodeId) {
       const result = await Api.linkValid(inviteLinkToken, nodeId);
       const { success, data: info } = result.data;

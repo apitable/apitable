@@ -105,7 +105,7 @@ export const useElements = (props: {
             degrees[id] && degrees[id].degree++;
             degrees[id] && degrees[id].inDegree++;
 
-            // 度的信息应当边统计边读取, 发现节点入度大于 1 了, 就用虚线
+            // The information of degree should be read while counting, and if the node entry is greater than 1, then use the dashed line
             if (degrees[id]?.inDegree > 1) {
               otherEdges.push({
                 id: `${row.recordId}-${id}`,

@@ -28,7 +28,7 @@ const MicroRowBase: React.FC = () => {
   const isExistInQueue = recordRanges && recordRanges.includes(recordId);
 
   if (recordId && !(rowsIndexMap.has(recordId))) {
-    // 判断当前的正在拖动的record有没有被协作者删除
+    // Determine if the current record being dragged has been deleted by the collaborator
     store.dispatch(StoreActions.setDragTarget(datasheetId, {}));
     Modal.error({
       title: t(Strings.error_something_wrong),
@@ -39,7 +39,6 @@ const MicroRowBase: React.FC = () => {
   }
 
   if (!isExistInQueue) {
-    // 当前操作的 record 不在队列中
     if (recordId) {
       recordDataCollection.push(recordId);
     }

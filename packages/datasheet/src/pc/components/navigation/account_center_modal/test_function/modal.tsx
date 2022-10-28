@@ -49,7 +49,6 @@ export const Modal: React.FC<IModalProps> = props => {
       },
       [FunctionType.REVIEW]: () => {
         const url = feature.key === 'robot' && isWecomFunc() ? WECOM_ROBOT_URL : feature.url;
-        // 跳转去 对应的神奇表单
         url && applyOpenFunction(url);
       },
       [FunctionType.NORMAL_PERSIST]: async() => {

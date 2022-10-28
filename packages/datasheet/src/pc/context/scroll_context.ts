@@ -1,7 +1,7 @@
 import { createContext, RefObject, useContext } from 'react';
 import { useSelector } from 'react-redux';
 
-// 缓存页面位置对象
+// Cache page location object
 export interface IScrollOffset {
   scrollTop?: number;
   scrollLeft?: number;

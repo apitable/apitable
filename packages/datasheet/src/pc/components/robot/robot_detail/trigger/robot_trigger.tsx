@@ -60,7 +60,6 @@ const RobotTriggerBase = (props) => {
 
         switch (triggerType.endpoint) {
           case 'form_submitted':
-            // properties!.formId.title = '选择表单';
             properties!.formId.enum = formList.map(f => f.nodeId);
             properties!.formId.enumNames = formList.map(f => f.nodeName);
             break;
@@ -68,7 +67,7 @@ const RobotTriggerBase = (props) => {
             properties!.datasheetId.default = datasheetId;
             properties!.datasheetId.enum = [datasheetId];
             properties!.datasheetId.enumNames = [datasheetName];
-            // 如果这里是 object ui 无法正常渲染，转化成 string，在 onchange 时候处理好序列化和反序列化。
+            // If here is object ui can't be rendered properly, convert to string and handle serialization and deserialization at onchange time.
             break;
           case 'record_created':
             properties!.datasheetId.default = datasheetId;
@@ -113,7 +112,6 @@ const RobotTriggerBase = (props) => {
   }, [datasheetId, triggerType?.endpoint, uiSchema]);
 
   const handleUpdateFormChange = useCallback(({ formData }) => {
-    // 更新输入
     if (!shallowEqual(formData, trigger.input)) {
       updateTriggerInput(trigger.triggerId, formData).then(() => {
         mutate({
@@ -147,7 +145,7 @@ const RobotTriggerBase = (props) => {
   );
 };
 
-// trigger 组件 = 选择原型下拉框 + input form 表单。
+// trigger component = select prototype dropdown box + input form form.
 export const RobotTrigger = ({ robotId, triggerTypes, formList, setTrigger }: IRobotTriggerProps) => {
   const { data: trigger, error, mutate } = useSWR(`/robots/${robotId}/trigger`, getRobotTrigger);
   useEffect(() => {
@@ -176,7 +174,7 @@ export const RobotTrigger = ({ robotId, triggerTypes, formList, setTrigger }: IR
       <RobotTriggerCreateForm robotId={robotId} triggerTypes={triggerTypes} />
     );
   }
-  // 丰富输入表单的默认值，trigger 是官方可控的。
+  // The default value of the rich input form, the trigger, is officially controllable.
   return <RobotTriggerBase
     trigger={trigger}
     mutate={mutate}

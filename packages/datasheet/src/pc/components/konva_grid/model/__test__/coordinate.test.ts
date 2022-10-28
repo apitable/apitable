@@ -22,7 +22,7 @@ const initState = {
 const coordinate = new Coordinate(initState);
 
 describe('test coordinate', () => {
-  // 获取列坐标
+  // Get column offset
   it('get column offset', () => {
     expect(
       coordinate.getColumnOffset(0)
@@ -37,7 +37,7 @@ describe('test coordinate', () => {
     ).toBe(1000432);
   });
 
-  // 获取行坐标
+  // Get row offset
   it('get row offset', () => {
     expect(
       coordinate.getRowOffset(0)
@@ -52,7 +52,7 @@ describe('test coordinate', () => {
     ).toBe(320056);
   });
 
-  // 根据横向滚动位置获取可见范围中第一列的索引
+  // Get the index of the first column in the visible range based on the horizontal scroll position
   it('get column start index', () => {
     expect(
       coordinate.getColumnStartIndex(0)
@@ -67,7 +67,7 @@ describe('test coordinate', () => {
     ).toBe(195);
   });
 
-  // 根据横向滚动位置获取可见范围中最后一列的索引
+  // Get the index of the last column in the visible range based on the horizontal scroll position
   it('get column stop index', () => {
     expect(
       coordinate.getColumnStopIndex(0, 0)
@@ -82,7 +82,7 @@ describe('test coordinate', () => {
     ).toBe(205);
   });
 
-  // 根据纵向滚动位置获取可见范围中第一行的索引
+  // Get the index of the first row in the visible range based on the vertical scroll position
   it('get row start index', () => {
     expect(
       coordinate.getRowStartIndex(0)
@@ -97,7 +97,7 @@ describe('test coordinate', () => {
     ).toBe(623);
   });
 
-  // 根据纵向滚动位置获取可见范围中最后一行的索引
+  // Get the index of the last row in the visible range based on the vertical scroll position
   it('get row stop index', () => {
     expect(
       coordinate.getRowStopIndex(0, 0)

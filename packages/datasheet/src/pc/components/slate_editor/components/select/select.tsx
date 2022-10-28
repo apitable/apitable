@@ -15,7 +15,7 @@ type TSelectValue = string;
 interface IOption {
   value: TSelectValue;
   label: React.ReactNode;
-  option?: React.ReactNode; // 用于在候选面板中渲染
+  option?: React.ReactNode; // For rendering in the candidate panel
 }
 
 interface ISelectProps {

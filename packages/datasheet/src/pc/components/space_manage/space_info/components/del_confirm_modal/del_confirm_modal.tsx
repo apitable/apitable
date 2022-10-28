@@ -52,7 +52,7 @@ export const DelConfirmModal: FC<IDelConfirmModalProps> = props => {
       handleCancel();
       return;
     }
-    // 否则直接跳过验证
+    // Otherwise, the verification is skipped directly
     del(spaceId);
   };
 
@@ -72,7 +72,6 @@ export const DelConfirmModal: FC<IDelConfirmModalProps> = props => {
             <li>{t(Strings.workspace_files)}</li>
             <li>{t(Strings.contact_data)}</li>
             <li>{t(Strings.attachment_data)}</li>
-            {/* <li>模板商城模板</li> */}
           </ul>
           <div className={styles.subTitle}>
             {t(Strings.space_info_del_confirm2)}

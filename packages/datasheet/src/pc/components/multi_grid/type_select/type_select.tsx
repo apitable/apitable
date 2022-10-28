@@ -20,21 +20,17 @@ interface ITypeSelect {
 }
 
 const fieldSequence: FieldType[] = [
-  // 三个一行
   FieldType.SingleText,
   FieldType.Text,
   FieldType.SingleSelect,
   FieldType.MultiSelect,
-  // 高级组
   FieldType.Link,
   FieldType.LookUp,
   FieldType.Formula,
-  // 数字组
   FieldType.Number,
   FieldType.Currency,
   FieldType.Percent,
   FieldType.AutoNumber,
-  //
   FieldType.DateTime,
   FieldType.CreatedTime,
   FieldType.LastModifiedTime,
@@ -185,11 +181,9 @@ export const TypeSelectBase: React.FC<ITypeSelect> = props => {
     const shadowEle = scrollShadowRef.current;
     if (!shadowEle) return;
     if (scrollTop + height > scrollHeight - 10) {
-      // 屏蔽可滚动样式
       shadowEle.style.display = 'none';
       return;
     }
-    // 展示可滚动样式
     if (shadowEle.style.display === 'block') {
       return;
     }
@@ -251,7 +245,7 @@ export const TypeSelectBase: React.FC<ITypeSelect> = props => {
 
   const filterByKeyword = (fieldType: FieldType) => {
     const fieldTitle = FieldTypeDescriptionMap[fieldType].title;
-    return fieldTitle.toLowerCase().includes(keyword.trim().toLowerCase()); // 大小写不敏感，移除输入字符串的两侧空白符
+    return fieldTitle.toLowerCase().includes(keyword.trim().toLowerCase());
   };
 
   const basicFieldList = fieldSequence

@@ -4,10 +4,6 @@ export function generateRowId() {
   return nanoid();
 }
 
-/**
- * 给每个 array item 添加一个唯一 key
- * @param formData 
- */
 export function generateKeyedFormData(formData: any) {
   const { operands } = formData.value;
   const newOperands = operands.map((v) => (

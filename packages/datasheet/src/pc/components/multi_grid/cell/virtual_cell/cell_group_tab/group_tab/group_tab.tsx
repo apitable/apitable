@@ -40,13 +40,12 @@ interface IGroupTab {
   row: ILinearRowGroupTab;
   actualColumnIndex: number;
   groupInfo: IGroupInfo;
-  // 是否按默认顺序排序
   isSort?: boolean;
 }
 
 export enum ExpandType {
-  Pull = 'Pull', // 展开
-  Retract = 'Retract', // 收起
+  Pull = 'Pull',
+  Retract = 'Retract',
   PullAll = 'PullAll',
   RetractAll = 'RetractAll',
 }
@@ -76,12 +75,12 @@ const GroupTabBase: React.FC<IGroupTab> = props => {
 
   const changeGroupCollapseState = useCallback(
     (newState: string[]) => {
-      // 表内查找时，屏蔽折叠分组操作
+      // Blocking collapsing grouping operation when searching within a table
       if (isSearching) {
         return;
       }
       dispatch(StoreActions.setGroupingCollapse(datasheetId, newState));
-      // QuickAppend 组件显示依赖于 hoverRecordId, 分组折叠的情况下应该清空, 避免产生视觉误导
+      // QuickAppend component display depends on hoverRecordId, which should be cleared in case of group collapse to avoid visual misleading
       dispatch(StoreActions.setHoverRecordId(datasheetId, null));
       setStorage(StorageName.GroupCollapse, { [`${datasheetId},${viewId}`]: newState });
     },
@@ -130,7 +129,7 @@ const GroupTabBase: React.FC<IGroupTab> = props => {
     );
   }
 
-  // 值按索引顺序排序
+  // Values are sorted by index order
   function sortValueByOptionOrder(value: string[] | null, options: ISelectFieldOption[]) {
     if (!value) {
       return null;
@@ -163,13 +162,13 @@ const GroupTabBase: React.FC<IGroupTab> = props => {
       return <div style={commonStyle}>({t(Strings.content_is_empty)})</div>;
     }
     let sortValue;
-    // 按照索引顺序排序
+    // Sort by index order
     if (isSort) {
-      // Tab 是“多选"并且 isSort 为 true
+      // Tab is multi-select and isSort is true
       if (field.type === FieldType.MultiSelect) {
         sortValue = sortValueByOptionOrder(cellValue, field.property.options);
       } else if (field.type === FieldType.LookUp) {
-        // Tab 是“神奇引用”并且 isSort 为 true 且 realField 是单选或者多选
+        // Tab is a lookup and isSort is true and realField is single or multiple choice
         const realField = (Field.bindModel(field) as LookUpField).getLookUpEntityField();
         if (realField && realField.property && Array.isArray(realField.property.options)) {
           sortValue = sortValueByOptionOrder(cellValue, realField.property.options);
@@ -200,7 +199,7 @@ const GroupTabBase: React.FC<IGroupTab> = props => {
     const tabs = findChildGroupTab();
 
     function groupCommand(type: ExpandType, e: React.MouseEvent) {
-      // 正在进行表内查找时，禁用分组相关操作。
+      // Disables grouping-related operations when a table lookup is being performed.
       if (isSearching) {
         return triggerRef.current!.close(e);
       }
@@ -275,7 +274,7 @@ const GroupTabBase: React.FC<IGroupTab> = props => {
         ) : (
           <></>
         )}
-        {// 存在没有折叠的组头时
+        { // When there are group tab that are not collapsed
           setComplement(Array.from(groupingCollapseIdsMap.keys()), allGroupTabIds).length > 0 ? (
             <li
               onMouseDown={e => {

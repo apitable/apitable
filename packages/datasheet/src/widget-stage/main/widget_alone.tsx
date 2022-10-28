@@ -19,7 +19,7 @@ function WidgetAlone() {
         <TextInput type="text" value={widgetId} onChange={e => setWidgetId(e.target.value)} />
       </div>
       <div className={styles.config}>
-          输入小组件代码地址：
+        输入小组件代码地址：
         <TextInput type="text" value={codeUrl} onChange={e => setCodeUrl(e.target.value)} />
         <Button color="primary" onClick={() => refresh()}>刷新</Button>
       </div>

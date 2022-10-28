@@ -15,8 +15,8 @@ enum SwitchType {
   AllowInvite = 'invitable',
   JoinSpace = 'joinable',
   ShowMobile = 'mobileShowable',
-  NodeExportable = 'nodeExportable', // 弃用
-  ExportLevel = 'exportLevel', // 0 - 禁止导出，1 - 只读以上可导出，2 - 可编辑以上可导出，3 - 可管理以上可导出
+  NodeExportable = 'nodeExportable', // Abandon
+  ExportLevel = 'exportLevel', // 0 - no export, 1 - exportable above read-only, 2 - exportable above editable, 3 - exportable above manageable
   WatermarkEnable = 'watermarkEnable',
   ShareNode = 'fileSharable',
   ManageRoot = 'rootManageable',
@@ -233,12 +233,11 @@ export const SwitchData: ISwitchDataItem[] = [
   },
 ];
 
-// 需要取反的开关：对于一些开关，需要取反来符合语义
 const reversedSwitches = [SwitchType.ShowMobile, SwitchType.WatermarkEnable, SwitchType.OrgIsolated, SwitchType.ExportLevel];
 
 /**
- * switchType === SwitchType.ExportLevel，data.switchValue 的值由五种可能，分别为 true，false，'1'，'2'，'3'，'4'
- * 当 switchValue === true 时，默认选中可管理权限，也即返回 2
+ * switchType === SwitchType.ExportLevel，data.switchValue has five possible values, namely true, false, '1', '2', '3', '4'
+ * When switchValue === true, manageable permissions are checked by default, i.e. 2 is returned
  */
 function exportLevelHandle(value: boolean | PermissionType) {
   if (typeof value === 'boolean') {
@@ -286,7 +285,7 @@ export const Security: FC = () => {
 
       const onOk = async() => {
         const newStatus = [SwitchType.ExportLevel].includes(switchType) ? exportLevelHandle(data.switchValue) : switchValue;
-        // 仅当切换 Switch 组件时，需要 loading 状态；切换 Radio 组件则不需要；
+        // The loading state is required only when switching Switch components; it is not required when switching Radio components.
         const res = await switchReq({ key: switchType, status: newStatus, loadingEnabled: isBoolean(switchValue) });
         setSettingLoading(null);
         const newFeatures = { ...spaceFeatures!, [switchType]: newStatus };

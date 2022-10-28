@@ -25,23 +25,21 @@ const getFirstWordFromString = (str: string) => {
 };
 
 /**
- * 基于原生 canvas API 封装的一些业务方法
+ * Some business methods based on the native canvas API wrapper
  */
 export class KonvaDrawer {
   ctx: CanvasRenderingContext2D = autoSizerCanvas.context!;
   needDraw = false;
 
-  // 初始化上下文
   public initCtx(ctx) {
     this.needDraw = Boolean(ctx);
     this.ctx = ctx || autoSizerCanvas.context!;
     /**
-     * textBaseline 指定为 middle，兼容各浏览器的差异
+     * textBaseline is specified as middle, compatible with browser differences
      */
     this.ctx.textBaseline = 'middle';
   }
 
-  // 设置样式
   public setStyle(props: ICtxStyleProps) {
     const {
       fontSize,
@@ -63,9 +61,6 @@ export class KonvaDrawer {
     }
   }
 
-  /**
-   * 绘制文字溢出效果
-   */
   public textEllipsis(props: ITextEllipsisProps) {
     const {
       text,
@@ -91,7 +86,7 @@ export class KonvaDrawer {
 
     const ellipsis = '…';
     const textSize = text.length;
-    // 对传入文字进行阈值宽度的预判
+    // Predetermine the threshold width of the incoming text
     let guessSize = Math.ceil(maxWidth / fontSize);
     let guessText = text.substr(0, guessSize);
     let guessWidth = getTextWidth(this.ctx, guessText, fontStyle);
@@ -267,15 +262,15 @@ export class KonvaDrawer {
     }
 
     const resultData: IWrapTextDataProps = [];
-    // 对包含 emoji 的字符串进行精准分割
+    // Accurate segmentation of strings containing emoji
     const arrText = graphemeSplitter.splitGraphemes(text);
     const textLength = arrText.length;
     const ellipsisWidth = this.ctx.measureText('…').width;
-    let showText = ''; // 每个片段显示的文字
-    let showTextWidth = 0; // 每个片段的宽度
-    let showLineWidth = 0; // 当前每行显示文字的宽度
-    let curLinkData: ILinkData | null = null; // 当前 link 的信息
-    let rowCount = 0; // 总行数
+    let showText = ''; // Text displayed for each segment
+    let showTextWidth = 0; // Width of each segment
+    let showLineWidth = 0; // Current width of displayed text per line
+    let curLinkData: ILinkData | null = null; // Current link information
+    let rowCount = 0;
     let linkIndex = 0;
     const linkMap = {};
 
@@ -283,7 +278,7 @@ export class KonvaDrawer {
       (originValue as ISegment[]).forEach(item => {
         const length = item.text.length;
         const nextIndex = linkIndex + length;
-        // isLinkSplit 作为多个 URL 引用值进行特殊处理的标识
+        // The isLinkSplit is used as an identifier for special handling of multiple URL references
         if (item.type === SegmentType.Url || isLinkSplit) {
           linkMap[linkIndex] = {
             endIndex: nextIndex - 1,
@@ -306,7 +301,7 @@ export class KonvaDrawer {
       const isLineEnd = diffWidth > maxWidth;
       const linkData = linkMap[n];
 
-      // 遇到 链接片段 开头
+      // Encounter the beginning of a linked fragment
       if (linkData && !isUnderline) {
         if (n === linkData.endIndex) {
           resultData.push({
@@ -334,7 +329,7 @@ export class KonvaDrawer {
         continue;
       }
 
-      // 遇到 链接片段 结尾
+      // Encounter End of linked clip
       if (curLinkData && n === curLinkData.endIndex && !isUnderline) {
         resultData.push({
           offsetX,
@@ -360,7 +355,7 @@ export class KonvaDrawer {
         continue;
       }
 
-      // 遇到 断行 或 行尾
+      // encounter line break or end of line
       if ((isLineEnd || isLineBreak) && rowCount < maxRow) {
         const isLastLetter = n === arrText.length - 1;
         resultData.push({
@@ -450,11 +445,11 @@ export class KonvaDrawer {
       return;
     }
     const image = imageCache.getImage(url);
-    // 未加载成功
+    // Not loaded successfully
     if (image === false) {
       return;
     }
-    // 未加载过
+    // Unloaded
     if (image == null) {
       return imageCache.loadImage(url, url);
     }
@@ -553,9 +548,6 @@ export class KonvaDrawer {
     };
   }
 
-  /**
-   * 绘制头像
-   */
   public avatar(props) {
     const {
       x = 0,
@@ -575,7 +567,6 @@ export class KonvaDrawer {
     const firstWord = getFirstWordFromString(title.trim());
     const avatarBg = avatarSrc ? colors.defaultBg : getAvatarRandomColor(id);
     switch (type) {
-      // 部门
       case AvatarType.Team: {
         if (!url) {
           this.rect({

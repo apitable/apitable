@@ -134,7 +134,8 @@ export const InsertPanel = () => {
           toggleBlock(editor, item.value);
           return;
         }
-        // 如果插入的位置原本为列表，则先插入一个段落元素，然后分割列表再设置成应该插入的元素，是否有更高效的方式？
+        // If the inserted position is originally a list, is there a more efficient way to insert a paragraph element first, 
+        // then split the list and then set it to the element that should be inserted?
         Transforms.insertNodes(editor, curIsList ? GENERATOR.paragraph({}) : nextElement, { at: nextPath });
         Transforms.select(editor, nextPath);
         if (curIsList) {
@@ -204,7 +205,7 @@ export const InsertPanel = () => {
             break;
           }
 
-          // 确定
+          // confirm
           case 'Space':
           case 'Enter': {
             e.preventDefault();
@@ -281,7 +282,7 @@ export const InsertPanel = () => {
       const halfHeight = offsetHeight / 2;
       const wrapHeight = el.offsetHeight;
       const wrapScrollTop = el.scrollTop;
-      // 有一半在可见范围外，则需要滚动。
+      // Half of them are outside the visible range, then they need to be rolled.
       if (offsetTop > wrapHeight + wrapScrollTop - halfHeight || offsetTop + halfHeight < wrapScrollTop) {
         activeEle.scrollIntoView({ behavior: 'smooth' });
       }

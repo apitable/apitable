@@ -199,7 +199,7 @@ export const Drag: React.FC<IDragProps> = props => {
       checkIsOpacityLine ? checkIsOpacityLine(e) : getParentNodeByClass(e.target as HTMLElement, OPACITY_LINE_CLASS),
     );
     if (isChangeColumnWidth && columnWidthEditable && !view.lockInfo) {
-      // 有修改的权限，并且点击的是修改列宽的dom，则开始修改列宽
+      // If you have the permission to modify and you click on the dom that modifies the column width, you start modifying the column width
       changeColumnWidth(e);
       return;
     }
@@ -211,7 +211,7 @@ export const Drag: React.FC<IDragProps> = props => {
   };
 
   /**
-   * @description 处理分组下的自动排序
+   * @description Handling automatic sorting under grouping
    * @param {MouseEvent} e
    */
   function dragWithSortInfo(e: MouseEvent) {
@@ -262,7 +262,7 @@ export const Drag: React.FC<IDragProps> = props => {
         dragOffsetY: e.pageY,
       });
     } else {
-      // 拖动距离超过5个像素，出现拖动条
+      // Dragging distance more than 5 pixels, dragging bar appears
       const dragOffsetX = Math.abs(e.pageX - getGlobalRef().originPageX) > 5 ? e.pageX : 0;
       const dragOffsetY = e.pageY;
       if (!dragOffsetX) {
@@ -276,7 +276,6 @@ export const Drag: React.FC<IDragProps> = props => {
     }
   };
 
-  // 清除 redux 中的状态
   const clearOperateState = () => {
     setGlobalRef({ originPageX: 0 });
     dispatch(batchActions([StoreActions.setDragTarget(datasheetId, {}), StoreActions.setHoverGroupPath(datasheetId, null)]));
@@ -299,7 +298,7 @@ export const Drag: React.FC<IDragProps> = props => {
     const changeWidthFieldId = getGlobalRef().changeWidthFieldId;
     const changeWidthColumn = visibleColumns.find(column => column.fieldId === changeWidthFieldId);
     const originWidth = Selectors.getColumnWidth(changeWidthColumn as IGridViewColumn);
-    const finalWidth = Math.max(originWidth + changeWidthSum, MIN_COLUMN_WIDTH); // 如果小于最小宽度，则使用最小宽度
+    const finalWidth = Math.max(originWidth + changeWidthSum, MIN_COLUMN_WIDTH);
 
     executeCommandWithMirror(
       () => {
@@ -376,18 +375,21 @@ export const Drag: React.FC<IDragProps> = props => {
   }
 
   /**
-   * @description 存在分组，并且存在自动排序，drop 拖动的 record 之后根据分组的 value 设置相应的值
-   * 这里和拖动排序的逻辑不太一样，appendRows 是将拖动的 record 放置到目标 record 的上面或者下面，但是当存在自动排序，
-   * 就不应在手动给 record 排序，而是将相应单元格的值设置成分组的值即可，不改动 record 的位置
+   * @description There is a group and there is an auto sort, 
+   * drop the dragged record and then set the corresponding value according to the value of the group
+   * The logic here is not the same as drag sorting, 
+   * appendRows places the dragged record above or below the target record, but when there is an automatic sort,
+   * instead of sorting the record manually, set the value of the corresponding cell to the value of the group, 
+   * without changing the position of the record.
    */
   function setCellValueByKeepSort() {
     const { dragTarget } = gridViewDragState;
     let recordIds: string[] = [];
     if (selectRecordIds.length) {
-      // 当前正在操作的 record 已经被勾选或者处于选区中
+      // The record you are currently working on is already checked or in the selection
       recordIds = selectRecordIds;
     } else {
-      // 当前正在操作的 record 不处于勾选状态
+      // The record currently in operation is not checked
       recordIds = [dragTarget.recordId!];
     }
     const groupCellValues = getCellValuesForGroupRecord(dragOption.overTargetId);
@@ -433,7 +435,7 @@ export const Drag: React.FC<IDragProps> = props => {
 
     let data: Array<{ recordId: string; overTargetId: string; direction: DropDirectionType }>;
     if (new Set(selectRecordIds).has(dragTarget.recordId)) {
-      // 当前正在操作的 record 已经处于勾选状态
+      // The record you are currently working on is already checked
       data = selectRecordIds.map(recordId => {
         return {
           recordId,
@@ -442,7 +444,7 @@ export const Drag: React.FC<IDragProps> = props => {
         };
       });
     } else {
-      // 当前正在操作的 record 不处于勾选状态
+      // The record currently in operation is not checked
       data = [
         {
           recordId: dragTarget.recordId,

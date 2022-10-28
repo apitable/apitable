@@ -80,7 +80,7 @@ export const HoverLine: React.FC<IHoverLine> = props => {
     });
   }
 
-  // 解决拖动到首行，需要判断当期的是上半部分高度还是下半部分高度
+  // Solve dragging to the first row, need to determine whether the current period is the top half of the height or the bottom half of the height
   function dragMove(e: MouseEvent) {
     if (!e) return;
 

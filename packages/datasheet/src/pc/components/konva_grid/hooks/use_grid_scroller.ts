@@ -28,10 +28,11 @@ export const useGridScroller = (props: IUseGridScrollerProps) => {
     cellVerticalBarRef,
     pointAreaType = AreaType.Grid,
   } = props;
-  const isRealTouchDevice = isTouchDevice(); // 真正意义上的触控设备，处理 surface 之类的触控笔记本的情况
+  // Touch devices in the true sense of the word, dealing with touch notebooks like surface
+  const isRealTouchDevice = isTouchDevice();
   const isGridArea = pointAreaType === AreaType.Grid;
 
-  // 触摸设备表格滚动
+  // Touch device grid scrolling
   const { scrollTo: gridMobileScrollTo } = useMobileScroller({
     containerRef,
     horizontalBarRef: gridHorizontalBarRef,

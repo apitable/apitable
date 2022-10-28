@@ -28,12 +28,15 @@ export const MobileSideBar: React.FC = () => {
 
   const matchedNode = RegExp('/[fod|dst|fom|dsb|mir]').test(pathname);
 
-  // 切空间时要保持 sidebar 正常弹出,
-  // 但切换的操作目前需要刷新页面,
-  // 无法得到前一步的状态, 需要持久化一个 flag, 得出用户切换空间的意图
+  /**
+   * When cutting space to keep the sidebar normal pop-up, 
+   * but the switch operation currently needs to refresh the page, 
+   * can not get the state of the previous step, need to persist a flag, 
+   * to get the user's intention to switch space
+   */
   const hasToggleSpaceIntent = localStorage.getItem('toggleSpaceId');
 
-  // 兼容第三方登录或从其他路由跳转到节点的情况 如 `/workbench` => `/workbench/:nodeId`
+  // Compatible with third-party logins or jumps to nodes from other routes e.g. `/workbench` => `/workbench/:nodeId`
   const hasOtherRouteToSpaceIntent = !matchedNode && spaceId;
 
   useMount(() => {

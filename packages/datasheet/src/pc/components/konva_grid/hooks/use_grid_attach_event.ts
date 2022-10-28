@@ -73,7 +73,7 @@ export const useAttachEvent = (props: IUseAttachEventProps) => {
     const _fieldRanges = generateFieldRanges(e, fieldId, columnIndex);
 
     if (!firstRecord) {
-      // 需要区分当前有没有按下shift键
+      // Need to distinguish whether the shift key is currently pressed or not
       dispatch(StoreActions.setFieldRanges(datasheetId, _fieldRanges));
       return;
     }
@@ -92,7 +92,7 @@ export const useAttachEvent = (props: IUseAttachEventProps) => {
   }
 
   function handleForFillBar() {
-    // 填充把手首次按下
+    // Fill handler first press
     const selectionRange = selectRanges && selectRanges[0];
     if (!selectionRange) return;
     dispatch(StoreActions.setFillHandleStatus({
@@ -100,7 +100,7 @@ export const useAttachEvent = (props: IUseAttachEventProps) => {
     }));
   }
 
-  // 通过shift键合并选区
+  // Merge selections by shift key
   function combineRangeByShift(hoverCell: ICell) {
     dispatch(StoreActions.setSelection({
       start: activeCell!,
@@ -119,7 +119,7 @@ export const useAttachEvent = (props: IUseAttachEventProps) => {
     }
     const isSideRecordOpen = state.space.isSideRecordOpen;
     onViewMouseDown(hoverCell);
-    // FIXME: 统一滚动到单元格方法
+    // FIXME: Unified scroll to cell method
     // props.scrollToItem({ rowIndex, columnIndex }, areaIndex);
 
     if (e.shiftKey && activeCell) {
@@ -131,7 +131,7 @@ export const useAttachEvent = (props: IUseAttachEventProps) => {
     }
   }
 
-  // 展开单元格，如果点击mask收起 ，阻止它的mouseDown事件
+  // Expand the record, and if you click on the mask to collapse it, block its mouseDown event
   function isClickInExpandModal(e: MouseEvent) {
     const modalRoot = document.querySelector('.ant-modal-root');
     if (modalRoot && modalRoot.contains(e.target as HTMLElement)) return true;
@@ -142,7 +142,7 @@ export const useAttachEvent = (props: IUseAttachEventProps) => {
     if (isClickInExpandModal(e)) return;
     if (isOperateHead) return;
     if (getParentNodeByClass(e.target as HTMLElement, 'hideenFieldItem')) return;
-    // DOM 模式下判断是否点击为滚动条
+    // Determining whether a click is a scrollbar in DOM mode
     const gridContainer = document.getElementById(DATASHEET_ID.DOM_CONTAINER);
     const verticalScrollBar = gridContainer?.nextSibling;
     const horizontalScrollBar = verticalScrollBar?.nextSibling;

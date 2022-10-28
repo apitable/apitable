@@ -1,32 +1,32 @@
 export interface IListBase<T, L> {
   /**
-   * @description 已经存在的数据
-   * 对于 cell 来说，就是 cellValue
-   * 对于 filter 来说，就是 filterValue
+   * @description Existing data
+   * For cell, it is cellValue
+   * For filter, this is filterValue
    * @type {(IUnitIds | null)}
   */
   existValues: T;
 
   /**
-   * @description 下拉框中每个选项的点击回调
+   * @description Click callbacks for each option in the dropdown box
    * @param {T} value
    */
   onClickItem (value: T): void;
 
   /**
-   * @description 标注当前是单选模式还是多选模式
+   * @description Mark whether the current mode is single-select or multi-select
    * @type {boolean}
    */
   multiMode: boolean;
 
   /**
-   * @description 下拉列表中需要显示的数据，如果不传入，就会使用 memberStash 类中存储的数据
+   * @description The data to be displayed in the drop-down list, if not passed in, will use the data stored in the memberStash class
    * @type {L}
    */
   listData?: L;
 
   /**
-   * @description 方便内部组件知道自身是否需要更新的特殊属性
+   * @description Special properties that make it easy for internal components to know if they need to be updated
    * @type {string}
    */
   monitorId?: string;

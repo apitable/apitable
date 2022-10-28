@@ -11,7 +11,6 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import styles from './style.module.less';
 
-//发送通知
 export const sendRemind = () => {
   const state = store.getState();
   const commitRemindParam = state.catalogTree.permissionCommitRemindParameter;
@@ -20,7 +19,6 @@ export const sendRemind = () => {
   }
 };
 
-//获取无权限人员列表
 export const getNoPermissionMemberList = async(nodeId: string, unitsIds: string[]): Promise<IApi.INoPermissionMemberResponseData[] | null> => {
   if (!nodeId) {
     return null;
@@ -34,11 +32,9 @@ export const getNoPermissionMemberList = async(nodeId: string, unitsIds: string[
 };
 
 export const verificationPermission = async(commitRemindParam: IApi.ICommitRemind) => {
-  // 设置详细参数
   const newCommitRemindParam = fastCloneDeep(commitRemindParam);
   dispatch(StoreActions.setPermissionCommitRemindParameter(newCommitRemindParam));
 
-  // 获取无权限人员unitIds
   const state = store.getState();
   const nodeId = commitRemindParam.nodeId || '';
   const unitsIds = newCommitRemindParam.unitRecs.map(unitRec => unitRec.unitIds).flat();
@@ -47,11 +43,11 @@ export const verificationPermission = async(commitRemindParam: IApi.ICommitRemin
   const isNotify = !Selectors.getCurrentView(state);
 
   if (noPermissionMemberData && noPermissionMemberData.length > 0) {
-    // 权限预填信息设置
+    // Permission pre-fill information setting
     const noPermissionUnitIds = noPermissionMemberData.map(member => member.unitId);
     dispatch(StoreActions.setNoPermissionMembers(noPermissionUnitIds));
 
-    // 异步补全成员信息
+    // Asynchronous Complementary Member Information
     const unitMap = Selectors.getUnitMap(state);
     const missUnitIds = difference(noPermissionUnitIds, Object.keys(unitMap || {}));
     if (missUnitIds.length) {
@@ -68,7 +64,7 @@ export const verificationPermission = async(commitRemindParam: IApi.ICommitRemin
       });
     }
 
-    // 显示无权限通知
+    // Show no permission notification
     const manageable = isNotify ? false : Selectors.getPermissions(state, nodeId).manageable;
     notificationVerification({
       members: noPermissionMemberData,
@@ -112,7 +108,6 @@ const notificationVerification = (props: IUnitProps) => {
   );
 };
 
-// TODO 这里换一种形式进行实现
 export const NotificationVerificationModal: React.FC<IUnitProps> = props => {
   const { members, setPermission, manageable, closeModal } = props;
   const { screenIsAtMost } = useResponsive();

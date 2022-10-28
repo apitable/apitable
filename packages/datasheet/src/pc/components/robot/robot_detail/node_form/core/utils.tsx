@@ -128,7 +128,7 @@ export function hasWidget(schema, widget, registeredWidgets = {}) {
 }
 
 /**
- * 计算 schema 中的默认值, 返回的 defaults 始终是原始值。
+ * Calculates the default values in the schema, and the returned defaults are always the original values.
  * @param _schema 
  * @param parentDefaults
  * @param rootSchema
@@ -136,10 +136,10 @@ export function hasWidget(schema, widget, registeredWidgets = {}) {
  * @param includeUndefinedValues
  */
 function computeDefaults(
-  _schema, // 当前 schema
-  parentDefaults, // 父级默认值
-  rootSchema, // 根 schema
-  rawFormData = {}, //
+  _schema,
+  parentDefaults,
+  rootSchema,
+  rawFormData = {},
   includeUndefinedValues = false,
 ) {
   let schema = isObject(_schema) ? _schema : {};
@@ -186,7 +186,7 @@ function computeDefaults(
           (defaults || {})[key],
           rootSchema,
           getObjectOperandProperty(formData, key, schema.properties[key]),
-          // (formData || {})[key], //FIXME: 需要用表达式的方法获取属性值
+          // (formData || {})[key], //FIXME: Need to get the property value using the expression method
           includeUndefinedValues,
         );
         if (includeUndefinedValues || computedDefault !== undefined) {
@@ -234,9 +234,9 @@ export function getDefaultFormState(_schema: any, formData: any, rootSchema = {}
     throw new Error('Invalid schema: ' + _schema);
   }
   const schema = retrieveSchema(_schema, rootSchema, formData);
-  // 递归获取 schema 中声明的默认值
+  // Recursively get the default values declared in the schema
   const _defaults = computeDefaults(schema, _schema.default, rootSchema, formData, includeUndefinedValues);
-  // 默认值转化为操作数
+  // The default value is converted to an operand
   const defaults = data2Operand(_defaults);
   // console.log('defaults', defaults, formData);
   if (formData == null) {
@@ -246,7 +246,7 @@ export function getDefaultFormState(_schema: any, formData: any, rootSchema = {}
   if (isArrayOperand(formData) || isObjectOperand(formData)) {
     return mergeOperand(defaults, formData);
   }
-  // schema 默认值和传入的初始化 formData 合并
+  // The schema defaults are merged with the initialized formData passed in.
   // if (isObject(formData) || Array.isArray(formData)) {
   //   return mergeDefaultsWithFormData(defaults, formData);
   // }
@@ -605,12 +605,10 @@ function processDependencies(dependencies, resolvedSchema, rootSchema, formData)
   // Process dependencies updating the local schema properties as appropriate.
   for (const dependencyKey in dependencies) {
     // Skip this dependency if its trigger property is not present.
-    // 空值直接跳过
     if (getObjectOperandProperty(formData, dependencyKey, resolvedSchema) === EmptyNullOperand) {
       continue;
     }
     // Skip this dependency if it is not included in the schema (such as when dependencyKey is itself a hidden dependency.)
-    // 找不到以来的依赖项目，直接跳过
     if (resolvedSchema.properties && !(dependencyKey in resolvedSchema.properties)) {
       continue;
     }

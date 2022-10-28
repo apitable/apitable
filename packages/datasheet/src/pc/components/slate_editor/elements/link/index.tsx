@@ -119,10 +119,10 @@ const Link = React.memo(({ element, children, attributes }: IElementRenderProps<
     <div className={styles.linkPanel} onClick={handleWrapClick}>
       <div className={styles.linkPanelInline}>
         <Input size="small" value={value} placeholder={i18nText.linkInputPlaceholder} onChange={handleInputChange} onKeyDown={handleKeyDown} />
-        {/** 如果是用onclick会使编辑器失去焦点，致使editor的selection属性丢失
-         * 此时对节点unwrap操作，会导致节点的路径path变化
-         * 预先保存的lastSelection的path和unwrap后的节点path冲突，
-         * 根据lastSelection的path去查找节点会找到一个不存在的节点，并且导致Slate抛出一个错误
+        {/** If onclick is used, the editor will lose focus and the selection property of the editor will be lost.
+         * At this point the node unwrap operation will cause the path of the node to change
+         * The pre-saved path of lastSelection conflicts with the path of the node after unwrap.
+         * Finding a node based on lastSelection's path will find a non-existent node and cause Slate to throw an error
         */}
         <i className={styles.divider} />
         {/* <Tooltip overlayClassName="editor-tooltip" title={i18nText.ok}>

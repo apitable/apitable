@@ -5,24 +5,27 @@ import { CardBody } from './card_body';
 import { CardHeader } from './card_header';
 import { useThemeColors } from '@vikadata/components';
 
-//  相册和看板视图公用的卡片组件
+//  Common card component for Gallery and Kanban views
 interface IRecordCardProps {
   recordId: string;
   isCoverFit: boolean;
   isColNameVisible?: boolean;
   cardWidth: number;
-  coverHeight: number; // 封面高度
+  coverHeight: number;
   showEmptyCover: boolean;
-  showEmptyField: boolean; // 是否显示值为空的字段，相册卡片显示等高空白占位，看板卡片不显示
-  multiTextMaxLine: number; // 多行文本显示的最大行数
+  // Whether to display the value of the empty field, the album card to display equal height blank placeholder, Kanban card does not display
+  showEmptyField: boolean;
+  multiTextMaxLine: number;
   datasheetId?: string;
   coverFieldId?: string;
-  showOneImage?: boolean; // 看板视图只显示一张封面图
+  // Kanban view shows only one cover image
+  showOneImage?: boolean;
   className?: string;
   visibleFields?: IViewColumn[];
   bodyClassName?: string;
-  isVirtual?: boolean; // 是否为虚拟看板
-  isGallery?: boolean; // 是否为相册
+  // Whether it is a virtual kanban
+  isVirtual?: boolean;
+  isGallery?: boolean;
 }
 
 const RecordCardBase: React.FC<IRecordCardProps> = props => {
@@ -54,7 +57,7 @@ const RecordCardBase: React.FC<IRecordCardProps> = props => {
   const currentSearchItemStyle = isCurrentSearchItem ? {
     border: `1px solid ${colors.primaryColor}`,
   } : {};
-  // 计算高度
+  
   return (
     <div
       style={{

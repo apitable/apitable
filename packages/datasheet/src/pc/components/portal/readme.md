@@ -1,18 +1,19 @@
-## 简介说明
-对`ReactDOM.createPortal`的简单封装，便于快捷的将组件渲染的指定dom树
+## Introduction
+A simple wrapper around `ReactDOM.createPortal` that makes it easy to quickly render the component to the specified dom tree
 
-## props说明
+## Description of props
 ```tsx
 interface IPortalProps {
   children: React.ReactNode;
-  // 控制层级: 主要用于需要屏蔽下层dom树的事件以及显示的层级
+  // Control hierarchy: mainly used for events that need to be blocked from the lower dom tree and the displayed hierarchy
   zIndex?: number;
-  //是否可见，默认true, 注意：如果为false会整体将children卸载, visible变化会多次触发children的mount和unmount
+  // Whether visible or not, default true
+  // Note: If false will unmount the children as a whole, visible changes will trigger the children's mount and unmount multiple times
   visible?: boolean;
-  getContainer?: () => HTMLElement; // 挂载的dom节点，默认为body
+  getContainer?: () => HTMLElement; // Mounted dom node, default is body
 }
 
-// 示例
+// Example
 
 import { Portal } from 'pc/components/portal';
 

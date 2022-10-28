@@ -14,14 +14,14 @@ export const normalize = (document: EditorValue) => {
   }
   document = document.map((_ele) => {
     const ele = { ..._ele };
-    // 老版本数据有解析错误的情况
+    // Older versions of data have parsing errors
     const maybeIsText = ele as unknown as TText;
     if ((ele as unknown as TText).text != null) {
       const text = (!maybeIsText.text || maybeIsText.text === 'undefined') ? '' : maybeIsText.text;
       return GENERATOR[ElementType.PARAGRAPH]({}, [{ text }]);
     }
 
-    // 确保列表包裹元素下都为列表Item元素
+    // Ensure that the listItem elements are all under the list wrapper element
     if (LIST_TYPE_DICT[ele.type]) {
       const listItemType = LIST_TYPE_DICT[ele.type];
       const listChildGenerator = GENERATOR[listItemType] || GENERATOR.listItem;
@@ -41,7 +41,7 @@ export const normalize = (document: EditorValue) => {
       }
     }
 
-    // 将没有包裹在列表Wrap下的列表元素转为普通段落
+    // Convert list elements that are not wrapped under a list wrap to normal paragraphs
     if (LIST_ITEM_TYPE_DICT[ele.type]) {
       ele.type = ElementType.PARAGRAPH;
       ele.data = {};

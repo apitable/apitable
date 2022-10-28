@@ -88,12 +88,11 @@ export const Tab: FC<ITabStateProps> = memo(props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [views]);
 
-  // 更改视图
   const switchView = (e: React.MouseEvent | null, id: string) => {
     if (activeView === id) {
       return;
     }
-    // 时光机预览时不能切换视图
+    // View cannot be switched during time machine preview
     if(datasheet?.id === PREVIEW_DATASHEET_ID) {
       return;
     }

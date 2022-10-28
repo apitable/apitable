@@ -26,7 +26,7 @@ import { ISlateEditorProps, EditorValue, IEditorData } from './interface/editor'
 import { withVika } from './plugins/withVika';
 import { withEventBus, BUILT_IN_EVENTS } from './plugins/withEventBus';
 import { withMeta } from './plugins/withMeta';
-// 暂时隐藏代码高亮功能
+// Temporarily hide the code highlighting feature
 // import { getDecorate } from './plugins/codeBlock';
 import i18nText from './strings';
 import { normalize } from './normalize';
@@ -43,7 +43,7 @@ export const fixImeInputBug = (e: React.CompositionEvent, editor: ReactEditor): 
     e.stopPropagation();
     return true;
   }
-  // 火狐、QQ 浏览器手动加文本加入到 editor 数据结构中
+  // Firefox and QQ browsers manually add text to the editor data structure
   if (IS_QQBROWSER || IS_FIREFOX) {
     Editor.insertText(editor, text);
     return false;
@@ -80,7 +80,7 @@ const SlateEditorBase: FC<ISlateEditorProps> = ((props) => {
   const [value, setValue] = useState(defaultValue);
   const imeInputText = useRef('');
 
-  // 同步更新编辑器用到的api
+  // Synchronize the api used to update the editor
   API.setApi(editor, API.ApiKeys.ImageUpload, imageUploadApi);
 
   const editorStyle = useMemo(() => {
@@ -102,7 +102,7 @@ const SlateEditorBase: FC<ISlateEditorProps> = ((props) => {
         const lastLevel = path.pop();
         const nodeText = Node.string(node);
         if (!lastLevel) {
-          // 修复firefox在一行开头混合输入文字重复
+          // Fix firefox mix input text duplication at the beginning of a line
           const firstPath = [...path, 0];
           if (nodeText === imeText) {
             Transforms.removeNodes(editor, { at: firstPath });
@@ -184,13 +184,13 @@ const SlateEditorBase: FC<ISlateEditorProps> = ((props) => {
     }
     cancelForcedNormalizeNode();
     forcedNormalizeNode();
-    // 确定只需要外部传入的value改变才触发此effect
+    // Make sure this effect is triggered only if the value passed in externally changes
     // eslint-disable-next-line
   }, [propsValue]);
 
   useEffect(() => {
     if (autoFocus && !readOnly) {
-      // 用slate自带的autoFocus参数，可能不能自动获得焦点
+      // With slate's autoFocus parameter, you may not get the focus automatically
       const selection = getValidSelection(editor);
       ReactEditor.focus(editor);
       Transforms.select(editor, selection);

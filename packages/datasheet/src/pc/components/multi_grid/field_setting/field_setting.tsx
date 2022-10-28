@@ -32,9 +32,9 @@ import { checkFactory, CheckFieldSettingBase } from './check_factory';
 import { FieldTypeSelect } from './field_type_select';
 import styles from './styles.module.less';
 
-export const OPERATE_WIDTH = parseInt(styles.fieldSettingBoxWidth, 10); // 操作框的宽度
-// const EXCEPT_SCROLL_HEIGHT = 85; // 需要滚动区域之外，底部不可滚动部分的高度
-// const STAT_HEIGHT = 40; // 底部统计栏的高度
+export const OPERATE_WIDTH = parseInt(styles.fieldSettingBoxWidth, 10); // The width of the operation box
+// const EXCEPT_SCROLL_HEIGHT = 85; // Height of the non-scrollable part at the bottom, outside the area to be scrolled
+// const STAT_HEIGHT = 40; // Height of the bottom statistics column
 
 const { TextArea: TextAreaComponent } = Input;
 
@@ -47,9 +47,9 @@ interface IScrollToItem {
 interface IFieldSettingProps {
   scrollToItem?: (props: IScrollToItem) => void;
   onClose?(): void;
-  datasheetId?: string; // 神奇表单中新增列时pageParams拿不到datasheetId
-  viewId?: string; // 神奇表单中新增列时pageParams拿不到viewId
-  targetDOM?: HTMLElement | null; // 自定义FieldSetting挂载DOM节点，默认为数表
+  datasheetId?: string; // PageParams can't get datasheetId when adding columns in the form
+  viewId?: string; // PageParams does not get the viewId when adding a new column in the form
+  targetDOM?: HTMLElement | null; // Custom field setting mount DOM node, default is grid
   showAdvancedFields?: boolean;
 }
 
@@ -57,7 +57,7 @@ const MIN_HEIGHT = 120;
 const MAX_HEIGHT = 640;
 
 /**
- * 除了DomGrid会唤起外，神奇表单和展开Modal均复用该组件
+ * This component is reused by the Magic Form and Expand Modal, except for the DomGrid, which evokes it.
  */
 export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
   const colors = useThemeColors();
@@ -108,11 +108,9 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
       const ele = scrollShadowRef.current;
       if (!ele) return;
       if (scrollTop + height > scrollHeight - 10) {
-        // 屏蔽可滚动样式
         ele.style.display = 'none';
         return;
       }
-      // 展示可滚动样式
       if (ele.style.display === 'block') {
         return;
       }
@@ -133,7 +131,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
     if (activeFieldState.fieldId === ButtonOperateType.AddField) {
       return;
     }
-    if (!columns) return; // 从神奇表单或展开Modal唤起没有visibleColumns
+    if (!columns) return; // Recall no visibleColumns from the magic form or expand Modal
     const _field = columns.find((item: IViewColumn) => item.fieldId === activeFieldState.fieldId);
     if (!_field) {
       Message.warning({
@@ -165,7 +163,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
     ? field
     : ({
       id: getNewId(IDPrefix.Field),
-      // 新增字段，不再默认填充一个字段名称
+      // New fields are added and no longer populated with a field name by default
       name: '',
       type: FieldType.Text,
       property: getFieldClass(FieldType.Text).defaultProperty(),
@@ -272,7 +270,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
     });
   };
 
-  // 判断当前的列是否存在有数据的cell
+  // Determine if there is a cell with data in the current column
   const hasFieldValue = () => {
     if (fieldInfoForState.type === currentField.type) {
       return false;
@@ -296,7 +294,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
       datasheetId,
     });
 
-    // 如果指定了挂载的dom，则不提示
+    // If a mounted dom is specified, no prompt will be given
     if (ExecuteResult.Success === result.result && !targetDOM) {
       notify.open({
         message: t(Strings.toast_field_configuration_success),
@@ -328,7 +326,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
       datasheetId,
     });
     if (ExecuteResult.Success === result.result) {
-      // 如果指定了挂载的dom，则不提示
+      // If a mounted dom is specified, no prompt will be given
       if (!targetDOM) {
         notify.open({
           message: t(Strings.toast_add_field_success),
@@ -357,7 +355,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
     });
   }
 
-  // 如果转换的结果是成员字段，扫描数据，加载新的成员信息
+  // If the result of the conversion is a member field, scan the data and load the new member information
   const checkMemberField = async(checkResult: IField) => {
     if (checkResult.type === FieldType.Member) {
       const cellValues = DatasheetActions.getCellValuesByFieldId(store.getState(), snapshot, checkResult.id);
@@ -389,7 +387,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
     }
 
     if (activeFieldState.fieldId === ButtonOperateType.AddField) {
-      // 外部传入datasheetId表示非数表中挂载FieldSetting, 使用activeFieldState的列index
+      // Passing datasheetId externally means that FieldSetting is mounted in a non-numbered table, using the activeFieldState column index.
       if (propDatasheetId) {
         addField(checkResult, activeFieldState?.fieldIndex);
       } else {

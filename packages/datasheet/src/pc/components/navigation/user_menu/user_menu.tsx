@@ -210,7 +210,6 @@ export const UserMenu: FC<IUserMenuProps> = props => {
 
   const uploadImgConfirm = (data: ISelectInfo) => {
     const { officialToken, customFile } = data;
-    // 选择了官方头像
     if (officialToken) {
       updateAvatar({ token: officialToken });
       return;
@@ -294,7 +293,7 @@ export const UserMenu: FC<IUserMenuProps> = props => {
     isModified: isMemberNameModified,
     spaceInfo,
   });
-  // 企微浏览器 + 企微第三方空间站 + 未绑定手机
+  // Enterprise Micro Browser + Enterprise Micro Third Party Space Station + Unbound Mobile
   const hiddenMobileRes = isWecomFunc() && isWecomSpace && !mobile;
 
   return (

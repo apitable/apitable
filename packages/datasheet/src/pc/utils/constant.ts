@@ -1,21 +1,17 @@
 import { Strings, t } from '@apitable/core';
 
-// Grid 第一列的操作区域的类型
 export const OPERATE_HEAD_CLASS = 'operateHeadClass';
-// Cell 单元格的类名
+
 export const CELL_CLASS = 'cellClass';
-// 列头的类名
+
 export const FIELD_HEAD_CLASS = 'fieldHeaderClass';
-// 拖动列宽，给鼠标留下的操作区的类名
+
 export const OPACITY_LINE_CLASS = 'opacityLineClass';
 
-// EditorContainerBase id名
 export const EDITOR_CONTAINER = 'editor-container';
 
-// 默认的checkbox icon
 export const DEFAULT_CHECK_ICON = 'white_check_mark';
 
-// 展开卡片默认显示关联记录最大值
 export const DEFAULT_LINK_RECORD_COUNT = 20;
 
 export const OPERATE_BUTTON_CLASS = 'operateButton';
@@ -24,14 +20,11 @@ export const GROUP_TITLE = 'groupTitle';
 
 export const FIELD_DOT = 'fieldDot';
 
-// 使用第一行在第一列
 export const GHOST_RECORD_ID = 'ghostRecordId';
 
-// index.less 中设置的默认字体
 // eslint-disable-next-line
 export const DEFAULT_FONT_FAMILY = " BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'";
 
-// 表格区域操作按钮的操作对象
 export enum ButtonOperateType {
   AddRecord = 'addRecord',
   AddField = 'addField',

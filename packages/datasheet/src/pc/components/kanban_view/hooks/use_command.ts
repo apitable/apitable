@@ -9,7 +9,7 @@ import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 interface ISetRecordData {
   recordId: string;
   fieldId: string;
-  field?: IField; // 可选，传入 field 信息。适用于在还没有应用到 snapshot 的 field 上 addRecords
+  field?: IField; // Optional, applies to addRecords on fields that have not yet been applied to a snapshot
   fieldType: FieldType;
   value: ICellValue;
 }

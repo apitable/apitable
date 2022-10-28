@@ -1,5 +1,5 @@
 /**
- * 添加请按 keyCode 排序
+ * Please add in order by keyCode
  */
 export enum KeyCode {
   BackSpace = 8,
@@ -60,8 +60,8 @@ export enum KeyCode {
   Caret = 94, // The `^` character.
   Numpad0 = 96,
   Numpad9 = 105,
-  NumpadPlus = 107, // 全键盘 +
-  NumpadMinus = 109, // 全键盘 -
+  NumpadPlus = 107, // Full keyboard +
+  NumpadMinus = 109, // Full keyboard -
   NumpadDot = 110,
   F11 = 122,
   Semicolon = 186,
@@ -105,7 +105,7 @@ export function printableKey(event: KeyboardEvent) {
     (keyCode === KeyCode.Space) ||
     (keyCode === 61) ||
     (keyCode === 173) ||
-    // 搜狗输入法下shift会被视为输入内容，需要过滤
+    // Sogou input method under shift will be regarded as input content, need to filter
     ((keyCode === KeyCode.Ime || keyCode === 0) && event.key !== 'Shift')
   );
 }

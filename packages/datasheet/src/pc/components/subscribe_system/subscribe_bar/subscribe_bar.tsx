@@ -12,7 +12,7 @@ export const SubscribeBar = (props) => {
   return <div className={styles.navBar}>
     <div style={{ margin: '0 auto', width: 976 }} className={styles.navBarInner}>
       <div className={styles.logo} onClick={() => location.href = '/workbench'}>
-        {/* 这里的色值是根据设计的要求，不考虑主题切换，固定的色值 */}
+        {/* The color values here are fixed according to the requirements of the design, regardless of theme switching */}
         <Logo size="small" />
       </div>
       <div style={{ flex: 1 }} />

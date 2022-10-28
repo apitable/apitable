@@ -15,7 +15,6 @@ const WorkspaceRoute: FC = () => {
   const nodeId = useSelector(state => Selectors.getNodeId(state));
   const activeNodeError = useSelector(state => state.catalogTree.activeNodeError);
   const { datasheetId, folderId, formId, dashboardId, mirrorId } = useSelector((state: IReduxState) => {
-    // 只取需要的数据，避免无意义渲染
     return {
       datasheetId: state.pageParams.datasheetId,
       folderId: state.pageParams.folderId,

@@ -32,7 +32,7 @@ export const CellCreatedBy: React.FC<ICellCreatedByProps> = props => {
   const isAlien = cellVal.includes(OtherTypeUnitId.Alien);
 
   useEffect(() => {
-    // 处理数据协同导致的 User 信息缺失情况
+    // Handling missing User information due to data synergies
     if (!cellVal.length || isAlien) {
       return;
     }
@@ -64,7 +64,7 @@ export const CellCreatedBy: React.FC<ICellCreatedByProps> = props => {
             let key: string;
 
             switch (item) {
-              // 仅筛选时会出现 -> “当前用户” 标记
+              // The "current user" flag appears when filtering only
               case OtherTypeUnitId.Self: {
                 const { uuid, unitId, memberName, nickName } = userData;
                 userInfo = {
@@ -77,11 +77,10 @@ export const CellCreatedBy: React.FC<ICellCreatedByProps> = props => {
                   isDelete: false,
                   isSelf: true,
                 };
-                // 防止 key 重复
                 key = `${OtherTypeUnitId.Self}-${unitId}`;
                 break;
               }
-              // 创建人支持显示匿名者
+              // CreateBy support shows anonymous
               case OtherTypeUnitId.Alien: {
                 userInfo = {
                   type: MemberType.Member,
@@ -99,7 +98,7 @@ export const CellCreatedBy: React.FC<ICellCreatedByProps> = props => {
                 if (!userMap || !userMap[item]) {
                   return <Fragment key={index} />;
                 }
-                // 兼容部分查不到 type 的 User
+                // Compatible with User whose type is not found in the section
                 userInfo = { ...userMap[item] };
                 if (!userInfo.type) {
                   userInfo.type = MemberType.Member;

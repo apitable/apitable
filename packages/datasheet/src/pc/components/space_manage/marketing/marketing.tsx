@@ -21,7 +21,7 @@
 //   const isBindSocial = spaceInfo && isSocialPlatformEnabled(spaceInfo);
 
 //   const openingApps = apps.filter(app => app.status);
-//   // 开启了某个第三方集成（钉钉、微信、飞书，其他两个就隐藏）
+//   // Some third-party integration is enabled (Dingtalk, Wecom, Feishu, the other two are hidden)
 //   const closedApps = isBindSocial ?
 //     apps.filter(app => !app.status && !socialAppIds.includes(app.appId)) :
 //     apps.filter(app => !app.status);

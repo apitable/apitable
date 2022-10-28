@@ -2,8 +2,8 @@ import { DropDirectionType, IJOTAction, IListMoveAction, IMoveColumn, jot, OTAct
 import produce from 'immer';
 import { store } from 'pc/store';
 
-/** 获取isColNameVisible值，兼容之前已创建的视图isColNameVisible为undefined
- *  默认为ture
+/** Get the isColNameVisible value, compatible with the previously created view isColNameVisible is undefined
+ *  Default is true
  */
 export const getIsColNameVisible = (value) => {
   return typeof value === 'boolean' ? value : true;
@@ -49,11 +49,11 @@ export const getMoveColumnsResult = (props: IMoveColumnsProps) => {
       targetIndex--;
     }
     if (targetIndex === 0) {
-      // 不允许将其他列拖动到第一列
+      // Do not allow other columns to be dragged to the first column
       return collected;
     }
     if (originColumnIndex === 0) {
-      // 第一列不允许拖动
+      // The first column is not allowed to be dragged
       return collected;
     }
 

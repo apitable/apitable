@@ -6,7 +6,7 @@ import { useCallback, useContext, useMemo, useState } from 'react';
 import { Node, Transforms } from 'slate';
 import { ReactEditor, useReadOnly, useSlate } from 'slate-react';
 import { EditorContext } from '../../context';
-// 暂时隐藏代码高亮功能
+// Temporarily hide the code highlighting feature
 // import { languages } from '../../plugins/codeBlock';
 // import { Select } from '../../components/select';
 // import { Z_INDEX } from '../../constant';

@@ -122,7 +122,7 @@ export const useHeads = (props: IUseHeadsProps) => {
   }, [columnCount, editable, fieldHeadHeight, fieldMap, getFieldHeadStatus, instance, mirrorId, viewType, visibleColumns, autoHeadHeight]);
 
   /**
-   * 绘制首列列头
+   * Drawing the first column header
    */
   const frozenFieldHead = useMemo(() => {
     const isChecked = recordRanges?.length === visibleRows.length;
@@ -191,7 +191,7 @@ export const useHeads = (props: IUseHeadsProps) => {
   ]);
 
   /**
-   * 绘制其他列列头
+   * Drawing other column headers
    */
   const fieldHeads = useMemo(() => {
     return getColumnHead(Math.max(columnStartIndex, frozenColumnCount), columnStopIndex);

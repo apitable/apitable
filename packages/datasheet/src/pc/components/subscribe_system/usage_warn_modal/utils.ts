@@ -11,22 +11,22 @@ export const isSaaSApp = () => {
     return true;
   }
 
-  // 自建应用 - 联系客服
+  // Self-built applications - Contact Support
   if (social?.appType === 1) {
     return false;
   }
 
-  // 第三方应用
+  // Third-party applications
   if (social?.appType === 2 && social.enabled) {
-    // 企微 - 联系客服
+    // Wecom
     if (social.platform === 1) {
       return false;
     }
-    // 钉钉
+    // Dingtalk
     if (social.platform === 2) {
       return false;
     }
-    // 飞书 - 联系客服
+    // Feishu
     if (social.platform === 3) {
       if (user?.isAdmin) {
         return false;

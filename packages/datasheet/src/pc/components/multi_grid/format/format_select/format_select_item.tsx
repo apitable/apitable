@@ -44,7 +44,7 @@ export const FormatSelectItem: React.FC<IFormatSelectItem> = props => {
 
   const deleteItem = (index: number) => {
     setCurrentField(pre => {
-      // 删除单多选选项时，立即清理 defaultValue 中使用的被删除的选项
+      // When deleting a single multi-select option, the deleted option used in defaultValue is immediately cleared
       const curOption = currentField.property.options[index];
       let defaultValue = currentField.property.defaultValue;
       if (Array.isArray(defaultValue) && defaultValue.some(dv => dv === curOption.id)) {
@@ -64,7 +64,6 @@ export const FormatSelectItem: React.FC<IFormatSelectItem> = props => {
 
   const pressEnter = (e: React.KeyboardEvent) => {
     (e.target as HTMLInputElement).blur();
-    // 新功能: 按下 enter 是新建一个 Item
     addNewItem();
   };
 

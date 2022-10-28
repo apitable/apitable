@@ -41,7 +41,7 @@
     })
   </script>
   <script>
-    /* 由于 IE 11 及以下的浏览器不支持 React, React 的代码不会被执行，因此入口的浏览器判断不会生效，需要在这里特殊处理 */
+    /* Since IE 11 and below do not support React, React's code will not be executed, so the browser judgment of the entry will not take effect and needs to be handled specially here */
     (function() {
       if (!!window.ActiveXObject || "ActiveXObject" in window) {
         window.location.pathname = '/not_support'
@@ -55,9 +55,9 @@
 
     gtag('config', 'UA-169214238-1');
   </script>
-   <!-- 钉钉h5微应用 企业内部应用 -->
-   <!-- <script src="https://g.alicdn.com/dingding/dingtalk-jsapi/2.10.3/dingtalk.open.js"></script> -->
-  <!-- 模版测试 -->
+  <!-- Dingtalk h5 micro application Enterprise internal application -->
+  <!-- <script src="https://g.alicdn.com/dingding/dingtalk-jsapi/2.10.3/dingtalk.open.js"></script> -->
+  <!-- Template Test -->
   <script>
     window.__initialization_data__ = {
       userInfo: {{{userInfo}}},
@@ -68,9 +68,9 @@
       locale: "{{{locale}}}",
     };
   </script>
-   <!-- 阿里无痕验证 -->
+   <!-- Ali No Trace Verification -->
   <script src="https://g.alicdn.com/AWSC/AWSC/awsc.js"></script>
-  <!-- 钉钉浏览器中，加入监控中心 -->
+  <!-- In the Dingtalk browser, join the monitoring center -->
   <meta name="wpk-bid" content="dta_2_83919">
   <script>
     if (navigator.userAgent.toLowerCase().includes('dingtalk')) {
@@ -101,7 +101,6 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-  <!-- script loading 动画相关js -->
   <script>
     window._loading = new Date().getTime();
     const logoImg = document.querySelector('.script-loading-logo-img');
@@ -121,7 +120,7 @@
     })
   </script>
 
-    <!-- 神策数据埋点接入 -->
+    <!-- Sensor Data Analytic Access -->
   <script>
     (function (para) {
       var p = para.sdk_url, n = para.name, w = window, d = document, s = 'script', x = null, y = null;
@@ -181,7 +180,7 @@
   </script>
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-169214238-1"></script> -->
-  <!-- 百度统计 -->
+  <!-- Baidu Statistics -->
   <script>
     var _hmt = _hmt || [];
     (function() {
@@ -192,9 +191,9 @@
     })();
   </script>
 
-  <!-- js钉钉登录 -->
+  <!-- Dingtalk login in -->
   <script src="https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js"></script>
-  <!-- 飞书 -->
+  <!-- Feishu -->
   <!-- <script type="text/javascript" src="https://s3.bytecdn.cn/ee/lark/js_sdk/h5-js-sdk-1.4.13.js"></script> -->
 </body>
 </html>

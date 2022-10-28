@@ -121,7 +121,7 @@ export const useGrid = (props: IUseGridProps) => {
   const [shadowHover, setShadowHover] = useState(false);
 
   /**
-   * 列头
+   * Field header
    */
   const {
     frozenFieldHead,
@@ -136,7 +136,7 @@ export const useGrid = (props: IUseGridProps) => {
   });
 
   /**
-   * 静态单元格
+   * Static cells
    */
   const {
     frozenCells,
@@ -151,7 +151,7 @@ export const useGrid = (props: IUseGridProps) => {
   });
 
   /**
-   * Active 和 Hover 状态下的动态单元格
+   * Dynamic cells in active and hover states
    */
   const {
     activedCell,
@@ -174,7 +174,7 @@ export const useGrid = (props: IUseGridProps) => {
   });
 
   /**
-   * 分组组头和底部的统计栏
+   * Group tab and statistics column at the bottom of the group
    */
   const {
     groupStats,
@@ -191,7 +191,7 @@ export const useGrid = (props: IUseGridProps) => {
   });
 
   /**
-   * 单元格协同相关
+   * Cell sync related
    */
   const {
     collaboratorAvatars,
@@ -225,7 +225,7 @@ export const useGrid = (props: IUseGridProps) => {
   });
 
   /**
-   * 包括组头、空行、添加行按钮的占位
+   * Includes placeholders for group tabs, blank rows, and add rows buttons
    */
   const otherRows: React.ReactNode[] = [];
   for (let rowIndex = rowStartIndex; rowIndex <= rowStopIndex; rowIndex++) {
@@ -272,7 +272,7 @@ export const useGrid = (props: IUseGridProps) => {
     }
   }
 
-  // 行头工具栏
+  // Row head toolbar
   const hoverRowHeadOperation: React.ReactNode[] = [];
   for (let rowIndex = rowStartIndex; rowIndex <= rowStopIndex; rowIndex++) {
     if (rowIndex > rowCount - 1) break;
@@ -301,7 +301,7 @@ export const useGrid = (props: IUseGridProps) => {
   }
 
   /**
-   * 添加列按钮
+   * Add column button
    */
   const addFieldBtn = useMemo(() => {
     if (columnStopIndex !== columnLength - 1) return;
@@ -388,7 +388,7 @@ export const useGrid = (props: IUseGridProps) => {
   }, [columnCount, instance, visibleColumns, rowInitSize]);
 
   /**
-   * 首列列宽可拖拽区域
+   * First column width draggable area
    */
   const frozenOpacityLines = useMemo(() => {
     if (isScrolling) return null;
@@ -396,7 +396,7 @@ export const useGrid = (props: IUseGridProps) => {
   }, [frozenColumnCount, getOpacityLines, isScrolling]);
 
   /**
-   * 列宽可拖拽区域
+   * Column width draggable area
    */
   const opacityLines = useMemo(() => {
     if (isScrolling) return null;
@@ -404,7 +404,7 @@ export const useGrid = (props: IUseGridProps) => {
   }, [columnStartIndex, columnStopIndex, getOpacityLines, isScrolling]);
 
   /**
-   * 首列边缘投影
+   * First column edge projection
    */
   const frozenShadowVisible = scrollLeft > 0;
   const remainWidth = containerWidth - frozenColumnWidth;

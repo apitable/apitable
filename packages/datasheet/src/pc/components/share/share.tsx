@@ -34,7 +34,6 @@ interface IShareProps {
 
 const Share: React.FC<IShareProps> = ({ shareInfo }) => {
   const colors = useThemeColors();
-  /** 控制侧边栏的显隐 */
   const { sideBarVisible, setSideBarVisible } = useSideBarVisible();
   const shareLoginFailed = getStorage(StorageName.ShareLoginFailed);
   const { shareId, datasheetId, folderId, formId, dashboardId, mirrorId } = useSelector(state => state.pageParams);
@@ -109,7 +108,6 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
     //   shareId: shareSpaceInfo.shareId
     // }));
     if (shareInfo.isFolder && nodeTree.length === 0) {
-      // 空文件夹
       return;
     }
     dispatch(StoreActions.addNodeToMap(Selectors.flatNodeTree([...nodeTree, { nodeId: shareNodeId, nodeName: shareNodeName, icon: shareNodeIcon }])));
@@ -221,7 +219,7 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
   } = shareSpace;
   const realSpaceId = userInfo?.spaceId;
 
-  // 控制申请加入空间站功能的显示
+  // Control the display of the application to join the space
   const applicationJoinAlertVisible = (
     allowApply &&
     !loading &&
@@ -229,7 +227,6 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
     (!realSpaceId || (spaceList.every(({ spaceId }) => spaceId !== shareSpaceId)))
   );
 
-  /** 表示该分享只有一个表单节点 */
   const singleFormShare = formId && nodeTree?.nodeId === formId;
   return (
     <ShareContext.Provider value={{ shareInfo: shareSpace }}>
@@ -244,7 +241,7 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
       <div
         className={classNames(styles.share, {
           [styles.hiddenCatalog]: !sideBarVisible,
-          [styles.formShare]: formId && nodeTree?.nodeId !== formId, // 表示神奇表单是通过文件夹来分享的
+          [styles.formShare]: formId && nodeTree?.nodeId !== formId, // The form is shared through a folder
         })}
       >
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>

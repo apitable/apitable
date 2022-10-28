@@ -61,7 +61,7 @@ export const BasicSetting: FC = () => {
   const [unBindModal, setUnBindModal] = useState<null | IUnbindType>(null);
   // const [imgUploadModal] = useState(false);
 
-  // 企微浏览器 + 企微第三方空间站 + 未绑定手机
+  // Enterprise Micro Browser + Enterprise Micro Third Party Space Station + Unbound Mobile
   const hiddenMobileRes = isWecomFunc() && isWecomSpace && !user!.mobile;
   const env = getEnvVariables();
 
@@ -87,7 +87,7 @@ export const BasicSetting: FC = () => {
 
   const mobileContent = () => {
     if (user!.mobile === undefined || user!.mobile === null) {
-      return t(Strings.unbound); // '未绑定';
+      return t(Strings.unbound);
     }
     return hiddenMobile(user!.mobile);
   };
@@ -99,7 +99,6 @@ export const BasicSetting: FC = () => {
   };
   const uploadImgConfirm = (data: ISelectInfo) => {
     const { officialToken, customFile } = data;
-    // 选择了官方头像
     if (officialToken) {
       updateAvatar({ token: officialToken });
       return;

@@ -15,7 +15,7 @@ export interface ITooltipInfo {
   visible: boolean;
   placement: TooltipPlacement;
   /**
-   * 是否启用坐标系进行定位
+   * Whether to enable coordinate system for positioning
    */
   coordXEnable?: boolean;
   coordYEnable?: boolean;

@@ -9,7 +9,7 @@ const { fields, widgets } = getDefaultRegistry();
 const vikaWidgets = {
   TextWidget,
   SelectWidget,
-  // 自定义组件的 key 要以小写开头
+  // The key of the custom component should start with lowercase
   // toggleButtonWidget: ToggleButtonWidget,
 };
 

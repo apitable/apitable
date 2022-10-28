@@ -93,7 +93,7 @@ export const CellLink: FC<ICellProps> = (props) => {
     if (!realField) {
       return;
     }
-    // 判断关联表权限
+    // Determining Related Datasheet Permissions.
     const readable = Selectors.getPermissions(state, realField.property.foreignDatasheetId).readable;
     if (!readable && realField.property.foreignDatasheetId) {
       Message.warning({

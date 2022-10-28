@@ -20,7 +20,7 @@ import { ModeItem } from './mode_item';
 import styles from './style.module.less';
 
 export const AccountManager: FC = () => {
-  // 控制Wechat二维码模态框的显示
+  // Control the display of the Wechat QR code modal box
   const [wechatVisible, setWechatVisible] = useState(false);
   const userInfo = useSelector(state => state.user.info);
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
@@ -29,7 +29,6 @@ export const AccountManager: FC = () => {
   const { run: getLoginStatus } = useRequest(getLoginStatusReq, { manual: true });
 
   useEffect(() => {
-    // 清除缓存
     localStorage.removeItem('binding_dingding_status');
     localStorage.removeItem('binding_qq_status');
 
@@ -74,13 +73,12 @@ export const AccountManager: FC = () => {
     }
   }, [userInfo?.thirdPartyInformation]);
 
-  // 解绑第三方账号
+  // Unbind third-party accounts
   const unbind = (mode: BindAccount) => {
     dispatch(StoreActions.unBindAccount(mode));
   };
 
   const clickWechat = () => {
-    // 解绑操作
     if (userInfo?.thirdPartyInformation.findIndex(item => item.type === BindAccount.WECHAT) !== -1) {
       Modal.confirm({
         title: t(Strings.confirm_unbind),
@@ -89,13 +87,11 @@ export const AccountManager: FC = () => {
         type: 'warning'
       });
     } else {
-      // 绑定操作
       setWechatVisible(true);
     }
   };
 
   const clickDingDing = () => {
-    // 解绑操作
     if (userInfo?.thirdPartyInformation.findIndex(item => item.type === BindAccount.DINGDING) !== -1) {
       Modal.confirm({
         title: t(Strings.confirm_unbind),
@@ -104,7 +100,6 @@ export const AccountManager: FC = () => {
         type: 'warning'
       });
     } else {
-      // 绑定操作
       const { appId, callbackUrl } = getDingdingConfig();
       localStorage.setItem('vika_account_manager_operation_type', String(ConfigConstant.ScanQrType.Binding));
       const url = `https://oapi.dingtalk.com/connect/qrconnect?appid=${appId}&response_type=code&
@@ -114,7 +109,6 @@ scope=snsapi_login&state=STATE&redirect_uri=${callbackUrl}`;
   };
 
   const clickQQ = () => {
-    // 解绑操作
     if (userInfo?.thirdPartyInformation.findIndex(item => item.type === BindAccount.QQ) !== -1) {
       Modal.confirm({
         title: t(Strings.confirm_unbind),
@@ -123,7 +117,6 @@ scope=snsapi_login&state=STATE&redirect_uri=${callbackUrl}`;
         type: 'warning'
       });
     } else {
-      // 绑定操作
       const { appId, callbackUrl } = getQQConfig();
       localStorage.setItem('vika_account_manager_operation_type', String(ConfigConstant.ScanQrType.Binding));
       navigationToUrl(`https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=${appId}&redirect_uri=${callbackUrl}`);

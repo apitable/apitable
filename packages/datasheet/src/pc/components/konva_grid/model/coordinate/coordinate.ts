@@ -8,38 +8,31 @@ import {
 } from '../../interface';
 
 /**
- * 用于构建 Canvas 基础坐标系，之后的绘图工作都是基于此坐标系建立的
+ * Used to build the Canvas base coordinate system on which subsequent drawing work is based
  */
 export class Coordinate {
-  // 行高
   protected _rowHeight: number;
-  // 列宽
   protected _columnWidth: number;
-  // 总行数
   public rowCount: number;
-  // 总列数
   public columnCount: number;
-  // 容器宽度
   public containerWidth: number;
-  // 容器高度
   public containerHeight: number;
-  // 行高异常集合
+  // Row height exception map
   public rowIndicesMap: IndicesMap = {};
-  // 列宽异常集合
+  // Column width exception map
   public columnIndicesMap: IndicesMap = {};
-  // 滚动区域纵向初始距离
+  // Scrolling area vertical initial distance
   public rowInitSize: number;
-  // 滚动区域横向初始距离
+  // Scrolling area horizontal initial distance
   public columnInitSize: number;
-  // 行坐标集合中最后一行的索引
+  // Index of the last row in the set of row coordinates
   public lastRowIndex = -1;
-  // 列坐标集合中最后一列的索引
+  // Index of the last column in the set of column coordinates
   public lastColumnIndex = -1;
-  // 行坐标集合
+  // Collection of row coordinates
   public rowMetaDataMap: CellMetaDataMap = {};
-  // 列坐标集合
+  // Collection of column coordinates
   public columnMetaDataMap: CellMetaDataMap = {};
-  // 行高层级
   public rowHeightLevel: RowHeightLevel;
 
   constructor({
@@ -80,7 +73,7 @@ export class Coordinate {
   }
 
   /**
-   * 获取总宽度
+   * Total width
    */
   public get totalWidth() {
     const { offset, size } = this.getCellMetaData(this.columnCount - 1, ItemType.Column);
@@ -88,7 +81,7 @@ export class Coordinate {
   }
 
   /**
-   * 获取总高度
+   * Total height
    */
   public get totalHeight() {
     const { offset, size } = this.getCellMetaData(this.rowCount - 1, ItemType.Row);
@@ -96,21 +89,21 @@ export class Coordinate {
   }
 
   /**
-   * 根据 rowIndex 获取对应行高
+   * Get the corresponding row height based on rowIndex
    */
   public getRowHeight(index: number) {
     return this.rowMetaDataMap[index]?.size ?? this.rowHeight;
   }
 
   /**
-   * 根据 columnIndex 获取对应列宽
+   * Get the corresponding column width based on columnIndex
    */
   public getColumnWidth(index: number) {
     return this.columnMetaDataMap[index]?.size ?? this.columnWidth;
   }
 
   /**
-   * 获取每个 “格子” 纵向/横向 的坐标信息
+   * Get the coordinate information of each "grid" in vertical/horizontal direction
    */
   protected getCellMetaData(index: number, itemType: ItemType): CellMetaData {
     let cellMetadataMap, itemSize, lastMeasuredIndex, offset;
@@ -152,8 +145,8 @@ export class Coordinate {
   }
 
   /**
-   * 查找最近的 “格子” 索引
-   * 性能较差，但是任何情况下都可以查找到
+   * Find the nearest cell index
+   * Poor performance, but can be found in any case
    */
   private _findNearestCellIndex(index: number, offset: number, itemType: ItemType) {
     const itemCount = itemType === ItemType.Column ? this.columnCount : this.rowCount;
@@ -171,8 +164,8 @@ export class Coordinate {
   }
 
   /**
-   * 二分法查找最近的 “格子” 索引
-   * 性能较好，但是需要数据都已经加载过
+   * Dichotomy to find the nearest cell index
+   * Better performance, but requires data to be loaded
    */
   private _findNearestCellIndexByBinary(offset: number, low: number, high: number, itemType: ItemType) {
     while (low <= high) {
@@ -191,7 +184,7 @@ export class Coordinate {
   }
 
   /**
-   * 根据 offset 查找到最近的 “格子” 索引
+   * Find the nearest cell index based on offset
    */
   public findNearestCellIndex(offset: number, itemType: ItemType) {
     let itemMetadataMap, lastIndex;
@@ -212,14 +205,14 @@ export class Coordinate {
   }
 
   /**
-   * 根据纵向 offset 查找 “起始格子” 的索引
+   * Find the index of the starting cell based on the vertical offset
    */
   public getRowStartIndex(offset: number) {
     return this.findNearestCellIndex(offset, ItemType.Row);
   }
 
   /**
-   * 根据纵向 ”起始格子“ 的索引来查找 “终止格子” 的索引
+   * Find the index of the end cell based on the index of the vertical start cell
    */
   public getRowStopIndex(startIndex: number, scrollTop: number) {
     const itemMetadata = this.getCellMetaData(startIndex, ItemType.Row);
@@ -235,14 +228,14 @@ export class Coordinate {
   }
 
   /**
-   * 根据横向 offset 查找 “起始格子” 的索引
+   * Find the index of the starting cell based on the horizontal offset
    */
   public getColumnStartIndex(offset: number) {
     return this.findNearestCellIndex(offset, ItemType.Column);
   }
 
   /**
-   * 根据横向 ”起始格子“ 的索引来查找 “终止格子” 的索引
+   * Find the index of the end cell based on the index of the horizontal start cell
    */
   public getColumnStopIndex(startIndex: number, scrollLeft: number) {
     const itemMetadata = this.getCellMetaData(startIndex, ItemType.Column);
@@ -258,14 +251,14 @@ export class Coordinate {
   }
 
   /**
-   * 根据 rowIndex 获取纵向 offset
+   * Get vertical offset based on rowIndex
    */
   public getRowOffset(rowIndex: number) {
     return this.getCellMetaData(rowIndex, ItemType.Row).offset;
   }
 
   /**
-   * 根据 columnIndex 获取横向 offset
+   * Get horizontal offset based on columnIndex
    */
   public getColumnOffset(columnIndex: number) {
     return this.getCellMetaData(columnIndex, ItemType.Column).offset;

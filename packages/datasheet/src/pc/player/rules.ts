@@ -61,7 +61,7 @@ export const getConditionValue = (str: string) => {
       const rulesContext = {
         main_admin: userInfo && userInfo?.isMainAdmin,
         sub_admin: userInfo && (!userInfo.isMainAdmin) && userInfo.isAdmin,
-        member: true, // 暂时都默认具有普通成员的身份
+        member: true, // All have the status of ordinary members by default for the time being
         visitor: false,
       };
       return Object.keys(rulesContext).filter(key => rulesContext[key]);
@@ -163,7 +163,7 @@ export const isRulesPassed = (rulesConfig, ruleIds: string[] | undefined) => {
   return !someIsNotPass;
 };
 
-// 判断当前时间是否在配置的时间区间内
+// Determine if the current time is within the configured time interval
 export const isTimeRulePassed = (startTime?: string | number, endTime?: string | number) => {
   if (!startTime && !endTime) {
     return true;
@@ -174,7 +174,7 @@ export const isTimeRulePassed = (startTime?: string | number, endTime?: string |
   return cur > start && cur < end;
 };
 
-// 判断eventState是否匹配
+// Determine if eventState matches
 export const isEventStateMatch = (args: any, eventStatesConfig: any) => {
   if (!eventStatesConfig) {
     return true;

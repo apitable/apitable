@@ -77,9 +77,9 @@ export const MentionPanel = () => {
     mentionData => {
       const selection = getValidSelection(editor);
       Transforms.select(editor, selection);
-      // 需要多删除一个@字符
+      // Need to delete one more @ character
       Transforms.delete(editor, { distance: searchTextRef.current.length + 1, reverse: true, unit: 'character' });
-      // 在后面多插入一个空格
+      // Insert an extra space after
       const mention = GENERATOR.mention({ data: mentionData });
       Transforms.insertFragment(editor, [mention, { text: ' ' }]);
     },
@@ -140,7 +140,7 @@ export const MentionPanel = () => {
             handleChangeIndex(true);
             break;
           }
-          // 确定
+          // confirm
           case 'Enter': {
             e.preventDefault();
             handleOk();
@@ -181,7 +181,7 @@ export const MentionPanel = () => {
     const afterMatch = afterText.match(/^(\s|$)/);
     const wordBeforePath = wordBefore && [...wordBefore.path];
     const startPath = [...start.path];
-    // 最后一级为text节点，需要比较上一级节点的path
+    // The last level is text node, need to compare the path of the previous level node
     wordBeforePath && wordBeforePath.pop();
     startPath.pop();
     const isSameBlock = wordBeforePath && Path.equals(wordBeforePath, startPath);

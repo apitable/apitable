@@ -79,32 +79,28 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
 
   const confirmDelete = (currentViewId: string) => {
     if (currentViewId === activeViewId) {
-      // 如果删除的视图就是当前展示的视图,将激活的视图换到视图列表的其他视图
+      // If the deleted view is the currently displayed view, switch the active view to another view in the view list
       if (viewList.findIndex(item => item.id === currentViewId) === 0) {
-        // 删除的视图就是当前第一个视图，则换到第二个
         changeView(viewList[1]['id']);
       } else {
-        // 否则换到第一个
         changeView(viewList[0]['id']);
       }
     }
     deleteView(currentViewId);
   };
 
-  // 快捷菜单方式-重命名
   const handleRenameItem = (args) => {
-    const { props: { tabIndex } } = args;
+    const { props: { tabIndex }} = args;
     setEditIndex(tabIndex);
     return;
   };
 
-  // 快捷菜单方式-复制数表
-  const handleForDeleteView = async (args) => {
-    const { props: { tabIndex } } = args;
+  const handleForDeleteView = async(args) => {
+    const { props: { tabIndex }} = args;
     let content = t(Strings.del_view_content, {
       view_name: viewList[tabIndex].name,
     });
-    const [formList, { data: { data: mirrorList } }] = await Promise.all([
+    const [formList, { data: { data: mirrorList }}] = await Promise.all([
       StoreActions.fetchForeignFormList(activeNodeId!, activeViewId!),
       Api.getRelateNodeByDstId(activeNodeId!, activeViewId!, ConfigConstant.NodeType.MIRROR),
     ]);
@@ -132,7 +128,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
   };
 
   const exportTypeCsv = (args) => {
-    const { props: { tabIndex } } = args;
+    const { props: { tabIndex }} = args;
     exportDatasheet(
       activeNodeId!, ConfigConstant.EXPORT_TYPE_CSV,
       { view: Selectors.getViewsList(store.getState())[tabIndex] }
@@ -140,7 +136,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
   };
 
   const exportTypeXlsx = (args) => {
-    const { props: { tabIndex } } = args;
+    const { props: { tabIndex }} = args;
     exportDatasheet(
       activeNodeId!, ConfigConstant.EXPORT_TYPE_XLSX,
       { view: Selectors.getViewsList(store.getState())[tabIndex] }
@@ -148,7 +144,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
   };
 
   const exportTypeImage = (args) => {
-    const { props: { tabIndex } } = args;
+    const { props: { tabIndex }} = args;
     const viewId = Selectors.getViewsList(store.getState())[tabIndex].id;
     if (currentViewId !== viewId) return;
     ModalComponent.success({
@@ -172,7 +168,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
   };
 
   const duplicateView = (args) => {
-    const { props: { tabIndex } } = args;
+    const { props: { tabIndex }} = args;
     const view = viewList[tabIndex] as IViewProperty;
     const snapshot = Selectors.getSnapshot(store.getState());
     const { id: newId } = DatasheetActions.deriveDefaultViewProperty(snapshot!, view.type, view.id);
@@ -221,7 +217,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
   };
 
   const openViewLock = (args) => {
-    const { props: { tabIndex } } = args;
+    const { props: { tabIndex }} = args;
     expandViewLock(viewList[tabIndex].id);
   };
 
@@ -272,7 +268,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
           if (!permissions.manageable) {
             return true;
           }
-          const { props: { tabIndex } } = arg;
+          const { props: { tabIndex }} = arg;
           const view = viewList[tabIndex];
           return Boolean(view.lockInfo);
         },
@@ -288,7 +284,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
           if (!permissions.manageable) {
             return true;
           }
-          const { props: { tabIndex } } = arg;
+          const { props: { tabIndex }} = arg;
           const view = viewList[tabIndex];
           return !view.lockInfo;
         },
@@ -354,7 +350,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
         'data-sensors-click': true,
         id: DATASHEET_ID.VIEW_OPERATION_ITEM_DELETE,
         disabled: (arg) => {
-          const { props: { tabIndex } } = arg;
+          const { props: { tabIndex }} = arg;
           const view = viewList[tabIndex];
           setShowDeleteTip(Boolean(view.lockInfo));
           return Boolean(view.lockInfo);

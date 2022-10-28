@@ -19,7 +19,6 @@ export const ViewListBox: React.FC<IViewListBox> = props => {
   const snapshot = useSelector(state => Selectors.getSnapshot(state));
   const activeViewId = useSelector(state => Selectors.getActiveView(state));
 
-  // 更改视图
   const switchView = (id: string) => {
     if (activeViewId === id) {
       hideViewList();

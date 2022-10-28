@@ -27,7 +27,7 @@ export const RobotRunHistoryItemDetail = (props: IRobotRunHistoryItemDetailProps
       <Typography variant="body3">{t(Strings.robot_run_history_fail_unknown_error)} (taskId: {taskId})</Typography>
     </Box>;
   }
-  // 旧版本的数据不支持展示。
+  // Older versions of data are not supported for display.
   if (!taskDetail.nodeByIds) {
     return <Box padding="16px">
       <Typography variant="body3">{t(Strings.robot_run_history_old_version_tip)}</Typography>

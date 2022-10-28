@@ -72,13 +72,12 @@ enum MemberTypeInNotice {
   IsDeleted = 2,
   IsVisitor = 3,
 }
-// 消息状态——key值对应消息体里的extras/applyStatus里的值
-// 0-待审核，1- 同意， 2-拒绝， 3-失效,（失效原因：0——邮箱邀请，1——通讯录导入，2——邀请链接）
+
 enum NotifyStatusType {
   CheckPending = 0,
   Agree = 1,
   Reject = 2,
-  Invalid = 3,
+  Invalid = 3, // Reason for Invalid: 0 - email invitation, 1 - address book import, 2 - invitation link
 }
 
 export const JoinMsgApplyStatus: FC<{ status: number }> = ({ status }): React.ReactElement => {
@@ -207,7 +206,7 @@ export const getNoticeUrlParams = (data: INoticeDetail) => {
   return { spaceId, nodeId, viewId, recordId, configPathname, toastUrl, notifyType: data.notifyType, recordIds, notifyId, roleName };
 };
 
-// 获取消息体——消息展示的文字是否来自于config配置，如果不是，则是ws消息体中获取
+// Get the message body - whether the text displayed in the message comes from the config configuration, if not, then it is ws message body to get
 export const getMsgText = (data: INoticeDetail) => {
   const templateConfig = SystemConfig.notifications.templates[data.templateId];
 
@@ -225,7 +224,7 @@ export const getMsgText = (data: INoticeDetail) => {
     }
   }
 };
-// spaceName为当前通知的所属空间
+// spaceName is the space to which the current notification belongs
 export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBodyOptions) => {
   const pureString = options ? options.pureString : false;
   const spaceInfo = options ? options.spaceInfo : null;
@@ -408,7 +407,7 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
   return parser(template, parseOptions);
 };
 
-// 判断消息类型是否是某人申请加入空间的
+// Determine if the message type is someone's application to join the space
 export const isAskForJoiningMsg = (data: INoticeDetail): boolean => {
   switch (data.templateId) {
     case NoticeTemplatesConstant.space_join_apply: {
@@ -419,7 +418,7 @@ export const isAskForJoiningMsg = (data: INoticeDetail): boolean => {
     }
   }
 };
-// 判断消息类型是点击卡片不会进行跳转的类型
+// Determine if the message type is the type that will not jump when the card is clicked
 export const canJumpWhenClickCard = (data: INoticeDetail): boolean => {
   const info = NotificationTemplates[data.templateId];
   return info && info.hasOwnProperty('can_jump') && Boolean(NotificationTemplates[data.templateId]['can_jump']);
@@ -436,7 +435,7 @@ export const commentContentFormat = (commentContent: string, spaceInfo?: ISpaceI
         isModified: false,
         spaceInfo,
       });
-      // 将匹配 @$userName=wpOhr1DQAAwS6hkj_EMauEI4ljF-nAgQ$ 格式转用企微的组件
+      // Convert the @$userName=wpOhr1DQAAwS6hkj_EMauEI4ljF-nAgQ$ format to the Enterprise Micro component
       content = content.replace(matchString, `${typeof title === 'string' ? title : '@' + ReactDOMServer.renderToStaticMarkup(title)}`);
     });
     return <span dangerouslySetInnerHTML={{ __html: content }} />;

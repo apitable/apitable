@@ -56,7 +56,7 @@ export interface IRenderProps {
 
 export interface IRenderStyleProps {
   color?: string;
-  bgColor?: string; // 背景颜色，供甘特图使用
+  bgColor?: string; // Background color for gantt view
   textAlign?: 'left' | 'right' | 'center' | 'start' | 'end';
   fontWeight?: 'normal' | 'bold' | 'bolder' | 'lighter';
 }

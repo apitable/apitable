@@ -42,14 +42,14 @@ const RenderModalBase: React.FC<IRenderModalBase> = props => {
   const permissions = useSelector(state => Selectors.getPermissions(state));
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state)!);
   const { uploadImage } = useImageUpload();
-  // 这个ref主要用于防止光标改变触发重复提交相同的数据
+  // This ref is mainly used to prevent cursor changes from triggering repeated submissions of the same data
   const editorHtml = useRef('');
 
   const onCancel = (e, isButton?: boolean) => {
     stopPropagation(e);
     const isExitInnerText = null;
     if (!isExitInnerText) {
-      // 内容为空，不弹出提示框
+      // Content is empty, no pop-up box
       if (!isButton) {
         onClose();
       }
@@ -95,10 +95,10 @@ const RenderModalBase: React.FC<IRenderModalBase> = props => {
     const res = await Api.changeNodeDesc(activeNodeId, JSON.stringify(descStruct));
     const { success, message } = res.data;
     if (success) {
-      // 节点描述保存成功
+      // Node description saved successfully
       dispatch(StoreActions.recordNodeDesc(datasheetId, JSON.stringify(descStruct)));
     } else {
-      // 节点描述保存失败，错误提示，但是不改变编辑状态
+      // Node description failed to save, error message, but does not change edit status
       errModal(message);
     }
   }, 500), []);
@@ -178,8 +178,8 @@ const htmlReg = /<[^>]+>/g;
 export const htmlElmentHasText = (str: string) => {
   if (!str) return false;
   /**
-   * html => 纯文本 => 过滤空格,
-   * 描述是否显示，如果是只有空格，会失去高度，把只有空格当做没有内容
+   * html => plain text => filtered spaces,
+   * Description of whether to display, if it is only spaces, will lose height, treat only spaces as no content
    */
   return str.replace(htmlReg, '').replace(/\s/g, '');
 };
@@ -195,13 +195,12 @@ interface IDescriptionModal {
   onClick?: () => void;
 }
 
-// FIXME: 目前是 0.4.5，两个版本以后可以删除这段兼容代码
 function polyfillData(oldData: string[] | { [key: string]: string[] } | null) {
   if (oldData == null) {
     return [];
   }
   if (Object.prototype.toString.call(oldData) === '[object Object]') {
-    // 对旧数据的兼容处理
+    // Compatible processing of old data
     const result = [...new Set(Object.values(oldData).flat(1))];
     setStorage(StorageName.Description, result, StorageMethod.Set);
     return result;

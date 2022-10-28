@@ -1,4 +1,4 @@
-// 缓动动画
+// Slow motion animation
 // http://robertpenner.com/easing/
 
 export const Easing = {

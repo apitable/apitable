@@ -94,7 +94,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
     });
   };
 
-  // 这里因为在 ColorPiker 里定义了通用的属性设置方法, 所以有个 unused 参数
+  // Here there is an unused parameter because of the generic property setting method defined in ColorPiker
   const onOptionChange = (type: OptionSetting, id: string, value: number | string) => {
     selectColor(
       options.findIndex(item => item.id === id),
@@ -169,7 +169,6 @@ const FormatSelectBase = (props: IFormatSelect) => {
   );
 };
 
-// TODO: 临时兼容两端问题，后面合并逻辑
 export const FormatSelect: React.FC<IFormatSelect> = props => {
   return (
     <>

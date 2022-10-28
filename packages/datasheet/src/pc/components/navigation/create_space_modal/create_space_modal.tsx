@@ -38,7 +38,7 @@ export const CreateSpaceModal: FC<ICreateSpaceModalProps> = props => {
     return Api.createSpace(spaceName).then(res => {
       const { data, code, success, message } = res.data;
       if (success) {
-        // 兼容企业域名创建空间站跳转
+        // Compatible with corporate domain name creation space station jump
         if (isSocialDomain()) {
           toGetUser(data.spaceId);
           return;

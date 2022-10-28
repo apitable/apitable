@@ -22,14 +22,14 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
   const listContainerRef = useRef<any>();
   const [searchValue, setSearchValue] = useState<string>('');
 
-  // 根据 schema 生产的动态参数列表
+  // Dynamic list of parameters produced according to schema
   let variableList: ISchemaPropertyListItem[] = getCurrentVariableList({
     schemaExpressionList,
     nodeOutputSchemaList,
     isJSONField
   });
 
-  // 按关键词搜索过滤之后的动态参数列表
+  // List of dynamic parameters after filtering by keyword search
   variableList = variableList.filter(item => item.label?.includes(searchValue));
 
   useEffect(() => {
@@ -66,7 +66,8 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
       uiSchema: listItem.uiSchema,
       expression: listItem.expression,
     };
-    // string 直接插入，不会进入到下一步。这里是要选择 string 的 原型方法。
+    // The string is inserted directly and does not go to the next step. 
+    // Here you have to choose the prototype method of string.
     const isStringType = listItem.schema?.type === 'string';
     if (isJSONField && isStringType) {
       const expression: IExpression = {
@@ -93,7 +94,7 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
     if (listItem.disabled) {
       return;
     }
-    // 指定了是否进入子节点
+    // Specifies whether or not to enter the child node
     if (goIntoChildren && listItem.hasChildren) {
       goNext(listItem);
       return;
@@ -103,7 +104,7 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
     } else if (listItem.hasChildren) {
       goNext(listItem);
     }
-    // 插入完成之后再次聚焦
+    // Focus again after insertion is complete
     // searchRef.current?.focus();
   };
   const listUISchema = schemaExpressionList.length > 0 ? schemaExpressionList[schemaExpressionList.length - 1].uiSchema : undefined;

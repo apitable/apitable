@@ -50,7 +50,7 @@ export const MemberTable: FC<IMemberTable> = (props) => {
   const isBindSocial = spaceInfo && isSocialPlatformEnabled(spaceInfo) && isSocialDingTalk(spaceInfo) && isSocialWecom(spaceInfo);
   const isRootTeam = selectedTeamInfoInSpace && selectedTeamInfoInSpace.teamId === ConfigConstant.ROOT_TEAM_ID;
   const isPrimaryOrOwn = React.useCallback((info: IMemberInfoInSpace) => user && isPrimaryOrOwnFunc(info, user.memberId), [user]);
-  // 更换所选小组，初始化表格页数
+  // Replace the selected group and initialize the form pages
   useEffect(() => {
     setPageNo(1);
     setEmptyData(false);
@@ -91,12 +91,10 @@ export const MemberTable: FC<IMemberTable> = (props) => {
     setPageNo(pageNo);
   };
 
-  // 操作-编辑成员
   const editMemberBtn = (record: IMemberInfoInSpace) => {
     setAdjustMemberModalVisible(true);
     dispatch(StoreActions.getEditMemberInfo(record.memberId));
   };
-  // 操作-单个删除成员
   const singleDelMemberBtn = (record: IMemberInfoInSpace) => {
     removeBaseFunc([record]);
   };
@@ -226,12 +224,11 @@ export const MemberTable: FC<IMemberTable> = (props) => {
     });
   }
 
-  // 如果为玉符私有化去掉操作列
+  // If privatizing the operation column for the Yufu
   if (isIdassPrivateDeployment()) {
     columns.length = columns.length - 1;
   }
 
-  // 选择表格中的员工
   const onSelectMemberChange = (selectedRowKeys: ReactText[], selectedRows: IMemberInfoInSpace[]) => {
     dispatch(StoreActions.updateSelectMemberListInSpace(selectedRowKeys as string[]));
     dispatch(StoreActions.updateSelectedRowsInSpace(selectedRows));

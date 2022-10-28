@@ -18,7 +18,7 @@ const PublishNotifyList = [
   NoticeTemplatesConstant.common_system_notify,
   NoticeTemplatesConstant.common_system_notify_web,
 ];
-// 不存在通知中心的消息
+// Notification Center messages do not exist
 const NotInNotificationCenterList = [NoticeTemplatesConstant.web_publish, NoticeTemplatesConstant.common_system_notify_web];
 
 export class NotificationStore {
@@ -67,7 +67,7 @@ export class NotificationStore {
     ws.on('NOTIFY', (data) => {
       console.log('收到实时消息: ', data);
       const templateId = data.templateId;
-      // 浏览器通知
+      // Browser notifications
       if (!PublishNotifyList.includes(templateId)) {
         requestWebNotification({
           options: {
@@ -109,11 +109,11 @@ export class NotificationStore {
           },
         });
       }
-      // 更新通知中心页面的新消息数量
+      // Update the number of new messages on the Notification Center page
       if (!NotInNotificationCenterList.includes(templateId)) {
         store.dispatch(StoreActions.updateNewNoticeListFromWs(data));
       }
-      // 特殊消息的处理
+      // Handling of special messages
       renderNoticeUi(data);
     });
 
@@ -128,7 +128,6 @@ export class NotificationStore {
     return ws;
   }
 
-  // 进入空间时
   static joinSpace(spaceId: string) {
     this.socket.emit('WATCH_SPACE', { spaceId }, (result) => {
       if (!result) {
@@ -152,7 +151,7 @@ export class NotificationStore {
   }
 }
 
-// 特殊消息的处理
+// Handling of special messages
 export const renderNoticeUi = (data: INoticeDetail) => {
   const state = store.getState();
   const spaceId = state.space.activeId;

@@ -51,16 +51,15 @@ const transformToastData = (toast: IToast, id: string) => {
   };
 };
 
-// 在线用户，全部都要处理，对于离线用户， 只需要处理两种ui
+// For online users, all of them have to be processed, for offline users, only two types of ui need to be processed
 export const PublishController = (props: INoticeDetail) => {
   const { notifyBody, id, templateId } = props;
   try {
     const { version, needVersionCompare, toast, channel, platform, socialPlatformType } = notifyBody.extras;
-    // 不是指定环境的应用不处理通知
+    // Applications that are not in the specified environment do not process notifications
     if (platform != null && platform !== getPlatformType()) {
       return;
     }
-    // 首先判断版本
     const isVersionRuleTrue =
       !needVersionCompare ||
       (needVersionCompare && version && isUserInOldVersionOrLocal(version));
@@ -68,7 +67,6 @@ export const PublishController = (props: INoticeDetail) => {
       return;
     }
 
-    // 判断第三方平台是否有限制
     const isSocialRulePassed = socialPlatformType === 2 ? isSocialDingTalk() : true;
 
     if (templateId === NoticeTemplatesConstant.space_paid_notify || templateId === NoticeTemplatesConstant.space_vika_paid_notify) {
@@ -89,7 +87,6 @@ export const PublishController = (props: INoticeDetail) => {
       return;
     }
 
-    // 判断是什么ui组件
     const channelArr = channel.split(',');
     if (channelArr.length) {
       channelArr.forEach((uiKey) => {
@@ -125,7 +122,6 @@ export const PublishController = (props: INoticeDetail) => {
   }
 };
 
-// 对配置的toast url的处理
 export const navigationToConfigUrl = (configUrl: string, option?: {
   clearQuery?: boolean | undefined;
   method?: Method | undefined;

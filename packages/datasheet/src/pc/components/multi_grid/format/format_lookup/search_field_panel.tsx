@@ -190,8 +190,8 @@ export function FieldSearchPanel(props: IFieldSearchPanelProps) {
             isEmpty(showFields) ?
               <NoLookupField showType={showType} value={value} /> :
               showFields.map((sf, index) => {
-                // 判断是否会导致循环引用
-                // 模拟实际选择的数据结构做检查
+                // Determining whether a circular reference will result
+                // Simulation of the actual selected data structure to do the check
                 let warnText;
                 if (field && [FieldType.LookUp, FieldType.Formula].includes(sf.type)) {
                   const newField = {
@@ -203,7 +203,7 @@ export function FieldSearchPanel(props: IFieldSearchPanelProps) {
                   };
                   warnText = checkComputeRef(newField);
                   if (typeof warnText != 'string') {
-                    // 模拟选择实际数据检查新的 field 是否有问题
+                    // Simulate the selection of actual data to check if the new field has problems
                     if (Field.bindModel(newField).hasError) {
                       warnText = t(Strings.field_configuration_err);
                     } else {

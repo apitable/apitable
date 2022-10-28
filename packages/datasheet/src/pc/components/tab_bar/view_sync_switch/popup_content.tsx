@@ -29,12 +29,13 @@ export const requestServerView = async(datasheetId: string, viewId: string, shar
     const revision = Selectors.getResourceRevision(state, datasheetId, ResourceType.Datasheet);
 
     if (data['revision'] < revision!) {
-      // 数据库的版本比本地版本小，可能是在请求的同时正好在处理 op，所以重新发送一次请求
+      // The database version is smaller than the local version, 
+      // probably because the op is being processed at the same time as the request, so a new request is sent
       return await ViewPropertyFilter.requestViewDate(datasheetId!, viewId, shareId);
     }
 
     if (data['revision'] > revision!) {
-      // 如果本地的版本比数据库的版本要小，则应该先补足版本号，再进行数据替换
+      // If the local version is smaller than the database version, you should make up the version number before replacing the data
       const engine = resourceService.instance?.getCollaEngine(datasheetId);
       await engine?.checkMissChanges(data['revision']);
       return await ViewPropertyFilter.requestViewDate(datasheetId!, viewId, shareId);
@@ -85,7 +86,7 @@ export const confirmViewAutoSave = (autoSave: boolean, datasheetId: string, view
 export const PopupContent: React.FC<IPopupContentProps> = (props) => {
   const colors = useThemeColors();
   const { datasheetId, viewId, autoSave, onClose, contentRef, shareId, isViewLock } = props;
-  // TODO: 把这里的权限替换成更细的权限
+  // TODO: Replace the permissions here with more granular ones
   const { manageable, editable } = useSelector(state => Selectors.getPermissions(state, datasheetId));
   const manualSaveView = async() => {
     if (isViewLock) {

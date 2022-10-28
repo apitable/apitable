@@ -24,7 +24,7 @@ export const useImage = ({ url, crossOrigin }: IUseImageProps) => {
   useEffect(() => {
     if (!url) return;
 
-    // 缓存中加载过，就直接从缓存中读取
+    // If it is loaded in the cache, it is read directly from the cache
     let img = imageCache.getImage(url);
     if (img) {
       return setState({

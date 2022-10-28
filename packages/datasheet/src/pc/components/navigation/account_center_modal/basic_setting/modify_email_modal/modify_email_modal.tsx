@@ -40,14 +40,13 @@ export const ModifyEmailModal: FC<IModifyEmailModalProps> = (props) => {
   const { setEmailModal, data } = props;
   const [newEmail, setNewEmail] = useState('');
   const [identifyingCode, setIdentifyingCode] = useState('');
-  // 表示操作是绑定邮箱还是修改邮箱
+  // Indicates whether the operation is to bind the mailbox or modify the mailbox
   const [isBindEmail, setIsBindEmail] = useState(true);
   const [errMsg, setErrMsg] = useSetState<{
     accountErrMsg: string;
     identifyingCodeErrMsg: string;
   }>();
 
-  // 表示是否在加载中
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -133,7 +132,6 @@ export const ModifyEmailModal: FC<IModifyEmailModalProps> = (props) => {
     setIdentifyingCode(value);
   };
 
-  // 绑定邮箱页面
   const bindEmailPage = () => {
     return (
       <div className={styles.modifyNameWrapper}>
@@ -167,7 +165,6 @@ export const ModifyEmailModal: FC<IModifyEmailModalProps> = (props) => {
     );
   };
 
-  // 验证验证码页面
   const checkEmailPage = () => {
     if (!data.email) return;
     return (

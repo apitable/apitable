@@ -12,9 +12,9 @@ export interface IAlertProps {
   content: string;
   closable?: boolean;
   onClose?: any;
-  btnText?: string; // 刷新页面的按钮文字，设置为空字符串或者不传此参数则不显示此按钮
+  btnText?: string; // Refresh page button text, set to empty string or don't pass this parameter then don't show this button
   onBtnClick?: any;
-  showVikaby?: boolean; // 是否显示Vikaby的头像，默认为false
+  showVikaby?: boolean; // Whether to show Vikaby's avatar, default is false
   upgrade?: boolean;
 }
 

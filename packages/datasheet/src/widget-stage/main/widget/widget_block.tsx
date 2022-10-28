@@ -15,7 +15,7 @@ const query = new URLSearchParams(window.location.search);
 const widgetId = query.get('widgetId');
 
 declare const window: any;
-// 初始化全局静态参数
+// Initialize global static parameters
 window.__initialization_data__ = window.__initialization_data__ || {};
 window.__initialization_data__.isIframe = true;
 window.__initialization_data__.lang = query.get('lang');
@@ -72,7 +72,7 @@ export const WidgetBlock: React.FC<{ widgetId: string }> = ({ widgetId }) => {
 
   useEffect(() => {
     if (widgetMessage && widgetStore && connected) {
-      /** 更新 widget config */
+      /** Update widget config */
       widgetMessage.onSyncWidgetConfig(res => {
         if (res.success && res.data) {
           widgetStore.dispatch(updateWidgetConfigAction(res.data));
@@ -85,7 +85,7 @@ export const WidgetBlock: React.FC<{ widgetId: string }> = ({ widgetId }) => {
 
   useEffect(() => {
     if (connected && widgetMessage && widgetStore) {
-      /** 更新 widget Store */
+      /** Update widget Store */
       widgetMessage.onSyncOperations(res => {
         const state = widgetStore.getState();
         if (res.success && res.data && (Object.keys(state.datasheetMap).includes(res.data.resourceId) || state.widget?.id === res.data.resourceId)) {
@@ -112,7 +112,7 @@ export const WidgetBlock: React.FC<{ widgetId: string }> = ({ widgetId }) => {
       widgetMessage.onSyncShare(res => {
         widgetStore.dispatch({ type: SET_SHARE_INFO, payload: res });
       });
-      // 初次 加载其他关联表数据
+      // Initial Load other related datasheet data
       widgetMessage.onLoadOtherDatasheet(data => {
         const datasheetMap = {};
         Object.keys(data).forEach(datasheetId => {
@@ -121,7 +121,7 @@ export const WidgetBlock: React.FC<{ widgetId: string }> = ({ widgetId }) => {
         widgetStore.dispatch(refreshUsedDatasheetAction(datasheetMap));
       });
 
-      // 更新 加载其他关联表数据
+      // Update Load other related datasheet data
       widgetMessage.onDatasheetSimpleUpdate(datasheet => {
         widgetStore.dispatch(refreshUsedDatasheetSimpleAction(datasheet));
       });
@@ -134,26 +134,23 @@ export const WidgetBlock: React.FC<{ widgetId: string }> = ({ widgetId }) => {
         widgetStore.dispatch({ type: UPDATE_DASHBOARD, payload: dashboard });
       });
 
-      // 更新缓存
       widgetMessage.onSyncCalcCache(res => {
         widgetStore.dispatch(refreshCalcCache(res));
       });
 
-      // 更新镜像
       widgetMessage.onSyncMirrorMap(res => {
         res && widgetStore.dispatch(setMirrorAction(res));
       });
-      // 标记缓存过期
+
       widgetMessage.onCalcExpire(res => {
         widgetStore.dispatch(expireCalcCache(res));
       });
 
-      // 更新 userInfo
       widgetMessage.onSyncUserInfo(res => {
         widgetStore.dispatch({ type: SET_USER_INFO, payload: res });
       });
 
-      // 添加监听主应用加载小程序代码动作
+      // Add listen to the main app loading applet code action
       widgetMessage.onLoadWidget();
     }
   }, [connected]);

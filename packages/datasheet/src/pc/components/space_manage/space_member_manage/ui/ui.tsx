@@ -9,7 +9,6 @@ import { Identity } from '../../identity';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 
 export const Reinvite: FC<{record: IMemberInfoInSpace}> = ({ record }) => {
-  // 操作-再次发送邀请
   const reSendEmail = (record: IMemberInfoInSpace) => {
     Api.reSendInvite(record.email).then(res => {
       const { success, message } = res.data;

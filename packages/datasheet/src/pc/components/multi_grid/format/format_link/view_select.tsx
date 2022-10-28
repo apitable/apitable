@@ -45,7 +45,7 @@ export const ViewSelect = memo((props: IViewSelect) => {
     <div className={styles.viewSelectPanel}>
       <div className={styles.viewSelect}>
         {views.map(view => {
-          // 没有关联表的可查看权限，在视图列表只能看到被指定好的视图，其他视图不可见
+          // There is no view access to the link datasheet, only the assigned view can be seen in the view list, other views are not visible
           if (!foreignDatasheetReadable && viewId !== view.id) {
             return null;
           }

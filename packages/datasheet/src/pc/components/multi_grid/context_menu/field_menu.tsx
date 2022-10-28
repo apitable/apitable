@@ -200,8 +200,8 @@ export const FieldMenu: React.FC<IFieldMenuProps> = memo((
   }
 
   function hiddenField() {
-    // 先清空选区，然后再隐藏字段。否则会弹出警告。
-    // 参见 packages/datasheet/src/pc/components/editors/attach_event_hoc.tsx:L224
+    // Clear the selection first, and then hide the field. Otherwise a warning will pop up.
+    // See here: packages/datasheet/src/pc/components/editors/attach_event_hoc.tsx:L224
     dispatch(StoreActions.clearSelection(datasheetId));
     if (hasChosenMulti) {
       handleHideField(fieldRanges || [], true);

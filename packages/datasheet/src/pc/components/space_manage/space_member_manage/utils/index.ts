@@ -1,5 +1,5 @@
 import { Api, ITagsInSpace, ISubTeamListInSpaceBase, IMemberInfoInSpace } from '@apitable/core';
-// 验证小组名称是否重复
+
 export const verifyTeamName = async(spaceId: string, teamId: string, inputContent: string) => {
   let questRes = false;
   const { data: { success, data }} = await Api.getSubTeams(teamId);
@@ -10,9 +10,8 @@ export const verifyTeamName = async(spaceId: string, teamId: string, inputConten
   }
   return questRes;
 };
-// 查询直属小组下的子小组
 
-// 转化小组名称
+// Conversion group name
 export const getContent = (arr: ITagsInSpace[] | ISubTeamListInSpaceBase[], name: string) => {
   let content = '';
   if (arr) {

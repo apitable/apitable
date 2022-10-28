@@ -53,13 +53,13 @@ export const WidgetLoader: React.FC<{
     const url = new URL(loadUrl || 'https://127.0.0.1:9000');
     const widgetCliSOcket = initWidgetCliSocket(url.origin, WidgetCliSocketType.LiveReload);
     const reload = (res) => {
-      console.log(res.success ? `小组件热更新: ${widgetId}` : '链接断开');
+      console.log(res.success ? `The widget is hot updated: ${widgetId}` : 'Socket link disconnected');
       refresh();
     };
     widgetCliSOcket.on(WidgetCliSocketType.LiveReload, reload);
     return () => widgetCliSOcket.destroy();
   }, [isDevMode, loadUrl, refresh, widgetId]);
-  // 未发布的状态
+  // Unpublished status
   if (!isDevMode && status === WidgetPackageStatus.Developing) {
     return (
       <div className={styles.configInfo}>
@@ -76,7 +76,7 @@ export const WidgetLoader: React.FC<{
       </div>
     );
   }
-  // 开发者模式错误处理
+  // Developer mode error handling
   if (isDevMode && error) {
     switch(error) {
       case WidgetLoadError.PackageIdNotMatch: return (

@@ -16,7 +16,7 @@ export const useEnhanceTextClick = () => {
       case FieldType.URL:
       default:
         try {
-        // 使用 URL 构造函数校验地址合法性
+        // Verifying Address Legitimacy with URL Constructors
           const testURL = new URL(text);
           if (testURL.protocol && !/^javascript:/i.test(testURL.protocol)) {
             url = testURL.href;
@@ -25,7 +25,7 @@ export const useEnhanceTextClick = () => {
             return;
           }
         } catch (error) {
-        // 无协议头, 默认添加 http 协议头
+          // No protocol header, add http protocol header by default
           try {
             const testURL = new URL(`http://${text}`);
             url = testURL.href;

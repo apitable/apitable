@@ -6,7 +6,6 @@ import { RobotRunHistoryHead } from './robot_history_head';
 export const RobotHead = () => {
   const { state } = useRobotContext();
 
-  // 默认列表 => 指定机器人详情 => 指定机器人详情的运行历史
   if (state.currentRobotId) {
     if (state.isHistory) {
       return <RobotRunHistoryHead />;

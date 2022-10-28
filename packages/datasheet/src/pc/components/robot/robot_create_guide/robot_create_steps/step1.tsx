@@ -18,7 +18,6 @@ export const RobotCreateGuideStep1 = (props: IStepProps) => {
   const handleClick = async() => {
     setLoading(true);
     if (!robotId) {
-      // 创建机器人
       const newRobotId = await createRobot({
         resourceId: datasheetId!,
         name,
@@ -31,7 +30,7 @@ export const RobotCreateGuideStep1 = (props: IStepProps) => {
       // await updateRobotName(robotId, name);
     }
     setLoading(false);
-    // 更新机器人名称
+    // Update robot name
     props.goNextStep();
   };
   return (

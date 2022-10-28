@@ -35,7 +35,7 @@ export const addRecord = (viewId: string, index: number, autoOpen = true) => {
   return null;
 };
 
-// TODO: 抽取出来作为一个公共业务组件
+// TODO: Extracted as a public business component
 export const RecordList: FC<IRecordList> = (props) => {
   const colors = useThemeColors();
   const {
@@ -74,7 +74,7 @@ export const RecordList: FC<IRecordList> = (props) => {
         },
       ];
       if (item.data.degree && item.data.degree.inDegree >= 1) {
-        // 待断开的连接🔗
+        // Connections to be disconnected
         const sourceLinkData = item.data.parents?.reduce((sourceLinkData, parent) => {
           const {
             id: sourceId,

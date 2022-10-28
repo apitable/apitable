@@ -43,16 +43,16 @@ const RouterProvider = ({ children }) => {
   const cacheScrollMap = useRef({});
   const dispatch = useDispatch();
 
-  // 记录面板展示模式 - 从 localStorage 中初始化 redux
+  // Logging panel presentation mode - initializing redux from localStorage
   useEffect(() => {
     dispatch(StoreActions.setRecordVision(getStorage(StorageName.RecordVision) || RecordVision.Center));
   }, [dispatch]);
 
-  // 解决在飞书中路由跳转需要带上一个飞书标识，所以把 a 标签的行为代理到 navigationToUrl 中一起处理
+  // To solve the problem of routing in Feishu needs to bring a Feishu logo, 
+  // so the behavior of the a tag is handled together with the proxy in navigationToUrl
   useEffect(() => {
     const isFeishu = navigator.userAgent.toLowerCase().indexOf('lark') > -1;
     const clickHandler = e => {
-      // 由于配置表中有写死的url(vika.cn开头)，为了多环境测试，需要开放vika.cn
       const reg = new RegExp(`^(${window.location.origin}|(http|https)://vika.cn)`);
       const paths = ['/user', '/login', '/org', '/workbench', '/notify', '/management', '/invite', '/template', '/share'];
       let element = e.target;
@@ -79,7 +79,7 @@ const RouterProvider = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 打开 http 协议的链接自动重定向到 https
+  // Links for the http protocol are automatically redirected to https
   useEffect(() => {
     if (!getEnvVariables()?.FORCE_HTTPS) {
       return;
@@ -94,20 +94,16 @@ const RouterProvider = ({ children }) => {
   }, []);
 
   useNavigatorName();
-  useViewTypeTrack(); // 视图类型埋点
+  useViewTypeTrack(); // View Type Burial
   useBlackSpace();
 
   useEffect(() => {
-    // 添加请求拦截器
     axios.interceptors.request.use(
       config => {
-        // console.log(config);
-        // 在发送请求之前做些什么
         config.headers['X-XSRF-TOKEN'] = getCookie('XSRF-TOKEN');
         return config;
       },
       error => {
-        // 对请求错误做些什么
         return Promise.reject(error);
       },
     );

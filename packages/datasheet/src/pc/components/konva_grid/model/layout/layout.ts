@@ -27,29 +27,20 @@ export class GridLayout extends KonvaDrawer {
     this.viewType = viewType;
   }
 
-  /**
-   * 是否是行头
-   */
   protected get isFirst() {
     return this.columnIndex === 0;
   }
 
-  /**
-   * 是否是行尾
-   */
   protected get isLast() {
     return this.columnIndex === this.columnCount - 1;
   }
 
-  /**
-   * 添加列按钮宽度
-   */
   protected get addBtnWidth() {
     return this.groupCount ? GRID_GROUP_ADD_FIELD_BUTTON_WIDTH : GRID_ADD_FIELD_BUTTON_WIDTH;
   }
 
   /**
-   * 根据分组长度，获取对应背景色列表
+   * Get the list of corresponding background colors according to the group length
    */
   private getGroupBackgrounds() {
     const length = this.groupCount;
@@ -60,7 +51,7 @@ export class GridLayout extends KonvaDrawer {
   }
 
   /**
-   * 根据对应的深度，获取对应的背景色
+   * Get the corresponding background color according to the corresponding depth
    */
   protected getGroupBackgroundByDepth(depth: number) {
     if (this.viewType === ViewType.Gantt) return colors.defaultBg;
@@ -69,7 +60,6 @@ export class GridLayout extends KonvaDrawer {
     return backgrounds[depth];
   }
 
-  // 渲染 "添加列" 区域的空白 UI
   protected renderAddFieldBlank(row: ILinearRow) {
     const width = this.addBtnWidth;
     const background = this.getGroupBackgroundByDepth(0);
@@ -92,7 +82,7 @@ export class GridLayout extends KonvaDrawer {
   }
 
   /**
-   * 渲染行头缩进区域
+   * Render row header indent area
    */
   protected renderIndentFront(depth: number) {
     range(depth).forEach(i => {
@@ -113,7 +103,7 @@ export class GridLayout extends KonvaDrawer {
   }
 
   /**
-   * 渲染行尾缩进区域
+   * Render row end indent area
    */
   protected renderIndentEnd(depth: number) {
     const x = this.x;

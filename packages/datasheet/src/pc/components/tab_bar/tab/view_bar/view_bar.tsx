@@ -27,7 +27,7 @@ interface IViewBarProps {
   className: string;
 }
 
-// 默认图标占据看度，默认 + 视图锁，视图前置icon，视图内边距，除去内容的最小视图宽度，编辑状态宽度
+// Default icon occupancy, default + view lock, view front icon, view inner margin, minimum view width without content, edit state width
 const DEFAULT_FIXED_WIDTH = 24;
 const VIEW_SYNC_ICON_FIXED_WIDTH = 45;
 const VIEW_ICON_WIDTH = 20;
@@ -45,7 +45,6 @@ export const ViewBar: React.FC<IViewBarProps> = props => {
   const [iconHighlight, setIconHighlight] = useState(false);
   const [hoverIndex, setHoverIndex] = useState(-1);
   const [contextMenuIndex, setContextMenuIndex] = useState(-1);
-  // 错误信息
   const [errMsg, setErrMsg] = useState('');
   const collapseRef = useRef<ICollapseFunc | null>(null);
   // const spaceManualSaveViewIsOpen = useSelector(state => {
@@ -57,7 +56,6 @@ export const ViewBar: React.FC<IViewBarProps> = props => {
 
   const { contextMenu, onSetContextMenu } = useContextMenu();
 
-  // input框失去焦点
   const handleInputBlur = (e: React.FocusEvent) => {
     if (!errMsg) {
       const inputValue = (e.target as any).value;
@@ -75,32 +73,27 @@ export const ViewBar: React.FC<IViewBarProps> = props => {
     setViewList(views);
   }, [views]);
 
-  // 鼠标按下
   const handleItemClick = (e: React.MouseEvent, id: string) => {
     switchView(e, id);
   };
 
-  // 输入框内容改变
   const handleInputChange = (e: React.ChangeEvent) => {
     const inputValue = (e.target as HTMLInputElement).value.trim();
     const isExitSameName = viewList.findIndex(
       item => item.name === inputValue && item.id !== viewList[editIndex!].id,
     );
     if (isExitSameName !== -1) {
-      // 名称重复
       setErrMsg(t(Strings.name_repeat));
       return;
     }
-    // 判断长度是否在1-30之间
     if (inputValue.length < 1 || inputValue.length > 30) {
       setErrMsg(t(Strings.view_name_length_err));
       return;
     }
     setErrMsg('');
-    // TODO: 判断文件名是否有重复
+    // TODO: Determine if there are duplicate file names
   };
 
-  // 输入框按回车
   const handleInputEnter = (e: React.KeyboardEvent) => {
     if (e.keyCode === KeyCode.Esc) {
       setEditIndex(null);
@@ -119,7 +112,6 @@ export const ViewBar: React.FC<IViewBarProps> = props => {
     setErrMsg('');
   };
 
-  // 双击标签进行重命名
   const handleItemDbClick = (e: React.MouseEvent) => {
     if (!permissions.viewRenamable) {
       return;
@@ -170,7 +162,6 @@ export const ViewBar: React.FC<IViewBarProps> = props => {
     changeView(prevViewId);
   };
 
-  // 移动视图
   const moveView = (viewId, newIndex) => {
     resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.MoveViews,
@@ -183,7 +174,6 @@ export const ViewBar: React.FC<IViewBarProps> = props => {
     });
   };
 
-  // 修改视图
   const modifyView = (isEditingId: string, isEditingValue: string) => {
     if (isEditingValue === viewList.filter(item => item.id === isEditingId)[0].name) {
       return;
@@ -254,7 +244,8 @@ export const ViewBar: React.FC<IViewBarProps> = props => {
 
   const activeView = viewList.filter(item => item !== null).filter((v) => v.id === activeViewId)[0];
 
-  // 如果空间站全局没有开启不协同的实验功能，则视图标签栏不用显示图标，在宽度方面就不用进行调整
+  // If the space station is not globally enabled for non-cooperative experiments, 
+  // the view tab bar does not need to display icons and no adjustment is needed in terms of width
   // const getFixedWidth = () => {
   //   if (activeView?.lockInfo) {
   //     return VIEW_SYNC_ICON_FIXED_WIDTH;

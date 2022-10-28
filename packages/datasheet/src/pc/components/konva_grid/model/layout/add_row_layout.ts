@@ -7,7 +7,6 @@ import { colors } from '@vikadata/components';
 const AddOutlinedPath = AddOutlined.toString();
 
 export class AddRowLayout extends GridLayout {
-  // "添加列" 绘制
   renderAddFieldBlank(row: ILinearRow) {
     super.renderAddFieldBlank(row);
     const { depth } = row;
@@ -144,7 +143,7 @@ export class AddRowLayout extends GridLayout {
     });
   }
 
-  // hover 时，展示 “添加行” 提示
+  // Show "add row" prompt when hovering
   private renderHoverTip({
     rowCreatable,
     isHoverColumn,

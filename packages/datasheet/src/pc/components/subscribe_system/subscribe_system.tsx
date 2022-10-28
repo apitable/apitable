@@ -74,19 +74,19 @@ export const SubScribeSystem = () => {
 
   useEffect(() => {
     if (getPageType() === SubscribePageType.Subscribe && seatList.length) {
-      // 用户第一次订阅，根据当前空间站的人数推荐订阅的席位数
+      // The first time a user subscribes, the number of seats recommended for subscription based on the current number of people in the space station
       setSeat(seatList.find(item => item >= spaceInfo?.seats!) || seatList[seatList.length - 1]);
       return;
     }
     if (getPageType() === SubscribePageType.Renewal && subscription) {
-      // 对于续费的需求，席位数并不用发生变更，所以沿用原先产品的席位数即可
+      // For renewal requests, the number of seats does not need to be changed, so the number of seats of the original product can be used.
       setSeat(subscription?.maxSeats);
       return;
     }
     if (!subscription || !seatList.length) {
       return;
     }
-    // 升级，应该是在原来订阅席位之上选择一个选项
+    // To upgrade, you should select an option over the original subscription seat
     setSeat(seatList.find(item => item > subscription.maxSeats) || seatList[seatList.length - 1]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seatList, spaceInfo?.seats, subscription]);
@@ -117,11 +117,11 @@ export const SubScribeSystem = () => {
       }
 
       /**
-       * priceInfoCache.current 的数据结构：
+       * Data structure of priceInfoCache.current:
        * {
-       *   [席位数]:{
-       *     [订阅时长]:{
-       *       // 具体的产品价格等信息
+       *   [Seats]:{
+       *     [Subscription Duration]:{
+       *       // Specific product price and other information
        *     }
        *   },
        *   ...........
@@ -133,7 +133,10 @@ export const SubScribeSystem = () => {
       for (const v of data) {
         if (getPageType() === SubscribePageType.Renewal && subscription?.maxSeats !== v.seat) {
           /**
-           * 产品规格做了变动，每种产品只对应一种席位，因此这里的逻辑是，如果当前用户的空间站席位和产品给定的席位数不同，且用户是处于续费阶段，则提示用户续费方案不存在
+           * The product specifications have been changed so that each product only corresponds to one type of seat, 
+           * so the logic here is that if the current user's space station seat is different from 
+           * the number of seats given by the product and the user is in the renewal phase, 
+           * the user will be prompted that the renewal plan does not exist
            */
           Modal.warning({
             title: t(Strings.renewal_prompt),
@@ -196,7 +199,7 @@ export const SubScribeSystem = () => {
 
   const calcExpireDate = () => {
     if (getPageType() !== SubscribePageType.Renewal) {
-      // 如果是订阅，到期时间应该是在今天的基础上+用户订阅的时间
+      // If it is a subscription, the expiration time should be on top of today's + the time the user subscribed
       return dayjs()
         .add(Number(subscribeLongs), 'month')
         .format('YYYY-MM-DD');
@@ -204,7 +207,7 @@ export const SubScribeSystem = () => {
     if (!subscription) {
       return null;
     }
-    // 如果是续费，应该是在用户原先产品的到期时间+用户续费的时间
+    // If it is a renewal, it should be at the expiration time of the user's original product + the time of the user's renewal
     return dayjs(subscription.deadline)
       .add(Number(subscribeLongs), 'month')
       .format('YYYY-MM-DD');

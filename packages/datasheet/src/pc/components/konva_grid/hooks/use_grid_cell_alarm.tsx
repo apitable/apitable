@@ -44,10 +44,10 @@ export const useCellAlarm = (props: IUseCellAlarmProps) => {
 
   const dateAlarmMap = useMemo(() => {
     if (isScrolling) return { dateAlarms: null, frozenDateAlarms: null };
-    // 日期的闹钟图标
+    // Alarm clock icon for date
     const dateAlarms: React.ReactNode[] = [];
     const frozenDateAlarms: React.ReactNode[] = [];
-    // 行头工具栏
+    // Row head toolbar
     for (let rowIndex = rowStartIndex; rowIndex <= rowStopIndex; rowIndex++) {
       if (rowIndex > rowCount - 1) break;
       const row = linearRows[rowIndex];
@@ -97,7 +97,7 @@ export const useCellAlarm = (props: IUseCellAlarmProps) => {
   ]);
 
   /**
-   * hover 日期闹钟图标、用户快速添加闹钟
+   * hover date alarm clock icon, user quick add alarm clock
    */
   let dateAddAlarm: ReactNode = null;
   let frozenDateAddAlarm: ReactNode = null;

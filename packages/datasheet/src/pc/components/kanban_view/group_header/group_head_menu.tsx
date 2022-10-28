@@ -236,7 +236,8 @@ export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
     });
   };
 
-  // 在成员列上层实现，是为了成员列可以超出显示省略号并且自适应右侧统计数字宽度
+  // Implemented at the top of the member column so that the member column can go beyond displaying ellipses and 
+  // adapts to the width of the statistics on the right
   useClickAway(
     () => {
       field.type !== FieldType.SingleSelect && setEditing(false);

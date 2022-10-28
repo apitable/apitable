@@ -1,4 +1,4 @@
-// 暂时没有实现Method.replace功能
+// Method.replace function is not implemented yet
 import { StoreActions } from '@apitable/core';
 import { Method } from 'pc/components/route_manager/const';
 import { getHistoryMethod } from 'pc/components/route_manager/helper';
@@ -26,10 +26,11 @@ export const navigationToUrl = (
   const go = getHistoryMethod(method);
   const urlObj = new URL(url);
   const urlQuery = new URLSearchParams(urlObj.search);
-  // 由于配置表中有写死的url(vika.cn开头)，为了多环境测试，需要开放vika.cn
+  // Since there is a written dead url in the configuration table (starting with vika.cn), 
+  // for multi-environment testing, it is necessary to open vika.cn
   const reg = new RegExp(`^(${window.location.origin}|(http|https)://vika.cn)|(http|https)://help.vika.cn`);
   let newQuery: IQuery = {};
-  // 收集url上已有的query
+  // Collect the existing query on the url
   for (const [key, value] of urlQuery) {
     newQuery[key] = value;
   }

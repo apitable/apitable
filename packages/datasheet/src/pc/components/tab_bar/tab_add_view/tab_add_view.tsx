@@ -52,7 +52,6 @@ export const TabAddView: React.FC<ITabAddView> = props => {
   } = useSearchPanel();
   const [triggerInfo, setTriggerInfo] = useState<IUseListenTriggerInfo>();
 
-  // 新增视图
   const addView = (view: IViewProperty, startIndex: number, viewType: ViewType) => {
     const { result } = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddViews,
@@ -61,7 +60,11 @@ export const TabAddView: React.FC<ITabAddView> = props => {
         startIndex,
       }],
     });
-    // 5:新建表格视图；6:新建相册视图；7:新建看板视图
+    /**
+     * 5 - Add Grid view
+     * 6 - Add Gallery view
+     * 7 - Add Kanban view
+     */
     if (ExecuteResult.Success === result) {
       notify.open({
         message: t(Strings.add_new_view_success, { viewName: view.name }),
@@ -92,7 +95,7 @@ export const TabAddView: React.FC<ITabAddView> = props => {
     stopPropagation(e);
     const datasheet = Selectors.getDatasheet(store.getState())!;
 
-    // 创建神奇表单时，需要选择相应视图进行创建
+    // When creating a magic form, you need to select the corresponding view to create it
     if (nodeType === ConfigConstant.NodeType.FORM) {
       setPanelVisible(true);
       setPanelInfo({

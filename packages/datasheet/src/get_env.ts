@@ -1,5 +1,5 @@
 /**
- * 获取系统环境变量
+ * Get system environment variables
  */
 export const getEnvVars = () => {
   return {

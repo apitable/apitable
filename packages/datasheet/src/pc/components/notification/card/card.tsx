@@ -76,7 +76,7 @@ export const Card: FC<ICard> = ({ data, isProcessed }) => {
     return params.join('/');
   }
   const cardClick = (data: INoticeDetail) => {
-    // 优先级说明： toastUrl > canJump > configUrl > notifySpace > curSpace
+    // Priority Notes: toastUrl > canJump > configUrl > notifySpace > curSpace
     if (toastUrl) {
       navigationToConfigUrl(toastUrl);
       return;
@@ -135,9 +135,9 @@ export const Card: FC<ICard> = ({ data, isProcessed }) => {
       }
       default: {
         /**
-         * 目前 space/member/record 类型都会包含 space 信息，
-         * 这里只是为了兼容脏数据，如使用 GM 命令导致字段值错误，结果没有找到对应 space，
-         * 防止线上出现大规模通知中心崩溃的问题
+         * Currently space/member/record types will contain space information, 
+         * here just to be compatible with dirty data, such as the use of GM commands lead to field value errors, 
+         * the result did not find the corresponding space, to prevent the problem of large-scale notification center crash online
          */
         text = notifyBody.space?.spaceName || '';
         break;

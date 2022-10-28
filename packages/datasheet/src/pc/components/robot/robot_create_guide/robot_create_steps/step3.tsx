@@ -10,7 +10,7 @@ import { useActionTypes, useRobot } from '../../hooks';
 import { IStepProps } from '../interface';
 import robotGuideAvatar from 'static/icon/robot/robot_guide_avatar.png';
 import { t, Strings } from '@apitable/core';
-// 创建 action
+// Create action
 export const RobotCreateGuideStep3 = (props: IStepProps) => {
   const { robotId, isActive } = props;
   const { data: actionTypes, loading: actionTypesLoading } = useActionTypes();
@@ -20,7 +20,7 @@ export const RobotCreateGuideStep3 = (props: IStepProps) => {
   const theme = useTheme();
   const datasheetId = useSelector(Selectors.getActiveDatasheetId);
 
-  // 当选择完 action type 后，更新机器人描述
+  // When the action type has been selected, update the robot description
   // const _updateRobotDescription = useCallback(async(actionTypeId: string) => {
   //   const triggerTypeId = (robot?.nodes[0] as IRobotTrigger)?.triggerTypeId;
   //   const actionType = actionTypes.find((actionType) => actionType.actionTypeId === actionTypeId);

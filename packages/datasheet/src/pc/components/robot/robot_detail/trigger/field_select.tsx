@@ -21,13 +21,13 @@ import {
 
 const FieldIconMap = {
   [FieldType.DeniedField]: LockFilled,
-  [FieldType.Text]: ColumnLongtextFilled, // FIXME: icon
-  [FieldType.Number]: ColumnFigureFilled, // FIXME: icon 命名有问题。
+  [FieldType.Text]: ColumnLongtextFilled,
+  [FieldType.Number]: ColumnFigureFilled,
   [FieldType.SingleSelect]: ColumnSingleFilled,
   [FieldType.MultiSelect]: ColumnMultipleFilled,
-  [FieldType.DateTime]: ColumnCalendarFilled, // FIXME: icon 命名有问题。
+  [FieldType.DateTime]: ColumnCalendarFilled,
   [FieldType.Attachment]: ColumnAttachmentFilled,
-  [FieldType.Link]: ColumnLinktableFilled, // ?
+  [FieldType.Link]: ColumnLinktableFilled,
   [FieldType.URL]: ColumnUrlOutlined,
   [FieldType.Email]: ColumnEmailFilled,
   [FieldType.Phone]: ColumnPhoneFilled,
@@ -77,7 +77,7 @@ export const FieldSelect = ({ fields, value, onChange }: IFieldSelectProps) => {
       onSelected={(option) => {
         onChange && onChange(option.value);
       }}
-      // fix：下拉列表内部调整maxHeight，外部限制会导致双层滚动条
+      // FIXME：Adjusting maxHeight inside the dropdown list and limiting it outside will result in double scrollbars
       // listStyle={{
       //   maxHeight: 320,
       //   overflow: 'scroll',

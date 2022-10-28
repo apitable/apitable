@@ -38,7 +38,9 @@ export const MemberFieldHead: React.FC<IHeadMemberProps> = props => {
 
   const style: React.CSSProperties = editing ? { width: isNewBoard ? '80%' : '100%' } : {};
 
-  // 不在此处做 setEditing 操作是为了针对成员列超出显示省略号并且适应右侧统计数字宽度做出的妥协，所以需要在上层实现 setEditing(false)
+  // The setEditing operation is not done here because it is a compromise for the member column to go beyond the ellipses and 
+  // to fit the width of the statistics on the right, 
+  // so setEditing(false) needs to be implemented in the upper level
   return (
     <>
       <div onClick={onDoubleClick} ref={divRef} style={{ position: 'relative', overflow: 'hidden', ...style }}>

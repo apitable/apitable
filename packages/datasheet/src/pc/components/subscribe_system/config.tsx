@@ -27,19 +27,12 @@ export const paySystemConfig = {
     levelName: t(Strings.plan_model_choose_space_level, { space_level: t(Strings.silver) }),
     levelPowerTitle: t(Strings.plan_model_benefits_title, { space_level: t(Strings.silver) }),
     headBgSrc: SilverImg,
-    /*当前订阅等级的图标*/
     levelIcon: <SilverFilled size={24} />,
-    /*当前 tab 被激活时的字体颜色*/
     activeLevelNameColor: colorVars.indigo[400],
-    /*当前 tab 未被激活时的字体颜色*/
-    normalLevelNameColor: '#636363', // 不考虑主题切换，固定的色值，下同
-    /*主题颜色*/
+    normalLevelNameColor: '#636363', // No theme switching, fixed color values
     activeColor: colorVars.indigo[400],
-    /*选中卡片的背景色*/
     cardSelectBg: colorVars.extraLightIndigo,
-    /*页面右侧详情的背景色*/
     rightFeatureListBg: colorVars.extraLightIndigo,
-    /*坐席数*/
     seatNums: [2, 5, 10, 20, 30, 40, 50],
     levelDesc: t(Strings.plan_model_benefits_sliver).split(';').filter(item => Boolean(item))
   },
@@ -89,10 +82,7 @@ export const monthMap = {
 };
 
 export enum SubscribePageType {
-  // 订阅
   Subscribe,
-  // 续费
   Renewal,
-  // 升级
   Upgrade
 }

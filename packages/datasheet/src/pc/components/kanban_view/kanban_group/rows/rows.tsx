@@ -11,7 +11,7 @@ import styles from '../styles.module.less';
 import { useContextMenu } from '@vikadata/components';
 import { getIsColNameVisible } from 'pc/utils/datasheet';
 
-// 上下卡片之间的间距
+// Spacing between top and bottom cards
 export const MARGIN_DISTANCE = 8;
 
 interface ICardProps {
@@ -110,7 +110,7 @@ const RowBase: React.FC<IRowBaseProps> = props => {
   const { rows, cardHeight, groupId, keepSort } = items;
   const row = rows[index];
   const rowSortable = useSelector(state => Selectors.getPermissions(state).rowSortable);
-  // 给 PlaceHolder 的渲染留出空间
+  // Leave space for PlaceHolder rendering
   if (!row) {
     return null;
   }

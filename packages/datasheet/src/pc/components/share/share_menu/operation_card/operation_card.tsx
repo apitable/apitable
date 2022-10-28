@@ -14,7 +14,6 @@ export interface IOperationCardProps {
 }
 
 export const OperationCard: FC<IOperationCardProps> = ({ img, onClick, tipText, btnText }) => {
-  // 是否是紧凑模式
   const [isCompact, setIsCompact] = useState(false);
 
   return (

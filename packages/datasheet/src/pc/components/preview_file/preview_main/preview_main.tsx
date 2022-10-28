@@ -58,7 +58,7 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
   const isMobile = screenIsAtMost(ScreenSize.md);
   const clientWidth = typeof rightPaneWidth == 'number' && !isFullScreen ? _clientWidth - rightPaneWidth : _clientWidth;
 
-  // 当前正在预览的 fileInfo 实例
+  // The fileInfo instance currently being previewed
   const activeFile: IAttachmentValue = files[activeIndex];
 
   const [officePreviewUrl, setOfficePreviewUrl] = useState<string | null>(null);
@@ -211,7 +211,7 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
 
       <main className={styles.container} onMouseDown={onClose}>
         <div className={styles.left}>
-          {// 左侧箭头
+          {
             showPrevBtn && (
               <div className={styles.iconPre} onClick={handlePrev} onMouseDown={stopPropagation}>
                 <PreviousFilled width={40} height={40} className={styles.prev} />
@@ -238,7 +238,7 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
         </div>
 
         <div className={styles.right}>
-          {// 右侧箭头
+          {
             showNextBtn && (
               <div className={styles.iconNext} onClick={handleNext} onMouseDown={stopPropagation}>
                 <NextFilled width={40} height={40} className={styles.next} />

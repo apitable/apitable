@@ -62,7 +62,6 @@ const MicroColumnBase: React.FC = () => {
     return <></>;
   }
   if (!existInQueue) {
-    // 当前操作的 field 不在队列中
     if (dragTarget.fieldId) {
       recordFieldCollection.push({
         fieldId: dragTarget.fieldId,
@@ -71,7 +70,6 @@ const MicroColumnBase: React.FC = () => {
       });
     }
   } else {
-    // 当前操作的 field 在队列中
     if (fieldRanges) {
       const fieldIndexRanges = visibleColumns
         .slice(

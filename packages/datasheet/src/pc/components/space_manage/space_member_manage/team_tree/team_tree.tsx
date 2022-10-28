@@ -54,7 +54,6 @@ export const TeamTree: FC<IModalProps> = props => {
   const isBindDingtalk = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.DINGTALK) && !isSocialDingTalk(spaceInfo);
   const isBindWecom = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.WECOM) && !isSocialWecom(spaceInfo);
   const [refreshBtnLoading, setRefreshBtnLoading] = useState(false);
-  // 是否处于搜索状态
   const [inSearch, setInSearch] = useState<boolean>(false);
   const [teamOperate, setTeamOperate] = useState(false);
   const [selectKey, setSelectKey] = useState(ConfigConstant.ROOT_TEAM_ID);
@@ -163,7 +162,6 @@ export const TeamTree: FC<IModalProps> = props => {
       );
     });
   };
-  // 右击小组，获取小组信息
   const getRightClickDeptInfo = (data: ISelectedTeamInfoInSpace) => {
     if (!teamOperate) {
       return;
@@ -178,7 +176,6 @@ export const TeamTree: FC<IModalProps> = props => {
       dispatch(StoreActions.updateRightClickTeamInfoInSpace(info));
     }
   };
-  // 操作-添加子小组
   const handleAddDeptClick = (e: React.MouseEvent, data: ISelectedTeamInfoInSpace) => {
     socialPlatPreOperate(spaceInfo, () => {
       getRightClickDeptInfo(data);
@@ -186,18 +183,15 @@ export const TeamTree: FC<IModalProps> = props => {
     });
   };
 
-  // 操作-重命名小组名称
   const handleRenameClick = (e: React.MouseEvent, data: ISelectedTeamInfoInSpace) => {
     socialPlatPreOperate(spaceInfo, () => {
       getRightClickDeptInfo(data);
       setRenameDeptModalVisible(true);
     });
   };
-  // 操作-删除小组
   const handleDeleteClick = (e: React.MouseEvent, data: ISelectedTeamInfoInSpace) => {
     socialPlatPreOperate(spaceInfo, () => {
       getRightClickDeptInfo(data);
-      // 删除小组之前检查小组信息
       if (data) {
         Api.readTeam(data.teamId).then(res => {
           const { success, data } = res.data;
@@ -213,14 +207,12 @@ export const TeamTree: FC<IModalProps> = props => {
     });
 
   };
-  // 删除小组，存在子小组或成员
   const rejectDeleteTeam = () => {
     Modal.warning({
       title: t(Strings.watch_out),
       content: t(Strings.warning_exists_sub_team_or_member),
     });
   };
-  // 删除小组，再次确认
   const confrimDeleteTeam = (teamId: string) => {
     const confirmDelTeamOk = () => {
       if (user) {
@@ -243,7 +235,6 @@ export const TeamTree: FC<IModalProps> = props => {
       maskClosable: true,
     });
   };
-  // 操作-非搜索状态下左击选中小组，查看成员列表
   const onSelect = (keys: ReactText[], { node }) => {
     props.setSearchMemberRes([]);
     if (node.props.title) {
@@ -252,11 +243,11 @@ export const TeamTree: FC<IModalProps> = props => {
     }
   };
 
-  // 操作-搜索状态下左击选中小组，查看成员列表
+  // Left click on the selected group in search status to view the list of members
   const teamClick = (teamId: string) => {
     changeSelectTeam(teamId);
   };
-  // 操作-点击小组目录上的“更多”icon
+  // Click on the "more" icon on the group directory
   const moreClick = (
     e: React.MouseEvent,
     ref: React.RefObject<{ handleContextClick: (e: React.MouseEvent) => void; }>) => {
@@ -271,7 +262,7 @@ export const TeamTree: FC<IModalProps> = props => {
     memberCount: props.memberCount,
   });
 
-  // 操作-搜索状态下点击员工
+  // Search state click staff
   const memberClick = (memberId: string) => {
     changeSelectTeam(ConfigConstant.ROOT_TEAM_ID);
     Api.getMemberInfo({ memberId }).then(res => {

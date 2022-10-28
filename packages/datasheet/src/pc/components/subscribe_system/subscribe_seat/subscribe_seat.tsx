@@ -52,7 +52,7 @@ export const SubscribeSeat: React.FC<ISubscribeSeatProps> = (props) => {
   }
 
   /**
-   * 以下部分的代码不再起作用，纯纯粹是为了避免以后产品的席位规格又改回多席位做的备份
+   * The following part of the code no longer works and is purely a backup
    */
   return <div className={styles.checkSeatsNum}>
     {loading ? (

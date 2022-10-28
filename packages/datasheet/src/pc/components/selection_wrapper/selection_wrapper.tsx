@@ -38,8 +38,8 @@ export const attachSelection = WrappedComponent => {
       column: 0,
     };
 
-    // 单元格按下
-    // 这里的操作限定和直接和选取相关的，亦直接对cell的操作，除此以外像是列宽和拖动都不在这里处理
+    // The operation here is limited and directly related to the selection, and also directly to the cell operation, 
+    // except for the column width and dragging are not handled here
     mouseDown = (e: React.MouseEvent) => {
       const target = e.target as HTMLElement;
       const element = getParentNodeByClass(target, CELL_CLASS);
@@ -56,10 +56,9 @@ export const attachSelection = WrappedComponent => {
       this.isDown = true;
     };
 
-    // 单元格上拖动事件
-    // Note: 目前在视图区域所有涉及操作的 mouseDown 事件，统一设置 isDown 为 true，
-    // 因此 mousemove 事件中需要对不同的情况加以处理，适当的提前返回程序
-    // TODO:  拆分出对于不同事件，不同的 mousemove 处理逻辑，目前的有些混乱
+    // Note: Currently, all mouseDown events in the view area involving operations are set to true, 
+    // so the mousemove event needs to handle different cases and return to the program in advance, as appropriate.
+    // TODO:  Split out the mousemove processing logic for different events, the current one is a bit confusing
     mouseMove = (e: MouseEvent) => {
       e.preventDefault();
       const isDown = this.isDown;
@@ -79,7 +78,7 @@ export const attachSelection = WrappedComponent => {
       const { fillHandleStatus } = this.props;
       const isFillHandleActive = Boolean(fillHandleStatus && fillHandleStatus.isActive);
 
-      // 按下填充把手后，选区不再改变
+      // When the fill handle is pressed, the selection is no longer changed
       if (isFillHandleActive) {
         return store.dispatch(setFillHandleStatus({
           isActive: true,
@@ -93,7 +92,6 @@ export const attachSelection = WrappedComponent => {
       }));
     };
 
-    // 单元格上松开事件
     mouseUp = async() => {
       const state = store.getState();
       this.wrappedComponentRef.current!.columnScrollHandler.stopScroll();
@@ -103,7 +101,7 @@ export const attachSelection = WrappedComponent => {
       }
       this.isDown = false;
       const { fillHandleStatus } = this.props;
-      // 填充选区结束
+      // End of fill selection
       if (fillHandleStatus && fillHandleStatus.isActive && fillHandleStatus.fillRange) {
         await this.preFetchUnitMapIfNeed(
           selectRanges, fillHandleStatus.fillRange, fillHandleStatus.direction,
@@ -143,7 +141,7 @@ export const attachSelection = WrappedComponent => {
       document.removeEventListener('mouseup', this.onContextMenu);
     }
 
-    // 横向填充之前，
+    // Before horizontal filling
     preFetchUnitMapIfNeed(
       selectionRange: IRange[], fillRange?: IRange, direction?: FillDirection
     ) {

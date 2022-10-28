@@ -14,7 +14,7 @@ interface IRobotTriggerCreateProps {
 }
 
 /**
- * 在检测到机器人没有 trigger 时，渲染创建 trigger 的表单
+ * Renders the form for creating a trigger when the robot is detected to have no trigger
  */
 export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerCreateProps) => {
   const defaultFormData = useDefaultTriggerFormData();
@@ -23,7 +23,7 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerC
   const createRobotTrigger = useMemo(() => {
     return async(triggerTypeId: string) => {
       const triggerType = triggerTypes.find((item) => item.triggerTypeId === triggerTypeId);
-      // 当 trigger 为记录创建时，需要填入默认值。
+      // When the trigger is created for a record, the default value needs to be filled in.
       const input = triggerType?.endpoint === 'record_created' ? defaultFormData : undefined;
       const triggerRes = await createTrigger(robotId, triggerTypeId, input);
       mutate(`/robots/${robotId}/trigger`);

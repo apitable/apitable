@@ -53,15 +53,13 @@
 // .ant-btn {
 //   // color: var(--firstLevelText);
 //   border-radius: 2px;
-//   // 要达到图标在视觉上的上下居中，需要进行一定的偏移
-//   // 方案取自于 antd button
+//   // To achieve a visually centered top and bottom icon, certain offsets are required
 //   svg {
 //     vertical-align: -0.125em;
 //     transition: fill 0.5s;
 //   }
 // }
 
-//  通用样式
 .ant-btn[ant-click-animating-without-extra-node]:after {
   border: 0 none;
   opacity: 0;
@@ -90,12 +88,10 @@
   padding: 0 16px;
 }
 
-// 透明度-变量
 @hoverOpacity: 0.8;
 @activeOpacity: 0.5;
 @disabledOpacity: 0.5;
 
-// 透明度-样式
 .ant-btn,
 .ant-btn-primary,
 .ant-btn-default,
@@ -120,7 +116,6 @@
   }
 }
 
-// 样式-类型：primary
 .ant-btn-primary:not(.colorBg),
 .ant-btn-primary:not(.colorBg):hover,
 .ant-btn-primary:not(.colorBg):active,
@@ -135,7 +130,6 @@
     box-shadow: 0 6px 12px -4px var(--primaryColor);
   }
 }
-// 样式-类型：primary + colorBg
 .ant-btn-primary.colorBg,
 .ant-btn-primary.colorBg:hover {
   background: var(--defaultBg);
@@ -151,7 +145,6 @@
 //   color: rgba(var(--defaultBg-rgb), 50%);
 // }
 
-// 样式-类型：second-primary
 .ant-btn-secondPrimary,
 // .ant-btn-secondPrimary:hover,
 // .ant-btn-secondPrimary:active,
@@ -212,7 +205,6 @@
   color: rgba(var(--defaultBg-rgb), 50%);
 }
 
-// 样式-类型：default
 .ant-btn-default,
 .ant-btn-default:hover,
 .ant-btn-default:active,
@@ -247,7 +239,6 @@
 //   color: var(--fourthLevelText) !important;
 // }
 
-// 样式-类型：subDefault
 .subDefault.ant-btn-default,
 .subDefault.ant-btn {
   color: var(--secondLevelText);
@@ -257,7 +248,6 @@
   }
 }
 
-// 样式-类型：translucent
 .translucent.ant-btn-default,
 .translucent.ant-btn {
   color: var(--defaultBg);
@@ -268,7 +258,6 @@
     fill: var(--defaultBg);
   }
 }
-// 样式-类型：viceDefault
 .viceDefault.ant-btn-default,
 .viceDefault.ant-btn,
 .viceDefault.ant-btn[disabled] {
@@ -280,7 +269,6 @@
   }
 }
 
-// 样式-类型：text
 .text:not(.colorBg) svg {
   fill: var(--primaryColor);
 }
@@ -293,7 +281,7 @@
 .text.ant-btn-dangerous:not(.colorBg)[disabled] {
   color: var(--errorColor);
 }
-// 样式-类型：text + colorBg
+
 .text.colorBg,
 .text.colorBg:focus {
   color: var(--defaultBg);
@@ -302,7 +290,6 @@
   }
 }
 
-// 样式-类型：subText与textLink
 .subText,
 .subText:hover,
 .subText:active,
@@ -322,7 +309,6 @@
   }
 }
 
-// 样式-类型：textLink
 .textLink,
 .textLink.ant-btn:active,
 .textLink.ant-btn:hover {
@@ -333,7 +319,6 @@
   }
 }
 
-// 样式-类型：danger
 .ant-btn-dangerous.ant-btn-primary,
 .ant-btn-dangerous.ant-btn-primary:hover,
 .ant-btn-dangerous.ant-btn-primary:active,
@@ -353,7 +338,6 @@
   }
 }
 
-// 样式-类型：subDanger
 .ant-btn-default.ant-btn-dangerous,
 .ant-btn-default.ant-btn-dangerous:hover,
 .ant-btn-default.ant-btn-dangerous:active,
@@ -368,7 +352,6 @@
   }
 }
 
-// 样式-类型：icon
 .icon.ant-btn-circle {
   padding: 0;
   width: 24px;
@@ -385,8 +368,6 @@
   }
 }
 
-// 样式-类型: dark
-// TODO: 重新梳理 button 样式
 .dark.ant-btn {
   background-color: var(--dc03);
   &:hover {
@@ -444,7 +425,6 @@
   }
 }
 
-// 样式-类型：secondIcon
 .secondIcon.ant-btn-circle {
   position: relative;
   padding: 0;
@@ -526,7 +506,6 @@
   }
 }
 
-// 样式-类型：glassIcon
 .glassIcon.ant-btn-circle {
   padding: 0;
   display: flex;
@@ -611,7 +590,6 @@
   }
 }
 
-// 样式-类型：subIcon
 .subIcon.ant-btn-circle {
   padding: 0;
   display: flex;
@@ -690,7 +668,6 @@
   }
 }
 
-// 样式-类型：按钮组合
 .ant-btn-group {
   button:not(:first-child):active::before,
   button:not(:first-child):hover::before,

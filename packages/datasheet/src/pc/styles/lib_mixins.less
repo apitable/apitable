@@ -22,9 +22,7 @@
 }
 
 /**
-  color: 背景色
-  opacity: 背景色的透明度 0% - 100%
-  blurSize: blur的px值
+ * opacity: 0% - 100%
  */
 .backgroundBlur(@color, @opacity, @blurSize) {
   background-color: @color;
@@ -34,7 +32,7 @@
   }
 }
 
-// 全局input的样式(antd Input)
+// global style for antd Input
 .input(@color: var(--primaryColor), @error-color: var(--errorColor), @height: 50px) {
   .ant-input {
     border: none;
@@ -154,7 +152,6 @@
   justify-content: center;
 }
 
-// antd的复选框勾勾样式
 .antTickInCheckbox (@sWidth: 8px; @sHeight: 6px) {
   .ant-checkbox-inner {
     background-color: transparent;
@@ -191,9 +188,9 @@
   }
 }
 
-// antd的复选框样式
-// @size是复选框宽高, @sizeSub2是复选框宽高-边框宽度
-// @sWidth与@sHeight是勾勾宽高
+// @size is the checkbox width and height
+// @sizeSub2 is the checkbox width and height - border width
+// @sWidth and @sHeight are hooks for width and height
 .antdCheckbox(@size: 14px; @sizeSub2: 12px; @sWidth: 8px; @sHeight: 6px) {
   .ant-checkbox {
     width: @size;
@@ -227,12 +224,7 @@
   }
 }
 
-// antd的table样式，对其规范样式
 .antdTable() {
-  // 多选框
-  // .antdCheckbox();
-
-  // 表头
   .ant-table-thead {
     height: 45px;
 
@@ -257,7 +249,6 @@
     }
   }
 
-  // 表格内容
   .ant-table-tbody > tr > td {
     border: none;
   }
@@ -345,19 +336,19 @@
 
 .tree {
   :global {
-    // 清除默认的节点选中样式
+    // Clear the default node selection style
     .ant-tree-treenode-selected .ant-tree-node-content-wrapper::before {
       background: none !important;
     }
 
-    // 清除drag-over的默认样式
+    // Clear the default style of drag-over
     .drag-over .ant-tree-node-content-wrapper {
       background: none !important;
       opacity: 1 !important;
       color: var(--firstLevelText) !important;
     }
 
-    // 展开和收缩图标
+    // Expand and collapse icons
     .ant-tree-switcher {
       position: relative;
       width: 32px !important;
@@ -388,7 +379,7 @@
         }
       }
 
-      // 展开文件夹时
+      // When expanding a folder
       &.ant-tree-switcher_open .ant-tree-switcher-icon {
         svg {
           transform: rotate(0deg) !important;
@@ -396,18 +387,16 @@
       }
     }
 
-    // 子节点缩进距离
+    // Child node indentation distance
     .ant-tree-indent-unit {
       width: 16px !important;
     }
 
-    // // 加载图标
     // .ant-tree-switcher-loading-icon {
     //   top: 50%;
     //   transform: translateY(-50%) !important;
     // }
 
-    // tree-node的内容
     .ant-tree-node-content-wrapper {
       width: calc(100% - 28px);
       height: 40px !important;
@@ -416,7 +405,7 @@
       position: relative;
       display: flex;
 
-      // 经过时背景色
+      // Background color when passing
       &::before {
         height: 40px !important;
         transform: translateY(-2px);
@@ -434,7 +423,6 @@
         background: none !important;
       }
 
-      // 节点图标
       .ant-tree-iconEle {
         width: 16px !important;
         height: 36px !important;
@@ -446,7 +434,7 @@
         margin-left: 4px;
       }
 
-      // 节点名称
+      // Node name
       .ant-tree-title {
         display: inline-block;
         width: calc(100% - 20px);
@@ -456,7 +444,7 @@
       }
     }
 
-    // 鼠标经过和编辑时的背景
+    // Background when mouse passes over and edits
     .editBgColor,
     .nodeHover {
       &::before {
@@ -464,14 +452,14 @@
       }
     }
 
-    // 选中时节点时的样式
+    // Style when node is selected
     .ant-tree-treenode-selected {
       &::before {
         background-color: var(--rowSelectedBg);
       }
     }
 
-    // 给拖动时的边框加上圆圈
+    // Add a circle to the border when dragging
     .drag-over-gap-top > .ant-tree-node-content-wrapper::after,
     .drag-over-gap-bottom > .ant-tree-node-content-wrapper::after {
       position: absolute;
@@ -484,34 +472,33 @@
       z-index: var(--drag-line-circle);
     }
 
-    // 定位上边框的圆圈位置
+    // Position the circle in the upper border
     .drag-over-gap-top > .ant-tree-node-content-wrapper::after {
       top: 0;
       left: 0;
       transform: translate(-5px, -4px);
     }
 
-    // 定位下边框的圆圈位置
+    // Position the circle in the lower border
     .drag-over-gap-bottom > .ant-tree-node-content-wrapper::after {
       bottom: 0;
       left: 0;
       transform: translate(-5px, 4px);
     }
 
-    // 拖拽到节点上
+    // Drag and drop to the node
     .drag-over {
       &.floder::before {
         border: 2px solid var(--primaryColor);
       }
     }
 
-    // 禁用节点（也就是”无节点文件“时）
+    // Disable nodes (i.e. when "no node file")
     .ant-tree-treenode-disabled {
       padding: 0 !important;
       pointer-events: none;
     }
 
-    // 更多按钮
     .moreBtn {
       display: flex;
       justify-content: center;
@@ -586,7 +573,6 @@
         }
       }
 
-      // 子节点缩进距离
       .ant-tree-indent-unit {
         width: 16px !important;
       }
@@ -722,7 +708,6 @@
         }
       }
 
-      // 子节点缩进距离
       .ant-tree-indent-unit {
         width: 16px !important;
       }

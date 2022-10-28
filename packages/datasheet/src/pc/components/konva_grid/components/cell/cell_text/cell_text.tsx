@@ -45,7 +45,7 @@ export const CellText: FC<ICellProps> = (props) => {
   });
   const { renderContent } = renderData;
 
-  // 点击链接时校验 URL 合法性
+  // Verify URL legitimacy when clicking on links.
   const handleURLClick = (type: SegmentType | FieldType, text: string, active?: boolean) => {
     if (!active) return;
 

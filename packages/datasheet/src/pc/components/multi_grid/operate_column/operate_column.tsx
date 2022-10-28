@@ -104,7 +104,6 @@ export const OperateColumn: React.FC<IOperateColumnOwnProperty> = React.memo(pro
   const isCheckedAll = recordRanges &&
     recordRanges.length === recordIds.length && recordIds.length !== 0;
 
-  // 点击拖曳图标
   function onMouseDown(e: React.MouseEvent) {
     if (!rowSortable || !isAllowDrag) {
       return;

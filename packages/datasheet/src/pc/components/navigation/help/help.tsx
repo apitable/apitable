@@ -181,7 +181,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
     ],
   ];
 
-  // 返回移动端的菜单数据
+  // Return menu data for mobile
   const getMobileMenuData = () => {
     return [
       menuData[0]

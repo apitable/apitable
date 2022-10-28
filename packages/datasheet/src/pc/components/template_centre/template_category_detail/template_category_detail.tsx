@@ -22,12 +22,10 @@ import { imgUrl } from '../template_choice';
 import { TemplateItem } from '../template_item';
 import styles from './style.module.less';
 
-// 默认banner图地址
 const defaultBanner = integrateCdnHost(Settings.folder_showcase_banners.value.split(',')[0]);
 
 export interface ITemplateCategoryDetailProps {
   isOfficial: boolean;
-  // 分类
   templateCategory: ITemplateCategory[];
   setUsingTemplate: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -60,7 +58,7 @@ export const TemplateCategoryDetail: FC<ITemplateCategoryDetailProps> = props =>
     useRequest<ITemplate[]>(getTemplateCategoriesReq, { manual: true });
 
   useEffect(() => {
-    // 访问空间站模板需要处于登录状态
+    // Login status is required to access the space station template
     if (categoryId === 'tpcprivate' && user) {
       setIsOfficial(false);
       getTemplateList(spaceId, '', true);

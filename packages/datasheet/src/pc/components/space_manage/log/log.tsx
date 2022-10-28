@@ -410,13 +410,6 @@ const Log = (): JSX.Element => {
       </div>
       <div className={styles.labelRow}>
         <h6 className={styles.subTitle}>{t(Strings.space_logs)}</h6>
-        {/* <Button
-         color="default"
-         size="middle"
-         prefixIcon={<DownloadOutlined />}
-         >
-         下载日志
-         </Button> */}
       </div>
       <Table
         className={styles.logTable}

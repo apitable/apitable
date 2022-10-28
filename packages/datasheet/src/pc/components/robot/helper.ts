@@ -9,7 +9,7 @@ import {
 } from './interface';
 
 /**
- * 客户端在没有上下文的情况下，解析表达式，跳过动态参数。
+ * The client parses the expression without context, skipping dynamic parameters.
  */
 export const operand2PureValue = (operand: any) => {
   const parser = new MagicVariableParser(ACTION_INPUT_PARSER_BASE_FUNCTIONS, ACTION_INPUT_PARSER_PASS_THROUGH_FUNCTIONS);
@@ -57,7 +57,7 @@ export const getNodeOutputSchemaList = (props: {
       schemaList.push({
         id: action.id,
         title: actionType.name,
-        // TODO: 上 integration 后删除这里的判断， 三个发 IM 消息的 action 没有 outputJsonSchema，
+        // TODO: After integration, remove the judgement here, the three actions that send IM messages do not have outputJsonSchema.
         schema: ['sendWecomMsg', 'sendLarkMsg', 'sendDingtalkMsg'].includes(actionType?.endpoint) ? undefined : actionType.outputJsonSchema
       });
     }
@@ -96,7 +96,7 @@ export const makeRobotCardInfo = (robot: IRobotBaseInfo, triggerTypes: ITriggerT
 };
 
 export const fields2Schema = (fields: IField[], fieldPermissionMap: IFieldPermissionMap): IJsonSchema => {
-  // 从 fields 中提取出所有的字段，并转化为 json schema
+  // Extract all fields from fields and convert to json schema
   const fieldsSchema = {
     title: '列属性',
     type: 'object',
@@ -119,10 +119,10 @@ export const fields2Schema = (fields: IField[], fieldPermissionMap: IFieldPermis
   return fieldsSchema;
 };
 
-// TODO(kailang) 目前是为了通过企微验收，后续要改回来
+// TODO(kailang): Currently it is to pass the enterprise micro acceptance, the follow-up to change back
 export const getFilterActionTypes = (actionTypes: IActionType[], ignoreActionId?: string) => {
   let tmpActionTypes = actionTypes;
-  // 企微浏览器屏蔽飞书和钉钉
+  // Enterprise Web Browser blocks Feishu and Dingtalk
   if (isWecomFunc() && tmpActionTypes) {
     tmpActionTypes = tmpActionTypes.filter(ad =>
       !['sendLarkMsg', 'sendDingtalkMsg'].includes(ad.endpoint) || ad.actionTypeId === ignoreActionId

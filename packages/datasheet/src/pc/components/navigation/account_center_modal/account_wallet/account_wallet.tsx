@@ -57,10 +57,10 @@ export const AccountWallet: FC = () => {
     0: { color: colors.warningColor, text: '+' },
     1: { color: colors.errorColor, text: '-' },
   };
-  // 收支记录
+  // Income and expenditure records
   const [pageNo, setPageNo] = useState(1);
   const [pageData, setPageData] = useState<IPageData | null>(null);
-  // 订阅信息
+  // Subscription Information
   const { getUserIntegral } = useBilling();
   const { data: integralInfo, run: getUserIntegralRun, loading: cardLoading } = useRequest<IIntegralInfo>(getUserIntegral, { manual: true });
   const [inputErr, setInputErr] = useState('');

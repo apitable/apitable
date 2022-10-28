@@ -73,7 +73,7 @@ export const RowHeadOperation: FC<IRowHeadOperationProps> = memo((props) => {
       x={x}
       y={y}
     >
-      {/* 提供背景色 */}
+      {/* Provide background color */}
       <Rect
         name={generateTargetName({
           targetName: KONVA_DATASHEET_ID.GRID_ROW_HEAD,
@@ -87,7 +87,7 @@ export const RowHeadOperation: FC<IRowHeadOperationProps> = memo((props) => {
       {
         (isChecked || isHovered || isActive) &&
         <Group>
-          {/* 拖拽行 */}
+          {/* Drag and drop row */}
           <Icon
             name={generateTargetName({
               targetName: KONVA_DATASHEET_ID.GRID_ROW_DRAG_HANDLER,
@@ -101,7 +101,7 @@ export const RowHeadOperation: FC<IRowHeadOperationProps> = memo((props) => {
             onMouseOut={clearTooltipInfo}
           />
 
-          {/* 选中行 */}
+          {/* Select row */}
           <Icon
             name={generateTargetName({
               targetName: KONVA_DATASHEET_ID.GRID_ROW_SELECT_CHECKBOX,
@@ -113,7 +113,7 @@ export const RowHeadOperation: FC<IRowHeadOperationProps> = memo((props) => {
             fill={isChecked ? colors.primaryColor : colors.thirdLevelText}
           />
 
-          {/* 展开行/评论 */}
+          {/* Expanded Lines/Comments */}
           <Group
             x={48}
             y={iconOffsetY}

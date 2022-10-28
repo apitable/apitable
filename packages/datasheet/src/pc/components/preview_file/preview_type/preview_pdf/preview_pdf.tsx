@@ -19,8 +19,9 @@ const PreviewPdf: React.FC<IPreviewTypeBase> = props => {
   }
 
   useEffect(() => {
-    // 目前最新版 5.7.2 虽然解决了签名问题, 但存在字体加载问题, 5.4.0 是较完美版本
-    // 未来升级, 需要从 pdfjs.version 读取精确版本号, 否则可能与 react-pdf 的版本不一致导致错误(如白屏等)
+    // The latest version 5.7.2 has solved the signature problem, but there are font loading problems, 5.4.0 is a more perfect version
+    // Future upgrades, you need to read the exact version number from pdfjs.version, 
+    // otherwise it may be inconsistent with the version of the react-pdf resulting in errors (such as white screen, etc.)
     pdfjs.GlobalWorkerOptions.workerSrc = process.env.NEXT_PUBLIC_PUBLIC_URL + '/file/pdf/pdf.worker.2.9.359.min.js';
   });
 

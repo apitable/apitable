@@ -58,7 +58,7 @@ class RemindAggregation {
           }];
         }
       }
-      // 先消费掉消息，失败不会重发
+      // Consume the message first, failure will not resend
       remindUnitRecordsMap.clear();
       for (const item of Object.entries(reqMap)) {
         const [key, unitRecs] = item;

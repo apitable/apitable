@@ -17,9 +17,9 @@ const SHOW_IMAGE_MAX_COUNT = 6;
 interface IImageBoxProps {
   images: string[];
   showType?: ImageShowType;
-  style?: React.CSSProperties; // 图片 CSS
-  height?: number; // 封面图片的高度
-  width?: number; // 封面图片的宽度
+  style?: React.CSSProperties;
+  height?: number;
+  width?: number;
   isCoverFit?: boolean;
   fileList: IAttachmentValue[];
   recordId: string;
@@ -41,7 +41,6 @@ export const ImageBox: React.FC<IImageBoxProps> = ({
   }, [recordId]);
 
   const showImages = images.slice(0, showOneImage ? 1 : SHOW_IMAGE_MAX_COUNT);
-  // 计算缩略图/跑马灯宽度
   const marqueeWrapperWidth = showImages.length * 16 + 8;
   const imgWidth = Math.floor((width! - 200) / 6);
   const thumbHeight = imgWidth * 4 / 3;

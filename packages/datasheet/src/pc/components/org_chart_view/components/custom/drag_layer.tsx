@@ -70,7 +70,7 @@ export const DragLayer: FC = () => {
 
   const overflowX = (currentOffset: XYCoord) => {
 
-    // 右边栏打开时，不允许滚动
+    // When the right sidebar is open, scrolling is not allowed
     if (settingPanelVisible && currentOffset.x + itemWidth >= bodySize.width - settingPanelWidth) {
       return false;
     }

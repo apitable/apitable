@@ -10,10 +10,10 @@ import { getFieldComponent } from './helper';
 export function SchemaField(props: ISchemaFieldProps) {
   const {
     uiSchema = {},
-    formData, // 外部传入的 formData
+    formData,
     errorSchema = {},
-    idPrefix, // idPrefix
-    name, // html form 表单名称
+    idPrefix,
+    name,
     onChange,
     onKeyChange,
     onDropPropertyClick,

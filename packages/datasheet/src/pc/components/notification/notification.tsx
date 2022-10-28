@@ -42,12 +42,9 @@ export const Notification: FC = () => {
   );
   const dispatch = useDispatch();
   const [tabActiveKey, setTabActiveKey] = useState(TabKey.Unprocessed);
-  //  未读消息列表是否渲染完成，第一次渲染已读消息列表时以及查看更多已读消息列表时将其置为false
   const [unReadedListRendered, setUnReadedListRendered] = useState(false);
-  // 已读消息列表是否渲染完成，第一次渲染已读消息列表时以及查看更多已读消息列表时将其置为false
   const [readedListRendered, setReadedListRendered] = useState(false);
   const { getNotificationPage } = useNotificationRequest();
-  // 首次进入此页面，请求消息数量请求消息列表， 只执行一次
   const { run: getAllData, loading: firstLoading } = useRequest(
     () =>
       Api.getNotificationStatistics().then(async res => {
@@ -65,11 +62,8 @@ export const Notification: FC = () => {
     { manual: true },
   );
 
-  // 查看更多未读消息列表
   const { run: getMoreUnRead, loading: moreUnReadLoading } = useRequest(getNotificationPage, { manual: true });
-  // 查看更多已读消息列表
   const { run: getMoreRead, loading: moreReadLoading } = useRequest(getNotificationPage, { manual: true });
-  // 一键处理
   const { run: allToRead, loading: allToReadBtnLoading } = useRequest(
     () =>
       Api.transferNoticeToRead([], true).then(res => {
@@ -86,7 +80,6 @@ export const Notification: FC = () => {
 
   useEffect(() => {
     return () => {
-      // 清空消息列表
       dispatch(StoreActions.updateReadNoticeList([]));
       dispatch(StoreActions.updateUnReadNoticeList([]));
     };
@@ -95,7 +88,7 @@ export const Notification: FC = () => {
   const onTabActiveChange = active => {
     setTabActiveKey(active);
   };
-  // 点击查看新推送过来的消息
+  // Click to see the new tweeted messages
   const toNewMsg = () => {
     if (tabActiveKey === TabKey.Processed) {
       setTabActiveKey(TabKey.Unprocessed);
@@ -103,19 +96,17 @@ export const Notification: FC = () => {
     dispatch(StoreActions.getNewMsgFromWsAndLook(true));
   };
 
-  // 点击查看更多未处理消息
   const moreUnReadMsg = () => {
     const rowNo = unReadCount - unReadNoticeList.length + 1;
     setUnReadedListRendered(false);
     getMoreUnRead(false, rowNo);
   };
-  // 点击查看更多已处理消息
   const moreReadMsg = () => {
     const rowNo = readCount - readNoticeList.length + 1;
     setReadedListRendered(false);
     getMoreRead(true, rowNo);
   };
-  // 判断已读消息列表是否渲染完成
+  // Determine if the list of read messages has been rendered
   const noticeListRended = (e, tabKey: string) => {
     const lastNotice = tabKey === TabKey.Unprocessed ? unReadNoticeList[unReadNoticeList.length - 1] : readNoticeList[readNoticeList.length - 1];
     if (e.key === lastNotice.id) {
@@ -128,7 +119,8 @@ export const Notification: FC = () => {
     const moreLoading = tabKey === TabKey.Unprocessed ? moreUnReadLoading : moreReadLoading;
     const numEqual = tabKey === TabKey.Unprocessed ? unReadCount === unReadNoticeList.length : readCount === readNoticeList.length;
     const clickFun = tabKey === TabKey.Unprocessed ? moreUnReadMsg : moreReadMsg;
-    // 消息列表处于moreLoading时，显示「加载中」，loaded并且处于列表渲染过程中不显示，列表渲染完成后显示「加载更多」
+    // When the message list is moreLoading, it shows "Loading", loaded and in the process of rendering the list is not displayed, 
+    // and after the list is rendered, it shows "Loading more".
     const visible = moreLoading || rendered ? 'visible' : 'hidden';
     const dom = numEqual ? (
       t(Strings.end)

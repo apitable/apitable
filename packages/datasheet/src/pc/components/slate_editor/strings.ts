@@ -1,7 +1,7 @@
 import { t, Strings } from '@apitable/core';
 
 export default {
-  // 块级元素
+  // Block-level elements
   paragraph: t(Strings.paragraph),
   headingOne: t(Strings.heading_one),
   headingTwo: t(Strings.heading_two),
@@ -17,7 +17,7 @@ export default {
   codeBlockWrap: t(Strings.code_block),
   divider: t(Strings.divider),
   table: t(Strings.table),
-  // 内联元素
+  // Inline elements
   link: t(Strings.link),
   italic: t(Strings.italic),
   underLine: t(Strings.under_line),
@@ -26,11 +26,11 @@ export default {
   inlineCode: t(Strings.inline_code),
   mention: t(Strings.mention),
   highlight: t(Strings.highlight),
-  // 对齐方式
+  // Alignment method
   alignLeft: t(Strings.align_left),
   alignCenter: t(Strings.align_center),
   alignRight: t(Strings.align_right),
-  // 其他
+  // Other
   ok: t(Strings.submit),
   cancel: t(Strings.cancel),
   text: t(Strings.text),

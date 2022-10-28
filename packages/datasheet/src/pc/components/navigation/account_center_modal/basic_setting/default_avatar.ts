@@ -1,6 +1,6 @@
-// 头像地址从 cdn 地址中取得，跟用户上传的 头像逻辑保持一致。
-// 使用 path 不加 host 方便私有化版本迁移数据
-// 维护地址 https://vika.cn/space/spcBcZN1UZZJz/workbench/dstbbxEQsgj4n5YoY3/viwyjWJEgnapf/rec82hjVdPPd3
+// The avatar address is obtained from the cdn address and is consistent with the user's uploaded avatar logic.
+// Use path without host to facilitate migration of data for privatized versions
+// Maintain Address: https://vika.cn/space/spcBcZN1UZZJz/workbench/dstbbxEQsgj4n5YoY3/viwyjWJEgnapf/rec82hjVdPPd3
 
 export const defaultAvatars = [
   'space/2020/09/11/e6aa3037a38f45acb65324ea314aea58',

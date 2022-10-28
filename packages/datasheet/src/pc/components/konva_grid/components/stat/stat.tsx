@@ -78,10 +78,10 @@ export const Stat: FC<IStatProps> = memo((props) => {
 
   const getStatRecordIds = useCallback(() => {
     let res = visibleRecordIds;
-    // 默认是全部记录
+    // The default is all records
     if (isGroupStat) {
       const groupSketch = new GroupClass(groupInfo, groupBreakpoint);
-      // 分组的统计栏，展示分组下的记录
+      // The statistics column for the grouping, showing the records under the grouping
       res = groupSketch.getRecordsInGroupByDepth(state, row!.recordId, row!.depth).map(row => row.recordId);
     }
     return res;
@@ -89,8 +89,8 @@ export const Stat: FC<IStatProps> = memo((props) => {
   }, [visibleRecordIds, isGroupStat, groupInfo, groupBreakpoint, row]);
 
   /**
-   * 统计的选区只针对超过 1 个格子被选中的情况，
-   * 如果只选中了一个单元格，则无需获取选区记录。
+   * The statistical selection is only for cases where more than 1 cell is selected.
+   * If only one cell is selected, there is no need to get the selection record.
    */
   const multiSelection = useMemo(() => {
     const isMultiSelection = hasLargeSelection(selectRanges?.[0], recordRanges);

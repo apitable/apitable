@@ -1,5 +1,5 @@
 /*
- * React 全局 crash 时显示的 fallback 页面
+ * The fallback page displayed when the React global crashes
  */
 import { Button, colorVars, LinkButton, Typography } from '@vikadata/components';
 import { Strings, t } from '@apitable/core';

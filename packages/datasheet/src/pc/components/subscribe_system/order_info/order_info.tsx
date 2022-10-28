@@ -99,7 +99,6 @@ export const OrderInfo: React.FC<IOrderInfo> = (props) => {
       }
       if (pay === 1) {
         pingpp.setUrlReturnCallback(function(err, url) {
-          // 自行处理跳转或者另外打开支付页面地址(url)
           const _url = new URL(url);
           setAliPayUrl(`https://${_url.hostname}${_url.pathname}${_url.search}`);
         }, ['alipay_pc_direct', 'alipay_wap']);
@@ -189,7 +188,6 @@ export const OrderInfo: React.FC<IOrderInfo> = (props) => {
           </span>
         </p>
       }
-      {/* 二维码 */}
       {
         getQrCode
       }

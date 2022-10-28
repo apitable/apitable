@@ -12,7 +12,7 @@ interface IUrlDiscernProp {
  * @param props 
  * string 
  * @returns 
- * 将字符串进行拆分将URL添加可点击功能
+ * Splitting strings to add clickable functionality to URLs
  */
 export const UrlDiscern: React.FC<IUrlDiscernProp> = props => {
   const { value = '' } = props;
@@ -25,7 +25,7 @@ export const UrlDiscern: React.FC<IUrlDiscernProp> = props => {
     return null;
   };
 
-  // 点击链接时校验 URL 合法性
+  // Verify URL legitimacy when clicking on links
   const _handleEnhanceTextClick = useEnhanceTextClick();
   const handleURLClick = (e: React.MouseEvent, type: SegmentType | FieldType, text: string) => {
     stopPropagation(e);

@@ -228,9 +228,10 @@ type FormValidation = FieldValidation & {
 export type IThemeProps<T = any> = Omit<IFormProps<T>, 'schema'>;
 
 export interface INodeSchema {
-  // 描述节点数据类型
+  // Description of the node data type
   schema: JSONSchema7;
-  // 对 IJsonSchema 的扩充。控制表单的 ui，即 react json schema form 中的 uiSchema，这里放在描述的数据的 schema 中。
+  // An extension to IJsonSchema. The ui of the control form, i.e. the uiSchema in the react json schema form, 
+  // is placed here in the schema of the described data.
   uiSchema?: object;
 }
 

@@ -28,7 +28,7 @@ export const FieldSelectModal: React.FC<IFieldSelectModalProps> = (props: IField
   const [collection, setCollection] = useState([...fieldIdCollection]);
   const [query, setQuery] = useState('');
 
-  // 排除 当前字段、计算字段 和 无法编辑 的字段类型
+  // Exclude current fields, computed fields, and field types that cannot be edited
   const filteredColumns = useMemo(() => {
     const computedFields = new Set([
       FieldType.Formula,
@@ -46,7 +46,6 @@ export const FieldSelectModal: React.FC<IFieldSelectModalProps> = (props: IField
     });
   }, [columns, fieldMap, currentFieldId]);
 
-  // 搜索结果
   const searchedColumns = useMemo(() => {
     return filteredColumns.filter(column => fieldMap[column.fieldId].name.includes(query));
   }, [fieldMap, filteredColumns, query]);

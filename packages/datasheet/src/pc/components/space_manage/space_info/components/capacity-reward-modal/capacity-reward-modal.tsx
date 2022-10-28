@@ -46,11 +46,10 @@ export const CapacityRewardModal: FC<ICapacityRewardModalProps> = ({ onCancel })
       render(source, record) {
         const templateFn =
           {
-            subscription_package_capacity: () => t(Strings.capacity_from_subscription_package), // 订阅套餐
-            official_gift_capacity: () => t(Strings.capacity_from_official_gift), // 官方赠送
-            purchase_capacity: () => t(Strings.capacity_from_purchase), // 购买容量
+            subscription_package_capacity: () => t(Strings.capacity_from_subscription_package),
+            official_gift_capacity: () => t(Strings.capacity_from_official_gift),
+            purchase_capacity: () => t(Strings.capacity_from_purchase),
             participation_capacity: () => {
-              // 邀请新用户赠送
               const inviteUserInfo = record.inviteUserInfo;
               if (!inviteUserInfo) return null;
               const userId = inviteUserInfo.userId;

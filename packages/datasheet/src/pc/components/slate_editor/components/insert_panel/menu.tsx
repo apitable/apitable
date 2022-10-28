@@ -34,7 +34,7 @@ export const Menu: FC<IMenuProps> = (({ menus, active, onMenuClick }) => {
           const key = `${groupIndex}-${menuIdx}`;
           return <li
             className={styles.menuItem}
-            // 防止编辑器失焦
+            // Prevent the editor from losing focus
             onMouseDown={onMenuClick}
             data-active={key === active}
             key={key}

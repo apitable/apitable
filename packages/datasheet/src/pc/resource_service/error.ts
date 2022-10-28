@@ -17,7 +17,8 @@ export const onError: IServiceError = (error, type) => {
 
     let modalType = error.modalType || 'error';
     let contentMessage = errorMessage + `(${errorCode})`;
-    // TODO: 临时方案，表单及数表无权限插入或编辑需要报不同的错误以及不同错误码报错需要不同文案
+    // TODO: Temporary solutions, forms and tables without permission to insert or edit need to report different errors and 
+    // different error codes to report errors need different copy
     if(errorCode == StatusCode.NOT_PERMISSION || errorCode == StatusCode.NODE_NOT_EXIST) {
       modalType = 'warning';
       contentMessage = /fom\w+/.test(window.location.href) && errorCode == StatusCode.NOT_PERMISSION ?

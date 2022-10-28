@@ -22,7 +22,6 @@ export const CardText: React.FC<ICardTextProps> = ({ cellValue, field, maxLine, 
   const style: React.CSSProperties = { width: '100%' };
   if (autoHeight) {
     const contentHeight = getVietualFieldHeight(field, maxLine);
-    // 移除自适应，性能需要（写死高度后可以省略 use_card_height 高度计算），将 max-height 改为 height
     style.height = contentHeight;
     style.marginTop = isColNameVisible ? 4 : 0;
     style.marginBottom = 8;

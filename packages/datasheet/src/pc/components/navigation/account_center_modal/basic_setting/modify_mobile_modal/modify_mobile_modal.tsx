@@ -45,7 +45,7 @@ export const ModifyMobileModal: FC<IModifyMobileModalProps> = (props) => {
     identifyingCode: string;
   }>(defaultState);
   const { setMobileModal, data } = props;
-  // 表示操作是验证原手机号还是更换手机号
+  // Indicates whether the operation is to verify the original cell phone number or to change the cell phone number
   const [isChangeMobile, setIsChangeMobile] = useState(false);
   const [errMsg, setErrMsg] = useSetState<{
     accountErrMsg: string;
@@ -63,14 +63,12 @@ export const ModifyMobileModal: FC<IModifyMobileModalProps> = (props) => {
     setState({ areaCode: data.areaCode, account: data.mobile });
   }, [data, setState]);
 
-  // 表示是否在加载中
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const handleCancel = () => {
     setMobileModal(false);
   };
 
-  // 校验绑定手机操作的验证码
   const handleBindMobileCheck = () => {
     if (!isPhoneNumber(state.account, state.areaCode)) {
       setErrMsg({
@@ -89,11 +87,10 @@ export const ModifyMobileModal: FC<IModifyMobileModalProps> = (props) => {
     bindMobile();
   };
 
-  // 校验解除绑定手机操作的验证码
+  // Verify the verification code for unbinding cell phone operation
   const handleUnBindMobileCheck = () => {
     smsCodeVerify();
   };
-  // 校验验证码
   const smsCodeVerify = () => {
     setLoading(true);
     Api.smsVerify(state.areaCode, state.account, state.identifyingCode).then(
@@ -111,7 +108,6 @@ export const ModifyMobileModal: FC<IModifyMobileModalProps> = (props) => {
     );
   };
 
-  // 绑定新手机
   const bindMobile = () => {
     setLoading(true);
     Api.bindMobile(state.areaCode, state.account, state.identifyingCode).then(
@@ -143,7 +139,7 @@ export const ModifyMobileModal: FC<IModifyMobileModalProps> = (props) => {
     );
   };
 
-  // 手机号或区号改变
+  // Cell phone number or area code change
   const handlePhoneChange = (areaCode: string, phone: string) => {
     if (errMsg.accountErrMsg) {
       setErrMsg({ accountErrMsg: '' });
@@ -162,7 +158,6 @@ export const ModifyMobileModal: FC<IModifyMobileModalProps> = (props) => {
     setState({ identifyingCode: value });
   };
 
-  // 更换手机号页面
   const changeMobilePage = () => {
     return (
       <div className={styles.modifyNameWrapper}>
@@ -194,7 +189,6 @@ export const ModifyMobileModal: FC<IModifyMobileModalProps> = (props) => {
     );
   };
 
-  // 验证手机号页面
   const checkMobilePage = () => {
     if (!data.mobile) {
       return;

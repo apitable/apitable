@@ -36,10 +36,10 @@ export const CellValueContainerFC: React.FC<ICellValueContainer> = props => {
   const fieldId = columns[actualColumnIndex] && columns[actualColumnIndex].fieldId;
   const currentCell = { recordId, fieldId };
   const groupHeadRecordId = row.groupHeadRecordId;
-  // 行头显示的行号
+  // Row number displayed in the line header
   const displayRowIndex = row.displayIndex;
 
-  // 组件大规模渲染的时候，合并 useSelector 可以获得显著的性能提升
+  // Merging useSelector can result in significant performance gains when components are rendered at scale
   const {
     field,
     cellValue,
@@ -108,7 +108,6 @@ export const CellValueContainerFC: React.FC<ICellValueContainer> = props => {
       return Range.bindModel(selectionRange).contains(state, currentCell);
     })();
     return {
-
       field,
       cellValue,
       isRowDragging: dragTarget.recordId === recordId,
@@ -148,14 +147,14 @@ export const CellValueContainerFC: React.FC<ICellValueContainer> = props => {
   })();
 
   /**
-   * 1. 查询当前表格&当前视图下，所有的协同光标。
-   * 2. 判断当前单元格是否有其他协同人员
-   * 3. 协同光标根据 hash(userId+socketId) 映射到彩虹色轮上
-   * TODO: 目前是每次进入房间按规则随机颜色，后续可能加入配置项
+   * 1. Query all the collaborative cursors under the current table & current view.
+   * 2. Determine if there are other collaborators in the current cell
+   * 3. Co-cursor is mapped to the rainbow color wheel based on hash(userId+socketId)
+   * TODO: At present, each time you enter the room according to the rules of random color, the subsequent may add configuration items
    */
   let addCollaboratorStyle = {};
   if (collaboratorCell.length) {
-    // 协作单元格线框颜色，以最后激活单元格的协作者为准。
+    // Collaboration cell wireframe color, based on the collaborator of the last activated cell.
     const collaborator = collaboratorCell.reduce((a, b) => a > b ? a : b);
     const color = getCollaboratorColor(collaborator);
     addCollaboratorStyle = {
@@ -164,34 +163,29 @@ export const CellValueContainerFC: React.FC<ICellValueContainer> = props => {
   }
   let operateHeadClass = '';
   if (isRowDragging) {
-    // 拖动行，原始行的背景效果
+    // Dragging the row, the background effect of the original row
     cellClass = classNames(cellClass, styles.originRow);
     operateHeadClass = styles.originRow;
   } else if (recordChecked) {
-    // 点击复选框效果
+    // The effect of clicking the checkbox
     cellClass = classNames(cellClass, styles.select);
     operateHeadClass = styles.select;
   } else if (isActiveRow || isHoverLine) {
-    // 当前有激活选区的那一行增加背景,或者
-    // 当前被 hover 的那一行增加背景
+    // Add a background to the line that currently has an active selection or hover
     cellClass = classNames(cellClass, styles.editActiveLine);
     operateHeadClass = styles.editActiveLine;
   } else {
     cellClass = classNames(cellClass);
   }
 
-  // 当前激活的cell
   if (isActive) {
     cellClass = classNames(cellClass, styles.activeCell, 'activeCell');
   }
 
-  // 行高类
   cellClass = classNames(cellClass, styles['rowHeight' + rowHeightLevel || RowHeightLevel.Short]);
 
-  // 选区背景
   isCellInSelection && (cellClass = classNames(cellClass, styles.selected));
 
-  // 填充区域背景
   isCellInFillSelection && (cellClass = classNames(cellClass, styles.willFilledCell));
 
   let width = parseInt(style.width as string, 10);
@@ -262,7 +256,7 @@ export const CellValueContainerFC: React.FC<ICellValueContainer> = props => {
           width:
             (style.width && actualColumnIndex === 0) ?
               (parseInt(style.width as string, 10) - OPERATE_COLUMN_WIDTH) : '',
-          height: isActive ? 'max-content' : (style.height as number) - 1, // 减去1个像素，保证边框可以显示出来
+          height: isActive ? 'max-content' : (style.height as number) - 1, // Subtract 1 pixel to ensure that the border can be displayed
           minHeight: (style.height as number) - 1,
           borderBottom: !collaboratorCell.length && groupInfo.length ?
             ' 1px solid ' + (isActive ? 'transparent' : colors.shadowColor) : '',

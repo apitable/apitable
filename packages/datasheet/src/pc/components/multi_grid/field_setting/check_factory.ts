@@ -20,19 +20,19 @@ export const checkComputeRef = (curField: string | ILookUpField | IFormulaField)
     const currSnapshot = Selectors.getSnapshot(state, datasheetId);
     const fieldMap = currSnapshot?.meta.fieldMap;
     const draftFieldMap = { ...fieldMap, [curField.id]: curField };
-    // 利用收集依赖的循环引用检查，判断是否发生了循环 lookup;
+    // Use the circular reference check of the collection dependency to determine if a circular lookup has occurred;
     const draftComputeRefManager = new ComputeRefManager(
       new Map(globalComputeRefManager.refMap),
       new Map(globalComputeRefManager.reRefMap),
     );
-    // !!! 这里是模拟判断是否发生循环引用，不要将 draft 的引用关系，加入到缓存中。
+    // Here is the simulation to determine whether circular references occur, do not add the reference relationship of draft, to the cache.
     draftComputeRefManager.computeRefMap(draftFieldMap, datasheetId, state, false);
 
-    // 允许构造循环依赖时，不做检查直接返回。
+    // Allow constructing loop dependencies to be returned directly without checking.
     if (getTestFunctionAvailable('allowFieldLoopRef')) {
       return curField;
     }
-    // 判断是否存在循环依赖, 如果要构造循环依赖的字段，可以注释掉这里。
+    // Determine if there is a circular dependency, and comment out this field if you want to construct a circular dependency.
     if (!draftComputeRefManager.checkRef(`${datasheetId}-${curField.id}`)) {
       throw Error(t(Strings.field_circular_err));
     }
@@ -64,7 +64,7 @@ export class CheckFieldSettingBase {
     });
   }
 
-  // 神奇表单中新增列时pageParams拿不到datasheetId
+  // PageParams can't get datasheetId when adding columns in magic form
   static checkStream(curField: IField, datasheetId?: string) {
     return compose(
       CheckFieldSettingBase.checkFieldNameLen,
@@ -74,7 +74,7 @@ export class CheckFieldSettingBase {
 }
 
 class CheckFieldOption {
-  // 检查是否存在选项配置
+  // Check for the presence of option configurations
   static isExitOption(curField: IMultiSelectField | ISingleSelectField): boolean {
     if (!curField.property || !curField.property.options) {
       return false;

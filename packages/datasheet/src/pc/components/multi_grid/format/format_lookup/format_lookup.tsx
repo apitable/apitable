@@ -206,13 +206,13 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
             ...currentField.property,
             [propertyKey]: value,
             ...newProperty,
-            datasheetId: activeDstId, // WARN: 非常重要
+            datasheetId: activeDstId,
           },
         };
         const showFormatType = getFieldValueType(newField);
         setCurrentField(assignDefaultFormatting(showFormatType, newField));
       };
-      // 切换关联列会导致筛选数据清空，给出提示
+      // Switching link field will cause the filter data to be cleared, giving a hint
       if (propertyKey === 'relatedLinkFieldId' && openFilter) {
         Modal.confirm({
           title: t(Strings.operate_info),
@@ -222,7 +222,7 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
           onOk: () => updateField({ openFilter: false, filterInfo: undefined }),
         });
       } else if (
-        // 关闭筛选按钮会导致筛选数据清空，给出提示
+        // Closing the filter button will cause the filter data to be cleared, giving a prompt
         propertyKey === 'openFilter' &&
         openFilter &&
         Boolean(filterInfo && filterInfo.conditions.length > 0)

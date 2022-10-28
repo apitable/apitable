@@ -12,7 +12,6 @@ import { LineSearchInput } from './line_search_input';
 
 import styles from './styles.module.less';
 
-// 搜索框，尾部，最大，最小
 const SEARCH_HEIGHT = 48;
 const FOOTER_HEIGHT = 40;
 const MAX_HEIGHT = 336;
@@ -91,7 +90,7 @@ export const CommonList: React.FC<ICommonListProps> & { Option: React.FC<IOption
     const subHeaderHeight = showInput ? SEARCH_HEIGHT : 0;
     const subFooterHeight = footerComponent && Boolean(footerComponent()) ? FOOTER_HEIGHT : 0;
     const actualHeight = restHeight - subHeaderHeight - subFooterHeight;
-    // 判断是否大于剩余高度
+    // Determine if it is greater than the remaining height
     let finalHeight = 0;
     if (ele.clientHeight > restHeight) {
       finalHeight = actualHeight < MIN_HGEIGHT ? MIN_HGEIGHT : actualHeight;
@@ -114,7 +113,7 @@ export const CommonList: React.FC<ICommonListProps> & { Option: React.FC<IOption
     parent.classList.add(CLS);
   }, [restHeight, showInput, footerComponent, listRef, containerRef]);
 
-  // 监听滚动变化，添加可滚动提示色值
+  // Listen for scrolling changes and add scrollable hint color values
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const ele = e.target as HTMLElement;
     const parent = ele.parentElement as HTMLElement;
@@ -129,7 +128,7 @@ export const CommonList: React.FC<ICommonListProps> & { Option: React.FC<IOption
     parent.classList.add(CLS);
   };
 
-  // TODO: 加一个节流
+  // TODO: Add throttle
   const changInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target!.value);
     onSearchChange && onSearchChange(e, e.target!.value);
@@ -223,7 +222,7 @@ export const CommonList: React.FC<ICommonListProps> & { Option: React.FC<IOption
 
   return (
     <div ref={containerRef} tabIndex={0} onKeyDown={keydownForContainer} className={classNames(styles.listContainer, className)}>
-      {/* 搜索部分 */}
+      {/* Search section */}
       {showInput && (
         <div className={styles.searchField} style={inputStyle}>
           <LineSearchInput
@@ -241,7 +240,7 @@ export const CommonList: React.FC<ICommonListProps> & { Option: React.FC<IOption
           />
         </div>
       )}
-      {/* 列表部分 */}
+      {/* List section */}
       {(showNoDataTip || showNoSearchResult) && <span className={styles.noResult}>{showNoDataTip ? _noDataTip : _noSearchResultTip}</span>}
       {Boolean(childrenCount) && (
         <div>

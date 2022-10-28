@@ -5,8 +5,10 @@ import { getTestFunctionAvailable } from '../utils/storage';
 import { dispatch, remoteStoreWrap } from './store';
 
 /**
- * comlinkStore 类似于一个全双工的socket服务，主线程可以通过storeComlink.proxy命令式的调用worker实例的方法
- * 同时worker实例也会主动推送一些消息来更新主线程的redux，以此来更新UI，主动推送的data数据为一个redux的action
+ * comlinkStore is similar to a full-duplex socket service, 
+ * where the main thread can call the worker instance's methods imperatively via storeComlink.proxy.
+ * At the same time the worker instance will also actively push some messages to update the redux of the main thread, 
+ * so as to update the UI, actively pushing the data data for a redux action
 */
 export const comlinkStore:
 { worker: Worker | null, proxy: Remote<any> | null, store: Store<IReduxState> & { removeCache: (params: any[]) => void } | null }
@@ -22,7 +24,7 @@ export async function initWorkerStore() {
     worker.addEventListener('message', (e: any) => {
       if (typeof e.data === 'string') {
         const data = JSON.parse(e.data);
-        // worker主动发送的一些action消息，如将一些计算好的数据主动推送到主线程store
+        // Some action messages sent by the worker, such as pushing some calculated data to the main thread store
         // console.log('worker data post spend time: ', Date.now() - data.postTime);
         // console.log('dispatch action from worker', data.action);
         dispatch(data.action);
@@ -33,7 +35,7 @@ export async function initWorkerStore() {
           const state = comlinkStore.store!.getState();
           const datasheet = Selectors.getDatasheet(state, datasheetId);
           if (datasheet) {
-            console.log('从主线程的store补发数据到worker', datasheet);
+            console.log("Replenish data from the main thread's store to the worker", datasheet);
             comlinkStore.store!.dispatch({
               ...StoreActions.receiveDataPack({ snapshot: datasheet.snapshot, datasheet }, datasheet.isPartOfData, () => state),
               dispatchToStore: DispatchToStore.Remote
@@ -50,7 +52,7 @@ export async function initWorkerStore() {
   comlinkStore.proxy = proxy;
   comlinkStore.store = wrappedStore;
   if (useWorker) {
-    console.log('worker 初始化成功', comlinkStore);
+    console.log('worker initialization successful', comlinkStore);
   }
   return comlinkStore;
 }

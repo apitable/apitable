@@ -49,13 +49,11 @@ export const HandleMsg = (props: ICard) => {
     }
   });
   const isAskForJoining = isAskForJoiningMsg(data);
-  // 已处理消息，并且是“申请加入的消息“
   if (isProcessed && isAskForJoining) {
     const applyStatus = data.notifyBody.extras?.applyStatus;
     return <JoinMsgApplyStatus status={applyStatus} />;
   }
 
-  // 未处理消息，并且是“申请加入的消息“
   if (!isProcessed && isAskForJoining) {
     return (
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
@@ -71,7 +69,6 @@ export const HandleMsg = (props: ICard) => {
     );
   }
 
-  // 未处理消息，不是“申请加入的消息“
   if (!isProcessed && !isAskForJoining) {
     return (
       <>
@@ -92,6 +89,5 @@ export const HandleMsg = (props: ICard) => {
       </>
     );
   }
-  // 已处理消息，不是““申请加入的消息”
   return <></>;
 };

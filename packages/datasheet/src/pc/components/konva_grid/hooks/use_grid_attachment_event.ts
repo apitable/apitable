@@ -33,7 +33,7 @@ export const useAttachmentEvent = (props) => {
     };
   }, shallowEqual);
 
-  const wheelingRef = useRef<number | null>(null); // 存储定时器，保证操作流畅性
+  const wheelingRef = useRef<number | null>(null);
   const [draggingOutlineInfo, setDraggingOutlineInfo] = useState<{ rowIndex: number; columnIndex: number; } | null>(null);
   const { frozenColumnWidth } = instance;
 

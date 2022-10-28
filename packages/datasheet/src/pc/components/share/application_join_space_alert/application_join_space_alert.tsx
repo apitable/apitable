@@ -24,7 +24,6 @@ export const ApplicationJoinSpaceAlert: FC<IApplicationJoinSpaceAlertProps> = ({
   const colors = useThemeColors();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  /** 表示是否开启最小化模式 */
   const [minimized, setMinimized] = useState(isMobile ? true : !defaultVisible);
   const { applyJoinSpaceReq } = useSpaceRequest();
   const { run: applyJoinSpace } = useRequest(applyJoinSpaceReq, { manual: true });

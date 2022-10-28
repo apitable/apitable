@@ -23,7 +23,7 @@ interface IFieldHeadProps {
   height: number;
   field: IField;
   columnIndex: number;
-  iconVisible: boolean; // 是否显示图标，鼠标移入时显示，否则隐藏
+  iconVisible: boolean; // Show icon or not, show when mouse over, otherwise hide
   permissionInfo?: (string | FC<IIconProps>)[] | null;
   isSelected: boolean;
   isHighlight: boolean;
@@ -63,7 +63,7 @@ export const FieldHead: FC<IFieldHeadProps> = memo((props) => {
       2 * (GRID_CELL_VALUE_PADDING + GRID_ICON_COMMON_SIZE + FIELD_HEAD_ICON_GAP_SIZE) : 
       2 * GRID_CELL_VALUE_PADDING + GRID_ICON_COMMON_SIZE + FIELD_HEAD_ICON_GAP_SIZE
   );
-  // 「默认列头高度」模式下，换行符转成空格完整显示
+  // Line feeds are converted to spaces for full display in "Default column header height" mode.
   const fieldName = _autoHeadHeight ? _fieldName : _fieldName.replace(/\r|\n/g, ' ');
   const isGanttNoWrap = viewType === ViewType.Gantt && !autoHeadHeight;
 

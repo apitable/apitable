@@ -41,7 +41,7 @@ const webhookJsonSchema = {
 export const RobotRunHistoryActionDetail = (props: IRobotRunHistoryActionDetail) => {
   const { nodeDetail } = props;
 
-  // TODO: 删掉
+  // TODO: Remove
   const nodeType = produce(props.nodeType, nodeType => {
     if (nodeType.endpoint === 'sendRequest') {
       nodeType.outputJsonSchema = { ...webhookJsonSchema };

@@ -1,5 +1,5 @@
-# 虚拟单元格
+# Virtual Cells
 
-当前文件夹中的 cell 不是真实数据中存在的单元格，而是用于布局/统计/功能类的单元格
+The cells in the current folder are not cells that exist in the real data, but cells for layout/statistics/functional classes
 
-不承载数据渲染类的工作。
+Does not carry data rendering type of work.

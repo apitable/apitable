@@ -71,7 +71,7 @@ interface IMyAppProps {
   pathUrl: string;
 }
 
-const initWorker = async () => {
+const initWorker = async() => {
   const comlinkStore = await initWorkerStore();
   // Initialization functions
   initializer(comlinkStore);
@@ -214,10 +214,10 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
   }, []);
 
   useEffect(() => {
-    (function () {
+    (function() {
       const _Worker = window.Worker;
       if (typeof _Worker === 'function') {
-        window.Worker = function (url: string, opts: any) {
+        window.Worker = function(url: string, opts: any) {
           if (url.startsWith('//')) {
             url = `${window.location.protocol}${url}`;
           } else if (url.startsWith('/')) {

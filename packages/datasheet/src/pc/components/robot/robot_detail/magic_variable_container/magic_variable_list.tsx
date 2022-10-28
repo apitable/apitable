@@ -18,10 +18,10 @@ export const SchemaPropertyList = (props: ISchemaPropertyListProps) => {
     return map;
   }, {});
   const theme = useTheme();
-  // 是否存在原型属性/方法，如果有则分组。
+  // Whether there are prototype properties/methods, and if so, group them.
   const hasPrototype = list.some(item => item.isPrototype);
 
-  // 没有布局要求，直接按顺序排列
+  // No layout requirements, directly in order
   if (!hasPrototype && (!layout || !listItemMap)) {
     return <>
       {

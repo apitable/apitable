@@ -1,21 +1,21 @@
 # RecordCard 
 
-在相册视图和看板视图中的展示卡片
+Showcards in Gallery View and Kanban View
 
 
-## 高度计算
+## Height calculation
 
-卡片无需关心自己整体的高度，只需要考虑空值字段是否展示内容，空值字段的占位高度。
+The card does not need to care about its overall height, it only needs to consider whether the empty value field displays content and the occupancy height of the empty value field.
 
-相应的卡片高度计算交给父组件完成。传递给 react-window 的 grid / list， 用于计算虚拟滚动的 padding。
+The corresponding card height calculation is done by the parent component. The grid / list passed to the react-window is used to calculate the padding for virtual scrolling.
 
-### 卡片高度计算逻辑
+### Card height calculation
 
 + padding-top 8px 
 + header 
 + body 
-  + 标题
-  + sum（字段名+字段值）
+  + title
+  + sum（fieldName + cellValue）
 + padding-bottom 8px
 
-简化： header + body + 8*2 
+Simplify: header + body + 8*2 

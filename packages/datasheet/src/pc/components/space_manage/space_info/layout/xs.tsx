@@ -20,7 +20,6 @@ export const Xs = (props: ILayoutProps) => {
   } = useCards(props);
 
   return <div className={styles.lg} >
-    {/* 第一列 */}
     <Block isWrap vertical style={{ overflow: 'hidden' }}>
       <Block flex={43}>
         <InfoCard minHeight={476} />

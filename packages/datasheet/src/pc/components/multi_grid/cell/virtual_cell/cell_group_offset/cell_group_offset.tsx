@@ -21,8 +21,7 @@ interface ICellGroupOffset {
 }
 
 /**
- * 
- * 处理好分组情况下，首列和尾列的 border 边界
+ * Handle the border boundaries of the first and last columns in the case of grouping
  */
 export const CellGroupOffset: React.FC<ICellGroupOffset> = React.memo(({
   children, groupLength, actualColumnIndex, style, row, columnsLength, needOffsetBorderBottom, nextRow,
@@ -86,7 +85,6 @@ export const CellGroupOffset: React.FC<ICellGroupOffset> = React.memo(({
         groupLength - 2 > -1 && new Array(groupLength - 2).fill('').map((item, index) => {
           const hasBorderRight = () => {
             if (row.type === CellType.Blank) {
-              // 不是通项写法。
               return row.depth === 2;
             }
             if (row.type === CellType.GroupTab) {

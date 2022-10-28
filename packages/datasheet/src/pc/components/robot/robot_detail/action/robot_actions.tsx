@@ -64,7 +64,7 @@ export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onSc
     triggerTypes,
     trigger,
   });
-  // 无trigger 时候引导创建 trigger
+  // Guides the creation of a trigger when there is no trigger
   // <NodeForm schema={triggerUpdateForm as any} onSubmit={handleUpdateFormChange} />
   return (
     <Box

@@ -305,7 +305,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     return targetName === KONVA_DATASHEET_ID.GRID_FIELD_HEAD_OPACITY_LINE;
   };
 
-  // 获取统计菜单位置信息
+  // Get statistics menu position information
   const getStatPositionInfo = (columnIndex: number, rowIndex?: number | null) => {
     const currentColumn = visibleColumns[columnIndex];
     const columnWidth = Selectors.getColumnWidth(currentColumn);
@@ -521,7 +521,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     };
   });
 
-  // 兼容 iPad 无法触发 click 事件的问题
+  // Compatible with iPad not triggering click event issue
   useEffect(() => {
     if (!isIPad13) return;
     const element = wrapperRef!.current;
@@ -534,7 +534,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
 
   function isClickInExpandModal(e: MouseEvent) {
     const modalRoot = document.querySelector('.ant-modal-root');
-    // 侧边展示的记录卡片，点击它时也不让单元格失焦
+    // The expand card displayed on the side doesn't let the cell go out of focus even when you click on it
     const sideRecordContainer = document.getElementById(DATASHEET_ID.SIDE_RECORD_PANEL);
     if ((modalRoot && modalRoot.contains(e.target as HTMLElement)) || (sideRecordContainer && sideRecordContainer.contains(e.target as HTMLElement)))
       return true;
@@ -545,7 +545,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     if (isClickInExpandModal(e)) return;
     if (getParentNodeByClass(e.target as HTMLElement, ['vikaGridView', 'hideenFieldItem'])) return;
 
-    // canvas 模式下判断点击是否为滚动条
+    // Determine whether a click is a scrollbar under "canvas" mode
     const wrapperElement = wrapperRef.current;
     if (wrapperElement) {
       const horizontalScrollBar = wrapperElement.nextSibling;
@@ -703,7 +703,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
           }}
         >
           <div style={{ transform: `translate3d(-${scrollLeft}px, -${scrollTop}px, 0)` }}>
-            {/* 激活单元格滚动 */}
+            {/* The scrolling of active cell */}
             {scrollPosition != null && (
               <div
                 ref={cellVerticalBarRef}
@@ -729,7 +729,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
           </div>
         </div>
 
-        {/* 拖拽行/列 */}
+        {/* Drag and drop rows/columns */}
         <Drag
           width={containerWidth}
           height={containerHeight}
@@ -745,16 +745,16 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
         />
       </div>
 
-      {/* 分组组头菜单 */}
+      {/* Group header menu */}
       <GroupMenu parentRef={wrapperRef} getBoundary={getGroupMenuBoundary} />
 
-      {/* 统计栏菜单 */}
+      {/* Statistics column menu */}
       <StatMenu parentRef={wrapperRef} getBoundary={getStatMenuBoundary} />
 
-      {/* 统计栏右键菜单 */}
+      {/* The right-click menu of the statistics column */}
       <StatRightClickMenu parentRef={wrapperRef} getBoundary={getBottomStatMenuBoundary} />
 
-      {/* 右键菜单 */}
+      {/* Right-click menu */}
       <ContextMenu
         parentRef={wrapperRef}
         getIdMapByEvent={getIdMapByEvent}
@@ -763,12 +763,12 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
         onFrozenColumn={onFrozenColumn}
       />
 
-      {/* 列设置 */}
+      {/* Field setting */}
       {activeFieldId && activeFieldOperateType === FieldOperateType.FieldSetting && !document.querySelector(`.${EXPAND_RECORD}`) && (
         <FieldSetting scrollToItem={scrollToItem} />
       )}
 
-      {/* 列描述 */}
+      {/* Field Description */}
       {activeFieldId && activeFieldOperateType === FieldOperateType.FieldDesc && !document.querySelector(`.${EXPAND_RECORD}`) && (
         <FieldDesc fieldId={activeFieldId} datasheetId={datasheetId} readOnly={!permissions.descriptionEditable} />
       )}

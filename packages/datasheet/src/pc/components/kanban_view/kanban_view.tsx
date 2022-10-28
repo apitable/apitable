@@ -99,7 +99,7 @@ export const KanbanView: React.FC<IKanbanViewProps> = props => {
       return;
     }
     if (kanbanGroupMap[destination!.droppableId].length === 0) {
-      // 目标看板里没有任何内容
+      // There is nothing in the target kanban view
       command.setRecords(getRecordData(result) || []);
       return;
     }
@@ -209,16 +209,16 @@ export const KanbanView: React.FC<IKanbanViewProps> = props => {
     const { destination, source } = result;
     setDraggingInfo({ isDragging: false, dragId: '' });
     if (source.droppableId !== destination?.droppableId) {
-      // 跨看板拖动
+      // Dragging across kanban
       return dragWithinView(result);
     }
 
     if (source.droppableId === viewId && destination?.droppableId === viewId) {
-      // 看板的拖动
+      // Kanban dragging
       return dragGroup(result);
     }
 
-    // 当前看板内的拖动
+    // Dragging within the current kanban view
     dragWithinGroup(result);
   }
 
@@ -270,7 +270,7 @@ export const KanbanView: React.FC<IKanbanViewProps> = props => {
       const scrollLeft = target.scrollLeft;
       const left = target.getBoundingClientRect().left;
 
-      // 观察发现，原生滚动条里容器左边界的距离其实不是 scrollLeft, 而是 scrollLeft * rate
+      // Observe that the distance to the left border of the container in the native scrollbar is not scrollLeft, but scrollLeft * rate
       setToolTipLeft(left + scrollLeft * rate + scrollBarLen / 2);
     } else {
       setToolTipLeft(0);

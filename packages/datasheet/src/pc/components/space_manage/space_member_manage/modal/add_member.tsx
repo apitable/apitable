@@ -18,9 +18,9 @@ export const AddMember: FC<IAddMember> = ({ onCancel }) => {
   }), shallowEqual);
 
   const { teamAddMember } = useMemberManage();
-  // 小组已有成员
+  // The group already has members
   const [existMemberArr, setExistMemberArr] = useState<string[]>([]);
-  // 查询本小组下已有成员
+  // Check the existing members under this group
   useEffect(() => {
     if (!selectedTeamInfoInSpace) {
       return;

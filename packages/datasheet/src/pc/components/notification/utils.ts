@@ -33,7 +33,7 @@ const removeFirstV = (s: string): string => {
   return s;
 };
 
-// 判断当前用户是否未更新到新版本
+// Determine if the current user has not updated to the new version
 export const isUserInOldVersionOrLocal = (latestVersion: string) => {
   const curVersion = getInitializationData().version;
   if (!curVersion) return true;
@@ -44,7 +44,6 @@ export const isUserInOldVersionOrLocal = (latestVersion: string) => {
   );
 };
 
-// 处理点击事件
 export const stringToActions = (arr: string[], id: string, url?: string) => {
   arr.forEach(str => {
     const firstIndex = str.indexOf('(');
@@ -70,7 +69,6 @@ export const stringToActions = (arr: string[], id: string, url?: string) => {
   });
 };
 
-// 创建浏览器通知
 const createWebNotification = (data:{title?: string, options?: NotificationOptions | undefined, onClick?: ()=>void}) => {
   const { title = t(Strings.vikadata), options, onClick } = data;
   const webNotification = new Notification(title, {
@@ -82,7 +80,7 @@ const createWebNotification = (data:{title?: string, options?: NotificationOptio
     webNotification.onclick = onClick;
   }
 };
-// 验证浏览器通知的授权信息，根据结果显示浏览器通知
+// Validate the authorization information of browser notifications and display browser notifications according to the result
 export const requestWebNotification = (data:{title?: string, options?: NotificationOptions | undefined, onClick?: ()=>void}) => {
   if (window.Notification && Notification.permission === 'granted') {
     createWebNotification(data);

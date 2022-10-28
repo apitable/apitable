@@ -33,7 +33,7 @@ export const useScrollEvents = (direction: ScrollBarType, containerRef: React.Re
     bottom,
   } = bounds;
 
-  // 坐标转换: 将图坐标系转换为容器坐标系
+  // Coordinate conversion: Convert graph coordinate system to container coordinate system
   const leftInContainer = left * scale + translateX;
   const rightInContainer = right * scale + translateX + CARD_WIDTH * scale;
 
@@ -68,7 +68,7 @@ export const useScrollEvents = (direction: ScrollBarType, containerRef: React.Re
   useLayoutEffect(() => {
 
     if (direction === ScrollBarType.Horizontal) {
-      // 图的左边界离容器右边界的距离
+      // The distance of the left boundary of the graph from the right boundary of the container
       const scrollLeft = containerWidth - leftInContainer - BOUNDS_PADDING;
       if (containerRef.current) {
         containerRef.current.scrollTo({
@@ -78,7 +78,7 @@ export const useScrollEvents = (direction: ScrollBarType, containerRef: React.Re
       return;
     }
 
-    // 图的上边界离容器下边界的距离
+    // Distance of the upper boundary of the graph from the lower boundary of the container
     const scrollTop = containerHeight - topInContainer - BOUNDS_PADDING;
     if (containerRef.current) {
       containerRef.current.scrollTo({

@@ -8,8 +8,8 @@ export async function loadRecords(datasheetId: string, recordIds: string[]) {
   const client = Selectors.getDatasheetClient(state, datasheetId)!;
   const snapshot = Selectors.getSnapshot(state, datasheetId);
 
-  // 已经在加载中的要过滤掉
-  // 已加载过的也要过滤掉
+  // Filter out those that are already loading
+  // Loaded ones should also be filtered out
   recordIds = recordIds.filter(recordId => {
     return !client.loadingRecord[recordId] && !snapshot?.recordMap[recordId];
   });
@@ -25,9 +25,9 @@ export async function loadRecords(datasheetId: string, recordIds: string[]) {
     const recordRevision = res.data.data.revision;
     const recordMap = res.data.data.recordMap || {};
 
-    // TODO: 处理版本差距问题
+    // TODO: Handling version gaps
     if (recordRevision !== revision) {
-      console.warn('! ' + `records 版本: ${recordRevision}和 datasheet 版本: ${revision}不匹配！`);
+      console.warn('! ' + `records version: ${recordRevision} don't match datasheet version: ${revision}`);
     }
 
     const loadedRecordIds = recordIds.filter(recordId => {

@@ -2,22 +2,20 @@ export interface IRobotRunHistoryDetail {
   executedNodeIds: string[];
   nodeByIds: {
     [nodeId: string]: {
-      typeId: string; // trigger / action 的 typeId
+      typeId: string;
       input?: any;
       output?: any;
-      // 开始时间戳
       startAt?: number;
-      // 结束时间戳
       endAt?: number;
       errorStacks?: any[];
     }
   }
 }
 export interface IUISchemaLayoutGroup {
-  title: string; // 分组标题
+  title: string;
   items: string[];
 }
-// robot ui 用到的数据上下文
+
 export interface IRobotContext {
   triggerTypes: ITriggerType[];
   actionTypes: IActionType[];
@@ -254,7 +252,8 @@ export interface IJsonSchema {
 
 export interface INodeSchema {
   schema: IJsonSchema;
-  // 对 IJsonSchema 的扩充。控制表单的 ui，即 react json schema form 中的 uiSchema，这里放在描述的数据的 schema 中。
+  // An extension to IJsonSchema. 
+  // The ui of the control form, i.e. the uiSchema in the react json schema form, is placed here in the schema of the described data.
   uiSchema?: object;
 }
 

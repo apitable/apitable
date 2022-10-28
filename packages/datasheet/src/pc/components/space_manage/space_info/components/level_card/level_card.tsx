@@ -68,7 +68,7 @@ export const LevelCard: FC<ILevelCard> = ({ type, minHeight, deadline, className
       return null;
     }
     if (appType === 1) {
-      // 自建应用不允许订阅，续费和升级，统一联系客服
+      // Self-built applications do not allow subscriptions, renewals and upgrades, unified contact customer service
       return (
         <Button
           onClick={() => {
@@ -160,7 +160,7 @@ export const LevelCard: FC<ILevelCard> = ({ type, minHeight, deadline, className
             <span>{t(Strings.expiration, { date: expirationText })}</span>
           ) : (
             <span>
-              {/* 暂时隐藏支付记录入口 */}
+              {/* Temporarily hide the payment record portal */}
               {/* <a
                  className={styles.payRecord}
                  style={{ color: secondTextColor || strokeColor }} >

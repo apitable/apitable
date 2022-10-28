@@ -58,7 +58,7 @@ export const CellLookUp: React.FC<ICellProps> = props => {
     );
   }
 
-  // 非纯文本的字段原样展示
+  // Non-plain text fields are displayed as-is.
   switch (realField.type) {
     case FieldType.Attachment:
       return (
@@ -81,7 +81,7 @@ export const CellLookUp: React.FC<ICellProps> = props => {
       return (
         <CellLink {...commonProps} />
       );
-    // 文本逗号分割
+    // Text comma splitting
     case FieldType.Number:
     case FieldType.Percent:
     case FieldType.Currency:

@@ -41,7 +41,7 @@ export const SubmitInviteCode: FC<ISubmitInviteCode> = ({ submitAndSuccess, myIn
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let s = e.target.value;
-    s = s.replace(/[^\d]/g, ''); // 移除非数字字符
+    s = s.replace(/[^\d]/g, '');
     if (!loading && s.length < 8) {
       setErrMsg('');
     }

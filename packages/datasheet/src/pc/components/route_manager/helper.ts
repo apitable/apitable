@@ -46,9 +46,9 @@ const wrapper = (cb: (path: string) => void) => (path: string, query?: IQuery, c
 };
 
 /**
- * @return go 函数，拥有两个参数分别是
- *  @params path: 跳转的路径（不带 query 和 hash)
- *  @params query: 路径上携带的 query，例：{x: '1', y: '2'} 则等于 ?x=1&y=2
+ * @return go function, with two arguments that are
+ * @params path: The path to jump (without query and hash)
+ * @params query: The query carried on the path, e.g. {x: '1', y: '2'} is equivalent to ?x=1&y=2
  */
 export const getHistoryMethod = (method?: Method) => {
   switch (method) {
@@ -83,7 +83,7 @@ export function getNodeId() {
   return treeNodesMap[activeNodeId!].nodeId;
 }
 
-// 切换空间站之前，需要更新服务端 Session 中的 spaceId
+// Before switching the space station, you need to update the spaceId in the server session
 export const toggleSpace = async(spaceId?: string | null) => {
   if (!spaceId) {
     return;
@@ -96,10 +96,13 @@ export const toggleSpace = async(spaceId?: string | null) => {
   store.dispatch(StoreActions.setActiveSpaceId(spaceId));
 
   /**
-   * 原本是希望在 _app 中通过 getInitPoops 来获取 userInfo 的信息进行数据更新，但是经过测试，在当前版本的 next（12.3） 中，除了第一次加载页面 _app 的 props 会接收到 userInfo 的信息，
-   * 通过 router.push 的方式进行路由的切换，_app 中获取到的 props 为 undefined，导致无法及时更新 userInfo 的信息，使用 router.redirect 则能正常更新信息，但是这样的体验很差，页面会有刷新的效果。
-   *
-   * 因此决定使用 router.push 时，如果存在 spaceId 的参数，则手动刷新
+   * Originally, I wanted to get userInfo information from _app by gettingInitProps to update data, 
+   * but after testing, in the current version of next (12.3), except for the first page load, 
+   * _app's props will receive userInfo information and switch the route by router.push. 
+   * However, in the current version of next (12.3), except for the first load of the page, 
+   * the props of _app will receive the userInfo information, and the route switch by router.push, the props of _app is undefined, 
+   * so the userInfo information can't be updated in time, but the information can be updated normally by using router.redirect,
+   * so it was decided that when using router.push, if the spaceId parameter is present, it will be manually refreshed
    */
   try {
     const res = await Api.getUserMe({ spaceId });

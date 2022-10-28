@@ -1,6 +1,6 @@
 export interface IStoreAppInstance {
   appId: string;
-  appInstanceId: string; // 已经开启后的应用实例化的 id
+  appInstanceId: string; // The id of the application instantiated after it has been opened
   config: {
     type: AppType;
     profile: {
@@ -8,7 +8,7 @@ export interface IStoreAppInstance {
     }
   };
   createdAt: string;
-  isEnabled: boolean; // 后端存在三个状态，开启/停用/删除
+  isEnabled: boolean; // Three states exist on the backend, on/deactivate/delete
   spaceId: string;
   type: AppType;
 }

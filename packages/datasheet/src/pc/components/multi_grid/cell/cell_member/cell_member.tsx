@@ -49,7 +49,7 @@ export const CellMember: React.FC<ICellMember> = props => {
   }, [cellValueIncludeOldData]);
 
   useEffect(() => {
-    // 处理数据协同导致的成员信息缺失处理
+    // Handling of missing member information due to data synergy
     if (!cellValue) {
       return;
     }
@@ -114,7 +114,7 @@ export const CellMember: React.FC<ICellMember> = props => {
             .map((item, index) => {
               let unitInfo;
 
-              // 仅筛选时会出现 -> 当前用户标记
+              // The current user flag appears when filtering only
               if (item === OtherTypeUnitId.Self) {
                 const { uuid, unitId, memberName, nickName } = userInfo;
                 const currentUnit = {
@@ -165,6 +165,5 @@ export const CellMember: React.FC<ICellMember> = props => {
     );
   };
 
-  // Tooltip 只在必要的时候 render 以提升性能
   return MainLayout();
 };
