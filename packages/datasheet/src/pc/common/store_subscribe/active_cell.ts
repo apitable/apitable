@@ -14,7 +14,7 @@ store.subscribe(function activeCellChange() {
   if (!activeView) return;
 
   activeCell = Selectors.getActiveCell(state);
-  // 点击相同单元格。
+  // Click on the same cell.
   if (
     preActiveCell && activeCell
     && preActiveCell.recordId === activeCell.recordId
@@ -23,9 +23,9 @@ store.subscribe(function activeCellChange() {
     return;
   }
 
-  // gridView UI 在渲染时发现记录移动了，向缓存中添加 flag。
-  // 横向激活单元格时，发现存在 flag 则不再上报激活行信息。
-  // gridView UI 中发现激活行变化，删除缓存。
+  // gridView UI Add a flag to the cache when a record is found to have moved during rendering.
+  // When activating a cell horizontally, the presence of a flag is not reported as an active row.
+  // gridView UI The activation line change was found in the cache and the cache was deleted.
   if (
     preActiveCell && activeCell &&
     preActiveCell.recordId === activeCell.recordId
@@ -55,7 +55,7 @@ store.subscribe(function activeCellChange() {
     const _recordSnapshot = cloneDeep(recordSnapshot);
     Object.entries(fieldMap).forEach(item => {
       const [fieldId, field] = item;
-      // 记录下激活行，计算字段的值存储在 recordSnapshot 中，用于后续预排序比较。
+      // The active row is recorded and the value of the calculated field is stored in recordSnapshot for subsequent pre-sorting comparisons.
       if (Field.bindModel(field).isComputed) {
         computeFieldData[fieldId] = Selectors.getCellValue(state, snapshot, recordId, fieldId);
       }

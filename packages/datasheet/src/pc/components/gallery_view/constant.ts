@@ -1,19 +1,19 @@
 import { FieldType } from '@apitable/core';
 
-// 字段渲染组件如果不是 text 类，在这里声明字段在卡片中的展示高度。
+// The field rendering component declares here the height at which the field will be displayed in the card if it is not a text class.
 export const FIELD_HEIGHT_MAP = {
   [FieldType.Attachment]: 24,
   [FieldType.Checkbox]: 16,
   [FieldType.Link]: 25,
   [FieldType.SingleSelect]: 25,
   [FieldType.MultiSelect]: 25,
-  // 成员
+  // Member
   [FieldType.Member]: 26,
   [FieldType.CreatedBy]: 26,
   [FieldType.LastModifiedBy]: 26,
 };
 
-// 虚拟卡片对应的字段计算高度
+// The height of the field corresponding to the virtual card is calculated
 export const FIELD_HEIGHT_VIRTUAL_MAP = {
   [FieldType.Rating]: 16,
   [FieldType.Checkbox]: 16,
@@ -28,13 +28,13 @@ export const FIELD_HEIGHT_VIRTUAL_MAP = {
   [FieldType.DateTime]: 21,
   [FieldType.Link]: 20,
 
-  // 成员
+  // Member
   [FieldType.Member]: 24,
   [FieldType.CreatedBy]: 24,
   [FieldType.LastModifiedBy]: 24,
 };
 
-// 移动端虚拟卡片对应的字段计算高度
+// Height calculation for fields corresponding to virtual cards on mobile
 export const FIELD_HEIGHT_VIRTUAL_MAP_MOBILE = {
   ...FIELD_HEIGHT_VIRTUAL_MAP,
 
@@ -49,16 +49,16 @@ export const FIELD_HEIGHT_MAP_MOBILE = {
   [FieldType.Link]: 29,
   [FieldType.SingleSelect]: 29,
   [FieldType.MultiSelect]: 29,
-  // 成员
+  // Member
   [FieldType.Member]: 27,
   [FieldType.CreatedBy]: 27,
   [FieldType.LastModifiedBy]: 27,
 };
 
-// 不在 FIELD_HEIGHT_MAP 中的字段，都是以单行文本高度展示。
+// Fields that are not in FIELD_HEIGHT_MAP are displayed as a single line of text height.
 export const DEFAULT_SINGLE_TEXT_HEIGHT = 21;
 
-// 卡片大于等于这个宽度的时候显示缩略图，同时这个宽度也是超过 1920 px 后的固定卡片宽度
+// Thumbnails are displayed when the card is greater than or equal to this width, which is also the fixed card width beyond 1920 px
 export const SHOW_THUMBIAL_WIDTH = 336;
 
 export const PADDING_TOP = 32;
@@ -68,20 +68,20 @@ export const GROUP_TITLE_CHECKBOX_HEIGHT = 16;
 export const GROUP_TITLE_PERSON_HEIGHT = 20;
 export const PADDING_RIGHT = 18;
 export const PADDING_BOTTOM = 40;
-export const ONE_COLUMN_MODE_CONTAINER_WIDTH = 730; // 720 的固定卡片宽度 + 10
+export const ONE_COLUMN_MODE_CONTAINER_WIDTH = 730; // Fixed card width of 720 + 10
 export const ItemTypes = {
   CARD: 'card',
 };
 
 export enum GalleryGroupItemType {
-  // 普通卡片
+  // Regular Cards
   Card = 'Card',
-  // 添加卡片
+  // Add a card
   AddCard = 'AddCard',
-  // 空白卡片
+  // Blank Card
   BlankCard = 'BlankCard',
-  // 分组头标题
+  // Subgroup headings
   GroupTitle = 'GroupTitle',
-  // 分组头占位空白
+  // Grouping head occupancy gap
   GroupHeadBlank = 'GroupHeadBlank',
 }

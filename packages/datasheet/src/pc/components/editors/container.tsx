@@ -85,7 +85,7 @@ type EditorContainerProps = IEditorContainerOwnProps & IEditorContainerBaseOwnPr
 
 const CELL_EDITOR = 'CELL_EDITOR';
 
-// TODO: 区分 SimpleEditor 和 customEditor
+// TODO: Distinguish between SimpleEditor and customEditor
 const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, EditorContainerProps> = (props, ref) => {
   useImperativeHandle(
     ref,
@@ -131,21 +131,22 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
   const activeView = useSelector(state => Selectors.getCurrentView(state));
   const visibleRows = useSelector(state => Selectors.getVisibleRows(state));
 
-  // FIXME: 这里还是使用组件内部 editing 控制状态，使用 redux 的 isEditing 状态，编辑框会闪烁一下。
+  // FIXME: Here we are still using the component's internal editing control state, using redux's isEditing state, the edit box will blink a little.
   const [editing, setEditing] = useState(false);
   const editorX = !editing ? 0 : -scrollLeft!;
   const editorY = !editing ? 0 : -scrollTop!;
   const editorRef = useRef<IEditor | null>(null);
   /**
-   * activeCellRef 的存在是为了解决单多选，成员这类通过弹出组件交互的字段，显著特点是这类组件具备在 editing 和 !editing 之间切换的能力
-   * 流程上，点击不同的单元格， 保存上一个单元格的数据 -> 激活下一个单元格，点击自身则不应该发生变化
-   * 单多选的另一个特殊在于编辑组件没有悬浮在相应的单元格上，导致每次对单元格的点击都会触发上述正常的流程，editing 的状态切换会被打破，那就永远也无法正常展示组件。
-   * 所以需要用一个值用于记忆 「上一次」 的单元格是谁，那针对单多选，就可以由此判断是否再点击同一个单元格，阻止对 editing 状态切换的破坏
+   * activeCellRef exists to address single-multi-select, member fields that are interacted with via pop-up components, 
+   * notable for their ability to switch between editing and !
+   * The flow is such that clicking on a different cell saves the data of the previous cell -> activates the next cell, 
+   * clicking on itself should not change it
+   * Another special feature of single-multi-selection is that the editing component is not hovered over the corresponding cell, 
+   * so that every click on the cell triggers the normal flow described above, 
+   * the editing state switch is broken and the component can never be displayed properly.
+   * So you need a value to remember who the 'last' cell was, so that for single and multiple selections, 
+   * you can tell if you are clicking on the same cell again and stop the editing state switching from being broken
    *
-   * bug 记录：
-   * 20201121 - 最开始对 activeCell 的缓存和鼠标操作是绑定在一起的，每次点击新的单元格，当前的单元格信息就会被正常缓存。但是如果点击了单元格 A，通过 Tab 键切换到下一个单元格 B，
-   * 此时缓存理应记录单元格 B 的数据，但是因为并非通过点击操作，所以事实上缓存的依然是单元格 A 的数据，如果此时在单元格 B 编辑完数据，再点回 A，B 的数据并不会保存，而是会被当做 A 的数据展示。
-   * 所以为了解决该问题，明确一点，键盘操作应该和鼠标操作保持一致，都需要缓存即将要激活的单元格信息 缓存 = 要点击的单元格 或者 要切换过去的单元格
    */
   const activeCellRef = useRef<ICell | null>((field && record) ? {
     recordId: record.id,
@@ -182,9 +183,9 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
   };
 
   /**
-   * @description 将当前的选区置为编辑状态
-   * 这里如果 keepValue 为true，说明需要留存当前store中存储的数据，在此基础上进行编辑
-   * 为 false ， 说明store中即便保存数据也不使用，完全重新开始编辑
+   * @description Putting the current selection into edit mode
+   * Here, if keepValue is true, it means that the data stored in the current store needs to be kept and edited on this basis
+   * is false, it means that the store is not used even if the data is saved and the editing is completely restarted
    *
    */
   const startEdit = (keepValue = false) => {
@@ -252,7 +253,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     dispatch(StoreActions.setEditStatus(datasheetId, null));
   }, [datasheetId, dispatch, editing]);
 
-  // 将 endEdit 暴露出去
+  // Exposing endEdit
   setEndEditCell(endEdit);
   useUnmount(() => {
     setEndEditCell(noop);
@@ -267,11 +268,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
   };
 
   useEffect(() => {
-    // 连续选区 - 通过鼠标快捷键选中的区块。
-    // 非连续选区 - 通过记录前的 checkbox 选中记录组成的选区。可能是连续的，也可能是不连续的。统一当作非连续选区处理。
-    // 连续选区和非连续选区互斥（点击 checkbox 时会清空连续选区)
-    // 存在连续选区，一定会有激活单元格，自动 focus 激活单元格进入编辑状态。
-    // 存在非连续选区时，也要 focus 编辑器。只有当页面中存在 activeElement 的时候 onCopy 事件才会触发。
+   
     if (selection?.ranges || selection?.recordRanges) {
       focus();
     }
@@ -280,21 +277,14 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
 
   useEffect(() => {
     /**
-     * 激活单元格变动时，广播协作光标。
+     * 
      * sendCursor > room-server > broadcast ENGAGEMENT_CURSOR >
      * client on ENGAGEMENT_CURSOR > handleCursor > dispatch(cursorMove)
      */
 
-    // 没有单元格的编辑权限，也不发送协同信息 @苏简
-    // 协同光标，不需要关注是否能编辑。不可编辑也能体现用户是否聚焦在某个单元格，需要发送。但是不清楚 @苏简 当时为啥这样改，先观察一段时间。
-    // if (!recordEditable) {
-    //   return;
-    // }
-
     if (!field || !record) {
       return;
     }
-    // 单人房间不同步游标信息，减少请求量。
     if (collaborators.length > 1) {
       resourceService.instance!.sendCursor({
         datasheetId,
@@ -305,15 +295,10 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
       });
     }
   }, [collaborators.length, datasheetId, field, record, viewId, recordEditable]);
-  /**
-   * 考虑到单元格位置在协同的状态下存在难以预测性（比如远程进行了增删行列操作、修改行高，左侧状态栏被拖动等）。
-   * 目前采用暴力的方式，每次渲染直接从 dom 节点计算出来其所在位置，没有进行任何缓存行为。
-   * 目前效果看起来还可以，没有出现计算瓶颈。
-   */
+ 
   const getCellRelativeRect = (cell: ICell) => {
     const containerDom = document.getElementById(DATASHEET_ID.DOM_CONTAINER);
-    // note: 这里新增对cell的处理， 原因在于处理删除record，redux的更新不会及时卸载该组件，导致数据源缺失，但是该方法
-    // 依旧被触发，导致cell.row 找不到
+    
     if (!containerDom || !cell) {
       return null;
     }
@@ -327,14 +312,12 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
       const getDelta = (delta: number, selfSize: number, containerSize: number) => {
         const safeBorder = 2;
         if (delta > safeBorder) {
-          // 每超出左边界也没超出右边界
           if (delta < containerSize - selfSize) {
             return delta;
           }
-          // 停在右边界
+        
           return containerSize - selfSize - safeBorder;
         }
-        // 停在左边界
         return safeBorder;
       };
 
@@ -526,11 +509,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     const state = store.getState();
     const depthBreakpoints = groupSketch.getDepthGroupBreakPoints() || [];
     const newRange = Range.bindModel(selectionRange).move(state, direction, depthBreakpoints);
-    /**
-     * 除了全选之外，选区的变化过程中，activeCell 一定是在 range 的一个顶点上。
-     * 而用户前进的方向一定是 activeCell 在 range 中的对角线另一端的顶点。
-     */
-    // activeCell 在左上角, scrollTo 右下角
+    
     if (activeCell && newRange) {
       const scroll2cell = Range.bindModel(newRange).getDiagonalCell(state, activeCell);
       if (scroll2cell) {
@@ -546,9 +525,10 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
   const groupSketch = useMemo(() => new Group(groupInfo, groupBreakpoint), [groupBreakpoint, groupInfo]);
 
   /**
-   * 目前只有在结束编辑时，根据分组来限制 cellMove，不会影响其它操作（如上下左右移动）
-   * @param direction 方向
-   * @param isCheckGroup 是否检查分组的边界
+   * Currently, cellMove is only restricted by grouping at the end of editing and does not affect other operations
+   *  (e.g. moving up, down, left, right, left)
+   * @param direction 
+   * @param isCheckGroup
    */
   const cellMove = (direction: CellDirection, isCheckGroup = false) => {
     if (!activeCell) {
@@ -558,10 +538,10 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     const depthBreakpoints = groupSketch.getDepthGroupBreakPoints() || [];
     const nextActiveCell = Cell.bindModel(activeCell).move(state, direction, depthBreakpoints);
     if (nextActiveCell == null) return;
-    // 考虑分组边界
+    // Consider group boundaries
     if (depthBreakpoints.length && isCheckGroup) {
       const nextRowIndex = visibleRowsIndexMap.get(nextActiveCell.recordId);
-      // 当下一个单元格是最深层级分组的起始位置时，不允许移动
+      // No movement is allowed when the next cell is the starting position of the deepest level grouping
       if (depthBreakpoints.findIndex(bp => bp === nextRowIndex) > -1) return;
     }
     const nextCellUIIndex = Selectors.getCellUIIndex(state, nextActiveCell);
@@ -642,7 +622,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
         ],
       });
 
-      // URL列开启识别，调用API加载meta信息并额外发起一次SetRecords
+      // URL column recognition is turned on, the API is called to load the meta information and initiate an additional SetRecords
       if (field.type === FieldType.URL && field.property?.isRecogURLFlag && Array.isArray(value)) {
         const _value = value as IHyperlinkSegment[];
         const url = _value.reduce((acc: string, cur: IHyperlinkSegment) => (cur.text || '') + acc, '');
@@ -682,14 +662,12 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
       return;
     }
     const alarm = Selectors.getDateTimeCellAlarmForClient(snapshot, record.id, field.id);
-    // time 允许输入，如果 time 为空值，保存为 00:00
     const formatCurAlarm = curAlarm ? {
       ...curAlarm,
       time: curAlarm.time === '' ? '00:00' : curAlarm.time
     } : undefined;
 
     if (
-      // 处理单纯修改提醒，而没有操作日期的情况
       field.type === FieldType.DateTime && isEqual(cellValue, value) && !isEqual(alarm, formatCurAlarm)
     ) {
       resourceService.instance!.commandManager!.execute({
@@ -700,7 +678,6 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
       });
  
     } else {
-      // 考虑同时新增闹钟和日期单元格数据需要合并操作，在这个理处理闹钟逻辑
       resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetRecords,
         datasheetId,
@@ -734,7 +711,6 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [editing, activeCell, editorX, editorY, field],
   );
-  // 单元格变化的时候重新计算 rect 要等内容先渲染完，用 useEffect
   useEffect(() => {
     setTimeout(() => {
       calcEditorRect();

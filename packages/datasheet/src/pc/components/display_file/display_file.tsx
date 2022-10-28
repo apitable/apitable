@@ -82,7 +82,6 @@ const DisplayFileBase: React.FC<IDisplayFileProps> = props => {
           activeIndex,
           cellValue: fileList,
           editable,
-          // 在神奇表单中，实际上不是真上传，有外部传入的 onSave 方法表示在神奇表单中
           onChange: onSave || onChange,
           disabledDownload: Boolean(disabledDownload)
         });

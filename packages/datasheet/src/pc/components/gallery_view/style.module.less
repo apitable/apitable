@@ -2,8 +2,8 @@
 @import "~pc/styles/lib_mixins.less";
 
 .galleryViewContainer {
-  width: calc(100% + 32px); // 补充父容器左侧的 32 px，达到 100% 的效果
-  margin-left: -32px; // 负边距处理，使视图左侧距离工作台 32px
+  width: calc(100% + 32px); 
+  margin-left: -32px;
 
   & > div {
     width: 100% !important;
@@ -31,7 +31,7 @@
 
 .card {
   cursor: pointer;
-  // 超出卡片宽度的部分，在drag 预览时会出现错误。
+  // Any part of the card that exceeds the width of the card will result in an error when dragging the preview.
   // https://github.com/react-dnd/react-dnd/issues/832#issuecomment-442071628
   transform: translate3d(0, 0, 0);
   transition: all 300ms ease-in-out;
@@ -53,7 +53,7 @@
   }
 }
 
-// FIXME: 临时修复一列时 hover 的阴影问题，具体等相册分组重构解决。
+// FIXME: Temporary fix for hover shadows in one column, pending refactoring of album groups。
 .innerCardForOneColumnMode {
   @media (any-hover: hover) {
     &:hover {

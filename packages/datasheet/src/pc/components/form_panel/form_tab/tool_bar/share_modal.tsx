@@ -27,18 +27,18 @@ export const ShareModal: React.FC<IShareModalProps> = props => {
   const [switchLoading, setSwitchLoading] = useState(false);
   const [confirmPopVisible, setConfirmPopVisible] = useState(false);
   const { formId, visible, onClose } = props;
-  // 神奇表单相关属性
+  // Magical Forms Related Properties
   const [formProps, setFormProps] = useState<IFormProps>({});
   const { fillAnonymous = false, submitLimit = 0 } = formProps;
   const [isLoadingShow, setLoadingShow] = useState<boolean>(true);
-  // 被分享节点的相关信息
+  // Information about the node being shared
   const [shareSettings, setShareSettings] = useState<IShareSettings | null>(null);
   const { userInfo } = useSelector((state: IReduxState) => ({ userInfo: state.user.info }), shallowEqual);
   const dispatch = useDispatch();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const fileSharable = useSelector(state => state.space.spaceFeatures?.fileSharable);
-  // 更新属性
+  // Update Properties
   const updateProps = partProps => {
     const finalFormProps = produce(formProps, draft => {
       draft = Object.assign(draft, partProps);
@@ -55,7 +55,7 @@ export const ShareModal: React.FC<IShareModalProps> = props => {
     });
   };
 
-  // 获取分享设置
+  // Get sharing settings
   const getShareSettings = () => {
     setLoadingShow(true);
     Api.getShareSettings(formId).then(res => {
@@ -73,7 +73,7 @@ export const ShareModal: React.FC<IShareModalProps> = props => {
     });
   };
 
-  // 获取 formProps
+  // Get formProps
   const getFormProps = () => {
     FormApi.fetchFormProps(formId).then(res => {
       const { data, success } = res.data;
@@ -86,13 +86,13 @@ export const ShareModal: React.FC<IShareModalProps> = props => {
     });
   };
 
-  // 更新数表和工作目录的分享状态
+  // Update the sharing status of number tables and working directories
   const updateShareStatus = (status: boolean) => {
     dispatch(StoreActions.updateTreeNodesMap(formId, { nodeShared: status }));
     dispatch(StoreActions.updateForm(formId, { nodeShared: status }));
   };
 
-  // 打开分享
+  // Open and share
   const updateShareSettings = (permission: { onlyRead?: boolean; canBeEdited?: boolean; canBeStored?: boolean }) => {
     setSwitchLoading(true);
     Api.updateShare(formId, permission).then(res => {
@@ -108,7 +108,7 @@ export const ShareModal: React.FC<IShareModalProps> = props => {
     });
   };
 
-  // 关闭分享
+  // Close Share
   const closeShare = () => {
     Api.disableShare(formId).then(res => {
       const { success } = res.data;

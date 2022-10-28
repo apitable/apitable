@@ -56,7 +56,7 @@ class LanguageUtil {
         if (specialCases.indexOf(p[1].toLowerCase()) > -1) {
           // p[1] = capitalize(p[1].toLowerCase());
 
-          // 移除 special cases (如 zh-Hans-CN转成zh_CN)
+          
           p[1] = p[2];
           p.pop();
         }

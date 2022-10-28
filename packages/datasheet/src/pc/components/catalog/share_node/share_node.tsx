@@ -10,16 +10,16 @@ import { ShareContent } from './share_content';
 import styles from './style.module.less';
 
 export interface IShareNodeProps {
-  /** 被操作节点相关的信息 */
+  /** Information about the node being operated on */
   data: {
     nodeId: string;
     type: ConfigConstant.NodeType;
     icon: string;
     name: string;
   };
-  /** 模态框显隐控制 */
+  /** Modal Box Visible Control */
   visible: boolean;
-  /** 关闭模态框 */
+  /** Close modal box */
   onClose?: () => void;
   isTriggerRender?: boolean;
 }
@@ -44,7 +44,7 @@ export const ShareNode: FC<IShareNodeProps> = ({
 
   return (
     <>
-      {/* pc端 */}
+      {/* pc */}
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <Modal
           className={styles.shareNodeModal}
@@ -60,7 +60,7 @@ export const ShareNode: FC<IShareNodeProps> = ({
         </Modal>
       </ComponentDisplay>
 
-      {/* 移动端 */}
+      {/* Mobile */}
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <Popup
           className={styles.shareNodeDrawer}

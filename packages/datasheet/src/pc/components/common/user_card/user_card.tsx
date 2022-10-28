@@ -11,19 +11,15 @@ import styles from './style.module.less';
 import { IAvatarProps } from 'pc/components/common';
 import classNames from 'classnames';
 export interface IUserCard {
-  // 通知中心使用
   memberId?: string;
-  // 协同头像使用
   userId?: string;
-  // 是否显示权限模块
   permissionVisible?: boolean;
-  spareName?: string; // 接口查询不到信息时备用接口
-  spareSrc?: string; // 接口查询不到信息时备用接口
-  spaceName?: string; // 不传则默认取userinfo里的空间名称
+  spareName?: string; // Alternate interface in case the interface does not query information
+  spareSrc?: string; 
+  spaceName?: string; // If not passed, the space name in userinfo is taken by default
   isAlien?: boolean;
   isDeleted?: boolean;
   isActive?: boolean;
-  // 关闭悬浮卡片
   onClose?: () => void;
   avatarProps?: IAvatarProps;
 }
@@ -54,7 +50,7 @@ export const UserCard: FC<IUserCard> = ({
   const { run: getMemberRole, data: memberRole } = useRequest(getMemberRoleReq, { manual: true });
   const dispatch = useDispatch();
 
-  // 获取成员信息
+  // Get member information
   function getMemberInfo() {
     return Api.getMemberInfo({ memberId, uuid: userId }).then(res => {
       const { success, data } = res.data;
@@ -69,7 +65,7 @@ export const UserCard: FC<IUserCard> = ({
     });
   }
 
-  // 通过memberId获取成员的角色
+  // Get the member's role by memberId
   async function getMemberRoleReq(memberId?: string) {
     if (memberId) {
       const data = await getNodeRoleListReq(activeNodeId!);
@@ -82,7 +78,7 @@ export const UserCard: FC<IUserCard> = ({
       }
     }
 
-    // 外部访客
+    // External visitors
     if (!isAlien) {
       const shareInfo: IShareSettings = await shareSettingsReq(activeNodeId!);
       if (shareInfo.props.canBeEdited) {
@@ -102,10 +98,10 @@ export const UserCard: FC<IUserCard> = ({
       return t(Strings.added_not_yet);
     }
   
-    // 外星人
+    // Aliens
     if (isAlien) {
       return t(Strings.anonymous);
-    } else if (!memberInfo) { // 外部访问者
+    } else if (!memberInfo) { // External visitors
       return t(Strings.guests_per_space);
     }
 

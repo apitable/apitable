@@ -21,7 +21,6 @@ const FeiShuUserAuth = () => {
           return;
         }
         const { openId, tenantKey } = data;
-        // 查询飞书是否已经完成了配置
         const bindDataRes = await Api.socialFeiShuCheckTenantBind(tenantKey);
         const { success: bindDataSuccess, data: bindData } = bindDataRes.data;
         if (!bindDataSuccess) {
@@ -76,7 +75,6 @@ const FeiShuUserAuth = () => {
             }
             return;
           }
-          // 飞书未绑
           if (code === StatusCode.FEISHU_ACCOUNT_NOT_BOUND) {
             Router.push(Navigation.FEISHU, {
               params: { feiShuPath: 'bind_user' },

@@ -48,7 +48,7 @@ export const LoginWithoutOther: FC<ILoginWithoutOtherProps> = ({ defaultEmail, s
 
   return (
     <>
-      {/* 移动端或showTitle为false时不展示 */}
+      {/* Not shown on mobile or when showTitle is false */}
       {!isMobile && showTitle && (
         <div className={styles.divider}>
           <div className={styles.text}>{modTitleText}</div>

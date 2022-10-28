@@ -23,13 +23,6 @@ export interface INodeContextMenuProps {
   contextMenu: IContextMenuClickState;
 }
 
-// - 文件菜单
-//   - 复制URL
-//   - 设置权限
-//   - 文件信息
-//   - 分享
-//   - 保存为模板
-
 export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, openDatasheetPanel, openCatalog, contextMenu }) => {
   const { addTreeNode } = useCatalog();
   const dispatch = useDispatch();
@@ -52,7 +45,6 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
 
   const deleteNode = (nodeId: string, level: string, module: ConfigConstant.Modules) => {
     const delNodeId = module === ConfigConstant.Modules.CATALOG ? nodeId : `${level},${nodeId}`;
-    // 因为在星标树中可能出现同一个节点出现在树的多个地方，所以在删除时需要携带上层级信息
     dispatch(StoreActions.setDelNodeId(delNodeId, module));
   };
 
@@ -131,7 +123,6 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
     const nodeUrl = `${window.location.protocol}//${window.location.host}/workbench/${nodeId}`;
     let data: any = [];
     switch (contextMenuType) {
-      /** 数表节点 */
       case ConfigConstant.ContextMenuType.DATASHEET: {
         data = [[
           contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
@@ -154,11 +145,9 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
         ], [
           contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable),
         ]];
-        // 往菜单注入新功能
         Player.applyFilters(Events.get_context_menu_file_more, data);
         break;
       }
-      /** 文件夹节点 */
       case ConfigConstant.ContextMenuType.FOLDER: {
         data = [[
           contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
@@ -173,11 +162,9 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
         ], [
           contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable),
         ]];
-        // 往菜单注入新功能
         Player.applyFilters(Events.get_context_menu_folder_more, data);
         break;
       }
-      /** 神奇表单节点 */
       case ConfigConstant.ContextMenuType.FORM: {
         data = [[
           contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
@@ -192,11 +179,9 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
         ], [
           contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable),
         ]];
-        // 往菜单注入新功能
         Player.applyFilters(Events.get_context_menu_file_more, data);
         break;
       }
-      /** 仪表盘的节点 */
       case ConfigConstant.ContextMenuType.DASHBOARD: {
         data = [[
           contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
@@ -210,11 +195,9 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
         ], [
           contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable),
         ]];
-        // 往菜单注入新功能
         Player.applyFilters(Events.get_context_menu_file_more, data);
         break;
       }
-      /** 镜像的节点 */
       case ConfigConstant.ContextMenuType.MIRROR: {
         data = [[
           contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
@@ -231,7 +214,6 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
         ], [
           contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable),
         ]];
-        // 往菜单注入新功能
         Player.applyFilters(Events.get_context_menu_file_more, data);
         break;
       }
@@ -274,7 +256,6 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
           ],
           [contextItemMap.get(ContextItemKey.CreateFromTemplate)(() => Router.push(Navigation.TEMPLATE, { params: { spaceId }}))],
         ];
-        // 往菜单注入新功能
         Player.applyFilters(Events.get_context_menu_root_add, data);
       }
     }

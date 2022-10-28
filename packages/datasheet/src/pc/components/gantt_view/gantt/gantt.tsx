@@ -185,7 +185,7 @@ const Gantt: FC<IGanttProps> = memo((props) => {
         }
 
         {
-          // 甘特图图形区域没有可用宽度时，不进行渲染
+          // No rendering when there is no width available in the Gantt chart graph area
           ganttWidth > 0 &&
           <>
             <Group
@@ -242,7 +242,7 @@ const Gantt: FC<IGanttProps> = memo((props) => {
           </>
         }
 
-        {/* 左侧任务栏区域 */}
+        {/* Left taskbar area */}
         {
           gridVisible &&
           <>

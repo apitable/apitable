@@ -53,12 +53,12 @@ const ExpandRecordModalBase: FC<IExpandRecordModal> = props => {
         destroyOnClose
         width="70%"
         style={{
-          minWidth: isMobile ? undefined : 760, // 弹窗宽度如果超过屏幕宽度，会出现样式错误
+          minWidth: isMobile ? undefined : 760, // Pop-ups that are wider than the screen width will be styled incorrectly
           maxWidth: 2000,
         }}
         footer={null}
-        transitionName="" // https://ant.design/components/modal/#How-to-disable-motion antd更新时需留意
-        maskTransitionName="" // https://ant.design/components/modal/#How-to-disable-motion antd更新时需留意
+        transitionName="" // https://ant.design/components/modal/#How-to-disable-motion Note on antd updates
+        maskTransitionName="" // https://ant.design/components/modal/#How-to-disable-motion Note on antd updates
         centered
         zIndex={Z_INDEX}
       >
@@ -67,17 +67,17 @@ const ExpandRecordModalBase: FC<IExpandRecordModal> = props => {
     );
   };
 
-  // 强制居中（路由中不存在 recordId 或设置了 forceCenter，且不为全屏模式）
+  // forced centering (no recordId in route or forceCenter set and not in full screen mode)
   if (!hasRecordId || (props.forceCenter && !isRecordFullScreen)) {
     return renderCenterModal();
   }
 
-  // 全屏
+  // Full screen
   if (!isMobile && isRecordFullScreen) {
     return <div className={styles.fullScreenModal}>{props.children}</div>;
   }
 
-  // 侧边
+  // Side
   if (!isMobile && recordVision === RecordVision.Side) {
     const children = (
       <div className={styles.sideModal} ref={ref}>
@@ -87,7 +87,7 @@ const ExpandRecordModalBase: FC<IExpandRecordModal> = props => {
     return <Portal getContainer={() => document.querySelector(`#${DATASHEET_ID.SIDE_RECORD_PANEL}`) as HTMLElement}>{() => children}</Portal>;
   }
 
-  // 居中
+  // Centering
   return renderCenterModal();
 };
 

@@ -69,7 +69,6 @@ const FavoriteBase: FC = () => {
       const pos = `${level}-${index}`;
       const deleteNodeInfo = favoriteDelNodeId.split(',');
       const editingNodeInfo = favoriteEditNodeId.split(',');
-      /** 分割出来的数组第一个元素表示元素所在的层级，第二个参数表示要删除的节点ID */
       const deleting = deleteNodeInfo[0] === pos && deleteNodeInfo[1] === nodeId;
       const editing = editingNodeInfo[0] === pos && editingNodeInfo[1] === nodeId;
       const operating = deleting || editing;
@@ -182,7 +181,6 @@ const FavoriteBase: FC = () => {
       return;
     }
 
-    // 拖动到dropNode的上面
     if (dropPosition === -1) {
       const index = favoriteTreeNodeIds.findIndex(id => id === dropNodeId);
       const prevNodeId = favoriteTreeNodeIds[index - 1] || '';

@@ -34,14 +34,14 @@ const datasheetPartOfDataMap: { [key: string]: boolean | undefined } = {};
 let userInfo: IUserInfo | null = null; 
 
 store.subscribe(function widgetClient() {
-  // 未开启小程序 iframe 的时候不用进入后面判断
+  // You don't have to go to the back of the iframe if the applet is not open
   if (!mainWidgetMessage.enable) {
     return;
   }
   const state = store.getState();
   const datasheetMap = state.datasheetMap;
 
-  // 同步 client
+  // Sync client
   const preClient = client;
   const stateClient = Selectors.getDatasheetClient(state);
   client = {
@@ -53,35 +53,35 @@ store.subscribe(function widgetClient() {
     mainWidgetMessage.syncClient(client);
   }
 
-  // 同步 labs
+  // Sync labs
   const preLabs = labs;
   labs = state.labs;
   if (labs !== preLabs) {
     mainWidgetMessage.syncLabs(labs);
   }
 
-  // 同步 pageParams
+  // Sync pageParams
   const prePageParams = pageParams;
   pageParams = state.pageParams;
   if (pageParams !== prePageParams) {
     mainWidgetMessage.syncPageParams(pageParams);
   }
 
-  // 同步 unitInfo
+  // Sync unitInfo
   const preUnitInfo = unitInfo;
   unitInfo = state.unitInfo;
   if (unitInfo !== preUnitInfo) {
     mainWidgetMessage.syncUnitInfo(unitInfo);
   }
 
-  // 同步 share
+  // Sync share
   const preShare = share;
   share = state.share;
   if (share !== preShare) {
     mainWidgetMessage.syncShare(share);
   }
 
-  // 同步 dashboard
+  // Sync dashboard
   const preDashboard = dashboard;
   const dashboardPack = Selectors.getDashboardPack(state);
   dashboard = iframeWidgetDashboardSelector(dashboardPack);
@@ -92,7 +92,7 @@ store.subscribe(function widgetClient() {
     mainWidgetMessage.syncDashboard({ collaborators: dashboard?.collaborators });
   }
 
-  // 同步 mirrorMap
+  // Sync mirrorMap
   const preMirrorMap = mirrorMap;
   mirrorMap = state.mirrorMap;
   Object.keys(mirrorMap).every(mirrorId => {
@@ -103,14 +103,14 @@ store.subscribe(function widgetClient() {
     return true;
   });
 
-  // 同步 userInfo
+  // Synchronize userInfo
   const preUserInfo = userInfo;
   userInfo = state.user.info;
   if (userInfo && preUserInfo !== userInfo) {
     mainWidgetMessage.syncUserInfo(userInfo);
   }
 
-  // 同步除了 snapshot 之外的数据
+  // Syncing data other than snapshot
   const datasheetSimpleUpdate: IDatasheetMainSimple = {};
   Object.keys(state.datasheetMap).some(key => {
     const { fieldPermissionMap, datasheet, loading } = state.datasheetMap[key];
@@ -160,7 +160,7 @@ store.subscribe(function widgetClient() {
     mainWidgetMessage.datasheetSimpleUpdate(dstIds, { [datasheetSimpleUpdate.datasheetId!]: datasheetSimpleUpdate });
   }
 
-  // 同步其他关联表数据（只在其他关联表第一次 loading 完成之后触发）
+  // Synchronise data from other related tables (only triggered after the first load of other related tables has completed)
   const preDatasheetPartOfDataMap = datasheetPartOfDataMap;
   Object.keys(datasheetMap).forEach(datasheetId => {
     const { loading, datasheet } = datasheetMap[datasheetId];
@@ -171,7 +171,7 @@ store.subscribe(function widgetClient() {
       };
       dstIds.forEach(dstId => {
         map[dstId] = datasheetMap[dstId];
-        /** 关联表加载完成之后，发送给小程序 */
+        /** Once the association table is loaded, send it to the applet */
         mainWidgetMessage.loadOtherDatasheetInit(dstId, { [datasheetId]: datasheetMap[datasheetId] });
       });
       mainWidgetMessage.loadOtherDatasheetInit(datasheetId, map);

@@ -38,7 +38,6 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
 
   const firstTeamId = teamList?.[0]?.teamId;
   useEffect(() => {
-    // 查询已创建的链接
     dispatch(StoreActions.getLinkInviteList());
   }, [dispatch]);
 
@@ -84,7 +83,6 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
     });
   };
 
-  // 创建链接
   const createBtnClick = async(teamId: string) => {
     if (!teamId) {
       Message.warning({ content: t(Strings.placeholder_choose_group) });
@@ -95,7 +93,6 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
     } = await Api.createLink(teamId);
     if (success) {
       Message.success({ content: t(Strings.create_link_succeed) });
-      // 查询已创建的链接
       dispatch(StoreActions.getLinkInviteList());
       setValue('');
     } else {
@@ -103,14 +100,12 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
     }
   };
 
-  // 删除链接
   const deleteLink = async(teamId: string) => {
     const {
       data: { success, message },
     } = await Api.deleteLink(teamId);
     if (success) {
       Message.success({ content: t(Strings.link_delete_succeed) });
-      // 重新查询已创建的链接
       dispatch(StoreActions.getLinkInviteList());
     } else {
       Message.error({ content: message });

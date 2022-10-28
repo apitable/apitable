@@ -70,7 +70,6 @@ function transformNode2Link(node: ITextNode): ITextNode | ITextNode[]{
   return res;
 }
 
-// 检测url转换为带URL的
 export function transformNodes2Link(nodes: ITextNode[]): ITextNode[] {
   const res: ITextNode[] = [];
   for (const node of nodes) {
@@ -86,7 +85,6 @@ export function transformNodes2Link(nodes: ITextNode[]): ITextNode[] {
 
 function removeLinkNode(node: ITextNode): ITextNode | ITextNode[] {
   if (node.type === 'link') {
-    // 脏数据，旧link格式为{type: 'link', data: string}得兼容一下
     if (typeof node.data === 'string') {
       return { text: node.data } as ITextNode;
     }
@@ -98,7 +96,6 @@ function removeLinkNode(node: ITextNode): ITextNode | ITextNode[] {
   }
   return res;
 }
-// 讲带link element的转换为不带的，是上面的逆运算
 export function removeLinkNodes(nodes: ITextNode[]): ITextNode[] {
   const res: ITextNode[] = [];
   for (const node of nodes) {
@@ -112,7 +109,6 @@ export function removeLinkNodes(nodes: ITextNode[]): ITextNode[] {
   return res;
 }
 
-// 提取mention里面的unitId
 export function walk(nodes: ITextNode | ITextNode[]) {
   const res: string[] = [];
   if (Array.isArray(nodes)) {
@@ -134,7 +130,6 @@ export function walk(nodes: ITextNode | ITextNode[]) {
   return [...new Set(res)];
 }
 
-// 转换为纯文本
 export function serialize(nodes: ITextNode | ITextNode[], spaceInfo?: ISpaceBasicInfo | null, isRemind?: boolean) {
   const res: (string | JSX.Element)[] = [];
   if (Array.isArray(nodes)) {
@@ -151,12 +146,11 @@ export function serialize(nodes: ITextNode | ITextNode[], spaceInfo?: ISpaceBasi
           spaceInfo
         }) : nodes?.data?.name;
         let memberName: string | JSX.Element = '';
-        // /node/remind 接口特定成员数据结构
         if (isRemind && spaceInfo && isSocialWecom(spaceInfo) && !isMemberNameModified) {
           memberName = ' @$userName=' + (nodes?.data?.name || '') + '$ ';
         } else if (typeof title === 'string') {
           memberName = ' @' + (title || '') + ' ';
-        } else { // 企微
+        } else {
           memberName = <span>@{title}</span>;
         }
         res.push(memberName);

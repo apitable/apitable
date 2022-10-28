@@ -16,7 +16,7 @@ interface IFeishuSyncConcat {
 }
 
 /**
- * 通讯录同步中间页
+ * Address Book Sync Middle Page
  */
 const FeishuSyncConcat: React.FC<IFeishuSyncConcat> = (props) => {
   const theme = useTheme();

@@ -36,7 +36,7 @@ export function parseCsv(data: string): ITableData | null {
     if (!inCell) {
       if (endsWith(cellText, cellDelimiter)) {
         if (cellText === cellDelimiter) {
-          // 以 cellDelimiter 开头，认为是单元格的开头
+          // Start with cellDelimiter, think of it as the beginning of a cell
           cellText = '';
           inCell = true;
         }
@@ -57,7 +57,7 @@ export function parseCsv(data: string): ITableData | null {
     } else {
       if (endsWith(cellText, cellDelimiter)) {
         if (dataLength >= index + 1 + dl && cellDelimiter === data.substr(index + 1, dl)) {
-          // 连续两个 cellDelimiter 表示转义，跳过第二个 cellDelimiter
+          // Two consecutive cellDelimiters indicate an escape, skipping the second cellDelimiter
           index += dl;
         } else {
           cellText = cellText.substr(0, sbrLength - dl);
@@ -67,7 +67,7 @@ export function parseCsv(data: string): ITableData | null {
     }
   }
 
-  // 最后可能没有 Delimiter 结尾，需要处理一下
+  // The end may not have a Delimiter ending and needs to be dealt with
   if (cellText) {
     if (endsWith(cellText, '\r\n')) {
       cellText = cellText.substr(0, cellText.length - 2);

@@ -26,7 +26,7 @@ export const getStyleProperty = (element, propertyName, prefixVendor = false) =>
   return propertyValue && propertyValue.toLowerCase ? propertyValue.toLowerCase() : propertyValue;
 };
 
-// 将对象格式的style转换为字符串格式
+// Convert object-formatted styles to string format
 export const stringifyStyleObject = (styleObj: React.CSSProperties) => {
   const arr: string[] = [];
   Object.keys(styleObj).forEach(key => {

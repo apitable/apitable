@@ -18,7 +18,7 @@ interface IFormFieldContainerProps {
   editable: boolean;
   meta: IMeta;
   filteredColumns: IViewColumnWithIndex[];
-  fieldUI?: any; // 按需定制 formField 的 UI
+  fieldUI?: any; 
   recordId: string;
 }
 
@@ -74,7 +74,7 @@ export const FormFieldContainer: FC<IFormFieldContainerProps> = memo((props) => 
                     fieldId={fieldId}
                     datasheetId={datasheetId}
                     viewId={viewId}
-                    // 仅基础字段可编辑
+                    // Only the base fields are editable
                     editable={[
                       FieldType.SingleText,
                       FieldType.Text,
@@ -97,7 +97,7 @@ export const FormFieldContainer: FC<IFormFieldContainerProps> = memo((props) => 
                       onMouseDown={() => { 
                         clickWithinField.current = true; 
 
-                        // 兼容点击日期编辑器空白处无法聚焦的场景
+                        // Compatible with scenarios where clicking on a blank space in the date editor fails to focus
                         if (type === FieldType.DateTime) {
                           setFocusId(fieldId);
                         }

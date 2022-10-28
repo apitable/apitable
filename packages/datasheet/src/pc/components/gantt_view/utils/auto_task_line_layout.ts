@@ -45,7 +45,7 @@ export const autoTaskScheduling = (visibleRows, ganttStyle, sourceRecord?: ISour
   const rowsTimeList = fastCloneDeep(visibleRowsTime);
 
   const autoDFS = sourceId => {
-    // 查看是否有关联任务
+    // Check if there are associated tasks
     if (!sourceAdj[sourceId] || !rowsTimeList[sourceId]) return;
 
     if (rowsTimeList[sourceId].diffCount < 0) return;
@@ -54,7 +54,7 @@ export const autoTaskScheduling = (visibleRows, ganttStyle, sourceRecord?: ISour
       if (cycleEdges.includes(`taskLine-${sourceId}-${targetId}`) || !rowsTimeList[targetId]) return;
       const { diffCount } = rowsTimeList[targetId];
       if (diffCount < 0) return;
-      // 比较所有后置任务所有前置任务的大小取最靠近的那个
+      // Compare the size of all post-tasks to the size of all pre-tasks, whichever is closest
 
       let recentRecordId = sourceId;
       let recentTime = rowsTimeList[sourceId].endTime ?? rowsTimeList[sourceId].startTime;
@@ -72,7 +72,7 @@ export const autoTaskScheduling = (visibleRows, ganttStyle, sourceRecord?: ISour
         }
       });
 
-      // 更新当前的时间
+      // Update the current time
 
       const nodeEndTime = rowsTimeList[recentRecordId]?.endTime ?? rowsTimeList[recentRecordId]?.startTime;
       const startTime = rowsTimeList[targetId]?.startTime;
@@ -84,12 +84,11 @@ export const autoTaskScheduling = (visibleRows, ganttStyle, sourceRecord?: ISour
         endTime: endTime ? originalChange(nodeEndTime, 1 + diffTime, 'day').valueOf() : endTime,
       };
 
-      // 沿着路径递归更新
+      // Recursive updates along the path
       autoDFS(targetId);
     });
   };
 
-  // 遍历一下所有task 发现入度为0的递归设置
   if (!sourceRecord) {
     visibleRows.forEach(row => {
       if (!targetAdj[row.recordId]) {

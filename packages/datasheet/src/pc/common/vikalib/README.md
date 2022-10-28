@@ -1,24 +1,25 @@
 # vikaby
 
-vikaby，维卡比是维格表的吉祥物。
+vikaby is the mascot。
 
-同时也是一个暴露成全局变量，供云程序插件进行使用的客户端定制标准库。
+It is also a standard library of client-side customisations exposed as global variables for use by cloud application plugins.
 
 
-## 技术
+## Technology
 
-Virtual Component,所有对界面修改的操作，都不是直接操纵界面JS组件，而是经过虚拟转换后，对EveAPI进行事件式操作。
 
-## 案例
+Virtual Component,Instead of manipulating the JS components of the interface directly, all interface modifications are performed through virtual conversions and event-based manipulation of the EveAPI。
 
-### 添加一个导航栏按钮
+## Cases
+
+### Add a navigation bar button
 
 ```typescript
 const navPage = vikaby.nav.addPage({
   icon: "icon_id",
-  title: "后台管理",
-  catalog : true, // 左是catalog目录树，右边是显示的内容 viewContainer
-  current: true, // nav按钮，是否弄成current状态，默认就是true
+  title: "Back Office Management",
+  catalog : true, // Left is the catalog tree, right is the displayed content viewContainer
+  current: true, // nav button, whether to make it current or not, default is true
   // mainContent: null,
   mainContent: {
     type: "iframe",
@@ -28,14 +29,14 @@ const navPage = vikaby.nav.addPage({
 ```
 
 
-### 添加Catalog按钮
+### Add Catalog button
 
 
 ```typescript
 const treeView = navContainer.getTree();
 const treeNode = treeView.addStaticNode({
   icon: "icon",
-  name: "百度首页",
+  name: "Baidu Home Page",
   content: {
     type: "iframe",
     url: "https://baidu.com"
@@ -43,16 +44,16 @@ const treeNode = treeView.addStaticNode({
 });
 ```
 
-## 全局搜索
+## Global Search
 
-假设，我们添加一个全局搜索功能
+Suppose, we add a global search function
 
 ```typescript
 const navContainer = vikaby.nav.addPage({
   icon: "icon_id",
-  title: "全局搜索",
-  catalog : false, // 左是catalog目录树，右边是显示的内容 viewContainer
-  current: true, // nav按钮，是否弄成current状态，默认就是true
+  title: "Global Search",
+  catalog : false, // Left is the catalog tree, right is the displayed content viewContainer
+  current: true, // nav button, whether to make it current or not, default is true
   mainContent: {
     type: "iframe",
     url: "https://baidu.com"

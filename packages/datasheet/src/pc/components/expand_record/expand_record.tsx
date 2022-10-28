@@ -88,7 +88,7 @@ const SubscribeButton = ({ active, onSubOrUnsub }): JSX.Element => {
 };
 
 /**
- * 展开卡片实际实际调用
+ * Expand the card to actually call it
  */
 export const expandRecordInner = (props: IExpandRecordInnerProp) => {
   const { recordType, onClose, datasheetId } = props;
@@ -101,7 +101,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
   const root = createRoot(container);
 
   const modalClose = () => {
-    dispatch(StoreActions.clearActiveFieldState(datasheetId)); // 清空激活的 field 状态。
+    dispatch(StoreActions.clearActiveFieldState(datasheetId));
     expandRecordManager.destroyCurrentRef();
     root.unmount();
     container.parentElement?.removeChild(container);
@@ -139,16 +139,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
     }
     modalClose();
   };
-
-  /**
-   * 原则上来说，希望在展开卡片中的所有操作都能有 focus 的元素，方便 esc 关闭当前的展开卡片，
-   * 但进行附件预览时，focus 会被预览夺取，并且在预览关闭后没有任何回调把 focus 在重新放回展开卡片中，如果单纯针对附件新增一个参数又不通用
-   * 从现有的逻辑上来说，关联记录造成的多个展开卡片的堆叠，当前卡片关闭，会自动 focus 下一个卡片，但下一个卡片也会遇到附件预览的问题
-   * 参考 document.body.onkeydown 这种全局唯一的事件挂载，可以执行两种操作
-   * 1. 当新卡片展开，默认将事件监听挂载在 body 上，
-   * 2. 关闭当前卡片，自动聚焦到上一个卡片的时候，重新将上一个卡片的上下文挂载到 body 上
-   * @param e
-   */
+  
   document.body.onkeydown = monitorBodyFocus;
 
   const wrapperProps = {
@@ -224,7 +215,6 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
     mirrorSourceDstId && setDatasheetId(mirrorSourceDstId);
   }, [mirrorSourceDstId]);
 
-  // 独立展开的卡片产生的ot action，无法将 viewId 传递过去，所以在这里设置一下 activeView
   useEffect(() => {
     isIndependent && viewId && datasheetId && activeDatasheetId !== datasheetId && dispatch(StoreActions.switchView(datasheetId, viewId));
   }, [isIndependent, datasheetId, viewId, activeDatasheetId]);
@@ -243,11 +233,10 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
               customModal.destroy();
             },
             modalButtonType: 'warning',
-            okText: t(Strings.submit), // '确认',
+            okText: t(Strings.submit), 
           }));
           break;
         case StatusCode.FORM_FOREIGN_DATASHEET_NOT_EXIST:
-          // 镜像源表被删除
           customModal = CustomModal.warning(getModalConfig({
             title: t(Strings.open_failed),
             content: t(Strings.mirror_resource_dst_been_deleted),
@@ -261,7 +250,6 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
           break;
         default:
       }
-      // 对于加载回来的数据为空的情况
       if (!errorCode && activeRecordId && !snapshot?.recordMap[activeRecordId]) {
         const customModal = CustomModal.error(getModalConfig({
           title: t(Strings.open_failed),
@@ -291,9 +279,7 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
     switch (recordType) {
       case RecordType.Independent: {
 
-        // 传入的和现有的交集，因为可能有被删除的，所以这里求交集
         curRecordIds = recordIds.filter(id => snapshot?.recordMap[id]);
-        // 默认使用 activeRecord，如果 activeRecord 被过滤掉了，就用第一个，realActiveRecordId 作为切换后
         curActiveRecordId =
           (realActiveRecordId && snapshot?.recordMap?.[realActiveRecordId]?.id)
           || (activeRecordId && snapshot?.recordMap?.[activeRecordId]?.id) || curRecordIds[0];
@@ -319,7 +305,6 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
       }
       setRealActiveRecordId(realRecordIds[index]);
 
-      // 更新 previewFile 的 datasheetId 参数，并将 activeIndex 重置为第一个附件
       const previewFile = store.getState().previewFile;
       dispatch(
         StoreActions.setPreviewFile({
@@ -344,8 +329,6 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
 
   const commonProps = {
     ...props,
-    // 跟随 url 模式下，realActiveRecordId 跟随 url 中的 recordId
-    // 这样写防止多次状态修改导致的 ExpandRecordComponent 多余的重渲染
     activeRecordId: isIndependent ? realActiveRecordId! : pageParamsRecordId!,
     pageParamsRecordId,
     recordIds: realRecordIds,
@@ -388,7 +371,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
   const view = useGetViewByIdWithDefault(datasheetId, props.viewId)!;
   const viewId = props.viewId || view.id;
   const clickWithinField = useRef<boolean>();
-  const _dispatch = useDispatch(); // 和/worker/dispatch区分
+  const _dispatch = useDispatch(); 
 
   const { run: subscribeRecordByIds } = useRequest(DatasheetApi.subscribeRecordByIds, { manual: true });
   const { run: unsubscribeRecordByIds } = useRequest(DatasheetApi.unsubscribeRecordByIds, { manual: true });
@@ -426,7 +409,6 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
     } else if (query.has('comment')) {
       setCommentPane(true);
     }
-    // 移动端无comment参数时因为使用了Popup默认不激活面板
     else if (isMobile) {
       setCommentPane(false);
     } else if (cacheType?.[datasheetId] === ActivitySelectType.NONE) {
@@ -440,7 +422,6 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
     }
   }, [allowShowCommentPane, isMobile, setCommentPane]);
 
-  // 如果是侧边栏模式时，打开侧边栏
   useEffect(() => {
     recordVision === RecordVision.Side && _dispatch(StoreActions.toggleSideRecord(true));
   }, [_dispatch, recordVision]);
@@ -456,7 +437,6 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
     return activeId || view.columns[0].fieldId;
   });
 
-  // 点击左侧时，侧边栏也做定位
   useEffect(() => {
     if (!isSetFocusIdByClickFieldRef.current && isSideRecordOpen && activeId) {
       setTimeout(() => {
@@ -465,7 +445,6 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
     }
   }, [isSideRecordOpen, pageParamsRecordId, activeId]);
 
-  // 侧边模式时，焦点聚焦回到单元格
   useEffect(() => {
     if (isSideRecordOpen && pageParamsRecordId) {
       setTimeout(() => {
@@ -506,7 +485,6 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
         return;
       }
       // https://stackoverflow.com/questions/19669786/check-if-element-is-visible-in-dom
-      // dom 不在可视区时 offsetParent 为 null
       if (dom.offsetParent === null) {
         _setShowHiddenField(true);
       }
@@ -529,7 +507,6 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
     setFocusFieldId(null);
   }
 
-  // 侧边模式下，其他面板的发生鼠标按下事件时，让记录展开卡片失焦
   useEffect(() => {
     const els = [document.querySelector('.workspaceMenu'), document.querySelector('.dataspaceRight')];
     const _onMouseDown = onMouseDown;
@@ -612,7 +589,6 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
     setTimeout(() => {
       isSetFocusIdByClickFieldRef.current = false;
     }, 10);
-    // 侧边模式下，点击卡片中的输入框，左侧会进行聚焦
     if (!props.forceCenter && isSideRecordOpen && pageParamsRecordId && activeDatasheetId === datasheetId) {
       dispatch(
         StoreActions.setActiveCell(datasheetId, {
@@ -640,12 +616,12 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
         className={classNames(isMobile ? styles.mobileContainer : styles.pcContainer, { isSideExpandRecord: isSideRecordOpen })}
         onMouseDown={onMouseDown}
       >
-        {/* pc 端的显示 */}
+        {/* pc  */}
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
           <div className={styles.headerRow}>
             <h2>{title}</h2>
             <div className={styles.buttonsOps}>
-              {/* 独立展开的情况如通知或神奇关联新增等不需要展示翻页 */}
+              {/* Individually expanded cases such as notifications or magically linked additions do not need to show page turns */}
               <RecordOperationArea
                 fromCurrentDatasheet={fromCurrentDatasheet}
                 activeRecordId={activeRecordId}
@@ -657,7 +633,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
                 gotoSourceDst={gotoSourceDst}
                 showPageTurn={recordType !== RecordType.Independent}
               />
-              {/* 从通知中心、神奇表单等打开时，隐藏切换展示模式按钮 */}
+              {/* Hide toggle display mode button when opening from notification centre, magic form etc */}
               {!(!pageParamsRecordId || props.forceCenter) && <ExpandRecordVisionOption />}
               <ExpandRecordMoreOption
                 modalClose={modalClose}
@@ -694,7 +670,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
                   modalClose={modalClose}
                   disappearHiddenField={Boolean(shareId && mirrorId)}
                 />
-                {/* 编辑字段Modal */}
+                {/* Edit field Modal */}
                 {activeFieldId && activeFieldOperateType === FieldOperateType.FieldSetting && (
                   <FieldSetting
                     datasheetId={datasheetId}
@@ -703,7 +679,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
                     showAdvancedFields
                   />
                 )}
-                {/* 编辑字段描述Modal */}
+                {/* Edit field description Modal */}
                 {activeFieldId && activeFieldOperateType === FieldOperateType.FieldDesc && (
                   <FieldDesc
                     fieldId={activeFieldId}
@@ -725,7 +701,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
                 onClose={() => {
                   handleCacheType(ActivitySelectType.NONE);
                   setCommentPane(false);
-                }} // 侧边栏模式下会显示关闭按钮
+                }} 
                 style={
                   isColumnLayout
                     ? {
@@ -740,13 +716,8 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
               />
             )}
           </div>
-          {/* {
-           activeFieldId &&
-           activeFieldOperateType === FieldOperateType.FieldSetting &&
-           <FieldSetting datasheetId={datasheetId} viewId={viewId} targetDOM={document.body} />
-           } */}
         </ComponentDisplay>
-        {/* 手机端的显示 */}
+        {/* Mobile */}
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
           <div className={styles.mobileRecordHeader}>
             <div className={styles.toggleRecordBtnWrapper} onClick={modalClose}>

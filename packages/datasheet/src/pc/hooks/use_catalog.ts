@@ -24,20 +24,6 @@ export const useCatalog = () => {
   const { addNodeReq } = useCatalogTreeRequest();
   const dispatch = useDispatch();
   const { run: addNode, loading: addNodeLoading } = useRequest(addNodeReq, { manual: true });
-  // /**
-  //  * 判断同级下是否有同名节点
-  //  * 当type存在，表示判断同级并且同类型下是否有同名文件
-  //  * @param name 节点名称
-  //  * @param type 节点类型
-  //  */
-  // const isRepeat = (name: string, type?: number): boolean => {
-  //   const names = get
-  // };
-  // const isLoaded = (nodeId: string) => {
-  //   const { hasChildren, children } = treeNodesMap[nodeId];
-  //   // 分两各情况，一种是正常情况（就是没有设置任何权限的时候）,第二种是设置了权限的情况，可能存在这个文件夹下所有的节点都不可见的情况
-  //   return hasChildren ? children && (children.length || (expandedKeys.includes(nodeId) && !children.length)) : true;
-  // };
 
   const checkRepeat = (nodeId: string, str: string, type?: number): boolean => {
     const parentNodeId = treeNodesMap[nodeId].parentId;
@@ -49,7 +35,6 @@ export const useCatalog = () => {
     return names.filter(item => item === str).length >= 1;
   };
 
-  // 目录树添加节点
   const addTreeNode = (
     parentNodeId?: string,
     type: ConfigConstant.NodeType = ConfigConstant.NodeType.DATASHEET,

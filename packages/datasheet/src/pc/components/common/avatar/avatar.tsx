@@ -25,9 +25,8 @@ const ColorWheel = Object.keys(lightColors).reduce<string[]>((pre, cur) => {
   return pre;
 }, []);
 
-// 生成颜色规则：传入字符串
 export const getAvatarRandomColor = (str: string) => {
-  const index = str.charCodeAt(Math.floor(str.length / 2)); // 用于生成颜色，取字符串中间字节的unicode值
+  const index = str.charCodeAt(Math.floor(str.length / 2));
   return ColorWheel[index % ColorWheel.length];
 };
 
@@ -45,8 +44,8 @@ export enum AvatarType {
 }
 
 export interface IAvatarProps extends Omit<IAvatarBaseProps, 'shape'> {
-  id: string; // 说明：组件根据id生成随机颜色，一般情况下，成员、部门、空间头像分别传memberId、teamId、spaceId，保证每个地方调用此组件所生成的背景一样
-  title: string; // 说明：无图片时获取title的首个字符作为头像
+  id: string; 
+  title: string;
   isGzip?: boolean;
   children?: JSX.Element;
   type?: AvatarType;
@@ -60,7 +59,6 @@ const AvatarHoc = Component => {
   return (props: IAvatarProps) => {
     const { src, title, isGzip = true, id, size = AvatarSize.Size32, type = AvatarType.Member, style, defaultIcon } = props;
     if (!title || !id) return null;
-    // 部门
     if (type === AvatarType.Team) {
       return (
         <Component
@@ -85,7 +83,6 @@ const AvatarHoc = Component => {
     }) : src;
     const firstWord = getFirstWordFromString(title.trim());
     const avatarBg = avatarSrc ? colors.defaultBg : getAvatarRandomColor(id);
-    // 空间
     if (type === AvatarType.Space) {
       return (
         <Component
@@ -103,8 +100,6 @@ const AvatarHoc = Component => {
         </Component>
       );
     }
-
-    // 个人
     return (
       <Component
         {...props}

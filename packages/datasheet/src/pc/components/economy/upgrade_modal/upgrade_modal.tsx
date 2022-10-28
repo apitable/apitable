@@ -24,7 +24,7 @@ export const UpgradeInFeiShuContent: React.FC<{ onClick: () => void, content: st
         <Image src={UpgradeImg} width={240} height={180} />
       </span>
 
-      {/* 移动端无法进行升级操作，请移步至 PC 端进行升级 */}
+      {/* The upgrade cannot be done on mobile, please move to PC for upgrade */}
       <span className={styles.des}>{props.content}</span>
       <Button
         onClick={() => {
@@ -199,6 +199,5 @@ export const showTipInDingTalk = (modalType: IDingTalkModalType) => {
   const { clientWidth, clientHeight } = document.body;
   const { isMobile } = getScreen(clientWidth, clientHeight);
 
-  // 移动端使用 popup，pc端使用 modal
   isMobile ? showPopupInDingTalk(modalType) : showModalInDingTalk(modalType);
 };

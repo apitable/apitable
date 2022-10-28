@@ -26,12 +26,9 @@ const MARGIN_TOP = 8;
 
 const ColorPickerBase: React.ForwardRefRenderFunction<IColorPickerRef, IColorPicker> = (props, ref) => {
   const { showRenameInput, onChange, option, mask, triggerComponent } = props;
-  // 判断当前是否将要在 X 轴方向溢出，以此控制选色板 小箭头/三角 展示在左边还是右边
   const [adjustX, setAdjustX] = useState(false);
-  // 小箭头 Y 轴方向上的大致偏移量
   const [arrowOffsetY, setArrowOffsetY] = useState(0);
   const [visible, setVisible] = useState(false);
-
   const cacheTheme = useSelector(Selectors.getTheme);
   const fieldEditable = useSelector(state => Selectors.getPermissions(state).manageable);
   const optionColor = setColor(option.color, cacheTheme);
@@ -85,7 +82,6 @@ const ColorPickerBase: React.ForwardRefRenderFunction<IColorPickerRef, IColorPic
       style={{
         marginTop: arrowOffsetY < 0 ? MARGIN_TOP : 0,
       }}
-      // 兼容性处理，防止看板视图下在不正确的时机关闭
       onMouseDown={stopPropagation}
       onClick={stopPropagation}
     >

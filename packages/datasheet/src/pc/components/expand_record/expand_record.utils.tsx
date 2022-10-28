@@ -4,27 +4,27 @@ import { IExpandRecordDatasheetProp, IExpandRecordIndependentProp } from 'pc/com
 import { store } from 'pc/store';
 
 /**
- * 暴露给外部调用，独立的卡片展开，且强制居中
+ * Exposed to external calls, independent card expansion, and forced centering
  */
 export const expandRecordInCenter = (props: IExpandRecordIndependentProp) => {
   expandRecordInner({ recordType: RecordType.Independent, ...props, forceCenter: true });
 };
 
 /**
- * 暴露给外部调用，独立的卡片展开
+ * Exposed to external calls, independent card unfolding
  */
 export const expandRecord = (props: IExpandRecordIndependentProp) => {
   expandRecordInner({ recordType: RecordType.Independent, ...props });
 };
 
 /**
- * 路由方式触发展开卡片
+ * Routing method triggers the expansion of the card
  */
 export const expandRecordRoute = (props?: IExpandRecordDatasheetProp) => {
   const state = store.getState();
   const { datasheetId, viewId, mirrorId } = state.pageParams;
   if (!datasheetId || !viewId) {
-    console.warn('错误调用 expandRecordIdNavigate，路由参数不满足');
+    console.warn('Error calling expandRecordIdNavigate, route parameter not satisfied');
     return;
   }
   const commonProps = { datasheetId: mirrorId || datasheetId, viewId, recordIds: [], ...props };

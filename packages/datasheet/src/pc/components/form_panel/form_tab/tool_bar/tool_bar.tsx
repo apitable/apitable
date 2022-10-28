@@ -43,7 +43,7 @@ export const ToolBar: React.FC<IToolBarProps> = props => {
       partialProps: partProps,
     });
     if (partProps.coverVisible != null || partProps.logoVisible != null) {
-      // 当用户滚动到页面底部改变设置项时，提醒用户设置项生效
+      // Remind the user that a setting is in effect when they scroll to the bottom of the page to change it
       const formContainer = document.querySelector('.vikaFormContainer');
       formContainer?.scrollTo(0, 0);
     }

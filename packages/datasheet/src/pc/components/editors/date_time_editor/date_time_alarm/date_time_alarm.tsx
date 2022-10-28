@@ -32,7 +32,8 @@ interface IDateTimeAlarmProps {
 }
 
 /**
- * 这个数据结构主要是为了使用成员选择器，组件来自于成员的筛选功能，由于必须提供一个 field，所以这里使用伪造的数据
+ * This data structure is primarily intended for use with the member selector, 
+ * the component comes from the filter function of the member, and since a field must be provided, the forged data is used here
  */
 export const fakeMemberField = {
   name: 'fakeMemberField',
@@ -100,7 +101,7 @@ export const DateTimeAlarm = (props: IDateTimeAlarmProps) => {
     }];
   }, [fieldMap]);
 
-  // 无成员数据时异步补充
+  // Asynchronous replenishment when no member data is available
   useEffect(() => {
     if (curAlarm?.target !== AlarmUsersType.Member) {
       return;
@@ -131,10 +132,9 @@ export const DateTimeAlarm = (props: IDateTimeAlarmProps) => {
 
   const subtractOptions = useMemo(() => {
     let optionData: object;
-    if (includeTime) { // 日期开启时间可以选所有选项
+    if (includeTime) { 
       optionData = ALL_ALARM_SUBTRACT;
     } else {
-      // 日期不显示时间，但是之前设置过分钟、小时级别
       let extraSubtract = {};
       if (curAlarm?.subtract && inDayKeys.includes(curAlarm?.subtract)) {
         extraSubtract = pick(ALL_ALARM_SUBTRACT, curAlarm?.subtract);
@@ -169,7 +169,6 @@ export const DateTimeAlarm = (props: IDateTimeAlarmProps) => {
 
   const changeAlarmField = (fieldIds: string[]) => {
     if (!fieldIds.length) {
-      // 在当前配置条件下，不允许清空所有选项
       Message.warning({
         content: t(Strings.at_least_select_one_field)
       });
@@ -179,7 +178,6 @@ export const DateTimeAlarm = (props: IDateTimeAlarmProps) => {
   };
 
   const showTimePicker = Boolean(curAlarm?.time) || !includeTime ||
-    // subtract 选择不在一天内时需要显示具体的时间
     (!curAlarm?.subtract || !inDayKeys.includes(curAlarm?.subtract));
   return (
     <div className={styles.dateTimeAlarm}>
@@ -203,11 +201,9 @@ export const DateTimeAlarm = (props: IDateTimeAlarmProps) => {
                 onSelected={(option) => {
                   const val = option.value === 'current' ? '' : option.value;
                   const updateAlarm: any = { subtract: val };
-                  // 设置为天以内的时间清空 time
                   if (inDayKeys.includes(val as string) && curAlarm?.time) {
                     updateAlarm.time = undefined;
                   }
-                  // 设置为非天以内的时间补充 time
                   if (!inDayKeys.includes(val as string) && !curAlarm?.time) {
                     updateAlarm.time = timeValue;
                   }

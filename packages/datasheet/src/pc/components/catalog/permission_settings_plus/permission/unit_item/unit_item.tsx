@@ -67,7 +67,7 @@ export const UnitItem: FC<IUnitItemProps> = props => {
     if (!isAdmin && !isOwner) {
       return <></>;
     }
-    // 默认为isAdmin && !isOwner
+    // Defaults to isAdmin && !isOwner
     let backgroundColor = colors.deepPurple[100];
     let color = colors.deepPurple[500];
     let str = t(Strings.space_admin);

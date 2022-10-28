@@ -63,10 +63,10 @@ const mapIcon = {
 };
 
 /*
- * 悬浮球显示客服
+ * Hoverball shows customer service
  *    vikaby(onclick) => TriggerCommands(open_guide_wizard) => redux =>
  *      current_guide_step(subscribe) => guid.showUiFromConfig => here
- * 新手引导显示客服
+ * Newbie guide shows customer service
  *    guide.questionnaire => guid.showUiFromConfig => here
  */
 const prefix = 'vika-qrcode';
@@ -80,8 +80,11 @@ const Modal: FC<IGuideContactUsOptions> = props => {
   const [show, setShow] = useState(true);
 
   const isVikaby = true;
-  // 二维码先区分是新手引导跳转还是点击客服，再区分平台，平台 -> saas, 钉钉，企微，飞书
-  // 第三方平台不区分扫码和客户端，只看空间站归属
+  /**
+   * QR code first distinguish whether it is newbie guide jump or click customer service, 
+   * then distinguish platform, platform -> saas, nail, enterprise micro, fly book
+   */
+  // Third-party platforms do not distinguish between sweeps and clients, only space station attribution
   const isBindDingTalk = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.DINGTALK);
   const isBindWecom = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.WECOM);
   const isBindFeishu = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.FEISHU);

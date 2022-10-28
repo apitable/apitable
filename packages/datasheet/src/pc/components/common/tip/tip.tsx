@@ -7,14 +7,11 @@ import { useRef } from 'react';
 import { useEffect } from 'react';
 import classNames from 'classnames';
 
-// oneline: 当气泡内的内容不需要换行时传入此参数，默认为false
-// needArrow: 是否显示气泡框的箭头，默认为false
-// visible: 手动控制是否显示
 interface IPopoverProps extends PopoverProps {
   oneline?: boolean;
   needArrow?: boolean;
   visible?: boolean;
-  noCheckDisplay?: boolean; // 主动传入这个参数，取消对宽度的检查。
+  noCheckDisplay?: boolean;
 }
 
 export const Tip: FC<IPopoverProps> = props => {

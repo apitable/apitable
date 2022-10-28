@@ -1,41 +1,41 @@
-// 任务上下间距
+// Spacing above and below the task
 export const GANTT_TASK_GAP_SIZE = 8;
 
-// 任务拖拽把手内部的竖条高度
+// Height of the vertical bar inside the task drag handle
 export const GANTT_INNER_HANDLER_HEIGHT = 12;
 
-// 甘特图触发横向滚动的阈值
+// Threshold for Gantt chart to trigger horizontal scrolling
 export const GANTT_HORIZONTAL_DEFAULT_SPACING = 50;
 
-// 甘特图触发纵向滚动的阈值
+// Threshold for Gantt chart to trigger vertical scrolling
 export const GANTT_VERTICAL_DEFAULT_SPACING = 50;
 
-// 甘特图中图形区域 tabbar 高度
+// Height of tabbar in Gantt chart graph area
 export const GANTT_TAB_BAR_HEIGHT = 40;
 
-// 甘特图中图形区域时间轴高度
+// Height of the timeline of the graphical area in the Gantt chart
 export const GANTT_TIMELINE_HEIGHT = 32;
 
-// 甘特图中按月显示的图形区域时间轴高度
+// Height of the timeline of the graph area displayed by month in the Gantt chart
 export const GANTT_MONTH_TIMELINE_HEIGHT = 40;
 
-// 甘特图中图形区域头部高度
+// Height of the head of the graphical area in the Gantt chart
 export const GANTT_HEADER_HEIGHT = GANTT_TAB_BAR_HEIGHT + GANTT_TIMELINE_HEIGHT;
 
-// 甘特图中按月显示的头部高度
+// Head height by month in Gantt chart
 export const GANTT_MONTH_HEADER_HEIGHT = GANTT_TAB_BAR_HEIGHT + GANTT_MONTH_TIMELINE_HEIGHT;
 
-// 甘特图中 “极简” 模式下，成员的高度
+// Height of members in "minimalist" mode in Gantt chart
 export const GANTT_SHORT_TASK_MEMBER_ITEM_HEIGHT = 20;
 
-// 甘特图中的 icon 大小
+// The size of the icon in the Gantt chart
 export const GANTT_COMMON_ICON_SIZE = 16;
 
-// 导出图片的内间距
+// Inner spacing of exported images
 export const EXPORT_IMAGE_PADDING = 16;
 
-// 导出图片 Logo 区域的高度
+// Height of the logo area of the exported image
 export const EXPORT_BRAND_DESC_HEIGHT = 48;
 
-// 导出图片区域最大像素点
+// Maximum pixel points in the exported image area
 export const MAX_EXPORT_IMAGE_AREA_SIZE = Math.pow(11240, 2);

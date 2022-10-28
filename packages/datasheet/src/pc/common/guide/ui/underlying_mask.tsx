@@ -17,7 +17,7 @@ let timer: any;
 export const showUnderlyingMask = (props: IUnderlyingMaskProps) => {
   const { eleString } = props;
   let previousNode: HTMLElement | null;
-  // 创建overlay
+  // Create overlay
   const attachOverlay = () => {
     const pageOverlay = document.getElementById(GUIDE_UNDERLYING_OVERLAY_ID);
     if (pageOverlay) return;
@@ -36,7 +36,7 @@ export const showUnderlyingMask = (props: IUnderlyingMaskProps) => {
     document.body.appendChild(overlay);
   };
 
-  // 创建stage
+  // Create a stage
   const attachStage = (targetDom: HTMLElement) => {
     const pageOverlay = document.getElementById(GUIDE_UNDERLYING_STAGE_ID);
     if (pageOverlay) return;
@@ -48,7 +48,7 @@ export const showUnderlyingMask = (props: IUnderlyingMaskProps) => {
     document.body.appendChild(overlay);
   };
 
-  // 计算stage的样式
+  // Calculate the style of the stage
   const calculateStageStyle = (targetDom: HTMLElement) => {
     const { left, right, top, bottom } = getCalculatedPosition(targetDom);
     const padding = GUIDE_UNDERLYING_OVERLAY_PADDING;
@@ -69,19 +69,19 @@ export const showUnderlyingMask = (props: IUnderlyingMaskProps) => {
     return stageStyle;
   };
 
-  // 移除dom的相关高亮样式
+  // Remove dom's associated highlighting style
   const removeHighlightClasses = (node: HTMLElement | null) => {
     if (node) {
       node.classList.remove(GUIDE_UNDERLYING_MASK_HIGHLIGHT_DOM_CLASS);
     }
   };
-  // 添加dom的相关高亮样式
+  // Add dom related highlighting styles
   const addHighlightClasses = (node: HTMLElement) => {
     node.classList.add(GUIDE_UNDERLYING_MASK_HIGHLIGHT_DOM_CLASS);
     canMakeRelative(node) && node.classList.add(GUIDE_UNDERLYING_MASK_RELATIVE_DOM_CLASS);
   };
 
-  // 获取dom元素：stage
+  // Get the dom element: stage
   const getStageDiv = () => {
     return document.getElementById(GUIDE_UNDERLYING_STAGE_ID);
   };
@@ -116,7 +116,7 @@ export const showUnderlyingMask = (props: IUnderlyingMaskProps) => {
       parentNode = parentNode.parentNode;
     }
   };
-  // 更新stage元素
+  // Update the stage element
   const refreshStage = (previousNode: HTMLElement | null, curNode: HTMLElement) => {
     const stageDiv = getStageDiv();
     const newStageStyle = calculateStageStyle(curNode);
@@ -124,7 +124,7 @@ export const showUnderlyingMask = (props: IUnderlyingMaskProps) => {
     stageDiv?.setAttribute('style', stringifyStyleObject(newStageStyle));
     addHighlightClasses(curNode);
   };
-  // 目标元素找到了
+  // Target element found
   const domFound = (targetDom: HTMLElement) => {
     bringInView(targetDom as HTMLElement);
     previousNode = curNode;

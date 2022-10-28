@@ -103,16 +103,14 @@ export const ImportFile: FC<IImportFileProps> = ({
       stopPercent();
     });
   };
-
-  // 重新选择
+  
   const handleReSelect = () => {
     setIsUploading(false);
     setProcessing(false);
     setUploadPercent(0);
     setIsFail(ConfigConstant.PROGRESS_NORMAL);
   };
-
-  // 取消上传
+  
   const handleCancel = () => {
     if (!reqToken) {
       return;
@@ -126,8 +124,7 @@ export const ImportFile: FC<IImportFileProps> = ({
     setProcessing(false);
     setIsFail(ConfigConstant.PROGRESS_NORMAL);
   };
-
-  // 失败页面
+  
   const failPage = () => {
     return (
       <div className={styles.fail}>
@@ -145,8 +142,7 @@ export const ImportFile: FC<IImportFileProps> = ({
       </div>
     );
   };
-
-  // 成功页面
+  
   const successPage = () => {
     return (
       <div className={styles.success}>
@@ -157,8 +153,7 @@ export const ImportFile: FC<IImportFileProps> = ({
       </div>
     );
   };
-
-  // 上传中页面
+  
   const processPage = () => {
     return (
       <div className={styles.process}>
@@ -176,7 +171,6 @@ export const ImportFile: FC<IImportFileProps> = ({
     );
   };
 
-  // 关闭导入excel窗口
   const handleClose = () => {
     if (isProcess) {
       return;

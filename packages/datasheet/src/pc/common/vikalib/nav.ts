@@ -1,5 +1,5 @@
 /*
- * 左侧导航栏
+ * Left navigation bar
  *
  * @Author: Kelly Peilin Chan (kelly@vikadata.com)
  * @Date: 2020-03-21 16:07:00

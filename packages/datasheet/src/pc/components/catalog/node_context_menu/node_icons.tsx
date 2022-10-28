@@ -34,7 +34,7 @@ import {
 import { colorVars } from '@vikadata/components';
 
 /**
- * 节点图标类型，外部使用该枚举作为配置
+ * Node icon type, external use of this enumeration as configuration
  *
  * @export
  * @enum {string}
@@ -67,7 +67,6 @@ export enum NodeIcon {
   UnFavorite = 'un_favorite',
   Url = 'url',
   NodeInfo = 'node_info',
-  // 节点类型
   Folder = 'folder',
   OpenFolder = 'open_folder',
   EmptyFolder = 'empty_folder',
@@ -78,7 +77,7 @@ export enum NodeIcon {
   MoveTo = 'MoveTo',
 }
 
-// 枚举与资源位置匹配表
+// Enumeration and Resource Location Matching Table
 export const nodeIconImportMap: {
   [iconName: string]: React.FC<IIconProps>
 } = {
@@ -119,7 +118,7 @@ export const nodeIconImportMap: {
 };
 
 /**
- * 通过枚举值获得 Node 相关图标
+ * Get Node related icons by enumeration value
  */
 export function makeNodeIconComponent(
   icon: NodeIcon,

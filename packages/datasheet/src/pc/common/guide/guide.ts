@@ -1,5 +1,5 @@
 /*
- * 引导系统的Service
+ * Service for bootstrapping systems
  *
  * @Author: Kelly Peilin Chan (kelly@vikadata.com)
  * @Date: 2020-03-19 12:40:19
@@ -24,7 +24,7 @@ import { destroyTaskList, IGuideTaskListProps, showTaskList } from './ui/task_li
 import { addWizardNumberAndApiRun } from './utils';
 
 /**
- * 新手引导Service类
+ * Newbie Guide Service Class
  *
  * @export
  * @class Guide
@@ -58,8 +58,8 @@ export class Guide {
           readMoreTxt: _next,
           onClose() {
             onClose();
-            // 根据 vikaby 菜单上的 “历史更新按钮” 的 wizard 是否访问过
-            // 如果没有，且为非移动端，打开 vikaby 菜单，并执行对应 wizard。
+            // Depending on whether the wizard of the "History Update Button" on the vikaby menu has been accessed
+            // If not, and you are not mobile, open the vikaby menu and execute the corresponding wizard.
             const curWizards = user.info ? { ...user.info.wizards } : {};
             const isPc = window.innerWidth > ScreenWidth.md;
             const VIKABY_UPDATE_LOGS_HISTORY = ConfigConstant.WizardIdConstant.VIKABY_UPDATE_LOGS_HISTORY;
@@ -115,7 +115,7 @@ export class Guide {
         break;
       }
       case 'questionnaire': {
-        // 新手引导弹窗 - 调查问卷
+        // Newcomer guide pop-ups - Questionnaire
         this.showQuestionnaire({
           ...uiInfo,
           onClose: () => {
@@ -134,7 +134,7 @@ export class Guide {
               ...answers,
             };
 
-            // TODO：此处 Message 先隐藏，等待后续交互优化
+            // TODO：Here the Message is hidden pending subsequent interaction optimisation
             Api.submitQuestionnaire(submitData);
             // .then(res => {
             //   const { msg } = res.data;
@@ -160,17 +160,6 @@ export class Guide {
         break;
       }
       case 'contactUs': {
-        // // 联系客服，来源存在2种（新手引导与点击悬浮球的客服）
-        // let platformStr = 'feishu'; // 'website';
-        // const ua = navigator.userAgent.toLowerCase();
-
-        // // 只在飞书客户端会显示飞书交流群的二维码，其余都显示企业微信交流群的二维码
-        // Object.entries(GUIDE_CONTACT_MAP).forEach(([key, value]) => {
-        //   if (ua.indexOf(value) > -1) {
-        //     platformStr = key;
-        //   }
-        // });
-        // const config = uiInfo[platformStr] || uiInfo['website'];
         this.showContactUs({
           // ...config,
           uiInfo,
@@ -255,10 +244,10 @@ export class Guide {
     showBreath(props);
   }
 
-  /* nps 需求的相关文档：https://vikadata.feishu.cn/docs/doccnWmDDh29H89CdKMSYOiHRaf */
+  /* nps Documentation of requirements：https://vikadata.feishu.cn/docs/doccnWmDDh29H89CdKMSYOiHRaf */
   static showCustomQuestionnaire(npsId: string) {
     if (isMobile) {
-      // 手机端不展示调查问卷
+      // No questionnaires are displayed on mobile
       return;
     }
     (function(a, b, c, d) {
@@ -276,8 +265,8 @@ export class Guide {
     const initData = getInitializationData();
     window['npsmeter']({
       key: npsId,
-      user_id: initData.userInfo?.userId, //替换成用户id
-      user_name: initData.userInfo?.nickName, //替换成用户名
+      user_id: initData.userInfo?.userId, // Replace with user id
+      user_name: initData.userInfo?.nickName, // Replace with username
     });
 
     setTimeout(() => {

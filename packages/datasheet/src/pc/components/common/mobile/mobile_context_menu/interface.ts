@@ -4,30 +4,30 @@ export interface IMobileContextMenuProps {
   visible: boolean;
 
   /**
-   * @description 移动端的 contextMenu 会有一个标题
+   * @description There will be a title
    */
   title: React.ReactNode;
 
   /**
-   * @description 需要显示的数据
+   * @description Data to be displayed
    */
   data: any;
 
   /**
-   * @description 关闭的回调
+   * @description Callbacks for closure
    */
   onClose: () => void;
 
   /**
-   * @description hidden 或者 disabled 可能是函数，这里可以定制化一些参数
+   * @description hidden or disabled may be functions, where some parameters can be customized
    */
   params?: {
     [key: string]: any
   }
 
   /**
-   * @description 显示高度
-   * @default 90%（手机屏幕高度的 90%）
+   * @description Display height
+   * @default 90%(90% of the height of the phone screen）
    */
   height?: string;
 }

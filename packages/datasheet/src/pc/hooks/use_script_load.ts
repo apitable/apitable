@@ -26,7 +26,7 @@ type ScriptStatusMap = {
 
 export const scripts: ScriptStatusMap = {};
 
-// 检查是否已经存在相同的脚本
+// Check if the same script already exists
 const checkExisting = (src: string): ScriptStatus | undefined => {
   const existing: HTMLScriptElement | null = document.querySelector(
     `script[src="${src}"]`,

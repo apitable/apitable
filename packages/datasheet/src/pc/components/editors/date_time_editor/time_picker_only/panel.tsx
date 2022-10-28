@@ -62,13 +62,11 @@ export class Panel extends React.PureComponent<IPanelProps, IPanelState> {
 
   static getDerivedStateFromProps(nextProps: IPanelProps, prevState: IPanelState) {
     const { value } = nextProps;
-    // 当传入的value发生变化的时候，更新state
     if (value !== prevState.value) {
       return {
         value,
       };
     }
-    // 否则，对于state不进行任何操作
     return null;
   }
 
@@ -122,13 +120,11 @@ export class Panel extends React.PureComponent<IPanelProps, IPanelState> {
     const hourOptions = generateOptions(24, hourStep);
     const minuteOptions = generateOptions(60, minuteStep);
 
-    // 设置最近的时间默认选择 todo：如果已选择就用已选择的
     let selectHour;
     let selectMinute;
     let isValidHour = true;
     let isValidMinite = true;
 
-    // 已有选择内容或填充内容
     if (value !== '') {
       const splitTime = value.split(':');
       isValidHour = !Number.isNaN(parseInt(splitTime[0], 10));
@@ -136,7 +132,6 @@ export class Panel extends React.PureComponent<IPanelProps, IPanelState> {
       isValidMinite = splitTime.length > 1 && !Number.isNaN(parseInt(splitTime[1], 10));
       selectMinute = isValidHour && isValidMinite ? parseInt(splitTime[1], 10) : '';
     } else {
-      // 获取当前时间显示高亮
       const time = new Date();
       selectHour = time.getHours();
       selectMinute = time.getMinutes();

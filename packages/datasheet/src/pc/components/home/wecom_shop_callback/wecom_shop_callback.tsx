@@ -11,22 +11,22 @@ import { wecomQuickLogin } from '../other_login';
 import styles from './style.module.less';
 
 /**
- * 企微应用商店授权回调页
+ * Enterprise App Store Authorization Callback Page
  */
 const WecomShopCallback: FC = () => {
   const query = useQuery();
-  // 获取进入回调页面的入口来源
+  // Get the source of the entry point to the callback page
   const loginType = localStorage.getItem('wecomShopLoginType');
   const reference = localStorage.getItem('wecomShopLoginToReference');
   const config = getWecomShopConfig();
   const isCamera = loginType === ConfigConstant.AuthReference.CAMERA;
-  // auth_code - 扫码回调参数，code - 网页授权回调参数
+  // auth_code - Sweep callback parameters, code - web authorisation callback parameters
   const authCode = query.get('auth_code') || query.get('code') || '';
   const suiteId = isCamera ? config.suiteId : (query.get('suiteid') || query.get('state'))!;
   const [isSyncing, setSyncing] = useState(false);
 
   useEffect(() => {
-    // 区分跳转来源
+    // Distinguish the source of the jump
     const method = isCamera ? Api.postWecomScanLogin : Api.postWecomAutoLogin;
     method(authCode, suiteId).then(res => {
       const { success, data, message, code } = res.data;
@@ -39,13 +39,13 @@ const WecomShopCallback: FC = () => {
           suiteId
         }));
 
-        // 正在同步通讯录
+        // Contacts being synced
         if (contactSyncing) {
           setSyncing(true);
           return;
         }
 
-        // 同步完通讯录查询用户是否在应用内，0 - 不在，1 - 在
+        // Check if the user is in the app after syncing the address book, 0 - not in, 1 - in
         if (!logined) {
           Message.error({ content: message });
           return;
@@ -66,7 +66,7 @@ const WecomShopCallback: FC = () => {
           return;
         }
 
-        // 存在回调
+        // Retracement exists
         if (reference) {
           window.location.href = reference;
           return;

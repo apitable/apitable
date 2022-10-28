@@ -4,7 +4,7 @@ type IJob = [(store) => void, number];
 
 const jobs: IJob[] = [
   [fixData, 300],
-  // [uploadError, 10000],  FIXME: 取消 Missing RecordData 的上报。
+  // [uploadError, 10000],  FIXME: Cancel the reporting of Missing RecordData.
 ];
 
 export const initCronjobs = (store) => {

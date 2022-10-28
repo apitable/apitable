@@ -2,7 +2,6 @@ import { Role, Selectors } from '@apitable/core';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-// 拿到有权限（也可以拿到没权限的，目前需要区分）能看到的所有字段，字段顺序和默认视图的字段顺序一样，可以看到隐藏的字段。
 /**
  * 
  * @param dstId 

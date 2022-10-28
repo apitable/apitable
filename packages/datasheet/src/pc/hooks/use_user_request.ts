@@ -17,7 +17,7 @@ import { batchActions } from 'redux-batched-actions';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 
 /**
- * 该hook封装了用户请求处理相关的逻辑,
+ * This hook encapsulates the logic related to user request processing
  */
 export const useUserRequest = () => {
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ export const useUserRequest = () => {
   );
   const { join } = useLinkInvite();
   /**
-   * 获取登录状态，如果已经登录，则将获取到的用户信息更新到redux中的userMe中
+   * Get the login status and update the user information into userMe in redux if you are already logged in.
    * @param {{spaceId?: string | null, nodeId?: string | null}} locateIdMap
    * @param {boolean} filter
    * @returns {Promise<import("axios").AxiosResponse<IApiWrapper & {data: IUserInfo}>>}
@@ -83,10 +83,10 @@ export const useUserRequest = () => {
     };
 
   /**
-   * 直接登录/注册
+   * Direct login/registration
    */
   const loginOrRegisterReq = (loginData: ApiInterface.ISignIn, loginType?: ConfigConstant.LoginTypes) => {
-    // 提取邀请加入的 spaceId，赠送空间需要用到
+    // Extract the spaceId of the invitation to join, which is needed to give away space
     const invite = store.getState().invite;
     const spaceId = invite?.inviteLinkInfo?.data?.spaceId || invite?.inviteEmailInfo?.data?.spaceId;
     return Api.signInOrSignUp({ ...loginData, spaceId }).then((res) => {
@@ -95,18 +95,16 @@ export const useUserRequest = () => {
         dispatch(StoreActions.setLoading(true));
 
         const urlParams = getSearchParams();
-        // 发送好友邀请码获得奖励
+        // Send a friend invitation code for a reward
         const inviteCode = urlParams.get('inviteCode');
         if (inviteCode) {
           Api.submitInviteCode(inviteCode);
         }
-        // 链接邀请
         if (!data) {
           if (urlParams.has('inviteLinkToken')) {
             join();
             return res.data;
           }
-          // 邮箱邀请
           if (urlParams.has('inviteMailToken') && inviteEmailInfo) {
             Router.redirect(Navigation.WORKBENCH, {
               params: { spaceId: inviteEmailInfo.data.spaceId },
@@ -124,19 +122,15 @@ export const useUserRequest = () => {
           }
         }
 
-        // 正常流程
         if (data) {
           Router.redirect(Navigation.WORKBENCH,);
           return res.data;
         }
-        // ! 是否是从分享页面登录的（保存的是分享页面的地址）
         const shareReference = localStorage.getItem('share_login_reference');
-        // 是否从分享页面登录的
         if (shareReference) {
           window.location.href = shareReference;
           return res.data;
         }
-        // 如果有源URL地址，就跳转到源地址
         if (reference && isLocalSite(window.location.href, reference)) {
           window.location.href = reference;
           return res.data;
@@ -159,7 +153,7 @@ export const useUserRequest = () => {
   };
 
   /**
-   * 登录【废弃】
+   * Log in [abandoned]
    */
   const loginReq = (loginData: ApiInterface.ISignIn, loginType?: ConfigConstant.LoginTypes) => {
     return Api.signIn(loginData).then((res) => {
@@ -169,12 +163,10 @@ export const useUserRequest = () => {
         dispatch(StoreActions.setLoading(true));
 
         const urlParams = getSearchParams();
-        // 链接邀请
         if (urlParams.has('inviteLinkToken') && !data) {
           join();
           return res.data;
         }
-        // 邮箱邀请
         if (urlParams.has('inviteMailToken') && !data && inviteEmailInfo) {
           Router.push(Navigation.WORKBENCH, {
             params: { spaceId: inviteEmailInfo.data.spaceId },
@@ -183,7 +175,6 @@ export const useUserRequest = () => {
           return res.data;
         }
 
-        // 正常流程
         if (data) {
           Router.push(Navigation.INVITATION_VALIDATION, {
             query: {
@@ -197,14 +188,11 @@ export const useUserRequest = () => {
           });
           return res.data;
         }
-        // ! 是否是从分享页面登录的（保存的是分享页面的地址）
         const shareReference = localStorage.getItem('share_login_reference');
-        // 是否从分享页面登录的
         if (shareReference) {
           window.location.href = shareReference;
           return res.data;
         }
-        // 如果有源URL地址，就跳转到源地址
         if (reference && isLocalSite(window.location.href, reference)) {
           window.location.href = reference;
           return res.data;
@@ -212,7 +200,6 @@ export const useUserRequest = () => {
         Router.push(Navigation.HOME);
       }
 
-      // 进行二次验证（滑块验证）
       if (code === StatusCode.SECONDARY_VALIDATION || code === StatusCode.NVC_FAIL) {
         openSliderVerificationModal();
       } else if (code === StatusCode.PHONE_VALIDATION) {
@@ -240,7 +227,6 @@ export const useUserRequest = () => {
     });
   };
 
-  // 注册（带上登录获取的 token，带上可选的邀请码）
   const signUpReq = (token: string, inviteCode?: string) => {
     return Api.signUp(token, inviteCode).then((res) => {
       const { success } = res.data;
@@ -266,7 +252,7 @@ export const useUserRequest = () => {
   };
 
   /**
-   * 退出登录
+   * Logout
    */
   const signOutReq = () => {
     return Api.signOut().then((res) => {
@@ -275,7 +261,6 @@ export const useUserRequest = () => {
         if (data.needRedirect) {
           window.location.href = data.redirectUri;
         } else {
-          // navigationTo 方法会带上 reference，所以直接使用 location.href
           window.location.href = '/login';
         }
       }
@@ -283,7 +268,7 @@ export const useUserRequest = () => {
   };
 
   /**
-   * 编辑自己在空间站的成员信息
+   * Edit your own membership information on the space station
    */
   const editOwnerMemberName = (memberName: string, oldUnitMap: IUnitValue | null, needMessage?: boolean) =>
     Api.updateOwnerMemberInfo(memberName).then((res) => {
@@ -294,7 +279,7 @@ export const useUserRequest = () => {
           content: t(Strings.message_member_name_modified_successfully),
         });
         dispatch(StoreActions.updateUserInfo({ memberName, isMemberNameModified: true }));
-        // 修改成员信息后同步数表等成员信息
+        // Synchronising member information such as number tables after modifying member information
         if (oldUnitMap) {
           dispatch(StoreActions.updateUnitMap({
             [oldUnitMap.unitId]: {
@@ -311,7 +296,7 @@ export const useUserRequest = () => {
       }
     });
 
-  // 生成开发者令牌
+  // Generating developer tokens
   const createApiKeyReq = () => {
     return Api.createApiKey().then((res) => {
       const { data, success } = res.data;
@@ -324,7 +309,7 @@ export const useUserRequest = () => {
     });
   };
 
-  // 刷新开发者令牌
+  // Refreshing the Developer Token
   const refreshApiKeyReq = (code?: string, type?: string) => {
     return Api.refreshApiKey(code, type).then((res) => {
       const { success, message, code } = res.data;
@@ -337,7 +322,7 @@ export const useUserRequest = () => {
     });
   };
 
-  // 是否开启全员可邀请
+  // Whether to turn on full invitability
   const inviteStatusApi = () => {
     return Api.getSpaceFeatures().then((res) => {
       const { success, data } = res.data;
@@ -345,7 +330,7 @@ export const useUserRequest = () => {
     });
   };
 
-  // 获取可邀请成员状态
+  // Get Inviteable Member Status
   const getInviteStatus = async() => {
     if (!userInfo) {
       return;
@@ -353,7 +338,7 @@ export const useUserRequest = () => {
     return await inviteStatusApi();
   };
 
-  // 更新头像
+  // Update avatar
   const updateAvatar = (token: string, init?: boolean) => {
     return Api.updateUser({ avatar: token, init }).then((res) => {
       const { success, data } = res.data;
@@ -365,7 +350,7 @@ export const useUserRequest = () => {
     });
   };
 
-  // 更新头像
+  // Update avatar
   const customOrOfficialAvatarUpload = async({
     file,
     token,
@@ -394,7 +379,7 @@ export const useUserRequest = () => {
     return;
   };
 
-  // 获取手机验证码
+  // Get mobile verification code
   const getSmsCodeReq = (
     areaCode: string,
     phone: string,
@@ -406,7 +391,7 @@ export const useUserRequest = () => {
       if (success) {
         return res.data;
       }
-      // 进行二次验证（滑块验证）
+      // Perform secondary verification (slider verification)
       if (code === StatusCode.SECONDARY_VALIDATION || code === StatusCode.NVC_FAIL) {
         openSliderVerificationModal();
       } else if (code === StatusCode.PHONE_VALIDATION) {
@@ -427,14 +412,12 @@ export const useUserRequest = () => {
     });
   };
 
-  // 获取邮件验证码
   const getEmailCodeReq = (email: string, type: number) => {
     return Api.getEmailCode(email, type).then((res) => {
       return res.data;
     });
   };
 
-  // 找回密码
   const retrievePwdReq = (
     areaCode: string,
     username: string,
@@ -451,7 +434,6 @@ export const useUserRequest = () => {
     });
   };
 
-  // 修改密码
   const modifyPasswordReq = (password: string, code?: string, type?: string) => {
     return Api.updatePwd(password, code, type).then(res => {
       return res.data;

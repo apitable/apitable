@@ -64,7 +64,7 @@ export const FormFieldUI: React.FC<IFormFieldUIProps> = ({
   };
 
   const renderIndex = () => {
-    // 若indexVisible为undefined或true时，才展示index
+    // Show index only if indexVisible is undefined or true
     if (formProps.indexVisible === false) return null;
 
     return <span className={styles.indexClass}>{index < 10 ? `0${index}` : index}</span>;
@@ -75,7 +75,7 @@ export const FormFieldUI: React.FC<IFormFieldUIProps> = ({
       <h4 className={styles.title} data-required={required}>
         {renderIndex()}
         <span className={styles.titleText}>{title}</span>
-        {/* 有表单及源表的manageable权限且未设置过列权限时才可编辑 */}
+        {/* Editing is only possible if you have manageable permissions on the form and source table and no column permissions have been set */}
         {formState?.permissions?.manageable &&
           formState?.sourceInfo?.datasheetPermissions?.manageable &&
           !formState?.fieldPermissionMap?.[fieldId] && (

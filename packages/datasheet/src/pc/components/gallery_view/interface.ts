@@ -8,7 +8,7 @@ export interface ICommitDragDropState {
 }
 
 /**
- * 对于 react-window 来说，item 的 interface 应该是通用的。在分组的情况下，类型不同而已。
+ * For react-window, the interface for items should be common. In the case of grouping, the type is just different.
  */
 export interface IGalleryGroupItem {
   groupIndex?: number,

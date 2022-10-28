@@ -8,7 +8,6 @@ import styles from './style.module.less';
 
 const ImprovingInfo: FC = () => {
   const query = useQuery();
-  // 微信公众号token
   const mpToken = query.get('token') || '';
   const { loginOrRegisterReq } = useUserRequest();
   const mobileModLogin = (data: ISubmitRequestParam) => {

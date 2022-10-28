@@ -18,7 +18,7 @@ const DocInnerHtml = dynamic(() => import('./doc_inner_html'), {
 
 export type IFieldValueBase = number | string | boolean | { [key: string]: any };
 
-// 单元格 value 值类型
+// Cell value Value type
 export type IFieldValue = IFieldValueBase | IFieldValueBase[] | null;
 
 export type IFieldValueMap = { [fieldKey: string]: IFieldValue };
@@ -27,8 +27,8 @@ export interface IRecord {
   recordId: string;
 
   /**
-   * record 中的数据
-   * 只有当 record 某一列存在内容时，data 中才会有这一列的fieldId key
+   * Data in record
+   * The fieldId key of a column of record will only be available in data if there is content in that column.
    */
   fields: IFieldValueMap;
 }
@@ -52,7 +52,8 @@ const API_BASE = 'https://api.vika.cn';
 const MORE_SDK_URL = 'https://github.com/vikadata/awesome-vikadata';
 const VARIABLE_REG = /^[_a-zA-Z][_a-zA-Z0-9]*$/;
 const INVALID_FIELD_NAME_TIPS = `
-存在不符合变量规则的字段名，请开启「使用 FieldId」，否则下方的代码示例可能无法运行！[字段映射](https://github.com/vikadata/vika.py#字段映射)可以帮助你解决这个问题。
+A field name exists that does not match the variable rules, please turn on "Use FieldId" or the code example below may not work! 
+[Field Mapping](https://github.com/vikadata/vika.py#字段映射) can help you to solve this problem.
 `;
 
 export const FieldCode: React.FC<IFieldCode> = props => {
@@ -71,7 +72,7 @@ export const FieldCode: React.FC<IFieldCode> = props => {
       const attachmentField = fieldMap[attachmentColumn.fieldId];
       return byFieldId ? attachmentField.id : attachmentField.name;
     }
-    return '<附件字段>';
+    return '<attachment field>';
   };
 
   const getInvalidFieldNames = () => {
@@ -95,9 +96,9 @@ export const FieldCode: React.FC<IFieldCode> = props => {
             switch (type) {
               case RecordType.Add:
               case RecordType.Update:
-                // 字段可编辑时才能写入。
+                // Fields can only be written when they are editable.
                 if (Field.bindModel(field).recordEditable()) {
-                  // 空值不显示
+                  // Empty values are not displayed
                   fields[byFieldId ? field.id : field.name] = apiValue;
                 }
                 break;
@@ -145,7 +146,7 @@ export const FieldCode: React.FC<IFieldCode> = props => {
       oneFieldValue,
     };
   };
-  // 组装查询条件
+  // Assemble the search criteria
   const getSearchParams = (type?: 'get' | 'add' | 'update' | 'bulk_add') => {
     const { oneFieldKey, oneFieldValue, oneRecord } = getExampleRecordKV(true);
 
@@ -180,7 +181,7 @@ export const FieldCode: React.FC<IFieldCode> = props => {
     return {
       code: 200,
       success: true,
-      message: '请求成功',
+      message: 'Request successful',
       data: data,
     };
   };
@@ -249,7 +250,7 @@ export const FieldCode: React.FC<IFieldCode> = props => {
         return {
           ...commonContext,
           method: 'UPLOAD',
-          data: '{你的 文件路径}',
+          data: '{Your file path}',
           response: JSON.parse(defaultExampleId ? t(Strings[defaultExampleId]) : '{}'),
           attachFieldName: getAttachmentFieldName(),
         };

@@ -20,7 +20,7 @@ const DingTalkLogin = () => {
     onSuccess: res => {
       const { data, success, code } = res.data;
 
-      // 当内部服务不稳定时，进行重试
+      // Retries when internal services are unstable
       if (code === StatusCode.COMMON_ERR && count < 3) {
         setCount(count + 1);
         return dd.runtime.permission.requestAuthCode({
@@ -30,7 +30,7 @@ const DingTalkLogin = () => {
         } as IRuntimePermissionRequestAuthCodeParams);
       }
 
-      // 需要联系管理员的情况
+      // Situations requiring contact with the administrator
       if ([StatusCode.DINGTALK_NOT_BIND_SPACE, StatusCode.DINGTALK_USER_NOT_EXIST].includes(code)) {
         Message.error({ content: t(Strings.dingtalk_tenant_not_exist_tips) });
         return Router.push(Navigation.LOGIN, {
@@ -42,7 +42,7 @@ const DingTalkLogin = () => {
         return setSyncing(true);
       }
 
-      // 其余情况，联系客服
+      // For the rest, contact customer service
       if (!success || !data.bindSpaceId) {
         Message.error({ content: t(Strings.dingtalk_login_fail_tips) });
         return Router.push(Navigation.LOGIN, {

@@ -19,7 +19,7 @@ import styles from './style.module.less';
 import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
 
 export interface IShareContentProps {
-  /** 被操作节点相关的信息 */
+  /** Information about the node being operated on */
   data: {
     nodeId: string,
     type: ConfigConstant.NodeType,
@@ -73,7 +73,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
     return success;
   };
 
-  // 选择成员的提交事件
+  // Select member submission events
   const onSubmit = async(unitInfos: IUnitValue[], permission: IOption) => {
     if (!unitInfos.length) {
       return;

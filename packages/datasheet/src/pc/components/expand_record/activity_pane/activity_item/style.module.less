@@ -19,7 +19,6 @@
   padding-bottom: 4px;
 
   :global {
-    // 单选、多选样式
     .optionCellContainer {
       .unitMember {
         margin: 4px 2px;
@@ -193,7 +192,6 @@
 
   .old {
     opacity: 0.8;
-    // 成员 avatar 是文本时不应该有中划线
     &:not(:global(> .optionCellContainer > .unitMember)) {
       text-decoration-line: line-through;
     }

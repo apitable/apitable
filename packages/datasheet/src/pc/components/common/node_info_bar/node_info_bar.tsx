@@ -19,28 +19,18 @@ export const NODE_NAME_MIN_LEN = 1;
 export const NODE_NAME_MAX_LEN = 100;
 
 export interface INodeInfoBarProps {
-  // 节点相关的信息
   data: {
-    // 节点id
     nodeId: string;
-    // 节点名称
     name: string | undefined;
-    // 节点图标
     icon: string | undefined;
-    // 节点类型
     type: ConfigConstant.NodeType;
-    // 是否是可编辑的
     nameEditable?: boolean;
-    // 图标是否可以更改
     iconEditable?: boolean;
-    // 星标是否已经激活
     favoriteEnabled?: boolean;
-    // 当前节点的权限
     role?: string;
     iconSize?: number;
   };
   style?: React.CSSProperties;
-  // 表示需要隐藏哪些模块（节点图标、节点权限，星标），默认情况下全部显示
   hiddenModule?: { icon?: boolean, permission?: boolean, favorite?: boolean };
 }
 
@@ -64,7 +54,6 @@ export const NodeInfoBar: FC<INodeInfoBarProps> = ({ data, hiddenModule, style }
   const { checkRepeat } = useCatalog();
   const { renameNodeReq } = useCatalogTreeRequest();
   const { run: renameNode } = useRequest(renameNodeReq, { manual: true });
-  // 临时对数表节点的进行特殊处理
   const isDatasheet = type === ConfigConstant.NodeType.DATASHEET;
 
   useEffect(() => {
@@ -77,7 +66,6 @@ export const NodeInfoBar: FC<INodeInfoBarProps> = ({ data, hiddenModule, style }
     }
 
     const value = newName.trim();
-    // 新名称与旧名称相同时，跳过
     if (value === name) {
       setEditing(false);
       return;
@@ -141,7 +129,7 @@ export const NodeInfoBar: FC<INodeInfoBarProps> = ({ data, hiddenModule, style }
         return ConfigConstant.DashboardPermissionTip[permission];
     }
   };
-  // TODO: // 这里的结构还需要调整一下
+  // TODO: // Restructuring
   return (
     <div className={classNames(styles.nodeInfoBar, { [styles.multiLine]: isDatasheet })} ref={nodeInfoBarRef}>
       <div className={classNames(styles.nameWrapper, { [styles.editing]: editing })}>

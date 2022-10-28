@@ -45,7 +45,7 @@ export const CreateFieldModal = memo((props) => {
   };
 
   const onClick = () => {
-    // 管理权限才能创建字段
+    // Fields can only be created with administrative privileges
     if (!manageable) {
       return;
     }
@@ -110,7 +110,7 @@ export const CreateFieldModal = memo((props) => {
       <div className={styles.createFieldModal}>
         <div className={styles.banner}>
           <span className={styles.bannerImg}>
-            <Image src={manageable ? GanttCreationDate : GanttCreationNoDate} alt="甘特图创建时间字段 banner" />
+            <Image src={manageable ? GanttCreationDate : GanttCreationNoDate} alt="Gantt chart creation time field banner" />
           </span>
         </div>
         <Typography variant="h7" align={'center'}>

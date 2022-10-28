@@ -128,7 +128,6 @@ export const MobileAlarm = (props: IMobileAlarmProps) => {
     return new Date(`${date} ${pickTime}`);
   }, [pickTime]);
 
-  // 无成员数据时异步补充
   useEffect(() => {
     if (curAlarm?.target !== AlarmUsersType.Member) {
       return;
@@ -162,7 +161,7 @@ export const MobileAlarm = (props: IMobileAlarmProps) => {
     if (!unitMap || !user?.unitId) {
       return;
     }
-    // TODO 补充逻辑
+    // TODO Additional logic
     // if (alarmMember?.data && !isAlarmMemberField) {
     //   return unitMap[alarmMember?.data];
     // }
@@ -180,10 +179,10 @@ export const MobileAlarm = (props: IMobileAlarmProps) => {
 
   const subtractOptions = useMemo(() => {
     let optionData: object;
-    if (includeTime) { // 日期开启时间可以选所有选项
+    if (includeTime) { // All options can be selected for the date and time of opening
       optionData = ALL_ALARM_SUBTRACT;
     } else {
-      // 日期不显示时间，但是之前设置过分钟、小时级别
+      // The date does not show the time, but the minute and hour levels were previously set
       let extraSubtract = {};
       if (curAlarm?.subtract && inDayKeys.includes(curAlarm?.subtract)) {
         extraSubtract = pick(ALL_ALARM_SUBTRACT, curAlarm?.subtract);
@@ -271,7 +270,7 @@ export const MobileAlarm = (props: IMobileAlarmProps) => {
   };
 
   const showTimePicker = Boolean(curAlarm?.time) || !includeTime ||
-    // subtract 选择不在一天内时需要显示具体的时间
+    // subtract Need to show specific time of day when selecting not in a day
     (!curAlarm?.subtract || !inDayKeys.includes(curAlarm?.subtract));
 
   const alarmConfigList = compact([

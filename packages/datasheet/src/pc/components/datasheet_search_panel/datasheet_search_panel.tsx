@@ -40,14 +40,11 @@ interface ISearchPanelProps {
   activeDatasheetId: string;
   setSearchPanelVisible(v: boolean);
   onChange(result: { datasheetId?: string; mirrorId?: string; viewId?: string; widgetIds?: string[] });
-  // 小组件选择数据源，只需要检查有当前的可查看权限即可
   noCheckPermission?: boolean;
-  // 标记右侧副栏目应该显示什么内容，展示视图或者小组件
   subColumnType?: SubColumnType;
   showMirrorNode?: boolean;
 }
 
-// 副栏目的显示内容
 export enum SubColumnType {
   Widget,
   View,
@@ -81,9 +78,7 @@ const getModalTitle = (subColumnType?: SubColumnType) => {
 const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
   const colors = useThemeColors();
   const { activeDatasheetId, noCheckPermission, folderId, subColumnType, showMirrorNode } = props;
-  // 新建视图和节点时，可以选择创建神奇表单，神奇表单需要绑定视图数据
   const showSubColumnWithView = subColumnType === SubColumnType.View;
-  // 在数表中安装的小组件可以选择发送到哪个仪表盘
   const showSubColumnWithWidget = subColumnType === SubColumnType.Widget;
   const editorRef = useRef<{ focus() } | null>(null);
 
@@ -132,7 +127,6 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
           setShowSearch(true);
           setCurrentFolderId(props.folderId);
           if (!folders.length && !files.length) {
-            // 未搜索到内容时，记录被搜索的值
             setSearchResult(val);
             return;
           }
@@ -202,7 +196,6 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
   }, [datasheet, props, folderLoaded, showSubColumnWithView, currentMeta, currentDatasheetId, currentMirrorId, mirror]);
 
   useMount(() => {
-    // 点击视图右侧 ”+“ 按钮，直接获取神奇表单信息
     if (showSubColumnWithView && currentMeta == null) {
       searchDatasheetMetaData(activeDatasheetId);
     }
@@ -227,7 +220,6 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
     if (loading) {
       return;
     }
-    // TODO:0.6.2上线之后删除workbench_create_form_panel_shown
     setTimeout(() => {
       Player.doTrigger(showSubColumnWithView ? Events.workbench_create_form_panel_shown : Events.datasheet_search_panel_shown);
     }, 1000);
@@ -318,10 +310,9 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
   };
 
   /**
-   * @description 判断当前的节点是否可以被选中，需要检查节点的权限
+   * @description To determine if the current node can be selected, check the node's permissions
    */
   const checkNodeDisable = (node: INode) => {
-    // 不需要对 view 视图进行检查，因为所在数表已经过检查
     if (node.type === ConfigConstant.NodeType.VIEW || noCheckPermission) {
       return;
     }

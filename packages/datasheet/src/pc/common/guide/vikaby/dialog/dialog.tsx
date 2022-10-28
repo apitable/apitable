@@ -31,7 +31,7 @@ export const Dialog: FC<IDialog> = (props) => {
       <div className={styles.title}>{title}</div>
       <div className={styles.desc}>{content && parser(content)}</div>
       {
-        // 经济系统-用量与限制的升级按钮
+        // Economy system - Upgrade button for usage and limits
         dialogClx === 'billingNotify' && !isMobileApp() &&
         <div className={styles.upgradeBtn}>
           <Button

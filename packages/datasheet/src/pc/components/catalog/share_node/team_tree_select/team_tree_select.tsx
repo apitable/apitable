@@ -22,13 +22,9 @@ export interface ITeamTreeSelectProps {
 
 export const TeamTreeSelect: FC<ITeamTreeSelectProps> = ({ className, onChange }) => {
   const colors = useThemeColors();
-  /** 选中的组织ID */
   const [checkedTeamId, setCheckedTeamId] = useState('');
-  /** 选中的组织名称 */
   const [checkedTeamName, setCheckedTeamName] = useState('');
-  /** 组织的树型集合 */
   const [teamTree, setTeamTree] = useState<ITeamTreeNode[]>([]);
-  /** 选择组织的drawer显示 */
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [expandKeys, setExpandKeys] = useState<string[]>([]);
   const { readTeamReq, getSubTeamsReq } = useInviteRequest();
@@ -37,14 +33,12 @@ export const TeamTreeSelect: FC<ITeamTreeSelectProps> = ({ className, onChange }
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
-  // 设置根节点
   useEffect(() => {
     if (team) {
       setTeamTree([team]);
     }
   }, [team]);
 
-  // 设置子节点
   useEffect(() => {
     if (!subTeams) {
       return;
@@ -76,7 +70,6 @@ export const TeamTreeSelect: FC<ITeamTreeSelectProps> = ({ className, onChange }
     }, null);
   };
 
-  // 给tree使用
   const loadHandler = (nodeId: string) => {
     return getSubTeams(nodeId);
   };

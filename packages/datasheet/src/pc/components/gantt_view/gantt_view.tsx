@@ -205,7 +205,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { startFieldId, endFieldId, workDays = DEFAULT_WORK_DAYS, onlyCalcWorkDay, autoTaskLayout, linkFieldId } = ganttStyle;
-  const rowCount = linearRows.length; // 总行数
+  const rowCount = linearRows.length;
   const { autoHeadHeight, id: viewId } = view as IGanttViewProperty;
   const dispatch = useDispatch();
   const ganttViewStatus: IGanttViewStatus = useMemo(() => {
@@ -229,11 +229,11 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
   const { visualizationEditable, editable } = permissions;
   const settingPanelVisible = (visualizationEditable || editable) && _settingPanelVisible;
   const settingPanelWidth = isMobile ? 0 : _settingPanelWidth;
-  const containerWidth = _containerWidth; // 考虑 2px border
+  const containerWidth = _containerWidth; 
   const ganttViewWidth = settingPanelVisible ? containerWidth - settingPanelWidth : containerWidth;
-  const gridVisible = !isMobile && _gridVisible; // 移动端不展示左侧任务栏
+  const gridVisible = !isMobile && _gridVisible;
 
-  // 左侧任务栏总宽度
+  // Total width of the left taskbar
   const gridTotalWidth = useMemo(() => {
     return gridVisibleColumns.reduce((pre, cur) => pre + Selectors.getColumnWidth(cur), GRID_ROW_HEAD_WIDTH);
   }, [gridVisibleColumns]);
@@ -243,11 +243,12 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
   const ganttWidth = gridVisible ? ganttViewWidth - gridWidth : ganttViewWidth;
 
   /**
-   * 这里使用完整的 fieldMap，包含没有权限的列
-   * 之前逻辑：
-   * 若检测到无日期字段，就会弹出创建日期的弹窗
-   * 当前兼容的情况：
-   * 兼容用户没有对应日期列的权限，但此时不需要弹出弹窗，因为有日期列存在
+   * Here the full fieldMap is used, containing columns without permissions
+   * Previous logic.
+   * If no date field is detected, a pop-up will be created for the date
+   * Current compatibility.
+   * The compatible user does not have access to the corresponding date column, 
+   * but there is no need to pop up the pop-up at this point, as the date column exists
    */
   const dateTimeTypeFields = useMemo(
     () =>
@@ -257,17 +258,17 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     [entityFieldMap],
   );
 
-  // 设置新增一行的行为状态
+  // Set the behavioural state of a new line
   const [canAppendRow, setCanAppendRow] = useState(true);
 
   // Refs
   const containerRef = useRef<any>();
   const domGridRef = useRef<IContainerEdit | null>(null); // Grid Dom
-  const gridHorizontalBarRef = useRef<any>(); // 任务区域横向滚动条
-  const ganttHorizontalBarRef = useRef<any>(); // 图形区域横向滚动条
-  const verticalBarRef = useRef<any>(); // 纵向滚动条
-  const cellVerticalBarRef = useRef<any>(); // 单元格纵向滚动条
-  const resetScrollingTimeoutID = useRef<TimeoutID | null>(null); // 滚动定时器，当滚动时，禁止 stage 的事件监听
+  const gridHorizontalBarRef = useRef<any>(); // Horizontal scroll bar in the task area
+  const ganttHorizontalBarRef = useRef<any>(); // Horizontal scrollbar in the graphics area
+  const verticalBarRef = useRef<any>(); // Vertical scroll bar
+  const cellVerticalBarRef = useRef<any>(); // Cell vertical scroll bar
+  const resetScrollingTimeoutID = useRef<TimeoutID | null>(null); // Scroll timer to disable event listening on stage when scrolling
 
   // Hooks
   const forceRender = useUpdate();
@@ -279,7 +280,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     isOverflow: false,
   });
   const { scrollLeft, scrollTop, isScrolling } = ganttScrollState;
-  // 落点
+
   const [pointPosition, setPointPosition] = useState<PointPosition>({
     areaType: AreaType.None,
     realAreaType: AreaType.None,
@@ -293,22 +294,21 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     offsetLeft: 0,
   });
 
-  // 用于标识开始选区或填充的状态
+  // Used to mark the start of a selection or the state of a fill
   const [isCellDown, setCellDown] = useState<boolean>(false);
-  // DOM 坐标系中的 tooltip
+  // tooltip in the DOM coordinate system
   const [tooltipInfo, setTooltipInfo] = useSetState<ITooltipInfo>(DEFAULT_TOOLTIP_PROPS);
-  // 任务列宽度拖拽过程中的高亮分割线
+  // Highlighted dividers during task column width dragging
   const [dragSplitterInfo, setDragSplitterInfo] = useSetState<ISplitterProps>({ x: -1, visible: false });
   const [activeCellBound, setActiveCellBound] = useSetState<CellBound>({
     width: 0,
     height: 0,
   });
-  const [isLocking, setLocking] = useState<boolean>(false); // 对操作进行锁定，防止其它操作频发
+  const [isLocking, setLocking] = useState<boolean>(false); // Locking of operations to prevent other operations from occurring frequently
   const [dragTaskId, setDragTaskId] = useState<string | null>(null);
   const [transformerId, setTransformerId] = useState<string>('');
   const [draggingOutlineInfo, setDraggingOutlineInfo] = useState<IDraggingOutlineInfoProps | null>(null);
 
-  // 任务关联相关
   const [isTaskLineDrawing, setIsTaskLineDrawing] = useState<boolean>(false);
   const [targetTaskInfo, setTargetTaskInfo] = useState<ITargetTaskInfo | null>(null);
   const [taskLineSetting, setTaskLineSetting] = useState<ITaskLineSetting | null>(null);
@@ -351,7 +351,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
       }
     };
 
-    // 只在分组下计算图形区域的组头信息
+    // Calculation of group header information for graphic areas under grouping only
     if (!groupCount) return dataMap;
 
     ganttLinearRows.forEach(row => {
@@ -363,7 +363,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
       if (type !== CellType.Record) {
         return;
       }
-      // 考虑到可能会有 undefined 的情况，影响后续 min/max 的计算
+      // Considering that there may be undefined cases that affect the subsequent min/max calculation
       let start = Selectors.getCellValueByGanttDateTimeFieldId(state, snapshot, recordId, startFieldId) || null;
       const end = Selectors.getCellValueByGanttDateTimeFieldId(state, snapshot, recordId, endFieldId) || start;
       start = start ?? end;
@@ -385,8 +385,8 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
   }, [startFieldId, endFieldId, ganttLinearRows, snapshot]);
 
   /**
-   * 当前 gantt 的数据实例
-   * 提供与时间轴和甘特图坐标相关的方法
+   * Example of current gantt data
+   * Provides methods related to timeline and Gantt chart coordinates
    */
   const ganttInstance = useCreation<GanttCoordinate>(
     () =>
@@ -408,8 +408,8 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
   );
 
   /**
-   * 当前 gantt 的左侧任务栏数据实例
-   * 提供与任务栏坐标相关的方法
+   * Example of the left-hand taskbar data for the current gantt
+   * Provide methods related to taskbar coordinates
    */
   const gridInstance = useCreation<GridCoordinate>(
     () =>
@@ -517,7 +517,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     resetScrollingTimeoutID.current = requestTimeout(resetScrolling, 150);
   }, [resetScrolling]);
 
-  // 设置鼠标样式
+  // Set mouse style
   const setMouseStyle = useCallback((mouseStyle: string) => (containerRef.current.style.cursor = mouseStyle), []);
 
   useGridMessage({
@@ -526,7 +526,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     firstColumnWidth: Selectors.getColumnWidth(gridVisibleColumns[0]),
   });
 
-  // 滚动到某个单元格
+  // Scroll to a cell
   const scrollToItem = useCallback(
     ({ rowIndex, columnIndex }: { rowIndex?: number; columnIndex?: number }) => {
       let _scrollTop;
@@ -559,7 +559,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     [columnIndicesMap, containerHeight, containerWidth, gridInstance, rowHeight, scrollLeft, scrollTo, scrollTop],
   );
 
-  // 返回某个时间
+  // Return to a time
   const backTo = useCallback(
     (dateTime, offsetX: number = -ganttWidth / 2) => {
       ganttInstance.initTimeline(dateUnitType, dateTime);
@@ -572,7 +572,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
   );
 
   /**
-   * 设置起止字段时间，并保留日期内的时间
+   * Set the start and end time and keep the time within the date
    */
   const setRecord = (recordId: string, startUnitIndex: number | null, endUnitIndex: number | null) => {
     const data: ISetRecordOptions[] = [];
@@ -597,7 +597,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
       if (!isSameField) {
         data.push(endData);
       }
-      // 如果开启了自动编排而且结束时间遭到了修改
+      // If automatic scheduling is enabled and the end time has been changed
       if (autoTaskLayout && endData) {
         autoSingleTask({ recordId: endData.recordId, endTime: endData.value });
       }
@@ -609,7 +609,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     });
   };
 
-  // 上一页/下一页
+  // Previous / Next
   const scrollIntoView = useCallback(
     (type: ScrollViewType) => {
       const scrollLeft = ganttHorizontalBarRef.current.scrollLeft;
@@ -624,7 +624,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     let isStop = false;
     let _scrollOptions: IScrollOptions = {};
     let _areaType: AreaType = AreaType.Grid;
-    // 记录 X/Y 轴滚动的总距离
+    // Record the total distance of the X/Y axis roll
     let totalScrollX = 0;
     let totalScrollY = 0;
 
@@ -690,7 +690,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     window.dispatchEvent(new Event('resize'));
   };
 
-  // 布局切换
+  // Layout switching
   useUpdateEffect(() => {
     ganttInstance.rowHeight = rowHeight;
     ganttInstance.rowMetaDataMap = {};
@@ -722,7 +722,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     forceRender();
   }, [workDays, onlyCalcWorkDay]);
 
-  // 转换时间精度
+  // Conversion time accuracy
   useUpdateEffect(() => {
     const selfWidth = ganttWidth / 2;
     const prevColumnIndex = ganttInstance.getColumnStartIndex(scrollLeft + selfWidth);
@@ -735,7 +735,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     forceRender();
   }, [dateUnitType]);
 
-  // 限制滚动阈值，实现虚拟滚动
+  // Limit scrolling thresholds for virtual scrolling
   useUpdateEffect(() => {
     if (scrollLeft <= 0) {
       if (isTaskLineDrawing) {
@@ -747,9 +747,9 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
       scrollTo({ scrollLeft: currentScrollLeft }, AreaType.Gantt);
       return forceRender();
     }
-    // 最大滚动距离
+    // Max. rolling distance
     const scrollMaxSize = ganttHorizontalBarRef.current.scrollWidth - ganttHorizontalBarRef.current.clientWidth;
-    // 与最大滚动距离的差值
+    // Difference to maximum rolling distance
     const scrollMaxDiff = scrollLeft - scrollMaxSize;
     if (scrollMaxDiff >= 0) {
       if (isTaskLineDrawing) {
@@ -766,9 +766,9 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
 
   useEffect(() => {
     /**
-     * 初始化 GanttStatus 相关数据
-     * 若有本地缓存，则从缓存中读取
-     * 若无本地缓存，则将 Redux 中的初始数据存入本地缓存
+     * Initialising GanttStatus related data
+     * Read from cache if local cache is available
+     * If there is no local cache, the initial data in Redux is stored in the local cache
      */
     const defaultGanttViewStatus = getGanttViewStatusWithDefault({
       spaceId,
@@ -791,7 +791,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
   }, [view?.id]);
 
   useMount(() => {
-    // 初始化甘特图滚动条位置
+    // Initialising the Gantt chart scrollbar position
     if (0 <= todayIndex && todayIndex <= columnThreshold * 2) {
       const todayOffset = ganttInstance.getColumnOffset(todayIndex);
       const currentScrollLeft = todayOffset - ganttWidth / 2;
@@ -829,7 +829,6 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
   }, [clearTooltipInfo, isScrolling]);
   const theme = useTheme();
 
-  // 任务关联相关
   const linkCycleEdges = useMemo(() => {
     if (!linkFieldId) {
       return {
@@ -860,7 +859,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     };
   }, [visibleRows, linkFieldId, state, snapshot]);
 
-  // 根据分组隐藏信息补充ganttLinearRows
+  // Additional ganttLinearRows based on group hiding information
   const ganttLinearRowsAfterCollapseMap = useMemo(() => {
     return getCollapsedLinearRows(ganttLinearRows, groupCollapseIds);
   }, [ganttLinearRows, groupCollapseIds]);
@@ -901,7 +900,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     return cellValueMap;
   }, [visibleRows, linkFieldId, groupCollapseIds, rowsIndexMap, startFieldId, endFieldId, state, snapshot, ganttLinearRowsAfterCollapseMap]);
 
-  // 单任务修改自动编排
+  // Automatic scheduling of single-task modifications
   const autoSingleTask = endData => {
     if (!linkFieldId || !startFieldId || !endFieldId) {
       return;
@@ -1058,7 +1057,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
                 </KonvaGridViewContext.Provider>
               </div>
 
-              {/* 任务区横向滚动条 */}
+              {/* Horizontal scroll bar in the task area */}
               <div
                 ref={gridHorizontalBarRef}
                 className={styles.horizontalScrollBarWrapper}
@@ -1078,7 +1077,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
                 {scrollbarTooltip}
               </div>
 
-              {/* 图形区横向滚动条 */}
+              {/* Horizontal scrollbar in the graphics area */}
               <div
                 ref={ganttHorizontalBarRef}
                 className={styles.horizontalScrollBarWrapper}
@@ -1100,7 +1099,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
                 {scrollbarTooltip}
               </div>
 
-              {/* 纵向滚动条 */}
+              {/* Vertical scroll bar */}
               <div
                 ref={verticalBarRef}
                 className={styles.verticalScrollBarWrapper}
@@ -1136,7 +1135,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
           allowResize={false}
         />
 
-        {/* 数表 DOM 坐标系 */}
+        {/* Number Table DOM Coordinate System */}
         <DomGrid
           ref={domGridRef}
           instance={gridInstance}
@@ -1149,7 +1148,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
           cellVerticalBarRef={cellVerticalBarRef}
         />
 
-        {/* 甘特图 DOM 坐标系 */}
+        {/* Gantt Chart DOM Coordinate System */}
         <DomGantt 
           containerWidth={ganttViewWidth} 
           containerHeight={containerHeight} 
@@ -1158,7 +1157,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
           dateUnitType={dateUnitType}
         />
 
-        {/* 创建列模态框 */}
+        {/* Create column modal boxes */}
         {!dateTimeTypeFields.length && <CreateFieldModal />}
       </div>
     </KonvaGridContext.Provider>

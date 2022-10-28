@@ -91,7 +91,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
   const x = taskWidth > columnWidth ? taskX + taskWidth - 16 : taskX + columnWidth - 16;
   const y = taskY + rowHeight - 4;
 
-  // 计算当前鼠标位置在哪个task内
+  // Calculate which task the current mouse position is in
   const includeTask = (targetX: number, targetY: number) => {
     let res = '';
     Object.keys(taskMap).forEach(task => {

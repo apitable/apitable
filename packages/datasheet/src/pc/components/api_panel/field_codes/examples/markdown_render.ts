@@ -20,7 +20,7 @@ const md = new MarkdownIt({
   highlight: (str, lang, ...d) => {
     if (lang) {
       const langObject = Prism.languages[lang];
-      // 在线调试
+      // Online commissioning
       const onlineDebugButton = `<button ${lang === 'shell' && isSassProduction() ? '' : 'style="display: none"'} class="${DEBUG_BUTTON_CLASS_NAME}"
       >${debugOutlinedStr}${t(Strings.request_in_api_panel_curl)}</button>`;
       try {

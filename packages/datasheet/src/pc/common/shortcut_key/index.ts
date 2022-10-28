@@ -1,6 +1,6 @@
 /**
- * 【快捷键绑定系统】
- * 灵感以及大部分代码来源于 vscode，可参照 preference -> Keyboard Shortcuts 的配置来理解。
+ * 【Shortcut Key Binding System】
+ * The inspiration and much of the code comes from vscode and can be understood by referring to the preference -> Keyboard Shortcuts configuration.
  * > https://github.com/microsoft/vscode/blob/master/src/vs/base/common/keybindingParser.ts
  */
 

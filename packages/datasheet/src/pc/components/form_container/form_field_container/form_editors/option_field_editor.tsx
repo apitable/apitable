@@ -88,7 +88,7 @@ const OptionFieldEditorBase: React.ForwardRefRenderFunction<IEditor, IOptionFiel
                     if (disabled) {
                       return;
                     }
-                    // 表单单选支持反选
+                    // Form radio support for inverse selection
                     if (isSingleSelect && e.target.value === value) {
                       clearSingleSelect();
                     }

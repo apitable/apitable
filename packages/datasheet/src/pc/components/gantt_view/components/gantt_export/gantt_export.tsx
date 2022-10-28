@@ -60,7 +60,7 @@ export const GanttExport: FC<IGanttExportProps> = ({ dateUnitType }) => {
     ganttLinearRows.forEach(row => {
       const { recordId, type } = row;
       if (type !== CellType.Record) return;
-      // 考虑到可能会有 undefined 的情况，影响后续 min/max 的计算
+      // Considering that there may be undefined cases that affect the subsequent min/max calculation
       let curStart = Selectors.getCellValueByGanttDateTimeFieldId(state, snapshot, recordId, startFieldId) || null;
       let curEnd = Selectors.getCellValueByGanttDateTimeFieldId(state, snapshot, recordId, endFieldId) || null;
       if (curStart == null && curEnd != null) {

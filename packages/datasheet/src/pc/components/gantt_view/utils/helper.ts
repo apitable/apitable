@@ -28,7 +28,7 @@ export const requestTimeout = (callback: Function, delay: number): TimeoutID => 
 };
 
 /**
- * 根据 linearRow 的类型，获取 rowHeight
+ * Get the rowHeight based on the type of linearRow
  */
 export const getLinearRowHeight = (cellType: CellType, rowHeight: number, viewType: ViewType = ViewType.Grid) => {
   switch (cellType) {
@@ -44,7 +44,7 @@ export const getLinearRowHeight = (cellType: CellType, rowHeight: number, viewTy
 };
 
 /**
- * 根据传入信息，生成图形的 targetName
+ * Generate the targetName of the graph based on the incoming information
  */
 export const generateTargetName = ({
   targetName,
@@ -57,7 +57,7 @@ export const generateTargetName = ({
 };
 
 /**
- * 解析 targetName，获取内置信息
+ * Parse targetName for built-in information
  */
 export const getDetailByTargetName = (_targetName: string | null): ITargetNameDetail => {
   if (_targetName == null) {
@@ -80,7 +80,7 @@ export const getDetailByTargetName = (_targetName: string | null): ITargetNameDe
 };
 
 /**
- * 格式化 groupId，统一入口
+ * Formatted groupId, unified entry
  */
 export const getGanttGroupId = (recordId: string, depth: number) => {
   return `${recordId}-${depth}`;
@@ -119,13 +119,13 @@ export const onDragScrollSpacing = (
   const isHorizontalScroll = needScrollToLeft || needScrollToRight;
   const isVerticalScroll = needScrollToTop || needScrollToBottom;
 
-  // 无需进行拖拽滚动
+  // No need for drag-and-drop scrolling
   if (!isHorizontalScroll && !isVerticalScroll) {
     scrollHandler.stopScroll();
     noScrollSet();
     return;
   }
-  // 需要进行拖拽滚动
+  // Drag and drop scrolling required
   const scrollOptions: IScrollOptions = {};
   if (isHorizontalScroll) {
     scrollOptions.columnSpeed = needScrollToLeft ? -getSpeed(leftSpacing) : getSpeed(rightSpacing);

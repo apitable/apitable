@@ -13,9 +13,9 @@ const DingdingCallback: FC = props => {
   const query = useQuery();
   const code = query.get('code') || '';
   const state = query.get('state') || '';
-  // 0:表示扫码登录，1:表示账号绑定
+  // 0:for swipe code login, 1:for account binding
   const type = Number(localStorage.getItem('vika_account_manager_operation_type')) || ConfigConstant.ScanQrType.Login;
-  // ! 是否是从分享页面登录的（保存的是分享页面的地址）
+  // ! whether you are logged in from the share page (the address of the share page is saved)
   const shareReference = localStorage.getItem('share_login_reference');
   const reference = localStorage.getItem('reference') || '';
   localStorage.removeItem('vika_account_manager_operation_type');
@@ -26,9 +26,9 @@ const DingdingCallback: FC = props => {
     Api.dingtalkLoginCallback(state, code, type).then(res => {
       const { success, data, code } = res.data;
       if (success) {
-        // 扫码登录
+        // Scan code to login
         if (type === ConfigConstant.ScanQrType.Login) {
-          // 链接邀请
+          // Link invitation
           if (inviteLinkData && data) {
             const { inviteLinkInfo, linkToken } = JSON.parse(inviteLinkData);
             Router.push(Navigation.IMPROVING_INFO, {
@@ -44,13 +44,12 @@ const DingdingCallback: FC = props => {
             join({ fromLocalStorage: true });
             return;
           }
-          // 是否需要去完善信息
+          // Do you need to go and improve the information
           if (data) {
             Router.push(Navigation.IMPROVING_INFO, { query: { token: data, inviteCode, reference }});
             return;
           }
-          // ! 待删除
-          // 是否从分享页面登录的
+          // Is logged in from the share page
           if (shareReference) {
             setStorage(StorageName.ShareLoginFailed, false);
             window.location.href = shareReference;
@@ -63,13 +62,13 @@ const DingdingCallback: FC = props => {
           }
           Router.redirect(Navigation.HOME);
         } else {
-          // 账号绑定
+          // Account Binding
           localStorage.setItem('binding_dingding_status', code);
           window.close();
         }
       } else {
         if (type === ConfigConstant.ScanQrType.Login) {
-          // 是否从分享页面登录的
+          // Is logged in from the share page
           if (shareReference) {
             setStorage(StorageName.ShareLoginFailed, true);
             window.location.href = shareReference;

@@ -19,7 +19,7 @@ enum Modes {
 }
 
 export const GetInvitationCodePopover: FC = ({ children }) => {
-  // 是否显示气泡内容
+  // Whether to display the contents of the bubble
   const [visible, setVisible] = useState(false);
   const [mode, setMode] = useState(Modes.Personal);
   const colors = useThemeColors();

@@ -120,7 +120,6 @@ export const CreateApplication: React.FC<ICreateApplicationProps> = props => {
     if (!validator({ ...schema1 })) {
       return;
     }
-    // 下一步，验证配置
     setLarkConfig(formData);
   };
 

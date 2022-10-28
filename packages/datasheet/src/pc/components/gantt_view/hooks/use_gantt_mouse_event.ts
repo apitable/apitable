@@ -103,7 +103,6 @@ export const useGanttMouseEvent = ({
     const task = getTaskData(pointRowIndex);
     if (task == null) return setTransformerId('');
     const taskId = `task-${task.recordId}`;
-    // 设置当前 Transformer 的对象
     if (transformerId !== taskId) return setTransformerId(taskId);
   };
 
@@ -123,11 +122,11 @@ export const useGanttMouseEvent = ({
         return setRecord(taskRecordId, startUnitIndex, endUnitIndex - 1);
       }
       /**
-       * 创建行规则：
-       * 1. 对于两个不同日期字段：在创建行的同时给两个日期字段赋值
-       * 2. 对于两个相同日期字段：同 1，但是在（季/年）精度下，赋值为每个格子的第一天
-       * 3. 对于日期字段和计算类日期（创建日期或神奇引用日期）字段：只创建行，不进行赋值
-       * 4. 对于两个计算类日期字段：同 3
+       * Creation line rule.
+       * 1. For two different date fields: assign values to both date fields at the same time as creating the row
+       * 2. For two identical date fields: same 1, but with (quarter/year) precision, assigned to the first day of each cell
+       * 3. For date fields and calculated date (creation date or magical reference date) fields: only rows are created, no assignment is made
+       * 4. For two calculated date fields: same as 3
        */
       case CellType.Add: {
         if (!rowCreatable) return;
@@ -158,7 +157,7 @@ export const useGanttMouseEvent = ({
     const { realAreaType, targetName, rowIndex, offsetLeft, offsetTop } = getMousePosition(x, y, _targetName);
     if (realAreaType !== AreaType.Gantt) return;
     const pointRecordId = linearRows[rowIndex]?.recordId;
-    // 移动端下只跳转到离边界 1 格的距离，PC 端是 3 格
+    // Only jumps to a distance of 1 frame from the border on mobile, 3 frames on PC
     const columnDistanceCount = isMobile ? 1 : 3;
     console.log('targetName--->', targetName);
     if(targetName !== KONVA_DATASHEET_ID.GANTT_LINE_SETTING) {
@@ -166,11 +165,11 @@ export const useGanttMouseEvent = ({
     }
 
     switch (targetName) {
-      // 回到当前时间
+      // Back to current time
       case KONVA_DATASHEET_ID.GANTT_BACK_TO_NOW_BUTTON: {
         return backTo(Date.now());
       }
-      // 左侧 “回到任务”按钮 —— 可见区域展示任务起始时间
+      // Back to task button on the left - visible area showing the start time of the task
       case KONVA_DATASHEET_ID.GANTT_BACK_TO_TASK_BUTTON_LEFT: {
         let startDistanceCount = columnDistanceCount;
         let startTime = Selectors.getCellValueByGanttDateTimeFieldId(state, snapshot, pointRecordId, startFieldId);
@@ -180,7 +179,7 @@ export const useGanttMouseEvent = ({
         }
         return backTo(startTime, -columnWidth * startDistanceCount);
       }
-      // 右侧 “回到任务”按钮 —— 可见区域展示任务结束时间
+      // Back to task button on the right - visible area showing the end of the task
       case KONVA_DATASHEET_ID.GANTT_BACK_TO_TASK_BUTTON_RIGHT: {
         const endDistanceCount = columnDistanceCount + 1;
         let endTime = Selectors.getCellValueByGanttDateTimeFieldId(state, snapshot, pointRecordId, endFieldId);
@@ -190,26 +189,25 @@ export const useGanttMouseEvent = ({
         }
         return backTo(endTime, -(ganttWidth - columnWidth * endDistanceCount));
       }
-      // 点击任务，展开卡片
+      // Click on the task to expand the card
       case KONVA_DATASHEET_ID.GANTT_TASK:
       case KONVA_DATASHEET_ID.GANTT_ERROR_TASK_TIP: {
         if (e.evt.button === MouseDownType.Right) return;
         return expandRecordIdNavigate(pointRecordId!);
       }
-      // 点击空白处，新建任务
+      // Click on the blank space to create a new task
       case KONVA_DATASHEET_ID.GANTT_BLANK: {
         if(taskLineSetting) return;
         return clickBlankHandler();
       }
-      // 上一页
+      // Previous page
       case KONVA_DATASHEET_ID.GANTT_PREV_PAGE_BUTTON: {
         return scrollIntoView(ScrollViewType.Prev);
       }
-      // 下一页
+      // Next page
       case KONVA_DATASHEET_ID.GANTT_NEXT_PAGE_BUTTON: {
         return scrollIntoView(ScrollViewType.Next);
       }
-      //任务关联线设置
       case KONVA_DATASHEET_ID.GANTT_LINE_TASK: {
         const { sourceId, targetId, dashEnabled, fillColor } = e.target.attrs;
         setTaskLineSetting({
@@ -251,7 +249,7 @@ export const useGanttMouseEvent = ({
     const pos = e.target.getStage()?.getPointerPosition();
     if (pos == null) return;
     const { x } = pos;
-    // 设置悬浮分割线的位置
+    // Set the position of the hover divider
     if (dragSplitterInfo.visible) {
       setDragSplitterInfo({ x });
     }
@@ -309,10 +307,10 @@ export const useGanttMouseEvent = ({
   function setCellValueByKeepSort() {
     let recordIds: string[] = [];
     if (selectRecordIds.length) {
-      // 当前正在操作的 record 已经被勾选或者处于选区中
+      // The record you are currently working on is already ticked or in the selection
       recordIds = selectRecordIds;
     } else {
-      // 当前正在操作的 record 不处于勾选状态
+      // The record currently in operation is not ticked
       recordIds = [dragTaskId!];
     }
     const pointRecordId = linearRows[pointRowIndex]?.recordId;
@@ -344,7 +342,7 @@ export const useGanttMouseEvent = ({
         const direction = pointOffsetTop - pointY > (rowHeight / 2) ? DropDirectionType.AFTER : DropDirectionType.BEFORE;
         let data: Array<{ recordId: string; overTargetId: string; direction: DropDirectionType }>;
         if (new Set(selectRecordIds).has(dragTaskId)) {
-          // 当前正在操作的 record 已经处于勾选状态
+          // The record currently in operation is already ticked
           data = selectRecordIds.map(recordId => {
             return {
               recordId,
@@ -353,7 +351,7 @@ export const useGanttMouseEvent = ({
             };
           });
         } else {
-          // 当前正在操作的 record 不处于勾选状态
+          // The record currently in operation is not ticked
           data = [{
             recordId: dragTaskId,
             overTargetId,
@@ -398,7 +396,7 @@ export const useGanttMouseEvent = ({
         });
       }
     }
-    // 重置拖拽的 recordId
+    // Reset the recordId of the drag and drop
     setDragTaskId(null);
   };
 

@@ -17,7 +17,6 @@ const FeishuAdmin = () => {
   const tenantKey = query.get('tenant_key') || query.get('tenantKey');
   const [data, setData] = useState<IAdminData | null>();
 
-  // 变更管理员
   const { run: changeAdmin } = useRequest((spaceId, memberId) => Api.feishuChangeMainAdmin(tenantKey, spaceId, memberId), {
     manual: true,
     onError: () => {
@@ -34,7 +33,6 @@ const FeishuAdmin = () => {
     }
   });
 
-  // 获取绑定的空间信息
   const { run: getInfo } = useRequest((tenantKey) => Api.getFeiShuTenant(tenantKey), {
     manual: true,
     onSuccess: res => {

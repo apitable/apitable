@@ -120,7 +120,7 @@ export const FormContainer: React.FC = () => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { shareInfo } = useContext(ShareContext);
-  const fillDisabled = shareId && !fillAnonymous && !isLogin; // 分享状态下，配置了不能匿名填写，则未登录不能填写神奇表单
+  const fillDisabled = shareId && !fillAnonymous && !isLogin;
   const hasSubmitPermission = isLogin || fillAnonymous;
   const currentView = formRelMeta.views.filter(view => view.id === viewId)[0];
   const fieldMap = useMemo(() => formRelMeta.fieldMap || {}, [formRelMeta.fieldMap]);
@@ -139,8 +139,8 @@ export const FormContainer: React.FC = () => {
       return [];
     }
 
-    // 联合类型ts4.1.5以下用map会报错 https://github.com/microsoft/TypeScript/issues/33591
-    // 这里新增index字段是为了在有隐藏列的情况下神奇表单新增列也能拿到真实的列index
+    //  https://github.com/microsoft/TypeScript/issues/33591
+    // The index field is added here to get the real column index even if there is a hidden column in the magic form.
     return _map(currentView.columns, (column, index) => ({ ...column, colIndex: index })).filter((column, index) => {
       const { fieldId, hidden } = column;
       const field = fieldMap[fieldId];
@@ -148,7 +148,7 @@ export const FormContainer: React.FC = () => {
         return false;
       }
 
-      // 隐藏是计算字段的首列
+      // Hide is the first column of the calculated field
       if (index == 0 && Field.bindModel(field).isComputed) {
         return false;
       }
@@ -161,7 +161,6 @@ export const FormContainer: React.FC = () => {
   }, [currentView, fieldMap, fieldPermissionMap]);
 
   const realContentType = useMemo(() => {
-    // 分享的神奇表单限制只能提交一次，非站内成员提交完之后再次访问会进入欢迎页
     if (shareId && submitLimit === 1 && hasSubmitted) {
       return IFormContentType.Welcome;
     }
@@ -196,7 +195,6 @@ export const FormContainer: React.FC = () => {
     });
   };
 
-  // 网络状况导致无法提交的提示
   const networkErrorTip = () => {
     Modal.warning({
       title: t(Strings.form_submit_fail),
@@ -207,7 +205,6 @@ export const FormContainer: React.FC = () => {
     });
   };
 
-  // 没有填写神奇表单的任何字段
   const emptyTip = () => {
     Message.warning({ content: t(Strings.form_empty_tip) });
     document.getElementById(filteredColumns[0]?.fieldId)?.scrollIntoView({ behavior: 'smooth' });
@@ -232,7 +229,6 @@ export const FormContainer: React.FC = () => {
     return [...new Set(unitIds)];
   };
 
-  // 站内神奇表单提交之后，进行成员提及
   const commitRemind = (recordId: string, shareId?: string) => {
     try {
       const unitIds = getRemindUnitIds();
@@ -245,7 +241,6 @@ export const FormContainer: React.FC = () => {
       const frozenFieldId = currentView.columns[0].fieldId;
       const frozenField = fieldMap[frozenFieldId];
       unitIds.forEach(unitId => {
-        // 如果有多个成员字段则用第一个 fileName
         const { fieldId: firstMemberFieldId }: any = formRelMeta.views[0]?.columns.find(({ fieldId }) => {
           const value = formData[fieldId];
           return isArray(value) && value.includes(unitId);
@@ -302,7 +297,6 @@ export const FormContainer: React.FC = () => {
     return false;
   };
 
-  // 提交表单数据
   const onSubmit = () => {
     if (isEmpty) {
       emptyTip();
@@ -370,7 +364,6 @@ export const FormContainer: React.FC = () => {
     if (shareId) {
       setContentType(IFormContentType.Welcome);
     }
-    // 神策埋点
     try {
       !isPrivateDeployment() && (window as any).sensors.track('formSubmitSuccess', { $url: window.location.href });
     } catch (error) {
@@ -378,12 +371,10 @@ export const FormContainer: React.FC = () => {
     }
   };
 
-  // 跳转官网
   const onJump = () => {
     Router.newTab(Navigation.HOME, { query: { home: 1 }});
   };
 
-  // 再次填写
   const onFillAgain = () => {
     window.location.reload();
   };
@@ -427,7 +418,7 @@ export const FormContainer: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fillDisabled]);
 
-  // TODO(kailang) 下个 sprint 支持表单默认值
+  // TODO(kailang) 
   // const collectDefaultData = (fieldMap: IFieldMap) => {
   //   const defaultData = {};
   //   for (const fId in fieldMap) {
@@ -512,14 +503,12 @@ export const FormContainer: React.FC = () => {
   useUnmount(() => {
     unmounted.current = true;
     removeTmpSnapshot();
-    // 读取缓存，初始化formData
     const formFieldContainer = getStorage(storageName);
     setFormData(formFieldContainer?.[id] || {});
   });
 
   const lottieRef = useRef<any>();
   useEffect(() => {
-    // 提前预加载动画脚本，提交时不会出现先加载脚本再出现动画的情况
     import('lottie-web/build/player/lottie_svg').then(module => {
       lottieRef.current = module.default;
     });
@@ -543,7 +532,6 @@ export const FormContainer: React.FC = () => {
 
   const patchRecord = useCallback(
     (record: IRecord) => {
-      // 防止因为子组件卸载时调用setFormData，从而patch一条假记录到数表
       if (unmounted.current) return;
       const preSnapshot = Selectors.getSnapshot(store.getState(), sourceInfo.datasheetId);
       if (!preSnapshot) {
@@ -565,7 +553,6 @@ export const FormContainer: React.FC = () => {
     },
     [datasheetId, dispatch, viewId, recordId, sourceInfo.datasheetId],
   );
-  // 收集表数据写入localStorage
   const { run: setFormToStorage } = useDebounceFn(
     formData => {
       const formFieldContainer = getStorage(storageName);
@@ -646,7 +633,7 @@ export const FormContainer: React.FC = () => {
         <meta property='og:description' content={serialize(formProps.description) || '维格表, 积木式多媒体数据表格, 维格表技术首创者, 数据整理神器, 让人人都是数据设计师'} />
       </Head>
       <div className={classnames(styles.formContainer, 'vikaFormContainer')} id={AutoTestID.FORM_CONTAINER}>
-        {/* 表单填写页 */}
+        {/* Form completion page */}
         {realContentType === IFormContentType.Form && (
           <div
             className={classnames(styles.formContent, {
@@ -655,16 +642,16 @@ export const FormContainer: React.FC = () => {
               [styles.formContentMobile]: isMobile,
             })}
           >
-            {/* 神奇表单自有属性 */}
+            {/* Magic Forms own properties */}
             <FormPropContainer
               formId={id}
               title={name}
               formProps={formProps}
-              // 只有管理权限才能进行属性编辑
+              // Property editing is only possible with administrative rights
               editable={manageable}
             />
 
-            {/* 列属性和填写的数据 */}
+            {/* Column attributes and filled data */}
             <div
               className={classnames(styles.formFieldContainer, {
                 [styles.formFieldContainerMobile]: isMobile,
@@ -680,7 +667,7 @@ export const FormContainer: React.FC = () => {
               />
             </div>
 
-            {/* 提交按钮 */}
+            {/* Submit button */}
             <div
               className={classnames(styles.submitWrapper, {
                 [styles.submitWrapperMobile]: isMobile,
@@ -706,7 +693,7 @@ export const FormContainer: React.FC = () => {
           </div>
         )}
 
-        {/* 表单欢迎页 */}
+        {/* Form welcome page */}
         {realContentType === IFormContentType.Welcome && (
           <div
             className={classnames(styles.welcomeWrapper, {
@@ -729,7 +716,7 @@ export const FormContainer: React.FC = () => {
           </div>
         )}
 
-        {/* 页脚：品牌水印 */}
+        {/* Footer: Brand watermark */}
         {brandVisible && (
           <div className={styles.brandContainerWrapper}>
             <div
@@ -752,7 +739,7 @@ export const FormContainer: React.FC = () => {
           </div>
         )}
 
-        {/* 左上角：品牌 logo */}
+        {/* Top left: brand logo */}
         {shareId && !fullScreen && !isMobile && (
           <div className={classnames('formVikaLogo', styles.logoContainer)}>
             <span className={styles.img} onClick={onJump}>
@@ -761,7 +748,7 @@ export const FormContainer: React.FC = () => {
           </div>
         )}
 
-        {/* 编辑字段Modal */}
+        {/* Edit field Modal */}
         {activeFieldId && activeFieldOperateType === FieldOperateType.FieldSetting && (
           <FieldSetting
             datasheetId={datasheetId}
@@ -771,7 +758,7 @@ export const FormContainer: React.FC = () => {
           />
         )}
 
-        {/* 编辑字段描述Modal */}
+        {/* Edit field description Modal */}
         {activeFieldId && activeFieldOperateType === FieldOperateType.FieldDesc && (
           <FieldDesc
             fieldId={activeFieldId}

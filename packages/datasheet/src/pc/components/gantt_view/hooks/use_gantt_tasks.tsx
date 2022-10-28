@@ -41,7 +41,7 @@ const generateKeyName = (fieldId: string, recordId: string) => {
   return `${fieldId}-${recordId}`;
 };
 
-// 检查当前甘特图列是否能够被拖动
+// Check if the current Gantt chart column can be dragged
 export const checkFieldEditable = (field: IField, fieldPermissionMap: IFieldPermissionMap | undefined) => {
   if (field == null) return false;
   const { id, type } = field;
@@ -89,7 +89,7 @@ export const useTask = (props: IUseTaskProps) => {
   const renderEnable = startField != null && endField != null;
   const splitterVisible = dragSplitterInfo.visible;
 
-  // 权限相关
+  // Permissions related
   const isMobile = _isMobile || isTouchDevice;
   const cellEditable = !isMobile && permissions.cellEditable;
   const isSameField = startFieldId === endFieldId;
@@ -118,7 +118,7 @@ export const useTask = (props: IUseTaskProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [endFieldId, linearRows, renderEnable, rowStartIndex, rowStopIndex, snapshot, startFieldId, dragTaskId]);
 
-  // 绘制 Gantt Hover 状态下，将要添加任务的区域
+  // Draw the area where the task will be added in the Gantt Hover state
   const willAddTaskPoint = useMemo(() => {
     if (!renderEnable || isScrolling || splitterVisible || isTaskLineDrawing) return null;
     if (!cellEditable || !isGanttArea || dragTaskId || pointRowType !== CellType.Add) {
@@ -157,7 +157,7 @@ export const useTask = (props: IUseTaskProps) => {
     isTaskLineDrawing,
   ]);
 
-  // 绘制 Gantt Hover 状态下，将要填充任务的区域
+  // Draws the area to be filled with the task in the Gantt Hover state
   const willFillTaskPoint = (() => {
     if (!renderEnable || isScrolling || pointRowType !== CellType.Record || splitterVisible || isTaskLineDrawing) return null;
     if (!isSameField && (!leftAnchorEnable || !rightAnchorEnable || !cellEditable)) return null;
@@ -189,7 +189,7 @@ export const useTask = (props: IUseTaskProps) => {
   })();
 
   /**
-   * 绘制甘特图分组的组头
+   * Drawing group headers for Gantt chart groupings
    */
   const taskGroupHeaders = (() => {
     if (!renderEnable) return null;
@@ -219,7 +219,7 @@ export const useTask = (props: IUseTaskProps) => {
   })();
 
   /**
-   * 绘制错误日期任务的提示
+   * Tips for drawing wrong date tasks
    */
   const errTaskTips = renderEnable
     ? Array.from({ length: rowStopIndex - rowStartIndex }, (_, index) => {
@@ -230,7 +230,7 @@ export const useTask = (props: IUseTaskProps) => {
       const startTime = cellValueMap[generateKeyName(startFieldId, recordId)];
       const endTime = cellValueMap[generateKeyName(endFieldId, recordId)];
       if (!startTime || !endTime) return null;
-      // 如果起止时间是正常的，就不进行提示（错误任务的起止时间比较只精确到 “天”）
+      // No prompting if the start and end times are normal (comparison of start and end times for incorrect tasks is only accurate to "days")
       if (getStartOfDate(startTime) <= getStartOfDate(endTime)) return null;
 
       const offsetY = (rowHeight - GANTT_COMMON_ICON_SIZE) / 2;
@@ -259,7 +259,7 @@ export const useTask = (props: IUseTaskProps) => {
     : null;
 
   /**
-   * 绘制 ”回到任务“ 按钮集合
+   * Draw a collection of "Back to Task" buttons
    */
   const backToTaskButtons = (() => {
     if (!renderEnable) return null;
@@ -306,7 +306,7 @@ export const useTask = (props: IUseTaskProps) => {
     return result;
   })();
 
-  // 绘制任务列表
+  // Drawing a list of tasks
   const taskList: React.ReactNode[] = [];
   const taskMap = {};
 
@@ -320,7 +320,6 @@ export const useTask = (props: IUseTaskProps) => {
     const taskId = `task-${recordId}`;
     const x = (startOffset ?? endOffset! - unitWidth)!;
     const taskWidth = width ?? unitWidth;
-    // TODO task转到更高的组件中去计算
     taskMap[recordId] = {
       x,
       y,
@@ -356,7 +355,7 @@ export const useTask = (props: IUseTaskProps) => {
       taskList.push(taskRenderer(rowIndex));
     }
     taskMap['taskListLength'] = taskList.length;
-    // 拖拽中的任务
+    // Tasks in drag and drop
     if (dragTaskId && !isDragRendered) {
       const rowIndex = rowsIndexMap.get(`${CellType.Record}_${dragTaskId}`);
       if (rowIndex != null) {
@@ -366,7 +365,7 @@ export const useTask = (props: IUseTaskProps) => {
   }
 
   /**
-   * Task 变形器
+   * Task Deformers
    */
   let transformer: ReactNode = null;
   if (renderEnable && cellEditable && Boolean(transformerId)) {
@@ -384,10 +383,6 @@ export const useTask = (props: IUseTaskProps) => {
       />
     );
   }
-
-  /**
-   * Task链接线
-   */
 
   return {
     tooltip,

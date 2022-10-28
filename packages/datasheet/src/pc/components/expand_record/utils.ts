@@ -28,7 +28,7 @@ export function clearExpandModal() {
 }
 
 /**
- * 路由方式展开卡片
+ * Routing method expansion card
  */
 export const expandRecordIdNavigate = debounce((recordId?: string, isReplace?: boolean) => {
   const state = store.getState();
@@ -41,7 +41,7 @@ export const expandRecordIdNavigate = debounce((recordId?: string, isReplace?: b
   if (!recordId) {
     searchParams.delete('comment');
   }
-  // 默认清除notifyId
+  // Clear notifyId by default
   if (searchParams.has('notifyId')) {
     searchParams.delete('notifyId');
   }

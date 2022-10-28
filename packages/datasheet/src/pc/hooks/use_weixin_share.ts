@@ -53,12 +53,12 @@ export const useWeixinShare = (info?: IInfo) => {
       const { appId, nonceStr, timestamp, signature } = data;
 
       wx.config({
-        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-        appId, // 必填，公众号的唯一标识
-        timestamp, // 必填，生成签名的时间戳
-        nonceStr, // 必填，生成签名的随机串
-        signature, // 必填，签名
-        jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'] // 必填，需要使用的JS接口列表
+        debug: false, 
+        appId, 
+        timestamp,
+        nonceStr,
+        signature,
+        jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData']
       });
     }
   };
@@ -77,24 +77,22 @@ export const useWeixinShare = (info?: IInfo) => {
       title = `${nodeName} - ${templateId ? t(Strings.template_type) : t(Strings.datasheet)}`;
     }
 
-    wx.ready(function() { // 需在用户可能点击分享按钮前就先调用
+    wx.ready(function() { // Needs to be called before the user may click the share button
       wx.updateAppMessageShareData({
-        title, // 分享标题
-        desc: nodeDesc, // 分享描述
-        link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-        imgUrl: integrateCdnHost(Settings.vika_logo.value), // 分享图标
+        title, // Share title
+        desc: nodeDesc, // Share Description
+        link: url, // Share the link, the link domain or path must be the same as the corresponding public JS secure domain on the current page
+        imgUrl: integrateCdnHost(Settings.vika_logo.value), // Share icon
         success() {
-          // 设置成功
           console.log(t(Strings.share_succeed));
         }
       });
 
       wx.updateTimelineShareData({
-        title, // 分享标题
-        link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-        imgUrl: integrateCdnHost(Settings.vika_logo.value), // 分享图标
+        title,
+        link: url,
+        imgUrl: integrateCdnHost(Settings.vika_logo.value),
         success() {
-          // 设置成功
           console.log(t(Strings.share_succeed));
         }
       });
@@ -108,7 +106,7 @@ export const useWeixinShare = (info?: IInfo) => {
       setWx(wx);
       return;
     }
-    // 不在微信中打开，不需要设置分享参数
+    // Does not open in WeChat, no need to set sharing parameters
     if (!browser.satisfies({ wechat: '>1.0' }) || !isObject(wx)) return;
 
     initWeixinShareApi();

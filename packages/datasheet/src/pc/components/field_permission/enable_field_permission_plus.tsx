@@ -44,7 +44,6 @@ export const EnableFieldPermissionPlus: React.FC<IEnablePermissionPlus> = (props
         setMemberList(members);
         setRoleList(roles || []);
         setSetting(setting || defaultSetting);
-        // 请求数据去触发引导
         setTimeout(() => {
           if (enabled) {
             TriggerCommands.open_guide_wizard(ConfigConstant.WizardIdConstant.PERMISSION_SETTING_OPENED);
@@ -61,12 +60,12 @@ export const EnableFieldPermissionPlus: React.FC<IEnablePermissionPlus> = (props
   });
 
   /**
-   * 开启列权限
-   * 如果当前未开启权限设置，那么需要在以下操作进行之前去手动调用开启
-   * 1. 新增角色
-   * 2. 编辑角色
-   * 3. 删除角色
-   * 4. 批量更新角色
+   * Open column permissions
+   * If the permission settings are not currently enabled, you will need to manually invoke them before the following actions can be performed
+   * 1. New characters
+   * 2. Editorial roles
+   * 3. Delete Role
+   * 4. Batch update roles
    * @returns
    */
   const openFieldPermission = async() => {
@@ -95,7 +94,6 @@ export const EnableFieldPermissionPlus: React.FC<IEnablePermissionPlus> = (props
     if (!unitInfos.length || !permission) {
       return;
     }
-    // 检查选择的人中是否有管理员
     if (unitInfos.some(({ unitId }) => roleList.some(v => v.unitId === unitId && (v.isAdmin || v.isOwner)))) {
       Message.error({ content: t(Strings.no_permission_setting_admin) });
       return;

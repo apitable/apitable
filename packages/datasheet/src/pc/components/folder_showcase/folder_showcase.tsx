@@ -62,22 +62,15 @@ const customTips = {
   cropDesc: t(Strings.custom_upload_tip),
 };
 
-const template = /(\/)?template(\/)?/; // 模板中心
+const template = /(\/)?template(\/)?/;
 
 export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes, nodeInfo }) => {
-  // 子节点集合
   const [childrenNodeIdList, setChildrenNodeIdList] = useState<IChildrenNode[]>([]);
-  // banner图集合
   const [banners, setBanners] = useState<string[]>([]);
-  // 是否显示描述编辑模态框
   const [isDescriptionModal, { toggle: toggleIsDescriptionModal }] = useToggle(false);
-  // 是否显示自定义banner模态框
   const [isBannerModal, { toggle: toggleIsBannerModal }] = useToggle(false);
-  // 是否显示生成模板模态框
   const [isGenerateTempalte, { toggle: toggleIsGenerateTemplate }] = useToggle(false);
-  // banner loading状态
   const [bannerLoading, setBannerLoading] = useState(false);
-  // 当前打开“分享模态框”的节点ID
   const [shareNodeId, setShareNodeId] = useState('');
   const moreRef = useRef<any>();
   const dispatch = useDispatch();
@@ -317,7 +310,6 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
     }
     const descJson = JSON.parse(showcaseData.description);
     if (descJson.slateData) {
-      // 只有新版的编辑器才有text字段
       if (!descJson.text) {
         return null;
       }
@@ -411,7 +403,6 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
                   ) : (
                     <span className={styles.defaultText}>{t(Strings.edit_node_desc)}</span>
                   )}
-                  {/* {showcaseData.description ? htmlParser(JSON.parse(showcaseData.description).data) : '暂无描述'} */}
                 </div>
               </div>
               <div className={styles.btnGroup}>
@@ -458,7 +449,6 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
               ) : (
                 <span className={styles.defaultText}>{t(Strings.edit_node_desc)}</span>
               )}
-              {/* {showcaseData.description ? htmlParser(JSON.parse(showcaseData.description).data) : '暂无描述'} */}
             </div>
           </div>
           <div className={styles.nodes} id={FOLDER_SHOWCASE_ID.NODES_CONTAINER}>
@@ -497,13 +487,13 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
             [
               {
                 icon: makeNodeIconComponent(NodeIcon.Permission),
-                text: t(Strings.permission_setting), // '权限设置',
+                text: t(Strings.permission_setting), 
                 onClick: () => dispatch(StoreActions.updatePermissionModalNodeId(nodeInfo.id)),
                 hidden: !permissions.nodeAssignable,
               },
               {
                 icon: makeNodeIconComponent(NodeIcon.Template),
-                text: t(Strings.save_as_template), // '保存为模板',
+                text: t(Strings.save_as_template), 
                 onClick: () => toggleIsGenerateTemplate(),
                 hidden: !permissions.templateCreatable,
               },

@@ -1,7 +1,8 @@
-# 命名规范
+# Naming convention
 
-subscribe 模块以监听的属性名作为命名。
+subscribe Modules are named after the name of the property they are listening to.
 
-比如：
+For example.
 
-监听 datasheetId 的变化，则文件名命名为 datasheet_id.ts
+Listen for changes in datasheetId, then name the file datasheet_id.ts
+

@@ -9,7 +9,7 @@ import { StatusIconFunc } from '../icon';
 import styles from './style.module.less';
 
 interface IPopconfirmProps extends PopoverProps {
-  icon?: ReactNode; // title前面的图标
+  icon?: ReactNode;
   type?: IButtonType;
   onOk?: (e?: React.MouseEvent<HTMLElement>) => void;
   onCancel?: (e?: React.MouseEvent<HTMLElement>) => void;

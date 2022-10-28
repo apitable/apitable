@@ -16,8 +16,8 @@ type Edge = {
 };
 
 /**
- * 以指定数表为起点，获取其关联引用关系网络。
- * @param dstId 数表id
+ * Take the specified number table as a starting point and obtain its network of associated reference relations.
+ * @param dstId Number table id
  */
 export const getDstNetworkData = (dstId?: string) => {
   const state = store.getState();
@@ -30,7 +30,7 @@ export const getDstNetworkData = (dstId?: string) => {
   };
   const dstIds = new Set<string>();
   const fieldIds = new Set<string>();
-  // 表与表关联关系
+  // Table-to-Table Relationships
   const dstLinkIds = new Set<string>();
 
   let computeRefManager = getComputeRefManager(state);
@@ -42,7 +42,7 @@ export const getDstNetworkData = (dstId?: string) => {
     computeRefManager.computeRefMap(fieldMap, dstId, state);
   }
 
-  // 收集所有节点
+  // Collect all nodes
   computeRefManager.reRefMap.forEach((item, key) => {
     const [selfDstId] = key.split('-');
     dstIds.add(selfDstId);
@@ -57,7 +57,7 @@ export const getDstNetworkData = (dstId?: string) => {
     });
   });
 
-  // 整理所有的数表节点
+  // Collate all number datasheet nodes
   dstIds.forEach(dstId => {
     const datasheet = Selectors.getDatasheet(state, dstId);
     if (datasheet) {
@@ -69,7 +69,7 @@ export const getDstNetworkData = (dstId?: string) => {
     }
   });
 
-  // 整理所有的字段节点 
+  // Collate all field nodes 
   fieldIds.forEach(key => {
     const [dstId, fieldId] = key.split('-');
     const field = Selectors.getField(state, fieldId, dstId);
@@ -99,7 +99,6 @@ export const getDstNetworkData = (dstId?: string) => {
     });
   });
 
-  // 处理表内边的关系
   fieldIds.forEach(key => {
     const [dstId] = key.split('-');
     data.edges.push({
@@ -110,7 +109,6 @@ export const getDstNetworkData = (dstId?: string) => {
     });
   });
 
-  // 表-表关联关系
   dstLinkIds.forEach(key => {
     const [a, b] = key.split('-');
     data.edges.push({
@@ -120,7 +118,7 @@ export const getDstNetworkData = (dstId?: string) => {
     });
   });
 
-  // 字段依赖关系
+  // Field dependencies
   computeRefManager.reRefMap.forEach((item, key) => {
     item.forEach(otherKey => {
       data.edges.push({

@@ -29,8 +29,8 @@ export function updateCache(datasheetId: string, viewIds?: string[]) {
   }
   const views = Selectors.getViewsList(state, datasheetId);
   /**
-   * 所有可能会更新的 viewId
-   * 如果传入了 viewId 说明是指定视图更新，否则需要更新所有视图
+   * All viewId's that may be updated
+   * If a viewId is passed in, it means that the view is specified to be updated, otherwise all views need to be updated
    */
   const updateViewIds: string[] = viewIds ? viewIds : views.map(view => view.id);
   updateViewIds.forEach(updateViewId => {

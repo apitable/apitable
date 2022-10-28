@@ -12,7 +12,7 @@ export const useSideBarVisible = () => {
   const dispatch = useDispatch();
   const setSideBarVisible = useCallback(
     (sideBarVisible: boolean) => {
-      // 需要保证 loc 在 dispatch 之前，存在 useEffect 篡改 sideBarVisible 的情况
+      // It is necessary to ensure that the useEffect tampers with the sideBarVisible before the loc is dispatched
       setStorage(StorageName.IsPanelClosed, sideBarVisible, StorageMethod.Set);
       dispatch(StoreActions.setSideBarVisible(sideBarVisible));
     },

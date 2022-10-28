@@ -9,18 +9,15 @@ import FeishuAndVikaLogo from 'static/icon/signin/signin_img_vika_feishu.png';
 import WecomAndVikaLogo from 'static/icon/signin/signin_img_vika_wecom.png';
 import WecomLogo from 'static/icon/signin/signin_img_wecom.png';
 
-// TODO: 删除string表里的feishu_manage_address_reject_msg
 export const SocialPlatformMap: { [key in ConfigConstant.SocialType]: {
   logo: React.ReactNode,
   name: string,
   logoWithVika: React.ReactNode,
-  // 应用开启，绑定空间页面
   bindSpace: {
     cardTitle: string,
     subTitle: React.ReactNode,
     desc: (maxCount: any)=> React.ReactNode,
   },
-  // 空间列表
   toolTipInSpaceListItem: string,
   org_manage_reject_default_msg: string,
   org_manage_reject_default_modal: ()=>void,
@@ -32,7 +29,6 @@ export const SocialPlatformMap: { [key in ConfigConstant.SocialType]: {
     bindSpace: {
       cardTitle: t(Strings.feishu_bind_space_select_title),
       subTitle: t(Strings.configuration_available_range),
-      // 第三方集成-企业微信还没有开发，此处暂时不放入string配置表里
       desc: (maxCount) => `与企业微信可使用范围一致（${maxCount}位成员）`
     },
     toolTipInSpaceListItem: t(Strings.wecom_space_list_item_tag_info),

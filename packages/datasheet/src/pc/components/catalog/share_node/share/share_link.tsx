@@ -24,7 +24,7 @@ export const ShareLink: React.FC<IShareLinkProps> = props => {
   const shareHost = `${window.location.protocol}//${window.location.host}/share/`;
   const colors = useThemeColors();
   const { shareSettings, userInfo, shareName } = props;
-  // 控制分享二维码的模态框显示
+  // Control the display of modal boxes for sharing QR codes
   const [shareCodeVisible, setShareCodeVisible] = useState(false);
   const [isCopied, setIsCopied] = useState<boolean>(false);
 

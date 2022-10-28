@@ -18,9 +18,9 @@ interface IReportWeb {
 }
 
 export const ReportWeb: FC<IReportWeb> = ({ nodeId }) => {
-  /** 控制菜单显示 */
+  /** Control menu display */
   const [menuVisible, setMenuVisible] = useState(false);
-  /** 控制填写举报原因模态框的显示 */
+  /** Control the display of the modal box for filling in the reason for reporting */
   const [reasonModalVisible, setReasonModalVisible] = useState(false);
   const isFeishu = navigator.userAgent.toLowerCase().indexOf('lark') > -1;
   // import { IContextMenuData } from '@vikadata/components'; 'error'

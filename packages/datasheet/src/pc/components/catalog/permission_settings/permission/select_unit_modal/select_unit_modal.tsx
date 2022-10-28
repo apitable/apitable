@@ -1,4 +1,4 @@
-// TODO 重构通讯录
+// TODO Reconstructing the address book
 import { Button, TextButton, ThemeProvider } from '@vikadata/components';
 import { IUnit, Selectors, Strings, t, UnitItem } from '@apitable/core';
 import { BaseModal } from 'pc/components/common';
@@ -27,20 +27,18 @@ export enum SelectUnitSource {
   SyncMember = 'syncMember',
 }
 
-// source的说明：perm-权限，member-成员字段，admin-子管理员，changeMemberTeam-分配小组，teamAddMember-添加成员
 export interface ISelectUnitModalProps extends Omit<IModalProps, 'onCancel'> {
   isSingleSelect?: boolean;
   checkedList?: UnitItem[];
-  source?: SelectUnitSource; // 用于标示该组件用在什么地方。此组件内部通过这个判断是否需要特殊处理数据
-  disableList?: string[]; // 不可勾选的 unit id; source== admin 时，小组也不可勾选
-  disableIdList?: string[]; // 不可勾选的id
+  source?: SelectUnitSource; 
+  disableList?: string[];
+  disableIdList?: string[];
   onSubmit: (checkedList: UnitItem[]) => void;
   onCancel: React.Dispatch<React.SetStateAction<string>>;
   onClose?: () => void;
   hiddenInviteBtn?: boolean;
-  // 企微管理面板不在空间内，需要单独传 spaceId
   spaceId?: string;
-  allowEmtpyCheckedList?: boolean; // 部分影响允许清空选择项
+  allowEmtpyCheckedList?: boolean;
   showTab?: boolean; // show role and org tab
 }
 
@@ -59,15 +57,12 @@ export const SelectUnitModal: FC<ISelectUnitModalProps> = props => {
     showTab,
     ...rest
   } = props;
-
-  // 企微管理面板不在空间内，需要单独处理 spaceInfo
+  
   const { spaceInfo } = useSpaceInfo(spaceId);
   const cacheTheme = useSelector(Selectors.getTheme);
-
-  // 已选列表（数据源）
+  
   const [checkedList, setCheckedList] = useState<UnitItem[]>(propsCheckedList ? propsCheckedList : []);
-
-  // unitList数据源
+  
   const [units, setUnits] = useState<IUnit | null>(null);
 
   const linkId = useSelector(Selectors.getLinkId);
@@ -77,7 +72,6 @@ export const SelectUnitModal: FC<ISelectUnitModalProps> = props => {
     propsCancel('');
   };
 
-  // 去掉指定的已选unit
   const cancelCheck = (unitId: string) => {
     setCheckedList(checkedList.filter(item => item.unitId !== unitId));
   };

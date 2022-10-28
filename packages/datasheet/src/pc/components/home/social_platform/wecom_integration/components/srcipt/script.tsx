@@ -34,7 +34,6 @@ const ScriptBase: React.ForwardRefRenderFunction<IScriptRef, IScriptProps> = (pr
   });
   
   useEffect(() => {
-    // 如果重试次数达到3 就不会再重试了
     const script = document.createElement('script');
     script.type = 'text/javascript';
     script.src = src;
@@ -42,7 +41,6 @@ const ScriptBase: React.ForwardRefRenderFunction<IScriptRef, IScriptProps> = (pr
     document.body.appendChild(script);
     script.onload = onload || (() => {});
     script.onerror = () => {
-      // 如果加载失败了， 自动重载3次
       onerror && onerror();
     };
     return () => {

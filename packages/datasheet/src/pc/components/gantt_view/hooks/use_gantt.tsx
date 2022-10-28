@@ -29,7 +29,7 @@ export const useGantt = (props: IUseGanttProps) => {
   const { containerWidth: ganttWidth } = instance;
 
   /**
-   * 绘制时间轴相关背景图层
+   * Drawing timeline related background layers
    */
   const {
     timelineTexts,
@@ -45,7 +45,7 @@ export const useGantt = (props: IUseGanttProps) => {
   });
 
   /**
-   * 绘制鼠标行、列状态及拖拽高亮线相关图层
+   * Draw mouse row and column states and drag and drop highlighting related layers
    */
   const {
     hoverRow,
@@ -63,7 +63,7 @@ export const useGantt = (props: IUseGanttProps) => {
   });
 
   /**
-   * 绘制按钮相关图层
+   * Drawing button-related layers
    */
   const {
     skipButtons,
@@ -76,7 +76,7 @@ export const useGantt = (props: IUseGanttProps) => {
   });
 
   /**
-   * 绘制任务相关图层
+   * Drawing task-related layers
    */
   const {
     tooltip,
@@ -98,7 +98,7 @@ export const useGantt = (props: IUseGanttProps) => {
   });
 
   /**
-   * 绘制任务关联链接线
+   * Drawing task-related link lines
    */
   const { 
     lineTooltip,

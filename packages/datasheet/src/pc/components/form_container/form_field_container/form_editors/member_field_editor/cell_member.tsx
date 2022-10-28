@@ -42,7 +42,7 @@ export const CellMember: React.FC<ICellComponentProps & ICellMemberProps> = prop
   }, [cellValueIncludeOldData]);
 
   useEffect(() => {
-    // 处理数据协同导致的成员信息缺失处理
+    // Dealing with missing member information due to data synergies
     if (!cellValue?.length) return;
     const state = store.getState();
     const unitMap = Selectors.getUnitMap(state);

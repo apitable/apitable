@@ -47,7 +47,6 @@ export const CreateFieldModal = memo(() => {
   };
 
   const handleClick = () => {
-    // 管理权限才能创建字段
     if (!manageable) {
       return;
     }

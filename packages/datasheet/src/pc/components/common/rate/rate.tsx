@@ -29,13 +29,13 @@ export function Rate(props: IRateProps) {
     }
     return 0;
   };
-  // 从其它单元格转换的评分数字，可能为浮点数
+  // Scoring figures converted from other cells, possibly as floating point numbers
   const transValue = getTransValue();
   const [pendingValue, setPendingValue] = useState(transValue);
   const handleClick = (newValue: number) => {
     if (isMobile) return;
     if (!disabled && onChange) {
-      // 双击原来的评分，清空评分
+      // Double click on the original rating to clear the rating
       if (value === newValue) {
         onChange(null);
       } else {
@@ -51,7 +51,6 @@ export function Rate(props: IRateProps) {
     setPendingValue(transValue);
   }, [transValue]);
 
-  // 只读状态下只显示 checked value
   const transMax = disabled ? transValue + 1 : max + 1;
   return (
     <div className={styles.rate} onMouseOut={() => setPendingValue(value)}>

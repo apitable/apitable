@@ -40,7 +40,7 @@ interface IMenuContextState {
 interface IMenuContext {
   contextState: IMenuContextState;
   setContextState: React.Dispatch<any>;
-  insertDirection: 'horizontal' | 'vertical'; //  插入新记录的方向
+  insertDirection: 'horizontal' | 'vertical';
 }
 
 const menuContextInit = { x: 0, y: 0 };

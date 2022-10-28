@@ -52,9 +52,9 @@ enum TransformType {
 }
 
 /**
- * 把手颜色规则（以 option 的色板为依据）：
- * 前四行颜色作为背景色，把手颜色依次增加 alpha，
- * 最后一行颜色作为背景色，把手颜色需要增加色号。
+ * Handle colour rule (based on option's colour palette).
+ * The first four rows of colour are used as the background colour and the handle colour is increased by alpha in turn.
+ * The last line of colour is used as the background colour and the handle colour needs to be increased by the colour number.
  */
 const getDeepColor = (color: number) => {
   const colorNumber = color < 40 ? 500 : 600;
@@ -237,7 +237,7 @@ const Task: FC<ITaskProps> = (props) => {
     });
   };
 
-  const wheelingRef = useRef<number | null>(null); // 存储定时器，保证拖拽出现 tooltip 时的流畅性
+  const wheelingRef = useRef<number | null>(null); // Store timers to ensure smooth drag and drop when tooltip appears
   const onTransformStart = (e: KonvaEventObject<Event>) => {
     const node = e.target;
     const transformer: any = node.getStage()?.findOne('.transformer');
@@ -264,7 +264,7 @@ const Task: FC<ITaskProps> = (props) => {
     const curWidth = Math.max(unitWidth, node.width() * scaleX);
     const isLeft = transformType === TransformType.Left;
 
-    // 拖拽过程中需要保持不变形
+    // Need to remain undistorted during dragging
     node.scaleX(1);
     const leftSpacing = pointX - gridWidth;
     const isTouchLeft = leftSpacing < GANTT_HORIZONTAL_DEFAULT_SPACING;
@@ -328,7 +328,7 @@ const Task: FC<ITaskProps> = (props) => {
     setLocking(true);
     setTimeout(() => setMouseStyle('move'));
     const node = e.target;
-    // 防止任务被遮挡
+    // Preventing tasks from being obscured
     node.moveToTop();
     contentRef.current.moveToTop();
    
@@ -378,8 +378,8 @@ const Task: FC<ITaskProps> = (props) => {
     const nodeY = Math.floor(node.y());
     const isVertical = Math.abs(y - nodeY) > rowHeight;
     const isHorizontal = Math.abs(x - nodeX) > threshold;
-    // 横竖都未超过阈值，返回原坐标
-    // 拖到没有 record 的地方，返回原处
+    // Horizontal and vertical thresholds are not exceeded, return to original coordinates
+    // Drag to the point where there is no record and return to the original location
     if ((!isVertical && !isHorizontal) || !dropRecordId) {
       setTaskPosition({ x, y, isOperating: false });
       return forceRender();
@@ -387,16 +387,16 @@ const Task: FC<ITaskProps> = (props) => {
     const viewId = view.id;
     const startUnitIndex = instance.getUnitIndex(nodeX);
     const endUnitIndex = instance.getUnitIndex(nodeX + taskWidth) - 1;
-    // 横向拖拽
+    // Horizontal dragging
     if (isHorizontal && !isVertical) {
       setRecord(recordId, startUnitIndex, endUnitIndex);
     }
     const direction = pointOffsetTop - instance.getRowOffset(pointRowIndex) > (rowHeight / 2) ? DropDirectionType.AFTER : DropDirectionType.BEFORE;
-    // 竖向拖拽
+    // Vertical dragging
     if (isVertical && !isHorizontal) {
       moveRow(viewId, recordId, dropRecordId, direction);
     }
-    // 横竖向都改变
+    // Horizontal and vertical changes
     if (isVertical && isHorizontal) {
       moveRow(viewId, recordId, dropRecordId, direction);
       setRecord(recordId, startUnitIndex, endUnitIndex);
@@ -421,7 +421,7 @@ const Task: FC<ITaskProps> = (props) => {
     const startY = (rowHeight - GANTT_INNER_HANDLER_HEIGHT) / 2;
     const endY = rowHeight - startY;
 
-    // 左拖拽把手
+    // Left towing handle
     if (leftAnchorEnable) {
       roundRect(0, GANTT_TASK_GAP_SIZE / 2, 10, taskHeight - GANTT_TASK_GAP_SIZE, taskCornerRadius, 0, 0, taskCornerRadius);
       ctx.beginPath();
@@ -431,7 +431,7 @@ const Task: FC<ITaskProps> = (props) => {
       ctx.lineTo(7, endY);
       ctx.fillStrokeShape(shape);
     }
-    // 右拖拽把手
+    // Right drag handle
     if (rightAnchorEnable) {
       roundRect(width - 10, GANTT_TASK_GAP_SIZE / 2, 10, taskHeight - GANTT_TASK_GAP_SIZE, 0, taskCornerRadius, taskCornerRadius, 0);
       ctx.beginPath();
@@ -468,8 +468,8 @@ const Task: FC<ITaskProps> = (props) => {
   }, [taskWidth, x, y, renderIndex]);
 
   /**
-   * 在 季/年 时间精度下可能会出现，任务较短的情况，
-   * 这里当鼠标移入时，将任务伸长至 columnWidth 的宽度，保证交互顺畅
+   * This may occur with quarterly/annual time accuracy, with shorter tasks.
+   * Here, the task is stretched to the width of the columnWidth when the mouse is moved in to ensure smooth interaction
    */
   useMemo(() => {
     if (isTransform && !isOperating && taskWidth < columnWidth) {

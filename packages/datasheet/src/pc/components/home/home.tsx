@@ -27,7 +27,6 @@ export const Home: FC = () => {
     { isLogin: state.user.isLogin, user: state.user }), shallowEqual);
 
   useEffect(() => {
-    // 清除缓存
     localStorage.removeItem('qq_login_failed');
     const storageChange = (e: StorageEvent) => {
       if (!e.newValue) {
@@ -50,7 +49,6 @@ export const Home: FC = () => {
     if (!isSocialDomain()) {
       return;
     }
-    // 如果是企业专属域名，就去加载企业专属域名相关配置
     Api.socialTenantEnv().then(res => {
       const { success, data } = res?.data;
       if (success) {

@@ -30,7 +30,6 @@ const FeiShuConfigure = () => {
         setErr(checkAdminMsg);
         return;
       }
-      // 非管理员
       if (!checkAdminInfo.isAdmin) {
         Router.push(Navigation.FEISHU, {
           params: { feiShuPath: 'err' },

@@ -4,8 +4,8 @@ import styles from './style.module.less';
 
 interface IProps {
   percent?: number,
-  strokeWidth?: number, // 线条粗细
-  strokeColor: string, // 线条颜色
+  strokeWidth?: number, // Line thickness
+  strokeColor: string, // Line colour
 }
 
 export const ProcessBar: FC<IProps> = (props) => {

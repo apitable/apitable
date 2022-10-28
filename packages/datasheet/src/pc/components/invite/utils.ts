@@ -7,7 +7,7 @@ const InviteInvalidReasonObj = {
   [StatusCode.INVITER_SPACE_MEMBER_LIMIT]: t(Strings.status_code_inviter_space_member_limit),
   [StatusCode.SPACE_LIMIT]: t(Strings.status_code_space_limit),
 };
-// 获取错误信息
+// Get error messages
 export const getInvalidReason = (code?: number, message?: string) => {
   const finalReason = (code && InviteInvalidReasonObj[code]) || message || t(Strings.link_common_err);
   return finalReason;

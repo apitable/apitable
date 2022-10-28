@@ -19,27 +19,6 @@ export const DingTalkDa: FC<IDingTalkDaProps> = (props) => {
   const { suiteKey, bizAppId, corpId } = props;
   const { show } = useContextMenu({ id: DINGTALK_DA });
 
-  // const openUrlInDingtalk = (url: URL) => {
-  //   const { href, hash } = url;
-  //   /**
-  //    * windows 版钉钉如果是妙聚窗口用 jsapi 打开，
-  //    * 非妙聚窗口从工作台打开，避免 windows 下非妙聚窗口打开新页面时出现独立窗口
-  //    */
-  //   if (
-  //     window.navigator.userAgent.indexOf('dingtalk-win') > -1 &&
-  //     href.indexOf('dingtalk://') !== 0 &&
-  //     (window as any).dingtalk?.tabwindow?.isTabWindow
-  //   ) {
-  //     (window as any).invokeWorkbench?.({
-  //       app_url: href,
-  //       app_info: {},
-  //     });
-  //   } else {
-  //     navigationToUrl(url.href, { hash, method: Method.NewTab });
-  //   }
-  // };
-
-  // 发布到钉钉工作台
   const linkToPublish = () => {
     const url = new URL(Settings.link_to_dingtalk_da.value);
 
@@ -53,7 +32,6 @@ export const DingTalkDa: FC<IDingTalkDaProps> = (props) => {
     navigationToUrl(url.href, { hash: '#/publish', method: Method.NewTab });
   };
 
-  // 前往钉钉搭低代码管理后台
   const linkToAdmin = () => {
     const url = new URL(Settings.link_to_dingtalk_da.value);
 

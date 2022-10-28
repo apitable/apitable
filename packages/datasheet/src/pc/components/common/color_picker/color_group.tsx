@@ -31,7 +31,7 @@ export const ColorGroup: FC<IColorGroupProps> = props => {
             <div
               className={classNames(styles.outer, {
                 [styles.colorSelected]: selected,
-                [styles.active]: selected && colorIdx, // 判断 selectedColorIdx 是否存在，首次打开不加载这个动效
+                [styles.active]: selected && colorIdx,
               })}
               onClick={(e: React.MouseEvent) => {
                 stopPropagation(e);

@@ -34,8 +34,8 @@ export const useCatalogTreeRequest = () => {
   const spaceInfo = useSelector(state => state.space.curSpaceInfo)!;
 
   const checkNodeNumberLimit = (nodeType: ConfigConstant.NodeType) => {
-    // 首先检查总的节点数量是否符合要求
-    // 文件夹不属于需要被统计的节点类型
+    // First check that the total number of nodes is as required
+    // Folders are not the type of node that needs to be counted
     if (nodeType !== ConfigConstant.NodeType.FOLDER) {
       const result1 = triggerUsageAlert('maxSheetNums', { usage: spaceInfo!.sheetNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
       if (result1) {
@@ -43,7 +43,7 @@ export const useCatalogTreeRequest = () => {
       }
     }
     if (nodeType === ConfigConstant.NodeType.FORM) {
-      // 其次根据节点类型检查 form 或者 mirror 的数量是否符合要求
+      // Next, check that the number of forms or mirrors meets the requirements according to the node type
       const result1 = triggerUsageAlert('maxFormViewsInSpace',
         { usage: spaceInfo!.formViewNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
       if (result1) {
@@ -51,7 +51,7 @@ export const useCatalogTreeRequest = () => {
       }
     }
     if (nodeType === ConfigConstant.NodeType.MIRROR) {
-      // 其次根据节点类型检查 form 或者 mirror 的数量是否符合要求
+      // Next, check that the number of forms or mirrors meets the requirements according to the node type
       const result1 = triggerUsageAlert('maxMirrorNums',
         { usage: spaceInfo!.mirrorNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
       if (result1) {
@@ -62,11 +62,11 @@ export const useCatalogTreeRequest = () => {
   };
 
   /**
-   * 新增节点
-   * @param parentId 父节点ID
-   * @param type 要创建节点的类型（数表/文件夹……）
-   * @param nodeName 要创建节点的名称（可选）
-   * @param preNodeId 要插入的位置（可选）
+   * Add Node
+   * @param parentId 
+   * @param type Node Type(datasheet Folders)
+   * @param nodeName Optional
+   * @param preNodeId Optional
    */
   const addNodeReq = (parentId: string, type: number, nodeName?: string, preNodeId?: string, extra?: { [key: string]: any }) => {
     const result = checkNodeNumberLimit(type);
@@ -90,16 +90,17 @@ export const useCatalogTreeRequest = () => {
   };
 
   /**
-   * 删除节点
-   * 注意：需要考虑所删除的节点如果是文件夹的话(并且在工作目录是已加载的情况下)，它的子节点可能是一个星标，
-   * 所以这时候将是星标的子节点进行删除。
-   * @param nodeId 要删除的节点ID
+   * Delete Node
+   * Note: Consider that if the node being deleted is a folder (and in the case of a working directory that is loaded), 
+   * its child node may be an asterisk.
+   * So at this point the child nodes that are starred are deleted.
+   * @param nodeId Node ID to be deleted
    */
   const deleteNodeReq = (optNode: IOptNode) => {
     const { nodeId } = optNode;
     return Api.delNode(nodeId).then(res => {
       if (res.data.success) {
-        // 删除成功后移除engine
+        // Remove engine after successful deletion
         if (nodeId.startsWith(ResourceIdPrefix.Datasheet)) {
           dispatch(StoreActions.resetDatasheet(nodeId));
           resourceService.instance?.reset(nodeId);
@@ -110,7 +111,7 @@ export const useCatalogTreeRequest = () => {
         if (!tree) {
           return;
         }
-        // 判断被删除的节点是否包含当前活动节点
+        // Determine if the deleted node contains the currently active node
         const hasChildren = activedNodeId === nodeId || (activedNodeId && isFindNodeInTree(tree, activedNodeId));
         dispatch(StoreActions.deleteNode(optNode));
         if (hasChildren) {
@@ -136,9 +137,9 @@ export const useCatalogTreeRequest = () => {
   };
 
   /**
-   * 复制节点
-   * @param nodeId 要复制的节点ID
-   * @param copyAll 是否要复制数表中的数据
+   * Copy nodes
+   * @param nodeId 
+   * @param copyAll 
    */
   const copyNodeReq = (nodeId: string, copyAll = true) => {
     const result = checkNodeNumberLimit(treeNodesMap[nodeId].type);
@@ -158,9 +159,9 @@ export const useCatalogTreeRequest = () => {
   };
 
   /**
-   * 更新节点
-   * @param nodeId 节点id
-   * @param data 要更新的数据信息
+   * Update Nodes
+   * @param nodeId 
+   * @param data 
    */
   const updateNodeReq = (
     nodeId: string,
@@ -187,9 +188,9 @@ export const useCatalogTreeRequest = () => {
   };
 
   /**
-   * 修改节点名称
-   * @param nodeId 节点ID
-   * @param nodeName 节点名称
+   * Modify node name
+   * @param nodeId 
+   * @param nodeName 
    */
   const renameNodeReq = (nodeId: string, nodeName: string) => {
     return Api.editNode(nodeId, { nodeName }).then(res => {
@@ -197,7 +198,6 @@ export const useCatalogTreeRequest = () => {
       if (success) {
         dispatch(StoreActions.setNodeName(nodeId, nodeName));
         const nodeType = treeNodesMap[nodeId].type;
-        // 表单现在属于单例，并且每次点击表单都会重新请求数据，这个和其他两个节点的表现并不一致
         if (formId) {
           dispatch(StoreActions.updateForm(nodeId, { name: nodeName }));
         }
@@ -227,7 +227,7 @@ export const useCatalogTreeRequest = () => {
     });
   };
 
-  // 接收 socket 更新 redux 中对应表的历史记录状态
+  // The receiving socket updates the history status of the corresponding table in redux
   const updateNodeRecordHistoryReq = (nodeId: string, type: ConfigConstant.NodeType, showRecordHistory: ConfigConstant.ShowRecordHistory) => {
     return Api.editNode(nodeId, { showRecordHistory }).then(res => {
       const { success, message } = res.data;
@@ -244,8 +244,8 @@ export const useCatalogTreeRequest = () => {
   };
 
   /**
-   * 获取指定节点的子节点列表
-   * @param nodeId 节点Id
+   * Get the list of children of the specified node
+   * @param nodeId
    */
   const getChildNodeListReq = (nodeId: string) => {
     return Api.getChildNodeList(nodeId).then(res => {
@@ -258,8 +258,8 @@ export const useCatalogTreeRequest = () => {
   };
 
   /**
-   * 查询部门下的子部门和成员
-   * @param teamId 部门ID
+   * Search for sub-departments and members under a department
+   * @param teamId
    */
   const getSubUnitListReq = (teamId?: string, linkId?: string) => {
     return Api.getSubUnitList(teamId, linkId).then(res => {
@@ -272,8 +272,8 @@ export const useCatalogTreeRequest = () => {
   };
 
   /**
-   * 查询节点角色列表
-   * @param nodeId 要查询的节点ID
+   * Get node roles list
+   * @param nodeId 
    */
   const getNodeRoleListReq = (
     nodeId: string, includeAdmin?: boolean,
@@ -284,7 +284,7 @@ export const useCatalogTreeRequest = () => {
       if (success) {
         return data;
       }
-      // 当对该节点没有操作权限的时候，及时刷新页面，改获取最新的权限
+      // When there is no permission to operate on the node, refresh the page and get the latest permission instead
       if (code === StatusCode.NODE_NOT_EXIST) {
         window.location.reload();
       }
@@ -293,8 +293,8 @@ export const useCatalogTreeRequest = () => {
   };
 
   /**
-   * 搜索组织资源
-   * @param keyword 关键字（标签/部门）
+   * Search Organizational Resources
+   * @param keyword Keyword (label/sector)
    */
   const searchUnitReq = (keyword: string, linkId?: string) => {
     return Api.searchUnit(keyword, linkId).then(res => {
@@ -307,8 +307,8 @@ export const useCatalogTreeRequest = () => {
   };
 
   /**
-   * 更新角色
-   * @param data 要更新的角色的信息
+   * Update roles
+   * @param data
    */
   const updateRoleReq = (data: IUpdateRoleData) => {
     return Api.updateRole(data).then(res => {
@@ -322,7 +322,7 @@ export const useCatalogTreeRequest = () => {
   };
 
   /**
-   * 获取成员所属的组织单元列表
+   * Get a list of organizational units to which members belong
    */
   const getUnitsByMemberReq = () => {
     return Api.getUnitsByMember().then(res => {
@@ -335,7 +335,7 @@ export const useCatalogTreeRequest = () => {
   };
 
   /**
-   * 获取folder_showcase资源
+   * Get folder_showcase resources
    * @param nodeId
    * @param shareId
    */
@@ -350,9 +350,9 @@ export const useCatalogTreeRequest = () => {
   };
 
   /**
-   * 更新节点描述
-   * @param nodeId 节点Id
-   * @param desc 描述
+   * Update node description
+   * @param nodeId 
+   * @param desc 
    */
   const updateNodeDescriptionReq = (nodeId: string, desc: string) => {
     return Api.changeNodeDesc(nodeId, desc).then(res => {
@@ -368,7 +368,7 @@ export const useCatalogTreeRequest = () => {
   };
 
   /**
-   * 获取目录树(模板)
+   * Get a directory tree (template)
    */
   const getNodeTreeReq = (depth?: number) => {
     return Api.getNodeTree(depth).then(res => {
@@ -381,8 +381,8 @@ export const useCatalogTreeRequest = () => {
   };
 
   /**
-   * 获取定位节点数据
-   * @param nodeId 节点id
+   * Get location node data
+   * @param nodeId 
    */
   const getPositionNodeReq = (nodeId: string) => {
     return Api.positionNode(nodeId).then(res => {
@@ -399,8 +399,8 @@ export const useCatalogTreeRequest = () => {
   };
 
   /**
-   * 获取节点分享状态信息
-   * @param nodeId 节点Id
+   * Get node sharing status information
+   * @param nodeId
    */
   const getShareSettingsReq = (nodeId: string) => {
     return Api.getShareSettings(nodeId).then(res => {
@@ -416,10 +416,10 @@ export const useCatalogTreeRequest = () => {
   };
 
   /**
-   * 发送节点移动请求
-   * @param nodeId 节点ID
-   * @param targetNodeId 目标节点ID
-   * @param pos -1: 表示目标节点的上方；0：表示移入目标节点内部；1：表示移入目标节点下方
+   * Sending node movement requests
+   * @param nodeId
+   * @param targetNodeId
+   * @param pos -1: indicates moving above the target node; 0: indicates moving inside the target node; 1: indicates moving below the target node
    */
   const nodeMoveReq = (nodeId: string, targetNodeId: string, pos: number) => {
     const parentId = pos === 0 ? targetNodeId : treeNodesMap[targetNodeId].parentId;
@@ -456,9 +456,9 @@ export const useCatalogTreeRequest = () => {
   };
 
   /**
-   * 检索一个节点是否存在树中
-   * @param tree 树
-   * @param nodeId 要查找的nodeId
+   * Retrieves whether a node exists in the tree
+   * @param tree 
+   * @param nodeId
    */
   function isFindNodeInTree(tree: INodesMapItem, nodeId: string): boolean {
     return tree.children.some(id => {
@@ -472,7 +472,7 @@ export const useCatalogTreeRequest = () => {
     });
   }
 
-  // 获取星标列表
+  // Get starred list
   const getFavoriteNodeListReq = () => {
     return Api.getFavoriteNodeList().then(res => {
       const { data, success, message } = res.data;
@@ -486,7 +486,7 @@ export const useCatalogTreeRequest = () => {
     });
   };
 
-  // 设置星标/取消星标
+  // Set starred/unstarred
   const updateNodeFavoriteStatusReq = (nodeId: string) => {
     const oldStatus = treeNodesMap[nodeId].nodeFavorite;
     return Api.updateNodeFavoriteStatus(nodeId).then(res => {
@@ -496,13 +496,13 @@ export const useCatalogTreeRequest = () => {
         Message.error({ content: t(Strings.add_or_cancel_favorite_fail) });
         return;
       }
-      // 如果以前星标状态为true的话，表明刚才的请求是取消星标操作
+      // If the starred status was previously true, the request was to cancel the starred operation.
       if (oldStatus) {
         dispatch(StoreActions.removeFavorite(nodeId));
         Message.success({ content: t(Strings.cancel_favorite_success) });
         return;
       }
-      // 添加星标操作
+      // Add star operation
       dispatch(StoreActions.generateFavoriteTree([{ ...node, preFavoriteNodeId: '', nodeFavorite: true }]));
       datasheetId && dispatch(StoreActions.updateDatasheet(nodeId, { nodeFavorite: true }));
       formId && dispatch(StoreActions.updateForm(nodeId, { nodeFavorite: true }));
@@ -537,7 +537,7 @@ export const useCatalogTreeRequest = () => {
       const { data, success } = res.data;
       dispatch(StoreActions.setTreeLoading(false));
       if (success) {
-        // 因为现在是默认加载两层数据，所以需要将第一层的文件夹节点放到已加载的集合中
+        // Since two levels of data are now loaded by default, the folder node of the first level needs to be placed in the loaded collection
         // const loadedNodeIds = data.children.filter(item => item.type === ConfigConstant.NodeType.FOLDER).map(item => item.nodeId);
         // dispatch(StoreActions.setLoadedKeys(loadedNodeIds));
         const flatTreeData = Selectors.flatNodeTree([data]);

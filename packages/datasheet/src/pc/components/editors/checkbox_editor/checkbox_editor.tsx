@@ -55,7 +55,6 @@ const CheckboxEditorBase: React.ForwardRefRenderFunction<IEditor, ICheckboxEdito
     editorRef.current && editorRef.current.focus();
   };
 
-  // 给 parent 组件调用的回调
   const onEndEdit = (cancel: boolean) => {
     if (!cancel) {
       saveValue(value);
@@ -67,7 +66,6 @@ const CheckboxEditorBase: React.ForwardRefRenderFunction<IEditor, ICheckboxEdito
     onSave && onSave(value);
   };
 
-  // 给 parent 组件调用的回调
   const onStartEdit = (value?: boolean | null) => {
     setEditorValue(Boolean(value));
   };

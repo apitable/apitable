@@ -111,7 +111,7 @@ const FormTabBase = props => {
                 style={{ maxWidth: showLabel ? 256 : 120 }}
               />
             </div>
-            {/* 来源信息 */}
+            {/* Source information */}
             {!shareId && !templateId && (
               <div className={styles.sourceInfo}>
                 {t(Strings.form_source_text)}：
@@ -139,7 +139,7 @@ const FormTabBase = props => {
         </div>
       )}
 
-      {/* 设置 & 分享 */}
+      {/* Setup & Share */}
       {!templateId && (
         <div
           className={classNames(styles.right, {

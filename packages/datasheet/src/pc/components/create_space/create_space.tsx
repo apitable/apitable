@@ -37,7 +37,6 @@ const CreateSpace: FC<ICreateSpace> = props => {
   const { run: createSpace } = useRequest((name: string) => Api.createSpace(name).then(res => {
     const { success, code, message, data } = res.data;
     if (success) {
-      // 兼容企业域名创建空间站跳转
       if (isSocialDomain()) {
         toGetUser(data.spaceId);
         return;

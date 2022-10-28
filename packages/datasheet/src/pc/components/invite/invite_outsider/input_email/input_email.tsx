@@ -86,7 +86,6 @@ export const InputEmail = forwardRef(({
     });
   };
 
-  // 校验邮箱格式
   const handleCheckEmail = () => {
     const textValidArr: string[] = [];
     const tempInputArr = { ...inputArr };
@@ -106,7 +105,6 @@ export const InputEmail = forwardRef(({
     setInputArr(tempInputArr);
     return textValidArr.length === inputKeyArr.length;
   };
-  // 操作-点击“继续添加”按钮，页面增加输入条
   const addMemberItem = () => {
     const keyArr = [...inputKeyArr];
     const newKey = [...inputKeyArr][0] + 1;
@@ -123,14 +121,12 @@ export const InputEmail = forwardRef(({
       setInviteLoading(false);
     }
   }, [isInvited, setMemberInvited]);
-  // 操作-点击输入条右边的移除图标，页面移除相应输入条
   const removeMemberItem = (k: number) => {
     setInputKeyArr(inputKeyArr.filter(key => key !== k));
     const inputObject = { ...inputArr };
     delete inputObject[k];
     setInputArr(inputObject);
   };
-  // 操作-继续发送
   const continueInvite = () => {
     setInviteList([]);
     setInputArr({ 0: InitialInputData });
@@ -138,16 +134,13 @@ export const InputEmail = forwardRef(({
   };
 
   const inviteBtnValid = inputKeyArr.some(key => inputArr[key].text !== '');
-  // 操作-点击“发送邀请”
   const inviteBtnClick = () => {
     setInviteLoading(true);
-    // 1、检验输入内容是否为空以及邮箱格式
     const allValid = handleCheckEmail();
     if (!allValid) {
       setInviteLoading(false);
       return;
     }
-    // 邮箱格式以及之前是否已经邀请过均已验证完毕，开始发送请求
     const emailList: IInviteMemberList[] = inputKeyArr.map(key => {
       return {
         email: inputArr[key].text,

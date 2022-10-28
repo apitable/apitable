@@ -35,7 +35,7 @@ export const AttachmentEditorBase: React.ForwardRefRenderFunction<IEditor, IEdit
 
   return (
     <>
-      {/* 这里的input只是为了保持聚焦状态，方便 shortKey 为 space 时展开record */}
+      {/* The input here is just to keep it in focus so that the record can be expanded when the shortKey is space */}
       <FocusHolder ref={inputRef} />
       {
         editing && !props.disabled && (

@@ -21,7 +21,7 @@ const defaultSubscribe: ISubscription = {
   version: 'V1',
   maxGanttViewsInSpace: 100,
   maxCalendarViewsInSpace: 100,
-  maxApiCall: 120000, // 原键值对："maxApiUsages": 10,
+  maxApiCall: 120000, // Original key-value pairs："maxApiUsages": 10,
   fieldPermissionNums: 1,
   maxRemainTimeMachineDays: 90,
   rainbowLabel: false,
@@ -53,10 +53,10 @@ const defaultSubscribe: ISubscription = {
 
 describe('test subscribeUsageChecker', () => {
   beforeEach(() => {
-    // 注入默认的订阅等级对应的权益
+    // Inject the benefits corresponding to the default subscription level
     store.dispatch(StoreActions.updateSubscription(defaultSubscribe));
 
-    // 注入用户的全局配置
+    // Injecting the user's global configuration
     store.dispatch(StoreActions.updateUserInfo({ sendSubscriptionNotify: true } as any));
   });
 

@@ -13,7 +13,7 @@ export enum TodoState {
 
 export interface ITodoItem {
   text: string,
-  stopEvents?: string[], // 对指定的 todo item 添加阻止默认事件
+  stopEvents?: string[], // Add a blocking default event to the specified todo item
   state: TodoState,
 }
 

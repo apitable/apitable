@@ -131,9 +131,9 @@ export const CalendarView: FC<ICalendarViewProps> = props => {
 
   useEffect(() => {
     /**
-     * 初始化 CalendarStatus 相关数据
-     * 若有本地缓存，则从缓存中读取
-     * 若无本地缓存，则将 Redux 中的初始数据存入本地缓存
+     * Initialize CalendarStatus related data
+     * Read from cache if local cache is available
+     * If there is no local cache, the initial data in Redux is stored in the local cache
      */
     const storeCalendarStatus = getStorage(StorageName.CalendarStatusMap);
     const calendarStatus = storeCalendarStatus?.[`${spaceId}_${datasheetId}_${view.id}`] || {};
@@ -159,7 +159,7 @@ export const CalendarView: FC<ICalendarViewProps> = props => {
     dispatch(StoreActions.clearActiveRowInfo(datasheetId));
   };
 
-  // 清理 move 列数据
+  // Clean up the move column data
   useEffect(() => {
     document.addEventListener('mousedown', onGlobalMouseDown);
     return () => {
@@ -220,7 +220,7 @@ export const CalendarView: FC<ICalendarViewProps> = props => {
       const endDate = endTime && isEndDateTimeField ? new Date(endTime) : null;
       const isStartDateValid = startDate ? dayjs(startDate).isValid() : true;
       const isEndDateValid = endTime ? dayjs(endTime).isValid() : true;
-      // 开始时间、结束时间必须合法并且有一个不是空值
+      // Start time, end time must be legal and one of them must not be null
       if (isStartDateValid && isEndDateValid && (startDate || endTime)) {
         records.push({
           id: recordId,
@@ -244,7 +244,7 @@ export const CalendarView: FC<ICalendarViewProps> = props => {
     }
     let height = 12;
     columns.forEach((column, cIdx) => {
-      // 首列高度
+      // First column height
       if (cIdx === 0) {
         height += DEFAULT_FIELD_HEIGHT;
       } else {

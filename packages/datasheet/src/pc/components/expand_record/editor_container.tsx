@@ -72,8 +72,6 @@ export const EditorContainer: React.FC<IEditorContainerProp> = props => {
   const colors = useThemeColors();
   const isSideRecordOpen = useSelector(state => state.space.isSideRecordOpen);
 
-  // 当前甘特图 ”隐藏列“ 功能只用于图形区域
-
   const getHiddenProps = () => {
     switch (view.type) {
       case ViewType.Gantt:
@@ -96,7 +94,6 @@ export const EditorContainer: React.FC<IEditorContainerProp> = props => {
   }, [hiddenProp, view.columns]);
   const hiddenFields = useMemo(() => view.columns.slice(1).filter(field => field[hiddenProp]), [hiddenProp, view.columns]);
 
-  // 创建一个数组，维护一行记录视图下真实的字段顺序
   const visibleColumns = shownFields.concat(hiddenFields);
 
   function tab() {
@@ -131,7 +128,6 @@ export const EditorContainer: React.FC<IEditorContainerProp> = props => {
   }
 
   useEffect(() => {
-    // 记录卡片展开为侧边模式时，不做快捷键绑定
     if (!isSideRecordOpen) {
       ShortcutActionManager.bind(ShortcutActionName.RecordTab, tab);
       ShortcutActionManager.bind(ShortcutActionName.RecordShiftTab, shiftTab);

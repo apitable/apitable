@@ -12,10 +12,7 @@ export function useCellEditorVisibleStyle(value: { editing: boolean, width?: num
       }
       return {};
     }
-    /**
-     *  为了解决中文输入法输入第一个字符被切掉的问题
-     * 在非编辑状态要变成一个不可见的编辑框，继续监听各种用户键盘事件
-     */
+  
     return {
       width: 0,
       height: 1,

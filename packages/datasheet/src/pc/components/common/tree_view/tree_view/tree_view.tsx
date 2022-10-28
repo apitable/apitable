@@ -60,19 +60,12 @@ export const TreeViewBase: React.ForwardRefRenderFunction<ITreeViewRef, ITreeVie
   onDoubleClick,
   children,
 }, ref) => {
-  /* 已展开节点的集合 */
   const expandedIdsRef = useRef<string[]>(expandedKeys || []);
-  /* 已选中的节点/节点集合 */
   const selectedIdsRef = useRef<string[]>(selectedKeys || []);
-  /* 当前聚焦的节点 */
   const [focusedNodeId, setFocusedNodeId] = useState('');
-  /* 拖拽节点时，经过的节点ID */
   const [dragOverNodeId, setDragOverNodeId] = useState<string>('');
-  /* 被拖拽的节点 */
   const [dragNodeId, setDragNodesId] = useState<string>('');
-  /* 需要高亮的节点 */
   const [highlightNodeId, setHighlightNodeId] = useState<string>('');
-  /* 当前正在加载数据节点 */
   const [loadingNodeId, setLoadingNodeId] = useState<string>('');
 
   useImperativeHandle(ref, () => ({
@@ -112,12 +105,12 @@ export const TreeViewBase: React.ForwardRefRenderFunction<ITreeViewRef, ITreeVie
   };
 
   /**
-   * 展开/收起节点
-   * @param nodeId 节点ID
-   * @param passive 是否为被动操作
+   * Expand/Collapse Nodes
+   * @param nodeId 
+   * @param passive Is it a passive operation
    */
   const toggleExpansion = (nodeId: string = focusedNodeId, passive = false): Promise<any> | undefined => {
-    // 收起操作
+    // Putting away operations
     if (expandedIdsRef.current.includes(nodeId)) {
       const newExpandedIds = expandedIdsRef.current.filter(id => id !== nodeId);
       expandedIdsRef.current = newExpandedIds;
@@ -127,7 +120,7 @@ export const TreeViewBase: React.ForwardRefRenderFunction<ITreeViewRef, ITreeVie
       return;
     }
 
-    // 展开操作
+    // Expand operation
     const newExpandedIds = expandedIdsRef.current.concat(nodeId);
     setLoadingNodeId(nodeId);
     expandedIdsRef.current = newExpandedIds;
@@ -180,7 +173,7 @@ export const TreeViewBase: React.ForwardRefRenderFunction<ITreeViewRef, ITreeVie
   const selectNode = (e: React.MouseEvent, nodeId: string, multiple = false) => {
     if (nodeId) {
       if (multiple) {
-        // TODO:多选操作
+        // TODO: Multi-select operation
       } else {
         singleSelectHandler(e, nodeId);
       }

@@ -46,9 +46,7 @@ const DEFAULT_FORMAT = 'YYYY-MM-DD';
 const DatePicker = React.lazy(() => import('./date_picker'));
 
 export interface IDateTimeEditorState {
-  // 永远存储包含年月日的字符串信息
   dateValue: string;
-  // 永远存储格式化后的日期信息
   displayDateStr: string;
   timeValue: string;
   dateOpen: boolean;
@@ -72,16 +70,12 @@ export interface IDateTimeEditorProps extends IBaseEditorProps {
   setCurAlarm?: (val?: WithOptional<IRecordAlarmClient, 'id'>) => void;
 }
 
-// 日期组件高度
 const DATE_COMPONENT_HEIGHT = 264;
 
 export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps, IDateTimeEditorState> implements IEditor {
   editorDateRef: HTMLInputElement | null = null;
   dateDivRef!: HTMLElement;
   timestamp: number | null = null;
-  // 由于日期格式(12/01)的单元格中其实是储存了设置格式时的年份信息的，
-  // 在第一次激活编辑的时候，需要读取原始 timestamp 来展示年份
-  // 当用户编辑过日期之后，则年份更新为当前年份
   shouldUseOriginTime = false;
   points = {
     top: ['bl', 'tl'],
@@ -98,7 +92,6 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     isIllegal: false,
   };
 
-  // 给 parent 组件调用的回调
   setValue(value?: ITimestamp | null) {
     if (value === undefined) {
       return;
@@ -106,16 +99,13 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     this.setEditorValue(value);
   }
 
-  // 给 parent 组件调用的回调
   saveValue() {
-    // fix isIllegal 为 true 时，展开卡片中的失焦操作不会自动将其重置为 false
     this.setState({
       isIllegal: false,
     });
     this.onEndEdit(false, false);
   }
 
-  // 给 parent 组件调用的回调
   setEditorValue(timestamp: ITimestamp | null) {
     if (timestamp == null) {
       this.setState({
@@ -127,7 +117,6 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     }
     const { dateFormat } = Field.bindModel(this.props.field);
     const timeFormat = 'HH:mm';
-    // 设定显示的初始值
     this.timestamp = timestamp;
     const dateTime = dayjs(timestamp);
     this.setState({
@@ -137,7 +126,6 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     });
   }
 
-  // 给 parent 组件调用的回调
   focus() {
     this.editorDateRef?.focus();
   }
@@ -149,7 +137,6 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     } else {
       this.shouldUseOriginTime = true;
     }
-    // 不显示时间，且时间还未赋值时 ignoreSetTime 为 true
     const ignoreSetTime = isSetTime ? false : !timeOpen && !timeValue;
 
     return this.setState({
@@ -186,7 +173,6 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     if (!cur.dataValue && !this.state.displayDateStr) {
       return;
     }
-    // 筛选仅用精确到天
     this.props.commandFn?.(this.getValue() !== null ? getDay(new Date(this.getValue()!)).getTime() : null);
   }
 
@@ -195,7 +181,6 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
       const nextState = { timeValue } as IDateTimeEditorState;
       if (!this.state.dateValue) {
         const { dateFormat } = Field.bindModel(this.props.field);
-        // 设定显示的初始值
         const dateTime = dayjs();
         this.timestamp = dateTime.valueOf();
         nextState.dateValue = dateTime.format(DEFAULT_FORMAT);
@@ -207,7 +192,6 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
 
   format2StandardDate = (dateStr: string): ITimestamp | null => str2timestamp(dateStr);
 
-  // 完成 2 件事情，一是对输入的日期字符串格式化处理，二是将时间与日期合并后返回
   getInputValue() {
     const { field } = this.props;
     const { property } = field;
@@ -220,7 +204,6 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     const { autoFill } = property;
     let dateTimestamp = new Date(getToday()).getTime();
     if (dateValue) {
-      // 需要判断日期是否合法，如果合法的话自动补充timeValue的值，不合法置空
 
       const timestamp = this.format2StandardDate(dateValue);
       if (timestamp == null || notInTimestampRange(timestamp)) {
@@ -228,7 +211,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
       }
       const datetime = dayjs(timestamp);
       /**
-       * @description 自动给日期填充年份
+       * @description Automatic filling of dates with years
        * @type {boolean}
        */
       const isIncludesYear = dayjs(dateValue, ['Y-M-D', 'D/M/Y', 'YYYY']).isValid();
@@ -247,7 +230,6 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     return dateTimestamp + time;
   }
 
-  // 给 parent 组件调用的回调
   onEndEdit(cancel: boolean, clear = true) {
     this.timestamp = null;
     const { dateOpen, timeOpen } = this.state;
@@ -285,7 +267,6 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
   }
 
   setPopupPosition() {
-    // 确定组件弹出位置
     if (this.dateDivRef.parentElement) {
       const parentElement = this.dateDivRef.parentElement;
       const parentRect = parentElement.getBoundingClientRect();
@@ -303,7 +284,6 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     }
   }
 
-  // 给 parent 组件调用的回调
   onStartEdit(value: ITimestamp | null) {
     if (!this.state.dateOpen) {
       this.setPopupPosition();
@@ -390,11 +370,9 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
 
     let value;
 
-    // 首次展示时展示原有的值
     if (!this.shouldUseOriginTime && this.timestamp != null) {
       value = dayjs(this.timestamp);
     } else if (dateFormat) {
-      // 输入的值则通过时间转换方式来得到
       const val = str2timestamp(dateValue);
       value = val ? dayjs(val) : dayjs();
     }
@@ -457,7 +435,6 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
                   align={{
                     offset: [-8, 31],
                   }}
-                  // input 框的初始值
                   inputDateValue={displayDateStr || ''}
                   onChange={this.onDateValueChange}
                   onPanelValueChange={this.onPanelValueChange}

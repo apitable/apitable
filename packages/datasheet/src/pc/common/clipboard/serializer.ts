@@ -12,7 +12,7 @@ export interface ISerializer<T, U> {
   parse (text: U): T;
 }
 
-// 多选才需要分隔符
+// Separator only required for multiple choice
 function getSeparator(fieldType: FieldType) {
   return fieldType !== FieldType.Text ? ', ' : '';
 }

@@ -24,7 +24,7 @@ export const DescEditor: React.FC<IDescEditorProps> = (props) => {
   const isEmpty = useMemo(() => {
     if (descData) {
       let formatContent = descData;
-      // 兼容旧版本 draftjs 格式数据
+      // Compatible with older versions of draftjs format data
       const { content } = descData;
       if (content) {
         formatContent = draft2slate(content);
@@ -48,7 +48,7 @@ export const DescEditor: React.FC<IDescEditorProps> = (props) => {
   }
 
   const contentChangeHandler = (content) => {
-    // 储存state
+    // Storage state
     setContent(content);
   };
 
@@ -61,7 +61,7 @@ export const DescEditor: React.FC<IDescEditorProps> = (props) => {
       onClick={() => {
         if (mode !== IModeEnum.Edit) return;
         setEditing(true);
-        // 手动设置鼠标定位展示
+        // Manual mouse positioning display
         editRef.current?.focus();
       }}
     >

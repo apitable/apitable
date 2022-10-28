@@ -13,9 +13,9 @@ export interface ITooltipProps {
 }
 
 /**
- * 默认情况：pc上显示，触摸设备不显示
- * @param textEllipsis： 与默认情况相似，主要针对文本，当有部分文本被隐藏时显示，否则不显示
- * @param showTipAnyway： 不管什么设备上都显示
+ * Default: displayed on pc, not on touch devices
+ * @param textEllipsis： Similar to the default, mainly for text, shown when part of the text is hidden, otherwise not shown
+ * @param showTipAnyway： Displayed on whatever device
  */
 export const Tooltip: FC<ITooltipProps & AntdTooltipProps> = ({
   showTipAnyway = false,

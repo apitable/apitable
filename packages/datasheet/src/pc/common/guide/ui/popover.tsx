@@ -147,7 +147,7 @@ const Popover: FC<IPopoverOptions> = (options) => {
       window.clearTimeout(timer);
     };
   }, [getCorrectPosition, targetNode, fresh]);
-  // 正确
+  
   const positionOnLeft = (elementPosition: Position) => {
     const popoverMargin = padding + 10;
     const pageSize = getFullPageSize();
@@ -172,7 +172,7 @@ const Popover: FC<IPopoverOptions> = (options) => {
     };
     return popoverInfo;
   };
-  // 正确
+  
   const positionOnLeftCenter = (elementPosition: Position): IPositionInfo => {
     const pageSize = getFullPageSize();
     const popoverMargin = padding + 10;
@@ -199,7 +199,7 @@ const Popover: FC<IPopoverOptions> = (options) => {
     };
     return popoverInfo;
   };
-  // 正确
+
   const positionOnRightCenter = (elementPosition: Position): IPositionInfo => {
     const popoverMargin = padding + 10;
     const elementCenter = (elementPosition.bottom - elementPosition.top) / 2;
@@ -260,7 +260,7 @@ const Popover: FC<IPopoverOptions> = (options) => {
     const popoverMargin = padding + 10;
     const pageHeightAfterPopOver = elementPosition.bottom + popoverHeight + popoverMargin;
 
-    // 如果高度大于剩余高度，则用 bottom right
+    // If the height is greater than the remaining height, then use bottom right
     if (pageHeightAfterPopOver >= pageHeight) {
       const popoverInfo = {
         left: '',

@@ -60,7 +60,6 @@ export const ExpandRecordMoreOption: React.FC<IExpandRecordMoreOptionProps> = (p
   const closeAllFieldsDesc = Boolean(fieldDescCollapseStatus?.collapseAll);
 
   const [switchLoading, { toggle: toggleSwitchLoading, set: setSwitchLoading }] = useToggle(false);
-  /* menu组件必须是受控的，因为history的Switch是异步操作，同时需要加上useClickAway */
   const [menuVisible, { toggle: toggleMenu }] = useToggle(false);
 
   useClickAway(() => {
@@ -96,7 +95,6 @@ export const ExpandRecordMoreOption: React.FC<IExpandRecordMoreOptionProps> = (p
     let thisRecordURL = urlcat(window.location.origin, '/workbench/:datasheetId/:viewId/:expandRecordId', {
       datasheetId, viewId, expandRecordId,
     });
-    // 关联记录不存在跳转到镜像，所以这里需要判断，只有是当前镜像的记录才需要加 mirrorId，否则就不需要，不能只单独判断是否存在 mirrorId
     if (mirrorId && fromCurrentDatasheet) {
       thisRecordURL = urlcat(window.location.origin, '/workbench/:mirrorId/:datasheetId/:viewId/:expandRecordId', {
         datasheetId, viewId, expandRecordId, mirrorId,
@@ -203,7 +201,7 @@ export const ExpandRecordMoreOption: React.FC<IExpandRecordMoreOptionProps> = (p
     )
   );
 
-  /* TODO: ContextMenu不支持非String类型，需upgrade ContextMenu以不使用antd */
+  /* TODO: ContextMenu does not support non-String types, you need to upgrade ContextMenu to not use antd */
   return (
     <Dropdown overlay={renderMenu()} visible={menuVisible} className={styles.moreOptionMenuDropdown} >
       <IconButton

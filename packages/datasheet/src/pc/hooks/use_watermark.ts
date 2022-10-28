@@ -8,20 +8,20 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 interface IWatermarkSettings {
-  watermark_id: string; //水印总体的id
-  watermark_prefix: string; //小水印的id前缀
-  watermark_txt: string; //水印的内容
-  watermark_x: number; //水印起始位置x轴坐标
-  watermark_x_gap: number; //水印x轴间隔
-  watermark_y_gap: number; //水印y轴间隔
-  watermark_color: string; //水印字体颜色
-  watermark_fontsize: number; //水印字体大小
-  watermark_opacity: number; //水印透明度，要求设置在大于等于0.005
-  watermark_rotate: number; //水印倾斜度数
-  watermark_parent_width: number; //水印的总体宽度（默认值：body的scrollWidth和clientWidth的较大值）
-  watermark_parent_height: number; //水印的总体高度（默认值：body的scrollHeight和clientHeight的较大值）
-  watermark_parent_node: null | string; //水印插件挂载的父元素element,不输入则默认挂在body上
-  watermark_z_index: number; // 水印的z-index值
+  watermark_id: string; 
+  watermark_prefix: string; 
+  watermark_txt: string; 
+  watermark_x: number; 
+  watermark_x_gap: number; 
+  watermark_y_gap: number; 
+  watermark_color: string; 
+  watermark_fontsize: number;
+  watermark_opacity: number; 
+  watermark_rotate: number;
+  watermark_parent_width: number; // Overall width of the watermark (default: the greater of the body's scrollWidth and clientWidth)
+  watermark_parent_height: number; // Overall height of the watermark (default: the greater of the body's scrollHeight and clientHeight)
+  watermark_parent_node: null | string; 
+  watermark_z_index: number; 
   manual: boolean;
 }
 
@@ -95,19 +95,19 @@ export const useWatermark = (props?: Partial<IWatermarkSettings>) => {
   const MutationObserver = window.MutationObserver || (window as any).WebKitMutationObserver || (window as any).MozMutationObserver;
   const hasObserver = MutationObserver !== undefined;
   const watermarkDom = hasObserver ? new MutationObserver(domChangeCallback) : null;
-  // 加载水印
+  // Load watermark
   const loadMark = useRefCallback((propsSettings?: IWatermarkSettings) => {
     const settings = propsSettings || globalSetting;
     if (!settings.watermark_txt) {
       console.warn('! ' + 'watermark_txt is null');
       return;
     }
-    /*如果元素存在则移除*/
+    /*Remove if element exists*/
     const watermarkElement = document.getElementById(settings.watermark_id);
     watermarkElement && watermarkElement.parentNode && watermarkElement.parentNode.removeChild(watermarkElement);
-    /*如果设置水印挂载的父元素的id*/
+    /*If the id of the parent element to which the watermark is mounted is set*/
     const parentEle = (settings.watermark_parent_node && document.querySelector(settings.watermark_parent_node)) || document.body;
-    /*获取父元素的宽高*/
+    /*Get the width and height of the parent element*/
     const parentWidth = Math.max(parentEle.scrollWidth, parentEle.clientWidth);
     const parentHeight = Math.max(parentEle.scrollHeight, parentEle.clientHeight);
 
@@ -195,7 +195,7 @@ export const useWatermark = (props?: Partial<IWatermarkSettings>) => {
     }, 500);
   });
 
-  // 移除水印
+  // Remove watermark
   const removeWM = useRefCallback((settings?: Partial<IWatermarkSettings>) => {
     watermarkDom?.disconnect();
     const id = settings?.watermark_id || globalSetting.watermark_id;
@@ -221,7 +221,7 @@ export const useWatermark = (props?: Partial<IWatermarkSettings>) => {
   return { initWM, removeWM };
 };
 
-// 获取水印内容 - 空间昵称+手机尾号四位 > 空间昵称+邮箱前缀 > 空间昵称 （不限制长度）
+// Get Watermark Content - Space Nickname + Mobile Phone Last Number 4 digits > Space Nickname + Email Prefix > Space Nickname (unlimited length)
 export const useWatermarkText = () => {
   const user = useSelector((state: IReduxState) => state.user.info);
   if (!user) return;

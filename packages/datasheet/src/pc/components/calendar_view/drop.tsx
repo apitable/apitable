@@ -43,7 +43,7 @@ const DropBase = ({ children, date, update, disabled }: IDrop) => {
           const task = tasks?.filter(t => item.id === t.id)[0];
           if (task) {
             let { startDate, endDate } = task;
-            // diff 天为单位时，忽略天以下的时间单位
+            // diff ignores units of time below the day when the unit is a day
             const formatDate = dayjs(date).format('YYYY/MM/DD');
             const formatDiff = dayjs(startDate ? startDate : endDate).format('YYYY/MM/DD');
             const diffDay = dayjs(formatDate).diff(dayjs(formatDiff), 'day');
@@ -56,7 +56,6 @@ const DropBase = ({ children, date, update, disabled }: IDrop) => {
             }
             update(task.id, startDate, endDate);
           } else if (isStartDateTimeField) {
-            // 有 endFieldId 并且 type 为 PRE_RECORD 表示从列表拖拽到日历补全结束时间
             update(item.id, date, endFieldId && item.type === PRE_RECORD ? date : null);
           } else {
             update(item.id, null, date);
@@ -121,8 +120,9 @@ const DropBase = ({ children, date, update, disabled }: IDrop) => {
       }
       const position = getPosition(e);
       /**
-       * 延迟设置 modal 选中行
-       * modal 存在时，点击 + 号新增记录会先触发 useClickAway 关闭 modal，再设置 recordId 打开新记录 modal
+       * Delay setting modal Checked row
+       * When a modal exists, clicking on the + sign to add a new record will first trigger useClickAway to close the modal, 
+       * then set the recordId to open the new record modal
        */
       setTimeout(() => {
         setRecordModal([newRecordId, true, position]);

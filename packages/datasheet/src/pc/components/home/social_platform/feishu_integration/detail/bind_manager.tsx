@@ -46,10 +46,8 @@ export const BindManager: React.FC<IBindManage> = props => {
     });
     const handleMessage = event => {
       const origin = event.origin;
-      // 使用 matchOrigin 方法来判断 message 是否来自飞书页面
       if (qrLoginObj.matchOrigin(origin)) {
         const loginTmpCode = event.data;
-        // 在授权页面地址上拼接上参数 tmp_code，并跳转
         window.location.href = `${goto}&tmp_code=${loginTmpCode}`;
       }
     };

@@ -39,7 +39,7 @@ const InfoList: FC<{ valueKey: 'title' | 'bronze' | 'silver' | 'enterprise' }> =
 };
 
 export const GradesChecklist = () => {
-  // 0-default，能看见button；1-不能看见
+  // 0-default, button visible; 1-hidden
   const [buttonVisible, setButtonVisible] = useState(true);
   const onScroll = (e => {
     if (typeof e.target.scrollTop !== 'number') return;

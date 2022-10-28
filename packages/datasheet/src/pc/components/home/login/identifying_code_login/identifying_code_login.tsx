@@ -25,11 +25,8 @@ export interface ISubmitRequestParam {
 }
 
 export interface IIdentifyingCodeLoginProps {
-  // 仅显示某一模式
   mode?: ConfigConstant.LoginMode.PHONE | ConfigConstant.LoginMode.MAIL;
-  // 点击登录按钮时的请求
   submitRequest: (data: ISubmitRequestParam) => Promise<any>;
-  // 短信类型（注册、登录……）
   smsType?: ConfigConstant.SmsTypes;
   submitText?: string;
   hiddenProtocol?: boolean;
@@ -56,15 +53,15 @@ const IdentifyingCodeLoginBase: FC<IIdentifyingCodeLoginProps> = ({
   footer,
   config
 }) => {
-  // 账号或验证码
+  // Account number or verification code
   const [data, setData] = useSetState({
     areaCode: '',
     account: '',
     credential: ''
   });
-  // 错误信息
+  // Error message
   const [errMsg, setErrMsg] = useSetState({ accountErrMsg: '', identifyingCodeErrMsg: '' });
-  // 当前验证码登录模式
+  // Current Captcha login mode
   const [identifyingCodeMode, setIdentifyingCodeMode] = useState<IdentifyingCodeModes>(initMode(mode));
   const mobileLoginRef = useRef<HTMLDivElement>(null);
   const { run: login, loading } = useRequest(submitRequest, { manual: true });
@@ -74,7 +71,7 @@ const IdentifyingCodeLoginBase: FC<IIdentifyingCodeLoginProps> = ({
 
   const { mobile } = usePlatform();
 
-  // 是否是自动化测试
+  // Is it an automated test
   const automationTestingData = query.get('vikaTest');
 
   const _isMobileApp = isMobileApp();
@@ -86,12 +83,12 @@ const IdentifyingCodeLoginBase: FC<IIdentifyingCodeLoginProps> = ({
     const loginData: ISubmitRequestParam = {
       ...data,
       nvcVal: automationTestingData || nvcVal,
-      // TODO: 这里还是需要区别一下 登录模式和登录类型
+      // TODO: There is still a distinction to be made between login mode and login type
       type: identifyingCodeMode === ConfigConstant.LoginMode.PHONE ? ConfigConstant.LoginTypes.SMS : ConfigConstant.LoginTypes.EMAIL,
       mode: ConfigConstant.LoginMode.IDENTIFYING_CODE
     };
     const result = await login(loginData);
-    // 将隐私协议标记为已读, 依赖这个标志不再弹窗
+    // Mark privacy agreement as read, rely on this flag to stop pop-ups
     localStorage.setItem(`${ConfigConstant.WizardIdConstant.AGREE_TERMS_OF_SERVICE}`, '1');
     if (!result) { return; }
     const { code, message, success } = result;
@@ -112,7 +109,7 @@ const IdentifyingCodeLoginBase: FC<IIdentifyingCodeLoginProps> = ({
     }
   };
 
-  // 提交请求（登录/注册）
+  // Submit a request (login/registration)
   const handleSubmit = () => {
     const accountValidity = checkAccount();
     const verificationCodeValidity = checkVerificationCode();
@@ -161,7 +158,7 @@ const IdentifyingCodeLoginBase: FC<IIdentifyingCodeLoginProps> = ({
     signIn();
   };
 
-  // 进行账号合法性检测
+  // Perform account legitimacy checks
   const checkAccount = (): boolean => {
     if (identifyingCodeMode === ConfigConstant.LoginMode.MAIL) {
       if (!data.account) {
@@ -198,13 +195,13 @@ const IdentifyingCodeLoginBase: FC<IIdentifyingCodeLoginProps> = ({
     return true;
   };
 
-  // 输入数据改变
+  // Input data change
   const handleChange = data => {
     setData(data);
     setErrMsg({ identifyingCodeErrMsg: '', accountErrMsg: '' });
   };
 
-  // 验证码模式切换
+  // Captcha Mode Switching
   const handleModeChange = mode => {
     setErrMsg({ identifyingCodeErrMsg: '', accountErrMsg: '' });
     setIdentifyingCodeMode(mode);
@@ -224,7 +221,7 @@ const IdentifyingCodeLoginBase: FC<IIdentifyingCodeLoginProps> = ({
             checkAccount={checkAccount}
             config={config}
           />
-          {/* 自动化测试专用 */}
+          {/* For automation testing */}
           {/* {vikaTest && (
             <div className={styles.inputItem}>
               <label className={styles.label}>Code</label>
@@ -237,7 +234,7 @@ const IdentifyingCodeLoginBase: FC<IIdentifyingCodeLoginProps> = ({
             </div>
           )
           } */}
-          {/* 自动化测试专用 */}
+          {/* For automation testing */}
 
           {
             !hiddenProtocol &&

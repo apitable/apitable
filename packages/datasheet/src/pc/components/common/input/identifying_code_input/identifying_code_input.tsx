@@ -10,18 +10,13 @@ import { execNoTraceVerification, initNoTraceVerification } from 'pc/utils';
 
 export interface IIdentifyingCodeInputProps extends ITextInputProps {
   mode?: ConfigConstant.LoginMode;
-  // 账号信息
   data: {
     areaCode?: string;
     account: string;
   };
-  // 短信类型
   smsType?: ConfigConstant.SmsTypes;
-  // 邮件类型
   emailType?: ConfigConstant.EmailCodeType;
-  /* 获取验证码Button的禁用状态 */
   disabled?: boolean;
-  /* 设置错误信息 */
   setErrMsg: (
     data:
       | Partial<{
@@ -49,9 +44,7 @@ export const IdentifyingCodeInput: FC<IIdentifyingCodeInputProps> = ({
   checkAccount,
   ...rest
 }) => {
-  // 倒计时-秒数
   const [second, setSecond] = useState(60);
-  // 是否正在倒计时中
   const [isRunning, { setTrue: startTime, setFalse: closingTime }] = useBoolean(
     false
   );
@@ -85,7 +78,6 @@ export const IdentifyingCodeInput: FC<IIdentifyingCodeInputProps> = ({
 
   useInterval(
     () => {
-      // 如果完成规定的时间，关闭计时器
       if (second === 0) {
         reset();
         return;
@@ -96,7 +88,6 @@ export const IdentifyingCodeInput: FC<IIdentifyingCodeInputProps> = ({
     isRunning ? 1000 : undefined
   );
 
-  // 获取验证码
   const getIdentifyingCode = async(nvcVal?: string) => {
     if (checkAccount && !checkAccount()) return;
 
@@ -134,7 +125,6 @@ export const IdentifyingCodeInput: FC<IIdentifyingCodeInputProps> = ({
     }
   };
 
-  // 获取验证码事件
   const handleGainIdentifyingCode = () => {
     execNoTraceVerification(getIdentifyingCode);
   };

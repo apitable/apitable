@@ -25,8 +25,8 @@ import { Align } from '@vikadata/react-window';
 import { Divider } from 'antd';
 
 export enum LinkEditorModalLayout {
-  Center = 'Center', // 居中
-  CenterRight = 'CenterRight', // 中间靠右
+  Center = 'Center',
+  CenterRight = 'CenterRight',
 }
 
 export interface ILinkEditorProps extends IBaseEditorProps {
@@ -101,7 +101,6 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
   };
 
   const toggleEditing = () => {
-    // 出错的情况下，禁止编辑
     if (!foreignDatasheetId && !loading) {
       return;
     }
@@ -137,13 +136,12 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
       if ((field as ILinkField).property.limitSingleRecord) {
         _toggleEditing && _toggleEditing();
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+      
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [field, datasheetId, recordId, editing],
   );
-
-  // TODO: 结束编辑的时候，如果不是 cancel 的状态下。并且 rows 里面只有一个元素，需要进行选中操作
-  // 目前因为编辑器的调用逻辑问题，暂未实现，重构后再搞
+ 
   const onEndEdit = () => {
     // const rows = searchContentRef.current && searchContentRef.current.getFilteredRows();
     // console.log('onSearchSubmit', rows);
@@ -157,7 +155,6 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
   }, [editing, datasheetId]);
 
   useEffect(() => {
-    // 重置 focusIndex
     if (!searchValue) {
       setFocusIndex(-1);
     }
@@ -176,7 +173,6 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
     }
     stopPropagation(e);
 
-    // 搜索状态下，支持键盘操作
     const rows = searchContentRef.current && searchContentRef.current.getFilteredRows();
     if (searchValue && rows) {
       const maxLength = rows.length;
@@ -201,7 +197,6 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
   };
 
   const onSearchKeyDown = (e: React.KeyboardEvent) => {
-    // 防止利用键盘上下移动选项时，出现光标同时移动的情况
     if ([KeyCode.Up, KeyCode.Down].includes(e.keyCode)) {
       e.preventDefault();
     }
@@ -282,7 +277,7 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
     <div
       style={{
         ...offsetStyle,
-        zIndex: document.querySelector('.centerExpandRecord') ? undefined : 1001, // 设置比预览附件弹窗的 z-index 大一点的值
+        zIndex: document.querySelector('.centerExpandRecord') ? undefined : 1001, 
       }}
       onMouseDown={e => e.nativeEvent.stopImmediatePropagation()}
       onWheel={stopPropagation}
@@ -290,10 +285,6 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
       onMouseMove={stopPropagation}
       className={classNames(
         style.linkEditorPortalContainer,
-        /**
-         * 由于 link editor 是渲染在dom 根节点的，所以需要增加一个 gridCellEditor 标致位。
-         * 是用来给快捷键模块判断是否应该响应快捷键操作，只有在组件作为gridView单元格编辑组件使用的时候，才会生效。
-         */
         { [ConfigConstant.GIRD_CELL_EDITOR]: props.gridCellEditor },
       )}
       tabIndex={-1}

@@ -37,15 +37,15 @@ export const useGanttAssocitionLine = (props: IAssociaLinePorps) => {
 
   const topY = scrollTop - rowHeight * 5;
   const bottomY = scrollTop + instance.containerHeight;
-  // 存放向上或者向下消失线的nodeId 不重复渲染
+  // Store the nodeId of the up or down vanishing line without repeated rendering
   const nodeTopLineMap: Map<string, string> = new Map();
   const nodeBottomLineMap: Map<string, string> = new Map();
 
-  // 存放分组收起来的任务task按照x的位置储存
+  // Storage of grouped and put away taskstasks are stored according to the location of x
   const sourceCollapseXMap: Map<string, Map<string, string>> = new Map();
   const targetCollapseXMap: Map<string, Map<string, string>> = new Map();
 
-  // 将每次计算过后的y值储存起来
+  // Store the y value after each calculation
   const taskYPositionMap: Map<string, number> = new Map();
 
   const getTaskXPosition = (startFiledValue: string, endFiledValue: string) => {

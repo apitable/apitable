@@ -14,7 +14,7 @@ const GradesColor = {
   Feishu_Enterprise: lightColors.rc01,
 };
 export const getBillingInfo = async(spaceId: string) => {
-  const { data: { success, data }} = await Api.subscribeInfo(spaceId); // 请求订阅内容。
+  const { data: { success, data }} = await Api.subscribeInfo(spaceId); // Request subscription content.
   if (!success) {
     return;
   }
@@ -24,14 +24,14 @@ export const getBillingInfo = async(spaceId: string) => {
     ...data,
     deadline: deadline || -1,
     productName: t(Strings[productI18nName]),
-    productColor: GradesColor[product], // 订阅等级对应主题色
+    productColor: GradesColor[product], // Subscription levels correspond to theme colours
 
   };
   return subscriptionInfo;
 };
 
 /**
- * 获取依赖的 datasheetId 数组
+ * Get an array of dependent datasheetId's
  * @param state
  * @param datasheetId
  */
@@ -45,7 +45,7 @@ export const getDependenceDstIds = (state: IReduxState, datasheetId: string) => 
 };
 
 /**
- * 检查某张表依赖的哪些表 datasheetId 集合
+ * Check which tables a table depends on datasheetId set
  * @param state
  * @param datasheetId
  */

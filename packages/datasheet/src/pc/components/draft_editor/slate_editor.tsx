@@ -26,10 +26,8 @@ import { draft2slate, EMPTY_CONTENT } from './utils/draft_slate';
 
 const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 const withLastSelection = editor => {
-  // 失焦记录位置
   const { onChange } = editor;
   editor.onChange = (...params) => {
-    // 记录最后一次selection值，确保编辑器失焦后能将新节点插入正确的位置，比如新加一个链接元素
     if (editor.selection) {
       // ref.current = editor.selection as unknown as Selection;
       editor.lastSelection = (editor.selection as unknown) as Selection;
@@ -102,7 +100,6 @@ const SlateEditor = (props, ref) => {
         const lastLevel = path.pop();
         const nodeText = Node.string(node);
         if (!lastLevel) {
-          // 修复firefox在一行开头混合输入文字重复
           const firstPath = [...path, 0];
           if (nodeText === imeText) {
             Transforms.removeNodes(editor, { at: firstPath });
@@ -118,7 +115,6 @@ const SlateEditor = (props, ref) => {
     }
   };
 
-  // 同步点赞用户的信息
   useEffect(() => {
     toPairs(emojis).forEach(([k, v]) => {
       if (v && (v as any).length) {
@@ -163,7 +159,6 @@ const SlateEditor = (props, ref) => {
 
   const focus = (isInsert?: boolean) => {
     ReactEditor.focus(editor);
-    // 手动设置鼠标定位展示
     if (isInsert) {
       Transforms.insertNodes(editor, { text: '' });
     }
@@ -205,7 +200,6 @@ const SlateEditor = (props, ref) => {
         Transforms.insertNodes(editor, mention);
         Transforms.move(editor);
       } else {
-        // 清除内容
         clearContent();
       }
     }
@@ -322,7 +316,6 @@ const SlateEditor = (props, ref) => {
       const afterMatch = afterText.match(/^(\s|$)/);
       const wordBeforePath = wordBefore && [...wordBefore.path];
       const startPath = [...start.path];
-      // 最后一级为text节点，需要比较上一级节点的path
       wordBeforePath && wordBeforePath.pop();
       startPath.pop();
       // const isSameBlock = wordBeforePath && Path.equals(wordBeforePath, startPath);

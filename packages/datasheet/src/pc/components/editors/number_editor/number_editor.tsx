@@ -64,9 +64,9 @@ const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorPro
   }));
 
   /**
-   * 输入态数据
-   * 单元格数据存储格式是 number，但是用户输入的时候需要转成字符串。
-   * 这样才能允许输入 e 之类的数学符号
+   * Input state data
+   * The cell data is stored in number format, but needs to be converted to a string when entered by the user.
+   * This allows mathematical symbols such as e to be entered
    */
   const setEditorValue = (value: number | null, showSymbol = false) => {
     let tempVal: string | number | null = null;
@@ -83,12 +83,12 @@ const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorPro
       } else {
         precision = digitLen > precision ? digitLen : precision;
       }
-      // !!! 对于整数
-      // 位数小于 17 位时，根据 precision 展示小数位，如 "1000.00"
-      // 位数大于等于 17 位时，如小数位为 0，则不展示小数位
+      // !!! For integers
+      // If the number of digits is less than 17, show the decimal places according to precision, e.g. "1000.00"
+      // If the number of decimal places is greater than or equal to 17, no decimal places will be displayed if the decimal place is 0
       tempVal = tempVal >= numberThresholdValue ? number2str(String(tempVal)) : numberToShow(tempVal, precision);
 
-      // 编辑的时候统一不显示单位
+      // No units are displayed uniformly when editing
       if (showSymbol) {
         if (fieldType === FieldType.Currency) {
           tempVal = str2Currency(tempVal, field.property.symbol, 3, ',', field.property.symbolAlign);
@@ -112,7 +112,7 @@ const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorPro
     setShowTip(false);
   }, [editing]);
 
-  // 用于单元格 编辑 和 筛选 操作
+  // For cell editing and filtering operations
   const updateValue = (event: ChangeEvent<HTMLInputElement>) => {
     if (editing && canInput) {
       let tempVal: string | null = event.target.value;
@@ -130,11 +130,12 @@ const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorPro
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const printable = printableKey(event.nativeEvent);
-    // 目前检查， safari，Windows中的 Chrome等在调用系统的中文输入法时（如，mac的中文和微软自带的中文）
-    // 会将所有的按键 KeyCode 处理成 229。如果是通过 KeyUp 事件监听的 KeyCode 则能返回正确的值。不过 KeyUp 有两个问题：
-    // 1. 频繁触发会有遗漏
-    // 2. KeyUp 的事件触发的太晚，依旧会有不合格的字符输入。
-    // 因此这里完全参考 AirTable 的处理，不检查 KeyCode 为 229 的输入。
+    // Currently checking, safari, Chrome in Windows, etc. 
+    // when calling the system's Chinese input method (e.g., mac's Chinese and Microsoft's own Chinese)
+    // If the KeyCode is listened to via the KeyUp event, the correct value is returned. However, there are two problems with KeyUp.
+    // 1. Frequent triggers can be missed
+    // 2. The KeyUp event is triggered too late and there will still be unqualified characters entered.
+    // Therefore, the treatment of AirTable is fully referenced here and no input with a KeyCode of 229 is checked.
     const acceptable = isNumeralKey(event.nativeEvent);
     if (printable && !acceptable) {
       event.preventDefault();
@@ -146,7 +147,6 @@ const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorPro
     }
   };
 
-  // 给 parent 组件调用的回调
   const onEndEdit = (cancel: boolean) => {
     if (!cancel) {
       saveValue();
@@ -154,18 +154,18 @@ const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorPro
     setEditorValue(null);
   };
 
-  // 设置态数据 —— 纯数字字符串
+  // Set state data - pure numeric strings
   const saveValue = () => {
     let tempVal: string | number | null = str2NumericStr(value);
 
-    // 保存时需要进行数据过滤，例如多次输入汉字，tempVal 一直为 null，
-    // 此时不会发送 ChangeSet，需要在组件内进行过滤
+    // Data filtering is required when saving, e.g. if a Chinese character is entered several times, tempVal will always be null.
+    // ChangeSet will not be sent at this point and will need to be filtered within the component
     if (tempVal == null) {
       setValue(tempVal || '');
     }
 
-    // 考虑到其它字段 “填充” 和 “复制” 到百分比时，若在 set_records 中处理，
-    // 会出现问题，因此直接在这做 “值还原” 处理
+    // Consider the other fields "populated" and "copied" to the percentage if handled in set_records
+    // There will be problems, so do the "value restore" process here directly
     if (fieldType === FieldType.Percent) {
       tempVal = tempVal == null ? null : str2number(tempVal);
       tempVal = tempVal == null ? null : divide(tempVal, 100);
@@ -173,7 +173,7 @@ const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorPro
     onSave && onSave(tempVal);
   };
 
-  // 给 parent 组件调用的回调
+  // Callbacks called on parent components
   const onStartEdit = (value?: number | null) => {
     if (value === undefined) return;
     setEditorValue(value);
@@ -210,7 +210,7 @@ const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorPro
       }}
       onMouseMove={stopPropagation}
     >
-      {/* 这里将判断逻辑套在外层，否则会引起 Tooltip 定位错误 */}
+      {/* Here the judgement logic is wrapped in an outer layer, otherwise it would cause a Tooltip positioning error */}
       {!isFromFormat && <Tooltip
         visible={showTip}
         title={toolTip}

@@ -15,7 +15,7 @@ import { ProcessBar } from './components/process_bar';
 import { ITodoItem, TodoList, TodoState } from './components/todo_list';
 
 type IAction = IElementAction | {
-  uiType: string, // 'element' 和其他
+  uiType: string, 
   uiConfig: string,
 };
 
@@ -23,9 +23,9 @@ type IElementAction = {
   uiType: 'element',
   uiConfig: {
     element: string,
-    emitEvent?: string, // 触发特定事件
-    finishTodoWhen?: string[], // 触发特定事件，算作当前这一步任务完成
-    nextActions?: IAction[], // 点击元素后，异步执行的后续 action
+    emitEvent?: string, // Trigger specific events
+    finishTodoWhen?: string[], // Triggers a specific event that counts as the completion of the current step
+    nextActions?: IAction[], // Subsequent actions executed asynchronously after an element is clicked
   }
 };
 
@@ -34,7 +34,7 @@ export interface IGuideTaskListProps {
   description: string,
   data?: Array<{
     text: string,
-    stopEvents?: string[], // 对指定的 todo item 添加阻止默认事件
+    stopEvents?: string[], // Add a blocking default event to the specified todo item
     actions: IAction[]
   }>
 }
@@ -43,7 +43,7 @@ const uniqAndSort = (list: number[]) => {
   return [...new Set(list)].sort((a, b) => a - b);
 };
 
-// 一次性事件响应函数绑定，和批量移除绑定。
+// One-off event response function bindings, and bulk removal bindings.
 const removeListeners: Array<() => void> = [];
 const clearListeners = () => {
   removeListeners.forEach(listener => {
@@ -64,7 +64,7 @@ const addOnceListener = (els: Element[], eventName: string, handler: (...args: a
   return removeAllListener;
 };
 
-// 清空定时器（切换另一个 action 以及销毁 taskList 时需要用到）
+// Clear timer (needed to switch to another action and to destroy taskList)
 const timers: any[] = [];
 const clearTimers = () => {
   timers.forEach(timer => {
@@ -86,7 +86,7 @@ export const TaskList: FC<IGuideTaskListProps> = (options) => {
   };
 
   const [doneList, setDoneList] = useState(getDoneListFromLocal());
-  const [activeIdx, setActiveIdx] = useState(-1); // 根据 doneList 和 originTaskList，计算 activeIdx。
+  const [activeIdx, setActiveIdx] = useState(-1); // Calculate activeIdx based on doneList and originTaskList.
   const taskList: ITodoItem[] = data.map((task, index) => {
     let state: TodoState = TodoState.Empty;
     if (doneList.includes(index)) {
@@ -112,13 +112,13 @@ export const TaskList: FC<IGuideTaskListProps> = (options) => {
   }, [activeIdx, doneList, wizardId]);
 
   const finishStepAndNext = (index: number) => {
-    // 完成当前步骤
+    // Complete the current step
     doneList.push(index);
     const _doneList = uniqAndSort(doneList);
     setDoneList(_doneList);
     TriggerCommands.clear_guide_uis(['breath', 'popover']);
     tracker.track(TrackEvents.TaskListComplete, {});
-    // 检查是否全部完成
+    // Check for full completion
     let isAllFinished = true;
     for (let i = 0; i < taskList.length; i++) {
       if (!_doneList.includes(i)) {
@@ -130,7 +130,7 @@ export const TaskList: FC<IGuideTaskListProps> = (options) => {
   };
 
   const finishAllTask = () => {
-    // 完成全部 todo
+    // Complete all todo
     tracker.track(TrackEvents.TaskListClose, {});
     TriggerCommands.set_wizard_completed({ wizardId });
     TriggerCommands.clear_guide_all_ui();
@@ -140,13 +140,13 @@ export const TaskList: FC<IGuideTaskListProps> = (options) => {
     });
   };
 
-  // index: 当前 task 的索引值
+  // index: Index value of the current task
   const doActions = (actions: IAction[], index: number) => {
     TriggerCommands.clear_guide_uis(['breath', 'popover']);
     clearListeners();
     clearTimers();
     actions && actions.forEach(action => {
-      if (action.uiType === 'element') { // 自定义的不在 step 表里的组件
+      if (action.uiType === 'element') { // Customised components not in the step table
         if (typeof action.uiConfig === 'string') {
           return;
         }
@@ -182,14 +182,14 @@ export const TaskList: FC<IGuideTaskListProps> = (options) => {
     });
   };
 
-  // 点击 item，将其设置为 active
+  // Click on the item and set it to active
   const goAndReset = (index: number) => {
     tracker.track(TrackEvents.TaskListClick, {});
     setActiveIdx(index);
     setDoneList(uniqAndSort(doneList.filter(item => item !== index)));
     const actions = data[index].actions;
     TriggerCommands.clear_guide_uis(['breath', 'popover']);
-    // 触发 action
+    // Trigger action
     doActions(actions, index);
   };
 
@@ -205,7 +205,7 @@ export const TaskList: FC<IGuideTaskListProps> = (options) => {
             <div className="title">{title}</div>
           </div>
         </div>
-        {/* 进度 */}
+        {/* Progress */}
         <div className="vika-guide-task-list-progress">
           <div className="progress-text">
             {t(Strings.task_progress)} <span className="progress-number">{progress}%</span>

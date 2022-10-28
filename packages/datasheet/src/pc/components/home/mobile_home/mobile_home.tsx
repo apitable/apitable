@@ -22,7 +22,6 @@ export const MobileHome: FC = () => {
   const query = useQuery();
   const quickLogin = query.get('quickLogin') || 'on';
   const secondPageRef = useRef<HTMLDivElement>(null);
-  // 判断是否是在指定的内置浏览器中，企业微信需要判断是否为专属域名
   const isQuickLogin = isWechatFunc() || isDingtalkFunc() || isQQFunc() || isLarkFunc() || isWecomFunc();
 
   const clickHandler = () => {

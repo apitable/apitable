@@ -44,7 +44,7 @@ export const useScroller = (props: IUseScrollerProps) => {
     }
   }, [isCellScrolling, ganttHorizontalBarRef, gridHorizontalBarRef, cellVerticalBarRef, verticalBarRef, pointAreaType]);
 
-  // 滚动到某个位置（供 PC 端使用）
+  // Scroll to a position (for PC use)
   const scrollTo = useCallback(({ scrollTop, scrollLeft }: IScrollCoordsProps, areaType: AreaType = AreaType.Grid) => {
     if (verticalBarRef.current && scrollTop != null) {
       verticalBarRef.current.scrollTop = scrollTop;
@@ -57,11 +57,11 @@ export const useScroller = (props: IUseScrollerProps) => {
     }
   }, [ganttHorizontalBarRef, gridHorizontalBarRef, verticalBarRef]);
 
-  // 处理 PC 滚动相关的事件
+  // Handling PC scrolling related events
   const onWheel = useCallback((event: React.WheelEvent) => {
     event.preventDefault();
     const { deltaX, deltaY, shiftKey } = event;
-    // 兼容 windows (shift + 滚轮) 横向滚动
+    // Windows compatible (shift + scroll wheel) horizontal scrolling
     const fixedDeltaY = shiftKey && isWindowsOS() ? 0 : deltaY;
     const fixedDeltaX = shiftKey && isWindowsOS() ? deltaY : deltaX;
     scrollHandler(fixedDeltaX, fixedDeltaY);

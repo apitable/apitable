@@ -28,11 +28,8 @@ export interface ITeamworkProps {
 }
 
 export const Teamwork: FC<ITeamworkProps> = ({ nodeId, jumpPublicLink }) => {
-  /** 协作成员详情显隐控制 */
   const [detailModalVisible, setDetailModalVisible] = useState(false);
-  /** 要邀请的邮箱 */
   const [inviteEmail, setInviteEmail] = useState('');
-  /** 要加入的组织Id */
   const [joinTeamId, setJoinTeamId] = useState('');
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
   const socketData = useSelector((state: IReduxState) => state.catalogTree.socketData);

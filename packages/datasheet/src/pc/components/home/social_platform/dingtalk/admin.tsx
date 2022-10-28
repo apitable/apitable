@@ -20,7 +20,7 @@ const DingTalkAdmin = () => {
   const [data, setData] = useState<IAdminData | null>(null);
   const [corpId, setCorpId] = useState<string>(() => getStorage(StorageName.SocialPlatformMap)?.socialDingTalk?.[code] || '');
 
-  // 变更管理员
+  //  Change Manager
   const { run: changeAdmin } = useRequest((spaceId, memberId) => Api.dingTalkChangeAdmin(suiteId, corpId, spaceId, memberId), {
     onError: () => {
       Message.error({ content: t(Strings.error) });
@@ -36,7 +36,7 @@ const DingTalkAdmin = () => {
     manual: true,
   });
 
-  // 获取绑定的空间信息
+  // Get the bound space information
   const { run: getAdminDetail } = useRequest(() => Api.dingTalkAdminDetail(suiteId, corpId), {
     onSuccess: res => {
       const { data, success } = res.data;
@@ -52,7 +52,7 @@ const DingTalkAdmin = () => {
     manual: true
   });
 
-  // 管理员登陆
+  // Administrator Login
   const { run: adminLogin } = useRequest(() => Api.dingTalkAdminLogin(suiteId, code, corpId), {
     onSuccess: res => {
       const { data, success } = res.data;
@@ -62,8 +62,9 @@ const DingTalkAdmin = () => {
       }
 
       /**
-       * corpId 需要存到 localStorage 中，
-       * 在浏览器刷新后，需要再次调用登陆接口，并将 corpId 回传给后端，告知当前的企业 ID
+       * The corpId needs to be stored in localStorage.
+       * After a browser refresh, the login interface needs to be called again and the corpId 
+       * needs to be passed back to the backend with the current corporate ID
        */
       const corpId = data.corpId;
       const socialPlatformMap = getStorage(StorageName.SocialPlatformMap) || {};

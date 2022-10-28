@@ -107,7 +107,6 @@ export const CreateEvent: React.FC<ICreateEvent> = props => {
     if (!validator(formData)) {
       return;
     }
-    // 下一步，验证配置
     setLarkConfig(formData);
   }, [formData, setLarkConfig, validator]);
 

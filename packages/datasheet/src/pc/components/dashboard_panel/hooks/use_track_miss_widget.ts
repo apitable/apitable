@@ -40,7 +40,6 @@ export const useTrackMissWidgetAndDep = () => {
           const datasheetIds = data.map(item => item.snapshot.datasheetId).filter(item => Boolean(item));
           const afterFilterRepeatIds: string[] = [...new Set(datasheetIds)] as string[];
           for (const id of afterFilterRepeatIds) {
-            // 如果 DatasheetMap 中已经有相应的数表数据，则不进行重复的请求
             if (!existDatasheetIds.includes(id)) {
               dispatch(StoreActions.fetchDatasheet(id));
             }
@@ -53,7 +52,10 @@ export const useTrackMissWidgetAndDep = () => {
     }
 
     if (reduceDiff.length) {
-      // TODO: 识别下是因为仪表盘请求出来的数据，这样在 unMount 仪表盘和删除 widget 时可以帮相应的数表数据也删除
+      /**
+       * TODO: Identify the data requested from the dashboard so that when unMounting the dashboard and deleting the widget, 
+       * the corresponding table data can also be deleted
+       * */ 
       dispatch(StoreActions.resetWidget(reduceDiff));
     }
 

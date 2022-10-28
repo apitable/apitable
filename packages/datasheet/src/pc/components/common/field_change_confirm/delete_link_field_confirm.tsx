@@ -23,7 +23,10 @@ const DeleteLinkField: React.FC<{ fieldId: string, datasheetId?: string, onClose
   const foreignDatasheetEditable = useSelector(state => Selectors.getPermissions(state, field.property.foreignDatasheetId).editable);
   const foreignField = foreignDatasheet && foreignDatasheet.snapshot.meta.fieldMap[field.property.brotherFieldId!];
   const [_shouldDelForeign, setShouldDelForeign] = useLocalStorageState('shouldDelForeignField', { defaultValue: false });
-  // 没有关联表的可编辑权限，不允许使用高级规则里的删除字段，默认将关联表的兄弟字段转换成文本字段
+  /**
+   * No editable permissions for related tables, no permission to use delete fields in advanced rules, 
+   * default conversion of sibling fields in related tables to text fields
+   **/ 
   const shouldDelForeign = foreignDatasheetEditable ? _shouldDelForeign : false;
 
   function onConfirm() {
@@ -98,7 +101,7 @@ export const deleteLinkFieldConfirm = (props: {
   const snapshot = Selectors.getSnapshot(state, datasheetId)!;
   const field = snapshot.meta.fieldMap[fieldId];
 
-  // 某些情况下，数据一致性会被损坏，这里要提示用户。
+  // In some cases, data consistency can be corrupted, and the user is prompted here.
   if (!field) {
     CustomModal.error({
       title: t(Strings.error),

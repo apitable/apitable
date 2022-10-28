@@ -8,7 +8,6 @@ import { IErrorInfo, IKidType, KidType } from '../interface';
 import styles from './style.module.less';
 
 const { Dragger } = Upload;
-// 下载地址
 
 interface IBeforeUpload {
   setKid: React.Dispatch<React.SetStateAction<IKidType>>;
@@ -31,13 +30,13 @@ export const BeforeUpload: FC<IBeforeUpload> = ({ setFile, setKid, setErr, setPr
       try {
         const result = event.target?.result;
         if(!result) return;
-        // 以二进制流方式读取得到整份excel表格对象
+        // Read the entire excel table object as a binary stream
         const Excel = await import('exceljs');
         const workbook = new Excel.Workbook();
         workbook.xlsx.load(result as ArrayBuffer).then(function() {
-          // 存储获取到的数据
+          // Storing the acquired data
           const data: IErrorInfo[] = [];
-          const worksheet = workbook.getWorksheet(1); //获取第一个worksheet
+          const worksheet = workbook.getWorksheet(1); //Get the first worksheet
           worksheet.eachRow({ includeEmpty: true }, function(row, rowNumber) {
             const emailContent = row.values[2];
             const rowName = row.values[1];

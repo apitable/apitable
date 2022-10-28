@@ -19,7 +19,7 @@ export const useLinkInvite = () => {
   const inviteLinkTokenInStore = useSelector((state: IReduxState) => state.invite.linkToken);
   const nodeId = useSelector((state: IReduxState) => state.invite.nodeId);
 
-  // 重新获取信息
+  // Retrieval of information
   const reGetLinkInfo = (linkToken: string, nodeId?: string) => {
     Api.linkValid(linkToken, nodeId).then(res => {
       const { success, data: info } = res.data;
@@ -45,13 +45,13 @@ export const useLinkInvite = () => {
   const join = (props?: IJoinFuncProps) => {
     const fromLocalStorage = props ? Boolean(props.fromLocalStorage) : false;
     const inviteLinkData = localStorage.getItem('invite_link_data');
-    // 对于钉钉或qq扫码之后，页面会刷新并且会丢失store数据，需要获取localStorage里的数据，并重新api请求
+    // Retrieval of information
     if (fromLocalStorage && inviteLinkData) {
       const { linkToken, nodeId } = JSON.parse(inviteLinkData);
       reGetLinkInfo(linkToken, nodeId);
       return;
     }
-    // 从store里获取数据
+    // Get data from the store
     if (inviteLinkTokenInStore && inviteLinkInfo && nodeId) {
       Api.joinViaSpace(inviteLinkTokenInStore, nodeId).then(res => {
         if (res.data.success) {
@@ -62,7 +62,7 @@ export const useLinkInvite = () => {
         return;
       });
     }
-    // 用户刷新了页面，重新获取数据
+    // The user refreshes the page and re-fetches the data
     if (inviteLinkTokenInUrl) {
       reGetLinkInfo(inviteLinkTokenInUrl, inviteNodeIdInUrl);
       return;

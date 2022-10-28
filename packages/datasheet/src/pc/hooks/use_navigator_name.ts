@@ -5,9 +5,9 @@ import { useEffect } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useQuery } from './';
 
-const contacts = /(\/)?org(\/)?/; // 通讯录
-const template = /(\/)?template(\/)?/; // 模板中心
-const management = /(\/)?management(\/)?/; // 空间站管理
+const contacts = /(\/)?org(\/)?/; // Directory
+const template = /(\/)?template(\/)?/; // Template Centre
+const management = /(\/)?management(\/)?/; // Space Station Management
 
 export async function getEmojiNativeByName(emojiName: string) {
   if (!emojiName) return '';

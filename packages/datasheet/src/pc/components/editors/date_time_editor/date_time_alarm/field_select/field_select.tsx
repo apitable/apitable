@@ -28,7 +28,7 @@ export const FieldSelect: React.FC<IFieldSelectProps> = props => {
     return Object.values(fieldMap).filter(field => field.type === FieldType.Member);
   }, [fieldMap]);
 
-  // TODO 解决神奇引用筛选面板不关闭问题，临时解决方案，强行关闭
+  // TODO Solve the problem of the magic quote filter panel not closing, temporary solution, force it to close
   const refSelect = useRef<HTMLDivElement>(null);
   const refSelectItem = useRef<HTMLDivElement>(null);
 

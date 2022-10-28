@@ -38,8 +38,6 @@ export const SwitchInfo: FC<ISwitchInfoProps> = props => {
           {arr.map(item => <li key={item}>{item}</li>)}
         </ul>
       </div>
-
-      {/* Radio 权限组 */}
       {
         Boolean(permissionList.length) &&
         <div className={classNames(styles.radioGroup, !checked && styles.radioGroupDisabled)}>

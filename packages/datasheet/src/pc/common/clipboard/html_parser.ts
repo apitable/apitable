@@ -18,7 +18,7 @@ export function parseHtml(html: string): ITableData | null {
   const tableCount = tables.length;
   let validTable = tableCount === 1;
   if (tableCount > 1) {
-    // Excel 复制有浮动图片时，会在里面包多一个table标签
+    // Excel will wrap an extra table tag inside when copying with floating images
     const firstTable = tables[0];
     let i = 1;
     for (; i < tableCount; i++) {
@@ -37,7 +37,7 @@ export function parseHtml(html: string): ITableData | null {
     tableData = getDataFromTable(tables[0]);
     document.body.removeChild(measureContainer);
   }
-  // NOTES: 特别针对 span 标签的处理，会导致除了被 span 包裹的内容之外的信息丢失，
+  // NOTES: The handling of span tags in particular can result in the loss of information other than the content wrapped in the span.
   // else if (tableCount === 0) {
   //   const spans = measureContainer.getElementsByTagName('span');
   //   if (spans.length === 1) {
@@ -57,7 +57,7 @@ export function parseHtml(html: string): ITableData | null {
 
 function getDataFromTable(table: HTMLTableElement): ITableData {
   const tableCellDatas: ITableCellData[][] = [];
-  // 收集行高数据
+  // Collection of line height data
   const tableRowsHeightList: (number | null)[] = [];
   const columns: (number | null)[] = getColumnWidthsFromTable(table);
 
@@ -71,7 +71,7 @@ function getDataFromTable(table: HTMLTableElement): ITableData {
 
     let columnIndex = 0;
     for (let c = 0, cellCount = cells.length; c < cellCount; c++) {
-      // 合并单元格会提前写入数据，直接跳过
+      // Merging cells will write data in advance, skipping directly
       while (tableRowData[columnIndex]) {
         columnIndex++;
       }
@@ -86,7 +86,7 @@ function getDataFromTable(table: HTMLTableElement): ITableData {
       tableCellData.rowSpan = rowSpan;
       tableCellData.colSpan = colSpan;
 
-      // 遇到合并单元格，提前把主单元格外的数据写好。
+      // When you encounter a merged cell, write the data outside the main cell in advance.
       for (let j = 0; j < rowSpan; j++) {
         for (let k = 0; k < colSpan; k++) {
           if (j === 0 && k === 0) continue;
@@ -138,7 +138,7 @@ function getColumnWidthsFromTable(table: HTMLTableElement): (number | null)[] {
 function getDataFromSpan(span: HTMLElement): ITableCellData {
   const originHTML = span.innerHTML;
   let innerHTML = originHTML && originHTML.replace(/\r?\n/g, '');
-  // 这里是一个补丁，为了解决解析的时候 <br> 没有被innerText解析为换行
+  // Here is a patch to fix the fact that <br> is not parsed as a newline by innerText when parsing
   innerHTML = innerHTML.replace(/<br>/g, '\n');
   if (innerHTML !== originHTML) {
     span.innerHTML = innerHTML;
@@ -155,16 +155,16 @@ function getDataFromSpan(span: HTMLElement): ITableCellData {
 }
 
 /**
- * 遍历 DOM tree，得到 segment 值。
- * 目前 datasheet 只需要解析 span 和 a
+ * Iterate through the DOM tree to get the segment value.
+ * Currently the datasheet only needs to resolve span and a
  */
 function getTextFromDOM(node: Node): string | ISegment[] {
-  // 有些 td 没有包 span，直接就是文本 dom
+  // Some td's don't have a package span, they are just text dom
   if (node.nodeType === Node.TEXT_NODE) {
     return node.textContent || [];
   }
 
-  // 防御性判断
+  // Defensive judgement
   if (node.nodeType !== Node.ELEMENT_NODE) {
     return [];
   }
@@ -172,10 +172,10 @@ function getTextFromDOM(node: Node): string | ISegment[] {
   const element = node as HTMLElement;
   const tagName = element.tagName.toLowerCase();
 
-  // 解析 span 标签
+  // Parse span tag
   if (tagName === 'span') {
     const text = element.innerText;
-    // 暂不支持 mention
+    // No support for mention
     // const mentionData = element.getAttribute('data-sheet-mention');
     // if (mentionData && text) {
     //   const { mentionType, mentionNotify, token, link } = JSON.parse(mentionData);
@@ -185,7 +185,7 @@ function getTextFromDOM(node: Node): string | ISegment[] {
     return text || [];
   }
 
-  // 解析 a 标签
+  // Parsing a tag
   if (tagName === 'a') {
     const link = (element as HTMLAnchorElement).href;
     if (link) {
@@ -195,7 +195,7 @@ function getTextFromDOM(node: Node): string | ISegment[] {
     return element.innerText || [];
   }
 
-  // 暂不支持图片
+  // Image not supported at this time
   // const imgElements = element.getElementsByTagName('img');
   // if (imgElements.length === 1) {
   //   const imgElement: HTMLImageElement = imgElements[0];
@@ -207,19 +207,19 @@ function getTextFromDOM(node: Node): string | ISegment[] {
   //   }
   // }
 
-  // 当前 dom 不是 span 和 a，后代也没有 span 也没有 a，就不需要再遍历了
+  // If the current dom is not span and a, and the descendant does not have span or a, there is no need to traverse it again
   if (element.getElementsByTagName('a').length === 0 && element.getElementsByTagName('span').length === 0) {
     return element.innerText || [];
   }
 
   const segments: ISegment[] = [];
   let child: Node | null = element.firstChild;
-  // 递归子 dom
+  // Recursive sub dom
   while (child) {
     const text = getTextFromDOM(child);
     let prev = segments[segments.length - 1];
     if (typeof text === 'string') {
-      // 合并 Text 类型
+      // Merge Text types
       if (prev && prev.type === SegmentType.Text) {
         prev.text += text;
       } else if (text) {
@@ -228,7 +228,7 @@ function getTextFromDOM(node: Node): string | ISegment[] {
     } else {
       text.forEach(seg => {
         prev = segments[segments.length - 1];
-        // 合并 Text 类型
+        // Merge Text types
         if (prev && prev.type === SegmentType.Text && seg.type === SegmentType.Text) {
           prev.text += seg.text;
         } else {

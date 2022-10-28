@@ -24,7 +24,7 @@ export const SelectUnitRight: React.FC<ISelectUnitRightProps> = props => {
         <div className={styles.list}>
           {checkedList.map(item => {
             let userInfo;
-            // 兼容传入的已选择的 IMemberValue
+            // Compatible with the selected IMemberValue passed in
             if (source === 'member' && 'type' in item && 'name' in item) {
               const title = getSocialWecomUnitName({
                 name: item['name'],

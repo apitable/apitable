@@ -3,34 +3,34 @@ import { SelectProps } from 'antd/lib/select';
 
 export interface IMobileSelectProps extends SelectProps<any> {
   /**
-   * @description 关闭的回调处理
+   * @description Callback handling for closures
    */
   onClose?: () => void;
 
   /**
-   * @description 选项的内容
+   * @description Content of the options
    */
   optionData?: IMobileOptionItem[];
 
   /**
-   * @description 手机端选项的标题
+   * @description Title of the mobile option
    */
   title?: string;
 
   triggerStyle?: React.CSSProperties;
 
   /**
-   * @description 手机端选择器的高度
+   * @description Height of selector on mobile
    */
   height?: number | string;
 
   /**
-   * @description 自定义触发器的内容
+   * @description Customising the content of triggers
    */
   triggerComponent?: React.ReactNode;
 
   /**
-   * @description 自定义弹出卡片的内容
+   * @description Customise the content of the pop-up card
    * @param {any} setVisible
    * @returns {React.ReactNode}
    */
@@ -39,27 +39,27 @@ export interface IMobileSelectProps extends SelectProps<any> {
 
 interface IMobileOptionItem {
   /**
-   * @description 列表中要显示的标签，可以是 string ，也可以是一个节点
+   * @description The label to be displayed in the list, either as a string or as a node
    */
   label: React.ReactNode;
 
   /**
-   * @description 选项对应的值
+   * @description The value corresponding to the option
    */
   value: any;
 
   /**
-   * @description 选项的前置 icon
+   * @description Front icon of the option
    */
   prefixIcon?: React.ReactNode;
 
   /**
-   * @description 选项的后置 icon
+   * @description Back icon for options
    */
   suffixIcon?: React.ReactNode;
 
   /**
-   * @description 当前选项是否可以操作
+   * @description Is the current option operable
    */
   disabled?: boolean;
 }

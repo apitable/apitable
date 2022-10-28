@@ -4,7 +4,7 @@ import FolderIcon from 'static/icon/datasheet/datasheet_icon_folder_normal.svg';
 import ArrowIcon from 'static/icon/datasheet/datasheet_icon_calender_right.svg';
 import { useThemeColors } from '@vikadata/components';
 
-// richContent: 搜索结果返回的是富文本标签，用来显示高亮
+// richContent: Search results are returned as rich text tags for display highlighting
 export const Folder: React.FC<{ id: string, onClick?(id: string), richContent?: boolean }> = props => {
   const { children, id, richContent, onClick } = props;
   const colors = useThemeColors();

@@ -72,7 +72,7 @@ const DragBase = ({ id, listStyle, task, disabled, isMore }: IDrag) => {
     const itemArray = (isMobile ? columns.slice(0, 1) : columns).map(column =>
       <RecordItem key={column.fieldId} column={column} id={id} />
     );
-    // 更多时，多一行展示日期区间
+    // More time, more rows to show date intervals
     if (isMore) {
       itemArray.splice(1, 0, (
         <div key="duration" className={styles.duration}>
@@ -101,8 +101,8 @@ const DragBase = ({ id, listStyle, task, disabled, isMore }: IDrag) => {
           }}
           onMouseDown={() => {
             /**
-             * 鼠标按下时，关闭 modal
-             * 解决拖拽时，modal 不消失问题
+             * Close modal when mouse is pressed
+             * Solve the problem of modal not disappearing when dragging
              */
             if (!isMobile && recordModal) {
               setRecordModal(undefined);

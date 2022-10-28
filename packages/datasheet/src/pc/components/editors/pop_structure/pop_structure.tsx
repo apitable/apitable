@@ -18,7 +18,7 @@ interface IPopStructureProps {
   onClose(): void;
 }
 
-const SECURITY_PADDING = 30; // 给屏幕边缘预留的安全距离
+const SECURITY_PADDING = 30; 
 
 export const PopStructure: React.FC<IPopStructureProps> = props => {
   const { children, editing, height, className, style, width, onClose } = props;
@@ -41,7 +41,6 @@ export const PopStructure: React.FC<IPopStructureProps> = props => {
     const isOverVertical = rect.top > bottomEdge / 2;
     const isOverHorizontal = rect.left + MIN_POP_STRUCTURE_WIDTH + SECURITY_PADDING > window.innerWidth;
 
-    // 设置存放下拉菜单区域的高度
     setRestHeight(isOverVertical ? rect.top : window.innerHeight - rect.top - height);
 
     setPosition({

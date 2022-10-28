@@ -5,12 +5,12 @@ type IOptions<T extends string> = {
   defaultLng: T,
 };
 /**
- * 回退语言
- * @param code 语言标识符1
- * @param options 配置项
- * @param options.supportedLngs 支持语言的数组
- * @param options.fallbackLng 回退映射，可选。匹配过程若命中，直接返回其指向的语言
- * @param options.defaultLng 默认值，都没有匹配到，返回这个值
+ * Fallback language
+ * @param code Language identifier 1
+ * @param options Configuration items
+ * @param options.supportedLngs Arrays of supported languages
+ * @param options.fallbackLng Fallback mapping, optional. If the match process hits, it returns the language it refers to directly
+ * @param options.defaultLng Default value, none matched, return this value
  * @example fallbackLang('zh-CN-Hans', { supportedLngs: ['zh-CN'], defaultLng: 'en-US' }) // => 'zh-CN'
  */
 export const fallbackLang = <T extends string>(code: string, { supportedLngs, fallbackLng, defaultLng }: IOptions<T>) => {
@@ -29,8 +29,8 @@ export const fallbackLang = <T extends string>(code: string, { supportedLngs, fa
 };
 
 /**
- * 返回一个支持的语言标识符
- * @param lang 语言标识符
+ * Returns a supported language identifier
+ * @param lang Language identifiers
  */
 export const getSupportedLang = (lang: string) => {
   type ISupportedLngs= 'zh-CN' | 'en-US';

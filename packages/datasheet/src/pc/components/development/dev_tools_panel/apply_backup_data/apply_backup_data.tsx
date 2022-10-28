@@ -12,7 +12,6 @@ export const ApplyBackupData = () => {
   const [updater, setUpdater] = useState(false);
 
   useEffect(() => {
-    // 把原先存在 localStorage 的备份数据移动到 indexedDB 中
     const backupStorage = store.namespace(`${LS_DATASHEET_NAMESPACE}.backup`);
     const backupMap = backupStorage.getAll();
 

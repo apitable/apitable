@@ -25,17 +25,19 @@ function hasPermissions() {
 }
 
 /**
- * 快捷键执行的上下文。用于给 config 中的 when 提供状态判断。
- * 用来给快捷键控制器判断，是否应该执行某个 action。
- * 比如，全选快捷键只应该在表格 focusing 而且非 editing 的时候的时候才生效。
- * 这时候，when = "isFocusing && !isEditing"
- * isFocusing 和 isEditing 就是取自于下面的 ShortcutContext 维护的 context 判断函数
+ * The context in which the shortcut is executed. Used to provide a status judgement for when in config.
+ * This is used to give the shortcut controller the ability to determine whether an action should be executed.
+ * For example, the Select All shortcut should only work when the form is focusing and not editing.
+ * when = "isFocusing && !isEditing"
+ * isFocusing and isEditing are taken from the following context determination functions maintained by ShortcutContext
  *
- * context 函数绑定有两种形式
- *  1. 如果状态直接存在于 store 中，则可以直接使用 selector 取到，这时候直接写在 context 对象初始化的时候就可以（参考 isFocusing)
- *  2. 如果状态只存在于组件内部 state 中
- *    1. 在下方 context 中填上预初始化占位函数 () => false
- *    2. 在存在 context 的组件中调用 bind 方法来将判断函数绑定到 context 上（参考 editorContainer.tsx 中的 isEditing)
+ * There are two forms of context function binding
+ *  1. If the state exists directly in the store, it can be fetched directly using the selector, 
+ *  which can be written directly to the context object when it is initialised (see isFocusing)
+ *  2. If the state exists only in the internal state of the component
+ *    1. Fill in the context below with the pre-initialized placeholder function () => false
+ *    2. Call the bind method in a component where a context exists to bind the judgement function 
+ *       to the context (see isEditing in editorContainer.tsx)
  */
 export class ShortcutContext {
   private constructor() { }
@@ -45,7 +47,7 @@ export class ShortcutContext {
     [ContextName.isMenuOpening]: () => false,
     [ContextName.isRecordExpanding]: () => {
       const state = store.getState();
-      // 侧边模式下认为卡片未展开，处理表格和展开卡片快捷键冲突问题
+      // Handling of table and expanded card shortcuts conflicts when cards are considered unexpanded in side mode
       if (state.space.isSideRecordOpen) return false;
       return Boolean(document.querySelectorAll(`.${EXPAND_RECORD}`).length);
     },
@@ -68,7 +70,7 @@ export class ShortcutContext {
       const isEditing = ShortcutContext.context[ContextName.isEditing]();
       const isFocusing = ShortcutContext.context[ContextName.isFocusing]();
 
-      // 聚焦在单元格上的时候, 只有进入了编辑状态才算为 true，否则属于非 globalEditing。
+      // When focusing on a cell, it is only true if it is in the editing state, otherwise it is not globalEditing.
       if (isFocusing) {
         if (isEditing) {
           return true;
@@ -77,7 +79,7 @@ export class ShortcutContext {
       }
 
       let inputFocusing = false;
-      // 非单元格以外的地方，只要聚焦到 input/textarea/contentEditable 则认为是编辑状态。
+      // Anywhere other than a cell that is focused on input/textarea/contentEditable is considered editable.
       if (document.activeElement) {
         const tagName = document.activeElement.tagName.toLowerCase();
         if (tagName === 'input' || tagName === 'textarea' || (document.activeElement as any).isContentEditable) {
@@ -115,11 +117,13 @@ export class ShortcutContext {
 }
 
 /**
- * 管理快捷键执行时候触发的 action
+ * Manage the action triggered when a shortcut is executed
  *
- * action 函数有两种
- *  1. 直接是 redux action ，或者 collaCommandManager 来执行的，不需要特定上下文，可以直接在下方 actionMap 中定义（参考Undo)
- *  2. 有组件内部状态依赖的 state action，则需要在组件中调用 bind 方法来将判断函数绑定到 actionMap 上（参考 selectionUp)
+ * action There are two types of functions
+ *  1. Directly executed by the redux action, or collaCommandManager, without a specific context, 
+ *     can be defined directly in the actionMap below (see Undo)
+ *  2. If you have a component internal state dependent state action, 
+ *     you need to call the bind method in the component to bind the judgment function to the actionMap (see selectionUp)
  */
 export class ShortcutActionManager {
   private constructor() { }
@@ -170,8 +174,9 @@ export class ShortcutActionManager {
   ]);
 
   /**
-   * 注意，绑定到 ShortcutAction 的回调函数是不能有参数的，因为快捷键按下的时候只能给出单一的状态，不存在传参的机会。
-   * fn 显式的返回为 false 的时候表示不进行 preventDefault。
+   * Note that a callback function bound to a ShortcutAction cannot have parameters, 
+   * as the shortcut key press can only give a single state and there is no opportunity to pass parameters.
+   * fn An explicit return of false means that preventDefault is not performed.
    */
   static bind(key: ShortcutActionName, fn: () => boolean | void) {
     this.actionMap.set(key, fn);
@@ -197,8 +202,8 @@ const getUndoManager = () => {
 
   const pageParams = store.getState().pageParams;
 
-  // TODO: dashboard 后面需要支持 undo/redo，但因为目前不支持，所以不展示提示
-  // 由于这个情况比较特殊，没有必要再增加一个属性进行配置，可以用这个暴力的方式进行判断
+  // TODO: dashboard The undo/redo support is required at the back, but as it is not currently supported, no hint is shown
+  // As this is a special case, there is no need to add another attribute for configuration and this brute force can be used to determine
   if (Boolean(pageParams.dashboardId)) {
     return;
   }
@@ -234,7 +239,7 @@ export function clear() {
         const cellId = UploadManager.getCellId(recordId, fieldId);
         uploadManager.clearFailQueue(cellId);
       }
-      // TODO: 上了列权限之后，这里要判断一下是否有列的编辑器权限
+      // TODO: Once the column permissions are on, here's how to determine if you have editor permissions for the column
       data.push({
         recordId,
         fieldId,

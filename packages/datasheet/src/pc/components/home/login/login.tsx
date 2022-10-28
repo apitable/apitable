@@ -38,7 +38,7 @@ export const Login: FC<ILoginProps> = ({ afterLogin }) => {
 
   const commonDefaultMod = polyfillMode(localStorage.getItem('vika_login_mod')) || loginMode;
   const defaultMod = ssoLogin ? ConfigConstant.SSO_LOGIN : commonDefaultMod;
-  // commonPrev 只是保存了密码或验证码登录两种方式
+  // commonPrev Just save both password or captcha login
   const [mod, setMod] = useState(defaultMod);
 
   const { loginOrRegisterReq } = useUserRequest();
@@ -108,7 +108,6 @@ export const Login: FC<ILoginProps> = ({ afterLogin }) => {
 
   const { modTitleText, loginComponent, changeModText } = modConfig;
 
-  // 其他登录方式的popup
   const loginOtherPopup = (
     <div className={styles.loginOtherPopup} onClick={() => popupVisibleToggle()}>
       <div className={styles.loginOtherItem} onClick={() => wechatLogin()}>
@@ -132,7 +131,7 @@ export const Login: FC<ILoginProps> = ({ afterLogin }) => {
 
   return (
     <>
-      {// 私有化和移动端不显示
+      {// Privatised and mobile not shown
         !isPrivateDeployment() && responsive.large && !isMobileApp() && (
           <>
             <div className={styles.otherLogin}>
@@ -157,7 +156,7 @@ export const Login: FC<ILoginProps> = ({ afterLogin }) => {
 
       {loginComponent}
       <div className={styles.buttonGroup}>
-        {// 移动端或者企业微信专属域名
+        {// Mobile or corporate WeChat exclusive domain name
           !responsive.large || !isWecom ? (
             <>
               <div>

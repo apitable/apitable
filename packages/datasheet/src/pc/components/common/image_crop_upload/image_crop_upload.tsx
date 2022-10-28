@@ -61,12 +61,12 @@ export type ISelectInfo = Partial<ISelectInfoBase>;
 
 export interface IImageUploadProps {
   visible: boolean;
-  initPreview: React.ReactNode; // 图片预览组件
+  initPreview: React.ReactNode; // Image Preview Component
   title?: string;
-  fileLimit?: number; // 上传图片大小限制，以MB为单位，比如限制图片裁剪之后大小限制为2MB，则fileLimit传2
-  officialImgs?: string[]; // 官方头像列表，传id
-  customTips?: ICustomTip; // 自定义 预览区 和 裁剪区 提示文案
-  previewShape?: IPreviewShape; // 预览图的形状
+  fileLimit?: number; // Upload the image size limit in MB, e.g. to limit the image size limit to 2MB after cropping, pass 2 for fileLimit
+  officialImgs?: string[]; // Official avatar list, pass id
+  customTips?: ICustomTip; // Customise the preview area and crop area Tip text
+  previewShape?: IPreviewShape; // The shape of the preview image
   cropShape?: ICropShape;
   cancel: () => void;
   confirm: (data: ISelectInfo) => void;
@@ -94,12 +94,12 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const [tabKey, setTabKey] = useState<string>(officialImgs?.length ? TabKeys.Default : TabKeys.Custom);
-  const [officialImgToken, setOfficialImgToken] = useState(''); // 官方图片id
-  const [upImg, setUpImg] = useState<string>(''); // 上传的最新图片 - url
-  const [upImgFile, setUpImgFile] = useState<string | File>(''); // 上传的最新图片 -file格式
-  const [crop, setCrop] = useState(initCropConfig); // 图片裁剪信息
-  const [previewUrl, setPreviewUrl] = useState<string>(''); // 预览图片
-  const [innerControlModal, setInnerControlModal] = useState(false); // 当传入了children参数，此state才生效
+  const [officialImgToken, setOfficialImgToken] = useState(''); // Official picture id
+  const [upImg, setUpImg] = useState<string>(''); // Latest images uploaded - url
+  const [upImgFile, setUpImgFile] = useState<string | File>(''); // Latest images uploaded -file format
+  const [crop, setCrop] = useState(initCropConfig); // Image cropping information
+  const [previewUrl, setPreviewUrl] = useState<string>(''); // Preview images
+  const [innerControlModal, setInnerControlModal] = useState(false); // This state only takes effect when the children parameter is passed
   const [isGif, setIsGif] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const isCropRectangle = cropShape === ICropShape.Rectangle;
@@ -157,7 +157,7 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
     }
   };
 
-  // 绘制任意形状裁剪区域
+  // Draw arbitrarily shaped cropped areas
   const cropAnyView = (image, crop) => {
     const canvas = document.createElement('canvas');
     const scaleX = image.naturalWidth / image.width;
@@ -180,7 +180,7 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
     canvasToFile(canvas);
   };
 
-  // 绘制正方形裁剪区域
+  // Drawing a square cut-out area
   const cropSquareView = (image, percentCrop) => {
     const canvas = document.createElement('canvas');
     const computedSize = Math.floor((image.naturalHeight * percentCrop.height) / 100);
@@ -202,7 +202,7 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
     canvasToFile(canvas);
   };
 
-  // 绘制长方形裁剪区域
+  // Drawing rectangular cut-out areas
   const cropRectangleView = (image, percentCrop) => {
     const canvas = document.createElement('canvas');
     const computedSize = Math.floor((image.naturalWidth * percentCrop.width) / 100);
@@ -229,7 +229,7 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
       if (!blob) {
         new Error('Canvas is empty');
       }
-      // 图片预览
+      // Image Preview
       setPreviewUrl(window.URL.createObjectURL(blob));
     }, (upImgFile as File).type);
     const imgBase64 = canvas.toDataURL((upImgFile as File).type, 1);
@@ -238,9 +238,9 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
   };
 
   const dataURLtoFile = (urlData, fileName) => {
-    const bytes = window.atob(urlData.split(',')[1]); // 去掉url的头，并转换为byte
+    const bytes = window.atob(urlData.split(',')[1]); // Remove the url header and convert to byte
     const mime = urlData.split(',')[0].match(/:(.*?);/)[1];
-    // 处理异常,将ascii码小于0的转换为大于0
+    // Handling exceptions, converting ascii codes less than 0 to greater than 0
     const ab = new ArrayBuffer(bytes.length);
     const ia = new Uint8Array(ab);
     for (let i = 0; i < bytes.length; i++) {
@@ -254,7 +254,7 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
       setIsGif(Boolean(file.type === 'image/gif'));
 
       const reader = new FileReader();
-      // 因为读取文件需要时间,所以要在回调函数中使用读取的结果
+      // Because it takes time to read a file, the result of the read is used in the callback function
       reader.onload = () => {
         const isLt2M = fileLimit ? (file as File).size / 1024 / 1024 > fileLimit : false;
         if (isLt2M) {
@@ -293,7 +293,7 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
     cancelBtnClick();
   };
 
-  // 取消选择
+  // Deselect
   const clearSelect = () => {
     setUpImg('');
     setUpImgFile('');

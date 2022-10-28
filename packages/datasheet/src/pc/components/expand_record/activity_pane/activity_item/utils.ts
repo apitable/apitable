@@ -7,7 +7,7 @@ interface ISelectFieldParam {
   oiOrOd: string;
   field?: IField;
 }
-// 补全单选 op 中缺失的 field
+// Fill in the missing fields in the radio op
 export const supplySelectField = (props: ISelectFieldParam) => {
   const { cacheFieldOptions, fieldId, oiOrOd, field } = props;
   if (get(field, 'property.options', []).some(op => oiOrOd === op.id)) {
@@ -23,7 +23,7 @@ interface IMultiSelectOrMemberFieldParam {
   oiOrOd: string[];
   field?: IField;
 }
-// 补全多选 op 中缺失的 field
+// Complete the missing fields in the multiple choice op
 export const supplyMultiSelectField = (props: IMultiSelectOrMemberFieldParam) => {
   const { cacheFieldOptions, fieldId, oiOrOd, field } = props;
   if (get(field, 'property.options', []).some(op => oiOrOd[0] === op.id)) {
@@ -33,7 +33,7 @@ export const supplyMultiSelectField = (props: IMultiSelectOrMemberFieldParam) =>
   return find(fieldOptionsMap, fo => has(fo, 'property.options') && fo.property.options.some(op => oiOrOd[0] === op.id)) || field;
 };
 
-// 补全成员中缺失的 field
+// Completes a missing field in a member
 export const supplyMemberField = (props: IMultiSelectOrMemberFieldParam) => {
   const { cacheFieldOptions, fieldId, oiOrOd, field } = props;
   if (get(field, 'property.unitIds', []).some(op => oiOrOd[0] === op.id)) {
@@ -52,15 +52,15 @@ interface IExtraFieldParam {
   revision: number;
   isOi?: boolean;
 }
-// 补全评分、勾选、数字、日期、关联 op 中缺失的 field
-// TODO 评分、勾选、数字改变 emoji 时，单元格实际数据没有变动
+// Fill in the missing fields for scoring, checkboxes, numbers, dates, associated op
+// TODO no change in actual cell data when scoring, ticking, number changing emoji
 export const supplyExtraField = (props: IExtraFieldParam) => {
   const { cacheFieldOptions, fieldId, revision, isOi } = props;
   let { field } = props;
   const fieldOptionsMap = cacheFieldOptions[fieldId];
   const revisionKeys = fieldOptionsMap && Object.keys(fieldOptionsMap);
   let idx = 0;
-  // 找到最接近并且大于或等于当前版本的 Field （后面版本的 od 操作丢失了 field）
+  // Find the Field that is closest to and greater than or equal to the current version (the field is lost in later versions of the od operation)
   while(revisionKeys && idx < revisionKeys.length) {
     const curKey = revisionKeys[idx].split('_')[1];
     if (
@@ -72,7 +72,7 @@ export const supplyExtraField = (props: IExtraFieldParam) => {
         has(fieldOptionsMap, `${revisionKeys[idx]}.property.foreignDatasheetId`) 
       )
     ) {
-      // oi 版本相等的情况不取缓存 od 的 field
+      // oi The field of the cache od is not taken in case of equal versions
       if (isOi) {
         if (Number(curKey) !== revision) {
           field = fieldOptionsMap[revisionKeys[idx]];

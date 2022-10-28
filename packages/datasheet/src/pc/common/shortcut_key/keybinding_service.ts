@@ -69,8 +69,8 @@ export class KeybindingService {
 
       // string to enum
       if (binding.command === undefined) {
-        console.warn('! ' + `发现一个空的快捷键Command声明: ${binding.key}`); // 建议这里可以进行条件编译
-        binding.command = 'None'; // 给个默认值
+        console.warn('! ' + `Found an empty shortcut Command statement: ${binding.key}`); 
+        binding.command = 'None'; // Give a default value
       }
 
       const commandEnumName = binding.command;

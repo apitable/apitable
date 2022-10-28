@@ -82,7 +82,6 @@ export const attachEventHoc = WrapperComponent => {
     useUpdateEffect(() => {
       const state = store.getState();
       const activeCell = Selectors.getActiveCell(state);
-      // 激活单元格的优先级高于表内查找高亮的单元格。
       if (activeCell) {
         return;
       }
@@ -93,7 +92,6 @@ export const attachEventHoc = WrapperComponent => {
       }
     }, [currentSearchCell?.toString()]);
 
-    // 展开卡片滚动到对应记录
     useEffect(() => {
       if (!recordId) {
         return;
@@ -134,7 +132,6 @@ export const attachEventHoc = WrapperComponent => {
 
       const isEditRecordExit = rowIndexMap.has(isEditCell.recordId);
 
-      // 当前用户正在编辑，但是编辑单元格所在的「列」或「行」被隐藏或者删除
       if (!isEditColumnExit || !isEditRecordExit) {
         Message.warning({ content: t(Strings.cell_not_exist_content) });
         dispatch(batchActions([StoreActions.clearSelection(datasheetId), StoreActions.setEditStatus(datasheetId, null)]));
@@ -142,7 +139,6 @@ export const attachEventHoc = WrapperComponent => {
     }, [columns, rowIndexMap, dispatch, datasheetId]);
 
     useUpdateEffect(() => {
-      // 退出搜索后滚动到最后高亮单元格
       if (isSearching) {
         return;
       }

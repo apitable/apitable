@@ -16,7 +16,6 @@ export interface IPickerProps {
   suffixIcon?: React.ReactNode;
   dropdownClassName?: string;
   disabledDate?: (current: dayjs.Dayjs) => boolean;
-  // 如果需要哪些属性可自行添加并在createPicker里添加相关逻辑
 }
 export interface IDatePickerProps extends IPickerProps {
   value?: dayjs.Dayjs;

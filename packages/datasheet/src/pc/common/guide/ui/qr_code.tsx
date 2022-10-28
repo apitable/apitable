@@ -9,12 +9,12 @@ export const ServiceQrCode: FC = () => {
  
   const spaceInfo = useSelector((state: IReduxState) => state.space.curSpaceInfo);
   
-  // 获取客服二维码的配置
+  // Get configuration of the customer service QR code
   const config = Settings.error_message_qrcode.value;
   const codeConfig = JSON.parse(config);
   const { feishu, dingtalk, wecom, website } = codeConfig;
 
-  // 区分平台使用不同的二维码
+  // Distinguish between platforms using different QR codes
  
   const isBindDingTalk = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.DINGTALK) || isDingtalkFunc();
   const isBindWecom = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.WECOM) || isWecomFunc();

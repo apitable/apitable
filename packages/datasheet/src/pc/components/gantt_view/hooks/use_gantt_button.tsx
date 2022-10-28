@@ -36,7 +36,7 @@ export const useButton = (props: IUseButtonProps) => {
   const isMobile = _isMobile || isTouchDevice;
 
   /**
-   * 绘制 “返回当前时间” 按钮
+   * Draw the "Return to current time" button
    */
   const backToNowButton = useMemo(() => {
     if (todayIndex > columnStartIndex && todayIndex < columnStopIndex) return null;
@@ -59,7 +59,7 @@ export const useButton = (props: IUseButtonProps) => {
   }, [colors, columnStartIndex, columnStopIndex, containerWidth, isMobile, todayIndex]);
 
   /**
-   * 绘制 “上一页” 和 “下一页” 按钮
+   * Draw "Previous" and "Next" buttons
    */
   const isHoverLeft = pointRealTargetName === KONVA_DATASHEET_ID.GANTT_PREV_PAGE_BUTTON;
   const isHoverRight = pointRealTargetName === KONVA_DATASHEET_ID.GANTT_NEXT_PAGE_BUTTON;

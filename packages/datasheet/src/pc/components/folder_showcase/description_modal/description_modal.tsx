@@ -65,7 +65,6 @@ export const DescriptionModal: FC<IDescriptionModalProps> = props => {
     const dataStruct = {
       text: Serializer.text(slateData.document),
       slateData,
-      // 实际存储的是html dom树，正式替换为slate编辑器后将字段名改为html更好
       data: html,
     };
     setValue(slateData);

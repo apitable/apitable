@@ -15,7 +15,6 @@ import styles from './style.module.less';
 const defaultErrMsg = { accountErrMsg: '', passwordErrMsg: '' };
 
 export interface IPasswordLoginProps {
-  // 点击登录按钮时的请求
   submitRequest: (data: ISubmitRequestParam) => Promise<any>;
   config?: IPasswordLoginConfig;
 }
@@ -34,20 +33,16 @@ export const PasswordLogin: FC<IPasswordLoginProps> = ({ submitRequest, config }
   const {
     supportAccountType
   } = getCustomConfig();
-  // 输入框的数据
   const [data, setData] = useState<IPasswordData>({
     areaCode: '',
     account: '',
     credential: ''
   });
-  // 错误信息
   const [errMsg, setErrMsg] = useSetState(defaultErrMsg);
-  // 登录方式
   const [mode, setMode] = useState(initMode(supportAccountType as IdentifyingCodeModes));
   const [nvcSuccessData, setNvcSuccessData] = useState<string | null>(null);
   const { run: login, loading } = useRequest(submitRequest, { manual: true });
   const query = useQuery();
-  // 是否是自动化测试, 通过其值绕过无痕验证
   const automationTestingData = query.get('vikaTest');
 
   useMount(() => {
@@ -67,7 +62,6 @@ export const PasswordLogin: FC<IPasswordLoginProps> = ({ submitRequest, config }
     const loginData = {
       ...data,
       nvcVal: automationTestingData || nvcVal,
-      // TODO: 这里还是需要区别一下 登录模式和登录类型
       type: ConfigConstant.LoginTypes.PASSWORD,
     };
     const result = await login(loginData);
@@ -94,7 +88,6 @@ export const PasswordLogin: FC<IPasswordLoginProps> = ({ submitRequest, config }
     }
   };
 
-  // input输入时
   const handleChange = (data: IPasswordData) => {
     if (errMsg.accountErrMsg || errMsg.passwordErrMsg) {
       setErrMsg(defaultErrMsg);
@@ -102,7 +95,6 @@ export const PasswordLogin: FC<IPasswordLoginProps> = ({ submitRequest, config }
     setData(data);
   };
 
-  // 登录模式切换
   const handleModeChange = mode => {
     setErrMsg(defaultErrMsg);
     setMode(mode);
@@ -145,7 +137,6 @@ export const PasswordLogin: FC<IPasswordLoginProps> = ({ submitRequest, config }
     return true;
   };
 
-  // 登录时
   const handleSubmit = () => {
     const accountValidity = checkAccount();
     const passwordValidity = checkPassword();

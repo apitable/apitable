@@ -71,7 +71,6 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
   const isMobile = screenIsAtMost(ScreenSize.md);
   const compactMode = formProps?.compactMode;
 
-  // 各个类型数据提交成功后的执行函数
   const onSave = useCallback(
     value => {
       let finalValue: ICellValue = null;
@@ -213,7 +212,7 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
     case FieldType.Email:
     case FieldType.Phone:
       return <EnhanceTextEditor ref={ref} {...commonProps} />;
-    case FieldType.SingleSelect: // 单选、多选
+    case FieldType.SingleSelect: 
     case FieldType.MultiSelect:
       return compactMode ? (
         <ExpandSelect {...commonProps} unitMap={null} cellValue={cellValue} isFocus={isFocus} onClose={onClose} onChange={onSave} />

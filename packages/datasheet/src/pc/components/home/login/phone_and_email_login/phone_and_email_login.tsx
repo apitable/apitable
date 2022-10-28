@@ -32,7 +32,6 @@ export const PhoneAndEmailLogin = (): JSX.Element => {
   const [isPopupVisible, { toggle: popupVisibleToggle }] = useToggle(false);
   const commonDefaultMod = polyfillMode(localStorage.getItem('vika_login_mod')) || loginMode;
   const defaultMod = ssoLogin ? ConfigConstant.SSO_LOGIN : commonDefaultMod;
-  // commonPrev 只是保存了密码或验证码登录两种方式
   const [mod, setMod] = React.useState(defaultMod);
 
   const changeLoginMod = () => {

@@ -47,13 +47,10 @@ export interface IDatasheetPanelInfo {
 
 export const WorkbenchSide: FC = () => {
   const colors = useThemeColors();
-  // 管理右击节点的信息
   const [rightClickInfo, setRightClickInfo] = useState<IRightClickInfo | null>(null);
   const { contextMenu, onSetContextMenu, onCancelContextMenu } = useContextMenu();
-  // 记录sidebar的展开状态
   const [activeKey, setActiveKey] = useState<string[]>([]);
   const [isSearch, setIsSearch] = useState(false);
-  // 打开数表选择弹框，用以选择神奇表单单关联的数表视图
   const { panelVisible, panelInfo, onChange, setPanelInfo, setPanelVisible } = useSearchPanel();
   const {
     spaceId,
@@ -103,7 +100,6 @@ export const WorkbenchSide: FC = () => {
   const isSpaceAdmin = spacePermissions && spacePermissions.includes('MANAGE_WORKBENCH');
   const rootManageable = userInfo?.isMainAdmin || isSpaceAdmin || spaceFeatures?.rootManageable;
 
-  /* 挂载/卸载目录树相关操作的快捷键 */
   useEffect(() => {
     const eventBundle = new Map([
       [
@@ -177,7 +173,6 @@ export const WorkbenchSide: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeNodeId, rootId]);
 
-  /* 读取本地存储的sidebar展开状态 */
   useEffect(() => {
     const defaultActiveKeyString = localStorage.getItem('vika_workbench_active_key');
     const defaultActiveKey = defaultActiveKeyString ? JSON.parse(defaultActiveKeyString) : [ConfigConstant.Modules.CATALOG];
@@ -215,7 +210,7 @@ export const WorkbenchSide: FC = () => {
       id: rootId,
       module: ConfigConstant.Modules.CATALOG,
       contextMenuType: ConfigConstant.ContextMenuType.DEFAULT,
-      level: '0', // 根节点的层级为“0”
+      level: '0', 
     });
     onSetContextMenu(e);
   };
@@ -250,12 +245,10 @@ export const WorkbenchSide: FC = () => {
 
   const permissionCommitRemindStatus = useSelector(state => state.catalogTree.permissionCommitRemindStatus);
 
-  // 权限设置弹窗关闭
   function onClosePermissionSettingModal() {
     dispatch(StoreActions.updatePermissionModalNodeId(''));
 
     if (permissionCommitRemindStatus) {
-      // 发送消息
       sendRemind();
       dispatch(StoreActions.setPermissionCommitRemindStatus(false));
     }

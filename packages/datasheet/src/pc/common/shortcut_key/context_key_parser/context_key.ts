@@ -7,11 +7,11 @@ export interface IContext { [key: string]: () => boolean; }
 export type Resolver = (value: string, context: IContext) => boolean;
 
 /**
- * Resolver 的作用是，给定一个字符串，根据字符串从 context 中获取值
+ * Resolver is to get the value from the context given a string
  *
  * Example:
  * value = 'a', context = { a: true }
- * objectResolver 要做的就是返回 context[value]()
+ * objectResolver All you have to do is return context[value]()
  */
 const objectResolver: Resolver = (value: string, context: IContext): boolean => {
   if (context && context.hasOwnProperty(value)) {
@@ -44,9 +44,9 @@ function ContextKeyParse(expression: string): AstNode {
 }
 
 /**
- * 传入表达式和 context，进行求值
- * rootNode 为抽象语法树的根
- * interpreter 作用为访问该抽象语法树
+ * Pass in the expression and context to evaluate
+ * rootNode Root of the abstract syntax tree
+ * interpreter The effect is to access the abstract syntax tree
  * @export
  * @param {string} expression
  * @param {*} context

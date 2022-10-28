@@ -15,7 +15,7 @@ store.subscribe(function currentStepInHook() {
     return;
   }
 
-  // step为空数组，则表示完成了所有引导，所有hook数据清空
+  // If step is an empty array, then all bootstrapping is complete and all hook data is cleared
   if (curSteps.length === 0) {
     TriggerCommands.clear_guide_all_ui();
     store.dispatch(StoreActions.updateCurrentGuideWizardId(-1));
@@ -25,14 +25,14 @@ store.subscribe(function currentStepInHook() {
   }
   const curWizardInfo = getWizardInfo(config, curGuideWizardId as number);
   const { steps, completeIndex } = curWizardInfo;
-  // 渲染页面
+  // Rendering pages
   setTimeout(()=>{
     curSteps.forEach(item => {
       const curStepInfo = config && config.guide && config.guide.step[item];
       if(!curStepInfo) return;
       const objectKeys = Object.keys(curStepInfo) || [];
       if(objectKeys.length === 0) {
-      // 若配置表里是空对象，则结束引导，避免页面报错
+      // If there are empty objects in the configuration table, end the guide to avoid errors on the page
         store.dispatch(StoreActions.updateCurrentGuideStepIds([]));
         return;
       }
@@ -40,7 +40,7 @@ store.subscribe(function currentStepInHook() {
     });
   }, 500);
 
-  // 将此step放入已完成的wizards数组里
+  // Put this step into the completed wizards array
   const curTriggerWizardInfo = curGuideWizardId in triggeredGuideInfo ?
     {
       ...triggeredGuideInfo[curGuideWizardId],
@@ -56,11 +56,11 @@ store.subscribe(function currentStepInHook() {
   };
   store.dispatch(StoreActions.updateTriggeredGuideInfo(newTriggeredGuideInfo));
 
-  // 发送请求
+  // Send request
 
   const curIndex = steps.findIndex(item => isEqualArr(item, curSteps));
   if(completeIndex !== -1 && curIndex === completeIndex){
-    // 此处特意作为宏任务触发，为了避免两个trigger同时发生的情况
+    // This is deliberately triggered as a macro task, in order to avoid two triggers occurring at the same time
     setTimeout(()=>{
       addWizardNumberAndApiRun(curGuideWizardId);
     }, 100);

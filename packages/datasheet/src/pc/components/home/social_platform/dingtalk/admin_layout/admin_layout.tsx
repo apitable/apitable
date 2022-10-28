@@ -24,52 +24,42 @@ const LevelConfig = {
     img: SilverImg,
     text: t(Strings.silver_grade)
   },
-  // 钉钉基础版
   dingtalk_base: {
     img: BronzeImg,
     text: t(Strings.dingtalk_basic)
   },
-  // 钉钉标准版（历史字段）
   dingtalk_basic: {
     img: SilverImg,
     text: t(Strings.dingtalk_standard)
   },
-  // 钉钉标准版
   dingtalk_standard: {
     img: SilverImg,
     text: t(Strings.dingtalk_standard)
   },
-  // 钉钉企业版
   dingtalk_enterprise: {
     img: GradeEnterpriseImg,
     text: t(Strings.dingtalk_enterprise)
   },
-  // 飞书基础版
   feishu_base: {
     img: BronzeImg,
     text: t(Strings.feishu_base)
   },
-  // 飞书标准版
   feishu_standard: {
     img: SilverImg,
     text: t(Strings.feishu_standard)
   },
-  // 飞书企业版
   feishu_enterprise: {
     img: GradeEnterpriseImg,
     text: t(Strings.feishu_enterprise)
   },
-  // 企微基础版
   wecom_base: {
     img: BronzeImg,
     text: t(Strings.wecom_base)
   },
-  // 企微标准版
   wecom_standard: {
     img: SilverImg,
     text: t(Strings.wecom_standard)
   },
-  // 企微企业版
   wecom_enterprise: {
     img: GradeEnterpriseImg,
     text: t(Strings.wecom_enterprise)

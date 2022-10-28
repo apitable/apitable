@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelectTeamChange } from './use_address';
 
-// 更换空间logo
+// Change of space logo
 export const useChangeLogo = (spaceId: string, cancel?: () => void) => {
   const dispatch = useDispatch();
   const [logo, setLogo] = useState('');
@@ -35,7 +35,7 @@ export const useChangeLogo = (spaceId: string, cancel?: () => void) => {
   }, [dispatch, spaceId, logo, cancel]);
   return { setLogo, logo };
 };
-// 增加子部门
+// Adding sub-sectors
 export const useCreateSubTeam = (name: string, spaceId: string, superId: string, user: IUserInfo) => {
   const dispatch = useAppDispatch();
   const [start, setStart] = useState(false);
@@ -57,7 +57,7 @@ export const useCreateSubTeam = (name: string, spaceId: string, superId: string,
   return [setStart];
 };
 
-// 编辑成员信息
+// Edit member information
 export const useEditMember = (
   data: IUpdateMemberInfo,
   spaceId: string,
@@ -88,7 +88,7 @@ export const useEditMember = (
   return [setStart];
 };
 
-// 编辑子管理员
+// Editorial Sub-Administrator
 export const useEditSubAdmin = (id: string, memberId: string, resourceCodes: string[], cancel: () => void) => {
   const dispatch = useAppDispatch();
   const [start, setEditStart] = useState(false);
@@ -138,7 +138,7 @@ interface IRemoveMemberProps {
 export const useMemberManage = () => {
   const dispatch = useAppDispatch();
   const { changeSelectTeam } = useSelectTeamChange();
-  // 添加成员
+  // Adding members
   const teamAddMember = (teamId: string, unitList: IAddIsActivedMemberInfo[]) => {
     Api.addIsActivedMembersInSpace(unitList, teamId).then(res => {
       const { success } = res.data;
@@ -151,7 +151,7 @@ export const useMemberManage = () => {
       dispatch(StoreActions.updateSelectMemberListInSpace([]));
     });
   };
-  // 分配小组
+  // Assignment team
   const changeMemberTeam = (
     teamId: string,
     memberIds: string[],
@@ -172,7 +172,7 @@ export const useMemberManage = () => {
     });
   };
 
-  // 移除成员
+  // Removal of members
   const removeMember = (props: IRemoveMemberProps) => {
     const { teamId, memberIdArr, isDeepDel, resFunc } = props;
     if(memberIdArr.length === 0) return;

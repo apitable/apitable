@@ -33,21 +33,21 @@ export type IIdentifyingCodeConfig = {
 };
 export interface IIdentifyingCodeModesProps {
   config?: IIdentifyingCodeConfig;
-  // 仅显示某一模式
+  // Only a certain mode is displayed
   mode?: IdentifyingCodeModes;
-  // 短信类型
+  // Type of text message
   smsType: ConfigConstant.SmsTypes;
-  // 发送邮件类型
+  // Type of email sent
   emailType?: ConfigConstant.EmailCodeType;
-  // 默认的验证码方式（默认为手机验证码登录）
+  // Default captcha method (default is mobile captcha login)
   defaultIdentifyingCodeMode?: IdentifyingCodeModes;
-  // 外面接口的报错（与账号或者验证有关的）
+  // Error reporting from outside interfaces (related to account or authentication)
   error?: { accountErrMsg: string; identifyingCodeErrMsg: string };
-  // 验证码模式改变时触发
+  // Triggered when captcha mode changes
   onModeChange?: (mode: IdentifyingCodeModes) => void;
-  // 校验手机或邮箱
+  // Calibrate mobile or email
   checkAccount?: () => boolean;
-  // 输入框数据改变时触发
+  // Triggered when the data in the input box changes
   onChange?: (data: IIdentifyingCodeData) => void;
 }
 
@@ -62,12 +62,12 @@ export const IdentifyingCodeModes: FC<IIdentifyingCodeModesProps> = ({
   onChange,
   checkAccount,
 }) => {
-  // 当前获取验证码的方式
+  // Current method of obtaining the verification code
   const [identifyingCodeMode, setIdentifyingCodeMode] = useState(mode || defaultIdentifyingCodeMode);
 
   const defaultPhone = config?.phone?.defaultValue;
   const defaultMail = config?.mail?.defaultValue;
-  // 主要数据（账号、验证码、密码、二次确认密码）
+  // Primary data (account number, verification code, password, secondary confirmation password)
   const [state, setState] = useSetState<IIdentifyingCodeData>({
     areaCode: '',
     account: (mode === ConfigConstant.LoginMode.PHONE ? defaultPhone : defaultMail) || '',
@@ -114,7 +114,7 @@ export const IdentifyingCodeModes: FC<IIdentifyingCodeModesProps> = ({
     setState({ account: value });
   };
 
-  // 手机号或区号改变
+  // Change of mobile phone number or area code
   const handlePhoneChange = (areaCode: string, phone: string) => {
     if (errMsg.accountErrMsg) {
       setErrMsg({ accountErrMsg: '' });
@@ -122,7 +122,7 @@ export const IdentifyingCodeModes: FC<IIdentifyingCodeModesProps> = ({
     setState({ areaCode, account: phone });
   };
 
-  // 切换是邮箱验证码登录还是手机验证码登录
+  // Toggle between email verification code login and mobile verification code login
   const handleModeChange = key => {
     const defaultV = (config && config[key] && (config[key]?.defaultValue) || '');
     setState({ ...state, account: defaultV });

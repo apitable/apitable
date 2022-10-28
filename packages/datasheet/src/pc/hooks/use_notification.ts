@@ -10,7 +10,7 @@ import { batchActions } from 'redux-batched-actions';
 export const useNotificationRequest = () => {
   const dispatch = useDispatch();
   const readCount = useSelector(state => state.notification.readCount);
-  // 获取通知数量
+  // Number of notifications obtained
   const notificationStatistics = () =>
     Api.getNotificationStatistics().then(res => {
       const { data, success } = res.data;
@@ -21,7 +21,7 @@ export const useNotificationRequest = () => {
       return res;
     });
 
-  // 获取通知分页列表
+  // Get a paginated list of notifications
   const getNotificationPage = (
     isRead: boolean,
     rowNo?: number,
@@ -44,7 +44,7 @@ export const useNotificationRequest = () => {
       }
     });
   };
-  // 获取通知列表
+  // Get a list of notifications
   const getNotificationList = (
     isRead?: boolean,
     notifyType?: string,
@@ -62,7 +62,7 @@ export const useNotificationRequest = () => {
       }
     });
   };
-  // 获取新的通知数量以及通知列表
+  // Get the number of new notifications and the list of notifications
   const getNoticeCountAndList = () => {
     return Api.getNotificationStatistics().then(res => {
       const { data, success } = res.data;
@@ -82,7 +82,7 @@ export const useNotificationRequest = () => {
       }
     });
   };
-  // 单个消息标记通知为已读
+  // Single message mark notification as read
   const transferNoticeToRead = (notice: INoticeDetail[]) => {
     const idArr = notice.map(item => item.id);
     return Api.transferNoticeToRead(idArr, false).then(res => {
@@ -93,7 +93,7 @@ export const useNotificationRequest = () => {
       }
     });
   };
-  // 单个消息处理之后，需要重新请求已处理消息列表
+  // After a single message has been processed, the list of processed messages needs to be re-requested
   const transferNoticeToReadAndRefresh = (notice: INoticeDetail[]) => {
     const idArr = notice.map(item => item.id);
     return Api.transferNoticeToRead(idArr, false).then(res => {
@@ -116,7 +116,7 @@ export const useNotificationCreate = ({ spaceId }: { fromUserId: string, spaceId
   const dispatch = useAppDispatch();
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
 
-  // 空间权限变为普通成员，即删除子管理员操作
+  // Space permissions change to normal members, i.e. delete sub-admin operations
   const delSubAdminAndNotice = (memberId: string) => {
     return Api.deleteSubAdmin(memberId).then(res => {
       const { success } = res.data;
@@ -128,7 +128,7 @@ export const useNotificationCreate = ({ spaceId }: { fromUserId: string, spaceId
       }
     });
   };
-  // 添加子管理员
+  // Add sub administrators
   const addSubAdminAndNotice = (
     memberIds: string[],
     resourceCodes: string[],
@@ -147,7 +147,7 @@ export const useNotificationCreate = ({ spaceId }: { fromUserId: string, spaceId
     });
   };
 
-  // 空间名称更改
+  // Space name change
   const changeSpaceNameAndNotice = (
     spaceId: string,
     name: string,
@@ -172,7 +172,7 @@ export const useNotificationCreate = ({ spaceId }: { fromUserId: string, spaceId
     });
   };
 
-  // 成员退出
+  // Withdrawal of members
   const memberQuitSpaceAndNotice = (quitSpaceId: string, successFn?: () => void) => {
     return Api.quitSpace(quitSpaceId).then(res => {
       const { success } = res.data;

@@ -38,7 +38,7 @@ export function ExpandLookUpBase(props: IExpandLookUp) {
   const rollUpType = field.property.rollUpType || RollUpFuncType.VALUES;
 
   // https://github.com/vikadata/vikadata/issues/1229#issuecomment-1275546897
-  // 根据 issue 里的描述，这里就是在寻找正确的跳板（datasheet）的 id
+  //  According to the description in the issue, this is a search for the correct datasheet id
   const getCurrentDatasheetIdFromLinkDatasheetId = () => {
     if (entityField.type !== FieldType.Link) return props.datasheetId;
 
@@ -85,7 +85,7 @@ export function ExpandLookUpBase(props: IExpandLookUp) {
     return <></>;
   }
 
-  // cellValue 神奇引用 尝试去拍平二维数组
+  // cellValue Magical references Try tapping flat two-dimensional arrays
   cellValue = cellValue?.flat(1) as ICellValue;
 
   if (LOOKUP_VALUE_FUNC_SET.has(rollUpType)) {
@@ -169,7 +169,6 @@ export function ExpandLookUpBase(props: IExpandLookUp) {
           datasheetId={getCurrentDatasheetIdFromLinkDatasheetId()}
         />
       );
-    // 文本逗号分割
     case FieldType.DateTime:
     case FieldType.Number:
     case FieldType.Percent:

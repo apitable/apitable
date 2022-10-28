@@ -10,7 +10,7 @@ interface IPortalProps {
 const MAX_AGE = 10000;
 
 /**
- * 特殊 Portal：一开始容器元素不存在，会一直查找，找到后挂载上去就结束
+ *  * Special Portal: at first the container element does not exist, it will keep looking for it, and when it is found it will be mounted and finished
  */
 export const Portal: FC<IPortalProps> = ({ getContainer, children }) => {
   const [container, setContainer] = useState(() => getContainer());

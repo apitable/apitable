@@ -15,14 +15,14 @@ class SubscribeUsageCheckEnhance extends SubscribeUsageCheck {
     this.storage = store.namespace(SUBSCRIBE_USAGE);
   }
 
-  // 在 localstorage 记录数据，设置过期时间
-  // 从 localstorage 中读取数据
+  // Record data in localstorage, set expiry time
+  // Read data from localstorage
   triggerVikabyAlert(functionName: keyof ISubscription, extra?: IExtra) {
     if (document.querySelector('.VIKABY_SUB_POPOVER_CONTENT')) {
       return;
     }
 
-    // 检查在当前时间段内是否触发过
+    // Check if it has been triggered in the current time period
     if (!this.shouldAlertToUser(functionName, extra?.usage, extra?.alwaysAlert)) {
       return;
     }
@@ -48,31 +48,32 @@ class SubscribeUsageCheckEnhance extends SubscribeUsageCheck {
   }
 
   /**
-   * @description 根据业务需求，同一种用量警告，一天内只出现一次
-   * 数据存储在 localstorage 中，每次提示前，检查该种提示是否有出现在 local 中，没有才弹出提示
-   * 另外，用量提示的警告需要发送给管理员，但一天只发送一次，所以说只有第一次触发的警告才会有通知
+   * @description Depending on business requirements, the same usage warning will only appear once in a day
+   * The data is stored in localstorage, before each prompt, check if the prompt appears in local, and pop up the prompt only if it does not.
+   * In addition, warnings for usage alerts need to be sent to the administrator, but they are only sent once a day, 
+   * so it means that only the first triggered warning will be notified
    */
   shouldAlertToUser(functionName: keyof ISubscription, usage?: any, readonly?: boolean) {
     const state = storeState.getState();
     const userInfo = state.user.info;
 
     if (!userInfo?.sendSubscriptionNotify) {
-      // 全局开关关闭，则禁止通知用户
+      // If the global switch is turned off, user notification is disabled
       return false;
     }
 
     if (isMobileApp()) {
-      // app 上不提示
+      // No prompt on app
       return false;
     }
 
     if (isPrivateDeployment()) {
-      // 公有云环境也不进行提示
+      // Public cloud environments are also not prompted
       return false;
     }
 
     if (super.underUsageLimit(functionName, usage)) {
-      // 检查是否达到功能用量的标准
+      // Check that the functional dosage criteria are met
       return false;
     }
 
@@ -85,7 +86,7 @@ class SubscribeUsageCheckEnhance extends SubscribeUsageCheck {
 
     if (!result || result.expireDate < Date.now()) {
       this.storage.set(spaceId, {
-        // 提醒的过期时间调整为 2 天
+        // Reminder expiry time adjusted to 2 days
         expireDate: new Date().setHours(24, 0, 0, 0) + 86400000,
         alertFunctionName: [functionName],
       });
@@ -100,8 +101,7 @@ class SubscribeUsageCheckEnhance extends SubscribeUsageCheck {
 
     return false;
   }
-
-  // 通知管理员
+  
   // private triggerNotifyAdmin(functionName: keyof ISubscription, extra?: Record<string, any>) {
   //   const state = storeState.getState();
   //   const spaceId = state.space.activeId;

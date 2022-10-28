@@ -70,12 +70,12 @@ export enum ScrollViewType {
 }
 
 export type PointPosition = {
-  x: number; // 鼠标针对可视区域的 x
-  y: number; // 鼠标针对可视区域的 y
-  areaType: AreaType; // 模糊的 areaType，可能包含图形的空白处，目前用于滚动识别
-  realAreaType: AreaType; // 真实的 areaType，只包含有效区域，配合 targetName 进行有效点击区域识别
-  targetName: string; // 模糊的 targetName，只能识别点击区域的类型，如 cell、head、operation 等区域
-  realTargetName: string; // 真实的 targetName，包含对应的 fieldId、recordId 等信息，配合 areaType 进行有效点击区域识别
+  x: number; // The mouse targets the visible area of the x
+  y: number; // The mouse targets the visible area of the  y
+  areaType: AreaType; // Fuzzy areaType, may contain blank spaces for graphics, currently used for scrolling recognition
+  realAreaType: AreaType; // Real areaType, containing only valid areas, with targetName for valid click area identification
+  targetName: string; // Fuzzy targetName that only identifies the type of area clicked, such as cell, head, operation, etc.
+  realTargetName: string; // Real targetName, including the corresponding fieldId, recordId, etc., with areaType for valid click area identification
   rowIndex: number;
   columnIndex: number;
   offsetTop: number;

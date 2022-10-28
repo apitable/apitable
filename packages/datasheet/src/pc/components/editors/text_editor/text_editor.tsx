@@ -86,7 +86,6 @@ const TextEditorBase: React.ForwardRefRenderFunction<IEditor, ITextEditorProps> 
     onChange && onChange(getValidValue(value));
   };
 
-  // 给 parent 组件调用的回调
   const onEndEdit = (cancel: boolean) => {
     if (!cancel) {
       saveValue();
@@ -127,7 +126,6 @@ const TextEditorBase: React.ForwardRefRenderFunction<IEditor, ITextEditorProps> 
     element.scrollTop = element.scrollHeight;
   };
 
-  // 给 parent 组件调用的回调
   const onStartEdit = (value?: ISegment[] | null) => {
     if (value === undefined) {
       return;
@@ -138,12 +136,7 @@ const TextEditorBase: React.ForwardRefRenderFunction<IEditor, ITextEditorProps> 
       setSelectionToEnd();
     }, 20);
   };
-
-  /**
-   * 修改 Text 类型单元格部分快捷键功能（仅编辑态）:
-   * Shift + Enter —— 结束编辑并聚焦下个单元格
-   * Enter —— 单元格内换行
-   */
+  
   const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     const wrapMetaCode = event.ctrlKey || event.altKey;
     const isWrapKeyCombination = wrapMetaCode && event.keyCode === 13;
@@ -154,22 +147,13 @@ const TextEditorBase: React.ForwardRefRenderFunction<IEditor, ITextEditorProps> 
 
     // execCommand docRef: https://momane.com/use-document-execcommand-to-set-value
     document.execCommand('insertText', false, '\n');
-
-    /**
-     * 手动添加的换行符并不会让 textarea 滚动到光标的位置，所以借助 失焦->聚焦 的方式让 textarea 滚动
-     * execCommand 这种调用还是无法让 textArea 自动滚动
-     */
+    
     textAreaRef.current?.blur();
     setTimeout(() => {
       textAreaRef.current?.focus();
     }, 0);
   };
-
-  /**
-   *  表格区域，输入框的最低高度取决于激活单元格的高度，也就是这里的 height，由于 rcTextArea 设置 autoSize 后会动态的计算 minHeight 和 maxHeight，
-   *  直接在 rcTextArea 上设置 style 会失效，换一个思路考虑，当进入编辑态的时候，输入框的最小高度就已经被确定了，可以直接多 rcTextArea 设置一个最小行数，
-   *  单行的高度为 31 （变量 TEXT_LINE_HEIGHT），可以用 「height / 行高」 计算出 minRows
-   */
+ 
   const autoSize = isInExpandRecord ? { minRows } : { minRows: Math.round(height / TEXT_LINE_HEIGHT), maxRows: 7 };
 
   return (

@@ -47,7 +47,7 @@ export const RecordList: FC<IRecordList> = props => {
   };
 
   useUnmount(() => {
-    // 关闭记录面板清理搜索
+    // Close the records panel to clean up your search
     if (keyword) {
       setKeyword('');
     }

@@ -68,7 +68,7 @@ const Notice: FC<IGuideNoticeOptions> = props => {
           </div>
         </Modal>
       </ComponentDisplay>
-      {/* 移动端 */}
+      {/* Mobile */}
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <MobileModal
           onClose={() => {

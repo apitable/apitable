@@ -58,7 +58,6 @@ const RatingEditorBase: React.ForwardRefRenderFunction<IEditor, IRatingEditorPro
     }
   };
 
-  // 给 parent 组件调用的回调
   const onEndEdit = (cancel: boolean) => {
     if (!cancel) {
       saveValue();
@@ -70,7 +69,6 @@ const RatingEditorBase: React.ForwardRefRenderFunction<IEditor, IRatingEditorPro
     onSave && onSave(value);
   };
 
-  // 给 parent 组件调用的回调
   const onStartEdit = (value?: number | null) => {
     if (value === undefined) return;
     setEditorValue(value);
@@ -90,19 +88,16 @@ const RatingEditorBase: React.ForwardRefRenderFunction<IEditor, IRatingEditorPro
       const { key } = e;
       let rate: number | null = Number(key);
 
-      // 非数字
       if (!isNumberKey(e as any)) {
         rate = value !== null ? value : cellValue;
       } else {
         const currentTime = Date.now();
-        // 当输入的评分为 0 时，向前推 0.3 秒追溯是否为 10 分
         if (rate === 0 && currentTime - lastTime <= 300) {
           rate = Number(`${value}${rate}`);
         }
 
         if (rate > props.field.property.max) {
           Message.error({ content: t(Strings.update_rate_error_notify), duration: 1.5 });
-          // value 存在为 null 情况，调用 cellValue 赋值
           rate = value !== null ? value : cellValue;
         }
       }
@@ -118,7 +113,6 @@ const RatingEditorBase: React.ForwardRefRenderFunction<IEditor, IRatingEditorPro
       className={style.ratingEditor}
       style={props.style}
       onKeyDown={handleKeyDown}
-      // 再次点击时存在焦点丢失问题，需要重新聚焦下
       onClick={focus}
     >
       <FocusHolder ref={editorRef} />

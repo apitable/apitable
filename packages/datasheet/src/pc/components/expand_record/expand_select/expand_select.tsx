@@ -26,7 +26,6 @@ export interface IExpandSelectProps extends IBaseEditorProps {
   unitMap: IUnitMap | null;
   recordId: string;
   linkId?: string;
-  // 加载成员字段而不是单选
   isMemberField?: boolean;
 }
 
@@ -152,7 +151,6 @@ export const ExpandSelect: React.FC<IExpandSelectProps> = React.forwardRef((prop
           <RcTrigger
             action="click"
             popup={
-              // 在 expandRecord 之外，点击会导致下拉框关闭，所以这里加个隔离层，阻止事件的传递
               <div onMouseDown={stopPropagation} className={styles.isolationBox}>
                 <CellEditor
                   ref={editorRef}

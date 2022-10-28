@@ -20,7 +20,6 @@ const WecomAdmin = () => {
   const [data, setData] = useState<IAdminData | null>(null);
   const [corpId, setCorpId] = useState<string>(() => getStorage(StorageName.SocialPlatformMap)?.socialWecom?.corpId || '');
   const [cpUserId, setCpUserId] = useState<string>(() => getStorage(StorageName.SocialPlatformMap)?.socialWecom?.cpUserId || '');
-  // 变更管理员
   const { run: changeAdmin } = useRequest((spaceId, memberId) => Api.postWecomChangeAdmin(
     corpId,
     memberId,
@@ -49,7 +48,7 @@ const WecomAdmin = () => {
     manual: true,
   });
 
-  // 获取用户绑定的空间信息
+  // Get information about the space to which the user is bound
   const { run: getAdminDetail } = useRequest(() => Api.getWecomBindSpacesInfo(corpId, suiteId, cpUserId), {
     onSuccess: res => {
       const { data, success, code } = res.data;
@@ -72,7 +71,6 @@ const WecomAdmin = () => {
     manual: true
   });
 
-  // 管理员登陆
   const { run: adminLogin } = useRequest(() => Api.postWecomLoginAdmin(code, suiteId), {
     onSuccess: (res) => {
       const { data, success, code } = res.data;
@@ -87,11 +85,7 @@ const WecomAdmin = () => {
         }
         return;
       }
-
-      /**
-       * corpId, cpUserId 需要存到 localStorage 中，
-       * 在浏览器刷新后，需要再次调用登陆接口，并将 corpId, cpUserId 回传给后端
-       */
+      
       const { authCorpId: corpId, cpUserId } = data;
       const socialPlatformMap = getStorage(StorageName.SocialPlatformMap) || {};
       socialPlatformMap.socialWecom = { corpId, cpUserId };
@@ -99,7 +93,6 @@ const WecomAdmin = () => {
       setCorpId(corpId);
       setCpUserId(cpUserId);
 
-      // 删除code，防止刷新时code重新获取失效
       const url = new URL(window.location.href);
       const params = url.searchParams;
       params.delete('code');

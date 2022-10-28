@@ -56,7 +56,7 @@ export function appendRow(option: IAppendRowsOption = {}) {
   if (direction === Direction.Down) {
     index++;
   }
-  // 新记录期望的位置。
+  //  New record desired position.
   const expectIndex = direction === Direction.Up ? baseRecordIndex : baseRecordIndex + 1;
   dispatch(StoreActions.setNewRecordExpectIndex(datasheetId, expectIndex));
 
@@ -97,9 +97,12 @@ export const appendRowCallback = (newRecordId: string) => {
   const datasheetId = Selectors.getActiveDatasheetId(state)!;
   const isSideRecordOpen = state.space.isSideRecordOpen;
 
-  // 用于处理快捷键添加行，自动将activeCell定位到新的record上面
-  // 添加完后应当更新hoverRecordId，保证连续添加行的情况（使用快速添加行组件时）一直是添加在最新行的上方
-  // 仅在 grid 视图下
+  // Used to handle shortcuts to add rows and automatically position the activeCell on top of the new record
+  /**
+   *   The hoverRecordId should be updated after adding to ensure that successive rows 
+   *   (when using the Quick Add Row component) are always added on top of the latest row
+   */
+  // Only in grid view
   if (![ViewType.Grid, ViewType.Gantt].includes(view.type)) {
     return;
   }
@@ -139,8 +142,8 @@ export const getCellValuesForGroupRecord = (recordId?: string) => {
   }, []);
 };
 
-// 快捷键添加record，根据 recordId 定位添加的位置
-// 查找记录在当前视图的 rows 中的位置，而不是 visibleRows 中的位置。
+// Shortcut to add a record, locate where to add it based on recordId
+// Finds the position of the record in the rows of the current view, not in the visibleRows.
 export const findRowsIndexById = (recordId: string) => {
   const state = store.getState();
   const view = Selectors.getCurrentView(state)!;

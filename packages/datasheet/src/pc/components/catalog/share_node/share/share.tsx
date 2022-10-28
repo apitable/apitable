@@ -23,9 +23,9 @@ export interface IShareProps {
 }
 
 export const Share: FC<IShareProps> = ({ shareSettings, onChange, nodeId }) => {
-  // 是否显示下拉菜单
+  // Whether to display the drop-down menu
   const [menuVisible, setMenuVisible] = useState(false);
-  // 控制分享二维码的模态框显示
+  // Control the display of modal boxes for sharing QR codes
   const dispatch = useDispatch();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -74,7 +74,6 @@ export const Share: FC<IShareProps> = ({ shareSettings, onChange, nodeId }) => {
     return { title: t(Strings.share_only_title), desc: t(Strings.share_only_desc) };
   };
 
-  // 更新数表和工作目录的分享状态
   const updateShareStatus = (status: boolean) => {
     dispatch(StoreActions.updateTreeNodesMap(shareSettings.nodeId, { nodeShared: status }));
     if (shareSettings.nodeId.startsWith('mir')) {
@@ -84,7 +83,7 @@ export const Share: FC<IShareProps> = ({ shareSettings, onChange, nodeId }) => {
     dispatch(StoreActions.updateDatasheet(shareSettings.nodeId, { nodeShared: status }));
   };
 
-  // 分享设置
+  // Share settings
   const updateShare = (permission: { onlyRead?: boolean; canBeEdited?: boolean; canBeStored?: boolean }) => {
     const onOk = () =>
       Api.updateShare(shareSettings.nodeId, permission).then(res => {
@@ -141,7 +140,6 @@ export const Share: FC<IShareProps> = ({ shareSettings, onChange, nodeId }) => {
     onOk();
   };
 
-  // 关闭分享
   const closeShare = () => {
     const onOk = () =>
       Api.disableShare(shareSettings.nodeId).then(res => {

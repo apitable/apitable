@@ -1,4 +1,4 @@
-import { FieldType, IDPrefix, IField, IJOTAction, LINK_REG, SegmentType, Selectors, string2Segment} from '@apitable/core';
+import { FieldType, IDPrefix, IField, IJOTAction, LINK_REG, SegmentType, Selectors, string2Segment } from '@apitable/core';
 import { useThemeColors } from '@vikadata/components';
 import { ArrowRightOutlined } from '@vikadata/icons';
 import cls from 'classnames';
@@ -35,7 +35,7 @@ const FieldSwitchTitle: React.FC<{ od: any; oi: any }> = ({ od, oi }) => {
   return (
     <div className={styles.changesetAction}>
       <div className={styles.header}>
-        {/* 复制列时 od 不存在，特殊处理 */}
+        {/* od does not exist when copying columns, special treatment */}
         {od && <ChangesetItemHeader field={od} old />}
         {od && <ArrowRightOutlined size={16} color={colors.thirdLevelText} />}
         <ChangesetItemHeader field={oi} block={!od} />
@@ -53,7 +53,7 @@ const ChangesetItemActionBase: React.FC<IChangesetItemAction> = (props) => {
     let { od, oi } = action as any;
     const { p } = action as any;
 
-    // 单元格操作
+    // Cell manipulation
     if (p[0] === 'recordMap' && p.length === 4) {
       if (typeof od === 'object' && od.id && typeof od.id === 'string' && od.id.startsWith(IDPrefix.Record)) {
         return null;
@@ -64,8 +64,7 @@ const ChangesetItemActionBase: React.FC<IChangesetItemAction> = (props) => {
       if (!field) return null;
       let oiField: IField | undefined = field;
       let odField: IField | undefined = field;
-      // 补全单选、多选 op 中缺失的 field
-      // 单选
+      // Fill in the missing fields for single and multiple choice op
       if (typeof oi === 'string' && oi.startsWith(IDPrefix.Option)) {
         oiField = supplySelectField({ cacheFieldOptions, fieldId, oiOrOd: oi, field: oiField });
       }
@@ -73,13 +72,11 @@ const ChangesetItemActionBase: React.FC<IChangesetItemAction> = (props) => {
         odField = supplySelectField({ cacheFieldOptions, fieldId, oiOrOd: od, field: odField });
       }
       if (Array.isArray(oi) && typeof oi[0] === 'string') {
-        // 多选
         if (oi[0].startsWith(IDPrefix.Option)) {
           oiField = supplyMultiSelectField({ cacheFieldOptions, fieldId, oiOrOd: oi, field: oiField });
         } else if (oi[0].startsWith(IDPrefix.Record)) {
           oiField = supplyExtraField({ cacheFieldOptions, fieldId, revision, field: oiField, isOi: true });
         } else {
-          // 成员
           oiField = supplyMemberField({ cacheFieldOptions, fieldId, oiOrOd: oi, field: oiField });
         }
       }
@@ -92,7 +89,6 @@ const ChangesetItemActionBase: React.FC<IChangesetItemAction> = (props) => {
           odField = supplyMemberField({ cacheFieldOptions, fieldId, oiOrOd: od, field: odField });
         }
       }
-      // 评分、勾选、数字
       if (typeof od === 'number' || typeof od === 'boolean') {
         odField = supplyExtraField({ cacheFieldOptions, fieldId, revision, field: odField });
       }
@@ -100,18 +96,16 @@ const ChangesetItemActionBase: React.FC<IChangesetItemAction> = (props) => {
         oiField = supplyExtraField({ cacheFieldOptions, fieldId, revision, field: oiField, isOi: true });
       }
       if (Array.isArray(oi) && typeof oi[0] === 'object') {
-        // 文本或者邮件
         if (oi[0].type) {
           oiField = {
             ...oiField,
             type: SegmentType.Email === oi[0].type ? FieldType.Email : FieldType.Text
           } as IField;
-        } else if (oi[0].token) { // 附件
+        } else if (oi[0].token) {
           oiField = {
             type: FieldType.Attachment
           } as IField;
         }
-        // 将网址字段存为text的ISegment结构重新转换
         if(oi[0].type && oi[0].type === FieldType.Text) {
           const urlMatch = [...oi[0].text.matchAll(LINK_REG)];
           if(urlMatch.length) {
@@ -132,23 +126,17 @@ const ChangesetItemActionBase: React.FC<IChangesetItemAction> = (props) => {
         }
       }
 
-      // 检查上一个 action 是否是类型切换
       let preTypeSwitch = false;
       if (index > 0) {
         const { p: preP, od: preOd, oi: preOi } = (actions as any)[index - 1];
         preTypeSwitch = preP[0] === 'meta' && preP[1] === 'fieldMap' && preOd && preOi && preOd.type !== preOi.type;
       }
 
-      // 检查下一个 action 是否是类型切换（撤销操作）
       let nextTypeSwitch = false;
       if (index === 0) {
         const { p: nextP, od: preOd, oi: preOi } = (actions as any)[1] || {};
         nextTypeSwitch = nextP && nextP[0] === 'meta' && nextP[1] === 'fieldMap' && preOd && preOi && preOd.type !== preOi.type;
       }
-
-      // diff 条件判断：oi、od 均为数组并且
-      // 数组元素为 object 时根据 id（必须） 做 diff
-      // 数组元素为 string 时根据元素本身（比如 optId、recId）做 diff
       const shouldDiff = Array.isArray(oi) && Array.isArray(od) &&
         (typeof oi[0] === 'object' ? has(oi, '0.id') : Boolean(oi[0])) &&
         (typeof od[0] === 'object' ? has(od, '0.id') : Boolean(od[0]));
@@ -232,8 +220,6 @@ const ChangesetItemActionBase: React.FC<IChangesetItemAction> = (props) => {
           )}
         </div>
       );
-      // 修改列类型
-      // 过滤撤销删除，此时 action.od === undefined
     } else if (p[0] === 'meta' && p[1] === 'fieldMap' && (action as any).od != null) {
       const { od: preOd, oi: preOi } = action as any;
       if (index === 0 && preOd && preOi && preOd.type !== preOi.type) {

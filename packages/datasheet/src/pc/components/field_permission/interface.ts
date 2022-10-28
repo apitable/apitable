@@ -9,18 +9,19 @@ export interface IFieldPermissionProps {
 export interface IUnitPermissionSelectProps {
   classNames?: string;
   /**
-   * @description 提交的回调函数
-   * @param {IMemberValue[]} unitInfos 已选择的成员信息的集合，如果是空数组，则不应该提交数据
-   * @param {IOption} permission 给所选择成员指定的权限，比如可编辑、可查看等，这个和 permissionList 中传入的对象结构一致
+   * @description Callback function for submission
+   * @param {IMemberValue[]} unitInfos A collection of selected member information, if it is an empty array, no data should be submitted
+   * @param {IOption} permission The permissions assigned to the selected member, such as editable, viewable, etc., 
+   * are consistent with the structure of the object passed into the permissionList
    */
   onSubmit(unitInfos: IUnitValue[], permission: IOption): void;
 
   /**
-   * @description 当前需要展示选项列表
+   * @description Current list of options to be displayed
    */
   permissionList: IDoubleOptions[]
 
-  // 管理员和创建人unitId数组
+  // Administrator and creator unitId arrays
   adminAndOwnerUnitIds?: string[];
   showTeams?: boolean;
 
@@ -36,7 +37,7 @@ export interface IEnablePermission {
   permissionStatus: boolean;
 
   /**
-   * @description 关闭权限的回调处理
+   * @description Callback handling for closing permissions
    */
   onClose(): void
 }

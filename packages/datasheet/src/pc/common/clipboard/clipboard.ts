@@ -25,7 +25,7 @@ function getCutRangeData(state: IReduxState, range: IRange): IGetCutRangeDataRet
   const { row, rowCount, column, columnCount } = numberRange;
   const _columns = Selectors.getVisibleColumns(state).slice(column, column + columnCount);
 
-  // 如果某列设置权限，且当前操作用户没有编辑权限，在剪切时应该对数据做过滤
+  // If permissions are set for a column and the user currently operating does not have edit permissions, the data should be filtered during the cut
   const fieldPermissionMap = Selectors.getFieldPermissionMap(state);
   const columns = _columns.filter(column => {
     const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, column.fieldId);
@@ -86,13 +86,13 @@ function extendViewIfNeed(
 }
 
 /**
- * 检查粘贴后检查该 record 是否还都在 view 的 property 里的 Record 中
- * 如果不都存在，则需要提示结果已经被筛选
+ * Check that the record is still all in the record in the property of the view after pasting
+ * If not all are present, you need to indicate that the results have been filtered
  * @param {IGridView} pasteView
  * @param {IStandardValueTable} stdValueTable
  */
 // function checkPasteNewRecordHasBeFilter(rows: IGridViewProperty, actions: { p: string[] }[]) {
-//   // action.p[1] 为 setRecord action 的 recordId
+//   // action.p[1] is setRecord action recordId
 //   const actionRecordIds = actions.map(action => action.p[1]);
 //   const visibleRecordIds = keyBy(rows, 'recordId');
 //   const pasteRecordInTheVisible = filter(actionRecordIds, rId => Boolean(visibleRecordIds[rId]));
@@ -180,7 +180,7 @@ export class Clipboard {
 
     const view = Selectors.getCurrentView(state);
     const selections = Selectors.getSelectRanges(state);
-    // 没有粘贴的目标
+    // No paste target
     if (!view || ![ViewType.Grid, ViewType.Gantt].includes(view.type) || !selections) {
       return;
     }
@@ -251,15 +251,9 @@ export class Clipboard {
           }
           if (commandResult.result === ExecuteResult.Success) {
             notify.open({ message: t(Strings.message_copy_succeed), key: NotifyKey.Paste });
-            // const actions = (commandResult as ICollaCommandExecuteSuccessResult<any>).data || [];
-            // const hasFilterCount = checkPasteNewRecordHasBeFilter(pasteView, actions);
-            // if (hasFilterCount < 0) {
-            //   message.success('粘贴成功', 2);
-            // } else {
-            //   message.info(`有${hasFilterCount}条粘贴记录被过滤了`);
-            // }
+          
           }
-        }, pasteCellCount > 100 ? 100 : 0); // 粘贴的单元格大于 100 个的时候再出延时提示
+        }, pasteCellCount > 100 ? 100 : 0); // Delayed prompt when pasting more than 100 cells
       }
     });
   }
@@ -337,7 +331,7 @@ export class Clipboard {
     if (!selectRecordIds.length) {
       return;
     }
-    // 没有选区。只有 checkbox 选中记录
+    // There are no selections. Only checkbox selected records
     if (!selections.length && selectRecordRanges) {
       isCopyCutCheckedRecords = true;
       selections = Range.selectRecord2Ranges(state, selectRecordRanges);

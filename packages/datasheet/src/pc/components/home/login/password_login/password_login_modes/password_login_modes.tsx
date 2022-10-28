@@ -22,15 +22,10 @@ export type IPasswordModes = ConfigConstant.LoginMode.PHONE | ConfigConstant.Log
 export type IPasswordLoginConfig = IIdentifyingCodeConfig;
 
 export interface IPasswordLoginModesProps {
-  // 默认的验证码方式（默认为手机验证码登录）
   defaultPasswordMode?: IPasswordModes;
-  // 仅显示某一模式
   mode?: IdentifyingCodeModes;
-  // 外面接口的报错（与账号或者密码有关的）
   error?: { accountErrMsg: string, passwordErrMsg: string };
-  // 模式改变时触发
   onModeChange?: (mode: IPasswordModes) => void;
-  // 输入框数据改变时触发
   onChange?: (data: IPasswordData) => void;
   config?: IPasswordLoginConfig;
 }
@@ -49,9 +44,7 @@ export const PasswordLoginModes: FC<IPasswordLoginModesProps> = ({
   config,
   mode,
 }) => {
-  // 当前获取验证码的方式
   const [defaultMode, setDefaultMode] = useState(defaultPasswordMode);
-  // 主要数据（账号、验证码、密码、二次确认密码）
   const [state, setState] = useSetState<IPasswordData>(defaultState);
   const phoneInputRef = useRef<IPhoneInputRefProps>(null);
   const mailInputRef = useRef<any>(null);
@@ -68,7 +61,6 @@ export const PasswordLoginModes: FC<IPasswordLoginModesProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultMode]);
 
-  // 切换是邮箱登录还是手机登录
   const handleModeChange = key => {
     const defaultV = (config && config[key] && (config[key]?.defaultValue) || '');
     setState({ ...state, account: defaultV });
@@ -82,7 +74,6 @@ export const PasswordLoginModes: FC<IPasswordLoginModesProps> = ({
     setState({ account: value });
   };
 
-  // 手机号或区号改变
   const handlePhoneChange = (areaCode: string, phone: string) => {
     setState({ areaCode, account: phone });
   };
@@ -92,9 +83,7 @@ export const PasswordLoginModes: FC<IPasswordLoginModesProps> = ({
     setState({ credential: value });
   };
 
-  // 账号错误提示
   const accountErrTip = error?.accountErrMsg || '';
-  // 密码错误提示
   const passwordErrTip = error?.passwordErrMsg || '';
 
   const LoginWithPhone = (

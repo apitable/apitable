@@ -69,12 +69,12 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
   };
 
   const getValidValue = (value: string) => {
-    // 单行文本类型转成邮箱时，确保邮箱格式文本数据不丢失
+    // Ensure no loss of mailbox formatted text data when converting single line text types to mailboxes
     let omitProps = {};
     if (cacheValueRef.current && cacheValueRef.current.some(v => v.text === value)) {
       omitProps = omit(find(cacheValueRef.current, { text: value }), ['text']);
     }
-    // 普通长文本，匹配 segment 电话邮箱网址, 则存储为 [Text]
+    // Plain long text, matching segment phone email address, then stored as [Text]
     const segment: ISegment[] = [{ type: SegmentType.Text, text: value, ...omitProps }];
     const tempVal = value.length ? segment : null;
     return tempVal;
@@ -88,7 +88,6 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
     }
   };
 
-  // 给 parent 组件调用的回调
   const onEndEdit = (cancel: boolean) => {
     if (!cancel) {
       saveValue();
@@ -108,7 +107,6 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
     element.scrollTop = element.scrollHeight;
   };
 
-  // 给 parent 组件调用的回调
   const onStartEdit = (value?: ISegment[] | null) => {
     if (value === undefined) return;
     setEditorValue(value);
@@ -161,9 +159,6 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
           type=""
           className={style.urlTitle}
           onMouseDown={() => {
-            // 如果不用onMouseDown事件，会导致外层expand modal关闭，和useClickAway有关
-            // 不能用a标签，否则会默认触发fieldBlock的active事件
-            // window open要拼接protocol，判断一下默认http连接
             if (/^https?:\/\//.test(value)) {
               window.open(value, '_blank');
               return;
@@ -196,7 +191,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           style={{
-            minHeight: 40, // 增强文本，都是单行文本，不随行高改变编辑器高度。
+            minHeight: 40, 
             color: showURLTitleFlag ? 'transparent' : 'inherit',
           }}
         />

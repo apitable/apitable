@@ -3,69 +3,69 @@
 export interface IUnitItemProps {
   className?: string;
   /**
-   * @description 权限列表中，unit 的基础信息
-   * 这里指的可能是具体的人，也可能是部门
+   * @description Permission list, base information for unit
+   * This may refer to a specific person or a department
    */
   unit: IUnitInfo;
 
   /**
-   * @description 当前 unit 的标识身份，
+   * @description The identity of the current unit.
    */
   identity?: IUnitIdentity;
 
   /**
-   * @description 标识是否允许更改当前用户的权限身份
+   * @description Identifies whether changes to the current user's permission status are allowed
    */
   disabled?: boolean;
 
   /**
-   * @description 不可操作的提示，可以不传
+   * @description Non-actionable tips that can be left out
    */
   disabledTip?: string;
   /**
-   * @description unit 此时的权限角色状态
+   * @description unit The status of the authority role at this time
    */
   // role: Role.Editor | Role.Member | Role.ReadOnly;
   role: string;
 
   /**
-   * @description 能给当前 unit 指定的身份
+   * @description The identity that can be assigned to the current unit
    */
   roleOptions?: IRoleOption[];
 
   /**
-   * @description 是否允许从权限列表中移除该 unit
+   * @description Whether to allow the unit to be removed from the permission list
    * @default true
    */
   allowRemove?: boolean
 
   /**
-   * @description 移除某个 unit 的回调
+   * @description Callback for removing a unit
    * @param {string} unitId
    */
   onRemove?: (unitId: string) => void;
 
   /**
-   * @description 修改了权限角色的回调
+   * @description Modified callbacks for permission roles
    * @param {string} unitId
    * @param {string} role
    */
   onChange?: (unitId: string, role: string) => void;
 
   /**
-   * @description 当期用户的权限状态是否异常
+   * @description Whether the current user's permission status is abnormal
    */
   roleInvalid?: boolean;
 }
 
 export interface IRoleOption {
-  // 数据中唯一，标识当前选项的值
+  // Unique in the data, identifies the value of the current option
   value: string;
-  // 展示给用户看的描述
+  // Descriptions displayed for the user to see
   label: string;
-  // 当前选项是否不可选
+  // Is the current option unavailable
   disabled?: boolean;
-  // 不可选的提示语
+  // Non-selectable prompts
   disabledTip?: string
 }
 
@@ -75,15 +75,14 @@ export interface IUnitInfo {
   name: string;
   info: string;
   isTeam: boolean;
-  // 企微
   isMemberNameModified?: boolean;
 }
 
 interface IUnitIdentity {
-  // 空间站管理员
+  // Space Station Manager
   admin?: boolean;
-  // 开启指定权限的人
+  // People who have opened specified permissions
   permissionOpener?: boolean;
-  // tooltip 中的内容
+  // Content in tooltip
   permissionOpenerTip?: string
 }

@@ -11,9 +11,9 @@ import { SystemConfig, t, Strings } from '@apitable/core';
 import { PhonenumberFilled } from '@vikadata/icons';
 import styles from './style.module.less';
 
-// 区号和城市集合
+// Area code and city collection
 const countryAndPhoneAreaCode = SystemConfig.country_code_and_phone_code;
-// 将数据转换为Select组件所需的数据结构
+// Converting data into the data structure required by the Select component
 const optionData = (() => {
   const tempArr: { value: string, label: string }[] = [];
   for (const country in countryAndPhoneAreaCode) {
@@ -31,9 +31,9 @@ export interface IPhoneInputRefProps {
 }
 
 export interface IPhoneInputProps extends Omit<ITextInputProps, 'onChange'> {
-  // 默认区号
+  // Default Area Code
   defaultAreaCode?: string;
-  // 区号或手机号改变时触发
+  // Triggered when area code or mobile phone number changes
   onChange?: (areaCode: string, phone: string) => void;
 }
 
@@ -43,9 +43,7 @@ export const PhoneInputBase: ForwardRefRenderFunction<any, IPhoneInputProps> = (
   defaultAreaCode = '+86',
   ...rest
 }, ref) => {
-  // 区号
   const [areaCode, setAreaCode] = useState(defaultAreaCode);
-  // 手机号
   const [phone, setPhone] = useState('');
   const inputWrapperRef = useRef<any>(null);
   const inputRef = useRef<any>(null);
@@ -69,7 +67,6 @@ export const PhoneInputBase: ForwardRefRenderFunction<any, IPhoneInputProps> = (
     setPhone(value);
   };
 
-  // 区号选择
   const PhoneCodeSelect = () => {
     return (
       <Select

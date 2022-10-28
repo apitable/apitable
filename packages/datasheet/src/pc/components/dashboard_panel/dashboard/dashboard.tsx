@@ -61,8 +61,7 @@ export const Dashboard = () => {
   const isShowWidget = useSelector(state => Selectors.labsFeatureOpen(state, SystemConfig.test_function.widget_center.feature_key));
   const query = useQuery();
   const purchaseToken = query.get('purchaseToken') || '';
-  const isSkuPage = isDingtalkSkuPage(purchaseToken); // 钉钉 sku 页面
-  // 是否在缩放中
+  const isSkuPage = isDingtalkSkuPage(purchaseToken);
   const [dragging, setDragging] = useState<boolean>(false);
   const installedWidgetInDashboard = Boolean(containerRef.current?.offsetWidth && dashboardLayout && dashboardLayout.length);
 
@@ -79,15 +78,14 @@ export const Dashboard = () => {
       const { data, success } = res.data;
       if (success) {
         store.getState();
-        // 当前仪表盘是否在重命名中
         const isEditing = store.getState().catalogTree.editNodeId === dashboardId;
         setVisibleRecommend(Boolean(data.length));
         /**
-         * TODO：升级antd版本 drawer 支持不自动聚焦配置可解决，下面为临时方案
-         * 如果当前仪表盘在重命名中
-         * 因为当前antd版本
-         * drawer会自动聚焦导致重命名失焦
-         * 所以用延时再聚焦回去
+         * TODO：Upgrading the antd version of the drawer to support a non-autofocus configuration will solve this, here is a temporary solution
+         * If the current dashboard is in the process of being renamed
+         * Because the current version of antd
+         * The drawer will autofocus causing the renaming to be out of focus
+         * So use the time delay to focus back in
          */
         setTimeout(() => {
           isEditing && dashboardId && store.dispatch(StoreActions.setEditNodeId(dashboardId));
@@ -150,7 +148,6 @@ export const Dashboard = () => {
       });
     }
 
-    // 兼容 sourceId 没有的情况
     const nodeId = widgetSnapshot.sourceId || widgetSnapshot.datasheetId;
     if (shareId) {
       Router.push(Navigation.SHARE_SPACE, {
@@ -264,18 +261,12 @@ export const Dashboard = () => {
     if (!dashboardLayout || readonly) {
       return;
     }
-    // 仅记录栅格为 12 列的布局数据
-    // 布局数据优先级 sm > md > lg
+    // Layout data prioritisation sm > md > lg
     const _currentLayout = allLayouts['sm'] || allLayouts['md'] || allLayouts['lg'];
     if (dashboardLayout.length !== _currentLayout.length) {
       return;
     }
-    /**
-     * 这里的处理是针对 页面第一次加载 和 安装/导入小组件 的，这两个行为都会导致该函数被调用，所以需要判断每个 widget 的坐标是否有变动，
-     * 特殊的地方是，一个新安装的小组件，为了保证布局正常，初始化的 y 坐标是赋予的数字的最大值，但是体现在真实的布局里就不是样的，
-     * 所以在判断 y 坐标是否相等，需要额外判断是否等于 Number.MAX_SAFE_INTEGER。
-     * 只有布局是由人为操作改变的才应该保存数据
-     */
+  
     const isAllEqual = dashboardLayout.every((item, index) => {
       const _item = _currentLayout[index];
       return (

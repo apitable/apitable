@@ -130,7 +130,6 @@ export const TabBar: React.FC<ITabBarProps> = (props) => {
     </div>;
   }
 
-  // 当仪表盘的显示区域过宅，不显示右上角的几个操作按钮
   const isEnoughToShowButton = size?.width && size?.width > SHOW_OPERATE_BUTTON;
 
   return <div className={styles.tabBar} ref={toolbarRef}>

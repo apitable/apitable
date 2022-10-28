@@ -39,11 +39,10 @@ const ChangesetItemBase: React.FC<IChangesetItem> = props => {
   const { setReplyText, emojis, setFocus, setReplyUnitId } = useContext(ActivityContext);
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
 
-  // 拿到 operations 所有的 actions
   const actions = operations.reduce((actionArr: IJOTAction[], op: IOperation) => {
     let { actions } = op;
     /**
-     * 添加行包含默认值处理
+     * Add line containing default value processing
      *
      * [{ n: 'OI', oi: { fieldId1: val1, fieldId2: val2 }, p: ['recordMap', 'recId'] }]
      * =>
@@ -78,7 +77,7 @@ const ChangesetItemBase: React.FC<IChangesetItem> = props => {
   const { screenIsAtLeast } = useResponsive();
 
   const [commentOperations, restOperations] = useMemo(() => {
-    // 区分评论操作、其他操作
+    // Distinguish between comment operations, other operations
     const commentOps: IOperation[] = [];
     const restOps: IOperation[] = [];
     operations.forEach(op => {
@@ -93,16 +92,16 @@ const ChangesetItemBase: React.FC<IChangesetItem> = props => {
 
   const itemArray = useMemo(() => {
     let itemActions: (IJOTAction | number | undefined)[] = [];
-    // 多条评论合并一起发送时，需要分成多条记录展示
+    // When multiple comments are combined and sent together, they need to be displayed in multiple records
     if (commentOperations.length > 0) {
       const systemOp = find(commentOperations, { cmd: CollaCommandName.SystemCorrectComment });
-      // SystemCorrectComment 服务端更新修正评论时间
+      // SystemCorrectComment Server-side update to fix comment times
       if (systemOp) {
         const serverFixActions = systemOp.actions.map((at, idx) => ({
           ...at,
           p: [idx],
         }));
-        // InsertComment 客户端添加评论
+        // InsertComment Adding comments from the client
         const clientActions = commentOperations
           .filter(op => !op.cmd.includes('System'))
           .map((op, idx) => ({
@@ -115,7 +114,7 @@ const ChangesetItemBase: React.FC<IChangesetItem> = props => {
       }
     }
     if (restOperations.length > 0) {
-      // 过滤系统 op，用 undefined 占位标记非评论操作
+      // Filter system op, mark non-comment operations with undefined placeholders
       itemActions = itemActions.concat(restOperations.filter(op => !op.cmd.includes('System')).map(() => undefined));
     }
     return itemActions;
@@ -143,7 +142,7 @@ const ChangesetItemBase: React.FC<IChangesetItem> = props => {
           },
         },
       },
-      // emojiAction 为 false 表示取消点赞
+      // emojiAction is false to cancel the like
       emojiAction: !emojiUsers.includes(selfUserId!),
     });
   };

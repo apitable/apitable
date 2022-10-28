@@ -6,7 +6,7 @@ import { IReduxState } from '@apitable/core';
 import styles from './style.module.less';
 import { IAvatarProps } from 'pc/components/common';
 interface IUserCardTrigger extends IUserCard, Partial<TriggerProps> {
-  scrollTarget?: string; // 如果传入此参数，则会给该元素绑定scroll事件，scroll时名片会消失
+  scrollTarget?: string; 
   isDeleted?: boolean;
   isActive?: boolean;
   avatarProps?: IAvatarProps;

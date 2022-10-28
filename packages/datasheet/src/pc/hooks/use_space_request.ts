@@ -17,7 +17,7 @@ export const useSpaceRequest = () => {
     });
   };
 
-  // 空间名称更改（用于在新手引导中修改个人昵称之后，自动更改空间默认名称）
+  // Space name change (used to automatically change the default space name after changing your personal nickname in the newbie guide)
   const changeSpaceNameReq = (name: string) => {
     return Api.updateSpace(name).then(res => {
       const { success } = res.data;
@@ -28,7 +28,7 @@ export const useSpaceRequest = () => {
     });
   };
 
-  // 申请加入空间
+  // Apply to join the space
   const applyJoinSpaceReq = (spaceId: string) => {
     return Api.applyJoinSpace(spaceId).then(res => {
       const { success, message } = res.data;
@@ -40,7 +40,7 @@ export const useSpaceRequest = () => {
     });
   };
 
-  // 获取空间特性
+  // Acquisition of spatial characteristics
   const spaceFeaturesReq = () => {
     return Api.getSpaceFeatures().then(res => {
       const { success, data } = res.data;
@@ -50,7 +50,7 @@ export const useSpaceRequest = () => {
     });
   };
 
-  // 更改权限与安全设置
+  // Changing permissions and security settings
   const updateSecuritySettingReq = (config: ApiInterface.IUpdateSecuritySetting) => {
     return Api.updateSecuritySetting(config).then(res => {
       const { success } = res.data;
@@ -69,7 +69,7 @@ export const useSpaceRequest = () => {
     });
   };
 
-  // 更改成员设置
+  // Changing member settings
   const updateMemberSettingReq = (data: { invitable?: boolean, joinable?: boolean, mobileShowable?: boolean }) => {
     return Api.updateMemberSetting(data).then(res => {
       const { success } = res.data;
@@ -81,7 +81,7 @@ export const useSpaceRequest = () => {
       return res.data;
     });
   };
-  // 更改工作台设置
+  // Changing workbench settings
   const updateWorkbenchSettingReq = (data: { nodeExportable?: boolean, watermarkEnable?: boolean }) => {
     return Api.updateWorkbenchSetting(data).then(res => {
       const { success } = res.data;
@@ -94,7 +94,7 @@ export const useSpaceRequest = () => {
     });
   };
 
-  // 判断空间内成员邮箱是否存在
+  // Determine if a member mailbox exists in the space
   const checkEmailReq = (email: string) => {
     return Api.isExistEmail(email).then(res => {
       const { success, message, data } = res.data;

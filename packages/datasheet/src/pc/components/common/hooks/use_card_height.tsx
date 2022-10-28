@@ -7,25 +7,24 @@ import { useSelector } from 'react-redux';
 const FIRST_FIELD_HEIGHT = 26;
 const FIELD_PADDING_TOP = 4;
 const FIELD_PADDING_BOTTOM = 12;
-// 字段名称
 const FIELD_TITLE_HEIGHT = 17;
 
-// 虚拟列表中的字段高度
-// 字段 title 高度，内容上边距，内容整体间距，默认字段内容高度
+// Field heights in virtual lists
+// Field title height, content top margin, overall content spacing, default field content height
 const FIELD_TITLE_HEIGHT_VIRTUAL = 18;
 const FIELD_CONTENT_TOP_SPACE = 4;
 const FIELD_CONTENT_SPACE = 12;
-// 相册类单行内边距，相册类多行内边距，看板类内边距
+// Single line margins for albums, multi-line margins for albums, margins for Kanban
 const GALLERY_SIGNLE_ROW = 4;
 const GALLERY_MULTI_ROW = 12;
 const VIEW_BOARD_ROW = 8;
 
 interface IUseCardHeightProps {
   showEmptyCover: boolean;
-  // 卡片的封面的默认高度
+  // The default height of the card cover
   cardCoverHeight: number;
   multiTextMaxLine?: number;
-  showEmptyField: boolean; // 记录值为空时显示占位还是不显示。
+  showEmptyField: boolean; // Show placeholder or not when record value is empty.
   coverFieldId?: string;
   isColNameVisible?: boolean;
   visibleColumns?: IViewColumn[];
@@ -43,8 +42,9 @@ export const useCardHeight = (props: IUseCardHeightProps) => {
   visibleColumns = props.visibleColumns || visibleColumns;
 
   /**
-   * @description 获取卡片封面的高度。相册和看板不同，相册的封面高度都是一样的，看板需要根据实际值来计算展示或者不展示。
-   * recordId 主动传入 null 表示，记录无关。
+   * @description Get the height of the card cover. Unlike albums, which all have the same cover height, 
+   * kanban needs to be calculated to show or not show depending on the actual value.
+   * recordId Active null is passed in to indicate that the record is irrelevant.
    * @param {string} recordId
    * @returns
    */
@@ -73,10 +73,10 @@ export const useCardHeight = (props: IUseCardHeightProps) => {
     if (visibleColumns.length) {
       if (isVirtual) {
         const finalTitleHeight = !isColNameVisible ? (isGallery ? 0 : -FIELD_CONTENT_TOP_SPACE) : FIELD_TITLE_HEIGHT_VIRTUAL;
-        // 4 - 相册卡片单行标题，12 - 相册卡片多行属性文本，8 - 看板视图标题
+        // 4 - single line title for album cards, 12 - multi-line attribute text for album cards, 8 - Kanban view title
         const cartHeightPadding = isGallery ? (visibleColumns.length === 1 ? GALLERY_SIGNLE_ROW : GALLERY_MULTI_ROW) : VIEW_BOARD_ROW;
         const total = visibleColumns.reduce((pre: number, cur: IViewColumn, i) => {
-          // 卡片第一行的标题高度 + 间距
+          // Height of header on first line of card + spacing
           if (i === 0) {
             return pre += (titleHeight + cartHeightPadding);
           }
@@ -96,7 +96,7 @@ export const useCardHeight = (props: IUseCardHeightProps) => {
           return pre += height;
         }, 0);
 
-        // 处理看板视图的最后一个属性的内边距
+        // Handling the inner margin of the last attribute of the Kanban view
         const sub = isGallery ? 0 : VIEW_BOARD_ROW;
         return total - sub;
       }
@@ -122,7 +122,6 @@ export const useCardHeight = (props: IUseCardHeightProps) => {
   }
 
   const getCardHeight = (recordId: string | null, isMobile?: boolean) => {
-    // 兼容相册视图
     const padding = isGallery ? 0 : 8;
     const cardCoverHeight = getCoverHeight(recordId);
     const cardBodyHeight = padding + getCardBodyHeight(multiTextMaxLine, recordId, isMobile);

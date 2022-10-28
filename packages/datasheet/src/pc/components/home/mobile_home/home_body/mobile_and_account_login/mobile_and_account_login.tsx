@@ -14,7 +14,6 @@ export const MobileAndAccountLogin: FC = () => {
       if (!mobileHomeTarget) { return; }
       return mobileHomeTarget.clientHeight;
     };
-    // 解决 登录/注册 页第二屏被输入法挤压的问题
     const onResize = () => {
       const secondPageTarget = (secondPageRef.current as HTMLDivElement);
       const mobileHomeTarget = document.querySelector(`.${styles.mobileHome}`) as HTMLDivElement;

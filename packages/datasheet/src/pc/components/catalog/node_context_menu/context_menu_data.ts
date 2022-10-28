@@ -44,7 +44,6 @@ const getCopyUrlText = (nodeType: ConfigConstant.NodeType) => {
 };
 
 export const contextItemMap = new Map<ContextItemKey, any>([
-  /** 重命名 */
   [ContextItemKey.Rename, (onClick: () => void, hidden: boolean) => ({
     icon: makeNodeIconComponent(NodeIcon.Rename),
     text: t(Strings.rename),
@@ -54,7 +53,6 @@ export const contextItemMap = new Map<ContextItemKey, any>([
     onClick,
     hidden,
   })],
-  /** 星标 */
   [ContextItemKey.Favorite, (onClick: () => void, isFavorite: boolean) => ({
     icon: makeNodeIconComponent(isFavorite ? NodeIcon.UnFavorite : NodeIcon.Favorite),
     text: isFavorite ? t(Strings.remove_favorite) : t(Strings.favorite),
@@ -62,7 +60,6 @@ export const contextItemMap = new Map<ContextItemKey, any>([
     id: WORKBENCH_SIDE_ID.OPERATE_ITEM_STAR_NODE,
     onClick,
   })],
-  /** 复制节点Url */
   [ContextItemKey.CopyUrl, (onClick: () => void, nodeType: ConfigConstant.NodeType) => ({
     icon: makeNodeIconComponent(NodeIcon.Url),
     text: getCopyUrlText(nodeType),
@@ -70,7 +67,6 @@ export const contextItemMap = new Map<ContextItemKey, any>([
     id: WORKBENCH_SIDE_ID.OPERATE_ITEM_COPY_NODE_URL,
     onClick,
   })],
-  /** 设置权限 */
   [ContextItemKey.Permission, (onClick: () => void, nodeAssignable: boolean) => ({
     icon: makeNodeIconComponent(NodeIcon.Permission),
     text: nodeAssignable ? t(Strings.permission_setting) : t(Strings.view_permissions),
@@ -79,7 +75,6 @@ export const contextItemMap = new Map<ContextItemKey, any>([
     id: WORKBENCH_SIDE_ID.OPERATE_ITEM_SET_PERMISSIONS,
     onClick,
   })],
-  /** 分享 */
   [ContextItemKey.Share, (onClick: () => void, hidden: boolean) => ({
     icon: makeNodeIconComponent(NodeIcon.Share),
     text: t(Strings.share),
@@ -89,7 +84,6 @@ export const contextItemMap = new Map<ContextItemKey, any>([
     onClick,
     hidden,
   })],
-  /** 保存为模板 */
   [ContextItemKey.SaveAsTemplate, (onClick: () => void, hidden: boolean) => ({
     icon: makeNodeIconComponent(NodeIcon.Template),
     text: t(Strings.save_as_template),
@@ -99,9 +93,6 @@ export const contextItemMap = new Map<ContextItemKey, any>([
     onClick,
     hidden,
   })],
-  /**
-   * 移动至
-   */
   [ContextItemKey.MoveTo, (onClick: () => void, hidden: boolean) => ({
     icon: makeNodeIconComponent(NodeIcon.MoveTo),
     text: t(Strings.move_to),
@@ -110,7 +101,6 @@ export const contextItemMap = new Map<ContextItemKey, any>([
     onClick,
     hidden,
   })],
-  /** 删除 */
   [ContextItemKey.Delete, (onClick: () => void, hidden: boolean) => ({
     icon: makeNodeIconComponent(NodeIcon.Delete, {
       color: isMobile
@@ -124,7 +114,6 @@ export const contextItemMap = new Map<ContextItemKey, any>([
     onClick,
     hidden,
   })],
-  /** 复制节点 */
   [ContextItemKey.Copy, (onClick: () => void, hidden: boolean) => ({
     icon: makeNodeIconComponent(NodeIcon.Copy),
     text: t(Strings.duplicate_datasheet),
@@ -133,7 +122,6 @@ export const contextItemMap = new Map<ContextItemKey, any>([
     hidden,
     onClick,
   })],
-  /** 导出 */
   [ContextItemKey.Export, (csvClick: () => void, excelClick: () => void, hidden: boolean) => ({
     icon: makeNodeIconComponent(NodeIcon.Export),
     text: t(Strings.export_to_excel),
@@ -155,7 +143,6 @@ export const contextItemMap = new Map<ContextItemKey, any>([
       onClick: csvClick,
     }],
   })],
-  /** 导入 */
   [ContextItemKey.Import, (onClick: () => void, hidden: boolean) => ({
     icon: makeNodeIconComponent(NodeIcon.Import),
     text: t(Strings.import_excel),
@@ -163,7 +150,6 @@ export const contextItemMap = new Map<ContextItemKey, any>([
     hidden,
     id: WORKBENCH_SIDE_ID.NODE_IMPORT,
   })],
-  /** 新建数表 */
   [ContextItemKey.AddDatasheet, (onClick: () => void, hidden: boolean) => ({
     icon: makeNodeIconComponent(NodeIcon.AddDatasheet),
     text: t(Strings.empty_datasheet),
@@ -172,7 +158,6 @@ export const contextItemMap = new Map<ContextItemKey, any>([
     hidden,
     id: WORKBENCH_SIDE_ID.NEW_DATASHEET,
   })],
-  /** 新建神奇表单 */
   [ContextItemKey.AddForm, (onClick: () => void, hidden: boolean) => ({
     icon: makeNodeIconComponent(NodeIcon.AddForm),
     text: t(Strings.add_form),
@@ -180,7 +165,6 @@ export const contextItemMap = new Map<ContextItemKey, any>([
     hidden,
     id: WORKBENCH_SIDE_ID.NEW_FORM,
   })],
-  /** 新建文件夹 */
   [ContextItemKey.AddFolder, (onClick: () => void, hidden: boolean) => ({
     icon: makeNodeIconComponent(NodeIcon.AddFolder),
     text: t(Strings.new_folder),
@@ -189,7 +173,6 @@ export const contextItemMap = new Map<ContextItemKey, any>([
     hidden,
     id: WORKBENCH_SIDE_ID.NEW_FOLDER,
   })],
-  /** 从模板创建 */
   [ContextItemKey.CreateFromTemplate, (onClick: () => void, hidden: boolean) => ({
     icon: makeNodeIconComponent(NodeIcon.Template),
     text: t(Strings.new_from_template),
@@ -204,7 +187,6 @@ export const contextItemMap = new Map<ContextItemKey, any>([
     hidden,
     id: WORKBENCH_SIDE_ID.NEW_DASHBOARD,
   })],
-  /** 查看节点信息 */
   [ContextItemKey.NodeInfo, (onClick: () => void, hidden: boolean) => ({
     icon: makeNodeIconComponent(NodeIcon.NodeInfo),
     text: t(Strings.node_info),

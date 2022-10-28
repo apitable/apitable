@@ -1,7 +1,7 @@
 import { IUserInfo } from '@apitable/core';
 
 /**
- * 邀请链接生成
+ * Invitation link generation
  */
 export const generateInviteLink = (userInfo: IUserInfo | null, token: string, nodeId: string) => {
   const url = new URL(window.location.origin);

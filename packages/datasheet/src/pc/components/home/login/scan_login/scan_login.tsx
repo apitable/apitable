@@ -21,7 +21,6 @@ import WecomIcon from 'static/icon/signin/signin_img_wecom.png';
 
 import styles from './style.module.less';
 
-/* 扫码登录组件，包含二维码展示区域和扫码方式的icons */
 export const ScanLogin = ({
   afterLogin
 }: { afterLogin?(data: string, loginMode: ConfigConstant.LoginMode): void }): JSX.Element => {
@@ -63,7 +62,6 @@ export const ScanLogin = ({
     }
   };
 
-  /* 微信、飞书为当前页生成二维码，其它为跳转SSO */
   const scanLoginMethods = [{
     id: 'wechat_login_btn',
     img: WechatIcon,

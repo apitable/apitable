@@ -16,21 +16,13 @@ import { truncate } from 'lodash';
 import { ItemRender } from './node_item_render';
 
 export interface INodeItemProps {
-  /* 节点信息 */
   node: INodesMapItem;
-  /* 是否是已展开的节点 */
   expanded?: boolean;
-  /* 是否是已激活的节点 */
   actived?: boolean;
-  /* 是否是没有子节点的节点 */
   hasChildren?: boolean;
-  /* 当前是否是编辑状态 */
   editing: boolean;
-  /* 当前是否是删除状态 */
   deleting: boolean;
-  /* 表示nodeItem来自哪个模块（星标或者工作目录） */
   from: ConfigConstant.Modules;
-  /* 表示节点所在的层级 */
   level: string;
 }
 

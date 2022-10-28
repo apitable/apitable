@@ -7,10 +7,10 @@ export const useTemplateRequest = () => {
   const dispatch = useDispatch();
 
   /**
-   * 创建模板
-   * @param nodeId 节点id
-   * @param name 模板名称
-   * @param data 是否保存数据
+   * Create a template
+   * @param nodeId
+   * @param name
+   * @param data
    */
   function createTemplateReq(nodeId: string, name: string, data?: boolean) {
     return Api.createTemplate(nodeId, name, data).then(res => {
@@ -20,8 +20,8 @@ export const useTemplateRequest = () => {
   }
 
   /**
-   * 获取官方模板分类内容
-   * @param categoryCode 模版分类 ID
+   * Get official template category content
+   * @param categoryCode
    */
   function getTemplateCategoriesReq(categoryCode: string) {
     return Api.getTemplateCategories(categoryCode).then(res => {
@@ -36,8 +36,8 @@ export const useTemplateRequest = () => {
   }
 
   /**
-   * 获取官方模版分类列表
-   * @param categoryCodes 需要排序的分类id列表
+   * Get a list of official template categories
+   * @param categoryCodes List of category ids to be sorted
    */
   function getTemplateCategoryReq(categoryCodes?: string) {
     return Api.getTemplateCategory(categoryCodes).then(res => {
@@ -53,10 +53,10 @@ export const useTemplateRequest = () => {
   }
 
   /**
-   * 获取模版列表
-   * @param spaceId 空间站 ID
-   * @param categoryName 模版分类名称
-   * @param templateIds 模版ID列表
+   * Get a list of templates
+   * @param spaceId Space Station ID
+   * @param categoryName Template Category Name
+   * @param templateIds List of stencil IDs
    */
   function getTemplateListReq(spaceId: string, categoryCode?: string, isPrivate?: boolean) {
     return Api.getTemplateList(spaceId, categoryCode, isPrivate).then(res => {
@@ -72,8 +72,8 @@ export const useTemplateRequest = () => {
   }
 
   /**
-   * 删除模板
-   * @param templateId 模板Id
+   * Delete template
+   * @param templateId
    */
   function deleteTemplateReq(templateId: string) {
     return Api.deleteTemplate(templateId).then(res => {
@@ -99,8 +99,8 @@ export const useTemplateRequest = () => {
   }
 
   /**
-   * 获取模板目录信息
-   * @param templateId 模板Id
+   * Get template catalogue information
+   * @param templateId
    */
   function getTemplateDirectoryReq(templateId: string, isPrivate: boolean, categoryCode?: string) {
     return Api.templateDirectory(templateId, isPrivate, categoryCode).then(res => {
@@ -116,7 +116,7 @@ export const useTemplateRequest = () => {
     });
   }
 
-  // 使用模板
+  // Use of templates
   function usingTemplateReq(templateId: string, parentId: string, data?: boolean) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     return Api.useTemplate(templateId, parentId, data).then(res => {
@@ -140,7 +140,7 @@ export const useTemplateRequest = () => {
     });
   }
 
-  // 校验模版名称是否已存在
+  // Check if the template name already exists
   function templateNameValidateReq(name: string) {
     return Api.templateNameValidate(name).then(res => {
       const { success, data, message } = res.data;
@@ -153,7 +153,7 @@ export const useTemplateRequest = () => {
     });
   }
 
-  // 获取热门推荐内容
+  // Get popular recommended content
   function templateRecommendReq() {
     return Api.templateRecommend().then(res => {
       const { success, data, message } = res.data;
@@ -167,7 +167,7 @@ export const useTemplateRequest = () => {
     });
   }
 
-  // 模糊搜索模板
+  // Fuzzy search templates
   function searchTemplateReq(keyword: string) {
     return Api.searchTemplate(keyword).then(res => {
       const { success, data, message } = res.data;

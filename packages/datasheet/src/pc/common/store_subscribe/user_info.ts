@@ -4,7 +4,7 @@ import { NotificationStore } from 'pc/notification_store';
 
 let userInfo: IUserInfo | undefined | null;
 
-// 同步 redux 的用户信息到 __initialization_data__.userInfo
+// Synchronize redux user information to __initialization_data__.userInfo
 function updateWindowUserInfo(userInfo: IUserInfo) {
   if(!window.__initialization_data__) (window as any).__initialization_data__ = {};
   if (!window.__initialization_data__.userInfo) {

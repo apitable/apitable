@@ -36,11 +36,11 @@ export const useGanttScroller = (props: IUseGanttScrollerProps) => {
     cellVerticalBarRef,
     pointAreaType = AreaType.Grid,
   } = props;
-  const isRealTouchDevice = isTouchDevice(); // 真正意义上的触控设备，处理 surface 之类的触控笔记本的情况
+  const isRealTouchDevice = isTouchDevice(); // A true touch device, dealing with touch laptops such as the surface
   const isGridArea = pointAreaType === AreaType.Grid;
   const isGanttArea = pointAreaType === AreaType.Gantt;
 
-  // 触摸设备表格滚动
+  // Touch device table scrolling
   const { scrollTo: gridMobileScrollTo } = useMobileScroller({
     containerRef,
     horizontalBarRef: gridHorizontalBarRef,
@@ -53,7 +53,7 @@ export const useGanttScroller = (props: IUseGanttScrollerProps) => {
     isRunning: isGridArea,
   });
 
-  // 触摸设备甘特图滚动
+  // Touch Equipment Gantt Chart Scroll
   const { scrollTo: ganttMobileScrollTo } = useMobileScroller({
     containerRef,
     horizontalBarRef: ganttHorizontalBarRef,

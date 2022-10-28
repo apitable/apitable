@@ -27,13 +27,13 @@ class ExpandRecordManager {
   }
 
   /**
-   * @description 检查缓存的数据和 dom 节点的数据是否保持一致，不一致则重置缓存
+   * @description Check that the data in the cache is consistent with the data in the dom node, and reset the cache if it is not
    * @returns
    */
   checkData() {
     const container = document.querySelectorAll(`.${EXPAND_RECORD}`);
     if (container.length !== this.focusHolderRefs.length) {
-      console.warn('! ' + '缓存和实际数据有差距');
+      console.warn('! ' + 'Gap between cache and actual data');
       this.destroy();
       return false;
     }

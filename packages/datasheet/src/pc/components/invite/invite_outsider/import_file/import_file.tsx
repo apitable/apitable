@@ -16,19 +16,19 @@ interface IImportFileProps {
   setSecondVerify: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-// 上传文件后返回的token
+// The token returned after uploading a file
 export const ImportFile: FC<IImportFileProps> = ({ setMemberInvited, closeModal, secondVerify, setSecondVerify }) => {
-  // 当前挂载的子组件
+  // Currently mounted subassemblies
   const [kid, setKid] = useState<IKidType>(KidType.BeforeUpload);
-  // 选择文件之后的回调信息
+  // Callback message after selecting a file
   const [file, setFile] = useState<File | undefined>();
-  // 上传文件进度
+  // Upload file progress
   const [percent, setPercent] = useState(0);
-  // 上传结果
+  // Upload results
   const [responseInfo, setResponseInfo] = useState<IUploadFileResponse | null>(null);
   const [previewList, setPreviewList] = useState<IErrorInfo[]>([]);
   const [err, setErr] = useState('');
-  // 初始化上传文件状态值 | 继续邀请
+  // Initialize upload file status value | Continue Invitation
   const init = () => {
     setFile(undefined);
     setKid(KidType.BeforeUpload);
@@ -36,7 +36,7 @@ export const ImportFile: FC<IImportFileProps> = ({ setMemberInvited, closeModal,
   const setReqToken = (c) => {
     reqToken = c;
   };
-  // 取消上传
+  // Cancel Upload
   const cancelImport = () => {
     if (!reqToken) return;
     reqToken();
@@ -44,7 +44,7 @@ export const ImportFile: FC<IImportFileProps> = ({ setMemberInvited, closeModal,
     init();
   };
 
-  // 上传文件成功后，刷新组织架构及员工列表
+  // Refresh the organisation structure and staff list after successful file upload
   const updateSpaceMember = () => {
     setMemberInvited(true);
   };

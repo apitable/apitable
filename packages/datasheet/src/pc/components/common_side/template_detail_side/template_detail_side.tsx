@@ -63,7 +63,6 @@ export const TemplateDetailSide: React.FC = () => {
   return (
     <div
       className={styles.left}
-      // 无 spaceId 时不存在div.bg, 特殊处理
       style={{
         backgroundColor: spaceId ? 'unset' : colors.blackBlue[900],
       }}

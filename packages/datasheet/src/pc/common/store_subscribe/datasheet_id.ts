@@ -19,8 +19,8 @@ store.subscribe(function datasheetIdChange() {
   }
 
   if (state.pageParams.mirrorId) {
-    // 从数表进入 mirror，由于 url 中存在 datasheetId ,所以这里依旧会存储数据，
-    // 当路由跳转会数表，则不会被触发 watchRoom
+    // From the datasheet into the mirror, the datasheetId is present in the url, so the data is still stored here.
+    // When a route jumps through the session table, it will not be triggered watchRoom
     datasheetId = undefined;
     return;
   }

@@ -10,7 +10,7 @@ store.subscribe(function TemplateChange() {
   const pageParams = state.pageParams;
 
   if (!pageParams.mirrorId) {
-    // store 发生变化，用户不在镜像中就不用关心缓存数据的变化
+    // store The user does not have to care about changes to the cached data if they are not in the mirror
     return;
   }
 
@@ -24,8 +24,8 @@ store.subscribe(function TemplateChange() {
 
   if (previousMirrorId && mirrorId && previousMirrorId === mirrorId) {
     if (!mirror || !mirror.temporaryView) {
-      // 没有 mirror 说明是第一次进入 mirror，此时保持 mirror 和原视图的数据同步
-      // 没有 temporaryView 也是一样的逻辑
+      // No mirror means it's the first time you've entered the mirror, so keep the mirror and the original view in sync.
+      // The logic is the same without the temporaryView
       return;
     }
     const previousFieldMap = fieldMap;
@@ -50,14 +50,14 @@ function fillColumns(fieldMap, columns, mirrorId) {
   let _columns = [...columns];
 
   if (deleteIds.length) {
-    // 过滤被删除的列
+    // Filtering deleted columns
     _columns = _columns.filter(column => {
       return !deleteIds.includes(column.fieldId);
     });
   }
 
   if (insertIds.length) {
-    // 新增列
+    // New column
     insertIds.map(id => {
       _columns.push({
         fieldId: id

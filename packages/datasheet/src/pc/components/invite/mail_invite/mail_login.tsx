@@ -27,7 +27,6 @@ const MailLogin: FC = () => {
   });
 
   useMount(() => {
-    // 切换为邮箱登录
     localStorage.setItem('vika-preference-login-mode', 'mail');
   });
 

@@ -1,5 +1,5 @@
 /*
- * 各种事件触发器的命令绑定
+ * Command binding for various event triggers
  *
  * @Author: Kelly Peilin Chan (kelly@vikadata.com)
  * @Date: 2020-03-11 21:05:29
@@ -45,7 +45,7 @@ export const TriggerCommands = {
     const user = state.user;
     if (!config) return;
     const pendingWizardIds: number[] = [];
-    // 过滤掉不符合条件的wizards
+    // Filter out unqualified wizards
     wizards.forEach(id => {
       const curWizard = getWizardInfo(config, id);
       if (!curWizard || !isTimeRulePassed(curWizard.startTime, curWizard.endTime)) return;
@@ -62,7 +62,7 @@ export const TriggerCommands = {
     ]));
   },
 
-  // 进入此wizard的最后一个step
+  // Go to the last step of this wizard
   open_guide_next_step: (props?: IOpenGuideNextStepProps) => {
     if (props?.clearAllPrevUi) {
       TriggerCommands.clear_guide_all_ui();
@@ -79,7 +79,7 @@ export const TriggerCommands = {
     }
     store.dispatch(StoreActions.updateCurrentGuideStepIds(nextStepIds));
   },
-  // 跳过当前wizard，进入下一个wizard的第一个steps
+  // Skip the current wizard and go to the first steps of the next wizard
   skip_current_wizard: (props?: ISkipCurrentWizardProps) => {
     const state = store.getState();
     const hooks = state.hooks;
@@ -121,25 +121,25 @@ export const TriggerCommands = {
     }
     return Promise.reject('wizardId is not a number');
   },
-  // 刷新页面
+  // Refresh page
   page_reload: () => {
     window.location.reload();
   },
-  // 打开新的窗口
+  // Open a new window
   window_open_url: (url: string) => {
     window.open(getHrefFromConfigUrl(url));
   },
-  // 当前页面打开网址
+  // Current page open URL
   window_location_href_to: (url: string) => {
     window.location.href = getHrefFromConfigUrl(url);
   },
-  // 标记消息为已读
+  // Mark message as read
   mark_notice_to_read: (idArr: string[], isAll?: boolean) => {
     Api.transferNoticeToRead(idArr, isAll);
   },
 };
 
-// 执行url的跳转处理
+// Perform url jump processing
 export const getHrefFromConfigUrl = (url: string) => {
   if (url.startsWith('/')) {
     const newUrl = new URL(url, window.location.origin);
@@ -147,7 +147,7 @@ export const getHrefFromConfigUrl = (url: string) => {
   }
   return url;
 };
-// 执行单个action
+// Execute a single action
 const startAction = (config: IWizardsConfig, actionId: string) => {
   const Actions = config.player.action;
   const curAction = Actions.find(item => item.id === actionId);

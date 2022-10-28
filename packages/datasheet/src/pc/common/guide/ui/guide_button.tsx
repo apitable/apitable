@@ -19,7 +19,7 @@ export interface IGuideButton {
   onPrev?: () => void;
 }
 
-// 判断有几个按钮
+// Determine how many buttons are available
 export const getButtonNum = (...args) => {
   const arr = args[0];
   const btnArrValid = arr.filter(item => item);

@@ -17,7 +17,7 @@ store.subscribe(() => {
   if (!paramsDashboardId) { return; }
 
   if (!paramsDashboardId && previousParamsDashboardId) {
-    // TODO: 销毁  Dashboard
+    // TODO: Destroy Dashboard
     return;
   }
 

@@ -17,7 +17,7 @@ export class Interpreter {
   }
 
   /**
-   * 通过访问抽象语法树进行求值
+   * Valuation by accessing the abstract syntax tree
    * @param {AstNode} node
    * @returns {boolean}
    * @memberof Interpreter

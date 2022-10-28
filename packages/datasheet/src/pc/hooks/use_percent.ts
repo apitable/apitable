@@ -8,9 +8,9 @@ export const usePercent = (
   options?: {
     immediate?: boolean;
   }) => {
-  // 进度值
+  // Progress values
   const [percent, setPercent] = useState(startValue);
-  // 是否开始倒计时
+  // Whether to start the countdown
   const [isStart, setIsStart] = useState(false);
 
   useInterval(() => {

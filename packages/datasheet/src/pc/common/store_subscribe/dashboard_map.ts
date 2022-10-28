@@ -21,7 +21,7 @@ store.subscribe(() => {
   }
 
   const diffOfAdd = difference([...dashboardIds], [...previousDashboardIds]);
-  // 如果以后要删除 dashboard 的数据结构，可以使用下面的变量判断
+  // If you want to delete a dashboard's data structure later, you can use the following variable judgement
   // const diffOfDelete = difference([...previousDashboardId], [...dashboardIds]);
 
   if (diffOfAdd.length) {

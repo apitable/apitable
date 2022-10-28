@@ -14,7 +14,7 @@ interface IAlarmTipTextProps {
   notShowDetail?: boolean;
 }
 
-// 只有数表移动出现 tooltip 才渲染并加载成员数据，防止重复加载
+// Only render and load member data when a tooltip appears on a table move to prevent double loading
 export const AlarmTipText = ({ datasheetId, recordId, dateTimeFieldId, curAlarm, notShowDetail }: IAlarmTipTextProps) => {
   const snapshot = useSelector(state => Selectors.getSnapshot(state, datasheetId))!;
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
@@ -23,7 +23,7 @@ export const AlarmTipText = ({ datasheetId, recordId, dateTimeFieldId, curAlarm,
   const dateTimeCellValue = useSelector(state => Selectors.getCellValue(state, snapshot, recordId, dateTimeFieldId));
   const fieldMap = useSelector(state => Selectors.getFieldMap(state, datasheetId)!);
 
-  // 无成员数据时异步补充
+  // Asynchronous replenishment when no member data is available
   useEffect(() => {
     if (alarm?.target !== AlarmUsersType.Member) {
       return;
@@ -61,8 +61,8 @@ export const AlarmTipText = ({ datasheetId, recordId, dateTimeFieldId, curAlarm,
         return t(Strings.task_reminder_notify_who_error_empty);
       }
 
-      // 在日期提醒设置的弹窗中，并不需要特别详细的展示有哪些字段需要提示
-      // 而在单元格的 tooltip 中，需要把详细的字段名拼接出来
+      // The pop-up window for date reminders does not need to show in particular detail which fields need to be prompted
+      // And in the tooltip of the cell, the detailed field names need to be spliced out
       if (notShowDetail) {
         memberTip = t(Strings.specifical_member_field);
       } else {
@@ -112,12 +112,12 @@ export const AlarmTipText = ({ datasheetId, recordId, dateTimeFieldId, curAlarm,
   }, [spaceInfo, alarm, dateTimeCellValue, fieldMap, unitMap, notShowDetail, snapshot.meta.fieldMap]);
 
   const getTipText = () => {
-    // alarmTipData 为字符串，场景应该是出现了错误
+    // alarmTipData is a string, the scene should be in error
     if (typeof alarmTipData === 'string') {
       return alarmTipData;
     }
 
-    /* alarmTipData!.memberTip 如果是数组，说明是注入的企微的组件 */
+    /* alarmTipData!.memberTip If it's an array, it means it's an injected Enterprise Micro component */
     const remindWho = Array.isArray(alarmTipData!.memberTip) ? <div>
       {alarmTipData!.memberTip.map(item => item)}
     </div> : alarmTipData!.memberTip;
@@ -129,7 +129,7 @@ export const AlarmTipText = ({ datasheetId, recordId, dateTimeFieldId, curAlarm,
         remind_time: '',
         remind_who: remindWho,
       });
-    } // 兼容企微
+    } // Compatible with Enterprise Micro
     return <span>
       {t(Strings.task_reminder_notify_tooltip, {
         remind_date: alarmTipData!.date,

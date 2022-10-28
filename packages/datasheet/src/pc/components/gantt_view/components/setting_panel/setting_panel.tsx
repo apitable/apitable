@@ -309,7 +309,6 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
   const autoAllRecords = (value: boolean) => {
     onGanttStyleChange(GanttStyleKeyType.AutoTaskLayout, value);
     if (value) {
-      // TODO 判断开始跟结束时间是否是计算字段是计算字段不可以修改
       const startTimeIsComputedField = Field.bindModel(fieldMap[startFieldId]).isComputed;
       const endTimeISComputedField = Field.bindModel(fieldMap[endFieldId]).isComputed;
       if (startTimeIsComputedField || endTimeISComputedField) {
@@ -393,7 +392,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
         <CloseMiddleOutlined className={styles.closeIcon} size={16} color={black[500]} onClick={onClose} />
       </header>
 
-      {/* 视频教学按钮 */}
+      {/* Video teaching button */}
       <div className={styles.guideWrap} onClick={onPlayGuideVideo}>
         <span className={styles.left}>
           <ClassroomOutlined size={16} color={colors.primaryColor} />
@@ -404,7 +403,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
         <ChevronRightOutlined size={16} color={colors.thirdLevelText} />
       </div>
 
-      {/* 设置开始和结束日期字段 */}
+      {/* Set the start and end date fields */}
       <div className={classNames(styles.setting, styles.firstSetting)}>
         <Typography className={styles.settingTitle} variant='h7'>
           {t(Strings.gantt_date_time_setting)}
@@ -451,7 +450,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
         {noRequiredField && <span className={styles.errorText}>{t(Strings.gantt_pick_two_dates_tips)}</span>}
       </div>
 
-      {/* 设置任务条颜色 */}
+      {/* Set taskbar colour */}
       <div className={styles.setting}>
         <div className={styles.settingHeader}>
           <Typography className={styles.settingTitle} variant='h7'>
@@ -517,7 +516,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
         )}
       </div>
 
-      {/* 设置工作日 */}
+      {/* Set working days */}
       <div className={styles.setting}>
         <Typography className={styles.settingTitle} variant='h7'>
           {t(Strings.gantt_workdays_setting)}

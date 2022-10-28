@@ -78,11 +78,11 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
   const { run: getSubUnitList, data: unitsData, loading: unitListloading } = useRequest(getSubUnitListReq, { manual: true });
   const { run: searchUnit, data: searchUnitData } = useRequest(searchUnitReq, { manual: true });
   const { run: search } = useDebounceFn(searchUnit, { wait: 100 });
-  // 面包屑数据源
+  // Breadcrumb data source
   const [breadCrumbData, setBreadCrumbData] = useState<IBreadCrumbData[]>([{ name: t(Strings.contacts), teamId: '' }]);
-  // 搜索关键字
+  // Search by keyword
   const [keyword, setKeyword] = useState('');
-  // 全选checkbox的状态
+  // Status of the select all checkbox
   const [checkedAll, setCheckedAll] = useState(false);
 
   const [clickedTeamId, setClickedTeamId] = useState<string>();
@@ -134,7 +134,6 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unitsData, source]);
 
-  // 判断是否disabled
   const isDisabled = useCallback(
     (data: UnitItem) => {
       if (source === SelectUnitSource.Admin && 'teamId' in data) {
@@ -161,7 +160,6 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
     },
     [disableList, disableIdList, source],
   );
-  // 判断是否有下一级
   const canEntrySubItem = (item: ITeam) => {
     if (source === SelectUnitSource.ChangeMemberTeam) {
       return item.hasChildrenTeam;
@@ -172,7 +170,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
     if (!units) {
       return;
     }
-    // 判断当前数据是否全部在已选列表中
+    // Determine if the current data is all in the selected list
     const unitsMemberWithoutDisabled = units.members.filter(item => !isDisabled(item));
     const unitsTeamWithoutDisabled = units.teams.filter(item => !isDisabled(item));
     const membersCheckedAll =
@@ -186,15 +184,14 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
     setCheckedAll(membersCheckedAll && teamsCheckedAll);
   }, [units, checkedList, isDisabled]);
 
-  // 面包屑点击事件
+  // Breadcrumb click event
   const skipUnit = (teamId: string) => {
     const index = breadCrumbData.findIndex(item => item.teamId === teamId);
     setBreadCrumbData(breadCrumbData.slice(0, index + 1));
     setClickedTeamId(teamId);
     getSubUnitList(teamId, linkId);
   };
-
-  // 点击下级事件
+  
   const onClickTeamItem = (unit: ITeam) => {
     if (unitListloading || !canEntrySubItem(unit)) {
       return;
@@ -205,7 +202,6 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
     setBreadCrumbData([...breadCrumbData, { name: unit.teamName, teamId: unit.teamId }]);
   };
 
-  // 选中时unit
   const onChangeChecked = (e: CheckboxChangeEvent, unit: UnitItem) => {
     const idx = checkedList.findIndex(item => item.unitId === unit.unitId);
     if (idx !== -1) {
@@ -406,11 +402,10 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
     const roleList = isRole ? (data as IRoleItem[]) : [];
     const members = units?.members || [];
     const teams = units?.teams || [];
-
-    // 勾选全选
+  
     const onCheckAllChange = () => {
       if (isSingleSelect) return;
-      // 全选时
+  
       if (!checkedAll) {
         const newCheckedList: UnitItem[] = Object.values(units)
           .flat()
@@ -434,7 +429,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
 
         setCheckedList(data);
       } else {
-        // 取消全选
+  
         const newCheckedList = checkedList.filter(listItem => {
           let isExist = true;
           Object.values(units).forEach(eachUnits => {

@@ -3,8 +3,9 @@ import produce from 'immer';
 import uniqBy from 'lodash/uniqBy';
 
 /**
- * @description 在进入空间或者分享页面，提前请求一部分成员的信息，方便用户在点击成员单元格时能提供良好的体验
- * 用于标记缓存的 cacheId 分为两种：
+ * @description Request a section of members' information in advance when entering a space or sharing page to provide a good experience for users
+ *  when clicking on a member cell
+ * The cacheId used to mark the cache is divided into two types.
  * 1. spaceId
  * 2. shareId
  * @class MemberStash

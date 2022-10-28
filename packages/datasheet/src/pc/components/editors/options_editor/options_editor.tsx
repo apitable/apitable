@@ -57,7 +57,6 @@ export const OptionsEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorP
     return Selectors.getCellValue(state, snapshot!, recordId, field.id);
   });
   const currentFieldInfo = useSelector(state => Selectors.getField(state, field.id, datasheetId));
-  // 这里计算出来的 isMulti 事实上是 field.isMulti 与 isFiltering  的并集, 在 Filtering（筛选) 状态, `单选 + 包含` 也当成多选处理
   const isMulti = FieldType.MultiSelect === field.type;
 
   const { screenIsAtMost } = useResponsive();
@@ -87,7 +86,6 @@ export const OptionsEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorP
     });
   };
 
-  // 这个状态用来维护拖拽时拖拽按钮的显示
   const [draggingId, setDraggingId] = useState<string | undefined>();
 
   function afterDrag(trulyOldIndex, trulyNewIndex) {
@@ -99,7 +97,6 @@ export const OptionsEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorP
     });
   }
 
-  // 创建一个新的选项
   function insertNewItem(keyword: string, cb: () => void) {
     if (!fieldPropertyEditable) {
       return;

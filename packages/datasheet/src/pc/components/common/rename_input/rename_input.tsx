@@ -6,7 +6,6 @@ import { forwardRef, ForwardRefRenderFunction, useImperativeHandle, useRef } fro
 import styles from './style.module.less';
 
 export interface IRenameInputProps extends InputProps {
-  // 显示错误信息
   errorMsg?: string;
   customStyle?: string;
 }
@@ -19,7 +18,6 @@ const RenameInputBase: ForwardRefRenderFunction<any, IRenameInputProps> = (props
   }));
 
   const { errorMsg, customStyle, ...rest } = props;
-  // 警告样式
   const returnInputClass = (errorMsg?: string, customStyle?: string) => {
     const hasIcon = Boolean(rest.prefix || rest.suffix);
     if (errorMsg) {

@@ -11,7 +11,7 @@ interface ITouchMove {
   };
   sessionStorageKey: string;
   onResize?: () => void;
-  onClick?: (e: any) => void; // 单击事件回调
+  onClick?: (e: any) => void; 
   onDragStart?: () => void;
 }
 

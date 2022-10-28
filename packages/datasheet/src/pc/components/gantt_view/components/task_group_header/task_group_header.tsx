@@ -91,10 +91,13 @@ const TaskGroupHeader: FC<ITaskGroupHeaderProps> = (props) => {
   const isCollapse = groupingCollapseIdsSet.has(pathKey);
 
   const changeGroupCollapseState = (newState: string[]) => {
-    // 表内查找时，屏蔽折叠分组操作
+    // Masked collapse grouping operation for in-table lookup
     if (isSearching) return;
     dispatch(StoreActions.setGroupingCollapse(datasheetId, newState));
-    // QuickAppend 组件显示依赖于 hoverRecordId, 分组折叠的情况下应该清空, 避免产生视觉误导
+    /* 
+     * QuickAppend The component display depends on the hoverRecordId, 
+     * which should be cleared in the case of group collapses to avoid visual misleadingness
+    **/
     dispatch(StoreActions.setHoverRecordId(datasheetId, null));
     setStorage(StorageName.GroupCollapse, { [`${datasheetId},${viewId}`]: newState });
   };

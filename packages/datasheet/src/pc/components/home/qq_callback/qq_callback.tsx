@@ -13,12 +13,9 @@ const QqCallback: FC = props => {
   const accessToken = query.get('access_token') || '';
   const expiresIn = query.get('expires_in') || '';
   const code = query.get('code') || '';
-  // 0:表示扫码登录，1:表示账号绑定
   const type = Number(localStorage.getItem('vika_account_manager_operation_type')) || ConfigConstant.ScanQrType.Login;
-  // ! 是否是从分享页面登录的（保存的是分享页面的地址）
   const shareReference = localStorage.getItem('share_login_reference');
   const reference = localStorage.getItem('reference');
-  // 从链接邀请过来的
   const inviteLinkData = localStorage.getItem('invite_link_data');
   const inviteCode = localStorage.getItem('invite_code');
   localStorage.removeItem('vika_account_manager_operation_type');
@@ -47,7 +44,6 @@ const QqCallback: FC = props => {
     }
   };
   const loginSuccess = () => {
-    // 手机端的链接邀请，qq登录成功并且不需要注册，再次进入链接邀请页面，需要用户重新点击确定按钮
     if (inviteLinkData && isMobile) {
       window.opener && window.opener.close();
       const { linkToken } = JSON.parse(inviteLinkData);
@@ -63,7 +59,6 @@ const QqCallback: FC = props => {
       Router.push(Navigation.HOME);
       return;
     }
-    // 是否从分享页面登录的
     if (shareReference) {
       setStorage(StorageName.ShareLoginFailed, false);
       window.location.href = shareReference;
@@ -95,7 +90,6 @@ const QqCallback: FC = props => {
         }
       } else {
         if (type === ConfigConstant.ScanQrType.Login) {
-          // 是否从分享页面登录的
           if (shareReference) {
             setStorage(StorageName.ShareLoginFailed, true);
             window.location.href = shareReference;

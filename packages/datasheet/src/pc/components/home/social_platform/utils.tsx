@@ -81,11 +81,12 @@ export const isSocialWecom = (space?: ISpaceInfo | ISpaceBasicInfo | null) => {
 };
 
 /**
- * 企业微信第三方应用 —— 引入官方通讯录组件展示
- * @param name 用户名/成员名
- * @param type 展示类型 <用户｜部门>
- * @param isModified 是否修改过（若没修改过，则使用官方组件展示；若修改过，则直接展示）
- * @param spaceInfo 空间站信息（用于判断是否是企微第三方应用）
+ * Enterprise WeChat third party application - introduction of official address book component display
+ * @param name Username/Member Name
+ * @param type Display type <user｜department
+ * @param isModified whether it has been modified (if it has not been modified, it is displayed using the official component; 
+ * if it has been modified, it is displayed directly)
+ * @param spaceInfo Space Station information (used to determine if it is an Enterprise Micro third party application)
  */
 export const getSocialWecomUnitName = ({
   name,
@@ -111,9 +112,9 @@ export const isSocialFeiShu = (space?: ISpaceInfo | ISpaceBasicInfo | null) => {
   return platform === ConfigConstant.SocialType.FEISHU && appType === 2;
 };
 
-// 空间是否绑定了钉钉、飞书、企业微信
+// Is the space tied to Dingtalk, Fishu, Enterprise Weixin
 export const isSocialPlatformEnabled = (space: ISpaceInfo | ISpaceBasicInfo, type?: ISocialPlatformType, appType?: ISocialAppType) => {
-  // 绑定了任意一个第三方应用或自建应用
+  // Bundled with any third party app or self-built app
   if (!type) {
     return Boolean(space.social && space.social.enabled &&
       typeof space.social.platform === 'number' && space.social.platform !== 0);
@@ -125,7 +126,7 @@ export const isSocialPlatformEnabled = (space: ISpaceInfo | ISpaceBasicInfo, typ
   return Boolean(typeof space.social.platform === 'number' && space.social.platform === type);
 };
 
-// 空间绑定了钉钉、飞书、企业微信，则弹出默认的阻止操作框
+// The default blocking action box pops up if the space is bound to Pinning, FeiShu or Enterprise WeChat
 export const socialPlatPreOperate = (space: ISpaceInfo | ISpaceBasicInfo | null, manageFunc: () => void) => {
   if (space && isSocialPlatformEnabled(space) && !isSocialDingTalk(space) && !isSocialWecom(space)) {
     return SocialPlatformMap[space?.social.platform].org_manage_reject_default_modal();
@@ -133,7 +134,6 @@ export const socialPlatPreOperate = (space: ISpaceInfo | ISpaceBasicInfo | null,
   manageFunc();
 };
 
-// 是否是在飞书、钉钉内部浏览器打开
 export const inSocialApp = (type?: ISocialPlatformType) => {
   if(process.env.SSR){
     return;
@@ -152,22 +152,22 @@ export const inSocialApp = (type?: ISocialPlatformType) => {
     default:
       break;
   }
-  // 判断是否是在指定的内置浏览器中
+  // Determine if it is in the specified built-in browser
   return socials.some(item => navigator.userAgent.toLowerCase().includes(item));
 };
 
-// 当前域名是否为企业专属域名
+// Is the current domain name a corporate exclusive domain name
 export const isSocialDomain = () => window.location.host.includes('.com.');
 
 /**
- * 判断是否在钉钉容器内，
- * 同时可判断是否可以调用钉钉的接口
+ * Determining whether a Dingtalk container is in the
+ * You can also determine if you can call the Dingtalk interface
  */
 export const isInDingtalkFunc = () => Boolean(dd.env.platform !== 'notInDingTalk');
 
 /**
- * 判断是否在钉钉 sku 页面
- * 如果是，则禁止除滚动事件外的交互事件
+ * Determine if you are on the Dingtalk sku page
+ * If yes, interaction events other than scroll events are disabled
  */
 export const isDingtalkSkuPage = (purchaseToken: string) => {
   return isDingtalkFunc() && Boolean(purchaseToken);

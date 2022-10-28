@@ -133,15 +133,6 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
   const isGrouped = groupInfo && groupInfo.length > 0;
 
   const setVisibleTransition = () => {
-    /*
-    展开:
-      add dom
-      do transition
-    收起:
-      do transition
-      remove dom
-    */
-    // 初始化与展开走这里添加数据
     if (isGrouped && groupingCollapseIds != null && groupingCollapseIds.length !== lastTransitionIds.length) {
       const arr: string[] = [];
       groupRows.forEach(eachGroupRows => {
@@ -151,7 +142,6 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
         }
       });
       if (groupingCollapseIds.length < lastTransitionIds.length) {
-        // 需要展开时，设置动画效果
         setTransitionRecordIds(arr);
       }
       setLastTransitionIds(groupingCollapseIds);
@@ -222,7 +212,6 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
     }
   };
 
-  // 上下滚动一屏
   const pageUpOrPageDown = (down: boolean) => {
     const gridEle = ReactDOM.findDOMNode(galleryViewRef.current) as Element;
     if (down) {
@@ -232,7 +221,6 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
     }
   };
 
-  // 滚动到顶部/底部
   const pageUpEdgeOrPageDownEdge = (down: boolean) => {
     const gridEle = ReactDOM.findDOMNode(galleryViewRef.current) as Element;
     if (down) {
@@ -246,7 +234,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
     return isMobile ? 178 : height;
   }
 
-  // 计算没列显示多少个卡片，每个卡片的宽度。
+  // Calculate how many cards to display in each column and the width of each card.
   const { columnCount, cardWidth } = getColumnWidthAndCount(containerWidth!, isMobile, galleryStyle!);
   const isOneColumnMode = columnCount === 1;
   const cardCoverHeight = toMobileImgHeight(columnCount > 3 ? 240 : 320);
@@ -264,7 +252,6 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
     titleHeight: 14,
   });
 
-  // 20 = 卡片上下内边距，16 = 卡片容器项边距
   const cardHeight = getCardHeight(null, isMobile) + 20 + 16;
   // const showAddCard = permissions.rowCreatable;
   const showAddCard = Boolean(!templateId && editable);
@@ -291,7 +278,6 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
     }
   }, [currentSearchItem, _visibleRecords, columnCount, linearRows, isGrouped]);
 
-  // 释放鼠标 drop 时，提交排序。
   const commitMove = () => {
     if (!commitRef.current) {
       return;
@@ -318,7 +304,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
     });
   };
 
-  // 拖动卡片时动态排序，将 drag 和 drop 的 recordId 记录下来。
+  // Dynamic sorting when dragging cards, recording the recordId of drag and drop.
   const moveCard = (dragIndex: number, hoverIndex: number, direction: DropDirectionType) => {
     commitRef.current = {
       dragRecordId: visibleRecords[dragIndex].recordId,
@@ -334,8 +320,6 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
   const onDoTransition = React.useCallback(
     recordId => {
       if (groupingCollapseIds == null) return;
-      // 有 recordId 被认为是隐藏，会先做动画，再移除 dom
-      // 展开动画时，由于会先添加 dom，所以会先移除 groupingCollapseIds 的 headId，所以此处无需再额外设置 setTransitionRecordIds
       if (recordId) {
         setTransitionRecordIds(recordIds => [...recordIds, recordId]);
       }
@@ -378,7 +362,6 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
     return `${record.type}_${recordId}`;
   };
 
-  // 根据字段类型返回对应高度，高度 = 内容 + padding
   const getRowHeightByFieldType = (field: IField, paddingTop: number) => {
     switch (field.type) {
       case FieldType.Text:
@@ -431,7 +414,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
       case GalleryGroupItemType.GroupTitle: {
         const paddingTop = getGroupTitlePaddingTip(linearRows, realIndex - 1, rowIndex);
         if (field) {
-          // 存在内容为空的情况，需要获取是否有值
+          // There are cases where the content is empty and you need to get if there is a value
           const cellValue = getCellValue(state, snapshot, record.recordId, field.id);
           return cellValue ? getRowHeightByFieldType(field, paddingTop) : GROUP_TITLE_DEFAULT_HEIGHT + paddingTop;
         }

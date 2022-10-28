@@ -6,27 +6,27 @@ import classNames from 'classnames';
 
 interface IPopUpTitleProps extends Required<Pick<ITypographyProps, 'variant'>> {
   /**
-   * @description 标题
+   * @description Title
    */
   title: string;
 
   /**
-   * @description 右侧需要显示的内容，可以不传
+   * @description The content to be displayed on the right can be left out
    */
   rightContent?: JSX.Element;
 
   /**
-   * @description 说明文档的地址，显示为一个 icon，紧跟在标题面
+   * @description The address of the description document, displayed as an icon, immediately above the title
    */
   infoUrl?: string
 
   /**
-   * @description 样式
+   * @description Format
    */
   className?: string;
 
   /**
-   * @description 样式
+   * @description Format
    */
   style?: React.CSSProperties
 }
@@ -35,7 +35,7 @@ export const PopUpTitle: React.FC<IPopUpTitleProps> = (props) => {
   const colors = useThemeColors();
   const { rightContent, title, variant, infoUrl, className, style } = props;
   return <div className={classNames(className, styles.popUpTitle)} style={style}>
-    {/* 左侧的显示 */}
+    {/* Left side of the display */}
     <div className={styles.leftPos}>
       <Typography variant={variant}>
         {title}
@@ -51,7 +51,7 @@ export const PopUpTitle: React.FC<IPopUpTitleProps> = (props) => {
       }
 
     </div>
-    {/* 支持自定义右侧的显示  */}
+    {/* Support for customising the display on the right  */}
     {
       rightContent ? <div className={styles.rightPos}>{rightContent}</div> : null
     }

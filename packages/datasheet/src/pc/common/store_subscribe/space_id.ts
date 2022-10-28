@@ -16,7 +16,7 @@ store.subscribe(function spaceIdChange() {
     return;
   }
 
-  // notify.reset(); // 切换空间，重置 toast 的定位的 dom 元素
+  // notify.reset(); // Toggle the space and reset the dom element positioned by toast
   console.log('init resourceService: ', spaceId);
 
   CacheManager.clear();
@@ -25,7 +25,7 @@ store.subscribe(function spaceIdChange() {
   memberStash.loadMemberList(spaceId);
 
   store.dispatch(StoreActions.resetUnitInfo());
-  // 请求订阅信息
+  // Request subscription information
   getBillingInfo(spaceId).then(data => {
     store.dispatch(StoreActions.updateSubscription(data));
   });

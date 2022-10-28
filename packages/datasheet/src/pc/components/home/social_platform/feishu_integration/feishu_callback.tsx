@@ -5,7 +5,7 @@ import * as React from 'react';
 import { useEffect } from 'react';
 
 /**
- * 点击工作台进入空间站的中间页
+ * Click on the workbench to go to the middle page of the space station
  */
 const FeishuCallback: React.FC = () => {
   const query = useQuery();

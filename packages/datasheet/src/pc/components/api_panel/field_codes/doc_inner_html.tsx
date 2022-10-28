@@ -50,7 +50,7 @@ const DocInnerHtml: React.FC<IDocInnerHtmlProps> = props => {
   };
 
   const triggerToDebug = () => {
-    // 各个浏览器url长度限制不同，所以取小点
+    // The url length limit varies from browser to browser, so take a smaller one
     const bodyMaxLength = 500;
     const { datasheetId, viewId, exampleRecords, method, fieldKey } = exampleConfig;
     const body = JSON.stringify({
@@ -64,7 +64,7 @@ const DocInnerHtml: React.FC<IDocInnerHtmlProps> = props => {
       recordId: method === 'DELETE' ? exampleConfig.exampleRecords.join(',') : '',
       body: body.length > bodyMaxLength ? '' : body,
     });
-    // 如果body长度过长就不带body
+    // Without body if body length is too long
     if (body.length > bodyMaxLength) {
       Modal.confirm({
         type: ModalType.Warning,

@@ -21,7 +21,6 @@ const DingTalkBindSpace = () => {
           clearQuery: true
         });
       }
-      // 应用已经绑定了空间
       // return window.location.href = `/workbench/${bizAppId}?spaceId=${data.bindSpaceId}`;
       return Router.push(Navigation.WORKBENCH, {
         params: { spaceId: data.bindSpaceId, nodeId: bizAppId },

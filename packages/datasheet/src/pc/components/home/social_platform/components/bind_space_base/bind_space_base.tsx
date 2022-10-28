@@ -15,13 +15,11 @@ import styles from './style.module.less';
 interface IBindSpaceBase {
   loading?: boolean;
   btnLoading?: boolean;
-  // optionData设置为null或undefined，则出现骨架屏
   optionData?: IFormatSelectOptionData[] | null;
   err?: React.ReactNode;
   defaultValue?: React.Key;
   onChange?: (value: React.Key) => void;
   onClick?: (value: React.Key) => void;
-  // maxCount设置为null或undefined，则出现骨架屏
   maxCount?: number | null;
   type: 1 | 2 | 3;
 }

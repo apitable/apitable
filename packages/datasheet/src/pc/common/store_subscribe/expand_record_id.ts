@@ -9,7 +9,7 @@ store.subscribe(function routeRecordChange() {
   const isLogin = state.user.isLogin;
   const { viewId, recordId, shareId } = state.pageParams;
 
-  // 分享页未登录也可以展开卡片
+  // Share page to expand cards even if you are not logged in
   if (!isLogin && !shareId) {
     return;
   }
@@ -20,13 +20,13 @@ store.subscribe(function routeRecordChange() {
     preRecordId && clearExpandModal();
     preRecordId = null;
     if (isSideRecordOpen) {
-      store.dispatch((StoreActions.toggleSideRecord(false))); // 当路由不存在 recordId 时，关闭侧边记录卡片
+      store.dispatch((StoreActions.toggleSideRecord(false))); // Close the side record card when the recordId does not exist for the route
     }
 
     return;
   }
 
-  // 兼容没有 viewId 但是有 recordId 的情况
+  // Compatible with cases where there is no viewId but there is a recordId
   if (!viewId || preRecordId === recordId) {
     return;
   }

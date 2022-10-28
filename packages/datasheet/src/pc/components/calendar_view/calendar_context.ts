@@ -14,10 +14,10 @@ export type IPosition = {
 export type IRecordModal = [string, boolean, IPosition];
 
 export interface ICalendarContext {
-  // 左键快捷操作日历视图记录
+  // Left-click shortcut to calendar view records
   setRecordModal: (recordMes?: IRecordModal) => void;
   recordModal?: IRecordModal;
-  // 缓存数据
+  // Cached data
   fieldMap: IFieldMap;
   columns: ICalendarViewColumn[];
   snapshot: ISnapshot;
@@ -37,7 +37,7 @@ export interface ICalendarContext {
   keyword: string,
   setKeyword: (word: string) => void;
   onCloseGrid: () => void;
-  // 缓存方法
+  // Caching methods
   getCellValue: (rId: string, fId: string) => any;
   isMobile: boolean;
   tasks?: ITask[];

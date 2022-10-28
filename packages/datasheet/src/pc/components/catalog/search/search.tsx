@@ -26,7 +26,7 @@ export type ISearchNode = INode & { superiorPath: string };
 let reqToken: () => void;
 
 const shouldOpenInNewTab = (e: React.MouseEvent) => {
-  // 按住 meta 或者使用鼠标中键点击，在新 tab 打开数表。
+  // Press and hold meta or click with the middle mouse button to open the table in a new tab.
   return e.metaKey || (e.button && e.button === 1);
 };
 
@@ -108,7 +108,7 @@ export const Search: FC<ISearchProps> = ({ className, closeSearch }) => {
         }
       })
       .catch(() => {
-        console.log('捕获取消请求');
+        console.log('Capture cancellation requests');
       });
   }, 500);
 

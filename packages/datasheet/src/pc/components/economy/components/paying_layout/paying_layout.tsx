@@ -16,7 +16,6 @@ interface IPayingLayout {
   footerRight?: React.ReactNode,
   onSubmit?: () => void;
   loading?: boolean;
-  // loading的icon颜色以及button的颜色
   themeColor?: string;
 }
 

@@ -80,7 +80,7 @@ export const useStatus = (props: IUseStatusProps) => {
     );
   }, [containerWidth, dragTaskId, instance, linearRows, offsetTop, rowHeight, rowIndex, scrollTop, theme.color.primaryColor]);
 
-  // 绘制 Hover 状态下的高亮行
+  // Drawing the highlighted line in Hover state
   const hoverRow: ReactNode = useMemo(() => {
     const isNoneArea = realAreaType == AreaType.None;
     const isRecordType = linearRows[rowIndex]?.type === CellType.Record;
@@ -97,7 +97,7 @@ export const useStatus = (props: IUseStatusProps) => {
     );
   }, [realAreaType, containerWidth, instance, linearRows, rowHeight, rowIndex, targetName, colors.rowSelectedBg]);
 
-  // 绘制 Active 状态下的高亮行
+  // Highlighting rows in Active state
   const activeRow: ReactNode = useMemo(() => {
     if (isMobile || !activeCell) return null;
 
@@ -116,15 +116,15 @@ export const useStatus = (props: IUseStatusProps) => {
   }, [activeCell, containerWidth, instance, isMobile, rowHeight, rowsIndexMap, colors.rowSelectedBg]);
 
   /**
-   * 绘制选中行
-   * 这里取个巧，对于全选的情况，只在 UI 上渲染可见的区域内容
+   * Draw selected rows
+   * Here's a trick, for the full selection case, only the content of the visible area is rendered on the UI
    */
   const selectedRows = useMemo(() => {
     if (recordRanges == null) return null;
     const selectedRows: React.ReactNode[] = [];
     const isSelectedAll = recordRanges.length === visibleRows.length;
 
-    // 全选
+    // Select All
     if (isSelectedAll) {
       for (let i = rowStartIndex; i < rowStopIndex; i++) {
         const record = linearRows[i];

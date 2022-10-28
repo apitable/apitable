@@ -17,15 +17,14 @@ interface ITriggerBase {
 
 interface IInfoCardProps {
   title: string | JSX.Element;
-  token?: React.ReactNode; // 用户标志（比如管理员）
+  token?: React.ReactNode; 
   description?: string;
-  onClick?: () => void; // 卡片是否有点击事件
-  originTitle?: string; // 用于搜索状态下展示
-  inSearch?: boolean; // 搜索状态下，会使用dangerouslySetInnerHTML，文字内容移出不会气泡显示
+  onClick?: () => void; 
+  originTitle?: string; 
+  inSearch?: boolean; 
   className?: string;
   style?: React.CSSProperties;
   avatarProps: IAvatarProps;
-  // 一些其他信息，展示在描述下面
   extra?: string;
   triggerBase?: ITriggerBase;
   userId?: string;

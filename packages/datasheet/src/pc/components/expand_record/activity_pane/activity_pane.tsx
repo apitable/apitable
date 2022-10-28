@@ -40,7 +40,7 @@ export const ActivityPaneBase: React.FC<IActivityPaneProps> = props => {
 
   const [selectOpen, setSelectOpen] = useState(false);
 
-  // 当前操作模式
+  // Current operating mode
   const unitMap = useSelector(state => Selectors.getUnitMap(state));
   const showRecordHistory = useSelector(state => Selectors.getRecordHistoryStatus(state, datasheetId))!;
   const [cacheType, setCacheType] = useLocalStorageState<ICacheType>('vika_activity_type', { defaultValue: {}});
@@ -56,7 +56,7 @@ export const ActivityPaneBase: React.FC<IActivityPaneProps> = props => {
   const [selectType, setSelectType] = useState<ActivitySelectType>(() => {
     let curDSType = cacheType && cacheType[datasheetId];
     if (curDSType === ActivitySelectType.NONE) {
-      // 屏蔽掉 NONE 的情况，因为 ACTIVITY_SELECT_MAP 没有 NONE 对应的值
+      // Mask out the case of NONE because ACTIVITY_SELECT_MAP does not have a value corresponding to NONE
       curDSType = ActivitySelectType.All;
     }
     if (!showRecordHistory && curDSType !== ActivitySelectType.Comment) {

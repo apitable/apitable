@@ -46,34 +46,37 @@ export const useWorkbenchSideSync = () => {
     }), shallowEqual);
   const { setRightClickInfo, rightClickInfo } = useContext(WorkbenchSideContext);
 
-  // 通过socket对目录树进行同步更新
+  // Synchronous update of the directory tree via socket
   useEffect(() => {
-    // 过滤掉操作方自己的信息（因为消息是全局广播的，所以操作方自己也会接收到）
+    // Filter out the operator's own messages (since the messages are broadcast globally, the operator itself will receive them)
     if (socketData && socketData.socketId !== NotificationStore.socket.id && socketData.spaceId === spaceId) {
       socketData && realTimeSyncTree(socketData);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socketData]);
 
-  // 判断指定节点是否存在并且展开过
-  // TODO: 还需要考虑到子节点本就为空的情况
+  // Determines if the specified node exists and has been expanded
+  // TODO: It is also necessary to take into account the case where the child node is already empty
   const isNodeExistAndExpanded = (nodeId: string): boolean => {
     if (!treeNodesMap[nodeId]) {
       return false;
     }
     const node = treeNodesMap[nodeId];
-    // 一个节点是表明是有子节点的，并且在树中有已经挂载了子节点，就返回true
+    // A node that indicates that it has children and that a child node is mounted in the tree returns true
     if ((treeNodesMap[nodeId].hasChildren && node?.children.length) || expandedKeys.includes(nodeId)) {
       return true;
     }
     return false;
   };
 
-  // 当前请求的节点数量与返回的节点数量不一致时，将对树进行差异操作
+  // If the number of nodes currently requested does not match the number of nodes returned, a diff operation is performed on the tree
   const diffOperation = (oldIds: string[], newNodes: INode[]) => {
     const newIds = newNodes.map(node => node.nodeId);
     const datasheetMapKeys = Selectors.getDatasheetIds(store.getState());
-    // 请求的节点数量大于返回的节点数量（因为请求只返回当前有权访问的节点），对树进行删除操作
+    /* 
+     * The number of nodes requested is greater than the number of nodes returned 
+     * (because the request only returns the nodes currently entitled to access), the tree is deleted
+     **/
     if (oldIds.length > newIds.length) {
       const diffNodeIds = oldIds.filter(nodeId => !newIds.includes(nodeId));
       if (rightClickInfo && diffNodeIds.includes(rightClickInfo.id)) {
@@ -111,7 +114,7 @@ export const useWorkbenchSideSync = () => {
     }
   };
 
-  // 更新数据源，比如目录树数表、表单的数据源
+  // Updating data sources, e.g. directory tree count tables, form data sources
   const updateNodeInfo = (nodeId: string, nodeType: ConfigConstant.NodeType, data: Partial<Omit<INodeMeta, 'name'> &
     { nodeName?: string, showRecordHistory?: ConfigConstant.ShowRecordHistory }>) => {
     dispatch(StoreActions.updateTreeNodesMap(nodeId, data));
@@ -119,7 +122,7 @@ export const useWorkbenchSideSync = () => {
     const nodeData = name ? { ...info, name } : info;
     switch (nodeType) {
       case ConfigConstant.NodeType.DATASHEET: {
-        // 协同更新表的历史记录开关状态
+        // Co-Update table history switch status
         if (has(data, 'showRecordHistory')) {
           dispatch(StoreActions.updateNodeInfo(nodeId, nodeType, {
             extra: {
@@ -179,7 +182,7 @@ export const useWorkbenchSideSync = () => {
 
   };
 
-  // 同步非文件夹类型的节点的错误状态
+  // Synchronising the error status of non-folder type nodes
   const syncErrorCode = (nodeId: string, nodeType: ConfigConstant.NodeType, code: number | null) => {
     switch (nodeType) {
       case ConfigConstant.NodeType.DATASHEET:
@@ -194,10 +197,13 @@ export const useWorkbenchSideSync = () => {
     }
   };
 
-  // 处理创建节点的同步消息
+  // Handling synchronisation messages for node creation
   const createNodeSync = async(data: INodeChangeSocketData) => {
     const { parentId } = data.data;
-    // 如果没有展开过就没必要去同步数据,但是需要更新当前节点的hasChildren状态，表示它是有子节点的
+    /**
+     * There is no need to synchronise the data if it has not been expanded,
+     * but it is necessary to update the hasChildren status of the current node to indicate that it has children.
+     */
     if (!isNodeExistAndExpanded(parentId)) {
       dispatch(StoreActions.updateTreeNodesMap(parentId, { hasChildren: true }));
       return;
@@ -211,7 +217,7 @@ export const useWorkbenchSideSync = () => {
       StoreActions.addNodeToMap(result, false),
       StoreActions.refreshTree(result)]));
     for (const node of result) {
-      // TODO: 当添加的节点为文件夹时并且是当前激活的节点，就将该文件夹的的错误状态取消
+      // TODO: When the added node is a folder and it is the currently active node, the error status of the folder is removed
       if (node.type === ConfigConstant.NodeType.FOLDER) {
         return;
       }
@@ -219,7 +225,7 @@ export const useWorkbenchSideSync = () => {
     }
   };
 
-  // 处理更新节点的同步消息
+  // Handling synchronisation messages for update nodes
   const updateNodeSync = (data: INodeChangeSocketData) => {
     const { nodeId, ...rest } = data.data;
     if (!treeNodesMap[nodeId]) {
@@ -228,7 +234,7 @@ export const useWorkbenchSideSync = () => {
     updateNodeInfo(nodeId, treeNodesMap[nodeId].type, rest);
   };
 
-  // 处理分享节点的同步消息
+  // Handle synchronisation messages from shared nodes
   const shareNodeSync = (data: INodeChangeSocketData) => {
     const { nodeId, nodeShared } = data.data;
     if (!treeNodesMap[nodeId]) {
@@ -239,36 +245,39 @@ export const useWorkbenchSideSync = () => {
     dispatch(StoreActions.updateNodeInfo(nodeId, treeNodesMap[nodeId].type, { nodeShared }));
   };
 
-  // 处理删除节点的同步消息
+  // Handling synchronisation messages for deleted nodes
   const deleteNodeSync = (data: INodeChangeSocketData) => {
     const { nodeId } = data.data;
     if (!treeNodesMap[nodeId]) {
       return;
     }
-    // 会受到影响的节点的id集合
+    // The set of ids of the nodes that will be affected
     const idsArray: string[] = collectProperty(treeNodesMap, nodeId);
-    // 考虑到删除一个节点有可能会影响到后面节点的prevNodeId，所以需要判断是否要更新后面一个节点的信息
+    /**
+     * Considering that deleting a node may affect the prevNodeId of the node after it, 
+     * you need to determine whether to update the information of a node after it
+     */
     updateNextNode(nodeId);
     dispatch(StoreActions.deleteNode({ parentId: treeNodesMap[nodeId].parentId, nodeId }));
     if (rightClickInfo && idsArray.includes(rightClickInfo.id)) {
       setRightClickInfo(null);
     }
-    // 显示错误信息页面
+    // Show error message page
     if (activeNodeId && idsArray.includes(activeNodeId)) {
       dispatch(StoreActions.resetResource(nodeId, getResourceTypeByNodeType(treeNodesMap[activeNodeId].type)));
       popErrorModal(activeNodeId, ErrorType.Delete, treeNodesMap[activeNodeId].type);
     }
   };
 
-  // 处理星标状态改变的消息
+  // Handling of starred status change messages
   const updateFavoriteSync = (data: INodeChangeSocketData) => {
     const { nodeId } = data.data;
-    // 取消星标
+    // Cancel Starred
     if (favoriteTreeNodeIds.findIndex(id => id === nodeId) !== -1) {
       dispatch(StoreActions.removeFavorite(nodeId));
       return;
     }
-    // 设置星标(节点数据已存在数据源中)
+    // Set star (node data already exists in the data source)
     if (treeNodesMap[nodeId]) {
       dispatch(
         StoreActions.generateFavoriteTree([{ ...treeNodesMap[nodeId], preFavoriteNodeId: '', nodeFavorite: true }]),
@@ -276,7 +285,7 @@ export const useWorkbenchSideSync = () => {
       dispatch(StoreActions.updateNodeInfo(nodeId, treeNodesMap[nodeId].type, { nodeFavorite: true }));
       return;
     }
-    // 设置星标(节点数据不存在数据源中)
+    // Set star (node data does not exist in the data source)
     Api.getNodeInfo(nodeId).then(res => {
       const { success, data } = res.data;
       if (success) {
@@ -286,16 +295,19 @@ export const useWorkbenchSideSync = () => {
     });
   };
 
-  // 处理权限变更的消息
+  // Handling of permission change messages
   const updateRoleSync = (data: INodeChangeSocketData) => {
     const datasheetMapKeys = Selectors.getDatasheetIds(store.getState());
     const { nodeId, parentId } = data.data;
-    // 如果父节点和更新的节点都不存在并且workbenchSidebar也不存在数表缓存中，就跳过后续的处理过程
+    /**
+     * If neither the parent node nor the updated node exists and the workbenchSidebar does not exist in the table cache, 
+     * the subsequent processing is skipped
+     */
     if (!treeNodesMap[parentId] && !treeNodesMap[nodeId] && datasheetMapKeys.includes(nodeId)) {
       return;
     }
 
-    // 要获取新信息的节点
+    // Node to get new information
     const idsArray: string[] = collectProperty(treeNodesMap, nodeId);
     const ids = idsArray.join(',');
 
@@ -338,19 +350,24 @@ export const useWorkbenchSideSync = () => {
     });
   };
 
-  // 处理移动结点的消息
+  // Handling messages from moving nodes
   const moveNodeSync = async(data: INodeChangeSocketData) => {
     const { nodeId, parentId, preNodeId } = data.data;
     const dragNode = treeNodesMap[nodeId];
-    // 被移动的节点和被移动到的容器节点都不存在数据源，就没有处理的必要了
+    /**
+     * Neither the node being moved nor the container node being moved to has a data source and there is no need to process it
+     */
     if (!dragNode && !treeNodesMap[parentId]) {
       return;
     }
 
-    // 同层级拖动
+    // Dragging at the same level
     if (dragNode && parentId === dragNode.parentId) {
       const parentNodeChildren = treeNodesMap[parentId].children;
-      // 如果目标位置的前置节点存在的话，就更新父节点的children属性，否则通过parentId请求子节点后来更新children属性
+      /**
+       * Update the children attribute of the parent node if the predecessor node at the target location exists, 
+       * otherwise request the children node to update the children attribute later via parentId
+       */
       if (parentNodeChildren.includes(preNodeId)) {
         const children = parentNodeChildren.reduce((prevArr, id) => {
           if (id !== nodeId) {
@@ -377,7 +394,7 @@ export const useWorkbenchSideSync = () => {
       return;
     }
 
-    // 跨层级拖动
+    // Dragging across levels
     if (dragNode) {
       dispatch(StoreActions.deleteNode({ parentId: dragNode.parentId, nodeId }));
     }
@@ -391,7 +408,7 @@ export const useWorkbenchSideSync = () => {
     }
   };
 
-  // 通过socket进行树的实时更新
+  // Real-time tree updates via sockets
   const realTimeSyncTree = (data: INodeChangeSocketData) => {
     switch (data.type) {
       case NodeChangeInfoType.Create:
@@ -416,7 +433,7 @@ export const useWorkbenchSideSync = () => {
         updateFavoriteSync(data);
         break;
       default:
-        console.log('无效的socket消息: ', data);
+        console.log('Invalid socket message: ', data);
     }
   };
 };

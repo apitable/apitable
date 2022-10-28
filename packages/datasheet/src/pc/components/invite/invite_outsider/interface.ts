@@ -1,4 +1,4 @@
-// 上传文件后的response结果
+// The result of the response after uploading the file
 export interface IUploadFileResponse {
   errorCount: number;
   errorList: IErrorInfo[];

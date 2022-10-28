@@ -20,7 +20,6 @@ const ExpandNumberBase: React.ForwardRefRenderFunction<IEditor, IExpandNumberPro
 
   useEffect(() => {
     if (isFocus && editable && typeof ref === 'object') {
-      // 通过 onStartEdit 对内容进行过滤，防止意外输入的中文遗留在 input 中
       ref?.current?.onStartEdit(cellValue);
       Promise.resolve().then(() => {
         ref?.current && ref.current.focus();

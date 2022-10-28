@@ -66,7 +66,7 @@ export const OperationBar: FC<IOperationBarProps> = memo((props) => {
     }
   }
 
-  // 可见范围内是否存在时间精度的起始日期
+  // Availability of time-accurate start dates within the visible range
   const isStartDateExist = Boolean(startDateList.length);
   const diff = Math.floor(isStartDateExist ? startDateList[0].x - scrollLeft : -1);
   const prevDate = instance.getDateFromStartDate(columnStartIndex * instance.unitScale);
@@ -74,7 +74,7 @@ export const OperationBar: FC<IOperationBarProps> = memo((props) => {
   const prevDateFormatStr = prevDate ? prevDate.format(formatStr) : '';
   const curDateFormatStr = curDate ? curDate.format(formatStr) : '';
   const maxThreshold = textSizer.current.measureText(prevDateFormatStr).width + INNER_PADDING + 5;
-  // 在上下阈值范围内，显示实时距离
+  // Display of real time distances within the upper and lower thresholds
   const flagX = (0 <= diff && diff <= maxThreshold) ? 
     scrollLeft + INNER_PADDING - maxThreshold + diff: 
     scrollLeft + INNER_PADDING;

@@ -18,9 +18,7 @@ export interface IPasswordData {
 const defaultErrMsg = { accountErrMsg: '', passwordErrMsg: '' };
 export type IPasswordLoginConfig = IIdentifyingCodeConfig;
 export interface IPasswordLoginModesProps {
-  // 点击登录按钮时的请求
   submitRequest: (data: ISubmitRequestParam) => Promise<any>;
-  // 输入框数据改变时触发
   onChange?: (data: IPasswordData) => void;
   config?: IPasswordLoginConfig;
 }
@@ -36,9 +34,7 @@ export const SSOLogin: FC<IPasswordLoginModesProps> = ({
   onChange,
   config
 }) => {
-  // 主要数据（账号、验证码、密码、二次确认密码）
   const [state, setState] = useSetState<IPasswordData>(defaultState);
-  // 错误信息
   const [errMsg, setErrMsg] = useSetState(defaultErrMsg);
 
   const accountInputRef = useRef<any>(null);
@@ -91,9 +87,7 @@ export const SSOLogin: FC<IPasswordLoginModesProps> = ({
         setErrMsg({ accountErrMsg: message });
     }
   };
-  // 账号错误提示
   const accountErrTip = errMsg?.accountErrMsg || '';
-  // 密码错误提示
   const passwordErrTip = errMsg?.passwordErrMsg || '';
   const btnDisabled = Boolean(loading || errMsg.accountErrMsg || errMsg.passwordErrMsg || !state.account || !state.credential);
   return (

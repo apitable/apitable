@@ -21,9 +21,7 @@ const MailBindPhone: FC = () => {
     whenPageRefreshed();
   });
 
-  // TODO: 这里貌似可以用登录那边的复用
   const submitRequest = (data: ISubmitRequestParam) => {
-    // 提取邀请加入的 spaceId，赠送空间需要用到
     const invite = store.getState().invite;
     const spaceId = invite?.inviteLinkInfo?.data?.spaceId || invite?.inviteEmailInfo?.data?.spaceId;
     const loginData: ApiInterface.ISignIn = {

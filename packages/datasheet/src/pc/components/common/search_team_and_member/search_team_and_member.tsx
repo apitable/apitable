@@ -19,9 +19,7 @@ export const SearchTeamAndMember: FC<ISearchTeamAndMemberProps> = ({ setInSearch
   const ref = useRef<HTMLDivElement>(null);
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const [keyword, setKeyword] = useState('');
-  // 搜索结果数据-小组
   const [searchTeams, setSearchTeams] = useState<ITeamsInSearch[]>([]);
-  // 搜索结果数据-成员
   const [searchMembers, setSearchMembers] = useState<IMembersInSearch[]>([]);
 
   const { run: searchTeamAndMember } = useRequest(Api.searchTeamAndMember, {

@@ -378,10 +378,10 @@ export const KeyCodeUtils = {
 };
 
 /**
- * 二进制绑定掩码
- * 通过二进制位相与快速判断快捷键键位
- * >>> 表示无符号右移
- * >>> 0 的意思是， toUint32()
+ * Binary binding masks
+ * Quickly determine shortcut keystrokes by binary bit phase and
+ * >>> Indicates unsigned right shift
+ * >>> 0 is means toUint32()
  * Binary encoding strategy:
  * ```
  *    1111 11
@@ -417,7 +417,7 @@ export function createKeybinding(keybinding: number): Keybinding | null {
   return createSimpleKeybinding(firstPart);
 }
 
-// 将二进制 keybinding 转换为普通 event.key，并创建一个 SimpleKeybinding
+// Converts a binary keybinding to a normal event.key and creates a SimpleKeybinding
 export function createSimpleKeybinding(keybinding: number): SimpleKeybinding {
 
   const ctrlCmd = (keybinding & BinaryKeybindingsMask.CtrlCmd ? true : false);

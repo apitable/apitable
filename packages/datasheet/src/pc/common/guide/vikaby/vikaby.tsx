@@ -50,7 +50,11 @@ export const Vikaby: FC<IVikabyBase> = ({ defaultExpandMenu, defaultExpandTodo, 
   const isWecom = isWecomFunc();
   const sessionPosition = sessionStorage.getItem(VIKABY_POSITION_SESSION_KEY);
   const initPosition = sessionPosition ? JSON.parse(sessionPosition) : VIKABY_DEFAULT_POSITION;
-  // todo卡片显示在document.body里还是vikaby的元素里，目前采用前者，因为后者方案会在点击todo时，会触发拖动事件
+  /**
+   * Whether the todo card is displayed in document.body or in vikaby's element, 
+   * the former is currently used as the latter option will trigger a drag event when the todo is clicked
+   */
+   
   const [taskCardVisible, { set: setTaskCardVisible }] = useToggle(defaultExpandTodo);
   const [menuVisible, { toggle: toggleMenuVisible, set: setMenuVisible }] = useToggle(defaultExpandMenu);
   const [dialogVisible, { set: setDialogVisible }] = useToggle(defaultExpandDialog);
@@ -147,7 +151,6 @@ export const Vikaby: FC<IVikabyBase> = ({ defaultExpandMenu, defaultExpandTodo, 
 
   const vikaby = (taskCardVisible || menuVisible || dialogVisible) ? VikabyActive : VikabyDefault;
 
-  // 如果当前进入 “历史更新” 的智能引导，隐藏 vikaby 菜单时需要额外写代码清除智能引导组件。
   useEffect(() => {
     if (!menuVisible) {
       const state = store.getState();

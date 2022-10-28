@@ -19,7 +19,6 @@ import styles from './style.module.less';
 //   default: PayingModalHeaderDefaultBg,
 //   capacity: PayingModalHeaderCapacityBg
 // };
-// modal标题
 export const PayingModalHeader = (data: { title: React.ReactNode, subTitle?: React.ReactNode, backgroundImage?: string }) => {
   const { title, subTitle, backgroundImage } = data;
   return (
@@ -29,7 +28,6 @@ export const PayingModalHeader = (data: { title: React.ReactNode, subTitle?: Rea
     </div>
   );
 };
-// modal子标题
 export const PayingModalTitle = (data: { title: string, tip?: string, themeColor?: string }) => {
   const { title, tip, themeColor } = data;
   return (
@@ -49,7 +47,6 @@ export const PayingModalTitle = (data: { title: string, tip?: string, themeColor
     </div>
   );
 };
-// 等级对比-价格对比
 export const LevelPrice = (data: { title: React.ReactNode, sup?: React.ReactNode, sub?: React.ReactNode }) => {
   const { title, sup, sub } = data;
   return (
@@ -61,7 +58,6 @@ export const LevelPrice = (data: { title: React.ReactNode, sup?: React.ReactNode
   );
 };
 
-// 等级对比-操作按钮
 export const LevelOperation: FC<{
   type: 'upgradeSeats' | 'upgradeLevel' | 'customerService' | 'free',
   className?: string
@@ -80,7 +76,6 @@ export const LevelOperation: FC<{
   }
 };
 
-// 特权列表
 export const PrivilegeList = (data: { title: string, privilegeList: string[], helper?: string, themeColor?: string }) => {
   const { title, privilegeList, helper, themeColor } = data;
   return (
@@ -100,7 +95,6 @@ export const PrivilegeList = (data: { title: string, privilegeList: string[], he
     </div>
   );
 };
-// 升级前后参数对比
 export const ParamsComparison = (data: { prev: string, cur: string, themeColor?: string }) => {
   const { prev, cur, themeColor } = data;
   return (
@@ -111,7 +105,6 @@ export const ParamsComparison = (data: { prev: string, cur: string, themeColor?:
     </div>
   );
 };
-// 金额计算
 export const PriceTotal = (data: { type: 'default' | 'subtotal' | 'total' | 'red', price: number, label?: string }) => {
   const { type, price, label } = data;
   switch (type) {
@@ -142,7 +135,6 @@ export const PriceTotal = (data: { type: 'default' | 'subtotal' | 'total' | 'red
   }
 };
 
-// 订单详情
 export const OrderDetails = (data:
                                { [key in 'title' | 'spaceName' | 'expireTime' | 'capacity' | 'total' | 'discount' | 'seats']?: React.ReactNode } &
                                { subtotal: number }
@@ -224,7 +216,6 @@ export const CheckWrap: FC<{
     </div>
   );
 };
-// 优惠tag
 export const DiscountTag: FC<{ className?: string }> = (props) => {
   return (
     <Typography variant="body3" className={classNames(styles.discountTag, props.className)}>
@@ -233,7 +224,6 @@ export const DiscountTag: FC<{ className?: string }> = (props) => {
   );
 };
 
-// 倒计时
 export const Countdown: FC<{ className?: string }> = (props) => {
   return (
     <Typography variant="body4" className={classNames(styles.countdown, props.className)}>
@@ -242,7 +232,6 @@ export const Countdown: FC<{ className?: string }> = (props) => {
   );
 };
 
-// 容量选择包
 export interface ICapacityCheckbox {
   key: React.Key,
   value?: React.ReactNode,
@@ -258,7 +247,6 @@ export interface ICapacityCheckbox {
   className?: string,
 }
 
-// 容量选择包
 export const CapacityCheckbox = (data: ICapacityCheckbox) => {
   const {
     value, price, desc, originalPrice, checked,
@@ -282,7 +270,6 @@ export const CapacityCheckbox = (data: ICapacityCheckbox) => {
   );
 };
 
-// 容量选择列表
 export const CapacityOptions = (data: {
   checkedKey?: React.Key,
   onChange?: (key: React.Key) => void,
@@ -317,7 +304,6 @@ export const CapacityOptions = (data: {
     </div>
   );
 };
-// 时长/席位选择
 export const BlockSelector = (data: {
   checkedKey?: React.Key,
   onChange?: (key: React.Key) => void,
@@ -402,7 +388,6 @@ export const BlockSelector = (data: {
   );
 };
 
-// 订单v币以及优惠金额计算
 export const PayingTotal = (data: { totalV: number, curV: number, curPrice: number, discount?: number }) => {
   const { totalV, curV, curPrice, discount } = data;
   return (
@@ -427,7 +412,6 @@ export const PayingTotal = (data: { totalV: number, curV: number, curPrice: numb
   );
 };
 
-// 支付失败
 export const showPaymentFailed = () => {
   console.log('ssss');
   return (
@@ -440,7 +424,6 @@ export const showPaymentFailed = () => {
   );
 };
 
-// 支付成功打勾动画
 export const PaySucceedTicking = () => {
   return (
     <div className={styles.paySucceedTicking}>
@@ -448,7 +431,6 @@ export const PaySucceedTicking = () => {
     </div>
   );
 };
-// 升级成功之后促销活动
 export const UpgradedPromotion = () => {
   return (
     <div className={styles.upgradedPromotion} style={{ backgroundImage: `url(${ActivityPng})` }}>
@@ -456,7 +438,6 @@ export const UpgradedPromotion = () => {
     </div>
   );
 };
-// 支付成功
 export const PaySucceed = (data: {
   title: string,
   time: string,

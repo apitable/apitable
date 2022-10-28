@@ -1,5 +1,5 @@
 /*
- * 初始化函数，用于一些非构造器型，需要再启动时进行初始化执行的事情
+ * Initialization functions, used for some non-constructor type things that need to be initialized and executed at startup again
  */
 import { RewriteFrames } from '@sentry/integrations';
 import * as Sentry from '@sentry/react';
@@ -28,7 +28,6 @@ const isMatch = (staticUrl: string, url: string) => {
   return formatArr.every(item => url.includes(item));
 };
 
-// 判断当前Url是否属于存在于要忽略的url集合中
 function hasUrlIgnore(curUrl: string | undefined): boolean {
   if (!curUrl) {
     return false;
@@ -50,8 +49,6 @@ function hasUrlIgnore(curUrl: string | undefined): boolean {
     return true;
   }
   for (const url of ignoreData) {
-    // 由于请求部分接口是通过模板动态渲染的，因此临时采用匹配子串的方式解决
-    // 为了捕获 errorCode，需要过滤 数表/神奇表单/... 等相关接口
     if (
       curUrl.includes(url) ||
       curUrl.includes('dataPack')
@@ -65,7 +62,6 @@ function hasUrlIgnore(curUrl: string | undefined): boolean {
 }
 
 function initAxios(store) {
-  // 对url的query进行转义
   axios.defaults.paramsSerializer = (params) => {
     return Object.keys(params).filter(it => {
       return params.hasOwnProperty(it);
@@ -90,7 +86,6 @@ function initAxios(store) {
       message = 'Error',
     } = response.data;
     const IGNORE_PATH_REG = /^\/(share|template|notify)/;
-    // 当路由上的nodeId变化是跨空间的话，需要重新获取用户相关的信息
     if (
       success && data && response.config.url?.startsWith('/nest/v1/') &&
       !IGNORE_PATH_REG.test(location.pathname)
@@ -210,7 +205,7 @@ function initAxios(store) {
 
 function initBugTracker() {
   const dsn = getEnvVariables().SENTRY_DSN;
-  // 本地开发和私有化部署不启用上报
+  // Reporting is not enabled for local development and private deployments
   if (!dsn) {
     return;
   }
@@ -222,8 +217,8 @@ function initBugTracker() {
       new Integrations.BrowserTracing(),
       new RewriteFrames(),
       /**
-       * @description Sentry 在 Chrome 74 对 requestAnimationFrame 的处理会有问题，会导致意外的报错
-       * 目前根据 Sentry 的 Issue 中提供的方法重写对 requestAnimationFrame 的检查
+       * @description Sentry's handling of requestAnimationFrame in Chrome 74 can be problematic and lead to unexpected errors
+       * Currently rewriting the check for requestAnimationFrame based on the method provided in Sentry's issue
        * @issue https://github.com/getsentry/sentry-javascript/issues/3388
        * @type {boolean}
        */
@@ -238,10 +233,12 @@ function initBugTracker() {
     // for finer control
     tracesSampleRate: 0.1,
     maxBreadcrumbs: 10,
-    // 每进入一个页面，发生一次 pageload 或者路由的变更，都会自动向 sentry 发送一条记录，目前来看这个数据没有多大意义，先关闭，后续观察
+    /**  Every time a page is entered, a pageload or a route change is made, a record is automatically sent to the sentry,
+     *   which doesn't make much sense at the moment, so turn it off and watch it later.
+     */
     autoSessionTracking: false,
     ignoreErrors: [
-      // 发现所有 hover 出现 tooltip 的地方都会向 sentry 发送请求，异常状态都是这个
+      // It was found that all hovers where tooltip appears send a request to sentry and the exception status is this
       'ResizeObserver loop limit exceeded'
     ],
   });
@@ -266,7 +263,7 @@ export function redirectIfUserApplyLogout() {
 export function initializer(comlink) {
   initAxios(comlink.store);
 
-  // 初始化 Field.bindModel
+  // Initialisation Field.bindModel
   injectStore(comlink.store);
   initCronjobs(comlink.store);
   initDayjs(comlink);
@@ -278,10 +275,10 @@ export function initializer(comlink) {
 
 /**
  * @description
- * @param {*} fn 表格区域的滚动函数
- * @param {*} id 需要滚动测试的 dom id
- * @param {*} totalCount 计算次数，也指代测试执行的总时间
- * @param {*} dps 每 16s 内滚动的距离，用来进行阻塞测试
+ * @param {*} fn Scroll functions for table areas
+ * @param {*} id The dom id to be rolled up for testing
+ * @param {*} totalCount Number of calculations, also refers to the total time of test execution
+ * @param {*} dps Distance scrolled in every 16s for blocking test
  * @returns
  */
 function checkFps(fn, id, totalCount, dps) {
@@ -316,7 +313,7 @@ function checkFps(fn, id, totalCount, dps) {
       const result = window._fpsResult;
 
       let frame = 0;
-      let count = 0; // 帧率计算节点次数（每次一秒左右）
+      let count = 0; // Number of frame rate calculation nodes (about one second at a time)
       let time = Date.now();
       let rafId;
 
@@ -335,7 +332,7 @@ function checkFps(fn, id, totalCount, dps) {
         console.log(fps);
         result.fps.push(fps);
         if (count >= totalCount) {
-          // 去掉第一秒和最后一秒
+          // Remove the first and last seconds
           result.fps.shift();
           result.fps.pop();
           result.averageFps = result.fps.reduce((cur, prev) => cur + prev) / result.fps.length;
@@ -351,7 +348,7 @@ function checkFps(fn, id, totalCount, dps) {
       }, 1000);
     }
 
-    // 滚动到顶部
+    // Scroll to the top
     // const sheet = window.spread.getActiveSheet();
     // sheet.showCell(0, 0, 0, 0);
     showFps(totalCount);

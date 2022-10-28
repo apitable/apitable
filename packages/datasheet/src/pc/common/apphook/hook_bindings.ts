@@ -10,7 +10,7 @@ import { IModalConfirmArgs, ModalConfirmKey } from './interface';
 
 let lastModalDestroy: any = null;
 
-// 设置用户ID，登录了
+// Set user ID, logged in
 Player.bindTrigger(Events.app_set_user_id, (args: IUserInfo) => {
   tracker.login(args.uuid);
   tracker.setProfile({
@@ -32,7 +32,7 @@ Player.bindTrigger(Events.app_set_user_id, (args: IUserInfo) => {
   });
 });
 
-// 错误上报相关
+// Error reporting related
 Player.bindTrigger(Events.app_error_logger, args => {
   const { error, metaData } = args;
   console.warn('! ' + 'app_error_logger', args);
@@ -41,7 +41,7 @@ Player.bindTrigger(Events.app_error_logger, args => {
   });
 });
 
-// 错误上报相关
+// Error reporting related
 Player.bindTrigger(Events.app_modal_confirm, (args: IModalConfirmArgs) => {
   const { key, metaData } = args;
   switch (key) {
@@ -61,7 +61,7 @@ Player.bindTrigger(Events.app_modal_confirm, (args: IModalConfirmArgs) => {
         }
 
         errorInfo.forEach(data => {
-          // 删除重复 view
+          // Delete duplicate view
           if ('duplicateViews' in data) {
             data.duplicateViews.forEach((index, i) => {
               actions.push({
@@ -87,11 +87,11 @@ Player.bindTrigger(Events.app_modal_confirm, (args: IModalConfirmArgs) => {
           const viewIndex = datasheet.snapshot.meta.views.findIndex(view => view.id === viewId);
           const rows = datasheet.snapshot.meta.views[viewIndex].rows;
           const columns = datasheet.snapshot.meta.views[viewIndex].columns;
-          // row/column index 为 value，防止重复删除
+          // row/column index is value to prevent duplicate deletions
           const rowsToDelete = new Set<number>(duplicateRows);
           const columnsToDelete = new Set<number>(duplicateColumns);
 
-          // column 和 row 中可能有 null 类型的值，这里要提前处理掉
+          // column and row may have null values in them, which should be dealt with in advance
           rows.forEach((item, index) => {
             if (!item) {
               rowsToDelete.add(index);
@@ -103,7 +103,7 @@ Player.bindTrigger(Events.app_modal_confirm, (args: IModalConfirmArgs) => {
             }
           });
 
-          // 有超过 100 行的数据无法匹配，对该视图的 rows 做整体的替换
+          // If there are more than 100 rows of data that cannot be matched, the rows of the view are replaced in their entirety
           if (replaceRows) {
             actions.push({
               n: OTActionName.ObjectReplace,
@@ -117,14 +117,14 @@ Player.bindTrigger(Events.app_modal_confirm, (args: IModalConfirmArgs) => {
             });
           }
 
-          // 在 recordMap 中不存在的，要在 view 中删除
+          // If it does not exist in the recordMap, delete it in the view
           notExistInRecordMap &&
             notExistInRecordMap.forEach((recordId: string) => {
               const rowIndex = rows.findIndex(row => row && row.recordId === recordId);
               rowIndex > -1 && rowsToDelete.add(rowIndex);
             });
 
-          // 在 view 中不存在的，要在 view 中新增
+          // If it does not exist in the view, add it to the view
           notExistInViewRow &&
             notExistInViewRow.forEach((recordId: string) => {
               actions.push({
@@ -134,14 +134,14 @@ Player.bindTrigger(Events.app_modal_confirm, (args: IModalConfirmArgs) => {
               });
             });
 
-          // 在 fieldMap 中不存在的，要在 view 中删除
+          // If it does not exist in the fieldMap, delete it in the view
           notExistInFieldMap &&
             notExistInFieldMap.forEach((fieldId: string) => {
               const columnIndex = columns.findIndex(column => column && column.fieldId === fieldId);
               columnIndex > -1 && columnsToDelete.add(columnIndex);
             });
 
-          // 在 view 中不存在的，要在 view 中新增
+          // If it does not exist in the view, add it to the view
           notExistInViewColumn &&
             notExistInViewColumn.forEach((fieldId: string) => {
               actions.push({
@@ -173,7 +173,7 @@ Player.bindTrigger(Events.app_modal_confirm, (args: IModalConfirmArgs) => {
         };
 
         resourceService.instance!.operationExecuted([{ resourceId: datasheetId, resourceType: ResourceType.Datasheet, operations:[operation] }]);
-        Sentry.captureMessage('fixConsistency: 发现数据一致性错误，并尝试修复', {
+        Sentry.captureMessage('fixConsistency: Data consistency errors found and attempts made to fix', {
           extra: {
             datasheetId,
             operation,
@@ -195,7 +195,7 @@ Player.bindTrigger(Events.app_modal_confirm, (args: IModalConfirmArgs) => {
   }
 });
 
-// 埋点统计相关
+// Buried point statistics related
 Player.bindTrigger(Events.app_tracker, args => {
   tracker.track(args.name, args.props);
 });

@@ -31,7 +31,7 @@ export const AddressList: React.FC = () => {
     }),
     shallowEqual,
   );
-  // 权限相关信息
+  // Permission-related information
   // const [isMainAdmin, setIsMainAdmin] = useState(false);
   // const [permissionList, setPermissionList] = useState<string[]>([]);
   const contactSyncing = isSocialDingTalk(spaceInfo) && isContactSyncing(spaceInfo);
@@ -44,7 +44,7 @@ export const AddressList: React.FC = () => {
     selectedTeamInfo.teamId && dispatch(StoreActions.getMemberListData(selectedTeamInfo.teamId));
   }, [spaceId, selectedTeamInfo, dispatch]);
 
-  // 获取权限
+  // Get permission
   useEffect(() => {
     dispatch(StoreActions.spaceResource());
     // eslint-disable-next-line react-hooks/exhaustive-deps

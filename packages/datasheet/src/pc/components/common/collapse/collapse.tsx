@@ -22,11 +22,11 @@ type IUnionDOMText = HTMLElement & ICollapseItemTextState;
 
 export interface ICollapseItemProps {
   key: string;
-  text: IText; // 文本/组件
-  label?: string; // 文字
-  fixedWidth?: number; // 浮动宽度
-  editing?: boolean; // 编辑状态
-  editingWidth?: number; // 编辑状态宽度
+  text: IText; 
+  label?: string;
+  fixedWidth?: number;
+  editing?: boolean;
+  editingWidth?: number;
 }
 
 export interface ICollapseProps extends Omit<TriggerProps, 'children' | 'popup' | 'className'> {
@@ -59,7 +59,7 @@ export interface ICollapseProps extends Omit<TriggerProps, 'children' | 'popup' 
   wrapClick?: (e: React.MouseEvent) => void;
   onSort?: (from: number, to: number) => void;
   onItemClick?: (e: React.MouseEvent, id: string) => void;
-  onRenderPopup?: (list: ICollapseItemProps[]) => IText; // 渲染隐藏的菜单项
+  onRenderPopup?: (list: ICollapseItemProps[]) => IText;
   onPopupVisibleChange?: (visible: boolean) => void;
 }
 
@@ -165,7 +165,9 @@ const CollapseBase: React.ForwardRefRenderFunction<ICollapseFunc, ICollapseProps
     return arr;
   };
 
-  // 倒排可视列表，计算需要移除几项才够放置插入的显示标签
+  /**
+   * Inverted visual list, calculating how many items need to be removed to place the inserted display label
+   */
   const reCalculateDisplayWidth = (list, childList: IUnionDOMText[], originTotal, total: number, item) => {
     let sum = originTotal;
     let index = list.length - 1;
@@ -173,7 +175,7 @@ const CollapseBase: React.ForwardRefRenderFunction<ICollapseFunc, ICollapseProps
     const itemWidth = item.width;
     const showChildList = childList.slice(0, list.length);
 
-    // 存在item不在list中，截取的一项比item的长度长
+    // There is an item not in the list, and the intercepted item is longer than the length of the item
     if (originTotal + itemWidth <= total) {
       return {
         show: [...list, item],
@@ -215,7 +217,7 @@ const CollapseBase: React.ForwardRefRenderFunction<ICollapseFunc, ICollapseProps
     };
   };
 
-  // 计算隐藏布局
+  // Calculate hidden layouts
   const setPopup = () => {
     const container = wrapRef.current, triggerBtn = triggerRef.current, extraWrap = extraRef.current;
     if (!container || !triggerBtn) {
@@ -232,7 +234,7 @@ const CollapseBase: React.ForwardRefRenderFunction<ICollapseFunc, ICollapseProps
       return;
     }
 
-    // 计算是否有需要固定前几项
+    // Calculate if there is a need to fix the first few items
     let fixedTotalWidth = 0;
     const fixedIndexResult = (fixedIndex > childList.length || fixedIndex < 0) ? 0 : fixedIndex;
     for (let i = 0; i < childList.length; i++) {
@@ -243,43 +245,43 @@ const CollapseBase: React.ForwardRefRenderFunction<ICollapseFunc, ICollapseProps
       fixedTotalWidth += isAuto ? child.offsetWidth : child.width;
     }
 
-    // 获取激活的标签
+    // Get active tags
     let activeItem: IUnionDOMText | null = null;
     if (activeKey) {
       activeItem = childList.filter((v) => v.key === activeKey)[0];
     }
 
-    // 不包含 extra 的宽度，不包含 extra 和 trigger 的宽度
+    // Width without extra, width without extra and trigger
     const displayWithTriggerWidth = width - extraWidth;
     const displayWidth = displayWithTriggerWidth - triggerWidth;
     let realDisplayWidth = displayWidth;
 
     let widthSum = fixedTotalWidth, sliceIndex = -1;
-    // 做互斥操作，激活和固定n项不能同时出现
+    // Do mutually exclusive operations, activation and fixed n terms cannot occur at the same time
     const startIndex = activeKey ? 0 : fixedIndexResult;
-    // 比较列表宽度与容器宽度，判断从第几位开始隐藏
+    // Compare the width of the list to the width of the container and determine from which position it is hidden
     for (let i = startIndex; i < childList.length; i++) {
       const curWidth = isAuto ? childList[i].offsetWidth : childList[i].width;
       widthSum += curWidth;
-      // 判断第一次要截取的位置
+      // Determining where the first interception is to take place
       if (widthSum > displayWidth && sliceIndex === -1) {
         sliceIndex = i;
-        // 如果首次就命中目标，判断宽度是否为 0
+        // If the target is hit on the first try, determine if the width is 0
         const sub = widthSum - curWidth;
         realDisplayWidth = sub || curWidth;
       }
-      // 超出包含trigger的宽度，需要截取
+      // exceeds the width of the containing trigger and needs to be intercepted
       if (widthSum > displayWithTriggerWidth) {
         break;
       }
-      // 遍历完毕没有超出总长度，不需要截取
+      // The total length is not exceeded when the traversal is complete and no interception is required
       if (i === childList.length - 1 && widthSum <= displayWithTriggerWidth) {
         sliceIndex = -1;
         realDisplayWidth = widthSum;
       }
     }
 
-    // 防止在 childList.length = fixedIndex 情况下出现不走循环判断的情况
+    // Preventing a no-loop situation where childList.length = fixedIndex
     realDisplayWidth = widthSum < realDisplayWidth ? widthSum : realDisplayWidth;
     const sliceFlag = sliceIndex === -1;
     const hide = sliceFlag ? [] : data.slice(sliceIndex);
@@ -290,12 +292,12 @@ const CollapseBase: React.ForwardRefRenderFunction<ICollapseFunc, ICollapseProps
 
     if (activeItem) {
       let activeIndex = -1;
-      // 从 childList中查找，collapse.show 存在 length 为 0 的情况
+      
       const list = sliceIndex === -1 ? childList : childList.slice(0, sliceIndex);
       activeIndex = list.findIndex((v) => v.key === activeKey);
-      // 判断固定项是否在可视区域内
+     
       if (activeIndex < 0 || (collapseList.show.length && collapseList.show.findIndex((v) => v.key === activeKey) < 0)) {
-        // 不在可视区域内，将activeItem添加上去
+       
         const result = reCalculateDisplayWidth(show, childList, realDisplayWidth, displayWidth, activeItem);
         show = result.show;
         realDisplayWidth = result.total;
@@ -303,10 +305,10 @@ const CollapseBase: React.ForwardRefRenderFunction<ICollapseFunc, ICollapseProps
       } else if (preActive) {
         const preActiveIndex = data.findIndex((v) => v.key === preActive);
         const existShowIndex = list.findIndex((v) => v.key === preActive);
-        // 存在临时保存项，并且与激活项不相等，并且不在可视区域内
+       
         if (preActiveIndex > -1 && preActive !== activeKey && existShowIndex < 0) {
           const result = reCalculateDisplayWidth(show, childList, realDisplayWidth, displayWidth, childList[preActiveIndex]);
-          // 存在激活active时，preActive占据的宽度不够active放置的问题
+         
           if (result.show.findIndex((v) => v.key === activeKey) > -1) {
             show = result.show;
             realDisplayWidth = result.total;
@@ -324,8 +326,6 @@ const CollapseBase: React.ForwardRefRenderFunction<ICollapseFunc, ICollapseProps
   };
 
   const { run, cancel } = useThrottleFn(setPopup, { wait: 100 });
-
-  // 监听 dom 节点变化
   useLayoutEffect(
     () => {
       const observer = new MutationObserver(run);
@@ -375,7 +375,7 @@ const CollapseBase: React.ForwardRefRenderFunction<ICollapseFunc, ICollapseProps
       return;
     }
     if (onSort) {
-      // 查找拖拽的项真实索引
+     
       const dragItem = show.filter((v, index) => index === source.index)[0];
       const dropItem = show.filter((v, index) => index === destination.index)[0];
       if (!dragItem || !dropItem) return;
@@ -384,7 +384,6 @@ const CollapseBase: React.ForwardRefRenderFunction<ICollapseFunc, ICollapseProps
       if (dragItem.key === preActive || dropItem.key === preActive) {
         setPreActive(null);
       }
-      // 如果放置的索引位置是计算布局时被追加的激活标签，则需要先将激活的标签先放到放置索引位置，然后再去做拖拽的真实交换
       if (dropIndex > destination.index) {
         onSort(dropIndex, destination.index);
       }
@@ -452,8 +451,7 @@ const CollapseBase: React.ForwardRefRenderFunction<ICollapseFunc, ICollapseProps
                           {...providedChild.draggableProps}
                           {...providedChild.dragHandleProps}
                           className={cls(itemCls, { [styles.itemHidden]: item.hidden })}
-                          // 切换标签时，内部若存在input focus，input blur 失效，使用 issues 提供的临时解决办法
-                          // 详情 https://github.com/atlassian/react-beautiful-dnd/issues/1872
+                          // Detail https://github.com/atlassian/react-beautiful-dnd/issues/1872
                           onMouseDown={(e) => e.currentTarget.focus()}
                           onClick={(e) => {
                             if (onItemClick) {

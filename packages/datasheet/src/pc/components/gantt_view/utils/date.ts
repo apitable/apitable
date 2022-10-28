@@ -9,7 +9,7 @@ export const getDayjs = (dateTime: DateTimeType): Dayjs => {
 };
 
 /**
- * 获取一天的开始时间的时间戳
+ * Get the timestamp of the start of the day
  */
 export const getStartOfDate = (dateTime: DateTimeType) => {
   return getDayjs(dateTime)
@@ -20,7 +20,7 @@ export const getStartOfDate = (dateTime: DateTimeType) => {
 };
 
 /**
- * 根据单位获取获取起止时间的时间差
+ * Get the time difference between the acquisition start and end times according to the unit
  */
 export const getDiffCount = (startTime: DateTimeType, endTime: DateTimeType, unit: OpUnitType = 'day') => {
   const end = getStartOfDate(endTime);
@@ -35,12 +35,12 @@ export const getDiffOriginalCount = (startTime: DateTimeType, endTime: DateTimeT
 };
 
 /**
- * 根据单位获取获取起止时间的时间差，排除休息日
+ * Excluding rest days, based on the time difference between the start and end of the unit's acquisition acquisition time
  */
 export const getDiffCountByWorkdays = (startTime: DateTimeType, endTime: DateTimeType, workDays: Set<number>) => {
   const workDayCount = workDays.size;
   const TOTAL_DAY_COUNT = 7;
-  // 整周都是工作日，无需进行特殊计算
+  // The whole week is a working day and no special calculations are required
   if (workDayCount === TOTAL_DAY_COUNT) {
     return getDiffCount(startTime, endTime) + 1;
   }
@@ -49,21 +49,21 @@ export const getDiffCountByWorkdays = (startTime: DateTimeType, endTime: DateTim
   const first = getStartOfDate(start.endOf('week'));
   const last = getStartOfDate(end.startOf('week'));
   const middleDays = Math.floor((last.diff(first, 'day') * workDayCount) / TOTAL_DAY_COUNT);
-  // 获取第一周的工作日天数
+  // Get the number of working days in the first week
   const startDayIndex = start.day();
   const startDiffCount = getDiffCount(start, first, 'day');
   const startDays = Array.from({ length: startDiffCount + 1 }, (_, index) => {
     const curIndex = startDayIndex + index;
     return curIndex > 6 ? curIndex - 7 : curIndex;
   }).filter(dayIndex => workDays.has(dayIndex)).length;
-  // 获取最后周的工作日天数
+  // Get the number of working days in the last week
   const lastDayIndex = last.day();
   const endDiffCount = getDiffCount(end, last, 'day');
   const endDays = Array.from({ length: endDiffCount + 1 }, (_, index) => {
     const curIndex = lastDayIndex + index;
     return curIndex > 6 ? curIndex - 7 : curIndex;
   }).filter(dayIndex => workDays.has(dayIndex)).length;
-  // 总工作日
+  // Total working days
   return startDays + middleDays + endDays;
 };
 
@@ -82,7 +82,7 @@ export const originalChange = (markDay: DateTimeType, num: number, unit: OpUnitT
 };
 
 /**
- * 获取当天的 0 点开始的时间戳
+ * Get the timestamp from 0:00 of the day
  */
 export const getTimeStampOfDate = (dateTime: DateTimeType) => {
   const current = getDayjs(dateTime);
@@ -91,28 +91,28 @@ export const getTimeStampOfDate = (dateTime: DateTimeType) => {
 };
 
 /**
- * 根据时间精度获取开始日期
+ * Get start date based on time precision
  */
 export const getStartDate = (dateTime: DateTimeType, unit: OpUnitType = 'day') => {
   return getDayjs(dateTime).startOf(unit);
 };
 
 /**
- * 根据时间精度获取结束日期
+ * Get end date based on time precision
  */
 export const getEndDate = (dateTime: DateTimeType, unit: OpUnitType = 'day') => {
   return getDayjs(dateTime).endOf(unit);
 };
 
 /**
- * 检查是否是当月的最后一天
+ * Check if it is the last day of the month
  */
 export const isLastDayOfMonth = (dateTime: DateTimeType) => {
   return getDayjs(dateTime).date() === getEndDate(dateTime, 'month').date();
 };
 
 /**
- * 检查是否是当年的最后一月
+ * Check if it is the last month of the year
  */
 export const isLastMonthOfYear = (dateTime: DateTimeType) => {
   return getDayjs(dateTime).month() === 11;

@@ -74,7 +74,6 @@ export const DownloadQrCode: FC<IDownloadQrCodeProps> = ({
         backgroundColor: '#fff',
       },
       filter: node => {
-        /** 过滤不必要的元素 */
         return !(node instanceof Element && node.id === 'downloadInviteBtn');
       },
     }).then(dataUrl => {

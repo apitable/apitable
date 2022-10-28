@@ -23,7 +23,7 @@ let timer: any;
 const HOTSPOT_ZINDEX = 1222;
 export const showHotspot = (options: IHotspotProps) => {
   const { eleString, placement = 'bottom' } = options;
-  // 创建外层wrap
+  //  Create outer wrap
   const attach = (style: string) => {
     const HotspotWrap = document.createElement('div');
     HotspotWrap.setAttribute('id', 'HOTSPOT_ID');
@@ -31,7 +31,7 @@ export const showHotspot = (options: IHotspotProps) => {
     document.body.appendChild(HotspotWrap);
   };
 
-  // 定位圆点外层div样式（包括位置）
+  // Positioning dot outer div style (including position)
   const getDotWrapStyle = (targetDom: Element, placement: IPlacement) => {
     const rect = targetDom.getBoundingClientRect();
     const eleWidth = Math.min(rect.right - rect.left, 50);
@@ -66,7 +66,7 @@ export const showHotspot = (options: IHotspotProps) => {
     }
   };
 
-  // 找到了dom元素
+  // The dom element was found
   const domFound = (targetDom: HTMLElement) => {
     attach(getDotWrapStyle(targetDom, placement));
     import('lottie-web/build/player/lottie_svg').then(module => {
@@ -81,7 +81,7 @@ export const showHotspot = (options: IHotspotProps) => {
     });
   };
 
-  // 寻找目标元素
+  // Find the target element
   const startFind = () => {
     destroy();
     timer = window.setInterval(() => {

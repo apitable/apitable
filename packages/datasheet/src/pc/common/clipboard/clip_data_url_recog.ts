@@ -32,12 +32,12 @@ interface IURLMetaMap {
   [key: string]: IURLMeta;
 }
 
-// 访问clipboard数据并判断是否要对其进行URL识别
+// Accessing clipboard data and determining whether to URL-identify it
 export const recogClipboardURLData = ({ state, row, column, stdValueTable, datasheetId, clipboardText }: IRecogClipboardURLDataProps): void => {
   const visibleColumns = Selectors.getVisibleColumns(state);
   const fieldMap = Selectors.getFieldMap(state, state.pageParams.datasheetId!)!;
 
-  // 没有复制选区，但外部剪贴板内容不为空，直接判断并识别
+  // No copy selection, but external clipboard content is not empty, directly judged and recognised
   if (!stdValueTable.recordIds?.length && clipboardText) {
     const activeCell = Selectors.getActiveCell(state, datasheetId);
     if (!activeCell) return;
@@ -102,16 +102,16 @@ export const recogClipboardURLData = ({ state, row, column, stdValueTable, datas
     return;
   }
 
-  // 判断复制目标区域有无开启了URL识别的列
+  // Determine if there are columns in the copy target area with URL recognition enabled
   const targetFieldsWithURLRecogFlag = visibleColumns
     .slice(column, column + stdValueTable.header.length)
     .map((col, index) => ({ ...col, index }))
     .filter(field => fieldMap[field.fieldId]?.type === FieldType.URL && fieldMap[field.fieldId]?.property?.isRecogURLFlag);
 
-  // 目标区域没有开启URL识别列不操作
+  // The target area does not have URL recognition columns turned on do not operate
   if (!targetFieldsWithURLRecogFlag.length) return;
 
-  // 需要识别超过100个单元格不操作
+  // Need to identify more than 100 cells without operation
   if (!stdValueTable.recordIds?.length
     || targetFieldsWithURLRecogFlag.length * stdValueTable.recordIds.length > ConfigConstant.MAX_URL_COPY_RECOG_NUM
   ) return;
@@ -121,7 +121,7 @@ export const recogClipboardURLData = ({ state, row, column, stdValueTable, datas
     .slice(row, row + stdValueTable.recordIds.length)
     .map((row, index) => ({ ...row, index }));
 
-  // 计算目标区域应该被paste的值
+  // Calculate the value of the target area that should be pasted
   const targetMatrix = targetRows.reduce((acc: any, row: IViewRow & { index: number }) => {
     const cells = targetFieldsWithURLRecogFlag.map(field => ({
       recordId: row.recordId,

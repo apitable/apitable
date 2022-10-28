@@ -147,12 +147,10 @@ export const OtherLogin: FC<{ afterLogin?(data: string, loginMode: ConfigConstan
   );
 };
 
-// 微信登录
 export const wechatLogin = (
   option: { afterLogin?: (data: string, loginMode: ConfigConstant.LoginMode) => void, type?: BindAccount } = { type: BindAccount.WECHAT },
 ) => {
   const { afterLogin, type } = option;
-  // 如果是微信浏览器则进行免密登录（区分企业微信）
   if (navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1 && navigator.userAgent.toLowerCase().indexOf('wxwork') === -1) {
     const { appId, callbackUrl } = getWechatConfig();
     // eslint-disable-next-line max-len
@@ -180,9 +178,7 @@ export const wechatLogin = (
     </Provider>);
 };
 
-// 钉钉登录
 export const dingdingLogin = () => {
-  // 如果是在钉钉内打开，则进行免密登录
   if (navigator.userAgent.indexOf('DingTalk') > -1) {
     const { appId, callbackUrl } = getDingdingConfig();
     // eslint-disable-next-line max-len
@@ -240,7 +236,6 @@ export const qqLogin = () => {
   }
 };
 
-// 企业微信专属域名/自建应用登录
 export const wecomLogin = (reference?: string) => {
   const state = store.getState();
   const wecomEnv = state.space.envs.weComEnv!;
@@ -254,7 +249,6 @@ export const wecomLogin = (reference?: string) => {
     corpId && url.searchParams.set('corpId', corpId);
     agentId && url.searchParams.set('agentId', agentId);
     reference && url.searchParams.set('reference', reference);
-    // 兼容一下pipeline，为了调试
     pipeline && url.searchParams.set('pipeline', pipeline);
     // eslint-disable-next-line max-len
     window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${corpId}&redirect_uri=${encodeURIComponent(url.href)}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect`;
@@ -292,16 +286,12 @@ export const wecomLogin = (reference?: string) => {
 };
 
 /**
- * snsapi_base: 静默授权，可获取成员的基础信息（UserId与DeviceId）
- * snsapi_userinfo: 静默授权，可获取成员的详细信息，但不包含头像、二维码等敏感信息
- * snsapi_privateinfo: 手动授权，可获取成员的详细信息，包含头像、二维码等敏感信息
+ * snsapi_base: Silent authorization with access to members' basic information（UserId与DeviceId）
+ * snsapi_userinfo: Silent authorization to access members' details but not sensitive information such as avatars, QR codes, etc.
+ * snsapi_privateinfo: Manual authorisation to access member details, including sensitive information such as avatars and QR codes
  */
 type ScopeType = 'snsapi_base' | 'snsapi_userinfo' | 'snsapi_privateinfo';
 
-/**
- * 企业微信集成第三方应用快速登录
- * @param reference 登录成功重定向地址
- */
 export const wecomQuickLogin = (scopeType: ScopeType, reference?: string | null) => {
   const { callbackUrl, suiteId } = getWecomShopConfig();
   const authUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize';
@@ -313,7 +303,6 @@ export const wecomQuickLogin = (scopeType: ScopeType, reference?: string | null)
   // eslint-disable-next-line max-len
   window.location.href = `${authUrl}?appid=${suiteId}&redirect_uri=${encodeURIComponent(redirectUrl.href)}&response_type=code&scope=${scopeType}&state=${suiteId}#wechat_redirect`;
 };
-// 企业微信商店应用
 export const wecomShopLogin = () => {
   const { corpId, callbackUrl } = getWecomShopConfig();
   const url = 'https://open.work.weixin.qq.com/wwopen/sso/3rd_qrConnect';

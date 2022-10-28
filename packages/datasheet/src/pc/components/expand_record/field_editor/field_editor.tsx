@@ -26,7 +26,6 @@ interface IFieldEditorProps {
   colIndex?: number;
 }
 
-// 这里记录不需要背景色的字段，比如 附件，关联等
 const notNeedBgField = [FieldType.Attachment, FieldType.Link];
 
 export type IExpandFieldEditRef = Pick<IEditor, 'focus' | 'setValue' | 'saveValue'>;
@@ -79,7 +78,6 @@ const FieldEditorBase = (props: IFieldEditorProps) => {
     editorRef.current && editorRef.current.setValue(cellValue as number);
   }, [cellValue]);
 
-  // 需要用 useLayoutEffect 确保 editorRef.current 不为 null
   useLayoutEffect(() => {
     return () => {
       onEndEdit();
@@ -126,8 +124,6 @@ const FieldEditorBase = (props: IFieldEditorProps) => {
     field,
     height: 32,
     width: 100,
-    // 这个 editing 只会影响编辑组件的可响应状态，与当前组件中 editing 含义不同。
-    // 在卡片编辑中，所有的编辑组件都是展开状态，默认允许直接响应鼠标点击。
     editing: true,
     ref: editorRef,
   };

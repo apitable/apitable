@@ -85,7 +85,7 @@ export const CommentEditor: React.FC<IActivityPaneProps> = props => {
   function checkPlainText(text: string) {
     const len = text.length;
     if (!len) {
-      // todo 感觉加个为空的提示更好
+      // todo Feels better to add an empty prompt
       return false;
     }
     if (len >= MAX_COMMENT_LENGTH) {
@@ -106,7 +106,7 @@ export const CommentEditor: React.FC<IActivityPaneProps> = props => {
   }, [content]);
 
   function slateSubmit() {
-    // 内容为空的时候，不提交
+    // Not submitted when content is empty
     if (isCommentEmpty()) {
       return;
     }
@@ -147,7 +147,7 @@ export const CommentEditor: React.FC<IActivityPaneProps> = props => {
 
   useClickAway(
     (event: MouseEvent | TouchEvent) => {
-      // 点击回复时，聚焦评论
+      // Spotlight comments when clicking reply
       const replyClass = get(event, 'target.className');
       if (replyClass && typeof replyClass === 'string' && replyClass.includes('replyIcon')) {
         editRef.current?.focus(true);
@@ -165,7 +165,7 @@ export const CommentEditor: React.FC<IActivityPaneProps> = props => {
   );
 
   const contentChangeHandler = (content: Descendant[]) => {
-    // 储存state
+    // Storage state
     setContent(content);
   };
 

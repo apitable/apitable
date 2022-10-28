@@ -12,7 +12,6 @@ export interface ITreeItemProps {
   nodeId: string;
   selectable?: boolean;
   isLeaf?: boolean;
-  // 如果想要在相关的事件监听器中获取当前节点的数据，就可以在渲染时将数据传递给该组件
   data?: any;
   className?: string;
   draggable?: boolean;
@@ -76,17 +75,14 @@ const TreeItemBase: FC<ITreeItemProps> = ({
     const gapHeight = 12;
     const pageY = clientOffset.y;
     let newDropPosition = 0;
-    // 判断鼠标位置是否在元素的下半部分
     if (pageY >= (offsetTop + (offsetHeight + 2) - gapHeight) && pageY <= (offsetTop + (offsetHeight + 2))) {
       newDropPosition = 1;
-      // 判断鼠标位置是否在元素的下半部分
     } else if (pageY <= (offsetTop + gapHeight) && pageY >= offsetTop - 4) {
       newDropPosition = -1;
     }
     return newDropPosition;
   };
 
-  // 获取节点偏移信息
   const getOffset = ele => {
     let doc;
     let win;
@@ -112,13 +108,9 @@ const TreeItemBase: FC<ITreeItemProps> = ({
     return rect;
   };
 
-  /* 当前节点是否是展开状态  */
   const expanded = isExpanded ? isExpanded(nodeId) : false;
-  /* 当前节点是否是选中状态 */
   const selected = isSelected ? isSelected(nodeId) : false;
-  /* 当前节点是否是聚焦状态 */
   const focused = isFocused ? isFocused(nodeId) : false;
-  /* 当前节点是否是加载状态 */
   const loading = loadingNodeId === nodeId;
 
   const clickHandler = (e: React.MouseEvent) => {
@@ -136,7 +128,7 @@ const TreeItemBase: FC<ITreeItemProps> = ({
       return;
     }
     if (isMultiple) {
-      // TODO: 多选操作
+      // TODO: Multi-select operation
     } else {
       selectNode(e, nodeId);
     }
@@ -162,7 +154,6 @@ const TreeItemBase: FC<ITreeItemProps> = ({
     return React.Children.map(children, (item, index) => renderTreeItem(item, index, pos));
   };
 
-  /* 当前节点的深度 */
   const depth = pos ? (pos.split('-').length - 1) : 0;
 
   drag(dndDrop(dragRef));

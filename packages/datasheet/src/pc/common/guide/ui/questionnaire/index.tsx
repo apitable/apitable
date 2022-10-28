@@ -30,7 +30,7 @@ interface IQuestionnaireConfig {
   title: string;
   type: string;
   answers?: string[];
-  // 对于选择类的项目，是否最后允许用户自定义内容
+  // For items in the selection category, whether user-defined content is finally allowed
   lastAllowInput?: boolean;
   submit?: boolean;
   next?: boolean;
@@ -81,7 +81,7 @@ const QuestionnaireContent: FC<IQuestionnaireProps> = props => {
     contentDom.parentElement!.parentElement!.scrollTop = 0;
   }, [curIndex]);
 
-  // 进入下一步
+  // Go to the next step
   const enterNext = () => {
     setCurIndex(preIndex => {
       if (preIndex === 2 && isWecomFunc()) {
@@ -95,7 +95,7 @@ const QuestionnaireContent: FC<IQuestionnaireProps> = props => {
     const value = e.target.value;
     setAnswers({ ...answers, [config.key]: value });
 
-    // 是否进入下一个题目
+    // Whether to move on to the next topic
     if (config.type === 'radio' && config.lastAllowInput && value === config.answers![config.answers!.length - 1]) {
       return;
     }
@@ -130,7 +130,7 @@ const QuestionnaireContent: FC<IQuestionnaireProps> = props => {
       }
       submitData[targetConfig.name] = answers[value];
     });
-    onSubmit && onSubmit(submitData); // 提交。onSubmit 配置中有关闭的逻辑。
+    onSubmit && onSubmit(submitData); // There is logic in the onSubmit configuration to close it.
   };
 
   const removeRadioElseAnswer = (str: string) => {

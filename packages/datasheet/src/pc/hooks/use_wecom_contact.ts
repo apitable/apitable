@@ -13,17 +13,6 @@ export const useWecomContact = () => {
   const _isSocialWecom = isSocialWecom(spaceInfo);
   const urlRef = useRef<string | null>(null);
 
-  // 企业微信第三方空间站，需要进行相关 sdk 的加载
-  // const { loaded: jweixinLoaded } = useScript({
-  //   src: _isSocialWecom ? 'https://res.wx.qq.com/open/js/jweixin-1.2.0.js' : null,
-  //   referrerpolicy: 'origin'
-  // });
-  // const { loaded: jwxworkLoaded } = useScript({
-  //   src: _isSocialWecom ? 'https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js' : null,
-  //   referrerpolicy: 'origin'
-  // });
-  // const isScriptLoaded = jweixinLoaded && jwxworkLoaded;
-
   const { run: getWecomCommonConfig } = useRequest(() => Api.getWecomCommonConfig(spaceId!, window.location.href), {
     onSuccess: res => {
       const { data } = res.data;
@@ -31,13 +20,13 @@ export const useWecomContact = () => {
       const wx = (window as any).wx;
       try {
         wx.config?.({
-          beta: true, // 必须这么写，否则 wx.invoke 调用形式的 jsapi 会有问题
-          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: authCorpId, // 必填，企业微信的corpID
-          timestamp, // 必填，生成签名的时间戳
-          nonceStr: random, // 必填，生成签名的随机串
-          signature, // 必填，签名，见 附录-JS-SDK使用权限签名算法
-          jsApiList: ['agentConfig'] // 必填，需要使用的JS接口列表，凡是要调用的接口都需要传进来
+          beta: true, // It must be written this way, otherwise the jsapi of the wx.invoke call form will have problems
+          debug: false, // Enable debugging mode, you can print the information returned by the api call on the PC
+          appId: authCorpId, // Required, corpID for corporate wechat
+          timestamp, // Required, timestamp for signature generation
+          nonceStr: random, //Required, random string to generate signature
+          signature, // Required, signature, see Appendix - JS-SDK usage permission signing algorithm
+          jsApiList: ['agentConfig'] // Mandatory, list of JS interfaces to be used, all interfaces to be called need to be passed in
         });
         wx.ready?.(() => {
           getWecomAgentConfig(spaceId);
@@ -47,7 +36,6 @@ export const useWecomContact = () => {
       }
     },
     onError: () => {
-      // Message.error({ content: 'wx.config 初始化错误' });
     },
     manual: true
   });

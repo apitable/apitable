@@ -26,13 +26,13 @@ interface IFormFieldProps {
   onClose?: (...args: any) => void;
 }
 
-// 移动端不需要背景色的 Field
+// Field without background colour for mobile
 const _notNeedBgFieldMobile = [FieldType.Attachment, FieldType.Link, FieldType.LookUp];
 
-// 不需要背景色的 Field
+// Field without background colour
 const _notNeedBgField = [FieldType.Attachment, FieldType.Link, FieldType.LookUp, FieldType.Rating];
 
-// 不需要激活态的 Field
+// Field without active state
 const _notNeedActiveField = [FieldType.Checkbox, FieldType.Rating, FieldType.Formula];
 
 const needPositionField = [FieldType.Member];
@@ -49,7 +49,7 @@ export const FormField: React.FC<IFormFieldProps> = props => {
   const editorRef = (useRef<(IFieldEditRef & HTMLDivElement) | null>(null) as any) as React.MutableRefObject<IEditor>;
   const { formData, formProps } = useContext(FormContext);
   const fieldId = field.id;
-  // TODO(kailang) 下个 sprint 支持表单默认值
+  // TODO(kailang) Next sprint supports form defaults
   // const hasSetField = has(formData, fieldId);
   // const defaultValue = Field.bindModel(field).defaultValue();
   // const cellValue = hasSetField ? (formData[fieldId] ?? null) : defaultValue;

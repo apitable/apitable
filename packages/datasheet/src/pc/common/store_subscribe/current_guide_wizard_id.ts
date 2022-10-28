@@ -15,13 +15,13 @@ store.subscribe(function currentGuideWizardIdInHook() {
   if (curId === previousCurWizardId || !config || !user || !user.info) return;
   const nextWizardInfo = getWizardInfo(config, curId as number);
   if (!nextWizardInfo) return;
-  // 有manualActions
+ 
   if (nextWizardInfo.manualActions) {
     startActions(config, nextWizardInfo.manualActions);
   }
-  // 有steps
+
   if (nextWizardInfo.steps && nextWizardInfo.steps.length > 0) {
-    // 更新triggeredGuideInfo
+  
     const newTriggeredGuideInfo = {
       ...triggeredGuideInfo,
       [curId]: {

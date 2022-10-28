@@ -50,7 +50,7 @@ const GanttStage: FC<IGanttStageProps> = memo((props) => {
   const { isLocking } = useContext(KonvaGanttViewContext);
 
   const stageRef = useRef<any>(); // Konva Stage
-  const wheelingRef = useRef<number | null>(null); // 存储定时器，保证操作流畅性
+  const wheelingRef = useRef<number | null>(null); // Storage timer for smooth operation
   const { scrollLeft: gridScrollLeft } = gridScrollState;
   const { scrollTop, scrollLeft: ganttScrollLeft } = ganttScrollState;
   const { containerWidth: gridWidth, columnCount: gridColumnCount, rowCount, frozenColumnWidth } = gridInstance;
@@ -59,19 +59,19 @@ const GanttStage: FC<IGanttStageProps> = memo((props) => {
   const containerWidth = gridWidth + ganttWidth;
   const viewName = view.name;
 
-  // 获取要渲染的纵向可见区域
+  // Get the vertical visible area to be rendered
   const getVerticalRangeInfo = () => {
     const startIndex = ganttInstance.getRowStartIndex(scrollTop);
     const stopIndex = ganttInstance.getRowStopIndex(startIndex, scrollTop);
 
-    // rowStartIndex 是可视区域的第一个，但会在视觉上留下空白，因此需要往前多渲染一个
+    // rowStartIndex is the first in the visible area, but leaves a visual gap, so it needs to be rendered one more time forward
     return {
       rowStartIndex: Math.max(0, startIndex - 1),
       rowStopIndex: Math.max(0, Math.min(rowCount - 1, stopIndex + 1)),
     };
   };
 
-  // 获取「图形区」要渲染的横向可见区域
+  // Get the horizontal visible area of the Graphics Area to be rendered
   const getHorizontalRangeInfo = () => {
     const startIndex = ganttInstance.getColumnStartIndex(ganttScrollLeft);
     const stopIndex = ganttInstance.getColumnStopIndex(ganttScrollLeft);
@@ -82,7 +82,7 @@ const GanttStage: FC<IGanttStageProps> = memo((props) => {
     };
   };
 
-  // 获取「任务区」要渲染的横向可见区域
+  // Get the horizontally visible area of the Task Area to be rendered
   const getGridHorizontalRangeInfo = () => {
     const startIndex = gridInstance.getColumnStartIndex(gridScrollLeft);
     const stopIndex = gridInstance.getColumnStopIndex(startIndex, gridScrollLeft);
@@ -97,7 +97,7 @@ const GanttStage: FC<IGanttStageProps> = memo((props) => {
   const { columnStartIndex, columnStopIndex } = getHorizontalRangeInfo();
   const { columnStartIndex: gridColumnStartIndex, columnStopIndex: gridColumnStopIndex } = getGridHorizontalRangeInfo();
 
-  // 获取前缀 targetName
+  // Get prefix targetName
   const getTargetName = (targetName) => {
     if (targetName == null || targetName === '') {
       return KONVA_DATASHEET_ID.GANTT_BLANK;
@@ -170,8 +170,8 @@ const GanttStage: FC<IGanttStageProps> = memo((props) => {
     return {
       areaType,
       realAreaType,
-      targetName, // 作为简单操作的标识别，只带前缀名
-      realTargetName: _targetName || KONVA_DATASHEET_ID.GANTT_BLANK, // 真实的 name
+      targetName, 
+      realTargetName: _targetName || KONVA_DATASHEET_ID.GANTT_BLANK,
       rowIndex,
       columnIndex,
       offsetTop,
@@ -217,7 +217,7 @@ const GanttStage: FC<IGanttStageProps> = memo((props) => {
   };
 
   /**
-   * 处理画布鼠标移动事件
+   * Handling canvas mouseover events
    */
   const onMouseMove = (e: KonvaEventObject<MouseEvent>) => {
     if (wheelingRef.current || isLocking) {
@@ -235,7 +235,7 @@ const GanttStage: FC<IGanttStageProps> = memo((props) => {
       const curMousePosition = getMousePosition(x, y, eventTargetName);
       const { realAreaType, areaType, targetName } = curMousePosition;
      
-      // 处理鼠标样式
+      // Handling mouse styles
       if (realAreaType === AreaType.Grid) {
         handleGridMouseStyle(targetName);
       }
@@ -280,7 +280,7 @@ const GanttStage: FC<IGanttStageProps> = memo((props) => {
   });
 
   /**
-   * 处理画布拖拽移动事件
+   * Handling canvas drag and move events
    */
   const onDragMove = () => {
     if (wheelingRef.current) {

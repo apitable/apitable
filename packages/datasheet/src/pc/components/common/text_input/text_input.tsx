@@ -5,7 +5,6 @@ import styles from './style.module.less';
 import classNames from 'classnames';
 
 export interface ITextInputProps extends InputProps {
-  // 显示错误信息
   err?: string;
 }
 

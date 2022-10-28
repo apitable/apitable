@@ -14,19 +14,16 @@ const DingTalkH5 = () => {
     onSuccess: res => {
       const { data, success } = res.data;
       if (!success) {
-        // 需要登录
         Router.push(Navigation.DINGTALK, {
           params: { dingtalkPath: 'login' },
           query: { reference }
         });
         return;
       }
-      // 后端说明：success为true时bindSpaceId不为空
       if (!data.bindSpaceId) {
         Message.error({ content: t(Strings.error) });
         return;
       }
-      // 应用已经绑定了空间
       // window.location.href = `/workbench?reference=${reference}&spaceId=${data.bindSpaceId}`;
       Router.push(Navigation.WORKBENCH, {
         params: { spaceId: data.bindSpaceId },

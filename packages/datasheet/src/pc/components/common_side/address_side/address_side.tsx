@@ -41,7 +41,6 @@ export const AddressSide: React.FC = () => {
   const { getInviteStatus } = useUserRequest();
   const { data: inviteRes, loading } = useRequest(getInviteStatus);
 
-  // 是否处于搜索状态
   const [inSearch, setInSearch] = useState<boolean>(false);
 
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
@@ -55,7 +54,6 @@ export const AddressSide: React.FC = () => {
   const { setSideBarVisible } = useSideBarVisible();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  // 操作-选择小组，获取所选小组信息，以及小组成员列表
   const teamClick = React.useCallback(
     (teamId: string) => {
       Api.readTeam(teamId).then(res => {
@@ -76,7 +74,6 @@ export const AddressSide: React.FC = () => {
     [isMobile, setSideBarVisible, dispatch],
   );
 
-  // 操作-选择成员
   const memberClick = (memberId: string) => {
     Router.push(Navigation.MEMBER_DETAIL, { params: { spaceId, memberId }});
     isMobile && expandMemberInfo();
@@ -90,7 +87,6 @@ export const AddressSide: React.FC = () => {
   const btnSize = isSyncingMembers ? 'large' : 'middle';
 
   const OperateButton = React.useMemo(() => {
-    // 玉符私有化隐藏按钮
     if (isIdassPrivateDeployment()) {
       return;
     }

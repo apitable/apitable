@@ -56,7 +56,8 @@ export const ExpandAttachmentBase: React.ForwardRefRenderFunction<
         getCellValueFn={getCellValueFn}
         className='uploadTabWrapper'
       />
-      {/* focus 的状态会和附件的拖动行为冲突，因此只在初次加载时进行定位，之后不再触发 focus */}
+      {/* The state of focus conflicts with the dragging behaviour of the attachment, so it is 
+      only positioned on initial load, after which focus is no longer triggered */}
       {
         !firstRender.current && <div style={{ height: '0px' }}>
           <FocusHolder ref={editorRef} />

@@ -8,12 +8,12 @@
   height: 100%;
 
   @media screen and (max-width: @w-md) {
-    // sidebar 中有输入框，防止 Android 挤压页面做容错处理, min-height 为 iPhone 5 高度
+    // sidebar input box to prevent Android from squeezing the page for error tolerance, min-height is iPhone 5 height
     min-height: 568px;
   }
 
   width: 100%;
-  // 给搜索出来的 nodeList 一个宽度参考对象，防止溢出
+  // Give the searched nodeList a width reference object to prevent overflow
   position: relative;
 
   .header {
@@ -53,8 +53,8 @@
     padding-left: 12px !important;
     display: flex;
     flex-direction: column;
-    padding-top: @shadowMaxWidthForGuide; // 此处用于新手引导，避免高亮元素的breath动画阴影被遮住
-    border-radius: 4px; // 此处为了新手引导出现时，阴影为圆角，不影响正常状态下的样式
+    padding-top: @shadowMaxWidthForGuide; 
+    border-radius: 4px; 
   }
 
   .groupName {
@@ -124,8 +124,7 @@
   }
 
   .fixedGroup {
-    // margin-top: @shadowMaxWidthForGuide; // 此处用于新手引导，避免高亮元素的breath动画阴影被遮住
-
+  
     display: flex;
     height: 40px;
     border-top: 1px solid var(--lineColor);

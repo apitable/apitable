@@ -58,7 +58,6 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
   };
 
   const openMemberList = (e, toggleClose = true) => {
-    // 用来处理 modal 对于 select 的事件阻止
     !editing && document.body.click();
     stopPropagation(e);
     if (toggleClose) {
@@ -88,8 +87,7 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
     const unitInfos = unitValue.map(unitId => {
       return unitMap[unitId];
     });
-
-    // 检查选择的人中是否有管理员
+    
     if (unitInfos.some(({ unitId }) => adminAndOwnerUnitIds.includes(unitId))) {
       Message.error({ content: t(Strings.no_permission_setting_admin) });
       return;

@@ -31,7 +31,7 @@ export const showBreath = (options: IGuideBreathOptions) => {
   const { shadowDirection = 'outset', color, element, onTarget, backdrop } = options;
   let previousNode: HTMLElement | null;
 
-  // 给目标元素添加类
+  // Adding a class to the target element
   const add = (targetNode: HTMLElement) => {
     targetNode.classList.add(getBreathClass(shadowDirection, color));
   };
@@ -40,7 +40,7 @@ export const showBreath = (options: IGuideBreathOptions) => {
     targetNode.classList.remove(getBreathClass(shadowDirection, color));
   };
 
-  // 找到了dom元素
+  // The dom element was found
   const domFound = (targetDom: HTMLElement) => {
     previousNode = curNode;
     curNode = targetDom;

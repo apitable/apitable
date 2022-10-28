@@ -18,11 +18,11 @@ interface IInlineNodeNameProps {
   nodeNameStyle?: React.CSSProperties;
   nodeIcon: string | undefined;
   withIcon?: boolean;
-  withBrackets?: boolean; // 带括, 「」会把名称括起来。
+  withBrackets?: boolean; 
   withTip?: boolean;
   iconSize?: number;
   size?: number;
-  prefix?: string; // 带前缀, 例如： <前缀>「<icon> <name> 」
+  prefix?: string;
   className?: string;
   iconEditable?: boolean;
 }

@@ -111,7 +111,7 @@ export const useTaskLineSetting = (props: ITaskLineSettingProps) => {
     setShowConnect(true);
   };
   
-  // TODO 抽出一个变量
+  // TODO Extracting a variable
   const shadowProps =
     cacheTheme === 'light'
       ? {

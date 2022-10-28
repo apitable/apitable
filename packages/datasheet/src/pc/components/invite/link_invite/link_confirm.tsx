@@ -49,7 +49,6 @@ const LinkConfirm: FC = () => {
           query: { inviteLinkToken: inviteLinkToken!, inviteCode, nodeId }
         });
       } else {
-        // 链接失效，更新数据
         window.location.reload();
       }
       return;

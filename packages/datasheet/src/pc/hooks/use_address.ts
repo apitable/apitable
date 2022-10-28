@@ -12,7 +12,7 @@ import {
 import { useDispatch } from './use_dispatch';
 import { Message, Modal } from 'pc/components/common';
 
-// 请求员工列表
+// Get Member List
 export const useUpdateMemberListInSpace = () => {
   const pageObjectParams = {
     pageSize: ConfigConstant.MEMBER_LIST_PAGE_SIZE,
@@ -64,7 +64,7 @@ export const useSelectTeamChange = () => {
 
 export const useAddressRequest = () => {
   const dispatch = useDispatch();
-  // 管理员编辑成员的站内昵称
+  // Administrators edit members' station nicknames
   const editMemberName = (data: IUpdateMemberInfo) => {
     return Api.updateMember(data as IUpdateMemberInfo).then(res => {
       const { success } = res.data;
@@ -77,7 +77,7 @@ export const useAddressRequest = () => {
       }
     });
   };
-  // 在通讯录页面编辑自己的站内昵称
+  // Edit your station nickname in the address book page
   const editOwnMemberNameInAddress = (memberId: string, memberName: string) => {
     return Api.updateOwnerMemberInfo(memberName).then(res => {
       const { success } = res.data;
@@ -102,7 +102,6 @@ export const useAddressRequest = () => {
       Message.success({ content: t(Strings.reload_page_later_msg) });
       setTimeout(() => {
         window.location.reload();
-        // 点击完按钮，5s后自动刷新页面
       }, 5000);
       return;
       
@@ -125,14 +124,12 @@ export const useAddressRequest = () => {
       Message.success({ content: t(Strings.reload_page_later_msg) });
       setTimeout(() => {
         window.location.reload();
-        // 点击完按钮，5s后自动刷新页面
       }, 5000);
       return;
       
     });
   };
 
-  // 玉符同步通讯录
   const freshIdaasOrg = () => {
     return Api.idaasContactSync().then(res => {
       const { success, message } = res.data;
@@ -143,7 +140,6 @@ export const useAddressRequest = () => {
       Message.success({ content: t(Strings.reload_page_later_msg) });
       setTimeout(() => {
         window.location.reload();
-        // 点击完按钮，5s后自动刷新页面
       }, 5000);
       return;
     });

@@ -109,7 +109,6 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     this.setValue(e.target.value);
   };
 
-  // 选中下拉框里的值时的改变。
   onPanelChange = (value: string) => {
     this.setValue(value);
     this.setOpen(false);

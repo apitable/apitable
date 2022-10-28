@@ -15,7 +15,7 @@ let timer: any;
 export const showAroundMask = (props: IAroundMaskProps) => {
   const { eleString } = props;
   let previousNode: HTMLElement | null;
-  // 找到了dom元素
+  //   The dom element was found
   const domFound = (targetDom: HTMLElement) => {
     bringInView(targetDom as HTMLElement);
     previousNode = curNode;
@@ -57,7 +57,7 @@ export const showAroundMask = (props: IAroundMaskProps) => {
   };
 
   const destroyMask = () => {
-    // 销毁遮罩
+    // Destruction of masks
     const leftDiv = document.getElementById(GUIDE_AROUND_MASK_LEFT_ID);
     const rightDiv = document.getElementById(GUIDE_AROUND_MASK_RIGHT_ID);
     const topDiv = document.getElementById(GUIDE_AROUND_MASK_TOP_ID);
@@ -125,7 +125,7 @@ export const refreshAroundMask = (node?: HTMLElement) => {
 export const destroyAroundMask = () => {
 
   const destroyMask = () => {
-    // 销毁遮罩
+    // Destruction of masks
     const leftDiv = document.getElementById(GUIDE_AROUND_MASK_LEFT_ID);
     const rightDiv = document.getElementById(GUIDE_AROUND_MASK_RIGHT_ID);
     const topDiv = document.getElementById(GUIDE_AROUND_MASK_TOP_ID);

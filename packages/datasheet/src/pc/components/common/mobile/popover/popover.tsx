@@ -22,7 +22,6 @@ export const Popover: React.FC<ITriggerProps> = props => {
       action={['click']}
       popupStyle={{
         position: 'absolute',
-        // 确保能在 modal 上层展示
         zIndex: 1000,
         pointerEvents: 'initial',
       }}
@@ -36,7 +35,6 @@ export const Popover: React.FC<ITriggerProps> = props => {
           onClick={() => setVisible(false)}
         >
           <div className={style.arrowWrapper}>
-            {/* FIXME:THEME 没有 dc 这种颜色 */}
             <ArrowIcon fill={'#262838'} width={20} height={12} />
           </div>
           {content}

@@ -27,10 +27,12 @@ const commonConfig = {
 };
 
 /*
- * notify 的出现要在视图区域内，因此需要定位包裹的 dom 元素，但是为了不频繁的获取包裹的 dom，
- * 在这里对数据进行缓存，但是在切换数表，切换空间，因为保存的依旧是原来的 dom 元素，或导致 notify 无法正常显示
- * 因此写了一个 reset 方法重置 dom
- * 如果在后续的开发中发现 notify 调用无反应，可以参考这里
+ * The notify has to appear within the view area, so the wrapped dom element needs to be located, 
+ * but in order to not fetch the wrapped dom too often, the
+ * The data is cached here, but when switching the number table, the space is switched, as the original dom element is still stored, 
+ * or the notify is not displayed properly
+ * So a reset method was written to reset the dom
+ * If you find that the notify call does not respond in subsequent development, you can refer here
  */
 // let container: null | HTMLElement = null;
 
@@ -83,7 +85,7 @@ const open = (config: ArgsProps & Partial<ICustomNotifyConfig>) => {
 export const notify = {
   close,
   open,
-  // 不建议轻易使用该方法，最好能调用 close
+  // It is not recommended to use this method lightly and it is better to call close
   destroy: () => { notification.destroy(); },
   reset: () => {
   },

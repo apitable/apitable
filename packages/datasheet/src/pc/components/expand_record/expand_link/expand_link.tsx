@@ -154,7 +154,7 @@ const ExpandLinkBase: React.ForwardRefRenderFunction<IExpandFieldEditRef, IExpan
       }
       editorRef.current?.focus();
     });
-    // 添加关联记录的时候，要把关联表的 record 全部加载进来以供搜索
+    // When adding an associated record, load all the records of the associated table for searching
     if (foreignDatasheet?.isPartOfData && !foreignDatasheetErrorCode) {
       if (mirrorId) {
         dispatch(StoreActions.fetchForeignDatasheet(mirrorId, foreignDatasheet.id) as any);
@@ -164,7 +164,7 @@ const ExpandLinkBase: React.ForwardRefRenderFunction<IExpandFieldEditRef, IExpan
   }
 
   function clickRecord(recordId: string) {
-    // 判断关联表权限
+    // Determining Related Table Permissions
     const state = store.getState();
     const readable = Selectors.getPermissions(state, field.property.foreignDatasheetId).readable;
     if (!readable && field.property.foreignDatasheetId) {
@@ -216,7 +216,8 @@ const ExpandLinkBase: React.ForwardRefRenderFunction<IExpandFieldEditRef, IExpan
 
   return (
     <div className={style.expandLink} style={props.style}>
-      {/* 这里换成一个无宽高的空元素，避免宽高影响其 focus 时出现预期外的滚动行为 */}
+      {/* This is replaced by an empty element with no width and height to
+       avoid unintended scrolling behaviour when the width and height affect its focus */}
       <div ref={focusRef} tabIndex={-1} />
       <div className={style.addLinkRecord}>{renderButton()}</div>
       {foreignSnapshot && (
@@ -226,7 +227,6 @@ const ExpandLinkBase: React.ForwardRefRenderFunction<IExpandFieldEditRef, IExpan
               showCellValues.map((recordId, index) => {
                 const record = foreignSnapshot.recordMap[recordId];
 
-                // 无法查询到记录，则直接返回
                 if (!record) {
                   return <></>;
                 }

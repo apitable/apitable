@@ -17,7 +17,6 @@ const WecomLogin: React.FC = () => {
     onSuccess: res => {
       const { data, success, code } = res.data;
       if (!success) {
-        // 需要登录
         switch (code) {
           case StatusCode.WECOM_NOT_BIND_SPACE:
             Router.push(Navigation.LOGIN);
@@ -42,12 +41,10 @@ const WecomLogin: React.FC = () => {
         }
         return;
       }
-      // 后端说明：success为true时bindSpaceId不为空
       if (!data?.bindSpaceId) {
         Message.error({ content: t(Strings.error) });
         return;
       }
-      // 应用已经绑定了空间
       if (reference) {
         window.location.href = reference;
         return;

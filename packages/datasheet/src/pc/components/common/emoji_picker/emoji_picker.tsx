@@ -36,7 +36,7 @@ export const EmojiPickerBase: FC<PropsWithChildren<IEmojiPopoverProps>> = props 
       <div ref={ref}>
         <Picker
           onSelect={emoji => {
-            onSelect(emoji.id); // onSelect 返回的是一个对象，只需要 id。
+            onSelect(emoji.id);
             setVisible(false);
           }}
         />

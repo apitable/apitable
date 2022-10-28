@@ -10,7 +10,7 @@ export function useQuery() {
 }
 
 /**
- * URLSearchParams类型转换成对象
+ * URLSearchParams
  * @param urlSearchParams
  * @returns
  */

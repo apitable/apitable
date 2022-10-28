@@ -45,9 +45,7 @@ export const Records: FC<IRecordsProps> = ({ records, title, subTitle, showDetai
   const downloadFail = async() => {
     const Excel = await import('exceljs');
     const workbook = new Excel.Workbook();
-    // 新建sheet
     const tempWorksheet = workbook.addWorksheet(t(Strings.failed_list));
-    // 定义column标题
     tempWorksheet.columns = HeaderConfig;
     tempWorksheet.addRows(curRecords);
     const fileName = t(Strings.failed_list);

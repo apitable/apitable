@@ -106,11 +106,11 @@ export const SelectFolder: React.FC<{
     const shadowEle = scrollShadowRef.current;
     if (!shadowEle) return;
     if (scrollTop + height > scrollHeight - 10) {
-      // 屏蔽可滚动样式
+     
       shadowEle.style.display = 'none';
       return;
     }
-    // 展示可滚动样式
+  
     if (shadowEle.style.display === 'block') {
       return;
     }
@@ -131,7 +131,7 @@ export const SelectFolder: React.FC<{
 
   return (
     <div className={styles.selectFolder}>
-      {/** 如果在web端或者移动端完整数据的时候显示搜索 */}
+      {/** the search is displayed when the data is complete on the web or mobile */}
       {isShowSearchInput && <TextInput
         className={styles.searchInput}
         value={keyword}

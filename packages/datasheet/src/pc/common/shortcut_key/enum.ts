@@ -1,20 +1,20 @@
 /* eslint-disable */
 export enum ContextName {
-  true = 'true',  // when一直为true
-  isEditing = 'isEditing', // 单元格编辑的时候。
-  isMenuOpening = 'isMenuOpening', // 菜单打开的时候（例如：列配置菜单）
-  isGlobalEditing = 'isGlobalEditing', // 任意输入框聚焦的时候。
-  isFocusing = 'isFocusing', // 单元格聚焦的时候。
-  hasActiveCell = 'hasActiveCell', // 存在激活单元格的时候。
-  isRecordExpanding = 'isRecordExpanding', // 卡片编辑激活的时候。
-  visualizationEditable = 'visualizationEditable', // 视图工具栏编辑
-  recordEditable = 'recordEditable', // Record 记录编辑
-  modalVisible = 'modalVisible',  // 当前是否打开了模态窗
+  true = 'true',  // when is always true
+  isEditing = 'isEditing', // When cell editing.
+  isMenuOpening = 'isMenuOpening', // When a menu is open (e.g. column configuration menu)
+  isGlobalEditing = 'isGlobalEditing', // When any input box is in focus.
+  isFocusing = 'isFocusing', // When the cell is in focus.
+  hasActiveCell = 'hasActiveCell', // exists to activate the cell.
+  isRecordExpanding = 'isRecordExpanding', // When the card editor is activated.
+  visualizationEditable = 'visualizationEditable', // View toolbar editing
+  recordEditable = 'recordEditable', // Record Record Editing
+  modalVisible = 'modalVisible',  // Is the modal window currently open
 }
 
 export enum ShortcutActionName {
-  None = 'None', // -> 出现这个，一般就是填config表出错了
-  Help = 'Help', // 键盘快捷键帮助面板
+  None = 'None', // -> When this happens, it is usually an error in filling out the config form
+  Help = 'Help', // Keyboard shortcuts help panel
   Undo = 'Undo',
   Redo = 'Redo',
   ToastForSave = 'ToastForSave',
@@ -23,7 +23,7 @@ export enum ShortcutActionName {
   ToggleNextEditing = 'ToggleNextEditing',
   ToggleWidgetPanel = 'ToggleWidgetPanel',
 
-  // 单元格移动
+  // Cell movement
   CellLeft = 'CellLeft',
   CellRight = 'CellRight',
   CellUp = 'CellUp',
@@ -32,11 +32,11 @@ export enum ShortcutActionName {
   CellDownEdge = 'CellDownEdge',
   CellLeftEdge = 'CellLeftEdge',
   CellRightEdge = 'CellRightEdge',
-  CellTab = 'CellTab', // 退出编辑状态，并向右移动一格
-  CellShiftTab = 'CellShiftTab', // 退出编辑状态，并向左移动一格
-  RecordTab = 'RecordTab', // 卡片编辑中，退出编辑状态，并向下移动一格
-  RecordShiftTab = 'RecordShiftTab', // 卡片编辑中，退出编辑状态，并向上移动一格
-  // 选区扩展
+  CellTab = 'CellTab', // Exit the edit state and move one frame to the right
+  CellShiftTab = 'CellShiftTab', // Exit the edit state and move one space to the left
+  RecordTab = 'RecordTab', // In card editing, exit the edit state and move down one frame
+  RecordShiftTab = 'RecordShiftTab', // In a card edit, exit the edit state and move up one frame
+  // Constituency expansion
   SelectionLeft = 'SelectionLeft',
   SelectionRight = 'SelectionRight',
   SelectionUp = 'SelectionUp',
@@ -66,7 +66,7 @@ export enum ShortcutActionName {
   ViewPrev = 'ViewPrev',
   ViewNext = 'ViewNext',
 
-  // 目录树
+  // Catalogue tree
   SearchNode = 'SearchNode',
   NewFolder = 'NewFolder',
   NewDatasheet = 'NewDatasheet',
@@ -77,16 +77,16 @@ export enum ShortcutActionName {
   SaveAsTemplate = 'SaveAsTemplate',
   ToggleCatalogPanel = 'ToggleCatalogPanel',
 
-  // 视图工具栏
+  // View toolbar
   ToggleFindPanel = 'ToggleFindPanel',
   ToggleApiPanel = 'ToggleApiPanel',
   ToggleRobotPanel = 'ToggleRobotPanel',
   ToggleTimeMachinePanel = 'ToggleTimeMachinePanel',
-  // 展开卡片
+  // Expand the card
   PreviousRecord = 'PreviousRecord',
   NextRecord = 'NextRecord',
-  // 关闭展开的卡片
+  // Close the unfolded card
   CloseExpandRecord = 'CloseExpandRecord',
-  // 开发者面板
+  // Developer Panel
   ToggleDevPanel = 'ToggleDevPanel',
 }

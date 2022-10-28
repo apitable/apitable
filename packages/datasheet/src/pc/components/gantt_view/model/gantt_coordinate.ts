@@ -4,24 +4,24 @@ import { IGanttCoordinate } from '../interface';
 import { Coordinate } from 'pc/components/konva_grid';
 import { getDiffCount, change, DateTimeType, getDayjs } from '../utils/date';
 
-// Unix 时间: 从 1970年1月1日0时0分0秒 起开始计算
+// Unix time: from 01/01/1970 0:0:0
 const unixDate = '1970-01-01';
 
 /**
- * 用于构建 Canvas Gantt 基础坐标系
+ * For building the Canvas Gantt base coordinate system
  */
 export class GanttCoordinate extends Coordinate {
-  // 时间轴开始时间对应的索引
+  // Index corresponding to the start time of the timeline
   private startDateIndex = -1;
-  // 时间轴结束时间对应的索引
+  // Index corresponding to the end time of the timeline
   private endDateIndex = -1;
-  // 时间刻度类型（周/月/季/年）
+  // Type of time scale (weekly/monthly/quarterly/yearly)
   public dateUnitType: DateUnitType = DateUnitType.Week;
-  // 工作日列表
+  // List of working days
   private _workDays: Set<number>;
-  // 是否只计算工作日
+  // Are only working days counted
   public onlyCalcWorkDay: boolean;
-  // 最大天数
+  // Maximum number of days
   private _columnThreshold = 60;
 
   constructor({ 
@@ -48,8 +48,8 @@ export class GanttCoordinate extends Coordinate {
   }
 
   /**
-   * 支持虚拟滚动
-   * 甘特图时间轴限制最多 60 个单元进行展示
+   * Virtual scrolling support
+   * Gantt chart timeline limited to a maximum of 60 cells for display
    */
   get columnThreshold() {
     return this._columnThreshold;
@@ -59,7 +59,7 @@ export class GanttCoordinate extends Coordinate {
     this._columnThreshold = count;
   }
 
-  // 获取横向间隔
+  // Get horizontal spacing
   get columnWidth() {
     switch (this.dateUnitType) {
       case DateUnitType.Week: 
@@ -85,7 +85,7 @@ export class GanttCoordinate extends Coordinate {
     }
   }
 
-  // 获取不同时间精度下的一天的宽度
+  // Get the width of a day with different time precision
   get unitWidth(): number {
     switch (this.dateUnitType) {
       case DateUnitType.Week:
@@ -98,7 +98,7 @@ export class GanttCoordinate extends Coordinate {
     }
   }
 
-  // 获取 dayjs 使用到的 unitType
+  // Get the unitType used by dayjs
   get unitType() {
     switch (this.dateUnitType) {
       case DateUnitType.Week:
@@ -111,22 +111,22 @@ export class GanttCoordinate extends Coordinate {
     }
   }
 
-  // 获取总宽度
+  // Get total width
   get totalWidth() {
     return 2 * this.columnThreshold * this.columnWidth;
   }
 
-  // 获取今天的 index
+  // Get today's index
   get todayIndex() {
     return this.getIndexFromStartDate(this.nowTime, this.unitType);
   }
 
-  // 获取当前时间戳
+  // Get the current timestamp
   get nowTime() {
     return Date.now();
   }
 
-  // 初始化时间轴相关的参数
+  // Initialisation of timeline related parameters
   public initTimeline(dateUnitType: DateUnitType, dateTime: DateTimeType = this.nowTime) {
     this.dateUnitType = dateUnitType;
     const isQuarter = dateUnitType === DateUnitType.Quarter;
@@ -155,36 +155,36 @@ export class GanttCoordinate extends Coordinate {
     this.endDateIndex = startIndex + diffCount;
   }
 
-  // 获取从 "1970-01-01" 至指定日期的时间精度的 index
+  // Gets the index of the time precision from "1970-01-01" to the specified date
   public getIndexFromUnix(current: DateTimeType, unit: OpUnitType = 'day') {
     return Math.abs(getDayjs(current).diff(unixDate, unit));
   }
 
-  // 从 "1970-01-01" 开始，根据 index 得出日期
+  // Date from "1970-01-01", based on index
   public getDateFromUnix = (diffIndex: number, unit: OpUnitType = 'day') => {
     return change(unixDate, diffIndex, unit);
   };
 
-  // 从范围时间中获取 index
+  // Get index from range time
   public getIndexFromStartDate(current: DateTimeType, unit: OpUnitType = 'day') {
     const startDate = this.getDateFromUnix(this.startDateIndex);
     return getDayjs(current).diff(startDate, unit);
   }
 
-  // 从范围时间中获取时间
+  // Get time from range time
   public getDateFromStartDate(diffIndex: number, unit: OpUnitType = 'day') {
     const startDate = change(unixDate, this.startDateIndex, 'day');
     return change(startDate, diffIndex, unit);
   }
 
-  // 获取起始单元 offset
+  // Get starting unit offset
   public getUnitStartOffset(dateTime: DateTimeType | null) {
     if (!dateTime) return null;
     const unitIndex = this.getIndexFromStartDate(dateTime);
     return this.getUnitOffset(unitIndex);
   }
 
-  // 获取结束单元 offset
+  // Get end cell offset
   private getUnitStopOffset(dateTime: DateTimeType | null) {
     if (!dateTime) return null;
     const end = change(dateTime, 1);
@@ -297,7 +297,7 @@ export class GanttCoordinate extends Coordinate {
     }
   }
 
-  // 是否是工作日
+  // Is it a working day
   public isWorkDay(date: DateTimeType) {
     const dateOfMonth = getDayjs(date);
     const day = dateOfMonth.day();

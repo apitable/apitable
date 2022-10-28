@@ -5,7 +5,7 @@ import { secondStepVerify } from 'pc/hooks/utils';
 export const useInviteRequest = () => {
 
   /**
-   * 获取链接列表
+   * Get link list
    */
   const linkListReq = () => {
     return Api.getLinkList().then(res => {
@@ -18,8 +18,8 @@ export const useInviteRequest = () => {
   };
 
   /**
-   * 查询部门信息
-   * @param teamId 部门ID（0：表示根部门）
+   * Search for departmental information
+   * @param teamId
    */
   const readTeamReq = (teamId = '0') => {
     return Api.readTeam(teamId).then(res => {
@@ -32,8 +32,8 @@ export const useInviteRequest = () => {
   };
 
   /**
-   * 查询直属子部门列表
-   * @param teamId 部门ID
+   * Search the list of direct sub-departments
+   * @param teamId
    */
   const getSubTeamsReq = (teamId: string) => {
     return Api.getSubTeams(teamId).then(res => {
@@ -46,8 +46,8 @@ export const useInviteRequest = () => {
   };
 
   /**
-   * 生成-刷新链接
-   * @param teamId 部门ID
+   * Generate - Refresh link
+   * @param teamId
    */
   const generateLinkReq = (teamId: string, nodeId?: string) => {
     return Api.createLink(teamId, nodeId).then(res => {
@@ -60,8 +60,8 @@ export const useInviteRequest = () => {
   };
 
   /**
-   * 删除链接
-   * @param teamId 部门ID
+   * Delete link
+   * @param teamId
    */
   const deleteLinkReq = (teamId: string) => {
     return Api.deleteLink(teamId).then(res => {
@@ -75,7 +75,7 @@ export const useInviteRequest = () => {
   };
 
   /**
-   * 发送邮件邀请成员
+   * Send an email to invite members
    */
   const sendInviteReq = (invite: IInviteMemberList[], nodeId?: string, nvcVal?: string) => {
     return Api.sendInvite(invite, nodeId, nvcVal).then(res => {
@@ -89,8 +89,8 @@ export const useInviteRequest = () => {
   };
 
   /**
-   * 搜索成员和小组
-   * @param keyword 关键词
+   * Search for members and groups
+   * @param keyword
    */
   const fetchTeamAndMember = (keyword: string, searchEmail: boolean) => {
     return Api.loadOrSearch({ keyword, searchEmail }).then(res => {

@@ -48,7 +48,7 @@ export const PermissionInfoSetting: React.FC<{
 
   return (
     <div className={classNames(styles.permissionInfoSetting, className)}>
-      {/* 当前权限的描述 */}
+      {/* Description of current authority */}
       <div className={styles.tipContainer}>
         {isExtend ? (
           <Box>
@@ -85,7 +85,7 @@ export const PermissionInfoSetting: React.FC<{
           </div>
         )}
       </div>
-      {/* 批量设置 */}
+      {/* Batch settings */}
       <div className={styles.settingLine}>
         <div className={styles.viewByPersonBtn} onClick={() => toggleIsMemberDetail()}>
           <Typography variant="body3" color={colors.textCommonSecondary}>

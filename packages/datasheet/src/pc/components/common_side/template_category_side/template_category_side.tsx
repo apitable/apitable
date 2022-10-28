@@ -34,7 +34,6 @@ export const TemplateCategorySide: FC = () => {
   /** official category list */
   const [categoryList, setCategoryList] = useState<ITemplateCategory[]>([]);
   const query = useQuery();
-  /** 搜索关键字 */
   const [keywords, setKeywords] = useState(query.get('searchKey') || '');
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const categoryId = useSelector((state: IReduxState) => state.pageParams.categoryId);
@@ -50,7 +49,7 @@ export const TemplateCategorySide: FC = () => {
   }>(searchTemplateReq, { manual: true });
   const { templates, albums } = searchTemplateResult || {};
   const { run: debouncedSearchTemplate } = useDebounceFn(searchTemplate, { wait: 300 });
-  // 记录一下已经上报过的keywords，避免重复埋点上报
+  // Keep track of the keywords that have been reported to avoid duplication of buried reports
   const hasTrackSearchKeyWords = useRef('');
   const router = useRouter();
 
@@ -88,13 +87,13 @@ export const TemplateCategorySide: FC = () => {
   };
 
   /**
-   * 触发埋点
-   * 规则：
-   * 1. 搜索出结果之后2000ms
-   * 2. 点击搜索结果模板之后
-   * 3. 组件卸载
-   * 4. 点击清空上报当前结果
-   * 5. 输入框enter
+   * Trigger burial points
+   * Rules：
+   * 1. 2000ms after search results
+   * 2. After clicking on the search results template
+   * 3. Component Uninstallation
+   * 4. Click to clear to report current results
+   * 5. Input box enter
    */
   const triggerTrack = useCallback(keywords => {
     if (!keywords || hasTrackSearchKeyWords.current === keywords) {

@@ -31,7 +31,7 @@ interface IInviteOutsiderTabsProps {
 export const InviteOutsiderTabs: FC<IInviteOutsiderTabsProps> = props => {
   const { cancelModal, resUpdate, shareId } = props;
   const { emailInvitationDisable, showLabelInInviteModal } = getCustomConfig();
-  // 是否有邀请人
+  // Availability of invitees
   const [memberInvited, setMemberInvited] = useState(false);
   const [secondVerify, setSecondVerify] = useState<null | string>(null);
   const isAdmin = useSelector(state => state.user.info?.isAdmin);
@@ -95,9 +95,9 @@ export const expandInviteModal = (data?: { resUpdate?: () => void; shareId?: str
   const state = store.getState();
   const spaceInfo = state.space.curSpaceInfo;
 
-  // 企微，authMode 为 2 表示「成员授权」，只有成员授权模式才可以调用企微通讯录
+  // Enterprise, authMode 2 means "Member Authorization", only member authorization mode can call Enterprise address book
   if (isSocialWecom(spaceInfo) && spaceInfo?.social.authMode === 2) {
-    // 不是企微内置浏览器
+    // Not a built-in browser for Enterprise Micro
     if (!isWecomFunc()) {
       Modal.warning({
         title: t(Strings.invite_member),
@@ -114,12 +114,12 @@ export const expandInviteModal = (data?: { resUpdate?: () => void; shareId?: str
           'selectPrivilegedContact',
           {
             fromDepartmentId: -1,
-            mode: 'multi', // 必填，选择模式，single表示单选，multi表示多选
-            selectedContextContact: 0, // 是否勾选当前环境的参与者。例如在群+号聊天附件栏打开，默认勾选当前群成员。
+            mode: 'multi', // Mandatory, select mode, single means single, multi means multiple
+            selectedContextContact: 0, 
           },
           function(res) {
             if (res.err_msg == 'selectPrivilegedContact:ok') {
-              const selectedTicket = res.result.selectedTicket; // 已选的集合Ticket
+              const selectedTicket = res.result.selectedTicket; 
               Api.postWecomUnauthMemberInvite(spaceId, [selectedTicket]).then(rlt => {
                 if (rlt.data.message === 'SUCCESS') {
                   Message.success({ content: t(Strings.success) });

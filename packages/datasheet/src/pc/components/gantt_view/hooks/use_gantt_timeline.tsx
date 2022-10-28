@@ -36,7 +36,7 @@ export const useTimelineLayer = (props: IUseTimelineLayerProps) => {
   const colors = theme.color;
 
   /**
-   * 绘制时间轴相关
+   * Plotting timeline related
    */
   const timelineMap = useMemo(() => {
     const timelineTexts: React.ReactNode[] = [];
@@ -55,7 +55,7 @@ export const useTimelineLayer = (props: IUseTimelineLayerProps) => {
       const isToday = todayIndex === columnStartIndex + index;
 
       /**
-       * 时间轴文字
+       * Timeline text
        */
       timelineTexts.push(
         <>
@@ -87,7 +87,7 @@ export const useTimelineLayer = (props: IUseTimelineLayerProps) => {
       );
 
       /**
-       * 时间轴线
+       * Timeline
        */
       timelineLines.push(
         <Line
@@ -100,10 +100,10 @@ export const useTimelineLayer = (props: IUseTimelineLayerProps) => {
       );
 
       /**
-       * 每个时间精度下的前一个结束时间和后一个开始时间，中间需要加分割线
-       * 规则（按时间精度区分）：
-       * 周/月/季：分割月
-       * 年：分割年
+       * The previous end time and the next start time for each time precision, with a split line in between
+       * Rules (differentiated by time accuracy).
+       * Week/month/quarter: split month
+       * Year: split year
        */
       if (dividerOffset != null) {
         timelineDividers.push(
@@ -117,7 +117,7 @@ export const useTimelineLayer = (props: IUseTimelineLayerProps) => {
       }
 
       /**
-       * 节假日
+       * Holiday
        */
       holidayOffsets.forEach((offset, i) => {
         timelineHolidays.push(
@@ -175,7 +175,7 @@ export const useTimelineLayer = (props: IUseTimelineLayerProps) => {
   }, [colors.lineColor, colors.sheetLineColor, colors.white, containerWidth, rowInitSize]);
 
   /**
-   * 绘制高亮时间线
+   * Drawing the highlighted timeline
    */
   const timelineHighlight = useMemo(() => {
     if (todayIndex < 0 || todayIndex > instance.columnThreshold * 2) return null;

@@ -9,8 +9,6 @@ export const useAppendField = (datasheetId: string) => {
     if (typeof realColIndex !== 'number' || realColIndex < 0) return;
 
     const { clientX, clientY } = e;
-
-    // FieldSetting Modal定宽336，留点余量不要顶边
     const fieldRectLeft = clientX - 340;
     const fieldRectBottom = window.innerHeight - clientY >= 360 ? clientY : clientY - 360;
     dispatch(

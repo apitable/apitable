@@ -104,7 +104,6 @@ const FeishuIntegrationBind: React.FC = () => {
     },
     {
       title: t(Strings.lark_integration_step4),
-      // 由于 step 是先加载，再控制显隐，所以这里给个条件，不让提前加载
       content: (
         <CreateEvent
           nextStep={nextStep}

@@ -30,7 +30,6 @@ const DingTalkH5Login = () => {
       const { data, success, message, code } = res.data;
       if (!success) {
         if (code === StatusCode.DINGTALK_NOT_BIND_SPACE) {
-          // 非管理员登录，并且企业还未绑定空间
           Router.push(Navigation.DINGTALK, {
             params: { dingtalkPath: 'unbound_err' },
           });
@@ -40,7 +39,6 @@ const DingTalkH5Login = () => {
         return;
       }
       if (data.bindSpaceId) {
-        // 应用已经绑定了空间
         Router.push(Navigation.WORKBENCH, {
           params: { spaceId: data.bindSpaceId },
           query: { reference },
@@ -85,12 +83,10 @@ const DingTalkH5Login = () => {
         corpId: corpId,
         onSuccess: res => userLogin(res.code),
         onFail: function(err) {
-          // 调用失败时回调
           Message.error({ content: err.errorMessage });
         }
       } as IRuntimePermissionRequestAuthCodeParams);
     } else {
-      // 开发调试用
       userLogin(DevCode);
     }
   });

@@ -31,7 +31,7 @@ export const useSelectIndex = (props: IUseSelectProps) => {
     if (isEditing()) {
       e.preventDefault();
       setIndex(getArrayLoopIndex(listLength, index, plusOrNot));
-      // 跟随滚动到当前列表的激活项
+      // Follow the scroll to the active item in the current list
       if (listContainerRef?.current && activeItemClass) {
         const activeElem = listContainerRef.current.querySelector(activeItemClass);
         activeElem && activeElem.scrollIntoView({ block: 'nearest' });

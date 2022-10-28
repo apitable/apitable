@@ -15,11 +15,8 @@ import MainBgPng from 'static/icon/datasheet/share/qrcode/datasheet_img_qr_up.pn
 import styles from './style.module.less';
 
 export interface IShareQrCodeProps {
-  // 二维码所携带的数据
   url: string;
-  // 分享者
   user: string;
-  // 被分享的节点名称
   nodeName: string;
   onClose: () => void;
 }
@@ -56,7 +53,6 @@ export const ShareQrCode: FC<IShareQrCodeProps> = ({ url, user, nodeName, onClos
         marginLeft: '40px',
       },
       filter: node => {
-        /** 过滤不必要的元素 */
         if (node instanceof Element && (node.id === 'closeBtn' || node.id === 'downloadBtn')) {
           return false;
         }

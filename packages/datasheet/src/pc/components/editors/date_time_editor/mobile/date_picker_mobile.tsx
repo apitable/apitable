@@ -71,18 +71,15 @@ const DatePickerMobileBase: React.ForwardRefRenderFunction<IEditor, IDateTimeEdi
       last === OptionType.ONCHANGE
       && lastPrev === OptionType.BACKTONOW
     ) {
-      // 用户最近的 2 个操作是 backToNow 和 onChange,
-      // 那么此时应用 state.value 的值而不是这个回调内部的 val
+     
       _val = value;
     }
 
     setValue(_val);
-    // commandFn 是筛选调用的函数, 目前筛选仅用精确到天
     commandFn?.(getDay(_val).getTime());
     onSave?.(_val.getTime(), curAlarm);
   }, [value, commandFn, onSave, curAlarm]);
 
-  // 存在一个 bug, 用户点击今天再点击确定, 保存的是上一次的值
   const onBackToNow = useCallback(() => {
     let now = new Date();
     if (value?.getTime()) {

@@ -10,17 +10,11 @@ import { EmojiPopover } from '../../emoji_popover';
 import styles from './style.module.less';
 
 export interface INodeIconProps {
-  /* 节点Id */
   nodeId: string;
-  /* 节点类型 */
   type?: ConfigConstant.NodeType;
-  /* emoji icon名称 */
   icon?: string;
-  /* 是否是已展开的节点 */
   expanded?: boolean;
-  /* 是否是没有子节点的节点 */
   hasChildren?: boolean;
-  /* 是否可以编辑节点图标 */
   editable?: boolean;
   actived?: boolean;
   size?: number;
@@ -47,10 +41,11 @@ export const NodeIcon: FC<INodeIconProps> = ({
 };
 
 /**
- * 通过指定参数获取节点的图标
- * @param icon emoji的名称
- * @param type 节点类型
- * @param options 其它参数(size: 默认节点图标的大小，emojiSize：emoji的大小，expanded: 是否是打开状态，hasChildren：是否有子节点)
+ * Get the icon of the node by specifying the parameters
+ * @param icon emoji
+ * @param type 
+ * @param options Other parameters (size: size of the default node icon, emojiSize: size of the emoji, expanded:
+ *  whether it is open, hasChildren: whether there are child nodes)
  */
 export const getNodeIcon = (
   icon: string | null | undefined,

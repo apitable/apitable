@@ -136,7 +136,7 @@ const TreeBase: FC<ITreeProps> = ({ rightClick }) => {
     }
     const isOpenNewTab = shouldOpenInNewTab(e);
     if (typeof selectedKeys === 'string' && (selectedKeys !== activeNodeId || isOpenNewTab)) {
-      // 不管点击文件或文件夹都关闭
+      // Close regardless of clicking on a file or folder
       isMobile && dispatch(StoreActions.setSideBarVisible(false));
 
       if (isOpenNewTab) {
@@ -157,11 +157,6 @@ const TreeBase: FC<ITreeProps> = ({ rightClick }) => {
   };
 
   const loadData = (nodeId: string) => {
-    /**
-     * 以下两种情况无需加载子节点：
-     * 1. 没有子节点
-     * 2. 当前节点是根节点
-     */
     if (!treeNodesMap[nodeId]?.hasChildren || rootId === nodeId) {
       return new Promise(resolve => {
         resolve(false);
@@ -179,7 +174,6 @@ const TreeBase: FC<ITreeProps> = ({ rightClick }) => {
         timerRef.current = null;
       }
     }
-    // 只有文件夹可以展开，所以排除非文件夹的情况
     if (treeNodesMap[targetNodeId].type !== ConfigConstant.NodeType.FOLDER) {
       return;
     }
@@ -211,8 +205,8 @@ const TreeBase: FC<ITreeProps> = ({ rightClick }) => {
       return;
     }
     /**
-     * 权限变更确认
-     * 仅移动顺序或者节点开启权限设置
+     * Confirmation of change of authority
+     * Only move order or nodes with permission settings enabled
      */
     if (dropPosition !== 0 && treeNodesMap[dragNodeId].parentId === treeNodesMap[dropNodeId].parentId || treeNodesMap[dragNodeId].nodePermitSet) {
       nodeMove(dragNodeId, dropNodeId, dropPosition);

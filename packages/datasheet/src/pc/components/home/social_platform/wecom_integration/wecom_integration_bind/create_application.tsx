@@ -115,7 +115,6 @@ export const CreateApplication: React.FC<ICreateApplicationProps> = (props) => {
       setConfig(formData.corpId, formData.agentId, data?.configSha, data?.domainName);
       return;
     }
-    // 判断企业微信返回的三种code， 当corpId、agentId、secret 不正确的情况
     if ([40001, 40013, 301002].includes(code)) {
       const error = {};
       Object.keys(schema1).forEach(key => {
@@ -132,7 +131,6 @@ export const CreateApplication: React.FC<ICreateApplicationProps> = (props) => {
       scrollToTop();
       return;
     }
-    // 下一步，验证配置
     setWecomConfig(formData);
   };
 

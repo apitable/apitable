@@ -37,7 +37,7 @@ export const useMobileScroller = (props: IUseScrollerProps) => {
     }
   }, [verticalBarRef, horizontalBarRef]);
 
-  // 滚动到某个位置（供移动端使用）
+  // Scroll to a location (for mobile use)
   const scrollTo = useCallback(({ scrollTop, scrollLeft }: IScrollCoordsProps) => {
     if (horizontalBarRef.current && verticalBarRef.current) {
       scrollerRef.current?.scrollTo(

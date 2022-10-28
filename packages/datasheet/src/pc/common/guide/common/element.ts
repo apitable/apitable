@@ -1,7 +1,7 @@
 import Position from './position';
 
 import { throttle } from 'lodash';
-// 检查当前元素是否可见
+// Check if the current element is visible
 export const isInView = (node: HTMLElement): boolean => {
   const rect = node.getBoundingClientRect();
   return (
@@ -96,7 +96,7 @@ export const getFullPageSize = (): {height: number, width: number} => {
   };
 };
 
-// 获取元素的css属性
+// Get the css attribute of an element
 export const getStyleProperty = (element, propertyName, prefixVendor = false) => {
   if (prefixVendor) {
     const prefixes = ['', '-webkit-', '-ms-', 'moz-', '-o-'];
@@ -169,7 +169,7 @@ export const FocusDom = function(params: IFocusDomParams){
         clearInterval(params.timer);
         params.timer = null;
         domFound(targetDom as HTMLElement);
-        // 监听事件
+        // Listening to events
         params.onTarget && DomEventListener.addEventListener(targetDom, params.onTarget);
       } else {
         if (++count >= 80) {

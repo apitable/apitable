@@ -11,8 +11,6 @@ export const getAllCycleDAG = (nodes: string[], sourceAdj) => {
   
   const cycles : string[][] = [];
  
-  // 记录起来 在访问情况为1的时候直接判断有环存起来，因为1是在找查找的链条上
-  // 如果有是1证明跑回来了
   const buildCycle = (start: string, end: string) => {
     const cycle : string[] = [start];
     for(let cur = end; cur !== start; cur = pre[cur]) {
@@ -26,13 +24,9 @@ export const getAllCycleDAG = (nodes: string[], sourceAdj) => {
     if(!sourceAdj[source]) {
       return;
     }
-    // 首先将节点的访问情况设置为1
     color[source] = 1;
-    // 遍历节点的字节点
     sourceAdj[source].forEach((target: string) => {
-      // 如果节点的访问情况为null，记录该节点的父节点，并且递归访问
-      // 如果节点的访问情况为1，有环记录起来
-      // 节访问情况为2，则是完全访问过
+     
       if (color[target] == null) {
         pre[target] = source;
         dfs(target);
@@ -43,7 +37,6 @@ export const getAllCycleDAG = (nodes: string[], sourceAdj) => {
     color[source] = 2;
   };
 
-  // 根据顶点访问情况(color)使用DFS遍历
   nodes.forEach(node => {
     if (color[node] == null) {
       dfs(node);
@@ -169,10 +162,8 @@ export const getCollapsedLinearRows = (ganttLinearRows: IGroupLinearRow[], group
     const res = ganttLinearRows.reduce<{collapsedLinearRows: IGroupLinearRow[], skip: boolean, depth: number, recordId: string}>
     ((ctx, ganttLinearRow: IGroupLinearRow) => {
       if(ctx.skip) {
-      // 遇到与跳过的分组同等级的 black，说明分组已结束
         if (ganttLinearRow.type === CellType.Blank && 
         ganttLinearRow.depth === ctx.depth) {
-        // 重置折叠状态
           ctx.depth = Infinity;
           ctx.skip = false;
           ctx.recordId = ganttLinearRow.recordId;

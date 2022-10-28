@@ -23,9 +23,9 @@ export interface IPermissionSettingProps {
 type IRoleMap = INodeRoleMap & { belongRootFolder: boolean };
 
 export const Permission: FC<IPermissionSettingProps> = ({ data }) => {
-  // 当前操作模式
+  // Current operating mode
   const [isAppointMode, setIsAppointMode] = useState(true);
-  // 是否显示查看成员详情模态框
+  // Whether to display the View Member Details modal box
   const [isMemberDetail, { toggle: toggleIsMemberDetail }] = useToggle(false);
   const ownUnitId = useSelector((state: IReduxState) => state.user.info?.unitId);
   const { getNodeRoleListReq } = useCatalogTreeRequest();
@@ -57,12 +57,12 @@ export const Permission: FC<IPermissionSettingProps> = ({ data }) => {
   }, [roleMap]);
 
   /**
-   * 关闭继承操作模式
-   * 如果当前未开启权限设置，那么需要在以下操作进行之前去手动调用开启
-   * 1. 新增角色
-   * 2. 编辑角色
-   * 3. 删除角色
-   * 4. 批量更新角色
+   * Turn off inheritance mode of operation
+   * If the permission settings are not currently enabled, you will need to manually invoke them before the following actions can be performed
+   * 1. Add Roles
+   * 2. Editorial roles
+   * 3. Delete Role
+   * 4. Batch update roles
    * @returns
    */
   const disableRoleExtend = async() => {
@@ -89,7 +89,7 @@ export const Permission: FC<IPermissionSettingProps> = ({ data }) => {
     return success;
   };
 
-  // 选择成员的提交事件
+  // Select member submission events
   const onSubmit = async(unitInfos: IUnitValue[], permission: IOption) => {
     if (!unitInfos.length) {
       return;

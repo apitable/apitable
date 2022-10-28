@@ -29,7 +29,7 @@ const FeiShuBindSpace = () => {
   const [maxCount, setMaxCount] = useState<number>();
   const [err, setErr] = useState<React.ReactNode>('');
 
-  // 获取可管理的空间列表
+  // Get a list of manageable spaces
   const { loading: listLoading } = useRequest(() => Api.spaceList(true), {
     onSuccess: res => {
       const { data, success, message } = res.data;
@@ -57,7 +57,6 @@ const FeiShuBindSpace = () => {
       Message.error({ content: t(Strings.error) });
     },
   });
-  // 获取飞书企业的信息
   const { run: getFeiShuTenantInfo, loading: numberLoading } = useRequest(tenantKey => Api.getFeiShuTenantInfo(tenantKey), {
     onSuccess: res => {
       const { data, success, message } = res.data;
@@ -73,7 +72,6 @@ const FeiShuBindSpace = () => {
     manual: true,
   });
 
-  // 飞书企业绑定空间站
   const { loading: btnLoading, run: bindSpace } = useRequest((tenantKey, spaceList) => Api.socialFeiShuBindSpace(tenantKey, spaceList), {
     onSuccess: res => {
       const { success, message, code } = res.data;

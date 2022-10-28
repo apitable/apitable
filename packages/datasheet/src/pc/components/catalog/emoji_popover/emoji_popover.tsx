@@ -8,7 +8,7 @@ import { useCatalogTreeRequest } from 'pc/hooks';
 import { useRequest } from 'pc/hooks';
 
 export interface IEmojiPopoverProps {
-  /* 节点类型 */
+  /* Node type */
   type: ConfigConstant.NodeType;
   nodeId: string;
   iconEditable?: boolean;

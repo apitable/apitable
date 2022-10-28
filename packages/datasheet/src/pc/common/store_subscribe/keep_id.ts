@@ -13,7 +13,7 @@ store.subscribe(function folderIdChange() {
   const previousMirrorId = mirrorId;
 
   const state = store.getState();
-  // 没加载完成 userInfo 的时候，不进行更新。
+  // The userInfo is not updated until it is loaded.
   if (!state.user.info) {
     return;
   }

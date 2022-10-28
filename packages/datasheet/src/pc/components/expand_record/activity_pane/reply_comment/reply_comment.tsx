@@ -31,21 +31,21 @@ export const ReplyComment = (props: IReplyComment) => {
       </div>
     );
   }
-  // 旧数据是draft的数据结构，所以获取text内容的方法不一样
+  // The old data is draft's data structure, so the method of getting the text content is different
   const blocks= get(reply, 'blocks');
   let text: string | JSX.Element = '';
-  if (blocks) { // draft数据格式
+  if (blocks) { // draft data format
     for (const block of blocks) {
       text += get(block, 'text') + ' ';
     }
   }
-  if (!text) { // slate数据格式
+  if (!text) { // slate data format
     const _reply = Object.entries(reply).filter(([k, v]) => !isNaN(Number(k))).sort().map(([k, v]) => v);
     const _text = serialize(_reply as unknown as ITextNode[], spaceInfo);
     const isAllTextString = _text.every(t => typeof t === 'string');
     if (isAllTextString) {
       text = _text.map(e=> e === '' ? ' ': e).join('').trim().replaceAll(/\s+/g, ' ');
-    } else { // 企微场景
+    } else { 
       text = (
         <>
           {_text.map(t => t === '' ? ' ': t)}

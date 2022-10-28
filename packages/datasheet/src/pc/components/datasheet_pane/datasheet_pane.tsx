@@ -143,7 +143,7 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
   );
   const { onSetSideBarVisibleByOhter, onSetPanelVisible, toggleType, clickType, sideBarVisible } = useSideBar();
 
-  // TODO: 统一优化右侧边栏展开/收起状态的控制逻辑
+  // TODO: Unified control logic for right sidebar expand/collapse states
   useEffect(() => {
     if (isApiPanelOpen) {
       dispatch(StoreActions.toggleSideRecord(false));
@@ -156,7 +156,7 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
       dispatch(StoreActions.toggleApiPanel(false));
     } else {
       if (widgetPanelStatus?.opening) {
-        window.dispatchEvent(new Event('resize')); // 触发组件面板的宽度响应
+        window.dispatchEvent(new Event('resize')); // Trigger the width response of the component panel
       }
     }
   }, [dispatch, isSideRecordOpen, widgetPanelStatus]);
@@ -181,9 +181,7 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
   }, [isRobotPanelOpen, dispatch, activeDatasheetId]);
 
   useEffect(() => {
-    // 数表变化退出开发者面板
     setDevToolsOpen(false);
-    // 切换表格时候关闭机器人面板
     setRobotPanelOpen(false);
     toggleTimeMachineOpen(false);
 
@@ -228,7 +226,6 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
     const widgetPanelStatusMap = getStorage(StorageName.WidgetPanelStatusMap);
     dispatch(StoreActions.setRightPaneWidth(newSize));
 
-    // 本地缓存小组件宽度
     if (widgetPanelStatusMap && !isRobotPanelOpen && !isSideRecordOpen) {
       const state = store.getState();
       const spaceId = state.space.activeId;
@@ -247,7 +244,6 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
       });
     }
 
-    // 展开侧边卡片情况下，记录好宽度。
     if (isSideRecordOpen) {
       setStorage(StorageName.SideRecordWidth, newSize, StorageMethod.Set);
     }
@@ -260,9 +256,6 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
     window.location.reload();
   };
 
-  /**
-   * 获取除开目录树的宽度
-   */
   const getContentWidth = (visible: boolean) => {
     if (!visible) {
       return window.innerWidth;
@@ -301,15 +294,8 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
   useEffect(() => {
     dispatch(StoreActions.setRightPaneWidth(panelSize));
   }, [dispatch, panelSize]);
-
-  /**
-   * 监听面板的开关状态，根据面板的开关判断是否展开或者收缩目录树
-   * 阻止触发逻辑
-   * 1、用户强制展开目录树时
-   * 2、搜索栏展开时
-   */
+  
   useEffect(() => {
-    // 设置面板的开关
     const panelVisible = Boolean(panelSize);
     onSetPanelVisible && onSetPanelVisible(panelVisible);
 
@@ -322,7 +308,6 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
       return;
     }
 
-    // 点击态为工具栏触发时（tip：必须添加此判断，因为在初始化时，effect 也会被触发）
     if (clickType === SideBarClickType.ToolBar) {
       const contentWidth = getContentWidth(sideBarVisible);
       if (rightPanelWidth < contentWidth / 2) {

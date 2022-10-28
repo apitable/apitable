@@ -50,7 +50,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
   };
 
   /**
-   * 设置分享权限
+   * Set sharing permissions
    */
   const handleUpdateShare = (permission: { onlyRead?: boolean, canBeEdited?: boolean, canBeStored?: boolean }) => {
     const onOk = () => Api.updateShare(nodeId, permission).then(res => {
@@ -106,7 +106,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
   };
 
   /**
-   * 关闭分享
+   * Close Share
    */
   const handleCloseShare = () => {
     if (!shareSettings) {
@@ -132,7 +132,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
   };
 
   /**
-   * 切换分享链接开关
+   * Toggle switch for sharing links
    */
   const handleToggle = (checked: boolean) => {
     if (checked) {
@@ -162,7 +162,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
   }, [invitable]);
   
   /**
-   * 复制邀请链接
+   * Copy invitation link
    */
   const handleCopyInviteLink = () => {
     if (link) {

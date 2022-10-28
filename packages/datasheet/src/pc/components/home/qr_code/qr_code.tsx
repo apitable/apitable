@@ -28,7 +28,7 @@ export const QrCode: React.FC<IQrCode> = ({ visible, type = BindAccount.WECHAT, 
   const { getLoginStatusReq } = useUserRequest();
   const { run: getLoginStatus } = useRequest(getLoginStatusReq, { manual: true });
   const { join } = useLinkInvite();
-  const [isTimeOut, setIsTimeOut] = useState(false); // 是否超时 ，10min
+  const [isTimeOut, setIsTimeOut] = useState(false);
   const [qrCode, setQrCode] = useState('');
   const urlParams = new URLSearchParams(window.location.search);
   const reference = urlParams.get('reference') || undefined;
@@ -64,7 +64,6 @@ export const QrCode: React.FC<IQrCode> = ({ visible, type = BindAccount.WECHAT, 
       resetInterval();
     }
     globalRef.current.limit -= 2000;
-    // 非链接邀请微信登录页面
     Api.officialAccountsPoll(mark, action).then(async res => {
       const { success, data, code } = res.data;
       if (success) {
@@ -72,18 +71,15 @@ export const QrCode: React.FC<IQrCode> = ({ visible, type = BindAccount.WECHAT, 
         await getLoginStatus();
         resetInterval();
         if (afterLogin) {
-          // share 页面的扫码登录
           afterLogin(data, ConfigConstant.LoginMode.OTHER);
           return;
         }
         if (action === QrAction.BIND && type === BindAccount.WECHAT) {
-          // 微信绑定
           Message.success({ content: t(Strings.binding_success) });
           return;
         }
         const urlParams = new URLSearchParams(window.location.search);
         const isFromLinkInvite = urlParams.has('inviteLinkToken');
-        // 链接邀请
         if (isFromLinkInvite && data) {
           Router.redirect(Navigation.IMPROVING_INFO, {
             query: {
@@ -98,13 +94,11 @@ export const QrCode: React.FC<IQrCode> = ({ visible, type = BindAccount.WECHAT, 
           join();
           return;
         }
-        // 正常登录注册流程
         if (data) {
           Router.redirect(Navigation.IMPROVING_INFO, {
             query: { token: data, inviteCode: urlParams.get('inviteCode') || undefined, reference },
           });
         } else {
-          // 如果有源URL地址，就跳转到源地址
           if (reference && isLocalSite(window.location.href, reference)) {
             window.location.href = reference;
             return;
@@ -113,7 +107,6 @@ export const QrCode: React.FC<IQrCode> = ({ visible, type = BindAccount.WECHAT, 
         }
       } else {
         if (action === QrAction.BIND && type === BindAccount.WECHAT) {
-          // 微信绑定
           StatusCode.BINDING_ACCOUNT_ERR.includes(Number(code)) &&
           Message.error({ content: t(Strings.binding_account_failure_tip, { mode: t(Strings.wechat) }) });
           return;
@@ -215,16 +208,15 @@ interface IQRCodeBase {
   afterLogin?(data: string, loginMode: ConfigConstant.LoginMode): void;
 }
 
-// 不需要Modal，直接作为组件渲染的QRCode
 export const QRCodeBase = ({
-                             type,
-                             action,
-                             afterLogin,
-                           }: IQRCodeBase): JSX.Element => {
+  type,
+  action,
+  afterLogin,
+}: IQRCodeBase): JSX.Element => {
   const { getLoginStatusReq } = useUserRequest();
   const { run: getLoginStatus } = useRequest(getLoginStatusReq, { manual: true });
   const { join } = useLinkInvite();
-  const [isTimeOut, setIsTimeOut] = useState(false); // 是否超时 ，10min
+  const [isTimeOut, setIsTimeOut] = useState(false);
   const [qrCode, setQrCode] = useState('');
   const urlParams = getSearchParams();
   const reference = urlParams.get('reference') || undefined;
@@ -254,25 +246,21 @@ export const QRCodeBase = ({
       resetInterval();
     }
     globalRef.current.limit -= 2000;
-    // 非链接邀请微信登录页面
     Api.officialAccountsPoll(mark, action).then(async res => {
       const { success, data, code } = res.data;
       if (success) {
         await getLoginStatus();
         resetInterval();
         if (afterLogin) {
-          // share 页面的扫码登录
           afterLogin(data, ConfigConstant.LoginMode.OTHER);
           return;
         }
         if (action === QrAction.BIND && type === BindAccount.WECHAT) {
-          // 微信绑定
           Message.success({ content: t(Strings.binding_success) });
           return;
         }
         const urlParams = new URLSearchParams(window.location.search);
         const isFromLinkInvite = urlParams.has('inviteLinkToken');
-        // 链接邀请
         if (isFromLinkInvite && data) {
           Router.redirect(Navigation.IMPROVING_INFO, {
             query: {
@@ -287,13 +275,11 @@ export const QRCodeBase = ({
           join();
           return;
         }
-        // 正常登录注册流程
         if (data) {
           Router.redirect(Navigation.IMPROVING_INFO, {
             query: { token: data, inviteCode: urlParams.get('inviteCode') || undefined, reference },
           });
         } else {
-          // 如果有源URL地址，就跳转到源地址
           if (reference && isLocalSite(window.location.href, reference)) {
             window.location.href = reference;
             return;
@@ -302,7 +288,6 @@ export const QRCodeBase = ({
         }
       } else {
         if (action === QrAction.BIND && type === BindAccount.WECHAT) {
-          // 微信绑定
           StatusCode.BINDING_ACCOUNT_ERR.includes(Number(code)) &&
           Message.error({ content: t(Strings.binding_account_failure_tip, { mode: t(Strings.wechat) }) });
           return;

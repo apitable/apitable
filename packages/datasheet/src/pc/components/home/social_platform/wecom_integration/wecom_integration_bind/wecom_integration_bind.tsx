@@ -105,7 +105,7 @@ const WecomIntegrationBind: React.FC = () => {
     },
     {
       title: t(Strings.integration_app_wecom_step3_title),
-      // 由于 step 是先加载，再控制显隐，所以这里给个条件，不让提前加载
+      // Since the step is loaded first and then controlled to be hidden, a condition is given here to prevent early loading
       content: current === 3 && <ScanBind {...config} />
     },
   ];

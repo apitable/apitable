@@ -13,9 +13,9 @@ import { Skeleton } from '@vikadata/components';
 import { WorkbenchSideContext } from '../common_side/workbench_side/workbench_side_context';
 
 export const CatalogBase: React.FC = () => {
-  // 节点是否加载完毕（展开节点）
+  // Whether the node is loaded or not (expand the node)
   const [isLoaded, setIsLoaded] = useState(false);
-  // 执行操作的类型, 0表示添加文件夹节点，1表示添加文件节点， 2表示导入excel
+  // Type of operation to perform, 0 means add folder node, 1 means add file node, 2 means import excel
   const [optType, setOptType] = useState<number | null>(null);
   const dispatch = useDispatch();
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
@@ -26,7 +26,7 @@ export const CatalogBase: React.FC = () => {
   const { addTreeNode } = useCatalog();
   useWorkbenchSideSync();
 
-  /* 挂载/卸载目录树相关操作的快捷键 */
+  /* Shortcut keys for operations related to mounting/unmounting the directory tree */
   useEffect(() => {
     const eventBundle = new Map([
       [ShortcutActionName.NewDatasheet, () => { openCatalogPanel(() => createNode()); }],
@@ -52,9 +52,9 @@ export const CatalogBase: React.FC = () => {
       return;
     }
     const activeNode = treeNodesMap[activedNodeId];
-    if (activeNode.type === ConfigConstant.NodeType.FOLDER) { // activeNode 为文件夹节点
+    if (activeNode.type === ConfigConstant.NodeType.FOLDER) { // activeNode is a folder node
       parentId = activedNodeId;
-    } else if (activeNode.type === ConfigConstant.NodeType.DATASHEET) { // activeNode 为文件节点
+    } else if (activeNode.type === ConfigConstant.NodeType.DATASHEET) { // activeNode is a file node
       parentId = activeNode.parentId;
     }
     addTreeNode(parentId, nodeType);
@@ -69,7 +69,6 @@ export const CatalogBase: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, optType]);
 
-  // 判断目录树面板是否已经展开，如果没有展开，就将其展开
   const openCatalogPanel = cb => {
     const state = store.getState();
     const sideBarVisible = state.space.sideBarVisible;

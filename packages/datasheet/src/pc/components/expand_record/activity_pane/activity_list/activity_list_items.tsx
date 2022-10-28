@@ -25,7 +25,6 @@ import styles from './style.module.less';
 
 const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 
-// 默认分页获取 10 条数据
 const PAGE_SIZE = 10;
 const LIMIT_DAY = 90;
 const MAX_LIMIT_DAY = 730;
@@ -56,7 +55,7 @@ export const ActivityListItems: FC<IActivityListProps & {
   const _maxRemainRecordActivityDays = useSelector(state => {
     return state.billing.subscription?.maxRemainRecordActivityDays || LIMIT_DAY;
   });
-  // 镜像视图检查是否是当前表的行面板
+  // Mirror view to check if it is the current table's row panel
   const resourceId = mirrorId ? mirrorId : datasheetId;
   const cancelsRef = useRef<CancelTokenSource[]>([]);
   const [listHeight, setListHeight] = useState(0);
@@ -69,7 +68,7 @@ export const ActivityListItems: FC<IActivityListProps & {
   }, [productName]);
 
   const scrollTo = (isBottom?: boolean) => {
-    // 等列表更新后再滚动
+    // Wait for the list to update before scrolling
     window.setTimeout(() => {
       const containerDom = containerRef.current;
       const listDom = listRef.current;
@@ -77,16 +76,16 @@ export const ActivityListItems: FC<IActivityListProps & {
         return;
       }
       const height = listDom.offsetHeight;
-      // 38 是 loading 占用的高度
+      // 38 is the height occupied by loading
       containerDom.scrollTop = isBottom ? height : height - listHeight - 38;
       setListHeight(height);
     });
   };
 
-  // 缓存单选，多选切换类型或者删除 op 操作时丢失的数据（od）
+  // Cache data lost during single-select, multi-select switch types or delete op operations (od)
   const [cacheFieldOptions, setCacheFieldOptions] = useState({});
 
-  // 列表渲染操作的数据
+  // Data for list rendering operations
   const [maxRemainRecordActivityDays, setMaxRemainRecordActivityDays] = useState<undefined | number>();
   const [recordList, setRecordList] = useState<IChangeSet[]>([]);
   const [minRevision, setMinRevision] = useState<number>();
@@ -108,7 +107,7 @@ export const ActivityListItems: FC<IActivityListProps & {
     const getRecordList = async() => {
       setAdding(true);
       await getActivityList(resourceId, expandRecordId, ACTIVITY_SELECT_MAP[selectType][0] as ConfigConstant.ActivityListParamsType);
-      // 获取新数据后滚动到原先位置
+      // Scroll to original position after getting new data
       scrollTo();
       setAdding(false);
     };
@@ -121,7 +120,7 @@ export const ActivityListItems: FC<IActivityListProps & {
     setMaxRemainRecordActivityDays(_maxRemainRecordActivityDays);
   }, [_maxRemainRecordActivityDays]);
 
-  // 协同更新评论删除、添加
+  // Collaborative update comment deletion, addition
   useEffect(() => {
     const recordCommentUpdatedCallBack = (context: ICommentUpdatedContext) => {
       const { recordId, action, datasheetId } = context;
@@ -137,7 +136,6 @@ export const ActivityListItems: FC<IActivityListProps & {
           const [[emojiKey, emojiUserIds]] = toPairs(curEmojis);
           const newEmojis = clone(emojis);
           const newUserIds = get(newEmojis, `${commentId}.${emojiKey}`, []) as string[];
-          // uniq 去重
           set(newEmojis, `${commentId}.${emojiKey}`, uniq([...emojiUserIds, ...newUserIds]));
           setEmojis(newEmojis);
           return;
@@ -180,7 +178,6 @@ export const ActivityListItems: FC<IActivityListProps & {
               setEnd(true);
             }
             if (userId === currUserId) {
-              // 新增评论滚动到最底部
               scrollTo(true);
             }
           };
@@ -206,14 +203,13 @@ export const ActivityListItems: FC<IActivityListProps & {
         }
       }
 
-      // 删除评论
       if (hasDeleteComment && !hasAddComment) {
         const commentId = get(action, 'ld.commentId');
         const filterRecordList: WithOptional<IRemoteChangeset, 'messageId' | 'resourceType'>[] = [];
         recordList.forEach(rc => {
-          // 过滤已删除评论
+          // Filter deleted comments
           if (get(rc, 'operations.0.actions.0.li.commentId') !== commentId) {
-            // 已删除评论在回复中标记为已删除
+            // Deleted comments are marked as deleted in the reply
             rc.operations.forEach((op, opIdx) => {
               const curAction = get(op, 'actions.0');
               const isSameComment = get(curAction, 'li.commentMsg.reply.commentId') === commentId;
@@ -229,10 +225,10 @@ export const ActivityListItems: FC<IActivityListProps & {
     };
     opEventManager.addEventListener(OPEventNameEnums.RecordCommentUpdated, recordCommentUpdatedCallBack);
     return () => {
-      // FIXME: 取消监听需要优化。
+      // FIXME: The cancellation of the listening needs to be optimised.
       opEventManager.removeEventListener(OPEventNameEnums.RecordCommentUpdated, recordCommentUpdatedCallBack);
     };
-    // currUserId 添加会导致评论概率闪现问题
+    // currUserId Adding will cause comment probability flashing issues
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [expandRecordId, recordList, selectType, unitMap, emojis]);
 
@@ -270,7 +266,7 @@ export const ActivityListItems: FC<IActivityListProps & {
         const { changesets, units, emojis: newEmojis, commentReplyMap } = data;
         setEmojis({ ...emojis, ...newEmojis });
         updateCommentReplyMap(pre => ({ ...pre, ...commentReplyMap }));
-        // 更新成员信息
+        // Update membership information
         dispatch(StoreActions.updateUnitMap(keyBy(units, 'unitId')));
 
         const newCacheFieldOptions = isClear ? {} : cacheFieldOptions;
@@ -283,9 +279,9 @@ export const ActivityListItems: FC<IActivityListProps & {
           }
           const { actions } = firstOperation;
           actions.forEach(action => {
-            // 获取切换、删除 field 第一个 action 的 od
+            // Get the od for switching, deleting the first action of the field
             const firstOd = get(action, 'od');
-            // 如果是单选、多选则加入缓存中
+            // Add to cache if single, multi-select
             if (
               has(firstOd, 'property.options') ||
               has(firstOd, 'property.icon') ||
@@ -308,7 +304,7 @@ export const ActivityListItems: FC<IActivityListProps & {
         changesets[changesets.length - 1] && setMinRevision(changesets[changesets.length - 1].revision);
       }
     } catch (err) {
-      // 取消返回异常视为正常
+      // Cancel return exception as normal
       if (!axios.isCancel(err)) {
         Message.warning({
           content: t(Strings.resource_load_failed),
@@ -319,10 +315,10 @@ export const ActivityListItems: FC<IActivityListProps & {
   }
 
   useEffect(() => {
-    // 观察者模式实现滚动加载
+    // Observer pattern for scrolling loading
     observerRef.current = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        // 进入可视区
+        // Access to the visual area
         if (entry.isIntersecting) {
           if (topRef.current) {
             topRef.current.click();
@@ -331,7 +327,7 @@ export const ActivityListItems: FC<IActivityListProps & {
       });
     });
     return () => {
-      // 停止观察
+      // Stop Watch
       observerRef.current?.disconnect();
     };
   }, []);
@@ -353,7 +349,7 @@ export const ActivityListItems: FC<IActivityListProps & {
     let topTarget: HTMLDivElement | null = null;
     getActivityList(resourceId, expandRecordId, ACTIVITY_SELECT_MAP[selectType][0] as ConfigConstant.ActivityListParamsType, true).then(() => {
       scrollTo(true);
-      // 滚动到底部后开始监听观察
+      // Scroll to the bottom and start listening for observations
       setTimeout(() => {
         topTarget = topRef.current;
         if (topTarget) {
@@ -363,7 +359,7 @@ export const ActivityListItems: FC<IActivityListProps & {
     });
 
     return () => {
-      // 取消失效的活动 API 请求
+      // Canceling a failed active API request
       cancelsRef.current.forEach(c => c.cancel());
       cancelsRef.current = [];
       if (topTarget) {
@@ -413,7 +409,7 @@ export const ActivityListItems: FC<IActivityListProps & {
           name: t(Strings.anonymous),
           isActive: true,
         };
-        // 评论删除后改变 key 更新组件
+        // Change key update component after comment deletion
         const isCommentDeleted = get(item, 'operations.0.actions.0.li.commentMsg.reply.isDeleted', false);
         return (
           <ChangesetItem

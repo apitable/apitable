@@ -12,7 +12,8 @@ import {
 import { IGalleryGroupItem } from './interface';
 
 /**
- * 返回可以作为相册封面的字段列表，包含普通的附件字段和 lookup 实体字段为附件的字段
+ * Returns a list of fields that can be used as album covers, including the normal 
+ * attachment fields and the fields where the lookup entity field is an attachment
  * @param fieldMap fieldMap
  */
 export const getCoverFields = (fieldMap: IFieldMap) => {
@@ -25,7 +26,6 @@ export const getCoverFields = (fieldMap: IFieldMap) => {
       case FieldType.LookUp:
         const entityField = Field.bindModel(field).getLookUpEntityField();
         const { basicValueType } = Field.bindModel(field);
-        // 这里跟是否有汇总计算无关， 原样展示/去重 返回的都是原样的附件，都可作为相册封面。
         if (basicValueType === BasicValueType.Array && entityField && entityField.type === FieldType.Attachment) {
           coverFields.push(field);
         }
@@ -44,8 +44,8 @@ export const hasCover = (fieldMap: IFieldMap, coverFieldId?: string) => {
 export const getShowFieldType = (field: IField) => {
   let fieldType = field.type;
   const { isComputed, basicValueType } = Field.bindModel(field);
-  // 创建/修改人是计算字段，且基础类型为 string，
-  // 此处需进行特殊处理，确保在相册/看板正确显示。
+  // The creator/modifier is a calculated field and the base type is string.
+  // Special processing is required here to ensure that it is displayed correctly in the album/kanban.
   if (isComputed && ![FieldType.CreatedBy, FieldType.LastModifiedBy].includes(fieldType)) {
     switch (basicValueType) {
       case BasicValueType.Boolean:
@@ -53,7 +53,7 @@ export const getShowFieldType = (field: IField) => {
         break;
       case BasicValueType.String:
       case BasicValueType.Number:
-        // 计算字段的文本在卡片中默认以单行文本展示
+        // The text of the calculation field is displayed as a single line of text in the card by default
         fieldType = FieldType.SingleText;
         break;
       case BasicValueType.DateTime:
@@ -71,7 +71,7 @@ export const getShowFieldType = (field: IField) => {
   return fieldType;
 };
 
-// maxLine 多行文本显示的最大行数
+// maxLine Maximum number of lines for multi-line text display
 export const getFieldHeight = (field: IField, maxLine: number, isMobile?: boolean) => {
   const showFieldType = getShowFieldType(field);
   if (showFieldType === FieldType.Text) {
@@ -81,7 +81,7 @@ export const getFieldHeight = (field: IField, maxLine: number, isMobile?: boolea
   return FIELD_HEIGHT_MAP[showFieldType] || DEFAULT_SINGLE_TEXT_HEIGHT;
 };
 
-// 暂时兼容虚拟卡片，需要替换不同的 hash 高度映射，存在优化空间
+// Temporarily compatible with virtual cards, need to replace different hash height mapping, room for optimization
 export const getVietualFieldHeight = (field: IField, maxLine: number, isMobile?: boolean) => {
   const showFieldType = getShowFieldType(field);
   if (showFieldType === FieldType.Text) {
@@ -92,10 +92,10 @@ export const getVietualFieldHeight = (field: IField, maxLine: number, isMobile?:
 };
 
 /**
- * 根据容器宽度，计算合适的卡片数量。
+ * Calculate the right number of cards according to the width of the container.
  */
 const getCardCount = (w: number) => {
-  // FIXME: 可优化
+  // FIXME: Optimisable
   if (w < 560) {
     return 2;
   }
@@ -127,14 +127,14 @@ export const getGroupLinearRows = (
 
   const res: IGalleryGroupItem[] = [];
   groupedRows.forEach((eachGroupRows) => {
-    // 这组隐藏，只渲染组头。
+    // This group is hidden and only the group header is rendered.
     const groupHeadRecordId = eachGroupRows[0];
     res.push({
       recordId: groupHeadRecordId,
       groupHeadRecordId,
       type: GalleryGroupItemType.GroupTitle,
     });
-    // 空白占位
+    // Blank placeholder
     [...Array((columnCount - 1))].forEach((item, index) => {
       res.push({
         recordId: `${groupHeadRecordId}_${index}`,
@@ -142,9 +142,9 @@ export const getGroupLinearRows = (
         type: GalleryGroupItemType.GroupHeadBlank,
       });
     });
-    // 没有被折叠则需要渲染正常卡片。
+    // If the card is not collapsed, it needs to be rendered normally.
     if (!groupingCollapseIds.includes(groupHeadRecordId)) {
-      // 展示几行
+      // Showing a few lines
       const cardCount = (eachGroupRows.length + (showAddCard ? 1 : 0));
       const rowCount = Math.ceil(
         cardCount / columnCount
@@ -187,7 +187,7 @@ export const getAddValue = (recordId?: string, fieldId?: string) => {
 };
 
 /**
- * 获取卡片的宽度，和单行卡片的数量
+ * Get the width of the card, and the number of cards in a row
  */
 export const getColumnWidthAndCount = (containerWith: number, isMobile: boolean, galleryStyle: IGalleryViewStyle) => {
   let width = containerWith - (isMobile ? 0 : PADDING_RIGHT);
@@ -196,10 +196,10 @@ export const getColumnWidthAndCount = (containerWith: number, isMobile: boolean,
 
   if (galleryStyle) {
     if (galleryStyle.isAutoLayout) {
-      // 自动模式下，卡片数量和宽度是通过分辨率计算
+      // In automatic mode, the number and width of cards are calculated from the resolution
       columnCount = getCardCount(width);
     } else {
-      // 手动模式下，卡片数量来着用户配置。卡片
+      // In manual mode, the number of cards comes to the user to configure. Cards
       columnCount = galleryStyle.cardCount;
     }
   }
@@ -252,7 +252,7 @@ export const getSearchItemIndex = (
   
 };
 
-// 根据标题的上一个类型判断是否需要添加 paddingTop
+// Determine if paddingTop should be added based on the previous type of the header
 export const getGroupTitlePaddingTip = (linearRows, index, rowIndex) => {
   if (rowIndex === 0) {
     return 16;
