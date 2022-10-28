@@ -3,11 +3,11 @@ import { IExpression } from './expression.interface';
 export abstract class MagicVariableParserABC<T> {
 
   /**
-   * 初始化解析器时，传入的系统函数
+   * init parser with system functions
    */
   abstract sysFunctions: Function[];
   /**
-   * 解析表达式，输出计算后的值
+   * expression, the value of output calc
    */
   abstract exec(expression: IExpression, globalContext: T): any;
 }

@@ -148,21 +148,21 @@ export class PermissionCheck {
     if (resultSet.datasheetId === resultSet.mainDatasheetId) {
       const view = resultSet.temporaryViews[action.p[2]] as IViewProperty;
       if (action.p.length === 3) {
-        // ====== 新增视图操作(包含复制视图) ======
+        // new view operation(includes duplicate view)
         if ('li' in action) {
           if (!permission.viewCreatable) {
             throw new Error('OPERATION_DENIED');
           }
           return;
         }
-        // ====== 删除视图操作 ======
+        // delete view
         if ('ld' in action) {
           if (!permission.viewRemovable || view.lockInfo) {
             throw new Error('OPERATION_DENIED');
           }
           return;
         }
-        // ====== 移动视图操作 ======
+        // move view
         if ('lm' in action) {
           if (!permission.viewMovable) {
             throw new Error('OPERATION_DENIED');
@@ -172,51 +172,51 @@ export class PermissionCheck {
       } else if (action.p.length > 3) {
         switch (action.p[3]) {
           case 'name':
-            // ====== 视图重命名操作 ======
+            // view rename
             if (!permission.viewRenamable) {
               throw new Error('OPERATION_DENIED');
             }
             return;
           case 'filterInfo':
-            // ====== 视图筛选 ======
+            // view filter
             if (!permission.viewFilterable || view.lockInfo) {
               throw new Error('OPERATION_DENIED');
             }
             return;
           case 'groupInfo':
-            // ====== 视图分组 ======
+            // view grouping
             if (!permission.fieldGroupable || view.lockInfo) {
               throw new Error('OPERATION_DENIED');
             }
             return;
           case 'sortInfo':
-            // ====== 视图排序 ======
+            // view sort
             if (!permission.columnSortable || view.lockInfo) {
               throw new Error('OPERATION_DENIED');
             }
             return;
           case 'rowHeightLevel':
-            // ====== 视图行高 ======
+            // view row height
             if (!permission.rowHighEditable || view.lockInfo) {
               throw new Error('OPERATION_DENIED');
             }
             return;
           case 'rows':
-            // ====== 记录新增对视图属性的影响 ======
+            // the affect of records add  towards to view attributes
             if ('li' in action) {
               if (!permission.rowCreatable) {
                 throw new Error('OPERATION_DENIED');
               }
               return;
             }
-            // ====== 记录删除对视图属性的影响 ======
+            // the affect of records add towards to view attributes
             if ('ld' in action) {
               if (!permission.rowRemovable) {
                 throw new Error('OPERATION_DENIED');
               }
               return;
             }
-            // ====== 记录移动顺序对视图属性的影响 ======
+            // the affect of records move towards to view attributes
             if ('lm' in action) {
               if (!permission.rowSortable) {
                 throw new Error('OPERATION_DENIED');

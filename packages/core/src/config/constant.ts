@@ -253,7 +253,7 @@ export const TAB_ARROW_RIGHT = 'right';
 export const TAB_ITEM_WIDTH = 180;
 export const MOUSE_LEFT_CLICK = 0;
 
-// 登录/注册相关
+// login/register
 export const REGISTER_ACCOUNT = 1;
 export const LOGIN_ACCOUNT = 2;
 export const MODIFY_PASSWORD = 3;
@@ -297,10 +297,10 @@ export enum CaptchaIds {
 }
 
 export enum LoginMode {
-  PASSWORD = 'password', // 密码
-  IDENTIFYING_CODE = 'identifying_code', // 验证码
-  MAIL = 'mail', // 邮箱账号
-  PHONE = 'phone', // 手机号
+  PASSWORD = 'password', 
+  IDENTIFYING_CODE = 'identifying_code', // verify coe
+  MAIL = 'mail', // email account
+  PHONE = 'phone', // mobile phone number
   OTHER = 'other',
 }
 
@@ -311,15 +311,15 @@ export enum LoginTypes {
   SSO_AUTH = 'sso_auth',
 }
 
-// 扫码所要执行的操作
+// Scan QRCode operations
 export enum ScanQrType {
   Login,
   Binding,
 }
 
-export const IDENTIFY_CODE_LOGIN = 'identify_code_login'; // 验证码登录
-export const PASSWORD_LOGIN = 'password_login'; // 密码登录
-export const SSO_LOGIN = 'sso_login'; // sso登录
+export const IDENTIFY_CODE_LOGIN = 'identify_code_login'; // login verify code
+export const PASSWORD_LOGIN = 'password_login'; // password login
+export const SSO_LOGIN = 'sso_login'; // sso login
 export const PASSWORD_MIN_LENGTH = 8;
 export const PASSWORD_MAX_LENGTH = 24;
 // export const PASSWORD_LENGTH_ERR = t(Strings.password_length_err); // '密码长度必须在8-24之间';
@@ -344,38 +344,39 @@ export const GLASS_FILTER = 'blur(8px)';
 export const PROGRESS_NORMAL = 'normal';
 export const PROGRESS_EXCEPTION = 'exception';
 
-// 空间管理-空间基本信息
-export const ROOT_TEAM_ID = '0'; // 根部门id
+// space - basic space information
+export const ROOT_TEAM_ID = '0'; 
 export const SPACE_NAME_LENGTH = 100;
 
-// 空间管理-成员管理-成员列表查询页数
+// space-members-members list query pages number
 export const MEMBER_LIST_PAGE_SIZE = 13;
-// 空间管理-子管理员-子管理员列表查询页数
+// space - sub admin - sub admin list query pages number
 export const SUB_ADMIN_LIST_PAGE_SIZE = 12;
 
-// 赠送空间查询页数
+// gifted space query page number
 export const CAPACITY_REWARD_LIST_PAGE_SIZE = 12;
 
-// 个人中心
+// personal center
 export const DINGDING = 0;
 export const WECHAT = 1;
-export const MEMBER_NAME_LENGTH = 32; // 空间内的站内昵称不超过32个字
-export const USER_INTEGRAL_RECORDS_PAGE_SIZE = 4; // 账户钱包收支分页数据页数
-// 数据排序规则
+export const MEMBER_NAME_LENGTH = 32; // space nickname length cannot exceed 32 characters
+export const USER_INTEGRAL_RECORDS_PAGE_SIZE = 4; // account wallet orders number per page
+
+// data sorting rule
 export const SORT_DESC = 'desc';
 export const SORT_ASC = 'asc';
 export const ORDER_CREATE_TIME = 'createdAt';
 export const ORDER_UPDATE_TIME = 'updatedAt';
 
-// 个人头像与空间logo相关
-// 属性不能简写, https://blog.csdn.net/weixin_45936690/article/details/108386544
+// personal avatar relates to space log
+// attributes can not use short name, https://blog.csdn.net/weixin_45936690/article/details/108386544
 export const ACCEPT_FILE_TYPE = 'image/jpeg,image/png,image/gif';
 
-// localStorage 的命名空间
+// localStorage 's namespace
 // https://github.com/nbubna/store
 export const LS_DATASHEET_NAMESPACE = '_datasheet';
 
-// 操作权限id
+// operation permission id
 export enum PermissionCode {
   WORKBENCH = 'MANAGE_WORKBENCH',
   TEAM = 'MANAGE_TEAM',
@@ -387,10 +388,10 @@ export enum PermissionCode {
   MANAGE_ROLE = 'MANAGE_ROLE',
 }
 
-// notification通知中心
-export const NOTICE_LIST_SIZE = 10; // 通知列表，一次请求的通知数量
+// notification center
+export const NOTICE_LIST_SIZE = 10; // notification list, one request notification count
 
-// 模板中心
+// template center
 export const TEMPLATE_CHOICE_CATEGORY_ID = 'tpc000';
 export const TEMPLATE_NAME_MAX = 100;
 
@@ -399,9 +400,9 @@ export enum BannerType {
   MIDDLE = 'middle',
 }
 
-// socket连接ping的超时时间，实际为120000+25000
+// the timeout of socket ping, actually 120000+25000
 export const PINT_TIMEOUT = 150000;
-// 检查最大次数
+// max check times
 export const MAX_CHECK_TIMES = 10;
 
 // export const NODE_INTRODUCE_MAP = new Map([
@@ -431,13 +432,13 @@ export enum WizardIdConstant {
   VIKABY_UPDATE_LOGS_HISTORY = 67,
   AGREE_TERMS_OF_SERVICE = 76,
 
-  // 架构视图相关
+  // org chart view
   ORG_VIEW_CREATE = 78, // 点击 “创建架构视图按钮” -> 显示视频 “架构视图使用方法”
   ORG_VIEW_PANEL = 79, // 架构视图中，右侧面板高亮，提示添加卡片到画布中
   ORG_VIEW_ADD_FIRST_NODE = 80, // 架构视图中，添加一个节点
   ORG_VIEW_DRAG_TO_UNHANDLED_LIST = 81, // 架构视图中，给节点添加了一个关联节点
 
-  // 节点权限相关
+  // node permissions
   PERMISSION_SETTING_EXTEND = 95, // 打开权限设置，继承状态
   PERMISSION_SETTING_OPENED = 96, // 打开权限设置，非继承状态
 }
@@ -446,9 +447,9 @@ export const DASHBOARD_MAX_WIDGET_COUNT = 30;
 
 export const WIDGET_PANEL_MAX_WIDGET_COUNT = 30;
 
-// 0 => 全部
-// 1 => 修改历史
-// 2 => 评论
+// 0 => all
+// 1 => changelog history
+// 2 => comments
 export enum ActivityListParamsType {
   ALL = 0,
   HISTORY = 1,
@@ -460,19 +461,19 @@ export enum ShowRecordHistory {
   OPEN = 1,
 }
 
-// 平台信息
+// platform information
 export enum PlatFormTypes {
   Web = 'Web',
   Desktop = 'Desktop',
   App = 'App',
 }
 
-// 无痕验证的 appkey
+// captcha appkey
 export const nvcAppkey = 'FFFF0N00000000008B7D';
 
 // 区分跳转（企微应用商店应用）授权页的入口来源
 export enum AuthReference {
-  CAMERA = 'camera', // 扫码登陆
+  CAMERA = 'camera', // scan qrcode 
   APPLICATION = 'application', // 点击app内的应用跳转授权页
 }
 
@@ -487,5 +488,5 @@ export enum DefaultStatusMessage {
   SERVER_ERROR_MSG = 'SERVER_ERROR',
 }
 
-// 批量复制URL单元格时最大支持批量识别数
+// batch copy URL cell, max support batch recognize count
 export const MAX_URL_COPY_RECOG_NUM = 100;
