@@ -51,7 +51,7 @@ export const getInitialProps = async(context: { ctx: NextPageContext }) => {
   const { nodeId } = getPageParams(pathUrl || '');
 
   /**
-   * 如果 pathUrl 里不存在 nodeId 或者 spaceId 时，user/me 和 client/info 返回的 userInfo 其实是一样的，没必要重复请求
+   * If there is no nodeId or spaceId in the pathUrl, the userInfo returned by user/me and client/info is actually the same, so there is no need to repeat the request.
    */
   if (
     pathUrl &&

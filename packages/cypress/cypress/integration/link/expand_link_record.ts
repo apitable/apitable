@@ -3,8 +3,8 @@ import { getRecordUtils } from 'cypress/support/actions/record';
 
 const recordAction = getRecordUtils();
 
-describe('测试展开关联记录', () => {
-  describe('只有关联表的可读权限，展开关联记录的操作选项里不应该显示删除按钮', () => {
+describe('Test unfolding association records', () => {
+  describe('Only the read access to the associated table, the delete button should not be displayed in the action option of expanding the associated record', () => {
     beforeEach(() => {
       (async() => {
         await cy.login('viceAccount');
@@ -14,12 +14,12 @@ describe('测试展开关联记录', () => {
       closeDescModal();
     });
 
-    it('展开只读权限的关联记录，没有删除记录的入口', function() {
+    it('Expand read-only permissions for associated records, no entry to delete records', function() {
       recordAction.expandExactLinkRecord();
       recordAction.unVisibleDeleteRecordOption();
     });
 
-    it('关联表展开卡片跳转去源表正确', function() {
+    it('Related tables expand the card to jump to the source table correctly', function() {
       recordAction.expandExactLinkRecord();
       recordAction.gotoSourceDst();
     });

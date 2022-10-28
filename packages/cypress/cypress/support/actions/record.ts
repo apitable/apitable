@@ -10,7 +10,7 @@ export const getRecordUtils = () => {
       commentMenu: '#COMMENT_MENU'
     },
     testId: {
-      // 展开记录的二级操作入口按钮
+      // Expand the secondary operation entry button of the record
       EXPAND_RECORD_OPERATE_BUTTON: 'EXPAND_RECORD_OPERATE_BUTTON',
       EXPAND_RECORD_OPERATE_COPY_LINK: 'EXPAND_RECORD_OPERATE_COPY_LINK',
       EXPAND_RECORD_DELETE_RECORD: 'EXPAND_RECORD_DELETE_RECORD',
@@ -59,7 +59,7 @@ export const getRecordUtils = () => {
       cy.getDomByTestId(this.testId.EXPAND_RECORD_OPERATE_BUTTON).click();
       cy.getDomByTestId(this.testId.EXPAND_RECORD_DELETE_RECORD).wait(200).click();
       cy.get(this.element.notice).wait(300).should('exist');
-      // 删除之后卡片是否正常关闭
+      // Whether the card closes properly after deletion
       cy.get(this.element.expandRecord).should('not.exist');
     },
     submitComment() {
@@ -92,9 +92,9 @@ export const getRecordUtils = () => {
       cy.getDomByTestId(this.testId.EXPAND_RECORD_COMMENT_WRAPPER).should('exist');
     },
     expandExactLinkRecord() {
-      // 第一次点击用来激活单元格
+      // The first click is used to activate the cell
       cy.canvasClick(...this.positionConstants.exactLinkRecord as [number, number]);
-      // 第二次点击展开卡片
+      // Second click to expand the card
       cy.canvasClick(...this.positionConstants.exactLinkRecord as [number, number]);
     },
     unVisibleDeleteRecordOption() {

@@ -5,7 +5,7 @@ import { CELL_ADD_ICON, FIRST_CELL_POSITION } from 'cypress/support/position_con
 
 const recordAction = getRecordUtils();
 
-describe('记录的新增和删除', () => {
+describe('Addition and deletion of records', () => {
   before(() => {
     (async() => {
       await cy.login();
@@ -18,23 +18,23 @@ describe('记录的新增和删除', () => {
 
   const nodeName = 'node record';
 
-  // it('创建节点', function() {
+  // it('Create Node', function() {
   //   createDatasheet(nodeName);
   // });
 
-  // it('删除记录', () => {
+  // it('Delete records', () => {
   //   // recordAction.getFirstCell().first().rightclick();
   //   cy.canvasRightClick(...FIRST_CELL_POSITION);
   //   cy.get('.react-contexify__item').last().click();
   //   recordAction.checkRecordLength(2);
   // });
 
-  it('新增记录', function() {
+  it('New records', function() {
     cy.canvasRightClick(...CELL_ADD_ICON);
     recordAction.checkRecordLength(3);
   });
 
-  // it(`删除 ${nodeName} 节点`, function() {
+  // it(`delete ${nodeName} node`, function() {
   //   deleteNode(nodeName);
   // });
 });

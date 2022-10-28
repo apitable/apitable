@@ -4,9 +4,9 @@ import { PIPE_LINE } from 'cypress/support/config';
 
 const viewAction = getViewUtils();
 
-describe('测试新增视图和删除视图', () => {
+describe('Test adding views and deleting views', () => {
 
-  describe('视图工具栏', () => {
+  describe('View Toolbar', () => {
 
     const nodeName = 'test view';
 
@@ -18,32 +18,32 @@ describe('测试新增视图和删除视图', () => {
       closeDescModal();
     });
 
-    it('新建节点', function() {
+    it('New Node', function() {
       createDatasheet(nodeName);
     });
 
-    it('新增表格视图', function() {
+    it('Add a new table view', function() {
       viewAction.addView(viewAction.gridView);
       viewAction.assertViewCount(2);
     });
 
-    // it('新增相册视图', function() {
+    // it('New album view', function() {
     //   cy.get('body').click();
     //   viewAction.addView(viewAction.galleryView);
     //   viewAction.assertViewCount(2);
     // });
 
-    it('新增看板视图', function() {
+    it('New Kanban view', function() {
       viewAction.addView(viewAction.kanbanView);
       viewAction.assertViewCount(3);
     });
 
-    it('新增甘特图', function() {
+    it('Add Gantt Chart', function() {
       viewAction.addView(viewAction.gattView);
       viewAction.assertViewCount(4);
     });
 
-    // it('视图数量不超过三十个', () => {
+    // it('The number of views does not exceed thirty', () => {
     //   for (let i = 4; i < 31; i++) {
     //     viewAction.addView(viewAction.gridView);
     //     cy.get('body').click();
@@ -51,12 +51,12 @@ describe('测试新增视图和删除视图', () => {
     //   viewAction.assertViewCount(30);
     // });
 
-    it(`删除 ${nodeName} 节点`, function() {
+    it(`delete ${nodeName} node`, function() {
       deleteNode(nodeName);
     });
   });
 
-  describe('视图列表', () => {
+  describe('View List', () => {
 
     const nodeName = 'test view';
 
@@ -73,14 +73,14 @@ describe('测试新增视图和删除视图', () => {
       createDatasheet(nodeName);
     });
 
-    it('新增视图', function() {
+    it('New View', function() {
       viewAction.getShowViewListButton().click();
       cy.getDomByTestId('DATASHEET_CREATE_GRID_IN_VIEW_LIST').click();
       cy.get('[data-rbd-droppable-id=view-switcher]').click();
       cy.get('[data-rbd-droppable-id=view-switcher]>div').should('have.length', 2);
     });
 
-    it('删除视图', function() {
+    it('Delete View', function() {
       viewAction.getShowViewListButton().click();
       cy.get('[data-rbd-draggable-context-id=0]').eq(1).trigger('mouseover');
       cy.get('[data-test-id=deleteViewIcon]').eq(1).click();
@@ -89,7 +89,7 @@ describe('测试新增视图和删除视图', () => {
       cy.get('[data-rbd-droppable-id=view-switcher]>div').should('have.length', 1);
     });
 
-    it('视图重命名', function() {
+    it('View renaming', function() {
       viewAction.getShowViewListButton().click();
       cy.get('[data-rbd-droppable-id=view-switcher] > div').first().trigger('mouseover');
       cy.get('[data-test-id=renameViewIcon]').click();
@@ -98,7 +98,7 @@ describe('测试新增视图和删除视图', () => {
       cy.get('[data-rbd-droppable-id=view-switcher]>div').contains(nodeName).should('exist');
     });
 
-    it(`删除 ${nodeName} 节点`, function() {
+    it(`delete ${nodeName} node`, function() {
       deleteNode(nodeName);
     });
   });

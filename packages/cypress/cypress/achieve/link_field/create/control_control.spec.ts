@@ -1,9 +1,9 @@
-import { deleteField } from "cypress/support/link_field/common";
+import { deleteField } from 'cypress/support/link_field/common';
 
-describe('本表可管理，关联表可管理', () => {
+describe('This table can be managed, and related tables can be managed', () => {
   beforeEach(() => {
 
-    (async () => {
+    (async() => {
       await cy.login();
     })();
 
@@ -12,7 +12,7 @@ describe('本表可管理，关联表可管理', () => {
 
   const newFieldName = '测试创建 可管理-可管理';
 
-  it('本表创建关联列', function () {
+  it('This table creates associated columns', function() {
     cy.open('/space/spcfan7hTtnxg/workbench/dstCiLHpaWejq46PcY/viwCCmpN4f5MU');
     cy.get('.operateButton[data-operate-type=addField]').click();
     cy.get('.fieldOperateBox input').type(newFieldName);
@@ -26,24 +26,24 @@ describe('本表可管理，关联表可管理', () => {
 
   });
 
-  it('关联表存在关联列', function () {
+  it('Related tables have related columns', function() {
     cy.open('/space/spcfan7hTtnxg/workbench/dst8HJcU0KPW5z5BCy/viwlUBUjYg20r');
-    expect(cy.get(`.fieldHeaderClass[data-field-name='可管理 A']`)).to.exist;
+    expect(cy.get('.fieldHeaderClass[data-field-name=\'可管理 A\']')).to.exist;
   });
 
-  it('本表删除新创建的关联列', function () {
+  it('This table deletes the newly created associated columns', function() {
     cy.open('/space/spcfan7hTtnxg/workbench/dstCiLHpaWejq46PcY/viwCCmpN4f5MU');
 
     deleteField(newFieldName);
 
-    cy.get(`.fieldHeaderClass[data-field-name]`).each(el => {
+    cy.get('.fieldHeaderClass[data-field-name]').each(el => {
       cy.get(el).should('not.have', newFieldName);
     });
   });
 
-  it('关联表存的关联列被删除', function () {
+  it('The associated columns in the association table are deleted', function() {
     cy.open('/space/spcfan7hTtnxg/workbench/dst8HJcU0KPW5z5BCy/viwlUBUjYg20r');
-    cy.get(`.fieldHeaderClass[data-field-name]`).each(el => {
+    cy.get('.fieldHeaderClass[data-field-name]').each(el => {
       cy.get(el).should('not.have', '可管理 A');
     });
   });

@@ -1,6 +1,7 @@
 /**
- * Next 中间件，类似于拦截器，常见示例包括身份验证、A/B 测试等
- * 中间件会拦截config:matcher配置的资源，为了尽可能的不影响性能这个应该做到足够`快`
+ * Next middleware, similar to an interceptor, common examples include authentication, A/B testing, etc.
+ * The middleware will intercept the resources configured in config:matcher,
+ * in order not to affect performance as much as possible this should be done `fast enough`.
  *
  * @see https://nextjs.org/docs/advanced-features/middleware
  * @see https://nextjs.org/docs/messages/middleware-upgrade-guide
@@ -19,13 +20,14 @@ const urlCheck = (path: string) => {
 };
 
 /**
- * 金丝雀测试（灰度测试）
- * 方法主要作用
- * 1：对直接访问域名的请求添加UrlParams?[spaceId=spcxxx]来给网关一个标识识别资源，判断流量走向
- * 2：删除非灰度流量下切换空间站UrlParams上的[spaceId=spcxxx]参数
+ * Canary test (grayscale test)
+ * The main role of the method
+ * 1：Add UrlParams?[spaceId=spcxxx] to requests for direct domain access to give the gateway an identifier to
+ * identify the resource and determine where the traffic is going
+ * 2：Delete the [spaceId=spcxxx] parameter on the UrlParams for switching space stations under non-grayscale traffic
  *
- *  @param request next 请求对象
- *  @see https://vikadata.feishu.cn/docx/doxcnD8Syt3UxJUTlRGRhxbLC3f [网关灰度处理流程]
+ *  @param request next request object
+ *  @see https://vikadata.feishu.cn/docx/doxcnD8Syt3UxJUTlRGRhxbLC3f [Gateway grayscale processing flow]
  */
 const canaryTestingByFillUpUrlPathFlag = async (request: NextRequest): Promise<NextResponse> => {
   const url = request.nextUrl.clone();
@@ -49,15 +51,15 @@ const canaryTestingByFillUpUrlPathFlag = async (request: NextRequest): Promise<N
     const userInfo = JSON.parse(res?.userInfo);
     if (userInfo) {
       /*
-       * 灰度环境带上spaceId，为了给网关识别流量
-       * 举个栗子： /workbench => /workbench?spaceId=spcxxxxxx
+       * Grayscale environment with spaceId, in order to identify traffic to the gateway
+       * As an example： /workbench => /workbench?spaceId=spcxxxxxx
        */
       if (res?.spaceGrayEnv && !searchParams.has(_canaryTestingUrlFlag)) {
         url.searchParams.set(_canaryTestingUrlFlag, userInfo?.spaceId);
         return NextResponse.redirect(url);
       }
       /*
-       * 非灰度环境，但是存在spaceId，主动删除spaceId
+       * Non-grayscale environment, but spaceId exists, actively delete spaceId
        */
       if (!res?.spaceGrayEnv && searchParams.has(_canaryTestingUrlFlag)) {
         searchParams.delete(_canaryTestingUrlFlag);
@@ -66,15 +68,16 @@ const canaryTestingByFillUpUrlPathFlag = async (request: NextRequest): Promise<N
     }
   }
   return NextResponse.next();
-}
+};
 
 export async function middleware(request: NextRequest) {
   let response;
   /*
-   * 📢为了避免出现一些例外的情况导致一些响应上的错误，这里对方法体try一下，只要出现错误直接放行
+   * 📢 In order to avoid some exceptions leading to some response errors,
+   * here is a try on the method body, as long as there is an error directly release
    */
   try {
-    // 1.金丝雀测试
+    // 1.Canary Test
     response = await canaryTestingByFillUpUrlPathFlag(request);
 
   } catch (error) {
@@ -86,4 +89,4 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: ['/:path*'],
-}
+};

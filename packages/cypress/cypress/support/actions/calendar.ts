@@ -5,8 +5,8 @@ export const calendar = () => ({
     notice: '.ant-notification-notice-content',
   },
   constants: {
-    secondSuccessNotice: '新增视图「日历视图 2」成功',
-    dateFieldCreateSuccess: '添加维格列成功'
+    secondSuccessNotice: 'Added a new view "Calendar View 2" successfully',
+    dateFieldCreateSuccess: 'Add field successfully'
   },
   createDate() {
     cy.get(this.elements.createDateBtn).click();

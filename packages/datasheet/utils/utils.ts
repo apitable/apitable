@@ -19,8 +19,8 @@ export const getRequestHeaders = (context: NextPageContext) => {
 
 /**
  * ！！！！Warning
- * 当前的方法只会在 getInitProps 中调用，会将 client/info 中的 lang 配置写入 cookie，
- * lang 值仅作为 api 的请求头参数存在，前端不允许调用
+ * The current method will only be called in getInitProps and will write the lang configuration in client/info to the cookie.
+ * The lang value exists only as a request header parameter for the api and the front-end is not allowed to call
  */
 export const setClientCookie = (cookies: string[], ctx: NextPageContext) => {
   cookies.map(item => {
@@ -41,7 +41,7 @@ export const setClientCookie = (cookies: string[], ctx: NextPageContext) => {
     });
 
     /**
-     * 如果这里不清除 sensorsdata2015jssdkcross，会出现下面的错误
+     * If sensorsdata2015jssdkcross is not cleared here, the following error will occur
      * Invalid character in header content ["cookie"]
      */
     deleteCookie('sensorsdata2015jssdkcross', { req: ctx.req, res: ctx.res });

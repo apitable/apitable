@@ -71,9 +71,9 @@ interface IMyAppProps {
   pathUrl: string;
 }
 
-const initWorker = async() => {
+const initWorker = async () => {
   const comlinkStore = await initWorkerStore();
-  // 初始化函数
+  // Initialization functions
   initializer(comlinkStore);
   const resourceService = initResourceService(comlinkStore.store);
   initEventListen(resourceService);
@@ -103,9 +103,9 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
   });
 
   useEffect(() => {
-    // 初始化用户系统
+    // Initialize the user system
     initPlayer();
-    console.log('当前版本号: ' + getReleaseVersion());
+    console.log('Current version number: ' + getReleaseVersion());
   }, []);
 
   useEffect(() => {
@@ -118,7 +118,7 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
 
     const endLoading = () => {
       const ele = document.querySelector('.script-loading-wrap');
-      // 删除 loading 动画: scale logo -> 出vika -> wait 1000ms -> disappear
+      // delete loading : scale logo -> vika -> wait 1000ms -> disappear
       const logoImg = document.querySelector('.script-loading-logo-img');
       logoImg?.classList.remove('loading-static-animation');
       setTimeout(() => ele?.classList.add('script-loading-wrap-finished'), 0);
@@ -132,7 +132,7 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
         }
         // setLoading(LoadingStatus.Complete);
       });
-      // 兼容之前的loading动画，私有云保留
+      // Compatible with previous loading animation, private cloud retention
       // const ldsEle = document.querySelector('.lds-ripple');
       // ldsEle?.parentNode?.removeChild(ldsEle);
 
@@ -194,7 +194,7 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
       StoreActions.updateUserInfoErr(null)
     ];
     if (!getRegResult(pathUrl, shareIdReg)) {
-      // 这里是为了避免在 share 路由下多初始化一次 space resource
+      // This is to avoid initializing the space resource more than once under the share route
       _batchActions.push(StoreActions.setActiveSpaceId(userInfo.spaceId));
     }
 
@@ -214,10 +214,10 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
   }, []);
 
   useEffect(() => {
-    (function() {
+    (function () {
       const _Worker = window.Worker;
       if (typeof _Worker === 'function') {
-        window.Worker = function(url: string, opts: any) {
+        window.Worker = function (url: string, opts: any) {
           if (url.startsWith('//')) {
             url = `${window.location.protocol}${url}`;
           } else if (url.startsWith('/')) {
@@ -236,7 +236,7 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
   return <>
     <Head>
       <title>{t(Strings.vikadata)}</title>
-      <meta name='description' content='维格表, 积木式多媒体数据表格, 维格表技术首创者, 数据整理神器, 让人人都是数据设计师' />
+      <meta name='description' content={t(Strings.client_meta_label_desc)} />
       <meta
         name='keywords'
         content='维格表,vika,vikadata,维格智数,大数据,数字化,数字化转型,数据中台,业务中台,数据资产,
@@ -249,7 +249,7 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
         content='width=device-width,viewport-fit=cover, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'
       />
       <meta name='theme-color' content='#000000' />
-      {/* 钉钉浏览器中，加入监控中心 */}
+      {/* In the pinning browser, join the monitoring center */}
       <meta name='wpk-bid' content='dta_2_83919' />
     </Head>
 
@@ -265,7 +265,7 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
           })
         `}
     </Script>
-    {/*百度统计*/}
+    {/*Baidu Statistics*/}
     <Script id={'baiduAnalyse'}>
       {`
           var _hmt = _hmt || [];
@@ -291,7 +291,7 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
           }
         `}
     </Script>
-    {/* script loading 动画相关js */}
+    {/* script loading js */}
     <Script id={'loadingAnimation'} strategy='lazyOnload'>
       {`
           window._loading = new Date().getTime();
@@ -346,8 +346,8 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
 }
 
 /**
- * 在 Safari 上编辑一个单元格，元素失焦之后，main 会向上偏移 7 像素。当发现偏移发生，需要手动重置。
- * 这里不用 onBlur 事件监听的原因在于编辑元素失焦后，会有其他的元素被聚焦，聚焦的元素是 main 的子元素，所以 onBlur 不会如期触发。
+ * When editing a cell in Safari, main will be shifted up by 7 pixels after the element is out of focus. When an offset is detected, it needs to be reset manually.
+ * The reason why the onBlur event is not used here is that after the editing element is out of focus, other elements will be focused, and the focused element is a child of main, so onBlur will not be triggered as expected.
  * @param e
  */
 const onScroll = (e: React.UIEvent<HTMLDivElement>) => {

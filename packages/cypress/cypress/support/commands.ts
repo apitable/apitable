@@ -79,7 +79,7 @@ Cypress.Commands.add('open', (url: string, waitConnect: boolean = true) => {
   if (!waitConnect) {
     return;
   }
-  // 需要 watchRoom 之后再做后续的操作，目前可以监听控制台打印的「resourceRevisions」 作为判断依据
+  // You need to watchRoom and then do subsequent operations, currently you can listen to the "resourceRevisions" printed on the console as a basis for judgment
   cy.waitUntil(() => {
     return cy.get('@consoleLog', {
       timeout: 200000,

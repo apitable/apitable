@@ -1,13 +1,13 @@
-import { deleteField, openFieldMenu } from "cypress/support/common";
+import { deleteField, openFieldMenu } from 'cypress/support/common';
 
-describe('复制关联表', () => {
+describe('Copy Linked Tables', () => {
   beforeEach(() => {
-    (async () => {
+    (async() => {
       await cy.login();
     })();
   });
 
-  it('本表可管理，关联表可管理', function () {
+  it('This table can be managed, and related tables can be managed', function() {
     cy.open('/space/spcfan7hTtnxg/workbench/dstCiLHpaWejq46PcY/viwCCmpN4f5MU');
 
     openFieldMenu('可管理 E');
@@ -31,7 +31,7 @@ describe('复制关联表', () => {
     });
   });
 
-  it('本表可管理，关联表可编辑', function () {
+  it('This table can be managed and related tables can be edited', function() {
     cy.open('/space/spcfan7hTtnxg/workbench/dstCiLHpaWejq46PcY/viwCCmpN4f5MU');
 
     openFieldMenu('可编辑 B');
@@ -55,7 +55,7 @@ describe('复制关联表', () => {
     });
   });
 
-  it('本表可管理，关联表可查看', function () {
+  it('This table can be managed, and related tables can be viewed', function() {
     cy.open('/space/spcfan7hTtnxg/workbench/dstCiLHpaWejq46PcY/viwCCmpN4f5MU');
 
     openFieldMenu('可查看 C');
@@ -67,7 +67,7 @@ describe('复制关联表', () => {
     });
   });
 
-  it('本表可管理，关联表禁止访问', function () {
+  it('This table can be managed, and access to related tables is prohibited', function() {
     cy.open('/space/spcfan7hTtnxg/workbench/dstCiLHpaWejq46PcY/viwCCmpN4f5MU');
 
     openFieldMenu('不可见 D');

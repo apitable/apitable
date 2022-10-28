@@ -7,7 +7,7 @@ const CALENDAR_NAME = 'Calendar_View_Testing';
 const toolbarAction = toolbar(ViewType.Calendar);
 const calendarAction = calendar();
 
-describe('记录日历视图', () => {
+describe('Record Calendar View', () => {
   beforeEach(() => {
     (async() => {
       await cy.login();
@@ -17,23 +17,23 @@ describe('记录日历视图', () => {
     closeDescModal();
   });
 
-  it(`创建 ${CALENDAR_NAME} 表`, () => {
+  it(`create ${CALENDAR_NAME}`, () => {
     createDatasheet(CALENDAR_NAME);
   });
 
-  it('创建日历视图（无日期列）', () => {
+  it('Create calendar view (no date column)', () => {
     toolbarAction.createView();
     closeVideoModal();
     calendarAction.createDate();
     toolbarAction.checkTabLength(2);
   });
 
-  it('创建日历视图（有日期列）', () => {
+  it('Create a calendar view (with date columns)', () => {
     toolbarAction.createView();
     toolbarAction.checkTabLength(3);
   });
 
-  it(`删除 ${CALENDAR_NAME} 表`, function() {
+  it(`delete ${CALENDAR_NAME}`, function() {
     deleteNode(CALENDAR_NAME);
   });
 });

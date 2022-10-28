@@ -1,8 +1,8 @@
-import { openFieldSetting } from "cypress/support/common";
+import { openFieldSetting } from 'cypress/support/common';
 
-describe('神奇应用', () => {
+describe('Magical Applications', () => {
   beforeEach(() => {
-    (async () => {
+    (async() => {
       await cy.login();
     })();
 
@@ -40,7 +40,7 @@ describe('神奇应用', () => {
   //   });
   // });
 
-  describe('是否允许引用列 -  当前表可管理', () => {
+  describe('Whether to allow referenced columns - the current table can be managed', () => {
     beforeEach(() => {
 
     });
@@ -51,20 +51,20 @@ describe('神奇应用', () => {
       cy.get('.styles_panel__3eTQz .styles_optList__-L1qY .styles_fieldItem__3_UwH').should(chains,);
     };
 
-    it('关联表可管理', function () {
+    it('Related tables can be managed', function() {
 
       checkLinkDstFieldCount('引用 E', 'to.be.exist');
     });
 
-    it('关联表可编辑', function () {
+    it('The association table can be edited', function() {
       checkLinkDstFieldCount('引用 B', 'to.be.exist');
     });
 
-    it('关联表可查看', function () {
+    it('The association table can be viewed', function() {
       checkLinkDstFieldCount('引用 C', 'to.be.exist');
     });
 
-    it('关联表不可见', function () {
+    it('Association table is not visible', function() {
       checkLinkDstFieldCount('引用 D', 'to.be.not.exist');
     });
   });

@@ -7,7 +7,7 @@ const recordAction = getRecordUtils();
 const notifyAction = getNotifyUtils();
 const toolbarAction = toolbar(ViewType.Vika);
 
-describe('展开记录测试', () => {
+describe('Expand Record Test', () => {
   const nodeName = 'expand record';
 
   beforeEach(() => {
@@ -19,47 +19,47 @@ describe('展开记录测试', () => {
     closeDescModal();
   });
 
-  it(`创建 ${nodeName} 节点`, function() {
+  it(`create ${nodeName} node`, function() {
     createDatasheet(nodeName);
   });
 
-  it('插入行展开卡片是否正确', function() {
+  it('Insert row to expand the card correctly', function() {
     toolbarAction.insertRow();
     recordAction.existExpandRecord(true);
   });
 
-  it('展开卡片中的复制链接是否正确', function() {
+  it('Is the copy link in the expansion card correct?', function() {
     recordAction.expandFirstRecord();
     recordAction.copyExpandRecordLink();
   });
 
-  it('展开卡片中的删除是否正确', function() {
+  it('Is the deletion in the expansion card correct?', function() {
     recordAction.expandFirstRecord();
     recordAction.deleteExpandRecord();
   });
 
-  it('展开卡片中的评论是否正确', function() {
+  it('Is the comment in the expansion card correct?', function() {
     recordAction.expandFirstRecord();
     recordAction.submitComment();
   });
 
-  it('展开卡片中的删除评论是否正确', function() {
+  it('Is the delete comment in the expansion card correct?', function() {
     recordAction.expandFirstRecord();
     recordAction.deleteComment();
   });
 
-  it('展开卡片中的展开折叠动态是否正确', function() {
+  it('Are the unfolding and folding dynamics in the unfolded card correct?', function() {
     recordAction.expandFirstRecord();
     recordAction.expandToggleActivity();
   });
 
-  it('通知中心展开卡片是否正确', function() {
+  it('Notification Center expands the card correctly', function() {
     notifyAction.enterNotify();
     notifyAction.enterNotifyList();
     notifyAction.expandRecord();
   });
 
-  it(`删除 ${nodeName} 节点`, function() {
+  it(`delete ${nodeName} node`, function() {
     deleteNode(nodeName);
   });
 });

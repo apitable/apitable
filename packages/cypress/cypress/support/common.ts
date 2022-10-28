@@ -1,5 +1,5 @@
 /**
- * @description 打开符合列名的右键菜单
+ * @description Open the right-click menu that matches the column name
  * @param {string} fieldName
  */
 import Chainable = Cypress.Chainable;
@@ -35,7 +35,7 @@ export const changeFieldType = (typeName: string) => {
   cy.get('.styles_typeSelectItem__RCkf6').contains(typeName).click();
 };
 
-// 检查 dom 上是否存在某个类名
+// Check if a class name exists on dom
 export const hasAtLeastOneClass = (expectedClasses: string[]) => {
   return ($el: any) => {
     const classList = Array.from($el[0].classList);
