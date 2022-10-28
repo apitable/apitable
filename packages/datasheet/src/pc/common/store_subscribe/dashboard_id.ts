@@ -26,7 +26,7 @@ store.subscribe(() => {
     store.dispatch(StoreActions.resetWidget(widgetMapKey));
   }
 
-  resourceService.instance?.switchResource({
+  resourceService.instance?.initialized && resourceService.instance?.switchResource({
     from: previousParamsDashboardId, to: paramsDashboardId!, resourceType: ResourceType.Dashboard,
   });
 
