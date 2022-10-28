@@ -114,16 +114,6 @@ public interface WidgetMapper {
     List<String> selectDataSourceDstIdsByNodeIds(@Param("nodeIds") List<String> nodeIds);
 
     /**
-     * 查询指定节点下的组件数量
-     *
-     * @param nodeId 节点ID
-     * @return count
-     * @author Chambers
-     * @date 2021/1/11
-     */
-    Integer selectCountByNodeId(@Param("nodeId") String nodeId);
-
-    /**
      * 批量新增组件
      *
      * @param entities 实体列表
