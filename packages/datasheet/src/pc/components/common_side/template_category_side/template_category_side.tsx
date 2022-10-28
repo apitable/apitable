@@ -224,7 +224,9 @@ export const TemplateCategorySide: FC = () => {
                     <>
                       <h3>{t(Strings.template)}</h3>
                       {templates.map(item => (
-                        <div className={styles.item} key={item.templateId} onClick={() => jumpTemplate(item.categoryCode, item.templateId)}>
+                        <div className={styles.item} key={item.templateId} onClick={() =>
+                          jumpTemplate(item.categoryCode || ConfigConstant.TEMPLATE_UNCATEGORIZED, item.templateId)}
+                        >
                           <Typography className={styles.nameContainer} variant='body2'>
                             <TemplateIcon width={16} height={16} fill={colors.staticWhite0} />
                             <span className={styles.name} dangerouslySetInnerHTML={{ __html: item.templateName }} />

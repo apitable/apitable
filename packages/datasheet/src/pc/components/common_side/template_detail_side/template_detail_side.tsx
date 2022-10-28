@@ -26,7 +26,10 @@ export const TemplateDetailSide: React.FC = () => {
   const { spaceInfo } = useSpaceInfo(spaceId);
 
   const goBack = () => {
-    Router.push(Navigation.TEMPLATE, { params: { spaceId, categoryId }});
+    const uncategorized = categoryId === ConfigConstant.TEMPLATE_UNCATEGORIZED;
+    Router.push(Navigation.TEMPLATE, { params: {
+      spaceId, categoryId: uncategorized ? undefined : categoryId
+    }});
   };
 
   const { sideBarVisible, setSideBarVisible } = useSideBarVisible();

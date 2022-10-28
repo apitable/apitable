@@ -1,4 +1,4 @@
-import { Api, Url } from '@vikadata/core';
+import { Api, ConfigConstant, Url } from '@vikadata/core';
 import axios from 'axios';
 import { TemplateListContext } from 'context/template_list';
 import { TemplateRecommendContext } from 'context/template_recommend';
@@ -31,6 +31,11 @@ export const getServerSideProps = async(context: NextPageContext) => {
   }
 
   if (categoryCode === 'tpcprivate') {
+    return { props: {}};
+  }
+
+  // uncategorized template
+  if (categoryCode === ConfigConstant.TEMPLATE_UNCATEGORIZED) {
     return { props: {}};
   }
 

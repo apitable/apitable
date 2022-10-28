@@ -393,6 +393,7 @@ export const NOTICE_LIST_SIZE = 10; // 通知列表，一次请求的通知数�
 // 模板中心
 export const TEMPLATE_CHOICE_CATEGORY_ID = 'tpc000';
 export const TEMPLATE_NAME_MAX = 100;
+export const TEMPLATE_UNCATEGORIZED = 'tpc_uncategorized';
 
 export enum BannerType {
   LARGE = 'large',
