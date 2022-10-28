@@ -6,11 +6,9 @@ import {
 import { ThemeName } from '@vikadata/components';
 import { IResourceService } from '../resource/interface';
 
-/** 单元格行、列唯一标识符 uuid */
+/** Cell row and column unique identifiers uuid */
 export interface ICell {
-  /** 单元格行唯一标识符 uuid */
   recordId: string;
-  /** 单元格列唯一标识符 uuid */
   fieldId: string;
 }
 
@@ -88,7 +86,7 @@ export interface IWidgetState {
   pageParams?: IPageParams,
   labs: ILabs;
   share: IShareInfo;
-  // 计算缓存数据
+  // view calculates cached data
   calcCache?: ICalcCache;
   mirrorMap?: IMirrorMap;
   user: IUserInfo | null;
@@ -116,13 +114,13 @@ export interface IExpandRecordProps {
   onClose?: () => void;
 }
 
-/* 小程序外部配置信息 */
+/* Widget external configuration information */
 export interface IWidgetConfig {
-  /* 小程序挂载时唯一 ID（同一个小程序被多次 mount 时 mountId 不相同，update 时 mountId 不变)*/
+  /* Unique ID when the widget is mounted */
   mountId: string;
-  /* 小程序是否被展开 */
+  /* Is the widget being expanded as full screen */
   isFullscreen: boolean;
-  /* 小程序设置面板是否被开启 */
+  /* Whether the widget settings panel is enabled or not */
   isShowingSettings: boolean;
 
   datasheetId?: string;
@@ -135,26 +133,22 @@ export interface IWidgetConfig {
 }
 
 /**
- * 数表和小程序之间的通信桥梁。
- *
- * 通过 bind 方法实现数表调用小程序函数。
- *
- * 通过 caller 方法实现小程序调用数表函数
+ * Widget Run Context.
  */
 export interface IWidgetContext {
-  /** 小程序 ID */
+  /** widget ID */
   id: string;
-  /** 国际化语言配置 */
+  /** internationalized language configuration */
   locale: string;
-  /** 系统主题 */
+  /** system Theme */
   theme: ThemeName;
-  /** 小程序数据服务 */
+  /** widget data service */
   resourceService: IResourceService;
-  /** 数表 Store */
+  /** datasheet Store */
   globalStore: Store<IReduxState>;
-  /** 小组件数据源表 Store */
+  /** widgets data source datasheet Store */
   widgetStore: Store<IWidgetState>;
-  /** 运行环境 */
+  /** widget runtime environment */
   runtimeEnv?: RuntimeEnv
 }
 
@@ -173,11 +167,8 @@ export interface INumberFormat {
 }
 
 export interface IDateTimeFormat {
-  // 日期格式
   dateFormat: DateFormat;
-  // 时间格式
   timeFormat: TimeFormat;
-  // 是否包含时间
   includeTime: boolean;
 }
 
@@ -191,14 +182,14 @@ export type INumberBaseFormatType = INumberFormat | ICurrencyFormat | IPercentFo
 export type IPermissionResult = { acceptable: true } | { acceptable: false, message: string };
 
 export interface IFieldQuery {
-  /** 指定查询哪些 fieldId 数据, 显式传入 undefined 返回空数据，不传入此参数则不进行过滤 */
+  /** Specify which fieldId data to query, explicitly pass undefined to return null data, do not pass this parameter to not filter. */
   ids?: string[] | undefined,
-  /** 仅返回视图中字段，设置为true会默认过滤视图中隐藏字段 */
+  /** Returns only the fields in the view, set to true will filter the hidden fields in the view by default. */
   visible?: boolean
 }
 
 export interface IRecordQuery {
-  /** 指定查询哪些 recordId 数据, 显式传入 undefined 返回空数据，不传入此参数则不进行过滤 */
+  /** Specify which recordId data to query, explicitly pass undefined to return empty data, do not pass this parameter to not filter. */
   ids?: string[] | undefined,
 }
 
@@ -207,139 +198,143 @@ export interface IUpdatePropertyError {
 }
 
 /**
- * `useExpandRecord()` 返回的函数的参数类型定义
+ * `useExpandRecord()` definition of the parameter type of the returned function.
  * */
 export interface IExpandRecord {
-  /** 需要展开记录的数组，默认数组中第一个 recordId 所对应的记录将会被展开，其他的记录可以通过上下按钮切换展示 */
+  /** 
+   * You need to expand the array of records. By default, 
+   * the record corresponding to the first recordId in the array will be expanded, 
+   * and the other records can be displayed by toggling the up and down buttons. 
+   */
   recordIds: string[];
-  /** 可选，记录默认会使用表格中第一个视图中的的列顺序/隐藏情况进行展示，传入后可以指定视图 */
+  /**
+   * Optional, records will be displayed by default using the column order/hiding in the first view in the datasheet, 
+   * pass in and specify the view .
+   */
   viewId?: string;
-  /** 可选，默认会从小程序关联的表格中尝试展开记录，如果需要展开其他表格的记录，则需要显式传入 */
+  /** 
+   * Optional, by default it will try to expand records from the datasheet associated with the widget, 
+   * if you need to expand records from other datasheet, you need to explicitly pass 
+   */
   datasheetId?: string;
 }
 
 export enum InstallPosition {
-  /** 小程序面板 */
   WidgetPanel = 'WidgetPanel',
-  /** 仪表盘 */
   Dashboard = 'Dashboard'
 }
 
 export enum RuntimeEnv {
-  /** 移动端 */
   Mobile = 'Mobile',
-  /** 桌面端 */
   Desktop = 'Desktop'
 }
 
 export interface IMetaType {
-  /** 小程序在运行环境中唯一ID */
+  /** Unique ID of the widget in the runtime environment. */
   id: string;
-  /** 小程序名称 */
+  /** Widget name. */
   name?: string;
-  /** 小程序图标 */
+  /** Widget icon. */
   widgetPackageIcon?: string;
-  /** 小程序发布名称 */
+  /** Widget release name */
   widgetPackageName?: string;
-  /** 小程序线上最新版本号 */
+  /** Widget version */
   widgetPackageVersion?: string;
-  /** 小程序发布ID */
+  /** Widget release ID */
   widgetPackageId?: string;
-  /** 作者邮箱 */
+  /** Author email */
   authorEmail?: string;
-  /** 作者头像 */
+  /** Author icon */
   authorIcon?: string;
-  /** 作者主页 */
+  /** Author personal website */
   authorLink?: string;
-  /** 作者名称 */
+  /** Author name */
   authorName?: string;
-  /** 小程序类型  */
+  /** Widget release type  */
   releaseType?: WidgetReleaseType;
-  /** 小程序发布代码地址 */
+  /** The running code url of the widget release  */
   releaseCodeBundle?: string;
-  /** 小程序关联维格表ID */
+  /** Widget associated vika datasheet ID */
   datasheetId?: string;
-  /** 小程序关联维格表名称 */
+  /** Widget associated vika datasheet name */
   datasheetName?: string;
-  /** 小程序当前状态 */
+  /** Current status of the widget */
   status?: WidgetPackageStatus;
-  /** 小程序在运行环境中唯一ID */
+  /** Unique ID of the widget in the runtime environment */
   widgetId?: string;
-  /** 来源ID，区分小程序绑定自维格表还是镜像 */
+  /** Source ID to distinguish whether the widget is bound from a datasheet or a mirror */
   sourceId?: string;
-  /** 小程序安装位置 */
+  /** Widget installation location */
   installPosition?: InstallPosition;
-  /** 小程序运行空间站 */
+  /** Widget installation space */
   spaceId?: string;
-  /** 系统主题 */
+  /** System Theme */
   theme: ThemeName
-  /** 当前运行环境 */
+  /** Current operating environment */
   runtimeEnv: RuntimeEnv;
 }
 
 /**
- * 新增记录时，指定它在视图中的位置（默认在最后插入）
+ * When adding a new record, specify its position in the view (default is inserted at the end)
  */
 export interface IInsertPosition {
-  /** 需要插入记录的视图ID */
+  /** ID of the view where the record needs to be inserted */
   viewId: string;
-  /** 锚点的记录 ID，将以条记录为基准向前或者向后插入 */
+  /** The record ID of the anchor point will be inserted forward or backward based on the bar */
   anchorRecordId: string;
-  /** 插入到锚点记录前还是后 */
+  /** Insert before or after the anchor record */
   position: 'before' | 'after';
 }
 
 /**
- * 获取字段在视图中的特征属性
+ * Get the characteristic properties of the field in the view.
  */
 export interface IPropertyInView {
   /**
-   * 是否隐藏
+   * Whether the field is hidden in the view
    */
   hidden?: boolean
 }
 
 export enum RollUpFuncType {
-  /** 原样引用 */
+  /** No operation */
   VALUES = 'VALUES',
-  /** 平均值 */
+  /** Average value */
   AVERAGE = 'AVERAGE',
-  /** 非空数值计数 */
+  /** Non-null value count */
   COUNT = 'COUNT',
-  /** 非空值计数 */
+  /** Non-null count */
   COUNTA = 'COUNTA',
-  /** 全计数 */
+  /** Full Count */
   COUNTALL = 'COUNTALL',
-  /** 总和 */
+  /** Find the total */
   SUM = 'SUM',
-  /** 最小值 */
+  /** Minimum value */
   MIN = 'MIN',
-  /** 最大值 */
+  /** Maximum value */
   MAX = 'MAX',
-  /** 和运算 */
+  /** And operation */
   AND = 'AND',
-  /** 或运算 */
+  /** Or operation */
   OR = 'OR',
-  /** 异或运算 */
+  /** eXclusive OR operation */
   XOR = 'XOR',
-  /** 连接成文本 */
+  /** CONCATENATE */
   CONCATENATE = 'CONCATENATE',
-  /** 逗号连接 */
+  /** Comma Link as text */
   ARRAYJOIN = 'ARRAYJOIN',
-  /** 去重 */
+  /** Remove duplicates */
   ARRAYUNIQUE = 'ARRAYUNIQUE',
-  /** 过滤所有空值 */
+  /** Remove nils */
   ARRAYCOMPACT = 'ARRAYCOMPACT',
 }
 
 export enum CollectType {
-  /** 所有字段 */
   AllFields,
-  /** 指定字段 */
   SpecifiedFields,
 }
 
-// 使用hook操作数表内容的权限
+// Permission to manipulate the contents of a datasheet using a hook.
 export enum DatasheetOperationPermission {
   AddRecord,
   EditRecord,

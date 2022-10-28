@@ -12,26 +12,28 @@ const getActiveCell = (state: IWidgetState, currentDatasheetId?: string) => {
 };
 
 /**
- * 获取当前光标激活的单元格坐标, 返回一个 {@link ICell}。当光标移动或者切换视图的时候，会触发重新渲染。
+ * Get the coordinates of cell where the cursor is currently active, return a {@link ICell}.
+ * Rerendering is triggered, When the cursor is moved or the view is switched. 
  *
- * 如果你不仅需要激活单元格的信息，还需要选区信息，请使用 {@link useSelection}。
+ * If you need to information not only about the activated cell, but also the selection,
+ * please use {@link useSelection}.
  * 
  * @param 
  * 
  * @returns
  *
- * ### 示例
+ * ### Example
  * ```js
  * import { useActiveCell, useRecord } from '@vikadata/widget-sdk';
  *
- * // 渲染当前选中单元格的值
+ * // Render the value of currently selected cell
  * function ActiveCell() {
  *   const activeCell = useActiveCell();
  *   const activeRecord = useRecord(activeCell?.recordId);
  *   if (!activeCell || !activeRecord) {
- *     return <p>无激活的单元格</p>
+ *     return <p>Cells without activation</p>
  *   }
- *   return <p>激活的单元格: {activeRecord.getCellValueString(activeCell.fieldId)}</p>
+ *   return <p>Activated Cells: {activeRecord.getCellValueString(activeCell.fieldId)}</p>
  * }
  * ```
  */

@@ -21,7 +21,8 @@ const ViewPickerWrapper = (props: IViewPicker) => {
       viewsMeta.some(viewMeta => viewMeta.id === viewId)
     ) {
       /**
-       * 异步的去完成跳转关联表设置视图，不对当前操作产生影响
+       * Asynchronously go through the jump to the associated datasheet to set the view, 
+       * without affecting the current operation
        */
       setTimeout(() => {
         setPickerViewId(viewId);
@@ -54,13 +55,14 @@ const ViewPickerBase = (props: IViewPicker) => {
 };
 
 /**
- * 视图选择器，使用该组件可以选择当前维格表的所有视图
+ * 
+ * View selector, using this components you can select all views of the currently datasheet.
  *
  * @returns
  *
- * #### 示例
+ * #### Example
  *
- * 普通示例
+ * Common usage.
  *
  * ``` ts
  * import React, { useState } from 'react';
@@ -72,7 +74,7 @@ const ViewPickerBase = (props: IViewPicker) => {
  *
  * ```
  *
- * 配合 {@link useCloudStorage} 实现持久化存储
+ * Use {@link useCloudStorage} implementing persistent storage.
  *
  * ``` ts
  * import React from 'react';

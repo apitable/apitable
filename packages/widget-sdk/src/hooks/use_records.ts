@@ -10,19 +10,19 @@ import { isIframe } from 'iframe_message/utils';
 import { Selectors } from '@apitable/core';
 
 /**
- * 获得表格中一个指定视图下面所有的 Records。
- * 当记录的值、视图配置、字段配置发生变化的时候，会触发重新渲染。
- * 获取所有的 records 可能造计算量急剧上升而产生卡顿，请谨慎使用并做好充分测试。
+ * Gets all the records under a given view in the datasheet. 
+ * Rerendering is triggered when the value of record, view configuration, field configuration changes.
+ * Get all the records may cause lag due to a sharp increase in computation, so please use caution and test well.
 
- * @param viewId 视图 ID, 传入 undefined 则返回空数组
- * @param query 查询配置参数
+ * @param viewId The ID for the view, pass undefined to return an empty array.
+ * @param query query configuration parameters.
  * @returns
  * 
- * ### 示例
+ * ### Example
  * ```js
  * import { useRecords, useActiveViewId } from '@vikadata/widget-sdk';
  *
- * // 展示记录主键
+ * // Show record name
  * function RecordsTitle() {
  *   const viewId = useActiveViewId();
  *   const records = useRecords(viewId);
@@ -36,18 +36,18 @@ export function useRecords(viewId: string | undefined, query?: IRecordQuery): Re
 
 /**
  * 
- * ## 支持加载对应表格数据 Records
+ * ## Support for loading the corresponding datasheet data records.
  * 
- * @param datasheet Datasheet 实例，通过 {@link useDatasheet} 获取
- * @param viewId 视图 ID, 传入 undefined 则返回空数组
- * @param query 查询配置参数
+ * @param datasheet Datasheet instance, by {@link useDatasheet} get.
+ * @param viewId View ID, passing in undefined returns an empty array.
+ * @param query query configuration parameters.
  * @returns
  * 
- * ### 示例
+ * ### Example
  * ```js
  * import { useRecords, useViewsMeta, useDatasheet } from '@vikadata/widget-sdk';
  *
- * // 展示对应 datasheetId(dstXXXXXXXX) 表的记录主键
+ * // Show the primary key of records the corresponding to the datasheetId(dstXXXXXXXX) datasheet
  * function RecordsTitle() {
  *   const datasheet = useDatasheet('dstXXXXXXXX');
  *   const viewsMeta = useViewsMeta(datasheet);

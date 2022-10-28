@@ -8,9 +8,11 @@ import { injectStore } from 'core';
 export const GlobalContext = React.createContext<IGlobalContext>(null!);
 
 /**
- * 在独立小程序环境中最上层使用，相当于一个完整的数表运行环境
- * 全局只能有一个 globalContextProvider，可以给多个 widgetStandAloneProvider 提供依赖支持
- * 使用时只要确保 widgetStandAloneProvider 的上层父组件存在 globalContextProvider 即可
+ * Used at the topmost level in a standalone widget environment, equivalent to a complete datasheet runtime environment.
+ * There can be only one globalContextProvider globally,
+ * which can provide dependency support to multiple widgetStandAloneProvider.
+ * When using the GlobalContextProvider,
+ * just make sure that the globalContextProvider exists in the parent component above the widgetStandAloneProvider.
  */
 export const GlobalContextProvider: React.FC = ({ children }) => {
   const [globalContext] = useState<IGlobalContext>(() => {

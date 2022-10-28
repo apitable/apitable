@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
 export interface ISession {
-  /** 当前登录用户信息 */
+  /** Current Login User Information */
   user: {
     id: string | undefined;
     name: string | undefined;
@@ -12,17 +12,18 @@ export interface ISession {
 }
 
 /**
- * 获取小程序的当前使用者相关信息
+ * Get information about the current users of the widget.
  * 
- * 注意： 由于维格表可以分享出去，所以在未登录的情况下的用户信息的id、name、avatar等都是 undefined
+ * Notes: Since the datasheet can be share out, the id, name, avatar, ect. of the user information in the case of 
+ * not logged in is undefined.
  *
  * @returns
  *
- * ### 示例
+ * ### Example
  * ```js
  * import { useSession } from '@vikadata/widget-sdk';
  *
- * // 显示小程序当前使用者名称
+ * // Show the currently users name of the widget.
  * function Meta() {
  *   const session = useSession();
  *   return (<div>

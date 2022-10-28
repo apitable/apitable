@@ -15,21 +15,21 @@ export const CellUrl = (props: ICellUrl) => {
   const handleClick = () => {
     let url = '';
     try {
-      // 使用 URL 构造函数校验地址合法性
+      // use URL Verifying Address Legitimacy with URL Constructors.
       const testURL = new URL(value);
       if (testURL.protocol && !/^javascript:/i.test(testURL.protocol)) {
         url = testURL.href;
       } else {
-        console.log('error', '非法链接');
+        console.log('error', 'Illegal links');
         return;
       }
     } catch (error) {
-      // 无协议头, 默认添加 http 协议头
+      // No protocol header, add http protocol header by default.
       try {
         const testURL = new URL(`http://${value}`);
         url = testURL.href;
       } catch (error) {
-        console.log('error', '非法链接');
+        console.log('error', 'Illegal links');
         return;
       }
     }

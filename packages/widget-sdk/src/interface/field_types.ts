@@ -1,132 +1,137 @@
 import { APIMetaFieldType as CoreFieldType, DateFormat, TimeFormat } from 'core';
 
 /**
- * 维格表字段类型的枚举
+ * An enum of Vika's field types
  * ``` ts
  * import { FieldType } from '@vikadata/widget-sdk'
  * console.log(FieldType.Number)
  * ```
  * 
- * > tips: 通过 `getCellValue` 获取的值都支持写入单元格
+ * > tips: the value obtained by `getCellValue` are supported for writing to the cell. 
  */
 export enum FieldType {
   /**
-   * 不支持类型
+   * Not support type.
    */
   NotSupport = CoreFieldType.NotSupport,
   /**
-   * 多行文本
+   * A long text field that can span multiple lines.
    * 
-   * ** 读取单元格值类型 **
-   * 
-   * `string`
-   * 
-   * ** 写入单元格值类型 **
+   * ** Cell read format **
    * 
    * `string`
    * 
-   * ** 读取字段配置类型 **
+   * ** Cell write format **
    * 
-   * 无
+   * `string`
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property read format **
    * 
-   * 无
+   * n/a
+   * 
+   * ** Field property write format **
+   * 
+   * n/a
    * 
    */
   Text = CoreFieldType.Text,
   /**
-   * 数字
+   * A number.
    * 
-   * ** 读取单元格值类型 **
-   * 
-   * `number`
-   * 
-   * ** 写入单元格值类型 **
+   * ** Cell read format **
    * 
    * `number`
    * 
-   * ** 读取字段配置类型 **
+   * ** Cell write format **
+   * 
+   * `number`
+   * 
+   * ** Field property read format **
    * 
    * ```ts
    * {
-   *  precision: number; // 保留小数位
-   *  defaultValue?: string; // 默认值
-   *  symbol?: string; // 单位
+   *  precision: number; // retain decimal places
+   *  defaultValue?: string; // default value
+   *  symbol?: string; // numerical units
    * }
    * ```
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property write format **
    * 
    * ``` ts
    * {
-   *  precision: number; // 保留小数位
-   *  defaultValue?: string; // 默认值
-   *  symbol?: string; // 单位
+   *  precision: number; // retain decimal places
+   *  defaultValue?: string; // default value
+   *  symbol?: string; // numerical units
    * }
    * ```
    */
   Number = CoreFieldType.Number,
   /**
-   * 单选
+   * Single select allows you to select a single choice from predefined choices in a dropdown.
    * 
-   * ** 读取单元格值类型 **
+   * ** Cell read format **
    * 
    * ``` ts
    * {
    *  id: string,
    *  name: string,
    *  color: {
-   *    name: string, // 颜色名称
-   *    value: string // 颜色的值
+   *    name: string, // The unique name corresponding to the color
+   *    value: string // The unique value corresponding to the color
    *  }
    * }
    * ```
    * 
-   * ** 写入单元格值类型 **
+   * ** Cell write format **
    * 
    * ``` ts
    * id: string | { id: string } | { name: string }
    * ```
    * 
-   * ** 读取字段配置类型 **
+   * ** Field property read format **
    * 
    * ``` ts
    * {
    *  options: {
-   *    id: string; // 选项 ID
-   *    name: string; // 选项名称
+   *    id: string;
+   *    name: string;
    *    color: {
    *      name: string;
    *      value: string;
-   *    }; // 选项颜色
+   *    };
    *  }[];
-   *  defaultValue?: string; // 默认值（选项ID）
+   *  defaultValue?: string; // default value（option ID）
    * }
    * ```
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property write format **
    * 
-   * 如果 option 不传 id 则会认为是需要新增选项
+   * If the option does not pass an id, it will be assumed that a new option is required
    * 
-   * color 颜色表 [Color](/developers/widget/colors)
+   * color table [Color](/developers/widget/colors)
+   * 
+   * If you want to allow options to be deleted, 
+   * you can pass an object with enableSelectOptionDelete: true as the second argument. 
+   * By passing this argument, any existing options which are not passed again via options will be deleted, 
+   * and any cells which referenced a now-deleted options will be cleared.
    * 
    * ``` ts
    * {
    *  options: {
-   *    id?: string; // 选项 ID
-   *    name: string; // 选项名称
+   *    id?: string;
+   *    name: string;
    *    color?: string; // color name
    *  }
-   *  defaultValue?: string; // 默认值（选项ID）
+   *  defaultValue?: string; // default value（option ID）
    * }
    * ```
    */
   SingleSelect = CoreFieldType.SingleSelect,
   /**
-   * 多选
+   * Multiple select allows you to select one or more predefined choices from a dropdown.
    * 
-   * ** 读取单元格值类型 **
+   * ** Cell read format **
    * 
    * ``` ts
    * {
@@ -139,112 +144,119 @@ export enum FieldType {
    * }[]
    * ```
    * 
-   * ** 写入单元格值类型 **
+   * ** Cell write format **
    * 
    * ``` ts
    * id: string[] | { id: string }[] | { name: string }[]
    * ```
    * 
-   * ** 读取字段配置类型 **
+   * ** Field property read format **
    * 
    * ``` ts
    * {
    *  options: {
-   *    id: string; // 选项 ID
-   *    name: string; // 选项名称
+   *    id: string;
+   *    name: string;
    *    color: {
    *      name: string;
    *      value: string;
-   *    }; // 选项颜色
+   *    };
    *  }[];
-   *  defaultValue?: string[]; // 默认值（选项ID）
+   *  defaultValue?: string[];
    * }
    * ```
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property write format **
    * 
-   * 如果 option 不传 id 则会认为是需要新增选项
+   * If the option does not pass an id, it will be assumed that a new option is required
    * 
-   * color 颜色表 [Color](/developers/widget/colors)
+   * color table [Color](/developers/widget/colors)
+   * 
+   * If you want to allow options to be deleted, 
+   * you can pass an object with enableSelectOptionDelete: true as the second argument. 
+   * By passing this argument, any existing options which are not passed again via options will be deleted, 
+   * and any cells which referenced a now-deleted options will be cleared.
    * 
    * ``` ts
    * {
    *  options: {
-   *    id?: string; // 选项 ID
-   *    name: string; // 选项名称
-   *    color?: string; // color name
+   *    id?: string;
+   *    name: string;
+   *    color?: string;
    *  }
-   *  defaultValue?: string[]; // 默认值（选项ID）
+   *  defaultValue?: string[];
    * }
    * ```
    */
   MultiSelect = CoreFieldType.MultiSelect,
   /**
-   * 日期
+   * A date field configured to also include a time.
    * 
-   * ** 读取单元格值类型 **
+   * ** Cell read format **
    * 
    * `string`
    * 
-   * ** 写入单元格值类型 **
+   * ** Cell write format **
    * 
    * `string | Date`
    * 
-   * ** 读取字段配置类型 **
+   * ** Field property read format **
    * 
    * {@link DateFormat} {@link TimeFormat}
    * 
    * ``` ts
    * {
-   *  dateFormat: DateFormat; // 日期格式
-   *  timeFormat?: TimeFormat; // 时间格式
-   *  includeTime?: boolean, // 是否包含时间
-   *  autoFill?: boolean // 新增记录时是否自动填入创建时间
+   *  dateFormat: DateFormat; // data value format
+   *  timeFormat?: TimeFormat; // time value format
+   *  includeTime?: boolean, // whether to include time
+   *  autoFill?: boolean // whether to automatically fill in the creation time when adding a record
    * }
    * ```
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property write format **
    * 
    * {@link DateFormat} {@link TimeFormat}
    * 
    * ``` ts
    * {
-   *  dateFormat: DateFormat; // 日期格式
-   *  timeFormat?: TimeFormat; // 时间格式
-   *  includeTime?: boolean, // 是否包含时间
-   *  autoFill?: boolean // 新增记录时是否自动填入创建时间
+   *  dateFormat: DateFormat; // data value format
+   *  timeFormat?: TimeFormat; // time value format
+   *  includeTime?: boolean, // whether to include time
+   *  autoFill?: boolean // whether to automatically fill in the creation time when adding a record
    * }
    * ```
    */
   DateTime = CoreFieldType.DateTime,
   /**
-   * 附件
+   * Attachments allow you to add images, documents, or other files which can then be viewed or downloaded.
    * 
-   * ** 读取单元格值类型 **
-   * 
-   * {@link IAttachmentValue}
-   * 
-   * ** 写入单元格值类型 **
-   * 
-   * 先调用官方API上传附件，得到相应数据之后写入
+   * ** Cell read format **
    * 
    * {@link IAttachmentValue}
    * 
-   * ** 读取字段配置类型 **
-   * 
-   * 无
+   * ** Cell read format **
    * 
    * 
-   * ** 写入字段配置类型 **
+   * First call the official API to upload the attachment, get the corresponding data and then write.
    * 
-   * 无
+   * The specified value will overwrite the current cell value.
+   * 
+   * {@link IAttachmentValue}
+   * 
+   * ** Field property read format **
+   * 
+   * n/a
+   * 
+   * ** Field property write format **
+   * 
+   * n/a
    * 
    */
   Attachment = CoreFieldType.Attachment,
   /**
-   * 神奇关联
+   * MagicLink, link to another record.
    * 
-   * ** 读取单元格值类型 **
+   * ** Cell read format **
    * 
    * ``` ts
    * {
@@ -253,111 +265,112 @@ export enum FieldType {
    * }[]
    * ```
    * 
-   * ** 写入单元格值类型 **
+   * ** Cell write format **
+   * 
+   * The currently linked record IDs and their primary cell values from the linked datasheet.
    * 
    * `recordId[]`
    * 
-   * ** 读取字段配置类型 **
+   * ** Field property read format **
    * 
    * ``` ts
    * {
-   *  foreignDatasheetId: string; // 关联的表格ID
-   *  brotherFieldId?: string; // 关联表的列ID
-   *  limitToView?: string; // 限制只在对应 viewId 可选 record
-   *  limitSingleRecord?: boolean; // 是否限制只允许关联一条阻断
+   *  foreignDatasheetId: string; // The ID of the datasheet this field links to
+   *  brotherFieldId?: string; // The ID of the field in the linked table that links back
+   *  limitToView?: string; // The ID of the view in the linked datasheet to use when showing
+   *  limitSingleRecord?: boolean; // Whether this field prefers to only have a single linked record
    * }
    * ```
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property write format **
    * 
-   * 当更新神奇关联字段的关联表格ID的时候，对于关联表格对应的关联字段的处理方式
-   * {@link Conversion}
+   * When updating the associated form ID of a magically associated field, 
+   * the processing of the associated field corresponding to the associated form.
    * 
    * ``` ts
    * {
-   *  foreignDatasheetId: string; // 关联的表格ID
-   *  limitToView?: string; // 限制只在对应 viewId 可选 record
-   *  limitSingleRecord?: boolean; // 是否限制只允许关联一条阻断
-   *  conversion?: Conversion;
+   *  foreignDatasheetId: string; // The ID of the datasheet this field links to
+   *  limitToView?: string; // The ID of the view in the linked datasheet to use when showing
+   *  limitSingleRecord?: boolean; // Whether this field prefers to only have a single linked record
    * }
    * ```
    */
   MagicLink = CoreFieldType.MagicLink,
   /**
-   * 网址
+   * A valid URL.
    * 
-   * ** 读取单元格值类型 **
-   * 
-   * `string`
-   * 
-   * ** 写入单元格值类型 **
+   * ** Cell read format **
    * 
    * `string`
    * 
-   * ** 读取字段配置类型 **
+   * ** Cell write format **
    * 
-   * 无
+   * `string`
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property read format **
    * 
-   * 无
+   * n/a
+   * 
+   * ** Field property write format **
+   * 
+   * n/a
    * 
    */
   URL = CoreFieldType.URL,
   /**
-   * 邮箱
+   * A valid email address.
    * 
-   * ** 读取单元格值类型 **
-   * 
-   * `string`
-   * 
-   * ** 写入单元格值类型 **
+   * ** Cell read format **
    * 
    * `string`
    * 
-   * ** 读取字段配置类型 **
+   * ** Cell write format **
    * 
-   * 无
+   * `string`
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property read format **
    * 
-   * 无
+   * n/a
+   * 
+   * ** Field property write format **
+   * 
+   * n/a
    * 
    */
   Email = CoreFieldType.Email,
   /**
-   * 电话
+   * A telephone number.
    * 
-   * ** 读取单元格值类型 **
-   * 
-   * `string`
-   * 
-   * ** 写入单元格值类型 **
+   * ** Cell read format **
    * 
    * `string`
    * 
-   * ** 读取字段配置类型 **
+   * ** Cell write format **
    * 
-   * 无
+   * `string`
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property read format **
    * 
-   * 无
+   * n/a
+   * 
+   * ** Field property write format **
+   * 
+   * n/a
    * 
    */
   Phone = CoreFieldType.Phone,
   /**
-   * 勾选
+   * This field is "true" when checked and "null" when unchecked.
    * 
-   * ** 读取单元格值类型 **
-   * 
-   * `boolean`
-   * 
-   * ** 写入单元格值类型 **
+   * ** Cell read format **
    * 
    * `boolean`
    * 
-   * ** 读取字段配置类型 **
+   * ** Cell write format **
+   * 
+   * `boolean`
+   * 
+   * ** Field property read format **
    * 
    * ``` ts
    * {
@@ -365,9 +378,9 @@ export enum FieldType {
    * }
    * ```
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property write format **
    * 
-   * icon Emoji 配置表 [Emojis](/developers/widget/emojis)
+   * icon Emoji config [Emojis](/developers/widget/emojis)
    * 
    * ``` ts
    * {
@@ -378,32 +391,32 @@ export enum FieldType {
    */
   Checkbox = CoreFieldType.Checkbox,
   /**
-   * 评分
+   * A rating.
    * 
-   * ** 读取单元格值类型 **
-   * 
-   * `number`
-   * 
-   * ** 写入单元格值类型 **
+   * ** Cell read format **
    * 
    * `number`
    * 
-   * ** 读取字段配置类型 **
+   * ** Cell write format **
+   * 
+   * `number`
+   * 
+   * ** Field property read format **
    * 
    * ```ts
    * {
-   *  max: number; // 最大值 1 - 10
+   *  max: number; // the maximum value for the rating, from 1 to 10 inclusive
    *  icon: string; // Emoji slug
    * }
    * ```
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property write format **
    * 
-   * icon Emoji 配置表 [Emojis](/developers/widget/emojis)
+   * icon Emoji config [Emojis](/developers/widget/emojis)
    * 
    * ```ts
    * {
-   *  max: number; // 最大值 1 - 10
+   *  max: number; // the maximum value for the rating, from 1 to 10 inclusive
    *  icon: 'star' | 'star2' | 'stars'; // icon name
    * }
    * ```
@@ -411,62 +424,63 @@ export enum FieldType {
    */
   Rating = CoreFieldType.Rating,
   /**
-   * 成员
+   * Select allows you to select one or more member from a dropdown.
    * 
-   * ** 读取单元格值类型 **
+   * ** Cell read format **
    * 
    * ``` ts
    * {
-   *  id: string, // 成员ID
-   *  type: 'Team' | 'Member', // 成员类型
-   *  name: string, // 成员名称
-   *  avatar?: string, // 成员头像
+   *  id: string,
+   *  type: 'Team' | 'Member',
+   *  name: string,
+   *  avatar?: string,
    * }[]
    * ```
    * 
-   * ** 写入单元格值类型 **
+   * ** Cell write format **
    * 
    * `id: string[]`
    * 
-   * ** 读取字段配置类型 **
+   * ** Field property read format **
    * 
    * ```ts
    * {
-   *  isMulti: boolean; // 可选单个或者多个成员
-   *  shouldSendMsg: boolean; // 选择成员后是否发送消息通知
+   *  isMulti: boolean; // one or more member can be selected
+   *  shouldSendMsg: boolean; // whether to send message notifications after selecting members
    *  options: [
-   *    id: string, // 成员ID
-   *    type: 'Team' | 'Member', // 成员类型
-   *    name: string, // 成员名称
-   *    avatar?: string, // 成员头像
-   *  ]; // 已选成员
+   *    id: string,
+   *    type: 'Team' | 'Member',
+   *    name: string, 
+   *    avatar?: string,
+   *  ]; // Selected members
    * }
    * ```
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property write format **
    * 
    * ```ts
    * {
-   *  isMulti?: boolean; // 可选单个或者多个成员；默认为true
-   *  shouldSendMsg?: boolean; // 选择成员后是否发送消息通知；默认为true
+   *  isMulti?: boolean; // one or more member can be selected, default is true (more than one can be selected)
+   *  shouldSendMsg?: boolean; // whether to send message notifications after selecting members
    * }
    * ```
    */
   Member = CoreFieldType.Member,
   /**
-   * * 神奇引用
+   * Lookup a field on linked records.
    * 
-   * ** 读取单元格值类型 **
+   * ** Cell read format **
    * 
-   * `(read cell value)[]` 引用的源字段的 cellValue 数组
+   * `(read cell value)[]` the cellValue array of the referenced source field.
    * 
-   * 至多是二维数组，如果引用的源字段的 cellValue 是数组就是二维数组，如果不是则为一维数组
+   * Is at most a two-dimensional array, if the cellValue of the referenced source field is an array, 
+   * it is a two-dimensional array, if not, it is a one-dimensional array.
    * 
-   * ** 写入单元格值类型 **
+   * ** Cell write format **
    * 
-   * 无
+   * n/a
    * 
-   * ** 读取字段配置类型 **
+   * ** Field property read format **
    * 
    * {@link BasicValueType}
    * 
@@ -474,16 +488,23 @@ export enum FieldType {
    * 
    * ```ts
    * {
-   *  relatedLinkFieldId: string; // 引用的当前表的关联字段 ID
-   *  targetFieldId: string; // 关联表中查询的字段 ID
-   *  hasError?: boolean; // 当神奇引用的依赖的关联字段被删除或者转化类型时，可能无法正常获取引用值
+   *  // the linked record field in this datasheet that this field is looking up
+   *  relatedLinkFieldId: string; 
+   *  // the field in the foreign datasheet that will be looked up on each linked record
+   *  targetFieldId: string; 
+   *  // whether the lookup field is correctly configured
+   *  hasError?: boolean;
+   *  // The entity field that is eventually referenced to does not contain a field of the magic reference type. 
+   *  // In the presence of an error, the entity field may not exist.
    *  entityField?: {
    *    datasheetId: string;
    *    field: IAPIMetaField;
-   *  }; // 最终引用到的实体字段，不包含神奇引用类型的字段。存在错误时，实体字段可能不存在。
-   *  rollupFunction?: RollUpFuncType; // 汇总函数
-   *  valueType?: BasicValueType; // 返回值类型，取值包括 String、Boolean、Number、DateTime、Array
-   *  // 根据被引用字段的类型可以自定义格式，如 日期、数字、百分比、货币字段
+   *  };
+   *  // aggregate functions
+   *  rollupFunction?: RollUpFuncType;
+   *  // return value types, including String, Boolean, Number, DateTime, Array
+   *  valueType?: BasicValueType;
+   *  // customizable formatting based on the type of field being referenced, such as date, number, percentage, currency field
    *  format?: {
    *    type: 'DateTime' | 'Number' | 'Percent' | 'Currency', 
    *    format: Format
@@ -491,16 +512,19 @@ export enum FieldType {
    * }
    * ```
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property write format **
    * 
    * {@link RollUpFuncType}
    * 
    * ```ts
    * {
-   *  relatedLinkFieldId: string; // 引用的当前表的关联字段 ID
-   *  targetFieldId: string; // 关联表中查询的字段 ID
-   *  rollupFunction?: RollUpFuncType; // 汇总函数
-   *  // 根据被引用字段的类型可以自定义格式，如 日期、数字、百分比、货币字段，具体format 参考对应字段写入属性
+   *  // the linked record field in this datasheet that this field is looking up
+   *  relatedLinkFieldId: string;
+   *  // the field in the foreign datasheet that will be looked up on each linked record
+   *  targetFieldId: string;
+   *  // aggregate functions
+   *  rollupFunction?: RollUpFuncType;
+   *  // customizable formatting based on the type of field being referenced, such as date, number, percentage, currency field
    *  format?: {
    *    type: 'DateTime' | 'Number' | 'Percent' | 'Currency', 
    *    format: Format
@@ -510,25 +534,30 @@ export enum FieldType {
    */
   MagicLookUp = CoreFieldType.MagicLookUp,
   /**
-   * 公式
+   * Compute a value in each record based on other fields in the same record.
    * 
-   * ** 读取单元格值类型 **
+   * ** Cell read format **
    * 
    * `null | string | number | boolean | string[] | number[] | boolean`
    * 
-   * ** 写入单元格值类型 **
+   * ** Cell write format **
    * 
-   * 无
+   * n/a
    * 
-   * ** 读取字段配置类型 **
+   * ** Field property read format **
    * 
    * {@link BasicValueType}
    * ```ts
    * {
-   *  valueType: BasicValueType; // 返回值类型，取值包括 String、Boolean、Number、DateTime、Array
-   *  expression: string; // 公式表达式
-   *  hasError: boolean; // 当公式依赖的相关字段被删除或者转化类型时，可能无法正常获取计算值
-   *  // 根据被引用字段的类型可以自定义格式，如 日期、数字、百分比、货币字段，具体format 参考对应字段写入属性
+   *  // return value types, including String, Boolean, Number, DateTime, Array
+   *  valueType: BasicValueType;
+   *  // formula expressions
+   *  expression: string;
+   *  // false if the formula contains an error
+   *  hasError: boolean;
+   *  // depending on the type of field being referenced, 
+   *  // you can customize the format, 
+   *  // such as date, number, percentage, currency field, the specific format refers to the corresponding field write property
    *  format?: {
    *    type: 'DateTime' | 'Number' | 'Percent' | 'Currency', 
    *    format: Format
@@ -536,12 +565,15 @@ export enum FieldType {
    * }
    * ```
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property write format **
    * 
    * ```ts
    * {
-   *  expression?: string; // 公式表达式
-   *  // 根据被引用字段的类型可以自定义格式，如 日期、数字、百分比、货币字段，具体format 参考对应字段写入属性
+   *  // formula expressions
+   *  expression?: string;
+   *  // depending on the type of field being referenced, 
+   *  // you can customize the format, 
+   *  // such as date, number, percentage, currency field, the specific format refers to the corresponding field write property
    *  format?: {
    *    type: 'DateTime' | 'Number' | 'Percent' | 'Currency', 
    *    format: Format
@@ -551,81 +583,81 @@ export enum FieldType {
    */
   Formula = CoreFieldType.Formula,
   /**
-   * 货币
+   * An amount of a currency.
    * 
-   * ** 写入单元格值类型 **
-   * 
-   * `number`
-   * 
-   * ** 读取单元格值类型 **
+   * ** Cell read format **
    * 
    * `number`
    * 
-   * ** 读取字段配置类型 **
+   * ** Cell write format **
+   * 
+   * `number`
+   * 
+   * ** Field property read format **
    * 
    * ``` ts
    * {
-   *  symbol?: string; // 单位
-   *  precision?: number; // 保留小数位
-   *  defaultValue?: string; // 默认值
-   *  symbolAlign?: 'Default' | 'Left' | 'Right'; // 单位的排列
+   *  symbol?: string; // units of currency
+   *  precision?: number; // from 0 to 4 inclusive
+   *  defaultValue?: string;
+   *  symbolAlign?: 'Default' | 'Left' | 'Right'; // arrangement of units and values
    * }
    * ```
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property read format **
    * 
    * ``` ts
    * {
-   *  symbol?: string; // 单位
-   *  precision?: number; // 保留小数位
-   *  defaultValue?: string; // 默认值
-   *  symbolAlign?: 'Default' | 'Left' | 'Right'; // 单位的排列
+   *  symbol?: string; // units of currency
+   *  precision?: number; // from 0 to 4 inclusive
+   *  defaultValue?: string;
+   *  symbolAlign?: 'Default' | 'Left' | 'Right'; // arrangement of units and values
    * }
    * ```
    */
   Currency = CoreFieldType.Currency,
   /**
-   * 百分比
+   * A percentage.
    * 
-   * ** 写入单元格值类型 **
-   * 
-   * `number`
-   * 
-   * ** 读取单元格值类型 **
+   * ** Cell read format **
    * 
    * `number`
    * 
-   * ** 读取字段配置类型 **
+   * ** Cell write format **
+   * 
+   * `number`
+   * 
+   * ** Field property read format **
    * 
    * ``` ts
    * {
-   *  precision: number; // 保留小数位
-   *  defaultValue?: string; // 默认值
+   *  precision: number; // from 0 to 4 inclusive
+   *  defaultValue?: string;
    * }
    * ```
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property write format **
    * 
    * ``` ts
    * {
-   *  precision: number; // 保留小数位
-   *  defaultValue?: string; // 默认值
+   *  precision: number; // from 0 to 4 inclusive
+   *  defaultValue?: string;
    * }
    * ```
    */
   Percent = CoreFieldType.Percent,
   /**
-   * 单行文本
+   * A single line of text.
    * 
-   * ** 写入单元格值类型 **
-   * 
-   * `string`
-   * 
-   * ** 读取单元格值类型 **
+   * ** Cell read format **
    * 
    * `string`
    * 
-   * ** 读取字段配置类型 **
+   * ** Cell write format **
+   * 
+   * `string`
+   * 
+   * ** Field property read format **
    * 
    * ``` ts
    * {
@@ -633,7 +665,7 @@ export enum FieldType {
    * }
    * ```
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property write format **
    * 
    * ``` ts
    * {
@@ -643,38 +675,38 @@ export enum FieldType {
    */
   SingleText = CoreFieldType.SingleText,
   /**
-   * 自增数字
+   * Automatically incremented unique counter for each record.
    * 
-   * ** 写入单元格值类型 **
-   * 
-   * 无
-   * 
-   * ** 读取单元格值类型 **
+   * ** Cell read format **
    * 
    * `number`
    * 
-   * ** 读取字段配置类型 **
+   * ** Cell write format **
    * 
-   * 无
+   * n/a
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property read format **
    * 
-   * 无
+   * n/a
+   * 
+   * ** Field property write format **
+   * 
+   * n/a
    * 
    */
   AutoNumber = CoreFieldType.AutoNumber,
   /**
-   * 创建时间
+   * The time the record was created in UTC.
    * 
-   * ** 写入单元格值类型 **
-   * 
-   * 无
-   * 
-   * ** 读取单元格值类型 **
+   * ** Cell read format **
    * 
    * `string`
    * 
-   * ** 读取字段配置类型 **
+   * ** Cell write format **
+   * 
+   * n/a
+   * 
+   * ** Field property read format **
    * 
    * {@link DateFormat}
    * 
@@ -684,11 +716,11 @@ export enum FieldType {
    * {
    *  dateFormat: DateFormat;
    *  timeFormat?: TimeFormat;
-   *  includeTime?: boolean, // 是否包含时间
+   *  includeTime?: boolean;
    * }
    * ```
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property write format **
    * 
    * {@link DateFormat}
    * 
@@ -698,24 +730,23 @@ export enum FieldType {
    * {
    *  dateFormat: DateFormat;
    *  timeFormat?: TimeFormat;
-   *  includeTime?: boolean, // 是否包含时间
-   * }
+   *  includeTime?: boolean;
    * ```
    * 
    */
   CreatedTime = CoreFieldType.CreatedTime,
   /**
-   * 修改时间
+   * Shows the date and time that a record was most recently modified in any editable field or just in specific editable fields.
    * 
-   * ** 写入单元格值类型 **
-   * 
-   * 无
-   * 
-   * ** 读取单元格值类型 **
+   * ** Cell read format **
    * 
    * `string`
    * 
-   * ** 读取字段配置类型 **
+   * ** Cell write format **
+   * 
+   * n/a
+   * 
+   * ** Field property read format **
    * 
    * {@link DateFormat}
    * 
@@ -727,13 +758,15 @@ export enum FieldType {
    * {
    *  dateFormat: DateFormat;
    *  timeFormat?: TimeFormat;
-   *  includeTime: boolean; // 是否包含时间
-   *  collectType: CollectType; // 指定字段类型：0 所有可编辑，1 指定字段
-   *  fieldIdCollection: string[]; // 是否指定字段，数组类型可指定多个字段，不填为所有
+   *  includeTime: boolean;
+   *  // the fields to check the last modified time of: 0 all editable, 1 specified field
+   *  collectType: CollectType;
+   *  // whether to specify the field, array type can specify more than one field, not fill for all
+   *  fieldIdCollection: string[];
    * }
    * ```
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property write format **
    * 
    * {@link DateFormat}
    * 
@@ -745,61 +778,67 @@ export enum FieldType {
    * {
    *  dateFormat: DateFormat;
    *  timeFormat?: TimeFormat;
-   *  includeTime?: boolean; // 是否包含时间
-   *  collectType?: CollectType; // 指定字段类型：0 所有可编辑，1 指定字段
-   *  fieldIdCollection?: string[]; // 是否指定字段，数组类型可指定多个字段，不填为所有
+   *  includeTime?: boolean;
+   *  // the fields to check the last modified time of: 0 all editable, 1 specified field
+   *  collectType?: CollectType;
+   *  // whether to specify the field, array type can specify more than one field, not fill for all
+   *  fieldIdCollection?: string[];
    * }
    * ```
    * 
    */
   LastModifiedTime = CoreFieldType.LastModifiedTime,
   /**
-   * 创建人
+   * The collaborator who created a record.
    * 
-   * ** 写入单元格值类型 **
-   * 
-   * 无
-   * 
-   * ** 读取单元格值类型 **
+   * ** Cell read format **
    * 
    * `string`
    * 
-   * ** 读取字段配置类型 **
+   * ** Cell write format **
    * 
-   * 无
+   * n/a
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property read format **
    * 
-   * 无
+   * n/a
+   * 
+   * ** Field property write format **
+   * 
+   * n/a
    *  
    */
   CreatedBy = CoreFieldType.CreatedBy,
   /**
-   * 修改人
+   * Shows the last collaborator who most recently modified any editable field or just in specific editable fields.
    * 
-   * ** 写入单元格值类型 **
-   * 
-   * 无
-   * 
-   * ** 读取单元格值类型 **
+   * ** Cell read format **
    * 
    * `string`
    * 
-   * ** 读取字段配置类型 **
+   * ** Cell write format **
+   * 
+   * n/a
+   * 
+   * ** Field property read format **
    * 
    * ``` ts
    * {
-   *  collectType?: CollectType; // 指定字段类型：0 所有可编辑，1 指定字段
-   *  fieldIdCollection?: string[]; // 是否指定字段，数组类型可指定多个字段，不填为所有
+   *  // the fields to check the last modified collaborator of: 0 all editable, 1 specified field
+   *  collectType?: CollectType;
+   *  // whether to specify the field, array type can specify more than one field, not fill for all
+   *  fieldIdCollection?: string[];
    * }
    * ```
    * 
-   * ** 写入字段配置类型 **
+   * ** Field property write format **
    * 
    * ``` ts
    * {
-   *  collectType?: CollectType; // 指定字段类型：0 所有可编辑，1 指定字段
-   *  fieldIdCollection?: string[]; // 是否指定字段，数组类型可指定多个字段，不填为所有
+   *  // the fields to check the last modified collaborator of: 0 all editable, 1 specified field
+   *  collectType?: CollectType;
+   *  // whether to specify the field, array type can specify more than one field, not fill for all
+   *  fieldIdCollection?: string[];
    * }
    * ```
 
@@ -809,53 +848,53 @@ export enum FieldType {
 }
 
 export interface IAttachmentValue {
-  /** id 用来做 follow key，目前和 attachmentToken 一样 */
+  /** id is used as a follow key, currently the same as attachmentToken */
   id: string;
-  /** 文件名 */
+  /** filename */
   name: string;
-  /** 文件的 mime 类型 */
+  /** the mime type of the file */
   mimeType: string;
-  /** 文件上传到后端 token，最终地址通过前端组装来访问。 */
+  /** the file is uploaded to the back-end token and the final address is accessed through the front-end assembly. */
   token: string;
-  /** 存储位置，后端返回 */
+  /** storage bucket location, back-end return */
   bucket: string;
-  /** 文件大小，后端返回 byte */
+  /** file size, the backend returns byte */
   size: number;
   width?: number;
   height?: number;
-  /** 预览地址（pdf 之类文件） */
+  /** preview address (pdf type file), without domain name */
   preview?: string;
-  /** 文件的完整地址 */
+  /** full address of the file */
   url: string;
-  /** 预览的完整地址 */
+  /** full address for previews */
   previewUrl?: string;
 }
 
 export interface IDateTimeFieldPropertyFormat {
-  /** 日期格式 */
+  /** date Format */
   dateFormat: DateFormat;
-  /** 时间格式 */
+  /** time Format */
   timeFormat: TimeFormat;
-  /** 是否包含时间 */
+  /** whether to include time */
   includeTime: boolean;
 }
 
 /**
- * 计算字段返回值为 number 时候，数字类型字段格式化
+ * When the return value of a calculated field is number, the field is formatted with the number type.
  */
 export interface INumberBaseFieldPropertyFormat {
   /**
-   * 数字的格式化类型
+   * formatting types for numbers
    */
   formatType: 'currency' | 'number' | 'datetime' | 'percent';
-  /** 保留小数位 */
+  /** from 0 to 4 inclusive */
   precision: number;
-  /** 单位 */
+  /** digital Units */
   symbol?: string;
 }
 
 /**
- * fieldType 的枚举值
+ * Enumerated values of fieldType.
  */
 export enum NumFieldType {
   NotSupport = 0,
@@ -883,5 +922,5 @@ export enum NumFieldType {
   LastModifiedTime = 22,
   CreatedBy = 23,
   LastModifiedBy = 24,
-  DeniedField = 999, // 无权限列
+  DeniedField = 999, // no permission column
 }

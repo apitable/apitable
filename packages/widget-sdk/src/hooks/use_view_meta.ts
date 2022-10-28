@@ -28,24 +28,24 @@ export const pickViewProperty = (view: IViewProperty): IViewMeta => {
 };
 
 /**
- * Beta API`, 未来有可能变更。
+ * Beta API`, possible future changes.
  * 
- * 获取视图的 metadata 属性。
- * 传入一个 viewId, 当 viewId 非法或者不存在时，返回 undefined。
- * 当 metadata 属性变化的时候会触发重新渲染。
+ * Gets the metadata property of the view.
+ * Pass in a viewId, and return undefined when the viewId is illegal or does not exist. 
+ * Rerendering is triggered when the metadata property changes.
  * 
- * @param viewId 需要获取 metadata 属性的视图ID
+ * @param viewId Need to get the view ID of the metadata property
  * @returns
  * 
- * ### 示例
+ * ### Example
  * ```js
  * import { useViewMeta, useActiveViewId } from '@vikadata/widget-sdk';
  *
- * // 显示当前视图名称
+ * // Show name of the currently view.
  * function ViewName() {
  *   const activeViewId = useActiveViewId();
  *   const viewMeta = useViewMeta(activeViewId);
- *   return <p>当前视图名称：{viewMeta?.name}</p>;
+ *   return <p>Current view name: {viewMeta?.name}</p>;
  * }
  * 
  * ```
@@ -54,21 +54,21 @@ export const pickViewProperty = (view: IViewProperty): IViewMeta => {
 export function useViewMeta(viewId: string | undefined): IViewMeta;
 
 /** 
- * ## 支持获取对应表格视图的 metadata 属性。
+ * ## Support getting the metadata property of the corresponding datasheet view.
  * 
- * @param datasheet Datasheet 实例，通过 {@link useDatasheet} 获取
- * @param viewId 需要获取 metadata 属性的视图ID
+ * @param datasheet Datasheet instance, by {@link useDatasheet} get.
+ * @param viewId Need to get the view ID of the metadata property
  * @returns
  * 
- * ### 示例
+ * ### Example
  * ```js
  * import { useViewMeta, useDatasheet } from '@vikadata/widget-sdk';
  *
- * // 显示对应 datasheetId(dstXXXXXXXX) 表的当前视图名称
+ * // Show the current view name of the corresponding datasheetId(dstXXXXXXXX) datasheet.
  * function ViewName() {
  *   const datasheet = useDatasheet('dstXXXXXXXX');
  *   const viewMeta = useViewMeta(datasheet, 'viwXXXXXXX');
- *   return <p>当前视图名称：{viewMeta?.name}</p>;
+ *   return <p>Current view name: {viewMeta?.name}</p>;
  * }
  * ```
  * 

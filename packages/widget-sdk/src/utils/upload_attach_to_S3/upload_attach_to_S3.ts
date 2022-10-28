@@ -30,7 +30,7 @@ async function uploadDirectOSS(
 }
 
 /**
- * 私有化部署使用 minio，需要根据当前的环境替换 origin 中的数据
+ * Private deployments use minio and need to replace the data in origin according to the current environment.
  */
 function convertOrigin(url: string) {
   const _url = new URL(url);
@@ -65,7 +65,7 @@ export async function uploadAttachToS3(optional: IUploadFileForSaaS): Promise<an
   const uploadCertificates = await getCertificate({ count: 1, type: fileType, data, nodeId });
 
   if (!Array.isArray(uploadCertificates)) {
-    // 如果在获取预签名时报错，就直接返回预签名的报错信息
+    // If you get an error when getting a pre-signature, return the pre-signed error message directly.
     return uploadCertificates;
   }
 

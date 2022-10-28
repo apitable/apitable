@@ -21,7 +21,7 @@ export function useWidgetComponent(
     }
 
     loadWidget(codeUrl, widgetPackageId,
-      // 当刷新版本 或者 传入的 codeUrl 变化时候就重新加载小程序代码包
+      // when version is refreshed or incoming codeUrl changes, the widget code package is reloaded
       count > preCount.current || (Boolean(preCodeUrl.current) && preCodeUrl.current !== codeUrl)
     ).then(component => {
       componentRef.current = component;

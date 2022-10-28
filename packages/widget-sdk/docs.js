@@ -9,14 +9,6 @@ const MODULES = 'modules';
 const UI = 'ui';
 const RELATIVE_PATH = '../../../developers/widget';
 const API_PATH = 'api-reference';
-const REPLACE_KEYS = [
-  ['## Functions', ''],
-  ['# Returns', '# 返回值'],
-  ['# Parameters', '# 参数'],
-  ['# Properties', '# 属性'],
-  ['# Accessors', '# 配件'],
-  ['# Methods', '# 方法']
-]
 
 const MODAL_FIELD_REPLACE_KEYS = [
   [/\*\*property\*\*\(\):.+/, '**property**(): [FieldType](../enums/interface_field_types.FieldType.md)'],
@@ -28,7 +20,7 @@ function hiddenProperties(data) {
   let start = -1;
   let end = -1
   ls.forEach((item, index) => {
-    if (item.indexOf('## Properties') === 0 || item.indexOf('## 属性') === 0) {
+    if (item.indexOf('## Properties') === 0) {
       start = index;
     } else if (end === -1 && start > -1 && item.indexOf('## ') === 0) {
       end = index;
@@ -58,7 +50,7 @@ async function main() {
   const targetPath = path.join(__dirname, outputDir);
   const outputParent = path.join(targetPath, '..');
   if (!fs.existsSync(outputParent)) {
-    throw new Error(`目标目录 ${outputParent} 不存在`);
+    throw new Error(`Destination directory ${outputParent} does not exist`);
   }
 
   fs.rmdirSync(outputDir, { recursive: true });
@@ -81,10 +73,10 @@ async function main() {
     disableSources: true,
     hideSources: true,
     hideGenerator: true,
-    // 根据文件中出现的顺序排序
+    // sort by the order of appearance in the document
     sort: 'source-order',
-    // typedoc-plugin-markdown 配置
-    // 隐藏 Table of contents
+    // typedoc-plugin-markdown configuration
+    // hidden the table of contents
     hideInPageTOC: true,
     hideBreadcrumbs: true,
     hidePageTitle: true,
@@ -92,21 +84,17 @@ async function main() {
   app.convertAndWatch(async (project) => {
     await app.generateDocs(project, outputDir);
 
-    // 格式化 modules 文件夹下面的 hooks 文件内容
+    // formatting the contents of the hooks file under the modules folder
     const destModulePath = `${outputDir}/${MODULES}`;
     const modulesFiles = fs.readdirSync(destModulePath);
     modulesFiles.forEach(file => {
       let [pre, targetFile] = file.split(/\_(.+)/);
       let fileData = fs.readFileSync(`${destModulePath}/${file}`, { encoding:'utf8' });
-      // 调整生成字符
-      REPLACE_KEYS.forEach(rk => {
-        fileData = fileData.replace(new RegExp(rk[0], 'g'), rk[1]);
-      })
       if (pre === 'hooks' || pre === 'utils' || pre === 'ui') {
-        // 去掉 hooks 标题和函数定义
+        // remove the hooks title and function definitions
         const data = fileData.split('\n');
         data.splice(0, 5);
-        // 如果 fileData 没有内容，则返回空文件
+        // if fileData has no content, return the empty files
         if (!data.join('')) {
           return fs.writeFileSync(`${destModulePath}/${file}`, '', { encoding:'utf8' });
         }
@@ -123,24 +111,20 @@ title: ${toHump(targetFile, pre === 'ui').replace('.md', '')}
       fs.writeFileSync(`${destModulePath}/${file}`, fileData, { encoding:'utf8' });
     })
 
-    // 格式化 classes 文件夹下面的 model 文件内容
+    // format the  content of the modal file under the classes folder
     const destClassPath = `${outputDir}/${CLASSES}`;
     const classesFiles = fs.readdirSync(destClassPath);
     classesFiles.forEach(file => {
       const [pre, targetFile] = file.split(/\.(.+)/);
       let fileData = fs.readFileSync(`${destClassPath}/${file}`, { encoding:'utf8' });
-      // 隐藏掉 Properties
+      // hide Properties
       fileData = hiddenProperties(fileData);
-      // 替换掉 modal_field 里面无用的
+      // replace the useless of the modal_field
       if (pre === 'model_field') {
         MODAL_FIELD_REPLACE_KEYS.forEach(rk => {
           fileData = fileData.replace(rk[0], rk[1]);
         })
       }
-      // 调整生成字符
-      REPLACE_KEYS.forEach(rk => {
-        fileData = fileData.replace(new RegExp(rk[0], 'g'), rk[1]);
-      })
       fileData = `---
 title: ${targetFile.replace('.md', '')}
 ---

@@ -12,25 +12,25 @@ const getActiveViewId = (state: IWidgetState, currentDatasheetId?: string) => {
 };
 
 /**
- * 获得当前激活的视图 ID, 返回一个 string。
- * 当切换视图的时候，会触发重新渲染。
+ * Get the view ID of currently active view, return a value of string.
+ * When views switched, re-rendering is triggered.
  * 
  * @param
  * 
  * @returns
  *
- * ### 示例
+ * ### Example
  * ```js
  * import { useActiveViewId, useViewMeta } from '@vikadata/widget-sdk';
  *
- * // 渲染当前选中视图名称
+ * // Render the currently selected view name
  * function ActiveView() {
  *   const activeViewId = useActiveViewId();
  *   const viewMeta = useViewMeta(activeViewId);
  *   if (!viewMeta) {
- *     return <p>未激活视图</p>
+ *     return <p>Inactive view</p>
  *   }
- *   return <p>当前激活的视图：{viewMeta.name}</p>
+ *   return <p>Currently active views: {viewMeta.name}</p>
  * }
  * ```
  */

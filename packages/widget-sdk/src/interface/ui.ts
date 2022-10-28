@@ -3,19 +3,23 @@ import { FieldType } from './field_types';
 import { ViewType } from './view_types';
 
 export interface IFieldPicker {
-  /** 指定可以选择的字段类型 */
+  /** An array indicating which field types can be selected. */
   allowedTypes?: FieldType[];
-  /** 选项值发生改变的时候回调 */
+  /** A function to be called when the selected field changes. */
   onChange?: (option: IOption) => void;
-  /** 对应的视图ID，指定视图后，字段选择器中的选项顺序将按该视图中的字段顺序，该视图隐藏的字段也会出现在选项中 */
+  /** 
+   * The corresponding view ID, after specifying the view, 
+   * the order of the options in the field selector will be in the order of the fields in that view, 
+   * and the fields hidden by that view will also appear in the options.
+   */
   viewId: string | undefined;
-  /** 选中的fieldId */
+  /** The selected field ID. */
   fieldId?: string;
-  /** 未选择字段时的占位符文本。默认为 “请选择” */
+  /** The placeholder text when no field is selected. . Defaults to 'Please pick' */
   placeholder?: string;
-  /** 如果设置为 true，则用户无法进行选择交互 */
+  /** If set to true, the user cannot interact with the select. */
   disabled?: boolean;
-  /** 从哪个维格表中选择字段，默认为小程序绑定的关联表 */
+  /** The parent datasheet model to select fields from. If null or undefined, the picker default datasheet associated with the widget. */
   datasheet?: Datasheet;
 }
 
@@ -25,28 +29,31 @@ export interface IOption {
 }
 
 export interface IViewPicker {
-  /** 指定可以选择的视图类型 */
+  /** An array indicating which view types can be selected. */
   allowedTypes?: ViewType[];
-  /** 未选择视图时的占位符文本。默认为 “请选择” */
+  /** The placeholder text when no view is selected. Defaults to 'Please pick' */
   placeholder?: string;
-  /** 选项值发生改变的时候回调 */
+  /** A function to be called when the selected view changes. */
   onChange?: (option: IOption) => void;
-  /** 选中的视图ID */
+  /** The selected view ID. */
   viewId?: string;
-  /** 如果设置为 true，则用户无法进行选择交互 */
+  /** If set to true, the user cannot interact with the select. */
   disabled?: boolean;
-  /** 从哪个维格表中选择视图，默认为小程序绑定的关联表 */
+  /** The parent datasheet model to select view from. If null or undefined, the picker default datasheet associated with the widget. */
   datasheet?: Datasheet;
   /**
-   * `Beta API`, 未来可能会有变更
+   * `Beta API`, possible feature changes.
    * 
-   * 如果开启此选项，该 ViewPicker 中所选择的视图将作为在仪表盘中「跳转到关联表」的目标视图。
+   * If this option is turned on, the selected view in this ViewPicker will be used as 
+   * the target view for "Jump to link datasheet" in the dashboard.
    * 
-   * 跳转到的关联表只能是该小程序绑定的维格表
+   * The jump to the link datasheet can only be the datasheet to which the widget is bound.
    * 
-   * 注意：同一个小程序中，只能在一个 ViewPicker 中设置 controlJump 选项；如果在多个 ViewPicker 中设置 controlJump 选项，将无法保证该功能正常。
+   * Note: In the same widget, the controlJump option can only be set in one ViewPicker; 
+   * if the controlJump option is set in multiple ViewPickers, the function will not be guaranteed to work properly.
    * 
-   * 建议：开启此功能后，应该对选择的视图使用 useCloudStorage 做持久化存储，否则可能将造成异常情况。
+   * Recommendation: When this feature is enabled, 
+   * you should use useCloudStorage to do persistent storage for the selected view, otherwise it may cause exceptions.
   */
   controlJump?: boolean;
 }

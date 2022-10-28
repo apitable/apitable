@@ -3,13 +3,12 @@ import { widgetMessage } from 'iframe_message';
 import { IResourceService } from 'resource';
 
 /**
- * TODO 私有化
- * 是否是安全的域名
- * 1、vika.ltd 或者 vika.cn 结尾
- * 2、localhost 本地域名
+ * Is it a secure domain name.
+ * 1. Main application with the same domain name.
+ * 2. localhost Local debugging domain name.
  */
 export const isSafeOrigin = (origin: string) => {
-  const SAFE_ORIGIN_END = ['vika.ltd', 'vika.cn', window.location.origin];
+  const SAFE_ORIGIN_END = [window.location.origin];
   const LOCAL = ['https://localhost', 'http://localhost'];
   return SAFE_ORIGIN_END.some(str => origin.endsWith(str)) || LOCAL.some(str => origin.startsWith(str));
 };

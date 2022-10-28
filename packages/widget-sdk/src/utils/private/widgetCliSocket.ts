@@ -28,7 +28,7 @@ class WidgetCliSocket implements IWidgetCliSocket {
   eventMap: Map<WidgetCliSocketType, ICallBack[]> = new Map();
 
   constructor(origin: string, type: WidgetCliSocketType) {
-    this.socket = io(origin, { path: `/${SOCKET_PATH_DEFAULT}` }); // 建立链接
+    this.socket = io(origin, { path: `/${SOCKET_PATH_DEFAULT}` }); // Establishing links
     this.socket.loading = true;
     this.socket.on(SOCKET_PATH_DEFAULT, (res: IWidgetCLiSocketResponse) => {
       this.eventMap.get(res.type)?.forEach((cb: ICallBack) => cb({
@@ -36,11 +36,11 @@ class WidgetCliSocket implements IWidgetCliSocket {
         data: res?.data
       }));
     });
-    // 连接成功
+    // connection successful
     this.socket.on('connect', () => {
       this.socket.loading = false;
     });
-    // 链接失败
+    // connection failure
     this.socket.on('disconnect', () => {
       [...this.eventMap.values()].flat(1).forEach((cb: ICallBack) => cb({
         success: false,

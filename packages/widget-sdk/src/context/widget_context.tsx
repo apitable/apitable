@@ -8,28 +8,27 @@ import { IWidgetStore } from 'store';
 import { Store } from 'redux';
 import { ThemeName } from '@vikadata/components';
 /**
- * 1. 提供小程序数据源的读写能力
- * 
- * 2. 提供数表数据的读写能力
+ * 1. provide the ability to read and write to the data source of the widget.
+ * 2. provide the ability to read and write to the datasheet data.
  */
 export const WidgetContext = React.createContext<IWidgetContext>(null!);
 
 export type IWidgetProviderProps = Omit<IWidgetContext, 'locale' | 'widgetStore'> & Omit<IWidgetConfig, 'mountId'> & {
   locale?: string;
-  /** 可选，给组件最外层 div 加一个类 */
+  /** Optionally, add a class to the outermost div of the components */
   className?: string;
-  /** 可选，给组件最外层 div 加样式 */
+  /** Optionally, add a style to the outermost div of the components */
   style?: React.CSSProperties;
   widgetStore?: Store<IWidgetState>;
 };
 
 /**
- * 提供小程序外层 UI 状态获取与控制能力
+ * Provide the ability to get and control the outer UI state of the widget.
  */
 export const WidgetConfigContext = React.createContext<IWidgetConfig>(null!);
 
 /**
- * 在主工程内，使用小程序之前需要包装 WidgetProvider
+ * Within the main project, the WidgetProvider need to be wrapped before the widget be used.
  */
 export const WidgetProvider: React.FC<IWidgetProviderProps> = props => {
   const {

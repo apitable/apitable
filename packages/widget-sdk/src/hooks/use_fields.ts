@@ -9,20 +9,20 @@ import { createDeniedField } from './use_field';
 import { getFieldMap, getFieldPermissionMap, getView } from '../store';
 
 /**
- * 获取当前视图所有的字段(列)信息。
- * 当字段属性/列顺序发生变化的时候，会触发重新渲染。
+ * Get information about all fields(columns) of currently view. 
+ * Rerendering is triggered when the fields property/columns order changes.
  * 
- * 如果没有传入 viewId 会返回空数组。
+ * If not viewId passed in, an empty array is returned.
  * 
- * @param viewId 视图ID
- * @param query 可选参数，指定查询哪些 fieldId 数据
+ * @param viewId The ID for view.
+ * @param query Optional parameter that specifies which fieldId data to query.
  * @returns
  *
- * ### 示例
+ * ### Example
  * ```js
  * import { useFields, useActiveViewId } from '@vikadata/widget-sdk';
  *
- * // 展示全部字段名称
+ * // Show all field names
  * function FieldNames() {
  *   const viewId = useActiveViewId();
  *   const fields = useFields(viewId);
@@ -36,19 +36,18 @@ import { getFieldMap, getFieldPermissionMap, getView } from '../store';
 export function useFields(viewId: string | undefined, query?: IFieldQuery): Field[];
 
 /**
+ * ## Support for loading the corresponding datasheet data fields.
  * 
- * ## 支持加载对应表格数据 Fields
- * 
- * @param datasheet Datasheet 实例，通过 {@link useDatasheet} 获取
- * @param viewId 视图ID
- * @param query 可选参数，指定查询哪些 fieldId 数据
+ * @param datasheet Datasheet instance, by {@link useDatasheet} get.
+ * @param viewId The ID for view.
+ * @param query Optional parameter that specifies which fieldId data to query.
  * @returns
  *
- * ### 示例
+ * ### Example
  * ```js
  * import { useFields, useDatasheet } from '@vikadata/widget-sdk';
  *
- * // 展示对应 datasheetId(dstXXXXXXXX) 表的全部字段名称
+ * // Show all field names corresponding to the datasheetId(dstXXXXXXXX) datasheet
  * function FieldNames() {
  *   const datasheet = useDatasheet('dstXXXXXXXX');
  *   const fields = useFields(datasheet, 'vieXXXXXXX');

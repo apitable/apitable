@@ -4,14 +4,14 @@ import { IAttachmentValue, IUploadProgress } from 'interface';
 import { identity, pickBy } from 'lodash';
 
 /**
- * 一个上传文件方法，可以使用此方法上传文件，去完成附件字段的写入
+ * An upload file method that can be used to upload a file and go through the attachment field writing.
  *
- * @param params.file 文件
- * @param params.datasheetId 维格表ID
- * @param params.onProgress 文件上传进度回调方法
+ * @param params.file Files to be uploaded.
+ * @param params.datasheetId Upload files to datasheet.
+ * @param params.onProgress File upload progress callback method.
  * @returns
  *
- * ### 示例
+ * ### Example
  * ``` ts
  * import React, { useState } from 'react';
  * import { upload, useDatasheet } from '@vikadata/widget-sdk';
@@ -89,7 +89,6 @@ export function upload(params: {
       width: data.width,
       height: data.height,
       preview: data.preview,
-      // 附加值
       previewUrl: data.preview ? cellValueToImageSrc(data, { isPreview: true }) : undefined,
       url: cellValueToImageSrc(data),
     }, identity) as IAttachmentValue);

@@ -10,20 +10,20 @@ import { isIframe } from 'iframe_message/utils';
 import { widgetMessage } from 'iframe_message';
 
 /**
- * 用于将 React 组件链接到 datasheet 的 hook。
- * datasheet 会提供对表格数据进行修改的接口，并提供对应的权限检查接口。
+ * A hook for connecting a React component to your datasheet's schema.
+ * Datasheet will provide the interface to make update to datasheet date, and check permission.
  * 
  * @param
  * 
- * @returns Datasheet 实例
- * ### 示例
+ * @returns Datasheet instance
+ * ### Example
  * ```js
  * import { useDatasheet } from '@vikadata/widget-sdk';
  *
  * function AddRecord() {
  *   const datasheet = useDatasheet();
  *   const [error, setError] = useState();
- *   // 参数的 key 为 fieldId， value 为单元格值
+ *   // The key of the parameter is the fieldId and the value is the cell value
  *   const valuesMap = {
  *     fld1234567980: 'this is a text value',
  *     fld0987654321: 1024,
@@ -41,7 +41,7 @@ import { widgetMessage } from 'iframe_message';
  *   }
  *   return (<div>
  *     {error && <p>{error}</p>}
- *     <button onClick={() => addRecord(valuesMap)}>新增一行</button>
+ *     <button onClick={() => addRecord(valuesMap)}>add a new record</button>
  *   </div>);
  * }
  * 

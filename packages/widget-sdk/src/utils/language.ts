@@ -1,20 +1,20 @@
 declare const window: any;
 
 export enum LangType {
-  /** 中文 */
+  /** Chinese */
   ZhCN = 'zh-CN',
-  /** 英文 */
+  /** English */
   EnUS = 'en-US'
 }
 /**
- * 用于获取当前系统语言
+ * Used to get the current system language
  * 
- * ## 示例
+ * ## Example
  * ``` js
  * import { getLanguage, LangType } from '@vikadata/widget-sdk';
  * 
  * if (getLanguage() === LangType.ZhCN) {
- *   console.log('当前系统语言为中文');
+ *   console.log('Current system language is Chinese');
  * }
  * 
  * ```

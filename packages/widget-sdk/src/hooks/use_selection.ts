@@ -24,7 +24,7 @@ const getSelectedFieldIds = (state: IWidgetState, currentDatasheetId?: string, v
   const visibleColumns = getVisibleColumns(state, currentDatasheetId, viewId);
   
   const visibleRowsIndexMap = Selectors.getVisibleRowsIndexMapBase(records?.map(record => ({ recordId: record.id })));
-  // 连续选区
+  // continuous selection
   if (recordRanges) {
     return {
       recordIds: recordRanges.filter(recordId => visibleRowsIndexMap.has(recordId)),
@@ -39,7 +39,7 @@ const getSelectedFieldIds = (state: IWidgetState, currentDatasheetId?: string, v
   const { fieldId: startFieldId, recordId: startRecordId } = ranges[0].start;
   const { fieldId: endFieldId, recordId: endRecordId } = ranges[0].end;
 
-  // 处理预排序
+  // handle pre-order
   const activeRowInfo = Selectors.getActiveRowInfo(state as any as IReduxState, currentDatasheetId);
   const { recordId: activeRecordId, visibleRowIndex } = activeRowInfo?.positionInfo || {} as any;
   const visibleRecordIds = records?.map(record => record.id);
@@ -57,7 +57,7 @@ const getSelectedFieldIds = (state: IWidgetState, currentDatasheetId?: string, v
 
   // field
   const visibleColumnsIndexMap = new Map(visibleColumns?.map((item, index) => [item.fieldId, index]));
-  // 如果 range 中的边界不在可见区则选区返回 undefined
+  // if the boundary in the range is not in the visible area, the selection returns undefined
   if (
     !visiblePureRowsIndexMap.has(startRecordId) ||
     !visiblePureRowsIndexMap.has(endRecordId) ||
@@ -86,18 +86,18 @@ const getSelectedFieldIds = (state: IWidgetState, currentDatasheetId?: string, v
 };
 
 /**
- * 获取当前单元格光标所选择的区域的 recordId 和 fieldId。
- * 当光标移动或者切换视图的时候，会触发重新渲染。
+ * Get the recordId and fieldId of the region selected by the current cell cursor. 
+ * Rerendering is triggered when the cursor is moved or the view is switched.
  *
- * 如果你仅需要激活单元格的信息，可以使用 {@link useActiveCell}
+ * If you only need information about the active cell, please use {@link useActiveCell}.
  *
  * @returns
  * 
- * ### 示例
+ * ### Example
  * ```js
  * import { useSelection, useRecords, useFields, useActiveViewId } from '@vikadata/widget-sdk';
  *
- * // 渲染当前选区信息
+ * // Render the currently selection information
  * function Selection() {
  *   const selection = useSelection();
  *   const viewId = useActiveViewId();

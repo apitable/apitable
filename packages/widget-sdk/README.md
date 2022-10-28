@@ -1,3 +1,3 @@
-# Vika Widget SDK
+# ApiTable Widget SDK
 
-维格表小程序 SDK
+ApiTable widget SDK

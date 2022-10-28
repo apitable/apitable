@@ -1,4 +1,4 @@
-# 当前 package 会发布到 npm，npm 中只保留 d.ts 不包含源码，将非必要的敏感信息均排出在
+# the current package will be published to npm, which only keep d.ts without source code and expels all non-essential sensitive information in
 .yarn
 src
 docs

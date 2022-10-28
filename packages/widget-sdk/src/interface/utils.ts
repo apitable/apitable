@@ -1,6 +1,6 @@
 export interface IUploadProgress {
-  /** 已经传输多少字节 */
+  /** How many bytes have been transferred */
   loaded: number;
-  /** 文件大小，总共多少字节 */
+  /** File size, how many bytes in total */
   total: number;
 }

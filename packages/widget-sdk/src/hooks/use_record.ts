@@ -8,19 +8,19 @@ import { useSelector } from 'react-redux';
 import { getWidgetDatasheet } from 'store';
 
 /**
- * 获取一个指定记录的信息。
- * 当记录的值、字段配置发生变化的时候，会触发重新渲染。
+ * Gets information of a specified record.
+ * Rerendering is triggered when the value of record, field property changes.
  * 
- * 如果没有传入 ID 会返回 undefined
+ * If not ID is passed in, undefined is returned.
  * 
- * @param recordId 记录ID
+ * @param recordId The ID for this record.
  * @returns
  *
- * ### 示例
+ * ### Example
  * ```js
  * import { useRecord } from '@vikadata/widget-sdk';
  *
- * // 展示记录主键
+ * // Show record title
  * function RecordTitle() {
  *   const record = useRecord('recXXXXXXX');
  *   return <p>{record.title}</p>
@@ -31,18 +31,17 @@ import { getWidgetDatasheet } from 'store';
 export function useRecord(recordId: string | undefined): Record;
 
 /**
+ * ## Support for loading the corresponding datasheet data record.
  * 
- * ## 支持加载对应表格数据 Record
- * 
- * @param datasheet Datasheet 实例，通过 {@link useDatasheet} 获取
- * @param recordId 记录ID
+ * @param datasheet Datasheet instance, by {@link useDatasheet} get.
+ * @param recordId The ID for this record.
  * @returns
  *
- * ### 示例
+ * ### Example
  * ```js
  * import { useRecord, useDatasheet } from '@vikadata/widget-sdk';
  * 
- * // 展示对应 datasheetId(dstXXXXXXXX) 表的记录主键
+ * // Show the primary key of record the corresponding to the datasheetId(dstXXXXXXXX) datasheet
  * function RecordTitle() {
  *   const datasheet = useDatasheet('dstXXXXXXXX);
  *   const record = useRecord('recXXXXXXX');

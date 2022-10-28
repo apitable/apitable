@@ -19,7 +19,8 @@ import { getNewId, IDPrefix } from '@apitable/core';
 
 /**
  * @hidden
- * 企业微信兼容判断，三方应用不支持显示成员字段
+ * Enterprise Wecom compatibility judgment, 
+ * three-party applications do not support the display of member fields.
  * @param type 
  * @returns 
  */
@@ -42,13 +43,15 @@ const getNoAcceptableFieldString = (type: FieldType, fieldName: string) => {
   return stringMap[type] || 'NoAcceptable';
 };
 
-// 字段描述长度
+// Field Description Length
 const MAX_DESC = 200;
 
 /**
- * 数表列操作和信息。
+ * Number datasheet column operations and information.
  * 
- * 操作数表列，可以使用 {@link useField}（单个列信息）、{@link useFields}（多个列信息）。
+ * To manipulate the number datasheet columns, 
+ * you can use {@link useField} (single column information), 
+ * {@link useFields} (multiple column information).
  */
 export class Field {
   private fieldEntity: FieldCore;
@@ -64,20 +67,20 @@ export class Field {
   }
 
   /**
-   * 是否有更新字段的权限
+   * Checks whether the current user has permission to perform the given field update.
    */
   private checkPermissionUpdateField(): IPermissionResult {
     if (!this.fieldEntity.propertyEditable()) {
-      return errMsg(`无 ${this.fieldData.name}(${this.id}) 列的写入权限`);
+      return errMsg(`No write access to ${this.fieldData.name}(${this.id}) column`);
     }
     return { acceptable: true };
   }
 
   /**
-   * 字段 id, 列的唯一标识
+   * The ID for this model.
    * @returns
    *
-   * #### 示例
+   * #### Example
    * ```js
    * console.log(myField.id);
    * // => 'fld1234567'
@@ -87,11 +90,11 @@ export class Field {
     return showField(this.type) ? this.fieldData.id : getNewId(IDPrefix.Field);
   }
   /**
-   * 列名称, 不同列名称为不重复值
+   * The name of the field. Can be watched.
    * 
    * @returns
    *
-   * #### 示例
+   * #### Example
    * ```js
    * console.log(myField.name);
    * // => 'Name'
@@ -101,11 +104,11 @@ export class Field {
     return showField(this.type) ? this.fieldData.name : getNoAcceptableFieldString(this.type, this.fieldData.name);
   }
   /**
-   * 列类型，列类型为枚举值，具体可参阅 {@link FieldType}
+   * The type of the field. Can be watched. {@link FieldType}
    * 
    * @returns
    *
-   * #### 示例
+   * #### Example
    * ```js
    * console.log(myField.type);
    * // => 'SingleLineText'
@@ -116,11 +119,11 @@ export class Field {
   }
 
   /**
-   * 返回当前字段的描述
+   * The description of the field, if it has one. Can be watched.
    *
    * @returns
    * 
-   * #### 示例
+   * #### Example
    * ```js
    * console.log(myField.description);
    * // => 'This is my field'
@@ -132,13 +135,14 @@ export class Field {
 
   /**
    * 
-   * 返回字段的属性配置，不同类型的字段有不同的属性配置。
-   * 返回 null 则代表这个字段没有属性配置。
-   * 具体可参阅 {@link FieldType}
+   * The configuration property of the field. 
+   * The structure of the field's property depend on the field's type. 
+   * null if the field has no property. Can be watched.
+   * Refer to {@link FieldType}.
    * 
    * @return {@link FieldType}
    *
-   * #### 示例
+   * #### Example
    * ```js
    * import { FieldType } from '@vikadata/widget-sdk';
    *
@@ -153,12 +157,12 @@ export class Field {
   }
 
   /**
-   * 判断当前字段是否是“计算字段”
-   * “计算字段”的意思是，不允许用户主动写入值的字段类型。（比如：自增数字、公式、神奇引用、修改时间、创建时间、修改人、创建人）
+   * true if this field is computed, false otherwise. 
+   * A field is "computed" if it's value is not set by user input (e.g. autoNumber, magic lookup,  magic formula, etc.). Can be watched
    *
    * @returns
    * 
-   * #### 示例
+   * #### Example
    * ```js
    * console.log(mySingleLineTextField.isComputed);
    * // => false
@@ -171,9 +175,10 @@ export class Field {
   }
 
   /**
-   * TODO 为了兼容留下，后续删除 
+   * TODO: Leave for compatibility, subsequent deletion 
    * @hidden
-   * 返回当前字段是否属于主字段，在维格表中，主字段永远是第一列所在的字段。
+   * true if this field is its parent table's primary field, false otherwise. 
+   * Should never change because the primary field of a datasheet cannot change.
    * @returns
    */
   get isPrimaryField(): boolean {
@@ -181,7 +186,8 @@ export class Field {
   }
 
   /**
-   * 返回当前字段是否属于主字段，在维格表中，主字段永远是第一列所在的字段。
+   * true if this field is its parent table's primary field, false otherwise. 
+   * Should never change because the primary field of a datasheet cannot change.
    * @returns
    */
   get isPrimary(): boolean {
@@ -191,19 +197,19 @@ export class Field {
   }
 
   /**
-   * 神奇表单是否必填
+   * Is the magic form required.
    */
   get required(): boolean | null {
     return this.fieldData.required || null;
   }
 
   /**
-   * 获取当前视图特征属性，如该字段在某个视图中是否被隐藏
+   * Get the current view feature properties, such as whether the field is hidden in a view
    * 
-   * @param viewId 视图ID
+   * @param viewId the view ID
    * @return
    * 
-   * #### 示例
+   * #### Example
    * ``` js
    * const propertyInView = field.getPropertyInView('viwxxxxx');
    * console.log(propertyInView?.hidden)
@@ -223,14 +229,14 @@ export class Field {
   }
 
   /**
-   * 更新字段的描述。
+   * Updates the description for this field.
    *
-   * 如果没有写入权限，该 API 会抛出异常信息。
+   * Throws an error if the user does not have permission to update the field, or if an invalid description is provided.
    * 
-   * @param description 字段描述
+   * @param description new description for the field
    * @returns
    * 
-   * #### 示例
+   * #### Example
    * ```js
    *  field.updateDescription('this is a new description')
    * ```
@@ -262,19 +268,21 @@ export class Field {
 
   /**
    * 
-   * Beta API, 未来有可能变更。
+   * Beta API, future changes are possible.
    *
-   * 更新字段的属性配置，注意，更新属性配置必须全量覆盖。
+   * Updates the property for this field, 
+   * tips: that the update property configuration must be overwritten in full.
    *
-   * 如果配置格式不正确，或者没有写入权限，该 API 会抛出异常信息。
+   * Throws an error if the user does not have permission to update the field, 
+   * if invalid property are provided, if this field has no writable property, or if updates to this field type is not supported.
    *
-   * 请先阅读 {@link FieldType}【字段属性配置文档】来确定不同字段的写入格式。
+   * Refer to {@link FieldType} for supported field types, the write format for property, and other specifics for certain field types.
    *
-   * @param property 字段的新属性配置
-   * @param options 允许会产生副作用的property
+   * @param property new property for the field.
+   * @param options optional options to affect the behavior of the update.
    * @returns
    *
-   * #### 示例
+   * #### Example
    * ```js
    * function addOptionToSelectField(selectField, nameForNewOption) {
    *     const updatedOptions = {
@@ -297,7 +305,7 @@ export class Field {
     }
     const updateProperty = this.fieldEntity.updateOpenFieldPropertyTransformProperty(property);
     let deleteBrotherField: boolean;
-    // 神奇关联特殊字段，需要判断是否删除关联表的关联字段
+    // Magic link special fields, need to determine whether to delete the associated fields of the associated table
     if (this.type === FieldType.MagicLink) {
       const { conversion } = property as IUpdateOpenMagicLinkFieldProperty;
       deleteBrotherField = conversion === Conversion.Delete;
@@ -325,12 +333,12 @@ export class Field {
 
   /**
    * 
-   * 检查是否有权限更新字段描述
+   * Checks whether the current user has permission to perform the given description update.
    * 
-   * @param description 字段描述 最长限制 200
+   * @param description new description for the field, Length limit 200.
    * @returns
    * 
-   * #### 示例
+   * #### Example
    * ``` js
    * const canUpdateFieldDescription = field.hasPermissionForUpdateDescription();
    * if (!canUpdateFieldDescription) {
@@ -347,14 +355,14 @@ export class Field {
 
   /**
    * 
-   * 检查是否有权限更新字段属性配置
+   * Check whether the current user has permission to perform the given option update.
    * 
-   * property 有关更新写入格式，请参阅 {@link FieldType}
+   * Property about the update write format, refer to {@link FieldType}.
    * 
-   * @param property  要检查的字段属性，如果不传则不检查格式
+   * @param property  new property for the field.
    * @returns
    * 
-   * #### 示例
+   * #### Example
    * ``` js
    * const canUpdateFieldProperty = field.hasPermissionForUpdateProperty();
    * if (!canUpdateFieldProperty) {
@@ -367,24 +375,25 @@ export class Field {
   }
 
   /**
-   * 校验用户是否有权限更新字段属性
+   * Check whether the current user has permission to perform the given option update.
    * 
-   * @param property 要检查的字段属性，如果不传则不检查格式
+   * @param property new property for the field.
    * @returns
    * 
    * 
-   * #### 描述
-   * 接受一个可选的 valuesMap  输入，valuesMap 是 key 为 fieldId, value 为单元格内容的 object
+   * #### Description
+   * Accepts partial input, in the same format as {@link updateProperty}.
    *
-   * property 有关更新写入格式，请参阅 {@link FieldType}
+   * property about the update write format, refer to {@link FieldType}.
+   * 
+   * Returns `{acceptable: true}` if the current user can update the specified property.
    *
-   * 如果有权限操作则返回 `{acceptable: true}`
+   * Returns `{acceptable: false, message: string}` if no permission to operate, message may be used to display an error message to the user.
    *
-   * 如果无权限操作则返回 `{acceptable: false, message: string}` ，message 为显示给用户的失败原因解释
-   *
-   * #### 示例
+   * #### Example
    * ```js
-   * // 校验用户是否有更新字段的权限，当更新的同时也有写入值的话，也可以一并进行校验
+   * // Check whether the current user has permission to perform the given property update, 
+   * // when the update is accompanied by a write, it can also be verified at the same time.
    * const updatePropertyCheckResult = field.checkPermissionForUpdateProperty({
    *   defaultValue: '1',
    * });
@@ -392,7 +401,9 @@ export class Field {
    *   alert(updatePropertyCheckResult.message);
    * }
    *
-   * // 校验用户是否有更新字段的权限，但并不校验具体的值（示例：可以用来在 UI 控制创建按钮可用状态）
+   * // Check if user could potentially update a property.
+   * // Use when you don't know the specific a property you want to update yet (for example,
+   * // to show or hide UI controls that let you start update a property.)
    * const updatePropertyCheckResult =
    *   field.checkPermissionForUpdateProperty();
    * ```
@@ -403,12 +414,14 @@ export class Field {
       return updateFieldPermissionResult;
     }
     if (!this.fieldEntity.propertyEditable()) {
-      return errMsg(`无 ${this.fieldData.name}(${this.id}) 列的写入权限`);
+      return errMsg(`No write access to ${this.fieldData.name}(${this.id}) column`);
     }
     if(property) {
       const { error } = this.fieldEntity.validateUpdateOpenProperty(property);
       if (error) {
-        return errMsg(`${this.fieldData.name}字段 当前写入值 ${JSON.stringify(property)} 不符合的格式，请检查：${error.message}`);
+        return errMsg(`
+          ${this.fieldData.name}field, current write value  ${JSON.stringify(property)} format that does not match, please check:${error.message}
+        `);
       }
     }
     return { acceptable: true };
@@ -416,7 +429,7 @@ export class Field {
 
   /**
    * @hidden
-   * 对于非 lookup 字段，entityType === type。
+   * For fields that are not lookup, entityType === type.
    */
   get entityType(): FieldType {
     if (this.type === FieldType.MagicLookUp) {
@@ -429,7 +442,7 @@ export class Field {
 
   /**
    * @hidden
-   * 字段值的基础类型
+   * Base type of field values.
    */
   get basicValueType(): BasicValueType {
     return this.fieldEntity.basicValueType;
@@ -437,11 +450,10 @@ export class Field {
 
   /**
    * @hidden
-   * 一些字段存在格式化，获取格式化类型
+   * Some fields have formatting, get the formatting type.
    */
   get formatType(): IFormatType {
     switch (this.type) {
-      // 日期
       case FieldType.DateTime:
       case FieldType.CreatedTime:
       case FieldType.LastModifiedTime:
@@ -450,7 +462,6 @@ export class Field {
           type: 'datetime',
           formatting: { dateFormat, timeFormat, includeTime },
         };
-      // 数字
       case FieldType.Number: {
         const { precision, commaStyle } = this.fieldData.property as INumberFieldProperty;
         return {
@@ -508,11 +519,12 @@ export class Field {
   }
   /**
    * @hidden
-   * 将字符串类型的数据尝试转换为当兼容当前字段的数据类型。
-   * 若果不兼容的话，则返回 null
+   * Attempts to convert data of string type to when compatible with the data type of the current field.
+   * 
+   * If it is not compatible, it returns null.
    *
    * @param string The string to parse.
-   * #### 示例
+   * #### Example
    * ```js
    * const inputString = '42';
    * const cellValue = myNumberField.convertStringToCellValue(inputString);

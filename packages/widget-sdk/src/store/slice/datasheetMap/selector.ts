@@ -9,7 +9,7 @@ import { widgetStore } from '../root';
 import { expireCalcCache, refreshCalcCache } from '../calc_cache/action';
 
 /**
- * 将 Widget 所需要的datasheet state 一次性获取到
+ * Get the datasheet state required by the widget in one go.
  */
 export const widgetDatasheetSelector = (state: IReduxState, datasheetId: string): IWidgetDatasheetState | null => {
   const datasheetPack = state.datasheetMap[datasheetId];
@@ -20,7 +20,7 @@ export const widgetDatasheetSelector = (state: IReduxState, datasheetId: string)
   if (!datasheet) {
     return null;
   }
-  //  部分数据约等于没有没数据，无法进行计算，对数表筛选会报错。
+  // Part of the data is approximately equal to no data, can not be calculated, logarithmic datasheet filter will report an error.
   if (datasheet.isPartOfData) {
     return null;
   }
@@ -164,7 +164,7 @@ export const getFieldRoleByFieldId = (fieldPermissionMap: IFieldPermissionMap | 
   return role || Role.None;
 };
 
-// 获取当前活动的视图
+// Get the currently active view.
 export const getActiveView = (state: IWidgetState, id?: string) => {
   const datasheet = getWidgetDatasheet(state, id);
   if (!datasheet) {
@@ -196,7 +196,7 @@ export const getPermissions = (state: IWidgetState, id?: string) => {
 export const getVisibleRowsCalcCache = (state: IWidgetState, datasheetId: string, viewId: string) => {
   const { cache, expire } = state.calcCache?.[datasheetId]?.[viewId] || {};
   if (!cache && getViewById(state, datasheetId, viewId)) {
-    // 防止重复初始化
+    // Prevent repeated initialization.
     widgetStore.dispatch(refreshCalcCache({
       datasheetId,
       viewId,
@@ -206,7 +206,7 @@ export const getVisibleRowsCalcCache = (state: IWidgetState, datasheetId: string
     return null;
   }
   if (expire) {
-    // 避免重复发送由于缓存去更新缓存的消息
+    // Avoid repeatedly sending messages that update the cache due to caching de-caching.
     widgetStore.dispatch(expireCalcCache({ datasheetId, viewId, expire: false }));
     widgetMessage.initCache(datasheetId, viewId);
   }

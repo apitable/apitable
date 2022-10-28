@@ -12,26 +12,25 @@ const viewSelector = (state: IWidgetState, datasheetId?: string) => {
 };
 
 /**
- * 获取当前 datasheet 所有视图的 id。
- * 当视图数量变化的时候，会触发重新渲染。
+ * Gets the ID of all view of the currently datasheet.
+ * Rerendering is triggered when the number of views changes.
  * 
  * @returns
  * 
- * ### 示例
+ * ### Example
  * ```js
  * import { useViewIds, useDatasheet } from '@vikadata/widget-sdk';
  *
- * // 显示总视图数量
+ * // Display the total number of views 
  * function ViewCount() {
  *   const viewIds = useViewIds();
- *   return <p>当前一共有 {viewIds.length} 个视图</p>;
+ *   return <p>There are currently {viewIds.length} views</p>;
  * }
- * 
- * // 显示对应 datasheetId(dstXXXXXXXX) 表的总视图数量
+ * // Displays the total number of views corresponding to the datasheetId(dstXXXXXXXX) datasheet
  * function DatasheetViewCount() {
  *   const datasheet = useDatasheet('dstXXXXXXXX');
  *   const viewIds = useViewIds(datasheet);
- *   return <p>当前一共有 {viewIds.length} 个视图</p>;
+ *   return <p>There are currently {viewIds.length} views</p>;
  * }
  * ```
  * 

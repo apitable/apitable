@@ -1,4 +1,4 @@
-// rc 系列颜色
+// rc(series colors)
 const FC_COLORS = [
   '#30C28B',
   '#6E382D',
@@ -14,9 +14,9 @@ const FC_COLORS = [
   '#FFAB00',
 ];
 
-// 生成颜色规则：传入字符串
+// Generate color rules: pass in a string.
 export const getAvatarRandomColor = (str: string) => {
-  const index = str.charCodeAt(Math.floor(str.length / 2)); // 用于生成颜色，取字符串中间字节的unicode值
+  const index = str.charCodeAt(Math.floor(str.length / 2)); // Used to generate colors, taking the unicode value of the middle byte of the string.
   return FC_COLORS[index % FC_COLORS.length];
 };
 

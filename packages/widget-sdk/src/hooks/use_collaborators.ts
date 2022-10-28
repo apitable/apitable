@@ -18,24 +18,26 @@ const getCurrentCollaborators = (state: IWidgetState) => {
 };
 
 /**
- * 获取小程序的当前所在运行环境协同者信息（包括自己），所在运行环境包含仪表盘、维格表、镜像。
+ * Get information(including yourself) about collaborators of the environment where the widget is currently running, 
+ * which include dashboard, datasheet, mirror.
  * 
- * 暂不支持使用协作者 ID 写入成员字段单元格
  * 
- * 注意： 由于维格表可以分享出去，所以在未登录的情况下的协同者的id、name、avatar都是 undefined
+ * Writing to member field cells using collaborator IDs is not supported at this time.
+ * 
+ * Note: Since the datasheet can be shared, the id, name, and avatar of the collaborator in the case of not being logged in are undefined.
  *
  * @returns
  *
- * ### 示例
+ * ### Example
  * ```js
  * import { useCollaborators } from '@vikadata/widget-sdk';
  *
- * // 显示小程序当前环境协同者
+ * // show the currently environment collaborator of the widget
  * function Meta() {
  *   const collaborators = useCollaborators();
  *   return (<div>
- *     <div>当前协同者：{collaborators.map(collaborator => {
- *       return <p>{collaborator.name || '外星人'}</p>
+ *     <div>Current collaborator: {collaborators.map(collaborator => {
+ *       return <p>{collaborator.name || 'Aliens'}</p>
  *     })}</div>
  *   </div>);
  * }

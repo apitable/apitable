@@ -5,17 +5,19 @@ import { cmdExecute } from 'iframe_message/utils';
 
 /**
  * @hidden
- * CloudStorage 是一个简单的 KV 存储中心, 该类属于底层基础方法类。
+ * CloudStorage is a simple KV storage center, and this class belongs to the underlying base method class.
  * 
- * 接收一个 string 类型的 key, value 可以用来存放 plain object / number / string / null JSON 类型的数据。
+ * Receive a string type key, value can be used to store object / number / string / null JSON type data.
  * 
- * 当执行 get 操作的时候，所有协作者拿到的数据都是一样的。
+ * When the get operation is performed, all collaborators get same data.
  * 
- * 当执行 set 操作的时候，所有协作者都会收到这份数据，并更新视图（如果视图有依赖对应数据的话）。
+ * When the set operation is performed, all collaborators receive this data and 
+ * update the view(if the view has dependencies on the corresponding data).
  * 
- * 当小程序被删除的时候，对应的 CloudStorage 中数据也会被删除。
+ * When the widget is deleted, the data in the corresponding CloudStorage is also deleted.
  * 
- * 可以使用 {@link useCloudStorage} 
+ * You can use {@link useCloudStorage}.
+ * 
  */
 export class CloudStorage {
   /**
@@ -28,19 +30,19 @@ export class CloudStorage {
   ) { }
 
   /**
-   * 检查 key 是否存在于 storage 中
+   * Check if the key exists in storage.
    * @param key 
    */
   has(key: string) {
     return this.storage && key in this.storage;
   } 
   /**
-   * 获取 key 值对应的 value
+   * Get the value corresponding to the key value.
    *
-   * 如果 key 值不存在则返回 undefined
+   * Returns undefined if key dose not exist.
    *
-   * @param key 一个 string 类型的 key 值
-   * #### 示例
+   * @param key A string type key.
+   * #### Example
    * ```js
    *
    * const value = cloudStorage.get('topLevelKey');
@@ -52,11 +54,11 @@ export class CloudStorage {
   }
 
   /**
-   * 判断是否有权限设置 cloudStorage
+   * Determine if you have permission to set cloudStorage.
    * 
-   * 拥有编辑权限的用户才可以修改 cloudStorage
+   * Only users with edit permission can modify cloudStorage.
    *
-   * #### 示例
+   * #### Example
    * ```js
    * // Check if user can update a specific key and value.
    * const canSetFavoriteColor = cloudStorage.hasPermissionToSet();
@@ -70,13 +72,13 @@ export class CloudStorage {
   }
 
   /**
-   * 给传入的 key 设置 value
+   * Set the value to the key passed in.
    * 
-   * 如果 key 设置失败，则会抛出错误
+   * If the key setting fails, an error will be thrown.
    *
-   * @param key 一个 string 类型的 key 值
-   * @param value plain object / number / boolean / string / array / null JSON 类型的数据，如果不传，则代表删除这个 key
-   * #### 示例
+   * @param key A string type key.
+   * @param value plain object / number / boolean / string / array / null JSON type data, if not passed, it means delete this.
+   * #### Example
    * ```js
    *
    * async function updateFavoriteColorIfPossibleAsync(color) {
@@ -97,8 +99,8 @@ export class CloudStorage {
       resourceId: this.widgetId,
     }, this.resourceService).then(result => {
       if (result.result !== ExecuteResult.Success) {
-        // 换成 toast
-        alert('操作执行失败');
+        // TODO: replace with toast
+        alert('Operation execution failed');
       }
     });
   }

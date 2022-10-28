@@ -19,10 +19,9 @@ export const createGlobalStore = () => createStore<IReduxState, any, unknown, un
   compose(applyMiddleware(thunkMiddleware)),
 );
 /**
- * 
- * @description 初始化一个小程序所需所有依赖和数据，创建可以独立运行的环境
- * 1. 让小程序开发者可以不启动维格表开发环境，直接开发小程序。
- * 2. 让小程序可以脱离数表独立的进行展示（独立页面）。
+ * @description Initialize all the dependencies and data needed for the widget and create an environment that can run independently.
+ * 1. Enables widget developers to develop widget directly without launching the main development environment.
+ * 2. Allow the widget to be displayed independently from the datasheet (standalone page).
  */
 export const initGlobalContext = (): IGlobalContext => {
   const store = createGlobalStore();

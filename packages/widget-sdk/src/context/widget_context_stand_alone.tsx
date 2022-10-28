@@ -15,8 +15,9 @@ export interface IWidgetStandAloneProps {
 }
 
 /**
- * @description 给独立组件使用的 WidgetProvider, 自带依赖数据加载能力和 resourceService
- * 一个页面中可以加载多个 widget，给每个 widget 外层包上 WidgetProvider 即可
+ * WidgetProvider for standalone widget, 
+ * with its own data loading capabilities and resourceService.
+ * Multiple widgets can be loaded in a page, just wrap WidgetProvider on the outer layer of each widget.
  */
 export const WidgetStandAloneProvider: React.FC<IWidgetStandAloneProps> = props => {
   const { resourceService, globalStore } = useContext(GlobalContext);
@@ -25,9 +26,9 @@ export const WidgetStandAloneProvider: React.FC<IWidgetStandAloneProps> = props 
   const { id, datasheetId, locale = 'zh-CN', className, style, children } = props;
 
   useEffect(() => {
-    // 获取datasheetId下的数表数据, 在connectWidgetStore之下监听，再设置widgetState
+    // get datasheet data under datasheetId, listen under connectWidgetStore
     resourceService.switchResource({ to: datasheetId, resourceType: ResourceType.Datasheet });
-    // 获取widget数据
+    // get globalStore of the widget need
     globalStore.dispatch(StoreActions.fetchWidgetsByWidgetIds([id]) as any);
   }, [id, datasheetId, resourceService, globalStore]);
 

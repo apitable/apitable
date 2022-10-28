@@ -12,17 +12,17 @@ const getDevWidgetHttpOrigin = (bundleUrl: string) => {
 };
 
 export enum WidgetLoadError {
-  // url 不符合规范
+  // url dose not meet specifications
   UrlIllegal = 1,
-  // packageId 不匹配
+  // packageId not match 
   PackageIdNotMatch = 2,
-  // 未解除浏览器加载 https 限制
+  // browser loading https restriction not lifted
   CretInvalid = 3,
-  // 未启动
+  // widget-cli not start
   LoadError = 4,
-  // cli 版本太低
+  // widget-cli too low version
   CliLowVersion = 5,
-  // 未知错误
+  // unknown version
   UnknownError = -1
 }
 
@@ -38,7 +38,8 @@ export function loadWidget(url: string, widgetPackageId: string, refresh?: boole
 
     $loadjs(requestUrl, {
       success: () => {
-        // 小程序加载之后，会触发 initializeWidget，存入componentMap，在下一个事件循环可以获取到
+        // after the widget is loaded, it will be triggered an initializeWidget,
+        // which is stored in the componentMap and can be retrieved in the next event loop
         setTimeout(() => {
           const cp = componentMap.get(widgetPackageId);
           if (!cp) {
@@ -59,13 +60,13 @@ export function loadWidget(url: string, widgetPackageId: string, refresh?: boole
 
 export function initializeWidget(Component: React.FC, widgetPackageId: string | undefined) {
   if (!widgetPackageId) {
-    throw Error('widget 加载失败，未定义 widgetPackageId');
+    throw Error('widget load error, widgetPackageId is undefined');
   }
   componentMap.set(widgetPackageId, Component);
 }
 
 /**
- * 小程序加载报错的时候区分是否是浏览器限制未解除
+ * distinguish whether the browser restriction is not lifted when the widget loads with an error
  * @param bundleUrl 
  */
 export function checkCretInvalid(bundleUrl) {
@@ -89,8 +90,8 @@ interface IWidgetConfig {
   packageId?: string;
 }
 /**
- * 小程序开发模式中，获取 sandbox 配置
- * @param bundleUrl bundleUrl 路径
+ * get sandbox configuration in widget development mode
+ * @param bundleUrl bundleUrl path
  */
 export function getWidgetConfig(bundleUrl) {
   const url = new URL(bundleUrl);
@@ -99,9 +100,9 @@ export function getWidgetConfig(bundleUrl) {
       .then(res => resolve(res.data))
       .catch(async() => {
         /**
-         * 加载失败原因
-         * 1、服务未启动
-         * 2、浏览器限制未解除
+         * reasons for loading failure
+         * 1. service is not available
+         * 2. browser restrictions are not lifted
          */
         const error = await checkCretInvalid(bundleUrl);
         reject(error);
@@ -110,8 +111,8 @@ export function getWidgetConfig(bundleUrl) {
 }
 
 /**
- * 小程序dev加载检查
- * @param bundleUrl 小程序 bundleUrl 路径
+ * check for widget dev mode loading
+ * @param bundleUrl path of the widget bundleUrl
  * @param widgetPackageId 
  */
 export function loadWidgetCheck(bundleUrl, widgetPackageId) {
@@ -133,7 +134,7 @@ interface ICliInfo {
 }
 
 /**
- * 版本检查工具方法
+ * check version method
  * a > b return 1
  * a = b return 0
  * a < b return -1
@@ -158,7 +159,7 @@ function checkVersion(a, b) {
 }
 
 /**
- * cli 版本检查
+ * cli version check
  */
 export function checkCliVersion(bundleUrl) {
   return new Promise<ICliInfo>((resolve, reject) => {

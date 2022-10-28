@@ -9,7 +9,7 @@ import { rootReducers, setErrorCodeAction } from './slice/root';
 import { refreshWidgetAction } from './slice/widget/action';
 
 /**
- * 初始化 widgetState;
+ * Init widgetState.
  */
 const initRootWidgetState = (state: IReduxState, id: string): IWidgetState => {
   const widget = Selectors.getWidget(state, id) || null;
@@ -43,10 +43,11 @@ const initRootWidgetState = (state: IReduxState, id: string): IWidgetState => {
 /**
  *
  * @param props
- *  globalStore 是主应用中的全局 store
- *  widgetData widget
- * 通过绑定 datasheetId 创造一个专属 widget 的 store 环境。
- * TODO: 需要考虑没有 datasheetId 的情况，比如一个 pure widget ，或者 dashboard 中还未选择数表的 widget
+ * globalStore is the global store in the main application.
+ * widgetData widget
+ * Create a store environment exclusive to the widget by binding the datasheetId.
+ * TODO: You need to consider the case where there is no datasheetId, 
+ * such as a pure widget, or a widget that has not yet selected a datasheet in the dashboard
  */
 export const connectWidgetStore = (props: {
   id: string;
@@ -55,9 +56,10 @@ export const connectWidgetStore = (props: {
   const { id, globalStore } = props;
   const widgetStore = createStore(rootReducers, initRootWidgetState(globalStore.getState(), id));
   /**
-   * TODO: 如果没有必要使用数表的数据，这里的监控可以不需要
-   * 监听整个 store 的变化，检查和 widget 绑定的 datasheet 相关数据是否有更新，检查内容参看 IWidgetDatasheetState
-   * 数据流：globalStore 变化 ---> datasheetId 过滤 ---> widgetStore 变化
+   * TODO: If there is no need to use the data from the datasheet, the monitoring here can be done without.
+   * Listen to the changes of the whole store and 
+   * check if the data related to the datasheet bound to the widget has been updated, see IWidgetDatasheetState.
+   * Data flow: globalStore changes ---> datasheetId filtering ---> widgetStore changes.
    */
   const unSubscribe = globalStore.subscribe(() => {
     const globalState = globalStore.getState();
@@ -72,7 +74,7 @@ export const connectWidgetStore = (props: {
     if (newErrorCode && newErrorCode !== widgetState.errorCode) {
       widgetStore.dispatch(setErrorCodeAction(newErrorCode));
     }
-    // 检查 datasheetMap 是否变化
+    // Check if the datasheetMap has changed.
     const updateUsedDatasheetMap = {};
     Object.keys(widgetState.datasheetMap).forEach(datasheetId => {
       const widgetUsedDatasheet = widgetDatasheetSelector(globalState, datasheetId);

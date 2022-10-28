@@ -2,21 +2,21 @@ import { useContext } from 'react';
 import { WidgetConfigContext } from '../context';
 
 /**
- * 返回小程序窗口相关的信息，以及变更函数。
- * 窗口变化的时候，会触发重新渲染。
+ * Return information related to the widget windows, and change function.
+ * When windows changes, re-rendering is triggered.
  * 
  * @returns
  * 
- * ### 示例
+ * ### Example
  * ```js
  * import { useViewport } from '@vikadata/widget-sdk';
  *
- * // 小程序全屏展示与控制
+ * // Full-screen display and control of the widget
  * function Viewport() {
  *   const { isFullscreen, toggleFullscreen } = useViewport();
  *   return (<div>
- *     <p>小程序展开全屏: {isFullscreen ? '是' : '否'}</p>
- *     <button onClick={() => toggleFullscreen()}>点我切换小程序展开</button>
+ *     <p>Widget expand full screen: {isFullscreen ? 'yes' : 'no'}</p>
+ *     <button onClick={() => toggleFullscreen()}>Tap me to switch the widget to expand</button>
  *   </div>);
  * }
  * ```

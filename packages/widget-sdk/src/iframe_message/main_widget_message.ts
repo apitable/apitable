@@ -23,14 +23,14 @@ interface IListenEvents {
 interface IListenDatasheetMap {
   [key: string]: {
     loading?: boolean;
-    // 作为订阅的数据视图ID
+    // data view ID as a subscription
     subscribeViewIds?: Set<string>;
   }
 }
 
 class MainWidgetMessageBase {
   enable = true;
-  /** 作为发消息的 window */
+  /** as the window for sending messages */
   private contentWindows: {
     [key: string]: IContentWindow;
   } = {};
@@ -51,10 +51,11 @@ class MainWidgetMessageBase {
   }
 
   /**
-   * 发送消息，如果有 key，则只会发送到指定 key 的 window，否则就广播到全体
+   * This is a method that sends a message, if the third parameter key is passed, 
+   * it will only be sent to the window with the specified key, otherwise it will be broadcast to all.
    * @param type
    * @param data
-   * @param widgetId
+   * @param key General is widgetId.
    */
   emit(type: WidgetMessageType, data: IResponse, key?: string) {
     if (key) {
@@ -106,7 +107,7 @@ class MainWidgetMessageBase {
   }
 
   /**
-   * 检查小程序是否在 iframe
+   * Check whether the widget is in an iframe window.
    * @param widgetId
    */
   widgetInIframe(widgetId: string) {
@@ -142,7 +143,7 @@ class MainWidgetMessage extends MainWidgetMessageBase {
   }
 
   /**
-   * 监听小组件初始化，发送小组件所需要的初始化数据
+   * Listen to widget initialization and send the initialization data required by the widget.
    * @param callback
    */
   onInitWidget(widgetId: string, callback: (res: IResponse<string>) => IInitResponse | null) {
@@ -152,10 +153,10 @@ class MainWidgetMessage extends MainWidgetMessageBase {
   }
 
   /**
-   * 当小组件或者数表的数据发生变化同步 operations 到小组件中应用
+   * Synchronize operations to the widget when the data in the widget or datasheet changes 
    * @param operations
-   * @param resourceType 资源类型
-   * @param resourceId 资源ID
+   * @param resourceType
+   * @param resourceId
    */
   syncOperations(operations: IOperation[], resourceType: ResourceType, resourceId: string) {
     this.emit(
@@ -166,8 +167,8 @@ class MainWidgetMessage extends MainWidgetMessageBase {
   }
 
   /**
-   * 同步 config
-   * @param widgetId 来源ID
+   * Synchronize configuration on some widget behaviors, such as setting and expanding widget.
+   * @param widgetId
    * @param config
    */
   syncWidgetConfig(widgetId: string, config: IWidgetConfigIframe) {
@@ -175,7 +176,7 @@ class MainWidgetMessage extends MainWidgetMessageBase {
   }
 
   /**
-   * 刷新小组件
+   * Trigger the widget reloading.
    * @param widgetId
    */
   refreshWidget(widgetId: string) {
@@ -183,8 +184,8 @@ class MainWidgetMessage extends MainWidgetMessageBase {
   }
 
   /**
-   * 当关联表更新的时候，需要强制刷新 snapshot 去触发重新计算 visibleRows
-   * 强制刷新 snapshot
+   * This method is a forced refresh of the snapshot.
+   * When the associated table is updated, you need to force a snapshot refresh to trigger a recalculation of visibleRows.
    * @param datasheetId
    */
   refreshSnapshot(datasheetId: string) {
@@ -199,7 +200,7 @@ class MainWidgetMessage extends MainWidgetMessageBase {
   }
 
   /**
-   * 监听来自小组件的 widget config 同步
+   * Listening for widget config sync from widgets.
    */
   onWidgetConfig(widgetId: string, callback: (res: IWidgetConfigIframe) => void) {
     this.on({
@@ -216,7 +217,7 @@ class MainWidgetMessage extends MainWidgetMessageBase {
   }
 
   /**
-   * 监听来自小组件同步过来应用的cmd
+   * Listening for cmd sync from widgets.
    */
   onSyncCmdOptions(widgetId: string, callback: (res: ICollaCommandOptions) => void) {
     this.on({ type: WidgetMessageType.SYNC_COMMAND, callback: (res: IResponse<ICollaCommandOptions>) => {
@@ -229,49 +230,49 @@ class MainWidgetMessage extends MainWidgetMessageBase {
   }
 
   /**
-   * 同步主应用应用 cmd 的结果
+   * Listening for the results of the main application application cmd sync.
    */
   syncCmdOptionsResult(widgetId: string, cmdOptionsResult: ICollaCommandExecuteResult<any>) {
     this.emit(WidgetMessageType.SYNC_COMMAND_RESULT, { success: true, data: cmdOptionsResult }, widgetId);
   }
 
   /**
-   * 同步主应用 datasheet 中 client 相关数据同步
+   * Synchronize client-related data in the main application datasheet.
    */
   syncClient(client: IDatasheetClient) {
     this.emit(WidgetMessageType.SYNC_DATASHEET_CLIENT, { success: true, data: client });
   }
 
   /**
-   * 同步主应用 unitInfo 相关数据同步
+   * Synchronize userInfo-related data in the main application datasheet.
    */
   syncUnitInfo(unitInfo: IUnitInfo) {
     this.emit(WidgetMessageType.SYNC_UNIT_INFO, { success: true, data: unitInfo });
   }
 
   /**
-   * 同步主应用 pageParams 相关数据同步
+   * Sync main application pageParams related data synchronization.
    */
   syncPageParams(pageParams: IPageParams) {
     this.emit(WidgetMessageType.SYNC_PAGE_PARAMS, { success: true, data: pageParams });
   }
 
   /**
-   * 同步主应用 labs 相关数据同步
+   * Sync main application labs related data synchronization.
    */
   syncLabs(labs: ILabs) {
     this.emit(WidgetMessageType.SYNC_LABS, { success: true, data: labs });
   }
 
   /**
-   * 同步主应用 share 相关数据同步
+   * Sync main application share related data synchronization.
    */
   syncShare(share: IShareInfo) {
     this.emit(WidgetMessageType.SYNC_SHARE, { success: true, data: share });
   }
 
   /**
-   * 同步 dashboard 数据
+   * Synchronizing dashboard data.
    * @param dashboard
    */
   syncDashboard(dashboard: Partial<IWidgetDashboardState>) {
@@ -279,14 +280,14 @@ class MainWidgetMessage extends MainWidgetMessageBase {
   }
 
   /**
-   * 同步主应用 mirrorMap 相关数据同步
+   * Sync main application mirrorMap related data synchronization.
    */
   syncMirrorMap(mirrorMap: IMirrorMap) {
     this.emit(WidgetMessageType.SYNC_MIRROR, { success: true, data: mirrorMap });
   }
 
   /**
-   * 监听小组件发起的加载其他关联表数据请求
+   * Listening to widget-initiated requests to load other linked table data.
    */
   onLoadOtherDatasheetInit(widgetId: string, callback: (res: string) => void) {
     this.on({ type: WidgetMessageType.LOAD_OTHER_DATASHEET_INIT, callback: (res: IResponse<string>) => {
@@ -299,7 +300,7 @@ class MainWidgetMessage extends MainWidgetMessageBase {
   }
 
   /**
-   * 其他关联表数据加载完成之后发送给小组件
+   * Send to the widget after the other linked table data is loaded.
    */
   loadOtherDatasheetInit(datasheetId: string, datasheetMap: IDatasheetMap) {
     if (datasheetId) {
@@ -313,7 +314,7 @@ class MainWidgetMessage extends MainWidgetMessageBase {
   }
 
   /**
-   * 其他关联表更新数据发送给小组件
+   * Other related tables update data to send to the widget.
    */
   datasheetSimpleUpdate(datasheetIds: string[], datasheetSimple: {[datasheetId: string]: IDatasheetMainSimple}) {
     if (datasheetIds.length) {
@@ -327,7 +328,7 @@ class MainWidgetMessage extends MainWidgetMessageBase {
   }
 
   /**
-   * 监听来自小组件的 展开卡片请求
+   * Listening for expand card requests from the widget.
    */
   onExpandRecord(widgetId: string, callback: (expandRecordParams: IExpandRecordProps) => void) {
     this.on({ type: WidgetMessageType.EXPAND_RECORD, callback: (res: IResponse<IExpandRecordProps>) => {
@@ -340,7 +341,7 @@ class MainWidgetMessage extends MainWidgetMessageBase {
   }
 
   /**
-   * 鼠标进入和离开小组件 iframe
+   * Mouse in and out of the widget iframe window.
    */
   onMouseListener(widgetId: string, callback: (type: MouseListenerType) => void) {
     this.on({ type: WidgetMessageType.MOUSE_EVENT, callback: (res: IResponse<MouseListenerType>) => {
@@ -353,9 +354,9 @@ class MainWidgetMessage extends MainWidgetMessageBase {
   }
 
   /**
-   * 广播缓存更新，只要有依赖的小组件 全部发送
-   * 只在数表情况下更新当前视图的缓存数据
-   * @param cache visibleRowsBase 缓存
+   * Broadcast the cache updates to the widget, and send all the widgets that have dependencies.
+   * In the case of a datasheet, only the cached data of the current view is updated.
+   * @param cache visibleRowsBase cache.
    */
   syncCalcCache(datasheetId: string, viewId: string, cache: IViewRow[]) {
     Object.keys(this.widgets).forEach(widgetId => {
@@ -367,7 +368,7 @@ class MainWidgetMessage extends MainWidgetMessageBase {
   }
 
   /**
-   * 监听来自小组件的缓存获取，并加入入订阅中
+   * Listen for cache fetches from the widget and add them to the subscription.
    */
   onInitCalcCache(widgetId: string, callback: (datasheetId: string, viewId: string) => void) {
     this.on({ type: WidgetMessageType.CALC_CACHE, callback: (res: IResponse<{ datasheetId: string, viewId: string }>) => {
@@ -387,14 +388,14 @@ class MainWidgetMessage extends MainWidgetMessageBase {
   }
 
   /**
-   * 定向发送缓存更新
+   * Send targeted updates to the cache of a view.
    */
   syncCalcCacheWidget(widgetId: string, datasheetId: string, viewId: string, cache: IViewRow[]) {
     this.emit(WidgetMessageType.CALC_CACHE, { success: true, data: { datasheetId, viewId, cache }}, widgetId);
   }
 
   /**
-   * 进入开发者模式
+   * Enter developer mode.
    */
   onExpandDevConfig(widgetId: string, callback: () => void) {
     this.on({ type: WidgetMessageType.EXPAND_DEV_CONFIG, callback: (res: IResponse) => {
@@ -407,7 +408,7 @@ class MainWidgetMessage extends MainWidgetMessageBase {
   }
 
   /**
-   * 加载小程序
+   * Go to loading widget.
    * @param devUrl
    * @param widgetPackageId
    * @param refresh
@@ -431,7 +432,7 @@ class MainWidgetMessage extends MainWidgetMessageBase {
   }
 
   /**
-   * 监听加载结果
+   * Listening for loading widget results.
    * @param widgetId
    * @param callback
    */
@@ -448,7 +449,7 @@ class MainWidgetMessage extends MainWidgetMessageBase {
   }
 
   /**
-   * 标记缓存过期
+   * Marking cache expiration.
    * @param callback
    */
   calcExpire(datasheetId: string, viewId: string) {
@@ -463,7 +464,7 @@ class MainWidgetMessage extends MainWidgetMessageBase {
   }
 
   /**
-   * 同步主应用 userInfo 相关数据
+   * Synchronize data related to the main application userInfo.
    * @param userInfo
    */
   syncUserInfo(userInfo: IUserInfo) {

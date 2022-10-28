@@ -5,19 +5,20 @@ import { WidgetConfigContext } from '../context';
 import { useMeta } from './use_meta';
 
 /**
- * 您可以通过这个方法初始化一个函数，并通过执行函数展开一条 record 记录的弹出框，获得更聚焦的编辑体验。
+ * you can use this methods to initialize, and get a more focused editing experience by executing the function 
+ * to expand a record modal.
  * 
- * @returns 指定参数展开一条 record 记录的弹出框的函数。
+ * @returns A function that expands the modal for a record with the specified parameters.
  * 
- * ### 示例
+ * ### Example
  * ```js
  * import { useExpandRecord, useRecords } from '@vikadata/widget-sdk';
  *
- * // 展开第一条 record
+ * // expand first record
  * function ExpandFirstRecord() {
  *   const firstRecord = useRecords(view.id)[0];
  *   const expandRecord = useExpandRecord();
- *   return <button onClick={() => expandRecord({recordIds: [firstRecord?.id]})}>展开第一条记录</button>;
+ *   return <button onClick={() => expandRecord({recordIds: [firstRecord?.id]})}>Expand first record</button>;
  * }
  * ```
  * 

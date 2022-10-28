@@ -6,13 +6,13 @@ import { noop } from 'lodash';
 import { Strings, t } from 'core';
 
 /**
- * 一个字段选择器组件，可以选择对应 视图ID 里面的字段
+ * A field selector component that can select the fields inside the corresponding view ID.
  * 
  * @returns
  * 
- * #### 示例
+ * #### Example
  * 
- * 普通示例
+ * Common usage.
  * ``` ts
  * import React, { useState } from 'react';
  * import { FieldPicker, useActiveViewId } from '@vikadata/widget-sdk';
@@ -23,7 +23,7 @@ import { Strings, t } from 'core';
  * }
  * ```
  * 
- * 配合 {@link useCloudStorage} 实现持久化存储
+ * Use {@link useCloudStorage} implementing persistent storage.
  * ``` ts
  * import React, { useState } from 'react';
  * import { FieldPicker, useActiveViewId, useCloudStorage } from '@vikadata/widget-sdk';

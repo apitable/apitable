@@ -15,20 +15,20 @@ const getInstallPosition = (state: IWidgetState) => {
 };
 
 /**
- * 获取小程序的 meta 信息，包含了小程序自身、作者、所在 datasheet 的信息等。
+ * Get meta information of the widget, including the widget itself, the author, the information in datasheet, etc.
  *
  * @returns
  *
- * ### 示例
+ * ### Example
  * ```js
  * import { useMeta } from '@vikadata/widget-sdk';
  *
- * // 显示小程序所关联的 datasheet 和作者
+ * // Show the datasheet and author associated with the widget
  * function Meta() {
  *   const { datasheetName, authorName } = useMeta();
  *   return (<div>
- *     <p>小程序关联的表名称：{datasheetName}</p>
- *     <p>小程序作者：{authorName}</p>
+ *     <p>Name of the datasheet associated with the widget: {datasheetName}</p>
+ *     <p>Widget author: {authorName}</p>
  *   </div>);
  * }
  * ```
@@ -43,7 +43,7 @@ export function useMeta(): IMetaType {
       widgetPackageIcon: state.widget?.widgetPackageIcon,
       widgetPackageName: state.widget?.widgetPackageName,
       widgetPackageVersion: state.widget?.widgetPackageVersion,
-      // 兼容审核中小程序ID，为了顺利加载小程序代码
+      // Compatibility audit widget ID, in order to smoothly load the widget code
       widgetPackageId: state.widget?.fatherWidgetPackageId || state.widget?.widgetPackageId,
       authorEmail: state.widget?.authorEmail,
       authorIcon: state.widget?.authorIcon,

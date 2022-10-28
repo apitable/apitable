@@ -2,17 +2,11 @@ import { NumFieldType as FieldType } from './field_types';
 import { APIMetaViewType } from 'core';
 
 export enum ViewType {
-  /** 维格视图 */
   Grid = APIMetaViewType.Grid,
-  /** 相册视图 */
   Gallery = APIMetaViewType.Gallery,
-  /** 看板视图 */
   Kanban = APIMetaViewType.Kanban,
-  /** 甘特视图 */
   Gantt = APIMetaViewType.Gantt,
-  /** 日历视图 */
   Calendar = APIMetaViewType.Calendar,
-  /** 架构视图 */
   Architecture = APIMetaViewType.Architecture,
 }
 
@@ -60,31 +54,12 @@ export enum FilterDuration {
   TheNextMonth = 'TheNextMonth',
 }
 
-export enum FilterDurationDesc {
-  ExactDate = '指定日期',
-  DateRange = '时间范围',
-  Today = '今天',
-  Tomorrow = '明天',
-  Yesterday = '昨天',
-  TheLastWeek = '过去 7 天',
-  TheNextWeek = '未来 7 天',
-  TheLastMonth = '过去 30 天',
-  TheNextMonth = '未来 30 天',
-  ThisWeek = '本周',
-  PreviousWeek = '上周',
-  ThisMonth = '本月',
-  PreviousMonth = '上月',
-  ThisYear = '今年',
-  SomeDayBefore = '多少天前',
-  SomeDayAfter = '多少天后'
-}
-
 export type IFilterValue = string;
 export type IFilterCheckbox = [boolean] | null;
 export type IFilterText = [IFilterValue] | null;
 export type IFilterNumber = [IFilterValue] | null;
 // export type IFilterRating = [IFilterValue] | null;
-// 单选字段为 包含/不包含 时，需提供多选下拉
+// When the radio field is Include/Exclude, a multi-select drop-down is required
 export type IFilterSingleSelect = IFilterValue[] | null;
 export type IFilterMultiSelect = IFilterValue[] | null;
 export type IFilterMember = string[] | null;
@@ -155,14 +130,14 @@ export interface IFilterConditionMap {
   };
   [FieldType.Attachment]: {
     fieldType: FieldType.Attachment,
-    // TODO: 未定义
+    // TODO: undefined
     value: any,
   };
   [FieldType.Link]: {
     fieldType: FieldType.Link,
     value: any,
   };
-  // TODO: 下面的字段支持 filter 操作
+  // TODO: need support filter
   [FieldType.URL]: {
     fieldType: FieldType.URL,
     value: any,

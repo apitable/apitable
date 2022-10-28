@@ -9,43 +9,45 @@ import { getWidgetDatasheet } from 'store';
 import { errMsg } from 'utils/private';
 
 /**
- * 表格操作
+ * Datasheet operation
  * 
- * 如果想操作表格，如获取表格数据、新增记录、删除记录等，推荐使用 {@link useDatasheet} 钩子函数
+ * It is recommended to use if you want to operate datasheet, such as obtaining datasheet data, adding records, deleting records, etc.,
+ * we recommend using the {@link useDatasheet} hook function.
  * 
- * 如果需要获取记录数据，可以使用 {@link useRecord}（查询单条记录数据）、{@link useRecords}（批量查询记录数据）
+ * If you need to obtain record data, 
+ * you can use {@link useRecord} (query single record data) and {@link useRecords} (batch query record data).
  *
- * - {@link addRecord}: 新增记录
+ * - {@link addRecord}: Creates a new record with the specified cell values
  *
- * - {@link addRecords}: 批量新增记录
+ * - {@link addRecords}: Creates multiple new records with the specified cell values
  *
- * - {@link setRecord}: 修改记录的值
+ * - {@link setRecord}: Updates cell values for a record
  *
- * - {@link setRecords}: 批量修改记录的值
+ * - {@link setRecords}: Updates cell values for multiple records
  *
- * - {@link deleteRecord}: 删除记录
+ * - {@link deleteRecord}: Delete the given record
  *
- * - {@link deleteRecords}: 批量删除记录
+ * - {@link deleteRecords}: Delete the given records
  * 
- * - {@link addField}: 新增字段
+ * - {@link addField}: Creates a new field
  * 
- * - {@link deleteField}: 删除字段
+ * - {@link deleteField}: Delete the given field
  *
- * - {@link checkPermissionsForAddRecord}: 校验用户是否有权限新增记录
+ * - {@link checkPermissionsForAddRecord}: Checks whether the current user has permission to create the specified record
  *
- * - {@link checkPermissionsForAddRecords}: 校验用户是否有权限批量新增记录
+ * - {@link checkPermissionsForAddRecords}: Checks whether the current user has permission to create the specified records
  *
- * - {@link checkPermissionsForSetRecord}: 校验用户是否有有权限修改记录的值
+ * - {@link checkPermissionsForSetRecord}: Checks whether the current user has permission to perform the given record update
  *
- * - {@link checkPermissionsForSetRecords}: 校验用户是否有有权限批量修改记录的值
+ * - {@link checkPermissionsForSetRecords}: Checks whether the current user has permission to perform the given record updates
  *
- * - {@link checkPermissionsForDeleteRecord}: 校验用户是否有权限删除记录
+ * - {@link checkPermissionsForDeleteRecord}: Checks whether the current user has permission to delete the specified record
  *
- * - {@link checkPermissionsForDeleteRecords}: 校验用户是否有权限批量删除记录
+ * - {@link checkPermissionsForDeleteRecords}: Checks whether the current user has permission to delete the specified records
  * 
- * - {@link checkPermissionsForAddField}: 校验用户是否有权限新增字段
+ * - {@link checkPermissionsForAddField}: Checks whether the current user has permission to create the specified field
  *
- * - {@link checkPermissionsForDeleteField}: 校验用户是否有权限删除字段
+ * - {@link checkPermissionsForDeleteField}: Checks whether the current user has permission to delete the specified field
  *
  */
 export class Datasheet {
@@ -63,10 +65,10 @@ export class Datasheet {
   }
 
   /**
-   * 表格 id, 表格的唯一标识
+   * The unique ID of this datasheet.
    * @returns
    *
-   * #### 示例
+   * #### Example
    * ```js
    * console.log(myDatasheet.id);
    * // => 'dstxxxxxxx'
@@ -77,11 +79,11 @@ export class Datasheet {
   }
 
   /**
-   * 表格名称
+   * The name of the Datasheet.
    * 
    * @returns
    *
-   * #### 示例
+   * #### Example
    * ```js
    * console.log(myDatasheet.name);
    * // => 'Name'
@@ -121,7 +123,7 @@ export class Datasheet {
       const coreFieldMap: Record<string, any> = {};
       Object.entries(valuesMap).forEach(([fieldId, cellValue]) => {
         const coreField = CoreField.bindModel(fieldDataMap[fieldId], state);
-        // 兼容一下 cellValue 为 undefined 情况
+        // Compatible with the case where cellValue is undefined
         coreFieldMap[fieldId] = cellValue === undefined ? null : coreField.openWriteValueToCellValue(cellValue);
       });
       return coreFieldMap;
@@ -132,13 +134,13 @@ export class Datasheet {
     const state = this.wCtx.globalStore.getState();
     const datasheetId = this.datasheetId;
     for (const recordId of recordIds) {
-      // 未传入 recordId 则不进行存在性校验
+      // If the recordId is not passed in, the existence verification will not be performed
       if (!recordId) {
         return { acceptable: true };
       }
       const record = Selectors.getRecord(state, recordId, datasheetId);
       if (!record) {
-        return { acceptable: false, message: `record:${recordId} 不存在` };
+        return { acceptable: false, message: `record:${recordId} doesn't exist` };
       }
     }
     return { acceptable: true };
@@ -152,33 +154,33 @@ export class Datasheet {
     const globalState = this.wCtx.globalStore.getState();
     const permissions = Selectors.getPermissions(globalState, datasheetId, undefined, sourceId?.startsWith('mir') ? sourceId : '');
     if (!datasheet || !permissions) {
-      return { acceptable: false, message: '维格表数据加载失败' };
+      return { acceptable: false, message: 'Failed to load the data of the datasheet' };
     }
 
     switch(operation) {
       case DatasheetOperationPermission.AddRecord: {
         if (!permissions.rowCreatable) {
-          return { acceptable: false, message: '维格表权限为只读，无法进行新增记录操作' };
+          return { acceptable: false, message: 'The permission of the datasheet is read-only and cannot be added record' };
         }
       } break;
       case DatasheetOperationPermission.EditRecord: {
         if (!permissions.cellEditable) {
-          return { acceptable: false, message: '维格表权限为只读，无法进行单元格写入操作' };
+          return { acceptable: false, message: 'The permission of the datasheet is read-only and cannot be updated cell' };
         }
       } break;
       case DatasheetOperationPermission.DeleteRecord: {
         if (!permissions.rowRemovable) {
-          return { acceptable: false, message: '维格表权限不足，无法进行删除记录操作' };
+          return { acceptable: false, message: 'The permission of the datasheet is read-only and cannot be deleted record' };
         }
       } break;
       case DatasheetOperationPermission.AddField: {
         if (!permissions.fieldCreatable) {
-          return { acceptable: false, message: '维格表权限不足，无法进行新增字段操作' };
+          return { acceptable: false, message: 'The permission of the datasheet is read-only and cannot be added field' };
         }
       } break;
       case DatasheetOperationPermission.DeleteField: {
         if (!permissions.fieldRemovable) {
-          return { acceptable: false, message: '维格表权限不足，无法进行删除字段操作' };
+          return { acceptable: false, message: 'The permission of the datasheet is read-only and cannot be deleted field' };
         }
       } break;
     }
@@ -191,7 +193,7 @@ export class Datasheet {
     const datasheetId = this.datasheetId;
 
     for (const valuesMap of records) {
-      // 不传 valuesMap 则不进行值校验
+      // No value verification will be performed if valuesMap is not transferred
       if (!valuesMap) {
         continue;
       }
@@ -201,22 +203,24 @@ export class Datasheet {
         const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId);
         const field = Selectors.getField(state, fieldId, datasheetId);
         if (!field) {
-          return errMsg(`当前操作的fieldId: ${fieldId} 不存在`);
+          return errMsg(`The fieldId of the current operation: ${fieldId} does not exist`);
         }
 
         if (fieldRole === ConfigConstant.Role.None || fieldRole === ConfigConstant.Role.Reader) {
-          return errMsg(`无 ${field.name}(${fieldId}) 列的写入权限`);
+          return errMsg(`No write permission for ${field.name}(${fieldId}) column`);
         }
 
         const fieldEntity = CoreField.bindContext(field, state);
 
         if (fieldEntity.isComputed) {
-          return errMsg(`${field.name}(${fieldId}) 字段的内容为计算自动生成，无法写入`);
+          return errMsg(`The content of the ${field.name}(${fieldId}) field is automatically generated by calculation and cannot be written`);
         }
-        // 兼容一下 undefined
+        // Compatible with undefined
         const checkError = fieldEntity.validateOpenWriteValue(!value ? null : value).error;
         if (checkError) {
-          return errMsg(`${field.name}字段 当前写入值 ${value} 不符合 ${checkError.message} 的格式，请检查`);
+          return errMsg(`
+            The currently written value ${value} of the ${field.name} field does not conform to the format of ${checkError.message}. Please check.`
+          );
         }
       }
     }
@@ -249,47 +253,47 @@ export class Datasheet {
   }
 
   /**
-   * 新增记录
+   * Creates a new record with the specified cell values.
    *
-   * @param valuesMap key 为 fieldId, value 为单元格内容的 object
+   * @param valuesMap object mapping fieldId to value for that field.
    *
-   * @param insertPosition 要在视图中插入的位置
+   * @param insertPosition position to insert in view.
    *
-   * @returns 返回新增的记录 ID
+   * @returns The returned promise will resolve to the recordId of the new record once it is persisted.
    *
-   * #### 描述
-   * 新增一条记录，并可选的指定它在视图中的位置（默认在最后）, 返回新增的记录 ID 数组
+   * #### Description
+   * Adds a new record and optionally specifies its position in the view (default at the end), returning an array of new record IDs.
    *
-   * 当用户无权限进行操作或者单元格值格式校验不通过时，将会抛出错误
+   * An error will be thrown when the user does not have permission to perform the operation or when the cell value format check does not pass.
    *
-   * 有关单元格值写入格式，请参阅 {@link FieldType}
+   * Refer to {@link FieldType} for cell value write formats.
    *
-   * #### 示例
+   * #### Example
    * ```js
    * async function addNewRecord(valuesMap) {
    *   if (datasheet.checkPermissionsForAddRecord(valuesMap).acceptable) {
    *     const newRecordId = await datasheet.addRecord(valuesMap);
-   *     alert(`新创建的记录 ID 为： ${newRecordId}`);
+   *     alert(`The newly created record ID is ${newRecordId}`);
    *
-   *     // 接下来可以对新创建的 records 进行选择，或者操作了
+   *     // Next, you can select, or manipulate, the newly created records.
    *     // ...
    *   }
    * }
    *
-   * // 参数的 key 为 fieldId， value 为单元格值
+   * // The key of the parameter is the fieldId and the value is the cell value.
    * addNewRecord({
    *   fld1234567980: 'this is a text value',
    *   fld0987654321: 1024,
    * });
    *
-   * // 不同类型的字段单元格值有特定的数据结构，需要进行正确的传入
+   * // Different types of field cell values have specific data structures that need to be passed in correctly
    * addNewRecord({
-   *   fld1234567890: 'this is a text value', // SingleLineText 单行文本
-   *   fld0987654321: 1024, // Number 数字
-   *   fld1234567891: '选项 1', // SingleSelect 单选
-   *   fld1234567892: ['选项 1', '选项 2'], // MultiSelect 多选
-   *   fld1234567893:  1635513510962, // DateTime 日期 （时间戳）
-   *   fld1234567894: ['rec1234567'], // MagicLink 神奇关联 （recordId)
+   *   fld1234567890: 'this is a text value', // SingleLineText
+   *   fld0987654321: 1024, // Number
+   *   fld1234567891: 'option 1', // SingleSelect
+   *   fld1234567892: ['option 1', 'option 2'], // MultiSelect
+   *   fld1234567893:  1635513510962, // DateTime
+   *   fld1234567894: ['rec1234567'], // MagicLink (recordId)
    * });
    * ```
    */
@@ -298,44 +302,44 @@ export class Datasheet {
   }
 
   /**
-   * 批量新增记录
+   * Creates new records with the specified cell values.
    * 
-   * @param records key 为 fieldId, value 为单元格内容的 object
+   * @param records Array of objects with a fields key mapping fieldId to value for that field.
    * 
-   * @param insertPosition 要在视图中插入的位置
+   * @param insertPosition Position to insert in the view.
    *
-   * @returns 返回新增的记录 ID 数组
+   * @returns The returned promise will resolve to an array of recordIds of the new records once the new records are persisted.
    *
-   * #### 描述
-   * 新增多条记录，并可选的指定它在视图中的位置（默认在最后插入）
+   * #### Description
+   * Add multiple records and optionally specify its position in the view (inserted at the end by default).
    *
-   * 当用户无权限进行操作或者单元格值格式校验不通过时，将会抛出错误
+   * An error will be thrown when the user does not have permission to perform the operation or when the cell value format check does not pass.
    *
-   * 有关单元格值写入格式，请参阅 {@link FieldType}
+   * Refer to {@link FieldType} for cell value write formats.
    *
-   * #### 示例
+   * #### Example
    * ```js
    * const records = [
-   *   // valuesMap 的 key 为 fieldId value 为单元格内容
+   *   // Cell values should generally have format matching the output of
    *   {
    *     valuesMap: {
    *       fld1234567890: 'this is a text value',
    *       fld0987654321: 1024,
    *     },
    *   },
-   *   // valuesMap 指定为空对象时，将会创建一条空记录
+   *   // Specifying no fields will create a new record with no cell values set
    *   {
    *     valuesMap: {},
    *   },
-   *   // 不同类型的字段单元格值有特定的数据结构，需要进行正确的传入
+   *   // Different types of field cell values have specific data structures that need to be passed in correctly
    *   {
    *     valuesMap: {
-   *       fld1234567890: 'Cat video 2', // SingleLineText 单行文本
-   *       fld0987654321: 1024, // Number 数字
-   *       fld1234567891: '选项 1', // SingleSelect 单选
-   *       fld1234567892: ['选项 1', '选项 2'], // MultiSelect 多选
-   *       fld1234567893:  1635513510962, // DateTime 日期 （时间戳）
-   *       fld1234567894: ['rec1234567'], // MagicLink 神奇关联 （recordId)
+   *       fld1234567890: 'Cat video 2', // SingleLineText
+   *       fld0987654321: 1024, // Number
+   *       fld1234567891: 'option 1', // SingleSelect
+   *       fld1234567892: ['option 1', 'option 2'], // MultiSelect
+   *       fld1234567893:  1635513510962, // DateTime (Timestamp)
+   *       fld1234567894: ['rec1234567'], // MagicLink (recordId)
    *     },
    *   },
    * ];
@@ -344,9 +348,9 @@ export class Datasheet {
    *   if (datasheet.checkPermissionToAddRecords(records)) {
    *     const recordIds = await datasheet.addRecords(records);
    *
-   *     alert(`新创建的记录 IDs: ${recordIds}`);
+   *     alert(`new records with IDs: ${recordIds}`);
    *
-   *     // 接下来可以对新创建的 records 进行选择，或者操作了
+   *     // Next, you can select, or manipulate, the newly created records
    *     // ...
    *   }
    * }
@@ -361,18 +365,18 @@ export class Datasheet {
     const transformedRecords = this.transformRecordValues(recordsValues);
     this.checkRecordsValues(transformedRecords);
 
-    // 默认位置：
+    // Default position
     let view = Selectors.getCurrentView(state, this.datasheetId)!;
     let viewId = view.id;
     let index = view.rows.length;
 
-    // 指定位置：
+    // Designated location
     if (insertPosition) {
-      // 遍历 rows 找到实际插入位置，同 common/components/menu 表格右键 UI 操作
-      // TODO: 这种方式在以后需要被优化
-      index = view.rows.findIndex(row => row.recordId === insertPosition.anchorRecordId) ;
+      // Iterate through rows to find the actual insertion location, same as common/components/menu datasheet right click UI operation
+      // TODO: This approach will need to be optimized in the future
+      index = view.rows!.findIndex(row => row.recordId === insertPosition.anchorRecordId) ;
       if (index === -1) {
-        throw new Error(`Anchor RecordId: ${insertPosition.anchorRecordId} is not exist in datasheet`);
+        throw new Error(`Anchor recordId: ${insertPosition.anchorRecordId} is not exist in datasheet`);
       }
       viewId = insertPosition.viewId;
       const snapshot = Selectors.getSnapshot(state, this.datasheetId)!;
@@ -408,22 +412,26 @@ export class Datasheet {
   }
 
   /**
-   * 修改记录的值
+   * Updates cell values for a record.
    *
-   * @param recordId 指定要修改的 record
+   * @param recordId the record to update.
    *
-   * @param valuesMap key 为 fieldId, value 为单元格内容的 object，只需要传入要修改 value，无需修改的key value 则不需要传入。要清空一个 field，需要传入 key: null
+   * @param valuesMap key for fieldId, value for the contents of the cell object,
+   * only need to pass to modify the value, do not need to modify the key value do not need to pass.
+   * To empty a field, you need to pass key: null.
    * @return 
    *
-   * #### 描述
-   * 当无权限，或者 recordId 不存在，或者写入的值类型不匹配的时候，会抛出对应的错误
+   * #### Description
+   * Throws an error if the user does not have permission to update the given cell values in the record, or or recordId does not exist,
+   * or when the written value type does not match.
    *
-   * 我们将一个 record 中的一个 field 称作单元格。有关单元格值写入格式，请参阅 {@link FieldType}
+   * We refer to a field in a record as a cell.
+   * Refer to {@link FieldType} for cell value write formats.
    *
    *
-   * 如果你需要同时修改多个记录，请使用 {@link setRecords}
+   * If you need to modify multiple records at the same time, use the {@link setRecords}.
    *
-   * #### 示例
+   * #### Example
    * ```js
    * function setRecord(recordId, valuesMap) {
    *   if (datasheet.checkPermissionsForSetRecord(recordId, valuesMap).acceptable) {
@@ -437,21 +445,25 @@ export class Datasheet {
   }
 
   /**
-   * 批量修改记录的值
-   * @param records 指定要修改的 records
+   * Updates cell values for records.
+   * @param records Specify the records be modified.
    * @return
    *
-   * #### 描述
-   * 当无权限，或者 recordId 不存在，或者写入的值类型不匹配的时候，会抛出对应的错误
+   * #### Description
+   * Throws an error if the user does not have permission to update the given cell values in the record, or or recordId does not exist,
+   * or when the written value type does not match.
    *
-   * valuesMap key 为 fieldId, value 为单元格内容的 object，只需要传入要修改 value，无需修改的key value 则不需要传入。要清空一个 field，需要传入 key: null
+   * valuesMap key for fieldId, value for the contents of the cell object,
+   * only need to pass to modify the value, do not need to modify the key value do not need to pass.
+   * To empty a field, you need to pass key: null.
    *
-   * 我们将一个 record 中的一个 field 称作单元格。有关单元格值写入格式，请参阅 {@link FieldType}
+   * We refer to a field in a record as a cell.
+   * Refer to {@link FieldType} for cell value write formats.
    *
    *
-   * 如果你只需要修改单个记录，请使用 {@link setRecord}
+   * If you only need to modify a single record, use the {@link setRecord}
    *
-   * #### 示例
+   * #### Example
    * ```js
    * function setRecord(id, valuesMap) {
    *   if (datasheet.checkPermissionsForSetRecords([{ id, valuesMap }]).acceptable) {
@@ -501,24 +513,24 @@ export class Datasheet {
   }
 
   /**
-   * 删除记录
+   * Delete the given record.
    *
-   * @param recordId 记录 Id
+   * @param recordId the record to be deleted.
    * @returns
    *
-   * #### 描述
-   * 通过 recordId 删除一条记录
+   * #### Description
+   * Delete a record by recordId.
    *
-   * 当用户无权限进行操作时，将会抛出错误
+   * Throws an error if the user does not have permission to delete the given record.
    *
-   * #### 示例
+   * #### Example
    * ```js
    * async function deleteRecord(recordId) {
    *   if (datasheet.checkPermissionsForDeleteRecord(recordId).acceptable) {
    *     await datasheet.deleteRecord(recordId);
-   *     alert('记录已被删除');
+   *     alert('The record has been deleted');
    *
-   *     // 记录此时已经被删除
+   *     // Record deletion has been saved to servers
    *   }
    * }
    * ```
@@ -528,25 +540,25 @@ export class Datasheet {
   }
 
   /**
-   * 批量删除记录
+   * Delete the given records.
    *
-   * @param recordIds 记录 Id 数组
+   * @param recordIds array of recordIds.
    * @returns
    * 
    *
-   * #### 描述
-   * 通过 recordIds 数组批量删除记录
+   * #### Description
+   * Delete the given record by recordIds.
    *
-   * 当用户无权限进行操作时，将会抛出错误
+   * Throws an error if the user does not have permission to delete the given record.
    *
-   * #### 示例
+   * #### Example
    * ```js
    * async function deleteRecords(recordIds) {
    *   if (datasheet.checkPermissionsForDeleteRecords(recordIds).acceptable) {
    *     await datasheet.deleteRecords(recordIds);
-   *     alert('记录已被批量删除');
+   *     alert('The records has been deleted');
    *
-   *     // 记录此时已经被删除
+   *     // Records deletion has been saved to servers
    *   }
    * }
    * ```
@@ -563,21 +575,22 @@ export class Datasheet {
   }
 
   /**
-   * 新增字段
+   * Creates a new field.
    *
-   * @param name 字段名称
-   * @param type 字段类型
-   * @param property 字段属性
+   * @param name name for the field. must be case-insensitive unique
+   * @param type type for the field.
+   * @param property property for the field. omit for fields without writable property.
    * @returns
    * 
    *
-   * #### 描述
+   * #### Description
    *
-   * 有关新增字段属性值写入格式，请参阅 {@link FieldType}
+   * Refer to {@link FieldType} for supported field types, the write format for property, and other specifics for certain field types.
    * 
-   * 当用户无权限进行操作时，将会抛出错误
+   * Throws an error if the user does not have permission to create a field,
+   * if invalid name, type or property are provided, or if creating fields of this type is not supported.
    *
-   * #### 示例
+   * #### Example
    * ```js
    * function addField(name, type, property) {
    *   if (datasheet.checkPermissionsForAddField(name, type, property).acceptable) {
@@ -619,18 +632,21 @@ export class Datasheet {
   }
 
   /**
-   * 删除字段
+   * Delete the given field.
    *
-   * @param fieldId 字段ID
-   * @param conversion 删除字段为关联字段的时候，标记关联表的关联字段是删除还是转换成文本，默认为 转成文本字段
+   * @param fieldId the field to be deleted.
+   * @param conversion
+   * When deleting a field as an associated field,
+   * mark whether the associated field of the associated datasheet is deleted or converted to text,
+   * the default is Converted to a text field.
    * @returns
    * 
    *
-   * #### 描述
+   * #### Description
    *
-   * 当用户无权限进行操作时，将会抛出错误
+   * Throws an error if the user does not have permission to delete a field.
    *
-   * #### 示例
+   * #### Example
    * ```js
    * function deleteField(fieldId) {
    *   if (datasheet.checkPermissionsForDeleteField(fieldId).acceptable) {
@@ -640,7 +656,7 @@ export class Datasheet {
    * ```
    */
   async deleteField(fieldId: string, conversion?: Conversion): Promise<void> {
-    // 检查一下主列，现在是允许删除主列的，删除之后表就崩溃了
+    // Check the primary column. It is allowed to delete the primary column. After deletion, the datasheet will crash.
     if (this.checkPrimaryField(fieldId!)) {
       throw new Error(`${fieldId} is Primary field, cannot be deleted`);
     }
@@ -661,24 +677,25 @@ export class Datasheet {
   }
 
   /**
-   * 校验用户是否有权限新增记录
+   * Checks whether the current user has permission to create the specified record.
    * 
-   * @param valuesMap key 为 fieldId, value 为单元格内容的 object
+   * @param valuesMap object mapping fieldId to value for that field.
    * @returns
    * 
    * 
-   * #### 描述
-   * 接受一个可选的 valuesMap  输入，valuesMap 是 key 为 fieldId, value 为单元格内容的 object
+   * #### Description
+   * Accepts partial input, in the same format as {@link addRecord}. The more information provided, the more accurate the permissions check will be.
    *
-   * valuesMap 的格式和写入单元格时的格式相同。有关单元格值写入格式，请参阅 {@link FieldType}
+   * The format of valuesMap is the same as when writing to cells. For cell value writing format, refer to {@link FieldType}.
    *
-   * 如果有权限操作则返回 `{acceptable: true}`
+   * Returns `{acceptable: true}` if the current user can create the specified record.
    *
-   * 如果无权限操作则返回 `{acceptable: false, message: string}` ，message 为显示给用户的失败原因解释
+   * Returns `{acceptable: false, message: string}` if no permission to operate, message may be used to display an error message to the user.
    *
-   * #### 示例
+   * #### Example
    * ```js
-   * // 校验用户是否有权限新增一条记录，当新增的同时也有写入值的话，也可以一并进行校验
+   * // Check if user can create a specific record, when you already know what
+   * // fields/cell values will be set for the record.
    * const setRecordCheckResult = datasheet.checkPermissionsForAddRecord({
    *   'fld1234567890': 'Advertising campaign',
    *   'fld0987654321': 1024,
@@ -687,7 +704,9 @@ export class Datasheet {
    *   alert(setRecordCheckResult.message);
    * }
    *
-   * // 校验用户是否有新增记录的权限，但并不校验具体的值（示例：可以用来在 UI 控制创建按钮可用状态）
+   * // Check if user could potentially create a record.
+   * // Use when you don't know the specific fields/cell values yet (for example,
+   * // to show or hide UI controls that let you start creating a record.)
    * const addUnknownRecordCheckResult =
    *   datasheet.checkPermissionsForAddRecord();
    * ```
@@ -701,24 +720,28 @@ export class Datasheet {
   }
 
   /**
-   * 校验用户是否有权限批量新增记录
+   * Checks whether the current user has permission to create the specified records.
    * 
-   * @param records 接收一个可选的 records 数组
+   * @param records Array of objects mapping fieldId to value for that field.
    * @returns
    * 
    * 
-   * #### 描述
-   * records 是 key 为 fieldId, value 为单元格内容的 object
+   * #### Description
+   * array of objects mapping fieldId to value for that field.
    *
-   * records 的格式和写入单元格时的格式相同。有关单元格值写入格式，请参阅 {@link FieldType}
+   * Accepts partial input, in the same format as {@link addRecords}.
+   * The more information provided, the more accurate the permissions check will be.
+   * 
+   * The format of records is the same as when writing to cells. For cell value writing format, refer to {@link FieldType}.
    *
-   * 如果有权限操作则返回 `{acceptable: true}`
+   * Returns `{acceptable: true}` if the current user can update the specified record.
    *
-   * 如果无权限操作则返回 `{acceptable: false, message: string}` ，message 为显示给用户的失败原因解释
+   * Returns `{acceptable: false, message: string}` if no permission to operate, message may be used to display an error message to the user.
    *
-   * #### 示例
+   * #### Example
    * ```js
-   * // 校验用户是否有权限新增记录，当新增的同时也有写入值的话，也可以一并进行校验
+   * // Check if user can update a specific records, when you already know what
+   * // fields/cell values will be set for the record.
    * const addRecordsCheckResult = datasheet.checkPermissionsForAddRecords([
    *   {
    *     valuesMap: {
@@ -737,8 +760,10 @@ export class Datasheet {
    * if (!addRecordsCheckResult.acceptable) {
    *   alert(addRecordsCheckResult.message);
    * }
-   * // 校验用户是否有新增记录的权限，但并不校验具体的值（示例：可以用来在 UI 控制新增按钮可用状态）
-   * // 与 checkPermissionsForSetRecord 一致
+   * // Check if user could potentially create a record.
+   * // Use when you don't know the specific fields/cell values yet (for example,
+   * // to show or hide UI controls that let you start creating a record.)
+   * // same as checkPermissionsForSetRecord
    * const addUnknownRecordCheckResult =
    *   datasheet.checkPermissionsForAddRecords();
    * ```
@@ -756,28 +781,29 @@ export class Datasheet {
   }
 
   /**
-   * 校验用户是否有有权限修改记录的值
+   * Checks whether the current user has permission to perform the given record update.
    * 
-   * @param recordId 要修改的 recordId
+   * @param recordId the record to update
    *
-   * @param valuesMap 是 key 为 fieldId, value 为单元格内容的 object
+   * @param valuesMap specified as object mapping fieldId to value for that field
    *
    * @returns {@link IPermissionResult}
    *
-   * #### 描述
-   * recordId 是要修改的 recordId, valuesMap 是 key 为 fieldId, value 为单元格内容的 object
+   * #### Description
    *
-   * 该方法会根据传入值的详细程度来进行**权限**以及**值合法性**校验。传入 valuesMap 会进行单元格写入合法性、列权限校验，传入 recordId 会进行记录存在性，和修改权限校验
+   * This method performs **permission** and **value legality** checks based on the level of detail of the value passed in. 
+   * Passing in valuesMap will check the legality of cell writes and column permissions, 
+   * and passing in recordId will check the existence of records and modification permissions.
    *
-   * valuesMap 的格式和写入单元格时的格式相同。有关单元格值写入格式，请参阅 {@link FieldType}
+   * The format of records is the same as when writing to cells. For cell value writing format, refer to {@link FieldType}.
    *
-   * 如果有权限操作则返回 `{acceptable: true}`
+   * Returns `{acceptable: true}` if the current user can update the specified record.
    *
-   * 如果无权限操作则返回 `{acceptable: false, message: string}` ，message 为显示给用户的失败原因解释
+   * Returns `{acceptable: false, message: string}` if no permission to operate, message may be used to display an error message to the user.
    *
-   * #### 示例
+   * #### Example
    * ```js
-   * // 校验用户是否有权限修改一个具体的 record 中的两个具体的字段
+   * // Check if user can update specific fields for a specific record
    * const setRecordCheckResult =
    *   datasheet.checkPermissionsForSetRecord('rec1234567', {
    *     'fld1234567890': 'this is a text value',
@@ -787,18 +813,20 @@ export class Datasheet {
    *   alert(setRecordCheckResult.message);
    * }
    *
-   * // 校验用户是否有权限修改一个记录，但不校验具体值是否能修改
+   * // Checks if a user has permission to modify a record, but does not check if the specific value can be modified
    * const setUnknownFieldsCheckResult =
    *   datasheet.checkPermissionsForSetRecord('rec1234567');
    *
-   * // 校验用户是否有权限修改对应字段，不关心具体的记录
+   * // Check whether the user has permission to modify the corresponding field, do not care about the specific record
    * const setUnknownRecordCheckResult =
    *   datasheet.checkPermissionsForSetRecord(undefined, {
    *     'fld1234567890': 'this is a text value',
-   * 		// 你也可以选择不传入具体值，使用 undefined 代替，这将不进行值类型校验
+   * 		// You can also choose not to pass in a specific value and use undefined instead, which will not perform a value type check
    *     'fld0987654321': undefined,
    *   });
-   * // 不传入任何值，也可以校验用户是否有权限修改记录，但不校验任何具体的记录和字段（也就是说即使返 acceptable 为 true，也可能有部分字段或者记录无权限修改，你可以用这个方式来显示是否小程序处于只读状态）
+   * // Check if user could perform updates within the datasheet, without knowing the
+   * // specific record or fields that will be updated yet (e.g., to render your
+   * // extension in "read only" mode)
    * const setUnknownRecordAndFieldsCheckResult =
    *   datasheet.checkPermissionsForSetRecord();
    * ```
@@ -808,33 +836,32 @@ export class Datasheet {
   }
 
   /**
-   * 校验用户是否有有权限批量修改记录的值
+   * Checks whether the current user has permission to perform the given record updates.
    * 
-   * @param records 要修改的 records
+   * @param records Array of objects containing recordId and fields/cellValues to update for that records.
    *
    * @returns {@link IPermissionResult}
    *
-   * #### 描述
-   * 接收一个可选的 records 数组
+   * #### Description
    *
-   * recordId 是要修改的 recordId, valuesMap 是 key 为 fieldId, value 为单元格内容的 object
+   * This method performs **permission** and **value legality** checks based on the level of detail of the value passed in. 
+   * Passing in valuesMap will check the legality of cell writes and column permissions, 
+   * and passing in recordId will check the existence of records and modification permissions.
    *
-   * 该方法会根据传入值的详细程度来进行权限、值合法性校验。传入 valuesMap 会进行单元格写入合法性、列权限校验，传入 recordId 会进行记录存在性，和修改权限校验
+   * The format of records is the same as when writing to cells. For cell value writing format, refer to {@link FieldType}.
    *
-   * valuesMap 的格式和写入单元格时的格式相同。有关单元格值写入格式，请参阅 {@link FieldType}
+   * Returns `{acceptable: true}` if the current user can update the specified records.
    *
-   * 如果有权限操作则返回 {acceptable: true}
+   * Returns `{acceptable: false, message: string}` if no permission to operate, message may be used to display an error message to the user.
    *
-   * 如果无权限操作则返回 {acceptable: false, message: string}，message 为显示给用户的失败原因解释
-   *
-   * #### 示例
+   * #### Example
    * ```js
    * const recordsToSet = [
    *   {
-   *     // 指定要修改的记录的 ID
+   *     // Validating a complete record update
    *     id: record1.id,
    *     valuesMap: {
-   *       // 将要写入的数据
+   *       // fields can be specified by ID
    *       fld1234567890: 'this is a text value',
    *       fld0987654321: 1024,
    *     },
@@ -842,19 +869,19 @@ export class Datasheet {
    *   {
    *     id: record2.id,
    *     valuesMap: {
-   *       // 只传了一个 fieldId 则只修改这条记录的这个单元格，其他的单元格不进行修改
+   *       // If only a fieldId is passed, only the cell of this record will be modified, and the other cells will not be modified
    *       fld1234567890: 'another text value',
    *     },
    *   },
    *   {
-   *     // 不传 valuesMap 表示只校验一下有没有权限可以修改这条记录，还不知道要进行哪些值的修改
+   *     // Validating an update to a specific record, not knowing what fields will be updated
    *     id: record3.id,
    *   },
    *   {
-   *     // 校验一下是否有权限修改某些字段的值，但是还不确定要修改哪个记录
+   *     // Validating an update to specific cell values, not knowing what record will be updated
    *     valuesMap: {
    *       fld1234567890: 'another text value',
-   *       // 如果需要校验某个字段是否有权限修改，但还不知道修改的值是什么，可以传入 undefined
+   *       // You can use undefined if you know you're going to update a field, but don't know the new cell value yet.
    *       fld0987654321: undefined,
    *     },
    *   },
@@ -865,8 +892,8 @@ export class Datasheet {
    *   console.log(checkResult.message);
    * }
    *
-   * // 不传入任何值，也可以校验用户是否有权限修改记录，但不校验任何具体的记录和字段（也就是说即使返 acceptable 为 true，也可能有部分字段或者记录无权限修改，你可以用这个方式来显示是否小程序处于只读状态）
-   * // 与 datasheet.checkPermissionsForSetRecord() 相等
+   * // Check if user could potentially update records.
+   * // Equivalent to datasheet.checkPermissionsForSetRecord()
    * const setUnknownRecordAndFieldsCheckResult =
    *   datasheet.checkPermissionsForSetRecords();
    * ```
@@ -879,7 +906,7 @@ export class Datasheet {
       recordIds.push(record.id);
       recordsValues.push(record.valuesMap);
     }
-    // records 校验存在性
+    // records checks existence
     const recordIdsExist = this.checkRecordIdsExist(recordIds);
     if (!recordIdsExist.acceptable) {
       return recordIdsExist;
@@ -894,29 +921,31 @@ export class Datasheet {
   }
 
   /**
-   * 校验用户是否有权限删除记录
+   * Checks whether the current user has permission to delete the specified record.
    *
-   * @param recordId 要删除的记录 ID
+   * @param recordId the record to be deleted.
    * @returns
    * 
    *
-   * #### 描述
-   * 接受一个可选的 recordId 参数
+   * #### Description
+   * Accepts optional input.
    *
-   * 如果有权限操作则返回 `{acceptable: true}`
+   * Returns `{acceptable: true}` if the current user can delete the specified record.
    *
-   * 如果无权限操作则返回 `{acceptable: false, message: string}` ，message 为显示给用户的失败原因解释
+   * Returns `{acceptable: false, message: string}` if no permission to operate, message may be used to display an error message to the user.
    *
-   * #### 示例
+   * #### Example
    * ```js
-   * // 校验用户是否有权限删除一个给定的记录
+   * // Check if user can delete a specific record
    * const deleteRecordCheckResult =
    *   datasheet.checkPermissionsForDeleteRecord(recordId);
    * if (!deleteRecordCheckResult.acceptable) {
    *   alert(deleteRecordCheckResult.message);
    * }
    *
-   * // 校验用户是否删除记录的权限，但并不校验具体的记录（示例：可以用来在 UI 控制删除选择器的可用状态）
+   * // Check if user could potentially delete a record.
+   * // Use when you don't know the specific record you want to delete yet (for
+   * // example, to show/hide UI controls that let you select a record to delete).
    * const deleteUnknownRecordCheckResult =
    *   datasheet.checkPermissionsForDeleteRecord();
    * ```
@@ -935,30 +964,32 @@ export class Datasheet {
   }
 
   /**
-   * 校验用户是否有权限批量删除记录
+   * Checks whether the current user has permission to delete the specified records.
    * 
-   * @param recordIds 要删除的记录 ID 数组
+   * @param recordIds the records to be deleted.
    * @returns
    * 
    * 
-   * #### 描述
-   * 接受一个可选的 recordIds 参数
+   * #### Description
+   * Accepts optional input.
    *
-   * 如果有权限操作则返回 `{acceptable: true}`
+   * Returns `{acceptable: true}` if the current user can delete the specified records.
    *
-   * 如果无权限操作则返回 `{acceptable: false, message: string}` ，message 为显示给用户的失败原因解释
+   * Returns `{acceptable: false, message: string}` if no permission to operate, message may be used to display an error message to the user.
    *
-   * #### 示例
+   * #### Example
    * ```js
-   * // 校验用户是否有权限删除一个给定的记录
+   * // Check if user can delete specific records
    * const deleteRecordsCheckResult =
    *   datasheet.checkPermissionsForDeleteRecords([recordId1. recordId2]);
    * if (!deleteRecordsCheckResult.acceptable) {
    *   alert(deleteRecordsCheckResult.message);
    * }
    *
-   * // 校验用户是否删除记录的权限，但并不校验具体的记录（示例：可以用来在 UI 控制删除选择器的可用状态）
-   * // 与 checkPermissionsForDeleteRecord 一致
+   * // Check if user could potentially delete records.
+   * // Use when you don't know the specific records you want to delete yet (for
+   * // example, to show/hide UI controls that let you select records to delete).
+   * // Equivalent to datasheet.checkPermissionsForDeleteRecord
    * const deleteUnknownRecordsCheckResult =
    *   datasheet.checkPermissionsForDeleteRecords();
    * ```
@@ -977,32 +1008,34 @@ export class Datasheet {
   }
   
   /**
-   * 校验用户是否有权限新增字段
+   * Checks whether the current user has permission to create a field.
    *
-   * @param name 字段名称
-   * @param type 字段类型
-   * @param property 字段属性
+   * @param name name for the field. must be case-insensitive unique.
+   * @param type type for the field.
+   * @param property property for the field. omit for fields without writable property.
    * @returns
    * 
    *
-   * #### 描述
+   * #### Description
    *
-   * 新增字段插入到最后，有关新增字段属性值写入格式，请参阅 {@link FieldType}
+   * Accepts partial input, in the same format as {@link addField}.
    * 
-   * 如果有权限操作则返回 `{acceptable: true}`
+   * Returns `{acceptable: true}` if the current user can create the specified field.
    *
-   * 如果无权限操作则返回 `{acceptable: false, message: string}` ，message 为显示给用户的失败原因解释
+   * Returns `{acceptable: false, message: string}` if no permission to operate, message may be used to display an error message to the user.
    *
-   * #### 示例
+   * #### Example
    * ```js
-   * // 校验用户是否有权限新增一个字段
+   * // Checks whether the current user has permission to create a field
    * const addFieldCheckResult =
    *   datasheet.checkPermissionsForAddField(recordId);
    * if (!addFieldCheckResult.acceptable) {
    *   alert(addFieldCheckResult.message);
    * }
-   *
-   * // 校验用户是否有增字段的权限，但并不校验具体的字段参数（示例：可以用来在 UI 控制删除选择器的可用状态）
+   * 
+   * // Check if user could potentially create a field.
+   * // Use when you don't know the specific a field you want to create yet (for example,
+   * // to show or hide UI controls that let you start creating a field.)
    * const addUnknownFieldCheckResult =
    *   datasheet.checkPermissionsForAddField();
    * ```
@@ -1022,14 +1055,14 @@ export class Datasheet {
     if (type) {
       fieldType = getFieldTypeByString(type as any);
       if (!fieldType) {
-        return errMsg('未知字段类型');
+        return errMsg('Unknown field type');
       }
     }
     
     if (fieldType && property != null) {
       const fieldInfoForState = {
         id: getNewId(IDPrefix.Field),
-        // 新增字段，不再默认填充一个字段名称
+        // New fields are added and no longer populated with a field name by default
         name,
         type: fieldType,
         property: getFieldClass(fieldType).defaultProperty(),
@@ -1037,35 +1070,37 @@ export class Datasheet {
       const field = CoreField.bindContext(fieldInfoForState, this.wCtx.globalStore.getState());
       const { error } = field.validateAddOpenFieldProperty(property || null);
       if (error) {
-        return errMsg(`当前 property ${JSON.stringify(property)} 不符合格式，请检查： ${error.message}`);
+        return errMsg(`current property ${JSON.stringify(property)} does not match the format, please check: ${error.message}`);
       }
     }
     return { acceptable: true };
   }
 
   /**
-   * 校验用户是否有权限删除
+   * Checks whether the current user has permission to delete a field.
    * 
-   * @param fieldId 字段ID
+   * @param fieldId the field to be deleted
    * @returns
    * 
    *
-   * #### 描述
+   * #### Description
    *
-   * 如果有权限操作则返回 `{acceptable: true}`
+   * Returns `{acceptable: true}` if the current user can delete the specified field.
    *
-   * 如果无权限操作则返回 `{acceptable: false, message: string}` ，message 为显示给用户的失败原因解释
+   * Returns `{acceptable: false, message: string}` if no permission to operate, message may be used to display an error message to the user.
    *
-   * #### 示例
+   * #### Example
    * ```js
-   * // 校验用户是否有权限删除一个字段
+   * // Checks whether the current user has permission to delete a field.
    * const deleteFieldCheckResult =
    *   datasheet.checkPermissionsForDeleteField(fieldId);
    * if (!deleteFieldCheckResult.acceptable) {
    *   alert(deleteFieldCheckResult.message);
    * }
    *
-   * // 校验用户是否有删除字段的权限，但并不校验具体的字段权限（示例：可以用来在 UI 控制删除选择器的可用状态）
+   * // Check if user could potentially delete a field.
+   * // Use when you don't know the specific a field you want to delete yet (for
+   * // example, to show/hide UI controls that let you select a field to delete).
    * const deleteUnknownFieldCheckResult =
    *   datasheet.checkPermissionsForDeleteField();
    * ```
@@ -1085,7 +1120,7 @@ export class Datasheet {
     const field = Selectors.getField(state, fieldId, this.datasheetId);
 
     if (!field) {
-      return errMsg(`当前删除的fieldId: ${fieldId} 不存在`);
+      return errMsg(`Current deleted fieldId: ${fieldId} does not exist`);
     }
 
     if (this.checkPrimaryField(fieldId!)) {
@@ -1093,7 +1128,7 @@ export class Datasheet {
     }
 
     if (fieldRole === ConfigConstant.Role.None || fieldRole === ConfigConstant.Role.Reader) {
-      return errMsg(`无 ${field.name}(${fieldId}) 列的写入权限`);
+      return errMsg(`No write access for ${field.name}(${fieldId}) column`);
     }
 
     return { acceptable: true };

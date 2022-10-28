@@ -9,19 +9,19 @@ import { Datasheet } from 'model';
 import { getFieldMap, getFieldPermissionMap, getFieldRoleByFieldId } from 'store/selector';
 
 /**
- * 获取一个指定的字段信息。
- * 当字段属性发生变化的时候，会触发重新渲染。
+ * Get information about a specified field.
+ * Rerendering is triggered when a field property changes.
  *
- * 如果没有传入 Id 会返回 undefined。
+ * If no ID is passed in, undefined is returned.
  * 
- * @param fieldId 字段ID
+ * @param fieldId The ID for this field.
  * @returns
  *
- * ### 示例
+ * ### Example
  * ```js
  * import { useField } from '@vikadata/widget-sdk';
  *
- * // 展示字段名称
+ * // show field name
  * function FieldName() {
  *   const field = useField('fldXXXXXXX');
  *   return <p>{field.name}</p>
@@ -33,18 +33,18 @@ import { getFieldMap, getFieldPermissionMap, getFieldRoleByFieldId } from 'store
 export function useField(fieldId: string | undefined): Field | undefined;
 
 /**
- * ## 支持加载对应表格数据 Field
+ * ## Support for loading the corresponding datasheet data field.
  * 
- * @param datasheet Datasheet 实例，通过 {@link useDatasheet} 获取
- * @param fieldId 字段ID
+ * @param datasheet Datasheet instance, by {@link useDatasheet} get.
+ * @param fieldId The ID for this field
  * @returns
  *
  * 
- * ### 示例
+ * ### Example
  * ```js
  * import { useField, useDatasheet } from '@vikadata/widget-sdk';
  *
- * // 展示对应 datasheetId(dstXXXXXXXX) 表的字段名称
+ * // show field name corresponding to the datasheetId(dstXXXXXXXX) datasheet
  * function FieldName() {
  *   const datasheet = useDatasheet('dstXXXXXXXX');
  *   const field = useField(datasheet, 'fldXXXXXXX');
@@ -76,7 +76,8 @@ export function useField(param1: Datasheet | string | undefined, param2?: string
     return getFieldRoleByFieldId(fieldPermissionMap, fieldId);
   });
 
-  // fieldRole 不存在，则 field 真实不存在，fieldRole 为 None 则无权限访问
+  // If fieldRole dose not exist, the field really dose not exist, 
+  // and if fieldRole is None, there is no permission to access
   return useMemo(() => {
     if (!datasheetId || !field) {
       return;

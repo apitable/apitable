@@ -27,7 +27,7 @@ export const createSimpleWrapper = () => createWidgetContextWrapper({
     releaseCodeBundle: 'string',
     sandbox: false,
     snapshot: {
-      widgetName: '自定义小程序',
+      widgetName: 'widget1',
       datasheetId: 'dstMock',
       storage: {
       },
@@ -39,7 +39,7 @@ export const createSimpleWrapper = () => createWidgetContextWrapper({
       datasheet: {
         id: 'dstMock',
         datasheetId: 'dstMock',
-        datasheetName: '数表名称',
+        datasheetName: 'datasheet1',
         permissions: createMockPermissions(),
         snapshot: createMockSnapshot(),
       },

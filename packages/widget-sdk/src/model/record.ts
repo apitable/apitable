@@ -6,9 +6,9 @@ import { getActiveView, getFieldPermissionMap, getFieldRoleByFieldId, getSnapsho
 import { showField } from './field';
 
 /**
- * 数表行操作以及信息。
+ * Datasheet row operations and information.
  * 
- * 获取行记录数据，可以使用 {@link useRecord}（查询单条记录数据）、{@link useRecords}（批量查询记录数据）。
+ * Get the rows record, you can use {@link useRecord} (querying single record data), {@link useRecords} (batch query of record data)
  */
 export class Record {
   /**
@@ -34,12 +34,12 @@ export class Record {
   }
 
   /**
-   * 获取 Record 中的指定单元格值
+   * Gets the cell value of the given field for this record.
    *
-   * @param fieldId 字段ID
+   * @param fieldId The field ID whose cell value you'd like to get.
    * @returns
    * 
-   * #### 示例
+   * #### Example
    * ```js
    * const cellValue = myRecord.getCellValue(mySingleLineTextFieldId);
    * console.log(cellValue);
@@ -62,7 +62,7 @@ export class Record {
     const snapshot = getSnapshot(state, this.datasheetId)!;
 
     const field = Selectors.getField(globalState, fieldId, this.datasheetId)!;
-    // 企业微信屏蔽的字段
+    // wecom blocked fields
     if (!showField(getFieldTypeString(field.type))) {
       return null;
     }
@@ -70,7 +70,7 @@ export class Record {
     if (isIframe()) {
       CacheManager.removeCellCacheByRecord(this.datasheetId, this.recordId);
     }
-    // getCellValue 判断列权限。如果无权限返回null
+    // getCellValue determines the column permission. Return null if no permission
     if (this.getFieldRole(fieldId) === ConfigConstant.Role.None) {
       return null;
     }
@@ -78,11 +78,11 @@ export class Record {
   }
 
   /**
-   * 获取 Record 中的指定单元格值, 并且转换为字符串类型
+   * Gets the cell value of the given field of record, and convert to string type.
    *
    * @returns
    * 
-   * #### 示例
+   * #### Example
    * ```js
    * const stringValue = myRecord.getCellValueString(myNumberFieldId);
    * console.log(stringValue);
@@ -98,7 +98,9 @@ export class Record {
   }
 
   /**
-   * 记录的 URL 地址，你可以在浏览器中访问这个地址，打开维格表界面并定位到记录
+   * 
+   * The URL address of the record, which you can access in your browser, 
+   * opens the Wiggle Table interface and locates the record
    * 
    * @param viewId 
    * @returns
@@ -113,18 +115,18 @@ export class Record {
   }
 
   /**
-   * 记录ID recordId
+   * The ID for this record.
    */
   get id() {
     return this.recordId;
   }
 
   /**
-   * 首列单元格的字符串值。首列通常被看做主字段。
+   * The primary cell value in this record, formatted as a string.
    *
    * @returns
    * 
-   * #### 示例
+   * #### Example
    * ```js
    * console.log(myRecord.title);
    * // => '42'
@@ -139,7 +141,7 @@ export class Record {
   }
 
   /**
-   * 评论数量
+   * The number of comments on this record.
    * @returns
    * 
    */

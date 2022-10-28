@@ -8,19 +8,19 @@ import { Datasheet } from 'model';
 import { getWidgetDatasheet } from 'store';
 
 /**
- * `Beta API`, 未来有可能变更。
+ * `Beta API`, possible future changes.
  * 
- * 获得表格中所有的 Records。
- * 当记录的值、视图配置、字段配置发生变化的时候，会触发重新渲染。
- * 获取所有的记录可能造计算量急剧上升而产生卡顿，请谨慎使用并做好充分测试。
+ * Get all the records in the datasheet.
+ * Rerendering is triggered when the value of record, view configuration, or field configuration changes. 
+ * Get all the records may cause lag due to a sharp increase in computation, so please use caution and test well.
  *
  * @returns
  * 
- * ### 示例
+ * ### Example
  * ```js
  * import { useRecordsAll, useDatasheet } from '@vikadata/widget-sdk';
  *
- * // 展示记录主键
+ * // Show record title
  * function RecordsTitle() {
  *   const records = useRecordsAll();
  *   return (<div>
@@ -28,7 +28,7 @@ import { getWidgetDatasheet } from 'store';
  *   </div>);
  * }
  * 
- * // 展示对应 datasheetId(dstXXXXXXXX) 表的记录主键
+ * // Show the primary key of records the corresponding to the datasheetId(dstXXXXXXXX) datasheet
  * function DatasheetRecordsTitle() {
  *   const useDatasheet = useDatasheet('dstXXXXXXXX');
  *   const records = useRecordsAll(useDatasheet);

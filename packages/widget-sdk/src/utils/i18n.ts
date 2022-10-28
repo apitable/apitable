@@ -1,9 +1,9 @@
 import { getLanguage } from 'iframe_message/utils';
 
 export interface IString {
-  /** 中文 */
+  /** Chinese */
   zh_CN?: string;
-  /** 英文 */
+  /** English */
   en_US?: string;
 }
 
@@ -11,23 +11,22 @@ const ERROR_STR = '[ERROR STR]';
 
 /**
  * @hidden
- * t 函数，用于解决小程序国际化方案的方法
+ * t function for solving the internationalization scheme of the widget.
  *
- * @param string string对象
- * @returns string
+ * @param string String object.
+ * @returns String
  *
- * ## 示例
+ * ## Example
  * ``` js
  * import { t } from '@vikadata/widget-sdk';
  *
  * const strings = {
  *   total: {
- *     zh_CN: '总计',
  *     en_US: 'Total'
  *   }
  * };
  *
- * // 当前系统是中文，则控制台输出 "总计"
+ * // The current system is English, then the console output "Total".
  * console.log(t(strings.total));
  *
  * ```

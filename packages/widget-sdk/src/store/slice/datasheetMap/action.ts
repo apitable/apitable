@@ -26,7 +26,7 @@ export interface IStoreRefreshDatasheetSimpleAction {
   payload: IDatasheetMainSimple;
 }
 
-// 作为除了 snapshot 之外的数据的更新 action
+// As an update action for data other than snapshot.
 export const refreshUsedDatasheetSimpleAction = (
   payload: IDatasheetMainSimple
 ): IStoreRefreshDatasheetSimpleAction => ({

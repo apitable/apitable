@@ -46,7 +46,7 @@ export const rootReducers = combineReducers<IWidgetState>({
         return state;
     }
   },
-  // TODO Selector 计算优化过后移除
+  // TODO: Selector computationally optimized post-removal.
   pageParams: (state, action) => {
     switch (action.type) {
       case 'UPDATE_PAGE_PARAMS':

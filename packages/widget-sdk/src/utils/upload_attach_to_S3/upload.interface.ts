@@ -1,17 +1,15 @@
 import { AxiosRequestConfig } from 'axios';
 
 export enum UploadType {
-  // 用户头像，会硬删除
+  // user avatar(that will be physically removed)
   UserAvatar,
-  // 空间 logo，会硬删除
+  // space logo(that will be physically removed)
   SpaceLogo,
-  // 数表附件
-  // 表格内使用这个
+  // datasheet attachment
   DstAttachment,
-  // 封面图
-  // fold showcase 用这个
+  // fold showcase with this
   CoverImage,
-  // 节点描述
+  // node description
   NodeDesc
 }
 

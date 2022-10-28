@@ -9,22 +9,22 @@ import { createDeniedField } from './use_field';
 import { getFieldMap, getFieldPermissionMap, getWidgetDatasheet } from 'store';
 
 /**
- * 获得主字段信息。
- * 当字段属性发生变化的时候，会触发重新渲染。
+ * Get information of primary field.
+ * Rerendering is triggered when a field property changes.
  * 
- * @returns 主字段信息
+ * @returns primary field info.
  *
- * ### 示例
+ * ### Example
  * ```js
  * import { usePrimaryField, useDatasheet } from '@vikadata/widget-sdk';
  *
- * // 展示主字段名称
+ * // Show primary field name
  * function PrimaryFieldName() {
  *   const field = usePrimaryField();
  *   return <p>{field.name}</p>
  * }
  * 
- * // 展示对应 datasheetId(dstXXXXXXXX) 表格主字段名称
+ * // Show corresponding datasheetId(dstXXXXXXXX) Name of the primary field of the datasheet 
  * function DatasheetPrimaryFieldName() {
  *   const useDatasheet = useDatasheet('dstXXXXXXXX');
  *   const field = usePrimaryField(useDatasheet);

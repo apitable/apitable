@@ -17,22 +17,25 @@ import { Field, getFieldTypeString, LookUpField } from '../../core';
 import { CellMultiText } from './cell_multi_text';
 
 /**
- * 显示记录指定字段单元格的 UI 样式，目前已经支持所有类型字段。
+ * Display the UI style for recording the cells of the specified field, 
+ * all types of fields are now supported.
  * 
- * @param props.recordId 行记录 ID
- * @param props.fieldId 列字段 ID
- * @param props.cellValue 符合类字段对应的格式化数据，可能是多个单元格并集、差集
- * @param props.className 样式类
- * @param props.style 行内样式
- * @param props.cellClassName 子元素样式类
- * @param props.cellStyle 子元素行内样式
+ * @param props.recordId The recordId from which to render a cell.
+ * @param props.fieldId The fieldId from which to render a cell.
+ * @param props.cellValue The cell value to render. 
+ * Either record or cellValue must be provided to the CellValue. If both are provided, record will be used.
+ * @param props.className Additional class names to apply to the cell renderer container, separated by spaces.
+ * @param props.style Additional styles to apply to the cell renderer container.
+ * @param props.cellClassName Additional class names to apply to the cell itself, separated by spaces.
+ * @param props.cellStyle Additional styles to apply to the cell itself.
  * @returns
  * 
- * #### 示例
+ * #### Example
  * 
- * **方法一**
+ * **Method 1**
  * 
- * 通过 recordId、fieldId 渲染 CellValue UI，比如 foucs 单元的渲染单元格显示的 UI：
+ * Use recordId,fieldId render CellValue UI, 
+ * Rendering CellValue UI by recordId, fieldId, e.g. focus cell's rendering cell display UI.
  * 
  * ```tsx
  * import React from 'react';
@@ -41,7 +44,7 @@ import { CellMultiText } from './cell_multi_text';
  * export const CellValueUI = () => {
  *   const activeCell = useActiveCell();
  *   if (!activeCell) {
- *     return <p>无激活的单元格</p>
+ *     return <p>Cells without activation</p>
  *   }
  *  const { recordId, fieldId } = activeCell;
  *   return (
@@ -55,9 +58,10 @@ import { CellMultiText } from './cell_multi_text';
  * }
  * ```
  * 
- *  **方法二**
+ *  **Method 2**
  * 
- * 通过 cellValue、fieldId 渲染 CellValue UI，比如对同列多个单元格数据进行合并或差集计算，返回 cellValue 格式的数据：
+ * Render CellValue UI by cellValue, fieldId, 
+ * e.g. merge or difference set calculation for multiple cells data in the same column, return data in cellValue format.
  * 
  * ```tsx
  * import React from 'react';
@@ -66,7 +70,7 @@ import { CellMultiText } from './cell_multi_text';
  * export const CellValueUI = ({ cellValue }) => {
  *   const activeCell = useActiveCell();
  *   if (!activeCell) {
- *     return <p>无激活的单元格</p>
+ *     return <p>Cells without activation</p>
  *   }
  *  const { fieldId } = activeCell;
  *   return (
@@ -174,6 +178,6 @@ export const CellValue = (props: {
     case FieldType.MagicLink:
       return <CellLink options={cellValue} {...cellProps} {...wrapperProps} />;
     default:
-      return <span>不支持</span>;
+      return <span>Not support</span>;
   }
 };

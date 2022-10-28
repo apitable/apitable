@@ -6,21 +6,26 @@ import { WidgetContext } from '../context';
 import { usePermission } from './private/use_permission';
 
 /**
- * 小程序数据存储器。
- * 针对当前运行的小程序，提供一个类似 `useState` 的接口存储, 通过一个指定的 key 来读写数据，多次设值数据会间隔 500ms 发送一次给协同者, key-value 键值对会被持久化的存储。
- * 当 value 变化的时候，会触发重新渲染，value 的变化可能来自于其他的协作者，不建议在小程序首次安装时设置默认值，因为在多人协同的情况下初始默认值都是相同的，多次设置默
- * 认值会造成无意义的性能浪费甚至是死循环，应当在外部数据发生变化后对数据进行设置。
+ * Widget data storage.
+ * For the currently running widget, provide a `useState` - like interface to store, 
+ * data is read and written by a specified key, 
+ * if you set the value multiple times the data will be sent to the collaborator at 500ms intervals, 
+ * key-value pairs are stored persistently. 
+ * When the value changes, re-render is triggered, changes in value may from other collaborator, 
+ * and it is not recommended to set default value when the widget first installed, because the initial default value 
+ * is the same of multiple collaborators. Setting defaults multiple times can result in pointless performance waste or event dead loops, 
+ * and data should be set up after changes in external data.
  * 
- * @typeParam S 默认值
- * @param key 存储时的 key 值
- * @param initValue 初始默认值, 可以传入值或者函数，原理与 `useState` 参数相同
- * @returns [value, setValue, editable] 分别为 [返回值，设置值方法、是否有权限写入]
+ * @typeParam S default value.
+ * @param key Key at storage.
+ * @param initValue Initial default value, can be passed value or function, same principle as `useState` parameter.
+ * @returns [value, setValue, editable] are [return value, setValue function, permission to write or not] respectively.
  * 
- * ### 示例
+ * ### Example
  * ```js
  * import { useCloudStorage } from '@vikadata/widget-sdk';
  *
- * // 一个简单的计数器
+ * // A simple counter
  * function Counter() {
  *   const [counter, setCounter, editable] = useCloudStorage('counter', 0);
  *   return (
@@ -39,7 +44,7 @@ export function useCloudStorage<S>(key: string, initValue?: S | (() => S)): [S, 
   const { resourceService: datasheetService, id } = useContext<IWidgetContext>(WidgetContext);
   const editable = usePermission().storage.editable;
   const cloudStorageData = useSelector(state => state.widget?.snapshot.storage ?? null);
-  // 将value提出来做缓存，避免 storage 变化引起组件刷新
+  // Bring up the value for caching to avoid components refresh due to storage changes.
   const storage = new CloudStorage(cloudStorageData, datasheetService, id);
   const value = storage.get(key) as any;
 

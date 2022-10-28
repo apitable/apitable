@@ -34,18 +34,11 @@ export const subscribeDatasheetMap = (store: Store<IReduxState>, datasheetServic
     }
     _visitedDst.add(datasheetId);
     if (!datasheet) {
-      console.log(`gogogo 加载(${datasheetId}) 的数据`);
+      console.log(`go go go load the data of (${datasheetId})`);
       return store.dispatch(StoreActions.fetchDatasheet(datasheetId) as any);
     }
     const fieldMap = Selectors.getFieldMap(state, datasheetId)!;
-    // const datasheetName = datasheet!.name;
-
-    // console.log(`1.    载入表:${datasheetName}`);
-    // 本表的 lookup 字段们
     const lookUpFields = Object.values(fieldMap).filter(field => field.type === FieldType.LookUp) as ILookUpField[];
-    // const linkFields = Object.values(fieldMap).filter(field => field.type === FieldType.Link) as ILinkField[];
-    // console.log(`2.    ${datasheetName} 中存在 ${lookUpFields.length} 个 lookup 字段: `, { lookUpFields });
-    // console.log(`2.    ${datasheetName} 中存在 ${linkFields.length} 个 link 字段: `, { linkFields });
     let index = 1;
 
     const findNextLookUpField = (field: ILookUpField, fieldMap: IFieldMap, visitedField?: Set<string>) => {
@@ -54,22 +47,22 @@ export const subscribeDatasheetMap = (store: Store<IReduxState>, datasheetServic
         return;
       }
       _visitedField.add(field.id);
-      // 本表 lookup 查询的实际字段
+      // The actual fields of this table lookup query.
       const lookUpTargetField = (Field.bindModel(field) as LookUpField).getLookUpTargetField();
       if (!lookUpTargetField) {
-        // 这个表的外键数据没有加载
+        // The foreign key data for this table is not loaded.
         const foreignField = fieldMap[field.property.relatedLinkFieldId] as ILinkField;
         if (foreignField && foreignField.type === FieldType.Link) {
-          console.log(`2.${index}.1 「${field.name}」 查询的表(${foreignField.property.foreignDatasheetId})数据未加载`);
+          console.log(`2.${index}.1 "${field.name}" the data of the queried table (${foreignField.property.foreignDatasheetId}) is not loaded`);
           linkLookUpField(foreignField.property.foreignDatasheetId, _visitedDst);
         }
       } else {
-        console.log(`2.${index}.1 「${field.name}」 查询的实际字段是: 「${lookUpTargetField.name}」`, { lookUpTargetField });
+        console.log(`2.${index}.1 "${field.name}" the actual field of the query is: 「${lookUpTargetField.name}」`, { lookUpTargetField });
       }
       // lookup lookup le lookup
-      // 本表的 lookup lookup 了外键表的另外一个 lookup 字段
+      // The lookup of this table looks up another lookup field of the foreign key table.
       if (lookUpTargetField && lookUpTargetField.type === FieldType.LookUp) {
-        console.log(`2.${index}.2 「${lookUpTargetField.name}」 也是一个 lookup 字段`);
+        console.log(`2.${index}.2 "${lookUpTargetField.name}" is also a lookup field`);
         findNextLookUpField(lookUpTargetField, fieldMap, _visitedField);
       }
     };
@@ -100,7 +93,7 @@ export const subscribeDatasheetMap = (store: Store<IReduxState>, datasheetServic
       return;
     }
 
-    // 检查是否加载了新的 datasheet 数据，如果是，则通过 resourceService 建立长链通道。
+    // Check if new datasheet data is loaded, and if so, establish a socket via resourceService.
     const currentDatasheetIds = Array.from(datasheetIdSet);
     const collaEngineKeys = datasheetService.instance.getCollaEngineKeys();
     const entityDatasheetIds = [...collaEngineKeys];
@@ -109,7 +102,8 @@ export const subscribeDatasheetMap = (store: Store<IReduxState>, datasheetServic
     diff.forEach(id => {
       datasheetService.instance!.createCollaEngine(id, ResourceType.Datasheet);
     });
-    // 为什么要清理公式解析的缓存？参见: https://www.notion.so/Debug-2021-03-29-a5a756dc2c9640e2957103c9bb5eeebd#bd1ef9866f504b8c85be4c27088f9ada
+    // Why should I clear the cache of formula parsing? See also: 
+    // https://www.notion.so/Debug-2021-03-29-a5a756dc2c9640e2957103c9bb5eeebd#bd1ef9866f504b8c85be4c27088f9ada.
     ExpCache.clearAll();
     diff.forEach(id => {
       linkLookUpField(id);
