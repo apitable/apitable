@@ -39,4 +39,14 @@ public class ResourceMetaMapperTest extends AbstractMyBatisMapperTest {
         String data = resourceMetaMapper.selectMetaDataByResourceId("ri41");
         assertThat(data).isEqualTo("{}");
     }
+
+    @Test
+    @Sql("/testdata/resource-meta-data.sql")
+    void testCountDashboardWidgetNumber() {
+        Integer widgetNum = resourceMetaMapper.countDashboardWidgetNumber("dsbvHRkLzQ3NjKzq01");
+        assertThat(widgetNum).isEqualTo(2);
+
+        widgetNum = resourceMetaMapper.countDashboardWidgetNumber("dsbvHRkLzQ3NjKzq01-1");
+        assertThat(widgetNum).isEqualTo(0);
+    }
 }

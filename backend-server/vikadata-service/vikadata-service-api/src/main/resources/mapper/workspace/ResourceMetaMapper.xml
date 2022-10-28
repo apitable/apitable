@@ -27,4 +27,13 @@
             </trim>
         </foreach>
     </insert>
+
+    <select id="countDashboardWidgetNumber" resultType="java.lang.Integer">
+        SELECT
+            COALESCE(MAX(JSON_LENGTH( vrm.meta_data -> '$.layout[*].id' )), 0)
+        FROM
+            vika_resource_meta vrm
+        WHERE
+            vrm.resource_id = #{dashboardId} AND vrm.is_deleted = 0
+    </select>
 </mapper>

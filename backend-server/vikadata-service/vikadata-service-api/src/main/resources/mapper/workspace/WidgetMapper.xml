@@ -110,13 +110,6 @@
         </foreach>
     </select>
 
-    <select id="selectCountByNodeId" resultType="java.lang.Integer">
-        SELECT count(1)
-        FROM vika_widget
-        WHERE node_id = #{nodeId}
-          AND is_deleted = 0
-    </select>
-
     <insert id="insertBatch">
         INSERT INTO vika_widget(id, space_id, node_id, package_id, widget_id, name, storage, created_by, updated_by)
         VALUES

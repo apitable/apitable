@@ -46,4 +46,11 @@ public interface ResourceMetaMapper {
      * @date 2020/12/18
      */
     int insertBatch(@Param("entities") Collection<ResourceMetaEntity> entities);
+
+    /**
+     * count the number of dashboard widget
+     *
+     * @param dashboardId
+     */
+    Integer countDashboardWidgetNumber(@Param("dashboardId") String dashboardId);
 }
