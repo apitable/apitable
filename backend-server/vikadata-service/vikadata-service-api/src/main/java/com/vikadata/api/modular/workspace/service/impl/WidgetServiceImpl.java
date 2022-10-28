@@ -19,8 +19,6 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vikadata.api.enums.widget.InstallEnvType;
-import com.vikadata.api.enums.widget.RuntimeEnvType;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.component.TaskManager;
@@ -31,6 +29,8 @@ import com.vikadata.api.control.ControlTemplate;
 import com.vikadata.api.enums.exception.DatabaseException;
 import com.vikadata.api.enums.exception.PermissionException;
 import com.vikadata.api.enums.exception.WidgetException;
+import com.vikadata.api.enums.widget.InstallEnvType;
+import com.vikadata.api.enums.widget.RuntimeEnvType;
 import com.vikadata.api.enums.workbench.WidgetPackageStatus;
 import com.vikadata.api.enums.workbench.WidgetReleaseType;
 import com.vikadata.api.model.dto.widget.DatasheetWidgetDTO;
@@ -45,6 +45,7 @@ import com.vikadata.api.model.vo.widget.WidgetPack;
 import com.vikadata.api.model.vo.widget.WidgetSnapshot;
 import com.vikadata.api.model.vo.widget.WidgetStoreListInfo;
 import com.vikadata.api.modular.workspace.mapper.DatasheetWidgetMapper;
+import com.vikadata.api.modular.workspace.mapper.ResourceMetaMapper;
 import com.vikadata.api.modular.workspace.mapper.WidgetMapper;
 import com.vikadata.api.modular.workspace.mapper.WidgetPackageMapper;
 import com.vikadata.api.modular.workspace.service.IDatasheetWidgetService;
@@ -67,14 +68,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.vikadata.api.enums.exception.NodeException.UNKNOWN_NODE_TYPE;
 
-/**
- * <p>
- *
- * </p>
- *
- * @author Chambers
- * @date 2020/12/23
- */
 @Slf4j
 @Service
 public class WidgetServiceImpl implements IWidgetService {
@@ -84,6 +77,9 @@ public class WidgetServiceImpl implements IWidgetService {
 
     @Resource
     private WidgetPackageMapper widgetPackageMapper;
+
+    @Resource
+    private ResourceMetaMapper resourceMetaMapper;
 
     @Resource
     private IWidgetPackageService iWidgetPackageService;
@@ -165,8 +161,8 @@ public class WidgetServiceImpl implements IWidgetService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String create(Long userId, String spaceId, WidgetCreateRo widget) {
-        log.info("创建组件");
-        // 判断组件包是否存在，只有开发中、待发布、已发布状态可以添加
+        log.info("Create Widget");
+        // to determine whether the component package exists, only under development, pending release, and released status can be added
         List<Integer> checkStatus = CollUtil.newArrayList(WidgetPackageStatus.DEVELOP.getValue(), WidgetPackageStatus.UNPUBLISHED.getValue(), WidgetPackageStatus.ONLINE.getValue());
         iWidgetPackageService.checkWidgetPackIfExist(widget.getWidgetPackageId(), checkStatus);
         String widgetId = IdUtil.createWidgetId();
@@ -174,15 +170,16 @@ public class WidgetServiceImpl implements IWidgetService {
         NodeType nodeType = iNodeService.getTypeByNodeId(widget.getNodeId());
         switch (nodeType) {
             case DATASHEET:
-                // 创建数表与组件的关联
+                // create associations between tables and components
                 iDatasheetWidgetService.create(spaceId, widget.getNodeId(), widgetId, widget.getNodeId());
                 break;
             case DASHBOARD:
-                int count = SqlTool.retCount(widgetMapper.selectCountByNodeId(widget.getNodeId()));
+                // Note: The number of statistics uses the number of Dashboard layout to ensure the accuracy, and the widget instance may have dirty data
+                int count = SqlTool.retCount(resourceMetaMapper.countDashboardWidgetNumber(widget.getNodeId()));
                 ExceptionUtil.isTrue(count < limitProperties.getDsbWidgetMaxCount(), WidgetException.WIDGET_NUMBER_LIMIT);
                 break;
             case MIRROR:
-                // 创建镜像源表与组件的关联
+                // create an association between a mirror source table and a component
                 NodeRelEntity nodeRel = iNodeRelService.getByRelNodeId(widget.getNodeId());
                 ExceptionUtil.isNotNull(nodeRel, PermissionException.NODE_NOT_EXIST);
                 iDatasheetWidgetService.create(spaceId, nodeRel.getMainNodeId(), widgetId, widget.getNodeId());
@@ -190,7 +187,7 @@ public class WidgetServiceImpl implements IWidgetService {
             default:
                 throw new BusinessException(UNKNOWN_NODE_TYPE);
         }
-        // 新增组件
+        // new components
         WidgetEntity widgetEntity = WidgetEntity.builder()
                 .id(IdWorker.getId())
                 .spaceId(spaceId)
@@ -204,24 +201,24 @@ public class WidgetServiceImpl implements IWidgetService {
                 .build();
         boolean flag = SqlHelper.retBool(widgetMapper.insertBatch(Collections.singletonList(widgetEntity)));
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
-        // 组件包累计安装次数
+        // the cumulative number of installations of the component package
         TaskManager.me().execute(() -> widgetPackageMapper.updateInstalledNumByPackageId(widget.getWidgetPackageId(), 1));
         return widgetId;
     }
 
     @Override
     public Collection<String> copyToDashboard(Long userId, String spaceId, String dashboardId, List<String> widgetIds) {
-        log.info("复制组件到仪表盘");
-        // 校验仪表盘的组件数量上限
-        int count = SqlTool.retCount(widgetMapper.selectCountByNodeId(dashboardId));
+        log.info("copy widgets to dashboard");
+        // verify the maximum number of components for a dashboard
+        int count = SqlTool.retCount(resourceMetaMapper.countDashboardWidgetNumber(dashboardId));
         ExceptionUtil.isTrue(count + widgetIds.size() <= limitProperties.getDsbWidgetMaxCount(), WidgetException.WIDGET_NUMBER_LIMIT);
-        // 校验组件是否都存在
+        // check if components exist
         int widgetCount = SqlTool.retCount(widgetMapper.selectCountBySpaceIdAndWidgetIds(spaceId, widgetIds));
         ExceptionUtil.isTrue(widgetCount == widgetIds.size(), WidgetException.WIDGET_NOT_EXIST);
-        // 校验组件数据源是否都存在
+        // verify that component data sources all exist
         List<WidgetDTO> widgetDTOList = widgetMapper.selectWidgetDtoByWidgetIds(widgetIds);
         ExceptionUtil.isTrue(CollUtil.isNotEmpty(widgetDTOList) && widgetDTOList.size() == widgetIds.size(), WidgetException.WIDGET_DATASHEET_NOT_EXIST);
-        // 构建 旧组件ID 与新组件ID 映射、新组件ID 与数据源数表ID 映射
+        // Build: Old widgetId and new widgetId mapping, new widgetId and data source datasheetId mapping
         Map<String, String> newNodeMap = new HashMap<>(widgetIds.size());
         Map<String, String> newWidgetIdMap = new HashMap<>(widgetIds.size());
         Map<String, DatasheetWidgetDTO> newWidgetIdToDstMap = new HashMap<>(widgetIds.size());
@@ -233,7 +230,7 @@ public class WidgetServiceImpl implements IWidgetService {
             BeanUtil.copyProperties(dto, datasheetWidgetDTO);
             newWidgetIdToDstMap.put(newWidgetId, datasheetWidgetDTO);
         }
-        // 复制组件
+        // copy widgets
         this.copyBatch(userId, spaceId, newNodeMap, newWidgetIdMap, newWidgetIdToDstMap);
         return newWidgetIdMap.values();
     }

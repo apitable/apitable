@@ -99,13 +99,6 @@ public class WidgetMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/widget-data.sql")
-    void testSelectCountByNodeId() {
-        Integer count = widgetMapper.selectCountByNodeId("ni41");
-        assertThat(count).isEqualTo(1);
-    }
-
-    @Test
     @Sql({"/testdata/widget-data.sql", "/testdata/datasheet-widget-data.sql"})
     void testSelectNodeWidgetDtoByNodeIds(){
         List<String>  nodeIds = new ArrayList<>();
