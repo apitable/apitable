@@ -60,7 +60,7 @@ export const SubAdmin: FC = () => {
   }, [tableRef]);
   useLayoutEffect(() => {
     updateScroll();
-  });
+  }, [updateScroll]);
   useEffect(() => {
     window.addEventListener('resize', updateScroll);
     return () => {
