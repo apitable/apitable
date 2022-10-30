@@ -1,6 +1,6 @@
 import {
   fetchDatasheetPack, fetchForeignDatasheetPack, fetchShareDatasheetPack, fetchShareForeignDatasheetPack, fetchTemplateDatasheetPack,
-} from 'api/datasheet_api';
+} from '../../../../modules/database/datasheet_api';
 import { StatusCode } from 'config';
 import { Strings, t } from 'i18n';
 import { isString } from 'lodash';

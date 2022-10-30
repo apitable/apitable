@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Url } from 'config';
+import * as Url from './url.data';
 import { IApiWrapper } from 'store';
 import { IServerFormPack } from 'store/interface/resource/form';
 import urlcat from 'urlcat';

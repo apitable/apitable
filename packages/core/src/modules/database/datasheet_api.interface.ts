@@ -1,6 +1,6 @@
-import { IFieldPermissionMap, IRoleMember, IViewProperty } from '../store';
+import { IFieldPermissionMap, IRoleMember, IViewProperty } from '../../store';
 import { MemberType } from 'types';
-import { ITeamData } from '../store';
+import { ITeamData } from '../../store';
 
 export interface IFieldPermissionRoleListData {
   enabled: boolean;

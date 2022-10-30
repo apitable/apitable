@@ -4,7 +4,7 @@ import { deleteNode } from 'store/actions/catalog_tree';
 import { StatusCode } from 'config';
 import { AxiosResponse } from 'axios';
 import { Dispatch } from 'redux';
-import { fetchMirrorDataPack, fetchMirrorInfo, fetchShareMirrorDataPack, fetchShareMirrorInfo } from 'api/mirror_api';
+import { fetchMirrorDataPack, fetchMirrorInfo, fetchShareMirrorDataPack, fetchShareMirrorInfo } from '../../../../modules/database/mirror_api';
 import { ActionConstants } from 'store/index';
 import { batchActions } from 'redux-batched-actions';
 import { CACHE_TEMPORARY_VIEW, UPDATE_MIRROR_INFO, UPDATE_MIRROR_NAME } from 'store/action_constants';

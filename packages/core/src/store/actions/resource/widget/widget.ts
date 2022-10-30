@@ -1,4 +1,4 @@
-import { readInstallationWidgets } from 'api/widget_api';
+import { readInstallationWidgets } from '../../../../modules/widget/widget_api';
 import { Events, Player } from 'player';
 import { batchActions } from 'redux-batched-actions';
 import { Selectors } from 'store';

@@ -1,7 +1,7 @@
 import * as actions from '../action_constants';
 import { Role } from 'config/constant';
 import { ConfigConstant } from 'config';
-import { ICommitRemind } from 'api/api.interface';
+import { ICommitRemind } from '../../modules/shared/api.interface';
 import { ITeamData } from './address_list';
 
 export { Role };

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Url } from 'config';
+import * as Url from './url.widget';
 import Qs from 'qs';
 import urlcat from 'urlcat';
 import { IApiWrapper, IWidget, WidgetPackageType, WidgetReleaseType } from 'store';

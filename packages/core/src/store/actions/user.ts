@@ -1,5 +1,5 @@
 import { Api } from 'api';
-import { ISignIn } from 'api/api.interface';
+import { ISignIn } from '../../modules/shared/api.interface';
 import { Dispatch } from 'redux';
 import { setActiveSpaceId } from 'store/actions/space';
 import { BindAccount, QrAction } from 'store/constants';

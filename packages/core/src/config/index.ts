@@ -9,10 +9,8 @@ import {
   SystemConfig,
 } from './system_config';
 import { TrackEvents } from './track_events';
-import * as Url from './url';
 
 export {
-  Url,
   ConfigConstant,
   StatusCode,
   Navigation,

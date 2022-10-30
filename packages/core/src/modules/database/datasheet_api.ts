@@ -1,8 +1,8 @@
 import {
   IFieldPermissionResponse, IFieldPermissionRoleListData, IGetCommentsByIdsResponse, ISubOrUnsubByRecordIdsReq,
-} from 'api/datasheet_api.interface';
+} from 'modules/database/datasheet_api.interface';
 import axios, { AxiosRequestConfig, CancelTokenSource } from 'axios';
-import { Url } from 'config';
+import * as Url from './url.data';
 import Qs from 'qs';
 import { IActivityListParams, IApiWrapper, IGetRecords, IMeta, IServerDatasheetPack } from 'store';
 import { ResourceType } from 'types';

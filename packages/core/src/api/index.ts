@@ -1,12 +1,14 @@
-import * as Api from './api';
-import * as DatasheetApi from './datasheet_api';
-import * as IApi from './api.interface';
-import * as FormApi from './form_api';
-import * as WidgetApi from './widget_api';
-import * as ApiInterface from './api.interface';
-import * as WidgetApiInterface from './widget_api.interface';
+// core/api is a compatible layer after modularize
 
-export * as DashboardApi from './dashboard_api';
-export * from './datasheet_api.interface';
+import * as Api from '../modules/shared/api';
+import * as DatasheetApi from '../modules/database/datasheet_api';
+import * as IApi from '../modules/shared/api.interface';
+import * as FormApi from '../modules/database/form_api';
+import * as WidgetApi from '../modules/widget/widget_api';
+import * as ApiInterface from '../modules/shared/api.interface';
+import * as WidgetApiInterface from '../modules/widget/widget_api.interface';
+
+export * as DashboardApi from '../modules/database/dashboard_api';
+export * from '../modules/database/datasheet_api.interface';
 
 export { Api, DatasheetApi, IApi, FormApi, WidgetApi, ApiInterface, WidgetApiInterface };

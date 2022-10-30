@@ -1,4 +1,4 @@
-import { getDstViewDataPack, getShareDstViewDataPack } from 'api/datasheet_api';
+import { getDstViewDataPack, getShareDstViewDataPack } from '../modules/database/datasheet_api';
 import { CollaCommandName } from 'commands';
 import { IJOTAction } from 'engine/ot';
 import { Strings, t } from 'i18n';

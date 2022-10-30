@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Url } from 'config';
+import * as Url from './url.data';
 import urlcat from 'urlcat';
 
 const baseURL = process.env.NEXT_PUBLIC_NEXT_API;

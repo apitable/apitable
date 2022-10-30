@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Url } from 'config';
+import * as Url from './url.data';
 import Qs from 'qs';
 import { IApiWrapper, IServerMirror } from 'store';
 import urlcat from 'urlcat';

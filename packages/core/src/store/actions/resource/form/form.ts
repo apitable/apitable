@@ -1,4 +1,4 @@
-import { fetchFormPack, fetchShareFormPack, fetchTemplateFormPack } from 'api/form_api';
+import { fetchFormPack, fetchShareFormPack, fetchTemplateFormPack } from '../../../../modules/database/form_api';
 import { AxiosResponse } from 'axios';
 import { ConfigConstant, StatusCode } from 'config';
 import { Dispatch } from 'redux';

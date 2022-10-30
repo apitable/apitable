@@ -1,0 +1,237 @@
+import axios from 'axios';
+import * as Url from '../shared/url';
+import {
+  IApiWrapper, ILogoutResult,
+} from 'store';
+import {
+  ISignIn, 
+} from '../shared/api.interface';
+
+/**
+ * Login / Register (get identity token directly)
+ * @param data 
+ * @returns 
+ */
+export function signInOrSignUp(data: ISignIn) {
+  return axios.post(Url.SIGN_IN_OR_SIGN_UP, { ...data });
+}
+
+/**
+ * Sign In
+ * @param data 
+ * @returns 
+ */
+export function signIn(data: ISignIn) {
+  return axios.post(Url.SIGN_IN, { ...data });
+}
+
+/**
+ * Sign Out
+ * 
+ * @returns 
+ */
+export function signOut() {
+  return axios.post<IApiWrapper & { data: ILogoutResult }>(Url.SIGN_OUT);
+}
+
+/**
+ * Close the user, delete the account
+ * 
+ * @returns 
+ */
+export function logout() {
+  return axios.post(Url.CLOSE_USER);
+}
+
+/**
+ * Cancel close the user, cancel delete the account
+ * @returns 
+ */
+export function revokeLogout() {
+  return axios.post(Url.CANCEL_CLOSE_USER);
+}
+
+/**
+ * 
+ * Register 
+ * 
+ * @param phone phone number
+ * @param password password
+ * @param code verify code
+ */
+export function signUp(token?: string, inviteCode?: string) {
+  return axios.post(Url.SIGN_UP, {
+    token,
+    inviteCode,
+  });
+}
+
+/**
+ * Generate or Refresh wechat public account QR code
+ * 
+ * @param type 
+ * @returns 
+ */
+export function getOfficialAccountsQrCode(type: number) {
+  return axios.get(Url.OFFICIAL_ACCOUNTS_QRCODE, {
+    params: {
+      type,
+    },
+  });
+}
+
+/**
+ * Poll wechat public account (media platform)
+ * 
+ * @param mark 
+ * @param type 
+ * @returns 
+ */
+export function officialAccountsPoll(mark: string, type: number) {
+  return axios.get(Url.OFFICIAL_ACCOUNTS_POLL, {
+    params: {
+      mark,
+      type,
+    },
+  });
+}
+
+/**
+ * 
+ * Get phone verification code
+ * 
+ * @param phone Phone Number
+ * @param type 1:Register, 3:Edit password
+ * @param data CAPTCHA arguments
+ */
+export function getSmsCode(areaCode: string, phone: string, type: number, data?: string) {
+  return axios.post(Url.SEND_SMS_CODE, {
+    areaCode,
+    phone,
+    type,
+    data,
+  });
+}
+
+/**
+ * Get Email Verify Code
+ * 
+ * @param email mail
+ */
+export function getEmailCode(email: string, type: number) {
+  return axios.post(Url.SEND_EMAIL_CODE, {
+    email,
+    type,
+  });
+}
+
+/**
+ * Bind the email
+ * @param email 
+ * @param code 
+ */
+export function bindEmail(email: string, code: string) {
+  return axios.post(Url.BIND_EMAIL, {
+    email,
+    code,
+  });
+}
+
+/**
+ * Bind the mobile phone 
+ * 
+ * @param phone 
+ * @param code 
+ */
+export function bindMobile(areaCode: string, phone: string, code: string) {
+  return axios.post(Url.BIND_MOBILE, {
+    areaCode,
+    phone,
+    code,
+  });
+}
+
+/**
+ * Verify the mobile phone code
+ * @param phone 
+ * @param code 
+ */
+export function smsVerify(areaCode: string, phone: string, code: string) {
+  return axios.post(Url.VALIDATE_SMS_CODE, {
+    areaCode,
+    phone,
+    code,
+  });
+}
+
+/**
+ * Verify the email code
+ * When you don't have a mobile phone
+ * you can verify your identity before changing your mailbox or changing the main administrator
+ */
+export function emailCodeVerify(email: string, code: string) {
+  return axios.post(Url.VALIDATE_EMAIL_CODE, {
+    email,
+    code,
+  });
+}
+
+/**
+ * Check whether the email exists in the space
+ * @param email
+ */
+export function isExistEmail(email: string) {
+  return axios.get(Url.EXIST_EMAIL, {
+    params: {
+      email,
+    },
+  });
+}
+
+/**
+ * Edit password 
+ * @param phone 
+ * @param code verify code
+ * @param password password
+ */
+export function updatePwd(password: string, code?: string, type?: string) {
+  return axios.post(Url.UPDATE_PWD, {
+    code,
+    password,
+    type,
+  });
+}
+
+/**
+ * Forgot password
+ * 
+ * @param phone 
+ * @param password 
+ */
+export function retrievePwd(areaCode: string, username: string, code: string, password: string, type: string) {
+  return axios.post(Url.RETRIEVE_PWD, {
+    areaCode,
+    username,
+    code,
+    password,
+    type,
+  });
+}
+
+/**
+ * create developer access token
+ * @returns 
+ */
+export function createApiKey() {
+  return axios.post(Url.CREATE_API_KEY);
+}
+
+/**
+ * refresh developer access token
+ * @param code 
+ * @param type 
+ * @returns 
+ */
+export function refreshApiKey(code?: string, type?: string) {
+  return axios.post(Url.REFRESH_API_KEY, { code, type });
+}

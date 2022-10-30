@@ -2,14 +2,14 @@
 // APIs for enterprise edition
 
 import axios from 'axios';
-import { Url } from 'config';
+import * as Url from '../shared/url';
 import urlcat from 'urlcat';
 import {
   ISocialWecomGetConfigResponse,
   IWecomAgentBindSpaceResponse,
 } from './api.enterprise.interface';
 import {
-  IApiWrapper
+  IApiWrapper, QrAction,
 } from 'store';
 // ***************************** lark
 
@@ -469,4 +469,73 @@ export function getDingtalkSKU(spaceId: string, callbackPage: string) {
 
 export function getDingtalkConfig(spaceId: string, url: string) {
   return axios.post(Url.SOCIAL_DINGTALK_CONFIG, { spaceId, url });
+}
+
+export function dingtalkLoginCallback(state: string, code: string, type = 0) {
+  return axios.get(Url.DINGTALK_LOGIN_CALLBACK, {
+    params: {
+      state,
+      code,
+      type,
+    },
+  });
+}
+
+export function qqLoginCallback(code: string, accessToken: string, expiresIn: string, type = 0) {
+  return axios.get(Url.QQ_LOGIN_CALLBACK, {
+    params: {
+      code,
+      accessToken,
+      expiresIn,
+      type,
+    },
+  });
+}
+
+export function wechatLoginCallback(code: string, state: string) {
+  return axios.get(Url.WECHAT_LOGIN_CALLBACK, {
+    params: {
+      code,
+      state,
+    },
+  });
+}
+
+export function wecomLoginCallback(code: string, agentId: string, corpId: string) {
+  return axios.post(Url.WECOM_LOGIN_CALLBACK, { code, agentId, corpId });
+}
+
+/**
+ * wechat miniapp poll check 
+ * @param {(0 | 1 | 2)} type
+ * 0：web qr code login
+ * 1：web account binding
+ * 2：miniapp is waiting get into workbench
+ * @param {string} mark  QR Code ID
+ * @returns
+ */
+export function poll(type: QrAction, mark: string) {
+  return axios.get(Url.POLL, {
+    params: {
+      type,
+      mark,
+    },
+  });
+}
+
+/**
+ * @description Get QR Code
+ * @param {number} type
+ * 0：login
+ * 1：binding
+ * @returns
+ */
+export function getQrCode(type: number, page?: string, width?: number) {
+  return axios.get(Url.WECHAT_QR_CODE, {
+    params: {
+      type,
+      page,
+      width,
+    },
+  });
 }
