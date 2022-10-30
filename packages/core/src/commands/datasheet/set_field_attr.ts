@@ -30,7 +30,7 @@ function generateLinkedFieldActions(
   const linkedActions: ILinkedActions[] = [];
   const { model: state } = context;
   if (oldField.type === FieldType.Link && newField.type === FieldType.Link) {
-    // 关联的表 id 没有变化，则不需要执行相关操作。
+    // If the associated table id has not changed, no related operations are required.
     if (oldField.property.foreignDatasheetId === newField.property.foreignDatasheetId) {
       return setField(context, snapshot, oldField, newField, datasheetId);
     }
@@ -48,7 +48,7 @@ function generateLinkedFieldActions(
 
   if (FieldType.Text === newField.type && internalFix?.clearOneWayLinkCell) {
     const fieldId = oldField.id;
-    // 清理单向关联单元格内容
+    // Clean up the content of the one-way association cell
     if (snapshot.meta.fieldMap[fieldId]) {
       for (const recordId in snapshot.recordMap) {
         const action = DatasheetActions.setRecord2Action(snapshot, { recordId, fieldId, value: null });
@@ -80,7 +80,7 @@ export const setFieldAttr: ICollaCommandDef<ISetFieldAttrOptions> = {
     if (!oldField) {
       return null;
     }
-    /* 检查是否重名 */
+    /* Check for duplicate names */
     const duplicate = Object.values(fieldMap).some(f => {
       return f.id !== options.fieldId && f.name === options.data.name;
     });
@@ -105,7 +105,7 @@ export const setFieldAttr: ICollaCommandDef<ISetFieldAttrOptions> = {
       return null;
     }
 
-    // 兼容线上部分字段 defaultValue 为 null 导致的报错
+    // Compatible with errors caused by defaultValue of some online fields being null
     if (
       [FieldType.Currency, FieldType.Percent, FieldType.Number].includes(newField.type) &&
       newField.property.defaultValue === null
@@ -113,14 +113,14 @@ export const setFieldAttr: ICollaCommandDef<ISetFieldAttrOptions> = {
       newField.property = { ...newField.property, defaultValue: '' };
     }
 
-    // AutoNumber 需要记录当前视图索引
+    // AutoNumber needs to record the current view index
     if (newField.type === FieldType.AutoNumber) {
       const datasheet = getDatasheet(state);
       const viewIdx = snapshot.meta.views.findIndex(item => item.id === datasheet?.activeView) || 0;
       newField.property = { ...newField.property, viewIdx };
     }
 
-    // 保证以下字段的property一定有datasheetId
+    // Ensure that the properties of the following fields must have datasheetId
     if (
       !newField.property?.datasheetId &&
       [FieldType.AutoNumber, FieldType.CreatedBy, FieldType.CreatedTime, FieldType.LastModifiedBy, FieldType.LastModifiedTime].includes(newField.type)
@@ -128,7 +128,7 @@ export const setFieldAttr: ICollaCommandDef<ISetFieldAttrOptions> = {
       newField.property = { ...newField.property, datasheetId };
     }
 
-    // 修改关联字段时，要进行关联表的兄弟字段数据的维护
+    // When modifying the associated field, it is necessary to maintain the sibling field data of the associated table
     if (oldField.type === FieldType.Link || newField.type === FieldType.Link) {
       const validateFieldPropertyError = Field.bindContext(newField, state).validateProperty().error;
       if (validateFieldPropertyError) {

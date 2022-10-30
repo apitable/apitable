@@ -43,7 +43,8 @@ export class URLField extends TextBaseField {
     return (cv as IHyperlinkSegment[]).map(seg => seg.text).join('') || null;
   }
 
-  // 不要直接重写cellValueToString 会导致分组 fusion API的值出问题 从外部去判断是展示cellValueToString或cellValueToURLTitle
+  // Do not rewrite cellValueToString directly, it will cause problems with the value of the grouped fusion API. 
+  // Judging from the outside is to display cellValueToString or cellValueToURLTitle
   cellValueToURLTitle(cellValue: ICellValue): string | null {
     if (cellValue === null) {
       return '';

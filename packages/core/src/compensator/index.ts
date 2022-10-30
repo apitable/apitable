@@ -1,10 +1,9 @@
 /**
- * 功能： 用于补偿每一帧渲染时主线程和worker之间的差异
- * 在生成action的时候记录需要补偿的信息
- * 接收到worker post消息后，清除补偿信息
- * 改变视图时也清除补偿信息
+ * Function: used to compensate for the difference between the main thread and the worker when each frame is rendered
+ * Record the information that needs to be compensated when the action is generated
+ * After receiving the worker post message, clear the compensation information
+ * also clear compensation information when changing view
  */
-
 import { IGroupInfo } from 'types';
 
 const usedWorker = () => !!(global as any).useWorkerCompute;

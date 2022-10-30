@@ -52,9 +52,9 @@ export class Group {
     return this.groupTabIdMap;
   }
   /**
-   * 获取当前断点下的所有断点（即当前分组下的子分组头）
-   * 1级分组断点 0---------10---------20
-   * 2级分组断点 0--3-5-6--10----15---20
+   * Get all breakpoints under the current breakpoint (ie, subgroup headers under the current group)
+   * Level 1 group breakpoint 0---------10---------20
+   * Level 2 group breakpoint 0--3-5-6--10----15---20
    * 0 => [3,5,6]
    */
   getChildBreakpointIds(state: IReduxState, recordId: string, depth: number) {
@@ -88,7 +88,7 @@ export class Group {
   }
 
   /**
-   * 根据断点，生成断点 Record 之间的分组结构的 Row
+   * According to the breakpoint, generate the Row of the grouping structure between the breakpoint Records
    * @param breakIndex 
    */
   genGroupLinearRows(
@@ -112,10 +112,10 @@ export class Group {
     for (const [index] of this.groupArray.entries()) {
       const groupKey = `${recordId}_${index}`;
       /**
-       * - groupingCollapseSet 记录的是哪些分组被折叠的信息
-       * - 存储在本地缓存的分组折叠信息，在分组项目变动时，无法及时更新。
-       * - 分组折叠信息无法正确地指导 linearRows 生成。
-       * - 这里要先过滤掉错误的折叠分组，避免 linearRows 计算错误。
+       * - groupingCollapseSet records which groups are collapsed
+       * - The group folding information stored in the local cache cannot be updated in time when the group item changes.
+       * - Grouped fold info did not guide linearRows generation correctly.
+       * - Here, we need to filter out wrong folded groups first to avoid linearRows calculation errors.
        */
       if (groupingCollapseSet.has(groupKey) && groupTabIds.has(groupKey)) {
         filterDepth = index;
@@ -124,18 +124,18 @@ export class Group {
     }
 
     let nextGlobalFilterDepth = Math.min(globalFilterDepth, filterDepth);
-    // 同级或者更低级别的断点。
+    // Breakpoint at the same level or lower.
     if (breakPointGroupLevel <= globalFilterDepth) {
-      // 该级断点没有被收起的分组
+      // The breakpoints at this level are not collapsed
       if (!Number.isFinite(filterDepth)) {
         nextGlobalFilterDepth = Infinity;
       } else if (filterDepth > globalFilterDepth) {
-        // 该级断点下存在被收起的分组
+        // There is a collapsed group under the breakpoint at this level
         nextGlobalFilterDepth = filterDepth;
       }
     }
 
-    // 上个分组末尾的添加行
+    // add line at the end of the previous group
     if (preRecordId) {
       const depth = this.groupArray.length;
       depth <= globalFilterDepth && res.push({
@@ -145,7 +145,7 @@ export class Group {
     }
 
     const addBlankLength = this.groupArray.length - breakPointGroupLevel;
-    // 距离上个分组的空行
+    // empty line from the previous group
     for (const i of [...Array(addBlankLength).keys()]) {
       if (i == addBlankLength - 1) {
         if (recordId) {
@@ -165,7 +165,7 @@ export class Group {
         });
       }
     }
-    // 当前分组的 tab
+    // current grouped tab
     for (const i of [...Array(this.groupArray.length - breakPointGroupLevel).keys()].reverse()) {
       if (recordId) {
         const depth = this.groupArray.length - 1 - i;
@@ -184,7 +184,7 @@ export class Group {
   }
 
   /**
-   * 获取最深层级分组的断点
+   * Get the breakpoint of the deepest grouping
    */
   getDepthGroupBreakPoints() {
     const groupLength = this.groupArray.length;

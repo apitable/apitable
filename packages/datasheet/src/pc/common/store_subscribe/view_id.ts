@@ -29,7 +29,7 @@ store.subscribe(() => {
   mirrorId = state.pageParams.mirrorId;
   datasheetActiveViewId = Selectors.getActiveView(state);
 
-  // Wait until the number table is loaded before starting the later checks
+  // Wait until the datasheet is loaded before starting the later checks
   if (!snapshot || !datasheetActiveViewId) {
     return;
   }

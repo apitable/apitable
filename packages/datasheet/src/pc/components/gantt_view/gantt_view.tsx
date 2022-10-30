@@ -1135,7 +1135,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
           allowResize={false}
         />
 
-        {/* Number Table DOM Coordinate System */}
+        {/* datasheet DOM Coordinate System */}
         <DomGrid
           ref={domGridRef}
           instance={gridInstance}

@@ -41,14 +41,14 @@ export class If extends LogicalFunc {
     if ([value1Node.valueType, value2Node.valueType].some(v => v === BasicValueType.Array)) {
       return BasicValueType.String;
     }
-    // 两个 value 中有一个为 BLANK，则结果类型由另一个的类型决定
+    // If one of the two values is 'BLANK', the result type is determined by the type of the other
     if (value1Node.token.value.toUpperCase() === 'BLANK') {
       return value2Node.valueType;
     }
     if (value2Node.token.value.toUpperCase() === 'BLANK') {
       return value1Node.valueType;
     }
-    // 两个 value 参数都为 Number/Boolean/DateTime/String 的时候，才推断为相应类型返回值
+    // When both value parameters are Number/Boolean/DateTime/String, the return value of the corresponding type is inferred
     if (value1Node.valueType === value2Node.valueType) {
       return value1Node.valueType;
     }
@@ -234,12 +234,13 @@ export class Switch extends LogicalFunc {
       return BasicValueType.String;
     }
 
-    // 只有当所有匹配到的表达式的值返回类型都为 Number/Boolean/DateTime/String，才推断为对应类型的返回值
+    // Only when the return type of the value of all matched expressions is Number/Boolean/DateTime/String, 
+    // it is inferred as the return value of the corresponding type
     const argsLength = params.length - 1;
     let resultType: BasicValueType | null = argsLength & 1 ? params[argsLength].valueType : null;
     for (let i = 2; i <= argsLength; i += 2) {
       const curParams = params[i];
-      // 如果匹配的表达式中包含 BLANK，则由其它返回类型决定
+      // If the matched expression contains BLANK, it is determined by other return types
       if (curParams.token.value.toUpperCase() === 'BLANK') continue;
       if (resultType != null && resultType !== curParams.valueType) {
         return BasicValueType.String;
@@ -256,8 +257,10 @@ export class Switch extends LogicalFunc {
     const argsLength = params.length - 1;
     const switchCount = Math.floor(argsLength / 2);
     const defaultValue: any = argsLength & 1 ? params[argsLength].value : null;
-    const isDateTimeType = params[0].node.innerValueType === BasicValueType.DateTime; // 对 DateTime 类型做特殊处理
-    const isEmptyArray = param => param.node.valueType === BasicValueType.Array && !param.value?.length; // 特殊处理 Array 类型字段对于 BLANK 的匹配
+    const isDateTimeType = params[0].node.innerValueType === BasicValueType.DateTime; // Do special handling for DateTime types
+
+    // Specially handle the matching of Array type fields to BLANK
+    const isEmptyArray = param => param.node.valueType === BasicValueType.Array && !param.value?.length; 
 
     if (isDateTimeType) {
       targetValue = dayjs(targetValue).valueOf();
@@ -285,7 +288,7 @@ export class Switch extends LogicalFunc {
   }
 }
 
-// 所有方程式的 运行报错 或 手动触发，都会继承此类
+// All equations' running errors or manual triggers will inherit this class
 export class FormulaError extends LogicalFunc {
   static validateParams(params: AstNode[]) {
     //

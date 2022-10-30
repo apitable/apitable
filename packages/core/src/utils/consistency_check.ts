@@ -19,11 +19,11 @@ export type IConsistencyErrorInfo = {
 };
 
 /**
- * 
- * @param array columns 或者 rows
- * @param key id key
- * @return 待删除的 rows/columns 的 index
- */
+  *
+  * @param array columns or rows
+  * @param key id key
+  * @return the index of the rows/columns to be deleted
+  */
 function getDuplicates<T = any>(array: T[], key: 'recordId' | 'fieldId' | 'id'): number[] | null {
   const set = new Set();
   const result: number[] = [];
@@ -38,18 +38,19 @@ function getDuplicates<T = any>(array: T[], key: 'recordId' | 'fieldId' | 'id'):
   return result.length ? result.sort() : null;
 }
 
-// 一致性校验，要求 snapshot 中所有 view 不重复，且 rows/columns 与 recordMap/fieldMap 一一对应, 不重复
+// Consistency check requires that all views in the snapshot are not duplicated, 
+// and that rows/columns correspond to recordMap/fieldMap one-to-one without duplication
 export function consistencyCheck(snapshot: ISnapshot) {
   const startTime = Date.now();
   const recordsInMap = Object.keys(snapshot.recordMap || {});
   const fieldsInMap = Object.keys(snapshot.meta.fieldMap || {});
   const consistencyErrors: IConsistencyErrorInfo[] = [];
   const duplicateViews = getDuplicates(snapshot.meta.views, 'id');
-  // 过滤重复的 view
+  // filter duplicate views
   const views = duplicateViews ? snapshot.meta.views.filter((_, index) => !duplicateViews.some((idx) => idx === index))
     : snapshot.meta.views;
 
-  // 删除重复的 view
+  // remove duplicate views
   if (duplicateViews) {
     consistencyErrors.push({
       duplicateViews,
@@ -82,8 +83,8 @@ export function consistencyCheck(snapshot: ISnapshot) {
         const notExistInRecordMap = differentRecords.filter(record => !snapshot.recordMap[record]);
         const notExistInViewRow = differentRecords.filter(record => snapshot.recordMap[record]);
         err.differentRecords = differentRecords;
-        err.notExistInRecordMap = notExistInRecordMap; // 存在于 view.rows 中，但不存在与 recordMap 中，说明 rows 添加了幽灵行
-        err.notExistInViewRow = notExistInViewRow; // 存在于 recordMap 中，但是不存在与 view.rows 中，说明 rows 中缺失了行
+        err.notExistInRecordMap = notExistInRecordMap; // exists in view.rows, but not in recordMap, indicating that rows add ghost rows
+        err.notExistInViewRow = notExistInViewRow; // exists in recordMap, but does not exist in view.rows, indicating that rows are missing in rows
       }
     }
 
@@ -91,13 +92,15 @@ export function consistencyCheck(snapshot: ISnapshot) {
       const notExistInFieldMap = differentFields.filter(record => !snapshot.meta.fieldMap[record]);
       const notExistInViewColumn = differentFields.filter(record => snapshot.meta.fieldMap[record]);
       err.differentFields = differentFields;
-      err.notExistInFieldMap = notExistInFieldMap; // 存在于 view.columns 中，但不存在与 recordMap 中，说明 columns 添加了幽灵行
-      err.notExistInViewColumn = notExistInViewColumn; // 存在于 recordMap 中，但是不存在与 view.columns 中，说明 columns 中缺失了行
+      err.notExistInFieldMap = notExistInFieldMap; // exists in view.columns, but not in recordMap, indicating that columns have added ghost rows
+
+      // exists in recordMap, but does not exist in view.columns, indicating that rows are missing in columns
+      err.notExistInViewColumn = notExistInViewColumn; 
     }
 
     consistencyErrors.push(err);
   });
 
-  console.log(`数据校验耗时：${Date.now() - startTime} ms`);
+  console.log(`Data verification time: ${Date.now() - startTime} ms`);
   return consistencyErrors.length ? consistencyErrors : null;
 }

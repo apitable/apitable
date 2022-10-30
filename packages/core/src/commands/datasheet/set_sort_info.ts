@@ -32,19 +32,19 @@ export const setSortInfo: ICollaCommandDef<ISetSortInfoOptions> = {
     const hasInvalidSort = data && data.rules.some(sortField => {
       const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, sortField.fieldId);
 
-      // 如果设置过列权限，当前列在视图数据中的确不存在，所以忽略这种情况
+      // If the column permission is set, the current column does not exist in the view data, so ignore this situation
       if (fieldRole === ConfigConstant.Role.None) {
         return false;
       }
       return !fieldIds.includes(sortField.fieldId);
     });
 
-    // 判断当前操作的 FieldId 存不存在
+    // Determine whether the FieldId of the current operation exists or not
     if (hasInvalidSort) {
       throw new Error(t(Strings.error_sorted_failed_the_field_not_exist));
     }
 
-    // 判断当前操作的view是否是激活的view
+    // Determine whether the currently operating view is the active view
     if (datasheet.activeView !== viewId) {
       throw new Error(t(Strings.error_sorted_failed_wrong_target_view));
     }

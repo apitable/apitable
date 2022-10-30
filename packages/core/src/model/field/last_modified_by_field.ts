@@ -21,9 +21,9 @@ export class LastModifiedByField extends MemberBaseField {
   static propertySchema = Joi.object({
     uuids: Joi.array().items(Joi.string()).required(),
     datasheetId: datasheetIdString().required(),
-    // 依赖的字段集合类型
+    // dependent field collection type
     collectType: Joi.valid(CollectType.AllFields, CollectType.SpecifiedFields).required(),
-    // 依赖的字段
+    // dependent fields
     fieldIdCollection: Joi.array().items(Joi.string()).required(),
   }).required();
 
@@ -123,7 +123,7 @@ export class LastModifiedByField extends MemberBaseField {
     const { collectType, fieldIdCollection } = this.field.property;
     const updatedMap = record.recordMeta?.fieldUpdatedMap;
 
-    // 依赖于 fieldUpdatedMap，否则返回 null
+    // Depends on fieldUpdatedMap, otherwise returns null
     if (!updatedMap) {
       return null;
     }
@@ -134,7 +134,7 @@ export class LastModifiedByField extends MemberBaseField {
     return updatedBy == null ? null : updatedBy;
   }
 
-  // 获取所有 record 中涉及的 uuid
+  // Get the uuid involved in all records
   getUuidsByRecordMap(recordMap: IRecordMap): string[] {
     const fieldUuids: string[] = [];
     const uuids = Object.values(recordMap)

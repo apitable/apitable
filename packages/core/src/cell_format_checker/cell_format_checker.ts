@@ -26,11 +26,13 @@ export class CellFormatChecker {
     const stdValue = Field.bindContext(previousField, state).cellValueToStdValue(cellValue);
     const result = Field.bindContext(currentField, state).stdValueToCellValue(stdValue);
 
-    // 因为已经对数据做了修正，所以同时会对旧的数据结构做更新，避免数据正确，记录的 FieldType 还是错误，导致中间层报错
+    // Because the data has been corrected, 
+    // the old data structure will be updated at the same time to prevent the data from being correct 
+    // and the recorded FieldType is still wrong, resulting in an error in the middle layer
     fieldMapSnapshot[currentField.id] = currentField;
 
     if (cellValue && !result && currentField.type === FieldType.Link) {
-      // 修复由于本表缺少关联 op 导致的数据异常
+      // Fix the data exception caused by the lack of associated ops in this table
       return Selectors.getCellValue(state, Selectors.getSnapshot(state)!, recordId, currentField.id);
     }
 

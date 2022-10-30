@@ -11,7 +11,7 @@ export type ICellValueBase = null |
   ILinkIds |
   IUnitIds;
 
-// LookUp 单元格的值是其它实体字段单元格值组成的扁平数组
+// LookUp value is another entity field cell value flat array
 export type ILookUpValue = ICellValueBase[];
 export type ICellValue = ICellValueBase | ILookUpValue;
 

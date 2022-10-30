@@ -34,7 +34,7 @@ export function composeOperation(preOperation: IOperation, curOperation: IOperat
     curOperation.actions.length === 1 &&
     preOperation.actions[0].p.length === curOperation.actions[0].p.length
   ) {
-    // 过滤 od、oi 或者 li、ld 一样的 action
+    // filter the same actions as od, oi or li, ld
     const actions = jot.compose(curOperation.actions, preOperation.actions).filter((action: any) => {
       if (action.n === OTActionName.ObjectReplace) {
         return !isEqual(action.od, action.oi);
@@ -44,7 +44,7 @@ export function composeOperation(preOperation: IOperation, curOperation: IOperat
       }
       return true;
     });
-    // 合并后 actions 不超过原 actions 长度
+    // The merged actions do not exceed the length of the original actions
     if (actions.length <= curOperation.actions.length) {
       let operation: IOperation | null = null;
       if (actions.length > 0) {

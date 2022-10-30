@@ -1,8 +1,8 @@
 /* eslint-disable */
-// 模版中心的id
+// id of the template center
 
 const TEMPLATE_CENTER_PREFIX = 'TEMPLATE_CENTER_';
 
-export const TOP_HOT_BANNER = TEMPLATE_CENTER_PREFIX + 'TOP_HOT_BANNER'; // 模板中心最热门banner图
-export const USE_TEMPLATE_BTN = TEMPLATE_CENTER_PREFIX + 'USE_TEMPLATE_BTN'; // “使用模板”按钮
-export const CONFIRM_BTN_IN_TEMPLATE_MODAL = TEMPLATE_CENTER_PREFIX + 'CONFIRM_BTN_IN_TEMPLATE_MODAL'; // 使用模板确认框中的确认按钮
+export const TOP_HOT_BANNER = TEMPLATE_CENTER_PREFIX + 'TOP_HOT_BANNER'; // The most popular banner in the template center
+export const USE_TEMPLATE_BTN = TEMPLATE_CENTER_PREFIX + 'USE_TEMPLATE_BTN'; // "Use Template" button
+export const CONFIRM_BTN_IN_TEMPLATE_MODAL = TEMPLATE_CENTER_PREFIX + 'CONFIRM_BTN_IN_TEMPLATE_MODAL'; // use the confirmation button in the template confirmation box

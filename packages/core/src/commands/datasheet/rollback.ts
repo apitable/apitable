@@ -13,7 +13,7 @@ import { Events, Player } from 'player';
 import { Field } from 'model';
 
 export interface IRollback {
-  // 注意 operations 此 operation 顺序是反序，新的在前面，旧的在后面
+  // Note that the order of operations This operation is in reverse order, the new one is in the front, the old one is in the back
   operations: IOperation[];
 }
 
@@ -26,7 +26,8 @@ export interface IRollbackOptions {
 export const getRollbackActions = (operations: IOperation[], state: IReduxState, snapshot: ISnapshot) => {
   return operations.reduce((collect, op) => {
     const needIgnoreActionFlag = { field: {}, record: {}};
-    // 先恢复列相关的操作，确保后续检查设置单元格值的action能得到正确的校验结果
+    // First restore the column-related operations to ensure that the subsequent 
+    // action of checking the set cell value can get the correct verification result
     const updateFieldActions: IAnyAction[] = [];
     const addFieldActions: IAnyAction[] = [];
     const otherActions: IAnyAction[] = [];
@@ -47,7 +48,8 @@ export const getRollbackActions = (operations: IOperation[], state: IReduxState,
         return;
       }
       const res = parseAction(action);
-      // 原字段为link，恢复的时候则会插入link字段，若已找不到对应的关联表，则忽略恢复此数据
+      // The original field is link, and the link field will be inserted during recovery. 
+      // If the corresponding association table cannot be found, the recovery of this data will be ignored.
       if ([ActionType.UpdateField, ActionType.DelField].includes(res.type)) {
         const oldField = action.od;
         if (oldField.type === FieldType.Link && oldField.property.foreignDatasheetId) {
@@ -58,14 +60,14 @@ export const getRollbackActions = (operations: IOperation[], state: IReduxState,
           }
         }
       }
-      // 删除column时，如果已经标记需要忽略对应的字段，则不恢复数据
+      // When deleting a column, if the corresponding field has been marked to be ignored, the data will not be restored
       if (res.type === ActionType.DelColumn) {
         if (needIgnoreActionFlag.field[res.context.fieldId!]) {
           return;
         }
       }
 
-      // 设置单元格值，但是字段和要设置值的类型不匹配需忽略
+      // Set the cell value, but the field does not match the type of the value to be set and needs to be ignored
       if (res.type === ActionType.UpdateRecord) {
         const fieldId = res.context.fieldId!;
         const recordId = res.context.recordId!;
@@ -88,7 +90,7 @@ export const getRollbackActions = (operations: IOperation[], state: IReduxState,
         collect.push(...invertActions);
       } catch (error) {
         Player.doTrigger(Events.app_error_logger, {
-          error: new Error(`时光机回滚错误：${error}`),
+          error: new Error(`Time Machine rollback error: ${error}`),
           metaData: {
             actions: [action],
             snapshot,
@@ -113,7 +115,7 @@ export const rollback: ICollaCommandDef<IRollbackOptions> = {
     if (!preDatasheet) {
       return null;
     }
-    /* 1. [apply], 依次将 逆转actions 并应用到一份克隆的 snapshot 上，获得最初版的回滚快照 */
+    /* 1. [apply], apply the reverse actions to a cloned snapshot in turn to get the original rollback snapshot */
     const preSnapshot = preDatasheet.snapshot;
     const postSnapshot = fastCloneDeep(preSnapshot);
     const actions = getRollbackActions(operations, state, postSnapshot);
@@ -123,7 +125,7 @@ export const rollback: ICollaCommandDef<IRollbackOptions> = {
       return null;
     }
 
-    // 将 actions 收集起来
+    // collect actions
     const linkedActions: ILinkedActions[] = [];
 
     function setLinkedActions(datasheetId: string, actions: IJOTAction[]) {
@@ -142,11 +144,12 @@ export const rollback: ICollaCommandDef<IRollbackOptions> = {
       }
     }
 
-    /* 2. [diff], apply 过后的 snapshot 与之前的 snapshot 作对比，取出变化的 link 字段，并生成对关联表的字段变更 */
+    /* 2. [diff], compare the snapshot after apply with the previous snapshot, 
+    take out the changed link field, and generate field changes to the associated table */
     const { deletedLinkFields, newLinkFields, normalLinkFields } = getLinkFieldChange(preSnapshot.meta.fieldMap, postSnapshot.meta.fieldMap);
 
     console.log({ deletedLinkFields, newLinkFields, normalLinkFields });
-    /* 3. [patch], 所有关联字段重新建立好双向关联，并对数据进行关联对齐 */
+    /* 3. [patch], re-establish bidirectional associations for all associated fields and align the data */
     deletedLinkFields.forEach(sourceField => {
       const foreignDatasheetId = sourceField.property.foreignDatasheetId;
       const foreignSnapshot = getSnapshot(state, foreignDatasheetId)!;
@@ -165,7 +168,7 @@ export const rollback: ICollaCommandDef<IRollbackOptions> = {
       let brotherFieldId = sourceField.property.brotherFieldId!;
       const foreignSnapshot = getSnapshot(state, foreignDatasheetId)!;
       if(!foreignSnapshot){
-        // 单向关联
+        // one-way association
         return;
       }
       const foreignField = getField(state, brotherFieldId, foreignDatasheetId);
@@ -173,13 +176,15 @@ export const rollback: ICollaCommandDef<IRollbackOptions> = {
       const foreignFieldIds = Object.keys(foreignSnapshot.meta.fieldMap);
 
       /**
-       * newLinkFields 对应的 brotherFieldId 还在关联表中存在, 并且关联字段不为纯文本，则需要修改 brotherFieldId 创建新的关联字段
-       * 否则将关联表的字段类型设置为神奇关联类型。
+       * The brotherFieldId corresponding to newLinkFields still exists in the association table, 
+       * and the association field is not plain text, you need to modify brotherFieldId to create a new association field
+       * Otherwise set the field type of the association table to the magic association type.
        */
       if (foreignField && foreignField.type !== FieldType.Text) {
         brotherFieldId = getNewId(IDPrefix.Field, foreignFieldIds);
-        /** 深度克隆一份避免下面的 DatasheetActions.setFieldAttr2Action 方法得到的ac oi和od 为相同的值。
-         * 从而避免中间层做OT转换的时候会出现od时，找不到关联表fieldMap对应的值
+        /** A deep clone avoids the following DatasheetActions.setFieldAttr2Action method to get the same value for ac oi and od.
+         * In order to avoid the occurrence of od when the middle layer does OT conversion, 
+         * the value corresponding to the associated table fieldMap cannot be found
          */
         sourceField = cloneDeep(sourceField);
         sourceField.property.brotherFieldId = brotherFieldId;
@@ -224,7 +229,7 @@ export const rollback: ICollaCommandDef<IRollbackOptions> = {
     newLinkFields.forEach((sourceField, index) => {
       console.log('newLinkFields: ', sourceField);
       if(!newForeignField[index]){
-        // 单向关联
+        // one-way direction
         return;
       }
       const result = patchFieldValues(state, postSnapshot, sourceField, newForeignField[index]);
@@ -249,80 +254,81 @@ export const rollback: ICollaCommandDef<IRollbackOptions> = {
 };
 
 /**
- * 获得新增的和删除的关联字段数组
- * @param preFieldMap 回滚前的 fieldMap
- * @param postFieldMap 回滚后的 fieldMap
- * @return deletedLinkFields 回滚后被删除的关联字段
- * @return newLinkFields 回滚后新增的
- * @return normalLinkFields 回滚还存在的关联字段
+ * Get an array of new and deleted associated fields
+ * @param preFieldMap fieldMap before rollback
+ * @param postFieldMap rollback fieldMap
+ * @return deletedLinkFields Link fields deleted after rollback
+ * @return newLinkFields added after rollback
+ * @return normalLinkFields rollback existing associated fields
  */
 function getLinkFieldChange(preFieldMap: Record<string, IField>, postFieldMap: Record<string, IField>) {
   let deletedLinkFields: ILinkField[] = [];
   let newLinkFields: ILinkField[] = [];
   let normalLinkFields: ILinkField[] = [];
   /**
-   * 三种情况被视为 deletedLinkFields，preFieldMap 拿到一个字段后在 postFieldMap 里用 fieldId 匹配
-   * pre 是 linkField，post 里匹配不到这个 field
-   * pre 是 linkField，post 里被转换了不是 link 字段
-   * pre 是 linkField，post 里被转换成了另一个 link 字段，或者兄弟字段不一致，（此时 post 里的link 字段视为新增）
-   *
-   * 三种种情况被视为 newLinkFields
-   * post 是 linkField， pre 中不存在这个 field
-   * post 是 linkField， pre 不是 linkField
-   * pre 是 linkField，post 里被转换成了另一个 link 字段，或者兄弟字段不一致，（同上面第三条）
-   *
-   * 一种情况被视为 normalLinkFields
-   * pre 和 post 中都存在，并且关联的表和兄弟字段都没变
-   */
+    * The three cases are regarded as deletedLinkFields. After preFieldMap gets a field, it is matched with fieldId in postFieldMap
+    * pre is linkField, this field cannot be matched in post
+    * pre is a linkField, and it is not a link field that is converted in post
+    * pre is a linkField, the post is converted into another link field, or the sibling fields are inconsistent, 
+    * (the link field in the post is considered new at this time)
+    *
+    * Three cases are treated as newLinkFields
+    * post is a linkField, this field does not exist in pre
+    * post is a linkField, pre is not a linkField
+    * pre is a linkField, the post is converted into another link field, or the sibling fields are inconsistent, (same as the third item above)
+    *
+    * One case is treated as normalLinkFields
+    * exists in both pre and post, and the associated table and sibling fields have not changed
+    */
   Object.values(preFieldMap).forEach(preField => {
     const postField = postFieldMap[preField.id];
-    // post 是 linkField, pre 不是 linkField 需要往newLinkFields push 一条记录；
+    // post is linkField, pre is not linkField, you need to push a record to newLinkFields;
     if (postField && postField.type === FieldType.Link) {
       if (preField && preField.type !== FieldType.Link) {
         newLinkFields.push(postField);
         return;
       }
     }
-    // pre 不是 linkField 先过滤掉
+    // pre is not a linkField to filter out first
     if (preField.type !== FieldType.Link) {
       return;
     }
 
-    // post 里匹配不到这个 field
+    // This field cannot be matched in the post
     if (!postField) {
       deletedLinkFields.push(preField);
       return;
     }
 
-    // post 里被转换了不是 link 字段
+    // The post is converted not the link field
     if (postField.type !== FieldType.Link) {
       deletedLinkFields.push(preField);
       return;
     }
 
-    // post 里关联的不是同一个表
+    // Posts are not related to the same table
     if (preField.property.foreignDatasheetId !== postField.property.foreignDatasheetId) {
       deletedLinkFields.push(preField);
       newLinkFields.push(postField);
       return;
     }
 
-    // post 里关联的是同一个表，但是兄弟字段不是同一个
+    // The post is associated with the same table, but the sibling fields are not the same
     if (preField.property.brotherFieldId !== postField.property.brotherFieldId) {
       deletedLinkFields.push(preField);
       newLinkFields.push(postField);
       return;
     }
 
-    // pre 和 post 中都存在，并且关联的表和兄弟字段都没变
+    // Both pre and post exist, and the associated table and sibling fields have not changed
     normalLinkFields.push(postField);
   });
 
-  // post 是 linkField， pre 中不存在这个 field
+  // post is a linkField, this field does not exist in pre
   const newInPostFields = Object.values(postFieldMap).filter(postField => !preFieldMap[postField.id] && postField.type === FieldType.Link);
   newLinkFields.push(...newInPostFields as ILinkField[]);
 
-  // 过滤掉 brotherFieldId 为空的 field，也就是自表关联的 field
+  // Filter out the fields where brotherFieldId is empty, that is, the fields associated with the table
   deletedLinkFields = deletedLinkFields.filter(field => field.property.brotherFieldId);
   newLinkFields = newLinkFields.filter(field => field.property.brotherFieldId);
   normalLinkFields = normalLinkFields.filter(field => field.property.brotherFieldId);
@@ -330,12 +336,12 @@ function getLinkFieldChange(preFieldMap: Record<string, IField>, postFieldMap: R
   return { deletedLinkFields, newLinkFields, normalLinkFields };
 }
 
-// 提供 sourceLinkField, 将关联表对应的 field 中的 cellValue 对齐双向关联
+// Provide sourceLinkField to align the cellValue in the field corresponding to the association table to a bidirectional association
 function patchFieldValues(
   state: IReduxState,
   sourceSnapshot: ISnapshot,
   sourceField: IField,
-  // 关联表新增的 field 不在snapshot 中，需要补充传入
+  // The newly added field of the association table is not in the snapshot, and needs to be added in
   isolateForeignField?: ILinkField
 ): {
   sourceActions: IJOTAction[];
@@ -344,7 +350,7 @@ function patchFieldValues(
   const foreignDatasheetId = sourceField.property.foreignDatasheetId;
   const foreignSnapshot = getSnapshot(state, foreignDatasheetId)!;
   const foreignField = isolateForeignField || getField(state, sourceField.property.brotherFieldId!, foreignDatasheetId);
-  // 生成兄弟字段需要的值
+  // Generate the value required by the sibling field
   const foreignLinkRecordValueMap: Record<string, string[]> = {};
   const foreignActions: IJOTAction[] = [];
   const sourceActions: IJOTAction[] = [];
@@ -356,13 +362,13 @@ function patchFieldValues(
     }
   }
 
-  // 以 postField 为依据生成关联列的值映射
+  // Generate a value map of the associated column based on postField
   eachFieldValue(sourceField.id, sourceSnapshot.recordMap, (recordId, linkCellValue) => {
     if (!linkCellValue) {
       return;
     }
     const filteredLinkCellValue = linkCellValue.filter(rid => {
-      // 如果关联单元格汇总 rid 在关联表不存在，则删掉这条 rid
+      // If the associated cell summary rid does not exist in the associated table, delete this rid
       if (!foreignSnapshot.recordMap[rid]) {
         return false;
       }
@@ -385,12 +391,12 @@ function patchFieldValues(
 
   console.log({ foreignLinkRecordValueMap });
 
-  // 遍历关联表，把存在的替换，不存在的删除，缺失的补充
+  // Traverse the association table, replace the existing ones, delete the ones that don't exist, and add the missing ones
   foreignSnapshot && eachFieldValue(foreignField.id, foreignSnapshot.recordMap, (recordId, linkCellValue) => {
     let action: IJOTAction | null = null;
     const newCellValue = foreignLinkRecordValueMap[recordId];
     if (newCellValue) {
-      // 数组中存在不同的值才需要替换
+      // need to be replaced if there are different values in the array
       if (xor(linkCellValue, newCellValue)) {
         action = DatasheetActions.setRecord2Action(foreignSnapshot, {
           fieldId: foreignField.id,

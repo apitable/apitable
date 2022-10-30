@@ -15,7 +15,9 @@ export interface IAddRecordsOptions {
   index: number;
   count: number;
   groupCellValues?: ICellValue[];
-  cellValues?: { [fieldId: string]: ICellValue }[]; // 填新增入单元格中的值，cellValues.length 必须等于 count;
+
+  // Fill in the new value added to the cell, cellValues.length must be equal to count;
+  cellValues?: { [fieldId: string]: ICellValue }[]; 
   ignoreFieldPermission?: boolean;
 }
 
@@ -85,12 +87,14 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
     const memberFieldMap: { [key: string]: string[] } = {};
 
     /**
-     * 新增一条记录，该记录可能是一条空白记录，也可能存在一些初始化的数据，
-     * 初始化的数据的数据来演有三部分：
-     * 1. 复制一条记录，目标记录里原本就有的数据
-     * 2. 存在筛选项，如果筛选值是一个确定的值，则会带上筛选项
-     * 3. 存在分组项，在一个分组中添加记录，会带上该分组的数据
-     * 假设添加一条记录，上面三部分都有相应的数据，则权重依次降低，也就是同一个字段，下一级来源的数据会被上一级来源的数据覆盖
+     * Add a new record, the record may be a blank record, or there may be some initialized data,
+     * The data of the initialized data has three parts:
+     * 1. Copy a record, the original data in the target record
+     * 2. There is a filter item, if the filter value is a certain value, the filter item will be included
+     * 3. There is a group item, adding a record in a group will bring the data of the group
+     * Assuming that a record is added, and the above three parts have corresponding data, 
+     * the weights will decrease in turn, that is, for the same field, 
+     * the data from the next-level source will be overwritten by the data from the previous-level source.
      */
     const actions = newRecordIds.reduce<IJOTAction[]>((collected, recordId, i) => {
       const userInfo = state.user.info!;
@@ -100,9 +104,10 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
       }
 
       /**
-       * 新增一条记录，可能因为 筛选、分组、复制一行 的原因代入初始值，
-       * 如果其中某一列设置了权限，且当前用户没有编辑权限，在设置数据时需要将相应列的数据过滤掉，
-       * 因为所有的数据处理完都会经过这里，所以此处进行统一的过滤
+       * Add a new record, which may be substituted into the initial value due to filtering, grouping, and copying a row.
+       * If permission is set for one of the columns, and the current user does not have editing permission, 
+       * the data of the corresponding column needs to be filtered out when setting the data.
+       * Because all data will pass here after processing, unified filtering is performed here
        */
       if (fieldPermissionMap && !ignoreFieldPermission) {
         const _data = {};
@@ -116,18 +121,23 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
       }
 
       /**
-       * 如果添加的记录中，存在成员字段的数据，需要特殊处理。当前的逻辑，成员字段表头中会记录当前这一列存在的所有成员去重后的 unitId,
-       * 所以在新增记录并且存在初始化数据，且数据中存在成员字段的内容，需要检查当前新增的 unitId 是否在表头中存在，如果不存在，则需要同步更新成员表头的数据
+       * If there is data in the member field in the added record, special processing is required. 
+       * In the current logic, the member field header will record the unitId of all members in the current column after deduplication,
+       * Therefore, when a new record is added and there is initialization data, 
+       * and the content of the member field exists in the data, 
+       * it is necessary to check whether the newly added unitId exists in the header. 
+       * If it does not exist, the data of the member header needs to be updated synchronously
        */
       if (newRecord.data) {
         const _recordData = {};
         for (const [fieldId, cellValue] of Object.entries(newRecord.data)) {
           if (!fieldMap[fieldId]) {
-            // 针对数据异常做的兼容处理，一部分模板中心的表里存在脏数据
+            // Compatible processing for data exceptions, some tables in the template center have dirty data
             continue;
           }
 
-          // 行记录中会存在已经不存在的列的数据，中间层加强校验之后，这部分数据会导致报错，所以这里只保留 fieldId 还存在的列数据
+          // There will be column data that does not exist in the row record. After the middle layer strengthens the verification, 
+          // this part of the data will cause an error, so only the column data that still exists in the fieldId is retained here.
           _recordData[fieldId] = cellValue;
           fieldMapSnapshot[fieldId] = fieldMap[fieldId];
 
@@ -161,7 +171,7 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
         const value = newRecord.data[field.id] as string[] | null;
         const linkedSnapshot = Selectors.getSnapshot(state, field.property.foreignDatasheetId)!;
 
-        // 当关联字段单元格本身就没有值的时候，则什么都不用做
+        // When the associated field cell itself has no value, do nothing
         if (!value) {
           return;
         }

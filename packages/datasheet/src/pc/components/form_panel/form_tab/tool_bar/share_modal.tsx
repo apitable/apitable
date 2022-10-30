@@ -86,7 +86,7 @@ export const ShareModal: React.FC<IShareModalProps> = props => {
     });
   };
 
-  // Update the sharing status of number tables and working directories
+  // Update the sharing status of datasheets and working directories
   const updateShareStatus = (status: boolean) => {
     dispatch(StoreActions.updateTreeNodesMap(formId, { nodeShared: status }));
     dispatch(StoreActions.updateForm(formId, { nodeShared: status }));

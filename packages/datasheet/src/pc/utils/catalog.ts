@@ -280,7 +280,7 @@ const getRowsAndCols = (datasheet: IDatasheetState, view?: IViewProperty) => {
   return { rows, cols };
 };
 
-// Return the current number table permissions with the provided parameters
+// Return the current datasheet permissions with the provided parameters
 export const getSharePermission = (info: IShareSpaceInfo) => {
   const { allowEdit, hasLogin, allowSaved } = info;
   if (allowSaved) {

@@ -37,7 +37,7 @@ export class Find extends TextFunc {
       const startFromPosition = params[2]?.value > 0 ? params[2].value - 1 : 0;
       return whereToSearch.indexOf(stringToFind, startFromPosition) + 1;
     }
-    // positionIndex 支持负数，如果填写的是负数，则从后往前计算位置
+    // positionIndex supports negative numbers, if a negative number is filled in, the position is calculated from the back to the front
     const startFromPosition = whereToSearch.length + params[2].value;
     return whereToSearch.lastIndexOf(stringToFind, startFromPosition) + 1;
   }
@@ -419,7 +419,7 @@ export class Substitute extends TextFunc {
     if (str == null) {
       return null;
     }
-    if (index < 1 || index > splitArr.length - 2) { // 当 起始位置 不符合范围值时，直接返回原字符串
+    if (index < 1 || index > splitArr.length - 2) { // When the starting position does not match the range value, return the original string directly
       return String(str);
     }
     if (index) {

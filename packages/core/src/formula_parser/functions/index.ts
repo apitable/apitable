@@ -332,7 +332,7 @@ export const Functions = new Map<string, IFunction>([
     summary: t(Strings.function_error_summary),
     example: t(Strings.function_error_example),
   }],
-  // TODO：这里先做 ISERROR 的兼容，刷完用户数据后统一删掉
+  // TODO: Do ISERROR compatibility here first, and delete the user data after brushing
   ['ISERROR', {
     name: 'ISERROR',
     func: logical.IsError,

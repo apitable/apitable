@@ -30,7 +30,7 @@ export const commonNumberFields = new Set([
   FieldType.AutoNumber,
   FieldType.Formula,
 ]);
-// 科学计数法临界值
+// scientific notation threshold
 export const numberThresholdValue = 1e+16;
 
 export const numberFormat = (cv, formatting) => {
@@ -161,7 +161,7 @@ export abstract class NumberBaseField extends Field {
 
     if (val != null) {
       stdVal.data.push({
-        // 对于 Number 类型相关字段，需保证数据源精确度是准确的
+        // For fields related to Number type, ensure that the data source accuracy is accurate
         text: this.cellValueToString(val) || '',
         value: val,
       });
@@ -170,7 +170,7 @@ export abstract class NumberBaseField extends Field {
     return stdVal;
   }
 
-  // StandardValue -> CellValue 需经过数据转换，否则会影响单元格复制、填充等操作
+  // StandardValue -> CellValue needs to undergo data conversion, otherwise it will affect cell copying, filling and other operations
   stdValueToCellValue(stdVal: IStandardValue): number | null {
     const { data, sourceType } = stdVal;
 
@@ -178,11 +178,11 @@ export abstract class NumberBaseField extends Field {
       return null;
     }
     const { text, value } = data[0];
-    // 从 Number & Formula 相关字段转换过来
+    // Convert from Number & Formula related fields
     if (commonNumberFields.has(sourceType) && this.validate(value)) {
       return value;
     }
-    // 其它字段
+    // other fields
     const cellValue: ICellValue = str2NumericStr(text);
     return cellValue == null ? null : str2number(cellValue);
   }
@@ -204,11 +204,13 @@ export abstract class NumberBaseField extends Field {
   }
 
   static _isMeetFilter(operator: FOperator, cellValue: number | null, conditionValue: Exclude<IFilterNumber, null>) {
-    // TODO: 整理这里的逻辑.
+    // TODO: Tidy up the logic here.
     // Field -> NumberBaseField -> [NumberField,RatingField,PercentField,CurrencyField] -> LookupField
-    // + getVisibleRows 会提前效验为空不为空的情况。按道理来说应该不用，全部的 filter 逻辑都应该走这里。
-    // + 在实现字段 isMeetFilter 时，应该提前判断单目运算符，然后再处理多目运算符号。这样下面对比较值的处理，就不会影响正常的判断逻辑。
-    // + 现在字段 filter 也需要提供给 automation 的单记录使用，为空不为空提前判断。
+    // + getVisibleRows will pre-validate if it is empty or not. Logically speaking, it should not be used, and all filter logic should go here.
+    // + When implementing the field isMeetFilter, the unary operator should be judged in advance, 
+    // and then the polynomial operator should be processed. In this way, 
+    // the following processing of the comparison value will not affect the normal judgment logic.
+    // + Now the field filter also needs to be provided to the single record of automation, and it is determined in advance if it is empty or not.
     if (operator === FOperator.IsEmpty) {
       return cellValue == null;
     }

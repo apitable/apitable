@@ -53,7 +53,7 @@ export const parseAction = (action: IAnyAction): IParseActionRes => {
     recordPropertyData = path[3];
   }
 
-  // 更改的path为 meta -> views -> vIdx -> rows，改变一个视图的记录
+  // The changed path is meta -> views -> vIdx -> rows, changing the record of a view
   if (viewProperty === 'rows') {
     if (hasLi && !hasLd) {
       return {
@@ -66,7 +66,7 @@ export const parseAction = (action: IAnyAction): IParseActionRes => {
         context: { viewIndex, viewProperty, propertyIndex }
       };
     }
-    // 更改的path为 meta -> views -> vIdx -> columns，改变一个视图的列
+    // The changed path is meta -> views -> vIdx -> columns, changing the columns of a view
   } else if (viewProperty === 'columns') {
     if (hasLi && hasLd) {
       return {
@@ -84,33 +84,33 @@ export const parseAction = (action: IAnyAction): IParseActionRes => {
         context: { viewIndex, viewProperty, propertyIndex, fieldId: action.ld.fieldId }
       };
     }
-    // 更改的path为 meta -> views -> vIdx -> name，改变一个视图名称
+    // Change the path to meta -> views -> vIdx -> name, change a view name
   } else if (metaField === 'views' && viewProperty === 'name') {
     return {
       type: ActionType.ModifyViewName,
       context: { viewIndex, viewProperty }
     };
-  // 更改的path为 meta -> views -> vIdx -> xxx，改变一个视图的视图配置，过滤、分组等
+  // Change the path to meta -> views -> vIdx -> xxx, change the view configuration, filtering, grouping, etc. of a view
   } else if (metaField === 'views' && viewProperty) {
     return {
       type: ActionType.SetViewProperty,
       context: { viewIndex, viewProperty }
     };
-  // 更改的path为 meta -> fieldMap -> fieldId，改变字段数据
+  // The changed path is meta -> fieldMap -> fieldId, changing the field data
   } else if (fieldId) {
-    // 新增字段
+    // add field
     if (hasOi && !hasOD) {
       return {
         type: ActionType.AddField,
         context: { fieldId }
       };
-      // 删除字段
+      // delete field
     } else if (hasOD && !hasOi) {
       return {
         type: ActionType.DelField,
         context: { fieldId }
       };
-      // 更新字段
+      // update field
     } else if (hasOi && hasOD) {
       return {
         type: ActionType.UpdateField,
@@ -118,49 +118,49 @@ export const parseAction = (action: IAnyAction): IParseActionRes => {
       };
     }
   } else if (recordId) {
-    // 新增记录
+    // new record
     if (hasOi && !hasOD && !recordPropertyData) {
       return {
         type: ActionType.AddRecord,
         context: { recordId }
       };
-      // 删除记录
+      // delete record
     } else if (hasOD && !hasOi && !recordPropertyData) {
       return {
         type: ActionType.DelRecord,
         context: { recordId }
       };
-      // 插入评论
+      // insert comment
     } else if (recordProperty === 'comments' && hasLi && !recordPropertyData) {
       return {
         type: ActionType.InsertComment,
         context: { recordId, data: action.li }
       };
-      // 更新评论（点赞）
+      // update comment(or like)
     } else if (recordProperty === 'comments' && hasLi && recordPropertyData) {
       return {
         type: ActionType.UpdateComment,
         context: { recordId, data: action.li }
       };
-      // 删除评论
+      // delete comment
     } else if (recordProperty === 'comments' && hasLd) {
       return {
         type: ActionType.DelComment,
         context: { recordId, data: action.li }
       };
-      // 增加评论数
+      // add comment number
     } else if (recordProperty === 'commentCount' && hasNa && action.na > 0) {
       return {
         type: ActionType.AddCommentCount,
         context: { recordId }
       };
-      // 减少评论数
+      // reduce comments
     } else if (recordProperty === 'commentCount' && hasNa && action.na < 0) {
       return {
         type: ActionType.DescCommentCount,
         context: { recordId }
       };
-      // 更新记录
+      // update records
     } else if (recordProperty === 'data' && recordPropertyData) {
       return {
         type: ActionType.UpdateRecord,

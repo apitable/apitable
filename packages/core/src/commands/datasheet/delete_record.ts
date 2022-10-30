@@ -42,12 +42,13 @@ export const deleteRecord: ICollaCommandDef<IDeleteRecordOptions> = {
     });
 
     /**
-     * 根据自关联 field，生成一个 map，key 为 recordId，值为关联了这个 recordId 的那些 records 的 id 数组。
-     * 多个自关联 field 会有多个这样的 map
+     * According to the self-association field, generate a map, the key is recordId, 
+     * and the value is the id array of those records associated with this recordId.
+     * Multiple self-associated fields will have multiple such maps
      */
     const fieldRelinkMap: { [fieldId: string]: { [recordId: string]: string[] } } = {};
     linkField.filter(field => {
-      // 过滤出字表关联 field
+      // Filter out the associated field of the word table
       return !field.property.brotherFieldId;
     }).forEach(field => {
       const reLinkRecords: { [recordId: string]: string[] } = {};
@@ -72,19 +73,19 @@ export const deleteRecord: ICollaCommandDef<IDeleteRecordOptions> = {
       }
       linkField.forEach((field: ILinkField) => {
         let oldValue: string[] | null = null;
-        // 两表关联
+        // two tables are associated
         if (field.property.brotherFieldId) {
           oldValue = record.data[field.id] as string[] | null;
         } else {
-          // 自关联
+          // self-association
           oldValue = fieldRelinkMap[field.id][record.id] || null;
-          // 自表关联并且关联记录包含被删除记录本身时，不生成linkedActions
+          // LinkedActions are not generated when the self-table is associated and the associated record contains the deleted record itself
           oldValue = oldValue?.filter(item => !data.includes(item));
         }
 
         const linkedSnapshot = Selectors.getSnapshot(state, field.property.foreignDatasheetId)!;
 
-        // 当关联字段单元格本身就没有值的时候，则什么都不用做
+        // When the associated field cell itself has no value, do nothing
         if (!oldValue?.length) {
           return;
         }

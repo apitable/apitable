@@ -42,7 +42,7 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
     }
 
     const view = getViewById(snapshot, viewId);
-    // 目前只有 Grid 视图才有粘贴
+    // Currently only the Grid view has paste
     if (!view || ![ViewType.Grid, ViewType.Gantt].includes(view.type)) {
       return null;
     }
@@ -62,13 +62,13 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
     }
 
     const actions: IJOTAction[] = [];
-    // 新增闹钟时补偿的 oi action
+    // oi action for compensation when adding an alarm
     const defaultAlarmActions: IObjectReplaceAction[] = [];
-    // 新增闹钟实际生效的 oi action
+    // Add the oi action that the alarm clock actually takes effect
     const realAlarmActions: IObjectReplaceAction[] = [];
     const linkedActions: ILinkedActions[] = [];
     const recordValues: ISetRecordOptions[] = [];
-    // 先删掉需要剪切的部分
+    // first delete the part that needs to be cut
     if (cut) {
       const datasheetId = cut.datasheetId;
       if (datasheetId === state.pageParams.datasheetId) {
@@ -89,7 +89,7 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
       }
     }
 
-    // 已有 record 粘贴赋值
+    // There is already record paste assignment
     const columnCount = options.fields.length;
     const visibleColumns = getVisibleColumns(state);
     const columnsToPaste = visibleColumns.slice(column, column + columnCount);
@@ -108,7 +108,7 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
             alarm: {
               id: getNewId(IDPrefix.DateTimeAlarm),
               ...omit(alarm, 'id'),
-              // 复制如果是其他成员会将他人设置的闹钟改为自己
+              // If the copy is another member, the alarm set by others will be changed to himself
               alarmUsers: userInfo && alarm.alarmUsers?.[0].type === AlarmUsersType.Member ? [{
                 type: AlarmUsersType.Member,
                 data: userInfo.unitId,
@@ -116,11 +116,11 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
             } as IRecordAlarm,
           }) as IObjectReplaceAction[];
           if (curAlarmActions) {
-            // 存在补偿的 OP
+            // there is a compensated OP
             if (curAlarmActions.length === 2) {
               /**
-               * p 相同的合并（同行的合并成一个 oi action）
-               * p 不相同的不合并（不同行单独为 oi action）
+               * p same merge (merge of peers into one oi action)
+               * p is not the same, not merged (different lines are oi action alone)
                */
               let isMerged = false;
               defaultAlarmActions.forEach((action, idx) => {
@@ -153,7 +153,7 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
       value = handleEmptyCellValue(value, Field.bindContext(field, state).basicValueType);
 
       if (value == null && stdValue.data.length && field.type !== stdValue.sourceType) {
-        // 这里说明有不匹配的类型存在
+        // This indicates that there is a mismatched type
         notifyExistIncompatibleField?.();
       }
 
@@ -163,12 +163,12 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
         value,
       });
 
-      // 粘贴单元格为日期类型、有值且有闹钟
+      // Paste the cell as a date type, with a value and with an alarm
       oldRecordId && addAlarm(value, field, recordId, oldRecordId);
 
     }
 
-    // 在只复制了一个单元格的情况下，要对选区进行覆盖式粘贴
+    // In the case where only one cell is copied, paste over the selection
     const singleCellPaste = stdValues.length === 1 && stdValues[0].length === 1;
     if (singleCellPaste) {
       const ranges = getSelectRanges(state)!;
@@ -184,7 +184,7 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
           pushPasteValue(stdValues[0][0], field, recordId, recordIds?.[0]);
         }
       }
-      // 复制了多个单元格的情况下，以负值区域为准，选区无关
+      // When multiple cells are copied, the negative value area shall prevail, the selection area is irrelevant
     } else {
       for (let i = 0; stdValues[i] && recordIdsToPaste[i]; i++) {
         const recordId = recordIdsToPaste[i];
@@ -207,7 +207,7 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
       actions.push(...rst.actions);
     }
 
-    // 扩增行的新增行与粘贴赋值
+    // Add new line and paste assignment for augmented line
     const newStdValues = stdValues.slice(recordIdsToPaste.length);
     if (newStdValues.length) {
       const recordValues: { [fieldId: string]: ICellValue }[] = [];
@@ -215,7 +215,7 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
       for (let row = 0; newStdValues[row]; row++) {
         const stdValuesRow = newStdValues[row];
         const cellValues: { [fieldId: string]: ICellValue } = {};
-        // 将一行转为一个 record
+        // Convert a line to a record
         for (let column = 0; stdValuesRow[column] && columnsToPaste[column]; column++) {
           const fieldId = columnsToPaste[column].fieldId;
           const stdValue = stdValuesRow[column];

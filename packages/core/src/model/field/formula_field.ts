@@ -81,7 +81,7 @@ export class FormulaField extends ArrayValueField {
           }
         };
       default:
-        // 默认按 string 处理
+        // By default, it is processed as string
         return {
           type: 'string',
           title: this.field.name,
@@ -188,7 +188,7 @@ export class FormulaField extends ArrayValueField {
   }
 
   compare(cv1: ICellValue, cv2: ICellValue, orderInCellValueSensitive?: boolean) {
-    // 兼容对公式 error 的排序
+    // Compatible with sorting formula error
     const isCv1Error = cv1 instanceof FormulaBaseError;
     const isCv2Error = cv2 instanceof FormulaBaseError;
     if (isCv1Error && isCv2Error) {
@@ -307,7 +307,7 @@ export class FormulaField extends ArrayValueField {
         return TextBaseField._isMeetFilter(operator, this.cellValueToString(cellValue), conditionValue);
       case BasicValueType.Array:
         switch (operator) {
-          // 否定语义的 filter 操作，需要数组内每个项都满足
+          // The filter operation of negative semantics requires that each item in the array satisfies
           case FOperator.DoesNotContain:
           case FOperator.IsNot:
           case FOperator.IsEmpty:

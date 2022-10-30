@@ -63,8 +63,9 @@ export class DateTimeField extends DateTimeBaseField {
     return null;
   }
 
-  /* 由于需要遍历 DateTimeFormat 枚举值，但 DateTimeFormat 在编译后会有 keyValue 和 valueKey 形式
-   需要过滤掉 number key 的情况 */
+  /* Due to the need to traverse the DateTimeFormat enumeration value, 
+  but DateTimeFormat will have the form of keyValue and valueKey after compilation
+    Need to filter out the case of number key */
   validateProperty() {
     return DateTimeField.propertySchema.validate(this.field.property);
   }

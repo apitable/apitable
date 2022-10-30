@@ -22,7 +22,7 @@ function isArrayParam(params: IFormulaParam<any>[]): params is [IFormulaParam<an
 }
 
 /**
- * 对参数的值进行扁平化
+ * Flatten the value of the parameter
  */
 export const flattenParams = (params: IFormulaParam[]): any[] => {
   const value = params.reduce((prev, cur) => {
@@ -162,7 +162,7 @@ export class Counta extends ArrayFunc {
   }
 
   static func(params: IFormulaParam<any>[]): number {
-    // 鉴于其它平台对此函数的处理，false 也包含于空值的范围
+    // Due to how other platforms handle this function, false is also included in the range of nulls
     const calc = (v: any) => v != null && v !== '' && v !== false;
 
     if (isArrayParam(params)) {
@@ -223,7 +223,7 @@ export class CountIf extends ArrayFunc {
 
     if (range == null) return 0;
     if (rangeNode.valueType === BasicValueType.Array) {
-      const filterTypes = [BasicValueType.String, BasicValueType.Number]; // 特殊可转换类型
+      const filterTypes = [BasicValueType.String, BasicValueType.Number]; // special convertible type
       switch (finalSymbol) {
         case SymbolType.Equal: {
           if (filterTypes.includes(rangeNode.innerValueType!) && filterTypes.includes(conditionNode.valueType!)) {
@@ -278,7 +278,7 @@ export class CountIf extends ArrayFunc {
     if (rangeNode.valueType === BasicValueType.String) {
       switch (finalSymbol) {
         case SymbolType.Equal: {
-          const filterTypes = [BasicValueType.String, BasicValueType.Number]; // 特殊可转换类型
+          const filterTypes = [BasicValueType.String, BasicValueType.Number]; // special convertible type
           if (filterTypes.includes(conditionNode.valueType)) {
             return range.split(condition).length - 1;
           }

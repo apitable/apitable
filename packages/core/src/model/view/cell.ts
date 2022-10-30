@@ -37,9 +37,9 @@ export class Cell {
     let { recordIndex, fieldIndex }: { recordIndex: number, fieldIndex: number } = Selectors.getCellIndex(state, Cell.instance)!;
 
     /**
-     * 针对以下两种情况，无需进行操作：
-     * 1. 激活单元格处于第一行，且要向上移动
-     * 2. 激活单元格处于最后一行，且要向下移动
+     * No action is required for the following two cases:
+     * 1. The active cell is in the first row and needs to be moved up
+     * 2. The active cell is in the last row and needs to be moved down
      */
     if (
       ([CellDirection.Up, CellDirection.UpEdge].includes(direction) && recordIndex === 0) ||
@@ -48,7 +48,7 @@ export class Cell {
       return Cell.instance;
     }
 
-    // 针对分组进行处理
+    // process the grouping
     if (breakpoints.length) {
       const nextBreakpointIndex = breakpoints.findIndex(bp => bp > recordIndex);
       if (nextBreakpointIndex > -1) {
@@ -90,7 +90,7 @@ export class Cell {
         return;
       }
     }
-    // 修正超出边界，则停留在边界。
+    // If the correction exceeds the boundary, it stays at the boundary.
     if (recordIndex < 0) recordIndex = 0;
     if (recordIndex > rowCount - 1) recordIndex = rowCount - 1;
     if (fieldIndex < 0) fieldIndex = 0;

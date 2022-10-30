@@ -44,7 +44,7 @@ export class CurrencyField extends NumberBaseField {
     };
   }
 
-  // 预览态数据 —— 包含 (正负号) + 货币符号 + 科学计数法数字 或 普通数字 + 千位分隔
+  // the data of preview, includes (positive or negative sign) + currency symbol + scientific notation number or normal number + thousand separator
   cellValueToString(cellValue: ICellValue, cellToStringOption?: ICellToStringOption): string | null {
 
     if (this.validate(cellValue)) {
@@ -61,7 +61,7 @@ export class CurrencyField extends NumberBaseField {
     return null;
   }
 
-  // 返回新增 record 时字段属性配置的默认值
+  // return new records' default value of field attributes
   defaultValue(): ICellValue {
     const { defaultValue } = this.field.property;
     return defaultValue ? str2number(defaultValue) : null;

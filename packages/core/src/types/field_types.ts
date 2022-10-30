@@ -10,7 +10,7 @@ export interface IURLProperty {
 }
 
 export interface IFormulaProperty {
-  datasheetId: string; // formula 进行计算是，需要通过 fieldProperty 定位到当前 datasheetId;
+  datasheetId: string; // formula is calculated, it needs to locate the current datasheetId through fieldProperty;
   expression: string;
   formatting?: IComputedFieldFormattingProperty;
 }
@@ -23,11 +23,10 @@ export enum FormulaFuncType {
   Record = 'Record',
   Text = 'Text',
 }
-
 /**
- * 单元格值的基础类型。
- */
-export enum BasicValueType {
+  * The underlying type of the cell value.
+  */
+ export enum BasicValueType {
   String = 'String',
   Number = 'Number',
   DateTime = 'DateTime',
@@ -38,7 +37,7 @@ export enum BasicValueType {
 export type IDateTimeFieldPropertyFormat = Omit<IDateTimeFieldProperty, 'autoFill'>;
 
 /**
- * 计算字段返回值为 number 时候，数字类型字段格式化
+ * When the return value of the calculated field is number, the number type field is formatted
  */
 export interface INumberBaseFieldPropertyFormat {
   formatType: number;
@@ -46,13 +45,13 @@ export interface INumberBaseFieldPropertyFormat {
   symbol?: string;
 }
 
-/** 计算字段：formula & lookup 在返回值为 number、datetime 时，可以额外设置格式化条件。 */
+/** Calculated field: formula & lookup When the return value is number or datetime, additional formatting conditions can be set. */
 export type IComputedFieldFormattingProperty = IDateTimeFieldPropertyFormat | INumberBaseFieldPropertyFormat;
 
 export enum RollUpFuncType {
-  VALUES = 'VALUES', // 原样展示，汇总数组
+  VALUES = 'VALUES', // display as is, aggregate array
 
-  // 走 formula 计算，存在 expression
+  // Take formula calculation, there is expression
   AVERAGE = 'AVERAGE',
   COUNT = 'COUNT',
   COUNTA = 'COUNTA',
@@ -63,12 +62,12 @@ export enum RollUpFuncType {
   AND = 'AND',
   OR = 'OR',
   XOR = 'XOR',
-
-  // 目前是 lookup 里面处理的
-  // // 会转换成 string
+  
+  // Currently processed in lookup
+  // // will be converted to string
   CONCATENATE = 'CONCATENATE',
   ARRAYJOIN = 'ARRAYJOIN',
-  // // 还是 array
+  // // still an array
   ARRAYUNIQUE = 'ARRAYUNIQUE',
   ARRAYCOMPACT = 'ARRAYCOMPACT',
 }
@@ -97,10 +96,9 @@ export interface IEmailField extends IBaseField {
   type: FieldType.Email;
   property: IEmailProperty;
 }
-
 export interface IMemberProperty {
-  isMulti: boolean; // 可选单个或者多个成员。
-  shouldSendMsg: boolean; // 选择成员后是否发送消息通知
+  isMulti: boolean; // Optional single or multiple members.
+  shouldSendMsg: boolean; // Whether to send a message notification after selecting a member
   unitIds: string[];
 }
 
@@ -128,16 +126,14 @@ export interface ICreatedByField extends IBaseField {
   type: FieldType.CreatedBy;
   property: ICreatedByProperty;
 }
-
 export interface ILastModifiedByProperty {
   uuids: string[];
   datasheetId: string;
-  // 依赖的字段集合类型
+  // dependent field collection type
   collectType: CollectType;
-  // 依赖的字段
+  // dependent fields
   fieldIdCollection: string[];
 }
-
 export interface ILastModifiedByField extends IBaseField {
   type: FieldType.LastModifiedBy;
   property: ILastModifiedByProperty;
@@ -157,23 +153,21 @@ export interface IPhoneField extends IBaseField {
   type: FieldType.Phone;
   property: IPhoneProperty;
 }
-
 export enum MentionType {
   Unknown = 0,
-  User = 1, // 用户
-  DataSheet = 2, // 数据表
-  Group = 3, // 小组
+  User = 1, // user
+  DataSheet = 2, // datasheet
+  Group = 3, // group
 }
 
 export enum SegmentType {
   Unknown = 0,
-  Text = 1, // 纯文本
-  Mention = 1, // @类型
-  Url = 2, // 链接
-  Image = 3, // 内联图片
-  Email = 4, // 邮箱, URL 的子集
+  Text = 1, // plain text
+  Mention = 1, // @type
+  Url = 2, // link
+  Image = 3, // inline image
+  Email = 4, // email, subset of URL
 }
-
 export interface IBaseSegment {
   text: string;
 }
@@ -181,10 +175,9 @@ export interface IBaseSegment {
 export interface ITextSegment extends IBaseSegment {
   type: SegmentType.Text;
 }
-
 export interface IHyperlinkSegment extends IBaseSegment {
   type: SegmentType.Url;
-  link: string; // 纯链接情况下，link 和 text 一样
+  link: string; // In the case of pure link, link is the same as text
   title?: string;
   favicon?: string;
   visited?: boolean;
@@ -192,7 +185,7 @@ export interface IHyperlinkSegment extends IBaseSegment {
 
 export interface IEmailSegment extends IBaseSegment {
   type: SegmentType.Email;
-  link: string; // 纯链接情况下，link 和 text 一样
+  link: string; // In the case of pure link, link is the same as text
 }
 
 export interface IMentionSegment extends IBaseSegment {
@@ -232,13 +225,12 @@ export enum NumberPrecisionType {
   level3 = 3,
   level4 = 4,
 }
-
 export enum SymbolAlign {
-  /** 默认 */
+  /** default */
   default = 0,
-  /** 居左 */
+  /** left */
   left = 1,
-  /** 居右 */
+  /** to the right */
   right = 2,
 }
 
@@ -277,34 +269,33 @@ export interface IAutoNumberField extends IBaseField {
 
 export interface ICreatedTimeFieldProperty {
   datasheetId: string;
-  dateFormat: DateFormat; // 日期格式
-  timeFormat: TimeFormat; // 时间格式
-  includeTime: boolean; // 是否包含时间
+  dateFormat: DateFormat; // date format
+  timeFormat: TimeFormat; // time format
+  includeTime: boolean; // whether to include time
 }
 
 export interface ICreatedTimeField extends IBaseField {
   type: FieldType.CreatedTime;
   property: ICreatedTimeFieldProperty;
 }
-
 export enum CollectType {
-  // 所有字段
+  // all fields
   AllFields,
-  // 指定字段
+  // specify the field
   SpecifiedFields,
 }
 
 export interface ILastModifiedTimeFieldProperty {
   datasheetId: string;
-  // 日期格式
+  // date format
   dateFormat: DateFormat;
-  // 时间格式
+  // Time format
   timeFormat: TimeFormat;
-  // 是否包含时间
+  // whether to include time
   includeTime: boolean;
-  // 依赖的字段集合类型
+  // dependent field collection type
   collectType: CollectType;
-  // 依赖的字段
+  // dependent fields
   fieldIdCollection: string[];
 }
 
@@ -313,7 +304,7 @@ export interface ILastModifiedTimeField extends IBaseField {
   property: ILastModifiedTimeFieldProperty;
 }
 
-// 用于 数字 类型字段格式化
+// for numeric type field formatting
 export interface INumberFormatFieldProperty extends IBaseField {
   formatType: number;
   precision: number;
@@ -358,7 +349,7 @@ export type ITimestamp = number;
 export enum DateRange {
   /**
    * 1901/01/01 00:00:00 UTC+0000
-   * 最小时间限制的原因
+   * Reason for minimum time limit
    */
   MinTimeStamp = -2177452800000,
   /** 3000/12/31 24:00:00 UTC+0000 */
@@ -366,21 +357,21 @@ export enum DateRange {
 }
 
 export enum DateFormat {
-  /** 年/月/日 */
+  /** year month day */
   'YYYY/MM/DD',
-  /** 年-月-日 */
+  /** year month day */
   'YYYY-MM-DD',
-  /** 日/月/年 */
+  /** day/month/year */
   'DD/MM/YYYY',
-  /** 年-月 */
+  /** year-month */
   'YYYY-MM',
-  /** 月-日 */
+  /** Month Day */
   'MM-DD',
-  /** 年份 */
+  /** year */
   'YYYY',
-  /** 月份 */
+  /** month */
   'MM',
-  /** 天 */
+  /** day */
   'DD',
 }
 
@@ -390,15 +381,14 @@ export enum TimeFormat {
   /** 'hh:mm', 00 - 12 hour */
   'hh:mm',
 }
-
 export interface IDateTimeFieldProperty {
-  /** 日期格式 */
+  /** date format */
   dateFormat: DateFormat;
-  /** 时间格式 */
+  /** Time format */
   timeFormat: TimeFormat;
-  /** 是否包含时间 */
+  /** Whether to include time */
   includeTime: boolean;
-  /** 新增记录时是否自动填入创建时间 */
+  /** Whether to automatically fill in the creation time when adding a new record */
   autoFill: boolean;
 }
 
@@ -408,20 +398,19 @@ export interface IDateTimeField extends IBaseField {
 }
 
 export interface IDateTimeBaseFieldProperty {
-  // 日期格式
+  // date format
   dateFormat: DateFormat;
-  // 时间格式
+  // Time format
   timeFormat: TimeFormat;
-  // 是否包含时间
+  // whether to include time
   includeTime: boolean;
-  // 新增记录时是否自动填入创建时间
+  // Whether to automatically fill in the creation time when adding a record
   autoFill?: boolean;
-  // 依赖的字段集合类型
+  // dependent field collection type
   collectType?: CollectType;
-  // 依赖的字段
+  // dependent fields
   fieldIdCollection?: string[];
 }
-
 export interface IDateTimeBaseField extends IBaseField {
   type: FieldType.DateTime | FieldType.CreatedTime | FieldType.LastModifiedTime;
   property: IDateTimeBaseFieldProperty;
@@ -461,8 +450,8 @@ export type ISelectField = IMultiSelectField | ISingleSelectField;
 export interface ILinkFieldProperty {
   foreignDatasheetId: string;
   brotherFieldId?: string;
-  limitToView?: string; // 限制只在对应 viewId 可选 record。注意：viewId 可能随着关联表的修改而并不存在于关联表
-  limitSingleRecord?: boolean; // 是否限制只允许关联一条阻断。注意：这是一个软性限制，只在当前表交互上生效，实际上有多种办法突破限制。
+  limitToView?: string; // The limit is only on the optional record corresponding to the viewId. Note: viewId may not exist in the associated table with the modification of the associated table
+  limitSingleRecord?: boolean; // Whether to limit only one block to be associated. Note: This is a soft limit that only takes effect on the current table interaction, there are actually multiple ways to break the limit.
 }
 
 export interface ILinkField extends IBaseField {
@@ -475,20 +464,20 @@ export enum LinkFieldSet {
 }
 
 export interface IAttachmentValue {
-  /** id 用来做 follow key，目前和 attachmentToken 一样 */
+  /** id is used as follow key, currently same as attachmentToken */
   id: string;
   name: string;
-  /** 文件的 mime 类型 */
+  /** mime type of the file */
   mimeType: string;
-  /** 文件上传到后端 token，最终地址通过前端组装来访问。 */
+  /** The file is uploaded to the back-end token, and the final address is accessed through the front-end assembly. */
   token: string;
-  /** 存储位置，后端返回 */
+  /** Storage location, backend returns */
   bucket: string;
-  /** 文件大小，后端返回 byte */
+  /** file size, backend returns byte */
   size: number;
   width?: number;
   height?: number;
-  /** 预览地址（pdf 之类文件） */
+  /** Preview address (files like pdf) */
   preview?: string;
 }
 
@@ -580,7 +569,7 @@ export enum FieldType {
   LastModifiedTime = 22,
   CreatedBy = 23,
   LastModifiedBy = 24,
-  DeniedField = 999, // 无权限列
+  DeniedField = 999, // no permission column
 }
 
 export const readonlyFields = new Set([
@@ -600,7 +589,7 @@ export interface IFieldTypeCollection {
   canBePrimaryField: boolean;
   fieldGroup: FieldGroup;
   help: string;
-  hasOptSetting: boolean; // 字段是否存在可选配置，用于控制字段配置菜单中是否显示分割线。
+  hasOptSetting: boolean; // Whether the field has optional configuration, it is used to control whether the split line is displayed in the field configuration menu.
 }
 
 export enum FieldGroup {

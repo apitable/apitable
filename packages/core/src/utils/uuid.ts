@@ -10,7 +10,7 @@ export enum IDPrefix {
   Field = 'fld',
   Option = 'opt',
   Condition = 'cdt',
-  File = 'atc', // 上传的附件
+  File = 'atc', // uploaded attachments
   Comment = 'cmt',
   WidgetPanel = 'wpl',
   Editor = 'edt',
@@ -19,9 +19,9 @@ export enum IDPrefix {
 }
 
 /**
- * 生成不重复的新 id
- * @param {IDPrefix} prefix 新的 id 前缀
- * @param {string[]} [ids=[]] 已有的 id，不会与这组重复
+ * Generate unique new id
+ * @param {IDPrefix} prefix new id prefix
+ * @param {string[]} [ids=[]] Existing ids, will not be repeated with this group
  * @returns {string}
  */
 export function getNewId(prefix: IDPrefix, ids: string[] = []): string {
@@ -29,10 +29,10 @@ export function getNewId(prefix: IDPrefix, ids: string[] = []): string {
 }
 
 /**
- * 生成一组不重复的新 id
- * @param {IDPrefix} prefix 新的 id 前缀
- * @param {number} num 期望生成的个数
- * @param {string[]} [ids=[]] 已有的 id，不会与这组重复
+ * Generate a new set of unique ids
+ * @param {IDPrefix} prefix new id prefix
+ * @param {number} num the expected number
+ * @param {string[]} [ids=[]] Existing ids, will not be repeated with this group
  * @returns {string[]}
  */
 export function getNewIds(prefix: IDPrefix, num: number, ids: string[] = []): string[] {
@@ -58,20 +58,20 @@ export function getNewIds(prefix: IDPrefix, num: number, ids: string[] = []): st
 export type NamePrefixString = string;
 export const NamePrefix = {
   Field: t(Strings.field), // 'Field',
-  GridView: t(Strings.grid_view), // '表格视图',
-  KanbanView: t(Strings.kanban_view), // '看板视图',
-  GalleryView: t(Strings.gallery_view), // '相册视图',
-  FormView: t(Strings.form_view), // '表单视图',
-  CalendarView: t(Strings.calendar_view), // '日历视图',
-  GanttView: t(Strings.gantt_view), // '甘特图视图',
-  OrgChartView: t(Strings.org_chart_view), // '架构视图',
+  GridView: t(Strings.grid_view), 
+  KanbanView: t(Strings.kanban_view), 
+  GalleryView: t(Strings.gallery_view),
+  FormView: t(Strings.form_view), 
+  CalendarView: t(Strings.calendar_view), 
+  GanttView: t(Strings.gantt_view), 
+  OrgChartView: t(Strings.org_chart_view), 
   View: t(Strings.view), // 'View',
 };
 
 /**
- * 获取安全不重复的命名
- * @param newName 想要取的名字
- * @param names 已有名字的数组，如存在重复则自动加上后缀
+ * Get safe and unique names
+ * @param newName the name you want to take
+ * @param names An array of existing names, if there are duplicates, suffixes will be added automatically
  */
 export function getUniqName(newName: string, names: string[]) {
   let index = 1;

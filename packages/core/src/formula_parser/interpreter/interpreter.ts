@@ -31,13 +31,13 @@ export class Interpreter {
   }
 
   private transformNodeValue(node: AstNode, value: any, tokenType: TokenType) {
-    // 字段值类型的 Node 需要执行专属的字符串转换逻辑
+    // Nodes of field value types need to perform dedicated string conversion logic
     if (node.name === AstNodeType.ValueOperandNode || node.name === AstNodeType.PureValueOperandNode) {
       const field = (node as ValueOperandNode).field;
       const fieldBasicValueType = Field.bindContext(field, this.context.state).basicValueType;
       /**
-       * DateTime 类型针对比较运算符，需要以时间戳格式进行比较，
-       * @example {起始时间} = TODAY()
+       * DateTime type is for comparison operators and needs to be compared in timestamp format,
+       * @example {start time} = TODAY()
        */
       if (
         [BasicValueType.Number, BasicValueType.Boolean, BasicValueType.String].includes(fieldBasicValueType) ||
@@ -58,7 +58,7 @@ export class Interpreter {
 
       if (fieldBasicValueType === BasicValueType.Array) {
         switch (node.innerValueType) {
-          // 直接取第一个值进行计算
+          // directly take the first value for calculation
           case BasicValueType.Number: {
             if (!value?.length) return null;
             if (value.length > 1) {
@@ -77,7 +77,7 @@ export class Interpreter {
   }
 
   /**
-   * 通过访问抽象语法树进行求值
+   * Evaluate by accessing the abstract syntax tree
    * @param {AstNode} node
    * @returns {any}
    * @memberof Interpreter
@@ -126,7 +126,7 @@ export class Interpreter {
     let left = this.transformNodeValue(node.left, this.visit(node.left), tokenType);
     let right = this.transformNodeValue(node.right, this.visit(node.right), tokenType);
 
-    // 对 BLANK 函数做值转换处理
+    // Perform value conversion processing on the BLANK function
     if (node.left.token?.value.toUpperCase() === 'BLANK') {
       left = getBlankValueByType(node.right.valueType, right);
     }
@@ -230,9 +230,10 @@ export class Interpreter {
         fnName,
       }));
     }
-    // IS_ERROR 函数需要监测到内部方程式是否会报错，IF/SWITCH 需要执行到 Error 才进行报错，
-    // 因此这里对 IS_ERROR/IF/SWITCH 函数做特殊标记
-    // TODO：这里先做 ISERROR 的兼容，刷完用户数据后统一删掉
+    // The IS_ERROR function needs to monitor whether the internal equation will report an error, 
+    // and IF/SWITCH needs to execute until Error before reporting an error.
+    // So here is a special mark for IS_ERROR/IF/SWITCH functions
+    // TODO: Do ISERROR compatibility here first, and delete the user data after brushing
     if (fnName === 'ISERROR' || fnName === 'IS_ERROR' || fnName === 'IF' || fnName === 'SWITCH') {
       isErrorScope = true;
     }
@@ -240,32 +241,32 @@ export class Interpreter {
     const params = node.params.map(param => {
       let value = this.visit(param, isErrorScope);
       let valueType = param.valueType;
-      // 字段值类型的 Node 需要执行专属的字符串转换逻辑
+      // Nodes of field value types need to perform dedicated string conversion logic
       if (param.name === AstNodeType.ValueOperandNode || param.name === AstNodeType.PureValueOperandNode) {
         const field = (param as ValueOperandNode).field;
 
-        // 若参数类型为 Array && 不被函数参数类型接受
+        // If the parameter type is Array && is not accepted by the function parameter type
         if (!fnClass.func.acceptValueType.has(valueType) && valueType === BasicValueType.Array) {
           const innerValueType = param.innerValueType;
 
-          // 数组内置类型为 Number 且只有一项时，可进行相应的运算，
-          // 若有多项，为避免用户误会，采取直接报错的形式
+          // When the built-in type of the array is Number and there is only one item, the corresponding operation can be performed.
+          // If there are multiple items, in order to avoid user misunderstanding, take the form of direct error reporting
           if (innerValueType === BasicValueType.Number) {
             if (value?.length > 1) {
               throw new FormulaBaseError('');
             }
             value = value && value[0];
           } else {
-            // 数组内置类型不为 Number，直接转为字符串
+            // The built-in type of the array is not Number, directly converted to a string
             value = value?.length && value.filter(v => !isNull(v)).join(', ');
           }
           innerValueType && (valueType = innerValueType);
         }
 
         /**
-         * value 值返回规则（粒度为具体的公式类）：
-         * 1. 若 acceptValueType 不包含 valueType，则会统一经过 cellValueToString 方法处理；
-         * 2. 若需要返回原始值，则需要添加当前 valueType 到 acceptValueType；
+         * value value return rules (granularity is specific formula class):
+         * 1. If acceptValueType does not contain valueType, it will be processed uniformly by the cellValueToString method;
+         * 2. If you need to return the original value, you need to add the current valueType to acceptValueType;
          */
         if (!fnClass.func.acceptValueType.has(valueType)) {
           if (isString(value)) {
@@ -274,12 +275,12 @@ export class Interpreter {
           value = Field.bindContext(field, this.context.state).cellValueToString(value as any);
         }
       } else {
-        // 将数组类型值转换为字符串类型。(理论上只会有字段值才会有数组类型，所以这里不会生效)
+        // Convert array type value to string type. (In theory, only field values will have array types, so this will not take effect)
         if (!fnClass.func.acceptValueType.has(valueType) && valueType === BasicValueType.Array) {
           value = String(value);
         }
 
-        // 将日期类型值转换为字符串类型。
+        // Convert date type value to string type.
         if (!fnClass.func.acceptValueType.has(valueType) && valueType === BasicValueType.DateTime) {
           value = value == null ? value : new Date(value).toISOString();
         }
@@ -289,8 +290,8 @@ export class Interpreter {
     });
 
     fnClass.func.validateParams(node.params);
-    // 对 DateTime 类函数做预检查
-    // LAST_MODIFIED_TIME 基于 record.recordMeta 进行计算，无需其他单元格的值
+    // pre-check for DateTime class functions
+    // LAST_MODIFIED_TIME is calculated based on record.recordMeta without the value of other cells
     if (fnClass.func.type === FormulaFuncType.DateTime && params.length && params[0]?.value == null && fnName !== 'LAST_MODIFIED_TIME') {
       return null;
     }

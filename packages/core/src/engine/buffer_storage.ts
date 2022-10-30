@@ -5,7 +5,7 @@ import { ResourceType } from 'types';
 import { Events, Player } from 'player';
 import { TrackEvents } from 'config';
 
-// 本地缓存处理接口
+// Local cache processing interface
 export interface IStoredData {
   [key: string]: any;
 }
@@ -98,14 +98,14 @@ export interface ILocalForage extends LocalForageDbMethodsCore {
 }
 
 /**
- * 用于将 opBuffer 和 localChangeset 缓存在本地 localStorage 中
- * 以供网络状况差/意外关闭的时候也可以从本地恢复未保存的数据
- */
+  * used to cache opBuffer and localChangeset in local localStorage
+  * Unsaved data can also be recovered locally for poor network conditions/unexpected shutdown
+  */
 export class BufferStorage {
   static bufferStorageNamespace = `${LS_DATASHEET_NAMESPACE}.opBuffer`;
   static pendingChangesetsNamespace = `${LS_DATASHEET_NAMESPACE}.localChangeset`;
 
-  // localStorage 封装实例，提前绑定 namespace
+  // localStorage encapsulates the instance and binds the namespace in advance
   // https://github.com/nbubna/store
   private opBufferStorage = this.lsStore.namespace(BufferStorage.bufferStorageNamespace);
   private _opBuffer: IOperation[] = [];
@@ -117,8 +117,8 @@ export class BufferStorage {
     this.resumeLocalState();
   }
 
-  // 缓存刚刚产生，但是还在排队没有发送出去的 Operation
-  // 发送出去之后，opBuffer 里面的 op 就会组装成 localPendingChangeset
+  // The cache has just been created, but it is still queuing operations that have not been sent out
+  // After sending, the op in opBuffer will be assembled into localPendingChangeset
   get opBuffer(): IOperation[] {
     return this._opBuffer;
   }
@@ -136,7 +136,7 @@ export class BufferStorage {
     }
   }
 
-  // 已经发送出去，正在等待 ACK 的 changeset
+  // has been sent, waiting for ACK changeset
   get localPendingChangeset(): ILocalChangeset | undefined {
     return this._localPendingChangeset;
   }
@@ -150,15 +150,15 @@ export class BufferStorage {
     try {
       this.localPendingChangesetStorage.set(this.resourceId, value);
     } catch (e) {
-      // 设置 localStorage 失败的时候，要清空掉原有值。
+      // When setting localStorage fails, clear the original value.
       this.localPendingChangesetStorage.remove(this.resourceId);
       console.error(e);
     }
   }
-
   /**
-   * @description 读取 opBuffer 的数据，并清空 opBuffer，
-   * 考虑到网络层延时的问题，前端无法及时收到 ack ，这里会将 opsBuffer 的数据在 storage 中保存一份
+   * @description reads the data of opBuffer and clears the opBuffer,
+   * Considering the delay of the network layer, the front end cannot receive the ack in time, 
+   * here will save a copy of the opsBuffer data in the storage
    * @param {number} revision
    * @returns
    * @memberof Engine
@@ -186,34 +186,34 @@ export class BufferStorage {
     };
   }
 
-  // 清空opBuffer，会丢失掉未同步的数据
+  // Clearing the opBuffer will lose unsynchronized data
   clearOpBuffer() {
     this.opBuffer = [];
   }
 
   /**
-   * @description 将 operation 加入到 buffer 发送队列。
+   * @description adds the operation to the buffer send queue.
    */
   pushOpBuffer(operation: IOperation) {
-    // 为了触发 setter，不通过 push 而是直接赋值
-    const opBuffer = this.opBuffer;
+    // To trigger the setter, assign directly instead of push
+    const opBuffer = this. opBuffer;
     this.opBuffer = [...opBuffer, operation];
   }
 
   clearLocalPendingChangeset() {
-    // 清空本地暂存的 changeset
+    // Clear the local temporary changeset
     this.localPendingChangeset = undefined;
     // this.status = EngineStatus.Clear;
-    // // 进行新一轮的发送
+    // // Do a new round of sending
     // this.send();
   }
 
   /**
-   * 从 localStorage 中恢复应用状态。
-   * 主要涉及两个状态，localChangeset 和 opBuffer。
-   * 这两个变量保存了还未得到服务端确认的 op。并且实时的在 localStorage 中持有备份。
-   * 当页面刷新 or 数表重新初始化的时候，内存中的 localChangeset 和 opBuffer 的值丢失
-   * 此时就要从 localStorage 中进行恢复。
+   * Restore application state from localStorage.
+   * Mainly involves two states, localChangeset and opBuffer.
+   * These two variables hold the op that has not been confirmed by the server. And keep backups in localStorage in real time.
+   * When the page is refreshed or the data table is re-initialized, the values of localChangeset and opBuffer in memory are lost
+   * At this point it is time to restore from localStorage.
    */
   resumeLocalState() {
     this.localPendingChangeset = this.compatibleLocalChangeset(this.localPendingChangesetStorage.get(this.resourceId) || undefined);
@@ -221,18 +221,19 @@ export class BufferStorage {
   }
 
   /**
-   * @description 针对线上缓存的协同数据结构的一次处理
-   * 这里只考虑 localChangeset 即可，opbufferstorage 中记录的是淡村的 op 结构，不需要兼容
-   * @param changeset
-   * 目前是 0.6.2 ，可以在两三个版本后删除这段兼容处理
-   * @private
-   */
+    * @description A processing of the collaborative data structure for the online cache
+    * Only the localChangeset is considered here. The op buffer storage records the op temp structure , which does not need to be compatible.
+    * @param changeset
+    * Currently 0.6.2 , this compatibility processing can be removed after two or three versions
+    * @private
+    */
   private compatibleLocalChangeset(changeset: ILocalChangeset | undefined): ILocalChangeset | undefined {
     if (!changeset) {
       return;
     }
     if (changeset['datasheetId']) {
-      // 属性中存在 datasheetId 的可以认为是旧的数据结构，并且旧的结构中还存在 userId，可以丢弃
+      // The datasheetId in the attribute can be considered as the old data structure, 
+      // and the userId still exists in the old structure, which can be discarded
       const newLocalChangeset = {
         baseRevision: changeset.baseRevision,
         resourceId: changeset['datasheetId'],

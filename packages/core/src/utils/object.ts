@@ -2,8 +2,8 @@
 // import { Buffer } from 'buffer';
 
 /**
- * JSON 转换，性能比 lodash cloneDeep 快很多。
- * 注意循环引用会 throw Error
+ * JSON conversion, performance is much faster than lodash cloneDeep.
+ * Note that circular references will throw Error
  */
 export function fastCloneDeep<T>(obj: T): T {
   if (obj == null) {
@@ -16,7 +16,7 @@ export function fastCloneDeep<T>(obj: T): T {
 }
 
 // /**
-//  * @param gzipBase64Str 必须是 base64 编码的
+//  * @param gzipBase64Str must be base64 encoded
 //  */
 // export function unBase64Gzip<T = any>(gzipBase64Str: string): T {
 //   return JSON.parse(pako.ungzip(Buffer.from(gzipBase64Str, 'base64'), { to: 'string' }));

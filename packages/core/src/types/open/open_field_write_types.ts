@@ -7,18 +7,18 @@ import {
 import { CollectType, IMultiSelectedIds, RollUpFuncType } from '../field_types';
 
 export enum Conversion {
-  /** 删除关联表的关联字段 */
+  /** delete the associated field of the associated table */
   Delete = 'delete',
-  /** 保留关联表的关联字段，并转换成文本类型 */
+  /** Keep the associated fields of the associated table and convert them to text type */
   KeepText = 'keepText'
 }
 
 /**
- * 更新字段的副作用
+ * Side effects of updating fields
  */
 export interface IEffectOption {
   /**
-   * 是否允许删除 options
+   * Whether to allow deletion of options
    */
   enableSelectOptionDelete?: boolean
 }
@@ -33,7 +33,6 @@ export interface IUpdateOpenField extends Omit<IOpenField, 'isPrimary' | 'id' | 
 
 export interface IWriteOpenSelectBaseFieldProperty {
   defaultValue?: string | IMultiSelectedIds;
-  /** 选项配置 */
   options: {
     id?: string;
     name: string;
@@ -67,40 +66,37 @@ export type IAddOpenSingleSelectFieldProperty = IWriteOpenSelectBaseFieldPropert
 export type IAddOpenMultiSelectFieldProperty = IWriteOpenSelectBaseFieldProperty;
 
 export interface IAddOpenMemberFieldProperty {
-  /* 是否允许添加多个成员 **/
+  /* Whether to allow adding multiple members **/
   isMulti?: boolean;
-  /** 是否发送通知 */
+  /** Whether to send notification */
   shouldSendMsg?: boolean;
 }
 
 export type IAddOpenDateTimeFieldProperty = IOpenDateTimeFieldProperty;
 
 export type IAddOpenAttachmentFieldProperty = null;
-
 export interface IAddOpenMagicLinkFieldProperty {
-  /** 关联表ID，切换关联表，之前的brotherField会转成文本字段 */
+  /** Associate table ID, switch the associated table, the previous brotherField will be converted to a text field */
   foreignDatasheetId: string;
-  /** 指定视图 ID 筛选记录 */
+  /** Specify view ID to filter records */
   limitToViewId?: string;
-  /** 是否限制只能选择单条记录 */
+  /** Whether to limit the selection to only a single record */
   limitSingleRecord?: boolean;
 }
-
 export interface IAddOpenMagicLookUpFieldProperty {
-  /** 引用的当前表的关联字段 ID */
+  /** The associated field ID of the current table referenced */
   relatedLinkFieldId: string;
-  /** 关联表中查询的字段 ID */
+  /** Field ID queried in the associated table */
   targetFieldId: string;
-  /** 汇总函数 */
+  /** Aggregate function */
   rollupFunction?: RollUpFuncType;
-  /** 格式，由于引用字段有区别，格式也不一样（数字、百分比、日期、货币） */
+  /** Format, because the reference field is different, the format is different (number, percentage, date, currency) */
   format?: IOpenComputedFormat;
 }
-
 export interface IAddOpenFormulaFieldProperty {
-  /** 公式表达式 */
+  /** formula expression */
   expression?: string;
-  /** 当公式依赖的相关字段被删除或者转化类型时，可能无法正常获取计算值 */
+  /** When the related field that the formula depends on is deleted or the type is converted, the calculated value may not be obtained normally */
   format?: IOpenComputedFormat;
 }
 
@@ -109,24 +105,24 @@ export type IAddOpenAutoNumberFieldProperty = null;
 export type IAddOpenCreatedTimeFieldProperty = IOpenCreatedTimeFieldProperty;
 
 export interface IAddOpenLastModifiedTimeFieldProperty {
-  /** 日期格式 */
+  /** date format */
   dateFormat: string;
-  /** 时间格式 */
+  /** Time format */
   timeFormat?: string;
-  /** 是否包含时间 */
+  /** Whether to include time */
   includeTime?: boolean;
-  /** 指定字段类型：0 所有可编辑，1 指定字段 */
+  /** Specify field type: 0 all editable, 1 specified field */
   collectType?: CollectType;
-  /** 是否指定字段，数组类型可指定多个字段，不填为所有 */
+  /** Whether to specify a field, the array type can specify multiple fields, do not fill in all */
   fieldIdCollection?: string[];
 }
 
 export type IAddOpenCreatedByFieldProperty = null;
 
 export interface IAddOpenLastModifiedByFieldProperty {
-  /** 指定字段类型：0 所有可编辑，1 指定字段 */
+  /** Specify field type: 0 all editable, 1 specified field */
   collectType?: CollectType;
-  /** 是否指定字段，数组类型可指定多个字段，不填为所有 */
+  /** Whether to specify a field, the array type can specify multiple fields, do not fill in all */
   fieldIdCollection?: string[];
 }
 
@@ -183,9 +179,8 @@ export type IUpdateOpenMemberFieldProperty = IAddOpenMemberFieldProperty;
 export type IUpdateOpenDateTimeFieldProperty = IOpenDateTimeFieldProperty;
   
 export type IUpdateOpenAttachmentFieldProperty = null;
-  
 export interface IUpdateOpenMagicLinkFieldProperty extends IAddOpenMagicLinkFieldProperty {
-  /** 修改关联表之后，对于之前关联表的关联字段的操作选项，默认 delete */
+  /** After modifying the associated table, for the operation options of the associated fields of the previous associated table, the default delete */
   conversion?: Conversion
 }
 

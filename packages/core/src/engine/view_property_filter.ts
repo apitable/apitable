@@ -64,7 +64,7 @@ export class ViewPropertyFilter {
     return true;
   }
 
-  /* 检查数据完整性的策略 */
+  /* Strategy for checking data integrity */
   private _fieldIntegrityCheck(viewProperty: IViewPropertyKey, op, fieldMap) {
     switch (viewProperty) {
       case 'groupInfo': {
@@ -115,7 +115,7 @@ export class ViewPropertyFilter {
     const propertyKey = path[3] as IViewPropertyKey;
 
     if (!propertyKey) {
-      // 不存在 propertyKey 的话，就应该是在做视图的删除操作，视图删除也需要放行
+      // If there is no propertyKey, it should be doing the delete operation of the view, and the view deletion also needs to be released
       return true;
     }
 
@@ -124,7 +124,8 @@ export class ViewPropertyFilter {
     }
 
     if (this._fromServer && path.includes('autoSave') && action['oi']) {
-      // 从服务端收到 op，如果检查到存在对 autoSave 的修改，并且是开启状态，则需要拉取服务端的最新视图数据对本地做覆盖
+      // Receive op from the server, if it is checked that there is a modification to autoSave, 
+      // and it is turned on, you need to pull the latest view data from the server to overwrite the local
       ViewPropertyFilter.resetViewProperty(state, {
         datasheetId: this._datasheetId,
         viewId: view.id,
@@ -135,12 +136,13 @@ export class ViewPropertyFilter {
     }
 
     if (path.includes('columns')) {
-      // 同时出行 li 和 ld 操作，则说明在对原内容做替换，属于 LR，需要过滤掉
-      // 比如隐藏列，修改列宽等
+      // If the li and ld operations are performed at the same time, 
+      // it means that the original content is being replaced, which belongs to LR and needs to be filtered out
+      // Such as hiding columns, modifying column widths, etc.
       if (action['li'] && action['ld']) {
         return false;
       }
-      // li 和 ld 只存在一个，就只是删除或者新增
+      // There is only one li and ld, just delete or add
       if (action['li'] || action['ld']) {
         return true;
       }
@@ -158,19 +160,20 @@ export class ViewPropertyFilter {
       [CollaCommandName.AddViews, CollaCommandName.DeleteViews, CollaCommandName.MoveViews, CollaCommandName.DeleteField,
         CollaCommandName.SetFieldAttr].includes(commandName)
     ) {
-      // 如果检查到是在修改视图的协同状态，就不需要再对这次的 action 做过滤
+      // If it is detected that the collaborative state of the view is being modified, there is no need to filter this action.
       return actions;
     }
 
     const state: IReduxState = this._getState();
     if (!state.labs.includes('view_manual_save') && !state.share.featureViewManualSave) {
-      // 没有开启全空间站的视图不协同的体验，这里就不用对数据做检查
+      // There is no uncoordinated view of the entire space station, so there is no need to check the data here
       return actions;
     }
 
     if (commandName && [CollaCommandName.ManualSaveView, CollaCommandName.SetViewAutoSave].includes(commandName)) {
-      // 手动对视图数据做保存，为了避免 field 不存在对于视图配置的影响，这里需要对 field 做存在性检查，对于异常的配置进行过滤
-      // 该过滤方案仅用于从 client 提交数据到 server 端，反之并不调用该方法
+      // Manually save the view data. In order to avoid the impact of the field's absence on the view configuration, 
+      // it is necessary to check the field's existence and filter the abnormal configuration.
+      // This filtering scheme is only used to submit data from the client to the server, otherwise this method is not called
       return actions.filter((action) => this._filterFieldExist(action));
     }
 
@@ -199,7 +202,7 @@ export class ViewPropertyFilter {
     return true;
   }
 
-  // 重置当前的是图配置，也就是和数据库数据保持一致
+  // Reset the current graph configuration, which is consistent with the database data
   static async resetViewProperty(state: IReduxState, { datasheetId, viewId, dispatch, onError, shareId }: IResetViewPropertyProps) {
     const snapshot = Selectors.getSnapshot(state, datasheetId)!;
     const { success, data } = await ViewPropertyFilter.requestViewDate(datasheetId, viewId);
@@ -208,12 +211,13 @@ export class ViewPropertyFilter {
       const revision = Selectors.getResourceRevision(state, datasheetId, ResourceType.Datasheet);
 
       if (data['revision'] < revision!) {
-        // 数据库的版本比本地版本小，可能是在请求的同时正好在处理 op，所以重新发送一次请求
+        // The version of the database is smaller than the local version, it may be that the op is being processed 
+        // at the same time as the request, so resend the request
         return await this.requestViewDate(datasheetId, viewId, shareId);
       }
 
       if (data['revision'] > revision! + 1) {
-        // 如果本地的版本比数据库的版本要小，则应该先补足版本号，再进行数据替换
+        // If the local version is smaller than the database version, you should make up the version number first, and then perform data replacement
         return this.handleError(onError);
       }
 

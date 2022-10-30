@@ -183,7 +183,7 @@ export class AttachmentField extends ArrayValueField {
     return null;
   }
 
-  // 大部分 arrayValueToString 的 field 直接 join 就好了，number dataTime 的有 format 的除外。
+  // most of arrayValueToString's field just join, except number dataTime's with format
   arrayValueToString(cellValues: string[] | null): string | null {
     return cellValues && cellValues.length ? cellValues.join(', ') : null;
   }
@@ -259,9 +259,9 @@ export class AttachmentField extends ArrayValueField {
     if (!isNullValue(cellValue)) {
       return cellValue.map(value => {
         return {
-          // 原始值
+          // original value
           ...value,
-          // 附加值
+          // addon value
           previewUrl: value.preview ? cellValueToImageSrc(value, { isPreview: true }) : undefined,
           url: cellValueToImageSrc(value),
         };

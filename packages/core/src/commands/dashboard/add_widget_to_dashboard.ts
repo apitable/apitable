@@ -38,7 +38,7 @@ export const addWidgetToDashboard: ICollaCommandDef<IAddWidgetToDashboard> = {
         id: widgetId,
         widthInColumns: WIDTH,
         heightInRoes: 6,
-        // 计算公式
+        // calculation formula
         // https://github.com/STRML/react-grid-layout/blob/master/test/examples/6-dynamic-add-remove.jsx
         row: Number.MAX_SAFE_INTEGER,
         column: ((layout.length + index) * WIDTH) % (cols || 12),

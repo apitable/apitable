@@ -5,7 +5,7 @@ import { ResourceType } from 'types';
 
 export interface ISetWidgetDepDstId extends ICommandOptionBase {
   dstId: string;
-  // sourceId 其实特指镜像，
+  // sourceId actually refers to the image,
   sourceId?: string;
 }
 

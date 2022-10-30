@@ -1,9 +1,11 @@
 import { Strings, t } from 'i18n';
 
-export const MAX_ROBOT_COUNT_PER_DST = 30; // 单表最大机器人数量限制
-export const FIRST_FILE_IN_GUIDE_CLASS = 'FIRST_FILE_IN_GUIDE_CLASS'; // 第一次点击文件时，激活新手引导，需要加上class
+export const MAX_ROBOT_COUNT_PER_DST = 30; // The maximum number of robots in a single table
 
-// 表格区域相关
+// When you click the file for the first time, to activate the novice guide, you need to add a class
+export const FIRST_FILE_IN_GUIDE_CLASS = 'FIRST_FILE_IN_GUIDE_CLASS'; 
+
+// table area related
 export const UPPER_LEFT_REGION = 0;
 export const BOTTOM_LEFT_REGION = 1;
 export const UPPER_RIGHT_REGION = 2;
@@ -12,7 +14,7 @@ export const GIRD_CELL_EDITOR = 'gridCellEditor';
 export const CELL_EMOJI_SIZE = 16;
 export const CELL_EMOJI_LARGE_SIZE = 22;
 
-// 节点类型(添加新类型时请将值+1即可)
+// Node type (please +1 the value when adding a new type)
 export enum NodeType {
   ROOT = 0,
   FOLDER = 1,
@@ -72,7 +74,7 @@ export enum SocialType {
   FEISHU = 3,
 }
 
-// 目录树
+// catalog tree
 export const NODE_CONTEXT_MENU_ID = 'NODE_CONTEXT_MENU_ID';
 
 export enum WorkbenchSidePanels {
@@ -104,7 +106,7 @@ export const permission = {
   owner: 'manager',
   anonymous: 'reader',
   foreigner: 'reader',
-  // 分享专用
+  // for share
   shareReader: 'shareReader',
   shareEditor: 'shareEditor',
   shareSave: 'shareSave',
@@ -190,7 +192,7 @@ export const DashboardPermissionTip = {
   manager: t(Strings.dashboard_manager_label),
   editor: t(Strings.dashboard_editor_label),
   reader: t(Strings.dashboard_reader_label),
-  // templateVisitor 这个可以共用
+  // templateVisitor this can be shared
   templateVisitor: t(Strings.datasheet_experience_label),
   shareReader: t(Strings.share_reader_label),
   shareEditor: t(Strings.share_editor_label),
@@ -222,26 +224,25 @@ export enum UnitTypes {
   Members = 'members',
 }
 
-/** 表示菜单所在的模块 */
+/** Indicates the module where the menu is located */
 export enum Modules {
   FAVORITE = 'FAVORITE',
   CATALOG = 'CATALOG',
   SHARE = 'SHARE',
   TEAM_TREE = 'TEAM_TREE',
 }
-
-/** 表示菜单的类型，每种不同类型的菜单对应不同的菜单列表 */
+/** Indicates the type of menu, each different type of menu corresponds to a different menu list */
 export enum ContextMenuType {
-  DEFAULT = 'DEFAULT', // 工作目录的默认菜单
-  DATASHEET = 'DATASHEET', // 工作目录的右击数表的菜单
-  FORM = 'FORM', // 工作目录的右击神奇表单的菜单
+  DEFAULT = 'DEFAULT', // default menu for working directory
+  DATASHEET = 'DATASHEET', // right-click table menu for working directory
+  FORM = 'FORM', // right-click magic form menu for working directory
   DASHBOARD = 'DASHBOARD', // DASHBOARD
-  FOLDER = 'FOLDER', // 工作目录的右击文件夹的菜单
-  FOLDER_SHOWCASE = 'FOLDER_SHOWCASE', // folder_showcase的更多操作菜单
-  VIEW_TABBAR = 'VIEW_TABBAR', // 视图标签栏的操作菜单
-  MIRROR = 'MIRROR', // 视图标签栏的操作菜单
-  FORM_FIELD_OP = 'FORM_FIELD_OP', // 神奇表单field操作菜单
-  EXPAND_RECORD_FIELD = 'EXPAND_RECORD_FIELD', // 展开卡片中操作字段配置
+  FOLDER = 'FOLDER', // right-click folder menu for working directory
+  FOLDER_SHOWCASE = 'FOLDER_SHOWCASE', // More action menu for folder_showcase
+  VIEW_TABBAR = 'VIEW_TABBAR', // Action menu for view tab bar
+  MIRROR = 'MIRROR', // Action menu for view tab bar
+  FORM_FIELD_OP = 'FORM_FIELD_OP', // Magical form field operation menu
+  EXPAND_RECORD_FIELD = 'EXPAND_RECORD_FIELD', // Expand the operation field configuration in the card
 }
 
 export const NODE_DESCRIPTION_EDITOR_ID = 'folderDescribeEditor';
@@ -322,15 +323,15 @@ export const PASSWORD_LOGIN = 'password_login'; // password login
 export const SSO_LOGIN = 'sso_login'; // sso login
 export const PASSWORD_MIN_LENGTH = 8;
 export const PASSWORD_MAX_LENGTH = 24;
-// export const PASSWORD_LENGTH_ERR = t(Strings.password_length_err); // '密码长度必须在8-24之间';
-// export const PASSWORD_PATTERN_ERR = t(Strings.password_pattern_err); // '密码必须同时存在数字和字母';
+// export const PASSWORD_LENGTH_ERR = t(Strings.password_length_err); // 'Password length must be between 8-24';
+// export const PASSWORD_PATTERN_ERR = t(Strings.password_pattern_err); // 'Password must contain both numbers and letters';
 
-// export const PASSWORD_NOT_IDENTICAL_ERR = t(Strings.password_not_identical_err); // '与第一次输入的密码不同';
-// export const PHONE_ERR = t(Strings.phone_err); //  '手机号格式不正确';
-// export const EMAIL_ERR = t(Strings.email_err); // '邮箱格式不正确';
-// export const BIND_PHONE_SAME = t(Strings.bind_phone_same); // '无法更改为相同的手机号';
-// export const BIND_EMAIL_SAME = t(Strings.bind_email_same); // '无法更改为相同的邮箱';
-// export const PHONE_CODE_ERR = t(Strings.phone_code_err); // '验证码错误';
+// export const PASSWORD_NOT_IDENTICAL_ERR = t(Strings.password_not_identical_err); // 'different from the first entered password';
+// export const PHONE_ERR = t(Strings.phone_err); // 'The phone number format is incorrect';
+// export const EMAIL_ERR = t(Strings.email_err); // 'The email format is incorrect';
+// export const BIND_PHONE_SAME = t(Strings.bind_phone_same); // 'Cannot change to the same phone number';
+// export const BIND_EMAIL_SAME = t(Strings.bind_email_same); // 'Cannot change to the same email';
+// export const PHONE_CODE_ERR = t(Strings.phone_code_err); // 'Verification code error';
 export const RESET_PWD_BY_PHONE = 0;
 export const RESET_PWD_BY_EMAIL = 1;
 
@@ -415,7 +416,6 @@ export const MAX_CHECK_TIMES = 10;
 //     },
 //   ],
 // ]);
-
 // wizardId
 export enum WizardIdConstant {
   EMAIL_BIND = 20,
@@ -424,8 +424,8 @@ export enum WizardIdConstant {
   REPLAY_GANTT_VIDEO = 34,
   REPLAY_CALENDAR_VIDEO = 37,
   REPLAY_ORG_CHART_VIDEO = 54,
-  ADD_FIRST_CHILD = 57, // 架构视图智能引导 - 添加首个节点 TODO: 架构视图的都在上线后移出
-  DRAG_TO_UNHANDLED_LIST = 58, // 架构视图智能引导 - 清除子集
+  ADD_FIRST_CHILD = 57, // Architecture view smart boot - add first node TODO: Architecture view is moved out after going online
+  DRAG_TO_UNHANDLED_LIST = 58, // Architecture View Smart Boot - clear subset
   CREATE_WIDGET_GUIDE = 40,
   RELEASE_WIDGET_GUIDE = 47,
   CONTACT_US_GUIDE = 64,
@@ -433,14 +433,14 @@ export enum WizardIdConstant {
   AGREE_TERMS_OF_SERVICE = 76,
 
   // org chart view
-  ORG_VIEW_CREATE = 78, // 点击 “创建架构视图按钮” -> 显示视频 “架构视图使用方法”
-  ORG_VIEW_PANEL = 79, // 架构视图中，右侧面板高亮，提示添加卡片到画布中
-  ORG_VIEW_ADD_FIRST_NODE = 80, // 架构视图中，添加一个节点
-  ORG_VIEW_DRAG_TO_UNHANDLED_LIST = 81, // 架构视图中，给节点添加了一个关联节点
+  ORG_VIEW_CREATE = 78, // Click the "Create Schema View button" -> show the video "How to use Schema View"
+  ORG_VIEW_PANEL = 79, // In the schema view, the right panel is highlighted, prompting to add cards to the canvas
+  ORG_VIEW_ADD_FIRST_NODE = 80, // Add a node to the architecture view
+  ORG_VIEW_DRAG_TO_UNHANDLED_LIST = 81, // In the schema view, an associated node is added to the node
 
   // node permissions
-  PERMISSION_SETTING_EXTEND = 95, // 打开权限设置，继承状态
-  PERMISSION_SETTING_OPENED = 96, // 打开权限设置，非继承状态
+  PERMISSION_SETTING_EXTEND = 95, // Open permission settings, inherit state
+  PERMISSION_SETTING_OPENED = 96, // Open permission settings, non-inherited state
 }
 
 export const DASHBOARD_MAX_WIDGET_COUNT = 30;
@@ -471,10 +471,10 @@ export enum PlatFormTypes {
 // captcha appkey
 export const nvcAppkey = 'FFFF0N00000000008B7D';
 
-// 区分跳转（企微应用商店应用）授权页的入口来源
+// Distinguish the entry source of the jump (Wecom App Store application) authorization page
 export enum AuthReference {
-  CAMERA = 'camera', // scan qrcode 
-  APPLICATION = 'application', // 点击app内的应用跳转授权页
+  CAMERA = 'camera', // scan qrcode
+  APPLICATION = 'application', // Click the application in the app to jump to the authorization page
 }
 
 export const MOBILE_APP_UA = 'vikaApp';

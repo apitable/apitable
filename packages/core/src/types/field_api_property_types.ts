@@ -1,12 +1,12 @@
 /**
- * API Meta 开放接口定义
- */
+  * API Meta open interface definition
+  */
 import { APIMetaFieldPropertyFormatEnums, APIMetaMemberType, TSymbolAlign } from './field_api_enums';
 import { IAPIMetaField } from './field_api_types';
 import { BasicValueType, RollUpFuncType } from './field_types';
 /**
- * 字段属性
- */
+  * Field properties
+  */
 export interface IAPIMetaSingleTextFieldFieldProperty {
   defaultValue?: string;
 }

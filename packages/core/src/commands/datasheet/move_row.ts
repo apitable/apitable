@@ -53,7 +53,7 @@ export const moveRow: ICollaCommandDef<IMoveRowOptions> = {
       const targetRowIndex = recordMap.get(targetRecordId);
       if (targetRowIndex == null || originRowIndex == null) {
         Player.doTrigger(Events.app_error_logger, {
-          error: new Error('移动的行数据存在问题'),
+          error: new Error('There is a problem with the moved row record data'),
           metaData: {
             recordId,
             targetRecordId,

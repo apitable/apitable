@@ -33,7 +33,7 @@ export const deleteField: ICollaCommandDef<IDeleteFieldOptions> = {
     const actions: IJOTAction[] = [];
     const linkedActions: ILinkedActions[] = [];
 
-    // 删除这个 field 的所有 cellValue
+    // delete all cellValues of this field
     data.forEach(({ fieldId }) => {
       if (!snapshot.meta.fieldMap[fieldId]) {
         throw new Error(t(Strings.field_had_deleted));
@@ -42,7 +42,7 @@ export const deleteField: ICollaCommandDef<IDeleteFieldOptions> = {
         const action = DatasheetActions.setRecord2Action(snapshot, { recordId, fieldId, value: null });
         action && actions.push(action);
       }
-      // 对于 LastModifiedBy/LastModifiedTime 字段类型，需要更新 fieldIdCollection
+      // For LastModifiedBy/LastModifiedTime field type, fieldIdCollection needs to be updated
       const newActions = setAffectFieldAttr2Action(snapshot, fieldId);
       actions.push(...newActions);
     });

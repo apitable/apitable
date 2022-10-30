@@ -61,7 +61,7 @@ export type IFilterCheckbox = [boolean] | null;
 export type IFilterText = [IFilterValue] | null;
 export type IFilterNumber = [IFilterValue] | null;
 // export type IFilterRating = [IFilterValue] | null;
-// 单选字段为 包含/不包含 时，需提供多选下拉
+// When the radio field is Include/Not Include , you need to provide a multi-select drop-down
 export type IFilterSingleSelect = IFilterValue[] | null;
 export type IFilterMultiSelect = IFilterValue[] | null;
 export type IFilterMember = IUnitIds | null;
@@ -132,14 +132,14 @@ export interface IFilterConditionMap {
   };
   [FieldType.Attachment]: {
     fieldType: FieldType.Attachment,
-    // TODO: 未定义
+    // TODO: undefined
     value: any,
   };
   [FieldType.Link]: {
     fieldType: FieldType.Link,
     value: any,
   };
-  // TODO: 下面的字段支持 filter 操作
+  // TODO: The following fields support filter operations
   [FieldType.URL]: {
     fieldType: FieldType.URL,
     value: any,

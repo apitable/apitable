@@ -172,14 +172,16 @@ export abstract class SelectField extends Field {
     return 0;
   }
 
-  // 根据StandardValue 修改当前的property
+  // Modify the current property according to StandardValue
   enrichProperty(stdVals: IStandardValue[]): ISelectFieldProperty {
     if (!this.propertyEditable()) {
-      // 对单多选填充不存在的值，会默认进行 enrich ,但如果没有节点的可管理权限，enrich 会报错
-      // 另外考虑到列权限，如果没有列的编辑权限，则该用户一定不是节点的可管理，因此不需要再另外检查列权限
+      // Filling non-existent values for single and multiple selection will be enriched by default, 
+      // but if there is no manageable permission for the node, enrich will report an error
+      // In addition, considering the column permissions, if there is no column editing permission, 
+      // the user must not be manageable by the node, so there is no need to check the column permissions.
       return this.field.property;
     }
-    // 两个 map 是因为存在多个选项对应一个 id 的情况
+    // The two maps are because there are multiple options corresponding to one id
     const options = [...this.field.property.options];
     const optionColor = options.map(op => op.color);
     const optionNameMap = keyBy(this.field.property.options, 'name');
@@ -202,14 +204,14 @@ export abstract class SelectField extends Field {
         }
         textList.forEach(text => {
           const existOption = optionNameMap[text];
-          // TODO: 复用 ID 和 Color
-          // 存在创建选项时，两个同样选项有 id 的case，比如后续添加的颜色字段
+          // TODO: reuse ID and Color
+          // When there is a creation option, two cases with the same option have id, such as the color field added later
           if (isString(text) && !existOption) {
             const newColor = getOptionColor(optionColor);
             const option = this.createNewOption(text, newColor);
             if (id) {
-              // 创建多一个选项，可能存在文本重复的情况
-              // 后续复用color，比如option.color = color
+              // Create one more option, there may be duplicate text
+              // Subsequent reuse of color, such as option.color = color
               option.id = id;
             }
             options.push(option);
@@ -220,7 +222,7 @@ export abstract class SelectField extends Field {
         });
       });
     }
-    // 保留当前列的 property，options 进行覆盖操作
+    // Keep the property of the current column, options are overwritten
     return { ...this.field.property, options: this.filterBlankOption(options) };
   }
 
@@ -249,11 +251,11 @@ export abstract class SelectField extends Field {
   }).required();
 
   validateWriteOpenOptionsEffect(updateProperty: IWriteOpenSelectBaseFieldProperty, effectOption?: IEffectOption): Joi.ValidationResult {
-    // 不允许传入有ID 但是没有 color 的option参数
+    // Not allowed to pass option parameter with ID but no color
     if (updateProperty.options.some(option => option.id && !option.color)) {
       return joiErrorResult('Option object is not supported. It has id but no color');
     }
-    // 校验此次更新是否会删除选项
+    // Check if this update removes options
     const updateOptionIds = updateProperty.options.map(option => option.id);
     const isDeleteOption = this.field.property.options.some(option => !updateOptionIds.includes(option.id));
     if (isDeleteOption && !effectOption?.enableSelectOptionDelete) {
@@ -270,7 +272,7 @@ export abstract class SelectField extends Field {
     const transformedOptions = options.map(option => {
       if (!option.id || !option.color) {
         const color = option.color ? this.getOptionColorNumberByName(option.color) : undefined;
-        // 防止出现重复的选项ID
+        // prevent duplicate option IDs
         const newOption = SelectField._createNewOption({ name: option.name, color }, [...this.field.property.options, ...newOptions]);
         transformedDefaultValue = this.transformDefaultValue(newOption, transformedDefaultValue);
         newOptions.push(newOption);
@@ -289,7 +291,7 @@ export abstract class SelectField extends Field {
   }
 
   /**
-   * 如果的defaultValue为option.name，需处理成option.id 
+   * If the defaultValue is option.name, it needs to be processed as option.id
    */
   private transformDefaultValue(option: ISelectFieldOption, defaultValue: string | IMultiSelectedIds | undefined) {
     if(this.matchSingleSelectName(option.name, defaultValue)) {
@@ -310,7 +312,7 @@ export abstract class SelectField extends Field {
   }
 
   /**
-   * 将获取的color name 转换成 color number
+   * Convert the obtained color name to color number
    * @param name color name
    */
   getOptionColorNumberByName(name: string) {
@@ -320,7 +322,7 @@ export abstract class SelectField extends Field {
   }
 }
 
-// TODO: 需要产品给具体逻辑
+// TODO: wait for PRD for specific logic
 function getOptionColor(colors: number[]) {
   if (colors.length < 10) {
     const diffColors = difference(range(10), colors);

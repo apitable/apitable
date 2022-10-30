@@ -28,7 +28,7 @@ export enum TokenType {
 
 export class Token {
   constructor(readonly type: TokenType, readonly index: number, readonly value: string) {
-    // String 和 Value 要去掉引号和大括号包裹
+    // String and Value need to remove quotes and braces
     this.value = value;
   }
 

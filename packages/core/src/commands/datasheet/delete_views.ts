@@ -41,11 +41,11 @@ export const deleteViews: ICollaCommandDef<IDeleteViewsOptions> = {
       const { viewId } = recordOption;
 
       if (views.length === 1) {
-        // 最后一个视图不可以删除
+        // The last view cannot be deleted
         return collected;
       }
 
-      // 检查viewId是否存在
+      // Check if viewId exists
       if (!find(views, { id: viewId })) {
         throw new Error(t(Strings.error_del_view_failed_not_found_target));
       }

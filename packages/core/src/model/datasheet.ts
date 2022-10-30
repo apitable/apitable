@@ -135,10 +135,12 @@ function getDefaultNewRecordDataByFilter(
       continue;
     }
 
-    // 候选的默认值要能通过所有筛选条件才能再赋值。
-    // 假设数字字段有两个筛选条件，=1 And < 0。
-    // 通过上面的逻辑确认的候选值为 1。
-    // 而 1 是无法通过 =1 And < 0 的，默认填充这个值不符合用户期望。
+    /**
+     * candidate default value must be able to pass all filter conditions.
+     * assume that there are two filter conditions for the numeric field, =1 And < 0.
+     * candidate value logic is 1, calc by the above.
+     * and 1 cannot pass =1 and <0, default fill in this value does not meet user expectations.
+     */
     const pass = conditionGroup.every(condition => doFilter(state, condition, field, result));
     if (pass) {
       // different fields of `And`, only need to assign the values ​​that have values ​​to them.
@@ -238,7 +240,7 @@ export class DatasheetActions {
   ): IJOTAction | null {
     const views = snapshot.meta.views;
     const viewId = payload.viewId;
-    // 判断是否当前是 activeView
+    // check whether current is activeView
     const viewIndex = findIndex(views, viw => viw.id === viewId);
     if (viewIndex < 0) {
       return null;
@@ -251,7 +253,8 @@ export class DatasheetActions {
   }
 
   /**
-   * 基于 viewID 更新 view
+   * update view based viewID
+   * 
    * @param {string} viewId
    */
   static modifyView2Action(
@@ -261,7 +264,7 @@ export class DatasheetActions {
     const views = snapshot.meta.views;
     const { viewId, key, value } = payload;
 
-    // 判断是否当前是 activeView
+    // check whether current is activeView
     const viewIndex = findIndex(views, viw => viw.id === viewId);
     if (viewIndex < 0) {
       return null;
@@ -296,7 +299,7 @@ export class DatasheetActions {
   }
 
   /**
-   * 为 table 添加 Field
+   * add Field to table
    */
   static addField2Action(
     snapshot: ISnapshot,
@@ -311,12 +314,12 @@ export class DatasheetActions {
       if (cur.columns.some(column => column.fieldId === field.id)) {
         return pre;
       }
-      // 对于复制产生的新增列，会传入 index，以传入的index为准
+      // as new columns with duplicate operation, pass in `index` to take precedence
       if (viewId && index && viewId === cur.id) {
         columnIndex = index;
       }
 
-      // 只有在指定 view 下，如果 fieldId 存在 则根据每个视图对应的 fieldId 计算 index
+      // only under specified view, if fieldId exists, calc index by every view's fieldId
       if (fieldId) {
         const fieldIdIndex = cur.columns.findIndex(column => column.fieldId === fieldId);
         columnIndex = fieldIdIndex + (offset ?? 0);
@@ -329,7 +332,7 @@ export class DatasheetActions {
         newColumn.statType = StatType.Sum;
       }
 
-      // 视图新增列处理
+      // handler of new column in view
       function viewColumnHandler() {
         let hiddenKey = 'hidden';
         switch (cur.type) {
@@ -343,7 +346,7 @@ export class DatasheetActions {
             hiddenKey = 'hiddenInOrgChart';
             break;
           default:
-            // 当前视图默认显示 或 视图没有隐藏列时不隐藏
+            // current view default display or view has no hidden column
             if ((viewId && viewId === cur.id) || cur.columns.every(column => !column.hidden)) {
               newColumn.hidden = Boolean(hiddenColumn);
               return;
@@ -378,7 +381,7 @@ export class DatasheetActions {
   }
 
   /**
-   * 删除 field
+   * delete field
    */
   static deleteField2Action(
     snapshot: ISnapshot,
@@ -388,7 +391,7 @@ export class DatasheetActions {
     const views = snapshot.meta.views;
     const { fieldId, datasheetId, viewId } = payload;
 
-    // 删除所有 view 中的对应 columns 相关属性
+    // delete all columns related attributes in all view
     const actions = views.reduce<IJOTAction[]>((action, view, index) => {
       const columnIndex = view.columns.findIndex(column => column.fieldId === fieldId);
 
@@ -416,7 +419,7 @@ export class DatasheetActions {
               });
             }
           }
-          // 剩最后一个，要直接删掉 group/sort 字段
+          // remain the last one, need to delete the group/sort field directly
           if (infoIndex > -1 && info.length === 1) {
             action.push({
               n: OTActionName.ObjectDelete,
@@ -469,11 +472,16 @@ export class DatasheetActions {
         }
       };
       if (datasheetId !== snapshot.datasheetId || !(view.lockInfo && view.id !== viewId)) {
-        // 这里的判断是为了处理视图锁的权限提示，比方说，视图 2 设置了字段 A 的筛选条件，我在视图 1 中删除了字段 A，因为视图 2 的视图锁会导致我的操作失败，
-        // 从用户的角度看，他不可能删除一个字段前检查所有视图，并且关掉视图锁，所以这里的判断就是删除字段的同时，不删除被锁视图配置里的信息，而只是提示异常状态
-        // 特殊的地方是对于关联表的操作，关联表的检查在中间层并不是很严格，只要求有节点的可编辑权限，因此关联表的操作可直接放行
+        // judgement here is for the permissions tips of lock view.
+        // for example, `view 2` set field A's filter condition, I delete field A in `view 1`, 
+        // because `view 2`'s view lock will make me operation failed,
+        // from user's point of view, he may not delete one field before check all views, and close view lock
+        // so, judgement here is to delete field, and at the same time, doesn't delete the information in lock view, 
+        // just show exception tips only
+        // what's special, is the relation table operation, verifications of relation table in middle server(room-server) is not strict, 
+        // only require editable permission, therefor, relation table operation can go pass directly.
 
-        // 筛选中依赖的 field 也要被删除
+        // the dependencies in filter's field, also need to be deleted
         if (view.filterInfo) {
           const newConditions = view.filterInfo.conditions.filter(condition => {
             if (condition.fieldId === fieldId) {
@@ -592,7 +600,7 @@ export class DatasheetActions {
   };
 
   /**
-   * 设置 gridview 视图中的 column 的统计维度
+   * set grid view's column's statistic dimension
    */
   static setColumnStatType2Action = (
     snapshot: ISnapshot,
@@ -628,7 +636,7 @@ export class DatasheetActions {
   };
 
   /**
-   * 设置 gridview 视图中的行高
+   * set the row height of gridview View
    */
   static setRowHeightLevel2Action = (
     snapshot: ISnapshot,
@@ -655,7 +663,7 @@ export class DatasheetActions {
   };
 
   /**
-   * 设置 Grid/Gantt 视图中的列头是否自动换行
+   * set Grid/Gantt view's column whether auto word wrap 
    */
   static setAutoHeadHeight2Action = (
     snapshot: ISnapshot,
@@ -748,7 +756,7 @@ export class DatasheetActions {
   }
 
   /**
-   * 更新 record, 当返回 null 时表示该 record 不存在与当前 table 中或者值未变
+   * update record, when return null, it means record does not exist and current table's value has not changed
    */
   static setRecord2Action(
     snapshot: ISnapshot,
@@ -783,7 +791,7 @@ export class DatasheetActions {
       };
     }
 
-    // 当原来的 cellValue 为空的时候，实际上是要 insert 一条 fieldId key。
+    // when origin cellValue is empty, in fact it need insert one fieldId key
     
     if (oldCellValue == null) {
       return {
@@ -802,7 +810,7 @@ export class DatasheetActions {
   }
 
   /**
-   * 根据 record id 删除 record
+   * delete record by record id
    */
   static deleteRecords(
     snapshot: ISnapshot,
@@ -822,14 +830,22 @@ export class DatasheetActions {
     let actions: IJOTAction[] = [];
 
     /**
-     * 根据要删除的条数和要删除条数占总条数的比率来综合判断是一条一条删除(ld)，还是整体替换（or）
-     * 当要删除的条数大于500或者删除条数占总条数的50%以上并且总条数在100条以上则整体替换，否则逐条删除
+     * 
+     * depends on records count to delete,  and the percent of delete count and total count to judge
+     * delete one by one (ld) ,  or total replace(or)
+     * 
+     * when the number of records to delete larger than 500, 
+     * or delete records / total records percent larger thant 50%,
+     * and total records larger than 160,
+     * then total replace
+     * otherwise delete one by one
+     * 
      */
 
-    // 整体删除views的rows
+    // delete all rows in views
     const rate = waitDeleteRecordSet.size / recordSize;
     if ((rate > 0.5 && recordSize > 100) || waitDeleteRecordSet.size > 500) {
-      // 删除views中关联的record
+      // delete related records in views
       actions = views.map<IJOTAction>((curView, index) => {
         const nextViewRows = curView.rows.reduce<{ recordId: string }[]>((pre, row) => {
           if (!waitDeleteRecordSet.has(row.recordId)) {
@@ -845,7 +861,7 @@ export class DatasheetActions {
         };
       });
     } else {
-      // 逐条删除
+      // delete one by one
       actions = views.reduce<IJOTAction[]>((pre, cur, index) => {
         const toDelete = cur.rows.reduce<{ recordId: string, index: number }[]>((pre, row, i) => {
           if (waitDeleteRecordSet.has(row.recordId)) {
@@ -885,8 +901,8 @@ export class DatasheetActions {
           data: data,
         };
 
-        // 删除日期行数据时移除闹钟
-        // TODO(kailang) ObjectDelete 已经做过这个处理
+        // when delete date, remove alarm
+        // TODO(kailang) ObjectDelete has did this
         Object.keys(fieldMap).forEach(fieldId => {
           if (fieldMap[fieldId].type === FieldType.DateTime) {
             const alarm = Selectors.getDateTimeCellAlarm(snapshot, recordId, fieldId);
@@ -915,7 +931,7 @@ export class DatasheetActions {
   }
 
   /**
-   * 根据 record 设置闹钟
+   * set alarm by record
    */
   static setDateTimeCellAlarm(
     snapshot: ISnapshot,
@@ -928,12 +944,12 @@ export class DatasheetActions {
     const { recordId, fieldId, alarm } = payload;
     const oldAlarm = Selectors.getDateTimeCellAlarm(snapshot, recordId, fieldId);
 
-    // 新建闹钟
+    // new alarm
     if (!oldAlarm) {
       const fieldExtraMap = snapshot.recordMap[recordId]?.recordMeta?.fieldExtraMap;
-      // 补偿 snapshot 中 fieldExtraMap 的默认数据
+      // compensate snapshot fieldExtraMap default data
       let defaultAction;
-      // 没有 fieldExtraMap
+      // without fieldExtraMap
       if (!fieldExtraMap) {
         defaultAction = {
           n: OTActionName.ObjectInsert,
@@ -942,7 +958,7 @@ export class DatasheetActions {
             [fieldId]: {}
           },
         };
-      } else if (!fieldExtraMap[fieldId]) { // 已有 fieldExtraMap 但是没有 fieldExtraMap[fieldId]
+      } else if (!fieldExtraMap[fieldId]) { // already have fieldExtraMap, but still have no fieldExtraMap[fieldId]
         defaultAction = {
           n: OTActionName.ObjectInsert,
           p: ['recordMap', recordId, 'recordMeta', 'fieldExtraMap', fieldId],
@@ -959,7 +975,7 @@ export class DatasheetActions {
     if (isEqual(oldAlarm, alarm)) {
       return null;
     }
-    // 删除闹钟
+    // delete alarm
     if (!alarm) {
       return [{
         n: OTActionName.ObjectDelete,
@@ -969,13 +985,14 @@ export class DatasheetActions {
     }
 
     /**
-     * 发现会有 alarm.alarmUsers 的长度为 0 的情况，原因待查，这里先做个判断
+     * found a situation, alarm.alarmUsers length equals 0,
+     * TODO: wait for debug, here just place the check
      */
     if (!alarm.alarmUsers?.length) {
       return null;
     }
 
-    // 修改闹钟
+    // edit alarm
     return [{
       n: OTActionName.ObjectReplace,
       p: ['recordMap', recordId, 'recordMeta', 'fieldExtraMap', fieldId, 'alarm'],
@@ -1021,7 +1038,7 @@ export class DatasheetActions {
 
     const view = snapshot.meta.views[viewIndex];
 
-    // 清空排序的时候，直接删除排序字段
+    // when clear sorts, delete sort field directly
     if (!sortInfo) {
       return [{
         n: OTActionName.ObjectDelete,
@@ -1031,7 +1048,7 @@ export class DatasheetActions {
     }
 
     if (applySort) {
-      // sort 方法会对数组进行突变(Mutate)，所以这里要提前复制一遍数组
+      // sort method will mutate the array, so here duplicate the array first
       const rows = sortRowsBySortInfo(state, view.rows, sortInfo.rules, snapshot);
 
       return [{
@@ -1056,7 +1073,7 @@ export class DatasheetActions {
   }
 
   /**
-   * 更新 Field, 直接替换 field
+   * update Field, replace field directly
    */
   static setFieldAttr2Action = (
     snapshot: ISnapshot,
@@ -1077,7 +1094,7 @@ export class DatasheetActions {
   };
 
   /**
-   * 设置视图筛选 filterInfo
+   * set view filter  filterInfo
    */
   static setFilterInfo2Action = (
     snapshot: ISnapshot,
@@ -1092,7 +1109,7 @@ export class DatasheetActions {
     const view = snapshot.meta.views[viewIndex];
 
     if (!validateFilterInfo(filterInfo)) {
-      console.error('非法的筛选条件！');
+      console.error('illegal filter condition！');
       filterInfo = undefined;
     }
 
@@ -1101,7 +1118,7 @@ export class DatasheetActions {
     }
 
     /**
-     * 清空筛选的时候，直接删除筛选字段
+     * when clear filter, delete filter field directly
      */
     if (!filterInfo) {
       return {
@@ -1165,7 +1182,7 @@ export class DatasheetActions {
     compensator.setLastGroupInfoIfNull(view.groupInfo);
 
     /**
-     * 清空分组的时候，直接删除分组字段
+     * when clear grouping, delete grouping field directly
      */
     if (!groupInfo) {
       return {
@@ -1184,7 +1201,8 @@ export class DatasheetActions {
   };
 
   /*
-   * 产生新 viewId
+   * generate new viewId
+   *
    * @returns {string}
    */
   static getNewViewId(views: IViewProperty[]): string {
@@ -1192,7 +1210,7 @@ export class DatasheetActions {
   }
 
   /**
-   * 生成新的 recordId
+   * generate new recordId
    * @returns {string}
    * @memberof Table
    */
@@ -1201,7 +1219,7 @@ export class DatasheetActions {
   }
 
   /**
-   * 生成新的 field Id
+   * generate new field id
    * @returns {string}
    * @memberof Table
    */
@@ -1210,7 +1228,7 @@ export class DatasheetActions {
   }
 
   /**
-   * 返回 table 要新增的有默认值的 record
+   * return new record with default value in table
    */
   static getDefaultNewRecord(
     state: IReduxState,
@@ -1293,7 +1311,8 @@ export class DatasheetActions {
   }
 
   /**
-   * 返回新生成的 view 名
+   * return new generated view name
+   * 
    * @param {ViewType} type
    * @returns {string}
    */
@@ -1333,7 +1352,7 @@ export class DatasheetActions {
   }
 
   /**
-   * 获取保持行列顺序的默认 View Property
+   * get default view property with stable row and column order
    */
   static deriveDefaultViewProperty(
     snapshot: ISnapshot,
@@ -1348,7 +1367,7 @@ export class DatasheetActions {
   }
 
   /**
-   * 获取 View 所有 Record 对应 FieldId 的数据
+   * get View's all Records' FieldId data
    * @param {string} fieldId
    * @returns {ICellValue[]}
    * @memberof Table
@@ -1381,7 +1400,7 @@ export class DatasheetActions {
     return cellValues;
   }
 
-  // 生成新增 comment 的 action
+  // generate new comment's action
   static insertComment2Action(
     state: IReduxState,
     options: {
@@ -1425,21 +1444,21 @@ export class DatasheetActions {
     const actions: IJOTAction[] = [];
 
     if (emojiAction) {
-      // 新增
+      // new 
       actions.push(
         {
           n: OTActionName.ListInsert,
-          // p 只验证更新 comment 的 emoji，没有其他地方使用
+          // p, only verify update comment's emoji, no use in other place
           p: ['recordMap', recordId, 'comments', 'emojis'],
           li: updateComments[0],
         }
       );
     } else {
-      // 取消
+      // cancel
       actions.push(
         {
           n: OTActionName.ListDelete,
-          // p 只验证更新 comment 的 emoji，没有其他地方使用
+          // p, only verify update comment's emoji, no use in other place
           p: ['recordMap', recordId, 'comments', 'emojis'],
           ld: updateComments[0],
         }
@@ -1707,7 +1726,7 @@ export class DatasheetActions {
         const oldValue = oldPosition[k];
         const newValue = newPosition[k];
         if (oldValue !== newValue) {
-          // 兼容老的小程序面板第一次设置 y 坐标属性，用 oi
+          // compatible with the old mini program panel, set the y coordinate attribute for the first time, use oi
           const isFirstSetY = k === 'y' && oldValue === undefined;
           const replaceAction: IObjectReplaceAction = {
             n: OTActionName.ObjectReplace,
@@ -1839,7 +1858,8 @@ export class DatasheetActions {
   }
 
   /**
-   * 修改单向关联DstId
+   * edit single relation dstID
+   * 
    * @param snapshot
    * @param payload
    */

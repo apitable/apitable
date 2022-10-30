@@ -1,47 +1,47 @@
-# 客户端协同
+# Client collaboration
 
 
 
-## 基本流程
+## Basic process
 
 
-1. 客户端加载后，会分配一条 socket 与协同服务器建立链接。
-2. 用户打开一张数表，会进入到这个数表的房间内。一个页面一个房间，页面中涉及到所有的数表操作都在一个房间中进行协作。
-3. 用户作出变更操作后，会向协同服务器发送操作记录。
-4. 协同服务器，接受到请求。
-5. 协同服务器，广播处理过的请求到对应的房间中。
-6. 客户端所在的房间收到请求。执行对应的处理逻辑。
+1. After the client is loaded, a socket will be allocated to establish a link with the co-server.
+2. The user opens a datasheet and enters the room of the datasheet. One page is one room, and all table operations involved in the page are coordinated in one room.
+3. After the user makes a change operation, the operation record will be sent to the collaborative server.
+4. The co-server receives the request.
+5. The cooperative server broadcasts the processed request to the corresponding room.
+6. The room where the client is located receives the request. Execute the corresponding processing logic.
 
 
-### 关联表说明
+### Association table description
 
-1. 用户打开表格 `A` ，进入该表所在的房间。
-2. `A` 表关联了 `B` 、`C` 两张表，用户也会加入 `B` 、`C` 表的房间。
-
-
-
-## 同步说明
+1. The user opens form `A` and enters the room where the form is located.
+2. The `A` table is associated with the `B` and `C` tables, and the user will also join the rooms of the `B` and `C` tables.
 
 
-### 发出请求
 
-| reqType           | name            | note                                             |
-|-------------------|-----------------|--------------------------------------------------|
-| \                 | watch           | 客户端加载后，会分配一条 socket 与协同服务器链接 |
-| USER_CHANGES      | sendUserChanges | 用户产生变更请求，发送给协同服务器               |
-| SWITCH_DATASHEET  | switchDatasheet | 用户从一张表（可以不存在）切换到另外一张表       |
-| ACTIVATE_COLLABORATOR | 激活协作人 | 将用户头像显示在界面中                            |
-| DEACTIVATE_COLLABORATOR | 取消激活协作人 | 隐藏用户头像，用户关闭页面是会自动取消激活协作人 |
-| ENGAGEMENT_CURSOR | sendCursor      | 用户点击单元格，发送激活单元格游标给协同服务器   |
-| \                 | unwatch         | 客户端与协同服务器断开链接                       |
+## Synchronization instructions
 
 
-### 接受请求
+### Make a request
 
-| recType           | name                      | note                                     |
-|-------------------|---------------------------|------------------------------------------|
-| NEW_CHANGES       | handleNewChanges          | 房间内的其它用户产生了变更请求           |
-| ENGAGEMENT_CURSOR | handleCursor              | 房间内的其它用户，激活单元格游标发生变化     |
-| ACTIVATE_COLLABORATOR | handleUserEnter           | 新的协作人被激活了                     |
-| DEACTIVATE_COLLABORATOR | handleUserLeave           | 有协作人离开了                           |
-| SWITCH_DATASHEET  | handleUserSwitchDatasheet | 有用户切换到了其它表格，但是没有离开房间 |
+| reqType | name | note |
+|-------------------|-----------------|------------ ---------------------------------------|
+| \ | watch | After the client is loaded, a socket will be allocated to connect to the co-server |
+| USER_CHANGES | sendUserChanges | The user generates a change request and sends it to the collaborative server |
+| SWITCH_DATASHEET | switchDatasheet | User switches from one sheet (which may not exist) to another sheet |
+| ACTIVATE_COLLABORATOR | Activate collaborators | Display user avatar in the interface |
+| DEACTIVATE_COLLABORATOR | Deactivate collaborators | Hide user avatars, users will automatically deactivate collaborators when closing the page |
+| ENGAGEMENT_CURSOR | sendCursor | When the user clicks on a cell, the active cell cursor is sent to the collaborative server |
+| \ | unwatch | Client disconnects from companion |
+
+
+### Accept the request
+
+| recType | name | note |
+|-------------------|----------------------------|- -----------------------------------------|
+| NEW_CHANGES | handleNewChanges | Change requests made by other users in the room |
+| ENGAGEMENT_CURSOR | handleCursor | Other users in the room, the active cell cursor changes |
+| ACTIVATE_COLLABORATOR | handleUserEnter | New collaborator activated |
+| DEACTIVATE_COLLABORATOR | handleUserLeave | A collaborator has left |
+| SWITCH_DATASHEET | handleUserSwitchDatasheet | A user switched to another sheet, but did not leave the room |

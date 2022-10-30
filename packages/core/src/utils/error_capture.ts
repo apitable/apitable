@@ -44,7 +44,7 @@ export const errorCapture = <T extends { event: { onError?(e: any): void } }>() 
           try {
             
             const promise = boundFn(...args);
-            // 如果是一个 promise 需要监听 catch
+            // If it is a promise, you need to listen catch catch
             if (promise instanceof Promise) {
               promise.catch(e => {
                 onError(e);

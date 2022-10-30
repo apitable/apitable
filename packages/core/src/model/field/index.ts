@@ -225,31 +225,31 @@ export const getFieldClass = (type: FieldType) => {
 };
 
 /**
- * 静态 store，用于给外部调用者(web端)注入。
- * web 端调用 Field 之间，先注入好 store 实例，则每次 bindModel 的时候不需要再次传入 store
+ * Static store for injection to external callers (web-side).
+ * Before calling Field on the web side, inject the store instance first, then you don't need to pass in the store again every time you bindModel
  */
 let storeCache: Store;
 export const injectStore = (store: Store) => { storeCache = store; };
 
 /**
- * 绑定 field model 数据，获得 field 计算方法实例。
- * 这里做了一次缓存。防止频繁调用时 new 实例造成的没必要的内存消耗。
+ * Bind the field model data to get an instance of the field calculation method.
+ * A cache is done here. Prevent unnecessary memory consumption caused by new instances when called frequently.
  */
 export const bindModel = (() => {
   const cache: { [key: number]: Field } = {};
   return (field: IField, inState?: IReduxState, newInstance?: boolean) => {
     if (!inState && !storeCache) {
-      throw new Error('请传入 store 数据源');
+      throw new Error('Please pass in the store data source');
     }
     const state = inState || storeCache.getState();
-    // 强制初始化新的实例
+    // Force initialize a new instance
     if (newInstance) {
       const FieldClass = getFieldClass(field.type);
       return new FieldClass(field as any, state);
     }
 
     if (cache[field.type]) {
-      // 当实例已经存在的时候，只需要修改  this.field 属性就可以满足数据初始化需求。
+      // When the instance already exists, you only need to modify the this.field property to meet the data initialization requirements.
       cache[field.type].field = field;
       cache[field.type].state = state;
       return cache[field.type];
@@ -268,5 +268,6 @@ export const bindContext = (field: IField, state: IReduxState) => {
 };
 
 Field.bindModel = bindModel as IBindFieldModel;
-// bindContext 与 bindModel 不同之处在于，bindContext 每次创建新的 Field 对象，并且强制要求传入 store。
+// The difference between bindContext and bindModel is that 
+// bindContext creates a new Field object every time, and it is mandatory to pass in the store.
 Field.bindContext = bindContext as IBindFieldContext;

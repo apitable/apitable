@@ -127,7 +127,7 @@ export abstract class TextBaseField extends Field {
   }
 
   defaultValueForCondition(condition: IFilterCondition<FieldType.Text>): null | ISegment[] {
-    // 文本类型筛选没有默认填充的逻辑\
+    // There is no default padding logic for text type filtering\
     const { value } = condition;
     return value ? value.map(item => ({ text: item, type: SegmentType.Text })) : null;
   }
@@ -144,7 +144,7 @@ export abstract class TextBaseField extends Field {
     return str.toLowerCase().includes(searchStr.trim().toLowerCase());
   }
 
-  // 这里直接传入格式化之后的字符串
+  // The formatted string is directly passed in here
   static _isMeetFilter(operator: FOperator, cellText: string | null, conditionValue: IFilterText) {
     if (operator === FOperator.IsEmpty) {
       return cellText == null;
@@ -195,7 +195,7 @@ export abstract class TextBaseField extends Field {
     }
     const [filterValue] = conditionValue;
     switch (operator) {
-      // 根据输入的值精确搜索，忽略空格及大小写
+      // Exact search based on the entered value, ignoring spaces and case
       case FOperator.Is: {
         return cellText != null && cellText.trim().toLowerCase() === filterValue.trim().toLowerCase();
       }

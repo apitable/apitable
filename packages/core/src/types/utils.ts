@@ -3,8 +3,8 @@ import { DefaultStatusMessage } from 'config/constant';
 import { Object } from 'ts-toolbelt';
 
 /**
- * 部分指定为可选类型
- */
+  * part specified as optional type
+  */
 export type WithOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
 export type IAxiosResponse<T = any> = Object.Merge<{

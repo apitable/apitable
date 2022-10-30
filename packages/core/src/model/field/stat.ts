@@ -17,8 +17,8 @@ export enum StatType {
   PercentUnique = 7,
   Sum = 8,
   Average = 9,
-  Max = 10, // 日期类型里的LatestDate
-  Min = 11, // 日期类型里的EarliestDate
+  Max = 10, // LatestDate in date type
+  Min = 11, // EarliestDate in date type
   // LatestDate = 10,
   // EarliestDate = 11,
   DateRangeOfDays = 12,
@@ -76,7 +76,7 @@ const statUnique = (cellValues: ICellValue[], field: IField) => {
   return result;
 };
 
-// 数字字段计算
+// numeric field calculation
 const statSum = (cellValues: ICellValue[], field: IField, state: IReduxState) => {
   let res: number | number[] = sum(cellValues) || 0;
   const instance = Field.bindContext(field, state);
@@ -86,9 +86,9 @@ const statSum = (cellValues: ICellValue[], field: IField, state: IReduxState) =>
   return instance.cellValueToString(res);
 };
 
-// 数字字段计算
+// numeric field calculation
 const statAverage = (cellValues: ICellValue[], field: IField, state: IReduxState) => {
-  // 单元格为空，不计算在总数里
+  // cell is empty, not counted in total
   const total = cellValues.filter(cv => typeof cv === 'number').length;
   let res: number | number[] = sum(cellValues) / total;
   if (field.type === FieldType.Rating) {
@@ -101,7 +101,7 @@ const statAverage = (cellValues: ICellValue[], field: IField, state: IReduxState
   return instance.cellValueToString(res);
 };
 
-// 数字&日期字段计算
+// Number & date field calculation
 const statMax = (cellValues: ICellValue[], field: IField, state: IReduxState) => {
   let res: number | number[] = cellValues.reduce<number>((accumulator, cellValue: number | null) =>
     Math.max(accumulator, typeof cellValue ==='number' ? cellValue : -Infinity), -Infinity);
@@ -111,7 +111,7 @@ const statMax = (cellValues: ICellValue[], field: IField, state: IReduxState) =>
   return instance.cellValueToString(res);
 };
 
-// 数字&日期字段计算
+// Number & date field calculation
 const statMin = (cellValues: ICellValue[], field: IField, state: IReduxState) => {
   let res: number | number[] = cellValues.reduce<number>((accumulator, cellValue: number | null) =>
     Math.min(accumulator, typeof cellValue ==='number' ? cellValue : Infinity), Infinity);
@@ -163,7 +163,7 @@ const statDateRangeOfMonths = (cellValues: ICellValue[]) => {
 };
 
 /**
- * 根据计算类型获取列结果
+ * Get column result based on calculation type
  */
 export const getFieldResultByStatType = (
   statType: StatType,

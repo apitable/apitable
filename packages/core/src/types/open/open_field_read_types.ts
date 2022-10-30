@@ -1,23 +1,22 @@
 import { APIMetaFieldPropertyFormatEnums, APIMetaMemberType, TSymbolAlign } from '../field_api_enums';
 import { IFormat } from '../field_api_property_types';
 import { BasicValueType, CollectType, IMultiSelectedIds, RollUpFuncType } from '../field_types';
-
 export interface IOpenField {
   /** fieldId */
   id: string;
   /** fieldName */
   name: string;
-  /** fieldType string格式 */
+  /** fieldType string format */
   type: string;
-  /** 是否是主列 */
+  /** Is it the main column */
   isPrimary?: boolean;
-  /** 列描述 */
+  /** column description */
   description?: string;
-  /** 字段配置 */
+  /** Field configuration */
   property?: IOpenFieldProperty;
-  /** 可编辑，字段权限 */
+  /** editable, field permissions */
   editable?: boolean;
-  /** 神奇表单必填 */
+  /** Magic form required */
   required?: boolean;
 }
 
@@ -66,39 +65,36 @@ export interface IOpenNumberFieldProperty {
 export interface IOpenCheckboxFieldProperty {
   icon: string;
 }
-
 export interface IOpenRatingFieldProperty {
-  /** 最大值 1 - 10 */
+  /** max 1 - 10 */
   max: number;
   /** Emoji slug */
   icon: string;
 }
 
 export interface IOpenPercentFieldProperty {
-  /** 新增记录默认值 */
+  /** New record default value */
   defaultValue?: string;
-  /** 保留小数位 */
+  /** Preserve decimal places */
   precision: number;
 }
 
 export interface IOpenCurrencyFieldProperty {
-  /** 新增记录默认值 */
+  /** New record default value */
   defaultValue?: string;
-  /** 单位 */
+  /** Units */
   symbol: string;
-  /** 保留小数位 */
+  /** Preserve decimal places */
   precision: number;
-  /** 单位对齐方式 */
+  /** Unit alignment */
   symbolAlign?: TSymbolAlign;
 }
-
 export type IOpenSingleSelectFieldProperty = IOpenSelectBaseFieldProperty;
 
 export type IOpenMultiSelectFieldProperty = IOpenSelectBaseFieldProperty;
-
 export interface IOpenSelectBaseFieldProperty {
   defaultValue?: string | IMultiSelectedIds;
-  /** 选项配置 */
+  /** Option configuration */
   options: {
     id: string;
     name: string;
@@ -112,42 +108,41 @@ export interface IOpenSelectBaseFieldProperty {
 export interface IOpenMemberOption {
   id: string;
   name: string;
-  /** 成员类型 */
+  /** member type */
   type: APIMetaMemberType;
-  /** 头像URl */
+  /** Avatar URl */
   avatar?: string;
 }
 
 export interface IOpenMemberFieldProperty {
-  /** 当前列所有值集合 */
+  /** Set of all values in the current column */
   options: IOpenMemberOption[];
-  // 是否允许添加多个成员
+  // Whether to allow adding multiple members
   isMulti?: boolean;
-  // 是否发送通知
+  // whether to send notification
   shouldSendMsg?: boolean;
 }
-
 export interface IOpenDateTimeFieldProperty {
-  /** 日期格式 */
+  /** date format */
   dateFormat: string;
-  /** 时间格式 */
+  /** Time format */
   timeFormat?: string;
-  /** 新增记录时是否自动填入创建时间 */
+  /** Whether to automatically fill in the creation time when adding a new record */
   autoFill?: boolean;
-  /** 是否包含时间 */
+  /** Whether to include time */
   includeTime?: boolean;
 }
 
 export type IOpenAttachmentFieldProperty = null;
 
 export interface IOpenMagicLinkFieldProperty {
-  /** 关联表ID */
+  /** Association table ID */
   foreignDatasheetId: string;
-  /** 关联表的关联字段ID */
+  /** The associated field ID of the associated table */
   brotherFieldId?: string;
-  /** 指定视图 ID 筛选记录 */
+  /** Specify view ID to filter records */
   limitToViewId?: string;
-  /** 是否限制只能选择单条记录 */
+  /** Whether to limit the selection to only a single record */
   limitSingleRecord?: boolean;
 }
 
@@ -157,33 +152,32 @@ export interface IOpenComputedFormat {
 }
 
 export interface IOpenMagicLookUpFieldProperty {
-  /** 引用的当前表的关联字段 ID */
+  /** The associated field ID of the current table referenced */
   relatedLinkFieldId: string;
-  /** 关联表中查询的字段 ID */
+  /** Field ID queried in the associated table */
   targetFieldId: string;
-  /** 当神奇引用的依赖的关联字段被删除或者转化类型时，可能无法正常获取引用值 */
+  /** When the dependent associated field of the magical reference is deleted or converted, the reference value may not be obtained normally */
   hasError?: boolean;
-  /** 最终引用到的实体字段，不包含神奇引用类型的字段。存在错误时，实体字段可能不存在。 */
+  /** The final referenced entity field, does not contain fields of magical reference type. Entity fields may not exist when there is an error. */
   entityField?: {
-    datasheetId: string; 
+    datasheetId: string;
     field: IOpenField;
   };
-  /** 汇总函数 */
+  /** Aggregate function */
   rollupFunction?: RollUpFuncType;
-  /** 返回值类型 */
+  /** return value type */
   valueType?: 'String' | 'Boolean' | 'Number' | 'DateTime' | 'Array';
-  /** 格式，由于引用字段有区别，格式也不一样（数字、百分比、日期、货币） */
+  /** Format, because the reference field is different, the format is different (number, percentage, date, currency) */
   format?: IOpenComputedFormat;
 }
-
 export interface IOpenFormulaFieldProperty {
-  /** 公式表达式 */
+  /** formula expression */
   expression: string;
-  /** 返回值类型，取值包括 String、Boolean、Number、DateTime、Array */
+  /** Return value type, including String, Boolean, Number, DateTime, Array */
   valueType: BasicValueType;
-  /** 当公式依赖的相关字段被删除或者转化类型时，可能无法正常获取计算值 */
+  /** When the related field that the formula depends on is deleted or the type is converted, the calculated value may not be obtained normally */
   hasError?: boolean;
-  /** 格式，由于引用字段有区别，格式也不一样（数字、百分比、日期、货币） */
+  /** Format, because the reference field is different, the format is different (number, percentage, date, currency) */
   format?: IOpenComputedFormat;
 }
 
@@ -191,23 +185,23 @@ export type IOpenAutoNumberFieldProperty = null;
 
 export type IOpenCreatedTimeFieldProperty = Omit<IOpenDateTimeFieldProperty, 'autoFill'>;
 export interface IOpenLastModifiedTimeFieldProperty {
-  /** 日期格式 */
+  /** date format */
   dateFormat: string;
-  /** 时间格式 */
+  /** Time format */
   timeFormat: string;
-  /** 是否包含时间 */
+  /** Whether to include time */
   includeTime: boolean;
-  /** 指定字段类型：0 所有可编辑，1 指定字段 */
+  /** Specify field type: 0 all editable, 1 specified field */
   collectType: CollectType;
-  /** 是否指定字段，数组类型可指定多个字段，不填为所有 */
+  /** Whether to specify a field, the array type can specify multiple fields, do not fill in all */
   fieldIdCollection?: string[];
 }
 
 export type IOpenCreatedByFieldProperty = null;
 
 export interface IOpenLastModifiedByFieldProperty {
-  /** 指定字段类型：0 所有可编辑，1 指定字段 */
+  /** Specify field type: 0 all editable, 1 specified field */
   collectType: CollectType;
-  /** 是否指定字段，数组类型可指定多个字段，不填为所有 */
+  /** Whether to specify a field, the array type can specify multiple fields, do not fill in all */
   fieldIdCollection?: string[];
 }

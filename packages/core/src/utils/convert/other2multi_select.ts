@@ -4,9 +4,15 @@ import {
 import { IField, FieldType } from 'types/field_types';
 
 /**
- * 1.单选转多选时，传入的值是一个 string, 这里判断该 string 是否存在于 newField 中
- * 2.多选转多选时，传入的值是一个 string[], 这里判断 string[]里的 id 是否存在于 newField 中
- * 3.其他类型转单选，传入的是一个 文本(name)，这里判断该文本是否已存在于 newField option 中
+ * 1. When converting from single selection to multiple selection, 
+ * the incoming value is a string, here it is judged whether the string exists in newField
+ * 
+ * 2. When converting multiple selections to multiple selections, 
+ * the incoming value is a string[], here it is judged whether the id in string[] exists in newField
+ * 
+ * 3. For other types to radio selection, a text (name) is passed in. 
+ * Here it is judged whether the text already exists in the newField option
+ * 
  * @export
  * @param {(string[] | string | null)} value
  * @param {MultiSelectField} newField
@@ -17,9 +23,10 @@ export function str2multi(value: string[] | string | null,
   newField: MultiSelectField,
   oldField: IField): string[] | null {
   if (value == null) return null;
-  /* 如果 value 是一个数组，但旧类型不是多选类型，则返回空 */
+  /* If value is an array, but the old type is not a multi-select type, return null */
   if (Array.isArray(value) && oldField.type !== FieldType.MultiSelect) {
-    console.warn(`当 value 参数是数组时，type 类型应该是多选类型:${FieldType.MultiSelect}，现在的类型时：${oldField.type}`);
+    console.warn(`When the value parameter is an array, the type should be a multi-select type: \
+                  ${FieldType.MultiSelect}, the current type: ${oldField.type}`);
     return null;
   }
   if (oldField.type === FieldType.SingleSelect) {

@@ -1,12 +1,12 @@
 /**
- * 移动数组
- * @export
- * @template T
- * @param {T[]} array
- * @param {number} from 移动数据的原始下标
- * @param {number} to 移动数据的目标下标
- * @returns {(T[] | boolean)}
- */
+  * move the array
+  * @export
+  * @template T
+  * @param {T[]} array
+  * @param {number} from original subscript of mobile data
+  * @param {number} to target index of mobile data
+  * @returns {(T[] | boolean)}
+  */
 export function moveArrayElement<T>(array: T[], from: number, to: number): boolean {
   const length = array.length;
 
@@ -23,7 +23,7 @@ export function moveArrayElement<T>(array: T[], from: number, to: number): boole
 }
 
 /**
- * 检测 array1 与 array2 是否为相同的集合
+ * Check if array1 and array2 are the same set
  * @template T
  * @param {T[]} array1
  * @param {T[]} array2
@@ -47,7 +47,7 @@ export function isSameSet<T extends number | string>(array1: T[], array2: T[]) {
 }
 
 /**
- * 检测 array1 是否为 array2 的子集
+ * Check if array1 is a subset of array2
  *
  * @export
  * @template T
@@ -73,7 +73,7 @@ export function isSubSet<T extends number | string>(array1: T[], array2: T[]) {
 }
 
 /**
- * 交集是否为空
+ * Is the intersection empty
  *
  * @export
  * @template T
@@ -104,11 +104,11 @@ export function array2Map<T>(arr: T[], key: string) {
 }
 
 /**
- * 获取数组的上一个索引或者下一个索引，当索引到达边界时候，从头开始。
- * @param length 数组长度
- * @param index 当前索引
- * @param plusOrNot +1 还是 -1
- */
+  * Get the previous index or the next index of the array, when the index reaches the boundary, start from the beginning.
+  * @param length array length
+  * @param index current index
+  * @param plusOrNot +1 or -1
+  */
 export const getArrayLoopIndex = (length: number, index: number, plusOrNot: number) => {
   if (index == null || length <= 0) return 0;
   const newIndex = index + plusOrNot;
@@ -119,7 +119,7 @@ export const getArrayLoopIndex = (length: number, index: number, plusOrNot: numb
 };
 
 /**
- * @description 给需要排序的对象数组中的每一项增加一个 anchorIndex ,这里的 anchorIndex 就是未排序前的数组的顺序
+ * @description adds an anchorIndex to each item in the object array to be sorted, where anchorIndex is the order of the unsorted array
  * @param sortList 
  */
 export const addExtraAnchorIndex = <T>(sortList: T[]): (T & { anchorIndex: number })[] => {
@@ -132,7 +132,8 @@ export const addExtraAnchorIndex = <T>(sortList: T[]): (T & { anchorIndex: numbe
 };
 
 /**
- * @description 结合上面增加的 anchorIndex, 当自定义排序函数的结果一致时，比较两项的 anchorIndex 是否一致来进行排序
+ * @description Combined with the anchorIndex added above, 
+ * when the results of the custom sorting function are consistent, compare whether the anchorIndex of the two items are consistent to sort
  * @param sortFunc 
  * @param sortList 
  */
@@ -144,7 +145,7 @@ export const sortByExtraAnchorIndex =
   };
 
 /**
- * a 相对于 b 的补集
+ * the complement of a with respect to b
  * a = [1,2,3]
  * b = [2,3,4]
  * setComplement(a,b) => [4]

@@ -16,8 +16,8 @@ type Edge = {
 };
 
 /**
- * Take the specified number table as a starting point and obtain its network of associated reference relations.
- * @param dstId Number table id
+ * Take the specified datasheet as a starting point and obtain its network of associated reference relations.
+ * @param dstId datasheet id
  */
 export const getDstNetworkData = (dstId?: string) => {
   const state = store.getState();

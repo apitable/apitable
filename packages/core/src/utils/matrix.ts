@@ -1,6 +1,6 @@
 /**
- * @description 矩阵(二维数组)进行转置
- * @param matrix - 二维数组
+ * @description matrix (two-dimensional array) to transpose
+ * @param matrix - 2D array
  */
 export const transpose = <T>(matrix: T[][]): T[][] => {
   const rows = matrix.length;

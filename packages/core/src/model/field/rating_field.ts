@@ -68,8 +68,8 @@ export class RatingField extends NumberBaseField {
   }
 
   /**
-   * 取消对 property.max 的校验，统计时会调用 cellValueToString。
-   * 求和的结果可能大于 max。在 UI 层已经对超出 max 的值做了处理。
+   * Cancel the verification of property.max, and call cellValueToString during statistics.
+   * The result of the summation may be greater than max. Values exceeding max have been handled at the UI layer.
    */
   validate(value: any): value is number {
     // && value <= this.field.property.max
@@ -78,7 +78,7 @@ export class RatingField extends NumberBaseField {
 
   isMeetFilter(operator: FOperator, cellValue: number | null, conditionValue: Exclude<IFilterNumber, null>) {
     if (conditionValue == null) {
-      // 评分筛选空值 == 0
+      // Score filter null == 0
       const filterValue = 0;
       const cv = cellValue || 0;
       switch (operator) {

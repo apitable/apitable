@@ -25,7 +25,7 @@ export const setAutoHeadHeight: ICollaCommandDef<ISetAutoHeadHeightOptions> = {
       return null;
     }
 
-    // 判断当前操作的 view 是否是激活的 view
+    // Determine whether the current operating view is the active view
     if (datasheet.activeView !== viewId) {
       throw new Error(t(Strings.error_set_row_height_failed_wrong_target_view));
     }

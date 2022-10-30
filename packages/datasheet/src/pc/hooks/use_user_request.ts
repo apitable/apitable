@@ -279,7 +279,7 @@ export const useUserRequest = () => {
           content: t(Strings.message_member_name_modified_successfully),
         });
         dispatch(StoreActions.updateUserInfo({ memberName, isMemberNameModified: true }));
-        // Synchronising member information such as number tables after modifying member information
+        // Synchronising member information such as datasheets after modifying member information
         if (oldUnitMap) {
           dispatch(StoreActions.updateUnitMap({
             [oldUnitMap.unitId]: {

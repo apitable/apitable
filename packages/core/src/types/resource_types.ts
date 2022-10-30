@@ -1,4 +1,4 @@
-// 枚举值对齐数据库表 vika_resource_changeset 的字段 resource_type，请勿修改
+// The enumeration value is aligned with the field resource_type of the database table `resource_changeset`, please do not modify it
 export enum ResourceType {
   Datasheet,
   Form,

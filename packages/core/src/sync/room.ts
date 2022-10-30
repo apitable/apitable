@@ -25,7 +25,7 @@ import {
   IWatchResponse, OtErrorCode, SyncRequestTypes,
 } from './types';
 
-// 数据重发 action 数量最大上线，超过此数值不进行超时重试操作
+// The maximum number of data retransmission actions is online, beyond this value, no timeout retry operation will be performed
 const MAX_RETRY_LENGTH = 5000;
 const VIKA_OP_BACKUP = 'VIKA_OP_BACKUP';
 
@@ -39,9 +39,9 @@ interface IRoomEvent {
 }
 
 /**
- * Room 模块，负责协作房间内的数据同步，重试、收发消息能力
- * 与资源实体不进行耦合，交由 CollaEngine 处理数据实体的操作
- * 1 个 Room 可以管理多个 CollaEngine
+ * Room module, responsible for data synchronization in the collaborative room, retry, sending and receiving messages
+ * It is not coupled with the resource entity, and the operation of the data entity is handled by CollaEngine
+ * 1 Room can manage multiple CollaEngines
  */
 export class RoomService {
   collaEngineMap = new Map<string, Engine>();
@@ -52,11 +52,12 @@ export class RoomService {
   backupDB: ILocalForage;
 
   /**
-   * 根据资源主资源Id 创建一个 roomId
-   * 什么是 resource 资源，资源是数据实体的概括，比如一个数表，一个小组件，一个仪表盘。他们的数据统称为资源
-   * 主资源 ID 一般指的是当前用户主要访问的节点页面，比如数表、仪表盘等
-   * 而主资源可能附带多个其他资源，比如一张表的关联表，一个 dashboard 上面的 widget
-   * @param resourceId 资源 ID，可以是 datasheetId, DashboardId, WidgetId 等实体资源的 Id
+   * Create a roomId based on the resource main resource ID
+   * What is a resource resource, a resource is a summary of data entities, 
+   * such as a datasheet, a widget, and a dashboard. Their data are collectively referred to as resources
+   * The main resource ID generally refers to the node page that the current user mainly accesses, such as the datasheet, dashboard, etc.
+   * The main resource may come with multiple other resources, such as an associated table of a table, a widget on a dashboard
+   * @param resourceId Resource ID, which can be the ID of entity resources such as datasheetId, DashboardId, WidgetId, etc.
    */
   static createRoomId(resourceId: string) {
     return `${resourceId}`;
@@ -84,7 +85,7 @@ export class RoomService {
   }
 
   /**
-   * 添加负责对资源进行实时协作协作的 OT 引擎。
+   * Add an OT engine responsible for real-time collaborative collaboration on resources.
    */
   addCollaEngine(collaEngine: Engine) {
     if (collaEngine.cancelQuit) {
@@ -94,7 +95,7 @@ export class RoomService {
 
     // await collaEngine.prepare();
     if (this.collaEngineMap.has(collaEngine.resourceId)) {
-      console.error('请勿重复增加 CollaEngine');
+      console.error('Do not add CollaEngine');
     }
     this.collaEngineMap.set(collaEngine.resourceId, collaEngine);
   }
@@ -106,7 +107,7 @@ export class RoomService {
   }
 
   async init(firstRoomInit = false) {
-    // 保证 协同引擎 已经完成初始化
+    // Ensure that the collaborative engine has been initialized
     const hasCollaEngine = () => {
       return this.collaEngineMap.has(this.roomId);
     };
@@ -114,7 +115,7 @@ export class RoomService {
       await this.nextTick();
     } while (!hasCollaEngine());
     firstRoomInit && this.sendLocalChangesetWithInit();
-    // 先对协作引擎进行初始化
+    // Initialize the collaboration engine first
     await Promise.all(Array.from(this.collaEngineMap.keys()).map(resourceId => {
       const collaEngine = this.collaEngineMap.get(resourceId)!;
       return collaEngine.waitPrepareComplete();
@@ -123,7 +124,7 @@ export class RoomService {
     await this.watch();
   }
 
-  // 初始化的时候，需要将缓存在本地的 localPendingChangeset  (如果有的话)发送到服务端
+  // When initializing, you need to send the locally cached localPendingChangeset (if any) to the server
   @errorCapture<RoomService>()
   async sendLocalChangesetWithInit() {
     const localPendingChangesetStorage = this.lsStore.namespace(BufferStorage.pendingChangesetsNamespace);
@@ -157,14 +158,14 @@ export class RoomService {
 
       const timestamps = await this.backupDB.keys();
       timestamps.map(timestamp => {
-        // 对备份时间大于两周的数据做清理
+        // Clean up data whose backup time is greater than two weeks
         if (dayjs().diff(Date.now(), 'day') > 14) {
           this.backupDB.removeItem(timestamp);
         }
       });
 
       Player.doTrigger(Events.app_error_logger, {
-        error: new Error(`初始化 applyChangeset 失败：${e.message}`),
+        error: new Error(`Failed to initialize applyChangeset: ${e.message}`),
         metaData: {
           roomId: this.roomId,
           changesetMap: JSON.stringify(changesetMap),
@@ -236,8 +237,8 @@ export class RoomService {
   }
 
   /**
-   * 后端主动推送别人提交的 changeset
-   * 或者主动补偿缺失版本的 changeset
+   * The backend server actively pushes changesets submitted by others
+   * Or actively compensate for missing versions of changeset
    */
   @errorCapture<RoomService>()
   handleNewChanges(data: INewChangesData) {
@@ -250,18 +251,20 @@ export class RoomService {
         resourceId.startsWith(NodeTypeReg.DATASHEET) &&
         !Selectors.getDatasheet(this.store.getState(), resourceId)
       ) {
-        // 此时获取到的数据已为最新版本，不需要再应用cs
+        // The data obtained at this time is the latest version, no need to apply cs anymore
         this.fetchResource(resourceId, ResourceType.Datasheet);
       }
     });
   }
 
   /**
-   * @description watch 方法主要用于做 3 件事
-   * 1. 在 client 端创建房间，并且加入 service 中
-   * 2. 注册各种 socket 的监听事件
-   * 3. 启动 client 上的事件协同监视器，保证阻塞的消息隔一段时间会被处理
-   * 原先考虑在 watch 中对缺失的版本进行补偿，但是补偿行为已经在 init 中，由每一个 engine 自己处理，所以 watch 不需要再关注版本补偿
+   * The @description watch method is mainly used to do 3 things
+   * 1. Create a room on the client side and add it to the service
+   * 2. Register listening events for various sockets
+   * 3. Start the event coordination monitor on the client to ensure that blocked messages will be processed at intervals
+   * Originally considered to compensate for the missing version in watch, 
+   * but the compensation behavior is already in init, handled by each engine itself, 
+   * so watch does not need to pay attention to version compensation anymore
    * @returns
    */
   @errorCapture<RoomService>()
@@ -293,7 +296,7 @@ export class RoomService {
   }
 
   /**
-   * 切换资源或者断网重连，都请求本房间内所有数表的列权限
+   * Switching resources or reconnecting after disconnection requires the column permissions of all data tables in the room
    */
   loadFieldPermissionMap() {
     const dstIds: string[] = [];
@@ -311,7 +314,7 @@ export class RoomService {
     const missVersionEngines: { collaEngine: Engine; revision: number }[] = [];
 
     if (!resourceRevisions || !resourceRevisions.length) {
-      console.log('当前资源由于长时间未操作，进行数据的自动更新');
+      console.log('The current resource has not been operated for a long time, and the data is automatically updated');
       await this.collaEngineMap.get(this.roomId)?.event.reloadResourceData();
       return;
     }
@@ -345,9 +348,12 @@ export class RoomService {
   }
 
   /**
-   * @description unwatch 不再需要关注协同队列是否清空，这里有两种情况：切换表格和ƒ socket 的完全断开。对于后者的处理需要依赖本地存储的数据，并且这里的 unwatch 事件也并不会触发。
-   * 对于前者，service 在处理切换房间中已经做了 engine 数据的转换，保证了即便上一个房间中有未发送的数据，在切换房间后也能协同出去，
-   * 所以这里只需要关注通知中间层离开房间
+   * @description unwatch no longer needs to pay attention to whether the coordinator queue is emptied, 
+   * there are two cases here: switch table and complete disconnection of ƒ socket. 
+   * The processing of the latter needs to rely on locally stored data, and the unwatch event here will not be triggered.
+   * For the former, the service has already converted the engine data in the process of switching rooms, 
+   * which ensures that even if there is unsent data in the previous room, it can be coordinated after switching rooms.
+   * So here you only need to pay attention to the notification that the middle server(room) leaves the room
    * @private
    */
   private async unwatch() {
@@ -355,15 +361,15 @@ export class RoomService {
   }
 
   /**
-   * 离开 room
-   * 1. 解除长链消息监听
-   * 2. 清除数据发送状态监测定时器
+   * leave room
+   * 1. Remove long chain message monitoring
+   * 2. Clear data sending status monitoring timer
    */
   async leaveRoom() {
     this.setConnected(false);
     /**
-     * 切换空间后，上一个空间的 socket 被关闭，导致 leave_room 的事件不会触发，所以
-     * 可以这里可以检查项 socket 的连接状况
+     * After switching the space, the socket of the previous space is closed, so the event of leave_room will not be triggered, so
+     * You can check the connection status of the item socket here
      */
     if (this.socket.connected) {
       await this.unwatch();
@@ -375,7 +381,7 @@ export class RoomService {
   }
 
   /**
-   * @description 支持单个 Resource 退出当前协同的 Room，而不销毁当前 Room
+   * @description supports a single Resource to exit the current collaborative Room without destroying the current Room
    * @param {string} resourceId
    * @returns
    */
@@ -406,10 +412,10 @@ export class RoomService {
   }
 
   /**
-   * 数据发送状态监听器
-   * 定时轮询检查用户数据是否已经发送出去并得到了确认
-   * 如果过长时间（1 分钟）还未得到确认，就执行重试机制
-   * 这种情况通常伴随着报错一起出现
+    * Data sending status listener
+    * Regular polling to check whether user data has been sent and confirmed
+    * If it has not been confirmed for a long time (1 minute), execute a retry mechanism
+    * This situation usually occurs with an error
    */
   private setSendingWatcher() {
     this.clearSendingWatcher();
@@ -436,8 +442,8 @@ export class RoomService {
     clearInterval(this.sendingWatcherTimer);
   }
 
-  // 强制发送数据到服务端，避免因为过程问题导致数据卡壳不发送。
-  // 只要长连接存在，就会发送数据。
+  // Force data to be sent to the server to avoid data jamming and not sending due to process problems.
+  // As long as a persistent connection exists, data will be sent.
   private forceSend(changesets: ILocalChangeset[]) {
     const actionLength = changesets.reduce((pre, cur) => {
       return pre + cur.operations.reduce((p, c) => {
@@ -445,9 +451,9 @@ export class RoomService {
       }, 0);
     }, 0);
 
-    // 注意：在粘贴超大数据的情况下，服务端可能返回缓慢，此时不进行数据重发。
+    // Note: In the case of pasting large data, the server may return slowly, and the data will not be re-sent at this time.
     if (actionLength > MAX_RETRY_LENGTH) {
-      console.error('大批量粘贴数据，将不进行重试操作');
+      console.error('Paste data in large batches, the retry operation will not be performed');
       return;
     }
 
@@ -460,19 +466,18 @@ export class RoomService {
   }
 
   /**
-   * 发送用户产生的 changeset
+   * Send user-generated changeset
    */
-
   private sendUserChanges = (changesets: ILocalChangeset[]) => {
-    console.log('提交数据: ', changesets, changesets.length);
-    // 标记发送队列正在等待返回
+    console.log('Submission data: ', changesets, changesets.length);
+    // mark the send queue waiting to return
     this.event.setRoomIOClear(false);
     this.event.setRoomLastSendTime();
     if (!this.connected) {
       console.error('room has been destroy,can\'t send anything');
       return;
     }
-    // 500ms 之后再进行 loading, 防止网络较快的情况下图标一闪而过
+    // Load after 500ms, to prevent the icon from flashing when the network is fast
     const collaEngine = this.collaEngineMap.get(this.roomId);
     const resourceType = collaEngine?.resourceType!;
     const timer = setTimeout(() => {
@@ -494,7 +499,7 @@ export class RoomService {
         data.data;
         return Promise.resolve();
       }
-      // 未成功的请求，引流到下面的catch
+      // Unsuccessful requests, divert traffic to the following catch
       return Promise.reject(data);
     }).catch(e => {
       this.event.setRoomIOClear(true);
@@ -517,12 +522,12 @@ export class RoomService {
     for (const cs of changesets) {
       const collaEngine = this.collaEngineMap.get(cs.resourceId)!;
       if (!collaEngine) {
-        console.log('房间已经切换，collaEngine 更新');
+        console.log('The room has been switched, the collaEngine is updated');
         continue;
       }
       await collaEngine.handleAcceptCommit(cs);
-      // TODO: changesets 里面有 cookie 要在中间层去掉
-      console.log('数据返回成功: ', cs);
+      // TODO: There are cookies in changesets to be removed in the middle layer
+      console.log('Data returned successfully: ', cs);
     }
 
     this.nextSend();
@@ -531,7 +536,7 @@ export class RoomService {
   @errorCapture<RoomService>()
   @socketGuard()
   async handleRejectCommit(data: ISocketResponseData, clearAllStorage = true) {
-    // 只是 message 重复了的话，不需要刷新
+    // If the message is repeated, no need to refresh
     if (data.code === OtErrorCode.MSG_ID_DUPLICATE) {
       console.log(data.message);
       this.nextSend();
@@ -541,7 +546,7 @@ export class RoomService {
     const bufferStorage = this.collaEngineMap.get(this.roomId)?.bufferStorage;
 
     Player.doTrigger(Events.app_error_logger, {
-      error: new Error(`错误的 op 信息：${data.message}`),
+      error: new Error(`Incorrect op message: ${data.message}`),
       metaData: {
         roomId: this.roomId,
         connected: this.connected,
@@ -552,7 +557,7 @@ export class RoomService {
     });
 
     if (clearAllStorage) {
-      // 清空数据之前，对被清空的数据做本地备份
+      // Before clearing the data, make a local backup of the cleared data
       await this.backupDB.setItem(String(Date.now()), {
         opBufferMap: this.getBufferOperateMap(),
         changesetMap: keyBy(this.getLocalPendingChangesets(), 'resourceId')
@@ -560,7 +565,7 @@ export class RoomService {
       this.clearAllStorage();
     }
 
-    console.trace('错误的 op 信息');
+    console.trace('Wrong op information');
     throw new EnhanceError(data);
   }
 
@@ -588,7 +593,7 @@ export class RoomService {
     return localPendingChangeset;
   }
 
-  // 清除所有待发送的 op 和待确认的 changeset
+  // Clear all pending ops and pending changesets
   private clearAllStorage() {
     for (const resourceId of this.collaEngineMap.keys()) {
       const collaEngine = this.collaEngineMap.get(resourceId)!;
@@ -598,11 +603,11 @@ export class RoomService {
   }
 
   /**
-   * @description 进行下一轮的发送
+   * @description for the next round of sending
    * @private
-   * 当目前没有排队请求的时候，可以直接开始发送
-   * 否则等待当前请求结束后，opBuffer 会自动被发送
-   * 第一次触发时立即调用，间隔时间结束后会再次调用
+   * When there are currently no queued requests, you can start sending directly
+   * Otherwise, after waiting for the current request to end, opBuffer will be sent automatically
+   * Called immediately when triggered for the first time, and will be called again after the interval expires
    */
   private nextSend = throttle(() => {
     if (!this.event.getRoomIOClear()) {
@@ -625,10 +630,11 @@ export class RoomService {
   }, 500);
 
   /**
-   * 将 operation 推入发送队列，SyncEngine 将保证数据按照版本顺序发送到服务端
-   * 并且提供临时性的本地持久化能力，防止用户意外断网和主动刷新的情况下丢失数据
+   * Push the operation into the send queue, SyncEngine will ensure that the data is sent to the server in version order
+   * And provide temporary local persistence capabilities to 
+   * prevent users from losing data in the case of accidental network disconnection and active refresh
    *
-   * Notice: 多个 operation 可能会被合并成一个 changeset 一次性发送到服务端
+   * Notice: Multiple operations may be merged into one changeset and sent to the server at one time
    *
    */
   @errorCapture<RoomService>()
@@ -642,8 +648,8 @@ export class RoomService {
   }
 
   /**
-   * 是否可以安全的关闭
-   * 当还存在没有成功同步的数据的时候，返回 false，否则返回 true
+   * Is it safe to close?
+   * When there is still data that has not been successfully synchronized, return false, otherwise return true
    */
   isSafeToClose(): boolean {
     for (const resourceId of this.collaEngineMap.keys()) {
@@ -656,8 +662,8 @@ export class RoomService {
   }
 
   /**
-   * 一个简单的消息发送器，适用于仅需要发送通知而不需要持久化的情况。
-   * 消息会发送给 所有在线的
+   * A simple message sender for situations where only notifications need to be sent and no persistence is required.
+   * message will be sent to all online
    */
   sendMessages(type: string, data?: Record<string, any>) {
     return this.io.request({
@@ -671,7 +677,8 @@ export class RoomService {
   }
 
   /**
-   * 激活协作者，调用此方法之后，当前用户的头像会显示在所有打开本表的协作者界面上
+   * Activate the collaborator. After calling this method, 
+   * the avatar of the current user will be displayed on the interface of all collaborators who open this table
    */
   handleActiveCollaborator(data: ICollaborator) {
     console.log('active collaborator', data);
@@ -683,7 +690,8 @@ export class RoomService {
   }
 
   /**
-   * 激活协作者，调用此方法之后，当前用户的头像会显示在所有打开本表的协作者界面上
+   * Activate the collaborator. After calling this method, 
+   * the avatar of the current user will be displayed on the interface of all collaborators who open this table
    */
   handleActiveCollaborators(data: { collaborators: ICollaborator[] }) {
     console.log('active collaborators', data);
@@ -697,7 +705,8 @@ export class RoomService {
   }
 
   /**
-   * 取消激活协作者，调用此方法之后，当前用户的头像会离开在所有打开本表的协作者界面上
+   * Deactivate the collaborator. 
+   * After calling this method, the avatar of the current user will be left on the interface of all collaborators who open this table
    */
   handleDeactivateCollaborator(data: ICollaborator) {
     console.log('deactivate collaborator', data);
@@ -749,7 +758,7 @@ export class RoomService {
     };
   }
 
-  // 开启列权限
+  // Enable column permissions
   handleFieldPermissionEnabled(data: IFieldPermissionMessage) {
     console.log('RECEIVED handleFieldPermissionEnabled: ', { data });
     const fieldPermission = this.generateStdFieldPermission(data, true);
@@ -757,21 +766,21 @@ export class RoomService {
 
   }
 
-  // 变更列权限
+  // change column permissions
   handleFieldPermissionChange(data: IFieldPermissionMessage) {
     console.log('RECEIVED handleFieldPermissionChange: ', { data });
     const fieldPermission = this.generateStdFieldPermission(data);
     this.store.dispatch(updateFieldPermissionMap(fieldPermission, data.datasheetId));
   }
 
-  // 关闭列权限
+  // disable column permissions
   handleFieldPermissionDisabled(data: IFieldPermissionMessage) {
     console.log('RECEIVED handleFieldPermissionDisabled: ', { data });
     this.store.dispatch(resetFieldPermissionMap(data.fieldId, data.datasheetId));
   }
 
-  // 修改列权限的配置
-  // 0.7 不处理该事件
+  // Modify the configuration of column permissions
+  // 0.7 don't handle the event
   handleFieldPermissionSetting(data: IFieldPermissionMessage) {
     console.log('RECEIVED IFieldPermissionMessage: ', { data });
     if (!data.setting) {
@@ -781,7 +790,7 @@ export class RoomService {
   }
 
   /**
-   * 处理 io 主动推送的消息
+   * Handle messages actively pushed by io
    */
   private bindSocketMessage = () => {
     if (!this.io.socket) {

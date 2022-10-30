@@ -30,10 +30,9 @@ function isArrayNodes(nodes?: AstNode[]) {
   }
   return false;
 }
-
 /**
- * 部分公共函数的工具类
- */
+  * Tool class for some public functions
+  */
 export class NumericUtilsFunc extends NumericFunc {
   static getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
@@ -41,8 +40,8 @@ export class NumericUtilsFunc extends NumericFunc {
   }
 
   /**
-   * CEILING、FLOOR
-   * 输出结果与 Excel 对齐
+   * CEILING, FLOOR
+   * The output result is aligned with Excel
    */
   static calc2RoundFC(
     params: [IFormulaParam<number>, IFormulaParam<number>],
@@ -92,7 +91,7 @@ export class Sum extends NumericFunc {
 
   static func(params: IFormulaParam<number>[]): number {
     let result = 0;
-    // 只有一个参数并且是数组的话，意味着是对数组类型字段的值进行求和
+    // If there is only one parameter and it is an array, it means that the value of the array type field is summed
     if (isArrayParam(params)) {
       const innerValueType = (params[0].node as ValueOperandNodeBase).innerValueType;
       if (innerValueType && innerValueType === BasicValueType.DateTime) {
@@ -143,7 +142,7 @@ export class Average extends NumericFunc {
   }
 
   static func(params: IFormulaParam<number>[]): number {
-    // 只有一个参数并且是数组的话，意味着是对数组类型字段的值进行求和
+    // If there is only one parameter and it is an array, it means that the value of the array type field is summed
     if (isArrayParam(params)) {
       const innerValueType = (params[0].node as ValueOperandNodeBase).innerValueType;
       if (innerValueType && innerValueType === BasicValueType.DateTime) {
@@ -159,7 +158,7 @@ export class Average extends NumericFunc {
     }
 
     const total = params.filter(cur => {
-      // 产品需求，单元格为空，该单元格不计算在总数里
+      // Product requirement, the cell is empty, the cell is not counted in the total
       if (cur.value == null) {
         return false;
       }
@@ -250,7 +249,7 @@ export class Max extends NumericFunc {
       return BasicValueType.Number;
     }
 
-    // 所有参数均为日期类型，则返回日期类型
+    // All parameters are date type, return date type
     if (params.every(node => node.valueType === BasicValueType.DateTime)) {
       return BasicValueType.DateTime;
     }
@@ -263,7 +262,7 @@ export class Max extends NumericFunc {
   }
 
   static calc(params: IFormulaParam<number>[], calcFn: (collection: any[]) => any): NumericType {
-    // 只有一个参数并且是数组的话，意味着是对数组类型字段的值进行求和
+    // If there is only one parameter and it is an array, it means that the value of the array type field is summed
     if (isArrayParam(params)) {
       if (!params[0].value) {
         return null;
@@ -272,7 +271,8 @@ export class Max extends NumericFunc {
       return v == null ? null : Number(v);
     }
 
-    // 返回值是不是 DateTime 则要将 DateTime 类型的 node 过滤掉，否则会引入时间戳扰乱计算结果
+    // If the return value is DateTime, the node of DateTime type should be filtered out, 
+    // otherwise the timestamp will be introduced to disturb the calculation result
     if (this.getReturnType(params.map(p => p.node)) !== BasicValueType.DateTime) {
       params = params.filter(p => p.node.valueType !== BasicValueType.DateTime);
     }
@@ -282,7 +282,7 @@ export class Max extends NumericFunc {
   }
 }
 
-// Min 函数与 Max 区别只在计算方式 calcFn 不同
+// The Min function is different from Max only in the calculation method calcFn
 export class Min extends Max {
   static func(params: IFormulaParam<number>[]): NumericType {
     return this.calc(params, min);

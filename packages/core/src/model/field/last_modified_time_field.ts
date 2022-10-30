@@ -77,7 +77,7 @@ export class LastModifiedTimeField extends DateTimeBaseField {
     const { collectType, fieldIdCollection } = this.field.property;
     const updatedMap = record.recordMeta?.fieldUpdatedMap;
 
-    // 依赖于 fieldUpdatedMap，否则返回 null
+    // Depends on fieldUpdatedMap, otherwise returns null
     if (!updatedMap) {
       return null;
     }

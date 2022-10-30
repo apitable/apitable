@@ -20,7 +20,7 @@ export function isSelectType(type: FieldType | null): type is FieldType.MultiSel
 export function isGroupFieldType(type: FieldType, viewType: ViewType = ViewType.Kanban): boolean {
   switch (viewType) {
     case ViewType.Grid: {
-    // grid 所有 field 都能分组
+    // All grid fields can be grouped
       return true;
     }
     case ViewType.Kanban: {

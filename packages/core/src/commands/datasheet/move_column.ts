@@ -8,9 +8,9 @@ import { ExecuteResult, ICollaCommandDef } from 'command_manager';
 import { CollaCommandName } from 'commands';
 
 export interface IMoveColumn {
-  fieldId: string; // 需要拖动那一列的id
-  overTargetId: string; // 当前放手时的columnIndex
-  direction: DropDirectionType; // 拖动的方向
+  fieldId: string; // the id of the column that needs to be dragged
+  overTargetId: string; // columnIndex when letting go
+  direction: DropDirectionType; // the direction of the drag
 }
 
 export interface IMoveColumnOptions {
@@ -67,11 +67,11 @@ export const moveColumn: ICollaCommandDef<IMoveColumnOptions> = {
         targetIndex--;
       }
       if (targetIndex === 0) {
-        // 不允许将其他列拖动到第一列
+        // Do not allow dragging other columns to the first column
         return collected;
       }
       if (originColumnIndex === 0) {
-        // 第一列不允许拖动
+        // The first column does not allow dragging
         return collected;
       }
       const action = DatasheetActions.moveColumns2Action(snapshot, { fieldId, target: targetIndex, viewId });

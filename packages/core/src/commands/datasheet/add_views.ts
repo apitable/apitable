@@ -66,8 +66,8 @@ export const addViews: ICollaCommandDef<IAddViewsOptions> = {
     const actions = data.reduce<IJOTAction[]>((collected, recordOption) => {
       const { startIndex, view } = recordOption;
 
-      // 检查viewId是否存在,
-      // 新增的viewid不应和目前以后的id冲突
+      // Check if viewId exists,
+      // The newly added viewid should not conflict with the current and future ids
       if (views.findIndex(item => item.id === view.id) !== -1) {
         throw new Error(t(Strings.error_create_view_failed_duplicate_view_id));
       }

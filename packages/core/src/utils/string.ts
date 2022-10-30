@@ -61,9 +61,9 @@ const ANY_TOP_DOMAIN = '[a-z\\-]{2,15}';
 /* eslint-disable */
 const TOP_DOMAIN = 'com|org|net|int|edu|gov|mil|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cu|cv|cw|cx|cy|cz|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gh|gi|gl|gm|gn|gp|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mf|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|um|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|za|zm|zw|site|top|wtf|xxx|xyz|cloud|engineering|help|one';
 const TOP_10_DOMAIN = 'com|cn|tk|de|net|org|uk|info|nl|ru';
-// 由于顶级域名不全，故更改为带 协议头的url 忽略上面顶级域名，直接匹配
+// Since the top-level domain name is incomplete, it is changed to a url with a protocol header, ignoring the above top-level domain name and matching directly
 const URL_REG = new RegExp(`(((${PROTOCOL}):\\/\\/${URL_HOST_BODY}${ANY_TOP_DOMAIN})|(${URL_HOST_BODY}(${TOP_10_DOMAIN})))(:[0-9]{2,5})?${LINK_SUFFIX}`, 'gi');
-// mailto的贪婪匹配在遇到极长的字符串（无空格的英文）会很慢，需要限长。
+// Mailto's greedy matching will be very slow when encountering extremely long strings (English without spaces), and the length needs to be limited.
 const EMAIL_URL_BODY = '[\\w.!#$%&\'*+-/=?^_\\`{|}~]{1,2000}@[A-Za-z0-9_.-]+\\.';
 const LENGTH_LIMITED_EMAIL_REG = new RegExp(`^(?!data:)((mailto:${EMAIL_URL_BODY}${ANY_TOP_DOMAIN})|(${EMAIL_URL_BODY}(${TOP_DOMAIN})))\\b`, 'gi');
 const LOCALHOST_REG = /localhost:[0-9]{2,5}/;
@@ -97,7 +97,7 @@ export function isPhoneNumber(phoneNumber: string, areaCode: string) {
   return phone(areaCode + ' ' + phoneNumber)?.isValid;
 }
 
-// 隐藏手机号中间4位
+// Hide the middle 4 digits of the phone number
 export function hiddenMobile(mobileNumber: string): string {
   return mobileNumber.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
 }
@@ -151,14 +151,14 @@ export function parseAllUrl(value: string): ISegment[] {
 
 export const stringHash2Number = (str: string, range: number): number => {
   /**
-   * 字符串 str 映射为指定 [0,range) 范围内的数值
+   * String str is mapped to a value in the specified range [0,range)
    */
   const sumOfStringCharCode = Array.from(str).map(c => c.charCodeAt(0)).reduce((a, b) => a + b);
   return Math.abs(sumOfStringCharCode % range);
 };
 
 /**
- * 字符串以正则匹配切割成带类型的 segment
+ * String is cut into segment with type by regex matching
  * @export
  * @param {string} str
  * @returns {ISegment[]}
@@ -172,11 +172,11 @@ export function string2Segment(str: string): ISegment[] {
       type: SegmentType.Url | SegmentType.Email;
     };
   } = {};
-  // 匹配 URL
+  // match URL
   const urlMatch = [...str.matchAll(LINK_REG)];
   const emailMatch = [...str.matchAll(EMAIL_REG)];
 
-  // 若没有匹配到 URL/Email，则直接返回，减少不必要的计算
+  // If there is no URL/Email match, return directly to reduce unnecessary calculations
   if (!urlMatch.length && !emailMatch.length) {
     segmentList.push({
       type: SegmentType.Text,
@@ -221,7 +221,7 @@ export function string2Segment(str: string): ISegment[] {
       cur++;
     }
   }
-  // 循环完毕后，添加末尾的文本
+  // After the loop is complete, add the text at the end
   if (seg.length) {
     segmentList.push({
       type: SegmentType.Text,
@@ -245,8 +245,8 @@ export const dateStrReplaceCN = (str: string) => {
 };
 
 /**
- * 普通字符串转为纯数字字符串（仅包含"+"、"-"、数字、"e" 和 "." 的字符串组合）
- * @param input 输入的字符串或数字
+ * Convert ordinary strings to pure numeric strings (only string combinations of "+", "-", numbers, "e" and ".")
+ * @param input input string or number
  */
 export function str2NumericStr(input: string | null): string | null {
   if (input == null || input === '') {
@@ -254,7 +254,7 @@ export function str2NumericStr(input: string | null): string | null {
   }
 
   const regNumber = /[^0-9\.e+-]/g;
-  const regSymbol = /(\+|\-|\.)+/g; // 尽量保留数字，兼容如 '--', '...' 的情况
+  const regSymbol = /(\+|\-|\.)+/g; // try to keep numbers, compatible with cases like '--', '...'
   let tempStr: string | null = (input + '').trim();
 
   tempStr = tempStr.replace(regNumber, '');
@@ -269,12 +269,12 @@ export function str2NumericStr(input: string | null): string | null {
 }
 
 /**
- * 以货币形式展示
- * @param input 输入的数字或者字符串
- * @param symbol 货币符号
- * @param digits 分隔位数
- * @param splitter 分隔符号
- * @param symbolAlign 货币符号位置
+ * Display in currency
+ * @param input input number or string
+ * @param symbol currency symbol
+ * @param digits Separation digits
+ * @param splitter separator
+ * @param symbolAlign currency symbol position
  */
 export function str2Currency(
   input: string | null,

@@ -11,24 +11,27 @@ enum ActionFlag {
 }
 
 /**
- * 用于记录关联字段的变化
- * 下方 Map 中的 string 分别为: datasheetId => brotherFieldId => linkedRecordId
- * 两个 Set 中的 string 为 recordId 分别是表示增加还是删除。
- * 在选区删除和批量粘贴的过程中，是有可能会一次性影响到不同的 datasheet 中不同的 brotherField 中不同的 linkedRecord
- * 并在其中 增加 或者 删除 recordId
+ * for remember relation fields change.
+ * the Map below string,they are: datasheetId => brotherFieldId => linkedRecordId
+ * two Set strings are recordId, means add or delete.
+ * 
+ * During the process of selection area delete and batch paste, 
+ * it would happen affects different  datasheet's different brotherField's different linkedRecord
+ * And also, add or delete recordId
+ *
  */
 type ILinkedChange = Map<string, Map<string, Map<string, { add: Set<string>, del: Set<string> }>>>;
 
 /**
- * 用于维护关联字段数据一致性的公用类。
- * 在对 record 进行增删该查的时候，如果 record 中有关联字段，则需要同时更新关联字段中相关的 record
+ * a common class that use to maintain relation fields' data consistency
+ * when CRUD to record, if there's relation fields in record, need to update relation field's records at the same time.
  */
 export class LinkedDataConformanceMaintainer {
   linkedChange: ILinkedChange = new Map();
 
   /**
-   * 对比 value 和 oldValue 的值，自动计算出关联的 record 中的变化，并进行记录
-   * 在一次 command 周期中，可以多次调用 insert。
+   * compare value and oldValue, auto calculate the changelog of relation records, and mark them down.
+   * during one command cycle, can call insert many times.
    */
   insert(
     state: IReduxState,
@@ -44,9 +47,9 @@ export class LinkedDataConformanceMaintainer {
       return;
     }
 
-    // value 里面有，而 oldValue 没有，则需要增加
+    // in `value` , but not in `oldValue`, need to add
     const toAdd = without(value, ...(oldValue || []));
-    // oldValue 里面有，而 value 没有，则需要删除
+    // oldValue exists,  but value don't exist, need to delete
     const toDel = without(oldValue, ...(value || []));
 
     toAdd.forEach(linkedRecordId => {
@@ -71,12 +74,12 @@ export class LinkedDataConformanceMaintainer {
       ) as string[] | null;
 
       if (!cellValueInLinkedCell) {
-        console.error(`关联的记录中内容为空, 本记录: ${recordId}`);
+        console.error(`The content of the related-record is empty, this record: ${recordId}`);
         return;
       }
 
       if (!cellValueInLinkedCell.includes(recordId)) {
-        console.error(`没有在被关联记录中找到本表的记录, 本记录: ${recordId} 关联记录 ${cellValueInLinkedCell}`);
+        console.error(`No records in this table were found in the related-records, this record: ${recordId} related-record ${cellValueInLinkedCell}`);
         return;
       }
 
@@ -125,8 +128,8 @@ export class LinkedDataConformanceMaintainer {
   }
 
   /**
-   * 对关联表中的值变化批量转化为 LinkedActions。
-   * 该方法会清空值变化缓存。在一次 command 周期中，只能执行一次。
+   * Batch convert value changes in the associated table into LinkedActions.
+   * This method will clear the value change cache. In a command cycle, it can only be executed once.
    */
   flushLinkedActions(state: IReduxState) {
     const linkedActions: ILinkedActions[] = [];
@@ -140,12 +143,12 @@ export class LinkedDataConformanceMaintainer {
         datasheet.forEach((field, fieldId) => {
           field.forEach((changeIds, recordId) => {
             if (!snapshot.recordMap[recordId]) {
-              console.error(`record: ${recordId} 在 datasheet: ${datasheetId} 中不存在！`);
+              console.error(`record: ${recordId} in datasheet: ${datasheetId} does not exist！`);
               return;
             }
 
             const fieldType = snapshot.meta.fieldMap[fieldId] && snapshot.meta.fieldMap[fieldId].type;
-            // 保证在外键字段确实是关联字段类型的时候，才进行单元格填充。
+            // Make sure that the cell is populated only when the foreign key field is indeed the relation field type.
             const cellValueInLinkedCell = fieldType === FieldType.Link ?
               Selectors.getCellValue(state, snapshot, recordId, fieldId, undefined, undefined, true) as string[] || [] : [];
             let newLinkedCellValue: string[] | null = without(cellValueInLinkedCell, ...changeIds.del);

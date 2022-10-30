@@ -55,28 +55,28 @@ export interface IListReplaceAction {
   li: any;
 }
 
-// {p:[path,idx1], lm:idx2} 将 path 指向的数组中的下标为 idx1 的元素移动到 idx2
+// {p:[path,idx1], lm:idx2} Move the element with index idx1 in the array pointed to by path to idx2
 export interface IListMoveAction {
   n: OTActionName.ListMove;
   p: IJOTPath;
   lm: number;
 }
 
-// {p:[path,key], oi:obj} 在 path 指向的对象的以新的 key 插入新的 obj
+// {p:[path,key], oi:obj} insert a new obj with a new key at the object pointed to by path
 export interface IObjectInsertAction {
   n: OTActionName.ObjectInsert;
   p: IJOTPath;
   oi: any;
 }
 
-// {p:[path,key], od:obj} 删除 path 指向的对象上的 key 以及内容 obj
+// {p:[path,key], od:obj} delete the key and content obj on the object pointed to by path
 export interface IObjectDeleteAction {
   n: OTActionName.ObjectDelete;
   p: IJOTPath;
   od: any;
 }
 
-// {p:[path,key], od:before, oi:after} 替换 path 指向的对象上的 key 原有的 before 内容，为 after 内容
+// {p:[path,key], od:before, oi:after} Replace the original before content of the key on the object pointed to by path to the after content
 export interface IObjectReplaceAction {
   n: OTActionName.ObjectReplace;
   p: IJOTPath;
@@ -84,7 +84,7 @@ export interface IObjectReplaceAction {
   oi: any;
 }
 
-// {p:[path], t:subtype, o:subtypeOp} 在 path 指向的元素上应用 subtype 类型的 subtypeOp 操作
+// {p:[path], t:subtype, o:subtypeOp} applies the subtypeOp operation of type subtype on the element pointed to by path
 export interface ISubTypeAction {
   n: OTActionName.SubType;
   p: IJOTPath;
@@ -92,14 +92,14 @@ export interface ISubTypeAction {
   o: any;
 }
 
-// {p:[path,offset], si:s} 在 path 指向的字符串上的 offset 位置上插入字符串 s （内部使用的 subtype 操作）
+// {p:[path,offset], si:s} inserts the string s at offset position on the string pointed to by path (subtype operation used internally)
 export interface ITextInsertAction {
   n: OTActionName.TextInsert;
   p: IJOTPath;
   si: string;
 }
 
-// {p:[path,offset], sd:s} 在 path 指向的字符串上的 offset 位置上删除字符串 s （内部使用的 subtype 操作）
+// {p:[path,offset], sd:s} deletes the string s at offset position on the string pointed to by path (subtype operation used internally)
 export interface ITextDeleteAction {
   n: OTActionName.TextDelete;
   p: IJOTPath;
@@ -131,23 +131,24 @@ export interface IChangeset {
   /**
    * random string, 
    */
-  messageId: string; // 随机字符串，用来给当前 id 做唯一性标记，防止重复消费
+  messageId: string; // random string used to uniquely mark the current id to prevent repeated consumption
   resourceType: ResourceType;
   resourceId: string;
   operations: IOperation[];
 }
 
 /**
- * changeset 客户端给服务端发送的一个数据包，它的特点就是带有版本信息。描述了用户一段时间内进行的所有操作。
- * 本地发送到服务端的 changeset 带有 baseRevision, 表示这段 changeset 是基于这个版本的快照生成的。
- */
+  * A packet sent by the changeset client to the server, which is characterized by version information. 
+  * Describes all actions performed by the user over a period of time.
+  * The changeset sent locally to the server has baseRevision, indicating that this changeset is generated based on the snapshot of this version.
+  */
 export interface ILocalChangeset extends IChangeset {
   baseRevision: number;
 }
 
 /**
- * 从服务端收到的远程 changeset
- * 远程 changeset 拥有被服务端认证的确定的 revision 版本。
+ * Remote changeset received from server
+ * The remote changeset has a certain revision certified by the server.
  */
 export interface IRemoteChangeset extends IChangeset {
   userId?: string;

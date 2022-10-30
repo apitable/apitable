@@ -1,7 +1,7 @@
 import { ConfigConstant } from '../config';
 import { ITreeNode, ITreeNodesMap, INode, INodesMapItem } from 'store/interface';
 
-// 收集指定节点下的所有节点的id(包含自身)
+// Collect the ids of all nodes under the specified node (including itself)
 export const collectProperty = (treeNodesMap: ITreeNodesMap, rootId: string) => {
   const node = treeNodesMap[rootId];
   if (!node) { return [rootId]; }
@@ -18,9 +18,9 @@ export const collectProperty = (treeNodesMap: ITreeNodesMap, rootId: string) => 
 };
 
 /**
- * 查找指定的节点
- * @param tree 目录树
- * @param nodeId 要查找的节点ID
+ * Find the specified node
+ * @param tree directory tree
+ * @param nodeId Node ID to look up
  */
 export const findNode = (tree: ITreeNode[], nodeId: string): ITreeNode | null => {
   return tree.reduce<ITreeNode | null>((preValue, item) => {
@@ -38,10 +38,10 @@ export const findNode = (tree: ITreeNode[], nodeId: string): ITreeNode | null =>
 };
 
 /**
- * 根据节点生成展开路径
- * @param tree 目录树
- * @param expandedKeys 已展开结点的数组
- * @param nodeId 节点ID
+ * Generate expansion paths based on nodes
+ * @param tree directory tree
+ * @param expandedKeys array of expanded nodes
+ * @param nodeId node ID
  */
 export function genarateExpandedKeys(treeNodesMap: ITreeNodesMap, expandedKeys: string[], nodeId: string) {
   const expanded: string[] = [];
@@ -56,8 +56,8 @@ export function genarateExpandedKeys(treeNodesMap: ITreeNodesMap, expandedKeys: 
 }
 
 /**
- * 扁平化树（将树结构转换成一维数组）
- * @param nodeTree INode类型的树
+ * Flatten the tree (convert the tree structure into a one-dimensional array)
+ * @param nodeTree tree of type INode
  */
 export const flatNodeTree = (nodeTree: INode[]) => {
   return nodeTree.reduce((prev, item) => {
@@ -69,10 +69,10 @@ export const flatNodeTree = (nodeTree: INode[]) => {
   }, [] as INode[]);
 };
 
-// 获取展开路径
+// Get the expansion path
 export const getExpandNodeIds = (data: ITreeNodesMap, nodeId: string, end: any = null, favoriteTreeNodeIds: string[] = []) => {
   const expandNodeIds: string[] = [];
-  // 如果在递归向上查找链条时，发现链条是断开的，直接放弃本次操作
+  // If the chain is found to be broken when searching up the chain recursively, give up this operation directly
   if (!data[nodeId]) { return []; }
   if (data[nodeId].type === ConfigConstant.NodeType.ROOT) {
     return expandNodeIds;

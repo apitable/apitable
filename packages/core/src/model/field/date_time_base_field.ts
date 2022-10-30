@@ -27,11 +27,11 @@ dayjs.extend(timezone);
 declare const window: any;
 
 export interface IOptionalDateTimeFieldProperty {
-  // 日期格式
+  // date format
   dateFormat?: DateFormat;
-  // 时间格式
+  // time format
   timeFormat?: TimeFormat;
-  // 是否包含时间
+  // whether includes time
   includeTime?: boolean;
 }
 
@@ -66,7 +66,7 @@ export const dateTimeFormat = (
     dayjs.locale(formatLocale);
     format += ' a';
   }
-  // 服务端
+  // server-side
   if (typeof window === 'undefined' && typeof global === 'object' && global.process) {
     return dayjs(Number(timestamp)).tz(DEFAULT_TIMEZONE).format(format);
   }
@@ -228,7 +228,7 @@ export abstract class DateTimeBaseField extends Field {
     const dateFormat = DateFormat[property?.dateFormat || defaultProps.dateFormat];
     const hasYear = dateFormat.includes('YYYY');
 
-    //在排序的情况并且包含年的情况下，只需要用原始的 timestamp 比较即可
+    // In the case of sorting and including the year, just use the original timestamp to compare
     if (onlyCompareOriginValue && hasYear) {
       return cv1 > cv2 ? 1 : -1;
     }
@@ -236,15 +236,17 @@ export abstract class DateTimeBaseField extends Field {
     const dateTimeStr1 = dateTimeFormat(cv1, property);
     const dateTimeStr2 = dateTimeFormat(cv2, property);
 
-    // 产品需求是统一使用显示值(即单元格看到的值)排序，理论可以全部使用 str 比较，
-    // 但年月日格式存在一个变体：日月年，如果这时用 str 比较顺序会出错，
-    // 所以包含年月日的格式统一使用 timestamp 比较
+    // The product requirement is to use the displayed value (that is, the value seen by the cell) to be sorted uniformly. 
+    // In theory, all of them can be compared using str.
+    // But there is a variant of the year-month-day format: day-month-year, 
+    // if you use str to compare the order at this time, there will be an error,
+    // So the format containing the year, month and day uses timestamp comparison uniformly
     if (hasYear) {
       return dateTimeStr1 === dateTimeStr2 ?
         0 : (cv1 > cv2 ? 1 : -1);
     }
 
-    // 填充一个统一的年份，再来比较时间戳
+    // Fill in a uniform year, then compare the timestamps
     const timestamp1 = dayjs(cv1).year(2000).valueOf();
     const timestamp2 = dayjs(cv2).year(2000).valueOf();
     return dateTimeStr1 === dateTimeStr2 ?
@@ -271,11 +273,12 @@ export abstract class DateTimeBaseField extends Field {
 
     if (cellValue != null) {
       /*
-       * 从一个日期字段粘贴或者拖拽的数据，要保存两份
-       * text 为文本，如 11/02 2020-11-1，用于向非日期字段粘贴时写入数据
-       * originValue 为时间戳，用于向日期字段粘贴或者填充数据使用，和 text 最大的不同在于保存了所有的时间信息，可以根据
-       * 目标日期字段的格式自由显示
-       */
+        * Data pasted or dragged from a date field should be saved twice
+        * text is text, such as 11/02 2020-11-1, used to write data when pasting to non-date fields
+        * originValue is a timestamp, which is used to paste or fill data into the date field. 
+        * The biggest difference from text is that all the time information is saved, which can be used according to
+        * The format of the target date field is displayed freely
+        */
       stdVal.data.push({
         text: this.cellValueToString(cellValue) || '',
         originValue: cellValue,
@@ -303,18 +306,24 @@ export abstract class DateTimeBaseField extends Field {
     let datetime = dayjs(_value);
     if (datetime.isValid()) {
       /**
-       * @description 自动给日期填充年份
-       * 如果是从一个时间字段的单元格内粘贴的数据，不做处理，但针对从文本或者 Excel 等地方粘贴的字符串，会做两个判断
-       * 1. 按照给定的格式进行模式匹配，检查是否有可能存在年份，如果存在则使用给定的年份
-       * 2. 上面的条件如果不满足，就检查最终格式化的年份是否是 2001 年，满足则定向到当前年份
-       * @type {boolean}
-       */
+        * automatically fills the date with the year
+        * If the data is pasted from a cell of a time field, 
+        * it will not be processed, but for strings pasted from text or Excel, two judgments will be made
+        * 
+        * 1. Perform pattern matching according to the given format, check if there is a possible year, 
+        * if there is, use the given year
+        * 
+        * 2. If the above conditions are not satisfied, check whether the final formatted year is 2001, 
+        * if it is satisfied, it will be directed to the current year
+        * 
+        * @type {boolean}
+        */
       const isIncludesYear = dayjs(_value, ['Y-M-D', 'D/M/Y']).isValid();
       if (datetime.year() === 2001 && !isIncludesYear) {
         datetime = datetime.year(dayjs().year());
       }
       const timestamp = datetime.toDate().getTime();
-      // 类型切换时，非法数据设置为 null
+      // When the type is switched, the illegal data is set to null
       if (notInTimestampRange(timestamp)) {
         return null;
       }
@@ -324,20 +333,20 @@ export abstract class DateTimeBaseField extends Field {
   }
 
   /**
-   * 假设现在是 2月8日 01:56:55 UTC+8
-   * 今天：[今天00:00, 明天23:59] UTC+8
-   * 明天：[明天00:00, 后天23:59] UTC+8
-   * 昨天：[昨天00:00, 今天23:59] UTC+8
-   * 未来 7 天内：[今天00:00, 2月16日23:59] UTC+8
-   * 过去 7 天内：[2月1日00:00, 今天23:59] UTC+8
-   * 未来 30 天内：[今天00:00, 3月9日23:59] UTC+8
-   * 过去 30 天内：[1月8日00:00, 今天23:59] UTC+8
-   * 本周：当前所在周的周一至周五
-   * 上周：上一周的周一至周五
-   * 本月：[2月1日 00:00, 2月28日 23:59] UTC+8
-   * 上月：[1月1日 00:00, 1月31日 23:59] UTC+8
-   * 今年：[1月1日 00:00, 12月31日 23:59] UTC+8
-   */
+    * Assuming it is now Feb 8 01:56:55 UTC+8
+    * Today: [Today 00:00, Tomorrow 23:59] UTC+8
+    * Tomorrow: [Tomorrow 00:00, The day after tomorrow 23:59] UTC+8
+    * Yesterday: [yesterday 00:00, today 23:59] UTC+8
+    * Next 7 days: [Today 00:00, Feb 16 23:59] UTC+8
+    * Last 7 days: [February 1st 00:00, today 23:59] UTC+8
+    * In the next 30 days: [Today 00:00, March 9th 23:59] UTC+8
+    * In the past 30 days: [January 8th 00:00, today 23:59] UTC+8
+    * This week: Monday to Friday of the current week
+    * Last week: Monday to Friday of the previous week
+    * This month: [February 1st 00:00, February 28th 23:59] UTC+8
+    * Last month: [January 1st 00:00, January 31st 23:59] UTC+8
+    * This year: [January 1st 00:00, December 31st 23:59] UTC+8
+    */
   static getTimeRange(filterDuration: FilterDuration, time: ITimestamp | string | null): [ITimestamp, ITimestamp] {
     switch (filterDuration) {
       case FilterDuration.ExactDate: {
@@ -386,7 +395,7 @@ export abstract class DateTimeBaseField extends Field {
           dayjs().add(-1, 'day').endOf('day').valueOf(),
         ];
       }
-      // 1/29 加一个月会等于 3月1日
+      // 1/29 plus one month equals March 1st
       case FilterDuration.TheNextMonth: {
         return [
           dayjs().add(1, 'day').startOf('day').valueOf(),
@@ -457,7 +466,7 @@ export abstract class DateTimeBaseField extends Field {
   static _isMeetFilter(
     operator: FOperator, cellValue: ITimestamp | null, conditionValue: Exclude<IFilterDateTime, null>,
   ) {
-    // 提前判断为空不为空的逻辑。
+    // The logic to judge in advance that it is empty or not.
     if (operator === FOperator.IsEmpty) {
       return cellValue == null;
     }
@@ -474,7 +483,7 @@ export abstract class DateTimeBaseField extends Field {
     ) {
       timestamp = conditionValue[1];
       /**
-       * 当不存在 timestamp 的时候，说明还没有进行时间选择，此时不进行筛选
+       * When there is no timestamp, it means that time selection has not been performed, and no filtering is performed at this time
        */
       if (timestamp == null) {
         return true;
@@ -482,8 +491,8 @@ export abstract class DateTimeBaseField extends Field {
     }
 
     /**
-     * 当单元格值为空的时候，要被隐藏掉
-     * 这里不用考虑是否为空的 operation 条件，这个条件已经在外部处理
+     * When the cell value is empty, it will be hidden
+     * There is no need to consider the operation condition of whether it is empty or not, this condition has been processed externally
      */
     if (cellValue == null) {
       return false;
@@ -534,7 +543,7 @@ export abstract class DateTimeBaseField extends Field {
   }
 
   /**
-   * @description 将统计的参数转换成中文
+   * @description convert the statistical parameters into Chinese
    */
   statType2text(type: StatType): string {
     return DateTimeBaseField._statType2text(type);

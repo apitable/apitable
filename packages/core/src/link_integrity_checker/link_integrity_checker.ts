@@ -3,7 +3,7 @@ import { IReduxState, Selectors } from 'store';
 import { IJOTAction } from 'engine';
 import { FieldType, IField } from 'types';
 
-// 解决单向关联
+// resolve one-way association @su
 export class LinkIntegrityChecker {
   constructor(private store: Store<IReduxState, AnyAction>) {}
 

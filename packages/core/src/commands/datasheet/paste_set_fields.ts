@@ -35,7 +35,7 @@ export const pasteSetFields: ICollaCommandDef<IPasteSetFieldsOptions> = {
     const view = getViewById(snapshot, viewId);
     const actions: IJOTAction[] = [];
     const linkedActions: ILinkedActions[] = [];
-    // 目前只有 Grid 视图才有粘贴
+    // Currently only the Grid view has paste
     if (!view || ![ViewType.Grid, ViewType.Gantt].includes(view.type)) {
       return null;
     }
@@ -81,7 +81,7 @@ export const pasteSetFields: ICollaCommandDef<IPasteSetFieldsOptions> = {
       }
     }
 
-    // 在只复制了一个单元格的情况下，要对选区列进行 enrich field property
+    // In the case where only one cell is copied, enrich field property on the selection column
     const singleCellPaste = stdValues.length === 1 && stdValues[0].length === 1;
     if (singleCellPaste) {
       const ranges = getSelectRanges(state)!;
@@ -108,9 +108,9 @@ export const pasteSetFields: ICollaCommandDef<IPasteSetFieldsOptions> = {
       }
     }
 
-    // 有要扩增的列
+    // have columns to expand
     let newFields = fields.slice(columnsToPaste.length);
-    // 没有 fieldCreatable 的权限不允许添加新的列
+    // Does not allow adding new columns without the fieldCreatable permission
     if (fieldCreatable && newFields.length > 0) {
       const fieldNames = new Set<string>();
       for (const fieldId in fieldMap) {
@@ -118,7 +118,8 @@ export const pasteSetFields: ICollaCommandDef<IPasteSetFieldsOptions> = {
       }
       newFields = newFields.map(field => {
         const originName = field.name;
-        // 传入的 fields 可能带有fieldId，为了保证与新建 field 的 id 不冲突，我们在这类把它强制删除掉。
+        // The incoming fields may have fieldId. In order to ensure that it does not conflict with the id of the newly created field, 
+        // we force it to be deleted in this category.
         delete (field as any).id;
         let name = originName;
         let i = 1;

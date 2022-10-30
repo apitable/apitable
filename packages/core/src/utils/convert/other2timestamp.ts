@@ -18,7 +18,7 @@ export function str2timestamp(
 
 /**
  *
- * 返回 13:45 距离 00:00 的毫秒数
+ * Returns the number of milliseconds from 13:45 to 00:00
  * @export
  * @param {string} value 12:34
  * @param {IDateTimeField} [field]

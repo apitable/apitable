@@ -1,17 +1,17 @@
 /* eslint_disable */
 
-// 维格表部分的id（不包含工作目录）
+// The id of the Wig table part (excluding the working directory)
 const NAV_PREFIX = 'NAV_';
 const PREFIX = 'NAV__';
-export const ICON_WORKBENCH = NAV_PREFIX + 'ICON_WORKBENCH'; // 导航栏icon_工作台
-export const ICON_ADDRESS = NAV_PREFIX + 'ICON_ADDRESS'; // 导航栏icon_通讯录
-export const ICON_TEMPLATE = NAV_PREFIX + 'ICON_TEMPLATE'; // 导航栏icon_模板中心
-export const ICON_SPACE_MANAGE = NAV_PREFIX + 'ICON_SPACE_MANAGE'; // 导航栏icon_空间管理
-export const ICON_NOTIFICATION = NAV_PREFIX + 'ICON_NOTIFICATION'; // 导航栏icon_通知中心图标
+export const ICON_WORKBENCH = NAV_PREFIX + 'ICON_WORKBENCH'; // navigation bar icon_workbench
+export const ICON_ADDRESS = NAV_PREFIX + 'ICON_ADDRESS'; // navigation bar icon_address book
+export const ICON_TEMPLATE = NAV_PREFIX + 'ICON_TEMPLATE'; // navigation bar icon_template center
+export const ICON_SPACE_MANAGE = NAV_PREFIX + 'ICON_SPACE_MANAGE'; // navigation bar icon_space management
+export const ICON_NOTIFICATION = NAV_PREFIX + 'ICON_NOTIFICATION'; // navigation bar icon_notification center icon
 
-// help_menu 的 context
-export const HELP_MENU_SHORTCUT_PANEL = PREFIX + 'SHORTCUT_PANEL'; 
-export const HELP_MENU_BEGINNER_GUIDE = PREFIX + 'BEGINNER_GUIDE'; 
+// context of help_menu
+export const HELP_MENU_SHORTCUT_PANEL = PREFIX + 'SHORTCUT_PANEL';
+export const HELP_MENU_BEGINNER_GUIDE = PREFIX + 'BEGINNER_GUIDE';
 
-// user_menu 的 context
+// context of user_menu
 export const USER_MENU_INVITE_ICON = NAV_PREFIX + 'USER_MENU_INVITE_ICON';

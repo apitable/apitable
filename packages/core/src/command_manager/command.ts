@@ -16,7 +16,7 @@ export interface ICollaCommandDefExecuteSuccessResult<T = any> extends ICollaCom
   linkedActions?: ILinkedActions[];
 
   /**
-   * @description 如果当前 command 的 action 中包含对于单元格数据的修改，会存在此属性
+   * @description This property exists if the action of the current command contains changes to cell data
    */
   fieldMapSnapshot?: IFieldMap
 }
@@ -30,27 +30,27 @@ export type ICollaCommandDefExecuteResult<T> = ICollaCommandDefExecuteSuccessRes
   ICollaCommandDefExecuteFailResult;
 
 /**
- * 协同 Command 定义
+ * Collaborative Command definition
  */
 export interface ICollaCommandDef<T = any, R = {}> {
   /**
-   * 声明该 command 是否支持 undo
+   * Declare whether the command supports undo
    */
   readonly undoable: boolean;
 
   /**
-   * 执行成功产生 actions，失败返回原因。不用处理返回 null。
+   * Actions are generated if the execution is successful, and the reason is returned if it fails. No need to deal with returning null.
    */
   readonly execute: (context: ICollaCommandExecuteContext, options: T) =>
     ICollaCommandDefExecuteResult<R> | null;
 
   /**
-   * 判断当前能否undo，不实现则默认可以undo
+   * Determine whether the current undo can be undone, if not, it can be undo by default
    */
   readonly canUndo?: (context: ICollaCommandExecuteContext, actions: IJOTAction[]) => boolean;
 
   /**
-   * 判断当前能否redo，不实现则默认可以redo
+   * Determine whether redo is currently possible, if not, redo can be done by default
    */
   readonly canRedo?: (context: ICollaCommandExecuteContext, actions: IJOTAction[]) => boolean;
 }
@@ -87,7 +87,7 @@ export class CollaCommand<T extends ICommandOptionBase = any, R = any> {
   }
 
   /**
-   * @returns {boolean} 返回 true，表示执行的结果可以放入
+   * @returns {boolean} returns true, indicating that the result of execution can be placed in
    */
   execute(context: ICollaCommandExecuteContext, options: T): ICollaCommandDefExecuteResult<R> | null {
     return this._cmdDef.execute(context, options);

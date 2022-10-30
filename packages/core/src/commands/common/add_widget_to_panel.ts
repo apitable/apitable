@@ -25,7 +25,7 @@ export const addWidgetToPanel: ICollaCommandDef<IAddWidgetToPanel> = {
     const actions: IJOTAction[] = [];
 
     if (!widgetPanels || !widgetPanels.length) {
-      // 第一次安装一个小组件，需要先安装一个面板
+      // The first time you install a widget, you need to install a panel first
       const rct = addWidgetPanel.execute(context, {
         cmd: CollaCommandName.AddWidgetPanel,
         resourceId,

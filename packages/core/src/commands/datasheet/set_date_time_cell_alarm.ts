@@ -15,7 +15,7 @@ export interface ISetDateTimeCellAlarmOptions {
 
 /**
  * TODO(kailang)
- * 支持新增闹钟 OP
+ * Support new alarm clock OP
  */
 
 export const setDateTimeCellAlarm: ICollaCommandDef<ISetDateTimeCellAlarmOptions> = {

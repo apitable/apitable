@@ -16,25 +16,26 @@ export function num2number(num: number): number | null {
 }
 
 /**
- * 从科学计数法变成数字格式（由于大数会自动转回科学计数法，以string方式记录）
- * @param value js里数字会转成科学计数法的部分数据
+ * Change from scientific notation to number format 
+ * (because large numbers will be automatically converted back to scientific notation, recorded in string mode)
+ * @param value The numbers in js will be converted to part of the data in scientific notation
  */
 function e2number(value: string) {
   const val = value.split('e');
-  const p = parseInt(val[1], 10); // 得到指数值
+  const p = parseInt(val[1], 10); // get the index value
   if (p === 0) {
     return val[0];
   }
 
   const num = val[0].split('.');
-  const dotLeft: string = num[0]; // 小数点左边值
-  const dotRight: string = num[1] || ''; // 小数点右边值
+  const dotLeft: string = num[0]; // value to the left of the decimal point
+  const dotRight: string = num[1] || ''; // value to the right of the decimal point
 
   if (p > 0) {
     value = dotLeft + dotRight.substr(0, p) +
       (dotRight.length > p ? '.' + dotRight.substr(p) : '0'.repeat(p - dotRight.length));
   } else {
-    // 由number转换的科学计数法默认的小数点左侧位数为1，所以只考虑这种情况
+    // Scientific notation converted by number has 1 digits to the left of the decimal point by default, so only consider this case
     const left = parseInt(dotLeft, 10);
     value = (left < 0 ? '-0.' : '0.') + '0'.repeat(-p - 1) + Math.abs(left) + dotRight;
   }
@@ -43,8 +44,8 @@ function e2number(value: string) {
 }
 
 /**
- * 对数字列数字做统一格式处理，截取前15位有效数字，并转成数字
- * @param value 从单元格输入的合法数字（string格式）
+ * Perform unified format processing on the numbers in the digital column, intercept the first 15 significant digits, and convert them into numbers
+ * @param value A legal number entered from the cell (string format)
  */
 function numberSpecification(value: string) {
   if (value.includes('e')) {
@@ -53,13 +54,15 @@ function numberSpecification(value: string) {
   const str = value.replace('.', '').replace('-', '').replace(/^[0]+/, '');
   const len = str.length;
 
-  const demarcationLen = 15; // 15位有效数字为截断分界点
+  const demarcationLen = 15; // 15 significant digits are the cutoff point
   if (len > demarcationLen) {
-    let isNegative = 0; // 用0表示正数，1表示负数，方便后面计数，因为负数需要多计算一位长度
+    // Use 0 for positive numbers and 1 for negative numbers, 
+    // which is convenient for counting later, because negative numbers need to calculate one more bit of length
+    let isNegative = 0; 
     if (Number(value) < 0) {
       isNegative = 1;
     }
-    // 整数的长度和len相等，带小数的长度=len + 1，纯小数的长度 - len > 1
+    // The length of an integer is equal to len, the length with decimals = len + 1, the length of pure decimals - len > 1
     const valLen = value.length - isNegative;
     if (valLen === len) {
       value = value.substr(0, demarcationLen + isNegative) + '0'.repeat(len - demarcationLen);

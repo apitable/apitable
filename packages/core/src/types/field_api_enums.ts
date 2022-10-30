@@ -41,13 +41,13 @@ export enum APIMetaMemberType {
 }
 
 /**
- * Field Meta 描述单元格数据。可以读列，即可以读单元格，单元格权限和列权限强相关。
- * 权限等级： Manage > Edit > Read
- */
+  * Field Meta describes cell data. Columns can be read, that is, cells can be read. Cell permissions and column permissions are strongly related.
+  * Permission level: Manage > Edit > Read
+  */
 export enum APIMetaFieldPermissionLevel {
-  Read = 'Read', // 读单元格
-  Edit = 'Edit', // 写单元格
-  Manage = 'Manage', // 管理列
+  Read = 'Read', // read cell
+  Edit = 'Edit', // write cell
+  Manage = 'Manage', // Manage columns
 }
 
 export enum APIMetaFieldPropertyFormatEnums {

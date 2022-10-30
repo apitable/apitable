@@ -12,7 +12,9 @@ export class WidgetActions {
     const { storage } = snapshot;
     const { value, key } = payload;
 
-    // 如果存在则覆盖，如果不存在则插入, 如果 value 为 null 则 delete
+    // if exists, then overwrite.
+    // if not exists, then insert.
+    // if value is null, then delete
     if (storage && Object.keys(storage).includes(key)) {
       return [{
         n: OTActionName.ObjectReplace,

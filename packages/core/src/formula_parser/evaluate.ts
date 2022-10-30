@@ -21,24 +21,26 @@ export interface IFormulaError {
   error: Error;
 }
 
-// 保留的关键字: values 用于对 lookup 字段进行 rollup 计算
+// reserved keyword: values are used to rollup the lookup field
 export const ROLLUP_KEY_WORDS = 'values';
 
 function resolverWrapper(context: IFormulaContext): ResolverFunction {
   /**
-   * Resolver 的作用是，给定一个 fieldId，根据字符串从 context 中获取值
-   * params
-   * @value 字段 ID
-   * @originValue: 是否返回原始单元格的值
+   * The role of the resolver is, given a fieldId, get the value from the context according to the string
+   *params
+   * @value field ID
+   * @originValue: whether to return the value of the original cell
    */
   return (fieldId: string) => {
     /**
-     * 当公式在 lookUp 字段中运行的时候，对保留关键字进行检查。
-     * 当关键字命中的时候，返回 LookUpField 的 cellValueArray 而不是 cellValue
+     * Check for reserved keywords when formulas are run in the lookUp field.
+     * When the keyword is hit, return LookUpField's cellValueArray instead of cellValue
      */
     const hostField = context.field;
     const state = context.state;
-    // TODO: 列权限第一期，因为中间层不主动推送数据，getFieldMap 又主动对数据做了屏蔽，所以这里暂时直接使用 datasheet 获取 fieldmap
+    // TODO: The first phase of column permissions, 
+    // because the middle layer does not actively push data, 
+    // and getFieldMap actively masks the data, so here we temporarily use the datasheet to get the fieldmap directly
     const datasheet = getDatasheet(state, context.field.property.datasheetId)!;
     const fieldMap = datasheet.snapshot.meta.fieldMap;
     // const fieldMap = getFieldMap(state, context.field.property.datasheetId)!;
@@ -61,9 +63,10 @@ function resolverWrapper(context: IFormulaContext): ResolverFunction {
     const recordSnapshot = { meta: { fieldMap: fieldMap }, recordMap: { [record.id]: record }};
     const cellValue = getCellValue(state, recordSnapshot, record.id, fieldId, false, datasheet.id, true);
 
-    // string 类型字段要做一下特殊处理。将 Segment|id 类型转为纯 string；
+    // String type fields need special treatment. Convert Segment|id type to pure string;
     const fieldBasicValueType = Field.bindContext(field, state).basicValueType;
-    // 当前 ""、[]、false 在 getCellValue 时都会被转成 null，为保证公式计算结果正确，需对布尔类型进行转换 null => false
+    // Currently "", [], false will be converted to null when getCellValue, 
+    // in order to ensure the correct calculation result of the formula, the boolean type needs to be converted null => false
     if (fieldBasicValueType === BasicValueType.Boolean) {
       return Boolean(cellValue);
     }
@@ -78,7 +81,7 @@ function resolverWrapper(context: IFormulaContext): ResolverFunction {
 
 }
 
-// 公式字段计算结果的缓存器。输入值不变，不需要重新计算
+// The buffer for the calculation result of the formula field. The input value is unchanged and does not need to be recalculated
 export class ExpCache {
   static cache = new Map<string, IFormulaExpr | IFormulaError>();
 
@@ -135,9 +138,9 @@ export function parse(
 }
 
 /**
- * 传入表达式和 context，进行求值
- * rootNode 为抽象语法树的根
- * interpreter 作用为访问该抽象语法树
+ * Pass in the expression and context, enter row evaluation
+ * rootNode is the root of the abstract syntax tree
+ * The interpreter is used to access the abstract syntax tree
  * @export
  * @param {string} expression
  * @param {*} context
@@ -170,7 +173,7 @@ export function evaluate(
     const interpreter = new Interpreter(resolverFn, context);
     const result = interpreter.visit(fExpr.ast);
 
-    // 针对 NaN/Infinite/-Infinite 值进行报错
+    // Error for NaN/Infinite/-Infinite values
     if (isNumber(result) && !isFinite(result)) {
       throw new FormulaBaseError('NaN');
     }
@@ -183,7 +186,7 @@ export function evaluate(
   }
 }
 
-// 将以 fieldName 作为变量名的表达式转换为以 fieldId 作为变量名的表达式
+// Convert an expression with fieldName as variable name to an expression with fieldId as variable name
 export function expressionTransform(
   expression: string, { fieldMap, fieldPermissionMap }: { fieldMap: IFieldMap, fieldPermissionMap?: IFieldPermissionMap }, to: 'id' | 'name',
 ): string {
@@ -196,7 +199,7 @@ export function expressionTransform(
     return '';
   }
 
-  // 将 fieldMap 转换一下，以 name 作为 key
+  // Convert fieldMap and use name as key
   let revertFieldMap = fieldMap;
   if (to === 'id') {
     revertFieldMap = {};
@@ -212,7 +215,7 @@ export function expressionTransform(
     function getPureTokenValue() {
       const pureTokenValue = token.value.replace(/\\(.)/g, '$1');
       const field = revertFieldMap[pureTokenValue];
-      // 根据 to 参数进行变量名转换
+      // Convert the variable name according to the to parameter
       if (!field) {
         return tokenValue;
       }
@@ -221,7 +224,7 @@ export function expressionTransform(
       }
 
       const name = field.name.replace(/(\{|\})/g, '\\$1');
-      // 当 name 包含非法参数的时候，要进行{}包装
+      // When name contains illegal parameters, {} wrapping is required
       if (/[/+\-|=*/><()（）!&%'"“”‘’^`~,，\s]/.test(name)) {
         return `{${name}}`;
       }
@@ -240,7 +243,7 @@ export function expressionTransform(
         return `{${t(Strings.crypto_field)}}`;
       }
 
-      // 根据 to 参数进行变量名转换
+      // Convert the variable name according to the to parameter
       if (field) {
         return to === 'id' ? `{${field.id}}` : `{${field.name.replace(/(\{|\})/g, '\\$1')}}`;
       }

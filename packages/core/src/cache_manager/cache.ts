@@ -1,12 +1,13 @@
 import LRU from 'lru-cache';
 
 /**
- * 缓存的数据结构为树形结构，这样在移除或者改变列时可以大大减少遍历
- * 获取的性能理论上也会有提升, 以数表资源 id 为key，每个资源下，存储资源用到的缓存。
- * 数表包含：
- * + 单元格计算缓存
- * + 分组缓存
- * + 搜索缓存
+ * The cached data structure is a tree structure, which can greatly reduce traversal when removing or changing columns
+ * The obtained performance will also be improved in theory. 
+ * The resource id of the data table is used as the key, and under each resource, the cache used by the storage resource is stored.
+ * The table contains:
+ * + cell calculation cache
+ * + group cache
+ * + search cache
 {
   dsId: {
     cellValues: {
@@ -70,7 +71,7 @@ class Cache {
   }
 
   addCellCache(dsId: string, fieldId: string, recordId: string, value: ICellValueData) {
-    // 检查数表缓存是否存在
+    // Check if the table cache exists
     let dsCache = this.getDsCache(dsId);
     if (!dsCache) {
       dsCache = {
@@ -78,7 +79,7 @@ class Cache {
       };
       this.dsMap.set(dsId, dsCache);
     }
-    // 检查列缓存是否存在
+    // Check if the column cache exists
     let fieldCache = dsCache.cellValues.get(fieldId);
     if (!fieldCache) {
       fieldCache = new Map();

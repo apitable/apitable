@@ -15,10 +15,13 @@ import { CurrencyField, DateTimeField, NumberField } from './field';
 import { PercentField } from './field/percent_field';
 
 /**
- * 数组空值处理, lookup 的 cv 现在默认包含 null 值了，会对原有的计算逻辑造成影响。
- * 在 lookup 中涉及到 cellValue 运算的需要对此进行空值的转化。
- * 在 UI 中，原来渲染的 lookup 组件的 cellValue 也需要经过这层处理，保证和原来展示一致。
+ * 
+ * Array null value processing, lookup's cv now contains null value by default, which will affect the original calculation logic.
+ * In the lookup, the cellValue operation needs to be converted to a null value.
+ * In the UI, the cellValue of the original rendered lookup component also needs to be processed 
+ * in this layer to ensure that it is consistent with the original display.
  * [null]=>null
+ * 
  */
 export const handleNullArray = (cv: any | null): any | null => {
   if (cv == null) {
@@ -34,7 +37,7 @@ export const handleNullArray = (cv: any | null): any | null => {
 };
 
 /**
- * 语义空值转 null
+ * Semantic null value to null
  */
 export const handleEmptyCellValue = <T>(cellValue: T, basicValueType?: BasicValueType): T | null => {
   if (cellValue == null) {
@@ -99,7 +102,7 @@ export const groupArray = (list: number[]) => {
 };
 
 /**
- * 将 emojiPicker 中存储的 icon 名称，转化为 emoji 对应的字符串。
+ * Convert the icon name stored in the emojiPicker to the string corresponding to the emoji.
  */
 export const getEmojiIconNativeString = (emoji: string | object): string => {
   if (!emoji) {
@@ -170,7 +173,7 @@ export const getViewTypeString = (viewType: ViewType): APIMetaViewType => {
 };
 
 export const getApiMetaPropertyFormat = (fieldInstance: LookUpField | FormulaField): IAPIMetaNoneStringValueFormat | null => {
-  // 格式化为日期
+  // format to datetime
   if (BasicValueType.DateTime === fieldInstance.basicValueType) {
     if (!fieldInstance.field.property.formatting) {
       return {
@@ -196,7 +199,7 @@ export const getApiMetaPropertyFormat = (fieldInstance: LookUpField | FormulaFie
       }
     };
   }
-  // 格式化为数字
+  // format to number
   if (BasicValueType.Number === fieldInstance.basicValueType) {
     const formatting = fieldInstance.field.property.formatting as INumberBaseFieldPropertyFormat;
     switch (formatting?.formatType) {
@@ -267,7 +270,7 @@ export const getMaxFieldCountPerSheet = () => {
 };
 
 /**
- * 校验 value 是否为空，null、undefined、空数组[]
+ * Check if value is empty, null, undefined, empty array[]
  * @param value
  */
 export const isNullValue = (value: any): value is null => {
@@ -276,7 +279,7 @@ export const isNullValue = (value: any): value is null => {
 
 /**
  * IOpenComputedFormat =》 IComputedFieldFormattingProperty
- * 将外部读取计算字段format内容转换成可执行cmd的格式（公式、神奇引用）
+ * Convert the external read calculation field format content into executable cmd format (formula, magic reference)
  * @param fieldInstance 
  * @param format 
  */

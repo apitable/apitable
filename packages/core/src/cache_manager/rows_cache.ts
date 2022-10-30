@@ -8,17 +8,17 @@ declare const self: any;
 
 type IViewRowsCache = Map<string, {[vieId: string]: IViewRow[]}>;
 
-// 用于存放 getVisibleRowsBase 缓存
+// used to store getVisibleRowsBase cache
 class VisibleRowsBaseCache {
   private visibleRowsBaseCache: IViewRowsCache = new Map();
-  // 镜像视图缓存
+  // mirror view cache
   private mirrorVisibleRowsBaseCache = new Map<string, { datasheetId: string, viewId: string, cache: IViewRow[] }>();
-  /** apply action 需要更新 visibleRowsBase 缓存的数据，用于 store 订阅  */
+  /** apply action needs to update visibleRowsBase cached data for store subscription */
   private _updateVisibleRowsBaseCacheData: { datasheetId: string; viewIds?: string[], mirrorId?: string } | null = null;
 
   /**
-   * 私有属性 _updateVisibleRowsBaseCacheData 的访问器
-   * 因为 _updateVisibleRowsBaseCacheData 是一次性标识，所以获取过一次之后就删除掉
+   * Accessor for private property _updateVisibleRowsBaseCacheData
+   * Because _updateVisibleRowsBaseCacheData is a one-time identifier, it will be deleted after getting it once
    */
   get updateVisibleRowsBaseCacheData() {
     const updateVisibleRowsBaseCacheData = this._updateVisibleRowsBaseCacheData;
@@ -31,11 +31,11 @@ class VisibleRowsBaseCache {
   }
 
   set(datasheetId: string, viewId: string, cache: IViewRow[], mirrorId?: string) {
-    // 如果是服务端环境就不缓存
+    // If it is a server-side environment, do not cache
     if (isServer()) {
       return;
     }
-    // 如果是 worker 不缓存
+    // If it is a worker, do not cache
     if (self.name === 'store_worker') {
       return;
     }
@@ -56,11 +56,11 @@ class VisibleRowsBaseCache {
   }
 
   setMirror(mirrorId: string, datasheetId: string, viewId: string, cache: IViewRow[]) {
-    // 如果是服务端环境就不缓存
+    // If it is a server-side environment, do not cache
     if (isServer()) {
       return;
     }
-    // 如果是 worker 不缓存
+    // If it is a worker, do not cache
     if (self.name === 'store_worker') {
       return;
     }
@@ -120,7 +120,8 @@ class VisibleRowsBaseCache {
         const isDeleteView = path.length === 3 && path[0] === 'meta' && path[1] === 'views' && typeof path[2] === 'number';
         const shouldUpdate = path.some(p => changeUpdatePath.includes(p as string)) || isDeleteView;
         if (shouldUpdate) {
-          // 计算的时机是在事件触发单元格缓存清除之前，所以这里需要清除一下，不然影响计算
+          // The timing of the calculation is before the event triggers the cell cache to clear, 
+          // so it needs to be cleared here, otherwise it will affect the calculation
           removeCellValueCacheIfNeed(action, datasheetId);
           shouldUpdateAction = true;
         }

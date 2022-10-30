@@ -3,8 +3,8 @@ import { isString } from 'lodash';
 import { ICellValue } from 'model';
 
 /**
- * 将数字列单元格的字符串做过滤，即不合法处理
- * @param value 单元格输入的值
+ * Filter the strings in the cells of the numeric column, that is, illegal processing
+ * @param value The value entered in the cell
  */
 export function convertToNumber(value: ICellValue): number | null {
   const num = Number(value);
@@ -19,21 +19,22 @@ export function convertToNumber(value: ICellValue): number | null {
 }
 
 /**
- * 从科学计数法变成数字格式（由于大数会自动转回科学计数法，以string方式记录）
- * @param value js里数字会转成科学计数法的部分数据
+ * Change from scientific notation to number format 
+ * (because large numbers will be automatically converted back to scientific notation, recorded in string mode)
+ * @param value The numbers in js will be converted to part of the data in scientific notation
  */
 export function e2number(value: string) {
   const val = value.split('e');
-  const p = parseInt(val[1], 10); // 得到指数值
+  const p = parseInt(val[1], 10); // get index value
   const num = val[0].split('.');
-  const dotLeft: string = num[0]; // 小数点左边值
-  const dotRight: string = num[1] || ''; // 小数点右边值
+  const dotLeft: string = num[0]; // value to the left of the decimal point
+  const dotRight: string = num[1] || ''; // right value of decimal point
 
   if (p > 0) {
     value = dotLeft + dotRight.substr(0, p) +
       (dotRight.length > p ? '.' + dotRight.substr(p) : '0'.repeat(p - dotRight.length));
   } else {
-    // 由number转换的科学计数法默认的小数点左侧位数为1，所以只考虑这种情况
+    // Scientific notation converted by number has 1 digits to the left of the decimal point by default, so only consider this case
     const left = parseInt(dotLeft, 10);
     value = (left < 0 ? '-0.' : '0.') + '0'.repeat(-p - 1) + Math.abs(left) + dotRight;
   }
@@ -42,8 +43,8 @@ export function e2number(value: string) {
 }
 
 /**
- * 对数字列数字做统一格式处理，截取前15位有效数字，并转成数字
- * @param value 从单元格输入的合法数字（string格式）
+ * Perform unified format processing on the numbers in the digital column, intercept the first 15 significant digits, and convert them into numbers
+ * @param value A legal number entered from the cell (string format)
  */
 export function numberSpecification(value: string) {
   return Number(number2str(value));
@@ -56,13 +57,15 @@ export function number2str(value: string) {
   const str = value.replace('.', '').replace('-', '').replace(/^[0]+/, '');
   const len = str.length;
 
-  const demarcationLen = 15; // 15位有效数字为截断分界点
+  const demarcationLen = 15; // 15 significant digits are the cutoff point
   if (len > demarcationLen) {
-    let isNegative = 0; // 用0表示正数，1表示负数，方便后面计数，因为负数需要多计算一位长度
+    // Use 0 for positive numbers and 1 for negative numbers, 
+    // which is convenient for counting later, because negative numbers need to calculate one more bit of length
+    let isNegative = 0; 
     if (Number(value) < 0) {
       isNegative = 1;
     }
-    // 整数的长度和len相等，带小数的长度=len + 1，纯小数的长度 - len > 1
+    // The length of an integer is equal to len, the length with decimals = len + 1, the length of pure decimals - len > 1
     const valLen = value.length - isNegative;
     if (valLen === len) {
       value = value.substr(0, demarcationLen + isNegative) + '0'.repeat(len - demarcationLen);
@@ -83,8 +86,8 @@ export function number2str(value: string) {
 }
 
 /**
- * 重写toFixed精度问题
- * 只能支持20位精度
+ * Rewrite toFixed precision problem
+ * Only supports 20 digits of precision
  */
 export const toFixed = function(value: number, precision = 0) {
   if (isNaN(value)) return 0;
@@ -92,7 +95,8 @@ export const toFixed = function(value: number, precision = 0) {
   let changenum;
   let index;
 
-  if (precision < 0) precision = 0; // 原来传入参数若为负值，则会报错。这里当作默认为0处理，即不保留位数的形式。
+  // If the input parameter is negative, an error will be reported. Here, it is treated as 0 by default, that is, the form of bits is not reserved.
+  if (precision < 0) precision = 0; 
   changenum = that * Math.pow(10, precision) + 0.5;
   changenum = (parseInt(changenum, 10) / Math.pow(10, precision)).toString();
   index = changenum.indexOf('.');
@@ -111,10 +115,10 @@ export const toFixed = function(value: number, precision = 0) {
 };
 
 /**
- * 展现在单元格里的数字形态，以精度来截取展现
- * @param value 最后保存在model的数据
- * @param precision 保留几位小数值
- * @param demarcationLen 几位数字为科学计数法展示分界点
+ * The digital form displayed in the cell, intercepted and displayed with precision
+ * @param value The last data saved in the model
+ * @param precision retains several decimal places
+ * @param demarcationLen Several digits show the demarcation point for scientific notation
  */
 export function numberToShow(value: number, precision = 0): string | null {
   value = Number(value);
@@ -129,11 +133,12 @@ export function numberToShow(value: number, precision = 0): string | null {
   let str = value.toString();
 
   const integerCount = str.split('.')[0].length;
-  const demarcationLen = 17; // 17 位数字为科学计数法展示分界点
-  // 当整数位数大于17位时，需要展现成科学计数法形式
+  const demarcationLen = 17; // 17 digits represent the demarcation point for scientific notation
+  // When the integer number is greater than 17, it needs to be displayed in scientific notation form
   if (integerCount >= demarcationLen || (str.includes('e') && !str.includes('e-'))) {
-    const significanceDigitCount = 5; // 小数点后保留几位有效数字
-    str = value.toExponential(significanceDigitCount); // 也会有精度问题，但是因为前提里已经是有精度要求，因此不会出现四舍五入的问题
+    const significanceDigitCount = 5; // number of significant digits after the decimal point
+    // There will also be precision problems, but because there are already precision requirements in the premise, there will be no rounding problems
+    str = value.toExponential(significanceDigitCount); 
   } else {
     str = toFixed(value, precision);
   }
@@ -141,19 +146,19 @@ export function numberToShow(value: number, precision = 0): string | null {
   return str;
 }
 const CapacityUnit = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-// 小数点进1
-// 比如1.23与1.26均返回1.3
+// decimal point by 1
+// For example, 1.23 and 1.26 both return 1.3
 export function decimalCeil(decimal: number) {
   return Math.ceil(decimal * 10) / 10;
 }
-// 小数点不进1
-// 比如1.23与1.26均返回1.2
+// decimal point does not advance by 1
+// For example, 1.23 and 1.26 both return 1.2
 export function normalDecimal(decimal: number) {
   return Math.floor(decimal * 10) / 10;
 }
 
-// 存储单位转化,参数单位为b
-// 规则：普通转化，不做进1处理
+// Storage unit conversion, parameter unit is b
+// Rule: normal conversion, do not do 1 processing
 export function normalByteMGArr(bytes: number) {
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
   if (i < 2) {
@@ -171,14 +176,15 @@ export function normalByteMGArr(bytes: number) {
   return [normalDecimal(bytes), CapacityUnit[0]];
 }
 
-// 存储单位转化,参数单位为b
-// 规则：小数点进1，小数点后保留一位，只有'MB', 'GB'两种单位,返回的arr[2]是小数点进1之后所对应的的bytes值
-// 例：区间（大于0小于0.1mb）返回['0.1', 'MB', 104857.6]
-// 例：传入的存储大小为0.13mb则返回['0.2','MB', 209715.2]
+// Storage unit conversion, parameter unit is b
+// Rule: The decimal point is advanced by 1, and one place is reserved after the decimal point. 
+// There are only two units of 'MB' and 'GB'. The returned arr[2] is the corresponding bytes value after the decimal point is advanced by 1.
+// Example: interval (greater than 0 and less than 0.1mb) returns ['0.1', 'MB', 104857.6]
+// Example: If the incoming storage size is 0.13mb, then return ['0.2','MB', 209715.2]
 export function byteMGArr(bytes: number, isCell = true) :[number, string, number]{
   const minMb = 104857.6;
   if (bytes <= minMb) {
-    //  0-0.1MB直接显示0.1MB,<0MB直接显示0MB
+    // 0-0.1MB directly displays 0.1MB, <0MB directly displays 0MB
     const res = bytes <= 0 ? 0 : isCell ? 0.1 : 0;
     return [res, CapacityUnit[2], res * Math.pow(1024, 2)];
   }
@@ -208,7 +214,7 @@ export function byteMG(bytes: number) {
   return `${byteMGArr(bytes)[0]} ${byteMGArr(bytes)[1]}`;
 }
 
-// @description: 给定两个整数，生成处于两个数中间的数组成的有序集合。以数组的形式，从小到大排列。
+// @description: Given two integers, generate an ordered set of numbers in between. In the form of an array, arranged from smallest to largest.
 // left: 5, right: 8
 // @return [6, 7];
 export function numbersBetween(left: number, right: number) {
@@ -218,17 +224,17 @@ export function numbersBetween(left: number, right: number) {
   return Array.from({ length: diff }).map((_, index) => _left + index + 1);
 }
 
-// 把数字转换成正确的值非 NaN;
+// Convert the number to the correct value not NaN;
 export function noNaN(n: number) {
   return isNaN(n) ? 0 : n;
 }
 
-// 修正错误的数据
+// fix wrong data
 export function strip(num: number, precision = 15): number {
   return parseFloat(Number(num).toPrecision(precision));
 }
 
-// 取小数点后的位数
+// get the number of digits after the decimal point
 export function digitLength(num: number): number {
   const eSplit = num.toString().split(/[eE]/);
   const dLen = (eSplit[0].split('.')[1] || '').length;
@@ -237,7 +243,7 @@ export function digitLength(num: number): number {
   return len > 0 ? len : 0;
 }
 
-// 将浮点数放大为整型，
+// Scale the float to an integer,
 export function float2Fixed(num: number): number {
   if (num.toString().indexOf('e') === -1) {
     return Number(num.toString().replace('.', ''));
@@ -247,7 +253,7 @@ export function float2Fixed(num: number): number {
 }
 
 /**
- * 精确乘法（解决精度丢失）
+ * Exact multiplication (to resolve loss of precision)
  */
 export function times(num1: number, num2: number): number {
   const intNum1 = float2Fixed(num1);
@@ -258,9 +264,9 @@ export function times(num1: number, num2: number): number {
 }
 
 /**
- * 精确除法（解决精度丢失）
- * @param num1 被除数
- * @param num2 除数
+ * Exact division (to resolve loss of precision)
+  * @param num1 dividend
+  * @param num2 divisor
  */
 export function divide(num1: number, num2: number): number {
   const intNum1 = float2Fixed(num1);
@@ -271,7 +277,7 @@ export function divide(num1: number, num2: number): number {
 }
 
 /**
- * 精确加法（解决精度丢失）
+ * Precise addition (to resolve loss of precision)
  */
 export function plus(num1: number, num2: number): number {
   const baseNum = Math.pow(10, Math.max(digitLength(num1), digitLength(num2)));
@@ -279,7 +285,7 @@ export function plus(num1: number, num2: number): number {
 }
 
 /**
- * 精确减法（解决精度丢失）
+ * Precise subtraction (to resolve loss of precision)
  */
 export function minus(num1: number, num2: number): number {
   const baseNum = Math.pow(10, Math.max(digitLength(num1), digitLength(num2)));

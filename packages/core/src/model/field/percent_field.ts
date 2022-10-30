@@ -18,7 +18,7 @@ export class PercentField extends NumberBaseField {
     defaultValue: Joi.string().allow('')
   }).required();
 
-  // 预览态数据
+  // preview state data
   cellValueToString(cellValue: ICellValue, cellToStringOption?: ICellToStringOption): string | null {
     if (this.validate(cellValue)) {
       const cellString = numberToShow(times(cellValue, 100), this.field.property.precision);
@@ -28,7 +28,7 @@ export class PercentField extends NumberBaseField {
     return null;
   }
 
-  // 返回新增 record 时字段属性配置的默认值
+  // Return the default value of the field attribute configuration when adding a record
   defaultValue(): ICellValue {
     const { defaultValue } = this.field.property;
     return defaultValue ? str2number(defaultValue) : null;

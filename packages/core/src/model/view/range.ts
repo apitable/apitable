@@ -93,7 +93,7 @@ export class Range {
     };
   }
   /**
-   * 数据坐标系向量 => 数字坐标系范围
+   * data coordinate system vector => numeric coordinate system range
    * @param state 
    */
   getIndexRange(state: IReduxState, range?: IRange): IIndexRange | null {
@@ -115,7 +115,7 @@ export class Range {
   }
 
   /**
-   * UI 数据坐标系向量 => UI 数字坐标系范围
+   * UI data coordinate system vector => UI digital coordinate system range
    * @param state 
    * @param range 
    */
@@ -152,8 +152,8 @@ export class Range {
     };
   }
   /**
-   * 判断单元格是否在选区内。
-   * @param cell 单元格
+   * Determine whether the cell is in the selection area.
+   * @param cell cell
    */
   contains(state: IReduxState, cell: ICell) {
     const currentCell = getCellIndex(state, cell);
@@ -174,7 +174,7 @@ export class Range {
   }
 
   /**
-   * 根据 hoverCell 计算出填充方向，优先垂直方向。
+   * Calculate the filling direction according to the hoverCell, and give priority to the vertical direction.
    * @param state 
    * @param hoverCell 
    */
@@ -201,7 +201,7 @@ export class Range {
   }
 
   /**
-   * 根据填充方向，计算将要填充的区域
+   * Calculate the area to be filled according to the filling direction
    * @param state 
    * @param direction 
    */
@@ -244,7 +244,11 @@ export class Range {
   }
 
   /**
-   * 合并连续选区 // FIXME: 判断是否连续，目前只用在选区和填充区。已知二者连续，这里不做检查。
+   * Merge continuous selection 
+   * 
+   * FIXME: Determine whether it is continuous, currently only used in selection and fill area. 
+   *   It is known that the two are continuous, so there is no check here.
+   * 
    * @param state 
    * @param ranges 
    */
@@ -271,7 +275,7 @@ export class Range {
   }
 
   /**
-   * 获取选区内，某个单元格的对角单元格，关于选区中心中心对称。
+   * Get the diagonal cells of a cell in the selection area, symmetrical about the center of the selection area.
    * @param state 
    * @param cell 
    */
@@ -287,7 +291,7 @@ export class Range {
     return Selectors.getCellByIndex(state, diagonalCellIndex);
   }
   /**
-   * 选区移动。
+   * Selection movement.
    * @param state 
    * @param direction 
    */
@@ -301,7 +305,7 @@ export class Range {
     const { fieldIndex, recordIndex } = activeCellIndex;
     const minRangeRowIndex = indexRange.record.min;
     const maxRangeRowIndex = indexRange.record.max;
-    // (activeCell 处于选区的那个边界, 移动方向) => 扩充/缩小选区。
+    // (activeCell is at the border of the selection, moving direction) => expand/reduce the selection.
     const isActiveCellAtRangeRightEdge = fieldIndex === indexRange.field.max;
     const isActiveCellAtRangeUpEdge = recordIndex === minRangeRowIndex;
     const isActiveCellAtRangeDownEdge = recordIndex === maxRangeRowIndex;
@@ -314,10 +318,10 @@ export class Range {
     const maxFieldIndex = visibleColumns.length - 1;
 
     /**
-     * 针对以下三种情况，无需进行操作：
-     * 1. 当前选区已经覆盖第一行，且为向上移动选区
-     * 2. 当前选区已经覆盖最后一行，且为向下移动选区
-     * 3. 当前选区已经全选，且当前快捷键为全选选区
+     * No action is required for the following three situations:
+      * 1. The current selection has covered the first row, and the selection is moved up
+      * 2. The current selection has covered the last line, and the selection is moved down
+      * 3. The current selection has been selected, and the current shortcut key is the selection of all selections
      */
     if (
       (direction === RangeDirection.All && (minRangeRowIndex === 0 && maxRangeRowIndex === visibleRowsCount - 1)) ||
@@ -332,25 +336,25 @@ export class Range {
     let minRowIndexInAllRange = 0;
     let maxRowIndexInAllRange = visibleRowsCount - 1;
 
-    // 针对分组进行处理
+    // process the grouping
     if (breakpoints.length) {
       const nextBreakpointIndex = findIndex(breakpoints, bp => bp > (isDownExpand ? maxRangeRowIndex : minRangeRowIndex));
       if (nextBreakpointIndex > -1) {
         const nextBreakpoint = breakpoints[nextBreakpointIndex];
         const currentBreakpointIndex = nextBreakpointIndex - 1;
         const currentBreakpoint = breakpoints[currentBreakpointIndex];
-        const isGroupRangeUpEdge = currentBreakpoint === minRangeRowIndex; // 选区是否已经覆盖某个分组的上边缘
-        const isGroupRangeDownEdge = nextBreakpoint === maxRangeRowIndex + 1; // 选区是否已经覆盖某个分组的下边缘
-        // 选区范围是否小于激活单元格所在分组
+        const isGroupRangeUpEdge = currentBreakpoint === minRangeRowIndex; // Whether the selection has covered the top edge of a group
+        const isGroupRangeDownEdge = nextBreakpoint === maxRangeRowIndex + 1; // Whether the selection has covered the bottom edge of a group
+        // Whether the selection range is smaller than the group where the active cell is located
         const isActiveCellInCurrentGroup = currentBreakpoint <= recordIndex && recordIndex < nextBreakpoint; 
         /**
-         * 向上扩展选区，直接落到分组起始位置
-         * 向上缩小选区，则落到分组结束位置
+         * Expand the selection area up and drop directly to the starting position of the group
+         * Narrow the selection up to the end of the group
          */
         const minRangeOffset = (isUpExpand || (isGroupRangeDownEdge && isActiveCellInCurrentGroup)) ? 0 : -1;
         /**
-         * 向下扩展选区，直接落到分组结束位置
-         * 向下缩小选区，则落到分组起始位置
+         * Extend the selection down, directly to the end of the group
+         * Reduce the selection area down, then it falls to the starting position of the group
          */
         const maxRangeOffset = (isDownExpand || (isGroupRangeUpEdge && isActiveCellInCurrentGroup)) ? -1 : 0;
 

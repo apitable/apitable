@@ -1,38 +1,38 @@
 /**
- * 勿动，该文件中的ID是给自动化测试使用的
+ * Do not touch, the ID in this file is for automated testing
  */
 
 const PREFIX = 'VIKA_';
 
-// 表示登录页
+// Represents the login page
 export const LOGIN = PREFIX + 'LOGIN';
-// “去登录”按钮
+// "Go to login" button
 export const GO_LOGIN_BTN = PREFIX + 'GO_LOGIN_BTN';
-// 分享页-左边菜单下面的卡片中的按钮，比如“另存到我的空间”
+// Share page - the button in the card below the menu on the left, such as "Save to my space"
 export const SHARE_MENU_CARD_BTN = PREFIX + 'SHARE_MENU_CARD_BTN';
-// 神奇表单分享页Container
+// Magical form sharing page Container
 export const FORM_CONTAINER = PREFIX + 'FORM_CONTAINER';
-// 分享页Container
+// Share page Container
 export const SHARE_CONTAINER = PREFIX + 'SHARE_CONTAINER';
-// 模板详情Container
+// Template details Container
 export const TEMPLATE_DETAIL_CONTAINER = PREFIX + 'TEMPLATE_DETAIL_CONTAINER';
-// 登录页-手机号输入框
+// Login page - mobile phone number input box
 export const LOGIN_PHONE_INPUT = PREFIX + 'LOGIN_PHONE_INPUT';
-// 登录页-密码输入框
+// Login page - password input box
 export const LOGIN_PASSWORD_INPUT = PREFIX + 'LOGIN_PASSWORD_INPUT';
-// 登录-切换登录方式的按钮
+// Login - button to switch the login method
 export const CHANGE_MODE_BTN = PREFIX + 'CHANGE_MODE_BTN';
-// 登录页-邮箱输入框
+// Login page - email input box
 export const LOGIN_MAIL_INPUT = PREFIX + 'LOGIN_MAIL_INPUT';
-// 获取验证码按钮
+// get verification code button
 export const GET_IDENTIFYING_CODE_BTN = PREFIX + 'GET_IDENTIFYING_CODE_BTN';
-// 验证码输入框
+// verification code input box
 export const IDENTIFYING_CODE_INPUT = PREFIX + 'IDENTIFYING_CODE_INPUT';
-// 登录按钮
+// login button
 export const LOGIN_BTN = PREFIX + 'LOGIN_BTN';
-// 工作台页面
+// workbench page
 export const WORKBENCH_PAGE = PREFIX + 'WORKBENCH_PAGE';
-// 登录页-登录切换Tab
+// Login page - login switch Tab
 export const LOGIN_CHANGE_MODE_TAB = PREFIX + 'LOGIN_CHANGE_MODE_TAB';
-// 邀请失效页
+// Invitation invalidation page
 export const INVITE_INVALID = PREFIX + 'INVITE_INVALID';

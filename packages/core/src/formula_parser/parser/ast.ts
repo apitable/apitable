@@ -45,7 +45,7 @@ export class BinaryOperatorNode extends AstNode {
     // TokenType.Times, TokenType.Div, TokenType.Minus,
     // TokenType.Mod, TokenType.Concat,
     switch (token.type) {
-    // 加减乘除运算符号，只有双方都是数字类型的时候，才予以正确计算。
+    // Addition, subtraction, multiplication and division operator symbols are calculated correctly only when both sides are numbers.
       case TokenType.Add: {
         const isNumberType = ({ valueType, innerValueType, token }: AstNode) => {
           return valueType === BasicValueType.Number || innerValueType === BasicValueType.Number || token.value.toUpperCase() === 'BLANK';
@@ -197,9 +197,9 @@ export class StringOperandNode extends AstNode {
 
     let tokenValue = token.value;
     const terminatorMap = new Map([
-      [/\\n/g, '\n'], // 换行
-      [/\\r/g, '\r'], // 换行
-      [/\\t/g, '\t'], // 制表符
+      [/\\n/g, '\n'], // newline
+      [/\\r/g, '\r'], // newline
+      [/\\t/g, '\t'], // tab 
     ]);
 
     terminatorMap.forEach((v, k) => {

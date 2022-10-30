@@ -13,7 +13,7 @@ import { IInternalFix } from '../common/field';
 export interface ISetRecordOptions {
   recordId: string;
   fieldId: string;
-  field?: IField; // 可选，传入 field 信息。适用于在还没有应用到 snapshot 的 field 上 addRecords
+  field?: IField; // Optional, pass in field information. Applicable to addRecords on fields that have not been applied to snapshot
   value: ICellValue;
 }
 
@@ -36,8 +36,8 @@ function collectMemberProperty(datasheetId: string, actions: IJOTAction[], conte
   const memberFieldIds: string[] = [];
   const unitIdsMap: Map<string, IUnitIds> = new Map();
 
-  // 检查当前的 OP 里是否存在对成员字段的修改，如果有，
-  // 将 OI（写入）的数据收集起来放入 operateRecordIds ，也把相关的 fieldId 收集起来放入 memberFieldIds
+  // Check if there is a modification to the member field in the current OP, if so,
+  // Collect OI (written) data into operateRecordIds, and also collect related fieldIds into memberFieldIds
   actions.forEach(item => {
     const fieldId = item.p[3] as string;
     const field = fieldMap[fieldId];
@@ -48,19 +48,23 @@ function collectMemberProperty(datasheetId: string, actions: IJOTAction[], conte
 
     memberFieldIds.push(fieldId);
 
-    // op 中存在 oi 和 od ，如果只有 od 就是删除数据，没有必要在收集
+    // oi and od exist in op, if only od is to delete data, there is no need to collect
     if ('oi' in item) {
       const existValue = unitIdsMap.get(fieldId) || [];
       unitIdsMap.set(fieldId, [...new Set([...existValue, ...item['oi']])]);
     }
   });
 
-  // 将根据 fieldId 收集到的数据，放入相应的 field 的 property 中
+  // Put the data collected according to fieldId into the property of the corresponding field
   memberFieldIds.forEach(fieldId => {
     const collectUnitIds = unitIdsMap.get(fieldId) || [];
     const field = fieldMap[fieldId];
-    // 成员的 unitIds 都是动态计算的，在看板中会导致看板的位置发生变化，因此在数据的收集中，现将 property 中存储的 unitIds 和 收集到的单元格的所有数据合并，去重，
-    // 这样能保证 unitIds 中的已有的数据顺序不发生变化，再以该结果和收集到的数据做「交集」 处理，取出相同的部分（i.e. 也就是从单元格手机的数据，但是保证了原来的 unitIds 的数据顺序）
+    // The unitIds of members are dynamically calculated, which will cause the position of the kanban to change in the kanban. 
+    // Therefore, in the data collection, the unitIds stored in the property and all the data of the collected cells are merged, 
+    // and the duplicates are removed.
+    // This can ensure that the order of the existing data in unitIds does not change, 
+    // and then perform "intersection" processing with the result and the collected data, and take out the same part 
+    // (i.e. that is, the data from the cell phone, but it is guaranteed the data order of the original unitIds)
     const unDuplicateArray = [...new Set([...field.property.unitIds, ...collectUnitIds])];
     const newProperty = unDuplicateArray.filter(item => item);
     memberFieldMaintainer.insert(fieldId, newProperty as string[], datasheetId);
@@ -101,12 +105,12 @@ export const setRecords: ICollaCommandDef<ISetRecordsOptions> = {
       const field = fieldMap[fieldId] || fieldProp;
       let value = recordOption.value;
 
-      // field 不存在，数据不生效
+      // field does not exist, the data does not take effect
       if (!field || !Field.bindContext(field, state).recordEditable(datasheetId, mirrorId) && !internalFix?.anonymouFix) {
         return collected;
       }
 
-      // 数字/货币/百分比 字段需要特殊处理，字符串转数字，数字有效位数等
+      // Number/currency/percentage fields need special processing, string to number, number of significant digits, etc.
       if (field.type === FieldType.Number || field.type === FieldType.Currency || field.type === FieldType.Percent) {
         if (isString(value)) {
           value = str2number(value);
@@ -117,13 +121,15 @@ export const setRecords: ICollaCommandDef<ISetRecordsOptions> = {
         }
       }
 
-      // 线上会有一部分数据存在问题，自表关联的情况也会存在 brotherFieldId ，导致多余的 action 存在
+      // There will be some data problems on the line, and brotherFieldId will also exist in the case of self-table association, 
+      // resulting in the existence of redundant actions
       if (field.type === FieldType.Link && field.property.brotherFieldId && field.property.foreignDatasheetId !== datasheetId) {
         /**
-         * 关联字段单元格数据一致性维护：
-         * 保证相互关联的两个不同 datasheet 中的 brotherField 中单元格数据的相互关联一致性。
-         * 即：当在一个 datasheet 的关联字段单元格中增加一条关联记录。则被关联的 datasheet 兄弟字段中，要创建一条对应的关联关系。
-         *    删除一个记录的时候也是同理。
+         * Data consistency maintenance for associated field cells:
+         * Guarantee the interrelated consistency of the cell data in brotherField in two different datasheets that are related to each other.
+         * That is: when an associated record is added to the associated field cell of a datasheet. 
+         * In the related datasheet sibling fields, a corresponding association relationship should be created.
+         * The same is true when deleting a record.
          */
         const oldValue = Selectors.getCellValue(state, snapshot, recordId, fieldId) as string[] | null;
         const linkedSnapshot = Selectors.getSnapshot(state, field.property.foreignDatasheetId)!;
@@ -137,7 +143,7 @@ export const setRecords: ICollaCommandDef<ISetRecordsOptions> = {
         );
       }
 
-      // 如果 val.value 为空数组则转为 null
+      // if val.value is an empty array then it will be null
       value = handleEmptyCellValue(value, Field.bindContext(field, state).basicValueType);
       fieldMapSnapshot[field.id] = field;
       const action = DatasheetActions.setRecord2Action(snapshot, { recordId, fieldId, value });
@@ -146,9 +152,9 @@ export const setRecords: ICollaCommandDef<ISetRecordsOptions> = {
       if (field.type === FieldType.DateTime) {
         const cacheAlarm = Selectors.getDateTimeCellAlarm(snapshot, recordId, field.id);
         /**
-         * 移除闹钟
-         * 1. 删除日期单元格数据
-         * 2. 日期单元格有数据直接移除闹钟
+         * remove alarm
+         * 1. Delete date cell data
+         * 2. The date cell has data to remove the alarm clock directly
          */
         if ((value === null && cacheAlarm) || (Boolean(value) && cacheAlarm && !alarm)) {
           const alarmActions = DatasheetActions.setDateTimeCellAlarm(snapshot, {
@@ -159,7 +165,7 @@ export const setRecords: ICollaCommandDef<ISetRecordsOptions> = {
           if (alarmActions) {
             collected.push(...alarmActions);
           }
-        } else if (Boolean(value) && !cacheAlarm && Boolean(alarm)) { // 新增闹钟
+        } else if (Boolean(value) && !cacheAlarm && Boolean(alarm)) { // new alarm
           const newAlarmId = getNewId(IDPrefix.DateTimeAlarm);
           const alarmActions = DatasheetActions.setDateTimeCellAlarm(snapshot, {
             recordId,
@@ -172,7 +178,7 @@ export const setRecords: ICollaCommandDef<ISetRecordsOptions> = {
           if (alarmActions) {
             collected.push(...alarmActions);
           }
-        } else if (Boolean(value) && !isEqual(cacheAlarm, alarm)) { // 修改闹钟
+        } else if (Boolean(value) && !isEqual(cacheAlarm, alarm)) { // edit alarm
           const alarmActions = DatasheetActions.setDateTimeCellAlarm(snapshot, {
             recordId,
             fieldId,

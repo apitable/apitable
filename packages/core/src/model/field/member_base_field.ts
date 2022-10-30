@@ -14,8 +14,8 @@ import { isNullValue } from 'model/utils';
 export type ICommonMemberField = IMemberField | ICreatedByField | ILastModifiedByField;
 
 export enum OtherTypeUnitId {
-  Self = 'Self', // 用于标识当前用户
-  Alien = 'Alien', // 用于标识匿名者
+  Self = 'Self', // used to identify the current user
+  Alien = 'Alien', // used to identify anonymous
 }
 
 export abstract class MemberBaseField extends ArrayValueField {
@@ -25,7 +25,7 @@ export abstract class MemberBaseField extends ArrayValueField {
   }
 
   /**
-   * 当前字段的单元格值的基础类型。
+   * The underlying type of the cell value of the current field.
    */
   get basicValueType(): BasicValueType {
     return BasicValueType.Array;
@@ -48,7 +48,7 @@ export abstract class MemberBaseField extends ArrayValueField {
   }
 
   /**
-   * 获取成员 unitIds，然后排序并拼接成字符串
+   * Get member unitIds, then sort and concatenate into strings
    */
   unitIdsToString(cellValue: IUnitIds | IUuids | null) {
     const unitIds = this.getUnitIds(cellValue);
@@ -57,9 +57,9 @@ export abstract class MemberBaseField extends ArrayValueField {
   }
 
   /**
-   * 多成员根据 unitIds 进行分组（orderInCellValueSensitive 为 false）
-   * 解决问题1: 多成员一一对应但成员顺序不同被分到不同组
-   * 解决问题2: 同名成员但 unitId 不同被分到同一个组
+   * Multiple members are grouped according to unitIds (orderInCellValueSensitive is false)
+   * Solve problem 1: Many members have one-to-one correspondence but the order of members is different and they are divided into different groups
+   * Solve problem 2: members with the same name but different unitId are assigned to the same group
    */
   compare(cellValue1: IUnitIds | IUuids | null, cellValue2: IUnitIds | IUuids | null, orderInCellValueSensitive?: boolean): number {
     if (!orderInCellValueSensitive) {
@@ -87,7 +87,8 @@ export abstract class MemberBaseField extends ArrayValueField {
     conditionValue: Exclude<IFilterMember, null>,
   ) {
     const cv4filter = cellValue ? this.getUnitIds(cellValue)! : [];
-    // 提前判断为空不为空, 应该直接判断 null 就行了，这里兼容旧数据。不能保证 cv 来的一定是 null，而不是空数组。
+    // If it is judged in advance that it is empty or not, it should be judged directly as null, which is compatible with old data. 
+    // There is no guarantee that cv comes with null, not an empty array.
     if (operator === FOperator.IsEmpty) {
       return cv4filter.length === 0;
     }
@@ -125,7 +126,7 @@ export abstract class MemberBaseField extends ArrayValueField {
   conditionValueToReal(value: string[]) {
     const conditionValue = value.slice();
     const selfIndex = conditionValue.indexOf(OtherTypeUnitId.Self);
-    // 识别当前用户选项，进行 unitId/uuid 还原
+    // Identify the current user options and restore unitId/uuid
     if (selfIndex > -1) {
       const { uuid, unitId } = this.state!.user.info!;
       const selfUnitId = this.field.type === FieldType.Member ? unitId : uuid;
@@ -135,39 +136,39 @@ export abstract class MemberBaseField extends ArrayValueField {
   }
 
   /**
-   * 继承类需实现此方法
-   * @desc 根据 cellValue 获取 uuids/unitIds
+   * Inherited classes need to implement this method
+   * @desc Get uuids/unitIds according to cellValue
    */
   getUnitIds(cellValue: IUnitIds | IUuids | null): null | string[] {
     return null;
   }
 
   /**
-   * 继承类需实现此方法
-   * @desc 根据 uuids/unitIds 获取对应 name 组成的数组
+   * Inherited classes need to implement this method
+    * @desc Get an array of corresponding names according to uuids/unitIds
    */
   getUnitNames(cellValue: IUnitIds | IUuids): null | string[] {
     return null;
   }
 
   /**
-   * 继承类需实现此方法
-   * @desc 根据 uuids/unitIds 获取对应 unit 信息组成的数组
+   * Inherited classes need to implement this method
+    * @desc Get an array of corresponding unit information according to uuids/unitIds
    */
   getUnits(cellValue: IUnitIds | IUuids): null | any[] {
     return null;
   }
 
   /**
-   * 继承类需实现此方法
-   * @desc 根据 uuids/unitIds 获取对应 name 组成的数组
+   * Inherited classes need to implement this method
+    * @desc Get an array of corresponding names according to uuids/unitIds
    */
   getUnitList(cellValue: IUnitIds | IUuids): null | string[] {
     return null;
   }
 
   /**
-   * @desc 根据 cellValue 获取对应 name 组成的数组
+   * @desc Get an array of corresponding names according to cellValue
    */
   cellValueToArray(cellValue: IUnitIds | IUuids | null): string[] | null {
     if (!cellValue) return null;
@@ -180,7 +181,7 @@ export abstract class MemberBaseField extends ArrayValueField {
   }
 
   /**
-   * @desc 根据 cellValue 获取对应 name 拼接的字符串
+   * @desc Get the string concatenated with the corresponding name according to cellValue
    */
   cellValueToString(cellValue: IUnitIds | IUuids | null, cellToStringOption?: ICellToStringOption): string | null {
     if (!cellValue) return null;
@@ -244,11 +245,11 @@ export abstract class MemberBaseField extends ArrayValueField {
   }
 
   /**
-   * api返回用户基本信息
-   * @param cellValues uuids的数组或者uuid
+   * api returns basic user information
+   * @param cellValues array of uuids or uuid
    * @return
    * @author Zoe Zheng
-   * @date 2021/3/15 3:03 下午
+   * @date 2021/3/15 3:03 pm
    */
   cellValueToApiStandardValue(cellValues: ICellValue | null): any | null {
     if (cellValues == null) return null;
@@ -277,10 +278,10 @@ export abstract class MemberBaseField extends ArrayValueField {
       return null;
     }
     const isSimple = openWriteValue.length && typeof openWriteValue[0] === 'string';
-    // iframe 中 redux 上 user 和 主线程中 user 不一样
+    // user on redux in iframe is different from user in main thread
     const userInfo = this.state.user.info || this.state.user as any as IUserInfo;
     const transUserId = (id: string) => {
-      // 对于 openWriteValue 可能为来自当前用户的userId，所以这里尝试去判断一下是否为当前用户的userId
+      // For openWriteValue, it may be the userId of the current user, so try to determine whether it is the userId of the current user.
       if (id === userInfo?.userId && userInfo.unitId) {
         return userInfo.unitId;
       }

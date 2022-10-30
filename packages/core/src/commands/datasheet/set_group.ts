@@ -28,14 +28,14 @@ export const setGroup: ICollaCommandDef<ISetGroupOptions> = {
       return null;
     }
 
-    // 判断当前操作的view是否是激活的view
+    // Determine whether the currently operating view is the active view
     if (datasheet.activeView !== viewId) {
       throw new Error(t(Strings.error_group_failed_wrong_target_view));
     }
 
     const checkMissGroupField = () => {
       return data && data.filter(item => {
-        // 由于权限原因导致的数据缺失是可预期的，不做处理
+        // Data missing due to permissions is expected and will not be processed
         if (getFieldRoleByFieldId(fieldPermissionMap, item.fieldId) === Role.None) {
           return false;
         }
@@ -43,7 +43,7 @@ export const setGroup: ICollaCommandDef<ISetGroupOptions> = {
       }).length;
     };
 
-    // 检查分组使用的字段是否存在于当前视图
+    // Check if the field used by grouping exists in the current view
     if (checkMissGroupField()) {
       throw new Error(t(Strings.error_group_failed_the_column_not_exist));
     }

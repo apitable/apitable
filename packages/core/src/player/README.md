@@ -1,7 +1,7 @@
-# Player 玩家系统
+# Player player system
 
-玩家相关的功能模块：
+Player-related functional modules:
 
-- 新手Onboarding
-- 事件Events
-- 触发器Trigger
+- Novice Onboarding
+- Events
+- Trigger

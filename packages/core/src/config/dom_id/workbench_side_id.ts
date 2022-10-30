@@ -1,17 +1,17 @@
 /* eslint_disable */
-// 工作台——工作目录ID
+// workbench - working directory ID
 
 const PREFIX = 'WORKBENCH_SIDE_';
-// 星标以及工作目录的container
+// star and container for working directory
 export const NODE_WRAPPER = PREFIX + 'NODE_WRAPPER';
 export const ADD_NODE_BTN = PREFIX + 'ADD_NODE_BTN';
 
-// 回收站
+// recycle bin
 export const RECYCLE_BIN = PREFIX + 'RECYCLE_BIN';
-// 使用模版
+// use template
 export const TO_SPACE_TEMPLATE = PREFIX + 'TO_SPACE_TEMPLATE';
 
-// 工作目录节点的操作菜单context
+// Action menu context of the working directory node
 export const OPERATE_ITEM_RENAME_NODE = PREFIX + 'RENAME_NODE';
 export const OPERATE_ITEM_STAR_NODE = PREFIX + 'STAR_NODE';
 export const OPERATE_ITEM_COPY_NODE = PREFIX + 'COPY_NODE';
@@ -25,7 +25,7 @@ export const OPERATE_ITEM_DELETE_NODE = PREFIX + 'DELETE_NODE';
 export const OPERATE_ITEM_ADD_DATASHEET = PREFIX + 'ADD_DATASHEET';
 export const OPERATE_ITEM_MOVE_TO = PREFIX + 'MOVE_TO';
 
-// 收集表
+// collection table, form
 export const FORM_USE_GUIDE_BTN = PREFIX + 'FORM_USE_GUIDE_BTN';
 
 export const NODE_EXPORT = PREFIX + 'NODE_EXPORT';

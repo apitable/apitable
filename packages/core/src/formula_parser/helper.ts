@@ -5,7 +5,8 @@ import { AstNodeType, ValueOperandNode } from './parser';
 import { produce } from 'immer';
 
 /**
- * lookup cv 现在默认保留空值。公式引用 lookup 字段作为参数时，部分函数需要对其空值做转换处理，使其符合预期。
+ * lookup cv now leaves null by default. 
+ * When the formula refers to the lookup field as a parameter, some functions need to convert the null value to make it as expected.
  */
 export const handleLookupNullValue = (params: IFormulaParam<any>[]) => {
   return produce(params, draftParams => {

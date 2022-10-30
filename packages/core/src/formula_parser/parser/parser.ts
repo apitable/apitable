@@ -16,10 +16,10 @@ import { IField } from 'types';
 import { t, Strings } from 'i18n';
 
 /**
- * 运算符优先级
- * https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence
- * 下方数组中，优先级从高到低排序。同一行的优先级相同。
- */
+  * operator precedence
+  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence
+  * In the array below, the priority is sorted from high to low. The same line has the same priority.
+  */
 const PriorityMap = new Map<TokenType, number>();
 [
   [TokenType.Times, TokenType.Div, TokenType.Mod],
@@ -79,7 +79,7 @@ export class FormulaExprParser {
     }
 
     switch (token.type) {
-      // 字段变量: {value}
+      // field variable: {value}
       case TokenType.Value: {
         this.next(TokenType.Value);
         const tokenValue = token.value.slice(1, -1);
@@ -89,7 +89,7 @@ export class FormulaExprParser {
         return new ValueOperandNode(token, this.context);
       }
 
-      // 字段变量: value （不带大括号）
+      // field variable: value (without curly braces)
       case TokenType.PureValue: {
         this.next(TokenType.PureValue);
         const tokenValue = token.value;
@@ -99,7 +99,7 @@ export class FormulaExprParser {
         return new PureValueOperandNode(token, this.context, this.context.field);
       }
 
-      // 预置函数: Sum/Average ...
+      // Preset functions: Sum/Average ...
       case TokenType.Call: {
         this.next(TokenType.Call);
         const node = new CallOperandNode(token);
@@ -121,7 +121,7 @@ export class FormulaExprParser {
           if (!this.currentToken) {
             throw new Error(t(Strings.function_err_end_of_right_bracket));
           }
-          // 排除多个参数间不加逗号的情况
+          // Exclude multiple parameters without commas
           if (this.currentToken.type !== TokenType.Comma) {
             break;
           }
@@ -134,19 +134,19 @@ export class FormulaExprParser {
         return node;
       }
 
-      // 数字: 123.333
+      // number: 123.333
       case TokenType.Number: {
         this.next(TokenType.Number);
         return new NumberOperandNode(token);
       }
 
-      // 字符串: 'xyz'
+      // string: 'xyz'
       case TokenType.String: {
         this.next(TokenType.String);
         return new StringOperandNode(token);
       }
 
-      // 左括号: '('
+      // Left parenthesis: '('
       case TokenType.LeftParen: {
         this.next(TokenType.LeftParen);
         const node: AstNode = this.expr();
@@ -154,21 +154,21 @@ export class FormulaExprParser {
         return node;
       }
 
-      // 取反符号(一元计算符号): '!'
+      // Negate sign (unary arithmetic sign): '!'
       case TokenType.Not: {
         this.next(TokenType.Not);
         const node: AstNode = this.factor();
         return new UnaryOperatorNode(node, token);
       }
 
-      // +符号(一元计算符号): '+'
+      // + sign (unary arithmetic sign): '+'
       case TokenType.Add: {
         this.next(TokenType.Add);
         const node: AstNode = this.factor();
         return new UnaryOperatorNode(node, token);
       }
 
-      // -符号(一元计算符号): '-'
+      // -sign (unary arithmetic sign): '-'
       case TokenType.Minus: {
         this.next(TokenType.Minus);
         const node: AstNode = this.factor();
@@ -216,10 +216,13 @@ export class FormulaExprParser {
       const currentToken = this.currentToken;
       const currentTokenIndex = this.lexer.currentTokenIndex;
       /**
-       * 往前试探一步，拿到 token 再回退
-       * 1. 如果遇到函数或左括号，则往前试探整个函数或括号内容，得到之后的运算符再回退
-       * 2. 如果不是函数，则只往前试探一个 token，得到运算符后再回退
-       */
+        * Take a step forward, get the token and go back
+        * 
+        * 1. If you encounter a function or left parenthesis, go forward to test the entire function or parenthesis content, 
+        * get the following operator and then fall back
+        * 
+        * 2. If it is not a function, just try a token forward, get the operator and then fall back
+        */
       if ([TokenType.Call, TokenType.LeftParen].includes(currentToken.type)) {
         this.factor();
         nextToken = this.currentToken;
@@ -237,7 +240,7 @@ export class FormulaExprParser {
         if (currentOpIndex != null && nextOpIndex != null && nextOpIndex < currentOpIndex) {
           right = this.expr(true);
         }
-        // 在循环中碰见优先级不同的运算符，要退出递归；
+        // When operators with different priorities are encountered in the loop, the recursion must be exited;
         if (inner && currentOpIndex != null && nextOpIndex != null && nextOpIndex > currentOpIndex) {
           return new BinaryOperatorNode(node, token, right || this.factor());
         }

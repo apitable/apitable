@@ -4,10 +4,10 @@ import { IFieldMap, IReduxState, Selectors } from 'store';
 import { FieldType, IField } from 'types';
 
 type IRefMap = Map<string, Set<string>>;
-// 计算字段的引用管理
+// Reference management for computed fields
 export class ComputeRefManager {
-  public reRefMap: IRefMap; // 反向引用，即正向依赖。 B 依赖 A， C 依赖 A。 计算字段做 key
-  public refMap: IRefMap; // A 被 [B,C] 引用。 计算字段做值
+  public reRefMap: IRefMap; // Back reference, that is, forward dependency. B depends on A, C depends on A. Calculated field as key
+  public refMap: IRefMap; // A is referenced by [B,C]. Calculate field value
 
   constructor(refMap?: IRefMap, reRefMap?: IRefMap) {
     this.refMap = refMap || new Map();
@@ -19,7 +19,7 @@ export class ComputeRefManager {
   }
 
   private addRef(key: string, value: string) {
-    // 模拟添加新的引用关系
+    // Simulate adding a new reference relationship
     const ref = this.refMap.get(key);
     if (ref) {
       ref.add(value);
@@ -29,7 +29,7 @@ export class ComputeRefManager {
   }
 
   /**
-   * 计算维格表依赖的正向或反向依赖的datasheetId集合
+   * Calculate the datasheetId collection of the forward or reverse dependence of the dimensional table dependence
    * @param dstId 
    * @param fieldMap 
    * @param refMap 
@@ -60,7 +60,7 @@ export class ComputeRefManager {
     return Array.from(dstSet);
   }
 
-  // 检查是否存在循环引用，存在则不通过
+  // Check if there is a circular reference, if it exists, it will not pass
   public checkRef(key: string, _visitedNode?: Set<string>) {
     const visitedNode = _visitedNode || new Set<string>();
     if (visitedNode.has(key)) {
@@ -75,10 +75,14 @@ export class ComputeRefManager {
   }
 
   /**
-   * TODO: 精确清理引用关系。
-   * 1. 计算字段变成非计算字段时（被删除或者字段转换），需要清理 reRefMap 作为 key 的一边，也需要清理 refMap 作为值的一边。
-   * 2. 计算字段转化成其他计算字段，formula lookup 互相转换。跨表非跨表依赖的转换
-   * 3. 计算字段没转换，但是发生了依赖变更。例如本来 formula 依赖 A、B 2个字段，后来只依赖 A 字段，那么对于 B 的依赖应该去掉。
+   * TODO: Precisely clean up references.
+   * 1. When a calculated field becomes a non-calculated field (deleted or field converted), 
+   * it is necessary to clean up the side of reRefMap as the key and the side of refMap as the value.
+   * 2. Calculated fields are converted into other calculated fields, and formula lookup is converted to each other. 
+   * Cross-table non-cross-table dependent transformation
+   * 3. The calculated field is not converted, but a dependency change has occurred. 
+   * For example, the formula originally depended on two fields A and B, 
+   * and later only depended on the A field, then the dependence on B should be removed.
    */
   public cleanFieldRef(fieldId: string, datasheetId: string) {
     const key = `${datasheetId}-${fieldId}`;
@@ -97,7 +101,7 @@ export class ComputeRefManager {
   }
 
   /**
-   * 清空依赖和引用关系。
+   * Clear dependencies and references.
    */
   public clear() {
     this.refMap.clear();
@@ -105,12 +109,13 @@ export class ComputeRefManager {
   }
 
   /*
-   * 以数表 fieldMap 为入口，计算数表的引用关系，一次只会计算一张数表的引用关系
-   * a - b - c 三表关联，
-   * 访问 a 表，服务端也会返回 b，c 表的 meta 和部分数据。这种情况下，computeRefMap 会调用三次。
-   * @param fieldMap 
-   * @param datasheetId 
-   * @param state 
+   * Take the datasheet fieldMap as the entry to calculate the reference relationship of the datasheet, 
+   * and only calculate the reference relationship of one datasheet at a time
+   * a - b - c three-table association,
+   * When accessing table a, the server will also return meta and partial data of table b and c. In this case, computeRefMap is called three times.
+   * @param fieldMap
+   * @param datasheetId
+   * @param state
    */
   public computeRefMap(fieldMap: IFieldMap, datasheetId: string, state: IReduxState, shouldSyncCache = true) {
     Object.values(fieldMap)
@@ -118,7 +123,7 @@ export class ComputeRefManager {
       .forEach((field: IField) => {
         switch (field.type) {
           case FieldType.Formula:
-            // 公式可能会解析错误
+            // formula may parse incorrectly
             const formulaExpr = parse(field.property.expression, { field, fieldMap, state }, true);
             if ('error' in formulaExpr) {
               break;
@@ -145,7 +150,7 @@ export class ComputeRefManager {
               this.addRef(key, `${datasheetId}-${field.id}`);
             });
             break;
-          // lookup 字段依赖当前表的 link 字段，和 link表的被 look 字段
+          // The lookup field depends on the link field of the current table and the looked field of the link table
           case FieldType.LookUp:
             const keys = new LookUpField(field, state).getCurrentDatasheetRelatedFieldKeys(datasheetId);
             this.addReRef(`${datasheetId}-${field.id}`, new Set(keys));
@@ -153,7 +158,7 @@ export class ComputeRefManager {
               this.addRef(key, `${datasheetId}-${field.id}`);
             });
             break;
-          // link 字段依赖外键表的首字段
+          // The link field depends on the first field of the foreign key table
           case FieldType.Link:
             const linkDstId = field.property.foreignDatasheetId;
             const linkSnapshot = Selectors.getSnapshot(state, linkDstId);
@@ -178,7 +183,7 @@ export class ComputeRefManager {
   }
 
   /**
-   * 获取某个字段影响的全部字段
+   * Get all fields affected by a field
    */
   public getAllEffectKeysByKey(key: string): {
     hasError: boolean;
@@ -187,7 +192,7 @@ export class ComputeRefManager {
     const effectedKeys = new Set<string>();
     const collectEffectedFieldKeys = (refKey: string) => {
       this.refMap.get(refKey)?.forEach((key) => {
-        // 先检查下是否会出现循环引用。
+        // First check if there is a circular reference.
         if (!effectedKeys.has(key)) {
           effectedKeys.add(key);
           collectEffectedFieldKeys(key);
@@ -209,7 +214,7 @@ export class ComputeRefManager {
   }
 
   /**
-   * 检查某张表依赖的哪些表 datasheetId 集合
+   * Check which table datasheetId collection a table depends on
    * @param dstId 
    * @param fieldMap 
    */
@@ -218,7 +223,7 @@ export class ComputeRefManager {
   }
 
   /**
-   * 检查某张表被哪些表依赖
+   * Check which tables a table depends on
    * @param dstId 
    * @param fieldMap 
    */

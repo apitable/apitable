@@ -15,11 +15,11 @@ export interface IAddFieldOptions {
   viewId?: string;
   index: number;
   data: Omit<IField, 'id'> & { id?: string };
-  // 触发新增列操作的 fieldId
+  // The fieldId that triggers the operation of adding a new column
   fieldId?: string;
-  // 相对 fieldId 位置的偏移
+  // Offset relative to fieldId position
   offset?: number;
-  // 是否隐藏这个新创建的字段
+  // whether to hide this newly created field
   hiddenColumn?: boolean;
 }
 
@@ -65,9 +65,10 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
       const view = snapshot.meta.views.find(view => view.id === viewId);
       const frozenColumnCount = (view as IGridViewProperty)?.frozenColumnCount;
 
-      // 针对关联字段的特殊处理
-      // 当新增的关联字段所关联的表无法在 state 中查询到的时候，此时无法建立一个关联关系。
-      // 这里我们将这个字段直接转换为文本字段。
+      // special handling for associated fields
+      // When the table associated with the newly added associated field cannot be queried in the state, 
+      // an association cannot be established at this time.
+      // Here we convert this field directly to a text field.
       if (
         fieldOption.data.type === FieldType.Link &&
         !Selectors.getDatasheet(state, fieldOption.data.property.foreignDatasheetId)
@@ -88,7 +89,8 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
         property: fieldOption.data.property,
       };
 
-      // 计算字段都需要通过field property 确定自己所在的 datasheet，在这里我们给他强行指定为当前 command 的 datasheetId
+      // Calculated fields need to determine their own datasheet through the field property, 
+      // here we force him to specify the datasheetId of the current command
       if (Field.bindContext(field, state).isComputed) {
         field.property = {
           ...field.property,
@@ -102,7 +104,7 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
         linkedAction && linkedActions.push(linkedAction);
       }
 
-      // AutoNumber 需要记录当前的视图索引
+      // AutoNumber needs to record the current view index
       if (field.type === FieldType.AutoNumber) {
         const datasheet = getDatasheet(state, datasheetId);
         const viewIdx = snapshot.meta.views.findIndex(item => item.id === datasheet?.activeView) || 0;
@@ -115,7 +117,7 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
       }
 
       const selfCreateNewField = internalFix?.selfCreateNewField ?? true;
-      // 特殊修复单向关联，如果为False本表不创建新字段
+      // Special repair one-way association, if False, this table does not create a new field
       if (selfCreateNewField) {
         const action = createNewField(snapshot, field, fieldOption);
 
@@ -155,7 +157,7 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
           newBrotherFieldId: linkedActions[0].actions[0]['li']['fieldId'],
         };
         linkedActions[0].actions[linkedActions[0].actions.length - 1]['oi'].property.brotherFieldId = fieldId;
-        // 修复单向关联列DstId
+        // Fix one-way association column DstId
         const result = fixOneWayLinkDstId.execute(context, {
           cmd: CollaCommandName.FixOneWayLinkDstId,
           data: [fixOneWayLinkData],

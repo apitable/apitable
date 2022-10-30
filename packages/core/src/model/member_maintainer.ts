@@ -5,11 +5,18 @@ import { FieldType, IMemberField } from 'types';
 import { IReduxState } from 'store';
 
 /**
- * 当前类为了解决 pasteSetRecord 中同时使用 setRecord 和 addRecord 对成员信息做变更时，生成的多个对列头数据的修改，相互覆盖的问题
- * 参考 linkDataMaintainer 的思路，在 setRecord 和 addRecord 中不再直接生成对列头数据的变更，而是交由该类的失灵进行数据管理，在最终提交数据前，统一生成
- * 一次对猎头数据修改的变更集
+ * 
+ * In order to solve the problem that the current class uses setRecord and addRecord at the same time 
+ * to change the member information in pasteSetRecord, 
+ * multiple changes to the column header data are generated and overlap each other.
+ * Referring to the idea of linkDataMaintainer, 
+ * the changes to the column header data are no longer directly generated in setRecord and addRecord, 
+ * but the data management is handed over to the failure of this class. Before the final data submission, unified generation
+ * A changeset for headhunting data modification
+ * 
  *
- * TODO: 目前先先解决线上的问题，保持旧的逻辑，对整列的数据进行变更，后续迭代为和 linkContainer 一样的对数量的检查，该步骤需要足够的测试
+ * TODO: At present, first solve the online problems, keep the old logic, and change the data of the entire column. 
+ * The subsequent iteration is the same number of checks as linkContainer. This step requires enough testing.
  */
 export class MemberFieldMaintainer {
   /**
@@ -24,7 +31,10 @@ export class MemberFieldMaintainer {
   }
 
   /**
-   * @description 插入当前 action 中对成员数据的修改，目前只需要以 fieldId 为 key，对数据进行一次聚合
+   * insert current action modifications of member data
+   * currently, use fieldId as key only
+   * aggregate the data
+   * 
    * @param {string} fieldId
    * @param {string} datasheetId
    * @param {string[]} insertUnitIds
@@ -38,7 +48,9 @@ export class MemberFieldMaintainer {
   }
 
   /**
-   * @description 检查是否存在缓存的数据，在其他 action 的末尾进行一次统一对成员列的修改 action
+   * check whether the cache data exists, 
+   * and at the end of other action, do a modification action to member field
+   * 
    * @param {IReduxState} state
    * @returns {any[] | IJOTAction[]}
    */
@@ -50,7 +62,8 @@ export class MemberFieldMaintainer {
     const actions: IJOTAction[] = [];
 
     /**
-     * 这里针对数据进行处理，不用考虑是否要和旧的列头数据做去重、筛选类的处理，目前的处理交给了 insert 之前，insert 的数据就是最终的完整数据
+     * here, is the process to data, no consider whether old column data needs to remove duplications, filter
+     * currently, the process handoff to the insert before, the data insert is the final complete data
      */
     this.memberDataChanges.forEach((memberFieldMap, datasheetId) => {
       const snapshot = getSnapshot(state, datasheetId)!;
@@ -59,7 +72,7 @@ export class MemberFieldMaintainer {
       memberFieldMap.forEach((cellValueForUnitIds, fieldId) => {
         const field = fieldMap[fieldId];
 
-        // 这里对字段类型做一次冗余的检查，兜底行为
+        // here, do a redundant check for field type, as a fallback behavior
         if (field.type !== FieldType.Member) {
           return;
         }

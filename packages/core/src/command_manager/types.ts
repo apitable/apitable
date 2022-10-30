@@ -20,32 +20,32 @@ export enum ExecuteType {
 }
 
 export enum ExecuteResult {
-  /** 无需执行 */
+  /** No need to execute */
   None = 'None',
   Fail = 'Fail',
   Success = 'Success',
 }
 
 export enum ExecuteFailReason {
-  /** 也不知道哪里出错了 */
+  /** Don't know what went wrong */
   Unknown = 'Unknown',
 
-  /** action 校验失败 */
+  /** action validation failed */
   ActionError = 'ActionError',
 
-  /** 对不支持的 field, view 进行操作 */
+  /** Operate on unsupported field, view */
   NotSupport = 'NotSupport',
 
-  /** table, view 名字重复 */
+  /** table, view name duplicate */
   NameRepeat = 'NameRepeat',
 
-  /** 最后一个，无法删除 */
+  /** The last one, cannot be deleted */
   LastOne = 'LastOne',
 
-  /** 字段类型不匹配 */
+  /** Field type mismatch */
   FieldTypeNotMatch = 'FieldTypeNotMatch',
 
-  /** 传递的参数问题 */
+  /** Passed parameter problem */
   WrongOptions = 'WrongOptions',
 }
 

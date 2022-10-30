@@ -219,305 +219,307 @@ export const WECHAT_OPERATE = 'wechat/miniapp/operate';
  * Get Wechat Signature
  */
 export const WECHAT_MP_SIGNATURE = '/wechat/mp/signature';
+// ================ WeChat related =======================
 
-// ================ 微信相关 ======================
-
-// ================ 空间相关 ======================
-// 获取空间列表
+// =============== Space related =======================
+// get the space list
 export const SPACE_LIST = '/space/list';
-// 创建空间
+// create space
 export const CREATE_SPACE = '/space/create';
-// 删除空间
+// delete space
 export const DELETE_SPACE = '/space/delete/:spaceId';
-// 切换空间站
+// switch space station
 export const SWITCH_SPACE = '/space/:spaceId/switch';
-// 立即删除空间
+// immediately delete the space
 export const DELETE_SPACE_NOW = '/space/del';
-// 编辑空间
+// edit space
 export const UPDATE_SPACE = '/space/update';
-// 移除空间列表的红点
+// remove the red dot from the space list
 export const REMOVE_RED_POINT = '/space/remove/';
-// 退出空间
+// exit space
 export const QUIT_SPACE = '/space/quit/';
-// 空间站-主管理员-获取主管理员信息
+// space station-main administrator-get main administrator information
 export const MAIN_ADMIN_INFO = '/space/manager';
-// 空间站-主管理员-更换主管理员
+// space station-main administrator-change main administrator
 export const CHANGE_MAIN_ADMIN = '/space/changeManager';
-// 空间站-子管理员-查询管理员列表
+// Space Station-Sub-Administrator-Query the list of administrators
 export const LIST_ROLE = '/space/listRole';
-// 空间站-子管理员-获取管理员信息
+// space station-sub-admin-get administrator information
 export const SUB_ADMIN_PERMISSION = '/space/getRoleDetail';
-// 空间站-子管理员-添加管理员
+// space station-sub-admin-add admin
 export const ADD_SUB_ADMIN = '/space/addRole';
-// 空间站-子管理员-编辑子管理员
+// space station-sub-admin-edit sub-admin
 export const EDIT_SUB_ADMIN = '/space/editRole';
-// 空间站-子管理员-删除管理员
+// space station-sub-admin-delete-admin
 export const DELETE_SUB_ADMIN = '/space/deleteRole/';
-// 空间站-更改成员设置
+// space station - change member settings
 export const UPDATE_MEMBER_SETTING = '/space/updateMemberSetting';
-// 空间站-获取禁止全员导出维格表状态
+// Space Station - Get the status of prohibiting all members from exporting the Wig table
 export const FORBID_STATUS = '/space/getForbidStatus';
-// 空间站-更改工作台设置
+// space station - change workbench settings
 export const UPDATE_WORKBENCH_SETTING = '/space/updateWorkbenchSetting';
-// 空间站-获取空间的特性
+// space station - get the properties of space
 export const GET_SPACE_FEATURES = '/space/features';
-// 空间站-获取空间的特性
+// space station - get the properties of space
 export const SWITCH_NODEROLE_ASSIGNALE = '/space/updateNodeRoleAssignable';
-// 空间站-获取第三方应用列表SINGLE_APP_INSTANCE
+// Space Station - Get a list of third-party apps SINGLE_APP_INSTANCE
 export const GET_MARKETPLACE_APPS = '/marketplace/integration/space/:spaceId/apps';
-
 /**
- * 第三方应用集成改版
- */
-// 空间站 - 获取第三方应用商店列表
+  * Third-party application integration revision
+  */
+// space station - get a list of 3rd party app stores
 export const GET_APPSTORES_APPS = '/appstores/apps';
-// 空间站 - 查询/创建 应用实例
+// space station - query/create application instance
 export const APP_INSTANCE = '/appInstances';
-// 空间站 - 删除应用实例
+// space station - delete application instance
 export const SINGLE_APP_INSTANCE = '/appInstances/:appInstanceId';
-// 空间站 - 飞书集成 - 更新基础配置
+// Space Station - Feishu Integration - Update Basic Configuration
 export const UPDATE_LARK_BASE_CONFIG = '/lark/appInstance/:appInstanceId/updateBaseConfig';
-// 空间站 - 飞书集成 - 更新事件配置
+// Space Station - Feishu Integration - Update Event Configuration
 export const UPDATE_LARK_EVENT_CONFIG = '/lark/appInstance/:appInstanceId/updateEventConfig';
-/* ----- 第三方应用集成改版分割线 ----- */
+/* ----- Third-party application integration revision dividing line ----- */
 
-// 空间站-更新企业安全设置
+// space station - update enterprise security settings
 export const UPDATE_SECURITY_SETTING = '/space/updateSecuritySetting';
 
-// 空间站-开启应用
+// space station - start the application
 export const APP_ENABLE = '/marketplace/integration/space/:spaceId/app/:appId/open';
-// 空间站-关闭应用
+// space station - close the app
 export const APP_DISABLE = 'marketplace/integration/space/:spaceId/app/:appId/stop';
-
-// 获取空间内容
+// get the space content
 export const SPACE_CONTENT = '/space/content/';
-// 空间信息
+// Spatial information
 export const SPACE_INFO = '/space/info/';
-// 恢复空间
+// restore space
 export const RECOVER_SPACE = '/space/cancel/';
-// 空间容量
+// space capacity
 export const SPACE_MEMORY = '/space/capacity';
-// 切换工作目录全员可见状态
+// Toggle the working directory to be visible to all members
 export const UPDATE_ALL_VISIBLE = '/space/updateNodeVisibleStatus';
-// 查询工作目录的全员可见状态
+// Query the visibility status of all members of the working directory
 export const GET_ALL_VISIBLE = '/space/getNodeVisible';
-// 空间统计
+// spatial statistics
 export const SPACE_STATISTICS = '/space/statistics';
-// 订阅
+// subscribe
 export const SUBSCRIBE_INFO = '/space/subscribe/';
 export const SUBSCRIBE_REMIND = '/player/notification/subscribe/remind';
 export const SUBSCRIBE_ACTIVE_EVENT = '/events/active';
-// 权限相关
+// permission related
 export const SPACE_RESOURCE = '/space/resource';
 export const NO_PERMISSION_MEMBER = '/node/remind/units/noPermission';
-// 赠送附件空间容量明细
+// Give attachment space capacity details
 export const CAPACITY_REWARD_LIST = '/space/capacity/detail';
-// 链接邀请
+// link invite
 export const CREATE_LINK = '/space/link/generate';
 export const LINK_LIST = '/space/link/list';
 export const DELETE_LINK = '/space/link/delete';
 export const LINK_VALID = '/space/link/valid';
 export const JOIN_VIA_LINK = '/space/link/join';
-// 申请加入空间
+// apply to join the space
 export const APPLY_JOIN_SPACE = '/space/apply/join';
-// ================ 空间相关 ======================
+// =============== Space related =======================
 
-// ================ 节点相关 ======================
-// 获取根节点
+// =============== Node related =======================
+// get the root node
 export const GET_ROOT_NODE = '/node/root';
-// 查询子节点列表
+// Query the list of child nodes
 export const GET_NODE_LIST = '/node/children';
-// 获取是否可以管理全员可见状态
+// Get whether you can manage the visible state of all members
 export const ALLOW_VISIBLE_SETTING = '/node/allowManageWorkbenchSetting';
-// 查询父节点到根节点的链条
+// Query the chain from parent node to root node
 export const GET_PARENTS = '/node/parents';
-// 查询工作台的节点树，限制查询两层
+// Query the node tree of the workbench, limit the query to two layers
 export const GET_NODE_TREE = '/node/tree';
-// 查询节点信息
+// Query node information
 export const GET_NODE_INFO = '/node/get';
-// 根据父节点id查询所属的子节点
+// Query the child node to which it belongs based on the parent node id
 export const SELECTBYPARENTID = '/node/selectByParentId/';
-// 移动节点
+// move node
 export const MOVE_NODE = '/node/move';
-// 新增节点
+// add node
 export const ADD_NODE = '/node/create';
-// 删除节点
+// delete node
 export const DELETE_NODE = '/node/delete/';
-// 编辑节点
+// edit node
 export const EDIT_NODE = '/node/update/';
-// 复制节点
+// copy node
 export const COPY_NODE = '/node/copy';
-// 获取数表ID
+// Get the table ID
 export const GET_DST_ID = '/node/getDstId/';
-// 记录活动的数表标签页
+// record active table tab
 export const KEEP_TAB_BAR = '/node/active';
-// 目录树定位
+// directory tree location
 export const POSITION_NODE = '/node/position/';
-// 检索节点
-// TODO: 待废弃
-export const FIND_NODE = '/node/select';
-// 搜索节点
-export const SEARCH_NODE = '/node/search';
-// 导入数表
-export const IMPORT_FILE = '/node/import';
-// 获取文件夹和文件的数量
-export const NODE_NUMBER = '/node/count';
-// 修改角色
-export const UPDATE_ROLE = '/node/updateRole';
-// 关闭节点分享
-export const DISABLE_SHARE = '/node/disableShare/';
-// 刷新节点分享链接
-export const REGENERATE_SHARE_LINK = '/node/regenerateShareLink/';
-// 获取节点分享设置
-export const SHARE_SETTINGS = '/node/shareSettings/';
-// 更新节点描述
-export const CHANGE_NODE_DESC = '/node/updateDesc';
-// 获取分享节点的信息
-export const READ_SHARE_INFO = '/node/readShareInfo';
-// 转存节点
-export const STORE_SHARE_DATA = '/node/storeShareData';
-// 更改节点分享设置
-export const UPDATE_SHARE = '/node/updateShare/';
-export const NODE_SHOWCASE = '/node/showcase';
-// 成员字段提及其他人记录
-export const COMMIT_REMIND = '/node/remind';
-// 开启节点继承模式
-export const ENABLE_ROLE_EXTEND = '/node/enableRoleExtend';
-// 关闭节点继承模式
-export const DISABLE_ROLE_EXTEND = '/node/disableRoleExtend';
-// 删除节点角色
-export const DELETE_ROLE = '/node/deleteRole';
-// 查询节点角色列表
-export const NODE_LIST_ROLE = '/node/listRole';
-// 修改节点的组织单元所属角色
-export const EDIT_ROLE = '/node/editRole';
-// 批量修改节点权限
-export const BATCH_EDIT_ROLE = '/node/batchEditRole';
-// 删除节点权限
-export const BATCH_DELETE_ROLE = 'node/batchDeleteRole';
-// 添加节点指定角色的组织单元
-export const ADD_ROLE = '/node/addRole';
-// 查询回收站的节点列表
-export const TRASH_LIST = '/node/rubbish/list';
-// 恢复节点
-export const TRASH_RECOVER = '/node/rubbish/recover';
-// 删除回收站的节点
-export const TRASH_DELETE = '/node/rubbish/delete/';
-// 更改节点收藏状态
-export const UPDATE_NODE_FAVORITE_STATUS = '/node/favorite/updateStatus/';
-// 移动收藏节点位置
-export const MOVE_FAVORITE_NODE = '/node/favorite/move';
-// 查询收藏的节点列表
-export const FAVORITE_NODE_LIST = '/node/favorite/list';
-// 查询数表节点关联的神奇表单/镜像
-export const DATASHEET_FOREIGN_FORM = '/node/getRelNode';
-// 获取目录树中指定类型的节点
-export const GET_SPECIFY_NODE_LIST = '/node/list';
-// ================ 节点相关 ======================
+// retrieve node
 
-// ================ 通讯录相关 ======================
-// 通讯录-查询指定空间的部门列表
+// TODO: to be discarded
+export const FIND_NODE = '/node/select';
+// search node
+export const SEARCH_NODE = '/node/search';
+// import datasheet
+export const IMPORT_FILE = '/node/import';
+// Get the number of folders and files
+export const NODE_NUMBER = '/node/count';
+// modify the character
+export const UPDATE_ROLE = '/node/updateRole';
+// close node sharing
+export const DISABLE_SHARE = '/node/disableShare/';
+// Refresh the node share link
+export const REGENERATE_SHARE_LINK = '/node/regenerateShareLink/';
+// Get node sharing settings
+export const SHARE_SETTINGS = '/node/shareSettings/';
+// update node description
+export const CHANGE_NODE_DESC = '/node/updateDesc';
+// Get the information of the shared node
+export const READ_SHARE_INFO = '/node/readShareInfo';
+// dump node
+export const STORE_SHARE_DATA = '/node/storeShareData';
+// Change node sharing settings
+export const UPDATE_SHARE = ​​'/node/updateShare/';
+export const NODE_SHOWCASE = '/node/showcase';
+// Member field mentions other records
+export const COMMIT_REMIND = '/node/remind';
+// Enable node inheritance mode
+export const ENABLE_ROLE_EXTEND = '/node/enableRoleExtend';
+// Turn off node inheritance mode
+export const DISABLE_ROLE_EXTEND = '/node/disableRoleExtend';
+// delete node role
+export const DELETE_ROLE = '/node/deleteRole';
+// Query the list of node roles
+export const NODE_LIST_ROLE = '/node/listRole';
+// Modify the role of the node's organizational unit
+export const EDIT_ROLE = '/node/editRole';
+// Batch modify node permissions
+export const BATCH_EDIT_ROLE = '/node/batchEditRole';
+// delete node permissions
+export const BATCH_DELETE_ROLE = 'node/batchDeleteRole';
+// Add the organizational unit of the specified role of the node
+export const ADD_ROLE = '/node/addRole';
+// Query the node list of the recycle bin
+export const TRASH_LIST = '/node/rubbish/list';
+// restore node
+export const TRASH_RECOVER = '/node/rubbish/recover';
+// delete the node from the recycle bin
+export const TRASH_DELETE = '/node/rubbish/delete/';
+// Change the node collection state
+export const UPDATE_NODE_FAVORITE_STATUS = '/node/favorite/updateStatus/';
+// Move the collection node position
+export const MOVE_FAVORITE_NODE = '/node/favorite/move';
+// Query the list of favorite nodes
+export const FAVORITE_NODE_LIST = '/node/favorite/list';
+// Query the magic form/mirror associated with the data table node
+export const DATASHEET_FOREIGN_FORM = '/node/getRelNode';
+// Get the node of the specified type in the directory tree
+export const GET_SPECIFY_NODE_LIST = '/node/list';
+// =============== Node related =======================
+
+// ================ Contacts related =======================
+// Address Book - Query the department list of the specified space
 export const TEAM_LIST = '/org/team/branch';
-// 通讯录-查询指定部门的成员列表
+// Address Book - Query the member list of the specified department
 export const MEMBER_LIST = '/org/member/list';
-// 通讯录-获取成员详情
+// address book - get member details
 export const MEMBER_INFO = '/org/member/read';
-// 空间站-通讯录管理-成员管理-分页查询指定部门的成员列表
+// Space Station-Address Book Management-Member Management-Pagination to query the member list of the specified department
 export const MEMBER_LIST_IN_SPACE = '/org/member/page';
-// 空间站-通讯录管理-成员管理-修改部门信息
+// Space station - address book management - member management - modify department information
 export const UPDATE_TEAM = '/org/team/update';
-// 空间站-通讯录管理-成员管理-添加子部门
+// Space station - address book management - member management - add sub-departments
 export const CREATE_TEAM = '/org/team/create';
-// 空间站-通讯录管理-成员管理-查询部门信息
+// Space station - address book management - member management - query department information
 export const READ_TEAM = '/org/team/read';
-// 通讯录-查询部门下的成员
+// address book - query the members under the department
 export const TEAM_MEMBERS = '/org/team/members';
-// 空间站-通讯录管理-成员管理-查询直属子部门列表
+// Space station - address book management - member management - query the list of subordinate departments
 export const READ_SUB_TEAMS = '/org/team/subTeams';
-// 空间站-通讯录管理-成员管理-删除部门
+// Space station - address book management - member management - delete department
 export const DELETE_TEAM = '/org/team/delete/';
-// 空间站-通讯录管理-成员管理-编辑成员信息
+// Space station - address book management - member management - edit member information
 export const UPDATE_MEMBER = '/org/member/updateInfo';
-// 空间站-通讯录管理-成员管理-单个删除成员
+// Space station - address book management - member management - single delete member
 export const SINGLE_DELETE_MEMBER = '/org/member/delete';
-// 空间站-通讯录管理-成员管理-批量删除成员
+// Space station - address book management - member management - batch delete members
 export const BATCH_DELETE_MEMBER = '/org/member/deleteBatch';
-// 空间站-通讯录管理-成员管理-搜索部门或成员
+// Space station - address book management - member management - search department or member
 export const SEARCH_TEAM_MEMBER = '/org/search';
-// 空间站-通讯录管理-成员管理-调整成员所属部门
+// Space station - address book management - member management - adjust the department to which members belong
 export const UPDATE_MEMBER_TEAM = '/org/member/updateMemberTeam';
-// 空间站-通讯录管理-成员管理-部门添加成员
+// Space station - address book management - member management - department adding members
 export const TEAM_ADD_MEMBER = '/org/member/addMember';
-// 空间站-通讯录管理-成员管理-搜索组织资源/添加部门成员modal中的搜索
+// Space station - address book management - 
+// member management - search for organizational resources / search in the modal of adding department members
 export const GET_ADD_MEMBERS = '/org/search/unit';
-// 空间站-判断空间内成员邮箱是否存在
+// Space station - determine whether member mailboxes exist in the space
 export const EXIST_EMAIL = '/org/member/checkEmail';
-// 空间站-邮件首次邀请外部成员
+// Space Station - Mail invites external members for the first time
 export const SEND_INVITE = '/org/member/sendInvite';
-// 空间站-邮件再次邀请外部成员
+// space station-mail invites external members again
 export const RESEND_INVITE = '/org/member/sendInviteSingle';
-// 空间站-下载员工信息表模版
+// Space station - download employee information form template
 export const DOWNLOAD_MEMBER_FILE = BASE_URL + '/org/member/downloadTemplate';
-// 空间站-上传员工信息表
+// space station - upload employee information form
 export const UPLOAD_MEMBER_FILE = '/org/member/uploadExcel';
-// 空间站-子管理员-模糊搜索成员
+// space station-sub-admin-fuzzy search member
 export const MEMBER_SEARCH = '/org/member/search';
-// 搜索组织资源
+// search for org resources
 export const SEARCH_UNIT = '/org/searchUnit';
-// 查询部门下的子部门和成员
+// Query the sub-departments and members under the department
 export const GET_SUB_UNIT_LIST = '/org/getSubUnitList';
-// 查询在空间内所属组织单元列表
+// Query the list of organizational units that belong to the space
 export const MEMBER_UNITS = '/org/member/units';
 
 /**
  * Edit Member Info
  */
 export const MEMBER_UPDATE = '/org/member/update';
-// 加载或者搜索成员
+// load or search for members
 export const LOAD_OR_SEARCH = '/org/loadOrSearch';
-// 根据提供的 name ，精确查找用户信息
+// Accurately find user information based on the provided name
 export const SEARCH_UNIT_INFO_VO = 'org/searchUnitInfoVo';
-// 处理“某人加入空间站”的消息
+// handle the "someone joined the space station" message
 export const PROCESS_SPACE_JOIN = '/space/apply/process';
-// ================ 通讯录相关 ======================
+// ================ Contacts related =======================
 
-// ================ 模板相关 ======================
+// =============== Template related =======================
 export const CREATE_TEMPLATE = '/template/create';
 export const OFFICIAL_TEMPLATE_CATEGORY = '/template/categoryList';
 export const TEMPLATE_LIST = '/template/list';
 /*
-* 获取官方模板分类内容
+* Get official template category content
  */
 export const TEMPLATE_CATEGORIES = '/template/categories/:categoryCode';
 /*
-* 加载空间站全部模板
+* Load all templates of space station
  */
 export const SPACE_TEMPLATES = '/spaces/:spaceId/templates';
 export const DELETE_TEMPLATE = '/template/delete/';
 export const TEMPLATE_DIRECTORY = '/template/directory';
 /*
- * 模板专题内容
- */
+  * Template topic content
+  */
 export const TEMPLATE_ALBUMS = '/template/albums/:albumId';
 /*
- * 模板专题推荐
- */
+  * Template topic recommendation
+  */
 export const TEMPLATE_ALBUMS_RECOMMEND = '/template/albums/recommend';
 export const USE_TEMPLATE = '/template/quote';
 export const TEMPLATE_NAME_VALIDATE = '/template/validate';
 export const TEMPLATE_RECOMMEND = '/template/recommend';
 export const TEMPLATE_SEARCH = '/template/global/search';
-// 新手引导
+// Beginner's guide
 export const TRIGGER_WIZARD = '/player/activity/triggerWizard';
-// 消息中心
+
+// Message Center
 export const NOTIFICATION_PAGE = '/player/notification/page';
 export const NOTIFICATION_LIST = '/player/notification/list';
 export const CREATE_NOTIFICATION = '/player/notification/create';
 export const NOTIFICATION_STATISTICS = '/player/notification/statistics';
 export const TRANSFER_NOTICE_TO_READ = '/player/notification/read';
-// ================ V码 ======================
+
+// =============== V code =======================
 export const CODE_EXCHANGE = '/vcode/exchange/';
-// ================ 第三方平台应用相关 ======================
+
+// =============== Third-party platform application related =======================
 export const SOCIAL_FEISHU_USER_AUTH = '/social/feishu/user/auth';
 export const SOCIAL_FEISHU_CHECK_ADMIN = '/social/feishu/checkUserAdmin';
 export const SOCIAL_FEISHU_CHECK_TENANT_BIND = '/social/feishu/checkTenantBind';
@@ -543,77 +545,77 @@ export const SOCIAL_DINGTALK_ADMIN_LOGIN = '/social/dingtalk/suite/:suiteId/admi
 export const SOCIAL_DINGTALK_CHANGE_ADMIN = '/social/dingtalk/suite/:suiteId/changeAdmin';
 export const SOCIAL_DINGTALK_SKU = '/social/dingtalk/skuPage';
 export const SOCIAL_DINGTALK_CONFIG = '/social/dingtalk/ddconfig';
-// 获取集成租户环境配置
+// Get the integrated tenant environment configuration
 export const SOCIAL_TENANT_ENV = '/social/tenant/env';
 
-// 钉钉扫码登陆回调
+// DingTalk scan code login callback
 export const DINGTALK_H5_USER_LOGIN = '/social/dingtalk/agent/:agentId/user/login';
 export const DINGTALK_H5_BIND_SPACE = '/social/dingtalk/agent/:agentId/bindSpace';
 export const DINGTALK_REFRESH_ORG = '/social/dingtalk/agent/refresh/contact';
-// ================ player相关 ======================
+// =============== player related =======================
 
-// ================ 风控相关 ======================
-//  内容风控
+// ================ Risk control related =======================
+// Content risk control
 export const CREATE_REPORTS = '/censor/createReports';
-// ================ 风控相关 ======================
+// ================ Risk control related =======================
 
-// ================ 资源相关 ======================
-// 获取资源指定变更集列表
+// =============== Resource related =======================
+// Get a list of resource-specific changesets
 export const READ_CHANGESET = '/resource/:resourceId/changesets';
-// 获取资源的关联表数据
+// Get the associated table data of the resource
 export const READ_FOREIGN_DATASHEET_PACK = '/resource/:resourceId/foreignDatasheet/:foreignDatasheetId/dataPack';
-// 获取分享资源的关联表数据
+// Get the associated table data of the shared resource
 export const READ_SHARE_FOREIGN_DATASHEET_PACK = '/share/:shareId/resource/:resourceId/foreignDatasheet/:foreignDatasheetId/dataPack';
-// 获取单条记录的评论和历史记录
+// Get comments and history for a single record
 export const GET_RECORD_ACTIVITY_LIST = '/resources/:resourceId/records/:recId/activity';
 
-// ================ 数表相关 ======================
-// 加载数表数据包
+// =============== datasheet related =======================
+// load table data package
 export const DATAPACK = '/datasheet/:dstId/dataPack';
-// 获取数表指定记录列表
+// Get the list of specified records in the datasheet
 export const READ_RECORDS = '/datasheet/:dstId/records';
-// 获取分享页面的表格数据
+// Get the form data of the share page
 export const READ_SHARE_DATAPACK = '/share/:shareId/datasheet/:dstId/dataPack';
-// 模版数据包
+// template packet
 export const READ_TEMPLATE_DATAPACK = '/template/datasheet/:dstId/dataPack';
-// 获取用户列表
+// get user list
 export const GET_USER_LIST = '/datasheet/:nodeId/users';
-// 获取数表对应的 Meta
+// Get the Meta corresponding to the datasheet
 export const READ_DATASHEET_META = '/datasheet/:dstId/meta';
-export const GET_DATASHEET_SUBSCRIPTIONS = '/datasheets/:dstId/records/subscriptions'; // 获取数表被关注的record IDs GET
-export const SUBSCRIBE_DATASHEET_RECORDS = '/datasheets/:dstId/records/subscriptions'; // 关注数表中的数据 POST
-export const UNSUBSCRIBE_DATASHEET_RECORDS = '/datasheets/:dstId/records/subscriptions'; // 取消关注数表中的数据
-// ================ 数表相关 ======================
+export const GET_DATASHEET_SUBSCRIPTIONS = '/datasheets/:dstId/records/subscriptions'; // Get the concerned record IDs of the datasheet GET
+export const SUBSCRIBE_DATASHEET_RECORDS = '/datasheets/:dstId/records/subscriptions'; // Follow the data in the datasheet POST
+export const UNSUBSCRIBE_DATASHEET_RECORDS = '/datasheets/:dstId/records/subscriptions'; // Unfollow the data in the datasheets
 
-// ================ 神奇表单相关 ================
-// 加载表单数据
+// =============== datasheet related =======================
+// ================ form ================
+// load form data
 export const FORMPACK = '/form/:formId/dataPack';
-// 获取表单分享页面数据
+// Get form share page data
 export const READ_SHARE_FORMPACK = '/share/:shareId/form/:formId/dataPack';
-// 获取表单模版页面数据
+// Get form template page data
 export const READ_TEMPLATE_FORMPACK = '/template/:templateId/form/:formId/dataPack';
-// 空间站内表单提交数据
+// Form submission data in the space station
 export const FORM_ADD_RECORD = '/form/:formId/addRecord';
-// 表单分享页面提交数据
+// form share page submit data
 export const SHARE_FORM_ADD_RECORD = '/share/:shareId/form/:formId/addRecord';
-// 空间站内更新表单相关属性
+// Update form related properties in the space station
 export const UPDATE_FORM_PROPS = '/form/:formId/props';
-// 空间站内获取表单所有属性
+// Get all the properties of the form in the space station
 export const READ_FORM_PROPS = '/form/:formId/props';
-// 空间站内更新表单相关属性
+// Update form related properties in the space station
 export const READ_FORM_SUBMIT_STATUS = '/form/:formId/submitStatus';
-// ================ 神奇表单相关 ================
+// =============== Magic form related ===============
 
-// ================ Socket相关 ======================
-// 数表长链接
+// =============== Socket =======================
+// datasheet long link
 export const WEBSOCKET_NAMESPACE = '/room';
-// 数表-协同操作长链接
+// datasheet - collaborative operation long link
 export const ROOM_PATH = '/room';
-// 消息通知长链接
+// message notification long link
 export const NOTIFICATION_PATH = '/notification';
-// ================ Socket相关 ======================
+// =============== Socket related =======================
 
-// ================ Widget 相关 ======================
+// ================ Widget related =======================
 export const INSTALLATION_WIDGETS = '/widget/get';
 export const WIDGET_CENTER_LIST = '/widget/package/store/list';
 export const INSTALL_WIDGET = '/widget/create';
@@ -621,24 +623,24 @@ export const COPY_WIDGET = '/widget/copy';
 export const RECENT_INSTALL_WIDGET = '/space/:spaceId/widget';
 export const GET_NODE_WIDGETS = '/node/:nodeId/widgetPack';
 export const CREATE_WIDGET = '/widget/package/create';
-// 获取节点安装的小组件信息，仅提供给预览所用，不包含完整的数据
+// Get the widget information installed by the node, which is only provided for preview, does not contain complete data
 export const GET_NODE_WIDGETS_PREVIOUS = '/node/:nodeId/widget';
-// 获取小组件模版列表
+// Get a list of widget templates
 export const GET_TEMPLATE_LIST = '/widget/template/package/list';
-// 下架小组件
+// remove widget
 export const UNPUBLISH_WIDGET = '/widget/package/unpublish';
-// 移交小组件
+// hand over widget
 export const TRANSFER_OWNER = '/widget/package/transfer/owner';
 
-// ================ Widget 相关 ======================
+// ================ Widget related =======================
 
-// ================ Dashboard 相关 ======================
+// =============== Dashboard related =======================
 export const FETCH_DASHBOARD = '/dashboard/:dashboardId/dataPack';
 export const FETCH_SHARE_DASHBOARD = '/share/:shareId/dashboard/:dashboardId/dataPck';
 export const FETCH_TEMPLATE_DASHBOARD = '/template/:templateId/dashboard/:dashboardId/dataPck';
-// ================ Dashboard 相关 ======================
+// =============== Dashboard related =======================
 
-// ================ 列权限 相关 start ======================
+// =============== Column permissions related start =======================
 export const FIELD_PERMISSION_ADD_ROLE = 'datasheet/:dstId/field/:fieldId/addRole';
 export const FIELD_PERMISSION_DELETE_ROLE = 'datasheet/:dstId/field/:fieldId/deleteRole';
 export const FIELD_PERMISSION_EDIT_ROLE = 'datasheet/:dstId/field/:fieldId/editRole';
@@ -648,77 +650,78 @@ export const FIELD_PERMISSION_UPDATE_SETTING = 'datasheet/:dstId/field/:fieldId/
 export const GET_FIELD_PERMISSION_MAP = 'datasheet/field/permission';
 export const BATCH_EDIT_PERMISSION_ROLE = 'datasheet/:dstId/field/:fieldId/batchEditRole';
 export const BATCH_DELETE_PERMISSION_ROLE = 'datasheet/:dstId/field/:fieldId/batchDeleteRole';
-// ================ 列权限 相关 end ======================
+// =============== Column permissions related end =======================
 
-// ================ mirror 相关 start ======================
-export const READ_MIRROR_INFO = 'mirror/:mirrorId/info'; // 请求 mirror 本身的数据
-export const READ_MIRROR_DATA_PACK = 'mirror/:mirrorId/dataPack'; // 请求 mirror 相关的数表的数据
-export const READ_SHARE_MIRROR_INFO = 'share/:shareId/mirror/:mirrorId/info'; // 请求 mirror 相关的数表的数据
-export const READ_SHARE_MIRROR_DATA_PACK = 'share/:shareId/mirror/:mirrorId/dataPack'; // 请求 mirror 相关的数表的数据
-export const GET_MIRROR_SUBSCRIPTIONS = '/mirrors/:mirrorId/records/subscriptions'; // 获取Mirror数表被关注的record IDs
-export const SUBSCRIBE_MIRROR_RECORDS = '/mirrors/:mirrorNodeId/records/subscriptions'; // 关注Mirror数表中的数据
-export const UNSUBSCRIBE_MIRROR_RECORDS = '/mirrors/:mirrorNodeId/records/subscriptions'; // 取消关注Mirror数表中的数据
-// ================ mirror 相关 end ======================
-// ================ 视图开关 相关 start ======================
+// ================ mirror related start =======================
+export const READ_MIRROR_INFO = 'mirror/:mirrorId/info'; // Request mirror data
+export const READ_MIRROR_DATA_PACK = 'mirror/:mirrorId/dataPack'; // Request the data of the mirror-related table
+export const READ_SHARE_MIRROR_INFO = 'share/:shareId/mirror/:mirrorId/info'; // Request the data of mirror-related tables
+export const READ_SHARE_MIRROR_DATA_PACK = 'share/:shareId/mirror/:mirrorId/dataPack'; // Request the data of the mirror-related table
+export const GET_MIRROR_SUBSCRIPTIONS = '/mirrors/:mirrorId/records/subscriptions'; // Get the concerned record IDs of the mirror table
+export const SUBSCRIBE_MIRROR_RECORDS = '/mirrors/:mirrorNodeId/records/subscriptions'; // Pay attention to the data in the mirror table
+export const UNSUBSCRIBE_MIRROR_RECORDS = '/mirrors/:mirrorNodeId/records/subscriptions'; // Unfollow the data in the mirror table
+// =============== mirror related end =======================
+
+// ================ View switch related start =======================
 export const GET_DST_VIEW_DATA_PACK = 'datasheet/:dstId/view/:viewId/dataPack';
 export const GET_SHARE_DST_VIEW_DATA_PACK = 'share/:shareId/datasheet/:dstId/view/:viewId/dataPack';
-// ================ 视图开关 相关 end ======================
+// =============== View switch related end =======================
 
-// 获取已开启实验性功能
+// Get the experimental features that are enabled
 export const GET_LABS_FEATURE = 'user/labs/features';
-// 获取实验性功能列表
+// Get a list of experimental features
 export const GET_LABS_FEATURE_LIST = 'labs/features';
 
 export const GET_COMMENTS_BY_IDS = 'datasheet/:dstId/record/:recordId/comments';
 
 export const APPLY_RESOURCE_CHANGESETS = 'resource/apply/changesets';
 
-// poc 版本同步组织架构成员
+// poc version synchronization organization structure members
 export const SYNC_ORG_MEMBERS = 'social/oneaccess/copyTeamAndMembers';
 
-// 获取节点信息 - 文件信息窗
+// Get node information - file information window
 export const GET_NODE_INFO_WINDOW = 'node/window';
 
-// ================ 企微应用商店 相关 start ======================
-export const GET_WECOM_TENANT_INFO = 'social/wecom/isv/datasheet/tenant/info'; // 获取租户绑定信息
-export const GET_WECOM_SPACE_INFO = 'social/wecom/isv/datasheet/login/info'; // 获取企微第三方应用绑定的空间站信息
-export const POST_WECOM_AUTO_LOGIN = 'social/wecom/isv/datasheet/login/code'; // 企微第三方跳转自动登录
-export const POST_WECOM_SCAN_LOGIN = 'social/wecom/isv/datasheet/login/authCode'; // 企微扫码登录
-export const POST_WECOM_LOGIN_ADMIN = 'social/wecom/isv/datasheet/login/adminCode'; // 企微跳转管理页自动登录
-export const POST_WECOM_CHANGE_ADMIN = 'social/wecom/isv/datasheet/admin/change'; // 企微更换空间站主管理员
-export const POST_WECOM_UNAUTHMEMBER_INVITE = 'social/wecom/isv/datasheet/invite/unauthMember'; // 授权模式邀请成员
-// ================ 企微应用商店 相关 end ======================
+// ================ Wecom App Store related start =======================
+export const GET_WECOM_TENANT_INFO = 'social/wecom/isv/datasheet/tenant/info'; // Get tenant binding information
+// Get the space station information bound by the third-party application of WECOM
+export const GET_WECOM_SPACE_INFO = 'social/wecom/isv/datasheet/login/info'; 
+export const POST_WECOM_AUTO_LOGIN = 'social/wecom/isv/datasheet/login/code'; // Wecom third-party jump automatic login
+export const POST_WECOM_SCAN_LOGIN = 'social/wecom/isv/datasheet/login/authCode'; // Enterprise WeChat scan code login
+export const POST_WECOM_LOGIN_ADMIN = 'social/wecom/isv/datasheet/login/adminCode'; // Automatically log in to the management page of Qiwei Jump
+export const POST_WECOM_CHANGE_ADMIN = 'social/wecom/isv/datasheet/admin/change'; // Wecom changes the main administrator of the space station
+export const POST_WECOM_UNAUTHMEMBER_INVITE = 'social/wecom/isv/datasheet/invite/unauthMember'; // Invite members in authorization mode
+// ================ Wecom App Store related end =======================
 
-// ================ 企微通讯录改造相关 start ====================
+// ================ Enterprise and micro address book transformation related start =====================
 export const GET_WECOM_AGENT_CONFIG = 'social/wecom/isv/datasheet/jsSdk/agentConfig';
 export const GET_WECOM_CONFIG = 'social/wecom/isv/datasheet/jsSdk/config';
-// ================ 企微通讯录改造相关 end ====================
+// ================ Enterprise and micro address book transformation related end =====================
 
-/* 订单模块相关的接口 start */
+/* Order module related interface start */
 export const ORDER_PRICE = 'shop/prices';
 export const ORDER_CREATE = 'orders';
 export const ORDER_PAYMENT = 'orders/:orderId/payment';
 export const ORDER_STATUS = 'orders/:orderId/paid';
 export const DRY_RUN = 'orders/dryRun/generate';
 export const PAID_CHECK = 'orders/:orderId/paidCheck\n';
-/* 订单模块相关的接口 end */
-
-// ============= 腾讯云玉符相关 start ====================//
-export const GET_IDASS_LOGIN_URL = '/idaas/auth/login'; // 获取玉符IDass 登录跳转地址
+/* Order module related interface end */
+// ============ Tencent iDaaS related start =====================//
+export const GET_IDASS_LOGIN_URL = '/idaas/auth/login'; // Get IDass login jump address
 export const IDAAS_LOGIN_CALLBACK = '/idaas/auth/callback';
 export const IDAAS_CONTACT_SYNC = 'idaas/contact/sync';
 export const IDAAS_GET_SPACE_BIND_INFO = '/idaas/auth/:spaceId/bindInfo';
-// ============= 腾讯云玉符相关 end ====================//
+// ============ Tencent iDaaSrelated end =====================//
 
-// 获取URL相关信息, URL列识别用
+// Get URL related information, used for URL column identification
 export const GET_URL_META = '/internal/field/url/awareContent';
 export const GET_URL_META_BATCH = '/internal/field/url/awareContents';
 
-// 附件直传
+// Attachment direct upload
 export const UPLOAD_PRESIGNED_URL = '/asset/upload/preSignedUrl';
 export const UPLOAD_CALLBACK = 'asset/upload/callback';
 
-// ============= 角色相关 start ====================//
+// ============ Character related start =====================//
 export const GET_ROLE_LIST = '/org/roles';
 export const CREATE_NEW_ROLE = '/org/roles';
 export const DELETE_ORG_ROLE = '/org/roles/:roleId';
@@ -727,7 +730,7 @@ export const GET_MEMBER_LIST_BY_ROLE = '/org/roles/:roleId/members';
 export const ADD_ROLE_MEMBER = '/org/roles/:roleId/members';
 export const DELETE_ROLE_MEMBER = '/org/roles/:roleId/members';
 export const INIT_ROLE = '/org/roles/init';
-// ============= 角色相关 end ====================//
+// ============ Character related end =====================//
 
 // recently browsed folder
 export const NODE_RECENTLY_BROWSED = '/node/recentList';

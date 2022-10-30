@@ -1,6 +1,8 @@
 /*
- * Player 用户系统, 包括新手引导、事件系统绑定、小红点、通知等与用户体验密切相关的管理器
- * 提供初始化函数，能再启动期间执行初始化（init）函数，对player配置表进行读取解释
+ * 
+ * Player user system, including novice guide, event system binding, red dot, notification and other managers closely related to user experience
+ * Provide an initialization function, which can execute the initialization (init) function during restart, 
+ * and read and explain the player configuration table
  *
  * @Author: Kelly Peilin Chan (kelly@vikadata.com)
  * @Date: 2020-03-10 14:16:06
@@ -11,7 +13,8 @@ import {
   AppHook, TriggerCommand, FilterCommand,
   // ITrigger,
 } from 'apphook';
-// eve引擎在这里声明，并成为全局单例
+
+// The apphook engine is declared here and becomes a global singleton
 const apphook = new AppHook();
 
 export interface IEvent {
@@ -20,8 +23,8 @@ export interface IEvent {
 }
 
 /**
- * 配置的时候，module和name分开配，便于产品策划识别事件和更好的可读性
- * 系统真实使用的时候，将module和name进行拼接： modulexxx_namexxx
+ * When configuring, module and name are configured separately, which is convenient for product planning to identify events and better readability
+ * When the system is actually used, splicing module and name: modulexxx_namexxx
  *
  * @param {IEvent} event
  * @returns
@@ -31,10 +34,10 @@ export function _getEventName(event: IEvent) {
 }
 
 /**
- * 绑定事件.
- * 为什么这里用bindTrigger，而不用addTrigger呢？
- * addTrigger，是可以add的，就是可以绑定非常多个的动作，适用于第三方插件奔放地开发；
- * 而在我们的自己程序代码里，我们不推崇使用add，这样我们自己的代码难维护，统一放到了event_bindings.ts文件了
+ * Bind events.
+ * Why use bindTrigger here instead of addTrigger?
+ * addTrigger can be added, that is, it can bind a lot of actions, which is suitable for the unrestrained development of third-party plug-ins;
+ * In our own program code, we do not respect the use of add, so our own code is difficult to maintain, so we put it in the event_bindings.ts file.
  *
  * @export
  * @param {IEvent} event
@@ -54,7 +57,7 @@ export function bindTrigger(event: IEvent, command: TriggerCommand, priority = 0
 }
 
 /**
- * 执行事件
+ * execute event
  *
  * @export
  * @param {IEvent} event
@@ -68,7 +71,7 @@ export function doTrigger(event: IEvent, eventState?: any) {
 }
 
 /**
- * 应用过滤器
+ * Apply filters
  *
  * @export
  * @param {IEvent} event
@@ -94,7 +97,7 @@ export function bindFilter(
 }
 
 /**
- * 直接获得eve事件引擎
+ * Direct access to apphook event manager
  *
  * @export
  * @returns

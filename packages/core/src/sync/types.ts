@@ -2,85 +2,85 @@ import { ILocalChangeset, IRemoteChangeset } from 'engine/ot';
 import { IApiWrapper, IFieldPermission, IFieldRoleSetting, IWatchResult, Role } from 'store';
 import { ModalType, OnOkType } from 'types';
 /**
- * 主动发出的请求消息类型
+ * The type of request message that is sent out actively
  */
 export enum SyncRequestTypes {
   /**
-   * 建立长连接通道
+   * Establish a long connection channel
    */
   WATCH_ROOM = 'WATCH_ROOM',
 
   /**
-   * 离开协作房间
+   * leave the collaboration room
    */
   LEAVE_ROOM = 'LEAVE_ROOM',
 
   /**
-   * Room 中的消息
-   * 可以一次性发送多条 changeset
+   * Messages in Room
+   * Can send multiple changesets at one time
    */
   CLIENT_ROOM_CHANGE = 'CLIENT_ROOM_CHANGE',
 
   /**
-   * NEST 服务的 ROOM 消息
+   * ROOM message for NEST service
    */
   NEST_ROOM_CHANGE = 'NEST_ROOM_CHANGE',
 }
 
 /**
- * 广播的消息类型
+ * Type of message to broadcast
  */
 export enum BroadcastTypes {
 
   /**
-   * 房间内其他用户操作了 changeset
-   * 因为相对于客户端来说，是服务端主动推给他的，所以以 Server 开头
+   * Other users in the room operated changeset
+   * Because compared to the client, it is actively pushed by the server, so it starts with Server
    */
 
   SERVER_ROOM_CHANGE = 'SERVER_ROOM_CHANGE',
 
   /**
-   * 有新激活协作人
+   * There are newly activated collaborators
    */
   ACTIVATE_COLLABORATOR = 'ACTIVATE_COLLABORATOR',
 
   /**
-   * 有新激活协作（多）人
+   * There are newly activated collaboration (multiple) people
    */
   ACTIVATE_COLLABORATORS = 'ACTIVATE_COLLABORATORS',
 
   /**
-   * 有协作人被取消激活
+   * A collaborator has been deactivated
    */
   DEACTIVATE_COLLABORATOR = 'DEACTIVATE_COLLABORATOR',
 
   /**
-   * 有用户更新了光标
+   * A user updated the cursor
    */
   ENGAGEMENT_CURSOR = 'ENGAGEMENT_CURSOR',
 
   /**
-   * 节点分享被关闭
+   * Node sharing is turned off
    */
   NODE_SHARE_DISABLED = 'NODE_SHARE_DISABLED',
 
   /**
-   * 字段权限开启
+   * Field permission is enabled
    */
   FIELD_PERMISSION_ENABLE = 'FIELD_PERMISSION_ENABLE',
 
   /**
-   * 字段权限变更
+   * Field permission change
    */
   FIELD_PERMISSION_CHANGE = 'FIELD_PERMISSION_CHANGE',
 
   /**
-   * 字段权限关闭
+   * Field permission off
    */
   FIELD_PERMISSION_DISABLE = 'FIELD_PERMISSION_DISABLE',
 
   /**
-   * 字段配置属性变更
+   * Field configuration property changes
    */
   FIELD_PERMISSION_SETTING_CHANGE = 'FIELD_PERMISSION_SETTING_CHANGE',
 }
@@ -105,25 +105,25 @@ export type IFieldPermissionMessage = {
   permission?: IFieldPermission;
 };
 
-// 前端请求数据类型
+// Front-end request data type
 export type IBaseClientVarsExtraData = {
   baseRev?: number;
   /**
-   * openType = 1时让后端区分请求，不在最近浏览文档中显示
+   * When openType = 1, let the backend distinguish the request, not show in the recently viewed document
    */
   openType?: number;
 } | {
   baseRev?: number;
   /**
-   * 有该字段，ClientVars 会带回指定的 tableId 的快照
+   * With this field, ClientVars will bring back a snapshot of the specified tableId
    */
   tableId: string;
   /**
-   * 有该字段和有分块数据的情况下，后端会先返回指定view的前xxx行数据
+   * In the case of this field and block data, the backend will first return the first xxx rows of data of the specified view
    */
   viewId?: string;
   /**
-   * openType = 1时让后端区分请求，不在最近浏览文档中显示
+   * When openType = 1, let the backend distinguish the request, not show in the recently viewed document
    */
   openType?: number;
 };
@@ -136,7 +136,7 @@ export interface ICursorInfoRequestData {
   time: number;
 }
 
-// 广播数据类型
+// broadcast data type
 export interface IEngagementCursorData {
   type: BroadcastTypes.ENGAGEMENT_CURSOR;
   cursorInfo: ICursorInfoRequestData;
@@ -177,24 +177,24 @@ export interface IClientRoomMessage {
 }
 
 export enum OtErrorCode {
-  // 服务异常
+  // server exception
   SERVER_ERROR = 4000,
-  // 消息重复
+  // message repeats
   MSG_ID_DUPLICATE = 4001,
-  // 提交版本冲突
+  // commit version conflict
   CONFLICT = 4002,
-  // 提交版本超限
+  // Commit version overrun
   REVISION_OVER_LIMIT = 4003,
-  // 提交版本错误
+  // commit version error
   REVISION_ERROR = 4004,
-  // 更新列头失败
+  // Failed to update column header
   APPLY_META_ERROR = 4005,
-  // 结构丢失
+  // structure is missing
   META_LOST_ERROR = 4006,
-  // 版本号不匹配
+  // version numbers do not match
   MATCH_VERSION_ERROR = 4007,
-  // 空间容量超出限制
+  // The space capacity exceeds the limit
   SPACE_CAPACITY_OVER_LIMIT = 4008,
-  // 单元格数据格式写入错误
+  // cell data format write error
   DATA_FORMAT_ERROR = 4009
 }

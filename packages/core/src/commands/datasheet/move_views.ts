@@ -41,7 +41,7 @@ export const moveViews: ICollaCommandDef<IMoveViewsOptions> = {
     const actions = data.reduce<IJOTAction[]>((collected, recordOption) => {
       const { newIndex, viewId } = recordOption;
 
-      // 检查viewId是否存在
+      // Check if viewId exists
 
       if (!find(views, { id: viewId })) {
         throw new Error(t(Strings.error_move_view_failed_not_found_target));

@@ -108,7 +108,7 @@ export class MemberField extends MemberBaseField {
     }
     return cellValue.map(item => {
       if (typeof item === 'object') {
-        // 旧数据只返回 unitId
+        // old data only returns unitId
         return (item as IUnitValue).unitId;
       }
       return item;
@@ -136,13 +136,14 @@ export class MemberField extends MemberBaseField {
   }
 
   stdValueToCellValue(stdValue: IStandardValue): ICellValue | null {
-    // 在 redux 中以 name 文本匹配符合的成员信息。
+    // Match matching member information with name text in redux.
     const unitMap = Selectors.getUnitMap(this.state);
     if (!unitMap) {
       return null;
     }
     const unitValue = Object.values(unitMap);
-    // 空间站的成员存在重名的可能性，所以每次对数据转换，需要优先找到激活且未被删除的成员，所以要对所有数据进行检查
+    // The members of the space station may have the same name, so every time the data is converted, 
+    // it is necessary to first find the members that are activated and not deleted, so all data must be checked
     const unitNames = Array.from(new Set(stdValue.data.map(d => d.text.split(/, ?/)).flat()));
     const cvMap = new Map();
     for (const name of unitNames) {
@@ -164,7 +165,7 @@ export class MemberField extends MemberBaseField {
     if (cv1 == null || cv2 == null) {
       return cv1 === cv2;
     }
-    // 兼容旧数据的比较
+    // Compatible with old data comparison
     return isEqual(MemberField.polyfillOldData([cv1].flat()), MemberField.polyfillOldData([cv2].flat()));
   }
 
@@ -174,9 +175,9 @@ export class MemberField extends MemberBaseField {
       return null;
     }
     return cellValue.map(id => {
-      // 单元格里存有unitId，但是空间内没有对应的用户信息，这里需要兼容两种情况：
-      // 1、 旧数据
-      // 2. 从其他空间粘贴的数据，或者是转存的表里存储的数据
+      // There is unitId in the cell, but there is no corresponding user information in the space. Two situations need to be compatible here:
+      // 1. Old data
+      // 2. Data pasted from other spaces, or data stored in the dumped table
       if (!unitMap[id]) {
         return '';
       }
@@ -199,7 +200,7 @@ export class MemberField extends MemberBaseField {
   }
 
   /**
-   * API 返回成员基本信息
+   * API returns basic information of members
    * @param cellValues
    */
   cellValueToApiStandardValue(cellValues: any[] | null): any[] | null {

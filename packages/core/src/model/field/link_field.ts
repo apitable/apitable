@@ -42,7 +42,7 @@ export class LinkField extends ArrayValueField {
   static propertySchema = Joi.object({
     foreignDatasheetId: Joi.custom((foreignDatasheetId, helpers) => {
       const foreignDatasheet = getDatasheet(helpers.prefs['context']?.['reduxState'], foreignDatasheetId);
-      // 如果未加载 foreignDatasheet 说明关联关系已经被破坏。
+      // If foreignDatasheet is not loaded, the relationship has been destroyed.
       if (!foreignDatasheet) {
         return helpers.message({ en: t(Strings.link_data_error) });
       }
@@ -186,7 +186,8 @@ export class LinkField extends ArrayValueField {
   }
 
   /**
-   * @orderInCellValueSensitive {boolean} 可选参数，给关联字段判断是否只做普通排序，对单元格内容不预处理
+   * @orderInCellValueSensitive {boolean} optional parameter, 
+   * to determine whether to only do normal sorting for the associated field, without preprocessing the cell content
    */
   compare(
     cellValue1: string[] | null,
@@ -230,7 +231,7 @@ export class LinkField extends ArrayValueField {
     }
   }
 
-  // 将被关联的 record 按照他们在被关联表指定的 view.rows 中的顺序做排序。
+  // Sort the relation records according to their order in view.rows specified by the relation table.
   sortValueByForeignRowOrder(value: string[] | null, rowIndexMap: Map<string, number>) {
     if (!value) {
       return null;
@@ -242,21 +243,22 @@ export class LinkField extends ArrayValueField {
 
   stdValueToCellValue(stdValue: IStandardValue): ICellValue {
 
-    // 如果是来自于当前 field 的数据，则直接录入。
+    // If it is data from the current field, write it directly.
     if (stdValue.data[0] && stdValue.data[0].datasheetId === this.field.property.foreignDatasheetId) {
       return stdValue.data.map((val: { text: string, recordId: string }) => {
         return val.recordId;
       });
     }
 
-    // 尝试从关联表中找到与主键文本相同的值，如果找到的话，则创建关联。
+    // Try to find the same value as the primary key text from the association table, if found, create the association.
     const textRecordMap = getTextRecordMap(this.state, this.field.property.foreignDatasheetId);
     let texts = [stdValue.data.map(d => d.text).join(', ')];
-    // 判断当前的配置项是否允许添加多个关联记录，允许则根据「,」进行切割
+    // Determine whether the current configuration item allows adding multiple associated records, 
+    // and if it is allowed, cut it according to ","
     if (!this.field.property.limitSingleRecord) {
       const splitText = texts[0].split(/, ?/);
       if (splitText.length > 1) {
-        // 分割前的和分割后的都加入候选数组尝试进行匹配
+        // Both before and after the split are added to the candidate array to try to match
         texts = [texts[0], ...splitText];
       }
     }
@@ -292,7 +294,8 @@ export class LinkField extends ArrayValueField {
   }
 
   /**
-   * @description 通过关联字段单元格内记录的 recordId ，获取关联表中首列的内容，并且该内容是经过 cellValue2String 处理的。
+   * Obtains the content of the first column in the associated table through the `recordId` recorded in the associated field cell, 
+   * and the content is processed by cellValue2String.
    * @param {(string[] | null)} recordIds
    * @returns {(string[] | null)}
    */
@@ -307,8 +310,8 @@ export class LinkField extends ArrayValueField {
   }
 
   /**
-   * @description 将通过 recordId 获取到的字符串拼接起来。
-   * 一个关联单元格内可能同时关联好几个记录
+   * @description concatenates the strings obtained by recordId.
+   * Several records may be associated with one associated cell at the same time
    * @param {(any[] | null)} cellValues
    * @returns
    */

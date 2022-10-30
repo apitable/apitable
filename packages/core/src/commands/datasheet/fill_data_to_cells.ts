@@ -23,8 +23,8 @@ type IDateArithmeticPatterns = {
 };
 type IPatterns = ICopyPatterns | IArithmeticPatterns | IDateArithmeticPatterns;
 
-const EARLIEST_DATE = -2177395200000; // 时间只支持到1901-01-01
-const DELTA = 1e-12; // 浮点数比较时的容差,EPSILON精度过高
+const EARLIEST_DATE = -2177395200000; // time only supports up to 1901-01-01
+const DELTA = 1e-12; // Tolerance when comparing floating-point numbers, EPSILON precision is too high
 
 function patternFinder(selectCellCol: ICell[], fieldType: FieldType, state: IReduxState, snapshot: ISnapshot, field: IField):IPatterns {
   if (selectCellCol.length< 2) return { type: 'copy' };
@@ -52,8 +52,8 @@ function patternFinder(selectCellCol: ICell[], fieldType: FieldType, state: IRed
     
     const _nums: number[] = includeTime ? nums : nums.map(getDate);
 
-    // 时间的format不用对应的计算逻辑也不同
-    if (includeTime) { // 当具体到分的时候
+    // The format of the time is different without the corresponding calculation logic
+    if (includeTime) { // When the specific point is reached
       const diff = _nums[1] - _nums[0];
       for (let i = 2; i < _nums.length; i++) {
         const newDiff = _nums[i] - _nums[i-1];
@@ -64,7 +64,7 @@ function patternFinder(selectCellCol: ICell[], fieldType: FieldType, state: IRed
       return { type: 'dateArithmetic', args: { dDiff: diff, dUnit: 'time' }};
     }
     if ([DateFormat['YYYY/MM/DD'], DateFormat['YYYY-MM-DD'], DateFormat['DD/MM/YYYY'],
-      DateFormat['MM-DD'], DateFormat['DD']].includes(dateFormat)) { // 具体到日的时候，填充的日期默认为0点0分
+      DateFormat['MM-DD'], DateFormat['DD']].includes(dateFormat)) { // When the date arrives, the filled date defaults to 0:00
       const diff = dayjs(_nums[1]).diff(_nums[0], 'day');
       for (let i = 2; i < _nums.length; i++) {
         const newDiff = dayjs(_nums[i]).diff(_nums[i-1], 'day');
@@ -73,7 +73,8 @@ function patternFinder(selectCellCol: ICell[], fieldType: FieldType, state: IRed
         }
       }
       return { type: 'dateArithmetic', args: { dDiff: diff, dUnit: 'day' }};
-    } else if ([DateFormat['YYYY-MM'], DateFormat['MM']].includes(dateFormat)){ // 具体到月的时候，填充的日期默认为当月1号
+    } else if ([DateFormat['YYYY-MM'], DateFormat['MM']].includes(dateFormat)){ 
+      // When it comes to the month, the filled date defaults to the 1st of the month
       const diff = dayjs(_nums[1]).diff(_nums[0], 'month');
       for (let i = 2; i < _nums.length; i++) {
         const newDiff = dayjs(_nums[i]).diff(_nums[i-1], 'month');
@@ -82,7 +83,7 @@ function patternFinder(selectCellCol: ICell[], fieldType: FieldType, state: IRed
         }
       }
       return { type: 'dateArithmetic', args: { dDiff: diff, dUnit: 'month' }};
-    } else if (dateFormat === DateFormat['YYYY']) { // 具体到年的时候，填充的日期默认为当年1月1号
+    } else if (dateFormat === DateFormat['YYYY']) { // When it comes to the year, the filled date defaults to January 1 of the current year
       const diff = dayjs(_nums[1]).diff(_nums[0], 'year');
       for (let i = 2; i < _nums.length; i++) {
         const newDiff = dayjs(_nums[i]).diff(_nums[i-1], 'year');
@@ -173,7 +174,7 @@ export const fillDataToCell: ICollaCommandDef<IFillDataToCellOptions> = {
       return data;
     }
 
-    // 计算纵向填充的数据
+    // Calculate vertically filled data
     const computeFillDataVertical = (
       fillRangeCells: ICell[][],
       selectRangeCells: ICell[][],
@@ -187,7 +188,7 @@ export const fillDataToCell: ICollaCommandDef<IFillDataToCellOptions> = {
       const tSelectRangeCells = transpose(selectRangeCells);
       const tFillRangeCells = transpose(fillRangeCells);
 
-      for (let j = 0; j < tSelectRangeCells.length; j++) { // 按列进行计算
+      for (let j = 0; j < tSelectRangeCells.length; j++) { // Calculate by column
         const tSelectCellCol = tSelectRangeCells[j];
         const tFillCellCol = tFillRangeCells[j];
 
@@ -198,7 +199,7 @@ export const fillDataToCell: ICollaCommandDef<IFillDataToCellOptions> = {
 
         const fieldId = tSelectCellCol[0].fieldId;
         const field = Selectors.getField(state, fieldId, datasheetId);
-        // 判断列类型,对时间和数字进行找规则
+        // Determine the column type, find rules for time and numbers
         if (field.type === FieldType.Number || field.type === FieldType.DateTime){
           const pattern = patternFinder(tSelectCellCol, field.type, state, snapshot, field);
           switch (pattern.type) {
@@ -258,7 +259,7 @@ export const fillDataToCell: ICollaCommandDef<IFillDataToCellOptions> = {
       return newFillFields;
     };
 
-    // 计算横向填充的数据
+    // Calculate horizontally filled data
     const computeFillDataHorizontal = (
       fillRangeCells: ICell[][],
       selectRangeCells: ICell[][],
@@ -275,7 +276,7 @@ export const fillDataToCell: ICollaCommandDef<IFillDataToCellOptions> = {
         selectCells.reverse();
         fillCells.reverse();
       }
-      // 横向填充，可能需要扩展字段的 property
+      // Horizontal padding, may need to extend the property of the field
 
       const fillFields = Selectors.getRangeFields(state, fillRange, datasheetId)!;
       let newFillFields = fillFields;
@@ -291,7 +292,7 @@ export const fillDataToCell: ICollaCommandDef<IFillDataToCellOptions> = {
         selectCellValue = handleEmptyCellValue(selectCellValue, Field.bindContext(selectField, state).basicValueType);
         const selectStdVal = Field.bindContext(selectField, state).cellValueToStdValue(selectCellValue);
         const willFillCellValue = Field.bindContext(fillField, state).stdValueToCellValue(selectStdVal);
-        // 横向填充涉及到字段转化，选中 cv > stdVal > 填充 cv
+        // Horizontal padding involves field conversion, select cv > stdVal > Fill cv
         data.push({
           recordId: fillCell.recordId,
           fieldId: fillCell.fieldId,

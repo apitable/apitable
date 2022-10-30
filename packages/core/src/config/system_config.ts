@@ -5,8 +5,8 @@ import systemConfigJson from './system_config.auto.json';
 import { SystemConfigInterfaceNotifications, SystemConfigInterface, Templates, Types } from './system_config.interface';
 
 /**
- * config类，直接获取SystemConfig整个类
- */
+  * config class, directly get the entire class of SystemConfig
+  */
 const SystemConfig: SystemConfigInterface = privateTransform(
   (systemConfigJson as any) as SystemConfigInterface,
   'settings',
@@ -19,14 +19,14 @@ const SystemConfig: SystemConfigInterface = privateTransform(
 const ApiTipConfig = apiTipConfigJson as APITipConfigInterface;
 
 /**
- * Settings对象, 快速获取system_config.system表, 系统常量配置
- *
- * 传入key
+  * Settings object, quickly get system_config.system table, system constant configuration
+  *
+  * pass in key
  * @example Conf.api_rate...
  */
 const Settings = SystemConfig.settings;
 
-// notification相关
+// notification
 const jsonToObject = (object) => {
   const obj = { ...object };
   Object.keys(object).forEach((i) => {

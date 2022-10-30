@@ -23,9 +23,9 @@ export interface IEngineEvent {
 }
 
 /**
- * 实时协同引擎，对任意可序列化的 JSON 结构数据提供实时协同支持
- * TODO: 监听 datasheet loaded 事件，补充检查版本是否已经落后
- */
+  * Real-time collaboration engine, providing real-time collaboration support for any serializable JSON structure data
+  * TODO: Listen to the datasheet loaded event, supplementary check whether the version has fallen behind
+  */
 export class Engine {
   bufferStorage: BufferStorage;
   resourceId: string;
@@ -33,7 +33,7 @@ export class Engine {
   getRevision: () => number;
   getNetworking: () => INetworking;
   event: IEngineEvent;
-  // 上次出发请求发送的时间。
+  // The time when the last departure request was sent.
   latestSendTime = 0;
   cancelQuit: (() => void) | null;
   getState: () => any;
@@ -68,8 +68,9 @@ export class Engine {
   }
 
   /**
-   * 将 operation 推入发送队列，SyncEngine 将保证数据按照版本顺序发送到服务端
-   * 并且提供临时性的本地持久化能力，防止用户意外断网和主动刷新的情况下丢失数据
+   * Push the operation into the send queue, SyncEngine will ensure that the data is sent to the server in version order
+   * And provide temporary local persistence capabilities to prevent users from losing data 
+   * in the case of accidental network disconnection and active refresh
    */
   pushOpBuffer(operation: IOperation) {
     const _actions = this.viewPropertyFilter ?
@@ -86,7 +87,7 @@ export class Engine {
   }
 
   /**
-   * 是否还存在未发送的数据
+   * Whether there is still unsent data
    */
   isStorageClear(): boolean {
     if (this.bufferStorage.opBuffer.length > 0 || this.bufferStorage.localPendingChangeset) {
@@ -130,23 +131,23 @@ export class Engine {
     return this.bufferStorage.opBuffer;
   }
 
-  // 清除等待确认的 changeset
+  // clear changeset pending confirmation
   clearLocalPendingChangeset() {
     this.bufferStorage.clearLocalPendingChangeset();
   }
 
-  // 清除等待被发送的 op
+  // clear ops waiting to be sent
   clearOpBuffer() {
     this.bufferStorage.clearOpBuffer();
   }
 
   /**
-   * 初始化准备事项
-   * 1. 检查是否有缺失的版本，有的话进行补充。
-   * 2. 检查本地是否有未同步的 changeset，如果有，则进行必要的 transform 保持 revision 和快照对齐
-   * 3. 每个 engine 会在第一次实例化和 watch 的时候 prepare
+   * Initialization preparations
+   * 1. Check if there are any missing versions, and supplement if there are any.
+   * 2. Check whether there are unsynchronized changesets locally, and if so, perform necessary transforms to keep revision and snapshot aligned
+   * 3. Each engine will be prepared when it is first instantiated and watched
    *
-   * 实例化时 checkVersion 不存在
+   * checkVersion does not exist when instantiated
    */
   async prepare(checkVersion?: number) {
     try {
@@ -161,7 +162,7 @@ export class Engine {
         },
       });
 
-      // 清除本地缓存以免再次发生问题
+      // clear the local cache to prevent the problem from happening again
       this.bufferStorage.clearLocalPendingChangeset();
       this.bufferStorage.clearOpBuffer();
 
@@ -175,7 +176,7 @@ export class Engine {
   }
 
   /**
-   * 完成了对本地资源的版本补充，可以进行协同数据同步操作了
+   * Completed the version supplement of local resources, and can perform collaborative data synchronization operations
    */
   waitPrepareComplete() {
     return new Promise<boolean>((resolve) => {
@@ -193,14 +194,14 @@ export class Engine {
   }
 
   /**
-   * 提交的 changeset 被服务接受了
-   */
+    * The submitted changeset is accepted by the service
+    */
   async handleAcceptCommit(remoteChangeset: IRemoteChangeset) {
-    // 检查版本连续性，如果不连续，则先进行补充。
+    // Check version continuity, if not, add it first.
     await this.checkMissChanges(remoteChangeset.revision);
     const revision = this.getRevision();
-    // 在首次进入数表的时候可能会出现这种情况。
-    // 客户端检测到还有本地内容没法送，所以进行了补发
+    // This may happen when entering the table for the first time.
+    // The client detects that there is still local content that cannot be sent, so it re-sends
     if (!this.bufferStorage.localPendingChangeset) {
       Player.doTrigger(Events.app_error_logger, {
         error: new Error('missing localChangeset when receiving ACK'),
@@ -223,8 +224,8 @@ export class Engine {
       this.dispatch(updateRevision(revision + 1, this.resourceId, this.resourceType));
       return;
     }
-    console.error('ACK 数据错误', { revision, ack: remoteChangeset, localChangeset: this.bufferStorage.localPendingChangeset });
-    throw new Error('数据返回格式错误, 请刷新重试');
+    console.error('ACK data error', { revision, ack: remoteChangeset, localChangeset: this.bufferStorage.localPendingChangeset });
+    throw new Error('Data returned in wrong format, please refresh and try again');
   }
 
   private async fetchMissVersion(revisions: number[]): Promise<IRemoteChangeset[]> {
@@ -243,11 +244,11 @@ export class Engine {
   }
 
   /**
-   * 后端主动推送别人提交的 changeset
-   * 或者主动补偿缺失版本的 changeset
+   * The backend actively pushes changesets submitted by others
+   * Or actively compensate for missing versions of changeset
    */
   async handleNewChanges(data: IRemoteChangeset) {
-    console.log('收到远程 Changeset: ', { data });
+    console.log('Received remote Changeset: ', { data });
     const loading = this.getNetworking().loading;
     if (loading) {
       Player.doTrigger(Events.app_error_logger, {
@@ -261,23 +262,25 @@ export class Engine {
   }
 
   private applyNewChanges(cs: IRemoteChangeset) {
-    // 收到来自自己的 newChanges。这种情况出现是因为，客户端掉线重连，重连的客户端被视为协作者。
-    // 这时候会将自己发送的 changeset 再次作为 newChanges 广播给自己。所以我们要先进行 messageId 相等判断
-    // 如果 messageId 相等，则视为 ACK。
+    // Receive newChanges from itself. This happens because the client disconnects and reconnects, 
+    // and the reconnected client is considered a collaborator.
+    // At this time, the changeset sent by yourself will be broadcast to yourself as newChanges again. 
+    // So we have to first judge the equality of messageId
+    // If messageId is equal, it is regarded as ACK.
     if (this.bufferStorage.localPendingChangeset && cs.messageId === this.bufferStorage.localPendingChangeset.messageId) {
-      console.error('newChanges 中的 messageId 与 localChangeset 相等，已转换成 ACK');
+      console.error('messageId in newChanges is equal to localChangeset and has been converted to ACK');
       this.handleAcceptCommit(cs);
       return;
     }
 
     const revision = this.getRevision();
-    // 必须保证 data.revision 不跳跃进位
+    // must ensure that data.revision does not jump carry
     if (cs.revision > revision + 1) {
-      console.log('revision 错误', revision, cs.revision);
+      console.log('revision error', revision, cs.revision);
       throw new Error('miss changes didn\'t well prepared');
     }
 
-    // 小于当前版本的 changeset 直接忽略
+    // Changesets smaller than the current version are ignored directly
     if (cs.revision <= revision) {
       console.warn('older changeset received and ignored');
       return;
@@ -301,13 +304,13 @@ export class Engine {
     return _remoteActions;
   }
 
-  // 检查远程 changeset 过来中间丢失的版本，有则直接补齐缺失的 changeset 应用到快照上。
+  // Check the missing version of the remote changeset, and if there is one, directly fill in the missing changeset and apply it to the snapshot.
   async checkMissChanges(revisionUpgradeTo: number) {
     const revision = this.getRevision();
 
     /**
-     * 远程 newChange 版本需要恰好比等于版本+1才能走正常流程。
-     * 如果版本差距大于1，则需要补齐中间版本
+     * The remote newChange version needs to be exactly equal to the version + 1 to go through the normal process.
+     * If the version gap is greater than 1, you need to fill in the intermediate version
      */
     if (revisionUpgradeTo === revision + 1) {
       return;
@@ -322,8 +325,8 @@ export class Engine {
     });
   }
 
-  // 检查本地快照和本地 changeset 之间的版本差距。
-  // 如果有差距，则将 localChangeset 进行 transform rebase 操作。
+  // Check the version gap between the local snapshot and the local changeset.
+  // If there is a gap, transform and rebase the localChangeset.
   async checkLocalDiffChanges(checkVersion?: number) {
     if (!this.bufferStorage.localPendingChangeset) {
       checkVersion != null && this.checkMissChanges(checkVersion);
@@ -346,10 +349,10 @@ export class Engine {
     if (baseRevision < revision) {
       let changesetList = await this.fetchMissVersion(numbersBetween(baseRevision, revision + 1));
       /**
-       * 检查 localChangeset 是否已经在 changesetList 中，如果在的话
-       * 1. 则说明 localChangeset 已经被应用到快照里, 则本地不需要再发送
-       * 2. 这个在这之前的 changeset 才需要进行 transform, 后面的不需要
-       */
+        * Check if localChangeset is already in changesetList, if so
+        * 1. It means that localChangeset has been applied to the snapshot, so it does not need to be sent locally
+        * 2. This changeset before this needs to be transformed, and the latter does not need to be transformed
+        */
       const transformEndIndex = changesetList.findIndex(changeset => {
         return changeset.messageId === this.bufferStorage.localPendingChangeset!.messageId;
       });
@@ -357,11 +360,12 @@ export class Engine {
       changesetList = changesetList.slice(0, transformEndIndex);
 
       if (transformEndIndex >= 0) {
-        // 1. 丢弃掉 localChangeset.
-        // 2. opBuffer 成为新的 localChangeset, 并将 baseRevision 设置为 changesetList 中，原 localChangeset 所在位置的 revision。
-        console.log('检测到本地 localPendingChangeset 已经被消费，直接删除', this.bufferStorage.localPendingChangeset);
+        // 1. Discard localChangeset.
+        // 2. opBuffer becomes the new localChangeset, and baseRevision is set to the revision 
+        // in the changesetList where the original localChangeset is located.
+        console.log('Detected that the local localPendingChangeset has been consumed, delete it directly', this.bufferStorage.localPendingChangeset);
         this.bufferStorage.deOpBuffer(revision);
-        console.log('本地 opBuffer 进入 localPendingChangeset', this.bufferStorage.localPendingChangeset);
+        console.log('The local opBuffer enters localPendingChangeset', this.bufferStorage.localPendingChangeset);
       }
 
       changesetList.forEach(changeset => {
@@ -378,7 +382,7 @@ export class Engine {
 
     this.event.getUndoManager().doTransform(remoteActions);
 
-    // localChangeset 需要进行 transform 并且更新成最新版本
+    // localChangeset needs to be transformed and updated to the latest version
     if (this.bufferStorage.localPendingChangeset) {
       console.log(
         'localPendingChangeset before transform:',

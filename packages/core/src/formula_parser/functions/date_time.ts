@@ -16,20 +16,20 @@ import isoWeek from 'dayjs/plugin/isoWeek';
 
 import utc from 'dayjs/plugin/utc';
 
-// 支持 国际化(i18n) 的列表
+// list of supported internationalization (i18n)
 import 'dayjs/locale/zh';
 import 'dayjs/locale/zh-cn';
 import 'dayjs/locale/zh-hk';
 import 'dayjs/locale/zh-tw';
-import 'dayjs/locale/fr'; // 法语
-import 'dayjs/locale/es'; // 西班牙语
-import 'dayjs/locale/pt'; // 葡萄牙语
-import 'dayjs/locale/ru'; // 俄罗斯语
-import 'dayjs/locale/ar'; // 阿拉伯语
-import 'dayjs/locale/de'; // 德语
-import 'dayjs/locale/ja'; // 日语
-import 'dayjs/locale/ko'; // 韩语
-import 'dayjs/locale/hi'; // 印地语
+import 'dayjs/locale/fr'; // French
+import 'dayjs/locale/es'; // Spanish
+import 'dayjs/locale/pt'; // portuguese
+import 'dayjs/locale/ru'; // Russian
+import 'dayjs/locale/ar'; // Arabic
+import 'dayjs/locale/de'; // german
+import 'dayjs/locale/ja'; // Japanese
+import 'dayjs/locale/ko'; // Korean
+import 'dayjs/locale/hi'; // Hindi
 import { Strings, t } from 'i18n';
 
 dayjs.extend(quarterOfYear);
@@ -90,39 +90,37 @@ const getPureUnit = (unitStr: string) => {
   }
   return UnitMapBase.get(unit)![1] as QUnitType;
 };
-
 export const getDayjs = (timeStamp: any) => {
-  // TODO 后续和 lookup 同步改造（不应该传入 string 的 timeStamp）
+  // TODO follow-up and lookup synchronous transformation (the timeStamp of string should not be passed in)
   if (timeStamp == null) {
     throw new FormulaBaseError('');
   }
-  // 如果入参已是 dayjs 对象，则直接返回
+  // If the input parameter is already a dayjs object, return directly
   if (isDayjs(timeStamp)) {
     return timeStamp;
   }
 
   const isString = typeof timeStamp === 'string';
-  const isTimeStamp = !isString || !Number.isNaN(Number(timeStamp)); // 时间戳格式检查
+  const isTimeStamp = !isString || !Number.isNaN(Number(timeStamp)); // timestamp format check
   const date = isTimeStamp ? dayjs(Number(timeStamp)).locale('en') : dayjs(dateStrReplaceCN(timeStamp)).locale('en');
-  // 添加统一的合法时间校验，不通过则抛错
+  // Add a unified legal time check, if it fails, throw an error
   if (!date.isValid()) {
     throw new FormulaBaseError('');
   }
   return date;
 };
-
-// 将日期字符串中的 星期几 和 十二个月份 的首字母转换成大写，
-// 以此兼容 dayjs 的本地化处理
+// Convert the day of the week and the first letter of the month in the date string to uppercase,
+// This is compatible with the localization of dayjs
 const formatDateTimeStr = (dateStr: string | number) => {
   if (typeof dateStr === 'number') {
     return dateStr;
   }
-  const reg = /(mon)|(tue)|(wed)|(thu)|(fri)|(sat)|(sun)|(jan)|(feb)|(mar)|(apr)|(may)|(jun)|(jul)|(aug)|(sep)|(oct)|(nov)|(dec)/g;
+  const reg = /(mon)|(tue)|(wed)|(thu)|(fri)|(sat)|(sun)|(jan)|(feb)|(mar)|(apr)|(may )|(jun)|(jul)|(aug)|(sep)|(oct)|(nov)|(dec)/g;
 
   return dateStr.replace(reg, (_, $1) => $1.charAt(0).toUpperCase() + $1.slice(1));
 };
 
-const DEFAULT_LOCALE = 'zh-cn'; // 默认本地化语言
+const DEFAULT_LOCALE = 'zh-cn'; // default localization language
 
 class DateFunc extends FormulaFunc {
   static readonly type = FormulaFuncType.DateTime;
@@ -396,11 +394,10 @@ export class FromNow extends DatetimeDiffUtil {
     return Math.abs(Number(diff));
   }
 }
-
 /**
- * 这里 FromNow 和 ToNow 的功能一致，
- * 分开写只是为了 提示文案 和 之后修改相关逻辑 能更好区分
- */
+  * Here FromNow and ToNow have the same function,
+  * Separately written just to remind the text and modify the relevant logic later to be better differentiated
+  */
 export class ToNow extends DatetimeDiffUtil {
   static validateParams(params: AstNode[]) {
     if (params.length < 2) {
@@ -485,9 +482,9 @@ export class WorkDay extends DateFunc {
   static func(params: IFormulaParam<number | string>[]): number | null {
     let startDate = getDayjs(params[0].value);
     const startDay = startDate.day();
-    // 规定周末是哪几天
+    // Specify which days the weekend is
     const weekends = [0, 6];
-    // 经过的工作日数量
+    // number of working days elapsed
     const totalWorkDays = Number(params[1].value);
 
     if (typeof totalWorkDays !== 'number') {
@@ -499,12 +496,15 @@ export class WorkDay extends DateFunc {
     }
 
     /**
-     * 思路：
-     * 以 WORKDAY('2021-10-15',8) 举例，2021-10-15 为周五，加 8 天，得到 2021-10-23，通过 dayjs.diff 方法检查到两个日期之间差了一周，也就是说要在 2021-10-23 的
-     * 基础上加上 2 天（一周有两天休息日）得到 2021-10-25
-     * 此时再以 2021-10-23 为开始日期，以修正后的 2021-10-25 为结束日期做 diff 检查，会发现又差了一周，重复上述过程，直到开始日期和结束日期在同一周，且结束日期不在
-     * 周六和周日里时说明计算结束
-     */
+      * Ideas:
+      * Take WORKDAY('2021-10-15',8) as an example, 2021-10-15 is Friday, add 8 days to get 2021-10-23, 
+      * and check the difference between the two dates through the dayjs.diff method One week, that is to say on 2021-10-23
+      * Add 2 days to the base (with two days off a week) to get 2021-10-25
+      * At this time, take 2021-10-23 as the start date and the revised 2021-10-25 as the end date to do a diff check, 
+      * you will find that there is another week, repeat the above process, 
+      * until the start date and end date are in the same week , and the end date is not in
+      * The calculation ends on Saturday and Sunday
+      */
     if (weekends.includes(startDay)) {
       const startDayDiff = totalWorkDays >= 0 ? (startDay === 6 ? -1 : -2) : (startDay === 6 ? 2 : 1);
       startDate = startDate.add(startDayDiff, 'day');
@@ -514,7 +514,7 @@ export class WorkDay extends DateFunc {
 
     const getDiffWeek = () => endDate.week() === startDate.week() ? 0 : endDate.startOf('week').diff(startDate.startOf('week'), 'week');
 
-    // 处理结束日期遇到周末的情况
+    // handle the case where the end date encounters a weekend
     const skipWeekends = (date: dayjs.Dayjs) => {
       const dayDiff = totalWorkDays >= 0 ? 2 : -2;
       return weekends.includes(date.day()) ? date.add(dayDiff, 'day') : date;
@@ -528,11 +528,11 @@ export class WorkDay extends DateFunc {
     }
     let finalDate = skipWeekends(endDate);
 
-    // 假日列表
+    // holiday list
     const holidayStrList = params.length > 2 ? String(params[2].value).split(',') : [];
     const holidays = holidayStrList.filter(v => v !== 'null').map(v => getDayjs(v.trim()));
 
-    // 计算节假日
+    // calculate holidays
     for (let i = 0; i < holidays.length; i++) {
       const holiday = holidays[i];
       const [_start, _end] = totalWorkDays >= 0 ? [getDayjs(params[0].value), finalDate] : [finalDate, getDayjs(params[0].value)];
@@ -566,15 +566,15 @@ export class WorkDayDiff extends DateFunc {
   static func(params: IFormulaParam<number | string>[]): number {
     let startDate = getDayjs(params[0].value);
     let endDate = getDayjs(params[1].value);
-    const isMinus = startDate.valueOf() > endDate.valueOf(); // 是否带负号
+    const isMinus = startDate.valueOf() > endDate.valueOf(); // Whether with a negative sign
     isMinus && ([startDate, endDate] = [endDate, startDate]);
     const holidayStrList = params.length > 2 ? String(params[2].value).split(',') : [];
     const holidays = holidayStrList.filter(v => v !== 'null').map(v => getDayjs(v.trim()));
-    const weekends = [0, 6]; // 规定周末是哪几天
+    const weekends = [0, 6]; // specify which days are the weekends
 
     const startDay = startDate.day();
     const endDay = endDate.day();
-    // 用于比较大小
+    // for size comparison
     const calcStartDay = startDay === 0 ? 7 : startDay;
     const calcEndDay = endDay === 0 ? 7 : endDay;
     const realStartDay = weekends.includes(startDay) ? 5 : startDay;
@@ -592,7 +592,7 @@ export class WorkDayDiff extends DateFunc {
     const diffWeekCount = endDate.diff(startDate, 'week');
     let finalCount = diffWeekCount * 5 + diffDay;
 
-    // 计算节假日
+    // calculate holidays
     for (let i = 0; i < holidays.length; i++) {
       const holiday = holidays[i];
       const holidayDay = holiday.day();
@@ -740,7 +740,8 @@ export class DateTimeParse extends DateFunc {
 
   static func(params: [IFormulaParam<string | number>, IFormulaParam<string>]): number {
     const dateStr = formatDateTimeStr(params[0].value);
-    const formatStr = typeof dateStr === 'number' ? '' : String(params[1]?.value); // 如果是时间戳，直接不传此参数，让 dayjs 自行转换
+    // If it is a timestamp, don't pass this parameter directly, let dayjs convert it by itself
+    const formatStr = typeof dateStr === 'number' ? '' : String(params[1]?.value); 
     const length = params.length;
 
     if (length >= 2) {
@@ -816,7 +817,7 @@ export class SetTimeZone extends DateFunc {
     let timezoneOffset = Number(params[1]?.value);
 
     if (!timezoneOffset && timezoneOffset !== 0) {
-      timezoneOffset = 8; // 默认时区为东八区 —— "Asia/Shanghai"
+      timezoneOffset = 8; // The default time zone is +8 District —— "Asia/Singapore"
     }
     return date.utcOffset(timezoneOffset);
   }

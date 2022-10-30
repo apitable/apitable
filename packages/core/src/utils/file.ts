@@ -4,15 +4,15 @@ import { Settings } from 'config';
 import urlcat from 'urlcat';
 
 export enum CutMethod {
-  UNCUT = '0', // 进行等比缩放，不裁剪
-  CUT = '1', // 进行等比缩放，居中裁剪
+  UNCUT = '0', // scale proportionally without cropping
+  CUT = '1', // Proportional scaling, center cropping
 }
 
 export interface IImageThumbOption {
   method?: CutMethod;
   w?: number;
   h?: number;
-  size?: number; // 传入 size 相当于同时指定 w 和 h
+  size?: number; // passing in size is equivalent to specifying both w and h
   format?: 'jpg';
   quality?: number;
 }
@@ -141,7 +141,7 @@ export function cellValueToImageSrc(
   }
 
   if (isGif(fileArgument) || isWebp(fileArgument)) {
-    // 调用方来自 Swiper，不使用切图参数
+    // The caller is from Swiper and does not use slice parameters
     if (options == null) {
       return originSrc;
     }
@@ -163,7 +163,7 @@ export const integrateCdnHost = (
   pathName: string,
   host: string = process.env.NEXT_PUBLIC_QNY1 || Settings.QNY1.value,
 ): string => {
-  // TODO:删掉这里。兼容旧版本数据
+  // TODO: delete this. Compatible with old version data
   if (pathName.startsWith('http')) {
     return pathName;
   }

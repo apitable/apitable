@@ -53,16 +53,16 @@ export const modifyViews: ICollaCommandDef<IModifyViewsOptions> = {
     const actions = data.reduce<IJOTAction[]>((collected, recordOption) => {
       const { viewId, key, value } = recordOption;
 
-      // 字符过长或者没填
+      // character is too long or not filled
       if (key === 'name' && (value.length > 30 || value.length < 1)) {
         return collected;
       }
 
-      // 判断是否有相同名称的视图
+      // Check if there is a view with the same name
       if (key === 'name' && find(views, { name: value as string })) {
         throw new Error(t(Strings.error_modify_view_failed_duplicate_name));
       }
-      // 检查viewId是否存在
+      // Check if viewId exists
       if (!find(views, { id: viewId })) {
         throw new Error(t(Strings.error_modify_view_failed_not_found_target));
       }

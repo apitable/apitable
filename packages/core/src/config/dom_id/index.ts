@@ -10,14 +10,14 @@ import * as AutoTestID from './auto_test_id';
 import * as VIKABY_ID from './vikaby';
 
 export {
-  WORKBENCH_SIDE_ID, // 工作目录
-  DATASHEET_ID, // 维格表
-  NAV_ID, // 侧边导航栏
-  NOTIFICATION_ID, // 通知中心
-  TEMPLATE_CENTER_ID, // 模版中心
-  FOLDER_SHOWCASE_ID, // 模版中心
-  ADDRESS_ID, //通讯录
+  WORKBENCH_SIDE_ID, // working directory
+  DATASHEET_ID, // datasheet table
+  NAV_ID, // side navigation bar
+  NOTIFICATION_ID, // notification center
+  TEMPLATE_CENTER_ID, // Template Center
+  FOLDER_SHOWCASE_ID, // Template Center
+  ADDRESS_ID, //Address book
   HomeId,
-  AutoTestID, // 自动化定位元素
+  AutoTestID, // automatically locate the element
   VIKABY_ID, // vikaby
 };

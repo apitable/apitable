@@ -47,7 +47,7 @@ export class SingleTextField extends TextBaseField {
   }
 
   /**
-   * @description 多行文本转换成单行文本，需要将 换行符 替换成 空格，其他逻辑不变
+   * @description Convert multi-line text to single-line text, you need to replace the newline character with a space, other logic remains unchanged
    * @param {IStandardValue} stdField
    * @returns {(ISegment[] | null)}
    * @memberof SingleTextField

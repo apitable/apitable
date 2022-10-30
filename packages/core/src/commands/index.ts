@@ -51,16 +51,17 @@ export enum CollaCommandName {
   SetOrgChartStyle = 'SetOrgChartStyle',
   SetCalendarStyle = 'SetCalendarStyle',
   FillDataToCells = 'FillDataToCells',
-  FixConsistency = 'FixConsistency', // 特殊 command，用于修复数据一致性问题
-  SystemSetRecords = 'SystemSetRecords', // 特殊 command，用于部分特殊 Record 只在中间层进行数据设置，以修复数据一致性问题
-  SystemSetFieldAttr = 'SystemSetFieldAttr', // 特殊 command，用于部分特殊 Field 只在中间层进行属性设置，以修复数据一致性问题
+  FixConsistency = 'FixConsistency', // special command to fix data consistency issues
+  // special command, used for some special records to set data only in the middle layer to fix the data consistency problem
+  SystemSetRecords = 'SystemSetRecords', 
+  // special command, used for some special fields to set attributes only in the middle layer to fix the data consistency problem
+  SystemSetFieldAttr = 'SystemSetFieldAttr', 
   SetKanbanStyle = 'SetKanbanStyle',
-  InsertComment = 'InsertComment', // 在记录中插入评论
+  InsertComment = 'InsertComment', // insert a comment into the record
   UpdateComment = 'UpdateComment',
-  DeleteComment = 'DeleteComment',// 删除记录中的某条评论
-  SystemCorrectComment = 'SystemCorrectComment', // 特殊的 command，修正评论中的时间
-  Rollback = 'Rollback', // 快照回滚
-
+  DeleteComment = 'DeleteComment',// delete a comment in the record
+  SystemCorrectComment = 'SystemCorrectComment', // special command, correct time in comment
+  Rollback = 'Rollback', // snapshot rollback
   // widgetPanel
   AddWidgetPanel = 'AddWidgetPanel',
   MoveWidgetPanel = 'MoveWidgetPanel',
@@ -83,17 +84,16 @@ export enum CollaCommandName {
 
   // Form
   UpdateFormProps = 'UpdateFormProps',
-
-  // 日期单元格闹钟
+  // Date cell alarm
   SetDateTimeCellAlarm = 'SetDateTimeCellAlarm',
 
-  // 手动保存视图配置
+  // Manually save the view configuration
   ManualSaveView = 'ManualSaveView',
 
-  // 修改配置的保存模式
+  // Modify the save mode of the configuration
   SetViewAutoSave = 'SetViewAutoSave',
 
-  // 特殊的 command，修正单向关联DstId
+  // special command, correct one-way association DstId
   FixOneWayLinkDstId = 'FixOneWayLinkDstId'
 }
 

@@ -23,7 +23,7 @@ export const setGalleryStyle: ICollaCommandDef<ISetGalleryStyle> = {
       return null;
     }
 
-    // 判断当前操作的view是否是激活的view
+    // Determine whether the currently operating view is the active view
     if (datasheet.activeView !== viewId) {
       throw new Error(t(Strings.error_modify_column_failed_wrong_target_view));
     }

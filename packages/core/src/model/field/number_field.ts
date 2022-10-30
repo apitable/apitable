@@ -70,7 +70,7 @@ export class NumberField extends NumberBaseField {
 
   defaultValue(): ICellValue {
     const { defaultValue } = this.field.property;
-    // 兼容旧数据没有 <默认值> 属性的情况
+    // Compatible with old data without the <default> attribute
     return defaultValue ? str2number(defaultValue) : null;
   }
 

@@ -35,20 +35,20 @@ export interface ILookUpTreeValue {
   cellValue: ICellValue | ILookUpTreeValue[];
 }
 
-// 需要原样输出的函数
+// function that needs to output as-is
 export const ORIGIN_VALUES_FUNC_SET = new Set([
   RollUpFuncType.VALUES,
   RollUpFuncType.ARRAYUNIQUE,
   RollUpFuncType.ARRAYCOMPACT,
 ]);
 
-// 需要以字符串连接展示的函数
+// Functions that need to be displayed by string concatenation
 export const LOOKUP_VALUE_FUNC_SET = new Set([
   RollUpFuncType.ARRAYJOIN,
   RollUpFuncType.CONCATENATE,
 ]);
 
-// 不需要数字格式化的函数
+// Functions that don't require number formatting
 export const NOT_FORMAT_FUNC_SET = new Set([
   RollUpFuncType.ARRAYJOIN,
   RollUpFuncType.CONCATENATE,
@@ -124,9 +124,9 @@ export class LookUpField extends ArrayValueField {
   }
 
   /**
-   * 值类型是否发生了改变？（是否还是实体字段值组成的数组？）
-   * - 不改变：按照实体字段 openValue JsonSchema 计算
-   * - 改变：按输出值类型推倒 jsonSchema
+   * Has the value type changed? (Is it still an array of entity field values?)
+   * - unchanged: Calculated according to entity field openValue JsonSchema
+   * - changed: push down jsonSchema by output value type
    */
   get openValueJsonSchema() {
     const entityField = this.getLookUpEntityField();
@@ -140,7 +140,7 @@ export class LookUpField extends ArrayValueField {
 
     const expression = this.getExpression();
     if (expression) {
-      // 存在表达式时，输出值类型基础类型
+      // When there is an expression, the output value type base type
       switch (this.valueType) {
         case BasicValueType.Number:
         case BasicValueType.Boolean:
@@ -202,7 +202,7 @@ export class LookUpField extends ArrayValueField {
     return isFilterTypeSwitch ? t(Strings.lookup_filter_waring) : '';
   }
 
-  // 统计可选项
+  // statistic options
   get statTypeList() {
     const expression = this.getExpression();
     const rollUpType = this.field.property.rollUpType;
@@ -243,7 +243,7 @@ export class LookUpField extends ArrayValueField {
     return BasicValueType.Array;
   }
 
-  // 当基础类型为 Array 的时候，获取 Array 里的元素的基础类型
+  // When the underlying type is Array, get the underlying type of the elements in the Array
   get innerBasicValueType(): BasicValueType {
     const entityField = this.getLookUpEntityField();
     if (!entityField) {
@@ -251,7 +251,8 @@ export class LookUpField extends ArrayValueField {
     }
 
     const valueType = Field.bindContext(entityField, this.state).basicValueType;
-    // 数组里的还是数组，说明是多选字段，直接强行指定为 string 即可
+    // The array in the array is still an array, 
+    // indicating that it is a multi-select field, and it can be specified as a string directly.
     return valueType === BasicValueType.Array ? BasicValueType.String : valueType;
   }
 
@@ -292,7 +293,7 @@ export class LookUpField extends ArrayValueField {
     return Field.bindContext(entityField, this.state).showFOperatorDesc(type);
   }
 
-  // 筛选可选项
+  // filter options
   get acceptFilterOperators() {
     const expression = this.getExpression();
     if (expression) {
@@ -332,7 +333,8 @@ export class LookUpField extends ArrayValueField {
     return lookUpEntityFieldInfo.depth;
   }
 
-  // 允许 lookup lookup lookup 字段，但是最终总会有一个实体字段。返回实体字段和字段的深度。
+  // Allow lookup lookup lookup fields, but there will always be an entity field in the end. 
+  // Returns entity fields and the depth of the fields.
   getLookUpEntityFieldInfo(visitedFields?: Set<string>, depth?: number): {
     field: IField; depth: number; datasheetId: string;
   } | undefined {
@@ -357,7 +359,7 @@ export class LookUpField extends ArrayValueField {
     };
   }
 
-  // 允许 lookup lookup lookup 字段，但是最终总会有一个实体字段。
+  // Allow lookup lookup lookup fields, but there will always be an entity field in the end.
   getLookUpEntityField(visitedFields?: Set<string>, depth?: number): IField | undefined {
     try {
       const lookUpEntityFieldInfo = this.getLookUpEntityFieldInfo(visitedFields, depth);
@@ -370,10 +372,11 @@ export class LookUpField extends ArrayValueField {
     }
   }
 
-  // 检查筛选条件对应列是否被删除, 检查筛选条件对应列是否切换类型
+  // Check whether the column corresponding to the filter condition is deleted, 
+  // check whether the column corresponding to the filter condition switches the type
   /**
-   * 检查筛选条件对应列是否被删除
-   * 检查筛选条件对应列是否切换类型
+   * Check whether the column corresponding to the filter condition is deleted
+   * Check whether the column corresponding to the filter condition switches the type
    */
   checkFilterInfo() {
     const { filterInfo } = this.field.property;
@@ -404,7 +407,7 @@ export class LookUpField extends ArrayValueField {
   }
 
   /**
-   * 获取查找目标字段的信息，返回 字段和 datasheetId 信息
+   * Get the information of the search target field, return the field and datasheetId information
    *
    * @param {string} [datasheetId]
    * @returns {({ field: IField; datasheetId: string } | undefined)}
@@ -461,9 +464,9 @@ export class LookUpField extends ArrayValueField {
     if (!entityField) {
       return null;
     }
-    const flatCellValue = this.getFlatCellValue(recordId, true); // 基础的 cv 值应该保留空值。
+    const flatCellValue = this.getFlatCellValue(recordId, true); // The underlying cv value should remain empty.
     if (Array.isArray(flatCellValue) && flatCellValue.length) {
-      // 文本类型的字段存储的都是字符片段，flat 需要保留原始信息，不能完全拍平
+      // Fields of text type store all character fragments, flat needs to retain the original information and cannot be completely flattened
       const _flatCellValue = isTextBaseType(entityField.type) ? flatCellValue : (flatCellValue as any)?.flat(1);
       switch (this.rollUpType) {
         case RollUpFuncType.VALUES:
@@ -481,10 +484,10 @@ export class LookUpField extends ArrayValueField {
     return flatCellValue;
   }
 
-  // 获取扁平的 lookup 单元格数据
-  // 对于非文本拼接类的数据，
+  // Get the flat lookup cell data
+  // For non-text concatenated data,
   getFlatCellValue(recordId: string, withEmpty?: boolean): ICellValue {
-    // 以当前记录为起点，递归查找 lookup 树。
+    // Starting from the current record, recursively search the lookup tree.
     const recordCellValues = this.getLookUpTreeValue(recordId);
     if (isEmpty(recordCellValues)) {
       return null;
@@ -510,7 +513,7 @@ export class LookUpField extends ArrayValueField {
   }
 
   /**
-   * getLookUpTreeValue  getCellvalue 递归查询到实体字段的数据，组合成树形结构的数据
+   * getLookUpTreeValue getCellvalue Recursively query the data of entity fields and combine them into tree-structured data
    *
    * @param {string} recordId
    * @param {string} [datasheetId]
@@ -520,19 +523,19 @@ export class LookUpField extends ArrayValueField {
   getLookUpTreeValue(
     recordId: string,
   ): ILookUpTreeValue[] {
-    // 筛选条件对应列被删除，不展示结果
+    // The column corresponding to the filter condition is deleted and the result is not displayed
     const { error: isFilterError } = this.checkFilterInfo();
     if (isFilterError) {
       return [];
     }
     const relatedLinkField = this.getRelatedLinkField();
     if (!relatedLinkField) {
-      // console.log('找不到外键字段', relatedLinkField);
+      // console.log('Cannot find foreign key field', relatedLinkField);
       return [];
     }
     const { lookUpTargetFieldId, datasheetId, filterInfo, openFilter } = this.field.property;
     const thisSnapshot = getSnapshot(this.state, datasheetId)!;
-    // 关联表记录的 IDs
+    // IDs of the associated table records
     let recordIDs = Selectors.getCellValue(
       this.state, thisSnapshot, recordId, relatedLinkField.id, true, datasheetId, true
     ) as ILinkIds;
@@ -548,7 +551,7 @@ export class LookUpField extends ArrayValueField {
     const lookUpTargetField = this.getLookUpTargetField() as IField;
 
     if (openFilter) {
-      // 神奇引用筛选
+      // magic reference filter
       recordIDs = getFilteredRecords(this.state, foreignSnapshot, recordIDs, filterInfo);
     }
 
@@ -567,7 +570,7 @@ export class LookUpField extends ArrayValueField {
     cellValue = handleNullArray(cellValue);
     switch (operator) {
       /**
-       * isEmpty 和 isNotEmpty 的逻辑基本通用
+       * The logic of isEmpty and isNotEmpty is basically common
        */
       case FOperator.IsEmpty: {
         return cellValue == null;
@@ -579,7 +582,7 @@ export class LookUpField extends ArrayValueField {
     }
   }
 
-  // lookup 不允许编辑单元格
+  // lookup does not allow editing cells
   recordEditable(): boolean {
     return false;
   }
@@ -592,10 +595,14 @@ export class LookUpField extends ArrayValueField {
   }
 
   /**
-   * 在该 field 上比较两个 cellValue 的大小，用于排序
-   * 默认是转为字符串比较，如果不是此逻辑，请自行实现
-   * @orderInCellValueSensitive {boolean} 可选参数，给关联字段判断是否只做普通排序，对单元格内容不预处理
-   * @returns {number} 负数 => 小于、0 => 等于、正数 => 大于
+   * 
+   * Compare the size of the two cellValues on the field for sorting
+   * The default is to convert to string comparison, if it is not this logic, please implement it yourself
+   * 
+   * @orderInCellValueSensitive {boolean} optional parameter, to determine whether to only do normal sorting for the associated field, 
+   * without preprocessing the cell content
+   * 
+   * @returns {number} negative => less than, 0 => equal, positive => greater than
    */
   compare(cv1: ICellValue, cv2: ICellValue, orderInCellValueSensitive?: boolean): number {
     const expression = this.getExpression();
@@ -659,7 +666,7 @@ export class LookUpField extends ArrayValueField {
           return TextBaseField._isMeetFilter(operator, this.cellValueToString(cellValue), conditionValue);
         case BasicValueType.Array:
           switch (operator) {
-            // 否定语义的 filter 操作，需要数组内每个项都满足
+            // The filter operation of negative semantics requires that each item in the array satisfies
             case FOperator.DoesNotContain:
             case FOperator.IsNot:
             case FOperator.IsEmpty:
@@ -702,10 +709,10 @@ export class LookUpField extends ArrayValueField {
     const judge = (cv) => {
       return Field.bindContext(entityField, this.state).isMeetFilter(operator, cv, conditionValue);
     };
-    // lookup 的 cv 已经是 flat 后的值，原本 field 值为数组的，使用通用的比较逻辑。
+    // The cv of the lookup is already the value after flat, and the original field value is an array, using common comparison logic.
     if (Field.bindContext(entityField, this.state).basicValueType === BasicValueType.Array && operator !== FOperator.IsRepeat) {
-      // 由于 “我” 筛选项的存在，cellValue 和 conditionValue 不存在全等的情况，
-      // 对于 Member 类型直接使用 isMeetFilter 进行计算，它会将 'Self' 标记转换成对应的 UnitId 进行比较
+      // Due to the existence of the "me" filter item, cellValue and conditionValue are not congruent,
+      // For Member type directly use isMeetFilter for calculation, it will convert the 'Self' tag into the corresponding UnitId for comparison
       if (entityField.type === FieldType.Member) {
         return Field.bindContext(entityField, this.state).isMeetFilter(operator, cellValue as IUnitIds, conditionValue);
       }
@@ -719,7 +726,7 @@ export class LookUpField extends ArrayValueField {
       }
     }
     switch (operator) {
-      // 否定语义的 filter 操作，需要数组内每个项都满足
+      // The `filter` operation of negative semantics requires that each item in the array satisfies
       case FOperator.DoesNotContain:
       case FOperator.IsNot:
       case FOperator.IsEmpty:
@@ -765,7 +772,7 @@ export class LookUpField extends ArrayValueField {
     const basicValueType = Field.bindContext(entityField, this.state).basicValueType;
     return cellValue == null ? null : (cellValue as ILookUpValue).reduce<any[]>((result, value) => {
 
-      // number|boolean|datetime 类型不需要进行任何转换
+      // number|boolean|datetime type does not need any conversion
       if (
         basicValueType === BasicValueType.Number ||
         basicValueType === BasicValueType.Boolean ||
@@ -779,7 +786,7 @@ export class LookUpField extends ArrayValueField {
         result.push(Field.bindContext(entityField!, this.state).cellValueToString(value));
         return result;
       }
-      // BasicValueType.Array & value 为 Array 类型需要进行处理
+      // BasicValueType.Array & value is of Array type and needs to be processed
       if (Array.isArray(value) || (value != null && basicValueType === BasicValueType.Array)) {
         [value].flat(Infinity).forEach(v => {
           result.push(Field.bindContext(entityField!, this.state).cellValueToString([(v as any)]));
@@ -794,7 +801,7 @@ export class LookUpField extends ArrayValueField {
   arrayValueToString(cellValue: any[] | null): string | null {
     const rollUpType = this.field.property.rollUpType;
     let vArray = this.arrayValueToArrayStringValueArray(cellValue);
-    // 对 ARRAYUNIQUE、ARRAYCOMPACT 函数进行处理
+    // Process ARRAYUNIQUE, ARRAYCOMPACT functions
     if (rollUpType === RollUpFuncType.ARRAYUNIQUE) {
       vArray = vArray && [...new Set(vArray)];
     }
@@ -818,13 +825,13 @@ export class LookUpField extends ArrayValueField {
       if (value == null) {
         return null;
       }
-      // 日期类型要使用 lookup 字段配置的格式
+      // Date type should use the format configured by the lookup field
       if (basicValueType === BasicValueType.DateTime) {
         const formatting = this.field.property.formatting as IDateTimeFieldProperty || entityField.property;
         return dateTimeFormat(value, formatting);
       }
 
-      // number|boolean 类型要使用 lookup 字段配置的格式
+      // The number|boolean type should use the format configured by the lookup field
       if (basicValueType === BasicValueType.Number || basicValueType === BasicValueType.Boolean) {
         if (!NOT_FORMAT_FUNC_SET.has(this.rollUpType)) {
           const property = this.field.property.formatting as INumberFormatFieldProperty || entityField.property;
@@ -866,9 +873,9 @@ export class LookUpField extends ArrayValueField {
   }
 
   /**
-   * 是否多选值类型的字段。
-   * 如多选，协作者字段，就是返回 true。
-   * NOTE: 需要保证返回 true 的字段，value 是数组。
+   * Whether to multi-select fields of value type.
+   * For multiple selections, the collaborator field will return true.
+   * NOTE: Fields that are guaranteed to return true, value is an array.
    */
   isMultiValueField(): boolean {
     return true;
@@ -886,14 +893,14 @@ export class LookUpField extends ArrayValueField {
   }
 
   /**
-   * 返回新增 record 时字段属性配置的默认值
+   * Returns the default value of the field attribute configuration when adding a record
    */
   defaultValue(): ICellValue {
     return null;
   }
 
   /**
-   * @description 将统计的参数转换成中文
+   * @description convert the statistical parameters into Chinese
    */
   statType2text(type: StatType): string {
     const expression = this.getExpression();
@@ -915,17 +922,17 @@ export class LookUpField extends ArrayValueField {
     return Field.bindContext(lookUpEntityField, this.state).statType2text(type);
   }
 
-  // 获取 lookup 字段依赖的字段，只获取一层关系
+  // Get the fields that the lookup field depends on, and only get one level of relationship
   getCurrentDatasheetRelatedFieldKeys(datasheetId: string) {
     const { relatedLinkFieldId, lookUpTargetFieldId, filterInfo, openFilter } = this.field.property;
     const allKeys: string[] = [];
-    // 依赖当前表的 link 字段
+    // Depends on the link field of the current table
     allKeys.push(`${datasheetId}-${relatedLinkFieldId}`);
     const relatedLinkField = this.getRelatedLinkField();
     if (relatedLinkField) {
       const { foreignDatasheetId } = relatedLinkField.property;
       allKeys.push(`${foreignDatasheetId}-${lookUpTargetFieldId}`);
-      // 筛选字段触发神奇应用更新
+      // filter field triggers magic app update
       if (openFilter && filterInfo) {
         const { conditions } = filterInfo;
         conditions.forEach(condition => {
@@ -985,7 +992,7 @@ export class LookUpField extends ArrayValueField {
     }
     const expression = this.getExpression();
     if (expression) {
-      // 存在表达式时，输出值类型为基础类型，可以直接输出
+      // When there is an expression, the output value type is the basic type, which can be output directly
       switch (this.valueType) {
         case BasicValueType.Number:
         case BasicValueType.Boolean:
@@ -995,17 +1002,19 @@ export class LookUpField extends ArrayValueField {
           return cellValue as any;
       }
     }
-    // 这2个是 array 转化为 string 的函数。
+    // These two are functions that convert array to string.
     if (LOOKUP_VALUE_FUNC_SET.has(this.rollUpType)) {
       return this.cellValueToString(cellValue);
     }
-    // 这里进来的是一维数组，先兼容成二维数组。
+    // What comes in here is a one-dimensional array, first compatible with a two-dimensional array.
     if (Array.isArray(cellValue)) {
       const targetField = Field.bindContext(entityField, this.state);
-      // TODO 临时兼容一下数据结构（等 getCellValue 改造成返回未拍平数组）
+      // TODO is temporarily compatible with the data structure (wait for getCellValue to be transformed to return an unflattened array)
       const isDoubleArray = this.openValueJsonSchema.items?.type === 'array';
-      // 预期的二维数组，在 cv 的时候已经拍平了，这里包一下，升级为二维数组。现在只是结构上的兼容，会影响实际的业务逻辑。
-      // 在机器人场景中，UI 输入的的值目前都是拼接成 string，所以不太影响。
+      // The expected two-dimensional array has been flattened at the time of cv, 
+      // and it is packaged here and upgraded to a two-dimensional array. 
+      // Now it is only a structural compatibility, which will affect the actual business logic.
+      // In the robot scene, the values input by the UI are currently spliced into strings, so it doesn't matter much.
       const _cellValue = isDoubleArray ? [(cellValue as any[]).filter(cv => cv != null)] : cellValue;
       const result: BasicOpenValueTypeBase[] = (_cellValue as ILookUpValue)
         .map(item => targetField.cellValueToOpenValue(item) as BasicOpenValueTypeBase);

@@ -60,7 +60,7 @@ export class UndoManager {
     }
 
     /**
-     * undo & redo 栈的转换需要将 actions 进行 invert 反转
+     * The conversion of undo & redo stack needs to invert actions
      */
     if (executeType === ExecuteType.Undo) {
       const inverted: IUndoCommand = {
@@ -85,7 +85,7 @@ export class UndoManager {
       const { _maxLength: maxLength, _undoStack: undoStack } = this;
       const deleteCount = undoStack.length - maxLength + 1;
 
-      // 清除超出栈大小的command
+      // clear the command that exceeds the stack size
       if (maxLength > 0 && deleteCount > 0) {
         undoStack.splice(0, deleteCount);
       }
@@ -109,7 +109,7 @@ export class UndoManager {
 
       undoStack.push(inverted);
 
-      // 执行command后，需要清空redo栈
+      // After executing the command, you need to clear the redo stack
       if (executeType === ExecuteType.Execute) {
         this._redoStack = [];
       }
@@ -132,9 +132,12 @@ export class UndoManager {
   }
 
   /**
-   * @description 临时解决方案，解决对本地缓存的 actions 和远程协同的 actions 做 transform 时，数据量过大造成的页面卡死
-   * 目前的思路是做 transform 的两个 action 数量的乘积超过设定的阈值，则放弃此次的 transform。并且清空本次及之后的所有缓存，
-   * 后续的方案会通过 worker 解决性能问题
+   * @description Temporary solution to solve the page stuck caused by excessive data volume 
+   * when transforming locally cached actions and remote collaborative actions
+   * The current idea is to give up this transform if the product of the two actions of the transform 
+   * exceeds the set threshold. And clear all caches this time and later,
+   * Subsequent solutions will solve performance problems through workers
+   * 
    * @param {number} stackActionLen
    * @param {number} remoteActionLen
    * @returns {boolean}

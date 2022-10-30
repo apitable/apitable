@@ -1,9 +1,9 @@
 import { difference } from 'lodash';
 
 /**
- * 1. getCellValue 过程发现需要补救的数据
- * 2. 将需要获取的数据搜集到 helper 中管理。
- * 3. UI 中定时批量补救数据
+ * 1. The getCellValue process finds data that needs to be remedied
+ * 2. Collect the data to be acquired into the helper for management.
+ * 3. Timed batch remediation data in UI
  */
 class DataSelfHelper {
   // dstId-fieldId: Set(recordId1, recordId2, ....)
@@ -26,11 +26,11 @@ class DataSelfHelper {
     }
   }
 
-  // 补救数据成功后确认一下
+  // Confirm after the recovery data is successful
   confirm(key: string, recordIds: string[]) {
     const dstRecordIdSet = this.dataMap.get(key);
     if (dstRecordIdSet) {
-      // 补救过程中，可能加入了新的需要补救的记录，求差集。
+      // During the remediation process, new records that need remediation may be added, and the difference is calculated.
       const restRecordIds = difference(Array.from(dstRecordIdSet), recordIds);
       if (restRecordIds.length) {
         this.dataMap.set(key, new Set(restRecordIds));
@@ -45,8 +45,8 @@ class DataSelfHelper {
   }
 }
 
-// 因为脏数据导致的数据丢失问题，实现自救措施。保证数据在 UI 上能正常显示。
+// Implement self-rescue measures for data loss caused by dirty data. Ensure that the data can be displayed normally on the UI.
 export const dataSelfHelper = new DataSelfHelper();
 
-// 用于存放计算缓存的 Map
+// Map used to store the calculation cache
 export const computeCache = new Map<string, any>();

@@ -29,7 +29,7 @@ const commonConfig = {
 /*
  * The notify has to appear within the view area, so the wrapped dom element needs to be located, 
  * but in order to not fetch the wrapped dom too often, the
- * The data is cached here, but when switching the number table, the space is switched, as the original dom element is still stored, 
+ * The data is cached here, but when switching the datasheet, the space is switched, as the original dom element is still stored, 
  * or the notify is not displayed properly
  * So a reset method was written to reset the dom
  * If you find that the notify call does not respond in subsequent development, you can refer here
