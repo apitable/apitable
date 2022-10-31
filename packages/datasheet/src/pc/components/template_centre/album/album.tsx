@@ -152,6 +152,12 @@ const AlbumDetail = () => {
                     {recommend.name}
                   </Typography>
                   <Typography
+                    variant="h7"
+                    ellipsis
+                  >
+                    {recommend.name}
+                  </Typography>
+                  <Typography
                     variant='body4'
                     className={styles.albumRecommendDesc}
                     ellipsis={{
