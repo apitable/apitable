@@ -4,64 +4,64 @@ import java.util.Map;
 
 /**
  * <p>
- * 前端直传凭据
+ * Front end direct transmission credentials
  * </p>
  *
- * @author Pengap
- * @date 2022/3/31 17:52:02
  */
 public class OssUploadPolicy {
 
     /**
-     * 若为 1，表示允许用户上传以 scope 的 keyPrefix 为前缀的文件。
+     * If it is 1, it means that users are allowed to upload files prefixed with keyPrefix of scope.
      *
      * support：
-     * 1.七牛云
+     * 1.qiniu cloud
      */
     private Integer isPrefixalScope;
 
     /**
-     * 限定为新增语意。如果设置为非 0 值，则无论 scope 设置为什么形式，仅能以新增模式上传文件。
+     * It is limited to new semantics. If it is set to a value other than 0, files can only be uploaded in the new mode regardless of the scope setting.
      */
     private Integer insertOnly;
 
     /**
-     * 限定上传文件大小最小值，单位Byte。小于限制上传文件大小的最小值会被判为上传失败，返回 403 状态码
+     * The minimum size of the uploaded file is limited in Byte. If it is smaller than the minimum upload file size,
+     * it will be judged as upload failure, and a 403 status code will be returned
      *
      * support：
-     * 1.七牛云
+     * 1.qiniu cloud
      */
     private Long fsizeMin;
 
     /**
-     * 限定上传文件大小最大值，单位Byte。超过限制上传文件大小的最大值会被判为上传失败，返回 413 状态码。
+     * The maximum size of the uploaded file is limited in Byte. If the maximum upload file size exceeds the limit,
+     * the upload will be judged as failed, and a 413 status code will be returned.
      *
      * support：
-     * 1.七牛云
+     * 1.qiniu
      */
     private Long fsizeLimit;
 
     /**
-     * 限定用户上传的文件类型。指定本字段值，七牛服务器会侦测文件内容以判断 MimeType，再用判断值跟指定值进行匹配，匹配成功则允许上传，匹配失败则返回 403 状态码。示例：
-     * image/* 表示只允许上传图片类型
-     * image/jpeg;image/png 表示只允许上传 jpg 和 png 类型的图片
-     * !application/json;text/plain 表示禁止上传 json 文本和纯文本。注意最前面的感叹号！
+     * Limit the file types uploaded by users. If this field value is specified, the 7N server will detect the file content to determine the MimeType, and then match the value with the specified value.
+     * If the matching is successful, upload is allowed, and if the matching fails, 403 status code will be returned. Example:
+     * image/* Indicates that only image types can be uploaded
+     * image/jpeg;image/png Indicates that only jpg and png images can be uploaded
+     * !application/json;text/plain Indicates that the upload of json text and plain text is prohibited. Pay attention to the front exclamation point!
      *
-     * support：
-     * 1.七牛云
-     */
+     * support：qiniu cloud
+     * */
     private String mimeLimit;
 
     /**
-     * 文件存储类型。0 为标准存储（默认），1 为低频存储，2 为归档存储，3 为深度归档存储。 </br>3
+     * File storage type. 0 is standard storage (default), 1 is low-frequency storage, 2 is archive storage, and 3 is deep archive storage. </br>3
      *
      * support：
-     * 1.七牛云
+     * 1.qiniu cloud
      */
     private Integer fileType;
 
     /**
-     * CallBack Body 扩展参数
+     * CallBack Body extended parameters
      */
     private Map<String, Object> putExtra;
 

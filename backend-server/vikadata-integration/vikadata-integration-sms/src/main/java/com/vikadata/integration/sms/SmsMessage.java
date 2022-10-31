@@ -2,11 +2,9 @@ package com.vikadata.integration.sms;
 
 /**
  * <p>
- * 短信消息体
+ * SMS message body
  * </p>
  *
- * @author Shawn Deng
- * @date 2019/12/25 17:00
  */
 public class SmsMessage {
 

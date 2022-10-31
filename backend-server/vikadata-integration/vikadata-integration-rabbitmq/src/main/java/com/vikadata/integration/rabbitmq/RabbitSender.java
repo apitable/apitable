@@ -3,7 +3,7 @@ package com.vikadata.integration.rabbitmq;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 /**
- * rabbitmq 发送器
+ * rabbitmq transmitter
  */
 public class RabbitSender implements RabbitSenderService {
 

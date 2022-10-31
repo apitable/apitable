@@ -20,10 +20,9 @@ import com.vikadata.integration.idaas.support.ServiceAccount;
 
 /**
  * <p>
- * 玉符 IDaaS 系统管理 API 测试
+ * IDaaS system config API test
  * </p>
- * @author 刘斌华
- * @date 2022-06-06 11:28:13
+ *
  */
 class SystemApiTests {
 
@@ -49,7 +48,7 @@ class SystemApiTests {
     void tenantTests() throws IdaasApiException {
         TenantRequest tenantRequest = new TenantRequest();
         tenantRequest.setName(TEST_TENANT_NAME);
-        tenantRequest.setDisplayName("junit测试租户");
+        tenantRequest.setDisplayName("junit test user");
         TenantRequest.Admin tenantAdmin = new TenantRequest.Admin();
         tenantAdmin.setUsername("junit-test");
         tenantAdmin.setPassword("123456");
@@ -61,7 +60,7 @@ class SystemApiTests {
     }
 
     @Test
-    @Disabled("每次执行都会新建租户 ServiceAccount，禁用")
+    @Disabled("Each execution will create a new tenant ServiceAccount, disable")
     void serviceAccountTest() throws IdaasApiException {
         ServiceAccount tenantServiceAccount = systemApi.serviceAccount(TEST_TENANT_NAME, systemServiceAccount);
         System.out.println(JSONUtil.toJsonStr(tenantServiceAccount));

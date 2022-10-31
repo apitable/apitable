@@ -10,9 +10,7 @@ import com.vikadata.integration.oss.OssClientRequest;
 import com.vikadata.integration.oss.OssClientRequestFactory;
 
 /**
- * aws s3 客户端请求构造工厂
- * @author Shawn Deng
- * @date 2021-03-23 12:51:56
+ * aws s3 Client Request Construction Factory
  */
 public class AwsS3OssClientRequestFactory implements OssClientRequestFactory {
 

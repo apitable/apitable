@@ -2,11 +2,9 @@ package com.vikadata.integration.vika.model;
 
 /**
  * <p>
- * 钉钉订阅信息
+ * DingTalk subscription information
  * </p>
  *
- * @author Chambers
- * @date 2021/10/26
  */
 public class DingTalkSubscriptionInfo {
 
@@ -29,9 +27,9 @@ public class DingTalkSubscriptionInfo {
     private String data;
 
     /**
-     * 订单标签
-     * 0：普通
-     * 1：满赠
+     * order label
+     * 0：common
+     * 1：full gift
      */
     private Integer orderLabel;
 

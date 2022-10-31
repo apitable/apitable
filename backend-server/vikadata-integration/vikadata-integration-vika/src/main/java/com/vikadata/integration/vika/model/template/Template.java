@@ -7,8 +7,6 @@ import java.util.List;
  * Template Center - Template
  * </p>
  *
- * @author Chambers
- * @date 2022/9/22
  */
 public class Template {
 

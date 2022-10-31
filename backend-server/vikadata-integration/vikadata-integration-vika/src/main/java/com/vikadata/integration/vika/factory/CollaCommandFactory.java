@@ -9,21 +9,16 @@ import cn.hutool.json.JSONUtil;
 
 /**
  * <p>
- * 简单的执行Command工厂</br>
- * 由于是一个低频操作，没有定义对象模型，直接使用Json Str数据结构
+ * Simple execution of Command factory</br>
+ * As it is a low-frequency operation, the object model is not defined, and the Json Str data structure is directly used
  * </p>
  *
- * @author Pengap
- * @date 2022/2/21 10:44:33
  */
 public class CollaCommandFactory {
 
     /**
-     * 修复单向关联自定义Cmd </br>
-     * 通过单向copy，然后变更关联foreignDstId修复 </br>
-     *
-     * @author Pengap
-     * @date 2022/2/21 16:37:49
+     * Fix Unidirectional Association Custom Cmd</br>
+     * Repair by one-way copy and changing the associated foreignDstId</br>
      */
     public static Map<String, Object> fixOneWayLinkByChangeDstId(String dstId, String fieldId, String foreignDstId) {
         String jsonStr = "{\n"
@@ -64,12 +59,9 @@ public class CollaCommandFactory {
     }
 
     /**
-     * 修复单向关联自定义Cmd </br>
-     * 修复单向关联，B表不存在的情况 </br>
-     * 缺失B表，转换关联列为多行文本 </br>
-     *
-     * @author Pengap
-     * @date 2022/2/21 16:37:49
+     * Fix Unidirectional Association Custom Cmd</br>
+     * Repair the situation where one-way association and table B do not exist</br>
+     * Table B is missing, and the associated column is converted to multiple lines of text</br>
      */
     public static Map<String, Object> fixOneWayLinkByMultilineText(String dstId, String fieldId, String fieldName) {
         String jsonStr = "{\n"

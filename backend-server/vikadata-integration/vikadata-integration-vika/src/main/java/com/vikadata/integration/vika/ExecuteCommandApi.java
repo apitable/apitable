@@ -14,8 +14,6 @@ import cn.vika.core.http.HttpHeader;
  *  the api for operate executeCommand
  * </p>
  *
- * @author Pengap
- * @date 2022/2/18 14:27:29
  */
 public class ExecuteCommandApi extends AbstractApi {
 

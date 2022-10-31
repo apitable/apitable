@@ -41,10 +41,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * <p>
- * 玉符 IDaaS 请求模板
+ * IDaaS request template
  * </p>
- * @author 刘斌华
- * @date 2022-05-12 15:20:41
+ *
  */
 public class IdaasTemplate {
 
@@ -127,19 +126,17 @@ public class IdaasTemplate {
     }
 
     /**
-     * 执行 API 请求
+     * Execute API request
      *
-     * @param url 接口路径
-     * @param httpMethod 请求方法
-     * @param payload 请求体
-     * @param responseType 返回结果类型
-     * @param tenantName 操作的租户名。选填
-     * @param serviceAccount 请求附带 Token 时需要的 ServiceAccount。选填
-     * @param tokenAudience Token 适用的人员，不指定时为空
-     * @return 返回结果
-     * @throws IdaasApiException 接口请求异常
-     * @author 刘斌华
-     * @date 2022-05-13 16:40:38
+     * @param url interface path
+     * @param httpMethod request method
+     * @param payload request body
+     * @param responseType request type
+     * @param tenantName The tenant name of the operation. Optional
+     * @param serviceAccount The ServiceAccount required when requesting to attach a Token. Optional
+     * @param tokenAudience Token Applicable personnel, blank if not specified
+     * @return result
+     * @throws IdaasApiException Interface request exception
      */
     private  <T> T execute(String url, HttpMethod httpMethod, Object payload,
             Class<T> responseType, String tenantName, ServiceAccount serviceAccount, String tokenAudience) throws IdaasApiException {
@@ -184,17 +181,15 @@ public class IdaasTemplate {
     }
 
     /**
-     * 执行全路径请求
+     * Execute full path request
      *
-     * @param url 接口全路径
-     * @param httpMethod 请求方法
-     * @param httpHeaders 请求头
-     * @param payload 请求体
-     * @param responseType 返回结果类型
-     * @return 返回结果
-     * @throws IdaasApiException 接口请求异常
-     * @author 刘斌华
-     * @date 2022-05-13 16:40:38
+     * @param url Full path of interface
+     * @param httpMethod request method
+     * @param httpHeaders request header
+     * @param payload request body
+     * @param responseType request type
+     * @return result
+     * @throws IdaasApiException Interface request exception
      */
     private  <T> T execute(String url, HttpMethod httpMethod, HttpHeaders httpHeaders, Object payload, Class<T> responseType) throws IdaasApiException {
         try {
@@ -213,13 +208,11 @@ public class IdaasTemplate {
     }
 
     /**
-     * 生成接口请求的 JWT Token
+     * Generate JWT Token of interface request
      *
-     * @param serviceAccount 服务商账户信息
-     * @param audience token 适用的用户名称，没有则为空
+     * @param serviceAccount Service provider account information
+     * @param audience token Applicable user's name, blank if no
      * @return JWT Token
-     * @author 刘斌华
-     * @date 2022-05-12 18:29:35
      */
     private String jwtToken(ServiceAccount serviceAccount, String audience) throws JOSEException, ParseException {
         ServiceAccount.PrivateKey privateKey = serviceAccount.getPrivateKey();

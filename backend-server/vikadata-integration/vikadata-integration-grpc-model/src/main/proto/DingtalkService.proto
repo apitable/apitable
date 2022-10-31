@@ -11,7 +11,7 @@ import 'DingTalkMessage.proto';
 import 'message.proto';
 import "google/protobuf/wrappers.proto";
 
-// 内部服务调用
+// internal service call
 service DingTalkService {
   rpc GetDeptUserList (DeptUserListRo) returns (RequestIdResult);
   rpc GetDepartmentSubIdList (DepartmentSubIdRo) returns (RequestIdResult);

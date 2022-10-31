@@ -10,10 +10,9 @@ import com.vikadata.integration.idaas.support.ServiceAccount;
 
 /**
  * <p>
- * 系统管理 API
+ * System Manage API
  * </p>
- * @author 刘斌华
- * @date 2022-05-12 17:42:27
+ *
  */
 public class SystemApi {
 
@@ -26,38 +25,33 @@ public class SystemApi {
     }
 
     /**
-     * 开通租户，并预置认证源与单点登录应用。多次调用此接口，认证源或单点登录应用配置，会进行更新
+     * Open the tenant, and preset the authentication source and single sign on application.
+     * The authentication source or single sign on application configuration will be updated when this interface is called multiple times
      *
-     * @param request 请求参数
-     * @param serviceAccount 系统级 ServiceAccount
-     * @return 返回结果
-     * @author 刘斌华
-     * @date 2022-05-12 19:04:16
+     * @param request request parameters
+     * @param serviceAccount system ServiceAccount
+     * @return tenant information
      */
     public TenantResponse tenant(TenantRequest request, ServiceAccount serviceAccount) throws IdaasApiException {
         return idaasTemplate.post(systemHost + ApiUri.TENANT, request, TenantResponse.class, null, serviceAccount, null);
     }
 
     /**
-     * 生成租户 ServiceAccount
+     * create tenant ServiceAccount
      *
-     * @param tenantName 要操作的租户名
-     * @param serviceAccount 系统级 ServiceAccount
-     * @return 租户的 ServiceAccount
-     * @author 刘斌华
-     * @date 2022-05-18 19:13:12
+     * @param tenantName tenant name to operate on
+     * @param serviceAccount system ServiceAccount
+     * @return tenant's ServiceAccount
      */
     public ServiceAccount serviceAccount(String tenantName, ServiceAccount serviceAccount) throws IdaasApiException {
         return idaasTemplate.post(systemHost + ApiUri.SERVICE_ACCOUNT, null, ServiceAccount.class, tenantName, serviceAccount, null);
     }
 
     /**
-     * 获取 Well-known 接口的返回结果
+     * Get the return result of the Well known interface
      *
-     * @param wellKnownUrl Well-known 接口路径
-     * @return 返回结果
-     * @author 刘斌华
-     * @date 2022-05-23 17:01:07
+     * @param wellKnownUrl Well-known interface path
+     * @return result
      */
     public WellKnowResponse fetchWellKnown(String wellKnownUrl) throws IdaasApiException {
         return idaasTemplate.getFromUrl(wellKnownUrl, null, WellKnowResponse.class);

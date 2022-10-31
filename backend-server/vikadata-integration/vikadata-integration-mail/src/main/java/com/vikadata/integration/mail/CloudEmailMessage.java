@@ -4,36 +4,34 @@ import java.util.List;
 
 /**
  * <p>
- * 云平台邮件推送消息模板
+ * Cloud platform mail push message template
  * </p>
  *
- * @author Chambers
- * @date 2022/2/9
  */
 public class CloudEmailMessage {
 
     /**
-     * 发件人个性化名称
+     * sender personalized name
      */
     private String personal;
 
     /**
-     * 邮件主题
+     * email subject
      */
     private String subject;
 
     /**
-     * 邮件模板ID
+     * email template ID
      */
     private Long templateId;
 
     /**
-     * 模板中的变量参数
+     * variable parameters in the template
      */
     private String templateData;
 
     /**
-     * 收件人列表(支持多个)
+     * recipient list (multiple supported)
      */
     private List<String> to;
 

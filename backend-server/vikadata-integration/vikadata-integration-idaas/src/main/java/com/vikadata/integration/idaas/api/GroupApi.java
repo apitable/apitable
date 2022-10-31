@@ -18,10 +18,9 @@ import org.springframework.util.MultiValueMap;
 
 /**
  * <p>
- * 用户组 API
+ * User Group API
  * </p>
- * @author 刘斌华
- * @date 2022-05-13 17:26:34
+ *
  */
 public class GroupApi {
 
@@ -34,14 +33,12 @@ public class GroupApi {
     }
 
     /**
-     * 获取用户组列表
+     * Get user group list
      *
-     * @param request 请求参数
-     * @param serviceAccount 租户 ServiceAccount
-     * @param tenantName 租户名
-     * @return 返回结果
-     * @author 刘斌华
-     * @date 2022-05-13 17:33:57
+     * @param request request parameters
+     * @param serviceAccount tenant ServiceAccount
+     * @param tenantName tenant name
+     * @return user group
      */
     public GroupsResponse groups(GroupsRequest request, ServiceAccount serviceAccount, String tenantName) throws IdaasApiException {
         MultiValueMap<String, Object> multiValueMap = new LinkedMultiValueMap<>();
@@ -55,16 +52,14 @@ public class GroupApi {
     }
 
     /**
-     * 获取应用下的用户组列表
+     * Get user group list in application
      *
-     * @param request 请求参数
-     * @param serviceAccount 租户 ServiceAccount
-     * @param tenantId 租户 ID
-     * @param tenantName 租户名
-     * @param clientId 应用 ID
-     * @return 返回结果
-     * @author 刘斌华
-     * @date 2022-06-14 17:13:45
+     * @param request request parameters
+     * @param serviceAccount tenant ServiceAccount
+     * @param tenantId tenant ID
+     * @param tenantName tenant name
+     * @param clientId application ID
+     * @return user group
      */
     public AppGroupsResponse appGroups(AppGroupsRequest request, ServiceAccount serviceAccount,
             String tenantId, String tenantName, String clientId) throws IdaasApiException {

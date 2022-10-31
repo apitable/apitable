@@ -7,8 +7,6 @@ import java.util.List;
  * Template Center - Recommend Info
  * </p>
  *
- * @author Chambers
- * @date 2022/9/22
  */
 public class RecommendInfo {
 

@@ -10,11 +10,9 @@ import java.util.Objects;
 
 /**
  * <p>
- * Socket 客户端自动配置
+ * Socket Client Auto Configuration
  * </p>
  *
- * @author zoe zheng
- * @date 2020/5/8 4:27 下午
  */
 public class SocketClientTemplate implements SocketClientOperations {
 
@@ -28,7 +26,7 @@ public class SocketClientTemplate implements SocketClientOperations {
 
     @Override
     public void emit(String event, JSON message) {
-        // js在接收long的时候会转换成字符串，失去精度
+        // When js receives a long, it will be converted to a string, losing precision
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Socket Event: {}, Message: {}", event, message);
         }

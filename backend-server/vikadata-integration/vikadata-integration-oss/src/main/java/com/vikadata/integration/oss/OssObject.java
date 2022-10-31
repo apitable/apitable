@@ -4,11 +4,9 @@ import java.io.InputStream;
 
 /**
  * <p>
- * Oss 对象
+ * Oss object
  * </p>
  *
- * @author Chambers
- * @date 2020/12/10
  */
 public class OssObject {
 

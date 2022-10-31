@@ -8,11 +8,11 @@ option java_outer_classname = "GrpcService";
 package grpc;
 
 import 'message.proto';
-// 内部服务调用生成changeset->apply
+// internal service invocation generation changeset->apply
 service NodeService {
-  // 空间站内复制副作用ot
+  // side effects of in-space replication ot
   rpc CopyNodeEffectOt (NodeCopyRo) returns (BasicResult);
-  // 空间站内删除接口副作用ot
+  // delete interface side effect in space ot
   rpc DeleteNodeEffectOt (NodeDeleteRo) returns (BasicResult);
 }
 

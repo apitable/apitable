@@ -4,11 +4,9 @@ import java.util.List;
 
 /**
  * <p>
- * GM 权限配置信息
+ * GM Permission configuration information
  * </p>
  *
- * @author Chambers
- * @date 2021/3/25
  */
 public class GmPermissionInfo {
 

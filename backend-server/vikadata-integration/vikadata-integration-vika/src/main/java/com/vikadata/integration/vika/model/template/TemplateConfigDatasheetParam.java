@@ -5,8 +5,6 @@ package com.vikadata.integration.vika.model.template;
  * Template Center - Config Datasheet Param
  * </p>
  *
- * @author Chambers
- * @date 2022/9/22
  */
 public class TemplateConfigDatasheetParam {
 

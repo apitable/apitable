@@ -5,10 +5,9 @@ import java.util.Map;
 
 /**
  * <p>
- * 账户信息 ServiceAccount
+ * Account information ServiceAccount
  * </p>
- * @author 刘斌华
- * @date 2022-05-12 18:11:35
+ *
  */
 public class ServiceAccount {
 

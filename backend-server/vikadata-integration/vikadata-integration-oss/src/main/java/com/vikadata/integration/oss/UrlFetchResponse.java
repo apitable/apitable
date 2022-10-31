@@ -2,10 +2,9 @@ package com.vikadata.integration.oss;
 
 /**
  * <p>
- * 网络资源上传结果
+ * Upload results of network resources
  * </p>
- * @author Shawn Deng
- * @date 2021/11/8 18:04
+ *
  */
 public class UrlFetchResponse {
 

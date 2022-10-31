@@ -7,22 +7,21 @@ import lombok.Setter;
 
 /**
  * <p>
- * 获取人员列表
+ * Get Personnel List
  * </p>
- * @author 刘斌华
- * @date 2022-05-13 17:12:19
+ *
  */
 @Setter
 @Getter
 public class UsersResponse {
 
     /**
-     * 筛选出的结果总数
+     * total number of filtered results
      */
     private Integer total;
 
     /**
-     * 筛选出的分页数据
+     * filtered page data
      */
     private List<UserResponse> data;
 

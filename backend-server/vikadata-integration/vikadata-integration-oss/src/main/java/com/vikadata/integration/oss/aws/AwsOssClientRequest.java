@@ -39,9 +39,7 @@ import com.vikadata.integration.oss.UrlFetchResponse;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * aws s3 client 实现
- * @author Shawn Deng
- * @date 2021-03-23 12:51:12
+ * aws s3 client realization
  */
 public class AwsOssClientRequest extends AbstractOssClientRequest {
 
@@ -72,7 +70,7 @@ public class AwsOssClientRequest extends AbstractOssClientRequest {
                 amazonClient.getBucketLocation(new GetBucketLocationRequest(bucketName));
             }
             else {
-                throw new UnsupportedOperationException("您的Bucket不存在，无法初始化");
+                throw new UnsupportedOperationException("Your bucket does not exist and cannot be initialized");
             }
         }
         return existBucket;
@@ -101,12 +99,13 @@ public class AwsOssClientRequest extends AbstractOssClientRequest {
     @Override
     public void uploadStreamForObject(String bucketName, InputStream in, String path, String mimeType, String digest) throws IOException {
         isBucketExist(bucketName);
-        //使用高级别分段上传
+        // use high-level staged upload
         TransferManager tm = TransferManagerBuilder.standard()
                 .withS3Client(amazonClient)
-                // 设置最小分片大小，默认是 5MB 。如果设置过小，会导致切片过多，影响上传速度。
+                // Set the minimum partition size, which is 5MB by default. If the setting is too small, it will cause too many slices and affect the upload speed.
                 .withMinimumUploadPartSize(10 * 1024 * 1024L)
-                // 设置采用分片上传的阈值。只有当文件大于该值时，才会采用分片上传，否则采用普通上传。默认值是 16MB 。
+                // Set the threshold for fragment upload. Only when the file is greater than this value will the file be uploaded in fragments,
+                // otherwise the file will be uploaded in a normal way. The default value is 16MB.
                 .withMultipartUploadThreshold(100 * 1024 * 1024L)
                 .build();
         ObjectMetadata metadata = new ObjectMetadata();
@@ -119,36 +118,36 @@ public class AwsOssClientRequest extends AbstractOssClientRequest {
         metadata.setCacheControl(CACHE_CONTROL_VALUE);
         try {
             Upload upload = tm.upload(bucketName, path, in, metadata);
-            LOGGER.info("上传开始......");
+            LOGGER.info("upload start......");
             upload.waitForCompletion();
-            LOGGER.info("上传完成......");
+            LOGGER.info("upload completed......");
         }
         catch (SdkBaseException e) {
             catchAwsBaseError(e);
         }
         catch (InterruptedException e) {
-            // 上传进程被中断
+            // The upload process was interrupted
             e.printStackTrace();
-            LOGGER.error("上传中断", e);
-            throw new RuntimeException("上传中断", e);
+            LOGGER.error("upload interrupted", e);
+            throw new RuntimeException("upload interrupted", e);
         }
         finally {
-            // 中断上传
-            LOGGER.info("上传结束");
+            // interrupt upload
+            LOGGER.info("end of upload");
             tm.shutdownNow();
         }
     }
 
     private void catchAwsBaseError(SdkBaseException e) {
         if (e instanceof AmazonServiceException) {
-            // 传输成功，但S3服务不能处理它，会返回错误
-            LOGGER.error("传输成功，存储服务错误", e);
-            throw new RuntimeException("传输成功，存储服务错误", e);
+            // The transmission succeeds, but the S3 service cannot process it. An error is returned
+            LOGGER.error("Transfer succeeded, storage service error", e);
+            throw new RuntimeException("Transfer succeeded, storage service error", e);
         }
         else if (e instanceof AmazonClientException) {
-            // s3服务不能连接，或者客户端不能解析s3服务返回的结果
-            LOGGER.error("上传客户端失败", e);
-            throw new RuntimeException("上传客户端失败", e);
+            // The s3 service cannot be connected, or the client cannot parse the results returned by the s3 service
+            LOGGER.error("Failed to upload client", e);
+            throw new RuntimeException("Failed to upload client", e);
         }
     }
 
@@ -191,7 +190,7 @@ public class AwsOssClientRequest extends AbstractOssClientRequest {
     @Override
     public OssObject getObject(String bucketName, String path) {
         try {
-            // 设置跳过 MD5 校验
+            // Set to skip MD5 verification
             System.setProperty(SkipMd5CheckStrategy.DISABLE_GET_OBJECT_MD5_VALIDATION_PROPERTY, "true");
             S3Object object = amazonClient.getObject(bucketName, path);
             ObjectMetadata metadata = object.getObjectMetadata();
@@ -232,7 +231,7 @@ public class AwsOssClientRequest extends AbstractOssClientRequest {
 
     @Override
     public void refreshCdn(String bucketName, String[] url) {
-        throw new Error("S3未实现该方法");
+        throw new Error("S3 does not implement this method");
     }
 
     @Override

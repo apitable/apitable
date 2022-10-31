@@ -13,9 +13,6 @@ import com.vikadata.integration.vika.model.BillingOrder;
 import com.vikadata.integration.vika.model.BillingOrderItem;
 import com.vikadata.integration.vika.model.BillingOrderPayment;
 
-/**
- * @author Shawn Deng
- */
 @Disabled
 public class VikaTemplateTest {
 

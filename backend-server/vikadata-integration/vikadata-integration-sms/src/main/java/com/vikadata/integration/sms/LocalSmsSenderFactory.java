@@ -2,11 +2,9 @@ package com.vikadata.integration.sms;
 
 /**
  * <p>
- * 本地短信发送器工厂
+ * Local SMS transmitter factory
  * </p>
  *
- * @author Chambers
- * @date 2021/5/13
  */
 public interface LocalSmsSenderFactory extends SmsSenderFactory {
 }

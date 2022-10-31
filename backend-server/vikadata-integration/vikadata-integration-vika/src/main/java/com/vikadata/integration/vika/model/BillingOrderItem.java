@@ -9,9 +9,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import com.vikadata.integration.vika.jackson.LocalDateTimeToUnixSerializer;
 
-/**
- * @author Shawn Deng
- */
 public class BillingOrderItem {
 
     @JsonProperty("订单ID")

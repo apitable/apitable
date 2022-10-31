@@ -2,7 +2,7 @@ package com.vikadata.integration.sms;
 
 /**
  * <p>
- * 短信发送器工厂
+ * SMS transmitter factory
  * </p>
  *
  * @author Chambers
@@ -11,11 +11,9 @@ package com.vikadata.integration.sms;
 public interface SmsSenderFactory {
 
     /**
-     * 创建短信发送器
+     * Create SMS sender
      *
      * @return SmsSender
-     * @author Chambers
-     * @date 2021/5/13
      */
     SmsSender createSender();
 }

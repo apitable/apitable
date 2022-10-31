@@ -4,11 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.function.Consumer;
 
-/**
- *
- * @author Shawn Deng
- * @date 2021-03-23 12:50:55
- */
 public interface OssClientRequest {
 
     UrlFetchResponse uploadRemoteUrl(String bucketName, String remoteSrcUrl, String keyPath) throws IOException;

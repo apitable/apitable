@@ -12,11 +12,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * <p>
- * 阿里云盾人机验证接口实现类
+ * Alibaba Cloud Shield human-machine verification interface implementation class
  * </p>
  *
- * @author Chambers
- * @date 2020/2/6
  */
 public class AliyunAfsChecker implements AfsChecker {
 
@@ -37,17 +35,17 @@ public class AliyunAfsChecker implements AfsChecker {
     @Override
     public String noTraceCheck(String data, String scoreJsonStr) {
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("云盾人机-无痕验证");
+            LOGGER.debug("Cloud shield machine Non-trace validation");
         }
         AnalyzeNvcRequest request = new AnalyzeNvcRequest();
-        // 必填参数，前端获取getNVCVal函数的值
+        // required parameters, the front end obtains the value of the getNVCVal function
         request.setData(data);
-        // 根据需求填写
+        // fill in as required
         request.setScoreJsonStr(scoreJsonStr);
         try {
             AnalyzeNvcResponse response = getClient().getAcsResponse(request);
             if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("人机验证结果: {}", response.getBizCode());
+                LOGGER.debug("Man-machine verification result: {}", response.getBizCode());
             }
             return response.getBizCode();
         } catch (ClientException e) {

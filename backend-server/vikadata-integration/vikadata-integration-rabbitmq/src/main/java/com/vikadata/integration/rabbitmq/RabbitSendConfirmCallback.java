@@ -10,31 +10,32 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate.ReturnsCallback;
 
 /**
  * <p>
- * rabbitmq 消息发送方确认机制
+ * rabbitmq Message sender confirmation mechanism
  * </p>
- * @author zoe zheng
- * @date 2021/12/7 4:31 PM
+ *
  */
 public class RabbitSendConfirmCallback implements ConfirmCallback, ReturnsCallback {
     private static final Logger LOGGER = LoggerFactory.getLogger(RabbitSendConfirmCallback.class);
 
     /**
-     *  ConfirmCallback只确认消息是否到达exchange，以实现方法confirm中ack属性为标准，true到达
-     *  config : 需要开启rabbitmq得ack    publisher-confirm-type
+     *  ConfirmCallback Only confirm whether the message arrives at the exchange.
+     *  Take the ack attribute in the confirmation method as the standard, and the true message arrives
+     *  config : need to enable the ack of rabbitmq    publisher-confirm-type
      */
     @Override
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
         if (!ack) {
-            LOGGER.error("发送消息到exchange失败：" + cause);
+            LOGGER.error("Failed to send message to exchange: " + cause);
         }
     }
 
     /**
-     *  ReturnCallback消息没有正确到达队列时触发回调，如果正确到达队列不执行
-     *  config : 需要开启rabbitmq发送失败回退    publisher-returns    或rabbitTemplate.setMandatory(true);设置为true
+     *  ReturnCallback  The callback is triggered when the message does not arrive at the queue correctly.
+     *  If the message arrives at the queue correctly, the callback is not executed
+     *  config : need to enable rabbitmq send failure rollback    publisher-returns    Or rabbitTemplate. setMandatory (true); Set to true
      */
     @Override
     public void returnedMessage(ReturnedMessage returned) {
-        LOGGER.error("匹配queue失败:{}", returned.toString());
+        LOGGER.error("Failed to match queue:{}", returned.toString());
     }
 }

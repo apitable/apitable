@@ -7,10 +7,9 @@ import cn.vika.client.api.http.ApiHttpClient.ApiVersion;
 
 /**
  * <p>
- * vika sdk 抽象类
+ * vika sdk abstract class
  * </p>
  *
- * @author Chambers
  */
 public abstract class VikaAccessor {
 

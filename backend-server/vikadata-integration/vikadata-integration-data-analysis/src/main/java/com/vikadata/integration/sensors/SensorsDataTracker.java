@@ -11,11 +11,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * <p>
- * 数据跟踪器 - 神策实现类
+ * Data Tracker - Shence Implementation Class
  * </p>
  *
- * @author Chambers
- * @date 2020/4/8
  */
 public class SensorsDataTracker implements DataTracker {
 
@@ -23,25 +21,25 @@ public class SensorsDataTracker implements DataTracker {
 
     @Override
     public void track(String distinctId, boolean isLoginId, String eventType, Map<String, Object> properties) {
-        LOGGER.info("记录事件:{}", eventType);
+        LOGGER.info("record events:{}", eventType);
         try {
             SensorsAnalytics analytics = this.getAnalytics();
             analytics.track(distinctId, isLoginId, eventType, properties);
             analytics.shutdown();
         } catch (Exception e) {
-            LOGGER.info("记录事件失败:{}:错误信息:", eventType, e);
+            LOGGER.info("failure to record events:{}:error message:", eventType, e);
         }
     }
 
     @Override
     public void trackSignUp(String loginId, String anonymousId) {
-        LOGGER.info("记录用户注册事件");
+        LOGGER.info("record user registration events");
         try {
             SensorsAnalytics analytics = this.getAnalytics();
             analytics.trackSignUp(loginId, anonymousId);
             analytics.shutdown();
         } catch (Exception e) {
-            LOGGER.info("记录用户注册事件失败");
+            LOGGER.info("failed to record user registration events");
         }
     }
 

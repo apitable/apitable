@@ -6,10 +6,9 @@ import lombok.Setter;
 
 /**
  * <p>
- * Well-known 接口的返回结果
+ * Well-known interface return result
  * </p>
- * @author 刘斌华
- * @date 2022-05-23 16:53:37
+ *
  */
 @Setter
 @Getter

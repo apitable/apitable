@@ -10,9 +10,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.vikadata.integration.vika.jackson.LocalDateTimeToUnixSerializer;
 import com.vikadata.integration.vika.jackson.PayChannelSerializer;
 
-/**
- * @author Shawn Deng
- */
 public class BillingOrderPayment {
 
     @JsonProperty("订单ID")

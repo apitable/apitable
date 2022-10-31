@@ -2,10 +2,9 @@ package com.vikadata.integration.vika.model;
 
 /**
  * <p>
- * 钉钉搭模版配置
+ * DingTalk config template
  * </p>
- * @author zoe zheng
- * @date 2022/1/4 11:36 AM
+ *
  */
 public class DingTalkDaTemplateInfo {
 

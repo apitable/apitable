@@ -21,10 +21,9 @@ import com.vikadata.integration.idaas.support.ServiceAccount;
 
 /**
  * <p>
- * 玉符 IDaaS 用户组 API 测试
+ * IDaaS user list API test
  * </p>
- * @author 刘斌华
- * @date 2022-06-08 11:50:47
+ *
  */
 class GroupApiTest {
 

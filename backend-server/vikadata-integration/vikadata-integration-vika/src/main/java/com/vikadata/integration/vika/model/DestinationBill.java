@@ -6,11 +6,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- *
- * @author Shawn Deng
- * @date 2021-12-28 09:53:10
- */
 @JsonInclude(Include.NON_NULL)
 public class DestinationBill {
 

@@ -4,11 +4,6 @@ import com.vikadata.integration.oss.OssClientRequest;
 import com.vikadata.integration.oss.OssUploadAuth;
 import com.vikadata.integration.oss.OssUploadPolicy;
 
-/**
- *
- * @author Chambers
- * @date 2022/8/22
- */
 public class QiniuTemporaryClientTemplate {
 
     private QiniuOssClientRequestFactory ossClientRequestFactory;

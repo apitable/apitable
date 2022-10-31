@@ -1,5 +1,8 @@
 package com.vikadata.integration.vika.model;
 
+/**
+ * user contact information
+ */
 public class UserContactInfo {
 
     private String recordId;

@@ -1,10 +1,5 @@
 package com.vikadata.integration.vika.model;
 
-/**
- *
- * @author Shawn Deng
- * @date 2021-12-28 15:38:20
- */
 public class MemberField {
 
     private String id;

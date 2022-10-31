@@ -17,10 +17,8 @@ import org.springframework.util.MultiValueMap;
 
 /**
  * <p>
- * 登录授权 API
+ * Login authorization API
  * </p>
- * @author 刘斌华
- * @date 2022-05-24 16:17:56
  */
 public class AuthApi {
 
@@ -31,15 +29,13 @@ public class AuthApi {
     }
 
     /**
-     * 获取访问用户信息的 access_token
+     * Get access user information's access_token
      *
-     * @param tokenUrl 获取 access_token 的路径
-     * @param clientId IDaaS 应用的 Client ID
-     * @param clientSecret IDaaS 应用的 Client Secret
-     * @param request 请求参数
-     * @return 访问用户信息的 access_token
-     * @author 刘斌华
-     * @date 2022-05-24 17:20:38
+     * @param tokenUrl access_token's path
+     * @param clientId IDaaS application Client ID
+     * @param clientSecret IDaaS application Client Secret
+     * @param request request parameters
+     * @return Access user information's access_token
      */
     public AccessTokenResponse accessToken(String tokenUrl, String clientId, String clientSecret, AccessTokenRequest request) throws IdaasApiException {
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -55,13 +51,11 @@ public class AuthApi {
     }
 
     /**
-     * 获取用户信息
+     * Get user information
      *
-     * @param userInfoUrl 获取用户信息的路径
-     * @param accessToken 访问用户信息的 access_token
-     * @return 用户信息
-     * @author 刘斌华
-     * @date 2022-05-24 17:24:21
+     * @param userInfoUrl Path to obtain user information
+     * @param accessToken Access to user information_ token
+     * @return user information
      */
     public UserInfoResponse userInfo(String userInfoUrl, String accessToken) throws IdaasApiException {
         HttpHeaders httpHeaders = new HttpHeaders();

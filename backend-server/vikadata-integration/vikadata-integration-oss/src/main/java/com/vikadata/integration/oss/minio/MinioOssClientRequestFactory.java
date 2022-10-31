@@ -5,11 +5,6 @@ import io.minio.MinioClient;
 import com.vikadata.integration.oss.OssClientRequest;
 import com.vikadata.integration.oss.OssClientRequestFactory;
 
-/**
- *
- * @author Shawn Deng
- * @date 2021-03-23 12:51:56
- */
 public class MinioOssClientRequestFactory implements OssClientRequestFactory {
 
     private final String endpoint;

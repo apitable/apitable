@@ -10,9 +10,6 @@ import com.vikadata.integration.vika.jackson.LocalDateTimeToUnixSerializer;
 import com.vikadata.integration.vika.jackson.OrderChannelSerializer;
 import com.vikadata.integration.vika.jackson.OrderTypeSerializer;
 
-/**
- * @author Shawn Deng
- */
 public class BillingOrder {
 
     @JsonProperty("订单ID")

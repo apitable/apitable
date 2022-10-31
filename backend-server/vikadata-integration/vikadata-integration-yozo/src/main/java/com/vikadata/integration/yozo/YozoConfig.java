@@ -1,10 +1,5 @@
 package com.vikadata.integration.yozo;
 
-/**
- *
- * @author Shawn Deng
- * @date 2021-06-22 11:32:47
- */
 public class YozoConfig {
 
     private String appId;

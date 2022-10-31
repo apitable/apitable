@@ -5,22 +5,21 @@ import lombok.Setter;
 
 /**
  * <p>
- * 玉符 IDaaS 配置
+ * IDaaS config
  * </p>
- * @author 刘斌华
- * @date 2022-05-12 15:21:10
+ *
  */
 @Setter
 @Getter
 public class IdaasConfig {
 
     /**
-     * 玉符管理接口的域名。如：https://demo-admin.cig.tencentcs.com
+     * Idaas domain name of the management interface. Example：https://demo-admin.cig.tencentcs.com
      */
     private String systemHost;
 
     /**
-     * 玉符通讯录接口的域名。如：https://{tenantName}-admin.cig.tencentcs.com
+     * Idaas domain name of address book interface. Example：https://{tenantName}-admin.cig.tencentcs.com
      */
     private String contactHost;
 

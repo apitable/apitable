@@ -3,10 +3,8 @@ package com.vikadata.integration.gitlab;
 import org.gitlab4j.api.GitLabApi.ApiVersion;
 
 /**
- * GitLab 配置
+ * GitLab config
  *
- * @author Shawn Deng
- * @date 2021-01-13 14:15:10
  */
 public class GitLabConfig {
 

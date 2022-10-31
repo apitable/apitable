@@ -2,52 +2,50 @@ package com.vikadata.integration.vika.model;
 
 
 /**
- * <p> 
- * 钉钉商品信息
- * </p> 
- * @author zoe zheng 
- * @date 2021/10/26 17:45
+ * <p>
+ * DingTalk product information
+ * </p>
+ *
  */
-
 public class DingTalkGoodsInfo {
 
     /**
-     * 表ID
+     * table ID
      */
     private Integer seats;
 
     /**
-     * 附件容量
+     * capacity
      */
     private Long capacity;
 
     /**
-     * sku 码
+     * sku code
      */
     private String itemCode;
 
     /**
-     * 订阅计划ID
+     * billing plan ID
      */
     private String billingPlanId;
 
     /**
-     * vika产品编码
+     * vika product code
      */
     private String product;
 
     /**
-     * 周期
+     * period
      */
     private String period;
 
     /**
-     * 文件数量
+     * file number
      */
     private Integer nodes;
 
     /**
-     * 是否是内购商品
+     * is internal product
      */
     private Boolean internal;
 

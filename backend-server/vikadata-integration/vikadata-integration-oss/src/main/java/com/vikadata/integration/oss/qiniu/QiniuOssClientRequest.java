@@ -42,9 +42,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * 七牛云实现
- * @author Shawn Deng
- * @date 2021-03-23 12:51:12
+ * qiniu cloud realization
  */
 public class QiniuOssClientRequest extends AbstractOssClientRequest {
 
@@ -55,24 +53,24 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
     private final Auth auth;
 
     /**
-     * 存储区域ID
-     * eg: 华南区是 z2
+     * storage area ID
+     * eg: South China is z2
      * doc: https://developer.qiniu.com/kodo/1671/region-endpoint-fq
      */
     private final String regionId;
 
     /**
-     * 空间对应域名
+     * domain name corresponding to the space
      */
     private String downloadDomain;
 
     /**
-     * 回调Url
+     * callback url
      */
     private final String callbackUrl;
 
     /**
-     * callbackBody 的 Content-Type。默认为 application/x-www-form-urlencoded
+     * callbackBody's Content-Type. default is application/x-www-form-urlencoded
      */
     private final String callbackBodyType;
 
@@ -90,19 +88,20 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
     private boolean autoCreateBucket;
 
     /**
-     * 分片上传的阈值。只有当文件大于该值时，才会采用分片上传，否则采用普通上传
-     * 默认：100MB
+     * The threshold value of shard upload.
+     * Only when the file is greater than this value, it will be uploaded in fragments, otherwise it will be uploaded normally.
+     * default: 100MB
      */
     private static final int MULTIPART_UPLOAD_THRESHOLD = 100 * 1024 * 1024;
 
     /**
-     * 最小分片上传大小
-     * 默认：10MB
+     * minimum fragment upload size
+     * default: 10MB
      */
     private static final int MINIMUM_UPLOAD_PART_SIZE = 10 * 1024 * 1024;
 
     /**
-     * 分片上传使用的线程池最大数量
+     * maximum number of thread pools used for fragment upload
      */
     private static final int RESUMABLE_UPLOAD_MAX_CONCURRENT_COUNT = 8;
 
@@ -142,31 +141,31 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
                     return true;
                 }
                 else {
-                    throw new UnsupportedOperationException("您的Bucket不存在，无法初始化");
+                    throw new UnsupportedOperationException("Your bucket does not exist and cannot be initialized");
                 }
             }
         }
         catch (QiniuException e) {
-            // HTTP异常
-            throw new RuntimeException("桶操作失败");
+            // HTTP exception
+            throw new RuntimeException("barrel operation failed");
         }
         return false;
     }
 
     @Override
     public UrlFetchResponse uploadRemoteUrl(String bucketName, String remoteSrcUrl, String keyPath) throws IOException {
-        // 抓取网络资源到空间
+        // grab network resources to space
         try {
             StopWatch stopWatch = new StopWatch("上传网络资源耗时");
             stopWatch.start();
             FetchRet fetchRet = bucketManager.fetch(remoteSrcUrl, bucketName, keyPath);
             stopWatch.stop();
             LOGGER.info(stopWatch.prettyPrint());
-            LOGGER.info("上传成功, Key: {}, 文件类型: {}, 大小: {}", fetchRet.key, fetchRet.mimeType, fetchRet.fsize);
+            LOGGER.info("Upload succeeded, Key: {}, file type: {}, size: {}", fetchRet.key, fetchRet.mimeType, fetchRet.fsize);
             return new UrlFetchResponse(fetchRet.key, fetchRet.hash, fetchRet.fsize, fetchRet.mimeType);
         }
         catch (QiniuException ex) {
-            LOGGER.error("上传网络资源失败", ex);
+            LOGGER.error("failed to upload network resources", ex);
             throw new IOException(ex.error(), ex);
         }
     }
@@ -179,7 +178,7 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
     @Override
     public void uploadStreamForObject(String bucketName, InputStream in, String keyPath, String mimeType, String digest) throws IOException {
         isBucketExist(bucketName);
-        // 限制上传文件类型
+        // limit upload file types
         StringMap policy = new StringMap();
         policy.put("mimeLimit", "!text/html");
         String uploadToken = auth.uploadToken(bucketName, keyPath, 3600, policy, true);
@@ -190,22 +189,22 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
                 params.put("Content-Type", mimeType);
             }
             if (StrUtil.isNotBlank(digest)) {
-                // 上传块内容的 md5 值，如果指定服务端会进行校验，不指定不校验
+                // Upload the md5 value of the block content. If the server is specified, it will be verified. If not, it will not be verified
                 params.put("Content-MD5", digest);
             }
-            LOGGER.info("上传开始......");
-            StopWatch stopWatch = new StopWatch("上传任务耗时");
+            LOGGER.info("Upload Start......");
+            StopWatch stopWatch = new StopWatch("time consuming for uploading tasks");
             stopWatch.start();
             Response response = uploadManager.put(in, keyPath, uploadToken, params, null);
-            //解析上传成功的结果
+            // analyze the result of successful upload
             DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
             stopWatch.stop();
             LOGGER.info(stopWatch.prettyPrint());
-            LOGGER.info("上传成功: {} - {}", putRet.key, putRet.hash);
+            LOGGER.info("Upload succeeded: {} - {}", putRet.key, putRet.hash);
 
         }
         catch (QiniuException ex) {
-            LOGGER.error("上传失败", ex);
+            LOGGER.error("Upload failed", ex);
             throw new IOException(ex.error(), ex);
         }
     }
@@ -213,9 +212,9 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
     @Override
     public OssObject getObject(String bucketName, String keyPath) {
         try {
-            // domain   下载 domain, eg: qiniu.com【必须】
-            // useHttps 是否使用 https【必须】
-            // key      下载资源在七牛云存储的 key【必须】
+            // domain   download domain, eg: qiniu.com【must】
+            // useHttps whether to use https【must】
+            // key      download resources stored in qiniu cloud key【must】
             DownloadUrl downloadUrl = new DownloadUrl(downloadDomain, true, keyPath);
             String urlString = downloadUrl.buildURL();
             InputStream in = URLUtil.getStream(URLUtil.url(urlString));
@@ -245,22 +244,22 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
     public boolean deleteObject(String bucketName, String key) {
         try {
             Response response = bucketManager.delete(bucketName, key);
-            LOGGER.info("删除资源响应: {}", response.bodyString());
+            LOGGER.info("Delete Resource Response: {}", response.bodyString());
             return true;
         }
         catch (QiniuException e) {
-            LOGGER.error("删除资源失败", e);
+            LOGGER.error("Failed to delete resource", e);
         }
         return false;
     }
 
     @Override
     public void refreshCdn(String bucketName, String[] url) {
-        LOGGER.debug("开始刷新文件的cdn缓存...");
+        LOGGER.debug("Start refreshing the cdn cache of files...");
         CdnManager cdnManager = new CdnManager(auth);
         try {
             CdnResult.RefreshResult result = cdnManager.refreshUrls(url);
-            LOGGER.info("CDN缓存刷新结果code：" + result.code + "，状态：" + result.error);
+            LOGGER.info("CDN cache refresh result code：" + result.code + ", status：" + result.error);
         }
         catch (QiniuException e) {
             e.printStackTrace();
@@ -288,7 +287,7 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
     }
 
     /*
-     * 默认回调信息，这部分信息开发业务者不需要过于关注，都是配置项
+     * The default callback information, which the business developer should not pay too much attention to, is all configuration items
      */
     private Map<String, Object> defaultCallbackMeta(Map<String, Object> putExtra) {
         Map<String, Object> defaultMeta = new HashMap<>();
@@ -299,9 +298,9 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
     }
 
     /*
-     * 创建回调Body，关于回调返回的魔法值
+     * Create the callback body, about the magic value returned by the callback
      *
-     * 如果需要可以参考：https://developer.qiniu.com/kodo/1235/vars#magicvar-fname
+     * Refer to if necessary: https://developer.qiniu.com/kodo/1235/vars#magicvar-fname
      */
     private String createCallbackBody(Map<String, Object> putExtra) {
         JSONObject callBackBody = new JSONObject()

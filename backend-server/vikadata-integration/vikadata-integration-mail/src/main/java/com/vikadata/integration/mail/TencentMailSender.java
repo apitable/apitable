@@ -10,11 +10,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * <p>
- * 腾讯云邮件推送
+ * Tencent cloud email push
  * </p>
  *
- * @author Chambers
- * @date 2022/2/7
  */
 public class TencentMailSender extends TencentSesClientAccessor implements CloudMailSender {
 
@@ -27,7 +25,7 @@ public class TencentMailSender extends TencentSesClientAccessor implements Cloud
     @Override
     public void send(CloudEmailMessage message) {
         try {
-            // 实例化一个请求对象,每个接口都会对应一个request对象
+            // Instantiate a request object, and each interface will correspond to a request object
             SendEmailRequest req = new SendEmailRequest();
 
             req.setSubject(message.getSubject());
@@ -39,7 +37,7 @@ public class TencentMailSender extends TencentSesClientAccessor implements Cloud
             template.setTemplateData(message.getTemplateData());
             req.setTemplate(template);
 
-            // 发送邮件
+            // send email
             this.getClient().SendEmail(req);
         }
         catch (TencentCloudSDKException e) {

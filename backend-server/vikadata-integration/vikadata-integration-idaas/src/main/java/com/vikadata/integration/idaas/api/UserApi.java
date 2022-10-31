@@ -20,10 +20,9 @@ import org.springframework.util.MultiValueMap;
 
 /**
  * <p>
- * 人员 API
+ * User API
  * </p>
- * @author 刘斌华
- * @date 2022-05-13 16:25:27
+ *
  */
 public class UserApi {
 
@@ -36,14 +35,12 @@ public class UserApi {
     }
 
     /**
-     * 获取人员列表
+     * get user list
      *
-     * @param request 请求参数
-     * @param serviceAccount 租户 ServiceAccount
-     * @param tenantName 租户名
-     * @return 返回结果
-     * @author 刘斌华
-     * @date 2022-05-13 16:43:13
+     * @param request request parameters
+     * @param serviceAccount tenant ServiceAccount
+     * @param tenantName tenant name
+     * @return result
      */
     public UsersResponse users(UsersRequest request, ServiceAccount serviceAccount, String tenantName) throws IdaasApiException {
         MultiValueMap<String, Object> multiValueMap = new LinkedMultiValueMap<>();
@@ -73,7 +70,8 @@ public class UserApi {
         if (CollUtil.isNotEmpty(userResponses)) {
             for (UserResponse userResponse : userResponses) {
                 Values userValues = userResponse.getValues();
-                // 用户没有手机号码、邮箱时会传空字符，这里设置为 null，防止后续保存时字段重复
+                // If a user does not have a mobile phone number or email address, empty characters will be transmitted.
+                // Set this parameter to null to prevent field duplication in future saving.
                 if (CharSequenceUtil.isBlank(userValues.getPhoneNum())) {
                     userValues.setPhoneNum(null);
                 }

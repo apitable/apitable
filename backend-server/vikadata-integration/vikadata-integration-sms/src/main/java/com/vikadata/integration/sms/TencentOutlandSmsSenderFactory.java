@@ -2,11 +2,9 @@ package com.vikadata.integration.sms;
 
 /**
  * <p>
- * 腾讯短信发送器工厂
+ * Tencent SMS transmitter factory
  * </p>
  *
- * @author Chambers
- * @date 2021/5/13
  */
 public class TencentOutlandSmsSenderFactory extends AbstractSmsSenderFactory implements OutlandSmsSenderFactory {
 

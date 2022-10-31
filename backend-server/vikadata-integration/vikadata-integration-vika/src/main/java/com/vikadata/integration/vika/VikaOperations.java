@@ -27,18 +27,16 @@ import com.vikadata.integration.vika.model.template.TemplateConfigDatasheetParam
 
 /**
  * <p>
- * vika sdk 接口
+ * vika sdk interface
  * </p>
  *
- * @author Chambers
  */
 public interface VikaOperations {
-
     /**
-     * 获取 GM 权限配置信息
+     * Get GM permission configuration information
      *
-     * @param dstId 数表ID
-     * @return 配置信息
+     * @param dstId datasheet id
+     * @return GMPermission information
      */
     List<GmPermissionInfo> getGmPermissionConfiguration(String dstId);
 
@@ -49,194 +47,192 @@ public interface VikaOperations {
      * @param token request bearer token
      * @param param config datasheet object
      * @return TemplateCenterConfigInfos
-     * @author Chambers
-     * @date 2022/9/22
      */
     List<TemplateCenterConfigInfo> getTemplateCenterConfigInfos(String host, String token, TemplateConfigDatasheetParam param);
 
     /**
-     * 获取热门推荐模板配置信息
+     * Get configuration information of popular recommended templates
      *
-     * @param dstId 数表ID
-     * @param viewId 视图ID
-     * @param lang 语言
-     * @return 配置信息
+     * @param dstId datasheet id
+     * @param viewId view id
+     * @param lang language
+     * @return config information
      */
     @Deprecated
     List<RecommendTemplateInfo> getRecommendTemplateConfiguration(String dstId, String viewId, String lang);
 
     /**
-     * 获取上架模板配置信息
+     * Get the configuration information of the online template
      *
-     * @param dstId 数表ID
-     * @param lang 语言
-     * @return 配置信息
+     * @param dstId datasheet id
+     * @param lang language
+     * @return config information
      */
     @Deprecated
     List<OnlineTemplateInfo> getOnlineTemplateConfiguration(String dstId, String lang);
 
     /**
-     * 获取上架模板分类
+     * Get the category of the template on the shelf
      *
-     * @param dstId 数表ID
-     * @param viewId 视图ID
-     * @param lang 语言
-     * @return 模板类别
+     * @param dstId datasheet id
+     * @param viewId view id
+     * @param lang language
+     * @return template type
      */
     @Deprecated
     List<String> getTemplateCategoryName(String dstId, String viewId, String lang);
 
     /**
-     * 获取全局小组件/小组件模版配置信息
+     * Get the global widget/widget template configuration information
      *
-     * @param dstId 数表ID
-     * @return 配置信息
+     * @param dstId datasheet id
+     * @return config information
      */
     List<GlobalWidgetInfo> getGlobalWidgetPackageConfiguration(String dstId);
 
     /**
-     * 获取钉钉定制应用的配置
+     * Get the configuration of nail customization application
      *
-     * @param dstId 数表ID
-     * @return 配置信息
+     * @param dstId datasheet id
+     * @return config information
      */
     List<DingTalkAgentAppInfo> getDingTalkAgentAppConfiguration(String dstId);
 
     /**
-     * 保存统计数据
+     * Save Statistics
      *
-     * @param dstId 数表ID
-     * @param data 数据
+     * @param dstId datasheet id
+     * @param data data
      */
     void saveStatisticsData(String dstId, String data);
 
     /**
-     * 获取钉钉定制应用的配置
+     * Get the configuration of DingTalk custom application
      *
-     * @param dstId 订阅计划数表ID
-     * @param featureDstId 订阅属性表
-     * @return 配置信息
+     * @param dstId Subscription plan ID
+     * @param featureDstId Subscription Property Sheet
+     * @return config information
      */
     List<DingTalkGoodsInfo> getDingTalkGoodsInfo(String token, String host, String dstId, String featureDstId);
 
     /**
-     * 获取订阅计划属性配置
+     * Get billing plan property configuration
      *
-     * @param featureDstId 订阅属性表
+     * @param featureDstId Subscription Property Sheet
      * @return Map<String, Record>
      */
     Map<String, Record> getBillingFeatures(String token, String host, String featureDstId);
 
     /**
-     * 保存钉钉订阅信息
+     * Save DingTalk subscription information
      *
-     * @param dstId 数表ID
-     * @param subscriptionInfo 订阅信息
+     * @param dstId datasheet id
+     * @param subscriptionInfo Subscription information
      */
     void saveDingTalkSubscriptionInfo(String dstId, DingTalkSubscriptionInfo subscriptionInfo);
 
     /**
-     * 获取维格表存储的订单信息
+     * Get the order information stored in the vika
      *
-     * @param dstId 数表ID
-     * @param viewId 视图ID
+     * @param dstId datasheet
+     * @param viewId view id
      * @return List<DingTalkOrderInfo>
      */
     List<DingTalkOrderInfo> getDingTalkOrderInfoList(String dstId, String viewId);
 
     /**
-     * 查询客户订单表
+     * Query customer order table
      *
-     * @param host 主机
-     * @param token 令牌
-     * @param dstId 数表ID
-     * @return 列表
+     * @param host host
+     * @param token token
+     * @param dstId datasheet id
+     * @return list
      */
     List<Map<String, Object>> fetchCustomerOrder(String host, String token, String dstId, String fiter);
 
     /**
-     * 获取白名单记录
+     * Get white list records
      *
-     * @return 原白名单数据
+     * @return Original white list data
      */
     OriginalWhite fetchRecordOnWhiteList(String host, String token, String dstId);
 
     /**
-     * 更新白名单处理状态
+     * Update white list processing status
      *
-     * @param recordId 记录ID
-     * @param statusName 状态值
+     * @param recordId record id
+     * @param statusName status value
      */
     void updateWhiteMigrateStatus(String host, String token, String dstId, String recordId, String statusName);
 
     /**
-     * 同步到新的订阅订单表
+     * Synchronize to new subscription order table
      *
-     * @param originalWhite 源订单表
+     * @param originalWhite Source Order Table
      */
     void addRecordToBillingSheet(OriginalWhite originalWhite);
 
     /**
-     * 获取钉钉搭模版信息
+     * Get DingTalk template information
      *
-     * @param dstId 模版配置表ID
-     * @param viewId 视图ID
+     * @param dstId template configuration table ID
+     * @param viewId view id
      */
     List<DingTalkDaTemplateInfo> getDingTalkDaTemplateInfo(String dstId, String viewId);
 
     /**
-     * 获取新订单
+     * Get new orders
      *
      * @return UserOrder
      */
     UserOrder fetchOrderData();
 
     /**
-     * 更新订单状态
+     * Update order status
      *
-     * @param recordId 记录id
-     * @param statusName 状态名
-     * @param statusDesc 状态信息备注
+     * @param recordId record id
+     * @param statusName status name
+     * @param statusDesc status remark information
      */
     void updateOrderHandleStatus(String recordId, String statusName, String statusDesc);
 
     /**
-     * 执行自定义Command
+     * Execute Custom Command
      *
-     * @param datasheetId 数表Id
-     * @param request 请求参数，参考：{@link CollaCommandFactory}
+     * @param datasheetId datasheet id
+     * @param request request parameters, reference:{@link CollaCommandFactory}
      */
     boolean executeCommand(String datasheetId, Map<String, Object> request);
 
     /**
-     * 获取积分奖励信息
+     * Get integral reward information
      *
-     * @param host 主机
-     * @param token 令牌
-     * @param dstId 数表ID
-     * @param viewId 视图ID
+     * @param host host
+     * @param token token
+     * @param dstId datasheet id
+     * @param viewId view id
      * @return IntegralRewardInfo
      */
     List<IntegralRewardInfo> getIntegralRewardInfo(String host, String token, String dstId, String viewId);
 
     /**
-     * 更新积分奖励结果
+     * Update integral reward result
      *
-     * @param host 主机
-     * @param token 令牌
-     * @param dstId 数表ID
-     * @param recordId 视图ID
-     * @param result 结果
-     * @param processor 处理者
+     * @param host host
+     * @param token token
+     * @param dstId datasheet id
+     * @param recordId view id
+     * @param result result
+     * @param processor processor
      */
     void updateIntegralRewardResult(String host, String token, String dstId, String recordId, String result, String processor);
 
     /**
-     * 同步订单
+     * Synchronize orders
      *
-     * @param order 订单
-     * @param items 订单子项
-     * @param payments 订单支付详情
+     * @param order order
+     * @param items order items
+     * @param payments order payment details
      */
     void syncOrder(BillingOrder order, List<BillingOrderItem> items, List<BillingOrderPayment> payments);
 

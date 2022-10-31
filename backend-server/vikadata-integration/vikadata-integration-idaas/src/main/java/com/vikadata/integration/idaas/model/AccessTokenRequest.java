@@ -6,17 +6,16 @@ import lombok.Setter;
 
 /**
  * <p>
- * 获取访问用户信息的 access_token
+ * Access to access user information_ token
  * </p>
- * @author 刘斌华
- * @date 2022-06-07 20:03:14
+ *
  */
 @Setter
 @Getter
 public class AccessTokenRequest {
 
     /**
-     * 授权方式
+     * way of authorization
      */
     @JsonProperty("grant_type")
     private String grantType = "authorization_code";
@@ -28,7 +27,7 @@ public class AccessTokenRequest {
     private String code;
 
     /**
-     * 回调地址
+     * token url
      */
     @JsonProperty("redirect_uri")
     private String redirectUri;

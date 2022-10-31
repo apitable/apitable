@@ -2,11 +2,9 @@ package com.vikadata.integration.vika.model;
 
 /**
  * <p>
- * 积分奖励信息
+ * integral reward information
  * </p>
  *
- * @author Chambers
- * @date 2022/6/24
  */
 public class IntegralRewardInfo {
 

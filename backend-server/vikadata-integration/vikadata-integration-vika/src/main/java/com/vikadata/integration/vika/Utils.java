@@ -4,14 +4,6 @@ import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 
-/**
- * <p>
- *
- * </p>
- *
- * @author Chambers
- * @date 2022/9/22
- */
 public class Utils {
 
     public static String getRelativePath(String attachCellValue) {

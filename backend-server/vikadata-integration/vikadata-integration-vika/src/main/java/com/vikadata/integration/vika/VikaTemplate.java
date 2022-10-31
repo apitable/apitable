@@ -79,10 +79,9 @@ import com.vikadata.integration.vika.model.template.TemplateConfigDatasheetParam
 
 /**
  * <p>
- * vika sdk 实现类
+ * vika sdk implementation class
  * </p>
  *
- * @author Chambers
  */
 public class VikaTemplate extends VikaAccessor implements VikaOperations {
     private static final Integer MAX_PAGE_SIZE = 1000;
@@ -98,20 +97,20 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
         LOGGER.info("Get GM Permission Configuration Information");
         String resource = "ACTION";
         String role = "PERMISSION_UNIT";
-        // 构建查询条件
+        // build query criteria
         ApiQueryParam queryParam = new ApiQueryParam()
                 .withFields(Arrays.asList(resource, role))
                 .withFilter("{ShouldUpdate} = 1");
-        // 查询结果
+        // query results
         Pager<Record> records = this.getClient().getRecordApi().getRecords(dstId, queryParam);
         List<GmPermissionInfo> infos = new ArrayList<>(records.getTotalItems());
         while (records.hasNext()) {
             for (Record record : records.next()) {
-                // 获取组织单元ID
+                // get unit ids
                 JSONArray jsonArray = JSONUtil.parseArray(record.getFields().get(role));
                 List<Long> unitIds = new ArrayList<>();
                 jsonArray.jsonIter().forEach(unit -> unitIds.add(unit.getLong("id")));
-                // 构建信息
+                // build information
                 GmPermissionInfo info = new GmPermissionInfo(record.getFields().get(resource).toString(), unitIds);
                 infos.add(info);
             }
@@ -306,10 +305,10 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
     @Override
     public List<RecommendTemplateInfo> getRecommendTemplateConfiguration(String dstId, String viewId, String lang) {
         LOGGER.info("Get Recommend Template Configuration Information");
-        // 查询结果
+        // query result
         List<RecommendTemplateInfo> list = new ArrayList<>();
         try {
-            // 构建查询条件
+            // build query criteria
             ApiQueryParam queryParam = new ApiQueryParam(1, MAX_PAGE_SIZE)
                     .withFilter(StrUtil.format("{i18n} = \"{}\" && {RULE} = 1", lang))
                     .withView(viewId);
@@ -319,7 +318,7 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
                 for (Record record : records.next()) {
                     Map<String, Object> fields = record.getFields();
                     if (fields != null) {
-                        // 获取组织单元ID
+                        // get unit ids
                         RecommendTemplateInfo info = mapper.convertValue(fields, RecommendTemplateInfo.class);
                         list.add(info);
                     }
@@ -327,7 +326,7 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
             }
         }
         catch (ApiException e) {
-            LOGGER.error("获取模板热门推荐配置异常", e);
+            LOGGER.error("Exception in obtaining popular recommended template configuration", e);
         }
         return list;
     }
@@ -335,10 +334,10 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
     @Override
     public List<OnlineTemplateInfo> getOnlineTemplateConfiguration(String dstId, String lang) {
         LOGGER.info("Get Online Template Configuration Information");
-        // 查询结果
+        // query result
         List<OnlineTemplateInfo> list = new ArrayList<>();
         try {
-            // 构建查询条件
+            // build query criteria
             ApiQueryParam queryParam = new ApiQueryParam(1, MAX_PAGE_SIZE)
                     .withCellFormat(CellFormat.STRING)
                     .withFilter(StrUtil.format("{i18n} = \"{}\" && {RULE} = 1", lang));
@@ -347,7 +346,7 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
                 for (Record record : records.next()) {
                     Map<String, Object> fields = record.getFields();
                     if (fields != null) {
-                        // 获取组织单元ID
+                        // get unit id
                         OnlineTemplateInfo info = new OnlineTemplateInfo();
                         info.setTemplateName(fields.get("TEMPLATE_NAME").toString());
                         Object category = fields.get("CATEGORY");
@@ -364,7 +363,7 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
             }
         }
         catch (ApiException e) {
-            LOGGER.error("获取在线模版配置异常", e);
+            LOGGER.error("Exception in obtaining online template configuration", e);
         }
         return list;
     }
@@ -372,10 +371,10 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
     @Override
     public List<String> getTemplateCategoryName(String dstId, String viewId, String lang) {
         LOGGER.info("Get Template Category Name Configuration Information");
-        // 查询结果
+        // query results
         List<String> list = new ArrayList<>();
         try {
-            // 构建查询条件
+            // build query criteria
             ApiQueryParam queryParam = new ApiQueryParam(1, MAX_PAGE_SIZE)
                     .withCellFormat(CellFormat.STRING)
                     .withFilter(StrUtil.format("{i18n} = \"{}\"", lang))
@@ -386,7 +385,7 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
                 for (Record record : records.next()) {
                     Map<String, Object> fields = record.getFields();
                     if (fields != null) {
-                        // 获取组织单元ID
+                        // get unit ids
                         Object templateCateGory = fields.get("TEMPLATE_CATEGORY");
                         list.add((String) templateCateGory);
                     }
@@ -394,7 +393,7 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
             }
         }
         catch (ApiException e) {
-            LOGGER.error("获取模版类别配置异常", e);
+            LOGGER.error("Exception in obtaining template category configuration", e);
         }
         return list;
     }
@@ -402,10 +401,10 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
     @Override
     public List<GlobalWidgetInfo> getGlobalWidgetPackageConfiguration(String dstId) {
         LOGGER.info("Get Widget Package Configuration Information");
-        // 查询结果
+        // query results
         List<GlobalWidgetInfo> result = new ArrayList<>();
         try {
-            // 构建查询条件
+            // build query criteria
             ApiQueryParam queryParam = new ApiQueryParam(1, MAX_PAGE_SIZE).withCellFormat(CellFormat.STRING);
 
             Pager<Record> records = this.getClient().getRecordApi().getRecords(dstId, queryParam);
@@ -426,7 +425,7 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
                         }
                         String templateCover = MapUtil.getStr(fields, "模版封面图");
                         if (StrUtil.isNotBlank(templateCover)) {
-                            // 获取相对路径的图片地址
+                            // Get the image address of the relative path
                             globalWidgetInfo.setTemplateCover(StrUtil.removePrefix(URLUtil.getPath(ReUtil.getGroup1("\\((.+)\\)", templateCover)), "/"));
                         }
                         String website = MapUtil.getStr(fields, "小程序官网地址");
@@ -441,7 +440,7 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
             }
         }
         catch (ApiException e) {
-            LOGGER.error("获取在线模版配置异常", e);
+            LOGGER.error("Exception in obtaining online template configuration", e);
         }
         return result;
     }
@@ -449,7 +448,7 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
     @Override
     public List<DingTalkAgentAppInfo> getDingTalkAgentAppConfiguration(String dstId) {
         LOGGER.info("Get ding talk agent app configuration");
-        // 查询结果
+        // query results
         List<DingTalkAgentAppInfo> list = new ArrayList<>();
         try {
             Pager<Record> records = this.getClient().getRecordApi().getRecords(dstId);
@@ -457,7 +456,7 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
                 for (Record record : records.next()) {
                     Map<String, Object> fields = record.getFields();
                     if (fields != null && fields.get("rules") != null && fields.get("canDeploy") != null && fields.get("deletedAt") == null) {
-                        // 获取组织单元ID
+                        // get uint ids
                         DingTalkAgentAppInfo info = BeanUtil.mapToBean(record.getFields(), DingTalkAgentAppInfo.class, true,
                                 null);
                         list.add(info);
@@ -466,7 +465,7 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
             }
         }
         catch (ApiException e) {
-            LOGGER.error("获取钉钉的定制应用配置异常，请确认是否正常?");
+            LOGGER.error("Exception in obtaining customized application configuration of DingTalk, please confirm whether it is normal?");
         }
         return list;
     }
@@ -493,17 +492,17 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
     @Override
     public List<DingTalkGoodsInfo> getDingTalkGoodsInfo(String token, String host, String dstId, String featureDstId) {
         LOGGER.info("Get ding talk goods configuration");
-        // 查询结果
+        // query result
         List<DingTalkGoodsInfo> list = new ArrayList<>();
         Map<String, Record> featureMap = getBillingFeatures(token, host, featureDstId);
         if (featureMap.isEmpty()) {
-            LOGGER.error("订阅计划属性为空");
+            LOGGER.error("subscription plan property is empty");
             return list;
         }
         try {
-            // 构建查询条件
-            // field 依次为 ID，features , 钉钉规格码（内购商品）,钉钉规格码（付费应用）,product
-            // 筛选条件为付款渠道=钉钉
+            // build query criteria
+            // field in order: ID，features , DingTalk specification code（domestic goods）,DingTalk specification code（paid application）,product
+            // Filter by payment channel=DingTalk
             String featureField = "fldHU39KnAaUZ";
             String idField = "fldasdYwFe6mU";
             String internalGoodsField = "fldLSeE3vBxgy";
@@ -529,12 +528,12 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
                     String period = record.getFields().get(periodField).toString();
                     String id = record.getFields().get(idField).toString();
                     if (!id.contains(period.toLowerCase(Locale.ROOT))) {
-                        LOGGER.error("钉钉订阅计划配置有问题:{}", id);
+                        LOGGER.error("There is a problem with the DingTalk subscription plan configuration:{}", id);
                         continue;
                     }
                     for (Object featureId : featureIds) {
                         if (featureMap.containsKey(featureId.toString())) {
-                            // 钉钉只考虑席位和容量
+                            // DingTalk only considers seats and capacity
                             Record feature = featureMap.get(featureId.toString());
                             Object function = feature.getFields().get("function");
                             if (ObjectUtil.equal(function, "seats")) {
@@ -548,7 +547,7 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
                             }
                         }
                     }
-                    // 一条订阅计划有两个sku码
+                    // One subscription plan has two sku codes
                     if (seats != null && capacity != null && nodes != null) {
                         if (record.getFields().get(internalGoodsField) != null) {
                             DingTalkGoodsInfo info = new DingTalkGoodsInfo();
@@ -576,13 +575,13 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
                         }
                     }
                     else {
-                        LOGGER.error("钉钉订阅计划配置有问题:{}", record.getFields().get(idField));
+                        LOGGER.error("There is a problem with the DingTalk subscription plan configuration:{}", record.getFields().get(idField));
                     }
                 }
             }
         }
         catch (ApiException e) {
-            LOGGER.error("获取钉钉的定制应用配置异常，请确认是否正常?");
+            LOGGER.error("Exception in obtaining customized application configuration of DingTalk, please confirm whether it is normal?");
         }
         return list;
     }
@@ -591,10 +590,10 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
     @Override
     public Map<String, Record> getBillingFeatures(String token, String host, String featureDstId) {
         LOGGER.info("Get billing features configuration");
-        // 查询结果
+        // query result
         Map<String, Record> result = new HashMap<>();
         try {
-            // 构建查询条件
+            // build query criteria
             ApiQueryParam queryParam = new ApiQueryParam(1, MAX_PAGE_SIZE)
                     .withCellFormat(CellFormat.STRING)
                     .withFields(ListUtil.toList("id", "function", "specification"));
@@ -606,7 +605,7 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
             }
         }
         catch (ApiException e) {
-            LOGGER.error("获取订阅计划属性配置异常，请确认是否正常?");
+            LOGGER.error("Exception in obtaining subscription plan property configuration, please confirm whether it is normal?");
         }
         return result;
     }
@@ -642,8 +641,8 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
 
     @Override
     public List<DingTalkOrderInfo> getDingTalkOrderInfoList(String dstId, String viewId) {
-        LOGGER.info("获取钉钉订阅订单信息");
-        // 查询结果
+        LOGGER.info("Get DingTalk subscription order information");
+        // query results
         Map<String, DingTalkOrderInfo> result = new HashMap<>();
         String orderIdField = "order_id";
         String goodsCodeField = "goods_code";
@@ -653,7 +652,7 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
         String subscriptionTypeField = "subscription_type";
         String createdAtField = "created_at";
         try {
-            // 构建查询条件
+            // build query criteria
             ApiQueryParam queryParam = new ApiQueryParam(1, MAX_PAGE_SIZE)
                     .withCellFormat(CellFormat.STRING)
                     .withFieldKey(FieldKey.Name)
@@ -671,7 +670,7 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
             }
         }
         catch (ApiException e) {
-            LOGGER.error("获取订阅计划属性配置异常，请确认是否正常?");
+            LOGGER.error("Exception in obtaining subscription plan property configuration, please confirm whether it is normal?");
         }
         return new ArrayList<>(result.values());
     }
@@ -690,7 +689,7 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
 
     @Override
     public OriginalWhite fetchRecordOnWhiteList(String host, String token, String dstId) {
-        // 构建查询条件
+        // build query criteria
         ApiQueryParam queryParam = new ApiQueryParam(1, 1)
                 .withView("viwfShmNeVy1e")
                 .withCellFormat(CellFormat.STRING)
@@ -736,11 +735,11 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
         DestinationBill bill = new DestinationBill();
         bill.setSpaceId(originalWhite.getSpaceId());
         bill.setSpaceName(originalWhite.getSpaceName());
-        // 客户
+        // customer
         bill.setCustomers(originalWhite.getCustomers());
         bill.setCustomerContact(originalWhite.getCustomerContact());
         bill.setBillingType("开通");
-        // 对接人
+        // counterpart
         if (CollUtil.isNotEmpty(originalWhite.getContact())) {
             List<MemberField> contact = originalWhite.getContact().stream().reduce(new ArrayList<>(),
                     (members, item) -> {
@@ -781,10 +780,10 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
     @Override
     public List<DingTalkDaTemplateInfo> getDingTalkDaTemplateInfo(String dstId, String viewId) {
         LOGGER.info("Get ding talk da template configuration");
-        String templateIdField = "模板ID";
+        String templateIdField = "模版ID";
         String templateIconField = "dingtalk_icon";
         String templateNameField = "TEMPLATE_NAME";
-        // 查询结果
+        // query results
         List<DingTalkDaTemplateInfo> list = new ArrayList<>();
         ApiQueryParam queryParam = new ApiQueryParam(1, MAX_PAGE_SIZE)
                 .withFieldKey(FieldKey.Name)
@@ -810,14 +809,14 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
                             list.add(info);
                         }
                         else {
-                            LOGGER.error("钉钉搭模版配置错误:{}:{}:{}", templateName, templateId, templateIcon);
+                            LOGGER.error("DingTalk template configuration error:{}:{}:{}", templateName, templateId, templateIcon);
                         }
                     }
                 }
             }
         }
         catch (ApiException e) {
-            LOGGER.error("获取钉钉搭的模版异常，请确认是否正常?", e);
+            LOGGER.error("Exception in obtaining the template of DingTalk, please confirm whether it is normal?", e);
         }
         return list;
     }
@@ -863,24 +862,24 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
             return result.isSuccess();
         }
         catch (ApiException e) {
-            LOGGER.error("执行自定义Cmd异常：", e);
+            LOGGER.error("Exception in executing custom Cmd：", e);
             return false;
         }
     }
 
     @Override
     public List<IntegralRewardInfo> getIntegralRewardInfo(String host, String token, String dstId, String viewId) {
-        // 构建查询条件
+        // build query criteria
         ApiQueryParam queryParam = new ApiQueryParam()
                 .withView(viewId)
                 .withFilter("{RULE} = 1");
-        // 查询结果
+        // query results
         Pager<Record> records = this.getClient(host, token).getRecordApi().getRecords(dstId, queryParam);
         List<IntegralRewardInfo> infos = new ArrayList<>(records.getTotalItems());
         while (records.hasNext()) {
             for (Record record : records.next()) {
                 Map<String, Object> recordMap = record.getFields();
-                // 构建信息
+                // build information
                 IntegralRewardInfo info = new IntegralRewardInfo();
                 info.setRecordId(record.getRecordId());
                 info.setAreaCode(MapUtil.getStr(recordMap, "AREA_CODE"));
@@ -910,14 +909,14 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
         URI uri = URLUtil.toURI(getHostUrl());
         String env = Arrays.stream(uri.getHost().split("\\.")).iterator().next();
         JSONObject config = loadOrderConfig(env);
-        // 订单列表
+        // order list
         CreateRecordRequest orderRecord = new CreateRecordRequest()
                 .withFieldKey(FieldKey.Name)
                 .withRecords(Collections.singletonList(new RecordMap().withFields(JacksonConverter.toMap(order))));
         List<Record> records = getClient().getRecordApi().addRecords(config.getStr("order"), orderRecord);
         String recordId = records.iterator().next().getRecordId();
 
-        // 订单详情
+        // order detail
         List<RecordMap> orderItemRecordMaps = new ArrayList<>();
         items.forEach(item -> {
             item.setOrderIds(Collections.singletonList(recordId));
@@ -927,7 +926,7 @@ public class VikaTemplate extends VikaAccessor implements VikaOperations {
                 .withFieldKey(FieldKey.Name)
                 .withRecords(orderItemRecordMaps));
 
-        // 支付详情
+        // pay detail
         if (CollUtil.isEmpty(payments)) {
             return;
         }

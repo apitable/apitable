@@ -8,59 +8,58 @@ import lombok.Setter;
 
 /**
  * <p>
- * 获取人员列表
+ * Get Personnel List
  * </p>
- * @author 刘斌华
- * @date 2022-05-13 17:12:00
+ *
  */
 @Setter
 @Getter
 public class UsersRequest {
 
     /**
-     * 人员状态。ACTIVE、SUSPENDED(已停用)
+     * person status ACTIVE、SUSPENDED(deactivated)
      */
     @JsonProperty("status")
     private String status;
 
     /**
-     * 人员所属部门
+     * department of personnel
      */
     @JsonProperty("dept_id")
     private String deptId;
 
     /**
-     * 人员手机号
+     * Personnel mobile phone number
      */
     @JsonProperty("phone_num")
     private String phoneNum;
 
     /**
-     * 指定人员的更新时间范围，通过更新时间范围筛选。时间戳，毫秒
+     * Specify the update time range of personnel, and filter by the update time range. Timestamp, ms
      */
     @JsonProperty("start_time")
     private Long startTime;
 
     /**
-     * 指定人员的更新时间范围，通过更新时间范围筛选。时间戳，毫秒
+     * Specify the update time range of personnel, and filter by the update time range. Timestamp, ms
      */
     @JsonProperty("end_time")
     private Long endTime;
 
     /**
-     * 起始页码。从 0 开始
+     * Start page number. Start at 0
      */
     @JsonProperty("page_index")
     private Integer pageIndex;
 
     /**
-     * 分页大小
+     * page size
      */
     @JsonProperty("page_size")
     private Integer pageSize;
 
     /**
-     * 排序字段，前面带 {@code _} 表示升序，否则降序
+     * sort field, preceded by {@code _} indicates ascending order, otherwise descending order
      */
     @JsonProperty("order_by")
     private List<String> orderBy;

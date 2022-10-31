@@ -2,11 +2,9 @@ package com.vikadata.integration.vika.model;
 
 /**
  * <p>
- * 上线模板配置信息
+ * Online template configuration information
  * </p>
  *
- * @author Chambers
- * @date 2021/3/25
  */
 public class OnlineTemplateInfo {
     private String templateName;

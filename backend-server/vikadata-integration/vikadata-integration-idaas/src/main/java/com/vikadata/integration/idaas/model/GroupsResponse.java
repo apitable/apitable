@@ -7,10 +7,9 @@ import lombok.Setter;
 
 /**
  * <p>
- * 获取用户组列表
+ * Get the list of user group
  * </p>
- * @author 刘斌华
- * @date 2022-05-13 17:34:26
+ *
  */
 @Setter
 @Getter
@@ -31,10 +30,10 @@ public class GroupsResponse {
         private String type;
 
         /**
-         * 用户组排序
+         * User Group Sort
          *
          * <p>
-         * 注意：接口本身并没有返回排序值，这里是方便同步至维格表进行排序使用
+         * Note: The interface itself does not return the sort value, here is convenient to synchronize to the VIKA for sorting use
          * </p>
          */
         private Integer order;

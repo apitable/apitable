@@ -15,11 +15,6 @@ import com.vikadata.integration.oss.OssClientRequest;
 import com.vikadata.integration.oss.OssObject;
 import com.vikadata.integration.oss.UrlFetchResponse;
 
-/**
- *
- * @author Shawn Deng
- * @date 2021-11-06 14:36:15
- */
 @Disabled("no assertion")
 public class QiniuOssClientRequestTest {
 
@@ -32,11 +27,11 @@ public class QiniuOssClientRequestTest {
         URL url = URLUtil.url(remoteUrl);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         String checksum = DigestUtil.md5Hex(urlConnection.getInputStream());
-        System.out.println("上传前的checksum: " + checksum);
+        System.out.println("Before upload checksum: " + checksum);
         UrlFetchResponse response = request.uploadRemoteUrl("vk-assets-ltd",
                 remoteUrl,
                 "test/testjpg");
-        System.out.println("上传后的结果: " + response.toString());
+        System.out.println("Results after uploading: " + response.toString());
     }
 
     @Test

@@ -3,10 +3,8 @@ package com.vikadata.integration.vika.model;
 import java.util.List;
 
 /**
- * 原白名单
- * 时长
- * @author Shawn Deng
- * @date 2021-12-28 00:17:11
+ * Original white list
+ * duration
  */
 public class OriginalWhite {
 

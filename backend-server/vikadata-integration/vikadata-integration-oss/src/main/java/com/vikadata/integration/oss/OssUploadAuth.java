@@ -5,8 +5,6 @@ package com.vikadata.integration.oss;
  * oss upload credentials
  * </p>
  *
- * @author Pengap
- * @date 2022/3/31 17:52:02
  */
 public class OssUploadAuth {
 

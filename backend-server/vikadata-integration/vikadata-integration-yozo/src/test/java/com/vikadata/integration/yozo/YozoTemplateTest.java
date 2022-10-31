@@ -9,11 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import com.vikadata.integration.yozo.YozoConfig.Uri;
 
-/**
- *
- * @author Shawn Deng
- * @date 2021-06-22 11:47:37
- */
 @Disabled("no assertion")
 public class YozoTemplateTest {
 
@@ -34,7 +29,7 @@ public class YozoTemplateTest {
     public void testPreview() throws UnsupportedEncodingException {
         String fileUrl = "https://s1.vika.cn/%s?attname=%s";
         String token = "space/2021/06/21/677157111a7c4e62be512aa6d210565a";
-        String attachName = "JAVA-李锦-20+2-1!0@6#2$1%D&H*;) [].pdf";
+        String attachName = "JAVA-LiJing-20+2-1!0@6#2$1%D&H*;) [].pdf";
         String encode = URLEncoder.encode(attachName.replaceAll("\\s|%", ""), "UTF-8");
         String url = String.format(fileUrl, token, encode);
         String previewUrl = yozoTemplate.preview(url);

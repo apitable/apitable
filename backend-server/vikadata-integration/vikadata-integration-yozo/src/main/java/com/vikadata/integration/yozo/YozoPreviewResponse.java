@@ -1,10 +1,5 @@
 package com.vikadata.integration.yozo;
 
-/**
- *
- * @author Shawn Deng
- * @date 2021-06-22 10:49:28
- */
 public class YozoPreviewResponse extends YozoBaseResponse {
 
     private Data data;

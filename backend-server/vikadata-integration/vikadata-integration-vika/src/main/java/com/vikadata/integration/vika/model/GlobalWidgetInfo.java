@@ -2,11 +2,9 @@ package com.vikadata.integration.vika.model;
 
 /**
  * <p>
- * 全局小组件配置
+ * Global widget config
  * </p>
  *
- * @author Chambers
- * @date 2021/3/25
  */
 public class GlobalWidgetInfo {
 
@@ -22,13 +20,13 @@ public class GlobalWidgetInfo {
 
     private Integer widgetSort;
 
-    /* 小组件扩展字段，widget_body */
+    /* Widget Extension Fields, widget_body */
     private String openSourceAddres;
 
     private String templateCover;
 
     private String website;
-    /* 小组件扩展字段，widget_body */
+    /* Widget Extension Fields, widget_body */
 
     public String getPackageName() {
         return packageName;

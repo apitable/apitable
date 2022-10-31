@@ -6,11 +6,9 @@ import cn.hutool.core.util.StrUtil;
 
 /**
  * <p>
- * 短信发送模板
+ * SMS sending template
  * </p>
  *
- * @author Chambers
- * @date 2021/5/13
  */
 public class SmsSenderTemplate {
 
@@ -51,7 +49,7 @@ public class SmsSenderTemplate {
         boolean isLocal = this.getLocalAreaCode().equals(smsMessage.getAreaCode());
         SmsSenderFactory factory = isLocal ? this.getLocalSmsSenderFactory() : this.getOutlandSmsSenderFactory();
         if (factory == null) {
-            throw new RuntimeException(StrUtil.format("{}短信服务未配置", isLocal ? "本地" : "外地"));
+            throw new RuntimeException(StrUtil.format("{}SMS service is not configured", isLocal ? "local" : "field"));
         }
         SmsSender sender = factory.createSender();
         sender.send(smsMessage);

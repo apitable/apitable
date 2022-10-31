@@ -34,9 +34,7 @@ import com.vikadata.integration.oss.UrlFetchResponse;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * minio client 实现
- * @author Shawn Deng
- * @date 2021-03-23 15:15:58
+ * minio client realization
  */
 public class MinioOssClientRequest extends AbstractOssClientRequest {
 
@@ -87,7 +85,7 @@ public class MinioOssClientRequest extends AbstractOssClientRequest {
                     );
                 }
                 else {
-                    throw new UnsupportedOperationException("您的Bucket不存在，无法初始化");
+                    throw new UnsupportedOperationException("Your bucket does not exist and cannot be initialized");
                 }
             }
         }
@@ -114,7 +112,7 @@ public class MinioOssClientRequest extends AbstractOssClientRequest {
         }
         catch (Exception e) {
             e.printStackTrace();
-            throw new IOException("上传失败", e);
+            throw new IOException("upload failed", e);
         }
     }
 
@@ -131,7 +129,7 @@ public class MinioOssClientRequest extends AbstractOssClientRequest {
         }
         catch (Exception e) {
             e.printStackTrace();
-            throw new IOException("上传失败", e);
+            throw new IOException("upload failed", e);
         }
     }
 
@@ -158,7 +156,7 @@ public class MinioOssClientRequest extends AbstractOssClientRequest {
         }
         catch (Exception e) {
             e.printStackTrace();
-            throw new IOException("上传失败", e);
+            throw new IOException("upload failed", e);
         }
     }
 
@@ -234,7 +232,7 @@ public class MinioOssClientRequest extends AbstractOssClientRequest {
 
     @Override
     public void refreshCdn(String bucketName, String[] url) {
-        throw new Error("minio未实现该方法");
+        throw new Error("minio is not implemented");
     }
 
     @Override
@@ -262,7 +260,7 @@ public class MinioOssClientRequest extends AbstractOssClientRequest {
 
     @Override
     public boolean isValidCallback(String originAuthorization, String url, byte[] body, String contentType) {
-        // TODO minio 马上支持
+        // TODO minio support immediately
         return false;
     }
 }

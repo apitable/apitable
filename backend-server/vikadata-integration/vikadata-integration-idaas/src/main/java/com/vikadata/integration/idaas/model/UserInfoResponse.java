@@ -6,41 +6,40 @@ import lombok.Setter;
 
 /**
  * <p>
- * 获取用户信息
+ * Get user information
  * </p>
- * @author 刘斌华
- * @date 2022-05-24 17:22:22
+ *
  */
 @Setter
 @Getter
 public class UserInfoResponse {
 
     /**
-     * 用户唯一 ID
+     * user unique ID
      */
     @JsonProperty("user_id")
     private String userId;
 
     /**
-     * 用户名
+     * user's name
      */
     @JsonProperty("sub")
     private String sub;
 
     /**
-     * 用户在千帆玉符的显示名称
+     * user display name in idaas
      */
     @JsonProperty("name")
     private String name;
 
     /**
-     * 用户在千帆玉符的邮箱
+     * user's email in idaas
      */
     @JsonProperty("email")
     private String email;
 
     /**
-     * 用户在千帆玉符的手机号
+     * user's phone number in idaas
      */
     @JsonProperty("phone_number")
     private String phoneNumber;

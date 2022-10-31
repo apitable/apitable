@@ -2,10 +2,10 @@ package com.vikadata.integration.gitlab;
 
 import org.gitlab4j.api.GitLabApi;
 
+
 /**
- * GitLab API 服务接口
- * @author Shawn Deng
- * @date 2021-01-13 14:19:10
+ * GitLab API Service interface
+ *
  */
 public class GitLabService {
 

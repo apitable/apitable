@@ -8,11 +8,6 @@ import java.util.function.Consumer;
 
 import cn.hutool.core.util.URLUtil;
 
-/**
- *
- * @author Shawn Deng
- * @date 2021-03-23 14:04:57
- */
 public abstract class AbstractOssClientRequest implements OssClientRequest {
 
     protected abstract boolean isBucketExist(String bucketName);

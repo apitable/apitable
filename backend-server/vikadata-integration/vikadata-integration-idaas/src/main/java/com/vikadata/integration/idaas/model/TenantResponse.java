@@ -5,10 +5,9 @@ import lombok.Setter;
 
 /**
  * <p>
- * 开通企业
+ * open enterprise
  * </p>
- * @author 刘斌华
- * @date 2022-05-12 18:53:29
+ *
  */
 @Setter
 @Getter
@@ -59,32 +58,32 @@ public class TenantResponse {
         public static class Config {
 
             /**
-             * 应用ClientID
+             * application ClientID
              */
             private String clientId;
 
             /**
-             * 应用ClientSecret
+             * application ClientSecret
              */
             private String clientSecret;
 
             /**
-             * 发起authorize地址
+             * originating authorize address
              */
             private String authorizationEndpoint;
 
             /**
-             * 请求token接口的地址
+             * request the address of the token interface
              */
             private String tokenEndpoint;
 
             /**
-             * 请求userInfo接口的地址
+             * request the address of the userInfo interface
              */
             private String userInfoEndpoint;
 
             /**
-             * well-known接口地址
+             * well-known interface address
              */
             private String wellKnownEndpoint;
 

@@ -5,33 +5,27 @@ import java.util.Map;
 
 /**
  * <p>
- * 数据跟踪器
+ * Data Tracker
  * </p>
  *
- * @author Chambers
- * @date 2020/4/8
  */
 public interface DataTracker {
 
     /**
-     * 记录事件
+     * record events
      *
-     * @param distinctId 用户 ID
-     * @param isLoginId  是否是登录 ID，false 表示该 ID 是一个匿名 ID
-     * @param eventName  事件名称
-     * @param properties 事件的属性
-     * @author Chambers
-     * @date 2020/4/8
+     * @param distinctId user's id
+     * @param isLoginId  Is it a login ID, False indicates that the ID is an anonymous ID
+     * @param eventName  event name
+     * @param properties Properties of the event
      */
     void track(String distinctId, boolean isLoginId, String eventName, Map<String, Object> properties);
 
     /**
-     * 记录用户注册事件
+     * Log user registration events
      *
-     * @param loginId     登录 ID
-     * @param anonymousId 匿名 ID
-     * @author Chambers
-     * @date 2020/4/8
+     * @param loginId     login ID
+     * @param anonymousId anonymous ID
      */
     void trackSignUp(String loginId, String anonymousId);
 }

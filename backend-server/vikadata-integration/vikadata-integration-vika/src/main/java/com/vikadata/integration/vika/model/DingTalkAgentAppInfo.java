@@ -1,12 +1,11 @@
 package com.vikadata.integration.vika.model;
 
-/** 
-* <p> 
-* 钉钉定制应用配置
-* </p> 
-* @author zoe zheng 
-* @date 2021/5/28 11:53 上午
-*/
+/**
+ * <p>
+ * DingTalk Customized application configuration
+ * </p>
+ *
+ */
 public class DingTalkAgentAppInfo {
 
     private String agentId;
@@ -20,12 +19,13 @@ public class DingTalkAgentAppInfo {
     private String corpId;
 
     /**
-     * 加解密需要用到的token，可以随机填写，长度大于等于6个字符且少于64个字符。
+     * The token required for encryption and decryption can be filled in randomly, with a length of no less than 6 characters and no more than 64 characters.
      */
     private String token;
 
     /**
-     * 数据加密密钥。用于回调数据的加密，长度固定为43个字符，从a-z，A-Z，0-9共62个字符中选取，您可以随机生成，ISV(服务提供商)推荐使用注册套件时填写的EncodingAESKey。
+     * Data encryption key. It is used for the encryption of callback data. The length is fixed to 43 characters. You can select from a total of 62 characters a-z, A-Z, 0-9. You can randomly generate it.
+     * ISV (service provider) recommends using the EncodingAESKey filled in when registering a suite.
      */
     private String aesKey;
 

@@ -10,8 +10,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Recommend Config Info
  * </p>
  *
- * @author Chambers
- * @date 2021/3/25
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RecommendTemplateInfo {

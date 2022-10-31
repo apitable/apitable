@@ -4,11 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.function.Consumer;
 
-/**
- *
- * @author Shawn Deng
- * @date 2021-03-23 14:21:46
- */
 public class OssClientTemplate {
 
     private OssClientRequestFactory ossClientRequestFactory;
@@ -25,12 +20,13 @@ public class OssClientTemplate {
     }
 
     /**
-     * 上传网络资源
-     * @param bucketName 存储桶名称
-     * @param remoteUrl 网络资源地址
-     * @param keyPath 保存到存储桶的文件名，如果是空，则抓取网络资源的地址
+     * Upload network resources
+     *
+     * @param bucketName Bucket name
+     * @param remoteUrl Network resource address
+     * @param keyPath The file name saved to the bucket. If it is empty, the address of the network resource will be retrieved
      * @return UrlFetchResponse
-     * @throws IOException io异常
+     * @throws IOException io exception
      */
     public UrlFetchResponse upload(String bucketName, String remoteUrl, String keyPath) throws IOException {
         OssClientRequest request = getOssClientRequestFactory().createClient();

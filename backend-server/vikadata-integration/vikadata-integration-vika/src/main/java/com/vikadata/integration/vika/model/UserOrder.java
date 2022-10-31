@@ -1,10 +1,5 @@
 package com.vikadata.integration.vika.model;
 
-/**
- *
- * @author Shawn Deng
- * @date 2021-12-29 20:34:22
- */
 public class UserOrder {
 
     private String recordId;

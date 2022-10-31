@@ -11,11 +11,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * <p>
- * 腾讯云短信发送器
+ * Tencent Cloud SMS Sender
  * </p>
  *
- * @author Shawn Deng
- * @date 2019-04-16 17:45
  */
 public class TencentSmsSender implements SmsSender {
 
@@ -35,8 +33,9 @@ public class TencentSmsSender implements SmsSender {
 
     @Override
     public void send(SmsMessage smsMessage) {
-        log.info("发送短信消息");
-        //TODO 高性能下，借助MQ队列发布消息，交予订阅者消费发送消息,这里暂时使用单线程发送
+        log.info("Send SMS");
+        //TODO Under high performance, the message is published by MQ queue and sent to the subscriber for consumption.
+        // Here, the message is sent by single thread temporarily
         try {
             String smsTemplateCode = smsMessage.getTemplateCode();
             SmsSingleSender sender = new SmsSingleSender(appId, appKey);
@@ -45,27 +44,27 @@ public class TencentSmsSender implements SmsSender {
                 smsMessage.getParams(), sign,
                 "", "");
             if (result.result != 0) {
-                log.error("发送失败，代码:{}，错误信息:{}", result.result, result.errMsg);
-                throw new RuntimeException(StrUtil.format("发送失败，代码:{}，错误信息:{}", result.result, result.errMsg));
+                log.error("fail in send, code:{}, error message:{}", result.result, result.errMsg);
+                throw new RuntimeException(StrUtil.format("fail in send, code:{}, error message:{}", result.result, result.errMsg));
             }
         }
         catch (HTTPException e) {
-            // HTTP 响应码错误
+            // HTTP response code error
             e.printStackTrace();
-            log.error("连接短信服务服务器失败,code:{}, msg{}", e.getStatusCode(), e.getMessage());
-            throw new RuntimeException(StrUtil.format("连接短信服务服务器失败,code:{}, msg{}", e.getStatusCode(), e.getMessage()));
+            log.error("Failed to connect to SMS server,code:{}, msg{}", e.getStatusCode(), e.getMessage());
+            throw new RuntimeException(StrUtil.format("Failed to connect to SMS server,code:{}, msg{}", e.getStatusCode(), e.getMessage()));
         }
         catch (IOException e) {
-            // 网络 IO 错误
+            // Network IO error
             e.printStackTrace();
-            log.error("连接短信服务网络出错, msg{}", e.getMessage());
-            throw new RuntimeException(StrUtil.format("连接短信服务网络出错, msg{}", e.getMessage()));
+            log.error("Error connecting to SMS network, msg{}", e.getMessage());
+            throw new RuntimeException(StrUtil.format("Error connecting to SMS network, msg{}", e.getMessage()));
         }
         catch (Exception e) {
-            // 其他错误
+            // other errors
             e.printStackTrace();
-            log.error("短信服务器解析返回信息失败, msg{}", e.getMessage());
-            throw new RuntimeException(StrUtil.format("短信服务器解析返回信息失败, msg{}", e.getMessage()));
+            log.error("The SMS server failed to parse the returned information, msg{}", e.getMessage());
+            throw new RuntimeException(StrUtil.format("The SMS server failed to parse the returned information, msg{}", e.getMessage()));
         }
     }
 }

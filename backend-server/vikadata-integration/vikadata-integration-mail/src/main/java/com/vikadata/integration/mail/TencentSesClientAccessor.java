@@ -5,14 +5,6 @@ import com.tencentcloudapi.common.profile.ClientProfile;
 import com.tencentcloudapi.common.profile.HttpProfile;
 import com.tencentcloudapi.ses.v20201002.SesClient;
 
-/**
- * <p> 
- *
- * </p> 
- *
- * @author Chambers
- * @date 2022/2/9
- */
 public abstract class TencentSesClientAccessor {
 
     private static final String ENDPOINT = "ses.tencentcloudapi.com";
@@ -36,18 +28,18 @@ public abstract class TencentSesClientAccessor {
     }
 
     protected SesClient getClient() {
-        // 实例化一个认证对象
+        // instantiate an authentication object
         Credential cred = new Credential(secretId, secretKey);
 
-        // 实例化一个http选项
+        // instantiate a http option
         HttpProfile httpProfile = new HttpProfile();
         httpProfile.setEndpoint(ENDPOINT);
 
-        // 实例化一个client选项
+        // Instantiate a client option
         ClientProfile clientProfile = new ClientProfile();
         clientProfile.setHttpProfile(httpProfile);
 
-        // 实例化要请求产品的client对象
+        // instantiate the client object of the requested product
         return new SesClient(cred, region, clientProfile);
     }
 }

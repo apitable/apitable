@@ -3,10 +3,9 @@ package com.vikadata.integration.vika.model;
 
 /**
  * <p>
- * 钉钉订单信息
+ * DingTalk order information
  * </p>
- * @author zoe zheng
- * @date 2021/11/22 3:32 下午
+ *
  */
 public class DingTalkOrderInfo {
     String corpId;

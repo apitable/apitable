@@ -6,35 +6,34 @@ import lombok.Setter;
 
 /**
  * <p>
- * 获取访问用户信息的 access_token
+ * Access to access user information_ token
  * </p>
- * @author 刘斌华
- * @date 2022-05-24 16:58:02
+ *
  */
 @Setter
 @Getter
 public class AccessTokenResponse {
 
     /**
-     * 请求 token，用于请求用户信息
+     * request token, use to request user information
      */
     @JsonProperty("access_token")
     private String accessToken;
 
     /**
-     * 表示 token 过期时间，单位：秒
+     * token expire time, Unit: second
      */
     @JsonProperty("expires_in")
     private Integer expiresIn;
 
     /**
-     * 固定为 Bearer，后续请求用户信息时需要使用此验证方式
+     * fixed to Bearer, this authentication mode is required for subsequent user information requests
      */
     @JsonProperty("token_type")
     private String tokenType;
 
     /**
-     * token 作用域
+     * token scope
      */
     @JsonProperty("scope")
     private String scope;

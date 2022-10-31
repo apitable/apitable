@@ -8,29 +8,28 @@ import lombok.Setter;
 
 /**
  * <p>
- * 获取用户组列表
+ * Get the list of user groups
  * </p>
- * @author 刘斌华
- * @date 2022-05-13 17:34:26
+ *
  */
 @Setter
 @Getter
 public class GroupsRequest {
 
     /**
-     * 起始页码。从 0 开始
+     * start page number. start from 0
      */
     @JsonProperty("page_index")
     private Integer pageIndex;
 
     /**
-     * 分页大小
+     * page size
      */
     @JsonProperty("page_size")
     private Integer pageSize;
 
     /**
-     * 排序字段，前面带 {@code _} 表示升序，否则降序
+     * sort field, preceded by {@code _} indicates ascending order, otherwise descending order
      */
     @JsonProperty("order_by")
     private List<String> orderBy;
