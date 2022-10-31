@@ -132,7 +132,7 @@ public class BillingOfflineServiceImplTest extends AbstractIntegrationTest {
         // create renew order
         iBillingOfflineService.createBusinessOrder(renewData);
 
-        final LocalDate renewShouldExpireDate = nowToday.plusMonths(7);
+        final LocalDate renewShouldExpireDate = shouldExpireDate.plusMonths(3);
         // check space entitlement
         entitlementChecker.checkBundle(mockUserSpace.getSpaceId(),
                 new ExpectedBundleCheck(nowToday, renewShouldExpireDate));
