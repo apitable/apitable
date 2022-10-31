@@ -13,6 +13,7 @@ import { ChevronDownOutlined, ChevronUpOutlined } from '@vikadata/icons';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { PermissionSelectMobile } from './permission_select_mobile';
 import { useResponsive } from 'pc/hooks';
+import { get } from 'lodash';
 
 export const DEFAULT_ROLE: IRoleOption[] = [
   {
@@ -118,7 +119,7 @@ export const UnitItem: FC<IUnitItemProps> = props => {
           }
           triggerBase={unit.isTeam ? undefined : triggerBase}
           memberId={unit.memberId || memberId}
-          description={teamData ? teamData[0].fullHierarchyTeamName : ''}
+          description={get(teamData, '0.fullHierarchyTeamName', '')}
           extra={!isAppointMode ? t(Strings.node_permission_extend_desc) : ''}
           style={{ backgroundColor: 'transparent', height: 'auto' }}
           avatarProps={{
