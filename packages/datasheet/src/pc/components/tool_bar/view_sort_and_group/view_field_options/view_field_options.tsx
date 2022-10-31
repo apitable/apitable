@@ -18,7 +18,7 @@ interface IViewFieldOptions {
   invalidFieldIds?: string[];
   invalidTip?: string;
   index?: number;
-  isAddNewOption?: boolean; // 当前选项的操作是否是添加新的选项
+  isAddNewOption?: boolean; // Whether the operation of the current option is to add a new option.
 }
 
 export const ViewFieldOptions: React.FC<IViewFieldOptions> = props => {

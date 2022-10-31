@@ -24,7 +24,7 @@ import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { CommonSide } from '../common_side';
 import styles from './style.module.less';
 
-// 恢复用户上次打开的数表
+// Restore the user's last opened datasheet.
 const resumeUserHistory = (path: string) => {
   const state = store.getState();
   const user = state.user.info!;
@@ -84,20 +84,26 @@ export const Workspace: React.FC = () => {
   const query = useQuery();
   const router = useRouter();
 
-  // 目录树切换来源态，目录树点击态，侧边栏开关
+  // Directory tree toggle source status, directory tree click status, sidebar switch.
   const [toggleType, setToggleType] = useState<SideBarType>(SideBarType.None);
   const [clickType, setClickType] = useState<SideBarClickType>(SideBarClickType.None);
   const [panelVisible, setPanelVisible] = useState(false);
   const sideBarVisible = useSelector(state => state.space.sideBarVisible);
 
   /**
-   * 目录树开关来源 - 用户
+   * Directory Tree Switch Source - Users.
    */
   const handleSetSideBarByUser = (visible, panel) => {
-    // 判断目录树切换类型，右侧面板处于展开或者右侧面板在关闭情况下用户同时关闭了目录树，则认为是用户点击操作，则展开和关闭面板不应当影响目录树状态
+    // To determine the type of directory tree switch, 
+    // if the right panel is expanded or the right panel is closed and 
+    // the user closes the directory tree at the same time, 
+    // it is considered as a user click operation and the expanded and 
+    // closed panels should not affect the directory tree state.    
     const resToggleType = panel || (!panel && sideBarVisible) ? SideBarType.User : SideBarType.UserWithoutPanel;
     setToggleType(resToggleType);
-    // 右侧面板未展开或者右侧面板展开并且目录树也处于展开状态时需要，设置目录树开关的点击类型认为是用户操作
+    // If the right panel is not expanded or if the right panel is expanded and 
+    // the directory tree is also expanded, 
+    // set the click type of the directory tree switch to be considered a user action.
     if (!panel || (panel && sideBarVisible)) {
       setClickType(SideBarClickType.User);
     }
@@ -106,7 +112,7 @@ export const Workspace: React.FC = () => {
   };
 
   /**
-   * 目录树开关来源 - 面板
+   * Directory Tree Switch Source - Panel.
    */
   const handleSetSideBarByOther = visible => {
     setStorage(StorageName.IsPanelClosed, visible, StorageMethod.Set);
@@ -122,7 +128,7 @@ export const Workspace: React.FC = () => {
   useMount(() => {
     const notifyId = query.get('notifyId');
     if (notifyId) {
-      // 来自通知，则标记通知已读
+      // From a notification, then mark the notification as read.
       Api.transferNoticeToRead([notifyId]);
     }
   });
@@ -144,7 +150,7 @@ export const Workspace: React.FC = () => {
     };
   }, [isMobile, shareId]);
 
-  // 绑定/解绑快捷键
+  // Binding/unbinding shortcut keys.
   useEffect(() => {
     const eventBundle = new Map([
       [
@@ -230,7 +236,8 @@ export const Workspace: React.FC = () => {
     >
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <SideBarContext.Provider value={sideContextValue}>
-          {/* TODO：SplitPane 上直接设置 pane1Style 加动画会导致无法拖动的问题， 下个版本解决。0.4 暂时不加动画 */}
+          {/* TODO: `SplitPane` directly set `pane1Style` add animation will lead to the problem 
+           that can not be dragged, the next version to solve. 0.4 temporarily do not add animation */}
           <VikaSplitPanel
             panelLeft={
               <div style={{ width: sideBarVisible ? '100%' : 0 }} className={styles.splitLeft} data-test-id='workspace-sidebar'>

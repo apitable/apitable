@@ -14,7 +14,7 @@ export const closeWidgetRoute = (widgetId: string, widgetFullScreen?: IWidgetFul
 };
 
 /**
- * 考虑 站内，分享，模板中的使用场景
+ * Consider the use of scenarios in the space, sharing, templates
  * @param widgetId
  */
 export const expandWidgetRoute = (widgetId: string, isReplace?: boolean, widgetFullScreen?: IWidgetFullScreenType) => {

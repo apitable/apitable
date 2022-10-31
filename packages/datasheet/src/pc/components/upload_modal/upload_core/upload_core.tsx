@@ -29,7 +29,7 @@ interface IUploadCoreProps {
 }
 
 export enum UploadCoreSize {
-  // 只用于上传模态框，没有已上传图片和正在上传图片的时候
+  // Only for upload modal box, when there is no uploaded image and no image being uploaded.
   Big = 'Big',
   Normal = 'Normal',
   // Small = 'Small'

@@ -19,7 +19,7 @@ export const useManageWidgetMap = () => {
     if (!activeWidgetPanel) {
       return [];
     }
-    // 这里需要对数组进行排序，避免拖拽排序造成的影响
+    // Here the array needs to be sorted to avoid the effects of drag-and-drop sorting.
     return activeWidgetPanel.widgets.map(item => {
       return item.id;
     }).sort();

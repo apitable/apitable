@@ -79,7 +79,7 @@ export const ViewSort: React.FC<IViewSetting> = props => {
     const invalidFields: string[] = [];
     activeViewGroupInfo.forEach(item => {
       const field = fieldMap[item.fieldId];
-      // 非多选 FieldType 分组后，排序无效
+      // Sorting is invalid after non-multi-selected FieldType grouping.
       if (field && ![FieldType.MultiSelect].includes(field.type)) {
         invalidFields.push(field.id);
       }
@@ -87,7 +87,7 @@ export const ViewSort: React.FC<IViewSetting> = props => {
     return invalidFields;
   }, [activeViewGroupInfo, fieldMap]);
 
-  // 拖动结束之后修改顺序
+  // Modify the order after the end of dragging.
   const onDragEnd = useCallback(
     (result: DropResult) => {
       const { source, destination } = result;
@@ -150,7 +150,7 @@ export const ViewSort: React.FC<IViewSetting> = props => {
     submitSort(newSortInfo, check ? false : true);
   }
 
-  // TODO: 重新布局
+  // TODO: Relocation.
   const manualSort = sortInfo && !sortInfo.keepSort;
   const mainContentStyle: React.CSSProperties = isMobile
     ? {

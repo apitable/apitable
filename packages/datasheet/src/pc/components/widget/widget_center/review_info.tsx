@@ -1,5 +1,5 @@
 import { Avatar, Box, Divider, LinkButton, Modal, Space, Typography } from '@vikadata/components';
-import { IWidgetPackage } from '@apitable/core';
+import { IWidgetPackage, Strings, t } from '@apitable/core';
 import { store } from 'pc/store';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -45,7 +45,7 @@ export const ReviewInfo: React.FC<IReviewInfo> = (props) => {
             vertical
           >
             <Space align='start' size={6} vertical>
-              <Box fontWeight='bold'>发布者</Box>
+              <Box fontWeight='bold'>{t(Strings.widget_center_publisher)}</Box>
               <Space size={6}>
                 <Avatar size='xxs' src={authorIcon} alt={authorName} />
                 <Space>{authorName}</Space>

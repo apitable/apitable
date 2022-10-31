@@ -82,7 +82,7 @@ export const ViewSwitcher: React.FC<IViewSwitcherProps> = props => {
     }
   };
 
-  // TODO: 区分用户拖拽、滑动删除操作
+  // TODO: Distinguish between user drag and drop, swipe to delete operations.
   // const [dragStoppable, setDragStoppable] = useState(false);
 
   const validator = (value: string): boolean => {

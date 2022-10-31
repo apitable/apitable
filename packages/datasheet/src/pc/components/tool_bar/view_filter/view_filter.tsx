@@ -54,11 +54,11 @@ const ViewFilterBase = props => {
       const ele = scrollShadowRef.current;
       if (!ele) return;
       if (scrollTop + height > scrollHeight - 10) {
-        // 屏蔽可滚动样式
+        // Masked scrollable styles.
         ele.style.display = 'none';
         return;
       }
-      // 展示可滚动样式
+      // Display scrollable style.
       if (ele.style.display === 'block') {
         return;
       }
@@ -92,7 +92,7 @@ const ViewFilterBase = props => {
     [activeViewFilter, filterCommand],
   );
 
-  // 标记是否已添加新的筛选项，直接在 commandForAddViewFilter 函数中滚动到底部无效
+  // Mark if a new filter has been added, scrolling directly to the bottom in the commandForAddViewFilter function is not valid.
   const added = useRef<boolean>(false);
 
   function commandForAddViewFilter(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {

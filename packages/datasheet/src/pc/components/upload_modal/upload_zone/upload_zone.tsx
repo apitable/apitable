@@ -20,7 +20,7 @@ interface IUploadZonProps {
   cellValue: IAttachmentValue[];
   style?: React.CSSProperties;
   accept?: string[];
-  // 以透明的状态悬浮显示，目前仅用于单元格
+  // Hover in a transparent state, currently only available for cells.
   layoutOpacity?: boolean;
 }
 
@@ -95,7 +95,7 @@ export const UploadZoneBase: React.ForwardRefRenderFunction<ICommonTabRef, IUplo
       }}
       defaultValue=""
     >
-      {/* 微信小程序input不支持multiple, 小程序端强制设置为false */}
+      {/* WeChat applet input does not support multiple, widget side forced to set to false */}
       <input {...getInputProps()} defaultValue="" {...(isMiniProgram && { multiple: false })} />
       {!layoutOpacity && (
         <>

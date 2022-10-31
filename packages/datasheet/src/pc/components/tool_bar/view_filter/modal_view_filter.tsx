@@ -31,7 +31,7 @@ const ViewFilterBase: React.FC<IViewFilter> = props => {
     setFilters(result);
   };
 
-  // 标记是否已添加新的筛选项，直接在 addViewFilter 函数中滚动到底部无效
+  // Mark if a new filter has been added, scrolling to the bottom directly in the addViewFilter function is not valid.
   const added = useRef<boolean>(false);
 
   function addViewFilter(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {

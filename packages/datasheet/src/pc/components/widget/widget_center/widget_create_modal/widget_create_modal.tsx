@@ -156,7 +156,7 @@ const WidgetCreateModal: React.FC<IWidgetCreateModalProps> = (props) => {
             const value = e.target.value;
             setInputWidgetName(value);
             /**
-             * 去除头尾空格、中间空格用 '-' 替换
+             * Remove leading and trailing spaces, replace middle spaces with '-'.
              * filenamify: On Unix-like systems, / is reserved. On Windows, <>:"/\|?* along with trailing periods are reserved.
              */
             setWidgetName(value ? filenamify(trim(value).replace(/\s/g, '-'), { replacement: '-' }) : '');

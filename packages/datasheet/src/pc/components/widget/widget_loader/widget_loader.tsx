@@ -16,7 +16,7 @@ import styles from './styles.module.less';
 
 (()=>{
   if(!process.env.SSR){
-    // 注册小组件依赖包到 window，小组件才能正常加载
+    // Register the widget dependency package to window in order for the widget to load properly.
     window['_React'] = React;
     window['_ReactDom'] = ReactDom;
     window['_@vikadata/components'] = components;
@@ -73,13 +73,13 @@ const WidgetLoaderBase: React.ForwardRefRenderFunction<
       const url = new URL(loadUrl || 'https://127.0.0.1:9000');
       const widgetCliSOcket = initWidgetCliSocket(url.origin, WidgetCliSocketType.LiveReload);
       const reload = (res) => {
-        console.log(res.success ? `小组件热更新: ${widgetId}` : '链接断开');
+        console.log(res.success ? `Widget hot updates: ${widgetId}` : 'Widget disconnection');
         refresh();
       };
       widgetCliSOcket.on(WidgetCliSocketType.LiveReload, reload);
       return () => widgetCliSOcket.destroy();
     }, [isDevMode, loadUrl, refresh, widgetId]);
-    // 未发布的状态
+    // Unpublished status.
     if (!isDevMode && status === WidgetPackageStatus.Developing) {
       return (
         <div className={styles.configInfo}>
@@ -98,7 +98,7 @@ const WidgetLoaderBase: React.ForwardRefRenderFunction<
         </div>
       );
     }
-    // 开发者模式错误处理
+    // Developer mode error handling.
     if (isDevMode && error) {
       switch (error) {
         case WidgetLoadError.PackageIdNotMatch: return (

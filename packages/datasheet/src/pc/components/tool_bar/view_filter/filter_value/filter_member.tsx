@@ -16,7 +16,8 @@ import { IFilterMemberProps } from '../interface';
 import { FilterGeneralSelect } from './filter_general_select';
 
 interface IExFilterMemberProps extends IFilterMemberProps {
-  // 筛选成员 = 我（当前访问用户）是一个客户端状态。事件中没有这个状态，对应的 UI 需要隐藏这个筛选条件。
+  // Filter member = I (currently visiting user) is a client state. 
+  // This state is not present in the event and the corresponding UI needs to hide this filter condition.
   hiddenClientOption?: boolean;
 }
 
@@ -35,11 +36,11 @@ export const FilterMember: React.FC<IExFilterMemberProps> = props => {
     }
 
     const operator = condition.operator;
-    // 以下 筛选条件 添加新的 筛选值 - <当前用户>
+    // The following filter adds a new filter value - <current user>.
     const filterOperators = new Set([FOperator.Is, FOperator.IsNot, FOperator.Contains, FOperator.DoesNotContain]);
 
     if (filterOperators.has(operator)) {
-      // 对于 CreatedBy 字段，新增 ”匿名者“ 标识
+      // For the CreatedBy field, add the "Anonymous" flag.
       if (field.type === FieldType.CreatedBy) {
         const alienUnit = {
           type: MemberType.Member,

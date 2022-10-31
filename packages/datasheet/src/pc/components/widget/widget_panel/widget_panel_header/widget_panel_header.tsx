@@ -78,7 +78,7 @@ export const WidgetPanelHeader = (props: { onClosePanel: () => void }) => {
 
   return (
     <div className={styles.panelHeader}>
-      {/* pc 端的显示 */}
+      {/* Display on pc side */}
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <WrapperTooltip wrapper tip={reachLimitInstalledCount ? t(Strings.reach_limit_installed_widget) : t(Strings.add_widget)}>
           <IconButton component={'button'} onClick={openWidgetCenter} disabled={reachLimitInstalledCount || Boolean(linkId)} icon={ReactIconAdd} />
@@ -116,7 +116,7 @@ export const WidgetPanelHeader = (props: { onClosePanel: () => void }) => {
         </RcTrigger>
         <IconButton onClick={props.onClosePanel} icon={CloseLargeOutlined} />
       </ComponentDisplay>
-      {/** 移动端 */}
+      {/** Mobile */}
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <div className={styles.navBar}>
           <IconButton

@@ -85,11 +85,11 @@ export const WidgetItem: React.FC<IWidgetItemProps> = props => {
 
   const [searchPanelVisible, setSearchPanelVisible] = useState(false);
   const [isSettingOpened, { toggle: toggleSettingOpened }] = useToggle(false);
-  // 小程序全屏按钮，不同于widget-sdk中 fullScreen
+  // Widget full screen button, different from fullScreen in widget-sdk.
   const [isFullScreenWidget, toggleFullScreenWidget] = useFullScreen(widgetId);
   const widgetLoader = useRef<IWidgetLoaderRefs>(null);
 
-  // 是否开启 sandbox (启用就使用iframe去渲染)
+  // Whether to enable sandbox (enable to use iframe to render).
   const isTestFunctionAvailable = getTestFunctionAvailable('widgetIframe');
   const [devSandbox, devSandboxLoading, error, refreshVersion] = useDevLoadCheck(widgetId, config?.isDevMode);
   const sandbox = config?.isDevMode ? devSandbox : widget?.sandbox;
@@ -117,7 +117,7 @@ export const WidgetItem: React.FC<IWidgetItemProps> = props => {
     dispatch(StoreActions.fetchDatasheet(widgetBindDatasheetId));
   }, [widgetBindDatasheetId, dispatch, widgetSnapshot?.sourceId]);
 
-  // 关闭 expand widget 的时候去尝试清除setting状态
+  // Try to clear the setting status when closing the expand widget.
   useEffect(() => {
     if ((isSettingOpened && !isExpandWidget) || (!isSettingOpened && isExpandWidget)) {
       toggleSetting();
@@ -401,7 +401,9 @@ export const WidgetHeader: React.FC<IWidgetHeaderProps> = props => {
   const nameMouseUp = e => {
     setDragging(false);
     const now = new Date();
-    // fixme 这里应该找一个小于原生dragstart触发的时间，文档上没找到暂时先设200ms,会有cursor 变成grabbing一闪而过的问题,放手慢了会没办法进入编辑
+    // fixme: Here you should find a time less than the native dragstart trigger, 
+    // the document did not find a temporary first set 200ms, 
+    // there will be cursor into grabbing a flash of the problem, let go of the slow will not be able to enter the editor.
     if (now.getTime() - window.__pressTimer.getTime() < 200) {
       if (config.hideEditName) {
         return;
@@ -414,7 +416,7 @@ export const WidgetHeader: React.FC<IWidgetHeaderProps> = props => {
 
   const nameMouseDown = () => (window.__pressTimer = new Date());
 
-  // TODO widget header 上的操作按钮重构一下，太乱了这里
+  // TODO: The action buttons on the widget header need to be refactored, it's too messy here.
   return (
     <div
       className={classNames(

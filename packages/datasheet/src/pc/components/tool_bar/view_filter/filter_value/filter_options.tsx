@@ -7,7 +7,7 @@ import { FilterGeneralSelect } from './filter_general_select';
 export const FilterOptions: React.FC<IFilterOptionProps> = props => {
   const { condition, field, onChange } = props;
   const [isMulti, setIsMulti] = useState(false);
-  // 这里传进来的 field 是实体字段。condition 里面的 fieldType 才是真实的字段。
+  // The field passed in here is the entity field. fieldType inside the condition is the real field.
   const fieldType = condition.fieldType === FieldType.LookUp ? FieldType.MultiSelect : condition.fieldType;
   const fieldValue = field.property.options;
   const filterValue = condition.value ? fieldValue.filter(item => condition.value.includes(item.id)) : [];

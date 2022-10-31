@@ -44,7 +44,7 @@ const ConditionList: FC<IConditionList> = props => {
   });
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
 
-  // 检查神奇引用筛选是否循环引用
+  // Check if the magic lookup filter is circularly referenced
   const [warnTextObj, setWarnTextObj] = useState<{ string?: string }>({});
   useEffect(() => {
     if (field) {

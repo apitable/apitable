@@ -116,7 +116,7 @@ export const WidgetIframeBase: React.ForwardRefRenderFunction<IWidgetLoaderRefs,
       mainWidgetMessage.addWindow(widgetId, { window: iframeRef.current?.contentWindow!, origin: WIDGET_IFRAME_PATH });
       mainWidgetMessage.connectWidget(widgetId, window.location.origin, () => {
         setConnected(true);
-        // 首次链接是确定小组件关联的表已经 loading 完成，所以这里直接设置成 true
+        // The first link is to make sure that the datasheet associated with the widget has been loaded, so it is set to true directly here.
         mainWidgetMessage.widgets[widgetId].listenDatasheetMap[nodeId] = { loading: true };
       });
     }
@@ -272,7 +272,7 @@ export const WidgetIframeBase: React.ForwardRefRenderFunction<IWidgetLoaderRefs,
   }
 
   return <>
-    {/* 一个透明蒙层 div，解决拖动、缩放的时候鼠标会被 iframe 劫持 */}
+    {/* A transparent mask div to solve the problem of mouse being hijacked by iframe when dragging and zooming. */}
     <div className={classnames(
       styles.iframeMask,
       dragging && styles.iframeMasking,

@@ -23,15 +23,16 @@ type IToolItemProps = {
   showViewLockModal?: boolean;
 };
 
-// 工具栏添加新的工具项后，需要计算出最小可显示 icon + 名称的宽度。更新这里的阈值。
-// toolItem 内的文字位数 也会影响这里的宽度
+// After adding a new tool item to the toolbar, 
+// you need to calculate the width of the minimum displayable icon + name. Update the threshold value here.
+// The number of text positions in the toolItem will also affect the width here.
 // const SHOW_TOOL_TEXT_WIDTH = 999;
 
 export const ToolItem: React.FC<IToolItemProps> = props => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { isActive, className, showLabel = true, disabled, onClick, icon, text, id, showViewLockModal, isHide } = props;
-  const shouldShowText = isHide || showLabel || isMobile; // 移动端始终显示 Label
+  const shouldShowText = isHide || showLabel || isMobile; // Label is always displayed on mobile.
   const activeView = useSelector(Selectors.getCurrentView)!;
 
   const buttonProps: any = {

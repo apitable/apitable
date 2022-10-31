@@ -31,7 +31,7 @@ export const WidgetBlock = React.memo((props: {
 
   window['_isSocialWecom'] = isSocialWecom(spaceInfo);
 
-  // 在数表中小程序等数表socket连接上在显示
+  // In the datasheet widget and other datasheet socket connection on the display
   const connected = useSelector(state => {
     const { templateId } = state.pageParams;
     return templateId || nodeId !== state.pageParams.nodeId || Selectors.getDatasheetPack(state, nodeId)?.connected;

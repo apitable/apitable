@@ -7,7 +7,7 @@ export enum EditorType {
   None,
   Text,
   Number,
-  Rating, // 同 Number 但是单独拿出来
+  Rating, // Same as Number but separate out.
   Boolean,
   DateTime,
   Options,
@@ -59,7 +59,7 @@ export const getFieldEditorType = (field: IField) => {
       }
       const entityField = Field.bindModel(field).getLookUpEntityField();
       if (entityField) {
-        // lookup 出的评分字段，使用数字编辑器。
+        // lookup out of the scoring fields, using the numeric editor.
         if (entityField.type === FieldType.Rating) return EditorType.Number;
         return editorMap[field.type] || getFieldEditorType(entityField);
       }

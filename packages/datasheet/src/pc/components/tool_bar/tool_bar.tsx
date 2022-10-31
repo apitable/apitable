@@ -62,12 +62,14 @@ import styles from './style.module.less';
 import { ToolItem } from './tool_item';
 import { Undo } from './undo';
 
-// 当激活表内查找时，工具栏label与icon适配规则
-// width:[1180,+infinity)->显示所有
-// width:[1080,1180)->只隐藏右边工具的文字
-// width:[763,1080)->隐藏左右边工具的文字，只显示icon，不自动折叠右边工作目录
-// width:[540,763)->未折叠工作目录：只显示icon，并自动折叠右边工作目录。已经折叠了工作目录：隐藏右边所有工具
-// width:(0,540)->未折叠工作目录：只显示左边工作icon，右边所有工具隐藏
+// Toolbar label and icon adaptation rules when in-table lookup is activated.
+// width:[1180,+infinity) -> Show all.
+// width:[1080,1180) -> Hide only the text of the right tool.
+// width:[763,1080) -> Hide the text of the left and right side tools, 
+// display only the icon, and do not automatically collapse the right working directory.
+// width:[540,763) -> Uncollapsed working directory: Show only the icon and collapse the working directory on the right automatically. 
+// Already collapsed working directory: Hide all tools on the right side.
+// width:(0,540) -> Uncollapsed working directory: only the left working icon is displayed, all tools on the right are hidden.
 const HIDDEN_TOOLBAR_LEFT_LABEL_WIDTH = 1080;
 export const HIDDEN_TREE_WIDTH = 763;
 const HIDDEN_TOOLBAR_RIGHT_WIDTH = 465;
@@ -77,7 +79,7 @@ const SIDERBAR_WIDTH = 333;
 const ToolbarBase = () => {
   const colors = useThemeColors();
   const collapseRef = useRef<ICollapseFunc>(null);
-  // 是否显示分享模态框
+  // Whether to show the sharing modal box.
   const [shareNodeId, setShareNodeId] = useState('');
   const [isFindOpen, setIsFindOpen] = useState(false);
   const [iconRotation, setIconRotation] = useState(false);
@@ -172,7 +174,8 @@ const ToolbarBase = () => {
   }, [groupIds, hiddenGroupMap]);
 
   const dispatch = useDispatch();
-  // 工具栏插入行的逻辑比较特殊，这里自己处理。始终在第一个、不带入分组数据。
+  // The logic of inserting rows in the toolbar is special and is handled here by itself. 
+  // Always in the first, no grouped data is brought in.
   const appendRecord = () => {
     const state = store.getState();
     const view = Selectors.getCurrentView(state)!;
@@ -185,14 +188,14 @@ const ToolbarBase = () => {
     });
     if (result.result === ExecuteResult.Success) {
       const newRecordId = result.data && result.data[0];
-      // 需求变更：工具栏插入行，始终展开卡片（下面的别删
+      // Requirement change: Toolbar insert line, always expand the card (don't delete the following).
       expandRecordIdNavigate(newRecordId);
       // const rowsMap = Selectors.getVisibleRowsIndexMap(store.getState());
       // const newRecordIndex = rowsMap[newRecordId];
       // console.log({ newRecordIndex });
       // const groupInfo = Selectors.getActiveViewGroupInfo(state)!;
       // const hasGroup = Boolean(groupInfo.length);
-      // // 位置变化 ｜ 分组下，直接展开。
+      // // Position change ｜ Under the grouping, expand directly.
       // if (newRecordIndex !== 0 || hasGroup) {
       //   expandRecordRoute(newRecordId);
       // } else {
@@ -277,14 +280,14 @@ const ToolbarBase = () => {
       sideBarVisible &&
       !isMobile
     ) {
-      // 强制默认为用户点击
+      // Forced default for users to click.
       onSetToggleType(SideBarType.User);
       onSetClickType(SideBarClickType.FindInput);
       onSetSideBarVisibleByOhter(!sideBarVisible);
     }
   };
 
-  // 点击空白处关闭搜索
+  // Click on the blank to close the search.
   const handleWrapClick = (e: React.MouseEvent) => {
     const classname = e.target && (e.target as HTMLElement).className;
     const ele = collapseRef.current;
@@ -295,7 +298,7 @@ const ToolbarBase = () => {
     }
   };
 
-  // 监听页面变化时工具栏宽度是否满足要求
+  // Listening for page changes when the toolbar width meets the requirements.
   const handleListenSize = useCallback(() => {
     const windowWidth = document.documentElement.offsetWidth;
     if (onSetSideBarVisibleByOhter && windowWidth !== winWidth && ![SideBarType.User, SideBarType.UserWithoutPanel].includes(toggleType)) {
@@ -308,7 +311,7 @@ const ToolbarBase = () => {
 
   useEffect(() => {
     setWinWidth(document.documentElement.offsetWidth);
-    // 窗口大小
+    // Window size
     window.addEventListener('resize', run);
     return () => {
       window.removeEventListener('resize', run);
@@ -316,16 +319,16 @@ const ToolbarBase = () => {
     };
   }, [run, cancel]);
 
-  // 侧边栏打开情况下，需要关闭搜索栏
+  // With the sidebar open, you need to close the search bar.
   useEffect(() => {
     if (sideBarVisible && isFindOpen && size?.width && size.width < HIDDEN_TREE_WIDTH - offsetWidth) {
       setIsFindOpen(false);
     }
   }, [setIsFindOpen, sideBarVisible, toggleType, isFindOpen, size, offsetWidth]);
 
-  // 右侧互斥
+  // Mutually exclusive with the right-hand area.
   const handleToggleRightBar = (toggleKey: ShortcutActionName) => {
-    // 关闭侧边栏
+    // Close sidebar.
     if (isSideRecordOpen) {
       store.dispatch(StoreActions.toggleSideRecord(false));
       closeAllExpandRecord();
@@ -347,7 +350,8 @@ const ToolbarBase = () => {
     ShortcutActionManager.trigger(toggleKey);
   };
 
-  // 该配置数组遍历进行渲染，需要给 component 手动指定不重复的 key，一般为组件名称即可，重复渲染的组件在后面加上数字
+  // The configuration array traversal for rendering, you need to manually specify a non-repeating key for the component, 
+  // usually the component name can be, repeatedly rendered components are followed by a number.
   const featureToolItems = [
     {
       component: (
@@ -419,7 +423,7 @@ const ToolbarBase = () => {
         />
       ),
       key: 'robot',
-      show: !mirrorId && !shareId && !templateId, // 上线前只在预览环境开启入口
+      show: !mirrorId && !shareId && !templateId, // Open the portal only in the preview environment before going online.
     },
     {
       component: (
@@ -512,8 +516,8 @@ const ToolbarBase = () => {
         {!((isCalendarView || isGanttView) && isMobile) && (
           <Display type={ToolHandleType.HideField}>
             {/**
-             * 组件写法需要用 div 包裹下（Display 中使用的 rc-trigger 限制）
-             * 详细信息：https://github.com/react-component/trigger/blob/55ed22f53975e2aab241aea791eee4500d10eef7/src/index.tsx#L853
+             * Component writing needs to be wrapped under div (rc-trigger restriction used in Display).
+             * Detailed information: https://github.com/react-component/trigger/blob/55ed22f53975e2aab241aea791eee4500d10eef7/src/index.tsx#L853
              */}
             <div>
               <HideFieldNode

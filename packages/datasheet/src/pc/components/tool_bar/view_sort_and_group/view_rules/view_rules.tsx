@@ -27,7 +27,7 @@ export const ViewRules: React.FC<IViewRules> = props => {
   }
   const ascClass = classNames(styles.asc, !rulesItem.desc ? styles.active : '');
   const descClass = classNames(styles.desc, rulesItem.desc ? styles.active : '');
-  // 根据active返回合适的icon
+  // Returns the appropriate icon based on active.
   function renderCorrectIcon(className: string) {
     if (/active/.test(className)) {
       return <IconArrowGray fill={colors.staticWhite0} />;
@@ -39,7 +39,7 @@ export const ViewRules: React.FC<IViewRules> = props => {
     onChange(type);
   }
 
-  // 数字排序
+  // Number Sorting.
   function sortTypeForNumber() {
     return (
       <>
@@ -61,7 +61,7 @@ export const ViewRules: React.FC<IViewRules> = props => {
     );
   }
 
-  // 勾选排序
+  // Check Sort.
   function sortTypeForCheckbox() {
     const ascIconColor = !rulesItem.desc ? colors.staticWhite0 : colors.thirdLevelText;
     const descIconColor = rulesItem.desc ? colors.staticWhite0 : colors.thirdLevelText;
@@ -85,7 +85,7 @@ export const ViewRules: React.FC<IViewRules> = props => {
     );
   }
 
-  // 字母排序
+  // Alphabetical order.
   function sortTypeForLetter() {
     return (
       <>
@@ -108,7 +108,7 @@ export const ViewRules: React.FC<IViewRules> = props => {
     );
   }
 
-  // 顺序排序
+  // Sort by order.
   function sortTypeForSequence() {
     return (
       <>
@@ -125,7 +125,8 @@ export const ViewRules: React.FC<IViewRules> = props => {
   function judgeFieldRule(field: IField) {
     const { valueType } = Field.bindModel(field);
 
-    // 单多选顺序排序，其它的按照返回类型展示。lookup 实体字段为单多选时按 string 处理
+    // Sort by single-multi-select order, others are displayed according to the return type. 
+    // lookup entity fields are handled as string when single-multi-select.
     if (isSelectField(field)) {
       return sortTypeForSequence();
     }

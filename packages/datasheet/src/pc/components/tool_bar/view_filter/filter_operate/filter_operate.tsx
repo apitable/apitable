@@ -43,14 +43,14 @@ export const FilterOperate: React.FC<IFilterOperateProps> = props => {
     const field = fieldMap[condition.fieldId];
     const { valueType } = Field.bindModel(field);
     const isNullOperator = checkNullOperator(operator);
-    // 切换为空/非空，清除掉所有的条件，对所有字段类型生效
+    // Clear out all conditions when toggle to null/non-null, effective for all field types.
     if (isNullOperator) {
       return null;
     }
 
     if (valueType === BasicValueType.DateTime) {
-      // 日期字段的筛选条件从 「空」或者「非空」切换成其他条件，需要设置 value 为 [FilterDuration.ExactDate, null]
-      // 否则切换后，选择日期区间的组件不会出现
+      // To switch from "empty" or "non-empty" to other conditions for the date field, set the value to [FilterDuration.ExactDate, null],
+      // otherwise the components for the selected date range will not appear after the switch.
       const lastOperateIsEmpty = checkNullOperator(condition.operator);
       return lastOperateIsEmpty && !isNullOperator ? [FilterDuration.ExactDate, null] : [FilterDuration.ExactDate, condition.value[1]];
     }
@@ -87,7 +87,7 @@ export const FilterOperate: React.FC<IFilterOperateProps> = props => {
         const condition = draft.conditions[conditionIndex];
         draft.conditions[conditionIndex] = {
           ...condition,
-          // 类型不一致（比如神奇引用切换类型），改动操作后要修正
+          // Type inconsistency (e.g. magical lookup switching type) to be corrected after the change operation.
           fieldType: field.type,
           operator: value,
           value: generateValue(value),

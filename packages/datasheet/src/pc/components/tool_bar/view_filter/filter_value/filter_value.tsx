@@ -31,7 +31,7 @@ export const FilterValue: React.FC<IFilterValueProps> = props => {
         const condition = draft.conditions[conditionIndex];
         draft.conditions[conditionIndex] = {
           ...condition,
-          // 类型不一致（比如神奇引用切换类型），改动后要修正
+          // Type inconsistency (e.g. magic lookup switching type), change to fix.
           fieldType: props.field.type,
           value: inputValue ? [inputValue] : null
         };
@@ -68,9 +68,9 @@ export const FilterValue: React.FC<IFilterValueProps> = props => {
   };
 
   const submitFilterValue = selectValue => {
-    // 工具栏的筛选组件是走这里。
+    // The filter component of the toolbar is go here.
     changeFilter && changeFilter(value => {
-      // 检查如果 selectValue 跟旧的值一样，不更新 store
+      // Check that if the selectValue is the same as the old value, do not update the store.
       const noValueChange = isEqual(selectValue, get(value, `conditions.${conditionIndex}.value`));
       if (noValueChange) return value;
       return produce(value, draft => {
@@ -80,7 +80,7 @@ export const FilterValue: React.FC<IFilterValueProps> = props => {
         const condition = draft.conditions[conditionIndex];
         draft.conditions[conditionIndex] = {
           ...condition,
-          // 类型不一致（比如神奇引用切换类型），改动后要修正
+          // Type inconsistency (e.g. magic lookup switching type), change to fix.
           fieldType: props.field.type,
           value: selectValue
         };
@@ -167,7 +167,7 @@ export const FilterValue: React.FC<IFilterValueProps> = props => {
     return <div />;
   }
 
-  // 判断是否该类型的字段是否需要输入框
+  // Determine if a field of this type requires an input box.
   const isDisplay = ![FOperator.IsEmpty, FOperator.IsNotEmpty, FOperator.IsRepeat].includes(condition.operator);
 
   return (

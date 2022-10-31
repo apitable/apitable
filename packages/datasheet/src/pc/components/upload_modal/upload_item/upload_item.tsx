@@ -49,7 +49,7 @@ export const UploadItem: React.FC<IUploadFileItemProps> = props => {
     const item = list.find(item => item.fileId === fileId);
     if (item) return;
     const cellId = UploadManager.getCellId(recordId, field.id);
-    // 发送请求
+    // send request.
     uploadManager.register(
       cellId,
       uploadManager.generateSuccessFn(
@@ -68,7 +68,7 @@ export const UploadItem: React.FC<IUploadFileItemProps> = props => {
   useEffect(() => {
     const cellId = UploadManager.getCellId(recordId, field.id);
     if (status) {
-      // 和数据绑定
+      // De-Data Binding.
       uploadManager.bindFileStatus(cellId, fileId, updateFileItem);
       return;
     }

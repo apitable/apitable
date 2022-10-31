@@ -48,7 +48,7 @@ export const useVerifyOperateItemTitle = (list: any, keyPressEnterCb?: (id: stri
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     let errorMsg = '';
-    // 判断长度是否在1-30之间
+    // Determine if the length is between 1 and 30.
     if (value.length < 1 || value.length > 30) {
       errorMsg = t(Strings.view_name_length_err);
     }
@@ -85,7 +85,7 @@ export const useVerifyOperateItemTitle = (list: any, keyPressEnterCb?: (id: stri
     if (isExitSameName !== -1) {
       errorMsg = t(Strings.name_repeat);
     } else if (!editingValue || editingValue.length > 30) {
-      errorMsg = t(Strings.view_name_length_err); // '名称要求1~30字符以内';
+      errorMsg = t(Strings.view_name_length_err); // Name requirement within 1~30 characters.
     }
 
     if (errorMsg) {
@@ -269,13 +269,13 @@ export const ViewSwitcher: React.FC<IViewSwitcherProperty> = props => {
     modifyView(id, value);
   });
 
-  // 新增视图
   const addNewViews = (e: React.MouseEvent, viewType: ViewType) => {
     if (!viewCreatable) {
       return;
     }
-    // 以下两个恶阻止冒泡事件，旨在点击添加视图时，阻止像组件上层冒泡触发编辑状态的重置以及
-    // 上层组件收起来当前组件
+    // The following two block bubble events are designed to prevent the upper level bubble 
+    // like component from triggering a reset of the edit state and the upper level component from putting away 
+    // the current component when clicking Add View.
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
     const newView = DatasheetActions.deriveDefaultViewProperty(Selectors.getSnapshot(store.getState())!, viewType, activityViewId);
@@ -285,7 +285,7 @@ export const ViewSwitcher: React.FC<IViewSwitcherProperty> = props => {
     setEditingValue(newView.name);
   };
 
-  // 修改视图
+  // Modify view.
   const modifyView = (editingViewId: string, editingViewName: string) => {
     if (!viewRenamable) {
       return;
@@ -305,7 +305,7 @@ export const ViewSwitcher: React.FC<IViewSwitcherProperty> = props => {
     ViewAction.moveView(movingItemId, destination.index);
   };
 
-  // 更改视图
+  // Modify view.
   const switchView = (e: React.MouseEvent, id: string, type?: 'add') => {
     if (activityViewId === id) {
       close(e);
@@ -322,12 +322,12 @@ export const ViewSwitcher: React.FC<IViewSwitcherProperty> = props => {
       return;
     }
     if (currentViewId === activityViewId) {
-      // 如果删除的视图就是当前展示的视图,将激活的视图换到视图列表的其他视图
+      // If the deleted view is the currently displayed view, switch the active view to another view in the view list.
       if (views.findIndex(item => item.id === currentViewId) === 0) {
-        // 删除的视图就是当前第一个视图，则换到第二个
+        // The deleted view is the current first view, then switch to the second.
         switchView(e, views[1]['id']);
       } else {
-        // 否则换到第一个
+        // Otherwise switch to the first.
         switchView(e, views[0]['id']);
       }
     }

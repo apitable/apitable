@@ -15,7 +15,7 @@ interface IViewFieldOptionsMobile {
   existFieldIds: string[];
   defaultFieldId: string;
   index?: number;
-  isAddNewOption?: boolean; // 当前选项的操作是否是添加新的选项
+  isAddNewOption?: boolean; // Whether the operation of the current option is to add a new option.
   isCryptoField?: boolean;
   fieldNotFound?: boolean;
 }

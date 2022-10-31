@@ -24,7 +24,7 @@ const MAX_HEIGHT = 340;
 
 export const ViewGroup: React.FC<IViewSetting> = props => {
   const { triggerInfo } = props;
-  const activeViewGroupInfo = useSelector(state => Selectors.getActiveViewGroupInfo(state)); // store 总存储的数据
+  const activeViewGroupInfo = useSelector(state => Selectors.getActiveViewGroupInfo(state));
   const activityView = useSelector(state => Selectors.getCurrentView(state))!;
 
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -54,7 +54,7 @@ export const ViewGroup: React.FC<IViewSetting> = props => {
     },
     [activityViewId],
   );
-  // 相册仅支持一级分组
+  // Gallery view supports only one level of grouping.
   const fieldSelectVisible = [ViewType.Gallery].includes(activityView.type)
     ? !activeViewGroupInfo.length
     : activeViewGroupInfo && activeViewGroupInfo.length < 3;
@@ -63,10 +63,10 @@ export const ViewGroup: React.FC<IViewSetting> = props => {
     submitGroup(
       produce(activeViewGroupInfo, draft => {
         if (!exitFieldIds.length) {
-          // 第一次添加
+          // First add.
           draft.push({ fieldId, desc: false });
         } else {
-          // 第二次更新，刷新数据
+          // Second update, refreshing data.
           draft[index] = { fieldId, desc: false };
         }
         return draft;
@@ -74,7 +74,7 @@ export const ViewGroup: React.FC<IViewSetting> = props => {
     );
   }
 
-  // 拖动结束之后修改顺序
+  // Trigger the modification sequence after the end of dragging.
   const onDragEnd = useCallback(
     (result: DropResult) => {
       const { source, destination } = result;

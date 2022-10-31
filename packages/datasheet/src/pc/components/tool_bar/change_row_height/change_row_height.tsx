@@ -115,7 +115,7 @@ export const ChangeRowHeight = (props) => {
   });
 
   const rowLevelList = Object.keys(RowHeightLevel).filter(x => {
-    // 甘特图只有三种高度
+    // Gantt chart has only three heights.
     if (view.type === ViewType.Gantt && x === 'ExtraTall') {
       return false;
     }

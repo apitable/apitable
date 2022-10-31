@@ -127,7 +127,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
     onModalClose(widget.id);
   };
 
-  // 安装小程序之前的检查，区分空间站和官方不同交互
+  // Check before installing the widget, distinguish between the space station and the official different interactions.
   const installWidgetPre = (widgetPackageId: string) => {
     if (!manageable) {
       return;
@@ -154,7 +154,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
     toInstallWidget(widgetPackageId);
   };
 
-  // 检查环境是否支持
+  // Check if the environment supports.
   const onClickInstall = () => {
     const installPosToEnvMap = {
       [InstallPosition.WidgetPanel]: WidgetInstallEnv.Panel,
@@ -327,7 +327,7 @@ const WidgetPackageList = (props: IWidgetPackageListProps) => {
           />
         ))
       }
-      {/* 仪表盘不提供创建小组件入口 */}
+      {/* Dashboard does not provide a widget creation portal. */}
       {releaseType === WidgetReleaseType.Space && isShowWidget && (
         <WrapperTooltip
           wrapper={!canCreateWidget}
@@ -448,7 +448,7 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
       return;
     }
     const selectMember = checkedList[0] as IMember;
-    // 移交
+    // Handover widget.
     Modal.warning({
       title: t(Strings.widget_transfer_modal_title, {
         widgetPackageName: curOperationProps.current.widgetPackageName,
@@ -595,9 +595,14 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
             }
           </Scrollbars>
         </TabPane>
-        {showPreview && <TabPane key={WidgetReleaseType.Preview} tab={'待审核'}>
+        {showPreview && <TabPane key={WidgetReleaseType.Preview} tab={'Preview'}>
           <Scrollbars renderThumbVertical={renderThumb} style={{ width: '100%', height: '100%' }}>
-            <TabItemIntroduction introduction={'审核中小程序列表，安装预览处理审核结果之后将安装在面板或者仪表盘的小程序清除'} />
+            <TabItemIntroduction
+              introduction={
+                'Review the list of widget, ' + 
+                'install the preview to clear the widget installed in the panel or dashboard after processing the review results.'
+              }
+            />
             {loading ? <div className={styles.skeletonWrap}><Skeleton /></div> : <WidgetPackageList
               needPlaceholder={needPlaceholder}
               installPosition={installPosition}

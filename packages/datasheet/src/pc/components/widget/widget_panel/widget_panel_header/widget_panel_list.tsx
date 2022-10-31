@@ -112,9 +112,9 @@ export const WidgetPanelList: FC<{ onClickItem?: (panelIndex: number) => void }>
   };
 
   /**
-   * 删除第一个列表，依次激活下一个面板，
-   * 删除的非地一个面板，删除后则激活第一个面板
-   * 全部删除完则清空
+   * 1. Delete the first list and activate the next panel, in turn.
+   * 2. Deleted non-directional panel, when deleted, activates the first panel.
+   * 3. Deleted non-directional panel, when deleted, activates the first panel.
    */
   const confirmDelete = (panelId: string) => {
     if (panelId === activeWidgetPanel.id) {

@@ -49,8 +49,8 @@ export const ForeignForm: FC<IForeignFormProps> = (props) => {
   });
 
   /**
-   * 复制表格时，viewId 是一致的
-   * 此时需要结合 datasheetId 和 viewId 来标识唯一性
+   * The viewId is consistent when copying tables.
+   * In this case, you need to combine datasheetId and viewId to identify the uniqueness.
    */
   const uniqueId = `${datasheetId}-${viewId}`;
 

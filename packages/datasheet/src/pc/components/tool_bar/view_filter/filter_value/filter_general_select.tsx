@@ -62,7 +62,7 @@ export const FilterGeneralSelect: React.FC<IFilterGeneralSelectProps> = props =>
     }
   }
 
-  // TODO 解决神奇引用筛选面板不关闭问题，临时解决方案，强行关闭
+  // TODO Type inconsistency (e.g. magic lookup switching type) to be corrected after the change operation.
   const refSelect = useRef<HTMLDivElement>(null);
   const refSelectItem = useRef<HTMLDivElement>(null);
   useClickAway(() => setVisible(false), [refSelect, refSelectItem], 'click');

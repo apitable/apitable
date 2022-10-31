@@ -55,7 +55,7 @@ export const WidgetList = () => {
   const widgetMap = useSelector(state => state.widgetMap);
   const isShowWidget = useSelector(state => Selectors.labsFeatureOpen(state, SystemConfig.test_function.widget_center.feature_key));
   const readonly = !editable;
-  // 是否在缩放中
+  // Is scaling in.
   const [dragging, setDragging] = useState<boolean>(false);
 
   const { screenIsAtMost } = useResponsive();

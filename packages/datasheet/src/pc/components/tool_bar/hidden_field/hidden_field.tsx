@@ -149,7 +149,7 @@ export const HiddenField: React.FC<IHiddenFieldProps> = props => {
   const isExclusive = hideFieldType === HideFieldType.Exclusive;
   const isGridView = viewType === ViewType.Grid;
   const columns: IViewColumn[] = activeView.columns;
-  // 表格视图需要主键，其它视图进入各自判断逻辑
+  // The grid view requires a primary key, and the other views enter their own judgment logic.
   const freeColumns = getFreeColumnsByViewType(columns, viewType, hideFieldType);
   const coverFields = getCoverFields(fieldMap);
   const [query, setQuery] = useState('');
@@ -279,7 +279,7 @@ export const HiddenField: React.FC<IHiddenFieldProps> = props => {
     );
   }
 
-  // 是否封面拉伸
+  // Whether the cover is stretched.
   const switchCoverFit = (checked: boolean) => {
     if (activeView.type === ViewType.Kanban || activeView.type === ViewType.Gallery) {
       executeCommandWithMirror(
@@ -320,7 +320,7 @@ export const HiddenField: React.FC<IHiddenFieldProps> = props => {
     }
   };
 
-  // 是否显示隐藏维格列名称
+  // Whether to show hidden column names
   const switchColNameVisible = (checked: boolean) => {
     if (activeView.type === ViewType.Gallery) {
       executeCommandWithMirror(
@@ -402,7 +402,7 @@ export const HiddenField: React.FC<IHiddenFieldProps> = props => {
       );
     }
   };
-  // 是否显示封面
+  // Whether to show the cover.
   const changeCoverField = value => {
     if (activeView.type === ViewType.Gallery) {
       executeCommandWithMirror(
@@ -617,7 +617,7 @@ export const HiddenField: React.FC<IHiddenFieldProps> = props => {
           {t(Strings.show_all_fields)}
         </Button>
       </div>
-      {/* TODO: 列权限上线后开放 */}
+      {/* TODO: Column permissions open when online. */}
       {/* <Button
        type='link'
        onClick={() => window.open('#')}

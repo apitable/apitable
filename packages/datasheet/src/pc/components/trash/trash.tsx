@@ -138,7 +138,8 @@ const Trash: FC = () => {
     }
     triggerUsageAlert(
       'maxRemainTrashDays',
-      // 这里 maxRemainTrashDays 取得为 billing 里的值，其实就是允许的最大值，所以为了触发弹窗，需要 +1
+      // Here maxRemainTrashDays is obtained as the value in billing, 
+      // which is actually the maximum allowed, so in order to trigger the popup, you need +1.
       { usage: maxRemainTrashDays + 1, alwaysAlert: true },
       SubscribeUsageTipType.Alert,
     );

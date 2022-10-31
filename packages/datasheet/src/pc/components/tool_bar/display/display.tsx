@@ -33,7 +33,8 @@ interface IDisplay extends Partial<TriggerProps> {
   children: React.ReactElement;
   className?: string;
   onVisibleChange?: (visible: boolean) => void;
-  // 当 popup open 时，自动高亮 item 下的 icon 和文字。这个特性默认开启，如果 icon 着色异常请主动关闭
+  // Automatically highlight the icon and text under the item when popup is open. 
+  // This feature is enabled by default, please turn it off if the icon coloring is abnormal.
   disableAutoActiveItem?: boolean;
 }
 
@@ -77,7 +78,7 @@ export const Display: React.FC<IDisplay> = props => {
   }, [ref]);
 
   function onMenuVisibleChange(popupVisible: boolean) {
-    // 过滤后的行是否有 url 对应的 recordId，没有就关闭记录卡片弹窗
+    // If the filtered row has a recordId corresponding to the url, close the record card popup if it doesn't.
     const state = store.getState();
     const visibleRows = Selectors.getVisibleRows(state);
     const recordId = state.pageParams.recordId;
@@ -95,7 +96,7 @@ export const Display: React.FC<IDisplay> = props => {
       return;
     }
 
-    // 分享只有具有可编辑可管理权限的人才能打开
+    // Share only people with editable and manageable permissions can open.
     if (type === ToolHandleType.Share && !canOpenShare) {
       return;
     }
@@ -144,7 +145,7 @@ export const Display: React.FC<IDisplay> = props => {
       case ToolHandleType.HiddenKanbanGroup:
         renderNode = <HiddenKanbanGroup triggerInfo={triggerInfo} />;
         break;
-      // 隐藏视图专属的列（如甘特图右侧图形区域的列）
+      // Hide columns exclusive to the view (e.g. columns in the graphical area on the right side of the Gantt chart).
       case ToolHandleType.HideExclusiveField:
         renderNode = <HiddenField triggerInfo={triggerInfo} type={HideFieldType.Exclusive} />;
         break;

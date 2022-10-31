@@ -18,8 +18,8 @@ interface IPreviewItemProps {
   index: number;
   recordId: string;
   field: IField;
-  // 调用者需要综合计算出最终的 readonly 传入，
-  // 这里不再额外引入 permissions 来进行权限判断
+  // The caller needs to synthesize the final readonly incoming,
+  // no additional 'permissions' are introduced here to determine permissions
   readonly?: boolean;
   style?: React.CSSProperties;
   onSave: (cellValue: IAttachmentValue[]) => void;
@@ -28,7 +28,7 @@ interface IPreviewItemProps {
 }
 
 export const useAllowDownloadAttachment = (fieldId: string, datasheetId?: string): boolean => {
-  // 获取是否为只读用户，获取空间站只读用户的下载权限
+  // Get whether it is read-only user and get download permission for read-only user of space station.
   const allowDownloadAttachment = useSelector(state => {
     const _allowDownloadAttachment = state.space.spaceFeatures?.allowDownloadAttachment || state.share.allowDownloadAttachment;
     return Boolean(_allowDownloadAttachment);

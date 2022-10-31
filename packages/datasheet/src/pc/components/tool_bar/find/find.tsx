@@ -98,9 +98,9 @@ export const Find = (props: IFindProps) => {
 
   useEffect(() => {
     if (isFindOpen) {
-      // 清空选区，避免和编辑器争夺输入焦点
+      // Clear the selection to avoid competing with the editor for input focus.
       dispatch(StoreActions.clearSelection(datasheetId!));
-      // 缓存上一次的分组信息
+      // Cache the last grouping information.
       cacheLastGroupingCollapse();
       let clearGroupCollapse;
       switch (viewType) {
@@ -113,15 +113,15 @@ export const Find = (props: IFindProps) => {
           clearGroupCollapse = [];
           break;
       }
-      // 清空分组信息
+      // Clear group information.
       changeGroupCollapse({ [storageId]: clearGroupCollapse });
       onOpen && onOpen();
     } else {
-      // 还原分组信息
+      // Restore group information.
       if (lastGroupingCollapseState != null) {
         changeGroupCollapse(lastGroupingCollapseState);
       }
-      // 面板不可见时，激活最后搜索的单元格，清空搜索关键字。
+      // When the panel is not visible, activate the last cell searched and clear the search keywords.
       activeCurrentSearchCell();
       dispatch(StoreActions.clearActiveRowInfo(datasheetId!));
       dispatch(StoreActions.setSearchKeyword(datasheetId!, ''));
@@ -137,7 +137,7 @@ export const Find = (props: IFindProps) => {
   }, [storageId, datasheetId, setIsFindOpen]);
 
   useEffect(() => {
-    // cmd + f 只能打开搜索面板，不能关闭。
+    // cmd + f only the search panel can be opened, not closed.
     const showFindPanel = () => {
       setIsFindOpen(true);
       inputRef.current?.select();

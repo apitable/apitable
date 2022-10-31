@@ -47,7 +47,6 @@ export const CommonViewSet: React.FC<ICommonViewSetProps> = props => {
       return;
     }
     const fieldId = dragData[index].fieldId;
-    // 检查是否有效
     const isInvalid = invalidFieldIds.some(di => di === fieldId);
     const isCryptoField = Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId) === ConfigConstant.Role.None;
     const fieldNotFound = !isCryptoField && !fieldMap[fieldId];
@@ -57,7 +56,7 @@ export const CommonViewSet: React.FC<ICommonViewSetProps> = props => {
           <div className={styles.iconDrag} onMouseOver={onMouseOver}>
             <DragOutlined size={10} color={colors.fourthLevelText} />
           </div>
-          {/* 选项列表 */}
+          {/* option list */}
           <ViewFieldOptions
             index={index}
             onChange={setField.bind(null, index)}
@@ -66,7 +65,7 @@ export const CommonViewSet: React.FC<ICommonViewSetProps> = props => {
             isCryptoField={isCryptoField}
             fieldNotFound={fieldNotFound}
           />
-          {/* 排序规则 */}
+          {/* Sorting Rules */}
           {isCryptoField || fieldNotFound ? (
             <InvalidValue style={{ marginLeft: 20, maxWidth: 185 }} content={fieldNotFound ? t(Strings.current_field_fail) : undefined} />
           ) : (
@@ -100,7 +99,7 @@ export const CommonViewSet: React.FC<ICommonViewSetProps> = props => {
               </div>
             </Col>
             <Col span={12}>
-              {/* 排序规则 */}
+              {/* Sorting Rules */}
               {isCryptoField || fieldNotFound ? (
                 <InvalidValue style={{ marginLeft: 20, maxWidth: 185 }} content={fieldNotFound ? t(Strings.current_field_fail) : undefined} />
               ) : (

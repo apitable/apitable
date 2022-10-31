@@ -55,7 +55,7 @@ export const FilterDateDuration: React.FC<IFilterDateDurationProps> = props => {
 
   function onChange(selectValue: string) {
     return changeFilter(value => {
-      // TODO 需要比较
+      // TODO Need to compare.
       return produce(value, draft => {
         const condition = draft.conditions[conditionIndex];
         if (selectValue === FilterDuration.ExactDate) {

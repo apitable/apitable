@@ -43,8 +43,7 @@ export const Welcome: FC = () => {
   const [downModuleId, setDownModuleId] = useState('');
   const env = getEnvVariables();
   const spaceInfo = useSelector((state: IReduxState) => state.space.curSpaceInfo);
-  // 区分平台使用不同的二维码
-
+  // Distinguish between platforms using different QR codes.
   const isBindDingTalk = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.DINGTALK);
   const isBindWecom = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.WECOM);
   const isBindFeishu = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.FEISHU);

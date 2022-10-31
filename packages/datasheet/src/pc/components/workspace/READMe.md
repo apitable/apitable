@@ -1,15 +1,15 @@
-## 切换视图
+## Switching views
 
-旧的逻辑里，切换视图有两种形式：
-1. 监控Url上的参数，主动修改redux中的activeView
-2. 基于用户的交互操作，先改变redux中的activeView，在通过监听该值的变化，切换路由
+In the old logic, there were two forms of switching views.
+1. Monitor the parameters on Url and actively modify the `activeView` in `redux`.
+2. Based on user interaction, first change the `activeView` in the `redux`, and then switch the route by listening to the change of the value.
 
-这两种逻辑可以说是相悖的，而且还不好维护。
+These two logics are arguably at odds with each other and are not well maintained.
 
-所以考虑到数据和URL是绑定的，完全可以通过单向的，通过修改路由，监听路由的变化，继而修改redux中的数据。如此，视图的变化就能和路由绑定。
+So considering that data and URLs are bound, it is perfectly possible to go one way, by modifying the route, listening for changes in the route and subsequently modifying the data in the `redux`. In this way, the view changes can be bound to the route.
 
-这里有两种特殊情况：
-1. 路由上存在viewId，但是当前datasheet的数据还没有加载完，视图的变化此时没有意义
-2. 当前的路由上就不存在viewId
+There are two special cases here.
+1. The `viewId` exists on the route, but the data of the current `datasheet` has not been loaded yet, and the change of the view is meaningless at this point.
+2. The `viewId` does not exist on the current route.
 
-以上特殊情况就需要对视图的路由做特殊的判断。如自动跳转到视图列表的第一个路由和监听redux中的datasheetId.
+The above special cases require special judgments about the view's routing. Such as automatically jumping to the first route in the view list and listening to the `datasheetId` in the `redux`.

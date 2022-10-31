@@ -29,7 +29,7 @@ interface IViewItemOwnProps {
 
 type IViewItemProps = IViewItemOwnProps;
 
-// TODO: 删除需要弹窗确认
+// TODO: Deletion requires pop-up confirmation.
 export const ViewItem: React.FC<IViewItemProps> = props => {
   const {
     currentViewId, currentViewName, isEditingId, renameEvent, viewType,
@@ -48,7 +48,7 @@ export const ViewItem: React.FC<IViewItemProps> = props => {
     renameEvent(currentViewId, currentViewName);
   };
 
-  // 视图的类型icon
+  // The type of view icon.
   const viewIconFill = props.activityViewId === currentViewId ? colors.primaryColor : colors.thirdLevelText;
 
   const clickView = (e: React.MouseEvent) => {

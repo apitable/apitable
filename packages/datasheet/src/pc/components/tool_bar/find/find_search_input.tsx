@@ -90,7 +90,7 @@ export const SearchInputBase: React.ForwardRefRenderFunction<ISearchInputRef, IS
     return;
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.CompositionEvent) => {
-    // 参见：https://zhuanlan.zhihu.com/p/106805657
+    // Reference: https://zhuanlan.zhihu.com/p/106805657
     if (e.type === 'compositionstart') {
       lock.current = true;
       return;
@@ -100,7 +100,7 @@ export const SearchInputBase: React.ForwardRefRenderFunction<ISearchInputRef, IS
       // chrome: compositionstart --> input --> compositionend
       // firefox: compositionstart --> compositionend --> input
       setKeyword((e as React.ChangeEvent<HTMLInputElement>).target.value);
-      // 结束中文输入时，主动触发一次搜索。
+      // Active search is triggered once when ending Chinese input.
       setRefreshIndex(refreshIndex + 1);
       return;
     }

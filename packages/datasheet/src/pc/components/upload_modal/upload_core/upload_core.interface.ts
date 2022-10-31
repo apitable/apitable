@@ -2,7 +2,7 @@ import { IAttacheField, IAttachmentValue, RowHeightLevel } from '@apitable/core'
 import { UploadStatus } from '../../../utils/upload_manager';
 
 export interface IUploadFileItemProps {
-  fileUrl: string; // 方便重新上传
+  fileUrl: string; // Easy re-upload.
   recordId: string;
   field: IAttacheField;
   fileId: string;
@@ -22,16 +22,16 @@ export interface IUploadFile {
   fileId: string;
   status?: UploadStatus;
   file: File;
-  fileUrl: string; // 方便重新上传
+  fileUrl: string; // Easy re-upload.
   loadedData?: number;
 }
 
 export type IUploadFileList = IUploadFile[];
 
 export interface IUploadResponse {
-  token: string; // 文件上传到后端 token，最终地址通过前端组装来访问。
-  bucket: string; // 存储位置，后端返回
-  size: number; // 文件大小，后端返回 byte
+  token: string; // The file is uploaded to the back-end token and the final address is accessed through the front-end assembly.
+  bucket: string; // Storage location, back-end return.
+  size: number; // file size, the backend returns byte.
   width: number;
   height: number;
   mimeType: string;
