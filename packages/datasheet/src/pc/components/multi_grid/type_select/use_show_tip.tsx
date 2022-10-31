@@ -33,8 +33,8 @@ export const useShowTip = (container: HTMLElement, tipWidth: number) => {
     let root;
 
     function unMountDiv() {
-      if (!divRef.current || !root) return;
-      root.unmount();
+      if (!divRef.current) return;
+      root?.unmount();
       divRef.current.parentElement &&
       divRef.current.parentElement.removeChild(divRef.current);
     }
