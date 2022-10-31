@@ -51,17 +51,17 @@ public class InternalNodeController {
     @Resource
     private SpaceCapacityCacheService spaceCapacityCacheService;
 
-    @PostResource(name = "创建数表节点", path = "/spaces/{spaceId}/datasheets", requiredPermission = false)
-    @ApiOperation(value = "创建数表节点", notes = "创建数表节点", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostResource(name = "create a table node", path = "/spaces/{spaceId}/datasheets", requiredPermission = false)
+    @ApiOperation(value = "create a table node", notes = "create a table node", produces = MediaType.APPLICATION_JSON_VALUE)
     @Notification(templateId = NotificationTemplateId.NODE_CREATE)
     public ResponseData<CreateDatasheetVo> createDatasheet(@PathVariable("spaceId") String spaceId, @RequestBody CreateDatasheetRo ro) {
         SpaceHolder.set(spaceId);
         Long userId = SessionContext.getUserId();
-        // 获取成员ID，方法包含判断用户是否在此空间
+        // Get the member ID, the method includes judging whether the user is in this space
         Long memberId = LoginContext.me().getMemberId(userId, spaceId);
-        // 校验父级节点下是否有指定操作权限
+        // Check whether the parent node has the specified operation permission
         String parentId = ro.getFolderId();
-        // 如果未设置上一级节点，则默认为根节点
+        // If the parent node is not set, it defaults to the root node
         if (StrUtil.isEmpty(parentId)) {
             parentId = nodeService.getRootNodeIdBySpaceId(spaceId);
             ro.setFolderId(parentId);
@@ -83,29 +83,29 @@ public class InternalNodeController {
         return ResponseData.success(vo);
     }
 
-    @PostResource(name = "删除节点", path = "/spaces/{spaceId}/nodes/{nodeId}/delete", requiredPermission = false)
-    @ApiOperation(value = "删除节点", notes = "删除节点", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostResource(name = "delete node", path = "/spaces/{spaceId}/nodes/{nodeId}/delete", requiredPermission = false)
+    @ApiOperation(value = "delete node", notes = "delete node", produces = MediaType.APPLICATION_JSON_VALUE)
     @Notification(templateId = NotificationTemplateId.NODE_DELETE)
     public ResponseData<Void> deleteNode(@PathVariable("spaceId") String spaceId
             , @PathVariable("nodeId") String nodeId) {
         SpaceHolder.set(spaceId);
         Long userId = SessionContext.getUserId();
-        // 获取成员ID，方法包含判断用户是否在此空间
+        // Get the member ID, the method includes judging whether the user is in this space
         Long memberId = LoginContext.me().getMemberId(userId, spaceId);
-        // 校验节点下是否有指定操作权限
+        // Check whether there is specified operation permission under the node
         controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.REMOVE_NODE,
                 status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
-        // 不可以删除根节点
+        // root node cannot be deleted
         String rootNodeId = nodeService.getRootNodeIdBySpaceId(spaceId);
         ExceptionUtil.isFalse(nodeId.equals(rootNodeId), NODE_OPERATION_DENIED);
         nodeService.deleteById(spaceId, memberId, nodeId);
-        // 删除空间容量缓存
+        // delete space capacity cache
         spaceCapacityCacheService.del(spaceId);
         return ResponseData.success();
     }
 
-    @GetResource(name = "获取节点属于的空间站Id", path = "/spaces/nodes/{nodeId}/belongSpace", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "获取节点属于的空间站Id", notes = "获取节点属于的空间站Id", hidden = true)
+    @GetResource(name = "get the space station id to which the node belongs", path = "/spaces/nodes/{nodeId}/belongSpace", requiredLogin = false, requiredPermission = false)
+    @ApiOperation(value = "get the space station id to which the node belongs", notes = "get the space station id to which the node belongs", hidden = true)
     public ResponseData<NodeFromSpaceVo> nodeFromSpace(@RequestHeader(name = ParamsConstants.INTERNAL_REQUEST) String internalRequest, @PathVariable("nodeId") String nodeId) {
         if (!"yes".equals(internalRequest)) {
             return ResponseData.success(null);

@@ -22,15 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 /**
- * <p>
- * 钉钉相关接口
- * </p>
- *
- * @author Shawn Deng
- * @date 2019/11/26 20:12
+ * DingTalk related interface
  */
 @RestController
-@Api(tags = "钉钉模块_钉钉企业内部应用相关服务接口")
+@Api(tags = "DingTalk enterprise internal application related service interface")
 @ApiResource(path = "/dingtalkCorp")
 @Slf4j
 public class DingTalkCorpController {
@@ -38,17 +33,17 @@ public class DingTalkCorpController {
     @Resource
     private IDingTalkService dingTalkService;
 
-    @PostResource(path = "/login", name = "钉钉用户免密登录", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "钉钉用户免密登录", notes = "登录完成后，系统默认保存用户会话，调用其他业务接口自动带上cookie即可")
+    @PostResource(path = "/login", name = "dingtalk user password free login", requiredLogin = false, requiredPermission = false)
+    @ApiOperation(value = "dingtalk user password free login", notes = "After the login is completed, the system saves the user session by default, and calls other business interfaces to automatically bring the cookie")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "code", value = "免登临时授权码，由客户端传上来", dataTypeClass = String.class, required = true, paramType = "query")
+            @ApiImplicitParam(name = "code", value = "temporary authorization code, uploaded by the client", dataTypeClass = String.class, required = true, paramType = "query")
     })
     public ResponseData<DingTalkUserDetail> login(@RequestParam(value = "code") String requestAuthCode) throws DingTalkApiException {
-        log.info("钉钉用户登录,code:{}", requestAuthCode);
-        //查询会话中是否有用户登录信息
+        log.info("DingTalk user login,code:{}", requestAuthCode);
+        // query whether there is user login information in the session
         String userId = dingTalkService.getUserInfoV2ByCode(requestAuthCode).getUserid();
         DingTalkUserDetail userInfo = dingTalkService.getUserInfoByUserId(userId);
-        //查询系统用户并且保存到会话里，下次无需重新登录
+        // query system users and save them to the session, no need to log in again next time
         if (ObjectUtil.isNotNull(userInfo)) {
             SessionContext.setDingTalkUserId(userId, userInfo.getName());
         }

@@ -83,7 +83,7 @@ public class FieldServiceImpl implements IFieldService {
                 continue;
             }
             URL urlObj;
-            // 检查URL的合法性，成功则将URL转为JAVA对象
+            // Check the validity of the URL, if successful, convert the URL to a JAVA object
             Optional<URL> checkUrl = ClientUriUtil.checkUrl(url);
             if (checkUrl.isPresent()) {
                 urlObj = checkUrl.get();
@@ -92,16 +92,16 @@ public class FieldServiceImpl implements IFieldService {
                 urlToUrlAwareContents.put(url, new UrlAwareContentVo(false));
                 continue;
             }
-            // 判断url地址是否站内网址
+            // determine whether the url address is an internal site url
             if (isIntranetSite(siteUrlHost, urlObj)) {
-                // 识别站内地址的URL内容
+                // identify the internal url content of the site s address
                 UrlAwareContentVo vo = getIntranetSiteUrlContent(urlObj, siteUrlHost, userId);
                 if (vo.getIsAware()) {
                     urlToUrlAwareContents.put(url, vo);
                     continue;
                 }
             }
-            // 识别站外地址
+            // identify extranet link addresses
             final UrlAwareContentVo vo = new UrlAwareContentVo();
             vo.setIsAware(false);
             vo.setFavicon(getUrlFavicon(urlObj));
@@ -110,7 +110,7 @@ public class FieldServiceImpl implements IFieldService {
                 continue;
             }
             if (calls.size() % 20 == 0 && UrlRequestUtil.readyRequestCount() > 200) {
-                // 爬取繁忙，停止爬取外部链接
+                // crawl busy stop crawling external links
                 isStopFetchOffSiteUrl = true;
             }
             else {
@@ -128,24 +128,24 @@ public class FieldServiceImpl implements IFieldService {
             return new UrlAwareContentVo(false);
         }
         urlObj = checkUrl.get();
-        // 判断url地址是否站内网址
+        // determine whether the url address is an internal site url
         String siteUrlHost = getSiteUrlHost();
         if (isIntranetSite(siteUrlHost, urlObj)) {
-            // 识别站内地址的URL内容
+            // identify the internal url content of the site s address
             UrlAwareContentVo vo = getIntranetSiteUrlContent(urlObj, siteUrlHost, userId);
             if (vo.getIsAware()) {
                 return vo;
             }
         }
-        // 识别站外地址
+        // identify off the external link
         return tryGetOffSiteUrlContent(urlObj);
     }
 
     /**
-     * 判断url是否属于站内
-     * @param siteUrlHost 站内域名
-     * @param url 网址
-     * @return url是否属于站内
+     * determine whether the url belongs to the internal site
+     * @param siteUrlHost the internal site domain name
+     * @param url url
+     * @return whether the url belongs to the internal site
      */
     private boolean isIntranetSite(String siteUrlHost, URL url) {
         String host = url.getHost();
@@ -156,12 +156,12 @@ public class FieldServiceImpl implements IFieldService {
     }
 
     /**
-     * 获取站内URL相关内容
+     * get url related content on the internal site
      *
-     * @param url 站内URL
-     * @param siteUrlHost 站内域名
-     * @param userId 用户id
-     * @return 站外URL相关内容
+     * @param url internal site url
+     * @param siteUrlHost internal domain
+     * @param userId user id
+     * @return internal related content
      */
     private UrlAwareContentVo getIntranetSiteUrlContent(URL url, String siteUrlHost, Long userId) {
         UrlAwareContentVo vo = defaultIntranetSiteUrlContent(siteUrlHost);
@@ -170,7 +170,7 @@ public class FieldServiceImpl implements IFieldService {
             return urlAwareFailureWithFavicon(url);
         }
         URI uri = turnIntoUri.get();
-        // 判断是否是分享地址
+        // determine whether it is a shared address
         if (ClientUriUtil.isMatchSharePath(uri)) {
             Optional<String> shareId = ClientUriUtil.getShareIdByPath(uri);
             shareId.ifPresent(id -> {
@@ -178,7 +178,7 @@ public class FieldServiceImpl implements IFieldService {
                 nodeName.ifPresent(vo::setTitle);
             });
         }
-        // 判断网址是否是工作台节点
+        // determine if the url is a workbench node
         else if (ClientUriUtil.isMatchWorkbenchPath(uri)) {
             Optional<String> nodeId = ClientUriUtil.getNodeIdByPath(uri);
             nodeId.ifPresent(id -> {
@@ -193,10 +193,10 @@ public class FieldServiceImpl implements IFieldService {
     }
 
     /**
-     * 获取站外URL相关内容
+     * get extranet site url related content
      *
-     * @param url 站外URL
-     * @return 站外URL相关内容
+     * @param url extranet url
+     * @return extranet url related content
      */
     private UrlAwareContentVo tryGetOffSiteUrlContent(URL url) {
         UrlAwareContentVo urlAwareContentVo = new UrlAwareContentVo();
@@ -214,15 +214,15 @@ public class FieldServiceImpl implements IFieldService {
 
     private void waitFetchOffSiteUrl(CompletableFuture<String> lastFuture, List<Call> calls) {
         try {
-            // 限制超时
+            // limit timeout
             if (ObjectUtil.isNotNull(lastFuture)) {
                 lastFuture.get(2, TimeUnit.SECONDS);
             }
         }
         catch (ExecutionException | TimeoutException | InterruptedException e) {
-            log.info("请求失败：[{}]", e.getMessage());
+            log.info("request failed:[{}]", e.getMessage());
         }
-        // 取消掉还没有处理的请求
+        // Cancel pending requests
         calls.forEach(Call::cancel);
     }
 
@@ -235,7 +235,7 @@ public class FieldServiceImpl implements IFieldService {
                 vo.setTitle(title);
             }
             else {
-                log.info("站外地址[{}]识别失败：[{}]", urlObj, e.getMessage());
+                log.info("Offsite address [{}] recognition failed: [{}]", urlObj, e.getMessage());
             }
         });
         return future;

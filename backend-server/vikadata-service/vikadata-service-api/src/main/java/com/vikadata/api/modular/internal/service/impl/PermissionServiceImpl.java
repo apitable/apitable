@@ -33,12 +33,7 @@ import com.vikadata.api.modular.workspace.service.INodeShareSettingService;
 import org.springframework.stereotype.Service;
 
 /**
- * <p>
  * Permission Service Implements
- * </p>
- *
- * @author Chambers
- * @date 2021/12/14
  */
 @Slf4j
 @Service
@@ -73,11 +68,11 @@ public class PermissionServiceImpl implements IPermissionService {
 
     @Override
     public List<DatasheetPermissionView> getDatasheetPermissionView(Long userId, List<String> nodeIds, String shareId) {
-        // 判断节点是否都属于模板（仅部分是模板触发异常）
+        // Determine whether the nodes belong to the template (only part of the template triggers an exception)
         Boolean isTemplate = iNodeService.getIsTemplateByNodeIds(nodeIds);
         List<DatasheetPermissionView> views = new ArrayList<>(nodeIds.size());
         String uuid = iUserService.getUuidByUserId(userId);
-        // 模版权限直接返回
+        // template permissions are returned directly
         if (BooleanUtil.isTrue(isTemplate)) {
             DatasheetPermissionView templateView = ControlRoleManager.parseNodeRole(Node.TEMPLATE_VISITOR).permissionToBean(DatasheetPermissionView.class);
             templateView.setHasRole(true);
@@ -92,34 +87,34 @@ public class PermissionServiceImpl implements IPermissionService {
             }
             return views;
         }
-        // 获取空间ID（多个空间触发异常）
+        // Get space ID (multiple spaces trigger exception)
         String spaceId = iNodeService.getSpaceIdByNodeIds(nodeIds);
-        // 在分享中加载节点权限时，以分享设置最后的变更人的权限为准，方法包含判断变更人是否存在
+        // When loading node permissions in sharing, the permissions of the last changer in the sharing settings shall prevail. The method includes judging whether the changer exists.
         Long owner = StrUtil.isNotBlank(shareId) ? iNodeShareSettingService.getUpdatedByByShareId(shareId) : userId;
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(owner, spaceId);
-        // 非空间站的成员
+        // non space station member
         if (memberId == null) {
             for (String nodeId : nodeIds) {
                 views.add(this.getEmptyPermissionView(userId, uuid, memberId, nodeId, shareId));
             }
             return views;
         }
-        // 加载节点权限集
+        // load node permission set
         ControlRoleDict roleDict = controlTemplate.fetchInternalNodeRole(memberId, nodeIds);
-        // 节点均无权限则返回空权限集
+        // If no node has permission, return an empty permission set
         if (roleDict.isEmpty()) {
             for (String nodeId : nodeIds) {
                 views.add(this.getEmptyPermissionView(userId, uuid, memberId, nodeId, shareId));
             }
             return views;
         }
-        // 获取空间全局属性
+        // get spatial global properties
         SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
-        // 获取星标节点ID
+        // get star node id
         List<String> favoriteNodeIds = iNodeFavoriteService.getFavoriteNodeIdsByMemberId(memberId);
         for (String nodeId : nodeIds) {
             if (!roleDict.containsKey(nodeId)) {
-                // 无节点权限则返回空权限集
+                // Returns an empty permission set if there is no node permission
                 views.add(this.getEmptyPermissionView(userId, uuid, memberId, nodeId, shareId));
                 continue;
             }
@@ -130,7 +125,7 @@ public class PermissionServiceImpl implements IPermissionService {
             permissionView.setUuid(uuid);
             permissionView.setRole(controlRole.getRoleTag());
             permissionView.setIsGhostNode(controlRole.isGhostNode());
-            // 获取数表所有字段的权限
+            // permission to get all fields of the data table
             FieldPermissionView fieldPermissionView = iFieldRoleService.getFieldPermissionView(memberId, nodeId, shareId);
             if (fieldPermissionView != null) {
                 permissionView.setDatasheetId(fieldPermissionView.getDatasheetId());
@@ -160,7 +155,7 @@ public class PermissionServiceImpl implements IPermissionService {
         DatasheetPermissionView emptyPermissionView = new DatasheetPermissionView();
         emptyPermissionView.setUserId(userId);
         emptyPermissionView.setUuid(uuid);
-        // 获取数表所有字段的权限
+        // permission to get all fields of the data table
         FieldPermissionView fieldPermissionView = iFieldRoleService.getFieldPermissionView(memberId, nodeId, shareId);
         if (fieldPermissionView != null) {
             emptyPermissionView.setDatasheetId(fieldPermissionView.getDatasheetId());

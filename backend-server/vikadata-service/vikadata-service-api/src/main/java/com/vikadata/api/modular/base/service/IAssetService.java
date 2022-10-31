@@ -13,109 +13,90 @@ import com.vikadata.api.model.vo.asset.AssetUploadResult;
 import com.vikadata.entity.AssetEntity;
 
 /**
- * <p>
- * 基础-附件表 服务类
- * </p>
- *
- * @author Chambers
- * @since 2020-03-06
+ * Basics - Attachment Table Service Class
  */
 public interface IAssetService extends IService<AssetEntity> {
 
     /**
-     * 上传前置检查
+     * upload pre check
      *
-     * @param nodeId    节点ID
-     * @param secret    人机验证密钥
-     * @author Chambers
-     * @date 2022/4/8
+     * @param nodeId    Node ID
+     * @param secret    Human verification secret
      */
     void checkBeforeUpload(String nodeId, String secret);
 
     /**
-     * 上传资源文件到空间内，并计算容量
+     * Upload resource files to the space and calculate the capacity
      *
-     * @param nodeId           节点ID
-     * @param in               资源文件流
-     * @param fileOriginalName 文件源名称
-     * @param fileSize         文件资源大小
-     * @param mimeType         文件类型
-     * @param assetType        资源类型
+     * @param nodeId           node id
+     * @param in               resource file stream
+     * @param fileOriginalName file source name
+     * @param fileSize         file resource size
+     * @param mimeType         file type
+     * @param assetType        resource type
      * @return AssetUploadResult
-     * @author Shawn Deng
-     * @date 2020/6/3 20:52
      */
     AssetUploadResult uploadFileInSpace(String nodeId, InputStream in, String fileOriginalName, long fileSize, String mimeType, AssetType assetType);
 
     /**
-     *
-     * @param url 网络资源地址
-     * @return
+     * upload remote url
+     * @param url network resource address
+     * @return AssetUploadResult
      */
     AssetUploadResult uploadRemoteUrl(String url);
 
     /**
-     * 简单上传资源文件，不计入空间容量
+     * Simple upload of resource files, not included in the space capacity
      *
-     * @param in          资源文件流
-     * @param fileSize    文件资源大小
-     * @param contentType 资源文件类型
+     * @param in          resource file stream
+     * @param fileSize    file resource size
+     * @param contentType resource file type
      * @return AssetUploadResult
-     * @author Shawn Deng
-     * @date 2020/6/3 20:52
      */
     AssetUploadResult uploadFile(InputStream in, long fileSize, String contentType);
 
     /**
-     * 上传资源文件到开发者空间，并计算容量
+     * Upload resource files to developer space and calculate capacity
      *
-     * @param in                    资源文件流
-     * @param uploadPath            上传文件全路径
-     * @param fileOriginalName      文件源名称
-     * @param fileSize              文件资源大小
-     * @param contentType           文件类型
-     * @param createdBy             上传人
-     * @param developerAssetType    资源类型
+     * @param in                    resource file stream
+     * @param uploadPath            upload file full path
+     * @param fileOriginalName      file source name
+     * @param fileSize              file resource size
+     * @param contentType           file type
+     * @param createdBy             uploader
+     * @param developerAssetType    resource type
      * @return AssetUploadResult
-     * @author Pengap
-     * @date 2021/7/21
      */
     AssetUploadResult uploadFileInDeveloper(InputStream in, String uploadPath, String fileOriginalName, long fileSize, String contentType, Long createdBy, DeveloperAssetType developerAssetType);
 
     /**
-     * 文件预览
+     * file preview
      *
-     * @param officePreviewRo 附件请求参数
-     * @param spaceId 空间站ID
-     * @author Benson Cheung
-     * @date 2021/01/04
+     * @param officePreviewRo attachment request parameters
+     * @param spaceId space station id
      */
     String officePreview(AttachOfficePreviewRo officePreviewRo, String spaceId);
 
     /**
-     * 删除云端s3文件
+     * delete cloud s3 files
      *
-     * @param token 云端key
-     * @author Chambers
-     * @date 2020/3/21
+     * @param token cloud key
      */
     void delete(String token);
 
     /**
-     * 附件url上传
+     * attachment url upload
      *
-     * @param attachOpRo 附件参数
-     * @return AttachVo 附件vo
-     * @author Benson Cheung
-     * @date 2020/03/25
+     * @param attachOpRo attachment parameters
+     * @return AttachVo attachment vo
      */
     AssetUploadResult urlUpload(AttachUrlOpRo attachOpRo);
 
     /**
-     * 上传第三方头像
+     * upload third party avatars
      *
-     * @param avatarUrl 第三方头像地址
-     * @return 上传完成的Url
+     * @param avatarUrl third party avatar address
+     * @return upload completed url
      */
     String downloadAndUploadUrl(String avatarUrl);
 
@@ -125,8 +106,6 @@ public interface IAssetService extends IService<AssetEntity> {
      * @param assetIds      asset table ids
      * @param isTemplate    whether it is a template attachment status
      * @return real updated asset checksum list
-     * @author Chambers
-     * @date 2022/8/15
      */
     List<String> updateAssetTemplateByIds(List<Long> assetIds, Boolean isTemplate);
 }

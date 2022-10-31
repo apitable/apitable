@@ -1,25 +1,20 @@
 package com.vikadata.api.modular.internal.service;
 
 import java.util.List;
-import java.util.Map;
 
-import com.vikadata.api.modular.internal.model.UrlAwareContentVo;
 import com.vikadata.api.modular.internal.model.UrlAwareContentsVo;
 
 /**
- * <p>
- *     字段相关功能
- * </p>
+ * Field related functions
  *
- * @author tao
  */
 public interface IFieldService {
 
     /**
-     * 获取url的网址信息
+     * get the url information of the url
      * @param urls url
-     * @param userId 用户id
-     * @return url网址信息
+     * @param userId User id
+     * @return url information
      */
     UrlAwareContentsVo getUrlAwareContents(List<String> urls, Long userId);
 }

@@ -92,11 +92,7 @@ import static com.vikadata.define.constants.RedisConstants.GENERAL_LOCKED;
 import static com.vikadata.define.constants.RedisConstants.USER_AUTH_INFO_TOKEN;
 
 /**
- * <p>
- * 授权相关服务接口实现
- * </p>
- *
- * @author Shawn Deng
+ * Authorization-related service interface implementation
  */
 @Service
 @Slf4j
@@ -164,25 +160,26 @@ public class AuthServiceImpl implements IAuthService {
             errorPwdCount = Integer.parseInt(Objects.requireNonNull(opts.get()).toString());
             ExceptionUtil.isTrue(errorPwdCount < 5, LOGIN_OFTEN);
         }
-        //判断密码
+        // Determine the password
         PasswordEncoder passwordEncoder = SpringContextHolder.getBean(PasswordEncoder.class);
         if (passwordEncoder.matches(loginRo.getCredential(), user.getPassword())) {
-            // 第三方帐号关联
+            // Third-party account linking
             SocialAuthInfo authInfo = this.getAuthInfoFromCache(loginRo.getToken());
             if (authInfo != null && StrUtil.isNotBlank(authInfo.getUnionId())) {
-                // 创建关联
+                // Create association
                 this.createUserLink(user.getId(), authInfo, true);
-                // 立即从缓存里删除授权信息
+                // Immediately delete authorization information from the cache
                 this.removeInviteTokenFromCache(loginRo.getToken());
             }
-            //登陆成功，清空输入密码错误的次数
+            // Successful login, clear the number of wrong password input
             redisTemplate.delete(key);
-            //更新最后登陆时间
+            // Update last login time
             iUserService.updateLoginTime(user.getId());
             return user.getId();
         }
         else {
-            //记录输入密码错误的次数，连续输错密码超过五次账号锁定20分钟
+            // Record the number of wrong passwords entered, and the account will be locked for 20 minutes if the
+            // wrong password is entered more than five times in a row
             redisTemplate.opsForValue().set(key, errorPwdCount + 1, 20, TimeUnit.MINUTES);
             throw new BusinessException(USERNAME_OR_PASSWORD_ERROR);
         }
@@ -191,14 +188,14 @@ public class AuthServiceImpl implements IAuthService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long loginUsingPassword(LoginRo loginRo) {
-        // 根据用户名（邮箱/区号+手机）获取用户, 查询不到用户名会自动抛出异常
+        // Get the user according to the user name (email area code + mobile phone), if the user name cannot be queried, an exception will be thrown automatically
         UserEntity user = iUserService.getByUsername(loginRo.getAreaCode(), loginRo.getUsername());
-        // 记录用户密码输入错误的键，每次锁住20分钟
+        // Record the wrong keys of the user password, and lock them for 20 minutes each time
         String errorInputPwdCountKey = ERROR_PWD_NUM_DIR + user.getId();
         int errorPwdCount = 0;
-        // 判断是否连续输错超过五次密码
+        // Determine whether you have entered the wrong password more than five times in a row
         if (BooleanUtil.isTrue(redisTemplate.hasKey(errorInputPwdCountKey))) {
-            // 有记录输错密码次数，计算是否大于5次
+            // There is a record of the number of wrong passwords, and calculate whether it is greater than 5 times
             BoundValueOperations<String, Object> opts = redisTemplate.boundValueOps(errorInputPwdCountKey);
             Object value = opts.get();
             if (!Objects.isNull(value)) {
@@ -206,17 +203,17 @@ public class AuthServiceImpl implements IAuthService {
                 ExceptionUtil.isTrue(errorPwdCount < 5, LOGIN_OFTEN);
             }
         }
-        // 判断密码是否匹配
+        // Check if the passwords match
         PasswordEncoder passwordEncoder = SpringContextHolder.getBean(PasswordEncoder.class);
         if (!passwordEncoder.matches(loginRo.getCredential(), user.getPassword())) {
-            // 记录输入密码错误的次数，连续输错密码超过五次账号锁定20分钟
+            // Record the number of wrong passwords entered, and the account will be locked for 20 minutes if the wrong password is entered more than five times in a row
             BoundValueOperations<String, Object> opts = redisTemplate.boundValueOps(errorInputPwdCountKey);
             opts.set(errorPwdCount + 1, 20, TimeUnit.MINUTES);
             throw new BusinessException(USERNAME_OR_PASSWORD_ERROR);
         }
-        // 更新最后登陆时间
+        // Update last login time
         iUserService.updateLoginTime(user.getId());
-        // 登陆成功，清空输入密码错误的次数
+        // Successful login, clear the number of wrong password input
         redisTemplate.delete(errorInputPwdCountKey);
         return user.getId();
     }
@@ -226,36 +223,36 @@ public class AuthServiceImpl implements IAuthService {
     public UserLoginResult loginBySmsCode(LoginRo loginRo) {
         String mobile = loginRo.getUsername();
         String code = StrUtil.trim(loginRo.getCredential());
-        // 校验参数
+        // Check parameters
         ExceptionUtil.isNotBlank(code, CODE_EMPTY);
-        // 校验验证码
+        // Verify verification code
         ValidateCodeProcessor processor = ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.SMS);
         ValidateTarget target = ValidateTarget.create(loginRo.getUsername(), loginRo.getAreaCode());
         processor.validate(target, code, false, CodeValidateScope.LOGIN);
         UserLoginResult result = new UserLoginResult();
         Long userId = userMapper.selectIdByMobile(mobile);
-        // 从缓存取出用户授权信息
+        // Get user authorization information from cache
         SocialAuthInfo authInfo = this.getAuthInfoFromCache(loginRo.getToken());
-        // 是否关联账号
+        // Whether to link the account
         boolean link = authInfo != null && StrUtil.isNotBlank(authInfo.getUnionId());
-        // 是否绑定邮箱
+        // Whether to bind the mailbox
         boolean bindEmail = authInfo != null && StrUtil.isNotBlank(authInfo.getEmail());
         if (ObjectUtil.isNotNull(userId)) {
-            // 第三方帐号关联
+            // third party account linking
             if (link) {
                 this.createUserLink(userId, authInfo, true);
                 result.setUnionId(authInfo.getUnionId());
             }
-            // 邮箱验证码后进入，绑定邮箱与维格帐号
+            // Enter after the email verification code, bind the email with the Weige account
             if (bindEmail) {
                 this.emailProcess(userId, authInfo.getEmail());
             }
-            // 更新最后登陆时间
+            // Update last login time
             iUserService.updateLoginTime(userId);
             result.setUserId(userId);
         }
         else {
-            // 检查第三方帐号是否关联了其他维格账号
+            // Check whether the third-party account is associated with other Weige accounts
             if (link) {
                 iUserLinkService.checkThirdPartyLinkOtherUser(authInfo.getUnionId(), authInfo.getType());
             }
@@ -266,9 +263,9 @@ public class AuthServiceImpl implements IAuthService {
             authInfo.setMobile(mobile);
             result.setToken(this.saveAuthInfoToCache(authInfo));
         }
-        // 删除验证码
+        // delete verification code
         processor.delCode(target.getRealTarget(), CodeValidateScope.LOGIN);
-        // 立即从缓存里删除授权信息
+        // Immediately delete authorization information from the cache
         this.removeInviteTokenFromCache(loginRo.getToken());
         return result;
     }
@@ -277,52 +274,52 @@ public class AuthServiceImpl implements IAuthService {
     @Transactional(rollbackFor = Exception.class)
     public UserLoginResult loginUsingSmsCode(LoginRo loginRo) {
         UserLoginResult result = new UserLoginResult();
-        // 短信验证码方式登录，不存在则自动注册
+        // Log in by SMS verification code, if it does not exist, it will automatically register
         String areaCode = StrUtil.trim(loginRo.getAreaCode());
         ExceptionUtil.isNotBlank(areaCode, MOBILE_EMPTY);
         String mobile = StrUtil.trim(loginRo.getUsername());
         ExceptionUtil.isNotBlank(mobile, MOBILE_EMPTY);
         String mobileValidCode = StrUtil.trim(loginRo.getCredential());
         ExceptionUtil.isNotBlank(mobileValidCode, CODE_EMPTY);
-        // 校验手机验证码
+        // Verify mobile phone verification code
         ValidateCodeProcessor processor = ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.SMS);
         ValidateTarget target = ValidateTarget.create(loginRo.getUsername(), loginRo.getAreaCode());
         processor.validate(target, mobileValidCode, false, CodeValidateScope.LOGIN);
-        // 从缓存取出用户授权信息
+        // Get user authorization information from cache
         SocialAuthInfo authInfo = getAuthInfoFromCache(loginRo.getToken());
-        // 是否第三方扫码登录后绑定手机号操作
+        // Whether to bind the mobile phone number after the third-party scan code login operation
         boolean socialLogin = authInfo != null && StrUtil.isNotBlank(authInfo.getUnionId());
         if (socialLogin) {
             iUserLinkService.checkThirdPartyLinkOtherUser(authInfo.getUnionId(), authInfo.getType());
-            // 加载获取第三方的昵称、头像
+            // Load and obtain third-party nicknames and avatars
             useThirdPartyInfo(authInfo);
         }
         Long userId = iUserService.getUserIdByMobile(mobile);
         if (ObjectUtil.isNotNull(userId)) {
-            // 更新最后登陆时间
+            // Update last login time
             iUserService.updateLoginTime(userId);
-            // 查询是否有手机号对应的空间成员
+            // Query whether there is a space member corresponding to a mobile phone number
             List<MemberDto> inactiveMembers = iMemberService.getInactiveMemberDtoByMobile(mobile);
             iUserService.activeInvitationSpace(userId, inactiveMembers.stream().map(MemberDto::getId).collect(Collectors.toList()));
         }
         else {
-            // 注册用户
+            // registered a new user
             String nickName = socialLogin ? authInfo.getNickName() : null;
             String avatar = socialLogin ? authInfo.getAvatar() : null;
             userId = registerUserUsingMobilePhone(areaCode, mobile, nickName, avatar);
             if (StrUtil.isNotEmpty(loginRo.getSpaceId())) {
-                // 缓存，用于邀请用户赠送附件容量
+                // Cache, used to invite users to give away attachment capacity
                 this.handleCache(userId, loginRo.getSpaceId());
             }
             result.setIsSignUp(true);
         }
-        // 如果是第三方应用扫码登录后绑定账号，则绑定
+        // If it is a third-party application that binds the account after scanning the code to log in
         if (socialLogin) {
             createUserLink(userId, authInfo, false);
         }
-        // 删除验证码
+        // delete verification code
         processor.delCode(target.getRealTarget(), CodeValidateScope.LOGIN);
-        // 立即从缓存里删除第三方授权信息
+        // Immediately delete third-party authorization information from the cache
         this.removeInviteTokenFromCache(loginRo.getToken());
         result.setUserId(userId);
         return result;
@@ -332,17 +329,17 @@ public class AuthServiceImpl implements IAuthService {
     public UserLoginResult loginByEmailCode(LoginRo loginRo) {
         String email = loginRo.getUsername();
         String code = StrUtil.trim(loginRo.getCredential());
-        // 校验参数
+        // Check parameters
         ExceptionUtil.isTrue(Validator.isEmail(email), REGISTER_EMAIL_ERROR);
         ExceptionUtil.isNotBlank(code, CODE_EMPTY);
-        // 校验验证码
+        // Verify verification code
         ValidateCodeProcessor processor = ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.EMAIL);
         processor.validate(ValidateTarget.create(email), code, false, CodeValidateScope.REGISTER_EMAIL);
         UserLoginResult result = new UserLoginResult();
-        // 判断是否存在
+        // determine whether there is
         UserEntity userEntity = userMapper.selectByEmail(email);
         if (ObjectUtil.isNotNull(userEntity)) {
-            // 更新最后登陆时间
+            // Update last login time
             iUserService.updateLoginTime(userEntity.getId());
             result.setUserId(userEntity.getId());
         }
@@ -351,7 +348,7 @@ public class AuthServiceImpl implements IAuthService {
             authInfo.setEmail(email);
             result.setToken(this.saveAuthInfoToCache(authInfo));
         }
-        // 删除验证码
+        // delete verification code
         processor.delCode(email, CodeValidateScope.REGISTER_EMAIL);
         return result;
     }
@@ -361,51 +358,51 @@ public class AuthServiceImpl implements IAuthService {
         UserLoginResult result = new UserLoginResult();
         String email = loginRo.getUsername();
         String emailValidCode = StrUtil.trim(loginRo.getCredential());
-        // 校验参数
+        // Check parameters
         ExceptionUtil.isTrue(Validator.isEmail(email), REGISTER_EMAIL_ERROR);
         ExceptionUtil.isNotBlank(emailValidCode, CODE_EMPTY);
-        // 校验验证码
+        // Verify verification code
         ValidateCodeProcessor processor = ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.EMAIL);
         processor.validate(ValidateTarget.create(email), emailValidCode, false, CodeValidateScope.REGISTER_EMAIL);
-        // 判断是否存在
+        // determine whether there is
         Long userId = iUserService.getUserIdByEmail(email);
         if (userId != null) {
-            // 更新最后登陆时间
+            // Update last login time
             iUserService.updateLoginTime(userId);
-            // 查询是否有邮箱对应的空间成员，只有新注册才会有这个操作
+            // Query whether there is a space member corresponding to the mailbox, only new registration will have this operation
             List<MemberDto> inactiveMembers = iMemberService.getInactiveMemberDtoByEmail(email);
             iUserService.activeInvitationSpace(userId, inactiveMembers.stream().map(MemberDto::getId).collect(Collectors.toList()));
         }
         else {
-            // 邮箱自动注册用户不提供第三方扫码登录绑定
+            // Email automatic registration users do not provide third-party scan code login binding
             userId = registerUserUsingEmail(email, loginRo.getSpaceId());
             if (StrUtil.isNotEmpty(loginRo.getSpaceId())) {
-                // 缓存，用于邀请用户赠送附件容量
+                // Cache, used to invite users to give away attachment capacity
                 this.handleCache(userId, loginRo.getSpaceId());
             }
             result.setIsSignUp(true);
         }
-        // 删除验证码
+        // delete verification code
         processor.delCode(email, CodeValidateScope.LOGIN);
         result.setUserId(userId);
         return result;
     }
 
     public Long registerUserUsingMobilePhone(String areaCode, String mobile, String nickName, String avatar) {
-        // 根据手机号新建用户，并激活对应成员
+        // Create a new user based on the mobile phone number and activate the corresponding member
         UserEntity user = iUserService.createUserByMobilePhone(areaCode, mobile, nickName, avatar);
-        // 查询是否有手机号对应的空间成员
+        // Query whether there is a space member corresponding to a mobile phone number
         List<MemberDto> inactiveMembers = iMemberService.getInactiveMemberDtoByMobile(mobile);
         createOrActiveSpace(user, inactiveMembers.stream().map(MemberDto::getId).collect(Collectors.toList()));
         return user.getId();
     }
 
     public Long registerUserUsingEmail(String email, String spaceId) {
-        // 根据邮箱新建用户，并激活对应成员
+        // Create a new user based on the mailbox and activate the corresponding member
         UserEntity user = iUserService.createUserByEmail(email);
-        // 查询是否有邮箱对应的空间成员，只有新注册才会有这个操作
+        // Query whether there is a space member corresponding to the mailbox, only new registration will have this operation
         List<MemberDto> inactiveMembers = iMemberService.getInactiveMemberDtoByEmail(email);
-        // 邀请新用户加入空间站奖励附件容量，异步操作
+        // Invite new users to join the space station to reward attachment capacity, asynchronous operation
         TaskManager.me().execute(() -> this.checkSpaceRewardCapacity(user.getId(), user.getNickName(), spaceId));
         createOrActiveSpace(user, inactiveMembers.stream().map(MemberDto::getId).collect(Collectors.toList()));
         return user.getId();
@@ -423,81 +420,81 @@ public class AuthServiceImpl implements IAuthService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UserRegisterResult signUpByInviteCode(String token, String inviteCode) {
-        log.info("邀请码注册新用户:{}-{}", token, inviteCode);
-        // 从缓存取出用户授权信息
+        log.info("Invitation code to register new user: {}-{}", token, inviteCode);
+        // Get user authorization information from cache
         SocialAuthInfo authInfo = this.getAuthInfoFromCache(token);
         ExceptionUtil.isTrue(authInfo != null, AUTH_INFO_NO_VALID);
         boolean isMobile = StrUtil.isNotBlank(authInfo.getMobile());
         boolean isEmail = StrUtil.isNotBlank(authInfo.getEmail());
         ExceptionUtil.isTrue(isMobile || isEmail, AUTH_INFO_NO_VALID);
         String credential = isMobile ? authInfo.getMobile() : authInfo.getEmail();
-        // 锁住注册凭证
+        // lock registration credentials
         this.lockRegisterCredential(credential);
-        // 校验邀请码的有效性（放在缓存操作之后，减少同一注册凭证恶意攻击，造成对数据库的压力）
+        // Verify the validity of the invitation code (put it after the cache operation to reduce malicious attacks on the same registration credential and cause pressure on the database)
         if (StrUtil.isNotBlank(inviteCode)) {
             try {
                 iVCodeService.checkInviteCode(inviteCode);
             }
             finally {
-                // 立即释放注册凭证锁
+                // Immediately release the registration credential lock
                 this.releaseLockForRegisterCredential(credential);
             }
         }
         if (isMobile) {
-            // 校验手机号未注册
+            // Check the phone number is not registered
             boolean exist = iUserService.checkByCodeAndMobile(authInfo.getAreaCode(), authInfo.getMobile());
             ExceptionUtil.isFalse(exist, MOBILE_HAS_REGISTER);
         }
         boolean link = StrUtil.isNotBlank(authInfo.getUnionId());
-        // 检查第三方帐号是否关联了其他维格账号
+        // Check whether the third-party account is associated with other Weige accounts
         if (link) {
             iUserLinkService.checkThirdPartyLinkOtherUser(authInfo.getUnionId(), authInfo.getType());
-            // 获取第三方的昵称、头像
+            // get third party nicknames and avatars
             useThirdPartyInfo(authInfo);
         }
         String email = null;
         UserRegisterResult result = new UserRegisterResult();
         if (isEmail) {
-            // 校验邮箱未被其他维格帐号绑定
+            // Verify that the mailbox is not bound by other Weige accounts
             boolean exist = iUserService.checkByEmail(authInfo.getEmail());
             ExceptionUtil.isFalse(exist, REGISTER_EMAIL_HAS_EXIST);
             email = authInfo.getEmail();
             result.setEmailRegister(true);
         }
-        // 注册用户
+        // registered a new user
         Long registerUserId = iUserService.create(authInfo.getAreaCode(), authInfo.getMobile(),
                 authInfo.getNickName(), authInfo.getAvatar(), email, authInfo.getTenantName());
         result.setUserId(registerUserId);
-        // 第三方帐号帐号关联
+        // third party account association
         if (link) {
             this.createUserLink(registerUserId, authInfo, false);
             result.setType(authInfo.getType());
             result.setUnionId(authInfo.getUnionId());
         }
-        // 邀请奖励
+        // invitation reward
         this.invitedReward(registerUserId, authInfo, inviteCode);
-        // 立即从缓存里删除授权信息
+        // Immediately delete authorization information from the cache
         this.removeInviteTokenFromCache(token);
-        // 立即释放注册凭证锁
+        // Immediately release the registration credential lock
         this.releaseLockForRegisterCredential(credential);
         return result;
     }
 
     private void invitedReward(Long registerUserId, SocialAuthInfo authInfo, String inviteCode) {
-        // 跳过邀请码无奖励
+        // skip the invitation code without reward
         if (inviteCode == null) {
             return;
         }
-        // 保存邀请码使用记录
+        // save the invitation code usage record
         ivCodeService.useInviteCode(registerUserId, authInfo.getNickName(), inviteCode);
-        // 邮箱注册无奖励
+        // No reward for email registration
         if (StrUtil.isBlank(authInfo.getMobile())) {
             return;
         }
-        // 邀请码拥有者，非个人邀请码不处理奖励
+        // Invitation code owner, non-personal invitation code does not process rewards
         Long inviteUserId = vCodeMapper.selectRefIdByCodeAndType(inviteCode, VCodeType.PERSONAL_INVITATION_CODE.getType());
         if (inviteUserId == null) {
-            // ============= 官方邀请注册奖励积分值 ===============
+            // ============ Official Invitation Registration Reward Points ================
             this.officialInvitedReward(registerUserId);
             return;
         }
@@ -510,10 +507,10 @@ public class AuthServiceImpl implements IAuthService {
         IntegralRule beInvitedRewardIntegralRule = SystemConfigManager.getConfig().getIntegral().getRule().get(officialRewardActionCode);
         int beInvitedRewardIntegralValue = beInvitedRewardIntegralRule.getIntegralValue();
         int beInvitorBeforeIntegralValue = iIntegralService.getTotalIntegralValueByUserId(registerUserId);
-        // 新用户创建积分记录
+        // new user create points record
         iIntegralService.createHistory(registerUserId, officialRewardActionCode, IntegralAlterType.INCOME,
                 beInvitorBeforeIntegralValue, beInvitedRewardIntegralValue, JSONUtil.createObj());
-        // 发送通知
+        // send notification
         if (beInvitedRewardIntegralRule.isNotify()) {
             TaskManager.me().execute(() -> NotificationManager.me().playerNotify(NotificationTemplateId.INTEGRAL_INCOME_NOTIFY,
                     Collections.singletonList(registerUserId), 0L, null,
@@ -523,65 +520,65 @@ public class AuthServiceImpl implements IAuthService {
 
     @Override
     public void personalInvitedReward(Long registerUserId, String registerUserName, Long inviteUserId) {
-        // 要对邀请者实施奖励积分，先锁住当前用户积分变更
+        // To apply bonus points to the inviter, first lock the current user points changes
         Lock lock = redisLockRegistry.obtain(inviteUserId.toString());
         try {
             if (lock.tryLock(100, TimeUnit.MILLISECONDS)) {
                 try {
-                    // ============= 被邀请注册奖励积分值 ===============
+                    // ============ Invited to register reward point value ================
                     IntegralRule beInvitedRewardIntegralRule = SystemConfigManager.getConfig().getIntegral().getRule().get(IntegralActionCodeConstants.BE_INVITED_TO_REWARD);
                     int beInvitedRewardIntegralValue = beInvitedRewardIntegralRule.getIntegralValue();
-                    // 新用户创建积分记录
+                    // new user create points record
                     String invitorName = userMapper.selectUserNameById(inviteUserId);
                     int beInvitorBeforeIntegralValue = iIntegralService.getTotalIntegralValueByUserId(registerUserId);
                     iIntegralService.createHistory(registerUserId, IntegralActionCodeConstants.BE_INVITED_TO_REWARD, IntegralAlterType.INCOME,
                             beInvitorBeforeIntegralValue, beInvitedRewardIntegralValue, JSONUtil.createObj().putOnce("name", invitorName));
-                    // 发送通知
+                    // send notification
                     if (beInvitedRewardIntegralRule.isNotify()) {
                         TaskManager.me().execute(() -> NotificationManager.me().playerNotify(NotificationTemplateId.INTEGRAL_INCOME_NOTIFY,
                                 Collections.singletonList(registerUserId), 0L, null,
                                 Dict.create().set(COUNT, beInvitedRewardIntegralRule.getIntegralValue()).set(ACTION_NAME, beInvitedRewardIntegralRule.getActionName())));
                     }
 
-                    // ============= 奖励邀请码拥有者 =============
+                    // ============ Reward code owner =============
                     IntegralRule inviteRewardIntegralRule = SystemConfigManager.getConfig().getIntegral().getRule().get(IntegralActionCodeConstants.INVITATION_REWARD);
-                    // 手机注册获取奖励倍数
+                    // mobile phone registration to get reward multiples
                     int inviteRewardIntegralValue = inviteRewardIntegralRule.getIntegralValue();
                     int invitorBeforeIntegralValue = iIntegralService.getTotalIntegralValueByUserId(inviteUserId);
-                    // 创建积分记录
+                    // create points record
                     String inviteUserName = registerUserName != null ? registerUserName : userMapper.selectUserNameById(registerUserId);
                     Long recordId = iIntegralService.createHistory(inviteUserId, IntegralActionCodeConstants.INVITATION_REWARD, IntegralAlterType.INCOME,
                             invitorBeforeIntegralValue, inviteRewardIntegralValue,
                             JSONUtil.createObj().putOnce("userId", registerUserId).putOnce("name", inviteUserName));
-                    // 发送通知
+                    // send notification
                     if (inviteRewardIntegralRule.isNotify()) {
                         TaskManager.me().execute(() -> NotificationManager.me().playerNotify(NotificationTemplateId.INTEGRAL_INCOME_NOTIFY,
                                 Collections.singletonList(inviteUserId), 0L, null,
                                 Dict.create().set(COUNT, inviteRewardIntegralValue).set(ACTION_NAME, inviteRewardIntegralRule.getActionName())));
                     }
-                    // 暂时记录下被邀请的新用户，跨连接修改名称
+                    // Temporarily record the invited new user, and change the name across connections
                     String key = RedisConstants.getInviteHistoryKey(registerUserId.toString());
                     redisTemplate.opsForValue().set(key, recordId, 1, TimeUnit.HOURS);
                 }
                 catch (Exception e) {
-                    // 业务失败，直接抛异常
-                    log.error("邀请码注册奖励失败", e);
+                    // if the business fails throw an exception directly
+                    log.error("Invitation code registration reward failed", e);
                     throw new BusinessException(VCodeException.INVITE_CODE_REWARD_ERROR);
                 }
                 finally {
-                    // 解锁邀请码所属用户的积分锁
+                    // Unlock the points lock of the user who owns the invitation code
                     lock.unlock();
                 }
             }
             else {
-                // 注册操作过于频繁，请稍后重试
-                log.error("注册操作过于频繁，请稍后重试");
+                // The registration operation is too frequent, please try again later
+                log.error("The registration operation is too frequent, please try again later");
                 throw new BusinessException(VCodeException.INVITE_CODE_FREQUENTLY);
             }
         }
         catch (InterruptedException e) {
-            // 被中断，返回失败信息
-            log.error("邀请码注册奖励失败", e);
+            // Interrupted, return failure message
+            log.error("Invitation code registration reward failed", e);
             throw new BusinessException(VCodeException.INVITE_CODE_REWARD_ERROR);
         }
     }
@@ -607,7 +604,7 @@ public class AuthServiceImpl implements IAuthService {
         if (StrUtil.isBlank(token)) {
             return null;
         }
-        // 从缓存取出用户授权信息
+        // get user authorization information from cache
         BoundValueOperations<String, ?> authCache = redisTemplate.boundValueOps(StrUtil.format(USER_AUTH_INFO_TOKEN, token));
         return JSONUtil.parseObj(authCache.get()).toBean(SocialAuthInfo.class);
     }
@@ -672,7 +669,7 @@ public class AuthServiceImpl implements IAuthService {
             if (info.getAvatar() == null) {
                 return;
             }
-            // 上传第三方头像到云端存储
+            // upload third party avatars to cloud storage
             try {
                 URL url = URLUtil.url(info.getAvatar());
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -680,7 +677,7 @@ public class AuthServiceImpl implements IAuthService {
                 String fileName = StrUtil.subAfter(info.getAvatar(), StrUtil.SLASH, true);
                 String mimeType = fileName.contains(StrUtil.DOT) ? FileUtil.extName(fileName) : urlConnection.getContentType();
                 long contentLength = urlConnection.getContentLengthLong();
-                // 如果出现读取请求头为-1，直接过去流预估大小
+                // If the read request header is -1, go directly to the estimated size of the stream
                 if (-1 == contentLength) {
                     contentLength = inputStream.available();
                 }
@@ -688,19 +685,19 @@ public class AuthServiceImpl implements IAuthService {
                 authInfo.setAvatar(uploadResult.getToken());
             }
             catch (Exception e) {
-                log.warn("第三方头像 URL 无法读取，跳过", e);
+                log.warn("third party avatar url cannot be read skip", e);
             }
         }
     }
 
     private void emailProcess(Long userId, String email) {
-        // 校验注册邮箱，防止过程中被其他维格帐号绑定
+        // Verify the registered email address to prevent being bound by other Weige accounts during the process
         UserEntity userEntity = userMapper.selectByEmail(email);
         if (userEntity != null) {
             ExceptionUtil.isTrue(userId.equals(userEntity.getId()), REGISTER_EMAIL_HAS_EXIST);
             return;
         }
-        // 判断用户是否已绑定其他邮箱、用户的邮箱须为空或是注册邮箱
+        // Determine whether the user has bound other mailboxes, the user's mailbox must be empty or registered mailbox
         UserEntity user = iUserService.getById(userId);
         ExceptionUtil.isNotNull(user, USER_NOT_EXIST);
         if (StrUtil.isNotBlank(user.getEmail())) {

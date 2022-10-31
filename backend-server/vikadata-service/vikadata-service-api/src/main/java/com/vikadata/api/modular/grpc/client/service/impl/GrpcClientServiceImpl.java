@@ -102,8 +102,8 @@ public class GrpcClientServiceImpl implements IGrpcClientService {
             return simpleStub.deleteNodeEffectOt(ro);
         }
         catch (StatusRuntimeException e) {
-            log.warn("删除节点错误:{}:{}", ro.getDeleteNodeIdList(), ro.getLinkNodeIdList(), e);
-            // 网络原因，提示用户重试
+            log.warn("Delete node error: {}:{}", ro.getDeleteNodeIdList(), ro.getLinkNodeIdList(), e);
+            // network reasons prompt the user to retry
             if (e.getStatus().equals(Status.UNAVAILABLE)) {
                 throw new BusinessException(NodeException.DELETE_NODE_LINK__FIELD_ERROR);
             }

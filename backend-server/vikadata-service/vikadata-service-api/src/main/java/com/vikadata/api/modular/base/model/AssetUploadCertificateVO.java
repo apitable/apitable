@@ -7,17 +7,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * <p>
- * 附件资源上传凭证结果VO
- * </p>
- *
- * @author Chambers
- * @date 2022/8/3
+ * Attachment resource upload voucher result VO
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("附件资源上传凭证结果VO")
+@ApiModel("Attachment resource upload voucher result VO")
 public class AssetUploadCertificateVO {
 
     @ApiModelProperty(value = "资源名，文件访问相对路径（可能非最终的值）", example = "spc10/2019/12/10/159.jpg", position = 1)

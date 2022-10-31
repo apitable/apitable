@@ -58,8 +58,6 @@ import static com.vikadata.api.constants.AssetsPublicConstants.PUBLIC_PREFIX;
 import static com.vikadata.api.constants.AssetsPublicConstants.SPACE_PREFIX;
 import static com.vikadata.api.constants.WidgetAssetConstans.TOKEN_MAX;
 import static com.vikadata.api.constants.WidgetAssetConstans.WIDGET_PREFIX;
-import static com.vikadata.api.constants.WidgetAssetConstans.FILE_SIZE_LIMIT;
-import static com.vikadata.api.constants.WidgetAssetConstans.WIDGET_FILE_MIME_LIMIT;
 import static com.vikadata.api.enums.exception.ParameterException.INCORRECT_ARG;
 
 /**
@@ -111,17 +109,17 @@ public class AssetUploadTokenServiceImpl implements IAssetUploadTokenService {
     @Transactional(rollbackFor = Exception.class)
     public AssetUploadTokenVo createWidgetAssetsUploadToken(Long opUserId, String nodeId, AssetUploadTokenRo assetUploadTokenRo) {
         if (OssType.MINIO == ossProperties.getType()) {
-            // TODO minio 马上支持
+            // TODO minio support now
             AssetUploadTokenVo assetUploadTokenVo = new AssetUploadTokenVo();
             assetUploadTokenVo.setUploadType(ossProperties.getType().name());
             return assetUploadTokenVo;
         }
-        // 检查小程序是否存在
+        // Check if the applet exists
         iWidgetPackageService.getByPackageId(nodeId, true);
         AssetUploadScope uploadScope = AssetUploadScope.of(assetUploadTokenRo.getPrefixalScope());
         OssUploadPolicy uploadPolicy = new OssUploadPolicy();
         uploadPolicy.setIsPrefixalScope(uploadScope.getValue());
-        // 限制上传大小（50MB）
+        // limit upload size 50 mb
         Long fsizeLimit = 1024 * 1024 * 50L;
         uploadPolicy.setFsizeLimit(fsizeLimit);
         uploadPolicy.setMimeLimit("image/*;application/javascript;text/css");
@@ -134,13 +132,13 @@ public class AssetUploadTokenServiceImpl implements IAssetUploadTokenService {
         String spaceId = StrUtil.nullToEmpty(assetUploadTokenRo.getSpaceId());
 
         /*
-         * 预创建上传记录
-         * 1.小程序上传静态资源是多文件上传，无法记录每一条资源记录，所以这里只记录主文件夹目录
+         * pre created upload records
+         * 1. The static resources uploaded by the applet are multi-file uploads, and each resource record cannot be recorded, so only the main folder directory is recorded here.
          */
         Long preUploadAssetId = this.preInsertAssetRecord(key, constProperties.getOssBucketByPublicAsset());
         Long preUploadDeveloperAssetId = this.preInsertDeveloperAssetRecord(preUploadAssetId, spaceId, nodeId, DeveloperAssetType.WIDGET.getValue(), key, opUserId);
 
-        // 给CallBack一些标识
+        // Give CallBack some tag
         uploadPolicy.setPutExtra(this.createPutExtra(AssetUploadSource.WIDGET_STATIC, opUserId, spaceId, nodeId, preUploadAssetId, preUploadDeveloperAssetId));
 
         OssBucketInfo publicAsset = constProperties.getOssBucketByPublicAsset();
@@ -227,7 +225,7 @@ public class AssetUploadTokenServiceImpl implements IAssetUploadTokenService {
         List<DeveloperAssetEntity> developerAssetEntities = new ArrayList<>(filePositions.size());
         OssBucketInfo bucketInfo = constProperties.getOssBucketByAsset();
         Set<String> existFileUrl = assetMapper.selectByFileUrl(filePositions).stream().map(AssetEntity::getFileUrl).collect(Collectors.toSet());
-        for (String filePosition: filePositions) {
+        for (String filePosition : filePositions) {
             if (!existFileUrl.contains(filePosition)) {
                 AssetEntity assetEntity = this.preBuildAssetRecord(filePosition, bucketInfo);
                 DeveloperAssetEntity developerAssetEntity = preBuildDeveloperAssetRecord(userId, packageId, spaceId, filePosition, assetEntity);

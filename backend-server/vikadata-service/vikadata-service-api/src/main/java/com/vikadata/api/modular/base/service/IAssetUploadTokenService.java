@@ -10,24 +10,17 @@ import com.vikadata.api.modular.base.model.WidgetUploadMetaVo;
 import com.vikadata.api.modular.base.model.WidgetUploadTokenVo;
 
 /**
- * <p>
  * Asset Upload Credentials Service
- * </p>
- *
- * @author Pengap
- * @date 2022/4/6 16:44:50
  */
 public interface IAssetUploadTokenService {
 
     /**
-     * 创建上传小程序资源凭据
+     * create upload mini program resource credentials
      *
-     * @param opUserId           操作用户ID
-     * @param nodeId             节点Id
-     * @param assetUploadTokenRo 资源上传Token请求参数
-     * @return 创建Upload Token结果
-     * @author Pengap
-     * @date 2022/4/6 17:36:27
+     * @param opUserId           operation user id
+     * @param nodeId             node id
+     * @param assetUploadTokenRo Resource upload token request parameters
+     * @return Create Upload Token result
      */
     AssetUploadTokenVo createWidgetAssetsUploadToken(Long opUserId, String nodeId, AssetUploadTokenRo assetUploadTokenRo);
 
@@ -35,8 +28,6 @@ public interface IAssetUploadTokenService {
      * create public asset pre-signed url
      *
      * @return AssetUploadCertificateVO
-     * @author Chambers
-     * @date 2022/8/3
      */
     AssetUploadCertificateVO createPublishAssetPreSignedUrl();
 
@@ -48,8 +39,6 @@ public interface IAssetUploadTokenService {
      * @param assetType         asset type
      * @param count             created count
      * @return AssetUploadCertificateVO
-     * @author Chambers
-     * @date 2022/8/3
      */
     List<AssetUploadCertificateVO> createSpaceAssetPreSignedUrl(Long userId, String nodeId, int assetType, int count);
 

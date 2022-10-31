@@ -19,31 +19,27 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-/** 
-* <p> 
-* 内部服务-通知接口
-* </p> 
-* @author zoe zheng 
-* @date 2022/2/22 15:38
-*/
+/**
+ * Internal Service - Notification Interface
+ */
 @RestController
 @ApiResource(path = "/internal/notification")
-@Api(tags = "内部服务-通知接口")
+@Api(tags = "Internal Service - Notification Interface")
 public class InternalNotifyController {
 
     @Resource
     private IPlayerNotificationService playerNotificationService;
 
-    @PostResource(name = "发送消息", path = "/create", requiredLogin = false)
-    @ApiOperation(value = "发送消息", notes = "发送消息", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseData<Void>  create(@Valid @RequestBody List<NotificationCreateRo> notificationCreateRoList) {
+    @PostResource(name = "send a message", path = "/create", requiredLogin = false)
+    @ApiOperation(value = "send a message", notes = "send a message", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseData<Void> create(@Valid @RequestBody List<NotificationCreateRo> notificationCreateRoList) {
         boolean bool = playerNotificationService.batchCreateNotify(notificationCreateRoList);
         if (bool) {
             return ResponseData.success();
-        } else {
+        }
+        else {
             throw new BusinessException("insert error");
         }
     }
-
 
 }

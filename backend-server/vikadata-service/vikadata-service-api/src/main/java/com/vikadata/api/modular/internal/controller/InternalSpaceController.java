@@ -24,15 +24,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>
- * 内部服务-空间接口
- * </p>
- *
- * @author Chambers
- * @date 2021/4/14
+ * Internal Service - Space Interface
  */
 @RestController
-@Api(tags = "内部服务-空间接口")
+@Api(tags = "Internal Service - Space Interface")
 @ApiResource(path = "/internal")
 public class InternalSpaceController {
 
@@ -46,8 +41,8 @@ public class InternalSpaceController {
     private IStaticsService iStaticsService;
 
     @GetResource(path = "/space/{spaceId}/capacity", requiredLogin = false)
-    @ApiOperation(value = "获取空间的附件容量信息")
-    @ApiImplicitParam(name = "spaceId", value = "空间ID", required = true, dataTypeClass = String.class, paramType = "path", example = "spczJrh2i3tLW")
+    @ApiOperation(value = "get attachment capacity information for a space")
+    @ApiImplicitParam(name = "spaceId", value = "space id", required = true, dataTypeClass = String.class, paramType = "path", example = "spczJrh2i3tLW")
     public ResponseData<InternalSpaceCapacityVo> getSpaceCapacity(@PathVariable("spaceId") String spaceId) {
         InternalSpaceCapacityVo vo = iSpaceService.getSpaceCapacityVo(spaceId);
         vo.setIsAllowOverLimit(true);
@@ -55,21 +50,21 @@ public class InternalSpaceController {
     }
 
     @GetResource(path = "/space/{spaceId}/subscription", requiredLogin = false)
-    @ApiOperation(value = "获取空间的订阅信息")
-    @ApiImplicitParam(name = "spaceId", value = "空间ID", required = true, dataTypeClass = String.class, paramType = "path", example = "spczJrh2i3tLW")
+    @ApiOperation(value = "get subscription information for a space")
+    @ApiImplicitParam(name = "spaceId", value = "space id", required = true, dataTypeClass = String.class, paramType = "path", example = "spczJrh2i3tLW")
     public ResponseData<InternalSpaceSubscriptionVo> getSpaceSubscription(@PathVariable("spaceId") String spaceId) {
         return ResponseData.success(iSpaceSubscriptionService.getSpaceSubscriptionVo(spaceId));
     }
 
     @GetResource(path = "/space/{spaceId}/usages", requiredLogin = false)
-    @ApiOperation(value = "获取空间的用量信息")
-    @ApiImplicitParam(name = "spaceId", value = "空间ID", required = true, dataTypeClass = String.class, paramType = "path", example = "spczJrh2i3tLW")
+    @ApiOperation(value = "get space usage information")
+    @ApiImplicitParam(name = "spaceId", value = "space id", required = true, dataTypeClass = String.class, paramType = "path", example = "spczJrh2i3tLW")
     public ResponseData<InternalSpaceUsageVo> getSpaceUsages(@PathVariable("spaceId") String spaceId) {
         return ResponseData.success(iSpaceService.getInternalSpaceUsageVo(spaceId));
     }
 
     @GetResource(path = "/space/{spaceId}/apiUsages", requiredLogin = false)
-    @ApiOperation(value = "获取指定空间的API用量信息", notes = "提供中间层请求鉴权作用，查询空间对应的订阅计划里API用量信息")
+    @ApiOperation(value = "get api usage information of a specified space", notes = "Provides the authentication function of the middle layer request, and queries the API usage information in the subscription plan corresponding to the space.")
     public ResponseData<InternalSpaceApiUsageVo> apiUsages(@PathVariable("spaceId") String spaceId) {
         InternalSpaceApiUsageVo result = new InternalSpaceApiUsageVo();
         SubscribePlanInfo planInfo = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);

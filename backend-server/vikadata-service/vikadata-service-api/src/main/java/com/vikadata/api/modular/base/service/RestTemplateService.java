@@ -6,30 +6,21 @@ import com.vikadata.api.model.ro.datasheet.FieldPermissionChangeNotifyRo;
 import com.vikadata.api.model.ro.node.NodeShareDisableNotifyRo;
 
 /**
- * <p>
- * RestTemplate 服务
- * </p>
- *
- * @author Chambers
- * @date 2020/4/2
+ * RestTemplate service
  */
 public interface RestTemplateService {
 
     /**
-     * 关闭节点分享通知
+     * turn off node sharing notifications
      *
-     * @param message 请求消息
-     * @author Chambers
-     * @date 2021/3/3
+     * @param message request message
      */
     void disableNodeShareNotify(List<NodeShareDisableNotifyRo> message);
 
     /**
-     * 字段权限变更通知
+     * field permission change notification
      *
-     * @param  message 请求消息
-     * @author Chambers
-     * @date 2021/3/31
+     * @param  message request message
      */
     void fieldPermissionChangeNotify(FieldPermissionChangeNotifyRo message);
 }

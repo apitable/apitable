@@ -9,27 +9,21 @@ import com.vikadata.api.support.serializer.NullBooleanSerializer;
 import com.vikadata.api.support.serializer.NullNumberSerializer;
 
 /**
- * <p>
- * 空间订阅计划资源视图
- * 提供于中间层调用
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/9/14 14:49
+ * space subscription plan resource view
  */
 @Data
-@ApiModel("空间订阅计划资源视图")
+@ApiModel("space subscription plan resource view")
 public class InternalSpaceApiUsageVo {
 
-    @ApiModelProperty(value = "是否允许超量限制", example = "false", position = 1)
+    @ApiModelProperty(value = "whether to allow over limiting", example = "false", position = 1)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean isAllowOverLimit;
 
-    @ApiModelProperty(value = "已使用的API用量数", example = "10000", position = 2)
+    @ApiModelProperty(value = "api usage used", example = "10000", position = 2)
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long apiUsageUsedCount;
 
-    @ApiModelProperty(value = "最大使用API用量数", example = "60000", position = 3)
+    @ApiModelProperty(value = "maximum api usage", example = "60000", position = 3)
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxApiUsageCount;
 }

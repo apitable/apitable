@@ -9,53 +9,40 @@ import org.apache.ibatis.annotations.Param;
 import com.vikadata.entity.AssetEntity;
 
 /**
- * <p>
- * 基础-附件表 Mapper 接口
- * </p>
- *
- * @author Chambers
- * @since 2020-03-06
+ * Basics - Attachment Table Mapper Interface
  */
 public interface AssetMapper extends BaseMapper<AssetEntity> {
 
     /**
-     * 获取摘要相同的附件ID、云端保存文件名
+     * Get the same attachment ID and cloud save file name as the abstract
      *
-     * @param checksum md5摘要
+     * @param checksum md5 summary
      * @return dto
-     * @author Chambers
-     * @date 2019/12/25
      */
     AssetEntity selectByChecksum(@Param("checksum") String checksum);
 
     /**
-     * 查询文件拓展名
+     * view file extensions
      *
-     * @param fileUrl 云端文件名
-     * @return 拓展名
-     * @author Chambers
-     * @date 2020/3/7
+     * @param fileUrl cloud file name
+     * @return extension
      */
     String selectExtensionNameByFileUrl(@Param("fileUrl") String fileUrl);
 
     /**
-     * 获取checksum和ID
+     * Get checksum and ID
      *
-     * @param fileUrls 云端文件存放路径
+     * @param fileUrls Cloud file storage path
      * @return List<AssetChecksumDto>
-     * @author zoe zheng
-     * @date 2020/12/24 12:12 下午
      */
     List<AssetEntity> selectByFileUrl(@Param("fileUrls") Collection<String> fileUrls);
 
     /**
-     * 更新资源文件大小
+     * Update resource file size
      *
-     * @param id           数据Id
-     * @param incrFileSize 增量文件大小
-     * @return int 执行结果数
-     * @author Pengap
-     * @date 2022/4/7 16:25:49
+     * @param id           id
+     * @param incrFileSize incremental file size
+     * @return int number of execution results
      */
     int updateFileSizeById(@Param("id") Long id, @Param("incrFileSize") Long incrFileSize);
 

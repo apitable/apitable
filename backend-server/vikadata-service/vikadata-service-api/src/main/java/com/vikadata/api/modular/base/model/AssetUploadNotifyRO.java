@@ -9,19 +9,14 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * <p>
- * 资源上传完成通知RO
- * </p>
- *
- * @author Chambers
- * @date 2022/8/8
+ * Resource upload completion notification RO
  */
 @Data
-@ApiModel("资源上传完成通知RO")
+@ApiModel("Resource upload completion notification RO")
 public class AssetUploadNotifyRO {
 
-    @ApiModelProperty(value = "类型(0:用户头像;1:空间logo;2:数表附件;3:封面图;4:节点描述)", example = "0", position = 1, required = true)
-    @NotNull(message = "类型不能为空")
+    @ApiModelProperty(value = "Type (0: user avatar; 1: space logo; 2: number table attachment; 3: cover image; 4: node description)", example = "0", position = 1, required = true)
+    @NotNull(message = "Type cannot be null")
     private Integer type;
 
     @ApiModelProperty(value = "资源名列表", example = "[\"spc10/2019/12/10/159\", \"spc10/2019/12/10/168\"]", position = 2)

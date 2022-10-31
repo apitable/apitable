@@ -10,51 +10,38 @@ import com.vikadata.api.model.vo.asset.AssetsAuditVo;
 import com.vikadata.entity.AssetAuditEntity;
 
 /**
- * <p>
- * 资源审核表 服务类
- * </p>
- *
- * @author Benson Cheung
- * @since 2020-03-21
+ * Resource Audit Form Service Class
  */
 public interface IAssetAuditService extends IService<AssetAuditEntity> {
 
     /**
-     * 创建资源审核记录
+     * Create resource audit records
      *
-     * @param assetId    资源ID
-     * @param checksum   资源摘要
-     * @param uploadPath 资源存储路径
-     * @author Shawn Deng
-     * @date 2020/6/2 17:41
+     * @param assetId    resource ID
+     * @param checksum   resource summary
+     * @param uploadPath resource storage path
      */
     void create(Long assetId, String checksum, String uploadPath);
 
     /**
-     * 回调审核结果处理
+     * Callback for audit result processing
      *
-     * @param result 回调结果
-     * @author Benson Cheung
-     * @date 2020/3/20
+     * @param result callback result
      */
     void auditCallback(AttachAuditCallbackRo result);
 
     /**
-     * 查询待人工审核图片列表
+     * Query the list of pictures to be reviewed manually
      *
-     * @param page 分页参数
-     * @return List<AssetsAuditVo> 回调结果
-     * @author Benson Cheung
-     * @date 2020/3/20
+     * @param page pagination parameters
+     * @return List<AssetsAuditVo> callback result
      */
     IPage<AssetsAuditVo> readReviews(Page page);
 
     /**
-     * 提交审核结果
+     * Submit audit results
      *
-     * @param results 提交审核结果
-     * @author Benson Cheung
-     * @date 2020/3/20
+     * @param results Submit audit results
      */
     void submitAuditResult(AssetsAuditRo results);
 }

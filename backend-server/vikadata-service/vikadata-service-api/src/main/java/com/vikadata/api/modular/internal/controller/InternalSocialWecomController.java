@@ -19,14 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>
- * 内部服务-企微接口
- * </p>
- * @author 刘斌华
- * @date 2022-08-11 14:39:35
+ * Internal Service-Enterprise Micro Interface
  */
 @RestController
-@Api(tags = "内部服务-企微接口")
+@Api(tags = "Internal Service-Enterprise Micro Interface")
 @ApiResource(path = "/internal/social/wecom")
 public class InternalSocialWecomController {
 
@@ -37,7 +33,7 @@ public class InternalSocialWecomController {
     private ISocialWecomPermitDelayService socialWecomPermitDelayService;
 
     @PostResource(path = "/permitDelay/batchProcess", requiredLogin = false)
-    @ApiOperation("批量处理待处理的接口许可延时信息")
+    @ApiOperation("Batch processing pending interface license delay information")
     public ResponseData<Void> postPermitDelayBatchProcess() {
         List<String> suiteIds = weComProperties.getIsvAppList().stream()
                 .map(IsvApp::getSuiteId)

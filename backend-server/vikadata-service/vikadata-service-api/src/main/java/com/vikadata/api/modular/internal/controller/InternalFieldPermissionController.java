@@ -37,13 +37,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 字段权限接口
- * @author Shawn Deng
- * @date 2021-04-12 16:54:40
+ * field permission interface
  */
 @RestController
 @ApiResource(path = "/internal")
-@Api(tags = "内部服务-数表字段权限接口")
+@Api(tags = "Internal service - data table field permission interface")
 public class InternalFieldPermissionController {
 
     @Resource
@@ -62,20 +60,20 @@ public class InternalFieldPermissionController {
     private INodeShareSettingService iNodeShareSettingService;
 
     @PostResource(path = "/datasheet/{dstId}/field/permission/disable", requiredPermission = false)
-    @ApiOperation(value = "关闭多个字段权限", notes = "中间层 OT 删除字段操作调用")
+    @ApiOperation(value = "turn off multiple field permissions", notes = "room layer ot delete field operation call")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "dstId", value = "数表ID", required = true, dataTypeClass = String.class, paramType = "path", example = "dstGxznHFXf9pvF1LZ"),
-            @ApiImplicitParam(name = "fieldIds", value = "字段ID列表", required = true, dataTypeClass = String.class, paramType = "query", example = "fldB7uWmwYrQf,fldB7uWmwYrQf")
+            @ApiImplicitParam(name = "dstId", value = "table id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstGxznHFXf9pvF1LZ"),
+            @ApiImplicitParam(name = "fieldIds", value = "list of field ids", required = true, dataTypeClass = String.class, paramType = "query", example = "fldB7uWmwYrQf,fldB7uWmwYrQf")
     })
     public ResponseData<Void> disableRoles(@PathVariable("dstId") @NodeMatch String dstId,
             @RequestParam("fieldIds") List<String> fieldIds) {
         ControlId controlId = ControlIdBuilder.fieldIds(dstId, fieldIds);
-        // 获取存在的控制单元ID
+        // get the existing control unit id
         List<String> existedControlIds = iControlService.getExistedControlId(controlId.getControlIds());
         if (!existedControlIds.isEmpty()) {
-            // 关闭字段权限
+            // turn off field permissions
             iControlService.removeControl(SessionContext.getUserId(), existedControlIds, true);
-            // 发布事件，远程调用 Socket 广播
+            // publish events call socket broadcast remotely
             String spaceId = iNodeService.getSpaceIdByNodeId(dstId);
             String memberName = LoginContext.me().getUserSpaceDto(spaceId).getMemberName();
             TaskManager.me().execute(() -> SocketBroadcastFactory.me().fieldBroadcast(memberName, existedControlIds));
@@ -84,37 +82,37 @@ public class InternalFieldPermissionController {
     }
 
     @GetResource(path = "/node/{nodeId}/field/permission", requiredLogin = false)
-    @ApiOperation(value = "获取字段权限")
+    @ApiOperation(value = "get field permissions")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "nodeId", value = "节点ID", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
-            @ApiImplicitParam(name = "shareId", value = "分享ID", dataTypeClass = String.class, paramType = "query", example = "shrFPXT8qnyFJglX6elJi")
+            @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
+            @ApiImplicitParam(name = "shareId", value = "share id", dataTypeClass = String.class, paramType = "query", example = "shrFPXT8qnyFJglX6elJi")
     })
     public ResponseData<FieldPermissionView> getFieldPermission(@PathVariable("nodeId") String nodeId,
             @RequestParam(value = "shareId", required = false) String shareId) {
-        // 获取空间ID，方法包含判断节点是否存在
+        // Get the space ID, the method includes judging whether the node exists
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
-        // 在分享中加载节点权限时，以分享设置最后的变更人的权限为准，方法包含判断变更人是否存在
+        // When loading node permissions in sharing, the permissions of the last changer in the sharing settings shall prevail. The method includes judging whether the changer exists.
         Long userId = StrUtil.isNotBlank(shareId) ? iNodeShareSettingService.getUpdatedByByShareId(shareId) : SessionContext.getUserId();
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
-        // 获取数表所有字段的权限
+        // permission to get all fields of the data table
         return ResponseData.success(iFieldRoleService.getFieldPermissionView(memberId, nodeId, shareId));
     }
 
     @PostResource(path = "/node/field/permission", requiredLogin = false)
-    @ApiOperation(value = "获取多个节点的字段权限集")
+    @ApiOperation(value = "get field permission set for multiple nodes")
     public ResponseData<List<FieldPermissionView>> getMultiFieldPermissionViews(@RequestBody @Valid InternalPermissionRo data) {
-        // 过滤不存在的节点，防止后续抛异常
+        // Filter non-existing nodes to prevent subsequent exceptions from being thrown
         List<String> existNodeIds = iNodeService.getExistNodeIdsBySelf(data.getNodeIds());
         if (existNodeIds.isEmpty()) {
             return ResponseData.success(new ArrayList<>());
         }
         String shareId = data.getShareId();
-        // 获取空间ID
+        // get space id
         String spaceId = iNodeService.getSpaceIdByNodeIds(existNodeIds);
-        // 在分享中加载节点权限时，以分享设置最后的变更人的权限为准，方法包含判断变更人是否存在
+        // When loading node permissions in sharing, the permissions of the last changer in the sharing settings shall prevail. The method includes judging whether the changer exists.
         Long userId = StrUtil.isNotBlank(shareId) ? iNodeShareSettingService.getUpdatedByByShareId(shareId) : SessionContext.getUserId();
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
-        // 获取所有节点的字段权限
+        // get field permissions for all nodes
         List<FieldPermissionView> views = new ArrayList<>();
         for (String nodeId : existNodeIds) {
             FieldPermissionView view = iFieldRoleService.getFieldPermissionView(memberId, nodeId, shareId);

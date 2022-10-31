@@ -25,15 +25,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>
- * 配置接口
- * </p>
- *
- * @author Chambers
- * @date 2020/7/10
+ * configuration interface
  */
 @RestController
-@Api(tags = "配置相关接口")
+@Api(tags = "Configuration related interfaces")
 @ApiResource(path = "/config")
 public class ConfigController {
 
@@ -47,10 +42,10 @@ public class ConfigController {
     private IConfigService iConfigService;
 
     @GetResource(path = "/get", requiredLogin = false)
-    @ApiOperation(value = "获取配置信息")
+    @ApiOperation(value = "Get configuration information")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "type", value = "类型：1、新手引导/公告", required = true, dataTypeClass = Integer.class, paramType = "query", example = "1"),
-            @ApiImplicitParam(name = "lang", value = "语言", dataTypeClass = String.class, paramType = "query", example = "zh_CN")
+            @ApiImplicitParam(name = "type", value = "Type: 1. Newbie guide announcement", required = true, dataTypeClass = Integer.class, paramType = "query", example = "1"),
+            @ApiImplicitParam(name = "lang", value = "language", dataTypeClass = String.class, paramType = "query", example = "zh_CN")
     })
     public ResponseData<Object> get(@RequestParam(value = "type") Integer type,
             @RequestParam(value = "lang", required = false, defaultValue = "zh_CN") String lang) {
@@ -58,7 +53,7 @@ public class ConfigController {
     }
 
     @PostResource(path = "/general", requiredPermission = false)
-    @ApiOperation(value = "通用配置", notes = "场景：新手引导、公告")
+    @ApiOperation(value = "General configuration", notes = "Scenario: novice guidance, announcement")
     public ResponseData<Void> general(@RequestBody @Valid ConfigRo ro) {
         Long userId = SessionContext.getUserId();
         iGmService.validPermission(userId, GmAction.WIZARD_CONFIG);
@@ -68,7 +63,7 @@ public class ConfigController {
 
     @Deprecated
     @PostResource(path = "/template", requiredPermission = false)
-    @ApiOperation(value = "模板配置", notes = "热门推荐、上架模板")
+    @ApiOperation(value = "Template configuration", notes = "popular recommendation and listing templates")
     public ResponseData<Void> template(@RequestBody @Valid TemplateConfigRo ro) {
         Long userId = SessionContext.getUserId();
         iGmService.validPermission(userId, GmAction.TEMPLATE_CENTER_CONFIG);

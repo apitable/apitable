@@ -314,7 +314,7 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
     }
 
     private void appendImageInfo(String bucketName, String key, AssetEntity entity) {
-        // 若是图片，解析图片的高宽
+        // If it is a picture, parse the height and width of the picture
         ossTemplate.executeStreamFunction(bucketName, key,
                 in -> {
                     try {
@@ -325,7 +325,7 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
                         }
                     }
                     catch (IOException e) {
-                        log.error("读取图片「{}」异常，错误信息:{}", key, e.getMessage());
+                        log.error("Error reading image {}, error message: {}", key, e.getMessage());
                     }
                 });
     }

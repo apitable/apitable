@@ -21,12 +21,7 @@ import org.springframework.stereotype.Service;
 import static com.vikadata.define.constants.RedisConstants.GENERAL_CONFIG;
 
 /**
- * <p>
- * 配置 接口实现类
- * </p>
- *
- * @author Chambers
- * @date 2020/7/30
+ * Configuration implementation class
  */
 @Slf4j
 @Service
@@ -40,13 +35,12 @@ public class ConfigServiceImpl implements IConfigService {
 
     @Override
     public Object getWizardConfig(String lang) {
-        // 查询缓存
         String key = StrUtil.format(GENERAL_CONFIG, "wizards", lang);
         Object cacheVal = redisTemplate.opsForValue().get(key);
         if (cacheVal != null) {
             return cacheVal;
         }
-        // 查询数据库，存在则设置为缓存
+        // Query the database, if it exists, set it as a cache
         String dbVal = iSystemConfigService.findConfig(SystemConfigType.WIZARD_CONFIG, lang);
         if (dbVal != null) {
             redisTemplate.opsForValue().set(key, dbVal, 7, TimeUnit.DAYS);
@@ -66,10 +60,10 @@ public class ConfigServiceImpl implements IConfigService {
             if (preConfig == null || config == null) {
                 throw new BusinessException("上个版本的配置不存在，回退失败");
             }
-            // 新旧配置交换，原配置保留14天以供再次回滚
+            // The old and new configuration is exchanged, and the original configuration is retained for 14 days for rollback again
             redisTemplate.opsForValue().set(key, preConfig, 7, TimeUnit.DAYS);
             redisTemplate.opsForValue().set(preKey, config, 14, TimeUnit.DAYS);
-            // 更新数据库
+            // update the data in database
             iSystemConfigService.saveOrUpdate(userId, SystemConfigType.WIZARD_CONFIG, ro.getLang(), JSONUtil.toJsonStr(preConfig));
         }
         else {
@@ -78,11 +72,11 @@ public class ConfigServiceImpl implements IConfigService {
                 throw new BusinessException("配置内容不能为空");
             }
             redisTemplate.opsForValue().set(key, content, 7, TimeUnit.DAYS);
-            // 新旧交替，原配置保留14天以供回滚
+            // Alternate between old and new, the original configuration is retained for 14 days for rollback
             if (config != null) {
                 redisTemplate.opsForValue().set(preKey, config, 14, TimeUnit.DAYS);
             }
-            // 保存或更新数据库
+            // save or update the data in database
             iSystemConfigService.saveOrUpdate(userId, SystemConfigType.WIZARD_CONFIG, ro.getLang(), JSONUtil.toJsonStr(content));
         }
     }

@@ -30,9 +30,6 @@ import static com.vikadata.api.enums.exception.SpaceException.SPACE_NOT_EXIST;
 
 /**
  * ActionServiceImpl
- *
- * @author Chambers
- * @since 2019/10/26
  */
 @Service
 @Slf4j
@@ -55,16 +52,16 @@ public class ActionServiceImpl implements IActionService {
 
     @Override
     public InviteInfoVo inviteValidate(String inviteToken) {
-        log.info("邀请校验");
-        //是否非法链接
+        log.info("Invitation check");
+        // is it a illegal link
         SpaceInviteRecordEntity record = spaceInviteRecordMapper.selectByInviteToken(inviteToken);
-        //判断是否非法
+        // determine whether it is illegal
         ExceptionUtil.isNotNull(record, INVITE_URL_ERROR);
-        //判断是否失效
+        // determine whether it expired
         ExceptionUtil.isFalse(record.getIsExpired(), INVITE_EXPIRE);
         String inviteSpaceId = record.getInviteSpaceId();
         SpaceEntity spaceEntity = spaceMapper.selectBySpaceId(inviteSpaceId);
-        //判断空间是否不存在或者处于删除状态中
+        // Determine whether the space does not exist or is in the deletion state
         ExceptionUtil.isFalse(Objects.isNull(spaceEntity) || !Objects.isNull(spaceEntity.getPreDeletionTime()), SPACE_NOT_EXIST);
         String inviteSpaceName = spaceEntity.getName();
         String inviteEmail = record.getInviteEmail();
@@ -74,19 +71,19 @@ public class ActionServiceImpl implements IActionService {
         inviteInfoVo.setSpaceName(inviteSpaceName);
         inviteInfoVo.setInviter(member.getMemberName());
         inviteInfoVo.setInviteEmail(inviteEmail);
-        //是否绑定绑定了邮箱
+        // Whether the binding is bound to the mailbox
         boolean inviteBindUser = this.checkInviteBindUser(inviteEmail);
         inviteInfoVo.setIsBound(inviteBindUser);
         boolean isLogin = this.checkUserInSession();
         inviteInfoVo.setIsLogin(isLogin);
-        // 获取链接创建者的个人邀请码
+        // get the link creator's personal invitation code
         String inviteCode = vCodeMapper.selectCodeByTypeAndRefId(VCodeType.PERSONAL_INVITATION_CODE.getType(), member.getUserId());
         inviteInfoVo.setInviteCode(inviteCode);
         return inviteInfoVo;
     }
 
     /**
-     * 检查当前请求是否存在会话
+     * Check if a session exists for the current request
      *
      * @return true | false
      */
@@ -96,9 +93,9 @@ public class ActionServiceImpl implements IActionService {
     }
 
     /**
-     * 检查邮箱是否已经绑定其他用户
+     * Check if the mailbox is bound to another user
      *
-     * @param inviteEmail 邀请邮箱
+     * @param inviteEmail invitation email
      * @return true | false
      */
     private boolean checkInviteBindUser(String inviteEmail) {

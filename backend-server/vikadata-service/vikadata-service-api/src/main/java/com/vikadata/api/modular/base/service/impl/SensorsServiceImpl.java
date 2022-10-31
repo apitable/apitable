@@ -28,12 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * <p>
- * 神策分析服务实现类
- * </p>
- *
- * @author Chambers
- * @date 2020/4/8
+ * sensors analysis service implementation class
  */
 @Slf4j
 @Service
@@ -48,10 +43,10 @@ public class SensorsServiceImpl implements SensorsService {
     @Override
     public void track(Long userId, TrackEventType type, String scene, ClientOriginInfo originInfo) {
         if (dataTracker == null) {
-            log.info("该环境关闭神策日志记录");
+            log.info("Sensors logging is turned off for this environment");
             return;
         }
-        log.info("开始神策日志记录，记录事件:{}", type.getEventName());
+        log.info("start sensors record events:{}", type.getEventName());
         String distinctId = null;
         if (ObjectUtil.isNotNull(userId)) {
             distinctId = userMapper.selectUuidById(userId);
@@ -77,14 +72,14 @@ public class SensorsServiceImpl implements SensorsService {
                     dataTracker.trackSignUp(distinctId, anonymousId);
                 }
                 properties.put("registeredMethod", scene);
-                // 注册后自动登录，需要记录登录事件
+                // Automatic login after registration, need to record login events
                 HashMap<String, Object> map = MapUtil.newHashMap(2);
                 map.put("loginMethod", scene);
                 map.put("desktop", desktop);
                 dataTracker.track(distinctId, true, TrackEventType.LOGIN.getEventName(), map);
                 break;
             case LOGIN:
-                // 将未登陆状态的匿名ID和用户ID关联
+                // Associate the anonymous ID in the logged out state with the user ID
                 anonymousId = this.getAnonymousId(cookies);
                 if (StrUtil.isNotBlank(anonymousId)) {
                     dataTracker.trackSignUp(distinctId, anonymousId);
@@ -116,7 +111,7 @@ public class SensorsServiceImpl implements SensorsService {
     }
 
     /**
-     * 从cookie中获取匿名ID
+     * Get anonymous ID from cookie
      */
     private String getAnonymousId(Cookie[] cookies) {
         String value = null;

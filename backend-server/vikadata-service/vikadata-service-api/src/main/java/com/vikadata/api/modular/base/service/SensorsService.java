@@ -6,35 +6,26 @@ import com.vikadata.api.enums.action.TrackEventType;
 import com.vikadata.api.model.dto.client.ClientOriginInfo;
 
 /**
- * <p>
- * 神策分析服务
- * </p>
- *
- * @author Chambers
- * @date 2020/4/8
+ * Sensors Analysis Service
  */
 public interface SensorsService {
 
     /**
-     * 记录事件
+     * record event
      *
-     * @param userId     用户 ID
-     * @param type       事件类型
-     * @param scene      场景
-     * @param originInfo 来源信息
-     * @author Chambers
-     * @date 2020/4/8
+     * @param userId     user id
+     * @param type       event type
+     * @param scene      scenes
+     * @param originInfo source information
      */
     void track(Long userId, TrackEventType type, String scene, ClientOriginInfo originInfo);
 
     /**
-     * 记录事件
+     * record event
      *
-     * @param userId 用户 ID
-     * @param eventType  事件类型
-     * @param properties 事件的属性
-     * @author zoe
-     * @date 2020/4/8
+     * @param userId user id
+     * @param eventType  event type
+     * @param properties properties of the event
      */
     void eventTrack(Long userId, TrackEventType eventType, Map<String, Object> properties, ClientOriginInfo originInfo);
 }

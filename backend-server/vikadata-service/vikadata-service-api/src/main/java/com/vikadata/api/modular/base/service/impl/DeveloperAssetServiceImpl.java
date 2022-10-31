@@ -11,12 +11,7 @@ import com.vikadata.entity.DeveloperAssetEntity;
 import org.springframework.stereotype.Service;
 
 /**
- * <p>
- * 工作台-开发者附件表 服务实现类
- * </p>
- *
- * @author Pengap
- * @date 2021/7/21
+ * Workbench-Developer Attachment Table Service Implementation Class
  */
 @Slf4j
 @Service

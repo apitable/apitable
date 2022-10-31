@@ -32,14 +32,10 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.vikadata.core.constants.ResponseExceptionConstants.DEFAULT_ERROR_CODE;
 
 /**
- * <p>
- * 附件回调接口
- * </p>
- * @author Pengap
- * @date 2022/4/6 16:15:23
+ * Attachment callback interface
  */
 @RestController
-@Api(tags = "基础模块_附件回调接口")
+@Api(tags = "Basic module - accessory callback interface")
 @ApiResource(path = "/asset")
 public class AttachCallbackController {
 
@@ -53,8 +49,8 @@ public class AttachCallbackController {
     private OssProperties ossProperties;
 
     @Deprecated
-    @PostResource(name = "七牛云上传回调", path = "/qiniu/uploadCallback", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "七牛云上传回调", hidden = true)
+    @PostResource(name = "Qiniu cloud upload callback", path = "/qiniu/uploadCallback", requiredLogin = false, requiredPermission = false)
+    @ApiOperation(value = "Qiniu cloud upload callback", hidden = true)
     public ResponseData<AssetUploadResult> qiniuCallback(@RequestHeader("Authorization") String authorization, @RequestBody String body) {
         Qiniu qiniu = ossProperties.getQiniu();
         if (null == ossProperties.getQiniu()) {
@@ -70,8 +66,8 @@ public class AttachCallbackController {
         return ResponseData.success(iAssetCallbackService.qiniuCallback(callbackBody));
     }
 
-    @PostResource(name = "资源上传完成通知回调", path = "/upload/callback", requiredLogin = false)
-    @ApiOperation(value = "资源上传完成通知回调", notes = "S3完成客户端上传之后，主动触达通知服务端")
+    @PostResource(name = "Resource upload completion notification callback", path = "/upload/callback", requiredLogin = false)
+    @ApiOperation(value = "Resource upload completion notification callback", notes = "After S3 completes the client upload, it actively reaches the notification server")
     public ResponseData<List<AssetUploadResult>> notifyCallback(@RequestBody AssetUploadNotifyRO body) {
         return ResponseData.success(iAssetCallbackService.loadAssetUploadResult(AssetType.of(body.getType()), body.getResourceKeys()));
     }

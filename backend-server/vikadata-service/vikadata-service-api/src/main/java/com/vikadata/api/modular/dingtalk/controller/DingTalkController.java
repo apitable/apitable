@@ -37,15 +37,10 @@ import static com.vikadata.define.constants.RedisConstants.GENERAL_LOCKED;
 
 
 /**
- * <p>
- * 钉钉相关接口
- * </p>
- *
- * @author Chambers
- * @date 2020/10/9
+ * DingTalk related interface <p>
  */
 @RestController
-@Api(tags = "钉钉模块_钉钉相关服务接口")
+@Api(tags = "DingTalk service interface")
 @ApiResource(path = "/dingtalk")
 @Slf4j
 public class DingTalkController {
@@ -66,27 +61,28 @@ public class DingTalkController {
     private SensorsService sensorsService;
 
     @GetResource(path = "/login/callback", requiredLogin = false)
-    @ApiOperation(value = "钉钉扫码登陆回调")
+    @ApiOperation(value = "DingTalk scan code login callback")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "type", value = "类型(0:扫码登录;1:帐号绑定;)", dataTypeClass = Integer.class, paramType = "query", example = "0"),
-            @ApiImplicitParam(name = "code", value = "编码。JS获取loginTmpCode，跳转指定连接后重定向返回", dataTypeClass = String.class, required = true, paramType = "query", example = "ABC123"),
-            @ApiImplicitParam(name = "state", value = "声明值。用于防止重放攻击", dataTypeClass = String.class, required = true, paramType = "query", example = "STATE")
+            @ApiImplicitParam(name = "type", value = "Type (0: scan code to log in; 1: account binding;)", dataTypeClass = Integer.class, paramType = "query", example = "0"),
+            @ApiImplicitParam(name = "code", value = "coding. JS gets the login Tmp Code, redirects and returns after jumping to the specified connection", dataTypeClass = String.class, required = true, paramType = "query", example = "ABC123"),
+            @ApiImplicitParam(name = "state", value = "declare value. Used to prevent replay attacks", dataTypeClass = String.class, required = true, paramType = "query", example = "STATE")
     })
     public ResponseData<String> callback(@RequestParam(value = "type", required = false, defaultValue = "0") Integer type,
             @RequestParam(name = "code") String code, @RequestParam(name = "state") String state) {
-        // 防止重复请求
+        // prevent duplicate requests
         RedisLockHelper.me().preventDuplicateRequests(StrUtil.format(GENERAL_LOCKED, "dingtalk:code", code));
-        log.info("钉钉扫码登陆回调，type:{},code:{},state:{}", type, code, state);
+        log.info("DingTalk scan code login callback, type:{},code:{},state:{}", type, code, state);
         UserInfo userInfo;
-        // 通过临时授权码获取授权用户的个人信息
+        // get personal information of authorized users through temporary authorization codes
         try {
             userInfo = dingTalkService.getUserInfoByCode(code);
         }
         catch (DingTalkApiException e) {
-            log.info("通过临时授权码Code获取用户信息失败，code:{},msg:{}", e.getCode(), e.getMessage());
+            log.info("Failed to get user information through temporary authorization code Code, code:{},msg:{}",
+                    e.getCode(), e.getMessage());
             throw new BusinessException(INCORRECT_ARG);
         }
-        // 帐号绑定处理
+        // Account binding processing
         if (type == 1) {
             Long userId = SessionContext.getUserId();
             SocialAuthInfo authInfo = new SocialAuthInfo();
@@ -96,10 +92,10 @@ public class DingTalkController {
             iUserLinkService.createUserLink(userId, authInfo, true, LinkType.DINGTALK.getType());
             return ResponseData.success(null);
         }
-        // 查询是否关联了维格账号
+        // Query whether the account is associated
         Long linkUserId = userLinkMapper.selectUserIdByUnionIdAndType(userInfo.getUnionid(), LinkType.DINGTALK.getType());
         if (linkUserId == null) {
-            // 找不到关联维格帐号时，将信息保存到用户授权的缓存中，在PC 端完善用户信息后完成关联并登陆
+            // When the associated account cannot be found, save the information in the cache authorized by the user, complete the association and log in after completing the user information on the PC side
             SocialAuthInfo authInfo = new SocialAuthInfo();
             authInfo.setType(LinkType.DINGTALK.getType());
             authInfo.setUnionId(userInfo.getUnionid());
@@ -107,9 +103,9 @@ public class DingTalkController {
             authInfo.setNickName(userInfo.getNick());
             return ResponseData.success(iAuthService.saveAuthInfoToCache(authInfo));
         }
-        // 登录成功，保存session
+        // Successful login, save session
         SessionContext.setUserId(linkUserId);
-        // 神策埋点 - 登录
+        // Sensor - Login
         ClientOriginInfo origin = InformationUtil.getClientOriginInfo(false, true);
         TaskManager.me().execute(() -> sensorsService.track(linkUserId, TrackEventType.LOGIN, "钉钉扫码", origin));
         return ResponseData.success(null);

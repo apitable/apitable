@@ -6,23 +6,16 @@ import org.apache.ibatis.annotations.Param;
 import com.vikadata.entity.DeveloperAssetEntity;
 
 /**
- * <p>
- * 开发者-附件表 Mapper 接口
- * </p>
- *
- * @author Pengap
- * @date 2021/7/21
+ * developer attachment table mapper interface
  */
 public interface DeveloperAssetMapper extends BaseMapper<DeveloperAssetEntity> {
 
     /**
-     * 更新资源文件大小
+     * Update resource file size
      *
-     * @param id           数据Id
-     * @param incrFileSize 增量文件大小
-     * @return int 执行结果数
-     * @author Pengap
-     * @date 2022/4/7 16:25:49
+     * @param id           data Id
+     * @param incrFileSize incremental file size
+     * @return int number of execution results
      */
     int updateFileSizeById(@Param("id") Long id, @Param("incrFileSize") Long incrFileSize);
 

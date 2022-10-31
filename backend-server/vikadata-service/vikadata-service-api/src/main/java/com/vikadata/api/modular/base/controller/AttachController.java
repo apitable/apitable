@@ -45,13 +45,10 @@ import static com.vikadata.api.constants.PageConstants.PAGE_PARAM;
 import static com.vikadata.api.constants.PageConstants.PAGE_SIMPLE_EXAMPLE;
 
 /**
- * 附件接口
- *
- * @author Chambers
- * @since 2019/9/19
+ * Attachment interface
  */
 @RestController
-@Api(tags = "基础模块_附件接口")
+@Api(tags = "Basic module - Attachment Interface")
 @ApiResource(path = "/base/attach")
 public class AttachController {
 
@@ -67,12 +64,12 @@ public class AttachController {
     @Resource
     private INodeService iNodeService;
 
-    @PostResource(name = "上传资源", path = "/upload", requiredLogin = false)
-    @ApiOperation(value = "上传资源", notes = "上传资源文件，无限制任何文件类型", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostResource(name = "Upload resources", path = "/upload", requiredLogin = false)
+    @ApiOperation(value = "Upload resources", notes = "Upload resource files, any file type is unlimited", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseData<AssetUploadResult> upload(@Valid AttachOpRo data) throws IOException {
         AssetType assetType = AssetType.of(data.getType());
         MultipartFile file = data.getFile();
-        // 未登录状态下，进行人机验证
+        // When not logged in, perform human-machine verification
         Long userId = SessionContext.getUserIdWithoutException();
         if (userId == null) {
             iAssetService.checkBeforeUpload(data.getNodeId(), data.getData());
@@ -88,21 +85,21 @@ public class AttachController {
         }
     }
 
-    @PostResource(name = "office文档预览转换", path = "/officePreview/{spaceId}", requiredPermission = false)
-    @ApiOperation(value = "office文档预览转换", notes = "office文档预览转换，调用永中office转换接口")
+    @PostResource(name = "Office document preview conversion", path = "/officePreview/{spaceId}", requiredPermission = false)
+    @ApiOperation(value = "Office document preview conversion", notes = "Office document preview conversion, call Yongzhong office conversion interface")
     public ResponseData<String> officePreview(@PathVariable String spaceId, @RequestBody @Valid AttachOfficePreviewRo results) {
         return ResponseData.success(iAssetService.officePreview(results, spaceId));
     }
 
-    @PostResource(name = "图片审核结果回调", path = "/auditCallback", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "图片审核结果回调", notes = "接受OSS云存储的图片审核结果，对违规图片与需人工审核的结果进行特殊处理", hidden = true)
+    @PostResource(name = "Image review result callback", path = "/auditCallback", requiredLogin = false, requiredPermission = false)
+    @ApiOperation(value = "Image review result callback", notes = "Accept the image review results stored in the OSS cloud, and carry out special treatment for illegal images and results requiring manual review", hidden = true)
     public ResponseData<Void> auditCallback(@RequestBody @Valid AttachAuditCallbackRo result) {
         iAssetAuditService.auditCallback(result);
         return ResponseData.success();
     }
 
-    @GetResource(name = "分页查询需人工审核的图片", path = "/readReviews", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "分页查询需人工审核的图片", notes = "分页查询需人工审核的图片")
+    @GetResource(name = "Paging query pictures that need manual review", path = "/readReviews", requiredLogin = false, requiredPermission = false)
+    @ApiOperation(value = "Paging query pictures that need manual review", notes = "Paging query pictures that need manual review")
     @ApiImplicitParam(name = PAGE_PARAM, value = "分页参数，说明看接口描述", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
     @SuppressWarnings("rawtypes")
     public ResponseData<PageInfo<AssetsAuditVo>> readReviews(@PageObjectParam Page page) {
@@ -112,27 +109,27 @@ public class AttachController {
         return ResponseData.success(PageHelper.build(iAssetAuditService.readReviews(page)));
     }
 
-    @PostResource(name = "提交图片审核结果", path = "/submitAuditResult", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "提交图片审核结果", notes = "提交图片审核结果，提交时输入审核人姓名")
+    @PostResource(name = "Submit image review results", path = "/submitAuditResult", requiredLogin = false, requiredPermission = false)
+    @ApiOperation(value = "Submit image review results", notes = "Submit the image review results, enter the reviewer's name when submitting")
     public ResponseData<Void> submitAuditResult(@RequestBody @Valid AssetsAuditRo results) {
-        //查询session中的钉钉会员信息
+        // Query the DingTalk member information in the session
         String auditorUserId = SessionContext.getDingtalkUserId();
         ExceptionUtil.isNotNull(auditorUserId, AuthException.UNAUTHORIZED);
         iAssetAuditService.submitAuditResult(results);
         return ResponseData.success();
     }
 
-    @PostResource(name = "图片URL上传接口", path = "/urlUpload", requiredPermission = false)
-    @ApiOperation(value = "图片URL上传接口", notes = "图片URL上传接口")
+    @PostResource(name = "Image URL upload interface", path = "/urlUpload", requiredPermission = false)
+    @ApiOperation(value = "Image URL upload interface", notes = "Image URL upload interface")
     public ResponseData<AssetUploadResult> urlUpload(@Valid AttachUrlOpRo opRo) {
         AssetUploadResult result = iAssetService.urlUpload(opRo);
         return ResponseData.success(result);
     }
 
-    @PostResource(name = "空间附件资源引用数变更", path = "/cite", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "空间附件资源引用数变更", notes = "相同附件需重复传token")
+    @PostResource(name = "Changes in the number of references to space attachment resources", path = "/cite", requiredLogin = false, requiredPermission = false)
+    @ApiOperation(value = "Changes in the number of references to space attachment resources", notes = "The same attachment needs to pass the token repeatedly")
     public ResponseData<Void> cite(@RequestBody @Valid SpaceAssetOpRo opRo) {
-        // 表单匿名填写
+        // Fill out the form anonymously
         String spaceId = iNodeService.getSpaceIdByNodeIdIncludeDeleted(opRo.getNodeId());
         ExceptionUtil.isNotNull(spaceId, PermissionException.NODE_NOT_EXIST);
         iSpaceAssetService.datasheetAttachmentCite(spaceId, opRo);

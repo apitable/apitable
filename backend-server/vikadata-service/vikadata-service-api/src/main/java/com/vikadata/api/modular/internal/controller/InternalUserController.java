@@ -39,13 +39,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 内部服务-用户接口
- * @author Shawn Deng
- * @date 2021-04-01 19:40:10
+ * Internal Service - User Interface
  */
 @RestController
 @ApiResource(path = "/internal")
-@Api(tags = "内部服务-用户接口")
+@Api(tags = "Internal Service - User Interface")
 public class InternalUserController {
 
     @Resource
@@ -54,18 +52,18 @@ public class InternalUserController {
     @Resource
     private IUserHistoryService userHistoryService;
 
-    @GetResource(name = "查询是否已登录", path = "/user/session", requiredLogin = false)
-    @ApiOperation(value = "查询是否已登录", notes = "获取自己必要信息", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetResource(name = "check whether logged in", path = "/user/session", requiredLogin = false)
+    @ApiOperation(value = "check whether logged in", notes = "get the necessary information", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<Boolean> meSession() {
         HttpSession session = HttpContextUtil.getSession(false);
         return ResponseData.success(session != null && session.getAttribute(SessionAttrConstants.LOGIN_USER_ID) != null);
     }
 
-    @GetResource(name = "获取自己必要信息", path = "/user/get/me", requiredPermission = false)
-    @ApiOperation(value = "获取自己必要信息", notes = "获取自己必要信息", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetResource(name = "get the necessary information", path = "/user/get/me", requiredPermission = false)
+    @ApiOperation(value = "get the necessary information", notes = "get the necessary information", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<UserBaseInfoVo> userBaseInfo() {
         Long userId = SessionContext.getUserId();
-        //查询用户基本信息
+        // query basic user information
         LoginUserDto loginUserDto = LoginContext.me().getLoginUser();
         UserBaseInfoVo baseInfo = UserBaseInfoVo.builder()
                 .userId(userId)
@@ -74,23 +72,23 @@ public class InternalUserController {
         return ResponseData.success(baseInfo);
     }
 
-    @GetResource(name = "获取冷静期用户", path = "/users/paused", requiredPermission = false, requiredLogin = false)
-    @ApiOperation(value = "获取冷静期用户", notes = "获取冷静期用户", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetResource(name = "get cooling off users", path = "/users/paused", requiredPermission = false, requiredLogin = false)
+    @ApiOperation(value = "get cooling off users", notes = "get cooling off users", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<List<UserInPausedDto>> getPausedUsers() {
         List<UserInPausedDto> pausedUserDtos = userService.getPausedUserDtos(null);
         return ResponseData.success(pausedUserDtos);
     }
 
-    @PostResource(name = "获取冷静期用户操作记录", path = "/getUserHistories", requiredPermission = false, requiredLogin = false)
-    @ApiOperation(value = "获取冷静期用户操作记录", notes = "获取冷静期用户操作记录", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostResource(name = "get the cooling-off period user operation record", path = "/getUserHistories", requiredPermission = false, requiredLogin = false)
+    @ApiOperation(value = "get the cooling-off period user operation record", notes = "get the cooling-off period user operation record", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<List<PausedUserHistoryDto>> getUserHistoryDtos(@RequestBody PausedUserHistoryRo userHistoryRo) {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime createdBefore = now.minusDays(30 + userHistoryRo.getLimitDays());
         // LocalDateTime createdAfter = now.minusDays(lastDays);
-        // 获取指定冷静期天数再往前30天内，有过注销申请的操作.
+        // After obtaining the specified cooling-off period, there has been an operation to cancel the application within 30 days before.
         List<PausedUserHistoryDto> userHistoryDtos = userHistoryService
                 .selectUserHistoryDtos(createdBefore, now, UserOperationType.APPLY_FOR_CLOSING);
-        // 找出仍处在冷静期的账号.
+        // Find out which accounts are still in the cooling-off period.
         List<Long> userIds = userHistoryDtos.stream().map(PausedUserHistoryDto::getUserId).collect(Collectors.toList());
         if (CollectionUtils.isEmpty(userIds)) {
             return ResponseData.success(Lists.newArrayList());
@@ -100,14 +98,14 @@ public class InternalUserController {
             return ResponseData.success(Lists.newArrayList());
         }
         List<Long> pausedUserIds = userDtos.stream().map(UserInPausedDto::getUserId).collect(Collectors.toList());
-        // 过滤掉非冷静期账号(已注销/已取消注销).
+        // Filter out non-cooling-off accounts (cancelled and cancelled).
         List<PausedUserHistoryDto> pausedUserHistoryDtos = userHistoryDtos
                 .stream().filter(historyDto -> pausedUserIds.contains(historyDto.getUserId())).collect(Collectors.toList());
         return ResponseData.success(pausedUserHistoryDtos);
     }
 
-    @PostResource(name = "关闭注销冷静期用户账号", path = "/users/{userId}/close", requiredPermission = false, requiredLogin = false)
-    @ApiOperation(value = "关闭注销冷静期用户账号", notes = "关闭注销冷静期用户账号", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostResource(name = "Close and log off the cooling-off period user account", path = "/users/{userId}/close", requiredPermission = false, requiredLogin = false)
+    @ApiOperation(value = "Close and log off the cooling-off period user account", notes = "Close and log off the cooling-off period user account", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<Boolean> closePausedUserAccount(@PathVariable("userId") Long userId) {
         UserEntity user = userService.getById(userId);
         ExceptionUtil.isNotNull(user, UserException.USER_NOT_EXIST);

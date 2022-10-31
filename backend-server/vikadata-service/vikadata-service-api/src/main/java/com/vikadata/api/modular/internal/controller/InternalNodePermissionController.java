@@ -57,10 +57,10 @@ public class InternalNodePermissionController {
     }
 
     @PostResource(path = "/node/permission", requiredPermission = false)
-    @ApiOperation(value = "获取多个节点的权限集")
+    @ApiOperation(value = "Get permission set for multiple nodes")
     public ResponseData<List<DatasheetPermissionView>> getMultiNodePermissions(@RequestBody @Valid InternalPermissionRo data) {
         Long userId = SessionContext.getUserId();
-        // 过滤不存在的节点，防止后续抛异常
+        // Filter non-existing nodes to prevent subsequent exceptions from being thrown
         List<String> existNodeIds = iNodeService.getExistNodeIdsBySelf(data.getNodeIds());
         if (existNodeIds.isEmpty()) {
             return ResponseData.success(new ArrayList<>());

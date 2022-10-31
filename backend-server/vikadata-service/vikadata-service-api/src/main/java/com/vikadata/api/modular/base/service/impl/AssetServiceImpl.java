@@ -95,12 +95,7 @@ import static org.springframework.util.MimeTypeUtils.IMAGE_JPEG;
 import static org.springframework.util.MimeTypeUtils.IMAGE_PNG;
 
 /**
- * <p>
- * 基础-附件表 服务实现类
- * </p>
- *
- * @author Chambers
- * @since 2020-03-06
+ * Basics - Attachment Table Service Implementation Class
  */
 @Slf4j
 @Service
@@ -150,9 +145,9 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
 
     @Override
     public void checkBeforeUpload(String nodeId, String secret) {
-        // 获取 API KEY
+        // get api key
         String apiKey = ApiHelper.getApiKey(HttpContextUtil.getRequest());
-        // 校验API KEY是否有效
+        // check whether the api key is valid
         boolean apiUpload = apiKey != null && iDeveloperService.validateApiKey(apiKey);
         if (apiUpload) {
             return;
@@ -160,9 +155,9 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
         if (StrUtil.isBlank(secret)) {
             throw new BusinessException(MAN_MACHINE_VERIFICATION_FAILED);
         }
-        // 未登录状态下，进行人机验证
+        // When not logged in, perform human-machine verification
         int hash = HashUtil.javaDefaultHash(secret);
-        // 客户端连续上传，传入的 secret 不变，因此在校验通过后的缓存有效时间内，可以跳过校验
+        // The client uploads continuously, and the incoming secret remains unchanged. Therefore, the verification can be skipped within the validity period of the cache after the verification is passed.
         String key = StrUtil.format(GENERAL_LOCKED, "anonymous:upload", hash);
         if (BooleanUtil.isTrue(redisTemplate.hasKey(key))) {
             return;
@@ -172,7 +167,7 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
             return;
         }
         afsCheckService.noTraceCheck(secret);
-        // 验证通过，生成定时缓存
+        // The verification is passed, and the timing cache is generated
         redisTemplate.opsForValue().set(key, "", 2, TimeUnit.HOURS);
         redisTemplate.opsForValue().set(nodeKey, "", 2, TimeUnit.HOURS);
     }
@@ -180,23 +175,23 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
     @Override
     @Transactional(rollbackFor = Throwable.class)
     public AssetUploadResult uploadFileInSpace(String nodeId, InputStream in, String fileOriginalName, long fileSize, String mimeType, AssetType assetType) {
-        log.info("上传空间内资源");
+        log.info("upload resources in the space");
         ExceptionUtil.isFalse(MediaType.TEXT_HTML_VALUE.equals(mimeType), ActionException.FILE_NOT_SUPPORT_HTML);
         AssetUploadResult result = new AssetUploadResult();
-        // 空间容量存储，需要计算容量，针对某个节点的存储，不允许节点为空
+        // Space capacity storage, requires computing capacity, for the storage of a node, the node is not allowed to be empty
         ExceptionUtil.isNotBlank(nodeId, INCORRECT_ARG);
-        // 校验节点是否存在，否则视为不可访问
+        // Check whether the node exists, otherwise it is regarded as inaccessible
         String spaceId = nodeMapper.selectSpaceIdByNodeId(nodeId);
         ExceptionUtil.isNotNull(spaceId, PermissionException.NODE_ACCESS_DENIED);
 
         try (InputStreamCache streamCache = new InputStreamCache(in, fileSize)) {
-            // 设置文件名称
+            // set file name
             result.setName(fileOriginalName);
-            // 设置资源大小
+            // set resource size
             result.setSize(fileSize);
-            // md5校验，判断该文件是否已存在
+            // md5 check to determine whether the file already exists
             String checksum = DigestUtil.md5Hex(streamCache.getInputStream());
-            // 判断是否超过附件空间上限，白名单空间跳过
+            // Determine whether the upper limit of the attachment space is exceeded, and the whitelist space is skipped
             // iSubscriptionService.checkCapacity(spaceId, fileSize, checksum);
             ImageDto imageDto = getImageInfo(streamCache.getInputStream());
             Integer height = null;
@@ -210,53 +205,53 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
             result.setMimeType(mimeType);
             boolean isPdf = StrUtil.isNotBlank(mimeType) && mimeType.equals(MediaType.APPLICATION_PDF_VALUE);
 
-            // 锁住 checksum，防止第一次并发上传多个新附件
+            // Lock checksum to prevent multiple new attachments from being uploaded concurrently for the first time
             Lock lock = redisLockRegistry.obtain(checksum);
             try {
                 if (lock.tryLock(2, TimeUnit.MINUTES)) {
                     AssetEntity assetEntity = baseMapper.selectByChecksum(checksum);
                     if (ObjectUtil.isNull(assetEntity)) {
-                        // 未存在，上传并存储到云端
+                        // does not exist, upload and store to the cloud
                         String uploadPath = buildPath(SPACE_PREFIX);
-                        // 上传附件
+                        // upload attachment
                         ossTemplate.upload(constProperties.getOssBucketByAsset().getBucketName(), streamCache.getInputStream(), uploadPath, mimeType, checksum);
                         result.setToken(uploadPath);
                         result.setBucket(constProperties.getOssBucketByAsset().getType());
                         if (isPdf) {
-                            // 上传PDF 图片
+                            // upload pdf image
                             String pdfImgUploadPath = uploadAndSavePdfImg(streamCache.getInputStream());
                             result.setPreview(pdfImgUploadPath);
                         }
-                        // 保存数据库
+                        // save in database
                         Long assetId = save(checksum, null, fileSize, uploadPath, mimeType, height, width, result.getPreview());
-                        // 数表的计算统一在op进行计算，无需处理数据
+                        // The calculation of the number table is uniformly calculated in the op, without the need to process the data
                         if (assetType != AssetType.DATASHEET) {
                             iSpaceAssetService.saveAssetInSpace(spaceId, nodeId, assetId, checksum, assetType, fileOriginalName, fileSize);
                         }
-                        // 如果是图片，需要创建审核记录
+                        // If it is a picture, you need to create an audit record
                         if (imageDto != null) {
                             iAssetAuditService.create(assetId, checksum, uploadPath);
                         }
                     }
                     else {
-                        // 已存在
+                        // existed
                         result.setToken(assetEntity.getFileUrl());
                         result.setBucket(assetEntity.getBucket());
                         result.setPreview(assetEntity.getPreview());
                         if (isPdf && assetEntity.getPreview() == null) {
-                            // 上传PDF 图片
+                            // upload pdf image
                             String pdfImgUploadPath = uploadAndSavePdfImg(streamCache.getInputStream());
                             result.setPreview(pdfImgUploadPath);
-                            // 基础资源记录，补充 preview 数据
+                            // Basic resource records, supplementary preview data
                             AssetEntity update = new AssetEntity();
                             update.setId(assetEntity.getId());
                             update.setPreview(result.getPreview());
                             updateById(update);
                         }
-                        // 判断是否已在该数表上引用该文件，是则累加一次引用次数，否则新增一条空间附件记录
+                        // Determine whether the file has been referenced on the number table, if so, add the number of references once, otherwise add a space attachment record
                         SpaceAssetDto assetDto = spaceAssetMapper.selectDto(spaceId, nodeId, assetEntity.getId());
                         if (ObjectUtil.isNotNull(assetDto)) {
-                            // 一次作为封面图使用，空间资源记录便硬性记录类型为封面图，方便获取使用过的所有封面图
+                            // Once used as a cover image, the space resource record is rigidly recorded as cover image, which is convenient to obtain all used cover images.
                             boolean flag = !assetDto.getType().equals(AssetType.COVER.getValue()) && assetType.equals(AssetType.COVER);
                             Integer type = flag ? AssetType.COVER.getValue() : null;
                             if (assetType != AssetType.DATASHEET) {
@@ -265,7 +260,7 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
                             }
                         }
                         else {
-                            // 数表的计算统一在op进行计算，无需处理数据
+                            // The calculation of the number table is uniformly calculated in the op, without the need to process the data
                             if (assetType != AssetType.DATASHEET) {
                                 iSpaceAssetService.saveAssetInSpace(spaceId, nodeId, assetEntity.getId(), checksum, assetType, fileOriginalName, fileSize);
                             }
@@ -273,8 +268,8 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
                     }
                 }
                 else {
-                    log.error("上传操作过于频繁，请稍后重试。checksum:{}", checksum);
-                    throw new BusinessException("上传操作过于频繁，请稍后重试");
+                    log.error("The upload operation is too frequent. Please try again later.checksum:{}", checksum);
+                    throw new BusinessException("Upload operation is too frequent, please try again later");
                 }
             }
             finally {
@@ -286,19 +281,19 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
             if (e.getMessage().contains(ignoreInfo)) {
                 throw new BusinessException(ActionException.FILE_NOT_SUPPORT_HTML);
             }
-            log.error("上传资源失败", e);
-            throw new BusinessException("上传失败");
+            log.error("Failed to upload resource", e);
+            throw new BusinessException("upload failed");
         }
         return result;
     }
 
     @Override
     public AssetUploadResult uploadRemoteUrl(String url) {
-        log.info("上传网络资源到公共空间");
-        // 未做完
+        log.info("Upload web resources to public space");
+        // unfinished
         AssetUploadResult result = new AssetUploadResult();
         result.setBucket(constProperties.getOssBucketByAsset().getType());
-        //上传公共区域
+        // upload to public area
         String uploadPath = buildPath(PUBLIC_PREFIX);
         try {
             UrlFetchResponse response = ossTemplate.upload(constProperties.getOssBucketByAsset().getBucketName(), url, uploadPath);
@@ -306,34 +301,34 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
             try {
                 MimeType mimeType = MimeTypeUtils.parseMimeType(response.getMimeType());
                 if (mimeType.isPresentIn(ImmutableList.of(IMAGE_JPEG, IMAGE_PNG, IMAGE_GIF))) {
-                    // 读取图片
-                    log.info("网站资源是图片");
+                    // read image
+                    log.info("website resources are images");
                 }
             }
             catch (InvalidMimeTypeException e) {
-                log.error("无法识别的文件类型");
-                // 忽略，不设置即可
+                log.error("unrecognized file type");
+                // Ignore, don't set it
             }
             result.setSize(response.getSize());
             result.setToken(response.getKeyName());
         }
         catch (IOException e) {
-            log.error("上传公共资源失败", e);
-            throw new BusinessException("上传失败");
+            log.error("Failed to upload public resource", e);
+            throw new BusinessException("upload failed");
         }
         return result;
     }
 
     @Override
     public AssetUploadResult uploadFile(InputStream in, long fileSize, String contentType) {
-        log.info("上传非空间资源文件");
+        log.info("upload non space resource files");
         AssetUploadResult result = new AssetUploadResult();
 
         try (InputStreamCache streamCacher = new InputStreamCache(in, fileSize)) {
             result.setBucket(constProperties.getOssBucketByAsset().getType());
-            //上传公共区域
+            // Upload public area
             String uploadPath = buildPath(PUBLIC_PREFIX);
-            //上传文件
+            //upload files
             ossTemplate.upload(constProperties.getOssBucketByAsset().getBucketName(), streamCacher.getInputStream(), uploadPath);
             result.setToken(uploadPath);
             result.setMimeType(contentType);
@@ -344,8 +339,8 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
             }
         }
         catch (IOException e) {
-            log.error("上传资源失败", e);
-            throw new BusinessException("上传失败");
+            log.error("failed to upload resource", e);
+            throw new BusinessException("upload failed");
         }
         return result;
     }
@@ -358,30 +353,30 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
 
         AssetUploadResult result = new AssetUploadResult();
         try (InputStreamCache streamCache = new InputStreamCache(in, fileSize)) {
-            // 设置文件名称
+            // set file name
             result.setName(fileOriginalName);
-            // 设置资源大小
+            // set resource size
             result.setSize(fileSize);
-            // md5校验，判断该文件是否已存在
+            // md5 check to determine whether the file already exists
             String checksum = DigestUtil.md5Hex(streamCache.getInputStream());
             AssetEntity assetEntity = baseMapper.selectByChecksum(checksum);
-            // 读取图片
+            // read image
             ImageDto imageDto = getImageInfo(streamCache.getInputStream());
             if (imageDto != null) {
                 result.setHeight(imageDto.getHeight());
                 result.setWidth(imageDto.getWidth());
             }
             if (ObjectUtil.isNull(assetEntity)) {
-                // 未存在，上传并存储到云端
+                // does not exist, upload and store to the cloud
                 if (StrUtil.isBlank(uploadPath)) {
-                    // 如果未指定，使用默认名称，为指定后缀
+                    // If not specified, use default name, specify suffix for
                     uploadPath = buildPath(DEVELOP_PREFIX);
                 }
-                // 上传附件
+                // upload attachment
                 ossTemplate.upload(constProperties.getOssBucketByAsset().getBucketName(), streamCache.getInputStream(), uploadPath, contentType, checksum);
-                // 计算文件头部Sum
+                // Calculate the file header Sum
                 String headSum = DigestUtil.createHeadSum(streamCache.getInputStream());
-                // 保存数据库，并且绑定开发者附件表关联关系
+                // Save into the database and bind the developer attachment table relationship
                 Long assetId = this.save(checksum, headSum, fileSize, uploadPath, contentType, result.getHeight(), result.getWidth(), result.getPreview());
                 iDeveloperAssetService.saveAssetInDeveloper(assetId, createdBy, checksum, developerAssetType, fileOriginalName, fileSize);
 
@@ -389,13 +384,13 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
                 result.setBucket(constProperties.getOssBucketByAsset().getType());
             }
             else {
-                // 存在
+                // exist
                 result.setToken(assetEntity.getFileUrl());
                 result.setBucket(assetEntity.getBucket());
             }
         }
         catch (IOException e) {
-            throw new RuntimeException("上传资源失败", e);
+            throw new RuntimeException("Failed to upload resource", e);
         }
         return result;
     }
@@ -406,7 +401,7 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
     }
 
     public Long save(String checksum, String headSum, long size, String path, String mimeType, Integer height, Integer width, String preview) {
-        log.info("保存基础附件记录");
+        log.info("save records of base attachments");
         AssetEntity entity = AssetEntity.builder()
                 .checksum(checksum)
                 .headSum(headSum)
@@ -426,18 +421,18 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
 
     @Override
     public String officePreview(AttachOfficePreviewRo officePreviewRo, String spaceId) {
-        log.info("office文件预览转换");
+        log.info("Office file preview conversion");
         if (yozoTemplate == null) {
-            throw new BusinessException("未开启文件预览组件功能");
+            throw new BusinessException("File preview component is not enabled");
         }
-        // 校验空间站是否已启用预览功能
+        // Check if the space station has the preview function enabled
         ExceptionUtil.isTrue(iAppInstanceService.checkInstanceExist(spaceId, AppType.OFFICE_PREVIEW.name()), APP_NOT_OPENED);
 
         String suffix = baseMapper.selectExtensionNameByFileUrl(officePreviewRo.getToken());
         ExceptionUtil.isNotNull(suffix, FILE_NOT_EXIST);
-        // 文件源地址（无后缀）
+        // File source address (no suffix)
         String fileUrl = constProperties.getOssBucketByAsset().getResourceUrl() + "/%s?attname=%s";
-        // 新增URLEcode编码，防止特殊文件名转换失败
+        // Added URL Ecode encoding to prevent the conversion of special filenames from failing
         try {
             String attname = URLEncoder.encode(officePreviewRo.getAttname().replaceAll("\\s|%", ""), "UTF-8");
             String url = String.format(fileUrl, officePreviewRo.getToken(), attname);
@@ -445,26 +440,26 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
         }
         catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-            throw new BusinessException("解析文件名失败");
+            throw new BusinessException("Failed to parse filename");
         }
         catch (YozoApiException exception) {
             throw new BusinessException(OFFICE_PREVIEW_GET_URL_FAILED);
         }
         catch (RestClientException e) {
-            log.error("请求office预览服务器失败", e);
+            log.error("Failed to request office preview server", e);
             throw new BusinessException(OFFICE_PREVIEW_API_FAILED);
         }
     }
 
     @Override
     public void delete(String token) {
-        log.info("删除云端s3文件");
+        log.info("delete cloud s3 files");
         ossTemplate.delete(constProperties.getOssBucketByAsset().getBucketName(), token);
     }
 
     @Override
     public AssetUploadResult urlUpload(AttachUrlOpRo attachUrlOpRo) {
-        log.info("URL上传附件");
+        log.info("URL upload attachment");
         try {
             URL url = URLUtil.url(attachUrlOpRo.getUrl());
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -482,21 +477,21 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
                 mimeType = FileUtil.extName(fileName);
             }
             long contentLength = urlConnection.getContentLengthLong();
-            // 如果出现读取请求头没有说明，直接获取流预估的大小
+            // If there is no description in the read request header, directly obtain the estimated size of the stream
             if (-1 == contentLength) {
                 contentLength = inputStream.available();
             }
             return this.uploadFileInSpace(attachUrlOpRo.getNodeId(), inputStream, fileName, contentLength, mimeType, AssetType.of(attachUrlOpRo.getType()));
         }
         catch (IOException e) {
-            log.error("URL无法读取", e);
-            // 无法解析资源的Content-Type
-            throw new BusinessException("无法解析文件类型");
+            log.error("URL cannot be read", e);
+            // Could not resolve Content-Type of resource
+            throw new BusinessException("Could not resolve file type");
         }
     }
 
     private String uploadAndSavePdfImg(InputStream in) {
-        log.info("PDF生成图片");
+        log.info("PDF to generate pictures");
         InputStream imageIn = PdfToImageUtil.convert(in);
         if (imageIn == null) {
             return null;
@@ -509,8 +504,8 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
             return pdfImgUploadPath;
         }
         catch (IOException e) {
-            log.error("上传资源失败", e);
-            throw new BusinessException("上传失败");
+            log.error("Failed to upload resource", e);
+            throw new BusinessException("upload failed");
         }
     }
 
@@ -525,7 +520,7 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
             }
         }
         catch (Exception e) {
-            log.error("读取图片异常，错误信息:" + e.getMessage(), e);
+            log.error("Error reading image, error message: " + e.getMessage(), e);
         }
         return null;
     }
@@ -536,7 +531,7 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
             return null;
         }
 
-        // 上传第三方头像到云端存储
+        // Upload third-party avatars to cloud storage
         try {
             URL url = URLUtil.url(avatarUrl);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -544,7 +539,7 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
             String fileName = StrUtil.subAfter(avatarUrl, StrUtil.SLASH, true);
             String mimeType = fileName.contains(StrUtil.DOT) ? FileUtil.extName(fileName) : urlConnection.getContentType();
             long contentLength = urlConnection.getContentLengthLong();
-            // 如果出现读取请求头为-1，直接过去流预估大小
+            // If the read request header is -1, go directly to the estimated size of the stream
             if (-1 == contentLength) {
                 contentLength = inputStream.available();
             }
@@ -552,7 +547,7 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
             return uploadResult.getToken();
         }
         catch (Exception e) {
-            log.warn("第三方头像 URL 无法读取，跳过。", e);
+            log.warn("Third-party avatar URL cannot be read, skip.", e);
         }
         return null;
     }

@@ -22,12 +22,8 @@ import org.springframework.web.client.RestTemplate;
 import static com.vikadata.core.constants.ResponseExceptionConstants.DEFAULT_SUCCESS_CODE;
 
 /**
- * <p>
- * RestTemplate 服务实现类
- * </p>
+ * RestTemplate service implementation class
  *
- * @author Chambers
- * @date 2020/4/2
  */
 @Slf4j
 @Service

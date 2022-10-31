@@ -33,15 +33,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>
- * 附件上传Token接口
- * </p>
- *
- * @author Pengap
- * @date 2022/4/6 16:43:14
+ * Attachment upload token interface
  */
 @RestController
-@Api(tags = "基础模块_附件上传Token接口")
+@Api(tags = "Basics - Attachment upload token interface")
 @ApiResource(path = "/asset")
 public class AttachUploadTokenController {
 
@@ -51,18 +46,18 @@ public class AttachUploadTokenController {
     @Resource
     private IAssetUploadTokenService iAssetUploadTokenService;
 
-    @PostResource(name = "获取上传资源令牌", path = "/widgets/{nodeId}/uploadToken", requiredPermission = false)
-    @ApiOperation(value = "获取上传资源令牌 assets", notes = "获取上传令牌，用于前端直传")
+    @PostResource(name = "Get upload resource token", path = "/widgets/{nodeId}/uploadToken", requiredPermission = false)
+    @ApiOperation(value = "Get upload resource token assets", notes = "Get upload token for front-end direct upload")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "nodeId", value = "节点ID", required = true, dataTypeClass = String.class, paramType = "path", example = "wpk123456")
+            @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "path", example = "wpk123456")
     })
     public ResponseData<AssetUploadTokenVo> createWidgetAssetsUploadToken(@PathVariable String nodeId, @RequestBody @Valid AssetUploadTokenRo assetUploadTokenRo) {
         Long userId = SessionContext.getUserId();
         return ResponseData.success(iAssetUploadTokenService.createWidgetAssetsUploadToken(userId, nodeId, assetUploadTokenRo));
     }
 
-    @PostResource(name = "获取上传预签名URL", path = "/upload/preSignedUrl", requiredLogin = false)
-    @ApiOperation(value = "获取上传预签名URL")
+    @PostResource(name = "Get upload presigned URL", path = "/upload/preSignedUrl", requiredLogin = false)
+    @ApiOperation(value = "Get upload presigned URL")
     public ResponseData<List<AssetUploadCertificateVO>> generatePreSignedUrl(@RequestBody @Valid AssetUploadCertificateRO data) {
         // When not logged in, perform human-machine verification
         Long userId = SessionContext.getUserIdWithoutException();

@@ -31,7 +31,7 @@ public class SystemConfigServiceImpl implements ISystemConfigService {
     @Override
     public void saveOrUpdate(Long userId, SystemConfigType type, String lang, String configVal) {
         Long id = systemConfigMapper.selectIdByTypeAndLang(type.getType(), lang);
-        // 不存在，新建记录
+        // does not exist, create a new record
         if (ObjectUtil.isNull(id)) {
             SystemConfigEntity entity = SystemConfigEntity.builder()
                     .id(IdWorker.getId())
@@ -44,7 +44,7 @@ public class SystemConfigServiceImpl implements ISystemConfigService {
             systemConfigMapper.insert(entity);
             return;
         }
-        // 存在，更新记录
+        // exist, update the record
         SystemConfigEntity entity = SystemConfigEntity.builder()
                 .id(id)
                 .configMap(configVal)
