@@ -3,13 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CacheConfigService } from 'shared/cache/cache.config.service';
 import { ApiRequestMiddleware } from 'shared/middleware/api.request.middleware';
 import { NodeRateLimiterMiddleware } from 'shared/middleware/node.rate.limiter.middleware';
-import { QueueWorkerModule } from '../_modules/queue.worker.module';
+import { QueueWorkerModule } from '../enterprise/shared/queue.worker.module';
 import { ApiUsageRepository } from './repositories/api.usage.repository';
 import { UnitMemberRepository } from '../database/repositories/unit.member.repository';
-import { RestModule } from '../_modules/rest.module';
-import { DatasheetServiceModule } from '../_modules/datasheet.service.module';
-import { FusionApiServiceModule } from '../_modules/fusion.api.service.module';
-import { NodeServiceModule } from '../_modules/node.service.module';
+// import { FusionApiServiceModule } from '../_modules/fusion.api.service.module';
 import { FusionApiController } from './fusion.api.controller';
 import { SharedModule } from 'shared/shared.module';
 import { UnitService } from 'database/services/unit/unit.service';
@@ -20,9 +17,22 @@ import { UnitRepository } from 'database/repositories/unit.repository';
 import { UnitTagRepository } from 'database/repositories/unit.tag.repository';
 import { UnitTeamRepository } from 'database/repositories/unit.team.repository';
 import { UserRepository } from 'database/repositories/user.repository';
-import { UserServiceModule } from '_modules/user.service.module';
 import { DeveloperRepository } from 'database/repositories/developer.repository';
 import { DeveloperService } from 'database/services/developer/developer.service';
+import { HttpModule } from '@nestjs/axios';
+import { HttpConfigService } from 'shared/services/config/http.config.service';
+import { RestService } from 'shared/services/rest/rest.service';
+import { NodeDescriptionService } from 'database/services/node/node.description.service';
+import { NodeShareSettingService } from 'database/services/node/node.share.setting.service';
+import { NodePermissionService } from 'database/services/node/node.permission.service';
+import { NodeService } from 'database/services/node/node.service';
+import { NodeRepository } from 'database/repositories/node.repository';
+import { NodeDescRepository } from 'database/repositories/node.desc.repository';
+import { NodeRelRepository } from 'database/repositories/node.rel.repository';
+import { NodeShareSettingRepository } from 'database/repositories/node.share.setting.repository';
+import { DatasheetRepository } from 'database/repositories/datasheet.repository';
+import { ResourceMetaRepository } from 'database/repositories/resource.meta.repository';
+import { UserService } from 'database/services/user/user.service';
 
 /**
  * 数表模块
@@ -32,20 +42,41 @@ import { DeveloperService } from 'database/services/developer/developer.service'
   imports: [
   TypeOrmModule.forFeature([DeveloperRepository, UserRepository, UnitMemberRepository]),
   SharedModule,
-  FusionApiServiceModule,
-  DatasheetServiceModule,
-  NodeServiceModule,
-  RestModule,
+  // FusionApiServiceModule,
+  // DatasheetServiceModule,
+  // HttpModule.registerAsync({
+  //   useClass: HttpConfigService,
+  //   }),
   CacheModule.registerAsync({
     useClass: CacheConfigService,
     }),
   TypeOrmModule.forFeature([UnitMemberRepository, ApiUsageRepository]),
   QueueWorkerModule,
   TypeOrmModule.forFeature([UnitRepository, UnitMemberRepository, UnitTagRepository, UnitTeamRepository, UserRepository]),
-  UserServiceModule,
+  TypeOrmModule.forFeature([UserRepository]),
+  TypeOrmModule.forFeature([
+    NodeRepository,
+    NodeRelRepository,
+    NodeDescRepository,
+    NodeShareSettingRepository,
+    DatasheetRepository,
+    ResourceMetaRepository,
+    ]),
+  // HttpModule.registerAsync({
+  //   useClass: HttpConfigService,
+  //   }),
+  TypeOrmModule.forFeature([UnitRepository, UnitMemberRepository, UnitTagRepository, UnitTeamRepository, UserRepository]),
   ],
   controllers: [FusionApiController],
-  providers: [DeveloperService, UnitService, UnitMemberService, UnitTagService, UnitTeamService],
+  providers: [ 
+  UserService,
+// RestService, 
+  DeveloperService, UnitService, UnitMemberService, UnitTagService, UnitTeamService,
+  NodeService, NodePermissionService, NodeShareSettingService, NodeDescriptionService, 
+  
+  UnitService, UnitMemberService, UnitTagService, UnitTeamService
+  ],
+  
   })
 export class FusionApiModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

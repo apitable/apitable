@@ -4,7 +4,7 @@ import { AutomationActionRepository } from './repositories/automation.action.rep
 import { AutomationRobotRepository } from './repositories/automation.robot.repository';
 import { AutomationRunHistoryRepository } from './repositories/automation.run.history.repository';
 import { AutomationTriggerRepository } from './repositories/automation.trigger.repository';
-import { UserServiceModule } from '../_modules/user.service.module';
+// import { UserServiceModule } from '../_modules/user.service.module';
 import { RobotActionController } from './action.controller';
 import { RobotActionTypeController } from './action.type.controller';
 import { RobotController } from './robot.controller';
@@ -18,6 +18,8 @@ import { NodeRepository } from 'database/repositories/node.repository';
 import { AutomationServiceRepository } from './repositories/automation.service.repository';
 import { AutomationTriggerTypeRepository } from './repositories/automation.trigger.type.repository';
 import { AutomationActionTypeRepository } from './repositories/automation.action.type.repository';
+import { UserRepository } from 'database/repositories/user.repository';
+import { UserService } from 'database/services/user/user.service';
 
 @Module({
   imports: [
@@ -28,7 +30,8 @@ import { AutomationActionTypeRepository } from './repositories/automation.action
     AutomationRobotRepository,
     AutomationRunHistoryRepository,
     ]),
-  UserServiceModule,
+  // UserServiceModule,
+  TypeOrmModule.forFeature([UserRepository]),
   TypeOrmModule.forFeature([
     NodeRepository,
     AutomationTriggerRepository,
@@ -41,6 +44,7 @@ import { AutomationActionTypeRepository } from './repositories/automation.action
   ],
   providers: [
   AutomationService,
+  UserService,
   ],
   controllers: [
   RobotController,

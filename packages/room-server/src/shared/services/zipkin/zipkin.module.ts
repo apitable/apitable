@@ -2,18 +2,18 @@ import { DynamicModule, Global, Module } from '@nestjs/common';
 import {
   IZipkinModuleAsyncOptions,
   IZipkinModuleOptions,
-} from '../shared/services/zipkin/zipkin.interface';
+} from './zipkin.interface';
 import {
   createZipkinOptionAsyncProviders,
   createZipkinOptionProviders,
-} from '../shared/services/zipkin/zipkin.providers';
-import { ZipkinService } from '../shared/services/zipkin/zipkin.service';
+} from './zipkin.providers';
+import { ZipkinService } from './zipkin.service';
 
 @Global()
 @Module({
   providers: [ZipkinService],
   exports: [ZipkinService],
-})
+  })
 export class ZipkinModule {
 
   static forRoot(options: IZipkinModuleOptions): DynamicModule {

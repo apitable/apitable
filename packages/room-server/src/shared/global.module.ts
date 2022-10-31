@@ -8,7 +8,6 @@ import { AutomationServiceRepository } from 'automation/repositories/automation.
 import { AutomationTriggerRepository } from 'automation/repositories/automation.trigger.repository';
 import { AutomationTriggerTypeRepository } from 'automation/repositories/automation.trigger.type.repository';
 import { AutomationService } from 'automation/services/automation.service';
-import { AssetRepository } from 'database/repositories/asset.repository';
 import { DatasheetChangesetRepository } from 'database/repositories/datasheet.changeset.repository';
 import { DatasheetChangesetSourceRepository } from 'database/repositories/datasheet.changeset.source.repository';
 import { DatasheetMetaRepository } from 'database/repositories/datasheet.meta.repository';
@@ -23,6 +22,7 @@ import { NodeRelRepository } from 'database/repositories/node.rel.repository';
 import { NodeRepository } from 'database/repositories/node.repository';
 import { NodeShareSettingRepository } from 'database/repositories/node.share.setting.repository';
 import { RecordCommentRepository } from 'database/repositories/record.comment.repository';
+import { ResourceChangesetRepository } from 'database/repositories/resource.changeset.repository';
 import { ResourceMetaRepository } from 'database/repositories/resource.meta.repository';
 import { UnitMemberRepository } from 'database/repositories/unit.member.repository';
 import { UnitRepository } from 'database/repositories/unit.repository';
@@ -30,7 +30,8 @@ import { UnitTagRepository } from 'database/repositories/unit.tag.repository';
 import { UnitTeamRepository } from 'database/repositories/unit.team.repository';
 import { UserRepository } from 'database/repositories/user.repository';
 import { WidgetRepository } from 'database/repositories/widget.repository';
-import { AttachmentService } from 'database/services/attachment/attachment.service';
+import { CommandOptionsService } from 'database/services/command/impl/command.options.service';
+import { CommandService } from 'database/services/command/impl/command.service';
 import { DashboardService } from 'database/services/dashboard/dashboard.service';
 import { ComputeFieldReferenceManager } from 'database/services/datasheet/compute.field.reference.manager';
 import { DatasheetChangesetService } from 'database/services/datasheet/datasheet.changeset.service';
@@ -56,6 +57,9 @@ import { MirrorOtService } from 'database/services/ot/mirror.ot.service';
 import { OtService } from 'database/services/ot/ot.service';
 import { ResourceChangeHandler } from 'database/services/ot/resource.change.handler';
 import { WidgetOtService } from 'database/services/ot/widget.ot.service';
+import { ChangesetService } from 'database/services/resource/changeset.service';
+import { MetaService } from 'database/services/resource/meta.service';
+import { ResourceService } from 'database/services/resource/resource.service';
 import { UnitMemberService } from 'database/services/unit/unit.member.service';
 import { UnitService } from 'database/services/unit/unit.service';
 import { UnitTagService } from 'database/services/unit/unit.tag.service';
@@ -63,54 +67,39 @@ import { UnitTeamService } from 'database/services/unit/unit.team.service';
 import { UserService } from 'database/services/user/user.service';
 import { WidgetService } from 'database/services/widget/widget.service';
 import { QueueWorkerModule } from 'enterprise/shared/queue.worker.module';
-import { FusionApiFilter } from 'fusion/filter/fusion.api.filter';
-import { ApiUsageRepository } from 'fusion/repositories/api.usage.repository';
-import { FusionApiRecordService } from 'fusion/services/fusion.api.record.service';
-import { FusionApiService } from 'fusion/services/fusion.api.service';
-import { FusionApiTransformer } from 'fusion/transformer/fusion.api.transformer';
 import { GrpcClientModule } from 'proto/client/grpc.client.module';
-import { GlobalModule } from './global.module';
-import { LoggerModule } from './logger/winston.module';
-import { HttpConfigService } from './services/config/http.config.service';
-import { LoggerConfigService } from './services/config/logger.config.service';
-import { ZipkinConfigService } from './services/config/zipkin.config.service';
+// import { DatasheetServiceModule } from '_modules/datasheet.service.module';
+// import { ResourceServiceModule } from '_modules/resource.service.module';
+import { HttpConfigService } from '../shared/services/config/http.config.service';
+import { RestService } from '../shared/services/rest/rest.service';
 import { JavaModule } from './services/java/java.module';
-import { ZipkinModule } from './services/zipkin/zipkin.module';
+import { ClientStorage } from './services/socket/client.storage';
+import { RoomResourceRelService } from './services/socket/room.resource.rel.service';
 
+@Global()
 @Module({
   imports: [
-  GlobalModule,
-  TypeOrmModule.forFeature([AssetRepository]),
-  JavaModule,
   HttpModule.registerAsync({
     useClass: HttpConfigService,
     }),
-
-// Zipkin 配置
-  ZipkinModule.forRootAsync({
-    useClass: ZipkinConfigService,
-    }),
-// 日志配置
-  LoggerModule.forRootAsync({
-    useClass: LoggerConfigService,
-    }),
-  TypeOrmModule.forFeature([UserRepository]),
+   
   TypeOrmModule.forFeature([
     WidgetRepository,
     ]),
-  TypeOrmModule.forFeature([ApiUsageRepository]),
-  JavaModule,
-  // ResourceServiceModule,
+  TypeOrmModule.forFeature([DatasheetRepository, ResourceMetaRepository, WidgetRepository]),
   TypeOrmModule.forFeature([UserRepository]),
-  TypeOrmModule.forFeature([DatasheetRecordRepository]),
-  TypeOrmModule.forFeature([ResourceMetaRepository, DatasheetWidgetRepository]),
   // ResourceServiceModule,
-  // HttpModule.registerAsync({
-  //   useClass: HttpConfigService,
-  //   }),
+  // DatasheetServiceModule,
   GrpcClientModule,
+  TypeOrmModule.forFeature([ResourceMetaRepository, DatasheetWidgetRepository]),
+  // DatasheetServiceModule,
+  // ResourceServiceModule,
+// HttpModule.registerAsync({
+//   useClass: HttpConfigService,
+//   }),
+  GrpcClientModule,
+  // DatasheetServiceModule,
   TypeOrmModule.forFeature([AutomationTriggerRepository, AutomationTriggerTypeRepository]),
-  
   TypeOrmModule.forFeature([
     NodeRepository,
     AutomationTriggerRepository,
@@ -121,7 +110,6 @@ import { ZipkinModule } from './services/zipkin/zipkin.module';
     AutomationActionTypeRepository
     ]),
   TypeOrmModule.forFeature([ResourceMetaRepository]),
-  TypeOrmModule.forFeature([UnitRepository, UnitMemberRepository, UnitTagRepository, UnitTeamRepository, UserRepository]),
   TypeOrmModule.forFeature([
     NodeRepository,
     NodeRelRepository,
@@ -130,11 +118,42 @@ import { ZipkinModule } from './services/zipkin/zipkin.module';
     DatasheetRepository,
     ResourceMetaRepository,
     ]),
-  // HttpModule.registerAsync({
-  //   useClass: HttpConfigService,
-  //   }),
+// HttpModule.registerAsync({
+//   useClass: HttpConfigService,
+//   }),
   TypeOrmModule.forFeature([UnitRepository, UnitMemberRepository, UnitTagRepository, UnitTeamRepository, UserRepository]),
- 
+  TypeOrmModule.forFeature([
+    WidgetRepository,
+    ]),
+  TypeOrmModule.forFeature([
+    DatasheetChangesetRepository,
+    ResourceChangesetRepository,
+    ]),
+  // DatasheetServiceModule,
+  TypeOrmModule.forFeature([
+    NodeRepository,
+    AutomationTriggerRepository,
+    AutomationRobotRepository,
+    AutomationRunHistoryRepository,
+    AutomationServiceRepository,
+    AutomationTriggerTypeRepository,
+    AutomationActionTypeRepository
+    ]),
+  TypeOrmModule.forFeature([
+    NodeRepository,
+    NodeRelRepository,
+    NodeDescRepository,
+    NodeShareSettingRepository,
+    DatasheetRepository,
+    ResourceMetaRepository,
+    ]),
+// HttpModule.registerAsync({
+//   useClass: HttpConfigService,
+//   }),
+  TypeOrmModule.forFeature([UnitRepository, UnitMemberRepository, UnitTagRepository, UnitTeamRepository, UserRepository]),
+  // UserServiceModule,
+  TypeOrmModule.forFeature([UserRepository]),
+
   TypeOrmModule.forFeature([
     WidgetRepository,
     ]),
@@ -172,13 +191,12 @@ import { ZipkinModule } from './services/zipkin/zipkin.module';
   //   useClass: HttpConfigService,
   //   }),
   TypeOrmModule.forFeature([UnitRepository, UnitMemberRepository, UnitTagRepository, UnitTeamRepository, UserRepository]),
-  // UserServiceModule, 
+  // UserServiceModule,
   ],
-
-  controllers: [],
-  providers: [AttachmentService,UserService,
-  FusionApiRecordService, FusionApiService, FusionApiFilter, FusionApiTransformer,
-// RestService,
+  providers: [RestService, CommandService, CommandOptionsService,
+  RoomResourceRelService, ClientStorage,
+  UserService,
+  // RestService,
   OtService,
   DatasheetOtService,
   DashboardOtService,
@@ -190,11 +208,15 @@ import { ZipkinModule } from './services/zipkin/zipkin.module';
   EventService,
   AutomationService,
   DashboardService,
-  UnitService, UnitMemberService, UnitTagService, UnitTeamService,
   WidgetService,
   NodeService, NodePermissionService, NodeShareSettingService, NodeDescriptionService, 
-  UserService ,
+  
   UnitService, UnitMemberService, UnitTagService, UnitTeamService,
+
+  ResourceService, MetaService, ChangesetService, AutomationService, WidgetService,
+  NodeService, NodePermissionService, NodeShareSettingService, NodeDescriptionService, 
+  UserService,
+  UnitService, UnitMemberService, UnitTagService, UnitTeamService ,
   DatasheetService,
   DatasheetMetaService,
   DatasheetRecordService,
@@ -213,7 +235,8 @@ import { ZipkinModule } from './services/zipkin/zipkin.module';
   
   UnitService, UnitMemberService, UnitTagService, UnitTeamService
   ],
-  exports: [AttachmentService, UserService,FusionApiService, FusionApiFilter, FusionApiTransformer,
+  exports: [RestService, CommandService, CommandOptionsService, RoomResourceRelService, ClientStorage,
+  ResourceService, MetaService, ChangesetService,
   DatasheetService,
   DatasheetMetaService,
   DatasheetRecordService,
@@ -227,4 +250,4 @@ import { ZipkinModule } from './services/zipkin/zipkin.module';
   DatasheetRecordAlarmService,
   ],
   })
-export class SharedModule {}
+export class GlobalModule {}

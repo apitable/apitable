@@ -7,18 +7,14 @@ import { enableScheduler } from 'app.environment';
 import { EnvConfigModule } from 'shared/services/config/env.config.module';
 import { DatabaseConfigService } from './shared/services/config/database.config.service';
 import { LoggerConfigService } from './shared/services/config/logger.config.service';
-import { ZipkinConfigService } from './shared/services/config/zipkin.config.service';
 import { MiddlewareModule } from 'shared/middleware/middleware.module';
-import { LoggerModule } from 'shared/logger/winston.module';
-import { QueueWorkerModule } from './_modules/queue.worker.module';
-import { SchedTaskModule } from './_modules/sched.task.module';
-import { SocketModule } from './_modules/socket.module';
-import { SocketModule as SocketModuleNew } from './socket/socket.module';
+import { QueueWorkerModule } from './enterprise/shared/queue.worker.module';
+import { EnterpriseModule } from './enterprise/enterprise.module';
+import { SocketModule } from './socket/socket.module';
 import { I18nModule } from 'nestjs-i18n';
 import { RedisModule, RedisModuleOptions } from '@vikadata/nestjs-redis';
 import path, { resolve } from 'path';
 import environmentConfig from './shared/services/config/environment.config';
-import { ZipkinModule } from './_modules/zipkin.module';
 import { ActuatorModule } from 'actuator/actuator.module';
 import { FusionApiModule } from 'fusion/fusion.api.module';
 import { GrpcController } from 'database/controllers/grpc.controller';
@@ -27,13 +23,8 @@ import { MirrorController } from 'database/controllers/mirror.controller';
 import { ResourceController } from 'database/controllers/resource.controller';
 import { MirrorService } from 'database/services/mirror/mirror.service';
 import { FormService } from 'database/services/form/form.service';
-import { ResourceServiceModule } from '_modules/resource.service.module';
-import { FusionApiServiceModule } from '_modules/fusion.api.service.module';
-import { CommandServiceModule } from '_modules/command.service.module';
-import { DatasheetServiceModule } from '_modules/datasheet.service.module';
+// import { FusionApiServiceModule } from '_modules/fusion.api.service.module';
 import { ResourceMetaRepository } from 'database/repositories/resource.meta.repository';
-import { NodeServiceModule } from '_modules/node.service.module';
-import { UserServiceModule } from '_modules/user.service.module';
 import { DatabaseModule } from 'database/database.module';
 import { RobotModule } from 'automation/robot.module';
 import { DashboardController } from 'database/controllers/dashboard.controller';
@@ -48,7 +39,6 @@ import { AutomationRunHistoryRepository } from 'automation/repositories/automati
 import { AutomationServiceRepository } from 'automation/repositories/automation.service.repository';
 import { AutomationActionTypeRepository } from 'automation/repositories/automation.action.type.repository';
 import { DashboardService } from 'database/services/dashboard/dashboard.service';
-import { RestModule } from '_modules/rest.module';
 import { GrpcSocketService } from 'shared/services/grpc/grpc.socket.service';
 import { OtService } from 'database/services/ot/ot.service';
 import { DatasheetOtService } from 'database/services/ot/datasheet.ot.service';
@@ -61,6 +51,28 @@ import { DatasheetWidgetRepository } from 'database/repositories/datasheet.widge
 import { GrpcClientModule } from 'proto/client/grpc.client.module';
 import { WidgetRepository } from 'database/repositories/widget.repository';
 import { WidgetService } from 'database/services/widget/widget.service';
+import { HttpModule } from '@nestjs/axios';
+import { HttpConfigService } from 'shared/services/config/http.config.service';
+import { RestService } from 'shared/services/rest/rest.service';
+import { SharedModule } from 'shared/shared.module';
+import { NodeService } from 'database/services/node/node.service';
+import { NodePermissionService } from 'database/services/node/node.permission.service';
+import { NodeShareSettingService } from 'database/services/node/node.share.setting.service';
+import { NodeDescriptionService } from 'database/services/node/node.description.service';
+import { UnitService } from 'database/services/unit/unit.service';
+import { UnitMemberService } from 'database/services/unit/unit.member.service';
+import { UnitTagService } from 'database/services/unit/unit.tag.service';
+import { UnitTeamService } from 'database/services/unit/unit.team.service';
+import { NodeRelRepository } from 'database/repositories/node.rel.repository';
+import { NodeDescRepository } from 'database/repositories/node.desc.repository';
+import { NodeShareSettingRepository } from 'database/repositories/node.share.setting.repository';
+import { DatasheetRepository } from 'database/repositories/datasheet.repository';
+import { UnitRepository } from 'database/repositories/unit.repository';
+import { UnitMemberRepository } from 'database/repositories/unit.member.repository';
+import { UnitTagRepository } from 'database/repositories/unit.tag.repository';
+import { UnitTeamRepository } from 'database/repositories/unit.team.repository';
+import { UserRepository } from 'database/repositories/user.repository';
+import { UserService } from 'database/services/user/user.service';
 
 // 初始化环境，本地开发为development，部署线上则需要指定NODE_ENV，非开发环境可选值[integration, staging, production]
 // 环境已经使用app.environment设置了
@@ -68,6 +80,7 @@ import { WidgetService } from 'database/services/widget/widget.service';
 
 @Module({
   imports: [
+  SharedModule,
 // 环境配置
   ConfigModule.forRoot({
     envFilePath: resolve(process.cwd(), 'dist/env/.env.defaults'),
@@ -87,15 +100,6 @@ import { WidgetService } from 'database/services/widget/widget.service';
     return redisModuleOptions(configService);
     },
     }),
-// 日志配置
-  LoggerModule.forRootAsync({
-    useClass: LoggerConfigService,
-    }),
-// Zipkin 配置
-  ZipkinModule.forRootAsync({
-    useClass: ZipkinConfigService,
-    }),
-  SocketModule,
   MiddlewareModule,
   EnvConfigModule,
   I18nModule.forRoot({
@@ -106,22 +110,17 @@ import { WidgetService } from 'database/services/widget/widget.service';
     },
     }),
   ScheduleModule.forRoot(),
-  SchedTaskModule.register(enableScheduler),
-  SocketModuleNew.register(true), // TODO: whether or not use socket-module
+  EnterpriseModule.register(enableScheduler),
+  SocketModule.register(true), // TODO: whether or not use socket-module
   QueueWorkerModule,
   ActuatorModule, FusionApiModule,
-  DatabaseModule, RobotModule, NodeServiceModule,
-  UserServiceModule, 
-  NodeServiceModule, 
+  DatabaseModule, RobotModule,
   TypeOrmModule.forFeature([ResourceMetaRepository]),
-  DatasheetServiceModule,
-  CommandServiceModule,
-  FusionApiServiceModule,
-  ResourceServiceModule,
-  UserServiceModule,
-  NodeServiceModule,
-  DatasheetServiceModule,
-  CommandServiceModule,
+  // DatasheetServiceModule,
+  // FusionApiServiceModule,
+  // ResourceServiceModule,
+  TypeOrmModule.forFeature([UserRepository]),
+  // DatasheetServiceModule,
   TypeOrmModule.forFeature([AutomationTriggerRepository, AutomationTriggerTypeRepository]),
   TypeOrmModule.forFeature([
     NodeRepository,
@@ -132,17 +131,15 @@ import { WidgetService } from 'database/services/widget/widget.service';
     AutomationTriggerTypeRepository,
     AutomationActionTypeRepository
     ]),
-  RestModule,
-
+  // HttpModule.registerAsync({
+  //   useClass: HttpConfigService,
+  //   }),
   TypeOrmModule.forFeature([ResourceMetaRepository, DatasheetWidgetRepository]),
-  DatasheetServiceModule,
-  NodeServiceModule,
-  UserServiceModule,
-  ResourceServiceModule,
-  RestModule,
+  // DatasheetServiceModule,
+  TypeOrmModule.forFeature([UserRepository]),
+  // ResourceServiceModule,
   GrpcClientModule,
-  DatasheetServiceModule,
-  CommandServiceModule,
+  // DatasheetServiceModule,
   TypeOrmModule.forFeature([AutomationTriggerRepository, AutomationTriggerTypeRepository]),
   TypeOrmModule.forFeature([
     NodeRepository,
@@ -154,17 +151,29 @@ import { WidgetService } from 'database/services/widget/widget.service';
     AutomationActionTypeRepository
     ]),
   TypeOrmModule.forFeature([ResourceMetaRepository]),
-  NodeServiceModule,
-  RestModule,
   TypeOrmModule.forFeature([
     WidgetRepository,
     ]),
+  TypeOrmModule.forFeature([
+    NodeRepository,
+    NodeRelRepository,
+    NodeDescRepository,
+    NodeShareSettingRepository,
+    DatasheetRepository,
+    ResourceMetaRepository,
+    ]),
+// HttpModule.registerAsync({
+//   useClass: HttpConfigService,
+//   }),
+  TypeOrmModule.forFeature([UnitRepository, UnitMemberRepository, UnitTagRepository, UnitTeamRepository, UserRepository]),
 
   EntryModule,
   ],
   controllers: [DashboardController, GrpcController, FormController, MirrorController, ResourceController],
   providers: [GrpcSocketService, DashboardService, EventService, FormService, MirrorService, AutomationService, 
   OtService,
+  UserService,
+  // RestService,
   DatasheetOtService,
   DashboardOtService,
   MirrorOtService,
@@ -176,6 +185,10 @@ import { WidgetService } from 'database/services/widget/widget.service';
   AutomationService,
   DashboardService,
   WidgetService,
+
+  NodeService, NodePermissionService, NodeShareSettingService, NodeDescriptionService, 
+  
+  UnitService, UnitMemberService, UnitTagService, UnitTeamService 
   
   ],
   })

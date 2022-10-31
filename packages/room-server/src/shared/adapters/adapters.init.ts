@@ -16,10 +16,11 @@ import {
 import { NodeRepository } from '../../database/repositories/node.repository';
 import { DatasheetMetaService } from 'database/services/datasheet/datasheet.meta.service';
 import { DatasheetService } from 'database/services/datasheet/datasheet.service';
-import { DatasheetServiceModule } from '../../_modules/datasheet.service.module';
 import { DeveloperService } from 'database/services/developer/developer.service';
-import { ResourceServiceModule } from '../../_modules/resource.service.module';
+// import { ResourceServiceModule } from '../../_modules/resource.service.module';
 import { MiddlewareModule } from 'shared/middleware/middleware.module';
+import { GlobalModule } from '../global.module';
+import { SharedModule } from 'shared/shared.module';
 
 export const initSwagger = (app: INestApplication) => {
   // wouldn't be enabled in production
@@ -77,20 +78,20 @@ export const initHttpHook = (app: INestApplication) => {
       request[SPACE_ID_HTTP_DECORATE] = request.params['spaceId'];
     }
     if (request.params['nodeId']) {
-      const nodeRepository = app.select(ResourceServiceModule).get(NodeRepository);
+      const nodeRepository = app.select(GlobalModule).get(NodeRepository);
       const nodeInfo = await nodeRepository.getNodeInfo(request.params['nodeId']);
       request[NODE_INFO] = nodeInfo;
       request[SPACE_ID_HTTP_DECORATE] = nodeInfo.spaceId;
     }
     // datasheetId param should be defined in the fusion api controller by query parameter(datasheets/:datasheetId)
     if (request.params['datasheetId']) {
-      const datasheetService = app.select(DatasheetServiceModule).get(DatasheetService);
+      const datasheetService = app.select(SharedModule).get(DatasheetService);
       const datasheet = await datasheetService.getDatasheet(request.params['datasheetId']);
       if (datasheet) {
         // TODO: should be optimized
         request[DATASHEET_HTTP_DECORATE] = datasheet;
         request[SPACE_ID_HTTP_DECORATE] = datasheet.spaceId;
-        const metaService = app.select(DatasheetServiceModule).get(DatasheetMetaService);
+        const metaService = app.select(SharedModule).get(DatasheetMetaService);
         request[DATASHEET_META_HTTP_DECORATE] = await metaService.getMetaDataByDstId(request.params['datasheetId']);
         request[DATASHEET_LINKED] = {};
         request[DATASHEET_ENRICH_SELECT_FIELD] = {};
@@ -98,14 +99,14 @@ export const initHttpHook = (app: INestApplication) => {
       }
     }
     if (request.body && request.body['folderId']) {
-      const nodeRepository = app.select(ResourceServiceModule).get(NodeRepository);
+      const nodeRepository = app.select(GlobalModule).get(NodeRepository);
       const folderId = request.body['folderId'];
       const folder = await nodeRepository.getNodeInfo(folderId);
       request[REQUEST_HOOK_FOLDER] = folder;
 
     }
     if (request.body && request.body['preNodeId']) {
-      const nodeRepository = app.select(ResourceServiceModule).get(NodeRepository);
+      const nodeRepository = app.select(GlobalModule).get(NodeRepository);
       const preNodeId = request.body['preNodeId'];
       const preNode = await nodeRepository.getNodeInfo(preNodeId);
       request[REQUEST_HOOK_PRE_NODE] = preNode;
