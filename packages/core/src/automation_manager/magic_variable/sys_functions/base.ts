@@ -1,4 +1,4 @@
-// 和运行时上下文无关的函数
+// built-in functions which are not related to runtime context, just pure functions
 
 export const getArrayLength = (_context: any, array: any[]): number => {
   // if (!array) return 0;
@@ -6,7 +6,7 @@ export const getArrayLength = (_context: any, array: any[]): number => {
 };
 
 /**
- * 将数组拍平，降低一个维度。
+ * reduce dimension of array
  * @param context 
  * @param array 
  * @returns 
@@ -16,9 +16,9 @@ export const flatten = (context: any, array: any[]): any[] => {
 };
 
 /**
- * json path 取值
+ * get value by json path
  * ({a:{b:1}},['a','b']) => 1
- * 这里兼容数组的语意 ([{a:1},{a:2}] ,['a']) => "1,2"
+ * if the obj is an array, ([{a:1},{a:2}] ,['a']) => "1,2"
  */
 export const getObjectProperty = (_context: any, obj: object, paths: string[]) => {
   const getValue = (obj: any, paths: string[]) => {
@@ -43,7 +43,7 @@ export const getObjectProperty = (_context: any, obj: object, paths: string[]) =
 };
 
 /**
- * 段落拼接 \n
+ * concat paragraph with '\n'
  * @param args 
  * @returns 
  */
@@ -53,7 +53,7 @@ export const concatParagraph = (...args) => {
 };
 
 /**
- * 字符串拼接
+ * concat string with ''
  */
 export const concatString = (...args) => {
   const [, ...strings] = args;
@@ -61,7 +61,7 @@ export const concatString = (...args) => {
 };
 
 /**
- * 构造对象
+ * the factory function of object to make a new object
  * [key1,value1,key2,value2,...] => {key1:value1,key2:value2,...}
  */
 export const newObject = (...args) => {
@@ -77,7 +77,7 @@ export const newObject = (...args) => {
 };
 
 /**
- * 构造数组
+ * the factory function of array to make a new array
  */
 export const newArray = (...args) => {
   const [, ...restArgs] = args;
@@ -85,7 +85,7 @@ export const newArray = (...args) => {
 };
 
 /**
- * 逻辑与
+ * logical and
  */
 export const and = (...args) => {
   const [, ...restArgs] = args;
@@ -94,7 +94,7 @@ export const and = (...args) => {
 };
 
 /**
- * 逻辑或
+ * logical or
  */
 export const or = (...args) => {
   const [, ...restArgs] = args;
@@ -103,7 +103,7 @@ export const or = (...args) => {
 };
 
 /**
- * JSON 格式化为字符串
+ * just json stringify
  * @param args
  * @returns 
  */
@@ -113,7 +113,7 @@ export const JSONStringify = (_context: any, obj: object) => {
 };
 
 /**
- * 获取可迭代对象的长度
+ * get length of iterable object
  * @param _context 
  * @param obj 
  */

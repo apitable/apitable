@@ -8,16 +8,19 @@ import {
 } from './magic_variable/sys_functions';
 
 /**
- * 消费任务队列中的任务，解析执行·
+ * handle workflow execution
  */
 export class AutomationRobotRunner extends IAutomationRobotRunner {
 
   constructor(reqMethods: IReqMethod) {
     super();
+    // the reqMethods is used to call api of other service, implement by the host of runner(room-server)
     this.reqMethods = reqMethods;
     this.inputParser = this.initInputParser();
   }
   private initInputParser() {
+    // functions below are used to parse input of action, you can add any function you want at `./magic_variable/sys_functions`
+    // then add it into sysFunctions array. just like standard lib for programming language
     const sysFunctions = [length, flatten, getNodeOutput, getObjectProperty, concatString, concatParagraph, newArray, newObject, JSONStringify];
     const parser = new MagicVariableParser(sysFunctions);
     return new InputParser(parser);
@@ -29,11 +32,11 @@ export class AutomationRobotRunner extends IAutomationRobotRunner {
     await this.executeAction(entryActionId, globalContext);
   }
   validateActionInput(actionType: IActionType, input: any): boolean {
-    // TODO: 实现 json 校验
+    // TODO: implement json schema validation
     return true;
   }
   validateActionOutput(actionType: IActionType, output: any): boolean {
-    // TODO: 实现 json 校验
+    // TODO: implement json schema validation
     return true;
   }
   initRuntimeContext(robotTask: IRobotTask, robot: IRobot): IRobotTaskRuntimeContext {
@@ -50,28 +53,26 @@ export class AutomationRobotRunner extends IAutomationRobotRunner {
         }
       },
       isDone: false,
-      success: true, // 没有错误就是成功
+      success: true,
     };
   }
   async executeAction(actionId: string, globalContext: IRobotTaskRuntimeContext) {
     // console.log('globalContext', globalContext, JSON.stringify(globalContext.context));
     globalContext.currentNodeId = actionId;
     const start = new Date().getTime();
-    // 获取 action 实例
+    // get instance of the action by id
     const actionInstance = globalContext.robot.actionsById[actionId];
-    // 获取 action type
+    // get type of the action
     const actionType = globalContext.robot.actionTypesById[actionInstance.typeId];
-    // 校验 action 运行时 input
-    // if (this.validateActionInput(actionType, actionRuntimeInput)) {
-    // 执行 action
+    // TODO: validate input
+    // if (this.validateActionInput(actionType, actionRuntimeInput)) {}
     let output: IActionOutput | undefined;
     const errorStacks: any[] = [];
     let nextActionId: string | undefined;
-    // 获取 action 运行时 input
+    // the input of action may have dynamic value, so we need to parse it
     let actionRuntimeInput;
     try {
       try {
-        // 目前存在逃过表单校验开启机器人的情况。这里校验输入。
         actionRuntimeInput = this.getRuntimeActionInput(actionId, globalContext);
         if (!this.validateActionInput(actionType, actionRuntimeInput)) {
           throw new Error('action input is invalid');
@@ -79,29 +80,27 @@ export class AutomationRobotRunner extends IAutomationRobotRunner {
       } catch (error) {
         throw new Error('action input is invalid');
       }
-      // TODO: 推送到队列，保证顺序。
+      // TODO: push task to queue, to ensure the order of execution
       try {
         output = await this.reqMethods.requestActionOutput(actionRuntimeInput, actionType);
       } catch (error) {
-        // 网络原因，action 执行失败了
+        // execute action failed, most likely because of network error
         throw new Error('action execute failed');
       }
       nextActionId = actionInstance.nextActionId;
       // console.log(output, nextActionId);
       if (output && !output.success) {
         errorStacks.push(...output.data.errors);
-        // 报错时候，直接全局执行完成。不再执行
+        // when some output of action is failed, we should stop the execution, done but failed
         globalContext.isDone = true;
-        // 任何一个报错就是失败了。暂定这样的逻辑。TODO:最后一个校验失败可以认定为可以跳过。算是成功
         globalContext.success = false;
       }
     } catch (error) {
       errorStacks.push({
         message: error.message,
       });
-      // 报错时候，直接全局执行完成。不再执行
+      // unexpected error, we should stop the execution, done but failed
       globalContext.isDone = true;
-      // 任何一个报错就是失败了。暂定这样的逻辑。TODO:最后一个校验失败可以认定为可以跳过。算是成功
       globalContext.success = false;
     } finally {
       const end = new Date().getTime();

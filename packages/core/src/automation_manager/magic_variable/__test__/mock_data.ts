@@ -1,4 +1,4 @@
-// 维格表A
+// apitableA
 export const getNodeOutputExpr = {
   operator: 'getObjectProperty',
   operands: [
@@ -34,12 +34,12 @@ export const dynamicStrExpr = {
     },
     {
       type: 'Literal',
-      value: '",\n      "title": "doge: automation test",\n      "picUrl": "",\n      "messageUrl": "https://vika.cn"\n  }\n}\n'
+      value: '",\n      "title": "doge: automation test",\n      "picUrl": "",\n      "messageUrl": "https://example.com"\n  }\n}\n'
     }
   ]
 };
 
-// 动态数组表达式 ["维格表A","维格表B"]
+// ["apitableA","apitableB"]
 export const dynamicArrayExpr = {
   operator: 'newArray',
   operands: [
@@ -49,18 +49,18 @@ export const dynamicArrayExpr = {
     },
     {
       type: 'Literal',
-      value: '维格表B'
+      value: 'apitableB'
     }
   ]
 };
 
-// 动态对象表达式 { "维格表A": "维格表A", "维格表B": "维格表B" }
+// { "apitableA": "apitableA", "apitableB": "apitableB" }
 export const dynamicObjectExpr = {
   operator: 'newObject',
   operands: [
     {
       type: 'Literal',
-      value: '维格表A',
+      value: 'apitableA',
     },
     {
       type: 'Expression',
@@ -68,22 +68,22 @@ export const dynamicObjectExpr = {
     },
     {
       type: 'Literal',
-      value: '维格表B',
+      value: 'apitableB',
     },
     {
       type: 'Literal',
-      value: '维格表B',
+      value: 'apitableB',
     }
   ]
 };
 
-// 动态嵌套对象表达式 { "维格表A": { "维格表A": "维格表A", "维格表B": "维格表B" }, "维格表B": "维格表B" }
+// { "apitableA": { "apitableA": "apitableA", "apitableB": "apitableB" }, "apitableB": "apitableB" }
 export const dynamicNestedObjectExpr = {
   operator: 'newObject',
   operands: [
     {
       type: 'Literal',
-      value: '维格表A',
+      value: 'apitableA',
     },
     {
       type: 'Expression',
@@ -91,16 +91,16 @@ export const dynamicNestedObjectExpr = {
     },
     {
       type: 'Literal',
-      value: '维格表B',
+      value: 'apitableB',
     },
     {
       type: 'Literal',
-      value: '维格表B',
+      value: 'apitableB',
     }
   ]
 };
 
-// 动态 key 对象表达式 { "维格表A": "维格表A Value", "维格表B": "维格表B" }
+// { "apitableA": "apitableA Value", "apitableB": "apitableB" }
 export const dynamicKeyObjectExpr = {
   operator: 'newObject',
   operands: [
@@ -110,15 +110,15 @@ export const dynamicKeyObjectExpr = {
     },
     {
       type: 'Literal',
-      value: '维格表A Value',
+      value: 'apitableA Value',
     },
     {
       type: 'Literal',
-      value: '维格表B',
+      value: 'apitableB',
     },
     {
       type: 'Literal',
-      value: '维格表B',
+      value: 'apitableB',
     }
   ]
 };

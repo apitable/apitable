@@ -1,9 +1,9 @@
 import { JSONSchema7 } from 'json-schema';
 import { validateMagicForm } from '../validate';
 import { formData, conditionSchema } from './mock_data';
-describe('测试表单校验', () => {
+describe('form validate', () => {
 
-  it('测试 oneOf conditionSchema  校验', () => {
+  it('oneOf conditionSchema', () => {
     const res = validateMagicForm(conditionSchema as JSONSchema7, formData);
     expect(res.errors.length).toEqual(1);
   });

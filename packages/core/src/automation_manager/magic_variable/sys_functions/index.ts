@@ -28,8 +28,8 @@ const makeFunction = (func: any, funcName: string) => {
   return func;
 };
 
-// !!!下面的导出为什么要这样写呢？
-// core 的代码是 build 完之后，再给 pc 用的，function 会被编译一遍。name 信息会丢失。本地开发没问题, 但是 build 完之后表现异常
+// we must redefine the name of function, otherwise the name will be random after building
+// this will be fine in local development, but will cause some strange bugs in production
 
 export const TRIGGER_INPUT_PARSER_FUNCTIONS = [
   makeFunction(newObject, 'newObject'),

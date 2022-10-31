@@ -1,1 +1,1 @@
-Automation 动态参数中自带的系统函数
+built-in system functions for input of node(trigger/action)

@@ -1,35 +1,36 @@
 /**
- * 表达式相关的操作工具函数
+ * utils for operand
  */
 import produce from 'immer';
 import { isEqual } from 'lodash';
 import { EmptyNullOperand, EmptyObjectOperand, EmptyArrayOperand } from './const';
 
-// 判断一个对象是否是操作数
+// is input value an operand
 export const isOperand = (value: any) => {
   if (value == null) return false;
   return typeof value === 'object' && value.type === 'Literal' || value.type === 'Expression';
 };
 
+// is input value an expression
 export const isLiteralOperand = (value: any) => {
   return isOperand(value) && value.type === 'Literal';
 };
 
-// 判断一个对象是否是数组操作数
+// is input value an array operand
 export const isArrayOperand = (operand: any) => {
   return isOperand(operand) && !isLiteralOperand(operand) && operand.value.operator === 'newArray';
 };
 
-// 判断一个对象是否是对象操作数
+// is input value an object operand
 export const isObjectOperand = (operand: any) => {
   return isOperand(operand) && !isLiteralOperand(operand) && operand.value.operator === 'newObject';
 };
 
 /**
- * 获取对象操作数指定 key 的值
+ * get value of operand-object by key
  * @param objectOperand 
  * @param key 
- * @param propertySchema 获取的属性的 schema，由此返回默认的空值。 
+ * @param propertySchema
  */
 export const getObjectOperandProperty = (objectOperand, key, propertySchema) => {
   if (isObjectOperand(objectOperand)) {
@@ -41,11 +42,10 @@ export const getObjectOperandProperty = (objectOperand, key, propertySchema) => 
     }
     return JSON.parse(JSON.stringify(EmptyNullOperand));
   }
-  // formData 本身就是空的
+  // when formData is empty, return default null value
   if (objectOperand == null || Object.keys(objectOperand).length === 0) {
     return JSON.parse(JSON.stringify(EmptyNullOperand));
   }
-  // 拿不到，返回空值。
   switch (propertySchema.type) {
     case 'object':
       return JSON.parse(JSON.stringify(EmptyObjectOperand));
@@ -71,7 +71,7 @@ const getExpressionOperatorReturnType = (operator: string) => {
   return OperatorReturnTypeMap[operator] || 'null';
 };
 
-// 获取操作数值的类型
+// get return type of operand
 export const getOperandValueType = (operand: any) => {
   if (!isOperand(operand)) {
     throw Error('must be operand');
@@ -86,7 +86,7 @@ export const getOperandValueType = (operand: any) => {
 };
 
 export const isOperandNullValue = (operand, schema) => {
-  // 操作数的空值
+  // if null 
   if (operand.type === 'Literal' && operand.value === null) {
     return true;
   }
@@ -106,26 +106,25 @@ export const isOperandNullValue = (operand, schema) => {
 };
 
 /**
- * 递归合并合并 objects 对象
+ * merge to the array of operands into one object operand
  * - ['key1',{k11:v11,k12:v12},'key1',{k11:v12,k22:v22},'key2','value22'] => 
  * {
  *   key1: {
- *      k11: v12,
- *      k12:v12, // 后面的没有这个 key 保留
- *      k22: v22 // 前面的没有这个 key 加上
+ *      k11: v12, // params[0].key1.k11 is overrided by params[2].key1.k11
+ *      k12: v12, // params[0].key1 has 'k12' and params[2].key1 has no 'k12', so keep params[0].key1.k12
+ *      k22: v22  // params[2].key1 has 'k22' and params[0].key1 has no 'k22', so keep params[2].key1.k22
  *   }
  *   key2: 'value22'
  * }
  * @param operands 
  */
 export const objectCombOperand = (operands: any[]) => {
-  // 后面的相同 key 的 item 会覆盖前面的。
   const newItems: any[] = [];
   for (let idx = 0; idx < operands.length; idx += 2) {
     // idx 0 2 4 6 8 
     const itemKey = operands[idx]; // 0
     const itemValue = operands[idx + 1]; //1
-    // 偶数位为 key
+    // even numbers is key & odd numbers is value
     const newItemKeys = newItems.filter((item, index) => {
       return index % 2 === 0;
     });
@@ -133,14 +132,12 @@ export const objectCombOperand = (operands: any[]) => {
     if (itemKeyIndex > -1) {
       const itemValueIndex = itemKeyIndex * 2 + 1;
       const oldItemValue = newItems[itemValueIndex];
-      // 没有模式匹配啊阿啊阿啊
       if (isObjectOperand(oldItemValue) && isObjectOperand(itemValue)) {
         newItems[itemValueIndex] = mergeOperand(oldItemValue, itemValue);
       } else {
         newItems[itemValueIndex] = itemValue;
       }
     } else {
-      // 不存在的 key 直接加 
       newItems.push(itemKey);
       newItems.push(itemValue);
     }
@@ -157,7 +154,7 @@ export const removeArrayOperandItemByIndex = (arrayOperand, index: number) => {
 };
 
 /**
- * 将正常的嵌套结构的对象转化为操作数
+ * transform an object to an operand
  */
 export const data2Operand = (data: any) => {
   if (data == null) {
@@ -175,7 +172,6 @@ export const data2Operand = (data: any) => {
           }
         };
       }
-      // 普通对象
       return {
         type: 'Expression',
         value: {
@@ -194,7 +190,7 @@ export const data2Operand = (data: any) => {
 };
 
 /**
- * 合并两个操作数
+ * merge two operands into one
  * @param operand1 
  * @param operand2 
  */

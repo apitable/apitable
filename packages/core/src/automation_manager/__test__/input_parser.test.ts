@@ -4,12 +4,12 @@ import { MagicVariableParser } from 'automation_manager/magic_variable/magic_var
 import { getNodeOutput, getObjectProperty, concatString, newArray, newObject } from 'automation_manager/magic_variable/sys_functions';
 import { recordMatchConditionTriggerInput, runtimeContext, webhookSendRequestInput } from './mock_data';
 
-describe('测试动态参数求值', () => {
+describe('get value of variable', () => {
   const sysFunctions = [getNodeOutput, getObjectProperty, concatString, newArray, newObject];
   const parser = new MagicVariableParser<typeof runtimeContext>(sysFunctions);
   const inputParser = new InputParser(parser);
 
-  it('测试 webhook input', () => {
+  it('webhook input', () => {
     const res = inputParser.render(webhookSendRequestInput as IExpressionOperand, runtimeContext);
     expect(res).toEqual({
       url: 'https://oapi.dingtalk.com/robot/send?access_token=8bfaxxbd2cbd490594a99609b44f98e637e7233fb4ff57ec97d9b866cec07c8e',
@@ -18,16 +18,16 @@ describe('测试动态参数求值', () => {
       body: '{\n' +
         '  "msgtype": "link",\n' +
         '  "link": {\n' +
-        '      "text": "维格表A",\n' +
+        '      "text": "apitableA",\n' +
         '      "title": "doge: automation test",\n' +
         '      "picUrl": "",\n' +
-        '      "messageUrl": "https://vika.cn"\n' +
+        '      "messageUrl": "https://example.com"\n' +
         '  }\n' +
         '}\n'
     });
   });
 
-  it('表达式对象的 key 可以是未声明字面量的 string', () => {
+  it('literal string can be key of expression object', () => {
     const res = inputParser.render({
       type: OperandTypeEnums.Expression,
       value: {
@@ -57,7 +57,7 @@ describe('测试动态参数求值', () => {
 
   const triggerParser = new MagicVariableParser<any>([newArray, newObject]);
   const triggerInputParser = new InputParser(triggerParser);
-  it('记录符合条件 trigger input', () => {
+  it('record matches condition trigger input', () => {
     const res = triggerInputParser.render(recordMatchConditionTriggerInput as IExpressionOperand, {});
     expect(res).toEqual(
       {
@@ -65,11 +65,10 @@ describe('测试动态参数求值', () => {
         filter: {
           operator: 'and',
           operands: [
-            // 状态 = 下单
             {
               type: 'Expression',
               value: {
-                operator: '=', // 这里的 operator 虽然是 =，第一个操作数是字段ID。 但是在解析表达式时，可以重载 = ，将第一个操作数转换为具体值
+                operator: '=',
                 operands: [
                   {
                     type: 'Literal',
@@ -85,7 +84,6 @@ describe('测试动态参数求值', () => {
             {
               type: 'Expression',
               value: {
-                // 数量 > 3
                 operator: '>',
                 operands: [
                   {

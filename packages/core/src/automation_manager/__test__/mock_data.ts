@@ -6,21 +6,20 @@ export const runtimeContext: IRobotTaskRuntimeContext = {
     id: 'robotId',
     triggerId: 'string',
     triggerTypeId: 'triggerTypeId',
-    // 入口 actionID;
     entryActionId: 'string',
-    // 全部 action map;
+    // action map;
     actionsById: {
       actionId1: {
         id: 'actionId1',
-        // 动作原型ID
+        // action type id
         typeId: 'actionType1',
-        // 动作输入
+        // action input
         input: {},
         // 
         nextActionId: 'string',
       }
     },
-    // 全部 actionType map;
+    // actionType map;
     actionTypesById: {
 
     }
@@ -33,7 +32,7 @@ export const runtimeContext: IRobotTaskRuntimeContext = {
       output: {
         datasheet: {
           id: 'dstAid',
-          name: '维格表A'
+          name: 'apitableA'
         },
         record: {
           id: 'recordId',
@@ -49,7 +48,6 @@ export const runtimeContext: IRobotTaskRuntimeContext = {
   success: false,
 };
 
-// webhook 动态输入的数据
 export const webhookSendRequestInput = {
   type: 'Expression',
   value: {
@@ -121,7 +119,7 @@ export const webhookSendRequestInput = {
             },
             {
               type: 'Literal',
-              value: '",\n      "title": "doge: automation test",\n      "picUrl": "",\n      "messageUrl": "https://vika.cn"\n  }\n}\n'
+              value: '",\n      "title": "doge: automation test",\n      "picUrl": "",\n      "messageUrl": "https://example.com"\n  }\n}\n'
             }
           ]
         }

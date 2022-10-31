@@ -8,65 +8,58 @@ export interface IActionType {
 
 export interface IActionInstance<Input> {
   id: string;
-  // 动作原型ID
+  // action type id
   typeId: string;
-  // 动作输入
+  // action input
   input: Input;
   // 
   nextActionId?: string;
 }
 
 export interface IRobot {
-  // 机器人ID
+  // robot id
   id: string;
   triggerId: string;
   triggerTypeId: string;
-  // 入口 actionID;
   entryActionId: string;
-  // 全部 action map;
+  // action map;
   actionsById: Record<string, IActionInstance<any>>;
-  // 全部 actionType map;
+  // actionType map;
   actionTypesById: Record<string, IActionType>;
 }
 
 export interface IRobotTask {
-  // 当前任务 ID
   taskId: string;
-  // 要运行的机器人ID
   robotId: string;
-  // 触发 trigger 的 input
   triggerInput: any;
-  // 触发 trigger 的 output
   triggerOutput: any;
 }
 
 /**
- * 用于动态解析任务的全局上下文，一些 action 需要动态获取之前节点的 output，作为 input 传入。
- * 是一个全局上下文，存储了执行过的每一个节点的 output。
+ * manage runtime context of robot task, we store the output of each node in this context, so we can use it in later nodes.
  */
 export interface IRobotTaskRuntimeContext {
-  // uuid
+  // uuid, every task has a unique id
   taskId: string;
-  // 机器人完整信息;
+  // detail of robot, include detail of trigger & actions
   robot: IRobot;
-  // 执行过的节点 id。
   executedNodeIds: string[];
-  // 当前执行的节点
+  // execute all nodes in order, currentNodeId is the node to be executed
   currentNodeId: string;
   context: {
     [nodeId: string]: {
-      typeId: string; // trigger / action 的 typeId
+      typeId: string; // typeId of trigger or action
       input?: any;
       output?: any;
-      // 开始时间戳
+      // timestamp of node execution start
       startAt?: number;
-      // 结束时间戳
+      // timestamp of node execution end
       endAt?: number;
       errorStacks?: any[];
     }
   }
-  // 任务是否执行完毕，不管是否中途报错。
+  // is this task done, no matter if there is an error
   isDone: boolean;
-  // 执行完毕的 task 是否成功了，存在报错则不成功。
+  // is this task success, if there is an error, it is not success
   success: boolean;
 }

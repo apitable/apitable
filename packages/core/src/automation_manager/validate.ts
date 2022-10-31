@@ -1,10 +1,11 @@
-/**
- * 表达式 + form 的校验逻辑
- */
+
 import { JSONSchema7 } from 'json-schema';
 import { getLiteralOperandValue, getObjectOperandProperty, getOperandValueType, isLiteralOperand, isOperandNullValue } from './utils';
 import { Strings, t } from 'i18n'; 
 
+/**
+ * override the validate method of rjsf to support expression.
+ */
 export const validateMagicForm = (rootSchema: JSONSchema7, formData: any) => {
   let validationError: any = null;
   const propertyErrors: any[] = [];
@@ -28,7 +29,6 @@ export const validateMagicForm = (rootSchema: JSONSchema7, formData: any) => {
           //   propertyKey, propertySchema, propertyValue, isRequired,
           //   rootSchema, formData,
           // });
-          // 先判断是否必填
           if (isRequired) {
             if (isOperandNullValue(propertyValue, propertySchema)) {
               propertyErrors.push({
@@ -39,9 +39,7 @@ export const validateMagicForm = (rootSchema: JSONSchema7, formData: any) => {
                 schemaPath: '#/required',
               });
             } else {
-              // 存在 enum 枚举值时，值是否匹配。
               if (propertySchema.enum) {
-                // 判断非空值是否存在指定选项中。
                 if (isLiteralOperand(propertyValue) && !propertySchema.enum!.includes(getLiteralOperandValue(propertyValue))) {
                   propertyErrors.push({
                     dataPath: `.${propertyKey}`,
@@ -54,14 +52,12 @@ export const validateMagicForm = (rootSchema: JSONSchema7, formData: any) => {
               }
             }
           } else {
-            // 存在 enum 枚举值时，值是否匹配。
             if (propertySchema.enum) {
-              // 判断非空值是否存在指定选项中。
               if (isLiteralOperand(propertyValue) && !propertySchema.enum!.includes(getLiteralOperandValue(propertyValue))) {
                 propertyErrors.push({
                   dataPath: `.${propertyKey}`,
                   keyword: 'enum',
-                  message: '不存在指定的选项',
+                  message: '不存在指定的选项', // TODO: i18n
                   params: { enum: propertySchema.enum },
                   schemaPath: '#/enum',
                 });
@@ -70,7 +66,7 @@ export const validateMagicForm = (rootSchema: JSONSchema7, formData: any) => {
             if (isOperandNullValue(propertyValue, propertySchema)) {
               return;
             }
-            // 再判断类型是否匹配
+            // check type
             switch (propertySchema.type) {
               case 'object':
                 if (getOperandValueType(propertyValue) !== 'object') {
@@ -101,8 +97,7 @@ export const validateMagicForm = (rootSchema: JSONSchema7, formData: any) => {
               case 'null':
                 break;
             }
-            // 然后才是判断额外的校验逻辑
-            // TODO: 目前不支持
+            // then we can check the extra validation logic, but now we don't support it.
           }
           // if (propertySchema.type === 'object') {
           //   console.log('object', propertyKey, propertySchema);
@@ -113,7 +108,7 @@ export const validateMagicForm = (rootSchema: JSONSchema7, formData: any) => {
       throw new Error('rootSchema type must be object');
     }
   } catch (err) {
-    // 校验过程中发生了未知错误
+    // some unknown error happened in the validation process
     validationError = err;
   }
 

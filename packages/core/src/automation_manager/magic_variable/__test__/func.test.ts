@@ -7,49 +7,49 @@ import {
   getNodeOutputExpr, dynamicStrExpr
 } from './mock_data';
 
-describe('测试动态参数渲染', () => {
+describe('dynamic variable render', () => {
   const sysFunctions = [getNodeOutput, getObjectProperty, concatString, newArray, newObject, flatten];
   const parser = new MagicVariableParser<typeof runtimeContext>(sysFunctions);
 
-  it('获取节点输出值', () => {
+  it('get output of node', () => {
     const res = parser.exec(getNodeOutputExpr as IExpression, runtimeContext);
-    expect(res).toEqual('维格表A');
+    expect(res).toEqual('apitableA');
   });
 
-  it('测试字符串拼接', () => {
+  it('concat string', () => {
     const res = parser.exec(dynamicStrExpr as IExpression, runtimeContext);
     expect(JSON.parse(res)).toEqual({
       msgtype: 'link',
       link: {
-        text: '维格表A',
+        text: 'apitableA',
         title: 'doge: automation test',
         picUrl: '',
-        messageUrl: 'https://vika.cn'
+        messageUrl: 'https://example.com'
       }
     });
   });
 
-  it('测试动态数组', () => {
+  it('dynamic array', () => {
     const res = parser.exec(dynamicArrayExpr as IExpression, runtimeContext);
-    expect(res).toEqual(['维格表A', '维格表B']);
+    expect(res).toEqual(['apitableA', 'apitableB']);
   });
 
-  it('测试动态对象', () => {
+  it('dynamic object', () => {
     const res = parser.exec(dynamicObjectExpr as IExpression, runtimeContext);
-    expect(res).toEqual({ 维格表A: '维格表A', 维格表B: '维格表B' });
+    expect(res).toEqual({ apitableA: 'apitableA', apitableB: 'apitableB' });
   });
 
-  it('测试动态嵌套对象', () => {
+  it('dynamic nested object', () => {
     const res = parser.exec(dynamicNestedObjectExpr as IExpression, runtimeContext);
-    expect(res).toEqual({ 维格表A: { 维格表A: '维格表A', 维格表B: '维格表B' }, 维格表B: '维格表B' });
+    expect(res).toEqual({ apitableA: { apitableA: 'apitableA', apitableB: 'apitableB' }, apitableB: 'apitableB' });
   });
 
-  it('测试动态 key 对象', () => {
+  it('dynamic object key', () => {
     const res = parser.exec(dynamicKeyObjectExpr as IExpression, runtimeContext);
-    expect(res).toEqual({ 维格表A: '维格表A Value', 维格表B: '维格表B' });
+    expect(res).toEqual({ apitableA: 'apitableA Value', apitableB: 'apitableB' });
   });
 
-  it('测试数组套数组', () => {
+  it('dynamic nested array', () => {
     const res = parser.exec({
       operator: 'flatten',
       operands: [
